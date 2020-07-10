@@ -163,18 +163,3 @@ final class SongsTVC: LibraryTableViewController {
 	}
 	
 }
-
-final class SongsArtworkCell: UITableViewCell {
-	@IBOutlet var artworkImageView: UIImageView!
-}
-
-final class SongsHeaderCell: UITableViewCell {
-	@IBOutlet var albumArtistLabel: UILabel!
-	@IBOutlet var yearLabel: UILabel!
-	@IBOutlet var addAllToDeckButton: UIButton!
-}
-
-final class SongCell: UITableViewCell {
-	@IBOutlet var trackNumberLabel: UILabel!
-	@IBOutlet var titleLabel: UILabel!
-}

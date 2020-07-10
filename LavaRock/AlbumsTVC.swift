@@ -43,16 +43,14 @@ final class AlbumsTVC: LibraryTableViewController {
 		
 		// Get the data to put into the cell.
 		let album = activeLibraryItems[indexPath.row] as! Album
-		
-		// Put the data into the (built-in–style) cell.
-//		cell.imageView?.image = UIImage(named: (album.sampleArtworkTitle!)) //
-//		cell.textLabel?.text = album.title
-//		cell.detailTextLabel?.text = String(album.year)
+		let albumArtwork = UIImage(named: (album.sampleArtworkTitle!)) //
+		let albumTitle = album.title
+		let albumYearText = String(album.year)
 		
 		// Put data into the (custom) cell.
-		cell.artworkImageView.image = UIImage(named: (album.sampleArtworkTitle!)) //
-		cell.titleLabel.text = album.title
-		cell.yearLabel.text = String(album.year)
+		cell.artworkImageView.image = albumArtwork
+		cell.titleLabel.text = albumTitle
+		cell.yearLabel.text = albumYearText
 			
 		// Customize the cell.
 		if collectionsNC.isInMoveAlbumsMode {

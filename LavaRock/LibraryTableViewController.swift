@@ -125,9 +125,19 @@ class LibraryTableViewController: UITableViewController {
 		
 		// Get the data to put into the cell.
 		let libraryItem = activeLibraryItems[indexPath.row]
+		let itemTitle = libraryItem.value(forKey: "title") as? String
 		
 		// Put the data into the cell.
-		cell.textLabel?.text = libraryItem.value(forKey: "title") as? String
+		if #available(iOS 14, *) {
+			var content = cell.defaultContentConfiguration()
+			
+			content.text = itemTitle
+			
+			cell.contentConfiguration = content
+			
+		} else { // iOS 13 and earlier
+			cell.textLabel?.text = itemTitle
+		}
 		
         return cell
     }
