@@ -38,26 +38,55 @@ final class AlbumsTVC: LibraryTableViewController {
 	
 	// MARK: Loading data
 	
+//	private func downsampledImage(named imageName: String, finalSize: CGSize) -> UIImage {
+//		let image = UIImage(named: imageName)
+//		let renderer = UIGraphicsImageRenderer(size: finalSize)
+//		return renderer.image{_ in
+//			image?.draw(in: CGRect(origin: .zero, size: finalSize))
+//		}
+//	}
+	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
-		
 		// Get the data to put into the cell.
 		let album = activeLibraryItems[indexPath.row] as! Album
 		let albumArtwork = UIImage(named: (album.sampleArtworkTitle!)) //
 		let albumTitle = album.title
 		let albumYearText = String(album.year)
 		
-		// Put data into the (custom) cell.
-		cell.artworkImageView.image = albumArtwork
-		cell.titleLabel.text = albumTitle
-		cell.yearLabel.text = albumYearText
+		// Make, configure, and return the cell.
+//		if #available(iOS 14, *) {
+//			let cell = tableView.dequeueReusableCell(withIdentifier: "Basic Cell", for: indexPath)
+//
+//			var configuration = UIListContentConfiguration.subtitleCell()
+//			configuration.image = albumArtwork
+//			configuration.text = albumTitle
+//			configuration.secondaryText = albumYearText
+//
+//			cell.contentConfiguration = configuration
+//
+//			// Customize the cell.
+//			if collectionsNC.isInMoveAlbumsMode {
+//				cell.accessoryType = .none
+//			} else {
+//				cell.accessoryType = .disclosureIndicator
+//			}
+//
+//			return cell
+//
+//		} else { // iOS 13 or earlier
+			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
 			
-		// Customize the cell.
-		if collectionsNC.isInMoveAlbumsMode {
-			cell.accessoryType = .none
-		}
-		
-        return cell
+			cell.artworkImageView.image = albumArtwork
+			cell.titleLabel.text = albumTitle
+			cell.yearLabel.text = albumYearText
+			
+			// Customize the cell.
+			if collectionsNC.isInMoveAlbumsMode {
+				cell.accessoryType = .none
+			}
+			
+			return cell
+//		}
     }
 	
 	// MARK: Events
@@ -245,10 +274,4 @@ final class AlbumsTVC: LibraryTableViewController {
 		}
 	}
 	
-}
-
-final class AlbumCell: UITableViewCell {
-	@IBOutlet var artworkImageView: UIImageView!
-	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var yearLabel: UILabel!
 }

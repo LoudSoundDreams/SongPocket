@@ -92,16 +92,29 @@ final class SongsTVC: LibraryTableViewController {
 			return headerCell
 			
 		} else {
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
-			
 			// Get the data to put into the cell.
 			let song = activeLibraryItems[indexPath.row] as! Song
 			
-			// Put the data into the cell.
-			cell.trackNumberLabel.text = String(song.trackNumber)
-			cell.titleLabel.text = song.title
-			
-			return cell
+			// Make, configure, and return the cell.
+//			if #available(iOS 14, *) {
+//				let cell = tableView.dequeueReusableCell(withIdentifier: "Basic Cell", for: indexPath)
+//
+//				var configuration = UIListContentConfiguration.valueCell()
+//				configuration.text = String(song.trackNumber)
+//				configuration.secondaryText = song.title
+//
+//				cell.contentConfiguration = configuration
+//
+//				return cell
+//
+//			} else { // iOS 13 or earlier
+				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
+				
+				cell.trackNumberLabel.text = String(song.trackNumber)
+				cell.titleLabel.text = song.title
+				
+				return cell
+//			}
 		}
 	}
 	

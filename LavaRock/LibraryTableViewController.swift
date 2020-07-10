@@ -129,11 +129,11 @@ class LibraryTableViewController: UITableViewController {
 		
 		// Put the data into the cell.
 		if #available(iOS 14, *) {
-			var content = cell.defaultContentConfiguration()
+			var configuration = cell.defaultContentConfiguration()
 			
-			content.text = itemTitle
+			configuration.text = itemTitle
 			
-			cell.contentConfiguration = content
+			cell.contentConfiguration = configuration
 			
 		} else { // iOS 13 and earlier
 			cell.textLabel?.text = itemTitle
@@ -194,7 +194,7 @@ class LibraryTableViewController: UITableViewController {
 //	@IBSegueAction func drillDownInLibrarySwiftUI(_ coder: NSCoder) -> UIViewController? {
 //		let selectedItem = activeLibraryItems[tableView.indexPathForSelectedRow!.row]
 //		let selectedItemTitle = selectedItem.value(forKey: "title") as! String
-//		let destination = UIHostingController(coder: coder, rootView: SongsList())
+//		let destination = UIHostingController(coder: coder, rootView: SongsView())
 //		// As of iOS 13.5.1, if you set .navigationBarTitle within SongsView, it doesn't animate in; it just appears after the show segue finishes.
 //		destination?.navigationItem.title = selectedItemTitle
 //		return destination

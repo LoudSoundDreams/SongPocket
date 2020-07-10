@@ -20,7 +20,8 @@ final class CollectionsTVC: LibraryTableViewController {
 		
 		if !collectionsNC.isInMoveAlbumsMode && activeLibraryItems.isEmpty {
 			// Just for testing.
-			injectSampleLibrary()
+			SampleLibraryInjector.injectSampleLibrary()
+			super.loadViaCurrentManagedObjectContext()
 		}
 	}
 	
