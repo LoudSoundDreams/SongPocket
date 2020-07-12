@@ -11,7 +11,7 @@ import CoreData
 
 final class AlbumsTVC: LibraryTableViewController {
 	
-	static let rowHeightInPoints = 44 * 3
+	static let rowHeightInPoints = 44 * 3 // Album class references this to create thumbnails.
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
 	
 	// MARK: Setup
@@ -43,13 +43,14 @@ final class AlbumsTVC: LibraryTableViewController {
 		// Get the data to put into the cell.
 		let album = activeLibraryItems[indexPath.row] as! Album
 		
-		let albumArtwork: UIImage?
-		if let jpegdata = album.downsampledArtwork {
-			albumArtwork = UIImage(data: jpegdata, scale: UIScreen.main.scale)
+		let image: UIImage?
+		if let thumbnailData = album.artworkThumbnail {
+			image = UIImage(data: thumbnailData, scale: UIScreen.main.scale)
 			// .scale is the ratio of rendered pixels to points (3.0 on an iPhone Plus).
 			// .nativeScale is the ratio of physical pixels to points (2.608 on an iPhone Plus).
+			
 		} else {
-			albumArtwork = UIImage(named: (album.sampleArtworkTitle!)) //
+			image = album.sampleArtworkImageFullSize()
 		}
 		let albumTitle = album.title
 		let albumYearText = String(album.year)
@@ -77,7 +78,7 @@ final class AlbumsTVC: LibraryTableViewController {
 //		} else { // iOS 13 or earlier
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
 			
-			cell.artworkImageView.image = albumArtwork
+			cell.artworkImageView.image = image
 			cell.titleLabel.text = albumTitle
 			cell.yearLabel.text = albumYearText
 			

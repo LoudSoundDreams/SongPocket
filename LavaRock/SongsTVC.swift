@@ -74,7 +74,9 @@ final class SongsTVC: LibraryTableViewController {
 			let album = containerOfData as! Album
 			
 			// Put the data into the cell.
-			artworkCell.artworkImageView.image = UIImage(named: album.sampleArtworkTitle!)
+			if let image = album.sampleArtworkImageFullSize() {
+				artworkCell.artworkImageView.image = image
+			}
 			
 			return artworkCell
 			

@@ -208,7 +208,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="382.66666666666669" height="132"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="fallinLight" translatesAutoresizingMaskIntoConstraints="NO" id="qC4-bR-dWy">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="fallinLight.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="qC4-bR-dWy">
                                             <rect key="frame" x="20" y="0.0" width="132" height="132"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="qC4-bR-dWy" secondAttribute="height" multiplier="1:1" id="rdN-1x-Icb"/>
@@ -264,7 +264,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="fallinLight" id="ySH-HV-Yh6">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="fallinLight.jpg" id="ySH-HV-Yh6">
                                             <rect key="frame" x="20" y="0.0" width="192" height="132"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </imageView>
@@ -339,7 +339,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="414.33334350585938"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="palette" translatesAutoresizingMaskIntoConstraints="NO" id="AJa-zb-mTO">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fallinLight.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="AJa-zb-mTO">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="414.33333333333331"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" secondItem="AJa-zb-mTO" secondAttribute="width" multiplier="1:1" id="dfW-Eo-ZNH"/>
@@ -494,8 +494,7 @@
     <color key="tintColor" name="AccentColor"/>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
-        <image name="fallinLight" width="2036" height="1400"/>
-        <image name="palette" width="1400" height="1400"/>
+        <image name="fallinLight.jpg" width="2036" height="1400"/>
         <image name="playpause.fill" catalog="system" width="128" height="73"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.4779999852180481" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

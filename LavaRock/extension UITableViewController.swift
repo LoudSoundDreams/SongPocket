@@ -151,7 +151,7 @@ extension UITableViewController {
 		guard
 			indexPaths.count > 1,
 			!isFromMultipleSections(indexPaths)
-			else { return }
+		else { return }
 		
 		tableView.moveRow(at: indexPaths[0], to: firstIndexPath)
 		
