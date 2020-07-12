@@ -84,7 +84,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			textField.clearButtonMode = .whileEditing
 		} )
 		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: {_ in
+		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { _ in
 			
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
 			
@@ -97,11 +97,11 @@ final class CollectionsTVC: LibraryTableViewController {
 			self.tableView.performBatchUpdates( {
 				self.tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
 				
-			}, completion: {_ in
+			}, completion: { _ in
 				self.tableView.performBatchUpdates( {
 					self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top) // The entire app crashes if you try to complete scrolling before insertRows.
 					
-				}, completion: {_ in
+				}, completion: { _ in
 					self.performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
 				} )
 			} )

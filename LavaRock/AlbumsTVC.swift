@@ -11,6 +11,7 @@ import CoreData
 
 final class AlbumsTVC: LibraryTableViewController {
 	
+	static let rowHeightInPoints = 44 * 3
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
 	
 	// MARK: Setup
@@ -27,7 +28,7 @@ final class AlbumsTVC: LibraryTableViewController {
 		super.setUpUI()
 		
 		navigationItem.leftBarButtonItems = nil // Removes "Move All" button added in storyboard
-		tableView.rowHeight = 44 * 3
+		tableView.rowHeight = CGFloat(Self.rowHeightInPoints)
 		
 		if collectionsNC.isInMoveAlbumsMode {
 			tableView.allowsSelection = false
@@ -38,18 +39,18 @@ final class AlbumsTVC: LibraryTableViewController {
 	
 	// MARK: Loading data
 	
-//	private func downsampledImage(named imageName: String, finalSize: CGSize) -> UIImage {
-//		let image = UIImage(named: imageName)
-//		let renderer = UIGraphicsImageRenderer(size: finalSize)
-//		return renderer.image{_ in
-//			image?.draw(in: CGRect(origin: .zero, size: finalSize))
-//		}
-//	}
-	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
 		let album = activeLibraryItems[indexPath.row] as! Album
-		let albumArtwork = UIImage(named: (album.sampleArtworkTitle!)) //
+		
+		let albumArtwork: UIImage?
+		if let jpegdata = album.downsampledArtwork {
+			albumArtwork = UIImage(data: jpegdata, scale: UIScreen.main.scale)
+			// .scale is the ratio of rendered pixels to points (3.0 on an iPhone Plus).
+			// .nativeScale is the ratio of physical pixels to points (2.608 on an iPhone Plus).
+		} else {
+			albumArtwork = UIImage(named: (album.sampleArtworkTitle!)) //
+		}
 		let albumTitle = album.title
 		let albumYearText = String(album.year)
 		
@@ -193,7 +194,7 @@ final class AlbumsTVC: LibraryTableViewController {
 			do {
 				try collectionsNC.managedObjectContext.parent!.save()
 			} catch {
-				fatalError("Couldn’t save changes just before dismissing the “move albums” sheet: \(error)")
+				fatalError("Crashed while trying to commit changes, just before dismissing the “move albums” sheet: \(error)")
 			}
 		}
 		
@@ -227,7 +228,7 @@ final class AlbumsTVC: LibraryTableViewController {
 				tableView.insertRows(at: indexPaths, with: .middle)
 			}
 			
-		}, completion: {_ in
+		}, completion: { _ in
 			self.performSegue(withIdentifier: "Moved Albums", sender: self)
 		})
 		

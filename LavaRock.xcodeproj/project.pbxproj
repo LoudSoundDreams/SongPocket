@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0736E3A724B8415400A15420 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* AlbumCell.swift */; };
+		0736E3EA24B95FD600A15420 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* Album.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* songs view cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
 		0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308A24B42DEC0033E3CC /* SceneDelegate.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		0736E3A624B8415400A15420 /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
+		0736E3E924B95FD600A15420 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "songs view cells.swift"; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768308824B42DEC0033E3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
 				076830C424B42E3F0033E3CC /* SampleLibraryInjector.swift */,
+				0736E3E924B95FD600A15420 /* Album.swift */,
 				0768308824B42DEC0033E3CC /* AppDelegate.swift */,
 				0768308A24B42DEC0033E3CC /* SceneDelegate.swift */,
 				0768309624B42DEE0033E3CC /* LaunchScreen.storyboard */,
@@ -301,6 +304,7 @@
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				076830C624B42E3F0033E3CC /* CollectionsNC.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
+				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -75,7 +75,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="DGZ-AG-uNY" kind="show" identifier="Drill Down in Library" destinationCreationSelector="drillDownInLibrary:" id="ZQa-2H-OuX"/>
+                                    <segue destination="DGZ-AG-uNY" kind="show" identifier="Drill Down in Library" id="ZQa-2H-OuX"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -132,7 +132,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" name="accentColors"/>
+                        <color key="selectedImageTintColor" name="AccentColor"/>
                     </tabBar>
                     <connections>
                         <segue destination="YiT-J8-VtB" kind="relationship" relationship="viewControllers" id="ULc-Ck-PNa"/>
@@ -491,13 +491,13 @@
     <inferredMetricsTieBreakers>
         <segue reference="Y5v-Mn-JRo"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" name="accentColors"/>
+    <color key="tintColor" name="AccentColor"/>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
         <image name="fallinLight" width="2036" height="1400"/>
         <image name="palette" width="1400" height="1400"/>
         <image name="playpause.fill" catalog="system" width="128" height="73"/>
-        <namedColor name="accentColors">
+        <namedColor name="AccentColor">
             <color red="0.0" green="0.4779999852180481" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="secondaryLabelColor">

@@ -20,7 +20,7 @@ class LibraryTableViewController: UITableViewController {
 	var sortOptions = ["Title"] // Only include the options you want. Make sure they're spelled right, or they won't do anything.
 	
 	// Properties that subclasses should not change:
-	let tintColor = UIColor(named: "accentColors")
+	let tintColor = UIColor(named: "AccentColor")
 	let cellReuseIdentifier = "Cell"
 	lazy var floatToTopButton = UIBarButtonItem(
 		image: UIImage(systemName: "arrow.up.to.line"), // Needs VoiceOver hint
