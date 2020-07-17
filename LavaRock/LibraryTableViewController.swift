@@ -53,7 +53,7 @@ class LibraryTableViewController: UITableViewController {
 	func didSetActiveLibraryItems() {
 		collectionsNC.managedObjectContext.performAndWait {
 			for index in 0..<self.activeLibraryItems.count {
-				self.activeLibraryItems[index].setValue(index, forKey: "index")
+				activeLibraryItems[index].setValue(index, forKey: "index")
 			}
 		}
 	}
@@ -74,12 +74,14 @@ class LibraryTableViewController: UITableViewController {
 	func setUpUI() {
 		
 		// Always
+		
 		if containerOfData != nil {
 			title = containerOfData?.value(forKey: "title") as? String
 		}
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
 		// Depending whether the view is in "move albums" mode
+		
 		if collectionsNC.isInMoveAlbumsMode {
 			navigationItem.prompt = collectionsNC.moveAlbumsModePrompt
 			navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -152,6 +154,11 @@ class LibraryTableViewController: UITableViewController {
 		super.setEditing(editing, animated: animated)
 		
 		updateBarButtonItems()
+		
+		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
+		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
+		tableView.performBatchUpdates(nil, completion: nil) // As of iOS 14.0 beta 2, this causes the app to sometimes crash with an NSRangeException later on after moving a row. beginUpdates() and endUpdates() causes the same.
+		// NOTE: Apparently only when Dynamic Text size is one size larger than default, and 13 particular collections exist. Sometimes the crash is NSInternalInconsistencyException.
 	}
 	
 	func updateBarButtonItems() {

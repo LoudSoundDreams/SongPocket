@@ -27,6 +27,17 @@
 		076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C324B42E3F0033E3CC /* extension UITableViewController.swift */; };
 		076830CE24B42E400033E3CC /* SampleLibraryInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C424B42E3F0033E3CC /* SampleLibraryInjector.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
+		07F08EAF24BC4B6A001F897A /* pinkBlossom.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */; };
+		07F08EB924BC4B7C001F897A /* miniskirt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB024BC4B7B001F897A /* miniskirt.jpg */; };
+		07F08EBA24BC4B7C001F897A /* goodLuck.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB124BC4B7B001F897A /* goodLuck.jpg */; };
+		07F08EBB24BC4B7C001F897A /* angelsKnock.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB224BC4B7B001F897A /* angelsKnock.jpg */; };
+		07F08EBC24BC4B7C001F897A /* likeACat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB324BC4B7B001F897A /* likeACat.jpg */; };
+		07F08EBD24BC4B7C001F897A /* shortHair.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB424BC4B7C001F897A /* shortHair.jpg */; };
+		07F08EBE24BC4B7C001F897A /* wannabe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB524BC4B7C001F897A /* wannabe.jpg */; };
+		07F08EBF24BC4B7C001F897A /* heartAttack.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB624BC4B7C001F897A /* heartAttack.jpg */; };
+		07F08EC024BC4B7C001F897A /* angelsStory.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB724BC4B7C001F897A /* angelsStory.jpg */; };
+		07F08EC124BC4B7C001F897A /* redMotion.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB824BC4B7C001F897A /* redMotion.jpg */; };
+		07F08EC324BD1C51001F897A /* songOfTheSirens.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EC224BD1C51001F897A /* songOfTheSirens.jpg */; };
 		07FC96F024BABAAE0036DD3D /* fallinLight.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96D624BABAA70036DD3D /* fallinLight.jpg */; };
 		07FC96F124BABAAE0036DD3D /* sunnySummer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96D724BABAA70036DD3D /* sunnySummer.jpg */; };
 		07FC96F224BABAAE0036DD3D /* pop2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96D824BABAA80036DD3D /* pop2.jpg */; };
@@ -100,6 +111,17 @@
 		076830C324B42E3F0033E3CC /* extension UITableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "extension UITableViewController.swift"; sourceTree = "<group>"; };
 		076830C424B42E3F0033E3CC /* SampleLibraryInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleLibraryInjector.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pinkBlossom.jpg; sourceTree = "<group>"; };
+		07F08EB024BC4B7B001F897A /* miniskirt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = miniskirt.jpg; sourceTree = "<group>"; };
+		07F08EB124BC4B7B001F897A /* goodLuck.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = goodLuck.jpg; sourceTree = "<group>"; };
+		07F08EB224BC4B7B001F897A /* angelsKnock.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = angelsKnock.jpg; sourceTree = "<group>"; };
+		07F08EB324BC4B7B001F897A /* likeACat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = likeACat.jpg; sourceTree = "<group>"; };
+		07F08EB424BC4B7C001F897A /* shortHair.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shortHair.jpg; sourceTree = "<group>"; };
+		07F08EB524BC4B7C001F897A /* wannabe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wannabe.jpg; sourceTree = "<group>"; };
+		07F08EB624BC4B7C001F897A /* heartAttack.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = heartAttack.jpg; sourceTree = "<group>"; };
+		07F08EB724BC4B7C001F897A /* angelsStory.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = angelsStory.jpg; sourceTree = "<group>"; };
+		07F08EB824BC4B7C001F897A /* redMotion.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = redMotion.jpg; sourceTree = "<group>"; };
+		07F08EC224BD1C51001F897A /* songOfTheSirens.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = songOfTheSirens.jpg; sourceTree = "<group>"; };
 		07FC96D624BABAA70036DD3D /* fallinLight.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fallinLight.jpg; sourceTree = "<group>"; };
 		07FC96D724BABAA70036DD3D /* sunnySummer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sunnySummer.jpg; sourceTree = "<group>"; };
 		07FC96D824BABAA80036DD3D /* pop2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pop2.jpg; sourceTree = "<group>"; };
@@ -217,6 +239,8 @@
 		07FC96D524BAB9A80036DD3D /* Sample Artwork */ = {
 			isa = PBXGroup;
 			children = (
+				07F08EB224BC4B7B001F897A /* angelsKnock.jpg */,
+				07F08EB724BC4B7C001F897A /* angelsStory.jpg */,
 				07FC96E924BABAAC0036DD3D /* chatShire.jpg */,
 				07FC96EF24BABAAE0036DD3D /* dedicated.jpg */,
 				07FC96E824BABAAC0036DD3D /* dedicatedSideB.jpg */,
@@ -225,25 +249,34 @@
 				07FC96EB24BABAAD0036DD3D /* feverSeason.jpg */,
 				07FC96DD24BABAA90036DD3D /* flowerBud.jpg */,
 				07FC96EA24BABAAD0036DD3D /* fullCourse.jpg */,
+				07F08EB124BC4B7B001F897A /* goodLuck.jpg */,
+				07F08EB624BC4B7C001F897A /* heartAttack.jpg */,
 				07FC96EE24BABAAE0036DD3D /* iDisagree.jpg */,
 				07FC96D924BABAA80036DD3D /* jazz.jpg */,
 				07FC96E024BABAAA0036DD3D /* kiss.jpg */,
 				07FC96E424BABAAB0036DD3D /* labyrinth.jpg */,
+				07F08EB324BC4B7B001F897A /* likeACat.jpg */,
 				07FC96DE24BABAA90036DD3D /* lol.jpg */,
+				07F08EB024BC4B7B001F897A /* miniskirt.jpg */,
 				07FC96E224BABAAA0036DD3D /* modernTimesEpilogue.jpg */,
 				07FC96ED24BABAAE0036DD3D /* palette.jpg */,
+				07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */,
 				07FC96E324BABAAA0036DD3D /* planetaryPieces.png */,
 				07FC96D824BABAA80036DD3D /* pop2.jpg */,
 				07FC96E624BABAAC0036DD3D /* poppyRemixes.jpg */,
 				07FC96DB24BABAA80036DD3D /* rainbow.jpg */,
 				07FC96DC24BABAA80036DD3D /* real.jpg */,
+				07F08EB824BC4B7C001F897A /* redMotion.jpg */,
+				07F08EB424BC4B7C001F897A /* shortHair.jpg */,
 				07FC96DA24BABAA80036DD3D /* shostakovichPianoConcertos.jpg */,
+				07F08EC224BD1C51001F897A /* songOfTheSirens.jpg */,
 				071A78F824BB0B81004646FF /* sonicMania.jpg */,
 				071A78F624BB0AC9004646FF /* starTrekII.jpg */,
 				07FC96D724BABAA70036DD3D /* sunnySummer.jpg */,
 				07FC96E524BABAAB0036DD3D /* theAwakening.jpg */,
 				07FC96DF24BABAA90036DD3D /* timeForTheMoonNight.jpg */,
 				07FC96E124BABAAA0036DD3D /* timeForUs.jpg */,
+				07F08EB524BC4B7C001F897A /* wannabe.jpg */,
 				07FC96EC24BABAAD0036DD3D /* wide.png */,
 			);
 			path = "Sample Artwork";
@@ -365,6 +398,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				071A78F924BB0B81004646FF /* sonicMania.jpg in Resources */,
+				07F08EBA24BC4B7C001F897A /* goodLuck.jpg in Resources */,
 				07FC96F124BABAAE0036DD3D /* sunnySummer.jpg in Resources */,
 				07FC970324BABAAE0036DD3D /* chatShire.jpg in Resources */,
 				07FC96FD24BABAAE0036DD3D /* planetaryPieces.png in Resources */,
@@ -372,6 +406,7 @@
 				07FC96F024BABAAE0036DD3D /* fallinLight.jpg in Resources */,
 				07FC96F424BABAAE0036DD3D /* shostakovichPianoConcertos.jpg in Resources */,
 				07FC96F324BABAAE0036DD3D /* jazz.jpg in Resources */,
+				07F08EBD24BC4B7C001F897A /* shortHair.jpg in Resources */,
 				07FC96FB24BABAAE0036DD3D /* timeForUs.jpg in Resources */,
 				07FC970624BABAAE0036DD3D /* wide.png in Resources */,
 				071A78F724BB0AC9004646FF /* starTrekII.jpg in Resources */,
@@ -379,19 +414,28 @@
 				07FC96F524BABAAE0036DD3D /* rainbow.jpg in Resources */,
 				07FC970424BABAAE0036DD3D /* fullCourse.jpg in Resources */,
 				07FC970024BABAAE0036DD3D /* poppyRemixes.jpg in Resources */,
+				07F08EC024BC4B7C001F897A /* angelsStory.jpg in Resources */,
+				07F08EAF24BC4B6A001F897A /* pinkBlossom.jpg in Resources */,
+				07F08EBC24BC4B7C001F897A /* likeACat.jpg in Resources */,
 				07FC96FC24BABAAE0036DD3D /* modernTimesEpilogue.jpg in Resources */,
+				07F08EBB24BC4B7C001F897A /* angelsKnock.jpg in Resources */,
 				07FC96F724BABAAE0036DD3D /* flowerBud.jpg in Resources */,
 				07FC970224BABAAE0036DD3D /* dedicatedSideB.jpg in Resources */,
 				07FC970124BABAAE0036DD3D /* emotion.jpg in Resources */,
 				07FC970724BABAAE0036DD3D /* palette.jpg in Resources */,
+				07F08EBF24BC4B7C001F897A /* heartAttack.jpg in Resources */,
+				07F08EC124BC4B7C001F897A /* redMotion.jpg in Resources */,
 				07FC96FA24BABAAE0036DD3D /* kiss.jpg in Resources */,
 				07FC96FF24BABAAE0036DD3D /* theAwakening.jpg in Resources */,
 				07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				07FC96F924BABAAE0036DD3D /* timeForTheMoonNight.jpg in Resources */,
+				07F08EC324BD1C51001F897A /* songOfTheSirens.jpg in Resources */,
 				07FC96F824BABAAE0036DD3D /* lol.jpg in Resources */,
 				07FC970524BABAAE0036DD3D /* feverSeason.jpg in Resources */,
+				07F08EBE24BC4B7C001F897A /* wannabe.jpg in Resources */,
 				07FC970924BABAAE0036DD3D /* dedicated.jpg in Resources */,
+				07F08EB924BC4B7C001F897A /* miniskirt.jpg in Resources */,
 				07FC96FE24BABAAE0036DD3D /* labyrinth.jpg in Resources */,
 				07FC96F224BABAAE0036DD3D /* pop2.jpg in Resources */,
 				0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */,

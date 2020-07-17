@@ -107,6 +107,46 @@ struct SampleLibraryInjector {
 				]),
 			]),
 			
+			SampleCollection("AOA", [
+				SampleAlbum("Angel’s Knock", 2017, "angelsKnock", "jpg", [
+					SampleSong("Excuse Me", 1),
+				]),
+				SampleAlbum("Good Luck", 2016, "goodLuck", "jpg", [
+					SampleSong("Crazy Boy", 4),
+				]),
+				SampleAlbum("Heart Attack", 2015, "heartAttack", "jpg", [
+					SampleSong("Heart Attack", 1),
+				]),
+				SampleAlbum("Like a Cat", 2014, "likeACat", "jpg", [
+					SampleSong("AOA", 1),
+					SampleSong("Like a Cat", 2),
+				]),
+				SampleAlbum("Short Hair", 2014, "shortHair", "jpg", [
+					SampleSong("Short Hair", 2),
+				]),
+				SampleAlbum("Miniskirt", 2014, "miniskirt", "jpg", [
+					SampleSong("Under the Street Light", 2),
+					SampleSong("Mini Skirt", 2),
+				]),
+				SampleAlbum("Red Motion", 2013, "redMotion", "jpg", [
+					SampleSong("Confused", 1),
+				]),
+				SampleAlbum("Wannabe", 2012, "wannabe", "jpg", [
+					SampleSong("Get Out", 1),
+				]),
+				SampleAlbum("Angels’ Story", 2012, "angelsStory", "jpg", [
+					SampleSong("Elvis", 4),
+				]),
+			]),
+			
+			SampleCollection("Apink", [
+				SampleAlbum("Pink Blossom", 2014, "pinkBlossom", "jpg", [
+					SampleSong("Mr. Chu (On Stage)", 2),
+					SampleSong("Mr. Chu (On Stage) Inst.", 7),
+					SampleSong("Mr. Chu", 6),
+				]),
+			]),
+			
 			SampleCollection("Carly Rae Jepsen", [
 				SampleAlbum("Dedicated Side B", 2020, "dedicatedSideB", "jpg", [
 					SampleSong("This Love Isn’t Crazy", 1),
@@ -140,6 +180,9 @@ struct SampleLibraryInjector {
 			]),
 			
 			SampleCollection("GFriend", [
+				SampleAlbum("回:Song of the Sirens", 2020, "songOfTheSirens", "jpg", [
+					SampleSong("Tarot Cards", 4),
+				]),
 				SampleAlbum("回:Labyrinth", 2020, "labyrinth", "jpg", [
 					SampleSong("Labyrinth", 1),
 					SampleSong("Crossroads", 2),
@@ -261,7 +304,7 @@ struct SampleLibraryInjector {
 				]),
 			]),
 			
-			SampleCollection("Sega", [
+			SampleCollection("Tee Lopes", [
 				SampleAlbum("Sonic Mania", 2017, "sonicMania", "jpg", [
 					SampleSong("Rise of the Icon (Sonic Mania Alternate Intro)", 47),
 					SampleSong("Discovery (Title Screen)", 1),
@@ -284,6 +327,9 @@ struct SampleLibraryInjector {
 					SampleSong("Egg Reverie (Egg Reverie Zone)", 27),
 					SampleSong("Guided Tour (Credits)", 29),
 				]),
+			]),
+			
+			SampleCollection("Various Artists", [
 				SampleAlbum("Planetary Pieces: Sonic World Adventure", 2009, "planetaryPieces", "png", [
 					SampleSong("Endless Possibility - Vocal Theme -", 1),
 					SampleSong("Cutscene - Opening", 2),
