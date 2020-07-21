@@ -10,7 +10,7 @@ import UIKit
 
 extension UITableViewController {
 	
-	// MARK: shouldAllowFloatingToTop
+	// MARK: Testing Selected IndexPaths
 	
 	// Returns whether a "move selected rows to top" command should be allowed on the table view.
 	// Returns true only if one or more rows are selected, and they're all in the same section.
@@ -20,8 +20,6 @@ extension UITableViewController {
 		}
 		return !isFromMultipleSections(selectedIndexPaths)
 	}
-	
-	// MARK: shouldAllowSorting
 	
 	// Returns whether a "sort selected or all rows" command should be allowed on the table view.
 	// Sorting should only be allowed on consecutive items within one section. Therefore:
@@ -35,8 +33,6 @@ extension UITableViewController {
 			return tableView.numberOfSections == 1
 		}
 	}
-	
-	// MARK: isConsecutive
 	
 	// Returns whether an array of IndexPaths is in increasing consecutive order.
 	// WARNING: Only works for IndexPaths in the same section.
@@ -61,8 +57,6 @@ extension UITableViewController {
 		}
 	}
 	
-	// MARK: isFromMultipleSections
-	
 	// Returns whether the array contains IndexPaths from multiple sections.
 	func isFromMultipleSections(_ indexPaths: [IndexPath]) -> Bool {
 		if indexPaths.count <= 1 { // Terminating case.
@@ -76,7 +70,7 @@ extension UITableViewController {
 		}
 	}
 	
-	// MARK: indexPathsEnumeratedIn
+	// MARK: Getting IndexPaths or Rows
 	
 	func indexPathsEnumeratedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
 		var result = [IndexPath]()
@@ -86,9 +80,7 @@ extension UITableViewController {
 		return result
 	}
 	
-	// MARK: selectedOrAllRowsInOrder
-	
-	func selectedOrAllRowsInOrder(numberOfRows: Int) -> [Int] {
+	func selectedOrAllRowsSorted(numberOfRows: Int) -> [Int] {
 		var result = [Int]()
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows?.sorted() {
 			for indexPath in selectedIndexPaths {
@@ -102,7 +94,7 @@ extension UITableViewController {
 		return result
 	}
 	
-	// MARK: dataObjectsPairedWith
+	// MARK: Getting Data Objects
 	
 	// Takes an array of selected IndexPaths and the entire data source for your table view. Returns an array of tuples, each matching one of those IndexPaths with its corresponding data object from the data source.
 	// WARNING: Only works for IndexPaths in the same section.
@@ -114,11 +106,12 @@ extension UITableViewController {
 		return result
 	}
 	
-	// MARK: dataObjectsFor
-	
 	// Takes an array of selected IndexPaths and the entire data source for your table view. Returns the data objects associated with the selected items.
-	// WARNING: Only works for IndexPaths in the same section.
+	// NOTE: Only works for IndexPaths in the same section.
 	func dataObjectsFor(selectedIndexPaths: [IndexPath], tableViewDataSource: [Any]) -> [Any] {
+		guard !isFromMultipleSections(selectedIndexPaths) else {
+			fatalError("Someone called a function to get the data objects for the selected rows in a UITableView, but the selected rows were from multiple sections. This function, dataObjectsFor(selectedIndexPaths:tableViewDataSource:), only works for rows within the same section.")
+		}
 		var result = [Any]()
 		for indexPath in selectedIndexPaths {
 			result.append(tableViewDataSource[indexPath.row])
@@ -126,7 +119,7 @@ extension UITableViewController {
 		return result
 	}
 	
-	// MARK: moveRowsUpToEarliestRow
+	// MARK: Moving Rows
 	
 	// Moves the rows at the given IndexPaths into a consecutive group of rows, starting at the earliest of the given IndexPaths. Provide the rows in the order you want them to end up in.
 	// For example, if you provide [[0,5], [0,1], [0,3], [0,6]], the earliest IndexPath is [0,1]. This function moves the row that was at [0,5] to [0,1], the row that was at [0,1] to [0,2], the row that was at [0,3] to [0,3], and the row that was at [0,6] to [0,4], shifting the rows that were at [0,2] and [0,4] down to [0,5] and [0,6], respectively.

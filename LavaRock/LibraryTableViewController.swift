@@ -35,7 +35,6 @@ class LibraryTableViewController: UITableViewController {
 		action: #selector(showSortOptions)
 	)
 	lazy var collectionsNC = navigationController as! CollectionsNC
-//	var collectionsNC: CollectionsNC!
 	
 	var activeLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in activeLibraryItems, because the table view follows activeLibraryItems; not the "index" attribute of each NSManagedObject.
 		didSet {
@@ -64,10 +63,8 @@ class LibraryTableViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-//		collectionsNC = navigationController as? CollectionsNC
-		
 		setUpUI()
-		loadViaCurrentManagedObjectContext()
+		loadActiveLibraryItems()
 	}
 	
 	// MARK: Setting up UI
@@ -104,7 +101,7 @@ class LibraryTableViewController: UITableViewController {
 	
 	// MARK: Loading data
 	
-	func loadViaCurrentManagedObjectContext() {
+	func loadActiveLibraryItems() {
 		if containerOfData != nil {
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData!)
 		}

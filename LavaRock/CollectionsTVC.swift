@@ -15,14 +15,14 @@ final class CollectionsTVC: LibraryTableViewController {
 	
 	// MARK: Setup
 	
-	override func loadViaCurrentManagedObjectContext() {
-		super.loadViaCurrentManagedObjectContext()
+	override func loadActiveLibraryItems() {
+		super.loadActiveLibraryItems()
 		
 		if !collectionsNC.isInMoveAlbumsMode {
 			if activeLibraryItems.isEmpty {
 				// Just for testing.
 				SampleLibrary.inject()
-				super.loadViaCurrentManagedObjectContext()
+				super.loadActiveLibraryItems()
 			}
 			
 			
@@ -39,7 +39,7 @@ final class CollectionsTVC: LibraryTableViewController {
 		super.viewWillAppear(animated)
 		
 		if collectionsNC.didMoveAlbumsToNewCollections {
-			loadViaCurrentManagedObjectContext()
+			loadActiveLibraryItems()
 			tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
 		}
 	}

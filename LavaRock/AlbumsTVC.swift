@@ -132,9 +132,26 @@ final class AlbumsTVC: LibraryTableViewController {
 		moveAlbumsNC.isInMoveAlbumsMode = true
 		moveAlbumsNC.moveAlbumsModePrompt = moveAlbumsModePrompt()
 		
-		// Note the albums to move.
-		moveAlbumsNC.indexesOfAlbumsBeingMoved = selectedOrAllRowsInOrder(numberOfRows: activeLibraryItems.count)
-		moveAlbumsNC.originalIndexOfCollectionThatAlbumsAreBeingMovedFrom = Int((containerOfData as! Collection).index)
+		// Note the albums to move, and to not move.
+		
+		if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+			
+			for indexPath in indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: activeLibraryItems.count - 1) {
+				let album = activeLibraryItems[indexPath.row] as! Album
+				if selectedIndexPaths.contains(indexPath) {
+					moveAlbumsNC.managedObjectIDsOfAlbumsBeingMoved.append(album.objectID)
+				} else { // The row is not selected.
+					moveAlbumsNC.managedObjectIDsOfAlbumsNotBeingMoved.append(album.objectID)
+				}
+			}
+			
+		} else { // No rows are selected.
+			
+			for item in activeLibraryItems {
+				moveAlbumsNC.managedObjectIDsOfAlbumsBeingMoved.append(item.objectID)
+			}
+			
+		}
 		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
 		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
@@ -163,44 +180,30 @@ final class AlbumsTVC: LibraryTableViewController {
 	
 	@IBAction func moveAlbumsHere(_ sender: UIBarButtonItem) {
 		
-		guard collectionsNC.indexesOfAlbumsBeingMoved != nil else {
-			fatalError("In the “move albums” sheet, the user tapped Move Here, but the list of albums to move was empty.")
-		}
-		
 		if activeLibraryItems.isEmpty {
 			collectionsNC.didMoveAlbumsToNewCollections = true
 		}
 		
+		// Get the albums to move, and to not move.
+		var albumsToMove = [Album]()
+		for albumID in collectionsNC.managedObjectIDsOfAlbumsBeingMoved {
+			albumsToMove.append(collectionsNC.managedObjectContext.object(with: albumID) as! Album)
+		}
+		var albumsToNotMove = [Album]()
+		for albumID in collectionsNC.managedObjectIDsOfAlbumsNotBeingMoved {
+			albumsToNotMove.append(collectionsNC.managedObjectContext.object(with: albumID) as! Album)
+		}
+		
 		// Find out if we're moving albums to the collection they were already in.
 		// If so, we'll use the "move rows to top" logic.
-		let currentContainerIndex = Int((containerOfData as! Collection).index)
-		let isMovingToSameCollection =
-			!activeLibraryItems.isEmpty && // "We're not in the new (empty) collection"
-			currentContainerIndex == collectionsNC.originalIndexOfCollectionThatAlbumsAreBeingMovedFrom
-		
-		// Get the albums to move.
-		
-		// Fetch all the albums in the collection that albums are being moved from.
-		let albumsInCollectionToMoveFrom = albumsIn(collectionIndex: collectionsNC.originalIndexOfCollectionThatAlbumsAreBeingMovedFrom!)
-		
-		// Split that into the albums we're moving and the albums we're not moving.
-		var albumsToMove = [Album]()
-		var albumsNotToMove = [Album]()
-		for index in 0..<albumsInCollectionToMoveFrom.count {
-			let album = albumsInCollectionToMoveFrom[index]
-			if collectionsNC.indexesOfAlbumsBeingMoved!.contains(index) {
-				albumsToMove.append(album)
-			} else {
-				albumsNotToMove.append(album)
-			}
-		}
+		let isMovingToSameCollection = activeLibraryItems.contains(albumsToMove[0])
 		
 		// Apply the changes.
 		
 		// Update the indexes of the albums we aren't moving, within their collection.
 		// Almost identical to the property observer for activeLibraryItems.
-		for index in 0..<albumsNotToMove.count {
-			albumsNotToMove[index].setValue(index, forKey: "index")
+		for index in 0..<albumsToNotMove.count {
+			albumsToNotMove[index].setValue(index, forKey: "index")
 		}
 		
 		func saveParentManagedObjectContext() {
@@ -224,8 +227,12 @@ final class AlbumsTVC: LibraryTableViewController {
 		// If we're moving albums to the collection they're already in, prepare for "move rows to top".
 		var indexPathsToMoveToTop = [IndexPath]()
 		if isMovingToSameCollection {
-			for index in collectionsNC.indexesOfAlbumsBeingMoved! {
-				indexPathsToMoveToTop.append(IndexPath(row: index, section: 0))
+			for album in albumsToMove {
+				let index = activeLibraryItems.firstIndex(of: album)
+				guard index != nil else {
+					fatalError("It looks like we’re moving albums to the collection they’re already in, but one of the albums we’re moving isn’t here.")
+				}
+				indexPathsToMoveToTop.append(IndexPath(row: index!, section: 0))
 			}
 		}
 		
@@ -247,24 +254,10 @@ final class AlbumsTVC: LibraryTableViewController {
 		
 	}
 	
-	func albumsIn(collectionIndex: Int) -> [Album] {
-		var result = [Album]()
-		let predicateGivenContainerIndex = NSPredicate(format: "container.index == %i", collectionsNC.originalIndexOfCollectionThatAlbumsAreBeingMovedFrom!)
-		let previousPredicate = coreDataFetchRequest.predicate
-		coreDataFetchRequest.predicate = predicateGivenContainerIndex
-		do {
-			result = try collectionsNC.managedObjectContext.fetch(coreDataFetchRequest) as! [Album]
-		} catch {
-			fatalError("Couldn’t fetch the albums to move after the user tapped Move Here: \(error)")
-		}
-		coreDataFetchRequest.predicate = previousPredicate
-		return result
-	}
-	
 	@IBAction func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {
 		isEditing = false
 		
-		loadViaCurrentManagedObjectContext()
+		loadActiveLibraryItems()
 		tableView.reloadData()
 		
 		viewDidAppear(true) // Unwinds to Collections if you moved all the albums out

@@ -50,8 +50,8 @@ class CollectionsNC: UINavigationController {
 	
 	// "Constants" for "move albums" mode:
 	var moveAlbumsModePrompt: String?
-	var indexesOfAlbumsBeingMoved: [Int]?
-	var originalIndexOfCollectionThatAlbumsAreBeingMovedFrom: Int?
+	var managedObjectIDsOfAlbumsBeingMoved = [NSManagedObjectID]()
+	var managedObjectIDsOfAlbumsNotBeingMoved = [NSManagedObjectID]()
 	
 	// Variables:
 	var didMoveAlbumsToNewCollections = false

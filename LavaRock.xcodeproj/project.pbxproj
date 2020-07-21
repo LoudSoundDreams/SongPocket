@@ -176,6 +176,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		070BEA8724C6BD6A008D5299 /* Life Cycle */ = {
+			isa = PBXGroup;
+			children = (
+				0768308824B42DEC0033E3CC /* AppDelegate.swift */,
+				0768308A24B42DEC0033E3CC /* SceneDelegate.swift */,
+				0768309624B42DEE0033E3CC /* LaunchScreen.storyboard */,
+			);
+			path = "Life Cycle";
+			sourceTree = "<group>";
+		};
 		0768307C24B42DEC0033E3CC = {
 			isa = PBXGroup;
 			children = (
@@ -200,10 +210,8 @@
 			isa = PBXGroup;
 			children = (
 				0768309924B42DEE0033E3CC /* Info.plist */,
+				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				0768308824B42DEC0033E3CC /* AppDelegate.swift */,
-				0768308A24B42DEC0033E3CC /* SceneDelegate.swift */,
-				0768309624B42DEE0033E3CC /* LaunchScreen.storyboard */,
 				07FCE63824B42EDF00F94668 /* Main.storyboard */,
 				076830BC24B42E3E0033E3CC /* CollectionsNC.swift */,
 				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
