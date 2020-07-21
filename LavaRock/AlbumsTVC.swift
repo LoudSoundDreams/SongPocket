@@ -11,6 +11,9 @@ import CoreData
 
 final class AlbumsTVC: LibraryTableViewController {
 	
+	static let impossibleYear = -13800000001 // "nil" value for `year` attribute. Even though the attribute is optional, Swift doesn't treat it as an optional (neither does Objective-C) because "nil" for an integer Core Data attribute is actually a SQL `NULL`, not a Swift `nil`.
+	// SampleLibrary uses this number for sample albums without years.
+	// AlbumsTVC and SongsTVC leave the "year" field blank if the album's year is this number.
 	static let rowHeightInPoints = 44 * 3 // Album class references this to create thumbnails.
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
 	
@@ -40,7 +43,9 @@ final class AlbumsTVC: LibraryTableViewController {
 	// MARK: Loading data
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		
 		// Get the data to put into the cell.
+		
 		let album = activeLibraryItems[indexPath.row] as! Album
 		
 		let image: UIImage?
@@ -48,14 +53,21 @@ final class AlbumsTVC: LibraryTableViewController {
 			image = UIImage(data: thumbnailData, scale: UIScreen.main.scale)
 			// .scale is the ratio of rendered pixels to points (3.0 on an iPhone Plus).
 			// .nativeScale is the ratio of physical pixels to points (2.608 on an iPhone Plus).
-			
 		} else {
-			image = album.sampleArtworkImageFullSize()
+			image = album.sampleArtworkImageFullSize() //
 		}
-		let albumTitle = album.title
-		let albumYearText = String(album.year)
+		
+		let titleOfAlbum = album.title
+		
+		let yearText: String?
+		if album.year != AlbumsTVC.impossibleYear {
+			yearText = String(album.year)
+		} else {
+			yearText = nil
+		}
 		
 		// Make, configure, and return the cell.
+		
 //		if #available(iOS 14, *) {
 //			let cell = tableView.dequeueReusableCell(withIdentifier: "Basic Cell", for: indexPath)
 //
@@ -79,8 +91,8 @@ final class AlbumsTVC: LibraryTableViewController {
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
 			
 			cell.artworkImageView.image = image
-			cell.titleLabel.text = albumTitle
-			cell.yearLabel.text = albumYearText
+			cell.titleLabel.text = titleOfAlbum
+			cell.yearLabel.text = yearText
 			
 			// Customize the cell.
 			if collectionsNC.isInMoveAlbumsMode {

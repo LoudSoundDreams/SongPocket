@@ -34,7 +34,8 @@ class LibraryTableViewController: UITableViewController {
 		target: self,
 		action: #selector(showSortOptions)
 	)
-	var collectionsNC = CollectionsNC()
+	lazy var collectionsNC = navigationController as! CollectionsNC
+//	var collectionsNC: CollectionsNC!
 	
 	var activeLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in activeLibraryItems, because the table view follows activeLibraryItems; not the "index" attribute of each NSManagedObject.
 		didSet {
@@ -63,7 +64,7 @@ class LibraryTableViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		collectionsNC = navigationController as! CollectionsNC
+//		collectionsNC = navigationController as? CollectionsNC
 		
 		setUpUI()
 		loadViaCurrentManagedObjectContext()
@@ -123,14 +124,18 @@ class LibraryTableViewController: UITableViewController {
     }
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 		
 		// Get the data to put into the cell.
+		
 		let libraryItem = activeLibraryItems[indexPath.row]
 		let itemTitle = libraryItem.value(forKey: "title") as? String
 		
-		// Put the data into the cell.
+		// Make, configure, and return the cell.
+		
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+		
 		if #available(iOS 14, *) {
+			
 			var configuration = cell.defaultContentConfiguration()
 			
 			configuration.text = itemTitle
@@ -138,10 +143,13 @@ class LibraryTableViewController: UITableViewController {
 			cell.contentConfiguration = configuration
 			
 		} else { // iOS 13 and earlier
+			
 			cell.textLabel?.text = itemTitle
+			
 		}
 		
         return cell
+		
     }
 	
 	// MARK: Events

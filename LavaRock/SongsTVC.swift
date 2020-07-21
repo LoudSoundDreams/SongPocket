@@ -34,6 +34,7 @@ final class SongsTVC: LibraryTableViewController {
 	Also, editing commands that you can apply on "all items" without selecting them first, like sorting, don't work right.
 	*/
 	
+	static let impossibleTrackNumber = -1
 	let numberOfUneditableRowsAtTopOfSection = 2
 	
 	// MARK: Property observers
@@ -68,36 +69,54 @@ final class SongsTVC: LibraryTableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		if indexPath.row == 0 {
-			let artworkCell = tableView.dequeueReusableCell(withIdentifier: "Artwork Cell") as! SongsArtworkCell
 			
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
 			
-			// Put the data into the cell.
-			if let image = album.sampleArtworkImageFullSize() {
-				artworkCell.artworkImageView.image = image
-			}
-			
+			// Make, configure, and return the cell.
+			let artworkCell = tableView.dequeueReusableCell(withIdentifier: "Artwork Cell") as! SongsArtworkCell
+			artworkCell.artworkImageView.image = album.sampleArtworkImageFullSize()
 			return artworkCell
 			
 		} else if indexPath.row == 1 {
-			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell") as! SongsHeaderCell
 			
 			// Get the data to put into the cell.
+			
 			let album = containerOfData as! Album
 			
-			// Put the data into the cell.
-			headerCell.albumArtistLabel.text = album.albumArtist ?? "Unknown Album Artist"
-			headerCell.yearLabel.text = String(album.year)
+			let yearText: String?
+			if album.year != AlbumsTVC.impossibleYear {
+				yearText = String(album.year)
+			} else {
+				yearText = nil
+			}
+			
+			// Make, configure, and return the cell.
+			
+			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell") as! SongsHeaderCell
+			
+			headerCell.albumArtistLabel.text = album.albumArtist
+			headerCell.yearLabel.text = yearText
+			
 			headerCell.addAllToDeckButton.isEnabled = !isEditing
 			
 			return headerCell
 			
 		} else {
+			
 			// Get the data to put into the cell.
+			
 			let song = activeLibraryItems[indexPath.row] as! Song
 			
+			let trackNumberText: String?
+			if song.trackNumber != SongsTVC.impossibleTrackNumber {
+				trackNumberText = String(song.trackNumber)
+			} else {
+				trackNumberText = nil
+			}
+			
 			// Make, configure, and return the cell.
+			
 //			if #available(iOS 14, *) {
 //				let cell = tableView.dequeueReusableCell(withIdentifier: "Basic Cell", for: indexPath)
 //
@@ -110,12 +129,14 @@ final class SongsTVC: LibraryTableViewController {
 //				return cell
 //
 //			} else { // iOS 13 or earlier
-				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
-				
-				cell.trackNumberLabel.text = String(song.trackNumber)
-				cell.titleLabel.text = song.title
-				
-				return cell
+			
+			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
+			
+			cell.trackNumberLabel.text = trackNumberText
+			cell.titleLabel.text = song.title
+			
+			return cell
+			
 //			}
 		}
 	}

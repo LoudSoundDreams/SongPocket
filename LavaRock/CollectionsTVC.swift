@@ -18,10 +18,18 @@ final class CollectionsTVC: LibraryTableViewController {
 	override func loadViaCurrentManagedObjectContext() {
 		super.loadViaCurrentManagedObjectContext()
 		
-		if !collectionsNC.isInMoveAlbumsMode && activeLibraryItems.isEmpty {
-			// Just for testing.
-			SampleLibraryInjector.injectSampleLibrary()
-			super.loadViaCurrentManagedObjectContext()
+		if !collectionsNC.isInMoveAlbumsMode {
+			if activeLibraryItems.isEmpty {
+				// Just for testing.
+				SampleLibrary.inject()
+				super.loadViaCurrentManagedObjectContext()
+			}
+			
+			
+			// If needsThumbnailsUpdated is true, update thumbnails
+//			SampleLibrary.setThumbnailsInBackground(activeLibraryItems as! [Collection])
+			
+			
 		}
 	}
 	

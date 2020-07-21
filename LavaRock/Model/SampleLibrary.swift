@@ -1,5 +1,5 @@
 //
-//  SampleLibraryInjector.swift
+//  SampleLibrary.swift
 //  LavaRock
 //
 //  Created by h on 2020-05-07.
@@ -9,28 +9,28 @@
 import UIKit
 import CoreData
 
-struct SampleLibraryInjector {
+struct SampleLibrary {
 	
 	// MARK: Structures
 	
 	private struct SampleCollection {
-		let title: String
+		let title: String?
 		let albums: [SampleAlbum]
 		
-		init(_ title: String, _ albums: [SampleAlbum]) {
+		init(_ title: String?, _ albums: [SampleAlbum]) {
 			self.title = title
 			self.albums = albums
 		}
 	}
 	
 	private struct SampleAlbum {
-		let title: String
-		let year: Int
-		let artwork: String
-		let artworkExtension: String
+		let title: String?
+		let year: Int?
+		let artwork: String?
+		let artworkExtension: String?
 		let songs: [SampleSong]
 		
-		init(_ title: String, _ year: Int, _ artwork: String, _ artworkExtension: String, _ songs: [SampleSong]) {
+		init(_ title: String?, _ year: Int?, _ artwork: String?, _ artworkExtension: String?, _ songs: [SampleSong]) {
 			self.title = title
 			self.year = year
 			self.artwork = artwork
@@ -40,18 +40,54 @@ struct SampleLibraryInjector {
 	}
 	
 	private struct SampleSong {
-		let title: String
-		let trackNumber: Int
+		let title: String?
+		let trackNumber: Int?
 		
-		init(_ title: String, _ trackNumber: Int) {
+		init(_ title: String?, _ trackNumber: Int?) {
 			self.title = title
 			self.trackNumber = trackNumber
 		}
 	}
 	
 	// MARK: Methods
+	/*
+	static func setThumbnailsInBackground(_ collections: [Collection]) {
+		
+		let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		
+		let queue = OperationQueue()
+		queue.qualityOfService = .userInitiated
+		
+		for collection in collections {
+			
+			guard collection.contents != nil else {
+				continue
+			}
+			
+			for element in collection.contents! {
+				let album = element as! Album
+				
+				let operation = BlockOperation(block: {
+					album.artworkThumbnail = album.sampleArtworkThumbnailData()
+//					do {
+//						try managedObjectContext.save()
+//					} catch {
+//						fatalError("Made a thumbnail, but couldn’t save it: \(error)")
+//					}
+				} )
+				operation.completionBlock = {
+					print("Made and saved thumbnail for album: \(album)")
+				}
+				queue.addOperation(operation)
+			}
+			
+		}
+		
+	}
+	*/
 	
-	static func injectSampleLibrary() {
+	
+	static func inject() {
 		
 		let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		
@@ -62,7 +98,7 @@ struct SampleLibraryInjector {
 				let newSong = Song(context: managedObjectContext)
 				newSong.index = Int64(index)
 				newSong.title = song.title
-				newSong.trackNumber = Int64(song.trackNumber)
+				newSong.trackNumber = Int64(song.trackNumber ?? SongsTVC.impossibleTrackNumber)
 				newSong.container = toAlbum
 			}
 		}
@@ -77,7 +113,7 @@ struct SampleLibraryInjector {
 				newAlbum.sampleArtworkFileName = album.artwork
 				newAlbum.sampleArtworkFileNameExtension = album.artworkExtension
 				newAlbum.title = album.title
-				newAlbum.year = Int64(album.year)
+				newAlbum.year = Int64(album.year ?? AlbumsTVC.impossibleYear)
 				newAlbum.container = toCollection
 				
 				newAlbum.artworkThumbnail = newAlbum.sampleArtworkThumbnailData() // Do this on a serial background queue.
@@ -302,9 +338,19 @@ struct SampleLibraryInjector {
 				SampleAlbum("Sample Album with a Terribly, Horribly, No-Good, Very Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", 3000, "wide", "png", [
 					SampleSong("Sample Song with a Terribly, Horribly, No-Good, Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
 				]),
+				SampleAlbum("Sample Album with No Artwork and No Year", nil, nil, nil, [
+					SampleSong("Sample Song", 1),
+				]),
 			]),
 			
-			SampleCollection("Tee Lopes", [
+//			SampleCollection(nil, [
+//				SampleAlbum(nil, nil, nil, nil, [
+//					SampleSong(nil, nil),
+//				]),
+//			]),
+			
+			SampleCollection("Sega", [
+//			SampleCollection("Tee Lopes", [
 				SampleAlbum("Sonic Mania", 2017, "sonicMania", "jpg", [
 					SampleSong("Rise of the Icon (Sonic Mania Alternate Intro)", 47),
 					SampleSong("Discovery (Title Screen)", 1),
@@ -327,9 +373,9 @@ struct SampleLibraryInjector {
 					SampleSong("Egg Reverie (Egg Reverie Zone)", 27),
 					SampleSong("Guided Tour (Credits)", 29),
 				]),
-			]),
+//			]),
 			
-			SampleCollection("Various Artists", [
+//			SampleCollection("Various Artists", [
 				SampleAlbum("Planetary Pieces: Sonic World Adventure", 2009, "planetaryPieces", "png", [
 					SampleSong("Endless Possibility - Vocal Theme -", 1),
 					SampleSong("Cutscene - Opening", 2),

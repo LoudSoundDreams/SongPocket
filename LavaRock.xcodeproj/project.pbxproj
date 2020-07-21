@@ -10,7 +10,7 @@
 		071A78F724BB0AC9004646FF /* starTrekII.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 071A78F624BB0AC9004646FF /* starTrekII.jpg */; };
 		071A78F924BB0B81004646FF /* sonicMania.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 071A78F824BB0B81004646FF /* sonicMania.jpg */; };
 		0736E3A724B8415400A15420 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* AlbumCell.swift */; };
-		0736E3EA24B95FD600A15420 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* Album.swift */; };
+		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* songs view cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
 		0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308A24B42DEC0033E3CC /* SceneDelegate.swift */; };
@@ -25,7 +25,7 @@
 		076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C024B42E3F0033E3CC /* SongsTVC.swift */; };
 		076830CC24B42E400033E3CC /* SongsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C224B42E3F0033E3CC /* SongsView.swift */; };
 		076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C324B42E3F0033E3CC /* extension UITableViewController.swift */; };
-		076830CE24B42E400033E3CC /* SampleLibraryInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C424B42E3F0033E3CC /* SampleLibraryInjector.swift */; };
+		076830CE24B42E400033E3CC /* SampleLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C424B42E3F0033E3CC /* SampleLibrary.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		07F08EAF24BC4B6A001F897A /* pinkBlossom.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */; };
 		07F08EB924BC4B7C001F897A /* miniskirt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB024BC4B7B001F897A /* miniskirt.jpg */; };
@@ -88,7 +88,7 @@
 		071A78F624BB0AC9004646FF /* starTrekII.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = starTrekII.jpg; sourceTree = "<group>"; };
 		071A78F824BB0B81004646FF /* sonicMania.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sonicMania.jpg; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
-		0736E3E924B95FD600A15420 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
+		0736E3E924B95FD600A15420 /* extension Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Album.swift"; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "songs view cells.swift"; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768308824B42DEC0033E3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 		076830C024B42E3F0033E3CC /* SongsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsTVC.swift; sourceTree = "<group>"; };
 		076830C224B42E3F0033E3CC /* SongsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsView.swift; sourceTree = "<group>"; };
 		076830C324B42E3F0033E3CC /* extension UITableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "extension UITableViewController.swift"; sourceTree = "<group>"; };
-		076830C424B42E3F0033E3CC /* SampleLibraryInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleLibraryInjector.swift; sourceTree = "<group>"; };
+		076830C424B42E3F0033E3CC /* SampleLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleLibrary.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pinkBlossom.jpg; sourceTree = "<group>"; };
 		07F08EB024BC4B7B001F897A /* miniskirt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = miniskirt.jpg; sourceTree = "<group>"; };
@@ -287,8 +287,8 @@
 			children = (
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
-				0736E3E924B95FD600A15420 /* Album.swift */,
-				076830C424B42E3F0033E3CC /* SampleLibraryInjector.swift */,
+				0736E3E924B95FD600A15420 /* extension Album.swift */,
+				076830C424B42E3F0033E3CC /* SampleLibrary.swift */,
 				07FC96D524BAB9A80036DD3D /* Sample Artwork */,
 			);
 			path = Model;
@@ -471,12 +471,12 @@
 				073CDBF324B82BBB00F6D2B1 /* songs view cells.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
 				076830CC24B42E400033E3CC /* SongsView.swift in Sources */,
-				076830CE24B42E400033E3CC /* SampleLibraryInjector.swift in Sources */,
+				076830CE24B42E400033E3CC /* SampleLibrary.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTableViewController.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				076830C624B42E3F0033E3CC /* CollectionsNC.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
-				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
+				0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
