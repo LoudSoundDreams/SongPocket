@@ -127,8 +127,9 @@ final class AlbumsTVC: LibraryTableViewController {
 	
 	@IBAction func startMovingAlbums(_ sender: UIBarButtonItem) {
 		
-		// Prepare a new navigation controller to present modally.
+		// Prepare a new navigation controller in "move albums" mode to present modally.
 		let moveAlbumsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as! CollectionsNC
+		moveAlbumsNC.isInMoveAlbumsMode = true
 		
 		// Note the albums to move, and to not move.
 		
@@ -150,10 +151,6 @@ final class AlbumsTVC: LibraryTableViewController {
 			}
 			
 		}
-		
-		// Put the CollectionsNC in "move albums" mode.
-		moveAlbumsNC.isInMoveAlbumsMode = true
-		moveAlbumsNC.setMoveAlbumsModePrompt()
 		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
 		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)

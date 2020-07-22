@@ -20,23 +20,21 @@ class CollectionsNC: UINavigationController {
 	
 	// "Constants"
 	var isInMoveAlbumsMode = false
-	
-	// "Constants" for "move albums" mode
-	var moveAlbumsModePrompt: String?
+	var moveAlbumsModePrompt: String? {
+		let number = managedObjectIDsOfAlbumsBeingMoved.count
+		switch number {
+		case 0:
+			return nil
+		case 1:
+			return "Chooose a collection to move 1 album to."
+		default:
+			return "Choose a collection to move \(number) albums to."
+		}
+	}
 	var managedObjectIDsOfAlbumsBeingMoved = [NSManagedObjectID]()
 	var managedObjectIDsOfAlbumsNotBeingMoved = [NSManagedObjectID]()
 	
 	// Variables
 	var didMoveAlbumsToNewCollections = false
-	
-	// Methods
-	func setMoveAlbumsModePrompt() {
-		let number = managedObjectIDsOfAlbumsBeingMoved.count
-		if number == 1 {
-			moveAlbumsModePrompt = "Chooose a collection to move 1 album to."
-		} else {
-			moveAlbumsModePrompt = "Choose a collection to move \(number) albums to."
-		}
-	}
 	
 }
