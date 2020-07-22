@@ -80,6 +80,7 @@ extension UITableViewController {
 		return result
 	}
 	
+	/*
 	func selectedOrAllRowsSorted(numberOfRows: Int) -> [Int] {
 		var result = [Int]()
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows?.sorted() {
@@ -93,6 +94,7 @@ extension UITableViewController {
 		}
 		return result
 	}
+	*/
 	
 	// MARK: Getting Data Objects
 	

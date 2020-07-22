@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		071A78F724BB0AC9004646FF /* starTrekII.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 071A78F624BB0AC9004646FF /* starTrekII.jpg */; };
 		071A78F924BB0B81004646FF /* sonicMania.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 071A78F824BB0B81004646FF /* sonicMania.jpg */; };
+		071CA3AD24C6DA370092D92A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071CA3AC24C6DA370092D92A /* CoreDataManager.swift */; };
 		0736E3A724B8415400A15420 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* AlbumCell.swift */; };
 		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* songs view cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */; };
@@ -87,6 +88,7 @@
 /* Begin PBXFileReference section */
 		071A78F624BB0AC9004646FF /* starTrekII.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = starTrekII.jpg; sourceTree = "<group>"; };
 		071A78F824BB0B81004646FF /* sonicMania.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sonicMania.jpg; sourceTree = "<group>"; };
+		071CA3AC24C6DA370092D92A /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 		0736E3E924B95FD600A15420 /* extension Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Album.swift"; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "songs view cells.swift"; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				0736E3E924B95FD600A15420 /* extension Album.swift */,
 				076830C424B42E3F0033E3CC /* SampleLibrary.swift */,
 				07FC96D524BAB9A80036DD3D /* Sample Artwork */,
+				071CA3AC24C6DA370092D92A /* CoreDataManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0736E3A724B8415400A15420 /* AlbumCell.swift in Sources */,
 				076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */,
+				071CA3AD24C6DA370092D92A /* CoreDataManager.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* songs view cells.swift in Sources */,

@@ -48,13 +48,11 @@ class LibraryTableViewController: UITableViewController {
 	}()
 	var containerOfData: NSManagedObject?
 	
-	// MARK: Property observers
+	// MARK: Property Observers
 	
 	func didSetActiveLibraryItems() {
-		collectionsNC.managedObjectContext.performAndWait {
-			for index in 0..<self.activeLibraryItems.count {
-				activeLibraryItems[index].setValue(index, forKey: "index")
-			}
+		for index in 0..<self.activeLibraryItems.count {
+			activeLibraryItems[index].setValue(index, forKey: "index")
 		}
 	}
 	
@@ -67,7 +65,7 @@ class LibraryTableViewController: UITableViewController {
 		loadActiveLibraryItems()
 	}
 	
-	// MARK: Setting up UI
+	// MARK: Setting Up UI
 	
 	func setUpUI() {
 		
@@ -99,21 +97,14 @@ class LibraryTableViewController: UITableViewController {
 		
 	}
 	
-	// MARK: Loading data
+	// MARK: Loading Data
 	
 	func loadActiveLibraryItems() {
 		if containerOfData != nil {
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData!)
 		}
 		
-		collectionsNC.managedObjectContext.performAndWait {
-			do {
-				self.activeLibraryItems = try self.collectionsNC.managedObjectContext.fetch(self.coreDataFetchRequest)
-			} catch {
-				print("Couldn’t load from Core Data using the fetch request: \(self.coreDataFetchRequest)")
-				fatalError("\(error)")
-			}
-		}
+		activeLibraryItems = collectionsNC.coreDataManager.managedObjects(for: coreDataFetchRequest)
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -153,7 +144,7 @@ class LibraryTableViewController: UITableViewController {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
-			collectionsNC.saveCurrentManagedObjectContext()
+			collectionsNC.coreDataManager.save()
 		}
 		
 		super.setEditing(editing, animated: animated)
@@ -221,7 +212,7 @@ class LibraryTableViewController: UITableViewController {
 		updateBarButtonItems() // If you made selected items non-consecutive, that should disable the Sort button. If you made selected items consecutive, that should enable the Sort button.
 	}
 	
-	// MARK: Moving rows to top
+	// MARK: Moving Rows to Top
 	
 	@objc func moveSelectedItemsToTop() {
 		moveItemsUp(from: tableView.indexPathsForSelectedRows, to: IndexPath(row: 0, section: 0))

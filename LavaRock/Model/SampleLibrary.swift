@@ -50,41 +50,41 @@ struct SampleLibrary {
 	}
 	
 	// MARK: Methods
-	/*
-	static func setThumbnailsInBackground(_ collections: [Collection]) {
-		
-		let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		
-		let queue = OperationQueue()
-		queue.qualityOfService = .userInitiated
-		
-		for collection in collections {
-			
-			guard collection.contents != nil else {
-				continue
-			}
-			
-			for element in collection.contents! {
-				let album = element as! Album
-				
-				let operation = BlockOperation(block: {
-					album.artworkThumbnail = album.sampleArtworkThumbnailData()
-//					do {
-//						try managedObjectContext.save()
-//					} catch {
-//						fatalError("Made a thumbnail, but couldn’t save it: \(error)")
-//					}
-				} )
-				operation.completionBlock = {
-					print("Made and saved thumbnail for album: \(album)")
-				}
-				queue.addOperation(operation)
-			}
-			
-		}
-		
-	}
-	*/
+	
+//	static func setThumbnailsInBackground(_ collections: [Collection]) {
+//
+//		let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//
+//		let queue = OperationQueue()
+//		queue.qualityOfService = .userInitiated
+//
+//		for collection in collections {
+//
+//			guard collection.contents != nil else {
+//				continue
+//			}
+//
+//			for element in collection.contents! {
+//				let album = element as! Album
+//
+//				let operation = BlockOperation(block: {
+//					album.artworkThumbnail = album.sampleArtworkThumbnailData()
+////					do {
+////						try managedObjectContext.save()
+////					} catch {
+////						fatalError("Made a thumbnail, but couldn’t save it: \(error)")
+////					}
+//				} )
+//				operation.completionBlock = {
+//					print("Made and saved thumbnail for album: \(album)")
+//				}
+//				queue.addOperation(operation)
+//			}
+//
+//		}
+//
+//	}
+	
 	
 	
 	static func inject() {

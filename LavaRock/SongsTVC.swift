@@ -37,7 +37,7 @@ final class SongsTVC: LibraryTableViewController {
 	static let impossibleTrackNumber = -1
 	let numberOfUneditableRowsAtTopOfSection = 2
 	
-	// MARK: Property observers
+	// MARK: Property Observers
 	
 	override func didSetActiveLibraryItems() {
 		for index in 0..<activeLibraryItems.count {
@@ -53,7 +53,7 @@ final class SongsTVC: LibraryTableViewController {
 		coreDataEntityName = "Song"
 	}
 	
-	// MARK: Loading data
+	// MARK: Loading Data
 	
 	override func loadActiveLibraryItems() {
 		super.loadActiveLibraryItems()
@@ -192,7 +192,7 @@ final class SongsTVC: LibraryTableViewController {
 		}
 	}
 	
-	// MARK: Moving rows to top
+	// MARK: Moving Rows to Top
 	
 	override func moveSelectedItemsToTop() {
 		moveItemsUp(from: tableView.indexPathsForSelectedRows, to: IndexPath(row: numberOfUneditableRowsAtTopOfSection, section: 0))

@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //		print("This device's Application Support folder is at:")
 //		print("\(NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).last!)")
 		
+		
+		// Just for testing: on first launch, inject sample library.
+		
+		
 		return true
 	}
 	

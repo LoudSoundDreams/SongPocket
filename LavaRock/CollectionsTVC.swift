@@ -65,15 +65,15 @@ final class CollectionsTVC: LibraryTableViewController {
 				return
 		}
 		
-		collectionsNC.managedObjectContext.delete(collection)
+		collectionsNC.coreDataManager.managedObjectContext.delete(collection)
 		activeLibraryItems.remove(at: index)
 		if !collectionsNC.isInMoveAlbumsMode {
-			collectionsNC.saveCurrentManagedObjectContext()
+			collectionsNC.coreDataManager.save()
 		}
 		tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .middle)
 	}
 	
-	// MARK: “Move albums” mode
+	// MARK: “Move Albums" Mode
 	
 	@IBAction func makeNewCollection(_ sender: UIBarButtonItem) {
 		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
@@ -97,7 +97,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
 			
 			// Create the new collection.
-			let newCollection = Collection(context: self.collectionsNC.managedObjectContext) // Since we're in "move albums mode", this should be a child managed object context.
+			let newCollection = Collection(context: self.collectionsNC.coreDataManager.managedObjectContext) // Since we're in "move albums mode", this should be a child managed object context.
 			newCollection.title = dialog.textFields?[0].text ?? ""
 			self.activeLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
 			
@@ -158,7 +158,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			if wasRowSelectedBeforeRenaming {
 				self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			}
-			self.collectionsNC.saveCurrentManagedObjectContext()
+			self.collectionsNC.coreDataManager.save()
 		}) )
 		present(dialog, animated: true, completion: nil)
 	}
