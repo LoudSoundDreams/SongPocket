@@ -6,6 +6,8 @@
 //  Copyright © 2020 h. All rights reserved.
 //
 
+// This is a SwiftUI replacement for SongsTVC, which is a subclass of UITableViewController.
+
 import SwiftUI
 
 struct SongsView: View {

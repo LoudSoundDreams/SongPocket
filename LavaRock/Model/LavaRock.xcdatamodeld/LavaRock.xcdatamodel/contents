@@ -5,8 +5,7 @@
         <attribute name="artworkThumbnail" optional="YES" attributeType="Binary"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="needsNewThumbnail" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="sampleArtworkFileName" optional="YES" attributeType="String"/>
-        <attribute name="sampleArtworkFileNameExtension" optional="YES" attributeType="String"/>
+        <attribute name="sampleArtworkFileNameWithExtension" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="year" optional="YES" attributeType="Integer 64" defaultValueString="42" usesScalarValueType="YES"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="contents" inverseEntity="Collection"/>
@@ -24,7 +23,7 @@
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="contents" inverseEntity="Album"/>
     </entity>
     <elements>
-        <element name="Album" positionX="-63" positionY="-18" width="128" height="193"/>
+        <element name="Album" positionX="-63" positionY="-18" width="128" height="178"/>
         <element name="Collection" positionX="-54" positionY="-9" width="128" height="88"/>
         <element name="Song" positionX="-36" positionY="36" width="128" height="103"/>
     </elements>

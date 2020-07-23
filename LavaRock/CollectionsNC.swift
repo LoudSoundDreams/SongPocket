@@ -13,7 +13,7 @@ class CollectionsNC: UINavigationController {
 	
 	// MARK: Managing Saved Data
 	
-	// "Constants"
+	// Constant References
 	let coreDataManager = CoreDataManager()
 	
 	// MARK: Moving Albums

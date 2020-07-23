@@ -26,15 +26,13 @@ struct SampleLibrary {
 	private struct SampleAlbum {
 		let title: String?
 		let year: Int?
-		let artwork: String?
-		let artworkExtension: String?
+		let artworkFileName: String?
 		let songs: [SampleSong]
 		
-		init(_ title: String?, _ year: Int?, _ artwork: String?, _ artworkExtension: String?, _ songs: [SampleSong]) {
+		init(_ title: String?, _ year: Int?, _ artworkFileName: String?, _ songs: [SampleSong]) {
 			self.title = title
 			self.year = year
-			self.artwork = artwork
-			self.artworkExtension = artworkExtension
+			self.artworkFileName = artworkFileName
 			self.songs = songs
 		}
 	}
@@ -110,8 +108,7 @@ struct SampleLibrary {
 				let newAlbum = Album(context: managedObjectContext)
 				newAlbum.albumArtist = toCollection.title
 				newAlbum.index = Int64(index)
-				newAlbum.sampleArtworkFileName = album.artwork
-				newAlbum.sampleArtworkFileNameExtension = album.artworkExtension
+				newAlbum.sampleArtworkFileNameWithExtension = album.artworkFileName
 				newAlbum.title = album.title
 				newAlbum.year = Int64(album.year ?? AlbumsTVC.impossibleYear)
 				newAlbum.container = toCollection
@@ -138,45 +135,45 @@ struct SampleLibrary {
 		injectSampleCollections([
 			
 			SampleCollection("Alexander Melkinov", [
-				SampleAlbum("Shostakovich: Piano Concertos", 2012, "shostakovichPianoConcertos", "jpg", [
+				SampleAlbum("Shostakovich: Piano Concertos", 2012, "shostakovichPianoConcertos.jpg", [
 					SampleSong("Piano Concerto No. 2 in F Major, Op. 102 No. 1, Allegro", 1),
 				]),
 			]),
 			
 			SampleCollection("AOA", [
-				SampleAlbum("Angel’s Knock", 2017, "angelsKnock", "jpg", [
+				SampleAlbum("Angel’s Knock", 2017, "angelsKnock.jpg", [
 					SampleSong("Excuse Me", 1),
 				]),
-				SampleAlbum("Good Luck", 2016, "goodLuck", "jpg", [
+				SampleAlbum("Good Luck", 2016, "goodLuck.jpg", [
 					SampleSong("Crazy Boy", 4),
 				]),
-				SampleAlbum("Heart Attack", 2015, "heartAttack", "jpg", [
+				SampleAlbum("Heart Attack", 2015, "heartAttack.jpg", [
 					SampleSong("Heart Attack", 1),
 				]),
-				SampleAlbum("Like a Cat", 2014, "likeACat", "jpg", [
+				SampleAlbum("Like a Cat", 2014, "likeACat.jpg", [
 					SampleSong("AOA", 1),
 					SampleSong("Like a Cat", 2),
 				]),
-				SampleAlbum("Short Hair", 2014, "shortHair", "jpg", [
+				SampleAlbum("Short Hair", 2014, "shortHair.jpg", [
 					SampleSong("Short Hair", 2),
 				]),
-				SampleAlbum("Miniskirt", 2014, "miniskirt", "jpg", [
+				SampleAlbum("Miniskirt", 2014, "miniskirt.jpg", [
 					SampleSong("Under the Street Light", 2),
 					SampleSong("Mini Skirt", 2),
 				]),
-				SampleAlbum("Red Motion", 2013, "redMotion", "jpg", [
+				SampleAlbum("Red Motion", 2013, "redMotion.jpg", [
 					SampleSong("Confused", 1),
 				]),
-				SampleAlbum("Wannabe", 2012, "wannabe", "jpg", [
+				SampleAlbum("Wannabe", 2012, "wannabe.jpg", [
 					SampleSong("Get Out", 1),
 				]),
-				SampleAlbum("Angels’ Story", 2012, "angelsStory", "jpg", [
+				SampleAlbum("Angels’ Story", 2012, "angelsStory.jpg", [
 					SampleSong("Elvis", 4),
 				]),
 			]),
 			
 			SampleCollection("Apink", [
-				SampleAlbum("Pink Blossom", 2014, "pinkBlossom", "jpg", [
+				SampleAlbum("Pink Blossom", 2014, "pinkBlossom.jpg", [
 					SampleSong("Mr. Chu (On Stage)", 2),
 					SampleSong("Mr. Chu (On Stage) Inst.", 7),
 					SampleSong("Mr. Chu", 6),
@@ -184,17 +181,17 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("Carly Rae Jepsen", [
-				SampleAlbum("Dedicated Side B", 2020, "dedicatedSideB", "jpg", [
+				SampleAlbum("Dedicated Side B", 2020, "dedicatedSideB.jpg", [
 					SampleSong("This Love Isn’t Crazy", 1),
 					SampleSong("Solo", 11),
 				]),
-				SampleAlbum("Dedicated", 2019, "dedicated", "jpg", [
+				SampleAlbum("Dedicated", 2019, "dedicated.jpg", [
 					SampleSong("Now That I Found You", 3),
 					SampleSong("Want You in My Room", 4),
 					SampleSong("Happy Not Knowing", 6),
 					SampleSong("Real Love", 13),
 				]),
-				SampleAlbum("E•mo•tion", 2015, "emotion", "jpg", [
+				SampleAlbum("E•mo•tion", 2015, "emotion.jpg", [
 					SampleSong("Run Away with Me", 1),
 					SampleSong("E•mo•tion", 2),
 					SampleSong("I Really Like You", 3),
@@ -203,89 +200,89 @@ struct SampleLibrary {
 					SampleSong("Let’s Get Lost", 9),
 					SampleSong("When I Needed You", 12),
 				]),
-				SampleAlbum("Kiss", 2012, "kiss", "jpg", [
+				SampleAlbum("Kiss", 2012, "kiss.jpg", [
 					SampleSong("Good Time", 5),
 					SampleSong("Turn Me Up", 7),
 				]),
 			]),
 			
 			SampleCollection("Charli XCX", [
-				SampleAlbum("Pop 2", 2017, "pop2", "jpg", [
+				SampleAlbum("Pop 2", 2017, "pop2.jpg", [
 					SampleSong("Unlock It", 8),
 				]),
 			]),
 			
 			SampleCollection("GFriend", [
-				SampleAlbum("回:Song of the Sirens", 2020, "songOfTheSirens", "jpg", [
+				SampleAlbum("回:Song of the Sirens", 2020, "songOfTheSirens.jpg", [
 					SampleSong("Tarot Cards", 4),
 				]),
-				SampleAlbum("回:Labyrinth", 2020, "labyrinth", "jpg", [
+				SampleAlbum("回:Labyrinth", 2020, "labyrinth.jpg", [
 					SampleSong("Labyrinth", 1),
 					SampleSong("Crossroads", 2),
 				]),
-				SampleAlbum("Fallin’ Light", 2019, "fallinLight", "jpg", [
+				SampleAlbum("Fallin’ Light", 2019, "fallinLight.jpg", [
 					SampleSong("Fallin’ Light", 1),
 					SampleSong("La pam pam", 9),
 				]),
-				SampleAlbum("Fever Season", 2019, "feverSeason", "jpg", [
+				SampleAlbum("Fever Season", 2019, "feverSeason.jpg", [
 					SampleSong("Flower (Korean Ver.)", 7),
 				]),
-				SampleAlbum("Time for us", 2019, "timeForUs", "jpg", [
+				SampleAlbum("Time for us", 2019, "timeForUs.jpg", [
 					SampleSong("Memoria (Korean Ver.)", 12),
 				]),
-				SampleAlbum("Sunny Summer", 2018, "sunnySummer", "jpg", [
+				SampleAlbum("Sunny Summer", 2018, "sunnySummer.jpg", [
 					SampleSong("Sunny Summer", 1),
 				]),
-				SampleAlbum("Time for the moon night", 2018, "timeForTheMoonNight", "jpg", [
+				SampleAlbum("Time for the moon night", 2018, "timeForTheMoonNight.jpg", [
 					SampleSong("Time for the Moon Night", 2),
 					SampleSong("Time for the Moon Night (Inst.)", 8),
 				]),
-				SampleAlbum("Rainbow", 2017, "rainbow", "jpg", [
+				SampleAlbum("Rainbow", 2017, "rainbow.jpg", [
 					SampleSong("Summer Rain", 3),
 					SampleSong("Summer Rain (Inst.)", 10),
 					SampleSong("Ave Maria", 5),
 					SampleSong("Red Umbrella", 8),
 				]),
-				SampleAlbum("The Awakening", 2017, "theAwakening", "jpg", [
+				SampleAlbum("The Awakening", 2017, "theAwakening.jpg", [
 					SampleSong("Fingertip", 2),
 					SampleSong("Please Save My Earth", 4),
 				]),
-				SampleAlbum("LOL", 2016, "lol", "jpg", [
+				SampleAlbum("LOL", 2016, "lol.jpg", [
 					SampleSong("Navillera", 3),
 					SampleSong("Water Flower", 6),
 				]),
-				SampleAlbum("Flower bud", 2015, "flowerBud", "jpg", [
+				SampleAlbum("Flower bud", 2015, "flowerBud.jpg", [
 					SampleSong("Under the Sky", 3),
 				]),
 			]),
 			
 			SampleCollection("IU", [
-				SampleAlbum("Palette", 2017, "palette", "jpg", [
+				SampleAlbum("Palette", 2017, "palette.jpg", [
 					SampleSong("dlwlrma", 1),
 					SampleSong("Palette", 2),
 					SampleSong("Jam Jam", 5),
 					SampleSong("Through the Night", 8),
 				]),
-				SampleAlbum("Chat-Shire", 2015, "chatShire", "jpg", [
+				SampleAlbum("Chat-Shire", 2015, "chatShire.jpg", [
 					SampleSong("Shoes", 1),
 					SampleSong("Twenty-Three", 3),
 					SampleSong("Knees", 6),
 				]),
-				SampleAlbum("Modern Times – Epilogue", 2013, "modernTimesEpilogue", "jpg", [
+				SampleAlbum("Modern Times – Epilogue", 2013, "modernTimesEpilogue.jpg", [
 					SampleSong("Love of B", 3),
 					SampleSong("Everybody Has Secrets", 4),
 					SampleSong("The Red Shoes", 6),
 					SampleSong("Walk with Me, Girl", 10),
 					SampleSong("Havana", 11),
 				]),
-				SampleAlbum("Real", 2010, "real", "jpg", [
+				SampleAlbum("Real", 2010, "real.jpg", [
 					SampleSong("Good Day", 3),
 					SampleSong("Merry Christmas in Advance", 6),
 				]),
 			]),
 			
 			SampleCollection("James Horner", [
-				SampleAlbum("Star Trek II: The Wrath of Khan", 1982, "starTrekII", "jpg", [
+				SampleAlbum("Star Trek II: The Wrath of Khan", 1982, "starTrekII.jpg", [
 					SampleSong("Main Title", 1),
 					SampleSong("Khan’s Pets", 5),
 					SampleSong("Enterprise Clears Moorings", 6),
@@ -299,7 +296,7 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("Lee Jin-ah", [
-				SampleAlbum("Full Course", 2018, "fullCourse", "jpg", [
+				SampleAlbum("Full Course", 2018, "fullCourse.jpg", [
 					SampleSong("Stairs", 6),
 					SampleSong("Random", 7),
 					SampleSong("Yum Yum Yum (Rebooted Ver. with Tak)", 3),
@@ -308,7 +305,7 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("Poppy", [
-				SampleAlbum("I Disagree", 2020, "iDisagree", "jpg", [
+				SampleAlbum("I Disagree", 2020, "iDisagree.jpg", [
 					SampleSong("Concrete", 1),
 					SampleSong("I Disagree", 2),
 					SampleSong("BLOODMONEY", 3),
@@ -320,7 +317,7 @@ struct SampleLibrary {
 					SampleSong("Sick of the Sun", 9),
 					SampleSong("Don’t Go Outside", 10),
 				]),
-				SampleAlbum("Poppy.Remixes", 2018, "poppyRemixes", "jpg", [
+				SampleAlbum("Poppy.Remixes", 2018, "poppyRemixes.jpg", [
 					SampleSong("Moshi Moshi (Noboru Remix)", 2),
 					SampleSong("Moshi Moshi (Clarabell Remix)", 4),
 					SampleSong("Moshi Moshi (Mitch Murder Remix)", 3),
@@ -328,17 +325,17 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("Queen", [
-				SampleAlbum("Jazz", 1978, "jazz", "jpg", [
+				SampleAlbum("Jazz", 1978, "jazz.jpg", [
 					SampleSong("Fat Bottomed Girls", 2),
 					SampleSong("Don’t Stop Me Now", 12),
 				]),
 			]),
 			
 			SampleCollection("Sample Artist with a Terribly, Horribly, No-Good, Very Long Name, Whose Life’s Purpose Is to Try to Break UI Layouts", [
-				SampleAlbum("Sample Album with a Terribly, Horribly, No-Good, Very Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", 3000, "wide", "png", [
+				SampleAlbum("Sample Album with a Terribly, Horribly, No-Good, Very Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", 3000, "wide.png", [
 					SampleSong("Sample Song with a Terribly, Horribly, No-Good, Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
 				]),
-				SampleAlbum("Sample Album with No Artwork and No Year", nil, nil, nil, [
+				SampleAlbum("Sample Album with No Artwork and No Year", nil, nil, [
 					SampleSong("Sample Song", 1),
 				]),
 			]),
@@ -351,7 +348,7 @@ struct SampleLibrary {
 			
 			SampleCollection("Sega", [
 //			SampleCollection("Tee Lopes", [
-				SampleAlbum("Sonic Mania", 2017, "sonicMania", "jpg", [
+				SampleAlbum("Sonic Mania", 2017, "sonicMania.jpg", [
 					SampleSong("Rise of the Icon (Sonic Mania Alternate Intro)", 47),
 					SampleSong("Discovery (Title Screen)", 1),
 					SampleSong("Lights, Camera, Action! (Studiopolis Zone Act 1)", 3),
@@ -376,7 +373,7 @@ struct SampleLibrary {
 //			]),
 			
 //			SampleCollection("Various Artists", [
-				SampleAlbum("Planetary Pieces: Sonic World Adventure", 2009, "planetaryPieces", "png", [
+				SampleAlbum("Planetary Pieces: Sonic World Adventure", 2009, "planetaryPieces.png", [
 					SampleSong("Endless Possibility - Vocal Theme -", 1),
 					SampleSong("Cutscene - Opening", 2),
 					SampleSong("Apotos - Day", 4),

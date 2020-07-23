@@ -13,8 +13,8 @@ extension Album {
 	
 	func sampleArtworkImageFullSize() -> UIImage? {
 		if let pathToSampleArtwork = Bundle.main.path(
-			forResource: sampleArtworkFileName,
-			ofType: sampleArtworkFileNameExtension
+			forResource: sampleArtworkFileNameWithExtension,
+			ofType: nil
 		) {
 			return UIImage(contentsOfFile: pathToSampleArtwork)
 		} else {
@@ -25,8 +25,8 @@ extension Album {
 	func sampleArtworkThumbnailData() -> Data? {
 		guard
 			let urlToFullSizeArtwork = Bundle.main.url(
-				forResource: sampleArtworkFileName,
-				withExtension: sampleArtworkFileNameExtension
+				forResource: sampleArtworkFileNameWithExtension,
+				withExtension: nil
 			)//,
 			// TO DO: Make sure the original image's dimensions are larger than the target thumbnail size.
 		else {
