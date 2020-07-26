@@ -28,6 +28,8 @@
 		076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C324B42E3F0033E3CC /* extension UITableViewController.swift */; };
 		076830CE24B42E400033E3CC /* SampleLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C424B42E3F0033E3CC /* SampleLibrary.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
+		07752E2024CDE6C60065670F /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07752E1F24CDE6C60065670F /* QueueView.swift */; };
+		07752E2224CDE9D10065670F /* QueueViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07752E2124CDE9D10065670F /* QueueViewHostingController.swift */; };
 		07D0A2D624CDC59E004A2083 /* folklore.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07D0A2D524CDC59E004A2083 /* folklore.jpg */; };
 		07F08EAF24BC4B6A001F897A /* pinkBlossom.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */; };
 		07F08EB924BC4B7C001F897A /* miniskirt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB024BC4B7B001F897A /* miniskirt.jpg */; };
@@ -114,6 +116,8 @@
 		076830C324B42E3F0033E3CC /* extension UITableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "extension UITableViewController.swift"; sourceTree = "<group>"; };
 		076830C424B42E3F0033E3CC /* SampleLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleLibrary.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		07752E1F24CDE6C60065670F /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
+		07752E2124CDE9D10065670F /* QueueViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueViewHostingController.swift; sourceTree = "<group>"; };
 		07D0A2D524CDC59E004A2083 /* folklore.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = folklore.jpg; sourceTree = "<group>"; };
 		07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pinkBlossom.jpg; sourceTree = "<group>"; };
 		07F08EB024BC4B7B001F897A /* miniskirt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = miniskirt.jpg; sourceTree = "<group>"; };
@@ -217,15 +221,8 @@
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				07FCE63824B42EDF00F94668 /* Main.storyboard */,
-				076830BC24B42E3E0033E3CC /* CollectionsNC.swift */,
-				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
-				076830BB24B42E3E0033E3CC /* LibraryTableViewController.swift */,
-				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
-				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
-				0736E3A624B8415400A15420 /* AlbumCell.swift */,
-				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
-				073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */,
-				076830C224B42E3F0033E3CC /* SongsView.swift */,
+				07752E2324CDF44B0065670F /* Collections Tab */,
+				07752E2424CDF4600065670F /* Queue Tab */,
 			);
 			path = LavaRock;
 			sourceTree = "<group>";
@@ -246,6 +243,31 @@
 				076830AF24B42DEF0033E3CC /* Info.plist */,
 			);
 			path = LavaRockUITests;
+			sourceTree = "<group>";
+		};
+		07752E2324CDF44B0065670F /* Collections Tab */ = {
+			isa = PBXGroup;
+			children = (
+				076830BC24B42E3E0033E3CC /* CollectionsNC.swift */,
+				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
+				076830BB24B42E3E0033E3CC /* LibraryTableViewController.swift */,
+				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
+				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
+				0736E3A624B8415400A15420 /* AlbumCell.swift */,
+				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
+				073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */,
+				076830C224B42E3F0033E3CC /* SongsView.swift */,
+			);
+			path = "Collections Tab";
+			sourceTree = "<group>";
+		};
+		07752E2424CDF4600065670F /* Queue Tab */ = {
+			isa = PBXGroup;
+			children = (
+				07752E2124CDE9D10065670F /* QueueViewHostingController.swift */,
+				07752E1F24CDE6C60065670F /* QueueView.swift */,
+			);
+			path = "Queue Tab";
 			sourceTree = "<group>";
 		};
 		07FC96D524BAB9A80036DD3D /* Sample Artwork */ = {
@@ -488,11 +510,13 @@
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
 				076830CC24B42E400033E3CC /* SongsView.swift in Sources */,
 				076830CE24B42E400033E3CC /* SampleLibrary.swift in Sources */,
+				07752E2024CDE6C60065670F /* QueueView.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTableViewController.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				076830C624B42E3F0033E3CC /* CollectionsNC.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */,
+				07752E2224CDE9D10065670F /* QueueViewHostingController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

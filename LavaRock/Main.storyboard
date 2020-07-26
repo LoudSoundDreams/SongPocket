@@ -1,44 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17132" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="b88-5O-SoN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="b88-5O-SoN">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Table View Controller-->
-        <scene sceneID="cSC-Uc-M0q">
-            <objects>
-                <tableViewController id="qTA-Tq-jaU" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="T2c-qT-9Pz">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Kec-c9-FqP">
-                                <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kec-c9-FqP" id="o4V-wI-cgB">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="qTA-Tq-jaU" id="2PK-kR-oRM"/>
-                            <outlet property="delegate" destination="qTA-Tq-jaU" id="PH3-zZ-UQf"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="rGC-DR-yc5"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uMx-8I-KO9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5076" y="-474"/>
-        </scene>
         <!--All Songs-->
         <scene sceneID="fmg-Bd-ib8">
             <objects>
@@ -136,7 +107,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="YiT-J8-VtB" kind="relationship" relationship="viewControllers" id="ULc-Ck-PNa"/>
-                        <segue destination="vJK-cW-8Bm" kind="relationship" relationship="viewControllers" id="pKn-ve-4xZ"/>
+                        <segue destination="ulb-wa-Jzf" kind="relationship" relationship="viewControllers" id="3ue-Sy-hWD"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bkr-b7-c0x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -167,16 +138,33 @@
                             <constraint firstItem="1HS-QP-yCr" firstAttribute="centerX" secondItem="H6m-KF-5Rc" secondAttribute="centerX" id="p0R-0S-dEG"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem title="Skip Backward" image="gobackward.10" catalog="system" id="VMO-SX-j4p"/>
+                        <barButtonItem title="Play/Pause" image="pause.fill" catalog="system" style="done" id="Svh-gZ-G4D"/>
+                        <barButtonItem title="Skip Forward" image="goforward.10" catalog="system" id="1wb-6J-N3a"/>
+                        <barButtonItem title="After This Song" image="ellipsis" catalog="system" id="3Xz-PX-32t"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Queue" id="W5j-mY-QqY"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YvI-vK-hlH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5076" y="1905.6650246305419"/>
+            <point key="canvasLocation" x="5075" y="2551"/>
+        </scene>
+        <!--Queue-->
+        <scene sceneID="nni-yp-rT8">
+            <objects>
+                <hostingController id="ulb-wa-Jzf" customClass="QueueViewHostingController" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Queue" image="playpause.fill" catalog="system" id="q7p-UX-iou"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </hostingController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OLi-R0-kNo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4225" y="1905"/>
         </scene>
         <!--Queue-->
         <scene sceneID="u8P-4S-9k0">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vJK-cW-8Bm" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="vJK-cW-8Bm" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Queue" image="playpause.fill" catalog="system" id="6Mh-Ff-7mD"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lPd-Rm-6Iy">
@@ -184,13 +172,17 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Jag-2w-uVB">
+                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
-                        <segue destination="VxI-Ck-sXa" kind="relationship" relationship="rootViewController" id="79K-aj-FY7"/>
+                        <segue destination="VxI-Ck-sXa" kind="relationship" relationship="rootViewController" id="rHB-LR-Fz6"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yYa-A3-j4d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4225" y="1906"/>
+            <point key="canvasLocation" x="4225" y="2551"/>
         </scene>
         <!--All Albums-->
         <scene sceneID="27e-fe-8g7">
@@ -469,24 +461,6 @@
             </objects>
             <point key="canvasLocation" x="6492" y="192.85714285714286"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="FY6-r3-duY">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rfa-2y-u0g" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Wjz-wL-kUL">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="qTA-Tq-jaU" kind="relationship" relationship="rootViewController" id="wmo-jr-YoR"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rsj-S8-Cb1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4225" y="-474"/>
-        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Y5v-Mn-JRo"/>
@@ -494,7 +468,11 @@
     <color key="tintColor" name="AccentColor"/>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
+        <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="fallinLight.jpg" width="2036" height="1400"/>
+        <image name="gobackward.10" catalog="system" width="121" height="128"/>
+        <image name="goforward.10" catalog="system" width="121" height="128"/>
+        <image name="pause.fill" catalog="system" width="116" height="128"/>
         <image name="playpause.fill" catalog="system" width="128" height="73"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.4779999852180481" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -31,7 +31,7 @@ final class SongsTVC: LibraryTableViewController {
 		The "index" attribute of the dummy duplicate object in [0] is transparently updated to match that of its counterpart, which is elsewhere in activeLibraryItems.
 	
 	**This hack (probably) makes it harder** to adopt UITableViewDiffableDataSource and NSFetchedResultsController.
-	Also, editing commands that you can apply on "all items" without selecting them first, like sorting, don't work right.
+	Also, any commands that involve activeLibraryItems or IndexPaths probably won't work right without more hacking
 	*/
 	
 	static let impossibleTrackNumber = -1

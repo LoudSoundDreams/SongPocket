@@ -31,6 +31,9 @@ final class AlbumsTVC: LibraryTableViewController {
 		super.setUpUI()
 		
 		navigationItem.leftBarButtonItems = nil // Removes "Move All" button added in storyboard
+//		navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil) // Removes the text of the Back button on the next screen you navigate to.
+		// As of iOS 14.0 beta 3, using an empty string, "", breaks the animation of the large title on this screen when navigating to the next screen and coming back from it. The title shrinks down to (and grows back from) nothing, instead of shrinking just slightly like it normally does.
+		// Unfortunately, on the next screen you navigate to, in the menu when you touch and hold on the Back button, this line of code makes a blank button, which looks wrong.
 		tableView.rowHeight = CGFloat(Self.rowHeightInPoints)
 		
 		if collectionsNC.isInMoveAlbumsMode {

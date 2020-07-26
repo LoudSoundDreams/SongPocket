@@ -23,7 +23,7 @@ class LibraryTableViewController: UITableViewController {
 	let tintColor = UIColor(named: "AccentColor")
 	let cellReuseIdentifier = "Cell"
 	lazy var floatToTopButton = UIBarButtonItem(
-		image: UIImage(systemName: "arrow.up.to.line"), // Needs VoiceOver hint
+		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
 		style: .plain,
 		target: self,
 		action: #selector(moveSelectedItemsToTop)
