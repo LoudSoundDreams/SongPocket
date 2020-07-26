@@ -70,7 +70,7 @@ extension UITableViewController {
 		}
 	}
 	
-	// MARK: Getting IndexPaths or Rows
+	// MARK: Getting IndexPaths
 	
 	func indexPathsEnumeratedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
 		var result = [IndexPath]()
@@ -80,21 +80,13 @@ extension UITableViewController {
 		return result
 	}
 	
-	/*
-	func selectedOrAllRowsSorted(numberOfRows: Int) -> [Int] {
-		var result = [Int]()
+	func selectedOrAllIndexPathsSortedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows?.sorted() {
-			for indexPath in selectedIndexPaths {
-				result.append(indexPath.row)
-			}
+			return selectedIndexPaths
 		} else {
-			for row in 0..<numberOfRows {
-				result.append(row)
-			}
+			return indexPathsEnumeratedIn(section: section, firstRow: firstRow, lastRow: lastRow)
 		}
-		return result
 	}
-	*/
 	
 	// MARK: Getting Data Objects
 	

@@ -11,18 +11,16 @@ import ImageIO
 
 extension Album {
 	
-	func sampleArtworkImageFullSize() -> UIImage? {
-		if let pathToSampleArtwork = Bundle.main.path(
-			forResource: sampleArtworkFileNameWithExtension,
-			ofType: nil
-		) {
-			return UIImage(contentsOfFile: pathToSampleArtwork)
-		} else {
-			return nil
-		}
-	}
+//	func sampleArtworkDownsampledImage(maxWidthAndHeightInPixels: CGFloat) -> UIImage? {
+//		let imageData = sampleArtworkDownsampledData(maxWidthAndHeightInPixels: maxWidthAndHeightInPixels)
+//		if imageData != nil {
+//			return UIImage(data: imageData!)
+//		} else {
+//			return nil
+//		}
+//	}
 	
-	func sampleArtworkThumbnailData() -> Data? {
+	func sampleArtworkDownsampledData(maxWidthAndHeightInPixels: CGFloat) -> Data? {
 		guard
 			let urlToFullSizeArtwork = Bundle.main.url(
 				forResource: sampleArtworkFileNameWithExtension,
@@ -38,12 +36,11 @@ extension Album {
 		let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
 		let imageSource = CGImageSourceCreateWithURL(urlToFullSizeArtwork as CFURL, imageSourceOptions)!
 		
-		let maximumWidthAndHeightInPixels = CGFloat(AlbumsTVC.rowHeightInPoints) * UIScreen.main.scale
 		let downsampleOptions = [
 			kCGImageSourceCreateThumbnailFromImageAlways: true,
-			kCGImageSourceShouldCacheImmediately: true, // Do we need this?
+			kCGImageSourceShouldCacheImmediately: true,
 			kCGImageSourceCreateThumbnailWithTransform: true,
-			kCGImageSourceThumbnailMaxPixelSize: maximumWidthAndHeightInPixels
+			kCGImageSourceThumbnailMaxPixelSize: maxWidthAndHeightInPixels
 		] as CFDictionary
 		
 		let thumbnail = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions)

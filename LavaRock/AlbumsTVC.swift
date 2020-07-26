@@ -50,11 +50,11 @@ final class AlbumsTVC: LibraryTableViewController {
 		
 		let image: UIImage?
 		if let thumbnailData = album.artworkThumbnail {
-			image = UIImage(data: thumbnailData, scale: UIScreen.main.scale)
-			// .scale is the ratio of rendered pixels to points (3.0 on an iPhone Plus).
-			// .nativeScale is the ratio of physical pixels to points (2.608 on an iPhone Plus).
+			image = UIImage(data: thumbnailData)
+		} else if let artworkFileName = album.sampleArtworkFileNameWithExtension {
+			image = UIImage(imageLiteralResourceName: artworkFileName)
 		} else {
-			image = album.sampleArtworkImageFullSize() //
+			image = nil // To remove the placeholder image in the storyboard.
 		}
 		
 		let titleOfAlbum = album.title

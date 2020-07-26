@@ -53,6 +53,15 @@ final class SongsTVC: LibraryTableViewController {
 		coreDataEntityName = "Song"
 	}
 	
+	// MARK: Setting Up UI
+	
+	override func setUpUI() {
+		super.setUpUI()
+		
+		barButtonItemsEditMode = [floatToTopButton, sortButton]
+		sortOptions = ["Track Number"]
+	}
+	
 	// MARK: Loading Data
 	
 	override func loadActiveLibraryItems() {
@@ -74,8 +83,27 @@ final class SongsTVC: LibraryTableViewController {
 			let album = containerOfData as! Album
 			
 			// Make, configure, and return the cell.
+			
 			let artworkCell = tableView.dequeueReusableCell(withIdentifier: "Artwork Cell") as! SongsArtworkCell
-			artworkCell.artworkImageView.image = album.sampleArtworkImageFullSize()
+			
+			// Implementation that downsamples the artwork first.
+			// Doesn't seem faster at all, and image doesn't get cached for some reason.
+//			let artworkImage = album.sampleArtworkDownsampledImage(
+//				maxWidthAndHeightInPixels: UIScreen.main.bounds.width * UIScreen.main.scale
+//			)
+//			artworkCell.artworkImageView.image = artworkImage
+			
+			// Implementation that doesn't downsample the artwork first.
+			// Slow, but the image gets cached.
+			let image: UIImage?
+			if let artworkFileName = album.sampleArtworkFileNameWithExtension {
+				image = UIImage(imageLiteralResourceName: artworkFileName)
+			} else {
+				image = nil // To remove the placeholder image in the storyboard.
+			}
+			
+			artworkCell.artworkImageView.image = image
+			
 			return artworkCell
 			
 		} else if indexPath.row == 1 {
@@ -196,6 +224,12 @@ final class SongsTVC: LibraryTableViewController {
 	
 	override func moveSelectedItemsToTop() {
 		moveItemsUp(from: tableView.indexPathsForSelectedRows, to: IndexPath(row: numberOfUneditableRowsAtTopOfSection, section: 0))
+	}
+	
+	// In the parent class, sortSelectedOrAllItems is split into two parts, where the first part is like this stub here, in order to allow this class to inject numberOfUneditableRowsAtTopOfSection. This is bad practice.
+	override func sortSelectedOrAllItems(sender: UIAlertAction) {
+		let selectedIndexPaths = selectedOrAllIndexPathsSortedIn(section: 0, firstRow: numberOfUneditableRowsAtTopOfSection, lastRow: activeLibraryItems.count - 1)
+		sortSelectedOrAllItemsPart2(selectedIndexPaths: selectedIndexPaths, sender: sender)
 	}
 	
 }

@@ -28,6 +28,7 @@
 		076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C324B42E3F0033E3CC /* extension UITableViewController.swift */; };
 		076830CE24B42E400033E3CC /* SampleLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C424B42E3F0033E3CC /* SampleLibrary.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
+		07D0A2D624CDC59E004A2083 /* folklore.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07D0A2D524CDC59E004A2083 /* folklore.jpg */; };
 		07F08EAF24BC4B6A001F897A /* pinkBlossom.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */; };
 		07F08EB924BC4B7C001F897A /* miniskirt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB024BC4B7B001F897A /* miniskirt.jpg */; };
 		07F08EBA24BC4B7C001F897A /* goodLuck.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EB124BC4B7B001F897A /* goodLuck.jpg */; };
@@ -113,6 +114,7 @@
 		076830C324B42E3F0033E3CC /* extension UITableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "extension UITableViewController.swift"; sourceTree = "<group>"; };
 		076830C424B42E3F0033E3CC /* SampleLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleLibrary.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		07D0A2D524CDC59E004A2083 /* folklore.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = folklore.jpg; sourceTree = "<group>"; };
 		07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pinkBlossom.jpg; sourceTree = "<group>"; };
 		07F08EB024BC4B7B001F897A /* miniskirt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = miniskirt.jpg; sourceTree = "<group>"; };
 		07F08EB124BC4B7B001F897A /* goodLuck.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = goodLuck.jpg; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				07FC96D624BABAA70036DD3D /* fallinLight.jpg */,
 				07FC96EB24BABAAD0036DD3D /* feverSeason.jpg */,
 				07FC96DD24BABAA90036DD3D /* flowerBud.jpg */,
+				07D0A2D524CDC59E004A2083 /* folklore.jpg */,
 				07FC96EA24BABAAD0036DD3D /* fullCourse.jpg */,
 				07F08EB124BC4B7B001F897A /* goodLuck.jpg */,
 				07F08EB624BC4B7C001F897A /* heartAttack.jpg */,
@@ -436,6 +439,7 @@
 				07FC970724BABAAE0036DD3D /* palette.jpg in Resources */,
 				07F08EBF24BC4B7C001F897A /* heartAttack.jpg in Resources */,
 				07F08EC124BC4B7C001F897A /* redMotion.jpg in Resources */,
+				07D0A2D624CDC59E004A2083 /* folklore.jpg in Resources */,
 				07FC96FA24BABAAE0036DD3D /* kiss.jpg in Resources */,
 				07FC96FF24BABAAE0036DD3D /* theAwakening.jpg in Resources */,
 				07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */,

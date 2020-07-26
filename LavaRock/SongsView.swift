@@ -32,7 +32,6 @@ struct SongsView: View {
 			.padding(.all, 0)
 //			.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
 		}
-//	.navigationBarItems(trailing: EditButton()) // As of iOS 13.5.1, doesn't appear until the show segue animation finishes, and removes the title in the navigation bar.
 	}
 }
 

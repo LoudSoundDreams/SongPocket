@@ -74,6 +74,7 @@ class LibraryTableViewController: UITableViewController {
 		if containerOfData != nil {
 			title = containerOfData?.value(forKey: "title") as? String
 		}
+		barButtonItemsEditMode = [floatToTopButton]
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
 		// Depending whether the view is in "move albums" mode
@@ -89,7 +90,6 @@ class LibraryTableViewController: UITableViewController {
 			navigationController?.isToolbarHidden = false
 			
 		} else {
-			barButtonItemsEditMode = [floatToTopButton]
 			navigationItem.rightBarButtonItem = editButtonItem
 			
 			navigationController?.isToolbarHidden = true
@@ -153,7 +153,7 @@ class LibraryTableViewController: UITableViewController {
 		
 		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
 		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
-		tableView.performBatchUpdates(nil, completion: nil) // As of iOS 14.0 beta 2, this causes the app to sometimes crash with an NSRangeException later on after moving a row. beginUpdates() and endUpdates() causes the same.
+		tableView.performBatchUpdates(nil, completion: nil) // As of iOS 14.0 beta 3, this causes the app to sometimes crash with an NSRangeException later on after moving a row. beginUpdates() and endUpdates() causes the same.
 		// NOTE: Apparently only when Dynamic Text size is one size larger than default, and 13 particular collections exist. Sometimes the crash is NSInternalInconsistencyException.
 	}
 	
@@ -260,20 +260,20 @@ class LibraryTableViewController: UITableViewController {
 		// This should only be called if shouldAllowSorting() is true, so it assumes that a valid set of rows is selected.
 		
 		// Get the rows to sort.
-		var selectedIndexPaths = [IndexPath]()
-		if let selected = tableView.indexPathsForSelectedRows { // If any rows are selected.
-			// WARNING: Only works if the selected rows are consecutive.
-			selectedIndexPaths = selected.sorted()
-		} else { // If no rows are selected, sort all the rows.
-			selectedIndexPaths = indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: activeLibraryItems.count - 1)
-		}
+		let selectedIndexPaths = selectedOrAllIndexPathsSortedIn(section: 0, firstRow: 0, lastRow: activeLibraryItems.count - 1)
+		
+		// Continue in a separate function. This lets SongsTVC override the current function to hack selectedIndexPaths. This is bad practice.
+		sortSelectedOrAllItemsPart2(selectedIndexPaths: selectedIndexPaths, sender: sender)
+	}
+	
+	func sortSelectedOrAllItemsPart2(selectedIndexPaths: [IndexPath], sender: UIAlertAction) {
 		
 		// Get the items to sort, too.
 		let selectedIndexPathsAndItems = dataObjectsPairedWith(selectedIndexPaths, tableViewDataSource: activeLibraryItems) as! [(IndexPath, NSManagedObject)]
 		
 		// Sort the rows and items together.
 		let sortOption = sender.title
-		let sortedIndexPathsAndItems = sortThese(indexPathsAndItems: selectedIndexPathsAndItems, bySortOption: sortOption)
+		let sortedIndexPathsAndItems = sortThese(indexPathsAndItems: selectedIndexPathsAndItems, by: sortOption)
 		
 		// Remove the selected items from the data source.
 		for indexPath in selectedIndexPaths.reversed() {
@@ -301,19 +301,20 @@ class LibraryTableViewController: UITableViewController {
 	
 	// After editing the sort options, update this class's default sortOptions property (at the top of the file) to include all the options.
 	// Sorting should be stable! Multiple items with the same name, year, or whatever property we're sorting by should stay in the same order.
-	func sortThese(indexPathsAndItems: [(IndexPath, NSManagedObject)], bySortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
-		switch bySortOption {
+	func sortThese(indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
+		switch sortOption {
 		case "Title":
 			// Should we ignore words like "the" and "a" at the starts of titles? Which words should we ignore?
 			return indexPathsAndItems.sorted(by: {
 				($0.1.value(forKey: "title") as? String ?? "") < ($1.1.value(forKey: "title") as? String ?? "")
 			} )
-		// TO DO: Add cases for all the sort options here.
-		// "Track Number", "Oldest First", "Newest First", "Duration", "Date Modified"
-		
+		case "Track Number":
+			return indexPathsAndItems.sorted(by: {
+				(($0.1.value(forKey: "trackNumber") as! Int) < ($1.1.value(forKey: "trackNumber") as! Int))
+			} )
 		default:
-			print("The user tried to sort by “\(bySortOption ?? "")”, which isn’t a supported option. It might be misspelled or not available in the sorting code.")
-			return indexPathsAndItems // Otherwise, the app will crash when it tries to call moveRowsUpToEarliestRow on an empty sortItems array. Escaping here is easier than changing the logic to use optionals.
+			print("The user tried to sort by “\(sortOption ?? "")”, which isn’t a supported option. It might be misspelled.")
+			return indexPathsAndItems // Otherwise, the app will crash when it tries to call moveRowsUpToEarliestRow on an empty array. Escaping here is easier than changing the logic to use optionals.
 		}
 	}
 	

@@ -29,10 +29,10 @@ struct SampleLibrary {
 		let artworkFileName: String?
 		let songs: [SampleSong]
 		
-		init(_ title: String?, _ year: Int?, _ artworkFileName: String?, _ songs: [SampleSong]) {
+		init(_ title: String?, _ year: Int?, _ artworkFileNameWithExtension: String?, _ songs: [SampleSong]) {
 			self.title = title
 			self.year = year
-			self.artworkFileName = artworkFileName
+			self.artworkFileName = artworkFileNameWithExtension
 			self.songs = songs
 		}
 	}
@@ -66,7 +66,7 @@ struct SampleLibrary {
 //				let album = element as! Album
 //
 //				let operation = BlockOperation(block: {
-//					album.artworkThumbnail = album.sampleArtworkThumbnailData()
+//					album.artworkThumbnail = album.sampleArtworkDownsampledData()
 ////					do {
 ////						try managedObjectContext.save()
 ////					} catch {
@@ -113,7 +113,12 @@ struct SampleLibrary {
 				newAlbum.year = Int64(album.year ?? AlbumsTVC.impossibleYear)
 				newAlbum.container = toCollection
 				
-				newAlbum.artworkThumbnail = newAlbum.sampleArtworkThumbnailData() // Do this on a serial background queue.
+				// TO DO: Do this concurrently.
+				newAlbum.artworkThumbnail = newAlbum.sampleArtworkDownsampledData(
+					maxWidthAndHeightInPixels: CGFloat(AlbumsTVC.rowHeightInPoints) * UIScreen.main.scale
+				)
+				// .scale is the ratio of rendered pixels to points (3.0 on an iPhone Plus).
+				// .nativeScale is the ratio of physical pixels to points (2.608 on an iPhone Plus).
 				print("Created a thumbnail.")
 				
 				injectSampleSongs(album.songs, toAlbum: newAlbum)
@@ -340,14 +345,35 @@ struct SampleLibrary {
 				]),
 			]),
 			
-//			SampleCollection(nil, [
-//				SampleAlbum(nil, nil, nil, nil, [
-//					SampleSong(nil, nil),
-//				]),
-//			]),
+			SampleCollection(nil, [
+				SampleAlbum(nil, nil, nil, [
+					SampleSong(nil, nil),
+				]),
+			]),
 			
-			SampleCollection("Sega", [
-//			SampleCollection("Tee Lopes", [
+			SampleCollection("Taylor Swift", [
+				SampleAlbum("folklore", 2020, "folklore.jpg", [
+					SampleSong("the 1", 1),
+					SampleSong("cardigan", 2),
+					SampleSong("the last great american dynasty", 3),
+					SampleSong("exile", 4),
+					SampleSong("my tears ricochet", 5),
+					SampleSong("mirrorball", 6),
+					SampleSong("seven", 7),
+					SampleSong("august", 8),
+					SampleSong("this is me trying", 9),
+					SampleSong("illicit affairs", 10),
+					SampleSong("invisible string", 11),
+					SampleSong("mad woman", 12),
+					SampleSong("epiphany", 13),
+					SampleSong("betty", 14),
+					SampleSong("peace", 15),
+					SampleSong("hoax", 16),
+				]),
+			]),
+			
+//			SampleCollection("Sega", [
+			SampleCollection("Tee Lopes", [
 				SampleAlbum("Sonic Mania", 2017, "sonicMania.jpg", [
 					SampleSong("Rise of the Icon (Sonic Mania Alternate Intro)", 47),
 					SampleSong("Discovery (Title Screen)", 1),
@@ -370,9 +396,9 @@ struct SampleLibrary {
 					SampleSong("Egg Reverie (Egg Reverie Zone)", 27),
 					SampleSong("Guided Tour (Credits)", 29),
 				]),
-//			]),
+			]),
 			
-//			SampleCollection("Various Artists", [
+			SampleCollection("Various Artists", [
 				SampleAlbum("Planetary Pieces: Sonic World Adventure", 2009, "planetaryPieces.png", [
 					SampleSong("Endless Possibility - Vocal Theme -", 1),
 					SampleSong("Cutscene - Opening", 2),
