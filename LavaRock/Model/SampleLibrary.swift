@@ -340,19 +340,19 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("Sample Artist with a Terribly, Horribly, No-Good, Very Long Name, Whose Life’s Purpose Is to Try to Break UI Layouts", [
-				SampleAlbum("Sample Album with a Terribly, Horribly, No-Good, Very Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", 3000, "wide.png", [
-					SampleSong("Sample Song with a Terribly, Horribly, No-Good, Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
+				SampleAlbum("Sample Album with an Amazingly Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", 3000, "wide.png", [
+					SampleSong("Sample Song with a Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
 				]),
 				SampleAlbum("Sample Album with No Artwork and No Year", nil, nil, [
 					SampleSong("Sample Song", 1),
 				]),
 			]),
 			
-			SampleCollection(nil, [
-				SampleAlbum(nil, nil, nil, [
-					SampleSong(nil, nil),
-				]),
-			]),
+//			SampleCollection(nil, [
+//				SampleAlbum(nil, nil, nil, [
+//					SampleSong(nil, nil),
+//				]),
+//			]),
 			
 			SampleCollection("Taylor Swift", [
 				SampleAlbum("folklore", 2020, "folklore.jpg", [

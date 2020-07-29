@@ -21,7 +21,6 @@ class LibraryTableViewController: UITableViewController {
 	var sortOptions = ["Title"] // Only include the options you want. Make sure they're spelled right, or they won't do anything.
 	
 	// Properties that subclasses should not change:
-//	let tintColor = UIColor(named: "AccentColor")
 	let cellReuseIdentifier = "Cell"
 	lazy var floatToTopButton = UIBarButtonItem(
 		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
@@ -251,7 +250,6 @@ class LibraryTableViewController: UITableViewController {
 	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTableViewController. They're view controllers.
 	@objc func showSortOptions() {
 		let alertController = UIAlertController(title: "Sort By", message: nil, preferredStyle: .actionSheet)
-//		alertController.view.tintColor = tintColor
 		for sortOption in sortOptions {
 			alertController.addAction(UIAlertAction(title: sortOption, style: .default, handler: sortSelectedOrAllItems))
 		}

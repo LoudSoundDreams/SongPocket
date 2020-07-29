@@ -8,7 +8,6 @@
 import SwiftUI
 import UIKit
 
-//@available(iOS 14.0, *)
 struct OptionsView: View {
 //	@AppStorage("accentColorName") private var selectedColorName = "Blue" // @AppStorage isn't the right solution, because we don't want to create a default value here.
 	@State private var selectedColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String // Doesn't automatically get invalidated when we change UserDefaults; we need to update selectedColorName manually.
@@ -32,7 +31,7 @@ struct OptionsView: View {
 							}
 							.onTapGesture { // Only works if you tap on the text
 								UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
-								selectedColorName = rowColorName // You shouldn't do this manually
+								selectedColorName = rowColorName // You shouldn't have to do this manually
 								window.tintColor = rowUIColor
 							}
 						}
@@ -46,10 +45,34 @@ struct OptionsView: View {
 							closureTellingUIKitToDismissTheModalHostingControllerHostingThisSwiftUIView()
 						})
 					}
-				})
+				} )
 			} else { // iOS 13 and earlier
-				Text("Options")
-					.navigationBarTitle("Options", displayMode: .inline)
+				Form {
+					Section(header: Text("Accent Color")) {
+						ForEach(AccentColorManager.accentColorTuples, id: \.0) { (rowColorName, rowUIColor) in
+							HStack {
+								Text(rowColorName)
+									.foregroundColor(Color(rowUIColor))
+								Spacer()
+								if rowColorName == selectedColorName {
+									Image(systemName: "checkmark") // Should be bold
+										.foregroundColor(Color(rowUIColor))
+								}
+							}
+							.onTapGesture { // Only works if you tap on the text
+								UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
+								selectedColorName = rowColorName // You shouldn't do this manually
+								window.tintColor = rowUIColor
+							}
+						}
+					}
+				}
+				.navigationBarTitle("Options", displayMode: .inline)
+//				.navigationBarItems(
+//					trailing: Button("Done", action: { // Should be bold
+//						closureTellingUIKitToDismissTheModalHostingControllerHostingThisSwiftUIView()
+//					} )
+//				)
 			}
 		}
     }
