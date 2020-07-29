@@ -30,7 +30,7 @@ final class AlbumsTVC: LibraryTableViewController {
 	override func setUpUI() {
 		super.setUpUI()
 		
-		navigationItem.leftBarButtonItems = nil // Removes "Move All" button added in storyboard
+		navigationItem.leftBarButtonItems = nil // Removes Move All button added in the storyboard. We'll re-add it in code.
 //		navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil) // Removes the text of the Back button on the next screen you navigate to.
 		// As of iOS 14.0 beta 3, using an empty string, "", breaks the animation of the large title on this screen when navigating to the next screen and coming back from it. The title shrinks down to (and grows back from) nothing, instead of shrinking just slightly like it normally does.
 		// Unfortunately, on the next screen you navigate to, in the menu when you touch and hold on the Back button, this line of code makes a blank button, which looks wrong.
@@ -39,7 +39,7 @@ final class AlbumsTVC: LibraryTableViewController {
 		if collectionsNC.isInMoveAlbumsMode {
 			tableView.allowsSelection = false
 		} else {
-			barButtonItemsEditMode = [floatToTopButton, startMovingAlbumsButton]
+			navigationItemButtonsEditMode = [floatToTopButton, startMovingAlbumsButton]
 		}
 	}
 	
@@ -114,16 +114,33 @@ final class AlbumsTVC: LibraryTableViewController {
 		}
 	}
 	
+	override func updateBarButtonItems() {
+		super.updateBarButtonItems()
+		
+		if isEditing {
+			updateStartMovingAlbumsButton()
+		}
+	}
+	
+	func updateStartMovingAlbumsButton() {
+		if tableView.indexPathsForSelectedRows == nil {
+			startMovingAlbumsButton.title = "Move All"
+		} else {
+			startMovingAlbumsButton.title = "Move"
+		}
+	}
+
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "Moved Albums",
-			let destination = segue.destination as? AlbumsTVC,
-			collectionsNC.didMoveAlbumsToNewCollections {
+		   let destination = segue.destination as? AlbumsTVC,
+		   collectionsNC.didMoveAlbumsToNewCollections {
 			destination.collectionsNC.didMoveAlbumsToNewCollections = true
 		}
 		
 		super.prepare(for: segue, sender: sender)
 	}
 	
+
 	// MARK: “Move Albums" Mode
 	
 	// Starting moving albums
@@ -248,24 +265,6 @@ final class AlbumsTVC: LibraryTableViewController {
 		tableView.reloadData()
 		
 		viewDidAppear(true) // Unwinds to Collections if you moved all the albums out
-	}
-	
-	// MARK: Updating UI to Reflect Current State
-	
-	override func updateBarButtonItems() {
-		super.updateBarButtonItems()
-		
-		if isEditing {
-			updateStartMovingAlbumsButton()
-		}
-	}
-	
-	func updateStartMovingAlbumsButton() {
-		if tableView.indexPathsForSelectedRows == nil {
-			startMovingAlbumsButton.title = "Move All"
-		} else {
-			startMovingAlbumsButton.title = "Move"
-		}
 	}
 	
 }

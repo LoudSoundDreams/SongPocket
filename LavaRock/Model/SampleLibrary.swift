@@ -40,10 +40,12 @@ struct SampleLibrary {
 	private struct SampleSong {
 		let title: String?
 		let trackNumber: Int?
+		let discNumber: Int?
 		
-		init(_ title: String?, _ trackNumber: Int?) {
+		init(_ title: String?, _ trackNumber: Int?, disc: Int? = 1) {
 			self.title = title
 			self.trackNumber = trackNumber
+			self.discNumber = disc
 		}
 	}
 	
@@ -94,6 +96,7 @@ struct SampleLibrary {
 				let song = songs[index]
 				
 				let newSong = Song(context: managedObjectContext)
+				newSong.discNumber = Int64(song.discNumber ?? SongsTVC.impossibleDiscNumber)
 				newSong.index = Int64(index)
 				newSong.title = song.title
 				newSong.trackNumber = Int64(song.trackNumber ?? SongsTVC.impossibleTrackNumber)
@@ -353,46 +356,27 @@ struct SampleLibrary {
 			
 			SampleCollection("Taylor Swift", [
 				SampleAlbum("folklore", 2020, "folklore.jpg", [
-					SampleSong("the 1", 1),
-					SampleSong("cardigan", 2),
-					SampleSong("the last great american dynasty", 3),
-					SampleSong("exile", 4),
-					SampleSong("my tears ricochet", 5),
 					SampleSong("mirrorball", 6),
-					SampleSong("seven", 7),
 					SampleSong("august", 8),
 					SampleSong("this is me trying", 9),
 					SampleSong("illicit affairs", 10),
-					SampleSong("invisible string", 11),
-					SampleSong("mad woman", 12),
-					SampleSong("epiphany", 13),
 					SampleSong("betty", 14),
-					SampleSong("peace", 15),
-					SampleSong("hoax", 16),
 				]),
 			]),
 			
-//			SampleCollection("Sega", [
 			SampleCollection("Tee Lopes", [
 				SampleAlbum("Sonic Mania", 2017, "sonicMania.jpg", [
 					SampleSong("Rise of the Icon (Sonic Mania Alternate Intro)", 47),
 					SampleSong("Discovery (Title Screen)", 1),
-					SampleSong("Lights, Camera, Action! (Studiopolis Zone Act 1)", 3),
 					SampleSong("Prime Time (Studiopolis Zone Act 2)", 4),
-					SampleSong("Eggman Mean Bean", 36),
+					SampleSong("Dimension Heist (UFO Special Stage)", 30),
 					SampleSong("Flying Battery Zone (Act 1)", 5),
 					SampleSong("Flying Battery Zone (Act 2)", 6),
-					SampleSong("Ruby Delusions (Eggman Boss 1)", 23),
-					SampleSong("Stardust Speedway Zone (Act 1)", 9),
-					SampleSong("Dimension Heist (UFO Special Stage)", 30),
-					SampleSong("Comfort Zone (Main Menu)", 2),
-					SampleSong("Sunshine Cassette (Save Select)", 41),
 					SampleSong("Blue Spheres", 35),
 					SampleSong("Skyway Octane (Mirage Saloon Zone Act 1 ST Mix)", 13),
 					SampleSong("Hi-Spec Robo Go! (Hard Boiled Heavy Boss)", 25),
 					SampleSong("Metallic Madness Zone (Act 1)", 18),
 					SampleSong("Metallic Madness Zone (Act 2)", 19),
-					SampleSong("Ruby Illusions (Final Boss)", 26),
 					SampleSong("Egg Reverie (Egg Reverie Zone)", 27),
 					SampleSong("Guided Tour (Credits)", 29),
 				]),
@@ -404,19 +388,20 @@ struct SampleLibrary {
 					SampleSong("Cutscene - Opening", 2),
 					SampleSong("Apotos - Day", 4),
 					SampleSong("Windmill Isle - Day", 5),
+					SampleSong("Apotos - Night", 10),
 					SampleSong("Tornado Defense - 1st Battle", 12),
-					SampleSong("Savannah Citadel - Day", 21),
+					SampleSong("The World Adventure - Orchestral Theme -", 1, disc: 2),
+					SampleSong("Holoska - Night", 12, disc: 2),
 					SampleSong("Cool Edge - Day", 28),
+					SampleSong("The World Adventure - Piano Version", 29, disc: 2),
 					SampleSong("Spagonia - Night", 29),
-					SampleSong("The World Adventure - Orchestral Theme -", 1), // disc 2
-					SampleSong("Gaia Gate", 2), // 2
-					SampleSong("Chun-nan - Night", 3), // 2
-					SampleSong("Rooftop Run - Day", 8), // 2
-					SampleSong("Dragon Road - Day", 11), // 2
-					SampleSong("Holoska - Night", 12), // 2
-					SampleSong("Empire City - Night", 18), // 2
-					SampleSong("Shamar - Night", 21), // 2
-					SampleSong("The World Adventure - Piano Version", 29), // 2
+					SampleSong("Rooftop Run - Day", 8, disc: 2),
+					SampleSong("Chun-nan - Night", 3, disc: 2),
+					SampleSong("Gaia Gate", 2, disc: 2),
+					SampleSong("Dragon Road - Day", 11, disc: 2),
+					SampleSong("Shamar - Night", 21, disc: 2),
+					SampleSong("Savannah Citadel - Day", 21),
+					SampleSong("Empire City - Night", 18, disc: 2),
 				]),
 			]),
 			

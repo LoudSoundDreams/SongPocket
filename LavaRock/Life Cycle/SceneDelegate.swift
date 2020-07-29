@@ -16,6 +16,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let _ = (scene as? UIWindowScene) else { return }
+		
+		if let savedAccentColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String,
+		   let matchedAccentColor = AccentColorManager.uiColor(forName: savedAccentColorName) {
+			window?.tintColor = matchedAccentColor // What if you have multiple windows open on an iPad?
+		} else { // Either there was no saved accent color name, or there was one but it didn't match any UIColor in AccentColorManager.
+			window?.tintColor = UIColor.systemBlue
+			UserDefaults.standard.setValue("Blue", forKey: "accentColorName")
+		}
+		
 	}
 	
 	func sceneWillEnterForeground(_ scene: UIScene) {

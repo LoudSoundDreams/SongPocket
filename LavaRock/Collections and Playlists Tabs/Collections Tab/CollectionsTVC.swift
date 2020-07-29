@@ -8,12 +8,23 @@
 
 import UIKit
 import CoreData
+import SwiftUI
 
 final class CollectionsTVC: LibraryTableViewController {
 	
 	var indexOfEmptyCollection: Int?
+	@IBOutlet var optionsButton: UIBarButtonItem!
 	
-	// MARK: Setup
+	// MARK: Setting Up UI
+	
+	override func viewDidLoad() {
+		navigationItem.leftBarButtonItems = nil // Removes Options button added in the storyboard. We'll re-add it in code.
+		navigationItemButtonsNotEditMode = [optionsButton]
+		
+		super.viewDidLoad()
+	}
+	
+	// MARK: Loading Data
 	
 	override func loadActiveLibraryItems() {
 		super.loadActiveLibraryItems()
@@ -73,11 +84,22 @@ final class CollectionsTVC: LibraryTableViewController {
 		tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .middle)
 	}
 	
+	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {
+		let dismissClosure = { self.dismiss(animated: true, completion: nil) }
+		return UIHostingController(
+			coder: coder,
+			rootView: OptionsView(
+				window: view.window!,
+				closureTellingUIKitToDismissTheModalHostingControllerHostingThisSwiftUIView: dismissClosure
+			)
+		)
+	}
+	
 	// MARK: “Move Albums" Mode
 	
 	@IBAction func makeNewCollection(_ sender: UIBarButtonItem) {
 		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
-		dialog.view.tintColor = tintColor
+//		dialog.view.tintColor = tintColor
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
 			textField.returnKeyType = .done
@@ -135,7 +157,7 @@ final class CollectionsTVC: LibraryTableViewController {
 	func renameCollection(at indexPath: IndexPath) {
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
 		let dialog = UIAlertController(title: "Rename Collection", message: nil, preferredStyle: .alert)
-		dialog.view.tintColor = tintColor
+//		dialog.view.tintColor = tintColor
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
 			textField.returnKeyType = .done

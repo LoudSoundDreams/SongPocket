@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import SwiftUI
 import CoreData
+import SwiftUI
 
 class LibraryTableViewController: UITableViewController {
 	
@@ -16,11 +16,12 @@ class LibraryTableViewController: UITableViewController {
 	var coreDataEntityName = "Collection"
 	
 	// Properties that subclasses can optionally customize:
-	var barButtonItemsEditMode = [UIBarButtonItem]()
+	var navigationItemButtonsNotEditMode = [UIBarButtonItem]()
+	var navigationItemButtonsEditMode = [UIBarButtonItem]()
 	var sortOptions = ["Title"] // Only include the options you want. Make sure they're spelled right, or they won't do anything.
 	
 	// Properties that subclasses should not change:
-	let tintColor = UIColor(named: "AccentColor")
+//	let tintColor = UIColor(named: "AccentColor")
 	let cellReuseIdentifier = "Cell"
 	lazy var floatToTopButton = UIBarButtonItem(
 		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
@@ -61,6 +62,8 @@ class LibraryTableViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		navigationItemButtonsEditMode = [floatToTopButton]
+		
 		setUpUI()
 		loadActiveLibraryItems()
 	}
@@ -74,7 +77,6 @@ class LibraryTableViewController: UITableViewController {
 		if containerOfData != nil {
 			title = containerOfData?.value(forKey: "title") as? String
 		}
-		barButtonItemsEditMode = [floatToTopButton]
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
 		// Depending whether the view is in "move albums" mode
@@ -90,6 +92,7 @@ class LibraryTableViewController: UITableViewController {
 			navigationController?.isToolbarHidden = false
 			
 		} else {
+			navigationItem.leftBarButtonItems = navigationItemButtonsNotEditMode
 			navigationItem.rightBarButtonItem = editButtonItem
 			
 			navigationController?.isToolbarHidden = true
@@ -161,9 +164,9 @@ class LibraryTableViewController: UITableViewController {
 		if isEditing {
 			floatToTopButton.isEnabled = shouldAllowFloatingToTop()
 			sortButton.isEnabled = shouldAllowSorting()
-			navigationItem.setLeftBarButtonItems(barButtonItemsEditMode, animated: true)
+			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditMode, animated: true)
 		} else {
-			navigationItem.setLeftBarButtonItems(nil, animated: true)
+			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditMode, animated: true)
 		}
 	}
 	
@@ -219,25 +222,26 @@ class LibraryTableViewController: UITableViewController {
 	}
 	
 	// NOTE: Every IndexPath in selectedIndexPaths must be in the same section as targetIndexPath, and at or down below targetIndexPath.
-	func moveItemsUp(from indexPaths: [IndexPath]?, to targetIndexPath: IndexPath) {
+	func moveItemsUp(from selectedIndexPaths: [IndexPath]?, to firstIndexPath: IndexPath) {
 		
-		guard let selectedIndexPaths = indexPaths else {
+		guard let indexPaths = selectedIndexPaths else {
 			return
 		}
-		for indexPath in selectedIndexPaths {
-			if indexPath.section != targetIndexPath.section || indexPath.row < targetIndexPath.row {
+		for indexPath in indexPaths {
+			if indexPath.section != firstIndexPath.section || indexPath.row < firstIndexPath.row {
 				return
 			}
 		}
 		
-		let indexPathsAndItems = dataObjectsPairedWith(selectedIndexPaths.sorted(), tableViewDataSource: activeLibraryItems) as! [(IndexPath, NSManagedObject)]
-		var rowToMoveTo = targetIndexPath.row
-		for indexPathAndItem in indexPathsAndItems {
-			tableView.moveRow(at: indexPathAndItem.0, to: IndexPath(row: rowToMoveTo, section: targetIndexPath.section))
-			activeLibraryItems.remove(at: indexPathAndItem.0.row)
-			activeLibraryItems.insert(indexPathAndItem.1, at: rowToMoveTo)
-			tableView.deselectRow(at: IndexPath(row: rowToMoveTo, section: targetIndexPath.section), animated: true) // Wait until after all the rows have moved to do this?
-			rowToMoveTo += 1
+		let pairsToMove = dataObjectsPairedWith(indexPaths.sorted(), tableViewDataSource: activeLibraryItems) as! [(IndexPath, NSManagedObject)]
+		let targetSection = firstIndexPath.section
+		var targetRow = firstIndexPath.row
+		for (indexPath, libraryItem) in pairsToMove {
+			tableView.moveRow(at: indexPath, to: IndexPath(row: targetRow, section: targetSection))
+			activeLibraryItems.remove(at: indexPath.row)
+			activeLibraryItems.insert(libraryItem, at: targetRow)
+			tableView.deselectRow(at: IndexPath(row: targetRow, section: targetSection), animated: true) // Wait until after all the rows have moved to do this?
+			targetRow += 1
 		}
 		updateBarButtonItems()
 	}
@@ -247,7 +251,7 @@ class LibraryTableViewController: UITableViewController {
 	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTableViewController. They're view controllers.
 	@objc func showSortOptions() {
 		let alertController = UIAlertController(title: "Sort By", message: nil, preferredStyle: .actionSheet)
-		alertController.view.tintColor = tintColor
+//		alertController.view.tintColor = tintColor
 		for sortOption in sortOptions {
 			alertController.addAction(UIAlertAction(title: sortOption, style: .default, handler: sortSelectedOrAllItems))
 		}
@@ -304,14 +308,19 @@ class LibraryTableViewController: UITableViewController {
 	func sortThese(indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
 		switch sortOption {
 		case "Title":
-			// Should we ignore words like "the" and "a" at the starts of titles? Which words should we ignore?
+			// Ignore articles ("the", "a", and "an")?
 			return indexPathsAndItems.sorted(by: {
 				($0.1.value(forKey: "title") as? String ?? "") < ($1.1.value(forKey: "title") as? String ?? "")
 			} )
 		case "Track Number":
-			return indexPathsAndItems.sorted(by: {
-				(($0.1.value(forKey: "trackNumber") as! Int) < ($1.1.value(forKey: "trackNumber") as! Int))
+			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
+			let sortedByTrackNumber = indexPathsAndItems.sorted(by: {
+					($0.1.value(forKey: "trackNumber") as! Int) < ($1.1.value(forKey: "trackNumber") as! Int)
 			} )
+			return sortedByTrackNumber.sorted(by: {
+				($0.1.value(forKey: "discNumber") as! Int) < ($1.1.value(forKey: "discNumber") as! Int)
+			} )
+			
 		default:
 			print("The user tried to sort by “\(sortOption ?? "")”, which isn’t a supported option. It might be misspelled.")
 			return indexPathsAndItems // Otherwise, the app will crash when it tries to call moveRowsUpToEarliestRow on an empty array. Escaping here is easier than changing the logic to use optionals.

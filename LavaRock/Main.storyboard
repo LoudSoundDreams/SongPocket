@@ -4,12 +4,19 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Hosting Controller-->
+        <scene sceneID="ycJ-vj-G9u">
+            <objects>
+                <hostingController id="9Db-O2-sJO" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g6B-ui-Bzw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5074" y="-569"/>
+        </scene>
         <!--All Songs-->
         <scene sceneID="fmg-Bd-ib8">
             <objects>
@@ -64,7 +71,16 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ayd-SA-Efq"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Collections" id="aA7-bf-O8G"/>
+                    <navigationItem key="navigationItem" title="Collections" id="aA7-bf-O8G">
+                        <barButtonItem key="leftBarButtonItem" title="Options" id="am2-5M-IeP">
+                            <connections>
+                                <segue destination="9Db-O2-sJO" kind="presentation" destinationCreationSelector="showOptions:" id="MAU-6g-mRg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="optionsButton" destination="am2-5M-IeP" id="ENO-US-Br6"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Toq-AT-hvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -103,7 +119,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" name="AccentColor"/>
                     </tabBar>
                     <connections>
                         <segue destination="YiT-J8-VtB" kind="relationship" relationship="viewControllers" id="ULc-Ck-PNa"/>
@@ -401,7 +416,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rif-LJ-CL8">
-                                            <rect key="frame" x="20" y="22" width="32" height="21"/>
+                                            <rect key="frame" x="20" y="22" width="31.333333333333329" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="cYR-cd-ILw"/>
                                             </constraints>
@@ -410,7 +425,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A Song with a Terribly, Horribly, No-Good, Very Long Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t35-xm-5yN">
-                                            <rect key="frame" x="68" y="10.999999999999996" width="326" height="42.666666666666657"/>
+                                            <rect key="frame" x="67.333333333333343" y="10.999999999999996" width="326.66666666666663" height="42.666666666666657"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -465,7 +480,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="Y5v-Mn-JRo"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" name="AccentColor"/>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
@@ -474,9 +488,6 @@
         <image name="goforward.10" catalog="system" width="121" height="128"/>
         <image name="pause.fill" catalog="system" width="116" height="128"/>
         <image name="playpause.fill" catalog="system" width="128" height="73"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.4779999852180481" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
