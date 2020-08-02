@@ -109,6 +109,8 @@ final class AlbumsTVC: LibraryTableViewController {
 	// MARK: Events
 	
 	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
 		if !collectionsNC.isInMoveAlbumsMode && activeLibraryItems.isEmpty {
 			performSegue(withIdentifier: "Exit Empty Collection", sender: nil)
 		}

@@ -194,6 +194,8 @@ class LibraryTableViewController: UITableViewController {
 			let selectedItem = activeLibraryItems[tableView.indexPathForSelectedRow!.row]
 			destination.containerOfData = selectedItem
 		}
+		
+		super.prepare(for: segue, sender: sender)
 	}
 	
 //	@IBSegueAction func drillDownInLibrarySwiftUI(_ coder: NSCoder) -> UIViewController? {

@@ -12,27 +12,45 @@ import SwiftUI
 
 final class CollectionsTVC: LibraryTableViewController {
 	
-	var collectionTitleSuggestion: String?
-	var indexOfEmptyCollection: Int?
 	@IBOutlet var optionsButton: UIBarButtonItem!
+	static let defaultCollectionTitle = "Unnamed Collection"
+	var indexOfEmptyCollection: Int?
+	
+	// "Move albums" mode
+	var suggestedCollectionTitle: String?
 	
 	// MARK: Setting Up UI
 	
 	override func viewDidLoad() {
-		if collectionsNC.isInMoveAlbumsMode {
-			DispatchQueue.global(qos: .userInitiated).async {
-				self.collectionTitleSuggestion = Self.collectionTitleSuggestion(
-					for: self.collectionsNC.managedObjectIDsOfAlbumsBeingMoved,
-					in: self.collectionsNC.coreDataManager.managedObjectContext,
-					considering: ["albumArtist"]
-				)
-			}
-		}
-		
 		navigationItem.leftBarButtonItems = nil // Removes Options button added in the storyboard. We'll re-add it in code.
 		navigationItemButtonsNotEditMode = [optionsButton]
 		
 		super.viewDidLoad()
+		
+		if collectionsNC.isInMoveAlbumsMode {
+			DispatchQueue.global(qos: .userInitiated).async {
+				self.setSuggestedCollectionTitle()
+			}
+		}
+	}
+	
+	func setSuggestedCollectionTitle() {
+		var existingCollectionTitles = [String]()
+		for item in self.activeLibraryItems {
+			if
+				let collection = item as? Collection,
+				let collectionTitle = collection.title
+			{
+				existingCollectionTitles.append(collectionTitle)
+			}
+		}
+		
+		self.suggestedCollectionTitle = Self.suggestedCollectionTitle(
+			for: self.collectionsNC.managedObjectIDsOfAlbumsBeingMoved,
+			in: self.collectionsNC.coreDataManager.managedObjectContext,
+			considering: ["albumArtist"],
+			notMatching: existingCollectionTitles
+		)
 	}
 	
 	// MARK: Loading Data
@@ -48,7 +66,6 @@ final class CollectionsTVC: LibraryTableViewController {
 			}
 			
 			
-			// If needsThumbnailsUpdated is true, update thumbnails
 //			SampleLibrary.setThumbnailsInBackground(activeLibraryItems as! [Collection])
 			
 			
@@ -120,7 +137,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			textField.smartDashesType = .yes
 			
 			// UITextField
-			textField.text = self.collectionTitleSuggestion ?? "Unnamed Collection"
+			textField.text = self.suggestedCollectionTitle ?? Self.defaultCollectionTitle
 			textField.placeholder = "Title"
 			textField.clearButtonMode = .whileEditing
 		} )
@@ -131,7 +148,11 @@ final class CollectionsTVC: LibraryTableViewController {
 			
 			// Create the new collection.
 			let newCollection = Collection(context: self.collectionsNC.coreDataManager.managedObjectContext) // Since we're in "move albums mode", this should be a child managed object context.
-			newCollection.title = dialog.textFields?[0].text ?? ""
+			var newCollectionTitle = dialog.textFields?[0].text
+			if (newCollectionTitle == nil) || (newCollectionTitle == "") {
+				newCollectionTitle = Self.defaultCollectionTitle
+			}
+			newCollection.title = newCollectionTitle
 			self.activeLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
 			
 			// Enter the new collection.
@@ -151,20 +172,22 @@ final class CollectionsTVC: LibraryTableViewController {
 		present(dialog, animated: true, completion: nil)
 	}
 	
-	private static func collectionTitleSuggestion(
+	private static func suggestedCollectionTitle(
 		for albumIDs: [NSManagedObjectID],
 		in managedObjectContext: NSManagedObjectContext,
-		considering attributeNamesRanked: [String] // For example, ["albumArtist", "composer", "genre"]
+		considering attributeNamesRanked: [String], // For example, ["albumArtist", "composer", "genre"]
+		notMatching existingCollectionTitles: [String]?
 	) -> String? {
-		guard attributeNamesRanked.count >= 1 else {
+		if attributeNamesRanked.count < 1 {
 			return nil
 		}
 		
 		// Try the first attribute.
-		if let firstSuggestion = collectionTitleSuggestion(
+		if let firstSuggestion = suggestedCollectionTitle(
 			for: albumIDs,
 			in: managedObjectContext,
-			considering: attributeNamesRanked.first!
+			considering: attributeNamesRanked.first!,
+			notMatching: existingCollectionTitles
 		) {
 			return firstSuggestion
 			
@@ -173,26 +196,34 @@ final class CollectionsTVC: LibraryTableViewController {
 			var attributeNamesRankedMutable = attributeNamesRanked
 			attributeNamesRankedMutable.removeFirst()
 			
-			return collectionTitleSuggestion(
+			return suggestedCollectionTitle(
 				for: albumIDs,
 				in: managedObjectContext,
-				considering: attributeNamesRankedMutable
+				considering: attributeNamesRankedMutable,
+				notMatching: existingCollectionTitles
 			)
 		}
 	}
 	
-	private static func collectionTitleSuggestion(
+	private static func suggestedCollectionTitle(
 		for albumIDs: [NSManagedObjectID],
 		in managedObjectContext: NSManagedObjectContext,
-		considering attributeName: String
+		considering attributeName: String,
+		notMatching existingCollectionTitles: [String]?
 	) -> String? {
-		// Case: 0 albums
-		guard albumIDs.count >= 1 else {
+		if albumIDs.count < 1 {
 			return nil
 		}
 		
 		let firstAlbum = managedObjectContext.object(with: albumIDs[0])
 		let attributeValueForFirstAlbum = firstAlbum.value(forKey: attributeName) as? String
+		if
+			let existingCollectionTitles = existingCollectionTitles,
+			let attributeValueForFirstAlbum = attributeValueForFirstAlbum,
+			existingCollectionTitles.contains(attributeValueForFirstAlbum)
+		{
+			return nil
+		}
 		
 		// Case: 1 album
 		if albumIDs.count == 1 {
@@ -216,10 +247,11 @@ final class CollectionsTVC: LibraryTableViewController {
 				var albumIDsMutable = albumIDs
 				albumIDsMutable.removeFirst()
 				
-				return collectionTitleSuggestion(
+				return suggestedCollectionTitle(
 					for: albumIDsMutable,
 					in: managedObjectContext,
-					considering: attributeName
+					considering: attributeName,
+					notMatching: existingCollectionTitles
 				)
 			}
 		}
@@ -258,7 +290,11 @@ final class CollectionsTVC: LibraryTableViewController {
 		} )
 		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { action in
-			let newTitle = dialog.textFields?[0].text ?? ""
+			var newTitle = dialog.textFields?[0].text
+			if (newTitle == nil) || (newTitle == "") {
+				newTitle = Self.defaultCollectionTitle
+			}
+			
 			self.activeLibraryItems[indexPath.row].setValue(newTitle, forKey: "title")
 			self.tableView.reloadRows(at: [indexPath], with: .fade)
 			if wasRowSelectedBeforeRenaming {
