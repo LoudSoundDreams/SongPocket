@@ -10,9 +10,9 @@ import UIKit
 
 struct OptionsView: View {
 //	@AppStorage("accentColorName") private var selectedColorName = "Blue" // @AppStorage isn't the right solution, because we don't want to create a default value here.
-	@State private var selectedColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String // Doesn't automatically get invalidated when we change UserDefaults; we need to update selectedColorName manually.
+//	@State private var selectedColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String // Doesn't automatically get invalidated when we change UserDefaults; we need to update selectedColorName manually.
 	let window: UIWindow
-	let closureTellingUIKitToDismissTheModalHostingControllerHostingThisSwiftUIView: (() -> ())
+	let dismissModalHostingControllerHostingThisSwiftUIView: (() -> ())
 	
 	var body: some View {
 		NavigationView {
@@ -24,15 +24,18 @@ struct OptionsView: View {
 								Text(rowColorName)
 									.foregroundColor(Color(rowUIColor))
 								Spacer()
-								if rowColorName == selectedColorName {
+								if rowUIColor == window.tintColor {
 									Image(systemName: "checkmark") // Should be bold
 										.foregroundColor(Color(rowUIColor))
 								}
 							}
 							.onTapGesture { // Only works if you tap on the text
-								UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
-								selectedColorName = rowColorName // You shouldn't have to do this manually
+								DispatchQueue.global().async {
+									UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
+								}
+//								selectedColorName = rowColorName // You shouldn't have to do this manually
 								window.tintColor = rowUIColor
+								dismissModalHostingControllerHostingThisSwiftUIView()
 							}
 						}
 					}
@@ -42,7 +45,7 @@ struct OptionsView: View {
 				.toolbar(items: {
 					ToolbarItem(placement: .navigationBarTrailing) {
 						Button("Done", action: { // Should be bold
-							closureTellingUIKitToDismissTheModalHostingControllerHostingThisSwiftUIView()
+							dismissModalHostingControllerHostingThisSwiftUIView()
 						})
 					}
 				} )
@@ -54,25 +57,28 @@ struct OptionsView: View {
 								Text(rowColorName)
 									.foregroundColor(Color(rowUIColor))
 								Spacer()
-								if rowColorName == selectedColorName {
+								if rowUIColor == window.tintColor {
 									Image(systemName: "checkmark") // Should be bold
 										.foregroundColor(Color(rowUIColor))
 								}
 							}
 							.onTapGesture { // Only works if you tap on the text
-								UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
-								selectedColorName = rowColorName // You shouldn't do this manually
+								DispatchQueue.global().async {
+									UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
+								}
+//								selectedColorName = rowColorName // You shouldn't do this manually
 								window.tintColor = rowUIColor
+								dismissModalHostingControllerHostingThisSwiftUIView()
 							}
 						}
 					}
 				}
 				.navigationBarTitle("Options", displayMode: .inline)
-//				.navigationBarItems(
-//					trailing: Button("Done", action: { // Should be bold
-//						closureTellingUIKitToDismissTheModalHostingControllerHostingThisSwiftUIView()
-//					} )
-//				)
+				.navigationBarItems(
+					trailing: Button("Done", action: { // Should be bold
+						dismissModalHostingControllerHostingThisSwiftUIView()
+					} )
+				)
 			}
 		}
     }

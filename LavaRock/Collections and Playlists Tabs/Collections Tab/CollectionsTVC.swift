@@ -12,12 +12,23 @@ import SwiftUI
 
 final class CollectionsTVC: LibraryTableViewController {
 	
+	var collectionTitleSuggestion: String?
 	var indexOfEmptyCollection: Int?
 	@IBOutlet var optionsButton: UIBarButtonItem!
 	
 	// MARK: Setting Up UI
 	
 	override func viewDidLoad() {
+		if collectionsNC.isInMoveAlbumsMode {
+			DispatchQueue.global(qos: .userInitiated).async {
+				self.collectionTitleSuggestion = Self.collectionTitleSuggestion(
+					for: self.collectionsNC.managedObjectIDsOfAlbumsBeingMoved,
+					in: self.collectionsNC.coreDataManager.managedObjectContext,
+					considering: ["albumArtist"]
+				)
+			}
+		}
+		
 		navigationItem.leftBarButtonItems = nil // Removes Options button added in the storyboard. We'll re-add it in code.
 		navigationItemButtonsNotEditMode = [optionsButton]
 		
@@ -90,7 +101,7 @@ final class CollectionsTVC: LibraryTableViewController {
 //			coder: coder,
 //			rootView: OptionsView(
 //				window: view.window!,
-//				closureTellingUIKitToDismissTheModalHostingControllerHostingThisSwiftUIView: dismissClosure
+//				dismissModalHostingControllerHostingThisSwiftUIView: dismissClosure
 //			)
 //		)
 //	}
@@ -109,6 +120,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			textField.smartDashesType = .yes
 			
 			// UITextField
+			textField.text = self.collectionTitleSuggestion ?? "Unnamed Collection"
 			textField.placeholder = "Title"
 			textField.clearButtonMode = .whileEditing
 		} )
@@ -137,6 +149,80 @@ final class CollectionsTVC: LibraryTableViewController {
 			
 		} ) )
 		present(dialog, animated: true, completion: nil)
+	}
+	
+	private static func collectionTitleSuggestion(
+		for albumIDs: [NSManagedObjectID],
+		in managedObjectContext: NSManagedObjectContext,
+		considering attributeNamesRanked: [String] // For example, ["albumArtist", "composer", "genre"]
+	) -> String? {
+		guard attributeNamesRanked.count >= 1 else {
+			return nil
+		}
+		
+		// Try the first attribute.
+		if let firstSuggestion = collectionTitleSuggestion(
+			for: albumIDs,
+			in: managedObjectContext,
+			considering: attributeNamesRanked.first!
+		) {
+			return firstSuggestion
+			
+		} else {
+			// Try the next attribute.
+			var attributeNamesRankedMutable = attributeNamesRanked
+			attributeNamesRankedMutable.removeFirst()
+			
+			return collectionTitleSuggestion(
+				for: albumIDs,
+				in: managedObjectContext,
+				considering: attributeNamesRankedMutable
+			)
+		}
+	}
+	
+	private static func collectionTitleSuggestion(
+		for albumIDs: [NSManagedObjectID],
+		in managedObjectContext: NSManagedObjectContext,
+		considering attributeName: String
+	) -> String? {
+		// Case: 0 albums
+		guard albumIDs.count >= 1 else {
+			return nil
+		}
+		
+		let firstAlbum = managedObjectContext.object(with: albumIDs[0])
+		let attributeValueForFirstAlbum = firstAlbum.value(forKey: attributeName) as? String
+		
+		// Case: 1 album
+		if albumIDs.count == 1 {
+			return attributeValueForFirstAlbum
+			
+		} else {
+			// Case: 2 or more albums
+			let secondAlbum = managedObjectContext.object(with: albumIDs[1])
+			let attributeValueForSecondAlbum = secondAlbum.value(forKey: attributeName) as? String
+			
+			guard attributeValueForFirstAlbum == attributeValueForSecondAlbum else {
+				return nil
+			}
+			
+			if albumIDs.count == 2 {
+				// Terminating case.
+				return attributeValueForSecondAlbum
+				
+			} else {
+				// Recursive case.
+				var albumIDsMutable = albumIDs
+				albumIDsMutable.removeFirst()
+				
+				return collectionTitleSuggestion(
+					for: albumIDsMutable,
+					in: managedObjectContext,
+					considering: attributeName
+				)
+			}
+		}
 	}
 	
 	// Ending moving albums

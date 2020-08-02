@@ -25,8 +25,12 @@ class OptionsTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let rowColorName = AccentColorManager.accentColorTuples[indexPath.row].0
-		let rowUIColor = AccentColorManager.accentColorTuples[indexPath.row].1
+		guard
+			let rowColorName = AccentColorManager.colorName(forIndex: indexPath.row),
+			let rowUIColor = AccentColorManager.uiColor(forIndex: indexPath.row)
+		else {
+			return UITableViewCell()
+		}
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Color Cell", for: indexPath)
 		
@@ -55,12 +59,20 @@ class OptionsTableViewController: UITableViewController {
 	// MARK: Events
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let rowColorName = AccentColorManager.accentColorTuples[indexPath.row].0
-		let rowUIColor = AccentColorManager.accentColorTuples[indexPath.row].1
+		guard
+			let rowColorName = AccentColorManager.colorName(forIndex: indexPath.row),
+			let rowUIColor = AccentColorManager.uiColor(forIndex: indexPath.row)
+		else {
+			tableView.deselectRow(at: indexPath, animated: true)
+			return
+		}
 		
 		view.window?.tintColor = rowUIColor
-		UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
+		DispatchQueue.global().async { // A tester provided a screen recording of lag sometimes between selecting a row and the sheet dismissing. They reported that this line of code fixed it. iPhone SE (2nd generation), iOS 13.5.1
+			UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
+		}
 		tableView.reloadData()
+		dismiss(animated: true, completion: nil)
 	}
 	
 	@IBAction func dismissOptionsSheet(_ sender: UIBarButtonItem) {

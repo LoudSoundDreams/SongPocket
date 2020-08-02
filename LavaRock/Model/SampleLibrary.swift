@@ -28,6 +28,7 @@ struct SampleLibrary {
 		let year: Int?
 		let artworkFileName: String?
 		let songs: [SampleSong]
+//		let albumArtistIfDifferentFromCollectionTitle: String?
 		
 		init(_ title: String?, _ year: Int?, _ artworkFileNameWithExtension: String?, _ songs: [SampleSong]) {
 			self.title = title
@@ -142,6 +143,7 @@ struct SampleLibrary {
 		
 		injectSampleCollections([
 			
+//			SampleCollection("Albums", [
 			SampleCollection("Alexander Melkinov", [
 				SampleAlbum("Shostakovich: Piano Concertos", 2012, "shostakovichPianoConcertos.jpg", [
 					SampleSong("Piano Concerto No. 2 in F Major, Op. 102 No. 1, Allegro", 1),
@@ -348,11 +350,11 @@ struct SampleLibrary {
 				]),
 			]),
 			
-//			SampleCollection(nil, [
-//				SampleAlbum(nil, nil, nil, [
-//					SampleSong(nil, nil),
-//				]),
-//			]),
+			SampleCollection(nil, [
+				SampleAlbum(nil, nil, nil, [
+					SampleSong(nil, nil),
+				]),
+			]),
 			
 			SampleCollection("Taylor Swift", [
 				SampleAlbum("folklore", 2020, "folklore.jpg", [
