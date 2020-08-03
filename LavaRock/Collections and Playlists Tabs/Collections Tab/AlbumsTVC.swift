@@ -38,6 +38,7 @@ final class AlbumsTVC: LibraryTableViewController {
 		
 		if collectionsNC.isInMoveAlbumsMode {
 			tableView.allowsSelection = false
+			
 		} else {
 			navigationItemButtonsEditMode = [floatToTopButton, startMovingAlbumsButton]
 		}
@@ -51,22 +52,22 @@ final class AlbumsTVC: LibraryTableViewController {
 		
 		let album = activeLibraryItems[indexPath.row] as! Album
 		
-		let image: UIImage?
+		let albumImage: UIImage?
 		if let thumbnailData = album.artworkThumbnail {
-			image = UIImage(data: thumbnailData)
+			albumImage = UIImage(data: thumbnailData)
 		} else if let artworkFileName = album.sampleArtworkFileNameWithExtension {
-			image = UIImage(imageLiteralResourceName: artworkFileName)
+			albumImage = UIImage(imageLiteralResourceName: artworkFileName)
 		} else {
-			image = nil // To remove the placeholder image in the storyboard.
+			albumImage = nil // To remove the placeholder image in the storyboard.
 		}
 		
-		let titleOfAlbum = album.title
+		let albumTitle = album.title
 		
-		let yearText: String?
+		let albumYearText: String?
 		if album.year != AlbumsTVC.impossibleYear {
-			yearText = String(album.year)
+			albumYearText = String(album.year)
 		} else {
-			yearText = nil
+			albumYearText = nil
 		}
 		
 		// Make, configure, and return the cell.
@@ -75,9 +76,9 @@ final class AlbumsTVC: LibraryTableViewController {
 //			let cell = tableView.dequeueReusableCell(withIdentifier: "Basic Cell", for: indexPath)
 //
 //			var configuration = UIListContentConfiguration.subtitleCell()
-//			configuration.image = albumArtwork
+//			configuration.image = albumImage
 //			configuration.text = albumTitle
-//			configuration.secondaryText = albumYearText
+//			configuration.secondaryText = albumYear
 //
 //			cell.contentConfiguration = configuration
 //
@@ -93,9 +94,9 @@ final class AlbumsTVC: LibraryTableViewController {
 //		} else { // iOS 13 or earlier
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
 			
-			cell.artworkImageView.image = image
-			cell.titleLabel.text = titleOfAlbum
-			cell.yearLabel.text = yearText
+			cell.artworkImageView.image = albumImage
+			cell.titleLabel.text = albumTitle
+			cell.yearLabel.text = albumYearText
 			
 			// Customize the cell.
 			if collectionsNC.isInMoveAlbumsMode {
@@ -152,6 +153,7 @@ final class AlbumsTVC: LibraryTableViewController {
 		// Prepare a new navigation controller in "move albums" mode to present modally.
 		let moveAlbumsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as! CollectionsNC
 		moveAlbumsNC.isInMoveAlbumsMode = true
+		moveAlbumsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf = containerOfData!.objectID
 		
 		// Note the albums to move, and to not move.
 		

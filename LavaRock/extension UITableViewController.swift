@@ -10,7 +10,7 @@ import UIKit
 
 extension UITableViewController {
 	
-	// MARK: Testing Selected IndexPaths
+	// MARK: Asking About Selected IndexPaths
 	
 	// Returns whether a "move selected rows to top" command should be allowed on the table view.
 	// Returns true only if one or more rows are selected, and they're all in the same section.

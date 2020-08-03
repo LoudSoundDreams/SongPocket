@@ -31,6 +31,7 @@ class CollectionsNC: UINavigationController {
 			return "Choose a collection to move \(number) albums to."
 		}
 	}
+	var managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID?
 	var managedObjectIDsOfAlbumsBeingMoved = [NSManagedObjectID]()
 	var managedObjectIDsOfAlbumsNotBeingMoved = [NSManagedObjectID]()
 	

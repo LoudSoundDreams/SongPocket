@@ -34,6 +34,11 @@ class LibraryTableViewController: UITableViewController {
 		target: self,
 		action: #selector(showSortOptions)
 	)
+	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
+		barButtonSystemItem: .cancel,
+		target: self,
+		action: #selector(cancelMoveAlbums)
+	)
 	lazy var collectionsNC = navigationController as! CollectionsNC
 	
 	var activeLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in activeLibraryItems, because the table view follows activeLibraryItems; not the "index" attribute of each NSManagedObject.
@@ -82,11 +87,7 @@ class LibraryTableViewController: UITableViewController {
 		
 		if collectionsNC.isInMoveAlbumsMode {
 			navigationItem.prompt = collectionsNC.moveAlbumsModePrompt
-			navigationItem.rightBarButtonItem = UIBarButtonItem(
-				barButtonSystemItem: .cancel,
-				target: self,
-				action: #selector(cancelMoveAlbums)
-			)
+			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 			navigationController?.isToolbarHidden = false
 			
@@ -125,7 +126,6 @@ class LibraryTableViewController: UITableViewController {
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 		
 		if #available(iOS 14, *) {
-			
 			var configuration = cell.defaultContentConfiguration()
 			
 			configuration.text = itemTitle
@@ -133,13 +133,11 @@ class LibraryTableViewController: UITableViewController {
 			cell.contentConfiguration = configuration
 			
 		} else { // iOS 13 and earlier
-			
 			cell.textLabel?.text = itemTitle
 			
 		}
 		
         return cell
-		
     }
 	
 	// MARK: Events

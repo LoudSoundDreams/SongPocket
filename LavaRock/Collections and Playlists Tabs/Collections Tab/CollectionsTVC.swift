@@ -72,6 +72,44 @@ final class CollectionsTVC: LibraryTableViewController {
 		}
 	}
 	
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		
+		// Get the data to put into the cell.
+		
+		let collection = activeLibraryItems[indexPath.row] as! Collection
+		let collectionTitle = collection.title
+		
+		// Make, configure, and return the cell.
+		
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+		
+		if #available(iOS 14, *) {
+			var configuration = cell.defaultContentConfiguration()
+			configuration.text = collectionTitle
+
+			if collectionsNC.isInMoveAlbumsMode {
+				if collection.objectID == collectionsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf {
+					configuration.textProperties.color = .systemGray // A dedicated way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+					cell.selectionStyle = .none
+				}
+			}
+
+			cell.contentConfiguration = configuration
+
+		} else { // iOS 13 and earlier
+			cell.textLabel?.text = collectionTitle
+			
+			if collectionsNC.isInMoveAlbumsMode {
+				if collection.objectID == collectionsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf {
+					cell.textLabel?.isEnabled = false
+					cell.selectionStyle = .none
+				}
+			}
+		}
+		
+		return cell
+	}
+	
 	// MARK: Events
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -123,6 +161,21 @@ final class CollectionsTVC: LibraryTableViewController {
 //		)
 //	}
 	
+	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+		if collectionsNC.isInMoveAlbumsMode {
+			let collectionID = activeLibraryItems[indexPath.row].objectID
+			if collectionID == collectionsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf { //
+				return nil
+				
+			} else {
+				return indexPath
+			}
+			
+		} else {
+			return indexPath
+		}
+	}
+	
 	// MARK: “Move Albums" Mode
 	
 	@IBAction func makeNewCollection(_ sender: UIBarButtonItem) {
@@ -137,7 +190,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			textField.smartDashesType = .yes
 			
 			// UITextField
-			textField.text = self.suggestedCollectionTitle ?? Self.defaultCollectionTitle
+			textField.text = self.suggestedCollectionTitle
 			textField.placeholder = "Title"
 			textField.clearButtonMode = .whileEditing
 		} )
