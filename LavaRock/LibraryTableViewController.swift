@@ -12,15 +12,19 @@ import SwiftUI
 
 class LibraryTableViewController: UITableViewController {
 	
-	// Properties that subclasses should customize:
-	var coreDataEntityName = "Collection"
+	// MARK: Properties
 	
-	// Properties that subclasses can optionally customize:
+	// "Constants" that subclasses should customize
+	var coreDataEntityName = "Collection"
+	var containerOfData: NSManagedObject?
+	
+	// "Constants" that subclasses can optionally customize
+	var coreDataManager = CoreDataManager(managedObjectContext: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext) // Inject a child managed object context when in "move albums" mode.
 	var navigationItemButtonsNotEditMode = [UIBarButtonItem]()
 	var navigationItemButtonsEditMode = [UIBarButtonItem]()
 	var sortOptions = ["Title"] // Only include the options you want. Make sure they're spelled right, or they won't do anything.
 	
-	// Properties that subclasses should not change:
+	// "Constants" that subclasses should not change
 	let cellReuseIdentifier = "Cell"
 	lazy var floatToTopButton = UIBarButtonItem(
 		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
@@ -41,6 +45,7 @@ class LibraryTableViewController: UITableViewController {
 	)
 	lazy var collectionsNC = navigationController as! CollectionsNC
 	
+	// Variables
 	var activeLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in activeLibraryItems, because the table view follows activeLibraryItems; not the "index" attribute of each NSManagedObject.
 		didSet {
 			didSetActiveLibraryItems()
@@ -51,7 +56,6 @@ class LibraryTableViewController: UITableViewController {
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
-	var containerOfData: NSManagedObject?
 	
 	// MARK: Property Observers
 	
@@ -107,7 +111,7 @@ class LibraryTableViewController: UITableViewController {
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData!)
 		}
 		
-		activeLibraryItems = collectionsNC.coreDataManager.managedObjects(for: coreDataFetchRequest)
+		activeLibraryItems = coreDataManager.managedObjects(for: coreDataFetchRequest)
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -144,7 +148,7 @@ class LibraryTableViewController: UITableViewController {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
-			collectionsNC.coreDataManager.save()
+			coreDataManager.save()
 		}
 		
 		super.setEditing(editing, animated: animated)
@@ -191,6 +195,7 @@ class LibraryTableViewController: UITableViewController {
 			tableView.indexPathForSelectedRow != nil {
 			let selectedItem = activeLibraryItems[tableView.indexPathForSelectedRow!.row]
 			destination.containerOfData = selectedItem
+			destination.coreDataManager = coreDataManager
 		}
 		
 		super.prepare(for: segue, sender: sender)

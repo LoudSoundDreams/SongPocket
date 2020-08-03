@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class QueueViewHostingController: UIHostingController<QueueView> {
+final class QueueViewHostingController: UIHostingController<QueueView> {
 	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder, rootView: QueueView())

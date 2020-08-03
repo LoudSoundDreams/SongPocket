@@ -11,6 +11,9 @@ import CoreData
 
 final class AlbumsTVC: LibraryTableViewController {
 	
+	// MARK: Properties
+	
+	// "Constants"
 	static let impossibleYear = -13800000001 // "nil" value for `year` attribute. Even though the attribute is optional, Swift doesn't treat it as an optional (neither does Objective-C) because "nil" for an integer Core Data attribute is actually a SQL `NULL`, not a Swift `nil`.
 	// SampleLibrary uses this number for sample albums without years.
 	// AlbumsTVC and SongsTVC leave the "year" field blank if the album's year is this number.
@@ -151,9 +154,9 @@ final class AlbumsTVC: LibraryTableViewController {
 	@IBAction func startMovingAlbums(_ sender: UIBarButtonItem) {
 		
 		// Prepare a new navigation controller in "move albums" mode to present modally.
-		let moveAlbumsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as! CollectionsNC
-		moveAlbumsNC.isInMoveAlbumsMode = true
-		moveAlbumsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf = containerOfData!.objectID
+		let modalCollectionsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as! CollectionsNC
+		modalCollectionsNC.isInMoveAlbumsMode = true
+		modalCollectionsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf = containerOfData!.objectID
 		
 		// Note the albums to move, and to not move.
 		
@@ -162,26 +165,27 @@ final class AlbumsTVC: LibraryTableViewController {
 			for indexPath in indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: activeLibraryItems.count - 1) {
 				let album = activeLibraryItems[indexPath.row] as! Album
 				if selectedIndexPaths.contains(indexPath) {
-					moveAlbumsNC.managedObjectIDsOfAlbumsBeingMoved.append(album.objectID)
+					modalCollectionsNC.managedObjectIDsOfAlbumsBeingMoved.append(album.objectID)
 				} else { // The row is not selected.
-					moveAlbumsNC.managedObjectIDsOfAlbumsNotBeingMoved.append(album.objectID)
+					modalCollectionsNC.managedObjectIDsOfAlbumsNotBeingMoved.append(album.objectID)
 				}
 			}
 			
 		} else { // No rows are selected.
 			
 			for item in activeLibraryItems {
-				moveAlbumsNC.managedObjectIDsOfAlbumsBeingMoved.append(item.objectID)
+				modalCollectionsNC.managedObjectIDsOfAlbumsBeingMoved.append(item.objectID)
 			}
 			
 		}
 		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
 		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-		childManagedObjectContext.parent = collectionsNC.coreDataManager.managedObjectContext
-		moveAlbumsNC.coreDataManager.managedObjectContext = childManagedObjectContext
+		childManagedObjectContext.parent = coreDataManager.managedObjectContext
+		let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as! CollectionsTVC
+		modalCollectionsTVC.coreDataManager = CoreDataManager(managedObjectContext: childManagedObjectContext)
 		
-		present(moveAlbumsNC, animated: true, completion: nil)
+		present(modalCollectionsNC, animated: true, completion: nil)
 	}
 	
 	// Ending moving albums
@@ -195,11 +199,11 @@ final class AlbumsTVC: LibraryTableViewController {
 		// Get the albums to move, and to not move.
 		var albumsToMove = [Album]()
 		for albumID in collectionsNC.managedObjectIDsOfAlbumsBeingMoved {
-			albumsToMove.append(collectionsNC.coreDataManager.managedObjectContext.object(with: albumID) as! Album)
+			albumsToMove.append(coreDataManager.managedObjectContext.object(with: albumID) as! Album)
 		}
 		var albumsToNotMove = [Album]()
 		for albumID in collectionsNC.managedObjectIDsOfAlbumsNotBeingMoved {
-			albumsToNotMove.append(collectionsNC.coreDataManager.managedObjectContext.object(with: albumID) as! Album)
+			albumsToNotMove.append(coreDataManager.managedObjectContext.object(with: albumID) as! Album)
 		}
 		
 		// Find out if we're moving albums to the collection they were already in.
@@ -216,7 +220,7 @@ final class AlbumsTVC: LibraryTableViewController {
 		
 		func saveParentManagedObjectContext() {
 			do {
-				try collectionsNC.coreDataManager.managedObjectContext.parent!.save()
+				try coreDataManager.managedObjectContext.parent!.save()
 			} catch {
 				fatalError("Crashed while trying to commit changes, just before dismissing the “move albums” sheet: \(error)")
 			}
@@ -228,7 +232,7 @@ final class AlbumsTVC: LibraryTableViewController {
 				album.container = containerOfData as? Collection
 				activeLibraryItems.insert(album, at: index)
 			}
-			collectionsNC.coreDataManager.save()
+			coreDataManager.save()
 			saveParentManagedObjectContext()
 		}
 		
@@ -249,7 +253,7 @@ final class AlbumsTVC: LibraryTableViewController {
 			if isMovingToSameCollection {
 				// You need to do this in performBatchUpdates so that the sheet dismisses after the rows finish animating.
 				moveItemsUp(from: indexPathsToMoveToTop, to: IndexPath(row: 0, section: 0))
-				collectionsNC.coreDataManager.save()
+				coreDataManager.save()
 				saveParentManagedObjectContext()
 			} else {
 				let indexPaths = indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: albumsToMove.count - 1)

@@ -34,6 +34,9 @@ final class SongsTVC: LibraryTableViewController {
 	Also, any commands that involve activeLibraryItems or IndexPaths probably won't work right without more hacking
 	*/
 	
+	// MARK: Properties
+	
+	// Constants
 	static let impossibleDiscNumber = -1
 	static let impossibleTrackNumber = -1
 	let numberOfUneditableRowsAtTopOfSection = 2

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OptionsTableViewController: UITableViewController {
+final class OptionsTableViewController: UITableViewController {
 	
 	// MARK: Data Source
 	

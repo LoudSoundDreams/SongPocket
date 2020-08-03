@@ -8,12 +8,14 @@
 import CoreData
 import UIKit
 
-class CoreDataManager {
+struct CoreDataManager {
+	
+	// MARK: Properties
 	
 	// "Constants"
-	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace with a child NSManagedObjectContext in "move albums mode".
+	let managedObjectContext: NSManagedObjectContext
 	
-	// Methods
+	// MARK: Methods
 	
 	func save() {
 		managedObjectContext.perform {
@@ -52,7 +54,5 @@ class CoreDataManager {
 			}
 		}
 	}
-	
-	
 	
 }

@@ -200,15 +200,6 @@
 			path = "Life Cycle";
 			sourceTree = "<group>";
 		};
-		070D422D24CE71E5008A573A /* Collections and Playlists Tabs */ = {
-			isa = PBXGroup;
-			children = (
-				076830BB24B42E3E0033E3CC /* LibraryTableViewController.swift */,
-				07752E2324CDF44B0065670F /* Collections Tab */,
-			);
-			path = "Collections and Playlists Tabs";
-			sourceTree = "<group>";
-		};
 		0768307C24B42DEC0033E3CC = {
 			isa = PBXGroup;
 			children = (
@@ -238,7 +229,8 @@
 				07FCE63824B42EDF00F94668 /* Main.storyboard */,
 				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
-				070D422D24CE71E5008A573A /* Collections and Playlists Tabs */,
+				076830BB24B42E3E0033E3CC /* LibraryTableViewController.swift */,
+				07752E2324CDF44B0065670F /* Collections Tab */,
 				07752E2424CDF4600065670F /* Queue Tab */,
 			);
 			path = LavaRock;

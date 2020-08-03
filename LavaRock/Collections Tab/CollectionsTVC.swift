@@ -12,12 +12,15 @@ import SwiftUI
 
 final class CollectionsTVC: LibraryTableViewController {
 	
-	@IBOutlet var optionsButton: UIBarButtonItem!
-	static let defaultCollectionTitle = "Unnamed Collection"
-	var indexOfEmptyCollection: Int?
+	// MARK: Properties
 	
-	// "Move albums" mode
+	// "Constants"
+	@IBOutlet var optionsButton: UIBarButtonItem!
 	var suggestedCollectionTitle: String?
+	static let defaultCollectionTitle = "Unnamed Collection"
+	
+	// Variables
+	var indexOfEmptyCollection: Int?
 	
 	// MARK: Setting Up UI
 	
@@ -47,7 +50,7 @@ final class CollectionsTVC: LibraryTableViewController {
 		
 		self.suggestedCollectionTitle = Self.suggestedCollectionTitle(
 			for: self.collectionsNC.managedObjectIDsOfAlbumsBeingMoved,
-			in: self.collectionsNC.coreDataManager.managedObjectContext,
+			in: self.coreDataManager.managedObjectContext,
 			considering: ["albumArtist"],
 			notMatching: existingCollectionTitles
 		)
@@ -62,7 +65,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			if activeLibraryItems.isEmpty {
 				// Just for testing.
 				SampleLibrary.inject()
-				super.loadActiveLibraryItems()
+				loadActiveLibraryItems()
 			}
 			
 			
@@ -142,10 +145,10 @@ final class CollectionsTVC: LibraryTableViewController {
 				return
 		}
 		
-		collectionsNC.coreDataManager.managedObjectContext.delete(collection)
+		coreDataManager.managedObjectContext.delete(collection)
 		activeLibraryItems.remove(at: index)
 		if !collectionsNC.isInMoveAlbumsMode {
-			collectionsNC.coreDataManager.save()
+			coreDataManager.save()
 		}
 		tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .middle)
 	}
@@ -200,7 +203,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
 			
 			// Create the new collection.
-			let newCollection = Collection(context: self.collectionsNC.coreDataManager.managedObjectContext) // Since we're in "move albums mode", this should be a child managed object context.
+			let newCollection = Collection(context: self.coreDataManager.managedObjectContext) // Since we're in "move albums mode", this should be a child managed object context.
 			var newCollectionTitle = dialog.textFields?[0].text
 			if (newCollectionTitle == nil) || (newCollectionTitle == "") {
 				newCollectionTitle = Self.defaultCollectionTitle
@@ -353,7 +356,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			if wasRowSelectedBeforeRenaming {
 				self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			}
-			self.collectionsNC.coreDataManager.save()
+			self.coreDataManager.save()
 		}) )
 		present(dialog, animated: true, completion: nil)
 	}

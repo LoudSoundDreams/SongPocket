@@ -9,12 +9,7 @@
 import UIKit
 import CoreData
 
-class CollectionsNC: UINavigationController {
-	
-	// MARK: Managing Saved Data
-	
-	// Constant References
-	let coreDataManager = CoreDataManager()
+final class CollectionsNC: UINavigationController {
 	
 	// MARK: Moving Albums
 	

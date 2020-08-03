@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AccentColorManager {
+struct AccentColorManager {
 	
 	static let accentColorTuples = [
 		("Strawberry", UIColor.systemPink), // Magenta
