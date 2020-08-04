@@ -9,16 +9,20 @@
 import UIKit
 import CoreData
 
-final class AlbumsTVC: LibraryTableViewController {
+final class AlbumsTVC: LibraryTVC, AlbumMover {
 	
 	// MARK: Properties
 	
 	// "Constants"
-	static let impossibleYear = -13800000001 // "nil" value for `year` attribute. Even though the attribute is optional, Swift doesn't treat it as an optional (neither does Objective-C) because "nil" for an integer Core Data attribute is actually a SQL `NULL`, not a Swift `nil`.
+	static let impossibleYear = -13800000001 // nil value for `year` attribute. Even though the attribute is optional, Swift and Objective-C don't treat it as an optional, because for integer attributes in Core Data, the nil value is actually a SQL `NULL`, not a Swift `nil`.
 	// SampleLibrary uses this number for sample albums without years.
 	// AlbumsTVC and SongsTVC leave the "year" field blank if the album's year is this number.
 	static let rowHeightInPoints = 44 * 3 // The Album class references this to create thumbnails.
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
+	
+	// Variables
+	var moveAlbumsClipboard: MoveAlbumsClipboard?
+	var didMoveAlbumsToNewCollections = false
 	
 	// MARK: Setup
 	
@@ -28,22 +32,29 @@ final class AlbumsTVC: LibraryTableViewController {
 		coreDataEntityName = "Album"
 	}
 	
-	// MARK: Setting Up UI
-	
 	override func setUpUI() {
 		super.setUpUI()
 		
-		navigationItem.leftBarButtonItems = nil // Removes Move All button added in the storyboard. We'll re-add it in code.
-//		navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil) // Removes the text of the Back button on the next screen you navigate to.
-		// As of iOS 14.0 beta 3, using an empty string, "", breaks the animation of the large title on this screen when navigating to the next screen and coming back from it. The title shrinks down to (and grows back from) nothing, instead of shrinking just slightly like it normally does.
-		// Unfortunately, on the next screen you navigate to, in the menu when you touch and hold on the Back button, this line of code makes a blank button, which looks wrong.
 		tableView.rowHeight = CGFloat(Self.rowHeightInPoints)
 		
-		if collectionsNC.isInMoveAlbumsMode {
+		if moveAlbumsClipboard != nil {
+			setNavigationItemPrompt()
+			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
+			
 			tableView.allowsSelection = false
 			
+			navigationController?.isToolbarHidden = false
+			
 		} else {
-			navigationItemButtonsEditMode = [floatToTopButton, startMovingAlbumsButton]
+			navigationItemButtonsEditModeOnly = [floatToTopButton, startMovingAlbumsButton]
+			
+			navigationController?.isToolbarHidden = true
+		}
+	}
+	
+	func setNavigationItemPrompt() {
+		if let moveAlbumsClipboard = moveAlbumsClipboard {
+			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
 		}
 	}
 	
@@ -102,7 +113,7 @@ final class AlbumsTVC: LibraryTableViewController {
 			cell.yearLabel.text = albumYearText
 			
 			// Customize the cell.
-			if collectionsNC.isInMoveAlbumsMode {
+		if moveAlbumsClipboard != nil {
 				cell.accessoryType = .none
 			}
 			
@@ -115,8 +126,11 @@ final class AlbumsTVC: LibraryTableViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if !collectionsNC.isInMoveAlbumsMode && activeLibraryItems.isEmpty {
-			performSegue(withIdentifier: "Exit Empty Collection", sender: nil)
+		if moveAlbumsClipboard != nil {
+		} else {
+			if activeLibraryItems.isEmpty {
+				performSegue(withIdentifier: "Exit Empty Collection", sender: nil)
+			}
 		}
 	}
 	
@@ -138,9 +152,16 @@ final class AlbumsTVC: LibraryTableViewController {
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "Moved Albums",
-		   let destination = segue.destination as? AlbumsTVC,
-		   collectionsNC.didMoveAlbumsToNewCollections {
-			destination.collectionsNC.didMoveAlbumsToNewCollections = true
+		   let albumsTVC = segue.destination as? AlbumsTVC,
+		   didMoveAlbumsToNewCollections
+		{
+			albumsTVC.didMoveAlbumsToNewCollections = true
+		}
+		else if
+			segue.identifier == "Exit Empty Collection",
+			let collectionsTVC = segue.destination as? CollectionsTVC
+		{
+			collectionsTVC.didMoveAlbumsToNewCollections = true
 		}
 		
 		super.prepare(for: segue, sender: sender)
@@ -153,56 +174,71 @@ final class AlbumsTVC: LibraryTableViewController {
 	
 	@IBAction func startMovingAlbums(_ sender: UIBarButtonItem) {
 		
-		// Prepare a new navigation controller in "move albums" mode to present modally.
-		let modalCollectionsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as! CollectionsNC
-		modalCollectionsNC.isInMoveAlbumsMode = true
-		modalCollectionsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf = containerOfData!.objectID
+		// Prepare a Collections view to present modally.
+		
+		let modalCollectionsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as! UINavigationController
+		let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as! CollectionsTVC
+		
+		// Initialize a MoveAlbumsClipboard for the modal Collections view.
+		
+		let idOfSourceCollection = containerOfData!.objectID
 		
 		// Note the albums to move, and to not move.
 		
-		if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-			
+		var idsOfAlbumsToMove = [NSManagedObjectID]()
+		var idsOfAlbumsToNotMove = [NSManagedObjectID]()
+		
+		if let selectedIndexPaths = tableView.indexPathsForSelectedRows { // If any rows are selected.
 			for indexPath in indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: activeLibraryItems.count - 1) {
 				let album = activeLibraryItems[indexPath.row] as! Album
-				if selectedIndexPaths.contains(indexPath) {
-					modalCollectionsNC.managedObjectIDsOfAlbumsBeingMoved.append(album.objectID)
+				if selectedIndexPaths.contains(indexPath) { // If the row is selected.
+					idsOfAlbumsToMove.append(album.objectID)
 				} else { // The row is not selected.
-					modalCollectionsNC.managedObjectIDsOfAlbumsNotBeingMoved.append(album.objectID)
+					idsOfAlbumsToNotMove.append(album.objectID)
 				}
 			}
-			
 		} else { // No rows are selected.
-			
-			for item in activeLibraryItems {
-				modalCollectionsNC.managedObjectIDsOfAlbumsBeingMoved.append(item.objectID)
+			for album in activeLibraryItems {
+				idsOfAlbumsToMove.append(album.objectID)
 			}
-			
 		}
 		
+		modalCollectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
+			idOfCollectionThatAlbumsAreBeingMovedOutOf: idOfSourceCollection,
+			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
+			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove
+		)
+		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
-		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+		
+		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType) // Do this from within the MoveAlbumsClipboard, to guarantee it's done on the right thread.
 		childManagedObjectContext.parent = coreDataManager.managedObjectContext
-		let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as! CollectionsTVC
+		
 		modalCollectionsTVC.coreDataManager = CoreDataManager(managedObjectContext: childManagedObjectContext)
 		
 		present(modalCollectionsNC, animated: true, completion: nil)
+		
 	}
 	
 	// Ending moving albums
 	
 	@IBAction func moveAlbumsHere(_ sender: UIBarButtonItem) {
 		
+		guard let moveAlbumsClipboard = moveAlbumsClipboard else {
+			return
+		}
+		
 		if activeLibraryItems.isEmpty {
-			collectionsNC.didMoveAlbumsToNewCollections = true
+			didMoveAlbumsToNewCollections = true
 		}
 		
 		// Get the albums to move, and to not move.
 		var albumsToMove = [Album]()
-		for albumID in collectionsNC.managedObjectIDsOfAlbumsBeingMoved {
+		for albumID in moveAlbumsClipboard.idsOfAlbumsBeingMoved {
 			albumsToMove.append(coreDataManager.managedObjectContext.object(with: albumID) as! Album)
 		}
 		var albumsToNotMove = [Album]()
-		for albumID in collectionsNC.managedObjectIDsOfAlbumsNotBeingMoved {
+		for albumID in moveAlbumsClipboard.idsOfAlbumsNotBeingMoved {
 			albumsToNotMove.append(coreDataManager.managedObjectContext.object(with: albumID) as! Album)
 		}
 		
@@ -272,7 +308,7 @@ final class AlbumsTVC: LibraryTableViewController {
 		loadActiveLibraryItems()
 		tableView.reloadData()
 		
-		viewDidAppear(true) // Unwinds to Collections if you moved all the albums out
+		viewDidAppear(true) // Exits this collection if it's now empty.
 	}
 	
 }

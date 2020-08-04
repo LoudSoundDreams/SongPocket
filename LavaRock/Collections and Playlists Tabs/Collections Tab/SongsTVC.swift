@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-final class SongsTVC: LibraryTableViewController {
+final class SongsTVC: LibraryTVC {
 	
 	/*
 	WARNING: This class contains a hack on activeLibraryItems, in order to use a regular table view cell as a non-sticky "header".
@@ -57,12 +57,10 @@ final class SongsTVC: LibraryTableViewController {
 		coreDataEntityName = "Song"
 	}
 	
-	// MARK: Setting Up UI
-	
 	override func setUpUI() {
 		super.setUpUI()
 		
-		navigationItemButtonsEditMode = [floatToTopButton, sortButton]
+		navigationItemButtonsEditModeOnly = [floatToTopButton, sortButton]
 		sortOptions = ["Track Number"]
 	}
 	
@@ -166,6 +164,17 @@ final class SongsTVC: LibraryTableViewController {
 			
 			cell.trackNumberLabel.text = trackNumberText
 			cell.titleLabel.text = song.title
+			
+			
+			print("for IndexPath \(indexPath), \(String(describing: cell.titleLabel.text)):")
+			print("trackNumberLabel.frame: \(cell.trackNumberLabel.frame)")
+			print("trackNumberLabel.bounds: \(cell.trackNumberLabel.bounds)")
+			print("trackNumberLabel.intrinsicContentSize: \(cell.trackNumberLabel.intrinsicContentSize)")
+//			print("titleLabel.frame: \(cell.titleLabel.frame)")
+//			print("titleLabel.bounds: \(cell.titleLabel.bounds)")
+//			print("titleLabel.intrinsicContentSize: \(cell.titleLabel.intrinsicContentSize)")
+			print("")
+			
 			
 			return cell
 			

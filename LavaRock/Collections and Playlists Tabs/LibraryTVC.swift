@@ -1,5 +1,5 @@
 //
-//  LibraryTableViewController.swift
+//  LibraryTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-04-15.
@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import SwiftUI
 
-class LibraryTableViewController: UITableViewController {
+class LibraryTVC: UITableViewController {
 	
 	// MARK: Properties
 	
@@ -21,7 +21,7 @@ class LibraryTableViewController: UITableViewController {
 	// "Constants" that subclasses can optionally customize
 	var coreDataManager = CoreDataManager(managedObjectContext: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext) // Inject a child managed object context when in "move albums" mode.
 	var navigationItemButtonsNotEditMode = [UIBarButtonItem]()
-	var navigationItemButtonsEditMode = [UIBarButtonItem]()
+	var navigationItemButtonsEditModeOnly = [UIBarButtonItem]()
 	var sortOptions = ["Title"] // Only include the options you want. Make sure they're spelled right, or they won't do anything.
 	
 	// "Constants" that subclasses should not change
@@ -43,7 +43,7 @@ class LibraryTableViewController: UITableViewController {
 		target: self,
 		action: #selector(cancelMoveAlbums)
 	)
-	lazy var collectionsNC = navigationController as! CollectionsNC
+//	lazy var collectionsNC = navigationController as! CollectionsNC
 	
 	// Variables
 	var activeLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in activeLibraryItems, because the table view follows activeLibraryItems; not the "index" attribute of each NSManagedObject.
@@ -70,38 +70,19 @@ class LibraryTableViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		navigationItemButtonsEditMode = [floatToTopButton]
-		
 		setUpUI()
 		loadActiveLibraryItems()
 	}
 	
-	// MARK: Setting Up UI
-	
 	func setUpUI() {
-		
-		// Always
-		
 		if containerOfData != nil {
 			title = containerOfData?.value(forKey: "title") as? String
 		}
+		navigationItem.leftBarButtonItems = navigationItemButtonsNotEditMode
+		navigationItem.rightBarButtonItem = editButtonItem
+		navigationItemButtonsEditModeOnly = [floatToTopButton]
+		
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
-		
-		// Depending whether the view is in "move albums" mode
-		
-		if collectionsNC.isInMoveAlbumsMode {
-			navigationItem.prompt = collectionsNC.moveAlbumsModePrompt
-			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
-			
-			navigationController?.isToolbarHidden = false
-			
-		} else {
-			navigationItem.leftBarButtonItems = navigationItemButtonsNotEditMode
-			navigationItem.rightBarButtonItem = editButtonItem
-			
-			navigationController?.isToolbarHidden = true
-		}
-		
 	}
 	
 	// MARK: Loading Data
@@ -165,7 +146,7 @@ class LibraryTableViewController: UITableViewController {
 		if isEditing {
 			floatToTopButton.isEnabled = shouldAllowFloatingToTop()
 			sortButton.isEnabled = shouldAllowSorting()
-			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditMode, animated: true)
+			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditModeOnly, animated: true)
 		} else {
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditMode, animated: true)
 		}
@@ -190,9 +171,11 @@ class LibraryTableViewController: UITableViewController {
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "Drill Down in Library",
-			let destination = segue.destination as? LibraryTableViewController,
-			tableView.indexPathForSelectedRow != nil {
+		if
+			segue.identifier == "Drill Down in Library",
+			let destination = segue.destination as? LibraryTVC,
+			tableView.indexPathForSelectedRow != nil
+		{
 			let selectedItem = activeLibraryItems[tableView.indexPathForSelectedRow!.row]
 			destination.containerOfData = selectedItem
 			destination.coreDataManager = coreDataManager
@@ -252,7 +235,7 @@ class LibraryTableViewController: UITableViewController {
 	
 	// MARK: Sorting
 	
-	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTableViewController. They're view controllers.
+	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTVC. They're view controllers.
 	@objc func showSortOptions() {
 		let alertController = UIAlertController(title: "Sort By", message: nil, preferredStyle: .actionSheet)
 		for sortOption in sortOptions {

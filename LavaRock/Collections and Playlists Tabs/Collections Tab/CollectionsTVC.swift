@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import SwiftUI
 
-final class CollectionsTVC: LibraryTableViewController {
+final class CollectionsTVC: LibraryTVC, AlbumMover {
 	
 	// MARK: Properties
 	
@@ -20,24 +20,39 @@ final class CollectionsTVC: LibraryTableViewController {
 	static let defaultCollectionTitle = "Unnamed Collection"
 	
 	// Variables
+	var moveAlbumsClipboard: MoveAlbumsClipboard?
+	var didMoveAlbumsToNewCollections = false
 	var indexOfEmptyCollection: Int?
 	
-	// MARK: Setting Up UI
+	// MARK: Setup
 	
 	override func viewDidLoad() {
-		navigationItem.leftBarButtonItems = nil // Removes Options button added in the storyboard. We'll re-add it in code.
-		navigationItemButtonsNotEditMode = [optionsButton]
+		if moveAlbumsClipboard != nil {
+		} else {
+			navigationItemButtonsNotEditMode = [optionsButton]
+		}
 		
 		super.viewDidLoad()
+	}
+	
+	override func setUpUI() {
+		super.setUpUI()
 		
-		if collectionsNC.isInMoveAlbumsMode {
+		if let moveAlbumsClipboard = moveAlbumsClipboard {
 			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle()
+				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved)
 			}
+			setNavigationItemPrompt()
+			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
+			
+			navigationController?.isToolbarHidden = false
+			
+		} else {
+			navigationController?.isToolbarHidden = true
 		}
 	}
 	
-	func setSuggestedCollectionTitle() {
+	func setSuggestedCollectionTitle(for idsOfAlbumsBeingMoved: [NSManagedObjectID]) {
 		var existingCollectionTitles = [String]()
 		for item in self.activeLibraryItems {
 			if
@@ -49,11 +64,18 @@ final class CollectionsTVC: LibraryTableViewController {
 		}
 		
 		self.suggestedCollectionTitle = Self.suggestedCollectionTitle(
-			for: self.collectionsNC.managedObjectIDsOfAlbumsBeingMoved,
+			for: idsOfAlbumsBeingMoved,
 			in: self.coreDataManager.managedObjectContext,
 			considering: ["albumArtist"],
 			notMatching: existingCollectionTitles
 		)
+	}
+	
+	// Put this in an extension to AlbumMover?
+	func setNavigationItemPrompt() {
+		if let moveAlbumsClipboard = moveAlbumsClipboard {
+			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
+		}
 	}
 	
 	// MARK: Loading Data
@@ -61,7 +83,8 @@ final class CollectionsTVC: LibraryTableViewController {
 	override func loadActiveLibraryItems() {
 		super.loadActiveLibraryItems()
 		
-		if !collectionsNC.isInMoveAlbumsMode {
+		if moveAlbumsClipboard != nil {
+		} else {
 			if activeLibraryItems.isEmpty {
 				// Just for testing.
 				SampleLibrary.inject()
@@ -89,9 +112,9 @@ final class CollectionsTVC: LibraryTableViewController {
 		if #available(iOS 14, *) {
 			var configuration = cell.defaultContentConfiguration()
 			configuration.text = collectionTitle
-
-			if collectionsNC.isInMoveAlbumsMode {
-				if collection.objectID == collectionsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf {
+			
+			if let moveAlbumsClipboard = moveAlbumsClipboard {
+				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 					configuration.textProperties.color = .systemGray // A dedicated way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 					cell.selectionStyle = .none
 				}
@@ -102,8 +125,8 @@ final class CollectionsTVC: LibraryTableViewController {
 		} else { // iOS 13 and earlier
 			cell.textLabel?.text = collectionTitle
 			
-			if collectionsNC.isInMoveAlbumsMode {
-				if collection.objectID == collectionsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf {
+			if let moveAlbumsClipboard = moveAlbumsClipboard {
+				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 					cell.textLabel?.isEnabled = false
 					cell.selectionStyle = .none
 				}
@@ -118,16 +141,17 @@ final class CollectionsTVC: LibraryTableViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if collectionsNC.didMoveAlbumsToNewCollections {
+		if didMoveAlbumsToNewCollections {
 			loadActiveLibraryItems()
 			tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
+			didMoveAlbumsToNewCollections = false
 		}
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if collectionsNC.isInMoveAlbumsMode {
+		if moveAlbumsClipboard != nil {
 			deleteCollectionIfEmpty(at: 0)
 			
 		} else {
@@ -147,7 +171,8 @@ final class CollectionsTVC: LibraryTableViewController {
 		
 		coreDataManager.managedObjectContext.delete(collection)
 		activeLibraryItems.remove(at: index)
-		if !collectionsNC.isInMoveAlbumsMode {
+		if moveAlbumsClipboard != nil {
+		} else {
 			coreDataManager.save()
 		}
 		tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .middle)
@@ -165,9 +190,9 @@ final class CollectionsTVC: LibraryTableViewController {
 //	}
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-		if collectionsNC.isInMoveAlbumsMode {
+		if let moveAlbumsClipboard = moveAlbumsClipboard {
 			let collectionID = activeLibraryItems[indexPath.row].objectID
-			if collectionID == collectionsNC.managedObjectIDOfCollectionThatAlbumsAreBeingMovedOutOf { //
+			if collectionID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 				return nil
 				
 			} else {
@@ -177,6 +202,17 @@ final class CollectionsTVC: LibraryTableViewController {
 		} else {
 			return indexPath
 		}
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if
+			segue.identifier == "Drill Down in Library",
+			let albumsTVC = segue.destination as? AlbumsTVC
+		{
+			albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
+		}
+		
+		super.prepare(for: segue, sender: sender)
 	}
 	
 	// MARK: “Move Albums" Mode
@@ -203,7 +239,7 @@ final class CollectionsTVC: LibraryTableViewController {
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
 			
 			// Create the new collection.
-			let newCollection = Collection(context: self.coreDataManager.managedObjectContext) // Since we're in "move albums mode", this should be a child managed object context.
+			let newCollection = Collection(context: self.coreDataManager.managedObjectContext) // Since we're in "move albums" mode, this should be a child managed object context.
 			var newCollectionTitle = dialog.textFields?[0].text
 			if (newCollectionTitle == nil) || (newCollectionTitle == "") {
 				newCollectionTitle = Self.defaultCollectionTitle
@@ -316,8 +352,8 @@ final class CollectionsTVC: LibraryTableViewController {
 	// Ending moving albums
 	
 	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-		let sourceViewController = unwindSegue.source as! AlbumsTVC
-		let emptyCollection = sourceViewController.containerOfData as! Collection
+		let segueSource = unwindSegue.source as! AlbumsTVC
+		let emptyCollection = segueSource.containerOfData as! Collection
 		indexOfEmptyCollection = Int(emptyCollection.index)
 	}
 	

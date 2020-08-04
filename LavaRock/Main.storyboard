@@ -12,7 +12,7 @@
         <!--Options-->
         <scene sceneID="Gwy-Gy-UzT">
             <objects>
-                <tableViewController id="TG3-ks-vKX" customClass="OptionsTableViewController" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="TG3-ks-vKX" customClass="OptionsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="EF9-Kc-y5H">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -132,7 +132,7 @@
         <!--Collections-->
         <scene sceneID="Ha5-Ct-70h">
             <objects>
-                <navigationController storyboardIdentifier="Collections NC" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="YiT-J8-VtB" customClass="CollectionsNC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Collections NC" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="YiT-J8-VtB" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Collections" image="archivebox.fill" catalog="system" id="48j-Zp-q5X"/>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>

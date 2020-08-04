@@ -8,7 +8,7 @@
 import CoreData
 import UIKit
 
-struct CoreDataManager {
+final class CoreDataManager {
 	
 	// MARK: Properties
 	
@@ -16,6 +16,10 @@ struct CoreDataManager {
 	let managedObjectContext: NSManagedObjectContext
 	
 	// MARK: Methods
+	
+	init(managedObjectContext: NSManagedObjectContext) {
+		self.managedObjectContext = managedObjectContext
+	}
 	
 	func save() {
 		managedObjectContext.perform {
@@ -41,8 +45,8 @@ struct CoreDataManager {
 		return results
 	}
 	
-	
 	// Just for testing.
+	
 	func check(request: NSFetchRequest<NSFetchRequestResult>) {
 		print("Checking the current managed object context with the Core Data fetch request: \(request)")
 		managedObjectContext.performAndWait {
