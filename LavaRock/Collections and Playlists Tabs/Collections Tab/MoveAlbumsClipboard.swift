@@ -16,18 +16,7 @@ final class MoveAlbumsClipboard { // This is a class, not a struct, because we u
 	let idsOfAlbumsNotBeingMoved: [NSManagedObjectID]
 //	var didMoveAlbumsToNewCollections = false // We can't hand instances of this class to the base CollectionsTVC and AlbumsTVC not in "move albums" mode, because they assume that if they have a MoveAlbumsClipboard, they're in "move albums" mode.
 	
-	// MARK: Type Methods
-	
-	static func moveAlbumsModePrompt(numberOfAlbumsBeingMoved: Int) -> String {
-		switch numberOfAlbumsBeingMoved {
-		case 1:
-			return "Chooose a collection to move 1 album to."
-		default:
-			return "Choose a collection to move \(numberOfAlbumsBeingMoved) albums to."
-		}
-	}
-	
-	// MARK: Other Methods
+	// MARK: Methods
 	
 	init(
 		idOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID,
@@ -37,6 +26,15 @@ final class MoveAlbumsClipboard { // This is a class, not a struct, because we u
 		self.idOfCollectionThatAlbumsAreBeingMovedOutOf = idOfCollectionThatAlbumsAreBeingMovedOutOf
 		self.idsOfAlbumsBeingMoved = idsOfAlbumsBeingMoved
 		self.idsOfAlbumsNotBeingMoved = idsOfAlbumsNotBeingMoved
+	}
+	
+	static func moveAlbumsModePrompt(numberOfAlbumsBeingMoved: Int) -> String {
+		switch numberOfAlbumsBeingMoved {
+		case 1:
+			return "Chooose a box to move 1 album to."
+		default:
+			return "Choose a box to move \(numberOfAlbumsBeingMoved) albums to."
+		}
 	}
 	
 }

@@ -48,7 +48,6 @@
 		07F08EC324BD1C51001F897A /* songOfTheSirens.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07F08EC224BD1C51001F897A /* songOfTheSirens.jpg */; };
 		07FC96F024BABAAE0036DD3D /* fallinLight.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96D624BABAA70036DD3D /* fallinLight.jpg */; };
 		07FC96F124BABAAE0036DD3D /* sunnySummer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96D724BABAA70036DD3D /* sunnySummer.jpg */; };
-		07FC96F224BABAAE0036DD3D /* pop2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96D824BABAA80036DD3D /* pop2.jpg */; };
 		07FC96F324BABAAE0036DD3D /* jazz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96D924BABAA80036DD3D /* jazz.jpg */; };
 		07FC96F424BABAAE0036DD3D /* shostakovichPianoConcertos.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96DA24BABAA80036DD3D /* shostakovichPianoConcertos.jpg */; };
 		07FC96F524BABAAE0036DD3D /* rainbow.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96DB24BABAA80036DD3D /* rainbow.jpg */; };
@@ -70,7 +69,6 @@
 		07FC970524BABAAE0036DD3D /* feverSeason.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96EB24BABAAD0036DD3D /* feverSeason.jpg */; };
 		07FC970624BABAAE0036DD3D /* wide.png in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96EC24BABAAD0036DD3D /* wide.png */; };
 		07FC970724BABAAE0036DD3D /* palette.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96ED24BABAAE0036DD3D /* palette.jpg */; };
-		07FC970824BABAAE0036DD3D /* iDisagree.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96EE24BABAAE0036DD3D /* iDisagree.jpg */; };
 		07FC970924BABAAE0036DD3D /* dedicated.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96EF24BABAAE0036DD3D /* dedicated.jpg */; };
 		07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FCE63824B42EDF00F94668 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -140,7 +138,6 @@
 		07F08EC224BD1C51001F897A /* songOfTheSirens.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = songOfTheSirens.jpg; sourceTree = "<group>"; };
 		07FC96D624BABAA70036DD3D /* fallinLight.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fallinLight.jpg; sourceTree = "<group>"; };
 		07FC96D724BABAA70036DD3D /* sunnySummer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sunnySummer.jpg; sourceTree = "<group>"; };
-		07FC96D824BABAA80036DD3D /* pop2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pop2.jpg; sourceTree = "<group>"; };
 		07FC96D924BABAA80036DD3D /* jazz.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jazz.jpg; sourceTree = "<group>"; };
 		07FC96DA24BABAA80036DD3D /* shostakovichPianoConcertos.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shostakovichPianoConcertos.jpg; sourceTree = "<group>"; };
 		07FC96DB24BABAA80036DD3D /* rainbow.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rainbow.jpg; sourceTree = "<group>"; };
@@ -162,7 +159,6 @@
 		07FC96EB24BABAAD0036DD3D /* feverSeason.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = feverSeason.jpg; sourceTree = "<group>"; };
 		07FC96EC24BABAAD0036DD3D /* wide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wide.png; sourceTree = "<group>"; };
 		07FC96ED24BABAAE0036DD3D /* palette.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = palette.jpg; sourceTree = "<group>"; };
-		07FC96EE24BABAAE0036DD3D /* iDisagree.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iDisagree.jpg; sourceTree = "<group>"; };
 		07FC96EF24BABAAE0036DD3D /* dedicated.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dedicated.jpg; sourceTree = "<group>"; };
 		07FCE63824B42EDF00F94668 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -314,7 +310,6 @@
 				07FC96EA24BABAAD0036DD3D /* fullCourse.jpg */,
 				07F08EB124BC4B7B001F897A /* goodLuck.jpg */,
 				07F08EB624BC4B7C001F897A /* heartAttack.jpg */,
-				07FC96EE24BABAAE0036DD3D /* iDisagree.jpg */,
 				07FC96D924BABAA80036DD3D /* jazz.jpg */,
 				07FC96E024BABAAA0036DD3D /* kiss.jpg */,
 				07FC96E424BABAAB0036DD3D /* labyrinth.jpg */,
@@ -325,7 +320,6 @@
 				07FC96ED24BABAAE0036DD3D /* palette.jpg */,
 				07F08EAE24BC4B6A001F897A /* pinkBlossom.jpg */,
 				07FC96E324BABAAA0036DD3D /* planetaryPieces.png */,
-				07FC96D824BABAA80036DD3D /* pop2.jpg */,
 				07FC96E624BABAAC0036DD3D /* poppyRemixes.jpg */,
 				07FC96DB24BABAA80036DD3D /* rainbow.jpg */,
 				07FC96DC24BABAA80036DD3D /* real.jpg */,
@@ -474,7 +468,6 @@
 				07FC96FB24BABAAE0036DD3D /* timeForUs.jpg in Resources */,
 				07FC970624BABAAE0036DD3D /* wide.png in Resources */,
 				071A78F724BB0AC9004646FF /* starTrekII.jpg in Resources */,
-				07FC970824BABAAE0036DD3D /* iDisagree.jpg in Resources */,
 				07FC96F524BABAAE0036DD3D /* rainbow.jpg in Resources */,
 				07FC970424BABAAE0036DD3D /* fullCourse.jpg in Resources */,
 				07FC970024BABAAE0036DD3D /* poppyRemixes.jpg in Resources */,
@@ -502,7 +495,6 @@
 				07FC970924BABAAE0036DD3D /* dedicated.jpg in Resources */,
 				07F08EB924BC4B7C001F897A /* miniskirt.jpg in Resources */,
 				07FC96FE24BABAAE0036DD3D /* labyrinth.jpg in Resources */,
-				07FC96F224BABAAE0036DD3D /* pop2.jpg in Resources */,
 				0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

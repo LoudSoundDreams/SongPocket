@@ -196,9 +196,9 @@ struct SampleLibrary {
 					SampleSong("Solo", 11),
 				]),
 				SampleAlbum("Dedicated", 2019, "dedicated.jpg", [
-					SampleSong("Now That I Found You", 3),
-					SampleSong("Want You in My Room", 4),
-					SampleSong("Happy Not Knowing", 6),
+					SampleSong("Too Much", 8),
+					SampleSong("The Sound", 9),
+					SampleSong("Automatically in Love", 10),
 					SampleSong("Real Love", 13),
 				]),
 				SampleAlbum("E•mo•tion", 2015, "emotion.jpg", [
@@ -213,12 +213,6 @@ struct SampleLibrary {
 				SampleAlbum("Kiss", 2012, "kiss.jpg", [
 					SampleSong("Good Time", 5),
 					SampleSong("Turn Me Up", 7),
-				]),
-			]),
-			
-			SampleCollection("Charli XCX", [
-				SampleAlbum("Pop 2", 2017, "pop2.jpg", [
-					SampleSong("Unlock It", 8),
 				]),
 			]),
 			
@@ -315,18 +309,6 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("Poppy", [
-				SampleAlbum("I Disagree", 2020, "iDisagree.jpg", [
-					SampleSong("Concrete", 1),
-					SampleSong("I Disagree", 2),
-					SampleSong("BLOODMONEY", 3),
-					SampleSong("Anything Like Me", 4),
-					SampleSong("Fill The Crown", 5),
-					SampleSong("Nothing I Need", 6),
-					SampleSong("Sit / Stay", 7),
-					SampleSong("Bite Your Teeth", 8),
-					SampleSong("Sick of the Sun", 9),
-					SampleSong("Don’t Go Outside", 10),
-				]),
 				SampleAlbum("Poppy.Remixes", 2018, "poppyRemixes.jpg", [
 					SampleSong("Moshi Moshi (Noboru Remix)", 2),
 					SampleSong("Moshi Moshi (Clarabell Remix)", 4),
@@ -361,8 +343,6 @@ struct SampleLibrary {
 					SampleSong("mirrorball", 6),
 					SampleSong("august", 8),
 					SampleSong("this is me trying", 9),
-					SampleSong("illicit affairs", 10),
-					SampleSong("betty", 14),
 				]),
 			]),
 			

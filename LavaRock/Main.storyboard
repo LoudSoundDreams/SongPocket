@@ -70,7 +70,7 @@
             </objects>
             <point key="canvasLocation" x="6492" y="-485"/>
         </scene>
-        <!--Collections-->
+        <!--Boxes-->
         <scene sceneID="X0R-Et-kVe">
             <objects>
                 <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="Vce-TP-hYI" customClass="CollectionsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -114,7 +114,7 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ayd-SA-Efq"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Collections" id="aA7-bf-O8G">
+                    <navigationItem key="navigationItem" title="Boxes" id="aA7-bf-O8G">
                         <barButtonItem key="leftBarButtonItem" title="Options" id="mpR-tt-C6X">
                             <connections>
                                 <segue destination="Wty-xL-YQX" kind="presentation" identifier="Show Options" id="aqr-v5-Bgu"/>
@@ -129,11 +129,11 @@
             </objects>
             <point key="canvasLocation" x="5076" y="194"/>
         </scene>
-        <!--Collections-->
+        <!--Boxes-->
         <scene sceneID="Ha5-Ct-70h">
             <objects>
                 <navigationController storyboardIdentifier="Collections NC" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="YiT-J8-VtB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collections" image="archivebox.fill" catalog="system" id="48j-Zp-q5X"/>
+                    <tabBarItem key="tabBarItem" title="Boxes" image="archivebox.fill" catalog="system" id="48j-Zp-q5X"/>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uLz-8K-DqV">
@@ -499,6 +499,30 @@
                                             <rect key="frame" x="20" y="0.0" width="374" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Left Detail Cell" textLabel="3Zd-EF-b9o" detailTextLabel="THW-UH-mPH" style="IBUITableViewCellStyleValue2" id="3c6-C7-i4d" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="657.33333969116211" width="414" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3c6-C7-i4d" id="SNf-ot-ZBg">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Zd-EF-b9o">
+                                            <rect key="frame" x="20" y="15" width="91" height="15.666666666666666"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="THW-UH-mPH">
+                                            <rect key="frame" x="117" y="15" width="35" height="15.666666666666666"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>

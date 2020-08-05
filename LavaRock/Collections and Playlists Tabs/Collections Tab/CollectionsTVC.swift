@@ -17,7 +17,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	// "Constants"
 	@IBOutlet var optionsButton: UIBarButtonItem!
 	var suggestedCollectionTitle: String?
-	static let defaultCollectionTitle = "Unnamed Collection"
+	static let defaultCollectionTitle = "New Box"
 	
 	// Variables
 	var moveAlbumsClipboard: MoveAlbumsClipboard?
@@ -33,16 +33,19 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		}
 		
 		super.viewDidLoad()
+		
+		if let moveAlbumsClipboard = moveAlbumsClipboard {
+			DispatchQueue.global(qos: .userInitiated).async {
+				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved)
+			}
+		}
 	}
 	
 	override func setUpUI() {
 		super.setUpUI()
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
-			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved)
-			}
-			setNavigationItemPrompt()
+			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 			navigationController?.isToolbarHidden = false
@@ -54,7 +57,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	
 	func setSuggestedCollectionTitle(for idsOfAlbumsBeingMoved: [NSManagedObjectID]) {
 		var existingCollectionTitles = [String]()
-		for item in self.activeLibraryItems {
+		for item in activeLibraryItems {
 			if
 				let collection = item as? Collection,
 				let collectionTitle = collection.title
@@ -62,20 +65,13 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 				existingCollectionTitles.append(collectionTitle)
 			}
 		}
-		
-		self.suggestedCollectionTitle = Self.suggestedCollectionTitle(
+
+		suggestedCollectionTitle = Self.suggestedCollectionTitle(
 			for: idsOfAlbumsBeingMoved,
-			in: self.coreDataManager.managedObjectContext,
+			in: coreDataManager.managedObjectContext,
 			considering: ["albumArtist"],
 			notMatching: existingCollectionTitles
 		)
-	}
-	
-	// Put this in an extension to AlbumMover?
-	func setNavigationItemPrompt() {
-		if let moveAlbumsClipboard = moveAlbumsClipboard {
-			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
-		}
 	}
 	
 	// MARK: Loading Data
@@ -218,7 +214,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	// MARK: “Move Albums" Mode
 	
 	@IBAction func makeNewCollection(_ sender: UIBarButtonItem) {
-		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
+		let dialog = UIAlertController(title: "New Box", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
 			textField.returnKeyType = .done
@@ -365,7 +361,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	
 	func renameCollection(at indexPath: IndexPath) {
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
-		let dialog = UIAlertController(title: "Rename Collection", message: nil, preferredStyle: .alert)
+		let dialog = UIAlertController(title: "Rename Box", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
 			textField.returnKeyType = .done

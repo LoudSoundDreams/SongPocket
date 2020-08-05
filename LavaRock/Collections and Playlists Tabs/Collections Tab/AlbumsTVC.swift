@@ -37,8 +37,8 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		
 		tableView.rowHeight = CGFloat(Self.rowHeightInPoints)
 		
-		if moveAlbumsClipboard != nil {
-			setNavigationItemPrompt()
+		if let moveAlbumsClipboard = moveAlbumsClipboard {
+			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 			tableView.allowsSelection = false
@@ -49,12 +49,6 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 			navigationItemButtonsEditModeOnly = [floatToTopButton, startMovingAlbumsButton]
 			
 			navigationController?.isToolbarHidden = true
-		}
-	}
-	
-	func setNavigationItemPrompt() {
-		if let moveAlbumsClipboard = moveAlbumsClipboard {
-			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
 		}
 	}
 	

@@ -10,6 +10,4 @@ import UIKit
 protocol AlbumMover {
 	var moveAlbumsClipboard: MoveAlbumsClipboard? { get set }
 	var didMoveAlbumsToNewCollections: Bool { get set }
-	
-	func setNavigationItemPrompt()
 }
