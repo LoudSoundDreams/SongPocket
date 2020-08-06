@@ -161,7 +161,7 @@ final class SongsTVC: LibraryTVC {
 //
 //			} else { // iOS 13 or earlier
 			
-				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCellWithoutMoreButton
+				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
 				
 				cell.trackNumberLabel.text = trackNumberText
 				cell.titleLabel.text = song.title
@@ -214,8 +214,9 @@ final class SongsTVC: LibraryTVC {
 		
 		if !isEditing {
 			let song = activeLibraryItems[indexPath.row] as! Song
-			presentActions(for: song)
-			tableView.deselectRow(at: indexPath, animated: true)
+			showSongActions(for: song)
+			// The row should stay selected while the action sheet is onscreen.
+			// You must eventually deselect the row in every possible branch from here.
 		}
 	}
 	
@@ -229,47 +230,81 @@ final class SongsTVC: LibraryTVC {
 		print(sender.superview?.superview as Any)
 	}
 	
-	func presentActions(for song: Song) {
-		let songActionTitles = [
-			"Play",
-			"Play from Here",
-			"Add to Queue",
-			"Add to Queue from Here",
-//			"Add to Playlist",
-//			"Add to Playlist from Here",
-		]
+	func showSongActions(for song: Song) {
 		
-		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		// Prepare an action sheet, from top to bottom.
 		
-		for songActionTitle in songActionTitles {
-			let songAction = UIAlertAction(
-				title: songActionTitle,
-				style: .default,
-				handler: performSongAction
-			)
-			// If you tapped the last song.
-			if
-				Int(song.index) + numberOfUneditableRowsAtTopOfSection + 1 >= activeLibraryItems.count, // For example, with activeLibraryItems.count (the number of rows) == 3 and numberOfUneditableRowsAtTopOfSection == 2, the song at index 0 is the last song.
-				(songActionTitle == "Play from Here") || (songActionTitle == "Add to Queue from Here") || (songActionTitle == "Add to Playlist from Here")
-			{
-				songAction.isEnabled = false
-			}
-			actionSheet.addAction(songAction)
+		// Deduplicate this block. It's copied from cellForRowAt.
+		// Show disc number too?
+//		let trackNumberText: String?
+//		if song.trackNumber != Self.impossibleTrackNumber {
+//			trackNumberText = String(song.trackNumber)
+//		} else {
+//			trackNumberText = nil
+//		}
+//		let actionSheetTitle = (trackNumberText ?? "") + ". " + (song.title ?? "")
+		let actionSheetTitle: String? = nil
+		
+		let actionSheet = UIAlertController(title: actionSheetTitle, message: nil, preferredStyle: .actionSheet) // The name of the song you selected should be plain, not bold.
+		// Strangely, as of iOS 14.0 beta 4:
+		// - If title and message both have values, title is bold and message isn't.
+		// - But if only title has a value, it's not bold
+		// - And if only message has a title, it is bold.
+		
+		let playAlbumStartingHereAction = UIAlertAction(
+			title: "Play Starting Here",
+			style: .destructive,
+			handler: playAlbumStartingAtSelectedSong
+		)
+		
+		let enqueueSongAction = UIAlertAction(
+			title: "Add to Queue",
+			style: .default,
+			handler: enqueueSelectedSong
+		)
+		
+		let enqueueAlbumStartingHereAction = UIAlertAction(
+			title: "Add to Queue Starting Here",
+			style: .default,
+			handler: enqueueAlbumStartingAtSelectedSong
+		)
+		
+		// Disable the actions that we shouldn't offer for the last song in the section.
+		
+		if Int(song.index) + numberOfUneditableRowsAtTopOfSection + 1 >= activeLibraryItems.count { // For example, with activeLibraryItems.count (the number of rows) == 3 and numberOfUneditableRowsAtTopOfSection == 2, the song at index 0 is the last song.
+			enqueueAlbumStartingHereAction.isEnabled = false
 		}
+		
+		actionSheet.addAction(playAlbumStartingHereAction)
+		actionSheet.addAction(enqueueAlbumStartingHereAction)
+		actionSheet.addAction(enqueueSongAction)
 		
 		actionSheet.addAction(
 			UIAlertAction(
 				title: "Cancel",
 				style: .cancel,
-				handler: nil
+				handler: { _ in
+					self.tableView.deselectAllRows(animated: true)
+				}
 			)
 		)
 		
 		present(actionSheet, animated: true, completion: nil)
+		
 	}
 	
-	func performSongAction(sender: UIAlertAction) {
-		print("The user tapped the action “\(String(describing: sender.title))”.")
+	func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
+		tableView.deselectAllRows(animated: true)
+		
+	}
+	
+	func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
+		tableView.deselectAllRows(animated: true)
+		
+	}
+	
+	func enqueueSelectedSong(_ sender: UIAlertAction) {
+		tableView.deselectAllRows(animated: true)
 		
 	}
 	

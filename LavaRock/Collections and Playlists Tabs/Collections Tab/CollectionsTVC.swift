@@ -99,7 +99,6 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		// Get the data to put into the cell.
 		
 		let collection = activeLibraryItems[indexPath.row] as! Collection
-		let collectionTitle = collection.title
 		
 		// Make, configure, and return the cell.
 		
@@ -107,7 +106,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		
 		if #available(iOS 14, *) {
 			var configuration = cell.defaultContentConfiguration()
-			configuration.text = collectionTitle
+			configuration.text = collection.title
 			
 			if let moveAlbumsClipboard = moveAlbumsClipboard {
 				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
@@ -119,7 +118,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			cell.contentConfiguration = configuration
 
 		} else { // iOS 13 and earlier
-			cell.textLabel?.text = collectionTitle
+			cell.textLabel?.text = collection.title
 			
 			if let moveAlbumsClipboard = moveAlbumsClipboard {
 				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
@@ -235,15 +234,19 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
 			
 			// Create the new collection.
-			let newCollection = Collection(context: self.coreDataManager.managedObjectContext) // Since we're in "move albums" mode, this should be a child managed object context.
-			var newCollectionTitle = dialog.textFields?[0].text
-			if (newCollectionTitle == nil) || (newCollectionTitle == "") {
-				newCollectionTitle = Self.defaultCollectionTitle
+			
+			var newTitle = dialog.textFields?[0].text
+			if (newTitle == nil) || (newTitle == "") {
+				newTitle = Self.defaultCollectionTitle
 			}
-			newCollection.title = newCollectionTitle
+			
+			let newCollection = Collection(context: self.coreDataManager.managedObjectContext) // Since we're in "move albums" mode, this should be a child managed object context.
+			newCollection.title = newTitle
+			
 			self.activeLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
 			
 			// Enter the new collection.
+			
 			self.tableView.performBatchUpdates( {
 				self.tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
 				
@@ -372,23 +375,26 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			textField.smartDashesType = .yes
 			
 			// UITextField
-			textField.text = self.activeLibraryItems[indexPath.row].value(forKey: "title") as? String
+			let collection = self.activeLibraryItems[indexPath.row] as! Collection
+			textField.text = collection.title
 			textField.placeholder = "Title"
 			textField.clearButtonMode = .whileEditing
 		} )
 		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { action in
+		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { _ in
 			var newTitle = dialog.textFields?[0].text
 			if (newTitle == nil) || (newTitle == "") {
 				newTitle = Self.defaultCollectionTitle
 			}
 			
-			self.activeLibraryItems[indexPath.row].setValue(newTitle, forKey: "title")
+			let collection = self.activeLibraryItems[indexPath.row] as! Collection
+			collection.title = newTitle
+			self.coreDataManager.save()
+			
 			self.tableView.reloadRows(at: [indexPath], with: .fade)
 			if wasRowSelectedBeforeRenaming {
 				self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			}
-			self.coreDataManager.save()
 		}) )
 		present(dialog, animated: true, completion: nil)
 	}

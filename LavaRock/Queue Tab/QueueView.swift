@@ -68,11 +68,13 @@ struct QueueView: View {
 						}
 					}
 			} else { // iOS 13 and earlier
-				Text(noSongsPlaceholder)
-					.navigationBarTitle("Queue", displayMode: .inline)
-					.foregroundColor(.secondary)
-					.multilineTextAlignment(.center)
-					.padding(.all)
+				NavigationView {
+					Text(noSongsPlaceholder)
+						.navigationBarTitle("Queue", displayMode: .inline)
+						.foregroundColor(.secondary)
+						.multilineTextAlignment(.center)
+						.padding(.all)
+				}
 			}
 		}
 	}

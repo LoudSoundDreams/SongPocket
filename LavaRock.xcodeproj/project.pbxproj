@@ -11,12 +11,14 @@
 		071A78F724BB0AC9004646FF /* starTrekII.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 071A78F624BB0AC9004646FF /* starTrekII.jpg */; };
 		071A78F924BB0B81004646FF /* sonicMania.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 071A78F824BB0B81004646FF /* sonicMania.jpg */; };
 		071CA3AD24C6DA370092D92A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071CA3AC24C6DA370092D92A /* CoreDataManager.swift */; };
+		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
 		0736E3A724B8415400A15420 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* AlbumCell.swift */; };
 		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
 		073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColorManager.swift */; };
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
-		073CDBF324B82BBB00F6D2B1 /* songs view cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */; };
+		073CDBF324B82BBB00F6D2B1 /* views for songs view.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* views for songs view.swift */; };
 		0752A8B924DB654D00CAEBBF /* lovePoem.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0752A8B824DB654D00CAEBBF /* lovePoem.jpg */; };
+		0752A8BB24DBBFF800CAEBBF /* welcomeInterstateManagers.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0752A8BA24DBBFF800CAEBBF /* welcomeInterstateManagers.jpg */; };
 		07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07551BC324CFDFDD002D1B15 /* OptionsView.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
 		0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308A24B42DEC0033E3CC /* SceneDelegate.swift */; };
@@ -96,12 +98,14 @@
 		071A78F624BB0AC9004646FF /* starTrekII.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = starTrekII.jpg; sourceTree = "<group>"; };
 		071A78F824BB0B81004646FF /* sonicMania.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sonicMania.jpg; sourceTree = "<group>"; };
 		071CA3AC24C6DA370092D92A /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 		0736E3E924B95FD600A15420 /* extension Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Album.swift"; sourceTree = "<group>"; };
 		073AF48924D16647000C1A6D /* AccentColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
-		073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "songs view cells.swift"; sourceTree = "<group>"; };
+		073CDBF224B82BBB00F6D2B1 /* views for songs view.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "views for songs view.swift"; sourceTree = "<group>"; };
 		0752A8B824DB654D00CAEBBF /* lovePoem.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lovePoem.jpg; sourceTree = "<group>"; };
+		0752A8BA24DBBFF800CAEBBF /* welcomeInterstateManagers.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = welcomeInterstateManagers.jpg; sourceTree = "<group>"; };
 		07551BC324CFDFDD002D1B15 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768308824B42DEC0033E3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -245,6 +249,7 @@
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				07FCE63824B42EDF00F94668 /* Main.storyboard */,
+				072429C324DC786500F62AF6 /* extension UITableView.swift */,
 				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 				0706ABDF24D946AB0090EB21 /* Collections and Playlists Tabs */,
@@ -281,7 +286,7 @@
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
 				0736E3A624B8415400A15420 /* AlbumCell.swift */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
-				073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */,
+				073CDBF224B82BBB00F6D2B1 /* views for songs view.swift */,
 				076830C224B42E3F0033E3CC /* SongsView.swift */,
 			);
 			path = "Collections Tab";
@@ -337,6 +342,7 @@
 				07FC96DF24BABAA90036DD3D /* timeForTheMoonNight.jpg */,
 				07FC96E124BABAAA0036DD3D /* timeForUs.jpg */,
 				07F08EB524BC4B7C001F897A /* wannabe.jpg */,
+				0752A8BA24DBBFF800CAEBBF /* welcomeInterstateManagers.jpg */,
 				07FC96EC24BABAAD0036DD3D /* wide.png */,
 			);
 			path = "Sample Artwork";
@@ -484,6 +490,7 @@
 				07FC970224BABAAE0036DD3D /* dedicatedSideB.jpg in Resources */,
 				07FC970124BABAAE0036DD3D /* emotion.jpg in Resources */,
 				07FC970724BABAAE0036DD3D /* palette.jpg in Resources */,
+				0752A8BB24DBBFF800CAEBBF /* welcomeInterstateManagers.jpg in Resources */,
 				07F08EBF24BC4B7C001F897A /* heartAttack.jpg in Resources */,
 				07F08EC124BC4B7C001F897A /* redMotion.jpg in Resources */,
 				07D0A2D624CDC59E004A2083 /* folklore.jpg in Resources */,
@@ -532,12 +539,13 @@
 				071CA3AD24C6DA370092D92A /* CoreDataManager.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
-				073CDBF324B82BBB00F6D2B1 /* songs view cells.swift in Sources */,
+				073CDBF324B82BBB00F6D2B1 /* views for songs view.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
 				076830CC24B42E400033E3CC /* SongsView.swift in Sources */,
 				076830CE24B42E400033E3CC /* SampleLibrary.swift in Sources */,
 				07752E2024CDE6C60065670F /* QueueView.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
+				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
 				07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,

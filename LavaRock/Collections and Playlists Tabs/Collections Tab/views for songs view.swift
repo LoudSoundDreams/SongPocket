@@ -1,5 +1,5 @@
 //
-//  songs view cells.swift
+//  views for songs view.swift
 //  LavaRock
 //
 //  Created by h on 2020-07-10.
@@ -22,13 +22,11 @@ final class SongsHeaderCellWithoutButton: UITableViewCell {
 	@IBOutlet var yearLabel: UILabel!
 }
 
-final class SongCellWithoutMoreButton: UITableViewCell {
+final class SongCell: UITableViewCell {
 	@IBOutlet var trackNumberLabel: UILabel!
 	@IBOutlet var titleLabel: UILabel!
 }
 
-final class SongCellWithMoreButton: UITableViewCell {
-	@IBOutlet var trackNumberLabel: UILabel!
-	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var moreButton: UIButton!
+final class SongCellMoreButton: UIButton {
+//	var indexPath: IndexPath!
 }
