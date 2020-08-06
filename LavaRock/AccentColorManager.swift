@@ -9,18 +9,42 @@ import UIKit
 
 struct AccentColorManager {
 	
+	// MARK: Properties
+	
 	static let accentColorTuples = [
-		("Strawberry", UIColor.systemPink), // Magenta
+		("Strawberry", UIColor.systemPink), // "Magenta"
 //		("Red", UIColor.systemRed),
-		("Tangerine", UIColor.systemOrange), // Orange
+		("Tangerine", UIColor.systemOrange),
 //		("Yellow", UIColor.systemYellow),
-		("Lime", UIColor.systemGreen), // Green
+		("Lime", UIColor.systemGreen),
 //		("Cyan", UIColor.systemTeal),
-		("Blueberry", UIColor.systemBlue), // Blue
+		("Blueberry", UIColor.systemBlue),
 //		("Indigo", UIColor.systemIndigo),
-		("Grape", UIColor.systemPurple), // Violet
+		("Grape", UIColor.systemPurple), // "Violet"
 //		("None", UIColor.label),
 	]
+	
+	// MARK: Methods
+	
+	static func setAccentColor(_ window: UIWindow) {
+		
+		// If there's a saved accent color preference, set it.
+		if
+			let savedAccentColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String,
+			let matchedAccentColor = Self.uiColor(forName: savedAccentColorName)
+		{
+			window.tintColor = matchedAccentColor // What if you have multiple windows open on an iPad?
+			
+		} else { // Otherwise, either there was no saved preference, or there was one but it didn't correspond to any UIColor in AccentColorManager. Set and save the default accent color.
+			window.tintColor = UIColor.systemBlue
+			if let defaultAccentColorName = Self.colorName(forUIColor: window.tintColor) {
+				DispatchQueue.global().async {
+					UserDefaults.standard.setValue(defaultAccentColorName, forKey: "accentColorName")
+				}
+			}
+		}
+		
+	}
 	
 	static func uiColor(forName lookedUpName: String) -> UIColor? {
 		if let (_, matchedUIColor) = accentColorTuples.first(where: { (savedName, _) in

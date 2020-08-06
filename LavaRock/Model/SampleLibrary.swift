@@ -197,8 +197,6 @@ struct SampleLibrary {
 				]),
 				SampleAlbum("Dedicated", 2019, "dedicated.jpg", [
 					SampleSong("Too Much", 8),
-					SampleSong("The Sound", 9),
-					SampleSong("Automatically in Love", 10),
 					SampleSong("Real Love", 13),
 				]),
 				SampleAlbum("E•mo•tion", 2015, "emotion.jpg", [
@@ -261,6 +259,10 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("IU", [
+				SampleAlbum("Love poem", 2019, "lovePoem.jpg", [
+					SampleSong("unlucky", 1),
+					SampleSong("Lullaby", 5),
+				]),
 				SampleAlbum("Palette", 2017, "palette.jpg", [
 					SampleSong("dlwlrma", 1),
 					SampleSong("Palette", 2),

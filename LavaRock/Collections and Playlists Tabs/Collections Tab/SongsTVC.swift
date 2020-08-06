@@ -123,12 +123,13 @@ final class SongsTVC: LibraryTVC {
 			
 			// Make, configure, and return the cell.
 			
-			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell") as! SongsHeaderCell
+			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell Without Button") as! SongsHeaderCellWithoutButton
+//			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell") as! SongsHeaderCellWithButton
 			
 			headerCell.albumArtistLabel.text = album.albumArtist
 			headerCell.yearLabel.text = yearText
 			
-			headerCell.addAllToDeckButton.isEnabled = !isEditing
+//			headerCell.addAllToDeckButton.isEnabled = !isEditing
 			
 			return headerCell
 			
@@ -139,7 +140,7 @@ final class SongsTVC: LibraryTVC {
 			let song = activeLibraryItems[indexPath.row] as! Song
 			
 			let trackNumberText: String?
-			if song.trackNumber != SongsTVC.impossibleTrackNumber {
+			if song.trackNumber != Self.impossibleTrackNumber {
 				trackNumberText = String(song.trackNumber)
 			} else {
 				trackNumberText = nil
@@ -148,11 +149,11 @@ final class SongsTVC: LibraryTVC {
 			// Make, configure, and return the cell.
 			
 //			if #available(iOS 14, *) {
-//				let cell = tableView.dequeueReusableCell(withIdentifier: "Basic Cell", for: indexPath)
+//				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 //
 //				var configuration = UIListContentConfiguration.valueCell()
-//				configuration.text = String(song.trackNumber)
-//				configuration.secondaryText = song.title
+//				configuration.text = song.title
+//				configuration.secondaryText = trackNumberText
 //
 //				cell.contentConfiguration = configuration
 //
@@ -160,23 +161,23 @@ final class SongsTVC: LibraryTVC {
 //
 //			} else { // iOS 13 or earlier
 			
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
-			
-			cell.trackNumberLabel.text = trackNumberText
-			cell.titleLabel.text = song.title
-			
-			
-			print("for IndexPath \(indexPath), \(String(describing: cell.titleLabel.text)):")
-			print("trackNumberLabel.frame: \(cell.trackNumberLabel.frame)")
-			print("trackNumberLabel.bounds: \(cell.trackNumberLabel.bounds)")
-			print("trackNumberLabel.intrinsicContentSize: \(cell.trackNumberLabel.intrinsicContentSize)")
-//			print("titleLabel.frame: \(cell.titleLabel.frame)")
-//			print("titleLabel.bounds: \(cell.titleLabel.bounds)")
-//			print("titleLabel.intrinsicContentSize: \(cell.titleLabel.intrinsicContentSize)")
-			print("")
-			
-			
-			return cell
+				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCellWithoutMoreButton
+				
+				cell.trackNumberLabel.text = trackNumberText
+				cell.titleLabel.text = song.title
+				
+				
+//				print("for IndexPath \(indexPath), \(String(describing: cell.titleLabel.text)):")
+//				print("trackNumberLabel.frame: \(cell.trackNumberLabel.frame)")
+//				print("trackNumberLabel.bounds: \(cell.trackNumberLabel.bounds)")
+//				print("trackNumberLabel.intrinsicContentSize: \(cell.trackNumberLabel.intrinsicContentSize)")
+				//			print("titleLabel.frame: \(cell.titleLabel.frame)")
+				//			print("titleLabel.bounds: \(cell.titleLabel.bounds)")
+				//			print("titleLabel.intrinsicContentSize: \(cell.titleLabel.intrinsicContentSize)")
+//				print("")
+				
+				
+				return cell
 			
 //			}
 		}
@@ -185,19 +186,19 @@ final class SongsTVC: LibraryTVC {
 	// MARK: Events
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
-		if !isEditing {
-			if let headerCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? SongsHeaderCell {
-				headerCell.addAllToDeckButton.isEnabled = false
-			}
-		}
+//		if !isEditing {
+//			if let headerCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? SongsHeaderCellWithButton {
+//				headerCell.addAllToDeckButton.isEnabled = false
+//			}
+//		}
 		
 		super.setEditing(editing, animated: animated)
 		
-		if !isEditing {
-			if let headerCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? SongsHeaderCell {
-				headerCell.addAllToDeckButton.isEnabled = true
-			}
-		}
+//		if !isEditing {
+//			if let headerCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? SongsHeaderCellWithButton {
+//				headerCell.addAllToDeckButton.isEnabled = true
+//			}
+//		}
 	}
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -212,12 +213,64 @@ final class SongsTVC: LibraryTVC {
 		super.tableView(tableView, didSelectRowAt: indexPath)
 		
 		if !isEditing {
-			tableView.deselectRow(at: indexPath, animated: true) //
+			let song = activeLibraryItems[indexPath.row] as! Song
+			presentActions(for: song)
+			tableView.deselectRow(at: indexPath, animated: true)
 		}
 	}
 	
 	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		return indexPath.row >= numberOfUneditableRowsAtTopOfSection
+	}
+	
+	// MARK: Taking Action on Songs
+	
+	@IBAction func didTapMoreButton(_ sender: UIButton) {
+		print(sender.superview?.superview as Any)
+	}
+	
+	func presentActions(for song: Song) {
+		let songActionTitles = [
+			"Play",
+			"Play from Here",
+			"Add to Queue",
+			"Add to Queue from Here",
+//			"Add to Playlist",
+//			"Add to Playlist from Here",
+		]
+		
+		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		
+		for songActionTitle in songActionTitles {
+			let songAction = UIAlertAction(
+				title: songActionTitle,
+				style: .default,
+				handler: performSongAction
+			)
+			// If you tapped the last song.
+			if
+				Int(song.index) + numberOfUneditableRowsAtTopOfSection + 1 >= activeLibraryItems.count, // For example, with activeLibraryItems.count (the number of rows) == 3 and numberOfUneditableRowsAtTopOfSection == 2, the song at index 0 is the last song.
+				(songActionTitle == "Play from Here") || (songActionTitle == "Add to Queue from Here") || (songActionTitle == "Add to Playlist from Here")
+			{
+				songAction.isEnabled = false
+			}
+			actionSheet.addAction(songAction)
+		}
+		
+		actionSheet.addAction(
+			UIAlertAction(
+				title: "Cancel",
+				style: .cancel,
+				handler: nil
+			)
+		)
+		
+		present(actionSheet, animated: true, completion: nil)
+	}
+	
+	func performSongAction(sender: UIAlertAction) {
+		print("The user tapped the action “\(String(describing: sender.title))”.")
+		
 	}
 	
 	// MARK: Rearranging

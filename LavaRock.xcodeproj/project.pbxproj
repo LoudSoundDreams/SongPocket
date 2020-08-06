@@ -16,6 +16,7 @@
 		073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColorManager.swift */; };
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* songs view cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */; };
+		0752A8B924DB654D00CAEBBF /* lovePoem.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0752A8B824DB654D00CAEBBF /* lovePoem.jpg */; };
 		07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07551BC324CFDFDD002D1B15 /* OptionsView.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
 		0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308A24B42DEC0033E3CC /* SceneDelegate.swift */; };
@@ -100,6 +101,7 @@
 		073AF48924D16647000C1A6D /* AccentColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* songs view cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "songs view cells.swift"; sourceTree = "<group>"; };
+		0752A8B824DB654D00CAEBBF /* lovePoem.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lovePoem.jpg; sourceTree = "<group>"; };
 		07551BC324CFDFDD002D1B15 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768308824B42DEC0033E3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				07FC96E424BABAAB0036DD3D /* labyrinth.jpg */,
 				07F08EB324BC4B7B001F897A /* likeACat.jpg */,
 				07FC96DE24BABAA90036DD3D /* lol.jpg */,
+				0752A8B824DB654D00CAEBBF /* lovePoem.jpg */,
 				07F08EB024BC4B7B001F897A /* miniskirt.jpg */,
 				07FC96E224BABAAA0036DD3D /* modernTimesEpilogue.jpg */,
 				07FC96ED24BABAAE0036DD3D /* palette.jpg */,
@@ -457,6 +460,7 @@
 			files = (
 				071A78F924BB0B81004646FF /* sonicMania.jpg in Resources */,
 				07F08EBA24BC4B7C001F897A /* goodLuck.jpg in Resources */,
+				0752A8B924DB654D00CAEBBF /* lovePoem.jpg in Resources */,
 				07FC96F124BABAAE0036DD3D /* sunnySummer.jpg in Resources */,
 				07FC970324BABAAE0036DD3D /* chatShire.jpg in Resources */,
 				07FC96FD24BABAAE0036DD3D /* planetaryPieces.png in Resources */,

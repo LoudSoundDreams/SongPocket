@@ -160,10 +160,10 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	}
 	
 	func deleteCollectionIfEmpty(at index: Int) {
-		guard let collection = activeLibraryItems[index] as? Collection,
-			collection.contents?.count == 0 else {
-				return
-		}
+		guard
+			let collection = activeLibraryItems[index] as? Collection,
+			collection.contents?.count == 0
+		else { return }
 		
 		coreDataManager.managedObjectContext.delete(collection)
 		activeLibraryItems.remove(at: index)

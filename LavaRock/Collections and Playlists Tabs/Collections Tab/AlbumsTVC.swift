@@ -72,7 +72,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		let albumTitle = album.title
 		
 		let albumYearText: String?
-		if album.year != AlbumsTVC.impossibleYear {
+		if album.year != Self.impossibleYear {
 			albumYearText = String(album.year)
 		} else {
 			albumYearText = nil
