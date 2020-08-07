@@ -99,7 +99,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 //
 //			return cell
 //
-//		} else { // iOS 13 or earlier
+//		} else { // iOS 13 and earlier
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
 			
 			cell.artworkImageView.image = albumImage

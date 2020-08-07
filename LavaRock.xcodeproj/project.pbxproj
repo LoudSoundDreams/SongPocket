@@ -203,15 +203,6 @@
 			path = "Options Sheet";
 			sourceTree = "<group>";
 		};
-		0706ABDF24D946AB0090EB21 /* Collections and Playlists Tabs */ = {
-			isa = PBXGroup;
-			children = (
-				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
-				07752E2324CDF44B0065670F /* Collections Tab */,
-			);
-			path = "Collections and Playlists Tabs";
-			sourceTree = "<group>";
-		};
 		070BEA8724C6BD6A008D5299 /* Life Cycle */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,7 +243,7 @@
 				072429C324DC786500F62AF6 /* extension UITableView.swift */,
 				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
-				0706ABDF24D946AB0090EB21 /* Collections and Playlists Tabs */,
+				07752E2324CDF44B0065670F /* Collections Tab */,
 				07752E2424CDF4600065670F /* Queue Tab */,
 			);
 			path = LavaRock;
@@ -279,6 +270,7 @@
 		07752E2324CDF44B0065670F /* Collections Tab */ = {
 			isa = PBXGroup;
 			children = (
+				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 				07D157EC24D952A600FDF26A /* AlbumMover.swift */,
 				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,

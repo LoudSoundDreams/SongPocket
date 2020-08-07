@@ -159,7 +159,7 @@ final class SongsTVC: LibraryTVC {
 //
 //				return cell
 //
-//			} else { // iOS 13 or earlier
+//			} else { // iOS 13 and earlier
 			
 				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
 				
@@ -272,7 +272,23 @@ final class SongsTVC: LibraryTVC {
 		// Disable the actions that we shouldn't offer for the last song in the section.
 		
 		if Int(song.index) + numberOfUneditableRowsAtTopOfSection + 1 >= activeLibraryItems.count { // For example, with activeLibraryItems.count (the number of rows) == 3 and numberOfUneditableRowsAtTopOfSection == 2, the song at index 0 is the last song.
+			
+//			playAlbumStartingHereAction = UIAlertAction(
+//				title: "Play",
+//				style: .destructive,
+//				handler: playAlbumStartingAtSelectedSong
+//			)
+			
 			enqueueAlbumStartingHereAction.isEnabled = false
+			
+//		} else {
+//
+//			playAlbumStartingHereAction = UIAlertAction(
+//				title: "Play Starting Here",
+//				style: .destructive,
+//				handler: playAlbumStartingAtSelectedSong
+//			)
+			
 		}
 		
 		actionSheet.addAction(playAlbumStartingHereAction)

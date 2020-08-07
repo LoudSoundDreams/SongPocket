@@ -26,7 +26,3 @@ final class SongCell: UITableViewCell {
 	@IBOutlet var trackNumberLabel: UILabel!
 	@IBOutlet var titleLabel: UILabel!
 }
-
-final class SongCellMoreButton: UIButton {
-//	var indexPath: IndexPath!
-}

@@ -282,27 +282,27 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("IU", [
-				SampleAlbum("Love poem", 2019, "lovePoem.jpg", [
-					SampleSong("unlucky", 1),
-					SampleSong("Lullaby", 5),
-				]),
 				SampleAlbum("Palette", 2017, "palette.jpg", [
 					SampleSong("dlwlrma", 1),
-					SampleSong("Palette", 2),
 					SampleSong("Jam Jam", 5),
+					SampleSong("Palette", 2),
 					SampleSong("Through the Night", 8),
+				]),
+				SampleAlbum("Modern Times – Epilogue", 2013, "modernTimesEpilogue.jpg", [
+					SampleSong("Everybody Has Secrets", 4),
+					SampleSong("The Red Shoes", 6),
+					SampleSong("Walk with Me, Girl", 10),
+					SampleSong("Love of B", 3),
+					SampleSong("Havana", 11),
 				]),
 				SampleAlbum("Chat-Shire", 2015, "chatShire.jpg", [
 					SampleSong("Shoes", 1),
 					SampleSong("Twenty-Three", 3),
 					SampleSong("Knees", 6),
 				]),
-				SampleAlbum("Modern Times – Epilogue", 2013, "modernTimesEpilogue.jpg", [
-					SampleSong("Love of B", 3),
-					SampleSong("Everybody Has Secrets", 4),
-					SampleSong("The Red Shoes", 6),
-					SampleSong("Walk with Me, Girl", 10),
-					SampleSong("Havana", 11),
+				SampleAlbum("Love poem", 2019, "lovePoem.jpg", [
+					SampleSong("unlucky", 1),
+					SampleSong("Lullaby", 5),
 				]),
 				SampleAlbum("Real", 2010, "real.jpg", [
 					SampleSong("Good Day", 3),

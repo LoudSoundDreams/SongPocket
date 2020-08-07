@@ -6,7 +6,7 @@
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="needsNewThumbnail" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="sampleArtworkFileNameWithExtension" optional="YES" attributeType="String"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
         <attribute name="year" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="contents" inverseEntity="Collection"/>
         <relationship name="contents" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Song" inverseName="container" inverseEntity="Song"/>
@@ -19,7 +19,7 @@
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
         <attribute name="discNumber" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
         <attribute name="trackNumber" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="contents" inverseEntity="Album"/>
     </entity>

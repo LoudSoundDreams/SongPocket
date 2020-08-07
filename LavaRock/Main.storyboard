@@ -408,8 +408,136 @@
                                     <outlet property="artworkImageView" destination="AJa-zb-mTO" id="K6Z-Cx-6ka"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Header Cell Without Button" id="HA2-HZ-Z2g" customClass="SongsHeaderCellWithoutButton" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="442.33334350585938" width="414" height="69.666664123535156"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HA2-HZ-Z2g" id="57L-IM-v0t">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="69.666664123535156"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="2038" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kS2-rd-NR2">
+                                            <rect key="frame" x="20" y="39.666666666666664" width="374" height="15"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Unknown Album Artist" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXO-Md-qpb">
+                                            <rect key="frame" x="20" y="11.000000000000002" width="374" height="20.666666666666671"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="kS2-rd-NR2" firstAttribute="trailing" secondItem="57L-IM-v0t" secondAttribute="trailingMargin" id="1Z3-V3-kr3"/>
+                                        <constraint firstItem="AXO-Md-qpb" firstAttribute="trailing" secondItem="57L-IM-v0t" secondAttribute="trailingMargin" id="8bF-xe-zO8"/>
+                                        <constraint firstItem="kS2-rd-NR2" firstAttribute="leading" secondItem="57L-IM-v0t" secondAttribute="leadingMargin" id="Bb0-v3-nzs"/>
+                                        <constraint firstItem="kS2-rd-NR2" firstAttribute="top" secondItem="AXO-Md-qpb" secondAttribute="bottom" constant="8" symbolic="YES" id="b7r-0K-kay"/>
+                                        <constraint firstItem="AXO-Md-qpb" firstAttribute="leading" secondItem="57L-IM-v0t" secondAttribute="leadingMargin" id="f1A-UZ-sBD"/>
+                                        <constraint firstItem="kS2-rd-NR2" firstAttribute="bottom" secondItem="57L-IM-v0t" secondAttribute="bottomMargin" constant="-4" id="kTj-Oa-QX2"/>
+                                        <constraint firstItem="AXO-Md-qpb" firstAttribute="top" secondItem="57L-IM-v0t" secondAttribute="topMargin" id="vNE-uu-vfh"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="albumArtistLabel" destination="AXO-Md-qpb" id="auh-2N-HBs"/>
+                                    <outlet property="yearLabel" destination="kS2-rd-NR2" id="d1Q-X1-Tnm"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="5sl-vR-cfB" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="512.00000762939453" width="414" height="64.666664123535156"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5sl-vR-cfB" id="ULF-7m-1PD">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="64.666664123535156"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rif-LJ-CL8">
+                                            <rect key="frame" x="20" y="22" width="31.333333333333329" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="cYR-cd-ILw"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A Song with a Terribly, Horribly, No-Good, Very Long Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t35-xm-5yN">
+                                            <rect key="frame" x="67.333333333333343" y="10.999999999999996" width="326.66666666666663" height="42.666666666666657"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="leading" secondItem="ULF-7m-1PD" secondAttribute="leadingMargin" id="90c-yy-o3R"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="t35-xm-5yN" secondAttribute="bottom" id="GfA-hQ-4Ut"/>
+                                        <constraint firstItem="t35-xm-5yN" firstAttribute="leading" secondItem="rif-LJ-CL8" secondAttribute="trailing" constant="16" id="J33-dg-fmB"/>
+                                        <constraint firstItem="t35-xm-5yN" firstAttribute="top" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="ebT-ls-QPL"/>
+                                        <constraint firstItem="t35-xm-5yN" firstAttribute="trailing" secondItem="ULF-7m-1PD" secondAttribute="trailingMargin" id="kSh-Dh-xHY"/>
+                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="centerY" secondItem="ULF-7m-1PD" secondAttribute="centerY" id="qr1-lD-lh4"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="t35-xm-5yN" id="wWh-iH-4ik"/>
+                                    <outlet property="trackNumberLabel" destination="rif-LJ-CL8" id="YKf-hc-j1D"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell (with More Button)" id="Phs-W6-ch3" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="576.66667175292969" width="414" height="64.666664123535156"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Phs-W6-ch3" id="DMk-EJ-Y4e">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="64.666664123535156"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jP9-8j-zqT">
+                                            <rect key="frame" x="20" y="22" width="31.333333333333329" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="aXa-au-Y2e"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A Song with a Terribly, Horribly, No-Good, Very Long Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3q-fh-SGF">
+                                            <rect key="frame" x="67.333333333333343" y="10.999999999999996" width="285.66666666666663" height="42.666666666666657"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="270" horizontalCompressionResistancePriority="770" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mTP-pk-c13">
+                                            <rect key="frame" x="361" y="16" width="33" height="33"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="33" id="4DM-26-HdS"/>
+                                                <constraint firstAttribute="width" constant="33" id="MkJ-Xu-k8j"/>
+                                                <constraint firstAttribute="height" priority="750" constant="33" id="qMX-f1-Bkm"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <state key="normal" image="ellipsis" catalog="system"/>
+                                            <connections>
+                                                <action selector="didTapMoreButton:" destination="Uik-rz-IBd" eventType="touchUpInside" id="Rz4-jt-aXj"/>
+                                                <action selector="moreButton:" destination="XL4-QZ-kT4" eventType="touchUpInside" id="esf-sV-Vmb"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="mTP-pk-c13" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DMk-EJ-Y4e" secondAttribute="topMargin" id="BTj-Ta-0tb"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="l3q-fh-SGF" secondAttribute="bottom" id="GcS-eV-bG5"/>
+                                        <constraint firstItem="mTP-pk-c13" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="DMk-EJ-Y4e" secondAttribute="bottomMargin" id="J86-UF-ORV"/>
+                                        <constraint firstItem="jP9-8j-zqT" firstAttribute="leading" secondItem="DMk-EJ-Y4e" secondAttribute="leadingMargin" id="XH3-6V-OQL"/>
+                                        <constraint firstItem="l3q-fh-SGF" firstAttribute="leading" secondItem="jP9-8j-zqT" secondAttribute="trailing" constant="16" id="bex-WA-9wd"/>
+                                        <constraint firstItem="jP9-8j-zqT" firstAttribute="centerY" secondItem="DMk-EJ-Y4e" secondAttribute="centerY" id="gY6-Ae-JxZ"/>
+                                        <constraint firstItem="l3q-fh-SGF" firstAttribute="top" secondItem="DMk-EJ-Y4e" secondAttribute="topMargin" id="hOb-mr-Sk4"/>
+                                        <constraint firstItem="mTP-pk-c13" firstAttribute="leading" secondItem="l3q-fh-SGF" secondAttribute="trailing" constant="8" symbolic="YES" id="m10-Bu-t9B"/>
+                                        <constraint firstItem="mTP-pk-c13" firstAttribute="centerY" secondItem="DMk-EJ-Y4e" secondAttribute="centerY" id="q5c-hy-JNi"/>
+                                        <constraint firstItem="mTP-pk-c13" firstAttribute="trailing" secondItem="DMk-EJ-Y4e" secondAttribute="trailingMargin" id="zwo-oS-rcL"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="moreButton" destination="mTP-pk-c13" id="qOw-pT-3zx"/>
+                                    <outlet property="titleLabel" destination="l3q-fh-SGF" id="1b9-5L-GN3"/>
+                                    <outlet property="trackNumberLabel" destination="jP9-8j-zqT" id="SwX-06-a3E"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Header Cell" id="bJC-a8-16c" customClass="SongsHeaderCellWithButton" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="442.33334350585938" width="414" height="106.66666412353516"/>
+                                <rect key="frame" x="0.0" y="641.33333587646484" width="414" height="106.66666412353516"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bJC-a8-16c" id="9uE-sr-mbB">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="106.66666412353516"/>
@@ -449,134 +577,6 @@
                                     <outlet property="addAllToDeckButton" destination="wSW-cl-hId" id="EoM-YU-nZs"/>
                                     <outlet property="albumArtistLabel" destination="Fse-sf-jEA" id="EkT-wv-zNY"/>
                                     <outlet property="yearLabel" destination="nCe-rw-QJ6" id="ARA-Nl-iuk"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Header Cell Without Button" id="HA2-HZ-Z2g" customClass="SongsHeaderCellWithoutButton" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="549.00000762939453" width="414" height="69.666664123535156"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HA2-HZ-Z2g" id="57L-IM-v0t">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="69.666664123535156"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="2038" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kS2-rd-NR2">
-                                            <rect key="frame" x="20" y="39.666666666666664" width="374" height="15"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Unknown Album Artist" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXO-Md-qpb">
-                                            <rect key="frame" x="20" y="11.000000000000002" width="374" height="20.666666666666671"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="kS2-rd-NR2" firstAttribute="trailing" secondItem="57L-IM-v0t" secondAttribute="trailingMargin" id="1Z3-V3-kr3"/>
-                                        <constraint firstItem="AXO-Md-qpb" firstAttribute="trailing" secondItem="57L-IM-v0t" secondAttribute="trailingMargin" id="8bF-xe-zO8"/>
-                                        <constraint firstItem="kS2-rd-NR2" firstAttribute="leading" secondItem="57L-IM-v0t" secondAttribute="leadingMargin" id="Bb0-v3-nzs"/>
-                                        <constraint firstItem="kS2-rd-NR2" firstAttribute="top" secondItem="AXO-Md-qpb" secondAttribute="bottom" constant="8" symbolic="YES" id="b7r-0K-kay"/>
-                                        <constraint firstItem="AXO-Md-qpb" firstAttribute="leading" secondItem="57L-IM-v0t" secondAttribute="leadingMargin" id="f1A-UZ-sBD"/>
-                                        <constraint firstItem="kS2-rd-NR2" firstAttribute="bottom" secondItem="57L-IM-v0t" secondAttribute="bottomMargin" constant="-4" id="kTj-Oa-QX2"/>
-                                        <constraint firstItem="AXO-Md-qpb" firstAttribute="top" secondItem="57L-IM-v0t" secondAttribute="topMargin" id="vNE-uu-vfh"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="albumArtistLabel" destination="AXO-Md-qpb" id="auh-2N-HBs"/>
-                                    <outlet property="yearLabel" destination="kS2-rd-NR2" id="d1Q-X1-Tnm"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="5sl-vR-cfB" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="618.66667175292969" width="414" height="64.666664123535156"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5sl-vR-cfB" id="ULF-7m-1PD">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="64.666664123535156"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rif-LJ-CL8">
-                                            <rect key="frame" x="20" y="22" width="31.333333333333329" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="cYR-cd-ILw"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A Song with a Terribly, Horribly, No-Good, Very Long Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t35-xm-5yN">
-                                            <rect key="frame" x="67.333333333333343" y="10.999999999999996" width="326.66666666666663" height="42.666666666666657"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="leading" secondItem="ULF-7m-1PD" secondAttribute="leadingMargin" id="90c-yy-o3R"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="t35-xm-5yN" secondAttribute="bottom" id="GfA-hQ-4Ut"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="leading" secondItem="rif-LJ-CL8" secondAttribute="trailing" constant="16" id="J33-dg-fmB"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="top" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="ebT-ls-QPL"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="trailing" secondItem="ULF-7m-1PD" secondAttribute="trailingMargin" id="kSh-Dh-xHY"/>
-                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="centerY" secondItem="ULF-7m-1PD" secondAttribute="centerY" id="qr1-lD-lh4"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="titleLabel" destination="t35-xm-5yN" id="wWh-iH-4ik"/>
-                                    <outlet property="trackNumberLabel" destination="rif-LJ-CL8" id="YKf-hc-j1D"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell (with More Button)" id="Phs-W6-ch3" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="683.33333587646484" width="414" height="64.666664123535156"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Phs-W6-ch3" id="DMk-EJ-Y4e">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="64.666664123535156"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jP9-8j-zqT">
-                                            <rect key="frame" x="20" y="22" width="31.333333333333329" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="aXa-au-Y2e"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A Song with a Terribly, Horribly, No-Good, Very Long Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3q-fh-SGF">
-                                            <rect key="frame" x="67.333333333333343" y="10.999999999999996" width="285.66666666666663" height="42.666666666666657"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="270" horizontalCompressionResistancePriority="770" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mTP-pk-c13" customClass="SongCellMoreButton" customModule="LavaRock" customModuleProvider="target">
-                                            <rect key="frame" x="361" y="16" width="33" height="33"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="33" id="4DM-26-HdS"/>
-                                                <constraint firstAttribute="width" constant="33" id="MkJ-Xu-k8j"/>
-                                                <constraint firstAttribute="height" priority="750" constant="33" id="qMX-f1-Bkm"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <state key="normal" image="ellipsis" catalog="system"/>
-                                            <connections>
-                                                <action selector="didTapMoreButton:" destination="Uik-rz-IBd" eventType="touchUpInside" id="Rz4-jt-aXj"/>
-                                                <action selector="moreButton:" destination="XL4-QZ-kT4" eventType="touchUpInside" id="esf-sV-Vmb"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DMk-EJ-Y4e" secondAttribute="topMargin" id="BTj-Ta-0tb"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="l3q-fh-SGF" secondAttribute="bottom" id="GcS-eV-bG5"/>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="DMk-EJ-Y4e" secondAttribute="bottomMargin" id="J86-UF-ORV"/>
-                                        <constraint firstItem="jP9-8j-zqT" firstAttribute="leading" secondItem="DMk-EJ-Y4e" secondAttribute="leadingMargin" id="XH3-6V-OQL"/>
-                                        <constraint firstItem="l3q-fh-SGF" firstAttribute="leading" secondItem="jP9-8j-zqT" secondAttribute="trailing" constant="16" id="bex-WA-9wd"/>
-                                        <constraint firstItem="jP9-8j-zqT" firstAttribute="centerY" secondItem="DMk-EJ-Y4e" secondAttribute="centerY" id="gY6-Ae-JxZ"/>
-                                        <constraint firstItem="l3q-fh-SGF" firstAttribute="top" secondItem="DMk-EJ-Y4e" secondAttribute="topMargin" id="hOb-mr-Sk4"/>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="leading" secondItem="l3q-fh-SGF" secondAttribute="trailing" constant="8" symbolic="YES" id="m10-Bu-t9B"/>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="centerY" secondItem="DMk-EJ-Y4e" secondAttribute="centerY" id="q5c-hy-JNi"/>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="trailing" secondItem="DMk-EJ-Y4e" secondAttribute="trailingMargin" id="zwo-oS-rcL"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="moreButton" destination="mTP-pk-c13" id="qOw-pT-3zx"/>
-                                    <outlet property="titleLabel" destination="l3q-fh-SGF" id="1b9-5L-GN3"/>
-                                    <outlet property="trackNumberLabel" destination="jP9-8j-zqT" id="SwX-06-a3E"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
