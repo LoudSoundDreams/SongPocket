@@ -22,7 +22,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	
 	// Variables
 	var moveAlbumsClipboard: MoveAlbumsClipboard?
-	var didMoveAlbumsToNewCollections = false
+	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
 	
 	// MARK: Setup
 	
@@ -146,16 +146,11 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "Moved Albums",
-		   let albumsTVC = segue.destination as? AlbumsTVC,
-		   didMoveAlbumsToNewCollections
+		   let nonmodalAlbumsTVC = segue.destination as? AlbumsTVC,
+		   let newCollectionDetector = newCollectionDetector,
+		   newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
 		{
-			albumsTVC.didMoveAlbumsToNewCollections = true
-		}
-		else if
-			segue.identifier == "Exit Empty Collection",
-			let collectionsTVC = segue.destination as? CollectionsTVC
-		{
-			collectionsTVC.didMoveAlbumsToNewCollections = true
+			nonmodalAlbumsTVC.newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		
 		super.prepare(for: segue, sender: sender)
@@ -223,7 +218,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		}
 		
 		if activeLibraryItems.isEmpty {
-			didMoveAlbumsToNewCollections = true
+			newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		
 		// Get the albums to move, and to not move.

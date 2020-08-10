@@ -17,6 +17,7 @@
         <relationship name="contents" optional="YES" toMany="YES" deletionRule="Deny" ordered="YES" destinationEntity="Album" inverseName="container" inverseEntity="Album"/>
     </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
+        <attribute name="artist" optional="YES" attributeType="String"/>
         <attribute name="discNumber" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
@@ -26,6 +27,6 @@
     <elements>
         <element name="Album" positionX="-63" positionY="-18" width="128" height="178"/>
         <element name="Collection" positionX="-54" positionY="-9" width="128" height="88"/>
-        <element name="Song" positionX="-36" positionY="36" width="128" height="118"/>
+        <element name="Song" positionX="-36" positionY="36" width="128" height="133"/>
     </elements>
 </model>

@@ -28,20 +28,20 @@ struct SampleLibrary {
 	
 	private struct SampleAlbum {
 		let title: String
-		let albumArtistWhichIsDifferentFromCollectionTitle: String?
+		let albumArtist: String?
 		let year: Int?
 		let artworkFileName: String?
 		let songs: [SampleSong]
 		
 		init(
 			_ title: String,
-			albumArtist: String? = nil,
+			albumArtistIfDifferentFromCollectionTitle: String? = nil,
 			_ year: Int?,
 			_ artworkFileNameWithExtension: String?,
 			_ songs: [SampleSong]
 		) {
 			self.title = title
-			self.albumArtistWhichIsDifferentFromCollectionTitle = albumArtist
+			self.albumArtist = albumArtistIfDifferentFromCollectionTitle
 			self.year = year
 			self.artworkFileName = artworkFileNameWithExtension
 			self.songs = songs
@@ -122,7 +122,7 @@ struct SampleLibrary {
 				let album = albums[index]
 				
 				let newAlbum = Album(context: managedObjectContext)
-				if let albumArtist = album.albumArtistWhichIsDifferentFromCollectionTitle {
+				if let albumArtist = album.albumArtist {
 					newAlbum.albumArtist = albumArtist
 				} else {
 					newAlbum.albumArtist = toCollection.title
@@ -230,7 +230,38 @@ struct SampleLibrary {
 				]),
 			]),
 			
+			SampleCollection("Disasterpeace", [
+				SampleAlbum("Fez", 2012, "Fez.jpg", [
+					SampleSong("Home", 24),
+					SampleSong("Compass", 9),
+					SampleSong("Knowledge", 16),
+					SampleSong("Puzzle", 2),
+					SampleSong("Fear", 13),
+					SampleSong("Flow", 6),
+					SampleSong("Age", 21),
+					SampleSong("Reflection", 25),
+					SampleSong("Nocturne", 20),
+					SampleSong("Beacon", 5),
+					SampleSong("Spirit", 14),
+					SampleSong("Formations", 7),
+					SampleSong("Nature", 15),
+					SampleSong("Forgotten", 10),
+					SampleSong("Progress", 4),
+					SampleSong("Death", 17),
+					SampleSong("Beyond", 3),
+					SampleSong("Continuum", 23),
+					SampleSong("Love", 26),
+					SampleSong("Legend", 8),
+					SampleSong("Memory", 18),
+					SampleSong("Majesty", 22),
+					SampleSong("Adventure", 1),
+				]),
+			]),
+			
 			SampleCollection("Fountains Of Wayne", [
+				SampleAlbum("Sky Full of Holes", 2011, "Sky Full of Holes.jpg", [
+					SampleSong("Action Hero", 5),
+				]),
 				SampleAlbum("Welcome Interstate Managers", 2003, "welcomeInterstateManagers.jpg", [
 					SampleSong("Hey Julie", 9),
 					SampleSong("Hung Up On You", 11),
@@ -282,11 +313,19 @@ struct SampleLibrary {
 			]),
 			
 			SampleCollection("IU", [
+				SampleAlbum("Love poem", 2019, "lovePoem.jpg", [
+					SampleSong("unlucky", 1),
+				]),
 				SampleAlbum("Palette", 2017, "palette.jpg", [
 					SampleSong("dlwlrma", 1),
 					SampleSong("Jam Jam", 5),
 					SampleSong("Palette", 2),
 					SampleSong("Through the Night", 8),
+				]),
+				SampleAlbum("Chat-Shire", 2015, "chatShire.jpg", [
+					SampleSong("Shoes", 1),
+					SampleSong("Twenty-Three", 3),
+					SampleSong("Knees", 6),
 				]),
 				SampleAlbum("Modern Times – Epilogue", 2013, "modernTimesEpilogue.jpg", [
 					SampleSong("Everybody Has Secrets", 4),
@@ -294,15 +333,6 @@ struct SampleLibrary {
 					SampleSong("Walk with Me, Girl", 10),
 					SampleSong("Love of B", 3),
 					SampleSong("Havana", 11),
-				]),
-				SampleAlbum("Chat-Shire", 2015, "chatShire.jpg", [
-					SampleSong("Shoes", 1),
-					SampleSong("Twenty-Three", 3),
-					SampleSong("Knees", 6),
-				]),
-				SampleAlbum("Love poem", 2019, "lovePoem.jpg", [
-					SampleSong("unlucky", 1),
-					SampleSong("Lullaby", 5),
 				]),
 				SampleAlbum("Real", 2010, "real.jpg", [
 					SampleSong("Good Day", 3),
@@ -332,27 +362,36 @@ struct SampleLibrary {
 				]),
 			]),
 			
-			SampleCollection("Sample Box with a Terribly, Horribly, No-Good, Very Long Title that Was Written to Break UI Layouts", [
-				SampleAlbum("Jazz", albumArtist: "Queen", 1978, "jazz.jpg", [
+			SampleCollection("Sample Collection with a Terribly, Horribly, No-Good, Very Long Title that Was Written to Break UI Layouts", [
+				SampleAlbum("", albumArtistIfDifferentFromCollectionTitle: "", nil, nil, [
+					SampleSong("", nil),
+					SampleSong("", -2),
+					SampleSong("", 0),
+				]),
+				SampleAlbum("Sample Album with an Amazingly Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", albumArtistIfDifferentFromCollectionTitle: "Sample Artist with an Incredibly Long Name, Whose Lifelong Mission Is to Breaking UI Layouts", 3000, "wide.png", [
+					SampleSong("Sample Song with a Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
+				]),
+				SampleAlbum("Jazz", albumArtistIfDifferentFromCollectionTitle: "Queen", 1978, "jazz.jpg", [
 					SampleSong("Fat Bottomed Girls", 2),
 					SampleSong("Don’t Stop Me Now", 12),
 				]),
-				SampleAlbum("Full Course", albumArtist: "Lee Jin-ah", 2018, "fullCourse.jpg", [
+				SampleAlbum("Full Course", albumArtistIfDifferentFromCollectionTitle: "Lee Jin-ah", 2018, "fullCourse.jpg", [
 					SampleSong("Stairs", 6),
 					SampleSong("Random", 7),
 					SampleSong("Yum Yum Yum (Rebooted Ver. with Tak)", 3),
 					SampleSong("I’m Full", 4),
 				]),
-				SampleAlbum("Sample Album with an Amazingly Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", albumArtist: "Sample Artist with an Incredibly Long Name, Whose Lifelong Mission Is to Breaking UI Layouts", 3000, "wide.png", [
-					SampleSong("Sample Song with a Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
+			]),
+			
+			SampleCollection("supercell", [
+				SampleAlbum("Zigaexperientia", 2013, "zigaexperientia.jpg", [
+					SampleSong("My Dearest (Album Mix)", 4),
 				]),
-				SampleAlbum("", albumArtist: "", nil, nil, [
-					SampleSong("", nil),
-					SampleSong("", -2),
-					SampleSong("", 0),
+				SampleAlbum("My Dearest", 2011, "myDearest.jpg", [
+					SampleSong("My Dearest -Instrumental-", 5),
 				]),
-				SampleAlbum("Sample Album with No Album Artist, No Artwork, and No Year", albumArtist: "", nil, nil, [
-					SampleSong("Sample Song", 1),
+				SampleAlbum("君の知らない物語", 2009, "君の知らない物語.jpg", [
+					SampleSong("君の知らない物語", 1),
 				]),
 			]),
 			

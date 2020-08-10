@@ -17,11 +17,11 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	// "Constants"
 	@IBOutlet var optionsButton: UIBarButtonItem!
 	var suggestedCollectionTitle: String?
-	static let defaultCollectionTitle = "New Box"
+	static let defaultCollectionTitle = "New Collection"
 	
 	// Variables
 	var moveAlbumsClipboard: MoveAlbumsClipboard?
-	var didMoveAlbumsToNewCollections = false
+	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var indexOfEmptyCollection: Int?
 	
 	// MARK: Setup
@@ -110,7 +110,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			
 			if let moveAlbumsClipboard = moveAlbumsClipboard {
 				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
-					configuration.textProperties.color = .systemGray // A dedicated way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+					configuration.textProperties.color = .placeholderText // A dedicated way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 					cell.selectionStyle = .none
 				}
 			}
@@ -136,10 +136,10 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if didMoveAlbumsToNewCollections {
+		if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
 			loadActiveLibraryItems()
 			tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
-			didMoveAlbumsToNewCollections = false
+			newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
 		}
 	}
 	
@@ -205,6 +205,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			let albumsTVC = segue.destination as? AlbumsTVC
 		{
 			albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
+			albumsTVC.newCollectionDetector = newCollectionDetector
 		}
 		
 		super.prepare(for: segue, sender: sender)
@@ -213,7 +214,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	// MARK: “Move Albums" Mode
 	
 	@IBAction func makeNewCollection(_ sender: UIBarButtonItem) {
-		let dialog = UIAlertController(title: "New Box", message: nil, preferredStyle: .alert)
+		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
 			textField.returnKeyType = .done
@@ -364,7 +365,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	
 	func renameCollection(at indexPath: IndexPath) {
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
-		let dialog = UIAlertController(title: "Rename Box", message: nil, preferredStyle: .alert)
+		let dialog = UIAlertController(title: "Rename Collection", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
 			textField.returnKeyType = .done
