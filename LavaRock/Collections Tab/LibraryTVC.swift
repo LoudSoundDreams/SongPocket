@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import SwiftUI
+import MediaPlayer
 
 class LibraryTVC: UITableViewController {
 	
@@ -25,6 +26,7 @@ class LibraryTVC: UITableViewController {
 	var sortOptions = ["Title"] // Only include the options you want. Make sure they're spelled right, or they won't do anything.
 	
 	// "Constants" that subclasses should not change
+	let mediaLibraryManager = (UIApplication.shared.delegate as! AppDelegate).mediaLibraryManager
 	let cellReuseIdentifier = "Cell"
 	lazy var floatToTopButton = UIBarButtonItem(
 		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
@@ -79,6 +81,7 @@ class LibraryTVC: UITableViewController {
 		}
 		navigationItem.leftBarButtonItems = navigationItemButtonsNotEditMode
 		navigationItem.rightBarButtonItem = editButtonItem
+		navigationItem.rightBarButtonItem?.isEnabled = MPMediaLibrary.authorizationStatus() == .authorized // TO DO: disable the Edit button if there's 0 items, too.
 		navigationItemButtonsEditModeOnly = [floatToTopButton]
 		
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
@@ -95,34 +98,47 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return activeLibraryItems.count
+		switch MPMediaLibrary.authorizationStatus() {
+		case .authorized:
+			return activeLibraryItems.count // TO DO: use placeholder background view if there are no items
+		default:
+			return 1 // "Allow Access" cell
+		}
     }
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return allowAccessCell()
+		}
 		
 		// Get the data to put into the cell.
-		
 		let libraryItem = activeLibraryItems[indexPath.row]
 		let itemTitle = libraryItem.value(forKey: "title") as? String
 		
 		// Make, configure, and return the cell.
-		
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-		
 		if #available(iOS 14, *) {
 			var configuration = cell.defaultContentConfiguration()
-			
 			configuration.text = itemTitle
-			
 			cell.contentConfiguration = configuration
-			
 		} else { // iOS 13 and earlier
 			cell.textLabel?.text = itemTitle
-			
 		}
-		
         return cell
     }
+	
+	func allowAccessCell() -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell")!
+		if #available(iOS 14.0, *) {
+			var configuration = UIListContentConfiguration.cell()
+			configuration.text = "Allow Access to Apple Music"
+			configuration.textProperties.color = view.window!.tintColor
+			cell.contentConfiguration = configuration
+		} else { // iOS 13 and earlier
+			cell.textLabel?.textColor = view.window?.tintColor
+		}
+		return cell
+	}
 	
 	// MARK: Events
 	
@@ -156,9 +172,37 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		
+		switch MPMediaLibrary.authorizationStatus() {
+		case .authorized:
+			break
+		case .notDetermined: // The golden opportunity.
+			MPMediaLibrary.requestAuthorization() { newStatus in // Fires the alert asking the user for access.
+				switch newStatus {
+				case .authorized:
+					DispatchQueue.main.async {
+						MediaPlayerManager.setDefaultLibraryIfAuthorized()
+						self.viewDidLoad()
+						tableView.performBatchUpdates({
+							tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
+							tableView.insertRows(at: self.indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: self.activeLibraryItems.count - 1), with: .middle)
+						}, completion: nil)
+					}
+				default:
+					DispatchQueue.main.async { self.tableView.deselectRow(at: indexPath, animated: true) }
+				}
+			}
+		default: // Denied or restricted.
+			print("Current authorization status: \(MPMediaLibrary.authorizationStatus())")
+			print(UIApplication.openSettingsURLString)
+			let settingsURL = URL(string: UIApplication.openSettingsURLString)!
+			UIApplication.shared.open(settingsURL)
+		}
+		
 		if isEditing {
 			updateBarButtonItems()
 		}
+		
 	}
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

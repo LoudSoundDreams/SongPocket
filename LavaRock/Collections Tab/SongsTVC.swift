@@ -234,22 +234,7 @@ final class SongsTVC: LibraryTVC {
 		
 		// Prepare an action sheet, from top to bottom.
 		
-		// Deduplicate this block. It's copied from cellForRowAt.
-		// Show disc number too?
-//		let trackNumberText: String?
-//		if song.trackNumber != Self.impossibleTrackNumber {
-//			trackNumberText = String(song.trackNumber)
-//		} else {
-//			trackNumberText = nil
-//		}
-//		let actionSheetTitle = (trackNumberText ?? "") + ". " + (song.title ?? "")
-		let actionSheetTitle: String? = nil
-		
-		let actionSheet = UIAlertController(title: actionSheetTitle, message: nil, preferredStyle: .actionSheet) // The name of the song you selected should be plain, not bold.
-		// Strangely, as of iOS 14.0 beta 4:
-		// - If title and message both have values, title is bold and message isn't.
-		// - But if only title has a value, it's not bold
-		// - And if only message has a title, it is bold.
+		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		
 		let playAlbumStartingHereAction = UIAlertAction(
 			title: "Play Starting Here",
@@ -272,23 +257,7 @@ final class SongsTVC: LibraryTVC {
 		// Disable the actions that we shouldn't offer for the last song in the section.
 		
 		if Int(song.index) + numberOfUneditableRowsAtTopOfSection + 1 >= activeLibraryItems.count { // For example, with activeLibraryItems.count (the number of rows) == 3 and numberOfUneditableRowsAtTopOfSection == 2, the song at index 0 is the last song.
-			
-//			playAlbumStartingHereAction = UIAlertAction(
-//				title: "Play",
-//				style: .destructive,
-//				handler: playAlbumStartingAtSelectedSong
-//			)
-			
 			enqueueAlbumStartingHereAction.isEnabled = false
-			
-//		} else {
-//
-//			playAlbumStartingHereAction = UIAlertAction(
-//				title: "Play Starting Here",
-//				style: .destructive,
-//				handler: playAlbumStartingAtSelectedSong
-//			)
-			
 		}
 		
 		actionSheet.addAction(playAlbumStartingHereAction)

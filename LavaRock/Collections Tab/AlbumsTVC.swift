@@ -100,18 +100,18 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 //			return cell
 //
 //		} else { // iOS 13 and earlier
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
-			
-			cell.artworkImageView.image = albumImage
-			cell.titleLabel.text = albumTitle
-			cell.yearLabel.text = albumYearText
-			
-			// Customize the cell.
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
+		
+		cell.artworkImageView.image = albumImage
+		cell.titleLabel.text = albumTitle
+		cell.yearLabel.text = albumYearText
+		
+		// Customize the cell.
 		if moveAlbumsClipboard != nil {
-				cell.accessoryType = .none
-			}
-			
-			return cell
+			cell.accessoryType = .none
+		}
+		
+		return cell
 //		}
     }
 	

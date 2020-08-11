@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import SwiftUI
+import MediaPlayer
 
 final class CollectionsTVC: LibraryTVC, AlbumMover {
 	
@@ -95,6 +96,10 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return super.tableView(tableView, cellForRowAt: indexPath)
+		}
 		
 		// Get the data to put into the cell.
 		
@@ -392,7 +397,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			collection.title = newTitle
 			self.coreDataManager.save()
 			
-			self.tableView.reloadRows(at: [indexPath], with: .fade)
+			self.tableView.reloadRows(at: [indexPath], with: .automatic)
 			if wasRowSelectedBeforeRenaming {
 				self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			}
