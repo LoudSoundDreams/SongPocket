@@ -226,10 +226,6 @@ final class SongsTVC: LibraryTVC {
 	
 	// MARK: Taking Action on Songs
 	
-	@IBAction func didTapMoreButton(_ sender: UIButton) {
-		print(sender.superview?.superview as Any)
-	}
-	
 	func showSongActions(for song: Song) {
 		
 		// Prepare an action sheet, from top to bottom.

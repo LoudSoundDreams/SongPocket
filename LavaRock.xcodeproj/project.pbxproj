@@ -16,6 +16,9 @@
 		073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColorManager.swift */; };
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* views for songs view.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* views for songs view.swift */; };
+		073E648824E37B1D00A1761A /* Be Cool.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 073E648624E37B1D00A1761A /* Be Cool.jpg */; };
+		073E648924E37B1D00A1761A /* Be Wild.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 073E648724E37B1D00A1761A /* Be Wild.jpg */; };
+		073E648D24E37BE400A1761A /* FZ- Side Z.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 073E648C24E37BE400A1761A /* FZ- Side Z.jpg */; };
 		0752A8B924DB654D00CAEBBF /* lovePoem.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0752A8B824DB654D00CAEBBF /* lovePoem.jpg */; };
 		07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07551BC324CFDFDD002D1B15 /* OptionsView.swift */; };
 		0765170224DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */; };
@@ -78,6 +81,9 @@
 		073AF48924D16647000C1A6D /* AccentColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* views for songs view.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "views for songs view.swift"; sourceTree = "<group>"; };
+		073E648624E37B1D00A1761A /* Be Cool.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Be Cool.jpg"; sourceTree = "<group>"; };
+		073E648724E37B1D00A1761A /* Be Wild.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Be Wild.jpg"; sourceTree = "<group>"; };
+		073E648C24E37BE400A1761A /* FZ- Side Z.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "FZ- Side Z.jpg"; sourceTree = "<group>"; };
 		0752A8B824DB654D00CAEBBF /* lovePoem.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lovePoem.jpg; sourceTree = "<group>"; };
 		07551BC324CFDFDD002D1B15 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedAlbumsToNewCollectionDetector.swift; sourceTree = "<group>"; };
@@ -249,11 +255,14 @@
 		07FC96D524BAB9A80036DD3D /* Sample Artwork */ = {
 			isa = PBXGroup;
 			children = (
+				073E648624E37B1D00A1761A /* Be Cool.jpg */,
+				073E648724E37B1D00A1761A /* Be Wild.jpg */,
 				07FC96E924BABAAC0036DD3D /* chatShire.jpg */,
 				07FC96EF24BABAAE0036DD3D /* dedicated.jpg */,
 				07FC96E824BABAAC0036DD3D /* dedicatedSideB.jpg */,
 				07FC96E724BABAAC0036DD3D /* emotion.jpg */,
 				07CEAE9D24E0FEA600C87C95 /* Fez.jpg */,
+				073E648C24E37BE400A1761A /* FZ- Side Z.jpg */,
 				07FC96E024BABAAA0036DD3D /* kiss.jpg */,
 				0752A8B824DB654D00CAEBBF /* lovePoem.jpg */,
 				07FC96E224BABAAA0036DD3D /* modernTimesEpilogue.jpg */,
@@ -381,6 +390,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				073E648824E37B1D00A1761A /* Be Cool.jpg in Resources */,
 				071A78F924BB0B81004646FF /* sonicMania.jpg in Resources */,
 				0752A8B924DB654D00CAEBBF /* lovePoem.jpg in Resources */,
 				07FC970324BABAAE0036DD3D /* chatShire.jpg in Resources */,
@@ -389,12 +399,14 @@
 				07FC96FC24BABAAE0036DD3D /* modernTimesEpilogue.jpg in Resources */,
 				07FC970224BABAAE0036DD3D /* dedicatedSideB.jpg in Resources */,
 				07CEAE9E24E0FEA600C87C95 /* Fez.jpg in Resources */,
+				073E648D24E37BE400A1761A /* FZ- Side Z.jpg in Resources */,
 				07FC970124BABAAE0036DD3D /* emotion.jpg in Resources */,
 				07FC970724BABAAE0036DD3D /* palette.jpg in Resources */,
 				07FC96FA24BABAAE0036DD3D /* kiss.jpg in Resources */,
 				07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				07FC970924BABAAE0036DD3D /* dedicated.jpg in Resources */,
+				073E648924E37B1D00A1761A /* Be Wild.jpg in Resources */,
 				0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

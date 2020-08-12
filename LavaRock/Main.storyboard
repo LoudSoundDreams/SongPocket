@@ -292,7 +292,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="YiT-J8-VtB" kind="relationship" relationship="viewControllers" id="ULc-Ck-PNa"/>
-                        <segue destination="YYU-YO-v0c" kind="relationship" relationship="viewControllers" id="w9m-IZ-F6e"/>
                         <segue destination="vJK-cW-8Bm" kind="relationship" relationship="viewControllers" id="pkP-s2-ENa"/>
                     </connections>
                 </tabBarController>
@@ -616,64 +615,8 @@
                                     <outlet property="trackNumberLabel" destination="rif-LJ-CL8" id="YKf-hc-j1D"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell (with More Button)" id="Phs-W6-ch3" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="537.66667175292969" width="375" height="64.666664123535156"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Phs-W6-ch3" id="DMk-EJ-Y4e">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64.666664123535156"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jP9-8j-zqT">
-                                            <rect key="frame" x="16" y="22" width="31.666666666666671" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="aXa-au-Y2e"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A Song with a Terribly, Horribly, No-Good, Very Long Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3q-fh-SGF">
-                                            <rect key="frame" x="63.666666666666671" y="10.999999999999996" width="254.33333333333331" height="42.666666666666657"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="270" horizontalCompressionResistancePriority="770" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mTP-pk-c13">
-                                            <rect key="frame" x="326" y="16" width="33" height="33"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="33" id="4DM-26-HdS"/>
-                                                <constraint firstAttribute="width" constant="33" id="MkJ-Xu-k8j"/>
-                                                <constraint firstAttribute="height" priority="750" constant="33" id="qMX-f1-Bkm"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <state key="normal" image="ellipsis" catalog="system"/>
-                                            <connections>
-                                                <action selector="didTapMoreButton:" destination="Uik-rz-IBd" eventType="touchUpInside" id="Rz4-jt-aXj"/>
-                                                <action selector="moreButton:" destination="XL4-QZ-kT4" eventType="touchUpInside" id="esf-sV-Vmb"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DMk-EJ-Y4e" secondAttribute="topMargin" id="BTj-Ta-0tb"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="l3q-fh-SGF" secondAttribute="bottom" id="GcS-eV-bG5"/>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="DMk-EJ-Y4e" secondAttribute="bottomMargin" id="J86-UF-ORV"/>
-                                        <constraint firstItem="jP9-8j-zqT" firstAttribute="leading" secondItem="DMk-EJ-Y4e" secondAttribute="leadingMargin" id="XH3-6V-OQL"/>
-                                        <constraint firstItem="l3q-fh-SGF" firstAttribute="leading" secondItem="jP9-8j-zqT" secondAttribute="trailing" constant="16" id="bex-WA-9wd"/>
-                                        <constraint firstItem="jP9-8j-zqT" firstAttribute="centerY" secondItem="DMk-EJ-Y4e" secondAttribute="centerY" id="gY6-Ae-JxZ"/>
-                                        <constraint firstItem="l3q-fh-SGF" firstAttribute="top" secondItem="DMk-EJ-Y4e" secondAttribute="topMargin" id="hOb-mr-Sk4"/>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="leading" secondItem="l3q-fh-SGF" secondAttribute="trailing" constant="8" symbolic="YES" id="m10-Bu-t9B"/>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="centerY" secondItem="DMk-EJ-Y4e" secondAttribute="centerY" id="q5c-hy-JNi"/>
-                                        <constraint firstItem="mTP-pk-c13" firstAttribute="trailing" secondItem="DMk-EJ-Y4e" secondAttribute="trailingMargin" id="zwo-oS-rcL"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="moreButton" destination="mTP-pk-c13" id="qOw-pT-3zx"/>
-                                    <outlet property="titleLabel" destination="l3q-fh-SGF" id="1b9-5L-GN3"/>
-                                    <outlet property="trackNumberLabel" destination="jP9-8j-zqT" id="SwX-06-a3E"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Header Cell" id="bJC-a8-16c" customClass="SongsHeaderCellWithButton" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="602.33333587646484" width="375" height="106.66666412353516"/>
+                                <rect key="frame" x="0.0" y="537.66667175292969" width="375" height="106.66666412353516"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bJC-a8-16c" id="9uE-sr-mbB">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="106.66666412353516"/>
@@ -726,7 +669,6 @@
                     <navigationItem key="navigationItem" title="All Songs" id="skQ-0p-ko2"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hsb-JF-X0J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="XL4-QZ-kT4" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="7432.8000000000002" y="192.85714285714286"/>
         </scene>
@@ -776,7 +718,6 @@
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
         <image name="backward.end.alt.fill" catalog="system" width="128" height="66"/>
         <image name="backward.end.fill" catalog="system" width="128" height="102"/>
-        <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="ellipsis.circle.fill" catalog="system" width="128" height="121"/>
         <image name="fallinLight.jpg" width="2036" height="1400"/>
         <image name="forward.end.fill" catalog="system" width="128" height="102"/>

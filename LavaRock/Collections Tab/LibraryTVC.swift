@@ -153,8 +153,7 @@ class LibraryTVC: UITableViewController {
 		
 		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
 		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
-		tableView.performBatchUpdates(nil, completion: nil) // As of iOS 14.0 beta 3, this causes the app to sometimes crash with an NSRangeException later on after moving a row. beginUpdates() and endUpdates() causes the same.
-		// NOTE: Apparently only when Dynamic Text size is one size larger than default, and 13 particular collections exist. Sometimes the crash is NSInternalInconsistencyException.
+		tableView.performBatchUpdates(nil, completion: nil)
 	}
 	
 	func updateBarButtonItems() {
@@ -193,10 +192,9 @@ class LibraryTVC: UITableViewController {
 				}
 			}
 		default: // Denied or restricted.
-			print("Current authorization status: \(MPMediaLibrary.authorizationStatus())")
-			print(UIApplication.openSettingsURLString)
 			let settingsURL = URL(string: UIApplication.openSettingsURLString)!
 			UIApplication.shared.open(settingsURL)
+			tableView.deselectRow(at: indexPath, animated: true)
 		}
 		
 		if isEditing {
