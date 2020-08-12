@@ -373,12 +373,12 @@ struct SampleLibrary {
 //				]),
 //			]),
 			
-//			SampleCollection("Sample Collection with a Terribly, Horribly, No-Good, Very Long Title that Was Written to Break UI Layouts", [
-//				SampleAlbum("", albumArtistIfDifferentFromCollectionTitle: "", nil, nil, [
-//					SampleSong("", nil),
-//					SampleSong("", -2),
-//					SampleSong("", 0),
-//				]),
+			SampleCollection("Sample Collection with a Terribly, Horribly, No-Good, Very Long Title that Was Written to Break UI Layouts", [
+				SampleAlbum("", albumArtistIfDifferentFromCollectionTitle: "", nil, nil, [
+					SampleSong("", nil),
+					SampleSong("", -2),
+					SampleSong("", 0),
+				]),
 //				SampleAlbum("Sample Album with an Amazingly Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", albumArtistIfDifferentFromCollectionTitle: "Sample Artist with an Incredibly Long Name, Whose Lifelong Mission Is to Breaking UI Layouts", 3000, "wide.png", [
 //					SampleSong("Sample Song with a Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
 //				]),
@@ -392,7 +392,7 @@ struct SampleLibrary {
 //					SampleSong("Yum Yum Yum (Rebooted Ver. with Tak)", 3),
 //					SampleSong("I’m Full", 4),
 //				]),
-//			]),
+			]),
 			
 //			SampleCollection("supercell", [
 //				SampleAlbum("Zigaexperientia", 2013, "zigaexperientia.jpg", [

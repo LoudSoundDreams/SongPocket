@@ -192,7 +192,7 @@
             </objects>
             <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
         </scene>
-        <!--Library-->
+        <!--Apple Music-->
         <scene sceneID="gYt-zP-YD4">
             <objects>
                 <tableViewController id="8yt-Gx-J52" customClass="LibraryViewerTableViewController" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -274,7 +274,7 @@
                             <outlet property="delegate" destination="8yt-Gx-J52" id="mVe-o4-gI7"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Library" id="nuo-t8-Nxj"/>
+                    <navigationItem key="navigationItem" title="Apple Music" id="nuo-t8-Nxj"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DaJ-br-qUo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -292,7 +292,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="YiT-J8-VtB" kind="relationship" relationship="viewControllers" id="ULc-Ck-PNa"/>
-                        <segue destination="vJK-cW-8Bm" kind="relationship" relationship="viewControllers" id="pkP-s2-ENa"/>
+                        <segue destination="YYU-YO-v0c" kind="relationship" relationship="viewControllers" id="qW5-ru-Uw0"/>
+                        <segue destination="vJK-cW-8Bm" kind="relationship" relationship="viewControllers" id="eYS-lV-m5v"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bkr-b7-c0x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -690,11 +691,11 @@
             </objects>
             <point key="canvasLocation" x="5167" y="-601"/>
         </scene>
-        <!--Library-->
+        <!--Apple Music-->
         <scene sceneID="lin-jK-9Sp">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YYU-YO-v0c" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Library" image="app.fill" catalog="system" id="cTc-fV-FrR"/>
+                    <tabBarItem key="tabBarItem" title="Apple Music" image="app.fill" catalog="system" id="cTc-fV-FrR"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="s3G-Q7-eod">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
