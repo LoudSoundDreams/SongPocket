@@ -195,7 +195,7 @@
         <!--Apple Music-->
         <scene sceneID="gYt-zP-YD4">
             <objects>
-                <tableViewController id="8yt-Gx-J52" customClass="LibraryViewerTableViewController" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="8yt-Gx-J52" customClass="AppleMusicViewerTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="B98-xo-Jod">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

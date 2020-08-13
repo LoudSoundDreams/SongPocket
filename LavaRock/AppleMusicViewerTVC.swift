@@ -1,5 +1,5 @@
 //
-//  LibraryViewerTableViewController.swift
+//  AppleMusicViewerTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-10.
@@ -8,7 +8,7 @@
 import UIKit
 import MediaPlayer
 
-class LibraryViewerTableViewController: UITableViewController {
+class AppleMusicViewerTVC: UITableViewController {
 	
 	// Constants
 	static let artworkSize = CGSize(width: 66, height: 66)
