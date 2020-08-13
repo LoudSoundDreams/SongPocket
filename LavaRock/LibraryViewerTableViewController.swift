@@ -13,10 +13,14 @@ class LibraryViewerTableViewController: UITableViewController {
 	// Constants
 	static let artworkSize = CGSize(width: 66, height: 66)
 	
+	// Constant references
+	let mediaLibraryManager = (UIApplication.shared.delegate as! AppDelegate).mediaLibraryManager
+	lazy var collectionsTVC = (tabBarController?.viewControllers?.first as! UINavigationController).viewControllers.first as! CollectionsTVC // This is obviously just for testing. Obviously.
+	
 	// Variables
 	var items: [MPMediaItem]?
 	
-
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -34,40 +38,58 @@ class LibraryViewerTableViewController: UITableViewController {
 	
 	func loadSongs() {
 		items = MPMediaQuery.playlists().items
-//		tableView.reloadData()
+		//		tableView.reloadData()
 	}
 	
 	// MARK: Events
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		/*
-		Special cases:
-		- No access to Music library: 
-		*/
+		
+		switch MPMediaLibrary.authorizationStatus() {
+		case .authorized:
+			break
+		case .notDetermined: // The golden opportunity.
+			MPMediaLibrary.requestAuthorization() { newStatus in // Fires the alert asking the user for access.
+				switch newStatus {
+				case .authorized:
+					DispatchQueue.main.async {
+						MediaPlayerManager.setDefaultLibraryIfAuthorized()
+						self.viewDidLoad()
+						tableView.performBatchUpdates({
+							tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
+							tableView.insertRows(at: self.indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: self.tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
+						}, completion: nil)
+					}
+				default:
+					DispatchQueue.main.async { self.tableView.deselectRow(at: indexPath, animated: true) }
+				}
+			}
+		default: // Denied or restricted.
+			let settingsURL = URL(string: UIApplication.openSettingsURLString)!
+			UIApplication.shared.open(settingsURL)
+			tableView.deselectRow(at: indexPath, animated: true)
+		}
+		
 		tableView.deselectRow(at: indexPath, animated: true)
+		
 	}
-
+	
     // MARK: - Table view data source
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		// Remember to accommodate for situations where the user hasn't allowed access to their Music library (use "Allow Access to Music Library" cell as button), and where the user has no songs in their Music library (use "Add some songs to the Music app" label as background view).
-		return items?.count ?? 1
+		switch MPMediaLibrary.authorizationStatus() {
+		case .authorized:
+			return items?.count ?? 0 //
+		default:
+			return 1 // "Allow Access" cell
+		}
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		// TO DO: deduplicate this. Make this class a subclass of LibraryTVC.
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath)
-			if #available(iOS 14.0, *) {
-				var configuration = UIListContentConfiguration.cell()
-				configuration.text = "Allow Access to Music Library"
-				configuration.textProperties.color = view.window!.tintColor
-				cell.contentConfiguration = configuration
-			} else { // iOS 13 and earlier
-				cell.textLabel?.textColor = view.window?.tintColor
-			}
-			return cell
+			return allowAccessCell(for: indexPath)
 		}
 		
 //		guard items != nil else {
@@ -124,6 +146,19 @@ class LibraryViewerTableViewController: UITableViewController {
 			
 		}
 		
+	}
+	
+	func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) // Do we need a copy of this cell in the storyboard in every scene that's a child of this class?
+		if #available(iOS 14.0, *) {
+			var configuration = UIListContentConfiguration.cell()
+			configuration.text = "Allow Access to Apple Music"
+			configuration.textProperties.color = view.window!.tintColor
+			cell.contentConfiguration = configuration
+		} else { // iOS 13 and earlier
+			cell.textLabel?.textColor = view.window?.tintColor
+		}
+		return cell
 	}
 
     /*

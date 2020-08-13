@@ -23,7 +23,7 @@ class LibraryTVC: UITableViewController {
 	var coreDataManager = CoreDataManager(managedObjectContext: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext) // Inject a child managed object context when in "move albums" mode.
 	var navigationItemButtonsNotEditMode = [UIBarButtonItem]()
 	var navigationItemButtonsEditModeOnly = [UIBarButtonItem]()
-	var sortOptions = ["Title"] // Only include the options you want. Make sure they're spelled right, or they won't do anything.
+	var sortOptions = ["Title"]
 	
 	// "Constants" that subclasses should not change
 	let mediaLibraryManager = (UIApplication.shared.delegate as! AppDelegate).mediaLibraryManager
@@ -108,7 +108,7 @@ class LibraryTVC: UITableViewController {
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return allowAccessCell()
+			return allowAccessCell(for: indexPath)
 		}
 		
 		// Get the data to put into the cell.
@@ -127,8 +127,8 @@ class LibraryTVC: UITableViewController {
         return cell
     }
 	
-	func allowAccessCell() -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell")!
+	func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) // Do we need a copy of this cell in the storyboard in every scene that's a child of this class?
 		if #available(iOS 14.0, *) {
 			var configuration = UIListContentConfiguration.cell()
 			configuration.text = "Allow Access to Apple Music"
@@ -158,7 +158,7 @@ class LibraryTVC: UITableViewController {
 	
 	func updateBarButtonItems() {
 		if isEditing {
-			floatToTopButton.isEnabled = shouldAllowFloatingToTop()
+			floatToTopButton.isEnabled = shouldAllowFloatingToTop(indexPathsForSelectedRows: tableView.indexPathsForSelectedRows)
 			sortButton.isEnabled = shouldAllowSorting()
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditModeOnly, animated: true)
 		} else {
@@ -184,7 +184,7 @@ class LibraryTVC: UITableViewController {
 						self.viewDidLoad()
 						tableView.performBatchUpdates({
 							tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
-							tableView.insertRows(at: self.indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: self.activeLibraryItems.count - 1), with: .middle)
+							tableView.insertRows(at: self.indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: self.tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
 						}, completion: nil)
 					}
 				default:
@@ -252,7 +252,10 @@ class LibraryTVC: UITableViewController {
 	// NOTE: Every IndexPath in selectedIndexPaths must be in the same section as targetIndexPath, and at or down below targetIndexPath.
 	func moveItemsUp(from selectedIndexPaths: [IndexPath]?, to firstIndexPath: IndexPath) {
 		
-		guard let indexPaths = selectedIndexPaths else {
+		guard
+			let indexPaths = selectedIndexPaths,
+			shouldAllowFloatingToTop(indexPathsForSelectedRows: selectedIndexPaths)
+		else {
 			return
 		}
 		for indexPath in indexPaths {
@@ -287,9 +290,6 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	func sortSelectedOrAllItems(sender: UIAlertAction) {
-		// WARNING: I haven’t tested this when the table view has more than 1 section.
-		// This should only be called if shouldAllowSorting() is true, so it assumes that a valid set of rows is selected.
-		
 		// Get the rows to sort.
 		let selectedIndexPaths = selectedOrAllIndexPathsSortedIn(section: 0, firstRow: 0, lastRow: activeLibraryItems.count - 1)
 		
@@ -298,6 +298,8 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	func sortSelectedOrAllItemsPart2(selectedIndexPaths: [IndexPath], sender: UIAlertAction) {
+		
+		guard shouldAllowSorting() else { return }
 		
 		// Get the items to sort, too.
 		let selectedIndexPathsAndItems = dataObjectsPairedWith(selectedIndexPaths, tableViewDataSource: activeLibraryItems) as! [(IndexPath, NSManagedObject)]

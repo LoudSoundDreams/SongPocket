@@ -373,26 +373,18 @@ struct SampleLibrary {
 //				]),
 //			]),
 			
-			SampleCollection("Sample Collection with a Terribly, Horribly, No-Good, Very Long Title that Was Written to Break UI Layouts", [
-				SampleAlbum("", albumArtistIfDifferentFromCollectionTitle: "", nil, nil, [
-					SampleSong("", nil),
-					SampleSong("", -2),
-					SampleSong("", 0),
-				]),
-//				SampleAlbum("Sample Album with an Amazingly Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", albumArtistIfDifferentFromCollectionTitle: "Sample Artist with an Incredibly Long Name, Whose Lifelong Mission Is to Breaking UI Layouts", 3000, "wide.png", [
+//			SampleCollection("Sample Collection with a Terribly, Horribly, No-Good, Very Long Title that Was Written to Break UI Layouts", [
+//				SampleAlbum("Sample Album with an Amazingly Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", albumArtistIfDifferentFromCollectionTitle: "", nil, nil, [
+//					SampleSong("", nil),
+//					SampleSong("", -2),
+//					SampleSong("", 0),
 //					SampleSong("Sample Song with a Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
 //				]),
 //				SampleAlbum("Jazz", albumArtistIfDifferentFromCollectionTitle: "Queen", 1978, "jazz.jpg", [
 //					SampleSong("Fat Bottomed Girls", 2),
 //					SampleSong("Don’t Stop Me Now", 12),
 //				]),
-//				SampleAlbum("Full Course", albumArtistIfDifferentFromCollectionTitle: "Lee Jin-ah", 2018, "fullCourse.jpg", [
-//					SampleSong("Stairs", 6),
-//					SampleSong("Random", 7),
-//					SampleSong("Yum Yum Yum (Rebooted Ver. with Tak)", 3),
-//					SampleSong("I’m Full", 4),
-//				]),
-			]),
+//			]),
 			
 //			SampleCollection("supercell", [
 //				SampleAlbum("Zigaexperientia", 2013, "zigaexperientia.jpg", [
@@ -434,14 +426,7 @@ struct SampleLibrary {
 			
 			SampleCollection("Various Artists", [
 				SampleAlbum("FZ: Side Z", 2013, "FZ- Side Z.jpg", [
-					SampleSong("Onward Via Rotation (feat. Disasterpeace)", 7),
-					SampleSong("Come Back (feat. Disasterpeace & Surasshu)", 8),
-					SampleSong("Beacon (feat. Disasterpeace)", 14),
 					SampleSong("FZ: Side E - Trail", 17),
-					SampleSong("FZ: Side E - Night", 18),
-					SampleSong("Home (BONUS) [feat. Disasterpeace]", 21),
-					SampleSong("Pulse of Adventure (BONUS) [feat. Disasterpeace]", 22),
-					SampleSong("Home (BONUS) [feat. Disasterpeace]", 23),
 				]),
 				SampleAlbum("Planetary Pieces: Sonic World Adventure", 2009, "planetaryPieces.png", [
 					SampleSong("Endless Possibility - Vocal Theme -", 1),

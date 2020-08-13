@@ -201,7 +201,7 @@
 				079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 				079B2C8B24E1ED0C00A949FA /* LibraryViewerTableViewController.swift */,
-				07752E2324CDF44B0065670F /* Collections Tab */,
+				07752E2324CDF44B0065670F /* Library */,
 				07752E2424CDF4600065670F /* Queue Tab */,
 			);
 			path = LavaRock;
@@ -225,10 +225,9 @@
 			path = LavaRockUITests;
 			sourceTree = "<group>";
 		};
-		07752E2324CDF44B0065670F /* Collections Tab */ = {
+		07708A5524E5A2DF000FE01D /* Collections Tab */ = {
 			isa = PBXGroup;
 			children = (
-				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 				07D157EC24D952A600FDF26A /* AlbumMover.swift */,
 				0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */,
@@ -241,6 +240,15 @@
 				076830C224B42E3F0033E3CC /* SongsView.swift */,
 			);
 			path = "Collections Tab";
+			sourceTree = "<group>";
+		};
+		07752E2324CDF44B0065670F /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
+				07708A5524E5A2DF000FE01D /* Collections Tab */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 		07752E2424CDF4600065670F /* Queue Tab */ = {

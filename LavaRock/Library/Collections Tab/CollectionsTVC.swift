@@ -30,7 +30,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	override func viewDidLoad() {
 		if moveAlbumsClipboard != nil {
 		} else {
-			navigationItemButtonsNotEditMode = [optionsButton]
+			navigationItemButtonsNotEditMode = [UIBarButtonItem]()//[optionsButton]
 		}
 		
 		super.viewDidLoad()
