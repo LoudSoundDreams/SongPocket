@@ -160,8 +160,6 @@ struct SampleLibrary {
 		injectSampleCollections([
 			
 //			SampleCollection("Albums", [
-			
-			
 //			SampleCollection("Alexander Melkinov", [
 //				SampleAlbum("Shostakovich: Piano Concertos", 2012, "shostakovichPianoConcertos.jpg", [
 //					SampleSong("Piano Concerto No. 2 in F Major, Op. 102 No. 1, Allegro", 1),
@@ -211,10 +209,8 @@ struct SampleLibrary {
 			SampleCollection("Carly Rae Jepsen", [
 				SampleAlbum("Dedicated Side B", 2020, "dedicatedSideB.jpg", [
 					SampleSong("This Love Isn’t Crazy", 1),
-					SampleSong("Solo", 11),
 				]),
 				SampleAlbum("Dedicated", 2019, "dedicated.jpg", [
-					SampleSong("Too Much", 8),
 					SampleSong("Real Love", 13),
 				]),
 				SampleAlbum("E•mo•tion", 2015, "emotion.jpg", [
@@ -227,7 +223,6 @@ struct SampleLibrary {
 					SampleSong("When I Needed You", 12),
 				]),
 				SampleAlbum("Kiss", 2012, "kiss.jpg", [
-					SampleSong("Good Time", 5),
 					SampleSong("Turn Me Up", 7),
 				]),
 			]),
@@ -345,7 +340,7 @@ struct SampleLibrary {
 					SampleSong("Love of B", 3),
 					SampleSong("Havana", 11),
 				]),
-				SampleAlbum("Real", 2010, "real.jpg", [
+				SampleAlbum("Real", 2010, "Real.jpg", [
 					SampleSong("Good Day", 3),
 					SampleSong("Merry Christmas in Advance", 6),
 				]),
@@ -373,18 +368,18 @@ struct SampleLibrary {
 //				]),
 //			]),
 			
-//			SampleCollection("Sample Collection with a Terribly, Horribly, No-Good, Very Long Title that Was Written to Break UI Layouts", [
-//				SampleAlbum("Sample Album with an Amazingly Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", albumArtistIfDifferentFromCollectionTitle: "", nil, nil, [
-//					SampleSong("", nil),
-//					SampleSong("", -2),
-//					SampleSong("", 0),
-//					SampleSong("Sample Song with a Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
-//				]),
+			SampleCollection("Sample Collection with a Terribly, Horribly, No-Good, Very Long Title that Was Written to Break UI Layouts", [
+				SampleAlbum("Sample Album with an Amazingly Long Title, in Which Amazingly Few Discotheques Provide Jukeboxes", albumArtistIfDifferentFromCollectionTitle: "", nil, nil, [
+					SampleSong("", nil),
+					SampleSong("", -2),
+					SampleSong("", 0),
+					SampleSong("Sample Song with a Very Long Title, in Which Quick Brown Foxes Jump Over Lazy Dogs", 88888),
+				]),
 //				SampleAlbum("Jazz", albumArtistIfDifferentFromCollectionTitle: "Queen", 1978, "jazz.jpg", [
 //					SampleSong("Fat Bottomed Girls", 2),
 //					SampleSong("Don’t Stop Me Now", 12),
 //				]),
-//			]),
+			]),
 			
 //			SampleCollection("supercell", [
 //				SampleAlbum("Zigaexperientia", 2013, "zigaexperientia.jpg", [

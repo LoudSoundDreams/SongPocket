@@ -179,7 +179,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	}
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {
-//		let dismissClosure = { self.dismiss(animated: true, completion: nil) }
+//		let dismissClosure = { self.dismiss(animated: true, completion: nil) } // Does this cause a strong reference cycle?
 //		return UIHostingController(
 //			coder: coder,
 //			rootView: OptionsView(
