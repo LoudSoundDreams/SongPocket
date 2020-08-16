@@ -52,6 +52,17 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		}
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if moveAlbumsClipboard != nil {
+		} else {
+			if activeLibraryItems.isEmpty {
+				performSegue(withIdentifier: "Exit Empty Collection", sender: nil)
+			}
+		}
+	}
+	
 	// MARK: Loading Data
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -117,17 +128,6 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	
 	// MARK: - Events
 	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		if moveAlbumsClipboard != nil {
-		} else {
-			if activeLibraryItems.isEmpty {
-				performSegue(withIdentifier: "Exit Empty Collection", sender: nil)
-			}
-		}
-	}
-	
 	override func updateBarButtonItems() {
 		super.updateBarButtonItems()
 		
@@ -148,8 +148,10 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		if segue.identifier == "Moved Albums",
 		   let nonmodalAlbumsTVC = segue.destination as? AlbumsTVC,
 		   let newCollectionDetector = newCollectionDetector,
+//		   newCollectionDetector.numberOfCollectionsToInsertOnNextViewWillAppear > 0,
 		   newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
 		{
+//			nonmodalAlbumsTVC.newCollectionDetector!.numberOfCollectionsToInsertOnNextViewWillAppear = newCollectionDetector.numberOfCollectionsToInsertOnNextViewWillAppear
 			nonmodalAlbumsTVC.newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		
@@ -218,6 +220,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		}
 		
 		if activeLibraryItems.isEmpty {
+//			newCollectionDetector!.numberOfCollectionsToInsertOnNextViewWillAppear += 1
 			newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		

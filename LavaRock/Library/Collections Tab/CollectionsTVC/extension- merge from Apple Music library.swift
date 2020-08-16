@@ -52,7 +52,7 @@ extension CollectionsTVC {
 //		print("Deleted songs: \(deletedSongs.count)")
 //		print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
 		
-		createManagedObjects(for: newMediaItems)
+		createManagedObjects(for: newMediaItems) // Create before deleting. That way, for example, if you deleted all the songs from an album, but added other songs from that album, that album will stay in the same place in this app.
 		deleteManagedObjects(for: deletedSongs)
 		updateManagedObjects(for: potentiallyModifiedSongs, toMatch: potentiallyModifiedMediaItems)
 		
@@ -65,7 +65,6 @@ extension CollectionsTVC {
 	// MARK: - Creating Managed Objects
 	
 	func createManagedObjects(for songsImmutable: [MPMediaItem]) {
-		
 		let newMediaItemsSortedInReverse = songsSortedInReverseTargetOrder(songs: songsImmutable)
 		
 		// Make new managed objects for the new songs, adding containers for them if necessary.
@@ -79,7 +78,6 @@ extension CollectionsTVC {
 			
 			createManagedObject(for: newMediaItem)
 		}
-		
 	}
 	
 	private func songsSortedInReverseTargetOrder(songs songsImmutable: [MPMediaItem]) -> [MPMediaItem] {
@@ -94,8 +92,15 @@ extension CollectionsTVC {
 			songsCopy.sort() { ($0.dateAdded) > ($1.dateAdded) }
 		}
 		songsCopy.reverse()
-		// The final order of songs added will be:
-		
+		// We're targeting putting new songs in this order:
+		// - If we currently have no collections:
+		// - - Grouped by alphabetically sorted album artist
+		// - - Within each album artist, grouped by alphabetically sorted album
+		// - - Within each album, grouped by increasing track number
+		// - - Within each track number, sorted alphabetically
+		// - If there are any existing collections:
+		// - - Newer songs on top
+		// - - The actual results will be different: songs will be added to existing albums if possible, and albums will be added to existing collections if possible.
 		
 		return songsCopy
 	}

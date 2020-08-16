@@ -75,6 +75,31 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		)
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
+			loadSavedLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells loadSavedLibraryItems() to not call mergeChangesFromAppleMusicLibrary(), because that deletes empty collections for us. We want to animate that.
+			tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
+			newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
+		}
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if moveAlbumsClipboard != nil {
+			deleteCollectionIfEmpty(at: 0)
+			
+		} else {
+			if indexOfEmptyCollection != nil {
+				deleteCollectionIfEmpty(at: indexOfEmptyCollection!)
+				indexOfEmptyCollection = nil
+			}
+			
+		}
+	}
+	
 	// MARK: Loading Data
 	
 	override func loadSavedLibraryItems() {
@@ -82,9 +107,11 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		
 		if moveAlbumsClipboard != nil {
 		} else { // Not in "move albums" mode
-			mergeChangesFromAppleMusicLibrary()
-			
-			super.loadSavedLibraryItems() // Or rather, the full implementation above; just don't cause an infinite loop calling mergeChangesFromAppleMusicLibrary().
+			if !newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
+				mergeChangesFromAppleMusicLibrary()
+				
+				super.loadSavedLibraryItems() // Or rather, the full implementation above; just don't cause an infinite loop calling mergeChangesFromAppleMusicLibrary().
+			}
 			
 			
 //			if activeLibraryItems.isEmpty {
@@ -139,32 +166,6 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	}
 	
 	// MARK: - Events
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-			loadSavedLibraryItems() // Don't reload and refresh blindly; pass the specific changes back
-			print(activeLibraryItems)
-			tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
-			newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
-		}
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		if moveAlbumsClipboard != nil {
-			deleteCollectionIfEmpty(at: 0)
-			
-		} else {
-			if indexOfEmptyCollection != nil {
-				deleteCollectionIfEmpty(at: indexOfEmptyCollection!)
-				indexOfEmptyCollection = nil
-			}
-			
-		}
-	}
 	
 	func deleteCollectionIfEmpty(at index: Int) {
 		guard
@@ -363,13 +364,6 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		let albumsTVC = unwindSegue.source as! AlbumsTVC
 		let emptyCollection = albumsTVC.containerOfData as! Collection
 		indexOfEmptyCollection = Int(emptyCollection.index)
-		print(indexOfEmptyCollection)
-		
-		var indexes = [Int64]()
-		for item in activeLibraryItems {
-			indexes.append((item as! Collection).index)
-		}
-		print(indexes)
 	}
 	
 	// MARK: - Renaming
