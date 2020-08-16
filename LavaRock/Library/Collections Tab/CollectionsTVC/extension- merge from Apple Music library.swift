@@ -66,7 +66,25 @@ extension CollectionsTVC {
 	
 	func createManagedObjects(for songsImmutable: [MPMediaItem]) {
 		
+		let newMediaItemsSortedInReverse = songsSortedInReverseTargetOrder(songs: songsImmutable)
+		
+		// Make new managed objects for the new songs, adding containers for them if necessary.
+		for newMediaItem in newMediaItemsSortedInReverse {
+			// If we already have the album (by persistent ID) that we're adding the song to, add it to that album.
+			// Otherwise, make that album:
+			// - If we already have a collection with a matching title (by album artist), add it to that collection.
+			// - Otherwise, make that collection.
+			// - - Then make the album in that collection, like we were going to.
+			// - - - Then make the song in that album, like we were going to.
+			
+			createManagedObject(for: newMediaItem)
+		}
+		
+	}
+	
+	private func songsSortedInReverseTargetOrder(songs songsImmutable: [MPMediaItem]) -> [MPMediaItem] {
 		var songsCopy = songsImmutable
+		
 		if activeLibraryItems.count == 0 {
 			songsCopy.sort() { ($0.title ?? "") < ($1.title ?? "") }
 			songsCopy.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
@@ -75,67 +93,40 @@ extension CollectionsTVC {
 		} else {
 			songsCopy.sort() { ($0.dateAdded) > ($1.dateAdded) }
 		}
+		songsCopy.reverse()
+		// The final order of songs added will be:
 		
-		// Make new managed objects for the new songs, adding containers for them if necessary.
-		for newMediaItem in songsCopy.reversed() {
-			// The final order of songs added will be:
+		
+		return songsCopy
+	}
+	
+	private func createManagedObject(for newMediaItem: MPMediaItem) {
+		coreDataManager.managedObjectContext.performAndWait {
 			
+			let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
+			// TO DO: Filter the fetch request with a predicate that says "the album's persistent ID is []". Will that be faster?
+			let allAlbums = coreDataManager.managedObjects(for: albumsFetchRequest) as! [Album]
 			
-			if let existingCollectionWithMatchingTitle = activeLibraryItems.first(where: { (collection) in
-				(collection as! Collection).title == newMediaItem.albumArtist
+			// If we already have a record of the album (by albumPersistentID) that we're adding the song to.
+			if let matchingExistingAlbum = allAlbums.first(where: { existingAlbum in
+				existingAlbum.albumPersistentID == Int64(bitPattern: newMediaItem.albumPersistentID)
 			})
 			{
-				createManagedObject(for: newMediaItem, inCollection: existingCollectionWithMatchingTitle as! Collection) // Batch these? If so, watch the order!
+				createManagedObject(for: newMediaItem, inAlbumWithID: matchingExistingAlbum.objectID)
 				
-			} else { // There is no existing collection whose title matches the album artist of the new media item.
-				coreDataManager.managedObjectContext.performAndWait {
-					let newCollection = Collection(context: coreDataManager.managedObjectContext)
-					newCollection.title = newMediaItem.albumArtist ?? ""
-					activeLibraryItems.insert(newCollection, at: 0)
-				}
-				// … and then try again (with force!).
-				let existingCollectionWithMatchingTitle = activeLibraryItems.first(where: { (collection) in
-					(collection as! Collection).title == newMediaItem.albumArtist
-				})!
-				createManagedObject(for: newMediaItem, inCollection: existingCollectionWithMatchingTitle as! Collection) // Batch these?
+			} else { // Make the album to add the song to.
+				createManagedObjectForNewAlbum(for: newMediaItem)
+				// … and then try again (risking an infinite loop).
+				createManagedObject(for: newMediaItem)
 			}
-		}
-		
-	}
-	
-	private func createManagedObject(for song: MPMediaItem, inCollection collection: Collection) {
-		
-		let albumsInCollection = collection.contents
-		
-		// If the collection already contains the album that the song belongs to.
-		if let existingAlbum = albumsInCollection?.first(where: { (album) in
-			(album as! Album).albumPersistentID == Int64(bitPattern: song.albumPersistentID)
-		})
-		{
-			createManagedObject(for: song, inAlbum: existingAlbum as! Album)
 			
-		} else { // Make the album to add the song to.
-			coreDataManager.managedObjectContext.performAndWait {
-				let newAlbum = Album(context: coreDataManager.managedObjectContext)
-				newAlbum.albumArtist = song.albumArtist
-				newAlbum.albumPersistentID = Int64(bitPattern: song.albumPersistentID)
-				newAlbum.index = 0
-				if let albumsInCollection = albumsInCollection {
-					for album in albumsInCollection {
-						(album as! Album).index += 1
-					}
-				}
-				newAlbum.title = song.albumTitle
-//				newAlbum.year =
-				newAlbum.container = collection
-				createManagedObject(for: song, inAlbum: newAlbum)
-			}
 		}
-		
 	}
 	
-	private func createManagedObject(for song: MPMediaItem, inAlbum album: Album) {
+	private func createManagedObject(for song: MPMediaItem, inAlbumWithID albumID: NSManagedObjectID) {
 		coreDataManager.managedObjectContext.performAndWait {
+			let album = coreDataManager.managedObjectContext.object(with: albumID) as! Album
+			
 			let newSong = Song(context: coreDataManager.managedObjectContext)
 			newSong.artist = song.artist
 			newSong.discNumber = Int64(song.discNumber)
@@ -152,6 +143,48 @@ extension CollectionsTVC {
 		}
 	}
 	
+	private func createManagedObjectForNewAlbum(for newMediaItem: MPMediaItem) {
+		// We should only be running this if we don't already have a managed object for the album for the song.
+		coreDataManager.managedObjectContext.performAndWait {
+			
+			// If we already have a collection with a matching title (by album artist) that we should add the album to.
+			if let existingCollectionWithMatchingTitle = activeLibraryItems.first(where: { existingCollection in
+				(existingCollection as! Collection).title == newMediaItem.albumArtist
+			})
+			{
+				let existingCollectionWithMatchingTitle = existingCollectionWithMatchingTitle as! Collection
+				
+				let newAlbum = Album(context: coreDataManager.managedObjectContext)
+				newAlbum.albumArtist = newMediaItem.albumArtist
+				newAlbum.albumPersistentID = Int64(bitPattern: newMediaItem.albumPersistentID)
+				newAlbum.index = 0
+				if let existingAlbumsInCollection = existingCollectionWithMatchingTitle.contents {
+					for existingAlbum in existingAlbumsInCollection {
+						(existingAlbum as! Album).index += 1
+					}
+				}
+				newAlbum.title = newMediaItem.albumTitle
+//				newAlbum.year =
+				newAlbum.container = existingCollectionWithMatchingTitle
+				
+			} else { // Make the collection to add the album to.
+				createManagedObjectForNewCollection(for: newMediaItem)
+				// … and then try again (risking an infinite loop).
+				createManagedObjectForNewAlbum(for: newMediaItem)
+			}
+			
+		}
+	}
+	
+	private func createManagedObjectForNewCollection(for newMediaItem: MPMediaItem) {
+		// We should only be running this if we don't already have a managed object for the collection for the album for the song.
+		coreDataManager.managedObjectContext.performAndWait {
+			let newCollection = Collection(context: coreDataManager.managedObjectContext)
+			newCollection.title = newMediaItem.albumArtist ?? ""
+			activeLibraryItems.insert(newCollection, at: 0)
+		}
+	}
+	
 	// MARK: - Deleting Managed Objects
 	
 	func deleteManagedObjects(for songs: [Song]) { // then clean up empty albums, then clean up empty collections
@@ -159,41 +192,51 @@ extension CollectionsTVC {
 			for song in songs {
 				coreDataManager.managedObjectContext.delete(song)
 			}
-			
-			deleteEmptyAlbums()
-			deleteEmptyCollections()
 		}
+		
+		deleteEmptyAlbums()
+		deleteEmptyCollections()
 	}
 	
 	private func deleteEmptyAlbums() {
-		let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
-		let allAlbums = coreDataManager.managedObjects(for: albumsFetchRequest) as! [Album]
-		
-		for album in allAlbums {
-			if
-				let contents = album.contents,
-				contents.count > 0
-			{
-				
-			} else {
-				coreDataManager.managedObjectContext.delete(album)
+		coreDataManager.managedObjectContext.performAndWait {
+			
+			let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
+			// TO DO: Filter the fetch request with a predicate that says "the album has 0 contents". Will that be faster?
+			let allAlbums = coreDataManager.managedObjects(for: albumsFetchRequest) as! [Album]
+			
+			for album in allAlbums {
+				if
+					let contents = album.contents,
+					contents.count > 0
+				{
+					
+				} else {
+					coreDataManager.managedObjectContext.delete(album)
+				}
 			}
+			
 		}
 	}
 	
 	private func deleteEmptyCollections() {
-		let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
-		let allCollections = coreDataManager.managedObjects(for: collectionsFetchRequest) as! [Collection]
-		
-		for collection in allCollections {
-			if
-				let contents = collection.contents,
-				contents.count > 0
-			{
-				
-			} else {
-				coreDataManager.managedObjectContext.delete(collection)
+		coreDataManager.managedObjectContext.performAndWait {
+			
+			let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+			// TO DO: Filter the fetch request with a predicate that says "the collection has 0 contents". Will that be faster?
+			let allCollections = coreDataManager.managedObjects(for: collectionsFetchRequest) as! [Collection]
+			
+			for collection in allCollections {
+				if
+					let contents = collection.contents,
+					contents.count > 0
+				{
+					
+				} else {
+					coreDataManager.managedObjectContext.delete(collection)
+				}
 			}
+			
 		}
 	}
 	
