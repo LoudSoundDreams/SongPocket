@@ -24,7 +24,7 @@ final class SongsTVC: LibraryTVC {
 	
 	**Instead**, I've used the regular cell at IndexPath [0,0] as the "header".
 	This requires hacking activeLibraryItems to accommodate anything involving IndexPaths. This is the hack:
-	- As soon as activeLibraryItems is first loaded in loadActiveLibraryItems(), insert a dummy duplicate of the object at [0] to index 0.
+	- As soon as activeLibraryItems is first loaded in loadSavedLibraryItems(), insert a dummy duplicate of the object at [0] to index 0.
 		This makes activeLibraryItems.count match the number of rows, and makes activeLibraryItems[indexPath.row] reference the right object without any offset.
 		Nothing should access that dummy duplicate object.
 	- Whenever updating the "index" attributes of the NSManagedObjects in activeLibraryItems, set 0 to the first object after the dummy duplicate object, and count up from there.
@@ -66,16 +66,12 @@ final class SongsTVC: LibraryTVC {
 	
 	// MARK: Loading Data
 	
-	override func loadActiveLibraryItems() {
-		super.loadActiveLibraryItems()
+	override func loadSavedLibraryItems() {
+		super.loadSavedLibraryItems()
 		
 		for _ in 1...numberOfUneditableRowsAtTopOfSection {
 			activeLibraryItems.insert(activeLibraryItems[0], at: 0)
 		}
-	}
-	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return activeLibraryItems.count
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

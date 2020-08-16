@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0703ED2324E85F2A002EF1B4 /* Kiss.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0703ED2224E85F2A002EF1B4 /* Kiss.jpg */; };
+		0703ED2524E8D0DA002EF1B4 /* extension- merge from Apple Music library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* extension- merge from Apple Music library.swift */; };
 		0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */; };
-		071A78F924BB0B81004646FF /* sonicMania.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 071A78F824BB0B81004646FF /* sonicMania.jpg */; };
 		071CA3AD24C6DA370092D92A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071CA3AC24C6DA370092D92A /* CoreDataManager.swift */; };
 		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
 		0736E3A724B8415400A15420 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* AlbumCell.swift */; };
@@ -16,12 +17,8 @@
 		073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColorManager.swift */; };
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* views for songs view.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* views for songs view.swift */; };
-		073E648824E37B1D00A1761A /* Be Cool.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 073E648624E37B1D00A1761A /* Be Cool.jpg */; };
-		073E648924E37B1D00A1761A /* Be Wild.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 073E648724E37B1D00A1761A /* Be Wild.jpg */; };
 		073E648D24E37BE400A1761A /* FZ- Side Z.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 073E648C24E37BE400A1761A /* FZ- Side Z.jpg */; };
-		0752A8B924DB654D00CAEBBF /* lovePoem.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0752A8B824DB654D00CAEBBF /* lovePoem.jpg */; };
 		07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07551BC324CFDFDD002D1B15 /* OptionsView.swift */; };
-		0764C6F524E6FCAB003D5B3D /* Real.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0764C6F424E6FCAB003D5B3D /* Real.jpg */; };
 		0765170224DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
 		0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308A24B42DEC0033E3CC /* SceneDelegate.swift */; };
@@ -43,13 +40,8 @@
 		079B2C9524E227BF00A949FA /* MediaPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */; };
 		07CEAE9E24E0FEA600C87C95 /* Fez.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07CEAE9D24E0FEA600C87C95 /* Fez.jpg */; };
 		07D157ED24D952A600FDF26A /* AlbumMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D157EC24D952A600FDF26A /* AlbumMover.swift */; };
-		07FC96FA24BABAAE0036DD3D /* kiss.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96E024BABAAA0036DD3D /* kiss.jpg */; };
-		07FC96FC24BABAAE0036DD3D /* modernTimesEpilogue.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96E224BABAAA0036DD3D /* modernTimesEpilogue.jpg */; };
-		07FC96FD24BABAAE0036DD3D /* planetaryPieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96E324BABAAA0036DD3D /* planetaryPieces.png */; };
 		07FC970124BABAAE0036DD3D /* emotion.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96E724BABAAC0036DD3D /* emotion.jpg */; };
 		07FC970224BABAAE0036DD3D /* dedicatedSideB.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96E824BABAAC0036DD3D /* dedicatedSideB.jpg */; };
-		07FC970324BABAAE0036DD3D /* chatShire.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96E924BABAAC0036DD3D /* chatShire.jpg */; };
-		07FC970724BABAAE0036DD3D /* palette.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96ED24BABAAE0036DD3D /* palette.jpg */; };
 		07FC970924BABAAE0036DD3D /* dedicated.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96EF24BABAAE0036DD3D /* dedicated.jpg */; };
 		07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FCE63824B42EDF00F94668 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -72,8 +64,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0703ED2224E85F2A002EF1B4 /* Kiss.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Kiss.jpg; sourceTree = "<group>"; };
+		0703ED2424E8D0DA002EF1B4 /* extension- merge from Apple Music library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension- merge from Apple Music library.swift"; sourceTree = "<group>"; };
 		0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAlbumsClipboard.swift; sourceTree = "<group>"; };
-		071A78F824BB0B81004646FF /* sonicMania.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sonicMania.jpg; sourceTree = "<group>"; };
 		071CA3AC24C6DA370092D92A /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
@@ -81,12 +74,8 @@
 		073AF48924D16647000C1A6D /* AccentColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* views for songs view.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "views for songs view.swift"; sourceTree = "<group>"; };
-		073E648624E37B1D00A1761A /* Be Cool.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Be Cool.jpg"; sourceTree = "<group>"; };
-		073E648724E37B1D00A1761A /* Be Wild.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Be Wild.jpg"; sourceTree = "<group>"; };
 		073E648C24E37BE400A1761A /* FZ- Side Z.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "FZ- Side Z.jpg"; sourceTree = "<group>"; };
-		0752A8B824DB654D00CAEBBF /* lovePoem.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lovePoem.jpg; sourceTree = "<group>"; };
 		07551BC324CFDFDD002D1B15 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
-		0764C6F424E6FCAB003D5B3D /* Real.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Real.jpg; sourceTree = "<group>"; };
 		0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedAlbumsToNewCollectionDetector.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768308824B42DEC0033E3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -114,13 +103,8 @@
 		079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerManager.swift; sourceTree = "<group>"; };
 		07CEAE9D24E0FEA600C87C95 /* Fez.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Fez.jpg; sourceTree = "<group>"; };
 		07D157EC24D952A600FDF26A /* AlbumMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumMover.swift; sourceTree = "<group>"; };
-		07FC96E024BABAAA0036DD3D /* kiss.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kiss.jpg; sourceTree = "<group>"; };
-		07FC96E224BABAAA0036DD3D /* modernTimesEpilogue.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = modernTimesEpilogue.jpg; sourceTree = "<group>"; };
-		07FC96E324BABAAA0036DD3D /* planetaryPieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = planetaryPieces.png; sourceTree = "<group>"; };
 		07FC96E724BABAAC0036DD3D /* emotion.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = emotion.jpg; sourceTree = "<group>"; };
 		07FC96E824BABAAC0036DD3D /* dedicatedSideB.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dedicatedSideB.jpg; sourceTree = "<group>"; };
-		07FC96E924BABAAC0036DD3D /* chatShire.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chatShire.jpg; sourceTree = "<group>"; };
-		07FC96ED24BABAAE0036DD3D /* palette.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = palette.jpg; sourceTree = "<group>"; };
 		07FC96EF24BABAAE0036DD3D /* dedicated.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dedicated.jpg; sourceTree = "<group>"; };
 		07FCE63824B42EDF00F94668 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,6 +134,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0703ED2624E8D0E1002EF1B4 /* CollectionsTVC */ = {
+			isa = PBXGroup;
+			children = (
+				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
+				0703ED2424E8D0DA002EF1B4 /* extension- merge from Apple Music library.swift */,
+			);
+			path = CollectionsTVC;
+			sourceTree = "<group>";
+		};
 		0706ABDE24D946870090EB21 /* Options Sheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,7 +224,7 @@
 				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 				07D157EC24D952A600FDF26A /* AlbumMover.swift */,
 				0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */,
-				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
+				0703ED2624E8D0E1002EF1B4 /* CollectionsTVC */,
 				0706ABDE24D946870090EB21 /* Options Sheet */,
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
 				0736E3A624B8415400A15420 /* AlbumCell.swift */,
@@ -263,21 +256,12 @@
 		07FC96D524BAB9A80036DD3D /* Sample Artwork */ = {
 			isa = PBXGroup;
 			children = (
-				073E648624E37B1D00A1761A /* Be Cool.jpg */,
-				073E648724E37B1D00A1761A /* Be Wild.jpg */,
-				07FC96E924BABAAC0036DD3D /* chatShire.jpg */,
 				07FC96EF24BABAAE0036DD3D /* dedicated.jpg */,
 				07FC96E824BABAAC0036DD3D /* dedicatedSideB.jpg */,
 				07FC96E724BABAAC0036DD3D /* emotion.jpg */,
 				07CEAE9D24E0FEA600C87C95 /* Fez.jpg */,
 				073E648C24E37BE400A1761A /* FZ- Side Z.jpg */,
-				07FC96E024BABAAA0036DD3D /* kiss.jpg */,
-				0752A8B824DB654D00CAEBBF /* lovePoem.jpg */,
-				07FC96E224BABAAA0036DD3D /* modernTimesEpilogue.jpg */,
-				07FC96ED24BABAAE0036DD3D /* palette.jpg */,
-				07FC96E324BABAAA0036DD3D /* planetaryPieces.png */,
-				0764C6F424E6FCAB003D5B3D /* Real.jpg */,
-				071A78F824BB0B81004646FF /* sonicMania.jpg */,
+				0703ED2224E85F2A002EF1B4 /* Kiss.jpg */,
 			);
 			path = "Sample Artwork";
 			sourceTree = "<group>";
@@ -398,23 +382,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				073E648824E37B1D00A1761A /* Be Cool.jpg in Resources */,
-				071A78F924BB0B81004646FF /* sonicMania.jpg in Resources */,
-				0752A8B924DB654D00CAEBBF /* lovePoem.jpg in Resources */,
-				07FC970324BABAAE0036DD3D /* chatShire.jpg in Resources */,
-				07FC96FD24BABAAE0036DD3D /* planetaryPieces.png in Resources */,
-				07FC96FC24BABAAE0036DD3D /* modernTimesEpilogue.jpg in Resources */,
 				07FC970224BABAAE0036DD3D /* dedicatedSideB.jpg in Resources */,
 				07CEAE9E24E0FEA600C87C95 /* Fez.jpg in Resources */,
+				0703ED2324E85F2A002EF1B4 /* Kiss.jpg in Resources */,
 				073E648D24E37BE400A1761A /* FZ- Side Z.jpg in Resources */,
 				07FC970124BABAAE0036DD3D /* emotion.jpg in Resources */,
-				07FC970724BABAAE0036DD3D /* palette.jpg in Resources */,
-				0764C6F524E6FCAB003D5B3D /* Real.jpg in Resources */,
-				07FC96FA24BABAAE0036DD3D /* kiss.jpg in Resources */,
 				07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				07FC970924BABAAE0036DD3D /* dedicated.jpg in Resources */,
-				073E648924E37B1D00A1761A /* Be Wild.jpg in Resources */,
 				0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,6 +425,7 @@
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				079B2C8C24E1ED0C00A949FA /* AppleMusicViewerTVC.swift in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
+				0703ED2524E8D0DA002EF1B4 /* extension- merge from Apple Music library.swift in Sources */,
 				079B2C9524E227BF00A949FA /* MediaPlayerManager.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* views for songs view.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,

@@ -55,7 +55,7 @@ struct SampleLibrary {
 		
 		init(
 			_ title: String,
-			 _ trackNumber: Int?,
+			_ trackNumber: Int?,
 			disc: Int? = 1
 		) {
 			self.title = title
@@ -67,21 +67,14 @@ struct SampleLibrary {
 	// MARK: Methods
 	
 //	static func setThumbnailsInBackground(_ collections: [Collection]) {
-//
 //		let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//
 //		let queue = OperationQueue()
 //		queue.qualityOfService = .userInitiated
 //
 //		for collection in collections {
-//
-//			guard collection.contents != nil else {
-//				continue
-//			}
-//
+//			guard collection.contents != nil else { continue }
 //			for element in collection.contents! {
 //				let album = element as! Album
-//
 //				let operation = BlockOperation(block: {
 //					album.artworkThumbnail = album.sampleArtworkDownsampledData()
 ////					do {
@@ -95,9 +88,7 @@ struct SampleLibrary {
 //				}
 //				queue.addOperation(operation)
 //			}
-//
 //		}
-//
 //	}
 	
 	static func inject() {
@@ -218,11 +209,10 @@ struct SampleLibrary {
 					SampleSong("E•mo•tion", 2),
 					SampleSong("I Really Like You", 3),
 					SampleSong("Boy Problems", 6),
-					SampleSong("Your Type", 8),
 					SampleSong("Let’s Get Lost", 9),
 					SampleSong("When I Needed You", 12),
 				]),
-				SampleAlbum("Kiss", 2012, "kiss.jpg", [
+				SampleAlbum("Kiss", 2012, "Kiss.jpg", [
 					SampleSong("Turn Me Up", 7),
 				]),
 			]),
@@ -255,14 +245,14 @@ struct SampleLibrary {
 				]),
 			]),
 			
-			SampleCollection("Falk", [
-				SampleAlbum("Rooftop Run: Interactive Music Re-score - Side 1", 2011, "Be Cool.jpg", [
-					SampleSong("Be Cool", 1),
-				]),
-				SampleAlbum("Rooftop Run: Interactive Music Re-score - Side 2", 2011, "Be Wild.jpg", [
-					SampleSong("Be Wild", 2),
-				]),
-			]),
+//			SampleCollection("Falk", [
+//				SampleAlbum("Rooftop Run: Interactive Music Re-score - Side 1", 2011, "Be Cool.jpg", [
+//					SampleSong("Be Cool", 1),
+//				]),
+//				SampleAlbum("Rooftop Run: Interactive Music Re-score - Side 2", 2011, "Be Wild.jpg", [
+//					SampleSong("Be Wild", 2),
+//				]),
+//			]),
 			
 //			SampleCollection("Fountains Of Wayne", [
 //				SampleAlbum("Sky Full of Holes", 2011, "Sky Full of Holes.jpg", [
@@ -318,33 +308,33 @@ struct SampleLibrary {
 //				]),
 //			]),
 			
-			SampleCollection("IU", [
-				SampleAlbum("Love poem", 2019, "lovePoem.jpg", [
-					SampleSong("unlucky", 1),
-				]),
-				SampleAlbum("Palette", 2017, "palette.jpg", [
-					SampleSong("dlwlrma", 1),
-					SampleSong("Jam Jam", 5),
-					SampleSong("Palette", 2),
-					SampleSong("Through the Night", 8),
-				]),
-				SampleAlbum("Chat-Shire", 2015, "chatShire.jpg", [
-					SampleSong("Shoes", 1),
-					SampleSong("Twenty-Three", 3),
-					SampleSong("Knees", 6),
-				]),
-				SampleAlbum("Modern Times – Epilogue", 2013, "modernTimesEpilogue.jpg", [
-					SampleSong("Everybody Has Secrets", 4),
-					SampleSong("The Red Shoes", 6),
-					SampleSong("Walk with Me, Girl", 10),
-					SampleSong("Love of B", 3),
-					SampleSong("Havana", 11),
-				]),
-				SampleAlbum("Real", 2010, "Real.jpg", [
-					SampleSong("Good Day", 3),
-					SampleSong("Merry Christmas in Advance", 6),
-				]),
-			]),
+//			SampleCollection("IU", [
+//				SampleAlbum("Love poem", 2019, "lovePoem.jpg", [
+//					SampleSong("unlucky", 1),
+//				]),
+//				SampleAlbum("Palette", 2017, "palette.jpg", [
+//					SampleSong("dlwlrma", 1),
+//					SampleSong("Jam Jam", 5),
+//					SampleSong("Palette", 2),
+//					SampleSong("Through the Night", 8),
+//				]),
+//				SampleAlbum("Chat-Shire", 2015, "chatShire.jpg", [
+//					SampleSong("Shoes", 1),
+//					SampleSong("Twenty-Three", 3),
+//					SampleSong("Knees", 6),
+//				]),
+//				SampleAlbum("Modern Times – Epilogue", 2013, "modernTimesEpilogue.jpg", [
+//					SampleSong("Everybody Has Secrets", 4),
+//					SampleSong("The Red Shoes", 6),
+//					SampleSong("Walk with Me, Girl", 10),
+//					SampleSong("Love of B", 3),
+//					SampleSong("Havana", 11),
+//				]),
+//				SampleAlbum("Real", 2010, "Real.jpg", [
+//					SampleSong("Good Day", 3),
+//					SampleSong("Merry Christmas in Advance", 6),
+//				]),
+//			]),
 			
 //			SampleCollection("James Horner", [
 //				SampleAlbum("Star Trek II: The Wrath of Khan", 1982, "starTrekII.jpg", [
@@ -401,48 +391,48 @@ struct SampleLibrary {
 //				]),
 //			]),
 			
-			SampleCollection("Tee Lopes", [
-				SampleAlbum("Sonic Mania", 2017, "sonicMania.jpg", [
-					SampleSong("Rise of the Icon (Sonic Mania Alternate Intro)", 47),
-					SampleSong("Discovery (Title Screen)", 1),
-					SampleSong("Prime Time (Studiopolis Zone Act 2)", 4),
-					SampleSong("Dimension Heist (UFO Special Stage)", 30),
-					SampleSong("Flying Battery Zone (Act 1)", 5),
-					SampleSong("Flying Battery Zone (Act 2)", 6),
-					SampleSong("Blue Spheres", 35),
-					SampleSong("Skyway Octane (Mirage Saloon Zone Act 1 ST Mix)", 13),
-					SampleSong("Hi-Spec Robo Go! (Hard Boiled Heavy Boss)", 25),
-					SampleSong("Metallic Madness Zone (Act 1)", 18),
-					SampleSong("Metallic Madness Zone (Act 2)", 19),
-					SampleSong("Egg Reverie (Egg Reverie Zone)", 27),
-					SampleSong("Guided Tour (Credits)", 29),
-				]),
-			]),
+//			SampleCollection("Tee Lopes", [
+//				SampleAlbum("Sonic Mania", 2017, "sonicMania.jpg", [
+//					SampleSong("Rise of the Icon (Sonic Mania Alternate Intro)", 47),
+//					SampleSong("Discovery (Title Screen)", 1),
+//					SampleSong("Prime Time (Studiopolis Zone Act 2)", 4),
+//					SampleSong("Dimension Heist (UFO Special Stage)", 30),
+//					SampleSong("Flying Battery Zone (Act 1)", 5),
+//					SampleSong("Flying Battery Zone (Act 2)", 6),
+//					SampleSong("Blue Spheres", 35),
+//					SampleSong("Skyway Octane (Mirage Saloon Zone Act 1 ST Mix)", 13),
+//					SampleSong("Hi-Spec Robo Go! (Hard Boiled Heavy Boss)", 25),
+//					SampleSong("Metallic Madness Zone (Act 1)", 18),
+//					SampleSong("Metallic Madness Zone (Act 2)", 19),
+//					SampleSong("Egg Reverie (Egg Reverie Zone)", 27),
+//					SampleSong("Guided Tour (Credits)", 29),
+//				]),
+//			]),
 			
 			SampleCollection("Various Artists", [
 				SampleAlbum("FZ: Side Z", 2013, "FZ- Side Z.jpg", [
 					SampleSong("FZ: Side E - Trail", 17),
 				]),
-				SampleAlbum("Planetary Pieces: Sonic World Adventure", 2009, "planetaryPieces.png", [
-					SampleSong("Endless Possibility - Vocal Theme -", 1),
-					SampleSong("Cutscene - Opening", 2),
-					SampleSong("Apotos - Day", 4),
-					SampleSong("Windmill Isle - Day", 5),
-					SampleSong("Apotos - Night", 10),
-					SampleSong("Tornado Defense - 1st Battle", 12),
-					SampleSong("The World Adventure - Orchestral Theme -", 1, disc: 2),
-					SampleSong("Holoska - Night", 12, disc: 2),
-					SampleSong("Cool Edge - Day", 28),
-					SampleSong("The World Adventure - Piano Version", 29, disc: 2),
-					SampleSong("Spagonia - Night", 29),
-					SampleSong("Rooftop Run - Day", 8, disc: 2),
-					SampleSong("Chun-nan - Night", 3, disc: 2),
-					SampleSong("Gaia Gate", 2, disc: 2),
-					SampleSong("Dragon Road - Day", 11, disc: 2),
-					SampleSong("Shamar - Night", 21, disc: 2),
-					SampleSong("Savannah Citadel - Day", 21),
-					SampleSong("Empire City - Night", 18, disc: 2),
-				]),
+//				SampleAlbum("Planetary Pieces: Sonic World Adventure", 2009, "planetaryPieces.png", [
+//					SampleSong("Endless Possibility - Vocal Theme -", 1),
+//					SampleSong("Cutscene - Opening", 2),
+//					SampleSong("Apotos - Day", 4),
+//					SampleSong("Windmill Isle - Day", 5),
+//					SampleSong("Apotos - Night", 10),
+//					SampleSong("Tornado Defense - 1st Battle", 12),
+//					SampleSong("The World Adventure - Orchestral Theme -", 1, disc: 2),
+//					SampleSong("Holoska - Night", 12, disc: 2),
+//					SampleSong("Cool Edge - Day", 28),
+//					SampleSong("The World Adventure - Piano Version", 29, disc: 2),
+//					SampleSong("Spagonia - Night", 29),
+//					SampleSong("Rooftop Run - Day", 8, disc: 2),
+//					SampleSong("Chun-nan - Night", 3, disc: 2),
+//					SampleSong("Gaia Gate", 2, disc: 2),
+//					SampleSong("Dragon Road - Day", 11, disc: 2),
+//					SampleSong("Shamar - Night", 21, disc: 2),
+//					SampleSong("Savannah Citadel - Day", 21),
+//					SampleSong("Empire City - Night", 18, disc: 2),
+//				]),
 			]),
 			
 		])

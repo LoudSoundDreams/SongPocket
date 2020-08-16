@@ -24,7 +24,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	var moveAlbumsClipboard: MoveAlbumsClipboard?
 	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
 	
-	// MARK: Setup
+	// MARK: - Setup
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
@@ -115,7 +115,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 //		}
     }
 	
-	// MARK: Events
+	// MARK: - Events
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
@@ -157,7 +157,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	}
 	
 
-	// MARK: “Move Albums" Mode
+	// MARK: - “Move Albums" Mode
 	
 	// Starting moving albums
 	
@@ -294,7 +294,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	@IBAction func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {
 		isEditing = false
 		
-		loadActiveLibraryItems()
+		loadSavedLibraryItems()
 		tableView.reloadData()
 		
 		viewDidAppear(true) // Exits this collection if it's now empty.

@@ -7,6 +7,7 @@
 
 import UIKit
 import MediaPlayer
+import CoreData
 
 class AppleMusicViewerTVC: UITableViewController {
 	
@@ -15,35 +16,17 @@ class AppleMusicViewerTVC: UITableViewController {
 	
 	// Constant references
 	let mediaLibraryManager = (UIApplication.shared.delegate as! AppDelegate).mediaLibraryManager
-	lazy var collectionsTVC = (tabBarController?.viewControllers?.first as! UINavigationController).viewControllers.first as! CollectionsTVC // This is obviously just for testing. Obviously.
+	let coreDataManager = CoreDataManager(managedObjectContext: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+//	lazy var collectionsTVC = (tabBarController?.viewControllers?.first as! UINavigationController).viewControllers.first as! CollectionsTVC // This is obviously just for testing. Obviously.
 	
 	
-	enum ItemType {
-		case artist(ArtistInfo)
-		case album(AlbumInfo)
-		case song(SongInfo)
-	}
-	struct ArtistInfo {
-		let title: String
-	}
-	struct AlbumInfo {
-		let title: String
-		let year: Int
-	}
-	struct SongInfo {
-		let title: String
-		let trackNumber: Int
-	}
-//	let itemsType = ItemType.artist
-	var items = [ArtistInfo]()
-	var itemTitles: [String] {
-		var result = [String]()
-		for item in items {
-			result.append(item.title)
+	var items = [TestCollection]() {
+		didSet {
+			for indexInItems in 0..<items.count {
+				items[indexInItems].index = Int64(indexInItems)
+			}
 		}
-		return result
 	}
-	
 	
 	
 	override func viewDidLoad() {
@@ -51,71 +34,100 @@ class AppleMusicViewerTVC: UITableViewController {
 		
 		tableView.tableFooterView = UIView()
 		
-		// Uncomment the following line to preserve selection between presentations
-		// self.clearsSelectionOnViewWillAppear = false
+		loadSavedItems()
 		
 		if MPMediaLibrary.authorizationStatus() == .authorized {
-			loadItemsFromAppleMusic()
-		} else {
-			return
+			saveItemsFromAppleMusic()
 		}
 	}
 	
-	func loadItemsFromAppleMusic() {
-		items.removeAll()
-		guard var queriedItems = MPMediaQuery.playlists().items else {
+	func loadSavedItems() {
+		let fetchRequest = NSFetchRequest<TestCollection>(entityName: "TestCollection")
+		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		coreDataManager.managedObjectContext.performAndWait {
+			do {
+				items = try coreDataManager.managedObjectContext.fetch(fetchRequest)
+			} catch {
+				print("Couldn't load saved TestCollections.")
+				fatalError("\(error)")
+			}
+		}
+	}
+	
+	func saveItemsFromAppleMusic() {
+		guard var queriedItems = MPMediaQuery.songs().items else {
 			return
 		}
-		// Group by alphabetically sorted album artist.
-		// Within each album artist, group by album. Sort albums by
 		
-		
+//		queriedItems.sort() {
+//			if let date0 = $0.releaseDate {
+//				if let date1 = $1.releaseDate {
+//					return date0 > date1
+//				} else { // $0.releaseDate has a value, but $1.releaseDate doesn't
+//					return true
+//				}
+//			} else {
+//				if $1.releaseDate != nil { // $0.releaseDate is nil, but $1.releaseDate has a value
+//					return false
+//				} else {
+//					return true
+//				}
+//			}
+//		}
 		queriedItems.sort() { ($0.title ?? "") < ($1.title ?? "") }
 		queriedItems.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
 		queriedItems.sort() { ($0.albumTitle ?? "") < ($1.albumTitle ?? "") }
 		queriedItems.sort() { ($0.albumArtist ?? "") < ($1.albumArtist ?? "") }
 		
+		// songs
+//		for song in queriedItems {
+//			let songTitle = song.title ?? ""
+//			let newSong = SongInfo(title: songTitle, trackNumber: song.albumTrackNumber, releaseDate: song.releaseDate)
+//			if let year = song.value(forKey: "year") { // Undocumented. As of iOS 14.0 beta 4, this works, but if this key ever changes in the API, this line of code will crash the app.
+//				print(year)
+//			}
+//			items.append(newSong)
+//		}
+		
+		// albums
+//		for item in queriedItems {
+//			if
+//				let albumTitle = item.title,
+//				!itemTitles.contains(albumTitle)
+//			{
+//
+//				let album = AlbumInfo(title: albumTitle, year: <#T##Int#>)
+//				items.append(album)
+//			}
+//		}
+		
+		// Collections
+		var existingCollectionTitles = [String]()
+		for existingCollection in items {
+			existingCollectionTitles.append(existingCollection.title!)
+		}
 		for item in queriedItems {
-			if
-				let albumArtist = item.albumArtist,
-				!itemTitles.contains(albumArtist)
-			{
-				let artist = ArtistInfo(title: albumArtist)
-				items.append(artist)
+			let albumArtistName = item.albumArtist ?? "Unknown Album Artist"
+			guard !existingCollectionTitles.contains(albumArtistName) else {
+				continue
+			}
+			existingCollectionTitles.append(albumArtistName)
+			coreDataManager.managedObjectContext.performAndWait {
+				let newCollection = TestCollection(context: self.coreDataManager.managedObjectContext)
+				newCollection.title = albumArtistName
+				self.items.insert(newCollection, at: 0)
 			}
 		}
+		coreDataManager.save()
+		
+//		loadSavedItems()
 		
 //		tableView.reloadData()
 	}
 	
     // MARK: - Table view data source
 	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		// Remember to accommodate for situations where the user hasn't allowed access to their Music library (use "Allow Access to Music Library" cell as button), and where the user has no songs in their Music library (use "Add some songs to the Music app" label as background view).
-		switch MPMediaLibrary.authorizationStatus() {
-		case .authorized:
-			// This logic, for setting the "no items" placeholder, should be in numberOfRowsInSection, not in numberOfSections.
-			// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
-			// - If you put it in numberOfRowsInSection, VoiceOver move focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
-			if
-//				items != nil,
-				items.count > 0
-			{
-				tableView.backgroundView = nil
-				return items.count
-			} else {
-				let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell")!
-				tableView.backgroundView = noItemsView
-				return 0
-			}
-		default:
-			tableView.backgroundView = nil
-			return 1 // "Allow Access" cell
-		}
-	}
-	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return allowAccessCell(for: indexPath)
 		}
@@ -126,50 +138,37 @@ class AppleMusicViewerTVC: UITableViewController {
 		}
 		let item = items[indexPath.row]
 		let itemTitle = item.title
-//		let itemSubtitle = item.albumTitle
+		let itemSubtitle: String? = nil
+//		let dateFormatter = ISO8601DateFormatter()
+//		if let date = item.releaseDate {
+//			itemSubtitle = dateFormatter.string(from: date)
+//		}
 //		let itemArtwork = item.artwork?.image(at: Self.artworkSize)
 		
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+		
 		if #available(iOS 14.0, *) {
-			
-			// Make the cell.
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 			var cc = UIListContentConfiguration.subtitleCell()
 			
-			// Put the data into the cell.
 			cc.text = itemTitle
-//			cc.secondaryText = itemSubtitle
+			cc.secondaryText = itemSubtitle
 //			cc.image = itemArtwork
 			
-			// Style the cell.
-//			if indexPath.row == indexOfHighlightedItem {
-//				cc.textProperties.color = accentColor
-//			}
 			cc.secondaryTextProperties.color = .secondaryLabel
 			cc.imageProperties.maximumSize = Self.artworkSize
 			
-			// Return the cell.
 			cell.contentConfiguration = cc
-			return cell
 			
 		} else { // iOS 13 and earlier
-			
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-			
 			cell.textLabel?.text = itemTitle
-//			cell.detailTextLabel?.text = itemSubtitle
+			cell.detailTextLabel?.text = itemSubtitle
 //			cell.imageView?.image = itemArtwork
-			
-//			if indexPath.row == indexOfHighlightedItem {
-//				cell.textLabel?.textColor = accentColor
-//			} else {
-//				cell.textLabel?.textColor = nil
-//			}
-			
-			return cell
-			
 		}
 		
+		return cell
 	}
+	
+	// MARK: - DONE PORTING ALL THE METHODS BELOW TO LibraryTVC
 	
 	// Copied from LibraryTVC.
 	func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
@@ -185,11 +184,35 @@ class AppleMusicViewerTVC: UITableViewController {
 		return cell
 	}
 	
-	// MARK: Events
+	// Copied to LibraryTVC
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		// You need to accommodate 2 special cases:
+		// 1. When the user hasn't allowed access to Apple Music, use the "Allow Access to Apple Music" cell as a button.
+		// 2. When there are no items, set the "Add some songs to the Apple Music app." placeholder cell to the background view.
+		switch MPMediaLibrary.authorizationStatus() {
+		case .authorized:
+			// This logic, for setting the "no items" placeholder, should be in numberOfRowsInSection, not in numberOfSections.
+			// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
+			// - If you put it in numberOfRowsInSection, VoiceOver move focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
+			if items.count > 0 {
+				tableView.backgroundView = nil
+				return items.count
+			} else {
+				let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell")! // We need a copy of this cell in every scene in the storyboard that might use it.
+				tableView.backgroundView = noItemsView
+				return 0
+			}
+		default:
+			tableView.backgroundView = nil
+			return 1 // "Allow Access" cell
+		}
+	}
+	
+	// MARK: - Events
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
-		// Copied from LibraryTVC.
+		// Copied from LibraryTVC. OUT OF DATE
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
 			break
@@ -218,50 +241,5 @@ class AppleMusicViewerTVC: UITableViewController {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 	}
-	
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

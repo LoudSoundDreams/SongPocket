@@ -66,13 +66,13 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: Setup
+	// MARK: - Setup
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		setUpUI()
-		loadActiveLibraryItems()
+		loadSavedLibraryItems()
 	}
 	
 	func setUpUI() {
@@ -89,7 +89,7 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: Loading Data
 	
-	func loadActiveLibraryItems() {
+	func loadSavedLibraryItems() {
 		if containerOfData != nil {
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData!)
 		}
@@ -98,10 +98,27 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		// You need to accommodate 2 special cases:
+		// 1. When the user hasn't allowed access to Apple Music, use the "Allow Access to Apple Music" cell as a button.
+		// 2. When there are no items, set the "Add some songs to the Apple Music app." placeholder cell to the background view.
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
-			return activeLibraryItems.count // TO DO: use placeholder background view if there are no items
+			// This logic, for setting the "no items" placeholder, should be in numberOfRowsInSection, not in numberOfSections.
+			// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
+			// - If you put it in numberOfRowsInSection, VoiceOver move focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
+			if activeLibraryItems.count > 0 {
+				navigationItem.rightBarButtonItem?.isEnabled = true
+				tableView.backgroundView = nil
+				return activeLibraryItems.count
+			} else {
+				let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell")! // We need a copy of this cell in every scene in the storyboard that might use it.
+				navigationItem.rightBarButtonItem?.isEnabled = false
+				tableView.backgroundView = noItemsView
+				return 0
+			}
 		default:
+			navigationItem.rightBarButtonItem?.isEnabled = false
+			tableView.backgroundView = nil
 			return 1 // "Allow Access" cell
 		}
     }
@@ -128,7 +145,7 @@ class LibraryTVC: UITableViewController {
     }
 	
 	func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) // Do we need a copy of this cell in the storyboard in every scene that's a child of this class?
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) // We need a copy of this cell in every scene in the storyboard that might use it.
 		if #available(iOS 14.0, *) {
 			var configuration = UIListContentConfiguration.cell()
 			configuration.text = "Allow Access to Apple Music"
@@ -140,7 +157,7 @@ class LibraryTVC: UITableViewController {
 		return cell
 	}
 	
-	// MARK: Events
+	// MARK: - Events
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
@@ -182,10 +199,17 @@ class LibraryTVC: UITableViewController {
 					DispatchQueue.main.async {
 						MediaPlayerManager.setDefaultLibraryIfAuthorized()
 						self.viewDidLoad()
-						tableView.performBatchUpdates({
+						switch self.tableView.numberOfRows(inSection: 0) {
+						case 0:
+							tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+						case 1:
 							tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
-							tableView.insertRows(at: self.indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: self.tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
-						}, completion: nil)
+						default:
+							tableView.performBatchUpdates({
+								tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
+								tableView.insertRows(at: self.indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: self.tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
+							}, completion: nil)
+						}
 					}
 				default:
 					DispatchQueue.main.async { self.tableView.deselectRow(at: indexPath, animated: true) }
@@ -234,7 +258,7 @@ class LibraryTVC: UITableViewController {
 //		return destination
 //	}
 	
-	// MARK: Rearranging
+	// MARK: - Rearranging
 	
 	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 		let itemBeingMoved = activeLibraryItems[fromIndexPath.row]

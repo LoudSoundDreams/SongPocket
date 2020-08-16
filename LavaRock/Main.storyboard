@@ -106,7 +106,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add some songs to the Apple Music app." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6S-PX-Sod">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add some songs to the Apple Music app." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6S-PX-Sod">
                                             <rect key="frame" x="32" y="90" width="311.33333333333331" height="20.333333333333329"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="placeholderTextColor"/>
@@ -253,7 +253,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="176"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder: 0 songs" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fw-nR-lxL">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder: 0 songs" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fw-nR-lxL">
                                             <rect key="frame" x="107.66666666666667" y="78" width="159.66666666666663" height="20.333333333333329"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="placeholderTextColor"/>
@@ -394,7 +394,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="347.66666666666669" height="132"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="fallinLight.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="qC4-bR-dWy">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="Fez.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="qC4-bR-dWy">
                                             <rect key="frame" x="16" y="0.0" width="132" height="132"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="qC4-bR-dWy" secondAttribute="height" multiplier="1:1" id="rdN-1x-Icb"/>
@@ -444,18 +444,18 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Album Title that Is Very Long. A Very Long Album Title Indeed. How Are You Doing Today?" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="apK-Tm-mPv">
-                                            <rect key="frame" x="223.33333333333329" y="24" width="96.666666666666671" height="64.333333333333329"/>
+                                            <rect key="frame" x="163.33333333333331" y="24" width="176.33333333333337" height="64.333333333333329"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="fallinLight.jpg" id="ySH-HV-Yh6">
-                                            <rect key="frame" x="16" y="0.0" width="192.33333333333331" height="132"/>
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="Fez.jpg" id="ySH-HV-Yh6">
+                                            <rect key="frame" x="16" y="0.0" width="132.33333333333331" height="132"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </imageView>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="2019" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Q5D-gU-Rgz">
-                                            <rect key="frame" x="223.33333333333331" y="91.333333333333329" width="28.333333333333332" height="14.333333333333334"/>
+                                            <rect key="frame" x="163.33333333333331" y="91.333333333333329" width="28.333333333333332" height="14.333333333333334"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -473,6 +473,28 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3lx-zu-BVx" id="CzM-ip-tX2">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell" rowHeight="200" id="RmC-40-dsA">
+                                <rect key="frame" x="0.0" y="335.66666793823242" width="375" height="200"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RmC-40-dsA" id="ENJ-uS-m8G">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Albums" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waM-mg-RNh">
+                                            <rect key="frame" x="121" y="83.333333333333329" width="133" height="33.666666666666671"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                            <color key="textColor" systemColor="placeholderTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="waM-mg-RNh" firstAttribute="centerY" secondItem="ENJ-uS-m8G" secondAttribute="centerY" id="4fQ-oF-ona"/>
+                                        <constraint firstItem="waM-mg-RNh" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ENJ-uS-m8G" secondAttribute="trailingMargin" id="GI9-PT-UIn"/>
+                                        <constraint firstItem="waM-mg-RNh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ENJ-uS-m8G" secondAttribute="leadingMargin" id="Nc4-ox-j8f"/>
+                                        <constraint firstItem="waM-mg-RNh" firstAttribute="centerX" secondItem="ENJ-uS-m8G" secondAttribute="centerX" id="rCb-dy-z3g"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -525,7 +547,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="375.33334350585938"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fallinLight.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="AJa-zb-mTO">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fez.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="AJa-zb-mTO">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="375.33333333333331"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" secondItem="AJa-zb-mTO" secondAttribute="width" multiplier="1:1" id="dfW-Eo-ZNH"/>
@@ -659,6 +681,28 @@
                                     <outlet property="yearLabel" destination="nCe-rw-QJ6" id="ARA-Nl-iuk"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell" rowHeight="200" id="X3n-qN-qq8">
+                                <rect key="frame" x="0.0" y="644.33333587646484" width="375" height="200"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Songs" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4Y-7C-QjD">
+                                            <rect key="frame" x="128.66666666666666" y="83.333333333333329" width="118" height="33.666666666666671"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                            <color key="textColor" systemColor="placeholderTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="r4Y-7C-QjD" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="I8v-5S-t9B" secondAttribute="trailingMargin" id="AZ3-Rw-2zP"/>
+                                        <constraint firstItem="r4Y-7C-QjD" firstAttribute="centerX" secondItem="I8v-5S-t9B" secondAttribute="centerX" id="Dfp-Ov-UNL"/>
+                                        <constraint firstItem="r4Y-7C-QjD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="I8v-5S-t9B" secondAttribute="leadingMargin" id="Mfv-uB-3Ij"/>
+                                        <constraint firstItem="r4Y-7C-QjD" firstAttribute="centerY" secondItem="I8v-5S-t9B" secondAttribute="centerY" id="qdV-7h-2rM"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>
@@ -715,12 +759,12 @@
         <segue reference="Y5v-Mn-JRo"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="Fez.jpg" width="1000" height="1000"/>
         <image name="app.fill" catalog="system" width="128" height="114"/>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
         <image name="backward.end.alt.fill" catalog="system" width="128" height="66"/>
         <image name="backward.end.fill" catalog="system" width="128" height="102"/>
         <image name="ellipsis.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="fallinLight.jpg" width="2036" height="1400"/>
         <image name="forward.end.fill" catalog="system" width="128" height="102"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="playpause.fill" catalog="system" width="128" height="73"/>
