@@ -223,7 +223,6 @@ extension CollectionsTVC {
 				
 //				newAlbum.releaseDate =
 				newAlbum.title = newMediaItem.albumTitle // could be nil
-//				newAlbum.year =
 				newAlbum.container = existingCollectionWithMatchingTitle
 				
 			} else { // 2.2. Otherwise, make the Collection to add the Album to.

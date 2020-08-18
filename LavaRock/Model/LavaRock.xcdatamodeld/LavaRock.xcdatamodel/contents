@@ -3,12 +3,9 @@
     <entity name="Album" representedClassName="Album" syncable="YES" codeGenerationType="class">
         <attribute name="albumArtist" optional="YES" attributeType="String"/>
         <attribute name="albumPersistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
-        <attribute name="artworkThumbnail" optional="YES" attributeType="Binary"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="releaseDateEstimate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="sampleArtworkFileNameWithExtension" optional="YES" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
-        <attribute name="year" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="contents" inverseEntity="Collection"/>
         <relationship name="contents" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Song" inverseName="container" inverseEntity="Song"/>
     </entity>
@@ -26,24 +23,9 @@
         <attribute name="trackNumber" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="contents" inverseEntity="Album"/>
     </entity>
-    <entity name="TestAlbum" representedClassName="TestAlbum" syncable="YES" codeGenerationType="class">
-        <attribute name="albumPersistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
-        <attribute name="title" attributeType="String"/>
-    </entity>
-    <entity name="TestCollection" representedClassName="TestCollection" syncable="YES" codeGenerationType="class">
-        <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="title" attributeType="String"/>
-    </entity>
-    <entity name="TestSong" representedClassName="TestSong" syncable="YES" codeGenerationType="class">
-        <attribute name="persistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
-        <attribute name="title" attributeType="String"/>
-    </entity>
     <elements>
-        <element name="Album" positionX="-63" positionY="-18" width="128" height="193"/>
+        <element name="Album" positionX="-63" positionY="-18" width="128" height="28"/>
         <element name="Collection" positionX="-257.1171875" positionY="-18.56640625" width="128" height="88"/>
         <element name="Song" positionX="129.5859375" positionY="-12.60546875" width="128" height="148"/>
-        <element name="TestAlbum" positionX="-36" positionY="81" width="128" height="73"/>
-        <element name="TestCollection" positionX="-45" positionY="72" width="128" height="73"/>
-        <element name="TestSong" positionX="-27" positionY="90" width="128" height="73"/>
     </elements>
 </model>

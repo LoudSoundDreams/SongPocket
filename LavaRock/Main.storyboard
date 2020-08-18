@@ -192,94 +192,6 @@
             </objects>
             <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
         </scene>
-        <!--Apple Music-->
-        <scene sceneID="gYt-zP-YD4">
-            <objects>
-                <tableViewController id="8yt-Gx-J52" customClass="AppleMusicViewerTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="B98-xo-Jod">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="OZE-yU-OOu" detailTextLabel="vk8-ya-Cqt" imageView="QeX-zy-qJs" rowHeight="66" style="IBUITableViewCellStyleSubtitle" id="xYM-cV-mz0">
-                                <rect key="frame" x="0.0" y="28" width="375" height="66"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xYM-cV-mz0" id="fPt-bh-fJE">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="OZE-yU-OOu">
-                                            <rect key="frame" x="55" y="12.999999999999998" width="33" height="20.333333333333332"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="66" id="vk8-ya-Cqt">
-                                            <rect key="frame" x="55.000000000000014" y="36.333333333333329" width="43.666666666666664" height="14.333333333333334"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="square" catalog="system" id="QeX-zy-qJs">
-                                            <rect key="frame" x="18.333333333333336" y="24.333333333333336" width="19.333333333333332" height="17.333333333333332"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </imageView>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Allow Access Cell" textLabel="gpe-F8-OvX" style="IBUITableViewCellStyleDefault" id="Ykq-w2-QW2">
-                                <rect key="frame" x="0.0" y="94" width="375" height="43.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ykq-w2-QW2" id="z5b-1n-QVx">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Placeholder: No Access to Apple Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="gpe-F8-OvX">
-                                            <rect key="frame" x="16" y="0.0" width="343" height="43.666667938232422"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell" rowHeight="176" id="31R-Nk-H0j">
-                                <rect key="frame" x="0.0" y="137.66666793823242" width="375" height="176"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="31R-Nk-H0j" id="hdL-VJ-Sbb">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="176"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder: 0 songs" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fw-nR-lxL">
-                                            <rect key="frame" x="107.66666666666667" y="78" width="159.66666666666663" height="20.333333333333329"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="placeholderTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="1fw-nR-lxL" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="hdL-VJ-Sbb" secondAttribute="trailingMargin" id="4Uu-Hk-Se5"/>
-                                        <constraint firstItem="1fw-nR-lxL" firstAttribute="centerX" secondItem="hdL-VJ-Sbb" secondAttribute="centerX" id="biT-vm-gxv"/>
-                                        <constraint firstItem="1fw-nR-lxL" firstAttribute="centerY" secondItem="hdL-VJ-Sbb" secondAttribute="centerY" id="c5A-9Y-x0s"/>
-                                        <constraint firstItem="1fw-nR-lxL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hdL-VJ-Sbb" secondAttribute="leadingMargin" id="wDa-Mh-95s"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="8yt-Gx-J52" id="cdL-iQ-YxM"/>
-                            <outlet property="delegate" destination="8yt-Gx-J52" id="mVe-o4-gI7"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Apple Music" id="nuo-t8-Nxj"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DaJ-br-qUo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6016.8000000000002" y="881.5270935960591"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Qwl-AI-Z0K">
             <objects>
@@ -691,32 +603,12 @@
             </objects>
             <point key="canvasLocation" x="5167" y="-601"/>
         </scene>
-        <!--Apple Music-->
-        <scene sceneID="lin-jK-9Sp">
-            <objects>
-                <navigationController storyboardIdentifier="Apple Music Viewer Navigation Controller" automaticallyAdjustsScrollViewInsets="NO" id="YYU-YO-v0c" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Apple Music" image="app.fill" catalog="system" id="cTc-fV-FrR"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="s3G-Q7-eod">
-                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="8yt-Gx-J52" kind="relationship" relationship="rootViewController" id="tWR-iP-mjp"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qrz-tt-EDv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5166" y="882"/>
-        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Y5v-Mn-JRo"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Fez.jpg" width="1000" height="1000"/>
-        <image name="app.fill" catalog="system" width="128" height="114"/>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
         <image name="backward.end.alt.fill" catalog="system" width="128" height="66"/>
         <image name="backward.end.fill" catalog="system" width="128" height="102"/>
@@ -725,7 +617,6 @@
         <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="playpause.fill" catalog="system" width="128" height="73"/>
         <image name="speaker.fill" catalog="system" width="128" height="128"/>
-        <image name="square" catalog="system" width="128" height="114"/>
         <systemColor name="placeholderTextColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

@@ -12,7 +12,6 @@ import SwiftUI
 
 struct SongsView: View {
 	
-//	let pathToSampleArtwork = Bundle.main.path(forResource: "fallinLight", ofType: "jpg")!
 //	let albumTitle: String
 	
 	init() {
