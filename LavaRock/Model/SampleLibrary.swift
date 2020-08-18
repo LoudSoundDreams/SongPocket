@@ -209,10 +209,12 @@ struct SampleLibrary {
 					SampleSong("E•mo•tion", 2),
 					SampleSong("I Really Like You", 3),
 					SampleSong("Boy Problems", 6),
+					SampleSong("Your Type", 8),
 					SampleSong("Let’s Get Lost", 9),
 					SampleSong("When I Needed You", 12),
 				]),
 				SampleAlbum("Kiss", 2012, "Kiss.jpg", [
+					SampleSong("Good Time", 5),
 					SampleSong("Turn Me Up", 7),
 				]),
 			]),

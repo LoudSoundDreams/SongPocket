@@ -29,29 +29,31 @@ struct AccentColorManager {
 	static func setAccentColor(_ window: UIWindow) {
 		
 		// If there's a saved accent color preference, set it.
-//		if
-//			let savedAccentColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String,
-//			let matchedAccentColor = Self.uiColor(forName: savedAccentColorName)
-//		{
-//			window.tintColor = matchedAccentColor // What if you have multiple windows open on an iPad?
-//
-//		} else { // Otherwise, either there was no saved preference, or there was one but it didn't correspond to any UIColor in AccentColorManager. Set and save the default accent color.
+		if
+			let savedAccentColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String,
+			let matchedAccentColor = Self.uiColor(forName: savedAccentColorName)
+		{
+			window.tintColor = matchedAccentColor // What if you have multiple windows open on an iPad?
+
+		} else { // Otherwise, either there was no saved preference, or there was one but it didn't correspond to any UIColor in AccentColorManager. Set and save the default accent color.
 			
-			window.tintColor = UIColor(named: "IfDarkThenOrangeElseBlue")
-			DispatchQueue.global().async {
-				UserDefaults.standard.setValue("IfDarkThenOrangeElseBlue", forKey: "accentColorName")
+			window.tintColor = UIColor.systemBlue
+			if let defaultAccentColorName = Self.colorName(forUIColor: window.tintColor) {
+				DispatchQueue.global().async {
+					UserDefaults.standard.setValue(defaultAccentColorName, forKey: "accentColorName")
+				}
 			}
 			
-//			window.tintColor = UIColor.systemBlue
-//			if let defaultAccentColorName = Self.colorName(forUIColor: window.tintColor) {
-//				DispatchQueue.global().async {
-//					UserDefaults.standard.setValue(defaultAccentColorName, forKey: "accentColorName")
-//				}
-//			}
-			
-//		}
+		}
 		
 	}
+	
+//	static func setAccentColor(_ window: UIWindow) {
+//		window.tintColor = UIColor(named: "IfDarkThenOrangeElseBlue")
+//		DispatchQueue.global().async {
+//			UserDefaults.standard.setValue("IfDarkThenOrangeElseBlue", forKey: "accentColorName")
+//		}
+//	}
 	
 	static func uiColor(forName lookedUpName: String) -> UIColor? {
 		if let (_, matchedUIColor) = accentColorTuples.first(where: { (savedName, _) in

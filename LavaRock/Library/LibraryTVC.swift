@@ -199,7 +199,7 @@ class LibraryTVC: UITableViewController {
 					DispatchQueue.main.async {
 						MediaPlayerManager.setDefaultLibraryIfAuthorized()
 						self.viewDidLoad()
-						switch self.tableView.numberOfRows(inSection: 0) {
+						switch self.tableView(tableView, numberOfRowsInSection: 0) { // tableView.numberOfRows might not be up to date yet. Call the actual UITableViewDelegate method.
 						case 0:
 							tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
 						case 1:
@@ -368,10 +368,10 @@ class LibraryTVC: UITableViewController {
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
 			let sortedByTrackNumber = indexPathsAndItems.sorted(by: {
-					($0.1.value(forKey: "trackNumber") as! Int) < ($1.1.value(forKey: "trackNumber") as! Int)
+				(($0.1 as? Song)?.trackNumber ?? 0) < (($1.1 as? Song)?.trackNumber ?? 0)
 			} )
 			return sortedByTrackNumber.sorted(by: {
-				($0.1.value(forKey: "discNumber") as! Int) < ($1.1.value(forKey: "discNumber") as! Int)
+				(($0.1 as? Song)?.discNumber ?? 0) < (($1.1 as? Song)?.discNumber ?? 0)
 			} )
 			
 		default:

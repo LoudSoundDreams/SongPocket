@@ -5,6 +5,7 @@
         <attribute name="albumPersistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="artworkThumbnail" optional="YES" attributeType="Binary"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="releaseDateEstimate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="sampleArtworkFileNameWithExtension" optional="YES" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="year" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
@@ -17,10 +18,10 @@
         <relationship name="contents" optional="YES" toMany="YES" deletionRule="Deny" ordered="YES" destinationEntity="Album" inverseName="container" inverseEntity="Album"/>
     </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
-        <attribute name="artist" optional="YES" attributeType="String"/>
         <attribute name="discNumber" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="persistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="trackNumber" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="contents" inverseEntity="Album"/>
@@ -38,11 +39,11 @@
         <attribute name="title" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Album" positionX="-63" positionY="-18" width="128" height="178"/>
+        <element name="Album" positionX="-63" positionY="-18" width="128" height="193"/>
         <element name="Collection" positionX="-257.1171875" positionY="-18.56640625" width="128" height="88"/>
         <element name="Song" positionX="129.5859375" positionY="-12.60546875" width="128" height="148"/>
-        <element name="TestCollection" positionX="-45" positionY="72" width="128" height="73"/>
         <element name="TestAlbum" positionX="-36" positionY="81" width="128" height="73"/>
+        <element name="TestCollection" positionX="-45" positionY="72" width="128" height="73"/>
         <element name="TestSong" positionX="-27" positionY="90" width="128" height="73"/>
     </elements>
 </model>

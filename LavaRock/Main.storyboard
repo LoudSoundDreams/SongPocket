@@ -292,7 +292,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="YiT-J8-VtB" kind="relationship" relationship="viewControllers" id="ULc-Ck-PNa"/>
-                        <segue destination="YYU-YO-v0c" kind="relationship" relationship="viewControllers" id="GPW-eH-024"/>
                         <segue destination="vJK-cW-8Bm" kind="relationship" relationship="viewControllers" id="P44-30-jr9"/>
                     </connections>
                 </tabBarController>
@@ -738,7 +737,7 @@
         <!--Apple Music-->
         <scene sceneID="lin-jK-9Sp">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YYU-YO-v0c" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Apple Music Viewer Navigation Controller" automaticallyAdjustsScrollViewInsets="NO" id="YYU-YO-v0c" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Apple Music" image="app.fill" catalog="system" id="cTc-fV-FrR"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="s3G-Q7-eod">

@@ -38,6 +38,7 @@
 		07752E2224CDE9D10065670F /* QueueViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07752E2124CDE9D10065670F /* QueueViewHostingController.swift */; };
 		079B2C8C24E1ED0C00A949FA /* AppleMusicViewerTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C8B24E1ED0C00A949FA /* AppleMusicViewerTVC.swift */; };
 		079B2C9524E227BF00A949FA /* MediaPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */; };
+		07CAB24724EA227F008AC34C /* extension Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* extension Song.swift */; };
 		07CEAE9E24E0FEA600C87C95 /* Fez.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07CEAE9D24E0FEA600C87C95 /* Fez.jpg */; };
 		07D157ED24D952A600FDF26A /* AlbumMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D157EC24D952A600FDF26A /* AlbumMover.swift */; };
 		07FC970124BABAAE0036DD3D /* emotion.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 07FC96E724BABAAC0036DD3D /* emotion.jpg */; };
@@ -101,6 +102,7 @@
 		07752E2124CDE9D10065670F /* QueueViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueViewHostingController.swift; sourceTree = "<group>"; };
 		079B2C8B24E1ED0C00A949FA /* AppleMusicViewerTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicViewerTVC.swift; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerManager.swift; sourceTree = "<group>"; };
+		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
 		07CEAE9D24E0FEA600C87C95 /* Fez.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Fez.jpg; sourceTree = "<group>"; };
 		07D157EC24D952A600FDF26A /* AlbumMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumMover.swift; sourceTree = "<group>"; };
 		07FC96E724BABAAC0036DD3D /* emotion.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = emotion.jpg; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
 				0736E3E924B95FD600A15420 /* extension Album.swift */,
+				07CAB24624EA227F008AC34C /* extension Song.swift */,
 				076830C424B42E3F0033E3CC /* SampleLibrary.swift */,
 				07FC96D524BAB9A80036DD3D /* Sample Artwork */,
 				071CA3AC24C6DA370092D92A /* CoreDataManager.swift */,
@@ -434,6 +437,7 @@
 				07752E2024CDE6C60065670F /* QueueView.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
+				07CAB24724EA227F008AC34C /* extension Song.swift in Sources */,
 				07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,

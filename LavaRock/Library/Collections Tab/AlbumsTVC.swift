@@ -14,7 +14,8 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	// MARK: Properties
 	
 	// "Constants"
-	static let impossibleYear = -13800000001 // nil value for `year` attribute. Even though the attribute is optional, Swift and Objective-C don't treat it as an optional, because for integer attributes in Core Data, the nil value is actually a SQL `NULL`, not a Swift `nil`.
+	static let unknownAlbumTitlePlaceholderText = "Unknown Album"
+	static let impossibleYear = 0// nil value for `year` attribute. Even though the attribute is optional, Swift and Objective-C don't treat it as an optional, because for integer attributes in Core Data, the nil value is actually a SQL `NULL`, not a Swift `nil`.
 	// SampleLibrary uses this number for sample albums without years.
 	// AlbumsTVC and SongsTVC leave the "year" field blank if the album's year is this number.
 	static let rowHeightInPoints = 44 * 3 // The Album class references this to create thumbnails.
@@ -71,23 +72,20 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		
 		let album = activeLibraryItems[indexPath.row] as! Album
 		
-		let albumImage: UIImage?
-		if let thumbnailData = album.artworkThumbnail {
-			albumImage = UIImage(data: thumbnailData)
-		} else if let artworkFileName = album.sampleArtworkFileNameWithExtension {
-			albumImage = UIImage(imageLiteralResourceName: artworkFileName)
-		} else {
-			albumImage = nil // To remove the placeholder image in the storyboard.
+		var albumImage: UIImage? = nil // nil removes the placeholder image in the storyboard.
+		coreDataManager.managedObjectContext.performAndWait {
+			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
+			songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
+			songsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+			// TO DO: Is this wasteful?
+			let allSongs = coreDataManager.managedObjects(for: songsFetchRequest) as! [Song]
+			let firstSong = allSongs.first
+			albumImage = firstSong?.artworkImage() // TO DO: If the first song doesn't have any artwork, or it doesn't exist anymore, try the next song until we either get some artwork or reach the last song.
 		}
 		
-		let albumTitle = album.title
+		let albumTitle = album.titleOrPlaceholder()
 		
-		let albumYearText: String?
-		if album.year != Self.impossibleYear {
-			albumYearText = String(album.year)
-		} else {
-			albumYearText = nil
-		}
+		let albumYearText = album.releaseDateFormatted()
 		
 		// Make, configure, and return the cell.
 		
@@ -148,10 +146,8 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		if segue.identifier == "Moved Albums",
 		   let nonmodalAlbumsTVC = segue.destination as? AlbumsTVC,
 		   let newCollectionDetector = newCollectionDetector,
-//		   newCollectionDetector.numberOfCollectionsToInsertOnNextViewWillAppear > 0,
 		   newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
 		{
-//			nonmodalAlbumsTVC.newCollectionDetector!.numberOfCollectionsToInsertOnNextViewWillAppear = newCollectionDetector.numberOfCollectionsToInsertOnNextViewWillAppear
 			nonmodalAlbumsTVC.newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		
@@ -220,7 +216,6 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		}
 		
 		if activeLibraryItems.isEmpty {
-//			newCollectionDetector!.numberOfCollectionsToInsertOnNextViewWillAppear += 1
 			newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		

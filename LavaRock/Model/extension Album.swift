@@ -11,6 +11,38 @@ import ImageIO
 
 extension Album {
 	
+	// There's a similar method in `extension Song`. Make this generic?
+	func titleOrPlaceholder() -> String {
+		if
+			let storedTitle = title,
+			storedTitle != ""
+		{
+			return storedTitle
+		} else {
+			return AlbumsTVC.unknownAlbumTitlePlaceholderText
+		}
+	}
+	
+	func releaseDateFormatted() -> String? {
+		if let date = releaseDateEstimate {
+			let dateFormatter = DateFormatter()
+			
+			// Insert date formatter options
+////			dateFormatter.locale = Locale.current
+//			dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+//			dateFormatter.dateFormat = "yyyy-MM-dd"
+//			dateFormatter.timeZone = TimeZone.current// TimeZone(secondsFromGMT: 0)
+////			dateFormatter.setLocalizedDateFormatFromTemplate("yyyy-MM-dd")
+			
+			dateFormatter.dateStyle = .medium
+			dateFormatter.timeStyle = .none
+			
+			return dateFormatter.string(from: date)
+		} else {
+			return nil
+		}
+	}
+	
 //	func sampleArtworkDownsampledImage(maxWidthAndHeightInPixels: CGFloat) -> UIImage? {
 //		let imageData = sampleArtworkDownsampledData(maxWidthAndHeightInPixels: maxWidthAndHeightInPixels)
 //		if imageData != nil {
@@ -32,16 +64,6 @@ extension Album {
 		
 		let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
 		let imageSource = CGImageSourceCreateWithURL(urlToFullSizeArtwork as CFURL, imageSourceOptions)!
-		
-		// How do you use this thing? Would it kill Apple to put some example code on the Image I/O documentation page?
-//		let imageSourcePropertyOptions = [
-//			kCGImagePropertyPixelWidth: true,
-//			kCGImagePropertyPixelHeight: true
-//		] as CFDictionary
-//		let imageSourceProperties = CGImageSourceCopyProperties(imageSource, nil) as NSDictionary?
-//		print(imageSourceProperties![kCGImagePropertyPixelWidth]) as! Int
-		
-		
 		
 		let downsampleOptions = [
 			kCGImageSourceCreateThumbnailFromImageAlways: true,

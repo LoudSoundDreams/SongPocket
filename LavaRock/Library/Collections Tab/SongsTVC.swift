@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MediaPlayer
 
 final class SongsTVC: LibraryTVC {
 	
@@ -37,8 +38,10 @@ final class SongsTVC: LibraryTVC {
 	// MARK: Properties
 	
 	// Constants
-	static let impossibleDiscNumber = -1
-	static let impossibleTrackNumber = -1
+	static let unknownAlbumArtistPlaceholderText = "Unknown Artist"
+	static let unknownSongTitlePlaceholderText = "Unknown Song"
+	static let impossibleDiscNumber = 0
+	static let impossibleTrackNumber = 0
 	let numberOfUneditableRowsAtTopOfSection = 2
 	
 	// MARK: Property Observers
@@ -60,6 +63,7 @@ final class SongsTVC: LibraryTVC {
 	override func setUpUI() {
 		super.setUpUI()
 		
+		title = (containerOfData as? Album)?.titleOrPlaceholder()
 		navigationItemButtonsEditModeOnly = [floatToTopButton, sortButton]
 		sortOptions = ["Track Number"]
 	}
@@ -78,29 +82,15 @@ final class SongsTVC: LibraryTVC {
 		if indexPath.row == 0 {
 			
 			// Get the data to put into the cell.
-			let album = containerOfData as! Album
+//			let album = containerOfData as! Album
 			
 			// Make, configure, and return the cell.
 			
 			let artworkCell = tableView.dequeueReusableCell(withIdentifier: "Artwork Cell") as! SongsArtworkCell
 			
-			// Implementation that downsamples the artwork first.
-			// Doesn't seem faster at all, and image doesn't get cached for some reason.
-//			let artworkImage = album.sampleArtworkDownsampledImage(
-//				maxWidthAndHeightInPixels: UIScreen.main.bounds.width * UIScreen.main.scale
-//			)
-//			artworkCell.artworkImageView.image = artworkImage
-			
-			// Implementation that doesn't downsample the artwork first.
-			// Slow, but the image gets cached.
-			let image: UIImage?
-			if let artworkFileName = album.sampleArtworkFileNameWithExtension {
-				image = UIImage(imageLiteralResourceName: artworkFileName)
-			} else {
-				image = nil // To remove the placeholder image in the storyboard.
-			}
-			
-			artworkCell.artworkImageView.image = image
+			let firstSong = activeLibraryItems[numberOfUneditableRowsAtTopOfSection] as! Song
+			let artworkImage = firstSong.artworkImage()
+			artworkCell.artworkImageView.image = artworkImage
 			
 			return artworkCell
 			
@@ -110,19 +100,14 @@ final class SongsTVC: LibraryTVC {
 			
 			let album = containerOfData as! Album
 			
-			let yearText: String?
-			if album.year != AlbumsTVC.impossibleYear {
-				yearText = String(album.year)
-			} else {
-				yearText = nil
-			}
+			let yearText = album.releaseDateFormatted()
 			
 			// Make, configure, and return the cell.
 			
 			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell Without Button") as! SongsHeaderCellWithoutButton
 //			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell") as! SongsHeaderCellWithButton
 			
-			headerCell.albumArtistLabel.text = album.albumArtist
+			headerCell.albumArtistLabel.text = album.albumArtist ?? Self.unknownAlbumArtistPlaceholderText
 			headerCell.yearLabel.text = yearText
 			
 //			headerCell.addAllToDeckButton.isEnabled = !isEditing
@@ -157,12 +142,12 @@ final class SongsTVC: LibraryTVC {
 //
 //			} else { // iOS 13 and earlier
 			
-				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
-				
-				cell.trackNumberLabel.text = trackNumberText
-				cell.titleLabel.text = song.title
-				
-				
+			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
+			
+			cell.trackNumberLabel.text = trackNumberText
+			cell.titleLabel.text = song.titleOrPlaceholder()
+			
+			
 //				print("for IndexPath \(indexPath), \(String(describing: cell.titleLabel.text)):")
 //				print("trackNumberLabel.frame: \(cell.trackNumberLabel.frame)")
 //				print("trackNumberLabel.bounds: \(cell.trackNumberLabel.bounds)")
@@ -171,9 +156,9 @@ final class SongsTVC: LibraryTVC {
 				//			print("titleLabel.bounds: \(cell.titleLabel.bounds)")
 				//			print("titleLabel.intrinsicContentSize: \(cell.titleLabel.intrinsicContentSize)")
 //				print("")
-				
-				
-				return cell
+			
+			
+			return cell
 			
 //			}
 		}
