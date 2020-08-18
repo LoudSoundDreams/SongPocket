@@ -31,13 +31,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func sceneDidBecomeActive(_ scene: UIScene) {
 		// Called when the scene has moved from an inactive state to an active state.
 		// Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-		
-		
-		// Scan for changes in the music library.
-		
-		// Look for albums that need new thumbnails, and update those thumbnails.
-		
-		
 	}
 	
 	func sceneWillResignActive(_ scene: UIScene) {

@@ -15,7 +15,7 @@ final class SongsTVC: LibraryTVC {
 	/*
 	WARNING: This class contains a hack on activeLibraryItems, in order to use a regular table view cell as a non-sticky "header".
 	
-	The header, which contains the artwork and the "Add All to Deck" button, should self-size.
+	The header, which contains the artwork, album artist, and release date, should self-size.
 	**It would be cleaner** to assign the header to tableView.tableHeaderView and write code to make it self-size.
 	
 	Another option is to let the table view do the self-sizing, by using a section header or a regular cell as the header.
@@ -37,11 +37,13 @@ final class SongsTVC: LibraryTVC {
 	
 	// MARK: Properties
 	
-	// Constants
+	// Constants that should really be static constants on the Song entity
 	static let unknownAlbumArtistPlaceholderText = "Unknown Artist"
 	static let unknownSongTitlePlaceholderText = "Unknown Song"
 	static let impossibleDiscNumber = 0
 	static let impossibleTrackNumber = 0
+	
+	// Constants
 	let numberOfUneditableRowsAtTopOfSection = 2
 	
 	// MARK: Property Observers
@@ -104,13 +106,10 @@ final class SongsTVC: LibraryTVC {
 			
 			// Make, configure, and return the cell.
 			
-			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell Without Button") as! SongsHeaderCellWithoutButton
-//			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell") as! SongsHeaderCellWithButton
+			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell Without Button") as! SongsAlbumInfoHeaderCell
 			
 			headerCell.albumArtistLabel.text = album.albumArtist ?? Self.unknownAlbumArtistPlaceholderText
 			headerCell.yearLabel.text = yearText
-			
-//			headerCell.addAllToDeckButton.isEnabled = !isEditing
 			
 			return headerCell
 			
@@ -165,22 +164,6 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	// MARK: Events
-	
-	override func setEditing(_ editing: Bool, animated: Bool) {
-//		if !isEditing {
-//			if let headerCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? SongsHeaderCellWithButton {
-//				headerCell.addAllToDeckButton.isEnabled = false
-//			}
-//		}
-		
-		super.setEditing(editing, animated: animated)
-		
-//		if !isEditing {
-//			if let headerCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? SongsHeaderCellWithButton {
-//				headerCell.addAllToDeckButton.isEnabled = true
-//			}
-//		}
-	}
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 		if indexPath.row < numberOfUneditableRowsAtTopOfSection {

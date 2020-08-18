@@ -12,7 +12,7 @@ import SwiftUI
 
 struct SongsView: View {
 	
-	let pathToSampleArtwork = Bundle.main.path(forResource: "fallinLight", ofType: "jpg")!
+//	let pathToSampleArtwork = Bundle.main.path(forResource: "fallinLight", ofType: "jpg")!
 //	let albumTitle: String
 	
 	init() {
@@ -22,7 +22,7 @@ struct SongsView: View {
 	
 	var body: some View {
 		VStack {
-			Image(uiImage: UIImage(contentsOfFile: pathToSampleArtwork)!)
+			Image(systemName: "music.note")
 				.resizable()
 				.padding(.all, 0)
 				.scaledToFit()

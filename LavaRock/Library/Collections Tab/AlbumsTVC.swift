@@ -13,12 +13,13 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	
 	// MARK: Properties
 	
-	// "Constants"
+	// Constants that should really be static constants on the Album entity
 	static let unknownAlbumTitlePlaceholderText = "Unknown Album"
 	static let impossibleYear = 0// nil value for `year` attribute. Even though the attribute is optional, Swift and Objective-C don't treat it as an optional, because for integer attributes in Core Data, the nil value is actually a SQL `NULL`, not a Swift `nil`.
-	// SampleLibrary uses this number for sample albums without years.
 	// AlbumsTVC and SongsTVC leave the "year" field blank if the album's year is this number.
-	static let rowHeightInPoints = 44 * 3 // The Album class references this to create thumbnails.
+	
+	// "Constants"
+	static let rowHeightInPoints = 44 * 3
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
 	
 	// Variables

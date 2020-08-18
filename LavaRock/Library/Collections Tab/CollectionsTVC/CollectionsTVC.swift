@@ -112,13 +112,6 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 				
 				super.loadSavedLibraryItems() // Or rather, the full implementation above; just don't cause an infinite loop calling mergeChangesFromAppleMusicLibrary().
 			}
-			
-			
-//			if activeLibraryItems.isEmpty {
-//				SampleLibrary.inject()
-//				loadSavedLibraryItems()
-//			}
-////			SampleLibrary.setThumbnailsInBackground(activeLibraryItems as! [Collection])
 		}
 	}
 	

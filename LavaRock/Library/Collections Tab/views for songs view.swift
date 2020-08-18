@@ -11,13 +11,7 @@ final class SongsArtworkCell: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 }
 
-//final class SongsHeaderCellWithButton: UITableViewCell {
-//	@IBOutlet var albumArtistLabel: UILabel!
-//	@IBOutlet var yearLabel: UILabel!
-//	@IBOutlet var addAllToDeckButton: UIButton!
-//}
-
-final class SongsHeaderCellWithoutButton: UITableViewCell {
+final class SongsAlbumInfoHeaderCell: UITableViewCell {
 	@IBOutlet var albumArtistLabel: UILabel!
 	@IBOutlet var yearLabel: UILabel!
 }

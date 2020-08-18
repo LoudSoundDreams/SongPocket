@@ -20,9 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //		print("\(NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).last!)")
 		
 		
-		// Just for testing: on first launch, inject sample library.
-		
-		
 		return true
 	}
 	
