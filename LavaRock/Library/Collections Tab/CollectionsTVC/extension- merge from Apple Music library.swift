@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 import MediaPlayer
 
+//class AppleMusicLibraryMerger { // Move this to MediaPlayerManager?
 extension CollectionsTVC {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures corresponding with ("in sync with") items in the Apple Music library.
@@ -196,7 +197,7 @@ extension CollectionsTVC {
 			
 			// 2.1. If we already have a Collection with a matching title, then add the Album to that Collection.
 			if let existingCollectionWithMatchingTitle = activeLibraryItems.first(where: { existingCollection in
-				(existingCollection as! Collection).title == newMediaItem.albumArtist ?? SongsTVC.unknownAlbumArtistPlaceholderText
+				(existingCollection as! Collection).title == newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder()
 			})
 			{
 				let existingCollectionWithMatchingTitle = existingCollectionWithMatchingTitle as! Collection
@@ -238,7 +239,7 @@ extension CollectionsTVC {
 		// We should only be running this if we don't already have a managed object for the collection for the album for the song.
 		coreDataManager.managedObjectContext.performAndWait {
 			let newCollection = Collection(context: coreDataManager.managedObjectContext)
-			newCollection.title = newMediaItem.albumArtist ?? SongsTVC.unknownAlbumArtistPlaceholderText
+			newCollection.title = newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder()
 			activeLibraryItems.insert(newCollection, at: 0)
 		}
 	}

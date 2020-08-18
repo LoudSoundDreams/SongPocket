@@ -10,18 +10,6 @@ import MediaPlayer
 
 extension Song {
 	
-	// There's a similar method in `extension Album`. Make this generic?
-	func titleOrPlaceholder() -> String {
-		if
-			let storedTitle = title,
-			storedTitle != ""
-		{
-			return storedTitle
-		} else {
-			return SongsTVC.unknownSongTitlePlaceholderText
-		}
-	}
-	
 	func artworkImage() -> UIImage? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
@@ -39,6 +27,28 @@ extension Song {
 		let artworkImage = mediaItemArtwork?.image(
 			at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
 		return artworkImage
+	}
+	
+	// MARK: Getting Stored Attributes in a Nice Format
+	
+	// There's a similar method in `extension Album`. Make this generic?
+	func titleOrPlaceholder() -> String {
+		if
+			let storedTitle = title,
+			storedTitle != ""
+		{
+			return storedTitle
+		} else {
+			return "Unknown Song"
+		}
+	}
+	
+	func trackNumberFormatted() -> String {
+		if trackNumber == 0 {
+			return "-"
+		} else {
+			return String(trackNumber)
+		}
 	}
 	
 }

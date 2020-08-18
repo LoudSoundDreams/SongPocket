@@ -37,12 +37,6 @@ final class SongsTVC: LibraryTVC {
 	
 	// MARK: Properties
 	
-	// Constants that should really be static constants on the Song entity
-	static let unknownAlbumArtistPlaceholderText = "Unknown Artist"
-	static let unknownSongTitlePlaceholderText = "Unknown Song"
-	static let impossibleDiscNumber = 0
-	static let impossibleTrackNumber = 0
-	
 	// Constants
 	let numberOfUneditableRowsAtTopOfSection = 2
 	
@@ -108,7 +102,7 @@ final class SongsTVC: LibraryTVC {
 			
 			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell Without Button") as! SongsAlbumInfoHeaderCell
 			
-			headerCell.albumArtistLabel.text = album.albumArtist ?? Self.unknownAlbumArtistPlaceholderText
+			headerCell.albumArtistLabel.text = album.albumArtistOrPlaceholder()
 			headerCell.yearLabel.text = yearText
 			
 			return headerCell
@@ -119,12 +113,7 @@ final class SongsTVC: LibraryTVC {
 			
 			let song = activeLibraryItems[indexPath.row] as! Song
 			
-			let trackNumberText: String?
-			if song.trackNumber != Self.impossibleTrackNumber {
-				trackNumberText = String(song.trackNumber)
-			} else {
-				trackNumberText = nil
-			}
+			let trackNumberText = song.trackNumberFormatted()
 			
 			// Make, configure, and return the cell.
 			

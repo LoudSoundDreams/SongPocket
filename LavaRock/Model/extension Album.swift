@@ -11,15 +11,21 @@ import ImageIO
 
 extension Album {
 	
-	// There's a similar method in `extension Song`. Make this generic?
-	func titleOrPlaceholder() -> String {
+	// mergeChangesFromAppleMusicLibrary() references this when checking for and making new Collections.
+	static func unknownAlbumArtistPlaceholder() -> String {
+		return "Unknown Artist"
+	}
+	
+	// MARK: Getting Stored Attributes in a Nice Format
+	
+	func albumArtistOrPlaceholder() -> String {
 		if
-			let storedTitle = title,
-			storedTitle != ""
+			let storedAlbumArtist = albumArtist,
+			albumArtist != ""
 		{
-			return storedTitle
+			return storedAlbumArtist
 		} else {
-			return AlbumsTVC.unknownAlbumTitlePlaceholderText
+			return Self.unknownAlbumArtistPlaceholder()
 		}
 	}
 	
@@ -39,7 +45,19 @@ extension Album {
 			
 			return dateFormatter.string(from: date)
 		} else {
-			return nil
+			return nil//"Unknown Date"
+		}
+	}
+	
+	// There's a similar method in `extension Song`. Make this generic?
+	func titleOrPlaceholder() -> String {
+		if
+			let storedTitle = title,
+			storedTitle != ""
+		{
+			return storedTitle
+		} else {
+			return "Unknown Album"
 		}
 	}
 	
