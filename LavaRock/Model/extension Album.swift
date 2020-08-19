@@ -10,8 +10,7 @@ import MediaPlayer
 
 extension Album {
 	
-	// Uses Media Player's "representativeItem", but I'm not sure what it considers representative.
-	func representativeItem() -> MPMediaItem? {
+	func mpMediaItemCollection() -> MPMediaItemCollection? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
@@ -21,21 +20,18 @@ extension Album {
 				value: albumPersistentID, forProperty: MPMediaItemPropertyAlbumPersistentID)
 		)
 		
-//		print(albumsQuery.collections)
-//		print(albumsQuery.collectionSections)
-//		print(albumsQuery.items)
+		//		print(albumsQuery.collections)
+		//		print(albumsQuery.collectionSections)
+		//		print(albumsQuery.items)
 		
-		guard
+		if
 			albumsQuery.collections?.count == 1,
-			let album = albumsQuery.collections?[0]
-		else {
+			let albumMPMediaItemCollection = albumsQuery.collections?[0]
+		{
+			return albumMPMediaItemCollection
+		} else {
 			return nil
 		}
-		
-//		print(album.representativeItem?.title!)
-		return album.representativeItem
-		// What's "representative"?
-		// - Not determined by the latest-released song on the album. Do not use it for the album's release date.
 	}
 	
 	// MARK: Type Methods
@@ -43,15 +39,6 @@ extension Album {
 	// mergeChangesFromAppleMusicLibrary() references this when checking for and making new Collections.
 	static func unknownAlbumArtistPlaceholder() -> String {
 		return "Unknown Artist"
-	}
-	
-	// MARK: Querying Metadata
-	
-	func representativeItemArtworkImage() -> UIImage? {
-		let mediaItemArtwork = representativeItem()?.artwork
-		let artworkImage = mediaItemArtwork?.image(
-			at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)) // Make this a parameter.
-		return artworkImage
 	}
 	
 	// MARK: Getting Stored Attributes in a Nice Format

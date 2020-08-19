@@ -68,7 +68,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		
 		let album = activeLibraryItems[indexPath.row] as! Album
 		
-		let cellImage = album.representativeItemArtworkImage() // nil will remove the placeholder image in the storyboard.
+		let cellImage = album.mpMediaItemCollection()?.representativeItem?.artwork?.image(at: CGSize(width: Self.rowHeightInPoints, height: Self.rowHeightInPoints))// representativeItemArtworkImage() // nil will remove the placeholder image in the storyboard.
 		let cellTitle = album.titleOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
 		
