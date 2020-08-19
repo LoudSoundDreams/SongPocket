@@ -10,16 +10,8 @@ import MediaPlayer
 
 extension Album {
 	
-	// MARK: Type Methods
-	
-	// mergeChangesFromAppleMusicLibrary() references this when checking for and making new Collections.
-	static func unknownAlbumArtistPlaceholder() -> String {
-		return "Unknown Artist"
-	}
-	
-	// MARK: Querying Metadata
-	
-	func representativeItemArtworkImage() -> UIImage? {
+	// Uses Media Player's "representativeItem", but I'm not sure what it considers representative.
+	func representativeItem() -> MPMediaItem? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
@@ -41,7 +33,22 @@ extension Album {
 		}
 		
 //		print(album.representativeItem?.title!)
-		let mediaItemArtwork = album.representativeItem?.artwork // What's "representative"?
+		return album.representativeItem
+		// What's "representative"?
+		// - Not determined by the latest-released song on the album. Do not use it for the album's release date.
+	}
+	
+	// MARK: Type Methods
+	
+	// mergeChangesFromAppleMusicLibrary() references this when checking for and making new Collections.
+	static func unknownAlbumArtistPlaceholder() -> String {
+		return "Unknown Artist"
+	}
+	
+	// MARK: Querying Metadata
+	
+	func representativeItemArtworkImage() -> UIImage? {
+		let mediaItemArtwork = representativeItem()?.artwork
 		let artworkImage = mediaItemArtwork?.image(
 			at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)) // Make this a parameter.
 		return artworkImage
@@ -60,7 +67,7 @@ extension Album {
 		}
 	}
 	
-	func releaseDateFormatted() -> String? {
+	func releaseDateEstimateFormatted() -> String? {
 		if let date = releaseDateEstimate {
 			let dateFormatter = DateFormatter()
 			

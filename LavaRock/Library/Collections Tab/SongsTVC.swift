@@ -91,7 +91,7 @@ final class SongsTVC: LibraryTVC {
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
 			let cellHeading = album.albumArtistOrPlaceholder()
-			let cellSubtitle = album.releaseDateFormatted()
+			let cellSubtitle = album.releaseDateEstimateFormatted()
 			
 			// Make, configure, and return the cell.
 			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell Without Button") as! SongsAlbumInfoHeaderCell

@@ -70,7 +70,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		
 		let cellImage = album.representativeItemArtworkImage() // nil will remove the placeholder image in the storyboard.
 		let cellTitle = album.titleOrPlaceholder()
-		let cellSubtitle = album.releaseDateFormatted()
+		let cellSubtitle = album.releaseDateEstimateFormatted()
 		
 		// Make, configure, and return the cell.
 		
