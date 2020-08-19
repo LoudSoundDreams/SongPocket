@@ -70,7 +70,6 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		suggestedCollectionTitle = Self.suggestedCollectionTitle(
 			for: idsOfAlbumsBeingMoved,
 			in: coreDataManager.managedObjectContext,
-			considering: ["albumArtist"],
 			notMatching: existingCollectionTitles
 		)
 	}
@@ -125,7 +124,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		
 		// Get the data to put into the cell.
 		
-		let cellCollection = activeLibraryItems[indexPath.row] as! Collection
+		let collection = activeLibraryItems[indexPath.row] as! Collection
 		
 		// Make, configure, and return the cell.
 		
@@ -133,10 +132,10 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		
 		if #available(iOS 14, *) {
 			var configuration = cell.defaultContentConfiguration()
-			configuration.text = cellCollection.title
+			configuration.text = collection.title
 			
 			if let moveAlbumsClipboard = moveAlbumsClipboard {
-				if cellCollection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 					configuration.textProperties.color = .placeholderText // A dedicated way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 					cell.selectionStyle = .none
 				}
@@ -145,10 +144,10 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			cell.contentConfiguration = configuration
 
 		} else { // iOS 13 and earlier
-			cell.textLabel?.text = cellCollection.title
+			cell.textLabel?.text = collection.title
 			
 			if let moveAlbumsClipboard = moveAlbumsClipboard {
-				if cellCollection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 					cell.textLabel?.isEnabled = false
 					cell.selectionStyle = .none
 				}
@@ -266,75 +265,76 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		present(dialog, animated: true, completion: nil)
 	}
 	
+	private enum AlbumPropertyToConsider {
+		case albumArtist
+	}
+	
+	private static let rankedAlbumPropertiesToConsiderWhenSuggestingCollectionTitle: [AlbumPropertyToConsider] = [.albumArtist]
+	
 	private static func suggestedCollectionTitle(
 		for albumIDs: [NSManagedObjectID],
 		in managedObjectContext: NSManagedObjectContext,
-		considering attributeNamesRanked: [String], // For example, ["albumArtist", "composer", "genre"]
 		notMatching existingCollectionTitles: [String]?
 	) -> String? {
-		if attributeNamesRanked.count < 1 {
-			return nil
-		}
-		
-		// Try the first attribute.
-		if let firstSuggestion = suggestedCollectionTitle(
-			for: albumIDs,
-			in: managedObjectContext,
-			considering: attributeNamesRanked.first!,
-			notMatching: existingCollectionTitles
-		) {
-			return firstSuggestion
-			
-		} else {
-			// Try the next attribute.
-			var attributeNamesRankedMutable = attributeNamesRanked
-			attributeNamesRankedMutable.removeFirst()
-			
-			return suggestedCollectionTitle(
+		for albumProperty in Self.rankedAlbumPropertiesToConsiderWhenSuggestingCollectionTitle {
+			if let suggestion = suggestedCollectionTitle(
 				for: albumIDs,
 				in: managedObjectContext,
-				considering: attributeNamesRankedMutable,
-				notMatching: existingCollectionTitles
-			)
+				notMatching: existingCollectionTitles,
+				considering: albumProperty
+			) {
+				return suggestion
+			} else {
+				continue
+			}
 		}
+		return nil
 	}
 	
 	private static func suggestedCollectionTitle(
 		for albumIDs: [NSManagedObjectID],
 		in managedObjectContext: NSManagedObjectContext,
-		considering attributeName: String,
-		notMatching existingCollectionTitles: [String]?
+		notMatching existingCollectionTitles: [String]?,
+		considering albumProperty: AlbumPropertyToConsider
 	) -> String? {
 		if albumIDs.count < 1 {
 			return nil
 		}
 		
-		let firstAlbum = managedObjectContext.object(with: albumIDs[0])
-		let attributeValueForFirstAlbum = firstAlbum.value(forKey: attributeName) as? String
+		func valueForAlbumProperty(_ albumProperty: AlbumPropertyToConsider, on album: Album) -> String? {
+			let representativeItem = album.mpMediaItemCollection()?.representativeItem
+			switch albumProperty {
+			case .albumArtist:
+				return representativeItem?.albumArtist
+			}
+		}
+		
+		let firstAlbum = managedObjectContext.object(with: albumIDs[0]) as! Album
+		let propertyValueForFirstAlbum = valueForAlbumProperty(albumProperty, on: firstAlbum)
 		if
 			let existingCollectionTitles = existingCollectionTitles,
-			let attributeValueForFirstAlbum = attributeValueForFirstAlbum,
-			existingCollectionTitles.contains(attributeValueForFirstAlbum)
+			let propertyValueForFirstAlbum = propertyValueForFirstAlbum,
+			existingCollectionTitles.contains(propertyValueForFirstAlbum)
 		{
 			return nil
 		}
 		
 		// Case: 1 album
 		if albumIDs.count == 1 {
-			return attributeValueForFirstAlbum
+			return propertyValueForFirstAlbum
 			
 		} else {
 			// Case: 2 or more albums
-			let secondAlbum = managedObjectContext.object(with: albumIDs[1])
-			let attributeValueForSecondAlbum = secondAlbum.value(forKey: attributeName) as? String
+			let secondAlbum = managedObjectContext.object(with: albumIDs[1]) as! Album
+			let propertyValueForSecondAlbum = valueForAlbumProperty(albumProperty, on: secondAlbum)
 			
-			guard attributeValueForFirstAlbum == attributeValueForSecondAlbum else {
+			guard propertyValueForFirstAlbum == propertyValueForSecondAlbum else {
 				return nil
 			}
 			
 			if albumIDs.count == 2 {
 				// Terminating case.
-				return attributeValueForSecondAlbum
+				return propertyValueForSecondAlbum
 				
 			} else {
 				// Recursive case.
@@ -344,8 +344,8 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 				return suggestedCollectionTitle(
 					for: albumIDsMutable,
 					in: managedObjectContext,
-					considering: attributeName,
-					notMatching: existingCollectionTitles
+					notMatching: existingCollectionTitles,
+					considering: albumProperty
 				)
 			}
 		}
