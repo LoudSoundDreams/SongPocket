@@ -125,7 +125,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		
 		// Get the data to put into the cell.
 		
-		let collection = activeLibraryItems[indexPath.row] as! Collection
+		let cellCollection = activeLibraryItems[indexPath.row] as! Collection
 		
 		// Make, configure, and return the cell.
 		
@@ -133,10 +133,10 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		
 		if #available(iOS 14, *) {
 			var configuration = cell.defaultContentConfiguration()
-			configuration.text = collection.title
+			configuration.text = cellCollection.title
 			
 			if let moveAlbumsClipboard = moveAlbumsClipboard {
-				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+				if cellCollection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 					configuration.textProperties.color = .placeholderText // A dedicated way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 					cell.selectionStyle = .none
 				}
@@ -145,10 +145,10 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			cell.contentConfiguration = configuration
 
 		} else { // iOS 13 and earlier
-			cell.textLabel?.text = collection.title
+			cell.textLabel?.text = cellCollection.title
 			
 			if let moveAlbumsClipboard = moveAlbumsClipboard {
-				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+				if cellCollection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 					cell.textLabel?.isEnabled = false
 					cell.selectionStyle = .none
 				}

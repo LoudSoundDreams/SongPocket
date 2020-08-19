@@ -10,10 +10,11 @@ import CoreData
 import MediaPlayer
 
 //class AppleMusicLibraryMerger { // Move this to MediaPlayerManager?
+// If so, refactor CoreDataManager first? / Or inject a managed object context as a dependency
 extension CollectionsTVC {
 	
-	// This is where the magic happens. This is the engine that keeps our data structures corresponding with ("in sync with") items in the Apple Music library.
-	func mergeChangesFromAppleMusicLibrary() {
+	// This is where the magic happens. This is the engine that keeps our data structures matched up with items in the Apple Music library.
+	func mergeChangesFromAppleMusicLibrary(/*managedObjectContext: NSManagedObjectContext*/) {
 		
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,

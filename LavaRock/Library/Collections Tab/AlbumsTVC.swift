@@ -68,20 +68,9 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		
 		let album = activeLibraryItems[indexPath.row] as! Album
 		
-		var albumImage: UIImage? = nil // nil removes the placeholder image in the storyboard.
-		coreDataManager.managedObjectContext.performAndWait {
-			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
-			songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
-			songsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-			// TO DO: Is this wasteful?
-			let allSongs = coreDataManager.managedObjects(for: songsFetchRequest) as! [Song]
-			let firstSong = allSongs.first
-			albumImage = firstSong?.artworkImage() // TO DO: If the first song doesn't have any artwork, or it doesn't exist anymore, try the next song until we either get some artwork or reach the last song.
-		}
-		
-		let albumTitle = album.titleOrPlaceholder()
-		
-		let albumYearText = album.releaseDateFormatted()
+		let cellImage = album.representativeItemArtworkImage() // nil will remove the placeholder image in the storyboard.
+		let cellTitle = album.titleOrPlaceholder()
+		let cellSubtitle = album.releaseDateFormatted()
 		
 		// Make, configure, and return the cell.
 		
@@ -107,9 +96,9 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 //		} else { // iOS 13 and earlier
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
 		
-		cell.artworkImageView.image = albumImage
-		cell.titleLabel.text = albumTitle
-		cell.yearLabel.text = albumYearText
+		cell.artworkImageView.image = cellImage
+		cell.titleLabel.text = cellTitle
+		cell.yearLabel.text = cellSubtitle
 		
 		// Customize the cell.
 		if moveAlbumsClipboard != nil {

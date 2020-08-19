@@ -129,17 +129,17 @@ class LibraryTVC: UITableViewController {
 		}
 		
 		// Get the data to put into the cell.
-		let libraryItem = activeLibraryItems[indexPath.row]
-		let itemTitle = libraryItem.value(forKey: "title") as? String
+		let cellItem = activeLibraryItems[indexPath.row]
+		let cellTitle = cellItem.value(forKey: "title") as? String
 		
 		// Make, configure, and return the cell.
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 		if #available(iOS 14, *) {
 			var configuration = cell.defaultContentConfiguration()
-			configuration.text = itemTitle
+			configuration.text = cellTitle
 			cell.contentConfiguration = configuration
 		} else { // iOS 13 and earlier
-			cell.textLabel?.text = itemTitle
+			cell.textLabel?.text = cellTitle
 		}
         return cell
     }
@@ -368,10 +368,10 @@ class LibraryTVC: UITableViewController {
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
 			let sortedByTrackNumber = indexPathsAndItems.sorted(by: {
-				(($0.1 as? Song)?.trackNumber ?? 0) < (($1.1 as? Song)?.trackNumber ?? 0)
+				(($0.1 as? Song)?.trackNumber ?? 0) < (($1.1 as? Song)?.trackNumber ?? 0) // This is putting songs with unknown track numbers at the top, which doesn't look right.
 			} )
 			return sortedByTrackNumber.sorted(by: {
-				(($0.1 as? Song)?.discNumber ?? 0) < (($1.1 as? Song)?.discNumber ?? 0)
+				(($0.1 as? Song)?.discNumber ?? 0) < (($1.1 as? Song)?.discNumber ?? 0) // This is putting songs with unknown disc numbers at the top, which doesn't look right.
 			} )
 			
 		default:

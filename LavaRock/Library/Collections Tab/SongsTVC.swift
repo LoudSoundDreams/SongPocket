@@ -78,45 +78,35 @@ final class SongsTVC: LibraryTVC {
 		if indexPath.row == 0 {
 			
 			// Get the data to put into the cell.
-//			let album = containerOfData as! Album
+			let album = containerOfData as! Album
+			let cellImage = album.representativeItemArtworkImage()
 			
 			// Make, configure, and return the cell.
-			
 			let artworkCell = tableView.dequeueReusableCell(withIdentifier: "Artwork Cell") as! SongsArtworkCell
-			
-			let firstSong = activeLibraryItems[numberOfUneditableRowsAtTopOfSection] as! Song
-			let artworkImage = firstSong.artworkImage()
-			artworkCell.artworkImageView.image = artworkImage
-			
+			artworkCell.artworkImageView.image = cellImage
 			return artworkCell
 			
 		} else if indexPath.row == 1 {
 			
 			// Get the data to put into the cell.
-			
 			let album = containerOfData as! Album
-			
-			let yearText = album.releaseDateFormatted()
+			let cellHeading = album.albumArtistOrPlaceholder()
+			let cellSubtitle = album.releaseDateFormatted()
 			
 			// Make, configure, and return the cell.
-			
 			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell Without Button") as! SongsAlbumInfoHeaderCell
-			
-			headerCell.albumArtistLabel.text = album.albumArtistOrPlaceholder()
-			headerCell.yearLabel.text = yearText
-			
+			headerCell.albumArtistLabel.text = cellHeading
+			headerCell.yearLabel.text = cellSubtitle
 			return headerCell
 			
 		} else {
 			
 			// Get the data to put into the cell.
-			
 			let song = activeLibraryItems[indexPath.row] as! Song
-			
-			let trackNumberText = song.trackNumberFormatted()
+			let cellLeftText = song.trackNumberFormatted()
+			let cellRightText = song.titleOrPlaceholder()
 			
 			// Make, configure, and return the cell.
-			
 //			if #available(iOS 14, *) {
 //				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 //
@@ -129,11 +119,10 @@ final class SongsTVC: LibraryTVC {
 //				return cell
 //
 //			} else { // iOS 13 and earlier
-			
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
 			
-			cell.trackNumberLabel.text = trackNumberText
-			cell.titleLabel.text = song.titleOrPlaceholder()
+			cell.trackNumberLabel.text = cellLeftText
+			cell.titleLabel.text = cellRightText
 			
 			
 //				print("for IndexPath \(indexPath), \(String(describing: cell.titleLabel.text)):")
@@ -147,7 +136,6 @@ final class SongsTVC: LibraryTVC {
 			
 			
 			return cell
-			
 //			}
 		}
 	}

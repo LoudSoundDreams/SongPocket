@@ -20,12 +20,15 @@ extension Song {
 				value: persistentID, forProperty: MPMediaItemPropertyPersistentID)
 		)
 		
-		guard let song = songsQuery.items?[0] else {
+		guard
+			songsQuery.items?.count == 1,
+			let song = songsQuery.items?[0]
+		else {
 			return nil
 		}
 		let mediaItemArtwork = song.artwork
 		let artworkImage = mediaItemArtwork?.image(
-			at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
+			at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)) // Make this a parameter.
 		return artworkImage
 	}
 	
@@ -45,7 +48,7 @@ extension Song {
 	
 	func trackNumberFormatted() -> String {
 		if trackNumber == 0 {
-			return "-"
+			return "•"
 		} else {
 			return String(trackNumber)
 		}
