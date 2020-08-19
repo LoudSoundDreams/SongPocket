@@ -79,7 +79,8 @@ final class SongsTVC: LibraryTVC {
 			
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
-			let cellImage = album.mpMediaItemCollection()?.representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))// album.representativeItemArtworkImage()
+			let representativeItem = album.mpMediaItemCollection()?.representativeItem
+			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)) // nil removes the placeholder image in the storyboard.
 			
 			// Make, configure, and return the cell.
 			let artworkCell = tableView.dequeueReusableCell(withIdentifier: "Artwork Cell") as! SongsArtworkCell

@@ -67,8 +67,9 @@ extension CollectionsTVC {
 	}
 	
 	
-	// What's "representative"?
-	// An MPMediaItemCollection has a property representativeItem, but that doesn't necessarily represent the album's release date.
+	// Only MPMediaItems have release dates, and those can't be albums.
+	// An MPMediaItemCollection has a property representativeItem, but that item's release date doesn't necessarily represent the album's release date.
+	// Instead, we'll estimate the albums' release dates and keep the estimates up to date.
 	func recalculateReleaseDateEstimateForEachAlbum() {
 		coreDataManager.managedObjectContext.performAndWait {
 			
@@ -206,7 +207,6 @@ extension CollectionsTVC {
 				let existingCollectionWithMatchingTitle = existingCollectionWithMatchingTitle as! Collection
 				
 				let newAlbum = Album(context: coreDataManager.managedObjectContext)
-				newAlbum.albumArtist = newMediaItem.albumArtist // could be nil
 				newAlbum.albumPersistentID = Int64(bitPattern: newMediaItem.albumPersistentID)
 				if let existingAlbumsInCollection = existingCollectionWithMatchingTitle.contents {
 					for existingAlbum in existingAlbumsInCollection {
@@ -214,8 +214,6 @@ extension CollectionsTVC {
 					}
 				}
 				newAlbum.index = 0
-//				newAlbum.releaseDate =
-				// Only MPMediaItems have release dates, and those can't be albums. Instead, we'll estimate the albums' release dates and keep the estimates up to date.
 				newAlbum.title = newMediaItem.albumTitle // could be nil
 				newAlbum.container = existingCollectionWithMatchingTitle
 				

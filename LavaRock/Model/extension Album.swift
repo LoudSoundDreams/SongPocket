@@ -45,10 +45,14 @@ extension Album {
 	
 	func albumArtistOrPlaceholder() -> String {
 		if
-			let storedAlbumArtist = albumArtist,
-			albumArtist != ""
+			let representativeItem = mpMediaItemCollection()?.representativeItem,
+			let fetchedAlbumArtist = representativeItem.albumTitle
+//		if
+//			let storedAlbumArtist = albumArtist,
+//			albumArtist != ""
 		{
-			return storedAlbumArtist
+			return fetchedAlbumArtist
+//			return storedAlbumArtist
 		} else {
 			return Self.unknownAlbumArtistPlaceholder()
 		}

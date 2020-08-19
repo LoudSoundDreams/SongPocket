@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17183" systemVersion="19G2021" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17189" systemVersion="19G2021" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Album" representedClassName="Album" syncable="YES" codeGenerationType="class">
-        <attribute name="albumArtist" optional="YES" attributeType="String"/>
         <attribute name="albumPersistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="releaseDateEstimate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -24,7 +23,7 @@
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="contents" inverseEntity="Album"/>
     </entity>
     <elements>
-        <element name="Album" positionX="-63" positionY="-18" width="128" height="28"/>
+        <element name="Album" positionX="-63" positionY="-18" width="128" height="133"/>
         <element name="Collection" positionX="-257.1171875" positionY="-18.56640625" width="128" height="88"/>
         <element name="Song" positionX="129.5859375" positionY="-12.60546875" width="128" height="148"/>
     </elements>
