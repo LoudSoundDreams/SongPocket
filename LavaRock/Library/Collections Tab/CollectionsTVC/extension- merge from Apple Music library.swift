@@ -78,9 +78,9 @@ extension CollectionsTVC {
 			let allAlbums = coreDataManager.managedObjects(for: albumsFetchRequest) as! [Album]
 			
 			for album in allAlbums {
-				
 				// Update one album's release date estimate.
 				
+				// TO DO: Get the songs using mpMediaItemCollection() instead of Core Data?
 				let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
 				songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
 				// Order doesn't matter.
@@ -89,21 +89,20 @@ extension CollectionsTVC {
 				album.releaseDateEstimate = nil
 				
 				for song in allSongs {
-					
-					if album.releaseDateEstimate == nil {
-						album.releaseDateEstimate = song.releaseDate
-						
-					} else {
-						if
-							let currentEstimate = album.releaseDateEstimate,
-							let competingEstimate = song.releaseDate,
-							competingEstimate > currentEstimate
-						{
-							album.releaseDateEstimate = competingEstimate
-						}
+					guard let competingEstimate = song.mpMediaItem()?.releaseDate else {
+						continue
 					}
 					
+					if album.releaseDateEstimate == nil {
+						album.releaseDateEstimate = competingEstimate // Same as below
+					} else if
+						let currentEstimate = album.releaseDateEstimate,
+						competingEstimate > currentEstimate
+					{
+						album.releaseDateEstimate = competingEstimate // Same as above
+					}
 				}
+				
 			}
 			
 		}
@@ -111,8 +110,8 @@ extension CollectionsTVC {
 	
 	// MARK: - Creating Managed Objects
 	
-	func createManagedObjects(for songsImmutable: [MPMediaItem]) {
-		let newMediaItemsSortedInReverse = songsSortedInReverseTargetOrder(songs: songsImmutable)
+	func createManagedObjects(for newMediaItemsImmutable: [MPMediaItem]) {
+		let newMediaItemsSortedInReverse = sortedInReverseTargetOrder(mediaItems: newMediaItemsImmutable)
 		
 		// Make new managed objects for the new songs, adding containers for them if necessary.
 		for newMediaItem in newMediaItemsSortedInReverse {
@@ -131,20 +130,20 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func songsSortedInReverseTargetOrder(songs songsImmutable: [MPMediaItem]) -> [MPMediaItem] {
-		var songsCopy = songsImmutable
+	private func sortedInReverseTargetOrder(mediaItems mediaItemsImmutable: [MPMediaItem]) -> [MPMediaItem] {
+		var mediaItems = mediaItemsImmutable
 		
 		if activeLibraryItems.count == 0 {
-			songsCopy.sort() { ($0.title ?? "") < ($1.title ?? "") }
-			songsCopy.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
-			songsCopy.sort() { ($0.albumTitle ?? "") < ($1.albumTitle ?? "") }
+			mediaItems.sort() { ($0.title ?? "") < ($1.title ?? "") }
+			mediaItems.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
+			mediaItems.sort() { ($0.albumTitle ?? "") < ($1.albumTitle ?? "") }
 			let commonDate = Date()
-			songsCopy.sort() { ($0.releaseDate ?? commonDate) > ($1.releaseDate ?? commonDate) }
-			songsCopy.sort() { ($0.albumArtist ?? "") < ($1.albumArtist ?? "") }
+			mediaItems.sort() { ($0.releaseDate ?? commonDate) > ($1.releaseDate ?? commonDate) }
+			mediaItems.sort() { ($0.albumArtist ?? "") < ($1.albumArtist ?? "") }
 		} else {
-			songsCopy.sort() { ($0.dateAdded) > ($1.dateAdded) }
+			mediaItems.sort() { ($0.dateAdded) > ($1.dateAdded) }
 		}
-		songsCopy.reverse()
+		mediaItems.reverse()
 		// We're targeting putting new songs in this order:
 		// - If we currently have no collections:
 		// - - Grouped by alphabetically sorted album artist
@@ -155,7 +154,7 @@ extension CollectionsTVC {
 		// - - Newer songs on top
 		// - - The actual results will be different: songs will be added to existing albums if possible, and albums will be added to existing collections if possible.
 		
-		return songsCopy
+		return mediaItems
 	}
 	
 	private func createManagedObject(for newMediaItem: MPMediaItem) {
@@ -182,21 +181,20 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func createManagedObject(for song: MPMediaItem, inAlbumWithID albumID: NSManagedObjectID) {
+	private func createManagedObject(for newMediaItem: MPMediaItem, inAlbumWithID albumID: NSManagedObjectID) {
 		coreDataManager.managedObjectContext.performAndWait {
 			let album = coreDataManager.managedObjectContext.object(with: albumID) as! Album
 			
 			let newSong = Song(context: coreDataManager.managedObjectContext)
-			newSong.discNumber = Int64(song.discNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
+			newSong.discNumber = Int64(newMediaItem.discNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
 			if let songsInAlbum = album.contents { //
 				for existingSong in songsInAlbum {
 					(existingSong as! Song).index += 1
 				}
 			}
 			newSong.index = 0 //
-			newSong.persistentID = Int64(bitPattern: song.persistentID)
-			newSong.releaseDate = song.releaseDate // could be nil
-			newSong.trackNumber = Int64(song.albumTrackNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
+			newSong.persistentID = Int64(bitPattern: newMediaItem.persistentID)
+			newSong.trackNumber = Int64(newMediaItem.albumTrackNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
 			newSong.container = album
 		}
 	}
