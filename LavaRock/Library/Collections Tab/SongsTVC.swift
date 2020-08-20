@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-final class SongsTVC: LibraryTVC {
+final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 	
 	/*
 	WARNING: This class contains a hack on activeLibraryItems, in order to use a regular table view cell as a non-sticky "header".
@@ -59,9 +59,15 @@ final class SongsTVC: LibraryTVC {
 	override func setUpUI() {
 		super.setUpUI()
 		
-		title = (containerOfData as? Album)?.titleOrPlaceholder()
+		customizeNavigationItemTitle()
 		navigationItemButtonsEditModeOnly = [floatToTopButton, sortButton]
 		sortOptions = ["Track Number"]
+	}
+	
+	func customizeNavigationItemTitle() {
+		if let containingAlbum = containerOfData as? Album {
+			title = containingAlbum.fetchedTitleOrPlaceholder()
+		}
 	}
 	
 	// MARK: Loading Data
@@ -91,7 +97,7 @@ final class SongsTVC: LibraryTVC {
 			
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
-			let cellHeading = album.albumArtistOrPlaceholder()
+			let cellHeading = album.fetchedAlbumArtistOrPlaceholder()
 			let cellSubtitle = album.releaseDateEstimateFormatted()
 			
 			// Make, configure, and return the cell.
@@ -104,8 +110,8 @@ final class SongsTVC: LibraryTVC {
 			
 			// Get the data to put into the cell.
 			let song = activeLibraryItems[indexPath.row] as! Song
-			let cellLeftText = song.trackNumberFormatted()
-			let cellRightText = song.titleOrPlaceholder()
+			let cellLeftText = song.storedTrackNumberFormatted()
+			let cellRightText = song.fetchedTitleOrPlaceholder()
 			
 			// Make, configure, and return the cell.
 //			if #available(iOS 14, *) {

@@ -14,15 +14,11 @@ extension Album {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
-		let albumsQuery = MPMediaQuery.albums()
+		let albumsQuery = MPMediaQuery.albums() // Does this leave out any songs?
 		albumsQuery.addFilterPredicate(
 			MPMediaPropertyPredicate(
 				value: albumPersistentID, forProperty: MPMediaItemPropertyAlbumPersistentID)
 		)
-		
-		//		print(albumsQuery.collections)
-		//		print(albumsQuery.collectionSections)
-		//		print(albumsQuery.items)
 		
 		if
 			albumsQuery.collections?.count == 1,
@@ -43,7 +39,18 @@ extension Album {
 	
 	// MARK: Getting Stored Attributes in a Nice Format
 	
-	func albumArtistOrPlaceholder() -> String {
+	func fetchedTitleOrPlaceholder() -> String {
+		if
+			let representativeItem = mpMediaItemCollection()?.representativeItem,
+			let fetchedAlbumTitle = representativeItem.albumTitle
+		{
+			return fetchedAlbumTitle
+		} else {
+			return "Unknown Album"
+		}
+	}
+	
+	func fetchedAlbumArtistOrPlaceholder() -> String {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
 			let fetchedAlbumArtist = representativeItem.albumArtist
@@ -71,18 +78,6 @@ extension Album {
 			return dateFormatter.string(from: date)
 		} else {
 			return nil//"Unknown Date"
-		}
-	}
-	
-	// There's a similar method in `extension Song`. Make this generic?
-	func titleOrPlaceholder() -> String {
-		if
-			let storedTitle = title,
-			storedTitle != ""
-		{
-			return storedTitle
-		} else {
-			return "Unknown Album"
 		}
 	}
 	

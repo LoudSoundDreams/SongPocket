@@ -109,8 +109,6 @@ extension CollectionsTVC {
 		}
 	}
 	
-	
-	
 	// MARK: - Creating Managed Objects
 	
 	func createManagedObjects(for songsImmutable: [MPMediaItem]) {
@@ -118,6 +116,17 @@ extension CollectionsTVC {
 		
 		// Make new managed objects for the new songs, adding containers for them if necessary.
 		for newMediaItem in newMediaItemsSortedInReverse {
+//			guard newMediaItem.mediaType != .musicVideo else { // Apparently music videos don't match MPMediaType.musicVideo
+//			guard newMediaItem.mediaType != .anyVideo else { // This doesn't work either
+//			if newMediaItem.mediaType.rawValue == UInt(2049) { // This works, but seems fragile
+//				print(newMediaItem.albumArtist)
+//				print(newMediaItem.albumTitle)
+//				print(newMediaItem.title)
+//				print(newMediaItem.artist)
+//				print(newMediaItem.persistentID)
+//				print(newMediaItem.albumPersistentID)
+//				continue
+//			}
 			createManagedObject(for: newMediaItem)
 		}
 	}
@@ -178,7 +187,6 @@ extension CollectionsTVC {
 			let album = coreDataManager.managedObjectContext.object(with: albumID) as! Album
 			
 			let newSong = Song(context: coreDataManager.managedObjectContext)
-//			newSong.artist = song.artist // could be nil
 			newSong.discNumber = Int64(song.discNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
 			if let songsInAlbum = album.contents { //
 				for existingSong in songsInAlbum {
@@ -188,7 +196,6 @@ extension CollectionsTVC {
 			newSong.index = 0 //
 			newSong.persistentID = Int64(bitPattern: song.persistentID)
 			newSong.releaseDate = song.releaseDate // could be nil
-			newSong.title = song.title // could be nil
 			newSong.trackNumber = Int64(song.albumTrackNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
 			newSong.container = album
 		}
@@ -214,7 +221,6 @@ extension CollectionsTVC {
 					}
 				}
 				newAlbum.index = 0
-				newAlbum.title = newMediaItem.albumTitle // could be nil
 				newAlbum.container = existingCollectionWithMatchingTitle
 				
 			} else { // 2.2. Otherwise, make the Collection to add the Album to.

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-final class AlbumsTVC: LibraryTVC, AlbumMover {
+final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 	
 	// MARK: Properties
 	
@@ -32,6 +32,8 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	override func setUpUI() {
 		super.setUpUI()
 		
+		customizeNavigationItemTitle()
+		
 		tableView.rowHeight = CGFloat(Self.rowHeightInPoints)
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
@@ -46,6 +48,12 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 			navigationItemButtonsEditModeOnly = [floatToTopButton, startMovingAlbumsButton]
 			
 			navigationController?.isToolbarHidden = true
+		}
+	}
+	
+	func customizeNavigationItemTitle() {
+		if let containingCollection = containerOfData as? Collection {
+			title = containingCollection.title
 		}
 	}
 	
@@ -70,7 +78,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
 		let cellImage = representativeItem?.artwork?.image(at: CGSize(width: Self.rowHeightInPoints, height: Self.rowHeightInPoints)) // nil removes the placeholder image in the storyboard.
-		let cellTitle = album.titleOrPlaceholder()
+		let cellTitle = album.fetchedTitleOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
 		
 		// Make, configure, and return the cell.
@@ -112,8 +120,8 @@ final class AlbumsTVC: LibraryTVC, AlbumMover {
 	
 	// MARK: - Events
 	
-	override func updateBarButtonItems() {
-		super.updateBarButtonItems()
+	override func refreshNavigationBarButtons() {
+		super.refreshNavigationBarButtons()
 		
 		if isEditing {
 			updateStartMovingAlbumsButton()

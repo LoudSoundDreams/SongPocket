@@ -34,6 +34,7 @@
 		07752E2024CDE6C60065670F /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07752E1F24CDE6C60065670F /* QueueView.swift */; };
 		07752E2224CDE9D10065670F /* QueueViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07752E2124CDE9D10065670F /* QueueViewHostingController.swift */; };
 		079B2C9524E227BF00A949FA /* MediaPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */; };
+		07BF46D624EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */; };
 		07CAB24724EA227F008AC34C /* extension Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* extension Song.swift */; };
 		07D157ED24D952A600FDF26A /* AlbumMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D157EC24D952A600FDF26A /* AlbumMover.swift */; };
 		07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FCE63824B42EDF00F94668 /* Main.storyboard */; };
@@ -90,6 +91,7 @@
 		07752E1F24CDE6C60065670F /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 		07752E2124CDE9D10065670F /* QueueViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueViewHostingController.swift; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerManager.swift; sourceTree = "<group>"; };
+		07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NavigationItemTitleCustomizer.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
 		07D157EC24D952A600FDF26A /* AlbumMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumMover.swift; sourceTree = "<group>"; };
 		07FCE63824B42EDF00F94668 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */,
 				0703ED2624E8D0E1002EF1B4 /* CollectionsTVC */,
 				0706ABDE24D946870090EB21 /* Options Sheet */,
+				07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */,
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
 				0736E3A624B8415400A15420 /* AlbumCell.swift */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
@@ -403,6 +406,7 @@
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */,
+				07BF46D624EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift in Sources */,
 				07752E2224CDE9D10065670F /* QueueViewHostingController.swift in Sources */,
 				073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */,
 			);

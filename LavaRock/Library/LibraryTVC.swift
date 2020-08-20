@@ -23,7 +23,7 @@ class LibraryTVC: UITableViewController {
 	var coreDataManager = CoreDataManager(managedObjectContext: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext) // Inject a child managed object context when in "move albums" mode.
 	var navigationItemButtonsNotEditMode = [UIBarButtonItem]()
 	var navigationItemButtonsEditModeOnly = [UIBarButtonItem]()
-	var sortOptions = ["Title"]
+	var sortOptions = [String]()
 	
 	// "Constants" that subclasses should not change
 	let mediaLibraryManager = (UIApplication.shared.delegate as! AppDelegate).mediaLibraryManager
@@ -76,13 +76,11 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	func setUpUI() {
-		if containerOfData != nil {
-			title = containerOfData?.value(forKey: "title") as? String
-		}
 		navigationItem.leftBarButtonItems = navigationItemButtonsNotEditMode
 		navigationItem.rightBarButtonItem = editButtonItem
-		navigationItem.rightBarButtonItem?.isEnabled = MPMediaLibrary.authorizationStatus() == .authorized // TO DO: disable the Edit button if there's 0 items, too.
 		navigationItemButtonsEditModeOnly = [floatToTopButton]
+		
+		refreshNavigationBarButtons()
 		
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 	}
@@ -101,23 +99,21 @@ class LibraryTVC: UITableViewController {
 		// You need to accommodate 2 special cases:
 		// 1. When the user hasn't allowed access to Apple Music, use the "Allow Access to Apple Music" cell as a button.
 		// 2. When there are no items, set the "Add some songs to the Apple Music app." placeholder cell to the background view.
+		refreshNavigationBarButtons()
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
 			// This logic, for setting the "no items" placeholder, should be in numberOfRowsInSection, not in numberOfSections.
 			// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
 			// - If you put it in numberOfRowsInSection, VoiceOver move focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
 			if activeLibraryItems.count > 0 {
-				navigationItem.rightBarButtonItem?.isEnabled = true
 				tableView.backgroundView = nil
 				return activeLibraryItems.count
 			} else {
 				let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell")! // We need a copy of this cell in every scene in the storyboard that might use it.
-				navigationItem.rightBarButtonItem?.isEnabled = false
 				tableView.backgroundView = noItemsView
 				return 0
 			}
 		default:
-			navigationItem.rightBarButtonItem?.isEnabled = false
 			tableView.backgroundView = nil
 			return 1 // "Allow Access" cell
 		}
@@ -166,14 +162,23 @@ class LibraryTVC: UITableViewController {
 		
 		super.setEditing(editing, animated: animated)
 		
-		updateBarButtonItems()
+		refreshNavigationBarButtons()
 		
 		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
 		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
 		tableView.performBatchUpdates(nil, completion: nil)
 	}
 	
-	func updateBarButtonItems() {
+	func refreshNavigationBarButtons() {
+		if
+			MPMediaLibrary.authorizationStatus() == .authorized,
+			activeLibraryItems.count >= 1
+		{
+			editButtonItem.isEnabled = true
+		} else {
+			editButtonItem.isEnabled = false
+		}
+		
 		if isEditing {
 			floatToTopButton.isEnabled = shouldAllowFloatingToTop(indexPathsForSelectedRows: tableView.indexPathsForSelectedRows)
 			sortButton.isEnabled = shouldAllowSorting()
@@ -222,13 +227,13 @@ class LibraryTVC: UITableViewController {
 		}
 		
 		if isEditing {
-			updateBarButtonItems()
+			refreshNavigationBarButtons()
 		}
 		
 	}
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-		updateBarButtonItems()
+		refreshNavigationBarButtons()
 	}
 	
 	override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -264,7 +269,7 @@ class LibraryTVC: UITableViewController {
 		let itemBeingMoved = activeLibraryItems[fromIndexPath.row]
 		activeLibraryItems.remove(at: fromIndexPath.row)
 		activeLibraryItems.insert(itemBeingMoved, at: to.row)
-		updateBarButtonItems() // If you made selected items non-consecutive, that should disable the Sort button. If you made selected items consecutive, that should enable the Sort button.
+		refreshNavigationBarButtons() // If you made selected items non-consecutive, that should disable the Sort button. If you made selected items consecutive, that should enable the Sort button.
 	}
 	
 	// MARK: Moving Rows to Top
@@ -298,7 +303,7 @@ class LibraryTVC: UITableViewController {
 			tableView.deselectRow(at: IndexPath(row: targetRow, section: targetSection), animated: true) // Wait until after all the rows have moved to do this?
 			targetRow += 1
 		}
-		updateBarButtonItems()
+		refreshNavigationBarButtons()
 	}
 	
 	// MARK: Sorting
@@ -353,18 +358,28 @@ class LibraryTVC: UITableViewController {
 		for indexPath in selectedIndexPaths {
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
-		updateBarButtonItems()
+		refreshNavigationBarButtons()
 	}
 	
 	// After editing the sort options, update this class's default sortOptions property (at the top of the file) to include all the options.
 	// Sorting should be stable! Multiple items with the same name, year, or whatever property we're sorting by should stay in the same order.
 	func sortThese(indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
 		switch sortOption {
+		
+		/*
 		case "Title":
 			// Ignore articles ("the", "a", and "an")?
 			return indexPathsAndItems.sorted(by: {
+				
+				// If we're sorting collections:
 				($0.1.value(forKey: "title") as? String ?? "") < ($1.1.value(forKey: "title") as? String ?? "")
+				
+				// If we're sorting albums or songs, use the methods in `extension Album` or `extension Song` to fetch their titles (or placeholders).
+				
+				
 			} )
+			*/
+		
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
 			let sortedByTrackNumber = indexPathsAndItems.sorted(by: {

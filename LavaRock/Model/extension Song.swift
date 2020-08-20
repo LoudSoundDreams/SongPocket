@@ -10,23 +10,38 @@ import MediaPlayer
 
 extension Song {
 	
+	func mpMediaItem() -> MPMediaItem? {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return nil
+		}
+		let songsQuery = MPMediaQuery.songs()
+		songsQuery.addFilterPredicate(
+			MPMediaPropertyPredicate(value: persistentID, forProperty: MPMediaItemPropertyPersistentID)
+		)
+		
+		if
+			songsQuery.items?.count == 1,
+			let songMPMediaItem = songsQuery.items?[0]
+		{
+			return songMPMediaItem
+		} else {
+			return nil
+		}
+	}
+	
 	// MARK: Getting Stored Attributes in a Nice Format
 	
-	// There's a similar method in `extension Album`. Make this generic?
-	func titleOrPlaceholder() -> String {
-		if
-			let storedTitle = title,
-			storedTitle != ""
-		{
-			return storedTitle
+	func fetchedTitleOrPlaceholder() -> String {
+		if let fetchedTitle = mpMediaItem()?.title {
+			return fetchedTitle
 		} else {
 			return "Unknown Song"
 		}
 	}
 	
-	func trackNumberFormatted() -> String {
+	func storedTrackNumberFormatted() -> String {
 		if trackNumber == 0 {
-			return "•"
+			return "‒" // This is a figure dash, not a hyphen or an en dash.
 		} else {
 			return String(trackNumber)
 		}
