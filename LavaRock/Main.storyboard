@@ -161,6 +161,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="makeNewCollectionButton" destination="WzK-Aw-24e" id="UIh-Ws-Psj"/>
                         <outlet property="optionsButton" destination="mpR-tt-C6X" id="rCs-Xg-uZH"/>
                     </connections>
                 </tableViewController>
@@ -432,6 +433,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="moveAlbumsHereButton" destination="OWN-Ff-bGu" id="Hem-9M-S7E"/>
                         <outlet property="startMovingAlbumsButton" destination="nLw-6q-0dl" id="hrU-N5-LGl"/>
                         <segue destination="GFi-fJ-75x" kind="unwind" identifier="Moved Albums" unwindAction="unwindToAlbums:" id="xHh-aB-iEM"/>
                         <segue destination="GFi-fJ-75x" kind="unwind" identifier="Exit Empty Collection" unwindAction="unwindToCollectionsFromEmptyCollection:" id="54v-2Z-jNM"/>

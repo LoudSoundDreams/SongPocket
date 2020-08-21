@@ -66,7 +66,7 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 	
 	func customizeNavigationItemTitle() {
 		if let containingAlbum = containerOfData as? Album {
-			title = containingAlbum.fetchedTitleOrPlaceholder()
+			title = containingAlbum.titleFormattedOrPlaceholder()
 		}
 	}
 	
@@ -95,9 +95,11 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			
 		} else if indexPath.row == 1 {
 			
+			// Should we use placeholders for album artist and release date if they're unknown, or just remove this header cell altogether?
+			
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
-			let cellHeading = album.fetchedAlbumArtistOrPlaceholder()
+			let cellHeading = album.albumArtistFormattedOrPlaceholder()
 			let cellSubtitle = album.releaseDateEstimateFormatted()
 			
 			// Make, configure, and return the cell.
@@ -110,8 +112,8 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			
 			// Get the data to put into the cell.
 			let song = activeLibraryItems[indexPath.row] as! Song
-			let cellLeftText = song.storedTrackNumberFormatted()
-			let cellRightText = song.fetchedTitleOrPlaceholder()
+			let cellLeftText = song.trackNumberFromStoredAttributeFormatted()
+			let cellRightText = song.titleFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.
 //			if #available(iOS 14, *) {

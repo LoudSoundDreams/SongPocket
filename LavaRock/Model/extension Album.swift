@@ -39,10 +39,11 @@ extension Album {
 	
 	// MARK: Getting Stored Attributes in a Nice Format
 	
-	func fetchedTitleOrPlaceholder() -> String {
+	func titleFormattedOrPlaceholder() -> String {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
-			let fetchedAlbumTitle = representativeItem.albumTitle
+			let fetchedAlbumTitle = representativeItem.albumTitle,
+			fetchedAlbumTitle != ""
 		{
 			return fetchedAlbumTitle
 		} else {
@@ -50,10 +51,11 @@ extension Album {
 		}
 	}
 	
-	func fetchedAlbumArtistOrPlaceholder() -> String {
+	func albumArtistFormattedOrPlaceholder() -> String {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
-			let fetchedAlbumArtist = representativeItem.albumArtist
+			let fetchedAlbumArtist = representativeItem.albumArtist, // As of iOS 14.0 beta 5, even if the "album artist" field is blank in Apple Music for Mac (and other tag editors), this line of code can still return some album artist's name. Currently, it returns the same name as the one in the album's header in the Apple Music app.
+			fetchedAlbumArtist != ""
 		{
 			return fetchedAlbumArtist
 		} else {
@@ -77,7 +79,7 @@ extension Album {
 			
 			return dateFormatter.string(from: date)
 		} else {
-			return nil//"Unknown Date"
+			return nil
 		}
 	}
 	

@@ -31,15 +31,18 @@ extension Song {
 	
 	// MARK: Getting Stored Attributes in a Nice Format
 	
-	func fetchedTitleOrPlaceholder() -> String {
-		if let fetchedTitle = mpMediaItem()?.title {
+	func titleFormattedOrPlaceholder() -> String {
+		if
+			let fetchedTitle = mpMediaItem()?.title,
+			fetchedTitle != ""
+		{
 			return fetchedTitle
 		} else {
 			return "Unknown Song"
 		}
 	}
 	
-	func storedTrackNumberFormatted() -> String {
+	func trackNumberFromStoredAttributeFormatted() -> String {
 		if trackNumber == 0 {
 			return "‒" // This is a figure dash, not a hyphen or an en dash.
 		} else {

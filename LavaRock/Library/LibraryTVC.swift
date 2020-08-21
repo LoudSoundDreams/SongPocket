@@ -335,7 +335,7 @@ class LibraryTVC: UITableViewController {
 		
 		// Sort the rows and items together.
 		let sortOption = sender.title
-		let sortedIndexPathsAndItems = sortThese(indexPathsAndItems: selectedIndexPathsAndItems, by: sortOption)
+		let sortedIndexPathsAndItems = sorted(indexPathsAndItems: selectedIndexPathsAndItems, by: sortOption)
 		
 		// Remove the selected items from the data source.
 		for indexPath in selectedIndexPaths.reversed() {
@@ -363,7 +363,7 @@ class LibraryTVC: UITableViewController {
 	
 	// After editing the sort options, update this class's default sortOptions property (at the top of the file) to include all the options.
 	// Sorting should be stable! Multiple items with the same name, year, or whatever property we're sorting by should stay in the same order.
-	func sortThese(indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
+	func sorted(indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
 		switch sortOption {
 		
 		/*

@@ -5,12 +5,12 @@
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="releaseDateEstimate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="contents" inverseEntity="Collection"/>
-        <relationship name="contents" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Song" inverseName="container" inverseEntity="Song"/>
+        <relationship name="contents" toMany="YES" deletionRule="Cascade" destinationEntity="Song" inverseName="container" inverseEntity="Song"/>
     </entity>
     <entity name="Collection" representedClassName="Collection" syncable="YES" codeGenerationType="class">
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="contents" optional="YES" toMany="YES" deletionRule="Deny" ordered="YES" destinationEntity="Album" inverseName="container" inverseEntity="Album"/>
+        <relationship name="contents" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="Album" inverseName="container" inverseEntity="Album"/>
     </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
         <attribute name="discNumber" attributeType="Integer 64" usesScalarValueType="YES"/>
@@ -20,7 +20,7 @@
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="contents" inverseEntity="Album"/>
     </entity>
     <elements>
-        <element name="Album" positionX="-63" positionY="-18" width="128" height="28"/>
+        <element name="Album" positionX="-63" positionY="-18" width="128" height="118"/>
         <element name="Collection" positionX="-257.1171875" positionY="-18.56640625" width="128" height="88"/>
         <element name="Song" positionX="129.5859375" positionY="-12.60546875" width="128" height="28"/>
     </elements>

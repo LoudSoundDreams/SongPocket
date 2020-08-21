@@ -17,6 +17,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	
 	// "Constants"
 	@IBOutlet var optionsButton: UIBarButtonItem!
+	@IBOutlet var makeNewCollectionButton: UIBarButtonItem!
 	var suggestedCollectionTitle: String?
 	static let defaultCollectionTitle = "New Collection"
 	
@@ -77,10 +78,15 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-			loadSavedLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells loadSavedLibraryItems() to not call mergeChangesFromAppleMusicLibrary(), because that deletes empty collections for us. We want to animate that.
-			tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
-			newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
+		if moveAlbumsClipboard != nil {
+			makeNewCollectionButton.isEnabled = true
+			
+		} else {
+			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
+				loadSavedLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells loadSavedLibraryItems() to not call mergeChangesFromAppleMusicLibrary(), because that deletes empty collections for us. We want to animate that.
+				tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
+				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
+			}
 		}
 	}
 	
@@ -232,6 +238,9 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		} )
 		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { _ in
+			
+			self.makeNewCollectionButton.isEnabled = false // Without this, if you're fast, you can finish making a new collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first collection you made.
+			// In viewWillAppear, we enable the button, in case you exit the new collection you made, because then we delete it and you should be able to make another one.
 			
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
 			

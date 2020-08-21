@@ -16,6 +16,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 	// "Constants"
 	static let rowHeightInPoints = 44 * 3
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
+	@IBOutlet var moveAlbumsHereButton: UIBarButtonItem!
 	
 	// Variables
 	var moveAlbumsClipboard: MoveAlbumsClipboard?
@@ -78,7 +79,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
 		let cellImage = representativeItem?.artwork?.image(at: CGSize(width: Self.rowHeightInPoints, height: Self.rowHeightInPoints)) // nil removes the placeholder image in the storyboard.
-		let cellTitle = album.fetchedTitleOrPlaceholder()
+		let cellTitle = album.titleFormattedOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
 		
 		// Make, configure, and return the cell.
@@ -208,6 +209,10 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 		guard let moveAlbumsClipboard = moveAlbumsClipboard else {
 			return
 		}
+		
+		moveAlbumsHereButton.isEnabled = false // Without this, if you tap the "Move Here" button more than once, the app will crash when it tries to unwind from the "move albums" sheet.
+		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
+		// Unfortunately, disabling a button after you tap it looks weird and non-standard.
 		
 		if activeLibraryItems.isEmpty {
 			newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true

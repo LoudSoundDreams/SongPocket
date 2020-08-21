@@ -27,19 +27,22 @@ extension CollectionsTVC {
 		
 		// Separate our saved songs into the ones that have been deleted, and the ones that have been potentially modified.
 		var potentiallyModifiedMediaItems = [MPMediaItem]()
-		var potentiallyModifiedSongs = [Song]()
+		var managedObjectIDsOfPotentiallyModifiedSongs = [NSManagedObjectID]()
 		for queriedMediaItem in queriedMediaItems {
 			if let indexOfPotentiallyModifiedSong = savedSongs.firstIndex(where: { savedSong in
 				Int64(bitPattern: queriedMediaItem.persistentID) == savedSong.persistentID // We already have a record of this song. We need to check whether to update it.
 			})
 			{
 				potentiallyModifiedMediaItems.append(queriedMediaItem)
-				potentiallyModifiedSongs.append(savedSongs[indexOfPotentiallyModifiedSong])
+				managedObjectIDsOfPotentiallyModifiedSongs.append(savedSongs[indexOfPotentiallyModifiedSong].objectID)
 				savedSongs.remove(at: indexOfPotentiallyModifiedSong)
 			}
 		}
-		// savedSongs now holds the IDs of songs that have been deleted from the Apple Music library.
-		let deletedSongs = savedSongs
+		// savedSongs now holds the songs that have been deleted from the Apple Music library.
+		var managedObjectIDsOfSongsToDelete = [NSManagedObjectID]()
+		for songToDelete in savedSongs {
+			managedObjectIDsOfSongsToDelete.append(songToDelete.objectID)
+		}
 		
 		// From the list of queried IDs, remove the IDs of songs we've noted as potentially modified, only keeping the IDs of new songs.
 		for potentiallyModifiedMediaItem in potentiallyModifiedMediaItems {
@@ -57,8 +60,8 @@ extension CollectionsTVC {
 //		print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
 		
 		createManagedObjects(for: newMediaItems) // Create before deleting. That way, for example, if you deleted all the songs from an album, but added other songs from that album, that album will stay in the same place in this app.
-		deleteManagedObjects(for: deletedSongs)
-		updateManagedObjects(for: potentiallyModifiedSongs, toMatch: potentiallyModifiedMediaItems)
+		deleteManagedObjects(forSongsWith: managedObjectIDsOfSongsToDelete)
+		updateManagedObjects(forSongsWith: managedObjectIDsOfPotentiallyModifiedSongs, toMatch: potentiallyModifiedMediaItems)
 		
 		// Last: update album years
 		recalculateReleaseDateEstimateForEachAlbum()
@@ -108,6 +111,14 @@ extension CollectionsTVC {
 		}
 	}
 	
+	
+	func updateManagedObjects(forSongsWith objectIDsOfSongsToUpdate: [NSManagedObjectID], toMatch mediaItems: [MPMediaItem]) {
+		
+		
+		
+	}
+	
+	
 	// MARK: - Creating Managed Objects
 	
 	func createManagedObjects(for newMediaItemsImmutable: [MPMediaItem]) {
@@ -133,7 +144,15 @@ extension CollectionsTVC {
 	private func sortedInReverseTargetOrder(mediaItems mediaItemsImmutable: [MPMediaItem]) -> [MPMediaItem] {
 		var mediaItems = mediaItemsImmutable
 		
-		if activeLibraryItems.count == 0 {
+		let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+		var numberOfExistingCollections = 0
+		do {
+			numberOfExistingCollections = try coreDataManager.managedObjectContext.count(for: collectionsFetchRequest)
+		} catch {
+			print("Couldn't check the number of existing collections before adding managed objects.")
+		}
+		
+		if numberOfExistingCollections == 0 {
 			mediaItems.sort() { ($0.title ?? "") < ($1.title ?? "") }
 			mediaItems.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
 			mediaItems.sort() { ($0.albumTitle ?? "") < ($1.albumTitle ?? "") }
@@ -185,13 +204,14 @@ extension CollectionsTVC {
 		coreDataManager.managedObjectContext.performAndWait {
 			let album = coreDataManager.managedObjectContext.object(with: albumID) as! Album
 			
-			let newSong = Song(context: coreDataManager.managedObjectContext)
-			newSong.discNumber = Int64(newMediaItem.discNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
-			if let songsInAlbum = album.contents { //
-				for existingSong in songsInAlbum {
+			if let existingSongsInAlbum = album.contents { //
+				for existingSong in existingSongsInAlbum {
 					(existingSong as! Song).index += 1
 				}
 			}
+			
+			let newSong = Song(context: coreDataManager.managedObjectContext)
+			newSong.discNumber = Int64(newMediaItem.discNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
 			newSong.index = 0 //
 			newSong.persistentID = Int64(bitPattern: newMediaItem.persistentID)
 			newSong.trackNumber = Int64(newMediaItem.albumTrackNumber) // MPMediaItem returns non-optional Int. `0` is null or unknown.
@@ -204,22 +224,27 @@ extension CollectionsTVC {
 		// We should only be running this if we don't already have a managed object for the album for the song.
 		coreDataManager.managedObjectContext.performAndWait {
 			
+			let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+			collectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+			let existingCollections = coreDataManager.managedObjects(for: collectionsFetchRequest)
+			
 			// 2.1. If we already have a Collection with a matching title, then add the Album to that Collection.
-			if let existingCollectionWithMatchingTitle = activeLibraryItems.first(where: { existingCollection in
+			if let existingCollectionWithMatchingTitle = existingCollections.first(where: { existingCollection in
 				(existingCollection as! Collection).title == newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder()
 			})
 			{
-				let existingCollectionWithMatchingTitle = existingCollectionWithMatchingTitle as! Collection
+				let existingCollection = existingCollectionWithMatchingTitle as! Collection
 				
-				let newAlbum = Album(context: coreDataManager.managedObjectContext)
-				newAlbum.albumPersistentID = Int64(bitPattern: newMediaItem.albumPersistentID)
-				if let existingAlbumsInCollection = existingCollectionWithMatchingTitle.contents {
+				if let existingAlbumsInCollection = existingCollection.contents {
 					for existingAlbum in existingAlbumsInCollection {
 						(existingAlbum as! Album).index += 1
 					}
 				}
+				
+				let newAlbum = Album(context: coreDataManager.managedObjectContext)
+				newAlbum.albumPersistentID = Int64(bitPattern: newMediaItem.albumPersistentID)
 				newAlbum.index = 0
-				newAlbum.container = existingCollectionWithMatchingTitle
+				newAlbum.container = existingCollection
 				
 			} else { // 2.2. Otherwise, make the Collection to add the Album to.
 				createManagedObjectForNewCollection(for: newMediaItem)
@@ -233,18 +258,26 @@ extension CollectionsTVC {
 	private func createManagedObjectForNewCollection(for newMediaItem: MPMediaItem) {
 		// We should only be running this if we don't already have a managed object for the collection for the album for the song.
 		coreDataManager.managedObjectContext.performAndWait {
+			let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+			// Order doesn't matter.
+			let existingCollections = coreDataManager.managedObjects(for: collectionsFetchRequest) as! [Collection]
+			for existingCollection in existingCollections {
+				existingCollection.index += 1
+			}
+			
 			let newCollection = Collection(context: coreDataManager.managedObjectContext)
+			newCollection.index = 0
 			newCollection.title = newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder()
-			activeLibraryItems.insert(newCollection, at: 0)
 		}
 	}
 	
 	// MARK: - Deleting Managed Objects
 	
-	func deleteManagedObjects(for songs: [Song]) { // then clean up empty albums, then clean up empty collections
+	func deleteManagedObjects(forSongsWith objectIDsOfSongsToDelete: [NSManagedObjectID]) { // then clean up empty albums, then clean up empty collections
 		coreDataManager.managedObjectContext.performAndWait {
-			for song in songs {
-				coreDataManager.managedObjectContext.delete(song)
+			for objectIDOfSongToDelete in objectIDsOfSongsToDelete {
+				let songToDelete = coreDataManager.managedObjectContext.object(with: objectIDOfSongToDelete)
+				coreDataManager.managedObjectContext.delete(songToDelete)
 			}
 		}
 		
@@ -298,10 +331,6 @@ extension CollectionsTVC {
 	
 	// MARK: - Update Managed Objects
 	
-	func updateManagedObjects(for songs: [Song], toMatch mediaItems: [MPMediaItem]) {
-		
-		
-		
-	}
+	
 	
 }
