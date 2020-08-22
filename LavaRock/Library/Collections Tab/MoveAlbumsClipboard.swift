@@ -30,7 +30,7 @@ final class MoveAlbumsClipboard { // This is a class, not a struct, because we u
 	static func moveAlbumsModePrompt(numberOfAlbumsBeingMoved: Int) -> String {
 		switch numberOfAlbumsBeingMoved {
 		case 1:
-			return "Chooose a collection to move 1 album to."
+			return "Choose a collection to move 1 album to."
 		default:
 			return "Choose a collection to move \(numberOfAlbumsBeingMoved) albums to."
 		}

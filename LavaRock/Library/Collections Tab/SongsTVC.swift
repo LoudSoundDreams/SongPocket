@@ -83,6 +83,8 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		if indexPath.row == 0 {
 			
+			// Remove this cell altogether if there's no artwork?
+			
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
 			let representativeItem = album.mpMediaItemCollection()?.representativeItem

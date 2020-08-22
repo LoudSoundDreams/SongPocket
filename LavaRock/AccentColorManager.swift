@@ -37,7 +37,7 @@ struct AccentColorManager {
 
 		} else { // Otherwise, either there was no saved preference, or there was one but it didn't correspond to any UIColor in AccentColorManager. Set and save the default accent color.
 			
-			window.tintColor = UIColor.systemBlue
+			window.tintColor = UIColor.systemBlue // You need to have a tuple for this in accentColorTuples.
 			if let defaultAccentColorName = Self.colorName(forUIColor: window.tintColor) {
 				DispatchQueue.global().async {
 					UserDefaults.standard.setValue(defaultAccentColorName, forKey: "accentColorName")

@@ -471,7 +471,7 @@
                                         <constraint firstItem="AJa-zb-mTO" firstAttribute="leading" secondItem="nUq-na-guy" secondAttribute="leading" id="4N5-Jk-TDK"/>
                                         <constraint firstItem="AJa-zb-mTO" firstAttribute="top" secondItem="nUq-na-guy" secondAttribute="top" id="8rb-8Z-seI"/>
                                         <constraint firstItem="AJa-zb-mTO" firstAttribute="trailing" secondItem="nUq-na-guy" secondAttribute="trailing" id="Gpv-9c-cEp"/>
-                                        <constraint firstAttribute="bottom" secondItem="AJa-zb-mTO" secondAttribute="bottom" id="Hkd-qB-5D8"/>
+                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="bottom" secondItem="nUq-na-guy" secondAttribute="bottom" id="Hkd-qB-5D8"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>

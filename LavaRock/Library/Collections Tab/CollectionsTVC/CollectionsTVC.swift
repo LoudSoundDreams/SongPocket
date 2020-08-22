@@ -113,9 +113,14 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 		if moveAlbumsClipboard != nil {
 		} else { // Not in "move albums" mode
 			if !newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-				mergeChangesFromAppleMusicLibrary()
-				
-				super.loadSavedLibraryItems() // Or rather, the full implementation above; just don't cause an infinite loop calling mergeChangesFromAppleMusicLibrary().
+//				if activeLibraryItems.count == 0 {
+					mergeChangesFromAppleMusicLibrary()
+					
+					// containerOfData doesn't matter for Collections.
+					activeLibraryItems = coreDataManager.managedObjects(for: coreDataFetchRequest)
+//					super.loadSavedLibraryItems() // Or rather, the full implementation above; just don't cause an infinite loop calling mergeChangesFromAppleMusicLibrary().
+					// How did this not cause an infinite loop?
+//				}
 			}
 		}
 	}

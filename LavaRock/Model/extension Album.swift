@@ -34,7 +34,7 @@ extension Album {
 	
 	// mergeChangesFromAppleMusicLibrary() references this when checking for and making new Collections.
 	static func unknownAlbumArtistPlaceholder() -> String {
-		return "Unknown Album Artist"
+		return "Unknown Artist"
 	}
 	
 	// MARK: Getting Stored Attributes in a Nice Format
