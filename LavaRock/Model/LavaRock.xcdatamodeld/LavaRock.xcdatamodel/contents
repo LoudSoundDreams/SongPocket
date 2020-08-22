@@ -13,15 +13,13 @@
         <relationship name="contents" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="Album" inverseName="container" inverseEntity="Album"/>
     </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
-        <attribute name="discNumber" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="persistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
-        <attribute name="trackNumber" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="contents" inverseEntity="Album"/>
     </entity>
     <elements>
         <element name="Album" positionX="-63" positionY="-18" width="128" height="118"/>
         <element name="Collection" positionX="-257.1171875" positionY="-18.56640625" width="128" height="88"/>
-        <element name="Song" positionX="129.5859375" positionY="-12.60546875" width="128" height="28"/>
+        <element name="Song" positionX="129.5859375" positionY="-12.60546875" width="128" height="88"/>
     </elements>
 </model>

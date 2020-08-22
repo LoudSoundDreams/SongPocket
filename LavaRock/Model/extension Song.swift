@@ -38,15 +38,18 @@ extension Song {
 		{
 			return fetchedTitle
 		} else {
-			return "Unknown Song"
+			return "—" // This is an em dash. It aligns vertically with the figure dash for unknown track numbers.
 		}
 	}
 	
-	func trackNumberFromStoredAttributeFormatted() -> String {
-		if trackNumber == 0 {
-			return "‒" // This is a figure dash, not a hyphen or an en dash.
+	func trackNumberFormattedOrPlaceholder() -> String {
+		if
+			let fetchedTrackNumber = mpMediaItem()?.albumTrackNumber,
+			fetchedTrackNumber != 0
+		{
+			return String(fetchedTrackNumber)
 		} else {
-			return String(trackNumber)
+			return "‒" // This is a figure dash, not a hyphen or an en dash.
 		}
 	}
 	

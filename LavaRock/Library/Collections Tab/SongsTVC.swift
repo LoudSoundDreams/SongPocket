@@ -114,7 +114,7 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			
 			// Get the data to put into the cell.
 			let song = activeLibraryItems[indexPath.row] as! Song
-			let cellLeftText = song.trackNumberFromStoredAttributeFormatted()
+			let cellLeftText = song.trackNumberFormattedOrPlaceholder()
 			let cellRightText = song.titleFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.

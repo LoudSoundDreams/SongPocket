@@ -378,16 +378,27 @@ class LibraryTVC: UITableViewController {
 				
 				
 			} )
-			*/
+		*/
 		
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
-			let sortedByTrackNumber = indexPathsAndItems.sorted(by: {
-				(($0.1 as? Song)?.trackNumber ?? 0) < (($1.1 as? Song)?.trackNumber ?? 0) // This is putting songs with unknown track numbers at the top, which doesn't look right.
-			} )
-			return sortedByTrackNumber.sorted(by: {
-				(($0.1 as? Song)?.discNumber ?? 0) < (($1.1 as? Song)?.discNumber ?? 0) // This is putting songs with unknown disc numbers at the top, which doesn't look right.
-			} )
+			// As of iOS 14.0 beta 5 on an iPhone X and testing with 23 items, this is still fast, even though it seems like a lot of steps.
+			let sortedByTrackNumber = indexPathsAndItems.sorted() {
+				(($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0) <
+				(($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0)
+			}
+			let sortedByTrackNumberWithZeroAtEnd = sortedByTrackNumber.sorted() {
+				(($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber == 0)
+			}
+			let sortedByDiscNumber = sortedByTrackNumberWithZeroAtEnd.sorted() {
+				(($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0) <
+				(($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0)
+			}
+			let sortedByDiscNumberWithZeroAtEnd = sortedByDiscNumber.sorted() {
+				(($1.1 as? Song)?.mpMediaItem()?.discNumber == 0)
+			}
+			return sortedByDiscNumberWithZeroAtEnd
+			
 			
 		default:
 			print("The user tried to sort by “\(sortOption ?? "")”, which isn’t a supported option. It might be misspelled.")
