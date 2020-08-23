@@ -20,7 +20,7 @@ class LibraryTVC: UITableViewController {
 	var containerOfData: NSManagedObject?
 	
 	// "Constants" that subclasses can optionally customize
-	var coreDataManager = CoreDataManager(managedObjectContext: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext) // Inject a child managed object context when in "move albums" mode.
+	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "move albums" mode.
 	var navigationItemButtonsNotEditMode = [UIBarButtonItem]()
 	var navigationItemButtonsEditModeOnly = [UIBarButtonItem]()
 	var sortOptions = [String]()
@@ -92,7 +92,7 @@ class LibraryTVC: UITableViewController {
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData!)
 		}
 		
-		activeLibraryItems = coreDataManager.managedObjects(for: coreDataFetchRequest)
+		activeLibraryItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -157,7 +157,7 @@ class LibraryTVC: UITableViewController {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
-			coreDataManager.save()
+			managedObjectContext.tryToSave()
 		}
 		
 		super.setEditing(editing, animated: animated)
@@ -248,7 +248,7 @@ class LibraryTVC: UITableViewController {
 		{
 			let selectedItem = activeLibraryItems[tableView.indexPathForSelectedRow!.row]
 			destination.containerOfData = selectedItem
-			destination.coreDataManager = coreDataManager
+			destination.managedObjectContext = managedObjectContext
 		}
 		
 		super.prepare(for: segue, sender: sender)
@@ -352,7 +352,11 @@ class LibraryTVC: UITableViewController {
 		for indexPathAndItem in sortedIndexPathsAndItems {
 			sortedIndexPaths.append(indexPathAndItem.0)
 		}
-		moveRowsUpToEarliestRow(sortedIndexPaths) // You could use tableView.reloadRows, but none of those animations show the individual rows moving to their destinations.
+//		if sortedIndexPaths.count < 40 {
+			moveRowsUpToEarliestRow(sortedIndexPaths) // You could use tableView.reloadRows, but none of those animations show the individual rows moving to their destinations.
+//		} else {
+//			tableView.reloadData()
+//		}
 		
 		// Update the rest of the UI.
 		for indexPath in selectedIndexPaths {
@@ -382,20 +386,20 @@ class LibraryTVC: UITableViewController {
 		
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
-			// As of iOS 14.0 beta 5 on an iPhone X and testing with 23 items, this is still fast, even though it seems like a lot of steps.
+			// TO DO: With more songs, this gets too slow.
 			let sortedByTrackNumber = indexPathsAndItems.sorted() {
 				(($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0) <
 				(($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0)
 			}
 			let sortedByTrackNumberWithZeroAtEnd = sortedByTrackNumber.sorted() {
-				(($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber == 0)
+				(($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0) == 0
 			}
 			let sortedByDiscNumber = sortedByTrackNumberWithZeroAtEnd.sorted() {
-				(($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0) <
+				(($0.1 as? Song)?.mpMediaItem()?.discNumber ?? 0) <
 				(($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0)
 			}
 			let sortedByDiscNumberWithZeroAtEnd = sortedByDiscNumber.sorted() {
-				(($1.1 as? Song)?.mpMediaItem()?.discNumber == 0)
+				return (($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0) == 0
 			}
 			return sortedByDiscNumberWithZeroAtEnd
 			

@@ -194,9 +194,9 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
 		
 		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType) // Do this from within the MoveAlbumsClipboard, to guarantee it's done on the right thread.
-		childManagedObjectContext.parent = coreDataManager.managedObjectContext
+		childManagedObjectContext.parent = managedObjectContext
 		
-		modalCollectionsTVC.coreDataManager = CoreDataManager(managedObjectContext: childManagedObjectContext)
+		modalCollectionsTVC.managedObjectContext = childManagedObjectContext
 		
 		present(modalCollectionsNC, animated: true, completion: nil)
 		
@@ -221,11 +221,11 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 		// Get the albums to move, and to not move.
 		var albumsToMove = [Album]()
 		for albumID in moveAlbumsClipboard.idsOfAlbumsBeingMoved {
-			albumsToMove.append(coreDataManager.managedObjectContext.object(with: albumID) as! Album)
+			albumsToMove.append(managedObjectContext.object(with: albumID) as! Album)
 		}
 		var albumsToNotMove = [Album]()
 		for albumID in moveAlbumsClipboard.idsOfAlbumsNotBeingMoved {
-			albumsToNotMove.append(coreDataManager.managedObjectContext.object(with: albumID) as! Album)
+			albumsToNotMove.append(managedObjectContext.object(with: albumID) as! Album)
 		}
 		
 		// Find out if we're moving albums to the collection they were already in.
@@ -242,7 +242,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 		
 		func saveParentManagedObjectContext() {
 			do {
-				try coreDataManager.managedObjectContext.parent!.save()
+				try managedObjectContext.parent!.save()
 			} catch {
 				fatalError("Crashed while trying to commit changes, just before dismissing the “move albums” sheet: \(error)")
 			}
@@ -254,7 +254,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 				album.container = containerOfData as? Collection
 				activeLibraryItems.insert(album, at: index)
 			}
-			coreDataManager.save()
+			managedObjectContext.tryToSave()
 			saveParentManagedObjectContext()
 		}
 		
@@ -275,7 +275,7 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 			if isMovingToSameCollection {
 				// You need to do this in performBatchUpdates so that the sheet dismisses after the rows finish animating.
 				moveItemsUp(from: indexPathsToMoveToTop, to: IndexPath(row: 0, section: 0))
-				coreDataManager.save()
+				managedObjectContext.tryToSave()
 				saveParentManagedObjectContext()
 			} else {
 				let indexPaths = indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: albumsToMove.count - 1)

@@ -105,7 +105,7 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			let cellSubtitle = album.releaseDateEstimateFormatted()
 			
 			// Make, configure, and return the cell.
-			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell Without Button") as! SongsAlbumInfoHeaderCell
+			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell") as! SongsAlbumInfoHeaderCell
 			headerCell.albumArtistLabel.text = cellHeading
 			headerCell.yearLabel.text = cellSubtitle
 			return headerCell
@@ -114,8 +114,8 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			
 			// Get the data to put into the cell.
 			let song = activeLibraryItems[indexPath.row] as! Song
-			let cellLeftText = song.trackNumberFormattedOrPlaceholder()
-			let cellRightText = song.titleFormattedOrPlaceholder()
+			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
+			let cellTitle = song.titleFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.
 //			if #available(iOS 14, *) {
@@ -132,8 +132,8 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 //			} else { // iOS 13 and earlier
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
 			
-			cell.trackNumberLabel.text = cellLeftText
-			cell.titleLabel.text = cellRightText
+			cell.trackNumberLabel.text = cellTrackNumberText
+			cell.titleLabel.text = cellTitle
 			
 			
 //				print("for IndexPath \(indexPath), \(String(describing: cell.titleLabel.text)):")

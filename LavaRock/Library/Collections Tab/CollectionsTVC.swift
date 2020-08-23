@@ -70,7 +70,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 
 		suggestedCollectionTitle = Self.suggestedCollectionTitle(
 			for: idsOfAlbumsBeingMoved,
-			in: coreDataManager.managedObjectContext,
+			in: managedObjectContext,
 			notMatching: existingCollectionTitles
 		)
 	}
@@ -170,11 +170,11 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			collection.contents?.count == 0
 		else { return }
 		
-		coreDataManager.managedObjectContext.delete(collection)
+		managedObjectContext.delete(collection)
 		activeLibraryItems.remove(at: index)
 		if moveAlbumsClipboard != nil {
 		} else {
-			coreDataManager.save()
+			managedObjectContext.tryToSave()
 		}
 		tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .middle)
 	}
@@ -250,7 +250,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 				newTitle = Self.defaultCollectionTitle
 			}
 			
-			let newCollection = Collection(context: self.coreDataManager.managedObjectContext) // Since we're in "move albums" mode, this should be a child managed object context.
+			let newCollection = Collection(context: self.managedObjectContext) // Since we're in "move albums" mode, this should be a child managed object context.
 			newCollection.title = newTitle
 			
 			self.activeLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
@@ -400,7 +400,7 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 			
 			let collection = self.activeLibraryItems[indexPath.row] as! Collection
 			collection.title = newTitle
-			self.coreDataManager.save()
+			self.managedObjectContext.tryToSave()
 			
 			self.tableView.reloadRows(at: [indexPath], with: .automatic)
 			if wasRowSelectedBeforeRenaming {
