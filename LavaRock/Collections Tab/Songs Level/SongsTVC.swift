@@ -83,8 +83,6 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		if indexPath.row == 0 {
 			
-			// Remove this cell altogether if there's no artwork?
-			
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
 			let representativeItem = album.mpMediaItemCollection()?.representativeItem
@@ -96,8 +94,6 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			return albumArtworkCell
 			
 		} else if indexPath.row == 1 {
-			
-			// Should we use placeholders for album artist and release date if they're unknown, or just remove this header cell altogether?
 			
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
@@ -125,23 +121,21 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			let cellTitle = song.titleFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.
-//			if #available(iOS 14, *) {
-//				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-//
-//				var configuration = UIListContentConfiguration.valueCell()
-//				configuration.text = song.title
-//				configuration.secondaryText = trackNumberText
-//
-//				cell.contentConfiguration = configuration
-//
+//			if
+//				let cellArtist = song.artistFormatted(),
+//				cellArtist != (containerOfData as! Album).albumArtistFormattedOrPlaceholder()
+//			{
+//				let cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
+//				cell.trackNumberLabel.text = cellTrackNumberText
+//				cell.titleLabel.text = cellTitle
+//				cell.artistLabel.text = cellArtist
 //				return cell
 //
-//			} else { // iOS 13 and earlier
+//			} else { // The song's artist is not useful, or it's the same as the album artist.
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
-			
+			// As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
 			cell.trackNumberLabel.text = cellTrackNumberText
 			cell.titleLabel.text = cellTitle
-			
 			return cell
 //			}
 		}

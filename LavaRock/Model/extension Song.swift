@@ -53,4 +53,15 @@ extension Song {
 		}
 	}
 	
+	func artistFormatted() -> String? {
+		if
+			let fetchedArtist = mpMediaItem()?.artist,
+			fetchedArtist != ""
+		{
+			return fetchedArtist
+		} else {
+			return nil
+		}
+	}
+	
 }

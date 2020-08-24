@@ -24,3 +24,9 @@ final class SongCell: UITableViewCell {
 	@IBOutlet var trackNumberLabel: UILabel!
 	@IBOutlet var titleLabel: UILabel!
 }
+
+final class SongCellWithDifferentArtist: UITableViewCell {
+	@IBOutlet var trackNumberLabel: UILabel!
+	@IBOutlet var titleLabel: UILabel!
+	@IBOutlet var artistLabel: UILabel!
+}
