@@ -14,7 +14,6 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 	// MARK: Properties
 	
 	// "Constants"
-	static let rowHeightInPoints = 44 * 3
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
 	@IBOutlet var moveAlbumsHereButton: UIBarButtonItem!
 	
@@ -34,8 +33,6 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 		super.setUpUI()
 		
 		customizeNavigationItemTitle()
-		
-		tableView.rowHeight = CGFloat(Self.rowHeightInPoints)
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
 			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
@@ -82,28 +79,27 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
+		let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
+		
 		// Get the data to put into the cell.
 		
 		let album = activeLibraryItems[indexPath.row] as! Album
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
-		let cellImage = representativeItem?.artwork?.image(at: CGSize(width: Self.rowHeightInPoints, height: Self.rowHeightInPoints)) // nil removes the placeholder image in the storyboard.
+		let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 		let cellTitle = album.titleFormattedOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
 		
-		// Make, configure, and return the cell.
-		
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
-		
+		// Configure and return the cell.
 		cell.artworkImageView.image = cellImage
 		cell.titleLabel.text = cellTitle
 		cell.yearLabel.text = cellSubtitle
-		
 		if moveAlbumsClipboard != nil {
 			cell.accessoryType = .none
 		}
-		
 		return cell
+		
     }
 	
 	// MARK: - Events

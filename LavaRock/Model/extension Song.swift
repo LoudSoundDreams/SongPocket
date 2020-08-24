@@ -42,14 +42,15 @@ extension Song {
 		}
 	}
 	
-	func trackNumberFormattedOrPlaceholder() -> String {
+	func trackNumberFormattedOrPlaceholder() -> String? {
 		if
 			let fetchedTrackNumber = mpMediaItem()?.albumTrackNumber,
 			fetchedTrackNumber != 0
 		{
 			return String(fetchedTrackNumber)
 		} else {
-			return "‒" // This is a figure dash, not a hyphen or an en dash.
+			return nil
+//			return "‒" // This is a figure dash, not a hyphen or an en dash.
 		}
 	}
 	
