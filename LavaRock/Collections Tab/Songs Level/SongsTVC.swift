@@ -101,7 +101,7 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			let cellSubtitle = album.releaseDateEstimateFormatted()
 			
 			// Make, configure, and return the cell.
-			if cellSubtitle != nil {
+			if let cellSubtitle = cellSubtitle {
 				let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell") as! AlbumInfoCell
 				albumInfoCell.albumArtistLabel.text = cellHeading
 				albumInfoCell.yearLabel.text = cellSubtitle

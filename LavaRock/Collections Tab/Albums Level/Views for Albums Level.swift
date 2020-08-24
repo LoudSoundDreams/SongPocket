@@ -12,3 +12,8 @@ final class AlbumCell: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var yearLabel: UILabel!
 }
+
+final class AlbumCellWithoutReleaseDate: UITableViewCell {
+	@IBOutlet var artworkImageView: UIImageView!
+	@IBOutlet var titleLabel: UILabel!
+}

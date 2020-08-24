@@ -79,26 +79,40 @@ final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
-		let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
-		
 		// Get the data to put into the cell.
 		
 		let album = activeLibraryItems[indexPath.row] as! Album
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
-		let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 		let cellTitle = album.titleFormattedOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
 		
-		// Configure and return the cell.
-		cell.artworkImageView.image = cellImage
-		cell.titleLabel.text = cellTitle
-		cell.yearLabel.text = cellSubtitle
-		if moveAlbumsClipboard != nil {
-			cell.accessoryType = .none
+		// Make, configure, and return the cell.
+		if let cellSubtitle = cellSubtitle {
+			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
+			cell.yearLabel.text = cellSubtitle
+			
+			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
+			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
+			cell.artworkImageView.image = cellImage
+			cell.titleLabel.text = cellTitle
+			if moveAlbumsClipboard != nil {
+				cell.accessoryType = .none
+			}
+			return cell
+			
+		} else { // We couldn't determine the album's release date.
+			let cell = tableView.dequeueReusableCell(withIdentifier: "Cell Without Release Date", for: indexPath) as! AlbumCellWithoutReleaseDate
+			
+			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
+			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
+			cell.artworkImageView.image = cellImage
+			cell.titleLabel.text = cellTitle
+			if moveAlbumsClipboard != nil {
+				cell.accessoryType = .none
+			}
+			return cell
 		}
-		return cell
 		
     }
 	
