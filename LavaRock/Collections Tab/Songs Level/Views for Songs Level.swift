@@ -7,13 +7,17 @@
 
 import UIKit
 
-final class SongsArtworkCell: UITableViewCell {
+final class AlbumArtworkCell: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 }
 
-final class SongsAlbumInfoHeaderCell: UITableViewCell {
+final class AlbumInfoCell: UITableViewCell {
 	@IBOutlet var albumArtistLabel: UILabel!
 	@IBOutlet var yearLabel: UILabel!
+}
+
+final class AlbumInfoCellWithoutReleaseDate: UITableViewCell {
+	@IBOutlet var albumArtistLabel: UILabel!
 }
 
 final class SongCell: UITableViewCell {

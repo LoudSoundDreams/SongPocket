@@ -91,9 +91,9 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)) // nil removes the placeholder image in the storyboard.
 			
 			// Make, configure, and return the cell.
-			let artworkCell = tableView.dequeueReusableCell(withIdentifier: "Artwork Cell") as! SongsArtworkCell
-			artworkCell.artworkImageView.image = cellImage
-			return artworkCell
+			let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell") as! AlbumArtworkCell
+			albumArtworkCell.artworkImageView.image = cellImage
+			return albumArtworkCell
 			
 		} else if indexPath.row == 1 {
 			
@@ -105,10 +105,17 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			let cellSubtitle = album.releaseDateEstimateFormatted()
 			
 			// Make, configure, and return the cell.
-			let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header Cell") as! SongsAlbumInfoHeaderCell
-			headerCell.albumArtistLabel.text = cellHeading
-			headerCell.yearLabel.text = cellSubtitle
-			return headerCell
+			if cellSubtitle != nil {
+				let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell") as! AlbumInfoCell
+				albumInfoCell.albumArtistLabel.text = cellHeading
+				albumInfoCell.yearLabel.text = cellSubtitle
+				return albumInfoCell
+				
+			} else { // We couldn't determine the album's release date.
+				let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell Without Release Date") as! AlbumInfoCellWithoutReleaseDate
+				albumInfoCell.albumArtistLabel.text = cellHeading
+				return albumInfoCell
+			}
 			
 		} else {
 			
@@ -134,17 +141,6 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			
 			cell.trackNumberLabel.text = cellTrackNumberText
 			cell.titleLabel.text = cellTitle
-			
-			
-//				print("for IndexPath \(indexPath), \(String(describing: cell.titleLabel.text)):")
-//				print("trackNumberLabel.frame: \(cell.trackNumberLabel.frame)")
-//				print("trackNumberLabel.bounds: \(cell.trackNumberLabel.bounds)")
-//				print("trackNumberLabel.intrinsicContentSize: \(cell.trackNumberLabel.intrinsicContentSize)")
-				//			print("titleLabel.frame: \(cell.titleLabel.frame)")
-				//			print("titleLabel.bounds: \(cell.titleLabel.bounds)")
-				//			print("titleLabel.intrinsicContentSize: \(cell.titleLabel.intrinsicContentSize)")
-//				print("")
-			
 			
 			return cell
 //			}
