@@ -34,7 +34,7 @@ extension NSManagedObjectContext {
 	}
 	
 	// For testing.
-	func printManagedObjects(for request: NSFetchRequest<NSFetchRequestResult>) {
+	func printManagedObjectsFetched(for request: NSFetchRequest<NSFetchRequestResult>) {
 		print("Checking the current managed object context with the Core Data fetch request: \(request)")
 		performAndWait {
 			do {

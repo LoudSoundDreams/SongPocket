@@ -61,16 +61,6 @@
             </objects>
             <point key="canvasLocation" x="5166" y="-1254"/>
         </scene>
-        <!--All Songs-->
-        <scene sceneID="fmg-Bd-ib8">
-            <objects>
-                <hostingController storyboardIdentifier="Songs Hosting Controller" id="Nkp-X5-mEr" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" title="All Songs" id="1er-td-Z9h"/>
-                </hostingController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d4B-1d-InK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="7434.3999999999996" y="-485.46798029556652"/>
-        </scene>
         <!--Collections-->
         <scene sceneID="X0R-Et-kVe">
             <objects>
