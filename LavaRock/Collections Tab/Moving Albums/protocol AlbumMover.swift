@@ -1,5 +1,5 @@
 //
-//  AlbumMover - protocol.swift
+//  protocol AlbumMover.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-04.

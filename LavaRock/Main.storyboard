@@ -77,7 +77,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="347.66666666666669" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Jv2-Zx-uWS">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Jv2-Zx-uWS">
                                             <rect key="frame" x="16" y="0.0" width="323.66666666666669" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -302,7 +302,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="2038" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Izv-yI-Ddf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Izv-yI-Ddf">
                                                     <rect key="frame" x="0.0" y="24.333333333333329" width="86" height="14.333333333333336"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -312,15 +312,14 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="dHe-RO-OqD" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="bottom" id="00N-x6-WOU"/>
-                                        <constraint firstItem="dHe-RO-OqD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="top" id="28S-e5-Jjs"/>
+                                        <constraint firstItem="dHe-RO-OqD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="top" id="00N-x6-WOU"/>
                                         <constraint firstItem="WsP-na-zLq" firstAttribute="centerY" secondItem="JHd-Pq-eAK" secondAttribute="centerY" constant="-1" id="5Jg-6s-U63"/>
                                         <constraint firstItem="WsP-na-zLq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="topMargin" id="CRe-OQ-FIo"/>
+                                        <constraint firstItem="dHe-RO-OqD" firstAttribute="centerY" secondItem="JHd-Pq-eAK" secondAttribute="centerY" id="Jj8-1i-IEE"/>
                                         <constraint firstItem="WsP-na-zLq" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="trailingMargin" id="NLs-tr-2ss"/>
                                         <constraint firstItem="WsP-na-zLq" firstAttribute="leading" secondItem="dHe-RO-OqD" secondAttribute="trailing" constant="12" id="PSJ-SP-Hmu"/>
                                         <constraint firstItem="dHe-RO-OqD" firstAttribute="leading" secondItem="JHd-Pq-eAK" secondAttribute="leadingMargin" id="lHx-8k-pqf"/>
                                         <constraint firstItem="WsP-na-zLq" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="bottomMargin" id="yg3-Ml-9wl"/>
-                                        <constraint firstItem="dHe-RO-OqD" firstAttribute="centerY" secondItem="JHd-Pq-eAK" secondAttribute="centerY" id="zaT-9f-mlJ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -345,7 +344,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Album Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rXc-N2-njc">
-                                            <rect key="frame" x="160" y="54.000000000000007" width="86" height="20.333333333333336"/>
+                                            <rect key="frame" x="160" y="55.000000000000007" width="86" height="20.333333333333336"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -355,12 +354,11 @@
                                         <constraint firstItem="flP-P1-X1o" firstAttribute="leading" secondItem="S5B-ql-lwZ" secondAttribute="leadingMargin" id="QW0-6w-LBN"/>
                                         <constraint firstItem="rXc-N2-njc" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="bottomMargin" id="Stc-w7-4ke"/>
                                         <constraint firstItem="rXc-N2-njc" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="trailingMargin" id="ZOP-im-REP"/>
-                                        <constraint firstItem="flP-P1-X1o" firstAttribute="centerY" secondItem="S5B-ql-lwZ" secondAttribute="centerY" id="cSd-Ow-Lkr"/>
-                                        <constraint firstItem="rXc-N2-njc" firstAttribute="centerY" secondItem="S5B-ql-lwZ" secondAttribute="centerY" constant="-2" id="cZb-xa-Ibk"/>
-                                        <constraint firstItem="flP-P1-X1o" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="bottom" id="elQ-EB-w3H"/>
+                                        <constraint firstItem="rXc-N2-njc" firstAttribute="centerY" secondItem="S5B-ql-lwZ" secondAttribute="centerY" constant="-1" id="cZb-xa-Ibk"/>
+                                        <constraint firstItem="flP-P1-X1o" firstAttribute="top" relation="greaterThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="top" id="elQ-EB-w3H"/>
                                         <constraint firstItem="rXc-N2-njc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="topMargin" id="jvn-26-ve4"/>
                                         <constraint firstItem="rXc-N2-njc" firstAttribute="leading" secondItem="flP-P1-X1o" secondAttribute="trailing" constant="12" id="mtK-5U-jlH"/>
-                                        <constraint firstItem="flP-P1-X1o" firstAttribute="top" relation="greaterThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="top" id="swj-Mo-dMs"/>
+                                        <constraint firstItem="flP-P1-X1o" firstAttribute="centerY" secondItem="S5B-ql-lwZ" secondAttribute="centerY" id="zSQ-zs-dSH"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -450,9 +448,10 @@
                                         </imageView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="centerX" secondItem="nUq-na-guy" secondAttribute="centerX" id="42j-0d-sHo"/>
                                         <constraint firstItem="AJa-zb-mTO" firstAttribute="leading" secondItem="nUq-na-guy" secondAttribute="leading" id="4N5-Jk-TDK"/>
                                         <constraint firstItem="AJa-zb-mTO" firstAttribute="top" secondItem="nUq-na-guy" secondAttribute="top" id="8rb-8Z-seI"/>
-                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="trailing" secondItem="nUq-na-guy" secondAttribute="trailing" id="Gpv-9c-cEp"/>
+                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="nUq-na-guy" secondAttribute="trailing" id="Gpv-9c-cEp"/>
                                         <constraint firstItem="AJa-zb-mTO" firstAttribute="bottom" secondItem="nUq-na-guy" secondAttribute="bottom" id="Hkd-qB-5D8"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -477,8 +476,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="2038" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kS2-rd-NR2">
-                                                    <rect key="frame" x="0.0" y="28.333333333333325" width="30" height="14.333333333333332"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kS2-rd-NR2">
+                                                    <rect key="frame" x="0.0" y="28.333333333333325" width="28.666666666666668" height="14.333333333333332"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
                                                     <nil key="highlightedColor"/>
@@ -501,10 +500,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info Cell Without Release Date" id="iaf-Ej-2NQ" customClass="AlbumInfoCellWithoutReleaseDate" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="140.66666793823242" width="375" height="44.666667938232422"/>
+                                <rect key="frame" x="0.0" y="140.66666793823242" width="375" height="46.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iaf-Ej-2NQ" id="qC0-HK-ntc">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="46.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PgD-ST-isZ">
@@ -518,7 +517,7 @@
                                         <constraint firstItem="PgD-ST-isZ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="qC0-HK-ntc" secondAttribute="topMargin" id="3es-Aj-NUK"/>
                                         <constraint firstItem="PgD-ST-isZ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="qC0-HK-ntc" secondAttribute="bottomMargin" id="GWd-jx-yWa"/>
                                         <constraint firstItem="PgD-ST-isZ" firstAttribute="leading" secondItem="qC0-HK-ntc" secondAttribute="leadingMargin" id="HCL-1n-MwO"/>
-                                        <constraint firstItem="PgD-ST-isZ" firstAttribute="centerY" secondItem="qC0-HK-ntc" secondAttribute="centerY" constant="-1" id="JDC-Ck-3nW"/>
+                                        <constraint firstItem="PgD-ST-isZ" firstAttribute="centerY" secondItem="qC0-HK-ntc" secondAttribute="centerY" constant="-2" id="JDC-Ck-3nW"/>
                                         <constraint firstItem="PgD-ST-isZ" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="qC0-HK-ntc" secondAttribute="trailingMargin" id="uzm-Jp-MRq"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -528,7 +527,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Orn-Ku-PFM" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="185.33333587646484" width="375" height="44.666667938232422"/>
+                                <rect key="frame" x="0.0" y="187.33333587646484" width="375" height="44.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Orn-Ku-PFM" id="Fg6-10-nMy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
@@ -565,7 +564,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell with Different Artist" id="J5T-0G-4uX" customClass="SongCellWithDifferentArtist" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="230.00000381469727" width="375" height="63"/>
+                                <rect key="frame" x="0.0" y="232.00000381469727" width="375" height="63"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
@@ -578,16 +577,16 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ngy-rH-NbP">
-                                            <rect key="frame" x="16" y="11.333333333333332" width="295.66666666666669" height="38.666666666666671"/>
+                                            <rect key="frame" x="16" y="11.333333333333332" width="76.666666666666671" height="38.666666666666671"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Song Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAu-f6-M3i">
-                                                    <rect key="frame" x="0.0" y="0.0" width="295.66666666666669" height="20.333333333333332"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="76.666666666666671" height="20.333333333333332"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="260" text="Artist Name" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ZB-Qq-JY2">
-                                                    <rect key="frame" x="0.0" y="24.333333333333329" width="295.66666666666669" height="14.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="24.333333333333329" width="76.666666666666671" height="14.333333333333336"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
                                                     <nil key="highlightedColor"/>
@@ -603,7 +602,7 @@
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="Vii-fO-tcS"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="Xes-dR-lZq"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="bE3-fw-Fd1"/>
-                                        <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="16" id="eKz-tl-nIv"/>
+                                        <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="16" id="eKz-tl-nIv"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="yme-ol-E5x"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -614,7 +613,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="293.00000381469727" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="295.00000381469727" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -636,14 +635,14 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell (Track Number on Left)" id="5sl-vR-cfB" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="393.00000381469727" width="375" height="64.666664123535156"/>
+                                <rect key="frame" x="0.0" y="395.00000381469727" width="375" height="44.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5sl-vR-cfB" id="ULF-7m-1PD">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64.666664123535156"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rif-LJ-CL8">
-                                            <rect key="frame" x="16" y="22.333333333333336" width="32" height="20.333333333333336"/>
+                                            <rect key="frame" x="16" y="11.333333333333334" width="32" height="20.333333333333329"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="cYR-cd-ILw"/>
                                             </constraints>
@@ -651,8 +650,8 @@
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A Terribly, Horribly, No-Good, Very Long Song Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t35-xm-5yN">
-                                            <rect key="frame" x="64" y="11.333333333333332" width="295" height="42.333333333333343"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t35-xm-5yN">
+                                            <rect key="frame" x="64" y="11.333333333333334" width="76.666666666666686" height="20.333333333333329"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -662,12 +661,12 @@
                                         <constraint firstItem="rif-LJ-CL8" firstAttribute="leading" secondItem="ULF-7m-1PD" secondAttribute="leadingMargin" id="90c-yy-o3R"/>
                                         <constraint firstItem="t35-xm-5yN" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="bottomMargin" id="GfA-hQ-4Ut"/>
                                         <constraint firstItem="t35-xm-5yN" firstAttribute="leading" secondItem="rif-LJ-CL8" secondAttribute="trailing" constant="16" id="J33-dg-fmB"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="centerY" secondItem="ULF-7m-1PD" secondAttribute="centerY" id="Q16-J0-VVK"/>
+                                        <constraint firstItem="t35-xm-5yN" firstAttribute="centerY" secondItem="ULF-7m-1PD" secondAttribute="centerY" constant="-1" id="Q16-J0-VVK"/>
                                         <constraint firstItem="rif-LJ-CL8" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="bottomMargin" id="Y1e-v3-E3O"/>
                                         <constraint firstItem="t35-xm-5yN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="ebT-ls-QPL"/>
                                         <constraint firstItem="rif-LJ-CL8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="epM-E0-26m"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="trailing" secondItem="ULF-7m-1PD" secondAttribute="trailingMargin" id="kSh-Dh-xHY"/>
-                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="centerY" secondItem="ULF-7m-1PD" secondAttribute="centerY" id="qr1-lD-lh4"/>
+                                        <constraint firstItem="t35-xm-5yN" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="trailingMargin" id="kSh-Dh-xHY"/>
+                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="centerY" secondItem="t35-xm-5yN" secondAttribute="centerY" id="qr1-lD-lh4"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

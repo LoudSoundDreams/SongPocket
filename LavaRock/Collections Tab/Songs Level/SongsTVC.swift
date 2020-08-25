@@ -90,6 +90,13 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			
 			// Make, configure, and return the cell.
 			let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell") as! AlbumArtworkCell
+//			albumArtworkCell.artworkImageView.frame = CGRect(
+//				x: albumArtworkCell.artworkImageView.center.x,
+//				y: albumArtworkCell.artworkImageView.center.y,
+//				width: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height),
+//				height: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+//			)
+//			print(albumArtworkCell.artworkImageView.frame)
 			albumArtworkCell.artworkImageView.image = cellImage
 			return albumArtworkCell
 			
@@ -121,23 +128,23 @@ final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
 			let cellTitle = song.titleFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.
-//			if
-//				let cellArtist = song.artistFormatted(),
-//				cellArtist != (containerOfData as! Album).albumArtistFormattedOrPlaceholder()
-//			{
-//				let cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
-//				cell.trackNumberLabel.text = cellTrackNumberText
-//				cell.titleLabel.text = cellTitle
-//				cell.artistLabel.text = cellArtist
-//				return cell
-//
-//			} else { // The song's artist is not useful, or it's the same as the album artist.
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
-			// As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
-			cell.trackNumberLabel.text = cellTrackNumberText
-			cell.titleLabel.text = cellTitle
-			return cell
-//			}
+			if
+				let cellArtist = song.artistFormatted(),
+				cellArtist != (containerOfData as! Album).albumArtistFormattedOrPlaceholder()
+			{
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
+				cell.trackNumberLabel.text = cellTrackNumberText
+				cell.titleLabel.text = cellTitle
+				cell.artistLabel.text = cellArtist
+				return cell
+
+			} else { // The song's artist is not useful, or it's the same as the album artist.
+				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
+				// As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
+				cell.trackNumberLabel.text = cellTrackNumberText
+				cell.titleLabel.text = cellTitle
+				return cell
+			}
 		}
 	}
 	

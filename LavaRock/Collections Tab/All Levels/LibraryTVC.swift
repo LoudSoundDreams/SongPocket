@@ -26,7 +26,7 @@ class LibraryTVC: UITableViewController {
 	var sortOptions = [String]()
 	
 	// "Constants" that subclasses should not change
-	let mediaLibraryManager = (UIApplication.shared.delegate as! AppDelegate).mediaLibraryManager
+	let mediaPlayerManager = (UIApplication.shared.delegate as! AppDelegate).mediaPlayerManager
 	let cellReuseIdentifier = "Cell"
 	lazy var floatToTopButton = UIBarButtonItem(
 		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
@@ -185,7 +185,7 @@ class LibraryTVC: UITableViewController {
 				switch newStatus {
 				case .authorized:
 					DispatchQueue.main.async {
-						MediaPlayerManager.setDefaultLibraryIfAuthorized()
+						self.mediaPlayerManager.setUpLibraryIfAuthorized()
 						self.viewDidLoad()
 						switch self.tableView(tableView, numberOfRowsInSection: 0) { // tableView.numberOfRows might not be up to date yet. Call the actual UITableViewDelegate method.
 						case 0:

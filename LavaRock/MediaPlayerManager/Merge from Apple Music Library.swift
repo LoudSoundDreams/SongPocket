@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-extension CollectionsTVC {
+extension MediaPlayerManager {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
 	func mergeChangesFromAppleMusicLibrary() {
@@ -69,7 +69,7 @@ extension CollectionsTVC {
 //		print("")
 //		print("Deleted songs: \(objectIDsOfSongsToDelete.count)")
 		
-		updateManagedObjects( // Update before creating and deleting. That way, it's easier to put new songs above modified songs.
+		updateManagedObjects( // Update before creating and deleting, so that we can put new songs above modified songs (easily).
 			forSongsWith: potentiallyModifiedSongObjectIDs,
 			toMatch: potentiallyModifiedMediaItems)
 		createManagedObjects( // Create before deleting. That way, for example, if you deleted all the songs from an album, but added other songs from that album, that album will stay in the same place instead of being re-added to the top.
@@ -176,7 +176,7 @@ extension CollectionsTVC {
 					continue
 					
 				} else { // This is a song we recognize, but its albumPersistentID has changed.
-					print("This song's albumPersistentID has changed.")
+//					print("This song's albumPersistentID has changed.")
 					
 					if !knownAlbumPersistentIDs.contains(Int64(bitPattern: newAlbumPersistentID)) {
 						
@@ -213,15 +213,6 @@ extension CollectionsTVC {
 						}
 						song.index = 0 //
 						song.container = existingAlbum
-						
-						// This is wrong. This leaves a gap.
-						// Should we even move the album to the top in this case?
-//						for album in existingAlbum.container!.contents! {
-//							(album as! Album).index += 1
-//						}
-//						existingAlbum.index = 0 //
-						
-//						print("This song's albumPersistentID has changed, but we already have an album for it, so we added it to that album.")
 					}
 					
 					// We'll delete empty albums (and collections) later.
@@ -265,8 +256,9 @@ extension CollectionsTVC {
 		
 		// If we currently have no collections:
 		// - Grouped by alphabetically sorted album artist
-		// - Within each album artist, grouped by alphabetically sorted album
-		// - Within each album, grouped by increasing track number
+		// - Within each album artist, grouped by album, from newest to oldest
+		// - Within each album, grouped by increasing disc number, with "unknown" at the end.
+		// - Within each disc, grouped by increasing track number, with "unknown" at the end.
 		// - Within each track number (rare), sorted alphabetically
 		
 		// If there are any existing collections:
@@ -276,12 +268,14 @@ extension CollectionsTVC {
 		if isAppDatabaseEmpty {
 			mediaItems.sort() { ($0.title ?? "") < ($1.title ?? "") }
 			mediaItems.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
-			mediaItems.sort() { $0.discNumber < $1.discNumber }
 			mediaItems.sort() { 0 * $0.albumTrackNumber + $1.albumTrackNumber == 0 } // $0 is just to satisfy the compiler. We really just want to move songs with track number 0 (unknown) to the end.
-			mediaItems.sort() { ($0.albumTitle ?? "") < ($1.albumTitle ?? "") } // Albums in alphabetical order is wrong! We'll sort albums by their release dates, but we'll do it later, because it's possible that some "Album B" could have songs on it that were released both before and after the day some "Album A" was released as an album.
+			mediaItems.sort() { $0.discNumber < $1.discNumber }
+//			mediaItems.sort() { 0 * $0.discNumber + $1.discNumber == 0 } // As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
+			mediaItems.sort() { ($0.albumTitle ?? "") < ($1.albumTitle ?? "") }
+			// Albums in alphabetical order is wrong! We'll sort albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album. It's possible that some "Album B" could have songs on it that were released both before and after the day some "Album A" was released as an album.
 			mediaItems.sort() { ($0.albumArtist ?? "") < ($1.albumArtist ?? "") } // We'll move the "Unknown Album Artist" collection to the bottom later.
 		} else {
-			mediaItems.sort() { ($0.dateAdded) > ($1.dateAdded) } // There's a chance we'll have to sort songs within albums again, which wastes time. But it might be worth the code readability.
+			mediaItems.sort() { ($0.dateAdded) > ($1.dateAdded) } // There's a chance we'll have to sort songs within albums again, which will take more time.
 		}
 		mediaItems.reverse()
 		
@@ -446,14 +440,14 @@ extension CollectionsTVC {
 		}
 	}
 	
-	// MARK: Cleanup
+	// MARK: - Cleanup
 	
 	// Only MPMediaItems have release dates, and those can't be albums.
 	// An MPMediaItemCollection has a property representativeItem, but that item's release date doesn't necessarily represent the album's release date.
 	// Instead, we'll estimate the albums' release dates and keep the estimates up to date.
 	func recalculateReleaseDateEstimatesFor(albumsWithObjectIDs objectIDsOfAlbums: [NSManagedObjectID]) {
 		managedObjectContext.performAndWait {
-						
+			
 			for albumID in objectIDsOfAlbums {
 				// Update one album's release date estimate.
 				let album = managedObjectContext.object(with: albumID) as! Album

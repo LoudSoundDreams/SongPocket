@@ -31,15 +31,23 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	override func viewDidLoad() {
 		if moveAlbumsClipboard != nil {
 		} else {
-			navigationItemButtonsNotEditMode = [optionsButton]
+			mediaPlayerManager.setUpLibraryIfAuthorized() // This is the kickoff point for starting up Apple Music library integration.
+			// This needs to happen before loadSavedLibraryItems, because it includes merging changes from the Apple Music library.
 		}
 		
 		super.viewDidLoad()
 		
+		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration indent their separators in Edit mode, but with broken timing and no animation.
+		// This stops the separator insets from changing.
+		tableView.separatorInsetReference = .fromAutomaticInsets
+		tableView.separatorInset.left = 0
+		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
 			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved)
+				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // This needs to happen after loadSavedLibraryItems, because it checks the existing collection titles in activeLibraryItems.
 			}
+		} else {
+			navigationItemButtonsNotEditMode = [optionsButton]
 		}
 	}
 	
@@ -94,18 +102,6 @@ final class CollectionsTVC: LibraryTVC, AlbumMover {
 	}
 	
 	// MARK: Loading Data
-	
-	override func loadSavedLibraryItems() {
-		super.loadSavedLibraryItems()
-		
-		if moveAlbumsClipboard != nil {
-		} else { // Not in "moving albums" mode
-			if !newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-				mergeChangesFromAppleMusicLibrary()
-				super.loadSavedLibraryItems()
-			}
-		}
-	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
