@@ -10,7 +10,10 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-final class SongsTVC: LibraryTVC, NavigationItemTitleCustomizer {
+final class SongsTVC:
+	LibraryTVC,
+	NavigationItemTitleCustomizer
+{
 	
 	/*
 	WARNING: This class contains a hack on activeLibraryItems, in order to use a regular table view cell as a non-sticky "header".

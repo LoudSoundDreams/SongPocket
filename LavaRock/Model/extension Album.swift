@@ -54,7 +54,7 @@ extension Album {
 	func albumArtistFormattedOrPlaceholder() -> String {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
-			let fetchedAlbumArtist = representativeItem.albumArtist, // As of iOS 14.0 beta 5, even if the "album artist" field is blank in Apple Music for Mac (and other tag editors), this line of code can still return some album artist's name. Currently, it returns the same name as the one in the album's header in the Apple Music app.
+			let fetchedAlbumArtist = representativeItem.albumArtist, // As of iOS 14.0 beta 5, even if the "album artist" field is blank in Apple Music for Mac (and other tag editors), .albumArtist can still return something. It probably reads the "artist" field from one of the songs. Currently, it returns the same name as the one in the album's header in Apple Music for iOS.
 			fetchedAlbumArtist != ""
 		{
 			return fetchedAlbumArtist

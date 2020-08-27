@@ -9,7 +9,11 @@
 import UIKit
 import CoreData
 
-final class AlbumsTVC: LibraryTVC, AlbumMover, NavigationItemTitleCustomizer {
+final class AlbumsTVC:
+	LibraryTVC,
+	AlbumMover,
+	NavigationItemTitleCustomizer
+{
 	
 	// MARK: Properties
 	

@@ -21,35 +21,28 @@ extension MediaPlayerManager {
 		
 		let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
 		// Order doesn't matter, because this will end up being the array of songs to be deleted.
-		var savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
+		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
 		let wasAppDatabaseEmptyBeforeMerge = savedSongs.count == 0
 		
-		// Separate our saved songs into the ones that have been deleted, and the ones that have been potentially modified.
-		var potentiallyModifiedMediaItems = [MPMediaItem]()
+		// Find out which of our saved Songs we need to delete, and which we need to potentially update.
+		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
 		var potentiallyModifiedSongObjectIDs = [NSManagedObjectID]()
-		for queriedMediaItem in queriedMediaItems {
-			if let indexOfPotentiallyModifiedSong = savedSongs.firstIndex(where: { savedSong in
-				Int64(bitPattern: queriedMediaItem.persistentID) == savedSong.persistentID // We already have a record of this song. We need to check whether to update it.
-			}) {
-				potentiallyModifiedMediaItems.append(queriedMediaItem)
-				potentiallyModifiedSongObjectIDs.append(savedSongs[indexOfPotentiallyModifiedSong].objectID)
-				savedSongs.remove(at: indexOfPotentiallyModifiedSong)
-			}
-		}
-		// savedSongs now holds the songs that have been deleted from the Apple Music library.
+		var potentiallyModifiedMediaItems = [MPMediaItem]()
 		var objectIDsOfSongsToDelete = [NSManagedObjectID]()
-		for songToDelete in savedSongs {
-			objectIDsOfSongsToDelete.append(songToDelete.objectID)
-		}
-		
-		// From the list of queried IDs, remove the IDs of songs we've noted as potentially modified, only keeping the IDs of new songs.
-		for potentiallyModifiedMediaItem in potentiallyModifiedMediaItems {
-			if let index = queriedMediaItems.firstIndex(where: { queriedMediaItem in
-				Int64(bitPattern: potentiallyModifiedMediaItem.persistentID) == queriedMediaItem.persistentID
+		for savedSong in savedSongs {
+			if let indexOfPotentiallyModifiedMediaItem = queriedMediaItems.firstIndex(where: { queriedMediaItem in
+				savedSong.persistentID == Int64(bitPattern: queriedMediaItem.persistentID)
 			}) {
-				queriedMediaItems.remove(at: index)
+				potentiallyModifiedSongObjectIDs.append(savedSong.objectID)
+				let potentiallyModifiedMediaItem = queriedMediaItems[indexOfPotentiallyModifiedMediaItem]
+				potentiallyModifiedMediaItems.append(potentiallyModifiedMediaItem)
+				queriedMediaItems.remove(at: indexOfPotentiallyModifiedMediaItem)
+				
+			} else {
+				objectIDsOfSongsToDelete.append(savedSong.objectID)
 			}
 		}
+		// queriedMediaItems now holds the MPMediaItems that we don't have records of.
 		let newMediaItems = queriedMediaItems
 		
 //		print("")
@@ -70,9 +63,12 @@ extension MediaPlayerManager {
 //		print("Deleted songs: \(objectIDsOfSongsToDelete.count)")
 		
 		updateManagedObjects( // Update before creating and deleting, so that we can put new songs above modified songs (easily).
+			// This might make new albums, but not new collections.
+			// Also, this might leave behind "hollow" updated albums, which have no songs in them because they were all moved to other albums; but we won't delete those "hollow" albums, so that if the user also added other songs to that "hollow" album, we can keep that album in the same place, instead of re-adding it to the top.
 			forSongsWith: potentiallyModifiedSongObjectIDs,
 			toMatch: potentiallyModifiedMediaItems)
-		createManagedObjects( // Create before deleting. That way, for example, if you deleted all the songs from an album, but added other songs from that album, that album will stay in the same place instead of being re-added to the top.
+		createManagedObjects( // Create before deleting, because deleting also cleans up empty albums and collections, and we don't want to do that yet, because of what we mentioned above.
+			// This might make new albums, and if it does, it might make new collections.
 			for: newMediaItems,
 			isAppDatabaseEmpty: wasAppDatabaseEmptyBeforeMerge)
 		deleteManagedObjects(
@@ -107,6 +103,16 @@ extension MediaPlayerManager {
 		recalculateReleaseDateEstimatesFor(albumsWithObjectIDs: albumIDs)
 		
 		if wasAppDatabaseEmptyBeforeMerge {
+			
+//						inCollectionsWith collectionIDs: [NSManagedObjectID]
+			// TO DO:
+			// Take out the fetch above for albums.
+			// New modus operandi: within each collection, recalculate the release date estimates of all the albums, then sort them from newest to oldest by those new estimates.
+			
+//			for collectionID in collectionIDs {
+//
+//			}
+			
 			reindexAlbumsWithinEachCollectionByNewestFirst(objectIDsOfCollections: collectionIDs)
 		}
 		
@@ -119,16 +125,8 @@ extension MediaPlayerManager {
 		forSongsWith objectIDsOfSongsToUpdate: [NSManagedObjectID],
 		toMatch mediaItems: [MPMediaItem]
 	) {
-		// Here, you can update any stored attributes on each song. But unless we have to, it's best to not store data we have to manually keep up to date.
-//		coreDataManager.managedObjectContext.performAndWait {
-//			for index in 0 ..< objectIDsOfSongsToUpdate.count {
-//				let songID = objectIDsOfSongsToUpdate[index]
-//				let song = coreDataManager.managedObjectContext.object(with: songID) as! Song
-//				let mediaItem = mediaItems[index]
-//
-//				// Update stored attributes on each song here.
-//			}
-//		}
+		// Here, you can update any stored attributes on each song. But unless we have to, it's best to not store that data in the first place, because we'll have to manually keep up to date.
+		
 		updateRelationshipsBetweenAlbumsAndSongs(
 			with: objectIDsOfSongsToUpdate,
 			toMatch: mediaItems)
@@ -172,15 +170,13 @@ extension MediaPlayerManager {
 //				print("New albumPersistentID: \(newAlbumPersistentID)")
 				
 				if knownAlbumPersistentID == Int64(bitPattern: newAlbumPersistentID) {
-//					print("This song's albumPersistentID hasn't changed. Moving on to the next song.")
 					continue
 					
 				} else { // This is a song we recognize, but its albumPersistentID has changed.
-//					print("This song's albumPersistentID has changed.")
 					
 					if !knownAlbumPersistentIDs.contains(Int64(bitPattern: newAlbumPersistentID)) {
 						
-						// We've never seen his albumPersistentID before, so make a new album for it.
+						// We've never seen this albumPersistentID before, so make a new album for it.
 						
 						knownAlbumPersistentIDs.append(Int64(bitPattern: newAlbumPersistentID))
 						let newAlbum = Album(context: managedObjectContext)
@@ -196,8 +192,6 @@ extension MediaPlayerManager {
 						
 						song.index = 0 //
 						song.container = newAlbum
-						
-//						print("We've never seen this albumPersistentID before, so we made a new album for it.")
 						
 					} else {
 						
@@ -257,23 +251,24 @@ extension MediaPlayerManager {
 		// If we currently have no collections:
 		// - Grouped by alphabetically sorted album artist
 		// - Within each album artist, grouped by album, from newest to oldest
-		// - Within each album, grouped by increasing disc number, with "unknown" at the end.
-		// - Within each disc, grouped by increasing track number, with "unknown" at the end.
+		// - Within each album, grouped by increasing disc number
+		// - Within each disc, grouped by increasing track number, with "unknown" at the end
 		// - Within each track number (rare), sorted alphabetically
 		
 		// If there are any existing collections:
 		// - Newer songs on top
-		// - The final results will be different: we'll add songs to existing albums if possible, and add albums to existing collections if possible.
+		// The final results will be different: we'll add songs to existing albums if possible, and add albums to existing collections if possible.
 		
 		if isAppDatabaseEmpty {
 			mediaItems.sort() { ($0.title ?? "") < ($1.title ?? "") }
 			mediaItems.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
 			mediaItems.sort() { 0 * $0.albumTrackNumber + $1.albumTrackNumber == 0 } // $0 is just to satisfy the compiler. We really just want to move songs with track number 0 (unknown) to the end.
-			mediaItems.sort() { $0.discNumber < $1.discNumber }
-//			mediaItems.sort() { 0 * $0.discNumber + $1.discNumber == 0 } // As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
+			mediaItems.sort() { $0.discNumber < $1.discNumber } // As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
 			mediaItems.sort() { ($0.albumTitle ?? "") < ($1.albumTitle ?? "") }
-			// Albums in alphabetical order is wrong! We'll sort albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album. It's possible that some "Album B" could have songs on it that were released both before and after the day some "Album A" was released as an album.
-			mediaItems.sort() { ($0.albumArtist ?? "") < ($1.albumArtist ?? "") } // We'll move the "Unknown Album Artist" collection to the bottom later.
+			// Albums in alphabetical order is wrong! We'll sort albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
+			mediaItems.sort() { ($0.albumArtist ?? "") < ($1.albumArtist ?? "") }
+			let unknownAlbumArtistPlaceholder = Album.unknownAlbumArtistPlaceholder()
+			mediaItems.sort() { ($1.albumArtist ?? unknownAlbumArtistPlaceholder) == unknownAlbumArtistPlaceholder }
 		} else {
 			mediaItems.sort() { ($0.dateAdded) > ($1.dateAdded) } // There's a chance we'll have to sort songs within albums again, which will take more time.
 		}
@@ -375,7 +370,6 @@ extension MediaPlayerManager {
 				
 			} else {
 				newCollection.title = Album.unknownAlbumArtistPlaceholder()
-				newCollection.index = Int64(existingCollections.count) // Moves the collection to the bottom of the list.
 			}
 		}
 	}

@@ -8,6 +8,10 @@
 import MediaPlayer
 import CoreData
 
+extension Notification.Name {
+	static let LRDidMergeChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager finished mergeChangesFromAppleMusicLibrary(). View controllers that depend on the Apple Music library should update appropriately at this point.")
+}
+
 class MediaPlayerManager {
 	
 	// MARK: Properties
@@ -81,9 +85,20 @@ class MediaPlayerManager {
 //			updateIndexOfHighlightedItemDueToNotification()
 //			refreshUI()
 		case .MPMediaLibraryDidChange: // Update toolbar buttons, curr
-			break
+			DispatchQueue.global(qos: .userInitiated).async {
+				print("We should merge changes from the Apple Music library at this point.")
+//				self.mergeChangesFromAppleMusicLibrary() // TO DO: MERGE ON A NEW MANAGED OBJECT CONTEXT, BECAUSE THIS HAPPENS ON A DIFFERENT THREAD.
+				DispatchQueue.main.async { // Notifications are dealt with on the thread you post them in, so post this notification on the main thread.
+					NotificationCenter.default.post(
+						Notification(name: Notification.Name.LRDidMergeChangesFromAppleMusicLibrary)
+					)
+				}
+			}
+			
 //			reloadSongs()
 //			refreshUI()
+		
+		
 		default:
 			print("… but the app is not set to do anything after observing that notification.")
 		}

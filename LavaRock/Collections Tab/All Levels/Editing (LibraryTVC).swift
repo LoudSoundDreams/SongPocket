@@ -159,11 +159,8 @@ extension LibraryTVC {
 				(($0.1 as? Song)?.mpMediaItem()?.discNumber ?? 0) <
 					(($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0)
 			}
+			// As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
 			return sortedByDiscNumber
-//			let sortedByDiscNumberWithZeroAtEnd = sortedByDiscNumber.sorted() {
-//				return (($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0) == 0 // As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
-//			}
-//			return sortedByDiscNumberWithZeroAtEnd
 			
 			
 		default:

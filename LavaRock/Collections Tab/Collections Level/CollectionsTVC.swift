@@ -11,7 +11,10 @@ import CoreData
 import SwiftUI
 import MediaPlayer
 
-final class CollectionsTVC: LibraryTVC, AlbumMover {
+final class CollectionsTVC:
+	LibraryTVC,
+	AlbumMover
+{
 	
 	// MARK: Properties
 	
