@@ -239,7 +239,7 @@
                         <barButtonItem title="After Current Song" image="ellipsis.circle.fill" catalog="system" style="plain" id="3Xz-PX-32t"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Queue" id="W5j-mY-QqY">
-                        <barButtonItem key="leftBarButtonItem" title="Clear" id="Wvl-xP-IvU"/>
+                        <barButtonItem key="leftBarButtonItem" title="Remove" id="Wvl-xP-IvU"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>

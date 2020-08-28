@@ -262,8 +262,9 @@ extension MediaPlayerManager {
 		if isAppDatabaseEmpty {
 			mediaItems.sort() { ($0.title ?? "") < ($1.title ?? "") }
 			mediaItems.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
-			mediaItems.sort() { 0 * $0.albumTrackNumber + $1.albumTrackNumber == 0 } // $0 is just to satisfy the compiler. We really just want to move songs with track number 0 (unknown) to the end.
-			mediaItems.sort() { $0.discNumber < $1.discNumber } // As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
+			mediaItems.sort() { $1.albumTrackNumber == 0 }
+			mediaItems.sort() { $0.discNumber < $1.discNumber }
+			// As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
 			mediaItems.sort() { ($0.albumTitle ?? "") < ($1.albumTitle ?? "") }
 			// Albums in alphabetical order is wrong! We'll sort albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
 			mediaItems.sort() { ($0.albumArtist ?? "") < ($1.albumArtist ?? "") }
