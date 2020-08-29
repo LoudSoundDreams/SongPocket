@@ -120,7 +120,7 @@ class LibraryTVC: UITableViewController {
 				tableView.backgroundView = nil
 				return activeLibraryItems.count
 			} else {
-				let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell")! // We need a copy of this cell in every scene in the storyboard that might use it.
+				let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell")! // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
 				tableView.backgroundView = noItemsView
 				return 0
 			}
@@ -130,25 +130,13 @@ class LibraryTVC: UITableViewController {
 		}
     }
 	
+	// All subclasses should override this.
+	// Also, all subclasses should check the authorization status for the Apple Music library, and if the user hasn't granted authorization yet, they should call super (this implementation) to return the "Allow Access" cell.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return allowAccessCell(for: indexPath)
 		}
-		
-		// Get the data to put into the cell.
-		let cellItem = activeLibraryItems[indexPath.row]
-		let cellTitle = cellItem.value(forKey: "title") as? String
-		
-		// Make, configure, and return the cell.
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-		if #available(iOS 14, *) {
-			var configuration = cell.defaultContentConfiguration()
-			configuration.text = cellTitle
-			cell.contentConfiguration = configuration
-		} else { // iOS 13 and earlier
-			cell.textLabel?.text = cellTitle
-		}
-        return cell
+		return UITableViewCell()
     }
 	
 	func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
@@ -170,14 +158,16 @@ class LibraryTVC: UITableViewController {
 		print("Observed notification: \(notification.name)")
 		switch notification.name {
 		case .LRDidMergeChangesFromAppleMusicLibrary:
-			didMergeFromAppleMusicLibrary()
+			didMergeFromAppleMusicLibrary(notification)
 		default:
 			print("… but the app is not set to do anything after observing that notification.")
 		}
 	}
 	
-	@objc func didMergeFromAppleMusicLibrary() {
+	@objc func didMergeFromAppleMusicLibrary(_ notification: Notification) {
 		print("The class “\(Self.self)” should override didMergeFromAppleMusicLibrary(). We would call it at this point.")
+//		loadSavedLibraryItems()
+//		tableView.reloadData()
 	}
 	
 	func refreshNavigationBarButtons() {
@@ -255,23 +245,14 @@ class LibraryTVC: UITableViewController {
 		if
 			segue.identifier == "Drill Down in Library",
 			let destination = segue.destination as? LibraryTVC,
-			tableView.indexPathForSelectedRow != nil
+			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
-			let selectedItem = activeLibraryItems[tableView.indexPathForSelectedRow!.row]
+			let selectedItem = activeLibraryItems[selectedIndexPath.row]
 			destination.containerOfData = selectedItem
 			destination.managedObjectContext = managedObjectContext
 		}
 		
 		super.prepare(for: segue, sender: sender)
 	}
-	
-//	@IBSegueAction func drillDownInLibrarySwiftUI(_ coder: NSCoder) -> UIViewController? {
-//		let selectedItem = activeLibraryItems[tableView.indexPathForSelectedRow!.row]
-//		let selectedItemTitle = selectedItem.value(forKey: "title") as! String
-//		let destination = UIHostingController(coder: coder, rootView: SongsView())
-//		// As of iOS 13.5.1, if you set .navigationBarTitle within SongsView, it doesn't animate in; it just appears after the show segue finishes.
-//		destination?.navigationItem.title = selectedItemTitle
-//		return destination
-//	}
 	
 }

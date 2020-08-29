@@ -47,7 +47,7 @@ final class CollectionsTVC:
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
 			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // This needs to happen after loadSavedLibraryItems, because it checks the existing collection titles in activeLibraryItems.
+				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // This needs to happen after loadSavedLibraryItems, because it checks the existing collection titles.
 			}
 		} else {
 			navigationItemButtonsNotEditMode = [optionsButton]
@@ -104,36 +104,32 @@ final class CollectionsTVC:
 		indexOfEmptyCollection = Int(emptyCollection.index)
 	}
 	
-	// MARK: Loading Data
+	// MARK: - Table View
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return super.tableView(tableView, cellForRowAt: indexPath)
 		}
 		
 		// Get the data to put into the cell.
-		
 		let collection = activeLibraryItems[indexPath.row] as! Collection
 		
 		// Make, configure, and return the cell.
-		
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-		
 		if #available(iOS 14, *) {
 			var configuration = cell.defaultContentConfiguration()
 			configuration.text = collection.title
 			
 			if let moveAlbumsClipboard = moveAlbumsClipboard {
 				if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
-					configuration.textProperties.color = .placeholderText // A dedicated way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+					configuration.textProperties.color = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 					// TO DO: Tell VoiceOver that this cell is disabled.
 					cell.selectionStyle = .none
 				}
 			}
-
+			
 			cell.contentConfiguration = configuration
-
+			
 		} else { // iOS 13 and earlier
 			cell.textLabel?.text = collection.title
 			
@@ -144,7 +140,6 @@ final class CollectionsTVC:
 				}
 			}
 		}
-		
 		return cell
 	}
 	
@@ -166,7 +161,7 @@ final class CollectionsTVC:
 	}
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {
-//		let dismissClosure = { self.dismiss(animated: true, completion: nil) } // Does this cause a strong reference cycle?
+//		let dismissClosure = { self.dismiss(animated: true, completion: nil) }
 //		return UIHostingController(
 //			coder: coder,
 //			rootView: OptionsView(
@@ -181,7 +176,6 @@ final class CollectionsTVC:
 			let collectionID = activeLibraryItems[indexPath.row].objectID
 			if collectionID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 				return nil
-				
 			} else {
 				return indexPath
 			}

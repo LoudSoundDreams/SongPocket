@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MediaPlayer
 
 final class AlbumsTVC:
 	LibraryTVC,
@@ -79,9 +80,12 @@ final class AlbumsTVC:
 		viewDidAppear(true) // Exits this collection if it's now empty.
 	}
 	
-	// MARK: Loading Data
+	// MARK: - Table View
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return super.tableView(tableView, cellForRowAt: indexPath)
+		}
 		
 		// Get the data to put into the cell.
 		

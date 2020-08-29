@@ -83,7 +83,13 @@ final class SongsTVC:
 		}
 	}
 	
+	// MARK: - Table View
+	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return super.tableView(tableView, cellForRowAt: indexPath)
+		}
+		
 		if indexPath.row == 0 {
 			
 			// Get the data to put into the cell.
@@ -93,13 +99,6 @@ final class SongsTVC:
 			
 			// Make, configure, and return the cell.
 			let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell") as! AlbumArtworkCell
-//			albumArtworkCell.artworkImageView.frame = CGRect(
-//				x: albumArtworkCell.artworkImageView.center.x,
-//				y: albumArtworkCell.artworkImageView.center.y,
-//				width: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height),
-//				height: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
-//			)
-//			print(albumArtworkCell.artworkImageView.frame)
 			albumArtworkCell.artworkImageView.image = cellImage
 			return albumArtworkCell
 			
@@ -204,7 +203,7 @@ final class SongsTVC:
 		
 		// Disable the actions that we shouldn't offer for the last song in the section.
 		
-		if Int(song.index) + numberOfUneditableRowsAtTopOfSection + 1 >= activeLibraryItems.count { // For example, with activeLibraryItems.count (the number of rows) == 3 and numberOfUneditableRowsAtTopOfSection == 2, the song at index 0 is the last song.
+		if Int(song.index) + numberOfUneditableRowsAtTopOfSection + 1 >= tableView.numberOfRows(inSection: 0) { // For example, a Song with an "index" attribute of 0 is the last song if numberOfUneditableRowsAtTopOfSection == 2 and there are 3 rows in total.
 			enqueueAlbumStartingHereAction.isEnabled = false
 		}
 		

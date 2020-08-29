@@ -14,18 +14,14 @@ extension Notification.Name {
 
 class MediaPlayerManager {
 	
-	// MARK: Properties
+	// MARK: - Properties
 	
 	// "Constants"
-	static var playerController: MPMusicPlayerController!//? = nil
-	private var library: MPMediaLibrary? = nil
-	lazy var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	static var playerController: MPMusicPlayerController!//?
+	private var library: MPMediaLibrary?
+	lazy var mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
-	// MARK: Methods
-	
-	deinit {
-		endObservingAndGeneratingNotifications()
-	}
+	// MARK: - Setup and Teardown
 	
 	func setUpLibraryIfAuthorized() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
@@ -38,17 +34,23 @@ class MediaPlayerManager {
 		beginObservingAndGeneratingNotifications()
 	}
 	
+	deinit {
+		endObservingAndGeneratingNotifications()
+	}
+	
+	// MARK: - Notifications
+	
 	func beginObservingAndGeneratingNotifications() {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
-			name: UIApplication.didBecomeActiveNotification, // Works
+			name: UIApplication.didBecomeActiveNotification,
 			object: nil)
 		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
-			name: Notification.Name.MPMediaLibraryDidChange, // Works
+			name: Notification.Name.MPMediaLibraryDidChange,
 			object: nil)
 		library?.beginGeneratingLibraryChangeNotifications()
 		
@@ -82,23 +84,14 @@ class MediaPlayerManager {
 			.MPMusicPlayerControllerNowPlayingItemDidChange // Update current song. if it's not in the list, don't highlight any song
 		:
 			break
-//			updateIndexOfHighlightedItemDueToNotification()
-//			refreshUI()
-		case .MPMediaLibraryDidChange: // Update toolbar buttons, curr
-			DispatchQueue.global(qos: .userInitiated).async {
-				print("We should merge changes from the Apple Music library at this point.")
-//				self.mergeChangesFromAppleMusicLibrary() // TO DO: MERGE ON A NEW MANAGED OBJECT CONTEXT, BECAUSE THIS HAPPENS ON A DIFFERENT THREAD.
-				DispatchQueue.main.async { // Notifications are dealt with on the thread you post them in, so post this notification on the main thread.
-					NotificationCenter.default.post(
-						Notification(name: Notification.Name.LRDidMergeChangesFromAppleMusicLibrary)
-					)
-				}
-			}
-			
-//			reloadSongs()
-//			refreshUI()
-		
-		
+			// Update UI
+		case
+//			UIApplication.didBecomeActiveNotification,
+			.MPMediaLibraryDidChange // Update toolbar buttons, curr
+		// Doesn't seem to notify us when items are deleted
+		:
+			print("We should merge changes from the Apple Music library at this point.")
+//			mergeChangesFromAppleMusicLibrary()
 		default:
 			print("… but the app is not set to do anything after observing that notification.")
 		}
