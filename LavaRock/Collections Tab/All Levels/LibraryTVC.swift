@@ -139,7 +139,7 @@ class LibraryTVC: UITableViewController {
 		if #available(iOS 14.0, *) {
 			var configuration = UIListContentConfiguration.cell()
 			configuration.text = "Allow Access to Apple Music"
-			configuration.textProperties.color = view.window!.tintColor
+			configuration.textProperties.color = view.window?.tintColor ?? UIColor.systemBlue
 			cell.contentConfiguration = configuration
 		} else { // iOS 13 and earlier
 			cell.textLabel?.textColor = view.window?.tintColor
