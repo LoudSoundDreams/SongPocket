@@ -24,16 +24,9 @@ extension LibraryTVC {
 		tableView.performBatchUpdates(nil, completion: nil)
 	}
 	
-	// MARK: Rearranging
+	// Note: We handle rearranging in the UITableViewDataSource method tableView(_:moveRowAt:to:).
 	
-	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-		let itemBeingMoved = activeLibraryItems[fromIndexPath.row]
-		activeLibraryItems.remove(at: fromIndexPath.row)
-		activeLibraryItems.insert(itemBeingMoved, at: to.row)
-		refreshNavigationBarButtons() // If you made selected items non-consecutive, that should disable the Sort button. If you made selected items consecutive, that should enable the Sort button.
-	}
-	
-	// MARK: Moving Rows to Top
+	// MARK: - Moving Rows to Top
 	
 	@objc func moveSelectedItemsToTop() {
 		moveItemsUp(from: tableView.indexPathsForSelectedRows, to: IndexPath(row: 0, section: 0))
@@ -67,7 +60,7 @@ extension LibraryTVC {
 		refreshNavigationBarButtons()
 	}
 	
-	// MARK: Sorting
+	// MARK: - Sorting
 	
 	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTVC. They're view controllers.
 	@objc func showSortOptions() {

@@ -58,7 +58,7 @@ struct AccentColorManager {
 		)
 	}
 	
-	// MARK: Converting Between Names and Colors
+	// MARK: - Converting Between Names and Colors
 	
 	static func uiColor(forName lookedUpName: String) -> UIColor? {
 		if let (_, matchedUIColor) = accentColorTuples.first(where: { (savedName, _) in

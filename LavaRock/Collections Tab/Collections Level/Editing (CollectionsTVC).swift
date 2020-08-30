@@ -10,11 +10,7 @@ import CoreData
 
 extension CollectionsTVC {
 	
-	// MARK: Renaming
-	
-	override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-		renameCollection(at: indexPath)
-	}
+	// MARK: - Renaming
 	
 	func renameCollection(at indexPath: IndexPath) {
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false

@@ -30,14 +30,12 @@ extension Album {
 		}
 	}
 	
-	// MARK: Type Methods
+	// MARK: - Getting Stored Attributes in a Nice Format
 	
 	// mergeChangesFromAppleMusicLibrary() references this when checking for and making new Collections.
 	static func unknownAlbumArtistPlaceholder() -> String {
 		return "Unknown Artist"
 	}
-	
-	// MARK: Getting Stored Attributes in a Nice Format
 	
 	func titleFormattedOrPlaceholder() -> String {
 		if

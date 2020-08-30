@@ -10,6 +10,8 @@ import MediaPlayer
 
 extension LibraryTVC {
 	
+	// MARK: - Setup and Teardown
+	
 	func startObservingNotifications() {
 		NotificationCenter.default.addObserver(
 			self,
@@ -22,6 +24,12 @@ extension LibraryTVC {
 			name: Notification.Name.LRDidChangeAccentColor,
 			object: nil)
 	}
+	
+	func endObservingNotifications() {
+		NotificationCenter.default.removeObserver(self)
+	}
+	
+	// MARK: - Responding
 	
 	@objc func didObserve(_ notification: Notification) {
 		print("Observed notification: \(notification.name)")
@@ -44,10 +52,6 @@ extension LibraryTVC {
 	func didChangeAccentColor() {
 		guard MPMediaLibrary.authorizationStatus() != .authorized else { return }
 		tableView.reloadData()
-	}
-	
-	func endObservingNotifications() {
-		NotificationCenter.default.removeObserver(self)
 	}
 	
 }

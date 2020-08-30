@@ -10,7 +10,7 @@ import UIKit
 
 extension UITableViewController {
 	
-	// MARK: Asking About Selected IndexPaths
+	// MARK: - Asking About Selected IndexPaths
 	
 	// Returns whether a "move selected rows to top" command should be allowed on the table view.
 	// Returns true only if one or more rows are selected, and they're all in the same section.
@@ -70,7 +70,7 @@ extension UITableViewController {
 		}
 	}
 	
-	// MARK: Getting IndexPaths
+	// MARK: - Getting IndexPaths
 	
 	func indexPathsEnumeratedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
 		var result = [IndexPath]()
@@ -88,7 +88,7 @@ extension UITableViewController {
 		}
 	}
 	
-	// MARK: Getting Data Objects
+	// MARK: - Getting Data Objects
 	
 	// Takes an array of selected IndexPaths and the entire data source for your table view. Returns an array of tuples, each matching one of those IndexPaths with its corresponding data object from the data source.
 	// WARNING: Only works for IndexPaths in the same section.
@@ -113,7 +113,7 @@ extension UITableViewController {
 		return result
 	}
 	
-	// MARK: Moving Rows
+	// MARK: - Moving Rows
 	
 	// Moves the rows at the given IndexPaths into a consecutive group of rows, starting at the earliest of the given IndexPaths. Provide the rows in the order you want them to end up in.
 	// For example, if you provide [[0,5], [0,1], [0,3], [0,6]], the earliest IndexPath is [0,1]. This function moves the row that was at [0,5] to [0,1], the row that was at [0,1] to [0,2], the row that was at [0,3] to [0,3], and the row that was at [0,6] to [0,4], shifting the rows that were at [0,2] and [0,4] down to [0,5] and [0,6], respectively.

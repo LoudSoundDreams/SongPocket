@@ -9,26 +9,15 @@ import UIKit
 
 extension SongsTVC {
 	
-	// MARK: Rearranging
+	// Note: We handle rearranging in UITableViewDataSource and UITableViewDelegate methods.
 	
-	override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-		if proposedDestinationIndexPath.row < numberOfUneditableRowsAtTopOfSection {
-			return IndexPath(
-				row: numberOfUneditableRowsAtTopOfSection,
-				section: proposedDestinationIndexPath.section
-			)
-		} else {
-			return proposedDestinationIndexPath
-		}
-	}
-	
-	// MARK: Moving Rows to Top
+	// MARK: - Moving Rows to Top
 	
 	override func moveSelectedItemsToTop() {
 		moveItemsUp(from: tableView.indexPathsForSelectedRows, to: IndexPath(row: numberOfUneditableRowsAtTopOfSection, section: 0))
 	}
 	
-	// MARK: Sorting
+	// MARK: - Sorting
 	
 	// In the parent class, sortSelectedOrAllItems is split into two parts, where the first part is like this stub here, in order to allow this class to inject numberOfUneditableRowsAtTopOfSection. This is bad practice.
 	override func sortSelectedOrAllItems(sender: UIAlertAction) {

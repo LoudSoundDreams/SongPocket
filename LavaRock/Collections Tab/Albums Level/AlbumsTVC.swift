@@ -16,7 +16,7 @@ final class AlbumsTVC:
 	NavigationItemTitleCustomizer
 {
 	
-	// MARK: Properties
+	// MARK: - Properties
 	
 	// "Constants"
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
@@ -79,50 +79,6 @@ final class AlbumsTVC:
 		
 		viewDidAppear(true) // Exits this collection if it's now empty.
 	}
-	
-	// MARK: - Table View
-	
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return super.tableView(tableView, cellForRowAt: indexPath)
-		}
-		
-		// Get the data to put into the cell.
-		
-		let album = activeLibraryItems[indexPath.row] as! Album
-		let representativeItem = album.mpMediaItemCollection()?.representativeItem
-		
-		let cellTitle = album.titleFormattedOrPlaceholder()
-		let cellSubtitle = album.releaseDateEstimateFormatted()
-		
-		// Make, configure, and return the cell.
-		if let cellSubtitle = cellSubtitle {
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
-			cell.yearLabel.text = cellSubtitle
-			
-			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
-			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
-			cell.artworkImageView.image = cellImage
-			cell.titleLabel.text = cellTitle
-			if moveAlbumsClipboard != nil {
-				cell.accessoryType = .none
-			}
-			return cell
-			
-		} else { // We couldn't determine the album's release date.
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Cell Without Release Date", for: indexPath) as! AlbumCellWithoutReleaseDate
-			
-			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
-			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
-			cell.artworkImageView.image = cellImage
-			cell.titleLabel.text = cellTitle
-			if moveAlbumsClipboard != nil {
-				cell.accessoryType = .none
-			}
-			return cell
-		}
-		
-    }
 	
 	// MARK: - Events
 	

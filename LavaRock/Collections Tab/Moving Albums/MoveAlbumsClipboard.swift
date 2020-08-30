@@ -9,13 +9,13 @@ import CoreData
 
 final class MoveAlbumsClipboard { // This is a class, not a struct, because we use it to share information.
 	
-	// MARK: Properties
+	// MARK: - Properties
 	
 	let idOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID
 	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	let idsOfAlbumsNotBeingMoved: [NSManagedObjectID]
 	
-	// MARK: Methods
+	// MARK: - Methods
 	
 	init(
 		idOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID,

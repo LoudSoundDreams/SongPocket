@@ -41,6 +41,13 @@
 		07DC1B1D24F339E000AAEEDB /* Editing (LibraryTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1C24F339E000AAEEDB /* Editing (LibraryTVC).swift */; };
 		07DC1B2024F33C8C00AAEEDB /* “Moving Albums” Mode (CollectionsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* “Moving Albums” Mode (CollectionsTVC).swift */; };
 		07DC1B2324F33E0500AAEEDB /* “Moving Albums” Mode (AlbumsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* “Moving Albums” Mode (AlbumsTVC).swift */; };
+		07F36BBE24FC3CCA0064282D /* UITableViewDataSource (LibraryTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BBD24FC3CCA0064282D /* UITableViewDataSource (LibraryTVC).swift */; };
+		07F36BC024FC3D7D0064282D /* UITableViewDelegate (LibraryTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BBF24FC3D7D0064282D /* UITableViewDelegate (LibraryTVC).swift */; };
+		07F36BC224FC3F450064282D /* UITableViewDataSource (CollectionsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC124FC3F450064282D /* UITableViewDataSource (CollectionsTVC).swift */; };
+		07F36BC424FC3F850064282D /* UITableViewDelegate (CollectionsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC324FC3F850064282D /* UITableViewDelegate (CollectionsTVC).swift */; };
+		07F36BC624FC3FE40064282D /* UITableViewDataSource (AlbumsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC524FC3FE40064282D /* UITableViewDataSource (AlbumsTVC).swift */; };
+		07F36BC824FC400E0064282D /* UITableViewDataSource (SongsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC724FC400E0064282D /* UITableViewDataSource (SongsTVC).swift */; };
+		07F36BCA24FC40620064282D /* UITableViewDelegate (SongsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC924FC40620064282D /* UITableViewDelegate (SongsTVC).swift */; };
 		07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FCE63824B42EDF00F94668 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +109,13 @@
 		07DC1B1C24F339E000AAEEDB /* Editing (LibraryTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editing (LibraryTVC).swift"; sourceTree = "<group>"; };
 		07DC1B1F24F33C8C00AAEEDB /* “Moving Albums” Mode (CollectionsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "“Moving Albums” Mode (CollectionsTVC).swift"; sourceTree = "<group>"; };
 		07DC1B2224F33E0400AAEEDB /* “Moving Albums” Mode (AlbumsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "“Moving Albums” Mode (AlbumsTVC).swift"; sourceTree = "<group>"; };
+		07F36BBD24FC3CCA0064282D /* UITableViewDataSource (LibraryTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource (LibraryTVC).swift"; sourceTree = "<group>"; };
+		07F36BBF24FC3D7D0064282D /* UITableViewDelegate (LibraryTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDelegate (LibraryTVC).swift"; sourceTree = "<group>"; };
+		07F36BC124FC3F450064282D /* UITableViewDataSource (CollectionsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource (CollectionsTVC).swift"; sourceTree = "<group>"; };
+		07F36BC324FC3F850064282D /* UITableViewDelegate (CollectionsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDelegate (CollectionsTVC).swift"; sourceTree = "<group>"; };
+		07F36BC524FC3FE40064282D /* UITableViewDataSource (AlbumsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource (AlbumsTVC).swift"; sourceTree = "<group>"; };
+		07F36BC724FC400E0064282D /* UITableViewDataSource (SongsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource (SongsTVC).swift"; sourceTree = "<group>"; };
+		07F36BC924FC40620064282D /* UITableViewDelegate (SongsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDelegate (SongsTVC).swift"; sourceTree = "<group>"; };
 		07FCE63824B42EDF00F94668 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
+				07F36BC724FC400E0064282D /* UITableViewDataSource (SongsTVC).swift */,
+				07F36BC924FC40620064282D /* UITableViewDelegate (SongsTVC).swift */,
 				070E194324F340E000B21307 /* Editing (SongsTVC).swift */,
 				073CDBF224B82BBB00F6D2B1 /* Views (Songs Level).swift */,
 			);
@@ -163,6 +179,8 @@
 			isa = PBXGroup;
 			children = (
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
+				07F36BBD24FC3CCA0064282D /* UITableViewDataSource (LibraryTVC).swift */,
+				07F36BBF24FC3D7D0064282D /* UITableViewDelegate (LibraryTVC).swift */,
 				07DC1B1C24F339E000AAEEDB /* Editing (LibraryTVC).swift */,
 				077E089724FB7AFE007C2479 /* Notifications (LibraryTVC).swift */,
 			);
@@ -260,9 +278,11 @@
 			isa = PBXGroup;
 			children = (
 				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
+				07F36BC124FC3F450064282D /* UITableViewDataSource (CollectionsTVC).swift */,
+				07F36BC324FC3F850064282D /* UITableViewDelegate (CollectionsTVC).swift */,
+				0767166B24F6446B00762A44 /* After Merge from Apple Music Library (CollectionsTVC).swift */,
 				070E194024F33FC800B21307 /* Editing (CollectionsTVC).swift */,
 				07DC1B1F24F33C8C00AAEEDB /* “Moving Albums” Mode (CollectionsTVC).swift */,
-				0767166B24F6446B00762A44 /* After Merge from Apple Music Library (CollectionsTVC).swift */,
 			);
 			path = "Collections Level";
 			sourceTree = "<group>";
@@ -271,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
+				07F36BC524FC3FE40064282D /* UITableViewDataSource (AlbumsTVC).swift */,
 				07DC1B2224F33E0400AAEEDB /* “Moving Albums” Mode (AlbumsTVC).swift */,
 				0736E3A624B8415400A15420 /* Views (Albums Level).swift */,
 			);
@@ -435,18 +456,25 @@
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* Merge from Apple Music Library.swift in Sources */,
 				079B2C9524E227BF00A949FA /* MediaPlayerManager.swift in Sources */,
+				07F36BC624FC3FE40064282D /* UITableViewDataSource (AlbumsTVC).swift in Sources */,
+				07F36BC024FC3D7D0064282D /* UITableViewDelegate (LibraryTVC).swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Views (Songs Level).swift in Sources */,
+				07F36BC224FC3F450064282D /* UITableViewDataSource (CollectionsTVC).swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
+				07F36BBE24FC3CCA0064282D /* UITableViewDataSource (LibraryTVC).swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
 				07CAB24724EA227F008AC34C /* extension Song.swift in Sources */,
 				07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
+				07F36BC424FC3F850064282D /* UITableViewDelegate (CollectionsTVC).swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
+				07F36BCA24FC40620064282D /* UITableViewDelegate (SongsTVC).swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */,
 				07BF46D624EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift in Sources */,
 				070E194124F33FC800B21307 /* Editing (CollectionsTVC).swift in Sources */,
+				07F36BC824FC400E0064282D /* UITableViewDataSource (SongsTVC).swift in Sources */,
 				073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */,
 				07DC1B1A24F20C9E00AAEEDB /* extension NSManagedObjectContext.swift in Sources */,
 			);
