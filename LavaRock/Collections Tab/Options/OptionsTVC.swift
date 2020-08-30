@@ -64,7 +64,7 @@ final class OptionsTVC: UITableViewController {
 			return
 		}
 		
-		AccentColorManager.tryToSetAndSaveAccentColor(rowColorName, inWindow: view.window)
+		AccentColorManager.tryToSetAndSaveAccentColor(rowColorName, in: view.window)
 		tableView.reloadData()
 		dismiss(animated: true, completion: nil)
 	}

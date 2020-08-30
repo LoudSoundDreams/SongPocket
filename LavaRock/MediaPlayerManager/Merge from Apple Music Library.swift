@@ -9,6 +9,10 @@ import UIKit
 import CoreData
 import MediaPlayer
 
+extension Notification.Name {
+	static let LRDidMergeChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager has merged changes from the Apple Music library into the Core Data store. Objects that depend on either of those should observe this notification, and respond appropriately at this point.")
+}
+
 extension MediaPlayerManager {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.

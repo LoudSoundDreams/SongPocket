@@ -70,12 +70,7 @@ class LibraryTVC: UITableViewController {
 		
 		setUpUI()
 		loadSavedLibraryItems()
-		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(didObserve(_:)),
-			name: Notification.Name.LRDidMergeChangesFromAppleMusicLibrary,
-			object: nil)
+		startObservingNotifications()
 	}
 	
 	func setUpUI() {
@@ -101,7 +96,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Teardown
 	
 	deinit {
-		NotificationCenter.default.removeObserver(self)
+		endObservingNotifications()
 	}
 	
 	// MARK: - Table View
@@ -153,22 +148,6 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	// MARK: - Events
-	
-	@objc func didObserve(_ notification: Notification) {
-		print("Observed notification: \(notification.name)")
-		switch notification.name {
-		case .LRDidMergeChangesFromAppleMusicLibrary:
-			didMergeFromAppleMusicLibrary(notification)
-		default:
-			print("… but the app is not set to do anything after observing that notification.")
-		}
-	}
-	
-	@objc func didMergeFromAppleMusicLibrary(_ notification: Notification) {
-		print("The class “\(Self.self)” should override didMergeFromAppleMusicLibrary(). We would call it at this point.")
-//		loadSavedLibraryItems()
-//		tableView.reloadData()
-	}
 	
 	func refreshNavigationBarButtons() {
 		if

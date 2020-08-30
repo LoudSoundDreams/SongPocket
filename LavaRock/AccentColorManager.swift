@@ -7,6 +7,10 @@
 
 import UIKit
 
+extension Notification.Name {
+	static let LRDidChangeAccentColor = Notification.Name("AccentColorManager has changed some UIWindow's tintColor. If you find views that don't automatically reflect this change, make their controllers observe this notification and update those views at this point.")
+}
+
 struct AccentColorManager {
 	
 	// MARK: - Properties
@@ -26,25 +30,31 @@ struct AccentColorManager {
 	
 	// MARK: - Setting and Restoring
 	
-	static func restoreOrResetAccentColor(inWindow window: UIWindow) {
+	static func tryToRestoreAccentColor(in window: UIWindow?) {
 		// If there's a saved preference, set it.
-		if
-			let savedColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String,
-			let matchedUIColor = Self.uiColor(forName: savedColorName)
-		{
-			window.tintColor = matchedUIColor // What if you have multiple windows open on an iPad?
+		if let savedColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String {
+			Self.tryToSetAccentColorAndPostNotification(savedColorName, in: window)
 			
 		} else { // Either there was no saved preference, or there was one but it didn't correspond to any UIColor in AccentColorManager. Set and save the default accent color.
-			Self.tryToSetAndSaveAccentColor("Blueberry", inWindow: window) // You need to have a tuple for this color in accentColorTuples.
+			Self.tryToSetAndSaveAccentColor("Blueberry", in: window) // You need to have a tuple for this color in accentColorTuples.
 		}
 	}
 	
-	static func tryToSetAndSaveAccentColor(_ colorName: String, inWindow window: UIWindow?) {
-		guard let uiColor = Self.uiColor(forName: colorName) else { return }
-		window?.tintColor = uiColor
+	static func tryToSetAndSaveAccentColor(_ colorName: String, in window: UIWindow?) {
+		Self.tryToSetAccentColorAndPostNotification(colorName, in: window)
+		
 		DispatchQueue.global().async { // A tester provided a screen recording of lag sometimes between selecting a row and the sheet dismissing. They reported that this line of code fixed it. iPhone SE (2nd generation), iOS 13.5.1
 			UserDefaults.standard.set(colorName, forKey: "accentColorName")
 		}
+	}
+	
+	private static func tryToSetAccentColorAndPostNotification(_ colorName: String, in window: UIWindow?) {
+		guard let uiColor = Self.uiColor(forName: colorName) else { return }
+		
+		window?.tintColor = uiColor // What if you have multiple windows open on an iPad?
+		NotificationCenter.default.post(
+			Notification(name: Notification.Name.LRDidChangeAccentColor)
+		)
 	}
 	
 	// MARK: Converting Between Names and Colors
