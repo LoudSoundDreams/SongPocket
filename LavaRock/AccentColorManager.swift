@@ -9,7 +9,7 @@ import UIKit
 
 struct AccentColorManager {
 	
-	// MARK: Properties
+	// MARK: - Properties
 	
 	static let accentColorTuples = [
 		("Strawberry", UIColor.systemPink), // "Magenta"
@@ -24,36 +24,30 @@ struct AccentColorManager {
 //		("None", UIColor.label),
 	]
 	
-	// MARK: Methods
+	// MARK: - Setting and Restoring
 	
-	static func setAccentColor(_ window: UIWindow) {
-		
-		// If there's a saved accent color preference, set it.
+	static func restoreOrResetAccentColor(inWindow window: UIWindow) {
+		// If there's a saved preference, set it.
 		if
-			let savedAccentColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String,
-			let matchedAccentColor = Self.uiColor(forName: savedAccentColorName)
+			let savedColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String,
+			let matchedUIColor = Self.uiColor(forName: savedColorName)
 		{
-			window.tintColor = matchedAccentColor // What if you have multiple windows open on an iPad?
-
-		} else { // Otherwise, either there was no saved preference, or there was one but it didn't correspond to any UIColor in AccentColorManager. Set and save the default accent color.
+			window.tintColor = matchedUIColor // What if you have multiple windows open on an iPad?
 			
-			window.tintColor = UIColor.systemBlue // You need to have a tuple for this in accentColorTuples.
-			if let defaultAccentColorName = Self.colorName(forUIColor: window.tintColor) {
-				DispatchQueue.global().async {
-					UserDefaults.standard.setValue(defaultAccentColorName, forKey: "accentColorName")
-				}
-			}
-			
+		} else { // Either there was no saved preference, or there was one but it didn't correspond to any UIColor in AccentColorManager. Set and save the default accent color.
+			Self.tryToSetAndSaveAccentColor("Blueberry", inWindow: window) // You need to have a tuple for this color in accentColorTuples.
 		}
-		
 	}
 	
-//	static func setAccentColor(_ window: UIWindow) {
-//		window.tintColor = UIColor(named: "IfDarkThenOrangeElseBlue")
-//		DispatchQueue.global().async {
-//			UserDefaults.standard.setValue("IfDarkThenOrangeElseBlue", forKey: "accentColorName")
-//		}
-//	}
+	static func tryToSetAndSaveAccentColor(_ colorName: String, inWindow window: UIWindow?) {
+		guard let uiColor = Self.uiColor(forName: colorName) else { return }
+		window?.tintColor = uiColor
+		DispatchQueue.global().async { // A tester provided a screen recording of lag sometimes between selecting a row and the sheet dismissing. They reported that this line of code fixed it. iPhone SE (2nd generation), iOS 13.5.1
+			UserDefaults.standard.set(colorName, forKey: "accentColorName")
+		}
+	}
+	
+	// MARK: Converting Between Names and Colors
 	
 	static func uiColor(forName lookedUpName: String) -> UIColor? {
 		if let (_, matchedUIColor) = accentColorTuples.first(where: { (savedName, _) in

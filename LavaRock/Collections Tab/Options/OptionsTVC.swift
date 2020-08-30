@@ -9,7 +9,7 @@ import UIKit
 
 final class OptionsTVC: UITableViewController {
 	
-	// MARK: Data Source
+	// MARK: - Table View Data Source
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return AccentColorManager.accentColorTuples.count
@@ -56,21 +56,15 @@ final class OptionsTVC: UITableViewController {
 		return cell
 	}
 	
-	// MARK: Events
+	// MARK: - Events
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard
-			let rowColorName = AccentColorManager.colorName(forIndex: indexPath.row),
-			let rowUIColor = AccentColorManager.uiColor(forIndex: indexPath.row)
-		else {
+		guard let rowColorName = AccentColorManager.colorName(forIndex: indexPath.row) else {
 			tableView.deselectRow(at: indexPath, animated: true)
 			return
 		}
 		
-		view.window?.tintColor = rowUIColor
-		DispatchQueue.global().async { // A tester provided a screen recording of lag sometimes between selecting a row and the sheet dismissing. They reported that this line of code fixed it. iPhone SE (2nd generation), iOS 13.5.1
-			UserDefaults.standard.set(rowColorName, forKey: "accentColorName")
-		}
+		AccentColorManager.tryToSetAndSaveAccentColor(rowColorName, inWindow: view.window)
 		tableView.reloadData()
 		dismiss(animated: true, completion: nil)
 	}
