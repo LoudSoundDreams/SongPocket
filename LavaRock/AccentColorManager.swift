@@ -8,7 +8,7 @@
 import UIKit
 
 extension Notification.Name {
-	static let LRDidChangeAccentColor = Notification.Name("AccentColorManager has changed some UIWindow's tintColor. If you find views that don't automatically reflect this change, make their controllers observe this notification and update those views at this point.")
+	static let LRDidChangeAccentColor = Notification.Name("AccentColorManager has changed some UIWindow’s tintColor. If you find views that don’t automatically reflect this change, make their controllers observe this notification and update those views at this point.")
 }
 
 struct AccentColorManager {

@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import SwiftUI
 import MediaPlayer
 
 class LibraryTVC: UITableViewController {
@@ -124,11 +123,11 @@ class LibraryTVC: UITableViewController {
 		dismiss(animated: true, completion: nil)
 	}
 	
+	// MARK: Navigation
+	
 	override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
 		return !isEditing
 	}
-	
-	// MARK: Navigation
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if

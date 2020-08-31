@@ -10,7 +10,7 @@ import CoreData
 import MediaPlayer
 
 extension Notification.Name {
-	static let LRDidMergeChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager has merged changes from the Apple Music library into the Core Data store. Objects that depend on either of those should observe this notification, and respond appropriately at this point.")
+	static let LRDidMergeChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager has merged changes from the Apple Music library. Objects that depend on either of those should observe this notification, and respond appropriately at this point.") // Merged into where? The persistent store and/or which managed object context?
 }
 
 extension MediaPlayerManager {
