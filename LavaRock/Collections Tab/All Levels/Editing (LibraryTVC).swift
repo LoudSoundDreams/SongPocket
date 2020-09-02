@@ -24,7 +24,59 @@ extension LibraryTVC {
 		tableView.performBatchUpdates(nil, completion: nil)
 	}
 	
-	// Note: We handle rearranging in the UITableViewDataSource method tableView(_:moveRowAt:to:).
+	// MARK: Rearranging
+	
+	// TO DO: Move this to the UITableViewDataSource extension.
+	
+	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+		let itemBeingMoved = activeLibraryItems[fromIndexPath.row]
+		activeLibraryItems.remove(at: fromIndexPath.row)
+		activeLibraryItems.insert(itemBeingMoved, at: to.row)
+		
+		/*
+		// Begin NSFetchedResultsController-based implementation.
+		
+		guard
+			fromIndexPath != to,
+			fromIndexPath.section == to.section
+		else { return }
+		
+		isUserCurrentlyMovingRowManually = true
+		
+		// If you intersperse fetchedResultsController.object(at: indexPath) with edits to managed objects, you'll mess up the indexes of the objects while you're trying to get the objects. Therefore, you should get all the objects you need at once, then edit them all at once.
+		
+		let itemThatTheUserIsMoving = fetchedResultsController!.object(at: fromIndexPath)
+		var itemsThatWillBeDisplaced = [NSManagedObject]()
+		let isUserMovingRowDownward = fromIndexPath < to
+		if isUserMovingRowDownward { // If the user is moving a row downward.
+			for indexPath in indexPathsEnumeratedIn(section: to.section, firstRow: fromIndexPath.row, lastRow: to.row) {
+				itemsThatWillBeDisplaced.append(fetchedResultsController!.object(at: indexPath))
+			}
+			for item in itemsThatWillBeDisplaced {
+				let oldIndex = item.value(forKey: "index") as! Int
+				item.setValue(oldIndex - 1, forKey: "index")
+				print("Displaced \(item) from row \(oldIndex) to row \(String(describing: item.value(forKey: "index"))).")
+			}
+		} else { // The user is moving a row upward.
+			for indexPath in indexPathsEnumeratedIn(section: to.section, firstRow: to.row, lastRow: fromIndexPath.row) {
+				itemsThatWillBeDisplaced.append(fetchedResultsController!.object(at: indexPath))
+			}
+			for item in itemsThatWillBeDisplaced {
+				let oldIndex = item.value(forKey: "index") as! Int
+				item.setValue(oldIndex + 1, forKey: "index")
+				print("Displaced \(item) from row \(oldIndex) to row \(String(describing: item.value(forKey: "index"))).")
+			}
+		}
+		itemThatTheUserIsMoving.setValue(to.row, forKey: "index")
+		print("Moved \(itemThatTheUserIsMoving) to row \(String(describing: itemThatTheUserIsMoving.value(forKey: "index"))).")
+		
+		isUserCurrentlyMovingRowManually = false
+		
+		// End NSFetchedResultsController-based implementation.
+		*/
+		
+		refreshNavigationBarButtons() // If you made selected items non-consecutive, that should disable the Sort button. If you made selected items consecutive, that should enable the Sort button.
+	}
 	
 	// MARK: - Moving Rows to Top
 	
