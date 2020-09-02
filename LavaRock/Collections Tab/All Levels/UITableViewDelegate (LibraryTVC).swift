@@ -44,10 +44,10 @@ extension LibraryTVC {
 		case 0:
 			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
 		case 1:
-			tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
+			tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
 		default:
 			tableView.performBatchUpdates({
-				tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
+				tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
 				tableView.insertRows(at: indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
 			}, completion: nil)
 		}
