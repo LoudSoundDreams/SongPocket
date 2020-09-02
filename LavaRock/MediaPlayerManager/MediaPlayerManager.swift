@@ -9,7 +9,7 @@ import MediaPlayer
 import CoreData
 
 extension Notification.Name {
-	static let LRDidMergeChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager has merged changes from the Apple Music library into the Core Data store. Objects that depend on either of those should observe this notification, and respond appropriately at this point.")
+	static let LRWillSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager is about to save changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and the next NSManagedObjectContextDidSave notification, and respond appropriately.")
 }
 
 class MediaPlayerManager {
@@ -20,6 +20,9 @@ class MediaPlayerManager {
 	static var playerController: MPMusicPlayerController!//?
 	private var library: MPMediaLibrary?
 	lazy var mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	
+	// Variables
+	var shouldNextMergeBeSynchronous = false
 	
 	// MARK: - Setup and Teardown
 	
@@ -83,15 +86,10 @@ class MediaPlayerManager {
 			.MPMusicPlayerControllerPlaybackStateDidChange, // Update toolbar buttons
 			.MPMusicPlayerControllerNowPlayingItemDidChange // Update current song. if it's not in the list, don't highlight any song
 		:
-			break
-			// Update UI
-		case
-//			UIApplication.didBecomeActiveNotification,
-			.MPMediaLibraryDidChange // Update toolbar buttons, curr
-		// Doesn't seem to notify us when items are deleted
-		:
+			break //
+		case .MPMediaLibraryDidChange:
 			print("We should merge changes from the Apple Music library at this point.")
-//			mergeChangesFromAppleMusicLibrary()
+			mergeChangesFromAppleMusicLibrary()
 		default:
 			print("… but the app is not set to do anything after observing that notification.")
 		}

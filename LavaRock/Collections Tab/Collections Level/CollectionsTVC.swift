@@ -34,7 +34,7 @@ final class CollectionsTVC:
 	override func viewDidLoad() {
 		if moveAlbumsClipboard != nil {
 		} else {
-			mediaPlayerManager.setUpLibraryIfAuthorized() // This is the kickoff point for starting up Apple Music library integration.
+			mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
 			// This needs to happen before loadSavedLibraryItems, because it includes merging changes from the Apple Music library.
 		}
 		
@@ -112,7 +112,12 @@ final class CollectionsTVC:
 		}
 		
 		// Get the data to put into the cell.
+//		guard let collection = fetchedResultsController?.object(at: indexPath) as? Collection else {
+//			return UITableViewCell()
+//		}
 		let collection = activeLibraryItems[indexPath.row] as! Collection
+		
+//		print("According to our records, the collection “\(collection.title)” should be at row index \(collection.index); we're making a cell for it at row index \(indexPath.row)")
 		
 		// Make, configure, and return the cell.
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
@@ -144,6 +149,27 @@ final class CollectionsTVC:
 	}
 	
 	// MARK: - Events
+	
+	override func managedObjectContextDidSave(_ notification: Notification) {
+		guard shouldRespondToNextManagedObjectContextDidSaveNotification else { return }
+		shouldRespondToNextManagedObjectContextDidSaveNotification = false
+		
+		let changeTypes = [NSUpdatedObjectsKey, NSInsertedObjectsKey, NSDeletedObjectsKey]
+		for changeType in changeTypes {
+			if let updatedObjects = notification.userInfo?[changeType] as? Set<NSManagedObject> {
+				var updatedCollections = [Collection]()
+				for object in updatedObjects {
+					if let collection = object as? Collection {
+						updatedCollections.append(collection)
+						print("The collection “\(String(describing: collection.title))” should be updated with change type “\(changeType)” at index \(collection.index).")
+					}
+				}
+				print("We need to update \(updatedCollections.count) collections with change type “\(changeType)”.")
+			}
+		}
+	}
+	
+	
 	
 	func deleteCollectionIfEmpty(at index: Int) {
 		guard

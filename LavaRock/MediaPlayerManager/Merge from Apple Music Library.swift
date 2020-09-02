@@ -19,126 +19,131 @@ extension MediaPlayerManager {
 			var queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
-//		let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-//		managedObjectContext.parent = mainManagedObjectContext
-//
-//		managedObjectContext.performAndWait {
+		var managedObjectContext = mainManagedObjectContext
+		if !shouldNextMergeBeSynchronous {
+			shouldNextMergeBeSynchronous = false
+			let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+			childManagedObjectContext.parent = mainManagedObjectContext
+			managedObjectContext = childManagedObjectContext
+		}
 		
-		let managedObjectContext = mainManagedObjectContext
-		
-		let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
-		// Order doesn't matter, because this will end up being the array of songs to be deleted.
-		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
-		let wasAppDatabaseEmptyBeforeMerge = savedSongs.count == 0
-		
-		// Find out which of our saved Songs we need to delete, and which we need to potentially update.
-		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
-		var potentiallyModifiedSongObjectIDs = [NSManagedObjectID]()
-		var potentiallyModifiedMediaItems = [MPMediaItem]()
-		var objectIDsOfSongsToDelete = [NSManagedObjectID]()
-		for savedSong in savedSongs {
-			if let indexOfPotentiallyModifiedMediaItem = queriedMediaItems.firstIndex(where: { queriedMediaItem in
-				savedSong.persistentID == Int64(bitPattern: queriedMediaItem.persistentID)
-			}) {
-				potentiallyModifiedSongObjectIDs.append(savedSong.objectID)
-				let potentiallyModifiedMediaItem = queriedMediaItems[indexOfPotentiallyModifiedMediaItem]
-				potentiallyModifiedMediaItems.append(potentiallyModifiedMediaItem)
-				queriedMediaItems.remove(at: indexOfPotentiallyModifiedMediaItem)
-				
-			} else {
-				objectIDsOfSongsToDelete.append(savedSong.objectID)
+		managedObjectContext.performAndWait {
+			
+			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
+			// Order doesn't matter, because this will end up being the array of songs to be deleted.
+			let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
+			let wasAppDatabaseEmptyBeforeMerge = savedSongs.count == 0
+			
+			// Find out which of our saved Songs we need to delete, and which we need to potentially update.
+			// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
+			var potentiallyModifiedSongObjectIDs = [NSManagedObjectID]()
+			var potentiallyModifiedMediaItems = [MPMediaItem]()
+			var objectIDsOfSongsToDelete = [NSManagedObjectID]()
+			for savedSong in savedSongs {
+				if let indexOfPotentiallyModifiedMediaItem = queriedMediaItems.firstIndex(where: { queriedMediaItem in
+					savedSong.persistentID == Int64(bitPattern: queriedMediaItem.persistentID)
+				}) {
+					potentiallyModifiedSongObjectIDs.append(savedSong.objectID)
+					let potentiallyModifiedMediaItem = queriedMediaItems[indexOfPotentiallyModifiedMediaItem]
+					potentiallyModifiedMediaItems.append(potentiallyModifiedMediaItem)
+					queriedMediaItems.remove(at: indexOfPotentiallyModifiedMediaItem)
+					
+				} else {
+					objectIDsOfSongsToDelete.append(savedSong.objectID)
+				}
 			}
-		}
-		// queriedMediaItems now holds the MPMediaItems that we don't have records of.
-		let newMediaItems = queriedMediaItems
-		
-		//		print("")
-		//		print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
-		//		for item in potentiallyModifiedMediaItems {
-		//			print("")
-		//			print("\(String(describing: item.albumTitle)): \(item.albumPersistentID)")
-		//			print("\(String(describing: item.title)): \(item.persistentID)")
-		//		}
-		//		print("")
-		//		print("Added songs: \(newMediaItems.count)")
-		//		for item in newMediaItems {
-		//			print("")
-		//			print("\(String(describing: item.albumTitle)): \(item.albumPersistentID)")
-		//			print("\(String(describing: item.title)): \(item.persistentID)")
-		//		}
-		//		print("")
-		//		print("Deleted songs: \(objectIDsOfSongsToDelete.count)")
-		
-		updateManagedObjects( // Update before creating and deleting, so that we can put new songs above modified songs (easily).
-			// This might make new albums, but not new collections.
-			// Also, this might leave behind "hollow" updated albums, which have no songs in them because they were all moved to other albums; but we won't delete those "hollow" albums, so that if the user also added other songs to that "hollow" album, we can keep that album in the same place, instead of re-adding it to the top.
-			forSongsWith: potentiallyModifiedSongObjectIDs,
-			toMatch: potentiallyModifiedMediaItems,
-			in: managedObjectContext)
-		createManagedObjects( // Create before deleting, because deleting also cleans up empty albums and collections, and we don't want to do that yet, because of what we mentioned above.
-			// This might make new albums, and if it does, it might make new collections.
-			for: newMediaItems,
-			isAppDatabaseEmpty: wasAppDatabaseEmptyBeforeMerge,
-			in: managedObjectContext)
-		deleteManagedObjects(
-			forSongsWith: objectIDsOfSongsToDelete,
-			in: managedObjectContext)
-		
-		// Then, some cleanup.
-		
-		var collectionIDs = [NSManagedObjectID]()
-		let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
-		// Order doesn't matter.
-		let allCollections = managedObjectContext.objectsFetched(for: collectionsFetchRequest) as! [Collection]
-		for collection in allCollections {
-			collectionIDs.append(collection.objectID)
-		}
-		
-		var albumIDs = [NSManagedObjectID]()
-		let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
-		// Order doesn't matter.
-		let allAlbums = managedObjectContext.objectsFetched(for: albumsFetchRequest) as! [Album]
-		for album in allAlbums {
-			albumIDs.append(album.objectID)
-		}
-		
-		//			var songIDs = [NSManagedObjectID]()
-		//			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
-		//			// Order doesn't matter.
-		//			let allSongs = coreDataManager.objectsFetched(for: songsFetchRequest) as! [Song]
-		//			for song in allSongs {
-		//				songIDs.append(song.objectID)
-		//			}
-		
-		recalculateReleaseDateEstimatesFor(
-			albumsWithObjectIDs: albumIDs,
-			in: managedObjectContext)
-		
-		if wasAppDatabaseEmptyBeforeMerge {
+			// queriedMediaItems now holds the MPMediaItems that we don't have records of.
+			let newMediaItems = queriedMediaItems
 			
-			//						inCollectionsWith collectionIDs: [NSManagedObjectID]
-			// TO DO:
-			// Take out the fetch above for albums.
-			// New modus operandi: within each collection, recalculate the release date estimates of all the albums, then sort them from newest to oldest by those new estimates.
+			/*
+			print("")
+			print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
+			for item in potentiallyModifiedMediaItems {
+				print("")
+				print("\(String(describing: item.albumTitle)): \(item.albumPersistentID)")
+				print("\(String(describing: item.title)): \(item.persistentID)")
+			}
+			print("")
+			print("Added songs: \(newMediaItems.count)")
+			for item in newMediaItems {
+				print("")
+				print("\(String(describing: item.albumTitle)): \(item.albumPersistentID)")
+				print("\(String(describing: item.title)): \(item.persistentID)")
+			}
+			print("")
+			print("Deleted songs: \(objectIDsOfSongsToDelete.count)")
+			*/
 			
-			//			for collectionID in collectionIDs {
-			//
-			//			}
-			
-			reindexAlbumsWithinEachCollectionByNewestFirst(
-				objectIDsOfCollections: collectionIDs,
+			updateManagedObjects( // Update before creating and deleting, so that we can put new songs above modified songs (easily).
+				// This might make new albums, but not new collections.
+				// Also, this might leave behind "hollow" updated albums, which have no songs in them because they were all moved to other albums; but we won't delete those "hollow" albums, so that if the user also added other songs to that "hollow" album, we can keep that album in the same place, instead of re-adding it to the top.
+				forSongsWith: potentiallyModifiedSongObjectIDs,
+				toMatch: potentiallyModifiedMediaItems,
 				in: managedObjectContext)
+			createManagedObjects( // Create before deleting, because deleting also cleans up empty albums and collections, and we don't want to do that yet, because of what we mentioned above.
+				// This might make new albums, and if it does, it might make new collections.
+				for: newMediaItems,
+				isAppDatabaseEmpty: wasAppDatabaseEmptyBeforeMerge,
+				in: managedObjectContext)
+			deleteManagedObjects(
+				forSongsWith: objectIDsOfSongsToDelete,
+				in: managedObjectContext)
+			
+			// Then, some cleanup.
+			
+			var collectionIDs = [NSManagedObjectID]()
+			let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+			// Order doesn't matter.
+			let allCollections = managedObjectContext.objectsFetched(for: collectionsFetchRequest) as! [Collection]
+			for collection in allCollections {
+				collectionIDs.append(collection.objectID)
+			}
+			
+			var albumIDs = [NSManagedObjectID]()
+			let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
+			// Order doesn't matter.
+			let allAlbums = managedObjectContext.objectsFetched(for: albumsFetchRequest) as! [Album]
+			for album in allAlbums {
+				albumIDs.append(album.objectID)
+			}
+			
+			/*
+			var songIDs = [NSManagedObjectID]()
+			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
+			// Order doesn't matter.
+			let allSongs = coreDataManager.objectsFetched(for: songsFetchRequest) as! [Song]
+			for song in allSongs {
+				songIDs.append(song.objectID)
+			}
+			*/
+			
+			recalculateReleaseDateEstimatesFor(
+				albumsWithObjectIDs: albumIDs,
+				in: managedObjectContext)
+			
+			if wasAppDatabaseEmptyBeforeMerge {
+				
+				//						inCollectionsWith collectionIDs: [NSManagedObjectID]
+				// TO DO:
+				// Take out the fetch above for albums.
+				// New modus operandi: within each collection, recalculate the release date estimates of all the albums, then sort them from newest to oldest by those new estimates.
+				
+				//			for collectionID in collectionIDs {
+				//
+				//			}
+				
+				reindexAlbumsWithinEachCollectionByNewestFirst(
+					objectIDsOfCollections: collectionIDs,
+					in: managedObjectContext)
+			}
+			
 		}
 		
-		//		}
-		
-		managedObjectContext.tryToSave()
-		DispatchQueue.main.async {
-//			managedObjectContext.parent!.tryToSave()
-			NotificationCenter.default.post( // Notifications are dealt with on the thread you post them in, so post this notification on the main thread.
-				Notification(name: Notification.Name.LRDidMergeChangesFromAppleMusicLibrary)
-			)
-		}
+		NotificationCenter.default.post(
+			Notification(name: Notification.Name.LRWillSaveChangesFromAppleMusicLibrary)
+		)
+		managedObjectContext.tryToSave() // As of iOS 14.0 beta 6, for some reason, this posts multiple NSManagedObjectContextDidSave notifications with the same userInfo.
+		managedObjectContext.parent?.tryToSave()
 	}
 	
 	// MARK: - Update Managed Objects

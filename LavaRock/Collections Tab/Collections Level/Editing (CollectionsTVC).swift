@@ -29,6 +29,9 @@ extension CollectionsTVC {
 			textField.smartDashesType = .yes
 			
 			// UITextField
+//			guard let collection = self.fetchedResultsController?.object(at: indexPath) as? Collection else {
+//				return
+//			}
 			let collection = self.activeLibraryItems[indexPath.row] as! Collection
 			textField.text = collection.title
 			textField.placeholder = "Title"
@@ -41,6 +44,9 @@ extension CollectionsTVC {
 				newTitle = Self.defaultCollectionTitle
 			}
 			
+//			guard let collection = self.fetchedResultsController?.object(at: indexPath) as? Collection else {
+//				return
+//			}
 			let collection = self.activeLibraryItems[indexPath.row] as! Collection
 			collection.title = newTitle
 			self.managedObjectContext.tryToSave()

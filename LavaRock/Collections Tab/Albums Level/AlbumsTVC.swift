@@ -65,6 +65,7 @@ final class AlbumsTVC:
 		
 		if moveAlbumsClipboard != nil {
 		} else {
+//			if fetchedResultsController?.fetchedObjects?.count == 0 {
 			if activeLibraryItems.isEmpty {
 				performSegue(withIdentifier: "Exit Empty Collection", sender: nil)
 			}
@@ -89,6 +90,9 @@ final class AlbumsTVC:
 		
 		// Get the data to put into the cell.
 		
+//		guard let album = fetchedResultsController?.object(at: indexPath) as? Album else {
+//			return UITableViewCell()
+//		}
 		let album = activeLibraryItems[indexPath.row] as! Album
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		

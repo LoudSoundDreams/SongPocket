@@ -85,6 +85,10 @@ final class SongsTVC:
 	
 	// MARK: - Table View
 	
+//	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//		return super.tableView(tableView, numberOfRowsInSection: section) + numberOfUneditableRowsAtTopOfSection
+//	}
+	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return super.tableView(tableView, cellForRowAt: indexPath)
@@ -125,6 +129,11 @@ final class SongsTVC:
 		} else {
 			
 			// Get the data to put into the cell.
+//			guard let song = fetchedResultsController?.object(
+//					at: IndexPath(row: indexPath.row - numberOfUneditableRowsAtTopOfSection, section: indexPath.section)
+//			) as? Song else {
+//				return UITableViewCell()
+//			}
 			let song = activeLibraryItems[indexPath.row] as! Song
 			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 			let cellTitle = song.titleFormattedOrPlaceholder()
@@ -161,9 +170,12 @@ final class SongsTVC:
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		super.tableView(tableView, didSelectRowAt: indexPath)
+		super.tableView(tableView, didSelectRowAt: indexPath) // Why do we need this?
 		
 		if !isEditing {
+//			guard let song = fetchedResultsController?.object(at: indexPath) as? Song else {
+//				return
+//			}
 			let song = activeLibraryItems[indexPath.row] as! Song
 			showSongActions(for: song)
 			// The row should stay selected while the action sheet is onscreen.
