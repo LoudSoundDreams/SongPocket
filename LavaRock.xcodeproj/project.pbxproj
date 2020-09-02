@@ -18,6 +18,7 @@
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Views (Songs Level).swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Views (Songs Level).swift */; };
 		07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07551BC324CFDFDD002D1B15 /* OptionsView.swift */; };
+		0755872B24FF6410002DB763 /* Notifications (CollectionsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755872A24FF6410002DB763 /* Notifications (CollectionsTVC).swift */; };
 		0765170224DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
 		0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308A24B42DEC0033E3CC /* SceneDelegate.swift */; };
@@ -79,6 +80,7 @@
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Views (Songs Level).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views (Songs Level).swift"; sourceTree = "<group>"; };
 		07551BC324CFDFDD002D1B15 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
+		0755872A24FF6410002DB763 /* Notifications (CollectionsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications (CollectionsTVC).swift"; sourceTree = "<group>"; };
 		0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedAlbumsToNewCollectionDetector.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768308824B42DEC0033E3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -278,8 +280,8 @@
 				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
 				07F36BC124FC3F450064282D /* UITableViewDataSource (CollectionsTVC).swift */,
 				07F36BC324FC3F850064282D /* UITableViewDelegate (CollectionsTVC).swift */,
-				0767166B24F6446B00762A44 /* After Merge from Apple Music Library (CollectionsTVC).swift */,
 				070E194024F33FC800B21307 /* Editing (CollectionsTVC).swift */,
+				0755872A24FF6410002DB763 /* Notifications (CollectionsTVC).swift */,
 				07DC1B1F24F33C8C00AAEEDB /* “Moving Albums” Mode (CollectionsTVC).swift */,
 			);
 			path = "Collections Level";
@@ -455,6 +457,7 @@
 				079B2C9524E227BF00A949FA /* MediaPlayerManager.swift in Sources */,
 				07F36BC624FC3FE40064282D /* UITableViewDataSource (AlbumsTVC).swift in Sources */,
 				07F36BC024FC3D7D0064282D /* UITableViewDelegate (LibraryTVC).swift in Sources */,
+				0755872B24FF6410002DB763 /* Notifications (CollectionsTVC).swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Views (Songs Level).swift in Sources */,
 				07F36BC224FC3F450064282D /* UITableViewDataSource (CollectionsTVC).swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,

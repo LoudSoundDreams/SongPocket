@@ -10,6 +10,12 @@ import MediaPlayer
 
 extension SongsTVC {
 	
+	/*
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return super.tableView(tableView, numberOfRowsInSection: section) + numberOfUneditableRowsAtTopOfSection
+	}
+	*/
+	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return super.tableView(tableView, cellForRowAt: indexPath)
@@ -50,6 +56,11 @@ extension SongsTVC {
 		} else {
 			
 			// Get the data to put into the cell.
+//			guard let song = fetchedResultsController?.object(
+//				at: IndexPath(row: indexPath.row - numberOfUneditableRowsAtTopOfSection, section: indexPath.section)
+//			) as? Song else {
+//				return UITableViewCell()
+//			}
 			let song = activeLibraryItems[indexPath.row] as! Song
 			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 			let cellTitle = song.titleFormattedOrPlaceholder()

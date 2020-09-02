@@ -9,6 +9,10 @@ import UIKit
 import CoreData
 import MediaPlayer
 
+extension Notification.Name {
+	static let LRWillSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager is about to save changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and the next NSManagedObjectContextDidSave notification, and respond appropriately.")
+}
+
 extension MediaPlayerManager {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
@@ -142,7 +146,7 @@ extension MediaPlayerManager {
 		NotificationCenter.default.post(
 			Notification(name: Notification.Name.LRWillSaveChangesFromAppleMusicLibrary)
 		)
-		managedObjectContext.tryToSave() // As of iOS 14.0 beta 6, for some reason, this posts multiple NSManagedObjectContextDidSave notifications with the same userInfo.
+		managedObjectContext.tryToSave()
 		managedObjectContext.parent?.tryToSave()
 	}
 	
@@ -177,11 +181,13 @@ extension MediaPlayerManager {
 			potentiallyOutdatedSongs.sort() { $0.index < $1.index }
 			potentiallyOutdatedSongs.sort() { $0.container!.index < $1.container!.index }
 			potentiallyOutdatedSongs.sort() { $0.container!.container!.index < $1.container!.container!.index }
-//			print("")
-//			for song in potentiallyOutdatedSongs {
-//				print(song.titleFormattedOrPlaceholder())
-//				print("Container index: \(song.container!.container!.index), album index: \(song.container!.index), song index: \(song.index)")
-//			}
+			/*
+			print("")
+			for song in potentiallyOutdatedSongs {
+				print(song.titleFormattedOrPlaceholder())
+				print("Container index: \(song.container!.container!.index), album index: \(song.container!.index), song index: \(song.index)")
+			}
+			*/
 			
 			var knownAlbumPersistentIDs = [Int64]()
 			var existingAlbums = [Album]()
@@ -194,10 +200,12 @@ extension MediaPlayerManager {
 				
 				let knownAlbumPersistentID = song.container!.albumPersistentID
 				let newAlbumPersistentID = song.mpMediaItem()!.albumPersistentID
-//				print("")
-//				print("Checking album status of \(song.titleFormattedOrPlaceholder()).")
-//				print("Previously known albumPersistentID: \(UInt64(bitPattern: knownAlbumPersistentID))")
-//				print("New albumPersistentID: \(newAlbumPersistentID)")
+				/*
+				print("")
+				print("Checking album status of \(song.titleFormattedOrPlaceholder()).")
+				print("Previously known albumPersistentID: \(UInt64(bitPattern: knownAlbumPersistentID))")
+				print("New albumPersistentID: \(newAlbumPersistentID)")
+				*/
 				
 				if knownAlbumPersistentID == Int64(bitPattern: newAlbumPersistentID) {
 					continue
@@ -262,16 +270,18 @@ extension MediaPlayerManager {
 		
 		for newMediaItem in newMediaItemsSortedInReverse {
 			
+			/*
 			// Trying to filter out music videos (and giving up on it)
-//			guard newMediaItem.mediaType != .musicVideo else { // Apparently music videos don't match MPMediaType.musicVideo
-//			guard newMediaItem.mediaType != .anyVideo else { // This doesn't work either
-//			if newMediaItem.mediaType.rawValue == UInt(2049) { // This works, but seems fragile
-//				print(newMediaItem.albumTitle)
-//				print(newMediaItem.title)
-//				print(newMediaItem.albumPersistentID)
-//				print(newMediaItem.persistentID)
-//				continue
-//			}
+			guard newMediaItem.mediaType != .musicVideo else { // Apparently music videos don't match MPMediaType.musicVideo
+			guard newMediaItem.mediaType != .anyVideo else { // This doesn't work either
+			if newMediaItem.mediaType.rawValue == UInt(2049) { // This works, but seems fragile
+				print(newMediaItem.albumTitle)
+				print(newMediaItem.title)
+				print(newMediaItem.albumPersistentID)
+				print(newMediaItem.persistentID)
+				continue
+			}
+			*/
 			
 			createManagedObject(
 				for: newMediaItem,
@@ -282,18 +292,20 @@ extension MediaPlayerManager {
 	private func sortedInReverseTargetOrder(mediaItems mediaItemsImmutable: [MPMediaItem], isAppDatabaseEmpty: Bool) -> [MPMediaItem] {
 		var mediaItems = mediaItemsImmutable
 		
-		// We're targeting putting new songs in this order:
+		/*
+		 We're targeting putting new songs in this order:
 		
-		// If we currently have no collections:
-		// - Grouped by alphabetically sorted album artist
-		// - Within each album artist, grouped by album, from newest to oldest
-		// - Within each album, grouped by increasing disc number
-		// - Within each disc, grouped by increasing track number, with "unknown" at the end
-		// - Within each track number (rare), sorted alphabetically
+		 If we currently have no collections:
+		 - Grouped by alphabetically sorted album artist
+		 - Within each album artist, grouped by album, from newest to oldest
+		 - Within each album, grouped by increasing disc number
+		 - Within each disc, grouped by increasing track number, with "unknown" at the end
+		 - Within each track number (rare), sorted alphabetically
 		
-		// If there are any existing collections:
-		// - Newer songs on top
-		// The final results will be different: we'll add songs to existing albums if possible, and add albums to existing collections if possible.
+		 If there are any existing collections:
+		 - Newer songs on top
+		 The final results will be different: we'll add songs to existing albums if possible, and add albums to existing collections if possible.
+		*/
 		
 		if isAppDatabaseEmpty {
 			mediaItems.sort() { ($0.title ?? "") < ($1.title ?? "") }

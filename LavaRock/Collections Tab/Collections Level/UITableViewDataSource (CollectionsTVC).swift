@@ -16,7 +16,12 @@ extension CollectionsTVC {
 		}
 		
 		// Get the data to put into the cell.
+//		guard let collection = fetchedResultsController?.object(at: indexPath) as? Collection else {
+//			return UITableViewCell()
+//		}
 		let collection = activeLibraryItems[indexPath.row] as! Collection
+		
+//		print("According to our records, the collection “\(collection.title)” should be at row index \(collection.index); we're making a cell for it at row index \(indexPath.row)")
 		
 		// Make, configure, and return the cell.
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)

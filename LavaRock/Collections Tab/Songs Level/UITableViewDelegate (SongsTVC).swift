@@ -18,9 +18,12 @@ extension SongsTVC {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		super.tableView(tableView, didSelectRowAt: indexPath)
+		super.tableView(tableView, didSelectRowAt: indexPath) // Why do we need this?
 		
 		if !isEditing {
+//			guard let song = fetchedResultsController?.object(at: indexPath) as? Song else {
+//				return
+//			}
 			let song = activeLibraryItems[indexPath.row] as! Song
 			showSongActions(for: song)
 			// The row should stay selected while the action sheet is onscreen.

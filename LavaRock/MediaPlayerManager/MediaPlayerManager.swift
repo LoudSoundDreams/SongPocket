@@ -8,10 +8,6 @@
 import MediaPlayer
 import CoreData
 
-extension Notification.Name {
-	static let LRWillSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager is about to save changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and the next NSManagedObjectContextDidSave notification, and respond appropriately.")
-}
-
 class MediaPlayerManager {
 	
 	// MARK: - Properties
@@ -79,7 +75,7 @@ class MediaPlayerManager {
 	
 	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
 	@objc func didObserve(_ notification: Notification) {
-		print("Observed notification: \(notification.name)")
+		print("An instance of \(Self.self) observed the notification: \(notification.name)")
 		switch notification.name {
 		case
 			UIApplication.didBecomeActiveNotification, // Update toolbar buttons, current song
@@ -88,7 +84,6 @@ class MediaPlayerManager {
 		:
 			break //
 		case .MPMediaLibraryDidChange:
-			print("We should merge changes from the Apple Music library at this point.")
 			mergeChangesFromAppleMusicLibrary()
 		default:
 			print("… but the app is not set to do anything after observing that notification.")
