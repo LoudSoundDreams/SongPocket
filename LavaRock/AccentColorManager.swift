@@ -27,35 +27,36 @@ struct AccentColorManager {
 		("Grape", UIColor.systemPurple), // "Violet"
 //		("None", UIColor.label),
 	]
+	private static let defaultAccentColorName = "Blueberry" // You need to have a tuple for this in accentColorTuples, or you can cause an infinite loop.
 	
 	// MARK: - Setting and Restoring
 	
 	static func restoreAccentColor(in window: UIWindow?) {
 		// If there's a saved preference, set it.
 		if let savedColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String {
-			Self.tryToSetAccentColorAndPostNotification(savedColorName, in: window)
+			Self.setAccentColor(savedColorName, in: window)
 			
-		} else { // Either there was no saved preference, or there was one but it didn't correspond to any UIColor in AccentColorManager. Set and save the default accent color.
-			Self.setAccentColor("Blueberry", in: window) // You need to have a tuple for this color in accentColorTuples.
+		} else { // There was no saved preference.
+			Self.setAccentColor(defaultAccentColorName, in: window)
 		}
 	}
 	
 	static func setAccentColor(_ colorName: String, in window: UIWindow?) {
-		Self.tryToSetAccentColorAndPostNotification(colorName, in: window)
+		guard let uiColor = Self.uiColor(forName: colorName) else {
+			Self.setAccentColor(defaultAccentColorName, in: window)
+			return
+		}
+		
+		window?.tintColor = uiColor // This doesn't trigger tintColorDidChange() on LibraryTVC's table view, so we'll post our own notification.
+		// What if you have multiple windows open on an iPad?
+		
+		NotificationCenter.default.post(
+			Notification(name: Notification.Name.LRDidChangeAccentColor)
+		)
 		
 		DispatchQueue.global().async { // A tester provided a screen recording of lag sometimes between selecting a row and the sheet dismissing. They reported that this line of code fixed it. iPhone SE (2nd generation), iOS 13.5.1
 			UserDefaults.standard.set(colorName, forKey: "accentColorName")
 		}
-	}
-	
-	private static func tryToSetAccentColorAndPostNotification(_ colorName: String, in window: UIWindow?) {
-		guard let uiColor = Self.uiColor(forName: colorName) else { return }
-		
-		window?.tintColor = uiColor // This doesn't trigger tintColorDidChange() on LibraryTVC's table view, so we'll post our own notification.
-		// What if you have multiple windows open on an iPad?
-		NotificationCenter.default.post(
-			Notification(name: Notification.Name.LRDidChangeAccentColor)
-		)
 	}
 	
 	// MARK: - Converting Between Names and Colors

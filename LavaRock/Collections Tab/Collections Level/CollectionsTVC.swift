@@ -34,6 +34,7 @@ final class CollectionsTVC:
 	override func viewDidLoad() {
 		if moveAlbumsClipboard != nil {
 		} else {
+			mediaPlayerManager.shouldNextMergeBeSynchronous = true // TO DO: Remove this after this view can update itself gracefully after merging concurrently.
 			mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
 			// This needs to happen before loadSavedLibraryItems, because it includes merging changes from the Apple Music library.
 		}

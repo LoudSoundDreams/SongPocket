@@ -34,7 +34,7 @@ final class OptionsTVC: UITableViewController {
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Color Cell", for: indexPath)
 		
-		if rowUIColor == view.window?.tintColor {
+		if rowUIColor == view.window?.tintColor { // Check against the actual live tintColor here, not the saved accent color name in UserDefaults. This will help you notice if the saved accent color name doesn't match any of the row colors here, because in that case, none of the rows will have a checkmark.
 			cell.accessoryType = .checkmark
 		} else {
 			cell.accessoryType = .none
