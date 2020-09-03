@@ -75,7 +75,6 @@ class MediaPlayerManager {
 	
 	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
 	@objc func didObserve(_ notification: Notification) {
-		print("An instance of \(Self.self) observed the notification: \(notification.name)")
 		switch notification.name {
 		case
 			UIApplication.didBecomeActiveNotification, // Update toolbar buttons, current song
@@ -86,6 +85,7 @@ class MediaPlayerManager {
 		case .MPMediaLibraryDidChange:
 			mergeChangesFromAppleMusicLibrary()
 		default:
+			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but the app is not set to do anything after observing that notification.")
 		}
 	}

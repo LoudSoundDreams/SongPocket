@@ -80,7 +80,7 @@ extension UITableViewController {
 		return result
 	}
 	
-	func selectedOrAllIndexPathsSortedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
+	func selectedOrAllIndexPathsInOrderIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows?.sorted() {
 			return selectedIndexPaths
 		} else {

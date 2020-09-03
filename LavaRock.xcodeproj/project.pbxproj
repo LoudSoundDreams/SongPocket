@@ -19,6 +19,7 @@
 		073CDBF324B82BBB00F6D2B1 /* Views (Songs Level).swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Views (Songs Level).swift */; };
 		07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07551BC324CFDFDD002D1B15 /* OptionsView.swift */; };
 		0755872B24FF6410002DB763 /* Notifications (CollectionsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755872A24FF6410002DB763 /* Notifications (CollectionsTVC).swift */; };
+		0755872D25006F49002DB763 /* Notifications (SongsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755872C25006F49002DB763 /* Notifications (SongsTVC).swift */; };
 		0765170224DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
 		0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308A24B42DEC0033E3CC /* SceneDelegate.swift */; };
@@ -81,6 +82,7 @@
 		073CDBF224B82BBB00F6D2B1 /* Views (Songs Level).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views (Songs Level).swift"; sourceTree = "<group>"; };
 		07551BC324CFDFDD002D1B15 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		0755872A24FF6410002DB763 /* Notifications (CollectionsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications (CollectionsTVC).swift"; sourceTree = "<group>"; };
+		0755872C25006F49002DB763 /* Notifications (SongsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications (SongsTVC).swift"; sourceTree = "<group>"; };
 		0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedAlbumsToNewCollectionDetector.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768308824B42DEC0033E3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				07F36BC724FC400E0064282D /* UITableViewDataSource (SongsTVC).swift */,
 				07F36BC924FC40620064282D /* UITableViewDelegate (SongsTVC).swift */,
 				070E194324F340E000B21307 /* Editing (SongsTVC).swift */,
+				0755872C25006F49002DB763 /* Notifications (SongsTVC).swift */,
 				073CDBF224B82BBB00F6D2B1 /* Views (Songs Level).swift */,
 			);
 			path = "Songs Level";
@@ -465,6 +468,7 @@
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
 				07CAB24724EA227F008AC34C /* extension Song.swift in Sources */,
+				0755872D25006F49002DB763 /* Notifications (SongsTVC).swift in Sources */,
 				07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				07F36BC424FC3F850064282D /* UITableViewDelegate (CollectionsTVC).swift in Sources */,

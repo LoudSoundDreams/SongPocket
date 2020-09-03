@@ -63,19 +63,19 @@ extension MediaPlayerManager {
 			print("")
 			print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
 			for item in potentiallyModifiedMediaItems {
-				print("")
-				print("\(String(describing: item.albumTitle)): \(item.albumPersistentID)")
 				print("\(String(describing: item.title)): \(item.persistentID)")
 			}
 			print("")
 			print("Added songs: \(newMediaItems.count)")
 			for item in newMediaItems {
-				print("")
-				print("\(String(describing: item.albumTitle)): \(item.albumPersistentID)")
 				print("\(String(describing: item.title)): \(item.persistentID)")
 			}
 			print("")
 			print("Deleted songs: \(objectIDsOfSongsToDelete.count)")
+			for songID in objectIDsOfSongsToDelete {
+				let song = managedObjectContext.object(with: songID) as! Song
+				print(song.titleFormattedOrPlaceholder())
+			}
 			*/
 			
 			updateManagedObjects( // Update before creating and deleting, so that we can put new songs above modified songs (easily).
@@ -111,31 +111,13 @@ extension MediaPlayerManager {
 				albumIDs.append(album.objectID)
 			}
 			
-			/*
-			var songIDs = [NSManagedObjectID]()
-			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
-			// Order doesn't matter.
-			let allSongs = coreDataManager.objectsFetched(for: songsFetchRequest) as! [Song]
-			for song in allSongs {
-				songIDs.append(song.objectID)
-			}
-			*/
-			
 			recalculateReleaseDateEstimatesFor(
 				albumsWithObjectIDs: albumIDs,
 				in: managedObjectContext)
 			
+			// TO DO: Take out the fetch above for albums. Instead, within each collection, recalculate the release date estimates; then, if wasAppDatabaseEmptyBeforeMerge, sort those albums from newest to oldest (based on the newly recalculated estimates).
+			
 			if wasAppDatabaseEmptyBeforeMerge {
-				
-				//						inCollectionsWith collectionIDs: [NSManagedObjectID]
-				// TO DO:
-				// Take out the fetch above for albums.
-				// New modus operandi: within each collection, recalculate the release date estimates of all the albums, then sort them from newest to oldest by those new estimates.
-				
-				//			for collectionID in collectionIDs {
-				//
-				//			}
-				
 				reindexAlbumsWithinEachCollectionByNewestFirst(
 					objectIDsOfCollections: collectionIDs,
 					in: managedObjectContext)

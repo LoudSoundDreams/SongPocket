@@ -74,7 +74,10 @@ extension LibraryTVC {
 	
 	@objc func sortSelectedOrAllItems(sender: UIAlertAction) {
 		// Get the rows to sort.
-		let selectedIndexPaths = selectedOrAllIndexPathsSortedIn(section: 0, firstRow: 0, lastRow: activeLibraryItems.count - 1)
+		let selectedIndexPaths = selectedOrAllIndexPathsInOrderIn(
+			section: 0,
+			firstRow: 0,
+			lastRow: tableView.numberOfRows(inSection: 0) - 1)
 		
 		// Continue in a separate function. This lets SongsTVC override the current function to hack selectedIndexPaths. This is bad practice.
 		sortSelectedOrAllItemsPart2(selectedIndexPaths: selectedIndexPaths, sender: sender)

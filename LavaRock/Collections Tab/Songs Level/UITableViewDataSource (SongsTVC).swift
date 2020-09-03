@@ -26,7 +26,7 @@ extension SongsTVC {
 			// Get the data to put into the cell.
 			let album = containerOfData as! Album
 			let representativeItem = album.mpMediaItemCollection()?.representativeItem
-			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)) // nil removes the placeholder image in the storyboard.
+			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
 			
 			// Make, configure, and return the cell.
 			let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell") as! AlbumArtworkCell

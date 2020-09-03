@@ -14,14 +14,19 @@ extension SongsTVC {
 	// MARK: - Moving Rows to Top
 	
 	override func moveSelectedItemsToTop() {
-		moveItemsUp(from: tableView.indexPathsForSelectedRows, to: IndexPath(row: numberOfUneditableRowsAtTopOfSection, section: 0))
+		moveItemsUp(
+			from: tableView.indexPathsForSelectedRows,
+			to: IndexPath(row: numberOfUneditableRowsAtTopOfSection, section: 0))
 	}
 	
 	// MARK: - Sorting
 	
 	// In the parent class, sortSelectedOrAllItems is split into two parts, where the first part is like this stub here, in order to allow this class to inject numberOfUneditableRowsAtTopOfSection. This is bad practice.
 	override func sortSelectedOrAllItems(sender: UIAlertAction) {
-		let selectedIndexPaths = selectedOrAllIndexPathsSortedIn(section: 0, firstRow: numberOfUneditableRowsAtTopOfSection, lastRow: activeLibraryItems.count - 1)
+		let selectedIndexPaths = selectedOrAllIndexPathsInOrderIn(
+			section: 0,
+			firstRow: numberOfUneditableRowsAtTopOfSection,
+			lastRow: tableView.numberOfRows(inSection: 0) - 1)
 		sortSelectedOrAllItemsPart2(selectedIndexPaths: selectedIndexPaths, sender: sender)
 	}
 	

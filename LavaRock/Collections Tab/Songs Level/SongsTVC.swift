@@ -47,7 +47,9 @@ final class SongsTVC:
 	
 	override func didSetActiveLibraryItems() {
 		for index in 0..<activeLibraryItems.count {
-			activeLibraryItems[index].setValue(index - numberOfUneditableRowsAtTopOfSection, forKey: "index")
+			activeLibraryItems[index].setValue(
+				index - numberOfUneditableRowsAtTopOfSection,
+				forKey: "index")
 		}
 	}
 	

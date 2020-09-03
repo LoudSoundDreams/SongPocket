@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-import SwiftUI
+//import SwiftUI
 import MediaPlayer
 
 final class CollectionsTVC:
