@@ -10,22 +10,20 @@ import CoreData
 
 extension AlbumsTVC {
 	
-//	override func deleteFromView(_ allObjectsDeletedDuringPreviousMerge: [NSManagedObject]) {
+	// Remember: we might be in "moving albums" mode.
 	
-	// Remember, we might be in "moving albums" mode.
-	
-//		if
-//			let containerOfData = containerOfData,
-//			allObjectsDeletedDuringPreviousMerge.contains(containerOfData)
-//		{
-//
-//
-//		} else {
-//
-//
-//		}
-//
-//	}
+	// This is the same as in CollectionsTVC. Move it to the AlbumMover protocol?
+	override func beginObservingNotifications() {
+		super.beginObservingNotifications()
+		
+		if moveAlbumsClipboard != nil {
+			NotificationCenter.default.addObserver(
+				self,
+				selector: #selector(didObserve(_:)),
+				name: Notification.Name.NSManagedObjectContextDidSaveObjectIDs,
+				object: managedObjectContext.parent)
+		}
+	}
 	
 	
 	

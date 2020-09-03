@@ -105,7 +105,9 @@ final class CollectionsTVC:
 		indexOfEmptyCollection = Int(emptyCollection.index)
 	}
 	
-	
+	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
+		// TO DO: That empty collection needs to be deleted, but that should happen when this class runs deleteFromView(_:).
+	}
 	
 	// MARK: - Events
 	

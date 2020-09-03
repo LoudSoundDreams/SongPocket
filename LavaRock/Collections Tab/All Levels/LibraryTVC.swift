@@ -58,7 +58,7 @@ class LibraryTVC:
 		return request
 	}()
 	var respondsToWillSaveChangesFromAppleMusicLibraryNotifications = true
-	var shouldRespondToNextManagedObjectContextDidSaveNotification = false
+	var shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
 //	var isUserCurrentlyMovingRowManually = false
 	
 	// MARK: Property Observers
@@ -77,7 +77,7 @@ class LibraryTVC:
 		setUpUI()
 		loadSavedLibraryItems()
 		
-		startObservingNotifications()
+		beginObservingNotifications()
 	}
 	
 	func setUpUI() {

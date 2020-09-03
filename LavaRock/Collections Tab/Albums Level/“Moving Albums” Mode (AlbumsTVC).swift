@@ -51,8 +51,9 @@ extension AlbumsTVC {
 		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
 		
-		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType) // Do this from within the MoveAlbumsClipboard, to guarantee it's done on the right thread.
+		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		childManagedObjectContext.parent = managedObjectContext
+		childManagedObjectContext.automaticallyMergesChangesFromParent = true
 		
 		modalCollectionsTVC.managedObjectContext = childManagedObjectContext
 		

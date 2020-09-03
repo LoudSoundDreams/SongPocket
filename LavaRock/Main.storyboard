@@ -417,6 +417,7 @@
                         <outlet property="startMovingAlbumsButton" destination="nLw-6q-0dl" id="hrU-N5-LGl"/>
                         <segue destination="GFi-fJ-75x" kind="unwind" identifier="Moved Albums" unwindAction="unwindToAlbumsAfterMovingAlbums:" id="xHh-aB-iEM"/>
                         <segue destination="GFi-fJ-75x" kind="unwind" identifier="Moved All Albums Out" unwindAction="unwindToCollectionsAfterMovingAllAlbumsOut:" id="54v-2Z-jNM"/>
+                        <segue destination="GFi-fJ-75x" kind="unwind" identifier="Deleted All Contents" unwindAction="unwindToCollectionsFromEmptyCollection:" id="ZST-h2-yhJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DLy-Uy-9MG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -684,7 +685,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Songs" id="skQ-0p-ko2"/>
                     <connections>
-                        <segue destination="gme-PH-Cgo" kind="unwind" identifier="Deleted All Songs" unwindAction="unwindToAlbumsFromEmptyAlbum:" id="80Z-h1-Rre"/>
+                        <segue destination="gme-PH-Cgo" kind="unwind" identifier="Deleted All Contents" unwindAction="unwindToAlbumsFromEmptyAlbum:" id="80Z-h1-Rre"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hsb-JF-X0J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

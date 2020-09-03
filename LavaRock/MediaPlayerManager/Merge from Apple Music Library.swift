@@ -10,7 +10,7 @@ import CoreData
 import MediaPlayer
 
 extension Notification.Name {
-	static let LRWillSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager is about to save changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and the next NSManagedObjectContextDidSave notification, and respond appropriately.")
+	static let LRWillSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager is about to save changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and the next NSManagedObjectContextDidSaveObjectIDs notification, and respond appropriately.")
 }
 
 extension MediaPlayerManager {
