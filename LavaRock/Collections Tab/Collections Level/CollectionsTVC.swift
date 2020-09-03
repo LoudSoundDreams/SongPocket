@@ -99,11 +99,13 @@ final class CollectionsTVC:
 		}
 	}
 	
-	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
+	@IBAction func unwindToCollectionsAfterMovingAllAlbumsOut(_ unwindSegue: UIStoryboardSegue) {
 		let albumsTVC = unwindSegue.source as! AlbumsTVC
 		let emptyCollection = albumsTVC.containerOfData as! Collection
 		indexOfEmptyCollection = Int(emptyCollection.index)
 	}
+	
+	
 	
 	// MARK: - Events
 	

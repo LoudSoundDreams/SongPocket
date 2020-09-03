@@ -34,8 +34,9 @@ final class SongsTVC:
 	- Whenever updating the "index" attributes of the NSManagedObjects in activeLibraryItems, set 0 to the first object after the dummy duplicate object, and count up from there.
 		The "index" attribute of the dummy duplicate object in [0] is transparently updated to match that of its counterpart, which is elsewhere in activeLibraryItems.
 	
-	**This hack (probably) makes it harder** to adopt UITableViewDiffableDataSource and NSFetchedResultsController.
-	Also, any commands that involve activeLibraryItems or IndexPaths probably won't work right without more hacking
+	An alternative would be to leave activeLibraryItems alone so that it would have the same number of items as songs in this view, and get songs from it with activeLibraryItems[indexPath.row - numberOfUneditableRowsAtTopOfSection] instead of activeLibraryItems[indexPath.row]. But some methods in the superclass, LibraryTVC, assume that activeLibraryItems[indexPath.row] will get the right items, like sorting, and we would have to hack those too. It's better to contain the hack to this class.
+	
+	Anything that involves activeLibraryItems or IndexPaths probably won't work right without more hacking.
 	*/
 	
 	// MARK: - Properties
@@ -79,7 +80,7 @@ final class SongsTVC:
 	
 	override func loadSavedLibraryItems() {
 		super.loadSavedLibraryItems()
-		
+
 		for _ in 1...numberOfUneditableRowsAtTopOfSection {
 			activeLibraryItems.insert(activeLibraryItems[0], at: 0)
 		}

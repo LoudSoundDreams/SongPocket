@@ -61,7 +61,9 @@ extension LibraryTVC {
 		guard shouldRespondToNextManagedObjectContextDidSaveNotification else { return }
 		shouldRespondToNextManagedObjectContextDidSaveNotification = false
 		
-		var itemsToDeleteFromThisView = [NSManagedObject]()
+		// Remember, this method gets called in every subclass of LibraryTVC.
+		
+		var objectsToDeleteFromAnyView = [NSManagedObject]()
 		var itemsToRefreshInThisView = [NSManagedObject]()
 		
 		for key in [NSDeletedObjectsKey, NSInsertedObjectsKey, NSUpdatedObjectsKey] {
@@ -69,36 +71,38 @@ extension LibraryTVC {
 				continue // to the next key
 			}
 			
+			guard key != NSDeletedObjectsKey else {
+				objectsToDeleteFromAnyView.append(contentsOf: changedObjects)
+				continue // to the next key
+			}
+			
+			// key is NSInsertedObjectsKey or NSUpdatedObjectsKey.
 			for object in changedObjects {
 				guard object.entity.name == coreDataEntityName else {
 					continue // to the next object
 				}
-				
-				if key == NSDeletedObjectsKey {
-					itemsToDeleteFromThisView.append(object)
-					
-				} else { // NSInsertedObjectsKey or NSUpdatedObjectsKey
-					if containerOfData == nil || (containerOfData != nil && (object.value(forKey: "container") as? NSManagedObject) == containerOfData) {
-						itemsToRefreshInThisView.append(object)
-					}
+				if containerOfData == nil || (containerOfData != nil && (object.value(forKey: "container") as? NSManagedObject) == containerOfData) {
+					itemsToRefreshInThisView.append(object)
 				}
 			}
 		}
 		
+		print("")
 		print(Self.self)
-		print(itemsToDeleteFromThisView)
+		print(objectsToDeleteFromAnyView)
 		print(itemsToRefreshInThisView)
 		
-		deleteFromView(itemsToDeleteFromThisView)
+		deleteFromView(objectsToDeleteFromAnyView)
 		refreshInView(itemsToRefreshInThisView)
 	}
 	
-	@objc func deleteFromView(_ items: [NSManagedObject]) {
-//		print("The class “\(Self.self)” should override deleteFromView(items:). We would call it at this point.")
+	// objects will contain all the collections, albums, and songs that were deleted in the last merge; i.e., all the NSManagedObjects, of any entity, not just the ones relevant to any one view.
+	@objc func deleteFromView(_ allObjectsDeletedDuringPreviousMerge: [NSManagedObject]) {
+		print("The class “\(Self.self)” should override deleteFromView(items:). We would call it at this point.")
 	}
 	
 	@objc func refreshInView(_ items: [NSManagedObject]) {
-//		print("The class “\(Self.self)” should override refreshInView(items:). We would call it at this point.")
+		print("The class “\(Self.self)” should override refreshInView(items:). We would call it at this point.")
 	}
 	
 	func didChangeAccentColor() {

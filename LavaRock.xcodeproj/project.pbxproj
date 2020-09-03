@@ -11,6 +11,7 @@
 		0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */; };
 		070E194124F33FC800B21307 /* Editing (CollectionsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* Editing (CollectionsTVC).swift */; };
 		070E194424F340E000B21307 /* Editing (SongsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194324F340E000B21307 /* Editing (SongsTVC).swift */; };
+		0720A43525017C6C00E0A28A /* Notifications (AlbumsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A43425017C6C00E0A28A /* Notifications (AlbumsTVC).swift */; };
 		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
 		0736E3A724B8415400A15420 /* Views (Albums Level).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Views (Albums Level).swift */; };
 		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
@@ -74,6 +75,7 @@
 		0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAlbumsClipboard.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* Editing (CollectionsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editing (CollectionsTVC).swift"; sourceTree = "<group>"; };
 		070E194324F340E000B21307 /* Editing (SongsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editing (SongsTVC).swift"; sourceTree = "<group>"; };
+		0720A43425017C6C00E0A28A /* Notifications (AlbumsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications (AlbumsTVC).swift"; sourceTree = "<group>"; };
 		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* Views (Albums Level).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views (Albums Level).swift"; sourceTree = "<group>"; };
 		0736E3E924B95FD600A15420 /* extension Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Album.swift"; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 			children = (
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
 				07F36BC524FC3FE40064282D /* UITableViewDataSource (AlbumsTVC).swift */,
+				0720A43425017C6C00E0A28A /* Notifications (AlbumsTVC).swift */,
 				07DC1B2224F33E0400AAEEDB /* “Moving Albums” Mode (AlbumsTVC).swift */,
 				0736E3A624B8415400A15420 /* Views (Albums Level).swift */,
 			);
@@ -444,6 +447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				077E089824FB7AFF007C2479 /* Notifications (LibraryTVC).swift in Sources */,
+				0720A43525017C6C00E0A28A /* Notifications (AlbumsTVC).swift in Sources */,
 				070E194424F340E000B21307 /* Editing (SongsTVC).swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* “Moving Albums” Mode (CollectionsTVC).swift in Sources */,
