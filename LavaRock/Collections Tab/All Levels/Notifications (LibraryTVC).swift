@@ -115,35 +115,43 @@ extension LibraryTVC {
 		
 		// Remember: for CollectionsTVC and AlbumsTVC, we might be in "moving albums" mode.
 		
-		if
-			let containerOfData = containerOfData,
-			idsOfAllDeletedObjects.contains(containerOfData.objectID)
-		{
-			performSegue(withIdentifier: "Deleted All Contents", sender: self)
-			
-		} else {
-			
-			var indexesInActiveLibraryItemsToDelete = [Int]()
-			for idToDelete in idsOfAllDeletedObjects {
-				if let indexInActiveLibraryItems = activeLibraryItems.lastIndex(where: { activeItem in // Use .lastIndex(where:), not .firstIndex(where:), because SongsTVC hacks activeLibraryItems by inserting dummy duplicate songs at the beginning.
-					activeItem.objectID == idToDelete
-				}) {
-					indexesInActiveLibraryItemsToDelete.append(indexInActiveLibraryItems)
-				}
+		//		if
+		//			let containerOfData = containerOfData,
+		//			idsOfAllDeletedObjects.contains(containerOfData.objectID)
+		//		{
+		//			performSegue(withIdentifier: "Deleted All Contents", sender: self)
+		//
+		//		} else {
+		
+		var indexesInActiveLibraryItemsToDelete = [Int]()
+		for idToDelete in idsOfAllDeletedObjects {
+			if let indexInActiveLibraryItems = activeLibraryItems.lastIndex(where: { activeItem in // Use .lastIndex(where:), not .firstIndex(where:), because SongsTVC hacks activeLibraryItems by inserting dummy duplicate songs at the beginning.
+				activeItem.objectID == idToDelete
+			}) {
+				indexesInActiveLibraryItemsToDelete.append(indexInActiveLibraryItems)
 			}
-			var indexPathsToDelete = [IndexPath]()
-			for index in indexesInActiveLibraryItemsToDelete {
-				indexPathsToDelete.append(IndexPath(row: index, section: 0))
-				activeLibraryItems.remove(at: index)
-			}
-			tableView.performBatchUpdates({
-				tableView.deleteRows(
-					at: indexPathsToDelete,
-					with: .middle)
-			}, completion: nil)
-			
 		}
-	
+		var indexPathsToDelete = [IndexPath]()
+		for index in indexesInActiveLibraryItemsToDelete {
+			indexPathsToDelete.append(IndexPath(row: index, section: 0))
+			activeLibraryItems.remove(at: index)
+		}
+		// TO DO: Wait until this view is onscreen to do this.
+		tableView.performBatchUpdates({
+			tableView.deleteRows(
+				at: indexPathsToDelete,
+				with: .middle)
+		}, completion: { _ in
+			guard self.activeLibraryItems.count > 0 else {
+				self.performSegue(withIdentifier: "Deleted All Contents", sender: self)
+				return
+			}
+			
+			
+		})
+		
+		//		}
+		
 	}
 	
 	@objc func refreshInView(_ idsOfItemsInThisView: [NSManagedObjectID]) {
