@@ -61,9 +61,11 @@ extension LibraryTVC {
 		guard shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification else { return }
 		shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
 		
+		/*
 		print("")
 		print(Self.self)
 		print(managedObjectContext.parent)
+		*/
 		
 		// Remember: this method gets called in every subclass of LibraryTVC. And in CollectionsTVC and AlbumsTVC, we might be in "moving albums" mode.
 		
@@ -98,9 +100,11 @@ extension LibraryTVC {
 			}
 		}
 		
+		/*
 		print("")
 		print(idsOfObjectsToDeleteFromAnyView)
 		print(idsOfItemsInThisViewToRefresh)
+		*/
 		
 		deleteFromView(idsOfObjectsToDeleteFromAnyView)
 		refreshInView(idsOfItemsInThisViewToRefresh)

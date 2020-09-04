@@ -59,7 +59,7 @@ final class CollectionsTVC:
 		super.setUpUI()
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
-			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
+			navigationItem.prompt = moveAlbumsClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 			navigationController?.isToolbarHidden = false

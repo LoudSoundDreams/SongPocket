@@ -12,8 +12,17 @@ final class MoveAlbumsClipboard { // This is a class, not a struct, because we u
 	// MARK: - Properties
 	
 	let idOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID
-	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
+	var idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	let idsOfAlbumsNotBeingMoved: [NSManagedObjectID]
+	var navigationItemPrompt: String {
+		let number = idsOfAlbumsBeingMoved.count
+		switch number {
+		case 1:
+			return "Choose a collection to move 1 album to."
+		default:
+			return "Choose a collection to move \(number) albums to."
+		}
+	}
 	
 	// MARK: - Methods
 	
@@ -25,15 +34,6 @@ final class MoveAlbumsClipboard { // This is a class, not a struct, because we u
 		self.idOfCollectionThatAlbumsAreBeingMovedOutOf = idOfCollectionThatAlbumsAreBeingMovedOutOf
 		self.idsOfAlbumsBeingMoved = idsOfAlbumsBeingMoved
 		self.idsOfAlbumsNotBeingMoved = idsOfAlbumsNotBeingMoved
-	}
-	
-	static func moveAlbumsModePrompt(numberOfAlbumsBeingMoved: Int) -> String {
-		switch numberOfAlbumsBeingMoved {
-		case 1:
-			return "Choose a collection to move 1 album to."
-		default:
-			return "Choose a collection to move \(numberOfAlbumsBeingMoved) albums to."
-		}
 	}
 	
 }

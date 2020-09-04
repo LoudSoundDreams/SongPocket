@@ -40,7 +40,7 @@ final class AlbumsTVC:
 		customizeNavigationItemTitle()
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
-			navigationItem.prompt = MoveAlbumsClipboard.moveAlbumsModePrompt(numberOfAlbumsBeingMoved: moveAlbumsClipboard.idsOfAlbumsBeingMoved.count)
+			navigationItem.prompt = moveAlbumsClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 			tableView.allowsSelection = false
