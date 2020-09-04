@@ -14,31 +14,33 @@ extension UITableViewController {
 	
 	// Returns whether a "move selected rows to top" command should be allowed on the table view.
 	// Returns true only if one or more rows are selected, and they're all in the same section.
-	func shouldAllowFloatingToTop(indexPathsForSelectedRows: [IndexPath]?) -> Bool {
-		guard let indexPathsForSelectedRows = indexPathsForSelectedRows else {
+	func shouldAllowFloatingToTop(forIndexPaths indexPaths: [IndexPath]?) -> Bool {
+		guard let indexPaths = indexPaths else {
 			return false
 		}
-		return !isFromMultipleSections(indexPathsForSelectedRows)
+		return !isFromMultipleSections(indexPaths)
 	}
 	
 	// Returns whether a "sort selected or all rows" command should be allowed on the table view.
-	// Sorting should only be allowed on consecutive items within one section. Therefore:
-	// - If any rows are selected, this function returns whether they're in the same section and consecutive.
+	// Sorting should only be allowed on contiguous items within one section. Therefore:
+	// - If any rows are selected, this function returns whether they're in the same section and contiguous.
 	// - If no rows are selected, this function returns whether you could sort all the rows; i.e., whether the table view has exactly 1 section.
 	func shouldAllowSorting() -> Bool {
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows { // If any rows are selected.
 			return (!isFromMultipleSections(selectedIndexPaths)
-				&& isConsecutive(selectedIndexPaths))
+				&& isContiguousWithinTheSameSection(selectedIndexPaths))
 		} else { // If no rows are selected.
 			return tableView.numberOfSections == 1
 		}
 	}
 	
-	// Returns whether an array of IndexPaths is in increasing consecutive order.
-	// WARNING: Only works for IndexPaths in the same section.
-	func isConsecutive(_ rows: [IndexPath]) -> Bool {
+	// Returns whether the IndexPaths form a block of rows all next to each other in the same section. You can provide the IndexPaths in any order.
+	func isContiguousWithinTheSameSection(_ indexPaths: [IndexPath]) -> Bool {
+		guard !isFromMultipleSections(indexPaths) else {
+			return false
+		}
 		var rowNumbers = [Int]()
-		for indexPath in rows {
+		for indexPath in indexPaths {
 			rowNumbers.append(indexPath.row)
 		}
 		return isConsecutive(rowNumbers.sorted())
@@ -57,7 +59,7 @@ extension UITableViewController {
 		}
 	}
 	
-	// Returns whether the array contains IndexPaths from multiple sections.
+	// Returns false if all the IndexPaths you provide have the same value for their "section" parameter. Returns true if any one or more of the IndexPaths you provide has a different value for its "section" parameter than all the others.
 	func isFromMultipleSections(_ indexPaths: [IndexPath]) -> Bool {
 		if indexPaths.count <= 1 { // Terminating case.
 			return false
@@ -80,7 +82,7 @@ extension UITableViewController {
 		return result
 	}
 	
-	func selectedOrAllIndexPathsInOrderIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
+	func selectedOrEnumeratedIndexPathsIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows?.sorted() {
 			return selectedIndexPaths
 		} else {

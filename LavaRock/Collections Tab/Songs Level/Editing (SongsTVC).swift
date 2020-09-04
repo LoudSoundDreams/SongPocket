@@ -23,11 +23,11 @@ extension SongsTVC {
 	
 	// In the parent class, sortSelectedOrAllItems is split into two parts, where the first part is like this stub here, in order to allow this class to inject numberOfUneditableRowsAtTopOfSection. This is bad practice.
 	override func sortSelectedOrAllItems(sender: UIAlertAction) {
-		let selectedIndexPaths = selectedOrAllIndexPathsInOrderIn(
+		let indexPathsToSort = selectedOrEnumeratedIndexPathsIn(
 			section: 0,
 			firstRow: numberOfUneditableRowsAtTopOfSection,
 			lastRow: tableView.numberOfRows(inSection: 0) - 1)
-		sortSelectedOrAllItemsPart2(selectedIndexPaths: selectedIndexPaths, sender: sender)
+		sortSelectedOrAllItemsPart2(forIndexPaths: indexPathsToSort, sender: sender)
 	}
 	
 }

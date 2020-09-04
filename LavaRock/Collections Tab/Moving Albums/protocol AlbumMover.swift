@@ -15,19 +15,3 @@ protocol AlbumMover {
 	- Observe NSManagedObjectContextDidSaveObjectIDs notifications on the main managed object context.
 	*/
 }
-
-//extension AlbumMover {
-//	
-//	override func deleteFromView(_ idsOfAllDeletedObjects: [NSManagedObjectID]) {
-//		super.deleteFromView(idsOfAllDeletedObjects)
-//		
-//		if let moveAlbumsClipboard = moveAlbumsClipboard {
-//			for deletedID in idsOfAllDeletedObjects {
-//				if moveAlbumsClipboard.idsOfAlbumsBeingMoved.contains(deletedID) {
-//					dismiss(animated: true, completion: nil)
-//				}
-//			}
-//		}
-//	}
-//	
-//}

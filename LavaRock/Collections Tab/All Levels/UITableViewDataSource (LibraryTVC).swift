@@ -112,7 +112,7 @@ extension LibraryTVC {
 		// End NSFetchedResultsController-based implementation.
 		*/
 		
-		refreshNavigationBarButtons() // If you made selected items non-consecutive, that should disable the Sort button. If you made selected items consecutive, that should enable the Sort button.
+		refreshNavigationBarButtons() // If you made selected items non-contiguous, that should disable the Sort button. If you made selected items contiguous, that should enable the Sort button.
 	}
 	
 }

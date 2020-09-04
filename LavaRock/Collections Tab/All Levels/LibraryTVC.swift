@@ -164,7 +164,7 @@ class LibraryTVC:
 		}
 		
 		if isEditing {
-			floatToTopButton.isEnabled = shouldAllowFloatingToTop(indexPathsForSelectedRows: tableView.indexPathsForSelectedRows)
+			floatToTopButton.isEnabled = shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
 			sortButton.isEnabled = shouldAllowSorting()
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditModeOnly, animated: true)
 		} else {

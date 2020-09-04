@@ -37,7 +37,7 @@ extension LibraryTVC {
 		
 		guard
 			let indexPaths = selectedIndexPaths,
-			shouldAllowFloatingToTop(indexPathsForSelectedRows: selectedIndexPaths)
+			shouldAllowFloatingToTop(forIndexPaths: selectedIndexPaths)
 		else {
 			return
 		}
@@ -74,34 +74,34 @@ extension LibraryTVC {
 	
 	@objc func sortSelectedOrAllItems(sender: UIAlertAction) {
 		// Get the rows to sort.
-		let selectedIndexPaths = selectedOrAllIndexPathsInOrderIn(
+		let indexPathsToSort = selectedOrEnumeratedIndexPathsIn(
 			section: 0,
 			firstRow: 0,
 			lastRow: tableView.numberOfRows(inSection: 0) - 1)
 		
 		// Continue in a separate function. This lets SongsTVC override the current function to hack selectedIndexPaths. This is bad practice.
-		sortSelectedOrAllItemsPart2(selectedIndexPaths: selectedIndexPaths, sender: sender)
+		sortSelectedOrAllItemsPart2(forIndexPaths: indexPathsToSort, sender: sender)
 	}
 	
-	func sortSelectedOrAllItemsPart2(selectedIndexPaths: [IndexPath], sender: UIAlertAction) {
+	func sortSelectedOrAllItemsPart2(forIndexPaths: [IndexPath], sender: UIAlertAction) {
 		
 		guard shouldAllowSorting() else { return }
 		
 		// Get the items to sort, too.
-		let selectedIndexPathsAndItems = dataObjectsPairedWith(selectedIndexPaths, tableViewDataSource: activeLibraryItems) as! [(IndexPath, NSManagedObject)]
+		let selectedIndexPathsAndItems = dataObjectsPairedWith(forIndexPaths, tableViewDataSource: activeLibraryItems) as! [(IndexPath, NSManagedObject)]
 		
 		// Sort the rows and items together.
 		let sortOption = sender.title
 		let sortedIndexPathsAndItems = sorted(indexPathsAndItems: selectedIndexPathsAndItems, by: sortOption)
 		
 		// Remove the selected items from the data source.
-		for indexPath in selectedIndexPaths.reversed() {
+		for indexPath in forIndexPaths.reversed() {
 			activeLibraryItems.remove(at: indexPath.row)
 		}
 		
 		// Put the sorted items into the data source.
 		for indexPathAndItem in sortedIndexPathsAndItems.reversed() {
-			activeLibraryItems.insert(indexPathAndItem.1, at: selectedIndexPaths.first!.row)
+			activeLibraryItems.insert(indexPathAndItem.1, at: forIndexPaths.first!.row)
 		}
 		
 		// Update the table view.
@@ -116,7 +116,7 @@ extension LibraryTVC {
 		//		}
 		
 		// Update the rest of the UI.
-		for indexPath in selectedIndexPaths {
+		for indexPath in forIndexPaths {
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
 		refreshNavigationBarButtons()

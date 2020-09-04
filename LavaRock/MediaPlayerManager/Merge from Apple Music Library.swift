@@ -316,7 +316,6 @@ extension MediaPlayerManager {
 			
 			let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
 			// Order doesn't matter; we're just trying to get a match.
-			// TO DO: Filter the fetch request with a predicate that says "the album's persistent ID is []". Will that be faster?
 			let allAlbums = managedObjectContext.objectsFetched(for: albumsFetchRequest) as! [Album]
 			
 			// 1. If we already have the Album to add the Song to, then add the Song to that Album.
@@ -453,7 +452,6 @@ extension MediaPlayerManager {
 			
 			let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
 			// Order doesn't matter.
-			// TO DO: Filter the fetch request with a predicate that says "the album has 0 contents". Will that be faster?
 			let allAlbums = managedObjectContext.objectsFetched(for: albumsFetchRequest) as! [Album]
 			
 			for album in allAlbums {
@@ -478,7 +476,6 @@ extension MediaPlayerManager {
 			
 			let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
 			// Order doesn't matter.
-			// TO DO: Filter the fetch request with a predicate that says "the collection has 0 contents". Will that be faster?
 			let allCollections = managedObjectContext.objectsFetched(for: collectionsFetchRequest) as! [Collection]
 			
 			for collection in allCollections {
@@ -510,7 +507,7 @@ extension MediaPlayerManager {
 			for albumID in objectIDsOfAlbums {
 				// Update one album's release date estimate.
 				let album = managedObjectContext.object(with: albumID) as! Album
-				// TO DO: Get the songs using mpMediaItemCollection() instead of Core Data?
+				// Should we get the songs using mpMediaItemCollection() instead of Core Data?
 				
 				let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
 				songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
