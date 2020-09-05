@@ -46,17 +46,17 @@ extension MediaPlayerManager {
 			for savedSong in savedSongs {
 				if let indexOfPotentiallyModifiedMediaItem = queriedMediaItems.firstIndex(where: { queriedMediaItem in
 					savedSong.persistentID == Int64(bitPattern: queriedMediaItem.persistentID)
-				}) {
+				}) { // We already have a record of (a Song for) this MPMediaItem. We might have to update it.
 					potentiallyModifiedSongObjectIDs.append(savedSong.objectID)
 					let potentiallyModifiedMediaItem = queriedMediaItems[indexOfPotentiallyModifiedMediaItem]
 					potentiallyModifiedMediaItems.append(potentiallyModifiedMediaItem)
 					queriedMediaItems.remove(at: indexOfPotentiallyModifiedMediaItem)
 					
-				} else {
+				} else { // This Song no longer corresponds to any MPMediaItem in the Apple Music library. We'll remove it from our records.
 					objectIDsOfSongsToDelete.append(savedSong.objectID)
 				}
 			}
-			// queriedMediaItems now holds the MPMediaItems that we don't have records of.
+			// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
 			let newMediaItems = queriedMediaItems
 			
 			/*

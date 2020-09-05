@@ -34,9 +34,9 @@ final class CollectionsTVC:
 	override func viewDidLoad() {
 		if moveAlbumsClipboard != nil {
 		} else {
-			mediaPlayerManager.shouldNextMergeBeSynchronous = true // TO DO: Remove this after this view can update itself gracefully after merging concurrently.
+			mediaPlayerManager.shouldNextMergeBeSynchronous = true // TO DO: Remove this after this view can update itself live.
 			mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
-			// This needs to happen before loadSavedLibraryItems, because it includes merging changes from the Apple Music library.
+			// This needs to happen before reloadActiveLibraryItems, because it includes merging changes from the Apple Music library.
 		}
 		
 		super.viewDidLoad()
@@ -48,7 +48,7 @@ final class CollectionsTVC:
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
 			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // This needs to happen after loadSavedLibraryItems, because it checks the existing collection titles.
+				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // This needs to happen after reloadActiveLibraryItems, because it checks the existing collection titles.
 			}
 		} else {
 			navigationItemButtonsNotEditMode = [optionsButton]
@@ -77,7 +77,7 @@ final class CollectionsTVC:
 			
 		} else {
 			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-				loadSavedLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells loadSavedLibraryItems() to not call mergeChangesFromAppleMusicLibrary(), because that deletes empty collections for us. We want to animate that.
+				reloadActiveLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells reloadActiveLibraryItems() to not call mergeChangesFromAppleMusicLibrary(), because that deletes empty collections for us. We want to animate that.
 				tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
 				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
 			}
@@ -106,7 +106,6 @@ final class CollectionsTVC:
 	}
 	
 	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-		// TO DO: That empty collection needs to be deleted, but that should happen when this class runs deleteFromView(_:).
 	}
 	
 	// MARK: - Events

@@ -16,11 +16,11 @@ extension AlbumsTVC {
 	override func beginObservingNotifications() {
 		super.beginObservingNotifications()
 		
-		beginObservingParentManagedObjectContextNotifications()
+		beginObservingAlbumMoverNotifications()
 	}
 	
 	// This is the same as in CollectionsTVC.
-	func beginObservingParentManagedObjectContextNotifications() {
+	func beginObservingAlbumMoverNotifications() {
 		guard moveAlbumsClipboard != nil else { return }
 		
 		NotificationCenter.default.addObserver(
@@ -28,14 +28,38 @@ extension AlbumsTVC {
 			selector: #selector(didObserve(_:)),
 			name: Notification.Name.NSManagedObjectContextDidSaveObjectIDs,
 			object: managedObjectContext.parent)
+		
+		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(didObserve(_:)),
+			name: Notification.Name.NSManagedObjectContextDidMergeChangesObjectIDs,
+			object: managedObjectContext)
+		
+		
 	}
 	
+	
+	override func didObserve(_ notification: Notification) {
+		super.didObserve(notification)
+		
+		switch notification.name {
+		case .NSManagedObjectContextDidMergeChangesObjectIDs:
+			print(notification)
+			break
+		default: break
+		}
+	}
+	
+	
 	// This is the same as in CollectionsTVC.
+	/*
 	override func deleteFromView(_ idsOfAllDeletedObjects: [NSManagedObjectID]) {
 		super.deleteFromView(idsOfAllDeletedObjects)
 		
 		deleteFromViewWhileMovingAlbums(idsOfAllDeletedObjects)
 	}
+	*/
 	
 	func deleteFromViewWhileMovingAlbums(_ idsOfAllDeletedObjects: [NSManagedObjectID]) {
 		guard let moveAlbumsClipboard = moveAlbumsClipboard else { return }

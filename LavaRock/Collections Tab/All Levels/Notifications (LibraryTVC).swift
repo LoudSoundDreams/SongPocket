@@ -61,14 +61,11 @@ extension LibraryTVC {
 		guard shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification else { return }
 		shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
 		
+		// Now we need to refresh our data and our views. But to do that, we won't pull the NSManagedObjectIDs out of this notification, because that's more logic for the same result. Instead we'll just re-fetch our data and see how we need to update our views.
+		
+		refreshDataWithAnimationWhenVisible()
+		
 		/*
-		print("")
-		print(Self.self)
-		print(managedObjectContext.parent)
-		*/
-		
-		// Remember: this method gets called in every subclass of LibraryTVC. And in CollectionsTVC and AlbumsTVC, we might be in "moving albums" mode.
-		
 		var idsOfObjectsToDeleteFromAnyView = [NSManagedObjectID]()
 		var idsOfItemsInThisViewToRefresh = [NSManagedObjectID]()
 		
@@ -99,6 +96,7 @@ extension LibraryTVC {
 				}
 			}
 		}
+		*/
 		
 		/*
 		print("")
@@ -106,56 +104,89 @@ extension LibraryTVC {
 		print(idsOfItemsInThisViewToRefresh)
 		*/
 		
+		/*
 		deleteFromView(idsOfObjectsToDeleteFromAnyView)
 		refreshInView(idsOfItemsInThisViewToRefresh)
+		*/
 	}
 	
-	// objects will contain all the collections, albums, and songs that were deleted in the last merge; i.e., all the NSManagedObjects, of any entity, not just the ones relevant to any one view.
-	@objc func deleteFromView(_ idsOfAllDeletedObjects: [NSManagedObjectID]) {
+	func refreshDataWithAnimationWhenVisible() {
+		if view.window == nil {
+			shouldRefreshDataWithAnimationOnNextViewDidAppear = true
+		} else {
+			refreshDataWithAnimation()
+		}
+	}
+	
+	func refreshDataWithAnimation() {
 		
-		// Remember: for CollectionsTVC and AlbumsTVC, we might be in "moving albums" mode.
+		// Remember: in CollectionsTVC and AlbumsTVC, we might be in "moving albums" mode.
 		
-		//		if
-		//			let containerOfData = containerOfData,
-		//			idsOfAllDeletedObjects.contains(containerOfData.objectID)
-		//		{
-		//			performSegue(withIdentifier: "Deleted All Contents", sender: self)
-		//
-		//		} else {
+		/*
+		TO DO:
+		- Refresh contents of views.
+		- Hack this for SongsTVC.
+		- Hack this for CollectionsTVC and AlbumsTVC while moving albums.
+		- Hack this for MoveAlbumsClipboard.
+		- Refresh containerOfData.
+		*/
 		
-		var indexesInActiveLibraryItemsToDelete = [Int]()
-		for idToDelete in idsOfAllDeletedObjects {
-			if let indexInActiveLibraryItems = activeLibraryItems.lastIndex(where: { activeItem in // Use .lastIndex(where:), not .firstIndex(where:), because SongsTVC hacks activeLibraryItems by inserting dummy duplicate songs at the beginning.
-				activeItem.objectID == idToDelete
-			}) {
-				indexesInActiveLibraryItemsToDelete.append(indexInActiveLibraryItems)
+		print("")
+		
+		print(Self.self)
+		print(String(describing: managedObjectContext.parent))
+		
+		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
+		
+		let fixedSection = 0
+		var startingAndEndingIndexPathsOfRowsToMove = [(IndexPath, IndexPath)]()
+		var indexPathsOfNewItems = [IndexPath]()
+		for indexOfRefreshedItem in 0 ..< refreshedItems.count {
+			let refreshedItem = refreshedItems[indexOfRefreshedItem]
+			if let indexOfOutdatedItem = activeLibraryItems.firstIndex(where: { onscreenItem in
+				onscreenItem.objectID == refreshedItem.objectID
+			}) { // This item is already onscreen. We'll update it and maybe move it.
+				startingAndEndingIndexPathsOfRowsToMove.append(
+					(IndexPath(row: indexOfOutdatedItem, section: fixedSection),
+					 IndexPath(row: indexOfRefreshedItem, section: fixedSection))
+				)
+				
+			} else { // This item isn't onscreen yet, so we'll have to add it.
+				indexPathsOfNewItems.append(IndexPath(row: indexOfRefreshedItem, section: fixedSection))
 			}
 		}
-		var indexPathsToDelete = [IndexPath]()
-		for index in indexesInActiveLibraryItemsToDelete {
-			indexPathsToDelete.append(IndexPath(row: index, section: 0))
-			activeLibraryItems.remove(at: index)
+		
+		var indexPathsOfRowsToDelete = [IndexPath]()
+		for index in 0 ..< activeLibraryItems.count {
+			let onscreenItem = activeLibraryItems[index]
+			if let _ = refreshedItems.firstIndex(where: { refreshedItem in
+				refreshedItem.objectID == onscreenItem.objectID
+			})  {
+				continue // to the next onscreenItem
+			} else {
+				indexPathsOfRowsToDelete.append(IndexPath(row: index, section: fixedSection))
+			}
 		}
-		// TO DO: Wait until this view is onscreen to do this.
-		tableView.performBatchUpdates({
-			tableView.deleteRows(
-				at: indexPathsToDelete,
-				with: .middle)
-		}, completion: { _ in
-			guard self.activeLibraryItems.count > 0 else {
+		
+		print("Deleting rows at: \(indexPathsOfRowsToDelete)")
+		print("Inserting rows at: \(indexPathsOfNewItems)")
+		print("Moving rows at: \(startingAndEndingIndexPathsOfRowsToMove)")
+		
+		activeLibraryItems = refreshedItems
+		
+		tableView.performBatchUpdates {
+			tableView.deleteRows(at: indexPathsOfRowsToDelete, with: .middle)
+			tableView.insertRows(at: indexPathsOfNewItems, with: .middle)
+			for (startingIndexPath, endingIndexPath) in startingAndEndingIndexPathsOfRowsToMove {
+				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
+			}
+		} completion: { _ in
+			if self.activeLibraryItems.count == 0 {
 				self.performSegue(withIdentifier: "Deleted All Contents", sender: self)
 				return
 			}
-			
-			
-		})
+		}
 		
-		//		}
-		
-	}
-	
-	@objc func refreshInView(_ idsOfItemsInThisView: [NSManagedObjectID]) {
-		print("The class “\(Self.self)” should override refreshInView(_:). We would call it at this point.")
 	}
 	
 	func didChangeAccentColor() {

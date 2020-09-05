@@ -67,6 +67,7 @@ extension LibraryTVC {
 	
 	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 		let itemBeingMoved = activeLibraryItems[fromIndexPath.row]
+		// You can replace this with swapAt(_:_:).
 		activeLibraryItems.remove(at: fromIndexPath.row)
 		activeLibraryItems.insert(itemBeingMoved, at: to.row)
 		

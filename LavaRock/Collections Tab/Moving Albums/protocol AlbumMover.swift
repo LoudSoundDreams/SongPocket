@@ -11,6 +11,6 @@ import CoreData
 protocol AlbumMover {
 	var moveAlbumsClipboard: MoveAlbumsClipboard? { get set }
 	
-	func beginObservingParentManagedObjectContextNotifications()
+	func beginObservingAlbumMoverNotifications()
 	func deleteFromViewWhileMovingAlbums(_ idsOfAllDeletedObjects: [NSManagedObjectID])
 }

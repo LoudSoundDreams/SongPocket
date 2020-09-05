@@ -28,13 +28,14 @@ final class SongsTVC:
 	
 	**Instead**, I've used the regular cell at IndexPath [0,0] as the "header".
 	This requires hacking activeLibraryItems to accommodate anything involving IndexPaths. This is the hack:
-	- As soon as activeLibraryItems is first loaded in loadSavedLibraryItems(), insert a dummy duplicate of the object at [0] to index 0.
-		This makes activeLibraryItems.count match the number of rows, and makes activeLibraryItems[indexPath.row] reference the right object without any offset.
-		Nothing should access that dummy duplicate object.
+	- As soon as activeLibraryItems is first loaded in reloadActiveLibraryItems(), insert a dummy duplicate of the object at [0] to index 0.
+		- This makes activeLibraryItems.count match the number of rows, and makes activeLibraryItems[indexPath.row] reference the right object without any offset.
+		- Nothing should access that dummy duplicate object.
 	- Whenever updating the "index" attributes of the NSManagedObjects in activeLibraryItems, set 0 to the first object after the dummy duplicate object, and count up from there.
-		The "index" attribute of the dummy duplicate object in [0] is transparently updated to match that of its counterpart, which is elsewhere in activeLibraryItems.
+		- The "index" attribute of the dummy duplicate object in [0] is transparently updated to match that of its counterpart, which is elsewhere in activeLibraryItems.
 	
-	An alternative would be to leave activeLibraryItems alone so that it would have the same number of items as songs in this view, and get songs from it with activeLibraryItems[indexPath.row - numberOfUneditableRowsAtTopOfSection] instead of activeLibraryItems[indexPath.row]. But some methods in the superclass, LibraryTVC, assume that activeLibraryItems[indexPath.row] will get the right items, like sorting, and we would have to hack those too. It's better to contain the hack to this class.
+	An alternative would be to leave activeLibraryItems alone so that it would have the same number of items as songs in this view, and get songs from it with activeLibraryItems[indexPath.row - numberOfUneditableRowsAtTopOfSection] instead of activeLibraryItems[indexPath.row].
+	But some methods in the superclass, LibraryTVC, assume that activeLibraryItems[indexPath.row] will get the right items, like sorting, and we would have to hack those too. It's better to contain the hack to this class.
 	
 	Anything that involves activeLibraryItems or IndexPaths probably won't work right without more hacking.
 	*/
@@ -78,8 +79,8 @@ final class SongsTVC:
 	
 	// MARK: Loading Data
 	
-	override func loadSavedLibraryItems() {
-		super.loadSavedLibraryItems()
+	override func reloadActiveLibraryItems() {
+		super.reloadActiveLibraryItems()
 
 		for _ in 1...numberOfUneditableRowsAtTopOfSection {
 			activeLibraryItems.insert(activeLibraryItems[0], at: 0)

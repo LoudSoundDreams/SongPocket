@@ -52,6 +52,7 @@ extension LibraryTVC {
 		var targetRow = firstIndexPath.row
 		for (indexPath, libraryItem) in pairsToMove {
 			tableView.moveRow(at: indexPath, to: IndexPath(row: targetRow, section: targetSection))
+			// Replace this with swapAt(_:_:)?
 			activeLibraryItems.remove(at: indexPath.row)
 			activeLibraryItems.insert(libraryItem, at: targetRow)
 			tableView.deselectRow(at: IndexPath(row: targetRow, section: targetSection), animated: true) // Wait until after all the rows have moved to do this?

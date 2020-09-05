@@ -75,20 +75,13 @@ final class AlbumsTVC:
 	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
 		isEditing = false
 		
-		loadSavedLibraryItems()
+		reloadActiveLibraryItems()
 		tableView.reloadData()
 		
 		viewDidAppear(true) // Exits this collection if it's now empty.
 	}
 	
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
-		// TO DO: That empty album needs to be deleted, but that should happen when this class runs deleteFromView(_:).
-		
-		/*
-		let songsTVC = unwindSegue.source as! SongsTVC
-		let emptyAlbum = songsTVC.containerOfData
-		print(emptyAlbum)
-		*/
 	}
 	
 	// MARK: - Events

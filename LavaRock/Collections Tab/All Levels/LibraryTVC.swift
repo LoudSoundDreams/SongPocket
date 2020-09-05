@@ -57,9 +57,10 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
+//	var isUserCurrentlyMovingRowManually = false
 	var respondsToWillSaveChangesFromAppleMusicLibraryNotifications = true
 	var shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
-//	var isUserCurrentlyMovingRowManually = false
+	var shouldRefreshDataWithAnimationOnNextViewDidAppear = false
 	
 	// MARK: Property Observers
 	
@@ -75,7 +76,7 @@ class LibraryTVC:
 		super.viewDidLoad()
 		
 		setUpUI()
-		loadSavedLibraryItems()
+		reloadActiveLibraryItems()
 		
 		beginObservingNotifications()
 	}
@@ -90,9 +91,18 @@ class LibraryTVC:
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if shouldRefreshDataWithAnimationOnNextViewDidAppear {
+			shouldRefreshDataWithAnimationOnNextViewDidAppear = false
+			refreshDataWithAnimation()
+		}
+	}
+	
 	// MARK: Loading Data
 	
-	func loadSavedLibraryItems() {
+	func reloadActiveLibraryItems() {
 		if let containerOfData = containerOfData {
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData)
 		}
