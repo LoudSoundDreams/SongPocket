@@ -15,7 +15,7 @@ extension SongsTVC {
 		super.deleteFromView(idsOfAllDeletedObjects)
 		
 		tableView.performBatchUpdates(nil, completion: { _ in
-			guard self.activeLibraryItems.count > self.numberOfUneditableRowsAtTopOfSection else {
+			guard self.activeLibraryItems.count > self.numberOfRowsAboveActiveLibraryItems else {
 				self.performSegue(withIdentifier: "Deleted All Contents", sender: self)
 				return
 			}
@@ -28,8 +28,8 @@ extension SongsTVC {
 	
 	// Clean up the dummy songs at the beginning of activeLibraryItems: make sure they're duplicates of songs that still exist, so that we don't confuse ourselves by having songs in activeLibraryItems that don't exist in the persistent store anymore.
 	func refreshDummyDuplicatesInActiveLibraryItems() {
-		for index in 0 ..< numberOfUneditableRowsAtTopOfSection {
-			activeLibraryItems[index] = activeLibraryItems[numberOfUneditableRowsAtTopOfSection]
+		for index in 0 ..< numberOfRowsAboveActiveLibraryItems {
+			activeLibraryItems[index] = activeLibraryItems[numberOfRowsAboveActiveLibraryItems]
 		}
 	}
 	

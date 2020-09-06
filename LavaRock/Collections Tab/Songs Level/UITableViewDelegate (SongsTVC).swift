@@ -10,7 +10,7 @@ import UIKit
 extension SongsTVC {
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-		if indexPath.row < numberOfUneditableRowsAtTopOfSection {
+		if indexPath.row < numberOfRowsAboveActiveLibraryItems {
 			return nil
 		} else {
 			return indexPath
@@ -34,9 +34,9 @@ extension SongsTVC {
 	// MARK: - Rearranging
 	
 	override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-		if proposedDestinationIndexPath.row < numberOfUneditableRowsAtTopOfSection {
+		if proposedDestinationIndexPath.row < numberOfRowsAboveActiveLibraryItems {
 			return IndexPath(
-				row: numberOfUneditableRowsAtTopOfSection,
+				row: numberOfRowsAboveActiveLibraryItems,
 				section: proposedDestinationIndexPath.section
 			)
 		} else {

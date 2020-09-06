@@ -118,6 +118,7 @@ extension LibraryTVC {
 		}
 	}
 	
+	// Meant to be easy to override.
 	func refreshDataWithAnimation() {
 		
 		// Remember: in CollectionsTVC and AlbumsTVC, we might be in "moving albums" mode.
@@ -140,28 +141,50 @@ extension LibraryTVC {
 		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		
-		let fixedSection = 0
-		refreshRows(inSection: fixedSection, toMatch: refreshedItems)
+		refreshTableView(
+			forExistingItems: activeLibraryItems,
+			toMatchRefreshedItems: refreshedItems,
+			inSection: 0,
+			startingAtRow: 0)
 		
-		var startingAndEndingIndexPathsOfRowsToMove = [(IndexPath, IndexPath)]()
-		var indexPathsOfNewItems = [IndexPath]()
+		
+	}
+	
+	// Meant to be easy to plug arguments into.
+	func refreshTableView(
+		forExistingItems onscreenItems: [NSManagedObject],
+		toMatchRefreshedItems refreshedItems: [NSManagedObject],
+		inSection section: Int,
+		startingAtRow startingRow: Int
+	) {
+		
+		var indexPathsToMove = [(IndexPath, IndexPath)]()
+		var indexPathsToInsert = [IndexPath]()
+		
 		for indexOfRefreshedItem in 0 ..< refreshedItems.count {
 			let refreshedItem = refreshedItems[indexOfRefreshedItem]
 			if let indexOfOnscreenItem = activeLibraryItems.firstIndex(where: { onscreenItem in
 				onscreenItem.objectID == refreshedItem.objectID
 			}) { // This item is already onscreen, and we still want it onscreen. If necessary, we'll move it. Later, if necessary, we'll update it.
-				let startingIndexPath = IndexPath(row: indexOfOnscreenItem, section: fixedSection)
-				let endingIndexPath = IndexPath(row: indexOfRefreshedItem, section: fixedSection)
-				startingAndEndingIndexPathsOfRowsToMove.append(
-					(startingIndexPath, endingIndexPath)
-				)
+				let startingIndexPath = IndexPath(
+					row: startingRow + indexOfOnscreenItem,
+					section: section)
+				let endingIndexPath = IndexPath(
+					row: startingRow + indexOfRefreshedItem,
+					section: section)
+				indexPathsToMove.append(
+					(startingIndexPath, endingIndexPath))
 				
 			} else { // This item isn't onscreen yet, but we want it onscreen, so we'll have to add it.
-				indexPathsOfNewItems.append(IndexPath(row: indexOfRefreshedItem, section: fixedSection))
+				indexPathsToInsert.append(
+					IndexPath(
+						row: startingRow + indexOfRefreshedItem,
+						section: section))
 			}
 		}
 		
-		var indexPathsOfRowsToDelete = [IndexPath]()
+		var indexPathsToDelete = [IndexPath]()
+		
 		for index in 0 ..< activeLibraryItems.count {
 			let onscreenItem = activeLibraryItems[index]
 			if let _ = refreshedItems.firstIndex(where: { refreshedItem in
@@ -169,49 +192,50 @@ extension LibraryTVC {
 			})  {
 				continue // to the next onscreenItem
 			} else {
-				indexPathsOfRowsToDelete.append(IndexPath(row: index, section: fixedSection))
+				indexPathsToDelete.append(
+					IndexPath(
+						row: startingRow + index,
+						section: section))
 			}
 		}
 		
-		print("Deleting rows at: \(indexPathsOfRowsToDelete)")
-		print("Inserting rows at: \(indexPathsOfNewItems)")
-		print("Moving rows at: \(startingAndEndingIndexPathsOfRowsToMove)")
+//		print("Deleting rows at: \(indexPathsToDelete)")
+//		print("Inserting rows at: \(indexPathsToInsert)")
+//		print("Moving rows at: \(indexPathsToMove)")
 		
 		activeLibraryItems = refreshedItems
 		
 		tableView.performBatchUpdates {
-			tableView.deleteRows(at: indexPathsOfRowsToDelete, with: .middle)
-			tableView.insertRows(at: indexPathsOfNewItems, with: .middle)
-			for (startingIndexPath, endingIndexPath) in startingAndEndingIndexPathsOfRowsToMove {
+			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
+			tableView.insertRows(at: indexPathsToInsert, with: .middle)
+			for (startingIndexPath, endingIndexPath) in indexPathsToMove {
 				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
 		} completion: { _ in
-			if self.activeLibraryItems.count == 0 {
-				self.performSegue(withIdentifier: "Deleted All Contents", sender: self)
-				return
-			} else {
-				print(self.containerOfData)
-				
-				
-				self.refreshData()
-			}
+			self.didRefreshTableViewRows()
 		}
 		
 	}
 	
-	func refreshRows(inSection section: Int, toMatch refreshedItems: [NSManagedObject]) {
-		
-		
-		
+	// Meant to be easy to override.
+	func didRefreshTableViewRows() {
+		if activeLibraryItems.count == 0 {
+			performSegue(withIdentifier: "Deleted All Contents", sender: self)
+			return
+		} else {
+			print(containerOfData)
+			
+			
+			refreshTableViewData()
+		}
 	}
-	
 	
 	/*
 	This method is the final step in refreshDataWithAnimation(). The earlier steps delete, insert, and move rows as necessary (with animations), and update the data sources (including activeLibraryItems). This method's job is to update the data in those rows, which might be outdated: for example, songs' titles and albums' release date estimates.
 	The simplest way to do this is to just call tableView.reloadData(). That's infamous for not animating the changes, but we actually animated the deletes, inserts, and moves by ourselves earlier. All we're doing here is updating the data within each row, which generally looks fine without an animation. (If you wanted to add an animation, the most reasonable choice would probably be a fade). With reloadData(), the overall animation for refreshDataWithAnimation() becomes "animate all the row movements, and the instant those movements end, instantly change the data in each row to reflect any updates"—which looks fine.
 	You should override this method if you want to add an animation when you update any data. For example, if it looks jarring to change the album artwork in the songs view without an animation, you might want to refresh that artwork with a fade animation, and leave the rest of the views to update without animations.
 	*/
-	@objc func refreshData() {
+	@objc func refreshTableViewData() {
 		tableView.reloadData()
 	}
 	

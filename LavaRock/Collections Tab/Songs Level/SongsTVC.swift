@@ -43,14 +43,14 @@ final class SongsTVC:
 	// MARK: - Properties
 	
 	// Constants
-	let numberOfUneditableRowsAtTopOfSection = 2
+	let numberOfRowsAboveActiveLibraryItems = 2
 	
 	// MARK: Property Observers
 	
 	override func didSetActiveLibraryItems() {
 		for index in 0..<activeLibraryItems.count {
 			activeLibraryItems[index].setValue(
-				index - numberOfUneditableRowsAtTopOfSection,
+				index - numberOfRowsAboveActiveLibraryItems,
 				forKey: "index")
 		}
 	}
@@ -82,7 +82,7 @@ final class SongsTVC:
 	override func reloadActiveLibraryItems() {
 		super.reloadActiveLibraryItems()
 
-		for _ in 1...numberOfUneditableRowsAtTopOfSection {
+		for _ in 1...numberOfRowsAboveActiveLibraryItems {
 			activeLibraryItems.insert(activeLibraryItems[0], at: 0)
 		}
 	}
@@ -115,7 +115,7 @@ final class SongsTVC:
 		
 		// Disable the actions that we shouldn't offer for the last song in the section.
 		
-		if Int(song.index) + numberOfUneditableRowsAtTopOfSection + 1 >= tableView.numberOfRows(inSection: 0) { // For example, a Song with an "index" attribute of 0 is the last song if numberOfUneditableRowsAtTopOfSection == 2 and there are 3 rows in total.
+		if Int(song.index) + numberOfRowsAboveActiveLibraryItems + 1 >= tableView.numberOfRows(inSection: 0) { // For example, a Song with an "index" attribute of 0 is the last song if numberOfRowsAboveActiveLibraryItems == 2 and there are 3 rows in total.
 			enqueueAlbumStartingHereAction.isEnabled = false
 		}
 		

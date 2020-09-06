@@ -51,43 +51,6 @@ extension AlbumsTVC {
 		}
 	}
 	
-	/*
-	override func refreshOutdatedViews() {
-		for section in 0 ..< tableView.numberOfSections {
-			for row in 0 ..< tableView.numberOfRows(inSection: section) {
-				let indexPath = IndexPath(row: row, section: section)
-				if let onscreenCell = tableView.cellForRow(at: indexPath) as? AlbumCell { // This returns an existing cell, not a new cell.
-					let onscreenArtworkImage = onscreenCell.artworkImageView.image
-					let onscreenTitleText = onscreenCell.titleLabel.text
-					let onscreenReleaseDateText = onscreenCell.releaseDateLabel.text
-					print(String(describing: onscreenArtworkImage))
-					print(String(describing: onscreenTitleText))
-					print(String(describing: onscreenReleaseDateText))
-					
-					let refreshedCell = tableView(tableView, cellForRowAt: indexPath) as! AlbumCell
-					let refreshedArtworkImage = refreshedCell.artworkImageView.image
-					let refreshedTitleText = refreshedCell.titleLabel.text
-					let refreshedReleaseDateText = refreshedCell.releaseDateLabel.text
-					print(String(describing: refreshedArtworkImage))
-					print(String(describing: refreshedTitleText))
-					print(String(describing: refreshedReleaseDateText))
-					
-					let isOnscreenCellOutdated =
-						(onscreenArtworkImage != refreshedArtworkImage) ||
-						(onscreenTitleText != refreshedTitleText) ||
-						(onscreenReleaseDateText != refreshedReleaseDateText)
-					print(isOnscreenCellOutdated)
-					if isOnscreenCellOutdated {
-						tableView.reloadRows(at: [indexPath], with: .none)
-					}
-					
-				}
-				
-			}
-		}
-	}
-	*/
-	
 	
 	// This is the same as in CollectionsTVC.
 	/*

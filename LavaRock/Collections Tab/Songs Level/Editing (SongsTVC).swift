@@ -16,16 +16,16 @@ extension SongsTVC {
 	override func moveSelectedItemsToTop() {
 		moveItemsUp(
 			from: tableView.indexPathsForSelectedRows,
-			to: IndexPath(row: numberOfUneditableRowsAtTopOfSection, section: 0))
+			to: IndexPath(row: numberOfRowsAboveActiveLibraryItems, section: 0))
 	}
 	
 	// MARK: - Sorting
 	
-	// In the parent class, sortSelectedOrAllItems is split into two parts, where the first part is like this stub here, in order to allow this class to inject numberOfUneditableRowsAtTopOfSection. This is bad practice.
+	// In the parent class, sortSelectedOrAllItems is split into two parts, where the first part is like this stub here, in order to allow this class to inject numberOfRowsAboveActiveLibraryItems. This is bad practice.
 	override func sortSelectedOrAllItems(sender: UIAlertAction) {
 		let indexPathsToSort = selectedOrEnumeratedIndexPathsIn(
 			section: 0,
-			firstRow: numberOfUneditableRowsAtTopOfSection,
+			firstRow: numberOfRowsAboveActiveLibraryItems,
 			lastRow: tableView.numberOfRows(inSection: 0) - 1)
 		sortSelectedOrAllItemsPart2(forIndexPaths: indexPathsToSort, sender: sender)
 	}

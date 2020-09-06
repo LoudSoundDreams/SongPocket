@@ -12,7 +12,7 @@ extension SongsTVC {
 	
 	/*
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return super.tableView(tableView, numberOfRowsInSection: section) + numberOfUneditableRowsAtTopOfSection
+		return super.tableView(tableView, numberOfRowsInSection: section) + numberOfRowsAboveActiveLibraryItems
 	}
 	*/
 	
@@ -57,7 +57,7 @@ extension SongsTVC {
 			
 			// Get the data to put into the cell.
 //			guard let song = fetchedResultsController?.object(
-//				at: IndexPath(row: indexPath.row - numberOfUneditableRowsAtTopOfSection, section: indexPath.section)
+//				at: IndexPath(row: indexPath.row - numberOfRowsAboveActiveLibraryItems, section: indexPath.section)
 //			) as? Song else {
 //				return UITableViewCell()
 //			}
@@ -89,7 +89,7 @@ extension SongsTVC {
 	// MARK: - Editing
 	
 	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		return indexPath.row >= numberOfUneditableRowsAtTopOfSection
+		return indexPath.row >= numberOfRowsAboveActiveLibraryItems
 	}
 	
 }
