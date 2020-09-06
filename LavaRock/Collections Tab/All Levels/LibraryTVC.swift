@@ -47,9 +47,12 @@ class LibraryTVC:
 //	var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
 	
 	// Variables
-	var activeLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in activeLibraryItems, because the table view follows activeLibraryItems; not the "index" attribute of each NSManagedObject.
+	var numberOfRowsAboveIndexedLibraryItems = 0
+	var indexedLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in this array, because the table view follows this array; not the "index" attribute of each NSManagedObject.
 		didSet {
-			didSetActiveLibraryItems()
+			for index in 0 ..< indexedLibraryItems.count {
+				indexedLibraryItems[index].setValue(index, forKey: "index")
+			}
 		}
 	}
 	lazy var coreDataFetchRequest: NSFetchRequest<NSManagedObject> = {
@@ -61,21 +64,13 @@ class LibraryTVC:
 	var shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
 	var shouldRefreshDataWithAnimationOnNextViewDidAppear = false
 	
-	// MARK: Property Observers
-	
-	func didSetActiveLibraryItems() {
-		for index in 0..<self.activeLibraryItems.count {
-			activeLibraryItems[index].setValue(index, forKey: "index")
-		}
-	}
-	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		setUpUI()
-		reloadActiveLibraryItems()
+		reloadIndexedLibraryItems()
 		
 		beginObservingNotifications()
 	}
@@ -101,14 +96,14 @@ class LibraryTVC:
 	
 	// MARK: Loading Data
 	
-	func reloadActiveLibraryItems() {
+	func reloadIndexedLibraryItems() {
 		if let containerOfData = containerOfData {
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData)
 		}
 		
 //		updateFetchedResultsController()
 		
-		activeLibraryItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
+		indexedLibraryItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 	}
 	
 	/*
@@ -163,7 +158,7 @@ class LibraryTVC:
 		if
 			MPMediaLibrary.authorizationStatus() == .authorized,
 //			(fetchedResultsController?.fetchedObjects?.count ?? 0) >= 1
-			activeLibraryItems.count >= 1
+			indexedLibraryItems.count >= 1
 		{
 			editButtonItem.isEnabled = true
 		} else {
@@ -196,7 +191,7 @@ class LibraryTVC:
 			let selectedIndexPath = tableView.indexPathForSelectedRow//,
 //			let selectedItem = fetchedResultsController?.object(at: selectedIndexPath)
 		{
-			let selectedItem = activeLibraryItems[selectedIndexPath.row]
+			let selectedItem = indexedLibraryItems[selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems]
 			destination.containerOfData = selectedItem
 			destination.managedObjectContext = managedObjectContext
 		}

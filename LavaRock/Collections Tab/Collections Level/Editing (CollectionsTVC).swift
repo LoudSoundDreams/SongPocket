@@ -28,7 +28,7 @@ extension CollectionsTVC {
 //			guard let collection = self.fetchedResultsController?.object(at: indexPath) as? Collection else {
 //				return
 //			}
-			let collection = self.activeLibraryItems[indexPath.row] as! Collection
+			let collection = self.indexedLibraryItems[indexPath.row - self.numberOfRowsAboveIndexedLibraryItems] as! Collection
 			textField.text = collection.title
 			textField.placeholder = "Title"
 			textField.clearButtonMode = .whileEditing
@@ -43,7 +43,7 @@ extension CollectionsTVC {
 //			guard let collection = self.fetchedResultsController?.object(at: indexPath) as? Collection else {
 //				return
 //			}
-			let collection = self.activeLibraryItems[indexPath.row] as! Collection
+			let collection = self.indexedLibraryItems[indexPath.row - self.numberOfRowsAboveIndexedLibraryItems] as! Collection
 			collection.title = newTitle
 			self.managedObjectContext.tryToSave()
 			

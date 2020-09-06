@@ -10,7 +10,6 @@
 		0703ED2524E8D0DA002EF1B4 /* Merge from Apple Music Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* Merge from Apple Music Library.swift */; };
 		0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */; };
 		070E194124F33FC800B21307 /* Editing (CollectionsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* Editing (CollectionsTVC).swift */; };
-		070E194424F340E000B21307 /* Editing (SongsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194324F340E000B21307 /* Editing (SongsTVC).swift */; };
 		0720A43525017C6C00E0A28A /* Notifications (AlbumsTVC).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A43425017C6C00E0A28A /* Notifications (AlbumsTVC).swift */; };
 		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
 		0736E3A724B8415400A15420 /* Views (Albums Level).swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Views (Albums Level).swift */; };
@@ -74,7 +73,6 @@
 		0703ED2424E8D0DA002EF1B4 /* Merge from Apple Music Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Merge from Apple Music Library.swift"; sourceTree = "<group>"; };
 		0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAlbumsClipboard.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* Editing (CollectionsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editing (CollectionsTVC).swift"; sourceTree = "<group>"; };
-		070E194324F340E000B21307 /* Editing (SongsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editing (SongsTVC).swift"; sourceTree = "<group>"; };
 		0720A43425017C6C00E0A28A /* Notifications (AlbumsTVC).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications (AlbumsTVC).swift"; sourceTree = "<group>"; };
 		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* Views (Albums Level).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views (Albums Level).swift"; sourceTree = "<group>"; };
@@ -173,7 +171,6 @@
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
 				07F36BC724FC400E0064282D /* UITableViewDataSource (SongsTVC).swift */,
 				07F36BC924FC40620064282D /* UITableViewDelegate (SongsTVC).swift */,
-				070E194324F340E000B21307 /* Editing (SongsTVC).swift */,
 				0755872C25006F49002DB763 /* Notifications (SongsTVC).swift */,
 				073CDBF224B82BBB00F6D2B1 /* Views (Songs Level).swift */,
 			);
@@ -448,7 +445,6 @@
 			files = (
 				077E089824FB7AFF007C2479 /* Notifications (LibraryTVC).swift in Sources */,
 				0720A43525017C6C00E0A28A /* Notifications (AlbumsTVC).swift in Sources */,
-				070E194424F340E000B21307 /* Editing (SongsTVC).swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* “Moving Albums” Mode (CollectionsTVC).swift in Sources */,
 				07D157ED24D952A600FDF26A /* protocol AlbumMover.swift in Sources */,

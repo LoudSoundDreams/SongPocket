@@ -20,7 +20,7 @@ extension AlbumsTVC {
 //		guard let album = fetchedResultsController?.object(at: indexPath) as? Album else {
 //			return UITableViewCell()
 //		}
-		let album = activeLibraryItems[indexPath.row] as! Album
+		let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
 		let cellTitle = album.titleFormattedOrPlaceholder()

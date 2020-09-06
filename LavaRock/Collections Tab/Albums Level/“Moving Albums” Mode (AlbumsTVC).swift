@@ -29,8 +29,8 @@ extension AlbumsTVC {
 		var idsOfAlbumsToNotMove = [NSManagedObjectID]()
 		
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows { // If any rows are selected.
-			for indexPath in indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: activeLibraryItems.count - 1) {
-				let album = activeLibraryItems[indexPath.row] as! Album
+			for indexPath in indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: tableView.numberOfRows(inSection: 0) - 1) {
+				let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
 				if selectedIndexPaths.contains(indexPath) { // If the row is selected.
 					idsOfAlbumsToMove.append(album.objectID)
 				} else { // The row is not selected.
@@ -38,7 +38,7 @@ extension AlbumsTVC {
 				}
 			}
 		} else { // No rows are selected.
-			for album in activeLibraryItems {
+			for album in indexedLibraryItems {
 				idsOfAlbumsToMove.append(album.objectID)
 			}
 		}
@@ -73,7 +73,7 @@ extension AlbumsTVC {
 		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
 		// Unfortunately, disabling a button after you tap it looks weird and non-standard, and TO DO: it confuses VoiceOver.
 		
-		if activeLibraryItems.isEmpty {
+		if indexedLibraryItems.isEmpty {
 			newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		
@@ -89,12 +89,12 @@ extension AlbumsTVC {
 		
 		// Find out if we're moving albums to the collection they were already in.
 		// If so, we'll use the "move rows to top" logic.
-		let isMovingToSameCollection = activeLibraryItems.contains(albumsToMove[0])
+		let isMovingToSameCollection = indexedLibraryItems.contains(albumsToMove[0])
 		
 		// Apply the changes.
 		
 		// Update the indexes of the albums we aren't moving, within their collection.
-		// Almost identical to the property observer for activeLibraryItems.
+		// Almost identical to the property observer for indexedLibraryItems.
 		for index in 0..<albumsToNotMove.count {
 			albumsToNotMove[index].setValue(index, forKey: "index")
 		}
@@ -111,7 +111,7 @@ extension AlbumsTVC {
 			for index in 0..<albumsToMove.count {
 				let album = albumsToMove[index]
 				album.container = containerOfData as? Collection
-				activeLibraryItems.insert(album, at: index)
+				indexedLibraryItems.insert(album, at: index)
 			}
 			managedObjectContext.tryToSave()
 			saveParentManagedObjectContext()
@@ -121,7 +121,7 @@ extension AlbumsTVC {
 		var indexPathsToMoveToTop = [IndexPath]()
 		if isMovingToSameCollection {
 			for album in albumsToMove {
-				let index = activeLibraryItems.firstIndex(of: album)
+				let index = indexedLibraryItems.firstIndex(of: album)
 				guard index != nil else {
 					fatalError("It looks like we’re moving albums to the collection they’re already in, but one of the albums we’re moving isn’t here.")
 				}

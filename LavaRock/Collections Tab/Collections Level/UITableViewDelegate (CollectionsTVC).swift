@@ -11,7 +11,7 @@ extension CollectionsTVC {
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
-			let collectionID = activeLibraryItems[indexPath.row].objectID
+			let collectionID = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems].objectID
 			if collectionID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 				return nil
 			} else {

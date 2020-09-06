@@ -29,7 +29,9 @@ extension LibraryTVC {
 	// MARK: - Moving Rows to Top
 	
 	@objc func moveSelectedItemsToTop() {
-		moveItemsUp(from: tableView.indexPathsForSelectedRows, to: IndexPath(row: 0, section: 0))
+		moveItemsUp(
+			from: tableView.indexPathsForSelectedRows,
+			to: IndexPath(row: numberOfRowsAboveIndexedLibraryItems, section: 0))
 	}
 	
 	// NOTE: Every IndexPath in selectedIndexPaths must be in the same section as targetIndexPath, and at or down below targetIndexPath.
@@ -47,13 +49,17 @@ extension LibraryTVC {
 			}
 		}
 		
-		let pairsToMove = dataObjectsPairedWith(indexPaths.sorted(), tableViewDataSource: activeLibraryItems) as! [(IndexPath, NSManagedObject)]
+		let pairsToMove = dataObjectsPairedWith(
+			indexPaths.sorted(),
+			tableViewDataSource: indexedLibraryItems,
+			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems
+		) as! [(IndexPath, NSManagedObject)]
 		let targetSection = firstIndexPath.section
 		var targetRow = firstIndexPath.row
-		for (indexPath, libraryItem) in pairsToMove {
+		for (indexPath, matchingItem) in pairsToMove {
 			tableView.moveRow(at: indexPath, to: IndexPath(row: targetRow, section: targetSection))
-			activeLibraryItems.remove(at: indexPath.row)
-			activeLibraryItems.insert(libraryItem, at: targetRow)
+			indexedLibraryItems.remove(at: indexPath.row)
+			indexedLibraryItems.insert(matchingItem, at: targetRow)
 			tableView.deselectRow(at: IndexPath(row: targetRow, section: targetSection), animated: true) // Wait until after all the rows have moved to do this?
 			targetRow += 1
 		}
@@ -73,35 +79,35 @@ extension LibraryTVC {
 	}
 	
 	@objc func sortSelectedOrAllItems(sender: UIAlertAction) {
+		guard shouldAllowSorting() else { return }
+		
 		// Get the rows to sort.
 		let indexPathsToSort = selectedOrEnumeratedIndexPathsIn(
 			section: 0,
-			firstRow: 0,
+			firstRow: numberOfRowsAboveIndexedLibraryItems,
 			lastRow: tableView.numberOfRows(inSection: 0) - 1)
 		
-		// Continue in a separate function. This lets SongsTVC override the current function to hack selectedIndexPaths. This is bad practice.
-		sortSelectedOrAllItemsPart2(forIndexPaths: indexPathsToSort, sender: sender)
-	}
-	
-	func sortSelectedOrAllItemsPart2(forIndexPaths: [IndexPath], sender: UIAlertAction) {
-		
-		guard shouldAllowSorting() else { return }
-		
 		// Get the items to sort, too.
-		let selectedIndexPathsAndItems = dataObjectsPairedWith(forIndexPaths, tableViewDataSource: activeLibraryItems) as! [(IndexPath, NSManagedObject)]
+		let selectedIndexPathsAndItems = dataObjectsPairedWith(
+			indexPathsToSort,
+			tableViewDataSource: indexedLibraryItems,
+			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems
+		) as! [(IndexPath, NSManagedObject)]
 		
 		// Sort the rows and items together.
 		let sortOption = sender.title
-		let sortedIndexPathsAndItems = sorted(indexPathsAndItems: selectedIndexPathsAndItems, by: sortOption)
+		let sortedIndexPathsAndItems = sorted(selectedIndexPathsAndItems, by: sortOption)
 		
 		// Remove the selected items from the data source.
-		for indexPath in forIndexPaths.reversed() {
-			activeLibraryItems.remove(at: indexPath.row)
+		for indexPath in indexPathsToSort.reversed() {
+			indexedLibraryItems.remove(at: indexPath.row - numberOfRowsAboveIndexedLibraryItems)
 		}
 		
 		// Put the sorted items into the data source.
-		for indexPathAndItem in sortedIndexPathsAndItems.reversed() {
-			activeLibraryItems.insert(indexPathAndItem.1, at: forIndexPaths.first!.row)
+		for (_, item) in sortedIndexPathsAndItems.reversed() {
+			indexedLibraryItems.insert(
+				item,
+				at: indexPathsToSort.first!.row - numberOfRowsAboveIndexedLibraryItems)
 		}
 		
 		// Update the table view.
@@ -116,7 +122,7 @@ extension LibraryTVC {
 		//		}
 		
 		// Update the rest of the UI.
-		for indexPath in forIndexPaths {
+		for indexPath in indexPathsToSort {
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
 		refreshNavigationBarButtons()
@@ -124,7 +130,7 @@ extension LibraryTVC {
 	
 	// After editing the sort options, update this class's default sortOptions property (at the top of the file) to include all the options.
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
-	func sorted(indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
+	func sorted(_ indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
 		switch sortOption {
 		
 		/*

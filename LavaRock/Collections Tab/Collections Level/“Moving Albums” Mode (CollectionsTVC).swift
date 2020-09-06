@@ -12,7 +12,7 @@ extension CollectionsTVC {
 	
 	func setSuggestedCollectionTitle(for idsOfAlbumsBeingMoved: [NSManagedObjectID]) {
 		var existingCollectionTitles = [String]()
-		for item in activeLibraryItems {
+		for item in indexedLibraryItems {
 			if
 				let collection = item as? Collection,
 				let collectionTitle = collection.title
@@ -61,8 +61,9 @@ extension CollectionsTVC {
 			
 			let newCollection = Collection(context: self.managedObjectContext) // Since we're in "moving albums" mode, this should be a child managed object context.
 			newCollection.title = newTitle
+			// The property observer on indexedLibraryItems will set the "index" attribute for us.
 			
-			self.activeLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
+			self.indexedLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
 			
 			// Enter the new collection.
 			

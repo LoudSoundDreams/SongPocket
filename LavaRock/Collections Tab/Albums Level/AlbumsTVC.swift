@@ -66,7 +66,7 @@ final class AlbumsTVC:
 		if moveAlbumsClipboard != nil {
 		} else {
 //			if fetchedResultsController?.fetchedObjects?.count == 0 {
-			if activeLibraryItems.isEmpty {
+			if indexedLibraryItems.isEmpty {
 				performSegue(withIdentifier: "Moved All Albums Out", sender: nil)
 			}
 		}
@@ -75,7 +75,7 @@ final class AlbumsTVC:
 	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
 		isEditing = false
 		
-		reloadActiveLibraryItems()
+		reloadIndexedLibraryItems()
 		tableView.reloadData()
 		
 		viewDidAppear(true) // Exits this collection if it's now empty.

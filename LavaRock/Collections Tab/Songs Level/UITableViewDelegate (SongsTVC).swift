@@ -10,7 +10,7 @@ import UIKit
 extension SongsTVC {
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-		if indexPath.row < numberOfRowsAboveActiveLibraryItems {
+		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
 			return nil
 		} else {
 			return indexPath
@@ -24,7 +24,7 @@ extension SongsTVC {
 //			guard let song = fetchedResultsController?.object(at: indexPath) as? Song else {
 //				return
 //			}
-			let song = activeLibraryItems[indexPath.row] as! Song
+			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			showSongActions(for: song)
 			// The row should stay selected while the action sheet is onscreen.
 			// You must eventually deselect the row in every possible branch from here.
@@ -33,10 +33,14 @@ extension SongsTVC {
 	
 	// MARK: - Rearranging
 	
-	override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-		if proposedDestinationIndexPath.row < numberOfRowsAboveActiveLibraryItems {
+	override func tableView(
+		_ tableView: UITableView,
+		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
+		toProposedIndexPath proposedDestinationIndexPath: IndexPath
+	) -> IndexPath {
+		if proposedDestinationIndexPath.row < numberOfRowsAboveIndexedLibraryItems {
 			return IndexPath(
-				row: numberOfRowsAboveActiveLibraryItems,
+				row: numberOfRowsAboveIndexedLibraryItems,
 				section: proposedDestinationIndexPath.section
 			)
 		} else {

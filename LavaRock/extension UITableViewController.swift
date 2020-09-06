@@ -94,23 +94,31 @@ extension UITableViewController {
 	
 	// Takes an array of selected IndexPaths and the entire data source for your table view. Returns an array of tuples, each matching one of those IndexPaths with its corresponding data object from the data source.
 	// WARNING: Only works for IndexPaths in the same section.
-	func dataObjectsPairedWith(_ indexPaths: [IndexPath], tableViewDataSource: [Any]) -> [(IndexPath, Any)] {
+	func dataObjectsPairedWith(
+		_ indexPaths: [IndexPath],
+		tableViewDataSource: [Any],
+		rowForFirstDataSourceItem: Int
+	) -> [(IndexPath, Any)] {
 		var result = [(IndexPath, Any)]()
 		for indexPath in indexPaths {
-			result.append((indexPath, tableViewDataSource[indexPath.row]))
+			result.append((indexPath, tableViewDataSource[indexPath.row - rowForFirstDataSourceItem]))
 		}
 		return result
 	}
 	
 	// Takes an array of selected IndexPaths and the entire data source for your table view. Returns the data objects associated with the selected items.
 	// NOTE: Only works for IndexPaths in the same section.
-	func dataObjectsFor(selectedIndexPaths: [IndexPath], tableViewDataSource: [Any]) -> [Any] {
+	func dataObjectsFor(
+		selectedIndexPaths: [IndexPath],
+		tableViewDataSource: [Any],
+		rowForFirstDataSourceItem: Int
+	) -> [Any] {
 		guard !isFromMultipleSections(selectedIndexPaths) else {
 			fatalError("Someone called a function to get the data objects for the selected rows in a UITableView, but the selected rows were from multiple sections. This function, dataObjectsFor(selectedIndexPaths:tableViewDataSource:), only works for rows within the same section.")
 		}
 		var result = [Any]()
 		for indexPath in selectedIndexPaths {
-			result.append(tableViewDataSource[indexPath.row])
+			result.append(tableViewDataSource[indexPath.row - rowForFirstDataSourceItem])
 		}
 		return result
 	}

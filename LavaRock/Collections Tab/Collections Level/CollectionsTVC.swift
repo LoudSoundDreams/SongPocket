@@ -36,7 +36,7 @@ final class CollectionsTVC:
 		} else {
 			mediaPlayerManager.shouldNextMergeBeSynchronous = true // TO DO: Remove this after this view can update itself live.
 			mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
-			// This needs to happen before reloadActiveLibraryItems, because it includes merging changes from the Apple Music library.
+			// This needs to happen before reloadIndexedLibraryItems, because it includes merging changes from the Apple Music library.
 		}
 		
 		super.viewDidLoad()
@@ -48,7 +48,7 @@ final class CollectionsTVC:
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
 			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // This needs to happen after reloadActiveLibraryItems, because it checks the existing collection titles.
+				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // This needs to happen after reloadIndexedLibraryItems, because it checks the existing collection titles.
 			}
 		} else {
 			navigationItemButtonsNotEditMode = [optionsButton]
@@ -77,7 +77,7 @@ final class CollectionsTVC:
 			
 		} else {
 			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-				reloadActiveLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells reloadActiveLibraryItems() to not call mergeChangesFromAppleMusicLibrary(), because that deletes empty collections for us. We want to animate that.
+				reloadIndexedLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells reloadIndexedLibraryItems() to not call mergeChangesFromAppleMusicLibrary(), because that deletes empty collections for us. We want to animate that.
 				tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
 				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
 			}
@@ -88,11 +88,11 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 		
 		if moveAlbumsClipboard != nil {
-			deleteCollectionIfEmpty(at: 0)
+			deleteCollectionIfEmpty(withIndex: 0)
 			
 		} else {
 			if indexOfEmptyCollection != nil {
-				deleteCollectionIfEmpty(at: indexOfEmptyCollection!)
+				deleteCollectionIfEmpty(withIndex: indexOfEmptyCollection!)
 				indexOfEmptyCollection = nil
 			}
 			
@@ -110,19 +110,21 @@ final class CollectionsTVC:
 	
 	// MARK: - Events
 	
-	func deleteCollectionIfEmpty(at index: Int) {
+	func deleteCollectionIfEmpty(withIndex indexOfCollection: Int) {
 		guard
-			let collection = activeLibraryItems[index] as? Collection,
+			let collection = indexedLibraryItems[indexOfCollection] as? Collection,
 			collection.contents?.count == 0
 		else { return }
 		
 		managedObjectContext.delete(collection)
-		activeLibraryItems.remove(at: index)
+		indexedLibraryItems.remove(at: indexOfCollection)
 		if moveAlbumsClipboard != nil {
 		} else {
 			managedObjectContext.tryToSave()
 		}
-		tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .middle)
+		tableView.deleteRows(
+			at: [IndexPath(row: indexOfCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
+			with: .middle)
 	}
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {

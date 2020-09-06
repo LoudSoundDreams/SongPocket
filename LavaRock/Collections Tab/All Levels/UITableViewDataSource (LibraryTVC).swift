@@ -26,10 +26,10 @@ extension LibraryTVC {
 //			}
 			
 //			if numberOfItems > 0 {
-			if activeLibraryItems.count > 0 {
+			if indexedLibraryItems.count > 0 {
 				tableView.backgroundView = nil
 //				return numberOfItems
-				return activeLibraryItems.count
+				return indexedLibraryItems.count + numberOfRowsAboveIndexedLibraryItems
 			} else {
 				let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell")! // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
 				tableView.backgroundView = noItemsView
@@ -66,9 +66,9 @@ extension LibraryTVC {
 	// MARK: - Rearranging
 	
 	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-		let itemBeingMoved = activeLibraryItems[fromIndexPath.row]
-		activeLibraryItems.remove(at: fromIndexPath.row)
-		activeLibraryItems.insert(itemBeingMoved, at: to.row)
+		let itemBeingMoved = indexedLibraryItems[fromIndexPath.row - numberOfRowsAboveIndexedLibraryItems]
+		indexedLibraryItems.remove(at: fromIndexPath.row - numberOfRowsAboveIndexedLibraryItems)
+		indexedLibraryItems.insert(itemBeingMoved, at: to.row - numberOfRowsAboveIndexedLibraryItems)
 		refreshNavigationBarButtons() // If you made selected items non-contiguous, that should disable the Sort button. If you made selected items contiguous, that should enable the Sort button.
 	}
 	
