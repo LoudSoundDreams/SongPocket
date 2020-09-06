@@ -47,7 +47,7 @@ class LibraryTVC:
 //	var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
 	
 	// Variables
-	var numberOfRowsAboveIndexedLibraryItems = 0
+	var numberOfRowsAboveIndexedLibraryItems = 0 // This is implied to be true in each section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
 	var indexedLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in this array, because the table view follows this array; not the "index" attribute of each NSManagedObject.
 		didSet {
 			for index in 0 ..< indexedLibraryItems.count {

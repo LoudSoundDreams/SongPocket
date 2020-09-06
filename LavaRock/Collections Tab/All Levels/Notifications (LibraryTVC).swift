@@ -90,27 +90,34 @@ extension LibraryTVC {
 			- For CollectionsTVC, use numberOfRowsAboveIndexedLibraryItems to rewrite making new collections.
 		*/
 		
-		refreshTableView()
+		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
+		refreshTableView(section: 0, onscreenItems: indexedLibraryItems, refreshedItems: refreshedItems)
 		
 		
 	}
 	
-	func refreshTableView() {
-		
-		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
-		let fixedSection = 0
+	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().
+	// Note: Even though this method is easy to plug arguments into, it (currently) has side effects: It replaces indexedLibraryItems with the onscreenItems array you pass in.
+	func refreshTableView(
+		section: Int,
+		onscreenItems: [NSManagedObject],
+		refreshedItems: [NSManagedObject]
+	) {
 		
 		guard refreshedItems.count >= 1 else {
 			let allIndexPathsInSection = indexPathsEnumeratedIn(
-				section: fixedSection,
+				section: section,
 				firstRow: 0, // For SongsTVC, it could look nice to only delete the song cells (below the album artwork and album info cells), but that would add another state we need to accommodate in tableView(_:numberOfRowsInSection:).
-				lastRow: tableView.numberOfRows(inSection: fixedSection) - 1)
+				lastRow: tableView.numberOfRows(inSection: section) - 1)
+			
 			indexedLibraryItems = refreshedItems
+			
 			tableView.performBatchUpdates {
 				tableView.deleteRows(at: allIndexPathsInSection, with: .middle)
 			} completion: { _ in
 				self.didRefreshTableViewRows()
 			}
+			
 			return
 		}
 		
@@ -119,15 +126,15 @@ extension LibraryTVC {
 		
 		for indexOfRefreshedItem in 0 ..< refreshedItems.count {
 			let refreshedItem = refreshedItems[indexOfRefreshedItem]
-			if let indexOfOnscreenItem = indexedLibraryItems.firstIndex(where: { onscreenItem in
+			if let indexOfOnscreenItem = onscreenItems.firstIndex(where: { onscreenItem in
 				onscreenItem.objectID == refreshedItem.objectID
 			}) { // This item is already onscreen, and we still want it onscreen. If necessary, we'll move it. Later, if necessary, we'll update it.
 				let startingIndexPath = IndexPath(
 					row: indexOfOnscreenItem + numberOfRowsAboveIndexedLibraryItems,
-					section: fixedSection)
+					section: section)
 				let endingIndexPath = IndexPath(
 					row: indexOfRefreshedItem + numberOfRowsAboveIndexedLibraryItems,
-					section: fixedSection)
+					section: section)
 				indexPathsToMove.append(
 					(startingIndexPath, endingIndexPath))
 				
@@ -135,14 +142,14 @@ extension LibraryTVC {
 				indexPathsToInsert.append(
 					IndexPath(
 						row: indexOfRefreshedItem + numberOfRowsAboveIndexedLibraryItems,
-						section: fixedSection))
+						section: section))
 			}
 		}
 		
 		var indexPathsToDelete = [IndexPath]()
 		
-		for index in 0 ..< indexedLibraryItems.count {
-			let onscreenItem = indexedLibraryItems[index]
+		for index in 0 ..< onscreenItems.count {
+			let onscreenItem = onscreenItems[index]
 			if let _ = refreshedItems.firstIndex(where: { refreshedItem in
 				refreshedItem.objectID == onscreenItem.objectID
 			})  {
@@ -151,7 +158,7 @@ extension LibraryTVC {
 				indexPathsToDelete.append(
 					IndexPath(
 						row: index + numberOfRowsAboveIndexedLibraryItems,
-						section: fixedSection))
+						section: section))
 			}
 		}
 		
