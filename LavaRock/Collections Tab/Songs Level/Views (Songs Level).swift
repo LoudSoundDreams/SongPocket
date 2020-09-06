@@ -13,7 +13,7 @@ final class AlbumArtworkCell: UITableViewCell {
 
 final class AlbumInfoCell: UITableViewCell {
 	@IBOutlet var albumArtistLabel: UILabel!
-	@IBOutlet var yearLabel: UILabel!
+	@IBOutlet var releaseDateLabel: UILabel!
 }
 
 final class AlbumInfoCellWithoutReleaseDate: UITableViewCell {

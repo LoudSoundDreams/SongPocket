@@ -29,7 +29,7 @@ extension AlbumsTVC {
 		// Make, configure, and return the cell.
 		if let cellSubtitle = cellSubtitle {
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
-			cell.yearLabel.text = cellSubtitle
+			cell.releaseDateLabel.text = cellSubtitle
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))

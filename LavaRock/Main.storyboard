@@ -324,8 +324,8 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artworkImageView" destination="dHe-RO-OqD" id="MxJ-gU-xuo"/>
+                                    <outlet property="releaseDateLabel" destination="Izv-yI-Ddf" id="HTq-aZ-cB9"/>
                                     <outlet property="titleLabel" destination="Ebr-IM-9g1" id="12z-03-Qgo"/>
-                                    <outlet property="yearLabel" destination="Izv-yI-Ddf" id="HTq-aZ-cB9"/>
                                     <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="yEs-VP-boX"/>
                                 </connections>
                             </tableViewCell>
@@ -461,23 +461,23 @@
                                     <outlet property="artworkImageView" destination="AJa-zb-mTO" id="K6Z-Cx-6ka"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info Cell" id="HA2-HZ-Z2g" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info Cell" id="LjU-Kh-dPv" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="71.666667938232422" width="375" height="69"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HA2-HZ-Z2g" id="57L-IM-v0t">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LjU-Kh-dPv" id="SF6-nk-KdW">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="sw8-xM-ReT">
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="vtt-TP-3k8">
                                             <rect key="frame" x="16" y="11.333333333333332" width="150.66666666666666" height="42.666666666666671"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXO-Md-qpb">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0qU-Rc-iEX">
                                                     <rect key="frame" x="0.0" y="0.0" width="150.66666666666666" height="20.333333333333332"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kS2-rd-NR2">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7E-YU-mvM">
                                                     <rect key="frame" x="0.0" y="28.333333333333325" width="28.666666666666668" height="14.333333333333332"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -487,17 +487,17 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="sw8-xM-ReT" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="57L-IM-v0t" secondAttribute="bottomMargin" id="BEz-ht-UXS"/>
-                                        <constraint firstItem="sw8-xM-ReT" firstAttribute="leading" secondItem="57L-IM-v0t" secondAttribute="leadingMargin" id="ChF-g8-NPa"/>
-                                        <constraint firstItem="sw8-xM-ReT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="57L-IM-v0t" secondAttribute="topMargin" id="HUb-km-HI0"/>
-                                        <constraint firstItem="sw8-xM-ReT" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="57L-IM-v0t" secondAttribute="trailingMargin" id="oRn-Jg-J9B"/>
-                                        <constraint firstItem="sw8-xM-ReT" firstAttribute="centerY" secondItem="57L-IM-v0t" secondAttribute="centerY" constant="-2" id="rkF-YB-ZkO"/>
+                                        <constraint firstItem="vtt-TP-3k8" firstAttribute="leading" secondItem="SF6-nk-KdW" secondAttribute="leadingMargin" id="Ozj-GU-rp3"/>
+                                        <constraint firstItem="vtt-TP-3k8" firstAttribute="centerY" secondItem="SF6-nk-KdW" secondAttribute="centerY" constant="-2" id="eAa-3b-WRM"/>
+                                        <constraint firstItem="vtt-TP-3k8" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="SF6-nk-KdW" secondAttribute="trailingMargin" id="iBF-YW-QZB"/>
+                                        <constraint firstItem="vtt-TP-3k8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SF6-nk-KdW" secondAttribute="topMargin" id="rvo-8b-xzg"/>
+                                        <constraint firstItem="vtt-TP-3k8" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="SF6-nk-KdW" secondAttribute="bottomMargin" id="tey-mE-bmW"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
-                                    <outlet property="albumArtistLabel" destination="AXO-Md-qpb" id="auh-2N-HBs"/>
-                                    <outlet property="yearLabel" destination="kS2-rd-NR2" id="d1Q-X1-Tnm"/>
+                                    <outlet property="albumArtistLabel" destination="0qU-Rc-iEX" id="POk-Ka-niR"/>
+                                    <outlet property="releaseDateLabel" destination="l7E-YU-mvM" id="yAt-uL-27m"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info Cell Without Release Date" id="iaf-Ej-2NQ" customClass="AlbumInfoCellWithoutReleaseDate" customModule="LavaRock" customModuleProvider="target">

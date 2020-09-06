@@ -57,7 +57,6 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
-//	var isUserCurrentlyMovingRowManually = false
 	var respondsToWillSaveChangesFromAppleMusicLibraryNotifications = true
 	var shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
 	var shouldRefreshDataWithAnimationOnNextViewDidAppear = false
@@ -151,9 +150,7 @@ class LibraryTVC:
 		for type: NSFetchedResultsChangeType,
 		newIndexPath: IndexPath?
 	) {
-//		guard !isUserCurrentlyMovingRowManually else {
-//			fatalError("The NSFetchedResultsController reported that an item should be moved automatically while the user was already moving an item manually.")
-//		} // What if the controller reports that an object moved in the data layer, and the user is currently moving an object manually?
+	// What if the controller reports that an object moved in the data layer, and the user is currently moving an object manually?
 		
 		print("NSFetchedResultsController has detected a change to the object: \(anObject)")
 		print("It thinks the type of change should be: \(type)")

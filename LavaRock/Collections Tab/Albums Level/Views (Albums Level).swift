@@ -10,7 +10,7 @@ import UIKit
 final class AlbumCell: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var yearLabel: UILabel!
+	@IBOutlet var releaseDateLabel: UILabel!
 }
 
 final class AlbumCellWithoutReleaseDate: UITableViewCell {

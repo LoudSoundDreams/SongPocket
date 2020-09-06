@@ -52,7 +52,6 @@ extension LibraryTVC {
 		var targetRow = firstIndexPath.row
 		for (indexPath, libraryItem) in pairsToMove {
 			tableView.moveRow(at: indexPath, to: IndexPath(row: targetRow, section: targetSection))
-			// Replace this with swapAt(_:_:)?
 			activeLibraryItems.remove(at: indexPath.row)
 			activeLibraryItems.insert(libraryItem, at: targetRow)
 			tableView.deselectRow(at: IndexPath(row: targetRow, section: targetSection), animated: true) // Wait until after all the rows have moved to do this?
@@ -124,7 +123,7 @@ extension LibraryTVC {
 	}
 	
 	// After editing the sort options, update this class's default sortOptions property (at the top of the file) to include all the options.
-	// Sorting should be stable! Multiple items with the same name, year, or whatever property we're sorting by should stay in the same order.
+	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
 	func sorted(indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
 		switch sortOption {
 		

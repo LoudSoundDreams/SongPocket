@@ -44,7 +44,7 @@ extension SongsTVC {
 			if let cellSubtitle = cellSubtitle {
 				let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell") as! AlbumInfoCell
 				albumInfoCell.albumArtistLabel.text = cellHeading
-				albumInfoCell.yearLabel.text = cellSubtitle
+				albumInfoCell.releaseDateLabel.text = cellSubtitle
 				return albumInfoCell
 				
 			} else { // We couldn't determine the album's release date.

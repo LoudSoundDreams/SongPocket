@@ -124,34 +124,39 @@ extension LibraryTVC {
 		
 		/*
 		TO DO:
-		- Refresh contents of views.
+		
 		- Hack this for SongsTVC.
 		- Hack this for CollectionsTVC and AlbumsTVC while moving albums.
 		- Hack this for MoveAlbumsClipboard.
 		- Refresh containerOfData.
+		
+		update the navigation item title
+		
 		*/
 		
 		print("")
-		
 		print(Self.self)
 		print(String(describing: managedObjectContext.parent))
 		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		
 		let fixedSection = 0
+		refreshRows(inSection: fixedSection, toMatch: refreshedItems)
+		
 		var startingAndEndingIndexPathsOfRowsToMove = [(IndexPath, IndexPath)]()
 		var indexPathsOfNewItems = [IndexPath]()
 		for indexOfRefreshedItem in 0 ..< refreshedItems.count {
 			let refreshedItem = refreshedItems[indexOfRefreshedItem]
-			if let indexOfOutdatedItem = activeLibraryItems.firstIndex(where: { onscreenItem in
+			if let indexOfOnscreenItem = activeLibraryItems.firstIndex(where: { onscreenItem in
 				onscreenItem.objectID == refreshedItem.objectID
-			}) { // This item is already onscreen. We'll update it and maybe move it.
+			}) { // This item is already onscreen, and we still want it onscreen. If necessary, we'll move it. Later, if necessary, we'll update it.
+				let startingIndexPath = IndexPath(row: indexOfOnscreenItem, section: fixedSection)
+				let endingIndexPath = IndexPath(row: indexOfRefreshedItem, section: fixedSection)
 				startingAndEndingIndexPathsOfRowsToMove.append(
-					(IndexPath(row: indexOfOutdatedItem, section: fixedSection),
-					 IndexPath(row: indexOfRefreshedItem, section: fixedSection))
+					(startingIndexPath, endingIndexPath)
 				)
 				
-			} else { // This item isn't onscreen yet, so we'll have to add it.
+			} else { // This item isn't onscreen yet, but we want it onscreen, so we'll have to add it.
 				indexPathsOfNewItems.append(IndexPath(row: indexOfRefreshedItem, section: fixedSection))
 			}
 		}
@@ -184,10 +189,32 @@ extension LibraryTVC {
 			if self.activeLibraryItems.count == 0 {
 				self.performSegue(withIdentifier: "Deleted All Contents", sender: self)
 				return
+			} else {
+				print(self.containerOfData)
+				
+				
+				self.refreshData()
 			}
 		}
 		
 	}
+	
+	func refreshRows(inSection section: Int, toMatch refreshedItems: [NSManagedObject]) {
+		
+		
+		
+	}
+	
+	
+	/*
+	This method is the final step in refreshDataWithAnimation(). The earlier steps delete, insert, and move rows as necessary (with animations), and update the data sources (including activeLibraryItems). This method's job is to update the data in those rows, which might be outdated: for example, songs' titles and albums' release date estimates.
+	The simplest way to do this is to just call tableView.reloadData(). That's infamous for not animating the changes, but we actually animated the deletes, inserts, and moves by ourselves earlier. All we're doing here is updating the data within each row, which generally looks fine without an animation. (If you wanted to add an animation, the most reasonable choice would probably be a fade). With reloadData(), the overall animation for refreshDataWithAnimation() becomes "animate all the row movements, and the instant those movements end, instantly change the data in each row to reflect any updates"—which looks fine.
+	You should override this method if you want to add an animation when you update any data. For example, if it looks jarring to change the album artwork in the songs view without an animation, you might want to refresh that artwork with a fade animation, and leave the rest of the views to update without animations.
+	*/
+	@objc func refreshData() {
+		tableView.reloadData()
+	}
+	
 	
 	func didChangeAccentColor() {
 		guard MPMediaLibrary.authorizationStatus() != .authorized else { return }

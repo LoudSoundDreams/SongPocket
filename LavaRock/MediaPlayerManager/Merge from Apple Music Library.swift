@@ -18,6 +18,8 @@ extension MediaPlayerManager {
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
 	func mergeChangesFromAppleMusicLibrary() {
 		
+		// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data is Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
+		
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			var queriedMediaItems = MPMediaQuery.songs().items
@@ -246,6 +248,9 @@ extension MediaPlayerManager {
 		isAppDatabaseEmpty: Bool,
 		in managedObjectContext: NSManagedObjectContext
 	) {
+//		let newMediaItemCollections = groupedByMPMediaItemCollection(newMediaItems)
+		
+		
 		let newMediaItemsSortedInReverse = sortedInReverseTargetOrder(
 			mediaItems: newMediaItems,
 			isAppDatabaseEmpty: isAppDatabaseEmpty)
@@ -270,6 +275,15 @@ extension MediaPlayerManager {
 				in: managedObjectContext)
 		}
 	}
+	
+	
+//	private func groupedByMPMediaItemCollection(_ mediaItemsImmutable: [MPMediaItem]) -> [MPMediaItemCollection] {
+//		var result = [MPMediaItemCollection]()
+//
+//
+//
+//	}
+	
 	
 	private func sortedInReverseTargetOrder(mediaItems mediaItemsImmutable: [MPMediaItem], isAppDatabaseEmpty: Bool) -> [MPMediaItem] {
 		var mediaItems = mediaItemsImmutable
@@ -307,6 +321,9 @@ extension MediaPlayerManager {
 		
 		return mediaItems
 	}
+	
+	
+	
 	
 	private func createManagedObject(
 		for newMediaItem: MPMediaItem,
