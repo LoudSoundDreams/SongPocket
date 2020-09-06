@@ -34,7 +34,7 @@ extension LibraryTVC {
 			to: IndexPath(row: numberOfRowsAboveIndexedLibraryItems, section: 0))
 	}
 	
-	// NOTE: Every IndexPath in selectedIndexPaths must be in the same section as targetIndexPath, and at or down below targetIndexPath.
+	// Note: Every IndexPath in selectedIndexPaths must be in the same section as targetIndexPath, and at or down below targetIndexPath.
 	func moveItemsUp(from selectedIndexPaths: [IndexPath]?, to firstIndexPath: IndexPath) {
 		
 		guard

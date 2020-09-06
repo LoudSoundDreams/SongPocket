@@ -107,14 +107,14 @@ extension UITableViewController {
 	}
 	
 	// Takes an array of selected IndexPaths and the entire data source for your table view. Returns the data objects associated with the selected items.
-	// NOTE: Only works for IndexPaths in the same section.
+	// Note: Only works for IndexPaths in the same section.
 	func dataObjectsFor(
 		selectedIndexPaths: [IndexPath],
 		tableViewDataSource: [Any],
 		rowForFirstDataSourceItem: Int
 	) -> [Any] {
 		guard !isFromMultipleSections(selectedIndexPaths) else {
-			fatalError("Someone called a function to get the data objects for the selected rows in a UITableView, but the selected rows were from multiple sections. This function, dataObjectsFor(selectedIndexPaths:tableViewDataSource:), only works for rows within the same section.")
+			fatalError("Someone called dataObjectsFor(selectedIndexPaths:tableViewDataSource:rowForFirstDataSourceItem:) to get the data objects for the selected rows in a UITableView, but the selected rows were from multiple sections. This method only works for rows within the same section.")
 		}
 		var result = [Any]()
 		for indexPath in selectedIndexPaths {
@@ -127,7 +127,7 @@ extension UITableViewController {
 	
 	// Moves the rows at the given IndexPaths into a consecutive group of rows, starting at the earliest of the given IndexPaths. Provide the rows in the order you want them to end up in.
 	// For example, if you provide [[0,5], [0,1], [0,3], [0,6]], the earliest IndexPath is [0,1]. This function moves the row that was at [0,5] to [0,1], the row that was at [0,1] to [0,2], the row that was at [0,3] to [0,3], and the row that was at [0,6] to [0,4], shifting the rows that were at [0,2] and [0,4] down to [0,5] and [0,6], respectively.
-	// NOTE: Only works for IndexPaths in the same section.
+	// Note: Only works for IndexPaths in the same section.
 	func moveRowsUpToEarliestRow(_ indexPaths: [IndexPath]) {
 		guard !isFromMultipleSections(indexPaths) else {
 			return
@@ -142,7 +142,7 @@ extension UITableViewController {
 	}
 	
 	// Moves rows from the given IndexPaths into consecutive order, starting at the given starting IndexPath.
-	// NOTE: Only works for IndexPaths in the same section.
+	// Note: Only works for IndexPaths in the same section.
 	private func moveRowsUpToEarliestRow(from indexPaths: [IndexPath], startingAt firstIndexPath: IndexPath) {
 		
 		guard

@@ -57,68 +57,57 @@ extension LibraryTVC {
 		shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = true
 	}
 	
-	@objc func managedObjectContextDidSaveObjectIDs(_ notification: Notification) {
+	func managedObjectContextDidSaveObjectIDs(_ notification: Notification) {
 		guard shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification else { return }
 		shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
 		
 		// Now we need to refresh our data and our views. But to do that, we won't pull the NSManagedObjectIDs out of this notification, because that's more logic for the same result. Instead, we'll just re-fetch our data and see how we need to update our views.
 		
-		print("")
-		print(Self.self)
-		print(String(describing: managedObjectContext.parent))
-		
-		refreshDataWithAnimationWhenVisible()
+		refreshDataAndViewsWhenVisible()
 	}
 	
-	func refreshDataWithAnimationWhenVisible() {
+	func refreshDataAndViewsWhenVisible() {
 		if view.window == nil {
-			shouldRefreshDataWithAnimationOnNextViewDidAppear = true
+			shouldRefreshDataAndViewsOnNextViewDidAppear = true
 		} else {
-			refreshDataWithAnimation()
+			refreshDataAndViews()
 		}
 	}
 	
 	// Easy to override.
-	@objc func refreshDataWithAnimation() {
+	func refreshDataAndViews() {
 		
-		// Remember: in CollectionsTVC and AlbumsTVC, we might be in "moving albums" mode.
+		print("")
+		print(Self.self)
+		print(String(describing: managedObjectContext.parent))
 		
 		/*
 		TO DO:
-		
-		- Hack this for SongsTVC.
-		- Hack this for CollectionsTVC and AlbumsTVC while moving albums.
-		- Hack this for MoveAlbumsClipboard.
-		- Refresh containerOfData.
-		
-		update the navigation item title
-		
+		- Refresh containerOfData (it's a piece of data) and all the views it affects, including the navigation item title.
+		- What if we're moving albums, and those albums get deleted (or modified any other way) by the merger?
+		- What if we're moving albums, and the collection we're moving those albums out of gets modified?
+		- Make this work in CollectionsTVC and AlbumsTVC when they're in "moving albums" mode.
+			- For CollectionsTVC, use numberOfRowsAboveIndexedLibraryItems to rewrite making new collections.
 		*/
 		
-		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
-		refreshTableView(
-			forExistingItems: indexedLibraryItems,
-			toMatchRefreshedItems: refreshedItems,
-			inSection: 0,
-			startingAtRow: numberOfRowsAboveIndexedLibraryItems)
+		refreshTableView()
+		
+		
 	}
 	
-	// Easy to plug arguments into.
-	func refreshTableView(
-		forExistingItems onscreenItems: [NSManagedObject],
-		toMatchRefreshedItems refreshedItems: [NSManagedObject],
-		inSection section: Int,
-		startingAtRow startingRow: Int
-	) {
+	func refreshTableView() {
+		
+		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
+		let fixedSection = 0
 		
 		guard refreshedItems.count >= 1 else {
 			let allIndexPathsInSection = indexPathsEnumeratedIn(
-				section: section,
-				firstRow: 0,
-				lastRow: tableView.numberOfRows(inSection: section))
+				section: fixedSection,
+				firstRow: 0, // For SongsTVC, it could look nice to only delete the song cells (below the album artwork and album info cells), but that would add another state we need to accommodate in tableView(_:numberOfRowsInSection:).
+				lastRow: tableView.numberOfRows(inSection: fixedSection) - 1)
+			indexedLibraryItems = refreshedItems
 			tableView.performBatchUpdates {
 				tableView.deleteRows(at: allIndexPathsInSection, with: .middle)
-//				tableView.deleteSections(section, with: .middle)
 			} completion: { _ in
 				self.didRefreshTableViewRows()
 			}
@@ -134,19 +123,19 @@ extension LibraryTVC {
 				onscreenItem.objectID == refreshedItem.objectID
 			}) { // This item is already onscreen, and we still want it onscreen. If necessary, we'll move it. Later, if necessary, we'll update it.
 				let startingIndexPath = IndexPath(
-					row: startingRow + indexOfOnscreenItem,
-					section: section)
+					row: indexOfOnscreenItem + numberOfRowsAboveIndexedLibraryItems,
+					section: fixedSection)
 				let endingIndexPath = IndexPath(
-					row: startingRow + indexOfRefreshedItem,
-					section: section)
+					row: indexOfRefreshedItem + numberOfRowsAboveIndexedLibraryItems,
+					section: fixedSection)
 				indexPathsToMove.append(
 					(startingIndexPath, endingIndexPath))
 				
 			} else { // This item isn't onscreen yet, but we want it onscreen, so we'll have to add it.
 				indexPathsToInsert.append(
 					IndexPath(
-						row: startingRow + indexOfRefreshedItem,
-						section: section))
+						row: indexOfRefreshedItem + numberOfRowsAboveIndexedLibraryItems,
+						section: fixedSection))
 			}
 		}
 		
@@ -161,14 +150,10 @@ extension LibraryTVC {
 			} else {
 				indexPathsToDelete.append(
 					IndexPath(
-						row: startingRow + index,
-						section: section))
+						row: index + numberOfRowsAboveIndexedLibraryItems,
+						section: fixedSection))
 			}
 		}
-		
-//		print("Deleting rows at: \(indexPathsToDelete)")
-//		print("Inserting rows at: \(indexPathsToInsert)")
-//		print("Moving rows at: \(indexPathsToMove)")
 		
 		indexedLibraryItems = refreshedItems
 		
@@ -190,16 +175,16 @@ extension LibraryTVC {
 			performSegue(withIdentifier: "Deleted All Contents", sender: self)
 			return
 		} else {
-			refreshTableViewData()
+			refreshTableViewRowContents()
 		}
 	}
 	
 	/*
-	This method is the final step in refreshDataWithAnimation(). The earlier steps delete, insert, and move rows as necessary (with animations), and update the data sources (including indexedLibraryItems). This method's job is to update the data in those rows, which might be outdated: for example, songs' titles and albums' release date estimates.
-	The simplest way to do this is to just call tableView.reloadData(). That's infamous for not animating the changes, but we actually animated the deletes, inserts, and moves by ourselves earlier. All we're doing here is updating the data within each row, which generally looks fine without an animation. (If you wanted to add an animation, the most reasonable choice would probably be a fade). With reloadData(), the overall animation for refreshDataWithAnimation() becomes "animate all the row movements, and the instant those movements end, instantly change the data in each row to reflect any updates"—which looks fine.
-	You should override this method if you want to add an animation when you update any data. For example, if it looks jarring to change the album artwork in the songs view without an animation, you might want to refresh that artwork with a fade animation, and leave the rest of the views to update without animations.
+	This is the final step in refreshTableView(forExistingItems:toMatchItems:inSection:). The earlier steps delete, insert, and move rows as necessary (with animations), and update indexedLibraryItems. This method's job is to update the data in those rows, which might be outdated: for example, songs' titles and albums' release date estimates might have changed.
+	The simplest way to do this is to just call tableView.reloadData(). Infamously, that doesn't animate the changes, but we actually animated the deletes, inserts, and moves by ourselves earlier. All we're doing here is updating the data within each row, which generally looks fine without an animation. (If you wanted to add an animation, the most reasonable choice would probably be a fade.) With reloadData(), the overall animation for refreshing the table view becomes "animate all the row movements, and immediately after those movements end, instantly update the data in each row"—which looks fine.
+	You should override this method if you want to add animations when refreshing the contents of the table view. For example, if it looks jarring to change the album artwork in the songs view without an animation, you might want to refresh that artwork with a fade animation, and leave the other rows to update without animations. The hard part is that you'll have to detect the existing content in each row in order to prevent an unnecessary animation if the content hasn't changed.
 	*/
-	@objc func refreshTableViewData() {
+	@objc func refreshTableViewRowContents() {
 		tableView.reloadData()
 	}
 	

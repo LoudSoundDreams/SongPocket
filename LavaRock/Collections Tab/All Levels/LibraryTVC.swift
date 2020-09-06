@@ -62,7 +62,7 @@ class LibraryTVC:
 	}()
 	var respondsToWillSaveChangesFromAppleMusicLibraryNotifications = true
 	var shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
-	var shouldRefreshDataWithAnimationOnNextViewDidAppear = false
+	var shouldRefreshDataAndViewsOnNextViewDidAppear = false
 	
 	// MARK: - Setup
 	
@@ -88,9 +88,9 @@ class LibraryTVC:
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if shouldRefreshDataWithAnimationOnNextViewDidAppear {
-			shouldRefreshDataWithAnimationOnNextViewDidAppear = false
-			refreshDataWithAnimation()
+		if shouldRefreshDataAndViewsOnNextViewDidAppear {
+			shouldRefreshDataAndViewsOnNextViewDidAppear = false
+			refreshDataAndViews()
 		}
 	}
 	

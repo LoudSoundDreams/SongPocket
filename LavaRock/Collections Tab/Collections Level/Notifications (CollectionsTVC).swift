@@ -53,15 +53,6 @@ extension CollectionsTVC {
 	
 	
 	// This is the same as in AlbumsTVC.
-	/*
-	override func deleteFromView(_ idsOfAllDeletedObjects: [NSManagedObjectID]) {
-		super.deleteFromView(idsOfAllDeletedObjects)
-		
-		deleteFromViewWhileMovingAlbums(idsOfAllDeletedObjects)
-	}
-	*/
-	
-	// This is the same as in AlbumsTVC.
 	func deleteFromViewWhileMovingAlbums(_ idsOfAllDeletedObjects: [NSManagedObjectID]) {
 		guard let moveAlbumsClipboard = moveAlbumsClipboard else { return }
 		

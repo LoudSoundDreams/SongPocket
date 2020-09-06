@@ -61,15 +61,15 @@ final class AlbumsTVC:
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
 		if moveAlbumsClipboard != nil {
 		} else {
 //			if fetchedResultsController?.fetchedObjects?.count == 0 {
-			if indexedLibraryItems.isEmpty {
+			if indexedLibraryItems.isEmpty && !shouldRefreshDataAndViewsOnNextViewDidAppear {
 				performSegue(withIdentifier: "Moved All Albums Out", sender: nil)
 			}
 		}
+		
+		super.viewDidAppear(animated)
 	}
 	
 	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
