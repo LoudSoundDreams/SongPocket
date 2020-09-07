@@ -9,7 +9,8 @@ import UIKit
 import CoreData
 
 protocol AlbumMover {
-	var moveAlbumsClipboard: AlbumMoverClipboard? { get set }
+	var albumMoverClipboard: AlbumMoverClipboard? { get set }
+	var shouldRespondToNextMOCDidMergeChangesNotification: Bool { get set }
 	
 	func beginObservingAlbumMoverNotifications()
 	func mocDidMergeChanges()

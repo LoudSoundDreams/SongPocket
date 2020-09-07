@@ -25,7 +25,7 @@ final class CollectionsTVC:
 	static let defaultCollectionTitle = "New Collection"
 	
 	// Variables
-	var moveAlbumsClipboard: AlbumMoverClipboard?
+	var albumMoverClipboard: AlbumMoverClipboard?
 	var shouldRespondToNextMOCDidMergeChangesNotification = false
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var indexOfEmptyCollection: Int?
@@ -40,9 +40,9 @@ final class CollectionsTVC:
 		tableView.separatorInsetReference = .fromAutomaticInsets
 		tableView.separatorInset.left = 0
 		
-		if let moveAlbumsClipboard = moveAlbumsClipboard {
+		if let albumMoverClipboard = albumMoverClipboard {
 			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // You need to do this after reloadIndexedLibraryItems, because it checks the existing collection titles.
+				self.setSuggestedCollectionTitle(for: albumMoverClipboard.idsOfAlbumsBeingMoved) // You need to do this after reloadIndexedLibraryItems, because it checks the existing collection titles.
 			}
 		} else {
 //			DispatchQueue.global(qos: .userInteractive).async { // This speeds up launch time significantly, but first, we need to get merging to actually happen concurrently; otherwise, we have a thread issue.
@@ -59,8 +59,8 @@ final class CollectionsTVC:
 	override func setUpUI() {
 		super.setUpUI()
 		
-		if let moveAlbumsClipboard = moveAlbumsClipboard {
-			navigationItem.prompt = moveAlbumsClipboard.navigationItemPrompt
+		if let albumMoverClipboard = albumMoverClipboard {
+			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 			navigationController?.isToolbarHidden = false
@@ -77,7 +77,7 @@ final class CollectionsTVC:
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if moveAlbumsClipboard != nil {
+		if albumMoverClipboard != nil {
 			makeNewCollectionButton.isEnabled = true
 			
 		} else {
@@ -92,7 +92,7 @@ final class CollectionsTVC:
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if moveAlbumsClipboard != nil {
+		if albumMoverClipboard != nil {
 			deleteCollectionIfEmpty(withIndex: 0)
 			
 		} else {
@@ -123,7 +123,7 @@ final class CollectionsTVC:
 		
 		managedObjectContext.delete(collection)
 		indexedLibraryItems.remove(at: indexOfCollection)
-		if moveAlbumsClipboard != nil {
+		if albumMoverClipboard != nil {
 		} else {
 			managedObjectContext.tryToSave()
 		}
@@ -148,7 +148,7 @@ final class CollectionsTVC:
 			segue.identifier == "Drill Down in Library",
 			let albumsTVC = segue.destination as? AlbumsTVC
 		{
-			albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
+			albumsTVC.albumMoverClipboard = albumMoverClipboard
 			albumsTVC.newCollectionDetector = newCollectionDetector
 		}
 		

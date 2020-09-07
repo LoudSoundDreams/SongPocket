@@ -43,7 +43,7 @@ extension AlbumsTVC {
 			}
 		}
 		
-		modalCollectionsTVC.moveAlbumsClipboard = AlbumMoverClipboard(
+		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
 			idOfCollectionThatAlbumsAreBeingMovedOutOf: idOfSourceCollection,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
 			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove
@@ -65,7 +65,7 @@ extension AlbumsTVC {
 	
 	@IBAction func moveAlbumsHere(_ sender: UIBarButtonItem) {
 		
-		guard let moveAlbumsClipboard = moveAlbumsClipboard else {
+		guard let albumMoverClipboard = albumMoverClipboard else {
 			return
 		}
 		
@@ -79,11 +79,11 @@ extension AlbumsTVC {
 		
 		// Get the albums to move, and to not move.
 		var albumsToMove = [Album]()
-		for albumID in moveAlbumsClipboard.idsOfAlbumsBeingMoved {
+		for albumID in albumMoverClipboard.idsOfAlbumsBeingMoved {
 			albumsToMove.append(managedObjectContext.object(with: albumID) as! Album)
 		}
 		var albumsToNotMove = [Album]()
-		for albumID in moveAlbumsClipboard.idsOfAlbumsNotBeingMoved {
+		for albumID in albumMoverClipboard.idsOfAlbumsNotBeingMoved {
 			albumsToNotMove.append(managedObjectContext.object(with: albumID) as! Album)
 		}
 		

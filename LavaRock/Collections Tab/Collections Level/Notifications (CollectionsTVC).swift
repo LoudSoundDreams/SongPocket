@@ -16,14 +16,14 @@ extension CollectionsTVC {
 	override func beginObservingNotifications() {
 		super.beginObservingNotifications()
 		
-		if moveAlbumsClipboard != nil {
+		if albumMoverClipboard != nil {
 			beginObservingAlbumMoverNotifications()
 		}
 	}
 	
 	// This is the same as in AlbumsTVC.
 	func beginObservingAlbumMoverNotifications() {
-		guard moveAlbumsClipboard != nil else { return }
+		guard albumMoverClipboard != nil else { return }
 		
 		NotificationCenter.default.addObserver(
 			self,
@@ -46,7 +46,7 @@ extension CollectionsTVC {
 	
 	// This is the same as in AlbumsTVC.
 	override func willSaveChangesFromAppleMusicLibrary() {
-		if moveAlbumsClipboard != nil {
+		if albumMoverClipboard != nil {
 			guard respondsToWillSaveChangesFromAppleMusicLibraryNotifications else { return }
 			shouldRespondToNextMOCDidMergeChangesNotification = true
 		} else {
@@ -59,7 +59,7 @@ extension CollectionsTVC {
 	func mocDidMergeChanges() {
 		// We shouldn't respond to all of these notifications. For example, after tapping "Move Here", we move albums into a collection and save the main context, which triggers an NSManagedObjectContextDidMergeChangesObjectIDs notification, and the entire chain starting here can get all the way to refreshTableViewRowContents(), which is just tableView.reloadData() by default, which interrupts the animation inserting the albums into the collection.
 		guard
-			moveAlbumsClipboard != nil,
+			albumMoverClipboard != nil,
 			shouldRespondToNextMOCDidMergeChangesNotification
 		else { return }
 		shouldRespondToNextMOCDidMergeChangesNotification = false
@@ -71,19 +71,19 @@ extension CollectionsTVC {
 	// This is the same as in AlbumsTVC.
 	/*
 	func deleteFromViewWhileMovingAlbums(_ idsOfAllDeletedObjects: [NSManagedObjectID]) {
-		guard let moveAlbumsClipboard = moveAlbumsClipboard else { return }
+		guard let albumMoverClipboard = albumMoverClipboard else { return }
 		
 		for deletedID in idsOfAllDeletedObjects {
-			if let indexOfDeletedAlbumID = moveAlbumsClipboard.idsOfAlbumsBeingMoved.firstIndex(where: { idOfAlbumBeingMoved in
+			if let indexOfDeletedAlbumID = albumMoverClipboard.idsOfAlbumsBeingMoved.firstIndex(where: { idOfAlbumBeingMoved in
 				idOfAlbumBeingMoved == deletedID
 			}) {
-				moveAlbumsClipboard.idsOfAlbumsBeingMoved.remove(at: indexOfDeletedAlbumID)
-				if moveAlbumsClipboard.idsOfAlbumsBeingMoved.count == 0 {
+				albumMoverClipboard.idsOfAlbumsBeingMoved.remove(at: indexOfDeletedAlbumID)
+				if albumMoverClipboard.idsOfAlbumsBeingMoved.count == 0 {
 					dismiss(animated: true, completion: nil)
 				}
 			}
 		}
-		navigationItem.prompt = moveAlbumsClipboard.navigationItemPrompt // This needs to be separate from the code that modifies the array of albums being moved. Otherwise, another AlbumMover could be the one to modify that array, and only that AlbumMover would get an updated navigation item prompt.
+		navigationItem.prompt = albumMoverClipboard.navigationItemPrompt // This needs to be separate from the code that modifies the array of albums being moved. Otherwise, another AlbumMover could be the one to modify that array, and only that AlbumMover would get an updated navigation item prompt.
 	}
 	*/
 	

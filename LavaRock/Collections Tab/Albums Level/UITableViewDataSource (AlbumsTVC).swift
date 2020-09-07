@@ -35,7 +35,7 @@ extension AlbumsTVC {
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 			cell.artworkImageView.image = cellImage
 			cell.titleLabel.text = cellTitle
-			if moveAlbumsClipboard != nil {
+			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
 			return cell
@@ -47,7 +47,7 @@ extension AlbumsTVC {
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 			cell.artworkImageView.image = cellImage
 			cell.titleLabel.text = cellTitle
-			if moveAlbumsClipboard != nil {
+			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
 			return cell

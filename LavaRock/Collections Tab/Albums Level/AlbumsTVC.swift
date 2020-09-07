@@ -23,7 +23,7 @@ final class AlbumsTVC:
 	@IBOutlet var moveAlbumsHereButton: UIBarButtonItem!
 	
 	// Variables
-	var moveAlbumsClipboard: AlbumMoverClipboard?
+	var albumMoverClipboard: AlbumMoverClipboard?
 	var shouldRespondToNextMOCDidMergeChangesNotification = false
 	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
 	
@@ -40,8 +40,8 @@ final class AlbumsTVC:
 		
 		customizeNavigationItemTitle()
 		
-		if let moveAlbumsClipboard = moveAlbumsClipboard {
-			navigationItem.prompt = moveAlbumsClipboard.navigationItemPrompt
+		if let albumMoverClipboard = albumMoverClipboard {
+			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 			tableView.allowsSelection = false
@@ -62,7 +62,7 @@ final class AlbumsTVC:
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		if moveAlbumsClipboard != nil {
+		if albumMoverClipboard != nil {
 		} else {
 //			if fetchedResultsController?.fetchedObjects?.count == 0 {
 			if indexedLibraryItems.isEmpty && !shouldRefreshDataAndViewsOnNextViewDidAppear {

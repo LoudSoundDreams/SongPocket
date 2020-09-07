@@ -35,8 +35,8 @@ extension CollectionsTVC {
 				var configuration = cell.defaultContentConfiguration()
 				configuration.text = collection.title
 				
-				if let moveAlbumsClipboard = moveAlbumsClipboard {
-					if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+				if let albumMoverClipboard = albumMoverClipboard {
+					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						configuration.textProperties.color = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 						// TO DO: Tell VoiceOver that this cell is disabled.
 						cell.selectionStyle = .none
@@ -48,8 +48,8 @@ extension CollectionsTVC {
 			} else { // iOS 13 and earlier
 				cell.textLabel?.text = collection.title
 				
-				if let moveAlbumsClipboard = moveAlbumsClipboard {
-					if collection.objectID == moveAlbumsClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+				if let albumMoverClipboard = albumMoverClipboard {
+					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						cell.textLabel?.isEnabled = false
 						cell.selectionStyle = .none
 					}
