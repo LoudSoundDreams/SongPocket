@@ -23,7 +23,8 @@ final class AlbumsTVC:
 	@IBOutlet var moveAlbumsHereButton: UIBarButtonItem!
 	
 	// Variables
-	var moveAlbumsClipboard: MoveAlbumsClipboard?
+	var moveAlbumsClipboard: AlbumMoverClipboard?
+	var shouldRespondToNextMOCDidMergeChangesNotification = false
 	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
 	
 	// MARK: - Setup

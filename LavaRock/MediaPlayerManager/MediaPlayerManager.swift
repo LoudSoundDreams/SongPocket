@@ -8,14 +8,13 @@
 import MediaPlayer
 import CoreData
 
-class MediaPlayerManager {
+final class MediaPlayerManager {
 	
 	// MARK: - Properties
 	
 	// "Constants"
 	static var playerController: MPMusicPlayerController!//?
 	private var library: MPMediaLibrary?
-	lazy var mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	// Variables
 	var shouldNextMergeBeSynchronous = false

@@ -25,13 +25,16 @@ extension MediaPlayerManager {
 			var queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
-		var managedObjectContext = mainManagedObjectContext
-		if !shouldNextMergeBeSynchronous {
-			shouldNextMergeBeSynchronous = false
-			let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-			childManagedObjectContext.parent = mainManagedObjectContext
-			managedObjectContext = childManagedObjectContext
-		}
+		let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		var managedObjectContext: NSManagedObjectContext
+//		if shouldNextMergeBeSynchronous {
+			managedObjectContext = mainManagedObjectContext
+//		} else {
+//			let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+//			childManagedObjectContext.parent = mainManagedObjectContext
+//			managedObjectContext = childManagedObjectContext
+//		}
+//		shouldNextMergeBeSynchronous = false
 		
 		managedObjectContext.performAndWait {
 			
@@ -61,7 +64,7 @@ extension MediaPlayerManager {
 			// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
 			let newMediaItems = queriedMediaItems
 			
-			/*
+			
 			print("")
 			print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
 			for item in potentiallyModifiedMediaItems {
@@ -76,13 +79,13 @@ extension MediaPlayerManager {
 			print("Deleted songs: \(objectIDsOfSongsToDelete.count)")
 			for songID in objectIDsOfSongsToDelete {
 				let song = managedObjectContext.object(with: songID) as! Song
-				print(song.titleFormattedOrPlaceholder())
+				print(song.persistentID)
 			}
-			*/
+			
 			
 			updateManagedObjects( // Update before creating and deleting, so that we can put new songs above modified songs (easily).
 				// This might make new albums, but not new collections.
-				// Also, this might leave behind "hollow" updated albums, which have no songs in them because they were all moved to other albums; but we won't delete those "hollow" albums, so that if the user also added other songs to that "hollow" album, we can keep that album in the same place, instead of re-adding it to the top.
+				// Also, this might leave behind empty albums, because all the songs in them were moved to other albums; but we won't delete those empty albums for now, so that if the user also added other songs to those empty albums, we can keep those albums in the same place, instead of re-adding them to the top.
 				forSongsWith: potentiallyModifiedSongObjectIDs,
 				toMatch: potentiallyModifiedMediaItems,
 				in: managedObjectContext)

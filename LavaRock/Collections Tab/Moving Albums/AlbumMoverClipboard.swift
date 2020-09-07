@@ -1,5 +1,5 @@
 //
-//  MoveAlbumsClipboard.swift
+//  AlbumMoverClipboard.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-04.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-final class MoveAlbumsClipboard { // This is a class, not a struct, because we use it to share information.
+final class AlbumMoverClipboard { // This is a class, not a struct, because we use it to share information.
 	
 	// MARK: - Properties
 	

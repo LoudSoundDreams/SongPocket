@@ -25,20 +25,14 @@ final class CollectionsTVC:
 	static let defaultCollectionTitle = "New Collection"
 	
 	// Variables
-	var moveAlbumsClipboard: MoveAlbumsClipboard?
+	var moveAlbumsClipboard: AlbumMoverClipboard?
+	var shouldRespondToNextMOCDidMergeChangesNotification = false
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var indexOfEmptyCollection: Int?
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		if moveAlbumsClipboard != nil {
-		} else {
-			mediaPlayerManager.shouldNextMergeBeSynchronous = true // TO DO: Remove this after this view can update itself live.
-			mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
-			// This needs to happen before reloadIndexedLibraryItems, because it includes merging changes from the Apple Music library.
-		}
-		
 		super.viewDidLoad()
 		
 		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration indent their separators in Edit mode, but with broken timing and no animation.
@@ -48,12 +42,19 @@ final class CollectionsTVC:
 		
 		if let moveAlbumsClipboard = moveAlbumsClipboard {
 			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // This needs to happen after reloadIndexedLibraryItems, because it checks the existing collection titles.
+				self.setSuggestedCollectionTitle(for: moveAlbumsClipboard.idsOfAlbumsBeingMoved) // You need to do this after reloadIndexedLibraryItems, because it checks the existing collection titles.
 			}
 		} else {
-			navigationItemButtonsNotEditMode = [optionsButton]
+//			DispatchQueue.global(qos: .userInteractive).async { // This speeds up launch time significantly, but first, we need to get merging to actually happen concurrently; otherwise, we have a thread issue.
+				self.mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
+				// You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
+//			}
+			
+//			navigationItemButtonsNotEditMode = [optionsButton]
 		}
 	}
+	
+	// MARK: Setting Up UI
 	
 	override func setUpUI() {
 		super.setUpUI()
@@ -65,9 +66,13 @@ final class CollectionsTVC:
 			navigationController?.isToolbarHidden = false
 			
 		} else {
+			navigationItemButtonsNotEditMode = [optionsButton]
+			
 			navigationController?.isToolbarHidden = true
 		}
 	}
+	
+	// MARK: Setup Events
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)

@@ -9,8 +9,8 @@ import UIKit
 import CoreData
 
 protocol AlbumMover {
-	var moveAlbumsClipboard: MoveAlbumsClipboard? { get set }
+	var moveAlbumsClipboard: AlbumMoverClipboard? { get set }
 	
 	func beginObservingAlbumMoverNotifications()
-	func deleteFromViewWhileMovingAlbums(_ idsOfAllDeletedObjects: [NSManagedObjectID])
+	func mocDidMergeChanges()
 }

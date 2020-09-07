@@ -36,7 +36,7 @@ class LibraryTVC:
 		target: self,
 		action: #selector(moveSelectedItemsToTop))
 	lazy var sortButton = UIBarButtonItem(
-		image: UIImage(systemName: "arrow.up.arrow.down"), // Needs VoiceOver hint
+		title: "Sort",
 		style: .plain,
 		target: self,
 		action: #selector(showSortOptions))
@@ -61,7 +61,7 @@ class LibraryTVC:
 		return request
 	}()
 	var respondsToWillSaveChangesFromAppleMusicLibraryNotifications = true
-	var shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
+	var shouldRespondToNextMOCDidSaveObjectIDsNotification = false
 	var shouldRefreshDataAndViewsOnNextViewDidAppear = false
 	
 	// MARK: - Setup
@@ -69,29 +69,9 @@ class LibraryTVC:
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		setUpUI()
-		reloadIndexedLibraryItems()
-		
 		beginObservingNotifications()
-	}
-	
-	func setUpUI() {
-		navigationItem.leftBarButtonItems = navigationItemButtonsNotEditMode
-		navigationItem.rightBarButtonItem = editButtonItem
-		navigationItemButtonsEditModeOnly = [floatToTopButton]
-		
-		refreshNavigationBarButtons()
-		
-		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		if shouldRefreshDataAndViewsOnNextViewDidAppear {
-			shouldRefreshDataAndViewsOnNextViewDidAppear = false
-			refreshDataAndViews()
-		}
+		reloadIndexedLibraryItems()
+		setUpUI()
 	}
 	
 	// MARK: Loading Data
@@ -128,6 +108,27 @@ class LibraryTVC:
 		}
 	}
 	*/
+	
+	// MARK: Setting Up UI
+	
+	func setUpUI() {
+		navigationItem.leftBarButtonItems = navigationItemButtonsNotEditMode
+		navigationItem.rightBarButtonItem = editButtonItem
+		navigationItemButtonsEditModeOnly = [floatToTopButton]
+		
+		refreshNavigationBarButtons()
+		
+		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if shouldRefreshDataAndViewsOnNextViewDidAppear {
+			shouldRefreshDataAndViewsOnNextViewDidAppear = false
+			refreshDataAndViews()
+		}
+	}
 	
 	// MARK: Teardown
 	
@@ -167,10 +168,19 @@ class LibraryTVC:
 		
 		if isEditing {
 			floatToTopButton.isEnabled = shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
-			sortButton.isEnabled = shouldAllowSorting()
+			updateSortButton()
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditModeOnly, animated: true)
 		} else {
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditMode, animated: true)
+		}
+	}
+	
+	func updateSortButton() {
+		sortButton.isEnabled = shouldAllowSorting()
+		if tableView.indexPathsForSelectedRows == nil {
+			sortButton.title = "Sort All"
+		} else {
+			sortButton.title = "Sort"
 		}
 	}
 	

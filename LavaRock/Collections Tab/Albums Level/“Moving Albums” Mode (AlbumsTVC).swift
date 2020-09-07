@@ -19,7 +19,7 @@ extension AlbumsTVC {
 		let modalCollectionsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as! UINavigationController
 		let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as! CollectionsTVC
 		
-		// Initialize a MoveAlbumsClipboard for the modal Collections view.
+		// Initialize an AlbumMoverClipboard for the modal Collections view.
 		
 		let idOfSourceCollection = containerOfData!.objectID
 		
@@ -43,7 +43,7 @@ extension AlbumsTVC {
 			}
 		}
 		
-		modalCollectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
+		modalCollectionsTVC.moveAlbumsClipboard = AlbumMoverClipboard(
 			idOfCollectionThatAlbumsAreBeingMovedOutOf: idOfSourceCollection,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
 			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove

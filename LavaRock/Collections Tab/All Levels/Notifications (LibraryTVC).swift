@@ -43,7 +43,7 @@ extension LibraryTVC {
 		case .LRWillSaveChangesFromAppleMusicLibrary:
 			willSaveChangesFromAppleMusicLibrary()
 		case .NSManagedObjectContextDidSaveObjectIDs:
-			managedObjectContextDidSaveObjectIDs(notification)
+			mocDidSave()
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
 		default:
@@ -52,14 +52,17 @@ extension LibraryTVC {
 		}
 	}
 	
-	private func willSaveChangesFromAppleMusicLibrary() {
+	// Override this to change how this class responds to changes from the Apple Music library. Usually (i.e., for the base view controllers, not in "moving albums" mode), the right response is to wait for the next NSManagedObjectContextDidSaveObjectIDs notification and refresh our data and views after that.
+	// When in "moving albums" mode, since the managed object context will be a child of the main one, we should instead wait for the next NSManagedObjectContextDidMergeChangeObjectIDs notification and refresh our data and views after that.
+	@objc func willSaveChangesFromAppleMusicLibrary() {
 		guard respondsToWillSaveChangesFromAppleMusicLibraryNotifications else { return }
-		shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = true
+		shouldRespondToNextMOCDidSaveObjectIDsNotification = true
 	}
 	
-	func managedObjectContextDidSaveObjectIDs(_ notification: Notification) {
-		guard shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification else { return }
-		shouldRespondToNextManagedObjectContextDidSaveObjectIDsNotification = false
+	func mocDidSave() {
+		// We shouldn't respond to all of these notifications. For example, we don't need to do anything after exiting edit mode, which saves the context.
+		guard shouldRespondToNextMOCDidSaveObjectIDsNotification else { return }
+		shouldRespondToNextMOCDidSaveObjectIDsNotification = false
 		
 		// Now we need to refresh our data and our views. But to do that, we won't pull the NSManagedObjectIDs out of this notification, because that's more logic for the same result. Instead, we'll just re-fetch our data and see how we need to update our views.
 		
@@ -74,7 +77,6 @@ extension LibraryTVC {
 		}
 	}
 	
-	// Easy to override.
 	func refreshDataAndViews() {
 		
 		print("")
@@ -83,21 +85,25 @@ extension LibraryTVC {
 		
 		/*
 		TO DO:
-		- Refresh containerOfData (it's a piece of data) and all the views it affects, including the navigation item title.
-		- What if we're moving albums, and those albums get deleted (or modified any other way) by the merger?
+		- Make this work in AlbumsTVC in "moving albums" mode.
+		- Make this work in CollectionsTVC in "moving albums" mode.
+			- Use numberOfRowsAboveIndexedLibraryItems to rewrite making new collections.
 		- What if we're moving albums, and the collection we're moving those albums out of gets modified?
-		- Make this work in CollectionsTVC and AlbumsTVC when they're in "moving albums" mode.
-			- For CollectionsTVC, use numberOfRowsAboveIndexedLibraryItems to rewrite making new collections.
+		- What if we're moving albums, and those albums get deleted (or modified any other way) by the merger?
+		- Refresh containerOfData (it's a piece of data) and all the views it affects, including the navigation item title.
 		*/
 		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
-		refreshTableView(section: 0, onscreenItems: indexedLibraryItems, refreshedItems: refreshedItems)
+		refreshTableView(
+			section: 0,
+			onscreenItems: indexedLibraryItems,
+			refreshedItems: refreshedItems)
 		
 		
 	}
 	
 	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().
-	// Note: Even though this method is easy to plug arguments into, it (currently) has side effects: It replaces indexedLibraryItems with the onscreenItems array you pass in.
+	// Note: Even though this method is easy to plug arguments into, it (currently) has side effects: it replaces indexedLibraryItems with the onscreenItems array that you pass in.
 	func refreshTableView(
 		section: Int,
 		onscreenItems: [NSManagedObject],
@@ -108,6 +114,7 @@ extension LibraryTVC {
 			let allIndexPathsInSection = indexPathsEnumeratedIn(
 				section: section,
 				firstRow: 0, // For SongsTVC, it could look nice to only delete the song cells (below the album artwork and album info cells), but that would add another state we need to accommodate in tableView(_:numberOfRowsInSection:).
+				// Actually, it would be pretty easy to accommodate that extra state; we would return numberOfRowsAboveIndexedLibraryItems and set the "No Songs" placeholder. But I don't know how to put the "No Songs" placeholder below the album artwork and album info cells; setting it to tableView.backgroundView puts it in the center of the table view.
 				lastRow: tableView.numberOfRows(inSection: section) - 1)
 			
 			indexedLibraryItems = refreshedItems
