@@ -1,5 +1,5 @@
 //
-//  UITableViewDataSource (AlbumsTVC).swift
+//  UITableViewDataSource - AlbumsTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-30.

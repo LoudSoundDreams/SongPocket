@@ -1,5 +1,5 @@
 //
-//  Editing (LibraryTVC).swift
+//  Editing - LibraryTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-23.
@@ -43,8 +43,8 @@ extension LibraryTVC {
 		else {
 			return
 		}
-		for indexPath in indexPaths {
-			if indexPath.section != firstIndexPath.section || indexPath.row < firstIndexPath.row {
+		for startingIndexPath in indexPaths {
+			if startingIndexPath.section != firstIndexPath.section || startingIndexPath.row < firstIndexPath.row {
 				return
 			}
 		}
@@ -56,11 +56,16 @@ extension LibraryTVC {
 		) as! [(IndexPath, NSManagedObject)]
 		let targetSection = firstIndexPath.section
 		var targetRow = firstIndexPath.row
-		for (indexPath, matchingItem) in pairsToMove {
-			tableView.moveRow(at: indexPath, to: IndexPath(row: targetRow, section: targetSection))
-			indexedLibraryItems.remove(at: indexPath.row)
-			indexedLibraryItems.insert(matchingItem, at: targetRow)
-			tableView.deselectRow(at: IndexPath(row: targetRow, section: targetSection), animated: true) // Wait until after all the rows have moved to do this?
+		for (startingIndexPath, matchingItem) in pairsToMove {
+			let targetIndexPath = IndexPath(row: targetRow, section: targetSection)
+			tableView.moveRow(at: startingIndexPath, to: targetIndexPath)
+			tableView.deselectRow(at: targetIndexPath, animated: true) // Wait until after all the rows have moved to do this?
+			
+			let startingIndex = startingIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+			let targetIndex = targetRow - numberOfRowsAboveIndexedLibraryItems
+			indexedLibraryItems.remove(at: startingIndex)
+			indexedLibraryItems.insert(matchingItem, at: targetIndex)
+			
 			targetRow += 1
 		}
 		refreshNavigationBarButtons()

@@ -1,5 +1,5 @@
 //
-//  UITableViewDataSource (LibraryTVC).swift
+//  UITableViewDataSource - LibraryTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-30.
@@ -66,9 +66,12 @@ extension LibraryTVC {
 	// MARK: - Rearranging
 	
 	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-		let itemBeingMoved = indexedLibraryItems[fromIndexPath.row - numberOfRowsAboveIndexedLibraryItems]
-		indexedLibraryItems.remove(at: fromIndexPath.row - numberOfRowsAboveIndexedLibraryItems)
-		indexedLibraryItems.insert(itemBeingMoved, at: to.row - numberOfRowsAboveIndexedLibraryItems)
+		let fromIndex = fromIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		let toIndex = to.row - numberOfRowsAboveIndexedLibraryItems
+		
+		let itemBeingMoved = indexedLibraryItems[fromIndex]
+		indexedLibraryItems.remove(at: fromIndex)
+		indexedLibraryItems.insert(itemBeingMoved, at: toIndex)
 		refreshNavigationBarButtons() // If you made selected items non-contiguous, that should disable the Sort button. If you made selected items contiguous, that should enable the Sort button.
 	}
 	

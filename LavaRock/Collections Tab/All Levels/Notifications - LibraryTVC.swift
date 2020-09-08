@@ -1,5 +1,5 @@
 //
-//  Notifications (LibraryTVC).swift
+//  Notifications - LibraryTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-29.
@@ -52,6 +52,8 @@ extension LibraryTVC {
 		}
 	}
 	
+	// MARK: - After Merge from Apple Music Library
+	
 	// Override this to change how this class responds to changes from the Apple Music library. Usually (i.e., for the base view controllers, not in "moving albums" mode), the right response is to wait for the next NSManagedObjectContextDidSaveObjectIDs notification and refresh our data and views after that.
 	// When in "moving albums" mode, since the managed object context will be a child of the main one, we should instead wait for the next NSManagedObjectContextDidMergeChangeObjectIDs notification and refresh our data and views after that.
 	@objc func willSaveChangesFromAppleMusicLibrary() {
@@ -69,6 +71,8 @@ extension LibraryTVC {
 		refreshDataAndViewsWhenVisible()
 	}
 	
+	// MARK: Refreshing Data and Views
+	
 	func refreshDataAndViewsWhenVisible() {
 		if view.window == nil {
 			shouldRefreshDataAndViewsOnNextViewDidAppear = true
@@ -82,17 +86,6 @@ extension LibraryTVC {
 		print("")
 		print(Self.self)
 		print(String(describing: managedObjectContext.parent))
-		
-		/*
-		TO DO:
-		- Make this work in editing mode.
-		- Make this work in AlbumsTVC in "moving albums" mode.
-		- Make this work in CollectionsTVC in "moving albums" mode.
-			- Use numberOfRowsAboveIndexedLibraryItems to rewrite making new collections.
-		- What if we're moving albums, and the collection we're moving those albums out of gets modified?
-		- What if we're moving albums, and those albums get deleted (or modified any other way) by the merger?
-		- Refresh containerOfData (it's a piece of data) and all the views it affects, including the navigation item title.
-		*/
 		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		refreshTableView(
@@ -203,6 +196,8 @@ extension LibraryTVC {
 	@objc func refreshTableViewRowContents() {
 		tableView.reloadData()
 	}
+	
+	// MARK: - After Changing Accent Color
 	
 	func didChangeAccentColor() {
 		guard MPMediaLibrary.authorizationStatus() != .authorized else { return }

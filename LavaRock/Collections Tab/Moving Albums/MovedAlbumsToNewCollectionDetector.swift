@@ -7,7 +7,4 @@
 
 final class MovedAlbumsToNewCollectionDetector {
 	var shouldDetectNewCollectionsOnNextViewWillAppear = false
-	
-	init() {
-	}
 }

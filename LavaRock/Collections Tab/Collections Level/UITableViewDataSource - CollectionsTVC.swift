@@ -1,5 +1,5 @@
 //
-//  UITableViewDataSource (CollectionsTVC).swift
+//  UITableViewDataSource - CollectionsTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-30.

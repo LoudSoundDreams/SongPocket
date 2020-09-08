@@ -1,18 +1,18 @@
 //
-//  Notifications (AlbumsTVC).swift
+//  Notifications - CollectionsTVC.swift
 //  LavaRock
 //
-//  Created by h on 2020-09-03.
+//  Created by h on 2020-09-01.
 //
 
 import UIKit
 import CoreData
 
-extension AlbumsTVC {
+extension CollectionsTVC {
 	
 	// Remember: we might be in "moving albums" mode.
 	
-	// This is the same as in CollectionsTVC.
+	// This is the same as in AlbumsTVC.
 	override func beginObservingNotifications() {
 		super.beginObservingNotifications()
 		
@@ -21,7 +21,7 @@ extension AlbumsTVC {
 		}
 	}
 	
-	// This is the same as in CollectionsTVC.
+	// This is the same as in AlbumsTVC.
 	func beginObservingAlbumMoverNotifications() {
 		guard albumMoverClipboard != nil else { return }
 		
@@ -32,7 +32,7 @@ extension AlbumsTVC {
 			object: managedObjectContext)
 	}
 	
-	// This is the same as in CollectionsTVC.
+	// This is the same as in AlbumsTVC.
 	override func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .NSManagedObjectContextDidMergeChangesObjectIDs:
@@ -44,7 +44,7 @@ extension AlbumsTVC {
 		super.didObserve(notification)
 	}
 	
-	// This is the same as in CollectionsTVC.
+	// This is the same as in AlbumsTVC.
 	override func willSaveChangesFromAppleMusicLibrary() {
 		if albumMoverClipboard != nil {
 			guard respondsToWillSaveChangesFromAppleMusicLibraryNotifications else { return }
@@ -54,7 +54,7 @@ extension AlbumsTVC {
 		}
 	}
 	
-	// This is the same as in CollectionsTVC.
+	// This is the same as in AlbumsTVC.
 	// This is the counterpart to managedObjectContextDidSave() when not moving albums.
 	func managedObjectContextDidMergeChanges() {
 		// We shouldn't respond to all of these notifications. For example, after tapping "Move Here", we move albums into a collection and save the main context, which triggers an NSManagedObjectContextDidMergeChangesObjectIDs notification, and the entire chain starting here can get all the way to refreshTableViewRowContents(), which is just tableView.reloadData() by default, which interrupts the animation inserting the albums into the collection.
@@ -68,6 +68,8 @@ extension AlbumsTVC {
 	
 	
 	
+	// This is the same as in AlbumsTVC.
+	/*
 	func deleteFromViewWhileMovingAlbums(_ idsOfAllDeletedObjects: [NSManagedObjectID]) {
 		guard let albumMoverClipboard = albumMoverClipboard else { return }
 		
@@ -83,6 +85,7 @@ extension AlbumsTVC {
 		}
 		navigationItem.prompt = albumMoverClipboard.navigationItemPrompt // This needs to be separate from the code that modifies the array of albums being moved. Otherwise, another AlbumMover could be the one to modify that array, and only that AlbumMover would get an updated navigation item prompt.
 	}
+	*/
 	
 	
 	

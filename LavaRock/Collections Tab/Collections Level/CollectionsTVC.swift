@@ -46,7 +46,7 @@ final class CollectionsTVC:
 				self.setSuggestedCollectionTitle(for: albumMoverClipboard.idsOfAlbumsBeingMoved) // You need to do this after reloadIndexedLibraryItems, because it checks the existing collection titles.
 			}
 		} else {
-//			DispatchQueue.global(qos: .userInteractive).async { // This speeds up launch time significantly, but first, we need to get merging to actually happen concurrently; otherwise, we have a thread issue.
+//			DispatchQueue.global(qos: .userInteractive).async { // This speeds up launch time significantly, but first, we need to get merging to actually happen concurrently; otherwise, this accesses the main managed object context from the wrong thread.
 				self.mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
 				// You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
 //			}
