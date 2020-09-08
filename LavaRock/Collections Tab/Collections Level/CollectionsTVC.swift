@@ -26,6 +26,7 @@ final class CollectionsTVC:
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
+	var didAlreadyMakeNewCollection = false
 	var shouldRespondToNextMOCDidMergeChangesNotification = false
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var indexOfEmptyCollection: Int?
@@ -35,7 +36,7 @@ final class CollectionsTVC:
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration indent their separators in Edit mode, but with broken timing and no animation.
+		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration change their separator insets when entering and exiting editing mode, but with broken timing and no animation.
 		// This stops the separator insets from changing.
 		tableView.separatorInsetReference = .fromAutomaticInsets
 		tableView.separatorInset.left = 0
@@ -50,7 +51,7 @@ final class CollectionsTVC:
 				// You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
 //			}
 			
-//			navigationItemButtonsNotEditMode = [optionsButton]
+//			navigationItemButtonsNotEditingMode = [optionsButton]
 		}
 	}
 	
@@ -66,7 +67,7 @@ final class CollectionsTVC:
 			navigationController?.isToolbarHidden = false
 			
 		} else {
-			navigationItemButtonsNotEditMode = [optionsButton]
+			navigationItemButtonsNotEditingMode = [optionsButton]
 			
 			navigationController?.isToolbarHidden = true
 		}
@@ -78,8 +79,6 @@ final class CollectionsTVC:
 		super.viewWillAppear(animated)
 		
 		if albumMoverClipboard != nil {
-			makeNewCollectionButton.isEnabled = true
-			
 		} else {
 			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
 				reloadIndexedLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells reloadIndexedLibraryItems() to not call mergeChangesFromAppleMusicLibrary(), because that deletes empty collections for us. We want to animate that.
@@ -130,6 +129,7 @@ final class CollectionsTVC:
 		tableView.deleteRows(
 			at: [IndexPath(row: indexOfCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
 			with: .middle)
+		didAlreadyMakeNewCollection = false
 	}
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {

@@ -28,7 +28,7 @@ final class SongsTVC:
 		super.setUpUI()
 		
 		customizeNavigationItemTitle()
-		navigationItemButtonsEditModeOnly = [floatToTopButton, sortButton]
+		navigationItemButtonsEditingModeOnly = [floatToTopButton, sortButton]
 		sortOptions = ["Track Number"]
 	}
 	

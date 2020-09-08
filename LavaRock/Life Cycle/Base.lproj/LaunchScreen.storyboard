@@ -35,7 +35,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L2Z-q1-q4z">
-                                <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                                <rect key="frame" x="0.0" y="695" width="375" height="83"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items/>
                             </tabBar>
@@ -45,7 +45,7 @@
                         <constraints>
                             <constraint firstItem="L2Z-q1-q4z" firstAttribute="leading" secondItem="KN5-3b-O71" secondAttribute="leading" id="3pM-iT-ba9"/>
                             <constraint firstItem="L2Z-q1-q4z" firstAttribute="trailing" secondItem="KN5-3b-O71" secondAttribute="trailing" id="Ug7-On-E1I"/>
-                            <constraint firstItem="L2Z-q1-q4z" firstAttribute="bottom" secondItem="rnG-KV-ONy" secondAttribute="bottom" id="XOD-AL-6qK"/>
+                            <constraint firstItem="L2Z-q1-q4z" firstAttribute="bottom" secondItem="KN5-3b-O71" secondAttribute="bottomMargin" id="XOD-AL-6qK"/>
                         </constraints>
                     </view>
                 </viewController>

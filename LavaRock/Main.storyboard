@@ -228,15 +228,13 @@
                         </constraints>
                     </view>
                     <toolbarItems>
-                        <barButtonItem title="Go to Previous Song" image="backward.end.alt.fill" catalog="system" style="plain" id="PUF-aj-4Bx"/>
+                        <barButtonItem title="Go to Previous Song" image="backward.end.fill" catalog="system" width="10" style="plain" id="PUF-aj-4Bx"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="gf8-bL-6wb"/>
-                        <barButtonItem title="Restart Current Song" image="backward.end.fill" catalog="system" style="plain" id="VMO-SX-j4p"/>
+                        <barButtonItem title="Restart Current Song" image="arrow.counterclockwise.circle.fill" catalog="system" width="10" style="plain" id="VMO-SX-j4p"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="ax1-F3-Hhu"/>
-                        <barButtonItem title="Play/Pause" image="play.fill" catalog="system" style="plain" id="Svh-gZ-G4D"/>
+                        <barButtonItem title="Play/Pause" image="play.fill" catalog="system" width="10" style="plain" id="Svh-gZ-G4D"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="JXn-Ld-BJz"/>
-                        <barButtonItem title="Go to Next Song" image="forward.end.fill" catalog="system" style="plain" id="1wb-6J-N3a"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="WNM-fP-fup"/>
-                        <barButtonItem title="After Current Song" image="ellipsis.circle.fill" catalog="system" style="plain" id="3Xz-PX-32t"/>
+                        <barButtonItem title="Go to Next Song" image="forward.end.fill" catalog="system" width="10" style="plain" id="1wb-6J-N3a"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Queue" id="W5j-mY-QqY">
                         <barButtonItem key="leftBarButtonItem" title="Remove" id="Wvl-xP-IvU"/>
@@ -717,9 +715,8 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
-        <image name="backward.end.alt.fill" catalog="system" width="128" height="66"/>
+        <image name="arrow.counterclockwise.circle.fill" catalog="system" width="128" height="121"/>
         <image name="backward.end.fill" catalog="system" width="128" height="102"/>
-        <image name="ellipsis.circle.fill" catalog="system" width="128" height="121"/>
         <image name="forward.end.fill" catalog="system" width="128" height="102"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="speaker.fill" catalog="system" width="128" height="128"/>

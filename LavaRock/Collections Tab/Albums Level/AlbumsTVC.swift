@@ -25,6 +25,7 @@ final class AlbumsTVC:
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var shouldRespondToNextMOCDidMergeChangesNotification = false
+	var didAlreadyMoveAlbumsHere = false
 	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
 	
 	// MARK: - Setup
@@ -49,7 +50,7 @@ final class AlbumsTVC:
 			navigationController?.isToolbarHidden = false
 			
 		} else {
-			navigationItemButtonsEditModeOnly = [floatToTopButton, startMovingAlbumsButton]
+			navigationItemButtonsEditingModeOnly = [floatToTopButton, startMovingAlbumsButton]
 			
 			navigationController?.isToolbarHidden = true
 		}
@@ -96,6 +97,7 @@ final class AlbumsTVC:
 	}
 	
 	func updateStartMovingAlbumsButton() {
+		startMovingAlbumsButton.isEnabled = indexedLibraryItems.count > 0
 		if tableView.indexPathsForSelectedRows == nil {
 			startMovingAlbumsButton.title = "Move All"
 		} else {

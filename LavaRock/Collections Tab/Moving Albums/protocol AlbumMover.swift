@@ -13,5 +13,5 @@ protocol AlbumMover {
 	var shouldRespondToNextMOCDidMergeChangesNotification: Bool { get set }
 	
 	func beginObservingAlbumMoverNotifications()
-	func mocDidMergeChanges()
+	func managedObjectContextDidMergeChanges()
 }

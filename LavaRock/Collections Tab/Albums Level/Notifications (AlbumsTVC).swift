@@ -36,7 +36,7 @@ extension AlbumsTVC {
 	override func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .NSManagedObjectContextDidMergeChangesObjectIDs:
-			mocDidMergeChanges()
+			managedObjectContextDidMergeChanges()
 			return
 		default: break
 		}
@@ -55,8 +55,8 @@ extension AlbumsTVC {
 	}
 	
 	// This is the same as in CollectionsTVC.
-	// This is the counterpart to mocDidSave() when not moving albums.
-	func mocDidMergeChanges() {
+	// This is the counterpart to managedObjectContextDidSave() when not moving albums.
+	func managedObjectContextDidMergeChanges() {
 		// We shouldn't respond to all of these notifications. For example, after tapping "Move Here", we move albums into a collection and save the main context, which triggers an NSManagedObjectContextDidMergeChangesObjectIDs notification, and the entire chain starting here can get all the way to refreshTableViewRowContents(), which is just tableView.reloadData() by default, which interrupts the animation inserting the albums into the collection.
 		guard
 			albumMoverClipboard != nil,

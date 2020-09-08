@@ -23,8 +23,8 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving albums" mode.
-	var navigationItemButtonsNotEditMode = [UIBarButtonItem]()
-	var navigationItemButtonsEditModeOnly = [UIBarButtonItem]()
+	var navigationItemButtonsNotEditingMode = [UIBarButtonItem]()
+	var navigationItemButtonsEditingModeOnly = [UIBarButtonItem]()
 	var sortOptions = [String]()
 	
 	// "Constants" that subclasses should not change
@@ -112,9 +112,9 @@ class LibraryTVC:
 	// MARK: Setting Up UI
 	
 	func setUpUI() {
-		navigationItem.leftBarButtonItems = navigationItemButtonsNotEditMode
+		navigationItem.leftBarButtonItems = navigationItemButtonsNotEditingMode
 		navigationItem.rightBarButtonItem = editButtonItem
-		navigationItemButtonsEditModeOnly = [floatToTopButton]
+		navigationItemButtonsEditingModeOnly = [floatToTopButton]
 		
 		refreshNavigationBarButtons()
 		
@@ -156,27 +156,28 @@ class LibraryTVC:
 	// MARK: - Events
 	
 	func refreshNavigationBarButtons() {
-		if
-			MPMediaLibrary.authorizationStatus() == .authorized,
-//			(fetchedResultsController?.fetchedObjects?.count ?? 0) >= 1
-			indexedLibraryItems.count >= 1
-		{
-			editButtonItem.isEnabled = true
-		} else {
-			editButtonItem.isEnabled = false
-		}
+		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI after merging changes from the Apple Music library.
+		
+		editButtonItem.isEnabled =
+			MPMediaLibrary.authorizationStatus() == .authorized &&
+//			(fetchedResultsController?.fetchedObjects?.count ?? 0) > 0
+			indexedLibraryItems.count > 0
 		
 		if isEditing {
-			floatToTopButton.isEnabled = shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
+			floatToTopButton.isEnabled =
+				indexedLibraryItems.count > 0 &&
+				shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
 			updateSortButton()
-			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditModeOnly, animated: true)
+			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingModeOnly, animated: true)
 		} else {
-			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditMode, animated: true)
+			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditingMode, animated: true)
 		}
 	}
 	
 	func updateSortButton() {
-		sortButton.isEnabled = shouldAllowSorting()
+		sortButton.isEnabled =
+			indexedLibraryItems.count > 0 &&
+			shouldAllowSorting()
 		if tableView.indexPathsForSelectedRows == nil {
 			sortButton.title = "Sort All"
 		} else {

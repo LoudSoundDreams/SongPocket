@@ -29,6 +29,9 @@ extension CollectionsTVC {
 	}
 	
 	@IBAction func makeNewCollection(_ sender: UIBarButtonItem) {
+		guard !didAlreadyMakeNewCollection else { return } // Without this, if you're fast, you can finish making a new collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first collection you made.
+		// Another solution would be to disable the "make new collection" button after tapping Done in the dialog (not before then, in case you tap Cancel in the dialog), and re-enabling it if you back out of the new collection, after we delete that new collection; but it's easier to understand the intention of the didAlreadyMakeNewCollection flag.
+		
 		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
@@ -47,7 +50,8 @@ extension CollectionsTVC {
 		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { _ in
 			
-			self.makeNewCollectionButton.isEnabled = false // Without this, if you're fast, you can finish making a new collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first collection you made.
+			self.didAlreadyMakeNewCollection = true
+			
 			// In viewWillAppear, we enable the button, in case you exit the new collection you made, because then we delete it and you should be able to make another one.
 			
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)

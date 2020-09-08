@@ -43,7 +43,7 @@ extension LibraryTVC {
 		case .LRWillSaveChangesFromAppleMusicLibrary:
 			willSaveChangesFromAppleMusicLibrary()
 		case .NSManagedObjectContextDidSaveObjectIDs:
-			mocDidSave()
+			managedObjectContextDidSave()
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
 		default:
@@ -59,8 +59,8 @@ extension LibraryTVC {
 		shouldRespondToNextMOCDidSaveObjectIDsNotification = true
 	}
 	
-	func mocDidSave() {
-		// We shouldn't respond to all of these notifications. For example, we don't need to do anything after exiting edit mode, which saves the context.
+	func managedObjectContextDidSave() {
+		// We shouldn't respond to all of these notifications. For example, we don't need to do anything after exiting editing mode, which saves the context.
 		guard shouldRespondToNextMOCDidSaveObjectIDsNotification else { return }
 		shouldRespondToNextMOCDidSaveObjectIDsNotification = false
 		
@@ -85,6 +85,7 @@ extension LibraryTVC {
 		
 		/*
 		TO DO:
+		- Make this work in editing mode.
 		- Make this work in AlbumsTVC in "moving albums" mode.
 		- Make this work in CollectionsTVC in "moving albums" mode.
 			- Use numberOfRowsAboveIndexedLibraryItems to rewrite making new collections.
