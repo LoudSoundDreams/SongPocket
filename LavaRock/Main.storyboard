@@ -139,7 +139,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="IUP-Az-Qd9"/>
                         <barButtonItem systemItem="add" id="WzK-Aw-24e">
                             <connections>
-                                <action selector="makeNewCollection:" destination="Vce-TP-hYI" id="pzb-wh-2Mn"/>
+                                <action selector="presentDialogToMakeNewCollection:" destination="Vce-TP-hYI" id="pzb-wh-2Mn"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ayd-SA-Efq"/>

@@ -10,7 +10,7 @@ import CoreData
 
 extension CollectionsTVC {
 	
-	// MARK: - Renaming
+	// MARK: - Renaming Collection
 	
 	func renameCollection(at indexPath: IndexPath) {
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false

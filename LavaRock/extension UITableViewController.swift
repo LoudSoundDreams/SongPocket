@@ -74,20 +74,23 @@ extension UITableViewController {
 	
 	// MARK: - Getting IndexPaths
 	
-	func indexPathsEnumeratedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
-		var result = [IndexPath]()
-		for row in firstRow...lastRow {
-			result.append(IndexPath(row: row, section: section))
-		}
-		return result
-	}
-	
 	func selectedOrEnumeratedIndexPathsIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows?.sorted() {
 			return selectedIndexPaths
 		} else {
 			return indexPathsEnumeratedIn(section: section, firstRow: firstRow, lastRow: lastRow)
 		}
+	}
+	
+	func indexPathsEnumeratedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
+		guard lastRow >= firstRow else {
+			return [IndexPath]()
+		}
+		var result = [IndexPath]()
+		for row in firstRow...lastRow {
+			result.append(IndexPath(row: row, section: section))
+		}
+		return result
 	}
 	
 	// MARK: - Getting Data Objects

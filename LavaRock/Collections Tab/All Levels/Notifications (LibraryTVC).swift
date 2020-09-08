@@ -187,6 +187,7 @@ extension LibraryTVC {
 	// Easy to override.
 	func didRefreshTableViewRows() {
 		if indexedLibraryItems.count == 0 {
+//			setEditing(false, animated: true) // Doesn't seem to do anything
 			performSegue(withIdentifier: "Deleted All Contents", sender: self)
 			return
 		} else {

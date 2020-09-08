@@ -10,27 +10,11 @@ import CoreData
 
 extension CollectionsTVC {
 	
-	func setSuggestedCollectionTitle(for idsOfAlbumsBeingMoved: [NSManagedObjectID]) {
-		var existingCollectionTitles = [String]()
-		for item in indexedLibraryItems {
-			if
-				let collection = item as? Collection,
-				let collectionTitle = collection.title
-			{
-				existingCollectionTitles.append(collectionTitle)
-			}
-		}
-		
-		suggestedCollectionTitle = Self.suggestedCollectionTitle(
-			for: idsOfAlbumsBeingMoved,
-			in: managedObjectContext,
-			notMatching: existingCollectionTitles
-		)
-	}
+	// MARK: - Making New Collection
 	
-	@IBAction func makeNewCollection(_ sender: UIBarButtonItem) {
+	@IBAction func presentDialogToMakeNewCollection(_ sender: UIBarButtonItem) {
 		guard !didAlreadyMakeNewCollection else { return } // Without this, if you're fast, you can finish making a new collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first collection you made.
-		// Another solution would be to disable the "make new collection" button after tapping Done in the dialog (not before then, in case you tap Cancel in the dialog), and re-enabling it if you back out of the new collection, after we delete that new collection; but it's easier to understand the intention of the didAlreadyMakeNewCollection flag.
+		// Another solution would be to set makeNewCollectionButton.isEnabled = false after tapping Done in the dialog (not before then, in case you tap Cancel in the dialog), and re-enabling it if you back out of the new collection and after we delete that new collection; but it's easier to understand the intention of the didAlreadyMakeNewCollection flag.
 		
 		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
@@ -52,8 +36,6 @@ extension CollectionsTVC {
 			
 			self.didAlreadyMakeNewCollection = true
 			
-			// In viewWillAppear, we enable the button, in case you exit the new collection you made, because then we delete it and you should be able to make another one.
-			
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
 			
 			// Create the new collection.
@@ -73,10 +55,9 @@ extension CollectionsTVC {
 			
 			self.tableView.performBatchUpdates( {
 				self.tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
-				
 			}, completion: { _ in
 				self.tableView.performBatchUpdates( {
-					self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top) // The entire app crashes if you try to complete scrolling before insertRows.
+					self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top)
 					
 				}, completion: { _ in
 					self.performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
@@ -85,6 +66,25 @@ extension CollectionsTVC {
 			
 		} ) )
 		present(dialog, animated: true, completion: nil)
+	}
+	
+	// MARK: Suggesting Title for New Collection
+	
+	func setSuggestedCollectionTitle(for idsOfAlbumsBeingMoved: [NSManagedObjectID]) {
+		var existingCollectionTitles = [String]()
+		for item in indexedLibraryItems {
+			if
+				let collection = item as? Collection,
+				let collectionTitle = collection.title
+			{
+				existingCollectionTitles.append(collectionTitle)
+			}
+		}
+		
+		suggestedCollectionTitle = Self.suggestedCollectionTitle(
+			for: idsOfAlbumsBeingMoved,
+			in: managedObjectContext,
+			notMatching: existingCollectionTitles)
 	}
 	
 	private enum AlbumPropertyToConsider {
