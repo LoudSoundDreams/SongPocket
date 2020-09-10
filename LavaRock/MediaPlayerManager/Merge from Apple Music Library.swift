@@ -10,14 +10,13 @@ import CoreData
 import MediaPlayer
 
 extension Notification.Name {
-	static let LRWillSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager is about to save changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and the next NSManagedObjectContextDidSave or NSManagedObjectContextDidMergeChangesObjectIDs notification, and refresh their data after that.")
-//	static let LRDidSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager just saved changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and refresh their data now.")
+	static let LRDidSaveChangesFromAppleMusic = Notification.Name("MediaPlayerManager just saved changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and refresh their data now.")
 }
 
 extension MediaPlayerManager {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
-	func mergeChangesFromAppleMusicLibrary() {
+	func mergeChangesFromAppleMusic() {
 		
 		// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data is Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
 		
@@ -131,14 +130,11 @@ extension MediaPlayerManager {
 			
 		}
 		
-		NotificationCenter.default.post(
-			Notification(name: Notification.Name.LRWillSaveChangesFromAppleMusicLibrary)
-		)
 		managedObjectContext.tryToSave()
 		managedObjectContext.parent?.tryToSave()
-//		NotificationCenter.default.post(
-//			Notification(name: Notification.Name.LRDidSaveChangesFromAppleMusicLibrary)
-//		)
+		NotificationCenter.default.post(
+			Notification(name: Notification.Name.LRDidSaveChangesFromAppleMusic)
+		)
 	}
 	
 	// MARK: - Update Managed Objects

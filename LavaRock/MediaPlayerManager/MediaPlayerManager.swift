@@ -28,7 +28,7 @@ final class MediaPlayerManager {
 		
 		Self.playerController = MPMusicPlayerApplicationController.systemMusicPlayer
 		library = MPMediaLibrary.default()
-		mergeChangesFromAppleMusicLibrary()
+		mergeChangesFromAppleMusic()
 		beginObservingAndGeneratingNotifications()
 	}
 	
@@ -82,7 +82,7 @@ final class MediaPlayerManager {
 		:
 			break //
 		case .MPMediaLibraryDidChange:
-			mergeChangesFromAppleMusicLibrary()
+			mergeChangesFromAppleMusic()
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but the app is not set to do anything after observing that notification.")

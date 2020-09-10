@@ -17,18 +17,8 @@ extension LibraryTVC {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
-			name: Notification.Name.LRWillSaveChangesFromAppleMusicLibrary,
+			name: Notification.Name.LRDidSaveChangesFromAppleMusic,
 			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(didObserve(_:)),
-			name: Notification.Name.NSManagedObjectContextDidSaveObjectIDs,
-			object: managedObjectContext)
-//		NotificationCenter.default.addObserver(
-//			self,
-//			selector: #selector(didObserve(_:)),
-//			name: Notification.Name.LRDidSaveChangesFromAppleMusicLibrary,
-//			object: nil)
 		
 		NotificationCenter.default.addObserver(
 			self,
@@ -45,12 +35,8 @@ extension LibraryTVC {
 	
 	@objc func didObserve(_ notification: Notification) {
 		switch notification.name {
-		case .LRWillSaveChangesFromAppleMusicLibrary:
-			willSaveChangesFromAppleMusicLibrary()
-		case .NSManagedObjectContextDidSaveObjectIDs:
-			managedObjectContextDidSave()
-//		case .LRDidSaveChangesFromAppleMusicLibrary:
-//			didSaveChangesFromAppleMusicLibrary()
+		case .LRDidSaveChangesFromAppleMusic:
+			didSaveChangesFromAppleMusic()
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
 		default:
@@ -61,25 +47,11 @@ extension LibraryTVC {
 	
 	// MARK: - After Merge from Apple Music Library
 	
-	@objc func willSaveChangesFromAppleMusicLibrary() {
-		guard refreshesAfterWillSaveChangesFromAppleMusicLibrary else { return }
-		shouldRefreshOnNextManagedObjectContextDidSave = true
+	@objc func didSaveChangesFromAppleMusic() {
+		if refreshesAfterDidSaveChangesFromAppleMusic {
+			refreshDataAndViewsWhenVisible()
+		}
 	}
-	
-	func managedObjectContextDidSave() {
-		// We shouldn't respond to all of these notifications. For example, we don't need to do anything after exiting editing mode, which saves the context.
-		guard shouldRefreshOnNextManagedObjectContextDidSave else { return }
-		shouldRefreshOnNextManagedObjectContextDidSave = false
-		
-		// Now we need to refresh our data and our views. But to do that, we won't pull the NSManagedObjectIDs out of this notification, because that's more logic for the same result. Instead, we'll just re-fetch our data and see how we need to update our views.
-		refreshDataAndViewsWhenVisible()
-	}
-	
-//	private func didSaveChangesFromAppleMusicLibrary() {
-//		if shouldRefreshDataAndViewsAfterDidSaveChangesFromAppleMusicLibraryNotifications {
-//			refreshDataAndViewsWhenVisible()
-//		}
-//	}
 	
 	// MARK: Refreshing Data and Views
 	

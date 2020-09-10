@@ -62,8 +62,7 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
-	var refreshesAfterWillSaveChangesFromAppleMusicLibrary = true
-	var shouldRefreshOnNextManagedObjectContextDidSave = false
+	var refreshesAfterDidSaveChangesFromAppleMusic = true
 	var shouldRefreshOnNextViewDidAppear = false
 	
 	// MARK: - Setup

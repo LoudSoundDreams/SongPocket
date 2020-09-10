@@ -11,11 +11,11 @@ import CoreData
 extension CollectionsTVC {
 	
 	// This is the same as in AlbumsTVC.
-	override func willSaveChangesFromAppleMusicLibrary() {
+	override func didSaveChangesFromAppleMusic() {
 		if albumMoverClipboard != nil {
 			dismiss(animated: true, completion: nil)
 		} else {
-			super.willSaveChangesFromAppleMusicLibrary()
+			super.didSaveChangesFromAppleMusic()
 		}
 	}
 	
