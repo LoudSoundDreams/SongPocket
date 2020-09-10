@@ -84,8 +84,8 @@ extension LibraryTVC {
 		}
 		
 		let refreshedItems = contextToFetchFrom.objectsFetched(for: coreDataFetchRequest)
-		print(refreshedItems)
-		print(indexedLibraryItems)
+//		print(refreshedItems)
+//		print(indexedLibraryItems)
 		refreshTableView(
 			section: 0,
 			onscreenItems: indexedLibraryItems,

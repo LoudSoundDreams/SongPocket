@@ -95,7 +95,9 @@ final class CollectionsTVC:
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
+		if indexOfEmptyCollection == nil { // Prevents refreshDataAndViews() from running if we're deleting a collection after moving all albums out of it.
+			super.viewDidAppear(animated)
+		}
 		
 		if albumMoverClipboard != nil {
 			deleteCollectionIfEmpty(withIndex: 0)
