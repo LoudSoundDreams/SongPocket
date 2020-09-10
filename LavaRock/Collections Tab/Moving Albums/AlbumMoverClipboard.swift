@@ -24,6 +24,7 @@ final class AlbumMoverClipboard { // This is a class, not a struct, because we u
 		}
 	}
 	var didAlreadyMakeNewCollection = false
+	var didAlreadyCommitMoveAlbums = false
 	
 	// MARK: - Methods
 	

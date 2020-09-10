@@ -25,7 +25,6 @@ final class AlbumsTVC:
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var shouldRefreshOnNextManagedObjectContextDidMergeChanges = false
-	var didAlreadyMoveAlbumsHere = false
 	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
 	
 	// MARK: - Setup
