@@ -37,7 +37,7 @@ extension LibraryTVC {
 	}
 	
 	private func didReceiveAuthorizationForAppleMusicLibrary() {
-		shouldRefreshDataAndViewsAfterDidSaveChangesFromAppleMusicLibraryNotifications = false
+		respondsToWillSaveChangesFromAppleMusicLibrary = false
 		mediaPlayerManager.shouldNextMergeBeSynchronous = true
 		viewDidLoad() // Includes mediaPlayerManager.setUpLibraryIfAuthorized(), which includes merging changes from the Apple Music library. Since we set mediaPlayerManager.shouldNextMergeBeSynchronous = true, it will merge synchronously, and CollectionsTVC will call the merge before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
 		// Remove the following and make refreshDataAndViewsWhenVisible() accomodate it instead?
@@ -52,7 +52,7 @@ extension LibraryTVC {
 				tableView.insertRows(at: indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
 			}, completion: nil)
 		}
-		shouldRefreshDataAndViewsAfterDidSaveChangesFromAppleMusicLibraryNotifications = true
+		respondsToWillSaveChangesFromAppleMusicLibrary = true
 	}
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

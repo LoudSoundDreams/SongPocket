@@ -26,6 +26,7 @@ final class CollectionsTVC:
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var didAlreadyMakeNewCollection = false
+	var shouldRefreshOnNextManagedObjectContextDidMergeChanges = false
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var indexOfEmptyCollection: Int?
 	
@@ -40,11 +41,6 @@ final class CollectionsTVC:
 		}
 		
 		super.viewDidLoad()
-		
-		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration change their separator insets when entering and exiting editing mode, but with broken timing and no animation.
-		// This stops the separator insets from changing.
-		tableView.separatorInsetReference = .fromAutomaticInsets
-		tableView.separatorInset.left = 0
 		
 		if albumMoverClipboard != nil {
 		} else {
@@ -61,6 +57,11 @@ final class CollectionsTVC:
 	
 	override func setUpUI() {
 		super.setUpUI()
+		
+		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration change their separator insets when entering and exiting editing mode, but with broken timing and no animation.
+		// This stops the separator insets from changing.
+		tableView.separatorInsetReference = .fromAutomaticInsets
+		tableView.separatorInset.left = 0
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
@@ -91,19 +92,18 @@ final class CollectionsTVC:
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		if indexOfEmptyCollection == nil { // Prevents refreshDataAndViews() from running if we're deleting a collection after moving all albums out of it.
-			super.viewDidAppear(animated)
-		}
+//		if indexOfEmptyCollection == nil {
+			super.viewDidAppear(animated) // Includes refreshDataAndViews(). We always need to call that, because the library might have been modified since we last saw the collections view.
+			// But if we have to delete a collection because we moved all the albums out of it, refreshDataAndViews() will get all the way to reloadData() while we're still animating deleting that collection, which is janky. So in that case, we'll delete our empty collection manually first, then refresh.
+//		}
 		
 		if albumMoverClipboard != nil {
 			deleteCollectionIfEmpty(withIndex: 0)
-			
 		} else {
 			if indexOfEmptyCollection != nil {
 				deleteCollectionIfEmpty(withIndex: indexOfEmptyCollection!)
 				indexOfEmptyCollection = nil
 			}
-			
 		}
 	}
 	
@@ -124,16 +124,23 @@ final class CollectionsTVC:
 			collection.contents?.count == 0
 		else { return }
 		
-		managedObjectContext.delete(collection)
+		managedObjectContext.delete(collection) // Do we need to save after this?
 		indexedLibraryItems.remove(at: indexOfCollection)
 		if albumMoverClipboard != nil {
 		} else {
 			managedObjectContext.tryToSave()
 		}
-		tableView.deleteRows(
-			at: [IndexPath(row: indexOfCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
-			with: .middle)
-		didAlreadyMakeNewCollection = false
+		tableView.performBatchUpdates {
+			tableView.deleteRows(
+				at: [IndexPath(row: indexOfCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
+				with: .middle)
+		} completion: { _ in
+			self.refreshDataAndViews()
+		}
+		
+		if albumMoverClipboard != nil {
+			didAlreadyMakeNewCollection = false
+		}
 	}
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {

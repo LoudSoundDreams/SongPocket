@@ -24,6 +24,7 @@ final class AlbumsTVC:
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
+	var shouldRefreshOnNextManagedObjectContextDidMergeChanges = false
 	var didAlreadyMoveAlbumsHere = false
 	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
 	
@@ -65,7 +66,7 @@ final class AlbumsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 //			if fetchedResultsController?.fetchedObjects?.count == 0 {
-			if indexedLibraryItems.isEmpty && !shouldRefreshDataAndViewsOnNextViewDidAppear {
+			if indexedLibraryItems.isEmpty && !shouldRefreshOnNextViewDidAppear {
 				performSegue(withIdentifier: "Moved All Albums Out", sender: nil)
 			}
 		}

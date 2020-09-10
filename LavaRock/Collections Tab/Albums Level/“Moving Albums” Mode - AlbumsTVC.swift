@@ -69,6 +69,14 @@ extension AlbumsTVC {
 			let albumMoverClipboard = albumMoverClipboard,
 			didAlreadyMoveAlbumsHere == false
 		else { return }
+		
+		// We shouldn't be moving albums to this collection if they're already here.
+		for albumInCollectionToMoveTo in indexedLibraryItems {
+			if albumMoverClipboard.idsOfAlbumsBeingMoved.contains(albumInCollectionToMoveTo.objectID) {
+				return
+			}
+		}
+		
 		didAlreadyMoveAlbumsHere = true // Without this, if you tap the "Move Here" button more than once, the app will crash when it tries to unwind from the "move albums" sheet.
 		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
 		// Another solution would be to set moveAlbumsHereButton.isEnabled = false, but that looks weird and non-standard, and it confuses VoiceOver.
@@ -89,7 +97,7 @@ extension AlbumsTVC {
 		
 		// Find out if we're moving albums to the collection they were already in.
 		// If so, we'll use the "move rows to top" logic.
-		let isMovingToSameCollection = indexedLibraryItems.contains(albumsToMove[0])
+//		let isMovingToSameCollection = indexedLibraryItems.contains(albumsToMove[0])
 		
 		// Apply the changes.
 		
@@ -107,7 +115,7 @@ extension AlbumsTVC {
 			}
 		}
 		
-		if !isMovingToSameCollection {
+//		if !isMovingToSameCollection {
 			for index in 0..<albumsToMove.count {
 				let album = albumsToMove[index]
 				album.container = containerOfData as? Collection
@@ -115,31 +123,31 @@ extension AlbumsTVC {
 			}
 			managedObjectContext.tryToSave()
 			saveParentManagedObjectContext()
-		}
+//		}
 		
 		// If we're moving albums to the collection they're already in, prepare for "move rows to top".
-		var indexPathsToMoveToTop = [IndexPath]()
-		if isMovingToSameCollection {
-			for album in albumsToMove {
-				let index = indexedLibraryItems.firstIndex(of: album)
-				guard index != nil else {
-					fatalError("It looks like we’re moving albums to the collection they’re already in, but one of the albums we’re moving isn’t here.")
-				}
-				indexPathsToMoveToTop.append(IndexPath(row: index!, section: 0))
-			}
-		}
+//		var indexPathsToMoveToTop = [IndexPath]()
+//		if isMovingToSameCollection {
+//			for album in albumsToMove {
+//				let index = indexedLibraryItems.firstIndex(of: album)
+//				guard index != nil else {
+//					fatalError("It looks like we’re moving albums to the collection they’re already in, but one of the albums we’re moving isn’t here.")
+//				}
+//				indexPathsToMoveToTop.append(IndexPath(row: index!, section: 0))
+//			}
+//		}
 		
 		// Update the table view.
 		tableView.performBatchUpdates( {
-			if isMovingToSameCollection {
-				// You need to do this in performBatchUpdates so that the sheet dismisses after the rows finish animating.
-				moveItemsUp(from: indexPathsToMoveToTop, to: IndexPath(row: 0, section: 0))
-				managedObjectContext.tryToSave()
-				saveParentManagedObjectContext()
-			} else {
+//			if isMovingToSameCollection {
+//				// You need to do this in performBatchUpdates so that the sheet dismisses after the rows finish animating.
+//				moveItemsUp(from: indexPathsToMoveToTop, to: IndexPath(row: 0, section: 0))
+//				managedObjectContext.tryToSave()
+//				saveParentManagedObjectContext()
+//			} else {
 				let indexPaths = indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: albumsToMove.count - 1)
 				tableView.insertRows(at: indexPaths, with: .middle)
-			}
+//			}
 			
 		}, completion: { _ in
 			self.performSegue(withIdentifier: "Moved Albums", sender: self)

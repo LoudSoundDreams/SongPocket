@@ -12,6 +12,60 @@ extension CollectionsTVC {
 	
 	// Remember: we might be in "moving albums" mode.
 	
+	// This is the same as in AlbumsTVC.
+	override func beginObservingNotifications() {
+		super.beginObservingNotifications()
+		
+		if albumMoverClipboard != nil {
+			beginObservingAlbumMoverNotifications()
+		}
+	}
+	
+	// This is the same as in AlbumsTVC.
+	func beginObservingAlbumMoverNotifications() {
+		guard albumMoverClipboard != nil else { return }
+		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(didObserve(_:)),
+			name: Notification.Name.NSManagedObjectContextDidMergeChangesObjectIDs,
+			object: managedObjectContext)
+	}
+	
+	// This is the same as in AlbumsTVC.
+	override func didObserve(_ notification: Notification) {
+		switch notification.name {
+		case .NSManagedObjectContextDidMergeChangesObjectIDs:
+			managedObjectContextDidMergeChanges()
+			return
+		default: break
+		}
+		
+		super.didObserve(notification)
+	}
+	
+	// This is the same as in AlbumsTVC.
+	override func willSaveChangesFromAppleMusicLibrary() {
+		if albumMoverClipboard != nil {
+			guard respondsToWillSaveChangesFromAppleMusicLibrary else { return }
+			shouldRefreshOnNextManagedObjectContextDidMergeChanges = true
+		} else {
+			super.willSaveChangesFromAppleMusicLibrary()
+		}
+	}
+	
+	// This is the same as in AlbumsTVC.
+	// This is the counterpart to managedObjectContextDidSave() when not moving albums.
+	func managedObjectContextDidMergeChanges() {
+		// We shouldn't respond to all of these notifications. For example, after tapping "Move Here", we move albums into a collection and save the main context, which triggers an NSManagedObjectContextDidMergeChangesObjectIDs notification, and the entire chain starting here can get all the way to refreshTableViewRowContents(), which is just tableView.reloadData() by default, which interrupts the animation inserting the albums into the collection.
+		guard
+			albumMoverClipboard != nil,
+			shouldRefreshOnNextManagedObjectContextDidMergeChanges
+		else { return }
+		shouldRefreshOnNextManagedObjectContextDidMergeChanges = false
+		refreshDataAndViewsWhenVisible()
+	}
+	
 	
 	// This is the same as in AlbumsTVC.
 	/*

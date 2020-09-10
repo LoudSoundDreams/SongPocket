@@ -10,4 +10,8 @@ import CoreData
 
 protocol AlbumMover {
 	var albumMoverClipboard: AlbumMoverClipboard? { get set }
+	var shouldRefreshOnNextManagedObjectContextDidMergeChanges: Bool { get set }
+	
+	func beginObservingAlbumMoverNotifications()
+	func managedObjectContextDidMergeChanges()
 }

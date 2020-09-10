@@ -10,7 +10,8 @@ import CoreData
 import MediaPlayer
 
 extension Notification.Name {
-	static let LRDidSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager just saved changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and refresh their data now.")
+	static let LRWillSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager is about to save changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and the next NSManagedObjectContextDidSave or NSManagedObjectContextDidMergeChangesObjectIDs notification, and refresh their data after that.")
+//	static let LRDidSaveChangesFromAppleMusicLibrary = Notification.Name("MediaPlayerManager just saved changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and refresh their data now.")
 }
 
 extension MediaPlayerManager {
@@ -130,11 +131,14 @@ extension MediaPlayerManager {
 			
 		}
 		
+		NotificationCenter.default.post(
+			Notification(name: Notification.Name.LRWillSaveChangesFromAppleMusicLibrary)
+		)
 		managedObjectContext.tryToSave()
 		managedObjectContext.parent?.tryToSave()
-		NotificationCenter.default.post(
-			Notification(name: Notification.Name.LRDidSaveChangesFromAppleMusicLibrary)
-		)
+//		NotificationCenter.default.post(
+//			Notification(name: Notification.Name.LRDidSaveChangesFromAppleMusicLibrary)
+//		)
 	}
 	
 	// MARK: - Update Managed Objects

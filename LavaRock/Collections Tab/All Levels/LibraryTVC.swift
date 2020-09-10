@@ -62,8 +62,9 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
-	var shouldRefreshDataAndViewsAfterDidSaveChangesFromAppleMusicLibraryNotifications = true
-	var shouldRefreshDataAndViewsOnNextViewDidAppear = false
+	var respondsToWillSaveChangesFromAppleMusicLibrary = true
+	var shouldRefreshOnNextManagedObjectContextDidSave = false
+	var shouldRefreshOnNextViewDidAppear = false
 	
 	// MARK: - Setup
 	
@@ -122,11 +123,13 @@ class LibraryTVC:
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 	}
 	
+	// MARK: Setup Events
+	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if shouldRefreshDataAndViewsOnNextViewDidAppear {
-			shouldRefreshDataAndViewsOnNextViewDidAppear = false
+		if shouldRefreshOnNextViewDidAppear {
+			shouldRefreshOnNextViewDidAppear = false
 			refreshDataAndViews()
 		}
 	}
