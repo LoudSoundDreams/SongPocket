@@ -49,6 +49,8 @@ class LibraryTVC:
 	// Variables
 	var numberOfRowsAboveIndexedLibraryItems = 0 // This is implied to be true in each section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
 	var indexedLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in this array, because the table view follows this array; not the "index" attribute of each NSManagedObject.
+		// WARNING: indexedLibraryItems[indexPath.row] will not necessarily get the right library item. Whenever you use both indexedLibraryItems and IndexPaths, always subtract from indexPath.row numberOfRowsAboveIndexedLibraryItems, even if it's 0.
+		// This is a hack to allow other rows in the table view above the rows for indexedLibraryItems. This lets us use table view rows for album artwork and album info in SongsTVC. We can also use this for All Albums and New Collection buttons in CollectionsTVC, and All Songs and Move Here buttons in AlbumsTVC.
 		didSet {
 			for index in 0 ..< indexedLibraryItems.count {
 				indexedLibraryItems[index].setValue(index, forKey: "index")
@@ -60,8 +62,7 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
-	var respondsToWillSaveChangesFromAppleMusicLibraryNotifications = true
-	var shouldRespondToNextMOCDidSaveObjectIDsNotification = false
+	var shouldRefreshDataAndViewsAfterDidSaveChangesFromAppleMusicLibraryNotifications = true
 	var shouldRefreshDataAndViewsOnNextViewDidAppear = false
 	
 	// MARK: - Setup

@@ -24,7 +24,6 @@ final class AlbumsTVC:
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
-	var shouldRespondToNextMOCDidMergeChangesNotification = false
 	var didAlreadyMoveAlbumsHere = false
 	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
 	

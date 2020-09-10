@@ -87,18 +87,13 @@ extension CollectionsTVC {
 			notMatching: existingCollectionTitles)
 	}
 	
-	private enum AlbumPropertyToConsider {
-		case albumArtist
-	}
-	
-	private static let rankedAlbumPropertiesToConsiderWhenSuggestingCollectionTitle: [AlbumPropertyToConsider] = [.albumArtist]
-	
 	private static func suggestedCollectionTitle(
 		for albumIDs: [NSManagedObjectID],
 		in managedObjectContext: NSManagedObjectContext,
 		notMatching existingCollectionTitles: [String]?
 	) -> String? {
-		for albumProperty in Self.rankedAlbumPropertiesToConsiderWhenSuggestingCollectionTitle {
+		
+		for albumProperty in AlbumPropertyToConsider.allCases {
 			if let suggestion = suggestedCollectionTitle(
 				for: albumIDs,
 				in: managedObjectContext,
@@ -111,6 +106,10 @@ extension CollectionsTVC {
 			}
 		}
 		return nil
+	}
+	
+	private enum AlbumPropertyToConsider: CaseIterable {
+		case albumArtist // Order matters. First, we'll see if all the albums have the same artist; if they don't, then we'll try the next case, and so on.
 	}
 	
 	private static func suggestedCollectionTitle(
@@ -172,6 +171,5 @@ extension CollectionsTVC {
 			}
 		}
 	}
-	
 	
 }

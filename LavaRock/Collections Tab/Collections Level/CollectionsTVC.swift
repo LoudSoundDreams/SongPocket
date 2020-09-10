@@ -27,13 +27,19 @@ final class CollectionsTVC:
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var didAlreadyMakeNewCollection = false
-	var shouldRespondToNextMOCDidMergeChangesNotification = false
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var indexOfEmptyCollection: Int?
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
+		if albumMoverClipboard != nil {
+		} else {
+			if mediaPlayerManager.shouldNextMergeBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show the user an empty table view while we merge from the Apple Music library for the first time; in that case, we need to merge before calling super, which includes reloadIndexedLibraryItems.
+				mediaPlayerManager.setUpLibraryIfAuthorized()
+			}
+		}
+		
 		super.viewDidLoad()
 		
 		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration change their separator insets when entering and exiting editing mode, but with broken timing and no animation.
