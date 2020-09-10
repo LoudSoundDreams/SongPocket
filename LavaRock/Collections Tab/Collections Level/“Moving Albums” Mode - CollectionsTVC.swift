@@ -27,7 +27,7 @@ extension CollectionsTVC {
 			textField.smartDashesType = .yes
 			
 			// UITextField
-			textField.text = self.suggestedCollectionTitle
+			textField.text = self.suggestedCollectionTitle()
 			textField.placeholder = "Title"
 			textField.clearButtonMode = .whileEditing
 		} )
@@ -70,7 +70,11 @@ extension CollectionsTVC {
 	
 	// MARK: Suggesting Title for New Collection
 	
-	func setSuggestedCollectionTitle(for idsOfAlbumsBeingMoved: [NSManagedObjectID]) {
+	func suggestedCollectionTitle() -> String? {
+		guard let albumMoverClipboard = albumMoverClipboard else {
+			return nil
+		}
+		
 		var existingCollectionTitles = [String]()
 		for item in indexedLibraryItems {
 			if
@@ -81,8 +85,8 @@ extension CollectionsTVC {
 			}
 		}
 		
-		suggestedCollectionTitle = Self.suggestedCollectionTitle(
-			for: idsOfAlbumsBeingMoved,
+		return Self.suggestedCollectionTitle(
+			for: albumMoverClipboard.idsOfAlbumsBeingMoved,
 			in: managedObjectContext,
 			notMatching: existingCollectionTitles)
 	}

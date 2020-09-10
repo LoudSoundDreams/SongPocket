@@ -21,7 +21,6 @@ final class CollectionsTVC:
 	// "Constants"
 	@IBOutlet var optionsButton: UIBarButtonItem!
 	@IBOutlet var makeNewCollectionButton: UIBarButtonItem!
-	var suggestedCollectionTitle: String?
 	static let defaultCollectionTitle = "New Collection"
 	
 	// Variables
@@ -47,10 +46,7 @@ final class CollectionsTVC:
 		tableView.separatorInsetReference = .fromAutomaticInsets
 		tableView.separatorInset.left = 0
 		
-		if let albumMoverClipboard = albumMoverClipboard {
-			DispatchQueue.global(qos: .userInitiated).async {
-				self.setSuggestedCollectionTitle(for: albumMoverClipboard.idsOfAlbumsBeingMoved) // You need to do this after reloadIndexedLibraryItems, because it checks the existing collection titles.
-			}
+		if albumMoverClipboard != nil {
 		} else {
 //			DispatchQueue.global(qos: .userInteractive).async { // This speeds up launch time significantly, but first, we need to get merging to actually happen concurrently; otherwise, this accesses the main managed object context from the wrong thread.
 				self.mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
