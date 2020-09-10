@@ -25,7 +25,6 @@ final class CollectionsTVC:
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
-	var shouldRefreshOnNextManagedObjectContextDidMergeChanges = false
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var indexOfEmptyCollection: Int?
 	

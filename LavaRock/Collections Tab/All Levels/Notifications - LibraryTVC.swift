@@ -61,10 +61,8 @@ extension LibraryTVC {
 	
 	// MARK: - After Merge from Apple Music Library
 	
-	// Easy to override.
-	// When in "moving albums" mode, we have a child managed object context so we should call refreshDataAndViews() after the next NSManagedObjectContextDidMergeChangeObjectIDs notification, rather than the next NSManagedObjectContextDidSave(ObjectIDs) notification.
 	@objc func willSaveChangesFromAppleMusicLibrary() {
-		guard respondsToWillSaveChangesFromAppleMusicLibrary else { return }
+		guard refreshesAfterWillSaveChangesFromAppleMusicLibrary else { return }
 		shouldRefreshOnNextManagedObjectContextDidSave = true
 	}
 	
@@ -98,11 +96,7 @@ extension LibraryTVC {
 		print(Self.self)
 		print(String(describing: managedObjectContext.parent))
 		
-		// If there's a parent context (because we're in "moving albums" mode), reset the context, then fetch?
-		// In that case, you might be able to use LRDidSaveChangesFromAppleMusicLibrary.
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
-//		print(refreshedItems)
-//		print(indexedLibraryItems)
 		refreshTableView(
 			section: 0,
 			onscreenItems: indexedLibraryItems,
