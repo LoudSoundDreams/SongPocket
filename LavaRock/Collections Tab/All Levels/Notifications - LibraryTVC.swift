@@ -62,8 +62,7 @@ extension LibraryTVC {
 	// MARK: - After Merge from Apple Music Library
 	
 	// Easy to override.
-	// Usually (i.e., for the base view controllers, not in "moving albums" mode), the right response after observing LRWillSaveChangesFromAppleMusicLibrary is to wait for the next NSManagedObjectContextDidSave(ObjectIDs) notification and refresh our data and views after that.
-	// But when in "moving albums" mode, since the managed object context will be a child of the main one, we should instead wait for the next NSManagedObjectContextDidMergeChangeObjectIDs notification and refresh our data and views after that.
+	// When in "moving albums" mode, we have a child managed object context so we should call refreshDataAndViews() after the next NSManagedObjectContextDidMergeChangeObjectIDs notification, rather than the next NSManagedObjectContextDidSave(ObjectIDs) notification.
 	@objc func willSaveChangesFromAppleMusicLibrary() {
 		guard respondsToWillSaveChangesFromAppleMusicLibrary else { return }
 		shouldRefreshOnNextManagedObjectContextDidSave = true
@@ -75,7 +74,6 @@ extension LibraryTVC {
 		shouldRefreshOnNextManagedObjectContextDidSave = false
 		
 		// Now we need to refresh our data and our views. But to do that, we won't pull the NSManagedObjectIDs out of this notification, because that's more logic for the same result. Instead, we'll just re-fetch our data and see how we need to update our views.
-		
 		refreshDataAndViewsWhenVisible()
 	}
 	
@@ -120,7 +118,6 @@ extension LibraryTVC {
 		refreshedItems: [NSManagedObject],
 		completion: (() -> ())?
 	) {
-		
 		guard refreshedItems.count >= 1 else {
 			deleteAllRowsThenExit()
 			return
@@ -176,7 +173,6 @@ extension LibraryTVC {
 				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
 		} completion: { _ in (completion ?? { })() }
-		
 	}
 	
 	func deleteAllRowsThenExit() {
@@ -193,6 +189,7 @@ extension LibraryTVC {
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
 		} completion: { _ in
 //			self.setEditing(false, animated: true) // Doesn't seem to do anything
+			guard !(self is CollectionsTVC) else { return } // TO DO: Does this work?
 			self.performSegue(withIdentifier: "Deleted All Contents", sender: self)
 		}
 	}
@@ -210,7 +207,7 @@ extension LibraryTVC {
 	}
 	
 	/*
-	This is the final step in refreshTableView(forExistingItems:toMatchItems:inSection:). The earlier steps delete, insert, and move rows as necessary (with animations), and update indexedLibraryItems. This method's job is to update the data in those rows, which might be outdated: for example, songs' titles and albums' release date estimates might have changed.
+	This is the final step in refreshTableView. The earlier steps delete, insert, and move rows as necessary (with animations), and update indexedLibraryItems. This method's job is to update the data in those rows, which might be outdated: for example, songs' titles and albums' release date estimates might have changed.
 	The simplest way to do this is to just call tableView.reloadData(). Infamously, that doesn't animate the changes, but we actually animated the deletes, inserts, and moves by ourselves earlier. All we're doing here is updating the data within each row, which generally looks fine without an animation. (If you wanted to add an animation, the most reasonable choice would probably be a fade.) With reloadData(), the overall animation for refreshing the table view becomes "animate all the row movements, and immediately after those movements end, instantly update the data in each row"—which looks fine.
 	You should override this method if you want to add animations when refreshing the contents of the table view. For example, if it looks jarring to change the album artwork in the songs view without an animation, you might want to refresh that artwork with a fade animation, and leave the other rows to update without animations. The hard part is that you'll have to detect the existing content in each row in order to prevent an unnecessary animation if the content hasn't changed.
 	*/

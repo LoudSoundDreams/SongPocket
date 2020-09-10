@@ -62,6 +62,8 @@ final class AlbumsTVC:
 		}
 	}
 	
+	// MARK: Setup Events
+	
 	override func viewDidAppear(_ animated: Bool) {
 		if albumMoverClipboard != nil {
 		} else {

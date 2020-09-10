@@ -206,9 +206,9 @@ class LibraryTVC:
 			let selectedIndexPath = tableView.indexPathForSelectedRow//,
 //			let selectedItem = fetchedResultsController?.object(at: selectedIndexPath)
 		{
+			destination.managedObjectContext = managedObjectContext
 			let selectedItem = indexedLibraryItems[selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems]
 			destination.containerOfData = selectedItem
-			destination.managedObjectContext = managedObjectContext
 		}
 		
 		super.prepare(for: segue, sender: sender)

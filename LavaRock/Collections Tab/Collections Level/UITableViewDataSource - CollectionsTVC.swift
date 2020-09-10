@@ -15,11 +15,11 @@ extension CollectionsTVC {
 			return super.tableView(tableView, cellForRowAt: indexPath)
 		}
 		
-		if false {
+		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
 			
+			return UITableViewCell()
 			
-			
-		} else {
+		} else { // Return a cell for an item in indexedLibraryItems.
 			
 			// Get the data to put into the cell.
 			/*

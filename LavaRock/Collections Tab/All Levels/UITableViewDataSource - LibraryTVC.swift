@@ -13,7 +13,7 @@ extension LibraryTVC {
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		// You need to accommodate 2 special cases:
 		// 1. When the user hasn't allowed access to Apple Music, use the "Allow Access to Apple Music" cell as a button.
-		// 2. When there are no items, set the "Add some songs to the Apple Music app." placeholder cell to the background view.
+		// 2. When there are no items, set the no-content placeholder to the background view.
 		refreshNavigationBarButtons()
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
@@ -47,7 +47,7 @@ extension LibraryTVC {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return allowAccessCell(for: indexPath)
 		}
-		return UITableViewCell()
+		return UITableViewCell() //
 	}
 	
 	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {

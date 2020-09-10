@@ -25,7 +25,6 @@ final class CollectionsTVC:
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
-	var didAlreadyMakeNewCollection = false
 	var shouldRefreshOnNextManagedObjectContextDidMergeChanges = false
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var indexOfEmptyCollection: Int?
@@ -97,8 +96,10 @@ final class CollectionsTVC:
 			// But if we have to delete a collection because we moved all the albums out of it, refreshDataAndViews() will get all the way to reloadData() while we're still animating deleting that collection, which is janky. So in that case, we'll delete our empty collection manually first, then refresh.
 //		}
 		
-		if albumMoverClipboard != nil {
-			deleteCollectionIfEmpty(withIndex: 0)
+		if let albumMoverClipboard = albumMoverClipboard {
+			if albumMoverClipboard.didAlreadyMakeNewCollection {
+				deleteCollectionIfEmpty(withIndex: 0)
+			}
 		} else {
 			if indexOfEmptyCollection != nil {
 				deleteCollectionIfEmpty(withIndex: indexOfEmptyCollection!)
@@ -144,8 +145,8 @@ final class CollectionsTVC:
 ////			self.refreshDataAndViews()
 //		}
 		
-		if albumMoverClipboard != nil {
-			didAlreadyMakeNewCollection = false
+		if let albumMoverClipboard = albumMoverClipboard {
+			albumMoverClipboard.didAlreadyMakeNewCollection = false
 		}
 	}
 	

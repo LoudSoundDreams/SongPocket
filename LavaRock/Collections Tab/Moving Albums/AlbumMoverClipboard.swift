@@ -23,6 +23,7 @@ final class AlbumMoverClipboard { // This is a class, not a struct, because we u
 			return "Choose a collection to move \(number) albums to."
 		}
 	}
+	var didAlreadyMakeNewCollection = false
 	
 	// MARK: - Methods
 	
