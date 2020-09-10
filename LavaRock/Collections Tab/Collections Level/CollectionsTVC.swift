@@ -105,6 +105,10 @@ final class CollectionsTVC:
 				indexOfEmptyCollection = nil
 			}
 		}
+		
+//		if indexOfEmptyCollection == nil {
+//			super.viewDidAppear(animated)
+//		}
 	}
 	
 	@IBAction func unwindToCollectionsAfterMovingAllAlbumsOut(_ unwindSegue: UIStoryboardSegue) {
@@ -124,19 +128,21 @@ final class CollectionsTVC:
 			collection.contents?.count == 0
 		else { return }
 		
-		managedObjectContext.delete(collection) // Do we need to save after this?
+		managedObjectContext.delete(collection)
 		indexedLibraryItems.remove(at: indexOfCollection)
 		if albumMoverClipboard != nil {
 		} else {
 			managedObjectContext.tryToSave()
 		}
-		tableView.performBatchUpdates {
+//		tableView.performBatchUpdates {
 			tableView.deleteRows(
 				at: [IndexPath(row: indexOfCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
 				with: .middle)
-		} completion: { _ in
-			self.refreshDataAndViews()
-		}
+//		} completion: { _ in
+//			self.indexOfEmptyCollection = nil
+//			super.viewDidAppear(true)
+////			self.refreshDataAndViews()
+//		}
 		
 		if albumMoverClipboard != nil {
 			didAlreadyMakeNewCollection = false

@@ -6,5 +6,5 @@
 //
 
 protocol NavigationItemTitleCustomizer {
-	func customizeNavigationItemTitle()
+	func refreshNavigationItemTitle()
 }

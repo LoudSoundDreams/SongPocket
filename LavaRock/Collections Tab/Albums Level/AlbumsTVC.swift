@@ -39,7 +39,7 @@ final class AlbumsTVC:
 	override func setUpUI() {
 		super.setUpUI()
 		
-		customizeNavigationItemTitle()
+		refreshNavigationItemTitle()
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
@@ -56,7 +56,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-	func customizeNavigationItemTitle() {
+	func refreshNavigationItemTitle() {
 		if let containingCollection = containerOfData as? Collection {
 			title = containingCollection.title
 		}

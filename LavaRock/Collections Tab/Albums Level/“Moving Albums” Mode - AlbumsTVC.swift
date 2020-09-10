@@ -95,10 +95,6 @@ extension AlbumsTVC {
 			albumsToNotMove.append(managedObjectContext.object(with: albumID) as! Album)
 		}
 		
-		// Find out if we're moving albums to the collection they were already in.
-		// If so, we'll use the "move rows to top" logic.
-//		let isMovingToSameCollection = indexedLibraryItems.contains(albumsToMove[0])
-		
 		// Apply the changes.
 		
 		// Update the indexes of the albums we aren't moving, within their collection.
@@ -115,40 +111,18 @@ extension AlbumsTVC {
 			}
 		}
 		
-//		if !isMovingToSameCollection {
-			for index in 0..<albumsToMove.count {
-				let album = albumsToMove[index]
-				album.container = containerOfData as? Collection
-				indexedLibraryItems.insert(album, at: index)
-			}
-			managedObjectContext.tryToSave()
-			saveParentManagedObjectContext()
-//		}
-		
-		// If we're moving albums to the collection they're already in, prepare for "move rows to top".
-//		var indexPathsToMoveToTop = [IndexPath]()
-//		if isMovingToSameCollection {
-//			for album in albumsToMove {
-//				let index = indexedLibraryItems.firstIndex(of: album)
-//				guard index != nil else {
-//					fatalError("It looks like we’re moving albums to the collection they’re already in, but one of the albums we’re moving isn’t here.")
-//				}
-//				indexPathsToMoveToTop.append(IndexPath(row: index!, section: 0))
-//			}
-//		}
+		for index in 0..<albumsToMove.count {
+			let album = albumsToMove[index]
+			album.container = containerOfData as? Collection
+			indexedLibraryItems.insert(album, at: index)
+		}
+		managedObjectContext.tryToSave()
+		saveParentManagedObjectContext()
 		
 		// Update the table view.
+		let indexPathsToInsert = indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: albumsToMove.count - 1)
 		tableView.performBatchUpdates( {
-//			if isMovingToSameCollection {
-//				// You need to do this in performBatchUpdates so that the sheet dismisses after the rows finish animating.
-//				moveItemsUp(from: indexPathsToMoveToTop, to: IndexPath(row: 0, section: 0))
-//				managedObjectContext.tryToSave()
-//				saveParentManagedObjectContext()
-//			} else {
-				let indexPaths = indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: albumsToMove.count - 1)
-				tableView.insertRows(at: indexPaths, with: .middle)
-//			}
-			
+				tableView.insertRows(at: indexPathsToInsert, with: .middle)
 		}, completion: { _ in
 			self.performSegue(withIdentifier: "Moved Albums", sender: self)
 		})

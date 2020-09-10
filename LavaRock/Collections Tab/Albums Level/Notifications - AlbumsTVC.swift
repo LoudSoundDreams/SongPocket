@@ -66,6 +66,13 @@ extension AlbumsTVC {
 		refreshDataAndViewsWhenVisible()
 	}
 	
+	// This is the same as in SongsTVC.
+	override func refreshContainerOfData() {
+		super.refreshContainerOfData()
+		
+		refreshNavigationItemTitle()
+	}
+	
 	
 	// This is the same as in CollectionsTVC.
 	/*

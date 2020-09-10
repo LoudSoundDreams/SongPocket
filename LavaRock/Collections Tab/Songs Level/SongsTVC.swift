@@ -27,12 +27,12 @@ final class SongsTVC:
 	override func setUpUI() {
 		super.setUpUI()
 		
-		customizeNavigationItemTitle()
+		refreshNavigationItemTitle()
 		navigationItemButtonsEditingModeOnly = [floatToTopButton, sortButton]
 		sortOptions = ["Track Number"]
 	}
 	
-	func customizeNavigationItemTitle() {
+	func refreshNavigationItemTitle() {
 		if let containingAlbum = containerOfData as? Album {
 			title = containingAlbum.titleFormattedOrPlaceholder()
 		}
