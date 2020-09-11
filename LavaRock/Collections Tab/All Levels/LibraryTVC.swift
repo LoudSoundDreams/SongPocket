@@ -88,7 +88,7 @@ class LibraryTVC:
 	}
 	
 	/*
-	func updateFetchedResultsController() {
+	private func updateFetchedResultsController() {
 		NSFetchedResultsController<NSManagedObject>.deleteCache(withName: fetchedResultsController?.cacheName)
 
 		if let containerOfData = containerOfData {
@@ -177,7 +177,7 @@ class LibraryTVC:
 		}
 	}
 	
-	func updateSortButton() {
+	private func updateSortButton() {
 		sortButton.isEnabled =
 			indexedLibraryItems.count > 0 &&
 			shouldAllowSorting()
@@ -188,7 +188,7 @@ class LibraryTVC:
 		}
 	}
 	
-	@objc func cancelMoveAlbums() {
+	@objc private func cancelMoveAlbums() {
 		dismiss(animated: true, completion: nil)
 	}
 	

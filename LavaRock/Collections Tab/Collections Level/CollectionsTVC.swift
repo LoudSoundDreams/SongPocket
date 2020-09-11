@@ -122,7 +122,7 @@ final class CollectionsTVC:
 	
 	// MARK: - Events
 	
-	func deleteCollectionIfEmpty(withIndex indexOfCollection: Int) {
+	private func deleteCollectionIfEmpty(withIndex indexOfCollection: Int) {
 		guard
 			let collection = indexedLibraryItems[indexOfCollection] as? Collection,
 			collection.contents?.count == 0

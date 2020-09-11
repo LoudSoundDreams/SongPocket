@@ -103,21 +103,16 @@ extension AlbumsTVC {
 			albumsToNotMove[index].setValue(index, forKey: "index")
 		}
 		
-		func saveParentManagedObjectContext() {
-			do {
-				try managedObjectContext.parent!.save()
-			} catch {
-				fatalError("Crashed while trying to commit changes, just before dismissing the “move albums” sheet: \(error)")
-			}
-		}
-		
 		for index in 0..<albumsToMove.count {
 			let album = albumsToMove[index]
 			album.container = containerOfData as? Collection
 			indexedLibraryItems.insert(album, at: index)
 		}
 		managedObjectContext.tryToSave()
-		saveParentManagedObjectContext()
+		guard let mainManagedObjectContext = managedObjectContext.parent else {
+			fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move albums” sheet.")
+		}
+		mainManagedObjectContext.tryToSave()
 		
 		// Update the table view.
 		let indexPathsToInsert = indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: albumsToMove.count - 1)

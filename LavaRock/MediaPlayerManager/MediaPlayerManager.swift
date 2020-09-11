@@ -38,7 +38,7 @@ final class MediaPlayerManager {
 	
 	// MARK: - Notifications
 	
-	func beginObservingAndGeneratingNotifications() {
+	private func beginObservingAndGeneratingNotifications() {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
@@ -73,7 +73,7 @@ final class MediaPlayerManager {
 	}
 	
 	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
-	@objc func didObserve(_ notification: Notification) {
+	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case
 			UIApplication.didBecomeActiveNotification, // Update toolbar buttons, current song
@@ -89,7 +89,7 @@ final class MediaPlayerManager {
 		}
 	}
 	
-	func endObservingAndGeneratingNotifications() {
+	private func endObservingAndGeneratingNotifications() {
 		NotificationCenter.default.removeObserver(self)
 		library?.endGeneratingLibraryChangeNotifications()
 		Self.playerController.endGeneratingPlaybackNotifications()

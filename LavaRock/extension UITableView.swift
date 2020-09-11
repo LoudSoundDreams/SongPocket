@@ -16,23 +16,4 @@ extension UITableView {
 		}
 	}
 	
-	/*
-	func containsDuplicates(_ indexPaths: [IndexPath]) -> Bool {
-		return containsDuplicatesHelper(sortedIndexPaths: indexPaths.sorted())
-	}
-	
-	// WARNING: I intend this to be a helper function only. The IndexPaths must be sorted.
-	func containsDuplicatesHelper(sortedIndexPaths: [IndexPath]) -> Bool {
-		if sortedIndexPaths.count < 2 {
-			return false
-		} else if sortedIndexPaths[0] == sortedIndexPaths[1] {
-			return true
-		} else {
-			var sortedIndexPathsCopy = sortedIndexPaths
-			sortedIndexPathsCopy.remove(at: 0)
-			return containsDuplicatesHelper(sortedIndexPaths: sortedIndexPathsCopy)
-		}
-	}
-	*/
-	
 }

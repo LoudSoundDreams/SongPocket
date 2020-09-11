@@ -96,7 +96,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-	func updateStartMovingAlbumsButton() {
+	private func updateStartMovingAlbumsButton() {
 		startMovingAlbumsButton.isEnabled = indexedLibraryItems.count > 0
 		if tableView.indexPathsForSelectedRows == nil {
 			startMovingAlbumsButton.title = "Move All"

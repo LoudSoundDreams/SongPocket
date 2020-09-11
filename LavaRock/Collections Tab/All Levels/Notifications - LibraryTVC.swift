@@ -55,7 +55,7 @@ extension LibraryTVC {
 	
 	// MARK: Refreshing Data and Views
 	
-	func refreshDataAndViewsWhenVisible() {
+	final func refreshDataAndViewsWhenVisible() {
 		if view.window == nil {
 			shouldRefreshOnNextViewDidAppear = true
 		} else {
@@ -67,6 +67,8 @@ extension LibraryTVC {
 		print("")
 		print(Self.self)
 		print(String(describing: managedObjectContext.parent))
+		
+		dismiss(animated: true, completion: nil) // Cancel any "breath-holding" modes that might depend on up-to-date data, including the "move albums" sheet and the action sheet after you tap on a song in SongsTVC.
 		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		refreshTableView(
@@ -141,7 +143,7 @@ extension LibraryTVC {
 		} completion: { _ in (completion ?? { })() }
 	}
 	
-	func deleteAllRowsThenExit() {
+	final func deleteAllRowsThenExit() {
 		var allIndexPaths = [IndexPath]()
 		for section in 0 ..< tableView.numberOfSections {
 			let allIndexPathsInSection = indexPathsEnumeratedIn(
@@ -183,7 +185,7 @@ extension LibraryTVC {
 	
 	// MARK: - After Changing Accent Color
 	
-	func didChangeAccentColor() {
+	private func didChangeAccentColor() {
 		guard MPMediaLibrary.authorizationStatus() != .authorized else { return }
 		tableView.reloadData()
 	}
