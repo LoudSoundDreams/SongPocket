@@ -17,7 +17,7 @@ final class SongsTVC:
 	
 	// MARK: - Properties
 	
-	var isPresentingSongActions = false // If an action sheet is presented when we're about to save changes from the Apple Music library, we'll dismiss before refreshing with updates.
+	var isPresentingSongActions = false // If an action sheet is onscreen, we'll dismiss it before refreshing to reflect changes in the Apple Music library.
 	
 	// MARK: - Setup
 	

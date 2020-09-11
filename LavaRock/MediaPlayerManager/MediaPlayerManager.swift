@@ -13,8 +13,14 @@ final class MediaPlayerManager {
 	// MARK: - Properties
 	
 	// "Constants"
-	static var playerController: MPMusicPlayerController!//?
+	static var playerController = MPMusicPlayerApplicationController.systemMusicPlayer // We can access this without asking the user for authorization.
 	private var library: MPMediaLibrary?
+//	lazy var privateManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+//	lazy var operationQueue: OperationQueue = {
+//		let queue = OperationQueue()
+//		queue.maxConcurrentOperationCount = 1
+//		return queue
+//	}()
 	
 	// Variables
 	var shouldNextMergeBeSynchronous = false
@@ -26,7 +32,6 @@ final class MediaPlayerManager {
 			return
 		}
 		
-		Self.playerController = MPMusicPlayerApplicationController.systemMusicPlayer
 		library = MPMediaLibrary.default()
 		mergeChangesFromAppleMusic()
 		beginObservingAndGeneratingNotifications()

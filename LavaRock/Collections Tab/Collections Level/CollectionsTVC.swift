@@ -42,12 +42,9 @@ final class CollectionsTVC:
 		
 		if albumMoverClipboard != nil {
 		} else {
-//			DispatchQueue.global(qos: .userInteractive).async { // This speeds up launch time significantly, but first, we need to get merging to actually happen concurrently; otherwise, this accesses the main managed object context from the wrong thread.
-				self.mediaPlayerManager.setUpLibraryIfAuthorized() // This is the starting point for setting up Apple Music library integration.
-				// You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
-//			}
-			
-//			navigationItemButtonsNotEditingMode = [optionsButton]
+			DispatchQueue.main.async { // This speeds up launch time significantly.
+				self.mediaPlayerManager.setUpLibraryIfAuthorized() // You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
+			}
 		}
 	}
 	
@@ -90,10 +87,7 @@ final class CollectionsTVC:
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-//		if indexOfEmptyCollection == nil {
-			super.viewDidAppear(animated) // Includes refreshDataAndViews(). We always need to call that, because the library might have been modified since we last saw the collections view.
-			// But if we have to delete a collection because we moved all the albums out of it, refreshDataAndViews() will get all the way to reloadData() while we're still animating deleting that collection, which is janky. So in that case, we'll delete our empty collection manually first, then refresh.
-//		}
+		super.viewDidAppear(animated)
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			if albumMoverClipboard.didAlreadyMakeNewCollection {
@@ -105,10 +99,6 @@ final class CollectionsTVC:
 				indexOfEmptyCollection = nil
 			}
 		}
-		
-//		if indexOfEmptyCollection == nil {
-//			super.viewDidAppear(animated)
-//		}
 	}
 	
 	@IBAction func unwindToCollectionsAfterMovingAllAlbumsOut(_ unwindSegue: UIStoryboardSegue) {
@@ -134,15 +124,9 @@ final class CollectionsTVC:
 		} else {
 			managedObjectContext.tryToSave()
 		}
-//		tableView.performBatchUpdates {
-			tableView.deleteRows(
-				at: [IndexPath(row: indexOfCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
-				with: .middle)
-//		} completion: { _ in
-//			self.indexOfEmptyCollection = nil
-//			super.viewDidAppear(true)
-////			self.refreshDataAndViews()
-//		}
+		tableView.deleteRows(
+			at: [IndexPath(row: indexOfCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
+			with: .middle)
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			albumMoverClipboard.didAlreadyMakeNewCollection = false

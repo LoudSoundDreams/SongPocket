@@ -159,7 +159,7 @@ class LibraryTVC:
 	// MARK: - Events
 	
 	func refreshNavigationBarButtons() {
-		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI after merging changes from the Apple Music library.
+		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI to reflect changes in the Apple Music library.
 		
 		editButtonItem.isEnabled =
 			MPMediaLibrary.authorizationStatus() == .authorized &&

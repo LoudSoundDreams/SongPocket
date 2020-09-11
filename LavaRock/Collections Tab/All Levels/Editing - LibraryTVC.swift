@@ -133,7 +133,6 @@ extension LibraryTVC {
 		refreshNavigationBarButtons()
 	}
 	
-	// After editing the sort options, update this class's default sortOptions property (at the top of the file) to include all the options.
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
 	private func sorted(_ indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
 		switch sortOption {

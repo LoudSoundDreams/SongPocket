@@ -21,6 +21,18 @@ extension NSManagedObjectContext {
 		}
 	}
 	
+	func tryToSaveSynchronously() {
+		performAndWait {
+			guard self.hasChanges else { return }
+			do {
+				try self.save()
+			} catch {
+				print("Crashed while trying to save changes.")
+				fatalError("\(error)")
+			}
+		}
+	}
+	
 	func objectsFetched(for request: NSFetchRequest<NSManagedObject>) -> [NSManagedObject] {
 		var results = [NSManagedObject]()
 		performAndWait {

@@ -43,16 +43,25 @@ extension LibraryTVC {
 		// Remove the following and make refreshDataAndViewsWhenVisible() accomodate it instead?
 		switch tableView(tableView, numberOfRowsInSection: 0) { // tableView.numberOfRows might not be up to date yet. Call the actual UITableViewDelegate method.
 		case 0:
-			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+			tableView.performBatchUpdates {
+				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+			} completion: { _ in
+				self.refreshesAfterDidSaveChangesFromAppleMusic = true
+			}
 		case 1:
-			tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+			tableView.performBatchUpdates {
+				tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+			} completion: { _ in
+				self.refreshesAfterDidSaveChangesFromAppleMusic = true
+			}
 		default:
 			tableView.performBatchUpdates({
 				tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
 				tableView.insertRows(at: indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
-			}, completion: nil)
+			}, completion: { _ in
+				self.refreshesAfterDidSaveChangesFromAppleMusic = true
+			})
 		}
-		refreshesAfterDidSaveChangesFromAppleMusic = true
 	}
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
