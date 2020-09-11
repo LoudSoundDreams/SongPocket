@@ -11,6 +11,7 @@
 		0706ABE124D947850090EB21 /* AlbumMoverClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */; };
 		070E194124F33FC800B21307 /* Editing - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* Editing - CollectionsTVC.swift */; };
 		071701FF250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071701FE250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift */; };
+		07170201250B3E9700CBC4C5 /* Notifications - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07170200250B3E9700CBC4C5 /* Notifications - CollectionsTVC.swift */; };
 		0720A43525017C6C00E0A28A /* Notifications - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A43425017C6C00E0A28A /* Notifications - AlbumsTVC.swift */; };
 		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
 		0736E3A724B8415400A15420 /* Views - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Views - AlbumsTVC.swift */; };
@@ -73,6 +74,7 @@
 		0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumMoverClipboard.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* Editing - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editing - CollectionsTVC.swift"; sourceTree = "<group>"; };
 		071701FE250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - SongsTVC.swift"; sourceTree = "<group>"; };
+		07170200250B3E9700CBC4C5 /* Notifications - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - CollectionsTVC.swift"; sourceTree = "<group>"; };
 		0720A43425017C6C00E0A28A /* Notifications - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* Views - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - AlbumsTVC.swift"; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
+				07170200250B3E9700CBC4C5 /* Notifications - CollectionsTVC.swift */,
 				07F36BC124FC3F450064282D /* UITableViewDataSource - CollectionsTVC.swift */,
 				07F36BC324FC3F850064282D /* UITableViewDelegate - CollectionsTVC.swift */,
 				070E194024F33FC800B21307 /* Editing - CollectionsTVC.swift */,
@@ -458,6 +461,7 @@
 				07F36BC624FC3FE40064282D /* UITableViewDataSource - AlbumsTVC.swift in Sources */,
 				07F36BC024FC3D7D0064282D /* UITableViewDelegate - LibraryTVC.swift in Sources */,
 				071701FF250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift in Sources */,
+				07170201250B3E9700CBC4C5 /* Notifications - CollectionsTVC.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Views - SongsTVC.swift in Sources */,
 				07F36BC224FC3F450064282D /* UITableViewDataSource - CollectionsTVC.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,

@@ -15,6 +15,10 @@ final class SongsTVC:
 	NavigationItemTitleCustomizer
 {
 	
+	// MARK: - Properties
+	
+	var isPresentingSongActions = false // If an action sheet is presented when we're about to save changes from the Apple Music library, we'll dismiss before refreshing with updates.
+	
 	// MARK: - Setup
 	
 	required init?(coder: NSCoder) {
@@ -41,6 +45,8 @@ final class SongsTVC:
 	// MARK: - Taking Action on Songs
 	
 	func showSongActions(for song: Song) {
+		
+		isPresentingSongActions = true
 		
 		// Prepare an action sheet, from top to bottom.
 		
@@ -80,6 +86,7 @@ final class SongsTVC:
 				style: .cancel,
 				handler: { _ in
 					self.tableView.deselectAllRows(animated: true)
+					self.isPresentingSongActions = false
 				}
 			)
 		)
@@ -90,16 +97,22 @@ final class SongsTVC:
 	
 	func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		tableView.deselectAllRows(animated: true)
+		isPresentingSongActions = false
+		
 		
 	}
 	
 	func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		tableView.deselectAllRows(animated: true)
+		isPresentingSongActions = false
+		
 		
 	}
 	
 	func enqueueSelectedSong(_ sender: UIAlertAction) {
 		tableView.deselectAllRows(animated: true)
+		isPresentingSongActions = false
+		
 		
 	}
 	

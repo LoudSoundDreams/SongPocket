@@ -68,8 +68,6 @@ extension LibraryTVC {
 		print(Self.self)
 		print(String(describing: managedObjectContext.parent))
 		
-		dismiss(animated: true, completion: nil) // Cancel any "breath-holding" modes that might depend on up-to-date data, including the "move albums" sheet and the action sheet after you tap on a song in SongsTVC.
-		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		refreshTableView(
 			section: 0,

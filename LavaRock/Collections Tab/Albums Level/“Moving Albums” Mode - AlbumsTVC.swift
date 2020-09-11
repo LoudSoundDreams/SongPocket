@@ -50,11 +50,8 @@ extension AlbumsTVC {
 		)
 		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
-		
 		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		childManagedObjectContext.parent = managedObjectContext
-		childManagedObjectContext.automaticallyMergesChangesFromParent = true
-		
 		modalCollectionsTVC.managedObjectContext = childManagedObjectContext
 		
 		present(modalCollectionsNC, animated: true, completion: nil)
