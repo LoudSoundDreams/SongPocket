@@ -10,13 +10,13 @@ import CoreData
 
 extension AlbumsTVC {
 	
-	// This is the same as in CollectionsTVC.
-	override func didSaveChangesFromAppleMusic() {
+	override func refreshDataAndViews() {
 		if albumMoverClipboard != nil {
 			dismiss(animated: true, completion: nil)
-		} else {
-			super.didSaveChangesFromAppleMusic()
+			return
 		}
+		
+		super.refreshDataAndViews()
 	}
 	
 	// This is the same as in SongsTVC.

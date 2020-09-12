@@ -89,7 +89,7 @@ final class MediaPlayerManager {
 		case .MPMediaLibraryDidChange:
 			mergeChangesFromAppleMusic()
 		default:
-			print("An instance of \(Self.self) observed the notification: \(notification.name)")
+			print("\(Self.self) observed the notification: \(notification.name)")
 			print("… but the app is not set to do anything after observing that notification.")
 		}
 	}

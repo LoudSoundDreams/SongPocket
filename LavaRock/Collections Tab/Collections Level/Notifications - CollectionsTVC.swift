@@ -9,13 +9,20 @@ import UIKit
 
 extension CollectionsTVC {
 	
-	// This is the same as in AlbumsTVC.
-	override func didSaveChangesFromAppleMusic() {
-		if albumMoverClipboard != nil {
+	override func refreshDataAndViews() {
+		if let albumMoverClipboard = albumMoverClipboard {
+			if albumMoverClipboard.isMakingNewCollection {
+				dismiss(animated: true, completion: nil)
+				albumMoverClipboard.isMakingNewCollection = false
+			}
 			dismiss(animated: true, completion: nil)
-		} else {
-			super.didSaveChangesFromAppleMusic()
+			return
+		} else if isRenamingCollection {
+			dismiss(animated: true, completion: nil)
+			isRenamingCollection = false
 		}
+		
+		super.refreshDataAndViews()
 	}
 	
 }

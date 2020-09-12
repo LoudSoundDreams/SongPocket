@@ -47,7 +47,7 @@ extension LibraryTVC {
 	
 	// MARK: - After Merge from Apple Music Library
 	
-	@objc func didSaveChangesFromAppleMusic() {
+	private func didSaveChangesFromAppleMusic() {
 		if refreshesAfterDidSaveChangesFromAppleMusic {
 			refreshDataAndViewsWhenVisible()
 		}
@@ -63,10 +63,27 @@ extension LibraryTVC {
 		}
 	}
 	
-	func refreshDataAndViews() {
+	/*
+	Easy to override. I recommend calling super (this implementation) after your additional code.
+	Before calling this implementation, you should cancel any content-dependent actions, including:
+	- Sort options (LibraryTVC)
+	- "Rename Collection" dialog (CollectionsTVC)
+	- "Move albums" sheet (CollectionsTVC, AlbumsTVC when in "moving albums" mode)
+	- "New Collection" dialog (CollectionsTVC when in "moving albums" mode)
+	- Song actions (SongsTVC)
+	Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).
+	*/
+	@objc func refreshDataAndViews() {
+		/*
 		print("")
 		print(Self.self)
 		print(String(describing: managedObjectContext.parent))
+		*/
+		
+		if areSortOptionsPresented {
+			dismiss(animated: true, completion: nil)
+			areSortOptionsPresented = false
+		}
 		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		refreshTableView(

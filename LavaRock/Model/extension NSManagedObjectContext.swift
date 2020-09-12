@@ -15,7 +15,7 @@ extension NSManagedObjectContext {
 			do {
 				try self.save()
 			} catch {
-				print("Crashed while trying to save changes.")
+				print("Crashed while trying to save changes asynchronously.")
 				fatalError("\(error)")
 			}
 		}
@@ -27,7 +27,7 @@ extension NSManagedObjectContext {
 			do {
 				try self.save()
 			} catch {
-				print("Crashed while trying to save changes.")
+				print("Crashed while trying to save changes synchronously.")
 				fatalError("\(error)")
 			}
 		}

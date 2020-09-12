@@ -17,7 +17,7 @@ final class SongsTVC:
 	
 	// MARK: - Properties
 	
-	var isPresentingSongActions = false // If an action sheet is onscreen, we'll dismiss it before refreshing to reflect changes in the Apple Music library.
+	var areSongActionsPresented = false // If we have to refresh to reflect changes in the Apple Music library, we'll dismiss this action sheet first.
 	
 	// MARK: - Setup
 	
@@ -46,7 +46,7 @@ final class SongsTVC:
 	
 	func showSongActions(for song: Song) {
 		
-		isPresentingSongActions = true
+		areSongActionsPresented = true
 		
 		// Prepare an action sheet, from top to bottom.
 		
@@ -86,7 +86,7 @@ final class SongsTVC:
 				style: .cancel,
 				handler: { _ in
 					self.tableView.deselectAllRows(animated: true)
-					self.isPresentingSongActions = false
+					self.areSongActionsPresented = false
 				}
 			)
 		)
@@ -97,21 +97,21 @@ final class SongsTVC:
 	
 	func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		tableView.deselectAllRows(animated: true)
-		isPresentingSongActions = false
+		areSongActionsPresented = false
 		
 		
 	}
 	
 	func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		tableView.deselectAllRows(animated: true)
-		isPresentingSongActions = false
+		areSongActionsPresented = false
 		
 		
 	}
 	
 	func enqueueSelectedSong(_ sender: UIAlertAction) {
 		tableView.deselectAllRows(animated: true)
-		isPresentingSongActions = false
+		areSongActionsPresented = false
 		
 		
 	}

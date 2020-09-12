@@ -64,6 +64,7 @@ class LibraryTVC:
 	}()
 	var refreshesAfterDidSaveChangesFromAppleMusic = true
 	var shouldRefreshOnNextViewDidAppear = false
+	var areSortOptionsPresented = false
 	
 	// MARK: - Setup
 	

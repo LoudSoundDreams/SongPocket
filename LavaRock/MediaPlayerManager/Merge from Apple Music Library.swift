@@ -78,7 +78,7 @@ extension MediaPlayerManager {
 		// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
 		let newMediaItems = queriedMediaItems
 		
-		
+		/*
 		print("")
 		print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
 		for item in potentiallyModifiedMediaItems {
@@ -95,7 +95,7 @@ extension MediaPlayerManager {
 			let song = managedObjectContext.object(with: songID) as! Song
 			print(song.persistentID)
 		}
-		
+		*/
 		
 		updateManagedObjects( // Update before creating and deleting, so that we can put new songs above modified songs (easily).
 			// This might make new albums, but not new collections.

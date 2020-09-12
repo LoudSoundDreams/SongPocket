@@ -13,7 +13,11 @@ extension CollectionsTVC {
 	// MARK: - Renaming Collection
 	
 	func renameCollection(at indexPath: IndexPath) {
+		guard let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Collection else { return }
+		
+		isRenamingCollection = true
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
+		
 		let dialog = UIAlertController(title: "Rename Collection", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
@@ -25,25 +29,19 @@ extension CollectionsTVC {
 			textField.smartDashesType = .yes
 			
 			// UITextField
-//			guard let collection = self.fetchedResultsController?.object(at: indexPath) as? Collection else {
-//				return
-//			}
-			let collection = self.indexedLibraryItems[indexPath.row - self.numberOfRowsAboveIndexedLibraryItems] as! Collection
 			textField.text = collection.title
 			textField.placeholder = "Title"
 			textField.clearButtonMode = .whileEditing
 		} )
-		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+			self.isRenamingCollection = false
+		}))
 		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { _ in
 			var newTitle = dialog.textFields?[0].text
 			if (newTitle == nil) || (newTitle == "") {
 				newTitle = Self.defaultCollectionTitle
 			}
 			
-//			guard let collection = self.fetchedResultsController?.object(at: indexPath) as? Collection else {
-//				return
-//			}
-			let collection = self.indexedLibraryItems[indexPath.row - self.numberOfRowsAboveIndexedLibraryItems] as! Collection
 			collection.title = newTitle
 			self.managedObjectContext.tryToSave()
 			
@@ -51,6 +49,8 @@ extension CollectionsTVC {
 			if wasRowSelectedBeforeRenaming {
 				self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			}
+			
+			self.isRenamingCollection = false
 		}) )
 		present(dialog, animated: true, completion: nil)
 	}

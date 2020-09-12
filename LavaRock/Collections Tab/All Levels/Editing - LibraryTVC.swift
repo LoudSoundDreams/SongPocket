@@ -79,12 +79,17 @@ extension LibraryTVC {
 		for sortOption in sortOptions {
 			alertController.addAction(UIAlertAction(title: sortOption, style: .default, handler: sortSelectedOrAllItems))
 		}
-		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {_ in
+			self.areSortOptionsPresented = false
+		}))
+		
+		areSortOptionsPresented = true
 		present(alertController, animated: true, completion: nil)
 	}
 	
 	@objc func sortSelectedOrAllItems(sender: UIAlertAction) {
 		guard shouldAllowSorting() else { return }
+		areSortOptionsPresented = false
 		
 		// Get the rows to sort.
 		let indexPathsToSort = selectedOrEnumeratedIndexPathsIn(

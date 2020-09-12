@@ -9,12 +9,13 @@ import UIKit
 
 extension SongsTVC {
 	
-	override func didSaveChangesFromAppleMusic() {
-		if isPresentingSongActions {
+	override func refreshDataAndViews() {
+		if areSongActionsPresented {
 			dismiss(animated: true, completion: nil) // TO DO: Don't do this unless refreshing to reflect changes in the Apple Music library is going to affect what we have onscreen.
+			areSongActionsPresented = false
 		}
 		
-		super.didSaveChangesFromAppleMusic()
+		super.refreshDataAndViews()
 	}
 	
 	// This is the same as in AlbumsTVC.

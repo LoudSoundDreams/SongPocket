@@ -34,10 +34,12 @@ extension CollectionsTVC {
 			textField.placeholder = "Title"
 			textField.clearButtonMode = .whileEditing
 		} )
-		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+			albumMoverClipboard.isMakingNewCollection = false
+		}))
 		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { _ in
 			
-			guard let albumMoverClipboard = self.albumMoverClipboard else { return }
+			albumMoverClipboard.isMakingNewCollection = false
 			albumMoverClipboard.didAlreadyMakeNewCollection = true
 			
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
@@ -69,6 +71,7 @@ extension CollectionsTVC {
 			} )
 			
 		} ) )
+		albumMoverClipboard.isMakingNewCollection = true
 		present(dialog, animated: true, completion: nil)
 	}
 	
