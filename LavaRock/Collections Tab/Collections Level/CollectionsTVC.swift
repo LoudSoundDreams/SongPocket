@@ -43,7 +43,7 @@ final class CollectionsTVC:
 		
 		if albumMoverClipboard != nil {
 		} else {
-			DispatchQueue.main.async { // This speeds up launch time significantly.
+			DispatchQueue.main.async {
 				self.mediaPlayerManager.setUpLibraryIfAuthorized() // You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
 			}
 		}

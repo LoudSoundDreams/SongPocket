@@ -11,8 +11,9 @@ final class AlbumMoverClipboard { // This is a class, not a struct, because we u
 	
 	// MARK: - Properties
 	
+	// "Constants"
 	let idOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID
-	var idsOfAlbumsBeingMoved: [NSManagedObjectID]
+	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	let idsOfAlbumsNotBeingMoved: [NSManagedObjectID]
 	var navigationItemPrompt: String {
 		let number = idsOfAlbumsBeingMoved.count
@@ -23,6 +24,9 @@ final class AlbumMoverClipboard { // This is a class, not a struct, because we u
 			return "Choose a collection to move \(number) albums to."
 		}
 	}
+	weak var abortDelegate: AlbumMoverAbortDelegate?
+	
+	// Variables
 	var isMakingNewCollection = false // If we have to refresh to reflect changes in the Apple Music library, we'll cancel making the new collection, (then dismiss the "move albums" sheet).
 	var didAlreadyMakeNewCollection = false
 	var didAlreadyCommitMoveAlbums = false
@@ -32,11 +36,13 @@ final class AlbumMoverClipboard { // This is a class, not a struct, because we u
 	init(
 		idOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID,
 		idsOfAlbumsBeingMoved: [NSManagedObjectID],
-		idsOfAlbumsNotBeingMoved: [NSManagedObjectID]
+		idsOfAlbumsNotBeingMoved: [NSManagedObjectID],
+		abortDelegate: AlbumMoverAbortDelegate?
 	) {
 		self.idOfCollectionThatAlbumsAreBeingMovedOutOf = idOfCollectionThatAlbumsAreBeingMovedOutOf
 		self.idsOfAlbumsBeingMoved = idsOfAlbumsBeingMoved
 		self.idsOfAlbumsNotBeingMoved = idsOfAlbumsNotBeingMoved
+		self.abortDelegate = abortDelegate
 	}
 	
 }

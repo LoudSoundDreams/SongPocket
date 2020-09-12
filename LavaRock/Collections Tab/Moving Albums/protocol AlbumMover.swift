@@ -11,3 +11,7 @@ import CoreData
 protocol AlbumMover {
 	var albumMoverClipboard: AlbumMoverClipboard? { get set }
 }
+
+protocol AlbumMoverAbortDelegate: AnyObject {
+	func didDismissDueToRefresh()
+}

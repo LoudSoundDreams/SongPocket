@@ -8,6 +8,12 @@
 import UIKit
 import CoreData
 
+extension AlbumsTVC: AlbumMoverAbortDelegate {
+	final func didDismissDueToRefresh() {
+		refreshDataAndViews()
+	}
+}
+
 extension AlbumsTVC {
 	
 	// MARK: - Starting Moving Albums
@@ -46,7 +52,8 @@ extension AlbumsTVC {
 		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
 			idOfCollectionThatAlbumsAreBeingMovedOutOf: idOfSourceCollection,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
-			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove
+			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove,
+			abortDelegate: self
 		)
 		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.

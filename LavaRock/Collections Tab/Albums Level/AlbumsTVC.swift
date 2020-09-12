@@ -12,8 +12,8 @@ import MediaPlayer
 
 final class AlbumsTVC:
 	LibraryTVC,
-	AlbumMover,
-	NavigationItemTitleCustomizer
+	NavigationItemTitleCustomizer,
+	AlbumMover
 {
 	
 	// MARK: - Properties
@@ -106,10 +106,11 @@ final class AlbumsTVC:
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "Moved Albums",
-		   let nonmodalAlbumsTVC = segue.destination as? AlbumsTVC,
-		   let newCollectionDetector = newCollectionDetector,
-		   newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
+		if
+			segue.identifier == "Moved Albums",
+			let nonmodalAlbumsTVC = segue.destination as? AlbumsTVC,
+			let newCollectionDetector = newCollectionDetector,
+			newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
 		{
 			nonmodalAlbumsTVC.newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
