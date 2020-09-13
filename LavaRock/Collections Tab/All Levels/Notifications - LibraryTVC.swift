@@ -64,7 +64,7 @@ extension LibraryTVC {
 	}
 	
 	/*
-	Easy to override. I recommend calling super (this implementation) after your additional code.
+	Easy to override. You'll probably want to call super (this implementation) after your additional code.
 	Before calling this implementation, you should cancel any content-dependent actions, including:
 	- Sort options (LibraryTVC)
 	- "Rename Collection" dialog (CollectionsTVC)
@@ -153,6 +153,7 @@ extension LibraryTVC {
 			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
 			tableView.insertRows(at: indexPathsToInsert, with: .middle)
 			for (startingIndexPath, endingIndexPath) in indexPathsToMove {
+//				guard startingIndexPath != endingIndexPath else { continue } // The table view tends to move to unnecessarily scroll the top row to the top of the screen. As of iOS 14.0 beta 8, this *doesn't* prevent it.
 				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
 		} completion: { _ in (completion ?? { })() }
@@ -172,12 +173,12 @@ extension LibraryTVC {
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
 		} completion: { _ in
 //			self.setEditing(false, animated: true) // Doesn't seem to do anything
-			guard !(self is CollectionsTVC) else { return } // TO DO: Does this work?
-			self.performSegue(withIdentifier: "Deleted All Contents", sender: self)
+			guard !(self is CollectionsTVC) else { return }
+			self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 		}
 	}
 	
-	func refreshData() {
+	@objc func refreshData() {
 		guard indexedLibraryItems.count >= 1 else { return }
 		refreshContainerOfData()
 		refreshTableViewRowContents()

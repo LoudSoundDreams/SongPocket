@@ -15,13 +15,15 @@ extension CollectionsTVC {
 				albumMoverClipboard.isMakingNewCollection = false
 				dismiss(animated: true, completion: refreshDataAndViews) // Dismisses presentedViewController, the "New Collection" dialog.
 			} else {
-				dismiss(animated: true, completion: albumMoverClipboard.abortDelegate?.didDismissDueToRefresh) // Tells presentingViewController to dismiss this view controller (CollectionsTVC).
+				dismiss(animated: true, completion: albumMoverClipboard.delegate?.didDismissDueToRefresh) // Tells presentingViewController to dismiss this view controller (CollectionsTVC).
 				// Calling didDismissDueToRefresh() solves the case where, when we had to refresh, you were moving albums, had the "New Collection" dialog onscreen, *and* deleted all the albums in the collection that you were moving albums out of: we'll dismiss the "New Collection" dialog, dismiss the "move albums" sheet, back out of the now-empty collection, and delete that empty collection.
 			}
 			return
+			
 		} else if isRenamingCollection {
 			dismiss(animated: true, completion: nil)
 			isRenamingCollection = false
+			
 		}
 		
 		super.refreshDataAndViews()

@@ -535,9 +535,7 @@ extension AppleMusicLibraryManager {
 				album.releaseDateEstimate = nil
 				
 				for song in songsInAlbum {
-					guard let competingEstimate = song.mpMediaItem()?.releaseDate else {
-						continue
-					}
+					guard let competingEstimate = song.mpMediaItem()?.releaseDate else { continue }
 					
 					if album.releaseDateEstimate == nil {
 						album.releaseDateEstimate = competingEstimate // Same as below

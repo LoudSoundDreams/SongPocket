@@ -62,25 +62,9 @@ final class AlbumsTVC:
 	
 	// MARK: Setup Events
 	
-	override func viewDidAppear(_ animated: Bool) {
-		if albumMoverClipboard != nil {
-		} else {
-//			if fetchedResultsController?.fetchedObjects?.count == 0 {
-			if indexedLibraryItems.isEmpty && !shouldRefreshOnNextViewDidAppear {
-				performSegue(withIdentifier: "Moved All Albums Out", sender: nil)
-			}
-		}
-		
-		super.viewDidAppear(animated)
-	}
-	
 	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
-		isEditing = false
-		
-		reloadIndexedLibraryItems()
-		tableView.reloadData()
-		
-		viewDidAppear(true) // Exits this collection if it's now empty.
+		refreshDataAndViews() // Exits this collection if it's now empty.
+		isEditing = false // You need to do this after refreshDataAndViews(), or you'll break the animation where we remove the albums that you moved out. This might be because our override of setEditing saves the context when exiting editing mode.
 	}
 	
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {

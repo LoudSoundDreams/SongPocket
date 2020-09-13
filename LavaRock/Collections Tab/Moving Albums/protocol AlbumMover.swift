@@ -12,6 +12,6 @@ protocol AlbumMover {
 	var albumMoverClipboard: AlbumMoverClipboard? { get set }
 }
 
-protocol AlbumMoverAbortDelegate: AnyObject {
+protocol AlbumMoverDelegate: AnyObject {
 	func didDismissDueToRefresh()
 }

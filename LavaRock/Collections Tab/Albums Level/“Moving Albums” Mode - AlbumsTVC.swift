@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-extension AlbumsTVC: AlbumMoverAbortDelegate {
+extension AlbumsTVC: AlbumMoverDelegate {
 	final func didDismissDueToRefresh() {
 		refreshDataAndViews()
 	}
@@ -53,7 +53,7 @@ extension AlbumsTVC {
 			idOfCollectionThatAlbumsAreBeingMovedOutOf: idOfSourceCollection,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
 			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove,
-			abortDelegate: self
+			delegate: self
 		)
 		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.

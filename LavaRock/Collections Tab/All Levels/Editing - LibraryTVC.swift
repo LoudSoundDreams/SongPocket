@@ -35,14 +35,12 @@ extension LibraryTVC {
 	}
 	
 	// Note: Every IndexPath in selectedIndexPaths must be in the same section as targetIndexPath, and at or down below targetIndexPath.
-	func moveItemsUp(from selectedIndexPaths: [IndexPath]?, to firstIndexPath: IndexPath) {
+	private func moveItemsUp(from selectedIndexPaths: [IndexPath]?, to firstIndexPath: IndexPath) {
 		
 		guard
 			let indexPaths = selectedIndexPaths,
 			shouldAllowFloatingToTop(forIndexPaths: selectedIndexPaths)
-		else {
-			return
-		}
+		else { return }
 		for startingIndexPath in indexPaths {
 			if startingIndexPath.section != firstIndexPath.section || startingIndexPath.row < firstIndexPath.row {
 				return
@@ -87,7 +85,7 @@ extension LibraryTVC {
 		present(alertController, animated: true, completion: nil)
 	}
 	
-	@objc func sortSelectedOrAllItems(sender: UIAlertAction) {
+	private func sortSelectedOrAllItems(sender: UIAlertAction) {
 		guard shouldAllowSorting() else { return }
 		areSortOptionsPresented = false
 		
@@ -125,11 +123,7 @@ extension LibraryTVC {
 		for indexPathAndItem in sortedIndexPathsAndItems {
 			sortedIndexPaths.append(indexPathAndItem.0)
 		}
-		//		if sortedIndexPaths.count < 40 {
 		moveRowsUpToEarliestRow(sortedIndexPaths) // You could use tableView.reloadRows, but none of those animations show the individual rows moving to their destinations.
-		//		} else {
-		//			tableView.reloadData()
-		//		}
 		
 		// Update the rest of the UI.
 		for indexPath in indexPathsToSort {

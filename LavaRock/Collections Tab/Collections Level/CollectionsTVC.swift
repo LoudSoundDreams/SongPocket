@@ -27,7 +27,7 @@ final class CollectionsTVC:
 	var isRenamingCollection = false // If we have to refresh to reflect changes in the Apple Music library, we'll cancel renaming.
 	var albumMoverClipboard: AlbumMoverClipboard?
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
-	var indexOfEmptyCollection: Int?
+	var collectionToDeleteBeforeNextRefresh: Collection?
 	
 	// MARK: - Setup
 	
@@ -88,27 +88,30 @@ final class CollectionsTVC:
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
 		if let albumMoverClipboard = albumMoverClipboard {
 			if albumMoverClipboard.didAlreadyMakeNewCollection {
 				deleteCollectionIfEmpty(withIndex: 0)
 			}
 		} else {
-			if indexOfEmptyCollection != nil {
-				deleteCollectionIfEmpty(withIndex: indexOfEmptyCollection!)
-				indexOfEmptyCollection = nil
+			if let emptyCollection = collectionToDeleteBeforeNextRefresh {
+				managedObjectContext.delete(emptyCollection) // For each collection below the empty collection, we'll need to subtract 1 from its index to shift it upward to close the gap. But that'll happen automatically during the refrish.
+				managedObjectContext.tryToSave()
+				collectionToDeleteBeforeNextRefresh = nil
 			}
 		}
-	}
-	
-	@IBAction func unwindToCollectionsAfterMovingAllAlbumsOut(_ unwindSegue: UIStoryboardSegue) {
-		let albumsTVC = unwindSegue.source as! AlbumsTVC
-		let emptyCollection = albumsTVC.containerOfData as! Collection
-		indexOfEmptyCollection = Int(emptyCollection.index)
+		
+		super.viewDidAppear(animated)
 	}
 	
 	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
+		if // If we moved all the albums out of a collection.
+			let albumsTVC = unwindSegue.source as? AlbumsTVC,
+			let collection = albumsTVC.containerOfData as? Collection,
+			collection.contents?.count == 0
+		{
+			collectionToDeleteBeforeNextRefresh = collection
+			refreshDataAndViewsWhenVisible()
+		}
 	}
 	
 	// MARK: - Events

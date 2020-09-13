@@ -132,9 +132,7 @@ extension UITableViewController {
 	// For example, if you provide [[0,5], [0,1], [0,3], [0,6]], the earliest IndexPath is [0,1]. This function moves the row that was at [0,5] to [0,1], the row that was at [0,1] to [0,2], the row that was at [0,3] to [0,3], and the row that was at [0,6] to [0,4], shifting the rows that were at [0,2] and [0,4] down to [0,5] and [0,6], respectively.
 	// Note: Only works for IndexPaths in the same section.
 	func moveRowsUpToEarliestRow(_ indexPaths: [IndexPath]) {
-		guard !isFromMultipleSections(indexPaths) else {
-			return
-		}
+		guard !isFromMultipleSections(indexPaths) else { return }
 		var firstIndexPath = indexPaths[0] // Default value
 		for indexPath in indexPaths {
 			if indexPath < firstIndexPath {

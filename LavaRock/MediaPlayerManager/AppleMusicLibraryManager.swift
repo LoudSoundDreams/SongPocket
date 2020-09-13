@@ -23,9 +23,7 @@ final class AppleMusicLibraryManager {
 	private init() { }
 	
 	func setUpLibraryIfAuthorized() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return
-		}
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		library = MPMediaLibrary.default()
 		mergeChanges()
