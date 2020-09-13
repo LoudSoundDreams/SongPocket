@@ -34,8 +34,8 @@ final class CollectionsTVC:
 	override func viewDidLoad() {
 		if albumMoverClipboard != nil {
 		} else {
-			if mediaPlayerManager.shouldNextMergeBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show the user an empty table view while we merge from the Apple Music library for the first time; in that case, we need to merge before calling super, which includes reloadIndexedLibraryItems.
-				mediaPlayerManager.setUpLibraryIfAuthorized()
+			if AppleMusicLibraryManager.shared.shouldNextMergeBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show the user an empty table view while we merge from the Apple Music library for the first time; in that case, we need to merge (synchronously) before calling reloadIndexedLibraryItems() (in super).
+				AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized()
 			}
 		}
 		
@@ -44,7 +44,7 @@ final class CollectionsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 			DispatchQueue.main.async {
-				self.mediaPlayerManager.setUpLibraryIfAuthorized() // You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
+				AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
 			}
 		}
 	}
@@ -80,7 +80,7 @@ final class CollectionsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-				reloadIndexedLibraryItems() // shouldDetectNewCollectionsOnNextViewWillAppear also acts as a flag that tells reloadIndexedLibraryItems() to not call mergeChangesFromAppleMusic(), because that deletes empty collections for us. We want to animate that.
+				reloadIndexedLibraryItems()
 				tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
 				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
 			}

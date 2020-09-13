@@ -38,26 +38,27 @@ extension LibraryTVC {
 	
 	private func didReceiveAuthorizationForAppleMusic() {
 		refreshesAfterDidSaveChangesFromAppleMusic = false
-		mediaPlayerManager.shouldNextMergeBeSynchronous = true
-		viewDidLoad() // Includes mediaPlayerManager.setUpLibraryIfAuthorized(), which includes merging changes from the Apple Music library. Since we set mediaPlayerManager.shouldNextMergeBeSynchronous = true, it will merge synchronously, and CollectionsTVC will call the merge before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
+		AppleMusicLibraryManager.shared.shouldNextMergeBeSynchronous = true
+		viewDidLoad() // Includes AppleMusicLibraryManager's setUpLibraryIfAuthorized(), which includes merging changes from the Apple Music library. Since we set shouldNextMergeBeSynchronous = true, CollectionsTVC will call the (synchronous) merge before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
 		// Remove the following and make refreshDataAndViewsWhenVisible() accomodate it instead?
 		switch tableView(tableView, numberOfRowsInSection: 0) { // tableView.numberOfRows might not be up to date yet. Call the actual UITableViewDelegate method.
 		case 0:
 			tableView.performBatchUpdates {
-				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
 			} completion: { _ in
 				self.refreshesAfterDidSaveChangesFromAppleMusic = true
 			}
 		case 1:
 			tableView.performBatchUpdates {
-				tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+				tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
 			} completion: { _ in
 				self.refreshesAfterDidSaveChangesFromAppleMusic = true
 			}
 		default:
 			tableView.performBatchUpdates({
-				tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-				tableView.insertRows(at: indexPathsEnumeratedIn(section: 0, firstRow: 1, lastRow: tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
+				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+				tableView.insertRows(at: indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: tableView(tableView, numberOfRowsInSection: 0) - 1), with: .middle)
 			}, completion: { _ in
 				self.refreshesAfterDidSaveChangesFromAppleMusic = true
 			})

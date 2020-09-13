@@ -34,7 +34,7 @@
 		076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C324B42E3F0033E3CC /* extension UITableViewController.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		077E089824FB7AFF007C2479 /* Notifications - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */; };
-		079B2C9524E227BF00A949FA /* MediaPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */; };
+		079B2C9524E227BF00A949FA /* AppleMusicLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */; };
 		07BF46D624EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */; };
 		07CAB24724EA227F008AC34C /* extension Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* extension Song.swift */; };
 		07D157ED24D952A600FDF26A /* protocol AlbumMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D157EC24D952A600FDF26A /* protocol AlbumMover.swift */; };
@@ -103,7 +103,7 @@
 		076830C324B42E3F0033E3CC /* extension UITableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "extension UITableViewController.swift"; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - LibraryTVC.swift"; sourceTree = "<group>"; };
-		079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerManager.swift; sourceTree = "<group>"; };
+		079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicLibraryManager.swift; sourceTree = "<group>"; };
 		07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NavigationItemTitleCustomizer.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
 		07D157EC24D952A600FDF26A /* protocol AlbumMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol AlbumMover.swift"; sourceTree = "<group>"; };
@@ -202,7 +202,7 @@
 		0748AEAF24F394F9000FBC61 /* MediaPlayerManager */ = {
 			isa = PBXGroup;
 			children = (
-				079B2C9424E227BF00A949FA /* MediaPlayerManager.swift */,
+				079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */,
 				0703ED2424E8D0DA002EF1B4 /* Merge from Apple Music Library.swift */,
 			);
 			path = MediaPlayerManager;
@@ -457,7 +457,7 @@
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* Merge from Apple Music Library.swift in Sources */,
-				079B2C9524E227BF00A949FA /* MediaPlayerManager.swift in Sources */,
+				079B2C9524E227BF00A949FA /* AppleMusicLibraryManager.swift in Sources */,
 				07F36BC624FC3FE40064282D /* UITableViewDataSource - AlbumsTVC.swift in Sources */,
 				07F36BC024FC3D7D0064282D /* UITableViewDelegate - LibraryTVC.swift in Sources */,
 				071701FF250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift in Sources */,

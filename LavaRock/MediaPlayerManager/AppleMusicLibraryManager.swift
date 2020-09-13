@@ -12,18 +12,15 @@ final class AppleMusicLibraryManager {
 	// MARK: - Properties
 	
 	// "Constants"
+	static let shared = AppleMusicLibraryManager()
 	private var library: MPMediaLibrary?
-//	lazy var privateManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-//	lazy var operationQueue: OperationQueue = {
-//		let queue = OperationQueue()
-//		queue.maxConcurrentOperationCount = 1
-//		return queue
-//	}()
 	
 	// Variables
 	var shouldNextMergeBeSynchronous = false
 	
 	// MARK: - Setup and Teardown
+	
+	private init() { }
 	
 	func setUpLibraryIfAuthorized() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
@@ -31,7 +28,7 @@ final class AppleMusicLibraryManager {
 		}
 		
 		library = MPMediaLibrary.default()
-		mergeChangesFromAppleMusic()
+		mergeChanges()
 		beginObservingAndGeneratingNotifications()
 	}
 	
@@ -63,7 +60,7 @@ final class AppleMusicLibraryManager {
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .MPMediaLibraryDidChange:
-			mergeChangesFromAppleMusic()
+			mergeChanges()
 		default:
 			print("\(Self.self) observed the notification: \(notification.name)")
 			print("… but the app is not set to do anything after observing that notification.")

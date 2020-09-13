@@ -28,7 +28,6 @@ class LibraryTVC:
 	var sortOptions = [String]()
 	
 	// "Constants" that subclasses should not change
-	let mediaPlayerManager = (UIApplication.shared.delegate as! AppDelegate).mediaPlayerManager
 	let cellReuseIdentifier = "Cell"
 	lazy var floatToTopButton = UIBarButtonItem(
 		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint

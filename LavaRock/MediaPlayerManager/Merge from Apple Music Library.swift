@@ -5,45 +5,29 @@
 //  Created by h on 2020-08-15.
 //
 
-import UIKit
 import CoreData
 import MediaPlayer
 
 extension Notification.Name {
-	static let LRDidSaveChangesFromAppleMusic = Notification.Name("MediaPlayerManager just saved changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and refresh their data now.")
+	static let LRDidSaveChangesFromAppleMusic = Notification.Name("AppleMusicLibraryManager just saved changes from the Apple Music library into the Core Data store. Objects that depend on the Core Data store should observe this notification and refresh their data now.")
 }
 
-extension MediaPlayerManager {
+extension AppleMusicLibraryManager {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
-	func mergeChangesFromAppleMusic() {
+	func mergeChanges() {
 //		if shouldNextMergeBeSynchronous {
-			let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-			mainManagedObjectContext.performAndWait {
-				mergeChangesFromAppleMusicPart2(inContext: mainManagedObjectContext)
-			}
-			
+		let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		mainManagedObjectContext.performAndWait {
+			mergeChangesPart2(inContext: mainManagedObjectContext)
+		}
 //		} else {
-//			let managedObjectContext = privateManagedObjectContext
-//			do {
-//				try managedObjectContext.setQueryGenerationFrom(.current)
-//			} catch {
-//				shouldNextMergeBeSynchronous = true
-//				DispatchQueue.main.sync {
-//					mergeChangesFromAppleMusic()
-//				}
-//				return
-//			}
-//			let mergeOperation = BlockOperation() {
-//				self.mergeChangesFromAppleMusicPart2(inContext: managedObjectContext)
-//			}
-//			operationQueue.addOperation(mergeOperation)
-//		}
 		
+//		}
 		shouldNextMergeBeSynchronous = false
 	}
 	
-	private func mergeChangesFromAppleMusicPart2(inContext managedObjectContext: NSManagedObjectContext) {
+	private func mergeChangesPart2(inContext managedObjectContext: NSManagedObjectContext) {
 		
 		// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
 		
