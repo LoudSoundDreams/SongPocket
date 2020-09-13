@@ -90,7 +90,7 @@ final class CollectionsTVC:
 	override func viewDidAppear(_ animated: Bool) {
 		if let albumMoverClipboard = albumMoverClipboard {
 			if albumMoverClipboard.didAlreadyMakeNewCollection {
-				deleteCollectionIfEmpty(withIndex: 0)
+				deleteEmptyNewCollection()
 			}
 		} else {
 			if let emptyCollection = collectionToDeleteBeforeNextRefresh {
@@ -116,25 +116,22 @@ final class CollectionsTVC:
 	
 	// MARK: - Events
 	
-	private func deleteCollectionIfEmpty(withIndex indexOfCollection: Int) {
+	private func deleteEmptyNewCollection() {
+		let indexOfEmptyNewCollection = 0
+		
 		guard
-			let collection = indexedLibraryItems[indexOfCollection] as? Collection,
+			let albumMoverClipboard = albumMoverClipboard,
+			let collection = indexedLibraryItems[indexOfEmptyNewCollection] as? Collection,
 			collection.contents?.count == 0
 		else { return }
 		
 		managedObjectContext.delete(collection)
-		indexedLibraryItems.remove(at: indexOfCollection)
-		if albumMoverClipboard != nil {
-		} else {
-			managedObjectContext.tryToSave()
-		}
+		indexedLibraryItems.remove(at: indexOfEmptyNewCollection)
 		tableView.deleteRows(
-			at: [IndexPath(row: indexOfCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
+			at: [IndexPath(row: indexOfEmptyNewCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
 			with: .middle)
 		
-		if let albumMoverClipboard = albumMoverClipboard {
-			albumMoverClipboard.didAlreadyMakeNewCollection = false
-		}
+		albumMoverClipboard.didAlreadyMakeNewCollection = false
 	}
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {
