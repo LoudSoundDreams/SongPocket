@@ -112,7 +112,7 @@ extension AlbumsTVC {
 			album.container = containerOfData as? Collection
 			indexedLibraryItems.insert(album, at: index)
 		}
-		managedObjectContext.tryToSave()
+		managedObjectContext.tryToSaveSynchronously()
 		guard let mainManagedObjectContext = managedObjectContext.parent else {
 			fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move albums” sheet.")
 		}
