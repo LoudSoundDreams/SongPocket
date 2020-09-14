@@ -10,6 +10,27 @@ import CoreData
 
 extension CollectionsTVC {
 	
+	// MARK: - Deleting New Collection
+	
+	func deleteEmptyNewCollection() {
+		let indexOfEmptyNewCollection = 0
+		
+		guard
+			let albumMoverClipboard = albumMoverClipboard,
+			albumMoverClipboard.didAlreadyMakeNewCollection,
+			let collection = indexedLibraryItems[indexOfEmptyNewCollection] as? Collection,
+			collection.contents?.count == 0
+		else { return }
+		
+		managedObjectContext.delete(collection)
+		indexedLibraryItems.remove(at: indexOfEmptyNewCollection)
+		tableView.deleteRows(
+			at: [IndexPath(row: indexOfEmptyNewCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
+			with: .middle)
+		
+		albumMoverClipboard.didAlreadyMakeNewCollection = false
+	}
+	
 	// MARK: - Making New Collection
 	
 	@IBAction func presentDialogToMakeNewCollection(_ sender: UIBarButtonItem) {

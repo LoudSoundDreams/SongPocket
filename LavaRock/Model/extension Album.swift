@@ -30,7 +30,7 @@ extension Album {
 		}
 	}
 	
-	// MARK: - Getting Stored Attributes in a Nice Format
+	// MARK: - Formatted Attributes
 	
 	// AppleMusicLibraryManager's mergeChanges() references this when checking for and making new Collections.
 	static func unknownAlbumArtistPlaceholder() -> String {

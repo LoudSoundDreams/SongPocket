@@ -34,6 +34,8 @@ final class AlbumsTVC:
 		coreDataEntityName = "Album"
 	}
 	
+	// MARK: Setting Up UI
+	
 	override func setUpUI() {
 		super.setUpUI()
 		
@@ -64,7 +66,7 @@ final class AlbumsTVC:
 	
 	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
 		refreshDataAndViews() // Exits this collection if it's now empty.
-		isEditing = false // You need to do this after refreshDataAndViews(), or you'll break the animation where we remove the albums that you moved out. This might be because our override of setEditing saves the context when exiting editing mode.
+//		isEditing = false // You need to do this after refreshDataAndViews(), or you'll break the animation where we remove the albums that you moved out. This might be because our override of setEditing saves the context when exiting editing mode.
 	}
 	
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {

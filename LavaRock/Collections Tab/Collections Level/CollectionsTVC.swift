@@ -33,18 +33,20 @@ final class CollectionsTVC:
 	
 	override func viewDidLoad() {
 		if albumMoverClipboard != nil {
+			super.viewDidLoad()
+			
 		} else {
-			if AppleMusicLibraryManager.shared.shouldNextMergeBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show the user an empty table view while we merge from the Apple Music library for the first time; in that case, we need to merge (synchronously) before calling reloadIndexedLibraryItems() (in super).
+			if AppleMusicLibraryManager.shared.shouldNextMergeBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show an empty table view while we merge from the Apple Music library for the first time. In that case, we need to merge (synchronously) before calling reloadIndexedLibraryItems().
 				AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized()
-			}
-		}
-		
-		super.viewDidLoad()
-		
-		if albumMoverClipboard != nil {
-		} else {
-			DispatchQueue.main.async {
-				AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingNotifications() (in super.viewDidLoad()), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
+				
+				super.viewDidLoad()
+				
+			} else {
+				super.viewDidLoad()
+				
+				DispatchQueue.main.async {
+					AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingNotifications(), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
+				}
 			}
 		}
 	}
@@ -74,14 +76,26 @@ final class CollectionsTVC:
 	
 	// MARK: Setup Events
 	
+	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
+		if // If we moved all the albums out of a collection. This doesn't conflict with deleting all the albums from a collection.
+			let albumsTVC = unwindSegue.source as? AlbumsTVC,
+			let collection = albumsTVC.containerOfData as? Collection,
+			collection.contents?.count == 0
+		{
+			collectionToDeleteBeforeNextRefresh = collection
+			refreshDataAndViewsWhenVisible()
+		}
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if albumMoverClipboard != nil {
 		} else {
 			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-				reloadIndexedLibraryItems()
-				tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
+				refreshDataAndViewsWhenVisible() // Re-animates adding the collections we made while moving albums, even though we already saw them get added in the "move albums" sheet. Is that bad?
+//				reloadIndexedLibraryItems()
+//				tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
 				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
 			}
 		}
@@ -103,36 +117,7 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
-	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-		if // If we moved all the albums out of a collection.
-			let albumsTVC = unwindSegue.source as? AlbumsTVC,
-			let collection = albumsTVC.containerOfData as? Collection,
-			collection.contents?.count == 0
-		{
-			collectionToDeleteBeforeNextRefresh = collection
-			refreshDataAndViewsWhenVisible()
-		}
-	}
-	
-	// MARK: - Events
-	
-	private func deleteEmptyNewCollection() {
-		let indexOfEmptyNewCollection = 0
-		
-		guard
-			let albumMoverClipboard = albumMoverClipboard,
-			let collection = indexedLibraryItems[indexOfEmptyNewCollection] as? Collection,
-			collection.contents?.count == 0
-		else { return }
-		
-		managedObjectContext.delete(collection)
-		indexedLibraryItems.remove(at: indexOfEmptyNewCollection)
-		tableView.deleteRows(
-			at: [IndexPath(row: indexOfEmptyNewCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
-			with: .middle)
-		
-		albumMoverClipboard.didAlreadyMakeNewCollection = false
-	}
+	// MARK: - Navigation
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {
 //		let dismissClosure = { self.dismiss(animated: true, completion: nil) }

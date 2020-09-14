@@ -29,7 +29,7 @@ extension Song {
 		}
 	}
 	
-	// MARK: - Getting Stored Attributes in a Nice Format
+	// MARK: - Formatted Attributes
 	
 	func titleFormattedOrPlaceholder() -> String {
 		if
