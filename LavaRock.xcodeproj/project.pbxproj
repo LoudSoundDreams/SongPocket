@@ -199,13 +199,13 @@
 			path = "Moving Albums";
 			sourceTree = "<group>";
 		};
-		0748AEAF24F394F9000FBC61 /* MediaPlayerManager */ = {
+		0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */ = {
 			isa = PBXGroup;
 			children = (
 				079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */,
 				0703ED2424E8D0DA002EF1B4 /* Merge from Apple Music Library.swift */,
 			);
-			path = MediaPlayerManager;
+			path = AppleMusicLibraryManager;
 			sourceTree = "<group>";
 		};
 		0768307C24B42DEC0033E3CC = {
@@ -237,7 +237,7 @@
 				07FCE63824B42EDF00F94668 /* Main.storyboard */,
 				072429C324DC786500F62AF6 /* extension UITableView.swift */,
 				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
-				0748AEAF24F394F9000FBC61 /* MediaPlayerManager */,
+				0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 				07708A5524E5A2DF000FE01D /* Collections Tab */,
 			);
