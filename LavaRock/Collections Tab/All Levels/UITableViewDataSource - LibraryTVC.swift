@@ -10,6 +10,8 @@ import MediaPlayer
 
 extension LibraryTVC {
 	
+	// MARK: - Cells
+	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		// You need to accommodate 2 special cases:
 		// 1. When the user hasn't allowed access to Apple Music, use the "Allow Access to Apple Music" cell as a button.
@@ -63,7 +65,13 @@ extension LibraryTVC {
 		return cell
 	}
 	
-	// MARK: - Rearranging
+	// MARK: - Editing
+	
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		return indexPath.row >= numberOfRowsAboveIndexedLibraryItems
+	}
+	
+	// MARK: Rearranging
 	
 	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 		let fromIndex = fromIndexPath.row - numberOfRowsAboveIndexedLibraryItems

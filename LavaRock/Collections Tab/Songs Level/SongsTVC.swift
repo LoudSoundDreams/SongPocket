@@ -47,25 +47,19 @@ final class SongsTVC:
 	// MARK: - Taking Action on Songs
 	
 	func showSongActions(for song: Song) {
-		
 		areSongActionsPresented = true
 		
-		// Prepare an action sheet, from top to bottom.
-		
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		
 		let playAlbumStartingHereAction = UIAlertAction(
 			title: "Play Starting Here",
 			style: .destructive,
 			handler: playAlbumStartingAtSelectedSong
 		)
-		
 		let enqueueSongAction = UIAlertAction(
 			title: "Add to Queue",
 			style: .default,
 			handler: enqueueSelectedSong
 		)
-		
 		let enqueueAlbumStartingHereAction = UIAlertAction(
 			title: "Add to Queue Starting Here",
 			style: .default,
@@ -73,7 +67,6 @@ final class SongsTVC:
 		)
 		
 		// Disable the actions that we shouldn't offer for the last song in the section.
-		
 		if song == indexedLibraryItems.last {
 			enqueueAlbumStartingHereAction.isEnabled = false
 		}
@@ -81,7 +74,6 @@ final class SongsTVC:
 		actionSheet.addAction(playAlbumStartingHereAction)
 		actionSheet.addAction(enqueueAlbumStartingHereAction)
 		actionSheet.addAction(enqueueSongAction)
-		
 		actionSheet.addAction(
 			UIAlertAction(
 				title: "Cancel",
@@ -92,10 +84,10 @@ final class SongsTVC:
 				}
 			)
 		)
-		
 		present(actionSheet, animated: true, completion: nil)
-		
 	}
+	
+	// MARK: Song Actions
 	
 	func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		tableView.deselectAllRows(animated: true)

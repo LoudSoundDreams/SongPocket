@@ -9,6 +9,7 @@ import UIKit
 
 extension CollectionsTVC {
 	
+	// WARNING: This doesn't accommodate numberOfRowsAboveIndexedLibraryItems. You might want to call super.
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 		if let albumMoverClipboard = albumMoverClipboard {
 			let collectionID = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems].objectID

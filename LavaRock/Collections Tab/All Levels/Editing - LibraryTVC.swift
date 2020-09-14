@@ -24,7 +24,7 @@ extension LibraryTVC {
 		tableView.performBatchUpdates(nil, completion: nil)
 	}
 	
-	// Note: We handle rearranging in a UITableViewDataSource method.
+	// Note: We handle rearranging in UITableViewDataSource and UITableViewDelegate methods.
 	
 	// MARK: - Moving Rows to Top
 	

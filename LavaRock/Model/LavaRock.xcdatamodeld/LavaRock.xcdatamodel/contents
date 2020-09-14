@@ -5,7 +5,7 @@
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="releaseDateEstimate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="contents" inverseEntity="Collection"/>
-        <relationship name="contents" toMany="YES" deletionRule="Cascade" destinationEntity="Song" inverseName="container" inverseEntity="Song"/>
+        <relationship name="contents" toMany="YES" deletionRule="Deny" destinationEntity="Song" inverseName="container" inverseEntity="Song"/>
     </entity>
     <entity name="Collection" representedClassName="Collection" syncable="YES" codeGenerationType="class">
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

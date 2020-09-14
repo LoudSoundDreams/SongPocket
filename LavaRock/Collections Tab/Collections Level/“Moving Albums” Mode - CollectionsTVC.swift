@@ -96,7 +96,7 @@ extension CollectionsTVC {
 		present(dialog, animated: true, completion: nil)
 	}
 	
-	// MARK: Suggesting Title for New Collection
+	// MARK: Suggesting Collection Title
 	
 	private func suggestedCollectionTitle() -> String? {
 		guard let albumMoverClipboard = albumMoverClipboard else {

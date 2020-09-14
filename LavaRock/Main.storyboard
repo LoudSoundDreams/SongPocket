@@ -237,7 +237,7 @@
                         <barButtonItem title="Go to Next Song" image="forward.end.fill" catalog="system" width="10" style="plain" id="1wb-6J-N3a"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Queue" id="W5j-mY-QqY">
-                        <barButtonItem key="leftBarButtonItem" title="Remove" id="Wvl-xP-IvU"/>
+                        <barButtonItem key="leftBarButtonItem" title="Clear" id="Wvl-xP-IvU"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>

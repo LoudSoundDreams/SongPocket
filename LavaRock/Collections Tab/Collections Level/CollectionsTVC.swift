@@ -108,7 +108,7 @@ final class CollectionsTVC:
 			}
 		} else {
 			if let emptyCollection = collectionToDeleteBeforeNextRefresh {
-				managedObjectContext.delete(emptyCollection) // For each collection below the empty collection, we'll need to subtract 1 from its index to shift it upward to close the gap. But that'll happen automatically during the refresh.
+				managedObjectContext.delete(emptyCollection) // TO DO: For each collection below the empty collection, we'll need to subtract 1 from its index to shift it upward to close the gap.
 				managedObjectContext.tryToSaveSynchronously()
 				collectionToDeleteBeforeNextRefresh = nil
 			}

@@ -10,8 +10,34 @@ import MediaPlayer
 
 extension LibraryTVC {
 	
+	// MARK: - Rearranging
+	
+	override func tableView(
+		_ tableView: UITableView,
+		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
+		toProposedIndexPath proposedDestinationIndexPath: IndexPath
+	) -> IndexPath {
+		if proposedDestinationIndexPath.row < numberOfRowsAboveIndexedLibraryItems {
+			return IndexPath(
+				row: numberOfRowsAboveIndexedLibraryItems,
+				section: proposedDestinationIndexPath.section
+			)
+		} else {
+			return proposedDestinationIndexPath
+		}
+	}
+	
+	// MARK: - Selecting
+	
+	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
+			return nil
+		} else {
+			return indexPath
+		}
+	}
+	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
 			break
@@ -33,7 +59,6 @@ extension LibraryTVC {
 		if isEditing {
 			refreshNavigationBarButtons()
 		}
-		
 	}
 	
 	private func didReceiveAuthorizationForAppleMusic() {
@@ -64,6 +89,8 @@ extension LibraryTVC {
 			})
 		}
 	}
+	
+	// MARK: Deselecting
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
 		refreshNavigationBarButtons()

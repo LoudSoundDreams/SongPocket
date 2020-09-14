@@ -10,6 +10,8 @@ import MediaPlayer
 
 extension CollectionsTVC {
 	
+	// MARK: - Cells
+	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return super.tableView(tableView, cellForRowAt: indexPath)

@@ -10,6 +10,8 @@ import MediaPlayer
 
 extension SongsTVC {
 	
+	// MARK: - Cells
+	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return super.tableView(tableView, cellForRowAt: indexPath)
@@ -78,12 +80,6 @@ extension SongsTVC {
 				return cell
 			}
 		}
-	}
-	
-	// MARK: - Editing
-	
-	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		return indexPath.row >= numberOfRowsAboveIndexedLibraryItems
 	}
 	
 }
