@@ -256,14 +256,17 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="53.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lWE-TU-khQ">
-                                            <rect key="frame" x="16.000000000000004" y="16.666666666666671" width="40.333333333333343" height="20.333333333333329"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lWE-TU-khQ">
+                                            <rect key="frame" x="16" y="16.666666666666671" width="66" height="20.333333333333329"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="66" id="ulO-ie-SUX"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="bNU-iT-fR7">
-                                            <rect key="frame" x="68.333333333333343" y="11.333333333333336" width="290.66666666666663" height="32"/>
+                                            <rect key="frame" x="90" y="11.333333333333336" width="269" height="32"/>
                                             <segments>
                                                 <segment title="" image="pause.fill" catalog="system"/>
                                                 <segment title="" image="repeat.1" catalog="system"/>
@@ -279,7 +282,7 @@
                                         <constraint firstItem="lWE-TU-khQ" firstAttribute="leading" secondItem="bcP-Vu-REi" secondAttribute="leadingMargin" id="JY8-Rm-P8s"/>
                                         <constraint firstItem="bNU-iT-fR7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="bcP-Vu-REi" secondAttribute="topMargin" id="Q9f-Gl-U8z"/>
                                         <constraint firstItem="lWE-TU-khQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="bcP-Vu-REi" secondAttribute="topMargin" id="S0G-Xo-cNK"/>
-                                        <constraint firstItem="bNU-iT-fR7" firstAttribute="leading" secondItem="lWE-TU-khQ" secondAttribute="trailing" constant="12" id="eDp-Pa-HH1"/>
+                                        <constraint firstItem="bNU-iT-fR7" firstAttribute="leading" secondItem="lWE-TU-khQ" secondAttribute="trailing" constant="8" symbolic="YES" id="eDp-Pa-HH1"/>
                                         <constraint firstItem="lWE-TU-khQ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="bcP-Vu-REi" secondAttribute="bottomMargin" id="kbE-0N-LEO"/>
                                     </constraints>
                                 </tableViewCellContentView>

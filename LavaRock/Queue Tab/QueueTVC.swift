@@ -14,7 +14,7 @@ final class QueueTVC: UITableViewController {
 	// MARK: - Properties
 	
 	// "Constants"
-	let playerController = MPMusicPlayerController.systemMusicPlayer
+	var playerController: MPMusicPlayerController? = nil//MPMusicPlayerController.systemMusicPlayer
 	@IBOutlet var clearButton: UIBarButtonItem!
 	@IBOutlet var goToPreviousSongButton: UIBarButtonItem!
 	@IBOutlet var restartCurrentSongButton: UIBarButtonItem!
@@ -43,6 +43,10 @@ final class QueueTVC: UITableViewController {
 		beginObservingAndGeneratingNotifications()
 		// load data
 		setUpUI()
+		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		playerController = MPMusicPlayerController.systemMusicPlayer
     }
 	
 	// MARK: Setting Up UI
@@ -57,10 +61,18 @@ final class QueueTVC: UITableViewController {
 		tableView.tableFooterView = UIView()
 	}
 	
+	// MARK: Setup Events
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		refreshButtons()
+	}
+	
 	// MARK: Teardown
 	
 	deinit {
-		endObservingNotifications()
+		endObservingAndGeneratingNotifications()
 	}
 	
 	// MARK: - Events
@@ -75,7 +87,7 @@ final class QueueTVC: UITableViewController {
 			UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
 			goToNextSongButton
 		]
-		if playerController.playbackState == .playing {
+		if playerController?.playbackState == .playing {
 			if let indexOfPlayButton = playbackButtons.firstIndex(where: { playbackButton in
 				playbackButton == playButton
 			}) {
@@ -85,7 +97,7 @@ final class QueueTVC: UITableViewController {
 		setToolbarItems(playbackButtons, animated: false)
 		
 		
-		clearButton.isEnabled = QueueController.shared.entries.count > 0
+		clearButton.isEnabled = false//QueueController.shared.entries.count > 0
 //		goToPreviousSongButton.isEnabled = QueueController.shared.entries.count > 0
 //		restartCurrentSongButton.isEnabled = QueueController.shared.entries.count > 0
 //		playButton.isEnabled = QueueController.shared.entries.count > 0
@@ -96,18 +108,17 @@ final class QueueTVC: UITableViewController {
 	// MARK: Controlling Playback
 	
 	@IBAction func restartCurrentSong(_ sender: UIBarButtonItem) {
-		playerController.skipToBeginning()
-		// Is there a way we can reliably detect whether the playhead is at the beginning of the song? If we can and it is, disable the button.
+		playerController?.skipToBeginning()
 	}
 	
 	@objc private func play() {
-		playerController.prepareToPlay()
-		playerController.play()
+		playerController?.prepareToPlay()
+		playerController?.play()
 		refreshButtons()
 	}
 	
 	@objc private func pause() {
-		playerController.pause()
+		playerController?.pause()
 		refreshButtons()
 	}
 	

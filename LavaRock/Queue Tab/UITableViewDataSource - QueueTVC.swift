@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import MediaPlayer
 
 extension QueueTVC {
 	
@@ -15,16 +16,24 @@ extension QueueTVC {
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		refreshButtons()
 		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return noContentRowsAndSetTableViewPlaceholder()
+		}
+		
 		let numberOfQueueEntries = QueueController.shared.entries.count
 		if numberOfQueueEntries > 0 {
 			tableView.backgroundColor = nil
 			return numberOfQueueEntries + numberOfNonQueueEntryCells
 		} else {
-			if let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell") {
-				tableView.backgroundView = noItemsView
-			}
-			return numberOfNonQueueEntryCells
+			return noContentRowsAndSetTableViewPlaceholder()
 		}
+	}
+	
+	private func noContentRowsAndSetTableViewPlaceholder() -> Int {
+		if let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell") {
+			tableView.backgroundView = noItemsView
+		}
+		return numberOfNonQueueEntryCells
 	}
 	
 	/*
