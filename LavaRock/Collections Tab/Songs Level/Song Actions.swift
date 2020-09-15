@@ -7,10 +7,7 @@
 
 import UIKit
 import CoreData
-
-//extension Notification.Name {
-//	static let LREnqueueSongs = Notification.Name("The user just told us to add some songs to the end of the queue. This notification’s `object` is an array of NSManagedObjectIDs for some Songs; enqueue the MPMediaItems associated with them.")
-//}
+import MediaPlayer
 
 extension SongsTVC {
 	
@@ -22,28 +19,46 @@ extension SongsTVC {
 		else { return }
 		didDismissSongActions()
 		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-		var objectIDsOfSongsToEnqueue = [NSManagedObjectID]()
+		var songIDsToEnqueue = [NSManagedObjectID]()
 		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
 			let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue]
-			objectIDsOfSongsToEnqueue.append(songToEnqueue.objectID)
+			songIDsToEnqueue.append(songToEnqueue.objectID)
 		}
 		
-		
-//		NotificationCenter.default.post(
-//			name: Notification.Name.LREnqueueSongs,
-//			object: objectIDsOfSongsToEnqueue)
+		QueueController.shared.setPlayerQueueWith(songsWithObjectIDs: songIDsToEnqueue)
+		playerController.prepareToPlay()
+		playerController.play()
 	}
 	
 	func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
-		
-		
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow
+		else { return }
 		didDismissSongActions()
+		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		var songIDsToEnqueue = [NSManagedObjectID]()
+		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
+			let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue]
+			songIDsToEnqueue.append(songToEnqueue.objectID)
+		}
+		
+		QueueController.shared.appendToPlayerQueue(songsWithObjectIDs: songIDsToEnqueue)
+		
+		
 	}
 	
 	func enqueueSelectedSong(_ sender: UIAlertAction) {
-		
-		
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow
+		else { return }
 		didDismissSongActions()
+		let indexOfSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		let song = indexedLibraryItems[indexOfSong]
+		let songID = song.objectID
+		
+		QueueController.shared.appendToPlayerQueue(songWithObjectID: songID)
+		
+		
 	}
 	
 	// MARK: - Presenting Actions
@@ -84,6 +99,7 @@ extension SongsTVC {
 			)
 		)
 		present(actionSheet, animated: true, completion: nil)
+		let _ = QueueController.shared
 	}
 	
 	// MARK: Dismissing Actions

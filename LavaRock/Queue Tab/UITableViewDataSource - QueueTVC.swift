@@ -15,17 +15,16 @@ extension QueueTVC {
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		refreshButtons()
 		
-//		let numberOfQueueEntries = QueueController.shared.entries.count
-//		if numberOfQueueEntries > 0 {
-//			tableView.backgroundColor = nil
-//			return numberOfQueueEntries + numberOfNonQueueEntryCells
-//		} else {
+		let numberOfQueueEntries = QueueController.shared.entries.count
+		if numberOfQueueEntries > 0 {
+			tableView.backgroundColor = nil
+			return numberOfQueueEntries + numberOfNonQueueEntryCells
+		} else {
 			if let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell") {
 				tableView.backgroundView = noItemsView
 			}
-			return 0
-//			return numberOfNonQueueEntryCells
-//		}
+			return numberOfNonQueueEntryCells
+		}
 	}
 	
 	/*

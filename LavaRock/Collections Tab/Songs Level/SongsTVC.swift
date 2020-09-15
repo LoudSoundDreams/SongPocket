@@ -17,6 +17,10 @@ final class SongsTVC:
 	
 	// MARK: - Properties
 	
+	// Constants
+	let playerController = MPMusicPlayerController.systemMusicPlayer
+	
+	// Variables
 	var areSongActionsPresented = false // If we have to refresh to reflect changes in the Apple Music library, we'll dismiss this action sheet first.
 	
 	// MARK: - Setup

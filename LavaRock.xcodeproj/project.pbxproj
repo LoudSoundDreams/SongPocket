@@ -227,7 +227,6 @@
 			isa = PBXGroup;
 			children = (
 				0768308724B42DEC0033E3CC /* LavaRock */,
-				07E92A0625103F0E00E9073B /* Queue Tab */,
 				076830A124B42DEE0033E3CC /* LavaRockTests */,
 				076830AC24B42DEF0033E3CC /* LavaRockUITests */,
 				0768308624B42DEC0033E3CC /* Products */,
@@ -250,14 +249,13 @@
 				0768309924B42DEE0033E3CC /* Info.plist */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				07FCE63824B42EDF00F94668 /* Main.storyboard */,
-				072429C324DC786500F62AF6 /* extension UITableView.swift */,
-				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
-				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
 				0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */,
 				07E92A1125105BEB00E9073B /* QueueController.swift */,
+				07E92A15251068E500E9073B /* Extensions to UIKit */,
+				07FCE63824B42EDF00F94668 /* Main.storyboard */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 				07708A5524E5A2DF000FE01D /* Collections Tab */,
+				07E92A0625103F0E00E9073B /* Queue Tab */,
 			);
 			path = LavaRock;
 			sourceTree = "<group>";
@@ -328,6 +326,16 @@
 				07E92A092510434800E9073B /* QueueEntryCell.swift */,
 			);
 			path = "Queue Tab";
+			sourceTree = "<group>";
+		};
+		07E92A15251068E500E9073B /* Extensions to UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				072429C324DC786500F62AF6 /* extension UITableView.swift */,
+				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
+				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
+			);
+			path = "Extensions to UIKit";
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
