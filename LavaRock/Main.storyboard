@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -204,46 +203,102 @@
             <point key="canvasLocation" x="4135.1999999999998" y="473.64532019704433"/>
         </scene>
         <!--Queue-->
-        <scene sceneID="2YX-BL-wMK">
+        <scene sceneID="ycG-HY-3oY">
             <objects>
-                <viewController id="VxI-Ck-sXa" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="H6m-KF-5Rc">
+                <tableViewController id="onv-xE-8hm" customClass="QueueTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="U7r-kL-ufZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose some songs from Collections." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="swk-45-om3">
-                                <rect key="frame" x="43.333333333333343" y="374" width="288.33333333333326" height="20.333333333333314"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <color key="textColor" systemColor="placeholderTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="YtA-ce-z6N"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="swk-45-om3" firstAttribute="centerX" secondItem="H6m-KF-5Rc" secondAttribute="centerX" id="Upg-Z6-VLA"/>
-                            <constraint firstItem="swk-45-om3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H6m-KF-5Rc" secondAttribute="leadingMargin" id="WNF-Ko-iYs"/>
-                            <constraint firstItem="swk-45-om3" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="H6m-KF-5Rc" secondAttribute="trailingMargin" id="Ym9-U6-WdP"/>
-                            <constraint firstItem="swk-45-om3" firstAttribute="centerY" secondItem="H6m-KF-5Rc" secondAttribute="centerYWithinMargins" id="crL-TP-VWE"/>
-                        </constraints>
-                    </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="GR7-PB-Wdk" customClass="QueueEntryCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44.333332061767578"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GR7-PB-Wdk" id="gOU-Ct-Vgy">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44.333332061767578"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5nd-mg-d3E">
+                                            <rect key="frame" x="16" y="0.0" width="44" height="44.333333333333336"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="44" id="O5I-5p-gfe"/>
+                                                <constraint firstAttribute="height" secondItem="5nd-mg-d3E" secondAttribute="width" multiplier="1:1" id="ta2-DL-MiM"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhJ-8a-hMN">
+                                            <rect key="frame" x="68" y="11.999999999999998" width="76.666666666666686" height="20.333333333333329"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="nhJ-8a-hMN" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="gOU-Ct-Vgy" secondAttribute="bottomMargin" id="CNA-GY-kH0"/>
+                                        <constraint firstItem="nhJ-8a-hMN" firstAttribute="leading" secondItem="5nd-mg-d3E" secondAttribute="trailing" constant="8" symbolic="YES" id="EGs-of-9S1"/>
+                                        <constraint firstItem="5nd-mg-d3E" firstAttribute="top" secondItem="gOU-Ct-Vgy" secondAttribute="top" id="HfB-vp-0gb"/>
+                                        <constraint firstItem="5nd-mg-d3E" firstAttribute="leading" secondItem="gOU-Ct-Vgy" secondAttribute="leadingMargin" id="Ve8-aC-9Op"/>
+                                        <constraint firstItem="nhJ-8a-hMN" firstAttribute="centerY" secondItem="gOU-Ct-Vgy" secondAttribute="centerY" id="igf-gi-3Da"/>
+                                        <constraint firstItem="nhJ-8a-hMN" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="gOU-Ct-Vgy" secondAttribute="trailingMargin" id="oyf-MQ-qg4"/>
+                                        <constraint firstAttribute="bottom" secondItem="5nd-mg-d3E" secondAttribute="bottom" id="w6i-68-of3"/>
+                                        <constraint firstItem="nhJ-8a-hMN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gOU-Ct-Vgy" secondAttribute="topMargin" id="z8y-fQ-j5J"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="artworkImageView" destination="5nd-mg-d3E" id="Ubu-NK-vps"/>
+                                    <outlet property="titleLabel" destination="nhJ-8a-hMN" id="5Mx-uV-Ej0"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell" rowHeight="100" id="epd-Xo-8Ei">
+                                <rect key="frame" x="0.0" y="72.333332061767578" width="375" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="epd-Xo-8Ei" id="jfU-qI-87o">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose some songs from Collections." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Lo-06-ZGi">
+                                            <rect key="frame" x="43.333333333333343" y="40" width="288.33333333333326" height="20.333333333333329"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <color key="textColor" systemColor="placeholderTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="1Lo-06-ZGi" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="jfU-qI-87o" secondAttribute="trailingMargin" id="J4V-MB-d4a"/>
+                                        <constraint firstItem="1Lo-06-ZGi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jfU-qI-87o" secondAttribute="leadingMargin" id="S4O-TT-Xh1"/>
+                                        <constraint firstItem="1Lo-06-ZGi" firstAttribute="centerX" secondItem="jfU-qI-87o" secondAttribute="centerX" id="c1H-LH-Et6"/>
+                                        <constraint firstItem="1Lo-06-ZGi" firstAttribute="centerY" secondItem="jfU-qI-87o" secondAttribute="centerY" id="jaG-9V-eP0"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="onv-xE-8hm" id="4eb-pv-2NN"/>
+                            <outlet property="delegate" destination="onv-xE-8hm" id="hzv-q4-P4W"/>
+                        </connections>
+                    </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Go to Previous Song" image="backward.end.fill" catalog="system" width="10" style="plain" id="PUF-aj-4Bx"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="gf8-bL-6wb"/>
-                        <barButtonItem title="Restart Current Song" image="arrow.counterclockwise.circle.fill" catalog="system" width="10" style="plain" id="VMO-SX-j4p"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ax1-F3-Hhu"/>
-                        <barButtonItem title="Play/Pause" image="play.fill" catalog="system" width="10" style="plain" id="Svh-gZ-G4D"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="JXn-Ld-BJz"/>
-                        <barButtonItem title="Go to Next Song" image="forward.end.fill" catalog="system" width="10" style="plain" id="1wb-6J-N3a"/>
+                        <barButtonItem title="Go to Previous Song" image="backward.end.fill" catalog="system" width="10" style="plain" id="vSM-Yq-XOT"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="qmL-8n-Rmt"/>
+                        <barButtonItem title="Restart Current Song" image="arrow.counterclockwise.circle.fill" catalog="system" width="10" style="plain" id="W0d-8y-GXY"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="f2j-33-xqA"/>
+                        <barButtonItem title="Play/Pause" image="play.fill" catalog="system" width="10" style="plain" id="TDX-5d-uSI"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="SHp-Ug-Xvm"/>
+                        <barButtonItem title="Go to Next Song" image="forward.end.fill" catalog="system" width="10" style="plain" id="KJc-Sk-01M"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Queue" id="W5j-mY-QqY">
-                        <barButtonItem key="leftBarButtonItem" title="Clear" id="Wvl-xP-IvU"/>
+                    <navigationItem key="navigationItem" title="Queue" id="R8H-6j-xFz">
+                        <barButtonItem key="leftBarButtonItem" title="Clear" id="f30-zq-Kjg"/>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YvI-vK-hlH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                    <connections>
+                        <outlet property="clearButton" destination="f30-zq-Kjg" id="kKM-8r-kmC"/>
+                        <outlet property="goToNextSongButton" destination="KJc-Sk-01M" id="wTK-wY-Jje"/>
+                        <outlet property="goToPreviousSongButton" destination="vSM-Yq-XOT" id="pQE-mJ-dlH"/>
+                        <outlet property="playPauseButton" destination="TDX-5d-uSI" id="MBq-e7-dso"/>
+                        <outlet property="restartCurrentSongButton" destination="W0d-8y-GXY" id="44e-4E-UCf"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FFB-f1-Vkj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6017" y="1722"/>
+            <point key="canvasLocation" x="6016.8000000000002" y="1065.5172413793105"/>
         </scene>
         <!--Queue-->
         <scene sceneID="u8P-4S-9k0">
@@ -251,6 +306,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="vJK-cW-8Bm" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Queue" image="speaker.fill" catalog="system" id="6Mh-Ff-7mD"/>
                     <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lPd-Rm-6Iy">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -261,12 +317,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="VxI-Ck-sXa" kind="relationship" relationship="rootViewController" id="rHB-LR-Fz6"/>
+                        <segue destination="onv-xE-8hm" kind="relationship" relationship="rootViewController" id="YaL-Y2-73M"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yYa-A3-j4d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5166" y="1722"/>
+            <point key="canvasLocation" x="5166" y="1066"/>
         </scene>
         <!--Albums-->
         <scene sceneID="27e-fe-8g7">

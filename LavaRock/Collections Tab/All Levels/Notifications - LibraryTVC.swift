@@ -41,7 +41,7 @@ extension LibraryTVC {
 			didChangeAccentColor()
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
-			print("… but the app is not set to do anything after observing that notification.")
+			print("… but is not set to do anything after observing that notification.")
 		}
 	}
 	
@@ -86,6 +86,8 @@ extension LibraryTVC {
 		}
 		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
+//		print(indexedLibraryItems)
+//		print(refreshedItems)
 		refreshTableView(
 			section: 0,
 			onscreenItems: indexedLibraryItems,

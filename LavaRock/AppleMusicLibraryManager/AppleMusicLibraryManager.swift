@@ -61,7 +61,7 @@ final class AppleMusicLibraryManager {
 			mergeChanges()
 		default:
 			print("\(Self.self) observed the notification: \(notification.name)")
-			print("… but the app is not set to do anything after observing that notification.")
+			print("… but is not set to do anything after observing that notification.")
 		}
 	}
 	

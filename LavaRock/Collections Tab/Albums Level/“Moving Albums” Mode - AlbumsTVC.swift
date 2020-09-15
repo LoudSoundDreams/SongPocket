@@ -104,7 +104,7 @@ extension AlbumsTVC {
 		// Update the indexes of the albums we aren't moving, within their collection.
 		// Almost identical to the property observer for indexedLibraryItems.
 		for index in 0..<albumsToNotMove.count {
-			albumsToNotMove[index].setValue(index, forKey: "index")
+			albumsToNotMove[index].setValue(Int64(index), forKey: "index")
 		}
 		
 		for index in 0..<albumsToMove.count {

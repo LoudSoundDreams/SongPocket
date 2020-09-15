@@ -52,7 +52,7 @@ class LibraryTVC:
 		// This is a hack to allow other rows in the table view above the rows for indexedLibraryItems. This lets us use table view rows for album artwork and album info in SongsTVC. We can also use this for All Albums and New Collection buttons in CollectionsTVC, and All Songs and Move Here buttons in AlbumsTVC.
 		didSet {
 			for index in 0 ..< indexedLibraryItems.count {
-				indexedLibraryItems[index].setValue(index, forKey: "index")
+				indexedLibraryItems[index].setValue(Int64(index), forKey: "index")
 			}
 		}
 	}

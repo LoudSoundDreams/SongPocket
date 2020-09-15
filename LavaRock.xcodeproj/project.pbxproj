@@ -42,6 +42,12 @@
 		07DC1B1D24F339E000AAEEDB /* Editing - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1C24F339E000AAEEDB /* Editing - LibraryTVC.swift */; };
 		07DC1B2024F33C8C00AAEEDB /* “Moving Albums” Mode - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* “Moving Albums” Mode - CollectionsTVC.swift */; };
 		07DC1B2324F33E0500AAEEDB /* “Moving Albums” Mode - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* “Moving Albums” Mode - AlbumsTVC.swift */; };
+		07E92A0825103F2700E9073B /* QueueTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0725103F2700E9073B /* QueueTVC.swift */; };
+		07E92A0A2510434800E9073B /* QueueEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A092510434800E9073B /* QueueEntryCell.swift */; };
+		07E92A0C251043CC00E9073B /* UITableViewDataSource - QueueTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0B251043CC00E9073B /* UITableViewDataSource - QueueTVC.swift */; };
+		07E92A0E2510497B00E9073B /* Song Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0D2510497B00E9073B /* Song Actions.swift */; };
+		07E92A1025104F9500E9073B /* Notifications - QueueTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0F25104F9500E9073B /* Notifications - QueueTVC.swift */; };
+		07E92A1225105BEB00E9073B /* QueueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A1125105BEB00E9073B /* QueueController.swift */; };
 		07F36BBE24FC3CCA0064282D /* UITableViewDataSource - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BBD24FC3CCA0064282D /* UITableViewDataSource - LibraryTVC.swift */; };
 		07F36BC024FC3D7D0064282D /* UITableViewDelegate - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BBF24FC3D7D0064282D /* UITableViewDelegate - LibraryTVC.swift */; };
 		07F36BC224FC3F450064282D /* UITableViewDataSource - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC124FC3F450064282D /* UITableViewDataSource - CollectionsTVC.swift */; };
@@ -111,6 +117,12 @@
 		07DC1B1C24F339E000AAEEDB /* Editing - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editing - LibraryTVC.swift"; sourceTree = "<group>"; };
 		07DC1B1F24F33C8C00AAEEDB /* “Moving Albums” Mode - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "“Moving Albums” Mode - CollectionsTVC.swift"; sourceTree = "<group>"; };
 		07DC1B2224F33E0400AAEEDB /* “Moving Albums” Mode - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "“Moving Albums” Mode - AlbumsTVC.swift"; sourceTree = "<group>"; };
+		07E92A0725103F2700E9073B /* QueueTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTVC.swift; sourceTree = "<group>"; };
+		07E92A092510434800E9073B /* QueueEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueEntryCell.swift; sourceTree = "<group>"; };
+		07E92A0B251043CC00E9073B /* UITableViewDataSource - QueueTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource - QueueTVC.swift"; sourceTree = "<group>"; };
+		07E92A0D2510497B00E9073B /* Song Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Song Actions.swift"; sourceTree = "<group>"; };
+		07E92A0F25104F9500E9073B /* Notifications - QueueTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - QueueTVC.swift"; sourceTree = "<group>"; };
+		07E92A1125105BEB00E9073B /* QueueController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueController.swift; sourceTree = "<group>"; };
 		07F36BBD24FC3CCA0064282D /* UITableViewDataSource - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource - LibraryTVC.swift"; sourceTree = "<group>"; };
 		07F36BBF24FC3D7D0064282D /* UITableViewDelegate - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDelegate - LibraryTVC.swift"; sourceTree = "<group>"; };
 		07F36BC124FC3F450064282D /* UITableViewDataSource - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource - CollectionsTVC.swift"; sourceTree = "<group>"; };
@@ -172,6 +184,7 @@
 				071701FE250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift */,
 				07F36BC724FC400E0064282D /* UITableViewDataSource - SongsTVC.swift */,
 				07F36BC924FC40620064282D /* UITableViewDelegate - SongsTVC.swift */,
+				07E92A0D2510497B00E9073B /* Song Actions.swift */,
 				073CDBF224B82BBB00F6D2B1 /* Views - SongsTVC.swift */,
 			);
 			path = "Songs Level";
@@ -212,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				0768308724B42DEC0033E3CC /* LavaRock */,
+				07E92A0625103F0E00E9073B /* Queue Tab */,
 				076830A124B42DEE0033E3CC /* LavaRockTests */,
 				076830AC24B42DEF0033E3CC /* LavaRockUITests */,
 				0768308624B42DEC0033E3CC /* Products */,
@@ -238,6 +252,7 @@
 				072429C324DC786500F62AF6 /* extension UITableView.swift */,
 				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
 				0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */,
+				07E92A1125105BEB00E9073B /* QueueController.swift */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 				07708A5524E5A2DF000FE01D /* Collections Tab */,
 			);
@@ -299,6 +314,17 @@
 				0736E3A624B8415400A15420 /* Views - AlbumsTVC.swift */,
 			);
 			path = "Albums Level";
+			sourceTree = "<group>";
+		};
+		07E92A0625103F0E00E9073B /* Queue Tab */ = {
+			isa = PBXGroup;
+			children = (
+				07E92A0725103F2700E9073B /* QueueTVC.swift */,
+				07E92A0F25104F9500E9073B /* Notifications - QueueTVC.swift */,
+				07E92A0B251043CC00E9073B /* UITableViewDataSource - QueueTVC.swift */,
+				07E92A092510434800E9073B /* QueueEntryCell.swift */,
+			);
+			path = "Queue Tab";
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
@@ -458,13 +484,16 @@
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* Merge from Apple Music Library.swift in Sources */,
 				079B2C9524E227BF00A949FA /* AppleMusicLibraryManager.swift in Sources */,
+				07E92A0C251043CC00E9073B /* UITableViewDataSource - QueueTVC.swift in Sources */,
 				07F36BC624FC3FE40064282D /* UITableViewDataSource - AlbumsTVC.swift in Sources */,
 				07F36BC024FC3D7D0064282D /* UITableViewDelegate - LibraryTVC.swift in Sources */,
 				071701FF250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift in Sources */,
 				07170201250B3E9700CBC4C5 /* Notifications - CollectionsTVC.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Views - SongsTVC.swift in Sources */,
 				07F36BC224FC3F450064282D /* UITableViewDataSource - CollectionsTVC.swift in Sources */,
+				07E92A1025104F9500E9073B /* Notifications - QueueTVC.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
+				07E92A0E2510497B00E9073B /* Song Actions.swift in Sources */,
 				07F36BBE24FC3CCA0064282D /* UITableViewDataSource - LibraryTVC.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
@@ -473,13 +502,16 @@
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				07F36BC424FC3F850064282D /* UITableViewDelegate - CollectionsTVC.swift in Sources */,
 				0706ABE124D947850090EB21 /* AlbumMoverClipboard.swift in Sources */,
+				07E92A1225105BEB00E9073B /* QueueController.swift in Sources */,
 				07F36BCA24FC40620064282D /* UITableViewDelegate - SongsTVC.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */,
+				07E92A0825103F2700E9073B /* QueueTVC.swift in Sources */,
 				07BF46D624EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift in Sources */,
 				070E194124F33FC800B21307 /* Editing - CollectionsTVC.swift in Sources */,
 				07F36BC824FC400E0064282D /* UITableViewDataSource - SongsTVC.swift in Sources */,
 				073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */,
+				07E92A0A2510434800E9073B /* QueueEntryCell.swift in Sources */,
 				07DC1B1A24F20C9E00AAEEDB /* extension NSManagedObjectContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -40,7 +40,6 @@ extension CollectionsTVC {
 				if let albumMoverClipboard = albumMoverClipboard {
 					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						configuration.textProperties.color = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
-						// TO DO: Tell VoiceOver that this cell is disabled.
 						cell.selectionStyle = .none
 					}
 				}

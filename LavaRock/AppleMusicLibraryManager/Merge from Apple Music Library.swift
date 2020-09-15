@@ -41,7 +41,7 @@ extension AppleMusicLibraryManager {
 		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
 		let wasAppDatabaseEmptyBeforeMerge = savedSongs.count == 0
 		
-		/*
+		
 		var savedSongsCopy = savedSongs
 		savedSongsCopy.sort() { $0.index < $1.index }
 		savedSongsCopy.sort() { $0.container!.index < $1.container!.index }
@@ -52,7 +52,7 @@ extension AppleMusicLibraryManager {
 		print(song.titleFormattedOrPlaceholder())
 		print("Container \(song.container!.container!.index), album \(song.container!.index), song \(song.index)")
 		}
-		*/
+		
 		
 		// Find out which of our saved Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.

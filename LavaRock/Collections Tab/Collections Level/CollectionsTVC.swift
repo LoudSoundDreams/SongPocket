@@ -108,7 +108,19 @@ final class CollectionsTVC:
 			}
 		} else {
 			if let emptyCollection = collectionToDeleteBeforeNextRefresh {
-				managedObjectContext.delete(emptyCollection) // TO DO: For each collection below the empty collection, we'll need to subtract 1 from its index to shift it upward to close the gap.
+				if let indexOfEmptyCollection = indexedLibraryItems.firstIndex(where: { onscreenCollection in
+					onscreenCollection.objectID == emptyCollection.objectID
+				}) {
+					let indexOfLastOnscreenCollection = indexedLibraryItems.count - 1
+					if indexOfEmptyCollection < indexOfLastOnscreenCollection {
+						for indexOfCollectionToShiftUpward in indexOfEmptyCollection + 1 ... indexOfLastOnscreenCollection {
+							// TO DO: This is fragile, because the property observer on indexedLibraryItems is designed to automatically set the "index" attribute and will override this if we touch it later.
+							let collectionToShiftUpward = indexedLibraryItems[indexOfCollectionToShiftUpward] as? Collection
+							collectionToShiftUpward?.index -= 1
+						}
+					}
+				}
+				managedObjectContext.delete(emptyCollection) // Don't remove the empty collection from indexedLibraryItems here. refreshDataAndViews() will remove it and its table view row for us.
 				managedObjectContext.tryToSaveSynchronously()
 				collectionToDeleteBeforeNextRefresh = nil
 			}
