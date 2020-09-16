@@ -74,8 +74,8 @@ extension QueueTVC {
 		}
 	}
 	
-	private func didReceiveAuthorizationForAppleMusic() {
-		beginObservingAndGeneratingNotifications()
+	func didReceiveAuthorizationForAppleMusic() {
+		viewDidLoad()
 	}
 	
 }

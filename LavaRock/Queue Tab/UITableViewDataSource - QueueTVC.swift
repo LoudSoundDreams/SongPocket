@@ -20,6 +20,8 @@ extension QueueTVC {
 			return noContentRowsAndSetTableViewPlaceholder()
 		}
 		
+		return noContentRowsAndSetTableViewPlaceholder()
+		/*
 		let numberOfQueueEntries = QueueController.shared.entries.count
 		if numberOfQueueEntries > 0 {
 			tableView.backgroundColor = nil
@@ -27,6 +29,7 @@ extension QueueTVC {
 		} else {
 			return noContentRowsAndSetTableViewPlaceholder()
 		}
+		*/
 	}
 	
 	private func noContentRowsAndSetTableViewPlaceholder() -> Int {

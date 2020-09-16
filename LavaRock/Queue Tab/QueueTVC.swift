@@ -9,7 +9,10 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-final class QueueTVC: UITableViewController {
+final class QueueTVC:
+	UITableViewController,
+	PlaybackToolbarManager
+{
 	
 	// MARK: - Properties
 	
@@ -78,6 +81,17 @@ final class QueueTVC: UITableViewController {
 	// MARK: - Events
 	
 	func refreshButtons() {
+		refreshToolbar()
+		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			clearButton.isEnabled = false
+			return
+		}
+		
+		clearButton.isEnabled = false//QueueController.shared.entries.count > 0
+	}
+	
+	func refreshToolbar() {
 		var playbackButtons: [UIBarButtonItem] = [
 			goToPreviousSongButton,
 			UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -94,15 +108,20 @@ final class QueueTVC: UITableViewController {
 				playbackButtons[indexOfPlayButton] = pauseButton
 			}
 		}
-		setToolbarItems(playbackButtons, animated: false)
+		toolbarItems = playbackButtons
 		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			goToPreviousSongButton.isEnabled = false
+			restartCurrentSongButton.isEnabled = false
+			playButton.isEnabled = false
+			goToNextSongButton.isEnabled = false
+			return
+		}
 		
-		clearButton.isEnabled = false//QueueController.shared.entries.count > 0
 //		goToPreviousSongButton.isEnabled = QueueController.shared.entries.count > 0
 //		restartCurrentSongButton.isEnabled = QueueController.shared.entries.count > 0
 //		playButton.isEnabled = QueueController.shared.entries.count > 0
 //		goToNextSongButton.isEnabled = QueueController.shared.entries.count > 0
-		
 	}
 	
 	// MARK: Controlling Playback

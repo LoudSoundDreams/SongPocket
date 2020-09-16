@@ -15,31 +15,31 @@ final class QueueController {
 	// Constants
 	static let shared = QueueController()
 	private let playerController = MPMusicPlayerController.systemMusicPlayer
-	private let coreDataFetchRequest: NSFetchRequest<QueueEntry> = {
-		let request = NSFetchRequest<QueueEntry>(entityName: "QueueEntry")
-		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		return request
-	}()
+//	private let coreDataFetchRequest: NSFetchRequest<QueueEntry> = {
+//		let request = NSFetchRequest<QueueEntry>(entityName: "QueueEntry")
+//		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+//		return request
+//	}()
 	
 	// Variables
 	private let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-	var entries = [QueueEntry]() {
-		didSet {
-			for index in 0 ..< entries.count {
-				entries[index].index = Int64(index)
-			}
-		}
-	}
+//	var entries = [QueueEntry]() {
+//		didSet {
+//			for index in 0 ..< entries.count {
+//				entries[index].index = Int64(index)
+//			}
+//		}
+//	}
 	
 	// MARK: - Setup
 	
 	private init() {
-		reloadEntries()
+//		reloadEntries()
 	}
 	
-	private func reloadEntries() {
+//	private func reloadEntries() {
 //		entries = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
-	}
+//	}
 	
 	// MARK: -
 	
