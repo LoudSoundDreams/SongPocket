@@ -36,6 +36,7 @@
 		076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C324B42E3F0033E3CC /* extension UITableViewController.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		077E089824FB7AFF007C2479 /* Notifications - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */; };
+		078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */; };
 		079B2C9524E227BF00A949FA /* AppleMusicLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */; };
 		07BF46D624EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */; };
 		07CAB24724EA227F008AC34C /* extension Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* extension Song.swift */; };
@@ -113,6 +114,7 @@
 		076830C324B42E3F0033E3CC /* extension UITableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "extension UITableViewController.swift"; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - LibraryTVC.swift"; sourceTree = "<group>"; };
+		078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumMoverDelegate - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicLibraryManager.swift; sourceTree = "<group>"; };
 		07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NavigationItemTitleCustomizer.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				0720A43425017C6C00E0A28A /* Notifications - AlbumsTVC.swift */,
 				07F36BC524FC3FE40064282D /* UITableViewDataSource - AlbumsTVC.swift */,
 				07DC1B2224F33E0400AAEEDB /* “Moving Albums” Mode - AlbumsTVC.swift */,
+				078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */,
 				0736E3A624B8415400A15420 /* Views - AlbumsTVC.swift */,
 			);
 			path = "Albums Level";
@@ -495,6 +498,7 @@
 				07DC1B2324F33E0500AAEEDB /* “Moving Albums” Mode - AlbumsTVC.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* Editing - LibraryTVC.swift in Sources */,
 				076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */,
+				078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* Merge from Apple Music Library.swift in Sources */,

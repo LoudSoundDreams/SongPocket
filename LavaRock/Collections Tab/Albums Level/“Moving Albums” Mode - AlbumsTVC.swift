@@ -8,12 +8,6 @@
 import UIKit
 import CoreData
 
-extension AlbumsTVC: AlbumMoverDelegate {
-	final func didDismissDueToRefresh() {
-		refreshDataAndViews()
-	}
-}
-
 extension AlbumsTVC {
 	
 	// MARK: - Starting Moving Albums
@@ -86,7 +80,7 @@ extension AlbumsTVC {
 		// Another solution would be to set moveAlbumsHereButton.isEnabled = false, but that looks weird and non-standard, and it confuses VoiceOver.
 		
 		if indexedLibraryItems.isEmpty {
-			newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
+			newCollectionDetector?.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		
 		// Get the albums to move, and to not move.
@@ -123,7 +117,16 @@ extension AlbumsTVC {
 		tableView.performBatchUpdates( {
 				tableView.insertRows(at: indexPathsToInsert, with: .middle)
 		}, completion: { _ in
-			self.performSegue(withIdentifier: "Moved Albums", sender: self)
+			var didMakeNewCollection = false
+			if
+				let newCollectionDetector = self.newCollectionDetector,
+				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
+			{
+				didMakeNewCollection = true
+			}
+			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbums(didMakeNewCollection: didMakeNewCollection)
+			})
+//			self.performSegue(withIdentifier: "Moved Albums", sender: self)
 		})
 		
 	}

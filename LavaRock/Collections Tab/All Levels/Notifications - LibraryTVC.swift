@@ -71,7 +71,7 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerPlaybackStateDidChange,
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
-			refreshBarButtons()
+			refreshDataAndViews() // Refresh the "current song" indicator, and refresh the bar buttons. Don't use tableView.reloadData() (even though that triggers refreshBarButtons()), because that beats didSaveChangesFromAppleMusic() to refreshing the UI.
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but is not set to do anything after observing that notification.")
@@ -237,7 +237,6 @@ extension LibraryTVC {
 	// MARK: - After Changing Accent Color
 	
 	private func didChangeAccentColor() {
-		guard MPMediaLibrary.authorizationStatus() != .authorized else { return }
 		tableView.reloadData()
 	}
 	

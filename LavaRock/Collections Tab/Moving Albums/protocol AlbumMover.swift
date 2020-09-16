@@ -13,5 +13,6 @@ protocol AlbumMover {
 }
 
 protocol AlbumMoverDelegate: AnyObject {
-	func didDismissDueToRefresh()
+	func didAbort()
+	func didMoveAlbums(didMakeNewCollection: Bool)
 }

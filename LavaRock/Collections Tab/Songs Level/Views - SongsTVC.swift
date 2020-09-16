@@ -21,12 +21,14 @@ final class AlbumInfoCellWithoutReleaseDate: UITableViewCell {
 }
 
 final class SongCell: UITableViewCell {
-	@IBOutlet var trackNumberLabel: UILabel!
 	@IBOutlet var titleLabel: UILabel!
+	@IBOutlet var currentSongIndicatorImageView: UIImageView!
+	@IBOutlet var trackNumberLabel: UILabel!
 }
 
 final class SongCellWithDifferentArtist: UITableViewCell {
-	@IBOutlet var trackNumberLabel: UILabel!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var artistLabel: UILabel!
+	@IBOutlet var currentSongIndicatorImageView: UIImageView!
+	@IBOutlet var trackNumberLabel: UILabel!
 }

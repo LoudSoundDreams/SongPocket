@@ -31,6 +31,8 @@ extension SongsTVC {
 		queueDescriptor.startItem = allMediaItems[indexOfSelectedSong]
 		
 		playerController?.setQueue(with: queueDescriptor)
+		playerController?.repeatMode = .none
+		playerController?.shuffleMode = .off
 		playerController?.prepareToPlay()
 		playerController?.play()
 	}
@@ -55,6 +57,8 @@ extension SongsTVC {
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
 		playerController?.append(queueDescriptor)
+		playerController?.repeatMode = .none
+		playerController?.shuffleMode = .off
 		if playerController?.playbackState != .playing {
 			playerController?.prepareToPlay()
 		}
@@ -76,6 +80,8 @@ extension SongsTVC {
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
 		playerController?.append(queueDescriptor)
+		playerController?.repeatMode = .none
+		playerController?.shuffleMode = .off
 		if playerController?.playbackState != .playing {
 			playerController?.prepareToPlay()
 		}

@@ -58,8 +58,9 @@ extension SongsTVC {
 //				return UITableViewCell()
 //			}
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
-			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 			let cellTitle = song.titleFormattedOrPlaceholder()
+			let currentSongIndicatorImage = UIImage(systemName: "speaker.wave.2.fill")
+			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.
 			if
@@ -67,16 +68,26 @@ extension SongsTVC {
 				cellArtist != (containerOfData as! Album).albumArtistFormattedOrPlaceholder()
 			{
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
-				cell.trackNumberLabel.text = cellTrackNumberText
 				cell.titleLabel.text = cellTitle
 				cell.artistLabel.text = cellArtist
+				if song.mpMediaItem() == playerController?.nowPlayingItem {
+					cell.currentSongIndicatorImageView.image = currentSongIndicatorImage
+				} else {
+					cell.currentSongIndicatorImageView.image = nil
+				}
+				cell.trackNumberLabel.text = cellTrackNumberText
 				return cell
 				
 			} else { // The song's artist is not useful, or it's the same as the album artist.
 				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
 				// As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
-				cell.trackNumberLabel.text = cellTrackNumberText
 				cell.titleLabel.text = cellTitle
+				if song.mpMediaItem() == playerController?.nowPlayingItem {
+					cell.currentSongIndicatorImageView.image = currentSongIndicatorImage
+				} else {
+					cell.currentSongIndicatorImageView.image = nil
+				}
+				cell.trackNumberLabel.text = cellTrackNumberText
 				return cell
 			}
 		}

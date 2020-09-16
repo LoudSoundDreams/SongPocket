@@ -48,7 +48,7 @@ class LibraryTVC:
 		action: #selector(cancelMoveAlbums))
 //	var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
 	
-	// "Constants" for PlaybackToolbarManager
+	// "Constants" that subclasses should not change, for PlaybackToolbarManager
 	var playerController: MPMusicPlayerController?
 	lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -180,7 +180,7 @@ class LibraryTVC:
 		navigationItem.rightBarButtonItem = editButtonItem
 		navigationItemButtonsEditingModeOnly = [floatToTopButton]
 		
-		refreshBarButtons()
+//		refreshBarButtons() // numberOfRowsInSection also calls this
 		
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 	}
