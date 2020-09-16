@@ -7,11 +7,16 @@
 
 import UIKit
 import MediaPlayer
-
+/*
+extension Notification.Name {
+	static let LRDidReceiveAuthorizationForAppleMusic = Notification.Name("The user just gave us permission to access their Apple Music library. Objects that depend on the Apple Music library should observe this notification and update now.")
+}
+*/
+/*
 extension QueueTVC {
 	
 	// MARK: - Setup and Teardown
-	
+	/*
 	func beginObservingAndGeneratingNotifications() {
 		NotificationCenter.default.addObserver(
 			self,
@@ -37,7 +42,7 @@ extension QueueTVC {
 			selector: #selector(didObserve(_:)),
 			name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: nil)
-		playerController?.beginGeneratingPlaybackNotifications()
+		PlaybackController.shared.playerController?.beginGeneratingPlaybackNotifications()
 		
 		// Experimental
 		NotificationCenter.default.addObserver(
@@ -52,15 +57,15 @@ extension QueueTVC {
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		playerController?.endGeneratingPlaybackNotifications()
+		PlaybackController.shared.playerController?.endGeneratingPlaybackNotifications()
 	}
-	
+	*/
 	// MARK: - Responding
 	
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
-		case .LRDidReceiveAuthorizationForAppleMusic:
-			didReceiveAuthorizationForAppleMusic()
+//		case .LRDidReceiveAuthorizationForAppleMusic:
+//			didReceiveAuthorizationForAppleMusic()
 		case
 			UIApplication.didBecomeActiveNotification,
 			.MPMusicPlayerControllerPlaybackStateDidChange,
@@ -79,3 +84,4 @@ extension QueueTVC {
 	}
 	
 }
+*/

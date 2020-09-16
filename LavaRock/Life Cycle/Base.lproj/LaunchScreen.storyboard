@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="uBf-Aj-oyT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="W9n-gA-DJs">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -19,7 +19,7 @@
                         <viewLayoutGuide key="safeArea" id="YNJ-za-8ML"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGB-t1-6B6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -51,7 +51,33 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="88T-Z3-cA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-242" y="2274"/>
+            <point key="canvasLocation" x="694" y="1598"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Tcg-T6-gfO">
+            <objects>
+                <viewController storyboardIdentifier="The toolbar appears with the wrong height." id="W9n-gA-DJs" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8t6-n8-NRC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bd8-3X-Wcu">
+                                <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                                <items/>
+                            </toolbar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="x4e-Rk-EZK"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="bd8-3X-Wcu" firstAttribute="bottom" secondItem="8t6-n8-NRC" secondAttribute="bottomMargin" id="YMc-lV-o3M"/>
+                            <constraint firstItem="bd8-3X-Wcu" firstAttribute="leading" secondItem="8t6-n8-NRC" secondAttribute="leading" id="eul-mZ-Eoa"/>
+                            <constraint firstItem="bd8-3X-Wcu" firstAttribute="trailing" secondItem="8t6-n8-NRC" secondAttribute="trailing" id="sj0-m4-tAO"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qUX-2T-S2O" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1474" y="1598"/>
         </scene>
     </scenes>
     <resources>

@@ -47,12 +47,8 @@ final class AlbumsTVC:
 			
 			tableView.allowsSelection = false
 			
-			navigationController?.isToolbarHidden = false
-			
 		} else {
 			navigationItemButtonsEditingModeOnly = [floatToTopButton, startMovingAlbumsButton]
-			
-			navigationController?.isToolbarHidden = true
 		}
 	}
 	
@@ -74,8 +70,8 @@ final class AlbumsTVC:
 	
 	// MARK: - Events
 	
-	override func refreshNavigationBarButtons() {
-		super.refreshNavigationBarButtons()
+	override func refreshBarButtons() {
+		super.refreshBarButtons()
 		
 		if isEditing {
 			updateStartMovingAlbumsButton()
@@ -88,6 +84,13 @@ final class AlbumsTVC:
 			startMovingAlbumsButton.title = "Move All"
 		} else {
 			startMovingAlbumsButton.title = "Move"
+		}
+	}
+	
+	override func setAndRefreshToolbar() {
+		if albumMoverClipboard != nil {
+		} else {
+			super.setAndRefreshToolbar()
 		}
 	}
 	

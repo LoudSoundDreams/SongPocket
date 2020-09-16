@@ -12,20 +12,14 @@
         <attribute name="title" attributeType="String"/>
         <relationship name="contents" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="Album" inverseName="container" inverseEntity="Album"/>
     </entity>
-    <entity name="QueueEntry" representedClassName="QueueEntry" syncable="YES" codeGenerationType="class">
-        <attribute name="index" attributeType="Integer 64" usesScalarValueType="YES"/>
-        <relationship name="song" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="queueEntry" inverseEntity="Song"/>
-    </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
         <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="persistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="contents" inverseEntity="Album"/>
-        <relationship name="queueEntry" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="QueueEntry" inverseName="song" inverseEntity="QueueEntry"/>
     </entity>
     <elements>
         <element name="Album" positionX="-63" positionY="-18" width="128" height="118"/>
         <element name="Collection" positionX="-257.1171875" positionY="-18.56640625" width="128" height="88"/>
-        <element name="Song" positionX="129.5859375" positionY="-12.60546875" width="128" height="103"/>
-        <element name="QueueEntry" positionX="-63" positionY="27" width="128" height="73"/>
+        <element name="Song" positionX="129.5859375" positionY="-12.60546875" width="128" height="88"/>
     </elements>
 </model>

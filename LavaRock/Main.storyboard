@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="b88-5O-SoN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -173,7 +173,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="j5X-IY-plX">
-                        <rect key="frame" x="0.0" y="680" width="375" height="49"/>
+                        <rect key="frame" x="0.0" y="729" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -187,7 +187,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Qwl-AI-Z0K">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="b88-5O-SoN" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="Main Tab Bar Controller" automaticallyAdjustsScrollViewInsets="NO" id="b88-5O-SoN" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FPo-yp-TZX">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -195,8 +195,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="YiT-J8-VtB" kind="relationship" relationship="viewControllers" id="ULc-Ck-PNa"/>
-                        <segue destination="vJK-cW-8Bm" kind="relationship" relationship="viewControllers" id="P44-30-jr9"/>
+                        <segue destination="vJK-cW-8Bm" kind="relationship" relationship="viewControllers" id="3PJ-sB-oOM"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bkr-b7-c0x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -343,11 +342,7 @@
                     <toolbarItems>
                         <barButtonItem title="Go to Previous Song" image="backward.end.fill" catalog="system" width="10" style="plain" id="vSM-Yq-XOT"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="qmL-8n-Rmt"/>
-                        <barButtonItem title="Restart Current Song" image="arrow.counterclockwise.circle.fill" catalog="system" width="10" style="plain" id="W0d-8y-GXY">
-                            <connections>
-                                <action selector="restartCurrentSong:" destination="onv-xE-8hm" id="Y9j-Pd-vQR"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem title="Restart Current Song" image="arrow.counterclockwise.circle.fill" catalog="system" width="10" style="plain" id="W0d-8y-GXY"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="f2j-33-xqA"/>
                         <barButtonItem title="Play" image="play.fill" catalog="system" width="10" style="plain" id="TDX-5d-uSI"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="SHp-Ug-Xvm"/>
@@ -357,10 +352,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Clear" id="f30-zq-Kjg"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="clearButton" destination="f30-zq-Kjg" id="kKM-8r-kmC"/>
-                        <outlet property="goToNextSongButton" destination="KJc-Sk-01M" id="wTK-wY-Jje"/>
-                        <outlet property="goToPreviousSongButton" destination="vSM-Yq-XOT" id="pQE-mJ-dlH"/>
-                        <outlet property="restartCurrentSongButton" destination="W0d-8y-GXY" id="44e-4E-UCf"/>
+                        <outlet property="clearButton" destination="f30-zq-Kjg" id="AvN-8r-JmM"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FFB-f1-Vkj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

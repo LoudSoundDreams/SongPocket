@@ -10,18 +10,26 @@ import CoreData
 import MediaPlayer
 
 final class QueueTVC:
-	UITableViewController,
-	PlaybackToolbarManager
+	UITableViewController//,
+//	PlaybackToolbarManager
 {
+	/*
 	
 	// MARK: - Properties
 	
 	// "Constants"
-	var playerController: MPMusicPlayerController? = nil//MPMusicPlayerController.systemMusicPlayer
+	let playbackController = PlaybackController.shared
 	@IBOutlet var clearButton: UIBarButtonItem!
-	@IBOutlet var goToPreviousSongButton: UIBarButtonItem!
-	@IBOutlet var restartCurrentSongButton: UIBarButtonItem!
-	@IBOutlet var goToNextSongButton: UIBarButtonItem!
+	lazy var goToPreviousSongButton = UIBarButtonItem(
+		image: UIImage(systemName: "backward.end.fill"),
+		style: .plain,
+		target: self,
+		action: #selector(goToPreviousSong))
+	lazy var restartCurrentSongButton = UIBarButtonItem(
+		image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
+		style: .plain,
+		target: self,
+		action: #selector(restartCurrentSong))
 	lazy var playButton = UIBarButtonItem(
 		image: UIImage(systemName: "play.fill"),
 		style: .plain,
@@ -32,6 +40,15 @@ final class QueueTVC:
 		style: .plain,
 		target: self,
 		action: #selector(pause))
+	lazy var goToNextSongButton = UIBarButtonItem(
+		image: UIImage(systemName: "forward.end.fill"),
+		style: .plain,
+		target: self,
+		action: #selector(goToNextSong))
+	let flexibleSpaceBarButtonItem = UIBarButtonItem(
+		barButtonSystemItem: .flexibleSpace,
+		target: nil,
+		action: nil)
 	let cellReuseIdentifier = "Cell"
 	let numberOfNonQueueEntryCells = 0
 	
@@ -43,13 +60,9 @@ final class QueueTVC:
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		beginObservingAndGeneratingNotifications()
+//		beginObservingAndGeneratingNotifications()
 		// load data
 		setUpUI()
-		
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		playerController = MPMusicPlayerController.systemMusicPlayer
     }
 	
 	// MARK: Setting Up UI
@@ -74,34 +87,34 @@ final class QueueTVC:
 	
 	// MARK: Teardown
 	
-	deinit {
-		endObservingAndGeneratingNotifications()
-	}
+//	deinit {
+//		endObservingAndGeneratingNotifications()
+//	}
 	
 	// MARK: - Events
 	
 	func refreshButtons() {
-		refreshToolbar()
+		setAndRefreshPlaybackToolbar()
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			clearButton.isEnabled = false
 			return
 		}
 		
-		clearButton.isEnabled = false//QueueController.shared.entries.count > 0
+		clearButton.isEnabled = false //
 	}
 	
-	func refreshToolbar() {
+	func setAndRefreshPlaybackToolbar() {
 		var playbackButtons: [UIBarButtonItem] = [
 			goToPreviousSongButton,
-			UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+			flexibleSpaceBarButtonItem,
 			restartCurrentSongButton,
-			UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+			flexibleSpaceBarButtonItem,
 			playButton,
-			UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+			flexibleSpaceBarButtonItem,
 			goToNextSongButton
 		]
-		if playerController?.playbackState == .playing {
+		if PlaybackController.shared.playerController?.playbackState == .playing {
 			if let indexOfPlayButton = playbackButtons.firstIndex(where: { playbackButton in
 				playbackButton == playButton
 			}) {
@@ -118,27 +131,37 @@ final class QueueTVC:
 			return
 		}
 		
-//		goToPreviousSongButton.isEnabled = QueueController.shared.entries.count > 0
-//		restartCurrentSongButton.isEnabled = QueueController.shared.entries.count > 0
-//		playButton.isEnabled = QueueController.shared.entries.count > 0
-//		goToNextSongButton.isEnabled = QueueController.shared.entries.count > 0
+		// enable and disable the other buttons
 	}
 	
-	// MARK: Controlling Playback
-	
-	@IBAction func restartCurrentSong(_ sender: UIBarButtonItem) {
-		playerController?.skipToBeginning()
+	@objc func presentClearQueueOptions() {
+		
 	}
 	
-	@objc private func play() {
-		playerController?.prepareToPlay()
-		playerController?.play()
+	// MARK: - Controlling Playback
+	
+	@objc func goToPreviousSong() {
+		
+	}
+	
+	@objc func restartCurrentSong() {
+		PlaybackController.shared.restartCurrentSong()
+	}
+	
+	@objc func play() {
+		PlaybackController.shared.play()
 		refreshButtons()
 	}
 	
-	@objc private func pause() {
-		playerController?.pause()
+	@objc func pause() {
+		PlaybackController.shared.pause()
 		refreshButtons()
 	}
 	
+	@objc func goToNextSong() {
+		
+	}
+	
+	
+	*/
 }

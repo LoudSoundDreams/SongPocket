@@ -11,11 +11,14 @@ import CoreData
 import MediaPlayer
 
 class LibraryTVC:
-	UITableViewController//,
+	UITableViewController,
+	PlaybackToolbarManager//,
 	//NSFetchedResultsControllerDelegate
 {
 	
 	// MARK: - Properties
+	
+	// MARK: "Constants"
 	
 	// "Constants" that subclasses should customize
 	var coreDataEntityName = "Collection"
@@ -45,7 +48,60 @@ class LibraryTVC:
 		action: #selector(cancelMoveAlbums))
 //	var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
 	
-	// Variables
+	// "Constants" for PlaybackToolbarManager
+	var playerController: MPMusicPlayerController?
+	lazy var goToPreviousSongButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "backward.end.fill"),
+			style: .plain,
+			target: self,
+			action: #selector(goToPreviousSong))
+		button.width = CGFloat(10.0)
+		return button
+	}()
+	lazy var restartCurrentSongButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
+			style: .plain,
+			target: self,
+			action: #selector(restartCurrentSong))
+		button.width = CGFloat(10.0)
+		return button
+	}()
+	lazy var playButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "play.fill"),
+			style: .plain,
+			target: self,
+			action: #selector(play))
+		button.width = CGFloat(10.0)
+		return button
+	}()
+	lazy var pauseButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "pause.fill"),
+			style: .plain,
+			target: self,
+			action: #selector(pause))
+		button.width = CGFloat(10.0) // As of iOS 14.0 beta 8, even with this line of code, the "pause.fill" button is still narrower than the "play.fill" button.
+		return button
+	}()
+	lazy var goToNextSongButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "forward.end.fill"),
+			style: .plain,
+			target: self,
+			action: #selector(goToNextSong))
+		button.width = CGFloat(10.0)
+		return button
+	}()
+	let flexibleSpaceBarButtonItem = UIBarButtonItem(
+		barButtonSystemItem: .flexibleSpace,
+		target: nil,
+		action: nil)
+	
+	// MARK: Variables
+	
 	var numberOfRowsAboveIndexedLibraryItems = 0 // This is implied to be true in each section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
 	var indexedLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in this array, because the table view follows this array; not the "index" attribute of each NSManagedObject.
 		// WARNING: indexedLibraryItems[indexPath.row] will not necessarily get the right library item. Whenever you use both indexedLibraryItems and IndexPaths, always subtract from indexPath.row numberOfRowsAboveIndexedLibraryItems, even if it's 0.
@@ -70,9 +126,16 @@ class LibraryTVC:
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		beginObservingNotifications()
+		setUpPlayerControllerIfAuthorized() // We need to do this before beginObservingAndGeneratingNotifications(), because we need to tell the player controller to begin generating notifications.
+		beginObservingAndGeneratingNotifications()
 		reloadIndexedLibraryItems()
 		setUpUI()
+	}
+	
+	private func setUpPlayerControllerIfAuthorized() {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		playerController = MPMusicPlayerController.systemMusicPlayer
 	}
 	
 	// MARK: Loading Data
@@ -117,7 +180,7 @@ class LibraryTVC:
 		navigationItem.rightBarButtonItem = editButtonItem
 		navigationItemButtonsEditingModeOnly = [floatToTopButton]
 		
-		refreshNavigationBarButtons()
+		refreshBarButtons()
 		
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 	}
@@ -158,7 +221,7 @@ class LibraryTVC:
 	
 	// MARK: - Events
 	
-	func refreshNavigationBarButtons() {
+	func refreshBarButtons() {
 		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI to reflect changes in the Apple Music library.
 		
 		editButtonItem.isEnabled =
@@ -174,6 +237,16 @@ class LibraryTVC:
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingModeOnly, animated: true)
 		} else {
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditingMode, animated: true)
+		}
+		
+		setAndRefreshToolbar()
+	}
+	
+	func setAndRefreshToolbar() {
+		if isEditing {
+			setToolbarItems(nil, animated: true)
+		} else {
+			setAndRefreshPlaybackToolbar()
 		}
 	}
 	

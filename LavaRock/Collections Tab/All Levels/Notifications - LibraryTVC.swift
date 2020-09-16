@@ -13,7 +13,7 @@ extension LibraryTVC {
 	
 	// MARK: - Setup and Teardown
 	
-	@objc func beginObservingNotifications() {
+	@objc func beginObservingAndGeneratingNotifications() {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
@@ -24,6 +24,33 @@ extension LibraryTVC {
 			self,
 			selector: #selector(didObserve(_:)),
 			name: Notification.Name.LRDidChangeAccentColor,
+			object: nil)
+		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(didObserve(_:)),
+			name: UIApplication.didBecomeActiveNotification,
+			object: nil)
+		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(didObserve(_:)),
+			name: Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
+			object: nil)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(didObserve(_:)),
+			name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
+			object: nil)
+		playerController?.beginGeneratingPlaybackNotifications()
+		
+		// Experimental
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(didObserve(_:)),
+			name: Notification.Name.MPMusicPlayerControllerQueueDidChange,
 			object: nil)
 	}
 	
@@ -39,6 +66,12 @@ extension LibraryTVC {
 			didSaveChangesFromAppleMusic()
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
+		case
+			UIApplication.didBecomeActiveNotification,
+			.MPMusicPlayerControllerPlaybackStateDidChange,
+			.MPMusicPlayerControllerNowPlayingItemDidChange
+		:
+			refreshBarButtons()
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but is not set to do anything after observing that notification.")

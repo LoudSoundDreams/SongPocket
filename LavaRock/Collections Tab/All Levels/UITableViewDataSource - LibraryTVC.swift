@@ -16,7 +16,7 @@ extension LibraryTVC {
 		// You need to accommodate 2 special cases:
 		// 1. When the user hasn't allowed access to Apple Music, use the "Allow Access to Apple Music" cell as a button.
 		// 2. When there are no items, set the no-content placeholder to the background view.
-		refreshNavigationBarButtons()
+		refreshBarButtons()
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
 			// This logic, for setting the "no items" placeholder, should be in numberOfRowsInSection, not in numberOfSections.
@@ -82,7 +82,7 @@ extension LibraryTVC {
 		let itemBeingMoved = indexedLibraryItems[fromIndex]
 		indexedLibraryItems.remove(at: fromIndex)
 		indexedLibraryItems.insert(itemBeingMoved, at: toIndex)
-		refreshNavigationBarButtons() // If you made selected items non-contiguous, that should disable the Sort button. If you made selected items contiguous, that should enable the Sort button.
+		refreshBarButtons() // If you made selected items non-contiguous, that should disable the Sort button. If you made selected items contiguous, that should enable the Sort button.
 	}
 	
 }

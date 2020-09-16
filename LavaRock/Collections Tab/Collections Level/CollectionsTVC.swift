@@ -45,7 +45,7 @@ final class CollectionsTVC:
 				super.viewDidLoad()
 				
 				DispatchQueue.main.async {
-					AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingNotifications(), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
+					AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingAndGeneratingNotifications(), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
 				}
 			}
 		}
@@ -65,12 +65,8 @@ final class CollectionsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
-			navigationController?.isToolbarHidden = false
-			
 		} else {
 			navigationItemButtonsNotEditingMode = [optionsButton]
-			
-			navigationController?.isToolbarHidden = true
 		}
 	}
 	
@@ -127,6 +123,15 @@ final class CollectionsTVC:
 		}
 		
 		super.viewDidAppear(animated)
+	}
+	
+	// MARK: - Events
+	
+	override func setAndRefreshToolbar() {
+		if albumMoverClipboard != nil {
+		} else {
+			super.setAndRefreshToolbar()
+		}
 	}
 	
 	// MARK: - Navigation

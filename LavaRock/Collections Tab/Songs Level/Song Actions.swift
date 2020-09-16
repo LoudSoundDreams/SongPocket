@@ -19,15 +19,20 @@ extension SongsTVC {
 		else { return }
 		didDismissSongActions()
 		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-		var songIDsToEnqueue = [NSManagedObjectID]()
-		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
-			let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue]
-			songIDsToEnqueue.append(songToEnqueue.objectID)
+		
+		var allMediaItems = [MPMediaItem]()
+		for songToEnqueue in indexedLibraryItems {
+			guard let mediaItem = (songToEnqueue as? Song)?.mpMediaItem() else { continue }
+			allMediaItems.append(mediaItem)
 		}
 		
-		QueueController.shared.setPlayerQueueWith(songsWithObjectIDs: songIDsToEnqueue)
-		playerController.prepareToPlay()
-		playerController.play()
+		let mediaItemCollection = MPMediaItemCollection(items: allMediaItems)
+		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
+		queueDescriptor.startItem = allMediaItems[indexOfSelectedSong]
+		
+		playerController?.setQueue(with: queueDescriptor)
+		playerController?.prepareToPlay()
+		playerController?.play()
 	}
 	
 	func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
@@ -36,15 +41,23 @@ extension SongsTVC {
 		else { return }
 		didDismissSongActions()
 		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-		var songIDsToEnqueue = [NSManagedObjectID]()
+		
+		var mediaItemsToEnqueue = [MPMediaItem]()
 		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
-			let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue]
-			songIDsToEnqueue.append(songToEnqueue.objectID)
+			guard
+				let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue] as? Song,
+				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
+			else { continue }
+			mediaItemsToEnqueue.append(mediaItemToEnqueue)
 		}
 		
-		QueueController.shared.appendToPlayerQueue(songsWithObjectIDs: songIDsToEnqueue)
+		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
+		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
-		
+		playerController?.append(queueDescriptor)
+		if playerController?.playbackState != .playing {
+			playerController?.prepareToPlay()
+		}
 	}
 	
 	func enqueueSelectedSong(_ sender: UIAlertAction) {
@@ -53,12 +66,19 @@ extension SongsTVC {
 		else { return }
 		didDismissSongActions()
 		let indexOfSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-		let song = indexedLibraryItems[indexOfSong]
-		let songID = song.objectID
 		
-		QueueController.shared.appendToPlayerQueue(songWithObjectID: songID)
+		guard
+			let song = indexedLibraryItems[indexOfSong] as? Song,
+			let mediaItem = song.mpMediaItem()
+		else { return }
 		
+		let mediaItemCollection = MPMediaItemCollection(items: [mediaItem])
+		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
+		playerController?.append(queueDescriptor)
+		if playerController?.playbackState != .playing {
+			playerController?.prepareToPlay()
+		}
 	}
 	
 	// MARK: - Presenting Actions
@@ -99,7 +119,6 @@ extension SongsTVC {
 			)
 		)
 		present(actionSheet, animated: true, completion: nil)
-		let _ = QueueController.shared
 	}
 	
 	// MARK: Dismissing Actions
