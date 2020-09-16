@@ -26,14 +26,13 @@ extension LibraryTVC {
 			name: Notification.Name.LRDidChangeAccentColor,
 			object: nil)
 		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
 			name: UIApplication.didBecomeActiveNotification,
 			object: nil)
-		
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
