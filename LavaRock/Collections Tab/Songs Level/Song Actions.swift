@@ -15,6 +15,7 @@ extension SongsTVC {
 	
 	func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		guard
+			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		didDismissSongActions()
@@ -39,6 +40,7 @@ extension SongsTVC {
 	
 	func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		guard
+			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		didDismissSongActions()
@@ -66,6 +68,7 @@ extension SongsTVC {
 	
 	func enqueueSelectedSong(_ sender: UIAlertAction) {
 		guard
+			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		didDismissSongActions()

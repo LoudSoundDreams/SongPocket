@@ -55,6 +55,8 @@ extension LibraryTVC {
 	
 	func endObservingNotifications() {
 		NotificationCenter.default.removeObserver(self)
+		
+		// TO DO: Should we tell playerController to end generating playback notifications? How do we make sure we don't do it when we shouldn't?
 	}
 	
 	// MARK: - Responding

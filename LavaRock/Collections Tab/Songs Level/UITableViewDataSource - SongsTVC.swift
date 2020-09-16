@@ -68,19 +68,29 @@ extension SongsTVC {
 				cellArtist != (containerOfData as! Album).albumArtistFormattedOrPlaceholder()
 			{
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
-				cell.titleLabel.text = cellTitle
 				cell.artistLabel.text = cellArtist
+				
+				cell.titleLabel.text = cellTitle
 				if song.mpMediaItem() == playerController?.nowPlayingItem {
 					cell.currentSongIndicatorImageView.image = currentSongIndicatorImage
 				} else {
 					cell.currentSongIndicatorImageView.image = nil
 				}
 				cell.trackNumberLabel.text = cellTrackNumberText
+				let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+				let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([
+					UIFontDescriptor.AttributeName.featureSettings: [[
+						UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
+						UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
+					]]
+				])
+				let monospacedNumbersBodyFont = UIFont(descriptor: monospacedNumbersBodyFontDescriptor, size: 0)
+				cell.trackNumberLabel.font = monospacedNumbersBodyFont
 				return cell
 				
 			} else { // The song's artist is not useful, or it's the same as the album artist.
-				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell
-				// As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
+				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
+				
 				cell.titleLabel.text = cellTitle
 				if song.mpMediaItem() == playerController?.nowPlayingItem {
 					cell.currentSongIndicatorImageView.image = currentSongIndicatorImage
@@ -88,8 +98,18 @@ extension SongsTVC {
 					cell.currentSongIndicatorImageView.image = nil
 				}
 				cell.trackNumberLabel.text = cellTrackNumberText
+				let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+				let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([
+					UIFontDescriptor.AttributeName.featureSettings: [[
+						UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
+						UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
+					]]
+				])
+				let monospacedNumbersBodyFont = UIFont(descriptor: monospacedNumbersBodyFontDescriptor, size: 0)
+				cell.trackNumberLabel.font = monospacedNumbersBodyFont
 				return cell
 			}
+			
 		}
 	}
 	

@@ -39,6 +39,8 @@ final class AppleMusicLibraryManager {
 	// MARK: Setup and Teardown
 	
 	private func beginObservingAndGeneratingNotifications() {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
@@ -49,6 +51,9 @@ final class AppleMusicLibraryManager {
 	
 	private func endObservingAndGeneratingNotifications() {
 		NotificationCenter.default.removeObserver(self)
+		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
 		library?.endGeneratingLibraryChangeNotifications()
 	}
 	
