@@ -19,9 +19,6 @@ extension AlbumsTVC {
 		
 		// Get the data to put into the cell.
 		
-//		guard let album = fetchedResultsController?.object(at: indexPath) as? Album else {
-//			return UITableViewCell()
-//		}
 		let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		

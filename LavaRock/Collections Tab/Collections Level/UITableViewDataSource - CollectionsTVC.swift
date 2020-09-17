@@ -24,11 +24,6 @@ extension CollectionsTVC {
 		} else { // Return a cell for an item in indexedLibraryItems.
 			
 			// Get the data to put into the cell.
-			/*
-			guard let collection = fetchedResultsController?.object(at: indexPath) as? Collection else {
-				return UITableViewCell()
-			}
-			*/
 			let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Collection
 			
 			// Make, configure, and return the cell.

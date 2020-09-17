@@ -15,9 +15,6 @@ extension SongsTVC {
 		super.tableView(tableView, didSelectRowAt: indexPath) // Why do we need this?
 		
 		if !isEditing {
-//			guard let song = fetchedResultsController?.object(at: indexPath) as? Song else {
-//				return
-//			}
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			showSongActions(for: song)
 			// This leaves the row selected while the action sheet is onscreen, as it should be.

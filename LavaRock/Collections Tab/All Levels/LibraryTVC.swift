@@ -12,8 +12,7 @@ import MediaPlayer
 
 class LibraryTVC:
 	UITableViewController,
-	PlaybackToolbarManager//,
-	//NSFetchedResultsControllerDelegate
+	PlaybackToolbarManager
 {
 	
 	// MARK: - Properties
@@ -52,7 +51,6 @@ class LibraryTVC:
 		barButtonSystemItem: .cancel,
 		target: self,
 		action: #selector(cancelMoveAlbums))
-//	var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
 	
 	// "Constants" that subclasses should not change, for PlaybackToolbarManager
 	var playerController: MPMusicPlayerController?
@@ -151,33 +149,8 @@ class LibraryTVC:
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData)
 		}
 		
-//		updateFetchedResultsController()
-		
 		indexedLibraryItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 	}
-	
-	/*
-	private func updateFetchedResultsController() {
-		NSFetchedResultsController<NSManagedObject>.deleteCache(withName: fetchedResultsController?.cacheName)
-
-		if let containerOfData = containerOfData {
-			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData)
-		}
-		fetchedResultsController = NSFetchedResultsController(
-			fetchRequest: coreDataFetchRequest,
-			managedObjectContext: managedObjectContext,
-			sectionNameKeyPath: nil,
-			cacheName: nil
-		)
-		fetchedResultsController?.delegate = self
-
-		do {
-			try fetchedResultsController?.performFetch()
-		} catch {
-			fatalError("Initialized an NSFetchedResultsController, but couldn't fetch objects.")
-		}
-	}
-	*/
 	
 	// MARK: Setting Up UI
 	
@@ -205,23 +178,6 @@ class LibraryTVC:
 	deinit {
 		endObservingNotifications()
 	}
-	
-	// MARK: - Fetched Results Controller Delegate
-	
-	/*
-	func controller(
-		_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-		didChange anObject: Any,
-		at indexPath: IndexPath?,
-		for type: NSFetchedResultsChangeType,
-		newIndexPath: IndexPath?
-	) {
-	// What if the controller reports that an object moved in the data layer, and the user is currently moving an object manually?
-		
-		print("NSFetchedResultsController has detected a change to the object: \(anObject)")
-		print("It thinks the type of change should be: \(type)")
-	}
-	*/
 	
 	// MARK: - Events
 	
@@ -251,7 +207,6 @@ class LibraryTVC:
 	private func refreshEditButton() {
 		editButtonItem.isEnabled =
 			MPMediaLibrary.authorizationStatus() == .authorized &&
-//			(fetchedResultsController?.fetchedObjects?.count ?? 0) > 0
 			indexedLibraryItems.count > 0
 	}
 	
@@ -293,8 +248,7 @@ class LibraryTVC:
 		if
 			segue.identifier == "Drill Down in Library",
 			let destination = segue.destination as? LibraryTVC,
-			let selectedIndexPath = tableView.indexPathForSelectedRow//,
-//			let selectedItem = fetchedResultsController?.object(at: selectedIndexPath)
+			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
 			destination.managedObjectContext = managedObjectContext
 			let selectedItem = indexedLibraryItems[selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems]

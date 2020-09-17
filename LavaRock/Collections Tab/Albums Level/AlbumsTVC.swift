@@ -50,8 +50,6 @@ final class AlbumsTVC:
 			
 			tableView.allowsSelection = false
 			
-//			setAlbumMoverToolbar()
-			
 		} else {
 			toolbarButtonsEditingModeOnly = [
 				startMovingAlbumsButton,
@@ -87,6 +85,14 @@ final class AlbumsTVC:
 	
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
+	
+//	override func viewDidAppear(_ animated: Bool) {
+//		super.viewDidAppear(animated)
+//
+//		if albumMoverClipboard != nil {
+//			setAlbumMoverToolbar()
+//		}
+//	}
 	
 	// MARK: - Events
 	

@@ -72,8 +72,14 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerPlaybackStateDidChange,
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
-			refreshDataAndViews() // Refresh the "current song" indicator, and refresh the bar buttons. Don't use tableView.reloadData() (even though that triggers refreshBarButtons()), because that beats didSaveChangesFromAppleMusic() to refreshing the UI.
-			// Note: This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
+			refreshBarButtons() // Note: This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
+			// What we really want is for every LibraryTVC to have its playback toolbar refreshed by the time it appears.
+			print(self is SongsTVC)
+			if self is SongsTVC {
+//				refreshData()
+//				refreshDataAndViewsWhenVisible() //
+				refreshDataAndViews() // Refresh the "current song" indicator. Don't use tableView.reloadData() (even though that triggers refreshBarButtons()), because that beats didSaveChangesFromAppleMusic() to refreshing the UI.
+			}
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but is not set to do anything after observing that notification.")
@@ -123,11 +129,14 @@ extension LibraryTVC {
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 //		print(indexedLibraryItems)
 //		print(refreshedItems)
-		refreshTableView(
-			section: 0,
-			onscreenItems: indexedLibraryItems,
-			refreshedItems: refreshedItems,
-			completion: refreshData)
+//		print(refreshedItems == indexedLibraryItems)
+//		if refreshedItems != indexedLibraryItems {
+			refreshTableView(
+				section: 0,
+				onscreenItems: indexedLibraryItems,
+				refreshedItems: refreshedItems,
+				completion: refreshData)
+//		}
 	}
 	
 	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().

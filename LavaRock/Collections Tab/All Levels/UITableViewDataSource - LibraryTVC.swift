@@ -23,14 +23,8 @@ extension LibraryTVC {
 			// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
 			// - If you put it in numberOfRowsInSection, VoiceOver move focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
 			
-//			guard let numberOfItems = fetchedResultsController?.sections?[section].numberOfObjects else {
-//				return 0
-//			}
-			
-//			if numberOfItems > 0 {
 			if indexedLibraryItems.count > 0 {
 				tableView.backgroundView = nil
-//				return numberOfItems
 				return indexedLibraryItems.count + numberOfRowsAboveIndexedLibraryItems
 			} else {
 				if let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell") { // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.

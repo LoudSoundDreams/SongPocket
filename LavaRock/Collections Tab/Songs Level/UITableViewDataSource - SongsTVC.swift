@@ -52,11 +52,6 @@ extension SongsTVC {
 		} else {
 			
 			// Get the data to put into the cell.
-//			guard let song = fetchedResultsController?.object(
-//				at: IndexPath(row: indexPath.row - numberOfRowsAboveIndexedLibraryItems, section: indexPath.section)
-//			) as? Song else {
-//				return UITableViewCell()
-//			}
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			let cellTitle = song.titleFormattedOrPlaceholder()
 			var currentSongIndicatorImage = UIImage(systemName: "speaker")
