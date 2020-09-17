@@ -73,6 +73,7 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
 			refreshDataAndViews() // Refresh the "current song" indicator, and refresh the bar buttons. Don't use tableView.reloadData() (even though that triggers refreshBarButtons()), because that beats didSaveChangesFromAppleMusic() to refreshing the UI.
+			// Note: This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but is not set to do anything after observing that notification.")

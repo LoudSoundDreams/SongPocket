@@ -59,7 +59,13 @@ extension SongsTVC {
 //			}
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			let cellTitle = song.titleFormattedOrPlaceholder()
-			let currentSongIndicatorImage = UIImage(systemName: "speaker.wave.2.fill")
+			var currentSongIndicatorImage = UIImage(systemName: "speaker.fill")
+			if
+				let playerController = playerController,
+				playerController.playbackState == .playing // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
+			{
+				currentSongIndicatorImage = UIImage(systemName: "speaker.wave.2.fill")
+			}
 			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.

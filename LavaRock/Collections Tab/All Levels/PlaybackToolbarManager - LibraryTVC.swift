@@ -22,7 +22,10 @@ extension LibraryTVC {
 			flexibleSpaceBarButtonItem,
 			goToNextSongButton
 		]
-		if playerController?.playbackState == .playing {
+		if
+			let playerController = playerController,
+			playerController.playbackState == .playing // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
+		{
 			if let indexOfPlayButton = playbackButtons.firstIndex(where: { playbackButton in
 				playbackButton == playButton
 			}) {
@@ -59,14 +62,12 @@ extension LibraryTVC {
 	}
 	
 	@objc func play() {
-		playerController?.prepareToPlay()
+//		playerController?.prepareToPlay()
 		playerController?.play()
-		refreshBarButtons()
 	}
 	
 	@objc func pause() {
 		playerController?.pause()
-		refreshBarButtons()
 	}
 	
 	@objc func goToNextSong() {

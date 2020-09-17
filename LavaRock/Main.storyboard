@@ -691,23 +691,23 @@
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="VRK-dB-HAw">
-                                            <rect key="frame" x="295.66666666666669" y="13.333333333333332" width="24" height="16.666666666666664"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="VRK-dB-HAw">
+                                            <rect key="frame" x="100.66666666666667" y="13.333333333333332" width="17" height="16.666666666666664"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="TnF-8u-0pb" firstAttribute="leading" secondItem="Fg6-10-nMy" secondAttribute="leadingMargin" id="4iD-z8-GFH"/>
-                                        <constraint firstItem="VRK-dB-HAw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TnF-8u-0pb" secondAttribute="trailing" constant="8" symbolic="YES" id="4y0-Qh-tmX"/>
+                                        <constraint firstItem="VRK-dB-HAw" firstAttribute="leading" secondItem="TnF-8u-0pb" secondAttribute="trailing" constant="8" symbolic="YES" id="4y0-Qh-tmX"/>
                                         <constraint firstItem="TnF-8u-0pb" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Fg6-10-nMy" secondAttribute="bottomMargin" id="QMe-33-w3J"/>
                                         <constraint firstItem="gGs-MB-auE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Fg6-10-nMy" secondAttribute="topMargin" id="QNp-R9-AHe"/>
                                         <constraint firstItem="VRK-dB-HAw" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Fg6-10-nMy" secondAttribute="bottomMargin" id="R9p-OK-dLT"/>
-                                        <constraint firstItem="VRK-dB-HAw" firstAttribute="centerY" secondItem="gGs-MB-auE" secondAttribute="centerY" id="Uid-ua-hQT"/>
+                                        <constraint firstItem="VRK-dB-HAw" firstAttribute="centerY" secondItem="TnF-8u-0pb" secondAttribute="centerY" id="Uid-ua-hQT"/>
                                         <constraint firstItem="gGs-MB-auE" firstAttribute="centerY" secondItem="TnF-8u-0pb" secondAttribute="centerY" id="XBn-Vl-cKu"/>
                                         <constraint firstItem="TnF-8u-0pb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Fg6-10-nMy" secondAttribute="topMargin" id="c8I-ZJ-SJd"/>
                                         <constraint firstItem="TnF-8u-0pb" firstAttribute="centerY" secondItem="Fg6-10-nMy" secondAttribute="centerY" constant="-1" id="iNK-s4-l2Y"/>
                                         <constraint firstItem="TnF-8u-0pb" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="gGs-MB-auE" secondAttribute="leading" constant="-16" id="is5-V7-6WV"/>
                                         <constraint firstItem="VRK-dB-HAw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Fg6-10-nMy" secondAttribute="topMargin" id="nIv-pS-9nC"/>
-                                        <constraint firstItem="gGs-MB-auE" firstAttribute="leading" secondItem="VRK-dB-HAw" secondAttribute="trailing" constant="8" symbolic="YES" id="up0-4w-IjK"/>
+                                        <constraint firstItem="gGs-MB-auE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VRK-dB-HAw" secondAttribute="trailing" constant="8" symbolic="YES" id="up0-4w-IjK"/>
                                         <constraint firstItem="gGs-MB-auE" firstAttribute="trailing" secondItem="Fg6-10-nMy" secondAttribute="trailingMargin" id="xDH-WV-opm"/>
                                         <constraint firstItem="gGs-MB-auE" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Fg6-10-nMy" secondAttribute="bottomMargin" id="xX5-hp-gxm"/>
                                     </constraints>
@@ -718,45 +718,8 @@
                                     <outlet property="trackNumberLabel" destination="gGs-MB-auE" id="eZ1-8X-3si"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell Without Current Song Indicator" id="Awf-as-aid" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="230.00000381469727" width="375" height="44.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Awf-as-aid" id="nFC-yA-gT8">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Song Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94F-Iw-rIo">
-                                            <rect key="frame" x="16" y="11.333333333333334" width="76.666666666666671" height="20.333333333333329"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cP5-nB-RQt">
-                                            <rect key="frame" x="327.66666666666669" y="11.333333333333334" width="31.333333333333314" height="20.333333333333329"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="cP5-nB-RQt" firstAttribute="centerY" secondItem="94F-Iw-rIo" secondAttribute="centerY" id="5EF-8F-JBX"/>
-                                        <constraint firstItem="94F-Iw-rIo" firstAttribute="centerY" secondItem="nFC-yA-gT8" secondAttribute="centerY" constant="-1" id="KUW-5e-EjN"/>
-                                        <constraint firstItem="94F-Iw-rIo" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nFC-yA-gT8" secondAttribute="topMargin" id="N8a-ew-XLs"/>
-                                        <constraint firstItem="94F-Iw-rIo" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="cP5-nB-RQt" secondAttribute="leading" constant="-16" id="STu-36-uH5"/>
-                                        <constraint firstItem="cP5-nB-RQt" firstAttribute="trailing" secondItem="nFC-yA-gT8" secondAttribute="trailingMargin" id="Sj3-t3-xfQ"/>
-                                        <constraint firstItem="94F-Iw-rIo" firstAttribute="leading" secondItem="nFC-yA-gT8" secondAttribute="leadingMargin" id="XQY-mh-zGG"/>
-                                        <constraint firstItem="94F-Iw-rIo" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="nFC-yA-gT8" secondAttribute="bottomMargin" id="elE-Q3-cdc"/>
-                                        <constraint firstItem="cP5-nB-RQt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nFC-yA-gT8" secondAttribute="topMargin" id="jLc-yh-juj"/>
-                                        <constraint firstItem="cP5-nB-RQt" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="nFC-yA-gT8" secondAttribute="bottomMargin" id="mJ4-XI-qoH"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="titleLabel" destination="94F-Iw-rIo" id="mvc-WI-Mre"/>
-                                    <outlet property="trackNumberLabel" destination="cP5-nB-RQt" id="SOl-Ab-fZK"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell with Different Artist" id="J5T-0G-4uX" customClass="SongCellWithDifferentArtist" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="274.66667175292969" width="375" height="63"/>
+                                <rect key="frame" x="0.0" y="230.00000381469727" width="375" height="63"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
@@ -785,23 +748,23 @@
                                                 </label>
                                             </subviews>
                                         </stackView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WdO-9k-h95">
-                                            <rect key="frame" x="295.66666666666669" y="22.333333333333332" width="24" height="16.666666666666668"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WdO-9k-h95">
+                                            <rect key="frame" x="100.66666666666667" y="22.333333333333332" width="17" height="16.666666666666668"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="0Fl-Si-GIs"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="3JO-c4-DJ4"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="centerY" secondItem="TU5-RY-n4A" secondAttribute="centerY" constant="-1" id="BBp-wO-3RZ"/>
-                                        <constraint firstItem="WdO-9k-h95" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="8" symbolic="YES" id="KTq-lY-q0D"/>
+                                        <constraint firstItem="WdO-9k-h95" firstAttribute="leading" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="8" symbolic="YES" id="KTq-lY-q0D"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="trailing" secondItem="TU5-RY-n4A" secondAttribute="trailingMargin" id="PSF-tJ-k9f"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="Vii-fO-tcS"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="Xes-dR-lZq"/>
-                                        <constraint firstItem="WdO-9k-h95" firstAttribute="centerY" secondItem="RAq-AF-bpj" secondAttribute="centerY" id="Z5x-M8-pLQ"/>
+                                        <constraint firstItem="WdO-9k-h95" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="Z5x-M8-pLQ"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="bE3-fw-Fd1"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="dES-oz-vrb"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="16" id="eKz-tl-nIv"/>
-                                        <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="trailing" constant="8" symbolic="YES" id="hTM-vu-gtP"/>
+                                        <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WdO-9k-h95" secondAttribute="trailing" constant="8" symbolic="YES" id="hTM-vu-gtP"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="x27-Sp-4dc"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="yme-ol-E5x"/>
                                     </constraints>
@@ -813,57 +776,8 @@
                                     <outlet property="trackNumberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell with Different Artist Without Current Song Indicator" id="r8e-Kl-WpB" customClass="SongCellWithDifferentArtist" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="337.66667175292969" width="375" height="63"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="r8e-Kl-WpB" id="hzq-Y1-I8I">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngK-yS-loR">
-                                            <rect key="frame" x="327.66666666666669" y="20.333333333333336" width="31.333333333333314" height="20.333333333333336"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="8SM-ZP-tXJ">
-                                            <rect key="frame" x="16" y="11.333333333333332" width="76.666666666666671" height="38.666666666666671"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Song Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7f3-pn-knL">
-                                                    <rect key="frame" x="0.0" y="0.0" width="76.666666666666671" height="20.333333333333332"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="260" text="Artist Name" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBY-a7-ieB">
-                                                    <rect key="frame" x="0.0" y="24.333333333333329" width="76.666666666666671" height="14.333333333333336"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="8SM-ZP-tXJ" firstAttribute="centerY" secondItem="hzq-Y1-I8I" secondAttribute="centerY" constant="-1" id="3io-Gg-8Av"/>
-                                        <constraint firstItem="8SM-ZP-tXJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hzq-Y1-I8I" secondAttribute="topMargin" id="7EP-zR-uGF"/>
-                                        <constraint firstItem="ngK-yS-loR" firstAttribute="centerY" secondItem="8SM-ZP-tXJ" secondAttribute="centerY" id="Fpt-1w-BPn"/>
-                                        <constraint firstItem="ngK-yS-loR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8SM-ZP-tXJ" secondAttribute="trailing" constant="16" id="G67-ID-JR5"/>
-                                        <constraint firstItem="ngK-yS-loR" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="hzq-Y1-I8I" secondAttribute="bottomMargin" id="IqY-zQ-qOg"/>
-                                        <constraint firstItem="8SM-ZP-tXJ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="hzq-Y1-I8I" secondAttribute="bottomMargin" id="VeF-pi-kRy"/>
-                                        <constraint firstItem="ngK-yS-loR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hzq-Y1-I8I" secondAttribute="topMargin" id="dqW-bT-fyN"/>
-                                        <constraint firstItem="8SM-ZP-tXJ" firstAttribute="leading" secondItem="hzq-Y1-I8I" secondAttribute="leadingMargin" id="e8S-ac-qQQ"/>
-                                        <constraint firstItem="ngK-yS-loR" firstAttribute="trailing" secondItem="hzq-Y1-I8I" secondAttribute="trailingMargin" id="tQS-TF-eZJ"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="artistLabel" destination="hBY-a7-ieB" id="pa9-Rx-d3Q"/>
-                                    <outlet property="titleLabel" destination="7f3-pn-knL" id="rOB-VC-kPi"/>
-                                    <outlet property="trackNumberLabel" destination="ngK-yS-loR" id="F2X-nB-tk4"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="400.66667175292969" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="293.00000381469727" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -885,7 +799,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell (Track Number on Left)" id="5sl-vR-cfB" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="500.66667175292969" width="375" height="44.666667938232422"/>
+                                <rect key="frame" x="0.0" y="393.00000381469727" width="375" height="44.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5sl-vR-cfB" id="ULF-7m-1PD">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
@@ -906,20 +820,29 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sd4-WK-ea6">
+                                            <rect key="frame" x="148.66666666666666" y="13.333333333333332" width="17" height="16.666666666666664"/>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="rif-LJ-CL8" firstAttribute="leading" secondItem="ULF-7m-1PD" secondAttribute="leadingMargin" id="90c-yy-o3R"/>
+                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="leading" secondItem="t35-xm-5yN" secondAttribute="trailing" constant="8" symbolic="YES" id="Acm-Wn-Wb5"/>
                                         <constraint firstItem="t35-xm-5yN" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="bottomMargin" id="GfA-hQ-4Ut"/>
                                         <constraint firstItem="t35-xm-5yN" firstAttribute="leading" secondItem="rif-LJ-CL8" secondAttribute="trailing" constant="16" id="J33-dg-fmB"/>
+                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="bottomMargin" id="LOq-8p-3zf"/>
                                         <constraint firstItem="t35-xm-5yN" firstAttribute="centerY" secondItem="ULF-7m-1PD" secondAttribute="centerY" constant="-1" id="Q16-J0-VVK"/>
+                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="centerY" secondItem="t35-xm-5yN" secondAttribute="centerY" id="Tc8-qu-oOy"/>
+                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="trailingMargin" id="WD4-R7-vj0"/>
                                         <constraint firstItem="rif-LJ-CL8" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="bottomMargin" id="Y1e-v3-E3O"/>
                                         <constraint firstItem="t35-xm-5yN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="ebT-ls-QPL"/>
                                         <constraint firstItem="rif-LJ-CL8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="epM-E0-26m"/>
                                         <constraint firstItem="t35-xm-5yN" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="trailingMargin" id="kSh-Dh-xHY"/>
                                         <constraint firstItem="rif-LJ-CL8" firstAttribute="centerY" secondItem="t35-xm-5yN" secondAttribute="centerY" id="qr1-lD-lh4"/>
+                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="zS2-NE-umO"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="currentSongIndicatorImageView" destination="sd4-WK-ea6" id="bEz-xH-lc0"/>
                                     <outlet property="titleLabel" destination="t35-xm-5yN" id="wWh-iH-4ik"/>
                                     <outlet property="trackNumberLabel" destination="rif-LJ-CL8" id="YKf-hc-j1D"/>
                                 </connections>
@@ -973,7 +896,6 @@
         <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="repeat.1" catalog="system" width="128" height="99"/>
         <image name="speaker.fill" catalog="system" width="128" height="128"/>
-        <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>
         <systemColor name="placeholderTextColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
