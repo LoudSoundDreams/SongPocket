@@ -10,8 +10,6 @@ import CoreData
 
 protocol AlbumMover {
 	var albumMoverClipboard: AlbumMoverClipboard? { get set }
-	
-	func setAlbumMoverToolbar()
 }
 
 protocol AlbumMoverDelegate: AnyObject {

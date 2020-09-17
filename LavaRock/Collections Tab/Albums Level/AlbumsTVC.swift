@@ -19,7 +19,11 @@ final class AlbumsTVC:
 	// MARK: - Properties
 	
 	// "Constants"
-	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
+	lazy var startMovingAlbumsButton = UIBarButtonItem(
+		title: "Move",
+		style: .plain,
+		target: self,
+		action: #selector(startMovingAlbums))
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
@@ -46,10 +50,14 @@ final class AlbumsTVC:
 			
 			tableView.allowsSelection = false
 			
-			setAlbumMoverToolbar()
+//			setAlbumMoverToolbar()
 			
 		} else {
-			navigationItemButtonsEditingModeOnly = [floatToTopButton, startMovingAlbumsButton]
+			toolbarButtonsEditingModeOnly = [
+				startMovingAlbumsButton,
+				flexibleSpaceBarButtonItem,
+				floatToTopButton
+			]
 		}
 	}
 	
@@ -59,17 +67,17 @@ final class AlbumsTVC:
 		}
 	}
 	
-	final func setAlbumMoverToolbar() {
-		toolbarItems = [
-			flexibleSpaceBarButtonItem,
-			UIBarButtonItem(
-				title: "Move Here",
-				style: .done,
-				target: self,
-				action: #selector(moveAlbumsHere)),
-			flexibleSpaceBarButtonItem
-		]
-	}
+//	final func setAlbumMoverToolbar() {
+//		toolbarItems = [
+//			flexibleSpaceBarButtonItem,
+//			UIBarButtonItem(
+//				title: "Move Here",
+//				style: .done,
+//				target: self,
+//				action: #selector(moveAlbumsHere)),
+//			flexibleSpaceBarButtonItem
+//		]
+//	}
 	
 	// MARK: Setup Events
 	
@@ -82,10 +90,15 @@ final class AlbumsTVC:
 	
 	// MARK: - Events
 	
+	// In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard.
+	override func setRefreshedBarButtons(animated: Bool) {
+		if albumMoverClipboard != nil { return }
+		
+		super.setRefreshedBarButtons(animated: animated)
+	}
+	
 	override func refreshBarButtons(animated: Bool) {
-		if albumMoverClipboard != nil {
-			return
-		}
+		if albumMoverClipboard != nil { return } // In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard.
 		
 		super.refreshBarButtons(animated: animated)
 		
@@ -95,12 +108,9 @@ final class AlbumsTVC:
 	}
 	
 	private func refreshStartMovingAlbumsButton() {
-		startMovingAlbumsButton.isEnabled = indexedLibraryItems.count > 0
-		if tableView.indexPathsForSelectedRows == nil {
-			startMovingAlbumsButton.title = "Move All"
-		} else {
-			startMovingAlbumsButton.title = "Move"
-		}
+		startMovingAlbumsButton.isEnabled =
+			indexedLibraryItems.count > 0 &&
+			tableView.indexPathsForSelectedRows != nil
 	}
 	
 	// MARK: - Navigation

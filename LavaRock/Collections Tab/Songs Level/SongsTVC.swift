@@ -34,7 +34,6 @@ final class SongsTVC:
 		super.setUpUI()
 		
 		refreshNavigationItemTitle()
-		navigationItemButtonsEditingModeOnly = [flexibleSpaceBarButtonItem] //
 		toolbarButtonsEditingModeOnly = [
 			sortButton,
 			flexibleSpaceBarButtonItem,

@@ -27,22 +27,27 @@ class LibraryTVC:
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving albums" mode.
 	var navigationItemButtonsNotEditingMode = [UIBarButtonItem]()
-	var navigationItemButtonsEditingModeOnly = [UIBarButtonItem]()
+	private var navigationItemButtonsEditingModeOnly = [UIBarButtonItem]()
 	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()
 	var sortOptions = [String]()
 	
 	// "Constants" that subclasses should not change
 	let cellReuseIdentifier = "Cell"
-	lazy var floatToTopButton = UIBarButtonItem(
-		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
+	lazy var selectAllOrNoneButton = UIBarButtonItem(
+		title: "Select All",
 		style: .plain,
 		target: self,
-		action: #selector(moveSelectedItemsToTop))
+		action: #selector(selectAllOrNone))
 	lazy var sortButton = UIBarButtonItem(
 		title: "Sort",
 		style: .plain,
 		target: self,
 		action: #selector(showSortOptions))
+	lazy var floatToTopButton = UIBarButtonItem(
+		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
+		style: .plain,
+		target: self,
+		action: #selector(moveSelectedItemsToTop))
 	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
 		barButtonSystemItem: .cancel,
 		target: self,
@@ -179,7 +184,7 @@ class LibraryTVC:
 	func setUpUI() {
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
-		navigationItemButtonsEditingModeOnly = [floatToTopButton]
+		navigationItemButtonsEditingModeOnly = [selectAllOrNoneButton]
 		navigationItem.rightBarButtonItem = editButtonItem
 		setRefreshedBarButtons(animated: true)
 	}
@@ -220,7 +225,7 @@ class LibraryTVC:
 	
 	// MARK: - Events
 	
-	final func setRefreshedBarButtons(animated: Bool) {
+	func setRefreshedBarButtons(animated: Bool) {
 		refreshBarButtons(animated: animated) // Includes setRefreshedPlaybackToolbar(animated:).
 		
 		if isEditing {
@@ -235,8 +240,9 @@ class LibraryTVC:
 		// Remember: There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI to reflect changes in the Apple Music library.
 		refreshEditButton()
 		if isEditing {
-			refreshFloatToTopButton()
+			refreshSelectAllOrNoneButton()
 			refreshSortButton()
+			refreshFloatToTopButton()
 		} else {
 			setRefreshedPlaybackToolbar(animated: animated)
 		}
@@ -249,21 +255,28 @@ class LibraryTVC:
 			indexedLibraryItems.count > 0
 	}
 	
-	private func refreshFloatToTopButton() {
-		floatToTopButton.isEnabled =
-			indexedLibraryItems.count > 0 &&
-			shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
+	private func refreshSelectAllOrNoneButton() {
+		if
+			let selectedIndexPaths = tableView.indexPathsForSelectedRows,
+			selectedIndexPaths.count == indexedLibraryItems.count
+		{
+			selectAllOrNoneButton.title = "Select None"
+		} else {
+			selectAllOrNoneButton.title = "Select All"
+		}
 	}
 	
 	private func refreshSortButton() {
 		sortButton.isEnabled =
 			indexedLibraryItems.count > 0 &&
+			tableView.indexPathsForSelectedRows != nil &&
 			shouldAllowSorting()
-		if tableView.indexPathsForSelectedRows == nil {
-			sortButton.title = "Sort All"
-		} else {
-			sortButton.title = "Sort"
-		}
+	}
+	
+	private func refreshFloatToTopButton() {
+		floatToTopButton.isEnabled =
+			indexedLibraryItems.count > 0 &&
+			shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
 	}
 	
 	@objc private func cancelMoveAlbums() {

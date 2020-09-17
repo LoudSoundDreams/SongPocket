@@ -69,22 +69,26 @@ final class CollectionsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
-			setAlbumMoverToolbar()
+//			setAlbumMoverToolbar()
 			
 		} else {
+			toolbarButtonsEditingModeOnly = [
+				flexibleSpaceBarButtonItem,
+				floatToTopButton
+			]
 		}
 	}
 	
-	final func setAlbumMoverToolbar() {
-		toolbarItems = [
-			flexibleSpaceBarButtonItem,
-			UIBarButtonItem(
-				barButtonSystemItem: .add,
-				target: self,
-				action: #selector(presentDialogToMakeNewCollection)),
-			flexibleSpaceBarButtonItem
-		]
-	}
+//	final func setAlbumMoverToolbar() {
+//		toolbarItems = [
+//			flexibleSpaceBarButtonItem,
+//			UIBarButtonItem(
+//				barButtonSystemItem: .add,
+//				target: self,
+//				action: #selector(presentDialogToMakeNewCollection)),
+//			flexibleSpaceBarButtonItem
+//		]
+//	}
 	
 	// MARK: Setup Events
 	
@@ -143,11 +147,17 @@ final class CollectionsTVC:
 	
 	// MARK: - Events
 	
-	override func refreshBarButtons(animated: Bool) {
-		if albumMoverClipboard != nil {
-			return
-		}
+	// In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard.
+	override func setRefreshedBarButtons(animated: Bool) {
+		if albumMoverClipboard != nil { return }
 		
+		super.setRefreshedBarButtons(animated: animated)
+	}
+	
+	// In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard.
+	override func refreshBarButtons(animated: Bool) {
+		if albumMoverClipboard != nil { return }
+
 		super.refreshBarButtons(animated: animated)
 	}
 	

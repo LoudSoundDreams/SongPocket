@@ -33,7 +33,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Making New Collection
 	
-	@objc final func presentDialogToMakeNewCollection() {
+	@IBAction func presentDialogToMakeNewCollection(_ sender: UIBarButtonItem) {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection
