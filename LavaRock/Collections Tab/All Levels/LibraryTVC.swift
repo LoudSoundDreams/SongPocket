@@ -58,47 +58,47 @@ class LibraryTVC:
 	var playerController: MPMusicPlayerController?
 	lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "backward.end.fill"),
+			image: UIImage(systemName: "backward.end"),
 			style: .plain,
 			target: self,
 			action: #selector(goToPreviousSong))
-		button.width = CGFloat(10.0)
+		button.width = 10.0
 		return button
 	}()
 	lazy var restartCurrentSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
+			image: UIImage(systemName: "arrow.counterclockwise"),
 			style: .plain,
 			target: self,
 			action: #selector(restartCurrentSong))
-		button.width = CGFloat(10.0)
+		button.width = 10.0
 		return button
 	}()
 	lazy var playButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "play.fill"),
+			image: UIImage(systemName: "play"),
 			style: .plain,
 			target: self,
 			action: #selector(play))
-		button.width = CGFloat(10.0)
+		button.width = 10.0
 		return button
 	}()
 	lazy var pauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "pause.fill"),
+			image: UIImage(systemName: "pause"),
 			style: .plain,
 			target: self,
 			action: #selector(pause))
-		button.width = CGFloat(10.0) // As of iOS 14.0 beta 8, even with this line of code, the "pause.fill" button is still narrower than the "play.fill" button.
+		button.width = 10.0 // As of iOS 14.0, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
 		return button
 	}()
 	lazy var goToNextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "forward.end.fill"),
+			image: UIImage(systemName: "forward.end"),
 			style: .plain,
 			target: self,
 			action: #selector(goToNextSong))
-		button.width = CGFloat(10.0)
+		button.width = 10.0
 		return button
 	}()
 	let flexibleSpaceBarButtonItem = UIBarButtonItem(
