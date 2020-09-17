@@ -17,7 +17,7 @@ extension LibraryTVC {
 		
 		super.setEditing(editing, animated: animated)
 		
-		refreshBarsAndButtons()
+		setRefreshedBarButtons(animated: animated)
 		
 		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
 		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
@@ -28,7 +28,7 @@ extension LibraryTVC {
 	
 	// MARK: - Moving Rows to Top
 	
-	@objc func moveSelectedItemsToTop() {
+	@objc final func moveSelectedItemsToTop() {
 		moveItemsUp(
 			from: tableView.indexPathsForSelectedRows,
 			to: IndexPath(row: numberOfRowsAboveIndexedLibraryItems, section: 0))
@@ -66,13 +66,13 @@ extension LibraryTVC {
 			
 			targetRow += 1
 		}
-		refreshBarsAndButtons()
+		refreshBarButtons()
 	}
 	
 	// MARK: - Sorting
 	
 	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTVC. They're view controllers.
-	@objc func showSortOptions() {
+	@objc final func showSortOptions() {
 		let alertController = UIAlertController(title: "Sort By", message: nil, preferredStyle: .actionSheet)
 		for sortOption in sortOptions {
 			alertController.addAction(UIAlertAction(title: sortOption, style: .default, handler: sortSelectedOrAllItems))
@@ -129,7 +129,7 @@ extension LibraryTVC {
 		for indexPath in indexPathsToSort {
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
-		refreshBarsAndButtons()
+		refreshBarButtons()
 	}
 	
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.

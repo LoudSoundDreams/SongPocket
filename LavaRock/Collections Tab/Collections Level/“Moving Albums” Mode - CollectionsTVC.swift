@@ -12,7 +12,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Deleting New Collection
 	
-	func deleteEmptyNewCollection() {
+	final func deleteEmptyNewCollection() {
 		let indexOfEmptyNewCollection = 0
 		
 		guard
@@ -33,7 +33,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Making New Collection
 	
-	@objc func presentDialogToMakeNewCollection() {
+	@objc final func presentDialogToMakeNewCollection() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection

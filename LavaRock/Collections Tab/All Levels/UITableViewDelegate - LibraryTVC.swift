@@ -57,11 +57,11 @@ extension LibraryTVC {
 		}
 		
 		if isEditing {
-			refreshBarsAndButtons()
+			refreshBarButtons()
 		}
 	}
 	
-	func didReceiveAuthorizationForAppleMusic() {
+	final func didReceiveAuthorizationForAppleMusic() {
 		refreshesAfterDidSaveChangesFromAppleMusic = false
 		AppleMusicLibraryManager.shared.shouldNextMergeBeSynchronous = true
 		viewDidLoad() // Includes AppleMusicLibraryManager's setUpLibraryIfAuthorized(), which includes merging changes from the Apple Music library. Since we set shouldNextMergeBeSynchronous = true, CollectionsTVC will call the (synchronous) merge before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
@@ -93,7 +93,7 @@ extension LibraryTVC {
 	// MARK: Deselecting
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-		refreshBarsAndButtons()
+		refreshBarButtons()
 	}
 	
 }

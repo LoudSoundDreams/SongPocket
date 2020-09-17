@@ -12,8 +12,8 @@ extension LibraryTVC {
 	
 	// MARK: - Events
 	
-	func setRefreshedPlaybackToolbar() {
-		var playbackButtons: [UIBarButtonItem] = [
+	final func setRefreshedPlaybackToolbar(animated: Bool = false) { // Only animate this when entering and exiting editing mode.
+		var playbackButtons = [
 			goToPreviousSongButton,
 			flexibleSpaceBarButtonItem,
 			restartCurrentSongButton,
@@ -22,6 +22,16 @@ extension LibraryTVC {
 			flexibleSpaceBarButtonItem,
 			goToNextSongButton
 		]
+		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			goToPreviousSongButton.isEnabled = false
+			restartCurrentSongButton.isEnabled = false
+			playButton.isEnabled = false
+			goToNextSongButton.isEnabled = false
+			toolbarItems = playbackButtons
+			return
+		}
+		
 		if
 			let playerController = playerController,
 			playerController.playbackState == .playing // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
@@ -32,16 +42,6 @@ extension LibraryTVC {
 				playbackButtons[indexOfPlayButton] = pauseButton
 			}
 		}
-		let shouldAnimateSettingToolbarItems = !refreshesAfterDidSaveChangesFromAppleMusic // This is true if we just got access to the Apple Music library.
-		setToolbarItems(playbackButtons, animated: shouldAnimateSettingToolbarItems)
-		
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			goToPreviousSongButton.isEnabled = false
-			restartCurrentSongButton.isEnabled = false
-			playButton.isEnabled = false
-			goToNextSongButton.isEnabled = false
-			return
-		}
 		
 		goToPreviousSongButton.isEnabled =
 			playerController?.indexOfNowPlayingItem ?? 0 > 0
@@ -49,28 +49,30 @@ extension LibraryTVC {
 		playButton.isEnabled = true
 		pauseButton.isEnabled = true
 		goToNextSongButton.isEnabled = true
+		
+		setToolbarItems(playbackButtons, animated: animated)
 	}
 	
 	// MARK: - Controlling Playback
 	
-	@objc func goToPreviousSong() {
+	@objc final func goToPreviousSong() {
 		playerController?.skipToPreviousItem()
 	}
 	
-	@objc func restartCurrentSong() {
+	@objc final func restartCurrentSong() {
 		playerController?.skipToBeginning()
 	}
 	
-	@objc func play() {
+	@objc final func play() {
 //		playerController?.prepareToPlay()
 		playerController?.play()
 	}
 	
-	@objc func pause() {
+	@objc final func pause() {
 		playerController?.pause()
 	}
 	
-	@objc func goToNextSong() {
+	@objc final func goToNextSong() {
 		playerController?.skipToNextItem()
 	}
 	

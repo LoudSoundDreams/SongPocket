@@ -12,7 +12,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Renaming Collection
 	
-	func renameCollection(at indexPath: IndexPath) {
+	final func renameCollection(at indexPath: IndexPath) {
 		guard let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Collection else { return }
 		
 		isRenamingCollection = true

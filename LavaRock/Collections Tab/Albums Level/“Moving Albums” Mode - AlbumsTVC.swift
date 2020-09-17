@@ -61,7 +61,7 @@ extension AlbumsTVC {
 	
 	// MARK: - Ending Moving Albums
 	
-	@objc func moveAlbumsHere() {
+	@objc final func moveAlbumsHere() {
 		
 		guard
 			let albumMoverClipboard = albumMoverClipboard,

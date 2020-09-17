@@ -94,7 +94,7 @@ final class QueueTVC:
 	// MARK: - Events
 	
 	func refreshButtons() {
-		setRefreshedPlaybackToolbar()
+		refreshPlaybackToolbarButtons()
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			clearButton.isEnabled = false

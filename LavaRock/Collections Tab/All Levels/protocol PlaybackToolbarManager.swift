@@ -16,7 +16,7 @@ protocol PlaybackToolbarManager {
 	var pauseButton: UIBarButtonItem { get set }
 	
 	func didReceiveAuthorizationForAppleMusic()
-	func setRefreshedPlaybackToolbar()
+	func setRefreshedPlaybackToolbar(animated: Bool)
 	
 	func goToPreviousSong()
 	func restartCurrentSong()

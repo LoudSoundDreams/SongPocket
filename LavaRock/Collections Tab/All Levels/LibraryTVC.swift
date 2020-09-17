@@ -28,6 +28,7 @@ class LibraryTVC:
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving albums" mode.
 	var navigationItemButtonsNotEditingMode = [UIBarButtonItem]()
 	var navigationItemButtonsEditingModeOnly = [UIBarButtonItem]()
+	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()
 	var sortOptions = [String]()
 	
 	// "Constants" that subclasses should not change
@@ -140,7 +141,7 @@ class LibraryTVC:
 	
 	// MARK: Loading Data
 	
-	func reloadIndexedLibraryItems() {
+	final func reloadIndexedLibraryItems() {
 		if let containerOfData = containerOfData {
 			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData)
 		}
@@ -176,13 +177,11 @@ class LibraryTVC:
 	// MARK: Setting Up UI
 	
 	func setUpUI() {
-		navigationItem.leftBarButtonItems = navigationItemButtonsNotEditingMode
-		navigationItem.rightBarButtonItem = editButtonItem
-		navigationItemButtonsEditingModeOnly = [floatToTopButton]
-		
-//		refreshBarsAndButtons() // numberOfRowsInSection also calls this
-		
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
+		
+		navigationItemButtonsEditingModeOnly = [floatToTopButton]
+		navigationItem.rightBarButtonItem = editButtonItem
+		setRefreshedBarButtons(animated: true)
 	}
 	
 	// MARK: Setup Events
@@ -221,33 +220,39 @@ class LibraryTVC:
 	
 	// MARK: - Events
 	
-	func refreshBarsAndButtons() {
-		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI to reflect changes in the Apple Music library.
+	final func setRefreshedBarButtons(animated: Bool) {
+		refreshBarButtons(animated: animated) // Includes setRefreshedPlaybackToolbar(animated:).
 		
+		if isEditing {
+			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingModeOnly, animated: animated)
+			setToolbarItems(toolbarButtonsEditingModeOnly, animated: animated)
+		} else {
+			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditingMode, animated: animated)
+		}
+	}
+	
+	func refreshBarButtons(animated: Bool = false) {
+		// Remember: There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI to reflect changes in the Apple Music library.
+		refreshEditButton()
+		if isEditing {
+			refreshFloatToTopButton()
+			refreshSortButton()
+		} else {
+			setRefreshedPlaybackToolbar(animated: animated)
+		}
+	}
+	
+	private func refreshEditButton() {
 		editButtonItem.isEnabled =
 			MPMediaLibrary.authorizationStatus() == .authorized &&
 //			(fetchedResultsController?.fetchedObjects?.count ?? 0) > 0
 			indexedLibraryItems.count > 0
-		
-		if isEditing {
-			floatToTopButton.isEnabled =
-				indexedLibraryItems.count > 0 &&
-				shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
-			refreshSortButton()
-			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingModeOnly, animated: true)
-		} else {
-			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditingMode, animated: true)
-		}
-		
-		setRefreshedToolbar()
 	}
 	
-	func setRefreshedToolbar() {
-		if isEditing {
-			setToolbarItems(nil, animated: true)
-		} else {
-			setRefreshedPlaybackToolbar()
-		}
+	private func refreshFloatToTopButton() {
+		floatToTopButton.isEnabled =
+			indexedLibraryItems.count > 0 &&
+			shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
 	}
 	
 	private func refreshSortButton() {

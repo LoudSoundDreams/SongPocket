@@ -11,7 +11,7 @@ import MediaPlayer
 extension AppleMusicLibraryManager {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
-	func mergeChanges() {
+	final func mergeChanges() {
 //		if shouldNextMergeBeSynchronous {
 		let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		mainManagedObjectContext.performAndWait {

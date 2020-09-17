@@ -53,18 +53,18 @@ final class AlbumsTVC:
 		}
 	}
 	
-	func refreshNavigationItemTitle() {
+	final func refreshNavigationItemTitle() {
 		if let containingCollection = containerOfData as? Collection {
 			title = containingCollection.title
 		}
 	}
 	
-	func setAlbumMoverToolbar() {
+	final func setAlbumMoverToolbar() {
 		toolbarItems = [
 			flexibleSpaceBarButtonItem,
 			UIBarButtonItem(
 				title: "Move Here",
-				style: .plain,
+				style: .done,
 				target: self,
 				action: #selector(moveAlbumsHere)),
 			flexibleSpaceBarButtonItem
@@ -82,8 +82,12 @@ final class AlbumsTVC:
 	
 	// MARK: - Events
 	
-	override func refreshBarsAndButtons() {
-		super.refreshBarsAndButtons()
+	override func refreshBarButtons(animated: Bool) {
+		if albumMoverClipboard != nil {
+			return
+		}
+		
+		super.refreshBarButtons(animated: animated)
 		
 		if isEditing {
 			refreshStartMovingAlbumsButton()
@@ -96,13 +100,6 @@ final class AlbumsTVC:
 			startMovingAlbumsButton.title = "Move All"
 		} else {
 			startMovingAlbumsButton.title = "Move"
-		}
-	}
-	
-	override func setRefreshedToolbar() {
-		if albumMoverClipboard != nil {
-		} else {
-			super.setRefreshedToolbar()
 		}
 	}
 	

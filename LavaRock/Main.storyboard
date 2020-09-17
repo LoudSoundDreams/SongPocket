@@ -135,11 +135,7 @@
                             <outlet property="delegate" destination="Vce-TP-hYI" id="W4z-q7-ait"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="IUP-Az-Qd9"/>
-                        <barButtonItem systemItem="add" id="WzK-Aw-24e"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Ayd-SA-Efq"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Collections" id="aA7-bf-O8G">
                         <barButtonItem key="leftBarButtonItem" title="Options" id="mpR-tt-C6X">
                             <connections>
@@ -537,11 +533,7 @@
                             <outlet property="delegate" destination="DGZ-AG-uNY" id="OJO-rr-42c"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="gfo-5Q-kgV"/>
-                        <barButtonItem title="Move Here" style="done" id="OWN-Ff-bGu"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="KvB-hY-Ib1"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Albums" id="ykw-Eq-xTa">
                         <barButtonItem key="leftBarButtonItem" title="Move All" id="nLw-6q-0dl">
                             <connections>

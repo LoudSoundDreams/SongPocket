@@ -53,6 +53,11 @@ final class CollectionsTVC:
 	// MARK: Setting Up UI
 	
 	override func setUpUI() {
+		if albumMoverClipboard != nil {
+		} else {
+			navigationItemButtonsNotEditingMode = [optionsButton] // You need to do this before super, because super sets the navigation item buttons.
+		}
+		
 		super.setUpUI()
 		
 		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration change their separator insets when entering and exiting editing mode, but with broken timing and no animation.
@@ -67,11 +72,10 @@ final class CollectionsTVC:
 			setAlbumMoverToolbar()
 			
 		} else {
-			navigationItemButtonsNotEditingMode = [optionsButton]
 		}
 	}
 	
-	func setAlbumMoverToolbar() {
+	final func setAlbumMoverToolbar() {
 		toolbarItems = [
 			flexibleSpaceBarButtonItem,
 			UIBarButtonItem(
@@ -139,11 +143,12 @@ final class CollectionsTVC:
 	
 	// MARK: - Events
 	
-	override func setRefreshedToolbar() {
+	override func refreshBarButtons(animated: Bool) {
 		if albumMoverClipboard != nil {
-		} else {
-			super.setRefreshedToolbar()
+			return
 		}
+		
+		super.refreshBarButtons(animated: animated)
 	}
 	
 	// MARK: - Navigation

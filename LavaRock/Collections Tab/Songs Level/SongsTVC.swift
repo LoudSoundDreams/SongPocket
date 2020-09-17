@@ -34,11 +34,16 @@ final class SongsTVC:
 		super.setUpUI()
 		
 		refreshNavigationItemTitle()
-		navigationItemButtonsEditingModeOnly = [floatToTopButton, sortButton]
+		navigationItemButtonsEditingModeOnly = [flexibleSpaceBarButtonItem] //
+		toolbarButtonsEditingModeOnly = [
+			sortButton,
+			flexibleSpaceBarButtonItem,
+			floatToTopButton
+		]
 		sortOptions = ["Track Number"]
 	}
 	
-	func refreshNavigationItemTitle() {
+	final func refreshNavigationItemTitle() {
 		if let containingAlbum = containerOfData as? Album {
 			title = containingAlbum.titleFormattedOrPlaceholder()
 		}

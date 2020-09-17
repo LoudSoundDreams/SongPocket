@@ -13,7 +13,7 @@ extension SongsTVC {
 	
 	// MARK: - Actions
 	
-	func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
+	final func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
@@ -38,7 +38,7 @@ extension SongsTVC {
 		playerController?.play()
 	}
 	
-	func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
+	final func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
@@ -66,7 +66,7 @@ extension SongsTVC {
 		}
 	}
 	
-	func enqueueSelectedSong(_ sender: UIAlertAction) {
+	final func enqueueSelectedSong(_ sender: UIAlertAction) {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
@@ -92,7 +92,7 @@ extension SongsTVC {
 	
 	// MARK: - Presenting Actions
 	
-	func showSongActions(for song: Song) {
+	final func showSongActions(for song: Song) {
 		areSongActionsPresented = true
 		
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
