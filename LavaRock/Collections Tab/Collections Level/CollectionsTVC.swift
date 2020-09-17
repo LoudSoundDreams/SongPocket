@@ -20,7 +20,6 @@ final class CollectionsTVC:
 	
 	// "Constants"
 	@IBOutlet var optionsButton: UIBarButtonItem!
-	@IBOutlet var makeNewCollectionButton: UIBarButtonItem!
 	static let defaultCollectionTitle = "New Collection"
 	
 	// Variables
@@ -65,9 +64,22 @@ final class CollectionsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
+			setAlbumMoverToolbar()
+			
 		} else {
 			navigationItemButtonsNotEditingMode = [optionsButton]
 		}
+	}
+	
+	func setAlbumMoverToolbar() {
+		toolbarItems = [
+			flexibleSpaceBarButtonItem,
+			UIBarButtonItem(
+				barButtonSystemItem: .add,
+				target: self,
+				action: #selector(presentDialogToMakeNewCollection)),
+			flexibleSpaceBarButtonItem
+		]
 	}
 	
 	// MARK: Setup Events
@@ -127,10 +139,10 @@ final class CollectionsTVC:
 	
 	// MARK: - Events
 	
-	override func setAndRefreshToolbar() {
+	override func setRefreshedToolbar() {
 		if albumMoverClipboard != nil {
 		} else {
-			super.setAndRefreshToolbar()
+			super.setRefreshedToolbar()
 		}
 	}
 	

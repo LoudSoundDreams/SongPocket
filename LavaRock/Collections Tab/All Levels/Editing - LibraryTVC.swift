@@ -17,7 +17,7 @@ extension LibraryTVC {
 		
 		super.setEditing(editing, animated: animated)
 		
-		refreshBarButtons()
+		refreshBarsAndButtons()
 		
 		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
 		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
@@ -66,7 +66,7 @@ extension LibraryTVC {
 			
 			targetRow += 1
 		}
-		refreshBarButtons()
+		refreshBarsAndButtons()
 	}
 	
 	// MARK: - Sorting
@@ -129,7 +129,7 @@ extension LibraryTVC {
 		for indexPath in indexPathsToSort {
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
-		refreshBarButtons()
+		refreshBarsAndButtons()
 	}
 	
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.

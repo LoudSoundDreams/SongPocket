@@ -57,7 +57,7 @@ extension LibraryTVC {
 		}
 		
 		if isEditing {
-			refreshBarButtons()
+			refreshBarsAndButtons()
 		}
 	}
 	
@@ -93,7 +93,7 @@ extension LibraryTVC {
 	// MARK: Deselecting
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-		refreshBarButtons()
+		refreshBarsAndButtons()
 	}
 	
 }

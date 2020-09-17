@@ -20,7 +20,6 @@ final class AlbumsTVC:
 	
 	// "Constants"
 	@IBOutlet var startMovingAlbumsButton: UIBarButtonItem!
-	@IBOutlet var moveAlbumsHereButton: UIBarButtonItem!
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
@@ -47,6 +46,8 @@ final class AlbumsTVC:
 			
 			tableView.allowsSelection = false
 			
+			setAlbumMoverToolbar()
+			
 		} else {
 			navigationItemButtonsEditingModeOnly = [floatToTopButton, startMovingAlbumsButton]
 		}
@@ -56,6 +57,18 @@ final class AlbumsTVC:
 		if let containingCollection = containerOfData as? Collection {
 			title = containingCollection.title
 		}
+	}
+	
+	func setAlbumMoverToolbar() {
+		toolbarItems = [
+			flexibleSpaceBarButtonItem,
+			UIBarButtonItem(
+				title: "Move Here",
+				style: .plain,
+				target: self,
+				action: #selector(moveAlbumsHere)),
+			flexibleSpaceBarButtonItem
+		]
 	}
 	
 	// MARK: Setup Events
@@ -69,15 +82,15 @@ final class AlbumsTVC:
 	
 	// MARK: - Events
 	
-	override func refreshBarButtons() {
-		super.refreshBarButtons()
+	override func refreshBarsAndButtons() {
+		super.refreshBarsAndButtons()
 		
 		if isEditing {
-			updateStartMovingAlbumsButton()
+			refreshStartMovingAlbumsButton()
 		}
 	}
 	
-	private func updateStartMovingAlbumsButton() {
+	private func refreshStartMovingAlbumsButton() {
 		startMovingAlbumsButton.isEnabled = indexedLibraryItems.count > 0
 		if tableView.indexPathsForSelectedRows == nil {
 			startMovingAlbumsButton.title = "Move All"
@@ -86,10 +99,10 @@ final class AlbumsTVC:
 		}
 	}
 	
-	override func setAndRefreshToolbar() {
+	override func setRefreshedToolbar() {
 		if albumMoverClipboard != nil {
 		} else {
-			super.setAndRefreshToolbar()
+			super.setRefreshedToolbar()
 		}
 	}
 	

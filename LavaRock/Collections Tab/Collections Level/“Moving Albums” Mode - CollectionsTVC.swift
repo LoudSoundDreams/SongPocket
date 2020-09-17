@@ -33,12 +33,11 @@ extension CollectionsTVC {
 	
 	// MARK: - Making New Collection
 	
-	@IBAction func presentDialogToMakeNewCollection(_ sender: UIBarButtonItem) {
+	@objc func presentDialogToMakeNewCollection() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection
 		else { return } // Without this, if you're fast, you can finish making a new collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first collection you made.
-		// Another solution would be to set makeNewCollectionButton.isEnabled = false after tapping Done in the dialog (not before then, in case you tap Cancel in the dialog), and re-enabling it if you back out of the new collection and after we delete that new collection; but it's easier to understand the intention of the didAlreadyMakeNewCollection flag.
 		
 		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in

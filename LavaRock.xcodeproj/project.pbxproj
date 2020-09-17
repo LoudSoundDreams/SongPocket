@@ -213,8 +213,8 @@
 		070E194624F3434600B21307 /* Moving Albums */ = {
 			isa = PBXGroup;
 			children = (
-				0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */,
 				07D157EC24D952A600FDF26A /* protocol AlbumMover.swift */,
+				0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */,
 				0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */,
 			);
 			path = "Moving Albums";

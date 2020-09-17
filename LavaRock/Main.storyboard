@@ -137,11 +137,7 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="IUP-Az-Qd9"/>
-                        <barButtonItem systemItem="add" id="WzK-Aw-24e">
-                            <connections>
-                                <action selector="presentDialogToMakeNewCollection:" destination="Vce-TP-hYI" id="pzb-wh-2Mn"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem systemItem="add" id="WzK-Aw-24e"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ayd-SA-Efq"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Collections" id="aA7-bf-O8G">
@@ -152,7 +148,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="makeNewCollectionButton" destination="WzK-Aw-24e" id="UIh-Ws-Psj"/>
                         <outlet property="optionsButton" destination="mpR-tt-C6X" id="rCs-Xg-uZH"/>
                     </connections>
                 </tableViewController>
@@ -544,11 +539,7 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="gfo-5Q-kgV"/>
-                        <barButtonItem title="Move Here" style="done" id="OWN-Ff-bGu">
-                            <connections>
-                                <action selector="moveAlbumsHere:" destination="DGZ-AG-uNY" id="C4A-Os-DBZ"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem title="Move Here" style="done" id="OWN-Ff-bGu"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="KvB-hY-Ib1"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Albums" id="ykw-Eq-xTa">
@@ -559,7 +550,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="moveAlbumsHereButton" destination="OWN-Ff-bGu" id="Hem-9M-S7E"/>
                         <outlet property="startMovingAlbumsButton" destination="nLw-6q-0dl" id="hrU-N5-LGl"/>
                         <segue destination="GFi-fJ-75x" kind="unwind" identifier="Moved Albums" unwindAction="unwindToAlbumsAfterMovingAlbums:" id="xHh-aB-iEM"/>
                         <segue destination="GFi-fJ-75x" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToCollectionsFromEmptyCollection:" id="ZST-h2-yhJ"/>

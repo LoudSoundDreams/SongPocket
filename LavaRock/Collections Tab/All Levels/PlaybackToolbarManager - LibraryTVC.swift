@@ -12,7 +12,7 @@ extension LibraryTVC {
 	
 	// MARK: - Events
 	
-	func setAndRefreshPlaybackToolbar() {
+	func setRefreshedPlaybackToolbar() {
 		var playbackButtons: [UIBarButtonItem] = [
 			goToPreviousSongButton,
 			flexibleSpaceBarButtonItem,

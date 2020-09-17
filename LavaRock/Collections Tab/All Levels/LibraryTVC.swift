@@ -180,7 +180,7 @@ class LibraryTVC:
 		navigationItem.rightBarButtonItem = editButtonItem
 		navigationItemButtonsEditingModeOnly = [floatToTopButton]
 		
-//		refreshBarButtons() // numberOfRowsInSection also calls this
+//		refreshBarsAndButtons() // numberOfRowsInSection also calls this
 		
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 	}
@@ -221,7 +221,7 @@ class LibraryTVC:
 	
 	// MARK: - Events
 	
-	func refreshBarButtons() {
+	func refreshBarsAndButtons() {
 		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI to reflect changes in the Apple Music library.
 		
 		editButtonItem.isEnabled =
@@ -233,24 +233,24 @@ class LibraryTVC:
 			floatToTopButton.isEnabled =
 				indexedLibraryItems.count > 0 &&
 				shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
-			updateSortButton()
+			refreshSortButton()
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingModeOnly, animated: true)
 		} else {
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditingMode, animated: true)
 		}
 		
-		setAndRefreshToolbar()
+		setRefreshedToolbar()
 	}
 	
-	func setAndRefreshToolbar() {
+	func setRefreshedToolbar() {
 		if isEditing {
 			setToolbarItems(nil, animated: true)
 		} else {
-			setAndRefreshPlaybackToolbar()
+			setRefreshedPlaybackToolbar()
 		}
 	}
 	
-	private func updateSortButton() {
+	private func refreshSortButton() {
 		sortButton.isEnabled =
 			indexedLibraryItems.count > 0 &&
 			shouldAllowSorting()
