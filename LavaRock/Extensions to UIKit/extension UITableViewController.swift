@@ -12,7 +12,7 @@ extension UITableViewController {
 	
 	// MARK: - Asking About Selected IndexPaths
 	
-	// Returns false if all the IndexPaths you provide have the same value for their "section" parameter. Returns true if any one or more of the IndexPaths you provide has a different value for its "section" parameter than all the others.
+	// Copy of isFromMultipleSections(_:) in extension to UITableView.
 	private func isFromMultipleSections(_ indexPaths: [IndexPath]) -> Bool {
 		if indexPaths.count <= 1 { // Terminating case.
 			return false
@@ -23,37 +23,6 @@ extension UITableViewController {
 			restOfSelectedIndexPaths.remove(at: 0)
 			return isFromMultipleSections(restOfSelectedIndexPaths)
 		}
-	}
-	
-	// MARK: - Getting IndexPaths
-	
-	final func selectedOrEnumeratedIndexPathsIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
-		if let selectedIndexPaths = tableView.indexPathsForSelectedRows?.sorted() {
-			return selectedIndexPaths
-		} else {
-			return indexPathsEnumeratedIn(
-				section: section,
-				firstRow: firstRow,
-				lastRow: lastRow)
-		}
-	}
-	
-	final func indexPathsEnumeratedIn(section: Int) -> [IndexPath] {
-		return indexPathsEnumeratedIn(
-			section: section,
-			firstRow: 0,
-			lastRow: tableView.numberOfRows(inSection: section) - 1)
-	}
-	
-	final func indexPathsEnumeratedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
-		guard lastRow >= firstRow else {
-			return [IndexPath]()
-		}
-		var result = [IndexPath]()
-		for row in firstRow...lastRow {
-			result.append(IndexPath(row: row, section: section))
-		}
-		return result
 	}
 	
 	// MARK: - Getting Data Objects
@@ -68,23 +37,6 @@ extension UITableViewController {
 		var result = [(IndexPath, Any)]()
 		for indexPath in indexPaths {
 			result.append((indexPath, tableViewDataSource[indexPath.row - rowForFirstDataSourceItem]))
-		}
-		return result
-	}
-	
-	// Takes an array of selected IndexPaths and the entire data source for your table view. Returns the data objects associated with the selected items.
-	// Note: Only works for IndexPaths in the same section.
-	final func dataObjectsFor(
-		selectedIndexPaths: [IndexPath],
-		tableViewDataSource: [Any],
-		rowForFirstDataSourceItem: Int
-	) -> [Any] {
-		guard !isFromMultipleSections(selectedIndexPaths) else {
-			fatalError("Someone called dataObjectsFor(selectedIndexPaths:tableViewDataSource:rowForFirstDataSourceItem:) to get the data objects for the selected rows in a UITableView, but the selected rows were from multiple sections. This method only works for rows within the same section.")
-		}
-		var result = [Any]()
-		for indexPath in selectedIndexPaths {
-			result.append(tableViewDataSource[indexPath.row - rowForFirstDataSourceItem])
 		}
 		return result
 	}

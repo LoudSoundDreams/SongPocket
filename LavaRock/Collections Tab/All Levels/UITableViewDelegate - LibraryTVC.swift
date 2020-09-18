@@ -83,7 +83,9 @@ extension LibraryTVC {
 		default:
 			tableView.performBatchUpdates({
 				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-				tableView.insertRows(at: indexPathsEnumeratedIn(section: 0), with: .middle)
+				tableView.insertRows(
+					at: tableView.indexPathsEnumeratedIn(section: 0, firstRow: 0),
+					with: .middle)
 			}, completion: { _ in
 				self.refreshesAfterDidSaveChangesFromAppleMusic = true
 			})

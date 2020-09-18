@@ -67,14 +67,6 @@ extension SongsTVC {
 				cell.titleLabel.text = cellTitle
 				cell.currentSongIndicatorImageView.image = currentSongIndicatorImage(forRowAt: indexPath)
 				cell.trackNumberLabel.text = cellTrackNumberText
-				let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-				let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([
-					UIFontDescriptor.AttributeName.featureSettings: [[
-						UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
-						UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
-					]]
-				])
-				let monospacedNumbersBodyFont = UIFont(descriptor: monospacedNumbersBodyFontDescriptor, size: 0)
 				cell.trackNumberLabel.font = monospacedNumbersBodyFont
 				return cell
 				
@@ -84,18 +76,23 @@ extension SongsTVC {
 				cell.titleLabel.text = cellTitle
 				cell.currentSongIndicatorImageView.image = currentSongIndicatorImage(forRowAt: indexPath)
 				cell.trackNumberLabel.text = cellTrackNumberText
-				let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-				let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([
-					UIFontDescriptor.AttributeName.featureSettings: [[
-						UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
-						UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
-					]]
-				])
-				let monospacedNumbersBodyFont = UIFont(descriptor: monospacedNumbersBodyFontDescriptor, size: 0)
 				cell.trackNumberLabel.font = monospacedNumbersBodyFont
 				return cell
 			}
 			
+		}
+	}
+	
+	func currentSongIndicatorImage(forRowAt indexPath: IndexPath) -> UIImage? {
+		if
+			let rowSong = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Song,
+			let rowMediaItem = rowSong.mpMediaItem(),
+			let playerController = playerController,
+			rowMediaItem == playerController.nowPlayingItem
+		{
+			return currentSongIndicatorImage
+		} else {
+			return nil
 		}
 	}
 	

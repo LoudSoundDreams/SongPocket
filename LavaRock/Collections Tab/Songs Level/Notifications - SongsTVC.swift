@@ -18,10 +18,9 @@ extension SongsTVC {
 	}
 	
 	private func refreshCurrentSongIndicator() {
-		for indexPath in indexPathsEnumeratedIn(
+		for indexPath in tableView.indexPathsEnumeratedIn(
 			section: 0,
-			firstRow: numberOfRowsAboveIndexedLibraryItems,
-			lastRow: tableView.numberOfRows(inSection: 0) - 1)
+			firstRow: numberOfRowsAboveIndexedLibraryItems)
 		{
 			refreshCurrentSongIndicator(forRowAt: indexPath)
 		}
@@ -34,19 +33,6 @@ extension SongsTVC {
 			cell.currentSongIndicatorImageView.image = image
 		} else if let cell = tableView.cellForRow(at: indexPath) as? SongCellWithDifferentArtist {
 			cell.currentSongIndicatorImageView.image = image
-		}
-	}
-	
-	func currentSongIndicatorImage(forRowAt indexPath: IndexPath) -> UIImage? {
-		if
-			let rowSong = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Song,
-			let rowMediaItem = rowSong.mpMediaItem(),
-			let playerController = playerController,
-			rowMediaItem == playerController.nowPlayingItem
-		{
-			return currentSongIndicatorImage
-		} else {
-			return nil
 		}
 	}
 	

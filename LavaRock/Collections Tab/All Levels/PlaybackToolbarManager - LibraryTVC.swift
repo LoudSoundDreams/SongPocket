@@ -12,7 +12,7 @@ extension LibraryTVC {
 	
 	// MARK: - Events
 	
-	final func setRefreshedPlaybackToolbar(animated: Bool = false) { // Only animate this when entering and exiting editing mode.
+	final func setRefreshedPlaybackToolbar(animated: Bool = false) { // Only animate this when entering and exiting editing mode, or immediately after receiving authorization for the user's Apple Music library.
 		var playbackButtons = [
 			goToPreviousSongButton,
 			flexibleSpaceBarButtonItem,
@@ -23,12 +23,19 @@ extension LibraryTVC {
 			goToNextSongButton
 		]
 		
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+		func setDisabledPlaybackToolbar() {
 			goToPreviousSongButton.isEnabled = false
 			restartCurrentSongButton.isEnabled = false
 			playButton.isEnabled = false
 			goToNextSongButton.isEnabled = false
 			toolbarItems = playbackButtons
+		}
+		
+		if
+			MPMediaLibrary.authorizationStatus() != .authorized
+				|| (self is CollectionsTVC && indexedLibraryItems.count == 0)
+		{
+			setDisabledPlaybackToolbar()
 			return
 		}
 		

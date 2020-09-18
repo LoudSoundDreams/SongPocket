@@ -35,7 +35,10 @@ extension LibraryTVC {
 		{
 			tableView.deselectAllRows(animated: false)
 		} else {
-			for indexPath in indexPathsEnumeratedIn(section: 0) {
+			for indexPath in tableView.indexPathsEnumeratedIn(
+				section: 0,
+				firstRow: numberOfRowsAboveIndexedLibraryItems)
+			{
 				tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			}
 		}
@@ -149,10 +152,9 @@ extension LibraryTVC {
 		areSortOptionsPresented = false
 		
 		// Get the rows to sort.
-		let indexPathsToSort = selectedOrEnumeratedIndexPathsIn(
+		let indexPathsToSort = tableView.selectedOrEnumeratedIndexPathsIn(
 			section: 0,
-			firstRow: numberOfRowsAboveIndexedLibraryItems,
-			lastRow: tableView.numberOfRows(inSection: 0) - 1)
+			firstRow: numberOfRowsAboveIndexedLibraryItems)
 		
 		// Get the items to sort, too.
 		let selectedIndexPathsAndItems = dataObjectsPairedWith(

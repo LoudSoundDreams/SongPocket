@@ -311,28 +311,6 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell 3" rowHeight="150" id="epd-Xo-8Ei">
-                                <rect key="frame" x="0.0" y="297.66666793823242" width="375" height="150"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="epd-Xo-8Ei" id="jfU-qI-87o">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose some songs from Collections." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Lo-06-ZGi">
-                                            <rect key="frame" x="43.333333333333343" y="43" width="288.33333333333326" height="20.333333333333329"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="placeholderTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="1Lo-06-ZGi" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="jfU-qI-87o" secondAttribute="trailingMargin" id="J4V-MB-d4a"/>
-                                        <constraint firstItem="1Lo-06-ZGi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jfU-qI-87o" secondAttribute="leadingMargin" id="S4O-TT-Xh1"/>
-                                        <constraint firstItem="1Lo-06-ZGi" firstAttribute="centerX" secondItem="jfU-qI-87o" secondAttribute="centerX" id="c1H-LH-Et6"/>
-                                        <constraint firstItem="1Lo-06-ZGi" firstAttribute="centerY" secondItem="jfU-qI-87o" secondAttribute="centerY" constant="-22" id="jaG-9V-eP0"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="onv-xE-8hm" id="4eb-pv-2NN"/>

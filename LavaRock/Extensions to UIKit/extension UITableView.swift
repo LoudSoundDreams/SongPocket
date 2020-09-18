@@ -63,7 +63,7 @@ extension UITableView {
 		return isConsecutive(rowNumbers.sorted())
 	}
 	
-	// Returns whether an array of integers is in increasing consecutive order.
+	// Returns whether the integers you provide are in increasing consecutive order.
 	private func isConsecutive(_ ints: [Int]) -> Bool {
 		if ints.count <= 1 {
 			return true
@@ -76,7 +76,8 @@ extension UITableView {
 		}
 	}
 	
-	// Returns false if all the IndexPaths you provide have the same value for their "section" parameter. Returns true if any one or more of the IndexPaths you provide has a different value for its "section" parameter than all the others.
+	// Returns false if all the IndexPaths you provide have the same value for their "section" parameter.
+	// Returns true if any one or more of the IndexPaths you provide has a different value for its "section" parameter than all the others.
 	private func isFromMultipleSections(_ indexPaths: [IndexPath]) -> Bool {
 		if indexPaths.count <= 1 { // Terminating case.
 			return false
@@ -87,6 +88,34 @@ extension UITableView {
 			restOfSelectedIndexPaths.remove(at: 0)
 			return isFromMultipleSections(restOfSelectedIndexPaths)
 		}
+	}
+	
+	// MARK: - Getting IndexPaths
+	
+	final func selectedOrEnumeratedIndexPathsIn(section: Int, firstRow: Int) -> [IndexPath] {
+		if let selectedIndexPaths = indexPathsForSelectedRows	 {
+			return selectedIndexPaths.sorted()
+		} else {
+			return indexPathsEnumeratedIn(section: section, firstRow: firstRow)
+		}
+	}
+	
+	final func indexPathsEnumeratedIn(section: Int, firstRow: Int) -> [IndexPath] {
+		return indexPathsEnumeratedIn(
+			section: section,
+			firstRow: firstRow,
+			lastRow: numberOfRows(inSection: section) - 1)
+	}
+	
+	final func indexPathsEnumeratedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
+		guard lastRow >= firstRow else {
+			return [IndexPath]()
+		}
+		var result = [IndexPath]()
+		for row in firstRow...lastRow {
+			result.append(IndexPath(row: row, section: section))
+		}
+		return result
 	}
 	
 	// MARK: - Moving Rows
@@ -111,7 +140,7 @@ extension UITableView {
 	final func deselectAllRows(animated: Bool) {
 		guard let indexPaths = indexPathsForSelectedRows else { return }
 		for indexPath in indexPaths {
-			deselectRow(at: indexPath, animated: animated) // As of iOS 14.0, this doesn't animate for some reason. It works right on iOS 13.5.1.
+			deselectRow(at: indexPath, animated: animated) // As of iOS 14.2 beta 1, this doesn't animate for some reason. It works right on iOS 13.5.1.
 		}
 	}
 	

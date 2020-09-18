@@ -92,7 +92,7 @@ class LibraryTVC:
 			style: .plain,
 			target: self,
 			action: #selector(pause))
-		button.width = 10.0 // As of iOS 14.0, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
+		button.width = 10.0 // As of iOS 14.2 beta 1, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
 		return button
 	}()
 	lazy var goToNextSongButton: UIBarButtonItem = {
