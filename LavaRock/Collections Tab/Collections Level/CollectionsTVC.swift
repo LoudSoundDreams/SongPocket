@@ -72,7 +72,9 @@ final class CollectionsTVC:
 		} else {
 			toolbarButtonsEditingModeOnly = [
 				flexibleSpaceBarButtonItem,
-				floatToTopButton
+				floatToTopButton,
+				flexibleSpaceBarButtonItem,
+				sinkToBottomButton
 			]
 		}
 	}

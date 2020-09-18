@@ -121,22 +121,22 @@ extension LibraryTVC {
 		print(String(describing: managedObjectContext.parent))
 		*/
 		
+		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
+//		print(indexedLibraryItems)
+//		print(refreshedItems)
+		print(refreshedItems == indexedLibraryItems)
+		if refreshedItems == indexedLibraryItems { return }
+		
 		if areSortOptionsPresented {
 			dismiss(animated: true, completion: nil)
 			areSortOptionsPresented = false
 		}
 		
-		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
-//		print(indexedLibraryItems)
-//		print(refreshedItems)
-//		print(refreshedItems == indexedLibraryItems)
-//		if refreshedItems != indexedLibraryItems {
 		refreshTableView(
 			section: 0,
 			onscreenItems: indexedLibraryItems,
 			refreshedItems: refreshedItems,
 			completion: refreshData)
-//		}
 	}
 	
 	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().
@@ -208,10 +208,7 @@ extension LibraryTVC {
 	private func deleteAllRowsThenExit() {
 		var allIndexPaths = [IndexPath]()
 		for section in 0 ..< tableView.numberOfSections {
-			let allIndexPathsInSection = indexPathsEnumeratedIn(
-				section: section,
-				firstRow: 0,
-				lastRow: tableView.numberOfRows(inSection: section) - 1)
+			let allIndexPathsInSection = indexPathsEnumeratedIn(section: section)
 			allIndexPaths.append(contentsOf: allIndexPathsInSection)
 		}
 		indexedLibraryItems.removeAll()

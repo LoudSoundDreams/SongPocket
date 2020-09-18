@@ -26,7 +26,7 @@ class LibraryTVC:
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving albums" mode.
 	var navigationItemButtonsNotEditingMode = [UIBarButtonItem]()
-	private var navigationItemButtonsEditingModeOnly = [UIBarButtonItem]()
+	private var navigationItemButtonsEditingMode = [UIBarButtonItem]()
 	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()
 	var sortOptions = [String]()
 	
@@ -47,6 +47,11 @@ class LibraryTVC:
 		style: .plain,
 		target: self,
 		action: #selector(moveSelectedItemsToTop))
+	lazy var sinkToBottomButton = UIBarButtonItem(
+		image: UIImage(systemName: "arrow.down.to.line.alt"),
+		style: .plain,
+		target: self,
+		action: #selector(sinkSelectedItemsToBottom))
 	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
 		barButtonSystemItem: .cancel,
 		target: self,
@@ -56,7 +61,7 @@ class LibraryTVC:
 	var playerController: MPMusicPlayerController?
 	lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "backward.end"),
+			image: UIImage(systemName: "backward.end.fill"),
 			style: .plain,
 			target: self,
 			action: #selector(goToPreviousSong))
@@ -65,7 +70,7 @@ class LibraryTVC:
 	}()
 	lazy var restartCurrentSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "arrow.counterclockwise"),
+			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
 			style: .plain,
 			target: self,
 			action: #selector(restartCurrentSong))
@@ -74,7 +79,7 @@ class LibraryTVC:
 	}()
 	lazy var playButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "play"),
+			image: UIImage(systemName: "play.fill"),
 			style: .plain,
 			target: self,
 			action: #selector(play))
@@ -83,7 +88,7 @@ class LibraryTVC:
 	}()
 	lazy var pauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "pause"),
+			image: UIImage(systemName: "pause.fill"),
 			style: .plain,
 			target: self,
 			action: #selector(pause))
@@ -92,7 +97,7 @@ class LibraryTVC:
 	}()
 	lazy var goToNextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "forward.end"),
+			image: UIImage(systemName: "forward.end.fill"),
 			style: .plain,
 			target: self,
 			action: #selector(goToNextSong))
@@ -157,8 +162,8 @@ class LibraryTVC:
 	func setUpUI() {
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
-		navigationItemButtonsEditingModeOnly = [selectAllOrNoneButton]
-//		navigationItemButtonsEditingModeOnly = [flexibleSpaceBarButtonItem]
+//		navigationItemButtonsEditingMode = [selectAllOrNoneButton]
+		navigationItemButtonsEditingMode = [flexibleSpaceBarButtonItem]
 		navigationItem.rightBarButtonItem = editButtonItem
 		setRefreshedBarButtons(animated: true)
 	}
@@ -186,7 +191,7 @@ class LibraryTVC:
 		refreshBarButtons(animated: animated) // Includes setRefreshedPlaybackToolbar(animated:).
 		
 		if isEditing {
-			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingModeOnly, animated: animated)
+			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingMode, animated: animated)
 			setToolbarItems(toolbarButtonsEditingModeOnly, animated: animated)
 		} else {
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditingMode, animated: animated)
@@ -200,6 +205,7 @@ class LibraryTVC:
 			refreshSelectAllOrNoneButton()
 			refreshSortButton()
 			refreshFloatToTopButton()
+			refreshSinkToBottomButton()
 		} else {
 			setRefreshedPlaybackToolbar(animated: animated)
 		}
@@ -225,8 +231,8 @@ class LibraryTVC:
 	private func refreshSortButton() {
 		sortButton.isEnabled =
 			indexedLibraryItems.count > 0 &&
-			tableView.indexPathsForSelectedRows != nil &&
-			shouldAllowSorting()
+//			tableView.indexPathsForSelectedRows != nil &&
+			tableView.shouldAllowSorting()
 //		if tableView.indexPathsForSelectedRows == nil {
 //			sortButton.title = "Sort All"
 //		} else {
@@ -237,7 +243,13 @@ class LibraryTVC:
 	private func refreshFloatToTopButton() {
 		floatToTopButton.isEnabled =
 			indexedLibraryItems.count > 0 &&
-			shouldAllowFloatingToTop(forIndexPaths: tableView.indexPathsForSelectedRows)
+			tableView.shouldAllowMovingSelectedRowsToTopOfSection()
+	}
+	
+	private func refreshSinkToBottomButton() {
+		sinkToBottomButton.isEnabled =
+			indexedLibraryItems.count > 0 &&
+			tableView.shouldAllowMovingSelectedRowsToBottomOfSection()
 	}
 	
 	@objc private func cancelMoveAlbums() {

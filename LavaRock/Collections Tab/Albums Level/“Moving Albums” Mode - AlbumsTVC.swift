@@ -29,7 +29,7 @@ extension AlbumsTVC {
 		var idsOfAlbumsToNotMove = [NSManagedObjectID]()
 		
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows { // If any rows are selected.
-			for indexPath in indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: tableView.numberOfRows(inSection: 0) - 1) {
+			for indexPath in indexPathsEnumeratedIn(section: 0) {
 				let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
 				if selectedIndexPaths.contains(indexPath) { // If the row is selected.
 					idsOfAlbumsToMove.append(album.objectID)
@@ -112,7 +112,10 @@ extension AlbumsTVC {
 		mainManagedObjectContext.tryToSave()
 		
 		// Update the table view.
-		let indexPathsToInsert = indexPathsEnumeratedIn(section: 0, firstRow: 0, lastRow: albumsToMove.count - 1)
+		let indexPathsToInsert = indexPathsEnumeratedIn(
+			section: 0,
+			firstRow: 0,
+			lastRow: albumsToMove.count - 1)
 		tableView.performBatchUpdates( {
 				tableView.insertRows(at: indexPathsToInsert, with: .middle)
 		}, completion: { _ in

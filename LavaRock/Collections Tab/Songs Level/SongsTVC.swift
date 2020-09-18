@@ -23,9 +23,9 @@ final class SongsTVC:
 			let playerController = playerController,
 			playerController.playbackState == .playing // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
 		{
-			return UIImage(systemName: "speaker.wave.2")
+			return UIImage(systemName: "speaker.wave.2.fill")
 		} else {
-			return UIImage(systemName: "speaker")
+			return UIImage(systemName: "speaker.fill")
 		}
 	}
 	
@@ -48,10 +48,11 @@ final class SongsTVC:
 		
 		refreshNavigationItemTitle()
 		toolbarButtonsEditingModeOnly = [
-			flexibleSpaceBarButtonItem,
 			sortButton,
 			flexibleSpaceBarButtonItem,
-			floatToTopButton
+			floatToTopButton,
+			flexibleSpaceBarButtonItem,
+			sinkToBottomButton
 		]
 		sortOptions = ["Track Number"]
 	}

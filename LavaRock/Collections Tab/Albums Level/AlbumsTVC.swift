@@ -56,7 +56,9 @@ final class AlbumsTVC:
 				flexibleSpaceBarButtonItem,
 				sortButton,
 				flexibleSpaceBarButtonItem,
-				floatToTopButton
+				floatToTopButton,
+				flexibleSpaceBarButtonItem,
+				sinkToBottomButton
 			]
 			sortOptions = ["Newest First", "Oldest First"]
 		}
@@ -91,8 +93,8 @@ final class AlbumsTVC:
 	
 	private func refreshStartMovingAlbumsButton() {
 		startMovingAlbumsButton.isEnabled =
-			indexedLibraryItems.count > 0 &&
-			tableView.indexPathsForSelectedRows != nil
+			indexedLibraryItems.count > 0// &&
+//			tableView.indexPathsForSelectedRows != nil
 //		if tableView.indexPathsForSelectedRows == nil {
 //			startMovingAlbumsButton.title = "Move All"
 //		} else {

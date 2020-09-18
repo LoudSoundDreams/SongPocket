@@ -35,11 +35,7 @@ extension LibraryTVC {
 		{
 			tableView.deselectAllRows(animated: false)
 		} else {
-			for indexPath in indexPathsEnumeratedIn(
-				section: 0,
-				firstRow: numberOfRowsAboveIndexedLibraryItems,
-				lastRow: tableView.numberOfRows(inSection: 0) - 1)
-			{
+			for indexPath in indexPathsEnumeratedIn(section: 0) {
 				tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			}
 		}
@@ -47,7 +43,7 @@ extension LibraryTVC {
 		refreshBarButtons()
 	}
 	
-	// MARK: - Moving Rows to Top
+	// MARK: - Moving to Top
 	
 	@objc final func moveSelectedItemsToTop() {
 		moveItemsUp(
@@ -55,38 +51,80 @@ extension LibraryTVC {
 			to: IndexPath(row: numberOfRowsAboveIndexedLibraryItems, section: 0))
 	}
 	
-	// Note: Every IndexPath in selectedIndexPaths must be in the same section as targetIndexPath, and at or down below targetIndexPath.
+	// Note: Every IndexPath in selectedIndexPaths must be in the same section as firstIndexPath, and at or down below firstIndexPath.
 	private func moveItemsUp(from selectedIndexPaths: [IndexPath]?, to firstIndexPath: IndexPath) {
-		
 		guard
-			let indexPaths = selectedIndexPaths,
-			shouldAllowFloatingToTop(forIndexPaths: selectedIndexPaths)
+			tableView.shouldAllowMovingSelectedRowsToTopOfSection(),
+			let selectedIndexPaths = selectedIndexPaths
 		else { return }
-		for startingIndexPath in indexPaths {
-			if startingIndexPath.section != firstIndexPath.section || startingIndexPath.row < firstIndexPath.row {
+		// Make sure every IndexPaths in selectedIndexPaths is in the same section as firstIndexPath, and at or down below firstIndexPath.
+		for selectedIndexPath in selectedIndexPaths {
+			if selectedIndexPath.section != firstIndexPath.section || selectedIndexPath.row < firstIndexPath.row {
 				return
 			}
 		}
 		
-		let pairsToMove = dataObjectsPairedWith(
-			indexPaths.sorted(),
+		guard let pairsToMove = dataObjectsPairedWith(
+			selectedIndexPaths.sorted(),
 			tableViewDataSource: indexedLibraryItems,
 			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems
-		) as! [(IndexPath, NSManagedObject)]
+		) as? [(IndexPath, NSManagedObject)]
+		else { return }
+		
 		let targetSection = firstIndexPath.section
 		var targetRow = firstIndexPath.row
-		for (startingIndexPath, matchingItem) in pairsToMove {
+		var selectedAndTargetIndexPaths = [(IndexPath, IndexPath)]()
+		for (selectedIndexPath, matchingItem) in pairsToMove {
 			let targetIndexPath = IndexPath(row: targetRow, section: targetSection)
-			tableView.moveRow(at: startingIndexPath, to: targetIndexPath)
-			tableView.deselectRow(at: targetIndexPath, animated: true) // Wait until after all the rows have moved to do this?
+			selectedAndTargetIndexPaths.append(
+				(selectedIndexPath, targetIndexPath))
 			
-			let startingIndex = startingIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+			let startingIndex = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
 			let targetIndex = targetRow - numberOfRowsAboveIndexedLibraryItems
 			indexedLibraryItems.remove(at: startingIndex)
 			indexedLibraryItems.insert(matchingItem, at: targetIndex)
 			
 			targetRow += 1
 		}
+		
+		tableView.moveRows(atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths)
+		refreshBarButtons()
+	}
+	
+	// MARK: - Moving to Bottom
+	
+	@objc final func sinkSelectedItemsToBottom() {
+		guard
+			tableView.shouldAllowMovingSelectedRowsToBottomOfSection(),
+			let selectedIndexPaths = tableView.indexPathsForSelectedRows
+		else { return }
+		
+		let sortedSelectedIndexPaths = selectedIndexPaths.sorted()
+		guard
+			let pairsToMove = dataObjectsPairedWith(
+				sortedSelectedIndexPaths,
+				tableViewDataSource: indexedLibraryItems,
+				rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems
+			) as? [(IndexPath, NSManagedObject)],
+			let targetSection = sortedSelectedIndexPaths.last?.section
+		else { return }
+		
+		var targetRow = tableView.numberOfRows(inSection: targetSection) - 1
+		var selectedAndTargetIndexPaths = [(IndexPath, IndexPath)]()
+		for (selectedIndexPath, matchingItem) in pairsToMove.reversed() {
+			let targetIndexPath = IndexPath(row: targetRow, section: targetSection)
+			selectedAndTargetIndexPaths.append(
+				(selectedIndexPath, targetIndexPath))
+			
+			let startingIndex = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+			let targetIndex = targetRow - numberOfRowsAboveIndexedLibraryItems
+			indexedLibraryItems.remove(at: startingIndex)
+			indexedLibraryItems.insert(matchingItem, at: targetIndex)
+			
+			targetRow -= 1
+		}
+		
+		tableView.moveRows(atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths)
 		refreshBarButtons()
 	}
 	
@@ -107,7 +145,7 @@ extension LibraryTVC {
 	}
 	
 	private func sortSelectedOrAllItems(sender: UIAlertAction) {
-		guard shouldAllowSorting() else { return }
+		guard tableView.shouldAllowSorting() else { return }
 		areSortOptionsPresented = false
 		
 		// Get the rows to sort.
@@ -148,7 +186,7 @@ extension LibraryTVC {
 		
 		// Update the rest of the UI.
 		for indexPath in indexPathsToSort {
-			tableView.deselectRow(at: indexPath, animated: true)
+			tableView.deselectRow(at: indexPath, animated: true) // TO DO: Wait until all the rows have moved to do this.
 		}
 		refreshBarButtons()
 	}
