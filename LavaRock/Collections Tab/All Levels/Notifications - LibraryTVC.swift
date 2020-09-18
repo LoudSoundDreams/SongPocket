@@ -104,17 +104,7 @@ extension LibraryTVC {
 		}
 	}
 	
-	/*
-	Easy to override. You'll probably want to call super (this implementation) after your additional code.
-	Before calling this implementation, you should cancel any content-dependent actions, including:
-	- Sort options (LibraryTVC)
-	- "Rename Collection" dialog (CollectionsTVC)
-	- "Move albums" sheet (CollectionsTVC, AlbumsTVC when in "moving albums" mode)
-	- "New Collection" dialog (CollectionsTVC when in "moving albums" mode)
-	- Song actions (SongsTVC)
-	Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).
-	*/
-	@objc func refreshDataAndViews() {
+	final func refreshDataAndViews() {
 //		print("")
 //		print(Self.self)
 //		print(String(describing: managedObjectContext.parent))
@@ -122,7 +112,29 @@ extension LibraryTVC {
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 //		print(indexedLibraryItems)
 //		print(refreshedItems)
+		prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
 		
+		refreshTableView(
+			section: 0,
+			onscreenItems: indexedLibraryItems,
+			refreshedItems: refreshedItems,
+			completion: refreshData)
+	}
+	
+	/*
+	Easy to override. You should call super (this implementation) in your override.
+	You might have content-dependent, blocking actions onscreen while we we need to refresh. If so, override this method and cancel those actions, if the refresh will change the content that those actions would have applied to. Typically, you should cancel those actions if refreshedItems is different from indexedLibraryItems.
+	These are the content-dependent, blocking actions we need to account for:
+	- Sort options (LibraryTVC)
+	- "Rename Collection" dialog (CollectionsTVC)
+	- "Move albums" sheet (CollectionsTVC, AlbumsTVC when in "moving albums" mode)
+	- "New Collection" dialog (CollectionsTVC when in "moving albums" mode)
+	- Song actions (SongsTVC)
+	Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).
+	*/
+	@objc func prepareToRefreshDataAndViews(
+		consideringRefreshedItems refreshedItems: [NSManagedObject]
+	) {
 		if
 			areSortOptionsPresented,
 			refreshedItems != indexedLibraryItems
@@ -130,12 +142,6 @@ extension LibraryTVC {
 			dismiss(animated: true, completion: nil)
 			areSortOptionsPresented = false
 		}
-		
-		refreshTableView(
-			section: 0,
-			onscreenItems: indexedLibraryItems,
-			refreshedItems: refreshedItems,
-			completion: refreshData)
 	}
 	
 	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().

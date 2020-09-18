@@ -23,7 +23,7 @@ final class CollectionsTVC:
 	static let defaultCollectionTitle = "New Collection"
 	
 	// Variables
-	var isRenamingCollection = false // If we have to refresh to reflect changes in the Apple Music library, we'll cancel renaming.
+	var isRenamingCollection = false // If we have to refresh to reflect changes in the Apple Music library, and the refresh will change indexedLibraryItems, we'll cancel renaming.
 	var albumMoverClipboard: AlbumMoverClipboard?
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var collectionToDeleteBeforeNextRefresh: Collection?

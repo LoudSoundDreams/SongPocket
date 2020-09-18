@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 extension SongsTVC {
 	
@@ -38,13 +39,19 @@ extension SongsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	override func refreshDataAndViews() {
-		if areSongActionsPresented {
+	override func prepareToRefreshDataAndViews(
+		consideringRefreshedItems refreshedItems: [NSManagedObject]
+	) {
+		if
+			areSongActionsPresented,
+			refreshedItems != indexedLibraryItems
+		{
 			dismiss(animated: true, completion: nil)
 			areSongActionsPresented = false
 		}
 		
-		super.refreshDataAndViews()
+		super.prepareToRefreshDataAndViews(
+			consideringRefreshedItems: refreshedItems)
 	}
 	
 	// This is the same as in AlbumsTVC.
