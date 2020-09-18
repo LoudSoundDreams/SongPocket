@@ -12,7 +12,7 @@ extension AlbumsTVC {
 	
 	// MARK: - Starting Moving Albums
 	
-	@IBAction func startMovingAlbums(_ sender: UIBarButtonItem) {
+	@objc func startMovingAlbums() {
 		
 		// Prepare a Collections view to present modally.
 		
@@ -61,7 +61,7 @@ extension AlbumsTVC {
 	
 	// MARK: - Ending Moving Albums
 	
-	@objc final func moveAlbumsHere() {
+	@IBAction func moveAlbumsHere(_ sender: UIBarButtonItem) {
 		
 		guard
 			let albumMoverClipboard = albumMoverClipboard,

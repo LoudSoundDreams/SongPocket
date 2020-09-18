@@ -54,13 +54,6 @@ extension SongsTVC {
 			// Get the data to put into the cell.
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			let cellTitle = song.titleFormattedOrPlaceholder()
-			var currentSongIndicatorImage = UIImage(systemName: "speaker")
-			if
-				let playerController = playerController,
-				playerController.playbackState == .playing // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
-			{
-				currentSongIndicatorImage = UIImage(systemName: "speaker.wave.2")
-			}
 			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.
@@ -72,11 +65,7 @@ extension SongsTVC {
 				cell.artistLabel.text = cellArtist
 				
 				cell.titleLabel.text = cellTitle
-				if song.mpMediaItem() == playerController?.nowPlayingItem {
-					cell.currentSongIndicatorImageView.image = currentSongIndicatorImage
-				} else {
-					cell.currentSongIndicatorImageView.image = nil
-				}
+				cell.currentSongIndicatorImageView.image = currentSongIndicatorImage(forRowAt: indexPath)
 				cell.trackNumberLabel.text = cellTrackNumberText
 				let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
 				let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([
@@ -93,11 +82,7 @@ extension SongsTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
 				
 				cell.titleLabel.text = cellTitle
-				if song.mpMediaItem() == playerController?.nowPlayingItem {
-					cell.currentSongIndicatorImageView.image = currentSongIndicatorImage
-				} else {
-					cell.currentSongIndicatorImageView.image = nil
-				}
+				cell.currentSongIndicatorImageView.image = currentSongIndicatorImage(forRowAt: indexPath)
 				cell.trackNumberLabel.text = cellTrackNumberText
 				let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
 				let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([

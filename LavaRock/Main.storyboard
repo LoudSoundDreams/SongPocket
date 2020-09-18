@@ -546,7 +546,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="UFi-Ul-07U"/>
                         <barButtonItem title="Move Here" style="done" id="i8X-rz-Cxu">
                             <connections>
-                                <action selector="startMovingAlbums:" destination="DGZ-AG-uNY" id="5Iw-x2-Bs0"/>
+                                <action selector="moveAlbumsHere:" destination="DGZ-AG-uNY" id="wrc-xM-I20"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="op0-MS-ctf"/>

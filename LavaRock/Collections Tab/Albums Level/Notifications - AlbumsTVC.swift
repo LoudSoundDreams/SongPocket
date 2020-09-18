@@ -10,6 +10,8 @@ import CoreData
 
 extension AlbumsTVC {
 	
+	// MARK: - Refreshing Data and Views
+	
 	override func refreshDataAndViews() {
 		if albumMoverClipboard != nil {
 			dismiss(animated: true, completion: nil)

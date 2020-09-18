@@ -171,23 +171,36 @@ extension LibraryTVC {
 		} )
 		*/
 		
+		case "Newest First":
+			let commonDate = Date()
+			return indexPathsAndItems.sorted() {
+				($0.1 as? Album)?.releaseDateEstimate ?? commonDate >
+					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
+			}
+			
+		case "Oldest First":
+			let commonDate = Date()
+			return indexPathsAndItems.sorted() {
+				($0.1 as? Album)?.releaseDateEstimate ?? commonDate <
+					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
+			}
+			
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
 			// TO DO: With more songs, this gets too slow.
 			let sortedByTrackNumber = indexPathsAndItems.sorted() {
-				(($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0) <
-					(($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0)
+				($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 <
+					($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0
 			}
 			let sortedByTrackNumberWithZeroAtEnd = sortedByTrackNumber.sorted() {
-				(($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0) == 0
+				($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 == 0
 			}
 			let sortedByDiscNumber = sortedByTrackNumberWithZeroAtEnd.sorted() {
-				(($0.1 as? Song)?.mpMediaItem()?.discNumber ?? 0) <
-					(($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0)
+				($0.1 as? Song)?.mpMediaItem()?.discNumber ?? 0 <
+					($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0
 			}
 			// As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
 			return sortedByDiscNumber
-			
 			
 		default:
 			print("The user tried to sort by “\(sortOption ?? "")”, which isn’t a supported option. It might be misspelled.")

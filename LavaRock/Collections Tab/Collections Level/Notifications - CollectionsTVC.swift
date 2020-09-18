@@ -9,6 +9,8 @@ import UIKit
 
 extension CollectionsTVC {
 	
+	// MARK: - Refreshing Data and Views
+	
 	override func refreshDataAndViews() {
 		if let albumMoverClipboard = albumMoverClipboard {
 			if albumMoverClipboard.isMakingNewCollection {

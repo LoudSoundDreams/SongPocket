@@ -17,6 +17,19 @@ final class SongsTVC:
 	
 	// MARK: - Properties
 	
+	// "Constants"
+	var currentSongIndicatorImage: UIImage? {
+		if
+			let playerController = playerController,
+			playerController.playbackState == .playing // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
+		{
+			return UIImage(systemName: "speaker.wave.2")
+		} else {
+			return UIImage(systemName: "speaker")
+		}
+	}
+	
+	// Variables
 	var areSongActionsPresented = false // If we have to refresh to reflect changes in the Apple Music library, we'll dismiss this action sheet first.
 	
 	// MARK: - Setup
@@ -35,6 +48,7 @@ final class SongsTVC:
 		
 		refreshNavigationItemTitle()
 		toolbarButtonsEditingModeOnly = [
+			flexibleSpaceBarButtonItem,
 			sortButton,
 			flexibleSpaceBarButtonItem,
 			floatToTopButton

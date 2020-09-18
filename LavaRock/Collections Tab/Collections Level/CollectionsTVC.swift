@@ -69,8 +69,6 @@ final class CollectionsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
-//			setAlbumMoverToolbar()
-			
 		} else {
 			toolbarButtonsEditingModeOnly = [
 				flexibleSpaceBarButtonItem,
@@ -78,17 +76,6 @@ final class CollectionsTVC:
 			]
 		}
 	}
-	
-//	final func setAlbumMoverToolbar() {
-//		toolbarItems = [
-//			flexibleSpaceBarButtonItem,
-//			UIBarButtonItem(
-//				barButtonSystemItem: .add,
-//				target: self,
-//				action: #selector(presentDialogToMakeNewCollection)),
-//			flexibleSpaceBarButtonItem
-//		]
-//	}
 	
 	// MARK: Setup Events
 	

@@ -54,8 +54,11 @@ final class AlbumsTVC:
 			toolbarButtonsEditingModeOnly = [
 				startMovingAlbumsButton,
 				flexibleSpaceBarButtonItem,
+				sortButton,
+				flexibleSpaceBarButtonItem,
 				floatToTopButton
 			]
+			sortOptions = ["Newest First", "Oldest First"]
 		}
 	}
 	
@@ -65,18 +68,6 @@ final class AlbumsTVC:
 		}
 	}
 	
-//	final func setAlbumMoverToolbar() {
-//		toolbarItems = [
-//			flexibleSpaceBarButtonItem,
-//			UIBarButtonItem(
-//				title: "Move Here",
-//				style: .done,
-//				target: self,
-//				action: #selector(moveAlbumsHere)),
-//			flexibleSpaceBarButtonItem
-//		]
-//	}
-	
 	// MARK: Setup Events
 	
 	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
@@ -85,14 +76,6 @@ final class AlbumsTVC:
 	
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
-	
-//	override func viewDidAppear(_ animated: Bool) {
-//		super.viewDidAppear(animated)
-//
-//		if albumMoverClipboard != nil {
-//			setAlbumMoverToolbar()
-//		}
-//	}
 	
 	// MARK: - Events
 	
@@ -110,6 +93,11 @@ final class AlbumsTVC:
 		startMovingAlbumsButton.isEnabled =
 			indexedLibraryItems.count > 0 &&
 			tableView.indexPathsForSelectedRows != nil
+//		if tableView.indexPathsForSelectedRows == nil {
+//			startMovingAlbumsButton.title = "Move All"
+//		} else {
+//			startMovingAlbumsButton.title = "Move"
+//		}
 	}
 	
 	// MARK: - Navigation

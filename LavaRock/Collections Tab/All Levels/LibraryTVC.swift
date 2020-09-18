@@ -158,6 +158,7 @@ class LibraryTVC:
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
 		navigationItemButtonsEditingModeOnly = [selectAllOrNoneButton]
+//		navigationItemButtonsEditingModeOnly = [flexibleSpaceBarButtonItem]
 		navigationItem.rightBarButtonItem = editButtonItem
 		setRefreshedBarButtons(animated: true)
 	}
@@ -226,6 +227,11 @@ class LibraryTVC:
 			indexedLibraryItems.count > 0 &&
 			tableView.indexPathsForSelectedRows != nil &&
 			shouldAllowSorting()
+//		if tableView.indexPathsForSelectedRows == nil {
+//			sortButton.title = "Sort All"
+//		} else {
+//			sortButton.title = "Sort"
+//		}
 	}
 	
 	private func refreshFloatToTopButton() {
