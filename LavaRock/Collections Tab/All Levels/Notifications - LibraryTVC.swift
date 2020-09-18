@@ -122,10 +122,11 @@ extension LibraryTVC {
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 //		print(indexedLibraryItems)
 //		print(refreshedItems)
-		print(refreshedItems == indexedLibraryItems)
-		if refreshedItems == indexedLibraryItems { return }
 		
-		if areSortOptionsPresented {
+		if
+			areSortOptionsPresented,
+			refreshedItems != indexedLibraryItems
+		{
 			dismiss(animated: true, completion: nil)
 			areSortOptionsPresented = false
 		}

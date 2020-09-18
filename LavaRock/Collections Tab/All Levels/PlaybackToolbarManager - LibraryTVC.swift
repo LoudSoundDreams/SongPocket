@@ -28,7 +28,7 @@ extension LibraryTVC {
 			restartCurrentSongButton.isEnabled = false
 			playButton.isEnabled = false
 			goToNextSongButton.isEnabled = false
-			toolbarItems = playbackButtons
+			setToolbarItems(playbackButtons, animated: true)
 		}
 		
 		if
