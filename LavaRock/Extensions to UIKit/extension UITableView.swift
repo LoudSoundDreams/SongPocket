@@ -122,17 +122,13 @@ extension UITableView {
 	
 	final func moveRows(
 		atIndexPathsToIndexPathsIn startingAndEndingIndexPaths: [(IndexPath, IndexPath)],
-		thenDeselectAll shouldDeselectAll: Bool = true
+		completion: (() -> ())?
 	) {
 		performBatchUpdates {
 			for (startingIndexPath, endingIndexPath) in startingAndEndingIndexPaths {
 				moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
-		} completion: { _ in
-			if shouldDeselectAll {
-				self.deselectAllRows(animated: true)
-			}
-		}
+		} completion: { _ in (completion ?? { })() }
 	}
 	
 	// MARK: - Taking Action on Rows

@@ -72,9 +72,9 @@ final class AlbumsTVC:
 	
 	// MARK: Setup Events
 	
-	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
-		refreshDataAndViews() // Exits this collection if it's now empty.
-	}
+//	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
+//		refreshDataAndViews() // Exits this collection if it's now empty.
+//	}
 	
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
@@ -104,17 +104,17 @@ final class AlbumsTVC:
 	
 	// MARK: - Navigation
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if
-			segue.identifier == "Moved Albums",
-			let nonmodalAlbumsTVC = segue.destination as? AlbumsTVC,
-			let newCollectionDetector = newCollectionDetector,
-			newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
-		{
-			nonmodalAlbumsTVC.newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
-		}
-		
-		super.prepare(for: segue, sender: sender)
-	}
+//	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//		if
+//			segue.identifier == "Moved Albums",
+//			let nonmodalAlbumsTVC = segue.destination as? AlbumsTVC,
+//			let newCollectionDetector = newCollectionDetector,
+//			newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
+//		{
+//			nonmodalAlbumsTVC.newCollectionDetector!.shouldDetectNewCollectionsOnNextViewWillAppear = true
+//		}
+//
+//		super.prepare(for: segue, sender: sender)
+//	}
 	
 }

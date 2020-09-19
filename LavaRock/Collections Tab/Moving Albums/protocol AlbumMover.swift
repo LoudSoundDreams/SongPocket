@@ -14,5 +14,6 @@ protocol AlbumMover {
 
 protocol AlbumMoverDelegate: AnyObject {
 	func didAbort()
-	func didMoveAlbums(didMakeNewCollection: Bool)
+	func didMoveAlbumsThenCommitDismiss()
+	func didMoveAlbumsThenFinishDismiss(didMakeNewCollection: Bool)
 }

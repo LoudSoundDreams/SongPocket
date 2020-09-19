@@ -90,8 +90,13 @@ extension LibraryTVC {
 			targetRow += 1
 		}
 		
-		tableView.moveRows(atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths)
-		refreshBarButtons()
+		tableView.moveRows(
+			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
+			completion: {
+				self.tableView.deselectAllRows(animated: true)
+				self.refreshBarButtons()
+			}
+		)
 	}
 	
 	// MARK: - Moving to Bottom
@@ -127,8 +132,13 @@ extension LibraryTVC {
 			targetRow -= 1
 		}
 		
-		tableView.moveRows(atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths)
-		refreshBarButtons()
+		tableView.moveRows(
+			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
+			completion: {
+				self.tableView.deselectAllRows(animated: true)
+				self.refreshBarButtons()
+			}
+		)
 	}
 	
 	// MARK: - Sorting
