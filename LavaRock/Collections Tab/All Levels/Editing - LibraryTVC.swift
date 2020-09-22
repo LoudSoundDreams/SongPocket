@@ -90,9 +90,25 @@ extension LibraryTVC {
 			targetRow += 1
 		}
 		
+//		for (selectedIndexPath, targetIndexPath) in selectedAndTargetIndexPaths {
+//			tableView.performBatchUpdates {
+//				tableView.moveRow(at: selectedIndexPath, to: targetIndexPath)
+//				tableView.deselectRow(at: targetIndexPath, animated: true)
+//			} completion: { _ in
+//				self.refreshBarButtons()
+//			}
+//		}
+		
 		tableView.moveRows(
 			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
 			completion: {
+//				self.tableView.performBatchUpdates {
+//					for (_, targetIndexPath) in selectedAndTargetIndexPaths {
+//						self.tableView.deselectRow(at: targetIndexPath, animated: true)
+//					}
+//				} completion: { _ in
+//					self.refreshBarButtons()
+//				}
 				self.tableView.deselectAllRows(animated: true)
 				self.refreshBarButtons()
 			}
@@ -132,9 +148,25 @@ extension LibraryTVC {
 			targetRow -= 1
 		}
 		
+//		for (selectedIndexPath, targetIndexPath) in selectedAndTargetIndexPaths {
+//			tableView.performBatchUpdates {
+//				tableView.moveRow(at: selectedIndexPath, to: targetIndexPath)
+//				tableView.deselectRow(at: targetIndexPath, animated: true)
+//			} completion: { _ in
+//				self.refreshBarButtons()
+//			}
+//		}
+		
 		tableView.moveRows(
 			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
 			completion: {
+//				self.tableView.performBatchUpdates {
+//					for (_, targetIndexPath) in selectedAndTargetIndexPaths {
+//						self.tableView.deselectRow(at: targetIndexPath, animated: true)
+//					}
+//				} completion: { _ in
+//					self.refreshBarButtons()
+//				}
 				self.tableView.deselectAllRows(animated: true)
 				self.refreshBarButtons()
 			}

@@ -25,7 +25,6 @@ extension UITableView {
 	}
 	
 	// Returns whether a command that "sinks" the selected rows to the bottom of their section, keeping them in the same order, should be allowed.
-	// Returns true only if one or more rows are selected, and they're all in the same section.
 	// Note: Currently identical to shouldAllowMovingSelectedRowsToTopOfSection().
 	final func shouldAllowMovingSelectedRowsToBottomOfSection() -> Bool {
 		guard

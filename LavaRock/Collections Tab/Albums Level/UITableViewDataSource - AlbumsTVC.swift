@@ -22,6 +22,9 @@ extension AlbumsTVC {
 		let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
+//		print(indexPath)
+//		print(album.titleFormattedOrPlaceholder())
+		
 		let cellTitle = album.titleFormattedOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
 		

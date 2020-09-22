@@ -21,15 +21,17 @@ extension SongsTVC {
 		didDismissSongActions()
 		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
 		
-		var allMediaItems = [MPMediaItem]()
-		for songToEnqueue in indexedLibraryItems {
-			guard let mediaItem = (songToEnqueue as? Song)?.mpMediaItem() else { continue }
-			allMediaItems.append(mediaItem)
+		var mediaItemsToEnqueue = [MPMediaItem]()
+		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
+			guard
+				let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue] as? Song,
+				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
+			else { continue }
+			mediaItemsToEnqueue.append(mediaItemToEnqueue)
 		}
 		
-		let mediaItemCollection = MPMediaItemCollection(items: allMediaItems)
+		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		queueDescriptor.startItem = allMediaItems[indexOfSelectedSong]
 		
 		playerController?.setQueue(with: queueDescriptor)
 		playerController?.repeatMode = .none

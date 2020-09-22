@@ -65,30 +65,19 @@ extension LibraryTVC {
 		refreshesAfterDidSaveChangesFromAppleMusic = false
 		AppleMusicLibraryManager.shared.shouldNextMergeBeSynchronous = true
 		viewDidLoad() // Includes AppleMusicLibraryManager's setUpLibraryIfAuthorized(), which includes merging changes from the Apple Music library. Since we set shouldNextMergeBeSynchronous = true, CollectionsTVC will call the (synchronous) merge before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
+		
 		// Remove the following and make refreshDataAndViewsWhenVisible() accomodate it instead?
-		switch tableView(tableView, numberOfRowsInSection: 0) { // tableView.numberOfRows might not be up to date yet. Call the actual UITableViewDelegate method.
-		case 0:
-			tableView.performBatchUpdates {
-				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-			} completion: { _ in
-				self.refreshesAfterDidSaveChangesFromAppleMusic = true
-			}
-		case 1:
-			tableView.performBatchUpdates {
-				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-				tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .middle)
-			} completion: { _ in
-				self.refreshesAfterDidSaveChangesFromAppleMusic = true
-			}
-		default:
-			tableView.performBatchUpdates({
-				tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-				tableView.insertRows(
-					at: tableView.indexPathsEnumeratedIn(section: 0, firstRow: 0),
-					with: .middle)
-			}, completion: { _ in
-				self.refreshesAfterDidSaveChangesFromAppleMusic = true
-			})
+		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
+		tableView.performBatchUpdates {
+			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+			tableView.insertRows(
+				at: tableView.indexPathsEnumeratedIn(
+					section: 0,
+					firstRow: 0,
+					lastRow: newNumberOfRows - 1), // It's incorrect and unsafe to call tableView.numberOfRows(inSection:) here, because we're changing the number of rows. Use the UITableViewDelegate method tableView(_:numberOfRowsInSection:) intead.
+				with: .middle)
+		} completion: { _ in
+			self.refreshesAfterDidSaveChangesFromAppleMusic = true
 		}
 	}
 	
