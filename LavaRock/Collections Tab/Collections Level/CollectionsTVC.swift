@@ -35,7 +35,7 @@ final class CollectionsTVC:
 			super.viewDidLoad()
 			
 		} else {
-			if AppleMusicLibraryManager.shared.shouldNextMergeBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show an empty table view while we merge from the Apple Music library for the first time. In that case, we need to merge (synchronously) before calling reloadIndexedLibraryItems().
+			if AppleMusicLibraryManager.shared.shouldNextImportBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show an empty table view while we import from the Apple Music library for the first time. In that case, we need to import (synchronously) before calling reloadIndexedLibraryItems().
 				AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized()
 				
 				super.viewDidLoad()
@@ -44,7 +44,7 @@ final class CollectionsTVC:
 				super.viewDidLoad()
 				
 				DispatchQueue.main.async {
-					AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingAndGeneratingNotifications(), because it includes merging changes from the Apple Music library, and we need to observe the notification when merging ends.
+					AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingAndGeneratingNotifications(), because it includes importing changes from the Apple Music library, and we need to observe the notification when importing ends.
 				}
 			}
 		}

@@ -63,8 +63,8 @@ extension LibraryTVC {
 	
 	final func didReceiveAuthorizationForAppleMusic() {
 		refreshesAfterDidSaveChangesFromAppleMusic = false
-		AppleMusicLibraryManager.shared.shouldNextMergeBeSynchronous = true
-		viewDidLoad() // Includes AppleMusicLibraryManager's setUpLibraryIfAuthorized(), which includes merging changes from the Apple Music library. Since we set shouldNextMergeBeSynchronous = true, CollectionsTVC will call the (synchronous) merge before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
+		AppleMusicLibraryManager.shared.shouldNextImportBeSynchronous = true
+		viewDidLoad() // Includes AppleMusicLibraryManager's setUpLibraryIfAuthorized(), which includes importing changes from the Apple Music library. Since we set shouldNextImportBeSynchronous = true, CollectionsTVC will call the (synchronous) import before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
 		
 		// Remove the following and make refreshDataAndViewsWhenVisible() accomodate it instead?
 		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)

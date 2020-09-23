@@ -1,5 +1,5 @@
 //
-//  func mergeChanges.swift
+//  func importChanges.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-15.
@@ -11,21 +11,21 @@ import MediaPlayer
 extension AppleMusicLibraryManager {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
-	final func mergeChanges() {
+	final func importChanges() {
 		let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//		if shouldNextMergeBeSynchronous {
+//		if shouldNextImportBeSynchronous {
 		managedObjectContext = mainManagedObjectContext // Set this again, just to be sure.
 		managedObjectContext.performAndWait {
-			mergeChangesPart2()
+			importChangesPart2()
 		}
 //		} else {
 		
 //		}
-		shouldNextMergeBeSynchronous = false
+		shouldNextImportBeSynchronous = false
 		managedObjectContext = mainManagedObjectContext // Set this again, just to be sure.
 	}
 	
-	private func mergeChangesPart2() {
+	private func importChangesPart2() {
 		
 		// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
 		
@@ -37,15 +37,15 @@ extension AppleMusicLibraryManager {
 		let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
 		// Order doesn't matter, because this will end up being the array of songs to be deleted.
 		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
-		let wasAppDatabaseEmptyBeforeMerge = savedSongs.count == 0
+		let shouldImportIntoDefaultOrder = savedSongs.count == 0
 		
 		let existingAlbumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
-		// Does order matter?
-//		existingAlbumsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		// Order doesn't matter, because we identify Albums by their albumPersistentID.
 		let existingAlbums = managedObjectContext.objectsFetched(for: existingAlbumsFetchRequest) as! [Album]
 		
 		let existingCollectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
-		// Does order matter?
+		// Order matters, because we'll try to add new Albums to the first Collection with a matching title.
+		existingCollectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		let existingCollections = managedObjectContext.objectsFetched(for: existingCollectionsFetchRequest) as! [Collection]
 		
 		
@@ -109,9 +109,8 @@ extension AppleMusicLibraryManager {
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty albums and collections, and we don't want to do that yet, because of what we mentioned above.
 			// This might make new albums, and if it does, it might make new collections.
 			for: newMediaItems,
-			isAppDatabaseEmpty: wasAppDatabaseEmptyBeforeMerge,
-			existingAlbums: existingAlbums,
-			existingCollections: existingCollections)
+			existingAlbumsBeforeImport: existingAlbums,
+			existingCollectionsBeforeImport: existingCollections)
 		deleteManagedObjects(
 			forSongsWith: objectIDsOfSongsToDelete)
 		
@@ -136,9 +135,9 @@ extension AppleMusicLibraryManager {
 		recalculateReleaseDateEstimatesForAlbums(
 			with: albumIDs)
 		
-		// TO DO: Take out the fetch above for albums. Instead, within each collection, recalculate the release date estimates; then, if wasAppDatabaseEmptyBeforeMerge, sort those albums from newest to oldest (based on the newly recalculated estimates).
+		// TO DO: Take out the fetch above for albums. Instead, within each collection, recalculate the release date estimates; then, if shouldImportIntoDefaultOrder, sort those albums from newest to oldest (based on the newly recalculated estimates).
 		
-		if wasAppDatabaseEmptyBeforeMerge {
+		if shouldImportIntoDefaultOrder {
 			reindexAlbumsByNewestFirstWithinCollections(with: collectionIDs)
 		}
 		

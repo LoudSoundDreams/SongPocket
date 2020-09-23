@@ -86,7 +86,7 @@ extension LibraryTVC {
 		refreshBarButtons() // We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
 	}
 	
-	// MARK: - After Merge from Apple Music Library
+	// MARK: - After Importing Changes from Apple Music Library
 	
 	private func didSaveChangesFromAppleMusic() {
 		if refreshesAfterDidSaveChangesFromAppleMusic {

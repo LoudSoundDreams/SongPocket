@@ -17,7 +17,7 @@ final class AppleMusicLibraryManager {
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	// Variables
-	var shouldNextMergeBeSynchronous = false
+	var shouldNextImportBeSynchronous = false
 	
 	// MARK: - Setup and Teardown
 	
@@ -27,7 +27,7 @@ final class AppleMusicLibraryManager {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		library = MPMediaLibrary.default()
-		mergeChanges()
+		importChanges()
 		beginObservingAndGeneratingNotifications()
 	}
 	
@@ -64,7 +64,7 @@ final class AppleMusicLibraryManager {
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .MPMediaLibraryDidChange:
-			mergeChanges()
+			importChanges()
 		default:
 			print("\(Self.self) observed the notification: \(notification.name)")
 			print("… but is not set to do anything after observing that notification.")

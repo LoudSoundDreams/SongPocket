@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0703ED2524E8D0DA002EF1B4 /* func mergeChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* func mergeChanges.swift */; };
+		0703ED2524E8D0DA002EF1B4 /* func importChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */; };
 		0706ABE124D947850090EB21 /* AlbumMoverClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */; };
 		070E194124F33FC800B21307 /* Editing - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* Editing - CollectionsTVC.swift */; };
 		071701FF250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071701FE250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift */; };
@@ -82,7 +82,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0703ED2424E8D0DA002EF1B4 /* func mergeChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func mergeChanges.swift"; sourceTree = "<group>"; };
+		0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func importChanges.swift"; sourceTree = "<group>"; };
 		0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumMoverClipboard.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* Editing - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editing - CollectionsTVC.swift"; sourceTree = "<group>"; };
 		071701FE250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - SongsTVC.swift"; sourceTree = "<group>"; };
@@ -230,7 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */,
-				0703ED2424E8D0DA002EF1B4 /* func mergeChanges.swift */,
+				0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */,
 				07A4F9042519E72C0065C87E /* func updateManagedObjects.swift */,
 				07A4F9092519E7D20065C87E /* func createManagedObjects.swift */,
 				07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */,
@@ -511,7 +511,7 @@
 				078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
-				0703ED2524E8D0DA002EF1B4 /* func mergeChanges.swift in Sources */,
+				0703ED2524E8D0DA002EF1B4 /* func importChanges.swift in Sources */,
 				07A4F9052519E72C0065C87E /* func updateManagedObjects.swift in Sources */,
 				079B2C9524E227BF00A949FA /* AppleMusicLibraryManager.swift in Sources */,
 				07E92A0C251043CC00E9073B /* UITableViewDataSource - QueueTVC.swift in Sources */,

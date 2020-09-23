@@ -32,7 +32,7 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	// AppleMusicLibraryManager's mergeChanges() references this when checking for and making new Collections.
+	// AppleMusicLibraryManager's importChanges() references this when checking for and making new Collections.
 	static func unknownAlbumArtistPlaceholder() -> String {
 		return "Unknown Artist"
 	}
