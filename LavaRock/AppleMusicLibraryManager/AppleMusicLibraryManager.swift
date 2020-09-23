@@ -14,6 +14,7 @@ final class AppleMusicLibraryManager {
 	// "Constants"
 	static let shared = AppleMusicLibraryManager()
 	private var library: MPMediaLibrary?
+	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	// Variables
 	var shouldNextMergeBeSynchronous = false

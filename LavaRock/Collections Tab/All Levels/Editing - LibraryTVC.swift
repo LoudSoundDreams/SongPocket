@@ -109,7 +109,9 @@ extension LibraryTVC {
 //				} completion: { _ in
 //					self.refreshBarButtons()
 //				}
-				self.tableView.deselectAllRows(animated: true)
+				for (_, targetIndexPath) in selectedAndTargetIndexPaths {
+					self.tableView.deselectRow(at: targetIndexPath, animated: true)
+				}
 				self.refreshBarButtons()
 			}
 		)
@@ -167,7 +169,9 @@ extension LibraryTVC {
 //				} completion: { _ in
 //					self.refreshBarButtons()
 //				}
-				self.tableView.deselectAllRows(animated: true)
+				for (_, targetIndexPath) in selectedAndTargetIndexPaths {
+					self.tableView.deselectRow(at: targetIndexPath, animated: true)
+				}
 				self.refreshBarButtons()
 			}
 		)

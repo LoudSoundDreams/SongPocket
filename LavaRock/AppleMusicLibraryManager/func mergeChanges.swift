@@ -1,5 +1,5 @@
 //
-//  Merge from Apple Music Library.swift
+//  func mergeChanges.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-15.
@@ -12,18 +12,20 @@ extension AppleMusicLibraryManager {
 	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
 	final func mergeChanges() {
-//		if shouldNextMergeBeSynchronous {
 		let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		mainManagedObjectContext.performAndWait {
-			mergeChangesPart2(via: mainManagedObjectContext)
+//		if shouldNextMergeBeSynchronous {
+		managedObjectContext = mainManagedObjectContext // Set this again, just to be sure.
+		managedObjectContext.performAndWait {
+			mergeChangesPart2()
 		}
 //		} else {
 		
 //		}
 		shouldNextMergeBeSynchronous = false
+		managedObjectContext = mainManagedObjectContext // Set this again, just to be sure.
 	}
 	
-	private func mergeChangesPart2(via managedObjectContext: NSManagedObjectContext) {
+	private func mergeChangesPart2() {
 		
 		// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
 		
@@ -103,18 +105,15 @@ extension AppleMusicLibraryManager {
 			// This might make new albums, but not new collections.
 			// This might also leave behind empty albums, because all the songs in them were moved to other albums; but we won't delete those empty albums for now, so that if the user also added other songs to those empty albums, we can keep those albums in the same place, instead of re-adding them to the top.
 			forSongsWith: potentiallyModifiedSongObjectIDs,
-			toMatch: potentiallyModifiedMediaItems,
-			via: managedObjectContext)
+			toMatch: potentiallyModifiedMediaItems)
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty albums and collections, and we don't want to do that yet, because of what we mentioned above.
 			// This might make new albums, and if it does, it might make new collections.
 			for: newMediaItems,
 			isAppDatabaseEmpty: wasAppDatabaseEmptyBeforeMerge,
 			existingAlbums: existingAlbums,
-			existingCollections: existingCollections,
-			via: managedObjectContext)
+			existingCollections: existingCollections)
 		deleteManagedObjects(
-			forSongsWith: objectIDsOfSongsToDelete,
-			via: managedObjectContext)
+			forSongsWith: objectIDsOfSongsToDelete)
 		
 		// Then, some cleanup.
 		
@@ -135,15 +134,12 @@ extension AppleMusicLibraryManager {
 		}
 		
 		recalculateReleaseDateEstimatesForAlbums(
-			with: albumIDs,
-			via: managedObjectContext)
+			with: albumIDs)
 		
 		// TO DO: Take out the fetch above for albums. Instead, within each collection, recalculate the release date estimates; then, if wasAppDatabaseEmptyBeforeMerge, sort those albums from newest to oldest (based on the newly recalculated estimates).
 		
 		if wasAppDatabaseEmptyBeforeMerge {
-			reindexAlbumsByNewestFirstWithinCollections(
-				with: collectionIDs,
-				via: managedObjectContext)
+			reindexAlbumsByNewestFirstWithinCollections(with: collectionIDs)
 		}
 		
 		managedObjectContext.tryToSaveSynchronously()
@@ -161,64 +157,58 @@ extension AppleMusicLibraryManager {
 	// An MPMediaItemCollection has a property representativeItem, but that item's release date doesn't necessarily represent the album's release date.
 	// Instead, we'll estimate the albums' release dates and keep the estimates up to date.
 	private func recalculateReleaseDateEstimatesForAlbums(
-		with albumIDs: [NSManagedObjectID],
-		via managedObjectContext: NSManagedObjectContext
+		with albumIDs: [NSManagedObjectID]
 	) {
-		managedObjectContext.performAndWait {
-			for albumID in albumIDs {
-				// Update one album's release date estimate.
-				let album = managedObjectContext.object(with: albumID) as! Album
-				// Should we get the songs using mpMediaItemCollection() instead of Core Data?
+		for albumID in albumIDs {
+			// Update one album's release date estimate.
+			let album = managedObjectContext.object(with: albumID) as! Album
+			// Should we get the songs using mpMediaItemCollection() instead of Core Data?
+			
+			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
+			songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
+			// Order doesn't matter.
+			let songsInAlbum = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
+			
+			album.releaseDateEstimate = nil
+			
+			for song in songsInAlbum {
+				guard let competingEstimate = song.mpMediaItem()?.releaseDate else { continue }
 				
-				let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
-				songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
-				// Order doesn't matter.
-				let songsInAlbum = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
-				
-				album.releaseDateEstimate = nil
-				
-				for song in songsInAlbum {
-					guard let competingEstimate = song.mpMediaItem()?.releaseDate else { continue }
-					
-					if album.releaseDateEstimate == nil {
-						album.releaseDateEstimate = competingEstimate // Same as below
-					} else if
-						let currentEstimate = album.releaseDateEstimate,
-						competingEstimate > currentEstimate
-					{
-						album.releaseDateEstimate = competingEstimate // Same as above
-					}
+				if album.releaseDateEstimate == nil {
+					album.releaseDateEstimate = competingEstimate // Same as below
+				} else if
+					let currentEstimate = album.releaseDateEstimate,
+					competingEstimate > currentEstimate
+				{
+					album.releaseDateEstimate = competingEstimate // Same as above
 				}
 			}
 		}
 	}
 	
 	private func reindexAlbumsByNewestFirstWithinCollections(
-		with collectionIDs: [NSManagedObjectID],
-		via managedObjectContext: NSManagedObjectContext
+		with collectionIDs: [NSManagedObjectID]
 	) {
-		managedObjectContext.performAndWait {
-			for collectionID in collectionIDs {
-				let collection = managedObjectContext.object(with: collectionID) as! Collection
-				
-				let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
-				albumsFetchRequest.predicate = NSPredicate(format: "container == %@", collection)
-				albumsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-				var albumsInCollection = managedObjectContext.objectsFetched(for: albumsFetchRequest) as! [Album]
-				
-				let commonDate = Date()
-				albumsInCollection.sort() {
-					$0.releaseDateEstimate ?? commonDate >=
-						$1.releaseDateEstimate ?? commonDate
-				}
-				albumsInCollection.sort() { (firstAlbum, _) in
-					firstAlbum.releaseDateEstimate == nil
-				}
-				
-				for index in 0..<albumsInCollection.count {
-					let album = albumsInCollection[index]
-					album.index = Int64(index)
-				}
+		for collectionID in collectionIDs {
+			let collection = managedObjectContext.object(with: collectionID) as! Collection
+			
+			let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
+			albumsFetchRequest.predicate = NSPredicate(format: "container == %@", collection)
+			albumsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+			var albumsInCollection = managedObjectContext.objectsFetched(for: albumsFetchRequest) as! [Album]
+			
+			let commonDate = Date()
+			albumsInCollection.sort() {
+				$0.releaseDateEstimate ?? commonDate >=
+					$1.releaseDateEstimate ?? commonDate
+			}
+			albumsInCollection.sort() { (firstAlbum, _) in
+				firstAlbum.releaseDateEstimate == nil
+			}
+			
+			for index in 0..<albumsInCollection.count {
+				let album = albumsInCollection[index]
+				album.index = Int64(index)
 			}
 		}
 	}
