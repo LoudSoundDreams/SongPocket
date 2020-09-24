@@ -48,7 +48,7 @@ extension AppleMusicLibraryManager {
 		existingCollectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		let existingCollections = managedObjectContext.objectsFetched(for: existingCollectionsFetchRequest) as! [Collection]
 		
-		
+		/*
 		var savedSongsCopy = savedSongs
 		savedSongsCopy.sort() { $0.index < $1.index }
 		savedSongsCopy.sort() { $0.container!.index < $1.container!.index }
@@ -59,7 +59,7 @@ extension AppleMusicLibraryManager {
 		print(song.titleFormattedOrPlaceholder())
 		print("Container \(song.container!.container!.index), album \(song.container!.index), song \(song.index)")
 		}
-		
+		*/
 		
 		// Find out which of our saved Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
@@ -116,18 +116,14 @@ extension AppleMusicLibraryManager {
 		
 		// Then, some cleanup.
 		
-		var collectionIDs = [NSManagedObjectID]()
-		let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
-		// Order doesn't matter.
-		let allCollections = managedObjectContext.objectsFetched(for: collectionsFetchRequest) as! [Collection]
-		for collection in allCollections {
-			collectionIDs.append(collection.objectID)
-		}
+		let allCollectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+		// Order doesn't matter, because this is for reindexing the albums within each collection.
+		let allCollections = managedObjectContext.objectsFetched(for: allCollectionsFetchRequest) as! [Collection]
 		
-		var albumIDs = [NSManagedObjectID]()
 		let allAlbumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
-		// Order doesn't matter.
+		// Order doesn't matter, because this is for recalculating each album's release date estimate, and reindexing the songs within each album.
 		let allAlbums = managedObjectContext.objectsFetched(for: allAlbumsFetchRequest) as! [Album]
+		var albumIDs = [NSManagedObjectID]()
 		for album in allAlbums {
 			albumIDs.append(album.objectID)
 		}
@@ -135,10 +131,14 @@ extension AppleMusicLibraryManager {
 		recalculateReleaseDateEstimatesForAlbums(
 			with: albumIDs)
 		
-		// TO DO: Take out the fetch above for albums. Instead, within each collection, recalculate the release date estimates; then, if shouldImportIntoDefaultOrder, sort those albums from newest to oldest (based on the newly recalculated estimates).
+		for collection in allCollections {
+			reindexAlbums(
+				in: collection,
+				shouldSortByNewestFirst: shouldImportIntoDefaultOrder)
+		}
 		
-		if shouldImportIntoDefaultOrder {
-			reindexAlbumsByNewestFirstWithinCollections(with: collectionIDs)
+		for album in allAlbums {
+			reindexSongs(in: album)
 		}
 		
 		managedObjectContext.tryToSaveSynchronously()
@@ -151,6 +151,8 @@ extension AppleMusicLibraryManager {
 	}
 	
 	// MARK: - Cleanup
+	
+	// MARK: Recalculating Release Date Estimates
 	
 	// Only MPMediaItems have release dates, and those can't be albums.
 	// An MPMediaItemCollection has a property representativeItem, but that item's release date doesn't necessarily represent the album's release date.
@@ -185,30 +187,62 @@ extension AppleMusicLibraryManager {
 		}
 	}
 	
-	private func reindexAlbumsByNewestFirstWithinCollections(
-		with collectionIDs: [NSManagedObjectID]
+	// MARK: - Reindexing Albums
+	
+	private func reindexAlbums(
+		in collection: Collection,
+		shouldSortByNewestFirst: Bool
 	) {
-		for collectionID in collectionIDs {
-			let collection = managedObjectContext.object(with: collectionID) as! Collection
-			
-			let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
-			albumsFetchRequest.predicate = NSPredicate(format: "container == %@", collection)
-			albumsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-			var albumsInCollection = managedObjectContext.objectsFetched(for: albumsFetchRequest) as! [Album]
-			
-			let commonDate = Date()
-			albumsInCollection.sort() {
-				$0.releaseDateEstimate ?? commonDate >=
-					$1.releaseDateEstimate ?? commonDate
-			}
-			albumsInCollection.sort() { (firstAlbum, _) in
-				firstAlbum.releaseDateEstimate == nil
-			}
-			
-			for index in 0..<albumsInCollection.count {
-				let album = albumsInCollection[index]
-				album.index = Int64(index)
-			}
+		guard let contentsOfCollection = collection.contents else { return }
+		
+		var albumsInCollection = [Album]()
+		for element in contentsOfCollection {
+			let albumInCollection = element as! Album
+			albumsInCollection.append(albumInCollection)
+		}
+		
+		albumsInCollection.sort() { $0.index < $1.index } // Do this even if we're going to sort by newest first; this keeps albums whose releaseDateEstimate is nil in their previous order.
+		if shouldSortByNewestFirst {
+			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albums: albumsInCollection)
+		}
+		
+		for index in 0 ..< albumsInCollection.count {
+			let album = albumsInCollection[index]
+			album.index = Int64(index)
+		}
+	}
+	
+	private func sortedByNewestFirstAndUnknownReleaseDateLast(albums albumsImmutable: [Album]) -> [Album] {
+		var albumsCopy = albumsImmutable
+		
+		let commonDate = Date()
+		albumsCopy.sort() {
+			$0.releaseDateEstimate ?? commonDate >= // This reverses the order of all albums whose releaseDateEstimate is nil.
+				$1.releaseDateEstimate ?? commonDate
+		}
+		albumsCopy.sort() { (firstAlbum, _) in
+			firstAlbum.releaseDateEstimate == nil // This re-reverses the order of all albums whose releaseDateEstimate is nil.
+		}
+		
+		return albumsCopy
+	}
+	
+	// MARK: - Reindexing Songs
+	
+	private func reindexSongs(in album: Album) {
+		guard let contentsOfAlbum = album.contents else { return }
+		
+		var songsInAlbum = [Song]()
+		for element in contentsOfAlbum {
+			let songInAlbum = element as! Song
+			songsInAlbum.append(songInAlbum)
+		}
+		
+		songsInAlbum.sort() { $0.index < $1.index }
+		
+		for index in 0 ..< songsInAlbum.count {
+			let song = songsInAlbum[index]
+			song.index = Int64(index)
 		}
 	}
 	

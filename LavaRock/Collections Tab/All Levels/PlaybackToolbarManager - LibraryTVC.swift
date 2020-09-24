@@ -43,9 +43,7 @@ extension LibraryTVC {
 			let playerController = playerController,
 			playerController.playbackState == .playing // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
 		{
-			if let indexOfPlayButton = playbackButtons.firstIndex(where: { playbackButton in
-				playbackButton == playButton
-			}) {
+			if let indexOfPlayButton = playbackButtons.firstIndex(of: playButton) {
 				playbackButtons[indexOfPlayButton] = pauseButton
 			}
 		}

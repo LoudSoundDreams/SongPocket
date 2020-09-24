@@ -31,7 +31,7 @@ extension AppleMusicLibraryManager {
 				contents.count == 0
 			else { continue }
 			managedObjectContext.delete(album)
-			// TO DO: This leaves gaps in the album indexes within each collection.
+			// Note: This leaves gaps in the album indexes within each collection. We'll reindex the albums later.
 		}
 	}
 	
@@ -46,7 +46,14 @@ extension AppleMusicLibraryManager {
 				contents.count == 0
 			else { continue }
 			managedObjectContext.delete(collection)
-			// TO DO: This leaves gaps in the collection indexes.
+		}
+		
+		collectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		let allRemainingCollectionsInOrder = managedObjectContext.objectsFetched(for: collectionsFetchRequest) as! [Collection]
+		
+		for index in 0 ..< allRemainingCollectionsInOrder.count {
+			let remainingCollection = allRemainingCollectionsInOrder[index]
+			remainingCollection.index = Int64(index)
 		}
 	}
 	
