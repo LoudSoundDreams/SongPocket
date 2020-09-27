@@ -46,22 +46,24 @@ extension LibraryTVC {
 		playerController?.beginGeneratingPlaybackNotifications()
 		
 		// Experimental
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(didObserve(_:)),
-			name: Notification.Name.MPMusicPlayerControllerQueueDidChange,
-			object: nil)
+//		NotificationCenter.default.addObserver(
+//			self,
+//			selector: #selector(didObserve(_:)),
+//			name: Notification.Name.MPMusicPlayerControllerQueueDidChange,
+//			object: nil)
 	}
 	
 	func endObservingNotifications() {
 		NotificationCenter.default.removeObserver(self)
 		
-		// TO DO: Should we tell playerController to end generating playback notifications? How do we make sure we don't do it when we shouldn't?
+		// TO DO: Tell playerController to end generating playback notifications, but make sure we don't do it when we shouldn't.
+		// What if we don't end generating playback notifications?
 	}
 	
 	// MARK: - Responding
 	
 	@objc func didObserve(_ notification: Notification) {
+//		print(notification)
 		switch notification.name {
 		case .LRDidSaveChangesFromAppleMusic:
 			didSaveChangesFromAppleMusic()
@@ -73,6 +75,8 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
 			refreshToReflectPlaybackState()
+//		case .MPMusicPlayerControllerQueueDidChange: // Experimental
+//			break
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but is not set to do anything after observing that notification.")
@@ -83,6 +87,7 @@ extension LibraryTVC {
 	
 	// Subclasses that show a "current song" indicator should override this function and update the indicator, and also call super (this implementation).
 	@objc func refreshToReflectPlaybackState() {
+//		print(String(describing: playerController?.playbackState.rawValue))
 		refreshBarButtons() // We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
 	}
 	

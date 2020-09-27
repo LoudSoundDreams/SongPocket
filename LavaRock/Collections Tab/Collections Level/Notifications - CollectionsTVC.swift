@@ -18,6 +18,8 @@ extension CollectionsTVC {
 		if let albumMoverClipboard = albumMoverClipboard {
 			// What if any of the albums we're moving get deleted?
 			
+			// What if we've already made a new collection and are transitioning into or out of it?
+			
 			if albumMoverClipboard.isMakingNewCollection {
 				albumMoverClipboard.isMakingNewCollection = false
 				// Only do this if indexedLibraryItems will change during the refresh?

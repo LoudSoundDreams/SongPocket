@@ -201,7 +201,7 @@ extension AppleMusicLibraryManager {
 			albumsInCollection.append(albumInCollection)
 		}
 		
-		albumsInCollection.sort() { $0.index < $1.index } // Do this even if we're going to sort by newest first; this keeps albums whose releaseDateEstimate is nil in their previous order.
+		albumsInCollection.sort() { $0.index < $1.index } // Sort by index here even if we're going to sort by release date later; this keeps albums whose releaseDateEstimate is nil in their previous order.
 		if shouldSortByNewestFirst {
 			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albums: albumsInCollection)
 		}

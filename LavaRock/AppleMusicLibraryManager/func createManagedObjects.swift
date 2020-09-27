@@ -98,7 +98,7 @@ extension AppleMusicLibraryManager {
 				createSongs(
 					for: newMediaItemsInTheSameAlbum,
 					atBeginningOf: matchingExistingAlbum)
-				sortSongsByValidAlbumOrder(in: matchingExistingAlbum)
+				sortSongsByAlbumOrder(in: matchingExistingAlbum)
 				
 			} else {
 				createSongs(
@@ -117,7 +117,7 @@ extension AppleMusicLibraryManager {
 			
 			// … and then add the Songs to that Album.
 			let newMediaItemsInAlbumOrder =
-				sortedByDeterministicAlbumOrder(mediaItems: newMediaItemsInTheSameAlbum)
+				sortedByAlbumOrder(mediaItems: newMediaItemsInTheSameAlbum)
 			createSongs(
 				for: newMediaItemsInAlbumOrder,
 				atBeginningOf: newAlbum)
@@ -137,86 +137,9 @@ extension AppleMusicLibraryManager {
 		}
 	}
 	
-	// MARK: - Checking Order of Saved Songs
-	
-	private func areSongsInAlbumOrder(in album: Album) -> Bool {
-//		var songsInAlbum = [Song]()
-//		if let contents = album.contents {
-//			for element in contents {
-//				let songInAlbum = element as! Song
-//				print(songInAlbum.titleFormattedOrPlaceholder())
-//				songsInAlbum.append(songInAlbum)
-//			}
-//		}
-//		songsInAlbum.sort() { $0.index < $1.index }
-		
-		let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
-		songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
-		songsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		let songsInAlbum = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
-		
-		func areInAlbumOrder(songs: [Song]) -> Bool {
-			guard songs.count >= 2 else {
-				return true
-			}
-			var discNumberToMatch = 0
-			var trackNumberToMatch = 0 //
-			for song in songs {
-				guard let mediaItem = song.mpMediaItem() else { continue } // The media item might have been deleted. If so, just skip over it; don't let a deleted song disrupt an otherwise in-order album.
-				let challengerDiscNumber = mediaItem.discNumber
-				let challengerTrackNumber = mediaItem.albumTrackNumber
-				if challengerDiscNumber < discNumberToMatch {
-					return false
-				}
-				if challengerDiscNumber == discNumberToMatch {
-					if challengerTrackNumber < trackNumberToMatch {
-						return false
-					}
-					if challengerTrackNumber > trackNumberToMatch {
-						trackNumberToMatch = challengerTrackNumber
-						continue
-					}
-				}
-				if challengerDiscNumber > discNumberToMatch {
-					discNumberToMatch = challengerDiscNumber
-					trackNumberToMatch = challengerTrackNumber
-					continue
-				}
-			}
-			return true
-		}
-		
-		return areInAlbumOrder(songs: songsInAlbum)
-	}
-	
-	// MARK: Sorting Saved Songs
-	
-	private func sortSongsByValidAlbumOrder(in album: Album) {
-		let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
-		songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
-		songsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		let songsInAlbum = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
-		
-		func sortedByValidAlbumOrder(songs songsImmutable: [Song]) -> [Song] {
-			var songsCopy = songsImmutable
-			// .mpMediaItem() might return nil, because the media item might have been deleted from the Apple Music library. The default values don't really matter, because we'll delete those songs later anyway.
-			songsCopy.sort() { $0.mpMediaItem()?.albumTrackNumber ?? 0 < $1.mpMediaItem()?.albumTrackNumber ?? 0 }
-			songsCopy.sort() { $1.mpMediaItem()?.albumTrackNumber ?? 0 == 0 }
-			songsCopy.sort() { $0.mpMediaItem()?.discNumber ?? 1 < $1.mpMediaItem()?.discNumber ?? 1 }
-			return songsCopy
-		}
-		
-		let sortedSongsInAlbum = sortedByValidAlbumOrder(songs: songsInAlbum)
-		
-		for index in 0 ..< sortedSongsInAlbum.count {
-			let song = sortedSongsInAlbum[index]
-			song.index = Int64(index)
-		}
-	}
-	
 	// MARK: - Sorting MPMediaItems
 	
-	private func sortedByDeterministicAlbumOrder(
+	private func sortedByAlbumOrder(
 		mediaItems mediaItemsImmutable: [MPMediaItem]
 	) -> [MPMediaItem] {
 		var mediaItemsCopy = mediaItemsImmutable
@@ -225,6 +148,71 @@ extension AppleMusicLibraryManager {
 		mediaItemsCopy.sort() { $1.albumTrackNumber == 0 }
 		mediaItemsCopy.sort() { $0.discNumber < $1.discNumber } // As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
 		return mediaItemsCopy
+	}
+	
+	// MARK: Checking Order of Saved Songs
+	
+	private func areSongsInAlbumOrder(in album: Album) -> Bool {
+		var songs = [Song]()
+		if let contents = album.contents {
+			for element in contents {
+				let songInAlbum = element as! Song
+				songs.append(songInAlbum)
+			}
+		}
+		let songsInAlbum = songs.sorted() { $0.index < $1.index }
+		
+		var mediaItemsInAlbum = [MPMediaItem]()
+		for songInAlbum in songsInAlbum {
+			guard let mediaItemInAlbum = songInAlbum.mpMediaItem() else { continue } // .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. Don't let deleted songs disrupt an otherwise in-order album; just skip over them.
+			mediaItemsInAlbum.append(mediaItemInAlbum)
+		}
+		
+		let mediaItemsInAlbumSorted = sortedByAlbumOrder(mediaItems: mediaItemsInAlbum)
+		
+		return mediaItemsInAlbum == mediaItemsInAlbumSorted
+	}
+	
+	// MARK: - Sorting Saved Songs
+	
+	private func sortSongsByAlbumOrder(in album: Album) {
+		var songs = [Song]()
+		if let contents = album.contents {
+			for element in contents {
+				let songInAlbum = element as! Song
+				songs.append(songInAlbum)
+			}
+		}
+//		songs.sort() { $0.index < $1.index }
+		
+		func sortedByAlbumOrder(songs songsImmutable: [Song]) -> [Song] {
+			var songsCopy = songsImmutable
+			// TO DO: Does this match sortedByAlbumOrder(mediaItems:) exactly? You can guarantee it by doing some setup moves and calling sortedByAlbumOrder(mediaItems:) itself.
+			// .mpMediaItem() might return nil, because the media item might have been deleted from the Apple Music library. The default values don't really matter, because we'll delete those songs later anyway.
+			songsCopy.sort() {
+				$0.titleFormattedOrPlaceholder() <
+					$1.titleFormattedOrPlaceholder()
+			}
+			songsCopy.sort() {
+				$0.mpMediaItem()?.albumTrackNumber ?? 0 <
+					$1.mpMediaItem()?.albumTrackNumber ?? 0
+			}
+			songsCopy.sort() {
+				$1.mpMediaItem()?.albumTrackNumber ?? 0 == 0
+			}
+			songsCopy.sort() {
+				$0.mpMediaItem()?.discNumber ?? 1 <
+					$1.mpMediaItem()?.discNumber ?? 1
+			}
+			return songsCopy
+		}
+		
+		let sortedSongsInAlbum = sortedByAlbumOrder(songs: songs)
+		
+		for index in 0 ..< sortedSongsInAlbum.count {
+			let song = sortedSongsInAlbum[index]
+			song.index = Int64(index)
+		}
 	}
 	
 	// MARK: - Creating Individual Songs
