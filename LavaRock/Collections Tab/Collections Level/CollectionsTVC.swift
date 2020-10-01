@@ -136,9 +136,8 @@ final class CollectionsTVC:
 	
 	// MARK: - Events
 	
-	// In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
 	override func refreshBarButtons(animated: Bool) {
-		if albumMoverClipboard != nil { return }
+		if albumMoverClipboard != nil { return } // In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
 
 		super.refreshBarButtons(animated: animated)
 	}

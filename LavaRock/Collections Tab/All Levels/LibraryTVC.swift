@@ -32,11 +32,11 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses should not change
 	let cellReuseIdentifier = "Cell"
-	lazy var selectAllOrNoneButton = UIBarButtonItem(
-		title: "Select All",
-		style: .plain,
-		target: self,
-		action: #selector(selectAllOrNone))
+//	lazy var selectAllOrNoneButton = UIBarButtonItem(
+//		title: "Select All",
+//		style: .plain,
+//		target: self,
+//		action: #selector(selectAllOrNone))
 	lazy var sortButton = UIBarButtonItem(
 		title: "Sort",
 		style: .plain,
@@ -165,7 +165,7 @@ class LibraryTVC:
 //		navigationItemButtonsEditingMode = [selectAllOrNoneButton]
 		navigationItemButtonsEditingMode = [flexibleSpaceBarButtonItem]
 		navigationItem.rightBarButtonItem = editButtonItem
-		setRefreshedBarButtons(animated: true)
+		refreshAndSetBarButtons(animated: true)
 	}
 	
 	// MARK: Setup Events
@@ -187,7 +187,7 @@ class LibraryTVC:
 	
 	// MARK: - Events
 	
-	func setRefreshedBarButtons(animated: Bool) {
+	func refreshAndSetBarButtons(animated: Bool) {
 		refreshBarButtons(animated: animated) // Includes setRefreshedPlaybackToolbar(animated:).
 		
 		if isEditing {
@@ -199,10 +199,10 @@ class LibraryTVC:
 	}
 	
 	func refreshBarButtons(animated: Bool = false) {
-		// Remember: There can momentarily be 0 items in indexedLibraryItems if we're refreshing the UI to reflect changes in the Apple Music library.
+		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing to reflect changes in the Apple Music library.
 		refreshEditButton()
 		if isEditing {
-			refreshSelectAllOrNoneButton()
+//			refreshSelectAllOrNoneButton()
 			refreshSortButton()
 			refreshFloatToTopButton()
 			refreshSinkToBottomButton()
@@ -217,16 +217,16 @@ class LibraryTVC:
 			indexedLibraryItems.count > 0
 	}
 	
-	private func refreshSelectAllOrNoneButton() {
-		if
-			let selectedIndexPaths = tableView.indexPathsForSelectedRows,
-			selectedIndexPaths.count == indexedLibraryItems.count
-		{
-			selectAllOrNoneButton.title = "Select None"
-		} else {
-			selectAllOrNoneButton.title = "Select All"
-		}
-	}
+//	private func refreshSelectAllOrNoneButton() {
+//		if
+//			let selectedIndexPaths = tableView.indexPathsForSelectedRows,
+//			selectedIndexPaths.count == indexedLibraryItems.count
+//		{
+//			selectAllOrNoneButton.title = "Select None"
+//		} else {
+//			selectAllOrNoneButton.title = "Select All"
+//		}
+//	}
 	
 	private func refreshSortButton() {
 		sortButton.isEnabled =

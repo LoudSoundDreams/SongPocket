@@ -17,7 +17,7 @@ extension LibraryTVC {
 		
 		super.setEditing(editing, animated: animated)
 		
-		setRefreshedBarButtons(animated: animated)
+		refreshAndSetBarButtons(animated: animated)
 		
 		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
 		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
@@ -90,25 +90,9 @@ extension LibraryTVC {
 			targetRow += 1
 		}
 		
-//		for (selectedIndexPath, targetIndexPath) in selectedAndTargetIndexPaths {
-//			tableView.performBatchUpdates {
-//				tableView.moveRow(at: selectedIndexPath, to: targetIndexPath)
-//				tableView.deselectRow(at: targetIndexPath, animated: true)
-//			} completion: { _ in
-//				self.refreshBarButtons()
-//			}
-//		}
-		
 		tableView.moveRows(
 			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
 			completion: {
-//				self.tableView.performBatchUpdates {
-//					for (_, targetIndexPath) in selectedAndTargetIndexPaths {
-//						self.tableView.deselectRow(at: targetIndexPath, animated: true)
-//					}
-//				} completion: { _ in
-//					self.refreshBarButtons()
-//				}
 				for (_, targetIndexPath) in selectedAndTargetIndexPaths {
 					self.tableView.deselectRow(at: targetIndexPath, animated: true)
 				}
@@ -150,25 +134,9 @@ extension LibraryTVC {
 			targetRow -= 1
 		}
 		
-//		for (selectedIndexPath, targetIndexPath) in selectedAndTargetIndexPaths {
-//			tableView.performBatchUpdates {
-//				tableView.moveRow(at: selectedIndexPath, to: targetIndexPath)
-//				tableView.deselectRow(at: targetIndexPath, animated: true)
-//			} completion: { _ in
-//				self.refreshBarButtons()
-//			}
-//		}
-		
 		tableView.moveRows(
 			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
 			completion: {
-//				self.tableView.performBatchUpdates {
-//					for (_, targetIndexPath) in selectedAndTargetIndexPaths {
-//						self.tableView.deselectRow(at: targetIndexPath, animated: true)
-//					}
-//				} completion: { _ in
-//					self.refreshBarButtons()
-//				}
 				for (_, targetIndexPath) in selectedAndTargetIndexPaths {
 					self.tableView.deselectRow(at: targetIndexPath, animated: true)
 				}

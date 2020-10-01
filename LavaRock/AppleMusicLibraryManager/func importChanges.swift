@@ -25,10 +25,8 @@ extension AppleMusicLibraryManager {
 		managedObjectContext = mainManagedObjectContext // Set this again, just to be sure.
 	}
 	
+	// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
 	private func importChangesPart2() {
-		
-		// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
-		
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			var queriedMediaItems = MPMediaQuery.songs().items
@@ -65,18 +63,18 @@ extension AppleMusicLibraryManager {
 		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
 		var potentiallyModifiedSongObjectIDs = [NSManagedObjectID]()
 		var potentiallyModifiedMediaItems = [MPMediaItem]()
-		var objectIDsOfSongsToDelete = [NSManagedObjectID]()
+		var deletedSongObjectIDs = [NSManagedObjectID]()
 		for savedSong in savedSongs {
 			if let indexOfPotentiallyModifiedMediaItem = queriedMediaItems.firstIndex(where: { queriedMediaItem in
 				savedSong.persistentID == Int64(bitPattern: queriedMediaItem.persistentID)
-			}) { // We already have a record of (a Song for) this MPMediaItem. We might have to update it.
+			}) { // We already have a Song for this MPMediaItem. We might have to update it.
 				potentiallyModifiedSongObjectIDs.append(savedSong.objectID)
 				let potentiallyModifiedMediaItem = queriedMediaItems[indexOfPotentiallyModifiedMediaItem]
 				potentiallyModifiedMediaItems.append(potentiallyModifiedMediaItem)
 				queriedMediaItems.remove(at: indexOfPotentiallyModifiedMediaItem)
 				
-			} else { // This Song no longer corresponds to any MPMediaItem in the Apple Music library. We'll remove it from our records.
-				objectIDsOfSongsToDelete.append(savedSong.objectID)
+			} else { // This Song no longer corresponds to any MPMediaItem in the Apple Music library. We'll delete it.
+				deletedSongObjectIDs.append(savedSong.objectID)
 			}
 		}
 		// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
@@ -94,14 +92,14 @@ extension AppleMusicLibraryManager {
 			print("\(String(describing: item.title)): \(item.persistentID)")
 		}
 		print("")
-		print("Deleted songs: \(objectIDsOfSongsToDelete.count)")
-		for songID in objectIDsOfSongsToDelete {
+		print("Deleted songs: \(deletedSongObjectIDs.count)")
+		for songID in deletedSongObjectIDs {
 			let song = managedObjectContext.object(with: songID) as! Song
 			print(song.persistentID)
 		}
 		*/
 		
-		updateManagedObjects( // Update before creating and deleting, so that we can put new songs above modified songs (easily).
+		updateManagedObjects( // Update before creating and deleting, so that we can easily put new songs above modified songs.
 			// This might make new albums, but not new collections.
 			// This might also leave behind empty albums, because all the songs in them were moved to other albums; but we won't delete those empty albums for now, so that if the user also added other songs to those empty albums, we can keep those albums in the same place, instead of re-adding them to the top.
 			forSongsWith: potentiallyModifiedSongObjectIDs,
@@ -112,7 +110,7 @@ extension AppleMusicLibraryManager {
 			existingAlbumsBeforeImport: existingAlbums,
 			existingCollectionsBeforeImport: existingCollections)
 		deleteManagedObjects(
-			forSongsWith: objectIDsOfSongsToDelete)
+			forSongsWith: deletedSongObjectIDs)
 		
 		// Then, some cleanup.
 		

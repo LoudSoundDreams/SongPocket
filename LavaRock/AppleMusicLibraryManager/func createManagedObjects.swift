@@ -183,12 +183,11 @@ extension AppleMusicLibraryManager {
 				songs.append(songInAlbum)
 			}
 		}
-//		songs.sort() { $0.index < $1.index }
 		
 		func sortedByAlbumOrder(songs songsImmutable: [Song]) -> [Song] {
 			var songsCopy = songsImmutable
 			// TO DO: Does this match sortedByAlbumOrder(mediaItems:) exactly? You can guarantee it by doing some setup moves and calling sortedByAlbumOrder(mediaItems:) itself.
-			// .mpMediaItem() might return nil, because the media item might have been deleted from the Apple Music library. The default values don't really matter, because we'll delete those songs later anyway.
+			// .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. It doesn't matter where those songs end up in the array, because we'll delete them later anyway.
 			songsCopy.sort() {
 				$0.titleFormattedOrPlaceholder() <
 					$1.titleFormattedOrPlaceholder()

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17503.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -616,48 +616,8 @@
                                     <outlet property="releaseDateLabel" destination="l7E-YU-mvM" id="yAt-uL-27m"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info Cell Centered" id="qcv-EQ-LZm" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="140.66666793823242" width="375" height="69"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qcv-EQ-LZm" id="18A-eF-yHj">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HoF-Fx-rrF">
-                                            <rect key="frame" x="112.33333333333333" y="11.333333333333332" width="150.66666666666669" height="42.666666666666671"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i0c-dE-UYt">
-                                                    <rect key="frame" x="0.0" y="0.0" width="150.66666666666666" height="20.333333333333332"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94g-Nd-dsF">
-                                                    <rect key="frame" x="61.000000000000007" y="28.333333333333325" width="28.666666666666664" height="14.333333333333332"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="HoF-Fx-rrF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="18A-eF-yHj" secondAttribute="leadingMargin" id="Fac-ZP-duB"/>
-                                        <constraint firstItem="HoF-Fx-rrF" firstAttribute="centerY" secondItem="18A-eF-yHj" secondAttribute="centerY" constant="-2" id="Gka-AO-UwC"/>
-                                        <constraint firstItem="HoF-Fx-rrF" firstAttribute="centerX" secondItem="18A-eF-yHj" secondAttribute="centerX" id="QxZ-9a-Wb4"/>
-                                        <constraint firstItem="HoF-Fx-rrF" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="18A-eF-yHj" secondAttribute="trailingMargin" id="cBe-X4-LZc"/>
-                                        <constraint firstItem="HoF-Fx-rrF" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="18A-eF-yHj" secondAttribute="bottomMargin" id="dOT-1n-TwE"/>
-                                        <constraint firstItem="HoF-Fx-rrF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="18A-eF-yHj" secondAttribute="topMargin" id="ubu-W9-B6B"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <connections>
-                                    <outlet property="albumArtistLabel" destination="i0c-dE-UYt" id="pKM-S3-EYP"/>
-                                    <outlet property="releaseDateLabel" destination="94g-Nd-dsF" id="JMm-uZ-HuN"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info Cell Without Release Date" id="iaf-Ej-2NQ" customClass="AlbumInfoCellWithoutReleaseDate" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="209.66666793823242" width="375" height="44.666667938232422"/>
+                                <rect key="frame" x="0.0" y="140.66666793823242" width="375" height="44.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iaf-Ej-2NQ" id="qC0-HK-ntc">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
@@ -683,36 +643,8 @@
                                     <outlet property="albumArtistLabel" destination="PgD-ST-isZ" id="f37-Rx-A7v"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info Cell Without Release Date Centered" id="Ned-xY-WXL" customClass="AlbumInfoCellWithoutReleaseDate" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="254.33333587646484" width="375" height="44.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ned-xY-WXL" id="IPU-lS-SVo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YX9-1N-EgR">
-                                            <rect key="frame" x="112.33333333333333" y="11.333333333333334" width="150.66666666666669" height="20.333333333333329"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="YX9-1N-EgR" firstAttribute="centerY" secondItem="IPU-lS-SVo" secondAttribute="centerY" constant="-1" id="Dy9-Pf-59p"/>
-                                        <constraint firstItem="YX9-1N-EgR" firstAttribute="centerX" secondItem="IPU-lS-SVo" secondAttribute="centerX" id="GdT-1v-1Qb"/>
-                                        <constraint firstItem="YX9-1N-EgR" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="IPU-lS-SVo" secondAttribute="bottomMargin" id="Gkc-5q-LwV"/>
-                                        <constraint firstItem="YX9-1N-EgR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IPU-lS-SVo" secondAttribute="leadingMargin" id="a5x-0C-2jv"/>
-                                        <constraint firstItem="YX9-1N-EgR" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="IPU-lS-SVo" secondAttribute="trailingMargin" id="fXj-Y7-fH0"/>
-                                        <constraint firstItem="YX9-1N-EgR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="IPU-lS-SVo" secondAttribute="topMargin" id="mmV-sW-IrN"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <connections>
-                                    <outlet property="albumArtistLabel" destination="YX9-1N-EgR" id="smb-Ho-2Ra"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Orn-Ku-PFM" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="299.00000381469727" width="375" height="44.666667938232422"/>
+                                <rect key="frame" x="0.0" y="185.33333587646484" width="375" height="44.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Orn-Ku-PFM" id="Fg6-10-nMy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
@@ -758,7 +690,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell with Different Artist" id="J5T-0G-4uX" customClass="SongCellWithDifferentArtist" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="343.66667175292969" width="375" height="63"/>
+                                <rect key="frame" x="0.0" y="230.00000381469727" width="375" height="63"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
@@ -816,7 +748,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="406.66667175292969" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="293.00000381469727" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -838,7 +770,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell (Track Number on Left)" id="5sl-vR-cfB" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="506.66667175292969" width="375" height="44.666667938232422"/>
+                                <rect key="frame" x="0.0" y="393.00000381469727" width="375" height="44.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5sl-vR-cfB" id="ULF-7m-1PD">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>

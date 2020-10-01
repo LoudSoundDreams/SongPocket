@@ -14,8 +14,8 @@
             filePath = "LavaRock/Collections Tab/All Levels/Editing - LibraryTVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
             landmarkName = "moveItemsUp(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "LavaRock/Collections Tab/All Levels/Editing - LibraryTVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "sinkSelectedItemsToBottom()"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "LavaRock/Collections Tab/All Levels/Editing - LibraryTVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "moveItemsUp(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "LavaRock/Collections Tab/All Levels/Editing - LibraryTVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "sinkSelectedItemsToBottom()"
             landmarkType = "7">
          </BreakpointContent>

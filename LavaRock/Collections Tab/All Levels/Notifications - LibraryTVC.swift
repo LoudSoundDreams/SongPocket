@@ -85,7 +85,7 @@ extension LibraryTVC {
 	
 	// MARK: - After Possible Playback State Change
 	
-	// Subclasses that show a "current song" indicator should override this function and update the indicator, and also call super (this implementation).
+	// Subclasses that show a "current song" indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func refreshToReflectPlaybackState() {
 //		print(String(describing: playerController?.playbackState.rawValue))
 		refreshBarButtons() // We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
@@ -209,7 +209,7 @@ extension LibraryTVC {
 			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
 			tableView.insertRows(at: indexPathsToInsert, with: .middle)
 			for (startingIndexPath, endingIndexPath) in indexPathsToMove {
-//				guard startingIndexPath != endingIndexPath else { continue } // The table view tends to move to unnecessarily scroll the top row to the top of the screen. As of iOS 14.0 beta 8, this *doesn't* prevent it.
+				guard startingIndexPath != endingIndexPath else { continue } // (Might) prevent the table view from unnecessarily scrolling the top row to the top of the screen.
 				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
 		} completion: { _ in (completion ?? { })() }
@@ -226,7 +226,6 @@ extension LibraryTVC {
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
 		} completion: { _ in
-//			self.setEditing(false, animated: true) // Doesn't seem to do anything
 			guard !(self is CollectionsTVC) else { return }
 			self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 		}
