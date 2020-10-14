@@ -60,7 +60,6 @@ final class AppleMusicLibraryManager {
 	
 	// MARK: Responding
 	
-	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .MPMediaLibraryDidChange:

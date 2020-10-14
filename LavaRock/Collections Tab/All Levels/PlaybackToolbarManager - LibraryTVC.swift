@@ -66,10 +66,10 @@ extension LibraryTVC {
 	
 	@objc final func restartCurrentSong() {
 		playerController?.skipToBeginning()
+		playerController?.prepareToPlay() // As of iOS 14.2 beta 3, without this, skipToBeginning() doesn't move the playhead to the beginning (even though it will the next time you tap Play).
 	}
 	
 	@objc final func play() {
-//		playerController?.prepareToPlay()
 		playerController?.play()
 	}
 	

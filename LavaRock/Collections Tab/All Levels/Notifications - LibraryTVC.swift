@@ -19,7 +19,6 @@ extension LibraryTVC {
 			selector: #selector(didObserve(_:)),
 			name: Notification.Name.LRDidSaveChangesFromAppleMusic,
 			object: nil)
-		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
@@ -44,13 +43,6 @@ extension LibraryTVC {
 			name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: nil)
 		playerController?.beginGeneratingPlaybackNotifications()
-		
-		// Experimental
-//		NotificationCenter.default.addObserver(
-//			self,
-//			selector: #selector(didObserve(_:)),
-//			name: Notification.Name.MPMusicPlayerControllerQueueDidChange,
-//			object: nil)
 	}
 	
 	func endObservingNotifications() {
@@ -62,8 +54,8 @@ extension LibraryTVC {
 	
 	// MARK: - Responding
 	
+	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
 	@objc func didObserve(_ notification: Notification) {
-//		print(notification)
 		switch notification.name {
 		case .LRDidSaveChangesFromAppleMusic:
 			didSaveChangesFromAppleMusic()
@@ -75,8 +67,6 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
 			refreshToReflectPlaybackState()
-//		case .MPMusicPlayerControllerQueueDidChange: // Experimental
-//			break
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but is not set to do anything after observing that notification.")
@@ -87,7 +77,6 @@ extension LibraryTVC {
 	
 	// Subclasses that show a "current song" indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func refreshToReflectPlaybackState() {
-//		print(String(describing: playerController?.playbackState.rawValue))
 		refreshBarButtons() // We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
 	}
 	
@@ -110,13 +99,7 @@ extension LibraryTVC {
 	}
 	
 	final func refreshDataAndViews() {
-//		print("")
-//		print(Self.self)
-//		print(String(describing: managedObjectContext.parent))
-		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
-//		print(indexedLibraryItems)
-//		print(refreshedItems)
 		prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
 		
 		refreshTableView(

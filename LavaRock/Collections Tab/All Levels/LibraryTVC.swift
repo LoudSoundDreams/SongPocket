@@ -42,16 +42,24 @@ class LibraryTVC:
 		style: .plain,
 		target: self,
 		action: #selector(showSortOptions))
-	lazy var floatToTopButton = UIBarButtonItem(
-		image: UIImage(systemName: "arrow.up.to.line.alt"), // Needs VoiceOver hint
-		style: .plain,
-		target: self,
-		action: #selector(moveSelectedItemsToTop))
-	lazy var sinkToBottomButton = UIBarButtonItem(
-		image: UIImage(systemName: "arrow.down.to.line.alt"),
-		style: .plain,
-		target: self,
-		action: #selector(sinkSelectedItemsToBottom))
+	lazy var floatToTopButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "arrow.up.to.line.alt"),
+			style: .plain,
+			target: self,
+			action: #selector(moveSelectedItemsToTop))
+		button.accessibilityLabel = "Move to top"
+		return button
+	}()
+	lazy var sinkToBottomButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "arrow.down.to.line.alt"),
+			style: .plain,
+			target: self,
+			action: #selector(sinkSelectedItemsToBottom))
+		button.accessibilityLabel = "Move to bottom"
+		return button
+	}()
 	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
 		barButtonSystemItem: .cancel,
 		target: self,
@@ -66,6 +74,7 @@ class LibraryTVC:
 			target: self,
 			action: #selector(goToPreviousSong))
 		button.width = 10.0
+		button.accessibilityLabel = "Previous track"
 		return button
 	}()
 	lazy var restartCurrentSongButton: UIBarButtonItem = {
@@ -75,6 +84,7 @@ class LibraryTVC:
 			target: self,
 			action: #selector(restartCurrentSong))
 		button.width = 10.0
+		button.accessibilityLabel = "Restart" //
 		return button
 	}()
 	lazy var playButton: UIBarButtonItem = {
@@ -84,6 +94,7 @@ class LibraryTVC:
 			target: self,
 			action: #selector(play))
 		button.width = 10.0
+		button.accessibilityLabel = "Play" //
 		return button
 	}()
 	lazy var pauseButton: UIBarButtonItem = {
@@ -93,6 +104,7 @@ class LibraryTVC:
 			target: self,
 			action: #selector(pause))
 		button.width = 10.0 // As of iOS 14.2 beta 1, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
+		button.accessibilityLabel = "Pause" //
 		return button
 	}()
 	lazy var goToNextSongButton: UIBarButtonItem = {
@@ -102,6 +114,7 @@ class LibraryTVC:
 			target: self,
 			action: #selector(goToNextSong))
 		button.width = 10.0
+		button.accessibilityLabel = "Next track"
 		return button
 	}()
 	let flexibleSpaceBarButtonItem = UIBarButtonItem(
