@@ -42,7 +42,7 @@ extension AppleMusicLibraryManager {
 				existingAlbumsCopy.insert(newAlbum, at: 0)
 			}
 			if let newCollection = newCollection {
-				existingCollectionsCopy.insert(newCollection, at: 0) //
+				existingCollectionsCopy.insert(newCollection, at: 0)
 			}
 		}
 	}

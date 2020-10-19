@@ -12,7 +12,7 @@ final class OptionsTVC: UITableViewController {
 	// MARK: - Table View Data Source
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return AccentColorManager.accentColorTuples.count
+		return AccentColorManager.colorTuples.count
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -38,20 +38,19 @@ final class OptionsTVC: UITableViewController {
 			var configuration = cell.defaultContentConfiguration()
 			configuration.text = rowColorName
 			configuration.textProperties.color = rowUIColor
-			
 			cell.contentConfiguration = configuration
-			
 		} else { // iOS 13 and earlier
 			cell.textLabel?.text = rowColorName
 			cell.textLabel?.textColor = rowUIColor
-			
 		}
 		
-		if rowUIColor == view.window?.tintColor { // Check against the actual current tintColor here, not the saved accent color name in UserDefaults. This will help you notice if the saved accent color name doesn't match any of the row colors, because in that case, none of the rows will have a checkmark.
+		if rowColorName == AccentColorManager.savedAccentColorName() {
 			cell.accessoryType = .checkmark
 		} else {
 			cell.accessoryType = .none
 		}
+		
+		cell.accessibilityTraits = .button
 		
 		return cell
 	}

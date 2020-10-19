@@ -58,7 +58,14 @@ extension LibraryTVC {
 		
 		if isEditing {
 			refreshBarButtons()
+			refreshAccessibilityTraitsAfterDidSelectRow(at: indexPath)
 		}
+	}
+	
+	// Easy to override.
+	@objc func refreshAccessibilityTraitsAfterDidSelectRow(at indexPath: IndexPath) {
+		guard let cell = tableView.cellForRow(at: indexPath) else { return }
+		cell.accessibilityTraits = .selected
 	}
 	
 	final func didReceiveAuthorizationForAppleMusic() {
@@ -85,6 +92,13 @@ extension LibraryTVC {
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
 		refreshBarButtons()
+		refreshAccessibilityTraitsAfterDidDeselectRow(at: indexPath)
+	}
+	
+	// Easy to override.
+	@objc func refreshAccessibilityTraitsAfterDidDeselectRow(at indexPath: IndexPath) {
+		guard let cell = tableView.cellForRow(at: indexPath) else { return }
+		cell.accessibilityTraits = .none
 	}
 	
 }

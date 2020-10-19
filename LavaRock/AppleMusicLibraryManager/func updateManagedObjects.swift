@@ -81,7 +81,7 @@ extension AppleMusicLibraryManager {
 					newAlbum.albumPersistentID = Int64(bitPattern: newAlbumPersistentID)
 					// We'll set releaseDateEstimate later.
 					
-					song.index = 0 //
+					song.index = 0
 					song.container = newAlbum
 					
 				} else {
@@ -96,7 +96,7 @@ extension AppleMusicLibraryManager {
 					for song in existingAlbum.contents! {
 						(song as! Song).index += 1
 					}
-					song.index = 0 //
+					song.index = 0
 					song.container = existingAlbum
 				}
 				

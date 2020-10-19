@@ -45,7 +45,7 @@ extension LibraryTVC {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return allowAccessCell(for: indexPath)
 		}
-		return UITableViewCell() //
+		return UITableViewCell()
 	}
 	
 	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
@@ -58,6 +58,7 @@ extension LibraryTVC {
 		} else { // iOS 13 and earlier
 			cell.textLabel?.textColor = view.window?.tintColor
 		}
+		cell.accessibilityTraits = .button // should never change
 		return cell
 	}
 	

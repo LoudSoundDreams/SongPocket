@@ -33,7 +33,7 @@ extension LibraryTVC {
 		
 		if
 			MPMediaLibrary.authorizationStatus() != .authorized
-				|| (self is CollectionsTVC && indexedLibraryItems.count == 0)
+//				|| (self is CollectionsTVC && indexedLibraryItems.count == 0) // there are no songs in the Apple Music library
 		{
 			setDisabledPlaybackToolbar()
 			return

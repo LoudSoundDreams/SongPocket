@@ -22,33 +22,22 @@ final class QueueTVC:
 	@IBOutlet var clearButton: UIBarButtonItem!
 	lazy var goToPreviousSongButton = UIBarButtonItem(
 		image: UIImage(systemName: "backward.end.fill"),
-		style: .plain,
-		target: self,
-		action: #selector(goToPreviousSong))
+		style: .plain, target: self, action: #selector(goToPreviousSong))
 	lazy var restartCurrentSongButton = UIBarButtonItem(
 		image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
-		style: .plain,
-		target: self,
-		action: #selector(restartCurrentSong))
+		style: .plain, target: self, action: #selector(restartCurrentSong))
 	lazy var playButton = UIBarButtonItem(
 		image: UIImage(systemName: "play.fill"),
-		style: .plain,
-		target: self,
-		action: #selector(play))
+		style: .plain, target: self, action: #selector(play))
 	lazy var pauseButton = UIBarButtonItem(
 		image: UIImage(systemName: "pause.fill"),
-		style: .plain,
-		target: self,
-		action: #selector(pause))
+		style: .plain, target: self, action: #selector(pause))
 	lazy var goToNextSongButton = UIBarButtonItem(
 		image: UIImage(systemName: "forward.end.fill"),
-		style: .plain,
-		target: self,
-		action: #selector(goToNextSong))
+		style: .plain, target: self, action: #selector(goToNextSong))
 	let flexibleSpaceBarButtonItem = UIBarButtonItem(
 		barButtonSystemItem: .flexibleSpace,
-		target: nil,
-		action: nil)
+		target: nil, action: nil)
 	let cellReuseIdentifier = "Cell"
 	let numberOfNonQueueEntryCells = 0
 	

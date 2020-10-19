@@ -9,6 +9,14 @@ import UIKit
 
 final class AlbumArtworkCell: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		// should never change
+		accessibilityLabel = "Album artwork"
+		accessibilityTraits = .image
+	}
 }
 
 final class AlbumInfoCell: UITableViewCell {
@@ -24,6 +32,16 @@ final class SongCell: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var currentSongIndicatorImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		resetAccessibilityTraits()
+	}
+	
+	final func resetAccessibilityTraits() {
+		accessibilityTraits = .button
+	}
 }
 
 final class SongCellWithDifferentArtist: UITableViewCell {
@@ -31,4 +49,14 @@ final class SongCellWithDifferentArtist: UITableViewCell {
 	@IBOutlet var artistLabel: UILabel!
 	@IBOutlet var currentSongIndicatorImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		resetAccessibilityTraits()
+	}
+	
+	final func resetAccessibilityTraits() {
+		accessibilityTraits = .button
+	}
 }

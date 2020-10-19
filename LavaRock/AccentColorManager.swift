@@ -11,7 +11,7 @@ struct AccentColorManager {
 	
 	// MARK: - Properties
 	
-	static let accentColorTuples = [
+	static let colorTuples = [
 		("Strawberry", UIColor.systemPink), // "Magenta"
 //		("Red", UIColor.systemRed),
 		("Tangerine", UIColor.systemOrange),
@@ -23,23 +23,26 @@ struct AccentColorManager {
 		("Grape", UIColor.systemPurple), // "Violet"
 //		("None", UIColor.label),
 	]
-	private static let defaultAccentColorName = "Blueberry" // You need to have a tuple for this in accentColorTuples, or you can cause an infinite loop.
+	private static let defaultColorName = "Blueberry" // You need to have a tuple for this in colorTuples, or you can cause an infinite loop.
 	
 	// MARK: - Setting and Restoring
 	
 	static func restoreAccentColor(in window: UIWindow?) {
 		// If there's a saved preference, set it.
-		if let savedColorName = UserDefaults.standard.value(forKey: "accentColorName") as? String {
+		if let savedColorName = savedAccentColorName() {
 			Self.setAccentColor(savedColorName, in: window)
-			
 		} else { // There was no saved preference.
-			Self.setAccentColor(defaultAccentColorName, in: window)
+			Self.setAccentColor(defaultColorName, in: window)
 		}
+	}
+	
+	static func savedAccentColorName() -> String? {
+		return UserDefaults.standard.value(forKey: "accentColorName") as? String
 	}
 	
 	static func setAccentColor(_ colorName: String, in window: UIWindow?) {
 		guard let uiColor = Self.uiColor(forName: colorName) else {
-			Self.setAccentColor(defaultAccentColorName, in: window)
+			Self.setAccentColor(defaultColorName, in: window)
 			return
 		}
 		
@@ -58,7 +61,7 @@ struct AccentColorManager {
 	// MARK: - Converting Between Names and Colors
 	
 	static func uiColor(forName lookedUpName: String) -> UIColor? {
-		if let (_, matchedUIColor) = accentColorTuples.first(where: { (savedName, _) in
+		if let (_, matchedUIColor) = colorTuples.first(where: { (savedName, _) in
 			lookedUpName == savedName
 		} ) {
 			return matchedUIColor
@@ -68,7 +71,7 @@ struct AccentColorManager {
 	}
 	
 	static func colorName(forUIColor lookedUpUIColor: UIColor) -> String? {
-		if let (matchedColorName, _) = accentColorTuples.first(where: { (_, savedUIColor) in
+		if let (matchedColorName, _) = colorTuples.first(where: { (_, savedUIColor) in
 			lookedUpUIColor == savedUIColor
 		} ) {
 			return matchedColorName
@@ -78,17 +81,17 @@ struct AccentColorManager {
 	}
 	
 	static func colorName(forIndex index: Int) -> String? {
-		guard (index >= 0) && (index <= accentColorTuples.count - 1) else {
+		guard (index >= 0) && (index <= colorTuples.count - 1) else {
 			return nil
 		}
-		return accentColorTuples[index].0
+		return colorTuples[index].0
 	}
 	
 	static func uiColor(forIndex index: Int) -> UIColor? {
-		guard (index >= 0) && (index <= accentColorTuples.count - 1) else {
+		guard (index >= 0) && (index <= colorTuples.count - 1) else {
 			return nil
 		}
-		return accentColorTuples[index].1
+		return colorTuples[index].1
 	}
 	
 }

@@ -34,45 +34,34 @@ class LibraryTVC:
 	let cellReuseIdentifier = "Cell"
 //	lazy var selectAllOrNoneButton = UIBarButtonItem(
 //		title: "Select All",
-//		style: .plain,
-//		target: self,
-//		action: #selector(selectAllOrNone))
+//		style: .plain, target: self, action: #selector(selectAllOrNone))
 	lazy var sortButton = UIBarButtonItem(
 		title: "Sort",
-		style: .plain,
-		target: self,
-		action: #selector(showSortOptions))
+		style: .plain, target: self, action: #selector(showSortOptions))
 	lazy var floatToTopButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.up.to.line.alt"),
-			style: .plain,
-			target: self,
-			action: #selector(moveSelectedItemsToTop))
+			style: .plain, target: self, action: #selector(moveSelectedItemsToTop))
 		button.accessibilityLabel = "Move to top"
 		return button
 	}()
 	lazy var sinkToBottomButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down.to.line.alt"),
-			style: .plain,
-			target: self,
-			action: #selector(sinkSelectedItemsToBottom))
+			style: .plain, target: self, action: #selector(sinkSelectedItemsToBottom))
 		button.accessibilityLabel = "Move to bottom"
 		return button
 	}()
 	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
 		barButtonSystemItem: .cancel,
-		target: self,
-		action: #selector(cancelMoveAlbums))
+		target: self, action: #selector(cancelMoveAlbums))
 	
 	// "Constants" that subclasses should not change, for PlaybackToolbarManager
 	var playerController: MPMusicPlayerController?
 	lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
-			style: .plain,
-			target: self,
-			action: #selector(goToPreviousSong))
+			style: .plain, target: self, action: #selector(goToPreviousSong))
 		button.width = 10.0
 		button.accessibilityLabel = "Previous track"
 		return button
@@ -80,53 +69,44 @@ class LibraryTVC:
 	lazy var restartCurrentSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
-			style: .plain,
-			target: self,
-			action: #selector(restartCurrentSong))
+			style: .plain, target: self, action: #selector(restartCurrentSong))
 		button.width = 10.0
-		button.accessibilityLabel = "Restart" //
+		button.accessibilityLabel = "Restart"
 		return button
 	}()
 	lazy var playButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "play.fill"),
-			style: .plain,
-			target: self,
-			action: #selector(play))
+			style: .plain, target: self, action: #selector(play))
 		button.width = 10.0
-		button.accessibilityLabel = "Play" //
+		button.accessibilityLabel = "Play"
 		return button
 	}()
 	lazy var pauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "pause.fill"),
-			style: .plain,
-			target: self,
-			action: #selector(pause))
+			style: .plain, target: self, action: #selector(pause))
 		button.width = 10.0 // As of iOS 14.2 beta 1, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
-		button.accessibilityLabel = "Pause" //
+		button.accessibilityLabel = "Pause"
 		return button
 	}()
 	lazy var goToNextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
-			style: .plain,
-			target: self,
-			action: #selector(goToNextSong))
+			style: .plain, target: self, action: #selector(goToNextSong))
 		button.width = 10.0
 		button.accessibilityLabel = "Next track"
 		return button
 	}()
 	let flexibleSpaceBarButtonItem = UIBarButtonItem(
 		barButtonSystemItem: .flexibleSpace,
-		target: nil,
-		action: nil)
+		target: nil, action: nil)
 	
 	// MARK: Variables
 	
-	var numberOfRowsAboveIndexedLibraryItems = 0 // This is implied to be true in each section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
+	var numberOfRowsAboveIndexedLibraryItems = 0 // This applies to every section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
 	var indexedLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in this array, because the table view follows this array; not the "index" attribute of each NSManagedObject.
-		// WARNING: indexedLibraryItems[indexPath.row] will not necessarily get the right library item. Whenever you use both indexedLibraryItems and IndexPaths, always subtract from indexPath.row numberOfRowsAboveIndexedLibraryItems, even if it's 0.
+		// WARNING: indexedLibraryItems[indexPath.row] might return the wrong library item. Whenever you use both indexedLibraryItems and IndexPaths, you must always subtract numberOfRowsAboveIndexedLibraryItems from indexPath.row.
 		// This is a hack to allow other rows in the table view above the rows for indexedLibraryItems. This lets us use table view rows for album artwork and album info in SongsTVC. We can also use this for All Albums and New Collection buttons in CollectionsTVC, and All Songs and Move Here buttons in AlbumsTVC.
 		didSet {
 			for index in 0 ..< indexedLibraryItems.count {
