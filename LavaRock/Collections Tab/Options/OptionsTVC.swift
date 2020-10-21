@@ -50,7 +50,7 @@ final class OptionsTVC: UITableViewController {
 			cell.accessoryType = .none
 		}
 		
-		cell.accessibilityTraits = .button
+		cell.accessibilityTraits.formUnion(.button)
 		
 		return cell
 	}

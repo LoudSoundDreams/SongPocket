@@ -58,7 +58,7 @@ extension LibraryTVC {
 		} else { // iOS 13 and earlier
 			cell.textLabel?.textColor = view.window?.tintColor
 		}
-		cell.accessibilityTraits = .button // should never change
+		cell.accessibilityTraits.formUnion(.button) // should never change
 		return cell
 	}
 	
@@ -126,14 +126,10 @@ extension LibraryTVC {
 		
 		if isEditing {
 			refreshBarButtons()
-			refreshAccessibilityTraitsAfterDidSelectRow(at: indexPath)
+			if let cell = tableView.cellForRow(at: indexPath) {
+				cell.accessibilityTraits.formUnion(.selected)
+			}
 		}
-	}
-	
-	// Easy to override.
-	@objc func refreshAccessibilityTraitsAfterDidSelectRow(at indexPath: IndexPath) {
-		guard let cell = tableView.cellForRow(at: indexPath) else { return }
-		cell.accessibilityTraits = .selected
 	}
 	
 	final func didReceiveAuthorizationForAppleMusic() {
@@ -160,13 +156,9 @@ extension LibraryTVC {
 	
 	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
 		refreshBarButtons()
-		refreshAccessibilityTraitsAfterDidDeselectRow(at: indexPath)
-	}
-	
-	// Easy to override.
-	@objc func refreshAccessibilityTraitsAfterDidDeselectRow(at indexPath: IndexPath) {
-		guard let cell = tableView.cellForRow(at: indexPath) else { return }
-		cell.accessibilityTraits = .none
+		if let cell = tableView.cellForRow(at: indexPath) {
+			cell.accessibilityTraits.subtract(.selected)
+		}
 	}
 	
 }

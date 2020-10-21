@@ -36,7 +36,7 @@ extension CollectionsTVC {
 					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						configuration.textProperties.color = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 						cell.selectionStyle = .none
-						cell.accessibilityTraits = .notEnabled // should never change
+						cell.accessibilityTraits.formUnion(.notEnabled) // should never change
 					}
 				}
 				
@@ -49,7 +49,7 @@ extension CollectionsTVC {
 					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						cell.textLabel?.isEnabled = false
 						cell.selectionStyle = .none
-						cell.accessibilityTraits = .notEnabled // should never change
+						cell.accessibilityTraits.formUnion(.notEnabled) // should never change
 					}
 				}
 				

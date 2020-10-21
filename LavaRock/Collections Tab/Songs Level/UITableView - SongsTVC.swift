@@ -109,19 +109,4 @@ extension SongsTVC {
 		}
 	}
 	
-	override func refreshAccessibilityTraitsAfterDidSelectRow(at indexPath: IndexPath) {
-		guard let cell = tableView.cellForRow(at: indexPath) else { return }
-		cell.accessibilityTraits = [.selected, .button]
-	}
-	
-	// MARK: Deselecting
-	
-	override func refreshAccessibilityTraitsAfterDidDeselectRow(at indexPath: IndexPath) {
-		if let cell = tableView.cellForRow(at: indexPath) as? SongCell {
-			cell.resetAccessibilityTraits()
-		} else if let cell = tableView.cellForRow(at: indexPath) as? SongCellWithDifferentArtist {
-			cell.resetAccessibilityTraits()
-		}
-	}
-	
 }

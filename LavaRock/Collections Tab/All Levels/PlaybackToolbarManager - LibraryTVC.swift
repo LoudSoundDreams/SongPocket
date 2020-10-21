@@ -12,53 +12,77 @@ extension LibraryTVC {
 	
 	// MARK: - Events
 	
-	final func setRefreshedPlaybackToolbar(animated: Bool = false) { // Only animate this when entering and exiting editing mode, or immediately after receiving authorization for the user's Apple Music library.
-		var playbackButtons = [
-			goToPreviousSongButton,
-			flexibleSpaceBarButtonItem,
-			restartCurrentSongButton,
-			flexibleSpaceBarButtonItem,
-			playButton,
-			flexibleSpaceBarButtonItem,
-			goToNextSongButton
-		]
+	final func refreshPlaybackToolbarButtons() {
 		
-		func setDisabledPlaybackToolbar() {
-			goToPreviousSongButton.isEnabled = false
-			restartCurrentSongButton.isEnabled = false
-			playButton.isEnabled = false
-			goToNextSongButton.isEnabled = false
-			setToolbarItems(playbackButtons, animated: true)
+		func setPlayPauseButtonToPlayButton() {
+			playPauseButton.image = playButtonImage
+			playPauseButton.action = playButtonAction
+			playPauseButton.accessibilityLabel = playButtonAccessibilityLabel
+			playPauseButton.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		}
 		
-		if
-			MPMediaLibrary.authorizationStatus() != .authorized
-//				|| (self is CollectionsTVC && indexedLibraryItems.count == 0) // there are no songs in the Apple Music library
-		{
-			setDisabledPlaybackToolbar()
+		func setPlayPauseButtonToPauseButton() {
+			playPauseButton.image = pauseButtonImage
+			playPauseButton.action = pauseButtonAction
+			playPauseButton.accessibilityLabel = pauseButtonAccessibilityLabel
+			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
+		}
+		
+		func disable(_ barButtonItem: UIBarButtonItem) {
+			barButtonItem.isEnabled = false
+			barButtonItem.accessibilityTraits.formUnion(.notEnabled)
+		}
+		
+		func enable(_ barButtonItem: UIBarButtonItem) {
+			barButtonItem.isEnabled = true
+			barButtonItem.accessibilityTraits.subtract(.notEnabled)
+		}
+		
+		guard
+			MPMediaLibrary.authorizationStatus() == .authorized,
+			let playerController = playerController
+		else {
+			setPlayPauseButtonToPlayButton()
+			for barButtonItem in playbackToolbarButtons {
+				disable(barButtonItem)
+			}
 			return
 		}
 		
-		if
-			let playerController = playerController,
-			playerController.playbackState == .playing // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
-		{
-			if let indexOfPlayButton = playbackButtons.firstIndex(of: playButton) {
-				playbackButtons[indexOfPlayButton] = pauseButton
-			}
+		if playerController.playbackState == .playing { // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
+			setPlayPauseButtonToPauseButton()
+		} else {
+			setPlayPauseButtonToPlayButton()
 		}
 		
-		goToPreviousSongButton.isEnabled =
-			playerController?.indexOfNowPlayingItem ?? 0 > 0
-		restartCurrentSongButton.isEnabled = true
-		playButton.isEnabled = true
-		pauseButton.isEnabled = true
-		goToNextSongButton.isEnabled = true
-		
-		setToolbarItems(playbackButtons, animated: animated)
+		for barButtonItem in playbackToolbarButtons {
+			enable(barButtonItem)
+		}
+		if playerController.indexOfNowPlayingItem == 0 {
+			disable(goToPreviousSongButton)
+		}
 	}
 	
 	// MARK: - Controlling Playback
+	
+	override func accessibilityPerformMagicTap() -> Bool {
+		guard playerController != nil else {
+			return false
+		}
+		
+		togglePlayPause()
+		return true
+	}
+	
+	private func togglePlayPause() {
+		guard let playerController = playerController else { return }
+		
+		if playerController.playbackState == .playing {
+			playerController.pause()
+		} else {
+			playerController.play()
+		}
+	}
 	
 	@objc final func goToPreviousSong() {
 		playerController?.skipToPreviousItem()

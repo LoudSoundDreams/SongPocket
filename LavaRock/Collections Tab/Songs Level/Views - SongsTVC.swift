@@ -13,9 +13,8 @@ final class AlbumArtworkCell: UITableViewCell {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		// should never change
-		accessibilityLabel = "Album artwork"
-		accessibilityTraits = .image
+		accessibilityLabel = "Album artwork" // should never change
+		accessibilityTraits.formUnion(.image) // should never change
 	}
 }
 
@@ -36,11 +35,7 @@ final class SongCell: UITableViewCell {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		resetAccessibilityTraits()
-	}
-	
-	final func resetAccessibilityTraits() {
-		accessibilityTraits = .button
+		accessibilityTraits.formUnion(.button)
 	}
 }
 
@@ -53,10 +48,6 @@ final class SongCellWithDifferentArtist: UITableViewCell {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		resetAccessibilityTraits()
-	}
-	
-	final func resetAccessibilityTraits() {
-		accessibilityTraits = .button
+		accessibilityTraits.formUnion(.button)
 	}
 }

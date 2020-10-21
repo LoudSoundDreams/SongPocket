@@ -103,6 +103,7 @@ extension SongsTVC {
 			style: .destructive,
 			handler: playAlbumStartingAtSelectedSong
 		)
+//		playAlbumStartingHereAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
 		let enqueueSongAction = UIAlertAction(
 			title: "Add to Queue",
 			style: .default,

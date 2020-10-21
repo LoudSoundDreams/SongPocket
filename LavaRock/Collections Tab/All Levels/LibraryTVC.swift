@@ -31,6 +31,7 @@ class LibraryTVC:
 	var sortOptions = [String]()
 	
 	// "Constants" that subclasses should not change
+	var playerController: MPMusicPlayerController?
 	let cellReuseIdentifier = "Cell"
 //	lazy var selectAllOrNoneButton = UIBarButtonItem(
 //		title: "Select All",
@@ -55,15 +56,19 @@ class LibraryTVC:
 	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
 		barButtonSystemItem: .cancel,
 		target: self, action: #selector(cancelMoveAlbums))
+	let flexibleSpaceBarButtonItem = UIBarButtonItem(
+		barButtonSystemItem: .flexibleSpace,
+		target: nil, action: nil)
 	
 	// "Constants" that subclasses should not change, for PlaybackToolbarManager
-	var playerController: MPMusicPlayerController?
+	var playbackToolbarButtons = [UIBarButtonItem]()
 	lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
 			style: .plain, target: self, action: #selector(goToPreviousSong))
 		button.width = 10.0
 		button.accessibilityLabel = "Previous track"
+		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	lazy var restartCurrentSongButton: UIBarButtonItem = {
@@ -72,22 +77,23 @@ class LibraryTVC:
 			style: .plain, target: self, action: #selector(restartCurrentSong))
 		button.width = 10.0
 		button.accessibilityLabel = "Restart"
+		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	lazy var playButton: UIBarButtonItem = {
+	let playButtonImage = UIImage(systemName: "play.fill")
+	let playButtonAction = #selector(play)
+	let playButtonAccessibilityLabel = "Play"
+	let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
+	let pauseButtonImage = UIImage(systemName: "pause.fill")
+	let pauseButtonAction = #selector(pause)
+	let pauseButtonAccessibilityLabel = "Pause"
+	lazy var playPauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "play.fill"),
-			style: .plain, target: self, action: #selector(play))
-		button.width = 10.0
-		button.accessibilityLabel = "Play"
-		return button
-	}()
-	lazy var pauseButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			image: UIImage(systemName: "pause.fill"),
-			style: .plain, target: self, action: #selector(pause))
-		button.width = 10.0 // As of iOS 14.2 beta 1, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
-		button.accessibilityLabel = "Pause"
+			image: playButtonImage,
+			style: .plain, target: self, action: playButtonAction)
+		button.width = 10.0 // As of iOS 14.2 beta 4, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
+		button.accessibilityLabel = playButtonAccessibilityLabel
+		button.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		return button
 	}()
 	lazy var goToNextSongButton: UIBarButtonItem = {
@@ -96,11 +102,9 @@ class LibraryTVC:
 			style: .plain, target: self, action: #selector(goToNextSong))
 		button.width = 10.0
 		button.accessibilityLabel = "Next track"
+		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	let flexibleSpaceBarButtonItem = UIBarButtonItem(
-		barButtonSystemItem: .flexibleSpace,
-		target: nil, action: nil)
 	
 	// MARK: Variables
 	
@@ -158,7 +162,16 @@ class LibraryTVC:
 //		navigationItemButtonsEditingMode = [selectAllOrNoneButton]
 		navigationItemButtonsEditingMode = [flexibleSpaceBarButtonItem]
 		navigationItem.rightBarButtonItem = editButtonItem
-		refreshAndSetBarButtons(animated: true)
+		playbackToolbarButtons = [
+			goToPreviousSongButton,
+			flexibleSpaceBarButtonItem,
+			restartCurrentSongButton,
+			flexibleSpaceBarButtonItem,
+			playPauseButton,
+			flexibleSpaceBarButtonItem,
+			goToNextSongButton
+		]
+		refreshAndSetBarButtons(animated: true) // After we receive authorization to access the Apple Music library, we call viewDidLoad() manually, and when that happens, the change should be animated.
 	}
 	
 	// MARK: Setup Events
@@ -181,17 +194,18 @@ class LibraryTVC:
 	// MARK: - Events
 	
 	func refreshAndSetBarButtons(animated: Bool) {
-		refreshBarButtons(animated: animated) // Includes setRefreshedPlaybackToolbar(animated:).
+		refreshBarButtons()
 		
 		if isEditing {
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingMode, animated: animated)
 			setToolbarItems(toolbarButtonsEditingModeOnly, animated: animated)
 		} else {
 			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditingMode, animated: animated)
+			setToolbarItems(playbackToolbarButtons, animated: animated)
 		}
 	}
 	
-	func refreshBarButtons(animated: Bool = false) {
+	func refreshBarButtons() {
 		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing to reflect changes in the Apple Music library.
 		refreshEditButton()
 		if isEditing {
@@ -200,7 +214,7 @@ class LibraryTVC:
 			refreshFloatToTopButton()
 			refreshSinkToBottomButton()
 		} else {
-			setRefreshedPlaybackToolbar(animated: animated)
+			refreshPlaybackToolbarButtons()
 		}
 	}
 	
