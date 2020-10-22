@@ -79,9 +79,13 @@ final class AlbumsTVC:
 	
 	// MARK: - Events
 	
-	override func refreshBarButtons() {
+	override func setToolbarButtons(animated: Bool) {
 		if albumMoverClipboard != nil { return } // In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
 		
+		super.setToolbarButtons(animated: animated)
+	}
+	
+	override func refreshBarButtons() {
 		super.refreshBarButtons()
 		
 		if isEditing {
