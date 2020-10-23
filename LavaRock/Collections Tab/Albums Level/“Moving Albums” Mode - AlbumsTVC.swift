@@ -21,7 +21,7 @@ extension AlbumsTVC {
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
 		
-		let idOfSourceCollection = containerOfData!.objectID
+		guard let idOfSourceCollection = containerOfData?.objectID else { return }
 		
 		// Note the albums to move, and to not move.
 		

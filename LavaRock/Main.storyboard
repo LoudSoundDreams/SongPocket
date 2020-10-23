@@ -684,7 +684,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="currentSongIndicatorImageView" destination="VRK-dB-HAw" id="hJH-Eb-hYY"/>
+                                    <outlet property="currentSongStatusImageView" destination="VRK-dB-HAw" id="hJH-Eb-hYY"/>
                                     <outlet property="titleLabel" destination="TnF-8u-0pb" id="nfY-h1-EDB"/>
                                     <outlet property="trackNumberLabel" destination="gGs-MB-auE" id="eZ1-8X-3si"/>
                                 </connections>
@@ -742,7 +742,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artistLabel" destination="4ZB-Qq-JY2" id="0Ih-29-wU1"/>
-                                    <outlet property="currentSongIndicatorImageView" destination="WdO-9k-h95" id="ri2-iY-m3p"/>
+                                    <outlet property="currentSongStatusImageView" destination="WdO-9k-h95" id="ri2-iY-m3p"/>
                                     <outlet property="titleLabel" destination="DAu-f6-M3i" id="RBU-KW-LbW"/>
                                     <outlet property="trackNumberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                 </connections>
@@ -813,7 +813,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="currentSongIndicatorImageView" destination="sd4-WK-ea6" id="bEz-xH-lc0"/>
+                                    <outlet property="currentSongStatusImageView" destination="sd4-WK-ea6" id="bEz-xH-lc0"/>
                                     <outlet property="titleLabel" destination="t35-xm-5yN" id="wWh-iH-4ik"/>
                                     <outlet property="trackNumberLabel" destination="rif-LJ-CL8" id="YKf-hc-j1D"/>
                                 </connections>

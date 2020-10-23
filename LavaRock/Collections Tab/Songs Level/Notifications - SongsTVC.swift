@@ -15,25 +15,29 @@ extension SongsTVC {
 	override func refreshToReflectPlaybackState() {
 		super.refreshToReflectPlaybackState()
 		
-		refreshCurrentSongIndicator()
+		refreshCurrentSongStatus()
 	}
 	
-	private func refreshCurrentSongIndicator() {
+	private func refreshCurrentSongStatus() {
 		for indexPath in tableView.indexPathsEnumeratedIn(
 			section: 0,
 			firstRow: numberOfRowsAboveIndexedLibraryItems)
 		{
-			refreshCurrentSongIndicator(forRowAt: indexPath)
+			refreshCurrentSongStatus(forRowAt: indexPath)
 		}
 	}
 	
-	private func refreshCurrentSongIndicator(forRowAt indexPath: IndexPath) {
-		let image = currentSongIndicatorImage(forRowAt: indexPath)
+	private func refreshCurrentSongStatus(forRowAt indexPath: IndexPath) {
+		let currentSongStatus = currentSongStatusImageAndAccessibilityLabel(forRowAt: indexPath)
+		let image = currentSongStatus.0
+		let accessibilityLabel = currentSongStatus.1
 		
 		if let cell = tableView.cellForRow(at: indexPath) as? SongCell {
-			cell.currentSongIndicatorImageView.image = image
+			cell.currentSongStatusImageView.image = image
+			cell.accessibilityValue = accessibilityLabel
 		} else if let cell = tableView.cellForRow(at: indexPath) as? SongCellWithDifferentArtist {
-			cell.currentSongIndicatorImageView.image = image
+			cell.currentSongStatusImageView.image = image
+			cell.accessibilityValue = accessibilityLabel
 		}
 	}
 	

@@ -119,8 +119,9 @@ extension LibraryTVC {
 				}
 			}
 		default: // Denied or restricted.
-			let settingsURL = URL(string: UIApplication.openSettingsURLString)!
-			UIApplication.shared.open(settingsURL)
+			if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+				UIApplication.shared.open(settingsURL)
+			}
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
 		

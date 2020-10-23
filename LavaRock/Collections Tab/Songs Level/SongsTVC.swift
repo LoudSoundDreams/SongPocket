@@ -17,17 +17,7 @@ final class SongsTVC:
 	
 	// MARK: - Properties
 	
-	// "Constants"
-	var currentSongIndicatorImage: UIImage? {
-		if
-			let playerController = playerController,
-			playerController.playbackState == .playing // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
-		{
-			return UIImage(systemName: "speaker.wave.2.fill")
-		} else {
-			return UIImage(systemName: "speaker.fill")
-		}
-	}
+	// Constants
 	let monospacedNumbersBodyFont: UIFont = {
 		let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
 		let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([

@@ -29,12 +29,12 @@ extension UITableViewController {
 	
 	// Takes an array of selected IndexPaths and the entire data source for your table view. Returns an array of tuples, each matching one of those IndexPaths with its corresponding data object from the data source.
 	// WARNING: Only works for IndexPaths in the same section.
-	final func dataObjectsPairedWith(
+	final func tuplesOfIndexPathsAndDataObjects<T>(
 		_ indexPaths: [IndexPath],
-		tableViewDataSource: [Any],
+		tableViewDataSource: [T],
 		rowForFirstDataSourceItem: Int
-	) -> [(IndexPath, Any)] {
-		var result = [(IndexPath, Any)]()
+	) -> [(IndexPath, T)] {
+		var result = [(IndexPath, T)]()
 		for indexPath in indexPaths {
 			result.append((indexPath, tableViewDataSource[indexPath.row - rowForFirstDataSourceItem]))
 		}

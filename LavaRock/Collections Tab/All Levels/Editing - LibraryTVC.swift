@@ -67,12 +67,10 @@ extension LibraryTVC {
 			}
 		}
 		
-		guard let pairsToMove = dataObjectsPairedWith(
+		let pairsToMove = tuplesOfIndexPathsAndDataObjects(
 			selectedIndexPaths.sorted(),
 			tableViewDataSource: indexedLibraryItems,
-			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems
-		) as? [(IndexPath, NSManagedObject)]
-		else { return }
+			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems)
 		
 		let targetSection = firstIndexPath.section
 		var targetRow = firstIndexPath.row
@@ -110,14 +108,11 @@ extension LibraryTVC {
 		else { return }
 		
 		let sortedSelectedIndexPaths = selectedIndexPaths.sorted()
-		guard
-			let pairsToMove = dataObjectsPairedWith(
-				sortedSelectedIndexPaths,
-				tableViewDataSource: indexedLibraryItems,
-				rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems
-			) as? [(IndexPath, NSManagedObject)],
-			let targetSection = sortedSelectedIndexPaths.last?.section
-		else { return }
+		let pairsToMove = tuplesOfIndexPathsAndDataObjects(
+			sortedSelectedIndexPaths,
+			tableViewDataSource: indexedLibraryItems,
+			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems)
+		guard let targetSection = sortedSelectedIndexPaths.last?.section else { return }
 		
 		var targetRow = tableView.numberOfRows(inSection: targetSection) - 1
 		var selectedAndTargetIndexPaths = [(IndexPath, IndexPath)]()
@@ -169,13 +164,13 @@ extension LibraryTVC {
 		let indexPathsToSort = tableView.selectedOrEnumeratedIndexPathsIn(
 			section: 0,
 			firstRow: numberOfRowsAboveIndexedLibraryItems)
+		guard indexPathsToSort.count >= 1 else { return }
 		
 		// Get the items to sort, too.
-		let selectedIndexPathsAndItems = dataObjectsPairedWith(
+		let selectedIndexPathsAndItems = tuplesOfIndexPathsAndDataObjects(
 			indexPathsToSort,
 			tableViewDataSource: indexedLibraryItems,
-			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems
-		) as! [(IndexPath, NSManagedObject)]
+			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems)
 		
 		// Sort the rows and items together.
 		let sortOption = sender.title

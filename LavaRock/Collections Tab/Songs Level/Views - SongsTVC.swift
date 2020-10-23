@@ -29,7 +29,7 @@ final class AlbumInfoCellWithoutReleaseDate: UITableViewCell {
 
 final class SongCell: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var currentSongIndicatorImageView: UIImageView!
+	@IBOutlet var currentSongStatusImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
 	
 	required init?(coder: NSCoder) {
@@ -42,7 +42,7 @@ final class SongCell: UITableViewCell {
 final class SongCellWithDifferentArtist: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var artistLabel: UILabel!
-	@IBOutlet var currentSongIndicatorImageView: UIImageView!
+	@IBOutlet var currentSongStatusImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
 	
 	required init?(coder: NSCoder) {
