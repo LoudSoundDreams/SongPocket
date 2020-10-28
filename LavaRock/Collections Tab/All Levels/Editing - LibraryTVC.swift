@@ -211,10 +211,10 @@ extension LibraryTVC {
 		// Ignore articles ("the", "a", and "an")?
 		return indexPathsAndItems.sorted(by: {
 		
-		// If we're sorting collections:
+		// If we're sorting Collections:
 		($0.1.value(forKey: "title") as? String ?? "") < ($1.1.value(forKey: "title") as? String ?? "")
 		
-		// If we're sorting albums or songs, use the methods in `extension Album` or `extension Song` to fetch their titles (or placeholders).
+		// If we're sorting Albums or Songs, use the methods in `extension Album` or `extension Song` to fetch their titles (or placeholders).
 		
 		
 		} )
@@ -236,7 +236,6 @@ extension LibraryTVC {
 			
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
-			// TO DO: With more songs, this gets too slow.
 			let sortedByTrackNumber = indexPathsAndItems.sorted() {
 				($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 <
 					($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0

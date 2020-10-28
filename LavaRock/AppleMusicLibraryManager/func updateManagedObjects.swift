@@ -14,7 +14,7 @@ extension AppleMusicLibraryManager {
 		forSongsWith songIDs: [NSManagedObjectID],
 		toMatch mediaItems: [MPMediaItem]
 	) {
-		// Here, you can update any stored attributes on each song. But unless we have to, it's best to not store that data in the first place, because we'll have to manually keep up to date.
+		// Here, you can update any attributes on each Song. But it's best to not store data on each Song in the first place unless we have to, because we'll have to manually keep it up to date.
 		
 		updateRelationshipsBetweenAlbumsAndSongs(
 			with: songIDs,
@@ -38,7 +38,7 @@ extension AppleMusicLibraryManager {
 		print("")
 		for song in potentiallyOutdatedSongs {
 		print(song.titleFormattedOrPlaceholder())
-		print("Container \(song.container!.container!.index), album \(song.container!.index), song \(song.index)")
+		print("Collection \(song.container!.container!.index), Album \(song.container!.index), Song \(song.index)")
 		}
 		*/
 		
@@ -53,28 +53,24 @@ extension AppleMusicLibraryManager {
 			
 			let knownAlbumPersistentID = song.container!.albumPersistentID
 			let newAlbumPersistentID = song.mpMediaItem()!.albumPersistentID
-			/*
+			
 			print("")
-			print("Checking album status of \(song.titleFormattedOrPlaceholder()).")
+			print("Checking album for \(song.titleFormattedOrPlaceholder()).")
 			print("Previously known albumPersistentID: \(UInt64(bitPattern: knownAlbumPersistentID))")
 			print("New albumPersistentID: \(newAlbumPersistentID)")
-			*/
 			
 			if knownAlbumPersistentID == Int64(bitPattern: newAlbumPersistentID) {
 				continue
 				
-			} else { // This is a song we recognize, but its albumPersistentID has changed.
+			} else { // This is a Song we recognize, but its albumPersistentID has changed.
 				
-				if !knownAlbumPersistentIDs.contains(Int64(bitPattern: newAlbumPersistentID)) {
-					
-					// We've never seen this albumPersistentID before, so make a new album for it.
-					
+				if !knownAlbumPersistentIDs.contains(Int64(bitPattern: newAlbumPersistentID)) { // We've never seen this albumPersistentID before, so make a new Album for it.
 					knownAlbumPersistentIDs.append(Int64(bitPattern: newAlbumPersistentID))
 					let newAlbum = Album(context: managedObjectContext)
 					existingAlbums.append(newAlbum)
 					
 					newAlbum.container = song.container!.container!
-					for album in newAlbum.container!.contents! { // For each album in the same collection as the new album
+					for album in newAlbum.container!.contents! { // For each Album in the same Collection as the new Album
 						(album as! Album).index += 1
 					}
 					newAlbum.index = 0
@@ -84,10 +80,7 @@ extension AppleMusicLibraryManager {
 					song.index = 0
 					song.container = newAlbum
 					
-				} else {
-					
-					// This song's albumPersistentID has changed, but we already have an album for it, so add it to that album.
-					
+				} else { // This Song's albumPersistentID has changed, but we already have an Album for it, so add it to that Album.
 					knownAlbumPersistentIDs.append(Int64(bitPattern: newAlbumPersistentID))
 					let existingAlbum = existingAlbums.first(where: { existingAlbum in
 						existingAlbum.albumPersistentID == Int64(bitPattern: newAlbumPersistentID)
@@ -100,7 +93,7 @@ extension AppleMusicLibraryManager {
 					song.container = existingAlbum
 				}
 				
-				// We'll delete empty albums (and collections) later.
+				// We'll delete empty Albums (and Collections) later.
 			}
 		}
 	}

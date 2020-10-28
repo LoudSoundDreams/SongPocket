@@ -30,6 +30,8 @@ extension LibraryTVC {
 				if let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell") { // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
 					tableView.backgroundView = noItemsView // As of iOS 14.0 beta 8, this crashes with EXC_BAD_ACCESS (code=2) when rotating from landscape to portrait (and sometimes when rotating from portrait to landscape, depending on your text size). The crash report in iOS Settings says "KERN_PROTECTION_FAILURE".
 					// TO DO: I've temporarily disabled landscape. Re-enable it after Apple fixes this.
+				} else {
+					tableView.backgroundView = nil
 				}
 				return 0
 			}

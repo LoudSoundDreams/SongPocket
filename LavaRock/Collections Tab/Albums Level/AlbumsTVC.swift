@@ -71,7 +71,7 @@ final class AlbumsTVC:
 	// MARK: Setup Events
 	
 //	@IBAction func unwindToAlbumsAfterMovingAlbums(_ unwindSegue: UIStoryboardSegue) {
-//		refreshDataAndViews() // Exits this collection if it's now empty.
+//		refreshDataAndViews() // Exits this Collection if it's now empty.
 //	}
 	
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
@@ -80,7 +80,7 @@ final class AlbumsTVC:
 	// MARK: - Events
 	
 	override func setToolbarButtons(animated: Bool) {
-		if albumMoverClipboard != nil { return } // In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
+		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
 		
 		super.setToolbarButtons(animated: animated)
 	}

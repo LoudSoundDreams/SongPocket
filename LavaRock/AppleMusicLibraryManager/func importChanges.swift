@@ -33,18 +33,9 @@ extension AppleMusicLibraryManager {
 		else { return }
 		
 		let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
-		// Order doesn't matter, because this will end up being the array of songs to be deleted.
+		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
 		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
 		let shouldImportIntoDefaultOrder = savedSongs.count == 0
-		
-		let existingAlbumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
-		// Order doesn't matter, because we identify Albums by their albumPersistentID.
-		let existingAlbums = managedObjectContext.objectsFetched(for: existingAlbumsFetchRequest) as! [Album]
-		
-		let existingCollectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
-		// Order matters, because we'll try to add new Albums to the first Collection with a matching title.
-		existingCollectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		let existingCollections = managedObjectContext.objectsFetched(for: existingCollectionsFetchRequest) as! [Collection]
 		
 		/*
 		var savedSongsCopy = savedSongs
@@ -55,7 +46,7 @@ extension AppleMusicLibraryManager {
 		print("")
 		for song in savedSongsCopy {
 		print(song.titleFormattedOrPlaceholder())
-		print("Container \(song.container!.container!.index), album \(song.container!.index), song \(song.index)")
+		print("Collection \(song.container!.container!.index), Album \(song.container!.index), Song \(song.index)")
 		}
 		*/
 		
@@ -99,27 +90,38 @@ extension AppleMusicLibraryManager {
 		}
 		*/
 		
-		updateManagedObjects( // Update before creating and deleting, so that we can easily put new songs above modified songs.
-			// This might make new albums, but not new collections.
-			// This might also leave behind empty albums, because all the songs in them were moved to other albums; but we won't delete those empty albums for now, so that if the user also added other songs to those empty albums, we can keep those albums in the same place, instead of re-adding them to the top.
+		updateManagedObjects( // Update before creating and deleting, so that we can easily put new Songs above modified Songs.
+			// This might make new Albums, but not new Collections or Songs.
+			// This doesn't delete any Songs, Albums, or Collections.
+			// This might also leave behind empty Albums, because all the Songs in them were moved to other Albums; but we won't delete those empty Albums for now, so that if the user also added other Songs to those empty Albums, we can keep those Albums in the same place, instead of re-adding them to the top.
 			forSongsWith: potentiallyModifiedSongObjectIDs,
 			toMatch: potentiallyModifiedMediaItems)
-		createManagedObjects( // Create before deleting, because deleting also cleans up empty albums and collections, and we don't want to do that yet, because of what we mentioned above.
-			// This might make new albums, and if it does, it might make new collections.
+		
+		let existingAlbumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
+		// Order doesn't matter, because we identify Albums by their albumPersistentID.
+		let existingAlbums = managedObjectContext.objectsFetched(for: existingAlbumsFetchRequest) as! [Album]
+		
+		let existingCollectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+		// Order matters, because we'll try to add new Albums to the first Collection with a matching title.
+		existingCollectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		let existingCollections = managedObjectContext.objectsFetched(for: existingCollectionsFetchRequest) as! [Collection]
+		
+		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, and we don't want to do that yet, because of what we mentioned above.
+			// This might make new Albums, and if it does, it might make new Collections.
 			for: newMediaItems,
-			existingAlbumsBeforeImport: existingAlbums,
-			existingCollectionsBeforeImport: existingCollections)
+			existingAlbums: existingAlbums,
+			existingCollections: existingCollections)
 		deleteManagedObjects(
 			forSongsWith: deletedSongObjectIDs)
 		
 		// Then, some cleanup.
 		
 		let allCollectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
-		// Order doesn't matter, because this is for reindexing the albums within each collection.
+		// Order doesn't matter, because this is for reindexing the Albums within each Collection.
 		let allCollections = managedObjectContext.objectsFetched(for: allCollectionsFetchRequest) as! [Collection]
 		
 		let allAlbumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
-		// Order doesn't matter, because this is for recalculating each album's release date estimate, and reindexing the songs within each album.
+		// Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		let allAlbums = managedObjectContext.objectsFetched(for: allAlbumsFetchRequest) as! [Album]
 		var albumIDs = [NSManagedObjectID]()
 		for album in allAlbums {
@@ -159,9 +161,9 @@ extension AppleMusicLibraryManager {
 		with albumIDs: [NSManagedObjectID]
 	) {
 		for albumID in albumIDs {
-			// Update one album's release date estimate.
+			// Update one Album's release date estimate.
 			let album = managedObjectContext.object(with: albumID) as! Album
-			// Should we get the songs using mpMediaItemCollection() instead of Core Data?
+			// Should we get the Songs using mpMediaItemCollection() instead of Core Data?
 			
 			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
 			songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
@@ -199,7 +201,7 @@ extension AppleMusicLibraryManager {
 			albumsInCollection.append(albumInCollection)
 		}
 		
-		albumsInCollection.sort() { $0.index < $1.index } // Sort by index here even if we're going to sort by release date later; this keeps albums whose releaseDateEstimate is nil in their previous order.
+		albumsInCollection.sort() { $0.index < $1.index } // Sort by index here even if we're going to sort by release date later; this keeps Albums whose releaseDateEstimate is nil in their previous order.
 		if shouldSortByNewestFirst {
 			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albums: albumsInCollection)
 		}
@@ -215,11 +217,11 @@ extension AppleMusicLibraryManager {
 		
 		let commonDate = Date()
 		albumsCopy.sort() {
-			$0.releaseDateEstimate ?? commonDate >= // This reverses the order of all albums whose releaseDateEstimate is nil.
+			$0.releaseDateEstimate ?? commonDate >= // This reverses the order of all Albums whose releaseDateEstimate is nil.
 				$1.releaseDateEstimate ?? commonDate
 		}
 		albumsCopy.sort() { (firstAlbum, _) in
-			firstAlbum.releaseDateEstimate == nil // This re-reverses the order of all albums whose releaseDateEstimate is nil.
+			firstAlbum.releaseDateEstimate == nil // This re-reverses the order of all Albums whose releaseDateEstimate is nil.
 		}
 		
 		return albumsCopy

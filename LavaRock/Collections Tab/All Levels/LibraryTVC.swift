@@ -24,7 +24,7 @@ class LibraryTVC:
 	var containerOfData: NSManagedObject?
 	
 	// "Constants" that subclasses can optionally customize
-	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving albums" mode.
+	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
 	var navigationItemButtonsNotEditingMode = [UIBarButtonItem]()
 	private var navigationItemButtonsEditingMode = [UIBarButtonItem]()
 	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()

@@ -82,7 +82,7 @@ final class CollectionsTVC:
 	// MARK: Setup Events
 	
 	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-		if // If we moved all the albums out of a collection. This doesn't conflict with deleting all the albums from a collection.
+		if // If we moved all the Albums out of a Collection. This doesn't conflict with *deleting* all the Albums from a Collection.
 			let albumsTVC = unwindSegue.source as? AlbumsTVC,
 			let collection = albumsTVC.containerOfData as? Collection,
 			collection.contents?.count == 0
@@ -98,9 +98,7 @@ final class CollectionsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-				refreshDataAndViewsWhenVisible() // Re-animates adding the collections we made while moving albums, even though we already saw them get added in the "move albums" sheet. Is that bad?
-//				reloadIndexedLibraryItems()
-//				tableView.reloadData() // Unfortunately, this makes it so that the row we're exiting doesn't start highlighted and unhighlight during the "back" animation, which it ought to.
+				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums" sheet.
 				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
 			}
 		}
@@ -125,7 +123,7 @@ final class CollectionsTVC:
 						}
 					}
 				}
-				managedObjectContext.delete(emptyCollection) // Don't remove the empty collection from indexedLibraryItems here. refreshDataAndViews() will remove it and its table view row for us.
+				managedObjectContext.delete(emptyCollection) // Don't remove the empty Collection from indexedLibraryItems here. refreshDataAndViews() will remove it and its table view row for us.
 				managedObjectContext.tryToSaveSynchronously()
 				collectionToDeleteBeforeNextRefresh = nil
 			}
@@ -137,7 +135,7 @@ final class CollectionsTVC:
 	// MARK: - Events
 	
 	override func setToolbarButtons(animated: Bool) {
-		if albumMoverClipboard != nil { return } // In "moving albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
+		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
 		
 		super.setToolbarButtons(animated: animated)
 	}

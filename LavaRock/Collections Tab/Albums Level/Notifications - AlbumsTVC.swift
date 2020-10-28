@@ -20,9 +20,9 @@ extension AlbumsTVC {
 			Only do this if indexedLibraryItems will change during the refresh?
 			
 			All special cases:
-			- In "moving albums" mode and in existing collection
-			- In "moving albums" mode and in new collection
-			- If any of the albums we're moving get deleted
+			- In "moving Albums" mode and in existing Collection
+			- In "moving Albums" mode and in new Collection
+			- If any of the Albums we're moving get deleted
 			*/
 			dismiss(animated: true, completion: nil)
 		}

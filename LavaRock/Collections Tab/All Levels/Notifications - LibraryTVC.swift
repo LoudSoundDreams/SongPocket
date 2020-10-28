@@ -66,6 +66,13 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerPlaybackStateDidChange,
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
+			
+			
+			print("")
+			print("Now playing: \(playerController?.nowPlayingItem?.title ?? "")")
+			print("albumPersistentID: \(String(describing: playerController?.nowPlayingItem?.albumPersistentID))")
+			
+			
 			refreshToReflectPlaybackState()
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
@@ -115,8 +122,8 @@ extension LibraryTVC {
 	These are the content-dependent, blocking actions we need to account for:
 	- Sort options (LibraryTVC)
 	- "Rename Collection" dialog (CollectionsTVC)
-	- "Move albums" sheet (CollectionsTVC, AlbumsTVC when in "moving albums" mode)
-	- "New Collection" dialog (CollectionsTVC when in "moving albums" mode)
+	- "Move Albums" sheet (CollectionsTVC, AlbumsTVC when in "moving Albums" mode)
+	- "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
 	- Song actions (SongsTVC)
 	Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).
 	*/

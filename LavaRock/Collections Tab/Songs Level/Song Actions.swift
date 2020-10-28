@@ -115,7 +115,7 @@ extension SongsTVC {
 			handler: enqueueAlbumStartingAtSelectedSong
 		)
 		
-		// Disable the actions that we shouldn't offer for the last song in the section.
+		// Disable the actions that we shouldn't offer for the last Song in the section.
 		if song == indexedLibraryItems.last {
 			enqueueAlbumStartingHereAction.isEnabled = false
 		}

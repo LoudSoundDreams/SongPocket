@@ -12,7 +12,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Renaming Collection
 	
-	// WARNING: Using VoiceOver, you can rename collections at any time, not just in editing mode.
+	// WARNING: Using VoiceOver, you can rename Collections at any time, not just in editing mode.
 	final func renameCollection(at indexPath: IndexPath) {
 		guard let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Collection else { return }
 		

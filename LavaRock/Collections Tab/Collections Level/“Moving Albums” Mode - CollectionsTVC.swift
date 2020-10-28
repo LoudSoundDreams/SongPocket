@@ -37,7 +37,7 @@ extension CollectionsTVC {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection
-		else { return } // Without this, if you're fast, you can finish making a new collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first collection you made.
+		else { return } // Without this, if you're fast, you can finish making a new Collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first Collection you made.
 		
 		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
@@ -64,20 +64,20 @@ extension CollectionsTVC {
 			
 			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
 			
-			// Create the new collection.
+			// Create the new Collection.
 			
 			var newTitle = dialog.textFields?[0].text
 			if (newTitle == nil) || (newTitle == "") {
 				newTitle = Self.defaultCollectionTitle
 			}
 			
-			let newCollection = Collection(context: self.managedObjectContext) // Since we're in "moving albums" mode, this should be a child managed object context.
+			let newCollection = Collection(context: self.managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
 			newCollection.title = newTitle
 			// The property observer on indexedLibraryItems will set the "index" attribute for us.
 			
 			self.indexedLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
 			
-			// Enter the new collection.
+			// Enter the new Collection.
 			
 			self.tableView.performBatchUpdates( {
 				self.tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
@@ -140,7 +140,7 @@ extension CollectionsTVC {
 	}
 	
 	private enum AlbumPropertyToConsider: CaseIterable {
-		case albumArtist // Order matters. First, we'll see if all the albums have the same artist; if they don't, then we'll try the next case, and so on.
+		case albumArtist // Order matters. First, we'll see if all the Albums have the same album artist; if they don't, then we'll try the next case, and so on.
 	}
 	
 	private static func suggestedCollectionTitle(
@@ -171,12 +171,12 @@ extension CollectionsTVC {
 			return nil
 		}
 		
-		// Case: 1 album
+		// Case: 1 Album
 		if albumIDs.count == 1 {
 			return propertyValueForFirstAlbum
 			
 		} else {
-			// Case: 2 or more albums
+			// Case: 2 or more Albums
 			let secondAlbum = managedObjectContext.object(with: albumIDs[1]) as! Album
 			let propertyValueForSecondAlbum = valueForAlbumProperty(albumProperty, on: secondAlbum)
 			

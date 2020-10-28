@@ -23,7 +23,7 @@ extension AlbumsTVC {
 		
 		guard let idOfSourceCollection = containerOfData?.objectID else { return }
 		
-		// Note the albums to move, and to not move.
+		// Note the Albums to move, and to not move.
 		
 		var idsOfAlbumsToMove = [NSManagedObjectID]()
 		var idsOfAlbumsToNotMove = [NSManagedObjectID]()
@@ -71,21 +71,21 @@ extension AlbumsTVC {
 			albumMoverClipboard.didAlreadyCommitMoveAlbums == false
 		else { return }
 		
-		// We shouldn't be moving albums to this collection if they're already here.
+		// We shouldn't be moving Albums to this Collection if they're already here.
 		for albumInCollectionToMoveTo in indexedLibraryItems {
 			if albumMoverClipboard.idsOfAlbumsBeingMoved.contains(albumInCollectionToMoveTo.objectID) {
 				return
 			}
 		}
 		
-		albumMoverClipboard.didAlreadyCommitMoveAlbums = true // Without this, if you tap the "Move Here" button more than once, the app will crash when it tries to unwind from the "move albums" sheet.
+		albumMoverClipboard.didAlreadyCommitMoveAlbums = true // Without this, if you tap the "Move Here" button more than once, the app will crash when it tries to unwind from the "move Albums" sheet.
 		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
 		
 		if indexedLibraryItems.isEmpty {
 			newCollectionDetector?.shouldDetectNewCollectionsOnNextViewWillAppear = true
 		}
 		
-		// Get the albums to move, and to not move.
+		// Get the Albums to move, and to not move.
 		var albumsToMove = [Album]()
 		for albumID in albumMoverClipboard.idsOfAlbumsBeingMoved {
 			albumsToMove.append(managedObjectContext.object(with: albumID) as! Album)
@@ -97,7 +97,7 @@ extension AlbumsTVC {
 		
 		// Apply the changes.
 		
-		// Update the indexes of the albums we aren't moving, within their collection.
+		// Update the indexes of the Albums we aren't moving, within their Collection.
 		// Almost identical to the property observer for indexedLibraryItems.
 		for index in 0..<albumsToNotMove.count {
 			albumsToNotMove[index].setValue(Int64(index), forKey: "index")
@@ -110,7 +110,7 @@ extension AlbumsTVC {
 		}
 		managedObjectContext.tryToSaveSynchronously()
 		guard let mainManagedObjectContext = managedObjectContext.parent else {
-			fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move albums” sheet.")
+			fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move Albums” sheet.")
 		}
 		mainManagedObjectContext.tryToSave()
 		

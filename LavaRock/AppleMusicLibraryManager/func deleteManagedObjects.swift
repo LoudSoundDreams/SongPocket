@@ -31,7 +31,7 @@ extension AppleMusicLibraryManager {
 				contents.count == 0
 			else { continue }
 			managedObjectContext.delete(album)
-			// Note: This leaves gaps in the album indexes within each collection. We'll reindex the albums later.
+			// Note: This leaves gaps in the Album indexes within each Collection. We'll reindex the Albums later.
 		}
 	}
 	

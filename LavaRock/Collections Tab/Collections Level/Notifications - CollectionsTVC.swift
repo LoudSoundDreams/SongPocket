@@ -16,9 +16,9 @@ extension CollectionsTVC {
 		consideringRefreshedItems refreshedItems: [NSManagedObject]
 	) {
 		if let albumMoverClipboard = albumMoverClipboard {
-			// What if any of the albums we're moving get deleted?
+			// What if any of the Albums we're moving get deleted?
 			
-			// What if we've already made a new collection and are transitioning into or out of it?
+			// What if we've already made a new Collection and are transitioning into or out of it?
 			
 			if albumMoverClipboard.isMakingNewCollection {
 				albumMoverClipboard.isMakingNewCollection = false
@@ -30,7 +30,7 @@ extension CollectionsTVC {
 			} else {
 				// Only do this if indexedLibraryItems will change during the refresh?
 				dismiss(animated: true, completion: albumMoverClipboard.delegate?.didAbort) // Tells presentingViewController to dismiss this view controller (CollectionsTVC).
-				// Calling didAbort() solves the case where, when we had to refresh, you were moving albums, had the "New Collection" dialog onscreen, *and* deleted all the albums in the collection that you were moving albums out of: we'll dismiss the "New Collection" dialog, dismiss the "move albums" sheet, back out of the now-empty collection, and delete that empty collection.
+				// Calling didAbort() solves the case where, before the refresh, you were moving Albums, had the "New Collection" dialog onscreen, *and* deleted all the Albums in the Collection that you were moving Albums out of: we'll dismiss the "New Collection" dialog, dismiss the "move Albums" sheet, back out of the now-empty Collection, and delete that empty Collection.
 			}
 		}
 		

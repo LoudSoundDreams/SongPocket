@@ -13,10 +13,10 @@ extension AppleMusicLibraryManager {
 	// Make new managed objects for the new media items, including new Albums and Collections to put them in if necessary.
 	final func createManagedObjects(
 		for newMediaItemsImmutable: [MPMediaItem],
-		existingAlbumsBeforeImport: [Album],
-		existingCollectionsBeforeImport: [Collection]
+		existingAlbums: [Album],
+		existingCollections: [Collection]
 	) {
-		let shouldImportIntoDefaultOrder = existingCollectionsBeforeImport.count == 0
+		let shouldImportIntoDefaultOrder = existingCollections.count == 0
 		
 		var sortedMediaItems = [MPMediaItem]()
 		if shouldImportIntoDefaultOrder {
@@ -26,12 +26,12 @@ extension AppleMusicLibraryManager {
 				$0.dateAdded > $1.dateAdded
 			}
 		}
-		// We'll sort songs within each album later, because it depends on whether the existing songs in each album are in album order.
+		// We'll sort Songs within each Album later, because it depends on whether the existing Songs in each Album are in album order.
 		let mediaItemGroups = groupedByAlbum(sortedMediaItems)
 		
-		var existingAlbumsCopy = existingAlbumsBeforeImport
-		var existingCollectionsCopy = existingCollectionsBeforeImport
-		for mediaItemGroup in mediaItemGroups.reversed() { // Add albums from bottom to top.
+		var existingAlbumsCopy = existingAlbums
+		var existingCollectionsCopy = existingCollections
+		for mediaItemGroup in mediaItemGroups.reversed() { // Add Albums from bottom to top.
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: mediaItemGroup,
 				existingAlbums: existingAlbumsCopy,
@@ -53,7 +53,7 @@ extension AppleMusicLibraryManager {
 		_ mediaItemsImmutable: [MPMediaItem]
 	) -> [MPMediaItem] {
 		var mediaItemsCopy = mediaItemsImmutable
-		mediaItemsCopy.sort() { $0.albumTitle ?? "" < $1.albumTitle ?? "" } // Albums in alphabetical order is wrong! We'll sort albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
+		mediaItemsCopy.sort() { $0.albumTitle ?? "" < $1.albumTitle ?? "" } // Albums in alphabetical order is wrong! We'll sort Albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
 		mediaItemsCopy.sort() { $0.albumArtist ?? "" < $1.albumArtist ?? "" }
 		let unknownAlbumArtistPlaceholder = Album.unknownAlbumArtistPlaceholder()
 		mediaItemsCopy.sort() { $1.albumArtist ?? unknownAlbumArtistPlaceholder == unknownAlbumArtistPlaceholder }
@@ -86,9 +86,16 @@ extension AppleMusicLibraryManager {
 		shouldImportIntoDefaultOrder: Bool
 	) -> (Album?, Collection?) {
 		guard let firstMediaItemInAlbum = newMediaItemsInTheSameAlbum.first else {
-			fatalError("Tried to add a new group of songs in the same album, but apparently the group was empty.")
+			fatalError("Tried to create Songs (and possibly a new Album and Collection) for a group of MPMediaItems with the same albumPersistentID, but apparently the group was empty.")
 		}
 		let albumPersistentID = firstMediaItemInAlbum.albumPersistentID
+		
+		print("")
+		print("Creating Songs and possibly a new Album and Collection for these MPMediaItems:")
+		for newMediaItem in newMediaItemsInTheSameAlbum {
+			print(newMediaItem.title ?? "")
+		}
+		print("The first MPMediaItem has the albumPersistentID: \(albumPersistentID)")
 		
 		// If we already have a matching Album to add the Songs to …
 		if let matchingExistingAlbum = existingAlbums.first(where: { existingAlbum in
@@ -164,7 +171,7 @@ extension AppleMusicLibraryManager {
 		
 		var mediaItemsInAlbum = [MPMediaItem]()
 		for songInAlbum in songsInAlbum {
-			guard let mediaItemInAlbum = songInAlbum.mpMediaItem() else { continue } // .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. Don't let deleted songs disrupt an otherwise in-order album; just skip over them.
+			guard let mediaItemInAlbum = songInAlbum.mpMediaItem() else { continue } // .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
 			mediaItemsInAlbum.append(mediaItemInAlbum)
 		}
 		
@@ -187,7 +194,7 @@ extension AppleMusicLibraryManager {
 		func sortedByAlbumOrder(songs songsImmutable: [Song]) -> [Song] {
 			var songsCopy = songsImmutable
 			// TO DO: Does this match sortedByAlbumOrder(mediaItems:) exactly? You can guarantee it by doing some setup moves and calling sortedByAlbumOrder(mediaItems:) itself.
-			// .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. It doesn't matter where those songs end up in the array, because we'll delete them later anyway.
+			// .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. It doesn't matter where those Songs end up in the array, because we'll delete them later anyway.
 			songsCopy.sort() {
 				$0.titleFormattedOrPlaceholder() <
 					$1.titleFormattedOrPlaceholder()

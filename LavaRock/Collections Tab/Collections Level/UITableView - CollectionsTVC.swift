@@ -32,7 +32,7 @@ extension CollectionsTVC {
 				var configuration = cell.defaultContentConfiguration()
 				configuration.text = collection.title
 				
-				// "Moving albums" mode
+				// "Moving Albums" mode
 				if let albumMoverClipboard = albumMoverClipboard {
 					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						configuration.textProperties.color = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
@@ -46,7 +46,7 @@ extension CollectionsTVC {
 			} else { // iOS 13 and earlier
 				cell.textLabel?.text = collection.title
 				
-				// "Moving albums" mode
+				// "Moving Albums" mode
 				if let albumMoverClipboard = albumMoverClipboard {
 					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						cell.textLabel?.isEnabled = false
