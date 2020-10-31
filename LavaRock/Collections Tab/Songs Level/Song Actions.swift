@@ -99,21 +99,24 @@ extension SongsTVC {
 		
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		let playAlbumStartingHereAction = UIAlertAction(
-			title: "Play Starting Here",
-			style: .destructive,
-			handler: playAlbumStartingAtSelectedSong
-		)
+			title: "Play Album Starting Here",
+//			title: "Play Album Starting Here",
+//			title: "Play Starting Here",
+			style: .default,
+			handler: playAlbumStartingAtSelectedSong)
 //		playAlbumStartingHereAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
-		let enqueueSongAction = UIAlertAction(
-			title: "Add to Queue",
-			style: .default,
-			handler: enqueueSelectedSong
-		)
 		let enqueueAlbumStartingHereAction = UIAlertAction(
-			title: "Add to Queue Starting Here",
+			title: "Queue Album Starting Here",
+//			title: "Play Album Starting Here Later",
+//			title: "Add to Queue Starting Here",
 			style: .default,
-			handler: enqueueAlbumStartingAtSelectedSong
-		)
+			handler: enqueueAlbumStartingAtSelectedSong)
+		let enqueueSongAction = UIAlertAction(
+			title: "Queue Song",
+//			title: "Play Song Later",
+//			title: "Add to Queue",
+			style: .default,
+			handler: enqueueSelectedSong)
 		
 		// Disable the actions that we shouldn't offer for the last Song in the section.
 		if song == indexedLibraryItems.last {

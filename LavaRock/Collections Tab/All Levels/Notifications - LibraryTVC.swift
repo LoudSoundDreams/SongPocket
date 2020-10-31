@@ -68,9 +68,9 @@ extension LibraryTVC {
 		:
 			
 			
-			print("")
-			print("Now playing: \(playerController?.nowPlayingItem?.title ?? "")")
-			print("albumPersistentID: \(String(describing: playerController?.nowPlayingItem?.albumPersistentID))")
+//			print("")
+//			print("Now playing: \(playerController?.nowPlayingItem?.title ?? "")")
+//			print("albumPersistentID: \(String(describing: playerController?.nowPlayingItem?.albumPersistentID))")
 			
 			
 			refreshToReflectPlaybackState()

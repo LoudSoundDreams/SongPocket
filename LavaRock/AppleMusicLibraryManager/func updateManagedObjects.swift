@@ -31,9 +31,9 @@ extension AppleMusicLibraryManager {
 			potentiallyOutdatedSongs.append(song)
 		}
 		
-		potentiallyOutdatedSongs.sort() { $0.index < $1.index }
-		potentiallyOutdatedSongs.sort() { $0.container!.index < $1.container!.index }
-		potentiallyOutdatedSongs.sort() { $0.container!.container!.index < $1.container!.container!.index }
+		potentiallyOutdatedSongs.sort { $0.index < $1.index }
+		potentiallyOutdatedSongs.sort { $0.container!.index < $1.container!.index }
+		potentiallyOutdatedSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
 		/*
 		print("")
 		for song in potentiallyOutdatedSongs {
@@ -54,10 +54,10 @@ extension AppleMusicLibraryManager {
 			let knownAlbumPersistentID = song.container!.albumPersistentID
 			let newAlbumPersistentID = song.mpMediaItem()!.albumPersistentID
 			
-			print("")
-			print("Checking album for \(song.titleFormattedOrPlaceholder()).")
-			print("Previously known albumPersistentID: \(UInt64(bitPattern: knownAlbumPersistentID))")
-			print("New albumPersistentID: \(newAlbumPersistentID)")
+//			print("")
+//			print("Checking album for \(song.titleFormattedOrPlaceholder()).")
+//			print("Previously known albumPersistentID: \(UInt64(bitPattern: knownAlbumPersistentID))")
+//			print("New albumPersistentID: \(newAlbumPersistentID)")
 			
 			if knownAlbumPersistentID == Int64(bitPattern: newAlbumPersistentID) {
 				continue

@@ -39,9 +39,9 @@ extension AppleMusicLibraryManager {
 		
 		/*
 		var savedSongsCopy = savedSongs
-		savedSongsCopy.sort() { $0.index < $1.index }
-		savedSongsCopy.sort() { $0.container!.index < $1.container!.index }
-		savedSongsCopy.sort() { $0.container!.container!.index < $1.container!.container!.index }
+		savedSongsCopy.sort { $0.index < $1.index }
+		savedSongsCopy.sort { $0.container!.index < $1.container!.index }
+		savedSongsCopy.sort { $0.container!.container!.index < $1.container!.container!.index }
 		
 		print("")
 		for song in savedSongsCopy {
@@ -201,7 +201,7 @@ extension AppleMusicLibraryManager {
 			albumsInCollection.append(albumInCollection)
 		}
 		
-		albumsInCollection.sort() { $0.index < $1.index } // Sort by index here even if we're going to sort by release date later; this keeps Albums whose releaseDateEstimate is nil in their previous order.
+		albumsInCollection.sort { $0.index < $1.index } // Sort by index here even if we're going to sort by release date later; this keeps Albums whose releaseDateEstimate is nil in their previous order.
 		if shouldSortByNewestFirst {
 			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albums: albumsInCollection)
 		}
@@ -216,11 +216,11 @@ extension AppleMusicLibraryManager {
 		var albumsCopy = albumsImmutable
 		
 		let commonDate = Date()
-		albumsCopy.sort() {
+		albumsCopy.sort {
 			$0.releaseDateEstimate ?? commonDate >= // This reverses the order of all Albums whose releaseDateEstimate is nil.
 				$1.releaseDateEstimate ?? commonDate
 		}
-		albumsCopy.sort() { (firstAlbum, _) in
+		albumsCopy.sort { (firstAlbum, _) in
 			firstAlbum.releaseDateEstimate == nil // This re-reverses the order of all Albums whose releaseDateEstimate is nil.
 		}
 		
@@ -238,7 +238,7 @@ extension AppleMusicLibraryManager {
 			songsInAlbum.append(songInAlbum)
 		}
 		
-		songsInAlbum.sort() { $0.index < $1.index }
+		songsInAlbum.sort { $0.index < $1.index }
 		
 		for index in 0 ..< songsInAlbum.count {
 			let song = songsInAlbum[index]

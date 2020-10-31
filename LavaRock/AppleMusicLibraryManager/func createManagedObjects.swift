@@ -22,7 +22,7 @@ extension AppleMusicLibraryManager {
 		if shouldImportIntoDefaultOrder {
 			sortedMediaItems = sortedByAlbumArtistThenAlbum(newMediaItemsImmutable)
 		} else {
-			sortedMediaItems = newMediaItemsImmutable.sorted() {
+			sortedMediaItems = newMediaItemsImmutable.sorted {
 				$0.dateAdded > $1.dateAdded
 			}
 		}
@@ -53,10 +53,21 @@ extension AppleMusicLibraryManager {
 		_ mediaItemsImmutable: [MPMediaItem]
 	) -> [MPMediaItem] {
 		var mediaItemsCopy = mediaItemsImmutable
-		mediaItemsCopy.sort() { $0.albumTitle ?? "" < $1.albumTitle ?? "" } // Albums in alphabetical order is wrong! We'll sort Albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
-		mediaItemsCopy.sort() { $0.albumArtist ?? "" < $1.albumArtist ?? "" }
+		mediaItemsCopy.sort { // Albums in alphabetical order is wrong! We'll sort Albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
+			// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
+			let albumTitle0 = $0.albumTitle ?? ""
+			let albumTitle1 = $1.albumTitle ?? ""
+			let comparisonResult = albumTitle0.localizedStandardCompare(albumTitle1) // The comparison method that the Finder uses
+			return comparisonResult == .orderedAscending
+		}
+		mediaItemsCopy.sort {
+			let albumArtist0 = $0.albumArtist ?? ""
+			let albumArtist1 = $1.albumArtist ?? ""
+			let comparisonResult = albumArtist0.localizedStandardCompare(albumArtist1)
+			return comparisonResult == .orderedAscending
+		}
 		let unknownAlbumArtistPlaceholder = Album.unknownAlbumArtistPlaceholder()
-		mediaItemsCopy.sort() { $1.albumArtist ?? unknownAlbumArtistPlaceholder == unknownAlbumArtistPlaceholder }
+		mediaItemsCopy.sort { $1.albumArtist ?? unknownAlbumArtistPlaceholder == unknownAlbumArtistPlaceholder }
 		return mediaItemsCopy
 	}
 	
@@ -90,12 +101,12 @@ extension AppleMusicLibraryManager {
 		}
 		let albumPersistentID = firstMediaItemInAlbum.albumPersistentID
 		
-		print("")
-		print("Creating Songs and possibly a new Album and Collection for these MPMediaItems:")
-		for newMediaItem in newMediaItemsInTheSameAlbum {
-			print(newMediaItem.title ?? "")
-		}
-		print("The first MPMediaItem has the albumPersistentID: \(albumPersistentID)")
+//		print("")
+//		print("Creating Songs and possibly a new Album and Collection for these MPMediaItems:")
+//		for newMediaItem in newMediaItemsInTheSameAlbum {
+//			print(newMediaItem.title ?? "")
+//		}
+//		print("The first MPMediaItem has the albumPersistentID: \(albumPersistentID)")
 		
 		// If we already have a matching Album to add the Songs to …
 		if let matchingExistingAlbum = existingAlbums.first(where: { existingAlbum in
@@ -150,10 +161,16 @@ extension AppleMusicLibraryManager {
 		mediaItems mediaItemsImmutable: [MPMediaItem]
 	) -> [MPMediaItem] {
 		var mediaItemsCopy = mediaItemsImmutable
-		mediaItemsCopy.sort() { $0.title ?? "" < $1.title ?? "" }
-		mediaItemsCopy.sort() { $0.albumTrackNumber < $1.albumTrackNumber }
-		mediaItemsCopy.sort() { $1.albumTrackNumber == 0 }
-		mediaItemsCopy.sort() { $0.discNumber < $1.discNumber } // As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
+		mediaItemsCopy.sort {
+			// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
+			let title0 = $0.title ?? ""
+			let title1 = $1.title ?? ""
+			let comparisonResult = title0.localizedStandardCompare(title1) // The comparison method that the Finder uses
+			return comparisonResult == .orderedAscending
+		}
+		mediaItemsCopy.sort { $0.albumTrackNumber < $1.albumTrackNumber }
+		mediaItemsCopy.sort { $1.albumTrackNumber == 0 }
+		mediaItemsCopy.sort { $0.discNumber < $1.discNumber } // As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
 		return mediaItemsCopy
 	}
 	
@@ -167,7 +184,7 @@ extension AppleMusicLibraryManager {
 				songs.append(songInAlbum)
 			}
 		}
-		let songsInAlbum = songs.sorted() { $0.index < $1.index }
+		let songsInAlbum = songs.sorted { $0.index < $1.index }
 		
 		var mediaItemsInAlbum = [MPMediaItem]()
 		for songInAlbum in songsInAlbum {
@@ -195,18 +212,21 @@ extension AppleMusicLibraryManager {
 			var songsCopy = songsImmutable
 			// TO DO: Does this match sortedByAlbumOrder(mediaItems:) exactly? You can guarantee it by doing some setup moves and calling sortedByAlbumOrder(mediaItems:) itself.
 			// .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. It doesn't matter where those Songs end up in the array, because we'll delete them later anyway.
-			songsCopy.sort() {
-				$0.titleFormattedOrPlaceholder() <
-					$1.titleFormattedOrPlaceholder()
+			songsCopy.sort {
+				// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
+				let title0 = $0.titleFormattedOrPlaceholder()
+				let title1 = $1.titleFormattedOrPlaceholder()
+				let comparisonResult = title0.localizedStandardCompare(title1) // The comparison method that the Finder uses
+				return comparisonResult == .orderedAscending
 			}
-			songsCopy.sort() {
+			songsCopy.sort {
 				$0.mpMediaItem()?.albumTrackNumber ?? 0 <
 					$1.mpMediaItem()?.albumTrackNumber ?? 0
 			}
-			songsCopy.sort() {
+			songsCopy.sort {
 				$1.mpMediaItem()?.albumTrackNumber ?? 0 == 0
 			}
-			songsCopy.sort() {
+			songsCopy.sort {
 				$0.mpMediaItem()?.discNumber ?? 1 <
 					$1.mpMediaItem()?.discNumber ?? 1
 			}

@@ -222,28 +222,28 @@ extension LibraryTVC {
 		
 		case "Newest First":
 			let commonDate = Date()
-			return indexPathsAndItems.sorted() {
+			return indexPathsAndItems.sorted {
 				($0.1 as? Album)?.releaseDateEstimate ?? commonDate >
 					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
 			}
 			
 		case "Oldest First":
 			let commonDate = Date()
-			return indexPathsAndItems.sorted() {
+			return indexPathsAndItems.sorted {
 				($0.1 as? Album)?.releaseDateEstimate ?? commonDate <
 					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
 			}
 			
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
-			let sortedByTrackNumber = indexPathsAndItems.sorted() {
+			let sortedByTrackNumber = indexPathsAndItems.sorted {
 				($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 <
 					($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0
 			}
-			let sortedByTrackNumberWithZeroAtEnd = sortedByTrackNumber.sorted() {
+			let sortedByTrackNumberWithZeroAtEnd = sortedByTrackNumber.sorted {
 				($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 == 0
 			}
-			let sortedByDiscNumber = sortedByTrackNumberWithZeroAtEnd.sorted() {
+			let sortedByDiscNumber = sortedByTrackNumberWithZeroAtEnd.sorted {
 				($0.1 as? Song)?.mpMediaItem()?.discNumber ?? 0 <
 					($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0
 			}
