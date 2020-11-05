@@ -31,7 +31,9 @@ class LibraryTVC:
 	var sortOptions = [String]()
 	
 	// "Constants" that subclasses should not change
-	var playerController: MPMusicPlayerController?
+	var playerController: MPMusicPlayerController? {
+		PlayerControllerManager.shared.playerController
+	}
 	let cellReuseIdentifier = "Cell"
 //	lazy var selectAllOrNoneButton = UIBarButtonItem(
 //		title: "Select All",
@@ -132,16 +134,9 @@ class LibraryTVC:
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		setUpPlayerControllerIfAuthorized() // We need to do this before beginObservingAndGeneratingNotifications(), because we need to tell the player controller to begin generating notifications.
-		beginObservingAndGeneratingNotifications()
+		beginObservingNotifications()
 		reloadIndexedLibraryItems()
 		setUpUI()
-	}
-	
-	private func setUpPlayerControllerIfAuthorized() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		playerController = MPMusicPlayerController.systemMusicPlayer
 	}
 	
 	// MARK: Loading Data

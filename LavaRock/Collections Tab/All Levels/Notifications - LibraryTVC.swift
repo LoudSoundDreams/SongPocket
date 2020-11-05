@@ -13,7 +13,7 @@ extension LibraryTVC {
 	
 	// MARK: - Setup and Teardown
 	
-	@objc func beginObservingAndGeneratingNotifications() {
+	@objc func beginObservingNotifications() {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
@@ -42,14 +42,10 @@ extension LibraryTVC {
 			selector: #selector(didObserve(_:)),
 			name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: nil)
-		playerController?.beginGeneratingPlaybackNotifications()
 	}
 	
-	func endObservingNotifications() {
+	final func endObservingNotifications() {
 		NotificationCenter.default.removeObserver(self)
-		
-		// TO DO: Tell playerController to end generating playback notifications, but make sure we don't do it when we shouldn't.
-		// What if we don't end generating playback notifications?
 	}
 	
 	// MARK: - Responding
@@ -66,13 +62,6 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerPlaybackStateDidChange,
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
-			
-			
-//			print("")
-//			print("Now playing: \(playerController?.nowPlayingItem?.title ?? "")")
-//			print("albumPersistentID: \(String(describing: playerController?.nowPlayingItem?.albumPersistentID))")
-			
-			
 			refreshToReflectPlaybackState()
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")

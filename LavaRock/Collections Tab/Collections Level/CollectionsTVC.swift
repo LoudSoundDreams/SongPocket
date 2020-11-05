@@ -37,6 +37,7 @@ final class CollectionsTVC:
 		} else {
 			if AppleMusicLibraryManager.shared.shouldNextImportBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show an empty table view while we import from the Apple Music library for the first time. In that case, we need to import (synchronously) before calling reloadIndexedLibraryItems().
 				AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized()
+				PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
 				
 				super.viewDidLoad()
 				
@@ -45,6 +46,7 @@ final class CollectionsTVC:
 				
 				DispatchQueue.main.async {
 					AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingAndGeneratingNotifications(), because it includes importing changes from the Apple Music library, and we need to observe the notification when importing ends.
+					PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
 				}
 			}
 		}

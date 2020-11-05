@@ -91,7 +91,7 @@ extension SongsTVC {
 		}
 	}
 	
-	func currentSongStatusImageAndAccessibilityLabel(forRowAt indexPath: IndexPath) -> (UIImage?, String?) {
+	final func currentSongStatusImageAndAccessibilityLabel(forRowAt indexPath: IndexPath) -> (UIImage?, String?) {
 		if
 			let rowSong = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Song,
 			let rowMediaItem = rowSong.mpMediaItem(),

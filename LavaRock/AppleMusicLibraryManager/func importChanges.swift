@@ -32,9 +32,9 @@ extension AppleMusicLibraryManager {
 			var queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
-		let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
+		let songsFetchRequest = NSFetchRequest<Song>(entityName: "Song")
 		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
-		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
+		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest)
 		let shouldImportIntoDefaultOrder = savedSongs.count == 0
 		
 		/*
@@ -97,14 +97,14 @@ extension AppleMusicLibraryManager {
 			forSongsWith: potentiallyModifiedSongObjectIDs,
 			toMatch: potentiallyModifiedMediaItems)
 		
-		let existingAlbumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
+		let existingAlbumsFetchRequest = NSFetchRequest<Album>(entityName: "Album")
 		// Order doesn't matter, because we identify Albums by their albumPersistentID.
-		let existingAlbums = managedObjectContext.objectsFetched(for: existingAlbumsFetchRequest) as! [Album]
+		let existingAlbums = managedObjectContext.objectsFetched(for: existingAlbumsFetchRequest)
 		
-		let existingCollectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+		let existingCollectionsFetchRequest = NSFetchRequest<Collection>(entityName: "Collection")
 		// Order matters, because we'll try to add new Albums to the first Collection with a matching title.
 		existingCollectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		let existingCollections = managedObjectContext.objectsFetched(for: existingCollectionsFetchRequest) as! [Collection]
+		let existingCollections = managedObjectContext.objectsFetched(for: existingCollectionsFetchRequest)
 		
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, and we don't want to do that yet, because of what we mentioned above.
 			// This might make new Albums, and if it does, it might make new Collections.
@@ -116,13 +116,13 @@ extension AppleMusicLibraryManager {
 		
 		// Then, some cleanup.
 		
-		let allCollectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+		let allCollectionsFetchRequest = NSFetchRequest<Collection>(entityName: "Collection")
 		// Order doesn't matter, because this is for reindexing the Albums within each Collection.
-		let allCollections = managedObjectContext.objectsFetched(for: allCollectionsFetchRequest) as! [Collection]
+		let allCollections = managedObjectContext.objectsFetched(for: allCollectionsFetchRequest)
 		
-		let allAlbumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
+		let allAlbumsFetchRequest = NSFetchRequest<Album>(entityName: "Album")
 		// Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
-		let allAlbums = managedObjectContext.objectsFetched(for: allAlbumsFetchRequest) as! [Album]
+		let allAlbums = managedObjectContext.objectsFetched(for: allAlbumsFetchRequest)
 		var albumIDs = [NSManagedObjectID]()
 		for album in allAlbums {
 			albumIDs.append(album.objectID)
@@ -165,10 +165,10 @@ extension AppleMusicLibraryManager {
 			let album = managedObjectContext.object(with: albumID) as! Album
 			// Should we get the Songs using mpMediaItemCollection() instead of Core Data?
 			
-			let songsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Song")
+			let songsFetchRequest = NSFetchRequest<Song>(entityName: "Song")
 			songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
 			// Order doesn't matter.
-			let songsInAlbum = managedObjectContext.objectsFetched(for: songsFetchRequest) as! [Song]
+			let songsInAlbum = managedObjectContext.objectsFetched(for: songsFetchRequest)
 			
 			album.releaseDateEstimate = nil
 			

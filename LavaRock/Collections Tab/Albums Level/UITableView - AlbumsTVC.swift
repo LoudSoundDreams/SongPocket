@@ -37,6 +37,19 @@ extension AlbumsTVC {
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 			cell.artworkImageView.image = cellImage
 			cell.titleLabel.text = cellTitle
+			
+			
+//			if PlayerControllerManager.shared.currentSong?.container == album {
+//				if playerController?.playbackState == .playing {
+//					cell.currentSongStatusImageView.image = UIImage(systemName: "speaker.wave.2.fill")
+//				} else {
+//					cell.currentSongStatusImageView.image = UIImage(systemName: "speaker.fill")
+//				}
+//			} else {
+				cell.currentSongStatusImageView.image = nil
+//			}
+			
+			
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
@@ -49,6 +62,19 @@ extension AlbumsTVC {
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 			cell.artworkImageView.image = cellImage
 			cell.titleLabel.text = cellTitle
+			
+			
+//			if PlayerControllerManager.shared.currentSong?.container == album {
+//				if playerController?.playbackState == .playing {
+//					cell.currentSongStatusImageView.image = UIImage(systemName: "speaker.wave.2.fill")
+//				} else {
+//					cell.currentSongStatusImageView.image = UIImage(systemName: "speaker.fill")
+//				}
+//			} else {
+				cell.currentSongStatusImageView.image = nil
+//			}
+			
+			
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}

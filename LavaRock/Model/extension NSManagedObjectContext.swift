@@ -33,8 +33,8 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	func objectsFetched(for request: NSFetchRequest<NSManagedObject>) -> [NSManagedObject] {
-		var results = [NSManagedObject]()
+	func objectsFetched<T>(for request: NSFetchRequest<T>) -> [T] {
+		var results = [T]()
 		performAndWait {
 			do {
 				results = try self.fetch(request)

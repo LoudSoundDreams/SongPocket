@@ -11,9 +11,11 @@ final class AlbumCell: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var releaseDateLabel: UILabel!
+	@IBOutlet var currentSongStatusImageView: UIImageView!
 }
 
 final class AlbumCellWithoutReleaseDate: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
+	@IBOutlet var currentSongStatusImageView: UIImageView!
 }

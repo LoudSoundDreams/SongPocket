@@ -21,9 +21,9 @@ extension AppleMusicLibraryManager {
 	}
 	
 	private func deleteEmptyAlbums() {
-		let albumsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Album")
+		let albumsFetchRequest = NSFetchRequest<Album>(entityName: "Album")
 		// Order doesn't matter.
-		let allAlbums = managedObjectContext.objectsFetched(for: albumsFetchRequest) as! [Album]
+		let allAlbums = managedObjectContext.objectsFetched(for: albumsFetchRequest)
 		
 		for album in allAlbums {
 			guard
@@ -36,9 +36,9 @@ extension AppleMusicLibraryManager {
 	}
 	
 	private func deleteEmptyCollections() {
-		let collectionsFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Collection")
+		let collectionsFetchRequest = NSFetchRequest<Collection>(entityName: "Collection")
 		// Order doesn't matter.
-		let allCollections = managedObjectContext.objectsFetched(for: collectionsFetchRequest) as! [Collection]
+		let allCollections = managedObjectContext.objectsFetched(for: collectionsFetchRequest)
 		
 		for collection in allCollections {
 			guard
@@ -49,7 +49,7 @@ extension AppleMusicLibraryManager {
 		}
 		
 		collectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		let allRemainingCollectionsInOrder = managedObjectContext.objectsFetched(for: collectionsFetchRequest) as! [Collection]
+		let allRemainingCollectionsInOrder = managedObjectContext.objectsFetched(for: collectionsFetchRequest)
 		
 		for index in 0 ..< allRemainingCollectionsInOrder.count {
 			let remainingCollection = allRemainingCollectionsInOrder[index]
