@@ -11,93 +11,15 @@ import MediaPlayer
 
 extension SongsTVC {
 	
-	// MARK: - Actions
-	
-	final func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
-		guard
-			MPMediaLibrary.authorizationStatus() == .authorized,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
-		else { return }
-		didDismissSongActions()
-		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-		
-		var mediaItemsToEnqueue = [MPMediaItem]()
-		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
-			guard
-				let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue] as? Song,
-				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
-			else { continue }
-			mediaItemsToEnqueue.append(mediaItemToEnqueue)
-		}
-		
-		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
-		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		
-		playerController?.setQueue(with: queueDescriptor)
-		playerController?.repeatMode = .none
-		playerController?.shuffleMode = .off
-		playerController?.prepareToPlay()
-		playerController?.play()
-	}
-	
-	final func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
-		guard
-			MPMediaLibrary.authorizationStatus() == .authorized,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
-		else { return }
-		didDismissSongActions()
-		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-		
-		var mediaItemsToEnqueue = [MPMediaItem]()
-		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
-			guard
-				let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue] as? Song,
-				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
-			else { continue }
-			mediaItemsToEnqueue.append(mediaItemToEnqueue)
-		}
-		
-		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
-		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		
-		playerController?.append(queueDescriptor)
-		playerController?.repeatMode = .none
-		playerController?.shuffleMode = .off
-		if playerController?.playbackState != .playing {
-			playerController?.prepareToPlay()
-		}
-	}
-	
-	final func enqueueSelectedSong(_ sender: UIAlertAction) {
-		guard
-			MPMediaLibrary.authorizationStatus() == .authorized,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
-		else { return }
-		didDismissSongActions()
-		let indexOfSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-		
-		guard
-			let song = indexedLibraryItems[indexOfSong] as? Song,
-			let mediaItem = song.mpMediaItem()
-		else { return }
-		
-		let mediaItemCollection = MPMediaItemCollection(items: [mediaItem])
-		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		
-		playerController?.append(queueDescriptor)
-		playerController?.repeatMode = .none
-		playerController?.shuffleMode = .off
-		if playerController?.playbackState != .playing {
-			playerController?.prepareToPlay()
-		}
-	}
-	
 	// MARK: - Presenting Actions
 	
 	final func showSongActions(for song: Song) {
 		areSongActionsPresented = true
 		
-		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		let actionSheet = UIAlertController(
+			title: nil,
+			message: nil,
+			preferredStyle: .actionSheet)
 		let playAlbumStartingHereAction = UIAlertAction(
 			title: "Play Album Starting Here",
 //			title: "Play Album Starting Here",
@@ -130,17 +52,195 @@ extension SongsTVC {
 			UIAlertAction(
 				title: "Cancel",
 				style: .cancel,
-				handler: { _ in self.didDismissSongActions() }
+				handler: { _ in
+					self.deselectSelectedSong()
+					self.didDismissSongActions()
+				}
 			)
 		)
 		present(actionSheet, animated: true, completion: nil)
 	}
 	
-	// MARK: Dismissing Actions
+	// MARK: - Actions
+	
+	private func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
+		defer {
+			deselectSelectedSong()
+			didDismissSongActions()
+		}
+		guard
+			MPMediaLibrary.authorizationStatus() == .authorized,
+			let selectedIndexPath = tableView.indexPathForSelectedRow
+		else { return }
+		
+		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		var mediaItemsToEnqueue = [MPMediaItem]()
+		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
+			guard
+				let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue] as? Song,
+				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
+			else { continue }
+			mediaItemsToEnqueue.append(mediaItemToEnqueue)
+		}
+		
+		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
+		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
+		
+		playerController?.setQueue(with: queueDescriptor)
+		
+		playerController?.repeatMode = .none
+		playerController?.shuffleMode = .off
+		playerController?.prepareToPlay()
+		playerController?.play()
+	}
+	
+	private func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
+		defer { didDismissSongActions() }
+		guard
+			MPMediaLibrary.authorizationStatus() == .authorized,
+			let selectedIndexPath = tableView.indexPathForSelectedRow
+		else {
+			deselectSelectedSong()
+			return
+		}
+		
+		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		var mediaItemsToEnqueue = [MPMediaItem]()
+		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
+			guard
+				let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue] as? Song,
+				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
+			else { continue }
+			mediaItemsToEnqueue.append(mediaItemToEnqueue)
+		}
+		
+		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
+		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
+		
+		playerController?.append(queueDescriptor)
+		
+		playerController?.repeatMode = .none
+		playerController?.shuffleMode = .off
+		if playerController?.playbackState != .playing {
+			playerController?.prepareToPlay()
+		}
+		
+		// Show explanation if the user is using this button for the first time
+		
+		guard let selectedSong = indexedLibraryItems[indexOfSelectedSong] as? Song else {
+			deselectSelectedSong()
+			return
+		}
+		
+		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
+		showExplanationIfNecessaryForEnqueueAction(
+//			userDefaultsKeyForShouldShowExplanation: "shouldShowExplanationForQueueAlbumStartingHere",
+			titleOfSelectedSong: titleOfSelectedSong,
+			numberOfSongsEnqueued: mediaItemsToEnqueue.count,
+			didCompleteInteraction: deselectSelectedSong)
+	}
+	
+	private func enqueueSelectedSong(_ sender: UIAlertAction) {
+		defer { didDismissSongActions() }
+		guard
+			MPMediaLibrary.authorizationStatus() == .authorized,
+			let selectedIndexPath = tableView.indexPathForSelectedRow
+		else {
+			deselectSelectedSong()
+			return
+		}
+		
+		let indexOfSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		guard
+			let song = indexedLibraryItems[indexOfSong] as? Song,
+			let mediaItem = song.mpMediaItem()
+		else {
+			deselectSelectedSong()
+			return
+		}
+		
+		let mediaItemCollection = MPMediaItemCollection(items: [mediaItem])
+		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
+		
+		playerController?.append(queueDescriptor)
+		
+		playerController?.repeatMode = .none
+		playerController?.shuffleMode = .off
+		if playerController?.playbackState != .playing {
+			playerController?.prepareToPlay()
+		}
+		
+		// Show explanation if the user is using this button for the first time
+		showExplanationIfNecessaryForEnqueueAction(
+//			userDefaultsKeyForShouldShowExplanation: "shouldShowExplanationForQueueSong",
+			titleOfSelectedSong: song.titleFormattedOrPlaceholder(),
+			numberOfSongsEnqueued: 1,
+			didCompleteInteraction: deselectSelectedSong)
+	}
+	
+	// MARK: Showing Explanation for Enqueue Actions
+	
+	private func showExplanationIfNecessaryForEnqueueAction(
+//		userDefaultsKeyForShouldShowExplanation: String,
+		titleOfSelectedSong: String,
+		numberOfSongsEnqueued: Int,
+		didCompleteInteraction: @escaping (() -> ())
+	) {
+		
+		
+//		UserDefaults.standard.removeObject(forKey: userDefaultsKeyForShouldShowExplanation) //
+		
+		
+//		let shouldShowExplanation = UserDefaults.standard.value(forKey: userDefaultsKeyForShouldShowExplanation) as? Bool ?? true
+//		
+//		guard shouldShowExplanation else {
+//			didCompleteInteraction()
+//			return
+//		}
+		
+		let alertTitle: String
+		switch numberOfSongsEnqueued {
+		case 1:
+			alertTitle  = "“\(titleOfSelectedSong)” Will Play Later"
+		case 2:
+			alertTitle = "“\(titleOfSelectedSong)” and 1 More Song Will Play Later"
+		default:
+//			alertTitle = "\(numberOfSongsEnqueued) Songs, Starting with “\(titleOfSelectedSong)”, Will Play Later"
+			alertTitle = "“\(titleOfSelectedSong)” and \(numberOfSongsEnqueued - 1) More Songs Will Play Later"
+		}
+		let alertMessage = "You can view and edit the queue in the Apple Music app."
+		
+		let alert = UIAlertController(
+			title: alertTitle,
+			message: alertMessage,
+			preferredStyle: .alert)
+//		alert.addAction(
+//			UIAlertAction(
+//				title: "Don’t Show Again",
+//				style: .default,
+//				handler: { _ in
+//					UserDefaults.standard.setValue(false, forKey: userDefaultsKeyForShouldShowExplanation)
+//					didCompleteInteraction()
+//				} ))
+		alert.addAction(
+			UIAlertAction(
+				title: "OK",
+				style: .default,
+				handler: { _ in
+//					UserDefaults.standard.setValue(false, forKey: userDefaultsKeyForShouldShowExplanation)
+					didCompleteInteraction()
+				} ))
+		present(alert, animated: true, completion: nil)
+	}
+	
+	// MARK: - Dismissing Actions
 	
 	private func didDismissSongActions() {
-		tableView.deselectAllRows(animated: true)
 		areSongActionsPresented = false
+	}
+	
+	private func deselectSelectedSong() {
+		tableView.deselectAllRows(animated: true)
 	}
 	
 }

@@ -19,6 +19,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //		print("\(NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).last!)")
 		
 		
+//		DispatchQueue.global(qos: .utility).async {
+//			for userDefaultsKeyToDelete in [
+//				"shouldShowExplanationForQueueAlbumStartingHere",
+//				"shouldShowExplanationForQueueSong"
+//			] {
+//				UserDefaults.standard.removeObject(forKey: userDefaultsKeyToDelete)
+//			}
+//		}
+		
+		
 		return true
 	}
 	

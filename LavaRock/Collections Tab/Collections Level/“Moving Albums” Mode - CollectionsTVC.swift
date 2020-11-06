@@ -39,7 +39,10 @@ extension CollectionsTVC {
 			!albumMoverClipboard.didAlreadyMakeNewCollection
 		else { return } // Without this, if you're fast, you can finish making a new Collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first Collection you made.
 		
-		let dialog = UIAlertController(title: "New Collection", message: nil, preferredStyle: .alert)
+		let dialog = UIAlertController(
+			title: "New Collection",
+			message: nil,
+			preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
 			textField.returnKeyType = .done

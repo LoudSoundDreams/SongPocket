@@ -19,7 +19,10 @@ extension CollectionsTVC {
 		isRenamingCollection = true
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
 		
-		let dialog = UIAlertController(title: "Rename Collection", message: nil, preferredStyle: .alert)
+		let dialog = UIAlertController(
+			title: "Rename Collection",
+			message: nil,
+			preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
 			// UITextInputTraits
 			textField.returnKeyType = .done
