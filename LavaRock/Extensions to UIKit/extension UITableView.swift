@@ -127,7 +127,7 @@ extension UITableView {
 			for (startingIndexPath, endingIndexPath) in startingAndEndingIndexPaths {
 				moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
-		} completion: { _ in (completion ?? { })() }
+		} completion: { _ in completion?() }
 	}
 	
 	// MARK: - Taking Action on Rows

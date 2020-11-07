@@ -22,6 +22,10 @@
 		073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColorManager.swift */; };
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Views - SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Views - SongsTVC.swift */; };
+		073E6A75255627D7003C84A5 /* CurrentSongIndicatorController - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A74255627D7003C84A5 /* CurrentSongIndicatorController - LibraryTVC.swift */; };
+		073E6A7A25562871003C84A5 /* protocol CurrentSongIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A7925562871003C84A5 /* protocol CurrentSongIndicatorController.swift */; };
+		073E6A8725562B93003C84A5 /* Views - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */; };
+		073E6A9225574B99003C84A5 /* protocol CurrentSongIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* protocol CurrentSongIndicator.swift */; };
 		07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07551BC324CFDFDD002D1B15 /* OptionsView.swift */; };
 		0765170224DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
@@ -95,6 +99,10 @@
 		073AF48924D16647000C1A6D /* AccentColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Views - SongsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - SongsTVC.swift"; sourceTree = "<group>"; };
+		073E6A74255627D7003C84A5 /* CurrentSongIndicatorController - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentSongIndicatorController - LibraryTVC.swift"; sourceTree = "<group>"; };
+		073E6A7925562871003C84A5 /* protocol CurrentSongIndicatorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol CurrentSongIndicatorController.swift"; sourceTree = "<group>"; };
+		073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - CollectionsTVC.swift"; sourceTree = "<group>"; };
+		073E6A9125574B98003C84A5 /* protocol CurrentSongIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol CurrentSongIndicator.swift"; sourceTree = "<group>"; };
 		07551BC324CFDFDD002D1B15 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedAlbumsToNewCollectionDetector.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -202,6 +210,9 @@
 			children = (
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */,
+				073E6A9125574B98003C84A5 /* protocol CurrentSongIndicator.swift */,
+				073E6A7925562871003C84A5 /* protocol CurrentSongIndicatorController.swift */,
+				073E6A74255627D7003C84A5 /* CurrentSongIndicatorController - LibraryTVC.swift */,
 				0719B57B2511A61F00748371 /* protocol PlaybackToolbarManager.swift */,
 				0719B57D2511CD4E00748371 /* PlaybackToolbarManager - LibraryTVC.swift */,
 				07F36BBD24FC3CCA0064282D /* UITableView - LibraryTVC.swift */,
@@ -318,6 +329,7 @@
 				07F36BC124FC3F450064282D /* UITableView - CollectionsTVC.swift */,
 				070E194024F33FC800B21307 /* Editing - CollectionsTVC.swift */,
 				07DC1B1F24F33C8C00AAEEDB /* “Moving Albums” Mode - CollectionsTVC.swift */,
+				073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */,
 			);
 			path = "Collections Level";
 			sourceTree = "<group>";
@@ -508,8 +520,10 @@
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0736E3A724B8415400A15420 /* Views - AlbumsTVC.swift in Sources */,
 				07DC1B2324F33E0500AAEEDB /* “Moving Albums” Mode - AlbumsTVC.swift in Sources */,
+				073E6A9225574B99003C84A5 /* protocol CurrentSongIndicator.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* Editing - LibraryTVC.swift in Sources */,
 				076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */,
+				073E6A7A25562871003C84A5 /* protocol CurrentSongIndicatorController.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
@@ -524,6 +538,7 @@
 				073CDBF324B82BBB00F6D2B1 /* Views - SongsTVC.swift in Sources */,
 				07F36BC224FC3F450064282D /* UITableView - CollectionsTVC.swift in Sources */,
 				07E92A1025104F9500E9073B /* Notifications - QueueTVC.swift in Sources */,
+				073E6A75255627D7003C84A5 /* CurrentSongIndicatorController - LibraryTVC.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
 				07A4F90F2519E8410065C87E /* func deleteManagedObjects.swift in Sources */,
 				07E92A0E2510497B00E9073B /* Song Actions.swift in Sources */,
@@ -545,6 +560,7 @@
 				0719B57C2511A61F00748371 /* protocol PlaybackToolbarManager.swift in Sources */,
 				07E92A0A2510434800E9073B /* QueueEntryCell.swift in Sources */,
 				07DC1B1A24F20C9E00AAEEDB /* extension NSManagedObjectContext.swift in Sources */,
+				073E6A8725562B93003C84A5 /* Views - CollectionsTVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

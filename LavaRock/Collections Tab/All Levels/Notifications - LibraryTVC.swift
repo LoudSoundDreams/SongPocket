@@ -191,7 +191,7 @@ extension LibraryTVC {
 				guard startingIndexPath != endingIndexPath else { continue } // (Might) prevent the table view from unnecessarily scrolling the top row to the top of the screen.
 				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
-		} completion: { _ in (completion ?? { })() }
+		} completion: { _ in completion?() }
 	}
 	
 	private func deleteAllRowsThenExit() {

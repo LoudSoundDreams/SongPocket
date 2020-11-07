@@ -134,7 +134,7 @@ extension SongsTVC {
 		
 		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
 		showExplanationIfNecessaryForEnqueueAction(
-//			userDefaultsKeyForShouldShowExplanation: "shouldShowExplanationForQueueAlbumStartingHere",
+//			userDefaultsKeyForShouldShowExplanation: "shouldExplainQueueAlbumStartingHere",
 			titleOfSelectedSong: titleOfSelectedSong,
 			numberOfSongsEnqueued: mediaItemsToEnqueue.count,
 			didCompleteInteraction: deselectSelectedSong)
@@ -172,7 +172,7 @@ extension SongsTVC {
 		
 		// Show explanation if the user is using this button for the first time
 		showExplanationIfNecessaryForEnqueueAction(
-//			userDefaultsKeyForShouldShowExplanation: "shouldShowExplanationForQueueSong",
+//			userDefaultsKeyForShouldShowExplanation: "shouldExplainQueueSong",
 			titleOfSelectedSong: song.titleFormattedOrPlaceholder(),
 			numberOfSongsEnqueued: 1,
 			didCompleteInteraction: deselectSelectedSong)
@@ -192,7 +192,7 @@ extension SongsTVC {
 		
 		
 //		let shouldShowExplanation = UserDefaults.standard.value(forKey: userDefaultsKeyForShouldShowExplanation) as? Bool ?? true
-//		
+//
 //		guard shouldShowExplanation else {
 //			didCompleteInteraction()
 //			return

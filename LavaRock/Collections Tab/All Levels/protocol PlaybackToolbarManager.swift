@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 
 protocol PlaybackToolbarManager {
 	var playbackToolbarButtons: [UIBarButtonItem] { get set }

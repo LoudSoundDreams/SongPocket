@@ -41,12 +41,12 @@ extension AlbumsTVC {
 			
 //			if PlayerControllerManager.shared.currentSong?.container == album {
 //				if playerController?.playbackState == .playing {
-//					cell.currentSongStatusImageView.image = UIImage(systemName: "speaker.wave.2.fill")
+//					cell.currentSongIndicatorImageView.image = UIImage(systemName: "speaker.wave.2.fill")
 //				} else {
-//					cell.currentSongStatusImageView.image = UIImage(systemName: "speaker.fill")
+//					cell.currentSongIndicatorImageView.image = UIImage(systemName: "speaker.fill")
 //				}
 //			} else {
-				cell.currentSongStatusImageView.image = nil
+				cell.currentSongIndicatorImageView.image = nil
 //			}
 			
 			
@@ -66,12 +66,12 @@ extension AlbumsTVC {
 			
 //			if PlayerControllerManager.shared.currentSong?.container == album {
 //				if playerController?.playbackState == .playing {
-//					cell.currentSongStatusImageView.image = UIImage(systemName: "speaker.wave.2.fill")
+//					cell.currentSongIndicatorImageView.image = UIImage(systemName: "speaker.wave.2.fill")
 //				} else {
-//					cell.currentSongStatusImageView.image = UIImage(systemName: "speaker.fill")
+//					cell.currentSongIndicatorImageView.image = UIImage(systemName: "speaker.fill")
 //				}
 //			} else {
-				cell.currentSongStatusImageView.image = nil
+				cell.currentSongIndicatorImageView.image = nil
 //			}
 			
 			

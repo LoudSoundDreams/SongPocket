@@ -27,10 +27,34 @@ extension CollectionsTVC {
 			
 			// Make, configure, and return the cell.
 			
+			/*
+			// Custom cell
+			
+			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CollectionCell
+			
+			cell.titleLabel.text = collection.title
+			
+			// "Moving Albums" mode
+			if let albumMoverClipboard = albumMoverClipboard {
+				if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+					cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+					cell.selectionStyle = .none
+					cell.accessibilityTraits.formUnion(.notEnabled) // should never change
+				}
+			}
+			*/
+			
+			
+			// Built-in cell
+			
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 			if #available(iOS 14, *) {
 				var configuration = cell.defaultContentConfiguration()
 				configuration.text = collection.title
+				
+				
+//				cell.accessoryView = UIImageView(image: UIImage(systemName: "speaker.wave.2.fill"))
+				
 				
 				// "Moving Albums" mode
 				if let albumMoverClipboard = albumMoverClipboard {
@@ -55,6 +79,7 @@ extension CollectionsTVC {
 					}
 				}
 			}
+			
 			
 			// Accessibility
 			let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(

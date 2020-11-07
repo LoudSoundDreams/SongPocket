@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 //		DispatchQueue.global(qos: .utility).async {
 //			for userDefaultsKeyToDelete in [
-//				"shouldShowExplanationForQueueAlbumStartingHere",
-//				"shouldShowExplanationForQueueSong"
+//				"shouldExplainQueueAlbumStartingHere",
+//				"shouldExplainQueueSong"
 //			] {
 //				UserDefaults.standard.removeObject(forKey: userDefaultsKeyToDelete)
 //			}
