@@ -71,7 +71,7 @@ extension LibraryTVC {
 	
 	// MARK: - After Possible Playback State Change
 	
-	// Subclasses that show a "current song" indicator should override this method, call super (this implementation), and update that indicator.
+	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func refreshToReflectPlaybackState() {
 		refreshBarButtons() // We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
 	}

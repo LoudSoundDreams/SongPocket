@@ -1,16 +1,15 @@
 //
-//  CurrentSongIndicatorController - LibraryTVC.swift
+//  NowPlayingIndicatorManager - SongsTVC.swift
 //  LavaRock
 //
-//  Created by h on 2020-11-06.
+//  Created by h on 2020-11-07.
 //
 
 import UIKit
-import MediaPlayer
 
-extension LibraryTVC/*: CurrentSongIndicatorController*/ {
+extension SongsTVC: NowPlayingIndicatorManager {
 	
-	final func currentSongIndicatorImageAndAccessibilityLabel(forRowAt indexPath: IndexPath) -> (UIImage?, String?) {
+	final func nowPlayingIndicator(forRowAt indexPath: IndexPath) -> (UIImage?, String?) {
 		if
 			let rowSong = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Song,
 			let rowMediaItem = rowSong.mpMediaItem(),

@@ -7,15 +7,21 @@
 
 import UIKit
 
-final class AlbumCell: UITableViewCell {
+final class AlbumCell:
+	UITableViewCell,
+	NowPlayingIndicator
+{
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var releaseDateLabel: UILabel!
-	@IBOutlet var currentSongIndicatorImageView: UIImageView!
+	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 }
 
-final class AlbumCellWithoutReleaseDate: UITableViewCell {
+final class AlbumCellWithoutReleaseDate:
+	UITableViewCell,
+	NowPlayingIndicator
+{
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var currentSongIndicatorImageView: UIImageView!
+	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 }

@@ -7,7 +7,10 @@
 
 import UIKit
 
-final class CollectionCell: UITableViewCell {
+final class CollectionCell:
+	UITableViewCell,
+	NowPlayingIndicator
+{
 	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var currentSongIndicatorImageView: UIImageView!
+	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 }

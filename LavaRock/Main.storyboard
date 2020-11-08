@@ -119,7 +119,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="currentSongIndicatorImageView" destination="ZA8-cG-C8X" id="nDR-0V-1wC"/>
+                                    <outlet property="nowPlayingIndicatorImageView" destination="ZA8-cG-C8X" id="nDR-0V-1wC"/>
                                     <outlet property="titleLabel" destination="SFb-dV-xDe" id="IjH-9w-2tc"/>
                                     <segue destination="DGZ-AG-uNY" kind="show" identifier="Drill Down in Library" id="Egm-ag-jV8"/>
                                 </connections>
@@ -488,7 +488,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artworkImageView" destination="dHe-RO-OqD" id="MxJ-gU-xuo"/>
-                                    <outlet property="currentSongIndicatorImageView" destination="5XX-Pg-W27" id="xvU-hP-ixe"/>
+                                    <outlet property="nowPlayingIndicatorImageView" destination="5XX-Pg-W27" id="xvU-hP-ixe"/>
                                     <outlet property="releaseDateLabel" destination="Izv-yI-Ddf" id="HTq-aZ-cB9"/>
                                     <outlet property="titleLabel" destination="Ebr-IM-9g1" id="12z-03-Qgo"/>
                                     <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="yEs-VP-boX"/>
@@ -534,7 +534,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artworkImageView" destination="flP-P1-X1o" id="icF-WO-8AU"/>
-                                    <outlet property="currentSongIndicatorImageView" destination="FWg-a3-lhS" id="8Ru-hR-Q1H"/>
+                                    <outlet property="nowPlayingIndicatorImageView" destination="FWg-a3-lhS" id="8Ru-hR-Q1H"/>
                                     <outlet property="titleLabel" destination="rXc-N2-njc" id="84F-7s-y0D"/>
                                     <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="7xD-nn-FhG"/>
                                 </connections>
@@ -732,7 +732,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="currentSongIndicatorImageView" destination="VRK-dB-HAw" id="hJH-Eb-hYY"/>
+                                    <outlet property="nowPlayingIndicatorImageView" destination="VRK-dB-HAw" id="hJH-Eb-hYY"/>
                                     <outlet property="titleLabel" destination="TnF-8u-0pb" id="nfY-h1-EDB"/>
                                     <outlet property="trackNumberLabel" destination="gGs-MB-auE" id="eZ1-8X-3si"/>
                                 </connections>
@@ -790,7 +790,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artistLabel" destination="4ZB-Qq-JY2" id="0Ih-29-wU1"/>
-                                    <outlet property="currentSongIndicatorImageView" destination="WdO-9k-h95" id="ri2-iY-m3p"/>
+                                    <outlet property="nowPlayingIndicatorImageView" destination="WdO-9k-h95" id="ri2-iY-m3p"/>
                                     <outlet property="titleLabel" destination="DAu-f6-M3i" id="RBU-KW-LbW"/>
                                     <outlet property="trackNumberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                 </connections>
@@ -861,7 +861,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="currentSongIndicatorImageView" destination="sd4-WK-ea6" id="bEz-xH-lc0"/>
+                                    <outlet property="nowPlayingIndicatorImageView" destination="sd4-WK-ea6" id="bEz-xH-lc0"/>
                                     <outlet property="titleLabel" destination="t35-xm-5yN" id="wWh-iH-4ik"/>
                                     <outlet property="trackNumberLabel" destination="rif-LJ-CL8" id="YKf-hc-j1D"/>
                                 </connections>

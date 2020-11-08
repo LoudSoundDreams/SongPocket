@@ -61,28 +61,20 @@ extension SongsTVC {
 				let cellArtist = song.artistFormatted(),
 				cellArtist != (containerOfData as! Album).albumArtistFormattedOrPlaceholder()
 			{
-				let cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
+				var cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
 				cell.artistLabel.text = cellArtist
 				
 				cell.titleLabel.text = cellTitle
-				let currentSongIndicator = currentSongIndicatorImageAndAccessibilityLabel(forRowAt: indexPath)
-				let currentSongIndicatorImage = currentSongIndicator.0
-				let currentSongIndicatorAccessibilityLabel = currentSongIndicator.1
-				cell.currentSongIndicatorImageView.image = currentSongIndicatorImage
-				cell.accessibilityValue = currentSongIndicatorAccessibilityLabel
+				cell.apply(nowPlayingIndicator: nowPlayingIndicator(forRowAt: indexPath))
 				cell.trackNumberLabel.text = cellTrackNumberText
 				cell.trackNumberLabel.font = monospacedNumbersBodyFont
 				return cell
 				
 			} else { // The song's artist is not useful, or it's the same as the album artist.
-				let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
+				var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
 				
 				cell.titleLabel.text = cellTitle
-				let currentSongIndicator = currentSongIndicatorImageAndAccessibilityLabel(forRowAt: indexPath)
-				let currentSongIndicatorImage = currentSongIndicator.0
-				let currentSongIndicatorAccessibilityLabel = currentSongIndicator.1
-				cell.currentSongIndicatorImageView.image = currentSongIndicatorImage
-				cell.accessibilityValue = currentSongIndicatorAccessibilityLabel
+				cell.apply(nowPlayingIndicator: nowPlayingIndicator(forRowAt: indexPath))
 				cell.trackNumberLabel.text = cellTrackNumberText
 				cell.trackNumberLabel.font = monospacedNumbersBodyFont
 				return cell
@@ -90,14 +82,6 @@ extension SongsTVC {
 			
 		}
 	}
-	
-//	private func applyCurrentSongIndicator<T: CurrentSongIndicator>(
-//		cell: T,
-//		imageAndAccessibilityLabel: (UIImage?, String?)
-//	) {
-//		cell.currentSongIndicatorImageView.image = imageAndAccessibilityLabel.0
-//		cell. // accessibility label
-//	}
 	
 	// MARK: - Selecting
 	
