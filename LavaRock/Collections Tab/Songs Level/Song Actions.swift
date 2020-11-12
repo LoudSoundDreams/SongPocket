@@ -201,11 +201,13 @@ extension SongsTVC {
 		let alertTitle: String
 		switch numberOfSongsEnqueued {
 		case 1:
+//			alertTitle  = "“\(titleOfSelectedSong)” will play later."
 			alertTitle  = "“\(titleOfSelectedSong)” Will Play Later"
 		case 2:
+//			alertTitle = "“\(titleOfSelectedSong)” and 1 more song will play later."
 			alertTitle = "“\(titleOfSelectedSong)” and 1 More Song Will Play Later"
 		default:
-//			alertTitle = "\(numberOfSongsEnqueued) Songs, Starting with “\(titleOfSelectedSong)”, Will Play Later"
+//			alertTitle = "“\(titleOfSelectedSong)” and \(numberOfSongsEnqueued - 1) more songs will play later."
 			alertTitle = "“\(titleOfSelectedSong)” and \(numberOfSongsEnqueued - 1) More Songs Will Play Later"
 		}
 		let alertMessage = "You can view and edit the queue in the Apple Music app."

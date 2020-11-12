@@ -10,6 +10,8 @@ import UIKit
 protocol NowPlayingIndicator {
 	var nowPlayingIndicatorImageView: UIImageView! { get set }
 	var accessibilityValue: String? { get set }
+	
+	mutating func apply(nowPlayingIndicator: (UIImage?, String?))
 }
 
 extension NowPlayingIndicator {
