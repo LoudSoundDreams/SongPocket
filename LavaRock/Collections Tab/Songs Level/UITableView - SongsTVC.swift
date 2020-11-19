@@ -54,6 +54,8 @@ extension SongsTVC {
 			// Get the data to put into the cell.
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			let cellTitle = song.titleFormattedOrPlaceholder()
+			let isNowPlayingSong = isNowPlayingItem(at: indexPath)
+			let cellNowPlayingIndicator = nowPlayingIndicator(isNowPlayingItem: isNowPlayingSong)
 			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.
@@ -65,7 +67,7 @@ extension SongsTVC {
 				cell.artistLabel.text = cellArtist
 				
 				cell.titleLabel.text = cellTitle
-				cell.apply(nowPlayingIndicator: nowPlayingIndicator(forRowAt: indexPath))
+				cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 				cell.trackNumberLabel.text = cellTrackNumberText
 				cell.trackNumberLabel.font = monospacedNumbersBodyFont
 				return cell
@@ -74,7 +76,7 @@ extension SongsTVC {
 				var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
 				
 				cell.titleLabel.text = cellTitle
-				cell.apply(nowPlayingIndicator: nowPlayingIndicator(forRowAt: indexPath))
+				cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 				cell.trackNumberLabel.text = cellTrackNumberText
 				cell.trackNumberLabel.font = monospacedNumbersBodyFont
 				return cell

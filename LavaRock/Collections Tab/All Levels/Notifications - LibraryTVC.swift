@@ -54,6 +54,7 @@ extension LibraryTVC {
 	@objc func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .LRDidSaveChangesFromAppleMusic:
+			PlayerControllerManager.shared.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
 			didSaveChangesFromAppleMusic()
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
@@ -62,6 +63,7 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerPlaybackStateDidChange,
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
+			PlayerControllerManager.shared.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
 			refreshToReflectPlaybackState()
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
@@ -74,6 +76,21 @@ extension LibraryTVC {
 	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func refreshToReflectPlaybackState() {
 		refreshBarButtons() // We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
+	}
+	
+	// LibraryTVC itself doesn't call this, but its subclasses might want to.
+	final func refreshNowPlayingIndicators(
+		isNowPlayingItemDeterminer: (IndexPath) -> Bool
+	) {
+		for indexPath in tableView.indexPathsEnumeratedIn(
+			section: 0,
+			firstRow: numberOfRowsAboveIndexedLibraryItems)
+		{
+			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue }
+			let isNowPlayingItem = isNowPlayingItemDeterminer(indexPath)
+			let indicator = nowPlayingIndicator(isNowPlayingItem: isNowPlayingItem)
+			cell.applyNowPlayingIndicator(indicator)
+		}
 	}
 	
 	// MARK: - After Importing Changes from Apple Music Library
@@ -95,6 +112,8 @@ extension LibraryTVC {
 	}
 	
 	final func refreshDataAndViews() {
+		refreshToReflectPlaybackState() // So that when we refresh CollectionsTVC, the "now playing" indicator never momentarily appears on more than one row.
+		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
 		

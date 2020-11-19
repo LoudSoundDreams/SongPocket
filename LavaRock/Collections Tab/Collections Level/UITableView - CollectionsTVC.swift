@@ -27,12 +27,15 @@ extension CollectionsTVC {
 			
 			// Make, configure, and return the cell.
 			
-			/*
+			
 			// Custom cell
 			
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CollectionCell
+			var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CollectionCell
 			
 			cell.titleLabel.text = collection.title
+			let isNowPlayingCollection = isNowPlayingItem(at: indexPath)
+			let cellNowPlayingIndicator = nowPlayingIndicator(isNowPlayingItem: isNowPlayingCollection)
+			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 			
 			// "Moving Albums" mode
 			if let albumMoverClipboard = albumMoverClipboard {
@@ -42,19 +45,15 @@ extension CollectionsTVC {
 					cell.accessibilityTraits.formUnion(.notEnabled) // should never change
 				}
 			}
-			*/
 			
 			
+			/*
 			// Built-in cell
 			
 			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 			if #available(iOS 14, *) {
 				var configuration = cell.defaultContentConfiguration()
 				configuration.text = collection.title
-				
-				
-//				cell.accessoryView = UIImageView(image: UIImage(systemName: "speaker.wave.2.fill"))
-				
 				
 				// "Moving Albums" mode
 				if let albumMoverClipboard = albumMoverClipboard {
@@ -79,9 +78,8 @@ extension CollectionsTVC {
 					}
 				}
 			}
+			*/
 			
-			
-			// Accessibility
 			let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(
 				name: "Rename",
 				actionHandler: { _ in self.renameAccessibilityFocusedCollection() } )

@@ -200,14 +200,12 @@ extension SongsTVC {
 		
 		let alertTitle: String
 		switch numberOfSongsEnqueued {
+		// The iOS HIG says to use sentence case and ending punctuation for alert titles that are complete sentences (e.g., "Song Title and 1 more song will play later."), but Apple doesn't follow its own advice.
 		case 1:
-//			alertTitle  = "“\(titleOfSelectedSong)” will play later."
 			alertTitle  = "“\(titleOfSelectedSong)” Will Play Later"
 		case 2:
-//			alertTitle = "“\(titleOfSelectedSong)” and 1 more song will play later."
 			alertTitle = "“\(titleOfSelectedSong)” and 1 More Song Will Play Later"
 		default:
-//			alertTitle = "“\(titleOfSelectedSong)” and \(numberOfSongsEnqueued - 1) more songs will play later."
 			alertTitle = "“\(titleOfSelectedSong)” and \(numberOfSongsEnqueued - 1) More Songs Will Play Later"
 		}
 		let alertMessage = "You can view and edit the queue in the Apple Music app."
@@ -221,7 +219,7 @@ extension SongsTVC {
 //				title: "Don’t Show Again",
 //				style: .default,
 //				handler: { _ in
-//					UserDefaults.standard.setValue(false, forKey: userDefaultsKeyForShouldShowExplanation)
+//					UserDefaults.standard.setValue(false, forKey: )
 //					didCompleteInteraction()
 //				} ))
 		alert.addAction(
@@ -229,7 +227,7 @@ extension SongsTVC {
 				title: "OK",
 				style: .default,
 				handler: { _ in
-//					UserDefaults.standard.setValue(false, forKey: userDefaultsKeyForShouldShowExplanation)
+//					UserDefaults.standard.setValue(false, forKey: )
 					didCompleteInteraction()
 				} ))
 		present(alert, animated: true, completion: nil)

@@ -11,14 +11,12 @@ protocol NowPlayingIndicator {
 	var nowPlayingIndicatorImageView: UIImageView! { get set }
 	var accessibilityValue: String? { get set }
 	
-	mutating func apply(nowPlayingIndicator: (UIImage?, String?))
+	mutating func applyNowPlayingIndicator(_ nowPlayingIndicator: (UIImage?, String?))
 }
 
 extension NowPlayingIndicator {
 	
-	mutating func apply(
-		nowPlayingIndicator: (UIImage?, String?)
-	) {
+	mutating func applyNowPlayingIndicator(_ nowPlayingIndicator: (UIImage?, String?)) {
 		nowPlayingIndicatorImageView.image = nowPlayingIndicator.0
 		accessibilityValue = nowPlayingIndicator.1
 	}

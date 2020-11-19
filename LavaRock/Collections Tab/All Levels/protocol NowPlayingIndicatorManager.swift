@@ -8,5 +8,5 @@
 import UIKit
 
 protocol NowPlayingIndicatorManager {
-	func nowPlayingIndicator(forRowAt indexPath: IndexPath) -> (UIImage?, String?)
+	func isNowPlayingItem(at indexPath: IndexPath) -> Bool
 }

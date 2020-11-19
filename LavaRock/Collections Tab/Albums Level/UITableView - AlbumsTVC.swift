@@ -22,59 +22,34 @@ extension AlbumsTVC {
 		let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
-//		print(indexPath)
-//		print(album.titleFormattedOrPlaceholder())
-		
 		let cellTitle = album.titleFormattedOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
+		let isNowPlayingAlbum = isNowPlayingItem(at: indexPath)
+		let cellNowPlayingIndicator = nowPlayingIndicator(isNowPlayingItem: isNowPlayingAlbum)
 		
 		// Make, configure, and return the cell.
 		if let cellSubtitle = cellSubtitle {
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
+			var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
 			cell.releaseDateLabel.text = cellSubtitle
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 			cell.artworkImageView.image = cellImage
 			cell.titleLabel.text = cellTitle
-			
-			
-//			if PlayerControllerManager.shared.currentSong?.container == album {
-//				if playerController?.playbackState == .playing {
-//					cell.nowPlayingIndicatorImageView.image = UIImage(systemName: "speaker.wave.2.fill")
-//				} else {
-//					cell.nowPlayingIndicatorImageView.image = UIImage(systemName: "speaker.fill")
-//				}
-//			} else {
-				cell.nowPlayingIndicatorImageView.image = nil
-//			}
-			
-			
+			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
 			return cell
 			
 		} else { // We couldn't determine the album's release date.
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Cell Without Release Date", for: indexPath) as! AlbumCellWithoutReleaseDate
+			var cell = tableView.dequeueReusableCell(withIdentifier: "Cell Without Release Date", for: indexPath) as! AlbumCellWithoutReleaseDate
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 			cell.artworkImageView.image = cellImage
 			cell.titleLabel.text = cellTitle
-			
-			
-//			if PlayerControllerManager.shared.currentSong?.container == album {
-//				if playerController?.playbackState == .playing {
-//					cell.nowPlayingIndicatorImageView.image = UIImage(systemName: "speaker.wave.2.fill")
-//				} else {
-//					cell.nowPlayingIndicatorImageView.image = UIImage(systemName: "speaker.fill")
-//				}
-//			} else {
-				cell.nowPlayingIndicatorImageView.image = nil
-//			}
-			
-			
+			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}

@@ -10,6 +10,14 @@ import CoreData
 
 extension CollectionsTVC {
 	
+	// MARK: - After Possible Playback State Change
+	
+	override func refreshToReflectPlaybackState() {
+		super.refreshToReflectPlaybackState()
+		
+		refreshNowPlayingIndicators(isNowPlayingItemDeterminer: isNowPlayingItem(at:))
+	}
+	
 	// MARK: - Refreshing Data and Views
 	
 	override func prepareToRefreshDataAndViews(

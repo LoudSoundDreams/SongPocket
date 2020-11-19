@@ -15,17 +15,7 @@ extension SongsTVC {
 	override func refreshToReflectPlaybackState() {
 		super.refreshToReflectPlaybackState()
 		
-		refreshNowPlayingIndicators()
-	}
-	
-	private func refreshNowPlayingIndicators() {
-		for indexPath in tableView.indexPathsEnumeratedIn(
-			section: 0,
-			firstRow: numberOfRowsAboveIndexedLibraryItems)
-		{
-			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue }
-			cell.apply(nowPlayingIndicator: nowPlayingIndicator(forRowAt: indexPath))
-		}
+		refreshNowPlayingIndicators(isNowPlayingItemDeterminer: isNowPlayingItem(at:))
 	}
 	
 	// MARK: - Refreshing Data and Views
