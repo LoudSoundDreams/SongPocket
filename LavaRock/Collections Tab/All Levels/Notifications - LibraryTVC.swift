@@ -95,7 +95,10 @@ extension LibraryTVC {
 	
 	// MARK: - After Importing Changes from Apple Music Library
 	
+	// Rename this to refreshToReflectAppleMusicLibrary()?
 	private func didSaveChangesFromAppleMusic() {
+		refreshToReflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by swiping back, the "now playing" indicators are already updated.
+		
 		if refreshesAfterDidSaveChangesFromAppleMusic {
 			refreshDataAndViewsWhenVisible()
 		}
@@ -112,8 +115,6 @@ extension LibraryTVC {
 	}
 	
 	final func refreshDataAndViews() {
-		refreshToReflectPlaybackState() // So that when we refresh CollectionsTVC, the "now playing" indicator never momentarily appears on more than one row.
-		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
 		

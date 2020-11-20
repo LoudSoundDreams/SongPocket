@@ -73,11 +73,13 @@ final class CollectionsTVC:
 			
 		} else {
 			toolbarButtonsEditingModeOnly = [
+				sortButton,
 				flexibleSpaceBarButtonItem,
 				floatToTopButton,
 				flexibleSpaceBarButtonItem,
 				sinkToBottomButton
 			]
+			sortOptions = ["Title"]
 		}
 	}
 	
@@ -90,6 +92,9 @@ final class CollectionsTVC:
 			collection.contents?.count == 0
 		{
 			collectionToDeleteBeforeNextRefresh = collection
+			
+			// Replace this with didSaveChangesFromAppleMusic()?
+			refreshToReflectPlaybackState() // So that the "now playing" indicator never momentarily appears on more than one row.
 			refreshDataAndViewsWhenVisible()
 		}
 	}
@@ -100,7 +105,11 @@ final class CollectionsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
+				
+				// Replace this with didSaveChangesFromAppleMusic()?
+				refreshToReflectPlaybackState() // So that the "now playing" indicator never momentarily appears on more than one row.
 				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums" sheet.
+				
 				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
 			}
 		}

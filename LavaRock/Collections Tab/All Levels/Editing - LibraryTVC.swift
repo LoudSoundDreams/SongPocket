@@ -206,40 +206,44 @@ extension LibraryTVC {
 	}
 	
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
-	private func sorted(_ indexPathsAndItems: [(IndexPath, NSManagedObject)], by sortOption: String?) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
+	private func sorted(
+		_ indexPathsAndItemsImmutable: [(IndexPath, NSManagedObject)],
+		by sortOption: String?
+	) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
 		switch sortOption {
 		
-		/*
 		case "Title":
-		// Ignore articles ("the", "a", and "an")?
-		return indexPathsAndItems.sorted(by: {
+			var indexPathsAndItemsCopy = indexPathsAndItemsImmutable
+			if self is CollectionsTVC {
+				indexPathsAndItemsCopy.sort {
+					// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
+					let collectionTitle0 = ($0.1 as? Collection)?.title ?? ""
+					let collectionTitle1 = ($1.1 as? Collection)?.title ?? ""
+					let comparisonResult = collectionTitle0.localizedStandardCompare(collectionTitle1) // The comparison method that the Finder uses
+					return comparisonResult == .orderedAscending
+				}
+			}
+			// If we're sorting Albums or Songs, use the methods in `extension Album` or `extension Song` to fetch their titles (or placeholders).
+			return indexPathsAndItemsCopy
 		
-		// If we're sorting Collections:
-		($0.1.value(forKey: "title") as? String ?? "") < ($1.1.value(forKey: "title") as? String ?? "")
-		
-		// If we're sorting Albums or Songs, use the methods in `extension Album` or `extension Song` to fetch their titles (or placeholders).
-		
-		
-		} )
-		*/
-		
+		// Albums only
 		case "Newest First":
 			let commonDate = Date()
-			return indexPathsAndItems.sorted {
+			return indexPathsAndItemsImmutable.sorted {
 				($0.1 as? Album)?.releaseDateEstimate ?? commonDate >
 					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
 			}
-			
 		case "Oldest First":
 			let commonDate = Date()
-			return indexPathsAndItems.sorted {
+			return indexPathsAndItemsImmutable.sorted {
 				($0.1 as? Album)?.releaseDateEstimate ?? commonDate <
 					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
 			}
-			
+		
+		// Songs only
 		case "Track Number":
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
-			let sortedByTrackNumber = indexPathsAndItems.sorted {
+			let sortedByTrackNumber = indexPathsAndItemsImmutable.sorted {
 				($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 <
 					($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0
 			}
@@ -255,7 +259,7 @@ extension LibraryTVC {
 			
 		default:
 			print("The user tried to sort by “\(sortOption ?? "")”, which isn’t a supported option. It might be misspelled.")
-			return indexPathsAndItems // Otherwise, the app will crash when it tries to call moveRowsUpToEarliestRow on an empty array. Escaping here is easier than changing the logic to use optionals.
+			return indexPathsAndItemsImmutable // Otherwise, the app will crash when it tries to call moveRowsUpToEarliestRow on an empty array. Escaping here is easier than changing the logic to use optionals.
 		}
 	}
 	
