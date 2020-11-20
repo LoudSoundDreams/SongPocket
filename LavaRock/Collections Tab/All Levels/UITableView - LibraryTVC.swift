@@ -14,7 +14,7 @@ extension LibraryTVC {
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		// You need to accommodate 2 special cases:
-		// 1. When the user hasn't allowed access to Apple Music, use the "Allow Access to Apple Music" cell as a button.
+		// 1. When the user hasn't allowed access to Apple Music, use the "allow access" cell as a button.
 		// 2. When there are no items, set the no-content placeholder to the background view.
 		refreshBarButtons()
 		switch MPMediaLibrary.authorizationStatus() {
@@ -37,12 +37,12 @@ extension LibraryTVC {
 			}
 		default:
 			tableView.backgroundView = nil
-			return 1 // "Allow Access" cell
+			return 1 // "allow access" cell
 		}
 	}
 	
 	// All subclasses should override this.
-	// Also, all subclasses should check the authorization status for the Apple Music library, and if the user hasn't granted authorization yet, they should call super (this implementation) to return the "Allow Access" cell.
+	// Also, all subclasses should check the authorization status for the Apple Music library, and if the user hasn't granted authorization yet, they should call super (this implementation) to return the "allow access" cell.
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return allowAccessCell(for: indexPath)
@@ -54,7 +54,7 @@ extension LibraryTVC {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) // We need a copy of this cell in every scene in the storyboard that might use it.
 		if #available(iOS 14.0, *) {
 			var configuration = UIListContentConfiguration.cell()
-			configuration.text = "Allow Access to Apple Music"
+			configuration.text = "Allow Access to Music"
 			configuration.textProperties.color = view.window?.tintColor ?? UIColor.systemBlue
 			cell.contentConfiguration = configuration
 		} else { // iOS 13 and earlier

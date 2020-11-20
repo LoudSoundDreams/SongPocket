@@ -208,7 +208,7 @@ extension SongsTVC {
 		default:
 			alertTitle = "“\(titleOfSelectedSong)” and \(numberOfSongsEnqueued - 1) More Songs Will Play Later"
 		}
-		let alertMessage = "You can view and edit the queue in the Apple Music app."
+		let alertMessage = "You can edit the queue in the built-in Music app."
 		
 		let alert = UIAlertController(
 			title: alertTitle,
