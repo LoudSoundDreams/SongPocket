@@ -14,7 +14,7 @@ extension SongsTVC {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return super.tableView(tableView, cellForRowAt: indexPath)
+			return UITableViewCell()
 		}
 		
 		if indexPath.row == 0 {

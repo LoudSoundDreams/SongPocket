@@ -10,7 +10,7 @@ import MediaPlayer
 
 extension LibraryTVC {
 	
-	// MARK: - Cells
+	// MARK: - Rows
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		// You need to accommodate 2 special cases:
@@ -41,27 +41,11 @@ extension LibraryTVC {
 		}
 	}
 	
-	// All subclasses should override this.
-	// Also, all subclasses should check the authorization status for the Apple Music library, and if the user hasn't granted authorization yet, they should call super (this implementation) to return the "allow access" cell.
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return allowAccessCell(for: indexPath)
-		}
-		return UITableViewCell()
-	}
+	// MARK: Cells
 	
-	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) // We need a copy of this cell in every scene in the storyboard that might use it.
-		if #available(iOS 14.0, *) {
-			var configuration = UIListContentConfiguration.cell()
-			configuration.text = "Allow Access to Music"
-			configuration.textProperties.color = view.window?.tintColor ?? UIColor.systemBlue
-			cell.contentConfiguration = configuration
-		} else { // iOS 13 and earlier
-			cell.textLabel?.textColor = view.window?.tintColor
-		}
-		cell.accessibilityTraits.formUnion(.button) // should never change
-		return cell
+	// All subclasses should override this.
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		return UITableViewCell()
 	}
 	
 	// MARK: - Editing
@@ -112,7 +96,7 @@ extension LibraryTVC {
 		case .authorized:
 			break
 		case .notDetermined: // The golden opportunity.
-			MPMediaLibrary.requestAuthorization() { newStatus in // Fires the alert asking the user for access.
+			MPMediaLibrary.requestAuthorization { newStatus in
 				switch newStatus {
 				case .authorized:
 					DispatchQueue.main.async { self.didReceiveAuthorizationForAppleMusic() }

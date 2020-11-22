@@ -11,7 +11,7 @@ import MediaPlayer
 /*
 extension QueueTVC {
 	
-	// MARK: - Cells
+	// MARK: - Rows
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		refreshButtons()
@@ -38,6 +38,8 @@ extension QueueTVC {
 		}
 		return numberOfNonQueueEntryCells
 	}
+	
+	// MARK: Cells
 	
 	/*
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

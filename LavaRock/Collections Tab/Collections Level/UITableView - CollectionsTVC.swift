@@ -14,7 +14,7 @@ extension CollectionsTVC {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return super.tableView(tableView, cellForRowAt: indexPath)
+			return allowAccessCell(for: indexPath)
 		}
 		
 		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
@@ -42,7 +42,11 @@ extension CollectionsTVC {
 				if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 					cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 					cell.selectionStyle = .none
-					cell.accessibilityTraits.formUnion(.notEnabled) // should never change
+					cell.accessibilityTraits.formUnion(.notEnabled)
+				} else { // Undo changes made to the disabled cell
+					cell.titleLabel.textColor = UIColor.label
+					cell.selectionStyle = .default
+					cell.accessibilityTraits.remove(.notEnabled)
 				}
 			}
 			
@@ -60,7 +64,11 @@ extension CollectionsTVC {
 					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						configuration.textProperties.color = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 						cell.selectionStyle = .none
-						cell.accessibilityTraits.formUnion(.notEnabled) // should never change
+						cell.accessibilityTraits.formUnion(.notEnabled)
+					} else { // Undo changes made to the disabled cell
+						configuration.textProperties.color = .label
+						cell.selectionStyle = .default
+						cell.accessibilityTraits.remove(.notEnabled)
 					}
 				}
 				
@@ -74,7 +82,11 @@ extension CollectionsTVC {
 					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 						cell.textLabel?.isEnabled = false
 						cell.selectionStyle = .none
-						cell.accessibilityTraits.formUnion(.notEnabled) // should never change
+						cell.accessibilityTraits.formUnion(.notEnabled)
+					} else { // Undo changes made to the disabled cell
+						cell.textLabel?.isEnabled = true
+						cell.selectionStyle = .default
+						cell.accessibilityTraits.remove(.notEnabled)
 					}
 				}
 			}
@@ -112,6 +124,33 @@ extension CollectionsTVC {
 			return false
 		}
 	}
+	
+	// MARK: "Allow Access" Cell
+	
+	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) as? AllowAccessCell else {
+			return UITableViewCell()
+		}
+		
+		cell.label.textColor = view.window?.tintColor
+		cell.accessibilityTraits.formUnion(.button) // should never change
+		
+		return cell
+	}
+	
+//	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
+//		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath)
+//		if #available(iOS 14.0, *) {
+//			var configuration = UIListContentConfiguration.cell()
+//			configuration.text = "Allow Access to Music"
+//			configuration.textProperties.color = view.window?.tintColor ?? UIColor.systemBlue
+//			cell.contentConfiguration = configuration
+//		} else { // iOS 13 and earlier
+//			cell.textLabel?.textColor = view.window?.tintColor
+//		}
+//		cell.accessibilityTraits.formUnion(.button) // should never change
+//		return cell
+//	}
 	
 	// MARK: - Editing
 	

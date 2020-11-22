@@ -7,6 +7,10 @@
 
 import UIKit
 
+final class AllowAccessCell: UITableViewCell {
+	@IBOutlet var label: UILabel!
+}
+
 final class CollectionCell:
 	UITableViewCell,
 	NowPlayingIndicator
