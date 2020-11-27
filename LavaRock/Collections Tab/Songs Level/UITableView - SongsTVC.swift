@@ -20,7 +20,7 @@ extension SongsTVC {
 		if indexPath.row == 0 {
 			
 			// Get the data to put into the cell.
-			let album = containerOfData as! Album
+			let album = containerOfLibraryItems as! Album
 			let representativeItem = album.mpMediaItemCollection()?.representativeItem
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
 			
@@ -32,7 +32,7 @@ extension SongsTVC {
 		} else if indexPath.row == 1 {
 			
 			// Get the data to put into the cell.
-			let album = containerOfData as! Album
+			let album = containerOfLibraryItems as! Album
 			let cellHeading = album.albumArtistFormattedOrPlaceholder()
 			let cellSubtitle = album.releaseDateEstimateFormatted()
 			
@@ -61,7 +61,7 @@ extension SongsTVC {
 			// Make, configure, and return the cell.
 			if
 				let cellArtist = song.artistFormatted(),
-				cellArtist != (containerOfData as! Album).albumArtistFormattedOrPlaceholder()
+				cellArtist != (containerOfLibraryItems as! Album).albumArtistFormattedOrPlaceholder()
 			{
 				var cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
 				cell.artistLabel.text = cellArtist

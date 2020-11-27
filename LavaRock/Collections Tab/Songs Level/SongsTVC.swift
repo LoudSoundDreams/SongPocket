@@ -58,7 +58,7 @@ final class SongsTVC:
 	}
 	
 	final func refreshNavigationItemTitle() {
-		if let containingAlbum = containerOfData as? Album {
+		if let containingAlbum = containerOfLibraryItems as? Album {
 			title = containingAlbum.titleFormattedOrPlaceholder()
 		}
 	}

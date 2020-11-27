@@ -21,7 +21,7 @@ extension AlbumsTVC {
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
 		
-		guard let idOfSourceCollection = containerOfData?.objectID else { return }
+		guard let idOfSourceCollection = containerOfLibraryItems?.objectID else { return }
 		
 		// Note the Albums to move, and to not move.
 		
@@ -105,7 +105,7 @@ extension AlbumsTVC {
 		
 		for index in 0..<albumsToMove.count {
 			let album = albumsToMove[index]
-			album.container = containerOfData as? Collection
+			album.container = containerOfLibraryItems as? Collection
 			indexedLibraryItems.insert(album, at: index)
 		}
 		managedObjectContext.tryToSaveSynchronously()

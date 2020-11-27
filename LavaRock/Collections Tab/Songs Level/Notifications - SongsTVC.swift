@@ -36,8 +36,8 @@ extension SongsTVC {
 	}
 	
 	// This is the same as in AlbumsTVC.
-	override func refreshContainerOfData() {
-		super.refreshContainerOfData()
+	override func refreshContainerOfLibraryItems() {
+		super.refreshContainerOfLibraryItems()
 		
 		refreshNavigationItemTitle()
 	}

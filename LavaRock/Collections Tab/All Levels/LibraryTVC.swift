@@ -21,7 +21,7 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses should customize
 	var coreDataEntityName = "Collection"
-	var containerOfData: NSManagedObject?
+	var containerOfLibraryItems: NSManagedObject?
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
@@ -142,8 +142,8 @@ class LibraryTVC:
 	// MARK: Loading Data
 	
 	final func reloadIndexedLibraryItems() {
-		if let containerOfData = containerOfData {
-			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfData)
+		if let containerOfLibraryItems = containerOfLibraryItems {
+			coreDataFetchRequest.predicate = NSPredicate(format: "container == %@", containerOfLibraryItems)
 		}
 		
 		indexedLibraryItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
@@ -282,7 +282,7 @@ class LibraryTVC:
 		{
 			destination.managedObjectContext = managedObjectContext
 			let selectedItem = indexedLibraryItems[selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems]
-			destination.containerOfData = selectedItem
+			destination.containerOfLibraryItems = selectedItem
 		}
 		
 		super.prepare(for: segue, sender: sender)

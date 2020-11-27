@@ -127,6 +127,7 @@ extension CollectionsTVC {
 	
 	// MARK: "Allow Access" Cell
 	
+	// Custom cell
 	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) as? AllowAccessCell else {
 			return UITableViewCell()
@@ -138,6 +139,7 @@ extension CollectionsTVC {
 		return cell
 	}
 	
+	// Built-in cell
 //	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
 //		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath)
 //		if #available(iOS 14.0, *) {

@@ -63,7 +63,7 @@ final class AlbumsTVC:
 	}
 	
 	final func refreshNavigationItemTitle() {
-		if let containingCollection = containerOfData as? Collection {
+		if let containingCollection = containerOfLibraryItems as? Collection {
 			title = containingCollection.title
 		}
 	}
