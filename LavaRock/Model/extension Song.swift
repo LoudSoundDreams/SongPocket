@@ -49,8 +49,8 @@ extension Song {
 		{
 			return String(fetchedTrackNumber)
 		} else {
-			return nil
-//			return "‒" // This is a figure dash, not a hyphen or an en dash.
+			return "‒" // This is a figure dash, not a hyphen or an en dash.
+//			return nil
 		}
 	}
 	
