@@ -25,7 +25,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="PSB-k7-svg">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Color Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="PSB-k7-svg">
                                             <rect key="frame" x="16" y="0.0" width="311" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -157,43 +157,6 @@
                                         <constraint firstItem="w6S-PX-Sod" firstAttribute="centerY" secondItem="ilp-7P-A9C" secondAttribute="centerY" id="hs1-AS-pTq"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Allow Access Cell Basic" textLabel="DY1-ce-pNa" style="IBUITableViewCellStyleDefault" id="bPp-tz-wKs">
-                                <rect key="frame" x="0.0" y="221.33333587646484" width="375" height="43.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bPp-tz-wKs" id="sZk-ht-Fwk">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Allow Access to Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="DY1-ce-pNa">
-                                            <rect key="frame" x="16" y="0.0" width="343" height="43.666667938232422"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell Basic" editingAccessoryType="detailButton" textLabel="Jv2-Zx-uWS" style="IBUITableViewCellStyleDefault" id="9GM-VR-afL">
-                                <rect key="frame" x="0.0" y="265.00000381469727" width="375" height="43.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9GM-VR-afL" id="tv5-te-pCh">
-                                    <rect key="frame" x="0.0" y="0.0" width="347.66666666666669" height="43.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Collection Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Jv2-Zx-uWS">
-                                            <rect key="frame" x="16" y="0.0" width="323.66666666666669" height="43.666667938232422"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="DGZ-AG-uNY" kind="show" identifier="Drill Down in Library" id="ZQa-2H-OuX"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -492,7 +455,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Izv-yI-Ddf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Izv-yI-Ddf">
                                                     <rect key="frame" x="0.0" y="24.333333333333329" width="86" height="14.333333333333336"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -875,55 +838,6 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell (Track Number on Left)" id="5sl-vR-cfB" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="397.00000381469727" width="375" height="44.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5sl-vR-cfB" id="ULF-7m-1PD">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rif-LJ-CL8">
-                                            <rect key="frame" x="16" y="11.333333333333334" width="32" height="20.333333333333329"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="cYR-cd-ILw"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t35-xm-5yN">
-                                            <rect key="frame" x="64" y="11.333333333333334" width="76.666666666666686" height="20.333333333333329"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sd4-WK-ea6">
-                                            <rect key="frame" x="148.66666666666666" y="13.333333333333332" width="17" height="16.666666666666664"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="leading" secondItem="ULF-7m-1PD" secondAttribute="leadingMargin" id="90c-yy-o3R"/>
-                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="leading" secondItem="t35-xm-5yN" secondAttribute="trailing" constant="8" symbolic="YES" id="Acm-Wn-Wb5"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="bottomMargin" id="GfA-hQ-4Ut"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="leading" secondItem="rif-LJ-CL8" secondAttribute="trailing" constant="16" id="J33-dg-fmB"/>
-                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="bottomMargin" id="LOq-8p-3zf"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="centerY" secondItem="ULF-7m-1PD" secondAttribute="centerY" constant="-1" id="Q16-J0-VVK"/>
-                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="centerY" secondItem="t35-xm-5yN" secondAttribute="centerY" id="Tc8-qu-oOy"/>
-                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="trailingMargin" id="WD4-R7-vj0"/>
-                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="bottomMargin" id="Y1e-v3-E3O"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="ebT-ls-QPL"/>
-                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="epM-E0-26m"/>
-                                        <constraint firstItem="t35-xm-5yN" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="trailingMargin" id="kSh-Dh-xHY"/>
-                                        <constraint firstItem="rif-LJ-CL8" firstAttribute="centerY" secondItem="t35-xm-5yN" secondAttribute="centerY" id="qr1-lD-lh4"/>
-                                        <constraint firstItem="sd4-WK-ea6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ULF-7m-1PD" secondAttribute="topMargin" id="zS2-NE-umO"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="nowPlayingIndicatorImageView" destination="sd4-WK-ea6" id="bEz-xH-lc0"/>
-                                    <outlet property="titleLabel" destination="t35-xm-5yN" id="wWh-iH-4ik"/>
-                                    <outlet property="trackNumberLabel" destination="rif-LJ-CL8" id="YKf-hc-j1D"/>
-                                </connections>
-                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>
@@ -963,7 +877,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="7xD-nn-FhG"/>
-        <segue reference="Egm-ag-jV8"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
