@@ -15,59 +15,76 @@ extension SongsTVC {
 	
 	final func showSongActions(for song: Song) {
 		areSongActionsPresented = true
+		// You must set areSongActionsPresented = false when the action sheet is dismissed. Use this function for convenience.
+		func didDismissSongActions() {
+			areSongActionsPresented = false
+		}
 		
-		let actionSheet = UIAlertController(
-			title: nil,
-			message: nil,
-			preferredStyle: .actionSheet)
+		// The row for the selected Song stays selected until we complete or cancel an action for it. So remember to deselect it in every possible branch from here. Use this function for convenience.
+		func deselectSelectedSong() {
+			tableView.deselectAllRows(animated: true)
+		}
+		
+		// Create the actions.
 		let playAlbumStartingHereAction = UIAlertAction(
 			title: "Play Album Starting Here",
-//			title: "Play Album Starting Here",
-//			title: "Play Starting Here",
 			style: .default,
-			handler: playAlbumStartingAtSelectedSong)
+			handler: { _ in
+				didDismissSongActions()
+				self.playAlbumStartingAtSelectedSong()
+				deselectSelectedSong()
+			}
+		)
 //		playAlbumStartingHereAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
 		let enqueueAlbumStartingHereAction = UIAlertAction(
 			title: "Queue Album Starting Here",
-//			title: "Play Album Starting Here Later",
-//			title: "Add to Queue Starting Here",
 			style: .default,
-			handler: enqueueAlbumStartingAtSelectedSong)
+			handler: { _ in
+				didDismissSongActions()
+				self.enqueueAlbumStartingAtSelectedSong()
+				deselectSelectedSong()
+			}
+		)
 		let enqueueSongAction = UIAlertAction(
 			title: "Queue Song",
-//			title: "Play Song Later",
-//			title: "Add to Queue",
 			style: .default,
-			handler: enqueueSelectedSong)
+			handler: { _ in
+				didDismissSongActions()
+				self.enqueueSelectedSong()
+				deselectSelectedSong()
+			}
+		)
+		let cancelAction = UIAlertAction(
+			title: "Cancel",
+			style: .cancel,
+			handler: { _ in
+				didDismissSongActions()
+				deselectSelectedSong()
+			}
+		)
 		
 		// Disable the actions that we shouldn't offer for the last Song in the section.
 		if song == indexedLibraryItems.last {
 			enqueueAlbumStartingHereAction.isEnabled = false
 		}
 		
+		// Create and present the action sheet.
+		let actionSheet = UIAlertController(
+			title: nil,
+			message: nil,
+			preferredStyle: .actionSheet)
 		actionSheet.addAction(playAlbumStartingHereAction)
 		actionSheet.addAction(enqueueAlbumStartingHereAction)
 		actionSheet.addAction(enqueueSongAction)
-		actionSheet.addAction(
-			UIAlertAction(
-				title: "Cancel",
-				style: .cancel,
-				handler: { _ in
-					self.deselectSelectedSong()
-					self.didDismissSongActions()
-				}
-			)
-		)
+		actionSheet.addAction(cancelAction)
 		present(actionSheet, animated: true, completion: nil)
 	}
 	
 	// MARK: - Actions
 	
-	private func playAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
-		defer {
-			deselectSelectedSong()
-			didDismissSongActions()
-		}
+	// MARK: Play
+	
+	private func playAlbumStartingAtSelectedSong() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
@@ -94,15 +111,13 @@ extension SongsTVC {
 		playerController?.play()
 	}
 	
-	private func enqueueAlbumStartingAtSelectedSong(_ sender: UIAlertAction) {
-		defer { didDismissSongActions() }
+	// MARK: Enqueue
+	
+	private func enqueueAlbumStartingAtSelectedSong() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
-		else {
-			deselectSelectedSong()
-			return
-		}
+		else { return }
 		
 		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
 		var mediaItemsToEnqueue = [MPMediaItem]()
@@ -127,37 +142,27 @@ extension SongsTVC {
 		
 		// Show explanation if the user is using this button for the first time
 		
-		guard let selectedSong = indexedLibraryItems[indexOfSelectedSong] as? Song else {
-			deselectSelectedSong()
-			return
-		}
+		guard let selectedSong = indexedLibraryItems[indexOfSelectedSong] as? Song else { return }
 		
 		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
 		showExplanationIfNecessaryForEnqueueAction(
 //			userDefaultsKeyForShouldShowExplanation: "shouldExplainQueueAlbumStartingHere",
 			titleOfSelectedSong: titleOfSelectedSong,
-			numberOfSongsEnqueued: mediaItemsToEnqueue.count,
-			didCompleteInteraction: deselectSelectedSong)
+			numberOfSongsEnqueued: mediaItemsToEnqueue.count)//,
+//			didCompleteInteraction: deselectSelectedSong)
 	}
 	
-	private func enqueueSelectedSong(_ sender: UIAlertAction) {
-		defer { didDismissSongActions() }
+	private func enqueueSelectedSong() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
-		else {
-			deselectSelectedSong()
-			return
-		}
+		else { return }
 		
 		let indexOfSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
 		guard
 			let song = indexedLibraryItems[indexOfSong] as? Song,
 			let mediaItem = song.mpMediaItem()
-		else {
-			deselectSelectedSong()
-			return
-		}
+		else { return }
 		
 		let mediaItemCollection = MPMediaItemCollection(items: [mediaItem])
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
@@ -174,17 +179,17 @@ extension SongsTVC {
 		showExplanationIfNecessaryForEnqueueAction(
 //			userDefaultsKeyForShouldShowExplanation: "shouldExplainQueueSong",
 			titleOfSelectedSong: song.titleFormattedOrPlaceholder(),
-			numberOfSongsEnqueued: 1,
-			didCompleteInteraction: deselectSelectedSong)
+			numberOfSongsEnqueued: 1)//,
+//			didCompleteInteraction: deselectSelectedSong)
 	}
 	
-	// MARK: Showing Explanation for Enqueue Actions
+	// MARK: Explaining Enqueue Actions
 	
 	private func showExplanationIfNecessaryForEnqueueAction(
 //		userDefaultsKeyForShouldShowExplanation: String,
 		titleOfSelectedSong: String,
-		numberOfSongsEnqueued: Int,
-		didCompleteInteraction: @escaping (() -> ())
+		numberOfSongsEnqueued: Int//,
+//		didCompleteInteraction: @escaping (() -> ())
 	) {
 		
 		
@@ -200,7 +205,7 @@ extension SongsTVC {
 		
 		let alertTitle: String
 		switch numberOfSongsEnqueued {
-		// The iOS HIG says to use sentence case and ending punctuation for alert titles that are complete sentences (e.g., "Song Title and 1 more song will play later."), but Apple doesn't follow its own advice.
+		// The iOS HIG says to use sentence case and ending punctuation for alert titles that are complete sentences (e.g., "“Song Title” and 1 more song will play later."), but Apple's own apps usually don't do this.
 		case 1:
 			alertTitle  = "“\(titleOfSelectedSong)” Will Play Later"
 		case 2:
@@ -226,21 +231,12 @@ extension SongsTVC {
 			UIAlertAction(
 				title: "OK",
 				style: .default,
-				handler: { _ in
-//					UserDefaults.standard.setValue(false, forKey: )
-					didCompleteInteraction()
-				} ))
+				handler: nil))
+//				handler: { _ in
+////					UserDefaults.standard.setValue(false, forKey: )
+//					didCompleteInteraction()
+//				} ))
 		present(alert, animated: true, completion: nil)
-	}
-	
-	// MARK: - Dismissing Actions
-	
-	private func didDismissSongActions() {
-		areSongActionsPresented = false
-	}
-	
-	private func deselectSelectedSong() {
-		tableView.deselectAllRows(animated: true)
 	}
 	
 }

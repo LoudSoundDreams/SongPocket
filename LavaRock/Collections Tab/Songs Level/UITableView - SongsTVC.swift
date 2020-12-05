@@ -93,8 +93,8 @@ extension SongsTVC {
 		if !isEditing {
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			showSongActions(for: song)
-			// This leaves the row selected while the action sheet is onscreen, as it should be.
-			// You must eventually deselect the row (and set isPresentingSongActions = false) in every possible branch from here.
+			// This leaves the row selected while the action sheet is onscreen, which I prefer.
+			// You must eventually deselect the row, and set isPresentingSongActions = false, in every possible branch from here.
 		}
 	}
 	
