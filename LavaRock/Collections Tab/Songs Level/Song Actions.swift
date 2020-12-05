@@ -140,16 +140,12 @@ extension SongsTVC {
 			playerController?.prepareToPlay()
 		}
 		
-		// Show explanation if the user is using this button for the first time
-		
 		guard let selectedSong = indexedLibraryItems[indexOfSelectedSong] as? Song else { return }
-		
 		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
 		showExplanationIfNecessaryForEnqueueAction(
 //			userDefaultsKeyForShouldShowExplanation: "shouldExplainQueueAlbumStartingHere",
 			titleOfSelectedSong: titleOfSelectedSong,
-			numberOfSongsEnqueued: mediaItemsToEnqueue.count)//,
-//			didCompleteInteraction: deselectSelectedSong)
+			numberOfSongsEnqueued: mediaItemsToEnqueue.count)
 	}
 	
 	private func enqueueSelectedSong() {
@@ -175,12 +171,10 @@ extension SongsTVC {
 			playerController?.prepareToPlay()
 		}
 		
-		// Show explanation if the user is using this button for the first time
 		showExplanationIfNecessaryForEnqueueAction(
 //			userDefaultsKeyForShouldShowExplanation: "shouldExplainQueueSong",
 			titleOfSelectedSong: song.titleFormattedOrPlaceholder(),
-			numberOfSongsEnqueued: 1)//,
-//			didCompleteInteraction: deselectSelectedSong)
+			numberOfSongsEnqueued: 1)
 	}
 	
 	// MARK: Explaining Enqueue Actions
@@ -188,8 +182,7 @@ extension SongsTVC {
 	private func showExplanationIfNecessaryForEnqueueAction(
 //		userDefaultsKeyForShouldShowExplanation: String,
 		titleOfSelectedSong: String,
-		numberOfSongsEnqueued: Int//,
-//		didCompleteInteraction: @escaping (() -> ())
+		numberOfSongsEnqueued: Int
 	) {
 		
 		
@@ -198,10 +191,7 @@ extension SongsTVC {
 		
 //		let shouldShowExplanation = UserDefaults.standard.value(forKey: userDefaultsKeyForShouldShowExplanation) as? Bool ?? true
 //
-//		guard shouldShowExplanation else {
-//			didCompleteInteraction()
-//			return
-//		}
+//		guard shouldShowExplanation else { return }
 		
 		let alertTitle: String
 		switch numberOfSongsEnqueued {
@@ -225,17 +215,12 @@ extension SongsTVC {
 //				style: .default,
 //				handler: { _ in
 //					UserDefaults.standard.setValue(false, forKey: )
-//					didCompleteInteraction()
 //				} ))
 		alert.addAction(
 			UIAlertAction(
 				title: "OK",
 				style: .default,
 				handler: nil))
-//				handler: { _ in
-////					UserDefaults.standard.setValue(false, forKey: )
-//					didCompleteInteraction()
-//				} ))
 		present(alert, animated: true, completion: nil)
 	}
 	
