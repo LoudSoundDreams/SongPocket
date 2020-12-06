@@ -1,3 +1,6 @@
+/* Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on. */
+"“%@” Will Play Later" = "「%@」將稍後播放";
+
 /* Options heading */
 "Accent Color" = "強調顏色";
 
@@ -7,8 +10,11 @@
 /* Button title */
 "Cancel" = "取消";
 
-/* The title for a collection if you leave it blank. In English, it’s “New Collection”. */
+/* Title for a collection if you leave it blank. In English, it’s “New Collection”. */
 "default_collection_title" = "新合集";
+
+/* Body text of the alert that appears after the user adds songs to the queue. */
+"did_enqueue_songs_alert_message" = "您可以在內建音樂App中編輯待播清單。";
 
 /* Button title */
 "Done" = "完成";
@@ -31,11 +37,20 @@
 /* Alert title */
 "New Collection" = "新增合集";
 
+/* Button title */
+"Newest First" = "最新的優先";
+
 /* Accessibility label */
 "Next track" = "下一個音軌";
 
 /* Accessibility label */
 "Now playing" = "播放中";
+
+/* Button title */
+"OK" = "好";
+
+/* Button title */
+"Oldest First" = "最舊的優先";
 
 /* Accessibility label */
 "Pause" = "暫停";
@@ -46,8 +61,17 @@
 /* Accessibility label */
 "Play" = "播放";
 
+/* Button title */
+"Play Album Starting Here" = "從此曲目播放";
+
 /* Accessibility label */
 "Previous track" = "上一個音軌";
+
+/* Button title */
+"Queue Album Starting Here" = "從此曲目待播";
+
+/* Button title */
+"Queue Song" = "待播";
 
 /* Accessibility label */
 "Rename" = "重新命名";
@@ -70,8 +94,11 @@
 /* Accent color */
 "Tangerine" = "橘子";
 
-/* The word for the name of a collection */
+/* The word for the name of a collection, album, or song */
 "Title" = "名稱";
+
+/* Button title */
+"Track Number" = "音軌編號";
 
 /* Placeholder for unknown album title */
 "Unknown Album" = "未知的專輯";

@@ -57,9 +57,15 @@ extension CollectionsTVC {
 			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
 		} )
-		dialog.addAction(UIAlertAction(title: LocalizedString.cancel, style: .cancel, handler: { _ in
-			albumMoverClipboard.isMakingNewCollection = false
-		}))
+		dialog.addAction(
+			UIAlertAction(
+				title: LocalizedString.cancel,
+				style: .cancel,
+				handler: { _ in
+					albumMoverClipboard.isMakingNewCollection = false
+				}
+			)
+		)
 		dialog.addAction(UIAlertAction(title: LocalizedString.done, style: .default, handler: { _ in
 			
 			albumMoverClipboard.isMakingNewCollection = false

@@ -79,7 +79,7 @@ final class CollectionsTVC:
 				flexibleSpaceBarButtonItem,
 				sinkToBottomButton
 			]
-			sortOptions = ["Title"]
+			sortOptions = [.title]
 		}
 	}
 	

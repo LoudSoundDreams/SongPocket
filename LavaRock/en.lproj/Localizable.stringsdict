@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>choose_a_collection_prompt</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@RESULT@</string>
+		<key>RESULT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>Choose a collection to move %lld album to.</string>
+			<key>other</key>
+			<string>Choose a collection to move %lld albums to.</string>
+		</dict>
+	</dict>
+	<key>did_enqueue_multiple_songs_alert_title</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>“%@” and %#@NUMBER_MORE_SONGS@ Will Play Later</string>
+		<key>NUMBER_MORE_SONGS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld More Song</string>
+			<key>other</key>
+			<string>%lld More Songs</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -54,7 +54,7 @@ final class SongsTVC:
 			flexibleSpaceBarButtonItem,
 			sinkToBottomButton
 		]
-		sortOptions = ["Track Number"]
+		sortOptions = [.trackNumber]
 	}
 	
 	final func refreshNavigationItemTitle() {

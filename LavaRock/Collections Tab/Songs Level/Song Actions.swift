@@ -27,7 +27,7 @@ extension SongsTVC {
 		
 		// Create the actions.
 		let playAlbumStartingHereAction = UIAlertAction(
-			title: "Play Album Starting Here",
+			title: LocalizedString.playAlbumStartingHere,
 			style: .default,
 			handler: { _ in
 				didDismissSongActions()
@@ -37,7 +37,7 @@ extension SongsTVC {
 		)
 //		playAlbumStartingHereAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
 		let enqueueAlbumStartingHereAction = UIAlertAction(
-			title: "Queue Album Starting Here",
+			title: LocalizedString.queueAlbumStartingHere,
 			style: .default,
 			handler: { _ in
 				didDismissSongActions()
@@ -46,7 +46,7 @@ extension SongsTVC {
 			}
 		)
 		let enqueueSongAction = UIAlertAction(
-			title: "Queue Song",
+			title: LocalizedString.queueSong,
 			style: .default,
 			handler: { _ in
 				didDismissSongActions()
@@ -197,13 +197,17 @@ extension SongsTVC {
 		switch numberOfSongsEnqueued {
 		// The iOS HIG says to use sentence case and ending punctuation for alert titles that are complete sentences (e.g., "“Song Title” and 1 more song will play later."), but Apple's own apps usually don't do this.
 		case 1:
-			alertTitle  = "“\(titleOfSelectedSong)” Will Play Later"
-		case 2:
-			alertTitle = "“\(titleOfSelectedSong)” and 1 More Song Will Play Later"
+			let formatString = LocalizedString.formatDidEnqueueOneSongAlertTitle
+			alertTitle = String.localizedStringWithFormat(formatString, titleOfSelectedSong)
 		default:
-			alertTitle = "“\(titleOfSelectedSong)” and \(numberOfSongsEnqueued - 1) More Songs Will Play Later"
+			let formatString = LocalizedString.formatDidEnqueueMultipleSongsAlertTitle
+			alertTitle = String.localizedStringWithFormat(
+				formatString,
+				titleOfSelectedSong,
+				numberOfSongsEnqueued - 1
+			)
 		}
-		let alertMessage = "You can edit the queue in the built-in Music app."
+		let alertMessage = LocalizedString.didEnqueueSongsAlertMessage
 		
 		let alert = UIAlertController(
 			title: alertTitle,
@@ -218,7 +222,7 @@ extension SongsTVC {
 //				} ))
 		alert.addAction(
 			UIAlertAction(
-				title: "OK",
+				title: LocalizedString.ok,
 				style: .default,
 				handler: nil))
 		present(alert, animated: true, completion: nil)

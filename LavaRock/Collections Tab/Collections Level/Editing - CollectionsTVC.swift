@@ -37,9 +37,15 @@ extension CollectionsTVC {
 			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
 		} )
-		dialog.addAction(UIAlertAction(title: LocalizedString.cancel, style: .cancel, handler: { _ in
-			self.isRenamingCollection = false
-		}))
+		dialog.addAction(
+			UIAlertAction(
+				title: LocalizedString.cancel,
+				style: .cancel,
+				handler: { _ in
+					self.isRenamingCollection = false
+				}
+			)
+		)
 		dialog.addAction(UIAlertAction(title: LocalizedString.done, style: .default, handler: { _ in
 			var newTitle = dialog.textFields?[0].text
 			if (newTitle == nil) || (newTitle == "") {

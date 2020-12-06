@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>choose_a_collection_prompt</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@RESULT@</string>
+		<key>RESULT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>請選擇這%lld個專輯的新合集。</string>
+		</dict>
+	</dict>
+	<key>did_enqueue_multiple_songs_alert_title</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>「%@」和%#@NUMBER_MORE_SONGS@將稍後播放</string>
+		<key>NUMBER_MORE_SONGS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>另外%lld首歌曲</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -149,11 +149,32 @@ extension LibraryTVC {
 			message: nil,
 			preferredStyle: .actionSheet)
 		for sortOption in sortOptions {
-			alertController.addAction(UIAlertAction(title: sortOption, style: .default, handler: sortSelectedOrAllItems))
+			let sortOptionTitle: String
+			switch sortOption {
+			case .title:
+				sortOptionTitle = LocalizedString.title
+			case .newestFirst:
+				sortOptionTitle = LocalizedString.newestFirst
+			case .oldestFirst:
+				sortOptionTitle = LocalizedString.oldestFirst
+			case .trackNumber:
+				sortOptionTitle = LocalizedString.trackNumber
+			}
+			alertController.addAction(
+				UIAlertAction(
+					title: sortOptionTitle,
+					style: .default,
+					handler: sortSelectedOrAllItems))
 		}
-		alertController.addAction(UIAlertAction(title: LocalizedString.cancel, style: .cancel, handler: {_ in
-			self.areSortOptionsPresented = false
-		}))
+		alertController.addAction(
+			UIAlertAction(
+				title: LocalizedString.cancel,
+				style: .cancel,
+				handler: {_ in
+					self.areSortOptionsPresented = false
+				}
+			)
+		)
 		
 		areSortOptionsPresented = true
 		present(alertController, animated: true, completion: nil)
@@ -176,8 +197,11 @@ extension LibraryTVC {
 			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems)
 		
 		// Sort the rows and items together.
-		let sortOption = sender.title
-		let sortedIndexPathsAndItems = sorted(selectedIndexPathsAndItems, by: sortOption)
+		let sortOptionLocalizedTitle = sender.title
+		let sortedIndexPathsAndItems =
+			sorted(
+				selectedIndexPathsAndItems,
+				bySortOptionLocalizedTitle: sortOptionLocalizedTitle)
 		
 		// Remove the selected items from the data source.
 		for indexPath in indexPathsToSort.reversed() {
@@ -208,11 +232,11 @@ extension LibraryTVC {
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
 	private func sorted(
 		_ indexPathsAndItemsImmutable: [(IndexPath, NSManagedObject)],
-		by sortOption: String?
+		bySortOptionLocalizedTitle sortOptionLocalizedTitle: String?
 	) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
-		switch sortOption {
+		switch sortOptionLocalizedTitle {
 		
-		case "Title":
+		case LocalizedString.title:
 			var indexPathsAndItemsCopy = indexPathsAndItemsImmutable
 			if self is CollectionsTVC {
 				indexPathsAndItemsCopy.sort {
@@ -227,13 +251,13 @@ extension LibraryTVC {
 			return indexPathsAndItemsCopy
 		
 		// Albums only
-		case "Newest First":
+		case LocalizedString.newestFirst:
 			let commonDate = Date()
 			return indexPathsAndItemsImmutable.sorted {
 				($0.1 as? Album)?.releaseDateEstimate ?? commonDate >
 					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
 			}
-		case "Oldest First":
+		case LocalizedString.oldestFirst:
 			let commonDate = Date()
 			return indexPathsAndItemsImmutable.sorted {
 				($0.1 as? Album)?.releaseDateEstimate ?? commonDate <
@@ -241,7 +265,7 @@ extension LibraryTVC {
 			}
 		
 		// Songs only
-		case "Track Number":
+		case LocalizedString.trackNumber:
 			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
 			let sortedByTrackNumber = indexPathsAndItemsImmutable.sorted {
 				($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 <
@@ -258,7 +282,7 @@ extension LibraryTVC {
 			return sortedByDiscNumber
 			
 		default:
-			print("The user tried to sort by “\(sortOption ?? "")”, which isn’t a supported option. It might be misspelled.")
+			print("The user tried to sort by “\(sortOptionLocalizedTitle ?? "")”, which isn’t a supported option. It might be misspelled.")
 			return indexPathsAndItemsImmutable // Otherwise, the app will crash when it tries to call moveRowsUpToEarliestRow on an empty array. Escaping here is easier than changing the logic to use optionals.
 		}
 	}

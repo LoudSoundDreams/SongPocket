@@ -15,6 +15,17 @@ class LibraryTVC:
 	PlaybackToolbarManager
 {
 	
+	enum SortOption {
+		case title
+		
+		// For Albums only
+		case newestFirst
+		case oldestFirst
+		
+		// For Songs only
+		case trackNumber
+	}
+	
 	// MARK: - Properties
 	
 	// MARK: "Constants"
@@ -28,7 +39,7 @@ class LibraryTVC:
 	var navigationItemButtonsNotEditingMode = [UIBarButtonItem]()
 	private var navigationItemButtonsEditingMode = [UIBarButtonItem]()
 	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()
-	var sortOptions = [String]()
+	var sortOptions = [SortOption]()
 	
 	// "Constants" that subclasses should not change
 	var playerController: MPMusicPlayerController? {
