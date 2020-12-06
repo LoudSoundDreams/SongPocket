@@ -55,7 +55,7 @@ extension SongsTVC {
 			}
 		)
 		let cancelAction = UIAlertAction(
-			title: "Cancel",
+			title: LocalizedString.cancel,
 			style: .cancel,
 			handler: { _ in
 				didDismissSongActions()

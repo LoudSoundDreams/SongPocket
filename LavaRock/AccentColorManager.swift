@@ -44,7 +44,7 @@ struct AccentColorManager {
 			uiColor: UIColor.systemPurple),
 	]
 	
-	// MARK: - Setting and Restoring
+	// MARK: - Methods
 	
 	static func restoreAccentColor(in window: UIWindow?) {
 		// If there's a saved preference, set it.

@@ -20,7 +20,7 @@ final class AlbumsTVC:
 	
 	// "Constants"
 	lazy var startMovingAlbumsButton = UIBarButtonItem(
-		title: "Move",
+		title: LocalizedString.move,
 		style: .plain, target: self, action: #selector(startMovingAlbums))
 	
 	// Variables

@@ -20,7 +20,7 @@ extension CollectionsTVC {
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
 		
 		let dialog = UIAlertController(
-			title: "Rename Collection",
+			title: LocalizedString.renameCollection,
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
@@ -34,13 +34,13 @@ extension CollectionsTVC {
 			
 			// UITextField
 			textField.text = collection.title
-			textField.placeholder = "Title"
+			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
 		} )
-		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+		dialog.addAction(UIAlertAction(title: LocalizedString.cancel, style: .cancel, handler: { _ in
 			self.isRenamingCollection = false
 		}))
-		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { _ in
+		dialog.addAction(UIAlertAction(title: LocalizedString.done, style: .default, handler: { _ in
 			var newTitle = dialog.textFields?[0].text
 			if (newTitle == nil) || (newTitle == "") {
 				newTitle = Self.defaultCollectionTitle

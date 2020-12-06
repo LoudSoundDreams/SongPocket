@@ -34,7 +34,7 @@ extension Album {
 	
 	// AppleMusicLibraryManager's importChanges() references this when checking for and making new Collections.
 	static func unknownAlbumArtistPlaceholder() -> String {
-		return "Unknown Artist"
+		return LocalizedString.unknownArtist
 	}
 	
 	func titleFormattedOrPlaceholder() -> String {
@@ -45,7 +45,7 @@ extension Album {
 		{
 			return fetchedAlbumTitle
 		} else {
-			return "Unknown Album"
+			return LocalizedString.unknownAlbum
 		}
 	}
 	

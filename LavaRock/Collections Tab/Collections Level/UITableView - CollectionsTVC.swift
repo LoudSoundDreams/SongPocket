@@ -93,7 +93,7 @@ extension CollectionsTVC {
 			*/
 			
 			let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(
-				name: "Rename",
+				name: LocalizedString.rename,
 				actionHandler: { _ in self.renameAccessibilityFocusedCollection() } )
 			cell.accessibilityCustomActions = [renameCollectionAccessibilityCustomAction]
 			

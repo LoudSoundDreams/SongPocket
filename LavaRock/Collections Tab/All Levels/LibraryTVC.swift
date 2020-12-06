@@ -39,20 +39,20 @@ class LibraryTVC:
 //		title: "Select All",
 //		style: .plain, target: self, action: #selector(selectAllOrNone))
 	lazy var sortButton = UIBarButtonItem(
-		title: "Sort",
+		title: LocalizedString.sort,
 		style: .plain, target: self, action: #selector(showSortOptions))
 	lazy var floatToTopButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.up.to.line.alt"),
 			style: .plain, target: self, action: #selector(moveSelectedItemsToTop))
-		button.accessibilityLabel = "Move to top"
+		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
 	}()
 	lazy var sinkToBottomButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down.to.line.alt"),
 			style: .plain, target: self, action: #selector(sinkSelectedItemsToBottom))
-		button.accessibilityLabel = "Move to bottom"
+		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
 	}()
 	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
@@ -69,7 +69,7 @@ class LibraryTVC:
 			image: UIImage(systemName: "backward.end.fill"),
 			style: .plain, target: self, action: #selector(goToPreviousSong))
 		button.width = 10.0
-		button.accessibilityLabel = "Previous track"
+		button.accessibilityLabel = LocalizedString.previousTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
@@ -78,17 +78,17 @@ class LibraryTVC:
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
 			style: .plain, target: self, action: #selector(restartCurrentSong))
 		button.width = 10.0
-		button.accessibilityLabel = "Restart"
+		button.accessibilityLabel = LocalizedString.restart
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	let playButtonImage = UIImage(systemName: "play.fill")
 	let playButtonAction = #selector(play)
-	let playButtonAccessibilityLabel = "Play"
+	let playButtonAccessibilityLabel = LocalizedString.play
 	let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
 	let pauseButtonImage = UIImage(systemName: "pause.fill")
 	let pauseButtonAction = #selector(pause)
-	let pauseButtonAccessibilityLabel = "Pause"
+	let pauseButtonAccessibilityLabel = LocalizedString.pause
 	lazy var playPauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: playButtonImage,
@@ -103,7 +103,7 @@ class LibraryTVC:
 			image: UIImage(systemName: "forward.end.fill"),
 			style: .plain, target: self, action: #selector(goToNextSong))
 		button.width = 10.0
-		button.accessibilityLabel = "Next track"
+		button.accessibilityLabel = LocalizedString.nextTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
@@ -248,7 +248,7 @@ class LibraryTVC:
 //		if tableView.indexPathsForSelectedRows == nil {
 //			sortButton.title = "Sort All"
 //		} else {
-//			sortButton.title = "Sort"
+//			sortButton.title = LocalizedString.sort
 //		}
 	}
 	

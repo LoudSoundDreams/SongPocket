@@ -4,15 +4,78 @@
 /* Accent color */
 "Blueberry" = "藍莓";
 
+/* Button title */
+"Cancel" = "取消";
+
+/* The title for a collection if you leave it blank. In English, it’s “New Collection”. */
+"default_collection_title" = "新合集";
+
+/* Button title */
+"Done" = "完成";
+
 /* Accent color */
 "Grape" = "葡萄";
 
 /* Accent color */
 "Lime" = "萊姆";
 
+/* Button title */
+"Move" = "搬移";
+
+/* Accessibility label */
+"Move to bottom" = "搬移至底";
+
+/* Accessibility label */
+"Move to top" = "搬移至頂";
+
+/* Alert title */
+"New Collection" = "新增合集";
+
+/* Accessibility label */
+"Next track" = "下一個音軌";
+
+/* Accessibility label */
+"Now playing" = "播放中";
+
+/* Accessibility label */
+"Pause" = "暫停";
+
+/* Accessibility label */
+"Paused" = "已暫停";
+
+/* Accessibility label */
+"Play" = "播放";
+
+/* Accessibility label */
+"Previous track" = "上一個音軌";
+
+/* Accessibility label */
+"Rename" = "重新命名";
+
+/* Alert title */
+"Rename Collection" = "重新命名合集";
+
+/* Accessibility label */
+"Restart" = "回到音軌開頭";
+
+/* Button title */
+"Sort" = "排序";
+
+/* Action sheet title */
+"Sort By" = "排序方式";
+
 /* Accent color */
 "Strawberry" = "草莓";
 
 /* Accent color */
 "Tangerine" = "橘子";
+
+/* The word for the name of a collection */
+"Title" = "名稱";
+
+/* Placeholder for unknown album title */
+"Unknown Album" = "未知的專輯";
+
+/* Placeholder for unknown album artist */
+"Unknown Artist" = "未知的藝人";
 

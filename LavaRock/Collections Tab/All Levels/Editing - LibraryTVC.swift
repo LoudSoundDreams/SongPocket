@@ -145,13 +145,13 @@ extension LibraryTVC {
 	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTVC. They're view controllers.
 	@objc final func showSortOptions() {
 		let alertController = UIAlertController(
-			title: "Sort By",
+			title: LocalizedString.sortBy,
 			message: nil,
 			preferredStyle: .actionSheet)
 		for sortOption in sortOptions {
 			alertController.addAction(UIAlertAction(title: sortOption, style: .default, handler: sortSelectedOrAllItems))
 		}
-		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {_ in
+		alertController.addAction(UIAlertAction(title: LocalizedString.cancel, style: .cancel, handler: {_ in
 			self.areSortOptionsPresented = false
 		}))
 		

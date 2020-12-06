@@ -20,7 +20,7 @@ final class CollectionsTVC:
 	
 	// "Constants"
 	@IBOutlet var optionsButton: UIBarButtonItem!
-	static let defaultCollectionTitle = "New Collection"
+	static let defaultCollectionTitle = LocalizedString.defaultCollectionTitle
 	
 	// Variables
 	var isRenamingCollection = false // If we have to refresh to reflect changes in the Apple Music library, and the refresh will change indexedLibraryItems, we'll cancel renaming.

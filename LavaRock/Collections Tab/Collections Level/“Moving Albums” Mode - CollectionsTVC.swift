@@ -40,7 +40,7 @@ extension CollectionsTVC {
 		else { return } // Without this, if you're fast, you can finish making a new Collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first Collection you made.
 		
 		let dialog = UIAlertController(
-			title: "New Collection",
+			title: LocalizedString.newCollection,
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
@@ -54,13 +54,13 @@ extension CollectionsTVC {
 			
 			// UITextField
 			textField.text = self.suggestedCollectionTitle()
-			textField.placeholder = "Title"
+			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
 		} )
-		dialog.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+		dialog.addAction(UIAlertAction(title: LocalizedString.cancel, style: .cancel, handler: { _ in
 			albumMoverClipboard.isMakingNewCollection = false
 		}))
-		dialog.addAction(UIAlertAction(title: "Done", style: .default, handler: { _ in
+		dialog.addAction(UIAlertAction(title: LocalizedString.done, style: .default, handler: { _ in
 			
 			albumMoverClipboard.isMakingNewCollection = false
 			albumMoverClipboard.didAlreadyMakeNewCollection = true
