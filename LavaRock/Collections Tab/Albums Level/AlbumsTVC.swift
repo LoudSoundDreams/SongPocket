@@ -100,7 +100,7 @@ final class AlbumsTVC:
 //		if tableView.indexPathsForSelectedRows == nil {
 //			startMovingAlbumsButton.title = "Move All"
 //		} else {
-//			startMovingAlbumsButton.title = "Move"
+//			startMovingAlbumsButton.title = LocalizedString.move
 //		}
 	}
 	

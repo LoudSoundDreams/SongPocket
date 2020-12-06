@@ -4,6 +4,9 @@
 /* Options heading */
 "Accent Color" = "強調顏色";
 
+/* Accessibility label */
+"Album artwork" = "專輯插圖";
+
 /* Accent color */
 "Blueberry" = "藍莓";
 

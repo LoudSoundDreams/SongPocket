@@ -13,7 +13,7 @@ final class AlbumArtworkCell: UITableViewCell {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		accessibilityLabel = "Album artwork" // should never change
+		accessibilityLabel = LocalizedString.albumArtwork // should never change
 		accessibilityTraits.formUnion(.image) // should never change
 	}
 }
