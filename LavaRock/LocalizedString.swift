@@ -14,7 +14,43 @@ final class LocalizedString { // You can't make this an enum, because associated
 	
 	// MARK: - Strings Without Variables
 	
+	// MARK: Options
 	
+	static var accentColor: String {
+		NSLocalizedString(
+			"Accent Color",
+			comment: "Options heading")
+	}
+	
+	static var strawberry: String {
+		NSLocalizedString(
+			"Strawberry",
+			comment: "Accent color")
+	}
+	
+	static var tangerine: String {
+		NSLocalizedString(
+			"Tangerine",
+			comment: "Accent color")
+	}
+	
+	static var lime: String {
+		NSLocalizedString(
+			"Lime",
+			comment: "Accent color")
+	}
+	
+	static var blueberry: String {
+		NSLocalizedString(
+			"Blueberry",
+			comment: "Accent color")
+	}
+	
+	static var grape: String {
+		NSLocalizedString(
+			"Grape",
+			comment: "Accent color")
+	}
 	
 	// MARK: - Strings With Variables (Format Strings)
 	

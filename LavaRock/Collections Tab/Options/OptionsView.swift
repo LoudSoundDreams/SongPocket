@@ -18,7 +18,7 @@ struct OptionsView: View {
 		NavigationView {
 			if #available(iOS 14.0, *) {
 				Form {
-					Section(header: Text("Accent Color")) {
+					Section(header: Text("")) {
 						ForEach(AccentColorManager.accentColorTuples, id: \.0) { (rowColorName, rowUIColor) in
 							HStack {
 								Text(rowColorName)
@@ -51,7 +51,7 @@ struct OptionsView: View {
 				} )
 			} else { // iOS 13 and earlier
 				Form {
-					Section(header: Text("Accent Color")) {
+					Section(header: Text("")) {
 						ForEach(AccentColorManager.accentColorTuples, id: \.0) { (rowColorName, rowUIColor) in
 							HStack {
 								Text(rowColorName)

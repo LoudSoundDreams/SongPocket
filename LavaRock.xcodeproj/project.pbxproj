@@ -27,6 +27,9 @@
 		073E6A8725562B93003C84A5 /* Views - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */; };
 		073E6A9225574B99003C84A5 /* protocol NowPlayingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* protocol NowPlayingIndicator.swift */; };
 		075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LocalizedString.swift */; };
+		075218AD257C4C0C0077AE9B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 075218AF257C4C0C0077AE9B /* Main.storyboard */; };
+		075218B7257C52390077AE9B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 075218B5257C52390077AE9B /* InfoPlist.strings */; };
+		075218BA257C52390077AE9B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 075218B8257C52390077AE9B /* Localizable.strings */; };
 		07551BC424CFDFDD002D1B15 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07551BC324CFDFDD002D1B15 /* OptionsView.swift */; };
 		0765170224DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */; };
 		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
@@ -67,7 +70,6 @@
 		07F36BC224FC3F450064282D /* UITableView - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC124FC3F450064282D /* UITableView - CollectionsTVC.swift */; };
 		07F36BC624FC3FE40064282D /* UITableView - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC524FC3FE40064282D /* UITableView - AlbumsTVC.swift */; };
 		07F36BC824FC400E0064282D /* UITableView - SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC724FC400E0064282D /* UITableView - SongsTVC.swift */; };
-		07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FCE63824B42EDF00F94668 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +110,10 @@
 		073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - CollectionsTVC.swift"; sourceTree = "<group>"; };
 		073E6A9125574B98003C84A5 /* protocol NowPlayingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NowPlayingIndicator.swift"; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
+		075218AE257C4C0C0077AE9B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		075218B1257C4C410077AE9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		075218B6257C52390077AE9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		075218B9257C52390077AE9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		07551BC324CFDFDD002D1B15 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		0765170124DFBF3C0070D77E /* MovedAlbumsToNewCollectionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedAlbumsToNewCollectionDetector.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,7 +160,6 @@
 		07F36BC124FC3F450064282D /* UITableView - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView - CollectionsTVC.swift"; sourceTree = "<group>"; };
 		07F36BC524FC3FE40064282D /* UITableView - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		07F36BC724FC400E0064282D /* UITableView - SongsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView - SongsTVC.swift"; sourceTree = "<group>"; };
-		07FCE63824B42EDF00F94668 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -284,14 +289,16 @@
 			isa = PBXGroup;
 			children = (
 				0768309924B42DEE0033E3CC /* Info.plist */,
+				075218B5257C52390077AE9B /* InfoPlist.strings */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				075218A1257C498D0077AE9B /* LocalizedString.swift */,
+				075218B8257C52390077AE9B /* Localizable.strings */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */,
 				07267A1F25537C5800C914A3 /* PlayerControllerManager.swift */,
 				07E92A15251068E500E9073B /* Extensions to UIKit */,
-				07FCE63824B42EDF00F94668 /* Main.storyboard */,
+				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 				07708A5524E5A2DF000FE01D /* Collections Tab */,
 				07E92A0625103F0E00E9073B /* Queue Tab */,
@@ -476,6 +483,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = 0768307C24B42DEC0033E3CC;
 			productRefGroup = 0768308624B42DEC0033E3CC /* Products */;
@@ -494,7 +502,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07FCE63924B42EDF00F94668 /* Main.storyboard in Resources */,
+				075218BA257C52390077AE9B /* Localizable.strings in Resources */,
+				075218AD257C4C0C0077AE9B /* Main.storyboard in Resources */,
+				075218B7257C52390077AE9B /* InfoPlist.strings in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */,
 			);
@@ -612,6 +622,31 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		075218AF257C4C0C0077AE9B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				075218AE257C4C0C0077AE9B /* Base */,
+				075218B1257C4C410077AE9B /* zh-Hant */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		075218B5257C52390077AE9B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				075218B6257C52390077AE9B /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		075218B8257C52390077AE9B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				075218B9257C52390077AE9B /* zh-Hant */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		0768309624B42DEE0033E3CC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -627,6 +662,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -688,6 +724,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
