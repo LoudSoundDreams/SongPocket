@@ -1,0 +1,27 @@
+/* Class = "UITabBarItem"; title = "Collections"; ObjectID = "48j-Zp-q5X"; */
+"48j-Zp-q5X.title" = "合集";
+
+/* Class = "UINavigationItem"; title = "Collections"; ObjectID = "aA7-bf-O8G"; */
+"aA7-bf-O8G.title" = "合集";
+
+/* Class = "UIBarButtonItem"; title = "Move Here"; ObjectID = "i8X-rz-Cxu"; */
+"i8X-rz-Cxu.title" = "移动至此";
+
+/* Class = "UIBarButtonItem"; title = "Options"; ObjectID = "mpR-tt-C6X"; */
+"mpR-tt-C6X.title" = "选项";
+
+/* Class = "UILabel"; text = "Allow Access to Music"; ObjectID = "MXV-wh-Iio"; */
+"MXV-wh-Iio.text" = "允许访问音乐";
+
+/* Class = "UINavigationItem"; title = "Options"; ObjectID = "oU6-xG-PqK"; */
+"oU6-xG-PqK.title" = "选项";
+
+/* Class = "UILabel"; text = "No Songs"; ObjectID = "r4Y-7C-QjD"; */
+"r4Y-7C-QjD.text" = "没有歌曲";
+
+/* Class = "UILabel"; text = "Add some songs to your Apple Music library, or sync some songs from your computer."; ObjectID = "w6S-PX-Sod"; */
+"w6S-PX-Sod.text" = "请添加歌曲到您的Apple Music资料库, 或从您的电脑同步歌曲。";
+
+/* Class = "UILabel"; text = "No Albums"; ObjectID = "waM-mg-RNh"; */
+"waM-mg-RNh.text" = "没有专辑";
+

@@ -1,0 +1,111 @@
+/* Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on. */
+"“%@” Will Play Later" = "“%@”将稍后播放";
+
+/* Options heading */
+"Accent Color" = "强调色";
+
+/* Accessibility label */
+"Album artwork" = "专辑插图";
+
+/* Accent color */
+"Blueberry" = "蓝莓";
+
+/* Button title */
+"Cancel" = "取消";
+
+/* Title for a collection if you leave it blank. In English, it’s “New Collection”. */
+"default_collection_title" = "新合集";
+
+/* Body text of the alert that appears after the user adds songs to the queue. */
+"did_enqueue_songs_alert_message" = "您可以在内建音乐App中编辑待播清单。";
+
+/* Button title */
+"Done" = "完成";
+
+/* Accent color */
+"Grape" = "葡萄";
+
+/* Accent color */
+"Lime" = "青柠";
+
+/* Button title */
+"Move" = "移动";
+
+/* Accessibility label */
+"Move to bottom" = "移动至底";
+
+/* Accessibility label */
+"Move to top" = "移动至顶";
+
+/* Alert title */
+"New Collection" = "新建合集";
+
+/* Button title */
+"Newest First" = "最新的排最前";
+
+/* Accessibility label */
+"Next track" = "下一个音轨";
+
+/* Accessibility label */
+"Now playing" = "播放中";
+
+/* Button title */
+"OK" = "好";
+
+/* Button title */
+"Oldest First" = "最旧的排最前";
+
+/* Accessibility label */
+"Pause" = "暂停";
+
+/* Accessibility label */
+"Paused" = "已暂停";
+
+/* Accessibility label */
+"Play" = "播放";
+
+/* Button title */
+"Play Album Starting Here" = "从此曲目播放";
+
+/* Accessibility label */
+"Previous track" = "上一个音轨";
+
+/* Button title */
+"Queue Album Starting Here" = "从此曲目待播";
+
+/* Button title */
+"Queue Song" = "待播";
+
+/* Accessibility label */
+"Rename" = "重新命名";
+
+/* Alert title */
+"Rename Collection" = "重新命名合集";
+
+/* Accessibility label */
+"Restart" = "回到音轨开头";
+
+/* Button title */
+"Sort" = "排序";
+
+/* Action sheet title */
+"Sort By" = "排序方式";
+
+/* Accent color */
+"Strawberry" = "草莓";
+
+/* Accent color */
+"Tangerine" = "橘子";
+
+/* The word for the name of a collection, album, or song */
+"Title" = "名称";
+
+/* Button title */
+"Track Number" = "音轨编号";
+
+/* Placeholder for unknown album title */
+"Unknown Album" = "未知专辑";
+
+/* Placeholder for unknown album artist */
+"Unknown Artist" = "未知艺人";
+
