@@ -14,7 +14,7 @@
 "Cancel" = "取消";
 
 /* Title for a collection if you leave it blank. In English, it’s “New Collection”. */
-"default_collection_title" = "新收藏";
+"default_collection_title" = "新合集";
 
 /* Body text of the alert that appears after the user adds songs to the queue. */
 "did_enqueue_songs_alert_message" = "您可以在內建音樂App中編輯待播清單。";
@@ -38,7 +38,7 @@
 "Move to top" = "搬移至頂";
 
 /* Alert title */
-"New Collection" = "新增收藏";
+"New Collection" = "新增合集";
 
 /* Button title */
 "Newest First" = "最新的優先";
@@ -80,7 +80,7 @@
 "Rename" = "重新命名";
 
 /* Alert title */
-"Rename Collection" = "重新命名收藏";
+"Rename Collection" = "重新命名合集";
 
 /* Accessibility label */
 "Restart" = "回到音軌開頭";

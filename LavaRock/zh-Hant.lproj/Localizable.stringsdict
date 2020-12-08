@@ -13,7 +13,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>other</key>
-			<string>請選擇這%lld個專輯的新收藏。</string>
+			<string>請點選這%lld個專輯要搬移至的合集。</string>
 		</dict>
 	</dict>
 	<key>did_enqueue_multiple_songs_alert_title</key>
