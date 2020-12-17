@@ -47,10 +47,8 @@ extension CollectionsTVC {
 			)
 		)
 		dialog.addAction(UIAlertAction(title: LocalizedString.done, style: .default, handler: { _ in
-			var newTitle = dialog.textFields?[0].text
-			if (newTitle == nil) || (newTitle == "") {
-				newTitle = Self.defaultCollectionTitle
-			}
+			let rawProposedTitle = dialog.textFields?[0].text
+			let newTitle = Collection.validatedTitle(from: rawProposedTitle)
 			
 			collection.title = newTitle
 			self.managedObjectContext.tryToSave()

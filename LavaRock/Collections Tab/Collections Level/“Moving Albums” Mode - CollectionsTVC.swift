@@ -75,10 +75,8 @@ extension CollectionsTVC {
 			
 			// Create the new Collection.
 			
-			var newTitle = dialog.textFields?[0].text
-			if (newTitle == nil) || (newTitle == "") {
-				newTitle = Self.defaultCollectionTitle
-			}
+			let rawProposedTitle = dialog.textFields?[0].text
+			let newTitle = Collection.validatedTitle(from: rawProposedTitle)
 			
 			let newCollection = Collection(context: self.managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
 			newCollection.title = newTitle
