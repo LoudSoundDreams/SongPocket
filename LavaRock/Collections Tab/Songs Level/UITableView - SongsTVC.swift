@@ -69,7 +69,7 @@ extension SongsTVC {
 				cell.titleLabel.text = cellTitle
 				cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 				cell.trackNumberLabel.text = cellTrackNumberText
-				cell.trackNumberLabel.font = monospacedNumbersBodyFont
+				cell.trackNumberLabel.font = UIFont.bodyMonospacedNumbers
 				return cell
 				
 			} else { // The song's artist is not useful, or it's the same as the album artist.
@@ -78,7 +78,7 @@ extension SongsTVC {
 				cell.titleLabel.text = cellTitle
 				cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 				cell.trackNumberLabel.text = cellTrackNumberText
-				cell.trackNumberLabel.font = monospacedNumbersBodyFont
+				cell.trackNumberLabel.font = UIFont.bodyMonospacedNumbers
 				return cell
 			}
 			

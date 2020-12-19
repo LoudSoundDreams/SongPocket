@@ -66,8 +66,8 @@ extension AppleMusicLibraryManager {
 			let comparisonResult = albumArtist0.localizedStandardCompare(albumArtist1)
 			return comparisonResult == .orderedAscending
 		}
-		let unknownAlbumArtistPlaceholder = Album.unknownAlbumArtistPlaceholder()
-		mediaItemsCopy.sort { $1.albumArtist ?? unknownAlbumArtistPlaceholder == unknownAlbumArtistPlaceholder }
+		let placeholder = Album.unknownAlbumArtistPlaceholder
+		mediaItemsCopy.sort { $1.albumArtist ?? placeholder == placeholder }
 		return mediaItemsCopy
 	}
 	
@@ -269,7 +269,7 @@ extension AppleMusicLibraryManager {
 	) -> (Album, Collection?) {
 		// If we already have a matching Collection to add the Album to …
 		if let matchingExistingCollection = existingCollections.first(where: { existingCollection in
-			existingCollection.title == newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder()
+			existingCollection.title == newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder
 		}) { // … then add the Album to that Collection.
 			let newAlbum = newAlbumMade(
 				for: newMediaItem,
@@ -319,12 +319,12 @@ extension AppleMusicLibraryManager {
 		if let titleFromAlbumArtist = newMediaItem.albumArtist {
 			newCollection.title = titleFromAlbumArtist
 		} else {
-			newCollection.title = Album.unknownAlbumArtistPlaceholder()
+			newCollection.title = Album.unknownAlbumArtistPlaceholder
 		}
 		
 		if
 			shouldImportIntoDefaultOrder,
-			newCollection.title == Album.unknownAlbumArtistPlaceholder()
+			newCollection.title == Album.unknownAlbumArtistPlaceholder
 		{
 			newCollection.index = Int64(existingCollections.count)
 		} else {

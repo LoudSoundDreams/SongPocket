@@ -33,9 +33,7 @@ extension Album {
 	// MARK: - Formatted Attributes
 	
 	// AppleMusicLibraryManager's importChanges() references this when checking for and making new Collections.
-	static func unknownAlbumArtistPlaceholder() -> String {
-		return LocalizedString.unknownArtist
-	}
+	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownArtist
 	
 	func titleFormattedOrPlaceholder() -> String {
 		if
@@ -57,7 +55,7 @@ extension Album {
 		{
 			return fetchedAlbumArtist
 		} else {
-			return Self.unknownAlbumArtistPlaceholder()
+			return Self.unknownAlbumArtistPlaceholder
 		}
 	}
 	

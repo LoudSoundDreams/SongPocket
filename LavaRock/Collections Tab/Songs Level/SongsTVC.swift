@@ -17,18 +17,6 @@ final class SongsTVC:
 	
 	// MARK: - Properties
 	
-	// Constants
-	let monospacedNumbersBodyFont: UIFont = {
-		let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-		let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([
-			UIFontDescriptor.AttributeName.featureSettings: [[
-				UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
-				UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
-			]]
-		])
-		return UIFont(descriptor: monospacedNumbersBodyFontDescriptor, size: 0)
-	}()
-	
 	// Variables
 	var areSongActionsPresented = false // If we have to refresh to reflect changes in the Apple Music library, and the refresh will change indexedLibraryItems, we'll dismiss this action sheet first.
 	
