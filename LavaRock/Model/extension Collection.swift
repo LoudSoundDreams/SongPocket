@@ -14,7 +14,12 @@ extension Collection {
 		if unwrappedProposedTitle == "" {
 			return LocalizedString.defaultCollectionTitle
 		} else {
-			return unwrappedProposedTitle.prefix(255) + "…" // In case the user pastes a dangerous amount of text
+			let trimmedTitle = unwrappedProposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
+			if trimmedTitle != unwrappedProposedTitle {
+				return trimmedTitle + "…" // Does this need to be localized?
+			} else {
+				return String(trimmedTitle)
+			}
 		}
 	}
 	
