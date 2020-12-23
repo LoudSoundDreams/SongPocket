@@ -36,6 +36,7 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
+	var numberOfRowsAboveIndexedLibraryItems = 0 // This applies to every section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
 	var navigationItemButtonsNotEditingMode = [UIBarButtonItem]()
 	private var navigationItemButtonsEditingMode = [UIBarButtonItem]()
 	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()
@@ -121,7 +122,6 @@ class LibraryTVC:
 	
 	// MARK: Variables
 	
-	var numberOfRowsAboveIndexedLibraryItems = 0 // This applies to every section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
 	var indexedLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in this array, because the table view follows this array; not the "index" attribute of each NSManagedObject.
 		// WARNING: indexedLibraryItems[indexPath.row] might return the wrong library item. Whenever you use both indexedLibraryItems and IndexPaths, you must always subtract numberOfRowsAboveIndexedLibraryItems from indexPath.row.
 		// This is a hack to allow other rows in the table view above the rows for indexedLibraryItems. This lets us use table view rows for album artwork and album info in SongsTVC. We can also use this for All Albums and New Collection buttons in CollectionsTVC, and All Songs and Move Here buttons in AlbumsTVC.
@@ -131,7 +131,7 @@ class LibraryTVC:
 			}
 		}
 	}
-	lazy var coreDataFetchRequest: NSFetchRequest<NSManagedObject> = {
+	lazy var coreDataFetchRequest: NSFetchRequest<NSManagedObject> = { // Make this a computed property?
 		let request = NSFetchRequest<NSManagedObject>(entityName: coreDataEntityName)
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request

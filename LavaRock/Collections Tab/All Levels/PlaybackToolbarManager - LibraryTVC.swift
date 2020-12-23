@@ -55,12 +55,30 @@ extension LibraryTVC {
 			setPlayPauseButtonToPlayButton()
 		}
 		
-		for barButtonItem in playbackToolbarButtons {
-			enable(barButtonItem)
-		}
+		// Enable or disable each button as appropriate
+		
 		if playerController.indexOfNowPlayingItem == 0 {
 			disable(goToPreviousSongButton)
+		} else {
+			enable(goToPreviousSongButton)
 		}
+		
+//		let currentPlaybackTime = playerController.currentPlaybackTime
+//		print(currentPlaybackTime)
+//		print(currentPlaybackTime == 0)
+//		print("")
+//		if
+//			playerController.currentPlaybackTime == 0, // As of iOS 14.4 beta 1, doesn't work reliably
+//			playerController.playbackState != .playing
+//		{
+//			disable(restartCurrentSongButton)
+//		} else {
+			enable(restartCurrentSongButton)
+//		}
+		
+		enable(playPauseButton)
+		
+		enable(goToNextSongButton)
 	}
 	
 	// MARK: - Controlling Playback
@@ -91,6 +109,8 @@ extension LibraryTVC {
 	@objc final func restartCurrentSong() {
 		playerController?.skipToBeginning()
 		playerController?.prepareToPlay() // As of iOS 14.2 beta 3, without this, skipToBeginning() doesn't move the playhead to the beginning (even though it will the next time you tap Play).
+		
+//		refreshBarButtons() // Disable the "restart current song" button if appropriate, but as of iOS 14.4 beta 1, that doesn't work reliably.
 	}
 	
 	@objc final func play() {
