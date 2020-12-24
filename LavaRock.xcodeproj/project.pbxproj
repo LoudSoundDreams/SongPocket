@@ -18,6 +18,7 @@
 		0720A43525017C6C00E0A28A /* Notifications - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A43425017C6C00E0A28A /* Notifications - AlbumsTVC.swift */; };
 		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
 		07267A2025537C5800C914A3 /* PlayerControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* PlayerControllerManager.swift */; };
+		0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */; };
 		0736E3A724B8415400A15420 /* Views - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Views - AlbumsTVC.swift */; };
 		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
 		073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColorManager.swift */; };
@@ -104,6 +105,7 @@
 		0720A43425017C6C00E0A28A /* Notifications - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
 		07267A1F25537C5800C914A3 /* PlayerControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControllerManager.swift; sourceTree = "<group>"; };
+		0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIBarButtonItem.swift"; sourceTree = "<group>"; };
 		0732DDBF257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		0732DDC0257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		0732DDC1257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 			isa = PBXGroup;
 			children = (
 				07A3FBCE258EB9B2000B450E /* extension UIFont.swift */,
+				0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */,
 				072429C324DC786500F62AF6 /* extension UITableView.swift */,
 				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
 				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
@@ -583,6 +586,7 @@
 				07A4F90F2519E8410065C87E /* func deleteManagedObjects.swift in Sources */,
 				07E92A0E2510497B00E9073B /* Song Actions.swift in Sources */,
 				07F36BBE24FC3CCA0064282D /* UITableView - LibraryTVC.swift in Sources */,
+				0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
@@ -814,7 +818,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = 8XXAVQ2G93;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
@@ -822,7 +826,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = h.LavaRock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -837,7 +841,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
@@ -845,7 +849,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.loudsounddreams.LavaRock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

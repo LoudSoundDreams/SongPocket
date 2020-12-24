@@ -28,23 +28,13 @@ extension LibraryTVC {
 			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
 		}
 		
-		func disable(_ barButtonItem: UIBarButtonItem) {
-			barButtonItem.isEnabled = false
-			barButtonItem.accessibilityTraits.formUnion(.notEnabled)
-		}
-		
-		func enable(_ barButtonItem: UIBarButtonItem) {
-			barButtonItem.isEnabled = true
-			barButtonItem.accessibilityTraits.subtract(.notEnabled)
-		}
-		
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let playerController = playerController
 		else {
 			setPlayPauseButtonToPlayButton()
 			for barButtonItem in playbackToolbarButtons {
-				disable(barButtonItem)
+				barButtonItem.disableIncludingAccessibilityTrait()
 			}
 			return
 		}
@@ -58,9 +48,9 @@ extension LibraryTVC {
 		// Enable or disable each button as appropriate
 		
 		if playerController.indexOfNowPlayingItem == 0 {
-			disable(goToPreviousSongButton)
+			goToPreviousSongButton.disableIncludingAccessibilityTrait()
 		} else {
-			enable(goToPreviousSongButton)
+			goToPreviousSongButton.enableIncludingAccessibilityTrait()
 		}
 		
 //		let currentPlaybackTime = playerController.currentPlaybackTime
@@ -73,12 +63,12 @@ extension LibraryTVC {
 //		{
 //			disable(restartCurrentSongButton)
 //		} else {
-			enable(restartCurrentSongButton)
+			restartCurrentSongButton.enableIncludingAccessibilityTrait()
 //		}
 		
-		enable(playPauseButton)
+		playPauseButton.enableIncludingAccessibilityTrait()
 		
-		enable(goToNextSongButton)
+		goToNextSongButton.enableIncludingAccessibilityTrait()
 	}
 	
 	// MARK: - Controlling Playback
