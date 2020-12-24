@@ -13,29 +13,22 @@ extension LibraryTVC {
 	// MARK: - Rows
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		// You need to accommodate 2 special cases:
-		// 1. When the user hasn't allowed access to Apple Music, use the "allow access" cell as a button.
-		// 2. When there are no items, set the no-content placeholder to the background view.
 		refreshBarButtons()
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
-			// This logic, for setting the "no items" placeholder, should be in numberOfRowsInSection, not in numberOfSections.
+			// Set the "no items" placeholder in numberOfRowsInSection (here), not in numberOfSections.
 			// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
 			// - If you put it in numberOfRowsInSection, VoiceOver move focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
-			
-			if indexedLibraryItems.count > 0 {
+			let numberOfLibraryItems = indexedLibraryItems.count
+			switch numberOfLibraryItems {
+			case 0:
+				tableView.backgroundView = noItemsPlaceholderView // Don't use dequeueReusableCell to create a placeholder view as needed every time within numberOfRowsInSection (here), because that might call numberOfRowsInSection, which causes an infinite loop.
+				return numberOfLibraryItems
+			default:
 				tableView.backgroundView = nil
-				return indexedLibraryItems.count + numberOfRowsAboveIndexedLibraryItems
-			} else {
-				if let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell") { // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
-					tableView.backgroundView = noItemsView // As of iOS 14.2, this sometimes crashes with "KERN_PROTECTION_FAILURE" when rotating your device, depending on your text size, and which orientation you rotate from and to.
-					// TO DO: I've temporarily disabled support for landscape and iPad. Re-enable it after Apple fixes this.
-				} else {
-					tableView.backgroundView = nil
-				}
-				return 0
+				return numberOfLibraryItems + numberOfRowsAboveIndexedLibraryItems
 			}
-		default:
+		default: // We haven't asked to access Apple Music, or the user has denied permission.
 			tableView.backgroundView = nil
 			return 1 // "allow access" cell
 		}

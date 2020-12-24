@@ -47,6 +47,9 @@ class LibraryTVC:
 		PlayerControllerManager.shared.playerController
 	}
 	let cellReuseIdentifier = "Cell"
+	lazy var noItemsPlaceholderView = {
+		return tableView?.dequeueReusableCell(withIdentifier: "No Items Cell") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier; otherwise, dequeueReusableCell returns nil.
+	}()
 //	lazy var selectAllOrNoneButton = UIBarButtonItem(
 //		title: "Select All",
 //		style: .plain, target: self, action: #selector(selectAllOrNone))
