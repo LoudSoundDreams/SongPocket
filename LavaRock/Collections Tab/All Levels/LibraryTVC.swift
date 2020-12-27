@@ -15,6 +15,8 @@ class LibraryTVC:
 	PlaybackToolbarManager
 {
 	
+	// MARK: - Types
+	
 	enum SortOption {
 		case title
 		

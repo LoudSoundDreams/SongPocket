@@ -46,6 +46,8 @@
 		076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C324B42E3F0033E3CC /* extension UITableViewController.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		077E089824FB7AFF007C2479 /* Notifications - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */; };
+		0781F1F12599181800781CF8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0781F1F02599181800781CF8 /* StoreKit.framework */; };
+		0781F1FA25991B3300781CF8 /* UITableView - OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0781F1F925991B3300781CF8 /* UITableView - OptionsTVC.swift */; };
 		078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */; };
 		07865B252566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B242566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift */; };
 		07865B322567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B312567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift */; };
@@ -144,6 +146,9 @@
 		076830C324B42E3F0033E3CC /* extension UITableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "extension UITableViewController.swift"; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - LibraryTVC.swift"; sourceTree = "<group>"; };
+		0781F1F02599181800781CF8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		0781F1F52599184700781CF8 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
+		0781F1F925991B3300781CF8 /* UITableView - OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView - OptionsTVC.swift"; sourceTree = "<group>"; };
 		078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumMoverDelegate - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		07865B242566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingIndicatorManager - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		07865B312567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingIndicatorManager - CollectionsTVC.swift"; sourceTree = "<group>"; };
@@ -180,6 +185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0781F1F12599181800781CF8 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */,
+				0781F1F925991B3300781CF8 /* UITableView - OptionsTVC.swift */,
 				07551BC324CFDFDD002D1B15 /* OptionsView.swift */,
 			);
 			path = Options;
@@ -261,6 +268,7 @@
 		0723C8CF254A5FA100C3150F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0781F1F02599181800781CF8 /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -280,6 +288,7 @@
 		0768307C24B42DEC0033E3CC = {
 			isa = PBXGroup;
 			children = (
+				0781F1F52599184700781CF8 /* Configuration.storekit */,
 				0768308724B42DEC0033E3CC /* LavaRock */,
 				076830A124B42DEE0033E3CC /* LavaRockTests */,
 				076830AC24B42DEF0033E3CC /* LavaRockUITests */,
@@ -566,6 +575,7 @@
 				073E6A9225574B99003C84A5 /* protocol NowPlayingIndicator.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* Editing - LibraryTVC.swift in Sources */,
 				076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */,
+				0781F1FA25991B3300781CF8 /* UITableView - OptionsTVC.swift in Sources */,
 				073E6A7A25562871003C84A5 /* protocol NowPlayingIndicatorManager.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
