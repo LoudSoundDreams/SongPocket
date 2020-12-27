@@ -176,7 +176,9 @@
                     <navigationItem key="navigationItem" title="Collections" id="aA7-bf-O8G">
                         <barButtonItem key="leftBarButtonItem" title="Options" id="mpR-tt-C6X">
                             <connections>
-                                <segue destination="Wty-xL-YQX" kind="presentation" identifier="Show Options" id="aqr-v5-Bgu"/>
+                                <segue destination="Wty-xL-YQX" kind="popoverPresentation" identifier="Show Options" popoverAnchorBarButtonItem="mpR-tt-C6X" id="aqr-v5-Bgu">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
