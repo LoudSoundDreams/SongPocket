@@ -35,7 +35,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Loading" textLabel="67e-Ol-SlR" style="IBUITableViewCellStyleDefault" id="Mtv-8J-K61">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Tip Loading" textLabel="67e-Ol-SlR" style="IBUITableViewCellStyleDefault" id="Mtv-8J-K61">
                                 <rect key="frame" x="16" y="99" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mtv-8J-K61" id="wuz-jT-01o">
@@ -80,7 +80,7 @@
                                     <outlet property="titleLabel" destination="9ZD-dZ-Uvk" id="fur-fo-dxz"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Thank You" textLabel="bAD-Vr-CxL" style="IBUITableViewCellStyleDefault" id="0dW-7o-DPH" customClass="TipThankYouCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Tip Thank You" textLabel="bAD-Vr-CxL" style="IBUITableViewCellStyleDefault" id="0dW-7o-DPH" customClass="TipThankYouCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="16" y="186.33333587646484" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0dW-7o-DPH" id="IkS-wO-VnE">
