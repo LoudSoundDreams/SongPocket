@@ -14,20 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 		
-		
-//		print("This device's Application Support folder is at:")
-//		print("\(NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).last!)")
-		
-		
-//		DispatchQueue.global(qos: .utility).async {
-//			for userDefaultsKeyToDelete in [
-//				"shouldExplainQueueAlbumStartingHere",
-//				"shouldExplainQueueSong"
-//			] {
-//				UserDefaults.standard.removeObject(forKey: userDefaultsKeyToDelete)
-//			}
-//		}
-		
+		PurchaseManager.shared.beginObservingPaymentTransactions()
 		
 		return true
 	}

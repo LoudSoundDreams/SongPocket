@@ -34,7 +34,7 @@ extension LibraryTVC {
 		else {
 			setPlayPauseButtonToPlayButton()
 			for barButtonItem in playbackToolbarButtons {
-				barButtonItem.disableIncludingAccessibilityTrait()
+				barButtonItem.disableWithAccessibilityTrait()
 			}
 			return
 		}
@@ -48,9 +48,9 @@ extension LibraryTVC {
 		// Enable or disable each button as appropriate
 		
 		if playerController.indexOfNowPlayingItem == 0 {
-			goToPreviousSongButton.disableIncludingAccessibilityTrait()
+			goToPreviousSongButton.disableWithAccessibilityTrait()
 		} else {
-			goToPreviousSongButton.enableIncludingAccessibilityTrait()
+			goToPreviousSongButton.enableWithAccessibilityTrait()
 		}
 		
 //		let currentPlaybackTime = playerController.currentPlaybackTime
@@ -63,12 +63,12 @@ extension LibraryTVC {
 //		{
 //			disable(restartCurrentSongButton)
 //		} else {
-			restartCurrentSongButton.enableIncludingAccessibilityTrait()
+			restartCurrentSongButton.enableWithAccessibilityTrait()
 //		}
 		
-		playPauseButton.enableIncludingAccessibilityTrait()
+		playPauseButton.enableWithAccessibilityTrait()
 		
-		goToNextSongButton.enableIncludingAccessibilityTrait()
+		goToNextSongButton.enableWithAccessibilityTrait()
 	}
 	
 	// MARK: - Controlling Playback

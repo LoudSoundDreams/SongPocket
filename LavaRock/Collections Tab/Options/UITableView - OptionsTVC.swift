@@ -46,7 +46,7 @@ extension OptionsTVC {
 	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 		switch section {
 		case Section.tipJar.rawValue:
-			return "Hi, I’m H. Tips help me improve Songpocket. They give you no extra features, and are completely optional. I would especially appreciate tips after updates to the app! But whether you tip or not, thanks for using Songpocket." // TO DO: Localize this.
+			return "Hi, I’m H. Tips help me improve Songpocket. They give you no extra features, and are completely optional. I would especially appreciate tips after updates to the app!" // TO DO: Localize this.
 		default:
 			return nil
 		}
@@ -87,7 +87,7 @@ extension OptionsTVC {
 			cell.textLabel?.textColor = rowColorEntry.uiColor
 		}
 		
-		if rowColorEntry.userDefaultsKey == AccentColorManager.savedAccentColorKey() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowColorEntry.uiColor.
+		if rowColorEntry.userDefaultsKey == AccentColorManager.savedUserDefaultsKey() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowColorEntry.uiColor.
 			cell.accessoryType = .checkmark
 		} else {
 			cell.accessoryType = .none
@@ -99,12 +99,78 @@ extension OptionsTVC {
 	}
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		switch tipStatus {
+		case .notReady:
+			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
+			return cell
+		case .ready:
+			return tipReadyCell()
+		case .thankYou:
+			return tipThankYouCell()
+		}
+	}
+	
+	private func tipReadyCell() -> UITableViewCell {
+		guard
+			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Ready") as? TipReadyCell,
+			let tipProduct = PurchaseManager.shared.tipProduct,
+			let priceFormatter = PurchaseManager.shared.priceFormatter
+		else {
+			return UITableViewCell()
+		}
 		
+		cell.titleLabel.text = tipProduct.localizedTitle
+		cell.titleLabel.textColor = view.window?.tintColor
 		
-		return UITableViewCell()
+		let localizedPriceString = priceFormatter.string(from: tipProduct.price)
+		cell.priceLabel.text = localizedPriceString
+		
+		return cell
+	}
+	
+	private func tipThankYouCell() -> UITableViewCell {
+		guard
+			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Thank You") as? TipThankYouCell
+		else {
+			return UITableViewCell()
+		}
+		
+		let heartEmoji = AccentColorManager.heartEmojiMatchingSavedAccentColor()
+		let thankYouTextBetweenHeartEmojisIncludingPaddingSpaces = " Thank You! " // TO DO: Localize this.
+		let thankYouMessage =
+			heartEmoji +
+			thankYouTextBetweenHeartEmojisIncludingPaddingSpaces +
+			heartEmoji
+		cell.thankYouLabel.text = thankYouMessage
+		
+		return cell
 	}
 	
 	// MARK: - Selecting
+	
+	final override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+		switch indexPath.section {
+		case Section.accentColor.rawValue:
+			return indexPath
+		case Section.tipJar.rawValue:
+			if shouldSelectTipJarRow() {
+				return indexPath
+			} else {
+				return nil
+			}
+		default:
+			return indexPath
+		}
+	}
+	
+	private func shouldSelectTipJarRow() -> Bool {
+		switch tipStatus {
+		case .notReady, .thankYou:
+			return false
+		case .ready:
+			return true
+		}
+	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch indexPath.section {
@@ -113,7 +179,7 @@ extension OptionsTVC {
 		case Section.tipJar.rawValue:
 			didSelectTipJarRow(at: indexPath)
 		default:
-			break
+			tableView.deselectRow(at: indexPath, animated: true)
 		}
 	}
 	
@@ -130,14 +196,31 @@ extension OptionsTVC {
 		
 		AccentColorManager.setAccentColor(selectedColorEntry, in: view.window)
 		tableView.reloadData()
-		dismiss(animated: true, completion: nil)
+//		dismiss(animated: true, completion: nil)
 	}
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
-		
+		switch tipStatus {
+		case .ready:
+			leaveTip()
+		default:
+			tableView.deselectRow(at: indexPath, animated: true)
+		}
+	}
+	
+	private func leaveTip() {
+		let tipProduct = PurchaseManager.shared.tipProduct
+		PurchaseManager.shared.addToPaymentQueue(tipProduct)
 	}
 	
 	// MARK: - Events
+	
+	final func refreshTipJarRows() {
+		let indexPaths = tableView.indexPathsEnumeratedIn(
+			section: Section.tipJar.rawValue,
+			firstRow: 0)
+		tableView.reloadRows(at: indexPaths, with: .fade)
+	}
 	
 	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
 		dismiss(animated: true, completion: nil)
