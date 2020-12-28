@@ -15,11 +15,11 @@ extension OptionsTVC {
 	
 	// MARK: - Numbers
 	
-	override func numberOfSections(in tableView: UITableView) -> Int {
+	final override func numberOfSections(in tableView: UITableView) -> Int {
 		return Section.allCases.count
 	}
 	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		switch section {
 		case Section.accentColor.rawValue:
 			return AccentColorManager.colorEntries.count
@@ -32,7 +32,7 @@ extension OptionsTVC {
 	
 	// MARK: - Headers and Footers
 	
-	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+	final override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		switch section {
 		case Section.accentColor.rawValue:
 			return LocalizedString.accentColor
@@ -43,7 +43,7 @@ extension OptionsTVC {
 		}
 	}
 	
-	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+	final override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 		switch section {
 		case Section.tipJar.rawValue:
 			return "Hi, I’m H. Tips help me improve Songpocket. They give you no extra features, and are completely optional. I would especially appreciate tips after updates to the app!" // TO DO: Localize this.
@@ -54,7 +54,7 @@ extension OptionsTVC {
 	
 	// MARK: - Cells
 	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch indexPath.section {
 		case Section.accentColor.rawValue:
 			return accentColorCell(forRowAt: indexPath)
@@ -105,6 +105,9 @@ extension OptionsTVC {
 			return cell
 		case .ready:
 			return tipReadyCell()
+		case .purchasing:
+			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Purchasing", for: indexPath)
+			return cell
 		case .thankYou:
 			return tipThankYouCell()
 		}
@@ -119,11 +122,11 @@ extension OptionsTVC {
 			return UITableViewCell()
 		}
 		
-		cell.titleLabel.text = tipProduct.localizedTitle
-		cell.titleLabel.textColor = view.window?.tintColor
+		cell.tipNameLabel.text = tipProduct.localizedTitle
+		cell.tipNameLabel.textColor = view.window?.tintColor
 		
 		let localizedPriceString = priceFormatter.string(from: tipProduct.price)
-		cell.priceLabel.text = localizedPriceString
+		cell.tipPriceLabel.text = localizedPriceString
 		
 		return cell
 	}
@@ -153,33 +156,33 @@ extension OptionsTVC {
 		case Section.accentColor.rawValue:
 			return indexPath
 		case Section.tipJar.rawValue:
-			if shouldSelectTipJarRow() {
-				return indexPath
-			} else {
-				return nil
-			}
+			return canSelectTipJarRow() ? indexPath : nil
 		default:
 			return indexPath
 		}
 	}
 	
-	private func shouldSelectTipJarRow() -> Bool {
+	private func canSelectTipJarRow() -> Bool {
 		switch tipStatus {
-		case .notReady, .thankYou:
+		case .notReady:
 			return false
 		case .ready:
 			return true
+		case .purchasing:
+			return false
+		case .thankYou:
+			return false
 		}
 	}
 	
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch indexPath.section {
 		case Section.accentColor.rawValue:
 			didSelectAccentColorRow(at: indexPath)
 		case Section.tipJar.rawValue:
 			didSelectTipJarRow(at: indexPath)
 		default:
-			tableView.deselectRow(at: indexPath, animated: true)
+			break
 		}
 	}
 	
@@ -201,25 +204,55 @@ extension OptionsTVC {
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
 		switch tipStatus {
+		case .notReady:
+			tableView.deselectRow(at: indexPath, animated: true)
 		case .ready:
 			leaveTip()
-		default:
+		case .purchasing:
+			break
+		case .thankYou:
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
 	}
 	
 	private func leaveTip() {
+		tipStatus = .purchasing
+		refreshTipJarRows()
+		
 		let tipProduct = PurchaseManager.shared.tipProduct
 		PurchaseManager.shared.addToPaymentQueue(tipProduct)
 	}
 	
 	// MARK: - Events
 	
+	final func deselectTipJarRows(animated: Bool) {
+		let indexPaths = tipJarIndexPaths()
+		tableView.deselectRows(at: indexPaths, animated: animated)
+	}
+	
 	final func refreshTipJarRows() {
-		let indexPaths = tableView.indexPathsEnumeratedIn(
+		let indexPathsToRefresh = tipJarIndexPaths()
+		
+		var tipJarIndexPathsThatWereSelected = [IndexPath]()
+		for indexPath in indexPathsToRefresh {
+			if
+				let selectedIndexPaths = tableView.indexPathsForSelectedRows,
+				selectedIndexPaths.contains(indexPath)
+			{
+				tipJarIndexPathsThatWereSelected.append(indexPath)
+			}
+		}
+		
+		tableView.reloadRows(at: indexPathsToRefresh, with: .fade)
+		
+		tableView.selectRows(at: tipJarIndexPathsThatWereSelected, animated: false)
+	}
+	
+	private func tipJarIndexPaths() -> [IndexPath] {
+		let tipJarIndexPaths = tableView.indexPathsEnumeratedIn(
 			section: Section.tipJar.rawValue,
 			firstRow: 0)
-		tableView.reloadRows(at: indexPaths, with: .fade)
+		return tipJarIndexPaths
 	}
 	
 	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {

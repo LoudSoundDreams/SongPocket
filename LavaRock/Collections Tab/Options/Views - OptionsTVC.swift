@@ -8,8 +8,8 @@
 import UIKit
 
 final class TipReadyCell: UITableViewCell {
-	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var priceLabel: UILabel!
+	@IBOutlet var tipNameLabel: UILabel!
+	@IBOutlet var tipPriceLabel: UILabel!
 }
 
 final class TipThankYouCell: UITableViewCell {

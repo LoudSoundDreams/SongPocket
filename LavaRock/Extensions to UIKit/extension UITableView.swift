@@ -132,11 +132,17 @@ extension UITableView {
 	
 	// MARK: - Taking Action on Rows
 	
-//	final func deselectRows(at indexPaths: [IndexPath], animated: Bool) {
-//		for indexPath in indexPaths {
-//			deselectRow(at: indexPath, animated: true)
-//		}
-//	}
+	final func selectRows(at indexPaths: [IndexPath], animated: Bool) {
+		for indexPath in indexPaths {
+			selectRow(at: indexPath, animated: animated, scrollPosition: .none)
+		}
+	}
+	
+	final func deselectRows(at indexPaths: [IndexPath], animated: Bool) {
+		for indexPath in indexPaths {
+			deselectRow(at: indexPath, animated: true)
+		}
+	}
 	
 	final func deselectAllRows(animated: Bool) {
 		guard let indexPaths = indexPathsForSelectedRows else { return }

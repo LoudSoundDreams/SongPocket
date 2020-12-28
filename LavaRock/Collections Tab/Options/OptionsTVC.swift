@@ -12,13 +12,13 @@ final class OptionsTVC: UITableViewController {
 	// MARK: - Types
 	
 	enum TipStatus {
-		case notReady, ready, thankYou
+		case notReady, ready, purchasing, thankYou
 	}
 	
 	// MARK: - Properties
 	
 	// Variables
-	var tipStatus: TipStatus = {
+	final var tipStatus: TipStatus = {
 		if PurchaseManager.shared.tipProduct == nil { // Keep tipProduct in PurchaseManager, not here, so that we don't have to download it every time we open the Options sheet.
 			return .notReady
 		} else {
