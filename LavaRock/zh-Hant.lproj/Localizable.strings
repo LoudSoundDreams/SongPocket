@@ -28,6 +28,9 @@
 /* Accent color */
 "Grape" = "葡萄";
 
+/* Options → Tip Jar section footer */
+"Hi, I’m H. Tips help me improve Songpocket. They give you no extra features, and are completely optional. I would especially appreciate tips after updates to the app!" = "你好，我是H。你的贊助能幫我改進Songpocket。這項內購不包含附加功能，但是也完全自願。請考慮在你喜歡的更新之後贊助一下喔！";
+
 /* Accent color */
 "Lime" = "萊姆";
 
@@ -99,6 +102,9 @@
 
 /* Accent color */
 "Tangerine" = "橘子";
+
+/* Options section header */
+"Tip Jar" = "贊助Songpocket";
 
 /* The word for the name of a collection, album, or song */
 "Title" = "名稱";

@@ -283,17 +283,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		0725A7ED259AF5AB00FE67D4 /* Localization */ = {
-			isa = PBXGroup;
-			children = (
-				075218B5257C52390077AE9B /* InfoPlist.strings */,
-				075218A1257C498D0077AE9B /* LocalizedString.swift */,
-				075218B8257C52390077AE9B /* Localizable.strings */,
-				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
-			);
-			path = Localization;
-			sourceTree = "<group>";
-		};
 		0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,8 +321,11 @@
 			isa = PBXGroup;
 			children = (
 				0768309924B42DEE0033E3CC /* Info.plist */,
+				075218B5257C52390077AE9B /* InfoPlist.strings */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
-				0725A7ED259AF5AB00FE67D4 /* Localization */,
+				075218A1257C498D0077AE9B /* LocalizedString.swift */,
+				075218B8257C52390077AE9B /* Localizable.strings */,
+				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07FC970A24BAC1050036DD3D /* Model */,
