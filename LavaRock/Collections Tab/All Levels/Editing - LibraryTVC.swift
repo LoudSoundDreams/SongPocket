@@ -35,7 +35,7 @@ extension LibraryTVC {
 //		{
 //			tableView.deselectAllRows(animated: false)
 //		} else {
-//			for indexPath in tableView.indexPathsEnumeratedIn(
+//			for indexPath in tableView.indexPathsForRowsIn(
 //				section: 0,
 //				firstRow: numberOfRowsAboveIndexedLibraryItems)
 //			{

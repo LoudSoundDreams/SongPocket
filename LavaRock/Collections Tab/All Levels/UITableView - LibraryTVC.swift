@@ -122,7 +122,7 @@ extension LibraryTVC {
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
 			tableView.insertRows(
-				at: tableView.indexPathsEnumeratedIn(
+				at: tableView.indexPathsForRowsIn(
 					section: 0,
 					firstRow: 0,
 					lastRow: newNumberOfRows - 1), // It's incorrect and unsafe to call tableView.numberOfRows(inSection:) here, because we're changing the number of rows. Use the UITableViewDelegate method tableView(_:numberOfRowsInSection:) intead.

@@ -104,7 +104,7 @@ extension CollectionsTVC {
 	private func renameAccessibilityFocusedCollection() -> Bool {
 		var indexPathOfCollectionToRename: IndexPath?
 		let section = 0
-		let indexPathsOfAllCollections = tableView.indexPathsEnumeratedIn(
+		let indexPathsOfAllCollections = tableView.indexPathsForRowsIn(
 			section: section,
 			firstRow: numberOfRowsAboveIndexedLibraryItems)
 		for indexPath in indexPathsOfAllCollections {

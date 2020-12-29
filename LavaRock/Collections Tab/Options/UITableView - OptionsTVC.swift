@@ -240,7 +240,7 @@ extension OptionsTVC {
 	}
 	
 	private func tipJarIndexPaths() -> [IndexPath] {
-		let tipJarIndexPaths = tableView.indexPathsEnumeratedIn(
+		let tipJarIndexPaths = tableView.indexPathsForRowsIn(
 			section: Section.tipJar.rawValue,
 			firstRow: 0)
 		return tipJarIndexPaths

@@ -82,7 +82,7 @@ extension LibraryTVC {
 	final func refreshNowPlayingIndicators(
 		isNowPlayingItemDeterminer: (IndexPath) -> Bool
 	) {
-		for indexPath in tableView.indexPathsEnumeratedIn(
+		for indexPath in tableView.indexPathsForRowsIn(
 			section: 0,
 			firstRow: numberOfRowsAboveIndexedLibraryItems)
 		{
@@ -218,7 +218,7 @@ extension LibraryTVC {
 		var allIndexPaths = [IndexPath]()
 		for section in 0 ..< tableView.numberOfSections {
 			let allIndexPathsInSection =
-				tableView.indexPathsEnumeratedIn(section: section, firstRow: 0)
+				tableView.indexPathsForRowsIn(section: section, firstRow: 0)
 			allIndexPaths.append(contentsOf: allIndexPathsInSection)
 		}
 		indexedLibraryItems.removeAll()

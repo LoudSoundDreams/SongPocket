@@ -95,18 +95,18 @@ extension UITableView {
 		if let selectedIndexPaths = indexPathsForSelectedRows	 {
 			return selectedIndexPaths.sorted()
 		} else {
-			return indexPathsEnumeratedIn(section: section, firstRow: firstRow)
+			return indexPathsForRowsIn(section: section, firstRow: firstRow)
 		}
 	}
 	
-	final func indexPathsEnumeratedIn(section: Int, firstRow: Int) -> [IndexPath] {
-		return indexPathsEnumeratedIn(
+	final func indexPathsForRowsIn(section: Int, firstRow: Int) -> [IndexPath] {
+		return indexPathsForRowsIn(
 			section: section,
 			firstRow: firstRow,
 			lastRow: numberOfRows(inSection: section) - 1)
 	}
 	
-	final func indexPathsEnumeratedIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
+	final func indexPathsForRowsIn(section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
 		guard lastRow >= firstRow else {
 			return [IndexPath]()
 		}
