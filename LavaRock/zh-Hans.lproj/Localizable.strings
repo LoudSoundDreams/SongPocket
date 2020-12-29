@@ -1,7 +1,10 @@
+/* After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them. */
+" Thank You! " = "谢谢！";
+
 /* Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on. */
 "“%@” Will Play Later" = "“%@”将稍后播放";
 
-/* Options heading */
+/* Options section header */
 "Accent Color" = "强调色";
 
 /* Accessibility label */

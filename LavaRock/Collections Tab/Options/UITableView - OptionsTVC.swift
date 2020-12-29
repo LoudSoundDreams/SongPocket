@@ -37,7 +37,7 @@ extension OptionsTVC {
 		case Section.accentColor.rawValue:
 			return LocalizedString.accentColor
 		case Section.tipJar.rawValue:
-			return "Tip Jar" // TO DO: Localize this.
+			return LocalizedString.tipJar
 		default:
 			return nil
 		}
@@ -46,7 +46,7 @@ extension OptionsTVC {
 	final override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 		switch section {
 		case Section.tipJar.rawValue:
-			return "Hi, I’m H. Tips help me improve Songpocket. They give you no extra features, and are completely optional. I would especially appreciate tips after updates to the app!" // TO DO: Localize this.
+			return LocalizedString.tipJarFooter
 		default:
 			return nil
 		}
@@ -139,10 +139,9 @@ extension OptionsTVC {
 		}
 		
 		let heartEmoji = AccentColorManager.heartEmojiMatchingSavedAccentColor()
-		let thankYouTextBetweenHeartEmojisIncludingPaddingSpaces = " Thank You! " // TO DO: Localize this.
 		let thankYouMessage =
 			heartEmoji +
-			thankYouTextBetweenHeartEmojisIncludingPaddingSpaces +
+			LocalizedString.tipThankYouMessageWithPaddingSpaces +
 			heartEmoji
 		cell.thankYouLabel.text = thankYouMessage
 		
@@ -207,7 +206,7 @@ extension OptionsTVC {
 		case .notReady:
 			tableView.deselectRow(at: indexPath, animated: true)
 		case .ready:
-			leaveTip()
+			beginleaveTip()
 		case .purchasing:
 			break
 		case .thankYou:
@@ -215,7 +214,7 @@ extension OptionsTVC {
 		}
 	}
 	
-	private func leaveTip() {
+	private func beginleaveTip() {
 		tipStatus = .purchasing
 		refreshTipJarRows()
 		
@@ -232,20 +231,12 @@ extension OptionsTVC {
 	
 	final func refreshTipJarRows() {
 		let indexPathsToRefresh = tipJarIndexPaths()
-		
-		var tipJarIndexPathsThatWereSelected = [IndexPath]()
-		for indexPath in indexPathsToRefresh {
-			if
-				let selectedIndexPaths = tableView.indexPathsForSelectedRows,
-				selectedIndexPaths.contains(indexPath)
-			{
-				tipJarIndexPathsThatWereSelected.append(indexPath)
-			}
+		let indexPathsToRefreshThatWereSelected = indexPathsToRefresh.filter { indexPath in
+			tableView.cellForRow(at: indexPath)?.isSelected ?? false
 		}
 		
 		tableView.reloadRows(at: indexPathsToRefresh, with: .fade)
-		
-		tableView.selectRows(at: tipJarIndexPathsThatWereSelected, animated: false)
+		tableView.selectRows(at: indexPathsToRefreshThatWereSelected, animated: false)
 	}
 	
 	private func tipJarIndexPaths() -> [IndexPath] {

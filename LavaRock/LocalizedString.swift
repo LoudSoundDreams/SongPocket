@@ -28,12 +28,16 @@ final class LocalizedString { // You can't make this an enum, because associated
 	
 	// MARK: Options
 	
-	static let accentColor = NSLocalizedString("Accent Color", comment: "Options heading")
+	static let accentColor = NSLocalizedString("Accent Color", comment: "Options section header")
 	static let strawberry = NSLocalizedString("Strawberry", comment: "Accent color")
 	static let tangerine = NSLocalizedString("Tangerine", comment: "Accent color")
 	static let lime = NSLocalizedString("Lime", comment: "Accent color")
 	static let blueberry = NSLocalizedString("Blueberry", comment: "Accent color")
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
+	
+	static let tipJar = NSLocalizedString("Tip Jar", comment: "Options section header")
+	static let tipJarFooter = NSLocalizedString("Hi, I’m H. Tips help me improve Songpocket. They give you no extra features, and are completely optional. I would especially appreciate tips after updates to the app!", comment: "Options → Tip Jar section footer")
+	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
 	// MARK: Playback Toolbar
 	
