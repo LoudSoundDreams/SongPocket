@@ -79,6 +79,7 @@
 		07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E092599227C00826447 /* PurchaseManager.swift */; };
 		07FD6E122599246700826447 /* PurchaseManagerTipDelegate - OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* PurchaseManagerTipDelegate - OptionsTVC.swift */; };
 		07FD6E17259925EF00826447 /* Views - OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E16259925EF00826447 /* Views - OptionsTVC.swift */; };
+		07FF515A259AF71000FA31F8 /* Queue Tab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FF5159259AF71000FA31F8 /* Queue Tab.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,6 +185,7 @@
 		07FD6E092599227C00826447 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		07FD6E112599246700826447 /* PurchaseManagerTipDelegate - OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PurchaseManagerTipDelegate - OptionsTVC.swift"; sourceTree = "<group>"; };
 		07FD6E16259925EF00826447 /* Views - OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - OptionsTVC.swift"; sourceTree = "<group>"; };
+		07FF5159259AF71000FA31F8 /* Queue Tab.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Queue Tab.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +283,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		0725A7ED259AF5AB00FE67D4 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				075218B5257C52390077AE9B /* InfoPlist.strings */,
+				075218A1257C498D0077AE9B /* LocalizedString.swift */,
+				075218B8257C52390077AE9B /* Localizable.strings */,
+				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,11 +332,8 @@
 			isa = PBXGroup;
 			children = (
 				0768309924B42DEE0033E3CC /* Info.plist */,
-				075218B5257C52390077AE9B /* InfoPlist.strings */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
-				075218A1257C498D0077AE9B /* LocalizedString.swift */,
-				075218B8257C52390077AE9B /* Localizable.strings */,
-				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
+				0725A7ED259AF5AB00FE67D4 /* Localization */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07FC970A24BAC1050036DD3D /* Model */,
@@ -401,6 +411,7 @@
 		07E92A0625103F0E00E9073B /* Queue Tab */ = {
 			isa = PBXGroup;
 			children = (
+				07FF5159259AF71000FA31F8 /* Queue Tab.storyboard */,
 				07E92A0725103F2700E9073B /* QueueTVC.swift */,
 				07E92A0F25104F9500E9073B /* Notifications - QueueTVC.swift */,
 				07E92A0B251043CC00E9073B /* UITableViewDataSource - QueueTVC.swift */,
@@ -543,6 +554,7 @@
 				075218B7257C52390077AE9B /* InfoPlist.strings in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */,
+				07FF515A259AF71000FA31F8 /* Queue Tab.storyboard in Resources */,
 				07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
