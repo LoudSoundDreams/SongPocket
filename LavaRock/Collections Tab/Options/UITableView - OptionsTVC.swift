@@ -100,9 +100,11 @@ extension OptionsTVC {
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch tipStatus {
-		case .notReady:
+		case .loading:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
 			return cell
+		case .reload:
+			return tipReloadCell()
 		case .ready:
 			return tipReadyCell()
 		case .purchasing:
@@ -111,6 +113,16 @@ extension OptionsTVC {
 		case .thankYou:
 			return tipThankYouCell()
 		}
+	}
+	
+	private func tipReloadCell() -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Reload") as? TipReloadCell else {
+			return UITableViewCell()
+		}
+		
+		cell.reloadLabel.textColor = view.window?.tintColor
+		
+		return cell
 	}
 	
 	private func tipReadyCell() -> UITableViewCell {
@@ -163,14 +175,10 @@ extension OptionsTVC {
 	
 	private func canSelectTipJarRow() -> Bool {
 		switch tipStatus {
-		case .notReady:
+		case .loading, .purchasing, .thankYou:
 			return false
-		case .ready:
+		case .reload, .ready:
 			return true
-		case .purchasing:
-			return false
-		case .thankYou:
-			return false
 		}
 	}
 	
@@ -203,15 +211,20 @@ extension OptionsTVC {
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
 		switch tipStatus {
-		case .notReady:
-			tableView.deselectRow(at: indexPath, animated: true)
+		case .loading, .purchasing, .thankYou: // Should never run
+			break
+		case .reload:
+			reloadTipProduct()
 		case .ready:
 			beginleaveTip()
-		case .purchasing:
-			break
-		case .thankYou:
-			tableView.deselectRow(at: indexPath, animated: true)
 		}
+	}
+	
+	private func reloadTipProduct() {
+		tipStatus = .loading
+		deselectTipJarRows(animated: true)
+		refreshTipJarRows()
+		PurchaseManager.shared.requestAllSKProducts()
 	}
 	
 	private func beginleaveTip() {

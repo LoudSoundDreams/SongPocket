@@ -16,12 +16,19 @@ extension OptionsTVC: PurchaseManagerTipDelegate {
 		}
 	}
 	
+	final func didFailToReceiveTipProduct() {
+		DispatchQueue.main.async {
+			self.tipStatus = .reload
+			self.refreshTipJarRows()
+		}
+	}
+	
 	final func didUpdateTipTransaction(_ tipTransaction: SKPaymentTransaction) {
 		switch tipTransaction.transactionState {
 		case .purchasing:
 			break
 		case .deferred:
-			break
+			cancelTip()
 		case .failed:
 			print("SKPaymentTransaction for a tip failed. Error: \(String(describing: tipTransaction.error))")
 			cancelTip()

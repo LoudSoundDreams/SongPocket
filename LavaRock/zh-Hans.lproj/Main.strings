@@ -1,8 +1,11 @@
+/* Class = "UILabel"; text = "Reload"; ObjectID = "9ZD-dZ-Uvk"; */
+"9ZD-dZ-Uvk.text" = "重新载入";
+
 /* Class = "UITabBarItem"; title = "Collections"; ObjectID = "48j-Zp-q5X"; */
 "48j-Zp-q5X.title" = "合集";
 
 /* Class = "UILabel"; text = "Loading…"; ObjectID = "67e-Ol-SlR"; */
-"67e-Ol-SlR.text" = "正在加载…";
+"67e-Ol-SlR.text" = "正在载入…";
 
 /* Class = "UINavigationItem"; title = "Collections"; ObjectID = "aA7-bf-O8G"; */
 "aA7-bf-O8G.title" = "合集";

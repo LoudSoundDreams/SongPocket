@@ -51,21 +51,41 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Ready" textLabel="9ZD-dZ-Uvk" detailTextLabel="UHW-Ym-QbO" style="IBUITableViewCellStyleValue1" id="Yih-vf-OWM" customClass="TipReadyCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Reload" textLabel="9ZD-dZ-Uvk" style="IBUITableViewCellStyleDefault" id="Yih-vf-OWM" customClass="TipReloadCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="16" y="142.66666793823242" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yih-vf-OWM" id="Yqc-Lr-iRw">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Placeholder Tip Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="9ZD-dZ-Uvk">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Reload" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="9ZD-dZ-Uvk">
+                                            <rect key="frame" x="16" y="0.0" width="311" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="reloadLabel" destination="9ZD-dZ-Uvk" id="k1h-6N-g6n"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Ready" textLabel="u8Y-Pw-tgf" detailTextLabel="pQd-xk-Plq" style="IBUITableViewCellStyleValue1" id="93I-Gd-hPM" customClass="TipReadyCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="16" y="186.33333587646484" width="343" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="93I-Gd-hPM" id="kIw-oY-d89">
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Placeholder Tip Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="u8Y-Pw-tgf">
                                             <rect key="frame" x="16" y="1" width="167.33333333333334" height="20.333333333333332"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Placeholder Tip Price" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="UHW-Ym-QbO">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Placeholder Tip Price" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="pQd-xk-Plq">
                                             <rect key="frame" x="232.66666666666671" y="1" width="94.333333333333329" height="42.333333333333336"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -75,12 +95,12 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="tipNameLabel" destination="9ZD-dZ-Uvk" id="fur-fo-dxz"/>
-                                    <outlet property="tipPriceLabel" destination="UHW-Ym-QbO" id="cR5-qr-GeQ"/>
+                                    <outlet property="tipNameLabel" destination="u8Y-Pw-tgf" id="y44-Pu-5Ld"/>
+                                    <outlet property="tipPriceLabel" destination="pQd-xk-Plq" id="Gdh-3S-R2v"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Purchasing" textLabel="RvL-wm-fb7" style="IBUITableViewCellStyleDefault" id="85d-p7-Pjt">
-                                <rect key="frame" x="16" y="186.33333587646484" width="343" height="43.666667938232422"/>
+                                <rect key="frame" x="16" y="230.00000381469727" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="85d-p7-Pjt" id="L8g-Up-fE3">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
@@ -97,7 +117,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Tip Thank You" textLabel="bAD-Vr-CxL" style="IBUITableViewCellStyleDefault" id="0dW-7o-DPH" customClass="TipThankYouCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="230.00000381469727" width="343" height="43.666667938232422"/>
+                                <rect key="frame" x="16" y="273.66667175292969" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0dW-7o-DPH" id="IkS-wO-VnE">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>

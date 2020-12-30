@@ -9,28 +9,35 @@ import StoreKit
 
 protocol PurchaseManagerTipDelegate: AnyObject {
 	func didReceiveTipProduct(_ tipProduct: SKProduct)
+	func didFailToReceiveTipProduct()
 	func didUpdateTipTransaction(_ tipTransaction: SKPaymentTransaction)
 }
 
 final class PurchaseManager: NSObject {
 	
-	// MARK: - Types
+	// MARK: Types
 	
 	enum ProductIdentifier: String, CaseIterable {
 		case tip = "com.loudsounddreams.LavaRock.tip"
 	}
 	
-	// MARK: - Properties
+	// MARK: Properties
 	
 	// Constants
 	static let shared = PurchaseManager()
 	
 	// Variables
-	var priceFormatter: NumberFormatter? // Move this to the view controllers that use it?
-	var tipProduct: SKProduct?
+	
+	
+//	var isFirstTimeRequestingAllSKProducts = true
+	
+	
+	lazy var savedSKProductsRequest: SKProductsRequest? = nil
+	lazy var priceFormatter: NumberFormatter? = nil
+	lazy var tipProduct: SKProduct? = nil
 	weak var tipDelegate: PurchaseManagerTipDelegate?
 	
-	// MARK: - Setup and Teardown
+	// MARK: Setup and Teardown
 	
 	private override init() { }
 	
@@ -46,7 +53,7 @@ final class PurchaseManager: NSObject {
 		SKPaymentQueue.default().remove(self)
 	}
 	
-	// MARK: - Other
+	// MARK: Other
 	
 	final func requestAllSKProducts() {
 		var setOfIdentifiers = Set<String>()
@@ -56,6 +63,7 @@ final class PurchaseManager: NSObject {
 		let productsRequest = SKProductsRequest(productIdentifiers: setOfIdentifiers)
 		productsRequest.delegate = self
 		productsRequest.start()
+		savedSKProductsRequest = productsRequest
 	}
 	
 	final func addToPaymentQueue(_ skProduct: SKProduct?) {
@@ -70,7 +78,28 @@ final class PurchaseManager: NSObject {
 
 extension PurchaseManager: SKProductsRequestDelegate {
 	
-	final func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+	final func productsRequest(
+		_ request: SKProductsRequest,
+		didReceive response: SKProductsResponse
+	) {
+//		if isFirstTimeRequestingAllSKProducts {
+//			isFirstTimeRequestingAllSKProducts = false
+//
+//
+//			if request == savedSKProductsRequest {
+//				for identifier in ProductIdentifier.allCases {
+//					switch identifier {
+//					case .tip:
+//						tipDelegate?.didFailToReceiveTipProduct()
+//					}
+//				}
+//			}
+//
+//
+//			return
+//		}
+		
+		
 		if let priceLocale = response.products.first?.priceLocale {
 			setUpPriceFormatter(locale: priceLocale)
 		}
@@ -81,6 +110,20 @@ extension PurchaseManager: SKProductsRequestDelegate {
 				self.tipDelegate?.didReceiveTipProduct(product)
 			default:
 				break
+			}
+		}
+	}
+	
+	final func request(
+		_ request: SKRequest,
+		didFailWithError error: Error
+	) {
+		if request == savedSKProductsRequest {
+			for identifier in ProductIdentifier.allCases {
+				switch identifier {
+				case .tip:
+					tipDelegate?.didFailToReceiveTipProduct()
+				}
 			}
 		}
 	}

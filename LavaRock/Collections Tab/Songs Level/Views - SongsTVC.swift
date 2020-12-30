@@ -35,8 +35,8 @@ final class SongCell:
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
 	
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
+	override func awakeFromNib() {
+		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)
 	}
@@ -51,8 +51,8 @@ final class SongCellWithDifferentArtist:
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
 	
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
+	override func awakeFromNib() {
+		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)
 	}
