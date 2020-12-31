@@ -9,22 +9,10 @@ import UIKit
 
 final class OptionsTVC: UITableViewController {
 	
-	// MARK: - Types
-	
-	enum TipStatus {
-		case loading, reload, ready, purchasing, thankYou
-	}
-	
 	// MARK: - Properties
 	
 	// Variables
-	final var tipStatus: TipStatus = {
-		if PurchaseManager.shared.tipProduct == nil { // Keep tipProduct in PurchaseManager, not here, so that we don't have to download it every time we open the Options sheet.
-			return .loading
-		} else {
-			return .ready
-		}
-	}()
+	final var shouldShowTemporaryThankYouMessage = false
 	
 	// MARK: - Setup
 	
@@ -37,7 +25,7 @@ final class OptionsTVC: UITableViewController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if tipStatus == .loading {
+		if PurchaseManager.shared.tipStatus == .loading { // This doesn't make sense: whether we've already requested or not, tipStatus == .loading either way
 			PurchaseManager.shared.requestAllSKProducts() // It should be safe to do this at this point, even if we both receive the response and refresh the table view extremely soon.
 		}
 	}

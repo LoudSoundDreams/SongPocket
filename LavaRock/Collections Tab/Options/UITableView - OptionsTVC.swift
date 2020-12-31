@@ -99,19 +99,21 @@ extension OptionsTVC {
 	}
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch tipStatus {
+		switch PurchaseManager.shared.tipStatus {
 		case .loading:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
 			return cell
 		case .reload:
 			return tipReloadCell()
 		case .ready:
-			return tipReadyCell()
-		case .purchasing:
+			if shouldShowTemporaryThankYouMessage {
+				return tipThankYouCell()
+			} else {
+				return tipReadyCell()
+			}
+		case .confirming:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Purchasing", for: indexPath)
 			return cell
-		case .thankYou:
-			return tipThankYouCell()
 		}
 	}
 	
@@ -174,11 +176,13 @@ extension OptionsTVC {
 	}
 	
 	private func canSelectTipJarRow() -> Bool {
-		switch tipStatus {
-		case .loading, .purchasing, .thankYou:
+		switch PurchaseManager.shared.tipStatus {
+		case .loading, .confirming:
 			return false
-		case .reload, .ready:
+		case .reload:
 			return true
+		case .ready:
+			return !shouldShowTemporaryThankYouMessage
 		}
 	}
 	
@@ -210,8 +214,8 @@ extension OptionsTVC {
 	}
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
-		switch tipStatus {
-		case .loading, .purchasing, .thankYou: // Should never run
+		switch PurchaseManager.shared.tipStatus {
+		case .loading, .confirming: // Should never run
 			break
 		case .reload:
 			reloadTipProduct()
@@ -221,18 +225,17 @@ extension OptionsTVC {
 	}
 	
 	private func reloadTipProduct() {
-		tipStatus = .loading
+		PurchaseManager.shared.requestAllSKProducts()
+		
 		deselectTipJarRows(animated: true)
 		refreshTipJarRows()
-		PurchaseManager.shared.requestAllSKProducts()
 	}
 	
 	private func beginleaveTip() {
-		tipStatus = .purchasing
-		refreshTipJarRows()
-		
 		let tipProduct = PurchaseManager.shared.tipProduct
 		PurchaseManager.shared.addToPaymentQueue(tipProduct)
+		
+		refreshTipJarRows()
 	}
 	
 	// MARK: - Events

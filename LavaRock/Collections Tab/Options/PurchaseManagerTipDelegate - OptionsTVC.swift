@@ -11,14 +11,12 @@ extension OptionsTVC: PurchaseManagerTipDelegate {
 	
 	final func didReceiveTipProduct(_ tipProduct: SKProduct) {
 		DispatchQueue.main.async {
-			self.tipStatus = .ready
 			self.refreshTipJarRows()
 		}
 	}
 	
 	final func didFailToReceiveTipProduct() {
 		DispatchQueue.main.async {
-			self.tipStatus = .reload
 			self.refreshTipJarRows()
 		}
 	}
@@ -46,17 +44,16 @@ extension OptionsTVC: PurchaseManagerTipDelegate {
 	}
 	
 	private func didReceiveTip() {
-		tipStatus = .thankYou
+		shouldShowTemporaryThankYouMessage = true
 		refreshTipJarRows()
 		DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: { [weak self] in // Don't retain this view controller just to do this work.
-			self?.tipStatus = .ready
+			self?.shouldShowTemporaryThankYouMessage = false
 			self?.deselectTipJarRows(animated: true)
 			self?.refreshTipJarRows()
 		})
 	}
 	
 	private func cancelTip() {
-		tipStatus = .ready
 		deselectTipJarRows(animated: true)
 		refreshTipJarRows()
 	}

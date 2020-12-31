@@ -21,12 +21,17 @@ final class PurchaseManager: NSObject {
 		case tip = "com.loudsounddreams.LavaRock.tip"
 	}
 	
+	enum TipStatus {
+		case loading, reload, ready, confirming
+	}
+	
 	// MARK: Properties
 	
 	// Constants
 	static let shared = PurchaseManager()
 	
 	// Variables
+	lazy var tipStatus: TipStatus = .loading
 	lazy var savedSKProductsRequest: SKProductsRequest? = nil
 	lazy var priceFormatter: NumberFormatter? = nil
 	lazy var tipProduct: SKProduct? = nil
@@ -51,6 +56,7 @@ final class PurchaseManager: NSObject {
 	// MARK: Other
 	
 	final func requestAllSKProducts() {
+		tipStatus = .loading // In case tipStatus has changed to, say, .reload
 		var setOfIdentifiers = Set<String>()
 		for identifier in ProductIdentifier.allCases {
 			setOfIdentifiers.insert(identifier.rawValue)
@@ -63,6 +69,8 @@ final class PurchaseManager: NSObject {
 	
 	final func addToPaymentQueue(_ skProduct: SKProduct?) {
 		guard let skProduct = skProduct else { return }
+		
+		tipStatus = .confirming // This is wrong. Not every SKProduct is the tip product
 		let skPayment = SKPayment(product: skProduct)
 //		let skPayment = SKMutablePayment(product: skProduct)
 //		skPayment.simulatesAskToBuyInSandbox = true
@@ -71,20 +79,28 @@ final class PurchaseManager: NSObject {
 	
 }
 
+// MARK: - SKProductsRequestDelegate
+
 extension PurchaseManager: SKProductsRequestDelegate {
 	
 	final func productsRequest(
 		_ request: SKProductsRequest,
 		didReceive response: SKProductsResponse
 	) {
+		guard response.products.count >= 1 else {
+			didFailToReceiveAnySKProducts()
+			return
+		}
+		
 		if let priceLocale = response.products.first?.priceLocale {
 			setUpPriceFormatter(locale: priceLocale)
 		}
 		for product in response.products {
 			switch product.productIdentifier {
 			case ProductIdentifier.tip.rawValue:
-				self.tipProduct = product
-				self.tipDelegate?.didReceiveTipProduct(product)
+				tipProduct = product
+				tipStatus = .ready
+				tipDelegate?.didReceiveTipProduct(product)
 			default:
 				break
 			}
@@ -96,11 +112,16 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		didFailWithError error: Error
 	) {
 		if request == savedSKProductsRequest {
-			for identifier in ProductIdentifier.allCases {
-				switch identifier {
-				case .tip:
-					tipDelegate?.didFailToReceiveTipProduct()
-				}
+			didFailToReceiveAnySKProducts()
+		}
+	}
+	
+	private func didFailToReceiveAnySKProducts() {
+		for identifier in ProductIdentifier.allCases {
+			switch identifier {
+			case .tip:
+				tipStatus = .reload
+				tipDelegate?.didFailToReceiveTipProduct()
 			}
 		}
 	}
@@ -114,12 +135,22 @@ extension PurchaseManager: SKProductsRequestDelegate {
 	
 }
 
+// MARK: SKPaymentTransasctionObserver
+
 extension PurchaseManager: SKPaymentTransactionObserver {
 	
 	func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
 		for transaction in transactions {
 			switch transaction.payment.productIdentifier {
 			case ProductIdentifier.tip.rawValue:
+				switch transaction.transactionState {
+				case .purchasing:
+					break
+				case .deferred, .failed, .purchased, .restored:
+					tipStatus = .ready
+				@unknown default:
+					fatalError()
+				}
 				tipDelegate?.didUpdateTipTransaction(transaction)
 			default:
 				break
