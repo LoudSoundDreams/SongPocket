@@ -143,7 +143,7 @@ extension SongsTVC {
 		guard let selectedSong = indexedLibraryItems[indexOfSelectedSong] as? Song else { return }
 		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
 		showExplanationIfNecessaryForEnqueueAction(
-//			userDefaultsKeyForShouldShowExplanation: "shouldExplainQueueAlbumStartingHere",
+			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAlbumStartingHere,
 			titleOfSelectedSong: titleOfSelectedSong,
 			numberOfSongsEnqueued: mediaItemsToEnqueue.count)
 	}
@@ -172,7 +172,7 @@ extension SongsTVC {
 		}
 		
 		showExplanationIfNecessaryForEnqueueAction(
-//			userDefaultsKeyForShouldShowExplanation: "shouldExplainQueueSong",
+			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueSong,
 			titleOfSelectedSong: song.titleFormattedOrPlaceholder(),
 			numberOfSongsEnqueued: 1)
 	}
@@ -180,18 +180,12 @@ extension SongsTVC {
 	// MARK: Explaining Enqueue Actions
 	
 	private func showExplanationIfNecessaryForEnqueueAction(
-//		userDefaultsKeyForShouldShowExplanation: String,
+		userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey,
 		titleOfSelectedSong: String,
 		numberOfSongsEnqueued: Int
 	) {
-		
-		
-//		UserDefaults.standard.removeObject(forKey: userDefaultsKeyForShouldShowExplanation) //
-		
-		
-//		let shouldShowExplanation = UserDefaults.standard.value(forKey: userDefaultsKeyForShouldShowExplanation) as? Bool ?? true
-//
-//		guard shouldShowExplanation else { return }
+		let shouldShowExplanation = UserDefaults.standard.value(forKey: userDefaultsKeyForShouldShowExplanation.rawValue) as? Bool ?? true
+		guard shouldShowExplanation else { return }
 		
 		let alertTitle: String
 		switch numberOfSongsEnqueued {
@@ -213,13 +207,13 @@ extension SongsTVC {
 			title: alertTitle,
 			message: alertMessage,
 			preferredStyle: .alert)
-//		alert.addAction(
-//			UIAlertAction(
-//				title: "Don’t Show Again",
-//				style: .default,
-//				handler: { _ in
-//					UserDefaults.standard.setValue(false, forKey: )
-//				} ))
+		alert.addAction(
+			UIAlertAction(
+				title: LocalizedString.dontShowAgain,
+				style: .default,
+				handler: { _ in
+					UserDefaults.standard.setValue(false, forKey: userDefaultsKeyForShouldShowExplanation.rawValue)
+				} ))
 		alert.addAction(
 			UIAlertAction(
 				title: LocalizedString.ok,

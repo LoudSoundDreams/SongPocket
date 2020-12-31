@@ -87,7 +87,7 @@ extension OptionsTVC {
 			cell.textLabel?.textColor = rowColorEntry.uiColor
 		}
 		
-		if rowColorEntry.userDefaultsKey == AccentColorManager.savedUserDefaultsKey() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowColorEntry.uiColor.
+		if rowColorEntry.userDefaultsValue == AccentColorManager.savedUserDefaultsValue() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowColorEntry.uiColor.
 			cell.accessoryType = .checkmark
 		} else {
 			cell.accessoryType = .none

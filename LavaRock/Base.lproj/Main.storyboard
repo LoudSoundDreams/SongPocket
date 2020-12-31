@@ -154,14 +154,6 @@
             </objects>
             <point key="canvasLocation" x="6018" y="-601"/>
         </scene>
-        <!--Hosting Controller-->
-        <scene sceneID="ycJ-vj-G9u">
-            <objects>
-                <hostingController storyboardIdentifier="Options Hosting Controller" id="9Db-O2-sJO" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="g6B-ui-Bzw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5166" y="-1254"/>
-        </scene>
         <!--Collections-->
         <scene sceneID="X0R-Et-kVe">
             <objects>

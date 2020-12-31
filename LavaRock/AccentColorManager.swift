@@ -11,7 +11,7 @@ struct AccentColorManager {
 	
 	// MARK: - Types
 	
-	private enum UserDefaultsKey: String, CaseIterable {
+	private enum UserDefaultsValueCase: String, CaseIterable {
 		case strawberry = "Strawberry"
 		case tangerine = "Tangerine"
 		case lime = "Lime"
@@ -20,7 +20,7 @@ struct AccentColorManager {
 	}
 	
 	struct ColorEntry {
-		let userDefaultsKey: String
+		let userDefaultsValue: String
 		let displayName: String
 		let uiColor: UIColor
 	}
@@ -28,28 +28,28 @@ struct AccentColorManager {
 	// MARK: - Properties
 	
 	private static let defaultColorEntry = ColorEntry(
-		userDefaultsKey: UserDefaultsKey.blueberry.rawValue,
+		userDefaultsValue: UserDefaultsValueCase.blueberry.rawValue,
 		displayName: LocalizedString.blueberry,
 		uiColor: UIColor.systemBlue)
 	
 	static let colorEntries = [
 		ColorEntry(
-			userDefaultsKey: UserDefaultsKey.strawberry.rawValue,
+			userDefaultsValue: UserDefaultsValueCase.strawberry.rawValue,
 			displayName: LocalizedString.strawberry,
 			uiColor: UIColor.systemPink),
 		ColorEntry(
-			userDefaultsKey: UserDefaultsKey.tangerine.rawValue,
+			userDefaultsValue: UserDefaultsValueCase.tangerine.rawValue,
 			displayName: LocalizedString.tangerine,
 			uiColor: UIColor.systemOrange),
 		ColorEntry(
-			userDefaultsKey: UserDefaultsKey.lime.rawValue,
+			userDefaultsValue: UserDefaultsValueCase.lime.rawValue,
 			displayName: LocalizedString.lime,
 			uiColor: UIColor.systemGreen),
 		
 		defaultColorEntry,
 		
 		ColorEntry(
-			userDefaultsKey: UserDefaultsKey.grape.rawValue,
+			userDefaultsValue: UserDefaultsValueCase.grape.rawValue,
 			displayName: LocalizedString.grape,
 			uiColor: UIColor.systemPurple),
 	]
@@ -67,20 +67,21 @@ struct AccentColorManager {
 			Notification(name: Notification.Name.LRDidChangeAccentColor)
 		)
 		
-		DispatchQueue.global().async { // A tester provided a screen recording of lag sometimes between selecting a row and the sheet dismissing. They reported that this line of code fixed it. iPhone SE (2nd generation), iOS 13.5.1
-			UserDefaults.standard.set(colorEntry.userDefaultsKey, forKey: "accentColorName")
-		}
+		UserDefaults.standard.set(
+			colorEntry.userDefaultsValue,
+			forKey: LRUserDefaultsKey.accentColorName.rawValue)
 	}
 	
 	// MARK: - Getting Info
 	
-	static func savedUserDefaultsKey() -> String? {
-		return UserDefaults.standard.value(forKey: "accentColorName") as? String
+	static func savedUserDefaultsValue() -> String? {
+		return UserDefaults.standard.value(
+			forKey: LRUserDefaultsKey.accentColorName.rawValue) as? String
 	}
 	
 	static func heartEmojiMatchingSavedAccentColor() -> String {
-		let savedKey = enumCaseForSavedUserDefaultsKey()
-		switch savedKey {
+		let savedValueCase = savedUserDefaultsValueCase()
+		switch savedValueCase {
 		case .strawberry:
 			return "❤️"
 		case .tangerine:
@@ -97,12 +98,14 @@ struct AccentColorManager {
 	
 	// MARK: - Private Methods
 	
+	private init() { }
+	
 	private static func savedOrDefaultColorEntry() -> ColorEntry {
 		// If there's a saved preference, set it.
 		if
-			let savedUserDefaultsKey = savedUserDefaultsKey(),
+			let savedUserDefaultsValue = savedUserDefaultsValue(),
 			let savedColorEntry = colorEntries.first(where: { colorEntry in
-				colorEntry.userDefaultsKey == savedUserDefaultsKey
+				colorEntry.userDefaultsValue == savedUserDefaultsValue
 			})
 		{
 			return savedColorEntry
@@ -111,13 +114,13 @@ struct AccentColorManager {
 		}
 	}
 	
-	private static func enumCaseForSavedUserDefaultsKey() -> UserDefaultsKey? {
-		let key = savedUserDefaultsKey()
-		return Self.enumCase(forUserDefaultsKey: key)
+	private static func savedUserDefaultsValueCase() -> UserDefaultsValueCase? {
+		let savedValue = savedUserDefaultsValue()
+		return Self.userDefaultsValueCase(withRawValue: savedValue)
 	}
 	
-	private static func enumCase(forUserDefaultsKey stringToMatch: String?) -> UserDefaultsKey? {
-		for enumCase in UserDefaultsKey.allCases {
+	private static func userDefaultsValueCase(withRawValue stringToMatch: String?) -> UserDefaultsValueCase? {
+		for enumCase in UserDefaultsValueCase.allCases {
 			if enumCase.rawValue == stringToMatch {
 				return enumCase
 			}

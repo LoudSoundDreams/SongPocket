@@ -23,6 +23,9 @@
 "did_enqueue_songs_alert_message" = "您可以在內建音樂App中編輯待播清單。";
 
 /* Button title */
+"Don’t Show Again" = "不再顯示";
+
+/* Button title */
 "Done" = "完成";
 
 /* Accent color */

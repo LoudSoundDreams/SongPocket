@@ -13,6 +13,8 @@ final class LocalizedString { // You can't make this an enum, because associated
 	
 	// Don't pass arguments to the Foundation function NSLocalizedString, because when you choose Editor -> Export for Localization…, Xcode won't include those calls.
 	
+	private init() { }
+	
 	// MARK: - Without Variables
 	
 	// MARK: Standard Buttons
@@ -90,6 +92,7 @@ final class LocalizedString { // You can't make this an enum, because associated
 		bundle: Bundle.main,
 		value: "You can edit the queue in the built-in Music app.",
 		comment: "Body text of the alert that appears after the user adds songs to the queue.")
+	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button title")
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Button title")
 	
 	// MARK: - With Variables, but Without Text Variations (Format Strings)

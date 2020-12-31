@@ -27,11 +27,6 @@ final class PurchaseManager: NSObject {
 	static let shared = PurchaseManager()
 	
 	// Variables
-	
-	
-//	var isFirstTimeRequestingAllSKProducts = true
-	
-	
 	lazy var savedSKProductsRequest: SKProductsRequest? = nil
 	lazy var priceFormatter: NumberFormatter? = nil
 	lazy var tipProduct: SKProduct? = nil
@@ -82,24 +77,6 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		_ request: SKProductsRequest,
 		didReceive response: SKProductsResponse
 	) {
-//		if isFirstTimeRequestingAllSKProducts {
-//			isFirstTimeRequestingAllSKProducts = false
-//
-//
-//			if request == savedSKProductsRequest {
-//				for identifier in ProductIdentifier.allCases {
-//					switch identifier {
-//					case .tip:
-//						tipDelegate?.didFailToReceiveTipProduct()
-//					}
-//				}
-//			}
-//
-//
-//			return
-//		}
-		
-		
 		if let priceLocale = response.products.first?.priceLocale {
 			setUpPriceFormatter(locale: priceLocale)
 		}

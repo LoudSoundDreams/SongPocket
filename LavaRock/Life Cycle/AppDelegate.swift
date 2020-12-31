@@ -16,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		PurchaseManager.shared.beginObservingPaymentTransactions()
 		
+		DispatchQueue.global(qos: .utility).async {
+			UserDefaults.standard.deleteAllEntries(exceptWithKeys: LRUserDefaultsKey.rawValues())
+		}
+		
 		return true
 	}
 	
