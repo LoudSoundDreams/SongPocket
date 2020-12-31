@@ -207,18 +207,20 @@ extension SongsTVC {
 			title: alertTitle,
 			message: alertMessage,
 			preferredStyle: .alert)
-		alert.addAction(
-			UIAlertAction(
-				title: LocalizedString.dontShowAgain,
-				style: .default,
-				handler: { _ in
-					UserDefaults.standard.setValue(false, forKey: userDefaultsKeyForShouldShowExplanation.rawValue)
-				} ))
-		alert.addAction(
-			UIAlertAction(
-				title: LocalizedString.ok,
-				style: .default,
-				handler: nil))
+		let dontShowAgainAction = UIAlertAction(
+			title: LocalizedString.dontShowAgain,
+			style: .default,
+			handler: { _ in
+				UserDefaults.standard.setValue(false, forKey: userDefaultsKeyForShouldShowExplanation.rawValue)
+			}
+		)
+		let okAction = UIAlertAction(
+			title: LocalizedString.ok,
+			style: .default,
+			handler: nil)
+		alert.addAction(dontShowAgainAction)
+		alert.addAction(okAction)
+		alert.preferredAction = okAction
 		present(alert, animated: true, completion: nil)
 	}
 	
