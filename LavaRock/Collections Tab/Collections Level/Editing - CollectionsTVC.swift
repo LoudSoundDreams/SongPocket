@@ -37,29 +37,34 @@ extension CollectionsTVC {
 			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
 		} )
-		dialog.addAction(
-			UIAlertAction(
-				title: LocalizedString.cancel,
-				style: .cancel,
-				handler: { _ in
-					self.isRenamingCollection = false
-				}
-			)
-		)
-		dialog.addAction(UIAlertAction(title: LocalizedString.done, style: .default, handler: { _ in
-			let rawProposedTitle = dialog.textFields?[0].text
-			let newTitle = Collection.validatedTitle(from: rawProposedTitle)
-			
-			collection.title = newTitle
-			self.managedObjectContext.tryToSave()
-			
-			self.tableView.reloadRows(at: [indexPath], with: .automatic)
-			if wasRowSelectedBeforeRenaming {
-				self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+		let cancelAction = UIAlertAction(
+			title: LocalizedString.cancel,
+			style: .cancel,
+			handler: { _ in
+				self.isRenamingCollection = false
 			}
-			
-			self.isRenamingCollection = false
-		}) )
+		)
+		let doneAction = UIAlertAction(
+			title: LocalizedString.done,
+			style: .default,
+			handler: { _ in
+				let rawProposedTitle = dialog.textFields?[0].text
+				let newTitle = Collection.validatedTitle(from: rawProposedTitle)
+				
+				collection.title = newTitle
+				self.managedObjectContext.tryToSave()
+				
+				self.tableView.reloadRows(at: [indexPath], with: .automatic)
+				if wasRowSelectedBeforeRenaming {
+					self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+				}
+				
+				self.isRenamingCollection = false
+			}
+		)
+		dialog.addAction(cancelAction)
+		dialog.addAction(doneAction)
+		dialog.preferredAction = doneAction
 		present(dialog, animated: true, completion: nil)
 	}
 	

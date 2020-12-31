@@ -57,47 +57,50 @@ extension CollectionsTVC {
 			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
 		} )
-		dialog.addAction(
-			UIAlertAction(
-				title: LocalizedString.cancel,
-				style: .cancel,
-				handler: { _ in
-					albumMoverClipboard.isMakingNewCollection = false
-				}
-			)
+		let cancelAction = UIAlertAction(
+			title: LocalizedString.cancel,
+			style: .cancel,
+			handler: { _ in
+				albumMoverClipboard.isMakingNewCollection = false
+			}
 		)
-		dialog.addAction(UIAlertAction(title: LocalizedString.done, style: .default, handler: { _ in
-			
-			albumMoverClipboard.isMakingNewCollection = false
-			albumMoverClipboard.didAlreadyMakeNewCollection = true
-			
-			let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
-			
-			// Create the new Collection.
-			
-			let rawProposedTitle = dialog.textFields?[0].text
-			let newTitle = Collection.validatedTitle(from: rawProposedTitle)
-			
-			let newCollection = Collection(context: self.managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
-			newCollection.title = newTitle
-			// The property observer on indexedLibraryItems will set the "index" attribute for us.
-			
-			self.indexedLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
-			
-			// Enter the new Collection.
-			
-			self.tableView.performBatchUpdates( {
-				self.tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
-			}, completion: { _ in
+		let doneAction = UIAlertAction(
+			title: LocalizedString.done,
+			style: .default,
+			handler: { _ in
+				albumMoverClipboard.isMakingNewCollection = false
+				albumMoverClipboard.didAlreadyMakeNewCollection = true
+				
+				let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
+				
+				// Create the new Collection.
+				
+				let rawProposedTitle = dialog.textFields?[0].text
+				let newTitle = Collection.validatedTitle(from: rawProposedTitle)
+				
+				let newCollection = Collection(context: self.managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
+				newCollection.title = newTitle
+				// The property observer on indexedLibraryItems will set the "index" attribute for us.
+				
+				self.indexedLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
+				
+				// Enter the new Collection.
+				
 				self.tableView.performBatchUpdates( {
-					self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top)
-					
+					self.tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
 				}, completion: { _ in
-					self.performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
+					self.tableView.performBatchUpdates( {
+						self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top)
+						
+					}, completion: { _ in
+						self.performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
+					} )
 				} )
-			} )
-			
-		} ) )
+			}
+		)
+		dialog.addAction(cancelAction)
+		dialog.addAction(doneAction)
+		dialog.preferredAction = doneAction
 		albumMoverClipboard.isMakingNewCollection = true
 		present(dialog, animated: true, completion: nil)
 	}
