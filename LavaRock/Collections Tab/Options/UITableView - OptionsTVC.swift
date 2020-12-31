@@ -162,7 +162,6 @@ extension OptionsTVC {
 		
 		AccentColorManager.setAccentColor(selectedColorEntry, in: view.window)
 		tableView.reloadData()
-//		dismiss(animated: true, completion: nil)
 	}
 	
 }
@@ -277,15 +276,10 @@ extension OptionsTVC {
 	// MARK: Events
 	
 	final func refreshTipJarRows() {
-		let indexPathsToRefresh = tipJarIndexPaths()
-		tableView.reloadRows(at: indexPathsToRefresh, with: .fade)
-	}
-	
-	private func tipJarIndexPaths() -> [IndexPath] {
-		let tipJarIndexPaths = tableView.indexPathsForRowsIn(
+		let tipJarIndexPaths = self.tableView.indexPathsForRowsIn(
 			section: Section.tipJar.rawValue,
 			firstRow: 0)
-		return tipJarIndexPaths
+		self.tableView.reloadRows(at: tipJarIndexPaths, with: .fade)
 	}
 	
 }
