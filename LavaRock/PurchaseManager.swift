@@ -36,6 +36,8 @@ final class PurchaseManager: NSObject {
 	lazy var priceFormatter: NumberFormatter? = nil
 	lazy var tipProduct: SKProduct? = nil
 	weak var tipDelegate: PurchaseManagerTipDelegate?
+	// For testing only
+//	lazy var isTestingDidFailToReceiveAnySKProducts = true
 	
 	// MARK: Setup and Teardown
 	
@@ -70,7 +72,12 @@ final class PurchaseManager: NSObject {
 	final func addToPaymentQueue(_ skProduct: SKProduct?) {
 		guard let skProduct = skProduct else { return }
 		
-		tipStatus = .confirming // This is wrong. Not every SKProduct is the tip product
+		switch skProduct {
+		case tipProduct:
+			tipStatus = .confirming
+		default:
+			break
+		}
 		let skPayment = SKPayment(product: skProduct)
 //		let skPayment = SKMutablePayment(product: skProduct)
 //		skPayment.simulatesAskToBuyInSandbox = true
@@ -87,6 +94,14 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		_ request: SKProductsRequest,
 		didReceive response: SKProductsResponse
 	) {
+		// For testing only
+//		if isTestingDidFailToReceiveAnySKProducts {
+//			isTestingDidFailToReceiveAnySKProducts = false
+//
+//			didFailToReceiveAnySKProducts()
+//			return
+//		}
+		
 		guard response.products.count >= 1 else {
 			didFailToReceiveAnySKProducts()
 			return

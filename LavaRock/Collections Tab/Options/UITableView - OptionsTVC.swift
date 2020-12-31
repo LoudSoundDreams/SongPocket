@@ -7,13 +7,15 @@
 
 import UIKit
 
+// MARK: - All Sections
+
 extension OptionsTVC {
 	
 	private enum Section: Int, CaseIterable {
 		case accentColor, tipJar
 	}
 	
-	// MARK: - Numbers
+	// MARK: Numbers
 	
 	final override func numberOfSections(in tableView: UITableView) -> Int {
 		return Section.allCases.count
@@ -30,7 +32,7 @@ extension OptionsTVC {
 		}
 	}
 	
-	// MARK: - Headers and Footers
+	// MARK: Headers and Footers
 	
 	final override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		switch section {
@@ -52,7 +54,7 @@ extension OptionsTVC {
 		}
 	}
 	
-	// MARK: - Cells
+	// MARK: Cells
 	
 	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch indexPath.section {
@@ -64,6 +66,53 @@ extension OptionsTVC {
 			return UITableViewCell()
 		}
 	}
+	
+	final override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		if
+			PurchaseManager.shared.tipStatus == .confirming,
+			indexPath.section == Section.tipJar.rawValue
+		{
+			cell.isSelected = true
+		}
+	}
+	
+	// MARK: Selecting
+	
+	final override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+		switch indexPath.section {
+		case Section.accentColor.rawValue:
+			return indexPath
+		case Section.tipJar.rawValue:
+			return canSelectTipJarRow() ? indexPath : nil
+		default:
+			return indexPath
+		}
+	}
+	
+	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		switch indexPath.section {
+		case Section.accentColor.rawValue:
+			didSelectAccentColorRow(at: indexPath)
+		case Section.tipJar.rawValue:
+			didSelectTipJarRow(at: indexPath)
+		default:
+			break
+		}
+	}
+	
+	// MARK: Events
+	
+	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
+		dismiss(animated: true, completion: nil)
+	}
+	
+}
+
+// MARK: - Accent Color Section
+
+extension OptionsTVC {
+	
+	// MARK: Cells
 	
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		let index = indexPath.row
@@ -97,6 +146,32 @@ extension OptionsTVC {
 		
 		return cell
 	}
+	
+	// MARK: Selecting
+	
+	private func didSelectAccentColorRow(at indexPath: IndexPath) {
+		let index = indexPath.row
+		guard
+			index >= 0,
+			index <= AccentColorManager.colorEntries.count - 1
+		else {
+			tableView.deselectRow(at: indexPath, animated: true)
+			return
+		}
+		let selectedColorEntry = AccentColorManager.colorEntries[index]
+		
+		AccentColorManager.setAccentColor(selectedColorEntry, in: view.window)
+		tableView.reloadData()
+//		dismiss(animated: true, completion: nil)
+	}
+	
+}
+
+// MARK: - Tip Jar Section
+
+extension OptionsTVC {
+	
+	// MARK: Cells
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch PurchaseManager.shared.tipStatus {
@@ -162,18 +237,7 @@ extension OptionsTVC {
 		return cell
 	}
 	
-	// MARK: - Selecting
-	
-	final override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-		switch indexPath.section {
-		case Section.accentColor.rawValue:
-			return indexPath
-		case Section.tipJar.rawValue:
-			return canSelectTipJarRow() ? indexPath : nil
-		default:
-			return indexPath
-		}
-	}
+	// MARK: Selecting
 	
 	private func canSelectTipJarRow() -> Bool {
 		switch PurchaseManager.shared.tipStatus {
@@ -184,33 +248,6 @@ extension OptionsTVC {
 		case .ready:
 			return !shouldShowTemporaryThankYouMessage
 		}
-	}
-	
-	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		switch indexPath.section {
-		case Section.accentColor.rawValue:
-			didSelectAccentColorRow(at: indexPath)
-		case Section.tipJar.rawValue:
-			didSelectTipJarRow(at: indexPath)
-		default:
-			break
-		}
-	}
-	
-	private func didSelectAccentColorRow(at indexPath: IndexPath) {
-		let index = indexPath.row
-		guard
-			index >= 0,
-			index <= AccentColorManager.colorEntries.count - 1
-		else {
-			tableView.deselectRow(at: indexPath, animated: true)
-			return
-		}
-		let selectedColorEntry = AccentColorManager.colorEntries[index]
-		
-		AccentColorManager.setAccentColor(selectedColorEntry, in: view.window)
-		tableView.reloadData()
-//		dismiss(animated: true, completion: nil)
 	}
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
@@ -227,7 +264,6 @@ extension OptionsTVC {
 	private func reloadTipProduct() {
 		PurchaseManager.shared.requestAllSKProducts()
 		
-		deselectTipJarRows(animated: true)
 		refreshTipJarRows()
 	}
 	
@@ -238,21 +274,11 @@ extension OptionsTVC {
 		refreshTipJarRows()
 	}
 	
-	// MARK: - Events
-	
-	final func deselectTipJarRows(animated: Bool) {
-		let indexPaths = tipJarIndexPaths()
-		tableView.deselectRows(at: indexPaths, animated: animated)
-	}
+	// MARK: Events
 	
 	final func refreshTipJarRows() {
 		let indexPathsToRefresh = tipJarIndexPaths()
-		let indexPathsToRefreshThatWereSelected = indexPathsToRefresh.filter { indexPath in
-			tableView.cellForRow(at: indexPath)?.isSelected ?? false
-		}
-		
 		tableView.reloadRows(at: indexPathsToRefresh, with: .fade)
-		tableView.selectRows(at: indexPathsToRefreshThatWereSelected, animated: false)
 	}
 	
 	private func tipJarIndexPaths() -> [IndexPath] {
@@ -260,10 +286,6 @@ extension OptionsTVC {
 			section: Section.tipJar.rawValue,
 			firstRow: 0)
 		return tipJarIndexPaths
-	}
-	
-	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
-		dismiss(animated: true, completion: nil)
 	}
 	
 }
