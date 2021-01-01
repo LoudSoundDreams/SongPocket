@@ -13,7 +13,7 @@ extension SongsTVC {
 	
 	// MARK: - Presenting Actions
 	
-	final func showSongActions(for song: Song) {
+	final func showSongActions(for song: Song, popoverAnchorView: UIView) {
 		areSongActionsPresented = true
 		// You must set areSongActionsPresented = false when the action sheet is dismissed. Use this function for convenience.
 		func didDismissSongActions() {
@@ -77,6 +77,7 @@ extension SongsTVC {
 		actionSheet.addAction(enqueueAlbumStartingHereAction)
 		actionSheet.addAction(enqueueSongAction)
 		actionSheet.addAction(cancelAction)
+		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		present(actionSheet, animated: true, completion: nil)
 	}
 	
