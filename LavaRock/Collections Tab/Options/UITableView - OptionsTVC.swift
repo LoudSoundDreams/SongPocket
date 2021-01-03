@@ -226,7 +226,8 @@ extension OptionsTVC {
 			return UITableViewCell()
 		}
 		
-		let heartEmoji = AccentColorManager.heartEmojiMatchingSavedAccentColor()
+		let savedColorEntry = AccentColorManager.savedOrDefaultColorEntry()
+		let heartEmoji = savedColorEntry.heartEmoji
 		let thankYouMessage =
 			heartEmoji +
 			LocalizedString.tipThankYouMessageWithPaddingSpaces +

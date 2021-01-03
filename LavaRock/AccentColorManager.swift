@@ -23,6 +23,7 @@ struct AccentColorManager {
 		let userDefaultsValue: String
 		let displayName: String
 		let uiColor: UIColor
+		let heartEmoji: String
 	}
 	
 	// MARK: - Properties
@@ -30,28 +31,33 @@ struct AccentColorManager {
 	private static let defaultColorEntry = ColorEntry(
 		userDefaultsValue: UserDefaultsValueCase.blueberry.rawValue,
 		displayName: LocalizedString.blueberry,
-		uiColor: UIColor.systemBlue)
+		uiColor: UIColor.systemBlue,
+		heartEmoji: "💙")
 	
 	static let colorEntries = [
 		ColorEntry(
 			userDefaultsValue: UserDefaultsValueCase.strawberry.rawValue,
 			displayName: LocalizedString.strawberry,
-			uiColor: UIColor.systemPink),
+			uiColor: UIColor.systemPink,
+			heartEmoji: "❤️"),
 		ColorEntry(
 			userDefaultsValue: UserDefaultsValueCase.tangerine.rawValue,
 			displayName: LocalizedString.tangerine,
-			uiColor: UIColor.systemOrange),
+			uiColor: UIColor.systemOrange,
+			heartEmoji: "🧡"),
 		ColorEntry(
 			userDefaultsValue: UserDefaultsValueCase.lime.rawValue,
 			displayName: LocalizedString.lime,
-			uiColor: UIColor.systemGreen),
+			uiColor: UIColor.systemGreen,
+			heartEmoji: "💚"),
 		
 		defaultColorEntry,
 		
 		ColorEntry(
 			userDefaultsValue: UserDefaultsValueCase.grape.rawValue,
 			displayName: LocalizedString.grape,
-			uiColor: UIColor.systemPurple),
+			uiColor: UIColor.systemPurple,
+			heartEmoji: "💜"),
 	]
 	
 	// MARK: - Restoring and Setting
@@ -79,28 +85,7 @@ struct AccentColorManager {
 			forKey: LRUserDefaultsKey.accentColorName.rawValue) as? String
 	}
 	
-	static func heartEmojiMatchingSavedAccentColor() -> String {
-		let savedValueCase = savedUserDefaultsValueCase()
-		switch savedValueCase {
-		case .strawberry:
-			return "❤️"
-		case .tangerine:
-			return "🧡"
-		case .lime:
-			return "💚"
-		case .grape:
-			return "💜"
-			
-		default:
-			return "💙"
-		}
-	}
-	
-	// MARK: - Private Methods
-	
-	private init() { }
-	
-	private static func savedOrDefaultColorEntry() -> ColorEntry {
+	static func savedOrDefaultColorEntry() -> ColorEntry {
 		// If there's a saved preference, set it.
 		if
 			let savedUserDefaultsValue = savedUserDefaultsValue(),
@@ -114,18 +99,8 @@ struct AccentColorManager {
 		}
 	}
 	
-	private static func savedUserDefaultsValueCase() -> UserDefaultsValueCase? {
-		let savedValue = savedUserDefaultsValue()
-		return Self.userDefaultsValueCase(withRawValue: savedValue)
-	}
+	// MARK: - Private Methods
 	
-	private static func userDefaultsValueCase(withRawValue stringToMatch: String?) -> UserDefaultsValueCase? {
-		for enumCase in UserDefaultsValueCase.allCases {
-			if enumCase.rawValue == stringToMatch {
-				return enumCase
-			}
-		}
-		return nil
-	}
+	private init() { }
 	
 }
