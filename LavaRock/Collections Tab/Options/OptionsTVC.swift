@@ -25,7 +25,7 @@ final class OptionsTVC: UITableViewController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if PurchaseManager.shared.tipStatus == .loading { // This doesn't make sense: whether we've already requested or not, tipStatus == .loading either way
+		if PurchaseManager.shared.tipStatus == .notYetFirstLoaded {
 			PurchaseManager.shared.requestAllSKProducts() // It should be safe to do this at this point, even if we both receive the response and refresh the table view extremely soon.
 		}
 	}

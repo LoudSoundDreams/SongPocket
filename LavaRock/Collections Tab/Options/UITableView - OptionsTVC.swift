@@ -174,7 +174,7 @@ extension OptionsTVC {
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch PurchaseManager.shared.tipStatus {
-		case .loading:
+		case .notYetFirstLoaded, .loading:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
 			return cell
 		case .reload:
@@ -241,7 +241,7 @@ extension OptionsTVC {
 	
 	private func canSelectTipJarRow() -> Bool {
 		switch PurchaseManager.shared.tipStatus {
-		case .loading, .confirming:
+		case .notYetFirstLoaded, .loading, .confirming:
 			return false
 		case .reload:
 			return true
@@ -252,7 +252,7 @@ extension OptionsTVC {
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
 		switch PurchaseManager.shared.tipStatus {
-		case .loading, .confirming: // Should never run
+		case .notYetFirstLoaded, .loading, .confirming: // Should never run
 			break
 		case .reload:
 			reloadTipProduct()

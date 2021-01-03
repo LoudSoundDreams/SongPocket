@@ -22,7 +22,7 @@ final class PurchaseManager: NSObject {
 	}
 	
 	enum TipStatus {
-		case loading, reload, ready, confirming
+		case notYetFirstLoaded, loading, reload, ready, confirming
 	}
 	
 	// MARK: Properties
@@ -31,7 +31,7 @@ final class PurchaseManager: NSObject {
 	static let shared = PurchaseManager()
 	
 	// Variables
-	lazy var tipStatus: TipStatus = .loading
+	lazy var tipStatus: TipStatus = .notYetFirstLoaded
 	lazy var savedSKProductsRequest: SKProductsRequest? = nil
 	lazy var priceFormatter: NumberFormatter? = nil
 	lazy var tipProduct: SKProduct? = nil
@@ -58,7 +58,7 @@ final class PurchaseManager: NSObject {
 	// MARK: Other
 	
 	final func requestAllSKProducts() {
-		tipStatus = .loading // In case tipStatus has changed to, say, .reload
+		tipStatus = .loading
 		var setOfIdentifiers = Set<String>()
 		for identifier in ProductIdentifier.allCases {
 			setOfIdentifiers.insert(identifier.rawValue)
