@@ -27,9 +27,6 @@ extension CollectionsTVC {
 			
 			// Make, configure, and return the cell.
 			
-			
-			// Custom cell
-			
 			var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CollectionCell
 			
 			cell.titleLabel.text = collection.title
@@ -50,56 +47,23 @@ extension CollectionsTVC {
 				}
 			}
 			
-			
-			/*
-			// Built-in cell
-			
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-			if #available(iOS 14, *) {
-				var configuration = cell.defaultContentConfiguration()
-				configuration.text = collection.title
-				
-				// "Moving Albums" mode
-				if let albumMoverClipboard = albumMoverClipboard {
-					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
-						configuration.textProperties.color = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
-						cell.selectionStyle = .none
-						cell.accessibilityTraits.formUnion(.notEnabled)
-					} else { // Undo changes made to the disabled cell
-						configuration.textProperties.color = .label
-						cell.selectionStyle = .default
-						cell.accessibilityTraits.remove(.notEnabled)
-					}
-				}
-				
-				cell.contentConfiguration = configuration
-				
-			} else { // iOS 13 and earlier
-				cell.textLabel?.text = collection.title
-				
-				// "Moving Albums" mode
-				if let albumMoverClipboard = albumMoverClipboard {
-					if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
-						cell.textLabel?.isEnabled = false
-						cell.selectionStyle = .none
-						cell.accessibilityTraits.formUnion(.notEnabled)
-					} else { // Undo changes made to the disabled cell
-						cell.textLabel?.isEnabled = true
-						cell.selectionStyle = .default
-						cell.accessibilityTraits.remove(.notEnabled)
-					}
-				}
-			}
-			*/
-			
 			let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(
 				name: LocalizedString.rename,
 				actionHandler: { _ in self.renameAccessibilityFocusedCollection() } )
 			cell.accessibilityCustomActions = [renameCollectionAccessibilityCustomAction]
+//			refreshVoiceControlNames(for: cell)
 			
 			return cell
 		}
 	}
+	
+//	final func refreshVoiceControlNames(for cell: UITableViewCell) {
+//		if isEditing {
+//			cell.accessoryView?.accessibilityUserInputLabels = ["Info", "Detail", "Rename"] // I want to give the "rename collection" button a name for Voice Control, but this line of code doesn't do it.
+//		} else {
+//			cell.accessoryView?.accessibilityUserInputLabels = [""]
+//		}
+//	}
 	
 	private func renameAccessibilityFocusedCollection() -> Bool {
 		var indexPathOfCollectionToRename: IndexPath?

@@ -10,8 +10,8 @@ import UIKit
 final class AlbumArtworkCell: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 	
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
+	override func awakeFromNib() {
+		super.awakeFromNib()
 		
 		accessibilityLabel = LocalizedString.albumArtwork // should never change
 		accessibilityTraits.formUnion(.image) // should never change

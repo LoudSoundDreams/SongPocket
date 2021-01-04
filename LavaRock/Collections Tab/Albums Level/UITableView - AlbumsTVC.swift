@@ -28,6 +28,7 @@ extension AlbumsTVC {
 		let cellNowPlayingIndicator = nowPlayingIndicator(isNowPlayingItem: isNowPlayingAlbum)
 		
 		// Make, configure, and return the cell.
+		
 		if let cellSubtitle = cellSubtitle {
 			var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
 			cell.releaseDateLabel.text = cellSubtitle
@@ -40,6 +41,9 @@ extension AlbumsTVC {
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
+			
+			cell.accessibilityUserInputLabels = [cellTitle]
+			
 			return cell
 			
 		} else { // We couldn't determine the album's release date.
@@ -53,6 +57,9 @@ extension AlbumsTVC {
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
+			
+			cell.accessibilityUserInputLabels = [cellTitle]
+			
 			return cell
 		}
 		

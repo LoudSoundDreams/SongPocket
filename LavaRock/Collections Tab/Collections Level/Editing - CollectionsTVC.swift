@@ -10,6 +10,23 @@ import CoreData
 
 extension CollectionsTVC {
 	
+//	override func setEditing(_ editing: Bool, animated: Bool) {
+//		super.setEditing(editing, animated: animated)
+//
+//		refreshVoiceControlNamesForAllCells()
+//	}
+	
+//	private func refreshVoiceControlNamesForAllCells() {
+//		for indexPath in tableView.indexPathsForRowsIn(
+//			section: 0,
+//			firstRow: numberOfRowsAboveIndexedLibraryItems)
+//		{
+//			guard let cell = tableView.cellForRow(at: indexPath) else { continue }
+//			
+//			refreshVoiceControlNames(for: cell)
+//		}
+//	}
+	
 	// MARK: - Renaming Collection
 	
 	// WARNING: Using VoiceOver, you can rename Collections at any time, not just in editing mode.

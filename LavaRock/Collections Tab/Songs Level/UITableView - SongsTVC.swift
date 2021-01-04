@@ -25,8 +25,12 @@ extension SongsTVC {
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
 			
 			// Make, configure, and return the cell.
+			
 			let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell") as! AlbumArtworkCell
 			albumArtworkCell.artworkImageView.image = cellImage
+			
+			albumArtworkCell.accessibilityUserInputLabels = [""]
+			
 			return albumArtworkCell
 			
 		} else if indexPath.row == 1 {
@@ -41,11 +45,17 @@ extension SongsTVC {
 				let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell") as! AlbumInfoCell
 				albumInfoCell.albumArtistLabel.text = cellHeading
 				albumInfoCell.releaseDateLabel.text = cellSubtitle
+				
+				albumInfoCell.accessibilityUserInputLabels = [""]
+				
 				return albumInfoCell
 				
 			} else { // We couldn't determine the album's release date.
 				let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell Without Release Date") as! AlbumInfoCellWithoutReleaseDate
 				albumInfoCell.albumArtistLabel.text = cellHeading
+				
+				albumInfoCell.accessibilityUserInputLabels = [""]
+				
 				return albumInfoCell
 			}
 			
@@ -70,6 +80,9 @@ extension SongsTVC {
 				cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 				cell.trackNumberLabel.text = cellTrackNumberText
 				cell.trackNumberLabel.font = UIFont.bodyMonospacedNumbers
+				
+				cell.accessibilityUserInputLabels = [cellTitle]
+				
 				return cell
 				
 			} else { // The song's artist is not useful, or it's the same as the album artist.
@@ -79,6 +92,9 @@ extension SongsTVC {
 				cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 				cell.trackNumberLabel.text = cellTrackNumberText
 				cell.trackNumberLabel.font = UIFont.bodyMonospacedNumbers
+				
+				cell.accessibilityUserInputLabels = [cellTitle]
+				
 				return cell
 			}
 			
