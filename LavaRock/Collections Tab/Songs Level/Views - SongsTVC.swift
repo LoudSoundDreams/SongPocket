@@ -13,6 +13,7 @@ final class AlbumArtworkCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
+		artworkImageView.accessibilityIgnoresInvertColors = true
 		accessibilityLabel = LocalizedString.albumArtwork // should never change
 		accessibilityTraits.formUnion(.image) // should never change
 	}

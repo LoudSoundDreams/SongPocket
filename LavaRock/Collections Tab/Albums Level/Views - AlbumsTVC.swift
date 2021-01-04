@@ -15,6 +15,12 @@ final class AlbumCell:
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var releaseDateLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		artworkImageView.accessibilityIgnoresInvertColors = true
+	}
 }
 
 final class AlbumCellWithoutReleaseDate:
@@ -24,4 +30,10 @@ final class AlbumCellWithoutReleaseDate:
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		artworkImageView.accessibilityIgnoresInvertColors = true
+	}
 }
