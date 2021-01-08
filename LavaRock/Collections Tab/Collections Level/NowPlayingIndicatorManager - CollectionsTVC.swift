@@ -9,7 +9,7 @@ import UIKit
 
 extension CollectionsTVC: NowPlayingIndicatorManager {
 	
-	final func isNowPlayingItem(at indexPath: IndexPath) -> Bool {
+	final func isItemNowPlaying(at indexPath: IndexPath) -> Bool {
 		if
 			let rowCollection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Collection,
 			PlayerControllerManager.shared.currentSong?.container?.container?.objectID == rowCollection.objectID

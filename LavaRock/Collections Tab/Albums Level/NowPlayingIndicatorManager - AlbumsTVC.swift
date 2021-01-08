@@ -9,7 +9,7 @@ import UIKit
 
 extension AlbumsTVC: NowPlayingIndicatorManager {
 	
-	final func isNowPlayingItem(at indexPath: IndexPath) -> Bool {
+	final func isItemNowPlaying(at indexPath: IndexPath) -> Bool {
 		if
 			let rowAlbum = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Album,
 			PlayerControllerManager.shared.currentSong?.container?.objectID == rowAlbum.objectID

@@ -10,9 +10,9 @@ import UIKit
 extension LibraryTVC {
 	
 	// LibraryTVC itself doesn't call this, but its subclasses might want to.
-	final func nowPlayingIndicator(isNowPlayingItem: Bool) -> (UIImage?, String?) {
+	final func nowPlayingIndicator(isItemNowPlaying: Bool) -> (UIImage?, String?) {
 		if
-			isNowPlayingItem,
+			isItemNowPlaying,
 			let playerController = playerController
 		{
 			if playerController.playbackState == .playing { // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.

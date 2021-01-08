@@ -8,5 +8,5 @@
 import UIKit
 
 protocol NowPlayingIndicatorManager {
-	func isNowPlayingItem(at indexPath: IndexPath) -> Bool
+	func isItemNowPlaying(at indexPath: IndexPath) -> Bool
 }

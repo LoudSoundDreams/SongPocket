@@ -64,8 +64,8 @@ extension SongsTVC {
 			// Get the data to put into the cell.
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			let cellTitle = song.titleFormattedOrPlaceholder()
-			let isNowPlayingSong = isNowPlayingItem(at: indexPath)
-			let cellNowPlayingIndicator = nowPlayingIndicator(isNowPlayingItem: isNowPlayingSong)
+			let isNowPlayingSong = isItemNowPlaying(at: indexPath)
+			let cellNowPlayingIndicator = nowPlayingIndicator(isItemNowPlaying: isNowPlayingSong)
 			let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 			
 			// Make, configure, and return the cell.

@@ -30,8 +30,8 @@ extension CollectionsTVC {
 			var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CollectionCell
 			
 			cell.titleLabel.text = collection.title
-			let isNowPlayingCollection = isNowPlayingItem(at: indexPath)
-			let cellNowPlayingIndicator = nowPlayingIndicator(isNowPlayingItem: isNowPlayingCollection)
+			let isNowPlayingCollection = isItemNowPlaying(at: indexPath)
+			let cellNowPlayingIndicator = nowPlayingIndicator(isItemNowPlaying: isNowPlayingCollection)
 			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 			
 			// "Moving Albums" mode

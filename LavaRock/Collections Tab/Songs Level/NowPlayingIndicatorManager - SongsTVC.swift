@@ -9,7 +9,7 @@ import UIKit
 
 extension SongsTVC: NowPlayingIndicatorManager {
 	
-	final func isNowPlayingItem(at indexPath: IndexPath) -> Bool {
+	final func isItemNowPlaying(at indexPath: IndexPath) -> Bool {
 		if
 			let rowSong = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Song,
 			let rowMediaItem = rowSong.mpMediaItem(),

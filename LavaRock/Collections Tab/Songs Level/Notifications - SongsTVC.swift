@@ -15,7 +15,7 @@ extension SongsTVC {
 	override func refreshToReflectPlaybackState() {
 		super.refreshToReflectPlaybackState()
 		
-		refreshNowPlayingIndicators(isNowPlayingItemDeterminer: isNowPlayingItem(at:))
+		refreshNowPlayingIndicators(isItemNowPlayingDeterminer: isItemNowPlaying(at:))
 	}
 	
 	// MARK: - Refreshing Data and Views
