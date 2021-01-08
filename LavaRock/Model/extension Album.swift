@@ -59,24 +59,23 @@ extension Album {
 		}
 	}
 	
+	private static let releaseDateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateStyle = .medium
+		dateFormatter.timeStyle = .none
+		// Failed attempt to apply ISO8601 format
+////		dateFormatter.locale = Locale.current
+//		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+//		dateFormatter.dateFormat = "yyyy-MM-dd"
+//		dateFormatter.timeZone = TimeZone.current// TimeZone(secondsFromGMT: 0)
+////		dateFormatter.setLocalizedDateFormatFromTemplate("yyyy-MM-dd")
+		
+		return dateFormatter
+	}()
+	
 	func releaseDateEstimateFormatted() -> String? {
 		if let releaseDateEstimate = releaseDateEstimate {
-//			let dateFormatter = DateFormatter()
-//			dateFormatter.dateStyle = .medium
-//			dateFormatter.timeStyle = .none
-			
-			// Failed attempt to apply ISO8601 format
-////			dateFormatter.locale = Locale.current
-//			dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-//			dateFormatter.dateFormat = "yyyy-MM-dd"
-//			dateFormatter.timeZone = TimeZone.current// TimeZone(secondsFromGMT: 0)
-////			dateFormatter.setLocalizedDateFormatFromTemplate("yyyy-MM-dd")
-			
-			let releaseDateFormatted = DateFormatter.localizedString(
-				from: releaseDateEstimate,
-				dateStyle: .medium,
-				timeStyle: .none)
-			return releaseDateFormatted
+			return Self.releaseDateFormatter.string(from: releaseDateEstimate)
 		} else {
 			return nil
 		}
