@@ -18,43 +18,45 @@ extension CollectionsTVC {
 		}
 		
 		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
-			
 			return UITableViewCell()
-			
 		} else { // Return a cell for an item in indexedLibraryItems.
-			// Get the data to put into the cell.
-			let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Collection
-			
-			// Make, configure, and return the cell.
-			
-			var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CollectionCell
-			
-			cell.titleLabel.text = collection.title
-			let isNowPlayingCollection = isItemNowPlaying(at: indexPath)
-			let cellNowPlayingIndicator = nowPlayingIndicator(isItemNowPlaying: isNowPlayingCollection)
-			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
-			
-			// "Moving Albums" mode
-			if let albumMoverClipboard = albumMoverClipboard {
-				if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
-					cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
-					cell.selectionStyle = .none
-					cell.accessibilityTraits.formUnion(.notEnabled)
-				} else { // Undo changes made to the disabled cell
-					cell.titleLabel.textColor = UIColor.label
-					cell.selectionStyle = .default
-					cell.accessibilityTraits.remove(.notEnabled)
-				}
-			}
-			
-			let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(
-				name: LocalizedString.rename,
-				actionHandler: { _ in self.renameAccessibilityFocusedCollection() } )
-			cell.accessibilityCustomActions = [renameCollectionAccessibilityCustomAction]
-//			refreshVoiceControlNames(for: cell)
-			
-			return cell
+			return collectionCell(forRowAt: indexPath)
 		}
+	}
+	
+	private func collectionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		// Get the data to put into the cell.
+		let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Collection
+		
+		// Make, configure, and return the cell.
+		
+		var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CollectionCell
+		
+		cell.titleLabel.text = collection.title
+		let isNowPlayingCollection = isItemNowPlaying(at: indexPath)
+		let cellNowPlayingIndicator = nowPlayingIndicator(isItemNowPlaying: isNowPlayingCollection)
+		cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
+		
+		// "Moving Albums" mode
+		if let albumMoverClipboard = albumMoverClipboard {
+			if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+				cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+				cell.selectionStyle = .none
+				cell.accessibilityTraits.formUnion(.notEnabled)
+			} else { // Undo changes made to the disabled cell
+				cell.titleLabel.textColor = UIColor.label
+				cell.selectionStyle = .default
+				cell.accessibilityTraits.remove(.notEnabled)
+			}
+		}
+		
+		let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(
+			name: LocalizedString.rename,
+			actionHandler: { _ in self.renameAccessibilityFocusedCollection() } )
+		cell.accessibilityCustomActions = [renameCollectionAccessibilityCustomAction]
+//		refreshVoiceControlNames(for: cell)
+		
+		return cell
 	}
 	
 //	final func refreshVoiceControlNames(for cell: UITableViewCell) {

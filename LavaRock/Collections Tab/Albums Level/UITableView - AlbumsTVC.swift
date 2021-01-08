@@ -17,6 +17,10 @@ extension AlbumsTVC {
 			return UITableViewCell()
 		}
 		
+		return albumCell(forRowAt: indexPath)
+	}
+	
+	private func albumCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
 		
 		let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
@@ -62,7 +66,6 @@ extension AlbumsTVC {
 			
 			return cell
 		}
-		
 	}
 	
 }
