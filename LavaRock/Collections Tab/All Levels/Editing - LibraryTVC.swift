@@ -221,12 +221,13 @@ extension LibraryTVC {
 		for indexPathAndItem in sortedIndexPathsAndItems {
 			sortedIndexPaths.append(indexPathAndItem.0)
 		}
-		moveRowsUpToEarliestRow(sortedIndexPaths) // You could use tableView.reloadRows, but none of those animations show the individual rows moving to their destinations.
+		moveRowsUpToEarliestRow( // You could use tableView.reloadRows, but none of those animations show the individual rows moving to their destinations.
+			sortedIndexPaths,
+			completion: {
+				self.tableView.deselectRows(at: indexPathsToSort, animated: true)
+			})
 		
 		// Update the rest of the UI.
-		for indexPath in indexPathsToSort {
-			tableView.deselectRow(at: indexPath, animated: true) // TO DO: Wait until all the rows have moved to do this.
-		}
 		refreshBarButtons()
 	}
 	

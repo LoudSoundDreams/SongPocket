@@ -150,18 +150,31 @@ extension OptionsTVC {
 	// MARK: Selecting
 	
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
-		let index = indexPath.row
+		let colorIndex = indexPath.row
 		guard
-			index >= 0,
-			index <= AccentColorManager.colorEntries.count - 1
+			colorIndex >= 0,
+			colorIndex <= AccentColorManager.colorEntries.count - 1
 		else {
 			tableView.deselectRow(at: indexPath, animated: true)
 			return
 		}
-		let selectedColorEntry = AccentColorManager.colorEntries[index]
 		
+		let selectedColorEntry = AccentColorManager.colorEntries[colorIndex]
 		AccentColorManager.setAccentColor(selectedColorEntry, in: view.window)
+		
+		let selectedIndexPath = tableView.indexPathForSelectedRow
 		tableView.reloadData()
+		if let selectedIndexPath = selectedIndexPath {
+			if #available(iOS 14.0, *) {
+				// See comment in the `else` block.
+			} else {
+				tableView.performBatchUpdates {
+					tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+				} completion: { _ in
+					self.tableView.deselectRow(at: selectedIndexPath, animated: true) // TO DO: Remove this `if #available` check when Apple fixes this: as of iOS 14.4 beta 1, this animation is broken. The row stays completely highlighted for period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
+				}
+			}
+		}
 	}
 	
 }
