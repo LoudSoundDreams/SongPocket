@@ -222,7 +222,7 @@ extension LibraryTVC {
 			sortedIndexPaths.append(indexPathAndItem.0)
 		}
 		moveRowsUpToEarliestRow( // You could use tableView.reloadRows, but none of those animations show the individual rows moving to their destinations.
-			sortedIndexPaths,
+			from: sortedIndexPaths,
 			completion: {
 				self.tableView.deselectRows(at: indexPathsToSort, animated: true)
 			})

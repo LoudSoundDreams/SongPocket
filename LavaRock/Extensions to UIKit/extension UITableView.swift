@@ -75,6 +75,7 @@ extension UITableView {
 		}
 	}
 	
+	// We have a copy of this method in an extension to UITableView.
 	// Returns false if all the IndexPaths you provide have the same value for their "section" parameter.
 	// Returns true if any one or more of the IndexPaths you provide has a different value for its "section" parameter than all the others.
 	private func isFromMultipleSections(_ indexPaths: [IndexPath]) -> Bool {

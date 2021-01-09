@@ -57,14 +57,14 @@ extension LibraryTVC {
 //		print(currentPlaybackTime)
 //		print(currentPlaybackTime == 0)
 //		print("")
-		if
-			playerController.currentPlaybackTime == 0,
-			playerController.playbackState != .playing
-		{
-			restartCurrentSongButton.disableWithAccessibilityTrait()
-		} else {
+//		if
+//			playerController.currentPlaybackTime == 0,
+//			playerController.playbackState != .playing
+//		{
+//			restartCurrentSongButton.disableWithAccessibilityTrait()
+//		} else {
 			restartCurrentSongButton.enableWithAccessibilityTrait()
-		}
+//		}
 		
 		playPauseButton.enableWithAccessibilityTrait()
 		
@@ -93,13 +93,16 @@ extension LibraryTVC {
 	}
 	
 	@objc final func goToPreviousSong() {
+//		playerController?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackToolbarButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
+		// Actually, that line of code makes this method take forever to return; it repeatedly prints "SYNC-WATCHDOG-1: Attempting to wake up the remote process" and "SYNC-WATCHDOG-2: Tearing down connection". That happens whether we set currentPlaybackTime = 0 before or after changing the song.
+		
 		playerController?.skipToPreviousItem()
 	}
 	
 	@objc final func restartCurrentSong() {
-		playerController?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, but this line of code does.
-//		playerController?.skipToBeginning() // As of iOS 14.2 beta 3, after you call this, the playhead doesn't move to the beginning until you tap Play or call prepareToPlay().
-//		playerController?.prepareToPlay()
+		playerController?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
+//		playerController?.skipToBeginning()
+//		playerController?.prepareToPlay() // As of iOS 14.2 beta 3, after you call skipToBeginning(), the playhead doesn't move to the beginning until you tap Play or call prepareToPlay().
 		
 		refreshBarButtons() // Disable the "restart current song" button if appropriate.
 	}
@@ -113,6 +116,8 @@ extension LibraryTVC {
 	}
 	
 	@objc final func goToNextSong() {
+//		playerController?.currentPlaybackTime = 0 // See comment in goToPreviousSong().
+		
 		playerController?.skipToNextItem()
 	}
 	
