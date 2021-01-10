@@ -224,10 +224,11 @@ extension LibraryTVC {
 		moveRowsUpToEarliestRow( // You could use tableView.reloadRows, but none of those animations show the individual rows moving to their destinations.
 			from: sortedIndexPaths,
 			completion: {
-				self.tableView.deselectRows(at: indexPathsToSort, animated: true)
+//				self.tableView.deselectRows(at: indexPathsToSort, animated: true) // This leaves the (editing mode) toolbar buttons out of date.
 			})
 		
 		// Update the rest of the UI.
+		tableView.deselectAllRows(animated: true) // TO DO: Wait until we finish moving the rows to do this, to match what happens after we tap "move to top" or "move to bottom".
 		refreshBarButtons()
 	}
 	
