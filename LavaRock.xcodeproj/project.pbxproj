@@ -25,7 +25,6 @@
 		073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColorManager.swift */; };
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Views - SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Views - SongsTVC.swift */; };
-		073E6A7A25562871003C84A5 /* protocol NowPlayingIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A7925562871003C84A5 /* protocol NowPlayingIndicatorManager.swift */; };
 		073E6A8725562B93003C84A5 /* Views - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */; };
 		073E6A9225574B99003C84A5 /* protocol NowPlayingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* protocol NowPlayingIndicator.swift */; };
 		075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LocalizedString.swift */; };
@@ -122,7 +121,6 @@
 		073AF48924D16647000C1A6D /* AccentColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Views - SongsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - SongsTVC.swift"; sourceTree = "<group>"; };
-		073E6A7925562871003C84A5 /* protocol NowPlayingIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NowPlayingIndicatorManager.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - CollectionsTVC.swift"; sourceTree = "<group>"; };
 		073E6A9125574B98003C84A5 /* protocol NowPlayingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NowPlayingIndicator.swift"; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
@@ -255,7 +253,6 @@
 				077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */,
 				07865B362567072B00DBEB26 /* “Now Playing” Indicator - LibraryTVC.swift */,
 				073E6A9125574B98003C84A5 /* protocol NowPlayingIndicator.swift */,
-				073E6A7925562871003C84A5 /* protocol NowPlayingIndicatorManager.swift */,
 				0719B57B2511A61F00748371 /* protocol PlaybackToolbarManager.swift */,
 				0719B57D2511CD4E00748371 /* PlaybackToolbarManager - LibraryTVC.swift */,
 				07F36BBD24FC3CCA0064282D /* UITableView - LibraryTVC.swift */,
@@ -590,7 +587,6 @@
 				07DC1B1D24F339E000AAEEDB /* Editing - LibraryTVC.swift in Sources */,
 				076830CD24B42E400033E3CC /* extension UITableViewController.swift in Sources */,
 				0781F1FA25991B3300781CF8 /* UITableView - OptionsTVC.swift in Sources */,
-				073E6A7A25562871003C84A5 /* protocol NowPlayingIndicatorManager.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
@@ -844,7 +840,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 69;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
@@ -867,7 +863,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 69;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;

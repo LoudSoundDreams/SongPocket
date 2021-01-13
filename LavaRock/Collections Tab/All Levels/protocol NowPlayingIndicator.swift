@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol NowPlayingIndicatorManager {
+	func isItemNowPlaying(at indexPath: IndexPath) -> Bool
+}
+
 protocol NowPlayingIndicator {
 	var nowPlayingIndicatorImageView: UIImageView! { get set }
 	var accessibilityValue: String? { get set }

@@ -25,8 +25,8 @@
 /* Class = "UILabel"; text = "No Songs"; ObjectID = "r4Y-7C-QjD"; */
 "r4Y-7C-QjD.text" = "沒有歌曲";
 
-/* Class = "UILabel"; text = "Purchasing…"; ObjectID = "RvL-wm-fb7"; */
-"RvL-wm-fb7.text" = "購買中⋯";
+/* Class = "UILabel"; text = "Confirming…"; ObjectID = "RvL-wm-fb7"; */
+"RvL-wm-fb7.text" = "確認中⋯";
 
 /* Class = "UILabel"; text = "Add some music to your Apple Music library, or sync some music from your computer."; ObjectID = "w6S-PX-Sod"; */
 "w6S-PX-Sod.text" = "請將音樂加入您的Apple Music資料庫，或將音樂從您的電腦同步至您的裝置。";
