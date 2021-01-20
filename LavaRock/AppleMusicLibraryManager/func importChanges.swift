@@ -132,14 +132,12 @@ extension AppleMusicLibraryManager {
 		let allAlbumsFetchRequest = NSFetchRequest<Album>(entityName: "Album")
 		// Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		let allAlbums = managedObjectContext.objectsFetched(for: allAlbumsFetchRequest)
-		var albumIDs = [NSManagedObjectID]()
-		for album in allAlbums {
-			albumIDs.append(album.objectID)
-		}
 		
-		recalculateReleaseDateEstimatesForAlbums(
-			with: albumIDs,
-			queriedMediaItems: queriedMediaItems)
+		os_signpost(.begin, log: Self.cleanupLog, name: "Recalculate Album release date estimates")
+		recalculateReleaseDateEstimates(
+			for: allAlbums,
+			considering: queriedMediaItems)
+		os_signpost(.end, log: Self.cleanupLog, name: "Recalculate Album release date estimates")
 		
 		os_signpost(.begin, log: Self.cleanupLog, name: "Reindex all Albums and Songs")
 		for collection in allCollections {
@@ -147,7 +145,6 @@ extension AppleMusicLibraryManager {
 				in: collection,
 				shouldSortByNewestFirst: shouldImportIntoDefaultOrder)
 		}
-		
 		for album in allAlbums {
 			reindexSongs(in: album)
 		}
@@ -175,21 +172,20 @@ extension AppleMusicLibraryManager {
 	// Only MPMediaItems have release dates, and those can't be albums.
 	// An MPMediaItemCollection has a property representativeItem, but that item's release date doesn't necessarily represent the album's release date.
 	// Instead, we'll estimate the albums' release dates and keep the estimates up to date.
-	private func recalculateReleaseDateEstimatesForAlbums(
-		with albumIDs: [NSManagedObjectID],
-		queriedMediaItems: [MPMediaItem]
+	private func recalculateReleaseDateEstimates(
+		for albums: [Album],
+		considering queriedMediaItems: [MPMediaItem]
 	) {
+		os_signpost(.begin, log: Self.cleanupLog, name: "Filter out MPMediaItems without releaseDates")
 		var queriedMediaItemsCopy = Set(queriedMediaItems).filter {
 			$0.releaseDate != nil
 		}
+		os_signpost(.end, log: Self.cleanupLog, name: "Filter out MPMediaItems without releaseDates")
 		
-		for albumID in albumIDs {
+		for album in albums {
 			// Update one Album's release date estimate.
 			os_signpost(.begin, log: Self.cleanupLog, name: "Recalculate release date estimate for one Album")
 			
-			os_signpost(.begin, log: Self.cleanupLog, name: "Get this Album")
-			let album = managedObjectContext.object(with: albumID) as! Album
-			os_signpost(.end, log: Self.cleanupLog, name: "Get this Album")
 			album.releaseDateEstimate = nil
 			
 			// Find the MPMediaItems associated with this Album.
