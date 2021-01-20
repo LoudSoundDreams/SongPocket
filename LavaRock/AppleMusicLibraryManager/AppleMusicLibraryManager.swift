@@ -16,6 +16,9 @@ final class AppleMusicLibraryManager {
 	private var library: MPMediaLibrary?
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
+	// Constants for debugging only
+	static let subsystemForOSLog = "LavaRock.AppleMusicLibraryManager"
+	
 	// Variables
 	var shouldNextImportBeSynchronous = false
 	

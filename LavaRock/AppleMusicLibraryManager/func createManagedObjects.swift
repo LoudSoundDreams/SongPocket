@@ -7,8 +7,13 @@
 
 import CoreData
 import MediaPlayer
+import OSLog
 
 extension AppleMusicLibraryManager {
+	
+	private static let createManagedObjectsLog = OSLog(
+		subsystem: subsystemForOSLog,
+		category: "2. Create Managed Objects")
 	
 	// Make new managed objects for the new media items, including new Albums and Collections to put them in if necessary.
 	final func createManagedObjects(
@@ -16,6 +21,11 @@ extension AppleMusicLibraryManager {
 		existingAlbums: [Album],
 		existingCollections: [Collection]
 	) {
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Subroutine")
+		defer {
+			os_signpost(.end, log: Self.createManagedObjectsLog, name: "Subroutine")
+		}
+		
 		let shouldImportIntoDefaultOrder = existingCollections.count == 0
 		
 		var sortedMediaItems = [MPMediaItem]()

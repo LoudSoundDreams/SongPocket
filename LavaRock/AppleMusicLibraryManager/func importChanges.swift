@@ -7,11 +7,21 @@
 
 import CoreData
 import MediaPlayer
+import OSLog
 
 extension AppleMusicLibraryManager {
 	
+	private static let importChangesLog = OSLog(
+		subsystem: subsystemForOSLog,
+		category: "0. Import Changes")
+	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
 	final func importChanges() {
+		os_signpost(.begin, log: Self.importChangesLog, name: "Routine")
+		defer {
+			os_signpost(.end, log: Self.importChangesLog, name: "Routine")
+		}
+		
 		let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 //		if shouldNextImportBeSynchronous {
 		managedObjectContext = mainManagedObjectContext // Set this again, just to be sure.
@@ -141,7 +151,9 @@ extension AppleMusicLibraryManager {
 			reindexSongs(in: album)
 		}
 		
+		os_signpost(.begin, log: Self.importChangesLog, name: "Save managed object context")
 		managedObjectContext.tryToSaveSynchronously()
+		os_signpost(.end, log: Self.importChangesLog, name: "Save managed object context")
 //		managedObjectContext.parent?.tryToSaveSynchronously()
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(

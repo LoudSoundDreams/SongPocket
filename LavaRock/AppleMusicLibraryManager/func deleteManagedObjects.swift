@@ -6,11 +6,21 @@
 //
 
 import CoreData
+import OSLog
 
 extension AppleMusicLibraryManager {
 	
+	private static let deleteManagedObjectsLog = OSLog(
+		subsystem: subsystemForOSLog,
+		category: "3. Delete Managed Objects")
+	
 	// Delete Songs for media items that are no longer in the Apple Music library, and then any empty Albums, and then any empty Collections.
 	final func deleteManagedObjects(forSongsWith songIDs: [NSManagedObjectID]) {
+		os_signpost(.begin, log: Self.deleteManagedObjectsLog, name: "Subroutine")
+		defer {
+			os_signpost(.end, log: Self.deleteManagedObjectsLog, name: "Subroutine")
+		}
+		
 		for songID in songIDs {
 			let songToDelete = managedObjectContext.object(with: songID)
 			managedObjectContext.delete(songToDelete)
