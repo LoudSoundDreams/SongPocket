@@ -26,7 +26,7 @@ extension AppleMusicLibraryManager {
 			os_signpost(.end, log: Self.createManagedObjectsLog, name: "Subroutine")
 		}
 		
-		let shouldImportIntoDefaultOrder = existingCollections.count == 0
+		let shouldImportIntoDefaultOrder = existingCollections.isEmpty
 		
 		var sortedMediaItems = [MPMediaItem]()
 		if shouldImportIntoDefaultOrder {

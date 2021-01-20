@@ -45,7 +45,7 @@ extension AppleMusicLibraryManager {
 		let songsFetchRequest = NSFetchRequest<Song>(entityName: "Song")
 		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
 		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest)
-		let shouldImportIntoDefaultOrder = savedSongs.count == 0
+		let shouldImportIntoDefaultOrder = savedSongs.isEmpty
 		
 		/*
 		var savedSongsCopy = savedSongs

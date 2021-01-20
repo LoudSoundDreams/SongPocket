@@ -16,7 +16,7 @@ extension Collection {
 		} else {
 			let trimmedTitle = unwrappedProposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
 			if trimmedTitle != unwrappedProposedTitle {
-				return trimmedTitle + "…" // Does this need to be localized?
+				return trimmedTitle + "…" // Do we need to localize this?
 			} else {
 				return String(trimmedTitle)
 			}

@@ -22,6 +22,7 @@ extension LibraryTVC {
 			let numberOfLibraryItems = indexedLibraryItems.count
 			switch numberOfLibraryItems {
 			case 0:
+				// TO DO: Wait until we've removed all the rows before we set the placeholder. Also, animate showing and hiding the placeholder.
 				tableView.backgroundView = noItemsPlaceholderView // Don't use dequeueReusableCell to create a placeholder view as needed every time within numberOfRowsInSection (here), because that might call numberOfRowsInSection, which causes an infinite loop.
 				return numberOfLibraryItems
 			default:
