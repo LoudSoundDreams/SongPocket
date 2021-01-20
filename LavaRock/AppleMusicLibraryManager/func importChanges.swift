@@ -35,7 +35,7 @@ extension AppleMusicLibraryManager {
 	private func importChangesPart2() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
-			var queriedMediaItems = MPMediaQuery.songs().items
+			let queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
 		let songsFetchRequest = NSFetchRequest<Song>(entityName: "Song")
@@ -61,21 +61,22 @@ extension AppleMusicLibraryManager {
 		var potentiallyModifiedSongObjectIDs = [NSManagedObjectID]()
 		var potentiallyModifiedMediaItems = [MPMediaItem]()
 		var deletedSongObjectIDs = [NSManagedObjectID]()
+		var queriedMediaItemsCopy = queriedMediaItems
 		for savedSong in savedSongs {
-			if let indexOfPotentiallyModifiedMediaItem = queriedMediaItems.firstIndex(where: { queriedMediaItem in
+			if let indexOfPotentiallyModifiedMediaItem = queriedMediaItemsCopy.firstIndex(where: { queriedMediaItem in
 				savedSong.persistentID == Int64(bitPattern: queriedMediaItem.persistentID)
 			}) { // We already have a Song for this MPMediaItem. We might have to update it.
 				potentiallyModifiedSongObjectIDs.append(savedSong.objectID)
-				let potentiallyModifiedMediaItem = queriedMediaItems[indexOfPotentiallyModifiedMediaItem]
+				let potentiallyModifiedMediaItem = queriedMediaItemsCopy[indexOfPotentiallyModifiedMediaItem]
 				potentiallyModifiedMediaItems.append(potentiallyModifiedMediaItem)
-				queriedMediaItems.remove(at: indexOfPotentiallyModifiedMediaItem)
+				queriedMediaItemsCopy.remove(at: indexOfPotentiallyModifiedMediaItem)
 				
 			} else { // This Song no longer corresponds to any MPMediaItem in the Apple Music library. We'll delete it.
 				deletedSongObjectIDs.append(savedSong.objectID)
 			}
 		}
 		// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
-		let newMediaItems = queriedMediaItems
+		let newMediaItems = queriedMediaItemsCopy
 		
 		/*
 		print("")
@@ -137,7 +138,8 @@ extension AppleMusicLibraryManager {
 		}
 		
 		recalculateReleaseDateEstimatesForAlbums(
-			with: albumIDs)
+			with: albumIDs,
+			queriedMediaItems: queriedMediaItems)
 		
 		os_signpost(.begin, log: Self.cleanupLog, name: "Reindex all Albums and Songs")
 		for collection in allCollections {
@@ -174,28 +176,38 @@ extension AppleMusicLibraryManager {
 	// An MPMediaItemCollection has a property representativeItem, but that item's release date doesn't necessarily represent the album's release date.
 	// Instead, we'll estimate the albums' release dates and keep the estimates up to date.
 	private func recalculateReleaseDateEstimatesForAlbums(
-		with albumIDs: [NSManagedObjectID]
+		with albumIDs: [NSManagedObjectID],
+		queriedMediaItems: [MPMediaItem]
 	) {
+		var queriedMediaItemsCopy = Set(queriedMediaItems).filter {
+			$0.releaseDate != nil
+		}
+		
 		for albumID in albumIDs {
+			// Update one Album's release date estimate.
 			os_signpost(.begin, log: Self.cleanupLog, name: "Recalculate release date estimate for one Album")
 			
-			// Update one Album's release date estimate.
+			os_signpost(.begin, log: Self.cleanupLog, name: "Get this Album")
 			let album = managedObjectContext.object(with: albumID) as! Album
-			// Should we get the Songs using mpMediaItemCollection() instead of Core Data?
-			
-			let songsFetchRequest = NSFetchRequest<Song>(entityName: "Song")
-			songsFetchRequest.predicate = NSPredicate(format: "container == %@", album)
-			// Order doesn't matter.
-			let songsInAlbum = managedObjectContext.objectsFetched(for: songsFetchRequest)
-			
+			os_signpost(.end, log: Self.cleanupLog, name: "Get this Album")
 			album.releaseDateEstimate = nil
 			
-			for song in songsInAlbum {
-				os_signpost(.begin, log: Self.cleanupLog, name: "Query for the MPMediaItem for one Song")
+			// Find the MPMediaItems associated with this Album.
+			// Don't use song.mpMediaItem() for every Song; it's way too slow.
+			let thisAlbumPersistentID = album.albumPersistentID
+			os_signpost(.begin, log: Self.cleanupLog, name: "Filter all MPMediaItems down to the ones associated with this Album")
+			let matchingQueriedMediaItems = queriedMediaItemsCopy.filter {
+				Int64(bitPattern: $0.albumPersistentID) == thisAlbumPersistentID
+			}
+			os_signpost(.end, log: Self.cleanupLog, name: "Filter all MPMediaItems down to the ones associated with this Album")
+			
+			// Determine the new release date estimate, using those MPMediaItems.
+			for mediaItem in matchingQueriedMediaItems {
 				defer {
-					os_signpost(.end, log: Self.cleanupLog, name: "Query for the MPMediaItem for one Song")
+					queriedMediaItemsCopy.remove(mediaItem)
 				}
-				guard let competingEstimate = song.mpMediaItem()?.releaseDate else { continue }
+				
+				guard let competingEstimate = mediaItem.releaseDate else { continue }
 				
 				if album.releaseDateEstimate == nil {
 					album.releaseDateEstimate = competingEstimate // Same as below

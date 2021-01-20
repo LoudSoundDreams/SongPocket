@@ -75,23 +75,23 @@ extension AppleMusicLibraryManager {
 			// Don't use song.mpMediaItem() for every Song; it's way too slow.
 			os_signpost(.begin, log: Self.updateManagedObjectsLog, name: "Match a fresh MPMediaItem to find this Song's new albumPersistentID")
 			let indexOfMatchingFreshMediaItem = freshMediaItemsCopy.firstIndex(where: { freshMediaItem in
-				freshMediaItem.persistentID == song.persistentID
+				Int64(bitPattern: freshMediaItem.persistentID) == song.persistentID
 			})!
 			let matchingFreshMediaItem = freshMediaItemsCopy[indexOfMatchingFreshMediaItem]
-			let freshAlbumPersistentID = matchingFreshMediaItem.albumPersistentID
+			let freshAlbumPersistentID_asInt64 = Int64(bitPattern: matchingFreshMediaItem.albumPersistentID)
 			// Speed things up as we go, by reducing the number of freshMediaItems to go through.
 			freshMediaItemsCopy.remove(at: indexOfMatchingFreshMediaItem)
 			os_signpost(.end, log: Self.updateManagedObjectsLog, name: "Match a fresh MPMediaItem to find this Song's new albumPersistentID")
 			
 			// If this Song's albumPersistentID has stayed the same, move on to the next one.
-			guard Int64(bitPattern: freshAlbumPersistentID) != knownAlbumPersistentID else { continue }
+			guard freshAlbumPersistentID_asInt64 != knownAlbumPersistentID else { continue }
 			
 			// This Song's albumPersistentID has changed.
 			
-			if !knownAlbumPersistentIDs.contains(Int64(bitPattern: freshAlbumPersistentID)) { // If we don't already have an Album with this albumPersistentID …
+			if !knownAlbumPersistentIDs.contains(freshAlbumPersistentID_asInt64) { // If we don't already have an Album with this albumPersistentID …
 				
 				// Make a note of this albumPersistentID.
-				knownAlbumPersistentIDs.insert(Int64(bitPattern: freshAlbumPersistentID))
+				knownAlbumPersistentIDs.insert(freshAlbumPersistentID_asInt64)
 				
 				// Make a new Album.
 				let newAlbum = Album(context: managedObjectContext)
@@ -105,7 +105,7 @@ extension AppleMusicLibraryManager {
 					(album as! Album).index += 1
 				}
 				newAlbum.index = 0
-				newAlbum.albumPersistentID = Int64(bitPattern: freshAlbumPersistentID)
+				newAlbum.albumPersistentID = freshAlbumPersistentID_asInt64
 				// We'll set releaseDateEstimate later.
 				
 				// Put the song into the new Album.
@@ -113,10 +113,10 @@ extension AppleMusicLibraryManager {
 				song.container = newAlbum
 				
 			} else { // This Song's albumPersistentID has changed, but we already have an Album for it.
-				knownAlbumPersistentIDs.insert(Int64(bitPattern: freshAlbumPersistentID))
+				knownAlbumPersistentIDs.insert(freshAlbumPersistentID_asInt64)
 				// Get the Album.
 				let existingAlbum = existingAlbums.first(where: { existingAlbum in
-					existingAlbum.albumPersistentID == Int64(bitPattern: freshAlbumPersistentID)
+					existingAlbum.albumPersistentID == freshAlbumPersistentID_asInt64
 				})!
 				
 				// Add the song to the Album.
