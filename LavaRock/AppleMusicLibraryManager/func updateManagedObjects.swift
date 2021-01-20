@@ -19,9 +19,9 @@ extension AppleMusicLibraryManager {
 		forSongsWith songIDs: [NSManagedObjectID],
 		toMatch mediaItems: [MPMediaItem]
 	) {
-		os_signpost(.begin, log: Self.updateManagedObjectsLog, name: "Subroutine")
+		os_signpost(.begin, log: Self.importChangesMainLog, name: "1. Update Managed Objects")
 		defer {
-			os_signpost(.end, log: Self.updateManagedObjectsLog, name: "Subroutine")
+			os_signpost(.end, log: Self.importChangesMainLog, name: "1. Update Managed Objects")
 		}
 		
 		// Here, you can update any attributes on each Song. But it's best to not store data on each Song in the first place unless we have to, because we'll have to manually keep it up to date.

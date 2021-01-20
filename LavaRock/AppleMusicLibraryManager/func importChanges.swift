@@ -11,15 +11,11 @@ import OSLog
 
 extension AppleMusicLibraryManager {
 	
-	private static let importChangesLog = OSLog(
-		subsystem: subsystemForOSLog,
-		category: "0. Import Changes")
-	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
 	final func importChanges() {
-		os_signpost(.begin, log: Self.importChangesLog, name: "Routine")
+		os_signpost(.begin, log: Self.importChangesMainLog, name: "0. Main")
 		defer {
-			os_signpost(.end, log: Self.importChangesLog, name: "Routine")
+			os_signpost(.end, log: Self.importChangesMainLog, name: "0. Main")
 		}
 		
 		let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -126,6 +122,8 @@ extension AppleMusicLibraryManager {
 		
 		// Then, some cleanup.
 		
+		os_signpost(.begin, log: Self.importChangesMainLog, name: "4. Cleanup")
+		
 		let allCollectionsFetchRequest = NSFetchRequest<Collection>(entityName: "Collection")
 		// Order doesn't matter, because this is for reindexing the Albums within each Collection.
 		let allCollections = managedObjectContext.objectsFetched(for: allCollectionsFetchRequest)
@@ -141,6 +139,7 @@ extension AppleMusicLibraryManager {
 		recalculateReleaseDateEstimatesForAlbums(
 			with: albumIDs)
 		
+		os_signpost(.begin, log: Self.cleanupLog, name: "Reindex all Albums and Songs")
 		for collection in allCollections {
 			reindexAlbums(
 				in: collection,
@@ -150,10 +149,11 @@ extension AppleMusicLibraryManager {
 		for album in allAlbums {
 			reindexSongs(in: album)
 		}
+		os_signpost(.end, log: Self.cleanupLog, name: "Reindex all Albums and Songs")
 		
-		os_signpost(.begin, log: Self.importChangesLog, name: "Save managed object context")
+		os_signpost(.end, log: Self.importChangesMainLog, name: "4. Cleanup")
+		
 		managedObjectContext.tryToSaveSynchronously()
-		os_signpost(.end, log: Self.importChangesLog, name: "Save managed object context")
 //		managedObjectContext.parent?.tryToSaveSynchronously()
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
@@ -164,6 +164,10 @@ extension AppleMusicLibraryManager {
 	
 	// MARK: - Cleanup
 	
+	private static let cleanupLog = OSLog(
+		subsystem: subsystemForOSLog,
+		category: "4. Cleanup")
+	
 	// MARK: Recalculating Release Date Estimates
 	
 	// Only MPMediaItems have release dates, and those can't be albums.
@@ -173,6 +177,8 @@ extension AppleMusicLibraryManager {
 		with albumIDs: [NSManagedObjectID]
 	) {
 		for albumID in albumIDs {
+			os_signpost(.begin, log: Self.cleanupLog, name: "Recalculate release date estimate for one Album")
+			
 			// Update one Album's release date estimate.
 			let album = managedObjectContext.object(with: albumID) as! Album
 			// Should we get the Songs using mpMediaItemCollection() instead of Core Data?
@@ -185,6 +191,10 @@ extension AppleMusicLibraryManager {
 			album.releaseDateEstimate = nil
 			
 			for song in songsInAlbum {
+				os_signpost(.begin, log: Self.cleanupLog, name: "Query for the MPMediaItem for one Song")
+				defer {
+					os_signpost(.end, log: Self.cleanupLog, name: "Query for the MPMediaItem for one Song")
+				}
 				guard let competingEstimate = song.mpMediaItem()?.releaseDate else { continue }
 				
 				if album.releaseDateEstimate == nil {
@@ -196,6 +206,8 @@ extension AppleMusicLibraryManager {
 					album.releaseDateEstimate = competingEstimate // Same as above
 				}
 			}
+			
+			os_signpost(.end, log: Self.cleanupLog, name: "Recalculate release date estimate for one Album")
 		}
 	}
 	

@@ -21,9 +21,9 @@ extension AppleMusicLibraryManager {
 		existingAlbums: [Album],
 		existingCollections: [Collection]
 	) {
-		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Subroutine")
+		os_signpost(.begin, log: Self.importChangesMainLog, name: "2. Create Managed Objects")
 		defer {
-			os_signpost(.end, log: Self.createManagedObjectsLog, name: "Subroutine")
+			os_signpost(.end, log: Self.importChangesMainLog, name: "2. Create Managed Objects")
 		}
 		
 		let shouldImportIntoDefaultOrder = existingCollections.isEmpty

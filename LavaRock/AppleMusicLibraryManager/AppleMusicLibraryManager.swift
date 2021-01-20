@@ -6,6 +6,7 @@
 //
 
 import MediaPlayer
+import OSLog
 
 final class AppleMusicLibraryManager {
 	
@@ -18,6 +19,9 @@ final class AppleMusicLibraryManager {
 	
 	// Constants for debugging only
 	static let subsystemForOSLog = "LavaRock.AppleMusicLibraryManager"
+	static let importChangesMainLog = OSLog(
+		subsystem: subsystemForOSLog,
+		category: "0. Import Changes Main")
 	
 	// Variables
 	var shouldNextImportBeSynchronous = false

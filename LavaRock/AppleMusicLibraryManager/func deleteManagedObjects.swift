@@ -16,9 +16,9 @@ extension AppleMusicLibraryManager {
 	
 	// Delete Songs for media items that are no longer in the Apple Music library, and then any empty Albums, and then any empty Collections.
 	final func deleteManagedObjects(forSongsWith songIDs: [NSManagedObjectID]) {
-		os_signpost(.begin, log: Self.deleteManagedObjectsLog, name: "Subroutine")
+		os_signpost(.begin, log: Self.importChangesMainLog, name: "3. Delete Managed Objects")
 		defer {
-			os_signpost(.end, log: Self.deleteManagedObjectsLog, name: "Subroutine")
+			os_signpost(.end, log: Self.importChangesMainLog, name: "3. Delete Managed Objects")
 		}
 		
 		for songID in songIDs {
