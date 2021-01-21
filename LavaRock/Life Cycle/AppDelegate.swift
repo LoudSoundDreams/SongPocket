@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+//import OSLog
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,7 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 		
+//		let launchLog = OSLog(
+//			subsystem: "LavaRock.lifeCycle",
+//			category: "Launch")
+//		os_signpost(.begin, log: launchLog, name: "Set up PurchaseManager")
 		PurchaseManager.shared.beginObservingPaymentTransactions()
+//		os_signpost(.end, log: launchLog, name: "Set up PurchaseManager")
 		
 		DispatchQueue.global(qos: .utility).async {
 			UserDefaults.standard.deleteAllEntries(exceptWithKeys: LRUserDefaultsKey.rawValues())

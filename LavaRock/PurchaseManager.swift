@@ -13,7 +13,7 @@ protocol PurchaseManagerTipDelegate: AnyObject {
 	func didUpdateTipTransaction(_ tipTransaction: SKPaymentTransaction)
 }
 
-final class PurchaseManager: NSObject {
+final class PurchaseManager: NSObject { // This type inherits from NSObject because that makes it easier to make it conform to SKProductsRequestDelegate and SKPaymentTransactionObserver, which inherit from NSObjectProtocol.
 	
 	// MARK: Types
 	

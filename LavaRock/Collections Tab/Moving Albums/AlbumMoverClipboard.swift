@@ -7,7 +7,7 @@
 
 import CoreData
 
-final class AlbumMoverClipboard { // This is a class, not a struct, because we use it to share information.
+final class AlbumMoverClipboard { // This is a class and not a struct because we use it to share information.
 	
 	// MARK: - Properties
 	

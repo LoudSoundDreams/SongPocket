@@ -9,6 +9,8 @@ import UIKit
 
 struct AccentColorManager {
 	
+	private init() { }
+	
 	// MARK: - Types
 	
 	private enum UserDefaultsValueCase: String, CaseIterable {
@@ -98,9 +100,5 @@ struct AccentColorManager {
 			return defaultColorEntry
 		}
 	}
-	
-	// MARK: - Private Methods
-	
-	private init() { }
 	
 }
