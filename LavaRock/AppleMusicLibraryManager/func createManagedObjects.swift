@@ -28,6 +28,8 @@ extension AppleMusicLibraryManager {
 		
 		let shouldImportIntoDefaultOrder = existingCollections.isEmpty
 		
+		// Sort the MPMediaItems into the order we want them to appear in in the app.
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Initial sort")
 		var sortedMediaItems = [MPMediaItem]()
 		if shouldImportIntoDefaultOrder {
 			sortedMediaItems = sortedByAlbumArtistThenAlbum(newMediaItemsImmutable)
@@ -36,12 +38,17 @@ extension AppleMusicLibraryManager {
 				$0.dateAdded > $1.dateAdded
 			}
 		}
+		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Initial sort")
 		// We'll sort Songs within each Album later, because it depends on whether the existing Songs in each Album are in album order.
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Group the MPMediaItems by album")
 		let mediaItemGroups = groupedByAlbum(sortedMediaItems)
+		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Group the MPMediaItems by album")
 		
 		var existingAlbumsCopy = existingAlbums
 		var existingCollectionsCopy = existingCollections
 		for mediaItemGroup in mediaItemGroups.reversed() { // Add Albums from bottom to top.
+			os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Create one Song and possibly a new Album and Collection for it")
+			
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: mediaItemGroup,
 				existingAlbums: existingAlbumsCopy,
@@ -54,6 +61,8 @@ extension AppleMusicLibraryManager {
 			if let newCollection = newCollection {
 				existingCollectionsCopy.insert(newCollection, at: 0)
 			}
+			
+			os_signpost(.end, log: Self.createManagedObjectsLog, name: "Create one Song and possibly a new Album and Collection for it")
 		}
 	}
 	
@@ -109,7 +118,7 @@ extension AppleMusicLibraryManager {
 		guard let firstMediaItemInAlbum = newMediaItemsInTheSameAlbum.first else {
 			fatalError("Tried to create Songs (and possibly a new Album and Collection) for a group of MPMediaItems with the same albumPersistentID, but apparently the group was empty.")
 		}
-		let albumPersistentID = firstMediaItemInAlbum.albumPersistentID
+		let albumPersistentID_asInt64 = Int64(bitPattern: firstMediaItemInAlbum.albumPersistentID)
 		
 //		print("")
 //		print("Creating Songs and possibly a new Album and Collection for these MPMediaItems:")
@@ -120,7 +129,7 @@ extension AppleMusicLibraryManager {
 		
 		// If we already have a matching Album to add the Songs to …
 		if let matchingExistingAlbum = existingAlbums.first(where: { existingAlbum in
-			existingAlbum.albumPersistentID == Int64(bitPattern: albumPersistentID)
+			existingAlbum.albumPersistentID == albumPersistentID_asInt64
 		}) { // … then add the Songs to that Album.
 			if areSongsInAlbumOrder(in: matchingExistingAlbum) {
 				createSongs(

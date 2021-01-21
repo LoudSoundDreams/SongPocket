@@ -43,7 +43,7 @@ extension AppleMusicLibraryManager {
 		}
 		
 		// Group and sort them by Collection, Album, and Song order.
-		os_signpost(.begin, log: Self.updateManagedObjectsLog, name: "Initial Sort")
+		os_signpost(.begin, log: Self.updateManagedObjectsLog, name: "Initial sort")
 		potentiallyOutdatedSongs.sort { $0.index < $1.index }
 		potentiallyOutdatedSongs.sort { $0.container!.index < $1.container!.index }
 		potentiallyOutdatedSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
@@ -54,7 +54,7 @@ extension AppleMusicLibraryManager {
 		print("Collection \(song.container!.container!.index), Album \(song.container!.index), Song \(song.index)")
 		}
 		*/
-		os_signpost(.end, log: Self.updateManagedObjectsLog, name: "Initial Sort")
+		os_signpost(.end, log: Self.updateManagedObjectsLog, name: "Initial sort")
 		
 		var knownAlbumPersistentIDs = Set<Int64>()
 		var existingAlbums = [Album]()
