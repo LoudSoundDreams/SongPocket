@@ -31,7 +31,7 @@ extension AppleMusicLibraryManager {
 	}
 	
 	private func deleteEmptyAlbums() {
-		let albumsFetchRequest = NSFetchRequest<Album>(entityName: "Album")
+		let albumsFetchRequest: NSFetchRequest<Album> = Album.fetchRequest()
 		// Order doesn't matter.
 		let allAlbums = managedObjectContext.objectsFetched(for: albumsFetchRequest)
 		
@@ -46,7 +46,7 @@ extension AppleMusicLibraryManager {
 	}
 	
 	private func deleteEmptyCollections() {
-		let collectionsFetchRequest = NSFetchRequest<Collection>(entityName: "Collection")
+		let collectionsFetchRequest: NSFetchRequest<Collection> = Collection.fetchRequest()
 		// Order doesn't matter.
 		let allCollections = managedObjectContext.objectsFetched(for: collectionsFetchRequest)
 		

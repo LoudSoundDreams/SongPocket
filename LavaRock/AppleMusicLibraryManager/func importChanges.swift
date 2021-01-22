@@ -38,7 +38,7 @@ extension AppleMusicLibraryManager {
 			let queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
-		let songsFetchRequest = NSFetchRequest<Song>(entityName: "Song")
+		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
 		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest)
 		let shouldImportIntoDefaultOrder = savedSongs.isEmpty
@@ -104,11 +104,11 @@ extension AppleMusicLibraryManager {
 			forSongsWith: potentiallyModifiedSongObjectIDs,
 			toMatch: potentiallyModifiedMediaItems)
 		
-		let existingAlbumsFetchRequest = NSFetchRequest<Album>(entityName: "Album")
+		let existingAlbumsFetchRequest: NSFetchRequest<Album> = Album.fetchRequest()
 		// Order doesn't matter, because we identify Albums by their albumPersistentID.
 		let existingAlbums = managedObjectContext.objectsFetched(for: existingAlbumsFetchRequest)
 		
-		let existingCollectionsFetchRequest = NSFetchRequest<Collection>(entityName: "Collection")
+		let existingCollectionsFetchRequest: NSFetchRequest<Collection> = Collection.fetchRequest()
 		// Order matters, because we'll try to add new Albums to the first Collection with a matching title.
 		existingCollectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		let existingCollections = managedObjectContext.objectsFetched(for: existingCollectionsFetchRequest)
@@ -125,11 +125,11 @@ extension AppleMusicLibraryManager {
 		
 		os_signpost(.begin, log: Self.importChangesMainLog, name: "4. Cleanup")
 		
-		let allCollectionsFetchRequest = NSFetchRequest<Collection>(entityName: "Collection")
+		let allCollectionsFetchRequest: NSFetchRequest<Collection> = Collection.fetchRequest()
 		// Order doesn't matter, because this is for reindexing the Albums within each Collection.
 		let allCollections = managedObjectContext.objectsFetched(for: allCollectionsFetchRequest)
 		
-		let allAlbumsFetchRequest = NSFetchRequest<Album>(entityName: "Album")
+		let allAlbumsFetchRequest: NSFetchRequest<Album> = Album.fetchRequest()
 		// Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		let allAlbums = managedObjectContext.objectsFetched(for: allAlbumsFetchRequest)
 		
