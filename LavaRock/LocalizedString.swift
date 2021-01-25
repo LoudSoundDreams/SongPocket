@@ -83,8 +83,8 @@ struct LocalizedString { // You can't make this an enum, because associated valu
 	// MARK: Songs View
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
-	static let playAlbumStartingHere = NSLocalizedString("Play Album Starting Here", comment: "Button title")
-	static let queueAlbumStartingHere = NSLocalizedString("Queue Album Starting Here", comment: "Button title")
+	static let playAlbumStartingHere = NSLocalizedString("Play All Starting Here", comment: "Button title")
+	static let queueAlbumStartingHere = NSLocalizedString("Queue All Starting Here", comment: "Button title")
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button title")
 	static let didEnqueueSongsAlertMessage = NSLocalizedString(
 		"did_enqueue_songs_alert_message",

@@ -74,13 +74,13 @@
 "Play" = "播放";
 
 /* Button title */
-"Play Album Starting Here" = "從此歌曲播放";
+"Play All Starting Here" = "從此歌曲播放";
 
 /* Accessibility label */
 "Previous track" = "上一個音軌";
 
 /* Button title */
-"Queue Album Starting Here" = "從此歌曲待播";
+"Queue All Starting Here" = "從此歌曲待播";
 
 /* Button title */
 "Queue Song" = "待播";
