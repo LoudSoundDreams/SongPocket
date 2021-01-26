@@ -244,13 +244,7 @@ class LibraryTVC:
 	private func refreshSortButton() {
 		sortButton.isEnabled =
 			indexedLibraryItems.count > 0 &&
-//			tableView.indexPathsForSelectedRows != nil &&
 			tableView.shouldAllowSorting()
-//		if tableView.indexPathsForSelectedRows == nil {
-//			sortButton.title = "Sort All"
-//		} else {
-//			sortButton.title = LocalizedString.sort
-//		}
 	}
 	
 	private func refreshFloatToTopButton() {
