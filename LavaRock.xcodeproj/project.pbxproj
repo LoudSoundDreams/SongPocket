@@ -50,7 +50,6 @@
 		078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */; };
 		07865B252566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B242566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift */; };
 		07865B322567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B312567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift */; };
-		07865B372567072B00DBEB26 /* “Now Playing” Indicator - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B362567072B00DBEB26 /* “Now Playing” Indicator - LibraryTVC.swift */; };
 		079B2C9524E227BF00A949FA /* AppleMusicLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */; };
 		07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A3FBCE258EB9B2000B450E /* extension UIFont.swift */; };
 		07A4F9052519E72C0065C87E /* func updateManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9042519E72C0065C87E /* func updateManagedObjects.swift */; };
@@ -154,7 +153,6 @@
 		078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumMoverDelegate - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		07865B242566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingIndicatorManager - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		07865B312567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingIndicatorManager - CollectionsTVC.swift"; sourceTree = "<group>"; };
-		07865B362567072B00DBEB26 /* “Now Playing” Indicator - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "“Now Playing” Indicator - LibraryTVC.swift"; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicLibraryManager.swift; sourceTree = "<group>"; };
 		07A3FBCE258EB9B2000B450E /* extension UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIFont.swift"; sourceTree = "<group>"; };
 		07A4F9042519E72C0065C87E /* func updateManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func updateManagedObjects.swift"; sourceTree = "<group>"; };
@@ -251,7 +249,6 @@
 			children = (
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */,
-				07865B362567072B00DBEB26 /* “Now Playing” Indicator - LibraryTVC.swift */,
 				073E6A9125574B98003C84A5 /* protocol NowPlayingIndicator.swift */,
 				0719B57B2511A61F00748371 /* protocol PlaybackToolbarManager.swift */,
 				0719B57D2511CD4E00748371 /* PlaybackToolbarManager - LibraryTVC.swift */,
@@ -615,7 +612,6 @@
 				0719B57E2511CD4E00748371 /* PlaybackToolbarManager - LibraryTVC.swift in Sources */,
 				075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* extension Song.swift in Sources */,
-				07865B372567072B00DBEB26 /* “Now Playing” Indicator - LibraryTVC.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				0706ABE124D947850090EB21 /* AlbumMoverClipboard.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,

@@ -88,7 +88,8 @@ extension LibraryTVC {
 		{
 			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue }
 			let isItemNowPlaying = isItemNowPlayingDeterminer(indexPath)
-			let indicator = nowPlayingIndicator(isItemNowPlaying: isItemNowPlaying)
+			let indicator = PlayerControllerManager.shared.nowPlayingIndicator(
+				isItemNowPlaying: isItemNowPlaying)
 			cell.applyNowPlayingIndicator(indicator)
 		}
 	}

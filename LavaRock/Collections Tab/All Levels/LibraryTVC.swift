@@ -72,6 +72,9 @@ class LibraryTVC:
 	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
 		barButtonSystemItem: .cancel,
 		target: self, action: #selector(cancelMoveAlbums))
+	@objc private func cancelMoveAlbums() {
+		dismiss(animated: true, completion: nil)
+	}
 	let flexibleSpaceBarButtonItem = UIBarButtonItem(
 		barButtonSystemItem: .flexibleSpace,
 		target: nil, action: nil)
@@ -257,10 +260,6 @@ class LibraryTVC:
 		sinkToBottomButton.isEnabled =
 			indexedLibraryItems.count > 0 &&
 			tableView.shouldAllowMovingSelectedRowsToBottomOfSection()
-	}
-	
-	@objc private func cancelMoveAlbums() {
-		dismiss(animated: true, completion: nil)
 	}
 	
 	// MARK: - Navigation

@@ -50,6 +50,33 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 		playerController?.endGeneratingPlaybackNotifications()
 	}
 	
+	// MARK: - "Now Playing" Indicator
+	
+	final func nowPlayingIndicator(isItemNowPlaying: Bool) -> (UIImage?, String?) {
+		guard
+			isItemNowPlaying,
+			let playerController = playerController
+		else {
+			return (nil, nil)
+		}
+		
+		if playerController.playbackState == .playing { // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
+			if #available(iOS 14.0, *) {
+				return
+					(UIImage(systemName: "speaker.wave.2.fill"),
+					 LocalizedString.nowPlaying)
+			} else { // iOS 13
+				return
+					(UIImage(systemName: "speaker.2.fill"),
+					 LocalizedString.nowPlaying)
+			}
+		} else {
+			return
+				(UIImage(systemName: "speaker.fill"),
+				 LocalizedString.paused)
+		}
+	}
+	
 	// MARK: - Other
 	
 	func refreshCurrentSong() {
