@@ -26,26 +26,6 @@ extension LibraryTVC {
 	
 	// Note: We handle rearranging in UITableViewDataSource and UITableViewDelegate methods.
 	
-	// MARK: - Selecting All or None
-	
-//	@objc final func selectAllOrNone() {
-//		if
-//			let selectedIndexPaths = tableView.indexPathsForSelectedRows,
-//			selectedIndexPaths.count == indexedLibraryItems.count
-//		{
-//			tableView.deselectAllRows(animated: false)
-//		} else {
-//			for indexPath in tableView.indexPathsForRowsIn(
-//				section: 0,
-//				firstRow: numberOfRowsAboveIndexedLibraryItems)
-//			{
-//				tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-//			}
-//		}
-//
-//		refreshBarButtons()
-//	}
-	
 	// MARK: - Moving to Top
 	
 	@objc final func moveSelectedItemsToTop() {

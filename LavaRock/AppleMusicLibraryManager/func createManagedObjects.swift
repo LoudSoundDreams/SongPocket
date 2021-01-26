@@ -72,6 +72,7 @@ extension AppleMusicLibraryManager {
 		_ mediaItemsImmutable: [MPMediaItem]
 	) -> [MPMediaItem] {
 		var mediaItemsCopy = mediaItemsImmutable
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Sort by album title")
 		mediaItemsCopy.sort { // Albums in alphabetical order is wrong! We'll sort Albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
 			// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 			let albumTitle0 = $0.albumTitle ?? ""
@@ -79,14 +80,19 @@ extension AppleMusicLibraryManager {
 			let comparisonResult = albumTitle0.localizedStandardCompare(albumTitle1) // The comparison method that the Finder uses
 			return comparisonResult == .orderedAscending
 		}
+		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album title")
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Sort by album artist name")
 		mediaItemsCopy.sort {
 			let albumArtist0 = $0.albumArtist ?? ""
 			let albumArtist1 = $1.albumArtist ?? ""
 			let comparisonResult = albumArtist0.localizedStandardCompare(albumArtist1)
 			return comparisonResult == .orderedAscending
 		}
+		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album artist name")
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Move unknown album artist to end")
 		let placeholder = Album.unknownAlbumArtistPlaceholder
 		mediaItemsCopy.sort { $1.albumArtist ?? placeholder == placeholder }
+		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Move unknown album artist to end")
 		return mediaItemsCopy
 	}
 	

@@ -52,9 +52,6 @@ class LibraryTVC:
 	lazy var noItemsPlaceholderView = {
 		return tableView?.dequeueReusableCell(withIdentifier: "No Items Cell") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier; otherwise, dequeueReusableCell returns nil.
 	}()
-//	lazy var selectAllOrNoneButton = UIBarButtonItem(
-//		title: "Select All",
-//		style: .plain, target: self, action: #selector(selectAllOrNone))
 	lazy var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort,
 		style: .plain, target: self, action: #selector(showSortOptions))
@@ -170,7 +167,7 @@ class LibraryTVC:
 	func setUpUI() {
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
-		navigationItemButtonsEditingMode = [flexibleSpaceBarButtonItem] // [selectAllOrNoneButton]
+		navigationItemButtonsEditingMode = [flexibleSpaceBarButtonItem]
 		navigationItem.rightBarButtonItem = editButtonItem
 		playbackToolbarButtons = [
 			goToPreviousSongButton,
@@ -230,7 +227,6 @@ class LibraryTVC:
 		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing to reflect changes in the Apple Music library.
 		refreshEditButton()
 		if isEditing {
-//			refreshSelectAllOrNoneButton()
 			refreshSortButton()
 			refreshFloatToTopButton()
 			refreshSinkToBottomButton()
@@ -244,17 +240,6 @@ class LibraryTVC:
 			MPMediaLibrary.authorizationStatus() == .authorized &&
 			indexedLibraryItems.count > 0
 	}
-	
-//	private func refreshSelectAllOrNoneButton() {
-//		if
-//			let selectedIndexPaths = tableView.indexPathsForSelectedRows,
-//			selectedIndexPaths.count == indexedLibraryItems.count
-//		{
-//			selectAllOrNoneButton.title = "Select None"
-//		} else {
-//			selectAllOrNoneButton.title = "Select All"
-//		}
-//	}
 	
 	private func refreshSortButton() {
 		sortButton.isEnabled =
