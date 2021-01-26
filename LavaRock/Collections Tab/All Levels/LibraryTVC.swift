@@ -241,24 +241,24 @@ class LibraryTVC:
 	private func refreshEditButton() {
 		editButtonItem.isEnabled =
 			MPMediaLibrary.authorizationStatus() == .authorized &&
-			indexedLibraryItems.count > 0
+			!indexedLibraryItems.isEmpty
 	}
 	
 	private func refreshSortButton() {
 		sortButton.isEnabled =
-			indexedLibraryItems.count > 0 &&
+			!indexedLibraryItems.isEmpty &&
 			tableView.shouldAllowSorting()
 	}
 	
 	private func refreshFloatToTopButton() {
 		floatToTopButton.isEnabled =
-			indexedLibraryItems.count > 0 &&
+			!indexedLibraryItems.isEmpty &&
 			tableView.shouldAllowMovingSelectedRowsToTopOfSection()
 	}
 	
 	private func refreshSinkToBottomButton() {
 		sinkToBottomButton.isEnabled =
-			indexedLibraryItems.count > 0 &&
+			!indexedLibraryItems.isEmpty &&
 			tableView.shouldAllowMovingSelectedRowsToBottomOfSection()
 	}
 	

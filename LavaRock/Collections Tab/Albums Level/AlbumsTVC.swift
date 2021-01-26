@@ -95,7 +95,7 @@ final class AlbumsTVC:
 	
 	private func refreshStartMovingAlbumsButton() {
 		startMovingAlbumsButton.isEnabled =
-			indexedLibraryItems.count > 0
+			!indexedLibraryItems.isEmpty
 	}
 	
 	// MARK: - Navigation
