@@ -100,40 +100,24 @@ extension AppleMusicLibraryManager {
 	
 	// MARK: Grouping MPMediaItems
 	
-	// Speeds up first import by 1.5x, but slows down subsequent launches (?!) by 2x. (Tested with a release build and 13,142 songs on an iPhone 6s Plus.)
-//	private func groupedByAlbum(_ sortedMediaItems: [MPMediaItem]) -> [[MPMediaItem]] {
-//		var groups = [[MPMediaItem]]()
-//		var seenAlbumPersistentIDs = [MPMediaEntityPersistentID]()
-//		for mediaItem in sortedMediaItems {
-//			os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Find or make an array for one MPMediaItem")
-//			let thisAlbumPersistentID = mediaItem.albumPersistentID
-//			if let indexOfMatchingExistingGroup = seenAlbumPersistentIDs.lastIndex(where: { seenAlbumPersistentID in
-//				seenAlbumPersistentID == thisAlbumPersistentID
-//			}) { // If we've already made a group for this media item.
-//				groups[indexOfMatchingExistingGroup].append(mediaItem)
-//				os_signpost(.end, log: Self.createManagedObjectsLog, name: "Find or make an array for one MPMediaItem")
-//			} else { // We haven't already made a group for this media item.
-//				let newGroup = [mediaItem]
-//				groups.append(newGroup)
-//				seenAlbumPersistentIDs.append(thisAlbumPersistentID)
-//				os_signpost(.end, log: Self.createManagedObjectsLog, name: "Find or make an array for one MPMediaItem")
-//			}
-//		}
-//		return groups
-//	}
-	
 	private func groupedByAlbum(_ sortedMediaItems: [MPMediaItem]) -> [[MPMediaItem]] {
 		var groups = [[MPMediaItem]]()
+		var seenAlbumPersistentIDs = [MPMediaEntityPersistentID]()
 		for mediaItem in sortedMediaItems {
 			os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Find or make an array for one MPMediaItem")
-			if var matchingExistingGroup = groups.last(where: { existingGroup in
-				existingGroup.first?.albumPersistentID == mediaItem.albumPersistentID // last(where:) takes around 2/3 as long as first(where:) for first imports
+			let thisAlbumPersistentID = mediaItem.albumPersistentID
+			if let indexOfMatchingExistingGroup = seenAlbumPersistentIDs.lastIndex(where: { seenAlbumPersistentID in // lastIndex(where:) is around 1.5× as fast as firstIndex(where:) here for first imports
+				seenAlbumPersistentID == thisAlbumPersistentID
+				// The above is around 5× as fast as:
+//				if let indexOfMatchingExistingGroup = groups.lastIndex(where: { existingGroup in
+//					existingGroup.first?.albumPersistentID == thisAlbumPersistentID
 			}) { // If we've already made a group for this media item.
-				matchingExistingGroup.append(mediaItem)
+				groups[indexOfMatchingExistingGroup].append(mediaItem)
 				os_signpost(.end, log: Self.createManagedObjectsLog, name: "Find or make an array for one MPMediaItem")
 			} else { // We haven't already made a group for this media item.
 				let newGroup = [mediaItem]
 				groups.append(newGroup)
+				seenAlbumPersistentIDs.append(thisAlbumPersistentID)
 				os_signpost(.end, log: Self.createManagedObjectsLog, name: "Find or make an array for one MPMediaItem")
 			}
 		}
