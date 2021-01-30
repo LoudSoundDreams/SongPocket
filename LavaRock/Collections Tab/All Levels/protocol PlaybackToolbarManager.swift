@@ -9,6 +9,7 @@ import UIKit
 
 protocol PlaybackToolbarManager {
 	var playbackToolbarButtons: [UIBarButtonItem] { get set }
+	
 	var goToPreviousSongButton: UIBarButtonItem { get set }
 	var restartCurrentSongButton: UIBarButtonItem { get set }
 	var playButtonImage: UIImage? { get }
@@ -21,7 +22,6 @@ protocol PlaybackToolbarManager {
 	var playPauseButton: UIBarButtonItem { get set }
 	var goToNextSongButton: UIBarButtonItem { get set }
 	
-	func didReceiveAuthorizationForMusicLibrary()
 	func refreshPlaybackToolbarButtons()
 	
 	func goToPreviousSong()

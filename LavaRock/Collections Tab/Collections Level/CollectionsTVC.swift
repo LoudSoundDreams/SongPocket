@@ -44,7 +44,7 @@ final class CollectionsTVC:
 				super.viewDidLoad()
 				
 				DispatchQueue.main.async {
-					MusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingAndGeneratingNotifications(), because it includes importing changes from the Music library, and we need to observe the notification when importing ends.
+					MusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after LibraryTVC's beginObservingNotifications(), because this triggers importing changes from the Music library, and we need to observe the notification when importing ends.
 					PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
 				}
 			}

@@ -13,7 +13,7 @@ extension LibraryTVC {
 	
 	// MARK: - Setup and Teardown
 	
-	@objc func beginObservingNotifications() {
+	final func beginObservingNotifications() {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
@@ -51,7 +51,7 @@ extension LibraryTVC {
 	// MARK: - Responding
 	
 	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
-	@objc func didObserve(_ notification: Notification) {
+	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .LRDidSaveChangesFromMusicLibrary:
 			PlayerControllerManager.shared.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.

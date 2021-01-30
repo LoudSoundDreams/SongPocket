@@ -113,7 +113,7 @@ extension LibraryTVC {
 		}
 	}
 	
-	final func didReceiveAuthorizationForMusicLibrary() {
+	private func didReceiveAuthorizationForMusicLibrary() {
 		refreshesAfterDidSaveChangesFromMusicLibrary = false
 		MusicLibraryManager.shared.shouldNextImportBeSynchronous = true
 		viewDidLoad() // Includes MusicLibraryManager's setUpLibraryIfAuthorized(), which includes importing changes from the Music library. Since we set shouldNextImportBeSynchronous = true, CollectionsTVC will call the (synchronous) import before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
@@ -129,9 +129,14 @@ extension LibraryTVC {
 					lastRow: newNumberOfRows - 1), // It's incorrect and unsafe to call tableView.numberOfRows(inSection:) here, because we're changing the number of rows. Use the UITableViewDelegate method tableView(_:numberOfRowsInSection:) intead.
 				with: .middle)
 		} completion: { _ in
-			self.refreshesAfterDidSaveChangesFromMusicLibrary = true
+			self.refreshesAfterDidSaveChangesFromMusicLibrary = true // Should we do this before or during completion?
 		}
 	}
+	
+//	final func setUpMusicLibraryAndPlayerController() {
+//		MusicLibraryManager.shared.setUpLibraryIfAuthorized()
+//		PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
+//	}
 	
 	// MARK: Deselecting
 	
