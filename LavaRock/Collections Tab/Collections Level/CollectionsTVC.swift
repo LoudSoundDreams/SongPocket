@@ -22,7 +22,7 @@ final class CollectionsTVC:
 	@IBOutlet var optionsButton: UIBarButtonItem!
 	
 	// Variables
-	var isRenamingCollection = false // If we have to refresh to reflect changes in the Apple Music library, and the refresh will change indexedLibraryItems, we'll cancel renaming.
+	var isRenamingCollection = false // If we have to refresh to reflect changes in the Music library, and the refresh will change indexedLibraryItems, we'll cancel renaming.
 	var albumMoverClipboard: AlbumMoverClipboard?
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
 	var collectionToDeleteBeforeNextRefresh: Collection?
@@ -34,8 +34,8 @@ final class CollectionsTVC:
 			super.viewDidLoad()
 			
 		} else {
-			if AppleMusicLibraryManager.shared.shouldNextImportBeSynchronous { // This is true if we just got access to the Apple Music library, and therefore we don't want to show an empty table view while we import from the Apple Music library for the first time. In that case, we need to import (synchronously) before calling reloadIndexedLibraryItems().
-				AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized()
+			if MusicLibraryManager.shared.shouldNextImportBeSynchronous { // This is true if we just got access to the Music library, and therefore we don't want to show an empty table view while we import from the Music library for the first time. In that case, we need to import (synchronously) before calling reloadIndexedLibraryItems().
+				MusicLibraryManager.shared.setUpLibraryIfAuthorized()
 				PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
 				
 				super.viewDidLoad()
@@ -44,7 +44,7 @@ final class CollectionsTVC:
 				super.viewDidLoad()
 				
 				DispatchQueue.main.async {
-					AppleMusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingAndGeneratingNotifications(), because it includes importing changes from the Apple Music library, and we need to observe the notification when importing ends.
+					MusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after beginObservingAndGeneratingNotifications(), because it includes importing changes from the Music library, and we need to observe the notification when importing ends.
 					PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
 				}
 			}
@@ -92,7 +92,7 @@ final class CollectionsTVC:
 		{
 			collectionToDeleteBeforeNextRefresh = collection
 			
-			// Replace this with didSaveChangesFromAppleMusic()?
+			// Replace this with refreshToReflectMusicLibrary()?
 			refreshToReflectPlaybackState() // So that the "now playing" indicator never momentarily appears on more than one row.
 			refreshDataAndViewsWhenVisible()
 		}
@@ -105,7 +105,7 @@ final class CollectionsTVC:
 		} else {
 			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
 				
-				// Replace this with didSaveChangesFromAppleMusic()?
+				// Replace this with refreshToReflectMusicLibrary()?
 				refreshToReflectPlaybackState() // So that the "now playing" indicator never momentarily appears on more than one row.
 				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums" sheet.
 				

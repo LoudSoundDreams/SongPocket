@@ -9,9 +9,9 @@ import CoreData
 import MediaPlayer
 import OSLog
 
-extension AppleMusicLibraryManager {
+extension MusicLibraryManager {
 	
-	// This is where the magic happens. This is the engine that keeps our data structures matched up with the Apple Music library.
+	// This is where the magic happens. This is the engine that keeps our data structures matched up with the library in the built-in Music app.
 	final func importChanges() {
 		os_signpost(.begin, log: Self.importChangesMainLog, name: "0. Main")
 		defer {
@@ -71,7 +71,7 @@ extension AppleMusicLibraryManager {
 				potentiallyModifiedMediaItems.append(potentiallyModifiedMediaItem)
 				queriedMediaItemsCopy.remove(at: indexOfPotentiallyModifiedMediaItem)
 				
-			} else { // This Song no longer corresponds to any MPMediaItem in the Apple Music library. We'll delete it.
+			} else { // This Song no longer corresponds to any MPMediaItem in the Music library. We'll delete it.
 				deletedSongObjectIDs.append(savedSong.objectID)
 			}
 		}
@@ -156,7 +156,7 @@ extension AppleMusicLibraryManager {
 //		managedObjectContext.parent?.tryToSaveSynchronously()
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
-				Notification(name: Notification.Name.LRDidSaveChangesFromAppleMusic)
+				Notification(name: Notification.Name.LRDidSaveChangesFromMusicLibrary)
 			)
 		}
 	}

@@ -18,7 +18,7 @@ final class SongsTVC:
 	// MARK: - Properties
 	
 	// Variables
-	var areSongActionsPresented = false // If we have to refresh to reflect changes in the Apple Music library, and the refresh will change indexedLibraryItems, we'll dismiss this action sheet first.
+	var areSongActionsPresented = false // If we have to refresh to reflect changes in the Music library, and the refresh will change indexedLibraryItems, we'll dismiss this action sheet first.
 	
 	// MARK: - Setup
 	

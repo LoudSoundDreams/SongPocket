@@ -9,7 +9,7 @@ import CoreData
 import MediaPlayer
 import OSLog
 
-extension AppleMusicLibraryManager {
+extension MusicLibraryManager {
 	
 	private static let updateManagedObjectsLog = OSLog(
 		subsystem: subsystemForOSLog,

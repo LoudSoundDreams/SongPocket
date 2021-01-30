@@ -50,7 +50,7 @@
 		078307B42512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */; };
 		07865B252566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B242566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift */; };
 		07865B322567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B312567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift */; };
-		079B2C9524E227BF00A949FA /* AppleMusicLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */; };
+		079B2C9524E227BF00A949FA /* MusicLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */; };
 		07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A3FBCE258EB9B2000B450E /* extension UIFont.swift */; };
 		07A4F9052519E72C0065C87E /* func updateManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9042519E72C0065C87E /* func updateManagedObjects.swift */; };
 		07A4F90A2519E7D20065C87E /* func createManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9092519E7D20065C87E /* func createManagedObjects.swift */; };
@@ -153,7 +153,7 @@
 		078307B32512BC59005CDA67 /* AlbumMoverDelegate - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumMoverDelegate - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		07865B242566FBC600DBEB26 /* NowPlayingIndicatorManager - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingIndicatorManager - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		07865B312567031C00DBEB26 /* NowPlayingIndicatorManager - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NowPlayingIndicatorManager - CollectionsTVC.swift"; sourceTree = "<group>"; };
-		079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicLibraryManager.swift; sourceTree = "<group>"; };
+		079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicLibraryManager.swift; sourceTree = "<group>"; };
 		07A3FBCE258EB9B2000B450E /* extension UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIFont.swift"; sourceTree = "<group>"; };
 		07A4F9042519E72C0065C87E /* func updateManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func updateManagedObjects.swift"; sourceTree = "<group>"; };
 		07A4F9092519E7D20065C87E /* func createManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func createManagedObjects.swift"; sourceTree = "<group>"; };
@@ -279,7 +279,7 @@
 		0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */ = {
 			isa = PBXGroup;
 			children = (
-				079B2C9424E227BF00A949FA /* AppleMusicLibraryManager.swift */,
+				079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */,
 				0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */,
 				07A4F9042519E72C0065C87E /* func updateManagedObjects.swift */,
 				07A4F9092519E7D20065C87E /* func createManagedObjects.swift */,
@@ -590,7 +590,7 @@
 				07267A2025537C5800C914A3 /* PlayerControllerManager.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* func importChanges.swift in Sources */,
 				07A4F9052519E72C0065C87E /* func updateManagedObjects.swift in Sources */,
-				079B2C9524E227BF00A949FA /* AppleMusicLibraryManager.swift in Sources */,
+				079B2C9524E227BF00A949FA /* MusicLibraryManager.swift in Sources */,
 				07E92A0C251043CC00E9073B /* UITableViewDataSource - QueueTVC.swift in Sources */,
 				07F36BC624FC3FE40064282D /* UITableView - AlbumsTVC.swift in Sources */,
 				071701FF250AAE0E00CBC4C5 /* Notifications - SongsTVC.swift in Sources */,

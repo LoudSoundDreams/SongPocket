@@ -29,7 +29,7 @@ extension LibraryTVC {
 				tableView.backgroundView = nil
 				return numberOfLibraryItems + numberOfRowsAboveIndexedLibraryItems
 			}
-		default: // We haven't asked to access Apple Music, or the user has denied permission.
+		default: // We haven't asked to access Music yet, or the user has denied permission.
 			tableView.backgroundView = nil
 			return 1 // "allow access" cell
 		}
@@ -93,7 +93,7 @@ extension LibraryTVC {
 			MPMediaLibrary.requestAuthorization { newStatus in
 				switch newStatus {
 				case .authorized:
-					DispatchQueue.main.async { self.didReceiveAuthorizationForAppleMusic() }
+					DispatchQueue.main.async { self.didReceiveAuthorizationForMusicLibrary() }
 				default:
 					DispatchQueue.main.async { self.tableView.deselectRow(at: indexPath, animated: true) }
 				}
@@ -113,10 +113,10 @@ extension LibraryTVC {
 		}
 	}
 	
-	final func didReceiveAuthorizationForAppleMusic() {
-		refreshesAfterDidSaveChangesFromAppleMusic = false
-		AppleMusicLibraryManager.shared.shouldNextImportBeSynchronous = true
-		viewDidLoad() // Includes AppleMusicLibraryManager's setUpLibraryIfAuthorized(), which includes importing changes from the Apple Music library. Since we set shouldNextImportBeSynchronous = true, CollectionsTVC will call the (synchronous) import before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
+	final func didReceiveAuthorizationForMusicLibrary() {
+		refreshesAfterDidSaveChangesFromMusicLibrary = false
+		MusicLibraryManager.shared.shouldNextImportBeSynchronous = true
+		viewDidLoad() // Includes MusicLibraryManager's setUpLibraryIfAuthorized(), which includes importing changes from the Music library. Since we set shouldNextImportBeSynchronous = true, CollectionsTVC will call the (synchronous) import before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
 		
 		// Remove the following and make refreshDataAndViewsWhenVisible() accomodate it instead?
 		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
@@ -129,7 +129,7 @@ extension LibraryTVC {
 					lastRow: newNumberOfRows - 1), // It's incorrect and unsafe to call tableView.numberOfRows(inSection:) here, because we're changing the number of rows. Use the UITableViewDelegate method tableView(_:numberOfRowsInSection:) intead.
 				with: .middle)
 		} completion: { _ in
-			self.refreshesAfterDidSaveChangesFromAppleMusic = true
+			self.refreshesAfterDidSaveChangesFromMusicLibrary = true
 		}
 	}
 	

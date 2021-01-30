@@ -9,7 +9,7 @@ import CoreData
 import MediaPlayer
 import OSLog
 
-extension AppleMusicLibraryManager {
+extension MusicLibraryManager {
 	
 	private static let createManagedObjectsLog = OSLog(
 		subsystem: subsystemForOSLog,
@@ -70,6 +70,9 @@ extension AppleMusicLibraryManager {
 	
 	// MARK: - Sorting MPMediaItems
 	
+	// 1. Group by album artists, sorted alphabetically.
+	// - "Unknown Album Artist" should go at the end.
+	// 2. Within each album artist, group by albums, sorted by most recent first.
 	private func sortedByAlbumArtistThenAlbum(
 		_ mediaItemsImmutable: [MPMediaItem]
 	) -> [MPMediaItem] {
@@ -224,7 +227,7 @@ extension AppleMusicLibraryManager {
 		
 		var mediaItemsInAlbum = [MPMediaItem]()
 		for songInAlbum in songsInAlbum {
-			guard let mediaItemInAlbum = songInAlbum.mpMediaItem() else { continue } // .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
+			guard let mediaItemInAlbum = songInAlbum.mpMediaItem() else { continue } // .mpMediaItem() returns nil if the media item is no longer in the Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
 			mediaItemsInAlbum.append(mediaItemInAlbum)
 		}
 		
@@ -247,7 +250,7 @@ extension AppleMusicLibraryManager {
 		func sortedByAlbumOrder(songs songsImmutable: [Song]) -> [Song] {
 			var songsCopy = songsImmutable
 			// TO DO: Does this match sortedByAlbumOrder(mediaItems:) exactly? You can guarantee it by doing some setup moves and calling sortedByAlbumOrder(mediaItems:) itself.
-			// .mpMediaItem() returns nil if the media item is no longer in the Apple Music library. It doesn't matter where those Songs end up in the array, because we'll delete them later anyway.
+			// .mpMediaItem() returns nil if the media item is no longer in the Music library. It doesn't matter where those Songs end up in the array, because we'll delete them later anyway.
 			songsCopy.sort {
 				// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 				let title0 = $0.titleFormattedOrPlaceholder()

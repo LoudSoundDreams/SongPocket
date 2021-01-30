@@ -17,7 +17,7 @@ extension LibraryTVC {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
-			name: Notification.Name.LRDidSaveChangesFromAppleMusic,
+			name: Notification.Name.LRDidSaveChangesFromMusicLibrary,
 			object: nil)
 		NotificationCenter.default.addObserver(
 			self,
@@ -53,9 +53,9 @@ extension LibraryTVC {
 	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
 	@objc func didObserve(_ notification: Notification) {
 		switch notification.name {
-		case .LRDidSaveChangesFromAppleMusic:
+		case .LRDidSaveChangesFromMusicLibrary:
 			PlayerControllerManager.shared.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
-			didSaveChangesFromAppleMusic()
+			refreshToReflectMusicLibrary()
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
 		case
@@ -94,13 +94,12 @@ extension LibraryTVC {
 		}
 	}
 	
-	// MARK: - After Importing Changes from Apple Music Library
+	// MARK: - After Importing Changes from Music Library
 	
-	// Rename this to refreshToReflectAppleMusicLibrary()?
-	private func didSaveChangesFromAppleMusic() {
+	private func refreshToReflectMusicLibrary() {
 		refreshToReflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by swiping back, the "now playing" indicators are already updated.
 		
-		if refreshesAfterDidSaveChangesFromAppleMusic {
+		if refreshesAfterDidSaveChangesFromMusicLibrary {
 			refreshDataAndViewsWhenVisible()
 		}
 	}

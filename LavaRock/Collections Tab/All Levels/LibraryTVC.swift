@@ -141,7 +141,7 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
-	var refreshesAfterDidSaveChangesFromAppleMusic = true
+	var refreshesAfterDidSaveChangesFromMusicLibrary = true
 	var shouldRefreshOnNextViewDidAppear = false
 	var areSortOptionsPresented = false
 	
@@ -181,7 +181,7 @@ class LibraryTVC:
 			flexibleSpaceBarButtonItem,
 			goToNextSongButton
 		]
-		refreshAndSetBarButtons(animated: true) // After we receive authorization to access the Apple Music library, we call viewDidLoad() manually, and when that happens, the change should be animated.
+		refreshAndSetBarButtons(animated: true) // After we receive authorization to access the Music library, we call viewDidLoad() manually, and when that happens, the change should be animated.
 	}
 	
 	// MARK: Setup Events
@@ -227,7 +227,7 @@ class LibraryTVC:
 	}
 	
 	func refreshBarButtons() {
-		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing to reflect changes in the Apple Music library.
+		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing to reflect changes in the Music library.
 		refreshEditButton()
 		if isEditing {
 			refreshSortButton()

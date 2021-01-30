@@ -1,5 +1,5 @@
 //
-//  AppleMusicLibraryManager.swift
+//  MusicLibraryManager.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-10.
@@ -8,17 +8,17 @@
 import MediaPlayer
 import OSLog
 
-final class AppleMusicLibraryManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
+final class MusicLibraryManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	
 	// MARK: - Properties
 	
 	// "Constants"
-	static let shared = AppleMusicLibraryManager()
+	static let shared = MusicLibraryManager()
 	private var library: MPMediaLibrary?
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	// Constants for debugging only
-	static let subsystemForOSLog = "LavaRock.AppleMusicLibraryManager"
+	static let subsystemForOSLog = "LavaRock.MusicLibraryManager"
 	static let importChangesMainLog = OSLog(
 		subsystem: subsystemForOSLog,
 		category: "0. Import Changes Main")

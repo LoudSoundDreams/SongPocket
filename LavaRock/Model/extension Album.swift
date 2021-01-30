@@ -32,7 +32,7 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	// AppleMusicLibraryManager's importChanges() references this when checking for and making new Collections.
+	// MusicLibraryManager's importChanges() references this when checking for and making new Collections.
 	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownArtist
 	
 	func titleFormattedOrPlaceholder() -> String {
@@ -50,7 +50,7 @@ extension Album {
 	func albumArtistFormattedOrPlaceholder() -> String {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
-			let fetchedAlbumArtist = representativeItem.albumArtist, // As of iOS 14.0 beta 5, even if the "album artist" field is blank in Apple Music for Mac (and other tag editors), .albumArtist can still return something. It probably reads the "artist" field from one of the songs. Currently, it returns the same name as the one in the album's header in Apple Music for iOS.
+			let fetchedAlbumArtist = representativeItem.albumArtist, // As of iOS 14.0 beta 5, even if the "album artist" field is blank in the Music app for Mac (and other tag editors), .albumArtist can still return something. It probably reads the "artist" field from one of the songs. Currently, it returns the same name as the one in the album's header in the built-in Music app for iOS.
 			fetchedAlbumArtist != ""
 		{
 			return fetchedAlbumArtist

@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 /*
 extension Notification.Name {
-	static let LRDidReceiveAuthorizationForAppleMusic = Notification.Name("The user just gave us permission to access their Apple Music library. Objects that depend on the Apple Music library should observe this notification and update now.")
+	static let LRDidReceiveAuthorizationForMusic = Notification.Name("The user just gave us permission to access their Music library. Objects that depend on the Music library should observe this notification and update now.")
 }
 */
 /*
@@ -21,7 +21,7 @@ extension QueueTVC {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
-			name: .LRDidReceiveAuthorizationForAppleMusic,
+			name: .LRDidReceiveAuthorizationForMusic,
 			object: nil)
 		
 		NotificationCenter.default.addObserver(
@@ -64,8 +64,8 @@ extension QueueTVC {
 	
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
-//		case .LRDidReceiveAuthorizationForAppleMusic:
-//			didReceiveAuthorizationForAppleMusic()
+//		case .LRDidReceiveAuthorizationForMusic:
+//			didReceiveAuthorizationForMusic()
 		case
 			UIApplication.didBecomeActiveNotification,
 			.MPMusicPlayerControllerPlaybackStateDidChange,
@@ -79,7 +79,7 @@ extension QueueTVC {
 		}
 	}
 	
-	func didReceiveAuthorizationForAppleMusic() {
+	func didReceiveAuthorizationForMusic() {
 		viewDidLoad()
 	}
 	
