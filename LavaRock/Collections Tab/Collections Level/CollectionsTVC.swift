@@ -34,19 +34,10 @@ final class CollectionsTVC:
 			super.viewDidLoad()
 			
 		} else {
-			if MusicLibraryManager.shared.shouldNextImportBeSynchronous { // This is true if we just got access to the Music library, and therefore we don't want to show an empty table view while we import from the Music library for the first time. In that case, we need to import (synchronously) before calling reloadIndexedLibraryItems().
-				MusicLibraryManager.shared.setUpLibraryIfAuthorized()
-				PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
-				
-				super.viewDidLoad()
-				
-			} else {
-				super.viewDidLoad()
-				
-				DispatchQueue.main.async {
-					MusicLibraryManager.shared.setUpLibraryIfAuthorized() // You need to do this after LibraryTVC's beginObservingNotifications(), because this triggers importing changes from the Music library, and we need to observe the notification when importing ends.
-					PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
-				}
+			super.viewDidLoad()
+			
+			DispatchQueue.main.async { // Yes, it's actually useful to use async on the main thread. This lets us show existing collections as soon as possible, then integrate with and import changes from the Music library shortly later.
+				self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
 			}
 		}
 	}

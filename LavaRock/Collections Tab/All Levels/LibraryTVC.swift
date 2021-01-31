@@ -150,12 +150,14 @@ class LibraryTVC:
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		setUp()
+	}
+	
+	final func setUp() {
 		beginObservingNotifications()
 		reloadIndexedLibraryItems()
 		setUpUI()
 	}
-	
-	// MARK: Loading Data
 	
 	final func reloadIndexedLibraryItems() {
 		if let containerOfLibraryItems = containerOfLibraryItems {
@@ -163,6 +165,13 @@ class LibraryTVC:
 		}
 		
 		indexedLibraryItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
+	}
+	
+	// LibraryTVC itself doesn't call this during viewDidLoad(), but its subclasses may want to.
+	// Call this method late into launch, after we've already set up most of the UI; this method sets up the MediaPlayer-related functionality so that we can set up the rest of the UI (although this method itself doesn't set up the rest of the UI).
+	final func integrateWithAndImportChangesFromMusicLibraryIfAuthorized() {
+		MusicLibraryManager.shared.setUpLibraryAndImportChangesIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
+		PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
 	}
 	
 	// MARK: Setting Up UI

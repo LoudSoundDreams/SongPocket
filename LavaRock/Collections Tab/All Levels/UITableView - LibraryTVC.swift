@@ -114,11 +114,12 @@ extension LibraryTVC {
 	}
 	
 	private func didReceiveAuthorizationForMusicLibrary() {
-		refreshesAfterDidSaveChangesFromMusicLibrary = false
-		MusicLibraryManager.shared.shouldNextImportBeSynchronous = true
-		viewDidLoad() // Includes MusicLibraryManager's setUpLibraryIfAuthorized(), which includes importing changes from the Music library. Since we set shouldNextImportBeSynchronous = true, CollectionsTVC will call the (synchronous) import before reloadIndexedLibraryItems(), to make sure that indexedLibraryItems is ready for the following.
+		// TO DO: Put the UI into an "Importing…" state.
 		
-		// Remove the following and make refreshDataAndViewsWhenVisible() accomodate it instead?
+		refreshesAfterDidSaveChangesFromMusicLibrary = false // Supress our usual refresh after observing the LRDidSaveChangesFromMusicLibrary notification that we'll post after importing changes; in this case, we'll update the UI in a different way, below.
+		integrateWithAndImportChangesFromMusicLibraryIfAuthorized() // Do this before setUp(), because when we call setUp(), we need to already have integrated with and imported changes from the Music library.
+		setUp() // Includes refreshing the playback toolbar.
+		
 		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
@@ -129,14 +130,11 @@ extension LibraryTVC {
 					lastRow: newNumberOfRows - 1), // It's incorrect and unsafe to call tableView.numberOfRows(inSection:) here, because we're changing the number of rows. Use the UITableViewDelegate method tableView(_:numberOfRowsInSection:) intead.
 				with: .middle)
 		} completion: { _ in
-			self.refreshesAfterDidSaveChangesFromMusicLibrary = true // Should we do this before or during completion?
+			self.refreshesAfterDidSaveChangesFromMusicLibrary = true
+			
+			// TO DO: Take the UI out of an "Importing…" state.
 		}
 	}
-	
-//	final func setUpMusicLibraryAndPlayerController() {
-//		MusicLibraryManager.shared.setUpLibraryIfAuthorized()
-//		PlayerControllerManager.shared.setUpPlayerControllerIfAuthorized()
-//	}
 	
 	// MARK: Deselecting
 	

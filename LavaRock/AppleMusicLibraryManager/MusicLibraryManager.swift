@@ -15,7 +15,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	// "Constants"
 	static let shared = MusicLibraryManager()
 	private var library: MPMediaLibrary?
-	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	// Constants for debugging only
 	static let subsystemForOSLog = "LavaRock.MusicLibraryManager"
@@ -23,14 +23,11 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		subsystem: subsystemForOSLog,
 		category: "0. Import Changes Main")
 	
-	// Variables
-	var shouldNextImportBeSynchronous = false
-	
 	// MARK: - Setup and Teardown
 	
 	private init() { }
 	
-	func setUpLibraryIfAuthorized() {
+	final func setUpLibraryAndImportChangesIfAuthorized() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		library = MPMediaLibrary.default()

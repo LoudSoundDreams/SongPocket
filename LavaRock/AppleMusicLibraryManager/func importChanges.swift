@@ -18,21 +18,13 @@ extension MusicLibraryManager {
 			os_signpost(.end, log: Self.importChangesMainLog, name: "0. Main")
 		}
 		
-		let mainManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//		if shouldNextImportBeSynchronous {
-		managedObjectContext = mainManagedObjectContext // Set this again, just to be sure.
 		managedObjectContext.performAndWait {
-			importChangesPart2()
+			importChangesMethodBody()
 		}
-//		} else {
-		
-//		}
-		shouldNextImportBeSynchronous = false
-		managedObjectContext = mainManagedObjectContext // Set this again, just to be sure.
 	}
 	
 	// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
-	private func importChangesPart2() {
+	private func importChangesMethodBody() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let queriedMediaItems = MPMediaQuery.songs().items

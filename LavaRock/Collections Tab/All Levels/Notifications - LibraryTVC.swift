@@ -115,14 +115,18 @@ extension LibraryTVC {
 	}
 	
 	final func refreshDataAndViews() {
+		// TO DO: Put the UI into an "Importing…" state.
+		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
+		
+		// TO DO: Take the UI out of an "Importing…" state after all animations complete.
 		
 		refreshTableView(
 			section: 0,
 			onscreenItems: indexedLibraryItems,
 			refreshedItems: refreshedItems,
-			completion: refreshData)
+			completion: refreshData) // refreshData includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
 	}
 	
 	/*
