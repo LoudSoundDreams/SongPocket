@@ -9,6 +9,12 @@ import UIKit
 
 final class AllowAccessCell: UITableViewCell {
 	@IBOutlet var label: UILabel!
+	
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		accessibilityTraits.formUnion(.button)
+	}
 }
 
 final class CollectionCell:

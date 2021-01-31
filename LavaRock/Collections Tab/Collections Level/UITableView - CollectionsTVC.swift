@@ -30,7 +30,9 @@ extension CollectionsTVC {
 		
 		// Make, configure, and return the cell.
 		
-		var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! CollectionCell
+		guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? CollectionCell else {
+			return UITableViewCell()
+		}
 		
 		cell.titleLabel.text = collection.title
 		let isNowPlayingCollection = isItemNowPlaying(at: indexPath)
@@ -101,14 +103,14 @@ extension CollectionsTVC {
 		}
 		
 		cell.label.textColor = view.window?.tintColor
-		cell.accessibilityTraits.formUnion(.button) // should never change
+		
 		
 		return cell
 	}
 	
 	// Built-in cell
-//	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
-//		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath)
+//	private func allowAccessCell() -> UITableViewCell {
+//		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell")
 //		if #available(iOS 14.0, *) {
 //			var configuration = UIListContentConfiguration.cell()
 //			configuration.text = "Allow Access to Music"

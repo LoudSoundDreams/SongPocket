@@ -32,13 +32,6 @@ final override func tableView(_ tableView: UITableView, numberOfRowsInSection se
 		*/
 	}
 	
-	private func noContentRowsAndSetTableViewPlaceholder() -> Int {
-		if let noItemsView = tableView.dequeueReusableCell(withIdentifier: "No Items Cell") {
-			tableView.backgroundView = noItemsView
-		}
-		return numberOfNonQueueEntryCells
-	}
-	
 	// MARK: Cells
 	
 	/*

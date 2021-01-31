@@ -14,8 +14,8 @@ final class AlbumArtworkCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true
-		accessibilityLabel = LocalizedString.albumArtwork // should never change
-		accessibilityTraits.formUnion(.image) // should never change
+		accessibilityLabel = LocalizedString.albumArtwork
+		accessibilityTraits.formUnion(.image)
 	}
 }
 

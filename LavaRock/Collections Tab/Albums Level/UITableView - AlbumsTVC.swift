@@ -35,7 +35,9 @@ extension AlbumsTVC {
 		// Make, configure, and return the cell.
 		
 		if let cellSubtitle = cellSubtitle {
-			var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! AlbumCell
+			guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? AlbumCell else {
+				return UITableViewCell()
+			}
 			cell.releaseDateLabel.text = cellSubtitle
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
@@ -52,7 +54,9 @@ extension AlbumsTVC {
 			return cell
 			
 		} else { // We couldn't determine the album's release date.
-			var cell = tableView.dequeueReusableCell(withIdentifier: "Cell Without Release Date", for: indexPath) as! AlbumCellWithoutReleaseDate
+			guard var cell = tableView.dequeueReusableCell(withIdentifier: "Cell Without Release Date", for: indexPath) as? AlbumCellWithoutReleaseDate else {
+				return UITableViewCell()
+			}
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))

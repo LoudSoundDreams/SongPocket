@@ -19,15 +19,15 @@ extension SongsTVC {
 		
 		switch indexPath.row {
 		case 0:
-			return albumArtworkCell(forRowAt: indexPath)
+			return albumArtworkCell()
 		case 1:
-			return albumInfoCell(forRowAt: indexPath)
+			return albumInfoCell()
 		default:
 			return songCell(forRowAt: indexPath)
 		}
 	}
 	
-	private func albumArtworkCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+	private func albumArtworkCell() -> UITableViewCell {
 		// Get the data to put into the cell.
 		let album = containerOfLibraryItems as! Album
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
@@ -35,7 +35,9 @@ extension SongsTVC {
 		
 		// Make, configure, and return the cell.
 		
-		let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell") as! AlbumArtworkCell
+		guard let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell") as? AlbumArtworkCell else {
+			return UITableViewCell()
+		}
 		albumArtworkCell.artworkImageView.image = cellImage
 		
 		albumArtworkCell.accessibilityUserInputLabels = [""]
@@ -43,7 +45,7 @@ extension SongsTVC {
 		return albumArtworkCell
 	}
 	
-	private func albumInfoCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+	private func albumInfoCell() -> UITableViewCell {
 		// Get the data to put into the cell.
 		let album = containerOfLibraryItems as! Album
 		let cellHeading = album.albumArtistFormattedOrPlaceholder()
@@ -51,7 +53,9 @@ extension SongsTVC {
 		
 		// Make, configure, and return the cell.
 		if let cellSubtitle = cellSubtitle {
-			let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell") as! AlbumInfoCell
+			guard let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell") as? AlbumInfoCell else {
+				return UITableViewCell()
+			}
 			albumInfoCell.albumArtistLabel.text = cellHeading
 			albumInfoCell.releaseDateLabel.text = cellSubtitle
 			
@@ -60,7 +64,9 @@ extension SongsTVC {
 			return albumInfoCell
 			
 		} else { // We couldn't determine the album's release date.
-			let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell Without Release Date") as! AlbumInfoCellWithoutReleaseDate
+			guard let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell Without Release Date") as? AlbumInfoCellWithoutReleaseDate else {
+				return UITableViewCell()
+			}
 			albumInfoCell.albumArtistLabel.text = cellHeading
 			
 			albumInfoCell.accessibilityUserInputLabels = [""]
@@ -83,7 +89,9 @@ extension SongsTVC {
 			let cellArtist = song.artistFormatted(),
 			cellArtist != (containerOfLibraryItems as! Album).albumArtistFormattedOrPlaceholder()
 		{
-			var cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as! SongCellWithDifferentArtist
+			guard var cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as? SongCellWithDifferentArtist else {
+				return UITableViewCell()
+			}
 			cell.artistLabel.text = cellArtist
 			
 			cell.titleLabel.text = cellTitle
@@ -96,7 +104,9 @@ extension SongsTVC {
 			return cell
 			
 		} else { // The song's artist is not useful, or it's the same as the album artist.
-			var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SongCell // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
+			guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? SongCell else { // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
+				return UITableViewCell()
+			}
 			
 			cell.titleLabel.text = cellTitle
 			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
