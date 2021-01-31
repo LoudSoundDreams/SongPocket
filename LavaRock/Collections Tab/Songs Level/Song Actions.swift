@@ -104,12 +104,12 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
-		playerController?.setQueue(with: queueDescriptor)
+		sharedPlayerController?.setQueue(with: queueDescriptor)
 		
-		playerController?.repeatMode = .none
-		playerController?.shuffleMode = .off
-		playerController?.prepareToPlay()
-		playerController?.play()
+		sharedPlayerController?.repeatMode = .none
+		sharedPlayerController?.shuffleMode = .off
+		sharedPlayerController?.prepareToPlay()
+		sharedPlayerController?.play()
 	}
 	
 	// MARK: Enqueue
@@ -133,12 +133,12 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
-		playerController?.append(queueDescriptor)
+		sharedPlayerController?.append(queueDescriptor)
 		
-		playerController?.repeatMode = .none
-		playerController?.shuffleMode = .off
-		if playerController?.playbackState != .playing {
-			playerController?.prepareToPlay()
+		sharedPlayerController?.repeatMode = .none
+		sharedPlayerController?.shuffleMode = .off
+		if sharedPlayerController?.playbackState != .playing {
+			sharedPlayerController?.prepareToPlay()
 		}
 		
 		guard let selectedSong = indexedLibraryItems[indexOfSelectedSong] as? Song else { return }
@@ -164,12 +164,12 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: [mediaItem])
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
-		playerController?.append(queueDescriptor)
+		sharedPlayerController?.append(queueDescriptor)
 		
-		playerController?.repeatMode = .none
-		playerController?.shuffleMode = .off
-		if playerController?.playbackState != .playing {
-			playerController?.prepareToPlay()
+		sharedPlayerController?.repeatMode = .none
+		sharedPlayerController?.shuffleMode = .off
+		if sharedPlayerController?.playbackState != .playing {
+			sharedPlayerController?.prepareToPlay()
 		}
 		
 		showExplanationIfNecessaryForEnqueueAction(

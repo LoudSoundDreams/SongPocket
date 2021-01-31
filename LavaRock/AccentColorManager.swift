@@ -11,15 +11,9 @@ struct AccentColorManager {
 	
 	private init() { }
 	
-	// MARK: - Types
+	// MARK: - NON-PRIVATE
 	
-	private enum UserDefaultsValueCase: String, CaseIterable {
-		case strawberry = "Strawberry"
-		case tangerine = "Tangerine"
-		case lime = "Lime"
-		case blueberry = "Blueberry"
-		case grape = "Grape"
-	}
+	// MARK: - Types
 	
 	struct ColorEntry {
 		let userDefaultsValue: String
@@ -29,12 +23,6 @@ struct AccentColorManager {
 	}
 	
 	// MARK: - Properties
-	
-	private static let defaultColorEntry = ColorEntry(
-		userDefaultsValue: UserDefaultsValueCase.blueberry.rawValue,
-		displayName: LocalizedString.blueberry,
-		uiColor: UIColor.systemBlue,
-		heartEmoji: "💙")
 	
 	static let colorEntries = [
 		ColorEntry(
@@ -100,5 +88,25 @@ struct AccentColorManager {
 			return defaultColorEntry
 		}
 	}
+	
+	// MARK: - PRIVATE
+	
+	// MARK: - Types
+	
+	private enum UserDefaultsValueCase: String, CaseIterable {
+		case strawberry = "Strawberry"
+		case tangerine = "Tangerine"
+		case lime = "Lime"
+		case blueberry = "Blueberry"
+		case grape = "Grape"
+	}
+	
+	// MARK: - Properties
+	
+	private static let defaultColorEntry = ColorEntry(
+		userDefaultsValue: UserDefaultsValueCase.blueberry.rawValue,
+		displayName: LocalizedString.blueberry,
+		uiColor: UIColor.systemBlue,
+		heartEmoji: "💙")
 	
 }

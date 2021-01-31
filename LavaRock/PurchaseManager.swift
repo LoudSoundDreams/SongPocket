@@ -15,47 +15,34 @@ protocol PurchaseManagerTipDelegate: AnyObject {
 
 final class PurchaseManager: NSObject { // This type inherits from NSObject because that makes it easier to make it conform to SKProductsRequestDelegate and SKPaymentTransactionObserver, which inherit from NSObjectProtocol.
 	
-	// MARK: Types
+	private override init() { }
 	
-	enum ProductIdentifier: String, CaseIterable {
-		case tip = "com.loudsounddreams.LavaRock.tip"
-	}
+	// MARK: - NON-PRIVATE
+	
+	// MARK: - Types
 	
 	enum TipStatus {
 		case notYetFirstLoaded, loading, reload, ready, confirming
 	}
 	
-	// MARK: Properties
+	// MARK: - Properties
 	
 	// Constants
-	static let shared = PurchaseManager()
+	static let shared = PurchaseManager() // We can't make everything in this class static, because StoreKit only works with instances, not types.
 	
 	// Variables
-	lazy var tipStatus: TipStatus = .notYetFirstLoaded
-	lazy var savedSKProductsRequest: SKProductsRequest? = nil
-	lazy var priceFormatter: NumberFormatter? = nil
-	lazy var tipProduct: SKProduct? = nil
+	private(set) lazy var tipStatus: TipStatus = .notYetFirstLoaded
+	private(set) lazy var tipProduct: SKProduct? = nil
+	private(set) lazy var tipPriceFormatter: NumberFormatter? = nil
 	weak var tipDelegate: PurchaseManagerTipDelegate?
-	// For testing only
-//	lazy var isTestingDidFailToReceiveAnySKProducts = true
 	
-	// MARK: Setup and Teardown
-	
-	private override init() { }
-	
-	deinit {
-		endObservingPaymentTransactions()
-	}
+	// MARK: - Setup
 	
 	final func beginObservingPaymentTransactions() {
-		SKPaymentQueue.default().add(self)
+		SKPaymentQueue.default().add(self) // We can't make this method static, because StoreKit needs an instance here, not a type.
 	}
 	
-	private func endObservingPaymentTransactions() {
-		SKPaymentQueue.default().remove(self)
-	}
-	
-	// MARK: Other
+	// MARK: - Other
 	
 	final func requestAllSKProducts() {
 		tipStatus = .loading
@@ -64,7 +51,7 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 			setOfIdentifiers.insert(identifier.rawValue)
 		}
 		let productsRequest = SKProductsRequest(productIdentifiers: setOfIdentifiers)
-		productsRequest.delegate = self
+		productsRequest.delegate = self // We can't make this method static, because StoreKit needs an instance here, not a type.
 		productsRequest.start()
 		savedSKProductsRequest = productsRequest
 	}
@@ -82,6 +69,31 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 //		let skPayment = SKMutablePayment(product: skProduct)
 //		skPayment.simulatesAskToBuyInSandbox = true
 		SKPaymentQueue.default().add(skPayment)
+	}
+	
+	// MARK: - PRIVATE
+	
+	// MARK: - Types
+	
+	private enum ProductIdentifier: String, CaseIterable {
+		case tip = "com.loudsounddreams.LavaRock.tip"
+	}
+	
+	// MARK: - Properties
+	
+	// Variables
+	private lazy var savedSKProductsRequest: SKProductsRequest? = nil
+	// For testing only
+//	private lazy var isTestingDidFailToReceiveAnySKProducts = true
+	
+	// MARK: - Teardown
+	
+	deinit {
+		endObservingPaymentTransactions()
+	}
+	
+	private func endObservingPaymentTransactions() {
+		SKPaymentQueue.default().remove(self)
 	}
 	
 }
@@ -145,7 +157,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .currency
 		formatter.locale = locale
-		priceFormatter = formatter
+		tipPriceFormatter = formatter
 	}
 	
 }
@@ -154,7 +166,10 @@ extension PurchaseManager: SKProductsRequestDelegate {
 
 extension PurchaseManager: SKPaymentTransactionObserver {
 	
-	func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+	final func paymentQueue(
+		_ queue: SKPaymentQueue,
+		updatedTransactions transactions: [SKPaymentTransaction])
+	{
 		for transaction in transactions {
 			switch transaction.payment.productIdentifier {
 			case ProductIdentifier.tip.rawValue:

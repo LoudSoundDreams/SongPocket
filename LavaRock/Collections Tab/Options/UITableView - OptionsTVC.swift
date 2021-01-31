@@ -258,7 +258,7 @@ extension OptionsTVC {
 		guard
 			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Ready") as? TipReadyCell,
 			let tipProduct = PurchaseManager.shared.tipProduct,
-			let priceFormatter = PurchaseManager.shared.priceFormatter
+			let tipPriceFormatter = PurchaseManager.shared.tipPriceFormatter
 		else {
 			return UITableViewCell()
 		}
@@ -266,7 +266,7 @@ extension OptionsTVC {
 		cell.tipNameLabel.text = tipProduct.localizedTitle
 		cell.tipNameLabel.textColor = view.window?.tintColor
 		
-		let localizedPriceString = priceFormatter.string(from: tipProduct.price)
+		let localizedPriceString = tipPriceFormatter.string(from: tipProduct.price)
 		cell.tipPriceLabel.text = localizedPriceString
 		
 		return cell

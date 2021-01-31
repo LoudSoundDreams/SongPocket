@@ -41,8 +41,6 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	// MARK: - Notifications
 	
-	// MARK: Setup and Teardown
-	
 	private func beginObservingAndGeneratingNotifications() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		

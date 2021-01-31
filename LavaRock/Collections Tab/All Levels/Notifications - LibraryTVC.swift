@@ -54,7 +54,7 @@ extension LibraryTVC {
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .LRDidSaveChangesFromMusicLibrary:
-			PlayerControllerManager.shared.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
+			PlayerControllerManager.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
 			refreshToReflectMusicLibrary()
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
@@ -63,7 +63,7 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerPlaybackStateDidChange,
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
-			PlayerControllerManager.shared.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
+			PlayerControllerManager.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
 			refreshToReflectPlaybackState()
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
@@ -88,7 +88,7 @@ extension LibraryTVC {
 		{
 			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue }
 			let isItemNowPlaying = isItemNowPlayingDeterminer(indexPath)
-			let indicator = PlayerControllerManager.shared.nowPlayingIndicator(
+			let indicator = PlayerControllerManager.nowPlayingIndicator(
 				isItemNowPlaying: isItemNowPlaying)
 			cell.applyNowPlayingIndicator(indicator)
 		}

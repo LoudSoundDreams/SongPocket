@@ -34,7 +34,7 @@ extension CollectionsTVC {
 		
 		cell.titleLabel.text = collection.title
 		let isNowPlayingCollection = isItemNowPlaying(at: indexPath)
-		let cellNowPlayingIndicator = PlayerControllerManager.shared.nowPlayingIndicator(
+		let cellNowPlayingIndicator = PlayerControllerManager.nowPlayingIndicator(
 			isItemNowPlaying: isNowPlayingCollection)
 		cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 		

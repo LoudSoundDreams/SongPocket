@@ -30,7 +30,7 @@ extension LibraryTVC {
 		
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
-			let playerController = playerController
+			let playerController = sharedPlayerController
 		else {
 			setPlayPauseButtonToPlayButton()
 			for barButtonItem in playbackToolbarButtons {
@@ -53,13 +53,13 @@ extension LibraryTVC {
 			goToPreviousSongButton.enableWithAccessibilityTrait()
 		}
 		
-//		let currentPlaybackTime = playerController.currentPlaybackTime
+//		let currentPlaybackTime = sharedPlayerController.currentPlaybackTime
 //		print(currentPlaybackTime)
 //		print(currentPlaybackTime == 0)
 //		print("")
 //		if
-//			playerController.currentPlaybackTime == 0,
-//			playerController.playbackState != .playing
+//			sharedPlayerController.currentPlaybackTime == 0,
+//			sharedPlayerController.playbackState != .playing
 //		{
 //			restartCurrentSongButton.disableWithAccessibilityTrait()
 //		} else {
@@ -74,7 +74,7 @@ extension LibraryTVC {
 	// MARK: - Controlling Playback
 	
 	override func accessibilityPerformMagicTap() -> Bool {
-		guard playerController != nil else {
+		guard sharedPlayerController != nil else {
 			return false
 		}
 		
@@ -83,7 +83,7 @@ extension LibraryTVC {
 	}
 	
 	private func togglePlayPause() {
-		guard let playerController = playerController else { return }
+		guard let playerController = sharedPlayerController else { return }
 		
 		if playerController.playbackState == .playing {
 			playerController.pause()
@@ -93,32 +93,32 @@ extension LibraryTVC {
 	}
 	
 	@objc final func goToPreviousSong() {
-//		playerController?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackToolbarButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
+//		sharedPlayerController?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackToolbarButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
 		// Actually, that line of code makes this method take forever to return; it repeatedly prints "SYNC-WATCHDOG-1: Attempting to wake up the remote process" and "SYNC-WATCHDOG-2: Tearing down connection". That happens whether we set currentPlaybackTime = 0 before or after changing the song.
 		
-		playerController?.skipToPreviousItem()
+		sharedPlayerController?.skipToPreviousItem()
 	}
 	
 	@objc final func restartCurrentSong() {
-		playerController?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
-//		playerController?.skipToBeginning()
-//		playerController?.prepareToPlay() // As of iOS 14.2 beta 3, after you call skipToBeginning(), the playhead doesn't move to the beginning until you tap Play or call prepareToPlay().
+		sharedPlayerController?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
+//		sharedPlayerController?.skipToBeginning()
+//		sharedPlayerController?.prepareToPlay() // As of iOS 14.2 beta 3, after you call skipToBeginning(), the playhead doesn't move to the beginning until you tap Play or call prepareToPlay().
 		
 		refreshBarButtons() // Disable the "restart current song" button if appropriate.
 	}
 	
 	@objc final func play() {
-		playerController?.play()
+		sharedPlayerController?.play()
 	}
 	
 	@objc final func pause() {
-		playerController?.pause()
+		sharedPlayerController?.pause()
 	}
 	
 	@objc final func goToNextSong() {
-//		playerController?.currentPlaybackTime = 0 // See comment in goToPreviousSong().
+//		sharedPlayerController?.currentPlaybackTime = 0 // See comment in goToPreviousSong().
 		
-		playerController?.skipToNextItem()
+		sharedPlayerController?.skipToNextItem()
 	}
 	
 }

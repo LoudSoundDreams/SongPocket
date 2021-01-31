@@ -13,7 +13,7 @@ extension SongsTVC: NowPlayingIndicatorManager {
 		if
 			let rowSong = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Song,
 			let rowMediaItem = rowSong.mpMediaItem(),
-			let playerController = playerController,
+			let playerController = sharedPlayerController,
 			rowMediaItem == playerController.nowPlayingItem
 		{
 			return true

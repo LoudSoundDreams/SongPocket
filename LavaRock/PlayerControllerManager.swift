@@ -10,52 +10,32 @@ import CoreData
 
 final class PlayerControllerManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	
-	// MARK: - Properties
-	
-	// "Constants"
-	static let shared = PlayerControllerManager()
-	var playerController: MPMusicPlayerController?
-	private var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-	
-	// Variables
-	var currentSong: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
-	
-	// MARK: - Setup and Teardown
-	
 	private init() { }
 	
-	func setUpPlayerControllerIfAuthorized() {
+	// MARK: - NON-PRIVATE
+	
+	// MARK: - Properties
+	
+	// Variables
+	private(set) static var playerController: MPMusicPlayerController?
+	private(set) static var currentSong: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
+	
+	// MARK: - Setup
+	
+	static func setUpPlayerControllerIfAuthorized() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		playerController = MPMusicPlayerController.systemMusicPlayer
-		beginGeneratingNotifications()
-		refreshCurrentSong()
-	}
-	
-	deinit {
-		endGeneratingNotifications()
-	}
-	
-	// MARK: - Notifications
-	
-	private func beginGeneratingNotifications() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		playerController?.beginGeneratingPlaybackNotifications()
-	}
-	
-	private func endGeneratingNotifications() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		playerController?.endGeneratingPlaybackNotifications()
+		Self.playerController = MPMusicPlayerController.systemMusicPlayer
+		Self.beginGeneratingNotifications()
+		Self.refreshCurrentSong()
 	}
 	
 	// MARK: - "Now Playing" Indicator
 	
-	final func nowPlayingIndicator(isItemNowPlaying: Bool) -> (UIImage?, String?) {
+	static func nowPlayingIndicator(isItemNowPlaying: Bool) -> (UIImage?, String?) {
 		guard
 			isItemNowPlaying,
-			let playerController = playerController
+			let playerController = Self.playerController
 		else {
 			return (nil, nil)
 		}
@@ -79,28 +59,53 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 	
 	// MARK: - Other
 	
-	func refreshCurrentSong() {
+	static func refreshCurrentSong() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
-			let nowPlayingItem = playerController?.nowPlayingItem
+			let nowPlayingItem = Self.playerController?.nowPlayingItem
 		else {
-			currentSong = nil
+			Self.currentSong = nil
 			return
 		}
 		
 		let currentPersistentID = nowPlayingItem.persistentID // Remember: This is a UInt64, and we store the persistentID attribute on each Song as an Int64.
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		songsFetchRequest.predicate = NSPredicate(format: "persistentID == %lld", Int64(bitPattern: currentPersistentID))
-		let nowPlayingSongs = managedObjectContext.objectsFetched(for: songsFetchRequest)
+		let nowPlayingSongs = Self.managedObjectContext.objectsFetched(for: songsFetchRequest)
 		
 		guard
 			nowPlayingSongs.count == 1,
 			let nowPlayingSong = nowPlayingSongs.first
 		else {
-			currentSong = nil
+			Self.currentSong = nil
 			return
 		}
-		currentSong = nowPlayingSong
+		Self.currentSong = nowPlayingSong
+	}
+	
+	// MARK: - PRIVATE
+	
+	// MARK: - Properties
+	
+	// Constants
+	private static let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	
+	// MARK: - Teardown
+	
+	deinit {
+		Self.endGeneratingNotifications()
+	}
+	
+	private static func beginGeneratingNotifications() {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		Self.playerController?.beginGeneratingPlaybackNotifications()
+	}
+	
+	private static func endGeneratingNotifications() {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		Self.playerController?.endGeneratingPlaybackNotifications()
 	}
 	
 }
