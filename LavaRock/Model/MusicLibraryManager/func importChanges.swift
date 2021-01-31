@@ -30,6 +30,8 @@ extension MusicLibraryManager {
 			let queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
+		os_signpost(.begin, log: Self.importChangesMainLog, name: "0a. Initial Parse")
+		
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
 		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest)
@@ -88,6 +90,8 @@ extension MusicLibraryManager {
 			print(song.persistentID)
 		}
 		*/
+		
+		os_signpost(.end, log: Self.importChangesMainLog, name: "0a. Initial Parse")
 		
 		updateManagedObjects( // Update before creating and deleting, so that we can easily put new Songs above modified Songs.
 			// This might make new Albums, but not new Collections or Songs.
