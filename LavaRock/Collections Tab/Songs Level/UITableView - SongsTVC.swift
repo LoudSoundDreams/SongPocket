@@ -12,7 +12,7 @@ extension SongsTVC {
 	
 	// MARK: - Cells
 	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return UITableViewCell()
 		}
@@ -111,10 +111,9 @@ extension SongsTVC {
 	
 	// MARK: - Selecting
 	
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		super.tableView(tableView, didSelectRowAt: indexPath) // Includes refreshBarButtons().
-		
-		if !isEditing {
+	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if isEditing {
+		} else {
 			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
 			if let selectedCell = tableView.cellForRow(at: indexPath) {
 				showSongActions(for: song, popoverAnchorView: selectedCell)
@@ -122,6 +121,8 @@ extension SongsTVC {
 			// This leaves the row selected while the action sheet is onscreen, which I prefer.
 			// You must eventually deselect the row, and set isPresentingSongActions = false, in every possible branch from here.
 		}
+		
+		super.tableView(tableView, didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
 	}
 	
 }

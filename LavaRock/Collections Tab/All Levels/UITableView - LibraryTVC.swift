@@ -12,7 +12,7 @@ extension LibraryTVC {
 	
 	// MARK: - Numbers
 	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		refreshBarButtons()
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
@@ -44,13 +44,13 @@ extension LibraryTVC {
 	
 	// MARK: - Editing
 	
-	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+	final override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		return indexPath.row >= numberOfRowsAboveIndexedLibraryItems
 	}
 	
 	// MARK: Rearranging
 	
-	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+	final override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 		let fromIndex = fromIndexPath.row - numberOfRowsAboveIndexedLibraryItems
 		let toIndex = to.row - numberOfRowsAboveIndexedLibraryItems
 		
@@ -60,7 +60,7 @@ extension LibraryTVC {
 		refreshBarButtons() // If you made selected items non-contiguous, that should disable the Sort button. If you made selected items contiguous, that should enable the Sort button.
 	}
 	
-	override func tableView(
+	final override func tableView(
 		_ tableView: UITableView,
 		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
 		toProposedIndexPath proposedDestinationIndexPath: IndexPath
@@ -120,6 +120,8 @@ extension LibraryTVC {
 		integrateWithAndImportChangesFromMusicLibraryIfAuthorized() // Do this before setUp(), because when we call setUp(), we need to already have integrated with and imported changes from the Music library.
 		setUp() // Includes refreshing the playback toolbar.
 		
+		// TO DO: Start taking the UI out of an "Importing…" state.
+		
 		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
@@ -132,13 +134,13 @@ extension LibraryTVC {
 		} completion: { _ in
 			self.refreshesAfterDidSaveChangesFromMusicLibrary = true
 			
-			// TO DO: Take the UI out of an "Importing…" state.
+			// TO DO: Finish taking the UI out of an "Importing…" state.
 		}
 	}
 	
 	// MARK: Deselecting
 	
-	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+	final override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
 		refreshBarButtons()
 		if let cell = tableView.cellForRow(at: indexPath) {
 			cell.accessibilityTraits.subtract(.selected)

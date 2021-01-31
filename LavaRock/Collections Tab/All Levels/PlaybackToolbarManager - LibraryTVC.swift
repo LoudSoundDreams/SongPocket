@@ -73,7 +73,7 @@ extension LibraryTVC {
 	
 	// MARK: - Controlling Playback
 	
-	override func accessibilityPerformMagicTap() -> Bool {
+	final override func accessibilityPerformMagicTap() -> Bool {
 		guard sharedPlayerController != nil else {
 			return false
 		}

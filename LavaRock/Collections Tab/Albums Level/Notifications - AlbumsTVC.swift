@@ -12,7 +12,7 @@ extension AlbumsTVC {
 	
 	// MARK: - After Possible Playback State Change
 	
-	override func refreshToReflectPlaybackState() {
+	final override func refreshToReflectPlaybackState() {
 		super.refreshToReflectPlaybackState()
 		
 		refreshNowPlayingIndicators(isItemNowPlayingDeterminer: isItemNowPlaying(at:))
@@ -20,7 +20,7 @@ extension AlbumsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	override func prepareToRefreshDataAndViews(
+	final override func prepareToRefreshDataAndViews(
 		consideringRefreshedItems refreshedItems: [NSManagedObject]
 	) {
 		if albumMoverClipboard != nil {
@@ -40,7 +40,7 @@ extension AlbumsTVC {
 	}
 	
 	// This is the same as in SongsTVC.
-	override func refreshContainerOfLibraryItems() {
+	final override func refreshContainerOfLibraryItems() {
 		super.refreshContainerOfLibraryItems()
 		
 		refreshNavigationItemTitle()

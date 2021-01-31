@@ -16,7 +16,7 @@ final class AlbumCell:
 	@IBOutlet var releaseDateLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	
-	override func awakeFromNib() {
+	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true
@@ -31,7 +31,7 @@ final class AlbumCellWithoutReleaseDate:
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	
-	override func awakeFromNib() {
+	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true

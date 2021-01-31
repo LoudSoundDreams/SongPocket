@@ -10,7 +10,7 @@ import UIKit
 final class AlbumArtworkCell: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 	
-	override func awakeFromNib() {
+	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true
@@ -36,7 +36,7 @@ final class SongCell:
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
 	
-	override func awakeFromNib() {
+	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)
@@ -52,7 +52,7 @@ final class SongCellWithDifferentArtist:
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
 	
-	override func awakeFromNib() {
+	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)

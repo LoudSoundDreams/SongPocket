@@ -120,7 +120,8 @@ extension LibraryTVC {
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
 		
-		// TO DO: Take the UI out of an "Importing…" state after all animations complete.
+		// TO DO: Start taking the UI out of an "Importing…" state here.
+		// TO DO: Finish taking the UI out of an "Importing…" state after all animations complete.
 		
 		refreshTableView(
 			section: 0,

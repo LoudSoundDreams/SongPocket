@@ -37,7 +37,7 @@ final class AlbumsTVC:
 	
 	// MARK: Setting Up UI
 	
-	override func setUpUI() {
+	final override func setUpUI() {
 		super.setUpUI()
 		
 		refreshNavigationItemTitle()
@@ -79,13 +79,13 @@ final class AlbumsTVC:
 	
 	// MARK: - Events
 	
-	override func setToolbarButtons(animated: Bool) {
+	final override func setToolbarButtons(animated: Bool) {
 		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
 		
 		super.setToolbarButtons(animated: animated)
 	}
 	
-	override func refreshBarButtons() {
+	final override func refreshBarButtons() {
 		super.refreshBarButtons()
 		
 		if isEditing {

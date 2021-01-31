@@ -29,7 +29,7 @@ final class CollectionsTVC:
 	
 	// MARK: - Setup
 	
-	override func viewDidLoad() {
+	final override func viewDidLoad() {
 		if albumMoverClipboard != nil {
 			super.viewDidLoad()
 			
@@ -44,7 +44,7 @@ final class CollectionsTVC:
 	
 	// MARK: Setting Up UI
 	
-	override func setUpUI() {
+	final override func setUpUI() {
 		if albumMoverClipboard != nil {
 		} else {
 			navigationItemButtonsNotEditingMode = [optionsButton] // You need to do this before super, because super sets the navigation item buttons.
@@ -89,7 +89,7 @@ final class CollectionsTVC:
 		}
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
+	final override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if albumMoverClipboard != nil {
@@ -105,7 +105,7 @@ final class CollectionsTVC:
 		}
 	}
 	
-	override func viewDidAppear(_ animated: Bool) {
+	final override func viewDidAppear(_ animated: Bool) {
 		if let albumMoverClipboard = albumMoverClipboard {
 			if albumMoverClipboard.didAlreadyMakeNewCollection {
 				deleteEmptyNewCollection()
@@ -135,7 +135,7 @@ final class CollectionsTVC:
 	
 	// MARK: - Events
 	
-	override func setToolbarButtons(animated: Bool) {
+	final override func setToolbarButtons(animated: Bool) {
 		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
 		
 		super.setToolbarButtons(animated: animated)
@@ -154,7 +154,7 @@ final class CollectionsTVC:
 //		)
 //	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+	final override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if
 			segue.identifier == "Drill Down in Library",
 			let albumsTVC = segue.destination as? AlbumsTVC

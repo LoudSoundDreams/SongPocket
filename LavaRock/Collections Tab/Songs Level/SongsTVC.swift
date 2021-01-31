@@ -31,7 +31,7 @@ final class SongsTVC:
 	
 	// MARK: Setting Up UI
 	
-	override func setUpUI() {
+	final override func setUpUI() {
 		super.setUpUI()
 		
 		refreshNavigationItemTitle()

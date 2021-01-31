@@ -273,7 +273,7 @@ class LibraryTVC:
 	
 	// MARK: - Navigation
 	
-	override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+	final override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
 		return !isEditing
 	}
 	

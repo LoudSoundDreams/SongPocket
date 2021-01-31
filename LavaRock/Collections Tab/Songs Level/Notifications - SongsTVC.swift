@@ -12,7 +12,7 @@ extension SongsTVC {
 	
 	// MARK: - After Possible Playback State Change
 	
-	override func refreshToReflectPlaybackState() {
+	final override func refreshToReflectPlaybackState() {
 		super.refreshToReflectPlaybackState()
 		
 		refreshNowPlayingIndicators(isItemNowPlayingDeterminer: isItemNowPlaying(at:))
@@ -20,7 +20,7 @@ extension SongsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	override func prepareToRefreshDataAndViews(
+	final override func prepareToRefreshDataAndViews(
 		consideringRefreshedItems refreshedItems: [NSManagedObject]
 	) {
 		if
@@ -36,7 +36,7 @@ extension SongsTVC {
 	}
 	
 	// This is the same as in AlbumsTVC.
-	override func refreshContainerOfLibraryItems() {
+	final override func refreshContainerOfLibraryItems() {
 		super.refreshContainerOfLibraryItems()
 		
 		refreshNavigationItemTitle()

@@ -12,9 +12,9 @@ extension CollectionsTVC {
 	
 	// MARK: - Cells
 	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return allowAccessCell(for: indexPath)
+			return allowAccessCell()
 		}
 		
 		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
@@ -95,8 +95,8 @@ extension CollectionsTVC {
 	// MARK: "Allow Access" Cell
 	
 	// Custom cell
-	private func allowAccessCell(for indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell", for: indexPath) as? AllowAccessCell else {
+	private func allowAccessCell() -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell") as? AllowAccessCell else {
 			return UITableViewCell()
 		}
 		
@@ -121,16 +121,24 @@ extension CollectionsTVC {
 //		return cell
 //	}
 	
+	// MARK: "Loading…"  Cell
+	
+//	private func importingCell() -> UITableViewCell {
+//		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Loading Cell") as?
+//
+//
+//	}
+	
 	// MARK: - Editing
 	
-	override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+	final override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		renameCollection(at: indexPath)
 	}
 	
 	// MARK: - Selecting
 	
 	// WARNING: This doesn't accommodate numberOfRowsAboveIndexedLibraryItems. You might want to call super.
-	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+	final override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 		if let albumMoverClipboard = albumMoverClipboard {
 			let collectionID = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems].objectID
 			if collectionID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
@@ -143,5 +151,7 @@ extension CollectionsTVC {
 			return indexPath
 		}
 	}
+	
+	
 	
 }

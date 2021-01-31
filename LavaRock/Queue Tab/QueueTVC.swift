@@ -46,7 +46,7 @@ final class QueueTVC:
 	
 	// MARK: - Setup
 	
-    override func viewDidLoad() {
+	final override func viewDidLoad() {
         super.viewDidLoad()
 		
 //		beginObservingAndGeneratingNotifications()
@@ -68,7 +68,7 @@ final class QueueTVC:
 	
 	// MARK: Setup Events
 	
-	override func viewWillAppear(_ animated: Bool) {
+	final override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		refreshButtons()

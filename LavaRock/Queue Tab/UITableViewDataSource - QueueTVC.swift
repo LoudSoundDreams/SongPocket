@@ -13,7 +13,7 @@ extension QueueTVC {
 	
 	// MARK: - Numbers
 	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		refreshButtons()
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
@@ -42,7 +42,7 @@ extension QueueTVC {
 	// MARK: Cells
 	
 	/*
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 	let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 	
 	// Configure the cell...
@@ -55,7 +55,7 @@ extension QueueTVC {
 	
 	/*
 	// Override to support conditional editing of the table view.
-	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+final override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 	// Return false if you do not want the specified item to be editable.
 	return true
 	}
@@ -63,7 +63,7 @@ extension QueueTVC {
 	
 	/*
 	// Override to support editing the table view.
-	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+final override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 	if editingStyle == .delete {
 	// Delete the row from the data source
 	tableView.deleteRows(at: [indexPath], with: .fade)
@@ -75,7 +75,7 @@ extension QueueTVC {
 	
 	/*
 	// Override to support conditional rearranging of the table view.
-	override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+final override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
 	// Return false if you do not want the item to be re-orderable.
 	return true
 	}
@@ -83,7 +83,7 @@ extension QueueTVC {
 	
 	/*
 	// Override to support rearranging the table view.
-	override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+final override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 	
 	}
 	*/
