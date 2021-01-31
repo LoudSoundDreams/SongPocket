@@ -141,7 +141,6 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
-	var refreshesAfterDidSaveChangesFromMusicLibrary = true
 	var shouldRefreshOnNextViewDidAppear = false
 	var areSortOptionsPresented = false
 	

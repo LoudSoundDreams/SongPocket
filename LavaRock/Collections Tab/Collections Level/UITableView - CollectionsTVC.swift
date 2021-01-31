@@ -101,10 +101,7 @@ extension CollectionsTVC {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell") as? AllowAccessCell else {
 			return UITableViewCell()
 		}
-		
 		cell.label.textColor = view.window?.tintColor
-		
-		
 		return cell
 	}
 	
@@ -139,21 +136,63 @@ extension CollectionsTVC {
 	
 	// MARK: - Selecting
 	
-	// WARNING: This doesn't accommodate numberOfRowsAboveIndexedLibraryItems. You might want to call super.
 	final override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 		if let albumMoverClipboard = albumMoverClipboard {
 			let collectionID = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems].objectID
 			if collectionID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 				return nil
-			} else {
-				return indexPath
 			}
-			
-		} else {
-			return indexPath
 		}
+		
+		return super.tableView(tableView, willSelectRowAt: indexPath)
 	}
 	
+	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		switch MPMediaLibrary.authorizationStatus() {
+		case .authorized:
+			break
+		case .notDetermined: // The golden opportunity.
+			MPMediaLibrary.requestAuthorization { newStatus in
+				switch newStatus {
+				case .authorized:
+					DispatchQueue.main.async { self.didReceiveAuthorizationForMusicLibrary() }
+				default:
+					DispatchQueue.main.async { self.tableView.deselectRow(at: indexPath, animated: true) }
+				}
+			}
+		default: // Denied or restricted.
+			if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+				UIApplication.shared.open(settingsURL)
+			}
+			tableView.deselectRow(at: indexPath, animated: true)
+		}
+		
+		super.tableView(tableView, didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
+	}
 	
+	private func didReceiveAuthorizationForMusicLibrary() {
+		// TO DO: Put the UI into an "Importing…" state.
+		
+		refreshesAfterDidSaveChangesFromMusicLibrary = false // Supress our usual refresh after observing the LRDidSaveChangesFromMusicLibrary notification that we'll post after importing changes; in this case, we'll update the UI in a different way, below.
+		integrateWithAndImportChangesFromMusicLibraryIfAuthorized() // Do this before setUp(), because when we call setUp(), we need to already have integrated with and imported changes from the Music library.
+		setUp() // Includes refreshing the playback toolbar.
+		
+		// TO DO: Start taking the UI out of an "Importing…" state.
+		
+		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
+		tableView.performBatchUpdates {
+			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+			tableView.insertRows(
+				at: tableView.indexPathsForRowsIn(
+					section: 0,
+					firstRow: 0,
+					lastRow: newNumberOfRows - 1), // It's incorrect and unsafe to call tableView.numberOfRows(inSection:) here, because we're changing the number of rows. Use the UITableViewDelegate method tableView(_:numberOfRowsInSection:) intead.
+				with: .middle)
+		} completion: { _ in
+			self.refreshesAfterDidSaveChangesFromMusicLibrary = true
+			
+			// TO DO: Finish taking the UI out of an "Importing…" state.
+		}
+	}
 	
 }

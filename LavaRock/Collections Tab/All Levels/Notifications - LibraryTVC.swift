@@ -98,15 +98,12 @@ extension LibraryTVC {
 	
 	private func refreshToReflectMusicLibrary() {
 		refreshToReflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by swiping back, the "now playing" indicators are already updated.
-		
-		if refreshesAfterDidSaveChangesFromMusicLibrary {
-			refreshDataAndViewsWhenVisible()
-		}
+		refreshDataAndViewsWhenVisible()
 	}
 	
 	// MARK: Refreshing Data and Views
 	
-	final func refreshDataAndViewsWhenVisible() {
+	@objc func refreshDataAndViewsWhenVisible() {
 		if view.window == nil {
 			shouldRefreshOnNextViewDidAppear = true
 		} else {
@@ -127,7 +124,7 @@ extension LibraryTVC {
 			section: 0,
 			onscreenItems: indexedLibraryItems,
 			refreshedItems: refreshedItems,
-			completion: refreshData) // refreshData includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
+			completion: { self.refreshData() }) // refreshData includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
 	}
 	
 	/*
@@ -155,7 +152,7 @@ extension LibraryTVC {
 	
 	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().
 	// Note: Even though this method is easy to plug arguments into, it (currently) has side effects: it replaces indexedLibraryItems with the onscreenItems array that you pass in.
-	func refreshTableView(
+	private func refreshTableView(
 		section: Int,
 		onscreenItems: [NSManagedObject],
 		refreshedItems: [NSManagedObject],
@@ -235,7 +232,7 @@ extension LibraryTVC {
 		}
 	}
 	
-	@objc func refreshData() {
+	@objc private func refreshData() {
 		guard indexedLibraryItems.count >= 1 else { return }
 		refreshContainerOfLibraryItems()
 		refreshTableViewRowContents()
@@ -252,7 +249,7 @@ extension LibraryTVC {
 	The simplest way to do this is to just call tableView.reloadData(). Infamously, that has no animation, but we actually animated the deletes, inserts, and moves by ourselves earlier. All reloadData() does here is update the data within each row without an animation, which usually looks okay.
 	You should override this method if you want to add animations when refreshing the contents of any part of table view. For example, if it looks jarring to change some artwork without an animation, you might want to refresh that artwork with a fade animation, but leave the other rows to update without animations. The hard part is that to prevent unnecessary animations when the content hasn't changed, you'll have to detect the existing content in each row.
 	*/
-	@objc func refreshTableViewRowContents() {
+	@objc private func refreshTableViewRowContents() {
 		tableView.reloadData()
 	}
 	

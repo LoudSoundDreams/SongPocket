@@ -20,6 +20,12 @@ extension CollectionsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
+	override func refreshDataAndViewsWhenVisible() {
+		guard refreshesAfterDidSaveChangesFromMusicLibrary else { return }
+		
+		super.refreshDataAndViewsWhenVisible()
+	}
+	
 	final override func prepareToRefreshDataAndViews(
 		consideringRefreshedItems refreshedItems: [NSManagedObject]
 	) {

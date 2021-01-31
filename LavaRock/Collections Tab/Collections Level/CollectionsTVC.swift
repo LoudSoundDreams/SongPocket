@@ -22,6 +22,7 @@ final class CollectionsTVC:
 	@IBOutlet var optionsButton: UIBarButtonItem!
 	
 	// Variables
+	var refreshesAfterDidSaveChangesFromMusicLibrary = true
 	var isRenamingCollection = false // If we have to refresh to reflect changes in the Music library, and the refresh will change indexedLibraryItems, we'll cancel renaming.
 	var albumMoverClipboard: AlbumMoverClipboard?
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
