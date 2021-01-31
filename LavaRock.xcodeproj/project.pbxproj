@@ -321,13 +321,10 @@
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07140604259D6958003CA92C /* UserDefaults.swift */,
-				07FD6E092599227C00826447 /* PurchaseManager.swift */,
+				076B56B025C747B100E147C0 /* Singletons */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
-				07267A1F25537C5800C914A3 /* PlayerControllerManager.swift */,
 				07E92A15251068E500E9073B /* Extensions to UIKit */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
-				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 				07708A5524E5A2DF000FE01D /* Collections Tab */,
 				07E92A0625103F0E00E9073B /* Queue Tab */,
 			);
@@ -350,6 +347,17 @@
 				076830AF24B42DEF0033E3CC /* Info.plist */,
 			);
 			path = LavaRockUITests;
+			sourceTree = "<group>";
+		};
+		076B56B025C747B100E147C0 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				07FD6E092599227C00826447 /* PurchaseManager.swift */,
+				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
+				07267A1F25537C5800C914A3 /* PlayerControllerManager.swift */,
+				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
+			);
+			path = Singletons;
 			sourceTree = "<group>";
 		};
 		07708A5524E5A2DF000FE01D /* Collections Tab */ = {
