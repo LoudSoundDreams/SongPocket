@@ -320,7 +320,8 @@
 				075218B8257C52390077AE9B /* Localizable.strings */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
-				076B56C225C74B8100E147C0 /* extensions to Foundation */,
+				07140604259D6958003CA92C /* UserDefaults.swift */,
+				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				076B56B025C747B100E147C0 /* Singletons */,
 				07E92A15251068E500E9073B /* Extensions to UIKit */,
@@ -357,15 +358,6 @@
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 			);
 			path = Singletons;
-			sourceTree = "<group>";
-		};
-		076B56C225C74B8100E147C0 /* extensions to Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				07140604259D6958003CA92C /* UserDefaults.swift */,
-				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
-			);
-			path = "extensions to Foundation";
 			sourceTree = "<group>";
 		};
 		07708A5524E5A2DF000FE01D /* Collections Tab */ = {
