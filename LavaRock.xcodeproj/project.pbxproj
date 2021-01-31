@@ -276,7 +276,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */ = {
+		0748AEAF24F394F9000FBC61 /* MusicLibraryManager */ = {
 			isa = PBXGroup;
 			children = (
 				079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */,
@@ -285,7 +285,7 @@
 				07A4F9092519E7D20065C87E /* func createManagedObjects.swift */,
 				07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */,
 			);
-			path = AppleMusicLibraryManager;
+			path = MusicLibraryManager;
 			sourceTree = "<group>";
 		};
 		0768307C24B42DEC0033E3CC = {
@@ -323,7 +323,7 @@
 				07140604259D6958003CA92C /* UserDefaults.swift */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				0748AEAF24F394F9000FBC61 /* AppleMusicLibraryManager */,
+				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
 				07267A1F25537C5800C914A3 /* PlayerControllerManager.swift */,
 				07E92A15251068E500E9073B /* Extensions to UIKit */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,

@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 /*
 extension Notification.Name {
-	static let LRDidReceiveAuthorizationForMusic = Notification.Name("The user just gave us permission to access their Music library. Objects that depend on the Music library should observe this notification and update now.")
+	static let LRDidReceiveAuthorizationForMusic = Notification.Name("The user just gave us permission to access their Music library. Instances that depend on the Music library should observe this notification and update now.")
 }
 */
 /*

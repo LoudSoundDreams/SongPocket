@@ -21,7 +21,7 @@ enum LRUserDefaultsKey: String, CaseIterable {
 extension UserDefaults {
 	
 	final func deleteAllEntries(exceptWithKeys keysToKeep: [String]) {
-		let existingEntries = dictionaryRepresentation() // Remember: this method operates on the instance of UserDefaults we're calling it on.
+		let existingEntries = dictionaryRepresentation() // Remember: This method operates on the instance of UserDefaults we're calling it on.
 		
 		var entriesToKeep = existingEntries
 		entriesToKeep.removeAll() // To match the type of existingEntries
