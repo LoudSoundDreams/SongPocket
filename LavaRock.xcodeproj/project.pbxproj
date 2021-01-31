@@ -320,9 +320,9 @@
 				075218B8257C52390077AE9B /* Localizable.strings */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
-				07140604259D6958003CA92C /* UserDefaults.swift */,
-				076B56B025C747B100E147C0 /* Singletons */,
+				076B56C225C74B8100E147C0 /* extensions to Foundation */,
 				07FC970A24BAC1050036DD3D /* Model */,
+				076B56B025C747B100E147C0 /* Singletons */,
 				07E92A15251068E500E9073B /* Extensions to UIKit */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				07708A5524E5A2DF000FE01D /* Collections Tab */,
@@ -353,11 +353,19 @@
 			isa = PBXGroup;
 			children = (
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
-				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
 				07267A1F25537C5800C914A3 /* PlayerControllerManager.swift */,
 				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 			);
 			path = Singletons;
+			sourceTree = "<group>";
+		};
+		076B56C225C74B8100E147C0 /* extensions to Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				07140604259D6958003CA92C /* UserDefaults.swift */,
+				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
+			);
+			path = "extensions to Foundation";
 			sourceTree = "<group>";
 		};
 		07708A5524E5A2DF000FE01D /* Collections Tab */ = {
@@ -421,7 +429,6 @@
 				0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */,
 				072429C324DC786500F62AF6 /* extension UITableView.swift */,
 				076830C324B42E3F0033E3CC /* extension UITableViewController.swift */,
-				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
 			);
 			path = "Extensions to UIKit";
 			sourceTree = "<group>";
@@ -431,6 +438,7 @@
 			children = (
 				07DC1B1924F20C9E00AAEEDB /* extension NSManagedObjectContext.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
+				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
 				07AE2AA3258C09D900C3A314 /* extension Collection.swift */,
 				0736E3E924B95FD600A15420 /* extension Album.swift */,
 				07CAB24624EA227F008AC34C /* extension Song.swift */,
