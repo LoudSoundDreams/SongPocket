@@ -23,6 +23,10 @@ struct LocalizedString { // You can't make this an enum, because associated valu
 	static let done = NSLocalizedString("Done", comment: "Button title")
 	static let ok = NSLocalizedString("OK", comment: "Button title")
 	
+	// MARK: Standard Phrases
+	
+	static let loadingWithEllipsis = NSLocalizedString("Loading…", comment: "Status message")
+	
 	// MARK: Albums
 	
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "Placeholder for unknown album title")
@@ -63,6 +67,7 @@ struct LocalizedString { // You can't make this an enum, because associated valu
 	
 	// MARK: Collections View
 	
+	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button title")
 	static let rename = NSLocalizedString("Rename", comment: "Accessibility label")
 	static let renameCollection = NSLocalizedString("Rename Collection", comment: "Alert title")
 	static let newCollection = NSLocalizedString("New Collection", comment: "Alert title")

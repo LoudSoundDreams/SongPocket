@@ -12,7 +12,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Numbers
 	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if isImportingMusicLibraryForTheFirstTime {
 			return 1
 		}
@@ -23,17 +23,24 @@ extension CollectionsTVC {
 	// MARK: - Cells
 	
 	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return allowAccessCell()
+		if
+			MPMediaLibrary.authorizationStatus() != .authorized ||
+				isImportingMusicLibraryForTheFirstTime
+		{
+			return allowAccessOrLoadingCell()
 		}
 		
-		if
-			isImportingMusicLibraryForTheFirstTime,
-			indexedLibraryItems.isEmpty
-		{
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Loading Cell", for: indexPath)
-			return cell
-		}
+//		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+//			return allowAccessOrLoadingCell()
+//		}
+//
+//		if
+//			isImportingMusicLibraryForTheFirstTime,
+//			indexedLibraryItems.isEmpty
+//		{
+//			let cell = tableView.dequeueReusableCell(withIdentifier: "Loading Cell", for: indexPath)
+//			return cell
+//		}
 		
 		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
 			return UITableViewCell()
@@ -115,16 +122,30 @@ extension CollectionsTVC {
 	// MARK: "Allow Access" Cell
 	
 	// Custom cell
-	private func allowAccessCell() -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell") as? AllowAccessCell else {
+	private func allowAccessOrLoadingCell() -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading Cell") as? AllowAccessOrLoadingCell else {
 			return UITableViewCell()
 		}
-		cell.label.textColor = view.window?.tintColor
-		return cell
+		
+		if !isImportingMusicLibraryForTheFirstTime {
+			// Show "Allow Access" state
+			cell.allowAccessOrLoadingLabel.text = LocalizedString.allowAccessToMusic
+			cell.allowAccessOrLoadingLabel.textColor = view.window?.tintColor
+			cell.spinnerView.stopAnimating()
+			cell.accessibilityTraits.formUnion(.button)
+			return cell
+		} else {
+			// Show "Loading…" state
+			cell.allowAccessOrLoadingLabel.text = LocalizedString.loadingWithEllipsis
+			cell.allowAccessOrLoadingLabel.textColor = .secondaryLabel
+			cell.spinnerView.startAnimating()
+			cell.accessibilityTraits.remove(.button)
+			return cell
+		}
 	}
 	
 	// Built-in cell
-//	private func allowAccessCell() -> UITableViewCell {
+//	private func allowAccessOrLoadingCell() -> UITableViewCell {
 //		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell")
 //		if #available(iOS 14.0, *) {
 //			var configuration = UIListContentConfiguration.cell()
@@ -183,13 +204,15 @@ extension CollectionsTVC {
 	private func didReceiveAuthorizationForMusicLibrary() {
 		// Put the UI into the "Loading…" state, then continue in part 2.
 		
+		// Do this immediately, to guarantee that we keep showing the (hybrid) "Allow Access"/"Loading…" cell.
 		isImportingMusicLibraryForTheFirstTime = true // TO DO: Move the source of truth for this to the change-importer.
 		
 		// Replace Edit button with spinner
 //		refreshAndSetBarButtons(animated: false)
 		
 		tableView.performBatchUpdates {
-			tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .fade) // Note: We have to wait for the animation to complete before we can start the change-importer (on the main thread), but that wastes time, of course.
+			let indexPath = IndexPath(row: 0, section: 0)
+			tableView.reloadRows(at: [indexPath], with: .fade) // Note: We have to wait for the animation to complete before we can start the change-importer (on the main thread), but that wastes time, of course.
 		} completion: { _ in
 			self.didReceiveAuthorizationForMusicLibraryPart2()
 		}

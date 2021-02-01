@@ -123,7 +123,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="💙 Placeholder Thank You Message! 💙" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="bAD-Vr-CxL">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Placeholder “💙 Thank You! 💙” Message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="bAD-Vr-CxL">
                                             <rect key="frame" x="16" y="0.0" width="311" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -163,65 +163,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Allow Access Cell" editingAccessoryType="detailButton" id="L5C-ZS-F6h" customClass="AllowAccessCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="46.666667938232422"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Allow Access or Loading Cell" editingAccessoryType="detailButton" id="L5C-ZS-F6h" customClass="AllowAccessOrLoadingCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="68.666664123535156"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L5C-ZS-F6h" id="HcT-lr-sMI">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="46.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="68.666664123535156"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Allow Access to Music" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXV-wh-Iio">
-                                            <rect key="frame" x="16" y="12.333333333333334" width="169.33333333333334" height="20.333333333333329"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder “Allow Access to Music” or “Loading…” Message" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXV-wh-Iio">
+                                            <rect key="frame" x="16" y="12.333333333333332" width="301" height="42.333333333333343"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="bottomMargin" constant="1" id="2A7-ym-KZd"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="leading" secondItem="HcT-lr-sMI" secondAttribute="leadingMargin" id="BZI-NY-qqx"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="topMargin" constant="1" id="GmW-rI-9HN"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="trailingMargin" id="dff-3P-mjb"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="centerY" secondItem="HcT-lr-sMI" secondAttribute="centerY" constant="-1" id="eMk-Ij-pNy"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="label" destination="MXV-wh-Iio" id="Hgh-pZ-1sv"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Loading Cell" editingAccessoryType="detailButton" id="9NT-3j-2JC">
-                                <rect key="frame" x="0.0" y="74.666667938232422" width="375" height="46.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9NT-3j-2JC" id="YmT-s6-g1L">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="46.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Loading…" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rGk-yx-EHc">
-                                            <rect key="frame" x="16" y="12.333333333333334" width="74" height="20.333333333333329"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="7Tl-zy-Jsh">
-                                            <rect key="frame" x="339" y="12.333333333333336" width="20" height="20"/>
+                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="QHx-ha-bUB">
+                                            <rect key="frame" x="339" y="23.333333333333329" width="20" height="20"/>
                                         </activityIndicatorView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="rGk-yx-EHc" firstAttribute="centerY" secondItem="YmT-s6-g1L" secondAttribute="centerY" constant="-1" id="0zB-qx-PB0"/>
-                                        <constraint firstItem="7Tl-zy-Jsh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="YmT-s6-g1L" secondAttribute="topMargin" id="2o2-Yz-W1X"/>
-                                        <constraint firstItem="rGk-yx-EHc" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="YmT-s6-g1L" secondAttribute="trailingMargin" id="I4V-ef-HME"/>
-                                        <constraint firstItem="rGk-yx-EHc" firstAttribute="centerY" secondItem="7Tl-zy-Jsh" secondAttribute="centerY" id="JaA-rJ-w7S"/>
-                                        <constraint firstItem="rGk-yx-EHc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="YmT-s6-g1L" secondAttribute="topMargin" constant="1" id="dLa-kD-W63"/>
-                                        <constraint firstItem="rGk-yx-EHc" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="YmT-s6-g1L" secondAttribute="bottomMargin" constant="1" id="dNs-3x-u8D"/>
-                                        <constraint firstItem="rGk-yx-EHc" firstAttribute="leading" secondItem="YmT-s6-g1L" secondAttribute="leadingMargin" id="esj-k8-OWA"/>
-                                        <constraint firstItem="7Tl-zy-Jsh" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="YmT-s6-g1L" secondAttribute="bottomMargin" id="jTs-Fw-OhS"/>
-                                        <constraint firstItem="7Tl-zy-Jsh" firstAttribute="trailing" secondItem="YmT-s6-g1L" secondAttribute="trailingMargin" id="mS8-TO-bwl"/>
-                                        <constraint firstItem="7Tl-zy-Jsh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rGk-yx-EHc" secondAttribute="trailing" constant="8" symbolic="YES" id="oyC-IF-4bN"/>
+                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="bottomMargin" constant="1" id="2A7-ym-KZd"/>
+                                        <constraint firstItem="QHx-ha-bUB" firstAttribute="trailing" secondItem="HcT-lr-sMI" secondAttribute="trailingMargin" id="2gW-Ec-taF"/>
+                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="leading" secondItem="HcT-lr-sMI" secondAttribute="leadingMargin" id="BZI-NY-qqx"/>
+                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="topMargin" constant="1" id="GmW-rI-9HN"/>
+                                        <constraint firstItem="QHx-ha-bUB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="MXV-wh-Iio" secondAttribute="trailing" constant="8" symbolic="YES" id="Izh-Zv-DrP"/>
+                                        <constraint firstItem="QHx-ha-bUB" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="bottomMargin" id="X9u-1r-RhB"/>
+                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="trailingMargin" id="dff-3P-mjb"/>
+                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="centerY" secondItem="HcT-lr-sMI" secondAttribute="centerY" constant="-1" id="eMk-Ij-pNy"/>
+                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="centerY" secondItem="QHx-ha-bUB" secondAttribute="centerY" id="rM7-3A-NGU"/>
+                                        <constraint firstItem="QHx-ha-bUB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="topMargin" id="sEf-XF-Yd1"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="allowAccessOrLoadingLabel" destination="MXV-wh-Iio" id="Hgh-pZ-1sv"/>
+                                    <outlet property="spinnerView" destination="QHx-ha-bUB" id="1Ke-f3-iBZ"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="121.33333587646484" width="375" height="46.666667938232422"/>
+                                <rect key="frame" x="0.0" y="96.666664123535156" width="375" height="46.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sQR-13-z5i" id="oWs-S1-Xp1">
                                     <rect key="frame" x="0.0" y="0.0" width="347.66666666666669" height="46.666667938232422"/>
@@ -261,7 +239,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Cell" rowHeight="100" id="i5d-DX-vvS">
-                                <rect key="frame" x="0.0" y="168.00000381469727" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="143.33333206176758" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="i5d-DX-vvS" id="ilp-7P-A9C">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>

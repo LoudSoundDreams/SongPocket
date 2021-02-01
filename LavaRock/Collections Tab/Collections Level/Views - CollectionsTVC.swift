@@ -7,14 +7,9 @@
 
 import UIKit
 
-final class AllowAccessCell: UITableViewCell {
-	@IBOutlet var label: UILabel!
-	
-	final override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		accessibilityTraits.formUnion(.button)
-	}
+final class AllowAccessOrLoadingCell: UITableViewCell {
+	@IBOutlet var allowAccessOrLoadingLabel: UILabel!
+	@IBOutlet var spinnerView: UIActivityIndicatorView!
 }
 
 final class CollectionCell:

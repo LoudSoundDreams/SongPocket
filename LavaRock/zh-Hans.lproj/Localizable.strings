@@ -10,6 +10,9 @@
 /* Accessibility label */
 "Album artwork" = "专辑插图";
 
+/* Button title */
+"Allow Access to Music" = "允许访问音乐";
+
 /* Accent color */
 "Blueberry" = "蓝莓";
 
@@ -36,6 +39,9 @@
 
 /* Accent color */
 "Lime" = "青柠";
+
+/* Status message */
+"Loading…" = "正在载入…";
 
 /* Button title */
 "Move" = "移动";

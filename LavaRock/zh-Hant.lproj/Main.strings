@@ -16,9 +16,6 @@
 /* Class = "UIBarButtonItem"; title = "Options"; ObjectID = "mpR-tt-C6X"; */
 "mpR-tt-C6X.title" = "選項";
 
-/* Class = "UILabel"; text = "Allow Access to Music"; ObjectID = "MXV-wh-Iio"; */
-"MXV-wh-Iio.text" = "允許取用音樂";
-
 /* Class = "UINavigationItem"; title = "Options"; ObjectID = "oU6-xG-PqK"; */
 "oU6-xG-PqK.title" = "選項";
 
