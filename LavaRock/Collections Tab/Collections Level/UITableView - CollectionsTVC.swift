@@ -12,8 +12,10 @@ extension CollectionsTVC {
 	
 	// MARK: - Numbers
 	
+	// Remember to call refreshBarButtons() before returning. super also does it.
 	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if isImportingMusicLibraryForTheFirstTime {
+			refreshBarButtons()
 			return 1
 		}
 		
@@ -69,11 +71,11 @@ extension CollectionsTVC {
 		if let albumMoverClipboard = albumMoverClipboard {
 			if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
 				cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
-				cell.selectionStyle = .none
+				cell.isUserInteractionEnabled = false
 				cell.accessibilityTraits.formUnion(.notEnabled)
 			} else { // Undo changes made to the disabled cell
 				cell.titleLabel.textColor = UIColor.label
-				cell.selectionStyle = .default
+				cell.isUserInteractionEnabled = true
 				cell.accessibilityTraits.remove(.notEnabled)
 			}
 		}
@@ -132,6 +134,7 @@ extension CollectionsTVC {
 			cell.allowAccessOrLoadingLabel.text = LocalizedString.allowAccessToMusic
 			cell.allowAccessOrLoadingLabel.textColor = view.window?.tintColor
 			cell.spinnerView.stopAnimating()
+			cell.isUserInteractionEnabled = true
 			cell.accessibilityTraits.formUnion(.button)
 			return cell
 		} else {
@@ -139,6 +142,7 @@ extension CollectionsTVC {
 			cell.allowAccessOrLoadingLabel.text = LocalizedString.loadingWithEllipsis
 			cell.allowAccessOrLoadingLabel.textColor = .secondaryLabel
 			cell.spinnerView.startAnimating()
+			cell.isUserInteractionEnabled = false
 			cell.accessibilityTraits.remove(.button)
 			return cell
 		}
@@ -166,17 +170,6 @@ extension CollectionsTVC {
 	}
 	
 	// MARK: - Selecting
-	
-	final override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-		if let albumMoverClipboard = albumMoverClipboard {
-			let collectionID = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems].objectID
-			if collectionID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
-				return nil
-			}
-		}
-		
-		return super.tableView(tableView, willSelectRowAt: indexPath)
-	}
 	
 	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch MPMediaLibrary.authorizationStatus() {

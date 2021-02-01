@@ -12,7 +12,7 @@ extension LibraryTVC {
 	
 	// MARK: - Numbers
 	
-	// Subclasses that override this method must call super (this implementation).
+	// Subclasses that override this method should call super (this implementation), or remember to call refreshBarButtons().
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		refreshBarButtons()
 		switch MPMediaLibrary.authorizationStatus() {
@@ -77,15 +77,6 @@ extension LibraryTVC {
 	}
 	
 	// MARK: - Selecting
-	
-	// Subclasses that override this method should call super (this implementation), or make sure to accommodate numberOfRowsAboveIndexedLibraryItems.
-	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
-			return nil
-		} else {
-			return indexPath
-		}
-	}
 	
 	// Subclasses that override this method must call super (this implementation).
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

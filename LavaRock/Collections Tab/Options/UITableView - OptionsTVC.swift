@@ -78,17 +78,6 @@ extension OptionsTVC {
 	
 	// MARK: Selecting
 	
-	final override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-		switch indexPath.section {
-		case Section.accentColor.rawValue:
-			return indexPath
-		case Section.tipJar.rawValue:
-			return canSelectTipJarRow() ? indexPath : nil
-		default:
-			return indexPath
-		}
-	}
-	
 	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch indexPath.section {
 		case Section.accentColor.rawValue:
@@ -291,17 +280,6 @@ extension OptionsTVC {
 	}
 	
 	// MARK: Selecting
-	
-	private func canSelectTipJarRow() -> Bool {
-		switch PurchaseManager.shared.tipStatus {
-		case .notYetFirstLoaded, .loading, .confirming:
-			return false
-		case .reload:
-			return true
-		case .ready:
-			return !shouldShowTemporaryThankYouMessage
-		}
-	}
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
 		switch PurchaseManager.shared.tipStatus {
