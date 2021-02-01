@@ -39,8 +39,9 @@ class LibraryTVC:
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
 	var numberOfRowsAboveIndexedLibraryItems = 0 // This applies to every section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
-	var navigationItemButtonsNotEditingMode = [UIBarButtonItem]()
-	private var navigationItemButtonsEditingMode = [UIBarButtonItem]()
+	var navigationItemLeftButtonsNotEditingMode = [UIBarButtonItem]()
+	private var navigationItemLeftButtonsEditingMode = [UIBarButtonItem]()
+	private var navigationItemRightButtons = [UIBarButtonItem]()
 	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()
 	var sortOptions = [SortOption]()
 	
@@ -178,8 +179,8 @@ class LibraryTVC:
 	func setUpUI() {
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
-		navigationItemButtonsEditingMode = [flexibleSpaceBarButtonItem]
-		navigationItem.rightBarButtonItem = editButtonItem
+		navigationItemLeftButtonsEditingMode = [flexibleSpaceBarButtonItem]
+		navigationItemRightButtons = [editButtonItem]
 		playbackToolbarButtons = [
 			goToPreviousSongButton,
 			flexibleSpaceBarButtonItem,
@@ -189,7 +190,7 @@ class LibraryTVC:
 			flexibleSpaceBarButtonItem,
 			goToNextSongButton
 		]
-		refreshAndSetBarButtons(animated: true) // After we receive authorization to access the Music library, we call viewDidLoad() manually, and when that happens, the change should be animated.
+		refreshAndSetBarButtons(animated: true) // After we receive authorization to access the Music library, we call setUpUI() again, and when that happens, the change should be animated.
 	}
 	
 	// MARK: Setup Events
@@ -220,10 +221,11 @@ class LibraryTVC:
 	
 	private func setNavigationItemButtons(animated: Bool) {
 		if isEditing {
-			navigationItem.setLeftBarButtonItems(navigationItemButtonsEditingMode, animated: animated)
+			navigationItem.setLeftBarButtonItems(navigationItemLeftButtonsEditingMode, animated: animated)
 		} else {
-			navigationItem.setLeftBarButtonItems(navigationItemButtonsNotEditingMode, animated: animated)
+			navigationItem.setLeftBarButtonItems(navigationItemLeftButtonsNotEditingMode, animated: animated)
 		}
+		navigationItem.setRightBarButtonItems(navigationItemRightButtons, animated: animated)
 	}
 	
 	func setToolbarButtons(animated: Bool) {

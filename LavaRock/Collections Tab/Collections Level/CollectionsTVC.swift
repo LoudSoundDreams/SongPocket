@@ -23,6 +23,7 @@ final class CollectionsTVC:
 	
 	// Variables
 	var refreshesAfterDidSaveChangesFromMusicLibrary = true
+	var isImportingMusicLibraryForTheFirstTime = false
 	var isRenamingCollection = false // If we have to refresh to reflect changes in the Music library, and the refresh will change indexedLibraryItems, we'll cancel renaming.
 	var albumMoverClipboard: AlbumMoverClipboard?
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
@@ -48,7 +49,7 @@ final class CollectionsTVC:
 	final override func setUpUI() {
 		if albumMoverClipboard != nil {
 		} else {
-			navigationItemButtonsNotEditingMode = [optionsButton] // You need to do this before super, because super sets the navigation item buttons.
+			navigationItemLeftButtonsNotEditingMode = [optionsButton] // You need to do this before super, because super sets the navigation item buttons.
 		}
 		
 		super.setUpUI()
@@ -135,6 +136,17 @@ final class CollectionsTVC:
 	}
 	
 	// MARK: - Events
+	
+//	final override func setNavigationItemButtons(animated: Bool) {
+//		super.setNavigationItemButtons(animated: animated)
+//
+//		if isImportingMusicLibraryForTheFirstTime {
+//			let activityIndicatorView = UIActivityIndicatorView()
+//			activityIndicatorView.startAnimating()
+//			let spinnerBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+//			navigationItem.setRightBarButtonItems([spinnerBarButtonItem], animated: animated)
+//		}
+//	}
 	
 	final override func setToolbarButtons(animated: Bool) {
 		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.

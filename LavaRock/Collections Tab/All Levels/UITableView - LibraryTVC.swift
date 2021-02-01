@@ -12,7 +12,8 @@ extension LibraryTVC {
 	
 	// MARK: - Numbers
 	
-	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	// Subclasses that override this method must call super (this implementation).
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		refreshBarButtons()
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:

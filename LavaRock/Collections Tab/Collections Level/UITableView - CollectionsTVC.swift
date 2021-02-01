@@ -10,11 +10,29 @@ import MediaPlayer
 
 extension CollectionsTVC {
 	
+	// MARK: - Numbers
+	
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		if isImportingMusicLibraryForTheFirstTime {
+			return 1
+		}
+		
+		return super.tableView(tableView, numberOfRowsInSection: section)
+	}
+	
 	// MARK: - Cells
 	
 	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return allowAccessCell()
+		}
+		
+		if
+			isImportingMusicLibraryForTheFirstTime,
+			indexedLibraryItems.isEmpty
+		{
+			let cell = tableView.dequeueReusableCell(withIdentifier: "Loading Cell", for: indexPath)
+			return cell
 		}
 		
 		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
@@ -120,14 +138,6 @@ extension CollectionsTVC {
 //		return cell
 //	}
 	
-	// MARK: "Loading…"  Cell
-	
-//	private func importingCell() -> UITableViewCell {
-//		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Loading Cell") as?
-//
-//
-//	}
-	
 	// MARK: - Editing
 	
 	final override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
@@ -171,13 +181,31 @@ extension CollectionsTVC {
 	}
 	
 	private func didReceiveAuthorizationForMusicLibrary() {
-		// TO DO: Put the UI into an "Importing…" state.
+		// Put the UI into the "Loading…" state, then continue in part 2.
 		
+		isImportingMusicLibraryForTheFirstTime = true // TO DO: Move the source of truth for this to the change-importer.
+		
+		// Replace Edit button with spinner
+//		refreshAndSetBarButtons(animated: false)
+		
+		tableView.performBatchUpdates {
+			tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .fade) // Note: We have to wait for the animation to complete before we can start the change-importer (on the main thread), but that wastes time, of course.
+		} completion: { _ in
+			self.didReceiveAuthorizationForMusicLibraryPart2()
+		}
+	}
+	
+	private func didReceiveAuthorizationForMusicLibraryPart2() {
 		refreshesAfterDidSaveChangesFromMusicLibrary = false // Supress our usual refresh after observing the LRDidSaveChangesFromMusicLibrary notification that we'll post after importing changes; in this case, we'll update the UI in a different way, below.
 		integrateWithAndImportChangesFromMusicLibraryIfAuthorized() // Do this before setUp(), because when we call setUp(), we need to already have integrated with and imported changes from the Music library.
 		setUp() // Includes refreshing the playback toolbar.
 		
-		// TO DO: Start taking the UI out of an "Importing…" state.
+		// Take the UI out of the "Loading…" state.
+		
+		isImportingMusicLibraryForTheFirstTime = false // TO DO: Move the source of truth for this to the change-importer.
+		
+		// Revert spinner back to Edit button
+//		refreshAndSetBarButtons(animated: false) // It should be safe to do this before updating the table view (instead of having to wait for completion), because we've already completed the import and reloaded indexedLibraryItems.
 		
 		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
 		tableView.performBatchUpdates {
@@ -190,8 +218,6 @@ extension CollectionsTVC {
 				with: .middle)
 		} completion: { _ in
 			self.refreshesAfterDidSaveChangesFromMusicLibrary = true
-			
-			// TO DO: Finish taking the UI out of an "Importing…" state.
 		}
 	}
 	
