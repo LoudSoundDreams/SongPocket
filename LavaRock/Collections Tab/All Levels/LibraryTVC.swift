@@ -145,7 +145,7 @@ class LibraryTVC:
 	var isEitherLoadingOrUpdating = false
 	var shouldRefreshOnNextViewDidAppear = false
 	var areSortOptionsPresented = false
-	var isAnimatingDuringRefreshTableView = 0
+//	var isAnimatingDuringRefreshTableView = 0
 	
 	// MARK: - Setup
 	

@@ -18,6 +18,8 @@ extension QueueTVC {
 	// MARK: - Setup and Teardown
 	/*
 	func beginObservingAndGeneratingNotifications() {
+		NotificationCenter.default.removeObserver(self)
+		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),

@@ -44,6 +44,8 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	private func beginObservingAndGeneratingNotifications() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
+		NotificationCenter.default.removeObserver(self)
+		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
@@ -54,8 +56,6 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	private func endObservingAndGeneratingNotifications() {
 		NotificationCenter.default.removeObserver(self)
-		
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		library?.endGeneratingLibraryChangeNotifications()
 	}
