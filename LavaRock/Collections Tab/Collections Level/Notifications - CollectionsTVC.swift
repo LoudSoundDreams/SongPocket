@@ -20,14 +20,8 @@ extension CollectionsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	override func refreshDataAndViewsWhenVisible() {
-		guard refreshesAfterDidSaveChangesFromMusicLibrary else { return }
-		
-		super.refreshDataAndViewsWhenVisible()
-	}
-	
-	final override func prepareToRefreshDataAndViews(
-		consideringRefreshedItems refreshedItems: [NSManagedObject]
+	final override func willRefreshDataAndViews(
+		toShow refreshedItems: [NSManagedObject]
 	) {
 		if isLoading {
 			didJustFinishLoading = true
@@ -45,8 +39,8 @@ extension CollectionsTVC {
 				albumMoverClipboard.isMakingNewCollection = false
 				// Only do this if indexedLibraryItems will change during the refresh?
 				dismiss(animated: true, completion: { // Dismisses presentedViewController, the "New Collection" dialog.
-					self.prepareToRefreshDataAndViews(
-						consideringRefreshedItems: refreshedItems)
+					self.willRefreshDataAndViews(
+						toShow: refreshedItems)
 				} )
 			} else {
 				// Only do this if indexedLibraryItems will change during the refresh?
@@ -63,7 +57,7 @@ extension CollectionsTVC {
 			isRenamingCollection = false
 		}
 		
-		super.prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
+		super.willRefreshDataAndViews(toShow: refreshedItems)
 	}
 	
 }

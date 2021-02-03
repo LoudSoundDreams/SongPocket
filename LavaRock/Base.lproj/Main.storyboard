@@ -260,28 +260,6 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Loading Placeholder" rowHeight="100" id="BQ3-Kg-Lj8">
-                                <rect key="frame" x="0.0" y="229.99999809265137" width="375" height="100"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BQ3-Kg-Lj8" id="LQb-hb-xAw">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading…" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n5Q-nM-XYq">
-                                            <rect key="frame" x="156.33333333333334" y="41.666666666666664" width="62.666666666666657" height="17"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="n5Q-nM-XYq" firstAttribute="centerX" secondItem="LQb-hb-xAw" secondAttribute="centerX" id="BRW-Zg-kWD"/>
-                                        <constraint firstItem="n5Q-nM-XYq" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="LQb-hb-xAw" secondAttribute="trailingMargin" id="LD7-RO-ruL"/>
-                                        <constraint firstItem="n5Q-nM-XYq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LQb-hb-xAw" secondAttribute="leadingMargin" id="b06-MD-3lt"/>
-                                        <constraint firstItem="n5Q-nM-XYq" firstAttribute="centerY" secondItem="LQb-hb-xAw" secondAttribute="centerY" id="w59-tY-cSW"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Vce-TP-hYI" id="FlR-Gu-MG5"/>

@@ -115,7 +115,7 @@ extension LibraryTVC {
 	
 	final func refreshDataAndViews() {
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
-		prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
+		willRefreshDataAndViews(toShow: refreshedItems)
 		
 		isEitherLoadingOrUpdating = false
 		refreshTableView(
@@ -139,8 +139,8 @@ extension LibraryTVC {
 	- Song actions (SongsTVC)
 	Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).
 	*/
-	@objc func prepareToRefreshDataAndViews(
-		consideringRefreshedItems refreshedItems: [NSManagedObject]
+	@objc func willRefreshDataAndViews(
+		toShow refreshedItems: [NSManagedObject]
 	) {
 		if
 			areSortOptionsPresented,

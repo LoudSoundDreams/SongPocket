@@ -20,8 +20,8 @@ extension AlbumsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	final override func prepareToRefreshDataAndViews(
-		consideringRefreshedItems refreshedItems: [NSManagedObject]
+	final override func willRefreshDataAndViews(
+		toShow refreshedItems: [NSManagedObject]
 	) {
 		if albumMoverClipboard != nil {
 			/*
@@ -35,8 +35,8 @@ extension AlbumsTVC {
 			dismiss(animated: true, completion: nil)
 		}
 		
-		super.prepareToRefreshDataAndViews(
-			consideringRefreshedItems: refreshedItems)
+		super.willRefreshDataAndViews(
+			toShow: refreshedItems)
 	}
 	
 	// This is the same as in SongsTVC.

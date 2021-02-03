@@ -193,38 +193,17 @@ extension CollectionsTVC {
 		super.tableView(tableView, didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
 	}
 	
+	// Similar to viewDidLoad().
 	private func didReceiveAuthorizationForMusicLibrary() {
-		// Put the UI into the "Loading…" state, then continue in part 2.
-		isEitherLoadingOrUpdating = true // Do this immediately, to guarantee that we keep showing the (hybrid) "Allow Access"/"Loading…" cell.
-//		refreshAndSetBarButtons(animated: false) // Replace Edit button with spinner
+		setUp()
+		
+		isEitherLoadingOrUpdating = true
 		tableView.performBatchUpdates {
 			let indexPath = IndexPath(row: 0, section: 0)
 			tableView.reloadRows(at: [indexPath], with: .fade)
 		} completion: { _ in
-			self.didReceiveAuthorizationForMusicLibraryPart2()
+			self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
 		}
-	}
-	
-	private func didReceiveAuthorizationForMusicLibraryPart2() {
-		refreshesAfterDidSaveChangesFromMusicLibrary = false // Supress our usual refresh after observing the LRDidSaveChangesFromMusicLibrary notification that we'll post after importing changes; in this case, we'll update the UI in a different way, below.
-		integrateWithAndImportChangesFromMusicLibraryIfAuthorized() // Do this before setUp(), because when we call setUp(), we need to already have integrated with and imported changes from the Music library.
-		setUp() // Includes refreshing the playback toolbar.
-		
-		// Take the UI out of the "Loading…" state.
-		isEitherLoadingOrUpdating = false
-		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
-		tableView.performBatchUpdates {
-			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-			tableView.insertRows(
-				at: tableView.indexPathsForRowsIn(
-					section: 0,
-					firstRow: 0,
-					lastRow: newNumberOfRows - 1), // It's incorrect and unsafe to call tableView.numberOfRows(inSection:) here, because we're changing the number of rows. Use the UITableViewDelegate method tableView(_:numberOfRowsInSection:) intead.
-				with: .middle)
-		} completion: { _ in
-			self.refreshesAfterDidSaveChangesFromMusicLibrary = true
-		}
-//		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
 	}
 	
 }

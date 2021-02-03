@@ -20,8 +20,8 @@ extension SongsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	final override func prepareToRefreshDataAndViews(
-		consideringRefreshedItems refreshedItems: [NSManagedObject]
+	final override func willRefreshDataAndViews(
+		toShow refreshedItems: [NSManagedObject]
 	) {
 		if
 			areSongActionsPresented,
@@ -31,8 +31,8 @@ extension SongsTVC {
 			areSongActionsPresented = false
 		}
 		
-		super.prepareToRefreshDataAndViews(
-			consideringRefreshedItems: refreshedItems)
+		super.willRefreshDataAndViews(
+			toShow: refreshedItems)
 	}
 	
 	// This is the same as in AlbumsTVC.

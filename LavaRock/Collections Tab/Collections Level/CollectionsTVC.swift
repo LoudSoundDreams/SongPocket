@@ -22,7 +22,6 @@ final class CollectionsTVC:
 	@IBOutlet var optionsButton: UIBarButtonItem!
 	
 	// Variables
-	var refreshesAfterDidSaveChangesFromMusicLibrary = true
 	var isLoading: Bool {
 		isEitherLoadingOrUpdating &&
 			indexedLibraryItems.isEmpty &&
