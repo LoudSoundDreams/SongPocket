@@ -19,15 +19,22 @@ extension LibraryTVC {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObserve(_:)),
-			name: Notification.Name.LRDidSaveChangesFromMusicLibrary,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(didObserve(_:)),
 			name: Notification.Name.LRDidChangeAccentColor,
 			object: nil)
 		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(didObserve(_:)),
+			name: Notification.Name.LRDidSaveChangesFromMusicLibrary,
+			object: nil)
+		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+//		NotificationCenter.default.addObserver(
+//			self,
+//			selector: #selector(didObserve(_:)),
+//			name: Notification.Name.MPMediaLibraryDidChange,
+//			object: nil)
 		
 		NotificationCenter.default.addObserver(
 			self,
@@ -55,11 +62,15 @@ extension LibraryTVC {
 	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
+		case .LRDidChangeAccentColor:
+			didChangeAccentColor()
+//		case .MPMediaLibraryDidChange:
+//			isEitherLoadingOrUpdating = true
+			
+			
 		case .LRDidSaveChangesFromMusicLibrary:
 			PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
 			refreshToReflectMusicLibrary()
-		case .LRDidChangeAccentColor:
-			didChangeAccentColor()
 		case
 			UIApplication.didBecomeActiveNotification,
 			.MPMusicPlayerControllerPlaybackStateDidChange,
@@ -71,6 +82,12 @@ extension LibraryTVC {
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
 			print("… but is not set to do anything after observing that notification.")
 		}
+	}
+	
+	// MARK: - After Changing Accent Color
+	
+	private func didChangeAccentColor() {
+		tableView.reloadData()
 	}
 	
 	// MARK: - After Possible Playback State Change
@@ -258,12 +275,6 @@ extension LibraryTVC {
 	You should override this method if you want to add animations when refreshing the contents of any part of table view. For example, if it looks jarring to change some artwork without an animation, you might want to refresh that artwork with a fade animation, but leave the other rows to update without animations. The hard part is that to prevent unnecessary animations when the content hasn't changed, you'll have to detect the existing content in each row.
 	*/
 	@objc private func refreshTableViewRowContents() {
-		tableView.reloadData()
-	}
-	
-	// MARK: - After Changing Accent Color
-	
-	private func didChangeAccentColor() {
 		tableView.reloadData()
 	}
 	

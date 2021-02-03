@@ -143,6 +143,11 @@ class LibraryTVC:
 		return request
 	}()
 	var isEitherLoadingOrUpdating = false
+//	var isUpdating: Bool {
+//		isEitherLoadingOrUpdating &&
+//			!indexedLibraryItems.isEmpty &&
+//			MPMediaLibrary.authorizationStatus() == .authorized
+//	}
 	var shouldRefreshOnNextViewDidAppear = false
 	var areSortOptionsPresented = false
 //	var isAnimatingDuringRefreshTableView = 0
@@ -173,8 +178,8 @@ class LibraryTVC:
 	// Call this method late into launch, after we've already set up most of the UI; this method sets up the MediaPlayer-related functionality so that we can set up the rest of the UI (although this method itself doesn't set up the rest of the UI).
 	// Before calling this method, set isEitherLoadingOrUpdating = true, and put the UI into the "Loading…" or "Updating…" state.
 	final func integrateWithAndImportChangesFromMusicLibraryIfAuthorized() {
-		MusicLibraryManager.shared.setUpLibraryAndImportChangesIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
-		PlayerControllerManager.setUpPlayerControllerIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
+		MusicLibraryManager.shared.importChangesAndBeginGeneratingNotificationsIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
+		PlayerControllerManager.setUpIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
 	}
 	
 	// MARK: Setting Up UI
@@ -223,7 +228,7 @@ class LibraryTVC:
 	}
 	
 	private func setNavigationItemButtons(animated: Bool) {
-//		if isEitherLoadingOrUpdating {
+//		if isUpdating {
 //			let activityIndicatorView = UIActivityIndicatorView()
 //			activityIndicatorView.startAnimating()
 //			let spinnerBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
