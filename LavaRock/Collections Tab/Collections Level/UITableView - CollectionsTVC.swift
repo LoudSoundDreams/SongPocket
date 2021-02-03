@@ -20,17 +20,6 @@ extension CollectionsTVC {
 			return 0
 		}
 		
-		
-//		let isLoading = isEitherLoadingOrUpdating &&
-//			indexedLibraryItems.isEmpty &&
-//			MPMediaLibrary.authorizationStatus() == .authorized
-//		if isLoading {
-//			refreshBarButtons()
-//			tableView.backgroundView = loadingPlaceholderView // Don't use dequeueReusableCell to create a placeholder view as needed every time within numberOfRowsInSection (here), because that might call numberOfRowsInSection, which causes an infinite loop.
-//			return 0
-//		}
-		
-		
 		if
 			MPMediaLibrary.authorizationStatus() != .authorized ||
 				isLoading
@@ -209,11 +198,6 @@ extension CollectionsTVC {
 		isEitherLoadingOrUpdating = true // Do this immediately, to guarantee that we keep showing the (hybrid) "Allow Access"/"Loading…" cell.
 //		refreshAndSetBarButtons(animated: false) // Replace Edit button with spinner
 		tableView.performBatchUpdates {
-//			let section = 0
-//			let indexPaths = tableView.indexPathsForRowsIn(section: section, firstRow: 0)
-//			tableView.deleteRows(at: indexPaths, with: .fade)
-			
-			
 			let indexPath = IndexPath(row: 0, section: 0)
 			tableView.reloadRows(at: [indexPath], with: .fade)
 		} completion: { _ in
@@ -231,8 +215,6 @@ extension CollectionsTVC {
 		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-			
-			
 			tableView.insertRows(
 				at: tableView.indexPathsForRowsIn(
 					section: 0,

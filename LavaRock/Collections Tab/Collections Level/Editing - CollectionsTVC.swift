@@ -71,7 +71,7 @@ extension CollectionsTVC {
 				collection.title = newTitle
 				self.managedObjectContext.tryToSave()
 				
-				self.tableView.reloadRows(at: [indexPath], with: .automatic)
+				self.tableView.reloadRows(at: [indexPath], with: .fade)
 				if wasRowSelectedBeforeRenaming {
 					self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 				}

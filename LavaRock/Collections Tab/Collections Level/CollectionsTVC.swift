@@ -23,21 +23,12 @@ final class CollectionsTVC:
 	
 	// Variables
 	var refreshesAfterDidSaveChangesFromMusicLibrary = true
-	
-	
-//	lazy var loadingPlaceholderView = {
-//		return tableView?.dequeueReusableCell(withIdentifier: "Loading Placeholder")
-//	}()
-	
-	
 	var isLoading: Bool {
 		isEitherLoadingOrUpdating &&
 			indexedLibraryItems.isEmpty &&
 			MPMediaLibrary.authorizationStatus() == .authorized
 	}
 	var didJustFinishLoading = false
-	
-	
 	var isRenamingCollection = false // If we have to refresh to reflect changes in the Music library, and the refresh will change indexedLibraryItems, we'll cancel renaming.
 	var albumMoverClipboard: AlbumMoverClipboard?
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
@@ -46,23 +37,11 @@ final class CollectionsTVC:
 	// MARK: - Setup
 	
 	final override func viewDidLoad() {
+		super.viewDidLoad()
+		
 		if albumMoverClipboard != nil {
-			super.viewDidLoad()
-			
 		} else {
-			super.viewDidLoad()
-			
 			DispatchQueue.main.async { [self] in // Yes, it's actually useful to use async on the main thread. This lets us show existing collections as soon as possible, then integrate with and import changes from the Music library shortly later.
-//				if MPMediaLibrary.authorizationStatus() == .authorized {
-//					isEitherLoadingOrUpdating = true
-//					refreshAndSetBarButtons(animated: false)
-//					tableView.reloadData() // Set the "Loading…" placeholder
-//					DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { // Wait for the navigation item to change the Edit button into the spinner, and for the table view to update the background
-//						integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
-//					}
-//				}
-				
-				
 				isEitherLoadingOrUpdating = true
 				tableView.performBatchUpdates {
 					if isLoading {
