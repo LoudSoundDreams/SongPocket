@@ -14,9 +14,30 @@ extension CollectionsTVC {
 	
 	// Remember to call refreshBarButtons() before returning. super also does it.
 	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if isImportingMusicLibraryForTheFirstTime {
+		if didJustFinishLoading { // This state should only ever happen extremely briefly. You must check for this before checking for isLoading.
 			refreshBarButtons()
-			return 1
+			tableView.backgroundView = nil
+			return 0
+		}
+		
+		
+//		let isLoading = isEitherLoadingOrUpdating &&
+//			indexedLibraryItems.isEmpty &&
+//			MPMediaLibrary.authorizationStatus() == .authorized
+//		if isLoading {
+//			refreshBarButtons()
+//			tableView.backgroundView = loadingPlaceholderView // Don't use dequeueReusableCell to create a placeholder view as needed every time within numberOfRowsInSection (here), because that might call numberOfRowsInSection, which causes an infinite loop.
+//			return 0
+//		}
+		
+		
+		if
+			MPMediaLibrary.authorizationStatus() != .authorized ||
+				isLoading
+		{
+			refreshBarButtons()
+			tableView.backgroundView = nil
+			return 1 // "Allow Access" or "Loading…" cell
 		}
 		
 		return super.tableView(tableView, numberOfRowsInSection: section)
@@ -27,22 +48,10 @@ extension CollectionsTVC {
 	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		if
 			MPMediaLibrary.authorizationStatus() != .authorized ||
-				isImportingMusicLibraryForTheFirstTime
+				isLoading
 		{
 			return allowAccessOrLoadingCell()
 		}
-		
-//		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-//			return allowAccessOrLoadingCell()
-//		}
-//
-//		if
-//			isImportingMusicLibraryForTheFirstTime,
-//			indexedLibraryItems.isEmpty
-//		{
-//			let cell = tableView.dequeueReusableCell(withIdentifier: "Loading Cell", for: indexPath)
-//			return cell
-//		}
 		
 		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
 			return UITableViewCell()
@@ -129,7 +138,7 @@ extension CollectionsTVC {
 			return UITableViewCell()
 		}
 		
-		if !isImportingMusicLibraryForTheFirstTime {
+		if MPMediaLibrary.authorizationStatus() != .authorized {
 			// Show "Allow Access" state
 			cell.allowAccessOrLoadingLabel.text = LocalizedString.allowAccessToMusic
 			cell.allowAccessOrLoadingLabel.textColor = view.window?.tintColor
@@ -138,6 +147,7 @@ extension CollectionsTVC {
 			cell.accessibilityTraits.formUnion(.button)
 			return cell
 		} else {
+			// We should be importing changes with no existing Collections: isLoading == true
 			// Show "Loading…" state
 			cell.allowAccessOrLoadingLabel.text = LocalizedString.loadingWithEllipsis
 			cell.allowAccessOrLoadingLabel.textColor = .secondaryLabel
@@ -196,16 +206,16 @@ extension CollectionsTVC {
 	
 	private func didReceiveAuthorizationForMusicLibrary() {
 		// Put the UI into the "Loading…" state, then continue in part 2.
-		
-		// Do this immediately, to guarantee that we keep showing the (hybrid) "Allow Access"/"Loading…" cell.
-		isImportingMusicLibraryForTheFirstTime = true // TO DO: Move the source of truth for this to the change-importer.
-		
-		// Replace Edit button with spinner
-//		refreshAndSetBarButtons(animated: false)
-		
+		isEitherLoadingOrUpdating = true // Do this immediately, to guarantee that we keep showing the (hybrid) "Allow Access"/"Loading…" cell.
+//		refreshAndSetBarButtons(animated: false) // Replace Edit button with spinner
 		tableView.performBatchUpdates {
+//			let section = 0
+//			let indexPaths = tableView.indexPathsForRowsIn(section: section, firstRow: 0)
+//			tableView.deleteRows(at: indexPaths, with: .fade)
+			
+			
 			let indexPath = IndexPath(row: 0, section: 0)
-			tableView.reloadRows(at: [indexPath], with: .fade) // Note: We have to wait for the animation to complete before we can start the change-importer (on the main thread), but that wastes time, of course.
+			tableView.reloadRows(at: [indexPath], with: .fade)
 		} completion: { _ in
 			self.didReceiveAuthorizationForMusicLibraryPart2()
 		}
@@ -217,15 +227,12 @@ extension CollectionsTVC {
 		setUp() // Includes refreshing the playback toolbar.
 		
 		// Take the UI out of the "Loading…" state.
-		
-		isImportingMusicLibraryForTheFirstTime = false // TO DO: Move the source of truth for this to the change-importer.
-		
-		// Revert spinner back to Edit button
-//		refreshAndSetBarButtons(animated: false) // It should be safe to do this before updating the table view (instead of having to wait for completion), because we've already completed the import and reloaded indexedLibraryItems.
-		
+		isEitherLoadingOrUpdating = false
 		let newNumberOfRows = tableView(tableView, numberOfRowsInSection: 0)
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+			
+			
 			tableView.insertRows(
 				at: tableView.indexPathsForRowsIn(
 					section: 0,
@@ -235,6 +242,7 @@ extension CollectionsTVC {
 		} completion: { _ in
 			self.refreshesAfterDidSaveChangesFromMusicLibrary = true
 		}
+//		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
 	}
 	
 }

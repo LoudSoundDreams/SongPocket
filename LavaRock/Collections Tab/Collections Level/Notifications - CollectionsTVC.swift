@@ -29,6 +29,13 @@ extension CollectionsTVC {
 	final override func prepareToRefreshDataAndViews(
 		consideringRefreshedItems refreshedItems: [NSManagedObject]
 	) {
+		if isLoading {
+			didJustFinishLoading = true
+			let indexPath = IndexPath(row: 0, section: 0)
+			tableView.deleteRows(at: [indexPath], with: .fade)
+			didJustFinishLoading = false
+		}
+		
 		if let albumMoverClipboard = albumMoverClipboard {
 			// What if any of the Albums we're moving get deleted?
 			

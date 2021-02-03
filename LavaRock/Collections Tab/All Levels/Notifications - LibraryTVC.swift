@@ -54,7 +54,7 @@ extension LibraryTVC {
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .LRDidSaveChangesFromMusicLibrary:
-			PlayerControllerManager.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
+			PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
 			refreshToReflectMusicLibrary()
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
@@ -63,7 +63,7 @@ extension LibraryTVC {
 			.MPMusicPlayerControllerPlaybackStateDidChange,
 			.MPMusicPlayerControllerNowPlayingItemDidChange
 		:
-			PlayerControllerManager.refreshCurrentSong() // Do this here, not within PlayerControllerManager, because we need to do it in response to certain notifications, and this class might observe those notifications before PlayerControllerManager does.
+			PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
 			refreshToReflectPlaybackState()
 		default:
 			print("An instance of \(Self.self) observed the notification: \(notification.name)")
@@ -112,19 +112,18 @@ extension LibraryTVC {
 	}
 	
 	final func refreshDataAndViews() {
-		// TO DO: Put the UI into an "Updating…" state.
-		
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		prepareToRefreshDataAndViews(consideringRefreshedItems: refreshedItems)
 		
-		// TO DO: Start taking the UI out of an "Updating…" state here.
-		// TO DO: Finish taking the UI out of an "Updating…" state after all animations complete.
-		
+		isEitherLoadingOrUpdating = false
 		refreshTableView(
 			section: 0,
 			onscreenItems: indexedLibraryItems,
 			refreshedItems: refreshedItems,
-			completion: { self.refreshData() }) // refreshData includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
+			completion: {
+				self.refreshData() // refreshData() includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
+			})
+//		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
 	}
 	
 	/*
@@ -206,6 +205,7 @@ extension LibraryTVC {
 		
 		indexedLibraryItems = refreshedItems
 		
+		isAnimatingDuringRefreshTableView += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
 			tableView.insertRows(at: indexPathsToInsert, with: .middle)
@@ -213,7 +213,12 @@ extension LibraryTVC {
 				guard startingIndexPath != endingIndexPath else { continue } // (Might) prevent the table view from unnecessarily scrolling the top row to the top of the screen.
 				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
-		} completion: { _ in completion?() }
+		} completion: { _ in
+			self.isAnimatingDuringRefreshTableView -= 1
+			if self.isAnimatingDuringRefreshTableView == 0 { // If we execute multiple refreshes quickly, executions after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure.
+				completion?()
+			}
+		}
 	}
 	
 	private func deleteAllRowsThenExit() {

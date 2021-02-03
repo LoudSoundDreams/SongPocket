@@ -51,7 +51,7 @@ class LibraryTVC:
 	}
 	let cellReuseIdentifier = "Cell"
 	lazy var noItemsPlaceholderView = {
-		return tableView?.dequeueReusableCell(withIdentifier: "No Items Cell") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier; otherwise, dequeueReusableCell returns nil.
+		return tableView?.dequeueReusableCell(withIdentifier: "No Items Placeholder") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier; otherwise, dequeueReusableCell returns nil.
 	}()
 	lazy var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort,
@@ -142,8 +142,10 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
+	var isEitherLoadingOrUpdating = false
 	var shouldRefreshOnNextViewDidAppear = false
 	var areSortOptionsPresented = false
+	var isAnimatingDuringRefreshTableView = 0
 	
 	// MARK: - Setup
 	
@@ -169,6 +171,7 @@ class LibraryTVC:
 	
 	// LibraryTVC itself doesn't call this during viewDidLoad(), but its subclasses may want to.
 	// Call this method late into launch, after we've already set up most of the UI; this method sets up the MediaPlayer-related functionality so that we can set up the rest of the UI (although this method itself doesn't set up the rest of the UI).
+	// Before calling this method, set isEitherLoadingOrUpdating = true, and put the UI into the "Loading…" or "Updating…" state.
 	final func integrateWithAndImportChangesFromMusicLibraryIfAuthorized() {
 		MusicLibraryManager.shared.setUpLibraryAndImportChangesIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
 		PlayerControllerManager.setUpPlayerControllerIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
@@ -220,6 +223,14 @@ class LibraryTVC:
 	}
 	
 	private func setNavigationItemButtons(animated: Bool) {
+//		if isEitherLoadingOrUpdating {
+//			let activityIndicatorView = UIActivityIndicatorView()
+//			activityIndicatorView.startAnimating()
+//			let spinnerBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+//			navigationItem.setRightBarButtonItems([spinnerBarButtonItem], animated: animated)
+//			return
+//		}
+		
 		if isEditing {
 			navigationItem.setLeftBarButtonItems(navigationItemLeftButtonsEditingMode, animated: animated)
 		} else {

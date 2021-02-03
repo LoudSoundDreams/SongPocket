@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 
 extension LibraryTVC {
 	
@@ -15,24 +14,16 @@ extension LibraryTVC {
 	// Subclasses that override this method should call super (this implementation), or remember to call refreshBarButtons().
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		refreshBarButtons()
-		switch MPMediaLibrary.authorizationStatus() {
-		case .authorized:
-			// Set the "no items" placeholder in numberOfRowsInSection (here), not in numberOfSections.
-			// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
-			// - If you put it in numberOfRowsInSection, VoiceOver move focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
-			let numberOfLibraryItems = indexedLibraryItems.count
-			switch numberOfLibraryItems {
-			case 0:
-				// TO DO: Wait until we've removed all the rows before we set the placeholder. Also, animate showing and hiding the placeholder.
-				tableView.backgroundView = noItemsPlaceholderView // Don't use dequeueReusableCell to create a placeholder view as needed every time within numberOfRowsInSection (here), because that might call numberOfRowsInSection, which causes an infinite loop.
-				return numberOfLibraryItems
-			default:
-				tableView.backgroundView = nil
-				return numberOfLibraryItems + numberOfRowsAboveIndexedLibraryItems
-			}
-		default: // We haven't asked to access Music yet, or the user has denied permission.
+		// Set the "no items" placeholder in numberOfRowsInSection (here), not in numberOfSections.
+		// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
+		// - If you put it in numberOfRowsInSection, VoiceOver moves focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
+		if indexedLibraryItems.isEmpty {
+			// TO DO: Wait until we've removed all the rows before we set the placeholder. Also, animate showing and hiding the placeholder.
+			tableView.backgroundView = noItemsPlaceholderView // Don't use dequeueReusableCell to create a placeholder view as needed every time within numberOfRowsInSection (here), because that might call numberOfRowsInSection, which causes an infinite loop.
+			return 0
+		} else {
 			tableView.backgroundView = nil
-			return 1 // "allow access" cell
+			return indexedLibraryItems.count + numberOfRowsAboveIndexedLibraryItems
 		}
 	}
 	

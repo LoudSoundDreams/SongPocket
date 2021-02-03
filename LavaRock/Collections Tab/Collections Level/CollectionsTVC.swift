@@ -23,7 +23,21 @@ final class CollectionsTVC:
 	
 	// Variables
 	var refreshesAfterDidSaveChangesFromMusicLibrary = true
-	var isImportingMusicLibraryForTheFirstTime = false
+	
+	
+//	lazy var loadingPlaceholderView = {
+//		return tableView?.dequeueReusableCell(withIdentifier: "Loading Placeholder")
+//	}()
+	
+	
+	var isLoading: Bool {
+		isEitherLoadingOrUpdating &&
+			indexedLibraryItems.isEmpty &&
+			MPMediaLibrary.authorizationStatus() == .authorized
+	}
+	var didJustFinishLoading = false
+	
+	
 	var isRenamingCollection = false // If we have to refresh to reflect changes in the Music library, and the refresh will change indexedLibraryItems, we'll cancel renaming.
 	var albumMoverClipboard: AlbumMoverClipboard?
 	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
@@ -38,8 +52,26 @@ final class CollectionsTVC:
 		} else {
 			super.viewDidLoad()
 			
-			DispatchQueue.main.async { // Yes, it's actually useful to use async on the main thread. This lets us show existing collections as soon as possible, then integrate with and import changes from the Music library shortly later.
-				self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+			DispatchQueue.main.async { [self] in // Yes, it's actually useful to use async on the main thread. This lets us show existing collections as soon as possible, then integrate with and import changes from the Music library shortly later.
+//				if MPMediaLibrary.authorizationStatus() == .authorized {
+//					isEitherLoadingOrUpdating = true
+//					refreshAndSetBarButtons(animated: false)
+//					tableView.reloadData() // Set the "Loading…" placeholder
+//					DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { // Wait for the navigation item to change the Edit button into the spinner, and for the table view to update the background
+//						integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+//					}
+//				}
+				
+				
+				isEitherLoadingOrUpdating = true
+				tableView.performBatchUpdates {
+					if isLoading {
+						let indexPath = IndexPath(row: 0, section: 0)
+						tableView.insertRows(at: [indexPath], with: .fade)
+					}
+				} completion: { _ in
+					integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+				}
 			}
 		}
 	}
@@ -136,17 +168,6 @@ final class CollectionsTVC:
 	}
 	
 	// MARK: - Events
-	
-//	final override func setNavigationItemButtons(animated: Bool) {
-//		super.setNavigationItemButtons(animated: animated)
-//
-//		if isImportingMusicLibraryForTheFirstTime {
-//			let activityIndicatorView = UIActivityIndicatorView()
-//			activityIndicatorView.startAnimating()
-//			let spinnerBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
-//			navigationItem.setRightBarButtonItems([spinnerBarButtonItem], animated: animated)
-//		}
-//	}
 	
 	final override func setToolbarButtons(animated: Bool) {
 		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
