@@ -144,7 +144,7 @@ extension SongsTVC {
 		guard let selectedSong = indexedLibraryItems[indexOfSelectedSong] as? Song else { return }
 		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
 		showExplanationIfNecessaryForEnqueueAction(
-			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAlbumStartingHere,
+			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAction,
 			titleOfSelectedSong: titleOfSelectedSong,
 			numberOfSongsEnqueued: mediaItemsToEnqueue.count)
 	}
@@ -173,7 +173,7 @@ extension SongsTVC {
 		}
 		
 		showExplanationIfNecessaryForEnqueueAction(
-			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueSong,
+			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAction,
 			titleOfSelectedSong: song.titleFormattedOrPlaceholder(),
 			numberOfSongsEnqueued: 1)
 	}

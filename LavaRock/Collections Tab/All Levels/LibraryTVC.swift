@@ -150,7 +150,6 @@ class LibraryTVC:
 //	}
 	var shouldRefreshOnNextViewDidAppear = false
 	var areSortOptionsPresented = false
-//	var isAnimatingDuringRefreshTableView = 0
 	
 	// MARK: - Setup
 	
@@ -198,7 +197,7 @@ class LibraryTVC:
 			flexibleSpaceBarButtonItem,
 			goToNextSongButton
 		]
-		refreshAndSetBarButtons(animated: true) // After we receive authorization to access the Music library, we call setUpUI() again, and when that happens, the change should be animated.
+		refreshAndSetBarButtons(animated: false)
 	}
 	
 	// MARK: Setup Events

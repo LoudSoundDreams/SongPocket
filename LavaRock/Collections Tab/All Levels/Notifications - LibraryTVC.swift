@@ -224,7 +224,6 @@ extension LibraryTVC {
 		
 		indexedLibraryItems = refreshedItems
 		
-//		isAnimatingDuringRefreshTableView += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
 			tableView.insertRows(at: indexPathsToInsert, with: .middle)
@@ -233,11 +232,7 @@ extension LibraryTVC {
 				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
 			}
 		} completion: { _ in
-//			print(self.isAnimatingDuringRefreshTableView)
-//			self.isAnimatingDuringRefreshTableView -= 1
-//			if self.isAnimatingDuringRefreshTableView == 0 { // If we execute multiple refreshes quickly, executions after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure.
-				completion?()
-//			}
+			completion?()
 		}
 	}
 	

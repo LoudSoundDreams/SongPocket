@@ -9,8 +9,7 @@ import Foundation
 
 enum LRUserDefaultsKey: String, CaseIterable {
 	case accentColorName = "accentColorName"
-	case shouldExplainQueueAlbumStartingHere = "shouldExplainQueueAlbumStartingHere"
-	case shouldExplainQueueSong = "shouldExplainQueueSong"
+	case shouldExplainQueueAction = "shouldExplainQueueAction"
 	
 	static func rawValues() -> [String] {
 		let result = Self.allCases.map { $0.rawValue }

@@ -51,6 +51,12 @@ final class CollectionsTVC:
 					} completion: { _ in
 						integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
 					}
+//					else if isUpdating {
+//						refreshAndSetBarButtons(animated: false)
+//						DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: { // Wait for the Edit button to actually change into the spinner before continuing
+//							integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+//						})
+//					}
 				}
 			}
 		}
