@@ -34,8 +34,7 @@ extension MusicLibraryManager {
 		
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
-//		let savedSongs = Set(managedObjectContext.objectsFetched(for: songsFetchRequest))
-		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest)
+		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) // A Set is actually slightly slower
 		let shouldImportIntoDefaultOrder = savedSongs.isEmpty
 		
 		/*
@@ -53,32 +52,25 @@ extension MusicLibraryManager {
 		
 		// Find out which of our saved Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
-//		var potentiallyModifiedSongObjectIDs = Set<NSManagedObjectID>()
-		var potentiallyModifiedSongObjectIDs = [NSManagedObjectID]()
-//		var potentiallyModifiedMediaItems = Set<MPMediaItem>()
-		var potentiallyModifiedMediaItems = [MPMediaItem]()
-//		var deletedSongObjectIDs = Set<NSManagedObjectID>()
-		var deletedSongObjectIDs = [NSManagedObjectID]()
-//		var queriedMediaItemsCopy = Set(queriedMediaItems) // Slower?
-		var queriedMediaItemsCopy = queriedMediaItems
+		var potentiallyModifiedSongs = [NSManagedObject]()
+		var potentiallyModifiedMediaItems = Set<MPMediaItem>()
+		var deletedSongs = Set<NSManagedObject>()
+		var queriedMediaItemsCopy = Set(queriedMediaItems)
 		for savedSong in savedSongs {
-			if let indexOfPotentiallyModifiedMediaItem = queriedMediaItemsCopy.firstIndex(where: { queriedMediaItem in
-				savedSong.persistentID == Int64(bitPattern: queriedMediaItem.persistentID)
-			}) { // We already have a Song for this MPMediaItem. We might have to update it.
-//				potentiallyModifiedSongObjectIDs.insert(savedSong.objectID)
-				potentiallyModifiedSongObjectIDs.append(savedSong.objectID)
-				let potentiallyModifiedMediaItem = queriedMediaItemsCopy[indexOfPotentiallyModifiedMediaItem]
-//				potentiallyModifiedMediaItems.insert(potentiallyModifiedMediaItem)
-				potentiallyModifiedMediaItems.append(potentiallyModifiedMediaItem)
-				queriedMediaItemsCopy.remove(at: indexOfPotentiallyModifiedMediaItem)
-				
-			} else { // This Song no longer corresponds to any MPMediaItem in the Music library. We'll delete it.
-//				deletedSongObjectIDs.insert(savedSong.objectID)
-				deletedSongObjectIDs.append(savedSong.objectID)
+			if let potentiallyModifiedMediaItem = queriedMediaItemsCopy.first(where: { queriedMediaItem in // first(where:) with remove(_:) is 2.6× as fast as firstIndex(where:) with [index] and remove(at:).
+				Int64(bitPattern: queriedMediaItem.persistentID) == savedSong.persistentID
+			}) {
+				// We already have a Song for this MPMediaItem. We might have to update it.
+				potentiallyModifiedSongs.append(savedSong)
+				potentiallyModifiedMediaItems.insert(potentiallyModifiedMediaItem)
+				queriedMediaItemsCopy.remove(potentiallyModifiedMediaItem)
+			} else {
+				// This Song no longer corresponds to any MPMediaItem in the Music library. We'll delete it.
+				deletedSongs.insert(savedSong)
 			}
 		}
 		// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
-		let newMediaItems = queriedMediaItemsCopy
+		let newMediaItems = Array(queriedMediaItemsCopy)
 		
 		/*
 		print("")
@@ -92,10 +84,9 @@ extension MusicLibraryManager {
 			print("\(String(describing: item.title)): \(item.persistentID)")
 		}
 		print("")
-		print("Deleted songs: \(deletedSongObjectIDs.count)")
-		for songID in deletedSongObjectIDs {
-			let song = managedObjectContext.object(with: songID) as! Song
-			print(song.persistentID)
+		print("Deleted songs: \(deletedSongs.count)")
+		for deletedSong in deletedSongs {
+			print(deletedSong.persistentID)
 		}
 		*/
 		
@@ -105,9 +96,7 @@ extension MusicLibraryManager {
 			// This might make new Albums, but not new Collections or Songs.
 			// This doesn't delete any Songs, Albums, or Collections.
 			// This might also leave behind empty Albums, because all the Songs in them were moved to other Albums; but we won't delete those empty Albums for now, so that if the user also added other Songs to those empty Albums, we can keep those Albums in the same place, instead of re-adding them to the top.
-//			forSongsWith: Array(potentiallyModifiedSongObjectIDs),
-			forSongsWith: potentiallyModifiedSongObjectIDs,
-//			toMatch: Array(potentiallyModifiedMediaItems))
+			for: potentiallyModifiedSongs as! [Song],
 			toMatch: potentiallyModifiedMediaItems)
 		
 		let existingAlbumsFetchRequest: NSFetchRequest<Album> = Album.fetchRequest()
@@ -121,13 +110,11 @@ extension MusicLibraryManager {
 		
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, and we don't want to do that yet, because of what we mentioned above.
 			// This might make new Albums, and if it does, it might make new Collections.
-//			for: Array(newMediaItems),
 			for: newMediaItems,
 			existingAlbums: existingAlbums,
 			existingCollections: existingCollections)
 		deleteManagedObjects(
-//			forSongsWith: Array(deletedSongObjectIDs))
-			forSongsWith: deletedSongObjectIDs)
+			for: deletedSongs as! Set<Song>)
 		
 		// Then, some cleanup.
 		

@@ -16,8 +16,8 @@ extension MusicLibraryManager {
 		category: "1. Update Managed Objects")
 	
 	final func updateManagedObjects(
-		forSongsWith songIDs: [NSManagedObjectID],
-		toMatch mediaItems: [MPMediaItem]
+		for songs: [Song],
+		toMatch mediaItems: Set<MPMediaItem>
 	) {
 		os_signpost(.begin, log: Self.importChangesMainLog, name: "1. Update Managed Objects")
 		defer {
@@ -27,20 +27,15 @@ extension MusicLibraryManager {
 		// Here, you can update any attributes on each Song. But it's best to not store data on each Song in the first place unless we have to, because we'll have to manually keep it up to date.
 		
 		updateRelationshipsBetweenAlbumsAndSongs(
-			with: songIDs,
+			songs: songs,
 			toMatch: mediaItems)
 	}
 	
 	private func updateRelationshipsBetweenAlbumsAndSongs(
-		with songIDs: [NSManagedObjectID],
-		toMatch freshMediaItems: [MPMediaItem]
+		songs potentiallyOutdatedSongs: [Song], // Don't use a Set, because we sort this.
+		toMatch freshMediaItems: Set<MPMediaItem> // Use a set, because we search through this.
 	) {
-		// Get all the Songs we might need to update.
-		var potentiallyOutdatedSongs = [Song]()
-		for songID in songIDs {
-			let song = managedObjectContext.object(with: songID) as! Song
-			potentiallyOutdatedSongs.append(song)
-		}
+		var potentiallyOutdatedSongs = potentiallyOutdatedSongs
 		
 		// Group and sort them by Collection, Album, and Song order.
 		os_signpost(.begin, log: Self.updateManagedObjectsLog, name: "Initial sort")
@@ -62,7 +57,7 @@ extension MusicLibraryManager {
 			knownAlbumPersistentIDs.insert(song.container!.albumPersistentID)
 			existingAlbums.append(song.container!)
 		}
-		var freshMediaItemsCopy = Set(freshMediaItems)
+		var freshMediaItemsCopy = freshMediaItems
 		for song in potentiallyOutdatedSongs.reversed() {
 			os_signpost(.begin, log: Self.updateManagedObjectsLog, name: "Update which Album is associated with one Song")
 			defer {
