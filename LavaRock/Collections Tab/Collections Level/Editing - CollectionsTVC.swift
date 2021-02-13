@@ -30,6 +30,7 @@ extension CollectionsTVC {
 	// MARK: - Renaming Collection
 	
 	// WARNING: Using VoiceOver, you can rename Collections at any time, not just in editing mode.
+	// Match presentDialogToMakeNewCollection(_:).
 	final func renameCollection(at indexPath: IndexPath) {
 		guard let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Collection else { return }
 		
@@ -41,18 +42,16 @@ extension CollectionsTVC {
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
-			// UITextInputTraits
-			textField.returnKeyType = .done
-			textField.autocapitalizationType = .sentences
-			textField.autocorrectionType = .yes
-			textField.spellCheckingType = .yes
-			textField.smartQuotesType = .yes
-			textField.smartDashesType = .yes
-			
 			// UITextField
 			textField.text = collection.title
 			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
+			
+			// UITextInputTraits
+			textField.returnKeyType = .done
+			textField.autocapitalizationType = .sentences
+			textField.smartQuotesType = .yes
+			textField.smartDashesType = .yes
 		} )
 		let cancelAction = UIAlertAction(
 			title: LocalizedString.cancel,

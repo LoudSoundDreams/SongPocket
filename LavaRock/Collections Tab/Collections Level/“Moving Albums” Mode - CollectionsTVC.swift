@@ -33,6 +33,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Making New Collection
 	
+	// Match renameCollection(at:).
 	@IBAction func presentDialogToMakeNewCollection(_ sender: UIBarButtonItem) {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
@@ -44,18 +45,16 @@ extension CollectionsTVC {
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextField(configurationHandler: { textField in
-			// UITextInputTraits
-			textField.returnKeyType = .done
-			textField.autocapitalizationType = .sentences
-			textField.autocorrectionType = .yes
-			textField.spellCheckingType = .yes
-			textField.smartQuotesType = .yes
-			textField.smartDashesType = .yes
-			
 			// UITextField
 			textField.text = self.suggestedCollectionTitle()
 			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
+			
+			// UITextInputTraits
+			textField.returnKeyType = .done
+			textField.autocapitalizationType = .sentences
+			textField.smartQuotesType = .yes
+			textField.smartDashesType = .yes
 		} )
 		let cancelAction = UIAlertAction(
 			title: LocalizedString.cancel,

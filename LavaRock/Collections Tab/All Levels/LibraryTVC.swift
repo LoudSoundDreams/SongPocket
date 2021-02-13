@@ -142,7 +142,16 @@ class LibraryTVC:
 		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return request
 	}()
-	var isEitherLoadingOrUpdating = false
+	var isEitherLoadingOrUpdating = false// {
+//		didSet {
+//			if
+//				oldValue == false,
+//				isEitherLoadingOrUpdating
+//			{
+//				didBecomeEitherLoadingOrUpdating()
+//			}
+//		}
+//	}
 //	var isUpdating: Bool {
 //		isEitherLoadingOrUpdating &&
 //			!indexedLibraryItems.isEmpty &&

@@ -33,7 +33,7 @@ extension LibraryTVC {
 //		NotificationCenter.default.addObserver(
 //			self,
 //			selector: #selector(didObserve(_:)),
-//			name: Notification.Name.MPMediaLibraryDidChange,
+//			name: Notification.Name.LRMediaLibraryDidChange,
 //			object: nil)
 		
 		NotificationCenter.default.addObserver(
@@ -64,8 +64,8 @@ extension LibraryTVC {
 		switch notification.name {
 		case .LRDidChangeAccentColor:
 			didChangeAccentColor()
-//		case .MPMediaLibraryDidChange:
-//			isEitherLoadingOrUpdating = true
+//		case .LRMediaLibraryDidChange:
+//			isEitherLoadingOrUpdating = true // Triggers a property observer that sets the "Loading…" state and imports changes
 			
 			
 		case .LRDidSaveChangesFromMusicLibrary:

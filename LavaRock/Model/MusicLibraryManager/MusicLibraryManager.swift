@@ -65,6 +65,9 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	@objc private func didObserve(_ notification: Notification) {
 		switch notification.name {
 		case .MPMediaLibraryDidChange:
+//			NotificationCenter.default.post(
+//				Notification(name: Notification.Name.LRMediaLibraryDidChange)
+//			)
 			importChanges()
 		default:
 			print("\(Self.self) observed the notification: \(notification.name)")

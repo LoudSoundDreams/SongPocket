@@ -190,7 +190,7 @@ extension MusicLibraryManager {
 		for mediaItem in newMediaItems.reversed() { // Add songs within each album from bottom to top.
 			createSong(
 				for: mediaItem,
-				atBeginningOfAlbumWith: album.objectID)
+				atBeginningOf: album)
 		}
 	}
 	
@@ -284,10 +284,8 @@ extension MusicLibraryManager {
 	
 	private func createSong(
 		for newMediaItem: MPMediaItem,
-		atBeginningOfAlbumWith albumID: NSManagedObjectID
+		atBeginningOf album: Album
 	) {
-		let album = managedObjectContext.object(with: albumID) as! Album
-		
 		if let existingSongsInAlbum = album.contents {
 			for existingSong in existingSongsInAlbum {
 				(existingSong as! Song).index += 1
