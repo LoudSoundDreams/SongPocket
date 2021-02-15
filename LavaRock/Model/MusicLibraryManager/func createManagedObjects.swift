@@ -28,11 +28,27 @@ extension MusicLibraryManager {
 		
 		let shouldImportIntoDefaultOrder = existingCollections.isEmpty
 		
+		
+		// Group the MPMediaItems into albums, sorted by the order we want them in in the app.
+//		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Initial group and sort")
+//		let mediaItemGroups: [[MPMediaItem]]
+//		if shouldImportIntoDefaultOrder {
+//			let groups = groupedByAlbum(newMediaItemsImmutable)
+//			mediaItemGroups = sortedByAlbumArtistNameThenAlbumTitle(mediaItemsGroupedByAlbum: groups)
+//		} else {
+//			let sortedMediaItems = newMediaItemsImmutable.sorted {
+//				$0.dateAdded > $1.dateAdded
+//			}
+//			mediaItemGroups = groupedByAlbum(sortedMediaItems)
+//		}
+//		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Initial group and sort")
+		
+		
 		// Sort the MPMediaItems into the order we want them to appear in in the app.
 		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Initial sort")
 		var sortedMediaItems = [MPMediaItem]()
 		if shouldImportIntoDefaultOrder {
-			sortedMediaItems = sortedByAlbumArtistThenAlbum(newMediaItemsImmutable)
+			sortedMediaItems = sortedByAlbumArtistNameThenAlbumTitle(newMediaItemsImmutable)
 		} else {
 			sortedMediaItems = newMediaItemsImmutable.sorted {
 				$0.dateAdded > $1.dateAdded
@@ -43,6 +59,7 @@ extension MusicLibraryManager {
 		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Group the MPMediaItems by album")
 		let mediaItemGroups = groupedByAlbum(sortedMediaItems)
 		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Group the MPMediaItems by album")
+		
 		
 		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Create all the Songs and necessary Albums and Collections")
 		var existingAlbumsCopy = existingAlbums
@@ -73,10 +90,46 @@ extension MusicLibraryManager {
 	// 1. Group by album artists, sorted alphabetically.
 	// - "Unknown Album Artist" should go at the end.
 	// 2. Within each album artist, group by albums, sorted by most recent first.
-	private func sortedByAlbumArtistThenAlbum(
+	
+	/*
+	private func sortedByAlbumArtistNameThenAlbumTitle(
+		mediaItemsGroupedByAlbum mediaItemGroups: [[MPMediaItem]]
+	) -> [[MPMediaItem]] {
+		var mediaItemGroups = mediaItemGroups
+		
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Sort by album title")
+		mediaItemGroups.sort { // Albums in alphabetical order is wrong! We'll sort Albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
+			// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
+			let albumTitle0 = $0.first?.albumTitle ?? ""
+			let albumTitle1 = $1.first?.albumTitle ?? ""
+			let comparisonResult = albumTitle0.localizedStandardCompare(albumTitle1) // The comparison method that the Finder uses
+			return comparisonResult == .orderedAscending
+		}
+		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album title")
+		
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Sort by album artist name")
+		mediaItemGroups.sort {
+			let albumArtist0 = $0.first?.albumArtist ?? ""
+			let albumArtist1 = $1.first?.albumArtist ?? ""
+			let comparisonResult = albumArtist0.localizedStandardCompare(albumArtist1)
+			return comparisonResult == .orderedAscending
+		}
+		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album artist name")
+		
+		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Move unknown album artist to end")
+		let placeholder = Album.unknownAlbumArtistPlaceholder
+		mediaItemGroups.sort { $1.first?.albumArtist ?? placeholder == placeholder }
+		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Move unknown album artist to end")
+		
+		return mediaItemGroups
+	}
+	*/
+	
+	private func sortedByAlbumArtistNameThenAlbumTitle(
 		_ mediaItemsImmutable: [MPMediaItem]
 	) -> [MPMediaItem] {
 		var mediaItemsCopy = mediaItemsImmutable
+		
 		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Sort by album title")
 		mediaItemsCopy.sort { // Albums in alphabetical order is wrong! We'll sort Albums by their release dates, but we'll do it later, because we have to keep songs grouped together by album, and some "Album B" could have songs on it that were originally released both before and after the day some earlier "Album A" was released as an album.
 			// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
@@ -86,6 +139,7 @@ extension MusicLibraryManager {
 			return comparisonResult == .orderedAscending
 		}
 		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album title")
+		
 		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Sort by album artist name")
 		mediaItemsCopy.sort {
 			let albumArtist0 = $0.albumArtist ?? ""
@@ -94,10 +148,12 @@ extension MusicLibraryManager {
 			return comparisonResult == .orderedAscending
 		}
 		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album artist name")
+		
 		os_signpost(.begin, log: Self.createManagedObjectsLog, name: "Move unknown album artist to end")
 		let placeholder = Album.unknownAlbumArtistPlaceholder
 		mediaItemsCopy.sort { $1.albumArtist ?? placeholder == placeholder }
 		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Move unknown album artist to end")
+		
 		return mediaItemsCopy
 	}
 	
@@ -112,8 +168,8 @@ extension MusicLibraryManager {
 			if let indexOfMatchingExistingGroup = seenAlbumPersistentIDs.lastIndex(where: { seenAlbumPersistentID in // lastIndex(where:) is around 1.5× as fast as firstIndex(where:) here for first imports
 				seenAlbumPersistentID == thisAlbumPersistentID
 				// The above is around 5× as fast as:
-//				if let indexOfMatchingExistingGroup = groups.lastIndex(where: { existingGroup in
-//					existingGroup.first?.albumPersistentID == thisAlbumPersistentID
+//			if let indexOfMatchingExistingGroup = groups.lastIndex(where: { existingGroup in
+//				existingGroup.first?.albumPersistentID == thisAlbumPersistentID
 			}) { // If we've already made a group for this media item.
 				groups[indexOfMatchingExistingGroup].append(mediaItem)
 				os_signpost(.end, log: Self.createManagedObjectsLog, name: "Find or make an array for one MPMediaItem")

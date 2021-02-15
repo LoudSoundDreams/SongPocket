@@ -47,10 +47,10 @@ extension LibraryTVC {
 			}
 		}
 		
-		let pairsToMove = tuplesOfIndexPathsAndDataObjects(
+		let pairsToMove = tuplesOfIndexPathsAndItems(
 			selectedIndexPaths.sorted(),
-			tableViewDataSource: indexedLibraryItems,
-			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems)
+			sectionItems: indexedLibraryItems,
+			rowForFirstItem: numberOfRowsAboveIndexedLibraryItems)
 		
 		let targetSection = firstIndexPath.section
 		var targetRow = firstIndexPath.row
@@ -88,10 +88,10 @@ extension LibraryTVC {
 		else { return }
 		
 		let sortedSelectedIndexPaths = selectedIndexPaths.sorted()
-		let pairsToMove = tuplesOfIndexPathsAndDataObjects(
+		let pairsToMove = tuplesOfIndexPathsAndItems(
 			sortedSelectedIndexPaths,
-			tableViewDataSource: indexedLibraryItems,
-			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems)
+			sectionItems: indexedLibraryItems,
+			rowForFirstItem: numberOfRowsAboveIndexedLibraryItems)
 		guard let targetSection = sortedSelectedIndexPaths.last?.section else { return }
 		
 		var targetRow = tableView.numberOfRows(inSection: targetSection) - 1
@@ -172,10 +172,10 @@ extension LibraryTVC {
 		guard indexPathsToSort.count >= 1 else { return }
 		
 		// Get the items to sort, too.
-		let selectedIndexPathsAndItems = tuplesOfIndexPathsAndDataObjects(
+		let selectedIndexPathsAndItems = tuplesOfIndexPathsAndItems(
 			indexPathsToSort,
-			tableViewDataSource: indexedLibraryItems,
-			rowForFirstDataSourceItem: numberOfRowsAboveIndexedLibraryItems)
+			sectionItems: indexedLibraryItems,
+			rowForFirstItem: numberOfRowsAboveIndexedLibraryItems)
 		
 		// Sort the rows and items together.
 		let sortOptionLocalizedTitle = sender.title
