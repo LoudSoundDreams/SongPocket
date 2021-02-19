@@ -14,12 +14,6 @@ extension SongsTVC {
 	// MARK: - Presenting Actions
 	
 	final func showSongActions(for song: Song, popoverAnchorView: UIView) {
-		areSongActionsPresented = true
-		// You must set areSongActionsPresented = false when the action sheet is dismissed. Use this function for convenience.
-		func didDismissSongActions() {
-			areSongActionsPresented = false
-		}
-		
 		// The row for the selected Song stays selected until we complete or cancel an action for it. So remember to deselect it in every possible branch from here. Use this function for convenience.
 		func deselectSelectedSong() {
 			tableView.deselectAllRows(animated: true)
@@ -30,7 +24,6 @@ extension SongsTVC {
 			title: LocalizedString.playAlbumStartingHere,
 			style: .default,
 			handler: { _ in
-				didDismissSongActions()
 				self.playAlbumStartingAtSelectedSong()
 				deselectSelectedSong()
 			}
@@ -40,7 +33,6 @@ extension SongsTVC {
 			title: LocalizedString.queueAlbumStartingHere,
 			style: .default,
 			handler: { _ in
-				didDismissSongActions()
 				self.enqueueAlbumStartingAtSelectedSong()
 				deselectSelectedSong()
 			}
@@ -49,7 +41,6 @@ extension SongsTVC {
 			title: LocalizedString.queueSong,
 			style: .default,
 			handler: { _ in
-				didDismissSongActions()
 				self.enqueueSelectedSong()
 				deselectSelectedSong()
 			}
@@ -58,7 +49,6 @@ extension SongsTVC {
 			title: LocalizedString.cancel,
 			style: .cancel,
 			handler: { _ in
-				didDismissSongActions()
 				deselectSelectedSong()
 			}
 		)

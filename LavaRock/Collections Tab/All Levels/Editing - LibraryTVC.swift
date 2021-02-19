@@ -123,47 +123,40 @@ extension LibraryTVC {
 	// MARK: - Sorting
 	
 	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTVC. They're view controllers.
-	@objc final func showSortOptions() {
+	@objc final func showSortOptionsActionSheet() {
 		let actionSheet = UIAlertController(
 			title: LocalizedString.sortBy,
 			message: nil,
 			preferredStyle: .actionSheet)
 		for sortOption in sortOptions {
-			let sortOptionTitle: String
-			switch sortOption {
-			case .title:
-				sortOptionTitle = LocalizedString.title
-			case .newestFirst:
-				sortOptionTitle = LocalizedString.newestFirst
-			case .oldestFirst:
-				sortOptionTitle = LocalizedString.oldestFirst
-			case .trackNumber:
-				sortOptionTitle = LocalizedString.trackNumber
-			}
 			actionSheet.addAction(
 				UIAlertAction(
-					title: sortOptionTitle,
+					title: sortOption.localizedName(),
 					style: .default,
-					handler: sortSelectedOrAllItems))
+					handler: sortSelectedOrAllItems(_:)))
 		}
 		actionSheet.addAction(
 			UIAlertAction(
 				title: LocalizedString.cancel,
 				style: .cancel,
-				handler: {_ in
-					self.areSortOptionsPresented = false
-				}
-			)
+				handler: nil)
 		)
 		actionSheet.popoverPresentationController?.barButtonItem = sortButton
 		
-		areSortOptionsPresented = true
 		present(actionSheet, animated: true, completion: nil)
 	}
 	
-	private func sortSelectedOrAllItems(sender: UIAlertAction) {
+	private func sortSelectedOrAllItems(_ sender: UIAlertAction) {
+		guard let sortOptionLocalizedName = sender.title else { return }
+		sortSelectedOrAllItems(sortOptionLocalizedName: sortOptionLocalizedName)
+	}
+	
+	final func sortActionHandler(_ sender: UIAction) {
+		sortSelectedOrAllItems(sortOptionLocalizedName: sender.title)
+	}
+	
+	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
 		guard tableView.shouldAllowSorting() else { return }
-		areSortOptionsPresented = false
 		
 		// Get the rows to sort.
 		let indexPathsToSort = tableView.selectedOrEnumeratedIndexPathsIn(
@@ -178,11 +171,10 @@ extension LibraryTVC {
 			rowForFirstItem: numberOfRowsAboveIndexedLibraryItems)
 		
 		// Sort the rows and items together.
-		let sortOptionLocalizedTitle = sender.title
 		let sortedIndexPathsAndItems =
 			sorted(
 				selectedIndexPathsAndItems,
-				bySortOptionLocalizedTitle: sortOptionLocalizedTitle)
+				sortOptionLocalizedName: sortOptionLocalizedName)
 		
 		// Remove the selected items from the data source.
 		for indexPath in indexPathsToSort.reversed() {
@@ -215,9 +207,9 @@ extension LibraryTVC {
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
 	private func sorted(
 		_ indexPathsAndItemsImmutable: [(IndexPath, NSManagedObject)],
-		bySortOptionLocalizedTitle sortOptionLocalizedTitle: String?
-	) -> [(IndexPath, NSManagedObject)] { // Make a SortOption enum.
-		switch sortOptionLocalizedTitle {
+		sortOptionLocalizedName: String?
+	) -> [(IndexPath, NSManagedObject)] {
+		switch sortOptionLocalizedName {
 		
 		case LocalizedString.title:
 			var indexPathsAndItemsCopy = indexPathsAndItemsImmutable
@@ -265,7 +257,7 @@ extension LibraryTVC {
 			return sortedByDiscNumber
 			
 		default:
-			print("The user tried to sort by “\(sortOptionLocalizedTitle ?? "")”, which isn’t a supported option. It might be misspelled.")
+			print("The user tried to sort by “\(sortOptionLocalizedName ?? "")”, which isn’t a supported option. It might be misspelled.")
 			return indexPathsAndItemsImmutable // Otherwise, the app will crash when it tries to call moveRowsUpToEarliestRow on an empty array. Escaping here is easier than changing the logic to use optionals.
 		}
 	}

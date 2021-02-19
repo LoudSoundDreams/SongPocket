@@ -15,11 +15,6 @@ final class SongsTVC:
 	NavigationItemTitleCustomizer
 {
 	
-	// MARK: - Properties
-	
-	// Variables
-	var areSongActionsPresented = false // If we have to refresh to reflect changes in the Music library, and the refresh will change indexedLibraryItems, we'll dismiss this action sheet first.
-	
 	// MARK: - Setup
 	
 	required init?(coder: NSCoder) {

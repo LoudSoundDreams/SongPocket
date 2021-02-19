@@ -20,23 +20,30 @@ extension AlbumsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	final override func willRefreshDataAndViews(
-		toShow refreshedItems: [NSManagedObject]
-	) {
-		if albumMoverClipboard != nil {
-			/*
-			Only do this if indexedLibraryItems will change during the refresh?
-			
-			All special cases:
-			- In "moving Albums" mode and in existing Collection
-			- In "moving Albums" mode and in new Collection
-			- If any of the Albums we're moving get deleted
-			*/
-			dismiss(animated: true, completion: nil)
-		}
+	/*
+	All special cases in AlbumsTVC:
+	- In "moving Albums" mode and in existing Collection
+	- In "moving Albums" mode and in new Collection
+	- If any of the Albums we're moving get deleted
+	*/
+	
+	// This is the same as in CollectionsTVC.
+	final override func didDismissAllModalViewControllers() {
+		super.didDismissAllModalViewControllers()
 		
-		super.willRefreshDataAndViews(
-			toShow: refreshedItems)
+		if let albumMoverClipboard = albumMoverClipboard {
+			// didAbort() solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
+			albumMoverClipboard.delegate?.didAbort()
+		}
+	}
+	
+	// This is the same as in CollectionsTVC.
+	final override func shouldContinueAfterWillRefreshDataAndViews() -> Bool {
+		if albumMoverClipboard != nil {
+			return false
+		} else {
+			return true
+		}
 	}
 	
 	// This is the same as in SongsTVC.

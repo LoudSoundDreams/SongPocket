@@ -34,7 +34,6 @@ extension CollectionsTVC {
 	final func renameCollection(at indexPath: IndexPath) {
 		guard let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Collection else { return }
 		
-		isRenamingCollection = true
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
 		
 		let dialog = UIAlertController(
@@ -56,10 +55,7 @@ extension CollectionsTVC {
 		let cancelAction = UIAlertAction(
 			title: LocalizedString.cancel,
 			style: .cancel,
-			handler: { _ in
-				self.isRenamingCollection = false
-			}
-		)
+			handler: nil)
 		let doneAction = UIAlertAction(
 			title: LocalizedString.done,
 			style: .default,
@@ -74,8 +70,6 @@ extension CollectionsTVC {
 				if wasRowSelectedBeforeRenaming {
 					self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 				}
-				
-				self.isRenamingCollection = false
 			}
 		)
 		dialog.addAction(cancelAction)

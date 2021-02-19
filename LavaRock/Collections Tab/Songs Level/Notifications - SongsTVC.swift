@@ -20,21 +20,6 @@ extension SongsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	final override func willRefreshDataAndViews(
-		toShow refreshedItems: [NSManagedObject]
-	) {
-		if
-			areSongActionsPresented,
-			refreshedItems != indexedLibraryItems
-		{
-			dismiss(animated: true, completion: nil)
-			areSongActionsPresented = false
-		}
-		
-		super.willRefreshDataAndViews(
-			toShow: refreshedItems)
-	}
-	
 	// This is the same as in AlbumsTVC.
 	final override func refreshContainerOfLibraryItems() {
 		super.refreshContainerOfLibraryItems()

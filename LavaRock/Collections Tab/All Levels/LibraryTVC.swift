@@ -26,6 +26,20 @@ class LibraryTVC:
 		
 		// For Songs only
 		case trackNumber
+		
+		// You can't have each LocalizedString be a raw value for an enum case, because raw values for enum cases must be literals.
+		func localizedName() -> String {
+			switch self {
+			case .title:
+				return LocalizedString.title
+			case .newestFirst:
+				return LocalizedString.newestFirst
+			case .oldestFirst:
+				return LocalizedString.oldestFirst
+			case .trackNumber:
+				return LocalizedString.trackNumber
+			}
+		}
 	}
 	
 	// MARK: - Properties
@@ -43,7 +57,18 @@ class LibraryTVC:
 	private var navigationItemLeftButtonsEditingMode = [UIBarButtonItem]()
 	private var navigationItemRightButtons = [UIBarButtonItem]()
 	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()
-	var sortOptions = [SortOption]()
+	var sortOptions = [SortOption]() {
+		didSet {
+			guard #available(iOS 14, *) else { return }
+			
+			let sortActions = sortOptions.map {
+				UIAction(
+					title: $0.localizedName(),
+					handler: sortActionHandler(_:))
+			}
+			sortButton.menu = UIMenu(children: sortActions)
+		}
+	}
 	
 	// "Constants" that subclasses should not change
 	var sharedPlayerController: MPMusicPlayerController? {
@@ -53,9 +78,16 @@ class LibraryTVC:
 	lazy var noItemsPlaceholderView = {
 		return tableView?.dequeueReusableCell(withIdentifier: "No Items Placeholder") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier; otherwise, dequeueReusableCell returns nil.
 	}()
-	lazy var sortButton = UIBarButtonItem(
-		title: LocalizedString.sort,
-		style: .plain, target: self, action: #selector(showSortOptions))
+	lazy var sortButton: UIBarButtonItem = {
+		if #available(iOS 14, *) {
+			return UIBarButtonItem(
+				title: LocalizedString.sort) // The property observer on sortOptions adds a UIMenu to this button.
+		} else { // iOS 13
+			return UIBarButtonItem(
+				title: LocalizedString.sort,
+				style: .plain, target: self, action: #selector(showSortOptionsActionSheet))
+		}
+	}()
 	lazy var floatToTopButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.up.to.line.alt"),
@@ -158,7 +190,6 @@ class LibraryTVC:
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
 	var shouldRefreshOnNextViewDidAppear = false
-	var areSortOptionsPresented = false
 	
 	// MARK: - Setup
 	

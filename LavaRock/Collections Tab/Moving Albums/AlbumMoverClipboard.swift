@@ -23,7 +23,6 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	weak var delegate: AlbumMoverDelegate?
 	
 	// Variables
-	var isMakingNewCollection = false // If we have to refresh to reflect changes in the Music library, we'll cancel making the new Collection, (then dismiss the "move Albums" sheet).
 	var didAlreadyMakeNewCollection = false
 	var didAlreadyCommitMoveAlbums = false
 	

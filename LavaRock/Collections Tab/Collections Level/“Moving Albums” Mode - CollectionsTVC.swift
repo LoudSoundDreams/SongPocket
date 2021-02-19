@@ -59,15 +59,11 @@ extension CollectionsTVC {
 		let cancelAction = UIAlertAction(
 			title: LocalizedString.cancel,
 			style: .cancel,
-			handler: { _ in
-				albumMoverClipboard.isMakingNewCollection = false
-			}
-		)
+			handler: nil)
 		let doneAction = UIAlertAction(
 			title: LocalizedString.done,
 			style: .default,
 			handler: { _ in
-				albumMoverClipboard.isMakingNewCollection = false
 				albumMoverClipboard.didAlreadyMakeNewCollection = true
 				
 				let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
@@ -100,7 +96,6 @@ extension CollectionsTVC {
 		dialog.addAction(cancelAction)
 		dialog.addAction(doneAction)
 		dialog.preferredAction = doneAction
-		albumMoverClipboard.isMakingNewCollection = true
 		present(dialog, animated: true, completion: nil)
 	}
 	

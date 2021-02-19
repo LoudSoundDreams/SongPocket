@@ -134,6 +134,8 @@ extension LibraryTVC {
 		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 		willRefreshDataAndViews(toShow: refreshedItems)
 		
+		guard shouldContinueAfterWillRefreshDataAndViews() else { return }
+		
 		isEitherLoadingOrUpdating = false
 		refreshTableView(
 			section: 0,
@@ -146,26 +148,37 @@ extension LibraryTVC {
 	}
 	
 	/*
-	Easy to override. You should call super (this implementation) in your override.
-	You might have content-dependent, blocking actions onscreen while we we need to refresh. If so, override this method and cancel those actions, if the refresh will change the content that those actions would have applied to. Typically, you should cancel those actions if refreshedItems is different from indexedLibraryItems.
-	These are the content-dependent, blocking actions we need to account for:
+	Easy to override. You should call super (this implementation) at the end of your override.
+	You might be in the middle of a content-dependent task when we need to refresh. Here are all of them:
 	- Sort options (LibraryTVC)
 	- "Rename Collection" dialog (CollectionsTVC)
 	- "Move Albums" sheet (CollectionsTVC, AlbumsTVC when in "moving Albums" mode)
 	- "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
 	- Song actions (SongsTVC)
-	Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).
+	- (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
+	Subclasses that offer those tasks should override this method and cancel those tasks. For more polish, only cancel those tasks if the refresh will change the content that those actions apply to. Typically, that's when refreshedItems is different from indexedLibraryItems.
 	*/
 	@objc func willRefreshDataAndViews(
 		toShow refreshedItems: [NSManagedObject]
 	) {
-		if
-			areSortOptionsPresented,
-			refreshedItems != indexedLibraryItems
-		{
-			dismiss(animated: true, completion: nil)
-			areSortOptionsPresented = false
+		// Only dismiss modal view controllers if indexedLibraryItems will change during the refresh?
+//		print(presentedViewController)
+		let shouldNotDismissAllModalViewControllers =
+			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
+		if !shouldNotDismissAllModalViewControllers {
+			view.window?.rootViewController?.dismiss(
+				animated: true,
+				completion: didDismissAllModalViewControllers)
 		}
+	}
+	
+	// Easy to override. You should call super (this implementation) in your override.
+	@objc func didDismissAllModalViewControllers() {
+	}
+	
+	// Easy to override. You should not call super (this implementation) in your override.
+	@objc func shouldContinueAfterWillRefreshDataAndViews() -> Bool {
+		return true
 	}
 	
 	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().
