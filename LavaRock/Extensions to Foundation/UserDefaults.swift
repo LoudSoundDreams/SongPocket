@@ -8,13 +8,11 @@
 import Foundation
 
 enum LRUserDefaultsKey: String, CaseIterable {
-	case accentColorName = "accentColorName"
-	case shouldExplainQueueAction = "shouldExplainQueueAction"
+	// Remember: These case names are also their raw values as strings.
+	case accentColorName
+	case shouldExplainQueueAction
 	
-	static func rawValues() -> [String] {
-		let result = Self.allCases.map { $0.rawValue }
-		return result
-	}
+	static let rawValues = allCases.map { $0.rawValue }
 }
 
 extension UserDefaults {

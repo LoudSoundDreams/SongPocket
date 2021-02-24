@@ -123,13 +123,12 @@ extension PurchaseManager: SKProductsRequestDelegate {
 			setUpPriceFormatter(locale: priceLocale)
 		}
 		for product in response.products {
-			switch product.productIdentifier {
-			case ProductIdentifier.tip.rawValue:
+			guard let productIdentifier = ProductIdentifier(rawValue: product.productIdentifier) else { continue }
+			switch productIdentifier {
+			case .tip:
 				tipProduct = product
 				tipStatus = .ready
 				tipDelegate?.didReceiveTipProduct(product)
-			default:
-				break
 			}
 		}
 	}
@@ -171,8 +170,9 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 		updatedTransactions transactions: [SKPaymentTransaction])
 	{
 		for transaction in transactions {
-			switch transaction.payment.productIdentifier {
-			case ProductIdentifier.tip.rawValue:
+			guard let productIdentifier = ProductIdentifier(rawValue: transaction.payment.productIdentifier) else { continue }
+			switch productIdentifier {
+			case .tip:
 				switch transaction.transactionState {
 				case .purchasing:
 					break
@@ -182,8 +182,6 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 					fatalError()
 				}
 				tipDelegate?.didUpdateTipTransaction(transaction)
-			default:
-				break
 			}
 		}
 	}

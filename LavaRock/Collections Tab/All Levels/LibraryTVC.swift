@@ -66,7 +66,7 @@ class LibraryTVC:
 					title: $0.localizedName(),
 					handler: sortActionHandler(_:))
 			}
-			sortButton.menu = UIMenu(children: sortActions)
+			sortButton.menu = UIMenu(children: sortActions.reversed()) // Reversed because a UIMenu lists its children from the bottom upward when a toolbar button presents it.
 		}
 	}
 	
@@ -190,6 +190,7 @@ class LibraryTVC:
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
 	var shouldRefreshOnNextViewDidAppear = false
+	var isAnimatingDuringRefreshTableView = 0
 	
 	// MARK: - Setup
 	

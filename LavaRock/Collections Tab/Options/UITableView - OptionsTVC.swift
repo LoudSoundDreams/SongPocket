@@ -22,48 +22,54 @@ extension OptionsTVC {
 	}
 	
 	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		switch section {
-		case Section.accentColor.rawValue:
-			return AccentColorManager.colorEntries.count
-		case Section.tipJar.rawValue:
-			return 1
-		default:
+		guard let section = Section(rawValue: section) else {
 			return 0
+		}
+		switch section {
+		case .accentColor:
+			return AccentColorManager.colorEntries.count
+		case .tipJar:
+			return 1
 		}
 	}
 	
 	// MARK: Headers and Footers
 	
 	final override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		switch section {
-		case Section.accentColor.rawValue:
-			return LocalizedString.accentColor
-		case Section.tipJar.rawValue:
-			return LocalizedString.tipJar
-		default:
+		guard let section = Section(rawValue: section) else {
 			return nil
+		}
+		switch section {
+		case .accentColor:
+			return LocalizedString.accentColor
+		case .tipJar:
+			return LocalizedString.tipJar
 		}
 	}
 	
 	final override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-		switch section {
-		case Section.tipJar.rawValue:
-			return LocalizedString.tipJarFooter
-		default:
+		guard let section = Section(rawValue: section) else {
 			return nil
+		}
+		switch section {
+		case .accentColor:
+			return nil
+		case .tipJar:
+			return LocalizedString.tipJarFooter
 		}
 	}
 	
 	// MARK: Cells
 	
 	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch indexPath.section {
-		case Section.accentColor.rawValue:
-			return accentColorCell(forRowAt: indexPath)
-		case Section.tipJar.rawValue:
-			return tipJarCell(forRowAt: indexPath)
-		default:
+		guard let section = Section(rawValue: indexPath.section) else {
 			return UITableViewCell()
+		}
+		switch section {
+		case .accentColor:
+			return accentColorCell(forRowAt: indexPath)
+		case .tipJar:
+			return tipJarCell(forRowAt: indexPath)
 		}
 	}
 	
@@ -79,13 +85,12 @@ extension OptionsTVC {
 	// MARK: Selecting
 	
 	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		switch indexPath.section {
-		case Section.accentColor.rawValue:
+		guard let section = Section(rawValue: indexPath.section) else { return }
+		switch section {
+		case .accentColor:
 			didSelectAccentColorRow(at: indexPath)
-		case Section.tipJar.rawValue:
+		case .tipJar:
 			didSelectTipJarRow(at: indexPath)
-		default:
-			break
 		}
 	}
 	
