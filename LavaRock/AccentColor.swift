@@ -1,5 +1,5 @@
 //
-//  AccentColorManager.swift
+//  AccentColor.swift
 //  LavaRock
 //
 //  Created by h on 2020-07-29.

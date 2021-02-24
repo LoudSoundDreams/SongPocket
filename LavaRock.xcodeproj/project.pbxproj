@@ -22,7 +22,7 @@
 		0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */; };
 		0736E3A724B8415400A15420 /* Views - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Views - AlbumsTVC.swift */; };
 		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
-		073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColorManager.swift */; };
+		073AF48A24D16647000C1A6D /* AccentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColor.swift */; };
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Views - SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Views - SongsTVC.swift */; };
 		073E6A8725562B93003C84A5 /* Views - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */; };
@@ -117,7 +117,7 @@
 		0732DDC2257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* Views - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - AlbumsTVC.swift"; sourceTree = "<group>"; };
 		0736E3E924B95FD600A15420 /* extension Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Album.swift"; sourceTree = "<group>"; };
-		073AF48924D16647000C1A6D /* AccentColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
+		073AF48924D16647000C1A6D /* AccentColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColor.swift; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Views - SongsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - SongsTVC.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Views - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - CollectionsTVC.swift"; sourceTree = "<group>"; };
@@ -323,6 +323,7 @@
 				076B56CF25C74BB400E147C0 /* Extensions to Foundation */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				076B56B025C747B100E147C0 /* Singletons */,
+				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				07E92A15251068E500E9073B /* Extensions to UIKit */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				07708A5524E5A2DF000FE01D /* Collections Tab */,
@@ -354,7 +355,6 @@
 			children = (
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07267A1F25537C5800C914A3 /* PlayerControllerManager.swift */,
-				073AF48924D16647000C1A6D /* AccentColorManager.swift */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -638,7 +638,7 @@
 				070E194124F33FC800B21307 /* Editing - CollectionsTVC.swift in Sources */,
 				07140605259D6958003CA92C /* UserDefaults.swift in Sources */,
 				07F36BC824FC400E0064282D /* UITableView - SongsTVC.swift in Sources */,
-				073AF48A24D16647000C1A6D /* AccentColorManager.swift in Sources */,
+				073AF48A24D16647000C1A6D /* AccentColor.swift in Sources */,
 				0719B57C2511A61F00748371 /* protocol PlaybackToolbarManager.swift in Sources */,
 				07E92A0A2510434800E9073B /* QueueEntryCell.swift in Sources */,
 				07DC1B1A24F20C9E00AAEEDB /* extension NSManagedObjectContext.swift in Sources */,
