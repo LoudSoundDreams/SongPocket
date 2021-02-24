@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		
 		
-		AccentColorManager.restoreAccentColor(in: window)
+		AccentColor.restore(in: window)
 		
 		
 	}

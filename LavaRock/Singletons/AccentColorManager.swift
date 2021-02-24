@@ -7,93 +7,11 @@
 
 import UIKit
 
-struct AccentColorManager {
-	
-	private init() { }
-	
-	// MARK: - NON-PRIVATE
+struct AccentColor: Equatable { // You can't make this an enum, because raw values for enum cases need to be literals.
 	
 	// MARK: - Types
 	
-	struct ColorEntry {
-		let userDefaultsValue: String
-		let displayName: String
-		let uiColor: UIColor
-		let heartEmoji: String
-	}
-	
-	// MARK: - Properties
-	
-	static let colorEntries = [
-		ColorEntry(
-			userDefaultsValue: UserDefaultsValueCase.strawberry.rawValue,
-			displayName: LocalizedString.strawberry,
-			uiColor: UIColor.systemPink,
-			heartEmoji: "❤️"),
-		ColorEntry(
-			userDefaultsValue: UserDefaultsValueCase.tangerine.rawValue,
-			displayName: LocalizedString.tangerine,
-			uiColor: UIColor.systemOrange,
-			heartEmoji: "🧡"),
-		ColorEntry(
-			userDefaultsValue: UserDefaultsValueCase.lime.rawValue,
-			displayName: LocalizedString.lime,
-			uiColor: UIColor.systemGreen,
-			heartEmoji: "💚"),
-		
-		defaultColorEntry,
-		
-		ColorEntry(
-			userDefaultsValue: UserDefaultsValueCase.grape.rawValue,
-			displayName: LocalizedString.grape,
-			uiColor: UIColor.systemPurple,
-			heartEmoji: "💜"),
-	]
-	
-	// MARK: - Restoring and Setting
-	
-	static func restoreAccentColor(in window: UIWindow?) {
-		let colorEntryToSet = Self.savedOrDefaultColorEntry()
-		Self.setAccentColor(colorEntryToSet, in: window)
-	}
-	
-	static func setAccentColor(_ colorEntry: ColorEntry, in window: UIWindow?) {
-		window?.tintColor = colorEntry.uiColor // This doesn't trigger tintColorDidChange() on LibraryTVC's table view, so we'll post our own notification.
-		NotificationCenter.default.post(
-			Notification(name: Notification.Name.LRDidChangeAccentColor)
-		)
-		
-		UserDefaults.standard.set(
-			colorEntry.userDefaultsValue,
-			forKey: LRUserDefaultsKey.accentColorName.rawValue)
-	}
-	
-	// MARK: - Getting Info
-	
-	static func savedUserDefaultsValue() -> String? {
-		return UserDefaults.standard.value(
-			forKey: LRUserDefaultsKey.accentColorName.rawValue) as? String
-	}
-	
-	static func savedOrDefaultColorEntry() -> ColorEntry {
-		// If there's a saved preference, set it.
-		if
-			let savedUserDefaultsValue = savedUserDefaultsValue(),
-			let savedColorEntry = colorEntries.first(where: { colorEntry in
-				colorEntry.userDefaultsValue == savedUserDefaultsValue
-			})
-		{
-			return savedColorEntry
-		} else { // There was no saved preference, or it didn't match any ColorEntry.
-			return defaultColorEntry
-		}
-	}
-	
-	// MARK: - PRIVATE
-	
-	// MARK: - Types
-	
-	private enum UserDefaultsValueCase: String, CaseIterable {
+	enum UserDefaultsValueCase: String, CaseIterable {
 		case strawberry = "Strawberry"
 		case tangerine = "Tangerine"
 		case lime = "Lime"
@@ -103,10 +21,99 @@ struct AccentColorManager {
 	
 	// MARK: - Properties
 	
-	private static let defaultColorEntry = ColorEntry(
-		userDefaultsValue: UserDefaultsValueCase.blueberry.rawValue,
+	// MARK: Instance Properties
+	
+	let userDefaultsValueCase: UserDefaultsValueCase
+	let displayName: String
+	let uiColor: UIColor
+	let heartEmoji: String
+	
+	// MARK: Type Properties
+	
+	static let all = [
+		Self(
+			userDefaultsValueCase: .strawberry,
+			displayName: LocalizedString.strawberry,
+			uiColor: .systemPink,
+			heartEmoji: "❤️"),
+		Self(
+			userDefaultsValueCase: .tangerine,
+			displayName: LocalizedString.tangerine,
+			uiColor: .systemOrange,
+			heartEmoji: "🧡"),
+		Self(
+			userDefaultsValueCase: .lime,
+			displayName: LocalizedString.lime,
+			uiColor: .systemGreen,
+			heartEmoji: "💚"),
+		
+		defaultAccentColor,
+		
+		Self(
+			userDefaultsValueCase: .grape,
+			displayName: LocalizedString.grape,
+			uiColor: .systemPurple,
+			heartEmoji: "💜"),
+	]
+	
+	// MARK: - Restoring and Setting
+	
+	static func restore(in window: UIWindow?) {
+		let accentColorToSet = savedPreferenceOrDefault()
+		accentColorToSet.set(in: window)
+	}
+	
+	func set(in window: UIWindow?) {
+		window?.tintColor = uiColor // This doesn't trigger tintColorDidChange() on LibraryTVC's table view, so we'll post our own notification.
+		NotificationCenter.default.post(
+			Notification(name: Notification.Name.LRDidChangeAccentColor)
+		)
+		
+		UserDefaults.standard.set(
+			userDefaultsValueCase.rawValue,
+			forKey: LRUserDefaultsKey.accentColorName.rawValue)
+	}
+	
+	// MARK: - Getting Saved Value
+	
+	static func savedPreferenceOrDefault() -> Self {
+		return savedPreference() ?? defaultAccentColor
+	}
+	
+	static func savedPreference() -> Self? {
+		// If there's a saved preference, return that.
+		if
+			let savedUserDefaultsValueCase = savedUserDefaultsValueCase(),
+			let result = all.first(where: { accentColor in
+				accentColor.userDefaultsValueCase == savedUserDefaultsValueCase
+			})
+		{
+			return result
+		} else { // There was no saved preference, or it didn't match any AccentColor.
+			return nil
+		}
+	}
+	
+	// MARK: - PRIVATE
+	
+	// MARK: - Properties
+	
+	// MARK: Type Properties
+	
+	private static let defaultAccentColor = Self(
+		userDefaultsValueCase: .blueberry,
 		displayName: LocalizedString.blueberry,
-		uiColor: UIColor.systemBlue,
+		uiColor: .systemBlue,
 		heartEmoji: "💙")
+	
+	// MARK: - Getting Saved Value
+	
+	private static func savedUserDefaultsValueCase() -> UserDefaultsValueCase? {
+		guard let savedUserDefaultsValue = UserDefaults.standard.value(
+				forKey: LRUserDefaultsKey.accentColorName.rawValue) as? String else {
+			return nil
+		}
+		return UserDefaultsValueCase(rawValue: savedUserDefaultsValue)
+	}
 	
 }

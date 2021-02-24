@@ -27,7 +27,7 @@ extension OptionsTVC {
 		}
 		switch section {
 		case .accentColor:
-			return AccentColorManager.colorEntries.count
+			return AccentColor.all.count
 		case .tipJar:
 			return 1
 		}
@@ -112,25 +112,26 @@ extension OptionsTVC {
 		let index = indexPath.row
 		guard
 			index >= 0,
-			index <= AccentColorManager.colorEntries.count - 1
+			index <= AccentColor.all.count - 1
 		else {
 			return UITableViewCell()
 		}
-		let rowColorEntry = AccentColorManager.colorEntries[index]
+		
+		let rowAccentColor = AccentColor.all[index]
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Color Cell", for: indexPath)
 		
 		if #available(iOS 14.0, *) {
 			var configuration = cell.defaultContentConfiguration()
-			configuration.text = rowColorEntry.displayName
-			configuration.textProperties.color = rowColorEntry.uiColor
+			configuration.text = rowAccentColor.displayName
+			configuration.textProperties.color = rowAccentColor.uiColor
 			cell.contentConfiguration = configuration
 		} else { // iOS 13 and earlier
-			cell.textLabel?.text = rowColorEntry.displayName
-			cell.textLabel?.textColor = rowColorEntry.uiColor
+			cell.textLabel?.text = rowAccentColor.displayName
+			cell.textLabel?.textColor = rowAccentColor.uiColor
 		}
 		
-		if rowColorEntry.userDefaultsValue == AccentColorManager.savedUserDefaultsValue() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowColorEntry.uiColor.
+		if rowAccentColor == AccentColor.savedPreference() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowAccentColor.uiColor.
 			cell.accessoryType = .checkmark
 		} else {
 			cell.accessoryType = .none
@@ -147,14 +148,14 @@ extension OptionsTVC {
 		let colorIndex = indexPath.row
 		guard
 			colorIndex >= 0,
-			colorIndex <= AccentColorManager.colorEntries.count - 1
+			colorIndex <= AccentColor.all.count - 1
 		else {
 			tableView.deselectRow(at: indexPath, animated: true)
 			return
 		}
 		
-		let selectedColorEntry = AccentColorManager.colorEntries[colorIndex]
-		AccentColorManager.setAccentColor(selectedColorEntry, in: view.window)
+		let selectedAccentColor = AccentColor.all[colorIndex]
+		selectedAccentColor.set(in: view.window)
 		
 		func refreshCheckmarksOnAccentColorRows(selectedIndexPath: IndexPath) {
 			if #available(iOS 14.0, *) { // See comment in the `else` block.
@@ -273,8 +274,8 @@ extension OptionsTVC {
 			return UITableViewCell()
 		}
 		
-		let savedColorEntry = AccentColorManager.savedOrDefaultColorEntry()
-		let heartEmoji = savedColorEntry.heartEmoji
+		let accentColor = AccentColor.savedPreferenceOrDefault()
+		let heartEmoji = accentColor.heartEmoji
 		let thankYouMessage =
 			heartEmoji +
 			LocalizedString.tipThankYouMessageWithPaddingSpaces +
