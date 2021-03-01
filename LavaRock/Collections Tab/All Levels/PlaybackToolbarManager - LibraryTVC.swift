@@ -102,7 +102,7 @@ extension LibraryTVC {
 	@objc final func restartCurrentSong() {
 		sharedPlayerController?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
 //		sharedPlayerController?.skipToBeginning()
-//		sharedPlayerController?.prepareToPlay() // As of iOS 14.2 beta 3, after you call skipToBeginning(), the playhead doesn't move to the beginning until you tap Play or call prepareToPlay().
+//		sharedPlayerController?.prepareToPlay()
 		
 		refreshBarButtons() // Disable the "restart current song" button if appropriate.
 	}

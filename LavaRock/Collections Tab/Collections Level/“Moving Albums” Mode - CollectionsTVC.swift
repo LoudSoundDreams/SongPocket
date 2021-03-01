@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import MediaPlayer
 
 extension CollectionsTVC {
 	
@@ -125,15 +126,18 @@ extension CollectionsTVC {
 	private static func suggestedCollectionTitle(
 		for albumIDs: [NSManagedObjectID],
 		in managedObjectContext: NSManagedObjectContext,
-		notMatching existingCollectionTitles: [String]?
+		notMatching existingCollectionTitles: [String]
 	) -> String? {
-		
-		for albumProperty in AlbumPropertyToConsider.allCases {
+		let albumPropertyKeyPaths = [
+			// Order matters. First, we'll see if all the Albums have the same album artist; if they don't, then we'll try the next case, and so on.
+			\MPMediaItem.albumArtist
+		]
+		for albumPropertyKeyPath in albumPropertyKeyPaths {
 			if let suggestion = suggestedCollectionTitle(
 				for: albumIDs,
 				in: managedObjectContext,
-				notMatching: existingCollectionTitles,
-				considering: albumProperty
+				considering: albumPropertyKeyPath,
+				notMatching: existingCollectionTitles
 			) {
 				return suggestion
 			} else {
@@ -143,67 +147,45 @@ extension CollectionsTVC {
 		return nil
 	}
 	
-	private enum AlbumPropertyToConsider: CaseIterable {
-		case albumArtist // Order matters. First, we'll see if all the Albums have the same album artist; if they don't, then we'll try the next case, and so on.
-	}
-	
 	private static func suggestedCollectionTitle(
 		for albumIDs: [NSManagedObjectID],
 		in managedObjectContext: NSManagedObjectContext,
-		notMatching existingCollectionTitles: [String]?,
-		considering albumProperty: AlbumPropertyToConsider
+		considering albumPropertyKeyPath: KeyPath<MPMediaItem, String?>,
+		notMatching existingCollectionTitles: [String]
 	) -> String? {
-		if albumIDs.count < 1 {
+		// If we have no albumIDs, return nil.
+		guard
+			let firstAlbumID = albumIDs.first,
+			let firstAlbum = managedObjectContext.object(with: firstAlbumID) as? Album
+		else {
 			return nil
 		}
 		
-		func valueForAlbumProperty(_ albumProperty: AlbumPropertyToConsider, on album: Album) -> String? {
-			let representativeItem = album.mpMediaItemCollection()?.representativeItem
-			switch albumProperty {
-			case .albumArtist:
-				return representativeItem?.albumArtist
-			}
-		}
-		
-		let firstAlbum = managedObjectContext.object(with: albumIDs[0]) as! Album
-		let propertyValueForFirstAlbum = valueForAlbumProperty(albumProperty, on: firstAlbum)
-		if
-			let existingCollectionTitles = existingCollectionTitles,
-			let propertyValueForFirstAlbum = propertyValueForFirstAlbum,
-			existingCollectionTitles.contains(propertyValueForFirstAlbum)
-		{
+		// If we can't fetch any metadata for the first album, return nil.
+		guard let metadataValueForFirstAlbum = firstAlbum.mpMediaItemCollection()?.representativeItem?[keyPath: albumPropertyKeyPath] else {
 			return nil
 		}
 		
-		// Case: 1 Album
 		if albumIDs.count == 1 {
-			return propertyValueForFirstAlbum
-			
+			// If the metadata for the first album matches an existing title, return nil.
+			guard !existingCollectionTitles.contains(metadataValueForFirstAlbum) else {
+				return nil
+			}
+			return metadataValueForFirstAlbum
 		} else {
-			// Case: 2 or more Albums
-			let secondAlbum = managedObjectContext.object(with: albumIDs[1]) as! Album
-			let propertyValueForSecondAlbum = valueForAlbumProperty(albumProperty, on: secondAlbum)
+			// 2 or more Albums
+			let restOfAlbumIDs = Array(albumIDs.dropFirst())
+			let suggestedCollectionTitleForRestOfAlbums = suggestedCollectionTitle(
+				for: restOfAlbumIDs,
+				in: managedObjectContext,
+				considering: albumPropertyKeyPath,
+				notMatching: existingCollectionTitles)
 			
-			guard propertyValueForFirstAlbum == propertyValueForSecondAlbum else {
+			guard metadataValueForFirstAlbum == suggestedCollectionTitleForRestOfAlbums else {
 				return nil
 			}
 			
-			if albumIDs.count == 2 {
-				// Terminating case.
-				return propertyValueForSecondAlbum
-				
-			} else {
-				// Recursive case.
-				var albumIDsMutable = albumIDs
-				albumIDsMutable.removeFirst()
-				
-				return suggestedCollectionTitle(
-					for: albumIDsMutable,
-					in: managedObjectContext,
-					notMatching: existingCollectionTitles,
-					considering: albumProperty
-				)
-			}
+			return metadataValueForFirstAlbum
 		}
 	}
 	
