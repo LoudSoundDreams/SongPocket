@@ -12,7 +12,8 @@ import UIKit
 extension OptionsTVC {
 	
 	private enum Section: Int, CaseIterable {
-		case accentColor, tipJar
+		case accentColor
+		case tipJar
 	}
 	
 	// MARK: Numbers

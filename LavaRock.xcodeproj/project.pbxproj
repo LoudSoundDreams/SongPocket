@@ -70,6 +70,7 @@
 		07E92A0E2510497B00E9073B /* Song Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0D2510497B00E9073B /* Song Actions.swift */; };
 		07E92A1025104F9500E9073B /* Notifications - QueueTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0F25104F9500E9073B /* Notifications - QueueTVC.swift */; };
 		07E92A142510682C00E9073B /* extension Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A132510682C00E9073B /* extension Notification.Name.swift */; };
+		07F1B91925F15EDB008591C7 /* SectionOfLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F1B91825F15EDB008591C7 /* SectionOfLibraryItems.swift */; };
 		07F36BBE24FC3CCA0064282D /* UITableView - LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BBD24FC3CCA0064282D /* UITableView - LibraryTVC.swift */; };
 		07F36BC224FC3F450064282D /* UITableView - CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC124FC3F450064282D /* UITableView - CollectionsTVC.swift */; };
 		07F36BC624FC3FE40064282D /* UITableView - AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC524FC3FE40064282D /* UITableView - AlbumsTVC.swift */; };
@@ -174,6 +175,7 @@
 		07E92A0D2510497B00E9073B /* Song Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Song Actions.swift"; sourceTree = "<group>"; };
 		07E92A0F25104F9500E9073B /* Notifications - QueueTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifications - QueueTVC.swift"; sourceTree = "<group>"; };
 		07E92A132510682C00E9073B /* extension Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Notification.Name.swift"; sourceTree = "<group>"; };
+		07F1B91825F15EDB008591C7 /* SectionOfLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionOfLibraryItems.swift; sourceTree = "<group>"; };
 		07F36BBD24FC3CCA0064282D /* UITableView - LibraryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView - LibraryTVC.swift"; sourceTree = "<group>"; };
 		07F36BC124FC3F450064282D /* UITableView - CollectionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView - CollectionsTVC.swift"; sourceTree = "<group>"; };
 		07F36BC524FC3FE40064282D /* UITableView - AlbumsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView - AlbumsTVC.swift"; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 		070E194524F3424500B21307 /* All Levels */ = {
 			isa = PBXGroup;
 			children = (
+				07F1B91825F15EDB008591C7 /* SectionOfLibraryItems.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				077E089724FB7AFE007C2479 /* Notifications - LibraryTVC.swift */,
 				073E6A9125574B98003C84A5 /* protocol NowPlayingIndicator.swift */,
@@ -621,6 +624,7 @@
 				07E92A0E2510497B00E9073B /* Song Actions.swift in Sources */,
 				07F36BBE24FC3CCA0064282D /* UITableView - LibraryTVC.swift in Sources */,
 				0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */,
+				07F1B91925F15EDB008591C7 /* SectionOfLibraryItems.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */,
 				07FD6E17259925EF00826447 /* Views - OptionsTVC.swift in Sources */,

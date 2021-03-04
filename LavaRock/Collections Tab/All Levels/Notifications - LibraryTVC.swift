@@ -132,7 +132,7 @@ extension LibraryTVC {
 	}
 	
 	final func refreshDataAndViews() {
-		let refreshedItems = managedObjectContext.objectsFetched(for: coreDataFetchRequest)
+		let refreshedItems = fetchedIndexedLibraryItems()
 		willRefreshDataAndViews(toShow: refreshedItems)
 		
 		guard shouldContinueAfterWillRefreshDataAndViews() else { return }

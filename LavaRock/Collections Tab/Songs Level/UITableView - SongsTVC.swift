@@ -87,7 +87,7 @@ extension SongsTVC {
 		// Make, configure, and return the cell.
 		if
 			let cellArtist = song.artistFormatted(),
-			cellArtist != (containerOfLibraryItems as! Album).albumArtistFormattedOrPlaceholder()
+			cellArtist != (containerOfLibraryItems as? Album)?.albumArtistFormattedOrPlaceholder()
 		{
 			guard var cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as? SongCellWithDifferentArtist else {
 				return UITableViewCell()

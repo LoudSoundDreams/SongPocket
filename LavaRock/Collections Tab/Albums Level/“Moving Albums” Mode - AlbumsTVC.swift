@@ -132,7 +132,6 @@ extension AlbumsTVC {
 			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss(didMakeNewCollection: didMakeNewCollection)
 			})
 			albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
-//			self.performSegue(withIdentifier: "Moved Albums", sender: self)
 		})
 		
 	}
