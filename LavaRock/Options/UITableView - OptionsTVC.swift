@@ -23,10 +23,10 @@ extension OptionsTVC {
 	}
 	
 	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		guard let section = Section(rawValue: section) else {
+		guard let sectionCase = Section(rawValue: section) else {
 			return 0
 		}
-		switch section {
+		switch sectionCase {
 		case .accentColor:
 			return AccentColor.all.count
 		case .tipJar:
@@ -37,10 +37,10 @@ extension OptionsTVC {
 	// MARK: Headers and Footers
 	
 	final override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		guard let section = Section(rawValue: section) else {
+		guard let sectionCase = Section(rawValue: section) else {
 			return nil
 		}
-		switch section {
+		switch sectionCase {
 		case .accentColor:
 			return LocalizedString.accentColor
 		case .tipJar:
@@ -49,10 +49,10 @@ extension OptionsTVC {
 	}
 	
 	final override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-		guard let section = Section(rawValue: section) else {
+		guard let sectionCase = Section(rawValue: section) else {
 			return nil
 		}
-		switch section {
+		switch sectionCase {
 		case .accentColor:
 			return nil
 		case .tipJar:
@@ -63,10 +63,10 @@ extension OptionsTVC {
 	// MARK: Cells
 	
 	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let section = Section(rawValue: indexPath.section) else {
+		guard let sectionCase = Section(rawValue: indexPath.section) else {
 			return UITableViewCell()
 		}
-		switch section {
+		switch sectionCase {
 		case .accentColor:
 			return accentColorCell(forRowAt: indexPath)
 		case .tipJar:
@@ -86,8 +86,8 @@ extension OptionsTVC {
 	// MARK: Selecting
 	
 	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let section = Section(rawValue: indexPath.section) else { return }
-		switch section {
+		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
+		switch sectionCase {
 		case .accentColor:
 			didSelectAccentColorRow(at: indexPath)
 		case .tipJar:
@@ -123,7 +123,7 @@ extension OptionsTVC {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Color Cell", for: indexPath)
 		
 		if #available(iOS 14.0, *) {
-			var configuration = cell.defaultContentConfiguration()
+			var configuration = UIListContentConfiguration.cell()
 			configuration.text = rowAccentColor.displayName
 			configuration.textProperties.color = rowAccentColor.uiColor
 			cell.contentConfiguration = configuration

@@ -121,7 +121,6 @@ extension CollectionsTVC {
 	
 	// MARK: "Allow Access" Cell
 	
-	// Custom cell
 	private func allowAccessOrLoadingCell() -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading Cell") as? AllowAccessOrLoadingCell else {
 			return UITableViewCell()
@@ -146,21 +145,6 @@ extension CollectionsTVC {
 			return cell
 		}
 	}
-	
-	// Built-in cell
-//	private func allowAccessOrLoadingCell() -> UITableViewCell {
-//		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access Cell")
-//		if #available(iOS 14.0, *) {
-//			var configuration = UIListContentConfiguration.cell()
-//			configuration.text = "Allow Access to Music"
-//			configuration.textProperties.color = view.window?.tintColor ?? UIColor.systemBlue
-//			cell.contentConfiguration = configuration
-//		} else { // iOS 13 and earlier
-//			cell.textLabel?.textColor = view.window?.tintColor
-//		}
-//		cell.accessibilityTraits.formUnion(.button) // should never change
-//		return cell
-//	}
 	
 	// MARK: - Editing
 	

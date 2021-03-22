@@ -214,10 +214,12 @@ class LibraryTVC:
 		beginObservingNotifications()
 		
 		
-//		sectionOfLibraryItems = SectionOfLibraryItems(
-//			container: containerOfLibraryItems,
-//			managedObjectContext: managedObjectContext,
-//			entityName: coreDataEntityName)
+//		sectionsOfLibraryItems = [
+//			SectionOfLibraryItems(
+//				container: containerOfLibraryItems,
+//				managedObjectContext: managedObjectContext,
+//				entityName: coreDataEntityName)
+//		]
 		
 		
 		indexedLibraryItems = fetchedIndexedLibraryItems()
