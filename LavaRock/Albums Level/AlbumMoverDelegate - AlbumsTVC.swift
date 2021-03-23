@@ -20,7 +20,9 @@ extension AlbumsTVC: AlbumMoverDelegate {
 	}
 	
 	final func didMoveAlbumsThenFinishDismiss() {
-		didMoveAlbumsDetector?.didMoveAlbums = true
+		NotificationCenter.default.post(
+			Notification(name: .LRDidMoveAlbums)
+		)
 		refreshDataAndViews() // Exits this Collection if it's now empty.
 	}
 	

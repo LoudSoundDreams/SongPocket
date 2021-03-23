@@ -13,7 +13,8 @@ extension LibraryTVC {
 	
 	// MARK: - Setup and Teardown
 	
-	final func beginObservingNotifications() {
+	// Subclasses that override this method should call super (this implementation) at the beginning of the override.
+	@objc func beginObservingNotifications() {
 		NotificationCenter.default.removeObserver(self)
 		
 		NotificationCenter.default.addObserver(
@@ -125,7 +126,7 @@ extension LibraryTVC {
 	
 	final func refreshDataAndViewsWhenVisible() {
 		if view.window == nil {
-			shouldRefreshOnNextViewDidAppear = true
+			shouldRefreshDataAndViewsOnNextViewDidAppear = true
 		} else {
 			refreshDataAndViews()
 		}

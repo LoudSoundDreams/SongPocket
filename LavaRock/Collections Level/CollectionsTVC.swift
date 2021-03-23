@@ -29,7 +29,7 @@ final class CollectionsTVC:
 	}
 	var didJustFinishLoading = false
 	var albumMoverClipboard: AlbumMoverClipboard?
-	let didMoveAlbumsDetector = DidMoveAlbumsDetector()
+	var didMoveAlbums = false
 	var collectionToDeleteBeforeNextRefresh: Collection?
 	
 	// MARK: - Setup
@@ -114,12 +114,12 @@ final class CollectionsTVC:
 		
 		if albumMoverClipboard != nil {
 		} else {
-			if didMoveAlbumsDetector.didMoveAlbums {
+			if didMoveAlbums {
 				// Replace this with refreshToReflectMusicLibrary()?
 				refreshToReflectPlaybackState() // So that the "now playing" indicator never momentarily appears on more than one row.
 				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums" sheet.
 				
-				didMoveAlbumsDetector.didMoveAlbums = false
+				didMoveAlbums = false
 			}
 		}
 	}
@@ -179,7 +179,6 @@ final class CollectionsTVC:
 			let albumsTVC = segue.destination as? AlbumsTVC
 		{
 			albumsTVC.albumMoverClipboard = albumMoverClipboard
-			albumsTVC.didMoveAlbumsDetector = didMoveAlbumsDetector
 		}
 		
 		super.prepare(for: segue, sender: sender)

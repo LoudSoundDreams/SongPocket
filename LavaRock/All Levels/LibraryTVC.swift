@@ -189,7 +189,7 @@ class LibraryTVC:
 //			!indexedLibraryItems.isEmpty &&
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
-	var shouldRefreshOnNextViewDidAppear = false
+	var shouldRefreshDataAndViewsOnNextViewDidAppear = false
 	var isAnimatingDuringRefreshTableView = 0
 	
 	// Computed properties
@@ -263,8 +263,8 @@ class LibraryTVC:
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if shouldRefreshOnNextViewDidAppear {
-			shouldRefreshOnNextViewDidAppear = false
+		if shouldRefreshDataAndViewsOnNextViewDidAppear {
+			shouldRefreshDataAndViewsOnNextViewDidAppear = false
 			refreshDataAndViews()
 		}
 	}

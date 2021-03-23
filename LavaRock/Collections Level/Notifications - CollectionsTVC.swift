@@ -10,6 +10,27 @@ import CoreData
 
 extension CollectionsTVC {
 	
+	// MARK: - Setup
+	
+	final override func beginObservingNotifications() {
+		super.beginObservingNotifications()
+		
+		if albumMoverClipboard != nil {
+		} else {
+			NotificationCenter.default.addObserver(
+				self,
+				selector: #selector(didObserveDidMoveAlbums),
+				name: Notification.Name.LRDidMoveAlbums,
+				object: nil)
+		}
+	}
+	
+	// MARK: - After Moving Albums
+	
+	@objc private func didObserveDidMoveAlbums() {
+		didMoveAlbums = true
+	}
+	
 	// MARK: - After Possible Playback State Change
 	
 	final override func refreshToReflectPlaybackState() {

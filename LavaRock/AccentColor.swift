@@ -66,7 +66,7 @@ struct AccentColor: Equatable { // You can't make this an enum, because raw valu
 	func set(in window: UIWindow?) {
 		window?.tintColor = uiColor // This doesn't trigger tintColorDidChange() on LibraryTVC's table view, so we'll post our own notification.
 		NotificationCenter.default.post(
-			Notification(name: Notification.Name.LRDidChangeAccentColor)
+			Notification(name: .LRDidChangeAccentColor)
 		)
 		
 		UserDefaults.standard.set(

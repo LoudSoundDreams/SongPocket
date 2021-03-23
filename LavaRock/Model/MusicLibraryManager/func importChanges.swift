@@ -151,7 +151,7 @@ extension MusicLibraryManager {
 //		managedObjectContext.parent?.tryToSaveSynchronously()
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
-				Notification(name: Notification.Name.LRDidSaveChangesFromMusicLibrary)
+				Notification(name: .LRDidSaveChangesFromMusicLibrary)
 			)
 		}
 	}

@@ -66,7 +66,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		switch notification.name {
 		case .MPMediaLibraryDidChange:
 //			NotificationCenter.default.post(
-//				Notification(name: Notification.Name.LRMediaLibraryDidChange)
+//				Notification(name: .LRMediaLibraryDidChange)
 //			)
 			importChanges()
 		default:
