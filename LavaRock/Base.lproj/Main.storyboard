@@ -198,8 +198,46 @@
                                     <outlet property="spinnerView" destination="QHx-ha-bUB" id="1Ke-f3-iBZ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="All Albums Cell" editingAccessoryType="detailButton" id="tft-PU-cry">
                                 <rect key="frame" x="0.0" y="86.666666030883789" width="375" height="43.333332061767578"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tft-PU-cry" id="u8K-ya-z0T">
+                                    <rect key="frame" x="0.0" y="0.0" width="349.33333333333331" height="43.333332061767578"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="All Albums" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gN8-Kg-nRJ">
+                                            <rect key="frame" x="16" y="12.333333333333336" width="68.333333333333329" height="17"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="22A-2P-2Xf">
+                                            <rect key="frame" x="317.33333333333331" y="12.333333333333336" width="24" height="17.000000000000014"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="centerY" secondItem="u8K-ya-z0T" secondAttribute="centerY" constant="-1" id="8F6-VM-Wfc"/>
+                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="u8K-ya-z0T" secondAttribute="trailingMargin" id="A3E-lT-avB"/>
+                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="u8K-ya-z0T" secondAttribute="topMargin" constant="1" id="C6h-Ql-mFA"/>
+                                        <constraint firstItem="22A-2P-2Xf" firstAttribute="trailing" secondItem="u8K-ya-z0T" secondAttribute="trailingMargin" id="CtS-bG-Frc"/>
+                                        <constraint firstItem="22A-2P-2Xf" firstAttribute="leading" secondItem="u8K-ya-z0T" secondAttribute="trailingMargin" constant="-24" id="NLD-lk-GGW"/>
+                                        <constraint firstItem="22A-2P-2Xf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gN8-Kg-nRJ" secondAttribute="trailing" constant="8" symbolic="YES" id="XDR-lI-Zw2"/>
+                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="centerY" secondItem="22A-2P-2Xf" secondAttribute="centerY" id="i5p-Rh-mUs"/>
+                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="leading" secondItem="u8K-ya-z0T" secondAttribute="leadingMargin" id="isU-0L-QBq"/>
+                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="u8K-ya-z0T" secondAttribute="bottomMargin" constant="1" id="l1H-wI-Ebo"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="subviews">
+                                            <exclude reference="22A-2P-2Xf"/>
+                                        </mask>
+                                        <mask key="constraints">
+                                            <exclude reference="CtS-bG-Frc"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="129.99999809265137" width="375" height="43.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sQR-13-z5i" id="oWs-S1-Xp1">
                                     <rect key="frame" x="0.0" y="0.0" width="349.33333333333331" height="43.333332061767578"/>
@@ -239,7 +277,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Placeholder" rowHeight="100" id="i5d-DX-vvS">
-                                <rect key="frame" x="0.0" y="129.99999809265137" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="173.33333015441895" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="i5d-DX-vvS" id="ilp-7P-A9C">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -769,7 +807,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="yEs-VP-boX"/>
+        <segue reference="7xD-nn-FhG"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>

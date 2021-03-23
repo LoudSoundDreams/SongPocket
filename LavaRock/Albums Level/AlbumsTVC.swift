@@ -25,7 +25,7 @@ final class AlbumsTVC:
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
-	var newCollectionDetector: MovedAlbumsToNewCollectionDetector?
+	var didMoveAlbumsDetector: DidMoveAlbumsDetector?
 	
 	// MARK: - Setup
 	

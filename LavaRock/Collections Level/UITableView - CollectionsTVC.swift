@@ -10,44 +10,94 @@ import MediaPlayer
 
 extension CollectionsTVC {
 	
+	private enum ContentState {
+		case allowAccess
+		case loading
+		case justFinishedLoading
+		case normal
+	}
+	
+	private func contentState() -> ContentState {
+		if MPMediaLibrary.authorizationStatus() != .authorized {
+			return .allowAccess
+		} else if didJustFinishLoading { // You must check didJustFinishLoading before checking isLoading.
+			return .justFinishedLoading
+		} else if isLoading {
+			return .loading
+		} else {
+			return .normal
+		}
+	}
+	
+//	private enum Section: Int, CaseIterable {
+//		case allAlbums
+//		case collections
+//	}
+	
 	// MARK: - Numbers
+	
+	// TO DO: Account for contentState
+//	final override func numberOfSections(in tableView: UITableView) -> Int {
+//		return Section.allCases.count
+//	}
 	
 	// Remember to call refreshBarButtons() before returning. super also does it.
 	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if didJustFinishLoading { // This state should only ever happen extremely briefly. You must check for this before checking for isLoading.
+		switch contentState() {
+		case .allowAccess, .loading:
+			refreshBarButtons()
+			tableView.backgroundView = nil
+			return 1
+		case .justFinishedLoading:
 			refreshBarButtons()
 			tableView.backgroundView = nil
 			return 0
+		case .normal:
+			return super.tableView(tableView, numberOfRowsInSection: section)
 		}
-		
-		if
-			MPMediaLibrary.authorizationStatus() != .authorized ||
-				isLoading
-		{
-			refreshBarButtons()
-			tableView.backgroundView = nil
-			return 1 // "Allow Access" or "Loading…" cell
-		}
-		
-		return super.tableView(tableView, numberOfRowsInSection: section)
 	}
 	
 	// MARK: - Cells
 	
 	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		if
-			MPMediaLibrary.authorizationStatus() != .authorized ||
-				isLoading
-		{
+		switch contentState() {
+		case .allowAccess, .loading:
 			return allowAccessOrLoadingCell()
-		}
-		
-		if indexPath.row < numberOfRowsAboveIndexedLibraryItems {
-			return UITableViewCell()
-		} else { // Return a cell for an item in indexedLibraryItems.
+		case .justFinishedLoading:
+			return UITableViewCell() // Should never run
+		case .normal:
 			return collectionCell(forRowAt: indexPath)
 		}
 	}
+	
+	// MARK: "Allow Access" or "Loading…" Cell
+	
+	private func allowAccessOrLoadingCell() -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading Cell") as? AllowAccessOrLoadingCell else {
+			return UITableViewCell()
+		}
+		
+		switch contentState() {
+		case .allowAccess:
+			cell.allowAccessOrLoadingLabel.text = LocalizedString.allowAccessToMusic
+			cell.allowAccessOrLoadingLabel.textColor = view.window?.tintColor
+			cell.spinnerView.stopAnimating()
+			cell.isUserInteractionEnabled = true
+			cell.accessibilityTraits.formUnion(.button)
+			return cell
+		case .loading:
+			cell.allowAccessOrLoadingLabel.text = LocalizedString.loadingWithEllipsis
+			cell.allowAccessOrLoadingLabel.textColor = .secondaryLabel
+			cell.spinnerView.startAnimating()
+			cell.isUserInteractionEnabled = false
+			cell.accessibilityTraits.remove(.button)
+			return cell
+		case .justFinishedLoading, .normal:
+			return UITableViewCell() // Should never run
+		}
+	}
+	
+	// MARK: Collection Cell
 	
 	private func collectionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
@@ -116,33 +166,6 @@ extension CollectionsTVC {
 			return true
 		} else {
 			return false
-		}
-	}
-	
-	// MARK: "Allow Access" Cell
-	
-	private func allowAccessOrLoadingCell() -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading Cell") as? AllowAccessOrLoadingCell else {
-			return UITableViewCell()
-		}
-		
-		if MPMediaLibrary.authorizationStatus() != .authorized {
-			// Show "Allow Access" state
-			cell.allowAccessOrLoadingLabel.text = LocalizedString.allowAccessToMusic
-			cell.allowAccessOrLoadingLabel.textColor = view.window?.tintColor
-			cell.spinnerView.stopAnimating()
-			cell.isUserInteractionEnabled = true
-			cell.accessibilityTraits.formUnion(.button)
-			return cell
-		} else {
-			// We should be importing changes with no existing Collections: isLoading == true
-			// Show "Loading…" state
-			cell.allowAccessOrLoadingLabel.text = LocalizedString.loadingWithEllipsis
-			cell.allowAccessOrLoadingLabel.textColor = .secondaryLabel
-			cell.spinnerView.startAnimating()
-			cell.isUserInteractionEnabled = false
-			cell.accessibilityTraits.remove(.button)
-			return cell
 		}
 	}
 	

@@ -68,7 +68,7 @@ extension AlbumsTVC {
 		
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
-			albumMoverClipboard.didAlreadyCommitMoveAlbums == false
+			!albumMoverClipboard.didAlreadyCommitMoveAlbums
 		else { return }
 		
 		// We shouldn't be moving Albums to this Collection if they're already here.
@@ -80,10 +80,6 @@ extension AlbumsTVC {
 		
 		albumMoverClipboard.didAlreadyCommitMoveAlbums = true // Without this, if you tap the "Move Here" button more than once, the app will crash when it tries to unwind from the "move Albums" sheet.
 		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
-		
-		if indexedLibraryItems.isEmpty {
-			newCollectionDetector?.shouldDetectNewCollectionsOnNextViewWillAppear = true
-		}
 		
 		// Get the Albums to move, and to not move.
 		var albumsToMove = [Album]()
@@ -122,14 +118,7 @@ extension AlbumsTVC {
 		tableView.performBatchUpdates( {
 				tableView.insertRows(at: indexPathsToInsert, with: .middle)
 		}, completion: { _ in
-			var didMakeNewCollection = false
-			if
-				let newCollectionDetector = self.newCollectionDetector,
-				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear
-			{
-				didMakeNewCollection = true
-			}
-			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss(didMakeNewCollection: didMakeNewCollection)
+			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
 			})
 			albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
 		})

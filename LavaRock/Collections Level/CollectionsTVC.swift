@@ -29,7 +29,7 @@ final class CollectionsTVC:
 	}
 	var didJustFinishLoading = false
 	var albumMoverClipboard: AlbumMoverClipboard?
-	let newCollectionDetector = MovedAlbumsToNewCollectionDetector()
+	let didMoveAlbumsDetector = DidMoveAlbumsDetector()
 	var collectionToDeleteBeforeNextRefresh: Collection?
 	
 	// MARK: - Setup
@@ -95,11 +95,12 @@ final class CollectionsTVC:
 	// MARK: Setup Events
 	
 	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-		if // If we moved all the Albums out of a Collection. This doesn't conflict with *deleting* all the Albums from a Collection.
+		if
 			let albumsTVC = unwindSegue.source as? AlbumsTVC,
 			let collection = albumsTVC.containerOfLibraryItems as? Collection,
 			collection.contents?.count == 0
 		{
+			// We moved all the Albums out from a Collection. This doesn't conflict with *deleting* all the Albums from a Collection.
 			collectionToDeleteBeforeNextRefresh = collection
 			
 			// Replace this with refreshToReflectMusicLibrary()?
@@ -113,13 +114,12 @@ final class CollectionsTVC:
 		
 		if albumMoverClipboard != nil {
 		} else {
-			if newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear {
-				
+			if didMoveAlbumsDetector.didMoveAlbums {
 				// Replace this with refreshToReflectMusicLibrary()?
 				refreshToReflectPlaybackState() // So that the "now playing" indicator never momentarily appears on more than one row.
 				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums" sheet.
 				
-				newCollectionDetector.shouldDetectNewCollectionsOnNextViewWillAppear = false
+				didMoveAlbumsDetector.didMoveAlbums = false
 			}
 		}
 	}
@@ -179,7 +179,7 @@ final class CollectionsTVC:
 			let albumsTVC = segue.destination as? AlbumsTVC
 		{
 			albumsTVC.albumMoverClipboard = albumMoverClipboard
-			albumsTVC.newCollectionDetector = newCollectionDetector
+			albumsTVC.didMoveAlbumsDetector = didMoveAlbumsDetector
 		}
 		
 		super.prepare(for: segue, sender: sender)

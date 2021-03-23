@@ -123,7 +123,7 @@ extension LibraryTVC {
 	
 	// MARK: Refreshing Data and Views
 	
-	@objc func refreshDataAndViewsWhenVisible() {
+	final func refreshDataAndViewsWhenVisible() {
 		if view.window == nil {
 			shouldRefreshOnNextViewDidAppear = true
 		} else {
