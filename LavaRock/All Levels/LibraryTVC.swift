@@ -47,12 +47,12 @@ class LibraryTVC:
 	// MARK: "Constants"
 	
 	// "Constants" that subclasses should customize
-	var coreDataEntityName = "Collection"
-	var containerOfLibraryItems: NSManagedObject? // MULTISECTION: Remove this
+	var entityName = "Collection"
+	var containerOfLibraryItems: NSManagedObject?
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
-	var numberOfRowsAboveIndexedLibraryItems = 0 // This applies to every section. numberOfRowsInEachSectionAboveIndexedLibraryItems would be a more explicit name.
+	var numberOfRowsAboveLibraryItems = 0
 	var navigationItemLeftButtonsNotEditingMode = [UIBarButtonItem]()
 	private var navigationItemLeftButtonsEditingMode = [UIBarButtonItem]()
 	private var navigationItemRightButtons = [UIBarButtonItem]()
@@ -160,20 +160,31 @@ class LibraryTVC:
 	
 	// MARK: Variables
 	
-	
-//	var sectionsOfLibraryItems = [SectionOfLibraryItems]()
-	
-	
-	// MULTISECTION: Remove this
-	var indexedLibraryItems = [NSManagedObject]() { // The truth for the order of items is their order in this array, because the table view follows this array; not the "index" attribute of each NSManagedObject.
-		// WARNING: indexedLibraryItems[indexPath.row] might return the wrong library item. Whenever you use both indexedLibraryItems and IndexPaths, you must always subtract numberOfRowsAboveIndexedLibraryItems from indexPath.row.
-		// This is a hack to allow other rows in the table view above the rows for indexedLibraryItems. This lets us use table view rows for album artwork and album info in SongsTVC. We can also use this for All Albums and New Collection buttons in CollectionsTVC, and All Songs and Move Here buttons in AlbumsTVC.
-		didSet {
-			for index in 0 ..< indexedLibraryItems.count {
-				indexedLibraryItems[index].setValue(Int64(index), forKey: "index")
-			}
-		}
+	lazy var sectionOfLibraryItems = SectionOfLibraryItems(
+		managedObjectContext: managedObjectContext,
+		container: containerOfLibraryItems,
+		entityName: entityName)
+	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItems.
+	// That's a hack to let us include other rows above the rows for library items. For example:
+	// - Rows for album artwork and album info in SongsTVC.
+	// - (Potentially in the future) in CollectionsTVC, rows for "All Albums" and "New Collection".
+	// - (Potentially in the future) in Albums TVC, rows for "All Songs" and "Move Here".
+	final func libraryItem(for indexPath: IndexPath) -> NSManagedObject {
+		let indexOfLibraryItem = indexOfLibraryItem(for: indexPath)
+		return sectionOfLibraryItems.items[indexOfLibraryItem]
 	}
+	final func indexOfLibraryItem(for indexPath: IndexPath) -> Int {
+		return indexPath.row - numberOfRowsAboveLibraryItems
+	}
+	final func indexPathFor(
+		indexOfLibraryItem: Int,
+		indexOfSectionOfLibraryItem: Int
+	) -> IndexPath {
+		return IndexPath(
+			row: indexOfLibraryItem + numberOfRowsAboveLibraryItems,
+			section: indexOfSectionOfLibraryItem)
+	}
+	
 	var isEitherLoadingOrUpdating = false// {
 //		didSet {
 //			if
@@ -186,21 +197,11 @@ class LibraryTVC:
 //	}
 //	var isUpdating: Bool {
 //		isEitherLoadingOrUpdating &&
-//			!indexedLibraryItems.isEmpty &&
+//			!sectionOfLibraryItems.items.isEmpty &&
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
 	var shouldRefreshDataAndViewsOnNextViewDidAppear = false
 	var isAnimatingDuringRefreshTableView = 0
-	
-	// Computed properties
-	var coreDataFetchRequest: NSFetchRequest<NSManagedObject> { // MULTISECTION: Remove this
-		let request = NSFetchRequest<NSManagedObject>(entityName: coreDataEntityName)
-		request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		if let container = containerOfLibraryItems {
-			request.predicate = NSPredicate(format: "container == %@", container)
-		}
-		return request
-	}
 	
 	// MARK: - Setup
 	
@@ -212,23 +213,7 @@ class LibraryTVC:
 	
 	final func setUp() {
 		beginObservingNotifications()
-		
-		
-//		sectionsOfLibraryItems = [
-//			SectionOfLibraryItems(
-//				container: containerOfLibraryItems,
-//				managedObjectContext: managedObjectContext,
-//				entityName: coreDataEntityName)
-//		]
-		
-		
-		indexedLibraryItems = fetchedIndexedLibraryItems()
 		setUpUI()
-	}
-	
-	// MULTISECTION: Remove this
-	final func fetchedIndexedLibraryItems() -> [NSManagedObject] {
-		return managedObjectContext.objectsFetched(for: coreDataFetchRequest)
 	}
 	
 	// LibraryTVC itself doesn't call this during viewDidLoad(), but its subclasses may want to.
@@ -310,7 +295,7 @@ class LibraryTVC:
 	}
 	
 	func refreshBarButtons() {
-		// There can momentarily be 0 items in indexedLibraryItems if we're refreshing to reflect changes in the Music library.
+		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
 		refreshEditButton()
 		if isEditing {
 			refreshSortButton()
@@ -324,24 +309,24 @@ class LibraryTVC:
 	private func refreshEditButton() {
 		editButtonItem.isEnabled =
 			MPMediaLibrary.authorizationStatus() == .authorized &&
-			!indexedLibraryItems.isEmpty
+			!sectionOfLibraryItems.items.isEmpty
 	}
 	
 	private func refreshSortButton() {
 		sortButton.isEnabled =
-			!indexedLibraryItems.isEmpty &&
+			!sectionOfLibraryItems.items.isEmpty &&
 			tableView.shouldAllowSorting()
 	}
 	
 	private func refreshFloatToTopButton() {
 		floatToTopButton.isEnabled =
-			!indexedLibraryItems.isEmpty &&
+			!sectionOfLibraryItems.items.isEmpty &&
 			tableView.shouldAllowMovingSelectedRowsToTopOfSection()
 	}
 	
 	private func refreshSinkToBottomButton() {
 		sinkToBottomButton.isEnabled =
-			!indexedLibraryItems.isEmpty &&
+			!sectionOfLibraryItems.items.isEmpty &&
 			tableView.shouldAllowMovingSelectedRowsToBottomOfSection()
 	}
 	
@@ -358,7 +343,7 @@ class LibraryTVC:
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
 			destination.managedObjectContext = managedObjectContext
-			let selectedItem = indexedLibraryItems[selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems]
+			let selectedItem = libraryItem(for: selectedIndexPath)
 			destination.containerOfLibraryItems = selectedItem
 		}
 		

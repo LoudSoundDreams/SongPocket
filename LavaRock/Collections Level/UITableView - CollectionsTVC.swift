@@ -101,7 +101,9 @@ extension CollectionsTVC {
 	
 	private func collectionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
-		let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Collection
+		guard let collection = libraryItem(for: indexPath) as? Collection else {
+			return UITableViewCell()
+		}
 		
 		// Make, configure, and return the cell.
 		
@@ -150,7 +152,7 @@ extension CollectionsTVC {
 		let section = 0
 		let indexPathsOfAllCollections = tableView.indexPathsForRowsIn(
 			section: section,
-			firstRow: numberOfRowsAboveIndexedLibraryItems)
+			firstRow: numberOfRowsAboveLibraryItems)
 		for indexPath in indexPathsOfAllCollections {
 			if
 				let cell = tableView.cellForRow(at: indexPath),

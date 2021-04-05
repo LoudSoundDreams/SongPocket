@@ -31,7 +31,7 @@ final class AlbumsTVC:
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		coreDataEntityName = "Album"
+		entityName = "Album"
 	}
 	
 	// MARK: Setting Up UI
@@ -90,7 +90,7 @@ final class AlbumsTVC:
 	
 	private func refreshStartMovingAlbumsButton() {
 		startMovingAlbumsButton.isEnabled =
-			!indexedLibraryItems.isEmpty
+			!sectionOfLibraryItems.items.isEmpty
 	}
 	
 }

@@ -23,7 +23,9 @@ extension AlbumsTVC {
 	private func albumCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
 		
-		let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
+		guard let album = libraryItem(for: indexPath) as? Album else {
+			return UITableViewCell()
+		}
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
 		let cellTitle = album.titleFormattedOrPlaceholder()

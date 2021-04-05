@@ -54,7 +54,7 @@ extension SongsTVC {
 		)
 		
 		// Disable the actions that we shouldn't offer for the last Song in the section.
-		if song == indexedLibraryItems.last {
+		if song == sectionOfLibraryItems.items.last {
 			enqueueAlbumStartingHereAction.isEnabled = false
 		}
 		
@@ -81,11 +81,11 @@ extension SongsTVC {
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		
-		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
 		var mediaItemsToEnqueue = [MPMediaItem]()
-		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
+		for indexOfSongToEnqueue in indexOfSelectedSong ... sectionOfLibraryItems.items.count - 1 {
 			guard
-				let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue] as? Song,
+				let songToEnqueue = sectionOfLibraryItems.items[indexOfSongToEnqueue] as? Song,
 				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
 			else { continue }
 			mediaItemsToEnqueue.append(mediaItemToEnqueue)
@@ -110,11 +110,11 @@ extension SongsTVC {
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		
-		let indexOfSelectedSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
 		var mediaItemsToEnqueue = [MPMediaItem]()
-		for indexOfSongToEnqueue in indexOfSelectedSong ... indexedLibraryItems.count - 1 {
+		for indexOfSongToEnqueue in indexOfSelectedSong ... sectionOfLibraryItems.items.count - 1 {
 			guard
-				let songToEnqueue = indexedLibraryItems[indexOfSongToEnqueue] as? Song,
+				let songToEnqueue = sectionOfLibraryItems.items[indexOfSongToEnqueue] as? Song,
 				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
 			else { continue }
 			mediaItemsToEnqueue.append(mediaItemToEnqueue)
@@ -131,7 +131,7 @@ extension SongsTVC {
 			sharedPlayerController?.prepareToPlay()
 		}
 		
-		guard let selectedSong = indexedLibraryItems[indexOfSelectedSong] as? Song else { return }
+		guard let selectedSong = libraryItem(for: selectedIndexPath) as? Song else { return }
 		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
 		showExplanationIfNecessaryForEnqueueAction(
 			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAction,
@@ -145,9 +145,9 @@ extension SongsTVC {
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		
-		let indexOfSong = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
+		let indexOfSong = indexOfLibraryItem(for: selectedIndexPath)
 		guard
-			let song = indexedLibraryItems[indexOfSong] as? Song,
+			let song = sectionOfLibraryItems.items[indexOfSong] as? Song,
 			let mediaItem = song.mpMediaItem()
 		else { return }
 		

@@ -19,14 +19,17 @@ extension CollectionsTVC {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			albumMoverClipboard.didAlreadyMakeNewCollection,
-			let collection = indexedLibraryItems[indexOfEmptyNewCollection] as? Collection,
+			let collection = sectionOfLibraryItems.items[indexOfEmptyNewCollection] as? Collection,
 			collection.contents?.count == 0
 		else { return }
 		
 		managedObjectContext.delete(collection)
-		indexedLibraryItems.remove(at: indexOfEmptyNewCollection)
+		sectionOfLibraryItems.items.remove(at: indexOfEmptyNewCollection)
+		let indexPathOfRowToDelete = indexPathFor(
+			indexOfLibraryItem: indexOfEmptyNewCollection,
+			indexOfSectionOfLibraryItem: 0)
 		tableView.deleteRows(
-			at: [IndexPath(row: indexOfEmptyNewCollection - numberOfRowsAboveIndexedLibraryItems, section: 0)],
+			at: [indexPathOfRowToDelete],
 			with: .middle)
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = false
@@ -76,9 +79,9 @@ extension CollectionsTVC {
 				
 				let newCollection = Collection(context: self.managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
 				newCollection.title = newTitle
-				// The property observer on indexedLibraryItems will set the "index" attribute for us.
+				// The property observer on sectionOfLibraryItems.items will set the "index" attribute of each Collection for us.
 				
-				self.indexedLibraryItems.insert(newCollection, at: indexPathOfNewCollection.row)
+				self.sectionOfLibraryItems.items.insert(newCollection, at: indexPathOfNewCollection.row)
 				
 				// Enter the new Collection.
 				
@@ -108,7 +111,7 @@ extension CollectionsTVC {
 		}
 		
 		var existingCollectionTitles = [String]()
-		for item in indexedLibraryItems {
+		for item in sectionOfLibraryItems.items {
 			if
 				let collection = item as? Collection,
 				let collectionTitle = collection.title

@@ -31,7 +31,10 @@ extension LibraryTVC {
 	@objc final func moveSelectedItemsToTop() {
 		moveItemsUp(
 			from: tableView.indexPathsForSelectedRows,
-			to: IndexPath(row: numberOfRowsAboveIndexedLibraryItems, section: 0))
+			to: indexPathFor(
+				indexOfLibraryItem: 0,
+				indexOfSectionOfLibraryItem: 0)
+		)
 	}
 	
 	// Note: Every IndexPath in selectedIndexPaths must be in the same section as firstIndexPath, and at or down below firstIndexPath.
@@ -49,8 +52,8 @@ extension LibraryTVC {
 		
 		let pairsToMove = tuplesOfIndexPathsAndItems(
 			selectedIndexPaths.sorted(),
-			sectionItems: indexedLibraryItems,
-			rowForFirstItem: numberOfRowsAboveIndexedLibraryItems)
+			sectionItems: sectionOfLibraryItems.items,
+			rowForFirstItem: numberOfRowsAboveLibraryItems)
 		
 		let targetSection = firstIndexPath.section
 		var targetRow = firstIndexPath.row
@@ -60,10 +63,10 @@ extension LibraryTVC {
 			selectedAndTargetIndexPaths.append(
 				(selectedIndexPath, targetIndexPath))
 			
-			let startingIndex = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-			let targetIndex = targetRow - numberOfRowsAboveIndexedLibraryItems
-			indexedLibraryItems.remove(at: startingIndex)
-			indexedLibraryItems.insert(matchingItem, at: targetIndex)
+			let startingIndexOfItem = indexOfLibraryItem(for: selectedIndexPath)
+			let endingIndexOfItem = indexOfLibraryItem(for: targetIndexPath)
+			sectionOfLibraryItems.items.remove(at: startingIndexOfItem)
+			sectionOfLibraryItems.items.insert(matchingItem, at: endingIndexOfItem)
 			
 			targetRow += 1
 		}
@@ -90,8 +93,8 @@ extension LibraryTVC {
 		let sortedSelectedIndexPaths = selectedIndexPaths.sorted()
 		let pairsToMove = tuplesOfIndexPathsAndItems(
 			sortedSelectedIndexPaths,
-			sectionItems: indexedLibraryItems,
-			rowForFirstItem: numberOfRowsAboveIndexedLibraryItems)
+			sectionItems: sectionOfLibraryItems.items,
+			rowForFirstItem: numberOfRowsAboveLibraryItems)
 		guard let targetSection = sortedSelectedIndexPaths.last?.section else { return }
 		
 		var targetRow = tableView.numberOfRows(inSection: targetSection) - 1
@@ -101,10 +104,10 @@ extension LibraryTVC {
 			selectedAndTargetIndexPaths.append(
 				(selectedIndexPath, targetIndexPath))
 			
-			let startingIndex = selectedIndexPath.row - numberOfRowsAboveIndexedLibraryItems
-			let targetIndex = targetRow - numberOfRowsAboveIndexedLibraryItems
-			indexedLibraryItems.remove(at: startingIndex)
-			indexedLibraryItems.insert(matchingItem, at: targetIndex)
+			let startingIndexOfItem = indexOfLibraryItem(for: selectedIndexPath)
+			let endingIndexOfItem = indexOfLibraryItem(for: targetIndexPath)
+			sectionOfLibraryItems.items.remove(at: startingIndexOfItem)
+			sectionOfLibraryItems.items.insert(matchingItem, at: endingIndexOfItem)
 			
 			targetRow -= 1
 		}
@@ -161,14 +164,14 @@ extension LibraryTVC {
 		// Get the rows to sort.
 		let indexPathsToSort = tableView.selectedOrEnumeratedIndexPathsIn(
 			section: 0,
-			firstRow: numberOfRowsAboveIndexedLibraryItems)
+			firstRow: numberOfRowsAboveLibraryItems)
 		guard indexPathsToSort.count >= 1 else { return }
 		
 		// Get the items to sort, too.
 		let selectedIndexPathsAndItems = tuplesOfIndexPathsAndItems(
 			indexPathsToSort,
-			sectionItems: indexedLibraryItems,
-			rowForFirstItem: numberOfRowsAboveIndexedLibraryItems)
+			sectionItems: sectionOfLibraryItems.items,
+			rowForFirstItem: numberOfRowsAboveLibraryItems)
 		
 		// Sort the rows and items together.
 		let sortedIndexPathsAndItems =
@@ -178,14 +181,16 @@ extension LibraryTVC {
 		
 		// Remove the selected items from the data source.
 		for indexPath in indexPathsToSort.reversed() {
-			indexedLibraryItems.remove(at: indexPath.row - numberOfRowsAboveIndexedLibraryItems)
+			let indexOfItemToRemove = indexOfLibraryItem(for: indexPath)
+			sectionOfLibraryItems.items.remove(at: indexOfItemToRemove)
 		}
 		
 		// Put the sorted items into the data source.
+		let indexToInsertItemAt = indexPathsToSort.first!.row - numberOfRowsAboveLibraryItems
 		for (_, item) in sortedIndexPathsAndItems.reversed() {
-			indexedLibraryItems.insert(
+			sectionOfLibraryItems.items.insert(
 				item,
-				at: indexPathsToSort.first!.row - numberOfRowsAboveIndexedLibraryItems)
+				at: indexToInsertItemAt)
 		}
 		
 		// Update the table view.

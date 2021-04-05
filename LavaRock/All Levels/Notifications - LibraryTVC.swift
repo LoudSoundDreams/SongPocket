@@ -105,7 +105,7 @@ extension LibraryTVC {
 	) {
 		for indexPath in tableView.indexPathsForRowsIn(
 			section: 0,
-			firstRow: numberOfRowsAboveIndexedLibraryItems)
+			firstRow: numberOfRowsAboveLibraryItems)
 		{
 			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue }
 			let isItemNowPlaying = isItemNowPlayingDeterminer(indexPath)
@@ -133,7 +133,7 @@ extension LibraryTVC {
 	}
 	
 	final func refreshDataAndViews() {
-		let refreshedItems = fetchedIndexedLibraryItems()
+		let refreshedItems = sectionOfLibraryItems.fetchedItems()
 		willRefreshDataAndViews(toShow: refreshedItems)
 		
 		guard shouldContinueAfterWillRefreshDataAndViews() else { return }
@@ -141,7 +141,7 @@ extension LibraryTVC {
 		isEitherLoadingOrUpdating = false
 		refreshTableView(
 			section: 0,
-			onscreenItems: indexedLibraryItems,
+			onscreenItems: sectionOfLibraryItems.items,
 			refreshedItems: refreshedItems,
 			completion: {
 				self.refreshData() // refreshData() includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
@@ -158,12 +158,12 @@ extension LibraryTVC {
 	- "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
 	- Song actions (SongsTVC)
 	- (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
-	Subclasses that offer those tasks should override this method and cancel those tasks. For more polish, only cancel those tasks if the refresh will change the content that those actions apply to. Typically, that's when refreshedItems is different from indexedLibraryItems.
+	Subclasses that offer those tasks should override this method and cancel those tasks. For more polish, only cancel those tasks if the refresh will change the content that those actions apply to. Typically, that's when refreshedItems is different from sectionOfLibraryItems.items.
 	*/
 	@objc func willRefreshDataAndViews(
 		toShow refreshedItems: [NSManagedObject]
 	) {
-		// Only dismiss modal view controllers if indexedLibraryItems will change during the refresh?
+		// Only dismiss modal view controllers if sectionOfLibraryItems.items will change during the refresh?
 //		print(presentedViewController)
 		let shouldNotDismissAllModalViewControllers =
 			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
@@ -184,7 +184,7 @@ extension LibraryTVC {
 	}
 	
 	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().
-	// Note: Even though this method is easy to plug arguments into, it (currently) has side effects: it replaces indexedLibraryItems with the onscreenItems array that you pass in.
+	// Note: Even though this method is easy to plug arguments into, it (currently) has side effects: it replaces sectionOfLibraryItems.items with the refreshedItems that you pass in.
 	private func refreshTableView(
 		section: Int,
 		onscreenItems: [NSManagedObject],
@@ -204,40 +204,42 @@ extension LibraryTVC {
 			if let indexOfOnscreenItem = onscreenItems.firstIndex(where: { onscreenItem in
 				onscreenItem.objectID == refreshedItem.objectID
 			}) { // This item is already onscreen, and we still want it onscreen. If necessary, we'll move it. Later, if necessary, we'll update it.
-				let startingIndexPath = IndexPath(
-					row: indexOfOnscreenItem + numberOfRowsAboveIndexedLibraryItems,
-					section: section)
-				let endingIndexPath = IndexPath(
-					row: indexOfRefreshedItem + numberOfRowsAboveIndexedLibraryItems,
-					section: section)
+				let startingIndexPath = indexPathFor(
+					indexOfLibraryItem: indexOfOnscreenItem,
+					indexOfSectionOfLibraryItem: section)
+				let endingIndexPath = indexPathFor(
+					indexOfLibraryItem: indexOfRefreshedItem,
+					indexOfSectionOfLibraryItem: section)
 				indexPathsToMove.append(
 					(startingIndexPath, endingIndexPath))
 				
 			} else { // This item isn't onscreen yet, but we want it onscreen, so we'll have to add it.
 				indexPathsToInsert.append(
-					IndexPath(
-						row: indexOfRefreshedItem + numberOfRowsAboveIndexedLibraryItems,
-						section: section))
+					indexPathFor(
+						indexOfLibraryItem: indexOfRefreshedItem,
+						indexOfSectionOfLibraryItem: section)
+				)
 			}
 		}
 		
 		var indexPathsToDelete = [IndexPath]()
 		
-		for index in 0 ..< onscreenItems.count {
-			let onscreenItem = onscreenItems[index]
+		for indexOfOnscreenItem in 0 ..< onscreenItems.count {
+			let onscreenItem = onscreenItems[indexOfOnscreenItem]
 			if let _ = refreshedItems.firstIndex(where: { refreshedItem in
 				refreshedItem.objectID == onscreenItem.objectID
 			})  {
 				continue // to the next onscreenItem
 			} else {
 				indexPathsToDelete.append(
-					IndexPath(
-						row: index + numberOfRowsAboveIndexedLibraryItems,
-						section: section))
+					indexPathFor(
+						indexOfLibraryItem: indexOfOnscreenItem,
+						indexOfSectionOfLibraryItem: section)
+				)
 			}
 		}
 		
-		indexedLibraryItems = refreshedItems
+		sectionOfLibraryItems.items = refreshedItems
 		
 		isAnimatingDuringRefreshTableView += 1
 		tableView.performBatchUpdates {
@@ -262,7 +264,7 @@ extension LibraryTVC {
 				tableView.indexPathsForRowsIn(section: section, firstRow: 0)
 			allIndexPaths.append(contentsOf: allIndexPathsInSection)
 		}
-		indexedLibraryItems.removeAll()
+		sectionOfLibraryItems.items.removeAll()
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
 		} completion: { _ in
@@ -272,7 +274,7 @@ extension LibraryTVC {
 	}
 	
 	@objc private func refreshData() {
-		guard indexedLibraryItems.count >= 1 else { return }
+		guard !sectionOfLibraryItems.items.isEmpty else { return }
 		refreshContainerOfLibraryItems()
 		refreshTableViewRowContents()
 	}
@@ -284,7 +286,7 @@ extension LibraryTVC {
 	}
 	
 	/*
-	This is the final step in refreshTableView. The earlier steps delete, insert, and move rows as necessary (with animations), and update indexedLibraryItems. This method updates the data within each row, which might be outdated: for example, songs' titles and albums' release dates.
+	This is the final step in refreshTableView. The earlier steps delete, insert, and move rows as necessary (with animations), and update sectionOfLibraryItems.items. This method updates the data within each row, which might be outdated: for example, songs' titles and albums' release dates.
 	The simplest way to do this is to just call tableView.reloadData(). Infamously, that has no animation, but we actually animated the deletes, inserts, and moves by ourselves earlier. All reloadData() does here is update the data within each row without an animation, which usually looks okay.
 	You should override this method if you want to add animations when refreshing the contents of any part of table view. For example, if it looks jarring to change some artwork without an animation, you might want to refresh that artwork with a fade animation, but leave the other rows to update without animations. The hard part is that to prevent unnecessary animations when the content hasn't changed, you'll have to detect the existing content in each row.
 	*/

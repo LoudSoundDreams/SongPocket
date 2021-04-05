@@ -20,8 +20,8 @@ final class SongsTVC:
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		coreDataEntityName = "Song"
-		numberOfRowsAboveIndexedLibraryItems = 2
+		entityName = "Song"
+		numberOfRowsAboveLibraryItems = 2
 	}
 	
 	// MARK: Setting Up UI

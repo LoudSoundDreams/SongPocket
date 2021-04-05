@@ -24,7 +24,7 @@ final class CollectionsTVC:
 	// Variables
 	var isLoading: Bool {
 		isEitherLoadingOrUpdating &&
-			indexedLibraryItems.isEmpty &&
+			sectionOfLibraryItems.items.isEmpty &&
 			MPMediaLibrary.authorizationStatus() == .authorized
 	}
 	var didJustFinishLoading = false
@@ -131,19 +131,19 @@ final class CollectionsTVC:
 			}
 		} else {
 			if let emptyCollection = collectionToDeleteBeforeNextRefresh {
-				if let indexOfEmptyCollection = indexedLibraryItems.firstIndex(where: { onscreenCollection in
+				if let indexOfEmptyCollection = sectionOfLibraryItems.items.firstIndex(where: { onscreenCollection in
 					onscreenCollection.objectID == emptyCollection.objectID
 				}) {
-					let indexOfLastOnscreenCollection = indexedLibraryItems.count - 1
+					let indexOfLastOnscreenCollection = sectionOfLibraryItems.items.count - 1
 					if indexOfEmptyCollection < indexOfLastOnscreenCollection {
 						for indexOfCollectionToShiftUpward in indexOfEmptyCollection + 1 ... indexOfLastOnscreenCollection {
-							// TO DO: This is fragile, because the property observer on indexedLibraryItems is designed to automatically set the "index" attribute and will override this if we touch it later.
-							let collectionToShiftUpward = indexedLibraryItems[indexOfCollectionToShiftUpward] as? Collection
+							// TO DO: This is fragile, because the property observer on sectionOfLibraryItems.items is designed to automatically set the "index" attribute and will override this if we touch it later.
+							let collectionToShiftUpward = sectionOfLibraryItems.items[indexOfCollectionToShiftUpward] as? Collection
 							collectionToShiftUpward?.index -= 1
 						}
 					}
 				}
-				managedObjectContext.delete(emptyCollection) // Don't remove the empty Collection from indexedLibraryItems here. refreshDataAndViews() will remove it and its table view row for us.
+				managedObjectContext.delete(emptyCollection) // Don't remove the empty Collection from sectionOfLibraryItems.items here. refreshDataAndViews() will remove it and its table view row for us.
 				managedObjectContext.tryToSaveSynchronously()
 				collectionToDeleteBeforeNextRefresh = nil
 			}

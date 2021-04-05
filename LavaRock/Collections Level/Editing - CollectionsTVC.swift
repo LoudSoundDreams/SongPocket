@@ -19,7 +19,7 @@ extension CollectionsTVC {
 //	private func refreshVoiceControlNamesForAllCells() {
 //		for indexPath in tableView.indexPathsForRowsIn(
 //			section: 0,
-//			firstRow: numberOfRowsAboveIndexedLibraryItems)
+//			firstRow: numberOfRowsAboveLibraryItems)
 //		{
 //			guard let cell = tableView.cellForRow(at: indexPath) else { continue }
 //			
@@ -32,7 +32,7 @@ extension CollectionsTVC {
 	// WARNING: Using VoiceOver, you can rename Collections at any time, not just in editing mode.
 	// Match presentDialogToMakeNewCollection(_:).
 	final func renameCollection(at indexPath: IndexPath) {
-		guard let collection = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as? Collection else { return }
+		guard let collection = libraryItem(for: indexPath) as? Collection else { return }
 		
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRows?.contains(indexPath) ?? false
 		

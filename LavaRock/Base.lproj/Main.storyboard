@@ -222,7 +222,7 @@
                                         <constraint firstItem="22A-2P-2Xf" firstAttribute="trailing" secondItem="u8K-ya-z0T" secondAttribute="trailingMargin" id="CtS-bG-Frc"/>
                                         <constraint firstItem="22A-2P-2Xf" firstAttribute="leading" secondItem="u8K-ya-z0T" secondAttribute="trailingMargin" constant="-24" id="NLD-lk-GGW"/>
                                         <constraint firstItem="22A-2P-2Xf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gN8-Kg-nRJ" secondAttribute="trailing" constant="8" symbolic="YES" id="XDR-lI-Zw2"/>
-                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="centerY" secondItem="22A-2P-2Xf" secondAttribute="centerY" id="i5p-Rh-mUs"/>
+                                        <constraint firstItem="22A-2P-2Xf" firstAttribute="centerY" secondItem="gN8-Kg-nRJ" secondAttribute="centerY" id="i5p-Rh-mUs"/>
                                         <constraint firstItem="gN8-Kg-nRJ" firstAttribute="leading" secondItem="u8K-ya-z0T" secondAttribute="leadingMargin" id="isU-0L-QBq"/>
                                         <constraint firstItem="gN8-Kg-nRJ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="u8K-ya-z0T" secondAttribute="bottomMargin" constant="1" id="l1H-wI-Ebo"/>
                                     </constraints>
@@ -231,7 +231,10 @@
                                             <exclude reference="22A-2P-2Xf"/>
                                         </mask>
                                         <mask key="constraints">
+                                            <exclude reference="i5p-Rh-mUs"/>
                                             <exclude reference="CtS-bG-Frc"/>
+                                            <exclude reference="NLD-lk-GGW"/>
+                                            <exclude reference="XDR-lI-Zw2"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>

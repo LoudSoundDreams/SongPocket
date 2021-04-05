@@ -29,7 +29,9 @@ extension SongsTVC {
 	
 	private func albumArtworkCell() -> UITableViewCell {
 		// Get the data to put into the cell.
-		let album = containerOfLibraryItems as! Album
+		guard let album = containerOfLibraryItems as? Album else {
+			return UITableViewCell()
+		}
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		let cellImage = representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
 		
@@ -47,7 +49,9 @@ extension SongsTVC {
 	
 	private func albumInfoCell() -> UITableViewCell {
 		// Get the data to put into the cell.
-		let album = containerOfLibraryItems as! Album
+		guard let album = containerOfLibraryItems as? Album else {
+			return UITableViewCell()
+		}
 		let cellHeading = album.albumArtistFormattedOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
 		
@@ -77,7 +81,9 @@ extension SongsTVC {
 	
 	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
-		let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
+		guard let song = libraryItem(for: indexPath) as? Song else {
+			return UITableViewCell()
+		}
 		let cellTitle = song.titleFormattedOrPlaceholder()
 		let isNowPlayingSong = isItemNowPlaying(at: indexPath)
 		let cellNowPlayingIndicator = PlayerControllerManager.nowPlayingIndicator(
@@ -124,7 +130,7 @@ extension SongsTVC {
 	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if isEditing {
 		} else {
-			let song = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Song
+			guard let song = libraryItem(for: indexPath) as? Song else { return }
 			if let selectedCell = tableView.cellForRow(at: indexPath) {
 				showSongActions(for: song, popoverAnchorView: selectedCell)
 			}

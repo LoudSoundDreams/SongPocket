@@ -16,8 +16,12 @@ extension AlbumsTVC {
 		
 		// Prepare a Collections view to present modally.
 		
-		let modalCollectionsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as! UINavigationController
-		let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as! CollectionsTVC
+		guard
+			let modalCollectionsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as? UINavigationController,
+			let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as? CollectionsTVC
+		else {
+			return
+		}
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
 		
@@ -31,9 +35,9 @@ extension AlbumsTVC {
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows { // If any rows are selected.
 			for indexPath in tableView.indexPathsForRowsIn(
 				section: 0,
-				firstRow: numberOfRowsAboveIndexedLibraryItems)
+				firstRow: numberOfRowsAboveLibraryItems)
 			{
-				let album = indexedLibraryItems[indexPath.row - numberOfRowsAboveIndexedLibraryItems] as! Album
+				let album = libraryItem(for: indexPath) as! Album
 				if selectedIndexPaths.contains(indexPath) { // If the row is selected.
 					idsOfAlbumsToMove.append(album.objectID)
 				} else { // The row is not selected.
@@ -41,7 +45,7 @@ extension AlbumsTVC {
 				}
 			}
 		} else { // No rows are selected.
-			for album in indexedLibraryItems {
+			for album in sectionOfLibraryItems.items {
 				idsOfAlbumsToMove.append(album.objectID)
 			}
 		}
@@ -72,7 +76,7 @@ extension AlbumsTVC {
 		else { return }
 		
 		// We shouldn't be moving Albums to this Collection if they're already here.
-		for albumInCollectionToMoveTo in indexedLibraryItems {
+		for albumInCollectionToMoveTo in sectionOfLibraryItems.items {
 			if albumMoverClipboard.idsOfAlbumsBeingMoved.contains(albumInCollectionToMoveTo.objectID) {
 				return
 			}
@@ -94,7 +98,7 @@ extension AlbumsTVC {
 		// Apply the changes.
 		
 		// Update the indexes of the Albums we aren't moving, within their Collection.
-		// Almost identical to the property observer for indexedLibraryItems.
+		// Almost identical to the property observer for sectionOfLibraryItems.items.
 		for index in 0..<albumsToNotMove.count {
 			albumsToNotMove[index].setValue(Int64(index), forKey: "index")
 		}
@@ -102,7 +106,7 @@ extension AlbumsTVC {
 		for index in 0..<albumsToMove.count {
 			let album = albumsToMove[index]
 			album.container = containerOfLibraryItems as? Collection
-			indexedLibraryItems.insert(album, at: index)
+			sectionOfLibraryItems.items.insert(album, at: index)
 		}
 		managedObjectContext.tryToSaveSynchronously()
 		guard let mainManagedObjectContext = managedObjectContext.parent else {
