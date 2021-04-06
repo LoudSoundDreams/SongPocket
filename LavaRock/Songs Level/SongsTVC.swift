@@ -41,9 +41,8 @@ final class SongsTVC:
 	}
 	
 	final func refreshNavigationItemTitle() {
-		if let containingAlbum = containerOfLibraryItems as? Album {
-			title = containingAlbum.titleFormattedOrPlaceholder()
-		}
+		guard let containingAlbum = sectionOfLibraryItems.container as? Album else { return }
+		title = containingAlbum.titleFormattedOrPlaceholder()
 	}
 	
 }

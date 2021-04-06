@@ -29,7 +29,7 @@ extension SongsTVC {
 	
 	private func albumArtworkCell() -> UITableViewCell {
 		// Get the data to put into the cell.
-		guard let album = containerOfLibraryItems as? Album else {
+		guard let album = sectionOfLibraryItems.container as? Album else {
 			return UITableViewCell()
 		}
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
@@ -49,7 +49,7 @@ extension SongsTVC {
 	
 	private func albumInfoCell() -> UITableViewCell {
 		// Get the data to put into the cell.
-		guard let album = containerOfLibraryItems as? Album else {
+		guard let album = sectionOfLibraryItems.container as? Album else {
 			return UITableViewCell()
 		}
 		let cellHeading = album.albumArtistFormattedOrPlaceholder()
@@ -93,7 +93,7 @@ extension SongsTVC {
 		// Make, configure, and return the cell.
 		if
 			let cellArtist = song.artistFormatted(),
-			cellArtist != (containerOfLibraryItems as? Album)?.albumArtistFormattedOrPlaceholder()
+			cellArtist != (sectionOfLibraryItems.container as? Album)?.albumArtistFormattedOrPlaceholder()
 		{
 			guard var cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as? SongCellWithDifferentArtist else {
 				return UITableViewCell()

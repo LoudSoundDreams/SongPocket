@@ -42,4 +42,9 @@ struct SectionOfLibraryItems {
 		return managedObjectContext.objectsFetched(for: fetchRequest)
 	}
 	
+	func refreshContainer() {
+		guard let container = container else { return }
+		managedObjectContext.refresh(container, mergeChanges: true)
+	}
+	
 }

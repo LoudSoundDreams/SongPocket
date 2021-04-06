@@ -275,14 +275,13 @@ extension LibraryTVC {
 	
 	@objc private func refreshData() {
 		guard !sectionOfLibraryItems.items.isEmpty else { return }
-		refreshContainerOfLibraryItems()
+		refreshContainers()
 		refreshTableViewRowContents()
 	}
 	
-	// Subclasses that show information about containerOfLibraryItems in their views should subclass this method by calling super (this implementation) and then updating those views with the refreshed containerOfLibraryItems.
-	@objc func refreshContainerOfLibraryItems() {
-		guard let containerOfLibraryItems = containerOfLibraryItems else { return }
-		managedObjectContext.refresh(containerOfLibraryItems, mergeChanges: true)
+	// Subclasses that show information that depends on sectionOfLibraryItems.container in their views should subclass this method, call super (this implementation), and then update their views.
+	@objc func refreshContainers() {
+		sectionOfLibraryItems.refreshContainer()
 	}
 	
 	/*

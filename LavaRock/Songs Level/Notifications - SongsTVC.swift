@@ -21,8 +21,8 @@ extension SongsTVC {
 	// MARK: - Refreshing Data and Views
 	
 	// This is the same as in AlbumsTVC.
-	final override func refreshContainerOfLibraryItems() {
-		super.refreshContainerOfLibraryItems()
+	final override func refreshContainers() {
+		super.refreshContainers()
 		
 		refreshNavigationItemTitle()
 	}

@@ -48,7 +48,6 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses should customize
 	var entityName = "Collection"
-	var containerOfLibraryItems: NSManagedObject?
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
@@ -162,7 +161,7 @@ class LibraryTVC:
 	
 	lazy var sectionOfLibraryItems = SectionOfLibraryItems(
 		managedObjectContext: managedObjectContext,
-		container: containerOfLibraryItems,
+		container: nil,
 		entityName: entityName)
 	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItems.
 	// That's a hack to let us include other rows above the rows for library items. For example:
@@ -344,7 +343,10 @@ class LibraryTVC:
 		{
 			destination.managedObjectContext = managedObjectContext
 			let selectedItem = libraryItem(for: selectedIndexPath)
-			destination.containerOfLibraryItems = selectedItem
+			destination.sectionOfLibraryItems = SectionOfLibraryItems(
+				managedObjectContext: managedObjectContext,
+				container: selectedItem,
+				entityName: destination.entityName)
 		}
 		
 		super.prepare(for: segue, sender: sender)

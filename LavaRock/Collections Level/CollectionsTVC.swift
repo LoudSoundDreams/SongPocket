@@ -97,7 +97,7 @@ final class CollectionsTVC:
 	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
 		if
 			let albumsTVC = unwindSegue.source as? AlbumsTVC,
-			let collection = albumsTVC.containerOfLibraryItems as? Collection,
+			let collection = albumsTVC.sectionOfLibraryItems.container as? Collection,
 			collection.contents?.count == 0
 		{
 			// We moved all the Albums out from a Collection. This doesn't conflict with *deleting* all the Albums from a Collection.
