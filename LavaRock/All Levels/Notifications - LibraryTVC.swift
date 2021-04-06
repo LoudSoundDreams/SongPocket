@@ -19,13 +19,13 @@ extension LibraryTVC {
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserve(_:)),
+			selector: #selector(didObserveLRDidChangeAccentColor),
 			name: Notification.Name.LRDidChangeAccentColor,
 			object: nil)
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserve(_:)),
+			selector: #selector(didObserveLRDidSaveChangesFromMusicLibrary),
 			name: Notification.Name.LRDidSaveChangesFromMusicLibrary,
 			object: nil)
 		
@@ -33,23 +33,23 @@ extension LibraryTVC {
 		
 //		NotificationCenter.default.addObserver(
 //			self,
-//			selector: #selector(didObserve(_:)),
+//			selector: #selector(didObserveLRMediaLibraryDidChange),
 //			name: Notification.Name.LRMediaLibraryDidChange,
 //			object: nil)
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserve(_:)),
+			selector: #selector(didObservePossiblePlaybackStateChange),
 			name: UIApplication.didBecomeActiveNotification,
 			object: nil)
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserve(_:)),
+			selector: #selector(didObservePossiblePlaybackStateChange),
 			name: Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
 			object: nil)
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserve(_:)),
+			selector: #selector(didObservePossiblePlaybackStateChange),
 			name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: nil)
 	}
@@ -60,35 +60,22 @@ extension LibraryTVC {
 	
 	// MARK: - Responding
 	
-	// After observing notifications, funnel control flow through here, rather than calling methods directly, to make debugging easier.
-	@objc private func didObserve(_ notification: Notification) {
-		switch notification.name {
-		case .LRDidChangeAccentColor:
-			didChangeAccentColor()
-//		case .LRMediaLibraryDidChange:
-//			isEitherLoadingOrUpdating = true // Triggers a property observer that sets the "Loading…" state and imports changes
-			
-			
-		case .LRDidSaveChangesFromMusicLibrary:
-			PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
-			refreshToReflectMusicLibrary()
-		case
-			UIApplication.didBecomeActiveNotification,
-			.MPMusicPlayerControllerPlaybackStateDidChange,
-			.MPMusicPlayerControllerNowPlayingItemDidChange
-		:
-			PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
-			refreshToReflectPlaybackState()
-		default:
-			print("An instance of \(Self.self) observed the notification: \(notification.name)")
-			print("… but is not set to do anything after observing that notification.")
-		}
+	@objc private func didObserveLRDidChangeAccentColor() {
+		tableView.reloadData()
 	}
 	
-	// MARK: - After Changing Accent Color
+//	@objc private func didObserveLRMediaLibraryDidChange() {
+//		isEitherLoadingOrUpdating = true // Triggers a property observer that sets the "Loading…" state and imports changes
+//	}
 	
-	private func didChangeAccentColor() {
-		tableView.reloadData()
+	@objc private func didObserveLRDidSaveChangesFromMusicLibrary() {
+		PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
+		refreshToReflectMusicLibrary()
+	}
+	
+	@objc private func didObservePossiblePlaybackStateChange() {
+		PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
+		refreshToReflectPlaybackState()
 	}
 	
 	// MARK: - After Possible Playback State Change
@@ -183,6 +170,8 @@ extension LibraryTVC {
 		return true
 	}
 	
+	// MARK: Refreshing Table View
+	
 	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().
 	// Note: Even though this method is easy to plug arguments into, it (currently) has side effects: it replaces sectionOfLibraryItems.items with the refreshedItems that you pass in.
 	private func refreshTableView(
@@ -272,6 +261,8 @@ extension LibraryTVC {
 			self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 		}
 	}
+	
+	// MARK: Refreshing Data
 	
 	@objc private func refreshData() {
 		guard !sectionOfLibraryItems.items.isEmpty else { return }

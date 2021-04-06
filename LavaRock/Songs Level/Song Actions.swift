@@ -202,7 +202,7 @@ extension SongsTVC {
 			title: LocalizedString.dontShowAgain,
 			style: .default,
 			handler: { _ in
-				UserDefaults.standard.setValue(false, forKey: userDefaultsKeyForShouldShowExplanation.rawValue)
+				UserDefaults.standard.set(false, forKey: userDefaultsKeyForShouldShowExplanation.rawValue)
 			}
 		)
 		let okAction = UIAlertAction(

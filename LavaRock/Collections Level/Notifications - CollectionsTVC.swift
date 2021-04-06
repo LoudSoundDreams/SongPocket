@@ -19,7 +19,7 @@ extension CollectionsTVC {
 		} else {
 			NotificationCenter.default.addObserver(
 				self,
-				selector: #selector(didObserveDidMoveAlbums),
+				selector: #selector(didObserveLRDidMoveAlbums),
 				name: Notification.Name.LRDidMoveAlbums,
 				object: nil)
 		}
@@ -27,7 +27,7 @@ extension CollectionsTVC {
 	
 	// MARK: - After Moving Albums
 	
-	@objc private func didObserveDidMoveAlbums() {
+	@objc private func didObserveLRDidMoveAlbums() {
 		didMoveAlbums = true
 	}
 	

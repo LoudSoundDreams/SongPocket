@@ -30,7 +30,6 @@ final class CollectionsTVC:
 	var didJustFinishLoading = false
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var didMoveAlbums = false
-	var collectionToDeleteBeforeNextRefresh: Collection?
 	
 	// MARK: - Setup
 	
@@ -95,18 +94,6 @@ final class CollectionsTVC:
 	// MARK: Setup Events
 	
 	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-		if
-			let albumsTVC = unwindSegue.source as? AlbumsTVC,
-			let collection = albumsTVC.sectionOfLibraryItems.container as? Collection,
-			collection.contents?.count == 0
-		{
-			// We moved all the Albums out from a Collection. This doesn't conflict with *deleting* all the Albums from a Collection.
-			collectionToDeleteBeforeNextRefresh = collection
-			
-			// Replace this with refreshToReflectMusicLibrary()?
-			refreshToReflectPlaybackState() // So that the "now playing" indicator never momentarily appears on more than one row.
-			refreshDataAndViewsWhenVisible()
-		}
 	}
 	
 	final override func viewWillAppear(_ animated: Bool) {
@@ -128,24 +115,6 @@ final class CollectionsTVC:
 		if let albumMoverClipboard = albumMoverClipboard {
 			if albumMoverClipboard.didAlreadyMakeNewCollection {
 				deleteEmptyNewCollection()
-			}
-		} else {
-			if let emptyCollection = collectionToDeleteBeforeNextRefresh {
-				if let indexOfEmptyCollection = sectionOfLibraryItems.items.firstIndex(where: { onscreenCollection in
-					onscreenCollection.objectID == emptyCollection.objectID
-				}) {
-					let indexOfLastOnscreenCollection = sectionOfLibraryItems.items.count - 1
-					if indexOfEmptyCollection < indexOfLastOnscreenCollection {
-						for indexOfCollectionToShiftUpward in indexOfEmptyCollection + 1 ... indexOfLastOnscreenCollection {
-							// TO DO: This is fragile, because the property observer on sectionOfLibraryItems.items is designed to automatically set the "index" attribute and will override this if we touch it later.
-							let collectionToShiftUpward = sectionOfLibraryItems.items[indexOfCollectionToShiftUpward] as? Collection
-							collectionToShiftUpward?.index -= 1
-						}
-					}
-				}
-				managedObjectContext.delete(emptyCollection) // Don't remove the empty Collection from sectionOfLibraryItems.items here. refreshDataAndViews() will remove it and its table view row for us.
-				managedObjectContext.tryToSaveSynchronously()
-				collectionToDeleteBeforeNextRefresh = nil
 			}
 		}
 		

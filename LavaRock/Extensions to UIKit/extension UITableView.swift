@@ -112,7 +112,7 @@ extension UITableView {
 			return [IndexPath]()
 		}
 		var result = [IndexPath]()
-		for row in firstRow...lastRow {
+		for row in firstRow ... lastRow {
 			result.append(IndexPath(row: row, section: section))
 		}
 		return result

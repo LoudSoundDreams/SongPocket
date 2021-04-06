@@ -20,7 +20,7 @@ extension CollectionsTVC {
 			let albumMoverClipboard = albumMoverClipboard,
 			albumMoverClipboard.didAlreadyMakeNewCollection,
 			let collection = sectionOfLibraryItems.items[indexOfEmptyNewCollection] as? Collection,
-			collection.contents?.count == 0
+			collection.contents == nil || collection.contents?.count == 0
 		else { return }
 		
 		managedObjectContext.delete(collection)

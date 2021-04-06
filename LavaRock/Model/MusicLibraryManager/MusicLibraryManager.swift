@@ -48,7 +48,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserve(_:)),
+			selector: #selector(didObserveMPMediaLibraryDidChange),
 			name: Notification.Name.MPMediaLibraryDidChange,
 			object: nil)
 		library?.beginGeneratingLibraryChangeNotifications()
@@ -62,17 +62,11 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	// MARK: Responding
 	
-	@objc private func didObserve(_ notification: Notification) {
-		switch notification.name {
-		case .MPMediaLibraryDidChange:
-//			NotificationCenter.default.post(
-//				Notification(name: .LRMediaLibraryDidChange)
-//			)
-			importChanges()
-		default:
-			print("\(Self.self) observed the notification: \(notification.name)")
-			print("… but is not set to do anything after observing that notification.")
-		}
+	@objc private func didObserveMPMediaLibraryDidChange() {
+//		NotificationCenter.default.post(
+//			Notification(name: .LRMediaLibraryDidChange)
+//		)
+		importChanges()
 	}
 	
 }

@@ -99,15 +99,31 @@ extension AlbumsTVC {
 		
 		// Update the indexes of the Albums we aren't moving, within their Collection.
 		// Almost identical to the property observer for sectionOfLibraryItems.items.
-		for index in 0..<albumsToNotMove.count {
-			albumsToNotMove[index].setValue(Int64(index), forKey: "index")
+		for index in 0 ..< albumsToNotMove.count {
+			albumsToNotMove[index].index = Int64(index)
 		}
 		
-		for index in 0..<albumsToMove.count {
+		let sourceCollection = albumsToMove.first!.container!
+		// Move the Albums we're moving.
+		for index in 0 ..< albumsToMove.count {
 			let album = albumsToMove[index]
 			album.container = sectionOfLibraryItems.container as? Collection
 			sectionOfLibraryItems.items.insert(album, at: index)
 		}
+		// If we moved all the Albums out of the Collection they used to be in, then delete that Collection.
+		if
+			sourceCollection.contents == nil || sourceCollection.contents?.count == 0
+		{
+			managedObjectContext.delete(sourceCollection)
+			let collectionsFetchRequest: NSFetchRequest<Collection> = Collection.fetchRequest()
+			collectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+			let collections = managedObjectContext.objectsFetched(for: collectionsFetchRequest)
+			// Almost identical to the property observer for sectionOfLibraryItems.items.
+			for index in 0 ..< collections.count {
+				collections[index].index = Int64(index)
+			}
+		}
+		
 		managedObjectContext.tryToSaveSynchronously()
 		guard let mainManagedObjectContext = managedObjectContext.parent else {
 			fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move Albums” sheet.")
