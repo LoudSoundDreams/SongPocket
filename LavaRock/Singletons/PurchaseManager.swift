@@ -114,7 +114,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 //			return
 //		}
 		
-		guard response.products.count >= 1 else {
+		guard !response.products.isEmpty else {
 			didFailToReceiveAnySKProducts()
 			return
 		}

@@ -67,7 +67,7 @@ extension UITableViewController {
 		completion: (() -> ())?
 	) {
 		guard
-			sourceIndexPaths.count >= 1,
+			!sourceIndexPaths.isEmpty,
 			targetIndexPath.section == sourceIndexPaths.first?.section,
 			!isFromMultipleSections(sourceIndexPaths)
 		else { return }

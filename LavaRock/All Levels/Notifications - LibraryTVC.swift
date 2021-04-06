@@ -191,7 +191,7 @@ extension LibraryTVC {
 		refreshedItems: [NSManagedObject],
 		completion: (() -> ())?
 	) {
-		guard refreshedItems.count >= 1 else {
+		guard !refreshedItems.isEmpty else {
 			deleteAllRowsThenExit()
 			return
 		}

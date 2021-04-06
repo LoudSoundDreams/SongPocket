@@ -165,7 +165,7 @@ extension LibraryTVC {
 		let indexPathsToSort = tableView.selectedOrEnumeratedIndexPathsIn(
 			section: 0,
 			firstRow: numberOfRowsAboveLibraryItems)
-		guard indexPathsToSort.count >= 1 else { return }
+		guard !indexPathsToSort.isEmpty else { return }
 		
 		// Get the items to sort, too.
 		let selectedIndexPathsAndItems = tuplesOfIndexPathsAndItems(

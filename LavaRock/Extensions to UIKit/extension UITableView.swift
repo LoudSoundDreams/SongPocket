@@ -17,7 +17,7 @@ extension UITableView {
 	final func shouldAllowMovingSelectedRowsToTopOfSection() -> Bool {
 		guard
 			let selectedIndexPaths = indexPathsForSelectedRows,
-			selectedIndexPaths.count >= 1
+			!selectedIndexPaths.isEmpty
 		else {
 			return false
 		}
@@ -29,7 +29,7 @@ extension UITableView {
 	final func shouldAllowMovingSelectedRowsToBottomOfSection() -> Bool {
 		guard
 			let selectedIndexPaths = indexPathsForSelectedRows,
-			selectedIndexPaths.count >= 1
+			!selectedIndexPaths.isEmpty
 		else {
 			return false
 		}
