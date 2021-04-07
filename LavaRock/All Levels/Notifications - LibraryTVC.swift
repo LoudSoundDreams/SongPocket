@@ -120,19 +120,16 @@ extension LibraryTVC {
 	}
 	
 	final func refreshDataAndViews() {
-		let refreshedItems = sectionOfLibraryItems.fetchedItems()
-		willRefreshDataAndViews(toShow: refreshedItems)
+		willRefreshDataAndViews()
 		
 		guard shouldContinueAfterWillRefreshDataAndViews() else { return }
 		
 		isEitherLoadingOrUpdating = false
 		refreshTableView(
-			section: 0,
-			onscreenItems: sectionOfLibraryItems.items,
-			refreshedItems: refreshedItems,
 			completion: {
 				self.refreshData() // refreshData() includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
-			})
+			}
+		)
 //		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
 	}
 	
@@ -147,9 +144,7 @@ extension LibraryTVC {
 	- (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
 	Subclasses that offer those tasks should override this method and cancel those tasks. For more polish, only cancel those tasks if the refresh will change the content that those actions apply to. Typically, that's when refreshedItems is different from sectionOfLibraryItems.items.
 	*/
-	@objc func willRefreshDataAndViews(
-		toShow refreshedItems: [NSManagedObject]
-	) {
+	@objc func willRefreshDataAndViews() {
 		// Only dismiss modal view controllers if sectionOfLibraryItems.items will change during the refresh?
 //		print(presentedViewController)
 		let shouldNotDismissAllModalViewControllers =
@@ -172,60 +167,44 @@ extension LibraryTVC {
 	
 	// MARK: Refreshing Table View
 	
-	// Easy to plug arguments into. You can call this on its own, separate from refreshDataAndViews().
-	// Note: Even though this method is easy to plug arguments into, it (currently) has side effects: it replaces sectionOfLibraryItems.items with the refreshedItems that you pass in.
 	private func refreshTableView(
-		section: Int,
-		onscreenItems: [NSManagedObject],
-		refreshedItems: [NSManagedObject],
 		completion: (() -> ())?
 	) {
+		let refreshedItems = sectionOfLibraryItems.fetchedItems()
+		
 		guard !refreshedItems.isEmpty else {
 			deleteAllRowsThenExit()
 			return
 		}
 		
-		var indexPathsToMove = [(IndexPath, IndexPath)]()
-		var indexPathsToInsert = [IndexPath]()
+		let section = 0
+		let onscreenItems = sectionOfLibraryItems.items
 		
-		for indexOfRefreshedItem in 0 ..< refreshedItems.count {
-			let refreshedItem = refreshedItems[indexOfRefreshedItem]
-			if let indexOfOnscreenItem = onscreenItems.firstIndex(where: { onscreenItem in
-				onscreenItem.objectID == refreshedItem.objectID
-			}) { // This item is already onscreen, and we still want it onscreen. If necessary, we'll move it. Later, if necessary, we'll update it.
-				let startingIndexPath = indexPathFor(
-					indexOfLibraryItem: indexOfOnscreenItem,
-					indexOfSectionOfLibraryItem: section)
-				let endingIndexPath = indexPathFor(
-					indexOfLibraryItem: indexOfRefreshedItem,
-					indexOfSectionOfLibraryItem: section)
-				indexPathsToMove.append(
-					(startingIndexPath, endingIndexPath))
-				
-			} else { // This item isn't onscreen yet, but we want it onscreen, so we'll have to add it.
-				indexPathsToInsert.append(
-					indexPathFor(
-						indexOfLibraryItem: indexOfRefreshedItem,
-						indexOfSectionOfLibraryItem: section)
-				)
-			}
+		let (
+			indexesOfOldItemsToDelete,
+			indexesOfNewItemsToInsert,
+			indexesOfItemsToMove
+		) = SectionOfLibraryItems.indexesOfDeletesInsertsAndMoves(
+			oldItems: onscreenItems,
+			newItems: refreshedItems)
+		
+		let indexPathsToDelete = indexesOfOldItemsToDelete.map {
+			indexPathFor(
+				indexOfLibraryItem: $0,
+				indexOfSectionOfLibraryItem: section)
 		}
-		
-		var indexPathsToDelete = [IndexPath]()
-		
-		for indexOfOnscreenItem in 0 ..< onscreenItems.count {
-			let onscreenItem = onscreenItems[indexOfOnscreenItem]
-			if let _ = refreshedItems.firstIndex(where: { refreshedItem in
-				refreshedItem.objectID == onscreenItem.objectID
-			})  {
-				continue // to the next onscreenItem
-			} else {
-				indexPathsToDelete.append(
-					indexPathFor(
-						indexOfLibraryItem: indexOfOnscreenItem,
-						indexOfSectionOfLibraryItem: section)
-				)
-			}
+		let indexPathsToInsert = indexesOfNewItemsToInsert.map {
+			indexPathFor(
+				indexOfLibraryItem: $0,
+				indexOfSectionOfLibraryItem: section)
+		}
+		let indexPathsToMove = indexesOfItemsToMove.map {
+			(indexPathFor(
+				indexOfLibraryItem: $0,
+				indexOfSectionOfLibraryItem: section),
+			 indexPathFor(
+				indexOfLibraryItem: $1,
+				indexOfSectionOfLibraryItem: section))
 		}
 		
 		sectionOfLibraryItems.items = refreshedItems

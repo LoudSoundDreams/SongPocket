@@ -14,8 +14,8 @@ struct SectionOfLibraryItems {
 	// MARK: Constants
 	
 	let managedObjectContext: NSManagedObjectContext
-	let container: NSManagedObject?
-	let entityName: String // Switch to associatedtype?
+	let container: NSManagedObject? // Switch to proper-type checking
+	let entityName: String
 	
 	// MARK: Variables
 	
@@ -32,7 +32,7 @@ struct SectionOfLibraryItems {
 	
 	// MARK: - Methods
 	
-	func fetchedItems() -> [NSManagedObject] {
+	func fetchedItems() -> [NSManagedObject] { // Switch to proper type-checking
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		if let container = container {
@@ -45,6 +45,43 @@ struct SectionOfLibraryItems {
 	func refreshContainer() {
 		guard let container = container else { return }
 		managedObjectContext.refresh(container, mergeChanges: true)
+	}
+	
+	static func indexesOfDeletesInsertsAndMoves(
+		oldItems: [NSManagedObject],
+		newItems: [NSManagedObject]
+	) -> (
+		[Int],
+		[Int],
+		[(Int, Int)]
+	) {
+		let difference = newItems.difference(from: oldItems, by: { oldItem, newItem in
+			oldItem.objectID == newItem.objectID
+		}).inferringMoves()
+		
+		var indexesOfOldItemsToDelete = [Int]()
+		var indexesOfNewItemsToInsert = [Int]()
+		var indexesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
+		for change in difference {
+			switch change {
+			case .remove(let offset, _, let association):
+				if let association = association {
+					indexesOfItemsToMove.append((oldIndex: offset, newIndex: association))
+				} else {
+					indexesOfOldItemsToDelete.append(offset)
+				}
+			case .insert(let offset, _, let association):
+				if association == nil {
+					indexesOfNewItemsToInsert.append(offset)
+				}
+			}
+		}
+		
+		return (
+			indexesOfOldItemsToDelete,
+			indexesOfNewItemsToInsert,
+			indexesOfItemsToMove
+		)
 	}
 	
 }

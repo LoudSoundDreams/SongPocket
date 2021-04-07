@@ -135,13 +135,13 @@ extension AlbumsTVC {
 			section: 0,
 			firstRow: 0,
 			lastRow: albumsToMove.count - 1)
-		tableView.performBatchUpdates( {
-				tableView.insertRows(at: indexPathsToInsert, with: .middle)
-		}, completion: { _ in
+		tableView.performBatchUpdates {
+			tableView.insertRows(at: indexPathsToInsert, with: .middle)
+		} completion: { _ in
 			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
 			})
 			albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
-		})
+		}
 		
 	}
 	

@@ -41,9 +41,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	final override func willRefreshDataAndViews(
-		toShow refreshedItems: [NSManagedObject]
-	) {
+	final override func willRefreshDataAndViews() {
 		if isLoading {
 			didJustFinishLoading = true
 			let indexPath = IndexPath(row: 0, section: 0)
@@ -51,7 +49,7 @@ extension CollectionsTVC {
 			didJustFinishLoading = false
 		}
 		
-		super.willRefreshDataAndViews(toShow: refreshedItems)
+		super.willRefreshDataAndViews()
 	}
 	
 	/*

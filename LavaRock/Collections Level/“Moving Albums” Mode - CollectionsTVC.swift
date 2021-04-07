@@ -85,16 +85,16 @@ extension CollectionsTVC {
 				
 				// Enter the new Collection.
 				
-				self.tableView.performBatchUpdates( {
+				self.tableView.performBatchUpdates {
 					self.tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
-				}, completion: { _ in
-					self.tableView.performBatchUpdates( {
+				} completion: { _ in
+					self.tableView.performBatchUpdates {
 						self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top)
 						
-					}, completion: { _ in
+					} completion: { _ in
 						self.performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
-					} )
-				} )
+					}
+				}
 			}
 		)
 		dialog.addAction(cancelAction)
