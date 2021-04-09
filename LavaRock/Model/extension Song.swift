@@ -8,7 +8,13 @@
 import CoreData
 import MediaPlayer
 
+extension Song: LibraryItem {
+	// Enables [song].reindex()
+}
+
 extension Song {
+	
+	// MARK: - Media Player
 	
 	func mpMediaItem() -> MPMediaItem? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {

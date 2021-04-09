@@ -32,9 +32,9 @@ extension MusicLibraryManager {
 	}
 	
 	private func deleteEmptyAlbums() {
-		let albumsFetchRequest: NSFetchRequest<Album> = Album.fetchRequest()
-		// Order doesn't matter.
-		let allAlbums = managedObjectContext.objectsFetched(for: albumsFetchRequest)
+		let allAlbums = Album.allFetched(
+			via: managedObjectContext,
+			ordered: false)
 		
 		for album in allAlbums {
 			guard
@@ -47,9 +47,9 @@ extension MusicLibraryManager {
 	}
 	
 	private func deleteEmptyCollections() {
-		let collectionsFetchRequest: NSFetchRequest<Collection> = Collection.fetchRequest()
-		// Order doesn't matter.
-		let allCollections = managedObjectContext.objectsFetched(for: collectionsFetchRequest)
+		let allCollections = Collection.allFetched(
+			via: managedObjectContext,
+			ordered: false)
 		
 		for collection in allCollections {
 			guard
@@ -59,13 +59,11 @@ extension MusicLibraryManager {
 			managedObjectContext.delete(collection)
 		}
 		
-		collectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		let allRemainingCollectionsInOrder = managedObjectContext.objectsFetched(for: collectionsFetchRequest)
+		var allRemainingCollectionsInOrder = Collection.allFetched(
+			via: managedObjectContext,
+			ordered: true)
 		
-		for index in 0 ..< allRemainingCollectionsInOrder.count {
-			let remainingCollection = allRemainingCollectionsInOrder[index]
-			remainingCollection.index = Int64(index)
-		}
+		allRemainingCollectionsInOrder.reindex()
 	}
 	
 }

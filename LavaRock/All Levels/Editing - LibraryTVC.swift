@@ -63,10 +63,10 @@ extension LibraryTVC {
 			selectedAndTargetIndexPaths.append(
 				(selectedIndexPath, targetIndexPath))
 			
-			let startingIndexOfItem = indexOfLibraryItem(for: selectedIndexPath)
-			let endingIndexOfItem = indexOfLibraryItem(for: targetIndexPath)
-			sectionOfLibraryItems.items.remove(at: startingIndexOfItem)
-			sectionOfLibraryItems.items.insert(matchingItem, at: endingIndexOfItem)
+			let sourceIndexOfItem = indexOfLibraryItem(for: selectedIndexPath)
+			let destinationIndexOfItem = indexOfLibraryItem(for: targetIndexPath)
+			sectionOfLibraryItems.items.remove(at: sourceIndexOfItem)
+			sectionOfLibraryItems.items.insert(matchingItem, at: destinationIndexOfItem)
 			
 			targetRow += 1
 		}
@@ -104,10 +104,10 @@ extension LibraryTVC {
 			selectedAndTargetIndexPaths.append(
 				(selectedIndexPath, targetIndexPath))
 			
-			let startingIndexOfItem = indexOfLibraryItem(for: selectedIndexPath)
-			let endingIndexOfItem = indexOfLibraryItem(for: targetIndexPath)
-			sectionOfLibraryItems.items.remove(at: startingIndexOfItem)
-			sectionOfLibraryItems.items.insert(matchingItem, at: endingIndexOfItem)
+			let sourceIndexOfItem = indexOfLibraryItem(for: selectedIndexPath)
+			let destinationIndexOfItem = indexOfLibraryItem(for: targetIndexPath)
+			sectionOfLibraryItems.items.remove(at: sourceIndexOfItem)
+			sectionOfLibraryItems.items.insert(matchingItem, at: destinationIndexOfItem)
 			
 			targetRow -= 1
 		}

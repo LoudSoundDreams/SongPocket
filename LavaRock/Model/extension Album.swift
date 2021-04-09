@@ -8,7 +8,30 @@
 import CoreData
 import MediaPlayer
 
+extension Album: LibraryItem {
+	// Enables [album].reindex()
+}
+
 extension Album {
+	
+	// MARK: - Core Data
+	
+	static func allFetched(
+		via managedObjectContext: NSManagedObjectContext,
+//		inCollection containerCollection: Collection? = nil,
+		ordered: Bool = true
+	) -> [Album] {
+		let fetchRequest: NSFetchRequest<Album> = fetchRequest()
+//		if let containerCollection = containerCollection {
+//			fetchRequest.predicate = NSPredicate(format: "container == %@", containerCollection)
+//		}
+		if ordered {
+			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		}
+		return managedObjectContext.objectsFetched(for: fetchRequest)
+	}
+	
+	// MARK: - Media Player
 	
 	func mpMediaItemCollection() -> MPMediaItemCollection? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
@@ -63,13 +86,6 @@ extension Album {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateStyle = .medium
 		dateFormatter.timeStyle = .none
-		// Failed attempt to apply ISO8601 format
-////		dateFormatter.locale = Locale.current
-//		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-//		dateFormatter.dateFormat = "yyyy-MM-dd"
-//		dateFormatter.timeZone = TimeZone.current// TimeZone(secondsFromGMT: 0)
-////		dateFormatter.setLocalizedDateFormatFromTemplate("yyyy-MM-dd")
-		
 		return dateFormatter
 	}()
 	

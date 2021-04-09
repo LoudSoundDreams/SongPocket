@@ -328,12 +328,9 @@ extension MusicLibraryManager {
 			return songsCopy
 		}
 		
-		let sortedSongsInAlbum = sortedByAlbumOrder(songs: songs)
+		var sortedSongsInAlbum = sortedByAlbumOrder(songs: songs)
 		
-		for index in 0 ..< sortedSongsInAlbum.count {
-			let song = sortedSongsInAlbum[index]
-			song.index = Int64(index)
-		}
+		sortedSongsInAlbum.reindex()
 	}
 	
 	// MARK: - Creating Individual Songs

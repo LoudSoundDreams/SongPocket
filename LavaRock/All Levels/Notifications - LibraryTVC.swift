@@ -126,8 +126,8 @@ extension LibraryTVC {
 		
 		isEitherLoadingOrUpdating = false
 		refreshTableView(
-			completion: {
-				self.refreshData() // refreshData() includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
+			completion: { [self] in
+				refreshData() // Includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
 			}
 		)
 //		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
@@ -170,6 +170,7 @@ extension LibraryTVC {
 	private func refreshTableView(
 		completion: (() -> ())?
 	) {
+		let section = 0
 		let refreshedItems = sectionOfLibraryItems.fetchedItems()
 		
 		guard !refreshedItems.isEmpty else {
@@ -177,7 +178,6 @@ extension LibraryTVC {
 			return
 		}
 		
-		let section = 0
 		let onscreenItems = sectionOfLibraryItems.items
 		
 		let (
@@ -213,13 +213,12 @@ extension LibraryTVC {
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
 			tableView.insertRows(at: indexPathsToInsert, with: .middle)
-			for (startingIndexPath, endingIndexPath) in indexPathsToMove {
-				guard startingIndexPath != endingIndexPath else { continue } // (Might) prevent the table view from unnecessarily scrolling the top row to the top of the screen.
-				tableView.moveRow(at: startingIndexPath, to: endingIndexPath)
+			for (sourceIndexPath, destinationIndexPath) in indexPathsToMove {
+				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
 		} completion: { _ in
 			self.isAnimatingDuringRefreshTableView -= 1
-			if self.isAnimatingDuringRefreshTableView == 0 { // If we execute multiple refreshes quickly, executions after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure.
+			if self.isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
 				completion?()
 			}
 		}

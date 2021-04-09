@@ -99,14 +99,12 @@ extension MusicLibraryManager {
 			for: potentiallyModifiedSongs as! [Song],
 			toMatch: potentiallyModifiedMediaItems)
 		
-		let existingAlbumsFetchRequest: NSFetchRequest<Album> = Album.fetchRequest()
-		// Order doesn't matter, because we identify Albums by their albumPersistentID.
-		let existingAlbums = managedObjectContext.objectsFetched(for: existingAlbumsFetchRequest)
-		
-		let existingCollectionsFetchRequest: NSFetchRequest<Collection> = Collection.fetchRequest()
-		// Order matters, because we'll try to add new Albums to the first Collection with a matching title.
-		existingCollectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		let existingCollections = managedObjectContext.objectsFetched(for: existingCollectionsFetchRequest)
+		let existingAlbums = Album.allFetched(
+			via: managedObjectContext,
+			ordered: false) // Order doesn't matter, because we identify Albums by their albumPersistentID.
+		let existingCollections = Collection.allFetched(
+			via: managedObjectContext,
+			ordered: true) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
 		
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, and we don't want to do that yet, because of what we mentioned above.
 			// This might make new Albums, and if it does, it might make new Collections.
@@ -120,13 +118,12 @@ extension MusicLibraryManager {
 		
 		os_signpost(.begin, log: Self.importChangesMainLog, name: "4. Cleanup")
 		
-		let allCollectionsFetchRequest: NSFetchRequest<Collection> = Collection.fetchRequest()
-		// Order doesn't matter, because this is for reindexing the Albums within each Collection.
-		let allCollections = managedObjectContext.objectsFetched(for: allCollectionsFetchRequest)
-		
-		let allAlbumsFetchRequest: NSFetchRequest<Album> = Album.fetchRequest()
-		// Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
-		let allAlbums = managedObjectContext.objectsFetched(for: allAlbumsFetchRequest)
+		let allCollections = Collection.allFetched(
+			via: managedObjectContext,
+			ordered: false) // Order doesn't matter, because this is for reindexing the Albums within each Collection.
+		let allAlbums = Album.allFetched(
+			via: managedObjectContext,
+			ordered: false) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		
 		os_signpost(.begin, log: Self.cleanupLog, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
@@ -233,10 +230,7 @@ extension MusicLibraryManager {
 			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albums: albumsInCollection)
 		}
 		
-		for index in 0 ..< albumsInCollection.count {
-			let album = albumsInCollection[index]
-			album.index = Int64(index)
-		}
+		albumsInCollection.reindex()
 	}
 	
 	private func sortedByNewestFirstAndUnknownReleaseDateLast(albums albumsImmutable: [Album]) -> [Album] {
@@ -267,10 +261,7 @@ extension MusicLibraryManager {
 		
 		songsInAlbum.sort { $0.index < $1.index }
 		
-		for index in 0 ..< songsInAlbum.count {
-			let song = songsInAlbum[index]
-			song.index = Int64(index)
-		}
+		songsInAlbum.reindex()
 	}
 	
 }

@@ -6,7 +6,11 @@
 //
 
 import CoreData
-
+/*
+protocol SectionOfLibraryItemsDelegate: AnyObject {
+	func didSetItems()
+}
+*/
 struct SectionOfLibraryItems {
 	
 	// MARK: - Properties
@@ -14,8 +18,12 @@ struct SectionOfLibraryItems {
 	// MARK: Constants
 	
 	let managedObjectContext: NSManagedObjectContext
-	let container: NSManagedObject? // Switch to proper-type checking
+	let container: NSManagedObject? // Switch to proper type-checking
 	let entityName: String
+	
+//	// MARK: "Constants"
+//
+//	weak var delegate: SectionOfLibraryItemsDelegate?
 	
 	// MARK: Variables
 	
@@ -26,9 +34,6 @@ struct SectionOfLibraryItems {
 			}
 		}
 	}
-	
-	// Computed properties
-//	var isEmpty: Bool { items.isEmpty } // Nonsensical build error: "Cannot use mutating getter on immutable value: 'self' is immutable"
 	
 	// MARK: - Methods
 	
@@ -83,5 +88,19 @@ struct SectionOfLibraryItems {
 			indexesOfItemsToMove
 		)
 	}
+	/*
+	mutating func setItems(_ newItems: [NSManagedObject]) {
+		let indexesOfChanges = Self.indexesOfDeletesInsertsAndMoves(
+			oldItems: items,
+			newItems: newItems)
+		items = newItems
+		delegate?.didSetItems()
 	
+	
+	this will not work.
+	1. didSetItem() triggers refreshDataAndViews(), which sets `items` again from fetchedItems().
+	1a. we haven't saved our modified items via the managed object context in the first place
+	2. refreshDataAndViews() wouldn't notice the right changes because it compares `items`to fetchedItems().
+	}
+	*/
 }

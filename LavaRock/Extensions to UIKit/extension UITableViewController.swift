@@ -80,7 +80,7 @@ extension UITableViewController {
 			}
 		}
 		
-		// Generate the new `sourceIndexPaths` for the recursive call.
+		// Generate the new sourceIndexPaths for the recursive call.
 		var newSourceIndexPaths = [IndexPath]()
 		for sourceIndexPath in sourceIndexPaths {
 			var newSourceIndexPath = sourceIndexPath // Default value
@@ -91,7 +91,7 @@ extension UITableViewController {
 		}
 		newSourceIndexPaths.removeFirst()
 		
-		// Generate the new `firstIndexPath` for the recursive call.
+		// Generate the new targetIndexPath for the recursive call.
 		let newTargetIndexPath = IndexPath(
 			row: targetIndexPath.row + 1,
 			section: targetIndexPath.section)

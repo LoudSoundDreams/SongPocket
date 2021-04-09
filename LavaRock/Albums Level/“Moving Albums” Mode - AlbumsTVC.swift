@@ -98,30 +98,23 @@ extension AlbumsTVC {
 		// Apply the changes.
 		
 		// Update the indexes of the Albums we aren't moving, within their Collection.
-		// Almost identical to the property observer for sectionOfLibraryItems.items.
-		for index in 0 ..< albumsToNotMove.count {
-			albumsToNotMove[index].index = Int64(index)
-		}
+		albumsToNotMove.reindex()
 		
 		let sourceCollection = albumsToMove.first!.container!
+		let destinationCollection = sectionOfLibraryItems.container as! Collection
 		// Move the Albums we're moving.
 		for index in 0 ..< albumsToMove.count {
 			let album = albumsToMove[index]
-			album.container = sectionOfLibraryItems.container as? Collection
-			sectionOfLibraryItems.items.insert(album, at: index)
+			album.container = destinationCollection
+			sectionOfLibraryItems.items.insert(album, at: index) // The property observer will set the "index" attribute on each Album for us.
 		}
 		// If we moved all the Albums out of the Collection they used to be in, then delete that Collection.
 		if
 			sourceCollection.contents == nil || sourceCollection.contents?.count == 0
 		{
 			managedObjectContext.delete(sourceCollection)
-			let collectionsFetchRequest: NSFetchRequest<Collection> = Collection.fetchRequest()
-			collectionsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-			let collections = managedObjectContext.objectsFetched(for: collectionsFetchRequest)
-			// Almost identical to the property observer for sectionOfLibraryItems.items.
-			for index in 0 ..< collections.count {
-				collections[index].index = Int64(index)
-			}
+			var allCollections = Collection.allFetched(via: managedObjectContext)
+			allCollections.reindex()
 		}
 		
 		managedObjectContext.tryToSaveSynchronously()

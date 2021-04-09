@@ -162,7 +162,8 @@ class LibraryTVC:
 	lazy var sectionOfLibraryItems = SectionOfLibraryItems(
 		managedObjectContext: managedObjectContext,
 		container: nil,
-		entityName: entityName)
+		entityName: entityName)//,
+//		delegate: self)
 	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItems.
 	// That's a hack to let us include other rows above the rows for library items. For example:
 	// - Rows for album artwork and album info in SongsTVC.
@@ -338,15 +339,16 @@ class LibraryTVC:
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if
 			segue.identifier == "Drill Down in Library",
-			let destination = segue.destination as? LibraryTVC,
+			let libraryTVC = segue.destination as? LibraryTVC,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
-			destination.managedObjectContext = managedObjectContext
+			libraryTVC.managedObjectContext = managedObjectContext
 			let selectedItem = libraryItem(for: selectedIndexPath)
-			destination.sectionOfLibraryItems = SectionOfLibraryItems(
+			libraryTVC.sectionOfLibraryItems = SectionOfLibraryItems(
 				managedObjectContext: managedObjectContext,
 				container: selectedItem,
-				entityName: destination.entityName)
+				entityName: libraryTVC.entityName)//,
+//				delegate: libraryTVC)
 		}
 		
 		super.prepare(for: segue, sender: sender)

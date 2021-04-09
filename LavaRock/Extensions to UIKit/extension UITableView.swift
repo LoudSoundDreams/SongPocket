@@ -121,12 +121,12 @@ extension UITableView {
 	// MARK: - Moving Rows
 	
 	final func moveRows(
-		atIndexPathsToIndexPathsIn startingAndEndingIndexPaths: [(IndexPath, IndexPath)],
+		atIndexPathsToIndexPathsIn sourceAndDestinationIndexPaths: [(IndexPath, IndexPath)],
 		completion: (() -> ())?
 	) {
 		performBatchUpdates {
-			for (startingIndexPath, endingIndexPath) in startingAndEndingIndexPaths {
-				moveRow(at: startingIndexPath, to: endingIndexPath)
+			for (sourceIndexPath, destinationIndexPath) in sourceAndDestinationIndexPaths {
+				moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
 		} completion: { _ in completion?() }
 	}

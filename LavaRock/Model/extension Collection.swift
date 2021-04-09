@@ -7,7 +7,22 @@
 
 import CoreData
 
+extension Collection: LibraryItem {
+	// Enables [collection].reindex()
+}
+
 extension Collection {
+	
+	static func allFetched(
+		via managedObjectContext: NSManagedObjectContext,
+		ordered: Bool = true
+	) -> [Collection] {
+		let fetchRequest: NSFetchRequest<Collection> = fetchRequest()
+		if ordered {
+			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		}
+		return managedObjectContext.objectsFetched(for: fetchRequest)
+	}
 	
 	static func validatedTitle(from rawProposedTitle: String?) -> String {
 		let unwrappedProposedTitle = rawProposedTitle ?? ""
