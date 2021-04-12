@@ -59,16 +59,16 @@ extension CollectionsTVC {
 		let doneAction = UIAlertAction(
 			title: LocalizedString.done,
 			style: .default,
-			handler: { _ in
+			handler: { [self] _ in
 				let rawProposedTitle = dialog.textFields?[0].text
 				let newTitle = Collection.validatedTitle(from: rawProposedTitle)
 				
 				collection.title = newTitle
-				self.managedObjectContext.tryToSave()
+				managedObjectContext.tryToSave()
 				
-				self.tableView.reloadRows(at: [indexPath], with: .fade)
+				tableView.reloadRows(at: [indexPath], with: .fade)
 				if wasRowSelectedBeforeRenaming {
-					self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+					tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 				}
 			}
 		)

@@ -31,12 +31,6 @@ extension LibraryTVC {
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-//		NotificationCenter.default.addObserver(
-//			self,
-//			selector: #selector(didObserveLRMediaLibraryDidChange),
-//			name: Notification.Name.LRMediaLibraryDidChange,
-//			object: nil)
-		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didObservePossiblePlaybackStateChange),
@@ -63,10 +57,6 @@ extension LibraryTVC {
 	@objc private func didObserveLRDidChangeAccentColor() {
 		tableView.reloadData()
 	}
-	
-//	@objc private func didObserveLRMediaLibraryDidChange() {
-//		isEitherLoadingOrUpdating = true // Triggers a property observer that sets the "Loading…" state and imports changes
-//	}
 	
 	@objc private func didObserveLRDidSaveChangesFromMusicLibrary() {
 		PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
@@ -126,8 +116,8 @@ extension LibraryTVC {
 		
 		isEitherLoadingOrUpdating = false
 		refreshTableView(
-			completion: { [self] in
-				refreshData() // Includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
+			completion: {
+				self.refreshData() // Includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
 			}
 		)
 //		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
@@ -142,11 +132,10 @@ extension LibraryTVC {
 	- "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
 	- Song actions (SongsTVC)
 	- (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
-	Subclasses that offer those tasks should override this method and cancel those tasks. For more polish, only cancel those tasks if the refresh will change the content that those actions apply to. Typically, that's when refreshedItems is different from sectionOfLibraryItems.items.
+	Subclasses that offer those tasks should override this method and cancel those tasks.
 	*/
 	@objc func willRefreshDataAndViews() {
 		// Only dismiss modal view controllers if sectionOfLibraryItems.items will change during the refresh?
-//		print(presentedViewController)
 		let shouldNotDismissAllModalViewControllers =
 			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 		if !shouldNotDismissAllModalViewControllers {
@@ -216,9 +205,9 @@ extension LibraryTVC {
 			for (sourceIndexPath, destinationIndexPath) in indexPathsToMove {
 				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
-		} completion: { _ in
-			self.isAnimatingDuringRefreshTableView -= 1
-			if self.isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
+		} completion: { [self] _ in
+			isAnimatingDuringRefreshTableView -= 1
+			if isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
 				completion?()
 			}
 		}
@@ -243,7 +232,6 @@ extension LibraryTVC {
 	// MARK: Refreshing Data
 	
 	@objc private func refreshData() {
-		guard !sectionOfLibraryItems.items.isEmpty else { return }
 		refreshContainers()
 		refreshTableViewRowContents()
 	}

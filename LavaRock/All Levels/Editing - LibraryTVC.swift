@@ -73,11 +73,11 @@ extension LibraryTVC {
 		
 		tableView.moveRows(
 			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
-			completion: {
+			completion: { [self] in
 				for (_, targetIndexPath) in selectedAndTargetIndexPaths {
-					self.tableView.deselectRow(at: targetIndexPath, animated: true)
+					tableView.deselectRow(at: targetIndexPath, animated: true)
 				}
-				self.refreshBarButtons()
+				refreshBarButtons()
 			}
 		)
 	}
@@ -114,11 +114,11 @@ extension LibraryTVC {
 		
 		tableView.moveRows(
 			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
-			completion: {
+			completion: { [self] in
 				for (_, targetIndexPath) in selectedAndTargetIndexPaths {
-					self.tableView.deselectRow(at: targetIndexPath, animated: true)
+					tableView.deselectRow(at: targetIndexPath, animated: true)
 				}
-				self.refreshBarButtons()
+				refreshBarButtons()
 			}
 		)
 	}

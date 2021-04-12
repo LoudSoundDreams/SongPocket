@@ -67,7 +67,7 @@ extension CollectionsTVC {
 		let doneAction = UIAlertAction(
 			title: LocalizedString.done,
 			style: .default,
-			handler: { _ in
+			handler: { [self] _ in
 				albumMoverClipboard.didAlreadyMakeNewCollection = true
 				
 				let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
@@ -77,22 +77,22 @@ extension CollectionsTVC {
 				let rawProposedTitle = dialog.textFields?[0].text
 				let newTitle = Collection.validatedTitle(from: rawProposedTitle)
 				
-				let newCollection = Collection(context: self.managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
+				let newCollection = Collection(context: managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
 				newCollection.title = newTitle
 				// The property observer on sectionOfLibraryItems.items will set the "index" attribute of each Collection for us.
 				
-				self.sectionOfLibraryItems.items.insert(newCollection, at: indexPathOfNewCollection.row)
+				sectionOfLibraryItems.items.insert(newCollection, at: indexPathOfNewCollection.row)
 				
 				// Enter the new Collection.
 				
-				self.tableView.performBatchUpdates {
-					self.tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
+				tableView.performBatchUpdates {
+					tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
 				} completion: { _ in
-					self.tableView.performBatchUpdates {
-						self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top)
+					tableView.performBatchUpdates {
+						tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top)
 						
 					} completion: { _ in
-						self.performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
+						performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
 					}
 				}
 			}

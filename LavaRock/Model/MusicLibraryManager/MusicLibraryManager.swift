@@ -63,9 +63,6 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	// MARK: Responding
 	
 	@objc private func didObserveMPMediaLibraryDidChange() {
-//		NotificationCenter.default.post(
-//			Notification(name: .LRMediaLibraryDidChange)
-//		)
 		importChanges()
 	}
 	

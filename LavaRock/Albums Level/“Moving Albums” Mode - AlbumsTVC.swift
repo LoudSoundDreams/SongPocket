@@ -86,13 +86,11 @@ extension AlbumsTVC {
 		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
 		
 		// Get the Albums to move, and to not move.
-		var albumsToMove = [Album]()
-		for albumID in albumMoverClipboard.idsOfAlbumsBeingMoved {
-			albumsToMove.append(managedObjectContext.object(with: albumID) as! Album)
+		let albumsToMove = albumMoverClipboard.idsOfAlbumsBeingMoved.map { albumID in
+			managedObjectContext.object(with: albumID) as! Album
 		}
-		var albumsToNotMove = [Album]()
-		for albumID in albumMoverClipboard.idsOfAlbumsNotBeingMoved {
-			albumsToNotMove.append(managedObjectContext.object(with: albumID) as! Album)
+		var albumsToNotMove = albumMoverClipboard.idsOfAlbumsNotBeingMoved.map { albumID in
+			managedObjectContext.object(with: albumID) as! Album
 		}
 		
 		// Apply the changes.
@@ -106,7 +104,7 @@ extension AlbumsTVC {
 		for index in 0 ..< albumsToMove.count {
 			let album = albumsToMove[index]
 			album.container = destinationCollection
-			sectionOfLibraryItems.items.insert(album, at: index) // The property observer will set the "index" attribute on each Album for us.
+			sectionOfLibraryItems.items.insert(album, at: index) // The property observer will set the "index" attribute on every Album in this Collection for us.
 		}
 		// If we moved all the Albums out of the Collection they used to be in, then delete that Collection.
 		if

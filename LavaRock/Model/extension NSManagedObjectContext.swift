@@ -10,10 +10,10 @@ import CoreData
 extension NSManagedObjectContext {
 	
 	func tryToSave() {
-		perform {
-			guard self.hasChanges else { return }
+		perform { [self] in
+			guard hasChanges else { return }
 			do {
-				try self.save()
+				try save()
 			} catch {
 				print("Crashed while trying to save changes asynchronously.")
 				fatalError("\(error)")
@@ -23,9 +23,9 @@ extension NSManagedObjectContext {
 	
 	func tryToSaveSynchronously() {
 		performAndWait {
-			guard self.hasChanges else { return }
+			guard hasChanges else { return }
 			do {
-				try self.save()
+				try save()
 			} catch {
 				print("Crashed while trying to save changes synchronously.")
 				fatalError("\(error)")
@@ -37,7 +37,7 @@ extension NSManagedObjectContext {
 		var results = [T]()
 		performAndWait {
 			do {
-				results = try self.fetch(request)
+				results = try fetch(request)
 			} catch {
 				fatalError("Couldn't load items from Core Data using the fetch request: \(request)")
 			}
