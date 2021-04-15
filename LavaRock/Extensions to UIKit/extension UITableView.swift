@@ -75,9 +75,6 @@ extension UITableView {
 		}
 	}
 	
-	// We have a copy of this method in an extension to UITableView.
-	// Returns false if all the IndexPaths you provide have the same value for their "section" parameter.
-	// Returns true if any one or more of the IndexPaths you provide has a different value for its "section" parameter than all the others.
 	private func isFromMultipleSections(_ indexPaths: [IndexPath]) -> Bool {
 		if indexPaths.count <= 1 { // Terminating case.
 			return false
@@ -118,32 +115,7 @@ extension UITableView {
 		return result
 	}
 	
-	// MARK: - Moving Rows
-	
-	final func moveRows(
-		atIndexPathsToIndexPathsIn sourceAndDestinationIndexPaths: [(IndexPath, IndexPath)],
-		completion: (() -> ())?
-	) {
-		performBatchUpdates {
-			for (sourceIndexPath, destinationIndexPath) in sourceAndDestinationIndexPaths {
-				moveRow(at: sourceIndexPath, to: destinationIndexPath)
-			}
-		} completion: { _ in completion?() }
-	}
-	
 	// MARK: - Taking Action on Rows
-	
-	final func selectRows(at indexPaths: [IndexPath], animated: Bool) {
-		for indexPath in indexPaths {
-			selectRow(at: indexPath, animated: animated, scrollPosition: .none)
-		}
-	}
-	
-	final func deselectRows(at indexPaths: [IndexPath], animated: Bool) {
-		for indexPath in indexPaths {
-			deselectRow(at: indexPath, animated: true)
-		}
-	}
 	
 	final func deselectAllRows(animated: Bool) {
 		guard let indexPaths = indexPathsForSelectedRows else { return }

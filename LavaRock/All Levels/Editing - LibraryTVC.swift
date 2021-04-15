@@ -29,57 +29,32 @@ extension LibraryTVC {
 	// MARK: - Moving to Top
 	
 	@objc final func moveSelectedItemsToTop() {
-		moveItemsUp(
-			from: tableView.indexPathsForSelectedRows,
-			to: indexPathFor(
-				indexOfLibraryItem: 0,
-				indexOfSectionOfLibraryItem: 0)
-		)
-	}
-	
-	// Note: Every IndexPath in selectedIndexPaths must be in the same section as firstIndexPath, and at or down below firstIndexPath.
-	private func moveItemsUp(from selectedIndexPaths: [IndexPath]?, to firstIndexPath: IndexPath) {
 		guard
 			tableView.shouldAllowMovingSelectedRowsToTopOfSection(),
-			let selectedIndexPaths = selectedIndexPaths
+			let indexPaths = tableView.indexPathsForSelectedRows?.sorted()
 		else { return }
-		// Make sure every IndexPaths in selectedIndexPaths is in the same section as firstIndexPath, and at or down below firstIndexPath.
-		for selectedIndexPath in selectedIndexPaths {
-			if selectedIndexPath.section != firstIndexPath.section || selectedIndexPath.row < firstIndexPath.row {
-				return
-			}
+		
+		// Update the data source.
+		
+		let indexesOfSelectedItems = indexPaths.map { indexOfLibraryItem(for: $0) }
+		let selectedItems = indexPaths.map { libraryItem(for: $0) }
+		let onscreenItems = sectionOfLibraryItems.items
+		for index in indexesOfSelectedItems.reversed() {
+			sectionOfLibraryItems.items.remove(at: index)
 		}
 		
-		let pairsToMove = tuplesOfIndexPathsAndItems(
-			selectedIndexPaths.sorted(),
-			sectionItems: sectionOfLibraryItems.items,
-			rowForFirstItem: numberOfRowsAboveLibraryItems)
-		
-		let targetSection = firstIndexPath.section
-		var targetRow = firstIndexPath.row
-		var selectedAndTargetIndexPaths = [(IndexPath, IndexPath)]()
-		for (selectedIndexPath, matchingItem) in pairsToMove {
-			let targetIndexPath = IndexPath(row: targetRow, section: targetSection)
-			selectedAndTargetIndexPaths.append(
-				(selectedIndexPath, targetIndexPath))
-			
-			let sourceIndexOfItem = indexOfLibraryItem(for: selectedIndexPath)
-			let destinationIndexOfItem = indexOfLibraryItem(for: targetIndexPath)
-			sectionOfLibraryItems.items.remove(at: sourceIndexOfItem)
-			sectionOfLibraryItems.items.insert(matchingItem, at: destinationIndexOfItem)
-			
-			targetRow += 1
+		for item in selectedItems.reversed() {
+			sectionOfLibraryItems.items.insert(item, at: 0)
 		}
 		
-		tableView.moveRows(
-			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
+		// Update the table view.
+		
+		refreshTableView(
+			onscreenItems: onscreenItems,
 			completion: { [self] in
-				for (_, targetIndexPath) in selectedAndTargetIndexPaths {
-					tableView.deselectRow(at: targetIndexPath, animated: true)
-				}
+				tableView.deselectAllRows(animated: true)
 				refreshBarButtons()
-			}
-		)
+			})
 	}
 	
 	// MARK: - Moving to Bottom
@@ -87,45 +62,35 @@ extension LibraryTVC {
 	@objc final func sinkSelectedItemsToBottom() {
 		guard
 			tableView.shouldAllowMovingSelectedRowsToBottomOfSection(),
-			let selectedIndexPaths = tableView.indexPathsForSelectedRows
+			let indexPaths = tableView.indexPathsForSelectedRows?.sorted()
 		else { return }
 		
-		let sortedSelectedIndexPaths = selectedIndexPaths.sorted()
-		let pairsToMove = tuplesOfIndexPathsAndItems(
-			sortedSelectedIndexPaths,
-			sectionItems: sectionOfLibraryItems.items,
-			rowForFirstItem: numberOfRowsAboveLibraryItems)
-		guard let targetSection = sortedSelectedIndexPaths.last?.section else { return }
+		// Update the data source.
 		
-		var targetRow = tableView.numberOfRows(inSection: targetSection) - 1
-		var selectedAndTargetIndexPaths = [(IndexPath, IndexPath)]()
-		for (selectedIndexPath, matchingItem) in pairsToMove.reversed() {
-			let targetIndexPath = IndexPath(row: targetRow, section: targetSection)
-			selectedAndTargetIndexPaths.append(
-				(selectedIndexPath, targetIndexPath))
-			
-			let sourceIndexOfItem = indexOfLibraryItem(for: selectedIndexPath)
-			let destinationIndexOfItem = indexOfLibraryItem(for: targetIndexPath)
-			sectionOfLibraryItems.items.remove(at: sourceIndexOfItem)
-			sectionOfLibraryItems.items.insert(matchingItem, at: destinationIndexOfItem)
-			
-			targetRow -= 1
+		let indexesOfSelectedItems = indexPaths.map { indexOfLibraryItem(for: $0) }
+		let selectedItems = indexPaths.map { libraryItem(for: $0) }
+		let onscreenItems = sectionOfLibraryItems.items
+		for index in indexesOfSelectedItems.reversed() {
+			sectionOfLibraryItems.items.remove(at: index)
 		}
 		
-		tableView.moveRows(
-			atIndexPathsToIndexPathsIn: selectedAndTargetIndexPaths,
+		for item in selectedItems {
+			sectionOfLibraryItems.items.append(item)
+		}
+		
+		// Update the table view.
+		
+		refreshTableView(
+			onscreenItems: onscreenItems,
 			completion: { [self] in
-				for (_, targetIndexPath) in selectedAndTargetIndexPaths {
-					tableView.deselectRow(at: targetIndexPath, animated: true)
-				}
+				tableView.deselectAllRows(animated: true)
 				refreshBarButtons()
-			}
-		)
+			})
 	}
 	
 	// MARK: - Sorting
 	
-	// Unfortunately, we can't save UIAlertActions as constant properties of LibraryTVC. They're view controllers.
+	// For iOS 13
 	@objc final func showSortOptionsActionSheet() {
 		let actionSheet = UIAlertController(
 			title: LocalizedString.sortBy,
@@ -149,11 +114,13 @@ extension LibraryTVC {
 		present(actionSheet, animated: true, completion: nil)
 	}
 	
+	// For iOS 13
 	private func sortSelectedOrAllItems(_ sender: UIAlertAction) {
 		guard let sortOptionLocalizedName = sender.title else { return }
 		sortSelectedOrAllItems(sortOptionLocalizedName: sortOptionLocalizedName)
 	}
 	
+	// For iOS 14 and later
 	final func sortActionHandler(_ sender: UIAction) {
 		sortSelectedOrAllItems(sortOptionLocalizedName: sender.title)
 	}
@@ -167,103 +134,97 @@ extension LibraryTVC {
 			firstRow: numberOfRowsAboveLibraryItems)
 		guard !indexPathsToSort.isEmpty else { return }
 		
-		// Get the items to sort, too.
-		let selectedIndexPathsAndItems = tuplesOfIndexPathsAndItems(
-			indexPathsToSort,
-			sectionItems: sectionOfLibraryItems.items,
-			rowForFirstItem: numberOfRowsAboveLibraryItems)
+		// Get and sort the items.
+		let itemsToSort = indexPathsToSort.map { libraryItem(for: $0) }
+		let sortedItems = sorted(
+			itemsToSort,
+			sortOptionLocalizedName: sortOptionLocalizedName)
 		
-		// Sort the rows and items together.
-		let sortedIndexPathsAndItems =
-			sorted(
-				selectedIndexPathsAndItems,
-				sortOptionLocalizedName: sortOptionLocalizedName)
-		
-		// Remove the selected items from the data source.
-		for indexPath in indexPathsToSort.reversed() {
-			let indexOfItemToRemove = indexOfLibraryItem(for: indexPath)
-			sectionOfLibraryItems.items.remove(at: indexOfItemToRemove)
+		// Update the data source.
+		let indexes = indexPathsToSort.map { indexOfLibraryItem(for: $0) }
+		let onscreenItems = sectionOfLibraryItems.items
+		for index in indexes.reversed() {
+			sectionOfLibraryItems.items.remove(at: index)
 		}
-		
-		// Put the sorted items into the data source.
-		let indexToInsertItemAt = indexPathsToSort.first!.row - numberOfRowsAboveLibraryItems
-		for (_, item) in sortedIndexPathsAndItems.reversed() {
-			sectionOfLibraryItems.items.insert(
-				item,
-				at: indexToInsertItemAt)
+		for i in 0 ..< sortedItems.count {
+			let sortedItem = sortedItems[i]
+			let index = indexes[i]
+			sectionOfLibraryItems.items.insert(sortedItem, at: index)
 		}
 		
 		// Update the table view.
-		var sortedIndexPaths = [IndexPath]()
-		for indexPathAndItem in sortedIndexPathsAndItems {
-			sortedIndexPaths.append(indexPathAndItem.0)
-		}
-		moveRowsUpToEarliestRow( // You could use tableView.reloadRows, but none of those animations show the individual rows moving to their destinations.
-			from: sortedIndexPaths,
-			completion: {
-//				self.tableView.deselectRows(at: indexPathsToSort, animated: true) // This leaves the (editing mode) toolbar buttons out of date.
+		refreshTableView(
+			onscreenItems: onscreenItems,
+			completion: { [self] in
+				tableView.deselectAllRows(animated: true)
+				refreshBarButtons()
 			})
-		
-		// Update the rest of the UI.
-		tableView.deselectAllRows(animated: true) // TO DO: Wait until we finish moving the rows to do this, to match what happens after we tap "move to top" or "move to bottom".
-		refreshBarButtons()
 	}
 	
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
 	private func sorted(
-		_ indexPathsAndItemsImmutable: [(IndexPath, NSManagedObject)],
+		_ items: [NSManagedObject],
 		sortOptionLocalizedName: String?
-	) -> [(IndexPath, NSManagedObject)] {
+	) -> [NSManagedObject] {
 		switch sortOptionLocalizedName {
 		
 		case LocalizedString.title:
-			var indexPathsAndItemsCopy = indexPathsAndItemsImmutable
-			if self is CollectionsTVC {
-				indexPathsAndItemsCopy.sort {
+			if let collections = items as? [Collection] {
+				return collections.sorted {
 					// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
-					let collectionTitle0 = ($0.1 as? Collection)?.title ?? ""
-					let collectionTitle1 = ($1.1 as? Collection)?.title ?? ""
+					let collectionTitle0 = $0.title ?? ""
+					let collectionTitle1 = $1.title ?? ""
 					let comparisonResult = collectionTitle0.localizedStandardCompare(collectionTitle1) // The comparison method that the Finder uses
 					return comparisonResult == .orderedAscending
 				}
+			} else {
+				// If we're sorting Albums or Songs, use titleFormattedOrPlaceholder().
+				return items
 			}
-			// If we're sorting Albums or Songs, use the methods in `extension Album` or `extension Song` to fetch their titles (or placeholders).
-			return indexPathsAndItemsCopy
 		
 		// Albums only
 		case LocalizedString.newestFirst:
+			guard let albums = items as? [Album] else {
+				return items
+			}
 			let commonDate = Date()
-			return indexPathsAndItemsImmutable.sorted {
-				($0.1 as? Album)?.releaseDateEstimate ?? commonDate >
-					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
+			return albums.sorted {
+				$0.releaseDateEstimate ?? commonDate >
+					$1.releaseDateEstimate ?? commonDate
 			}
 		case LocalizedString.oldestFirst:
+			guard let albums = items as? [Album] else {
+				return items
+			}
 			let commonDate = Date()
-			return indexPathsAndItemsImmutable.sorted {
-				($0.1 as? Album)?.releaseDateEstimate ?? commonDate <
-					($1.1 as? Album)?.releaseDateEstimate ?? commonDate
+			return albums.sorted {
+				$0.releaseDateEstimate ?? commonDate <
+					$1.releaseDateEstimate ?? commonDate
 			}
 		
 		// Songs only
 		case LocalizedString.trackNumber:
-			// Actually, return the items grouped by disc number, and sorted by track number within each disc.
-			let sortedByTrackNumber = indexPathsAndItemsImmutable.sorted {
-				($0.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 <
-					($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0
+			guard let songs = items as? [Song] else {
+				return items
+			}
+			// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
+			let sortedByTrackNumber = songs.sorted {
+				$0.mpMediaItem()?.albumTrackNumber ?? 0 <
+					$1.mpMediaItem()?.albumTrackNumber ?? 0
 			}
 			let sortedByTrackNumberWithZeroAtEnd = sortedByTrackNumber.sorted {
-				($1.1 as? Song)?.mpMediaItem()?.albumTrackNumber ?? 0 == 0
+				$1.mpMediaItem()?.albumTrackNumber ?? 0 == 0
 			}
 			let sortedByDiscNumber = sortedByTrackNumberWithZeroAtEnd.sorted {
-				($0.1 as? Song)?.mpMediaItem()?.discNumber ?? 0 <
-					($1.1 as? Song)?.mpMediaItem()?.discNumber ?? 0
+				$0.mpMediaItem()?.discNumber ?? 0 <
+					$1.mpMediaItem()?.discNumber ?? 0
 			}
 			// As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
 			return sortedByDiscNumber
 			
 		default:
 			print("The user tried to sort by “\(sortOptionLocalizedName ?? "")”, which isn’t a supported option. It might be misspelled.")
-			return indexPathsAndItemsImmutable // Otherwise, the app will crash when it tries to call moveRowsUpToEarliestRow on an empty array. Escaping here is easier than changing the logic to use optionals.
+			return items
 		}
 	}
 	

@@ -114,8 +114,12 @@ extension LibraryTVC {
 		
 		guard shouldContinueAfterWillRefreshDataAndViews() else { return }
 		
+		let onscreenItems = sectionOfLibraryItems.items
+		sectionOfLibraryItems.items = sectionOfLibraryItems.fetchedItems()
+		
 		isEitherLoadingOrUpdating = false
 		refreshTableView(
+			onscreenItems: onscreenItems,
 			completion: {
 				self.refreshData() // Includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
 			}
@@ -156,18 +160,17 @@ extension LibraryTVC {
 	
 	// MARK: Refreshing Table View
 	
-	private func refreshTableView(
+	final func refreshTableView(
+		onscreenItems: [NSManagedObject],
 		completion: (() -> ())?
 	) {
 		let section = 0
-		let refreshedItems = sectionOfLibraryItems.fetchedItems()
+		let newItems = sectionOfLibraryItems.items
 		
-		guard !refreshedItems.isEmpty else {
+		guard !newItems.isEmpty else {
 			deleteAllRowsThenExit()
 			return
 		}
-		
-		let onscreenItems = sectionOfLibraryItems.items
 		
 		let (
 			indexesOfOldItemsToDelete,
@@ -175,7 +178,7 @@ extension LibraryTVC {
 			indexesOfItemsToMove
 		) = SectionOfLibraryItems.indexesOfDeletesInsertsAndMoves(
 			oldItems: onscreenItems,
-			newItems: refreshedItems)
+			newItems: newItems)
 		
 		let indexPathsToDelete = indexesOfOldItemsToDelete.map {
 			indexPathFor(
@@ -195,8 +198,6 @@ extension LibraryTVC {
 				indexOfLibraryItem: $1,
 				indexOfSectionOfLibraryItem: section))
 		}
-		
-		sectionOfLibraryItems.items = refreshedItems
 		
 		isAnimatingDuringRefreshTableView += 1
 		tableView.performBatchUpdates {

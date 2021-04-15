@@ -24,13 +24,12 @@ extension CollectionsTVC {
 		else { return }
 		
 		managedObjectContext.delete(collection)
+		
+		let onscreenItems = sectionOfLibraryItems.items
 		sectionOfLibraryItems.items.remove(at: indexOfEmptyNewCollection)
-		let indexPathOfRowToDelete = indexPathFor(
-			indexOfLibraryItem: indexOfEmptyNewCollection,
-			indexOfSectionOfLibraryItem: 0)
-		tableView.deleteRows(
-			at: [indexPathOfRowToDelete],
-			with: .middle)
+		refreshTableView(
+			onscreenItems: onscreenItems,
+			completion: nil)
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = false
 	}
@@ -81,20 +80,14 @@ extension CollectionsTVC {
 				newCollection.title = newTitle
 				// The property observer on sectionOfLibraryItems.items will set the "index" attribute of each Collection for us.
 				
+				let onscreenItems = sectionOfLibraryItems.items
 				sectionOfLibraryItems.items.insert(newCollection, at: indexPathOfNewCollection.row)
-				
-				// Enter the new Collection.
-				
-				tableView.performBatchUpdates {
-					tableView.insertRows(at: [indexPathOfNewCollection], with: .middle)
-				} completion: { _ in
-					tableView.performBatchUpdates {
+				refreshTableView(
+					onscreenItems: onscreenItems,
+					completion: {
 						tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top)
-						
-					} completion: { _ in
 						performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
-					}
-				}
+					})
 			}
 		)
 		dialog.addAction(cancelAction)

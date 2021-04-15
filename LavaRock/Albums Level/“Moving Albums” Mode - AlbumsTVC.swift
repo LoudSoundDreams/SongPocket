@@ -98,13 +98,13 @@ extension AlbumsTVC {
 		// Update the indexes of the Albums we aren't moving, within their Collection.
 		albumsToNotMove.reindex()
 		
+		// Move the Albums we're moving.
 		let sourceCollection = albumsToMove.first!.container!
 		let destinationCollection = sectionOfLibraryItems.container as! Collection
-		// Move the Albums we're moving.
-		for index in 0 ..< albumsToMove.count {
-			let album = albumsToMove[index]
+		let onscreenItems = sectionOfLibraryItems.items
+		for album in albumsToMove.reversed() {
 			album.container = destinationCollection
-			sectionOfLibraryItems.items.insert(album, at: index) // The property observer will set the "index" attribute on every Album in this Collection for us.
+			sectionOfLibraryItems.items.insert(album, at: 0) // The property observer will set the "index" attribute on every Album in this Collection for us.
 		}
 		// If we moved all the Albums out of the Collection they used to be in, then delete that Collection.
 		if
@@ -122,17 +122,13 @@ extension AlbumsTVC {
 		mainManagedObjectContext.tryToSave()
 		
 		// Update the table view.
-		let indexPathsToInsert = tableView.indexPathsForRowsIn(
-			section: 0,
-			firstRow: 0,
-			lastRow: albumsToMove.count - 1)
-		tableView.performBatchUpdates {
-			tableView.insertRows(at: indexPathsToInsert, with: .middle)
-		} completion: { _ in
-			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
+		refreshTableView(
+			onscreenItems: onscreenItems,
+			completion: {
+				self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
+				})
+				albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
 			})
-			albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
-		}
 		
 	}
 	
