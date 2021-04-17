@@ -18,13 +18,4 @@ extension SongsTVC {
 		refreshNowPlayingIndicators(isItemNowPlayingDeterminer: isItemNowPlaying(at:))
 	}
 	
-	// MARK: - Refreshing Data and Views
-	
-	// This is the same as in AlbumsTVC.
-	final override func refreshContainers() {
-		super.refreshContainers()
-		
-		refreshNavigationItemTitle()
-	}
-	
 }

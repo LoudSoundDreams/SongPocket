@@ -12,7 +12,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	// MARK: - Properties
 	
 	// "Constants"
-	let idOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID
+	let ifOfSourceCollection: NSManagedObjectID
 	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	let idsOfAlbumsNotBeingMoved: [NSManagedObjectID]
 	var navigationItemPrompt: String {
@@ -29,12 +29,12 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	// MARK: - Methods
 	
 	init(
-		idOfCollectionThatAlbumsAreBeingMovedOutOf: NSManagedObjectID,
+		idOfSourceCollection: NSManagedObjectID,
 		idsOfAlbumsBeingMoved: [NSManagedObjectID],
 		idsOfAlbumsNotBeingMoved: [NSManagedObjectID],
 		delegate: AlbumMoverDelegate?
 	) {
-		self.idOfCollectionThatAlbumsAreBeingMovedOutOf = idOfCollectionThatAlbumsAreBeingMovedOutOf
+		self.ifOfSourceCollection = idOfSourceCollection
 		self.idsOfAlbumsBeingMoved = idsOfAlbumsBeingMoved
 		self.idsOfAlbumsNotBeingMoved = idsOfAlbumsNotBeingMoved
 		self.delegate = delegate

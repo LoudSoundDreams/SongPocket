@@ -84,7 +84,7 @@ extension LibraryTVC {
 			section: 0,
 			firstRow: numberOfRowsAboveLibraryItems)
 		{
-			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue }
+			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue } // TO DO: For some reason, this triggers tableView(_:cellForRowAt:) and redraws the entire cell, which we can't allow.
 			let isItemNowPlaying = isItemNowPlayingDeterminer(indexPath)
 			let indicator = PlayerControllerManager.nowPlayingIndicator(
 				isItemNowPlaying: isItemNowPlaying)
@@ -140,9 +140,9 @@ extension LibraryTVC {
 	*/
 	@objc func willRefreshDataAndViews() {
 		// Only dismiss modal view controllers if sectionOfLibraryItems.items will change during the refresh?
-		let shouldNotDismissAllModalViewControllers =
+		let shouldNotDismissAnyModalViewControllers =
 			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
-		if !shouldNotDismissAllModalViewControllers {
+		if !shouldNotDismissAnyModalViewControllers {
 			view.window?.rootViewController?.dismiss(
 				animated: true,
 				completion: didDismissAllModalViewControllers)
@@ -232,23 +232,12 @@ extension LibraryTVC {
 	
 	// MARK: Refreshing Data
 	
-	@objc private func refreshData() {
-		refreshContainers()
-		refreshTableViewRowContents()
-	}
-	
-	// Subclasses that show information that depends on sectionOfLibraryItems.container in their views should subclass this method, call super (this implementation), and then update their views.
-	@objc func refreshContainers() {
+	private func refreshData() {
 		sectionOfLibraryItems.refreshContainer()
-	}
-	
-	/*
-	This is the final step in refreshTableView. The earlier steps delete, insert, and move rows as necessary (with animations), and update sectionOfLibraryItems.items. This method updates the data within each row, which might be outdated: for example, songs' titles and albums' release dates.
-	The simplest way to do this is to just call tableView.reloadData(). Infamously, that has no animation, but we actually animated the deletes, inserts, and moves by ourselves earlier. All reloadData() does here is update the data within each row without an animation, which usually looks okay.
-	You should override this method if you want to add animations when refreshing the contents of any part of table view. For example, if it looks jarring to change some artwork without an animation, you might want to refresh that artwork with a fade animation, but leave the other rows to update without animations. The hard part is that to prevent unnecessary animations when the content hasn't changed, you'll have to detect the existing content in each row.
-	*/
-	@objc private func refreshTableViewRowContents() {
-		tableView.reloadData()
+		refreshNavigationItemTitle()
+		
+		// Update the data within each row, which might be outdated.
+		tableView.reloadData() // This has no animation (infamously), but we animated the deletes, inserts, and moves earlier, so here, it just updates the data within the rows after they stop moving, which looks fine.
 	}
 	
 }

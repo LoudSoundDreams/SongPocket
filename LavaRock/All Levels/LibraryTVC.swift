@@ -229,6 +229,8 @@ class LibraryTVC:
 	func setUpUI() {
 		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		
+		refreshNavigationItemTitle()
+		
 		navigationItemLeftButtonsEditingMode = [flexibleSpaceBarButtonItem]
 		navigationItemRightButtons = [editButtonItem]
 		playbackToolbarButtons = [
@@ -241,6 +243,10 @@ class LibraryTVC:
 			goToNextSongButton
 		]
 		refreshAndSetBarButtons(animated: false)
+	}
+	
+	// Easy to override.
+	func refreshNavigationItemTitle() {
 	}
 	
 	// MARK: Setup Events

@@ -37,7 +37,7 @@ extension AlbumsTVC {
 				section: 0,
 				firstRow: numberOfRowsAboveLibraryItems)
 			{
-				let album = libraryItem(for: indexPath) as! Album
+				let album = libraryItem(for: indexPath)
 				if selectedIndexPaths.contains(indexPath) { // If the row is selected.
 					idsOfAlbumsToMove.append(album.objectID)
 				} else { // The row is not selected.
@@ -51,7 +51,7 @@ extension AlbumsTVC {
 		}
 		
 		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
-			idOfCollectionThatAlbumsAreBeingMovedOutOf: idOfSourceCollection,
+			idOfSourceCollection: idOfSourceCollection,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
 			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove,
 			delegate: self

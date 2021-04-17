@@ -11,8 +11,7 @@ import CoreData
 import MediaPlayer
 
 final class SongsTVC:
-	LibraryTVC,
-	NavigationItemTitleCustomizer
+	LibraryTVC
 {
 	
 	// MARK: - Setup
@@ -29,7 +28,6 @@ final class SongsTVC:
 	final override func setUpUI() {
 		super.setUpUI()
 		
-		refreshNavigationItemTitle()
 		toolbarButtonsEditingModeOnly = [
 			sortButton,
 			flexibleSpaceBarButtonItem,
@@ -40,7 +38,7 @@ final class SongsTVC:
 		sortOptions = [.trackNumber]
 	}
 	
-	final func refreshNavigationItemTitle() {
+	final override func refreshNavigationItemTitle() {
 		guard let containingAlbum = sectionOfLibraryItems.container as? Album else { return }
 		title = containingAlbum.titleFormattedOrPlaceholder()
 	}

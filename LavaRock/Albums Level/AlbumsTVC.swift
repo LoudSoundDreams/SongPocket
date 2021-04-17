@@ -12,7 +12,6 @@ import MediaPlayer
 
 final class AlbumsTVC:
 	LibraryTVC,
-	NavigationItemTitleCustomizer,
 	AlbumMover
 {
 	
@@ -39,8 +38,6 @@ final class AlbumsTVC:
 	final override func setUpUI() {
 		super.setUpUI()
 		
-		refreshNavigationItemTitle()
-		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
@@ -61,7 +58,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-	final func refreshNavigationItemTitle() {
+	final override func refreshNavigationItemTitle() {
 		guard let containingCollection = sectionOfLibraryItems.container as? Collection else { return }
 		title = containingCollection.title
 	}

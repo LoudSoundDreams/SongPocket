@@ -101,6 +101,9 @@
 "Restart" = "回到音軌開頭";
 
 /* Button title */
+"Save" = "儲存";
+
+/* Button title */
 "Sort" = "排序";
 
 /* Action sheet title */

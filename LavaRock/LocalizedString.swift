@@ -20,7 +20,8 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	// MARK: Standard Buttons
 	
 	static let cancel = NSLocalizedString("Cancel", comment: "Button title")
-	static let done = NSLocalizedString("Done", comment: "Button title")
+	static let save = NSLocalizedString("Save", comment: "Button title")
+//	static let done = NSLocalizedString("Done", comment: "Button title")
 	static let ok = NSLocalizedString("OK", comment: "Button title")
 	
 	// MARK: Standard Phrases

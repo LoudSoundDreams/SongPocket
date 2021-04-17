@@ -32,8 +32,7 @@ extension AlbumsTVC {
 		super.didDismissAllModalViewControllers()
 		
 		if let albumMoverClipboard = albumMoverClipboard {
-			// didAbort() solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
-			albumMoverClipboard.delegate?.didAbort()
+			albumMoverClipboard.delegate?.didAbort() // Solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
 		}
 	}
 	
@@ -44,13 +43,6 @@ extension AlbumsTVC {
 		} else {
 			return true
 		}
-	}
-	
-	// This is the same as in SongsTVC.
-	final override func refreshContainers() {
-		super.refreshContainers()
-		
-		refreshNavigationItemTitle()
 	}
 	
 }

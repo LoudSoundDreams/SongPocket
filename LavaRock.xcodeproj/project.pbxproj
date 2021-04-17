@@ -56,7 +56,6 @@
 		07A4F90A2519E7D20065C87E /* func createManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9092519E7D20065C87E /* func createManagedObjects.swift */; };
 		07A4F90F2519E8410065C87E /* func deleteManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */; };
 		07AE2AA4258C09D900C3A314 /* extension Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* extension Collection.swift */; };
-		07BF46D624EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */; };
 		07CAB24724EA227F008AC34C /* extension Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* extension Song.swift */; };
 		07D157ED24D952A600FDF26A /* protocol AlbumMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D157EC24D952A600FDF26A /* protocol AlbumMover.swift */; };
 		07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */; };
@@ -155,7 +154,6 @@
 		07A4F9092519E7D20065C87E /* func createManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func createManagedObjects.swift"; sourceTree = "<group>"; };
 		07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func deleteManagedObjects.swift"; sourceTree = "<group>"; };
 		07AE2AA3258C09D900C3A314 /* extension Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Collection.swift"; sourceTree = "<group>"; };
-		07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NavigationItemTitleCustomizer.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
 		07D157EC24D952A600FDF26A /* protocol AlbumMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol AlbumMover.swift"; sourceTree = "<group>"; };
 		07D9DBF5257C9CA2007EEB87 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -323,7 +321,6 @@
 				070E194624F3434600B21307 /* Moving Albums */,
 				07DC1B1E24F33C5100AAEEDB /* Collections Level */,
 				0706ABDE24D946870090EB21 /* Options */,
-				07BF46D524EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift */,
 				07DC1B2124F33DF400AAEEDB /* Albums Level */,
 				070E194224F340C500B21307 /* Songs Level */,
 			);
@@ -603,7 +600,6 @@
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				072017132557987E0019CA3E /* NowPlayingIndicatorManager - SongsTVC.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */,
-				07BF46D624EEFDC800A663D7 /* protocol NavigationItemTitleCustomizer.swift in Sources */,
 				070E194124F33FC800B21307 /* Editing - CollectionsTVC.swift in Sources */,
 				07140605259D6958003CA92C /* UserDefaults.swift in Sources */,
 				07F36BC824FC400E0064282D /* UITableView - SongsTVC.swift in Sources */,
@@ -820,7 +816,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 108;
+				CURRENT_PROJECT_VERSION = 110;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
@@ -843,7 +839,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 108;
+				CURRENT_PROJECT_VERSION = 110;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;

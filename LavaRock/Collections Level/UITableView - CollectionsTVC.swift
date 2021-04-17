@@ -119,7 +119,7 @@ extension CollectionsTVC {
 		
 		// "Moving Albums" mode
 		if let albumMoverClipboard = albumMoverClipboard {
-			if collection.objectID == albumMoverClipboard.idOfCollectionThatAlbumsAreBeingMovedOutOf {
+			if collection.objectID == albumMoverClipboard.ifOfSourceCollection {
 				cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 				cell.isUserInteractionEnabled = false
 				cell.accessibilityTraits.formUnion(.notEnabled)

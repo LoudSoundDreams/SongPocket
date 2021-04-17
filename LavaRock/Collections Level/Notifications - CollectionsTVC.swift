@@ -41,17 +41,6 @@ extension CollectionsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	final override func willRefreshDataAndViews() {
-		if isLoading {
-			didJustFinishLoading = true
-			let indexPath = IndexPath(row: 0, section: 0)
-			tableView.deleteRows(at: [indexPath], with: .fade)
-			didJustFinishLoading = false
-		}
-		
-		super.willRefreshDataAndViews()
-	}
-	
 	/*
 	When moving Albums:
 	- What if any of the Albums we're moving get deleted?
@@ -59,13 +48,23 @@ extension CollectionsTVC {
 	Currently, we're just dismissing the "move Albums" sheet to not deal with any of those edge cases.
 	*/
 	
+	final override func willRefreshDataAndViews() {
+		if isLoading {
+			didJustFinishLoading = true
+			let indexPath = IndexPath(row: 0, section: 0)
+			tableView.deleteRows(at: [indexPath], with: .middle)
+			didJustFinishLoading = false
+		}
+		
+		super.willRefreshDataAndViews()
+	}
+	
 	// This is the same as in AlbumsTVC.
 	final override func didDismissAllModalViewControllers() {
 		super.didDismissAllModalViewControllers()
 		
 		if let albumMoverClipboard = albumMoverClipboard {
-			// didAbort() solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
-			albumMoverClipboard.delegate?.didAbort()
+			albumMoverClipboard.delegate?.didAbort() // Solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
 		}
 	}
 	

@@ -57,7 +57,7 @@ extension CollectionsTVC {
 			style: .cancel,
 			handler: nil)
 		let doneAction = UIAlertAction(
-			title: LocalizedString.done,
+			title: LocalizedString.save,
 			style: .default,
 			handler: { [self] _ in
 				let rawProposedTitle = dialog.textFields?[0].text

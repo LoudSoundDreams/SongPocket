@@ -20,7 +20,8 @@ protocol NowPlayingIndicator {
 	var accessibilityLabel: String? { get set }
 	
 	mutating func applyNowPlayingIndicator(
-		_ nowPlayingIndicator: (UIImage?, String?))
+		_ nowPlayingIndicator: (UIImage?, String?)
+	)
 }
 
 extension NowPlayingIndicator {

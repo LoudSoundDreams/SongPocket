@@ -64,7 +64,7 @@ extension CollectionsTVC {
 			style: .cancel,
 			handler: nil)
 		let doneAction = UIAlertAction(
-			title: LocalizedString.done,
+			title: LocalizedString.save,
 			style: .default,
 			handler: { [self] _ in
 				albumMoverClipboard.didAlreadyMakeNewCollection = true
