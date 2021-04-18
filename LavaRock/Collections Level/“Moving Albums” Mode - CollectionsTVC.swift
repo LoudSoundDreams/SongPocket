@@ -26,7 +26,9 @@ extension CollectionsTVC {
 		managedObjectContext.delete(collection)
 		
 		let onscreenItems = sectionOfLibraryItems.items
-		sectionOfLibraryItems.items.remove(at: indexOfEmptyNewCollection)
+		var newItems = sectionOfLibraryItems.items
+		newItems.remove(at: indexOfEmptyNewCollection)
+		sectionOfLibraryItems.setItems(newItems)
 		refreshTableView(
 			onscreenItems: onscreenItems,
 			completion: nil)
@@ -63,13 +65,13 @@ extension CollectionsTVC {
 			title: LocalizedString.cancel,
 			style: .cancel,
 			handler: nil)
-		let doneAction = UIAlertAction(
+		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
 			style: .default,
 			handler: { [self] _ in
 				albumMoverClipboard.didAlreadyMakeNewCollection = true
 				
-				let indexPathOfNewCollection = IndexPath(row: 0, section: 0)
+				let indexOfNewCollection = 0
 				
 				// Create the new Collection.
 				
@@ -81,18 +83,23 @@ extension CollectionsTVC {
 				// The property observer on sectionOfLibraryItems.items will set the "index" attribute of each Collection for us.
 				
 				let onscreenItems = sectionOfLibraryItems.items
-				sectionOfLibraryItems.items.insert(newCollection, at: indexPathOfNewCollection.row)
+				var newItems = sectionOfLibraryItems.items
+				newItems.insert(newCollection, at: indexOfNewCollection)
+				sectionOfLibraryItems.setItems(newItems)
 				refreshTableView(
 					onscreenItems: onscreenItems,
 					completion: {
-						tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .top)
-						performSegue(withIdentifier: "Drill Down in Library", sender: indexPathOfNewCollection.row)
+						let indexPath = indexPathFor(
+							indexOfLibraryItem: indexOfNewCollection,
+							indexOfSectionOfLibraryItem: 0)
+						tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+						performSegue(withIdentifier: "Drill Down in Library", sender: nil)
 					})
 			}
 		)
 		dialog.addAction(cancelAction)
-		dialog.addAction(doneAction)
-		dialog.preferredAction = doneAction
+		dialog.addAction(saveAction)
+		dialog.preferredAction = saveAction
 		present(dialog, animated: true, completion: nil)
 	}
 	

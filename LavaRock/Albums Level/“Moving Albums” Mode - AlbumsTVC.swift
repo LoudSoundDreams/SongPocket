@@ -82,7 +82,7 @@ extension AlbumsTVC {
 			}
 		}
 		
-		albumMoverClipboard.didAlreadyCommitMoveAlbums = true // Without this, if you tap the "Move Here" button more than once, the app will crash when it tries to unwind from the "move Albums" sheet.
+		albumMoverClipboard.didAlreadyCommitMoveAlbums = true // Without this, if you tap the "Move Here" button more than once, the app will crash.
 		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
 		
 		// Get the Albums to move, and to not move.
@@ -102,10 +102,12 @@ extension AlbumsTVC {
 		let sourceCollection = albumsToMove.first!.container!
 		let destinationCollection = sectionOfLibraryItems.container as! Collection
 		let onscreenItems = sectionOfLibraryItems.items
+		var newItems = sectionOfLibraryItems.items
 		for album in albumsToMove.reversed() {
 			album.container = destinationCollection
-			sectionOfLibraryItems.items.insert(album, at: 0) // The property observer will set the "index" attribute on every Album in this Collection for us.
+			newItems.insert(album, at: 0) // The property observer will set the "index" attribute on every Album in this Collection for us.
 		}
+		sectionOfLibraryItems.setItems(newItems)
 		// If we moved all the Albums out of the Collection they used to be in, then delete that Collection.
 		if
 			sourceCollection.contents == nil || sourceCollection.contents?.count == 0

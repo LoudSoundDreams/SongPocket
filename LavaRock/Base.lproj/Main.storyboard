@@ -231,10 +231,10 @@
                                             <exclude reference="22A-2P-2Xf"/>
                                         </mask>
                                         <mask key="constraints">
-                                            <exclude reference="i5p-Rh-mUs"/>
                                             <exclude reference="CtS-bG-Frc"/>
                                             <exclude reference="NLD-lk-GGW"/>
                                             <exclude reference="XDR-lI-Zw2"/>
+                                            <exclude reference="i5p-Rh-mUs"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -311,7 +311,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="mc9-rg-QOt"/>
                         <barButtonItem style="plain" systemItem="add" id="y90-g1-bFX">
                             <connections>
-                                <action selector="presentDialogToMakeNewCollection:" destination="Vce-TP-hYI" id="1ia-bd-Zyi"/>
+                                <action selector="presentDialogToMakeNewCollection:" destination="Vce-TP-hYI" id="3YH-a4-Y2n"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="4fx-KG-8b8"/>

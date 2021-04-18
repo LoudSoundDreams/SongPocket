@@ -68,7 +68,7 @@ final class AlbumsTVC:
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
-	// MARK: - Events
+	// MARK: - Refreshing Buttons
 	
 	final override func setToolbarButtons(animated: Bool) {
 		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.

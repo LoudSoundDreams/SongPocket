@@ -39,13 +39,16 @@ extension LibraryTVC {
 		let indexesOfSelectedItems = indexPaths.map { indexOfLibraryItem(for: $0) }
 		let selectedItems = indexPaths.map { libraryItem(for: $0) }
 		let onscreenItems = sectionOfLibraryItems.items
+		var newItems = sectionOfLibraryItems.items
 		for index in indexesOfSelectedItems.reversed() {
-			sectionOfLibraryItems.items.remove(at: index)
+			newItems.remove(at: index)
 		}
 		
 		for item in selectedItems.reversed() {
-			sectionOfLibraryItems.items.insert(item, at: 0)
+			newItems.insert(item, at: 0)
 		}
+		
+		sectionOfLibraryItems.setItems(newItems)
 		
 		// Update the table view.
 		
@@ -70,13 +73,16 @@ extension LibraryTVC {
 		let indexesOfSelectedItems = indexPaths.map { indexOfLibraryItem(for: $0) }
 		let selectedItems = indexPaths.map { libraryItem(for: $0) }
 		let onscreenItems = sectionOfLibraryItems.items
+		var newItems = sectionOfLibraryItems.items
 		for index in indexesOfSelectedItems.reversed() {
-			sectionOfLibraryItems.items.remove(at: index)
+			newItems.remove(at: index)
 		}
 		
 		for item in selectedItems {
-			sectionOfLibraryItems.items.append(item)
+			newItems.append(item)
 		}
+		
+		sectionOfLibraryItems.setItems(newItems)
 		
 		// Update the table view.
 		
@@ -143,14 +149,16 @@ extension LibraryTVC {
 		// Update the data source.
 		let indexes = indexPathsToSort.map { indexOfLibraryItem(for: $0) }
 		let onscreenItems = sectionOfLibraryItems.items
+		var newItems = sectionOfLibraryItems.items
 		for index in indexes.reversed() {
-			sectionOfLibraryItems.items.remove(at: index)
+			newItems.remove(at: index)
 		}
 		for i in 0 ..< sortedItems.count {
 			let sortedItem = sortedItems[i]
 			let index = indexes[i]
-			sectionOfLibraryItems.items.insert(sortedItem, at: index)
+			newItems.insert(sortedItem, at: index)
 		}
+		sectionOfLibraryItems.setItems(newItems)
 		
 		// Update the table view.
 		refreshTableView(

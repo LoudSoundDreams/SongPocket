@@ -164,27 +164,6 @@ class LibraryTVC:
 		container: nil,
 		entityName: entityName)//,
 //		delegate: self)
-	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItems.
-	// That's a hack to let us include other rows above the rows for library items. For example:
-	// - Rows for album artwork and album info in SongsTVC.
-	// - (Potentially in the future) in CollectionsTVC, rows for "All Albums" and "New Collection".
-	// - (Potentially in the future) in Albums TVC, rows for "All Songs" and "Move Here".
-	final func libraryItem(for indexPath: IndexPath) -> NSManagedObject {
-		let indexOfLibraryItem = indexOfLibraryItem(for: indexPath)
-		return sectionOfLibraryItems.items[indexOfLibraryItem]
-	}
-	final func indexOfLibraryItem(for indexPath: IndexPath) -> Int {
-		return indexPath.row - numberOfRowsAboveLibraryItems
-	}
-	final func indexPathFor(
-		indexOfLibraryItem: Int,
-		indexOfSectionOfLibraryItem: Int
-	) -> IndexPath {
-		return IndexPath(
-			row: indexOfLibraryItem + numberOfRowsAboveLibraryItems,
-			section: indexOfSectionOfLibraryItem)
-	}
-	
 	var isEitherLoadingOrUpdating = false// {
 //		didSet {
 //			if
@@ -196,7 +175,8 @@ class LibraryTVC:
 //		}
 //	}
 //	var isUpdating: Bool {
-//		isEitherLoadingOrUpdating &&
+//		return
+//			isEitherLoadingOrUpdating &&
 //			!sectionOfLibraryItems.items.isEmpty &&
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
@@ -266,7 +246,95 @@ class LibraryTVC:
 		endObservingNotifications()
 	}
 	
-	// MARK: - Events
+	// MARK: - Accessing Data
+	
+	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItems.
+	// That's a hack to let us include other rows above the rows for library items. For example:
+	// - Rows for album artwork and album info in SongsTVC.
+	// - (Potentially in the future) in CollectionsTVC, rows for "All Albums" and "New Collection".
+	// - (Potentially in the future) in Albums TVC, rows for "All Songs" and "Move Here".
+	final func libraryItem(for indexPath: IndexPath) -> NSManagedObject {
+		let indexOfLibraryItem = indexOfLibraryItem(for: indexPath)
+		// Multisection: Get the right SectionOfLibraryItems.
+		return sectionOfLibraryItems.items[indexOfLibraryItem]
+	}
+	
+	final func indexOfLibraryItem(for indexPath: IndexPath) -> Int {
+		return indexPath.row - numberOfRowsAboveLibraryItems
+	}
+	
+	final func indexPathFor(
+		indexOfLibraryItem: Int,
+		indexOfSectionOfLibraryItem: Int
+	) -> IndexPath {
+		return IndexPath(
+			row: indexOfLibraryItem + numberOfRowsAboveLibraryItems,
+			section: indexOfSectionOfLibraryItem)
+	}
+	
+	// MARK: - Refreshing Table View
+	
+	final func refreshTableView(
+//		section: Int,
+		onscreenItems: [NSManagedObject],
+		completion: (() -> ())?
+	) {
+		let section = 0
+		let newItems = sectionOfLibraryItems.items
+		
+		guard !newItems.isEmpty else {
+			// Delete all rows, then exit.
+			tableView.deleteAllRows(completion: {
+				if !(self is CollectionsTVC) {
+					self.performSegue(withIdentifier: "Removed All Contents", sender: nil)
+				}
+			})
+			return
+		}
+		
+		let (
+			indexesOfOldItemsToDelete,
+			indexesOfNewItemsToInsert,
+			indexesOfItemsToMove
+		) = SectionOfLibraryItems.indexesOfDeletesInsertsAndMoves(
+			oldItems: onscreenItems,
+			newItems: newItems)
+		
+		let indexPathsToDelete = indexesOfOldItemsToDelete.map {
+			indexPathFor(
+				indexOfLibraryItem: $0,
+				indexOfSectionOfLibraryItem: section)
+		}
+		let indexPathsToInsert = indexesOfNewItemsToInsert.map {
+			indexPathFor(
+				indexOfLibraryItem: $0,
+				indexOfSectionOfLibraryItem: section)
+		}
+		let indexPathsToMove = indexesOfItemsToMove.map {
+			(indexPathFor(
+				indexOfLibraryItem: $0,
+				indexOfSectionOfLibraryItem: section),
+			 indexPathFor(
+				indexOfLibraryItem: $1,
+				indexOfSectionOfLibraryItem: section))
+		}
+		
+		isAnimatingDuringRefreshTableView += 1
+		tableView.performBatchUpdates {
+			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
+			tableView.insertRows(at: indexPathsToInsert, with: .middle)
+			for (sourceIndexPath, destinationIndexPath) in indexPathsToMove {
+				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
+			}
+		} completion: { [self] _ in
+			isAnimatingDuringRefreshTableView -= 1
+			if isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
+				completion?()
+			}
+		}
+	}
+	
+	// MARK: - Refreshing Buttons
 	
 	final func refreshAndSetBarButtons(animated: Bool) {
 		refreshBarButtons()

@@ -47,8 +47,11 @@ extension LibraryTVC {
 		let toItemIndex = indexOfLibraryItem(for: to)
 		
 		let itemBeingMoved = sectionOfLibraryItems.items[fromItemIndex]
-		sectionOfLibraryItems.items.remove(at: fromItemIndex)
-		sectionOfLibraryItems.items.insert(itemBeingMoved, at: toItemIndex)
+		var newItems = sectionOfLibraryItems.items
+		newItems.remove(at: fromItemIndex)
+		newItems.insert(itemBeingMoved, at: toItemIndex)
+		sectionOfLibraryItems.setItems(newItems)
+		
 		refreshBarButtons() // If you made selected items non-contiguous, that should disable the Sort button. If you made selected items contiguous, that should enable the Sort button.
 	}
 	

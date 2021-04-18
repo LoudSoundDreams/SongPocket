@@ -7,8 +7,8 @@
 /*
 extension LibraryTVC: SectionOfLibraryItemsDelegate {
 	
-	func didSetItems() {
-		refreshDataAndViews()
+	func refreshUI(fromOldItems: [NSManagedObject]) {
+		
 	}
 	
 }

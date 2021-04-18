@@ -56,7 +56,7 @@ extension CollectionsTVC {
 			title: LocalizedString.cancel,
 			style: .cancel,
 			handler: nil)
-		let doneAction = UIAlertAction(
+		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
 			style: .default,
 			handler: { [self] _ in
@@ -73,8 +73,8 @@ extension CollectionsTVC {
 			}
 		)
 		dialog.addAction(cancelAction)
-		dialog.addAction(doneAction)
-		dialog.preferredAction = doneAction
+		dialog.addAction(saveAction)
+		dialog.preferredAction = saveAction
 		present(dialog, animated: true, completion: nil)
 	}
 	

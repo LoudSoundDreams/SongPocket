@@ -114,10 +114,10 @@ extension LibraryTVC {
 		
 		guard shouldContinueAfterWillRefreshDataAndViews() else { return }
 		
-		let onscreenItems = sectionOfLibraryItems.items
-		sectionOfLibraryItems.items = sectionOfLibraryItems.fetchedItems()
-		
 		isEitherLoadingOrUpdating = false
+		
+		let onscreenItems = sectionOfLibraryItems.items
+		sectionOfLibraryItems.setItems(sectionOfLibraryItems.fetchedItems())
 		refreshTableView(
 			onscreenItems: onscreenItems,
 			completion: {
@@ -156,78 +156,6 @@ extension LibraryTVC {
 	// Easy to override. You should not call super (this implementation) in your override.
 	@objc func shouldContinueAfterWillRefreshDataAndViews() -> Bool {
 		return true
-	}
-	
-	// MARK: Refreshing Table View
-	
-	final func refreshTableView(
-		onscreenItems: [NSManagedObject],
-		completion: (() -> ())?
-	) {
-		let section = 0
-		let newItems = sectionOfLibraryItems.items
-		
-		guard !newItems.isEmpty else {
-			deleteAllRowsThenExit()
-			return
-		}
-		
-		let (
-			indexesOfOldItemsToDelete,
-			indexesOfNewItemsToInsert,
-			indexesOfItemsToMove
-		) = SectionOfLibraryItems.indexesOfDeletesInsertsAndMoves(
-			oldItems: onscreenItems,
-			newItems: newItems)
-		
-		let indexPathsToDelete = indexesOfOldItemsToDelete.map {
-			indexPathFor(
-				indexOfLibraryItem: $0,
-				indexOfSectionOfLibraryItem: section)
-		}
-		let indexPathsToInsert = indexesOfNewItemsToInsert.map {
-			indexPathFor(
-				indexOfLibraryItem: $0,
-				indexOfSectionOfLibraryItem: section)
-		}
-		let indexPathsToMove = indexesOfItemsToMove.map {
-			(indexPathFor(
-				indexOfLibraryItem: $0,
-				indexOfSectionOfLibraryItem: section),
-			 indexPathFor(
-				indexOfLibraryItem: $1,
-				indexOfSectionOfLibraryItem: section))
-		}
-		
-		isAnimatingDuringRefreshTableView += 1
-		tableView.performBatchUpdates {
-			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
-			tableView.insertRows(at: indexPathsToInsert, with: .middle)
-			for (sourceIndexPath, destinationIndexPath) in indexPathsToMove {
-				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
-			}
-		} completion: { [self] _ in
-			isAnimatingDuringRefreshTableView -= 1
-			if isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
-				completion?()
-			}
-		}
-	}
-	
-	private func deleteAllRowsThenExit() {
-		var allIndexPaths = [IndexPath]()
-		for section in 0 ..< tableView.numberOfSections {
-			let allIndexPathsInSection =
-				tableView.indexPathsForRowsIn(section: section, firstRow: 0)
-			allIndexPaths.append(contentsOf: allIndexPathsInSection)
-		}
-		sectionOfLibraryItems.items.removeAll()
-		tableView.performBatchUpdates {
-			tableView.deleteRows(at: allIndexPaths, with: .middle)
-		} completion: { _ in
-			guard !(self is CollectionsTVC) else { return }
-			self.performSegue(withIdentifier: "Removed All Contents", sender: self)
-		}
 	}
 	
 	// MARK: Refreshing Data

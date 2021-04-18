@@ -23,7 +23,8 @@ final class CollectionsTVC:
 	
 	// Variables
 	var isLoading: Bool {
-		isEitherLoadingOrUpdating &&
+		return
+			isEitherLoadingOrUpdating &&
 			sectionOfLibraryItems.items.isEmpty &&
 			MPMediaLibrary.authorizationStatus() == .authorized
 	}
@@ -121,7 +122,7 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
-	// MARK: - Events
+	// MARK: - Refreshing Buttons
 	
 	final override func setToolbarButtons(animated: Bool) {
 		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.

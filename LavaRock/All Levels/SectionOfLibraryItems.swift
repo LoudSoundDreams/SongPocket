@@ -8,7 +8,7 @@
 import CoreData
 /*
 protocol SectionOfLibraryItemsDelegate: AnyObject {
-	func didSetItems()
+	func refreshUI(fromOldItems: [NSManagedObject])
 }
 */
 struct SectionOfLibraryItems {
@@ -27,7 +27,7 @@ struct SectionOfLibraryItems {
 	
 	// MARK: Variables
 	
-	lazy var items = fetchedItems() {
+	private(set) lazy var items = fetchedItems() {
 		didSet {
 			for index in 0 ..< items.count { // The truth for the order of items is their order in this array, not the "index" attribute of each NSManagedObject, because the UI follows this array.
 				items[index].setValue(Int64(index), forKey: "index") // Switch to proper type-checking
@@ -36,6 +36,10 @@ struct SectionOfLibraryItems {
 	}
 	
 	// MARK: - Methods
+	
+	mutating func setItems(_ newItems: [NSManagedObject]) {
+		items = newItems
+	}
 	
 	func fetchedItems() -> [NSManagedObject] { // Switch to proper type-checking
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
@@ -88,19 +92,5 @@ struct SectionOfLibraryItems {
 			indexesOfItemsToMove
 		)
 	}
-	/*
-	mutating func setItems(_ newItems: [NSManagedObject]) {
-		let indexesOfChanges = Self.indexesOfDeletesInsertsAndMoves(
-			oldItems: items,
-			newItems: newItems)
-		items = newItems
-		delegate?.didSetItems()
 	
-	
-	this will not work.
-	1. didSetItem() triggers refreshDataAndViews(), which sets `items` again from fetchedItems().
-	1a. we haven't saved our modified items via the managed object context in the first place
-	2. refreshDataAndViews() wouldn't notice the right changes because it compares `items`to fetchedItems().
-	}
-	*/
 }
