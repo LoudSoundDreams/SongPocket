@@ -25,12 +25,10 @@ extension CollectionsTVC {
 		
 		managedObjectContext.delete(collection)
 		
-		let onscreenItems = sectionOfLibraryItems.items
 		var newItems = sectionOfLibraryItems.items
 		newItems.remove(at: indexOfEmptyNewCollection)
-		sectionOfLibraryItems.setItems(newItems)
-		refreshTableView(
-			onscreenItems: onscreenItems,
+		setItemsAndRefreshTableView(
+			newItems: newItems,
 			completion: nil)
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = false
@@ -82,12 +80,10 @@ extension CollectionsTVC {
 				newCollection.title = newTitle
 				// The property observer on sectionOfLibraryItems.items will set the "index" attribute of each Collection for us.
 				
-				let onscreenItems = sectionOfLibraryItems.items
 				var newItems = sectionOfLibraryItems.items
 				newItems.insert(newCollection, at: indexOfNewCollection)
-				sectionOfLibraryItems.setItems(newItems)
-				refreshTableView(
-					onscreenItems: onscreenItems,
+				setItemsAndRefreshTableView(
+					newItems: newItems,
 					completion: {
 						let indexPath = indexPathFor(
 							indexOfLibraryItem: indexOfNewCollection,

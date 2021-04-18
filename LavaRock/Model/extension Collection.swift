@@ -13,17 +13,6 @@ extension Collection: LibraryItem {
 
 extension Collection {
 	
-	static func allFetched(
-		via managedObjectContext: NSManagedObjectContext,
-		ordered: Bool = true
-	) -> [Collection] {
-		let fetchRequest: NSFetchRequest<Collection> = fetchRequest()
-		if ordered {
-			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		}
-		return managedObjectContext.objectsFetched(for: fetchRequest)
-	}
-	
 	static func validatedTitle(from rawProposedTitle: String?) -> String {
 		let unwrappedProposedTitle = rawProposedTitle ?? ""
 		if unwrappedProposedTitle == "" {
@@ -36,6 +25,38 @@ extension Collection {
 				return String(trimmedTitle)
 			}
 		}
+	}
+	
+	// MARK: - Core Data
+	
+	static func allFetched(
+		via managedObjectContext: NSManagedObjectContext,
+		ordered: Bool = true
+	) -> [Collection] {
+		let fetchRequest: NSFetchRequest<Collection> = fetchRequest()
+		if ordered {
+			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		}
+		return managedObjectContext.objectsFetched(for: fetchRequest)
+	}
+	
+	static func deleteAllEmpty(
+		via managedObjectContext: NSManagedObjectContext
+	) {
+		var allCollections = Collection.allFetched(
+			via: managedObjectContext,
+			ordered: true)
+		
+		let count = allCollections.count
+		for numberFromEnd in 1 ... count {
+			let index = count - numberFromEnd
+			let collection = allCollections[index]
+			if collection.contents == nil || collection.contents?.count == 0 {
+				managedObjectContext.delete(collection)
+				allCollections.remove(at: index)
+			}
+		}
+		allCollections.reindex()
 	}
 	
 }

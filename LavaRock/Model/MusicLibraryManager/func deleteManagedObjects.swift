@@ -25,45 +25,24 @@ extension MusicLibraryManager {
 		
 		for songToDelete in songs {
 			managedObjectContext.delete(songToDelete)
+			// WARNING: This leaves gaps in the Song indexes within each Album. You must reindex the Songs within each Album later.
 		}
 		
-		deleteEmptyAlbums()
-		deleteEmptyCollections()
+		deleteEmptyAlbums_WithoutReindex()
+		Collection.deleteAllEmpty(via: managedObjectContext)
 	}
 	
-	private func deleteEmptyAlbums() {
+	private func deleteEmptyAlbums_WithoutReindex() {
 		let allAlbums = Album.allFetched(
 			via: managedObjectContext,
 			ordered: false)
 		
 		for album in allAlbums {
-			guard
-				let contents = album.contents,
-				contents.count == 0
-			else { continue }
-			managedObjectContext.delete(album)
-			// Note: This leaves gaps in the Album indexes within each Collection. We'll reindex the Albums later.
+			if album.contents == nil || album.contents?.count == 0 {
+				managedObjectContext.delete(album)
+				// WARNING: This leaves gaps in the Album indexes within each Collection. You must reindex the Albums within each Collection later.
+			}
 		}
-	}
-	
-	private func deleteEmptyCollections() {
-		let allCollections = Collection.allFetched(
-			via: managedObjectContext,
-			ordered: false)
-		
-		for collection in allCollections {
-			guard
-				let contents = collection.contents,
-				contents.count == 0
-			else { continue }
-			managedObjectContext.delete(collection)
-		}
-		
-		var allRemainingCollectionsInOrder = Collection.allFetched(
-			via: managedObjectContext,
-			ordered: true)
-		
-		allRemainingCollectionsInOrder.reindex()
 	}
 	
 }

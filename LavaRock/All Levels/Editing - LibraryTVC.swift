@@ -34,11 +34,10 @@ extension LibraryTVC {
 			let indexPaths = tableView.indexPathsForSelectedRows?.sorted()
 		else { return }
 		
-		// Update the data source.
+		// Make a new data source.
 		
 		let indexesOfSelectedItems = indexPaths.map { indexOfLibraryItem(for: $0) }
 		let selectedItems = indexPaths.map { libraryItem(for: $0) }
-		let onscreenItems = sectionOfLibraryItems.items
 		var newItems = sectionOfLibraryItems.items
 		for index in indexesOfSelectedItems.reversed() {
 			newItems.remove(at: index)
@@ -48,12 +47,9 @@ extension LibraryTVC {
 			newItems.insert(item, at: 0)
 		}
 		
-		sectionOfLibraryItems.setItems(newItems)
-		
-		// Update the table view.
-		
-		refreshTableView(
-			onscreenItems: onscreenItems,
+		// Update the data source and table view.
+		setItemsAndRefreshTableView(
+			newItems: newItems,
 			completion: { [self] in
 				tableView.deselectAllRows(animated: true)
 				refreshBarButtons()
@@ -68,11 +64,10 @@ extension LibraryTVC {
 			let indexPaths = tableView.indexPathsForSelectedRows?.sorted()
 		else { return }
 		
-		// Update the data source.
+		// Make a new data source.
 		
 		let indexesOfSelectedItems = indexPaths.map { indexOfLibraryItem(for: $0) }
 		let selectedItems = indexPaths.map { libraryItem(for: $0) }
-		let onscreenItems = sectionOfLibraryItems.items
 		var newItems = sectionOfLibraryItems.items
 		for index in indexesOfSelectedItems.reversed() {
 			newItems.remove(at: index)
@@ -82,12 +77,9 @@ extension LibraryTVC {
 			newItems.append(item)
 		}
 		
-		sectionOfLibraryItems.setItems(newItems)
-		
-		// Update the table view.
-		
-		refreshTableView(
-			onscreenItems: onscreenItems,
+		// Update the data source and table view.
+		setItemsAndRefreshTableView(
+			newItems: newItems,
 			completion: { [self] in
 				tableView.deselectAllRows(animated: true)
 				refreshBarButtons()
@@ -146,9 +138,8 @@ extension LibraryTVC {
 			itemsToSort,
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		
-		// Update the data source.
+		// Make a new data source.
 		let indexes = indexPathsToSort.map { indexOfLibraryItem(for: $0) }
-		let onscreenItems = sectionOfLibraryItems.items
 		var newItems = sectionOfLibraryItems.items
 		for index in indexes.reversed() {
 			newItems.remove(at: index)
@@ -158,15 +149,12 @@ extension LibraryTVC {
 			let index = indexes[i]
 			newItems.insert(sortedItem, at: index)
 		}
-		sectionOfLibraryItems.setItems(newItems)
 		
-		// Update the table view.
-		refreshTableView(
-			onscreenItems: onscreenItems,
-			completion: { [self] in
-				tableView.deselectAllRows(animated: true)
-				refreshBarButtons()
-			})
+		// Update the data source and table view.
+		setItemsAndRefreshTableView(newItems: newItems, completion: { [self] in
+			tableView.deselectAllRows(animated: true)
+			refreshBarButtons()
+		})
 	}
 	
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.

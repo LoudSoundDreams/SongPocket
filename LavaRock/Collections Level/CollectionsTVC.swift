@@ -40,7 +40,7 @@ final class CollectionsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 			if MPMediaLibrary.authorizationStatus() == .authorized {
-				DispatchQueue.main.async { [self] in // Yes, it's actually useful to use async on the main thread. This lets us show existing collections as soon as possible, then integrate with and import changes from the Music library shortly later.
+				DispatchQueue.main.async { [self] in // Yes, it's actually useful to use async on the main thread. This lets us show existing Collections as soon as possible, then integrate with and import changes from the Music library shortly later.
 					isEitherLoadingOrUpdating = true
 					tableView.performBatchUpdates {
 						if isLoading {

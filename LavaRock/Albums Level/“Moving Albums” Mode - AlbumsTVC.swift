@@ -99,23 +99,14 @@ extension AlbumsTVC {
 		albumsToNotMove.reindex()
 		
 		// Move the Albums we're moving.
-		let sourceCollection = albumsToMove.first!.container!
 		let destinationCollection = sectionOfLibraryItems.container as! Collection
-		let onscreenItems = sectionOfLibraryItems.items
 		var newItems = sectionOfLibraryItems.items
 		for album in albumsToMove.reversed() {
 			album.container = destinationCollection
 			newItems.insert(album, at: 0) // The property observer will set the "index" attribute on every Album in this Collection for us.
 		}
-		sectionOfLibraryItems.setItems(newItems)
 		// If we moved all the Albums out of the Collection they used to be in, then delete that Collection.
-		if
-			sourceCollection.contents == nil || sourceCollection.contents?.count == 0
-		{
-			managedObjectContext.delete(sourceCollection)
-			var allCollections = Collection.allFetched(via: managedObjectContext)
-			allCollections.reindex()
-		}
+		Collection.deleteAllEmpty(via: managedObjectContext) // Note: This checks the contents of and reindexes destinationCollection, too.
 		
 		managedObjectContext.tryToSaveSynchronously()
 		guard let mainManagedObjectContext = managedObjectContext.parent else {
@@ -124,8 +115,8 @@ extension AlbumsTVC {
 		mainManagedObjectContext.tryToSave()
 		
 		// Update the table view.
-		refreshTableView(
-			onscreenItems: onscreenItems,
+		setItemsAndRefreshTableView(
+			newItems: newItems,
 			completion: {
 				self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
 				})

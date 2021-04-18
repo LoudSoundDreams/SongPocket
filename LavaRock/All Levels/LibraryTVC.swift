@@ -274,7 +274,19 @@ class LibraryTVC:
 	
 	// MARK: - Refreshing Table View
 	
-	final func refreshTableView(
+	final func setItemsAndRefreshTableView(
+		newItems: [NSManagedObject],
+//		section: Int,
+		completion: (() -> ())?
+	) {
+		let onscreenItems = sectionOfLibraryItems.items
+		sectionOfLibraryItems.setItems(newItems)
+		refreshTableView(
+			onscreenItems: onscreenItems,
+			completion: completion)
+	}
+	
+	private func refreshTableView(
 //		section: Int,
 		onscreenItems: [NSManagedObject],
 		completion: (() -> ())?

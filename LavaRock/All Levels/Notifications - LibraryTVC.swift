@@ -116,14 +116,12 @@ extension LibraryTVC {
 		
 		isEitherLoadingOrUpdating = false
 		
-		let onscreenItems = sectionOfLibraryItems.items
-		sectionOfLibraryItems.setItems(sectionOfLibraryItems.fetchedItems())
-		refreshTableView(
-			onscreenItems: onscreenItems,
+		let newItems = sectionOfLibraryItems.fetchedItems()
+		setItemsAndRefreshTableView(
+			newItems: newItems,
 			completion: {
 				self.refreshData() // Includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
-			}
-		)
+			})
 //		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
 	}
 	
