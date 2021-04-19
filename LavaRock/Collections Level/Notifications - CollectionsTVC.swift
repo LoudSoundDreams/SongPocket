@@ -51,8 +51,7 @@ extension CollectionsTVC {
 	final override func willRefreshDataAndViews() {
 		if isLoading {
 			didJustFinishLoading = true
-			let indexPath = IndexPath(row: 0, section: 0)
-			tableView.deleteRows(at: [indexPath], with: .middle)
+			refreshToReflectContentState(completion: nil)
 			didJustFinishLoading = false
 		}
 		

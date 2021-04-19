@@ -29,6 +29,46 @@ extension CollectionsTVC {
 		}
 	}
 	
+	final func refreshToReflectContentState(
+		completion: (() -> ())?
+	) {
+		let allIndexPaths = tableView.allIndexPaths()
+		switch contentState() {
+		case .allowAccess, .loading:
+			let indexPathToKeep = IndexPath(row: 0, section: 0)
+			switch allIndexPaths.count {
+			case 0:
+				tableView.performBatchUpdates {
+					tableView.insertRows(at: [indexPathToKeep], with: .fade)
+				} completion: { _ in
+					completion?()
+				}
+			case 1:
+				tableView.performBatchUpdates {
+					tableView.reloadRows(at: [indexPathToKeep], with: .fade)
+				} completion: { _ in
+					completion?()
+				}
+			default:
+				let indexPathsToDelete = Array(allIndexPaths.dropFirst())
+				tableView.performBatchUpdates {
+					tableView.deleteRows(at: indexPathsToDelete, with: .fade)
+					tableView.reloadRows(at: [indexPathToKeep], with: .fade)
+				} completion: { _ in
+					completion?()
+				}
+			}
+		case .justFinishedLoading:
+			tableView.performBatchUpdates {
+				tableView.deleteRows(at: allIndexPaths, with: .middle)
+			} completion: { _ in
+				completion?()
+			}
+		case .normal:
+			completion?()
+		}
+	}
+	
 	// MARK: - Numbers
 	
 	// Remember to call refreshBarButtons() before returning. super also does it.
@@ -197,12 +237,9 @@ extension CollectionsTVC {
 		setUp()
 		
 		isImportingChanges = true
-		tableView.performBatchUpdates {
-			let indexPath = IndexPath(row: 0, section: 0)
-			tableView.reloadRows(at: [indexPath], with: .fade)
-		} completion: { _ in
+		refreshToReflectContentState(completion: {
 			self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
-		}
+		})
 	}
 	
 }

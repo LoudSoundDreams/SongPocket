@@ -40,16 +40,11 @@ final class CollectionsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 			if MPMediaLibrary.authorizationStatus() == .authorized {
-				DispatchQueue.main.async { [self] in // Yes, it's actually useful to use async on the main thread. This lets us show existing Collections as soon as possible, then integrate with and import changes from the Music library shortly later.
-					isImportingChanges = true
-					tableView.performBatchUpdates {
-						if isLoading {
-							let indexPath = IndexPath(row: 0, section: 0)
-							tableView.insertRows(at: [indexPath], with: .fade)
-						}
-					} completion: { _ in
-						integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
-					}
+				DispatchQueue.main.async { // Yes, it's actually useful to use async on the main thread. This lets us show existing Collections as soon as possible, then integrate with and import changes from the Music library shortly later.
+					self.isImportingChanges = true
+					self.refreshToReflectContentState(completion: {
+						self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+					})
 //					else if isUpdating {
 //						refreshAndSetBarButtons(animated: false)
 //						DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: { // Wait for the Edit button to actually change into the spinner before continuing
@@ -136,7 +131,7 @@ final class CollectionsTVC:
 	// MARK: - Navigation
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {
-//		let dismissClosure = { self.dismiss(animated: true, completion: nil) }
+//		let dismissClosure = { self.dismiss(animated: true) }
 //		return UIHostingController(
 //			coder: coder,
 //			rootView: OptionsView(

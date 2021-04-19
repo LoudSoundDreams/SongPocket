@@ -96,7 +96,7 @@ extension CollectionsTVC {
 		dialog.addAction(cancelAction)
 		dialog.addAction(saveAction)
 		dialog.preferredAction = saveAction
-		present(dialog, animated: true, completion: nil)
+		present(dialog, animated: true)
 	}
 	
 	// MARK: Suggesting Collection Title

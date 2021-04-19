@@ -21,7 +21,7 @@ extension LibraryTVC {
 		
 		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
 		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
-		tableView.performBatchUpdates(nil, completion: nil)
+		tableView.performBatchUpdates(nil)
 	}
 	
 	// Note: We handle rearranging in UITableViewDataSource and UITableViewDelegate methods.
@@ -50,9 +50,9 @@ extension LibraryTVC {
 		// Update the data source and table view.
 		setItemsAndRefreshTableView(
 			newItems: newItems,
-			completion: { [self] in
-				tableView.deselectAllRows(animated: true)
-				refreshBarButtons()
+			completion: {
+				self.tableView.deselectAllRows(animated: true)
+				self.refreshBarButtons()
 			})
 	}
 	
@@ -80,9 +80,9 @@ extension LibraryTVC {
 		// Update the data source and table view.
 		setItemsAndRefreshTableView(
 			newItems: newItems,
-			completion: { [self] in
-				tableView.deselectAllRows(animated: true)
-				refreshBarButtons()
+			completion: {
+				self.tableView.deselectAllRows(animated: true)
+				self.refreshBarButtons()
 			})
 	}
 	
@@ -109,7 +109,7 @@ extension LibraryTVC {
 		)
 		actionSheet.popoverPresentationController?.barButtonItem = sortButton
 		
-		present(actionSheet, animated: true, completion: nil)
+		present(actionSheet, animated: true)
 	}
 	
 	// For iOS 13
@@ -151,9 +151,9 @@ extension LibraryTVC {
 		}
 		
 		// Update the data source and table view.
-		setItemsAndRefreshTableView(newItems: newItems, completion: { [self] in
-			tableView.deselectAllRows(animated: true)
-			refreshBarButtons()
+		setItemsAndRefreshTableView(newItems: newItems, completion: {
+			self.tableView.deselectAllRows(animated: true)
+			self.refreshBarButtons()
 		})
 	}
 	

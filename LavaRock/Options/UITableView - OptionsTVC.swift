@@ -98,7 +98,7 @@ extension OptionsTVC {
 	// MARK: Events
 	
 	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
-		dismiss(animated: true, completion: nil)
+		dismiss(animated: true)
 	}
 	
 }

@@ -68,7 +68,7 @@ extension SongsTVC {
 		actionSheet.addAction(enqueueSongAction)
 		actionSheet.addAction(cancelAction)
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
-		present(actionSheet, animated: true, completion: nil)
+		present(actionSheet, animated: true)
 	}
 	
 	// MARK: - Actions
@@ -212,7 +212,7 @@ extension SongsTVC {
 		alert.addAction(dontShowAgainAction)
 		alert.addAction(okAction)
 		alert.preferredAction = okAction
-		present(alert, animated: true, completion: nil)
+		present(alert, animated: true)
 	}
 	
 }

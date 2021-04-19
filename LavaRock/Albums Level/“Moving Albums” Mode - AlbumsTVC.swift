@@ -62,7 +62,7 @@ extension AlbumsTVC {
 		childManagedObjectContext.parent = managedObjectContext
 		modalCollectionsTVC.managedObjectContext = childManagedObjectContext
 		
-		present(modalCollectionsNC, animated: true, completion: nil)
+		present(modalCollectionsNC, animated: true)
 		
 	}
 	
@@ -112,14 +112,14 @@ extension AlbumsTVC {
 		// Update the table view.
 		setItemsAndRefreshTableView(
 			newItems: newItems,
-			completion: { [self] in
-				managedObjectContext.tryToSaveSynchronously()
-				guard let mainManagedObjectContext = managedObjectContext.parent else {
+			completion: {
+				self.managedObjectContext.tryToSaveSynchronously()
+				guard let mainManagedObjectContext = self.managedObjectContext.parent else {
 					fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move Albums” sheet.")
 				}
 				mainManagedObjectContext.tryToSaveSynchronously()
 				
-				dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
+				self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
 				})
 				albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
 			})

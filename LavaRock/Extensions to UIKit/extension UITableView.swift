@@ -89,6 +89,15 @@ extension UITableView {
 	
 	// MARK: - Getting IndexPaths
 	
+	final func allIndexPaths() -> [IndexPath] {
+		var result = [IndexPath]()
+		for section in 0 ..< numberOfSections {
+			let indexPathsInSection = indexPathsForRowsIn(section: section, firstRow: 0)
+			result.append(contentsOf: indexPathsInSection)
+		}
+		return result
+	}
+	
 	final func selectedOrEnumeratedIndexPathsIn(section: Int, firstRow: Int) -> [IndexPath] {
 		if let selectedIndexPaths = indexPathsForSelectedRows	 {
 			return selectedIndexPaths.sorted()
@@ -116,21 +125,6 @@ extension UITableView {
 	}
 	
 	// MARK: - Taking Action on Rows
-	
-	final func deleteAllRows(
-		completion: (() -> ())?
-	) {
-		var allIndexPaths = [IndexPath]()
-		for section in 0 ..< numberOfSections {
-			let allIndexPathsInSection = indexPathsForRowsIn(section: section, firstRow: 0)
-			allIndexPaths.append(contentsOf: allIndexPathsInSection)
-		}
-		performBatchUpdates {
-			deleteRows(at: allIndexPaths, with: .middle)
-		} completion: { _ in
-			completion?()
-		}
-	}
 	
 	final func deselectAllRows(animated: Bool) {
 		guard let indexPaths = indexPathsForSelectedRows else { return }

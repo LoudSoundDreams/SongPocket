@@ -105,7 +105,7 @@ class LibraryTVC:
 		barButtonSystemItem: .cancel,
 		target: self, action: #selector(cancelMoveAlbums))
 	@objc private func cancelMoveAlbums() {
-		dismiss(animated: true, completion: nil)
+		dismiss(animated: true)
 	}
 	let flexibleSpaceBarButtonItem = UIBarButtonItem(
 		barButtonSystemItem: .flexibleSpace,
@@ -287,11 +287,14 @@ class LibraryTVC:
 		
 		guard !newItems.isEmpty else {
 			// Delete all rows, then exit.
-			tableView.deleteAllRows(completion: {
+			let allIndexPaths = tableView.allIndexPaths()
+			tableView.performBatchUpdates {
+				tableView.deleteRows(at: allIndexPaths, with: .middle)
+			} completion: { _ in
 				if !(self is CollectionsTVC) {
 					self.performSegue(withIdentifier: "Removed All Contents", sender: nil)
 				}
-			})
+			}
 			return
 		}
 		
@@ -329,9 +332,9 @@ class LibraryTVC:
 			for (sourceIndexPath, destinationIndexPath) in indexPathsToMove {
 				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
-		} completion: { [self] _ in
-			isAnimatingDuringRefreshTableView -= 1
-			if isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
+		} completion: { _ in
+			self.isAnimatingDuringRefreshTableView -= 1
+			if self.isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
 				completion?()
 			}
 		}

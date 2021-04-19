@@ -227,13 +227,13 @@ extension MusicLibraryManager {
 		
 		albumsInCollection.sort { $0.index < $1.index } // Sort by index here even if we're going to sort by release date later; this keeps Albums whose releaseDateEstimate is nil in their previous order.
 		if shouldSortByNewestFirst {
-			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albums: albumsInCollection)
+			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInCollection)
 		}
 		
 		albumsInCollection.reindex()
 	}
 	
-	private func sortedByNewestFirstAndUnknownReleaseDateLast(albums albumsImmutable: [Album]) -> [Album] {
+	private func sortedByNewestFirstAndUnknownReleaseDateLast(_ albumsImmutable: [Album]) -> [Album] {
 		var albumsCopy = albumsImmutable
 		
 		let commonDate = Date()
