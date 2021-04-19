@@ -114,7 +114,7 @@ extension LibraryTVC {
 		
 		guard shouldContinueAfterWillRefreshDataAndViews() else { return }
 		
-		isEitherLoadingOrUpdating = false
+		isImportingChanges = false
 		
 		let newItems = sectionOfLibraryItems.fetchedItems()
 		setItemsAndRefreshTableView(

@@ -12,7 +12,7 @@ extension AlbumsTVC: NowPlayingIndicatorManager {
 	final func isItemNowPlaying(at indexPath: IndexPath) -> Bool {
 		if
 			let rowAlbum = libraryItem(for: indexPath) as? Album,
-			PlayerControllerManager.currentSong?.container?.objectID == rowAlbum.objectID
+			PlayerControllerManager.nowPlayingSong?.container?.objectID == rowAlbum.objectID
 		{
 			return true
 		} else {

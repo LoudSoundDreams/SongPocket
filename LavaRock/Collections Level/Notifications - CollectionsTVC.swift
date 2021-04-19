@@ -64,7 +64,7 @@ extension CollectionsTVC {
 		super.didDismissAllModalViewControllers()
 		
 		if let albumMoverClipboard = albumMoverClipboard {
-			albumMoverClipboard.delegate?.didAbort() // Solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
+			albumMoverClipboard.delegate?.didAbort() // This solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
 		}
 	}
 	

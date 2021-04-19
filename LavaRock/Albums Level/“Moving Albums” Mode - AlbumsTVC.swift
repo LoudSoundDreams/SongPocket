@@ -103,22 +103,23 @@ extension AlbumsTVC {
 		var newItems = sectionOfLibraryItems.items
 		for album in albumsToMove.reversed() {
 			album.container = destinationCollection
-			newItems.insert(album, at: 0) // The property observer will set the "index" attribute on every Album in this Collection for us.
+			// When we set sectionOfLibraryItems.items, the property observer will set the "index" attribute of each Album in this Collection for us.
+			newItems.insert(album, at: 0)
 		}
 		// If we moved all the Albums out of the Collection they used to be in, then delete that Collection.
 		Collection.deleteAllEmpty(via: managedObjectContext) // Note: This checks the contents of and reindexes destinationCollection, too.
 		
-		managedObjectContext.tryToSaveSynchronously()
-		guard let mainManagedObjectContext = managedObjectContext.parent else {
-			fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move Albums” sheet.")
-		}
-		mainManagedObjectContext.tryToSave()
-		
 		// Update the table view.
 		setItemsAndRefreshTableView(
 			newItems: newItems,
-			completion: {
-				self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
+			completion: { [self] in
+				managedObjectContext.tryToSaveSynchronously()
+				guard let mainManagedObjectContext = managedObjectContext.parent else {
+					fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move Albums” sheet.")
+				}
+				mainManagedObjectContext.tryToSaveSynchronously()
+				
+				dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
 				})
 				albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
 			})

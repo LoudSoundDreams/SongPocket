@@ -164,19 +164,10 @@ class LibraryTVC:
 		container: nil,
 		entityName: entityName)//,
 //		delegate: self)
-	var isEitherLoadingOrUpdating = false// {
-//		didSet {
-//			if
-//				oldValue == false,
-//				isEitherLoadingOrUpdating
-//			{
-//				didBecomeEitherLoadingOrUpdating()
-//			}
-//		}
-//	}
+	var isImportingChanges = false
 //	var isUpdating: Bool {
 //		return
-//			isEitherLoadingOrUpdating &&
+//			isImportingChanges &&
 //			!sectionOfLibraryItems.items.isEmpty &&
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
@@ -198,7 +189,7 @@ class LibraryTVC:
 	
 	// LibraryTVC itself doesn't call this during viewDidLoad(), but its subclasses may want to.
 	// Call this method late into launch, after we've already set up most of the UI; this method sets up the MediaPlayer-related functionality so that we can set up the rest of the UI (although this method itself doesn't set up the rest of the UI).
-	// Before calling this method, set isEitherLoadingOrUpdating = true, and put the UI into the "Loading…" or "Updating…" state.
+	// Before calling this, put the UI into the "Loading…" or "Updating…" state.
 	final func integrateWithAndImportChangesFromMusicLibraryIfAuthorized() {
 		MusicLibraryManager.shared.importChangesAndBeginGeneratingNotificationsIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
 		PlayerControllerManager.setUpIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.

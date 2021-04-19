@@ -78,7 +78,7 @@ extension CollectionsTVC {
 				
 				let newCollection = Collection(context: managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
 				newCollection.title = newTitle
-				// The property observer on sectionOfLibraryItems.items will set the "index" attribute of each Collection for us.
+				// When we set sectionOfLibraryItems.items, the property observer will set the "index" attribute of each Collection for us.
 				
 				var newItems = sectionOfLibraryItems.items
 				newItems.insert(newCollection, at: indexOfNewCollection)

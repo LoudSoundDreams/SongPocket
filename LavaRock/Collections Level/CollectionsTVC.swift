@@ -24,7 +24,7 @@ final class CollectionsTVC:
 	// Variables
 	var isLoading: Bool {
 		return
-			isEitherLoadingOrUpdating &&
+			isImportingChanges &&
 			sectionOfLibraryItems.items.isEmpty &&
 			MPMediaLibrary.authorizationStatus() == .authorized
 	}
@@ -41,7 +41,7 @@ final class CollectionsTVC:
 		} else {
 			if MPMediaLibrary.authorizationStatus() == .authorized {
 				DispatchQueue.main.async { [self] in // Yes, it's actually useful to use async on the main thread. This lets us show existing Collections as soon as possible, then integrate with and import changes from the Music library shortly later.
-					isEitherLoadingOrUpdating = true
+					isImportingChanges = true
 					tableView.performBatchUpdates {
 						if isLoading {
 							let indexPath = IndexPath(row: 0, section: 0)

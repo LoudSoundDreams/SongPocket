@@ -29,17 +29,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-//	private enum Section: Int, CaseIterable {
-//		case allAlbums
-//		case collections
-//	}
-	
 	// MARK: - Numbers
-	
-	// TO DO: Account for contentState
-//	final override func numberOfSections(in tableView: UITableView) -> Int {
-//		return Section.allCases.count
-//	}
 	
 	// Remember to call refreshBarButtons() before returning. super also does it.
 	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -206,7 +196,7 @@ extension CollectionsTVC {
 	private func didReceiveAuthorizationForMusicLibrary() {
 		setUp()
 		
-		isEitherLoadingOrUpdating = true
+		isImportingChanges = true
 		tableView.performBatchUpdates {
 			let indexPath = IndexPath(row: 0, section: 0)
 			tableView.reloadRows(at: [indexPath], with: .fade)

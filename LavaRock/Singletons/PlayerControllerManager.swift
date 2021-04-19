@@ -18,16 +18,16 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 	
 	// Variables
 	private(set) static var playerController: MPMusicPlayerController?
-	private(set) static var currentSong: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
+	private(set) static var nowPlayingSong: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
 	
 	// MARK: - Setup
 	
 	static func setUpIfAuthorized() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		Self.playerController = MPMusicPlayerController.systemMusicPlayer
-		Self.beginGeneratingNotifications()
-		Self.refreshCurrentSong()
+		playerController = MPMusicPlayerController.systemMusicPlayer
+		beginGeneratingNotifications()
+		refreshCurrentSong()
 	}
 	
 	// MARK: - "Now Playing" Indicator
@@ -35,7 +35,7 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 	static func nowPlayingIndicator(isItemNowPlaying: Bool) -> (UIImage?, String?) {
 		guard
 			isItemNowPlaying,
-			let playerController = Self.playerController
+			let playerController = playerController
 		else {
 			return (nil, nil)
 		}
@@ -62,25 +62,25 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 	static func refreshCurrentSong() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
-			let nowPlayingItem = Self.playerController?.nowPlayingItem
+			let nowPlayingItem = playerController?.nowPlayingItem
 		else {
-			Self.currentSong = nil
+			nowPlayingSong = nil
 			return
 		}
 		
 		let currentPersistentID = nowPlayingItem.persistentID // Remember: This is a UInt64, and we store the persistentID attribute on each Song as an Int64.
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		songsFetchRequest.predicate = NSPredicate(format: "persistentID == %lld", Int64(bitPattern: currentPersistentID))
-		let nowPlayingSongs = Self.managedObjectContext.objectsFetched(for: songsFetchRequest)
+		let nowPlayingSongs = managedObjectContext.objectsFetched(for: songsFetchRequest)
 		
 		guard
 			nowPlayingSongs.count == 1,
-			let nowPlayingSong = nowPlayingSongs.first
+			let song = nowPlayingSongs.first
 		else {
-			Self.currentSong = nil
+			nowPlayingSong = nil
 			return
 		}
-		Self.currentSong = nowPlayingSong
+		nowPlayingSong = song
 	}
 	
 	// MARK: - PRIVATE
@@ -99,13 +99,13 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 	private static func beginGeneratingNotifications() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		Self.playerController?.beginGeneratingPlaybackNotifications()
+		playerController?.beginGeneratingPlaybackNotifications()
 	}
 	
 	private static func endGeneratingNotifications() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		Self.playerController?.endGeneratingPlaybackNotifications()
+		playerController?.endGeneratingPlaybackNotifications()
 	}
 	
 }
