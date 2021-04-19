@@ -107,7 +107,6 @@ extension CollectionsTVC {
 			isItemNowPlaying: isNowPlayingCollection)
 		cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 		
-		// "Moving Albums" mode
 		if let albumMoverClipboard = albumMoverClipboard {
 			if collection.objectID == albumMoverClipboard.ifOfSourceCollection {
 				cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
@@ -118,13 +117,14 @@ extension CollectionsTVC {
 				cell.isUserInteractionEnabled = true
 				cell.accessibilityTraits.remove(.notEnabled)
 			}
+			
+		} else {
+			let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(
+				name: LocalizedString.rename,
+				actionHandler: renameAccessibilityFocusedCollection)
+			cell.accessibilityCustomActions = [renameCollectionAccessibilityCustomAction]
+//			refreshVoiceControlNames(for: cell)
 		}
-		
-		let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(
-			name: LocalizedString.rename,
-			actionHandler: { _ in self.renameAccessibilityFocusedCollection() } )
-		cell.accessibilityCustomActions = [renameCollectionAccessibilityCustomAction]
-//		refreshVoiceControlNames(for: cell)
 		
 		return cell
 	}
@@ -137,7 +137,7 @@ extension CollectionsTVC {
 //		}
 //	}
 	
-	private func renameAccessibilityFocusedCollection() -> Bool {
+	private func renameAccessibilityFocusedCollection(_ sender: UIAccessibilityCustomAction) -> Bool {
 		var indexPathOfCollectionToRename: IndexPath?
 		let section = 0
 		let indexPathsOfAllCollections = tableView.indexPathsForRowsIn(

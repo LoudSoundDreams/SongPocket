@@ -70,8 +70,11 @@ final class AlbumsTVC:
 	
 	// MARK: - Refreshing Buttons
 	
+	// This is the same as in CollectionsTVC.
 	final override func setToolbarButtons(animated: Bool) {
-		if albumMoverClipboard != nil { return } // In "moving Albums" mode, prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
+		if albumMoverClipboard != nil {
+			return // Prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
+		}
 		
 		super.setToolbarButtons(animated: animated)
 	}

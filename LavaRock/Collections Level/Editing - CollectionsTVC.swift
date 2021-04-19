@@ -29,7 +29,6 @@ extension CollectionsTVC {
 	
 	// MARK: - Renaming Collection
 	
-	// WARNING: Using VoiceOver, you can rename Collections at any time, not just in editing mode.
 	// Match presentDialogToMakeNewCollection(_:).
 	final func renameCollection(at indexPath: IndexPath) {
 		guard let collection = libraryItem(for: indexPath) as? Collection else { return }
@@ -51,7 +50,7 @@ extension CollectionsTVC {
 			textField.autocapitalizationType = .sentences
 			textField.smartQuotesType = .yes
 			textField.smartDashesType = .yes
-		} )
+		})
 		let cancelAction = UIAlertAction(
 			title: LocalizedString.cancel,
 			style: .cancel,

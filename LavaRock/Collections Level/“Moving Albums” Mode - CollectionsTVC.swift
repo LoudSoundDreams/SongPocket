@@ -20,7 +20,7 @@ extension CollectionsTVC {
 			let albumMoverClipboard = albumMoverClipboard,
 			albumMoverClipboard.didAlreadyMakeNewCollection,
 			let collection = sectionOfLibraryItems.items[indexOfEmptyNewCollection] as? Collection,
-			collection.contents == nil || collection.contents?.count == 0
+			collection.isEmpty()
 		else { return }
 		
 		managedObjectContext.delete(collection)
@@ -58,7 +58,7 @@ extension CollectionsTVC {
 			textField.autocapitalizationType = .sentences
 			textField.smartQuotesType = .yes
 			textField.smartDashesType = .yes
-		} )
+		})
 		let cancelAction = UIAlertAction(
 			title: LocalizedString.cancel,
 			style: .cancel,

@@ -11,6 +11,10 @@ extension Collection: LibraryItem {
 	// Enables [collection].reindex()
 }
 
+extension Collection: LibraryContainer {
+	// Enables .isEmpty()
+}
+
 extension Collection {
 	
 	static func validatedTitle(from rawProposedTitle: String?) -> String {
@@ -51,7 +55,7 @@ extension Collection {
 		for numberFromEnd in 1 ... count {
 			let index = count - numberFromEnd
 			let collection = allCollections[index]
-			if collection.contents == nil || collection.contents?.count == 0 {
+			if collection.isEmpty() {
 				managedObjectContext.delete(collection)
 				allCollections.remove(at: index)
 			}

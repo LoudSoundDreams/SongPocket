@@ -20,3 +20,15 @@ extension Array {
 	}
 	
 }
+
+protocol LibraryContainer {
+	var contents: NSSet? { get set }
+}
+
+extension LibraryContainer {
+	
+	func isEmpty() -> Bool {
+		return contents == nil || contents?.count == 0
+	}
+	
+}

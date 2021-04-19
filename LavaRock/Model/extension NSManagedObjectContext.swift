@@ -9,7 +9,7 @@ import CoreData
 
 extension NSManagedObjectContext {
 	
-	func tryToSave() {
+	final func tryToSave() {
 		perform { [self] in
 			guard hasChanges else { return }
 			do {
@@ -21,7 +21,7 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	func tryToSaveSynchronously() {
+	final func tryToSaveSynchronously() {
 		performAndWait {
 			guard hasChanges else { return }
 			do {
@@ -33,7 +33,7 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	func objectsFetched<T>(for request: NSFetchRequest<T>) -> [T] {
+	final func objectsFetched<T>(for request: NSFetchRequest<T>) -> [T] {
 		var results = [T]()
 		performAndWait {
 			do {

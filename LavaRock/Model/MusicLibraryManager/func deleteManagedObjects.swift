@@ -38,7 +38,7 @@ extension MusicLibraryManager {
 			ordered: false)
 		
 		for album in allAlbums {
-			if album.contents == nil || album.contents?.count == 0 {
+			if album.isEmpty() {
 				managedObjectContext.delete(album)
 				// WARNING: This leaves gaps in the Album indexes within each Collection. You must reindex the Albums within each Collection later.
 			}

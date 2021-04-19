@@ -12,6 +12,10 @@ extension Album: LibraryItem {
 	// Enables [album].reindex()
 }
 
+extension Album: LibraryContainer {
+	// Enables .isEmpty()
+}
+
 extension Album {
 	
 	// MARK: - Core Data
@@ -33,7 +37,7 @@ extension Album {
 	
 	// MARK: - Media Player
 	
-	func mpMediaItemCollection() -> MPMediaItemCollection? {
+	final func mpMediaItemCollection() -> MPMediaItemCollection? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
@@ -58,7 +62,7 @@ extension Album {
 	// MusicLibraryManager's importChanges() references this when checking for and making new Collections.
 	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownArtist
 	
-	func titleFormattedOrPlaceholder() -> String {
+	final func titleFormattedOrPlaceholder() -> String {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
 			let fetchedAlbumTitle = representativeItem.albumTitle,
@@ -70,7 +74,7 @@ extension Album {
 		}
 	}
 	
-	func albumArtistFormattedOrPlaceholder() -> String {
+	final func albumArtistFormattedOrPlaceholder() -> String {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
 			let fetchedAlbumArtist = representativeItem.albumArtist, // As of iOS 14.0 beta 5, even if the "album artist" field is blank in the Music app for Mac (and other tag editors), .albumArtist can still return something. It probably reads the "artist" field from one of the songs. Currently, it returns the same name as the one in the album's header in the built-in Music app for iOS.
@@ -89,7 +93,7 @@ extension Album {
 		return dateFormatter
 	}()
 	
-	func releaseDateEstimateFormatted() -> String? {
+	final func releaseDateEstimateFormatted() -> String? {
 		if let releaseDateEstimate = releaseDateEstimate {
 			return Self.releaseDateFormatter.string(from: releaseDateEstimate)
 		} else {

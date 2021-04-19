@@ -16,7 +16,7 @@ extension Song {
 	
 	// MARK: - Media Player
 	
-	func mpMediaItem() -> MPMediaItem? {
+	final func mpMediaItem() -> MPMediaItem? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
@@ -37,7 +37,7 @@ extension Song {
 	
 	// MARK: - Formatted Attributes
 	
-	func titleFormattedOrPlaceholder() -> String {
+	final func titleFormattedOrPlaceholder() -> String {
 		if
 			let fetchedTitle = mpMediaItem()?.title,
 			fetchedTitle != ""
@@ -48,7 +48,7 @@ extension Song {
 		}
 	}
 	
-	func trackNumberFormattedOrPlaceholder() -> String? {
+	final func trackNumberFormattedOrPlaceholder() -> String? {
 		if
 			let fetchedTrackNumber = mpMediaItem()?.albumTrackNumber,
 			fetchedTrackNumber != 0
@@ -60,7 +60,7 @@ extension Song {
 		}
 	}
 	
-	func artistFormatted() -> String? {
+	final func artistFormatted() -> String? {
 		if
 			let fetchedArtist = mpMediaItem()?.artist,
 			fetchedArtist != ""

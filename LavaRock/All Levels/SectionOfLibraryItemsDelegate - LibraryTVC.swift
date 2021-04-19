@@ -7,7 +7,7 @@
 /*
 extension LibraryTVC: SectionOfLibraryItemsDelegate {
 	
-	func refreshUI(fromOldItems: [NSManagedObject]) {
+	final func refreshUI(fromOldItems: [NSManagedObject]) {
 		
 	}
 	
