@@ -9,21 +9,23 @@ import UIKit
 
 extension AlbumsTVC: AlbumMoverDelegate {
 	
-	final func didAbort() {
-		refreshDataAndViews()
-	}
-	
-	// Call this from the "move Albums" sheet, after completing the animation for inserting the Albums we moved. Here, in the non-modal AlbumsTVC, this method removes the rows for the Albums we just moved. (That timing looks good: we remove the Albums while dismissing the sheet, so you catch just a glimpse of the Albums leaving (even though it technically doesn't make sense).)
-	// However, that results in "Unbalanced calls to begin/end appearance transitions" for the modal AlbumsTVC, and the non-modal AlbumsTVC then (sometimes) fails to back out, because the non-modal AlbumsTVC finishes removing rows and tries to exit before we've finished dismissing the sheet, which isn't allowed. A simple workaround for this is to just call refreshDataAndViews() again after completing dismissing the sheet, in didMoveAlbumsThenFinishDismiss(didMoveAlbums:), below.
+	// Call this from the "move Albums" sheet after completing the animation for inserting the Albums we moved. Here, in the non-modal AlbumsTVC, this method removes the rows for the Albums we just moved. (That timing looks good: we remove the Albums while dismissing the sheet, so you catch just a glimpse of the Albums leaving (even though it technically doesn't make sense).)
+	// However, we then (sometimes) fail to back out of the non-modal AlbumsTVC, because it can finish removing rows and try to exit before we've finished dismissing the "move Albums" sheet, which isn't allowed. A simple workaround for this is to just refresh the table view again after completing dismissing the sheet, in didMoveAlbumsThenFinishDismiss(didMoveAlbums:), below.
 	final func didMoveAlbumsThenCommitDismiss() {
-		refreshDataAndViews()
+		let newItems = sectionOfLibraryItems.fetchedItems()
+		setItemsAndRefreshTableView(
+			newItems: newItems,
+			completion: nil)
 	}
 	
 	final func didMoveAlbumsThenFinishDismiss() {
 		NotificationCenter.default.post(
 			Notification(name: .LRDidMoveAlbums)
 		)
-		refreshDataAndViews() // Exits this Collection if it's now empty.
+		let existingItems = sectionOfLibraryItems.items
+		setItemsAndRefreshTableView( // Exits this Collection if it's now empty.
+			newItems: existingItems,
+			completion: nil)
 	}
 	
 }

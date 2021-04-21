@@ -13,7 +13,6 @@ protocol AlbumMover {
 }
 
 protocol AlbumMoverDelegate: AnyObject {
-	func didAbort()
 	func didMoveAlbumsThenCommitDismiss()
 	func didMoveAlbumsThenFinishDismiss()
 }

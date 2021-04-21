@@ -27,22 +27,12 @@ extension AlbumsTVC {
 	- If any of the Albums we're moving get deleted
 	*/
 	
-	// This is the same as in CollectionsTVC.
-	final override func didDismissAllModalViewControllers() {
-		super.didDismissAllModalViewControllers()
-		
-		if let albumMoverClipboard = albumMoverClipboard {
-			albumMoverClipboard.delegate?.didAbort() // This solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
-		}
-	}
-	
-	// This is the same as in CollectionsTVC.
-	final override func shouldContinueAfterWillRefreshDataAndViews() -> Bool {
+	final override func refreshDataAndViews() {
 		if albumMoverClipboard != nil {
-			return false
-		} else {
-			return true
+			return // without refreshing
 		}
+		
+		super.refreshDataAndViews()
 	}
 	
 }

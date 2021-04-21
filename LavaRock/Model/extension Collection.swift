@@ -51,15 +51,19 @@ extension Collection {
 			via: managedObjectContext,
 			ordered: true)
 		
-		let count = allCollections.count
-		for numberFromEnd in 1 ... count {
-			let index = count - numberFromEnd
+		var indexesOfEmptyCollections = [Int]()
+		for index in 0 ..< allCollections.count {
 			let collection = allCollections[index]
 			if collection.isEmpty() {
-				managedObjectContext.delete(collection)
-				allCollections.remove(at: index)
+				indexesOfEmptyCollections.append(index)
 			}
 		}
+		for index in indexesOfEmptyCollections.reversed() {
+			let emptyCollection = allCollections[index]
+			managedObjectContext.delete(emptyCollection)
+			allCollections.remove(at: index)
+		}
+		
 		allCollections.reindex()
 	}
 	

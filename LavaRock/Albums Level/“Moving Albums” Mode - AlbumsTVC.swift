@@ -115,7 +115,7 @@ extension AlbumsTVC {
 			completion: {
 				self.managedObjectContext.tryToSaveSynchronously()
 				guard let mainManagedObjectContext = self.managedObjectContext.parent else {
-					fatalError("Couldn’t access the main managed object context to save changes, just before dismissing the “move Albums” sheet.")
+					fatalError("After the user tapped “Move Here”, we couldn’t access the main managed object context to save changes.")
 				}
 				mainManagedObjectContext.tryToSaveSynchronously()
 				

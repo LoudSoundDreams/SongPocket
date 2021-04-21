@@ -48,32 +48,18 @@ extension CollectionsTVC {
 	Currently, we're just dismissing the "move Albums" sheet to not deal with any of those edge cases.
 	*/
 	
-	final override func willRefreshDataAndViews() {
+	final override func refreshDataAndViews() {
+		if albumMoverClipboard != nil {
+			return // without refreshing
+		}
+		
 		if isLoading {
 			didJustFinishLoading = true
 			refreshToReflectContentState(completion: nil)
 			didJustFinishLoading = false
 		}
 		
-		super.willRefreshDataAndViews()
-	}
-	
-	// This is the same as in AlbumsTVC.
-	final override func didDismissAllModalViewControllers() {
-		super.didDismissAllModalViewControllers()
-		
-		if let albumMoverClipboard = albumMoverClipboard {
-			albumMoverClipboard.delegate?.didAbort() // This solves the case where you deleted all the Albums in the Collection that you were moving Albums out of; it exits the now-empty Collection and removes it.
-		}
-	}
-	
-	// This is the same as in AlbumsTVC.
-	final override func shouldContinueAfterWillRefreshDataAndViews() -> Bool {
-		if albumMoverClipboard != nil {
-			return false
-		} else {
-			return true
-		}
+		super.refreshDataAndViews()
 	}
 	
 }

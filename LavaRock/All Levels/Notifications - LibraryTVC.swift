@@ -84,7 +84,7 @@ extension LibraryTVC {
 			section: 0,
 			firstRow: numberOfRowsAboveLibraryItems)
 		{
-			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue } // TO DO: For some reason, this triggers tableView(_:cellForRowAt:) and redraws the entire cell, which we can't allow.
+			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue } // TO DO: For some reason, this can trigger tableView(_:cellForRowAt:), which can redraw the cell to a null placeholder, which we can't allow.
 			let isItemNowPlaying = isItemNowPlayingDeterminer(indexPath)
 			let indicator = PlayerControllerManager.nowPlayingIndicator(
 				isItemNowPlaying: isItemNowPlaying)
@@ -95,7 +95,7 @@ extension LibraryTVC {
 	// MARK: - After Importing Changes from Music Library
 	
 	private func refreshToReflectMusicLibrary() {
-		refreshToReflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by swiping back, the "now playing" indicators are already updated.
+		refreshToReflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by swiping back, the "now playing" indicators and playback toolbar are already updated.
 		refreshDataAndViewsWhenVisible()
 	}
 	
@@ -109,61 +109,42 @@ extension LibraryTVC {
 		}
 	}
 	
-	final func refreshDataAndViews() {
-		willRefreshDataAndViews()
-		
-		guard shouldContinueAfterWillRefreshDataAndViews() else { return }
-		
+	@objc func refreshDataAndViews() {
 		isImportingChanges = false
-		
-		let newItems = sectionOfLibraryItems.fetchedItems()
-		setItemsAndRefreshTableView(
-			newItems: newItems,
-			completion: {
-				self.refreshData() // Includes tableView.reloadData(), which includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
-			})
 //		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
-	}
-	
-	/*
-	Easy to override. You should call super (this implementation) at the end of your override.
-	You might be in the middle of a content-dependent task when we need to refresh. Here are all of them:
-	- Sort options (LibraryTVC)
-	- "Rename Collection" dialog (CollectionsTVC)
-	- "Move Albums" sheet (CollectionsTVC and AlbumsTVC when in "moving Albums" mode)
-	- "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
-	- Song actions (SongsTVC)
-	- (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
-	Subclasses that offer those tasks should override this method and cancel those tasks.
-	*/
-	@objc func willRefreshDataAndViews() {
-		// Only dismiss modal view controllers if sectionOfLibraryItems.items will change during the refresh?
+		
+		/*
+		// When we need to refresh, you might be in the middle of a content-dependent task. Cancel those content-dependent tasks.
+		// TO DO: Only cancel if we'll move rows during the refresh.
+		- Sort options (LibraryTVC)
+		- "Rename Collection" dialog (CollectionsTVC)
+		- "Move Albums" sheet (CollectionsTVC and AlbumsTVC when in "moving Albums" mode)
+		- "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
+		- Song actions (SongsTVC)
+		- (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
+		*/
 		let shouldNotDismissAnyModalViewControllers =
 			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 		if !shouldNotDismissAnyModalViewControllers {
 			view.window?.rootViewController?.dismiss(
 				animated: true,
-				completion: didDismissAllModalViewControllers)
+				completion: refreshDataAndViewsPart2)
+		} else {
+			refreshDataAndViewsPart2()
 		}
-	}
-	
-	// Easy to override. You should call super (this implementation) in your override.
-	@objc func didDismissAllModalViewControllers() {
-	}
-	
-	// Easy to override. You should not call super (this implementation) in your override.
-	@objc func shouldContinueAfterWillRefreshDataAndViews() -> Bool {
-		return true
-	}
-	
-	// MARK: Refreshing Data
-	
-	private func refreshData() {
-		sectionOfLibraryItems.refreshContainer()
-		refreshNavigationItemTitle()
 		
-		// Update the data within each row, which might be outdated.
-		tableView.reloadData() // This has no animation (infamously), but we animated the deletes, inserts, and moves earlier, so here, it just updates the data within the rows after they stop moving, which looks fine.
+		func refreshDataAndViewsPart2() {
+			let newItems = sectionOfLibraryItems.fetchedItems()
+			setItemsAndRefreshTableView(
+				newItems: newItems,
+				completion: {
+					self.sectionOfLibraryItems.refreshContainer()
+					self.refreshNavigationItemTitle()
+					self.tableView.reloadData() // Update the data within each row, which might be outdated.
+					// This has no animation (infamously), but we animated the deletes, inserts, and moves earlier, so here, it just updates the data within the rows after they stop moving, which looks fine.
+					// This includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
+				})
+		}
 	}
 	
 }
