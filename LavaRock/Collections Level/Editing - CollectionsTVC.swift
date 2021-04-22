@@ -17,8 +17,8 @@ extension CollectionsTVC {
 //	}
 	
 //	private func refreshVoiceControlNamesForAllCells() {
-//		for indexPath in tableView.indexPathsForRowsIn(
-//			section: 0,
+//		for indexPath in tableView.indexPathsForRows(
+//			inSection: 0,
 //			firstRow: numberOfRowsAboveLibraryItems)
 //		{
 //			guard let cell = tableView.cellForRow(at: indexPath) else { continue }

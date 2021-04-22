@@ -33,8 +33,8 @@ extension AlbumsTVC {
 		var idsOfAlbumsToNotMove = [NSManagedObjectID]()
 		
 		if let selectedIndexPaths = tableView.indexPathsForSelectedRows { // If any rows are selected.
-			for indexPath in tableView.indexPathsForRowsIn(
-				section: 0,
+			for indexPath in tableView.indexPathsForRows(
+				inSection: 0,
 				firstRow: numberOfRowsAboveLibraryItems)
 			{
 				let album = libraryItem(for: indexPath)

@@ -180,8 +180,8 @@ extension CollectionsTVC {
 	private func renameAccessibilityFocusedCollection(_ sender: UIAccessibilityCustomAction) -> Bool {
 		var indexPathOfCollectionToRename: IndexPath?
 		let section = 0
-		let indexPathsOfAllCollections = tableView.indexPathsForRowsIn(
-			section: section,
+		let indexPathsOfAllCollections = tableView.indexPathsForRows(
+			inSection: section,
 			firstRow: numberOfRowsAboveLibraryItems)
 		for indexPath in indexPathsOfAllCollections {
 			if

@@ -80,8 +80,8 @@ extension LibraryTVC {
 	final func refreshNowPlayingIndicators(
 		isItemNowPlayingDeterminer: (IndexPath) -> Bool
 	) {
-		for indexPath in tableView.indexPathsForRowsIn(
-			section: 0,
+		for indexPath in tableView.indexPathsForRows(
+			inSection: 0,
 			firstRow: numberOfRowsAboveLibraryItems)
 		{
 			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue } // TO DO: For some reason, this can trigger tableView(_:cellForRowAt:), which can redraw the cell to a null placeholder, which we can't allow.

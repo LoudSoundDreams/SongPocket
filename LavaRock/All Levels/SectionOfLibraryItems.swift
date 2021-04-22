@@ -60,9 +60,9 @@ struct SectionOfLibraryItems {
 		oldItems: [NSManagedObject],
 		newItems: [NSManagedObject]
 	) -> (
-		[Int],
-		[Int],
-		[(Int, Int)]
+		deletes: [Int],
+		inserts: [Int],
+		moves: [(Int, Int)]
 	) {
 		let difference = newItems.difference(from: oldItems, by: { oldItem, newItem in
 			oldItem.objectID == newItem.objectID

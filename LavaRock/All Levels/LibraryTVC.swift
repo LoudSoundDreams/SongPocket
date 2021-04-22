@@ -90,7 +90,7 @@ class LibraryTVC:
 	lazy var floatToTopButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.up.to.line.alt"),
-			style: .plain, target: self, action: #selector(moveSelectedItemsToTop))
+			style: .plain, target: self, action: #selector(floatSelectedItemsToTop))
 		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
 	}()

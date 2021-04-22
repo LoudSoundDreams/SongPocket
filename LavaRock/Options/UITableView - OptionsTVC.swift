@@ -162,8 +162,8 @@ extension OptionsTVC {
 			if #available(iOS 14.0, *) { // See comment in the `else` block.
 				
 				func untickUnselectedAccentColorRows() {
-					let accentColorIndexPaths = tableView.indexPathsForRowsIn(
-						section: Section.accentColor.rawValue,
+					let accentColorIndexPaths = tableView.indexPathsForRows(
+						inSection: Section.accentColor.rawValue,
 						firstRow: 0)
 					let unselectedAccentColorIndexPaths = accentColorIndexPaths.filter { accentColorIndexPath in
 						accentColorIndexPath != selectedIndexPath // Don't use tableView.indexPathForSelectedRow, because we might have deselected the row already.
@@ -315,8 +315,8 @@ extension OptionsTVC {
 	// MARK: Events
 	
 	final func refreshTipJarRows() {
-		let tipJarIndexPaths = tableView.indexPathsForRowsIn(
-			section: Section.tipJar.rawValue,
+		let tipJarIndexPaths = tableView.indexPathsForRows(
+			inSection: Section.tipJar.rawValue,
 			firstRow: 0)
 		tableView.reloadRows(at: tipJarIndexPaths, with: .fade)
 	}

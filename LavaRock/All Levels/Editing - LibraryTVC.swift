@@ -28,7 +28,7 @@ extension LibraryTVC {
 	
 	// MARK: - Moving to Top
 	
-	@objc final func moveSelectedItemsToTop() {
+	@objc final func floatSelectedItemsToTop() {
 		guard
 			tableView.shouldAllowMovingSelectedRowsToTopOfSection(),
 			let indexPaths = tableView.indexPathsForSelectedRows?.sorted()
@@ -126,27 +126,33 @@ extension LibraryTVC {
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
 		guard tableView.shouldAllowSorting() else { return }
 		
-		// Get the rows to sort.
-		let indexPathsToSort = tableView.selectedOrEnumeratedIndexPathsIn(
-			section: 0,
-			firstRow: numberOfRowsAboveLibraryItems)
-		guard !indexPathsToSort.isEmpty else { return }
+		// Get the indexes of the items to sort.
+		let indexPathsToSort: [IndexPath]
+		if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+			indexPathsToSort = selectedIndexPaths.sorted()
+		} else {
+			indexPathsToSort = tableView.indexPathsForRows(
+				inSection: 0,
+				firstRow: numberOfRowsAboveLibraryItems)
+		}
+		let indexesOfItemsToSort = indexPathsToSort.map { indexOfLibraryItem(for: $0) }
 		
-		// Get and sort the items.
-		let itemsToSort = indexPathsToSort.map { libraryItem(for: $0) }
+		// Get the items to sort.
+		let itemsToSort = indexesOfItemsToSort.map { sectionOfLibraryItems.items[$0] }
+		
+		// Sort the items.
 		let sortedItems = sorted(
 			itemsToSort,
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		
 		// Make a new data source.
-		let indexes = indexPathsToSort.map { indexOfLibraryItem(for: $0) }
 		var newItems = sectionOfLibraryItems.items
-		for index in indexes.reversed() {
+		for index in indexesOfItemsToSort.reversed() {
 			newItems.remove(at: index)
 		}
 		for i in 0 ..< sortedItems.count {
 			let sortedItem = sortedItems[i]
-			let index = indexes[i]
+			let index = indexesOfItemsToSort[i]
 			newItems.insert(sortedItem, at: index)
 		}
 		
