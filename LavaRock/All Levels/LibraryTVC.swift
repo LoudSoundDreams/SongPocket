@@ -48,26 +48,27 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses should customize
 	var entityName = "Collection"
+	var bottomButtonsInEditingMode = [UIBarButtonItem]()
+	var sortOptions = [SortOption]() {
+		didSet {
+			if #available(iOS 14, *) {
+				let sortActions = sortOptions.map {
+					UIAction(
+						title: $0.localizedName(),
+						handler: sortActionHandler(_:))
+				}
+				sortButton.menu = UIMenu(children: sortActions.reversed()) // Reversed because a UIMenu lists its children from the bottom upward when a toolbar button presents it.
+			}
+		}
+	}
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
 	var numberOfRowsAboveLibraryItems = 0
-	var navigationItemLeftButtonsNotEditingMode = [UIBarButtonItem]()
-	private var navigationItemLeftButtonsEditingMode = [UIBarButtonItem]()
-	private var navigationItemRightButtons = [UIBarButtonItem]()
-	var toolbarButtonsEditingModeOnly = [UIBarButtonItem]()
-	var sortOptions = [SortOption]() {
-		didSet {
-			guard #available(iOS 14, *) else { return }
-			
-			let sortActions = sortOptions.map {
-				UIAction(
-					title: $0.localizedName(),
-					handler: sortActionHandler(_:))
-			}
-			sortButton.menu = UIMenu(children: sortActions.reversed()) // Reversed because a UIMenu lists its children from the bottom upward when a toolbar button presents it.
-		}
-	}
+	var topLeftButtonsInViewingMode = [UIBarButtonItem]()
+	private lazy var topLeftButtonsInEditingMode = [flexibleSpaceBarButtonItem]
+	lazy var topRightButtons = [editButtonItem]
+	lazy var bottomButtonsInViewingMode = playbackToolbarButtons
 	
 	// "Constants" that subclasses should not change
 	var sharedPlayerController: MPMusicPlayerController? {
@@ -75,7 +76,7 @@ class LibraryTVC:
 	}
 	let cellReuseIdentifier = "Cell"
 	lazy var noItemsPlaceholderView = {
-		return tableView?.dequeueReusableCell(withIdentifier: "No Items Placeholder") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier; otherwise, dequeueReusableCell returns nil.
+		return tableView?.dequeueReusableCell(withIdentifier: "No Items Placeholder") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
 	}()
 	lazy var sortButton: UIBarButtonItem = {
 		if #available(iOS 14, *) {
@@ -112,7 +113,15 @@ class LibraryTVC:
 		target: nil, action: nil)
 	
 	// "Constants" that subclasses should not change, for PlaybackToolbarManager
-	var playbackToolbarButtons = [UIBarButtonItem]()
+	lazy var playbackToolbarButtons = [
+		goToPreviousSongButton,
+		flexibleSpaceBarButtonItem,
+		restartCurrentSongButton,
+		flexibleSpaceBarButtonItem,
+		playPauseButton,
+		flexibleSpaceBarButtonItem,
+		goToNextSongButton
+	]
 	lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
@@ -162,8 +171,7 @@ class LibraryTVC:
 	lazy var sectionOfLibraryItems = SectionOfLibraryItems(
 		managedObjectContext: managedObjectContext,
 		container: nil,
-		entityName: entityName)//,
-//		delegate: self)
+		entityName: entityName)
 	var isImportingChanges = false
 //	var isUpdating: Bool {
 //		return
@@ -202,18 +210,7 @@ class LibraryTVC:
 		
 		refreshNavigationItemTitle()
 		
-		navigationItemLeftButtonsEditingMode = [flexibleSpaceBarButtonItem]
-		navigationItemRightButtons = [editButtonItem]
-		playbackToolbarButtons = [
-			goToPreviousSongButton,
-			flexibleSpaceBarButtonItem,
-			restartCurrentSongButton,
-			flexibleSpaceBarButtonItem,
-			playPauseButton,
-			flexibleSpaceBarButtonItem,
-			goToNextSongButton
-		]
-		refreshAndSetBarButtons(animated: false)
+		refreshAndSetBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
 	}
 	
 	// Easy to override.
@@ -345,11 +342,7 @@ class LibraryTVC:
 	final func refreshAndSetBarButtons(animated: Bool) {
 		refreshBarButtons()
 		
-		setNavigationItemButtons(animated: animated)
-		setToolbarButtons(animated: animated)
-	}
-	
-	private func setNavigationItemButtons(animated: Bool) {
+		// Set the navigation item buttons.
 //		if isUpdating {
 //			let activityIndicatorView = UIActivityIndicatorView()
 //			activityIndicatorView.startAnimating()
@@ -357,57 +350,49 @@ class LibraryTVC:
 //			navigationItem.setRightBarButtonItems([spinnerBarButtonItem], animated: animated)
 //			return
 //		}
-		
 		if isEditing {
-			navigationItem.setLeftBarButtonItems(navigationItemLeftButtonsEditingMode, animated: animated)
+			navigationItem.setLeftBarButtonItems(
+				topLeftButtonsInEditingMode,
+				animated: animated)
 		} else {
-			navigationItem.setLeftBarButtonItems(navigationItemLeftButtonsNotEditingMode, animated: animated)
+			navigationItem.setLeftBarButtonItems(
+				topLeftButtonsInViewingMode,
+				animated: animated)
 		}
-		navigationItem.setRightBarButtonItems(navigationItemRightButtons, animated: animated)
-	}
-	
-	func setToolbarButtons(animated: Bool) {
+		navigationItem.setRightBarButtonItems(
+			topRightButtons,
+			animated: animated)
+		
+		// Set the toolbar buttons.
 		if isEditing {
-			setToolbarItems(toolbarButtonsEditingModeOnly, animated: animated)
+			setToolbarItems(
+				bottomButtonsInEditingMode,
+				animated: animated)
 		} else {
-			setToolbarItems(playbackToolbarButtons, animated: animated)
+			setToolbarItems(
+				bottomButtonsInViewingMode,
+				animated: animated)
 		}
 	}
 	
 	func refreshBarButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
-		refreshEditButton()
-		if isEditing {
-			refreshSortButton()
-			refreshFloatToTopButton()
-			refreshSinkToBottomButton()
-		} else {
-			refreshPlaybackToolbarButtons()
-		}
-	}
-	
-	private func refreshEditButton() {
 		editButtonItem.isEnabled =
 			MPMediaLibrary.authorizationStatus() == .authorized &&
 			!sectionOfLibraryItems.items.isEmpty
-	}
-	
-	private func refreshSortButton() {
-		sortButton.isEnabled =
-			!sectionOfLibraryItems.items.isEmpty &&
-			tableView.shouldAllowSorting()
-	}
-	
-	private func refreshFloatToTopButton() {
-		floatToTopButton.isEnabled =
-			!sectionOfLibraryItems.items.isEmpty &&
-			tableView.shouldAllowMovingSelectedRowsToTopOfSection()
-	}
-	
-	private func refreshSinkToBottomButton() {
-		sinkToBottomButton.isEnabled =
-			!sectionOfLibraryItems.items.isEmpty &&
-			tableView.shouldAllowMovingSelectedRowsToBottomOfSection()
+		if isEditing {
+			sortButton.isEnabled =
+				!sectionOfLibraryItems.items.isEmpty &&
+				tableView.shouldAllowSorting()
+			floatToTopButton.isEnabled =
+				!sectionOfLibraryItems.items.isEmpty &&
+				tableView.shouldAllowMovingSelectedRowsToTopOfSection()
+			sinkToBottomButton.isEnabled =
+				!sectionOfLibraryItems.items.isEmpty &&
+				tableView.shouldAllowMovingSelectedRowsToBottomOfSection()
+		} else {
+			refreshPlaybackToolbarButtons()
+		}
 	}
 	
 	// MARK: - Navigation
@@ -427,8 +412,7 @@ class LibraryTVC:
 			libraryTVC.sectionOfLibraryItems = SectionOfLibraryItems(
 				managedObjectContext: managedObjectContext,
 				container: selectedItem,
-				entityName: libraryTVC.entityName)//,
-//				delegate: libraryTVC)
+				entityName: libraryTVC.entityName)
 		}
 		
 		super.prepare(for: segue, sender: sender)

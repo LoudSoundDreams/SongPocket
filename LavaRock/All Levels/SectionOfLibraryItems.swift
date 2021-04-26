@@ -6,11 +6,7 @@
 //
 
 import CoreData
-/*
-protocol SectionOfLibraryItemsDelegate: AnyObject {
-	func refreshUI(fromOldItems: [NSManagedObject])
-}
-*/
+
 struct SectionOfLibraryItems {
 	
 	// MARK: - Properties
@@ -20,10 +16,6 @@ struct SectionOfLibraryItems {
 	let managedObjectContext: NSManagedObjectContext
 	let container: NSManagedObject? // Switch to proper type-checking
 	let entityName: String
-	
-//	// MARK: "Constants"
-//
-//	weak var delegate: SectionOfLibraryItemsDelegate?
 	
 	// MARK: Variables
 	

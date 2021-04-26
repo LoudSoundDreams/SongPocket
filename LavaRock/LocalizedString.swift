@@ -19,10 +19,10 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Standard Buttons
 	
-	static let cancel = NSLocalizedString("Cancel", comment: "Button title")
-	static let save = NSLocalizedString("Save", comment: "Button title")
-//	static let done = NSLocalizedString("Done", comment: "Button title")
-	static let ok = NSLocalizedString("OK", comment: "Button title")
+	static let cancel = NSLocalizedString("Cancel", comment: "Button")
+	static let save = NSLocalizedString("Save", comment: "Button")
+	static let done = NSLocalizedString("Done", comment: "Button")
+	static let ok = NSLocalizedString("OK", comment: "Button")
 	
 	// MARK: Standard Phrases
 	
@@ -61,14 +61,14 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Editing Mode
 	
-	static let sort = NSLocalizedString("Sort", comment: "Button title")
+	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let sortBy = NSLocalizedString("Sort By", comment: "Action sheet title")
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label")
 	
 	// MARK: Collections View
 	
-	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button title")
+	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let rename = NSLocalizedString("Rename", comment: "Accessibility label")
 	static let renameCollection = NSLocalizedString("Rename Collection", comment: "Alert title")
 	static let newCollection = NSLocalizedString("New Collection", comment: "Alert title")
@@ -82,24 +82,25 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Albums View
 	
-	static let move = NSLocalizedString("Move", comment: "Button title")
-	static let newestFirst = NSLocalizedString("Newest First", comment: "Button title")
-	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Button title")
+	static let move = NSLocalizedString("Move", comment: "Button")
+	static let newestFirst = NSLocalizedString("Newest First", comment: "Button")
+	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Button")
+	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
 	// MARK: Songs View
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
-	static let playAlbumStartingHere = NSLocalizedString("Play All Starting Here", comment: "Button title")
-	static let queueAlbumStartingHere = NSLocalizedString("Queue All Starting Here", comment: "Button title")
-	static let queueSong = NSLocalizedString("Queue Song", comment: "Button title")
+	static let playAlbumStartingHere = NSLocalizedString("Play All Starting Here", comment: "Button")
+	static let queueAlbumStartingHere = NSLocalizedString("Queue All Starting Here", comment: "Button")
+	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let didEnqueueSongsAlertMessage = NSLocalizedString(
 		"did_enqueue_songs_alert_message",
 		tableName: nil,
 		bundle: Bundle.main,
 		value: "You can edit the queue in the built-in Music app.",
 		comment: "Body text of the alert that appears after the user adds songs to the queue.")
-	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button title")
-	static let trackNumber = NSLocalizedString("Track Number", comment: "Button title")
+	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button")
+	static let trackNumber = NSLocalizedString("Track Number", comment: "Button")
 	
 	// MARK: - With Variables, but Without Text Variations (Format Strings)
 	

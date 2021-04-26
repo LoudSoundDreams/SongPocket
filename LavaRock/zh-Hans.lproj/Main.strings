@@ -10,9 +10,6 @@
 /* Class = "UINavigationItem"; title = "Collections"; ObjectID = "aA7-bf-O8G"; */
 "aA7-bf-O8G.title" = "合集";
 
-/* Class = "UIBarButtonItem"; title = "Move Here"; ObjectID = "i8X-rz-Cxu"; */
-"i8X-rz-Cxu.title" = "移动至此";
-
 /* Class = "UIBarButtonItem"; title = "Options"; ObjectID = "mpR-tt-C6X"; */
 "mpR-tt-C6X.title" = "选项";
 

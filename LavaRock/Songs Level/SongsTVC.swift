@@ -28,7 +28,7 @@ final class SongsTVC:
 	final override func setUpUI() {
 		super.setUpUI()
 		
-		toolbarButtonsEditingModeOnly = [
+		bottomButtonsInEditingMode = [
 			sortButton,
 			flexibleSpaceBarButtonItem,
 			floatToTopButton,

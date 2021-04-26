@@ -10,13 +10,13 @@
 /* Accessibility label */
 "Album artwork" = "專輯插圖";
 
-/* Button title */
+/* Button */
 "Allow Access to Music" = "允許取用音樂";
 
 /* Accent color */
 "Blueberry" = "藍莓";
 
-/* Button title */
+/* Button */
 "Cancel" = "取消";
 
 /* Title for a collection if you leave it blank. In English, it’s “New Collection”. */
@@ -25,10 +25,10 @@
 /* Body text of the alert that appears after the user adds songs to the queue. */
 "did_enqueue_songs_alert_message" = "您可以在內建音樂App中編輯待播清單。";
 
-/* Button title */
+/* Button */
 "Don’t Show Again" = "不再顯示";
 
-/* Button title */
+/* Button */
 "Done" = "完成";
 
 /* Accent color */
@@ -43,8 +43,11 @@
 /* Status message */
 "Loading…" = "載入中⋯";
 
-/* Button title */
+/* Button */
 "Move" = "搬移";
+
+/* Button */
+"Move Here" = "搬移至此";
 
 /* Accessibility label */
 "Move to bottom" = "搬移至底";
@@ -55,7 +58,7 @@
 /* Alert title */
 "New Collection" = "新增合集";
 
-/* Button title */
+/* Button */
 "Newest First" = "最新的優先";
 
 /* Accessibility label */
@@ -64,10 +67,10 @@
 /* Accessibility label */
 "Now playing" = "播放中";
 
-/* Button title */
+/* Button */
 "OK" = "好";
 
-/* Button title */
+/* Button */
 "Oldest First" = "最舊的優先";
 
 /* Accessibility label */
@@ -79,16 +82,16 @@
 /* Accessibility label */
 "Play" = "播放";
 
-/* Button title */
+/* Button */
 "Play All Starting Here" = "從此歌曲播放";
 
 /* Accessibility label */
 "Previous track" = "上一個音軌";
 
-/* Button title */
+/* Button */
 "Queue All Starting Here" = "從此歌曲待播";
 
-/* Button title */
+/* Button */
 "Queue Song" = "待播";
 
 /* Accessibility label */
@@ -100,10 +103,10 @@
 /* Accessibility label */
 "Restart" = "回到音軌開頭";
 
-/* Button title */
+/* Button */
 "Save" = "儲存";
 
-/* Button title */
+/* Button */
 "Sort" = "排序";
 
 /* Action sheet title */
@@ -121,7 +124,7 @@
 /* The word for the name of a collection, album, or song */
 "Title" = "名稱";
 
-/* Button title */
+/* Button */
 "Track Number" = "音軌編號";
 
 /* Placeholder for unknown album title */

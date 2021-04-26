@@ -3,7 +3,7 @@
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18092"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -307,15 +307,7 @@
                             <outlet property="delegate" destination="Vce-TP-hYI" id="W4z-q7-ait"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="mc9-rg-QOt"/>
-                        <barButtonItem style="plain" systemItem="add" id="y90-g1-bFX">
-                            <connections>
-                                <action selector="presentDialogToMakeNewCollection:" destination="Vce-TP-hYI" id="3YH-a4-Y2n"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="4fx-KG-8b8"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Collections" id="aA7-bf-O8G">
                         <barButtonItem key="leftBarButtonItem" title="Options" id="mpR-tt-C6X">
                             <connections>
@@ -510,15 +502,7 @@
                             <outlet property="delegate" destination="DGZ-AG-uNY" id="OJO-rr-42c"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="UFi-Ul-07U"/>
-                        <barButtonItem title="Move Here" style="done" id="i8X-rz-Cxu">
-                            <connections>
-                                <action selector="moveAlbumsHere:" destination="DGZ-AG-uNY" id="wrc-xM-I20"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="op0-MS-ctf"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Albums" id="ykw-Eq-xTa"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>

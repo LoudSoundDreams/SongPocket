@@ -19,7 +19,9 @@ final class CollectionsTVC:
 	// MARK: - Properties
 	
 	// "Constants"
-	@IBOutlet var optionsButton: UIBarButtonItem!
+	@IBOutlet private var optionsButton: UIBarButtonItem!
+	private lazy var makeNewCollectionButton = UIBarButtonItem(
+		barButtonSystemItem: .add, target: self, action: #selector(presentDialogToMakeNewCollection))
 	
 	// Variables
 	var isLoading: Bool {
@@ -59,9 +61,21 @@ final class CollectionsTVC:
 	// MARK: Setting Up UI
 	
 	final override func setUpUI() {
+		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		if albumMoverClipboard != nil {
+//			topLeftButtonsInViewingMode = [cancelMoveAlbumsButton]
+//			topRightButtons = [makeNewCollectionButton]
+//			navigationController?.toolbar.isHidden = true
+			
+			topLeftButtonsInViewingMode = []
+			topRightButtons = [cancelMoveAlbumsButton]
+			bottomButtonsInViewingMode = [
+				flexibleSpaceBarButtonItem,
+				makeNewCollectionButton,
+				flexibleSpaceBarButtonItem
+			]
 		} else {
-			navigationItemLeftButtonsNotEditingMode = [optionsButton] // You need to do this before super, because super sets the navigation item buttons.
+			topLeftButtonsInViewingMode = [optionsButton]
 		}
 		
 		super.setUpUI()
@@ -73,10 +87,9 @@ final class CollectionsTVC:
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
-			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 		} else {
-			toolbarButtonsEditingModeOnly = [
+			bottomButtonsInEditingMode = [
 				sortButton,
 				flexibleSpaceBarButtonItem,
 				floatToTopButton,
@@ -117,26 +130,13 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
-	// MARK: - Refreshing Buttons
-	
-	// This is the same as in AlbumsTVC.
-	final override func setToolbarButtons(animated: Bool) {
-		if albumMoverClipboard != nil {
-			return // Prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
-		}
-		
-		super.setToolbarButtons(animated: animated)
-	}
-	
 	// MARK: - Navigation
 	
 //	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {
-//		let dismissClosure = { self.dismiss(animated: true) }
 //		return UIHostingController(
 //			coder: coder,
 //			rootView: OptionsView(
-//				window: view.window!,
-//				dismissModalHostingControllerHostingThisSwiftUIView: dismissClosure
+//				window: view.window!
 //			)
 //		)
 //	}

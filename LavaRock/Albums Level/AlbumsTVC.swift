@@ -18,9 +18,12 @@ final class AlbumsTVC:
 	// MARK: - Properties
 	
 	// "Constants"
-	lazy var startMovingAlbumsButton = UIBarButtonItem(
+	private lazy var startMovingAlbumsButton = UIBarButtonItem(
 		title: LocalizedString.move,
 		style: .plain, target: self, action: #selector(startMovingAlbums))
+	private lazy var moveAlbumsHereButton = UIBarButtonItem(
+		title: LocalizedString.moveHere,
+		style: .done, target: self, action: #selector(moveAlbumsHere))
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
@@ -36,16 +39,28 @@ final class AlbumsTVC:
 	// MARK: Setting Up UI
 	
 	final override func setUpUI() {
+		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
+		if albumMoverClipboard != nil {
+//			topRightButtons = [moveAlbumsHereButton]
+//			navigationController?.toolbar.isHidden = true
+			
+			topRightButtons = [cancelMoveAlbumsButton]
+			bottomButtonsInViewingMode = [
+				flexibleSpaceBarButtonItem,
+				moveAlbumsHereButton,
+				flexibleSpaceBarButtonItem
+			]
+		}
+		
 		super.setUpUI()
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
-			navigationItem.rightBarButtonItem = cancelMoveAlbumsButton
 			
 			tableView.allowsSelection = false
 			
 		} else {
-			toolbarButtonsEditingModeOnly = [
+			bottomButtonsInEditingMode = [
 				startMovingAlbumsButton,
 				flexibleSpaceBarButtonItem,
 				sortButton,
@@ -69,15 +84,6 @@ final class AlbumsTVC:
 	}
 	
 	// MARK: - Refreshing Buttons
-	
-	// This is the same as in CollectionsTVC.
-	final override func setToolbarButtons(animated: Bool) {
-		if albumMoverClipboard != nil {
-			return // Prevent LibraryTVC from changing the toolbar in the storyboard to the playback toolbar.
-		}
-		
-		super.setToolbarButtons(animated: animated)
-	}
 	
 	final override func refreshBarButtons() {
 		super.refreshBarButtons()
