@@ -58,7 +58,7 @@
 /* Alert title */
 "New Collection" = "新建合集";
 
-/* Button */
+/* Sort option */
 "Newest First" = "最新的排最前";
 
 /* Accessibility label */
@@ -70,7 +70,7 @@
 /* Button */
 "OK" = "好";
 
-/* Button */
+/* Sort option */
 "Oldest First" = "最旧的排最前";
 
 /* Accessibility label */
@@ -121,10 +121,10 @@
 /* Options section header */
 "Tip Jar" = "赞助Songpocket";
 
-/* The word for the name of a collection, album, or song */
+/* The word for the name of a collection, album, or song. Also the name of a sort option. */
 "Title" = "名称";
 
-/* Button */
+/* Sort option */
 "Track Number" = "音轨编号";
 
 /* Placeholder for unknown album title */

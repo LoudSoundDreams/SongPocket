@@ -69,7 +69,11 @@ final class AlbumsTVC:
 				flexibleSpaceBarButtonItem,
 				sinkToBottomButton
 			]
-			sortOptions = [.newestFirst, .oldestFirst]
+			sortOptions = [
+				.newestFirst,
+				.oldestFirst,
+				.reverse,
+			]
 		}
 	}
 	

@@ -28,28 +28,20 @@ extension AlbumsTVC {
 		guard let idOfSourceCollection = sectionOfLibraryItems.container?.objectID else { return }
 		
 		// Note the Albums to move, and to not move.
-		
 		var idsOfAlbumsToMove = [NSManagedObjectID]()
 		var idsOfAlbumsToNotMove = [NSManagedObjectID]()
-		
-		if let selectedIndexPaths = tableView.indexPathsForSelectedRows { // If any rows are selected.
-			for indexPath in tableView.indexPathsForRows(
-				inSection: 0,
-				firstRow: numberOfRowsAboveLibraryItems)
-			{
+		if tableView.indexPathsF0rSelectedRows.isEmpty {
+			idsOfAlbumsToMove = sectionOfLibraryItems.items.map { $0.objectID }
+		} else {
+			for indexPath in indexPaths(forIndexOfSectionOfLibraryItems: 0) {
 				let album = libraryItem(for: indexPath)
-				if selectedIndexPaths.contains(indexPath) { // If the row is selected.
+				if tableView.indexPathsF0rSelectedRows.contains(indexPath) { // If the row is selected.
 					idsOfAlbumsToMove.append(album.objectID)
 				} else { // The row is not selected.
 					idsOfAlbumsToNotMove.append(album.objectID)
 				}
 			}
-		} else { // No rows are selected.
-			for album in sectionOfLibraryItems.items {
-				idsOfAlbumsToMove.append(album.objectID)
-			}
 		}
-		
 		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
 			idOfSourceCollection: idOfSourceCollection,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,

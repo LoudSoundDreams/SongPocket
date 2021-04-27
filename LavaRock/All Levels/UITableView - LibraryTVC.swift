@@ -23,7 +23,7 @@ extension LibraryTVC {
 			return 0
 		} else {
 			tableView.backgroundView = nil
-			return sectionOfLibraryItems.items.count + numberOfRowsAboveLibraryItems
+			return sectionOfLibraryItems.items.count + numberOfRowsInSectionAboveLibraryItems
 		}
 	}
 	
@@ -37,7 +37,7 @@ extension LibraryTVC {
 	// MARK: - Editing
 	
 	final override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		return indexPath.row >= numberOfRowsAboveLibraryItems
+		return indexPath.row >= numberOfRowsInSectionAboveLibraryItems
 	}
 	
 	// MARK: Rearranging
@@ -60,7 +60,7 @@ extension LibraryTVC {
 		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
 		toProposedIndexPath proposedDestinationIndexPath: IndexPath
 	) -> IndexPath {
-		if proposedDestinationIndexPath.row < numberOfRowsAboveLibraryItems {
+		if proposedDestinationIndexPath.row < numberOfRowsInSectionAboveLibraryItems {
 			return indexPathFor(
 				indexOfLibraryItem: 0,
 				indexOfSectionOfLibraryItem: proposedDestinationIndexPath.section)

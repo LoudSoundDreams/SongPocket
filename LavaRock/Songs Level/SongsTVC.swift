@@ -20,7 +20,7 @@ final class SongsTVC:
 		super.init(coder: coder)
 		
 		entityName = "Song"
-		numberOfRowsAboveLibraryItems = 2
+		numberOfRowsInSectionAboveLibraryItems = 2
 	}
 	
 	// MARK: Setting Up UI
@@ -35,7 +35,10 @@ final class SongsTVC:
 			flexibleSpaceBarButtonItem,
 			sinkToBottomButton
 		]
-		sortOptions = [.trackNumber]
+		sortOptions = [
+			.trackNumber,
+			.reverse,
+		]
 	}
 	
 	final override func refreshNavigationItemTitle() {

@@ -18,7 +18,8 @@ class LibraryTVC:
 	// MARK: - Types
 	
 	enum SortOption {
-		case title // For Collections only (for now)
+		// For Collections only
+		case title
 		
 		// For Albums only
 		case newestFirst
@@ -26,6 +27,9 @@ class LibraryTVC:
 		
 		// For Songs only
 		case trackNumber
+		
+		// For all types
+		case reverse
 		
 		// You can't have each LocalizedString be a raw value for an enum case, because raw values for enum cases must be literals.
 		func localizedName() -> String {
@@ -38,6 +42,8 @@ class LibraryTVC:
 				return LocalizedString.oldestFirst
 			case .trackNumber:
 				return LocalizedString.trackNumber
+			case .reverse:
+				return LocalizedString.reverse
 			}
 		}
 	}
@@ -64,7 +70,7 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
-	var numberOfRowsAboveLibraryItems = 0
+	var numberOfRowsInSectionAboveLibraryItems = 0
 	var topLeftButtonsInViewingMode = [UIBarButtonItem]()
 	private lazy var topLeftButtonsInEditingMode = [flexibleSpaceBarButtonItem]
 	lazy var topRightButtons = [editButtonItem]
@@ -91,14 +97,14 @@ class LibraryTVC:
 	lazy var floatToTopButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.up.to.line.alt"),
-			style: .plain, target: self, action: #selector(floatSelectedItemsToTop))
+			style: .plain, target: self, action: #selector(floatSelectedItemsToTopOfSection))
 		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
 	}()
 	lazy var sinkToBottomButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down.to.line.alt"),
-			style: .plain, target: self, action: #selector(sinkSelectedItemsToBottom))
+			style: .plain, target: self, action: #selector(sinkSelectedItemsToBottomOfSection))
 		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
 	}()
@@ -236,7 +242,7 @@ class LibraryTVC:
 	
 	// MARK: - Accessing Data
 	
-	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItems.
+	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsInSectionAboveLibraryItems.
 	// That's a hack to let us include other rows above the rows for library items. For example:
 	// - Rows for album artwork and album info in SongsTVC.
 	// - (Potentially in the future) in CollectionsTVC, rows for "All Albums" and "New Collection".
@@ -248,7 +254,16 @@ class LibraryTVC:
 	}
 	
 	final func indexOfLibraryItem(for indexPath: IndexPath) -> Int {
-		return indexPath.row - numberOfRowsAboveLibraryItems
+		return indexPath.row - numberOfRowsInSectionAboveLibraryItems
+	}
+	
+	final func indexPaths(
+		forIndexOfSectionOfLibraryItems indexOfSectionOfLibraryItems: Int
+	) -> [IndexPath] {
+		// Multisection: Get the right SectionOfLibraryItems.
+		return tableView.indexPathsForRows(
+			inSection: 0,
+			firstRow: numberOfRowsInSectionAboveLibraryItems)
 	}
 	
 	final func indexPathFor(
@@ -256,7 +271,7 @@ class LibraryTVC:
 		indexOfSectionOfLibraryItem: Int
 	) -> IndexPath {
 		return IndexPath(
-			row: indexOfLibraryItem + numberOfRowsAboveLibraryItems,
+			row: indexOfLibraryItem + numberOfRowsInSectionAboveLibraryItems,
 			section: indexOfSectionOfLibraryItem)
 	}
 	
@@ -285,10 +300,15 @@ class LibraryTVC:
 		guard !newItems.isEmpty else {
 			// Delete all rows, then exit.
 			let allIndexPaths = tableView.allIndexPaths()
+			isAnimatingDuringRefreshTableView += 1
 			tableView.performBatchUpdates {
 				tableView.deleteRows(at: allIndexPaths, with: .middle)
 			} completion: { _ in
-				if !(self is CollectionsTVC) {
+				self.isAnimatingDuringRefreshTableView -= 1
+				if
+					self.isAnimatingDuringRefreshTableView == 0, // See matching comment in performBatchUpdates below.
+					!(self is CollectionsTVC)
+				{
 					self.performSegue(withIdentifier: "Removed All Contents", sender: nil)
 				}
 			}
@@ -381,15 +401,26 @@ class LibraryTVC:
 			MPMediaLibrary.authorizationStatus() == .authorized &&
 			!sectionOfLibraryItems.items.isEmpty
 		if isEditing {
-			sortButton.isEnabled =
-				!sectionOfLibraryItems.items.isEmpty &&
-				tableView.shouldAllowSorting()
-			floatToTopButton.isEnabled =
-				!sectionOfLibraryItems.items.isEmpty &&
-				tableView.shouldAllowMovingSelectedRowsToTopOfSection()
-			sinkToBottomButton.isEnabled =
-				!sectionOfLibraryItems.items.isEmpty &&
-				tableView.shouldAllowMovingSelectedRowsToBottomOfSection()
+			// "Sort"
+			if sectionOfLibraryItems.items.isEmpty {
+				sortButton.isEnabled = false
+			} else {
+				sortButton.isEnabled = shouldAllowSorting()
+			}
+			
+			// "Move to Top"
+			if sectionOfLibraryItems.items.isEmpty {
+				floatToTopButton.isEnabled = false
+			} else {
+				floatToTopButton.isEnabled = shouldAllowFloating()
+			}
+			
+			// "Move to Bottom"
+			if sectionOfLibraryItems.items.isEmpty {
+				sinkToBottomButton.isEnabled = false
+			} else {
+				sinkToBottomButton.isEnabled = shouldAllowSinking()
+			}
 		} else {
 			refreshPlaybackToolbarButtons()
 		}

@@ -11,16 +11,6 @@ protocol LibraryItem {
 	var index: Int64 { get set }
 }
 
-extension Array {
-	
-	mutating func reindex() where Element: LibraryItem {
-		for index in 0 ..< count {
-			self[index].index = Int64(index)
-		}
-	}
-	
-}
-
 protocol LibraryContainer {
 	var contents: NSSet? { get set }
 }

@@ -26,18 +26,37 @@ extension LibraryTVC {
 	
 	// Note: We handle rearranging in UITableViewDataSource and UITableViewDelegate methods.
 	
+	// MARK: - Allowing
+	
+	// You should only be allowed to sort contiguous items within the same SectionOfLibraryItems.
+	final func shouldAllowSorting() -> Bool {
+		if tableView.indexPathsF0rSelectedRows.isEmpty {
+			return true // Multisection: Only if we only have 1 SectionOfLibraryItems.
+		} else {
+			return tableView.indexPathsF0rSelectedRows.isContiguousWithinSameSection()
+		}
+	}
+	
+	final func shouldAllowFloating() -> Bool {
+		return
+			!tableView.indexPathsF0rSelectedRows.isEmpty &&
+			tableView.indexPathsF0rSelectedRows.isWithinSameSection()
+	}
+	
+	final func shouldAllowSinking() -> Bool {
+		return shouldAllowFloating()
+	}
+	
 	// MARK: - Moving to Top
 	
-	@objc final func floatSelectedItemsToTop() {
-		guard
-			tableView.shouldAllowMovingSelectedRowsToTopOfSection(),
-			let indexPaths = tableView.indexPathsForSelectedRows?.sorted()
-		else { return }
+	@objc final func floatSelectedItemsToTopOfSection() {
+		guard shouldAllowFloating() else { return }
 		
 		// Make a new data source.
 		
-		let indexesOfSelectedItems = indexPaths.map { indexOfLibraryItem(for: $0) }
-		let selectedItems = indexPaths.map { libraryItem(for: $0) }
+		let selectedIndexPaths = tableView.indexPathsF0rSelectedRows.sorted()
+		let indexesOfSelectedItems = selectedIndexPaths.map { indexOfLibraryItem(for: $0) }
+		let selectedItems = selectedIndexPaths.map { libraryItem(for: $0) }
 		var newItems = sectionOfLibraryItems.items
 		for index in indexesOfSelectedItems.reversed() {
 			newItems.remove(at: index)
@@ -58,16 +77,14 @@ extension LibraryTVC {
 	
 	// MARK: - Moving to Bottom
 	
-	@objc final func sinkSelectedItemsToBottom() {
-		guard
-			tableView.shouldAllowMovingSelectedRowsToBottomOfSection(),
-			let indexPaths = tableView.indexPathsForSelectedRows?.sorted()
-		else { return }
+	@objc final func sinkSelectedItemsToBottomOfSection() {
+		guard shouldAllowSinking() else { return }
 		
 		// Make a new data source.
 		
-		let indexesOfSelectedItems = indexPaths.map { indexOfLibraryItem(for: $0) }
-		let selectedItems = indexPaths.map { libraryItem(for: $0) }
+		let selectedIndexPaths = tableView.indexPathsF0rSelectedRows.sorted()
+		let indexesOfSelectedItems = selectedIndexPaths.map { indexOfLibraryItem(for: $0) }
+		let selectedItems = selectedIndexPaths.map { libraryItem(for: $0) }
 		var newItems = sectionOfLibraryItems.items
 		for index in indexesOfSelectedItems.reversed() {
 			newItems.remove(at: index)
@@ -124,16 +141,14 @@ extension LibraryTVC {
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
-		guard tableView.shouldAllowSorting() else { return }
+		guard shouldAllowSorting() else { return }
 		
 		// Get the indexes of the items to sort.
 		let indexPathsToSort: [IndexPath]
-		if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-			indexPathsToSort = selectedIndexPaths.sorted()
+		if tableView.indexPathsF0rSelectedRows.isEmpty {
+			indexPathsToSort = indexPaths(forIndexOfSectionOfLibraryItems: 0)
 		} else {
-			indexPathsToSort = tableView.indexPathsForRows(
-				inSection: 0,
-				firstRow: numberOfRowsAboveLibraryItems)
+			indexPathsToSort = tableView.indexPathsF0rSelectedRows.sorted()
 		}
 		let indexesOfItemsToSort = indexPathsToSort.map { indexOfLibraryItem(for: $0) }
 		
@@ -223,6 +238,9 @@ extension LibraryTVC {
 			}
 			// As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
 			return sortedByDiscNumber
+			
+		case LocalizedString.reverse:
+			return items.reversed()
 			
 		default:
 			print("The user tried to sort by “\(sortOptionLocalizedName ?? "")”, which isn’t a supported option. It might be misspelled.")

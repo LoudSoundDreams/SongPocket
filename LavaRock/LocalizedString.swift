@@ -63,6 +63,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let sortBy = NSLocalizedString("Sort By", comment: "Action sheet title")
+	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label")
 	
@@ -72,7 +73,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let rename = NSLocalizedString("Rename", comment: "Accessibility label")
 	static let renameCollection = NSLocalizedString("Rename Collection", comment: "Alert title")
 	static let newCollection = NSLocalizedString("New Collection", comment: "Alert title")
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song")
+	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
 	static let defaultCollectionTitle = NSLocalizedString(
 		"default_collection_title",
 		tableName: nil,
@@ -83,8 +84,8 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	// MARK: Albums View
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
-	static let newestFirst = NSLocalizedString("Newest First", comment: "Button")
-	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Button")
+	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
+	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Sort option")
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
 	// MARK: Songs View
@@ -100,7 +101,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 		value: "You can edit the queue in the built-in Music app.",
 		comment: "Body text of the alert that appears after the user adds songs to the queue.")
 	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button")
-	static let trackNumber = NSLocalizedString("Track Number", comment: "Button")
+	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
 	// MARK: - With Variables, but Without Text Variations (Format Strings)
 	
