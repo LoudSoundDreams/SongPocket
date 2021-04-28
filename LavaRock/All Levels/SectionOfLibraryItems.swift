@@ -56,9 +56,9 @@ struct SectionOfLibraryItems {
 		inserts: [Int],
 		moves: [(Int, Int)]
 	) {
-		let difference = newItems.difference(from: oldItems, by: { oldItem, newItem in
+		let difference = newItems.difference(from: oldItems) { oldItem, newItem in
 			oldItem.objectID == newItem.objectID
-		}).inferringMoves()
+		}.inferringMoves()
 		
 		var indexesOfOldItemsToDelete = [Int]()
 		var indexesOfNewItemsToInsert = [Int]()

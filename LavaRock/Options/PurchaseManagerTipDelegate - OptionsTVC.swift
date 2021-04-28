@@ -46,10 +46,10 @@ extension OptionsTVC: PurchaseManagerTipDelegate {
 	private func didReceiveTip() {
 		shouldShowTemporaryThankYouMessage = true
 		refreshTipJarRows()
-		DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: { [weak self] in // Don't retain this view controller just to do this work.
+		DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in // Don't retain this view controller just to do this work.
 			self?.shouldShowTemporaryThankYouMessage = false
 			self?.refreshTipJarRows()
-		})
+		}
 	}
 	
 	private func cancelTip() {

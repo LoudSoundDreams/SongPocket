@@ -249,8 +249,7 @@ class LibraryTVC:
 	// - (Potentially in the future) in Albums TVC, rows for "All Songs" and "Move Here".
 	final func libraryItem(for indexPath: IndexPath) -> NSManagedObject {
 		let indexOfLibraryItem = indexOfLibraryItem(for: indexPath)
-		// Multisection: Get the right SectionOfLibraryItems.
-		return sectionOfLibraryItems.items[indexOfLibraryItem]
+		return sectionOfLibraryItems.items[indexOfLibraryItem] // Multisection: Get the right SectionOfLibraryItems.
 	}
 	
 	final func indexOfLibraryItem(for indexPath: IndexPath) -> Int {
@@ -260,9 +259,8 @@ class LibraryTVC:
 	final func indexPaths(
 		forIndexOfSectionOfLibraryItems indexOfSectionOfLibraryItems: Int
 	) -> [IndexPath] {
-		// Multisection: Get the right SectionOfLibraryItems.
 		return tableView.indexPathsForRows(
-			inSection: 0,
+			inSection: 0, // Multisection: Get the right SectionOfLibraryItems.
 			firstRow: numberOfRowsInSectionAboveLibraryItems)
 	}
 	

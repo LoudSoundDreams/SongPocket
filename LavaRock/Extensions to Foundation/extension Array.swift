@@ -12,14 +12,14 @@ extension Array {
 	// MARK: - Higher-Order
 	
 	private func allNeighborsSatisfy(
-		_ comparison: (_ eachElement: Element, _ nextElement: Element) -> Bool
+		_ predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 	) -> Bool {
 		let rest = Array(dropFirst())
 		
 		func allNeighborsSatisfy(
 			first: Element?,
 			rest: [Element],
-			comparison: (_ eachElement: Element, _ nextElement: Element) -> Bool
+			predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 		) -> Bool {
 			guard
 				let first = first,
@@ -28,7 +28,7 @@ extension Array {
 				// We've reached the end.
 				return true
 			}
-			guard comparison(first, second) else {
+			guard predicate(first, second) else {
 				// Test case.
 				return false // Short-circuit.
 			}
@@ -36,13 +36,13 @@ extension Array {
 			return allNeighborsSatisfy(
 				first: second,
 				rest: newRest,
-				comparison: comparison)
+				predicate: predicate)
 		}
 		
 		return allNeighborsSatisfy(
 			first: first,
 			rest: rest,
-			comparison: comparison)
+			predicate: predicate)
 	}
 	
 	// MARK: - LibraryItem

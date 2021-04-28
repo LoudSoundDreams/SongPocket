@@ -191,8 +191,7 @@ extension LibraryTVC {
 					// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 					let collectionTitle0 = $0.title ?? ""
 					let collectionTitle1 = $1.title ?? ""
-					let comparisonResult = collectionTitle0.localizedStandardCompare(collectionTitle1) // The comparison method that the Finder uses
-					return comparisonResult == .orderedAscending
+					return collectionTitle0.precedesInAlphabeticalOrderFinderStyle(collectionTitle1)
 				}
 			} else {
 				// If we're sorting Albums or Songs, use titleFormattedOrPlaceholder().

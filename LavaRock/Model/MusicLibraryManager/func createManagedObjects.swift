@@ -102,8 +102,7 @@ extension MusicLibraryManager {
 			// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 			let albumTitle0 = $0.first?.albumTitle ?? ""
 			let albumTitle1 = $1.first?.albumTitle ?? ""
-			let comparisonResult = albumTitle0.localizedStandardCompare(albumTitle1) // The comparison method that the Finder uses
-			return comparisonResult == .orderedAscending
+			return albumTitle0.precedesInAlphabeticalOrderFinderStyle(albumTitle1)
 		}
 		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album title")
 		
@@ -111,8 +110,7 @@ extension MusicLibraryManager {
 		mediaItemGroups.sort {
 			let albumArtist0 = $0.first?.albumArtist ?? ""
 			let albumArtist1 = $1.first?.albumArtist ?? ""
-			let comparisonResult = albumArtist0.localizedStandardCompare(albumArtist1)
-			return comparisonResult == .orderedAscending
+			return albumArtist0.precedesInAlphabeticalOrderFinderStyle(albumArtist1)
 		}
 		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album artist name")
 		
@@ -135,8 +133,7 @@ extension MusicLibraryManager {
 			// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 			let albumTitle0 = $0.albumTitle ?? ""
 			let albumTitle1 = $1.albumTitle ?? ""
-			let comparisonResult = albumTitle0.localizedStandardCompare(albumTitle1) // The comparison method that the Finder uses
-			return comparisonResult == .orderedAscending
+			return albumTitle0.precedesInAlphabeticalOrderFinderStyle(albumTitle1)
 		}
 		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album title")
 		
@@ -144,8 +141,7 @@ extension MusicLibraryManager {
 		mediaItemsCopy.sort {
 			let albumArtist0 = $0.albumArtist ?? ""
 			let albumArtist1 = $1.albumArtist ?? ""
-			let comparisonResult = albumArtist0.localizedStandardCompare(albumArtist1)
-			return comparisonResult == .orderedAscending
+			return albumArtist0.precedesInAlphabeticalOrderFinderStyle(albumArtist1)
 		}
 		os_signpost(.end, log: Self.createManagedObjectsLog, name: "Sort by album artist name")
 		
@@ -260,8 +256,7 @@ extension MusicLibraryManager {
 			// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 			let title0 = $0.title ?? ""
 			let title1 = $1.title ?? ""
-			let comparisonResult = title0.localizedStandardCompare(title1) // The comparison method that the Finder uses
-			return comparisonResult == .orderedAscending
+			return title0.precedesInAlphabeticalOrderFinderStyle(title1)
 		}
 		mediaItemsCopy.sort { $0.albumTrackNumber < $1.albumTrackNumber }
 		mediaItemsCopy.sort { $1.albumTrackNumber == 0 }
@@ -313,8 +308,7 @@ extension MusicLibraryManager {
 				// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 				let title0 = $0.titleFormattedOrPlaceholder()
 				let title1 = $1.titleFormattedOrPlaceholder()
-				let comparisonResult = title0.localizedStandardCompare(title1) // The comparison method that the Finder uses
-				return comparisonResult == .orderedAscending
+				return title0.precedesInAlphabeticalOrderFinderStyle(title1)
 			}
 			songsCopy.sort {
 				$0.mpMediaItem()?.albumTrackNumber ?? 0 <
