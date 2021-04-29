@@ -103,6 +103,9 @@
 /* Accessibility label */
 "Restart" = "回到音軌開頭";
 
+/* Sort option */
+"Reverse" = "反向";
+
 /* Button */
 "Save" = "儲存";
 
