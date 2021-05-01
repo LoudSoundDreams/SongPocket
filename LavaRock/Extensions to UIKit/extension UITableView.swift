@@ -34,9 +34,6 @@ extension UITableView {
 	}
 	
 	private func indexPathsForRows(inSection section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
-		guard lastRow >= firstRow else {
-			return [IndexPath]()
-		}
 		var result = [IndexPath]()
 		for row in firstRow ... lastRow {
 			result.append(IndexPath(row: row, section: section))

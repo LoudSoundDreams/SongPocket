@@ -144,16 +144,16 @@ extension LibraryTVC {
 		guard shouldAllowSorting() else { return }
 		
 		// Get the indexes of the items to sort.
-		let indexPathsToSort: [IndexPath]
+		let sourceIndexPaths: [IndexPath]
 		if tableView.indexPathsF0rSelectedRows.isEmpty {
-			indexPathsToSort = indexPaths(forIndexOfSectionOfLibraryItems: 0)
+			sourceIndexPaths = indexPaths(forIndexOfSectionOfLibraryItems: 0)
 		} else {
-			indexPathsToSort = tableView.indexPathsF0rSelectedRows.sorted()
+			sourceIndexPaths = tableView.indexPathsF0rSelectedRows.sorted()
 		}
-		let indexesOfItemsToSort = indexPathsToSort.map { indexOfLibraryItem(for: $0) }
+		let sourceIndexesOfItems = sourceIndexPaths.map { indexOfLibraryItem(for: $0) }
 		
 		// Get the items to sort.
-		let itemsToSort = indexesOfItemsToSort.map { sectionOfLibraryItems.items[$0] }
+		let itemsToSort = sourceIndexesOfItems.map { sectionOfLibraryItems.items[$0] }
 		
 		// Sort the items.
 		let sortedItems = sorted(
@@ -162,20 +162,22 @@ extension LibraryTVC {
 		
 		// Make a new data source.
 		var newItems = sectionOfLibraryItems.items
-		for index in indexesOfItemsToSort.reversed() {
+		for index in sourceIndexesOfItems.reversed() {
 			newItems.remove(at: index)
 		}
-		for i in 0 ..< sortedItems.count {
+		for i in sortedItems.indices {
 			let sortedItem = sortedItems[i]
-			let index = indexesOfItemsToSort[i]
-			newItems.insert(sortedItem, at: index)
+			let destinationIndex = sourceIndexesOfItems[i]
+			newItems.insert(sortedItem, at: destinationIndex)
 		}
 		
 		// Update the data source and table view.
-		setItemsAndRefreshTableView(newItems: newItems, completion: {
-			self.tableView.deselectAllRows(animated: true)
-			self.refreshBarButtons()
-		})
+		setItemsAndRefreshTableView(
+			newItems: newItems,
+			completion: {
+				self.tableView.deselectAllRows(animated: true)
+				self.refreshBarButtons()
+			})
 	}
 	
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.

@@ -14,11 +14,11 @@ extension Array {
 	private func allNeighborsSatisfy(
 		_ predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 	) -> Bool {
-		let rest = Array(dropFirst())
+		let rest = dropFirst()
 		
 		func allNeighborsSatisfy(
 			first: Element?,
-			rest: [Element],
+			rest: ArraySlice<Element>,
 			predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 		) -> Bool {
 			guard
@@ -32,7 +32,7 @@ extension Array {
 				// Test case.
 				return false // Short-circuit.
 			}
-			let newRest = Array(rest.dropFirst())
+			let newRest = rest.dropFirst()
 			return allNeighborsSatisfy(
 				first: second,
 				rest: newRest,
@@ -49,7 +49,7 @@ extension Array {
 	
 	mutating func reindex()
 	where Element: LibraryItem {
-		for index in 0 ..< count {
+		for index in indices {
 			self[index].index = Int64(index)
 		}
 	}

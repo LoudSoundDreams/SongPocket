@@ -111,13 +111,6 @@ extension OptionsTVC {
 	
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		let index = indexPath.row
-		guard
-			index >= 0,
-			index <= AccentColor.all.count - 1
-		else {
-			return UITableViewCell()
-		}
-		
 		let rowAccentColor = AccentColor.all[index]
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Color Cell", for: indexPath)
@@ -147,14 +140,6 @@ extension OptionsTVC {
 	
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
 		let colorIndex = indexPath.row
-		guard
-			colorIndex >= 0,
-			colorIndex <= AccentColor.all.count - 1
-		else {
-			tableView.deselectRow(at: indexPath, animated: true)
-			return
-		}
-		
 		let selectedAccentColor = AccentColor.all[colorIndex]
 		selectedAccentColor.set(in: view.window)
 		

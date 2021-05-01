@@ -47,21 +47,14 @@ extension Collection {
 	static func deleteAllEmpty(
 		via managedObjectContext: NSManagedObjectContext
 	) {
-		var allCollections = Collection.allFetched(
-			via: managedObjectContext,
-			ordered: true)
+		var allCollections = Collection.allFetched(via: managedObjectContext)
 		
-		var indexesOfEmptyCollections = [Int]()
-		for index in 0 ..< allCollections.count {
+		for index in allCollections.indices.reversed() {
 			let collection = allCollections[index]
 			if collection.isEmpty() {
-				indexesOfEmptyCollections.append(index)
+				managedObjectContext.delete(collection)
+				allCollections.remove(at: index)
 			}
-		}
-		for index in indexesOfEmptyCollections.reversed() {
-			let emptyCollection = allCollections[index]
-			managedObjectContext.delete(emptyCollection)
-			allCollections.remove(at: index)
 		}
 		
 		allCollections.reindex()

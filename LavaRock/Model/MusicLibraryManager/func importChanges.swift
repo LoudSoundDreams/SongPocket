@@ -102,9 +102,7 @@ extension MusicLibraryManager {
 		let existingAlbums = Album.allFetched(
 			via: managedObjectContext,
 			ordered: false) // Order doesn't matter, because we identify Albums by their albumPersistentID.
-		let existingCollections = Collection.allFetched(
-			via: managedObjectContext,
-			ordered: true) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
+		let existingCollections = Collection.allFetched(via: managedObjectContext) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
 		
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, and we don't want to do that yet, because of what we mentioned above.
 			// This might make new Albums, and if it does, it might make new Collections.

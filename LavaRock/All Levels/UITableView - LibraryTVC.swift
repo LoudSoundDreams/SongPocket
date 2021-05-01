@@ -71,6 +71,20 @@ extension LibraryTVC {
 	
 	// MARK: - Selecting
 	
+//	final override func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+//		return true
+//	}
+//
+//	final override func tableView(_ tableView: UITableView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
+//		print("")
+//		print("Began multiple-selection interaction at IndexPath: \(indexPath)")
+//		setEditing(true, animated: true)
+//	}
+//
+//	override func tableViewDidEndMultipleSelectionInteraction(_ tableView: UITableView) {
+//		print("Ended multiple-selection interaction.")
+//	}
+	
 	// Subclasses that override this method must call super (this implementation).
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if isEditing {

@@ -80,17 +80,16 @@ extension SongsTVC {
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
-		
 		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
 		var mediaItemsToEnqueue = [MPMediaItem]()
-		for indexOfSongToEnqueue in indexOfSelectedSong ... sectionOfLibraryItems.items.count - 1 {
-			guard
-				let songToEnqueue = sectionOfLibraryItems.items[indexOfSongToEnqueue] as? Song,
+		for item in sectionOfLibraryItems.items[indexOfSelectedSong...] {
+			if
+				let songToEnqueue = item as? Song,
 				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
-			else { continue }
-			mediaItemsToEnqueue.append(mediaItemToEnqueue)
+			{
+				mediaItemsToEnqueue.append(mediaItemToEnqueue)
+			}
 		}
-		
 		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
@@ -109,17 +108,16 @@ extension SongsTVC {
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
-		
 		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
 		var mediaItemsToEnqueue = [MPMediaItem]()
-		for indexOfSongToEnqueue in indexOfSelectedSong ... sectionOfLibraryItems.items.count - 1 {
-			guard
-				let songToEnqueue = sectionOfLibraryItems.items[indexOfSongToEnqueue] as? Song,
+		for item in sectionOfLibraryItems.items[indexOfSelectedSong...] {
+			if
+				let songToEnqueue = item as? Song,
 				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
-			else { continue }
-			mediaItemsToEnqueue.append(mediaItemToEnqueue)
+			{
+				mediaItemsToEnqueue.append(mediaItemToEnqueue)
+			}
 		}
-		
 		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
