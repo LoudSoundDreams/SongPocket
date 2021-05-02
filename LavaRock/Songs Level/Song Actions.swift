@@ -13,7 +13,10 @@ extension SongsTVC {
 	
 	// MARK: - Presenting Actions
 	
-	final func showSongActions(for song: Song, popoverAnchorView: UIView) {
+	final func showSongActions(
+		for song: Song,
+		popoverAnchorView: UIView
+	) {
 		// The row for the selected Song stays selected until we complete or cancel an action for it. So remember to deselect it in every possible branch from here. Use this function for convenience.
 		func deselectSelectedSong() {
 			tableView.deselectAllRows(animated: true)

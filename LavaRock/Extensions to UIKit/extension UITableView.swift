@@ -27,10 +27,14 @@ extension UITableView {
 	}
 	
 	final func indexPathsForRows(inSection section: Int, firstRow: Int) -> [IndexPath] {
+		let lastRow = numberOfRows(inSection: section) - 1
+		guard lastRow >= 0 else {
+			return [IndexPath]()
+		}
 		return indexPathsForRows(
 			inSection: section,
 			firstRow: firstRow,
-			lastRow: numberOfRows(inSection: section) - 1)
+			lastRow: lastRow)
 	}
 	
 	private func indexPathsForRows(inSection section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {

@@ -231,7 +231,9 @@ extension MusicLibraryManager {
 		albumsInCollection.reindex()
 	}
 	
-	private func sortedByNewestFirstAndUnknownReleaseDateLast(_ albumsImmutable: [Album]) -> [Album] {
+	private func sortedByNewestFirstAndUnknownReleaseDateLast(
+		_ albumsImmutable: [Album]
+	) -> [Album] {
 		var albumsCopy = albumsImmutable
 		
 		let commonDate = Date()

@@ -72,7 +72,10 @@ extension CollectionsTVC {
 	// MARK: - Numbers
 	
 	// Remember to call refreshBarButtons() before returning. super also does it.
-	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	final override func tableView(
+		_ tableView: UITableView,
+		numberOfRowsInSection section: Int
+	)-> Int {
 		switch contentState() {
 		case .allowAccess, .loading:
 			refreshBarButtons()
@@ -89,7 +92,10 @@ extension CollectionsTVC {
 	
 	// MARK: - Cells
 	
-	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	final override func tableView(
+		_ tableView: UITableView,
+		cellForRowAt indexPath: IndexPath
+	) -> UITableViewCell {
 		switch contentState() {
 		case .allowAccess, .loading:
 			return allowAccessOrLoadingCell()
@@ -200,13 +206,19 @@ extension CollectionsTVC {
 	
 	// MARK: - Editing
 	
-	final override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+	final override func tableView(
+		_ tableView: UITableView,
+		accessoryButtonTappedForRowWith indexPath: IndexPath
+	) {
 		renameCollection(at: indexPath)
 	}
 	
 	// MARK: - Selecting
 	
-	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	final override func tableView(
+		_ tableView: UITableView,
+		didSelectRowAt indexPath: IndexPath
+	) {
 		switch MPMediaLibrary.authorizationStatus() {
 		case .authorized:
 			break

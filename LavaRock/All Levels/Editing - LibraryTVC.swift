@@ -10,7 +10,10 @@ import CoreData
 
 extension LibraryTVC {
 	
-	final override func setEditing(_ editing: Bool, animated: Bool) {
+	final override func setEditing(
+		_ editing: Bool,
+		animated: Bool
+	) {
 		if isEditing {
 			managedObjectContext.tryToSave()
 		}

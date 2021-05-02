@@ -12,7 +12,10 @@ extension LibraryTVC {
 	// MARK: - Numbers
 	
 	// Subclasses that override this method should call super (this implementation), or remember to call refreshBarButtons().
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(
+		_ tableView: UITableView,
+		numberOfRowsInSection section: Int
+	) -> Int {
 		refreshBarButtons()
 		// Set the "no items" placeholder in numberOfRowsInSection (here), not in numberOfSections.
 		// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
@@ -30,19 +33,29 @@ extension LibraryTVC {
 	// MARK: Cells
 	
 	// All subclasses should override this.
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	override func tableView(
+		_ tableView: UITableView,
+		cellForRowAt indexPath: IndexPath
+	) -> UITableViewCell {
 		return UITableViewCell()
 	}
 	
 	// MARK: - Editing
 	
-	final override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+	final override func tableView(
+		_ tableView: UITableView,
+		canEditRowAt indexPath: IndexPath
+	) -> Bool {
 		return indexPath.row >= numberOfRowsInSectionAboveLibraryItems
 	}
 	
 	// MARK: Rearranging
 	
-	final override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+	final override func tableView(
+		_ tableView: UITableView,
+		moveRowAt fromIndexPath: IndexPath,
+		to: IndexPath
+	) {
 		let fromItemIndex = indexOfLibraryItem(for: fromIndexPath)
 		let toItemIndex = indexOfLibraryItem(for: to)
 		
@@ -71,11 +84,17 @@ extension LibraryTVC {
 	
 	// MARK: - Selecting
 	
-//	final override func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+//	final override func tableView(
+//		_ tableView: UITableView,
+//		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
+//	) -> Bool {
 //		return true
 //	}
 //
-//	final override func tableView(_ tableView: UITableView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
+//	final override func tableView(
+//		_ tableView: UITableView,
+//		didBeginMultipleSelectionInteractionAt indexPath: IndexPath
+//	) {
 //		print("")
 //		print("Began multiple-selection interaction at IndexPath: \(indexPath)")
 //		setEditing(true, animated: true)
@@ -86,7 +105,10 @@ extension LibraryTVC {
 //	}
 	
 	// Subclasses that override this method must call super (this implementation).
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	override func tableView(
+		_ tableView: UITableView,
+		didSelectRowAt indexPath: IndexPath
+	) {
 		if isEditing {
 			refreshBarButtons()
 			if let cell = tableView.cellForRow(at: indexPath) {
@@ -97,7 +119,10 @@ extension LibraryTVC {
 	
 	// MARK: Deselecting
 	
-	final override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+	final override func tableView(
+		_ tableView: UITableView,
+		didDeselectRowAt indexPath: IndexPath
+	) {
 		refreshBarButtons()
 		if let cell = tableView.cellForRow(at: indexPath) {
 			cell.accessibilityTraits.subtract(.selected)

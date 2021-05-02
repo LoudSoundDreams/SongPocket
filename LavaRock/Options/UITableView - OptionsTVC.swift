@@ -22,7 +22,10 @@ extension OptionsTVC {
 		return Section.allCases.count
 	}
 	
-	final override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	final override func tableView(
+		_ tableView: UITableView,
+		numberOfRowsInSection section: Int
+	) -> Int {
 		guard let sectionCase = Section(rawValue: section) else {
 			return 0
 		}
@@ -36,7 +39,10 @@ extension OptionsTVC {
 	
 	// MARK: Headers and Footers
 	
-	final override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+	final override func tableView(
+		_ tableView: UITableView,
+		titleForHeaderInSection section: Int
+	) -> String? {
 		guard let sectionCase = Section(rawValue: section) else {
 			return nil
 		}
@@ -48,7 +54,10 @@ extension OptionsTVC {
 		}
 	}
 	
-	final override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+	final override func tableView(
+		_ tableView: UITableView,
+		titleForFooterInSection section: Int
+	) -> String? {
 		guard let sectionCase = Section(rawValue: section) else {
 			return nil
 		}
@@ -62,7 +71,10 @@ extension OptionsTVC {
 	
 	// MARK: Cells
 	
-	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	final override func tableView(
+		_ tableView: UITableView,
+		cellForRowAt indexPath: IndexPath
+	) -> UITableViewCell {
 		guard let sectionCase = Section(rawValue: indexPath.section) else {
 			return UITableViewCell()
 		}
@@ -74,7 +86,11 @@ extension OptionsTVC {
 		}
 	}
 	
-	final override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+	final override func tableView(
+		_ tableView: UITableView,
+		willDisplay cell: UITableViewCell,
+		forRowAt indexPath: IndexPath
+	) {
 		if
 			PurchaseManager.shared.tipStatus == .confirming,
 			indexPath.section == Section.tipJar.rawValue
@@ -85,7 +101,10 @@ extension OptionsTVC {
 	
 	// MARK: Selecting
 	
-	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	final override func tableView(
+		_ tableView: UITableView,
+		didSelectRowAt indexPath: IndexPath
+	) {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
 		case .accentColor:

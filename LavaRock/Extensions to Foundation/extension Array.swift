@@ -49,8 +49,8 @@ extension Array {
 	
 	mutating func reindex()
 	where Element: LibraryItem {
-		for index in indices {
-			self[index].index = Int64(index)
+		for currentIndex in indices {
+			self[currentIndex].index = Int64(currentIndex)
 		}
 	}
 	

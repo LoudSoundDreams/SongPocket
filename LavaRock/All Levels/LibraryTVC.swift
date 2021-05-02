@@ -426,11 +426,17 @@ class LibraryTVC:
 	
 	// MARK: - Navigation
 	
-	final override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+	final override func shouldPerformSegue(
+		withIdentifier identifier: String,
+		sender: Any?
+	) -> Bool {
 		return !isEditing
 	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+	override func prepare(
+		for segue: UIStoryboardSegue,
+		sender: Any?
+	) {
 		if
 			segue.identifier == "Drill Down in Library",
 			let libraryTVC = segue.destination as? LibraryTVC,

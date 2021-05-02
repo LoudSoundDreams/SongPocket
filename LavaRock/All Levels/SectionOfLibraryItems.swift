@@ -21,8 +21,8 @@ struct SectionOfLibraryItems {
 	
 	private(set) lazy var items = fetchedItems() {
 		didSet {
-			for index in items.indices { // The truth for the order of items is their order in this array, not the "index" attribute of each NSManagedObject, because the UI follows this array.
-				items[index].setValue(Int64(index), forKey: "index") // Switch to proper type-checking
+			for currentIndex in items.indices { // The truth for the order of items is their order in this array, not the "index" attribute of each NSManagedObject, because the UI follows this array.
+				items[currentIndex].setValue(Int64(currentIndex), forKey: "index") // Switch to proper type-checking
 			}
 		}
 	}

@@ -12,7 +12,10 @@ extension SongsTVC {
 	
 	// MARK: - Cells
 	
-	final override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	final override func tableView(
+		_ tableView: UITableView,
+		cellForRowAt indexPath: IndexPath
+	) -> UITableViewCell {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return UITableViewCell()
 		}
@@ -127,7 +130,10 @@ extension SongsTVC {
 	
 	// MARK: - Selecting
 	
-	final override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	final override func tableView(
+		_ tableView: UITableView,
+		didSelectRowAt indexPath: IndexPath
+	) {
 		if isEditing {
 		} else {
 			guard let song = libraryItem(for: indexPath) as? Song else { return }
