@@ -32,25 +32,25 @@ extension CollectionsTVC {
 	final func refreshToReflectContentState(
 		completion: (() -> ())?
 	) {
-		let allIndexPaths = tableView.allIndexPaths()
+		let onscreenIndexPaths = tableView.allIndexPaths()
 		switch contentState() {
 		case .allowAccess, .loading:
 			let indexPathToKeep = IndexPath(row: 0, section: 0)
-			switch allIndexPaths.count {
-			case 0:
+			switch onscreenIndexPaths.count {
+			case 0: // Launch -> "Loading…"
 				tableView.performBatchUpdates {
 					tableView.insertRows(at: [indexPathToKeep], with: .fade)
 				} completion: { _ in
 					completion?()
 				}
-			case 1:
+			case 1: // "Allow Access" -> "Loading…"
 				tableView.performBatchUpdates {
 					tableView.reloadRows(at: [indexPathToKeep], with: .fade)
 				} completion: { _ in
 					completion?()
 				}
-			default:
-				let indexPathsToDelete = Array(allIndexPaths.dropFirst())
+			default: // Currently unused
+				let indexPathsToDelete = Array(onscreenIndexPaths.dropFirst())
 				tableView.performBatchUpdates {
 					tableView.deleteRows(at: indexPathsToDelete, with: .fade)
 					tableView.reloadRows(at: [indexPathToKeep], with: .fade)
@@ -58,13 +58,13 @@ extension CollectionsTVC {
 					completion?()
 				}
 			}
-		case .justFinishedLoading:
+		case .justFinishedLoading: // "Loading…" -> empty
 			tableView.performBatchUpdates {
-				tableView.deleteRows(at: allIndexPaths, with: .middle)
+				tableView.deleteRows(at: onscreenIndexPaths, with: .middle)
 			} completion: { _ in
 				completion?()
 			}
-		case .normal:
+		case .normal: // Currently unused
 			completion?()
 		}
 	}
@@ -246,6 +246,7 @@ extension CollectionsTVC {
 		setUp()
 		
 		isImportingChanges = true
+		// contentState() == .loading
 		refreshToReflectContentState(completion: {
 			self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
 		})

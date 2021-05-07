@@ -44,6 +44,7 @@ final class CollectionsTVC:
 			if MPMediaLibrary.authorizationStatus() == .authorized {
 				DispatchQueue.main.async { // Yes, it's actually useful to use async on the main thread. This lets us show existing Collections as soon as possible, then integrate with and import changes from the Music library shortly later.
 					self.isImportingChanges = true
+					// contentState() == .loading
 					self.refreshToReflectContentState(completion: {
 						self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
 					})

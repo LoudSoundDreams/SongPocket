@@ -20,7 +20,7 @@ extension Collection {
 	static func validatedTitle(from rawProposedTitle: String?) -> String {
 		let unwrappedProposedTitle = rawProposedTitle ?? ""
 		if unwrappedProposedTitle == "" {
-			return LocalizedString.defaultCollectionTitle
+			return LocalizedString.defaultTitleForCollection
 		} else {
 			let trimmedTitle = unwrappedProposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
 			if trimmedTitle != unwrappedProposedTitle {

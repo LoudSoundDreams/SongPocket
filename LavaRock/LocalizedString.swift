@@ -43,7 +43,10 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	
 	static let tipJar = NSLocalizedString("Tip Jar", comment: "Options section header")
-	static let tipJarFooter = NSLocalizedString("Hi, I’m H. Tips help me improve Songpocket. They give you no extra features, and are completely optional. I would especially appreciate tips after updates to the app!", comment: "Options → Tip Jar section footer")
+	static let tipJarFooter = NSLocalizedString(
+		"[footer] options_tip_jar",
+		value: "Hi, I’m H. Tips are an optional way to help me improve Songpocket. I would especially appreciate tips after updates to the app!",
+		comment: "Options screen → Tip Jar section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
 	// MARK: Playback Toolbar
@@ -72,14 +75,15 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let rename = NSLocalizedString("Rename", comment: "Accessibility label")
 	static let renameCollection = NSLocalizedString("Rename Collection", comment: "Alert title")
-	static let newCollection = NSLocalizedString("New Collection", comment: "Alert title")
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
-	static let defaultCollectionTitle = NSLocalizedString(
-		"default_collection_title",
-		tableName: nil,
-		bundle: Bundle.main,
+	static let titleForAlertNewCollection = NSLocalizedString(
+		"New Collection [alert title]",
 		value: "New Collection",
-		comment: "Title for a collection if you leave it blank. In English, it’s “New Collection”.")
+		comment: "Alert title")
+	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
+	static let defaultTitleForCollection = NSLocalizedString(
+		"New Collection [default title for collection]",
+		value: "New Collection",
+		comment: "Default title for a collection if you make or rename a collection and don’t provide a title.")
 	
 	// MARK: Albums View
 	
@@ -95,9 +99,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let queueAlbumStartingHere = NSLocalizedString("Queue All Starting Here", comment: "Button")
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let didEnqueueSongsAlertMessage = NSLocalizedString(
-		"did_enqueue_songs_alert_message",
-		tableName: nil,
-		bundle: Bundle.main,
+		"[alert message] did_enqueue_songs",
 		value: "You can edit the queue in the built-in Music app.",
 		comment: "Body text of the alert that appears after the user adds songs to the queue.")
 	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button")
@@ -108,7 +110,8 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	// MARK: Songs View
 	
 	static let formatDidEnqueueOneSongAlertTitle = NSLocalizedString(
-		"“%@” Will Play Later",
+		"[alert title] did_enqueue_one_song",
+		value: "“%@” Will Play Later",
 		comment: "Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on.")
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
@@ -116,13 +119,13 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	// MARK: Albums View
 	
 	static let formatChooseACollectionPrompt = NSLocalizedString(
-		"choose_a_collection_prompt",
+		"plural - move_albums_to",
 		comment: "Prompt that appears at the top of the “move albums to…” sheet. Include the number of albums you’re moving.")
 	
 	// MARK: Songs View
 	
 	static let formatDidEnqueueMultipleSongsAlertTitle = NSLocalizedString(
-		"did_enqueue_multiple_songs_alert_title",
+		"plural - did_enqueue_multiple_songs",
 		comment: "Title of the alert that appears after the user adds multiple songs to the queue. Include the title of the song. Also, if the user added 2 songs, include “and 1 More Song”, and if they added 3 songs, include “and 2 More Songs”, and so on.")
 	
 }

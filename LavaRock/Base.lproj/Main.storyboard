@@ -350,7 +350,7 @@
             </objects>
             <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
         </scene>
-        <!--Albums-->
+        <!--Placeholder Albums View Title-->
         <scene sceneID="27e-fe-8g7">
             <objects>
                 <tableViewController id="DGZ-AG-uNY" customClass="AlbumsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -503,7 +503,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Albums" id="ykw-Eq-xTa"/>
+                    <navigationItem key="navigationItem" title="Placeholder Albums View Title" id="ykw-Eq-xTa"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="GFi-fJ-75x" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToCollectionsFromEmptyCollection:" id="ZST-h2-yhJ"/>
@@ -514,7 +514,7 @@
             </objects>
             <point key="canvasLocation" x="6727.1999999999998" y="193.5960591133005"/>
         </scene>
-        <!--Songs-->
+        <!--Placeholder Songs View Title-->
         <scene sceneID="qH4-7z-FvM">
             <objects>
                 <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="Uik-rz-IBd" customClass="SongsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -764,7 +764,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Songs" id="skQ-0p-ko2"/>
+                    <navigationItem key="navigationItem" title="Placeholder Songs View Title" id="skQ-0p-ko2"/>
                     <connections>
                         <segue destination="gme-PH-Cgo" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToAlbumsFromEmptyAlbum:" id="80Z-h1-Rre"/>
                     </connections>

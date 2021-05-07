@@ -2,21 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>choose_a_collection_prompt</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@RESULT@</string>
-		<key>RESULT</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>other</key>
-			<string>请选择这%lld个专辑要移动至的合集。</string>
-		</dict>
-	</dict>
-	<key>did_enqueue_multiple_songs_alert_title</key>
+	<key>plural - did_enqueue_multiple_songs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>“%@”和%#@NUMBER_MORE_SONGS@将稍后播放</string>
@@ -29,6 +15,20 @@
 			<key>other</key>
 			<string>另外%lld首歌曲</string>
 		</dict>
+	</dict>
+	<key>plural - move_albums_to</key>
+	<dict>
+		<key>CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>请选择这%lld个专辑要移动至的合集。</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
 	</dict>
 </dict>
 </plist>

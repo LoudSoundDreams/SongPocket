@@ -1,8 +1,14 @@
 /* After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them. */
 " Thank You! " = "谢谢！";
 
+/* Body text of the alert that appears after the user adds songs to the queue. */
+"[alert message] did_enqueue_songs" = "您可以在内建音乐App中编辑待播清单。";
+
 /* Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on. */
-"“%@” Will Play Later" = "“%@”将稍后播放";
+"[alert title] did_enqueue_one_song" = "“%@”将稍后播放";
+
+/* Options screen → Tip Jar section footer */
+"[footer] options_tip_jar" = "您好，我是H。您的赞助完全出自您的意愿，并且能够支持我改进Songpocket。我会特别感谢您在App更新之后的赞助！";
 
 /* Options section header */
 "Accent Color" = "强调色";
@@ -19,12 +25,6 @@
 /* Button */
 "Cancel" = "取消";
 
-/* Title for a collection if you leave it blank. In English, it’s “New Collection”. */
-"default_collection_title" = "新合集";
-
-/* Body text of the alert that appears after the user adds songs to the queue. */
-"did_enqueue_songs_alert_message" = "您可以在内建音乐App中编辑待播清单。";
-
 /* Button */
 "Don’t Show Again" = "不再显示";
 
@@ -33,9 +33,6 @@
 
 /* Accent color */
 "Grape" = "葡萄";
-
-/* Options → Tip Jar section footer */
-"Hi, I’m H. Tips help me improve Songpocket. They give you no extra features, and are completely optional. I would especially appreciate tips after updates to the app!" = "您好，我是H。您的赞助能够支持我改进Songpocket。这项赞助完全出自您的意愿，App内并不会增加额外的功能。我会特别感谢您在App更新之后的赞助！";
 
 /* Accent color */
 "Lime" = "青柠";
@@ -56,7 +53,10 @@
 "Move to top" = "移动至顶";
 
 /* Alert title */
-"New Collection" = "新建合集";
+"New Collection [alert title]" = "新建合集";
+
+/* Default title for a collection if you make or rename a collection and don’t provide a title. */
+"New Collection [default title for collection]" = "新合集";
 
 /* Sort option */
 "Newest First" = "最新的排最前";
