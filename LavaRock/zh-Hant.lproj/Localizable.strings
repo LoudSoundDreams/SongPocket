@@ -8,7 +8,7 @@
 "[alert title] did_enqueue_one_song" = "「%@」將稍後播放";
 
 /* Options screen → Tip Jar section footer */
-"[footer] options_tip_jar" = "您好，我是H。您的贊助完全出自您的意願，並且能夠支持我改進Songpocket。我會特別感謝您在App更新之後的贊助！";
+"[footer] options_tip_jar" = "您好，我是H。您自願的贊助能夠支持我改進Songpocket。我會特別感謝您在App更新之後的贊助！";
 
 /* Options section header */
 "Accent Color" = "強調顏色";
