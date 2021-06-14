@@ -223,7 +223,7 @@ extension CollectionsTVC {
 		case .authorized:
 			break
 		case .notDetermined: // The golden opportunity.
-			MPMediaLibrary.requestAuthorization { newStatus in
+			MPMediaLibrary.requestAuthorization { newStatus in // iOS 15: Use async/await
 				switch newStatus {
 				case .authorized:
 					DispatchQueue.main.async { self.didReceiveAuthorizationForMusicLibrary() }

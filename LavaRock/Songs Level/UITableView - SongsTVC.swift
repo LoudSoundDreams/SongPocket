@@ -106,7 +106,7 @@ extension SongsTVC {
 			cell.titleLabel.text = cellTitle
 			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 			cell.trackNumberLabel.text = cellTrackNumberText
-			cell.trackNumberLabel.font = UIFont.bodyMonospacedNumbers
+			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers
 			
 			cell.accessibilityUserInputLabels = [cellTitle]
 			
@@ -120,7 +120,7 @@ extension SongsTVC {
 			cell.titleLabel.text = cellTitle
 			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 			cell.trackNumberLabel.text = cellTrackNumberText
-			cell.trackNumberLabel.font = UIFont.bodyMonospacedNumbers
+			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers
 			
 			cell.accessibilityUserInputLabels = [cellTitle]
 			

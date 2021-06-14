@@ -17,21 +17,21 @@ extension SongsTVC {
 		for song: Song,
 		popoverAnchorView: UIView
 	) {
-		// The row for the selected Song stays selected until we complete or cancel an action for it. So remember to deselect it in every possible branch from here. Use this function for convenience.
+		// Keep the row for the selected Song selected until we complete or cancel an action for it. That means we also need to deselect it in every possible branch from here. Use this function for convenience.
 		func deselectSelectedSong() {
 			tableView.deselectAllRows(animated: true)
 		}
 		
 		// Create the actions.
-		let playAlbumStartingHereAction = UIAlertAction(
-			title: LocalizedString.playAlbumStartingHere,
+		let playAllStartingHereAction = UIAlertAction(
+			title: LocalizedString.playAllStartingHere,
 			style: .default,
 			handler: { _ in
-				self.playAlbumStartingAtSelectedSong()
+				self.playAllStartingAtSelectedSong()
 				deselectSelectedSong()
 			}
 		)
-//		playAlbumStartingHereAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
+//		playAllStartingHereAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
 		let enqueueAlbumStartingHereAction = UIAlertAction(
 			title: LocalizedString.queueAlbumStartingHere,
 			style: .default,
@@ -66,7 +66,7 @@ extension SongsTVC {
 			title: nil,
 			message: nil,
 			preferredStyle: .actionSheet)
-		actionSheet.addAction(playAlbumStartingHereAction)
+		actionSheet.addAction(playAllStartingHereAction)
 		actionSheet.addAction(enqueueAlbumStartingHereAction)
 		actionSheet.addAction(enqueueSongAction)
 		actionSheet.addAction(cancelAction)
@@ -78,11 +78,12 @@ extension SongsTVC {
 	
 	// MARK: Play
 	
-	private func playAlbumStartingAtSelectedSong() {
+	private func playAllStartingAtSelectedSong() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
+		
 		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
 		var mediaItemsToEnqueue = [MPMediaItem]()
 		for item in sectionOfLibraryItems.items[indexOfSelectedSong...] {
@@ -98,10 +99,11 @@ extension SongsTVC {
 		
 		sharedPlayerController?.setQueue(with: queueDescriptor)
 		
+		// As of iOS 14.7 beta 1, you must set repeatMode and shuffleMode after calling setQueue, or else the repeat mode and shuffle mode won't actually apply.
 		sharedPlayerController?.repeatMode = .none
 		sharedPlayerController?.shuffleMode = .off
-		sharedPlayerController?.prepareToPlay()
-		sharedPlayerController?.play()
+		
+		sharedPlayerController?.play() // Calls prepareToPlay auomatically
 	}
 	
 	// MARK: Enqueue
@@ -111,6 +113,7 @@ extension SongsTVC {
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
+		
 		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
 		var mediaItemsToEnqueue = [MPMediaItem]()
 		for item in sectionOfLibraryItems.items[indexOfSelectedSong...] {
@@ -128,6 +131,8 @@ extension SongsTVC {
 		
 		sharedPlayerController?.repeatMode = .none
 		sharedPlayerController?.shuffleMode = .off
+		
+		// As of iOS 14.7 beta 1, you must do this in case the user force quit the built-in Music app recently.
 		if sharedPlayerController?.playbackState != .playing {
 			sharedPlayerController?.prepareToPlay()
 		}
@@ -151,7 +156,6 @@ extension SongsTVC {
 			let song = sectionOfLibraryItems.items[indexOfSong] as? Song,
 			let mediaItem = song.mpMediaItem()
 		else { return }
-		
 		let mediaItemCollection = MPMediaItemCollection(items: [mediaItem])
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
@@ -159,6 +163,8 @@ extension SongsTVC {
 		
 		sharedPlayerController?.repeatMode = .none
 		sharedPlayerController?.shuffleMode = .off
+		
+		// As of iOS 14.7 beta 1, you must do this in case the user force quit the built-in Music app recently.
 		if sharedPlayerController?.playbackState != .playing {
 			sharedPlayerController?.prepareToPlay()
 		}

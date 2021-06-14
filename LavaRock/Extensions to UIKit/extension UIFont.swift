@@ -9,14 +9,14 @@ import UIKit
 
 extension UIFont {
 	
-	static let bodyMonospacedNumbers: UIFont = {
+	static let bodyWithMonospacedNumbers: UIFont = {
 		let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-		let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes([
-			UIFontDescriptor.AttributeName.featureSettings: [[
-				UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
-				UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
-			]]
-		])
+		let featureSettings: [[UIFontDescriptor.FeatureKey: Int]] = [
+			[.type: kNumberSpacingType,
+			 .selector: kMonospacedNumbersSelector]
+		]
+		let attributes = [UIFontDescriptor.AttributeName.featureSettings: featureSettings]
+		let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes(attributes)
 		return UIFont(descriptor: monospacedNumbersBodyFontDescriptor, size: 0)
 	}()
 	
