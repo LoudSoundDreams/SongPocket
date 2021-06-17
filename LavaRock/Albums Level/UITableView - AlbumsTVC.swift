@@ -33,9 +33,9 @@ extension AlbumsTVC {
 		
 		let cellTitle = album.titleFormattedOrPlaceholder()
 		let cellSubtitle = album.releaseDateEstimateFormatted()
-		let isNowPlayingAlbum = isItemNowPlaying(at: indexPath)
-		let cellNowPlayingIndicator = PlayerControllerManager.nowPlayingIndicator(
-			isItemNowPlaying: isNowPlayingAlbum)
+		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
+		let cellNowPlayingIndicator = PlayerManager.nowPlayingIndicator(
+			isInPlayer: isInPlayer)
 		
 		// Make, configure, and return the cell.
 		

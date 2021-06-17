@@ -9,9 +9,9 @@ import UIKit
 
 protocol NowPlayingIndicatorManager {
 	func refreshNowPlayingIndicators(
-		isItemNowPlayingDeterminer: (IndexPath) -> Bool
+		isInPlayerDeterminer: (IndexPath) -> Bool
 	)
-	func isItemNowPlaying(at indexPath: IndexPath) -> Bool
+	func isInPlayer(libraryItemFor indexPath: IndexPath) -> Bool
 }
 
 protocol NowPlayingIndicator {

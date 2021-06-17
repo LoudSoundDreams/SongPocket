@@ -71,9 +71,9 @@ final class CollectionsTVC:
 			topLeftButtonsInViewingMode = []
 			topRightButtons = [cancelMoveAlbumsButton]
 			bottomButtonsInViewingMode = [
-				flexibleSpaceBarButtonItem,
+				.flexibleSpac3(),
 				makeNewCollectionButton,
-				flexibleSpaceBarButtonItem
+				.flexibleSpac3(),
 			]
 		} else {
 			topLeftButtonsInViewingMode = [optionsButton]
@@ -92,10 +92,10 @@ final class CollectionsTVC:
 		} else {
 			bottomButtonsInEditingMode = [
 				sortButton,
-				flexibleSpaceBarButtonItem,
+				.flexibleSpac3(),
 				floatToTopButton,
-				flexibleSpaceBarButtonItem,
-				sinkToBottomButton
+				.flexibleSpac3(),
+				sinkToBottomButton,
 			]
 			sortOptions = [
 				.title,

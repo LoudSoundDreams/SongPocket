@@ -15,22 +15,22 @@ extension LibraryTVC {
 	final func refreshPlaybackToolbarButtons() {
 		
 		func setPlayPauseButtonToPlayButton() {
-			playPauseButton.image = playButtonImage
-			playPauseButton.action = playButtonAction
-			playPauseButton.accessibilityLabel = playButtonAccessibilityLabel
+			playPauseButton.image = playImage
+			playPauseButton.action = playAction
+			playPauseButton.accessibilityLabel = playAccessibilityLabel
 			playPauseButton.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		}
 		
 		func setPlayPauseButtonToPauseButton() {
-			playPauseButton.image = pauseButtonImage
-			playPauseButton.action = pauseButtonAction
-			playPauseButton.accessibilityLabel = pauseButtonAccessibilityLabel
+			playPauseButton.image = pauseImage
+			playPauseButton.action = pauseAction
+			playPauseButton.accessibilityLabel = pauseAccessibilityLabel
 			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
 		}
 		
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
-			let playerController = sharedPlayerController
+			let player = sharedPlayer
 		else {
 			setPlayPauseButtonToPlayButton()
 			for barButtonItem in playbackToolbarButtons {
@@ -39,7 +39,7 @@ extension LibraryTVC {
 			return
 		}
 		
-		if playerController.playbackState == .playing { // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
+		if player.playbackState == .playing { // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
 			setPlayPauseButtonToPauseButton()
 		} else {
 			setPlayPauseButtonToPlayButton()
@@ -47,23 +47,23 @@ extension LibraryTVC {
 		
 		// Enable or disable each button as appropriate
 		
-		if playerController.indexOfNowPlayingItem == 0 {
+		if player.indexOfNowPlayingItem == 0 {
 			goToPreviousSongButton.disableWithAccessibilityTrait()
 		} else {
 			goToPreviousSongButton.enableWithAccessibilityTrait()
 		}
 		
-//		let currentPlaybackTime = sharedPlayerController.currentPlaybackTime
+//		let currentPlaybackTime = sharedPlayer.currentPlaybackTime
 //		print(currentPlaybackTime)
 //		print(currentPlaybackTime == 0)
 //		print("")
 //		if
-//			sharedPlayerController.currentPlaybackTime == 0,
-//			sharedPlayerController.playbackState != .playing
+//			sharedPlayer.currentPlaybackTime == 0,
+//			sharedPlayer.playbackState != .playing
 //		{
-//			restartCurrentSongButton.disableWithAccessibilityTrait()
+//			rewindButton.disableWithAccessibilityTrait()
 //		} else {
-			restartCurrentSongButton.enableWithAccessibilityTrait()
+			rewindButton.enableWithAccessibilityTrait()
 //		}
 		
 		playPauseButton.enableWithAccessibilityTrait()
@@ -74,7 +74,7 @@ extension LibraryTVC {
 	// MARK: - Controlling Playback
 	
 	final override func accessibilityPerformMagicTap() -> Bool {
-		guard sharedPlayerController != nil else {
+		guard sharedPlayer != nil else {
 			return false
 		}
 		
@@ -83,42 +83,42 @@ extension LibraryTVC {
 	}
 	
 	private func togglePlayPause() {
-		guard let playerController = sharedPlayerController else { return }
+		guard let player = sharedPlayer else { return }
 		
-		if playerController.playbackState == .playing {
-			playerController.pause()
+		if player.playbackState == .playing {
+			player.pause()
 		} else {
-			playerController.play()
+			player.play()
 		}
 	}
 	
 	@objc final func goToPreviousSong() {
-//		sharedPlayerController?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackToolbarButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
+//		sharedPlayer?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackToolbarButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
 		// Actually, that line of code makes this method take forever to return; it repeatedly prints "SYNC-WATCHDOG-1: Attempting to wake up the remote process" and "SYNC-WATCHDOG-2: Tearing down connection". That happens whether we set currentPlaybackTime = 0 before or after changing the song.
 		
-		sharedPlayerController?.skipToPreviousItem()
+		sharedPlayer?.skipToPreviousItem()
 	}
 	
-	@objc final func restartCurrentSong() {
-		sharedPlayerController?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
-//		sharedPlayerController?.skipToBeginning()
-//		sharedPlayerController?.prepareToPlay()
+	@objc final func rewind() {
+		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
+//		sharedPlayer?.skipToBeginning()
+//		sharedPlayer?.prepareToPlay()
 		
 		refreshBarButtons() // Disable the "restart current song" button if appropriate.
 	}
 	
 	@objc final func play() {
-		sharedPlayerController?.play()
+		sharedPlayer?.play()
 	}
 	
 	@objc final func pause() {
-		sharedPlayerController?.pause()
+		sharedPlayer?.pause()
 	}
 	
 	@objc final func goToNextSong() {
-//		sharedPlayerController?.currentPlaybackTime = 0 // See comment in goToPreviousSong().
+//		sharedPlayer?.currentPlaybackTime = 0 // See comment in goToPreviousSong().
 		
-		sharedPlayerController?.skipToNextItem()
+		sharedPlayer?.skipToNextItem()
 	}
 	
 }

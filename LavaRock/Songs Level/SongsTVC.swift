@@ -30,10 +30,10 @@ final class SongsTVC:
 		
 		bottomButtonsInEditingMode = [
 			sortButton,
-			flexibleSpaceBarButtonItem,
+			.flexibleSpac3(),
 			floatToTopButton,
-			flexibleSpaceBarButtonItem,
-			sinkToBottomButton
+			.flexibleSpac3(),
+			sinkToBottomButton,
 		]
 		sortOptions = [
 			.trackNumber,

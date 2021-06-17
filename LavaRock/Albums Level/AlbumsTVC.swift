@@ -46,9 +46,9 @@ final class AlbumsTVC:
 			
 			topRightButtons = [cancelMoveAlbumsButton]
 			bottomButtonsInViewingMode = [
-				flexibleSpaceBarButtonItem,
+				.flexibleSpac3(),
 				moveAlbumsHereButton,
-				flexibleSpaceBarButtonItem
+				.flexibleSpac3(),
 			]
 		}
 		
@@ -62,12 +62,12 @@ final class AlbumsTVC:
 		} else {
 			bottomButtonsInEditingMode = [
 				startMovingAlbumsButton,
-				flexibleSpaceBarButtonItem,
+				.flexibleSpac3(),
 				sortButton,
-				flexibleSpaceBarButtonItem,
+				.flexibleSpac3(),
 				floatToTopButton,
-				flexibleSpaceBarButtonItem,
-				sinkToBottomButton
+				.flexibleSpac3(),
+				sinkToBottomButton,
 			]
 			sortOptions = [
 				.newestFirst,

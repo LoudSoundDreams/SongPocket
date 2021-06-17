@@ -72,13 +72,13 @@ class LibraryTVC:
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
 	var numberOfRowsInSectionAboveLibraryItems = 0
 	var topLeftButtonsInViewingMode = [UIBarButtonItem]()
-	private lazy var topLeftButtonsInEditingMode = [flexibleSpaceBarButtonItem]
+	private lazy var topLeftButtonsInEditingMode = [UIBarButtonItem.flexibleSpac3()]
 	lazy var topRightButtons = [editButtonItem]
 	lazy var bottomButtonsInViewingMode = playbackToolbarButtons
 	
 	// "Constants" that subclasses should not change
-	var sharedPlayerController: MPMusicPlayerController? {
-		PlayerControllerManager.playerController
+	var sharedPlayer: MPMusicPlayerController? {
+		PlayerManager.player
 	}
 	let cellReuseIdentifier = "Cell"
 	lazy var noItemsPlaceholderView = {
@@ -114,19 +114,16 @@ class LibraryTVC:
 	@objc private func cancelMoveAlbums() {
 		dismiss(animated: true)
 	}
-	let flexibleSpaceBarButtonItem = UIBarButtonItem(
-		barButtonSystemItem: .flexibleSpace,
-		target: nil, action: nil)
 	
 	// "Constants" that subclasses should not change, for PlaybackToolbarManager
 	lazy var playbackToolbarButtons = [
 		goToPreviousSongButton,
-		flexibleSpaceBarButtonItem,
-		restartCurrentSongButton,
-		flexibleSpaceBarButtonItem,
+		.flexibleSpac3(),
+		rewindButton,
+		.flexibleSpac3(),
 		playPauseButton,
-		flexibleSpaceBarButtonItem,
-		goToNextSongButton
+		.flexibleSpac3(),
+		goToNextSongButton,
 	]
 	lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -137,28 +134,28 @@ class LibraryTVC:
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	lazy var restartCurrentSongButton: UIBarButtonItem = {
+	lazy var rewindButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
-			style: .plain, target: self, action: #selector(restartCurrentSong))
+			style: .plain, target: self, action: #selector(rewind))
 		button.width = 10.0
 		button.accessibilityLabel = LocalizedString.restart
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	let playButtonImage = UIImage(systemName: "play.fill")
-	let playButtonAction = #selector(play)
-	let playButtonAccessibilityLabel = LocalizedString.play
+	let playImage = UIImage(systemName: "play.fill")
+	let playAction = #selector(play)
+	let playAccessibilityLabel = LocalizedString.play
 	let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
-	let pauseButtonImage = UIImage(systemName: "pause.fill")
-	let pauseButtonAction = #selector(pause)
-	let pauseButtonAccessibilityLabel = LocalizedString.pause
+	let pauseImage = UIImage(systemName: "pause.fill")
+	let pauseAction = #selector(pause)
+	let pauseAccessibilityLabel = LocalizedString.pause
 	lazy var playPauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: playButtonImage,
-			style: .plain, target: self, action: playButtonAction)
+			image: playImage,
+			style: .plain, target: self, action: playAction)
 		button.width = 10.0 // As of iOS 14.2 beta 4, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
-		button.accessibilityLabel = playButtonAccessibilityLabel
+		button.accessibilityLabel = playAccessibilityLabel
 		button.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		return button
 	}()
@@ -206,7 +203,7 @@ class LibraryTVC:
 	// Before calling this, put the UI into the "Loading…" or "Updating…" state.
 	final func integrateWithAndImportChangesFromMusicLibraryIfAuthorized() {
 		MusicLibraryManager.shared.importChangesAndBeginGeneratingNotificationsIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
-		PlayerControllerManager.setUpIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
+		PlayerManager.setUpIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
 	}
 	
 	// MARK: Setting Up UI

@@ -148,9 +148,9 @@ extension CollectionsTVC {
 		}
 		
 		cell.titleLabel.text = collection.title
-		let isNowPlayingCollection = isItemNowPlaying(at: indexPath)
-		let cellNowPlayingIndicator = PlayerControllerManager.nowPlayingIndicator(
-			isItemNowPlaying: isNowPlayingCollection)
+		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
+		let cellNowPlayingIndicator = PlayerManager.nowPlayingIndicator(
+			isInPlayer: isInPlayer)
 		cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
 		
 		if let albumMoverClipboard = albumMoverClipboard {

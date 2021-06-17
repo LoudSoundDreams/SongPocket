@@ -9,12 +9,10 @@ import UIKit
 
 extension SongsTVC: NowPlayingIndicatorManager {
 	
-	final func isItemNowPlaying(at indexPath: IndexPath) -> Bool {
+	final func isInPlayer(libraryItemFor indexPath: IndexPath) -> Bool {
 		if
 			let rowSong = libraryItem(for: indexPath) as? Song,
-			let rowMediaItem = rowSong.mpMediaItem(),
-			let playerController = sharedPlayerController,
-			rowMediaItem == playerController.nowPlayingItem
+			rowSong.objectID == PlayerManager.songInPlayer?.objectID
 		{
 			return true
 		} else {

@@ -59,12 +59,12 @@ extension LibraryTVC {
 	}
 	
 	@objc private func didObserveLRDidSaveChangesFromMusicLibrary() {
-		PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
+		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
 		refreshToReflectMusicLibrary()
 	}
 	
 	@objc private func didObservePossiblePlaybackStateChange() {
-		PlayerControllerManager.refreshCurrentSong() // Call this from here, not from within PlayerControllerManager, because this instance needs to guarantee that this has been done before it continues.
+		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
 		refreshToReflectPlaybackState()
 	}
 	
@@ -78,13 +78,13 @@ extension LibraryTVC {
 	
 	// LibraryTVC itself doesn't call this, but its subclasses might want to.
 	final func refreshNowPlayingIndicators(
-		isItemNowPlayingDeterminer: (IndexPath) -> Bool
+		isInPlayerDeterminer: (IndexPath) -> Bool
 	) {
 		for indexPath in indexPaths(forIndexOfSectionOfLibraryItems: 0) {
 			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue } // TO DO: For some reason, this can trigger tableView(_:cellForRowAt:), which can redraw the cell to a null placeholder, which we can't allow.
-			let isItemNowPlaying = isItemNowPlayingDeterminer(indexPath)
-			let indicator = PlayerControllerManager.nowPlayingIndicator(
-				isItemNowPlaying: isItemNowPlaying)
+			let isInPlayer = isInPlayerDeterminer(indexPath)
+			let indicator = PlayerManager.nowPlayingIndicator(
+				isInPlayer: isInPlayer)
 			cell.applyNowPlayingIndicator(indicator)
 		}
 	}

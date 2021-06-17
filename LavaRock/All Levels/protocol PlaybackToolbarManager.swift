@@ -11,21 +11,21 @@ protocol PlaybackToolbarManager {
 	var playbackToolbarButtons: [UIBarButtonItem] { get set }
 	
 	var goToPreviousSongButton: UIBarButtonItem { get set }
-	var restartCurrentSongButton: UIBarButtonItem { get set }
-	var playButtonImage: UIImage? { get }
-	var playButtonAction: Selector { get }
-	var playButtonAccessibilityLabel: String { get }
+	var rewindButton: UIBarButtonItem { get set }
+	var playImage: UIImage? { get }
+	var playAction: Selector { get }
+	var playAccessibilityLabel: String { get }
 	var playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits { get }
-	var pauseButtonImage: UIImage? { get }
-	var pauseButtonAction: Selector { get }
-	var pauseButtonAccessibilityLabel: String { get }
+	var pauseImage: UIImage? { get }
+	var pauseAction: Selector { get }
+	var pauseAccessibilityLabel: String { get }
 	var playPauseButton: UIBarButtonItem { get set }
 	var goToNextSongButton: UIBarButtonItem { get set }
 	
 	func refreshPlaybackToolbarButtons()
 	
 	func goToPreviousSong()
-	func restartCurrentSong()
+	func rewind()
 	func play()
 	func pause()
 	func goToNextSong()

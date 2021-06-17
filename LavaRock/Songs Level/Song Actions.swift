@@ -97,13 +97,13 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
-		sharedPlayerController?.setQueue(with: queueDescriptor)
+		sharedPlayer?.setQueue(with: queueDescriptor)
 		
 		// As of iOS 14.7 beta 1, you must set repeatMode and shuffleMode after calling setQueue, or else the repeat mode and shuffle mode won't actually apply.
-		sharedPlayerController?.repeatMode = .none
-		sharedPlayerController?.shuffleMode = .off
+		sharedPlayer?.repeatMode = .none
+		sharedPlayer?.shuffleMode = .off
 		
-		sharedPlayerController?.play() // Calls prepareToPlay auomatically
+		sharedPlayer?.play() // Calls prepareToPlay auomatically
 	}
 	
 	// MARK: Enqueue
@@ -127,14 +127,14 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
-		sharedPlayerController?.append(queueDescriptor)
+		sharedPlayer?.append(queueDescriptor)
 		
-		sharedPlayerController?.repeatMode = .none
-		sharedPlayerController?.shuffleMode = .off
+		sharedPlayer?.repeatMode = .none
+		sharedPlayer?.shuffleMode = .off
 		
 		// As of iOS 14.7 beta 1, you must do this in case the user force quit the built-in Music app recently.
-		if sharedPlayerController?.playbackState != .playing {
-			sharedPlayerController?.prepareToPlay()
+		if sharedPlayer?.playbackState != .playing {
+			sharedPlayer?.prepareToPlay()
 		}
 		
 		guard let selectedSong = libraryItem(for: selectedIndexPath) as? Song else { return }
@@ -159,14 +159,14 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: [mediaItem])
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
-		sharedPlayerController?.append(queueDescriptor)
+		sharedPlayer?.append(queueDescriptor)
 		
-		sharedPlayerController?.repeatMode = .none
-		sharedPlayerController?.shuffleMode = .off
+		sharedPlayer?.repeatMode = .none
+		sharedPlayer?.shuffleMode = .off
 		
 		// As of iOS 14.7 beta 1, you must do this in case the user force quit the built-in Music app recently.
-		if sharedPlayerController?.playbackState != .playing {
-			sharedPlayerController?.prepareToPlay()
+		if sharedPlayer?.playbackState != .playing {
+			sharedPlayer?.prepareToPlay()
 		}
 		
 		showExplanationIfNecessaryForEnqueueAction(
@@ -195,8 +195,7 @@ extension SongsTVC {
 			let formatString = LocalizedString.formatDidEnqueueMultipleSongsAlertTitle
 			alertTitle = String.localizedStringWithFormat(
 				formatString,
-				titleOfSelectedSong,
-				numberOfSongsEnqueued - 1
+				titleOfSelectedSong, numberOfSongsEnqueued - 1
 			)
 		}
 		let alertMessage = LocalizedString.didEnqueueSongsAlertMessage

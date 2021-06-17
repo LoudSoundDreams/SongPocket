@@ -88,9 +88,9 @@ extension SongsTVC {
 			return UITableViewCell()
 		}
 		let cellTitle = song.titleFormattedOrPlaceholder()
-		let isNowPlayingSong = isItemNowPlaying(at: indexPath)
-		let cellNowPlayingIndicator = PlayerControllerManager.nowPlayingIndicator(
-			isItemNowPlaying: isNowPlayingSong)
+		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
+		let cellNowPlayingIndicator = PlayerManager.nowPlayingIndicator(
+			isInPlayer: isInPlayer)
 		let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 		
 		// Make, configure, and return the cell.

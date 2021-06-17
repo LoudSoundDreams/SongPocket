@@ -1,5 +1,5 @@
 //
-//  PlayerControllerManager.swift
+//  PlayerManager.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-04.
@@ -8,7 +8,7 @@
 import MediaPlayer
 import CoreData
 
-final class PlayerControllerManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
+final class PlayerManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	
 	private init() { }
 	
@@ -17,30 +17,30 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 	// MARK: - Properties
 	
 	// Variables
-	private(set) static var playerController: MPMusicPlayerController?
-	private(set) static var nowPlayingSong: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
+	private(set) static var player: MPMusicPlayerController?
+	private(set) static var songInPlayer: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
 	
 	// MARK: - Setup
 	
 	static func setUpIfAuthorized() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		playerController = MPMusicPlayerController.systemMusicPlayer
+		player = .systemMusicPlayer
 		beginGeneratingNotifications()
-		refreshCurrentSong()
+		refreshSongInPlayer()
 	}
 	
 	// MARK: - "Now Playing" Indicator
 	
-	static func nowPlayingIndicator(isItemNowPlaying: Bool) -> (UIImage?, String?) {
+	static func nowPlayingIndicator(isInPlayer: Bool) -> (UIImage?, String?) {
 		guard
-			isItemNowPlaying,
-			let playerController = playerController
+			isInPlayer,
+			let player = player
 		else {
 			return (nil, nil)
 		}
 		
-		if playerController.playbackState == .playing { // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
+		if player.playbackState == .playing { // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
 			if #available(iOS 14.0, *) {
 				return
 					(UIImage(systemName: "speaker.wave.2.fill"),
@@ -59,28 +59,28 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 	
 	// MARK: - Other
 	
-	static func refreshCurrentSong() {
+	static func refreshSongInPlayer() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
-			let nowPlayingItem = playerController?.nowPlayingItem
+			let nowPlayingItem = player?.nowPlayingItem
 		else {
-			nowPlayingSong = nil
+			songInPlayer = nil
 			return
 		}
 		
 		let currentPersistentID = nowPlayingItem.persistentID // Remember: This is a UInt64, and we store the persistentID attribute on each Song as an Int64.
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		songsFetchRequest.predicate = NSPredicate(format: "persistentID == %lld", Int64(bitPattern: currentPersistentID))
-		let nowPlayingSongs = managedObjectContext.objectsFetched(for: songsFetchRequest)
+		let songsInPlayer = managedObjectContext.objectsFetched(for: songsFetchRequest)
 		
 		guard
-			nowPlayingSongs.count == 1,
-			let song = nowPlayingSongs.first
+			songsInPlayer.count == 1,
+			let song = songsInPlayer.first
 		else {
-			nowPlayingSong = nil
+			songInPlayer = nil
 			return
 		}
-		nowPlayingSong = song
+		songInPlayer = song
 	}
 	
 	// MARK: - PRIVATE
@@ -99,13 +99,13 @@ final class PlayerControllerManager { // This is a class and not a struct becaus
 	private static func beginGeneratingNotifications() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		playerController?.beginGeneratingPlaybackNotifications()
+		player?.beginGeneratingPlaybackNotifications()
 	}
 	
 	private static func endGeneratingNotifications() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		playerController?.endGeneratingPlaybackNotifications()
+		player?.endGeneratingPlaybackNotifications()
 	}
 	
 }

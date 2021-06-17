@@ -15,7 +15,7 @@ extension AlbumsTVC {
 	final override func refreshToReflectPlaybackState() {
 		super.refreshToReflectPlaybackState()
 		
-		refreshNowPlayingIndicators(isItemNowPlayingDeterminer: isItemNowPlaying(at:))
+		refreshNowPlayingIndicators(isInPlayerDeterminer: isInPlayer(libraryItemFor:))
 	}
 	
 	// MARK: - Refreshing Data and Views
