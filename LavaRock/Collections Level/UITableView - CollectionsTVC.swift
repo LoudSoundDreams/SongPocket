@@ -241,15 +241,4 @@ extension CollectionsTVC {
 		super.tableView(tableView, didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
 	}
 	
-	// Similar to viewDidLoad().
-	private func didReceiveAuthorizationForMusicLibrary() {
-		setUp()
-		
-		isImportingChanges = true
-		// contentState() == .loading
-		refreshToReflectContentState(completion: {
-			self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
-		})
-	}
-	
 }

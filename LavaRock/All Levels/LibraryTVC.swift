@@ -129,7 +129,7 @@ class LibraryTVC:
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
 			style: .plain, target: self, action: #selector(goToPreviousSong))
-		button.width = 10.0
+		button.width = 10.0 //
 		button.accessibilityLabel = LocalizedString.previousTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -138,7 +138,7 @@ class LibraryTVC:
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
 			style: .plain, target: self, action: #selector(rewind))
-		button.width = 10.0
+		button.width = 10.0 //
 		button.accessibilityLabel = LocalizedString.restart
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -147,9 +147,6 @@ class LibraryTVC:
 	let playAction = #selector(play)
 	let playAccessibilityLabel = LocalizedString.play
 	let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
-	let pauseImage = UIImage(systemName: "pause.fill")
-	let pauseAction = #selector(pause)
-	let pauseAccessibilityLabel = LocalizedString.pause
 	lazy var playPauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: playImage,
@@ -163,7 +160,7 @@ class LibraryTVC:
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
 			style: .plain, target: self, action: #selector(goToNextSong))
-		button.width = 10.0
+		button.width = 10.0 //
 		button.accessibilityLabel = LocalizedString.nextTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -196,14 +193,6 @@ class LibraryTVC:
 	final func setUp() {
 		beginObservingNotifications()
 		setUpUI()
-	}
-	
-	// LibraryTVC itself doesn't call this during viewDidLoad(), but its subclasses may want to.
-	// Call this method late into launch, after we've already set up most of the UI; this method sets up the MediaPlayer-related functionality so that we can set up the rest of the UI (although this method itself doesn't set up the rest of the UI).
-	// Before calling this, put the UI into the "Loading…" or "Updating…" state.
-	final func integrateWithAndImportChangesFromMusicLibraryIfAuthorized() {
-		MusicLibraryManager.shared.importChangesAndBeginGeneratingNotificationsIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
-		PlayerManager.setUpIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
 	}
 	
 	// MARK: Setting Up UI

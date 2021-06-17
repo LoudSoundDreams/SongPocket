@@ -59,6 +59,24 @@ final class CollectionsTVC:
 		}
 	}
 	
+	// Similar to viewDidLoad().
+	final func didReceiveAuthorizationForMusicLibrary() {
+		setUp()
+		
+		isImportingChanges = true
+		// contentState() == .loading
+		refreshToReflectContentState(completion: {
+			self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+		})
+	}
+	
+	// Call this method late into launch, after we've already set up most of the UI; this method sets up the MediaPlayer-related functionality so that we can set up the rest of the UI (although this method itself doesn't set up the rest of the UI).
+	// Before calling this, put the UI into the "Loading…" or "Updating…" state.
+	private func integrateWithAndImportChangesFromMusicLibraryIfAuthorized() {
+		MusicLibraryManager.shared.importChangesAndBeginGeneratingNotificationsIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
+		PlayerManager.setUpIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
+	}
+	
 	// MARK: Setting Up UI
 	
 	final override func setUpUI() {

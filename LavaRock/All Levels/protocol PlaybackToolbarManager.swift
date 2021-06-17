@@ -16,9 +16,6 @@ protocol PlaybackToolbarManager {
 	var playAction: Selector { get }
 	var playAccessibilityLabel: String { get }
 	var playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits { get }
-	var pauseImage: UIImage? { get }
-	var pauseAction: Selector { get }
-	var pauseAccessibilityLabel: String { get }
 	var playPauseButton: UIBarButtonItem { get set }
 	var goToNextSongButton: UIBarButtonItem { get set }
 	
