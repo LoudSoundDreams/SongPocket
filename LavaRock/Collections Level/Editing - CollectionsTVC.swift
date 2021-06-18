@@ -33,7 +33,7 @@ extension CollectionsTVC {
 	final func renameCollection(at indexPath: IndexPath) {
 		guard let collection = libraryItem(for: indexPath) as? Collection else { return }
 		
-		let wasRowSelectedBeforeRenaming = tableView.indexPathsF0rSelectedRows.contains(indexPath)
+		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
 		
 		let dialog = UIAlertController(
 			title: LocalizedString.renameCollection,

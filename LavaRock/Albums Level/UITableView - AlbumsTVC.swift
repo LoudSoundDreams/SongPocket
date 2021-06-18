@@ -31,48 +31,58 @@ extension AlbumsTVC {
 		}
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
-		let cellTitle = album.titleFormattedOrPlaceholder()
-		let cellSubtitle = album.releaseDateEstimateFormatted()
+		let albumTitle = album.titleFormattedOrPlaceholder()
+		let releaseDate = album.releaseDateEstimateFormatted()
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
-		let cellNowPlayingIndicator = PlayerManager.nowPlayingIndicator(
-			isInPlayer: isInPlayer)
+		let isPlaying = sharedPlayer?.playbackState == .playing
+		let nowPlayingIndicator = NowPlayingIndicator(
+			isInPlayer: isInPlayer,
+			isPlaying: isPlaying)
 		
 		// Make, configure, and return the cell.
 		
-		if let cellSubtitle = cellSubtitle {
-			guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? AlbumCell else {
+		if let releaseDate = releaseDate {
+			guard var cell = tableView.dequeueReusableCell(
+				withIdentifier: cellReuseIdentifier,
+				for: indexPath)
+					as? AlbumCell
+			else {
 				return UITableViewCell()
 			}
-			cell.releaseDateLabel.text = cellSubtitle
+			cell.releaseDateLabel.text = releaseDate
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 			cell.artworkImageView.image = cellImage
-			cell.titleLabel.text = cellTitle
-			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
+			cell.titleLabel.text = albumTitle
+			cell.apply(nowPlayingIndicator)
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
 			
-			cell.accessibilityUserInputLabels = [cellTitle]
+			cell.accessibilityUserInputLabels = [albumTitle]
 			
 			return cell
 			
 		} else { // We couldn't determine the album's release date.
-			guard var cell = tableView.dequeueReusableCell(withIdentifier: "Cell Without Release Date", for: indexPath) as? AlbumCellWithoutReleaseDate else {
+			guard var cell = tableView.dequeueReusableCell(
+				withIdentifier: "Cell Without Release Date",
+				for: indexPath)
+					as? AlbumCellWithoutReleaseDate
+			else {
 				return UITableViewCell()
 			}
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
 			cell.artworkImageView.image = cellImage
-			cell.titleLabel.text = cellTitle
-			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
+			cell.titleLabel.text = albumTitle
+			cell.apply(nowPlayingIndicator)
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
 			
-			cell.accessibilityUserInputLabels = [cellTitle]
+			cell.accessibilityUserInputLabels = [albumTitle]
 			
 			return cell
 		}

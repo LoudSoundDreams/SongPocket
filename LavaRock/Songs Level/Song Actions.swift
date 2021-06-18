@@ -85,16 +85,11 @@ extension SongsTVC {
 		else { return }
 		
 		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
-		var mediaItemsToEnqueue = [MPMediaItem]()
-		for item in sectionOfLibraryItems.items[indexOfSelectedSong...] {
-			if
-				let songToEnqueue = item as? Song,
-				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
-			{
-				mediaItemsToEnqueue.append(mediaItemToEnqueue)
-			}
+		let chosenSongs = sectionOfLibraryItems.items[indexOfSelectedSong...]
+		let chosenMediaItems = chosenSongs.compactMap {
+			($0 as? Song)?.mpMediaItem()
 		}
-		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
+		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
 		sharedPlayer?.setQueue(with: queueDescriptor)
@@ -115,16 +110,11 @@ extension SongsTVC {
 		else { return }
 		
 		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
-		var mediaItemsToEnqueue = [MPMediaItem]()
-		for item in sectionOfLibraryItems.items[indexOfSelectedSong...] {
-			if
-				let songToEnqueue = item as? Song,
-				let mediaItemToEnqueue = songToEnqueue.mpMediaItem()
-			{
-				mediaItemsToEnqueue.append(mediaItemToEnqueue)
-			}
+		let chosenSongs = sectionOfLibraryItems.items[indexOfSelectedSong...]
+		let chosenMediaItems = chosenSongs.compactMap {
+			($0 as? Song)?.mpMediaItem()
 		}
-		let mediaItemCollection = MPMediaItemCollection(items: mediaItemsToEnqueue)
+		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
 		sharedPlayer?.append(queueDescriptor)
@@ -142,7 +132,7 @@ extension SongsTVC {
 		showExplanationIfNecessaryForEnqueueAction(
 			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAction,
 			titleOfSelectedSong: titleOfSelectedSong,
-			numberOfSongsEnqueued: mediaItemsToEnqueue.count)
+			numberOfSongsEnqueued: chosenMediaItems.count)
 	}
 	
 	private func enqueueSelectedSong() {
@@ -153,10 +143,10 @@ extension SongsTVC {
 		
 		let indexOfSong = indexOfLibraryItem(for: selectedIndexPath)
 		guard
-			let song = sectionOfLibraryItems.items[indexOfSong] as? Song,
-			let mediaItem = song.mpMediaItem()
+			let selectedSong = sectionOfLibraryItems.items[indexOfSong] as? Song,
+			let selectedMediaItem = selectedSong.mpMediaItem()
 		else { return }
-		let mediaItemCollection = MPMediaItemCollection(items: [mediaItem])
+		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
 		sharedPlayer?.append(queueDescriptor)
@@ -171,7 +161,7 @@ extension SongsTVC {
 		
 		showExplanationIfNecessaryForEnqueueAction(
 			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAction,
-			titleOfSelectedSong: song.titleFormattedOrPlaceholder(),
+			titleOfSelectedSong: selectedSong.titleFormattedOrPlaceholder(),
 			numberOfSongsEnqueued: 1)
 	}
 	

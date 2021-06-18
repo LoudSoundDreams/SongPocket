@@ -80,12 +80,14 @@ extension LibraryTVC {
 	final func refreshNowPlayingIndicators(
 		isInPlayerDeterminer: (IndexPath) -> Bool
 	) {
+		let isPlaying = sharedPlayer?.playbackState == .playing
 		for indexPath in indexPaths(forIndexOfSectionOfLibraryItems: 0) {
-			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicator else { continue } // TO DO: For some reason, this can trigger tableView(_:cellForRowAt:), which can redraw the cell to a null placeholder, which we can't allow.
+			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicatorDisplayer else { continue } // TO DO: For some reason, this can trigger tableView(_:cellForRowAt:), which can redraw the cell to a null placeholder, which we can't allow.
 			let isInPlayer = isInPlayerDeterminer(indexPath)
-			let indicator = PlayerManager.nowPlayingIndicator(
-				isInPlayer: isInPlayer)
-			cell.applyNowPlayingIndicator(indicator)
+			let indicator = NowPlayingIndicator(
+				isInPlayer: isInPlayer,
+				isPlaying: isPlaying)
+			cell.apply(indicator)
 		}
 	}
 	

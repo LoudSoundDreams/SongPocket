@@ -33,17 +33,17 @@ extension LibraryTVC {
 	
 	// You should only be allowed to sort contiguous items within the same SectionOfLibraryItems.
 	final func shouldAllowSorting() -> Bool {
-		if tableView.indexPathsF0rSelectedRows.isEmpty {
+		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
 			return true // Multisection: Only if we only have 1 SectionOfLibraryItems.
 		} else {
-			return tableView.indexPathsF0rSelectedRows.isContiguousWithinSameSection()
+			return tableView.indexPathsForSelectedRowsNonNil.isContiguousWithinSameSection()
 		}
 	}
 	
 	final func shouldAllowFloating() -> Bool {
 		return
-			!tableView.indexPathsF0rSelectedRows.isEmpty &&
-			tableView.indexPathsF0rSelectedRows.isWithinSameSection()
+			!tableView.indexPathsForSelectedRowsNonNil.isEmpty &&
+			tableView.indexPathsForSelectedRowsNonNil.isWithinSameSection()
 	}
 	
 	final func shouldAllowSinking() -> Bool {
@@ -57,7 +57,7 @@ extension LibraryTVC {
 		
 		// Make a new data source.
 		
-		let selectedIndexPaths = tableView.indexPathsF0rSelectedRows.sorted()
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		let indexesOfSelectedItems = selectedIndexPaths.map { indexOfLibraryItem(for: $0) }
 		let selectedItems = selectedIndexPaths.map { libraryItem(for: $0) }
 		var newItems = sectionOfLibraryItems.items
@@ -85,7 +85,7 @@ extension LibraryTVC {
 		
 		// Make a new data source.
 		
-		let selectedIndexPaths = tableView.indexPathsF0rSelectedRows.sorted()
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		let indexesOfSelectedItems = selectedIndexPaths.map { indexOfLibraryItem(for: $0) }
 		let selectedItems = selectedIndexPaths.map { libraryItem(for: $0) }
 		var newItems = sectionOfLibraryItems.items
@@ -148,10 +148,10 @@ extension LibraryTVC {
 		
 		// Get the indexes of the items to sort.
 		let sourceIndexPaths: [IndexPath]
-		if tableView.indexPathsF0rSelectedRows.isEmpty {
+		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
 			sourceIndexPaths = indexPaths(forIndexOfSectionOfLibraryItems: 0)
 		} else {
-			sourceIndexPaths = tableView.indexPathsF0rSelectedRows.sorted()
+			sourceIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		}
 		let sourceIndexesOfItems = sourceIndexPaths.map { indexOfLibraryItem(for: $0) }
 		

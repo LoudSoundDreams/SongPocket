@@ -132,9 +132,11 @@ extension OptionsTVC {
 		let index = indexPath.row
 		let rowAccentColor = AccentColor.all[index]
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Color Cell", for: indexPath)
+		let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Color Cell",
+			for: indexPath)
 		
-		if #available(iOS 14.0, *) {
+		if #available(iOS 14, *) {
 			var configuration = UIListContentConfiguration.cell()
 			configuration.text = rowAccentColor.displayName
 			configuration.textProperties.color = rowAccentColor.uiColor
@@ -163,7 +165,7 @@ extension OptionsTVC {
 		selectedAccentColor.set(in: view.window)
 		
 		func refreshCheckmarksOnAccentColorRows(selectedIndexPath: IndexPath) {
-			if #available(iOS 14.0, *) { // See comment in the `else` block.
+			if #available(iOS 14, *) { // See comment in the `else` block.
 				
 				func untickUnselectedAccentColorRows() {
 					let accentColorIndexPaths = tableView.indexPathsForRows(
@@ -228,7 +230,9 @@ extension OptionsTVC {
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch PurchaseManager.shared.tipStatus {
 		case .notYetFirstLoaded, .loading:
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
+			let cell = tableView.dequeueReusableCell(
+				withIdentifier: "Tip Loading",
+				for: indexPath)
 			return cell
 		case .reload:
 			return tipReloadCell()
@@ -239,13 +243,18 @@ extension OptionsTVC {
 				return tipReadyCell()
 			}
 		case .confirming:
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Purchasing", for: indexPath)
+			let cell = tableView.dequeueReusableCell(
+				withIdentifier: "Tip Purchasing",
+				for: indexPath)
 			return cell
 		}
 	}
 	
 	private func tipReloadCell() -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Reload") as? TipReloadCell else {
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Tip Reload")
+				as? TipReloadCell
+		else {
 			return UITableViewCell()
 		}
 		
@@ -256,7 +265,9 @@ extension OptionsTVC {
 	
 	private func tipReadyCell() -> UITableViewCell {
 		guard
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Ready") as? TipReadyCell,
+			let cell = tableView.dequeueReusableCell(
+				withIdentifier: "Tip Ready")
+				as? TipReadyCell,
 			let tipProduct = PurchaseManager.shared.tipProduct,
 			let tipPriceFormatter = PurchaseManager.shared.tipPriceFormatter
 		else {
@@ -273,8 +284,9 @@ extension OptionsTVC {
 	}
 	
 	private func tipThankYouCell() -> UITableViewCell {
-		guard
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Thank You") as? TipThankYouCell
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Tip Thank You")
+				as? TipThankYouCell
 		else {
 			return UITableViewCell()
 		}

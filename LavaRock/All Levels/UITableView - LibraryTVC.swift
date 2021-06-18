@@ -30,7 +30,7 @@ extension LibraryTVC {
 		}
 	}
 	
-	// MARK: Cells
+	// MARK: - Cells
 	
 	// All subclasses should override this.
 	override func tableView(

@@ -91,26 +91,45 @@ class LibraryTVC:
 		} else { // iOS 13
 			return UIBarButtonItem(
 				title: LocalizedString.sort,
-				style: .plain, target: self, action: #selector(showSortOptionsActionSheet))
+				style: .plain,
+				target: self,
+				action: #selector(showSortOptionsActionSheet))
 		}
 	}()
 	lazy var floatToTopButton: UIBarButtonItem = {
+		let image: UIImage?
+		if #available(iOS 15, *) {
+			image = UIImage(systemName: "arrow.up.to.line.compact")
+		} else { // iOS 14 and earlier
+			image = UIImage(systemName: "arrow.up.to.line.alt")
+		}
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "arrow.up.to.line.alt"),
-			style: .plain, target: self, action: #selector(floatSelectedItemsToTopOfSection))
+			image: image,
+			style: .plain,
+			target: self,
+			action: #selector(floatSelectedItemsToTopOfSection))
 		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
 	}()
 	lazy var sinkToBottomButton: UIBarButtonItem = {
+		let image: UIImage?
+		if #available(iOS 15, *) {
+			image = UIImage(systemName: "arrow.down.to.line.compact")
+		} else { // iOS 14 and earlier
+			image = UIImage(systemName: "arrow.down.to.line.alt")
+		}
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "arrow.down.to.line.alt"),
-			style: .plain, target: self, action: #selector(sinkSelectedItemsToBottomOfSection))
+			image: image,
+			style: .plain,
+			target: self,
+			action: #selector(sinkSelectedItemsToBottomOfSection))
 		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
 	}()
 	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
 		barButtonSystemItem: .cancel,
-		target: self, action: #selector(cancelMoveAlbums))
+		target: self,
+		action: #selector(cancelMoveAlbums))
 	@objc private func cancelMoveAlbums() {
 		dismiss(animated: true)
 	}
@@ -128,7 +147,9 @@ class LibraryTVC:
 	lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
-			style: .plain, target: self, action: #selector(goToPreviousSong))
+			style: .plain,
+			target: self,
+			action: #selector(goToPreviousSong))
 		button.width = 10.0 //
 		button.accessibilityLabel = LocalizedString.previousTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
@@ -137,7 +158,9 @@ class LibraryTVC:
 	lazy var rewindButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
-			style: .plain, target: self, action: #selector(rewind))
+			style: .plain,
+			target: self,
+			action: #selector(rewind))
 		button.width = 10.0 //
 		button.accessibilityLabel = LocalizedString.restart
 		button.accessibilityTraits.formUnion(.startsMediaSession)
@@ -150,7 +173,9 @@ class LibraryTVC:
 	lazy var playPauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: playImage,
-			style: .plain, target: self, action: playAction)
+			style: .plain,
+			target: self,
+			action: playAction)
 		button.width = 10.0 // As of iOS 14.2 beta 4, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
 		button.accessibilityLabel = playAccessibilityLabel
 		button.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
@@ -159,7 +184,9 @@ class LibraryTVC:
 	lazy var goToNextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
-			style: .plain, target: self, action: #selector(goToNextSong))
+			style: .plain,
+			target: self,
+			action: #selector(goToNextSong))
 		button.width = 10.0 //
 		button.accessibilityLabel = LocalizedString.nextTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
@@ -198,7 +225,12 @@ class LibraryTVC:
 	// MARK: Setting Up UI
 	
 	func setUpUI() {
-		tableView.tableFooterView = UIView() // Removes the blank cells after the content ends. You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
+		if #available(iOS 15, *) {
+			// In iOS 15, by default, tableView.fillerRowHeight is 0, which removes the blank rows below the last row.
+		} else {
+			tableView.tableFooterView = UIView() // Removes the blank rows below the last row.
+			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
+		}
 		
 		refreshNavigationItemTitle()
 		

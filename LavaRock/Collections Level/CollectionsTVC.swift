@@ -21,7 +21,9 @@ final class CollectionsTVC:
 	// "Constants"
 	@IBOutlet private var optionsButton: UIBarButtonItem!
 	private lazy var makeNewCollectionButton = UIBarButtonItem(
-		barButtonSystemItem: .add, target: self, action: #selector(presentDialogToMakeNewCollection))
+		barButtonSystemItem: .add,
+		target: self,
+		action: #selector(presentDialogToMakeNewCollection))
 	
 	// Variables
 	var isLoading: Bool {
@@ -44,7 +46,7 @@ final class CollectionsTVC:
 			if MPMediaLibrary.authorizationStatus() == .authorized {
 				DispatchQueue.main.async { // Yes, it's actually useful to use async on the main thread. This lets us show existing Collections as soon as possible, then integrate with and import changes from the Music library shortly later.
 					self.isImportingChanges = true
-					// contentState() == .loading
+					// contentState() is now .loading
 					self.refreshToReflectContentState(completion: {
 						self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
 					})
@@ -64,7 +66,7 @@ final class CollectionsTVC:
 		setUp()
 		
 		isImportingChanges = true
-		// contentState() == .loading
+		// contentState() is now .loading
 		refreshToReflectContentState(completion: {
 			self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
 		})

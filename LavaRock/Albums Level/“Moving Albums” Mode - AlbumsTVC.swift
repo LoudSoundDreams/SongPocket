@@ -30,12 +30,12 @@ extension AlbumsTVC {
 		// Note the Albums to move, and to not move.
 		var idsOfAlbumsToMove = [NSManagedObjectID]()
 		var idsOfAlbumsToNotMove = [NSManagedObjectID]()
-		if tableView.indexPathsF0rSelectedRows.isEmpty {
+		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
 			idsOfAlbumsToMove = sectionOfLibraryItems.items.map { $0.objectID }
 		} else {
 			for indexPath in indexPaths(forIndexOfSectionOfLibraryItems: 0) {
 				let album = libraryItem(for: indexPath)
-				if tableView.indexPathsF0rSelectedRows.contains(indexPath) { // If the row is selected.
+				if tableView.indexPathsForSelectedRowsNonNil.contains(indexPath) { // If the row is selected.
 					idsOfAlbumsToMove.append(album.objectID)
 				} else { // The row is not selected.
 					idsOfAlbumsToNotMove.append(album.objectID)

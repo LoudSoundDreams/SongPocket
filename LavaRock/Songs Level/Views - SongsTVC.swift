@@ -30,7 +30,7 @@ final class AlbumInfoCellWithoutReleaseDate: UITableViewCell {
 
 final class SongCell:
 	UITableViewCell,
-	NowPlayingIndicator
+	NowPlayingIndicatorDisplayer
 {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
@@ -45,7 +45,7 @@ final class SongCell:
 
 final class SongCellWithDifferentArtist:
 	UITableViewCell,
-	NowPlayingIndicator
+	NowPlayingIndicatorDisplayer
 {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var artistLabel: UILabel!

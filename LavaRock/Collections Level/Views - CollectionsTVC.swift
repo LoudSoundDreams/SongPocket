@@ -21,7 +21,7 @@ final class AllowAccessOrLoadingCell: UITableViewCell {
 
 final class CollectionCell:
 	UITableViewCell,
-	NowPlayingIndicator
+	NowPlayingIndicatorDisplayer
 {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!

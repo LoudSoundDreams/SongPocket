@@ -9,7 +9,7 @@ import UIKit
 
 final class AlbumCell:
 	UITableViewCell,
-	NowPlayingIndicator
+	NowPlayingIndicatorDisplayer
 {
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
@@ -25,7 +25,7 @@ final class AlbumCell:
 
 final class AlbumCellWithoutReleaseDate:
 	UITableViewCell,
-	NowPlayingIndicator
+	NowPlayingIndicatorDisplayer
 {
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!

@@ -30,33 +30,6 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		refreshSongInPlayer()
 	}
 	
-	// MARK: - "Now Playing" Indicator
-	
-	static func nowPlayingIndicator(isInPlayer: Bool) -> (UIImage?, String?) {
-		guard
-			isInPlayer,
-			let player = player
-		else {
-			return (nil, nil)
-		}
-		
-		if player.playbackState == .playing { // There are many playback states; only show the "playing" icon when the player controller is playing. Otherwise, show the "not playing" icon.
-			if #available(iOS 14.0, *) {
-				return
-					(UIImage(systemName: "speaker.wave.2.fill"),
-					 LocalizedString.nowPlaying)
-			} else { // iOS 13
-				return
-					(UIImage(systemName: "speaker.2.fill"),
-					 LocalizedString.nowPlaying)
-			}
-		} else {
-			return
-				(UIImage(systemName: "speaker.fill"),
-				 LocalizedString.paused)
-		}
-	}
-	
 	// MARK: - Other
 	
 	static func refreshSongInPlayer() {

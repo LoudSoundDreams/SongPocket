@@ -20,10 +20,14 @@ final class AlbumsTVC:
 	// "Constants"
 	private lazy var startMovingAlbumsButton = UIBarButtonItem(
 		title: LocalizedString.move,
-		style: .plain, target: self, action: #selector(startMovingAlbums))
+		style: .plain,
+		target: self,
+		action: #selector(startMovingAlbums))
 	private lazy var moveAlbumsHereButton = UIBarButtonItem(
 		title: LocalizedString.moveHere,
-		style: .done, target: self, action: #selector(moveAlbumsHere))
+		style: .done,
+		target: self,
+		action: #selector(moveAlbumsHere))
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?

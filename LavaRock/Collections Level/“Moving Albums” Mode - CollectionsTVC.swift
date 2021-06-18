@@ -106,16 +106,9 @@ extension CollectionsTVC {
 			return nil
 		}
 		
-		var existingCollectionTitles = [String]()
-		for item in sectionOfLibraryItems.items {
-			if
-				let collection = item as? Collection,
-				let collectionTitle = collection.title
-			{
-				existingCollectionTitles.append(collectionTitle)
-			}
+		let existingCollectionTitles = sectionOfLibraryItems.items.compactMap {
+			($0 as? Collection)?.title
 		}
-		
 		return Self.suggestedCollectionTitle(
 			for: albumMoverClipboard.idsOfAlbumsBeingMoved,
 			in: managedObjectContext,
@@ -139,8 +132,6 @@ extension CollectionsTVC {
 				notMatching: existingCollectionTitles
 			) {
 				return suggestion
-			} else {
-				continue
 			}
 		}
 		return nil

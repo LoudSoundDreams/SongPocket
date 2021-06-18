@@ -14,14 +14,14 @@ extension LibraryTVC {
 	
 	final func refreshPlaybackToolbarButtons() {
 		
-		func setPlayButton() {
+		func configurePlayButton() {
 			playPauseButton.image = playImage
 			playPauseButton.action = playAction
 			playPauseButton.accessibilityLabel = playAccessibilityLabel
 			playPauseButton.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		}
 		
-		func setPauseButton() {
+		func configurePauseButton() {
 			playPauseButton.image = UIImage(systemName: "pause.fill")
 			playPauseButton.action = #selector(pause)
 			playPauseButton.accessibilityLabel = LocalizedString.pause
@@ -32,7 +32,7 @@ extension LibraryTVC {
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let player = sharedPlayer
 		else {
-			setPlayButton()
+			configurePlayButton()
 			for barButtonItem in playbackToolbarButtons {
 				barButtonItem.disableWithAccessibilityTrait()
 			}
@@ -40,9 +40,9 @@ extension LibraryTVC {
 		}
 		
 		if player.playbackState == .playing { // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
-			setPauseButton()
+			configurePauseButton()
 		} else {
-			setPlayButton()
+			configurePlayButton()
 		}
 		
 		// Enable or disable each button as appropriate

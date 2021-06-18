@@ -109,7 +109,10 @@ extension CollectionsTVC {
 	// MARK: "Allow Access" or "Loading…" Cell
 	
 	private func allowAccessOrLoadingCell() -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading Cell") as? AllowAccessOrLoadingCell else {
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Allow Access or Loading Cell")
+				as? AllowAccessOrLoadingCell
+		else {
 			return UITableViewCell()
 		}
 		
@@ -143,15 +146,21 @@ extension CollectionsTVC {
 		
 		// Make, configure, and return the cell.
 		
-		guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? CollectionCell else {
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: cellReuseIdentifier,
+			for: indexPath)
+				as? CollectionCell
+		else {
 			return UITableViewCell()
 		}
 		
 		cell.titleLabel.text = collection.title
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
-		let cellNowPlayingIndicator = PlayerManager.nowPlayingIndicator(
-			isInPlayer: isInPlayer)
-		cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
+		let isPlaying = sharedPlayer?.playbackState == .playing
+		let nowPlayingIndicator = NowPlayingIndicator(
+			isInPlayer: isInPlayer,
+			isPlaying: isPlaying)
+		cell.apply(nowPlayingIndicator)
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			if collection.objectID == albumMoverClipboard.ifOfSourceCollection {
@@ -184,20 +193,14 @@ extension CollectionsTVC {
 //	}
 	
 	private func renameAccessibilityFocusedCollection(_ sender: UIAccessibilityCustomAction) -> Bool {
-		var indexPathOfCollectionToRename: IndexPath?
 		let indexPathsOfAllCollections = indexPaths(forIndexOfSectionOfLibraryItems: 0)
-		for indexPath in indexPathsOfAllCollections {
-			if
-				let cell = tableView.cellForRow(at: indexPath),
-				cell.accessibilityElementIsFocused()
-			{
-				indexPathOfCollectionToRename = indexPath
-				break
-			}
+		let focusedIndexPath = indexPathsOfAllCollections.first {
+			let cell = tableView.cellForRow(at: $0)
+			return cell?.accessibilityElementIsFocused() ?? false
 		}
 		
-		if let indexPathOfCollectionToRename = indexPathOfCollectionToRename {
-			renameCollection(at: indexPathOfCollectionToRename)
+		if let focusedIndexPath = focusedIndexPath {
+			renameCollection(at: focusedIndexPath)
 			return true
 		} else {
 			return false

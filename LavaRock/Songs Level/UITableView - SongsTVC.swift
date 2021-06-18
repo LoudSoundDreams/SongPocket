@@ -40,7 +40,10 @@ extension SongsTVC {
 		
 		// Make, configure, and return the cell.
 		
-		guard let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell") as? AlbumArtworkCell else {
+		guard let albumArtworkCell = tableView.dequeueReusableCell(
+			withIdentifier: "Album Artwork Cell")
+				as? AlbumArtworkCell
+		else {
 			return UITableViewCell()
 		}
 		albumArtworkCell.artworkImageView.image = cellImage
@@ -60,7 +63,10 @@ extension SongsTVC {
 		
 		// Make, configure, and return the cell.
 		if let cellSubtitle = cellSubtitle {
-			guard let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell") as? AlbumInfoCell else {
+			guard let albumInfoCell = tableView.dequeueReusableCell(
+				withIdentifier: "Album Info Cell")
+					as? AlbumInfoCell
+			else {
 				return UITableViewCell()
 			}
 			albumInfoCell.albumArtistLabel.text = cellHeading
@@ -71,7 +77,10 @@ extension SongsTVC {
 			return albumInfoCell
 			
 		} else { // We couldn't determine the album's release date.
-			guard let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell Without Release Date") as? AlbumInfoCellWithoutReleaseDate else {
+			guard let albumInfoCell = tableView.dequeueReusableCell(
+				withIdentifier: "Album Info Cell Without Release Date")
+					as? AlbumInfoCellWithoutReleaseDate
+			else {
 				return UITableViewCell()
 			}
 			albumInfoCell.albumArtistLabel.text = cellHeading
@@ -87,42 +96,52 @@ extension SongsTVC {
 		guard let song = libraryItem(for: indexPath) as? Song else {
 			return UITableViewCell()
 		}
-		let cellTitle = song.titleFormattedOrPlaceholder()
+		let songTitle = song.titleFormattedOrPlaceholder()
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
-		let cellNowPlayingIndicator = PlayerManager.nowPlayingIndicator(
-			isInPlayer: isInPlayer)
+		let isPlaying = sharedPlayer?.playbackState == .playing
+		let nowPlayingIndicator = NowPlayingIndicator(
+			isInPlayer: isInPlayer,
+			isPlaying: isPlaying)
 		let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
 		
 		// Make, configure, and return the cell.
 		if
-			let cellArtist = song.artistFormatted(),
-			cellArtist != (sectionOfLibraryItems.container as? Album)?.albumArtistFormattedOrPlaceholder()
+			let artist = song.artistFormatted(),
+			artist != (sectionOfLibraryItems.container as? Album)?.albumArtistFormattedOrPlaceholder()
 		{
-			guard var cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath) as? SongCellWithDifferentArtist else {
+			guard var cell = tableView.dequeueReusableCell(
+				withIdentifier: "Cell with Different Artist",
+				for: indexPath)
+					as? SongCellWithDifferentArtist
+			else {
 				return UITableViewCell()
 			}
-			cell.artistLabel.text = cellArtist
+			cell.artistLabel.text = artist
 			
-			cell.titleLabel.text = cellTitle
-			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
+			cell.titleLabel.text = songTitle
+			cell.apply(nowPlayingIndicator)
 			cell.trackNumberLabel.text = cellTrackNumberText
 			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers
 			
-			cell.accessibilityUserInputLabels = [cellTitle]
+			cell.accessibilityUserInputLabels = [songTitle]
 			
 			return cell
 			
 		} else { // The song's artist is not useful, or it's the same as the album artist.
-			guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? SongCell else { // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
+			guard var cell = tableView.dequeueReusableCell(
+				withIdentifier: cellReuseIdentifier,
+				for: indexPath)
+					as? SongCell
+			else { // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
 				return UITableViewCell()
 			}
 			
-			cell.titleLabel.text = cellTitle
-			cell.applyNowPlayingIndicator(cellNowPlayingIndicator)
+			cell.titleLabel.text = songTitle
+			cell.apply(nowPlayingIndicator)
 			cell.trackNumberLabel.text = cellTrackNumberText
 			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers
 			
-			cell.accessibilityUserInputLabels = [cellTitle]
+			cell.accessibilityUserInputLabels = [songTitle]
 			
 			return cell
 		}

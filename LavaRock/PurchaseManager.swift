@@ -46,11 +46,8 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	
 	final func requestAllSKProducts() {
 		tipStatus = .loading
-		var setOfIdentifiers = Set<String>()
-		for identifier in ProductIdentifier.allCases {
-			setOfIdentifiers.insert(identifier.rawValue)
-		}
-		let productsRequest = SKProductsRequest(productIdentifiers: setOfIdentifiers)
+		let identifiers = ProductIdentifier.allCases.map { $0.rawValue }
+		let productsRequest = SKProductsRequest(productIdentifiers: Set(identifiers))
 		productsRequest.delegate = self // We can't make this method static, because StoreKit needs an instance here, not a type.
 		productsRequest.start()
 		savedSKProductsRequest = productsRequest

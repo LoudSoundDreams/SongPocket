@@ -55,7 +55,7 @@ extension CollectionsTVC {
 		
 		if isLoading {
 			didJustFinishLoading = true
-			// contentState() == .justFinishedLoading
+			// contentState() is now .justFinishedLoading
 			refreshToReflectContentState(completion: nil)
 			didJustFinishLoading = false
 		}
