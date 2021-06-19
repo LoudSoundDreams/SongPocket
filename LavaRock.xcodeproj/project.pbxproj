@@ -45,7 +45,7 @@
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		077E089824FB7AFF007C2479 /* LibraryTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */; };
 		0781F1F12599181800781CF8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0781F1F02599181800781CF8 /* StoreKit.framework */; };
-		0781F1FA25991B3300781CF8 /* UITableView - OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0781F1F925991B3300781CF8 /* UITableView - OptionsTVC.swift */; };
+		0781F1FA25991B3300781CF8 /* OptionsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */; };
 		078307B42512BC59005CDA67 /* AlbumsTVC + AlbumMoverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078307B32512BC59005CDA67 /* AlbumsTVC + AlbumMoverDelegate.swift */; };
 		07865B252566FBC600DBEB26 /* AlbumsTVC + NowPlayingIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B242566FBC600DBEB26 /* AlbumsTVC + NowPlayingIndicatorManager.swift */; };
 		07865B322567031C00DBEB26 /* CollectionsTVC + NowPlayingIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B312567031C00DBEB26 /* CollectionsTVC + NowPlayingIndicatorManager.swift */; };
@@ -72,8 +72,8 @@
 		07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */; };
 		07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */; };
 		07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E092599227C00826447 /* PurchaseManager.swift */; };
-		07FD6E122599246700826447 /* PurchaseManagerTipDelegate - OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* PurchaseManagerTipDelegate - OptionsTVC.swift */; };
-		07FD6E17259925EF00826447 /* Views - OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E16259925EF00826447 /* Views - OptionsTVC.swift */; };
+		07FD6E122599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift */; };
+		07FD6E17259925EF00826447 /* OptionsTVC - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E16259925EF00826447 /* OptionsTVC - Views.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,7 +144,7 @@
 		077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - Notifications.swift"; sourceTree = "<group>"; };
 		0781F1F02599181800781CF8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0781F1F52599184700781CF8 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
-		0781F1F925991B3300781CF8 /* UITableView - OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView - OptionsTVC.swift"; sourceTree = "<group>"; };
+		0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		078307B32512BC59005CDA67 /* AlbumsTVC + AlbumMoverDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + AlbumMoverDelegate.swift"; sourceTree = "<group>"; };
 		07865B242566FBC600DBEB26 /* AlbumsTVC + NowPlayingIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + NowPlayingIndicatorManager.swift"; sourceTree = "<group>"; };
 		07865B312567031C00DBEB26 /* CollectionsTVC + NowPlayingIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC + NowPlayingIndicatorManager.swift"; sourceTree = "<group>"; };
@@ -172,8 +172,8 @@
 		07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07FD6E092599227C00826447 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
-		07FD6E112599246700826447 /* PurchaseManagerTipDelegate - OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PurchaseManagerTipDelegate - OptionsTVC.swift"; sourceTree = "<group>"; };
-		07FD6E16259925EF00826447 /* Views - OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views - OptionsTVC.swift"; sourceTree = "<group>"; };
+		07FD6E112599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC + PurchaseManagerTipDelegate.swift"; sourceTree = "<group>"; };
+		07FD6E16259925EF00826447 /* OptionsTVC - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC - Views.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,9 +206,9 @@
 			isa = PBXGroup;
 			children = (
 				073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */,
-				0781F1F925991B3300781CF8 /* UITableView - OptionsTVC.swift */,
-				07FD6E112599246700826447 /* PurchaseManagerTipDelegate - OptionsTVC.swift */,
-				07FD6E16259925EF00826447 /* Views - OptionsTVC.swift */,
+				0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */,
+				07FD6E112599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift */,
+				07FD6E16259925EF00826447 /* OptionsTVC - Views.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -554,14 +554,14 @@
 				07A4F90A2519E7D20065C87E /* func createManagedObjects.swift in Sources */,
 				07865B322567031C00DBEB26 /* CollectionsTVC + NowPlayingIndicatorManager.swift in Sources */,
 				078FDD0F2638872100779AF2 /* extension Array.swift in Sources */,
-				07FD6E122599246700826447 /* PurchaseManagerTipDelegate - OptionsTVC.swift in Sources */,
+				07FD6E122599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift in Sources */,
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0736E3A724B8415400A15420 /* AlbumsTVC - Views.swift in Sources */,
 				07865B252566FBC600DBEB26 /* AlbumsTVC + NowPlayingIndicatorManager.swift in Sources */,
 				07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Moving Albums” Mode.swift in Sources */,
 				073E6A9225574B99003C84A5 /* NowPlayingIndicator.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* LibraryTVC - Editing.swift in Sources */,
-				0781F1FA25991B3300781CF8 /* UITableView - OptionsTVC.swift in Sources */,
+				0781F1FA25991B3300781CF8 /* OptionsTVC - UITableView.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumsTVC + AlbumMoverDelegate.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
@@ -585,7 +585,7 @@
 				07F1B91925F15EDB008591C7 /* SectionOfLibraryItems.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */,
-				07FD6E17259925EF00826447 /* Views - OptionsTVC.swift in Sources */,
+				07FD6E17259925EF00826447 /* OptionsTVC - Views.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
 				0719B57E2511CD4E00748371 /* LibraryTVC + PlaybackToolbarManager.swift in Sources */,
 				075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */,
