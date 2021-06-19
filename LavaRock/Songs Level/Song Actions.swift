@@ -130,7 +130,7 @@ extension SongsTVC {
 		guard let selectedSong = libraryItem(for: selectedIndexPath) as? Song else { return }
 		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
 		showExplanationIfNecessaryForEnqueueAction(
-			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAction,
+			userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
 			titleOfSelectedSong: titleOfSelectedSong,
 			numberOfSongsEnqueued: chosenMediaItems.count)
 	}
@@ -160,7 +160,7 @@ extension SongsTVC {
 		}
 		
 		showExplanationIfNecessaryForEnqueueAction(
-			userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey.shouldExplainQueueAction,
+			userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
 			titleOfSelectedSong: selectedSong.titleFormattedOrPlaceholder(),
 			numberOfSongsEnqueued: 1)
 	}
@@ -168,7 +168,7 @@ extension SongsTVC {
 	// MARK: Explaining Enqueue Actions
 	
 	private func showExplanationIfNecessaryForEnqueueAction(
-		userDefaultsKeyForShouldShowExplanation: LRUserDefaultsKey,
+		userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey,
 		titleOfSelectedSong: String,
 		numberOfSongsEnqueued: Int
 	) {

@@ -1,5 +1,5 @@
 //
-//  UITableView - CollectionsTVC.swift
+//  CollectionsTVC - UITableView.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-30.
@@ -98,7 +98,7 @@ extension CollectionsTVC {
 	) -> UITableViewCell {
 		switch contentState() {
 		case .allowAccess, .loading:
-			return allowAccessOrLoadingCell()
+			return allowAccessOrLoadingCell(forRowAt: indexPath)
 		case .justFinishedLoading:
 			return UITableViewCell() // Should never run
 		case .normal:
@@ -108,9 +108,10 @@ extension CollectionsTVC {
 	
 	// MARK: "Allow Access" or "Loading…" Cell
 	
-	private func allowAccessOrLoadingCell() -> UITableViewCell {
+	private func allowAccessOrLoadingCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Allow Access or Loading Cell")
+			withIdentifier: "Allow Access or Loading Cell",
+			for: indexPath)
 				as? AllowAccessOrLoadingCell
 		else {
 			return UITableViewCell()

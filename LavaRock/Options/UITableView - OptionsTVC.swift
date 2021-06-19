@@ -235,12 +235,12 @@ extension OptionsTVC {
 				for: indexPath)
 			return cell
 		case .reload:
-			return tipReloadCell()
+			return tipReloadCell(forRowAt: indexPath)
 		case .ready:
 			if shouldShowTemporaryThankYouMessage {
-				return tipThankYouCell()
+				return tipThankYouCell(forRowAt: indexPath)
 			} else {
-				return tipReadyCell()
+				return tipReadyCell(forRowAt: indexPath)
 			}
 		case .confirming:
 			let cell = tableView.dequeueReusableCell(
@@ -250,9 +250,10 @@ extension OptionsTVC {
 		}
 	}
 	
-	private func tipReloadCell() -> UITableViewCell {
+	private func tipReloadCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Tip Reload")
+			withIdentifier: "Tip Reload",
+			for: indexPath)
 				as? TipReloadCell
 		else {
 			return UITableViewCell()
@@ -263,10 +264,11 @@ extension OptionsTVC {
 		return cell
 	}
 	
-	private func tipReadyCell() -> UITableViewCell {
+	private func tipReadyCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard
 			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Tip Ready")
+				withIdentifier: "Tip Ready",
+				for: indexPath)
 				as? TipReadyCell,
 			let tipProduct = PurchaseManager.shared.tipProduct,
 			let tipPriceFormatter = PurchaseManager.shared.tipPriceFormatter
@@ -283,9 +285,10 @@ extension OptionsTVC {
 		return cell
 	}
 	
-	private func tipThankYouCell() -> UITableViewCell {
+	private func tipThankYouCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Tip Thank You")
+			withIdentifier: "Tip Thank You",
+			for: indexPath)
 				as? TipThankYouCell
 		else {
 			return UITableViewCell()

@@ -1,5 +1,5 @@
 //
-//  Views - AlbumsTVC.swift
+//  AlbumsTVC - Views.swift
 //  LavaRock
 //
 //  Created by h on 2020-07-10.

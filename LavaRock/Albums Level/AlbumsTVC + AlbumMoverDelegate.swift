@@ -1,5 +1,5 @@
 //
-//  AlbumMoverDelegate - AlbumsTVC.swift
+//  AlbumsTVC + AlbumMoverDelegate.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-16.

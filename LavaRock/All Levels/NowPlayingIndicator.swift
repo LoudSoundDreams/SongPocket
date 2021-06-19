@@ -13,7 +13,7 @@ struct NowPlayingIndicator {
 	
 	init(
 		isInPlayer: Bool,
-		isPlaying: Bool // MPMusicPlaybackState has more cases than just .playing and .paused. Call this with isPlaying: true if and only if player controller is playing. Otherwise, call this with isPlaying: false to get the "in player, but paused" indicator.
+		isPlaying: Bool // MPMusicPlayerController.playbackState has more cases than just .playing and .paused. Call this with isPlaying: true if and only if the player is playing. Otherwise, call this with isPlaying: false to get the "in player, but paused" indicator.
 	) {
 		guard isInPlayer else {
 			image = nil
@@ -40,20 +40,14 @@ protocol NowPlayingIndicatorDisplayer {
 //	var accessibilityLabel: String? { get set }
 	var accessibilityValue: String? { get set }
 	
-	mutating func apply(
-		_ indicator: NowPlayingIndicator
-	)
+	mutating func apply(_ indicator: NowPlayingIndicator)
 }
 
 extension NowPlayingIndicatorDisplayer {
-	
-	mutating func apply(
-		_ indicator: NowPlayingIndicator
-	) {
+	mutating func apply(_ indicator: NowPlayingIndicator) {
 		nowPlayingIndicatorImageView.image = indicator.image
 		accessibilityValue = indicator.accessibilityLabel
 	}
-	
 }
 
 protocol NowPlayingIndicatorManager {

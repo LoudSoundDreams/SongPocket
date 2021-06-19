@@ -44,16 +44,16 @@ final class CollectionsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 			if MPMediaLibrary.authorizationStatus() == .authorized {
-				DispatchQueue.main.async { // Yes, it's actually useful to use async on the main thread. This lets us show existing Collections as soon as possible, then integrate with and import changes from the Music library shortly later.
+				DispatchQueue.main.async { // Show existing Collections as soon as possible, then integrate with the built-in Music app shortly later.
 					self.isImportingChanges = true
 					// contentState() is now .loading
 					self.refreshToReflectContentState(completion: {
-						self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+						self.integrateWithBuiltInMusicApp()
 					})
 //					else if isUpdating {
 //						refreshAndSetBarButtons(animated: false)
 //						DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) { // Wait for the Edit button to actually change into the spinner before continuing
-//							integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+//							integrateWithBuiltInMusicApp()
 //						}
 //					}
 				}
@@ -68,15 +68,15 @@ final class CollectionsTVC:
 		isImportingChanges = true
 		// contentState() is now .loading
 		refreshToReflectContentState(completion: {
-			self.integrateWithAndImportChangesFromMusicLibraryIfAuthorized()
+			self.integrateWithBuiltInMusicApp()
 		})
 	}
 	
 	// Call this method late into launch, after we've already set up most of the UI; this method sets up the MediaPlayer-related functionality so that we can set up the rest of the UI (although this method itself doesn't set up the rest of the UI).
 	// Before calling this, put the UI into the "Loading…" or "Updating…" state.
-	private func integrateWithAndImportChangesFromMusicLibraryIfAuthorized() {
-		MusicLibraryManager.shared.importChangesAndBeginGeneratingNotificationsIfAuthorized() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
-		PlayerManager.setUpIfAuthorized() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
+	private func integrateWithBuiltInMusicApp() {
+		MusicLibraryManager.shared.setUpLibraryAndImportChanges() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
+		PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
 	}
 	
 	// MARK: Setting Up UI

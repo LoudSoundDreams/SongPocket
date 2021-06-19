@@ -27,7 +27,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	private init() { }
 	
-	final func importChangesAndBeginGeneratingNotificationsIfAuthorized() {
+	final func setUpLibraryAndImportChanges() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		library = MPMediaLibrary.default()

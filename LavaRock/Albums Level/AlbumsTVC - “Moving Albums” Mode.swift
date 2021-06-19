@@ -1,5 +1,5 @@
 //
-//  “Moving Albums” Mode - AlbumsTVC.swift
+//  AlbumsTVC - “Moving Albums” Mode.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-23.

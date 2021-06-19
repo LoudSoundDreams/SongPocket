@@ -1,5 +1,5 @@
 //
-//  Notifications - AlbumsTVC.swift
+//  AlbumsTVC - Notifications.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-03.

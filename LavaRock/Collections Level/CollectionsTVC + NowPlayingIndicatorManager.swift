@@ -1,5 +1,5 @@
 //
-//  NowPlayingIndicatorManager - CollectionsTVC.swift
+//  CollectionsTVC + NowPlayingIndicatorManager.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-19.

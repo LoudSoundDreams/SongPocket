@@ -71,7 +71,7 @@ struct AccentColor: Equatable { // You can't make this an enum, because raw valu
 		
 		UserDefaults.standard.set(
 			userDefaultsValueCase.rawValue,
-			forKey: LRUserDefaultsKey.accentColorName.rawValue)
+			forKey: UserDefaults.LRKey.accentColorName.rawValue)
 	}
 	
 	// MARK: - Getting Saved Value
@@ -110,7 +110,7 @@ struct AccentColor: Equatable { // You can't make this an enum, because raw valu
 	
 	private static func savedUserDefaultsValueCase() -> UserDefaultsValueCase? {
 		guard let savedUserDefaultsValue = UserDefaults.standard.value(
-				forKey: LRUserDefaultsKey.accentColorName.rawValue) as? String else {
+				forKey: UserDefaults.LRKey.accentColorName.rawValue) as? String else {
 			return nil
 		}
 		return UserDefaultsValueCase(rawValue: savedUserDefaultsValue)

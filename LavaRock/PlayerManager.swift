@@ -22,7 +22,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	
 	// MARK: - Setup
 	
-	static func setUpIfAuthorized() {
+	static func setUp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player = .systemMusicPlayer
