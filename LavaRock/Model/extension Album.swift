@@ -44,14 +44,16 @@ extension Album {
 		let albumsQuery = MPMediaQuery.albums() // Does this leave out any songs?
 		albumsQuery.addFilterPredicate(
 			MPMediaPropertyPredicate(
-				value: albumPersistentID, forProperty: MPMediaItemPropertyAlbumPersistentID)
+				value: albumPersistentID,
+				forProperty: MPMediaItemPropertyAlbumPersistentID)
 		)
 		
 		if
-			albumsQuery.collections?.count == 1,
-			let albumMPMediaItemCollection = albumsQuery.collections?[0]
+			let queriedAlbums = albumsQuery.collections,
+			queriedAlbums.count == 1,
+			let result = queriedAlbums.first
 		{
-			return albumMPMediaItemCollection
+			return result
 		} else {
 			return nil
 		}

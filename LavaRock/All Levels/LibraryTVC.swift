@@ -416,7 +416,7 @@ class LibraryTVC:
 	func refreshBarButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
 		editButtonItem.isEnabled =
-			MPMediaLibrary.authorizationStatus() == .authorized &&
+			MPMediaLibrary.authorizationStatus() == .authorized && // Do we need this?
 			!sectionOfLibraryItems.items.isEmpty
 		if isEditing {
 			// "Sort"

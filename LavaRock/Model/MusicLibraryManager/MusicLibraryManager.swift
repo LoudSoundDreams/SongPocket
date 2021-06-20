@@ -12,16 +12,12 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	// MARK: - Properties
 	
-	// "Constants"
+	// Constants
 	static let shared = MusicLibraryManager()
-	private var library: MPMediaLibrary?
 	let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
-	// Constants for debugging only
-	static let subsystemForOSLog = "LavaRock.MusicLibraryManager"
-	static let importChangesMainLog = OSLog(
-		subsystem: subsystemForOSLog,
-		category: "0. Import Changes Main")
+	// Variables
+	private var library: MPMediaLibrary?
 	
 	// MARK: - Setup and Teardown
 	

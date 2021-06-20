@@ -76,7 +76,7 @@ final class CollectionsTVC:
 	) {
 		let oldIndexPaths = tableView.allIndexPaths()
 		switch contentState() {
-		case .allowAccess, .loading:
+		case .allowAccess /*Currently unused*/, .loading:
 			let indexPathsToKeep = [IndexPath(row: 0, section: 0)]
 			let tableViewUpdates: () -> () = {
 				switch oldIndexPaths.count {
@@ -107,7 +107,7 @@ final class CollectionsTVC:
 			} completion: { _ in
 				completion?()
 			}
-		case .normal: // Currently unused
+		case .normal: // Importing changes with existing Collections
 			completion?()
 		}
 	}
@@ -119,14 +119,8 @@ final class CollectionsTVC:
 		
 		if albumMoverClipboard != nil {
 		} else {
-			if MPMediaLibrary.authorizationStatus() == .authorized {
-				DispatchQueue.main.async { // Show existing Collections as soon as possible, then integrate with the built-in Music app shortly later.
-					self.isImportingChanges = true
-					// contentState() is now .loading
-					self.refreshToReflectContentState(completion: {
-						self.integrateWithBuiltInMusicApp()
-					})
-				}
+			DispatchQueue.main.async { // Show existing Collections as soon as possible, then integrate with the built-in Music app shortly later.
+				self.integrateWithBuiltInMusicApp()
 			}
 		}
 	}
@@ -135,18 +129,18 @@ final class CollectionsTVC:
 	final func didReceiveAuthorizationForMusicLibrary() {
 		setUp()
 		
-		isImportingChanges = true
-		// contentState() is now .loading
-		refreshToReflectContentState(completion: {
-			self.integrateWithBuiltInMusicApp()
-		})
+		integrateWithBuiltInMusicApp()
 	}
 	
-	// Call this method late into launch, after we've already set up most of the UI; this method sets up the MediaPlayer-related functionality so that we can set up the rest of the UI (although this method itself doesn't set up the rest of the UI).
-	// Before calling this, put the UI into the "Loading…" or "Updating…" state.
 	private func integrateWithBuiltInMusicApp() {
-		MusicLibraryManager.shared.setUpLibraryAndImportChanges() // During a typical launch, we need to observe the notification after the import completes, so only do this after LibraryTVC's beginObservingNotifications(). After we observe that notification, we refresh our data and views, including the playback toolbar.
-		PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		isImportingChanges = true
+		// contentState() is now .loading or .normal (updating)
+		refreshToReflectContentState(completion: {
+			MusicLibraryManager.shared.setUpLibraryAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes. After we observe that notification, we refresh our data and views, including the playback toolbar.
+			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
+		})
 	}
 	
 	// MARK: Setting Up UI
@@ -202,7 +196,7 @@ final class CollectionsTVC:
 		} else {
 			if didMoveAlbums {
 				// Replace this with refreshToReflectMusicLibrary()?
-				refreshToReflectPlaybackState() // So that the "now playing" indicator never momentarily appears on more than one row.
+				refreshToReflectPlaybackState()
 				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums" sheet.
 				
 				didMoveAlbums = false

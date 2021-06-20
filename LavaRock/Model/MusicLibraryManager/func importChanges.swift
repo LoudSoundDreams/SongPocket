@@ -11,11 +11,22 @@ import OSLog
 
 extension MusicLibraryManager {
 	
+	static let subsystemName = "LavaRock.MusicLibraryManager"
+	static let logForImportChanges = OSLog(
+		subsystem: subsystemName,
+		category: "0. Import Changes Main")
+	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the library in the built-in Music app.
 	final func importChanges() {
-		os_signpost(.begin, log: Self.importChangesMainLog, name: "0. Main")
+		os_signpost(
+			.begin,
+			log: Self.logForImportChanges,
+			name: "0. Main")
 		defer {
-			os_signpost(.end, log: Self.importChangesMainLog, name: "0. Main")
+			os_signpost(
+				.end,
+				log: Self.logForImportChanges,
+				name: "0. Main")
 		}
 		
 		managedObjectContext.performAndWait {
@@ -30,7 +41,10 @@ extension MusicLibraryManager {
 			let queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
-		os_signpost(.begin, log: Self.importChangesMainLog, name: "0a. Initial Parse")
+		os_signpost(
+			.begin,
+			log: Self.logForImportChanges,
+			name: "0a. Initial Parse")
 		
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
@@ -90,7 +104,10 @@ extension MusicLibraryManager {
 		}
 		*/
 		
-		os_signpost(.end, log: Self.importChangesMainLog, name: "0a. Initial Parse")
+		os_signpost(
+			.end,
+			log: Self.logForImportChanges,
+			name: "0a. Initial Parse")
 		
 		updateManagedObjects( // Update before creating and deleting, so that we can easily put new Songs above modified Songs.
 			// This might make new Albums, but not new Collections or Songs.
@@ -114,7 +131,10 @@ extension MusicLibraryManager {
 		
 		// Then, some cleanup.
 		
-		os_signpost(.begin, log: Self.importChangesMainLog, name: "4. Cleanup")
+		os_signpost(
+			.begin,
+			log: Self.logForImportChanges,
+			name: "4. Cleanup")
 		
 		let allCollections = Collection.allFetched(
 			via: managedObjectContext,
@@ -123,13 +143,22 @@ extension MusicLibraryManager {
 			via: managedObjectContext,
 			ordered: false) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		
-		os_signpost(.begin, log: Self.cleanupLog, name: "Recalculate Album release date estimates")
+		os_signpost(
+			.begin,
+			log: Self.logForCleanup,
+			name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
 			for: allAlbums,
-			considering: queriedMediaItems)
-		os_signpost(.end, log: Self.cleanupLog, name: "Recalculate Album release date estimates")
+			   considering: queriedMediaItems)
+		os_signpost(
+			.end,
+			log: Self.logForCleanup,
+			name: "Recalculate Album release date estimates")
 		
-		os_signpost(.begin, log: Self.cleanupLog, name: "Reindex all Albums and Songs")
+		os_signpost(
+			.begin,
+			log: Self.logForCleanup,
+			name: "Reindex all Albums and Songs")
 		for collection in allCollections {
 			reindexAlbums(
 				in: collection,
@@ -138,9 +167,15 @@ extension MusicLibraryManager {
 		for album in allAlbums {
 			reindexSongs(in: album)
 		}
-		os_signpost(.end, log: Self.cleanupLog, name: "Reindex all Albums and Songs")
+		os_signpost(
+			.end,
+			log: Self.logForCleanup,
+			name: "Reindex all Albums and Songs")
 		
-		os_signpost(.end, log: Self.importChangesMainLog, name: "4. Cleanup")
+		os_signpost(
+			.end,
+			log: Self.logForImportChanges,
+			name: "4. Cleanup")
 		
 		managedObjectContext.tryToSaveSynchronously()
 //		managedObjectContext.parent?.tryToSaveSynchronously()
@@ -153,8 +188,8 @@ extension MusicLibraryManager {
 	
 	// MARK: - Cleanup
 	
-	private static let cleanupLog = OSLog(
-		subsystem: subsystemForOSLog,
+	private static let logForCleanup = OSLog(
+		subsystem: subsystemName,
 		category: "4. Cleanup")
 	
 	// MARK: Recalculating Release Date Estimates
@@ -166,26 +201,41 @@ extension MusicLibraryManager {
 		for albums: [Album],
 		considering queriedMediaItems: [MPMediaItem]
 	) {
-		os_signpost(.begin, log: Self.cleanupLog, name: "Filter out MPMediaItems without releaseDates")
+		os_signpost(
+			.begin,
+			log: Self.logForCleanup,
+			name: "Filter out MPMediaItems without releaseDates")
 		var queriedMediaItemsCopy = Set(queriedMediaItems).filter {
 			$0.releaseDate != nil
 		}
-		os_signpost(.end, log: Self.cleanupLog, name: "Filter out MPMediaItems without releaseDates")
+		os_signpost(
+			.end,
+			log: Self.logForCleanup,
+			name: "Filter out MPMediaItems without releaseDates")
 		
 		for album in albums {
 			// Update one Album's release date estimate.
-			os_signpost(.begin, log: Self.cleanupLog, name: "Recalculate release date estimate for one Album")
+			os_signpost(
+				.begin,
+				log: Self.logForCleanup,
+				name: "Recalculate release date estimate for one Album")
 			
 			album.releaseDateEstimate = nil
 			
 			// Find the MPMediaItems associated with this Album.
 			// Don't use song.mpMediaItem() for every Song; it's way too slow.
 			let thisAlbumPersistentID = album.albumPersistentID
-			os_signpost(.begin, log: Self.cleanupLog, name: "Filter all MPMediaItems down to the ones associated with this Album")
+			os_signpost(
+				.begin,
+				log: Self.logForCleanup,
+				name: "Filter all MPMediaItems down to the ones associated with this Album")
 			let matchingQueriedMediaItems = queriedMediaItemsCopy.filter {
 				Int64(bitPattern: $0.albumPersistentID) == thisAlbumPersistentID
 			}
-			os_signpost(.end, log: Self.cleanupLog, name: "Filter all MPMediaItems down to the ones associated with this Album")
+			os_signpost(
+				.end,
+				log: Self.logForCleanup,
+				name: "Filter all MPMediaItems down to the ones associated with this Album")
 			
 			// Determine the new release date estimate, using those MPMediaItems.
 			for mediaItem in matchingQueriedMediaItems {
@@ -205,7 +255,10 @@ extension MusicLibraryManager {
 				}
 			}
 			
-			os_signpost(.end, log: Self.cleanupLog, name: "Recalculate release date estimate for one Album")
+			os_signpost(
+				.end,
+				log: Self.logForCleanup,
+				name: "Recalculate release date estimate for one Album")
 		}
 	}
 	

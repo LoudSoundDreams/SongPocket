@@ -22,14 +22,17 @@ extension Song {
 		}
 		let songsQuery = MPMediaQuery.songs()
 		songsQuery.addFilterPredicate(
-			MPMediaPropertyPredicate(value: persistentID, forProperty: MPMediaItemPropertyPersistentID)
+			MPMediaPropertyPredicate(
+				value: persistentID,
+				forProperty: MPMediaItemPropertyPersistentID)
 		)
 		
 		if
-			songsQuery.items?.count == 1,
-			let songMPMediaItem = songsQuery.items?[0]
+			let queriedSongs = songsQuery.items,
+			queriedSongs.count == 1,
+			let result = queriedSongs.first
 		{
-			return songMPMediaItem
+			return result
 		} else {
 			return nil
 		}
