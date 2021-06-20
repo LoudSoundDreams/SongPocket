@@ -89,7 +89,9 @@ extension CollectionsTVC {
 							indexOfLibraryItem: indexOfNewCollection,
 							indexOfSectionOfLibraryItem: 0)
 						tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-						performSegue(withIdentifier: "Drill Down in Library", sender: nil)
+						performSegue(
+							withIdentifier: "Drill Down in Library",
+							sender: nil)
 					})
 			}
 		)

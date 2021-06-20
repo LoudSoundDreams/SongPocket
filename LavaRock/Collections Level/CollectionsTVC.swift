@@ -222,16 +222,10 @@ final class CollectionsTVC:
 	
 	// MARK: - Navigation
 	
-//	@IBSegueAction func showOptions(_ coder: NSCoder) -> UIViewController? {
-//		return UIHostingController(
-//			coder: coder,
-//			rootView: OptionsView(
-//				window: view.window!
-//			)
-//		)
-//	}
-	
-	final override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+	final override func prepare(
+		for segue: UIStoryboardSegue,
+		sender: Any?
+	) {
 		if
 			segue.identifier == "Drill Down in Library",
 			let albumsTVC = segue.destination as? AlbumsTVC

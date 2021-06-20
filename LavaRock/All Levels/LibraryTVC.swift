@@ -135,7 +135,7 @@ class LibraryTVC:
 	}
 	
 	// "Constants" that subclasses should not change, for PlaybackToolbarManager
-	lazy var playbackToolbarButtons = [
+	final lazy var playbackToolbarButtons = [
 		goToPreviousSongButton,
 		.flexibleSpac3(),
 		rewindButton,
@@ -144,7 +144,7 @@ class LibraryTVC:
 		.flexibleSpac3(),
 		goToNextSongButton,
 	]
-	lazy var goToPreviousSongButton: UIBarButtonItem = {
+	final lazy var goToPreviousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
 			style: .plain,
@@ -155,7 +155,7 @@ class LibraryTVC:
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	lazy var rewindButton: UIBarButtonItem = {
+	final lazy var rewindButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
 			style: .plain,
@@ -166,11 +166,11 @@ class LibraryTVC:
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	let playImage = UIImage(systemName: "play.fill")
-	let playAction = #selector(play)
-	let playAccessibilityLabel = LocalizedString.play
-	let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
-	lazy var playPauseButton: UIBarButtonItem = {
+	final let playImage = UIImage(systemName: "play.fill")
+	final let playAction = #selector(play)
+	final let playAccessibilityLabel = LocalizedString.play
+	final let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
+	final lazy var playPauseButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: playImage,
 			style: .plain,
@@ -181,7 +181,7 @@ class LibraryTVC:
 		button.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		return button
 	}()
-	lazy var goToNextSongButton: UIBarButtonItem = {
+	final lazy var goToNextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
 			style: .plain,
@@ -325,7 +325,9 @@ class LibraryTVC:
 					self.isAnimatingDuringRefreshTableView == 0, // See matching comment in performBatchUpdates below.
 					!(self is CollectionsTVC)
 				{
-					self.performSegue(withIdentifier: "Removed All Contents", sender: nil)
+					self.performSegue(
+						withIdentifier: "Removed All Contents",
+						sender: nil)
 				}
 			}
 			return

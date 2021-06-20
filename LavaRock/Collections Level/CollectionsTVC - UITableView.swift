@@ -116,10 +116,10 @@ extension CollectionsTVC {
 			}
 			
 		} else {
-			let renameCollectionAccessibilityCustomAction = UIAccessibilityCustomAction(
+			let renameFocusedCollectionAction = UIAccessibilityCustomAction(
 				name: LocalizedString.rename,
-				actionHandler: renameAccessibilityFocusedCollection)
-			cell.accessibilityCustomActions = [renameCollectionAccessibilityCustomAction]
+				actionHandler: renameFocusedCollectionHandler)
+			cell.accessibilityCustomActions = [renameFocusedCollectionAction]
 //			refreshVoiceControlNames(for: cell)
 		}
 		
@@ -134,7 +134,9 @@ extension CollectionsTVC {
 //		}
 //	}
 	
-	private func renameAccessibilityFocusedCollection(_ sender: UIAccessibilityCustomAction) -> Bool {
+	private func renameFocusedCollectionHandler(
+		_ sender: UIAccessibilityCustomAction
+	) -> Bool {
 		let indexPathsOfAllCollections = indexPaths(forIndexOfSectionOfLibraryItems: 0)
 		let focusedIndexPath = indexPathsOfAllCollections.first {
 			let cell = tableView.cellForRow(at: $0)
