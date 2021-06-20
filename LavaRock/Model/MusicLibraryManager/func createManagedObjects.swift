@@ -302,7 +302,6 @@ extension MusicLibraryManager {
 			songs songsImmutable: [Song]
 		) -> [Song] {
 			var songsCopy = songsImmutable
-			// TO DO: Does this match sortedByAlbumOrder(mediaItems:) exactly? You can guarantee it by doing some setup moves and calling sortedByAlbumOrder(mediaItems:) itself.
 			// .mpMediaItem() returns nil if the media item is no longer in the Music library. It doesn't matter where those Songs end up in the array, because we'll delete them later anyway.
 			songsCopy.sort {
 				// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".

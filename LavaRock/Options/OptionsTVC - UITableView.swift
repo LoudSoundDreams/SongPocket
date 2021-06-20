@@ -207,7 +207,7 @@ extension OptionsTVC {
 				tableView.performBatchUpdates {
 					tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
 				} completion: { _ in
-					self.tableView.deselectRow(at: selectedIndexPath, animated: true) // TO DO: Remove this `if #available` check when Apple fixes this: as of iOS 14.4 beta 1, this animation is broken (under some conditions). The row stays completely highlighted for period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
+					self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.4 beta 1, this animation is broken (under some conditions). The row stays completely highlighted for period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
 				}
 			}
 		}

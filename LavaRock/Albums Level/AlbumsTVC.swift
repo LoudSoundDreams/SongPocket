@@ -45,9 +45,6 @@ final class AlbumsTVC:
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		if albumMoverClipboard != nil {
-//			topRightButtons = [moveAlbumsHereButton]
-//			navigationController?.toolbar.isHidden = true
-			
 			topRightButtons = [cancelMoveAlbumsButton]
 			bottomButtonsInViewingMode = [
 				.flexibleSpac3(),

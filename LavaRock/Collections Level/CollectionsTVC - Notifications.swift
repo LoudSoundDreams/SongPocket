@@ -53,12 +53,7 @@ extension CollectionsTVC {
 			return // without refreshing
 		}
 		
-		if isLoading {
-			didJustFinishLoading = true
-			// contentState() is now .justFinishedLoading
-			refreshToReflectContentState(completion: nil)
-			didJustFinishLoading = false
-		}
+		deleteAllRowsIfFinishedLoading()
 		
 		super.refreshDataAndViews()
 	}

@@ -37,7 +37,7 @@ extension CollectionsTVC {
 	// MARK: - Making New Collection
 	
 	// Match renameCollection(at:).
-	@IBAction func presentDialogToMakeNewCollection(_ sender: UIBarButtonItem) {
+	@objc final func presentDialogToMakeNewCollection() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection
@@ -99,7 +99,7 @@ extension CollectionsTVC {
 		present(dialog, animated: true)
 	}
 	
-	// MARK: Suggesting Collection Title
+	// MARK: Suggesting Title
 	
 	private func suggestedCollectionTitle() -> String? {
 		guard let albumMoverClipboard = albumMoverClipboard else {

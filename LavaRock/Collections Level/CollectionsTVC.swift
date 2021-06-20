@@ -16,25 +16,101 @@ final class CollectionsTVC:
 	AlbumMover
 {
 	
+	// MARK: - Types
+	
+	enum ContentState {
+		case allowAccess
+		case loading
+		case justFinishedLoading
+		case normal
+	}
+	
 	// MARK: - Properties
 	
 	// "Constants"
 	@IBOutlet private var optionsButton: UIBarButtonItem!
+//	private lazy var combineButton = UIBarButtonItem(
+//		title: "Combine", // TO DO: Localize
+//		style: .plain,
+//		target: self,
+//		action: #selector(presentDialogToRenameSelectedCollections))
 	private lazy var makeNewCollectionButton = UIBarButtonItem(
 		barButtonSystemItem: .add,
 		target: self,
 		action: #selector(presentDialogToMakeNewCollection))
 	
 	// Variables
-	var isLoading: Bool {
-		return
-			isImportingChanges &&
-			sectionOfLibraryItems.items.isEmpty &&
-			MPMediaLibrary.authorizationStatus() == .authorized
-	}
 	var didJustFinishLoading = false
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var didMoveAlbums = false
+	
+	// MARK: - Content State
+	
+	final func contentState() -> ContentState {
+		if MPMediaLibrary.authorizationStatus() != .authorized {
+			return .allowAccess
+		}
+		if didJustFinishLoading { // You must check didJustFinishLoading before checking isLoading.
+			return .justFinishedLoading
+		}
+		if
+			isImportingChanges,
+			sectionOfLibraryItems.items.isEmpty
+		{
+			return .loading
+		}
+		return .normal
+	}
+	
+	final func deleteAllRowsIfFinishedLoading() {
+		if contentState() == .loading {
+			didJustFinishLoading = true
+			// contentState() is now .justFinishedLoading
+			refreshToReflectContentState(completion: nil)
+			didJustFinishLoading = false
+		}
+	}
+	
+	private func refreshToReflectContentState(
+		completion: (() -> ())?
+	) {
+		let oldIndexPaths = tableView.allIndexPaths()
+		switch contentState() {
+		case .allowAccess, .loading:
+			let indexPathsToKeep = [IndexPath(row: 0, section: 0)]
+			let tableViewUpdates: () -> () = {
+				switch oldIndexPaths.count {
+				case 0: // Launch -> "Loading…"
+					return {
+						self.tableView.insertRows(at: indexPathsToKeep, with: .fade)
+					}
+				case 1: // "Allow Access" -> "Loading…"
+					return {
+						self.tableView.reloadRows(at: indexPathsToKeep, with: .fade)
+					}
+				default: // Currently unused
+					let indexPathsToDelete = Array(oldIndexPaths.dropFirst())
+					return {
+						self.tableView.deleteRows(at: indexPathsToDelete, with: .fade)
+						self.tableView.reloadRows(at: indexPathsToKeep, with: .fade)
+					}
+				}
+			}()
+			tableView.performBatchUpdates {
+				tableViewUpdates()
+			} completion: { _ in
+				completion?()
+			}
+		case .justFinishedLoading: // "Loading…" -> empty
+			tableView.performBatchUpdates {
+				tableView.deleteRows(at: oldIndexPaths, with: .middle)
+			} completion: { _ in
+				completion?()
+			}
+		case .normal: // Currently unused
+			completion?()
+		}
+	}
 	
 	// MARK: - Setup
 	
@@ -50,12 +126,6 @@ final class CollectionsTVC:
 					self.refreshToReflectContentState(completion: {
 						self.integrateWithBuiltInMusicApp()
 					})
-//					else if isUpdating {
-//						refreshAndSetBarButtons(animated: false)
-//						DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) { // Wait for the Edit button to actually change into the spinner before continuing
-//							integrateWithBuiltInMusicApp()
-//						}
-//					}
 				}
 			}
 		}
@@ -84,10 +154,6 @@ final class CollectionsTVC:
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		if albumMoverClipboard != nil {
-//			topLeftButtonsInViewingMode = [cancelMoveAlbumsButton]
-//			topRightButtons = [makeNewCollectionButton]
-//			navigationController?.toolbar.isHidden = true
-			
 			topLeftButtonsInViewingMode = []
 			topRightButtons = [cancelMoveAlbumsButton]
 			bottomButtonsInViewingMode = [

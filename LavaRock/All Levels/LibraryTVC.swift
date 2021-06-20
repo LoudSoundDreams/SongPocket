@@ -383,7 +383,7 @@ class LibraryTVC:
 //			let activityIndicatorView = UIActivityIndicatorView()
 //			activityIndicatorView.startAnimating()
 //			let spinnerBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
-//			navigationItem.setRightBarButtonItems([spinnerBarButtonItem], animated: animated)
+//			navigationItem.setRightBarButtonItems([spinnerBarButtonItem], animated: animated) // Apparently UIKit does this asynchronously, meaning that this method can return and the caller can continue before the spinner actually appears. You can hack around that by using `DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {` after calling this method.
 //			return
 //		}
 		if isEditing {

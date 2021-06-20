@@ -82,7 +82,7 @@ extension LibraryTVC {
 	) {
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		for indexPath in indexPaths(forIndexOfSectionOfLibraryItems: 0) {
-			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicatorDisplayer else { continue } // TO DO: For some reason, this can trigger tableView(_:cellForRowAt:), which can redraw the cell to a null placeholder, which we can't allow.
+			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicatorDisplayer else { continue }
 			let isInPlayer = isInPlayerDeterminer(indexPath)
 			let indicator = NowPlayingIndicator(
 				isInPlayer: isInPlayer,
@@ -114,7 +114,6 @@ extension LibraryTVC {
 		
 		/*
 		// When we need to refresh, you might be in the middle of a content-dependent task. Cancel those content-dependent tasks.
-		// TO DO: Only cancel if we'll move rows during the refresh.
 		- Sort options (LibraryTVC)
 		- "Rename Collection" dialog (CollectionsTVC)
 		- "Move Albums" sheet (CollectionsTVC and AlbumsTVC when in "moving Albums" mode)

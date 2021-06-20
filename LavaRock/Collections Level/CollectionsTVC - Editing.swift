@@ -27,7 +27,7 @@ extension CollectionsTVC {
 //		}
 //	}
 	
-	// MARK: - Renaming Collection
+	// MARK: - Renaming
 	
 	// Match presentDialogToMakeNewCollection(_:).
 	final func renameCollection(at indexPath: IndexPath) {
@@ -76,5 +76,12 @@ extension CollectionsTVC {
 		dialog.preferredAction = saveAction
 		present(dialog, animated: true)
 	}
+	
+	// MARK: - Combining
+	
+//	@objc final func presentDialogToRenameSelectedCollections() {
+//		
+//		
+//	}
 	
 }
