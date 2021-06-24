@@ -50,7 +50,7 @@ final class CollectionsTVC:
 		if MPMediaLibrary.authorizationStatus() != .authorized {
 			return .allowAccess
 		}
-		if didJustFinishLoading { // You must check didJustFinishLoading before checking isLoading.
+		if didJustFinishLoading { // You must check didJustFinishLoading before checking isImportingChanges.
 			return .justFinishedLoading
 		}
 		if
@@ -64,8 +64,7 @@ final class CollectionsTVC:
 	
 	final func deleteAllRowsIfFinishedLoading() {
 		if contentState() == .loading {
-			didJustFinishLoading = true
-			// contentState() is now .justFinishedLoading
+			didJustFinishLoading = true // contentState() is now .justFinishedLoading
 			refreshToReflectContentState(completion: nil)
 			didJustFinishLoading = false
 		}
@@ -78,7 +77,7 @@ final class CollectionsTVC:
 		switch contentState() {
 		case .allowAccess /*Currently unused*/, .loading:
 			let indexPathsToKeep = [IndexPath(row: 0, section: 0)]
-			let tableViewUpdates: () -> () = {
+			let updateTableView: () -> () = {
 				switch oldIndexPaths.count {
 				case 0: // Launch -> "Loading…"
 					return {
@@ -97,7 +96,7 @@ final class CollectionsTVC:
 				}
 			}()
 			tableView.performBatchUpdates {
-				tableViewUpdates()
+				updateTableView()
 			} completion: { _ in
 				completion?()
 			}
@@ -119,7 +118,7 @@ final class CollectionsTVC:
 		
 		if albumMoverClipboard != nil {
 		} else {
-			DispatchQueue.main.async { // Show existing Collections as soon as possible, then integrate with the built-in Music app shortly later.
+			DispatchQueue.main.async {
 				self.integrateWithBuiltInMusicApp()
 			}
 		}
@@ -135,10 +134,9 @@ final class CollectionsTVC:
 	private func integrateWithBuiltInMusicApp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		isImportingChanges = true
-		// contentState() is now .loading or .normal (updating)
+		isImportingChanges = true // contentState() is now .loading or .normal (updating)
 		refreshToReflectContentState(completion: {
-			MusicLibraryManager.shared.setUpLibraryAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes. After we observe that notification, we refresh our data and views, including the playback toolbar.
+			MusicLibraryManager.shared.setUpLibraryAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes.
 			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
 		})
 	}
