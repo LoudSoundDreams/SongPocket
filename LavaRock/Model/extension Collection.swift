@@ -33,6 +33,7 @@ extension Collection {
 	
 	// MARK: - Core Data
 	
+	// This is the same as in Album.
 	static func allFetched(
 		via managedObjectContext: NSManagedObjectContext,
 		ordered: Bool = true

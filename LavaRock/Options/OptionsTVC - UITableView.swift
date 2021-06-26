@@ -164,58 +164,48 @@ extension OptionsTVC {
 		let selectedAccentColor = AccentColor.all[colorIndex]
 		selectedAccentColor.set(in: view.window)
 		
-		func refreshCheckmarksOnAccentColorRows(selectedIndexPath: IndexPath) {
-			if #available(iOS 14, *) { // See comment in the `else` block.
-				
-				func untickUnselectedAccentColorRows() {
-					let accentColorIndexPaths = tableView.indexPathsForRows(
-						inSection: Section.accentColor.rawValue,
-						firstRow: 0)
-					let unselectedAccentColorIndexPaths = accentColorIndexPaths.filter { accentColorIndexPath in
-						accentColorIndexPath != selectedIndexPath // Don't use tableView.indexPathForSelectedRow, because we might have deselected the row already.
-					}
-					for unselectedIndexPath in unselectedAccentColorIndexPaths {
-						if let unselectedCell = tableView.cellForRow(at: unselectedIndexPath) {
-							unselectedCell.accessoryType = .none // Don't use reloadRows, because as of iOS 14.4 beta 1, that breaks tableView.deselectRow's animation.
-						} else {
-							tableView.reloadRows(at: [unselectedIndexPath], with: .none) // Should never run
-						}
-					}
-				}
-				
-				func tickSelectedAccentColorRow() {
-					if let selectedCell = tableView.cellForRow(at: selectedIndexPath) {
-						selectedCell.accessoryType = .checkmark
-						tableView.deselectRow(at: selectedIndexPath, animated: true)
-					} else {
-						tableView.reloadRows(at: [selectedIndexPath], with: .none) // Should never run
-					}
-				}
-				
-				func reloadAllOtherSections() {
-					let allOtherSections = Section.allCases.filter { $0 != .accentColor }
-					let allOtherSectionRawValues = allOtherSections.map { $0.rawValue }
-					tableView.reloadSections(IndexSet(allOtherSectionRawValues), with: .none)
-				}
-				
-				untickUnselectedAccentColorRows()
-				tickSelectedAccentColorRow()
-				reloadAllOtherSections()
-				
-			} else { // iOS 13
-				tableView.reloadData()
-				tableView.performBatchUpdates {
-					tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
-				} completion: { _ in
-					self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.4 beta 1, this animation is broken (under some conditions). The row stays completely highlighted for period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
-				}
-			}
+		guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
+			// Should never run
+			tableView.reloadData()
+			return
 		}
 		
-		if let selectedIndexPath = tableView.indexPathForSelectedRow {
-			refreshCheckmarksOnAccentColorRows(selectedIndexPath: selectedIndexPath)
-		} else {
-			tableView.reloadData() // Should never run
+		if #available(iOS 14, *) { // See comment in the `else` block.
+			
+			// Move the checkmark to the selected accent color.
+			let colorIndexPaths = tableView.indexPathsForRows(
+				inSection: Section.accentColor.rawValue,
+				firstRow: 0)
+			for colorIndexPath in colorIndexPaths {
+				guard let colorCell = tableView.cellForRow(at: colorIndexPath) else {
+					// Should never run
+					tableView.reloadRows(at: [colorIndexPath], with: .none)
+					continue
+				}
+				
+				if colorIndexPath == selectedIndexPath {
+					colorCell.accessoryType = .checkmark
+					tableView.deselectRow(at: selectedIndexPath, animated: true)
+				} else {
+					colorCell.accessoryType = .none // Don't use reloadRows, because as of iOS 14.7 beta 2, that breaks tableView.deselectRow's animation.
+//					tableView.reloadRows(at: [colorIndexPath], with: .none)
+				}
+			}
+			
+			// Reload all other rows, which might depend on the selected accent color.
+			let allOtherSections = Section.allCases.filter { $0 != .accentColor }
+			let allOtherSectionAsInts = allOtherSections.map { $0.rawValue }
+			tableView.reloadSections(IndexSet(allOtherSectionAsInts), with: .none)
+			
+		} else { // iOS 13
+			
+			tableView.reloadData()
+			tableView.performBatchUpdates {
+				tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+			} completion: { _ in
+				self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.7 beta 2, this animation is broken (under some conditions). The row stays completely highlighted for the period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
+			}
+			
 		}
 	}
 	
@@ -237,7 +227,7 @@ extension OptionsTVC {
 		case .reload:
 			return tipReloadCell(forRowAt: indexPath)
 		case .ready:
-			if shouldShowTemporaryThankYouMessage {
+			if isTipJarShowingThankYou {
 				return tipThankYouCell(forRowAt: indexPath)
 			} else {
 				return tipReadyCell(forRowAt: indexPath)

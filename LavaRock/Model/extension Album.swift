@@ -7,6 +7,7 @@
 
 import CoreData
 import MediaPlayer
+import OSLog
 
 extension Album: LibraryItem {
 	// Enables [album].reindex()
@@ -18,17 +19,18 @@ extension Album: LibraryContainer {
 
 extension Album {
 	
+	static let log = OSLog(
+		subsystem: "LavaRock.Album",
+		category: .pointsOfInterest)
+	
 	// MARK: - Core Data
 	
+	// This is the same as in Collection.
 	static func allFetched(
 		via managedObjectContext: NSManagedObjectContext,
-//		inCollection containerCollection: Collection? = nil,
 		ordered: Bool = true
 	) -> [Album] {
 		let fetchRequest: NSFetchRequest<Album> = fetchRequest()
-//		if let containerCollection = containerCollection {
-//			fetchRequest.predicate = NSPredicate(format: "container == %@", containerCollection)
-//		}
 		if ordered {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
@@ -38,6 +40,17 @@ extension Album {
 	// MARK: - Media Player
 	
 	final func mpMediaItemCollection() -> MPMediaItemCollection? {
+		os_signpost(
+			.begin,
+			log: Self.log,
+			name: "mpMediaItemCollection()")
+		defer {
+			os_signpost(
+				.end,
+				log: Self.log,
+				name: "mpMediaItemCollection()")
+		}
+		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}

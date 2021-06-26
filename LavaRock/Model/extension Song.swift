@@ -7,6 +7,7 @@
 
 import CoreData
 import MediaPlayer
+import OSLog
 
 extension Song: LibraryItem {
 	// Enables [song].reindex()
@@ -14,9 +15,24 @@ extension Song: LibraryItem {
 
 extension Song {
 	
+	static let log = OSLog(
+		subsystem: "LavaRock.Song",
+		category: .pointsOfInterest)
+	
 	// MARK: - Media Player
 	
 	final func mpMediaItem() -> MPMediaItem? {
+		os_signpost(
+			.begin,
+			log: Self.log,
+			name: "mpMediaItem()")
+		defer {
+			os_signpost(
+				.end,
+				log: Self.log,
+				name: "mpMediaItem()")
+		}
+		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
@@ -51,7 +67,7 @@ extension Song {
 		}
 	}
 	
-	final func trackNumberFormattedOrPlaceholder() -> String? {
+	final func trackNumberFormattedOrPlaceholder() -> String {
 		if
 			let fetchedTrackNumber = mpMediaItem()?.albumTrackNumber,
 			fetchedTrackNumber != 0
@@ -59,7 +75,6 @@ extension Song {
 			return String(fetchedTrackNumber)
 		} else {
 			return "‒" // This is a figure dash, not a hyphen or an en dash.
-//			return nil
 		}
 	}
 	
