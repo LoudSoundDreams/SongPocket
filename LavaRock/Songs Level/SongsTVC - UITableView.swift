@@ -135,7 +135,7 @@ extension SongsTVC {
 				withIdentifier: cellReuseIdentifier,
 				for: indexPath)
 					as? SongCell
-			else { // As of some beta of iOS 14.0, UIListContentConfiguration.valueCell() doesn't gracefully accommodate multiple lines of text.
+			else {
 				return UITableViewCell()
 			}
 			
