@@ -99,9 +99,9 @@ class LibraryTVC:
 	lazy var floatToTopButton: UIBarButtonItem = {
 		let image: UIImage?
 		if #available(iOS 15, *) {
-			image = UIImage(systemName: "arrow.up.to.line.compact")
+			image = UIImage(systemName: "arrow.up.to.line.compact") // On iOS 15, this is the vertically short one; .alt doesn't exist anymore; arrow.up.to.line is the taller one
 		} else { // iOS 14 and earlier
-			image = UIImage(systemName: "arrow.up.to.line.alt")
+			image = UIImage(systemName: "arrow.up.to.line") // On iOS 14 and earlier, this is the vertically short one; .alt is taller; .compact doesn't exist yet
 		}
 		let button = UIBarButtonItem(
 			image: image,
@@ -116,7 +116,7 @@ class LibraryTVC:
 		if #available(iOS 15, *) {
 			image = UIImage(systemName: "arrow.down.to.line.compact")
 		} else { // iOS 14 and earlier
-			image = UIImage(systemName: "arrow.down.to.line.alt")
+			image = UIImage(systemName: "arrow.down.to.line")
 		}
 		let button = UIBarButtonItem(
 			image: image,
