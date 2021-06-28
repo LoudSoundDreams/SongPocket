@@ -46,7 +46,7 @@ extension OptionsTVC: PurchaseManagerTipDelegate {
 	private func didReceiveTip() {
 		isTipJarShowingThankYou = true
 		refreshTipJarRows()
-		DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in // Don't retain this view controller just to do this work.
+		DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
 			self?.isTipJarShowingThankYou = false
 			self?.refreshTipJarRows()
 		}

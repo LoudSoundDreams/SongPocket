@@ -60,7 +60,7 @@ extension Array {
 		if #available(iOS 15, *) { // See comment in the `else` block.
 			/*
 			 This is a rudimentary way of diffing two arrays to find the deletes, inserts, and moves. It's rudimentary, but it works. I shipped something similar in Songpocket 1.0.
-			 For Songpocket 1.4, I replaced this with an implementation that uses CollectionDifference, but as of iPadOS 15 beta 2, array.difference(from:by:) is crashing with "Fatal error: unsupported". So I've brought this back, hopefully temporarily.
+			 For Songpocket 1.4, I replaced this with an implementation that uses CollectionDifference, but as of iPadOS 15 beta 2, Array.difference(from:by:) is crashing with "Fatal error: unsupported". So I've brought this back, hopefully temporarily.
 			 */
 			
 			var indexesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
@@ -103,7 +103,7 @@ extension Array {
 			
 		} else { // iOS 14 and earlier
 			
-			let difference = newArray.difference(from: self) { oldItem, newItem in // As of iPadOS 15 beta 2, this crashes with "Fatal error: unsupported".
+			let difference = newArray.difference(from: self) { oldItem, newItem in // As of iPadOS 15 beta 2, this crashes with "Fatal error: unsupported" in ArrayBuffer.swift.
 				areEquivalent(oldItem, newItem)
 			}.inferringMoves()
 			
@@ -114,14 +114,14 @@ extension Array {
 			for change in difference {
 				// If a Change's `associatedWith:` value is non-nil, then it has a counterpart Change in the CollectionDifference, and the two Changes together represent a move, rather than a remove and an insert.
 				switch change {
-				case .remove(let offset, _, let association):
-					if let association = association {
-						indexesOfItemsToMove.append((oldIndex: offset, newIndex: association))
+				case .remove(let offset, _, let associatedOffset):
+					if let associatedOffset = associatedOffset {
+						indexesOfItemsToMove.append((oldIndex: offset, newIndex: associatedOffset))
 					} else {
 						indexesOfOldItemsToDelete.append(offset)
 					}
-				case .insert(let offset, _, let association):
-					if association == nil {
+				case .insert(let offset, _, let associatedOffset):
+					if associatedOffset == nil {
 						indexesOfNewItemsToInsert.append(offset)
 					}
 				}
@@ -138,6 +138,7 @@ extension Array {
 	
 	// MARK: - Element: LibraryItem
 	
+	// Needs to match the property observer on SectionOfLibraryItems.items.
 	mutating func reindex()
 	where Element: LibraryItem
 	{

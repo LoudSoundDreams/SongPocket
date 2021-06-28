@@ -36,12 +36,12 @@ extension CollectionsTVC {
 	
 	// MARK: - Making New Collection
 	
-	// Match renameCollection(at:).
+	// Match renameCollection.
 	@objc final func presentDialogToMakeNewCollection() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection
-		else { return } // Without this, if you're fast, you can finish making a new Collection by tapping Done in the dialog, and then tap New Collection to bring up another dialog before we enter the first Collection you made.
+		else { return } // Without this, if you're fast, you can finish making a new Collection by tapping Done in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
 		
 		let dialog = UIAlertController(
 			title: LocalizedString.titleForAlertNewCollection,

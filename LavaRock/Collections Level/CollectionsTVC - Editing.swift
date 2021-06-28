@@ -31,7 +31,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Renaming
 	
-	// Match presentDialogToMakeNewCollection(_:).
+	// Match presentDialogToMakeNewCollection.
 	final func renameCollection(at indexPath: IndexPath) {
 		guard let collection = libraryItem(for: indexPath) as? Collection else { return }
 		

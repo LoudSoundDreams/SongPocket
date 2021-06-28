@@ -39,7 +39,7 @@ extension MusicLibraryManager {
 	
 	private func updateRelationshipsBetweenAlbumsAndSongs(
 		songs potentiallyOutdatedSongs: [Song], // Don't use a Set, because we sort this.
-		toMatch freshMediaItems: Set<MPMediaItem> // Use a set, because we search through this.
+		toMatch freshMediaItems: Set<MPMediaItem> // Use a Set, because we search through this.
 	) {
 		var potentiallyOutdatedSongs = potentiallyOutdatedSongs
 		
@@ -85,7 +85,7 @@ extension MusicLibraryManager {
 			let knownAlbumPersistentID = song.container!.albumPersistentID
 			
 			// Get this Song's fresh albumPersistentID.
-			// Don't use song.mpMediaItem() for every Song; it's way too slow.
+			// Don't use mpMediaItem() for every Song; it's way too slow.
 			os_signpost(
 				.begin,
 				log: Self.logForUpdateObjects,

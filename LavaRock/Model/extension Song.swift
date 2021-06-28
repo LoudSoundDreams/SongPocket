@@ -10,7 +10,7 @@ import MediaPlayer
 import OSLog
 
 extension Song: LibraryItem {
-	// Enables [song].reindex()
+	// Enables [Song].reindex()
 }
 
 extension Song {
@@ -63,7 +63,7 @@ extension Song {
 		{
 			return fetchedTitle
 		} else {
-			return "—" // This is an em dash. It aligns vertically with the figure dash for unknown track numbers.
+			return "—" // Em dash
 		}
 	}
 	
@@ -74,7 +74,7 @@ extension Song {
 		{
 			return String(fetchedTrackNumber)
 		} else {
-			return "‒" // This is a figure dash, not a hyphen or an en dash.
+			return "‒" // Figure dash
 		}
 	}
 	

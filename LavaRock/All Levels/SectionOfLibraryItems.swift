@@ -15,14 +15,15 @@ struct SectionOfLibraryItems {
 	
 	let managedObjectContext: NSManagedObjectContext
 	let entityName: String
-	let container: NSManagedObject? // Switch to proper type-checking
+	let container: NSManagedObject?
 	
 	// MARK: Variables
 	
 	private(set) lazy var items = fetchedItems() {
 		didSet {
+			// Needs to match [LibraryItem].reindex().
 			for currentIndex in items.indices { // The truth for the order of items is their order in this array, not the "index" attribute of each NSManagedObject, because the UI follows this array.
-				items[currentIndex].setValue(Int64(currentIndex), forKey: "index") // Switch to proper type-checking
+				items[currentIndex].setValue(Int64(currentIndex), forKey: "index")
 			}
 		}
 	}
@@ -33,7 +34,7 @@ struct SectionOfLibraryItems {
 		items = newItems
 	}
 	
-	func fetchedItems() -> [NSManagedObject] { // Switch to proper type-checking
+	func fetchedItems() -> [NSManagedObject] {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		if let container = container {

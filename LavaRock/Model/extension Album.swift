@@ -10,11 +10,11 @@ import MediaPlayer
 import OSLog
 
 extension Album: LibraryItem {
-	// Enables [album].reindex()
+	// Enables [Album].reindex()
 }
 
 extension Album: LibraryContainer {
-	// Enables .isEmpty()
+	// Enables isEmpty()
 }
 
 extension Album {

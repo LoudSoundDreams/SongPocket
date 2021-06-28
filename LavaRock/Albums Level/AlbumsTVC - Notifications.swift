@@ -20,13 +20,6 @@ extension AlbumsTVC {
 	
 	// MARK: - Refreshing Data and Views
 	
-	/*
-	All special cases in AlbumsTVC:
-	- In "moving Albums" mode and in existing Collection
-	- In "moving Albums" mode and in new Collection
-	- If any of the Albums we're moving get deleted
-	*/
-	
 	final override func refreshDataAndViews() {
 		if albumMoverClipboard != nil {
 		} else {

@@ -21,7 +21,7 @@ extension UserDefaults {
 		let oldEntries = dictionaryRepresentation() // Remember: This method operates on the instance of UserDefaults we're calling it on.
 		
 		var newEntries = oldEntries
-		newEntries.removeAll() // To match the type of existingEntries
+		newEntries.removeAll() // To match the type of oldEntries
 		for key in keysToKeep {
 			let value = oldEntries[key]
 			newEntries[key] = value

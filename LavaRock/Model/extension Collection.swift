@@ -8,11 +8,11 @@
 import CoreData
 
 extension Collection: LibraryItem {
-	// Enables [collection].reindex()
+	// Enables [Collection].reindex()
 }
 
 extension Collection: LibraryContainer {
-	// Enables .isEmpty()
+	// Enables isEmpty()
 }
 
 extension Collection {

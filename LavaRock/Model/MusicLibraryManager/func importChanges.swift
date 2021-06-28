@@ -223,7 +223,7 @@ extension MusicLibraryManager {
 			album.releaseDateEstimate = nil
 			
 			// Find the MPMediaItems associated with this Album.
-			// Don't use song.mpMediaItem() for every Song; it's way too slow.
+			// Don't use mpMediaItem() for every Song; it's way too slow.
 			let thisAlbumPersistentID = album.albumPersistentID
 			os_signpost(
 				.begin,
