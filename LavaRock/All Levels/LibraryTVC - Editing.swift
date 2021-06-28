@@ -34,7 +34,7 @@ extension LibraryTVC {
 	// MARK: - Allowing
 	
 	// You should only be allowed to sort contiguous items within the same SectionOfLibraryItems.
-	final func shouldAllowSorting() -> Bool {
+	final func allowsSort() -> Bool {
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
 			return true // Multisection: Only if we only have 1 SectionOfLibraryItems.
 		} else {
@@ -42,20 +42,20 @@ extension LibraryTVC {
 		}
 	}
 	
-	final func shouldAllowFloating() -> Bool {
+	final func allowsFloat() -> Bool {
 		return
 			!tableView.indexPathsForSelectedRowsNonNil.isEmpty &&
 			tableView.indexPathsForSelectedRowsNonNil.isWithinSameSection()
 	}
 	
-	final func shouldAllowSinking() -> Bool {
-		return shouldAllowFloating()
+	final func allowsSink() -> Bool {
+		return allowsFloat()
 	}
 	
 	// MARK: - Moving to Top
 	
 	@objc final func floatSelectedItemsToTopOfSection() {
-		guard shouldAllowFloating() else { return }
+		guard allowsFloat() else { return }
 		
 		// Make a new data source.
 		
@@ -83,7 +83,7 @@ extension LibraryTVC {
 	// MARK: - Moving to Bottom
 	
 	@objc final func sinkSelectedItemsToBottomOfSection() {
-		guard shouldAllowSinking() else { return }
+		guard allowsSink() else { return }
 		
 		// Make a new data source.
 		
@@ -146,7 +146,7 @@ extension LibraryTVC {
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
-		guard shouldAllowSorting() else { return }
+		guard allowsSort() else { return }
 		
 		// Get the indexes of the items to sort.
 		let sourceIndexPaths: [IndexPath]

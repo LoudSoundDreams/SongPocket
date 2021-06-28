@@ -197,8 +197,8 @@ class LibraryTVC:
 	
 	lazy var sectionOfLibraryItems = SectionOfLibraryItems(
 		managedObjectContext: managedObjectContext,
-		container: nil,
-		entityName: entityName)
+		entityName: entityName,
+		container: nil)
 	var isImportingChanges = false
 //	var isUpdating: Bool {
 //		return
@@ -206,7 +206,7 @@ class LibraryTVC:
 //			!sectionOfLibraryItems.items.isEmpty &&
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
-	var shouldRefreshDataAndViewsOnNextViewDidAppear = false
+	var needsRefreshDataAndViewsOnViewDidAppear = false
 	var isAnimatingDuringRefreshTableView = 0
 	
 	// MARK: - Setup
@@ -248,8 +248,8 @@ class LibraryTVC:
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if shouldRefreshDataAndViewsOnNextViewDidAppear {
-			shouldRefreshDataAndViewsOnNextViewDidAppear = false
+		if needsRefreshDataAndViewsOnViewDidAppear {
+			needsRefreshDataAndViewsOnViewDidAppear = false
 			refreshDataAndViews()
 		}
 	}
@@ -295,70 +295,60 @@ class LibraryTVC:
 	
 	// MARK: - Refreshing Table View
 	
-	final func setItemsAndRefreshTableView(
-		newItems: [NSManagedObject],
-//		section: Int,
-		completion: (() -> ())?
-	) {
-		let onscreenItems = sectionOfLibraryItems.items
-		sectionOfLibraryItems.setItems(newItems)
-		refreshTableView(
-			onscreenItems: onscreenItems,
-			completion: completion)
+	// Deletes all rows, including any rows not for library items, then performs an unwind segue.
+	private func deleteAllRowsThenExit() {
+		let allIndexPaths = tableView.allIndexPaths()
+		isAnimatingDuringRefreshTableView += 1
+		tableView.performBatchUpdates {
+			tableView.deleteRows(at: allIndexPaths, with: .middle)
+		} completion: { _ in
+			self.isAnimatingDuringRefreshTableView -= 1
+			if
+				self.isAnimatingDuringRefreshTableView == 0, // See matching comment in setItemsAndRefreshTableView.
+				!(self is CollectionsTVC)
+			{
+				self.performSegue(
+					withIdentifier: "Removed All Contents",
+					sender: nil)
+			}
+		}
 	}
 	
-	private func refreshTableView(
+	final func setItemsAndRefreshTableView(
 //		section: Int,
-		onscreenItems: [NSManagedObject],
+		newItems: [NSManagedObject],
 		completion: (() -> ())?
 	) {
-		let section = 0
-		let newItems = sectionOfLibraryItems.items
-		
 		guard !newItems.isEmpty else {
-			// Delete all rows, then exit.
-			let allIndexPaths = tableView.allIndexPaths()
-			isAnimatingDuringRefreshTableView += 1
-			tableView.performBatchUpdates {
-				tableView.deleteRows(at: allIndexPaths, with: .middle)
-			} completion: { _ in
-				self.isAnimatingDuringRefreshTableView -= 1
-				if
-					self.isAnimatingDuringRefreshTableView == 0, // See matching comment in performBatchUpdates below.
-					!(self is CollectionsTVC)
-				{
-					self.performSegue(
-						withIdentifier: "Removed All Contents",
-						sender: nil)
-				}
-			}
+			deleteAllRowsThenExit()
 			return
 		}
 		
-		let (
-			indexesOfOldItemsToDelete,
-			indexesOfNewItemsToInsert,
-			indexesOfItemsToMove
-		) = SectionOfLibraryItems.indexesOfDeletesInsertsAndMoves(
-			oldItems: onscreenItems,
+		let section = 0
+		
+		let oldItems = sectionOfLibraryItems.items
+		let changes = SectionOfLibraryItems.indexesOfChanges(
+			oldItems: oldItems,
 			newItems: newItems)
 		
-		let indexPathsToDelete = indexesOfOldItemsToDelete.map {
+		sectionOfLibraryItems.setItems(newItems)
+		
+		let indexPathsToDelete = changes.deletes.map {
 			indexPathFor(
 				indexOfLibraryItem: $0,
 				indexOfSectionOfLibraryItem: section)
 		}
-		let indexPathsToInsert = indexesOfNewItemsToInsert.map {
+		let indexPathsToInsert = changes.inserts.map {
 			indexPathFor(
 				indexOfLibraryItem: $0,
 				indexOfSectionOfLibraryItem: section)
 		}
-		let indexPathsToMove = indexesOfItemsToMove.map {
+		let indexPathsToMove = changes.moves.map { oldIndex, newIndex in
 			(indexPathFor(
-				indexOfLibraryItem: $0,
+				indexOfLibraryItem: oldIndex,
 				indexOfSectionOfLibraryItem: section),
 			 indexPathFor(
-				indexOfLibraryItem: $1,
+				indexOfLibraryItem: newIndex,
 				indexOfSectionOfLibraryItem: section))
 		}
 		
@@ -425,21 +415,21 @@ class LibraryTVC:
 			if sectionOfLibraryItems.items.isEmpty {
 				sortButton.isEnabled = false
 			} else {
-				sortButton.isEnabled = shouldAllowSorting()
+				sortButton.isEnabled = allowsSort()
 			}
 			
 			// "Move to Top"
 			if sectionOfLibraryItems.items.isEmpty {
 				floatToTopButton.isEnabled = false
 			} else {
-				floatToTopButton.isEnabled = shouldAllowFloating()
+				floatToTopButton.isEnabled = allowsFloat()
 			}
 			
 			// "Move to Bottom"
 			if sectionOfLibraryItems.items.isEmpty {
 				sinkToBottomButton.isEnabled = false
 			} else {
-				sinkToBottomButton.isEnabled = shouldAllowSinking()
+				sinkToBottomButton.isEnabled = allowsSink()
 			}
 		} else {
 			refreshPlaybackToolbarButtons()
@@ -468,8 +458,8 @@ class LibraryTVC:
 			let selectedItem = libraryItem(for: selectedIndexPath)
 			libraryTVC.sectionOfLibraryItems = SectionOfLibraryItems(
 				managedObjectContext: managedObjectContext,
-				container: selectedItem,
-				entityName: libraryTVC.entityName)
+				entityName: libraryTVC.entityName,
+				container: selectedItem)
 		}
 		
 		super.prepare(for: segue, sender: sender)

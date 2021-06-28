@@ -14,8 +14,8 @@ struct SectionOfLibraryItems {
 	// MARK: Constants
 	
 	let managedObjectContext: NSManagedObjectContext
-	let container: NSManagedObject? // Switch to proper type-checking
 	let entityName: String
+	let container: NSManagedObject? // Switch to proper type-checking
 	
 	// MARK: Variables
 	
@@ -48,7 +48,7 @@ struct SectionOfLibraryItems {
 		managedObjectContext.refresh(container, mergeChanges: true)
 	}
 	
-	static func indexesOfDeletesInsertsAndMoves(
+	static func indexesOfChanges(
 		oldItems: [NSManagedObject],
 		newItems: [NSManagedObject]
 	) -> (
