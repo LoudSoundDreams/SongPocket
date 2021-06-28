@@ -11,7 +11,9 @@ import CoreData
 extension CollectionsTVC {
 	
 //	override func setEditing(_ editing: Bool, animated: Bool) {
-//		super.setEditing(editing, animated: animated)
+//		super.setEditing(
+//			editing,
+//			animated: animated)
 //
 //		refreshVoiceControlNamesForAllCells()
 //	}

@@ -29,10 +29,9 @@ extension AlbumsTVC {
 	
 	final override func refreshDataAndViews() {
 		if albumMoverClipboard != nil {
-			return // without refreshing
+		} else {
+			super.refreshDataAndViews()
 		}
-		
-		super.refreshDataAndViews()
 	}
 	
 }

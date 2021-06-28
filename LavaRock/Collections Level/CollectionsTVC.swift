@@ -166,7 +166,6 @@ final class CollectionsTVC:
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
-			
 		} else {
 			bottomButtonsInEditingMode = [
 				sortButton,
@@ -195,7 +194,7 @@ final class CollectionsTVC:
 			if didMoveAlbums {
 				// Replace this with refreshToReflectMusicLibrary()?
 				refreshToReflectPlaybackState()
-				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums" sheet.
+				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums to…" sheet.
 				
 				didMoveAlbums = false
 			}

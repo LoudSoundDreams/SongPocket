@@ -45,17 +45,16 @@ extension CollectionsTVC {
 	When moving Albums:
 	- What if any of the Albums we're moving get deleted?
 	- What if we've already made a new Collection and are transitioning into or out of it?
-	Currently, we're just dismissing the "move Albums" sheet to not deal with any of those edge cases.
+	Currently, we're just dismissing the "move Albums to…" sheet to not deal with any of those edge cases.
 	*/
 	
 	final override func refreshDataAndViews() {
 		if albumMoverClipboard != nil {
-			return // without refreshing
+		} else {
+			deleteAllRowsIfFinishedLoading()
+			
+			super.refreshDataAndViews()
 		}
-		
-		deleteAllRowsIfFinishedLoading()
-		
-		super.refreshDataAndViews()
 	}
 	
 }

@@ -88,4 +88,19 @@ extension AlbumsTVC {
 		}
 	}
 	
+	// MARK: - Selecting
+	
+	final override func tableView(
+		_ tableView: UITableView,
+		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
+	) -> Bool {
+		if albumMoverClipboard != nil {
+			return false
+		} else {
+			return super.tableView(
+				tableView,
+				shouldBeginMultipleSelectionInteractionAt: indexPath)
+		}
+	}
+	
 }

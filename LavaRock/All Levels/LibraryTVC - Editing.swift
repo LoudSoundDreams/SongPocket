@@ -18,7 +18,9 @@ extension LibraryTVC {
 			managedObjectContext.tryToSave()
 		}
 		
-		super.setEditing(editing, animated: animated)
+		super.setEditing(
+			editing,
+			animated: animated)
 		
 		refreshAndSetBarButtons(animated: animated)
 		

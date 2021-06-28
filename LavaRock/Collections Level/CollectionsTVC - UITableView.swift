@@ -27,7 +27,9 @@ extension CollectionsTVC {
 			tableView.backgroundView = nil
 			return 0
 		case .normal:
-			return super.tableView(tableView, numberOfRowsInSection: section)
+			return super.tableView(
+				tableView,
+				numberOfRowsInSection: section)
 		}
 	}
 	
@@ -40,8 +42,8 @@ extension CollectionsTVC {
 		switch contentState() {
 		case .allowAccess, .loading:
 			return allowAccessOrLoadingCell(forRowAt: indexPath)
-		case .justFinishedLoading:
-			return UITableViewCell() // Should never run
+		case .justFinishedLoading: // Should never run
+			return UITableViewCell()
 		case .normal:
 			return collectionCell(forRowAt: indexPath)
 		}
@@ -73,8 +75,8 @@ extension CollectionsTVC {
 			cell.isUserInteractionEnabled = false
 			cell.accessibilityTraits.remove(.button)
 			return cell
-		case .justFinishedLoading, .normal:
-			return UITableViewCell() // Should never run
+		case .justFinishedLoading, .normal: // Should never run
+			return UITableViewCell()
 		}
 	}
 	
@@ -114,7 +116,6 @@ extension CollectionsTVC {
 				cell.isUserInteractionEnabled = true
 				cell.accessibilityTraits.remove(.notEnabled)
 			}
-			
 		} else {
 			let renameFocusedCollectionAction = UIAccessibilityCustomAction(
 				name: LocalizedString.rename,
@@ -164,6 +165,27 @@ extension CollectionsTVC {
 	
 	final override func tableView(
 		_ tableView: UITableView,
+		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
+	) -> Bool {
+		if albumMoverClipboard != nil {
+			return false
+		} else {
+			switch contentState() {
+			case .allowAccess, .loading:
+				return false
+			case .justFinishedLoading: // Should never run
+				break
+			case .normal:
+				break
+			}
+			return super.tableView(
+				tableView,
+				shouldBeginMultipleSelectionInteractionAt: indexPath)
+		}
+	}
+	
+	final override func tableView(
+		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
 		switch MPMediaLibrary.authorizationStatus() {
@@ -185,7 +207,9 @@ extension CollectionsTVC {
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
 		
-		super.tableView(tableView, didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
+		super.tableView(
+			tableView,
+			didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
 	}
 	
 }

@@ -59,7 +59,6 @@ final class AlbumsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			
 			tableView.allowsSelection = false
-			
 		} else {
 			bottomButtonsInEditingMode = [
 				startMovingAlbumsButton,

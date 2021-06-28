@@ -30,6 +30,8 @@ extension SongsTVC {
 		}
 	}
 	
+	// MARK: Album Artwork Cell
+	
 	private func albumArtworkCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
 		guard let album = sectionOfLibraryItems.container as? Album else {
@@ -53,6 +55,8 @@ extension SongsTVC {
 		
 		return albumArtworkCell
 	}
+	
+	// MARK: Album Info Cell
 	
 	private func albumInfoCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
@@ -93,6 +97,8 @@ extension SongsTVC {
 			return albumInfoCell
 		}
 	}
+	
+	// MARK: Song Cell
 	
 	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
@@ -166,7 +172,9 @@ extension SongsTVC {
 			// You must eventually deselect the row, and set isPresentingSongActions = false, in every possible branch from here.
 		}
 		
-		super.tableView(tableView, didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
+		super.tableView(
+			tableView,
+			didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
 	}
 	
 }
