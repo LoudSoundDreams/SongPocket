@@ -327,9 +327,9 @@ class LibraryTVC:
 		let section = 0
 		
 		let oldItems = sectionOfLibraryItems.items
-		let changes = SectionOfLibraryItems.indexesOfChanges(
-			oldItems: oldItems,
-			newItems: newItems)
+		let changes = oldItems.indexesOfChanges(toMatch: newItems) { oldItem, newItem in
+			oldItem.objectID == newItem.objectID
+		}
 		
 		sectionOfLibraryItems.setItems(newItems)
 		
