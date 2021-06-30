@@ -319,11 +319,6 @@ class LibraryTVC:
 		newItems: [NSManagedObject],
 		completion: (() -> ())?
 	) {
-		guard !newItems.isEmpty else {
-			deleteAllRowsThenExit()
-			return
-		}
-		
 		let section = 0
 		
 		let oldItems = sectionOfLibraryItems.items
@@ -332,6 +327,11 @@ class LibraryTVC:
 		}
 		
 		sectionOfLibraryItems.setItems(newItems)
+		
+		guard !newItems.isEmpty else {
+			deleteAllRowsThenExit()
+			return
+		}
 		
 		let indexPathsToDelete = changes.deletes.map {
 			indexPathFor(

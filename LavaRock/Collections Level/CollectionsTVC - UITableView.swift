@@ -27,10 +27,12 @@ extension CollectionsTVC {
 			tableView.backgroundView = nil
 			return 0
 		case .normal:
-			return super.tableView(
-				tableView,
-				numberOfRowsInSection: section)
+			break
 		}
+		
+		return super.tableView(
+			tableView,
+			numberOfRowsInSection: section)
 	}
 	
 	// MARK: - Cells
@@ -178,6 +180,7 @@ extension CollectionsTVC {
 			case .normal:
 				break
 			}
+			
 			return super.tableView(
 				tableView,
 				shouldBeginMultipleSelectionInteractionAt: indexPath)

@@ -7,7 +7,7 @@
 
 import CoreData
 
-struct SectionOfLibraryItems {
+struct SectionOfLibraryItems: SectionOfLibraryItemsProtocol {
 	
 	// MARK: - Properties
 	
@@ -30,9 +30,23 @@ struct SectionOfLibraryItems {
 	
 	// MARK: - Methods
 	
+	// Helps callers keep `items` in a coherent state by forcing them to finalize their changes explicitly.
 	mutating func setItems(_ newItems: [NSManagedObject]) {
 		items = newItems
 	}
+	
+}
+
+protocol SectionOfLibraryItemsProtocol {
+	var managedObjectContext: NSManagedObjectContext { get }
+	var entityName: String { get }
+	var container: NSManagedObject? { get }
+	
+	func fetchedItems() -> [NSManagedObject]
+	func refreshContainer()
+}
+
+extension SectionOfLibraryItemsProtocol {
 	
 	func fetchedItems() -> [NSManagedObject] {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
@@ -40,7 +54,6 @@ struct SectionOfLibraryItems {
 		if let container = container {
 			fetchRequest.predicate = NSPredicate(format: "container == %@", container)
 		}
-		
 		return managedObjectContext.objectsFetched(for: fetchRequest)
 	}
 	
