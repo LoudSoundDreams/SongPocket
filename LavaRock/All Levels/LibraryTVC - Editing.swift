@@ -29,7 +29,7 @@ extension LibraryTVC {
 		tableView.performBatchUpdates(nil)
 	}
 	
-	// Note: We handle rearranging in UITableViewDataSource and UITableViewDelegate methods.
+	// Note: We handle reordering in UITableViewDataSource and UITableViewDelegate methods.
 	
 	// MARK: - Allowing
 	

@@ -11,14 +11,12 @@ struct SectionOfLibraryItems: SectionOfLibraryItemsProtocol {
 	
 	// MARK: - Properties
 	
-	// MARK: Constants
-	
-	let managedObjectContext: NSManagedObjectContext
+	// Constants
 	let entityName: String
+	let managedObjectContext: NSManagedObjectContext
 	let container: NSManagedObject?
 	
-	// MARK: Variables
-	
+	// Variables
 	private(set) lazy var items = fetchedItems() {
 		didSet {
 			// Needs to match [LibraryItem].reindex().
@@ -29,6 +27,17 @@ struct SectionOfLibraryItems: SectionOfLibraryItemsProtocol {
 	}
 	
 	// MARK: - Methods
+	
+	// Disables the default memberwise initializer (for structs), to prevent callers from initializing `items` incorrectly.
+	init(
+		entityName: String,
+		managedObjectContext: NSManagedObjectContext,
+		container: NSManagedObject?
+	) {
+		self.entityName = entityName
+		self.managedObjectContext = managedObjectContext
+		self.container = container
+	}
 	
 	// Helps callers keep `items` in a coherent state by forcing them to finalize their changes explicitly.
 	mutating func setItems(_ newItems: [NSManagedObject]) {

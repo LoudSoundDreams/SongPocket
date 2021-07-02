@@ -48,7 +48,7 @@ extension LibraryTVC {
 		return indexPath.row >= numberOfRowsInSectionAboveLibraryItems
 	}
 	
-	// MARK: Rearranging
+	// MARK: Reordering
 	
 	final override func tableView(
 		_ tableView: UITableView,

@@ -157,7 +157,7 @@
         <!--Collections-->
         <scene sceneID="X0R-Et-kVe">
             <objects>
-                <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="Vce-TP-hYI" customClass="CollectionsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Vce-TP-hYI" customClass="CollectionsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="OkG-hs-2fV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -317,7 +317,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="optionsButton" destination="mpR-tt-C6X" id="rCs-Xg-uZH"/>
                     </connections>
@@ -332,7 +332,6 @@
                 <navigationController storyboardIdentifier="Collections NC" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="YiT-J8-VtB" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Collections" image="archivebox.fill" catalog="system" id="48j-Zp-q5X"/>
                     <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uLz-8K-DqV">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -504,7 +503,6 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Placeholder Albums View Title" id="ykw-Eq-xTa"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="GFi-fJ-75x" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToCollectionsFromEmptyCollection:" id="ZST-h2-yhJ"/>
                     </connections>
@@ -517,7 +515,7 @@
         <!--Placeholder Songs View Title-->
         <scene sceneID="qH4-7z-FvM">
             <objects>
-                <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="Uik-rz-IBd" customClass="SongsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Uik-rz-IBd" customClass="SongsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" id="2Wt-Ak-PeR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

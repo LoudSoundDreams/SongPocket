@@ -196,8 +196,8 @@ class LibraryTVC:
 	// MARK: Variables
 	
 	lazy var sectionOfLibraryItems = SectionOfLibraryItems(
-		managedObjectContext: managedObjectContext,
 		entityName: entityName,
+		managedObjectContext: managedObjectContext,
 		container: nil)
 	var isImportingChanges = false
 //	var isUpdating: Bool {
@@ -457,8 +457,8 @@ class LibraryTVC:
 			libraryTVC.managedObjectContext = managedObjectContext
 			let selectedItem = libraryItem(for: selectedIndexPath)
 			libraryTVC.sectionOfLibraryItems = SectionOfLibraryItems(
-				managedObjectContext: managedObjectContext,
 				entityName: libraryTVC.entityName,
+				managedObjectContext: managedObjectContext,
 				container: selectedItem)
 		}
 		

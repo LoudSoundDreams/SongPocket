@@ -1,86 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19115.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="W9n-gA-DJs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19115.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vm6-Uf-Akz">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19107.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19107.5"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="fVb-EY-o8k">
+        <!--Collections-->
+        <scene sceneID="gyW-IV-cUa">
             <objects>
-                <viewController storyboardIdentifier="Even though I’ve set Bottom Bar to Translucent Tab Bar, no tab bar appears." id="xZv-7d-Usm" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Go7-Aq-jjg">
+                <viewController id="Fmw-eg-u4E" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8EM-dt-gqK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="YNJ-za-8ML"/>
+                        <viewLayoutGuide key="safeArea" id="BhZ-PG-QXS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem enabled="NO" id="Cpw-gQ-ceL">
+                            <imageReference key="image" image="backward.end.fill" catalog="system"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="sXT-W9-OjR"/>
+                        <barButtonItem enabled="NO" id="lxo-Bn-TMV">
+                            <imageReference key="image" image="arrow.counterclockwise.circle.fill" catalog="system"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Zbb-le-IEt"/>
+                        <barButtonItem enabled="NO" id="MSK-Wt-OWL">
+                            <imageReference key="image" image="play.fill" catalog="system"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="deT-cZ-FS6"/>
+                        <barButtonItem enabled="NO" id="k83-rG-aEg">
+                            <imageReference key="image" image="forward.end.fill" catalog="system"/>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Collections" id="BVQ-2l-f4R">
+                        <barButtonItem key="leftBarButtonItem" title="Options" id="5w2-4I-c6Q"/>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="edit" id="2bF-07-a56"/>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rGB-t1-6B6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Bf-ID-c2v" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-242" y="1599"/>
+            <point key="canvasLocation" x="2676" y="1604"/>
         </scene>
         <!--View Controller-->
-        <scene sceneID="VIA-Om-9L3">
+        <scene sceneID="Rcv-jZ-mbV">
             <objects>
-                <viewController id="uBf-Aj-oyT" sceneMemberID="viewController">
-                    <string key="storyboardIdentifier">I couldn’t get the tab bar to appear correctly in landscape using any combination of constraints, let alone both landscape and portrait.</string>
-                    <view key="view" contentMode="scaleToFill" id="KN5-3b-O71">
+                <viewController id="HeS-GM-hCI" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vJA-JN-cqR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L2Z-q1-q4z">
-                                <rect key="frame" x="0.0" y="729" width="375" height="49"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <items/>
-                            </tabBar>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="rnG-KV-ONy"/>
+                        <viewLayoutGuide key="safeArea" id="RY3-5U-8KO"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="L2Z-q1-q4z" firstAttribute="leading" secondItem="KN5-3b-O71" secondAttribute="leading" id="3pM-iT-ba9"/>
-                            <constraint firstItem="L2Z-q1-q4z" firstAttribute="trailing" secondItem="KN5-3b-O71" secondAttribute="trailing" id="Ug7-On-E1I"/>
-                            <constraint firstItem="L2Z-q1-q4z" firstAttribute="bottom" secondItem="KN5-3b-O71" secondAttribute="bottomMargin" id="XOD-AL-6qK"/>
-                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="0Pt-7f-4ot"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="88T-Z3-cA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r2k-Gu-Z8p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="694" y="1598"/>
+            <point key="canvasLocation" x="2676" y="3024"/>
         </scene>
         <!--View Controller-->
-        <scene sceneID="Tcg-T6-gfO">
+        <scene sceneID="SWH-3a-puN">
             <objects>
-                <viewController storyboardIdentifier="The toolbar appears with the wrong height." id="W9n-gA-DJs" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8t6-n8-NRC">
+                <viewController id="kG2-3G-bWI" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uHm-cy-2jQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bd8-3X-Wcu">
-                                <rect key="frame" x="0.0" y="729" width="375" height="49"/>
-                                <items/>
-                            </toolbar>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="x4e-Rk-EZK"/>
+                        <viewLayoutGuide key="safeArea" id="12m-ZP-lhv"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="bd8-3X-Wcu" firstAttribute="bottom" secondItem="8t6-n8-NRC" secondAttribute="bottomMargin" id="YMc-lV-o3M"/>
-                            <constraint firstItem="bd8-3X-Wcu" firstAttribute="leading" secondItem="8t6-n8-NRC" secondAttribute="leading" id="eul-mZ-Eoa"/>
-                            <constraint firstItem="bd8-3X-Wcu" firstAttribute="trailing" secondItem="8t6-n8-NRC" secondAttribute="trailing" id="sj0-m4-tAO"/>
-                        </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem enabled="NO" id="rZa-wH-dzj">
+                            <imageReference key="image" image="backward.end.fill" catalog="system"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="3i5-0C-jl7"/>
+                        <barButtonItem enabled="NO" id="OlY-db-KBc">
+                            <imageReference key="image" image="arrow.counterclockwise.circle.fill" catalog="system"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Hnl-9P-1n6"/>
+                        <barButtonItem enabled="NO" id="dZE-yW-xTF">
+                            <imageReference key="image" image="play.fill" catalog="system"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="gAM-A6-Ei9"/>
+                        <barButtonItem enabled="NO" id="9Hd-qi-2fW">
+                            <imageReference key="image" image="forward.end.fill" catalog="system"/>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="a9G-fG-4ni"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qUX-2T-S2O" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D0G-lt-NV6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1474" y="1598"/>
+            <point key="canvasLocation" x="2676" y="2328"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="mhx-he-ADX">
+            <objects>
+                <navigationController storyboardIdentifier="No text" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="vm6-Uf-Akz" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="aLd-ZI-Owy">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="w4y-4M-1et">
+                        <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="kG2-3G-bWI" kind="relationship" relationship="rootViewController" id="9Eu-wC-aXt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vfq-fy-90v" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1734" y="2328"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="2dS-zI-xGk">
+            <objects>
+                <navigationController storyboardIdentifier="No toolbar buttons" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="iuD-eo-rbc" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="IjX-cc-FTO">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lJR-EJ-GNr">
+                        <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="HeS-GM-hCI" kind="relationship" relationship="rootViewController" id="KaH-ly-Adi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QmI-eW-0BQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1734" y="3024"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="jhU-dz-eIw">
+            <objects>
+                <navigationController storyboardIdentifier="With text (but iOS 14 misaligns it)" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="nkN-1c-kHy" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="A0h-YG-iq8">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8fo-u5-0q6">
+                        <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="Fmw-eg-u4E" kind="relationship" relationship="rootViewController" id="H31-1h-GYd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="98Z-Jb-bxn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1734" y="1603"/>
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.counterclockwise.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="backward.end.fill" catalog="system" width="128" height="102"/>
+        <image name="forward.end.fill" catalog="system" width="128" height="102"/>
+        <image name="play.fill" catalog="system" width="116" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

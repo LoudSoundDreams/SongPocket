@@ -157,6 +157,8 @@
 		07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func deleteManagedObjects.swift"; sourceTree = "<group>"; };
 		07AE2AA3258C09D900C3A314 /* extension Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Collection.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
+		07CC4267268EC81C00D27E8C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		07CC4268268EC84B00D27E8C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		07D157EC24D952A600FDF26A /* protocol AlbumMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol AlbumMover.swift"; sourceTree = "<group>"; };
 		07D9DBF5257C9CA2007EEB87 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		07D9DBFB257CA34D007EEB87 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
@@ -670,6 +672,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				0768309724B42DEE0033E3CC /* Base */,
+				07CC4267268EC81C00D27E8C /* zh-Hant */,
+				07CC4268268EC84B00D27E8C /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";

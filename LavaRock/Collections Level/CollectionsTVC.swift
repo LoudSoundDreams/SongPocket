@@ -159,11 +159,6 @@ final class CollectionsTVC:
 		
 		super.setUpUI()
 		
-		// As of iOS 14.0 beta 5, cells that use UIListContentConfiguration change their separator insets when entering and exiting editing mode, but with broken timing and no animation.
-		// This stops the separator insets from changing.
-		tableView.separatorInsetReference = .fromAutomaticInsets
-		tableView.separatorInset.left = 0
-		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 		} else {
