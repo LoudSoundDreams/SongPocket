@@ -110,13 +110,34 @@ extension LibraryTVC {
 	
 	// MARK: - Sorting
 	
+	@available(iOS 14, *)
+	final func sortOptionsMenu() -> UIMenu {
+		let actionGroups: [[UIAction]] = sortOptionGroups.map { group in
+			let actionGroup = group.map { sortOption in
+				UIAction(
+					title: sortOption.localizedName(),
+					handler: sortActionHandler(_:))
+			}
+			return actionGroup
+		}
+		return UIMenu(
+			presentsUpward: true,
+			actionGroups: actionGroups)
+	}
+	
+	// For iOS 14 and later
+	final func sortActionHandler(_ sender: UIAction) {
+		sortSelectedOrAllItems(sortOptionLocalizedName: sender.title)
+	}
+	
 	// For iOS 13
 	@objc final func showSortOptionsActionSheet() {
 		let actionSheet = UIAlertController(
 			title: LocalizedString.sortBy,
 			message: nil,
 			preferredStyle: .actionSheet)
-		for sortOption in sortOptions {
+		let flatSortOptions = sortOptionGroups.flatMap { $0 }
+		for sortOption in flatSortOptions {
 			actionSheet.addAction(
 				UIAlertAction(
 					title: sortOption.localizedName(),
@@ -138,11 +159,6 @@ extension LibraryTVC {
 	private func sortSelectedOrAllItems(_ sender: UIAlertAction) {
 		guard let sortOptionLocalizedName = sender.title else { return }
 		sortSelectedOrAllItems(sortOptionLocalizedName: sortOptionLocalizedName)
-	}
-	
-	// For iOS 14 and later
-	final func sortActionHandler(_ sender: UIAction) {
-		sortSelectedOrAllItems(sortOptionLocalizedName: sender.title)
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {

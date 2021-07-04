@@ -55,18 +55,7 @@ class LibraryTVC:
 	// "Constants" that subclasses should customize
 	var entityName = "Collection"
 	var bottomButtonsInEditingMode = [UIBarButtonItem]()
-	var sortOptions = [SortOption]() {
-		didSet {
-			if #available(iOS 14, *) {
-				let sortActions = sortOptions.map {
-					UIAction(
-						title: $0.localizedName(),
-						handler: sortActionHandler(_:))
-				}
-				sortButton.menu = UIMenu(children: sortActions.reversed()) // Reversed because a UIMenu lists its children from the bottom upward when a toolbar button presents it.
-			}
-		}
-	}
+	var sortOptionGroups = [[SortOption]]()
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
@@ -87,13 +76,16 @@ class LibraryTVC:
 	lazy var sortButton: UIBarButtonItem = {
 		if #available(iOS 14, *) {
 			return UIBarButtonItem(
-				title: LocalizedString.sort) // The property observer on sortOptions adds a UIMenu to this button.
+				title: LocalizedString.sort,
+				menu: sortOptionsMenu()
+			)
 		} else { // iOS 13
 			return UIBarButtonItem(
 				title: LocalizedString.sort,
 				style: .plain,
 				target: self,
-				action: #selector(showSortOptionsActionSheet))
+				action: #selector(showSortOptionsActionSheet)
+			)
 		}
 	}()
 	lazy var floatToTopButton: UIBarButtonItem = {

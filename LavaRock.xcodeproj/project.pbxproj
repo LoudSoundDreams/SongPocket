@@ -31,6 +31,7 @@
 		075218AD257C4C0C0077AE9B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 075218AF257C4C0C0077AE9B /* Main.storyboard */; };
 		075218B7257C52390077AE9B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 075218B5257C52390077AE9B /* InfoPlist.strings */; };
 		075218BA257C52390077AE9B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 075218B8257C52390077AE9B /* Localizable.strings */; };
+		07566CEA2692261800257DB4 /* extension UIMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07566CE92692261800257DB4 /* extension UIMenu.swift */; };
 		07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */; };
 		07642C7C268FFC1600B66BB8 /* SectionOfSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* SectionOfSongs.swift */; };
 		07642C7E268FFEDC00B66BB8 /* protocol SectionOfLibraryItemsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* protocol SectionOfLibraryItemsProtocol.swift */; };
@@ -125,6 +126,7 @@
 		075218B1257C4C410077AE9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		075218B6257C52390077AE9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		075218B9257C52390077AE9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		07566CE92692261800257DB4 /* extension UIMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIMenu.swift"; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryItem.swift"; sourceTree = "<group>"; };
 		07642C7B268FFC1600B66BB8 /* SectionOfSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionOfSongs.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* protocol SectionOfLibraryItemsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol SectionOfLibraryItemsProtocol.swift"; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				07A3FBCE258EB9B2000B450E /* extension UIFont.swift */,
 				0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */,
 				072429C324DC786500F62AF6 /* extension UITableView.swift */,
+				07566CE92692261800257DB4 /* extension UIMenu.swift */,
 			);
 			path = "Extensions to UIKit";
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07566CEA2692261800257DB4 /* extension UIMenu.swift in Sources */,
 				07E92A142510682C00E9073B /* extension Notification.Name.swift in Sources */,
 				077E089824FB7AFF007C2479 /* LibraryTVC - Notifications.swift in Sources */,
 				07642C7C268FFC1600B66BB8 /* SectionOfSongs.swift in Sources */,

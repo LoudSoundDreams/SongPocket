@@ -112,6 +112,15 @@ final class CollectionsTVC:
 	
 	// MARK: - Setup
 	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		sortOptionGroups = [
+			[.title],
+			[.reverse]
+		]
+	}
+	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -167,10 +176,6 @@ final class CollectionsTVC:
 				floatToTopButton,
 				.flexibleSpac3(),
 				sinkToBottomButton,
-			]
-			sortOptions = [
-				.title,
-				.reverse,
 			]
 		}
 	}

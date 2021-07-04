@@ -38,6 +38,11 @@ final class AlbumsTVC:
 		super.init(coder: coder)
 		
 		entityName = "Album"
+		sortOptionGroups = [
+			[.newestFirst,
+			 .oldestFirst],
+			[.reverse]
+		]
 	}
 	
 	// MARK: Setting Up UI
@@ -68,11 +73,6 @@ final class AlbumsTVC:
 				floatToTopButton,
 				.flexibleSpac3(),
 				sinkToBottomButton,
-			]
-			sortOptions = [
-				.newestFirst,
-				.oldestFirst,
-				.reverse,
 			]
 		}
 	}
