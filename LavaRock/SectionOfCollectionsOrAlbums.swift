@@ -1,5 +1,5 @@
 //
-//  SectionOfLibraryItems.swift
+//  SectionOfCollectionsOrAlbums.swift
 //  LavaRock
 //
 //  Created by h on 2021-03-04.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-struct SectionOfLibraryItems: SectionOfLibraryItemsProtocol {
+struct SectionOfCollectionsOrAlbums: SectionOfLibraryItems {
 	
 	init(
 		entityName: String,
@@ -21,7 +21,7 @@ struct SectionOfLibraryItems: SectionOfLibraryItemsProtocol {
 		private_items = fetchedItems()
 	}
 	
-	// MARK: - SectionOfLibraryItemsProtocol
+	// MARK: - SectionOfLibraryItems
 	
 	// Constants
 	let entityName: String

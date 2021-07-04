@@ -187,8 +187,8 @@ class LibraryTVC:
 	
 	// MARK: Variables
 	
-	lazy var sectionOfLibraryItems: SectionOfLibraryItemsProtocol =
-	SectionOfLibraryItems( // Default value for CollectionsTVC
+	lazy var sectionOfLibraryItems: SectionOfLibraryItems =
+	SectionOfCollectionsOrAlbums( // Default value for CollectionsTVC
 		entityName: entityName,
 		managedObjectContext: managedObjectContext,
 		container: nil)
@@ -449,7 +449,7 @@ class LibraryTVC:
 		{
 			libraryTVC.managedObjectContext = managedObjectContext
 			let selectedItem = libraryItem(for: selectedIndexPath)
-			libraryTVC.sectionOfLibraryItems = SectionOfLibraryItems(
+			libraryTVC.sectionOfLibraryItems = SectionOfCollectionsOrAlbums(
 				entityName: libraryTVC.entityName,
 				managedObjectContext: managedObjectContext,
 				container: selectedItem)

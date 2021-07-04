@@ -36,7 +36,7 @@ extension LibraryTVC {
 	// You should only be allowed to sort contiguous items within the same SectionOfLibraryItems.
 	final func allowsSort() -> Bool {
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			return true // Multisection: Only if we only have 1 SectionOfLibraryItems.
+			return true // Multisection: Only if we have exactly 1 SectionOfLibraryItems.
 		} else {
 			return tableView.indexPathsForSelectedRowsNonNil.isContiguousWithinSameSection()
 		}

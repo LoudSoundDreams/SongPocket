@@ -1,5 +1,5 @@
 //
-//  protocol SectionOfLibraryItemsProtocol.swift
+//  protocol SectionOfLibraryItems.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-02.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-protocol SectionOfLibraryItemsProtocol {
+protocol SectionOfLibraryItems {
 	var managedObjectContext: NSManagedObjectContext { get }
 	var entityName: String { get }
 	var container: NSManagedObject? { get }
@@ -40,7 +40,7 @@ protocol SectionOfLibraryItemsProtocol {
 	func refreshContainer()
 }
 
-extension SectionOfLibraryItemsProtocol {
+extension SectionOfLibraryItems {
 	
 	func fetchedItems() -> [NSManagedObject] {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)

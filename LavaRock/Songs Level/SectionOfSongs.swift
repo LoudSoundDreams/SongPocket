@@ -8,7 +8,7 @@
 import CoreData
 import MediaPlayer
 
-struct SectionOfSongs: SectionOfLibraryItemsProtocol {
+struct SectionOfSongs: SectionOfLibraryItems {
 	
 	// MARK: - Properties
 	
@@ -70,7 +70,7 @@ struct SectionOfSongs: SectionOfLibraryItemsProtocol {
 //		}
 //	}
 	
-	// MARK: - SectionOfLibraryItemsProtocol
+	// MARK: - SectionOfLibraryItems
 	
 	// Constants
 	let entityName = "Song"
