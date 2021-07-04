@@ -105,18 +105,37 @@ extension SongsTVC {
 		guard let song = libraryItem(for: indexPath) as? Song else {
 			return UITableViewCell()
 		}
-		let songTitle = song.titleFormattedOrPlaceholder()
+		let mpMediaItem = song.mpMediaItem()
+		
+		let cellTitle = mpMediaItem?.title ?? Song.titlePlaceholder
+		
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
-		let cellTrackNumberText = song.trackNumberFormattedOrPlaceholder()
+		
+		let cellTrackNumberText: String = {
+			guard let mpMediaItem = mpMediaItem else {
+				return Song.trackNumberPlaceholder
+			}
+			let trackNumberText = String(mpMediaItem.albumTrackNumber)
+			if
+				let sectionOfSongs = sectionOfLibraryItems as? SectionOfSongs,
+				sectionOfSongs.shouldShowDiscNumbers
+			{
+				let discNumberText = String(mpMediaItem.discNumber)
+				return discNumberText + "-" /*hyphen*/ + trackNumberText
+			} else {
+				return trackNumberText
+			}
+		}()
 		
 		// Make, configure, and return the cell.
+		let albumArtist = (sectionOfLibraryItems.container as? Album)?.albumArtist() // Can be nil
 		if
-			let artist = song.artistFormatted(),
-			artist != (sectionOfLibraryItems.container as? Album)?.albumArtistFormattedOrPlaceholder()
+			let songArtist = mpMediaItem?.artist,
+			songArtist != albumArtist
 		{
 			guard var cell = tableView.dequeueReusableCell(
 				withIdentifier: "Cell with Different Artist",
@@ -125,14 +144,16 @@ extension SongsTVC {
 			else {
 				return UITableViewCell()
 			}
-			cell.artistLabel.text = artist
 			
-			cell.titleLabel.text = songTitle
+			cell.titleLabel.text = cellTitle
+			
+			cell.artistLabel.text = songArtist
+			
 			cell.apply(nowPlayingIndicator)
 			cell.trackNumberLabel.text = cellTrackNumberText
-			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers
+			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
 			
-			cell.accessibilityUserInputLabels = [songTitle]
+			cell.accessibilityUserInputLabels = [cellTitle]
 			
 			return cell
 			
@@ -145,12 +166,13 @@ extension SongsTVC {
 				return UITableViewCell()
 			}
 			
-			cell.titleLabel.text = songTitle
+			cell.titleLabel.text = cellTitle
+			
 			cell.apply(nowPlayingIndicator)
 			cell.trackNumberLabel.text = cellTrackNumberText
-			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers
+			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
 			
-			cell.accessibilityUserInputLabels = [songTitle]
+			cell.accessibilityUserInputLabels = [cellTitle]
 			
 			return cell
 		}

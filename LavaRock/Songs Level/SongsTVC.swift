@@ -10,16 +10,13 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-final class SongsTVC:
-	LibraryTVC
-{
+final class SongsTVC: LibraryTVC {
 	
 	// MARK: - Setup
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		entityName = "Song"
 		numberOfRowsInSectionAboveLibraryItems = 2
 	}
 	

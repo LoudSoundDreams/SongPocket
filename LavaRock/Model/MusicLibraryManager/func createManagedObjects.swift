@@ -382,26 +382,60 @@ extension MusicLibraryManager {
 		func sortedByAlbumOrder(
 			songs songsImmutable: [Song]
 		) -> [Song] {
-			var songsCopy = songsImmutable
-			// mpMediaItem() returns nil if the media item is no longer in the Music library. It doesn't matter where those Songs end up in the array, because we'll delete them later anyway.
-			songsCopy.sort {
+			os_signpost(
+				.begin,
+				log: Self.logForCreateObjects,
+				name: "Sort songs by album order in matching existing Album")
+			defer {
+				os_signpost(
+					.end,
+					log: Self.logForCreateObjects,
+					name: "Sort songs by album order in matching existing Album")
+			}
+			
+			var songsAndMediaItems = songsImmutable.map { song in
+				(song, song.mpMediaItem())
+				// mpMediaItem() returns nil if the media item is no longer in the Music library. It doesn't matter where those Songs end up in the array, because we'll delete them later anyway.
+			}
+			songsAndMediaItems.sort { leftPair, rightPair in
+				guard
+					let leftMediaItem = leftPair.1,
+					let rightMediaItem = rightPair.1
+				else {
+					return true
+				}
+				let leftTitle = leftMediaItem.title ?? ""
+				let rightTitle = rightMediaItem.title ?? ""
 				// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
-				let title0 = $0.titleFormattedOrPlaceholder()
-				let title1 = $1.titleFormattedOrPlaceholder()
-				return title0.precedesInAlphabeticalOrderFinderStyle(title1)
+				return leftTitle.precedesInAlphabeticalOrderFinderStyle(rightTitle)
 			}
-			songsCopy.sort {
-				$0.mpMediaItem()?.albumTrackNumber ?? 0 <
-					$1.mpMediaItem()?.albumTrackNumber ?? 0
+			songsAndMediaItems.sort { leftPair, rightPair in
+				guard
+					let leftMediaItem = leftPair.1,
+					let rightMediaItem = rightPair.1
+				else {
+					return true
+				}
+				return leftMediaItem.albumTrackNumber < rightMediaItem.albumTrackNumber
 			}
-			songsCopy.sort {
-				$1.mpMediaItem()?.albumTrackNumber ?? 0 == 0
+			songsAndMediaItems.sort { _, rightPair in
+				guard let rightMediaItem = rightPair.1 else {
+					return true
+				}
+				return rightMediaItem.albumTrackNumber == 0
 			}
-			songsCopy.sort {
-				$0.mpMediaItem()?.discNumber ?? 1 <
-					$1.mpMediaItem()?.discNumber ?? 1
+			songsAndMediaItems.sort { leftPair, rightPair in
+				guard
+					let leftMediaItem = leftPair.1,
+					let rightMediaItem = rightPair.1
+				else {
+					return true
+				}
+				return leftMediaItem.discNumber < rightMediaItem.discNumber
 			}
-			return songsCopy
+			return songsAndMediaItems.map { pair in
+				pair.0
+			}
 		}
 		
 		var sortedSongsInAlbum = sortedByAlbumOrder(songs: songs)

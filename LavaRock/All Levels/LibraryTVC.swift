@@ -195,7 +195,8 @@ class LibraryTVC:
 	
 	// MARK: Variables
 	
-	lazy var sectionOfLibraryItems = SectionOfLibraryItems(
+	lazy var sectionOfLibraryItems: SectionOfLibraryItemsProtocol =
+	SectionOfLibraryItems( // Default value for CollectionsTVC
 		entityName: entityName,
 		managedObjectContext: managedObjectContext,
 		container: nil)

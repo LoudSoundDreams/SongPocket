@@ -31,7 +31,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	// MARK: Albums
 	
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "Placeholder for unknown album title")
-	static let unknownArtist = NSLocalizedString("Unknown Album Artist", comment: "Placeholder for unknown album artist")
+	static let unknownAlbumArtist = NSLocalizedString("Unknown Album Artist", comment: "Placeholder for unknown album artist")
 	
 	// MARK: Options
 	

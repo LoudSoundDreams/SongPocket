@@ -39,6 +39,7 @@ extension Album {
 	
 	// MARK: - Media Player
 	
+	// Note: Slow.
 	final func mpMediaItemCollection() -> MPMediaItemCollection? {
 		os_signpost(
 			.begin,
@@ -74,8 +75,7 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	// MusicLibraryManager's importChanges() references this when checking for and making new Collections.
-	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownArtist
+	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownAlbumArtist
 	
 	final func titleFormattedOrPlaceholder() -> String {
 		if
@@ -90,14 +90,17 @@ extension Album {
 	}
 	
 	final func albumArtistFormattedOrPlaceholder() -> String {
+		return albumArtist() ?? Self.unknownAlbumArtistPlaceholder
+	}
+	
+	final func albumArtist() -> String? {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
-			let fetchedAlbumArtist = representativeItem.albumArtist, // As of iOS 14.0 beta 5, even if the "album artist" field is blank in the Music app for Mac (and other tag editors), .albumArtist can still return something. It probably reads the "artist" field from one of the songs. Currently, it returns the same name as the one in the album's header in the built-in Music app for iOS.
-			fetchedAlbumArtist != ""
+			let fetchedAlbumArtist = representativeItem.albumArtist // As of iOS 14.0 beta 5, even if the "album artist" field is blank in the Music app for Mac (and other tag editors), .albumArtist can still return something. It probably reads the "artist" field from one of the songs. Currently, it returns the same name as the one in the album's header in the built-in Music app for iOS.
 		{
 			return fetchedAlbumArtist
 		} else {
-			return Self.unknownAlbumArtistPlaceholder
+			return nil
 		}
 	}
 	

@@ -102,4 +102,27 @@ final class AlbumsTVC:
 			!sectionOfLibraryItems.items.isEmpty
 	}
 	
+	// MARK: - Navigation
+	
+	override func prepare(
+		for segue: UIStoryboardSegue,
+		sender: Any?
+	) {
+		if
+			segue.identifier == "Drill Down in Library",
+			let songsTVC = segue.destination as? SongsTVC,
+			let selectedIndexPath = tableView.indexPathForSelectedRow
+		{
+			songsTVC.managedObjectContext = managedObjectContext
+			let selectedItem = libraryItem(for: selectedIndexPath)
+			songsTVC.sectionOfLibraryItems = SectionOfSongs(
+				managedObjectContext: managedObjectContext,
+				container: selectedItem)
+			
+			return
+		}
+		
+		super.prepare(for: segue, sender: sender)
+	}
+	
 }

@@ -21,6 +21,7 @@ extension Song {
 	
 	// MARK: - Media Player
 	
+	// Note: Slow.
 	final func mpMediaItem() -> MPMediaItem? {
 		os_signpost(
 			.begin,
@@ -56,37 +57,7 @@ extension Song {
 	
 	// MARK: - Formatted Attributes
 	
-	final func titleFormattedOrPlaceholder() -> String {
-		if
-			let fetchedTitle = mpMediaItem()?.title,
-			fetchedTitle != ""
-		{
-			return fetchedTitle
-		} else {
-			return "—" // Em dash
-		}
-	}
-	
-	final func trackNumberFormattedOrPlaceholder() -> String {
-		if
-			let fetchedTrackNumber = mpMediaItem()?.albumTrackNumber,
-			fetchedTrackNumber != 0
-		{
-			return String(fetchedTrackNumber)
-		} else {
-			return "‒" // Figure dash
-		}
-	}
-	
-	final func artistFormatted() -> String? {
-		if
-			let fetchedArtist = mpMediaItem()?.artist,
-			fetchedArtist != ""
-		{
-			return fetchedArtist
-		} else {
-			return nil
-		}
-	}
+	static let titlePlaceholder = "—" // Em dash
+	static let trackNumberPlaceholder = "‒" // Figure dash
 	
 }

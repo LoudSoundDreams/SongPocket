@@ -8,8 +8,13 @@
 import UIKit
 import CoreData
 import MediaPlayer
+import OSLog
 
 extension SongsTVC {
+	
+	static let log = OSLog(
+		subsystem: "LavaRock.Song",
+		category: .pointsOfInterest)
 	
 	// MARK: - Presenting Actions
 	
@@ -86,9 +91,25 @@ extension SongsTVC {
 		
 		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
 		let chosenSongs = sectionOfLibraryItems.items[indexOfSelectedSong...]
+		os_signpost(
+			.begin,
+			log: Self.log,
+			name: "Get chosen MPMediaItems")
 		let chosenMediaItems = chosenSongs.compactMap {
 			($0 as? Song)?.mpMediaItem()
 		}
+//		let chosenMediaItems: [MPMediaItem] = {
+//			guard let sectionOfSongs = sectionOfLibraryItems as? SectionOfSongs else {
+//				return chosenSongs.compactMap {
+//					($0 as? Song)?.mpMediaItem()
+//				}
+//			}
+//			return sectionOfSongs.mpMediaItemsCompactFast(for: Array(chosenSongs))
+//		}()
+		os_signpost(
+			.end,
+			log: Self.log,
+			name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
@@ -111,9 +132,25 @@ extension SongsTVC {
 		
 		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
 		let chosenSongs = sectionOfLibraryItems.items[indexOfSelectedSong...]
+		os_signpost(
+			.begin,
+			log: Self.log,
+			name: "Get chosen MPMediaItems")
 		let chosenMediaItems = chosenSongs.compactMap {
 			($0 as? Song)?.mpMediaItem()
 		}
+//		let chosenMediaItems: [MPMediaItem] = {
+//			guard let sectionOfSongs = sectionOfLibraryItems as? SectionOfSongs else {
+//				return chosenSongs.compactMap {
+//					($0 as? Song)?.mpMediaItem()
+//				}
+//			}
+//			return sectionOfSongs.mpMediaItemsCompactFast(for: Array(chosenSongs))
+//		}()
+		os_signpost(
+			.end,
+			log: Self.log,
+			name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
@@ -127,12 +164,16 @@ extension SongsTVC {
 			sharedPlayer?.prepareToPlay()
 		}
 		
-		guard let selectedSong = libraryItem(for: selectedIndexPath) as? Song else { return }
-		let titleOfSelectedSong = selectedSong.titleFormattedOrPlaceholder()
-		showExplanationIfNecessaryForEnqueueAction(
-			userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
-			titleOfSelectedSong: titleOfSelectedSong,
-			numberOfSongsEnqueued: chosenMediaItems.count)
+		if
+			let selectedSong = libraryItem(for: selectedIndexPath) as? Song,
+			let selectedMediaItem = selectedSong.mpMediaItem()
+		{
+			let selectedTitle = selectedMediaItem.title ?? Song.titlePlaceholder
+			showExplanationIfNecessaryForEnqueueAction(
+				userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
+				titleOfSelectedSong: selectedTitle,
+				numberOfSongsEnqueued: chosenMediaItems.count)
+		}
 	}
 	
 	private func enqueueSelectedSong() {
@@ -159,9 +200,10 @@ extension SongsTVC {
 			sharedPlayer?.prepareToPlay()
 		}
 		
+		let selectedTitle = selectedMediaItem.title ?? Song.titlePlaceholder
 		showExplanationIfNecessaryForEnqueueAction(
 			userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
-			titleOfSelectedSong: selectedSong.titleFormattedOrPlaceholder(),
+			titleOfSelectedSong: selectedTitle,
 			numberOfSongsEnqueued: 1)
 	}
 	
