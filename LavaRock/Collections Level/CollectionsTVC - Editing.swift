@@ -29,6 +29,20 @@ extension CollectionsTVC {
 //		}
 //	}
 	
+	// MARK: - Allowing
+	
+	final func allowsCombine() -> Bool {
+		guard !sectionOfLibraryItems.items.isEmpty else {
+			return false
+		}
+		
+		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
+			return false
+		} else {
+			return true
+		}
+	}
+	
 	// MARK: - Renaming
 	
 	// Match presentDialogToMakeNewCollection.
@@ -81,9 +95,9 @@ extension CollectionsTVC {
 	
 	// MARK: - Combining
 	
-//	@objc final func presentDialogToRenameSelectedCollections() {
-//
-//
-//	}
+	@objc final func presentDialogToRenameSelectedCollections() {
+		
+		
+	}
 	
 }

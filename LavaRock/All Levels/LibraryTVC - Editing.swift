@@ -35,6 +35,10 @@ extension LibraryTVC {
 	
 	// You should only be allowed to sort contiguous items within the same SectionOfLibraryItems.
 	final func allowsSort() -> Bool {
+		guard !sectionOfLibraryItems.items.isEmpty else {
+			return false
+		}
+		
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
 			return true // Multisection: Only if we have exactly 1 SectionOfLibraryItems.
 		} else {
@@ -43,9 +47,15 @@ extension LibraryTVC {
 	}
 	
 	final func allowsFloat() -> Bool {
-		return
-			!tableView.indexPathsForSelectedRowsNonNil.isEmpty &&
-			tableView.indexPathsForSelectedRowsNonNil.isWithinSameSection()
+		guard !sectionOfLibraryItems.items.isEmpty else {
+			return false
+		}
+		
+		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
+			return false
+		} else {
+			return tableView.indexPathsForSelectedRowsNonNil.isWithinSameSection()
+		}
 	}
 	
 	final func allowsSink() -> Bool {

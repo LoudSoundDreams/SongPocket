@@ -28,11 +28,11 @@ final class CollectionsTVC:
 	
 	// "Constants"
 	@IBOutlet private var optionsButton: UIBarButtonItem!
-//	private lazy var combineButton = UIBarButtonItem(
-//		title: "Combine", // TO DO: Localize
-//		style: .plain,
-//		target: self,
-//		action: #selector(presentDialogToRenameSelectedCollections))
+	private lazy var combineButton = UIBarButtonItem(
+		title: "Combine", // TO DO: Localize
+		style: .plain,
+		target: self,
+		action: #selector(presentDialogToRenameSelectedCollections))
 	private lazy var makeNewCollectionButton = UIBarButtonItem(
 		barButtonSystemItem: .add,
 		target: self,
@@ -171,6 +171,12 @@ final class CollectionsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 		} else {
 			bottomButtonsInEditingMode = [
+				
+				
+//				combineButton,
+//				.flexibleSpac3(),
+				
+				
 				sortButton,
 				.flexibleSpac3(),
 				floatToTopButton,
@@ -208,6 +214,16 @@ final class CollectionsTVC:
 		}
 		
 		super.viewDidAppear(animated)
+	}
+	
+	// MARK: - Refreshing Buttons
+	
+	final override func refreshBarButtons() {
+		super.refreshBarButtons()
+		
+		if isEditing {
+			combineButton.isEnabled = allowsCombine()
+		}
 	}
 	
 	// MARK: - Navigation

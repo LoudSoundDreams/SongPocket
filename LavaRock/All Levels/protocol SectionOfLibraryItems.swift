@@ -42,6 +42,10 @@ protocol SectionOfLibraryItems {
 
 extension SectionOfLibraryItems {
 	
+	func isEmpty() -> Bool {
+		return items.isEmpty
+	}
+	
 	func fetchedItems() -> [NSManagedObject] {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]

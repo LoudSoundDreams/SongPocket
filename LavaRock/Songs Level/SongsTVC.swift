@@ -31,6 +31,12 @@ final class SongsTVC: LibraryTVC {
 		super.setUpUI()
 		
 		bottomButtonsInEditingMode = [
+			
+			
+//			.flexibleSpac3(),
+//			.flexibleSpac3(),
+			
+			
 			sortButton,
 			.flexibleSpac3(),
 			floatToTopButton,

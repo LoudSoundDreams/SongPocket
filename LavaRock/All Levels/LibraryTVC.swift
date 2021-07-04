@@ -404,26 +404,9 @@ class LibraryTVC:
 			MPMediaLibrary.authorizationStatus() == .authorized && // Do we need this?
 			!sectionOfLibraryItems.items.isEmpty
 		if isEditing {
-			// "Sort"
-			if sectionOfLibraryItems.items.isEmpty {
-				sortButton.isEnabled = false
-			} else {
-				sortButton.isEnabled = allowsSort()
-			}
-			
-			// "Move to Top"
-			if sectionOfLibraryItems.items.isEmpty {
-				floatToTopButton.isEnabled = false
-			} else {
-				floatToTopButton.isEnabled = allowsFloat()
-			}
-			
-			// "Move to Bottom"
-			if sectionOfLibraryItems.items.isEmpty {
-				sinkToBottomButton.isEnabled = false
-			} else {
-				sinkToBottomButton.isEnabled = allowsSink()
-			}
+			sortButton.isEnabled = allowsSort()
+			floatToTopButton.isEnabled = allowsFloat()
+			sinkToBottomButton.isEnabled = allowsSink()
 		} else {
 			refreshPlaybackToolbarButtons()
 		}
