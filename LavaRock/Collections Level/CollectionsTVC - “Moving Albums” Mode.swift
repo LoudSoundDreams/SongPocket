@@ -60,10 +60,7 @@ extension CollectionsTVC {
 			textField.smartDashesType = .yes
 		})
 		
-		let cancelAction = UIAlertAction(
-			title: LocalizedString.cancel,
-			style: .cancel,
-			handler: nil)
+		let cancelAction = UIAlertAction.cancel(handler: nil)
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
 			style: .default,

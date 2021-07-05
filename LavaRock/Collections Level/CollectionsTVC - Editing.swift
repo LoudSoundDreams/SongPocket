@@ -64,10 +64,7 @@ extension CollectionsTVC {
 			textField.smartDashesType = .yes
 		})
 		
-		let cancelAction = UIAlertAction(
-			title: LocalizedString.cancel,
-			style: .cancel,
-			handler: nil)
+		let cancelAction = UIAlertAction.cancel(handler: nil)
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
 			style: .default,
@@ -95,6 +92,18 @@ extension CollectionsTVC {
 	// MARK: - Combining
 	
 	@objc final func presentDialogToCombineSelectedCollections() {
+		// Save the previous SectionOfCollectionsOrAlbums for if we need to revert.
+//		previousSectionOfCollections = sectionOfLibraryItems
+		
+		
+	}
+	
+	private func commitCombineCollections() {
+		
+		
+	}
+	
+	private func cancelCombineCollections() {
 		
 		
 	}

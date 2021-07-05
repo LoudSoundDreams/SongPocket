@@ -73,10 +73,7 @@ extension AlbumsTVC {
 			style: .default,
 			handler: { _ in self.startOrganizingAlbums() })
 		organizeAction.isEnabled = false
-		let cancelAlertAction = UIAlertAction(
-			title: LocalizedString.cancel,
-			style: .cancel,
-			handler: nil)
+		let cancelAlertAction = UIAlertAction.cancel(handler: nil)
 		let moveAlertAction = UIAlertAction(
 			title: "Move To…", // TO DO: Localize
 			style: .default,

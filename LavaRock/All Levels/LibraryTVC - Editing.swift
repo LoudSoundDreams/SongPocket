@@ -100,10 +100,7 @@ extension LibraryTVC {
 			title: LocalizedString.moveToBottom,
 			style: .default,
 			handler: { _ in self.sinkSelectedItemsToBottomOfSection() })
-		let cancelAlertAction = UIAlertAction(
-			title: LocalizedString.cancel,
-			style: .cancel,
-			handler: nil)
+		let cancelAlertAction = UIAlertAction.cancel(handler: nil)
 		
 		actionSheet.addAction(moveToTopAlertAction)
 		actionSheet.addAction(moveToBottomAlertAction)
@@ -204,10 +201,7 @@ extension LibraryTVC {
 				style: .default,
 				handler: sortSelectedOrAllItems(_:))
 		}
-		let cancelAlertAction = UIAlertAction(
-			title: LocalizedString.cancel,
-			style: .cancel,
-			handler: nil)
+		let cancelAlertAction = UIAlertAction.cancel(handler: nil)
 		
 		for sortAlertAction in sortAlertActions {
 			actionSheet.addAction(sortAlertAction)

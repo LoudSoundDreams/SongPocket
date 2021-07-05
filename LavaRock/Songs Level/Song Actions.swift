@@ -53,13 +53,9 @@ extension SongsTVC {
 				deselectSelectedSong()
 			}
 		)
-		let cancelAction = UIAlertAction(
-			title: LocalizedString.cancel,
-			style: .cancel,
-			handler: { _ in
-				deselectSelectedSong()
-			}
-		)
+		let cancelAction = UIAlertAction.cancel { _ in
+			deselectSelectedSong()
+		}
 		
 		// Disable the actions that we shouldn't offer for the last Song in the section.
 		if song == sectionOfLibraryItems.items.last {
