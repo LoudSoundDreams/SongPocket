@@ -25,7 +25,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>other</key>
-			<string>請點選這%lld個專輯要搬移至的合集。</string>
+			<string>請選擇這%lld個專輯要搬移至的合集。</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
