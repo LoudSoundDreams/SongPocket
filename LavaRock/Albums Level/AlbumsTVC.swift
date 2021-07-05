@@ -42,7 +42,9 @@ final class AlbumsTVC:
 		target: self,
 		action: #selector(startMovingAlbums))
 	
-	// "Constants" for "moving Albums" mode
+	// MARK: "Moving Albums" Mode
+	
+	// "Constants"
 	private lazy var moveHereButton = UIBarButtonItem(
 		title: LocalizedString.moveHere,
 		style: .done,
@@ -91,6 +93,7 @@ final class AlbumsTVC:
 				
 //				organizeButton,
 //				.flexibleSpac3(),
+				
 				moveButton,
 				.flexibleSpac3(),
 				

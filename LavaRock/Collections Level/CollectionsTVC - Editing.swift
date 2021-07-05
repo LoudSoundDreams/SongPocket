@@ -94,7 +94,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Combining
 	
-	@objc final func presentDialogToRenameSelectedCollections() {
+	@objc final func presentDialogToCombineSelectedCollections() {
 		
 		
 	}

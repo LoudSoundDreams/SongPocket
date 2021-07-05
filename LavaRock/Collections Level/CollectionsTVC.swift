@@ -32,7 +32,7 @@ final class CollectionsTVC:
 		title: "Combine", // TO DO: Localize
 		style: .plain,
 		target: self,
-		action: #selector(presentDialogToRenameSelectedCollections))
+		action: #selector(presentDialogToCombineSelectedCollections))
 	private lazy var makeNewCollectionButton = UIBarButtonItem(
 		barButtonSystemItem: .add,
 		target: self,
@@ -40,6 +40,10 @@ final class CollectionsTVC:
 	
 	// Variables
 	var didJustFinishLoading = false
+	
+	// MARK: "Moving Albums" Mode
+	
+	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var didMoveAlbums = false
 	

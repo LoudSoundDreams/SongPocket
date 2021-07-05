@@ -98,9 +98,7 @@ extension AlbumsTVC {
 		guard
 			let modalCollectionsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as? UINavigationController,
 			let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as? CollectionsTVC
-		else {
-			return
-		}
+		else { return }
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
 		
@@ -114,9 +112,11 @@ extension AlbumsTVC {
 		} else {
 			for indexPath in indexPaths(forIndexOfSectionOfLibraryItems: 0) {
 				let album = libraryItem(for: indexPath)
-				if tableView.indexPathsForSelectedRowsNonNil.contains(indexPath) { // If the row is selected.
+				if tableView.indexPathsForSelectedRowsNonNil.contains(indexPath) {
+					// The row is selected.
 					idsOfAlbumsToMove.append(album.objectID)
-				} else { // The row is not selected.
+				} else {
+					// The row is not selected.
 					idsOfAlbumsToNotMove.append(album.objectID)
 				}
 			}
@@ -125,11 +125,11 @@ extension AlbumsTVC {
 			idOfSourceCollection: idOfSourceCollection,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
 			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove,
-			delegate: self
-		)
+			delegate: self)
 		
 		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
-		let childManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+		let childManagedObjectContext = NSManagedObjectContext(
+			concurrencyType: .mainQueueConcurrencyType)
 		childManagedObjectContext.parent = managedObjectContext
 		modalCollectionsTVC.managedObjectContext = childManagedObjectContext
 		
