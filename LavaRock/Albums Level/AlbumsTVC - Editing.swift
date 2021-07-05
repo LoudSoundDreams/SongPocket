@@ -12,12 +12,81 @@ extension AlbumsTVC {
 	
 	// MARK: - Allowing
 	
-	final func allowsStartMovingAlbums() -> Bool {
+	final func allowsMoveOrOrganize() -> Bool {
 		guard !sectionOfLibraryItems.items.isEmpty else {
 			return false
 		}
 		
 		return true
+	}
+	
+	final func allowsOrganize() -> Bool {
+		guard !sectionOfLibraryItems.items.isEmpty else {
+			return false
+		}
+		
+		return true
+	}
+	
+	final func allowsMove() -> Bool {
+		guard !sectionOfLibraryItems.items.isEmpty else {
+			return false
+		}
+		
+		return true
+	}
+	
+	// MARK: - Organizing
+	
+	@objc final func startOrganizingAlbums() {
+		
+		
+	}
+	
+	// MARK: - Moving or Organizing
+	
+	// For iOS 14 and later
+	final func moveOrOrganizeMenu() -> UIMenu {
+		let organizeAction = UIAction(
+			title: "Organize Into New Collections…", // TO DO: Localize
+//			title: "Move to New Collections By…", // TO DO: Localize
+//			title: "Organize Into…", // TO DO: Localize
+			handler: { _ in self.startOrganizingAlbums() })
+		let moveAction = UIAction(
+			title: "Move To…", // TO DO: Localize
+			handler: { _ in self.startMovingAlbums() })
+		let children = [
+			organizeAction,
+			moveAction,
+		]
+		return UIMenu(children: children.reversed())
+	}
+	
+	@objc final func showMoveOrOrganizeActionSheet() {
+		let actionSheet = UIAlertController(
+			title: nil,
+			message: nil,
+			preferredStyle: .actionSheet)
+		
+		let organizeAction = UIAlertAction(
+			title: "Organize Into…", // TO DO: Localize
+			style: .default,
+			handler: { _ in self.startOrganizingAlbums() })
+		organizeAction.isEnabled = false
+		let cancelAlertAction = UIAlertAction(
+			title: LocalizedString.cancel,
+			style: .cancel,
+			handler: nil)
+		let moveAlertAction = UIAlertAction(
+			title: "Move To…", // TO DO: Localize
+			style: .default,
+			handler: { _ in self.startMovingAlbums() })
+		
+		actionSheet.addAction(organizeAction)
+		actionSheet.addAction(moveAlertAction)
+		actionSheet.addAction(cancelAlertAction)
+		
+		present(actionSheet, animated: true)
 	}
 	
 	// MARK: - Starting Moving Albums

@@ -77,26 +77,36 @@ class LibraryTVC:
 		if #available(iOS 14, *) {
 			return UIBarButtonItem(
 				title: LocalizedString.sort,
-				menu: sortOptionsMenu()
-			)
+				menu: sortOptionsMenu())
 		} else { // iOS 13
 			return UIBarButtonItem(
 				title: LocalizedString.sort,
 				style: .plain,
 				target: self,
-				action: #selector(showSortOptionsActionSheet)
-			)
+				action: #selector(showSortOptionsActionSheet))
 		}
 	}()
+	lazy var moveToTopOrBottomButton: UIBarButtonItem = {
+		let image = UIImage(systemName: "arrow.up.arrow.down")
+		let button: UIBarButtonItem = {
+			if #available(iOS 14, *) {
+				return UIBarButtonItem(
+					image: image,
+					menu: moveToTopOrBottomMenu())
+			} else { // iOS 13
+				return UIBarButtonItem(
+					image: image,
+					style: .plain,
+					target: self,
+					action: #selector(showMoveToTopOrBottomActionSheet))
+			}
+		}()
+		button.accessibilityLabel = "Move to top or bottom" // TO DO: Localize
+		return button
+	}()
 	lazy var floatToTopButton: UIBarButtonItem = {
-		let image: UIImage?
-		if #available(iOS 15, *) {
-			image = UIImage(systemName: "arrow.up.to.line.compact") // As of iOS 15, this is the vertically short one; .alt doesn't exist anymore; arrow.up.to.line is the taller one
-		} else { // iOS 14 and earlier
-			image = UIImage(systemName: "arrow.up.to.line") // As of iOS 14 and earlier, this is the vertically short one; .alt is taller; .compact doesn't exist yet
-		}
 		let button = UIBarButtonItem(
-			image: image,
+			image: UIImage.floatToTopSymbol,
 			style: .plain,
 			target: self,
 			action: #selector(floatSelectedItemsToTopOfSection))
@@ -104,14 +114,8 @@ class LibraryTVC:
 		return button
 	}()
 	lazy var sinkToBottomButton: UIBarButtonItem = {
-		let image: UIImage?
-		if #available(iOS 15, *) {
-			image = UIImage(systemName: "arrow.down.to.line.compact")
-		} else { // iOS 14 and earlier
-			image = UIImage(systemName: "arrow.down.to.line")
-		}
 		let button = UIBarButtonItem(
-			image: image,
+			image: UIImage.sinkToBottomSymbol,
 			style: .plain,
 			target: self,
 			action: #selector(sinkSelectedItemsToBottomOfSection))
@@ -405,6 +409,7 @@ class LibraryTVC:
 			!sectionOfLibraryItems.items.isEmpty
 		if isEditing {
 			sortButton.isEnabled = allowsSort()
+			moveToTopOrBottomButton.isEnabled = allowsMoveToTopOrBottom()
 			floatToTopButton.isEnabled = allowsFloat()
 			sinkToBottomButton.isEnabled = allowsSink()
 		} else {

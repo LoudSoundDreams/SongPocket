@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703130026923D2600134B06 /* AlbumsTVC - Editing.swift */; };
+		07031303269254B600134B06 /* extension UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07031302269254B600134B06 /* extension UIImage.swift */; };
 		0703ED2524E8D0DA002EF1B4 /* func importChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */; };
 		0706ABE124D947850090EB21 /* AlbumMoverClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */; };
 		070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */; };
@@ -99,6 +100,7 @@
 
 /* Begin PBXFileReference section */
 		0703130026923D2600134B06 /* AlbumsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - Editing.swift"; sourceTree = "<group>"; };
+		07031302269254B600134B06 /* extension UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIImage.swift"; sourceTree = "<group>"; };
 		0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func importChanges.swift"; sourceTree = "<group>"; };
 		0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumMoverClipboard.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Editing.swift"; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 				0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */,
 				072429C324DC786500F62AF6 /* extension UITableView.swift */,
 				07566CE92692261800257DB4 /* extension UIMenu.swift */,
+				07031302269254B600134B06 /* extension UIImage.swift */,
 			);
 			path = "Extensions to UIKit";
 			sourceTree = "<group>";
@@ -602,6 +605,7 @@
 				0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */,
 				07F1B91925F15EDB008591C7 /* SectionOfCollectionsOrAlbums.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
+				07031303269254B600134B06 /* extension UIImage.swift in Sources */,
 				07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */,
 				07FD6E17259925EF00826447 /* Options - Views.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,

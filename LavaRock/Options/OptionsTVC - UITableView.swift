@@ -194,8 +194,10 @@ extension OptionsTVC {
 			
 			// Reload all other rows, which might depend on the selected accent color.
 			let allOtherSections = Section.allCases.filter { $0 != .accentColor }
-			let allOtherSectionAsInts = allOtherSections.map { $0.rawValue }
-			tableView.reloadSections(IndexSet(allOtherSectionAsInts), with: .none)
+			let allOtherSectionsAsInts = allOtherSections.map { $0.rawValue }
+			tableView.reloadSections(
+				IndexSet(allOtherSectionsAsInts),
+				with: .none)
 			
 		} else { // iOS 13
 			

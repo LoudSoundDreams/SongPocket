@@ -46,11 +46,11 @@
 /* Button */
 "Move Here" = "搬移至此";
 
-/* Accessibility label */
-"Move to bottom" = "搬移至底";
+/* Button */
+"Move to Bottom" = "搬移至底";
 
-/* Accessibility label */
-"Move to top" = "搬移至頂";
+/* Button */
+"Move to Top" = "搬移至頂";
 
 /* Alert title */
 "New Collection [alert title]" = "新增合集";
@@ -61,7 +61,7 @@
 /* Sort option */
 "Newest First" = "最新的優先";
 
-/* Accessibility label */
+/* Button */
 "Next track" = "下一個音軌";
 
 /* Accessibility label */
@@ -73,19 +73,19 @@
 /* Sort option */
 "Oldest First" = "最舊的優先";
 
-/* Accessibility label */
+/* Button */
 "Pause" = "暫停";
 
 /* Accessibility label */
 "Paused" = "已暫停";
 
-/* Accessibility label */
+/* Button */
 "Play" = "播放";
 
 /* Button */
 "Play All Starting Here" = "從此歌曲播放";
 
-/* Accessibility label */
+/* Button */
 "Previous track" = "上一個音軌";
 
 /* Button */
@@ -94,13 +94,13 @@
 /* Button */
 "Queue Song" = "待播";
 
-/* Accessibility label */
+/* Button */
 "Rename" = "重新命名";
 
 /* Alert title */
 "Rename Collection" = "重新命名合集";
 
-/* Accessibility label */
+/* Button */
 "Restart" = "回到音軌開頭";
 
 /* Sort option */

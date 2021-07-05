@@ -171,14 +171,13 @@ final class CollectionsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 		} else {
 			bottomButtonsInEditingMode = [
-				
-				
 //				combineButton,
 //				.flexibleSpac3(),
 				
-				
 				sortButton,
 				.flexibleSpac3(),
+				
+//				moveToTopOrBottomButton,
 				floatToTopButton,
 				.flexibleSpac3(),
 				sinkToBottomButton,

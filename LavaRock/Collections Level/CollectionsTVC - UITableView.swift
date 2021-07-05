@@ -131,7 +131,7 @@ extension CollectionsTVC {
 	
 //	final func refreshVoiceControlNames(for cell: UITableViewCell) {
 //		if isEditing {
-//			cell.accessoryView?.accessibilityUserInputLabels = ["Info", "Detail", "Rename"] // I want to give the "rename collection" button a name for Voice Control, but this line of code doesn't do it.
+//			cell.accessoryView?.accessibilityUserInputLabels = ["Rename", "Info", "Detail"] // I want to give the "rename" button a name for Voice Control, but this line of code doesn't do it.
 //		} else {
 //			cell.accessoryView?.accessibilityUserInputLabels = [""]
 //		}

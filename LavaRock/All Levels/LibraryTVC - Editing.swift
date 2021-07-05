@@ -46,6 +46,10 @@ extension LibraryTVC {
 		}
 	}
 	
+	final func allowsMoveToTopOrBottom() -> Bool {
+		return allowsFloat()
+	}
+	
 	final func allowsFloat() -> Bool {
 		guard !sectionOfLibraryItems.items.isEmpty else {
 			return false
@@ -62,7 +66,53 @@ extension LibraryTVC {
 		return allowsFloat()
 	}
 	
-	// MARK: - Moving to Top
+	// MARK: - Moving to Top or Bottom
+	
+	// For iOS 14 and later
+	final func moveToTopOrBottomMenu() -> UIMenu {
+		let floatToTopAction = UIAction(
+			title: LocalizedString.moveToTop,
+			image: UIImage.floatToTopSymbol,
+			handler: { _ in self.floatSelectedItemsToTopOfSection() })
+		let sinkToBottomAction = UIAction(
+			title: LocalizedString.moveToBottom,
+			image: UIImage.sinkToBottomSymbol,
+			handler: { _ in self.sinkSelectedItemsToBottomOfSection() })
+		let children = [
+			floatToTopAction,
+			sinkToBottomAction,
+		]
+		return UIMenu(children: children.reversed())
+	}
+	
+	// For iOS 13
+	@objc final func showMoveToTopOrBottomActionSheet() {
+		let actionSheet = UIAlertController(
+			title: nil,
+			message: nil,
+			preferredStyle: .actionSheet)
+		
+		let moveToTopAlertAction = UIAlertAction(
+			title: LocalizedString.moveToTop,
+			style: .default,
+			handler: { _ in self.floatSelectedItemsToTopOfSection() })
+		let moveToBottomAlertAction = UIAlertAction(
+			title: LocalizedString.moveToBottom,
+			style: .default,
+			handler: { _ in self.sinkSelectedItemsToBottomOfSection() })
+		let cancelAlertAction = UIAlertAction(
+			title: LocalizedString.cancel,
+			style: .cancel,
+			handler: nil)
+		
+		actionSheet.addAction(moveToTopAlertAction)
+		actionSheet.addAction(moveToBottomAlertAction)
+		actionSheet.addAction(cancelAlertAction)
+		
+		present(actionSheet, animated: true)
+	}
+	
+	// MARK: Moving to Top
 	
 	@objc final func floatSelectedItemsToTopOfSection() {
 		guard allowsFloat() else { return }
@@ -90,7 +140,7 @@ extension LibraryTVC {
 			})
 	}
 	
-	// MARK: - Moving to Bottom
+	// MARK: Moving to Bottom
 	
 	@objc final func sinkSelectedItemsToBottomOfSection() {
 		guard allowsSink() else { return }
@@ -120,7 +170,7 @@ extension LibraryTVC {
 	
 	// MARK: - Sorting
 	
-	@available(iOS 14, *)
+	// For iOS 14 and later
 	final func sortOptionsMenu() -> UIMenu {
 		let actionGroups: [[UIAction]] = sortOptionGroups.map { group in
 			let actionGroup = group.map { sortOption in
@@ -136,7 +186,7 @@ extension LibraryTVC {
 	}
 	
 	// For iOS 14 and later
-	final func sortActionHandler(_ sender: UIAction) {
+	private func sortActionHandler(_ sender: UIAction) {
 		sortSelectedOrAllItems(sortOptionLocalizedName: sender.title)
 	}
 	
@@ -146,20 +196,24 @@ extension LibraryTVC {
 			title: LocalizedString.sortBy,
 			message: nil,
 			preferredStyle: .actionSheet)
+		
 		let flatSortOptions = sortOptionGroups.flatMap { $0 }
-		for sortOption in flatSortOptions {
-			actionSheet.addAction(
-				UIAlertAction(
-					title: sortOption.localizedName(),
-					style: .default,
-					handler: sortSelectedOrAllItems(_:)))
-		}
-		actionSheet.addAction(
+		let sortAlertActions = flatSortOptions.map { sortOption in
 			UIAlertAction(
-				title: LocalizedString.cancel,
-				style: .cancel,
-				handler: nil)
-		)
+				title: sortOption.localizedName(),
+				style: .default,
+				handler: sortSelectedOrAllItems(_:))
+		}
+		let cancelAlertAction = UIAlertAction(
+			title: LocalizedString.cancel,
+			style: .cancel,
+			handler: nil)
+		
+		for sortAlertAction in sortAlertActions {
+			actionSheet.addAction(sortAlertAction)
+		}
+		actionSheet.addAction(cancelAlertAction)
+		
 		actionSheet.popoverPresentationController?.barButtonItem = sortButton
 		
 		present(actionSheet, animated: true)

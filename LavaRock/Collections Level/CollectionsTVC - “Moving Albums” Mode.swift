@@ -59,6 +59,7 @@ extension CollectionsTVC {
 			textField.smartQuotesType = .yes
 			textField.smartDashesType = .yes
 		})
+		
 		let cancelAction = UIAlertAction(
 			title: LocalizedString.cancel,
 			style: .cancel,
@@ -95,9 +96,11 @@ extension CollectionsTVC {
 					})
 			}
 		)
+		
 		dialog.addAction(cancelAction)
 		dialog.addAction(saveAction)
 		dialog.preferredAction = saveAction
+		
 		present(dialog, animated: true)
 	}
 	

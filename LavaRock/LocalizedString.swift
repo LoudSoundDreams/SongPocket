@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Putting all the keys we pass to NSLocalizedString in one place (here) helps us keep them unique, which we need to do to ensure predictable behavior.
+// Putting all the keys we pass to NSLocalizedString in one place (here) helps us keep them unique, which we must do to ensure predictable behavior.
 // It also helps us use the same phrases in multiple places if appropriate.
 struct LocalizedString { // You can't make this an enum, because raw values for enum cases need to be literals.
 	
@@ -51,11 +51,11 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Playback Toolbar
 	
-	static let previousTrack = NSLocalizedString("Previous track", comment: "Accessibility label")
-	static let restart = NSLocalizedString("Restart", comment: "Accessibility label")
-	static let play = NSLocalizedString("Play", comment: "Accessibility label")
-	static let pause = NSLocalizedString("Pause", comment: "Accessibility label")
-	static let nextTrack = NSLocalizedString("Next track", comment: "Accessibility label")
+	static let previousTrack = NSLocalizedString("Previous track", comment: "Button")
+	static let restart = NSLocalizedString("Restart", comment: "Button")
+	static let play = NSLocalizedString("Play", comment: "Button")
+	static let pause = NSLocalizedString("Pause", comment: "Button")
+	static let nextTrack = NSLocalizedString("Next track", comment: "Button")
 	
 	// MARK: "Now Playing" Indicator
 	
@@ -67,13 +67,13 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let sortBy = NSLocalizedString("Sort By", comment: "Action sheet title")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
-	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label")
-	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label")
+	static let moveToTop = NSLocalizedString("Move to Top", comment: "Button")
+	static let moveToBottom = NSLocalizedString("Move to Bottom", comment: "Button")
 	
 	// MARK: Collections View
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
-	static let rename = NSLocalizedString("Rename", comment: "Accessibility label")
+	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let renameCollection = NSLocalizedString("Rename Collection", comment: "Alert title")
 	static let titleForAlertNewCollection = NSLocalizedString(
 		"New Collection [alert title]",

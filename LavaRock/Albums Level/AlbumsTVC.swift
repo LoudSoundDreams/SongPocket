@@ -18,12 +18,32 @@ final class AlbumsTVC:
 	// MARK: - Properties
 	
 	// "Constants"
-	private lazy var startMovingAlbumsButton = UIBarButtonItem(
+	private lazy var moveOrOrganizeButton: UIBarButtonItem = {
+		if #available(iOS 14, *) {
+			return UIBarButtonItem(
+				title: LocalizedString.move,
+				menu: moveOrOrganizeMenu())
+		} else { // iOS 13
+			return UIBarButtonItem(
+				title: LocalizedString.move,
+				style: .plain,
+				target: self,
+				action: #selector(showMoveOrOrganizeActionSheet))
+		}
+	}()
+	private lazy var organizeButton = UIBarButtonItem(
+		title: "Organize", // TO DO: Localize
+		style: .plain,
+		target: self,
+		action: #selector(startOrganizingAlbums))
+	private lazy var moveButton = UIBarButtonItem(
 		title: LocalizedString.move,
 		style: .plain,
 		target: self,
 		action: #selector(startMovingAlbums))
-	private lazy var moveAlbumsHereButton = UIBarButtonItem(
+	
+	// "Constants" for "moving Albums" mode
+	private lazy var moveHereButton = UIBarButtonItem(
 		title: LocalizedString.moveHere,
 		style: .done,
 		target: self,
@@ -53,7 +73,7 @@ final class AlbumsTVC:
 			topRightButtons = [cancelMoveAlbumsButton]
 			bottomButtonsInViewingMode = [
 				.flexibleSpac3(),
-				moveAlbumsHereButton,
+				moveHereButton,
 				.flexibleSpac3(),
 			]
 		}
@@ -66,10 +86,18 @@ final class AlbumsTVC:
 			tableView.allowsSelection = false
 		} else {
 			bottomButtonsInEditingMode = [
-				startMovingAlbumsButton,
+//				moveOrOrganizeButton,
+//				.flexibleSpac3(),
+				
+//				organizeButton,
+//				.flexibleSpac3(),
+				moveButton,
 				.flexibleSpac3(),
+				
 				sortButton,
 				.flexibleSpac3(),
+				
+//				moveToTopOrBottomButton,
 				floatToTopButton,
 				.flexibleSpac3(),
 				sinkToBottomButton,
@@ -93,7 +121,9 @@ final class AlbumsTVC:
 		super.refreshBarButtons()
 		
 		if isEditing {
-			startMovingAlbumsButton.isEnabled = allowsStartMovingAlbums()
+			moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
+			organizeButton.isEnabled = allowsOrganize()
+			moveButton.isEnabled = allowsMove()
 		}
 	}
 	
