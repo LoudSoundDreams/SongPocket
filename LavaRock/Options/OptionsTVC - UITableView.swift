@@ -203,7 +203,10 @@ extension OptionsTVC {
 			
 			tableView.reloadData()
 			tableView.performBatchUpdates {
-				tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+				tableView.selectRow(
+					at: selectedIndexPath,
+					animated: false,
+					scrollPosition: .none)
 			} completion: { _ in
 				self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.7 beta 2, this animation is broken (under some conditions). The row stays completely highlighted for the period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
 			}

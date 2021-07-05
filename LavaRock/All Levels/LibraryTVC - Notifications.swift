@@ -133,15 +133,13 @@ extension LibraryTVC {
 		
 		func refreshDataAndViewsPart2() {
 			let newItems = sectionOfLibraryItems.fetchedItems()
-			setItemsAndRefreshTableView(
-				newItems: newItems,
-				completion: {
-					self.sectionOfLibraryItems.refreshContainer()
-					self.refreshNavigationItemTitle()
-					self.tableView.reloadData() // Update the data within each row, which might be outdated.
-					// This has no animation (infamously), but we animated the deletes, inserts, and moves earlier, so here, it just updates the data within the rows after they stop moving, which looks fine.
-					// This includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
-				})
+			setItemsAndRefreshTableView(newItems: newItems) {
+				self.sectionOfLibraryItems.refreshContainer()
+				self.refreshNavigationItemTitle()
+				self.tableView.reloadData() // Update the data within each row, which might be outdated.
+				// This has no animation (infamously), but we animated the deletes, inserts, and moves earlier, so here, it just updates the data within the rows after they stop moving, which looks fine.
+				// This includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
+			}
 		}
 	}
 	

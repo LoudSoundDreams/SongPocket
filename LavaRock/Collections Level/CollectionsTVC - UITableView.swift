@@ -147,7 +147,7 @@ extension CollectionsTVC {
 		}
 		
 		if let focusedIndexPath = focusedIndexPath {
-			renameCollection(at: focusedIndexPath)
+			presentDialogToRenameCollection(at: focusedIndexPath)
 			return true
 		} else {
 			return false
@@ -160,7 +160,7 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		accessoryButtonTappedForRowWith indexPath: IndexPath
 	) {
-		renameCollection(at: indexPath)
+		presentDialogToRenameCollection(at: indexPath)
 	}
 	
 	// MARK: - Selecting
@@ -198,9 +198,13 @@ extension CollectionsTVC {
 			MPMediaLibrary.requestAuthorization { newStatus in // iOS 15: Use async/await
 				switch newStatus {
 				case .authorized:
-					DispatchQueue.main.async { self.didReceiveAuthorizationForMusicLibrary() }
+					DispatchQueue.main.async {
+						self.didReceiveAuthorizationForMusicLibrary()
+					}
 				default:
-					DispatchQueue.main.async { self.tableView.deselectRow(at: indexPath, animated: true) }
+					DispatchQueue.main.async {
+						self.tableView.deselectRow(at: indexPath, animated: true)
+					}
 				}
 			}
 		default: // Denied or restricted.

@@ -22,6 +22,7 @@
 		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
 		07267A2025537C5800C914A3 /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* PlayerManager.swift */; };
 		072C04992692A67400F44AC5 /* extension UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C04982692A67400F44AC5 /* extension UIAlertAction.swift */; };
+		072C049B2692AB4400F44AC5 /* extension UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */; };
 		0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */; };
 		0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Albums - Views.swift */; };
 		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
@@ -115,6 +116,7 @@
 		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
 		07267A1F25537C5800C914A3 /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
 		072C04982692A67400F44AC5 /* extension UIAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIAlertAction.swift"; sourceTree = "<group>"; };
+		072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIAlertController.swift"; sourceTree = "<group>"; };
 		0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIBarButtonItem.swift"; sourceTree = "<group>"; };
 		0732DDBF257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		0732DDC0257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -409,9 +411,10 @@
 				07A3FBCE258EB9B2000B450E /* extension UIFont.swift */,
 				0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */,
 				072429C324DC786500F62AF6 /* extension UITableView.swift */,
-				07566CE92692261800257DB4 /* extension UIMenu.swift */,
 				07031302269254B600134B06 /* extension UIImage.swift */,
+				07566CE92692261800257DB4 /* extension UIMenu.swift */,
 				072C04982692A67400F44AC5 /* extension UIAlertAction.swift */,
+				072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */,
 			);
 			path = "Extensions to UIKit";
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07566CEA2692261800257DB4 /* extension UIMenu.swift in Sources */,
+				072C049B2692AB4400F44AC5 /* extension UIAlertController.swift in Sources */,
 				07E92A142510682C00E9073B /* extension Notification.Name.swift in Sources */,
 				077E089824FB7AFF007C2479 /* LibraryTVC - Notifications.swift in Sources */,
 				07642C7C268FFC1600B66BB8 /* SectionOfSongs.swift in Sources */,

@@ -129,12 +129,10 @@ extension LibraryTVC {
 		}
 		
 		// Update the data source and table view.
-		setItemsAndRefreshTableView(
-			newItems: newItems,
-			completion: {
-				self.tableView.deselectAllRows(animated: true)
-				self.refreshBarButtons()
-			})
+		setItemsAndRefreshTableView(newItems: newItems) {
+			self.tableView.deselectAllRows(animated: true)
+			self.refreshBarButtons()
+		}
 	}
 	
 	// MARK: Moving to Bottom
@@ -157,12 +155,10 @@ extension LibraryTVC {
 		}
 		
 		// Update the data source and table view.
-		setItemsAndRefreshTableView(
-			newItems: newItems,
-			completion: {
-				self.tableView.deselectAllRows(animated: true)
-				self.refreshBarButtons()
-			})
+		setItemsAndRefreshTableView(newItems: newItems) {
+			self.tableView.deselectAllRows(animated: true)
+			self.refreshBarButtons()
+		}
 	}
 	
 	// MARK: - Sorting
@@ -251,12 +247,10 @@ extension LibraryTVC {
 		}
 		
 		// Update the data source and table view.
-		setItemsAndRefreshTableView(
-			newItems: newItems,
-			completion: {
-				self.tableView.deselectAllRows(animated: true)
-				self.refreshBarButtons()
-			})
+		setItemsAndRefreshTableView(newItems: newItems) {
+			self.tableView.deselectAllRows(animated: true)
+			self.refreshBarButtons()
+		}
 	}
 	
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.

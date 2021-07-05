@@ -54,19 +54,17 @@ extension AlbumsTVC {
 		Collection.deleteAllEmpty(via: managedObjectContext) // Note: This checks the contents of and reindexes destinationCollection, too.
 		
 		// Update the table view.
-		setItemsAndRefreshTableView(
-			newItems: newItems,
-			completion: {
-				self.managedObjectContext.tryToSaveSynchronously()
-				guard let mainManagedObjectContext = self.managedObjectContext.parent else {
-					fatalError("After the user tapped “Move Here”, we couldn’t access the main managed object context to save changes.")
-				}
-				mainManagedObjectContext.tryToSaveSynchronously()
-				
-				self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
-				})
-				albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
+		setItemsAndRefreshTableView(newItems: newItems) {
+			self.managedObjectContext.tryToSaveSynchronously()
+			guard let mainManagedObjectContext = self.managedObjectContext.parent else {
+				fatalError("After the user tapped “Move Here”, we couldn’t access the main managed object context to save changes.")
+			}
+			mainManagedObjectContext.tryToSaveSynchronously()
+			
+			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
 			})
+			albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
+		}
 		
 	}
 	

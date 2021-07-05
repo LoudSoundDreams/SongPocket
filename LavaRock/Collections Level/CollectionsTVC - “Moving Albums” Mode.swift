@@ -36,7 +36,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Making New Collection
 	
-	// Match renameCollection.
+	// Match presentDialogToRenameCollection.
 	@objc final func presentDialogToMakeNewCollection() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
@@ -47,58 +47,55 @@ extension CollectionsTVC {
 			title: LocalizedString.titleForAlertNewCollection,
 			message: nil,
 			preferredStyle: .alert)
-		dialog.addTextField(configurationHandler: { textField in
-			// UITextField
-			textField.text = self.suggestedCollectionTitle()
-			textField.placeholder = LocalizedString.title
-			textField.clearButtonMode = .whileEditing
-			
-			// UITextInputTraits
-			textField.returnKeyType = .done
-			textField.autocapitalizationType = .sentences
-			textField.smartQuotesType = .yes
-			textField.smartDashesType = .yes
-		})
+		dialog.addTextFieldForCollectionTitle(defaultTitle: suggestedCollectionTitle())
 		
 		let cancelAction = UIAlertAction.cancel(handler: nil)
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
-			style: .default,
-			handler: { [self] _ in
-				albumMoverClipboard.didAlreadyMakeNewCollection = true
-				
-				let indexOfNewCollection = 0
-				
-				// Create the new Collection.
-				
-				let rawProposedTitle = dialog.textFields?[0].text
-				let newTitle = Collection.validatedTitle(from: rawProposedTitle)
-				
-				let newCollection = Collection(context: managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
-				newCollection.title = newTitle
-				// When we set sectionOfLibraryItems.items, the property observer will set the "index" attribute of each Collection for us.
-				
-				var newItems = sectionOfLibraryItems.items
-				newItems.insert(newCollection, at: indexOfNewCollection)
-				setItemsAndRefreshTableView(
-					newItems: newItems,
-					completion: {
-						let indexPath = indexPathFor(
-							indexOfLibraryItem: indexOfNewCollection,
-							indexOfSectionOfLibraryItem: 0)
-						tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-						performSegue(
-							withIdentifier: "Drill Down in Library",
-							sender: nil)
-					})
-			}
-		)
+			style: .default
+		) { _ in
+			let proposedTitle = dialog.textFields?[0].text
+			self.makeAndOpenCollection(withProposedTitle: proposedTitle)
+		}
 		
 		dialog.addAction(cancelAction)
 		dialog.addAction(saveAction)
 		dialog.preferredAction = saveAction
 		
 		present(dialog, animated: true)
+	}
+	
+	private func makeAndOpenCollection(
+		withProposedTitle proposedTitle: String?
+	) {
+		guard let albumMoverClipboard = albumMoverClipboard else { return }
+		
+		albumMoverClipboard.didAlreadyMakeNewCollection = true
+		
+		let indexOfNewCollection = 0
+		
+		// Create the new Collection.
+		
+		let newTitle = Collection.validatedTitle(from: proposedTitle)
+		
+		let newCollection = Collection(context: managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
+		newCollection.title = newTitle
+		// When we set sectionOfLibraryItems.items, the property observer will set the "index" attribute of each Collection for us.
+		
+		var newItems = sectionOfLibraryItems.items
+		newItems.insert(newCollection, at: indexOfNewCollection)
+		let indexPathOfNewCollection = indexPathFor(
+			indexOfLibraryItem: indexOfNewCollection,
+			indexOfSectionOfLibraryItem: 0)
+		setItemsAndRefreshTableView(newItems: newItems) {
+			self.tableView.selectRow(
+				at: indexPathOfNewCollection,
+				animated: true,
+				scrollPosition: .top)
+			self.performSegue(
+				withIdentifier: "Drill Down in Library",
+				sender: nil)
+		}
 	}
 	
 	// MARK: Suggesting Title

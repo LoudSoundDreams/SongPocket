@@ -42,7 +42,7 @@ extension CollectionsTVC {
 	// MARK: - Renaming
 	
 	// Match presentDialogToMakeNewCollection.
-	final func renameCollection(at indexPath: IndexPath) {
+	final func presentDialogToRenameCollection(at indexPath: IndexPath) {
 		guard let collection = libraryItem(for: indexPath) as? Collection else { return }
 		
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
@@ -51,42 +51,46 @@ extension CollectionsTVC {
 			title: LocalizedString.renameCollection,
 			message: nil,
 			preferredStyle: .alert)
-		dialog.addTextField(configurationHandler: { textField in
-			// UITextField
-			textField.text = collection.title
-			textField.placeholder = LocalizedString.title
-			textField.clearButtonMode = .whileEditing
-			
-			// UITextInputTraits
-			textField.returnKeyType = .done
-			textField.autocapitalizationType = .sentences
-			textField.smartQuotesType = .yes
-			textField.smartDashesType = .yes
-		})
+		dialog.addTextFieldForCollectionTitle(defaultTitle: collection.title)
 		
 		let cancelAction = UIAlertAction.cancel(handler: nil)
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
-			style: .default,
-			handler: { [self] _ in
-				let rawProposedTitle = dialog.textFields?[0].text
-				let newTitle = Collection.validatedTitle(from: rawProposedTitle)
-				
-				collection.title = newTitle
-				managedObjectContext.tryToSave()
-				
-				tableView.reloadRows(at: [indexPath], with: .fade)
-				if wasRowSelectedBeforeRenaming {
-					tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-				}
-			}
-		)
+			style: .default
+		) { _ in
+			let proposedTitle = dialog.textFields?[0].text
+			self.rename(
+				collection,
+				withProposedTitle: proposedTitle,
+				at: indexPath,
+				thenSelectRow: wasRowSelectedBeforeRenaming)
+		}
 		
 		dialog.addAction(cancelAction)
 		dialog.addAction(saveAction)
 		dialog.preferredAction = saveAction
 		
 		present(dialog, animated: true)
+	}
+	
+	private func rename(
+		_ collection: Collection,
+		withProposedTitle proposedTitle: String?,
+		at indexPath: IndexPath,
+		thenSelectRow: Bool
+	) {
+		let newTitle = Collection.validatedTitle(from: proposedTitle)
+		
+		collection.title = newTitle
+		managedObjectContext.tryToSave()
+		
+		tableView.reloadRows(at: [indexPath], with: .fade)
+		if thenSelectRow {
+			tableView.selectRow(
+				at: indexPath,
+				animated: false,
+				scrollPosition: .none)
+		}
 	}
 	
 	// MARK: - Combining
@@ -96,14 +100,42 @@ extension CollectionsTVC {
 //		previousSectionOfCollections = sectionOfLibraryItems
 		
 		
-	}
-	
-	private func commitCombineCollections() {
+		let dialog = UIAlertController(
+			title: "Combine Collections", // TO DO: Localize
+			message: nil,
+			preferredStyle: .alert)
+		dialog.addTextFieldForCollectionTitle(defaultTitle: nil) //
 		
+		let cancelAction = UIAlertAction.cancel { _ in
+			self.cancelCombineCollections()
+		}
+		let saveAction = UIAlertAction(
+			title: LocalizedString.save,
+			style: .default
+		) { _ in
+			let proposedTitle = dialog.textFields?[0].text
+			self.combine(withProposedTitle: proposedTitle)
+		}
 		
+		dialog.addAction(cancelAction)
+		dialog.addAction(saveAction)
+		dialog.preferredAction = saveAction
+		
+		present(dialog, animated: true)
 	}
 	
 	private func cancelCombineCollections() {
+		// Revert sectionOfLibraryItems.
+		// Revert the list of Collections.
+		// (Revert the rest of the UI.)
+		
+		
+	}
+	
+	private func combine(
+//		_ oldCollections: [Collection],
+		withProposedTitle proposedTitle: String?
+	) {
 		
 		
 	}
