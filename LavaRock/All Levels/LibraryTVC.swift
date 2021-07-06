@@ -58,7 +58,7 @@ class LibraryTVC:
 	var sortOptionGroups = [[SortOption]]()
 	
 	// "Constants" that subclasses can optionally customize
-	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child managed object context when in "moving Albums" mode.
+	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child context when in "moving Albums" mode.
 	var numberOfRowsInSectionAboveLibraryItems = 0
 	var topLeftButtonsInViewingMode = [UIBarButtonItem]()
 	private lazy var topLeftButtonsInEditingMode = [UIBarButtonItem.flexibleSpac3()]

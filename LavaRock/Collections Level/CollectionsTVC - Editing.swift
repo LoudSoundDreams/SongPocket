@@ -281,7 +281,6 @@ extension CollectionsTVC {
 		guard let mainManagedObjectContext = sectionOfLibraryItems.managedObjectContext.parent else {
 			fatalError("After the user confirmed to combine Collections, we couldn’t restore the main managed object context.")
 		}
-//		mainManagedObjectContext.tryToSaveSynchronously() // Do we need to do this synchronously? Also applies to "Move (Albums) Here"
 		
 		// Restore `sectionOfLibraryItems.managedObjectContext`.
 		let newSectionOfLibraryItems = SectionOfCollectionsOrAlbums(

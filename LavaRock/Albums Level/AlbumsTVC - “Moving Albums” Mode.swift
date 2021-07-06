@@ -59,7 +59,7 @@ extension AlbumsTVC {
 			guard let mainManagedObjectContext = self.managedObjectContext.parent else {
 				fatalError("After the user tapped “Move Here”, we couldn’t access the main managed object context to save changes.")
 			}
-			mainManagedObjectContext.tryToSaveSynchronously() // Save now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.
+			mainManagedObjectContext.tryToSaveSynchronously() // Save the main context now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.
 			
 			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
 			})
