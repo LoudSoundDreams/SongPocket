@@ -10,18 +10,6 @@ import CoreData
 extension NSManagedObjectContext {
 	
 	final func tryToSave() {
-		perform {
-			guard self.hasChanges else { return }
-			do {
-				try self.save()
-			} catch {
-				print("Crashed while trying to save changes asynchronously.")
-				fatalError("\(error)")
-			}
-		}
-	}
-	
-	final func tryToSaveSynchronously() {
 		performAndWait {
 			guard hasChanges else { return }
 			do {

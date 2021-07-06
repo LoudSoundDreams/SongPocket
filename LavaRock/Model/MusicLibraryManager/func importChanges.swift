@@ -177,8 +177,8 @@ extension MusicLibraryManager {
 			log: Self.logForImportChanges,
 			name: "4. Cleanup")
 		
-		managedObjectContext.tryToSaveSynchronously()
-//		managedObjectContext.parent?.tryToSaveSynchronously()
+		managedObjectContext.tryToSave()
+//		managedObjectContext.parent?.tryToSave()
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
 				Notification(name: .LRDidSaveChangesFromMusicLibrary)

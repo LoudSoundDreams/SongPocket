@@ -82,6 +82,7 @@ extension CollectionsTVC {
 		if let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) {
 			collection.title = newTitle
 		}
+		managedObjectContext.tryToSave()
 		
 		tableView.reloadRows(at: [indexPath], with: .fade)
 		if thenSelectRow {
@@ -94,20 +95,18 @@ extension CollectionsTVC {
 	
 	// MARK: - Combining
 	
-	@objc final func presentDialogToCombineSelectedCollections() {
+	@objc final func previewCombineSelectedCollectionsAndPresentDialog() {
 		// When we tap "New Collection" or "Move (Albums) Here", we set `didAlreadyMakeNewCollection` or `didAlreadyCommitMoveAlbums` (respectively) to `true` to prevent unexpected, incorrect sequences of events.
 		// However, there's no such problem with the "Combine (Collections)" or "rename (Collection)" buttons.
 		
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted() // Should have at least 2 items, but make this whole thing safe even if it doesn't
 		guard let indexPathOfCombinedCollection = selectedIndexPaths.first else { return }
-		let defaultTitle = LocalizedString.defaultTitleForCombinedCollection
 		
 		previewCombineCollections(
 			from: selectedIndexPaths,
-			into: indexPathOfCombinedCollection,
-			withDefaultTitle: defaultTitle
+			into: indexPathOfCombinedCollection
 		) {
-			self.presentDialogToCombineSelectedCollectionsPart2(
+			self.presentDialogToCombineCollections(
 				into: indexPathOfCombinedCollection)
 		}
 	}
@@ -115,14 +114,13 @@ extension CollectionsTVC {
 	private func previewCombineCollections(
 		from selectedIndexPaths: [IndexPath],
 		into indexPathOfCombinedCollection: IndexPath,
-		withDefaultTitle defaultTitle: String,
 		completion: (() -> ())?
 	) {
 		// Save the existing SectionOfCollectionsOrAlbums for if we need to revert.
 		previousSectionOfCollections = sectionOfLibraryItems // SIDE EFFECT
 		
 		
-		
+		/*
 		// Preview the changes using a child managed object context, so that we can cancel without having to revert our changes.
 		let childManagedObjectContext = NSManagedObjectContext(
 			concurrencyType: .mainQueueConcurrencyType)
@@ -142,7 +140,7 @@ extension CollectionsTVC {
 		precondition(previousObjectIDs == newObjectIDs)
 		
 		sectionOfLibraryItems = newSectionOfCollections // SIDE EFFECT
-		
+		*/
 		
 		
 		// Create the combined Collection.
@@ -152,24 +150,25 @@ extension CollectionsTVC {
 			for: indexPathOfCombinedCollection)
 		let combinedCollection = Collection.makeByCombining_withoutDeletingOrReindexing( // SIDE EFFECT
 			selectedCollections,
-			title: defaultTitle,
+			title: LocalizedString.defaultTitleForCombinedCollection,
 			index: Int64(indexOfCombinedCollection),
 			via: sectionOfLibraryItems.managedObjectContext)
 		// WARNING: We still need to delete empty Collections and reindex all Collections.
 		// Do that later, when we commit, because if we revert, we have to restore the original Collections, and Core Data warns you if you mutate managed objects after deleting them.
 		
 		
-		
+		/*
 		precondition(sectionOfLibraryItems.managedObjectContext.parent != nil)
 		// !! the following saves Collections into an incoherent state
-		sectionOfLibraryItems.managedObjectContext.tryToSaveSynchronously() // to give the new combined Collection a non-temporary objectID, so that the "now playing" indicator can appear on it
+		sectionOfLibraryItems.managedObjectContext.tryToSave() // Gives the new combined Collection a non-temporary objectID, so that the "now playing" indicator can appear on it
+		*/
 		
 		
-		
-//		try! sectionOfLibraryItems.managedObjectContext.obtainPermanentIDs(for: [combinedCollection])
+		try? sectionOfLibraryItems.managedObjectContext.obtainPermanentIDs(for: [combinedCollection]) // So that the "now playing" indicator can appear on the combined Collection.
 //		print("")
 //		print(combinedCollection.objectID)
 //		let collectionForSongInPlayer = PlayerManager.songInPlayer?.container?.container
+//		print("")
 //		print(String(describing: collectionForSongInPlayer?.title))
 //		print(String(describing: collectionForSongInPlayer?.objectID))
 //		print("equal? \(combinedCollection.objectID == collectionForSongInPlayer?.objectID)")
@@ -193,7 +192,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func presentDialogToCombineSelectedCollectionsPart2(
+	private func presentDialogToCombineCollections(
 		into indexPathOfCombinedCollection: IndexPath
 	) {
 		let dialog = UIAlertController(
@@ -226,27 +225,38 @@ extension CollectionsTVC {
 		completion: (() -> ())?
 	) {
 		guard let originalSectionOfCollections = previousSectionOfCollections else { return }
+		previousSectionOfCollections = nil // SIDE EFFECT
 		
 		// Revert sectionOfLibraryItems to previousSectionOfCollections, but give it the currently onscreen `items`, so that we can animate the change.
 		var copyOfOriginalSectionOfCollections = originalSectionOfCollections
 		
 		
-		
+		/*
 		precondition(copyOfOriginalSectionOfCollections.managedObjectContext.parent == nil)
-		
+		*/
 		
 		
 		print("")
 		print("BEFORE ROLLBACK")
 		print("")
 		print(Collection.allFetched(via: copyOfOriginalSectionOfCollections.managedObjectContext))
-		copyOfOriginalSectionOfCollections.managedObjectContext.rollback() //?
-		copyOfOriginalSectionOfCollections.setItems(sectionOfLibraryItems.items)
+//		print(copyOfOriginalSectionOfCollections.items)
+		
+		
+		copyOfOriginalSectionOfCollections.setItems(sectionOfLibraryItems.items) // To match the currently onscreen items.
+		
+		copyOfOriginalSectionOfCollections.managedObjectContext.rollback()
+		
+		
 		sectionOfLibraryItems = copyOfOriginalSectionOfCollections // SIDE EFFECT
+		
+		
+		/*
 		// the above discards child managed object context, which the preview sectionOfLibraryItems referenced
+		 */
+		
 		
 		let originalItems = originalSectionOfCollections.items
-		previousSectionOfCollections = nil // SIDE EFFECT
 		setItemsAndRefreshTableView( // SIDE EFFECT
 			newItems: originalItems) {
 //			self.refreshBarButtons() // not necessary; i don't ever want to think about this
@@ -261,8 +271,11 @@ extension CollectionsTVC {
 	) {
 		
 		
-		
+		/*
 		// The following should be using the child managed object context on sectionOfLibraryItems.
+		*/
+		
+		
 		guard let collection = libraryItem(for: indexPathOfCombinedCollection) as? Collection else { return }
 		if let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) {
 			collection.title = newTitle
@@ -274,10 +287,10 @@ extension CollectionsTVC {
 		print(Collection.allFetched(via: sectionOfLibraryItems.managedObjectContext))
 		Collection.deleteAllEmpty(via: sectionOfLibraryItems.managedObjectContext)
 		
-		sectionOfLibraryItems.managedObjectContext.tryToSaveSynchronously()
+		sectionOfLibraryItems.managedObjectContext.tryToSave()
 		
 		
-		
+		/*
 		guard let mainManagedObjectContext = sectionOfLibraryItems.managedObjectContext.parent else {
 			fatalError("After the user confirmed to combine Collections, we couldn’t restore the main managed object context.")
 		}
@@ -288,6 +301,7 @@ extension CollectionsTVC {
 			managedObjectContext: mainManagedObjectContext,
 			container: sectionOfLibraryItems.container)
 		sectionOfLibraryItems = newSectionOfLibraryItems // SIDE EFFECT
+		*/
 		 
 		
 		

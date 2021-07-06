@@ -32,7 +32,7 @@ final class CollectionsTVC:
 		title: "Combine", // TO DO: Localize
 		style: .plain,
 		target: self,
-		action: #selector(presentDialogToCombineSelectedCollections))
+		action: #selector(previewCombineSelectedCollectionsAndPresentDialog))
 	private lazy var makeNewCollectionButton = UIBarButtonItem(
 		barButtonSystemItem: .add,
 		target: self,
