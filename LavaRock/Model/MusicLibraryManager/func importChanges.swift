@@ -268,15 +268,8 @@ extension MusicLibraryManager {
 		in collection: Collection,
 		shouldSortByNewestFirst: Bool
 	) {
-		guard let contentsOfCollection = collection.contents else { return }
+		var albumsInCollection = collection.albums() // Sorted by index here, even if we're going to sort by release date later; this keeps Albums whose releaseDateEstimate is nil in their previous order.
 		
-		var albumsInCollection = [Album]()
-		for element in contentsOfCollection {
-			let albumInCollection = element as! Album
-			albumsInCollection.append(albumInCollection)
-		}
-		
-		albumsInCollection.sort { $0.index < $1.index } // Sort by index here even if we're going to sort by release date later; this keeps Albums whose releaseDateEstimate is nil in their previous order.
 		if shouldSortByNewestFirst {
 			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInCollection)
 		}
@@ -304,15 +297,7 @@ extension MusicLibraryManager {
 	// MARK: - Reindexing Songs
 	
 	private func reindexSongs(in album: Album) {
-		guard let contentsOfAlbum = album.contents else { return }
-		
-		var songsInAlbum = [Song]()
-		for element in contentsOfAlbum {
-			let songInAlbum = element as! Song
-			songsInAlbum.append(songInAlbum)
-		}
-		
-		songsInAlbum.sort { $0.index < $1.index }
+		var songsInAlbum = album.songs()
 		
 		songsInAlbum.reindex()
 	}

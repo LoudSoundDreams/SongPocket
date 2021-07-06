@@ -348,22 +348,13 @@ extension MusicLibraryManager {
 	// MARK: Checking Order of Saved Songs
 	
 	private func areSongsInAlbumOrder(in album: Album) -> Bool {
-		var songs = [Song]()
-		if let contents = album.contents {
-			for element in contents {
-				let songInAlbum = element as! Song
-				songs.append(songInAlbum)
-			}
-		}
-		let songsInAlbum = songs.sorted { $0.index < $1.index }
+		let songsInAlbum = album.songs()
 		
-		var mediaItemsInAlbum = [MPMediaItem]()
-		for songInAlbum in songsInAlbum {
-			guard let mediaItemInAlbum = songInAlbum.mpMediaItem() else { continue } // mpMediaItem() returns nil if the media item is no longer in the Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
-			mediaItemsInAlbum.append(mediaItemInAlbum)
+		let mediaItemsInAlbum = songsInAlbum.compactMap { song in // mpMediaItem() returns nil if the media item is no longer in the Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
+			song.mpMediaItem()
 		}
-		
-		let mediaItemsInAlbumSorted = sortedByAlbumOrder(mediaItems: mediaItemsInAlbum)
+		let mediaItemsInAlbumSorted = sortedByAlbumOrder(
+			mediaItems: mediaItemsInAlbum)
 		
 		return mediaItemsInAlbum == mediaItemsInAlbumSorted
 	}
@@ -371,13 +362,7 @@ extension MusicLibraryManager {
 	// MARK: - Sorting Saved Songs
 	
 	private func sortSongsByAlbumOrder(in album: Album) {
-		var songs = [Song]()
-		if let contents = album.contents {
-			for element in contents {
-				let songInAlbum = element as! Song
-				songs.append(songInAlbum)
-			}
-		}
+		let songs = album.songs(sorted: false)
 		
 		func sortedByAlbumOrder(
 			songs songsImmutable: [Song]
@@ -449,11 +434,11 @@ extension MusicLibraryManager {
 		for newMediaItem: MPMediaItem,
 		atBeginningOf album: Album
 	) {
-		if let existingSongsInAlbum = album.contents {
-			for existingSong in existingSongsInAlbum {
-				(existingSong as! Song).index += 1
-			}
+		let existingSongsInAlbum = album.songs(sorted: false)
+		for existingSong in existingSongsInAlbum {
+			existingSong.index += 1
 		}
+		
 		let newSong = Song(context: managedObjectContext)
 		newSong.index = 0
 		newSong.persistentID = Int64(bitPattern: newMediaItem.persistentID)
@@ -495,10 +480,9 @@ extension MusicLibraryManager {
 		for newMediaItem: MPMediaItem,
 		atBeginningOf collection: Collection
 	) -> Album {
-		if let existingAlbumsInCollection = collection.contents {
-			for existingAlbum in existingAlbumsInCollection {
-				(existingAlbum as! Album).index += 1
-			}
+		let existingAlbumsInCollection = collection.albums(sorted: false)
+		for existingAlbum in existingAlbumsInCollection {
+			existingAlbum.index += 1
 		}
 		
 		let newAlbum = Album(context: managedObjectContext)

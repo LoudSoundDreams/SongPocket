@@ -17,17 +17,22 @@ extension Collection: LibraryContainer {
 
 extension Collection {
 	
-	static func validatedTitle(from rawProposedTitle: String?) -> String {
-		let unwrappedProposedTitle = rawProposedTitle ?? ""
-		if unwrappedProposedTitle == "" {
-			return LocalizedString.defaultTitleForCollection
+	// If nil, `proposedTitle` was nil or "".
+	static func titleNotEmptyAndNotTooLong(
+		from proposedTitle: String?
+	) -> String? {
+		guard
+			let proposedTitle = proposedTitle,
+			proposedTitle != ""
+		else {
+			return nil
+		}
+
+		let trimmedTitle = proposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
+		if trimmedTitle != proposedTitle {
+			return trimmedTitle + "…" // Do we need to localize this?
 		} else {
-			let trimmedTitle = unwrappedProposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
-			if trimmedTitle != unwrappedProposedTitle {
-				return trimmedTitle + "…" // Do we need to localize this?
-			} else {
-				return String(trimmedTitle)
-			}
+			return String(trimmedTitle)
 		}
 	}
 	
@@ -45,6 +50,23 @@ extension Collection {
 		return managedObjectContext.objectsFetched(for: fetchRequest)
 	}
 	
+	// Similar to Album.songs(sorted:).
+	final func albums(
+		sorted: Bool = true
+	) -> [Album] {
+		guard let contents = contents else {
+			return [Album]()
+		}
+		
+		let unsortedAlbums = contents.map { $0 as! Album }
+		if sorted {
+			let sortedAlbums = unsortedAlbums.sorted { $0.index < $1.index }
+			return sortedAlbums
+		} else {
+			return unsortedAlbums
+		}
+	}
+	
 	static func deleteAllEmpty(
 		via managedObjectContext: NSManagedObjectContext
 	) {
@@ -59,6 +81,29 @@ extension Collection {
 		}
 		
 		allCollections.reindex()
+	}
+	
+	// Unsafe; leaves Collections in an incoherent state.
+	// After calling this, you must delete empty Collections and reindex all Collections.
+	static func makeByCombining_withoutDeletingOrReindexing(
+		_ selectedCollections: [Collection],
+		title titleOfCombinedCollection: String,
+		index indexOfCombinedCollection: Int64,
+		via managedObjectContext: NSManagedObjectContext
+	) -> Collection {
+		var selectedAlbums = selectedCollections.flatMap { selectedCollection in
+			selectedCollection.albums()
+		}
+		selectedAlbums.reindex()
+		
+		let combinedCollection = Collection(context: managedObjectContext)
+		combinedCollection.index = indexOfCombinedCollection
+		combinedCollection.title = titleOfCombinedCollection
+		selectedAlbums.forEach { album in
+			album.container = combinedCollection
+		}
+		
+		return combinedCollection
 	}
 	
 }

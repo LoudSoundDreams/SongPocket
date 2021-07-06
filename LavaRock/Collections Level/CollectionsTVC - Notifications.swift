@@ -46,7 +46,19 @@ extension CollectionsTVC {
 		} else {
 			deleteAllRowsIfFinishedLoading()
 			
-			super.refreshDataAndViews()
+			if previousSectionOfCollections != nil { // If the "Combine Collections" dialog is presented.
+				fatalError()
+				
+//				dismiss(animated: false) { //
+//					print("Dismissed “Combine Collections” dialog.")
+//					self.revertCombineCollections {
+//						print("Refreshing data and views.")
+//						super.refreshDataAndViews()
+//					}
+//				}
+			} else {
+				super.refreshDataAndViews()
+			}
 		}
 	}
 	

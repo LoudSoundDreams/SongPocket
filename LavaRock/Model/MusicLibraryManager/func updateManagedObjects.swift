@@ -119,10 +119,12 @@ extension MusicLibraryManager {
 				existingAlbums.insert(newAlbum, at: 0)
 				
 				// Set the Album's attributes.
-				newAlbum.container = song.container!.container!
-				for album in newAlbum.container!.contents! { // For each Album in the same Collection as the new Album
-					(album as! Album).index += 1
+				let existingCollection = song.container!.container!
+				for album in existingCollection.albums(sorted: false) {
+					album.index += 1
 				}
+				
+				newAlbum.container = existingCollection
 				newAlbum.index = 0
 				newAlbum.albumPersistentID = freshAlbumPersistentID_asInt64
 				// We'll set releaseDateEstimate later.
@@ -131,7 +133,9 @@ extension MusicLibraryManager {
 				song.index = 0
 				song.container = newAlbum
 				
-			} else { // This Song's albumPersistentID has changed, but we already have an Album for it.
+			} else {
+				// This Song's albumPersistentID has changed, but we already have an Album for it.
+				
 				knownAlbumPersistentIDs.insert(freshAlbumPersistentID_asInt64)
 				// Get the Album.
 				let existingAlbum = existingAlbums.first(where: { existingAlbum in
@@ -139,11 +143,12 @@ extension MusicLibraryManager {
 				})!
 				
 				// Add the song to the Album.
-				for song in existingAlbum.contents! { // For each Song in the same Album as the current Song
-					(song as! Song).index += 1
+				for song in existingAlbum.songs(sorted: false) {
+					song.index += 1
 				}
-				song.index = 0
+				
 				song.container = existingAlbum
+				song.index = 0
 			}
 		}
 		

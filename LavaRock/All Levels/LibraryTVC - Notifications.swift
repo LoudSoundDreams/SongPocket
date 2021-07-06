@@ -113,16 +113,17 @@ extension LibraryTVC {
 //		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
 		
 		/*
-		// When we need to refresh, you might be in the middle of a content-dependent task. Cancel those content-dependent tasks.
-		- Sort options (LibraryTVC)
-		- "Rename Collection" dialog (CollectionsTVC)
-		- "Move Albums to…" sheet (CollectionsTVC and AlbumsTVC when in "moving Albums" mode)
-		- "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
-		- Song actions (SongsTVC)
-		- (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
-		*/
-		let shouldNotDismissAnyModalViewControllers =
-			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
+		 // When we need to refresh, you might be in the middle of a content-dependent task. Cancel those content-dependent tasks.
+		 - Sort options (LibraryTVC)
+		 - "Rename Collection" dialog (CollectionsTVC)
+		 - "Combine Collections" dialog (CollectionsTVC)
+		 - "Move Albums to…" sheet (CollectionsTVC and AlbumsTVC when in "moving Albums" mode)
+		 - "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
+		 - Song actions (SongsTVC)
+		 - (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
+		 */
+		let shouldNotDismissAnyModalViewControllers
+		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 		if !shouldNotDismissAnyModalViewControllers {
 			view.window?.rootViewController?.dismiss(
 				animated: true,

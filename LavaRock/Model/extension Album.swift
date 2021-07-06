@@ -37,6 +37,23 @@ extension Album {
 		return managedObjectContext.objectsFetched(for: fetchRequest)
 	}
 	
+	// Similar to Collection.albums(sorted:).
+	final func songs(
+		sorted: Bool = true
+	) -> [Song] {
+		guard let contents = contents else {
+			return [Song]()
+		}
+		
+		let unsortedSongs = contents.map { $0 as! Song }
+		if sorted {
+			let sortedSongs = unsortedSongs.sorted { $0.index < $1.index }
+			return sortedSongs
+		} else {
+			return unsortedSongs
+		}
+	}
+	
 	// MARK: - Media Player
 	
 	// Note: Slow.

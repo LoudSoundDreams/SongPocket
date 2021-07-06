@@ -80,7 +80,8 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 		value: "New Collection",
 		comment: "Alert title")
 	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
-	static let defaultTitleForCollection = NSLocalizedString(
+	static let defaultTitleForCombinedCollection = "Combined Collection" // TO DO: Localize
+	static let defaultTitleForNewCollection = NSLocalizedString(
 		"New Collection [default title for collection]",
 		value: "New Collection",
 		comment: "Default title for a collection if you make or rename a collection and don’t provide a title.")

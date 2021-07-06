@@ -18,7 +18,6 @@ extension CollectionsTVC {
 		
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
-			albumMoverClipboard.didAlreadyMakeNewCollection,
 			let collection = sectionOfLibraryItems.items[indexOfEmptyNewCollection] as? Collection,
 			collection.isEmpty()
 		else { return }
@@ -41,7 +40,7 @@ extension CollectionsTVC {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection
-		else { return } // Without this, if you're fast, you can finish making a new Collection by tapping Done in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
+		else { return } // Without this, if you're fast, you can finish making a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
 		
 		let dialog = UIAlertController(
 			title: LocalizedString.titleForAlertNewCollection,
@@ -75,10 +74,8 @@ extension CollectionsTVC {
 		let indexOfNewCollection = 0
 		
 		// Create the new Collection.
-		
-		let newTitle = Collection.validatedTitle(from: proposedTitle)
-		
 		let newCollection = Collection(context: managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
+		let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) ?? LocalizedString.defaultTitleForNewCollection
 		newCollection.title = newTitle
 		// When we set sectionOfLibraryItems.items, the property observer will set the "index" attribute of each Collection for us.
 		

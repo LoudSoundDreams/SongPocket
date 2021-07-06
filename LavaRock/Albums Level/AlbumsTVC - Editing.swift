@@ -124,7 +124,7 @@ extension AlbumsTVC {
 			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove,
 			delegate: self)
 		
-		// Make the destination operate in a child managed object context, so that you can cancel without saving your changes.
+		// Make the "move Albums to…" sheet use a child managed object context, so that we can cancel without having to revert our changes.
 		let childManagedObjectContext = NSManagedObjectContext(
 			concurrencyType: .mainQueueConcurrencyType)
 		childManagedObjectContext.parent = managedObjectContext

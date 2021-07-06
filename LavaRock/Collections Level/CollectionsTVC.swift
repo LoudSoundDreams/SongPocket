@@ -40,7 +40,7 @@ final class CollectionsTVC:
 	
 	// Variables
 	var didJustFinishLoading = false
-//	var previousSectionOfCollections: SectionOfLibraryItems?
+	var previousSectionOfCollections: SectionOfLibraryItems?
 	
 	// MARK: "Moving Albums" Mode
 	
@@ -211,10 +211,8 @@ final class CollectionsTVC:
 	}
 	
 	final override func viewDidAppear(_ animated: Bool) {
-		if let albumMoverClipboard = albumMoverClipboard {
-			if albumMoverClipboard.didAlreadyMakeNewCollection {
-				deleteEmptyNewCollection()
-			}
+		if albumMoverClipboard != nil {
+			deleteEmptyNewCollection()
 		}
 		
 		super.viewDidAppear(animated)

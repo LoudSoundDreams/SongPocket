@@ -219,12 +219,13 @@ extension LibraryTVC {
 		guard allowsSort() else { return }
 		
 		// Get the indexes of the items to sort.
-		let sourceIndexPaths: [IndexPath]
-		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			sourceIndexPaths = indexPaths(forIndexOfSectionOfLibraryItems: 0)
-		} else {
-			sourceIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
-		}
+		let sourceIndexPaths: [IndexPath] = {
+			if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
+				return indexPaths(forIndexOfSectionOfLibraryItems: 0)
+			} else {
+				return tableView.indexPathsForSelectedRowsNonNil.sorted()
+			}
+		}()
 		let sourceIndexesOfItems = sourceIndexPaths.map { indexOfLibraryItem(for: $0) }
 		
 		// Get the items to sort.
