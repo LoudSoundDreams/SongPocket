@@ -22,10 +22,9 @@ struct SectionOfSongs: SectionOfLibraryItems {
 		managedObjectContext: NSManagedObjectContext,
 		container: NSManagedObject?
 	) {
-		self.managedObjectContext = managedObjectContext
 		self.container = container
 		
-		private_items = fetchedItems() // Doesn't trigger the property observer
+		private_items = itemsFetched(via: managedObjectContext) // Doesn't trigger the property observer
 		refreshShouldShowDiscNumbers()
 //		refreshMPMediaItems()
 	}
@@ -74,7 +73,6 @@ struct SectionOfSongs: SectionOfLibraryItems {
 	
 	// Constants
 	let entityName = "Song"
-	let managedObjectContext: NSManagedObjectContext
 	let container: NSManagedObject?
 	
 	// Variables

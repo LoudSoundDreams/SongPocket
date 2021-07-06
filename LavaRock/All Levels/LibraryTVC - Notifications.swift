@@ -133,9 +133,11 @@ extension LibraryTVC {
 		}
 		
 		func refreshDataAndViewsPart2() {
-			let newItems = sectionOfLibraryItems.fetchedItems()
+			let newItems = sectionOfLibraryItems.itemsFetched(
+				via: managedObjectContext)
 			setItemsAndRefreshTableView(newItems: newItems) {
-				self.sectionOfLibraryItems.refreshContainer()
+				self.sectionOfLibraryItems.refreshContainer(
+					via: self.managedObjectContext)
 				self.refreshNavigationItemTitle()
 				self.tableView.reloadData() // Update the data within each row, which might be outdated.
 				// This has no animation (infamously), but we animated the deletes, inserts, and moves earlier, so here, it just updates the data within the rows after they stop moving, which looks fine.

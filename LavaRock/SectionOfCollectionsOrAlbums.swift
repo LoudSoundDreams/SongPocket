@@ -15,17 +15,15 @@ struct SectionOfCollectionsOrAlbums: SectionOfLibraryItems {
 		container: NSManagedObject?
 	) {
 		self.entityName = entityName
-		self.managedObjectContext = managedObjectContext
 		self.container = container
 		
-		private_items = fetchedItems()
+		private_items = itemsFetched(via: managedObjectContext) // Doesn't trigger the property observer
 	}
 	
 	// MARK: - SectionOfLibraryItems
 	
 	// Constants
 	let entityName: String
-	let managedObjectContext: NSManagedObjectContext
 	let container: NSManagedObject?
 	
 	// Variables

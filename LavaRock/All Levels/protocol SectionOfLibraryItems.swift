@@ -8,7 +8,6 @@
 import CoreData
 
 protocol SectionOfLibraryItems {
-	var managedObjectContext: NSManagedObjectContext { get }
 	var entityName: String { get }
 	var container: NSManagedObject? { get }
 	
@@ -36,8 +35,11 @@ protocol SectionOfLibraryItems {
 	 */
 	
 	mutating func setItems(_ newItems: [NSManagedObject]) // Helps callers keep `items` in a coherent state by forcing them to finalize their changes explicitly.
-	func fetchedItems() -> [NSManagedObject]
-	func refreshContainer()
+	func itemsFetched(
+		via managedObjectContext: NSManagedObjectContext
+	) -> [NSManagedObject]
+	func refreshContainer(
+		via managedObjectContext: NSManagedObjectContext)
 }
 
 extension SectionOfLibraryItems {
@@ -46,7 +48,9 @@ extension SectionOfLibraryItems {
 		return items.isEmpty
 	}
 	
-	func fetchedItems() -> [NSManagedObject] {
+	func itemsFetched(
+		via managedObjectContext: NSManagedObjectContext
+	) -> [NSManagedObject] {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		if let container = container {
@@ -55,7 +59,9 @@ extension SectionOfLibraryItems {
 		return managedObjectContext.objectsFetched(for: fetchRequest)
 	}
 	
-	func refreshContainer() {
+	func refreshContainer(
+		via managedObjectContext: NSManagedObjectContext
+	) {
 		guard let container = container else { return }
 		managedObjectContext.refresh(container, mergeChanges: true)
 	}

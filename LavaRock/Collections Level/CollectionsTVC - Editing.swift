@@ -152,7 +152,7 @@ extension CollectionsTVC {
 			selectedCollections,
 			title: LocalizedString.defaultTitleForCombinedCollection,
 			index: Int64(indexOfCombinedCollection),
-			via: sectionOfLibraryItems.managedObjectContext)
+			via: managedObjectContext)
 		// WARNING: We still need to delete empty Collections and reindex all Collections.
 		// Do that later, when we commit, because if we revert, we have to restore the original Collections, and Core Data warns you if you mutate managed objects after deleting them.
 		
@@ -164,7 +164,8 @@ extension CollectionsTVC {
 		*/
 		
 		
-		try? sectionOfLibraryItems.managedObjectContext.obtainPermanentIDs(for: [combinedCollection]) // So that the "now playing" indicator can appear on the combined Collection.
+		try? managedObjectContext.obtainPermanentIDs(
+			for: [combinedCollection]) // So that the "now playing" indicator can appear on the combined Collection.
 //		print("")
 //		print(combinedCollection.objectID)
 //		let collectionForSongInPlayer = PlayerManager.songInPlayer?.container?.container
@@ -239,13 +240,12 @@ extension CollectionsTVC {
 		print("")
 		print("BEFORE ROLLBACK")
 		print("")
-		print(Collection.allFetched(via: copyOfOriginalSectionOfCollections.managedObjectContext))
-//		print(copyOfOriginalSectionOfCollections.items)
+		print(Collection.allFetched(via: managedObjectContext))
 		
 		
 		copyOfOriginalSectionOfCollections.setItems(sectionOfLibraryItems.items) // To match the currently onscreen items.
 		
-		copyOfOriginalSectionOfCollections.managedObjectContext.rollback()
+		managedObjectContext.rollback()
 		
 		
 		sectionOfLibraryItems = copyOfOriginalSectionOfCollections // SIDE EFFECT
@@ -284,10 +284,10 @@ extension CollectionsTVC {
 		print("")
 		print("BEFORE CLEANUP")
 		print("")
-		print(Collection.allFetched(via: sectionOfLibraryItems.managedObjectContext))
-		Collection.deleteAllEmpty(via: sectionOfLibraryItems.managedObjectContext)
+		print(Collection.allFetched(via: managedObjectContext))
+		Collection.deleteAllEmpty(via: managedObjectContext)
 		
-		sectionOfLibraryItems.managedObjectContext.tryToSave()
+		managedObjectContext.tryToSave()
 		
 		
 		/*
@@ -303,7 +303,6 @@ extension CollectionsTVC {
 		sectionOfLibraryItems = newSectionOfLibraryItems // SIDE EFFECT
 		*/
 		 
-		
 		
 		previousSectionOfCollections = nil // SIDE EFFECT
 		
