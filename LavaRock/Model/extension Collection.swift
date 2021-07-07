@@ -99,9 +99,7 @@ extension Collection {
 		let combinedCollection = Collection(context: managedObjectContext)
 		combinedCollection.index = indexOfCombinedCollection
 		combinedCollection.title = titleOfCombinedCollection
-		selectedAlbums.forEach { album in
-			album.container = combinedCollection
-		}
+		selectedAlbums.forEach { $0.container = combinedCollection }
 		
 		return combinedCollection
 	}

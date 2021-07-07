@@ -96,17 +96,19 @@ extension CollectionsTVC {
 	// MARK: - Combining
 	
 	@objc final func previewCombineSelectedCollectionsAndPresentDialog() {
-		// When we tap "New Collection" or "Move (Albums) Here", we set `didAlreadyMakeNewCollection` or `didAlreadyCommitMoveAlbums` (respectively) to `true` to prevent unexpected, incorrect sequences of events.
-		// However, there's no such problem with the "Combine (Collections)" or "rename (Collection)" buttons.
-		
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
-		guard let indexPathOfCombinedCollection = selectedIndexPaths.first else { return }
+		guard
+			sectionOfCollectionsBeforeCombining == nil, // Without this, if you tap the "Combine" button multiple times quickly, we'll try to combine the already-combined Collection.
+			// This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
+			let indexPathOfCombinedCollection = selectedIndexPaths.first
+		else { return }
 		
 		previewCombineCollections(
 			from: selectedIndexPaths,
 			into: indexPathOfCombinedCollection
 		) {
 			self.presentDialogToCombineCollections(
+				from: selectedIndexPaths,
 				into: indexPathOfCombinedCollection)
 		}
 	}
@@ -117,7 +119,7 @@ extension CollectionsTVC {
 		completion: (() -> ())?
 	) {
 		// Save the existing SectionOfCollectionsOrAlbums for if we need to revert.
-		previousSectionOfCollections = sectionOfLibraryItems // SIDE EFFECT
+		sectionOfCollectionsBeforeCombining = sectionOfLibraryItems // SIDE EFFECT
 		
 		// Create the combined Collection.
 		let selectedLibraryItems = selectedIndexPaths.map { libraryItem(for: $0) }
@@ -145,13 +147,17 @@ extension CollectionsTVC {
 		newItems.insert(combinedCollection, at: indexOfCombinedCollection)
 		
 		// Update the data source and table view.
-		setItemsAndRefreshTableView(newItems: newItems) { // SIDE EFFECT: Reindexes each Collection's `index` attribute
+		setItemsAndRefreshTableView(
+			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
+			indexesOfNewItemsToSelect: [indexOfCombinedCollection]
+		) {
 			self.refreshBarButtons() // i really don't want to have to do this manually
 			completion?()
 		}
 	}
 	
 	private func presentDialogToCombineCollections(
+		from originalSelectedIndexPaths: [IndexPath],
 		into indexPathOfCombinedCollection: IndexPath
 	) {
 		let dialog = UIAlertController(
@@ -161,7 +167,9 @@ extension CollectionsTVC {
 		dialog.addTextFieldForCollectionTitle(defaultTitle: nil)
 		
 		let cancelAction = UIAlertAction.cancel { _ in
-			self.revertCombineCollections(completion: nil)
+			self.revertCombineCollections(
+				from: originalSelectedIndexPaths,
+				completion: nil)
 		}
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
@@ -181,13 +189,14 @@ extension CollectionsTVC {
 	}
 	
 	final func revertCombineCollections(
+		from originalSelectedIndexPaths: [IndexPath],
 		completion: (() -> ())?
 	) {
 		guard
-			var copyOfOriginalSection = previousSectionOfCollections,
-			let originalItems = previousSectionOfCollections?.items
+			var copyOfOriginalSection = sectionOfCollectionsBeforeCombining,
+			let originalItems = sectionOfCollectionsBeforeCombining?.items
 		else { return }
-		previousSectionOfCollections = nil // SIDE EFFECT
+		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
 //		print("")
 //		print("All Collections, before revert:")
@@ -198,18 +207,24 @@ extension CollectionsTVC {
 //		print("")
 //		print(copyOfOriginalSection.items)
 		
-		// Revert sectionOfLibraryItems to previousSectionOfCollections, but give it the currently onscreen `items`, so that we can animate the change.
+		// Revert sectionOfLibraryItems to sectionOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
 		copyOfOriginalSection.setItems(sectionOfLibraryItems.items) // To match the currently onscreen items. Should cause no side effects.
 		managedObjectContext.rollback() // SIDE EFFECT
 		sectionOfLibraryItems = copyOfOriginalSection // SIDE EFFECT
 		
-		setItemsAndRefreshTableView(newItems: originalItems) { // SIDE EFFECT
+		let indexesOfOriginalSelectedCollections = originalSelectedIndexPaths.map {
+			indexOfLibraryItem(for: $0)
+		}
+		setItemsAndRefreshTableView(
+			newItems: originalItems, // SIDE EFFECT
+			indexesOfNewItemsToSelect: indexesOfOriginalSelectedCollections
+		) {
 //			print("")
 //			print("All Collections, after rollback:")
 //			print("")
 //			print(Collection.allFetched(via: self.managedObjectContext))
 			
-//			self.refreshBarButtons() // not necessary; i don't ever want to think about this
+			self.refreshBarButtons() //  i really don't want to have to do this manually
 			completion?()
 		}
 	}
@@ -232,9 +247,13 @@ extension CollectionsTVC {
 		Collection.deleteAllEmpty(via: managedObjectContext)
 		managedObjectContext.tryToSave()
 		
-		previousSectionOfCollections = nil // SIDE EFFECT
+		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
 		tableView.reloadRows(at: [indexPathOfCombinedCollection], with: .fade)
+//		tableView.selectRow(
+//			at: indexPathOfCombinedCollection,
+//			animated: false,
+//			scrollPosition: .none)
 	}
 	
 }

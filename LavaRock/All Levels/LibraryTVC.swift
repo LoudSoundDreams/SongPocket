@@ -314,6 +314,7 @@ class LibraryTVC:
 	final func setItemsAndRefreshTableView(
 //		section: Int,
 		newItems: [NSManagedObject],
+		indexesOfNewItemsToSelect: [Int] = [Int](),
 		completion: (() -> ())?
 	) {
 		let section = 0
@@ -349,11 +350,17 @@ class LibraryTVC:
 				indexOfSectionOfLibraryItem: section))
 		}
 		
+		let indexPathsToSelect = indexesOfNewItemsToSelect.map {
+			indexPathFor(
+				indexOfLibraryItem: $0,
+				indexOfSectionOfLibraryItem: section)
+		}
+		
 		isAnimatingDuringRefreshTableView += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
 			tableView.insertRows(at: indexPathsToInsert, with: .middle)
-			for (sourceIndexPath, destinationIndexPath) in indexPathsToMove {
+			indexPathsToMove.forEach { sourceIndexPath, destinationIndexPath in
 				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
 		} completion: { _ in
@@ -361,6 +368,13 @@ class LibraryTVC:
 			if self.isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
 				completion?()
 			}
+		}
+		
+		indexPathsToSelect.forEach {
+			tableView.selectRow( // Do this after performBatchUpdates's main closure, because otherwise it doesn't work on newly inserted rows.
+				at: $0,
+				animated: false,
+				scrollPosition: .none)
 		}
 	}
 	
@@ -404,9 +418,7 @@ class LibraryTVC:
 	
 	func refreshBarButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
-		editButtonItem.isEnabled
-		= MPMediaLibrary.authorizationStatus() == .authorized // Do we need this?
-		&& !sectionOfLibraryItems.isEmpty()
+		editButtonItem.isEnabled = !sectionOfLibraryItems.isEmpty()
 		
 		if isEditing {
 			sortButton.isEnabled = allowsSort()

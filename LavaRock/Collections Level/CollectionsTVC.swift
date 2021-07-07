@@ -40,7 +40,7 @@ final class CollectionsTVC:
 	
 	// Variables
 	var didJustFinishLoading = false
-	var previousSectionOfCollections: SectionOfLibraryItems?
+	var sectionOfCollectionsBeforeCombining: SectionOfLibraryItems?
 	
 	// MARK: "Moving Albums" Mode
 	

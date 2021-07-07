@@ -46,7 +46,7 @@ extension CollectionsTVC {
 		} else {
 			deleteAllRowsIfFinishedLoading()
 			
-			if previousSectionOfCollections != nil { // If the "Combine Collections" dialog is presented.
+			if sectionOfCollectionsBeforeCombining != nil { // If the "Combine Collections" dialog is presented.
 				fatalError()
 				
 //				dismiss(animated: false) { //

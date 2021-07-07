@@ -74,7 +74,7 @@ extension MusicLibraryManager {
 			if let potentiallyModifiedMediaItem = queriedMediaItemsCopy.first(where: { queriedMediaItem in // first(where:) with remove(_:) is 2.6× as fast as firstIndex(where:) with [index] and remove(at:).
 				Int64(bitPattern: queriedMediaItem.persistentID) == savedSong.persistentID
 			}) {
-				// We already have a Song for this MPMediaItem. We might have to update it.
+				// We have an existing Song for this MPMediaItem. We might have to update it.
 				potentiallyModifiedSongs.append(savedSong)
 				potentiallyModifiedMediaItems.insert(potentiallyModifiedMediaItem)
 				queriedMediaItemsCopy.remove(potentiallyModifiedMediaItem)
