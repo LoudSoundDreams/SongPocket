@@ -200,7 +200,7 @@ class LibraryTVC:
 //	var isUpdating: Bool {
 //		return
 //			isImportingChanges &&
-//			!sectionOfLibraryItems.items.isEmpty &&
+//			!sectionOfLibraryItems.isEmpty() &&
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
 	var needsRefreshDataAndViewsOnViewDidAppear = false
@@ -404,9 +404,10 @@ class LibraryTVC:
 	
 	func refreshBarButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
-		editButtonItem.isEnabled =
-			MPMediaLibrary.authorizationStatus() == .authorized && // Do we need this?
-			!sectionOfLibraryItems.items.isEmpty
+		editButtonItem.isEnabled
+		= MPMediaLibrary.authorizationStatus() == .authorized // Do we need this?
+		&& !sectionOfLibraryItems.isEmpty()
+		
 		if isEditing {
 			sortButton.isEnabled = allowsSort()
 			moveToTopOrBottomButton.isEnabled = allowsMoveToTopOrBottom()

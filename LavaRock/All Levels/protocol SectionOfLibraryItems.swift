@@ -36,13 +36,7 @@ protocol SectionOfLibraryItems {
 	
 	mutating func setItems(_ newItems: [NSManagedObject])
 	// Helps callers keep `items` in a coherent state by forcing them to finalize their changes explicitly.
-	// Note: Also reindexes the `index` attribute on each item.
-	
-	func itemsFetched(
-		via managedObjectContext: NSManagedObjectContext
-	) -> [NSManagedObject]
-	func refreshContainer(
-		via managedObjectContext: NSManagedObjectContext)
+	// Also reindexes the `index` attribute on each item.
 }
 
 extension SectionOfLibraryItems {

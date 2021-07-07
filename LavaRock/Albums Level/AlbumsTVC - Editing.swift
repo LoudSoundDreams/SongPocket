@@ -13,7 +13,7 @@ extension AlbumsTVC {
 	// MARK: - Allowing
 	
 	final func allowsMoveOrOrganize() -> Bool {
-		guard !sectionOfLibraryItems.items.isEmpty else {
+		guard !sectionOfLibraryItems.isEmpty() else {
 			return false
 		}
 		
@@ -21,7 +21,7 @@ extension AlbumsTVC {
 	}
 	
 	final func allowsOrganize() -> Bool {
-		guard !sectionOfLibraryItems.items.isEmpty else {
+		guard !sectionOfLibraryItems.isEmpty() else {
 			return false
 		}
 		
@@ -29,7 +29,7 @@ extension AlbumsTVC {
 	}
 	
 	final func allowsMove() -> Bool {
-		guard !sectionOfLibraryItems.items.isEmpty else {
+		guard !sectionOfLibraryItems.isEmpty() else {
 			return false
 		}
 		

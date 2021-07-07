@@ -59,7 +59,7 @@ final class CollectionsTVC:
 		}
 		if
 			isImportingChanges,
-			sectionOfLibraryItems.items.isEmpty
+			sectionOfLibraryItems.isEmpty()
 		{
 			return .loading
 		}

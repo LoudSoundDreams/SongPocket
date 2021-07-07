@@ -32,7 +32,7 @@ extension CollectionsTVC {
 	// MARK: - Allowing
 	
 	final func allowsCombine() -> Bool {
-		guard !sectionOfLibraryItems.items.isEmpty else {
+		guard !sectionOfLibraryItems.isEmpty() else {
 			return false
 		}
 		
@@ -99,7 +99,7 @@ extension CollectionsTVC {
 		// When we tap "New Collection" or "Move (Albums) Here", we set `didAlreadyMakeNewCollection` or `didAlreadyCommitMoveAlbums` (respectively) to `true` to prevent unexpected, incorrect sequences of events.
 		// However, there's no such problem with the "Combine (Collections)" or "rename (Collection)" buttons.
 		
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted() // Should have at least 2 items, but make this whole thing safe even if it doesn't
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard let indexPathOfCombinedCollection = selectedIndexPaths.first else { return }
 		
 		previewCombineCollections(
@@ -224,12 +224,12 @@ extension CollectionsTVC {
 			collection.title = newTitle
 		}
 		
-		print("")
-		print("Before cleanup:")
-		print("")
-		print(Collection.allFetched(via: managedObjectContext))
-		Collection.deleteAllEmpty(via: managedObjectContext)
+//		print("")
+//		print("Before cleanup:")
+//		print("")
+//		print(Collection.allFetched(via: managedObjectContext))
 		
+		Collection.deleteAllEmpty(via: managedObjectContext)
 		managedObjectContext.tryToSave()
 		
 		previousSectionOfCollections = nil // SIDE EFFECT

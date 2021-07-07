@@ -306,8 +306,8 @@ extension MusicLibraryManager {
 			let newAlbum = newContainers.0
 			
 			// … and then add the Songs to that Album.
-			let newMediaItemsInAlbumOrder =
-				sortedByAlbumOrder(mediaItems: newMediaItemsInTheSameAlbum)
+			let newMediaItemsInAlbumOrder = sortedByAlbumOrder(
+				mediaItems: newMediaItemsInTheSameAlbum)
 			createSongs(
 				for: newMediaItemsInAlbumOrder,
 				atBeginningOf: newAlbum)

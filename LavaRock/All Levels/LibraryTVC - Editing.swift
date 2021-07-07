@@ -35,7 +35,7 @@ extension LibraryTVC {
 	
 	// You should only be allowed to sort contiguous items within the same SectionOfLibraryItems.
 	final func allowsSort() -> Bool {
-		guard !sectionOfLibraryItems.items.isEmpty else {
+		guard !sectionOfLibraryItems.isEmpty() else {
 			return false
 		}
 		
@@ -51,7 +51,7 @@ extension LibraryTVC {
 	}
 	
 	final func allowsFloat() -> Bool {
-		guard !sectionOfLibraryItems.items.isEmpty else {
+		guard !sectionOfLibraryItems.isEmpty() else {
 			return false
 		}
 		

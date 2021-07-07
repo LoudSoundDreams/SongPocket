@@ -291,10 +291,10 @@ extension OptionsTVC {
 		
 		let accentColor = AccentColor.savedPreferenceOrDefault()
 		let heartEmoji = accentColor.heartEmoji
-		let thankYouMessage =
-			heartEmoji +
-			LocalizedString.tipThankYouMessageWithPaddingSpaces +
-			heartEmoji
+		let thankYouMessage
+		= heartEmoji
+		+ LocalizedString.tipThankYouMessageWithPaddingSpaces
+		+ heartEmoji
 		cell.thankYouLabel.text = thankYouMessage
 		
 		return cell
