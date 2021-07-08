@@ -73,7 +73,7 @@ final class AlbumsTVC:
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		if albumMoverClipboard != nil {
 			topRightButtons = [cancelMoveAlbumsButton]
-			bottomButtonsInViewingMode = [
+			viewingModeToolbarButtons = [
 				.flexibleSpac3(),
 				moveHereButton,
 				.flexibleSpac3(),
@@ -87,7 +87,7 @@ final class AlbumsTVC:
 			
 			tableView.allowsSelection = false
 		} else {
-			bottomButtonsInEditingMode = [
+			editingModeToolbarButtons = [
 //				moveOrOrganizeButton,
 //				.flexibleSpac3(),
 				
@@ -127,6 +127,9 @@ final class AlbumsTVC:
 			moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
 			organizeButton.isEnabled = allowsOrganize()
 			moveButton.isEnabled = allowsMove()
+			
+			
+			print("Is Move button enabled? \(moveButton.isEnabled)")
 		}
 	}
 	

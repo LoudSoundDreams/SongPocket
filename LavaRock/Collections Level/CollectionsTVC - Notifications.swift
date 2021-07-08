@@ -39,9 +39,9 @@ extension CollectionsTVC {
 		refreshNowPlayingIndicators(isInPlayerDeterminer: isInPlayer(libraryItemFor:))
 	}
 	
-	// MARK: - Refreshing Data and Views
+	// MARK: - Refreshing Library Items
 	
-	final override func refreshDataAndViews() {
+	final override func refreshLibraryItems() {
 		if albumMoverClipboard != nil {
 		} else {
 			deleteAllRowsIfFinishedLoading()
@@ -52,12 +52,12 @@ extension CollectionsTVC {
 //				dismiss(animated: false) { //
 //					print("Dismissed “Combine Collections” dialog.")
 //					self.revertCombineCollections {
-//						print("Refreshing data and views.")
-//						super.refreshDataAndViews()
+//						print("Refreshing library items.")
+//						super.refreshLibraryItems()
 //					}
 //				}
 			} else {
-				super.refreshDataAndViews()
+				super.refreshLibraryItems()
 			}
 		}
 	}

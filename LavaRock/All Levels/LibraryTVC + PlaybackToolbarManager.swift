@@ -13,6 +13,13 @@ extension LibraryTVC {
 	// MARK: - Events
 	
 	final func refreshPlaybackToolbarButtons() {
+		defer {
+			print("Is Previous button enabled? \(goToPreviousSongButton.isEnabled)")
+			print("Is Rewind button enabled? \(rewindButton.isEnabled)")
+			print("Is Play/Pause button enabled? \(playPauseButton.isEnabled)")
+			print("Is Next button enabled? \(goToNextSongButton.isEnabled)")
+		}
+		
 		
 		func configurePlayButton() {
 			playPauseButton.image = playImage

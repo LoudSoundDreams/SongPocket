@@ -14,9 +14,11 @@ extension AlbumsTVC: AlbumMoverDelegate {
 	final func didMoveAlbumsThenCommitDismiss() {
 		let newItems = sectionOfLibraryItems.itemsFetched(
 			via: managedObjectContext)
-		setItemsAndRefreshTableView(
-			newItems: newItems,
-			completion: nil)
+		setItemsAndRefreshTableView(newItems: newItems) {
+			
+			
+//			self.refreshBarButtons()
+		}
 	}
 	
 	final func didMoveAlbumsThenFinishDismiss() {
@@ -24,9 +26,11 @@ extension AlbumsTVC: AlbumMoverDelegate {
 			Notification(name: .LRDidMoveAlbums)
 		)
 		let existingItems = sectionOfLibraryItems.items
-		setItemsAndRefreshTableView( // Exits this Collection if it's now empty.
-			newItems: existingItems,
-			completion: nil)
+		setItemsAndRefreshTableView(newItems: existingItems) { // Exits this Collection if it's now empty.
+			
+			
+//			self.refreshBarButtons()
+		}
 	}
 	
 }

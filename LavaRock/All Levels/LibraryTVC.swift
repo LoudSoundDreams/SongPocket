@@ -54,21 +54,19 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses should customize
 	var entityName = "Collection"
-	var bottomButtonsInEditingMode = [UIBarButtonItem]()
+	var editingModeToolbarButtons = [UIBarButtonItem]()
 	var sortOptionGroups = [[SortOption]]()
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child context when in "moving Albums" mode.
 	var numberOfRowsInSectionAboveLibraryItems = 0
-	var topLeftButtonsInViewingMode = [UIBarButtonItem]()
-	private lazy var topLeftButtonsInEditingMode = [UIBarButtonItem.flexibleSpac3()]
+	var viewingModeTopLeftButtons = [UIBarButtonItem]()
+	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpac3()]
 	lazy var topRightButtons = [editButtonItem]
-	lazy var bottomButtonsInViewingMode = playbackToolbarButtons
+	lazy var viewingModeToolbarButtons = playbackToolbarButtons
 	
 	// "Constants" that subclasses should not change
-	var sharedPlayer: MPMusicPlayerController? {
-		PlayerManager.player
-	}
+	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	let cellReuseIdentifier = "Cell"
 	lazy var noItemsPlaceholderView = {
 		return tableView?.dequeueReusableCell(withIdentifier: "No Items Placeholder") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
@@ -203,7 +201,7 @@ class LibraryTVC:
 //			!sectionOfLibraryItems.isEmpty() &&
 //			MPMediaLibrary.authorizationStatus() == .authorized
 //	}
-	var needsRefreshDataAndViewsOnViewDidAppear = false
+	var needsRefreshLibraryItemsOnViewDidAppear = false
 	var isAnimatingDuringRefreshTableView = 0
 	
 	// MARK: - Setup
@@ -245,9 +243,9 @@ class LibraryTVC:
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if needsRefreshDataAndViewsOnViewDidAppear {
-			needsRefreshDataAndViewsOnViewDidAppear = false
-			refreshDataAndViews()
+		if needsRefreshLibraryItemsOnViewDidAppear {
+			needsRefreshLibraryItemsOnViewDidAppear = false
+			refreshLibraryItems()
 		}
 	}
 	
@@ -260,10 +258,7 @@ class LibraryTVC:
 	// MARK: - Accessing Data
 	
 	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsInSectionAboveLibraryItems.
-	// That's a hack to let us include other rows above the rows for library items. For example:
-	// - Rows for album artwork and album info in SongsTVC.
-	// - (Potentially in the future) in CollectionsTVC, rows for "All Albums" and "New Collection".
-	// - (Potentially in the future) in Albums TVC, rows for "All Songs" and "Move Here".
+	// That's a hack to let us include rows for album artwork and album info in SongsTVC, above the rows for library items.
 	final func libraryItem(for indexPath: IndexPath) -> NSManagedObject {
 		let indexOfLibraryItem = indexOfLibraryItem(for: indexPath)
 		return sectionOfLibraryItems.items[indexOfLibraryItem] // Multisection: Get the right SectionOfLibraryItems.
@@ -315,7 +310,7 @@ class LibraryTVC:
 //		section: Int,
 		newItems: [NSManagedObject],
 		indexesOfNewItemsToSelect: [Int] = [Int](),
-		completion: (() -> ())?
+		completion: (() -> ())? = nil
 	) {
 		let section = 0
 		
@@ -370,7 +365,7 @@ class LibraryTVC:
 			}
 		}
 		
-		indexPathsToSelect.forEach {
+		indexPathsToSelect.forEach { // You could also also just make callers do this themselves after calling this method
 			tableView.selectRow( // Do this after performBatchUpdates's main closure, because otherwise it doesn't work on newly inserted rows.
 				at: $0,
 				animated: false,
@@ -393,11 +388,11 @@ class LibraryTVC:
 //		}
 		if isEditing {
 			navigationItem.setLeftBarButtonItems(
-				topLeftButtonsInEditingMode,
+				editingModeTopLeftButtons,
 				animated: animated)
 		} else {
 			navigationItem.setLeftBarButtonItems(
-				topLeftButtonsInViewingMode,
+				viewingModeTopLeftButtons,
 				animated: animated)
 		}
 		navigationItem.setRightBarButtonItems(
@@ -407,11 +402,11 @@ class LibraryTVC:
 		// Set the toolbar buttons.
 		if isEditing {
 			setToolbarItems(
-				bottomButtonsInEditingMode,
+				editingModeToolbarButtons,
 				animated: animated)
 		} else {
 			setToolbarItems(
-				bottomButtonsInViewingMode,
+				viewingModeToolbarButtons,
 				animated: animated)
 		}
 	}
@@ -420,11 +415,21 @@ class LibraryTVC:
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
 		editButtonItem.isEnabled = !sectionOfLibraryItems.isEmpty()
 		
+		
+		print("")
+		print(self)
+		print("Is Edit button enabled? \(editButtonItem.isEnabled)")
+		
+		
 		if isEditing {
 			sortButton.isEnabled = allowsSort()
 			moveToTopOrBottomButton.isEnabled = allowsMoveToTopOrBottom()
 			floatToTopButton.isEnabled = allowsFloat()
 			sinkToBottomButton.isEnabled = allowsSink()
+			
+			
+			print("Is Sort button enabled? \(sortButton.isEnabled)")
+			print("Is Move to Top button enabled? \(floatToTopButton.isEnabled)")
 		} else {
 			refreshPlaybackToolbarButtons()
 		}

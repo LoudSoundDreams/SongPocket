@@ -95,20 +95,20 @@ extension LibraryTVC {
 	
 	private func refreshToReflectMusicLibrary() {
 		refreshToReflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by swiping back, the "now playing" indicators and playback toolbar are already updated.
-		refreshDataAndViewsWhenVisible()
+		refreshLibraryItemsWhenVisible()
 	}
 	
-	// MARK: Refreshing Data and Views
+	// MARK: Refreshing Library Items
 	
-	final func refreshDataAndViewsWhenVisible() {
+	final func refreshLibraryItemsWhenVisible() {
 		if view.window == nil {
-			needsRefreshDataAndViewsOnViewDidAppear = true
+			needsRefreshLibraryItemsOnViewDidAppear = true
 		} else {
-			refreshDataAndViews()
+			refreshLibraryItems()
 		}
 	}
 	
-	@objc func refreshDataAndViews() {
+	@objc func refreshLibraryItems() {
 		isImportingChanges = false
 //		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
 		
@@ -125,19 +125,17 @@ extension LibraryTVC {
 		let shouldNotDismissAnyModalViewControllers
 		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 		if !shouldNotDismissAnyModalViewControllers {
-			view.window?.rootViewController?.dismiss(
-				animated: true,
-				completion: refreshDataAndViewsPart2)
+			view.window?.rootViewController?.dismiss(animated: true) {
+				refreshLibraryItemsPart2()
+			}
 		} else {
-			refreshDataAndViewsPart2()
+			refreshLibraryItemsPart2()
 		}
 		
-		func refreshDataAndViewsPart2() {
-			let newItems = sectionOfLibraryItems.itemsFetched(
-				via: managedObjectContext)
+		func refreshLibraryItemsPart2() {
+			let newItems = sectionOfLibraryItems.itemsFetched(via: managedObjectContext)
+			sectionOfLibraryItems.refreshContainer(via: managedObjectContext)
 			setItemsAndRefreshTableView(newItems: newItems) {
-				self.sectionOfLibraryItems.refreshContainer(
-					via: self.managedObjectContext)
 				self.refreshNavigationItemTitle()
 				self.tableView.reloadData() // Update the data within each row, which might be outdated.
 				// This has no animation (infamously), but we animated the deletes, inserts, and moves earlier, so here, it just updates the data within the rows after they stop moving, which looks fine.

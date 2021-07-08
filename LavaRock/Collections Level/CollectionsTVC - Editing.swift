@@ -224,7 +224,7 @@ extension CollectionsTVC {
 //			print("")
 //			print(Collection.allFetched(via: self.managedObjectContext))
 			
-			self.refreshBarButtons() //  i really don't want to have to do this manually
+			self.refreshBarButtons() // i really don't want to have to do this manually
 			completion?()
 		}
 	}
@@ -250,10 +250,10 @@ extension CollectionsTVC {
 		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
 		tableView.reloadRows(at: [indexPathOfCombinedCollection], with: .fade)
-//		tableView.selectRow(
-//			at: indexPathOfCombinedCollection,
-//			animated: false,
-//			scrollPosition: .none)
+		tableView.selectRow(
+			at: indexPathOfCombinedCollection,
+			animated: false,
+			scrollPosition: .none)
 	}
 	
 }

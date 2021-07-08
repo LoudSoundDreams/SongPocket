@@ -30,7 +30,7 @@ final class SongsTVC: LibraryTVC {
 	final override func setUpUI() {
 		super.setUpUI()
 		
-		bottomButtonsInEditingMode = [
+		editingModeToolbarButtons = [
 //			.flexibleSpac3(),
 			
 			sortButton,

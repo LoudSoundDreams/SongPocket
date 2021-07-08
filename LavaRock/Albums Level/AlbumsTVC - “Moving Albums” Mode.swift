@@ -61,8 +61,9 @@ extension AlbumsTVC {
 			}
 			mainManagedObjectContext.tryToSave() // Save the main context now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.
 			
-			self.dismiss(animated: true, completion: { albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
-			})
+			self.dismiss(animated: true) {
+				albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
+			}
 			albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
 		}
 		

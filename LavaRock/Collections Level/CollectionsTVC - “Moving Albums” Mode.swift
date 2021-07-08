@@ -26,9 +26,7 @@ extension CollectionsTVC {
 		
 		var newItems = sectionOfLibraryItems.items
 		newItems.remove(at: indexOfEmptyNewCollection)
-		setItemsAndRefreshTableView(
-			newItems: newItems,
-			completion: nil)
+		setItemsAndRefreshTableView(newItems: newItems)
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = false
 	}

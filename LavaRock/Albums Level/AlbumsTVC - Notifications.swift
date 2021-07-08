@@ -18,12 +18,12 @@ extension AlbumsTVC {
 		refreshNowPlayingIndicators(isInPlayerDeterminer: isInPlayer(libraryItemFor:))
 	}
 	
-	// MARK: - Refreshing Data and Views
+	// MARK: - Refreshing Library Items
 	
-	final override func refreshDataAndViews() {
+	final override func refreshLibraryItems() {
 		if albumMoverClipboard != nil {
 		} else {
-			super.refreshDataAndViews()
+			super.refreshLibraryItems()
 		}
 	}
 	

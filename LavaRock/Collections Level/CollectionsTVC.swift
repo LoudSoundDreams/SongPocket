@@ -159,15 +159,15 @@ final class CollectionsTVC:
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		if albumMoverClipboard != nil {
-			topLeftButtonsInViewingMode = []
+			viewingModeTopLeftButtons = []
 			topRightButtons = [cancelMoveAlbumsButton]
-			bottomButtonsInViewingMode = [
+			viewingModeToolbarButtons = [
 				.flexibleSpac3(),
 				makeNewCollectionButton,
 				.flexibleSpac3(),
 			]
 		} else {
-			topLeftButtonsInViewingMode = [optionsButton]
+			viewingModeTopLeftButtons = [optionsButton]
 		}
 		
 		super.setUpUI()
@@ -175,7 +175,7 @@ final class CollectionsTVC:
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 		} else {
-			bottomButtonsInEditingMode = [
+			editingModeToolbarButtons = [
 //				combineButton,
 //				.flexibleSpac3(),
 				
@@ -203,7 +203,7 @@ final class CollectionsTVC:
 			if didMoveAlbums {
 				// Replace this with refreshToReflectMusicLibrary()?
 				refreshToReflectPlaybackState()
-				refreshDataAndViewsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums to…" sheet.
+				refreshLibraryItemsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums to…" sheet.
 				
 				didMoveAlbums = false
 			}
@@ -225,6 +225,9 @@ final class CollectionsTVC:
 		
 		if isEditing {
 			combineButton.isEnabled = allowsCombine()
+			
+			
+			print("Is Combine button enabled? \(combineButton.isEnabled)")
 		}
 	}
 	
