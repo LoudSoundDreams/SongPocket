@@ -191,12 +191,12 @@ extension SongsTVC {
 				showSongActions(for: song, popoverAnchorView: selectedCell)
 			}
 			// This leaves the row selected while the action sheet is onscreen, which I prefer.
-			// You must eventually deselect the row, and set isPresentingSongActions = false, in every possible branch from here.
+			// You must eventually deselect the row in every possible branch from here.
 		}
 		
 		super.tableView(
 			tableView,
-			didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
+			didSelectRowAt: indexPath)
 	}
 	
 }
