@@ -15,12 +15,12 @@ extension UIMenu {
 	) {
 		let actionGroupsReordered: [[UIAction]] = {
 			if presentsUpward {
-				var subactionsCopy = actionGroups
-				subactionsCopy.reverse()
-				for indexOfSubactionGroup in subactionsCopy.indices {
-					subactionsCopy[indexOfSubactionGroup].reverse()
+				var actionGroupsCopy = actionGroups
+				actionGroupsCopy.reverse()
+				actionGroupsCopy.indices.forEach {
+					actionGroupsCopy[$0].reverse()
 				}
-				return subactionsCopy
+				return actionGroupsCopy
 			} else {
 				return actionGroups
 			}

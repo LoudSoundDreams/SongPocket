@@ -107,7 +107,7 @@ extension AlbumsTVC {
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
 			idsOfAlbumsToMove = sectionOfLibraryItems.items.map { $0.objectID }
 		} else {
-			for indexPath in indexPaths(forIndexOfSectionOfLibraryItems: 0) {
+			indexPaths(forIndexOfSectionOfLibraryItems: 0).forEach { indexPath in
 				let album = libraryItem(for: indexPath)
 				if tableView.indexPathsForSelectedRowsNonNil.contains(indexPath) {
 					// The row is selected.

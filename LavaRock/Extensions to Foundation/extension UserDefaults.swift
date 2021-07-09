@@ -20,10 +20,9 @@ extension UserDefaults {
 	final func deleteAllEntries(exceptWithKeys keysToKeep: [String]) {
 		let oldEntries = dictionaryRepresentation() // Remember: This method operates on the instance of UserDefaults we're calling it on.
 		
-		// Replace this with `filter`
 		var newEntries = oldEntries
 		newEntries.removeAll() // To match the type of oldEntries
-		for key in keysToKeep {
+		keysToKeep.forEach { key in
 			let value = oldEntries[key]
 			newEntries[key] = value
 		}

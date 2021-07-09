@@ -18,7 +18,9 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	var navigationItemPrompt: String {
 		let formatString = LocalizedString.formatChooseACollectionPrompt
 		let number = idsOfAlbumsBeingMoved.count
-		return String.localizedStringWithFormat(formatString, number)
+		return String.localizedStringWithFormat(
+			formatString,
+			number)
 	}
 	weak var delegate: AlbumMoverDelegate?
 	

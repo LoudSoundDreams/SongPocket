@@ -30,8 +30,10 @@ struct SectionOfCollectionsOrAlbums: SectionOfLibraryItems {
 	var items: [NSManagedObject] { private_items }
 	private var private_items = [NSManagedObject]() {
 		didSet {
-			for currentIndex in private_items.indices {
-				private_items[currentIndex].setValue(Int64(currentIndex), forKey: "index")
+			private_items.indices.forEach { currentIndex in
+				private_items[currentIndex].setValue(
+					Int64(currentIndex),
+					forKey: "index")
 			}
 		}
 	}

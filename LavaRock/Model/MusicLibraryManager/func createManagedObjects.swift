@@ -320,9 +320,9 @@ extension MusicLibraryManager {
 		for newMediaItems: [MPMediaItem],
 		atBeginningOf album: Album
 	) {
-		for mediaItem in newMediaItems.reversed() { // Add songs within each album from bottom to top.
+		newMediaItems.reversed().forEach { // Add songs within each album from bottom to top.
 			createSong(
-				for: mediaItem,
+				for: $0,
 				atBeginningOf: album)
 		}
 	}
@@ -435,9 +435,7 @@ extension MusicLibraryManager {
 		atBeginningOf album: Album
 	) {
 		let existingSongsInAlbum = album.songs(sorted: false)
-		for existingSong in existingSongsInAlbum {
-			existingSong.index += 1
-		}
+		existingSongsInAlbum.forEach { $0.index += 1 }
 		
 		let newSong = Song(context: managedObjectContext)
 		newSong.index = 0
@@ -481,9 +479,7 @@ extension MusicLibraryManager {
 		atBeginningOf collection: Collection
 	) -> Album {
 		let existingAlbumsInCollection = collection.albums(sorted: false)
-		for existingAlbum in existingAlbumsInCollection {
-			existingAlbum.index += 1
-		}
+		existingAlbumsInCollection.forEach { $0.index += 1 }
 		
 		let newAlbum = Album(context: managedObjectContext)
 		newAlbum.albumPersistentID = Int64(bitPattern: newMediaItem.albumPersistentID)
@@ -512,9 +508,7 @@ extension MusicLibraryManager {
 		{
 			newCollection.index = Int64(existingCollections.count)
 		} else {
-			for existingCollection in existingCollections {
-				existingCollection.index += 1
-			}
+			existingCollections.forEach { $0.index += 1 }
 			newCollection.index = 0
 		}
 		

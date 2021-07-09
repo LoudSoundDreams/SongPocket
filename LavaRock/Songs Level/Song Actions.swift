@@ -218,13 +218,14 @@ extension SongsTVC {
 		// The iOS HIG says to use sentence case and ending punctuation for alert titles that are complete sentences (e.g., "“Song Title” and 1 more song will play later."), but Apple's own apps usually don't do this.
 		case 1:
 			let formatString = LocalizedString.formatDidEnqueueOneSongAlertTitle
-			alertTitle = String.localizedStringWithFormat(formatString, titleOfSelectedSong)
+			alertTitle = String.localizedStringWithFormat(
+				formatString,
+				titleOfSelectedSong)
 		default:
 			let formatString = LocalizedString.formatDidEnqueueMultipleSongsAlertTitle
 			alertTitle = String.localizedStringWithFormat(
 				formatString,
-				titleOfSelectedSong, numberOfSongsEnqueued - 1
-			)
+				titleOfSelectedSong, numberOfSongsEnqueued - 1)
 		}
 		let alertMessage = LocalizedString.didEnqueueSongsAlertMessage
 		

@@ -119,8 +119,8 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		if let priceLocale = response.products.first?.priceLocale {
 			setUpPriceFormatter(locale: priceLocale)
 		}
-		for product in response.products {
-			guard let productIdentifier = ProductIdentifier(rawValue: product.productIdentifier) else { continue }
+		response.products.forEach { product in
+			guard let productIdentifier = ProductIdentifier(rawValue: product.productIdentifier) else { return }
 			switch productIdentifier {
 			case .tip:
 				tipProduct = product
@@ -140,8 +140,8 @@ extension PurchaseManager: SKProductsRequestDelegate {
 	}
 	
 	private func didFailToReceiveAnySKProducts() {
-		for identifier in ProductIdentifier.allCases {
-			switch identifier {
+		ProductIdentifier.allCases.forEach {
+			switch $0 {
 			case .tip:
 				tipStatus = .reload
 				tipDelegate?.didFailToReceiveTipProduct()
@@ -166,8 +166,8 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 		_ queue: SKPaymentQueue,
 		updatedTransactions transactions: [SKPaymentTransaction])
 	{
-		for transaction in transactions {
-			guard let productIdentifier = ProductIdentifier(rawValue: transaction.payment.productIdentifier) else { continue }
+		transactions.forEach { transaction in
+			guard let productIdentifier = ProductIdentifier(rawValue: transaction.payment.productIdentifier) else { return }
 			switch productIdentifier {
 			case .tip:
 				switch transaction.transactionState {

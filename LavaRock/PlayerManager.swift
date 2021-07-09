@@ -43,7 +43,9 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		
 		let currentPersistentID = nowPlayingItem.persistentID // Remember: This is a UInt64, and we store the persistentID attribute on each Song as an Int64.
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
-		songsFetchRequest.predicate = NSPredicate(format: "persistentID == %lld", Int64(bitPattern: currentPersistentID))
+		songsFetchRequest.predicate = NSPredicate(
+			format: "persistentID == %lld",
+			Int64(bitPattern: currentPersistentID))
 		let songsInPlayer = managedObjectContext.objectsFetched(for: songsFetchRequest)
 		
 		guard

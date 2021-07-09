@@ -72,7 +72,7 @@ extension Collection {
 	) {
 		var allCollections = Collection.allFetched(via: managedObjectContext)
 		
-		for index in allCollections.indices.reversed() {
+		allCollections.indices.reversed().forEach { index in
 			let collection = allCollections[index]
 			if collection.isEmpty() {
 				managedObjectContext.delete(collection)
@@ -83,7 +83,7 @@ extension Collection {
 		allCollections.reindex()
 	}
 	
-	// Unsafe; leaves Collections in an incoherent state.
+	// WARNING: Unsafe; leaves Collections in an incoherent state.
 	// After calling this, you must delete empty Collections and reindex all Collections.
 	static func makeByCombining_withoutDeletingOrReindexing(
 		_ selectedCollections: [Collection],

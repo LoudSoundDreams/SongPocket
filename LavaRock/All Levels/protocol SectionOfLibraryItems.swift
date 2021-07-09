@@ -28,8 +28,10 @@ protocol SectionOfLibraryItems {
 	 
 	 You should also give `private_items` a property observer that sets the `index` attribute on each NSManagedObject, exactly like [LibraryItem].reindex():
 	 //	didSet {
-	 //		for currentIndex in private_items.indices {
-	 //			private_items[currentIndex].setValue(Int64(currentIndex), forKey: "index")
+	 //		private_items.indices.forEach { currentIndex in
+	 //			private_items[currentIndex].setValue(
+	 //				Int64(currentIndex),
+	 //				forKey: "index")
 	 //		}
 	 //	}
 	 */
@@ -51,7 +53,9 @@ extension SectionOfLibraryItems {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		if let container = container {
-			fetchRequest.predicate = NSPredicate(format: "container == %@", container)
+			fetchRequest.predicate = NSPredicate(
+				format: "container == %@",
+				container)
 		}
 		return managedObjectContext.objectsFetched(for: fetchRequest)
 	}

@@ -176,11 +176,11 @@ extension OptionsTVC {
 			let colorIndexPaths = tableView.indexPathsForRows(
 				inSection: Section.accentColor.rawValue,
 				firstRow: 0)
-			for colorIndexPath in colorIndexPaths {
+			colorIndexPaths.forEach { colorIndexPath in
 				guard let colorCell = tableView.cellForRow(at: colorIndexPath) else {
 					// Should never run
 					tableView.reloadRows(at: [colorIndexPath], with: .none)
-					continue
+					return
 				}
 				
 				if colorIndexPath == selectedIndexPath {

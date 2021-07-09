@@ -111,7 +111,7 @@ extension Array {
 			var indexesOfNewItemsToInsert = [Int]()
 			
 			var indexesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
-			for change in difference {
+			difference.forEach { change in
 				// If a Change's `associatedWith:` value is non-nil, then it has a counterpart Change in the CollectionDifference, and the two Changes together represent a move, rather than a remove and an insert.
 				switch change {
 				case .remove(let offset, _, let associatedOffset):
@@ -142,7 +142,7 @@ extension Array {
 	mutating func reindex()
 	where Element: LibraryItem
 	{
-		for currentIndex in indices {
+		indices.forEach { currentIndex in
 			self[currentIndex].index = Int64(currentIndex)
 		}
 	}

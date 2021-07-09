@@ -120,9 +120,7 @@ extension MusicLibraryManager {
 				
 				// Set the Album's attributes.
 				let existingCollection = song.container!.container!
-				for album in existingCollection.albums(sorted: false) {
-					album.index += 1
-				}
+				existingCollection.albums(sorted: false).forEach { $0.index += 1 }
 				
 				newAlbum.container = existingCollection
 				newAlbum.index = 0
@@ -143,9 +141,7 @@ extension MusicLibraryManager {
 				})!
 				
 				// Add the song to the Album.
-				for song in existingAlbum.songs(sorted: false) {
-					song.index += 1
-				}
+				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
 				
 				song.container = existingAlbum
 				song.index = 0

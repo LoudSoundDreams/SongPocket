@@ -29,8 +29,8 @@ extension MusicLibraryManager {
 				name: "3. Delete Managed Objects")
 		}
 		
-		for songToDelete in songs {
-			managedObjectContext.delete(songToDelete)
+		songs.forEach {
+			managedObjectContext.delete($0)
 			// WARNING: This leaves gaps in the Song indexes within each Album. You must reindex the Songs within each Album later.
 		}
 		
@@ -43,7 +43,7 @@ extension MusicLibraryManager {
 			via: managedObjectContext,
 			ordered: false)
 		
-		for album in allAlbums {
+		allAlbums.forEach { album in
 			if album.isEmpty() {
 				managedObjectContext.delete(album)
 				// WARNING: This leaves gaps in the Album indexes within each Collection. You must reindex the Albums within each Collection later.
