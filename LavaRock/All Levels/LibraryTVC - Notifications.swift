@@ -128,21 +128,20 @@ extension LibraryTVC {
 		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 		if !shouldNotDismissAnyModalViewControllers {
 			view.window?.rootViewController?.dismiss(animated: true) {
-				refreshLibraryItemsPart2()
+				self.refreshLibraryItemsPart2()
 			}
 		} else {
 			refreshLibraryItemsPart2()
 		}
-		
-		func refreshLibraryItemsPart2() {
-			let newItems = sectionOfLibraryItems.itemsFetched(via: managedObjectContext)
-			sectionOfLibraryItems.refreshContainer(via: managedObjectContext)
-			setItemsAndRefreshTableView(newItems: newItems) {
-				self.refreshNavigationItemTitle()
-				self.tableView.reloadData() // Update the data within each row, which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
-				self.didChangeRowsOrSelectedRows() // Because reloadData deselects all rows.
-			}
-			didChangeRowsOrSelectedRows() // When we exit the "Loading…" state, we've just enabled the playback toolbar at this point. Enable the "Edit" button now too; don't wait until we finish animating the table view.
+	}
+	
+	private func refreshLibraryItemsPart2() {
+		let newItems = sectionOfLibraryItems.itemsFetched(via: managedObjectContext)
+		sectionOfLibraryItems.refreshContainer(via: managedObjectContext)
+		setItemsAndRefreshTableView(newItems: newItems) {
+			self.refreshNavigationItemTitle()
+			self.tableView.reloadData() // Update the data within each row, which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
+			self.didChangeRowsOrSelectedRows() // Because reloadData deselects all rows.
 		}
 	}
 	

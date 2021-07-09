@@ -44,7 +44,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserveMPMediaLibraryDidChange),
+			selector: #selector(mediaLibraryDidChange),
 			name: Notification.Name.MPMediaLibraryDidChange,
 			object: nil)
 		library?.beginGeneratingLibraryChangeNotifications()
@@ -58,7 +58,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	// MARK: Responding
 	
-	@objc private func didObserveMPMediaLibraryDidChange() {
+	@objc private func mediaLibraryDidChange() {
 		importChanges()
 	}
 	

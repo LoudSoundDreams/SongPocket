@@ -49,12 +49,13 @@ extension CollectionsTVC {
 			if sectionOfCollectionsBeforeCombining != nil { // If the "Combine Collections" dialog is presented.
 				fatalError()
 				
-//				dismiss(animated: false) { //
-//					print("Dismissed “Combine Collections” dialog.")
-//					self.revertCombineCollections {
-//						print("Refreshing library items.")
-//						super.refreshLibraryItems()
-//					}
+				
+//				print("Reverting “Combine Collections”.")
+//				revertCombineCollections(
+//					from: [IndexPath]() //
+//				) {
+//					print("Reverted. Refreshing library items.")
+//					super.refreshLibraryItems()
 //				}
 			} else {
 				super.refreshLibraryItems()

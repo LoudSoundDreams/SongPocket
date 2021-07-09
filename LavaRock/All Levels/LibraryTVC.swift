@@ -360,7 +360,6 @@ class LibraryTVC:
 		} completion: { _ in
 			self.isAnimatingDuringRefreshTableView -= 1
 			if self.isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
-				self.didChangeRowsOrSelectedRows() // Trigger refreshEditingButtons after the animation completes, not before.
 				completion?()
 			}
 		}
@@ -371,6 +370,8 @@ class LibraryTVC:
 				animated: false,
 				scrollPosition: .none)
 		}
+		
+		didChangeRowsOrSelectedRows()
 	}
 	
 	// MARK: - Refreshing Buttons

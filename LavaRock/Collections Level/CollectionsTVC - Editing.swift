@@ -96,25 +96,21 @@ extension CollectionsTVC {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
 			allowsCombine(),
-			sectionOfCollectionsBeforeCombining == nil, // Without this, if you tap the "Combine" button multiple times quickly, we'll try to combine the already-combined Collection.
-			// This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
+			sectionOfCollectionsBeforeCombining == nil, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
 			let indexPathOfCombinedCollection = selectedIndexPaths.first
 		else { return }
 		
 		previewCombineCollections(
 			from: selectedIndexPaths,
-			into: indexPathOfCombinedCollection
-		) {
-			self.presentDialogToCombineCollections(
-				from: selectedIndexPaths,
-				into: indexPathOfCombinedCollection)
-		}
+			into: indexPathOfCombinedCollection)
+		presentDialogToCombineCollections(
+			from: selectedIndexPaths,
+			into: indexPathOfCombinedCollection)
 	}
 	
 	private func previewCombineCollections(
 		from selectedIndexPaths: [IndexPath],
-		into indexPathOfCombinedCollection: IndexPath,
-		completion: (() -> ())?
+		into indexPathOfCombinedCollection: IndexPath
 	) {
 		// Save the existing SectionOfCollectionsOrAlbums for if we need to revert.
 		sectionOfCollectionsBeforeCombining = sectionOfLibraryItems // SIDE EFFECT
@@ -139,20 +135,16 @@ extension CollectionsTVC {
 		let indexesOfSelectedCollections = selectedIndexPaths.map {
 			indexOfLibraryItem(for: $0)
 		}
-		indexesOfSelectedCollections.reversed().forEach {
-			newItems.remove(at: $0)
-		}
+		indexesOfSelectedCollections.reversed().forEach { newItems.remove(at: $0) }
 		newItems.insert(combinedCollection, at: indexOfCombinedCollection)
 		
 		// Update the data source and table view.
 		setItemsAndRefreshTableView(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
 			indexesOfNewItemsToSelect: [indexOfCombinedCollection]
-		) {
-			completion?()
-		}
-		// Don't call didChangeRowsOrSelectedRows here; otherwise, you'll enable the "Sort" button for the new combined Collection, which users can tap before we present the dialog, if they're fast.
-		// BUG: If the uncombined Collections were contiguous to begin with, users can tap "Sort" before we present the dialog, and that puts our app into an incoherent state.
+		)
+		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
+		// We could hack refreshEditingButtons to disable all the editing buttons during the animation, but that would clearly break separation of concerns.
 	}
 	
 	private func presentDialogToCombineCollections(
@@ -167,8 +159,7 @@ extension CollectionsTVC {
 		
 		let cancelAction = UIAlertAction.cancel { _ in
 			self.revertCombineCollections(
-				from: originalSelectedIndexPaths,
-				completion: nil)
+				thenSelectRowsAt: originalSelectedIndexPaths)
 		}
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
@@ -188,8 +179,8 @@ extension CollectionsTVC {
 	}
 	
 	final func revertCombineCollections(
-		from originalSelectedIndexPaths: [IndexPath],
-		completion: (() -> ())?
+		thenSelectRowsAt originalSelectedIndexPaths: [IndexPath],
+		completion: (() -> ())? = nil
 	) {
 		guard
 			var copyOfOriginalSection = sectionOfCollectionsBeforeCombining,
@@ -211,7 +202,6 @@ extension CollectionsTVC {
 		) {
 			completion?()
 		}
-		didChangeRowsOrSelectedRows() // Trigger refreshEditingButtons early, so that we disable the "Sort" button for non-contiguous original Collections.
 	}
 	
 	private func commitCombineCollection(

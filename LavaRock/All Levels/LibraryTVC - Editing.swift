@@ -24,9 +24,8 @@ extension LibraryTVC {
 		
 		setBarButtons(animated: animated)
 		
-		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
-		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
-		tableView.performBatchUpdates(nil)
+		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they'll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
+		// During WWDC 2021, I did a lab in UIKit where the Apple engineer said that this is the best practice for doing this.
 	}
 	
 	// MARK: - Allowing
