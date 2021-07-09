@@ -105,9 +105,9 @@ extension SongsTVC {
 		guard let song = libraryItem(for: indexPath) as? Song else {
 			return UITableViewCell()
 		}
-		let mpMediaItem = song.mpMediaItem()
+		let mediaItem = song.mpMediaItem()
 		
-		let cellTitle = mpMediaItem?.title ?? Song.titlePlaceholder
+		let cellTitle = mediaItem?.title ?? Song.titlePlaceholder
 		
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
@@ -116,15 +116,15 @@ extension SongsTVC {
 			isPlaying: isPlaying)
 		
 		let cellTrackNumberText: String = {
-			guard let mpMediaItem = mpMediaItem else {
+			guard let mediaItem = mediaItem else {
 				return Song.trackNumberPlaceholder
 			}
-			let trackNumberText = String(mpMediaItem.albumTrackNumber)
+			let trackNumberText = String(mediaItem.albumTrackNumber)
 			if
 				let sectionOfSongs = sectionOfLibraryItems as? SectionOfSongs,
 				sectionOfSongs.shouldShowDiscNumbers
 			{
-				let discNumberText = String(mpMediaItem.discNumber)
+				let discNumberText = String(mediaItem.discNumber)
 				return discNumberText + "-" /*hyphen*/ + trackNumberText
 			} else {
 				return trackNumberText
@@ -134,7 +134,7 @@ extension SongsTVC {
 		// Make, configure, and return the cell.
 		let albumArtist = (sectionOfLibraryItems.container as? Album)?.albumArtist() // Can be nil
 		if
-			let songArtist = mpMediaItem?.artist,
+			let songArtist = mediaItem?.artist,
 			songArtist != albumArtist
 		{
 			guard var cell = tableView.dequeueReusableCell(

@@ -51,26 +51,24 @@ extension MusicLibraryManager {
 		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) // A Set is actually slightly slower
 		let shouldImportIntoDefaultOrder = savedSongs.isEmpty
 		
-		/*
-		var savedSongsCopy = savedSongs
-		savedSongsCopy.sort { $0.index < $1.index }
-		savedSongsCopy.sort { $0.container!.index < $1.container!.index }
-		savedSongsCopy.sort { $0.container!.container!.index < $1.container!.container!.index }
-		
-		print("")
-		for song in savedSongsCopy {
-		print(song.titleFormattedOrPlaceholder())
-		print("Collection \(song.container!.container!.index), Album \(song.container!.index), Song \(song.index)")
-		}
-		*/
+//		var savedSongsCopy = savedSongs
+//		savedSongsCopy.sort { $0.index < $1.index }
+//		savedSongsCopy.sort { $0.container!.index < $1.container!.index }
+//		savedSongsCopy.sort { $0.container!.container!.index < $1.container!.container!.index }
+//
+//		print("")
+//		savedSongsCopy.forEach { song in
+//			print(song.mpMediaItem()?.title ?? Song.titlePlaceholder)
+//			print("Collection \(song.container!.container!.index), Album \(song.container!.index), Song \(song.index)")
+//		}
 		
 		// Find out which of our saved Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
-		var potentiallyModifiedSongs = [NSManagedObject]()
+		var potentiallyModifiedSongs = [Song]()
 		var potentiallyModifiedMediaItems = Set<MPMediaItem>()
-		var deletedSongs = Set<NSManagedObject>()
+		var deletedSongs = Set<Song>()
 		var queriedMediaItemsCopy = Set(queriedMediaItems)
-		for savedSong in savedSongs {
+		savedSongs.forEach { savedSong in
 			if let potentiallyModifiedMediaItem = queriedMediaItemsCopy.first(where: { queriedMediaItem in // first(where:) with remove(_:) is 2.6× as fast as firstIndex(where:) with [index] and remove(at:).
 				Int64(bitPattern: queriedMediaItem.persistentID) == savedSong.persistentID
 			}) {
@@ -86,23 +84,21 @@ extension MusicLibraryManager {
 		// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
 		let newMediaItems = Array(queriedMediaItemsCopy)
 		
-		/*
-		print("")
-		print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
-		for item in potentiallyModifiedMediaItems {
-			print("\(String(describing: item.title)): \(item.persistentID)")
-		}
-		print("")
-		print("Added songs: \(newMediaItems.count)")
-		for item in newMediaItems {
-			print("\(String(describing: item.title)): \(item.persistentID)")
-		}
-		print("")
-		print("Deleted songs: \(deletedSongs.count)")
-		for deletedSong in deletedSongs {
-			print(deletedSong.persistentID)
-		}
-		*/
+//		print("")
+//		print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
+//		potentiallyModifiedMediaItems.forEach {
+//			print("\(String(describing: $0.title)): \($0.persistentID)")
+//		}
+//		print("")
+//		print("Added songs: \(newMediaItems.count)")
+//		newMediaItems.forEach {
+//			print("\(String(describing: $0.title)): \($0.persistentID)")
+//		}
+//		print("")
+//		print("Deleted songs: \(deletedSongs.count)")
+//		deletedSongs.forEach {
+//			print($0.persistentID)
+//		}
 		
 		os_signpost(
 			.end,
@@ -113,7 +109,7 @@ extension MusicLibraryManager {
 			// This might make new Albums, but not new Collections or Songs.
 			// This doesn't delete any Songs, Albums, or Collections.
 			// This might also leave behind empty Albums, because all the Songs in them were moved to other Albums; but we won't delete those empty Albums for now, so that if the user also added other Songs to those empty Albums, we can keep those Albums in the same place, instead of re-adding them to the top.
-			for: potentiallyModifiedSongs as! [Song],
+			for: potentiallyModifiedSongs,
 			toMatch: potentiallyModifiedMediaItems)
 		
 		let existingAlbums = Album.allFetched(
@@ -127,7 +123,7 @@ extension MusicLibraryManager {
 			existingAlbums: existingAlbums,
 			existingCollections: existingCollections)
 		deleteManagedObjects(
-			for: deletedSongs as! Set<Song>)
+			for: deletedSongs)
 		
 		// Then, some cleanup.
 		
@@ -159,13 +155,13 @@ extension MusicLibraryManager {
 			.begin,
 			log: Self.logForCleanup,
 			name: "Reindex all Albums and Songs")
-		for collection in allCollections {
+		allCollections.forEach {
 			reindexAlbums(
-				in: collection,
+				in: $0,
 				shouldSortByNewestFirst: shouldImportIntoDefaultOrder)
 		}
-		for album in allAlbums {
-			reindexSongs(in: album)
+		allAlbums.forEach {
+			reindexSongs(in: $0)
 		}
 		os_signpost(
 			.end,

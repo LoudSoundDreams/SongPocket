@@ -275,10 +275,10 @@ extension MusicLibraryManager {
 		
 //		print("")
 //		print("Creating Songs and possibly a new Album and Collection for these MPMediaItems:")
-//		for newMediaItem in newMediaItemsInTheSameAlbum {
-//			print(newMediaItem.title ?? "")
+//		newMediaItemsInTheSameAlbum.forEach {
+//			print($0.title ?? Song.titlePlaceholder)
 //		}
-//		print("The first MPMediaItem has the albumPersistentID: \(albumPersistentID)")
+//		print("The first MPMediaItem has the albumPersistentID: \(firstMediaItemInAlbum.albumPersistentID)")
 		
 		// If we already have a matching Album to add the Songs to …
 		if let matchingExistingAlbum = existingAlbums.first(where: { existingAlbum in

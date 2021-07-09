@@ -66,7 +66,7 @@ extension Array {
 			var indexesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
 			var indexesOfNewItemsToInsert = [Int]()
 			
-			for indexOfNewItem in newArray.indices { // For each newItem
+			newArray.indices.forEach { indexOfNewItem in // For each newItem
 				let newItem = newArray[indexOfNewItem]
 				if let indexOfMatchingOldItem = self.firstIndex(where: { oldItem in // If there's a corresponding oldItem
 					areEquivalent(oldItem, newItem)
@@ -83,12 +83,12 @@ extension Array {
 			
 			var indexesOfOldItemsToDelete = [Int]()
 			
-			for indexOfOldItem in self.indices { // For each oldItem
+			self.indices.forEach { indexOfOldItem in // For each oldItem
 				let oldItem = self[indexOfOldItem]
 				if let _ = newArray.firstIndex(where: { newItem in // If there's a corresponding newItem
 					areEquivalent(oldItem, newItem)
 				}) {
-					continue
+					return
 				} else {
 					// Put the index in the "deletes" array.
 					indexesOfOldItemsToDelete.append(indexOfOldItem)

@@ -51,13 +51,13 @@ extension MusicLibraryManager {
 		potentiallyOutdatedSongs.sort { $0.index < $1.index }
 		potentiallyOutdatedSongs.sort { $0.container!.index < $1.container!.index }
 		potentiallyOutdatedSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
-		/*
-		print("")
-		for song in potentiallyOutdatedSongs {
-		print(song.titleFormattedOrPlaceholder())
-		print("Collection \(song.container!.container!.index), Album \(song.container!.index), Song \(song.index)")
-		}
-		*/
+		
+//		print("")
+//		potentiallyOutdatedSongs.forEach {
+//			print($0.mpMediaItem() ?? Song.titlePlaceholder)
+//			print("Collection \($0.container!.container!.index), Album \($0.container!.index), Song \($0.index)")
+//		}
+		
 		os_signpost(
 			.end,
 			log: Self.logForUpdateObjects,
@@ -65,9 +65,9 @@ extension MusicLibraryManager {
 		
 		var knownAlbumPersistentIDs = Set<Int64>()
 		var existingAlbums = [Album]()
-		for song in potentiallyOutdatedSongs {
-			knownAlbumPersistentIDs.insert(song.container!.albumPersistentID)
-			existingAlbums.append(song.container!)
+		potentiallyOutdatedSongs.forEach {
+			knownAlbumPersistentIDs.insert($0.container!.albumPersistentID)
+			existingAlbums.append($0.container!)
 		}
 		var freshMediaItemsCopy = freshMediaItems
 		for song in potentiallyOutdatedSongs.reversed() {
