@@ -11,17 +11,15 @@ extension LibraryTVC {
 	
 	// MARK: - Numbers
 	
-	// Subclasses that override this method should call super (this implementation), or remember to call refreshBarButtons().
 	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		refreshBarButtons()
 		// Set the "no items" placeholder in numberOfRowsInSection (here), not in numberOfSections.
 		// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
 		// - If you put it in numberOfRowsInSection, VoiceOver moves focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
 		if sectionOfLibraryItems.isEmpty() {
-			tableView.backgroundView = noItemsPlaceholderView // Don't use dequeueReusableCell to create a placeholder view as needed every time within numberOfRowsInSection (here), because that might call numberOfRowsInSection, which causes an infinite loop.
+			tableView.backgroundView = noItemsPlaceholderView // Don't use dequeueReusableCell here to create the placeholder view as needed, because that might call numberOfRowsInSection, creating an infinite loop.
 			return 0
 		} else {
 			tableView.backgroundView = nil
@@ -64,7 +62,7 @@ extension LibraryTVC {
 		newItems.insert(itemBeingMoved, at: toItemIndex)
 		sectionOfLibraryItems.setItems(newItems)
 		
-		refreshBarButtons() // If you made selected items non-contiguous, that should disable the "Sort" button. If you made selected items contiguous, that should enable the "Sort" button.
+		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the "Sort" button. If you made all the selected rows contiguous, that should enable the "Sort" button.
 	}
 	
 	final override func tableView(
@@ -124,10 +122,10 @@ extension LibraryTVC {
 		didSelectRowAt indexPath: IndexPath
 	) {
 		if isEditing {
-			refreshBarButtons()
 			if let cell = tableView.cellForRow(at: indexPath) {
 				cell.accessibilityTraits.formUnion(.selected)
 			}
+			didChangeRowsOrSelectedRows()
 		}
 	}
 	
@@ -137,10 +135,10 @@ extension LibraryTVC {
 		_ tableView: UITableView,
 		didDeselectRowAt indexPath: IndexPath
 	) {
-		refreshBarButtons()
 		if let cell = tableView.cellForRow(at: indexPath) {
 			cell.accessibilityTraits.subtract(.selected)
 		}
+		didChangeRowsOrSelectedRows()
 	}
 	
 }

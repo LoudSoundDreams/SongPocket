@@ -12,7 +12,7 @@ import MediaPlayer
 
 class LibraryTVC:
 	UITableViewController,
-	PlaybackToolbarManager
+	PlaybackController
 {
 	
 	// MARK: - Types
@@ -63,7 +63,7 @@ class LibraryTVC:
 	var viewingModeTopLeftButtons = [UIBarButtonItem]()
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpac3()]
 	lazy var topRightButtons = [editButtonItem]
-	lazy var viewingModeToolbarButtons = playbackToolbarButtons
+	lazy var viewingModeToolbarButtons = playbackButtons
 	
 	// "Constants" that subclasses should not change
 	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
@@ -128,17 +128,17 @@ class LibraryTVC:
 		dismiss(animated: true)
 	}
 	
-	// "Constants" that subclasses should not change, for PlaybackToolbarManager
-	final lazy var playbackToolbarButtons = [
-		goToPreviousSongButton,
+	// "Constants" that subclasses should not change, for PlaybackController
+	final lazy var playbackButtons = [
+		previousSongButton,
 		.flexibleSpac3(),
 		rewindButton,
 		.flexibleSpac3(),
 		playPauseButton,
 		.flexibleSpac3(),
-		goToNextSongButton,
+		nextSongButton,
 	]
-	final lazy var goToPreviousSongButton: UIBarButtonItem = {
+	final lazy var previousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
 			style: .plain,
@@ -175,7 +175,7 @@ class LibraryTVC:
 		button.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		return button
 	}()
-	final lazy var goToNextSongButton: UIBarButtonItem = {
+	final lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
 			style: .plain,
@@ -195,12 +195,6 @@ class LibraryTVC:
 		managedObjectContext: managedObjectContext,
 		container: nil)
 	var isImportingChanges = false
-//	var isUpdating: Bool {
-//		return
-//			isImportingChanges &&
-//			!sectionOfLibraryItems.isEmpty() &&
-//			MPMediaLibrary.authorizationStatus() == .authorized
-//	}
 	var needsRefreshLibraryItemsOnViewDidAppear = false
 	var isAnimatingDuringRefreshTableView = 0
 	
@@ -231,7 +225,7 @@ class LibraryTVC:
 		
 		refreshNavigationItemTitle()
 		
-		refreshAndSetBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
+		setBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
 	}
 	
 	// Easy to override.
@@ -290,6 +284,7 @@ class LibraryTVC:
 	// Deletes all rows, including any rows not for library items, then performs an unwind segue.
 	private func deleteAllRowsThenExit() {
 		let allIndexPaths = tableView.allIndexPaths()
+		
 		isAnimatingDuringRefreshTableView += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
@@ -299,11 +294,15 @@ class LibraryTVC:
 				self.isAnimatingDuringRefreshTableView == 0, // See matching comment in setItemsAndRefreshTableView.
 				!(self is CollectionsTVC)
 			{
-				self.performSegue(
-					withIdentifier: "Removed All Contents",
-					sender: nil)
+				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move Albums to…" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
+					self.performSegue(
+						withIdentifier: "Removed All Contents",
+						sender: nil)
+				}
 			}
 		}
+		
+		didChangeRowsOrSelectedRows() // Do this before the completion closure, so that we disable all the editing buttons during the animation.
 	}
 	
 	final func setItemsAndRefreshTableView(
@@ -361,11 +360,12 @@ class LibraryTVC:
 		} completion: { _ in
 			self.isAnimatingDuringRefreshTableView -= 1
 			if self.isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
+				self.didChangeRowsOrSelectedRows() // Trigger refreshEditingButtons after the animation completes, not before.
 				completion?()
 			}
 		}
 		
-		indexPathsToSelect.forEach { // You could also also just make callers do this themselves after calling this method
+		indexPathsToSelect.forEach {
 			tableView.selectRow( // Do this after performBatchUpdates's main closure, because otherwise it doesn't work on newly inserted rows.
 				at: $0,
 				animated: false,
@@ -375,64 +375,45 @@ class LibraryTVC:
 	
 	// MARK: - Refreshing Buttons
 	
-	final func refreshAndSetBarButtons(animated: Bool) {
-		refreshBarButtons()
+	final func setBarButtons(animated: Bool) {
+		refreshEditingButtons()
+		navigationItem.setRightBarButtonItems(
+			topRightButtons,
+			animated: animated)
 		
-		// Set the navigation item buttons.
-//		if isUpdating {
-//			let activityIndicatorView = UIActivityIndicatorView()
-//			activityIndicatorView.startAnimating()
-//			let spinnerBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
-//			navigationItem.setRightBarButtonItems([spinnerBarButtonItem], animated: animated) // Apparently UIKit does this asynchronously, meaning that this method can return and the caller can continue before the spinner actually appears. You can hack around that by using `DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {` after calling this method.
-//			return
-//		}
 		if isEditing {
 			navigationItem.setLeftBarButtonItems(
 				editingModeTopLeftButtons,
+				animated: animated)
+			setToolbarItems(
+				editingModeToolbarButtons,
 				animated: animated)
 		} else {
 			navigationItem.setLeftBarButtonItems(
 				viewingModeTopLeftButtons,
 				animated: animated)
-		}
-		navigationItem.setRightBarButtonItems(
-			topRightButtons,
-			animated: animated)
-		
-		// Set the toolbar buttons.
-		if isEditing {
-			setToolbarItems(
-				editingModeToolbarButtons,
-				animated: animated)
-		} else {
+			
+			refreshPlaybackButtons()
 			setToolbarItems(
 				viewingModeToolbarButtons,
 				animated: animated)
 		}
 	}
 	
-	func refreshBarButtons() {
+	// For clarity, call this rather than refreshEditingButtons directly, whenever appropriate.
+	final func didChangeRowsOrSelectedRows() {
+		refreshEditingButtons()
+	}
+	
+	func refreshEditingButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
+		
 		editButtonItem.isEnabled = !sectionOfLibraryItems.isEmpty()
 		
-		
-		print("")
-		print(self)
-		print("Is Edit button enabled? \(editButtonItem.isEnabled)")
-		
-		
-		if isEditing {
-			sortButton.isEnabled = allowsSort()
-			moveToTopOrBottomButton.isEnabled = allowsMoveToTopOrBottom()
-			floatToTopButton.isEnabled = allowsFloat()
-			sinkToBottomButton.isEnabled = allowsSink()
-			
-			
-			print("Is Sort button enabled? \(sortButton.isEnabled)")
-			print("Is Move to Top button enabled? \(floatToTopButton.isEnabled)")
-		} else {
-			refreshPlaybackToolbarButtons()
-		}
+		sortButton.isEnabled = allowsSort()
+		moveToTopOrBottomButton.isEnabled = allowsMoveToTopOrBottom()
+		floatToTopButton.isEnabled = allowsFloat()
+		sinkToBottomButton.isEnabled = allowsSink()
 	}
 	
 	// MARK: - Navigation

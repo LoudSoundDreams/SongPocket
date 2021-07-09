@@ -12,18 +12,15 @@ extension CollectionsTVC {
 	
 	// MARK: - Numbers
 	
-	// Remember to call refreshBarButtons() before returning. super also does it.
 	final override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	)-> Int {
 		switch contentState() {
 		case .allowAccess, .loading:
-			refreshBarButtons()
 			tableView.backgroundView = nil
 			return 1
 		case .justFinishedLoading:
-			refreshBarButtons()
 			tableView.backgroundView = nil
 			return 0
 		case .normal:
@@ -216,7 +213,7 @@ extension CollectionsTVC {
 		
 		super.tableView(
 			tableView,
-			didSelectRowAt: indexPath) // Includes refreshBarButtons() in editing mode.
+			didSelectRowAt: indexPath)
 	}
 	
 }

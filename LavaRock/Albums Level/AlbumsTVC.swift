@@ -120,17 +120,12 @@ final class AlbumsTVC:
 	
 	// MARK: - Refreshing Buttons
 	
-	final override func refreshBarButtons() {
-		super.refreshBarButtons()
+	final override func refreshEditingButtons() {
+		super.refreshEditingButtons()
 		
-		if isEditing {
-			moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
-			organizeButton.isEnabled = allowsOrganize()
-			moveButton.isEnabled = allowsMove()
-			
-			
-			print("Is Move button enabled? \(moveButton.isEnabled)")
-		}
+		moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
+		organizeButton.isEnabled = allowsOrganize()
+		moveButton.isEnabled = allowsMove()
 	}
 	
 	// MARK: - Navigation

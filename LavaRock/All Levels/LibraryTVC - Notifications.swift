@@ -19,31 +19,31 @@ extension LibraryTVC {
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserveLRDidChangeAccentColor),
+			selector: #selector(refreshToReflectAccentColor),
 			name: Notification.Name.LRDidChangeAccentColor,
 			object: nil)
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObserveLRDidSaveChangesFromMusicLibrary),
-			name: Notification.Name.LRDidSaveChangesFromMusicLibrary,
+			selector: #selector(didImportChanges),
+			name: Notification.Name.LRDidImportChanges,
 			object: nil)
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObservePossiblePlaybackStateChange),
+			selector: #selector(playbackStateMaybeDidChange),
 			name: UIApplication.didBecomeActiveNotification,
 			object: nil)
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObservePossiblePlaybackStateChange),
+			selector: #selector(playbackStateMaybeDidChange),
 			name: Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
 			object: nil)
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(didObservePossiblePlaybackStateChange),
+			selector: #selector(playbackStateMaybeDidChange),
 			name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: nil)
 	}
@@ -54,16 +54,19 @@ extension LibraryTVC {
 	
 	// MARK: - Responding
 	
-	@objc private func didObserveLRDidChangeAccentColor() {
+	@objc private func refreshToReflectAccentColor() {
 		tableView.reloadData()
 	}
 	
-	@objc private func didObserveLRDidSaveChangesFromMusicLibrary() {
+	@objc private func didImportChanges() {
 		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
 		refreshToReflectMusicLibrary()
 	}
 	
-	@objc private func didObservePossiblePlaybackStateChange() {
+	@objc private func playbackStateMaybeDidChange(
+		accordingTo notification: Notification
+	) {
+//		print(notification.name)
 		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
 		refreshToReflectPlaybackState()
 	}
@@ -73,7 +76,7 @@ extension LibraryTVC {
 	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func refreshToReflectPlaybackState() {
 		// We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
-		refreshBarButtons()
+		refreshPlaybackButtons()
 	}
 	
 	// LibraryTVC itself doesn't call this, but its subclasses might want to.
@@ -81,8 +84,8 @@ extension LibraryTVC {
 		isInPlayerDeterminer: (IndexPath) -> Bool
 	) {
 		let isPlaying = sharedPlayer?.playbackState == .playing
-		for indexPath in indexPaths(forIndexOfSectionOfLibraryItems: 0) {
-			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicatorDisplayer else { continue }
+		indexPaths(forIndexOfSectionOfLibraryItems: 0).forEach { indexPath in
+			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicatorDisplayer else { return }
 			let isInPlayer = isInPlayerDeterminer(indexPath)
 			let indicator = NowPlayingIndicator(
 				isInPlayer: isInPlayer,
@@ -94,7 +97,7 @@ extension LibraryTVC {
 	// MARK: - After Importing Changes from Music Library
 	
 	private func refreshToReflectMusicLibrary() {
-		refreshToReflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by swiping back, the "now playing" indicators and playback toolbar are already updated.
+		refreshToReflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
 		refreshLibraryItemsWhenVisible()
 	}
 	
@@ -110,7 +113,6 @@ extension LibraryTVC {
 	
 	@objc func refreshLibraryItems() {
 		isImportingChanges = false
-//		refreshAndSetBarButtons(animated: false) // Revert spinner back to Edit button
 		
 		/*
 		 // When we need to refresh, you might be in the middle of a content-dependent task. Cancel those content-dependent tasks.
@@ -137,10 +139,10 @@ extension LibraryTVC {
 			sectionOfLibraryItems.refreshContainer(via: managedObjectContext)
 			setItemsAndRefreshTableView(newItems: newItems) {
 				self.refreshNavigationItemTitle()
-				self.tableView.reloadData() // Update the data within each row, which might be outdated.
-				// This has no animation (infamously), but we animated the deletes, inserts, and moves earlier, so here, it just updates the data within the rows after they stop moving, which looks fine.
-				// This includes tableView(_:numberOfRowsInSection:), which includes refreshBarButtons(), which includes refreshPlaybackToolbarButtons(), which we need to call at some point before our work here is done.
+				self.tableView.reloadData() // Update the data within each row, which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
+				self.didChangeRowsOrSelectedRows() // Because reloadData deselects all rows.
 			}
+			didChangeRowsOrSelectedRows() // When we exit the "Loading…" state, we've just enabled the playback toolbar at this point. Enable the "Edit" button now too; don't wait until we finish animating the table view.
 		}
 	}
 	

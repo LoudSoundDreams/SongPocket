@@ -69,13 +69,13 @@ final class CollectionsTVC:
 	final func deleteAllRowsIfFinishedLoading() {
 		if contentState() == .loading {
 			didJustFinishLoading = true // contentState() is now .justFinishedLoading
-			refreshToReflectContentState(completion: nil)
+			refreshToReflectContentState()
 			didJustFinishLoading = false
 		}
 	}
 	
 	private func refreshToReflectContentState(
-		completion: (() -> ())?
+		completion: (() -> ())? = nil
 	) {
 		let oldIndexPaths = tableView.allIndexPaths()
 		switch contentState() {
@@ -148,10 +148,10 @@ final class CollectionsTVC:
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		isImportingChanges = true // contentState() is now .loading or .normal (updating)
-		refreshToReflectContentState(completion: {
-			MusicLibraryManager.shared.setUpLibraryAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes.
+		refreshToReflectContentState {
+			MusicLibraryManager.shared.setUpAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes.
 			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
-		})
+		}
 	}
 	
 	// MARK: Setting Up UI
@@ -220,15 +220,10 @@ final class CollectionsTVC:
 	
 	// MARK: - Refreshing Buttons
 	
-	final override func refreshBarButtons() {
-		super.refreshBarButtons()
+	final override func refreshEditingButtons() {
+		super.refreshEditingButtons()
 		
-		if isEditing {
-			combineButton.isEnabled = allowsCombine()
-			
-			
-			print("Is Combine button enabled? \(combineButton.isEnabled)")
-		}
+		combineButton.isEnabled = allowsCombine()
 	}
 	
 	// MARK: - Navigation

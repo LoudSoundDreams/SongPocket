@@ -1,5 +1,5 @@
 //
-//  LibraryTVC + PlaybackToolbarManager.swift
+//  LibraryTVC + PlaybackController.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-15.
@@ -12,14 +12,7 @@ extension LibraryTVC {
 	
 	// MARK: - Events
 	
-	final func refreshPlaybackToolbarButtons() {
-		defer {
-			print("Is Previous button enabled? \(goToPreviousSongButton.isEnabled)")
-			print("Is Rewind button enabled? \(rewindButton.isEnabled)")
-			print("Is Play/Pause button enabled? \(playPauseButton.isEnabled)")
-			print("Is Next button enabled? \(goToNextSongButton.isEnabled)")
-		}
-		
+	final func refreshPlaybackButtons() {
 		
 		func configurePlayButton() {
 			playPauseButton.image = playImage
@@ -40,9 +33,7 @@ extension LibraryTVC {
 			let player = sharedPlayer
 		else {
 			configurePlayButton()
-			for barButtonItem in playbackToolbarButtons {
-				barButtonItem.disableWithAccessibilityTrait()
-			}
+			playbackButtons.forEach { $0.disableWithAccessibilityTrait() }
 			return
 		}
 		
@@ -55,9 +46,9 @@ extension LibraryTVC {
 		// Enable or disable each button as appropriate
 		
 		if player.indexOfNowPlayingItem == 0 {
-			goToPreviousSongButton.disableWithAccessibilityTrait()
+			previousSongButton.disableWithAccessibilityTrait()
 		} else {
-			goToPreviousSongButton.enableWithAccessibilityTrait()
+			previousSongButton.enableWithAccessibilityTrait()
 		}
 		
 //		let currentPlaybackTime = sharedPlayer.currentPlaybackTime
@@ -75,7 +66,7 @@ extension LibraryTVC {
 		
 		playPauseButton.enableWithAccessibilityTrait()
 		
-		goToNextSongButton.enableWithAccessibilityTrait()
+		nextSongButton.enableWithAccessibilityTrait()
 	}
 	
 	// MARK: - Controlling Playback
@@ -100,7 +91,7 @@ extension LibraryTVC {
 	}
 	
 	@objc final func goToPreviousSong() {
-//		sharedPlayer?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackToolbarButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
+//		sharedPlayer?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
 		// Actually, that line of code makes this method take forever to return; it repeatedly prints "SYNC-WATCHDOG-1: Attempting to wake up the remote process" and "SYNC-WATCHDOG-2: Tearing down connection". That happens whether we set currentPlaybackTime = 0 before or after changing the song.
 		
 		sharedPlayer?.skipToPreviousItem()
@@ -111,7 +102,7 @@ extension LibraryTVC {
 //		sharedPlayer?.skipToBeginning()
 //		sharedPlayer?.prepareToPlay()
 		
-		refreshBarButtons() // Disable the "restart current song" button if appropriate.
+		refreshPlaybackButtons() // Disable the "restart current song" button if appropriate.
 	}
 	
 	@objc final func play() {

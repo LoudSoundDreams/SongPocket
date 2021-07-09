@@ -1,5 +1,5 @@
 //
-//  protocol PlaybackToolbarManager.swift
+//  protocol PlaybackController.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-15.
@@ -7,19 +7,19 @@
 
 import UIKit
 
-protocol PlaybackToolbarManager {
-	var playbackToolbarButtons: [UIBarButtonItem] { get set }
+protocol PlaybackController {
+	var playbackButtons: [UIBarButtonItem] { get set }
 	
-	var goToPreviousSongButton: UIBarButtonItem { get set }
+	var previousSongButton: UIBarButtonItem { get set }
 	var rewindButton: UIBarButtonItem { get set }
 	var playImage: UIImage? { get }
 	var playAction: Selector { get }
 	var playAccessibilityLabel: String { get }
 	var playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits { get }
 	var playPauseButton: UIBarButtonItem { get set }
-	var goToNextSongButton: UIBarButtonItem { get set }
+	var nextSongButton: UIBarButtonItem { get set }
 	
-	func refreshPlaybackToolbarButtons()
+	func refreshPlaybackButtons()
 	
 	func goToPreviousSong()
 	func rewind()

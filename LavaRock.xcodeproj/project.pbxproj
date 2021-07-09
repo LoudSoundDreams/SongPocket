@@ -15,8 +15,8 @@
 		07140605259D6958003CA92C /* extension UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07140604259D6958003CA92C /* extension UserDefaults.swift */; };
 		071701FF250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */; };
 		07170201250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */; };
-		0719B57C2511A61F00748371 /* protocol PlaybackToolbarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719B57B2511A61F00748371 /* protocol PlaybackToolbarManager.swift */; };
-		0719B57E2511CD4E00748371 /* LibraryTVC + PlaybackToolbarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719B57D2511CD4E00748371 /* LibraryTVC + PlaybackToolbarManager.swift */; };
+		0719B57C2511A61F00748371 /* protocol PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719B57B2511A61F00748371 /* protocol PlaybackController.swift */; };
+		0719B57E2511CD4E00748371 /* LibraryTVC + PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719B57D2511CD4E00748371 /* LibraryTVC + PlaybackController.swift */; };
 		072017132557987E0019CA3E /* SongsTVC + NowPlayingIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072017122557987E0019CA3E /* SongsTVC + NowPlayingIndicatorManager.swift */; };
 		0720A43525017C6C00E0A28A /* AlbumsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A43425017C6C00E0A28A /* AlbumsTVC - Notifications.swift */; };
 		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
@@ -109,8 +109,8 @@
 		07140604259D6958003CA92C /* extension UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UserDefaults.swift"; sourceTree = "<group>"; };
 		071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - Notifications.swift"; sourceTree = "<group>"; };
 		07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Notifications.swift"; sourceTree = "<group>"; };
-		0719B57B2511A61F00748371 /* protocol PlaybackToolbarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol PlaybackToolbarManager.swift"; sourceTree = "<group>"; };
-		0719B57D2511CD4E00748371 /* LibraryTVC + PlaybackToolbarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC + PlaybackToolbarManager.swift"; sourceTree = "<group>"; };
+		0719B57B2511A61F00748371 /* protocol PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol PlaybackController.swift"; sourceTree = "<group>"; };
+		0719B57D2511CD4E00748371 /* LibraryTVC + PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC + PlaybackController.swift"; sourceTree = "<group>"; };
 		072017122557987E0019CA3E /* SongsTVC + NowPlayingIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC + NowPlayingIndicatorManager.swift"; sourceTree = "<group>"; };
 		0720A43425017C6C00E0A28A /* AlbumsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - Notifications.swift"; sourceTree = "<group>"; };
 		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
@@ -260,8 +260,8 @@
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
 				073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */,
-				0719B57B2511A61F00748371 /* protocol PlaybackToolbarManager.swift */,
-				0719B57D2511CD4E00748371 /* LibraryTVC + PlaybackToolbarManager.swift */,
+				0719B57B2511A61F00748371 /* protocol PlaybackController.swift */,
+				0719B57D2511CD4E00748371 /* LibraryTVC + PlaybackController.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
 				07DC1B1C24F339E000AAEEDB /* LibraryTVC - Editing.swift */,
 			);
@@ -617,7 +617,7 @@
 				07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */,
 				07FD6E17259925EF00826447 /* Options - Views.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
-				0719B57E2511CD4E00748371 /* LibraryTVC + PlaybackToolbarManager.swift in Sources */,
+				0719B57E2511CD4E00748371 /* LibraryTVC + PlaybackController.swift in Sources */,
 				075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* extension Song.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
@@ -629,7 +629,7 @@
 				07140605259D6958003CA92C /* extension UserDefaults.swift in Sources */,
 				07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */,
 				073AF48A24D16647000C1A6D /* AccentColor.swift in Sources */,
-				0719B57C2511A61F00748371 /* protocol PlaybackToolbarManager.swift in Sources */,
+				0719B57C2511A61F00748371 /* protocol PlaybackController.swift in Sources */,
 				07DC1B1A24F20C9E00AAEEDB /* extension NSManagedObjectContext.swift in Sources */,
 				073E6A8725562B93003C84A5 /* Collections - Views.swift in Sources */,
 				078F65B62638CA75007FE538 /* extension String.swift in Sources */,

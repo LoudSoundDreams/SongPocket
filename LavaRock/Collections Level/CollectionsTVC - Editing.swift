@@ -19,11 +19,8 @@ extension CollectionsTVC {
 //	}
 	
 //	private func refreshVoiceControlNamesForAllCells() {
-//		for indexPath in tableView.indexPathsForRows(
-//			inSection: 0,
-//			firstRow: numberOfRowsAboveLibraryItems)
-//		{
-//			guard let cell = tableView.cellForRow(at: indexPath) else { continue }
+//		indexPaths(forIndexOfSectionOfLibraryItems: 0).forEach {
+//			guard let cell = tableView.cellForRow(at: $0) else { return }
 //			
 //			refreshVoiceControlNames(for: cell)
 //		}
@@ -98,6 +95,7 @@ extension CollectionsTVC {
 	@objc final func previewCombineSelectedCollectionsAndPresentDialog() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
+			allowsCombine(),
 			sectionOfCollectionsBeforeCombining == nil, // Without this, if you tap the "Combine" button multiple times quickly, we'll try to combine the already-combined Collection.
 			// This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
 			let indexPathOfCombinedCollection = selectedIndexPaths.first
@@ -151,9 +149,10 @@ extension CollectionsTVC {
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
 			indexesOfNewItemsToSelect: [indexOfCombinedCollection]
 		) {
-			self.refreshBarButtons() // i really don't want to have to do this manually
 			completion?()
 		}
+		// Don't call didChangeRowsOrSelectedRows here; otherwise, you'll enable the "Sort" button for the new combined Collection, which users can tap before we present the dialog, if they're fast.
+		// BUG: If the uncombined Collections were contiguous to begin with, users can tap "Sort" before we present the dialog, and that puts our app into an incoherent state.
 	}
 	
 	private func presentDialogToCombineCollections(
@@ -198,15 +197,6 @@ extension CollectionsTVC {
 		else { return }
 		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
-//		print("")
-//		print("All Collections, before revert:")
-//		print("")
-//		print(Collection.allFetched(via: managedObjectContext))
-//		print("")
-//		print("Original Collections, before revert:")
-//		print("")
-//		print(copyOfOriginalSection.items)
-		
 		// Revert sectionOfLibraryItems to sectionOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
 		copyOfOriginalSection.setItems(sectionOfLibraryItems.items) // To match the currently onscreen items. Should cause no side effects.
 		managedObjectContext.rollback() // SIDE EFFECT
@@ -219,18 +209,12 @@ extension CollectionsTVC {
 			newItems: originalItems, // SIDE EFFECT
 			indexesOfNewItemsToSelect: indexesOfOriginalSelectedCollections
 		) {
-//			print("")
-//			print("All Collections, after rollback:")
-//			print("")
-//			print(Collection.allFetched(via: self.managedObjectContext))
-			
-			self.refreshBarButtons() // i really don't want to have to do this manually
 			completion?()
 		}
+		didChangeRowsOrSelectedRows() // Trigger refreshEditingButtons early, so that we disable the "Sort" button for non-contiguous original Collections.
 	}
 	
 	private func commitCombineCollection(
-//		_ collection: Collection,
 		into indexPathOfCombinedCollection: IndexPath,
 		withProposedTitle proposedTitle: String?
 	) {
@@ -238,11 +222,6 @@ extension CollectionsTVC {
 		if let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) {
 			collection.title = newTitle
 		}
-		
-//		print("")
-//		print("Before cleanup:")
-//		print("")
-//		print(Collection.allFetched(via: managedObjectContext))
 		
 		Collection.deleteAllEmpty(via: managedObjectContext)
 		managedObjectContext.tryToSave()

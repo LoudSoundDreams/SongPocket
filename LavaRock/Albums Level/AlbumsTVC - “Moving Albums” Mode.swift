@@ -19,13 +19,6 @@ extension AlbumsTVC {
 			!albumMoverClipboard.didAlreadyCommitMoveAlbums
 		else { return }
 		
-		// We shouldn't be moving Albums to this Collection if they're already here.
-		for albumInCollectionToMoveTo in sectionOfLibraryItems.items {
-			if albumMoverClipboard.idsOfAlbumsBeingMoved.contains(albumInCollectionToMoveTo.objectID) {
-				return
-			}
-		}
-		
 		albumMoverClipboard.didAlreadyCommitMoveAlbums = true // Without this, if you tap the "Move Here" button more than once, the app will crash.
 		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
 		
@@ -45,7 +38,7 @@ extension AlbumsTVC {
 		// Move the Albums we're moving.
 		let destinationCollection = sectionOfLibraryItems.container as! Collection
 		var newItems = sectionOfLibraryItems.items
-		for album in albumsToMove.reversed() {
+		albumsToMove.reversed().forEach { album in
 			album.container = destinationCollection
 			// When we set sectionOfLibraryItems.items, the property observer will set the "index" attribute of each Album in this Collection for us.
 			newItems.insert(album, at: 0)
@@ -58,9 +51,11 @@ extension AlbumsTVC {
 			self.managedObjectContext.tryToSave()
 			self.managedObjectContext.parent!.tryToSave() // Save the main context now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.
 			
-			self.dismiss(animated: true) {
-				albumMoverClipboard.delegate?.didMoveAlbumsThenFinishDismiss()
-			}
+			NotificationCenter.default.post(
+				Notification(name: .LRDidMoveAlbums)
+			)
+			
+			self.dismiss(animated: true)
 			albumMoverClipboard.delegate?.didMoveAlbumsThenCommitDismiss()
 		}
 		

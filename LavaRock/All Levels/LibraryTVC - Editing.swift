@@ -22,14 +22,12 @@ extension LibraryTVC {
 			editing,
 			animated: animated)
 		
-		refreshAndSetBarButtons(animated: animated)
+		setBarButtons(animated: animated)
 		
 		// Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines).
 		// Otherwise, they'll stay the same size until they reload some other time, like after you edit them or they leave memory.
 		tableView.performBatchUpdates(nil)
 	}
-	
-	// Note: We handle reordering in UITableViewDataSource and UITableViewDelegate methods.
 	
 	// MARK: - Allowing
 	
@@ -120,18 +118,14 @@ extension LibraryTVC {
 		let indexesOfSelectedItems = selectedIndexPaths.map { indexOfLibraryItem(for: $0) }
 		let selectedItems = selectedIndexPaths.map { libraryItem(for: $0) }
 		var newItems = sectionOfLibraryItems.items
-		for index in indexesOfSelectedItems.reversed() {
-			newItems.remove(at: index)
-		}
+		indexesOfSelectedItems.reversed().forEach { newItems.remove(at: $0) }
 		
-		for item in selectedItems.reversed() {
-			newItems.insert(item, at: 0)
-		}
+		selectedItems.reversed().forEach { newItems.insert($0, at: 0) }
 		
 		// Update the data source and table view.
 		setItemsAndRefreshTableView(newItems: newItems) {
 			self.tableView.deselectAllRows(animated: true)
-			self.refreshBarButtons()
+			self.didChangeRowsOrSelectedRows()
 		}
 	}
 	
@@ -146,18 +140,14 @@ extension LibraryTVC {
 		let indexesOfSelectedItems = selectedIndexPaths.map { indexOfLibraryItem(for: $0) }
 		let selectedItems = selectedIndexPaths.map { libraryItem(for: $0) }
 		var newItems = sectionOfLibraryItems.items
-		for index in indexesOfSelectedItems.reversed() {
-			newItems.remove(at: index)
-		}
+		indexesOfSelectedItems.reversed().forEach { newItems.remove(at: $0) }
 		
-		for item in selectedItems {
-			newItems.append(item)
-		}
+		selectedItems.forEach { newItems.append($0) }
 		
 		// Update the data source and table view.
 		setItemsAndRefreshTableView(newItems: newItems) {
 			self.tableView.deselectAllRows(animated: true)
-			self.refreshBarButtons()
+			self.didChangeRowsOrSelectedRows()
 		}
 	}
 	
@@ -199,9 +189,7 @@ extension LibraryTVC {
 		}
 		let cancelAlertAction = UIAlertAction.cancel(handler: nil)
 		
-		for sortAlertAction in sortAlertActions {
-			actionSheet.addAction(sortAlertAction)
-		}
+		sortAlertActions.forEach { actionSheet.addAction($0) }
 		actionSheet.addAction(cancelAlertAction)
 		
 		actionSheet.popoverPresentationController?.barButtonItem = sortButton
@@ -238,19 +226,17 @@ extension LibraryTVC {
 		
 		// Make a new data source.
 		var newItems = sectionOfLibraryItems.items
-		for index in sourceIndexesOfItems.reversed() {
-			newItems.remove(at: index)
-		}
-		for i in sortedItems.indices {
-			let sortedItem = sortedItems[i]
-			let destinationIndex = sourceIndexesOfItems[i]
+		sourceIndexesOfItems.reversed().forEach { newItems.remove(at: $0) }
+		sortedItems.indices.forEach {
+			let sortedItem = sortedItems[$0]
+			let destinationIndex = sourceIndexesOfItems[$0]
 			newItems.insert(sortedItem, at: destinationIndex)
 		}
 		
 		// Update the data source and table view.
 		setItemsAndRefreshTableView(newItems: newItems) {
 			self.tableView.deselectAllRows(animated: true)
-			self.refreshBarButtons()
+			self.didChangeRowsOrSelectedRows()
 		}
 	}
 	
