@@ -249,9 +249,9 @@ extension LibraryTVC {
 		case LocalizedString.title:
 			if let collections = items as? [Collection] {
 				return collections.sorted {
-					// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 					let collectionTitle0 = $0.title ?? ""
 					let collectionTitle1 = $1.title ?? ""
+					// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 					return collectionTitle0.precedesInAlphabeticalOrderFinderStyle(collectionTitle1)
 				}
 			} else {
