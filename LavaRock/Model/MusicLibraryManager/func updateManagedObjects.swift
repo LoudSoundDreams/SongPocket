@@ -11,23 +11,13 @@ import OSLog
 
 extension MusicLibraryManager {
 	
-	private static let logForUpdateObjects = OSLog(
-		subsystem: subsystemName,
-		category: "1. Update Managed Objects")
-	
 	final func updateManagedObjects(
 		for songs: [Song],
 		toMatch mediaItems: Set<MPMediaItem>
 	) {
-		os_signpost(
-			.begin,
-			log: Self.logForImportChanges,
-			name: "1. Update Managed Objects")
+		os_signpost(.begin, log: importLog, name: "2. Update Managed Objects")
 		defer {
-			os_signpost(
-				.end,
-				log: Self.logForImportChanges,
-				name: "1. Update Managed Objects")
+			os_signpost(.end, log: importLog, name: "2. Update Managed Objects")
 		}
 		
 		// Here, you can update any attributes on each Song. But it's best to not store data on each Song in the first place unless we have to, because we'll have to manually keep it up to date.
@@ -44,10 +34,7 @@ extension MusicLibraryManager {
 		var potentiallyOutdatedSongs = potentiallyOutdatedSongs
 		
 		// Group and sort them by Collection, Album, and Song order.
-		os_signpost(
-			.begin,
-			log: Self.logForUpdateObjects,
-			name: "Initial sort")
+		os_signpost(.begin, log: updateLog, name: "Initial sort")
 		potentiallyOutdatedSongs.sort { $0.index < $1.index }
 		potentiallyOutdatedSongs.sort { $0.container!.index < $1.container!.index }
 		potentiallyOutdatedSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
@@ -58,10 +45,7 @@ extension MusicLibraryManager {
 //			print("Collection \($0.container!.container!.index), Album \($0.container!.index), Song \($0.index)")
 //		}
 		
-		os_signpost(
-			.end,
-			log: Self.logForUpdateObjects,
-			name: "Initial sort")
+		os_signpost(.end, log: updateLog, name: "Initial sort")
 		
 		var knownAlbumPersistentIDs = Set<Int64>()
 		var existingAlbums = [Album]()
@@ -71,25 +55,16 @@ extension MusicLibraryManager {
 		}
 		var freshMediaItemsCopy = freshMediaItems
 		for song in potentiallyOutdatedSongs.reversed() {
-			os_signpost(
-				.begin,
-				log: Self.logForUpdateObjects,
-				name: "Update which Album is associated with one Song")
+			os_signpost(.begin, log: updateLog, name: "Update which Album is associated with one Song")
 			defer {
-				os_signpost(
-					.end,
-					log: Self.logForUpdateObjects,
-					name: "Update which Album is associated with one Song")
+				os_signpost(.end, log: updateLog, name: "Update which Album is associated with one Song")
 			}
 			
 			let knownAlbumPersistentID = song.container!.albumPersistentID
 			
 			// Get this Song's fresh albumPersistentID.
 			// Don't use mpMediaItem() for every Song; it's way too slow.
-			os_signpost(
-				.begin,
-				log: Self.logForUpdateObjects,
-				name: "Match a fresh MPMediaItem to find this Song's new albumPersistentID")
+			os_signpost(.begin, log: updateLog, name: "Match a fresh MPMediaItem to find this Song's new albumPersistentID")
 			let indexOfMatchingFreshMediaItem = freshMediaItemsCopy.firstIndex(where: { freshMediaItem in
 				Int64(bitPattern: freshMediaItem.persistentID) == song.persistentID
 			})!
@@ -97,10 +72,7 @@ extension MusicLibraryManager {
 			let freshAlbumPersistentID_asInt64 = Int64(bitPattern: matchingFreshMediaItem.albumPersistentID)
 			// Speed things up as we go, by reducing the number of freshMediaItems to go through.
 			freshMediaItemsCopy.remove(at: indexOfMatchingFreshMediaItem)
-			os_signpost(
-				.end,
-				log: Self.logForUpdateObjects,
-				name: "Match a fresh MPMediaItem to find this Song's new albumPersistentID")
+			os_signpost(.end, log: updateLog, name: "Match a fresh MPMediaItem to find this Song's new albumPersistentID")
 			
 			// If this Song's albumPersistentID has stayed the same, move on to the next one.
 			guard freshAlbumPersistentID_asInt64 != knownAlbumPersistentID else { continue }

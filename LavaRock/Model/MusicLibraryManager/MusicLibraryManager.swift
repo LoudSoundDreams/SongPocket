@@ -6,6 +6,7 @@
 //
 
 import MediaPlayer
+import OSLog
 
 final class MusicLibraryManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	
@@ -14,6 +15,24 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	// Constants
 	static let shared = MusicLibraryManager()
 	let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	
+	// Constants for Instruments
+	private static let subsystemName = "LavaRock.MusicLibraryManager"
+	let importLog = OSLog(
+		subsystem: subsystemName,
+		category: "1. Main")
+	let updateLog = OSLog(
+		subsystem: subsystemName,
+		category: "2. Update")
+	let createLog = OSLog(
+		subsystem: subsystemName,
+		category: "3. Create")
+	let deleteLog = OSLog(
+		subsystem: subsystemName,
+		category: "4. Delete")
+	let cleanupLog = OSLog(
+		subsystem: subsystemName,
+		category: "5. Cleanup")
 	
 	// Variables
 	private var library: MPMediaLibrary?

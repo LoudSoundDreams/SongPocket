@@ -11,22 +11,11 @@ import OSLog
 
 extension MusicLibraryManager {
 	
-	static let subsystemName = "LavaRock.MusicLibraryManager"
-	static let logForImportChanges = OSLog(
-		subsystem: subsystemName,
-		category: "0. Import Changes Main")
-	
 	// This is where the magic happens. This is the engine that keeps our data structures matched up with the library in the built-in Music app.
 	final func importChanges() {
-		os_signpost(
-			.begin,
-			log: Self.logForImportChanges,
-			name: "0. Main")
+		os_signpost(.begin, log: importLog, name: "1. Import Changes Main")
 		defer {
-			os_signpost(
-				.end,
-				log: Self.logForImportChanges,
-				name: "0. Main")
+			os_signpost(.end, log: importLog, name: "1. Import Changes Main")
 		}
 		
 		managedObjectContext.performAndWait {
@@ -41,10 +30,7 @@ extension MusicLibraryManager {
 			let queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
-		os_signpost(
-			.begin,
-			log: Self.logForImportChanges,
-			name: "0a. Initial Parse")
+		os_signpost(.begin, log: importLog, name: "Initial parse")
 		
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
@@ -82,7 +68,7 @@ extension MusicLibraryManager {
 			}
 		}
 		// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
-		let newMediaItems = Array(queriedMediaItemsCopy)
+		let newMediaItems = queriedMediaItemsCopy
 		
 //		print("")
 //		print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
@@ -100,10 +86,7 @@ extension MusicLibraryManager {
 //			print($0.persistentID)
 //		}
 		
-		os_signpost(
-			.end,
-			log: Self.logForImportChanges,
-			name: "0a. Initial Parse")
+		os_signpost(.end, log: importLog, name: "Initial parse")
 		
 		updateManagedObjects( // Update before creating and deleting, so that we can easily put new Songs above modified Songs.
 			// This might make new Albums, but not new Collections or Songs.
@@ -127,10 +110,7 @@ extension MusicLibraryManager {
 		
 		// Then, some cleanup.
 		
-		os_signpost(
-			.begin,
-			log: Self.logForImportChanges,
-			name: "4. Cleanup")
+		os_signpost(.begin, log: importLog, name: "5. Cleanup")
 		
 		let allCollections = Collection.allFetched(
 			via: managedObjectContext,
@@ -139,22 +119,16 @@ extension MusicLibraryManager {
 			via: managedObjectContext,
 			ordered: false) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		
-		os_signpost(
-			.begin,
-			log: Self.logForCleanup,
-			name: "Recalculate Album release date estimates")
+		os_signpost(.begin, log: cleanupLog, name: "Recalculate Album release date estimates")
+		os_signpost(.begin, log: cleanupLog, name: "Convert Array to Set")
+		let setOfQueriedMediaItems = Set(queriedMediaItems)
+		os_signpost(.end, log: cleanupLog, name: "Convert Array to Set")
 		recalculateReleaseDateEstimates(
 			for: allAlbums,
-			   considering: queriedMediaItems)
-		os_signpost(
-			.end,
-			log: Self.logForCleanup,
-			name: "Recalculate Album release date estimates")
+			   considering: setOfQueriedMediaItems)
+		os_signpost(.end, log: cleanupLog, name: "Recalculate Album release date estimates")
 		
-		os_signpost(
-			.begin,
-			log: Self.logForCleanup,
-			name: "Reindex all Albums and Songs")
+		os_signpost(.begin, log: cleanupLog, name: "Reindex all Albums and Songs")
 		allCollections.forEach {
 			reindexAlbums(
 				in: $0,
@@ -163,15 +137,9 @@ extension MusicLibraryManager {
 		allAlbums.forEach {
 			reindexSongs(in: $0)
 		}
-		os_signpost(
-			.end,
-			log: Self.logForCleanup,
-			name: "Reindex all Albums and Songs")
+		os_signpost(.end, log: cleanupLog, name: "Reindex all Albums and Songs")
 		
-		os_signpost(
-			.end,
-			log: Self.logForImportChanges,
-			name: "4. Cleanup")
+		os_signpost(.end, log: importLog, name: "5. Cleanup")
 		
 		managedObjectContext.tryToSave()
 //		managedObjectContext.parent!.tryToSave()
@@ -184,10 +152,6 @@ extension MusicLibraryManager {
 	
 	// MARK: - Cleanup
 	
-	private static let logForCleanup = OSLog(
-		subsystem: subsystemName,
-		category: "4. Cleanup")
-	
 	// MARK: Recalculating Release Date Estimates
 	
 	// Only MPMediaItems have release dates, and those can't be albums.
@@ -195,66 +159,42 @@ extension MusicLibraryManager {
 	// Instead, we'll estimate the albums' release dates and keep the estimates up to date.
 	private func recalculateReleaseDateEstimates(
 		for albums: [Album],
-		considering queriedMediaItems: [MPMediaItem]
+		considering mediaItems: Set<MPMediaItem>
 	) {
-		os_signpost(
-			.begin,
-			log: Self.logForCleanup,
-			name: "Filter out MPMediaItems without releaseDates")
-		var queriedMediaItemsCopy = Set(queriedMediaItems).filter {
-			$0.releaseDate != nil
-		}
-		os_signpost(
-			.end,
-			log: Self.logForCleanup,
-			name: "Filter out MPMediaItems without releaseDates")
+		os_signpost(.begin, log: cleanupLog, name: "Filter out MPMediaItems without releaseDates")
+		// This is pretty slow, but can save time later.
+		let mediaItemsWithReleaseDates = mediaItems.filter { $0.releaseDate != nil }
+		os_signpost(.end, log: cleanupLog, name: "Filter out MPMediaItems without releaseDates")
 		
-		for album in albums {
-			// Update one Album's release date estimate.
-			os_signpost(
-				.begin,
-				log: Self.logForCleanup,
-				name: "Recalculate release date estimate for one Album")
+		// Note: We have a copy of this in createManagedObjects: groupedByAlbumPersistentID.
+		os_signpost(.begin, log: cleanupLog, name: "Group MPMediaItems by albumPersistentID")
+		let mediaItemsByAlbumPersistentID
+		= Dictionary(grouping: mediaItemsWithReleaseDates) { $0.albumPersistentID }
+		os_signpost(.end, log: cleanupLog, name: "Group MPMediaItems by albumPersistentID")
+		
+		albums.forEach { album in
+			os_signpost(.begin, log: cleanupLog, name: "Recalculate release date estimate for one Album")
+			defer {
+				os_signpost(.end, log: cleanupLog, name: "Recalculate release date estimate for one Album")
+			}
 			
 			album.releaseDateEstimate = nil
+			let albumPersistentID_asUInt64
+			= MPMediaEntityPersistentID(bitPattern: album.albumPersistentID)
 			
-			// Find the MPMediaItems associated with this Album.
-			// Don't use mpMediaItem() for every Song; it's way too slow.
-			let thisAlbumPersistentID = album.albumPersistentID
-			os_signpost(
-				.begin,
-				log: Self.logForCleanup,
-				name: "Filter all MPMediaItems down to the ones associated with this Album")
-			let matchingQueriedMediaItems = queriedMediaItemsCopy.filter {
-				Int64(bitPattern: $0.albumPersistentID) == thisAlbumPersistentID
+			os_signpost(.begin, log: cleanupLog, name: "Find the release dates associated with this Album")
+			// For Albums with no release dates, using `guard` to return early is slightly faster than optional chaining.
+			guard let matchingMediaItems = mediaItemsByAlbumPersistentID[albumPersistentID_asUInt64] else {
+				os_signpost(.end, log: cleanupLog, name: "Find the release dates associated with this Album")
+				return
 			}
-			os_signpost(
-				.end,
-				log: Self.logForCleanup,
-				name: "Filter all MPMediaItems down to the ones associated with this Album")
+			let matchingReleaseDates = matchingMediaItems.compactMap { $0.releaseDate }
+			os_signpost(.end, log: cleanupLog, name: "Find the release dates associated with this Album")
 			
-			// Determine the new release date estimate, using those MPMediaItems.
-			for mediaItem in matchingQueriedMediaItems {
-				defer {
-					queriedMediaItemsCopy.remove(mediaItem)
-				}
-				
-				guard let competingEstimate = mediaItem.releaseDate else { continue }
-				
-				if album.releaseDateEstimate == nil {
-					album.releaseDateEstimate = competingEstimate // Same as below
-				} else if
-					let currentEstimate = album.releaseDateEstimate,
-					competingEstimate > currentEstimate
-				{
-					album.releaseDateEstimate = competingEstimate // Same as above
-				}
-			}
-			
-			os_signpost(
-				.end,
-				log: Self.logForCleanup,
-				name: "Recalculate release date estimate for one Album")
+			os_signpost(.begin, log: cleanupLog, name: "Find the latest of those release dates")
+			let latestReleaseDate = matchingReleaseDates.max()
+			album.releaseDateEstimate = latestReleaseDate
+			os_signpost(.end, log: cleanupLog, name: "Find the latest of those release dates")
 		}
 	}
 	
@@ -273,20 +213,21 @@ extension MusicLibraryManager {
 		albumsInCollection.reindex()
 	}
 	
+	// Verified as of build 154 on iOS 14.7 beta 5.
 	private func sortedByNewestFirstAndUnknownReleaseDateLast(
-		_ albumsImmutable: [Album]
+		_ albums: [Album]
 	) -> [Album] {
-		var albumsCopy = albumsImmutable
-		
+		var albumsCopy = albums
 		let commonDate = Date()
 		albumsCopy.sort {
-			$0.releaseDateEstimate ?? commonDate >= // This reverses the order of all Albums whose releaseDateEstimate is nil.
-				$1.releaseDateEstimate ?? commonDate
+			// Reverses the order of all Albums whose releaseDateEstimate is nil.
+			$0.releaseDateEstimate ?? commonDate
+			>= $1.releaseDateEstimate ?? commonDate
 		}
-		albumsCopy.sort { (firstAlbum, _) in
-			firstAlbum.releaseDateEstimate == nil // This re-reverses the order of all Albums whose releaseDateEstimate is nil.
+		albumsCopy.sort { _, rightAlbum in
+			// Re-reverses the order of all Albums whose releaseDateEstimate is nil.
+			rightAlbum.releaseDateEstimate == nil
 		}
-		
 		return albumsCopy
 	}
 	

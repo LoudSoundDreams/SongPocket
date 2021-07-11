@@ -251,8 +251,8 @@ extension LibraryTVC {
 				return collections.sorted {
 					let collectionTitle0 = $0.title ?? ""
 					let collectionTitle1 = $1.title ?? ""
-					// Don't sort by <. It puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
-					return collectionTitle0.precedesInAlphabeticalOrderFinderStyle(collectionTitle1)
+					// Don't sort Strings by <. That puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
+					return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
 				}
 			} else {
 				// If we're sorting Albums or Songs, use titleFormattedOrPlaceholder().

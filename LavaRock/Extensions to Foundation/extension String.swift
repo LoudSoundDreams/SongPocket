@@ -7,8 +7,8 @@
 
 extension String {
 	
-	func precedesInAlphabeticalOrderFinderStyle(_ otherString: Self) -> Bool {
-		let comparisonResult = localizedStandardCompare(otherString) // The comparison method that the Finder uses
+	func precedesAlphabeticallyFinderStyle(_ other: Self) -> Bool {
+		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
 		return comparisonResult == .orderedAscending
 	}
 	
