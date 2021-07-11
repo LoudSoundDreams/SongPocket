@@ -247,16 +247,14 @@ extension LibraryTVC {
 		switch sortOptionLocalizedName {
 		
 		case LocalizedString.title:
-			if let collections = items as? [Collection] {
-				return collections.sorted {
-					let collectionTitle0 = $0.title ?? ""
-					let collectionTitle1 = $1.title ?? ""
-					// Don't sort Strings by <. That puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
-					return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
-				}
-			} else {
-				// If we're sorting Albums or Songs, use titleFormattedOrPlaceholder().
+			guard let collections = items as? [Collection] else {
 				return items
+			}
+			return collections.sorted {
+				let collectionTitle0 = $0.title ?? ""
+				let collectionTitle1 = $1.title ?? ""
+				// Don't sort Strings by <. That puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
+				return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
 			}
 		
 		// Albums only
