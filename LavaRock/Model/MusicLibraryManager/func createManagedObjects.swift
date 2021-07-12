@@ -109,31 +109,47 @@ extension MusicLibraryManager {
 	private func sortedByAlbumArtistNameThenAlbumTitle(
 		mediaItemGroups: [[MPMediaItem]]
 	) -> [[MPMediaItem]] {
-		// Verified as of build 154 on iOS 14.7 beta 5.
+		// Verified as of build 157 on iOS 14.7 beta 5.
 		let sortedMediaItemGroups = mediaItemGroups.sorted {
 			// Don't sort Strings by <. That puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 			
-			let leftAlbumArtist = $0.first?.albumArtist
-			let rightAlbumArtist = $1.first?.albumArtist
+			let leftArtist = $0.first?.albumArtist
+			let rightArtist = $1.first?.albumArtist
 			// Either can be nil
 			
-			guard leftAlbumArtist != rightAlbumArtist else {
+			guard leftArtist != rightArtist else {
+				let leftTitle = $0.first?.albumTitle
+				let rightTitle = $1.first?.albumTitle
+				// Either can be nil
+				
+				guard leftTitle != rightTitle else {
+					return true // Maybe we could go further with some other criterion
+				}
+				
+				// Move unknown album title to end
+				// As of iOS 14.7 beta 5, MediaPlayer reports unknown album titles as "".
+				guard rightTitle != "", let rightTitle = rightTitle else {
+					return true
+				}
+				guard leftTitle != "", let leftTitle = leftTitle else {
+					return false
+				}
+				
 				// Sort by album title
-				let leftAlbumTitle = $0.first?.albumTitle ?? ""
-				let rightAlbumTitle = $1.first?.albumTitle ?? ""
-				return leftAlbumTitle.precedesAlphabeticallyFinderStyle(rightAlbumTitle)
+				return leftTitle.precedesAlphabeticallyFinderStyle(rightTitle)
 			}
 			
 			// Move unknown album artist to end
-			guard let rightAlbumArtist = $1.first?.albumArtist else {
+			// As of iOS 14.7 beta 5, MediaPlayer reports unknown album artists as nil.
+			guard let rightArtist = $1.first?.albumArtist, rightArtist != "" else {
 				return true
 			}
-			guard let leftAlbumArtist = $0.first?.albumArtist else {
+			guard let leftArtist = $0.first?.albumArtist, leftArtist != "" else {
 				return false
 			}
 			
 			// Sort by album artist
-			return leftAlbumArtist.precedesAlphabeticallyFinderStyle(rightAlbumArtist)
+			return leftArtist.precedesAlphabeticallyFinderStyle(rightArtist)
 		}
 		return sortedMediaItemGroups
 	}
@@ -157,8 +173,7 @@ extension MusicLibraryManager {
 					for: mediaItemGroup,
 					   atEndOf: matchingExistingAlbum)
 				os_signpost(.begin, log: createLog, name: "Put the existing Album back in order")
-				let songsInAlbum = matchingExistingAlbum.songs(sorted: false)
-				sortByAlbumDisplayOrder(songs: songsInAlbum)
+				matchingExistingAlbum.sortSongsByDisplayOrder()
 				os_signpost(.end, log: createLog, name: "Put the existing Album back in order")
 			} else {
 				createSongs(
@@ -246,34 +261,6 @@ extension MusicLibraryManager {
 		let sortedMediaItems = sortedByAlbumDisplayOrder(mediaItems: mediaItems)
 		
 		return mediaItems == sortedMediaItems
-	}
-	
-	private func sortByAlbumDisplayOrder(songs: [Song]) {
-		
-		func sortedByAlbumDisplayOrder(songs: [Song]) -> [Song] {
-			var songsAndMediaItems = songs.map {
-				($0,
-				 $0.mpMediaItem())
-				// mpMediaItem() returns nil if the media item is no longer in the Music library. It doesn't matter where those Songs end up in the array, because we'll delete them later anyway.
-			}
-			
-			songsAndMediaItems.sort { leftTuple, rightTuple in
-				guard
-					let leftMediaItem = leftTuple.1,
-					let rightMediaItem = rightTuple.1
-				else {
-					return true
-				}
-				return leftMediaItem.precedesInSameAlbumInDisplayOrder(rightMediaItem)
-			}
-			
-			let result = songsAndMediaItems.map { tuple in tuple.0 }
-			return result
-		}
-		
-		var sortedSongs = sortedByAlbumDisplayOrder(songs: songs)
-		
-		sortedSongs.reindex()
 	}
 	
 	// MARK: - Creating Containers

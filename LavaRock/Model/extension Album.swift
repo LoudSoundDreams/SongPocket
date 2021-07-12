@@ -54,6 +54,36 @@ extension Album {
 		}
 	}
 	
+	final func sortSongsByDisplayOrder() {
+		let songs = songs(sorted: false)
+		
+		// Note: Behavior is undefined if you compare Songs that correspond to MPMediaItems from different albums.
+		// Note: Songs that don't have a corresponding MPMediaItem in the user's Music library will end up at an undefined position in the result. Songs that do will still be in the correct order relative to each other.
+		func sortedByDisplayOrderInSameAlbum(songs: [Song]) -> [Song] {
+			var songsAndMediaItems = songs.map {
+				($0,
+				 $0.mpMediaItem()) // Can be nil
+			}
+			
+			songsAndMediaItems.sort { leftTuple, rightTuple in
+				guard
+					let leftMediaItem = leftTuple.1,
+					let rightMediaItem = rightTuple.1
+				else {
+					return true
+				}
+				return leftMediaItem.precedesInSameAlbumInDisplayOrder(rightMediaItem)
+			}
+			
+			let result = songsAndMediaItems.map { tuple in tuple.0 }
+			return result
+		}
+		
+		var sortedSongs = sortedByDisplayOrderInSameAlbum(songs: songs)
+		
+		sortedSongs.reindex()
+	}
+	
 	// MARK: - Media Player
 	
 	// Note: Slow.

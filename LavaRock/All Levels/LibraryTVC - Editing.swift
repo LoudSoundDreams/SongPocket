@@ -262,20 +262,74 @@ extension LibraryTVC {
 			guard let albums = items as? [Album] else {
 				return items
 			}
-			let commonDate = Date()
-			return albums.sorted {
-				$0.releaseDateEstimate ?? commonDate >
-					$1.releaseDateEstimate ?? commonDate
+			print("")
+			albums.forEach {
+				print($0.titleFormattedOrPlaceholder())
 			}
+			return albums.sorted {
+				print("")
+				print(String(describing: $0.mpMediaItemCollection()?.representativeItem?.albumTitle))
+				print(String(describing: $1.mpMediaItemCollection()?.representativeItem?.albumTitle))
+				
+				let leftReleaseDate = $0.releaseDateEstimate
+				let rightReleaseDate = $1.releaseDateEstimate
+				// Either can be nil
+				
+				// Leave Albums in the same order if they both have no release date, or the same release date.
+				guard leftReleaseDate != rightReleaseDate else {
+//					return false
+					return true
+				}
+				
+				// Move unknown release date to the end
+				guard let rightReleaseDate = rightReleaseDate else {
+					return true
+				}
+				guard let leftReleaseDate = leftReleaseDate else {
+					return false
+				}
+				
+				return leftReleaseDate > rightReleaseDate
+			}
+			
+			
+//			let commonDate = Date()
+//			return albums.sorted {
+//				$0.releaseDateEstimate ?? commonDate >
+//					$1.releaseDateEstimate ?? commonDate
+//			}
 		case LocalizedString.oldestFirst:
 			guard let albums = items as? [Album] else {
 				return items
 			}
-			let commonDate = Date()
 			return albums.sorted {
-				$0.releaseDateEstimate ?? commonDate <
-					$1.releaseDateEstimate ?? commonDate
+				let leftReleaseDate = $0.releaseDateEstimate
+				let rightReleaseDate = $1.releaseDateEstimate
+				// Either can be nil
+
+				// Leave Albums in the same order if they both have no release date, or the same release date.
+				guard leftReleaseDate != rightReleaseDate else {
+//					return false
+					return true
+				}
+
+				// Move unknown release date to the end
+				guard let rightReleaseDate = rightReleaseDate else {
+					return true
+				}
+				guard let leftReleaseDate = leftReleaseDate else {
+					return false
+				}
+
+				return leftReleaseDate < rightReleaseDate
 			}
+			
+			
+//			let commonDate = Date()
+//			return albums.sorted {
+//				$0.releaseDateEstimate ?? commonDate <
+//					$1.releaseDateEstimate ?? commonDate
+//			}
 		
 		// Songs only
 		case LocalizedString.trackNumber:
@@ -283,6 +337,12 @@ extension LibraryTVC {
 				return items
 			}
 			// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
+//			return songs.sorted {
+//
+//
+//			}
+			
+			
 			let sortedByTrackNumber = songs.sorted {
 				$0.mpMediaItem()?.albumTrackNumber ?? 0 <
 					$1.mpMediaItem()?.albumTrackNumber ?? 0
