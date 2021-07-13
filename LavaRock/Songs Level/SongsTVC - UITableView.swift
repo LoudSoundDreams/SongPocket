@@ -63,7 +63,7 @@ extension SongsTVC {
 		guard let album = sectionOfLibraryItems.container as? Album else {
 			return UITableViewCell()
 		}
-		let cellHeading = album.albumArtistFormattedOrPlaceholder()
+		let cellHeading: String = album.albumArtistFormattedOrPlaceholder() // Don't let this be nil.
 		let cellSubtitle = album.releaseDateEstimateFormatted()
 		
 		// Make, configure, and return the cell.
@@ -107,7 +107,8 @@ extension SongsTVC {
 		}
 		let mediaItem = song.mpMediaItem()
 		
-		let cellTitle = mediaItem?.title ?? Song.titlePlaceholder
+		let songTitle: String // Don't let this be nil.
+		= mediaItem?.title ?? MPMediaItem.placeholderTitle
 		
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
@@ -115,21 +116,10 @@ extension SongsTVC {
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
 		
-		let cellTrackNumberText: String = {
-			guard let mediaItem = mediaItem else {
-				return Song.trackNumberPlaceholder
-			}
-			let trackNumberText = String(mediaItem.albumTrackNumber)
-			if
-				let sectionOfSongs = sectionOfLibraryItems as? SectionOfSongs,
-				sectionOfSongs.shouldShowDiscNumbers
-			{
-				let discNumberText = String(mediaItem.discNumber)
-				return discNumberText + "-" /*hyphen*/ + trackNumberText
-			} else {
-				return trackNumberText
-			}
-		}()
+		let shouldShowDiscNumbers = (sectionOfLibraryItems as? SectionOfSongs)?.shouldShowDiscNumbers ?? false
+		let trackNumberText: String // Don't let this be nil.
+		= mediaItem?.trackNumberFormatted(includeDisc: shouldShowDiscNumbers)
+		?? MPMediaItem.placeholderTrackNumber
 		
 		// Make, configure, and return the cell.
 		let albumArtist = (sectionOfLibraryItems.container as? Album)?.albumArtist() // Can be nil
@@ -145,15 +135,15 @@ extension SongsTVC {
 				return UITableViewCell()
 			}
 			
-			cell.titleLabel.text = cellTitle
+			cell.titleLabel.text = songTitle
 			
 			cell.artistLabel.text = songArtist
 			
 			cell.apply(nowPlayingIndicator)
-			cell.trackNumberLabel.text = cellTrackNumberText
+			cell.trackNumberLabel.text = trackNumberText
 			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
 			
-			cell.accessibilityUserInputLabels = [cellTitle]
+			cell.accessibilityUserInputLabels = [songTitle]
 			
 			return cell
 			
@@ -166,13 +156,13 @@ extension SongsTVC {
 				return UITableViewCell()
 			}
 			
-			cell.titleLabel.text = cellTitle
+			cell.titleLabel.text = songTitle
 			
 			cell.apply(nowPlayingIndicator)
-			cell.trackNumberLabel.text = cellTrackNumberText
+			cell.trackNumberLabel.text = trackNumberText
 			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
 			
-			cell.accessibilityUserInputLabels = [cellTitle]
+			cell.accessibilityUserInputLabels = [songTitle]
 			
 			return cell
 		}

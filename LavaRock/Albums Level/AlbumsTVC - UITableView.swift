@@ -31,8 +31,8 @@ extension AlbumsTVC {
 		}
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
-		let albumTitle = album.titleFormattedOrPlaceholder()
-		let releaseDate = album.releaseDateEstimateFormatted()
+		let albumTitle: String = album.titleFormattedOrPlaceholder() // Don't let this be nil.
+		let releaseDateText = album.releaseDateEstimateFormatted()
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
@@ -41,7 +41,7 @@ extension AlbumsTVC {
 		
 		// Make, configure, and return the cell.
 		
-		if let releaseDate = releaseDate {
+		if let releaseDateText = releaseDateText {
 			guard var cell = tableView.dequeueReusableCell(
 				withIdentifier: cellReuseIdentifier,
 				for: indexPath)
@@ -49,7 +49,7 @@ extension AlbumsTVC {
 			else {
 				return UITableViewCell()
 			}
-			cell.releaseDateLabel.text = releaseDate
+			cell.releaseDateLabel.text = releaseDateText
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
 			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))

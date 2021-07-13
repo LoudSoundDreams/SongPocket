@@ -272,7 +272,7 @@ extension MusicLibraryManager {
 	) -> (album: Album, collection: Collection?) {
 		// If we already have a matching Collection to add the Album to …
 		let collectionTitleToLookUp
-		= newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder
+		= newMediaItem.albumArtist ?? Album.placeholderAlbumArtist
 		if let matchingExistingCollection = existingCollections[collectionTitleToLookUp] {
 			
 			// … then add the Album to that Collection.
@@ -360,7 +360,7 @@ extension MusicLibraryManager {
 		}
 		
 		let newCollection = Collection(context: managedObjectContext)
-		newCollection.title = newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder
+		newCollection.title = newMediaItem.albumArtist ?? Album.placeholderAlbumArtist
 		newCollection.index = Int64(numberOfExistingCollections)
 		return newCollection
 	}
@@ -378,7 +378,7 @@ extension MusicLibraryManager {
 		collectionsToInsertAbove.forEach { $0.index += 1 }
 		
 		let newCollection = Collection(context: managedObjectContext)
-		newCollection.title = newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder
+		newCollection.title = newMediaItem.albumArtist ?? Album.placeholderAlbumArtist
 		newCollection.index = 0
 		return newCollection
 	}

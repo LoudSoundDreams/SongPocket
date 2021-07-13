@@ -55,9 +55,4 @@ extension Song {
 		}
 	}
 	
-	// MARK: - Formatted Attributes
-	
-	static let titlePlaceholder = "—" // Em dash
-	static let trackNumberPlaceholder = "‒" // Figure dash
-	
 }

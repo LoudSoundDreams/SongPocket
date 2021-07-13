@@ -164,7 +164,7 @@ extension SongsTVC {
 			let selectedSong = libraryItem(for: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		{
-			let selectedTitle = selectedMediaItem.title ?? Song.titlePlaceholder
+			let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
 			showExplanationIfNecessaryForEnqueueAction(
 				userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
 				titleOfSelectedSong: selectedTitle,
@@ -196,7 +196,7 @@ extension SongsTVC {
 			sharedPlayer?.prepareToPlay()
 		}
 		
-		let selectedTitle = selectedMediaItem.title ?? Song.titlePlaceholder
+		let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
 		showExplanationIfNecessaryForEnqueueAction(
 			userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
 			titleOfSelectedSong: selectedTitle,

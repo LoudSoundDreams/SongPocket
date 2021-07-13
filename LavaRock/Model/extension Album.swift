@@ -122,7 +122,7 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownAlbumArtist
+	static let placeholderAlbumArtist = LocalizedString.unknownAlbumArtist
 	
 	final func titleFormattedOrPlaceholder() -> String {
 		if
@@ -137,7 +137,7 @@ extension Album {
 	}
 	
 	final func albumArtistFormattedOrPlaceholder() -> String {
-		return albumArtist() ?? Self.unknownAlbumArtistPlaceholder
+		return albumArtist() ?? Self.placeholderAlbumArtist
 	}
 	
 	final func albumArtist() -> String? {

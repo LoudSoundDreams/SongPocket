@@ -38,13 +38,6 @@ extension MusicLibraryManager {
 		potentiallyOutdatedSongs.sort { $0.index < $1.index }
 		potentiallyOutdatedSongs.sort { $0.container!.index < $1.container!.index }
 		potentiallyOutdatedSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
-		
-//		print("")
-//		potentiallyOutdatedSongs.forEach {
-//			print($0.mpMediaItem() ?? Song.titlePlaceholder)
-//			print("Collection \($0.container!.container!.index), Album \($0.container!.index), Song \($0.index)")
-//		}
-		
 		os_signpost(.end, log: updateLog, name: "Initial sort")
 		
 		var knownAlbumPersistentIDs = Set<Int64>()

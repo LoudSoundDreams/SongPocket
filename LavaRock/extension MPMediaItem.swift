@@ -9,6 +9,13 @@ import MediaPlayer
 
 extension MPMediaItem {
 	
+	// MARK: - Properties
+	
+	// As of iOS 14.7 beta 5, MediaPlayer reports unknown track numbers as 0.
+	private static let unknownTrackNumber = 0
+	
+	// MARK: - Sorting
+	
 	// Note: Behavior is undefined if you compare with an MPMediaItem from a different album.
 	// Verified as of build 154 on iOS 14.7 beta 5.
 	final func precedesInSameAlbumInDisplayOrder(_ other: MPMediaItem) -> Bool {
@@ -34,16 +41,42 @@ extension MPMediaItem {
 		}
 		
 		// Move unknown track number to the end
-		// As of iOS 14.7 beta 5, MediaPlayer reports unknown track numbers as 0.
-		if otherTrack == 0 {
+		guard otherTrack != Self.unknownTrackNumber else {
 			return true
 		}
-		if myTrack == 0 {
+		guard myTrack != Self.unknownTrackNumber else {
 			return false
 		}
 		
 		// Sort by track number
 		return myTrack < otherTrack
+	}
+	
+	// MARK: - Formatted Attributes
+	
+	static let placeholderTitle = "—" // Em dash
+	static let placeholderTrackNumber = "‒" // Figure dash
+	
+	final func trackNumberFormatted(includeDisc: Bool) -> String {
+		guard includeDisc else {
+			// Don't include disc number
+			if albumTrackNumber == Self.unknownTrackNumber {
+				return Self.placeholderTrackNumber
+			} else {
+				return String(albumTrackNumber)
+			}
+		}
+
+		// Include disc number
+		let discNumberText = String(discNumber)
+		let trackNumberText: String = {
+			if albumTrackNumber == Self.unknownTrackNumber {
+				return ""
+			} else {
+				return String(albumTrackNumber)
+			}
+		}()
+		return discNumberText + "-" /*hyphen*/ + trackNumberText
 	}
 	
 }

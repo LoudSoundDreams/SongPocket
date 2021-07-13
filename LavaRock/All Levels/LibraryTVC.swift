@@ -68,7 +68,7 @@ class LibraryTVC:
 	// "Constants" that subclasses should not change
 	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	let cellReuseIdentifier = "Cell"
-	lazy var noItemsPlaceholderView = {
+	lazy var placeholderNoItemsView = {
 		return tableView?.dequeueReusableCell(withIdentifier: "No Items Placeholder") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
 	}()
 	lazy var sortButton: UIBarButtonItem = {

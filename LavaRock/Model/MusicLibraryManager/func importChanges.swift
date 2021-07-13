@@ -37,17 +37,6 @@ extension MusicLibraryManager {
 		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) // A Set is actually slightly slower
 		let shouldImportIntoDefaultOrder = savedSongs.isEmpty
 		
-//		var savedSongsCopy = savedSongs
-//		savedSongsCopy.sort { $0.index < $1.index }
-//		savedSongsCopy.sort { $0.container!.index < $1.container!.index }
-//		savedSongsCopy.sort { $0.container!.container!.index < $1.container!.container!.index }
-//
-//		print("")
-//		savedSongsCopy.forEach { song in
-//			print(song.mpMediaItem()?.title ?? Song.titlePlaceholder)
-//			print("Collection \(song.container!.container!.index), Album \(song.container!.index), Song \(song.index)")
-//		}
-		
 		// Find out which of our saved Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
 		var potentiallyModifiedSongs = [Song]()
