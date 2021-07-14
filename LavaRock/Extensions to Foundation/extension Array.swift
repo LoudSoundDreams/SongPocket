@@ -136,6 +136,30 @@ extension Array {
 		}
 	}
 	
+	// MARK: Sorting
+	
+	func sortedMaintainingOrderWhen(
+		areEqual: (Element, Element) -> Bool,
+		areInOrder: (Element, Element) -> Bool
+	) -> Self {
+		let sortedEnumerated = enumerated().sorted {
+			if areEqual($0.element, $1.element) {
+				return $0.offset < $1.offset
+			} else {
+				return areInOrder($0.element, $1.element)
+			}
+		}
+		return sortedEnumerated.map { $0.element }
+	}
+	
+	// MARK: - Sorting
+	
+	func sortedStably() -> Self
+	where Element: Comparable
+	{
+		return sortedMaintainingOrderWhen(areEqual: ==, areInOrder: <)
+	}
+	
 	// MARK: - Element: LibraryItem
 	
 	// Needs to match the property observer on SectionOfLibraryItems.items.

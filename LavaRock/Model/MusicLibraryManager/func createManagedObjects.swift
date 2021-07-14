@@ -109,47 +109,15 @@ extension MusicLibraryManager {
 	private func sortedByAlbumArtistNameThenAlbumTitle(
 		mediaItemGroups: [[MPMediaItem]]
 	) -> [[MPMediaItem]] {
-		// Verified as of build 157 on iOS 14.7 beta 5.
 		let sortedMediaItemGroups = mediaItemGroups.sorted {
-			// Don't sort Strings by <. That puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
-			
-			let leftArtist = $0.first?.albumArtist
-			let rightArtist = $1.first?.albumArtist
-			// Either can be nil
-			
-			guard leftArtist != rightArtist else {
-				let leftTitle = $0.first?.albumTitle
-				let rightTitle = $1.first?.albumTitle
-				// Either can be nil
-				
-				guard leftTitle != rightTitle else {
-					return true // Maybe we could go further with some other criterion
-				}
-				
-				// Move unknown album title to end
-				// As of iOS 14.7 beta 5, MediaPlayer reports unknown album titles as "".
-				guard rightTitle != "", let rightTitle = rightTitle else {
-					return true
-				}
-				guard leftTitle != "", let leftTitle = leftTitle else {
-					return false
-				}
-				
-				// Sort by album title
-				return leftTitle.precedesAlphabeticallyFinderStyle(rightTitle)
-			}
-			
-			// Move unknown album artist to end
-			// As of iOS 14.7 beta 5, MediaPlayer reports unknown album artists as nil.
-			guard let rightArtist = $1.first?.albumArtist, rightArtist != "" else {
+			guard
+				let leftMediaItem = $0.first,
+				let rightMediaItem = $1.first
+			else {
+				// Should never run
 				return true
 			}
-			guard let leftArtist = $0.first?.albumArtist, leftArtist != "" else {
-				return false
-			}
-			
-			// Sort by album artist
-			return leftArtist.precedesAlphabeticallyFinderStyle(rightArtist)
+			return leftMediaItem.precedesForImporterDisplayOrderOfAlbums(inDifferentAlbum: rightMediaItem)
 		}
 		return sortedMediaItemGroups
 	}
@@ -248,7 +216,7 @@ extension MusicLibraryManager {
 	// MARK: - Sorting MPMediaItems
 	
 	private func sortedByAlbumDisplayOrder(mediaItems: [MPMediaItem]) -> [MPMediaItem] {
-		return mediaItems.sorted { $0.precedesInSameAlbumInDisplayOrder($1) }
+		return mediaItems.sorted { $0.precedesForImporterDisplayOrderOfSongs(inSameAlbum: $1) }
 	}
 	
 	// MARK: - Sorting Saved Songs

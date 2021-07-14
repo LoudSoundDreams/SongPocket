@@ -72,7 +72,7 @@ extension Album {
 				else {
 					return true
 				}
-				return leftMediaItem.precedesInSameAlbumInDisplayOrder(rightMediaItem)
+				return leftMediaItem.precedesForImporterDisplayOrderOfSongs(inSameAlbum: rightMediaItem)
 			}
 			
 			let result = songsAndMediaItems.map { tuple in tuple.0 }
@@ -82,6 +82,53 @@ extension Album {
 		var sortedSongs = sortedByDisplayOrderInSameAlbum(songs: songs)
 		
 		sortedSongs.reindex()
+	}
+	
+	// MARK: - Predicates for Sorting
+	
+	final func precedesForSortOptionNewestFirst(_ other: Album) -> Bool {
+		let myReleaseDate = releaseDateEstimate
+		let otherReleaseDate = other.releaseDateEstimate
+		// Either can be nil
+		
+		// At this point, leave Albums in the same order if they both have no release date, or the same release date.
+		// However, as of iOS 14.7, when using sorted(by:), returning `true` in the closure doesn't always keep the elements in the same order.
+		// Use sortedMaintainingOrderWhen(areEqual:areInOrder:) to guarantee stable sorting.
+//		guard myReleaseDate != otherReleaseDate else {
+//			return true
+//		}
+		
+		// Move unknown release date to the end
+		guard let otherReleaseDate = otherReleaseDate else {
+			return true
+		}
+		guard let myReleaseDate = myReleaseDate else {
+			return false
+		}
+		
+		// Sort by newest first
+		return myReleaseDate > otherReleaseDate
+	}
+	
+	final func precedesForSortOptionOldestFirst(_ other: Album) -> Bool {
+		let myReleaseDate = releaseDateEstimate
+		let otherReleaseDate = other.releaseDateEstimate
+		// Either can be nil
+		
+//		guard myReleaseDate != otherReleaseDate else {
+//			return true
+//		}
+		
+		// Move unknown release date to the end
+		guard let otherReleaseDate = otherReleaseDate else {
+			return true
+		}
+		guard let myReleaseDate = myReleaseDate else {
+			return false
+		}
+		
+		// Sort by oldest first
+		return myReleaseDate < otherReleaseDate
 	}
 	
 	// MARK: - Media Player

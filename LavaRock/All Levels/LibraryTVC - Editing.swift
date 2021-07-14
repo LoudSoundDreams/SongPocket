@@ -253,7 +253,6 @@ extension LibraryTVC {
 			return collections.sorted {
 				let collectionTitle0 = $0.title ?? ""
 				let collectionTitle1 = $1.title ?? ""
-				// Don't sort Strings by <. That puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
 				return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
 			}
 		
@@ -262,100 +261,43 @@ extension LibraryTVC {
 			guard let albums = items as? [Album] else {
 				return items
 			}
-			print("")
-			albums.forEach {
-				print($0.titleFormattedOrPlaceholder())
+			return albums.sortedMaintainingOrderWhen {
+				$0.releaseDateEstimate == $1.releaseDateEstimate
+			} areInOrder: {
+				$0.precedesForSortOptionNewestFirst($1)
 			}
-			return albums.sorted {
-				print("")
-				print(String(describing: $0.mpMediaItemCollection()?.representativeItem?.albumTitle))
-				print(String(describing: $1.mpMediaItemCollection()?.representativeItem?.albumTitle))
-				
-				let leftReleaseDate = $0.releaseDateEstimate
-				let rightReleaseDate = $1.releaseDateEstimate
-				// Either can be nil
-				
-				// Leave Albums in the same order if they both have no release date, or the same release date.
-				guard leftReleaseDate != rightReleaseDate else {
-//					return false
-					return true
-				}
-				
-				// Move unknown release date to the end
-				guard let rightReleaseDate = rightReleaseDate else {
-					return true
-				}
-				guard let leftReleaseDate = leftReleaseDate else {
-					return false
-				}
-				
-				return leftReleaseDate > rightReleaseDate
-			}
-			
-			
-//			let commonDate = Date()
-//			return albums.sorted {
-//				$0.releaseDateEstimate ?? commonDate >
-//					$1.releaseDateEstimate ?? commonDate
-//			}
 		case LocalizedString.oldestFirst:
 			guard let albums = items as? [Album] else {
 				return items
 			}
-			return albums.sorted {
-				let leftReleaseDate = $0.releaseDateEstimate
-				let rightReleaseDate = $1.releaseDateEstimate
-				// Either can be nil
-
-				// Leave Albums in the same order if they both have no release date, or the same release date.
-				guard leftReleaseDate != rightReleaseDate else {
-//					return false
-					return true
-				}
-
-				// Move unknown release date to the end
-				guard let rightReleaseDate = rightReleaseDate else {
-					return true
-				}
-				guard let leftReleaseDate = leftReleaseDate else {
-					return false
-				}
-
-				return leftReleaseDate < rightReleaseDate
+			return albums.sortedMaintainingOrderWhen {
+				$0.releaseDateEstimate == $1.releaseDateEstimate
+			} areInOrder: {
+				$0.precedesForSortOptionOldestFirst($1)
 			}
 			
-			
-//			let commonDate = Date()
-//			return albums.sorted {
-//				$0.releaseDateEstimate ?? commonDate <
-//					$1.releaseDateEstimate ?? commonDate
-//			}
-		
 		// Songs only
 		case LocalizedString.trackNumber:
 			guard let songs = items as? [Song] else {
 				return items
 			}
 			// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
-//			return songs.sorted {
-//
-//
-//			}
-			
-			
-			let sortedByTrackNumber = songs.sorted {
-				$0.mpMediaItem()?.albumTrackNumber ?? 0 <
-					$1.mpMediaItem()?.albumTrackNumber ?? 0
+			let songsAndMediaItems = songs.map { ($0, $0.mpMediaItem()) }
+			let sorted = songsAndMediaItems.sortedMaintainingOrderWhen {
+				let leftMediaItem = $0.1
+				let rightMediaItem = $1.1
+				return leftMediaItem?.discNumber == rightMediaItem?.discNumber
+				&& leftMediaItem?.albumTrackNumber == rightMediaItem?.albumTrackNumber
+			} areInOrder: {
+				guard
+					let leftMediaItem = $0.1,
+					let rightMediaItem = $1.1
+				else {
+					return true
+				}
+				return leftMediaItem.precedesForSortOptionTrackNumber(inSameAlbum: rightMediaItem)
 			}
-			let sortedByTrackNumberWithZeroAtEnd = sortedByTrackNumber.sorted {
-				$1.mpMediaItem()?.albumTrackNumber ?? 0 == 0
-			}
-			let sortedByDiscNumber = sortedByTrackNumberWithZeroAtEnd.sorted {
-				$0.mpMediaItem()?.discNumber ?? 0 <
-					$1.mpMediaItem()?.discNumber ?? 0
-			}
-			// As of iOS 14.0 beta 5, MediaPlayer reports unknown disc numbers as 1, so there's no need to move disc 0 to the end.
-			return sortedByDiscNumber
+			return sorted.map { $0.0 }
 			
 		case LocalizedString.reverse:
 			return items.reversed()
