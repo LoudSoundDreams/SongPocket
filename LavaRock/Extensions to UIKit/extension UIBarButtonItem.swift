@@ -24,7 +24,7 @@ extension UIBarButtonItem {
 	
 	final func enableWithAccessibilityTrait() {
 		isEnabled = true
-		accessibilityTraits.subtract(.notEnabled) // As of iOS 14.4 beta 1, setting isEnabled doesn't do this automatically
+		accessibilityTraits.subtract(.notEnabled)
 	}
 	
 }

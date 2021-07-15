@@ -144,7 +144,7 @@ class LibraryTVC:
 			style: .plain,
 			target: self,
 			action: #selector(goToPreviousSong))
-		button.width = 10.0 //
+		button.width = 10.0
 		button.accessibilityLabel = LocalizedString.previousTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -155,7 +155,7 @@ class LibraryTVC:
 			style: .plain,
 			target: self,
 			action: #selector(rewind))
-		button.width = 10.0 //
+		button.width = 10.0
 		button.accessibilityLabel = LocalizedString.restart
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -181,7 +181,7 @@ class LibraryTVC:
 			style: .plain,
 			target: self,
 			action: #selector(goToNextSong))
-		button.width = 10.0 //
+		button.width = 10.0
 		button.accessibilityLabel = LocalizedString.nextTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button

@@ -57,10 +57,10 @@ extension Array {
 	)
 	where Element: Hashable
 	{
-		if #available(iOS 15, *) { // See comment in the `else` block.
+		if #available(iOS 15, *) {
 			/*
-			 This is a rudimentary way of diffing two arrays to find the deletes, inserts, and moves. It's rudimentary, but it works. I shipped something similar in Songpocket 1.0.
-			 For Songpocket 1.4, I replaced this with an implementation that uses CollectionDifference, but as of iPadOS 15 beta 2, Array.difference(from:by:) is crashing with "Fatal error: unsupported". So I've brought this back, hopefully temporarily.
+			 This is a rudimentary way of diffing two arrays to find the deletes, inserts, and moves. I shipped something similar in Songpocket 1.0, but replaced it in Songpocket 1.4 with an implementation that uses Array.difference(from:by:) -> CollectionDifference.
+			 However, as of iPadOS 15 beta 3, that crashes with "Swift/ArrayBuffer.swift:319: Fatal error: unsupported". So I've brought this back, hopefully temporarily.
 			 */
 			
 			var indexesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
@@ -103,7 +103,7 @@ extension Array {
 			
 		} else { // iOS 14 and earlier
 			
-			let difference = newArray.difference(from: self) { oldItem, newItem in // As of iPadOS 15 beta 2, this crashes with "Fatal error: unsupported" in ArrayBuffer.swift.
+			let difference = newArray.difference(from: self) { oldItem, newItem in
 				areEquivalent(oldItem, newItem)
 			}.inferringMoves()
 			
