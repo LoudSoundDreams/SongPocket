@@ -22,98 +22,108 @@ extension MusicLibraryManager {
 		
 		// Here, you can update any attributes on each Song. But it's best to not store data on each Song in the first place unless we have to, because we'll have to manually keep it up to date.
 		
+		os_signpost(.begin, log: updateLog, name: "Update all Album–Song relationships")
 		updateRelationshipsBetweenAlbumsAndSongs(
 			songs: songs,
 			toMatch: mediaItems)
+		os_signpost(.end, log: updateLog, name: "Update all Album–Song relationships")
 	}
 	
 	private func updateRelationshipsBetweenAlbumsAndSongs(
 		songs potentiallyOutdatedSongs: [Song], // Don't use a Set, because we sort this.
 		toMatch freshMediaItems: Set<MPMediaItem> // Use a Set, because we search through this.
 	) {
-		var potentiallyOutdatedSongs = potentiallyOutdatedSongs
-		
-		// Group and sort them by Collection, Album, and Song order.
+		// Sort the existing Songs by the order they appeared in in the app.
 		os_signpost(.begin, log: updateLog, name: "Initial sort")
-		potentiallyOutdatedSongs.sort { $0.index < $1.index }
-		potentiallyOutdatedSongs.sort { $0.container!.index < $1.container!.index }
-		potentiallyOutdatedSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
-		os_signpost(.end, log: updateLog, name: "Initial sort")
-		
-		var knownAlbumPersistentIDs = Set<Int64>()
-		var existingAlbums = [Album]()
-		potentiallyOutdatedSongs.forEach {
-			knownAlbumPersistentIDs.insert($0.container!.albumPersistentID)
-			existingAlbums.append($0.container!)
-		}
-		var freshMediaItemsCopy = freshMediaItems
-		for song in potentiallyOutdatedSongs.reversed() {
-			os_signpost(.begin, log: updateLog, name: "Update which Album is associated with one Song")
-			defer {
-				os_signpost(.end, log: updateLog, name: "Update which Album is associated with one Song")
+		let sortedSongs = potentiallyOutdatedSongs.sorted { leftSong, rightSong in
+			// Checking Song index first and Collection index last is slightly faster than the reverse.
+			guard leftSong.index == rightSong.index else {
+				return leftSong.index < rightSong.index
 			}
 			
-			let knownAlbumPersistentID = song.container!.albumPersistentID
+			let leftAlbum = leftSong.container!
+			let rightAlbum = rightSong.container!
+			guard leftAlbum.index == rightAlbum.index else {
+				return leftAlbum.index < rightAlbum.index
+			}
+			
+			let leftCollection = leftAlbum.container!
+			let rightCollection = rightAlbum.container!
+			return leftCollection.index < rightCollection.index
+		}
+		os_signpost(.end, log: updateLog, name: "Initial sort")
+		
+		os_signpost(.begin, log: updateLog, name: "Initialize updatedMediaItems")
+		let mediaItemTuples = freshMediaItems.map { mediaItem in
+			(Int64(bitPattern: mediaItem.persistentID),
+			mediaItem)
+		}
+		let mediaItems_byInt64 = Dictionary(uniqueKeysWithValues: mediaItemTuples)
+		os_signpost(.end, log: updateLog, name: "Initialize updatedMediaItems")
+		
+		os_signpost(.begin, log: updateLog, name: "Initialize existingAlbumsByAlbumPersistentID")
+		var existingAlbums_byInt64 = [Int64: Album]()
+		sortedSongs.forEach {
+			let oldAlbum = $0.container!
+			existingAlbums_byInt64[oldAlbum.albumPersistentID] = oldAlbum
+		}
+		os_signpost(.end, log: updateLog, name: "Initialize existingAlbumsByAlbumPersistentID")
+		
+		sortedSongs.reversed().forEach { song in
+			os_signpost(.begin, log: updateLog, name: "Update one Album–Song relationship")
+			defer {
+				os_signpost(.end, log: updateLog, name: "Update one Album–Song relationship")
+			}
 			
 			// Get this Song's fresh albumPersistentID.
-			// Don't use mpMediaItem() for every Song; it's way too slow.
-			os_signpost(.begin, log: updateLog, name: "Match a fresh MPMediaItem to find this Song's new albumPersistentID")
-			let indexOfMatchingFreshMediaItem = freshMediaItemsCopy.firstIndex(where: { freshMediaItem in
-				Int64(bitPattern: freshMediaItem.persistentID) == song.persistentID
-			})!
-			let matchingFreshMediaItem = freshMediaItemsCopy[indexOfMatchingFreshMediaItem]
-			let freshAlbumPersistentID_asInt64 = Int64(bitPattern: matchingFreshMediaItem.albumPersistentID)
-			// Speed things up as we go, by reducing the number of freshMediaItems to go through.
-			freshMediaItemsCopy.remove(at: indexOfMatchingFreshMediaItem)
-			os_signpost(.end, log: updateLog, name: "Match a fresh MPMediaItem to find this Song's new albumPersistentID")
+			os_signpost(.begin, log: updateLog, name: "Get one Song's fresh albumPersistentID")
+			let mediaItem = mediaItems_byInt64[song.persistentID]!
+			let newAlbumPersistentID_asInt64 = Int64(bitPattern: mediaItem.albumPersistentID)
+			os_signpost(.end, log: updateLog, name: "Get one Song's fresh albumPersistentID")
 			
 			// If this Song's albumPersistentID has stayed the same, move on to the next one.
-			guard freshAlbumPersistentID_asInt64 != knownAlbumPersistentID else { continue }
+			let oldAlbumPersistentID = song.container!.albumPersistentID
+			guard
+				newAlbumPersistentID_asInt64 != oldAlbumPersistentID
+			else { return }
 			
 			// This Song's albumPersistentID has changed.
-			
-			if !knownAlbumPersistentIDs.contains(freshAlbumPersistentID_asInt64) { // If we don't already have an Album with this albumPersistentID …
+			// If we already have a matching Album to move the Song to …
+			if let existingAlbum = existingAlbums_byInt64[
+				newAlbumPersistentID_asInt64
+			] {
+				// … then move the Song to that Album.
+				os_signpost(.begin, log: updateLog, name: "Move a Song to an existing Album")
+				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
 				
-				// Make a note of this albumPersistentID.
-				knownAlbumPersistentIDs.insert(freshAlbumPersistentID_asInt64)
+				song.index = 0
+				song.container = existingAlbum
+				os_signpost(.end, log: updateLog, name: "Move a Song to an existing Album")
+			} else {
+				// Otherwise, make the Album to move the Song to …
+				os_signpost(.begin, log: updateLog, name: "Move a Song to a new Album")
 				
-				// Make a new Album.
-				let newAlbum = Album(context: managedObjectContext)
-				
-				// Make a note of the new Album.
-				existingAlbums.insert(newAlbum, at: 0)
-				
-				// Set the Album's attributes.
 				let existingCollection = song.container!.container!
 				existingCollection.albums(sorted: false).forEach { $0.index += 1 }
 				
-				newAlbum.container = existingCollection
+				let newAlbum = Album(context: managedObjectContext)
+				newAlbum.albumPersistentID = newAlbumPersistentID_asInt64
 				newAlbum.index = 0
-				newAlbum.albumPersistentID = freshAlbumPersistentID_asInt64
+				newAlbum.container = existingCollection
 				// We'll set releaseDateEstimate later.
 				
-				// Put the song into the new Album.
+				// … and then move the Song to that Album.
 				song.index = 0
 				song.container = newAlbum
 				
-			} else {
-				// This Song's albumPersistentID has changed, but we already have an Album for it.
+				// Make a note of the new Album.
+				existingAlbums_byInt64[newAlbumPersistentID_asInt64] = newAlbum
 				
-				knownAlbumPersistentIDs.insert(freshAlbumPersistentID_asInt64)
-				// Get the Album.
-				let existingAlbum = existingAlbums.first(where: { existingAlbum in
-					existingAlbum.albumPersistentID == freshAlbumPersistentID_asInt64
-				})!
-				
-				// Add the song to the Album.
-				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
-				
-				song.container = existingAlbum
-				song.index = 0
+				os_signpost(.end, log: updateLog, name: "Move a Song to a new Album")
 			}
 		}
 		
-		// We'll delete empty Albums (and Collections) later.
+		// We'll delete empty Albums and Collections and reindex Songs and Albums later.
 	}
 	
 }

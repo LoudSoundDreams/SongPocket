@@ -65,9 +65,9 @@ extension MusicLibraryManager {
 		var existingCollectionsByTitle
 		= Dictionary(uniqueKeysWithValues: entriesForExistingCollections)
 		
-		os_signpost(.begin, log: createLog, name: "Create all the Songs and necessary Albums and Collections")
+		os_signpost(.begin, log: createLog, name: "Make all the Songs and containers")
 		mediaItemGroups.forEach { mediaItemGroup in
-			os_signpost(.begin, log: createLog, name: "Create one group of Songs and possibly new containers")
+			os_signpost(.begin, log: createLog, name: "Make one group of Songs and containers")
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: mediaItemGroup,
 				   existingAlbums: existingAlbumsByAlbumPersistentID,
@@ -75,16 +75,16 @@ extension MusicLibraryManager {
 				   shouldImportIntoDefaultOrder: shouldImportIntoDefaultOrder)
 			
 			if let newAlbum = newAlbum {
-				let albumPersistentID_asUInt64
-				= MPMediaEntityPersistentID(bitPattern: newAlbum.albumPersistentID)
-				existingAlbumsByAlbumPersistentID[albumPersistentID_asUInt64] = newAlbum
+				existingAlbumsByAlbumPersistentID[
+					MPMediaEntityPersistentID(bitPattern: newAlbum.albumPersistentID)
+				] = newAlbum
 			}
 			if let newCollection = newCollection {
 				existingCollectionsByTitle[newCollection.title!] = newCollection
 			}
-			os_signpost(.end, log: createLog, name: "Create one group of Songs and possibly new containers")
+			os_signpost(.end, log: createLog, name: "Make one group of Songs and containers")
 		}
-		os_signpost(.end, log: createLog, name: "Create all the Songs and necessary Albums and Collections")
+		os_signpost(.end, log: createLog, name: "Make all the Songs and containers")
 	}
 	
 	// MARK: - Grouping MPMediaItems
@@ -179,9 +179,9 @@ extension MusicLibraryManager {
 		for newMediaItems: [MPMediaItem],
 		atEndOf album: Album
 	) {
-		os_signpost(.begin, log: createLog, name: "Make new Songs at the end of an Album")
+		os_signpost(.begin, log: createLog, name: "Make Songs at the bottom")
 		defer {
-			os_signpost(.end, log: createLog, name: "Make new Songs at the end of an Album")
+			os_signpost(.end, log: createLog, name: "Make Songs at the bottom")
 		}
 		
 		newMediaItems.forEach {
@@ -197,9 +197,9 @@ extension MusicLibraryManager {
 		for newMediaItems: [MPMediaItem],
 		atBeginningOf album: Album
 	) {
-		os_signpost(.begin, log: createLog, name: "Make new Songs at the beginning of an Album")
+		os_signpost(.begin, log: createLog, name: "Make Songs at the top")
 		defer {
-			os_signpost(.end, log: createLog, name: "Make new Songs at the beginning of an Album")
+			os_signpost(.end, log: createLog, name: "Make Songs at the top")
 		}
 		
 		newMediaItems.reversed().forEach {
@@ -286,9 +286,9 @@ extension MusicLibraryManager {
 		for newMediaItem: MPMediaItem,
 		atEndOf collection: Collection
 	) -> Album {
-		os_signpost(.begin, log: createLog, name: "Make a new Album at the bottom of a Collection")
+		os_signpost(.begin, log: createLog, name: "Make an Album at the bottom")
 		defer {
-			os_signpost(.end, log: createLog, name: "Make a new Album at the bottom of a Collection")
+			os_signpost(.end, log: createLog, name: "Make an Album at the bottom")
 		}
 		
 		let newAlbum = Album(context: managedObjectContext)
@@ -303,9 +303,9 @@ extension MusicLibraryManager {
 		for newMediaItem: MPMediaItem,
 		atBeginningOf collection: Collection
 	) -> Album {
-		os_signpost(.begin, log: createLog, name: "Make a new Album at the top of a Collection")
+		os_signpost(.begin, log: createLog, name: "Make an Album at the top")
 		defer {
-			os_signpost(.end, log: createLog, name: "Make a new Album at the top of a Collection")
+			os_signpost(.end, log: createLog, name: "Make an Album at the top")
 		}
 		
 		let existingAlbums = collection.albums(sorted: false)
@@ -322,9 +322,9 @@ extension MusicLibraryManager {
 		for newMediaItem: MPMediaItem,
 		afterAllExistingCollectionsCount numberOfExistingCollections: Int
 	) -> Collection {
-		os_signpost(.begin, log: createLog, name: "Make a new Collection at the bottom")
+		os_signpost(.begin, log: createLog, name: "Make a Collection at the bottom")
 		defer {
-			os_signpost(.end, log: createLog, name: "Make a new Collection at the bottom")
+			os_signpost(.end, log: createLog, name: "Make a Collection at the bottom")
 		}
 		
 		let newCollection = Collection(context: managedObjectContext)
@@ -338,9 +338,9 @@ extension MusicLibraryManager {
 		for newMediaItem: MPMediaItem,
 		above collectionsToInsertAbove: [Collection]
 	) -> Collection {
-		os_signpost(.begin, log: createLog, name: "Make a new Collection at the top")
+		os_signpost(.begin, log: createLog, name: "Make a Collection at the top")
 		defer {
-			os_signpost(.end, log: createLog, name: "Make a new Collection at the top")
+			os_signpost(.end, log: createLog, name: "Make a Collection at the top")
 		}
 		
 		collectionsToInsertAbove.forEach { $0.index += 1 }

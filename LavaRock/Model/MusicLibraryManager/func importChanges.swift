@@ -168,12 +168,12 @@ extension MusicLibraryManager {
 			}
 			
 			album.releaseDateEstimate = nil
-			let albumPersistentID_asUInt64
-			= MPMediaEntityPersistentID(bitPattern: album.albumPersistentID)
 			
 			os_signpost(.begin, log: cleanupLog, name: "Find the release dates associated with this Album")
 			// For Albums with no release dates, using `guard` to return early is slightly faster than optional chaining.
-			guard let matchingMediaItems = mediaItemsByAlbumPersistentID[albumPersistentID_asUInt64] else {
+			guard let matchingMediaItems = mediaItemsByAlbumPersistentID[
+				MPMediaEntityPersistentID(bitPattern: album.albumPersistentID)
+			] else {
 				os_signpost(.end, log: cleanupLog, name: "Find the release dates associated with this Album")
 				return
 			}
