@@ -18,21 +18,11 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	// Constants for Instruments
 	private static let subsystemName = "LavaRock.MusicLibraryManager"
-	let importLog = OSLog(
-		subsystem: subsystemName,
-		category: "1. Main")
-	let updateLog = OSLog(
-		subsystem: subsystemName,
-		category: "2. Update")
-	let createLog = OSLog(
-		subsystem: subsystemName,
-		category: "3. Create")
-	let deleteLog = OSLog(
-		subsystem: subsystemName,
-		category: "4. Delete")
-	let cleanupLog = OSLog(
-		subsystem: subsystemName,
-		category: "5. Cleanup")
+	let importLog = OSLog(subsystem: subsystemName, category: "1. Main")
+	let updateLog = OSLog(subsystem: subsystemName, category: "2. Update")
+	let createLog = OSLog(subsystem: subsystemName, category: "3. Create")
+	let deleteLog = OSLog(subsystem: subsystemName, category: "4. Delete")
+	let cleanupLog = OSLog(subsystem: subsystemName, category: "5. Cleanup")
 	
 	// Variables
 	private var library: MPMediaLibrary?

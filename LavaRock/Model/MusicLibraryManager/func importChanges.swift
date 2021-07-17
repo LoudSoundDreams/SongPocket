@@ -31,74 +31,79 @@ extension MusicLibraryManager {
 		else { return }
 		
 		os_signpost(.begin, log: importLog, name: "Initial parse")
+		let existingSongs = Song.allFetched(via: managedObjectContext, ordered: false)
+		let shouldImportIntoDefaultOrder = existingSongs.isEmpty
 		
-		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
-		// Order doesn't matter, because this will end up being the array of Songs to be deleted.
-		let savedSongs = managedObjectContext.objectsFetched(for: songsFetchRequest) // A Set is actually slightly slower
-		let shouldImportIntoDefaultOrder = savedSongs.isEmpty
+		// Find out which Songs we need to delete, and which we need to potentially update.
+		// Meanwhile, isolate the MPMediaItems that we don't have Songs for. We'll make new managed objects for them.
+		var songsToUpdateAndFreshMediaItems = [(Song, MPMediaItem)]() // We'll sort these eventually.
+		var songsToDelete = Set<Song>()
 		
-		// Find out which of our saved Songs we need to delete, and which we need to potentially update.
-		// Meanwhile, isolate the MPMediaItems we haven't seen before. We'll make new managed objects for them.
-		var potentiallyModifiedSongs = [Song]()
-		var potentiallyModifiedMediaItems = Set<MPMediaItem>()
-		var deletedSongs = Set<Song>()
-		var queriedMediaItemsCopy = Set(queriedMediaItems)
-		savedSongs.forEach { savedSong in
-			if let potentiallyModifiedMediaItem = queriedMediaItemsCopy.first(where: { queriedMediaItem in // first(where:) with remove(_:) is 2.6× as fast as firstIndex(where:) with [index] and remove(at:).
-				Int64(bitPattern: queriedMediaItem.persistentID) == savedSong.persistentID
-			}) {
-				// We have an existing Song for this MPMediaItem. We might have to update it.
-				potentiallyModifiedSongs.append(savedSong)
-				potentiallyModifiedMediaItems.insert(potentiallyModifiedMediaItem)
-				queriedMediaItemsCopy.remove(potentiallyModifiedMediaItem)
+		let mediaItemTuples = queriedMediaItems.map { mediaItem in
+			(Int64(bitPattern: mediaItem.persistentID),
+			 mediaItem)
+		}
+		var mediaItems_byInt64 = Dictionary(uniqueKeysWithValues: mediaItemTuples)
+		
+		existingSongs.forEach { existingSong in
+			let persistentID_asInt64 = existingSong.persistentID
+			if let potentiallyUpdatedMediaItem = mediaItems_byInt64[persistentID_asInt64] {
+				// We have an existing Song for this MPMediaItem. We might need to update it.
+				songsToUpdateAndFreshMediaItems.append(
+					(existingSong, potentiallyUpdatedMediaItem)
+				)
+				
+				mediaItems_byInt64[persistentID_asInt64] = nil
 			} else {
 				// This Song no longer corresponds to any MPMediaItem in the Music library. We'll delete it.
-				deletedSongs.insert(savedSong)
+				songsToDelete.insert(existingSong)
 			}
 		}
-		// queriedMediaItems now holds the MPMediaItems that we don't have records of. We'll make new Songs for these.
-		let newMediaItems = queriedMediaItemsCopy
-		
-//		print("")
-//		print("Potentially modified songs: \(potentiallyModifiedMediaItems.count)")
-//		potentiallyModifiedMediaItems.forEach {
-//			print("\(String(describing: $0.title)): \($0.persistentID)")
-//		}
-//		print("")
-//		print("Added songs: \(newMediaItems.count)")
-//		newMediaItems.forEach {
-//			print("\(String(describing: $0.title)): \($0.persistentID)")
-//		}
-//		print("")
-//		print("Deleted songs: \(deletedSongs.count)")
-//		deletedSongs.forEach {
-//			print($0.persistentID)
-//		}
-		
+		// mediaItems_byInt64 now holds the MPMediaItems that we don't have Songs for. We'll make new Songs (and maybe new Albums and Collections) for them.
+		let newMediaItems = mediaItems_byInt64.map { $0.value }
 		os_signpost(.end, log: importLog, name: "Initial parse")
 		
 		updateManagedObjects( // Update before creating and deleting, so that we can easily put new Songs above modified Songs.
 			// This might make new Albums, but not new Collections or Songs.
 			// This doesn't delete any Songs, Albums, or Collections.
 			// This might also leave behind empty Albums, because all the Songs in them were moved to other Albums; but we won't delete those empty Albums for now, so that if the user also added other Songs to those empty Albums, we can keep those Albums in the same place, instead of re-adding them to the top.
-			for: potentiallyModifiedSongs,
-			toMatch: potentiallyModifiedMediaItems)
+			songsToUpdateAndFreshMediaItems: songsToUpdateAndFreshMediaItems)
 		
 		let existingAlbums = Album.allFetched(
 			via: managedObjectContext,
 			ordered: false) // Order doesn't matter, because we identify Albums by their albumPersistentID.
 		let existingCollections = Collection.allFetched(via: managedObjectContext) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
 		
-		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, which we shouldn't do yet, because of what we mentioned above.
+		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, which we shouldn't do yet, as mentioned above.
 			// This might make new Albums, and if it does, it might make new Collections.
 			for: newMediaItems,
 			existingAlbums: existingAlbums,
 			existingCollections: existingCollections)
 		deleteManagedObjects(
-			for: deletedSongs)
+			for: songsToDelete)
 		
-		// Then, some cleanup.
+		os_signpost(.begin, log: importLog, name: "Convert Array to Set")
+		let setOfQueriedMediaItems = Set(queriedMediaItems)
+		os_signpost(.end, log: importLog, name: "Convert Array to Set")
+		cleanUpManagedObjects(
+			allMediaItems: setOfQueriedMediaItems,
+			shouldImportIntoDefaultOrder: shouldImportIntoDefaultOrder)
 		
+		managedObjectContext.tryToSave()
+//		managedObjectContext.parent!.tryToSave()
+		DispatchQueue.main.async {
+			NotificationCenter.default.post(
+				Notification(name: .LRDidImportChanges)
+			)
+		}
+	}
+	
+	// MARK: - Cleanup
+	
+	private func cleanUpManagedObjects(
+		allMediaItems: Set<MPMediaItem>,
+		shouldImportIntoDefaultOrder: Bool
+	) {
 		os_signpost(.begin, log: importLog, name: "5. Cleanup")
 		
 		let allCollections = Collection.allFetched(
@@ -109,12 +114,9 @@ extension MusicLibraryManager {
 			ordered: false) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		
 		os_signpost(.begin, log: cleanupLog, name: "Recalculate Album release date estimates")
-		os_signpost(.begin, log: cleanupLog, name: "Convert Array to Set")
-		let setOfQueriedMediaItems = Set(queriedMediaItems)
-		os_signpost(.end, log: cleanupLog, name: "Convert Array to Set")
 		recalculateReleaseDateEstimates(
 			for: allAlbums,
-			   considering: setOfQueriedMediaItems)
+			   considering: allMediaItems)
 		os_signpost(.end, log: cleanupLog, name: "Recalculate Album release date estimates")
 		
 		os_signpost(.begin, log: cleanupLog, name: "Reindex all Albums and Songs")
@@ -129,17 +131,7 @@ extension MusicLibraryManager {
 		os_signpost(.end, log: cleanupLog, name: "Reindex all Albums and Songs")
 		
 		os_signpost(.end, log: importLog, name: "5. Cleanup")
-		
-		managedObjectContext.tryToSave()
-//		managedObjectContext.parent!.tryToSave()
-		DispatchQueue.main.async {
-			NotificationCenter.default.post(
-				Notification(name: .LRDidImportChanges)
-			)
-		}
 	}
-	
-	// MARK: - Cleanup
 	
 	// MARK: Recalculating Release Date Estimates
 	

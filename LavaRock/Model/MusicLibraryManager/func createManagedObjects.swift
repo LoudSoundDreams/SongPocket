@@ -13,7 +13,7 @@ extension MusicLibraryManager {
 	
 	// Make new managed objects for the new media items, including new Albums and Collections to put them in if necessary.
 	final func createManagedObjects(
-		for newMediaItems: Set<MPMediaItem>,
+		for newMediaItems: [MPMediaItem],
 		existingAlbums: [Album],
 		existingCollections: [Collection]
 	) {
@@ -28,7 +28,7 @@ extension MusicLibraryManager {
 		let mediaItemGroups: [[MPMediaItem]] = {
 			if shouldImportIntoDefaultOrder {
 				// Since our database is empty, we'll add items from the top down, because it's faster.
-				let dictionary = groupedByAlbumPersistentID(Array(newMediaItems))
+				let dictionary = groupedByAlbumPersistentID(newMediaItems)
 				let groups = dictionary.map { $0.value }
 				os_signpost(.begin, log: createLog, name: "Initial sort")
 				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(mediaItemGroups: groups)

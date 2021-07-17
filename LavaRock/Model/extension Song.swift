@@ -19,6 +19,20 @@ extension Song {
 		subsystem: "LavaRock.Song",
 		category: .pointsOfInterest)
 	
+	// MARK: - Core Data
+	
+	// Similar to Collection.allFetched and Album.allFetched.
+	static func allFetched(
+		via managedObjectContext: NSManagedObjectContext,
+		ordered: Bool = true
+	) -> [Song] {
+		let fetchRequest: NSFetchRequest<Song> = fetchRequest()
+		if ordered {
+			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		}
+		return managedObjectContext.objectsFetched(for: fetchRequest)
+	}
+	
 	// MARK: - Media Player
 	
 	// Note: Slow.

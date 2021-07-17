@@ -25,7 +25,7 @@ extension Album {
 	
 	// MARK: - Core Data
 	
-	// This is the same as in Collection.
+	// Similar to Collection.allFetched and Song.allFetched.
 	static func allFetched(
 		via managedObjectContext: NSManagedObjectContext,
 		ordered: Bool = true

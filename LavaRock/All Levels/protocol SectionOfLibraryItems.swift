@@ -47,6 +47,7 @@ extension SectionOfLibraryItems {
 		return items.isEmpty
 	}
 	
+	// Similar to allFetched in Collection, in Album, and in Song.
 	func itemsFetched(
 		via managedObjectContext: NSManagedObjectContext
 	) -> [NSManagedObject] {
