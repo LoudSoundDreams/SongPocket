@@ -16,11 +16,11 @@ extension AlbumsTVC {
 		
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
-			!albumMoverClipboard.didAlreadyCommitMoveAlbums
+			!albumMoverClipboard.didAlreadyCommitMoveAlbums // Without this, if you tap the "Move Here" button more than once, the app will crash.
+				// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
 		else { return }
 		
-		albumMoverClipboard.didAlreadyCommitMoveAlbums = true // Without this, if you tap the "Move Here" button more than once, the app will crash.
-		// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
+		albumMoverClipboard.didAlreadyCommitMoveAlbums = true
 		
 		// Get the Albums to move, and to not move.
 		let albumsToMove = albumMoverClipboard.idsOfAlbumsBeingMoved.map { albumID in

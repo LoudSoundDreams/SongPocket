@@ -11,10 +11,13 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	
 	// MARK: - Properties
 	
-	// "Constants"
+	// Constants
 	let ifOfSourceCollection: NSManagedObjectID
 	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	let idsOfAlbumsNotBeingMoved: [NSManagedObjectID]
+	static let indexOfNewCollection = 0
+	
+	// "Constants"
 	var navigationItemPrompt: String {
 		let formatString = LocalizedString.formatChooseACollectionPrompt
 		let number = idsOfAlbumsBeingMoved.count

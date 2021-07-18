@@ -38,7 +38,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Renaming
 	
-	// Match presentDialogToMakeNewCollection.
+	// Match presentDialogToMakeNewCollection and presentDialogToCombineCollections.
 	final func presentDialogToRenameCollection(at indexPath: IndexPath) {
 		guard let collection = libraryItem(for: indexPath) as? Collection else { return }
 		
@@ -97,6 +97,7 @@ extension CollectionsTVC {
 		guard
 			allowsCombine(),
 			sectionOfCollectionsBeforeCombining == nil, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
+			// You must reset sectionOfCollectionsBeforeCombining = nil during both reverting and committing.
 			let indexPathOfCombinedCollection = selectedIndexPaths.first
 		else { return }
 		
@@ -112,7 +113,7 @@ extension CollectionsTVC {
 		from selectedIndexPaths: [IndexPath],
 		into indexPathOfCombinedCollection: IndexPath
 	) {
-		// Save the existing SectionOfCollectionsOrAlbums for if we need to revert.
+		// Save the existing SectionOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
 		sectionOfCollectionsBeforeCombining = sectionOfLibraryItems // SIDE EFFECT
 		
 		// Create the combined Collection.
@@ -147,6 +148,7 @@ extension CollectionsTVC {
 		// We could hack refreshEditingButtons to disable all the editing buttons during the animation, but that would clearly break separation of concerns.
 	}
 	
+	// Match presentDialogToRenameCollection and presentDialogToMakeNewCollection.
 	private func presentDialogToCombineCollections(
 		from originalSelectedIndexPaths: [IndexPath],
 		into indexPathOfCombinedCollection: IndexPath
@@ -166,7 +168,7 @@ extension CollectionsTVC {
 			style: .default
 		) { _ in
 			let proposedTitle = dialog.textFields?[0].text
-			self.commitCombineCollection(
+			self.commitCombineCollections(
 				into: indexPathOfCombinedCollection,
 				withProposedTitle: proposedTitle)
 		}
@@ -185,7 +187,7 @@ extension CollectionsTVC {
 		guard
 			var copyOfOriginalSection = sectionOfCollectionsBeforeCombining,
 			let originalItems = sectionOfCollectionsBeforeCombining?.items
-		else { return }
+		else { return } //
 		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
 		// Revert sectionOfLibraryItems to sectionOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
@@ -204,7 +206,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func commitCombineCollection(
+	private func commitCombineCollections(
 		into indexPathOfCombinedCollection: IndexPath,
 		withProposedTitle proposedTitle: String?
 	) {

@@ -36,7 +36,7 @@ final class CollectionsTVC:
 	private lazy var makeNewCollectionButton = UIBarButtonItem(
 		barButtonSystemItem: .add,
 		target: self,
-		action: #selector(presentDialogToMakeNewCollection))
+		action: #selector(previewMakeNewCollectionAndPresentDialog))
 	
 	// Variables
 	var didJustFinishLoading = false
@@ -212,7 +212,7 @@ final class CollectionsTVC:
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		if albumMoverClipboard != nil {
-			deleteEmptyNewCollection()
+			revertMakeNewCollectionIfEmpty()
 		}
 		
 		super.viewDidAppear(animated)
