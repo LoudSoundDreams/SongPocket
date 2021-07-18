@@ -112,7 +112,11 @@ extension CollectionsTVC {
 		
 		guard let newCollection = sectionOfLibraryItems.items[indexOfNewCollection] as? Collection else { return }
 		
+		var didChangeTitle = false
 		if let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) {
+			if newCollection.title != newTitle {
+				didChangeTitle = true
+			}
 			newCollection.title = newTitle
 		}
 		
@@ -120,9 +124,11 @@ extension CollectionsTVC {
 			indexOfLibraryItem: indexOfNewCollection,
 			indexOfSectionOfLibraryItem: 0)
 		tableView.performBatchUpdates {
-			tableView.reloadRows(
-				at: [indexPathOfNewCollection],
-				with: .fade)
+			if didChangeTitle {
+				tableView.reloadRows(
+					at: [indexPathOfNewCollection],
+					with: .fade)
+			}
 		} completion: { _ in
 			self.tableView.selectRow(
 				at: indexPathOfNewCollection,

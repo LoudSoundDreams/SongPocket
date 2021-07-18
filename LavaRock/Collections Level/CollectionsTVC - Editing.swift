@@ -71,17 +71,24 @@ extension CollectionsTVC {
 	}
 	
 	private func rename(
-		_ collection: Collection,
+		_ renamedCollection: Collection,
 		withProposedTitle proposedTitle: String?,
 		at indexPath: IndexPath,
 		thenSelectRow: Bool
 	) {
+		var didChangeTitle = false
 		if let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) {
-			collection.title = newTitle
+			if renamedCollection.title != newTitle {
+				didChangeTitle = true
+			}
+			renamedCollection.title = newTitle
 		}
+		
 		managedObjectContext.tryToSave()
 		
-		tableView.reloadRows(at: [indexPath], with: .fade)
+		if didChangeTitle {
+			tableView.reloadRows(at: [indexPath], with: .fade)
+		}
 		if thenSelectRow {
 			tableView.selectRow(
 				at: indexPath,
@@ -210,17 +217,25 @@ extension CollectionsTVC {
 		into indexPathOfCombinedCollection: IndexPath,
 		withProposedTitle proposedTitle: String?
 	) {
-		guard let collection = libraryItem(for: indexPathOfCombinedCollection) as? Collection else { return }
+		guard let combinedCollection = libraryItem(for: indexPathOfCombinedCollection) as? Collection else { return }
+		
+		var didChangeTitle = false
 		if let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) {
-			collection.title = newTitle
+			if combinedCollection.title != newTitle {
+				didChangeTitle = true
+			}
+			combinedCollection.title = newTitle
 		}
 		
 		Collection.deleteAllEmpty(via: managedObjectContext)
+		
 		managedObjectContext.tryToSave()
 		
 		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
-		tableView.reloadRows(at: [indexPathOfCombinedCollection], with: .fade)
+		if didChangeTitle {
+			tableView.reloadRows(at: [indexPathOfCombinedCollection], with: .fade)
+		}
 		tableView.selectRow(
 			at: indexPathOfCombinedCollection,
 			animated: false,
