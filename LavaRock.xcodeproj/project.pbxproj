@@ -330,13 +330,14 @@
 				075218A1257C498D0077AE9B /* LocalizedString.swift */,
 				075218B8257C52390077AE9B /* Localizable.strings */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
-				076B56CF25C74BB400E147C0 /* Extensions to Foundation */,
+				076B56CF25C74BB400E147C0 /* Foundation */,
 				07FC970A24BAC1050036DD3D /* Model */,
+				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
 				07A4A005269A7432007B0085 /* extension MPMediaItem.swift */,
+				07267A1F25537C5800C914A3 /* PlayerManager.swift */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
-				07267A1F25537C5800C914A3 /* PlayerManager.swift */,
 				07E92A15251068E500E9073B /* Extensions to UIKit */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				070E194524F3424500B21307 /* All Levels */,
@@ -368,7 +369,7 @@
 			path = LavaRockUITests;
 			sourceTree = "<group>";
 		};
-		076B56CF25C74BB400E147C0 /* Extensions to Foundation */ = {
+		076B56CF25C74BB400E147C0 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
 				078FDD0E2638872100779AF2 /* extension Array.swift */,
@@ -376,7 +377,7 @@
 				07140604259D6958003CA92C /* extension UserDefaults.swift */,
 				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
 			);
-			path = "Extensions to Foundation";
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 		07DC1B1E24F33C5100AAEEDB /* Collections Level */ = {
@@ -431,7 +432,6 @@
 				07AE2AA3258C09D900C3A314 /* extension Collection.swift */,
 				0736E3E924B95FD600A15420 /* extension Album.swift */,
 				07CAB24624EA227F008AC34C /* extension Song.swift */,
-				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -848,7 +848,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 164;
+				CURRENT_PROJECT_VERSION = 165;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
@@ -871,7 +871,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 164;
+				CURRENT_PROJECT_VERSION = 165;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
