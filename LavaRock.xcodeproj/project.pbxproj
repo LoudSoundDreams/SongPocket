@@ -338,7 +338,7 @@
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
-				07E92A15251068E500E9073B /* Extensions to UIKit */,
+				07E92A15251068E500E9073B /* UIKit */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				070E194524F3424500B21307 /* All Levels */,
 				07F1B91825F15EDB008591C7 /* SectionOfCollectionsOrAlbums.swift */,
@@ -409,7 +409,7 @@
 			path = "Albums Level";
 			sourceTree = "<group>";
 		};
-		07E92A15251068E500E9073B /* Extensions to UIKit */ = {
+		07E92A15251068E500E9073B /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
 				07A3FBCE258EB9B2000B450E /* extension UIFont.swift */,
@@ -420,7 +420,7 @@
 				072C04982692A67400F44AC5 /* extension UIAlertAction.swift */,
 				072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */,
 			);
-			path = "Extensions to UIKit";
+			path = UIKit;
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
