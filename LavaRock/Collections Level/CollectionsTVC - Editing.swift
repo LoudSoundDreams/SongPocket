@@ -76,13 +76,11 @@ extension CollectionsTVC {
 		at indexPath: IndexPath,
 		thenSelectRow: Bool
 	) {
-		var didChangeTitle = false
-		if let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) {
-			if renamedCollection.title != newTitle {
-				didChangeTitle = true
-			}
+		let oldTitle = renamedCollection.title
+		if let newTitle = Collection.validatedTitleOptional(from: proposedTitle) {
 			renamedCollection.title = newTitle
 		}
+		let didChangeTitle = renamedCollection.title != oldTitle
 		
 		managedObjectContext.tryToSave()
 		
@@ -219,13 +217,11 @@ extension CollectionsTVC {
 	) {
 		guard let combinedCollection = libraryItem(for: indexPathOfCombinedCollection) as? Collection else { return }
 		
-		var didChangeTitle = false
-		if let newTitle = Collection.titleNotEmptyAndNotTooLong(from: proposedTitle) {
-			if combinedCollection.title != newTitle {
-				didChangeTitle = true
-			}
+		let oldTitle = combinedCollection.title
+		if let newTitle = Collection.validatedTitleOptional(from: proposedTitle) {
 			combinedCollection.title = newTitle
 		}
+		let didChangeTitle = combinedCollection.title != oldTitle
 		
 		Collection.deleteAllEmpty(via: managedObjectContext)
 		

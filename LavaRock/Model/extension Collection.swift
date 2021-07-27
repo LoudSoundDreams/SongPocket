@@ -18,7 +18,7 @@ extension Collection: LibraryContainer {
 extension Collection {
 	
 	// If nil, `proposedTitle` was nil or "".
-	static func titleNotEmptyAndNotTooLong(
+	static func validatedTitleOptional(
 		from proposedTitle: String?
 	) -> String? {
 		guard
