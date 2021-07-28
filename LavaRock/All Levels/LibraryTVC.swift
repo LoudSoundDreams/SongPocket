@@ -61,7 +61,7 @@ class LibraryTVC:
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child context when in "moving Albums" mode.
 	var numberOfRowsInSectionAboveLibraryItems = 0
 	var viewingModeTopLeftButtons = [UIBarButtonItem]()
-	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpac3()]
+	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
 	lazy var topRightButtons = [editButtonItem]
 	lazy var viewingModeToolbarButtons = playbackButtons
 	
@@ -71,117 +71,66 @@ class LibraryTVC:
 	lazy var placeholderNoItemsView = {
 		return tableView?.dequeueReusableCell(withIdentifier: "No Items Placeholder") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
 	}()
-	lazy var sortButton: UIBarButtonItem = {
-		if #available(iOS 14, *) {
-			return UIBarButtonItem(
-				title: LocalizedString.sort,
-				menu: sortOptionsMenu())
-		} else { // iOS 13
-			return UIBarButtonItem(
-				title: LocalizedString.sort,
-				style: .plain,
-				target: self,
-				action: #selector(showSortOptionsActionSheet))
-		}
-	}()
-	lazy var moveToTopOrBottomButton: UIBarButtonItem = {
-		let image = UIImage(systemName: "arrow.up.arrow.down")
-		let button: UIBarButtonItem = {
-			if #available(iOS 14, *) {
-				return UIBarButtonItem(
-					image: image,
-					menu: moveToTopOrBottomMenu())
-			} else { // iOS 13
-				return UIBarButtonItem(
-					image: image,
-					style: .plain,
-					target: self,
-					action: #selector(showMoveToTopOrBottomActionSheet))
-			}
-		}()
-		button.accessibilityLabel = "Move to top or bottom" // TO DO: Localize
-		return button
-	}()
+	lazy var sortButton = UIBarButtonItem(
+		title: LocalizedString.sort,
+		menu: sortOptionsMenu())
 	lazy var floatToTopButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.floatSelectedItemsToTopOfSection() }
 		let button = UIBarButtonItem(
 			image: UIImage.floatToTopSymbol,
-			style: .plain,
-			target: self,
-			action: #selector(floatSelectedItemsToTopOfSection))
+			primaryAction: action)
 		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
 	}()
 	lazy var sinkToBottomButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.sinkSelectedItemsToBottomOfSection() }
 		let button = UIBarButtonItem(
 			image: UIImage.sinkToBottomSymbol,
-			style: .plain,
-			target: self,
-			action: #selector(sinkSelectedItemsToBottomOfSection))
+			primaryAction: action)
 		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
 	}()
-	lazy var cancelMoveAlbumsButton = UIBarButtonItem(
-		barButtonSystemItem: .cancel,
-		target: self,
-		action: #selector(cancelMoveAlbums))
-	@objc private func cancelMoveAlbums() {
-		dismiss(animated: true)
-	}
+	lazy var cancelMoveAlbumsButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.dismiss(animated: true) }
+		return UIBarButtonItem(
+			systemItem: .cancel,
+			primaryAction: action)
+	}()
 	
 	// "Constants" that subclasses should not change, for PlaybackController
 	final lazy var playbackButtons = [
 		previousSongButton,
-		.flexibleSpac3(),
+		.flexibleSpace(),
 		rewindButton,
-		.flexibleSpac3(),
+		.flexibleSpace(),
 		playPauseButton,
-		.flexibleSpac3(),
+		.flexibleSpace(),
 		nextSongButton,
 	]
 	final lazy var previousSongButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.goToPreviousSong() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
-			style: .plain,
-			target: self,
-			action: #selector(goToPreviousSong))
-		button.width = 10.0
+			primaryAction: action)
 		button.accessibilityLabel = LocalizedString.previousTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final lazy var rewindButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.rewind() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
-			style: .plain,
-			target: self,
-			action: #selector(rewind))
-		button.width = 10.0
+			primaryAction: action)
 		button.accessibilityLabel = LocalizedString.restart
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	final let playImage = UIImage(systemName: "play.fill")
-	final let playAction = #selector(play)
-	final let playAccessibilityLabel = LocalizedString.play
-	final let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
-	final lazy var playPauseButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			image: playImage,
-			style: .plain,
-			target: self,
-			action: playAction)
-		button.width = 10.0 // As of iOS 14.2 beta 4, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
-		button.accessibilityLabel = playAccessibilityLabel
-		button.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
-		return button
-	}()
+	final lazy var playPauseButton = UIBarButtonItem()
 	final lazy var nextSongButton: UIBarButtonItem = {
+	let action = UIAction { _ in self.goToNextSong() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
-			style: .plain,
-			target: self,
-			action: #selector(goToNextSong))
-		button.width = 10.0
+			primaryAction: action)
 		button.accessibilityLabel = LocalizedString.nextTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -412,7 +361,6 @@ class LibraryTVC:
 		editButtonItem.isEnabled = !sectionOfLibraryItems.isEmpty()
 		
 		sortButton.isEnabled = allowsSort()
-		moveToTopOrBottomButton.isEnabled = allowsMoveToTopOrBottom()
 		floatToTopButton.isEnabled = allowsFloat()
 		sinkToBottomButton.isEnabled = allowsSink()
 	}

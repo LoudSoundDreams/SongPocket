@@ -18,38 +18,27 @@ final class AlbumsTVC:
 	// MARK: - Properties
 	
 	// "Constants"
-	private lazy var moveOrOrganizeButton: UIBarButtonItem = {
-		if #available(iOS 14, *) {
-			return UIBarButtonItem(
-				title: LocalizedString.move,
-				menu: moveOrOrganizeMenu())
-		} else { // iOS 13
-			return UIBarButtonItem(
-				title: LocalizedString.move,
-				style: .plain,
-				target: self,
-				action: #selector(showMoveOrOrganizeActionSheet))
-		}
-	}()
-	private lazy var organizeButton = UIBarButtonItem(
-		title: "Organize", // TO DO: Localize
-		style: .plain,
-		target: self,
-		action: #selector(startOrganizingAlbums))
-	private lazy var moveButton = UIBarButtonItem(
+	private lazy var moveOrOrganizeButton = UIBarButtonItem(
 		title: LocalizedString.move,
-		style: .plain,
-		target: self,
-		action: #selector(startMovingAlbums))
+		menu: moveOrOrganizeMenu())
+	private lazy var moveButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.startMovingAlbums() }
+		return UIBarButtonItem(
+			title: LocalizedString.move,
+			primaryAction: action)
+	}()
 	
 	// MARK: "Moving Albums" Mode
 	
 	// "Constants"
-	private lazy var moveHereButton = UIBarButtonItem(
-		title: LocalizedString.moveHere,
-		style: .done,
-		target: self,
-		action: #selector(moveAlbumsHere))
+	private lazy var moveHereButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.moveAlbumsHere() }
+		let button = UIBarButtonItem(
+			title: LocalizedString.moveHere,
+			primaryAction: action)
+		button.style = .done
+		return button
+	}()
 	
 	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
@@ -74,9 +63,9 @@ final class AlbumsTVC:
 		if albumMoverClipboard != nil {
 			topRightButtons = [cancelMoveAlbumsButton]
 			viewingModeToolbarButtons = [
-				.flexibleSpac3(),
+				.flexibleSpace(),
 				moveHereButton,
-				.flexibleSpac3(),
+				.flexibleSpace(),
 			]
 		}
 		
@@ -89,20 +78,16 @@ final class AlbumsTVC:
 		} else {
 			editingModeToolbarButtons = [
 //				moveOrOrganizeButton,
-//				.flexibleSpac3(),
-				
-//				organizeButton,
-//				.flexibleSpac3(),
+//				.flexibleSpace(),
 				
 				moveButton,
-				.flexibleSpac3(),
+				.flexibleSpace(),
 				
 				sortButton,
-				.flexibleSpac3(),
+				.flexibleSpace(),
 				
-//				moveToTopOrBottomButton,
 				floatToTopButton,
-				.flexibleSpac3(),
+				.flexibleSpace(),
 				sinkToBottomButton,
 			]
 		}
@@ -124,7 +109,6 @@ final class AlbumsTVC:
 		super.refreshEditingButtons()
 		
 		moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
-		organizeButton.isEnabled = allowsOrganize()
 		moveButton.isEnabled = allowsMove()
 	}
 	

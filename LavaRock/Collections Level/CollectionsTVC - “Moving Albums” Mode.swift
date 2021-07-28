@@ -13,7 +13,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Making New Collection
 	
-	@objc final func previewMakeNewCollectionAndPresentDialog() {
+	final func previewMakeNewCollectionAndPresentDialog() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection // Without this, if you're fast, you can finish making a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
@@ -34,7 +34,7 @@ extension CollectionsTVC {
 	) {
 		// Create the new Collection.
 		let newCollection = Collection(context: managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
-		newCollection.title = suggestedTitle ?? LocalizedString.defaultTitleForNewCollection
+		newCollection.title = suggestedTitle ?? LocalizedString.newCollectionDefaultTitle
 		// When we set sectionOfLibraryItems.items, the property observer will set the "index" attribute of each Collection for us.
 		
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
@@ -58,11 +58,11 @@ extension CollectionsTVC {
 	}
 	
 	// Match presentDialogToRenameCollection and presentDialogToCombineCollections.
-	@objc final func presentDialogToMakeNewCollection(
+	private func presentDialogToMakeNewCollection(
 		withSuggestedTitle suggestedTitle: String?
 	) {
 		let dialog = UIAlertController(
-			title: LocalizedString.titleForAlertNewCollection,
+			title: LocalizedString.newCollectionAlertTitle,
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextFieldForCollectionTitle(defaultTitle: suggestedTitle)

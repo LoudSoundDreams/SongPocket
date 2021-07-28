@@ -14,16 +14,22 @@ extension LibraryTVC {
 	
 	final func refreshPlaybackButtons() {
 		
+		let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
+		
 		func configurePlayButton() {
-			playPauseButton.image = playImage
-			playPauseButton.action = playAction
-			playPauseButton.accessibilityLabel = playAccessibilityLabel
+			playPauseButton.primaryAction = UIAction(
+				image: UIImage(systemName: "play.fill")
+			) { _ in self.play() }
+//			playPauseButton.width = 10.0 // As of iOS 14.7.1, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
+			playPauseButton.accessibilityLabel = LocalizedString.play
 			playPauseButton.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		}
 		
 		func configurePauseButton() {
-			playPauseButton.image = UIImage(systemName: "pause.fill")
-			playPauseButton.action = #selector(pause)
+			playPauseButton.primaryAction = UIAction(
+				image: UIImage(systemName: "pause.fill")
+			) { _ in self.pause() }
+//			playPauseButton.width = 10.0
 			playPauseButton.accessibilityLabel = LocalizedString.pause
 			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
 		}
@@ -90,30 +96,30 @@ extension LibraryTVC {
 		}
 	}
 	
-	@objc final func goToPreviousSong() {
+	final func goToPreviousSong() {
 //		sharedPlayer?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
 		// Actually, that line of code makes this method take forever to return; it repeatedly prints "SYNC-WATCHDOG-1: Attempting to wake up the remote process" and "SYNC-WATCHDOG-2: Tearing down connection". That happens whether we set currentPlaybackTime = 0 before or after changing the song.
 		
 		sharedPlayer?.skipToPreviousItem()
 	}
 	
-	@objc final func rewind() {
+	final func rewind() {
 		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
 //		sharedPlayer?.skipToBeginning()
 //		sharedPlayer?.prepareToPlay()
 		
-		refreshPlaybackButtons() // Disable the "restart current song" button if appropriate.
+//		refreshPlaybackButtons() // Disable the "restart current song" button if appropriate.
 	}
 	
-	@objc final func play() {
+	private func play() {
 		sharedPlayer?.play()
 	}
 	
-	@objc final func pause() {
+	private func pause() {
 		sharedPlayer?.pause()
 	}
 	
-	@objc final func goToNextSong() {
+	final func goToNextSong() {
 //		sharedPlayer?.currentPlaybackTime = 0 // See comment in goToPreviousSong().
 		
 		sharedPlayer?.skipToNextItem()

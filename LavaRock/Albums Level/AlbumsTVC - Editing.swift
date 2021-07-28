@@ -36,21 +36,11 @@ extension AlbumsTVC {
 		return true
 	}
 	
-	// MARK: - Organizing
-	
-	@objc final func startOrganizingAlbums() {
-		
-		
-	}
-	
 	// MARK: - Moving or Organizing
 	
-	// For iOS 14 and later
 	final func moveOrOrganizeMenu() -> UIMenu {
 		let organizeAction = UIAction(
 			title: "Organize Into New Collections…", // TO DO: Localize
-//			title: "Move to New Collections By…", // TO DO: Localize
-//			title: "Organize Into…", // TO DO: Localize
 			handler: { _ in self.startOrganizingAlbums() })
 		let moveAction = UIAction(
 			title: "Move To…", // TO DO: Localize
@@ -62,33 +52,16 @@ extension AlbumsTVC {
 		return UIMenu(children: children.reversed())
 	}
 	
-	@objc final func showMoveOrOrganizeActionSheet() {
-		let actionSheet = UIAlertController(
-			title: nil,
-			message: nil,
-			preferredStyle: .actionSheet)
+	// MARK: - Starting Organizing
+	
+	final func startOrganizingAlbums() {
 		
-		let organizeAction = UIAlertAction(
-			title: "Organize Into…", // TO DO: Localize
-			style: .default,
-			handler: { _ in self.startOrganizingAlbums() })
-		organizeAction.isEnabled = false
-		let cancelAlertAction = UIAlertAction.cancel(handler: nil)
-		let moveAlertAction = UIAlertAction(
-			title: "Move To…", // TO DO: Localize
-			style: .default,
-			handler: { _ in self.startMovingAlbums() })
 		
-		actionSheet.addAction(organizeAction)
-		actionSheet.addAction(moveAlertAction)
-		actionSheet.addAction(cancelAlertAction)
-		
-		present(actionSheet, animated: true)
 	}
 	
-	// MARK: - Starting Moving Albums
+	// MARK: - Starting Moving
 	
-	@objc final func startMovingAlbums() {
+	final func startMovingAlbums() {
 		
 		// Prepare a Collections view to present modally.
 		

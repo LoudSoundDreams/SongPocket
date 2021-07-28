@@ -11,15 +11,19 @@ extension UIFont {
 	
 	static let bodyWithMonospacedNumbers: UIFont = {
 		let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-		let featureSettings: [[UIFontDescriptor.FeatureKey: Int]] = [
-			// Xcode 13
-			[.type: kNumberSpacingType,
-			 .selector: kMonospacedNumbersSelector]
-			
-			// Xcode 12
-//			[.featureIdentifier: kNumberSpacingType,
-//			 .typeIdentifier: kMonospacedNumbersSelector]
-		]
+		let featureSettings: [[UIFontDescriptor.FeatureKey: Int]] = {
+			if #available(iOS 15, *) {
+				return [
+					[.type: kNumberSpacingType,
+					 .selector: kMonospacedNumbersSelector]
+				]
+			} else {
+				return [
+					[.featureIdentifier: kNumberSpacingType,
+					 .typeIdentifier: kMonospacedNumbersSelector]
+				]
+			}
+		}()
 		let attributes = [UIFontDescriptor.AttributeName.featureSettings: featureSettings]
 		let monospacedNumbersBodyFontDescriptor = bodyFontDescriptor.addingAttributes(attributes)
 		return UIFont(descriptor: monospacedNumbersBodyFontDescriptor, size: 0)

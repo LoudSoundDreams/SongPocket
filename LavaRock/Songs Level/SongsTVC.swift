@@ -31,14 +31,11 @@ final class SongsTVC: LibraryTVC {
 		super.setUpUI()
 		
 		editingModeToolbarButtons = [
-//			.flexibleSpac3(),
-			
 			sortButton,
-			.flexibleSpac3(),
+			.flexibleSpace(),
 			
-//			moveToTopOrBottomButton,
 			floatToTopButton,
-			.flexibleSpac3(),
+			.flexibleSpace(),
 			sinkToBottomButton,
 		]
 	}

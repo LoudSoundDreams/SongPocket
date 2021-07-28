@@ -45,7 +45,7 @@ extension CollectionsTVC {
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
 		
 		let dialog = UIAlertController(
-			title: LocalizedString.renameCollection,
+			title: LocalizedString.renameCollectionAlertTitle,
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextFieldForCollectionTitle(defaultTitle: collection.title)
@@ -97,7 +97,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Combining
 	
-	@objc final func previewCombineSelectedCollectionsAndPresentDialog() {
+	final func previewCombineSelectedCollectionsAndPresentDialog() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
 			allowsCombine(),
@@ -128,7 +128,7 @@ extension CollectionsTVC {
 			for: indexPathOfCombinedCollection)
 		let combinedCollection = Collection.makeByCombining_withoutDeletingOrReindexing( // SIDE EFFECT
 			selectedCollections,
-			title: LocalizedString.defaultTitleForCombinedCollection,
+			title: LocalizedString.combinedCollectionDefaultTitle,
 			index: Int64(indexOfCombinedCollection),
 			via: managedObjectContext)
 		// WARNING: We still need to delete empty Collections and reindex all Collections.
@@ -159,7 +159,7 @@ extension CollectionsTVC {
 		into indexPathOfCombinedCollection: IndexPath
 	) {
 		let dialog = UIAlertController(
-			title: "Combine Collections", // TO DO: Localize
+			title: LocalizedString.combineCollectionsAlertTitle,
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextFieldForCollectionTitle(defaultTitle: nil)

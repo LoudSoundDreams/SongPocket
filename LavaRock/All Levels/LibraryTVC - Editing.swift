@@ -63,52 +63,9 @@ extension LibraryTVC {
 		return allowsFloat()
 	}
 	
-	// MARK: - Moving to Top or Bottom
+	// MARK: - Moving to Top
 	
-	// For iOS 14 and later
-	final func moveToTopOrBottomMenu() -> UIMenu {
-		let floatToTopAction = UIAction(
-			title: LocalizedString.moveToTop,
-			image: UIImage.floatToTopSymbol,
-			handler: { _ in self.floatSelectedItemsToTopOfSection() })
-		let sinkToBottomAction = UIAction(
-			title: LocalizedString.moveToBottom,
-			image: UIImage.sinkToBottomSymbol,
-			handler: { _ in self.sinkSelectedItemsToBottomOfSection() })
-		let children = [
-			floatToTopAction,
-			sinkToBottomAction,
-		]
-		return UIMenu(children: children.reversed())
-	}
-	
-	// For iOS 13
-	@objc final func showMoveToTopOrBottomActionSheet() {
-		let actionSheet = UIAlertController(
-			title: nil,
-			message: nil,
-			preferredStyle: .actionSheet)
-		
-		let moveToTopAlertAction = UIAlertAction(
-			title: LocalizedString.moveToTop,
-			style: .default,
-			handler: { _ in self.floatSelectedItemsToTopOfSection() })
-		let moveToBottomAlertAction = UIAlertAction(
-			title: LocalizedString.moveToBottom,
-			style: .default,
-			handler: { _ in self.sinkSelectedItemsToBottomOfSection() })
-		let cancelAlertAction = UIAlertAction.cancel(handler: nil)
-		
-		actionSheet.addAction(moveToTopAlertAction)
-		actionSheet.addAction(moveToBottomAlertAction)
-		actionSheet.addAction(cancelAlertAction)
-		
-		present(actionSheet, animated: true)
-	}
-	
-	// MARK: Moving to Top
-	
-	@objc final func floatSelectedItemsToTopOfSection() {
+	final func floatSelectedItemsToTopOfSection() {
 		guard allowsFloat() else { return }
 		
 		// Make a new data source.
@@ -128,9 +85,9 @@ extension LibraryTVC {
 		}
 	}
 	
-	// MARK: Moving to Bottom
+	// MARK: - Moving to Bottom
 	
-	@objc final func sinkSelectedItemsToBottomOfSection() {
+	final func sinkSelectedItemsToBottomOfSection() {
 		guard allowsSink() else { return }
 		
 		// Make a new data source.
@@ -152,54 +109,20 @@ extension LibraryTVC {
 	
 	// MARK: - Sorting
 	
-	// For iOS 14 and later
 	final func sortOptionsMenu() -> UIMenu {
 		let actionGroups: [[UIAction]] = sortOptionGroups.map { group in
 			let actionGroup = group.map { sortOption in
 				UIAction(
-					title: sortOption.localizedName(),
-					handler: sortActionHandler(_:))
+					title: sortOption.localizedName()
+				) { action in
+					self.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
+				}
 			}
 			return actionGroup
 		}
 		return UIMenu(
 			presentsUpward: true,
 			actionGroups: actionGroups)
-	}
-	
-	// For iOS 14 and later
-	private func sortActionHandler(_ sender: UIAction) {
-		sortSelectedOrAllItems(sortOptionLocalizedName: sender.title)
-	}
-	
-	// For iOS 13
-	@objc final func showSortOptionsActionSheet() {
-		let actionSheet = UIAlertController(
-			title: LocalizedString.sortBy,
-			message: nil,
-			preferredStyle: .actionSheet)
-		
-		let flatSortOptions = sortOptionGroups.flatMap { $0 }
-		let sortAlertActions = flatSortOptions.map { sortOption in
-			UIAlertAction(
-				title: sortOption.localizedName(),
-				style: .default,
-				handler: sortSelectedOrAllItems(_:))
-		}
-		let cancelAlertAction = UIAlertAction.cancel(handler: nil)
-		
-		sortAlertActions.forEach { actionSheet.addAction($0) }
-		actionSheet.addAction(cancelAlertAction)
-		
-		actionSheet.popoverPresentationController?.barButtonItem = sortButton
-		
-		present(actionSheet, animated: true)
-	}
-	
-	// For iOS 13
-	private func sortSelectedOrAllItems(_ sender: UIAlertAction) {
-		guard let sortOptionLocalizedName = sender.title else { return }
-		sortSelectedOrAllItems(sortOptionLocalizedName: sortOptionLocalizedName)
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {

@@ -28,15 +28,18 @@ final class CollectionsTVC:
 	
 	// "Constants"
 	@IBOutlet private var optionsButton: UIBarButtonItem!
-	private lazy var combineButton = UIBarButtonItem(
-		title: "Combine", // TO DO: Localize
-		style: .plain,
-		target: self,
-		action: #selector(previewCombineSelectedCollectionsAndPresentDialog))
-	private lazy var makeNewCollectionButton = UIBarButtonItem(
-		barButtonSystemItem: .add,
-		target: self,
-		action: #selector(previewMakeNewCollectionAndPresentDialog))
+	private lazy var combineButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.previewCombineSelectedCollectionsAndPresentDialog() }
+		return UIBarButtonItem(
+			title: LocalizedString.combine,
+			primaryAction: action)
+	}()
+	private lazy var makeNewCollectionButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.previewMakeNewCollectionAndPresentDialog() }
+		return UIBarButtonItem(
+			systemItem: .add,
+			primaryAction: action)
+	}()
 	
 	// Variables
 	var didJustFinishLoading = false
@@ -162,9 +165,9 @@ final class CollectionsTVC:
 			viewingModeTopLeftButtons = []
 			topRightButtons = [cancelMoveAlbumsButton]
 			viewingModeToolbarButtons = [
-				.flexibleSpac3(),
+				.flexibleSpace(),
 				makeNewCollectionButton,
-				.flexibleSpac3(),
+				.flexibleSpace(),
 			]
 		} else {
 			viewingModeTopLeftButtons = [optionsButton]
@@ -177,14 +180,13 @@ final class CollectionsTVC:
 		} else {
 			editingModeToolbarButtons = [
 //				combineButton,
-//				.flexibleSpac3(),
+//				.flexibleSpace(),
 				
 				sortButton,
-				.flexibleSpac3(),
+				.flexibleSpace(),
 				
-//				moveToTopOrBottomButton,
 				floatToTopButton,
-				.flexibleSpac3(),
+				.flexibleSpace(),
 				sinkToBottomButton,
 			]
 		}

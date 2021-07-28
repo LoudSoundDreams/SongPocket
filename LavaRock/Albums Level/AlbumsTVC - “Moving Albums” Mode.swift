@@ -10,9 +10,9 @@ import CoreData
 
 extension AlbumsTVC {
 	
-	// MARK: - Ending Moving Albums
+	// MARK: - Ending Moving
 	
-	@objc final func moveAlbumsHere() {
+	final func moveAlbumsHere() {
 		
 		guard
 			let albumMoverClipboard = albumMoverClipboard,

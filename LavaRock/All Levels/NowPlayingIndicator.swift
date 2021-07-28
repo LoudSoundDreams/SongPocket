@@ -22,11 +22,7 @@ struct NowPlayingIndicator {
 		}
 		
 		if isPlaying {
-			if #available(iOS 14, *) {
-				image = UIImage(systemName: "speaker.wave.2.fill")
-			} else { // iOS 13
-				image = UIImage(systemName: "speaker.2.fill")
-			}
+			image = UIImage(systemName: "speaker.wave.2.fill")
 			accessibilityLabel = LocalizedString.nowPlaying
 		} else {
 			image = UIImage(systemName: "speaker.fill")

@@ -136,15 +136,10 @@ extension OptionsTVC {
 			withIdentifier: "Color Cell",
 			for: indexPath)
 		
-		if #available(iOS 14, *) {
-			var configuration = UIListContentConfiguration.cell()
-			configuration.text = rowAccentColor.displayName
-			configuration.textProperties.color = rowAccentColor.uiColor
-			cell.contentConfiguration = configuration
-		} else { // iOS 13 and earlier
-			cell.textLabel?.text = rowAccentColor.displayName
-			cell.textLabel?.textColor = rowAccentColor.uiColor
-		}
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = rowAccentColor.displayName
+		configuration.textProperties.color = rowAccentColor.uiColor
+		cell.contentConfiguration = configuration
 		
 		if rowAccentColor == AccentColor.savedPreference() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowAccentColor.uiColor.
 			cell.accessoryType = .checkmark
@@ -170,48 +165,44 @@ extension OptionsTVC {
 			return
 		}
 		
-		if #available(iOS 14, *) { // See comment in the `else` block.
-			
-			// Move the checkmark to the selected accent color.
-			let colorIndexPaths = tableView.indexPathsForRows(
-				inSection: Section.accentColor.rawValue,
-				firstRow: 0)
-			colorIndexPaths.forEach { colorIndexPath in
-				guard let colorCell = tableView.cellForRow(at: colorIndexPath) else {
-					// Should never run
-					tableView.reloadRows(at: [colorIndexPath], with: .none)
-					return
-				}
-				
-				if colorIndexPath == selectedIndexPath {
-					colorCell.accessoryType = .checkmark
-					tableView.deselectRow(at: selectedIndexPath, animated: true)
-				} else {
-					colorCell.accessoryType = .none // Don't use reloadRows, because as of iOS 14.7 beta 2, that breaks tableView.deselectRow's animation.
-//					tableView.reloadRows(at: [colorIndexPath], with: .none)
-				}
+		
+//		tableView.reloadData()
+//		tableView.performBatchUpdates {
+//			tableView.selectRow(
+//				at: selectedIndexPath,
+//				animated: false,
+//				scrollPosition: .none)
+//		} completion: { _ in
+//			self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.7 beta 2, this animation is broken (under some conditions). The row stays completely highlighted for the period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
+//		}
+		
+		
+		// Move the checkmark to the selected accent color.
+		let colorIndexPaths = tableView.indexPathsForRows(
+			inSection: Section.accentColor.rawValue,
+			firstRow: 0)
+		colorIndexPaths.forEach { colorIndexPath in
+			guard let colorCell = tableView.cellForRow(at: colorIndexPath) else {
+				// Should never run
+				tableView.reloadRows(at: [colorIndexPath], with: .none)
+				return
 			}
 			
-			// Reload all other rows, which might depend on the selected accent color.
-			let allOtherSections = Section.allCases.filter { $0 != .accentColor }
-			let allOtherSectionsAsInts = allOtherSections.map { $0.rawValue }
-			tableView.reloadSections(
-				IndexSet(allOtherSectionsAsInts),
-				with: .none)
-			
-		} else { // iOS 13
-			
-			tableView.reloadData()
-			tableView.performBatchUpdates {
-				tableView.selectRow(
-					at: selectedIndexPath,
-					animated: false,
-					scrollPosition: .none)
-			} completion: { _ in
-				self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.7 beta 2, this animation is broken (under some conditions). The row stays completely highlighted for the period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
+			if colorIndexPath == selectedIndexPath {
+				colorCell.accessoryType = .checkmark
+				tableView.deselectRow(at: selectedIndexPath, animated: true)
+			} else {
+//				tableView.reloadRows(at: [colorIndexPath], with: .none)
+				colorCell.accessoryType = .none // Don't use reloadRows, because as of iOS 14.7 beta 2, that breaks tableView.deselectRow's animation.
 			}
-			
 		}
+		
+		// Reload all other rows, which might depend on the selected accent color.
+		let allOtherSections = Section.allCases.filter { $0 != .accentColor }
+		let allOtherSectionsAsInts = allOtherSections.map { $0.rawValue }
+		tableView.reloadSections(
+			IndexSet(allOtherSectionsAsInts),
+			with: .none)
 	}
 	
 }

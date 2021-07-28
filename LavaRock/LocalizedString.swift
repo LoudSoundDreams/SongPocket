@@ -73,15 +73,21 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	// MARK: Collections View
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
+	
+	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
+	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let renameCollection = NSLocalizedString("Rename Collection", comment: "Alert title")
-	static let titleForAlertNewCollection = NSLocalizedString(
+	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title")
+	
+	static let combine = NSLocalizedString("Combine", comment: "Button") // TO DO: Localize
+	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title") // TO DO: Localize
+	static let combinedCollectionDefaultTitle = "Combined Collection" // TO DO: Localize
+	
+	static let newCollectionAlertTitle = NSLocalizedString(
 		"New Collection [alert title]",
 		value: "New Collection",
 		comment: "Alert title")
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
-	static let defaultTitleForCombinedCollection = "Combined Collection" // TO DO: Localize
-	static let defaultTitleForNewCollection = NSLocalizedString(
+	static let newCollectionDefaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
 		value: "New Collection",
 		comment: "Default title for a collection if you make or rename a collection and don’t provide a title.")
