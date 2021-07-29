@@ -165,8 +165,7 @@ extension SongsTVC {
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		{
 			let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
-			showExplanationIfNecessaryForEnqueueAction(
-				userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
+			showExplanationForEnqueueActionIfNecessary(
 				titleOfSelectedSong: selectedTitle,
 				numberOfSongsEnqueued: chosenMediaItems.count)
 		}
@@ -197,20 +196,22 @@ extension SongsTVC {
 		}
 		
 		let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
-		showExplanationIfNecessaryForEnqueueAction(
-			userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey.shouldExplainQueueAction,
+		showExplanationForEnqueueActionIfNecessary(
 			titleOfSelectedSong: selectedTitle,
 			numberOfSongsEnqueued: 1)
 	}
 	
 	// MARK: Explaining Enqueue Actions
 	
-	private func showExplanationIfNecessaryForEnqueueAction(
-		userDefaultsKeyForShouldShowExplanation: UserDefaults.LRKey,
+	private func showExplanationForEnqueueActionIfNecessary(
 		titleOfSelectedSong: String,
 		numberOfSongsEnqueued: Int
 	) {
-		let shouldShowExplanation = UserDefaults.standard.value(forKey: userDefaultsKeyForShouldShowExplanation.rawValue) as? Bool ?? true
+		let defaults = UserDefaults.standard
+		let defaultsKey = LRUserDefaultsKey.shouldExplainQueueAction.rawValue
+		
+		defaults.register(defaults: [defaultsKey: true])
+		let shouldShowExplanation = defaults.bool(forKey: defaultsKey)
 		guard shouldShowExplanation else { return }
 		
 		let alertTitle: String
@@ -237,9 +238,9 @@ extension SongsTVC {
 			title: LocalizedString.dontShowAgain,
 			style: .default,
 			handler: { _ in
-				UserDefaults.standard.set(
+				defaults.set(
 					false,
-					forKey: userDefaultsKeyForShouldShowExplanation.rawValue)
+					forKey: defaultsKey)
 			}
 		)
 		let okAction = UIAlertAction(

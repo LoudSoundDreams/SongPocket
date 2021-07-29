@@ -155,9 +155,10 @@ extension OptionsTVC {
 	// MARK: Selecting
 	
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
-		let colorIndex = indexPath.row
-		let selectedAccentColor = AccentColor.all[colorIndex]
+		let indexOfAccentColor = indexPath.row
+		let selectedAccentColor = AccentColor.all[indexOfAccentColor]
 		selectedAccentColor.set(in: view.window)
+		selectedAccentColor.saveAsPreference()
 		
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
 			// Should never run
@@ -280,8 +281,7 @@ extension OptionsTVC {
 			return UITableViewCell()
 		}
 		
-		let accentColor = AccentColor.savedPreferenceOrDefault()
-		let heartEmoji = accentColor.heartEmoji
+		let heartEmoji = AccentColor.savedPreference().heartEmoji
 		let thankYouMessage
 		= heartEmoji
 		+ LocalizedString.tipThankYouMessageWithPaddingSpaces

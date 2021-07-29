@@ -32,7 +32,11 @@ extension MusicLibraryManager {
 		
 		os_signpost(.begin, log: importLog, name: "Initial parse")
 		let existingSongs = Song.allFetched(via: managedObjectContext, ordered: false)
-		let shouldImportIntoDefaultOrder = existingSongs.isEmpty
+		
+		let defaults = UserDefaults.standard
+		let defaultsKeyHasEverImported = LRUserDefaultsKey.hasEverImportedFromMusic.rawValue
+		let hasEverImportedFromMusic = defaults.bool(forKey: defaultsKeyHasEverImported) // defaults to false
+		let isFirstImport = !hasEverImportedFromMusic
 		
 		// Find out which Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems that we don't have Songs for. We'll make new managed objects for them.
@@ -78,7 +82,8 @@ extension MusicLibraryManager {
 			// This might make new Albums, and if it does, it might make new Collections.
 			for: newMediaItems,
 			existingAlbums: existingAlbums,
-			existingCollections: existingCollections)
+			existingCollections: existingCollections,
+			isFirstImport: isFirstImport)
 		deleteManagedObjects(
 			for: songsToDelete)
 		
@@ -87,10 +92,15 @@ extension MusicLibraryManager {
 		os_signpost(.end, log: importLog, name: "Convert Array to Set")
 		cleanUpManagedObjects(
 			allMediaItems: setOfQueriedMediaItems,
-			shouldImportIntoDefaultOrder: shouldImportIntoDefaultOrder)
+			isFirstImport: isFirstImport)
+		
+		defaults.set(
+			true,
+			forKey: defaultsKeyHasEverImported)
 		
 		managedObjectContext.tryToSave()
 //		managedObjectContext.parent!.tryToSave()
+		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
 				Notification(name: .LRDidImportChanges)
@@ -102,7 +112,7 @@ extension MusicLibraryManager {
 	
 	private func cleanUpManagedObjects(
 		allMediaItems: Set<MPMediaItem>,
-		shouldImportIntoDefaultOrder: Bool
+		isFirstImport: Bool
 	) {
 		os_signpost(.begin, log: importLog, name: "5. Cleanup")
 		
@@ -123,7 +133,7 @@ extension MusicLibraryManager {
 		allCollections.forEach {
 			reindexAlbums(
 				in: $0,
-				shouldSortByNewestFirst: shouldImportIntoDefaultOrder)
+				shouldSortByNewestFirst: isFirstImport)
 		}
 		allAlbums.forEach {
 			reindexSongs(in: $0)
