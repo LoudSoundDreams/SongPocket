@@ -12,8 +12,6 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	case accentColorName
 	case hasEverImportedFromMusic
 	case shouldExplainQueueAction
-	
-	static let rawValues = allCases.map { $0.rawValue }
 }
 
 extension UserDefaults {

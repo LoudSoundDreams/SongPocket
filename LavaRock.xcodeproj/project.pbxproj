@@ -66,6 +66,7 @@
 		07A4F90F2519E8410065C87E /* func deleteManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */; };
 		07AE2AA4258C09D900C3A314 /* extension Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* extension Collection.swift */; };
 		07CAB24724EA227F008AC34C /* extension Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* extension Song.swift */; };
+		07CD588926B35B300054598A /* extension CaseIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD588826B35B300054598A /* extension CaseIterable.swift */; };
 		07D157ED24D952A600FDF26A /* protocol AlbumMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D157EC24D952A600FDF26A /* protocol AlbumMover.swift */; };
 		07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */; };
 		07DC1B1A24F20C9E00AAEEDB /* extension NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1924F20C9E00AAEEDB /* extension NSManagedObjectContext.swift */; };
@@ -175,6 +176,7 @@
 		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
 		07CC4267268EC81C00D27E8C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		07CC4268268EC84B00D27E8C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		07CD588826B35B300054598A /* extension CaseIterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension CaseIterable.swift"; sourceTree = "<group>"; };
 		07D157EC24D952A600FDF26A /* protocol AlbumMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol AlbumMover.swift"; sourceTree = "<group>"; };
 		07D9DBF5257C9CA2007EEB87 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		07D9DBFB257CA34D007EEB87 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
@@ -327,18 +329,19 @@
 				0768309924B42DEE0033E3CC /* Info.plist */,
 				075218B5257C52390077AE9B /* InfoPlist.strings */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
+				07CD588A26B35B520054598A /* extensions to Swift */,
 				075218A1257C498D0077AE9B /* LocalizedString.swift */,
 				075218B8257C52390077AE9B /* Localizable.strings */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
-				076B56CF25C74BB400E147C0 /* Foundation */,
+				076B56CF25C74BB400E147C0 /* extensions to Foundation */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
 				07A4A005269A7432007B0085 /* extension MPMediaItem.swift */,
 				07267A1F25537C5800C914A3 /* PlayerManager.swift */,
-				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
-				07E92A15251068E500E9073B /* UIKit */,
+				07E92A15251068E500E9073B /* extensions to UIKit */,
+				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				070E194524F3424500B21307 /* All Levels */,
 				07F1B91825F15EDB008591C7 /* SectionOfCollectionsOrAlbums.swift */,
@@ -369,15 +372,23 @@
 			path = LavaRockUITests;
 			sourceTree = "<group>";
 		};
-		076B56CF25C74BB400E147C0 /* Foundation */ = {
+		076B56CF25C74BB400E147C0 /* extensions to Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				078FDD0E2638872100779AF2 /* extension Array.swift */,
-				078F65B52638CA75007FE538 /* extension String.swift */,
 				07140604259D6958003CA92C /* extension UserDefaults.swift */,
 				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
 			);
-			path = Foundation;
+			path = "extensions to Foundation";
+			sourceTree = "<group>";
+		};
+		07CD588A26B35B520054598A /* extensions to Swift */ = {
+			isa = PBXGroup;
+			children = (
+				07CD588826B35B300054598A /* extension CaseIterable.swift */,
+				078FDD0E2638872100779AF2 /* extension Array.swift */,
+				078F65B52638CA75007FE538 /* extension String.swift */,
+			);
+			path = "extensions to Swift";
 			sourceTree = "<group>";
 		};
 		07DC1B1E24F33C5100AAEEDB /* Collections Level */ = {
@@ -409,7 +420,7 @@
 			path = "Albums Level";
 			sourceTree = "<group>";
 		};
-		07E92A15251068E500E9073B /* UIKit */ = {
+		07E92A15251068E500E9073B /* extensions to UIKit */ = {
 			isa = PBXGroup;
 			children = (
 				07A3FBCE258EB9B2000B450E /* extension UIFont.swift */,
@@ -420,7 +431,7 @@
 				072C04982692A67400F44AC5 /* extension UIAlertAction.swift */,
 				072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */,
 			);
-			path = UIKit;
+			path = "extensions to UIKit";
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
@@ -629,6 +640,7 @@
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				072017132557987E0019CA3E /* SongsTVC + NowPlayingIndicatorManager.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */,
+				07CD588926B35B300054598A /* extension CaseIterable.swift in Sources */,
 				070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */,
 				07140605259D6958003CA92C /* extension UserDefaults.swift in Sources */,
 				07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */,

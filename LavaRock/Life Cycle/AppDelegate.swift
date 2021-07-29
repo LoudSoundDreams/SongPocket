@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		DispatchQueue.global(qos: .utility).async {
 			UserDefaults.standard.deleteAllEntriesExcept(
-				withKeys: LRUserDefaultsKey.rawValues)
+				withKeys: LRUserDefaultsKey.rawValues())
 		}
 		
 		return true
