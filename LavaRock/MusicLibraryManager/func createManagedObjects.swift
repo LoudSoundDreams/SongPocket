@@ -116,7 +116,7 @@ extension MusicLibraryManager {
 				// Should never run
 				return true
 			}
-			return leftMediaItem.precedesForImporterDisplayOrderOfAlbums(inDifferentAlbum: rightMediaItem)
+			return leftMediaItem.precedesInDefaultOrder(inDifferentAlbum: rightMediaItem)
 		}
 		return sortedMediaItemGroups
 	}
@@ -135,12 +135,12 @@ extension MusicLibraryManager {
 		if let matchingExistingAlbum = existingAlbums[firstMediaItemInAlbum.albumPersistentID] {
 			
 			// … then add the Songs to that Album.
-			if areSongsInAlbumDisplayOrder(in: matchingExistingAlbum) {
+			if matchingExistingAlbum.areSongsInDefaultOrder() {
 				createSongs(
 					for: mediaItemGroup,
 					   atEndOf: matchingExistingAlbum)
 				os_signpost(.begin, log: createLog, name: "Put the existing Album back in order")
-				matchingExistingAlbum.sortSongsByDisplayOrder()
+				matchingExistingAlbum.sortSongsByDefaultOrder()
 				os_signpost(.end, log: createLog, name: "Put the existing Album back in order")
 			} else {
 				createSongs(
@@ -162,7 +162,9 @@ extension MusicLibraryManager {
 			
 			// … and then add the Songs to that Album.
 			os_signpost(.begin, log: createLog, name: "Sort the Songs for the new Album")
-			let sortedMediaItemGroup = sortedByAlbumDisplayOrder(mediaItems: mediaItemGroup)
+			let sortedMediaItemGroup = mediaItemGroup.sorted {
+				$0.precedesInDefaultOrder(inSameAlbum: $1)
+			}
 			os_signpost(.end, log: createLog, name: "Sort the Songs for the new Album")
 			createSongs(
 				for: sortedMediaItemGroup,
@@ -210,24 +212,6 @@ extension MusicLibraryManager {
 			newSong.index = 0
 			newSong.container = album
 		}
-	}
-	
-	// MARK: - Sorting MPMediaItems
-	
-	private func sortedByAlbumDisplayOrder(mediaItems: [MPMediaItem]) -> [MPMediaItem] {
-		return mediaItems.sorted { $0.precedesForImporterDisplayOrderOfSongs(inSameAlbum: $1) }
-	}
-	
-	// MARK: - Sorting Saved Songs
-	
-	private func areSongsInAlbumDisplayOrder(in album: Album) -> Bool {
-		let songs = album.songs()
-		let mediaItems = songs.compactMap { $0.mpMediaItem() }
-		// mpMediaItem() returns nil if the media item is no longer in the Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
-		
-		let sortedMediaItems = sortedByAlbumDisplayOrder(mediaItems: mediaItems)
-		
-		return mediaItems == sortedMediaItems
 	}
 	
 	// MARK: - Creating Containers

@@ -54,12 +54,23 @@ extension Album {
 		}
 	}
 	
-	final func sortSongsByDisplayOrder() {
+	final func areSongsInDefaultOrder() -> Bool {
+		let mediaItems = songs().compactMap { $0.mpMediaItem() }
+		// mpMediaItem() returns nil if the media item is no longer in the Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
+		
+		let sortedMediaItems = mediaItems.sorted {
+			$0.precedesInDefaultOrder(inSameAlbum: $1)
+		}
+		
+		return mediaItems == sortedMediaItems
+	}
+	
+	final func sortSongsByDefaultOrder() {
 		let songs = songs(sorted: false)
 		
 		// Note: Behavior is undefined if you compare Songs that correspond to MPMediaItems from different albums.
 		// Note: Songs that don't have a corresponding MPMediaItem in the user's Music library will end up at an undefined position in the result. Songs that do will still be in the correct order relative to each other.
-		func sortedByDisplayOrderInSameAlbum(songs: [Song]) -> [Song] {
+		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
 			var songsAndMediaItems = songs.map {
 				($0,
 				 $0.mpMediaItem()) // Can be nil
@@ -72,14 +83,14 @@ extension Album {
 				else {
 					return true
 				}
-				return leftMediaItem.precedesForImporterDisplayOrderOfSongs(inSameAlbum: rightMediaItem)
+				return leftMediaItem.precedesInDefaultOrder(inSameAlbum: rightMediaItem)
 			}
 			
 			let result = songsAndMediaItems.map { tuple in tuple.0 }
 			return result
 		}
 		
-		var sortedSongs = sortedByDisplayOrderInSameAlbum(songs: songs)
+		var sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
 		
 		sortedSongs.reindex()
 	}
@@ -87,6 +98,17 @@ extension Album {
 	// MARK: - Predicates for Sorting
 	
 	final func precedesForSortOptionNewestFirst(_ other: Album) -> Bool {
+		return precedesForSortOption(newestFirstRatherThanOldestFirst: true, other)
+	}
+	
+	final func precedesForSortOptionOldestFirst(_ other: Album) -> Bool {
+		return precedesForSortOption(newestFirstRatherThanOldestFirst: false, other)
+	}
+	
+	private func precedesForSortOption(
+		newestFirstRatherThanOldestFirst: Bool,
+		_ other: Album
+	) -> Bool {
 		let myReleaseDate = releaseDateEstimate
 		let otherReleaseDate = other.releaseDateEstimate
 		// Either can be nil
@@ -106,29 +128,12 @@ extension Album {
 			return false
 		}
 		
-		// Sort by newest first
-		return myReleaseDate > otherReleaseDate
-	}
-	
-	final func precedesForSortOptionOldestFirst(_ other: Album) -> Bool {
-		let myReleaseDate = releaseDateEstimate
-		let otherReleaseDate = other.releaseDateEstimate
-		// Either can be nil
-		
-//		guard myReleaseDate != otherReleaseDate else {
-//			return true
-//		}
-		
-		// Move unknown release date to the end
-		guard let otherReleaseDate = otherReleaseDate else {
-			return true
+		// Sort by release date
+		if newestFirstRatherThanOldestFirst {
+			return myReleaseDate > otherReleaseDate
+		} else {
+			return myReleaseDate < otherReleaseDate
 		}
-		guard let myReleaseDate = myReleaseDate else {
-			return false
-		}
-		
-		// Sort by oldest first
-		return myReleaseDate < otherReleaseDate
 	}
 	
 	// MARK: - Media Player

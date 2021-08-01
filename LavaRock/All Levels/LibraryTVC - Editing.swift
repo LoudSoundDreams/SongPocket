@@ -218,7 +218,7 @@ extension LibraryTVC {
 				else {
 					return true
 				}
-				return leftMediaItem.precedesForSortOptionTrackNumber(inSameAlbum: rightMediaItem)
+				return leftMediaItem.precedesForSortOptionTrackNumber(rightMediaItem)
 			}
 			return sorted.map { $0.0 }
 			

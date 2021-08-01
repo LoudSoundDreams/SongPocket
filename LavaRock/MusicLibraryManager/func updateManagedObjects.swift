@@ -39,7 +39,7 @@ extension MusicLibraryManager {
 		// Sort the existing Songs by the order they appeared in in the app.
 		os_signpost(.begin, log: updateLog, name: "Initial sort")
 		let sortedFilteredTuples = filteredTuples.sorted { leftTuple, rightTuple in
-			// Checking Song index first and Collection index last is slightly faster than the reverse.
+			// Checking Song index first and Collection index last is slightly faster than vice versa.
 			let leftSong = leftTuple.0
 			let rightSong = rightTuple.0
 			guard leftSong.index == rightSong.index else {
