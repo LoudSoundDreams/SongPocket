@@ -55,7 +55,7 @@ class LibraryTVC:
 	// "Constants" that subclasses should customize
 	var entityName = "Collection"
 	var editingModeToolbarButtons = [UIBarButtonItem]()
-	var sortOptionGroups = [[SortOption]]()
+	var sortOptionsGrouped = [[SortOption]]()
 	
 	// "Constants" that subclasses can optionally customize
 	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child context when in "moving Albums" mode.
@@ -258,7 +258,7 @@ class LibraryTVC:
 //		section: Int,
 		newItems: [NSManagedObject],
 		indexesOfNewItemsToSelect: [Int] = [Int](),
-		completion: (() -> ())? = nil
+		completion: (() -> Void)? = nil
 	) {
 		let section = 0
 		

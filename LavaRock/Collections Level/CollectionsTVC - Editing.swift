@@ -187,7 +187,7 @@ extension CollectionsTVC {
 	
 	final func revertCombineCollections(
 		thenSelectRowsAt originalSelectedIndexPaths: [IndexPath],
-		completion: (() -> ())? = nil
+		completion: (() -> Void)? = nil
 	) {
 		guard
 			var copyOfOriginalSection = sectionOfCollectionsBeforeCombining,

@@ -110,19 +110,19 @@ extension LibraryTVC {
 	// MARK: - Sorting
 	
 	final func sortOptionsMenu() -> UIMenu {
-		let actionGroups: [[UIAction]] = sortOptionGroups.map { group in
-			let actionGroup = group.map { sortOption in
+		let groupedChildren: [[UIAction]] = sortOptionsGrouped.map { sortOptionGroup in
+			let groupOfChildren = sortOptionGroup.map { sortOption in
 				UIAction(
 					title: sortOption.localizedName()
 				) { action in
 					self.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
 				}
 			}
-			return actionGroup
+			return groupOfChildren
 		}
 		return UIMenu(
 			presentsUpward: true,
-			actionGroups: actionGroups)
+			groupedChildren: groupedChildren)
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {

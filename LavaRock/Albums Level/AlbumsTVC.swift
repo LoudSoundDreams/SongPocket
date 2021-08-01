@@ -49,10 +49,9 @@ final class AlbumsTVC:
 		super.init(coder: coder)
 		
 		entityName = "Album"
-		sortOptionGroups = [
-			[.newestFirst,
-			 .oldestFirst],
-			[.reverse]
+		sortOptionsGrouped = [
+			[.newestFirst, .oldestFirst],
+			[.reverse],
 		]
 	}
 	

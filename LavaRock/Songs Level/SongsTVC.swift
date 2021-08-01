@@ -17,9 +17,9 @@ final class SongsTVC: LibraryTVC {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		sortOptionGroups = [
+		sortOptionsGrouped = [
 			[.trackNumber],
-			[.reverse]
+			[.reverse],
 		]
 		
 		numberOfRowsInSectionAboveLibraryItems = 2

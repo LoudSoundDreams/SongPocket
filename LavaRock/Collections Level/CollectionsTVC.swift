@@ -78,13 +78,13 @@ final class CollectionsTVC:
 	}
 	
 	private func refreshToReflectContentState(
-		completion: (() -> ())? = nil
+		completion: (() -> Void)? = nil
 	) {
 		let oldIndexPaths = tableView.allIndexPaths()
 		switch contentState() {
 		case .allowAccess /*Currently unused*/, .loading:
 			let indexPathsToKeep = [IndexPath(row: 0, section: 0)]
-			let updateTableView: () -> () = {
+			let updateTableView: () -> Void = {
 				switch oldIndexPaths.count {
 				case 0: // Launch -> "Loading…"
 					return {
@@ -123,9 +123,9 @@ final class CollectionsTVC:
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		sortOptionGroups = [
+		sortOptionsGrouped = [
 			[.title],
-			[.reverse]
+			[.reverse],
 		]
 	}
 	

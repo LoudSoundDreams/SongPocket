@@ -45,11 +45,10 @@ extension AlbumsTVC {
 		let moveAction = UIAction(
 			title: "Move To…", // TO DO: Localize
 			handler: { _ in self.startMovingAlbums() })
-		let children = [
+		return UIMenu(children: [
 			organizeAction,
 			moveAction,
-		]
-		return UIMenu(children: children.reversed())
+		].reversed())
 	}
 	
 	// MARK: - Starting Organizing
