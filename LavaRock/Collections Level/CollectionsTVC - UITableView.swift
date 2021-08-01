@@ -205,15 +205,19 @@ extension CollectionsTVC {
 				}
 			}
 		default: // Denied or restricted.
-			if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-				UIApplication.shared.open(settingsURL)
-			}
+			openSettingsURL()
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
 		
 		super.tableView(
 			tableView,
 			didSelectRowAt: indexPath)
+	}
+	
+	private func openSettingsURL() {
+		if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+			UIApplication.shared.open(settingsURL)
+		}
 	}
 	
 }

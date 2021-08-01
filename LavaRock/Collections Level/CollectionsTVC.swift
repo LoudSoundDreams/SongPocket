@@ -82,6 +82,7 @@ final class CollectionsTVC:
 	) {
 		let oldIndexPaths = tableView.allIndexPaths()
 		switch contentState() {
+			
 		case .allowAccess /*Currently unused*/, .loading:
 			let indexPathsToKeep = [IndexPath(row: 0, section: 0)]
 			let updateTableView: () -> Void = {
@@ -107,14 +108,17 @@ final class CollectionsTVC:
 			} completion: { _ in
 				completion?()
 			}
+			
 		case .justFinishedLoading: // "Loading…" -> empty
 			tableView.performBatchUpdates {
 				tableView.deleteRows(at: oldIndexPaths, with: .middle)
 			} completion: { _ in
 				completion?()
 			}
+			
 		case .normal: // Importing changes with existing Collections
 			completion?()
+			
 		}
 	}
 	
