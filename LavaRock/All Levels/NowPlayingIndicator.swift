@@ -7,6 +7,28 @@
 
 import UIKit
 
+protocol NowPlayingIndicatorDisplayer {
+	var nowPlayingIndicatorImageView: UIImageView! { get set }
+//	var accessibilityLabel: String? { get set }
+	var accessibilityValue: String? { get set }
+	
+	mutating func apply(_ indicator: NowPlayingIndicator)
+}
+
+extension NowPlayingIndicatorDisplayer {
+	mutating func apply(_ indicator: NowPlayingIndicator) {
+		nowPlayingIndicatorImageView.image = indicator.image
+		accessibilityValue = indicator.accessibilityLabel
+	}
+}
+
+protocol NowPlayingIndicatorManager {
+	func refreshNowPlayingIndicators(
+		isInPlayerDeterminer: (IndexPath) -> Bool
+	)
+	func isInPlayer(libraryItemFor indexPath: IndexPath) -> Bool
+}
+
 struct NowPlayingIndicator {
 	let image: UIImage?
 	let accessibilityLabel: String?
@@ -29,26 +51,4 @@ struct NowPlayingIndicator {
 			accessibilityLabel = LocalizedString.paused
 		}
 	}
-}
-
-protocol NowPlayingIndicatorDisplayer {
-	var nowPlayingIndicatorImageView: UIImageView! { get set }
-//	var accessibilityLabel: String? { get set }
-	var accessibilityValue: String? { get set }
-	
-	mutating func apply(_ indicator: NowPlayingIndicator)
-}
-
-extension NowPlayingIndicatorDisplayer {
-	mutating func apply(_ indicator: NowPlayingIndicator) {
-		nowPlayingIndicatorImageView.image = indicator.image
-		accessibilityValue = indicator.accessibilityLabel
-	}
-}
-
-protocol NowPlayingIndicatorManager {
-	func refreshNowPlayingIndicators(
-		isInPlayerDeterminer: (IndexPath) -> Bool
-	)
-	func isInPlayer(libraryItemFor indexPath: IndexPath) -> Bool
 }

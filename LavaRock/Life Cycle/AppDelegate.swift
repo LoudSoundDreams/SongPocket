@@ -7,7 +7,6 @@
 
 import UIKit
 import CoreData
-//import OSLog
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
