@@ -145,7 +145,7 @@ extension CollectionsTVC {
 		newItems.insert(combinedCollection, at: indexOfCombinedCollection)
 		
 		// Update the data source and table view.
-		setItemsAndRefreshTableView(
+		setItemsAndRefreshToMatch(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
 			indexesOfNewItemsToSelect: [indexOfCombinedCollection]
 		)
@@ -203,7 +203,7 @@ extension CollectionsTVC {
 		let indexesOfOriginalSelectedCollections = originalSelectedIndexPaths.map {
 			indexOfLibraryItem(for: $0)
 		}
-		setItemsAndRefreshTableView(
+		setItemsAndRefreshToMatch(
 			newItems: originalItems, // SIDE EFFECT
 			indexesOfNewItemsToSelect: indexesOfOriginalSelectedCollections
 		) {

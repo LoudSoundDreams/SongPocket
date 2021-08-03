@@ -26,27 +26,27 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Standard Phrases
 	
-	static let loadingWithEllipsis = NSLocalizedString("Loading…", comment: "Status message")
+	static let loadingWithEllipsis = NSLocalizedString("Loading…", comment: "")
 	
 	// MARK: Albums
 	
-	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "Placeholder for unknown album title")
-	static let unknownAlbumArtist = NSLocalizedString("Unknown Album Artist", comment: "Placeholder for unknown album artist")
+	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
+	static let unknownAlbumArtist = NSLocalizedString("Unknown Album Artist", comment: "")
 	
 	// MARK: Options
 	
-	static let accentColor = NSLocalizedString("Accent Color", comment: "Options section header")
+	static let accentColor = NSLocalizedString("Accent Color", comment: "Section header")
 	static let strawberry = NSLocalizedString("Strawberry", comment: "Accent color")
 	static let tangerine = NSLocalizedString("Tangerine", comment: "Accent color")
 	static let lime = NSLocalizedString("Lime", comment: "Accent color")
 	static let blueberry = NSLocalizedString("Blueberry", comment: "Accent color")
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	
-	static let tipJar = NSLocalizedString("Tip Jar", comment: "Options section header")
+	static let tipJar = NSLocalizedString("Tip Jar", comment: "Section header")
 	static let tipJarFooter = NSLocalizedString(
 		"[footer] options_tip_jar",
 		value: "Hi, I’m H. Tips are an optional way to help me improve Songpocket. I would especially appreciate tips after updates to the app!",
-		comment: "Options screen → Tip Jar section footer")
+		comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
 	// MARK: Playback Toolbar
@@ -74,6 +74,12 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	
+	static let noCollectionsPlaceholder = NSLocalizedString(
+		"[placeholder] no_collections",
+		value: "Add some music to your Apple Music library, or sync some music from your computer.",
+		comment: "Placeholder for when the app has no collections")
+	static let openMusic = NSLocalizedString("Open Music", comment: "Button") // TO DO: Localize
+	
 	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
@@ -90,7 +96,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let newCollectionDefaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
 		value: "New Collection",
-		comment: "Default title for a collection if you make or rename a collection and don’t provide a title.")
+		comment: "Default title for a collection if you make a collection and don’t provide a title.")
 	
 	// MARK: Albums View
 	

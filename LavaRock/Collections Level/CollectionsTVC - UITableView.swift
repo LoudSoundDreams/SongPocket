@@ -16,20 +16,20 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	)-> Int {
+		return newNumberOfRows(forSection: section)
+	}
+	
+	final func newNumberOfRows(forSection section: Int) -> Int {
 		switch contentState() {
 		case .allowAccess, .loading:
-			tableView.backgroundView = nil
 			return 1
-		case .justFinishedLoading:
-			tableView.backgroundView = nil
+		case .blank:
 			return 0
-		case .normal:
-			break
+		case .noCollections:
+			return 2
+		case .oneOrMoreCollections:
+			return sectionOfLibraryItems.items.count + numberOfRowsInSectionAboveLibraryItems
 		}
-		
-		return super.tableView(
-			tableView,
-			numberOfRowsInSection: section)
 	}
 	
 	// MARK: - Cells
@@ -41,9 +41,18 @@ extension CollectionsTVC {
 		switch contentState() {
 		case .allowAccess, .loading:
 			return allowAccessOrLoadingCell(forRowAt: indexPath)
-		case .justFinishedLoading: // Should never run
+		case .blank: // Should never run
 			return UITableViewCell()
-		case .normal:
+		case .noCollections:
+			switch indexPath.row {
+			case 0:
+				return noCollectionsPlaceholderCell(forRowAt: indexPath)
+			case 1:
+				return openMusicCell(forRowAt: indexPath)
+			default: // Should never run
+				return UITableViewCell()
+			}
+		case .oneOrMoreCollections:
 			return collectionCell(forRowAt: indexPath)
 		}
 	}
@@ -62,7 +71,7 @@ extension CollectionsTVC {
 		switch contentState() {
 		case .allowAccess:
 			cell.allowAccessOrLoadingLabel.text = LocalizedString.allowAccessToMusic
-			cell.allowAccessOrLoadingLabel.textColor = view.window?.tintColor
+			cell.allowAccessOrLoadingLabel.textColor = .tintColor(maybeResortTo: view.window)
 			cell.spinnerView.stopAnimating()
 			cell.isUserInteractionEnabled = true
 			cell.accessibilityTraits.formUnion(.button)
@@ -74,9 +83,34 @@ extension CollectionsTVC {
 			cell.isUserInteractionEnabled = false
 			cell.accessibilityTraits.remove(.button)
 			return cell
-		case .justFinishedLoading, .normal: // Should never run
+		case .blank, .noCollections, .oneOrMoreCollections: // Should never run
 			return UITableViewCell()
 		}
+	}
+	
+	// MARK: "No Collections" Cells
+	
+	private func noCollectionsPlaceholderCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "No Collections Placeholder", for: indexPath)
+		
+		var contentConfiguration = UIListContentConfiguration.cell()
+		contentConfiguration.text = LocalizedString.noCollectionsPlaceholder
+		contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: .body)
+		contentConfiguration.textProperties.color = .secondaryLabel
+		cell.contentConfiguration = contentConfiguration
+		
+		return cell
+	}
+	
+	private func openMusicCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Open Music", for: indexPath)
+		
+		var contentConfiguration = UIListContentConfiguration.cell()
+		contentConfiguration.text = LocalizedString.openMusic
+		contentConfiguration.textProperties.color = .tintColor(maybeResortTo: view.window)
+		cell.contentConfiguration = contentConfiguration
+		
+		return cell
 	}
 	
 	// MARK: Collection Cell
@@ -172,15 +206,15 @@ extension CollectionsTVC {
 			switch contentState() {
 			case .allowAccess, .loading:
 				return false
-			case .justFinishedLoading: // Should never run
-				break
-			case .normal:
-				break
+			case .blank: // Should never run
+				return false
+			case .noCollections:
+				return false
+			case .oneOrMoreCollections:
+				return super.tableView(
+					tableView,
+					shouldBeginMultipleSelectionInteractionAt: indexPath)
 			}
-			
-			return super.tableView(
-				tableView,
-				shouldBeginMultipleSelectionInteractionAt: indexPath)
 		}
 	}
 	
@@ -188,9 +222,25 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
+		switch contentState() {
+		case .allowAccess:
+			didSelectAllowAccessRow(at: indexPath)
+		case .loading, .blank: // Should never run
+			return
+		case .noCollections:
+			if let musicURL = URL(string: "music://") {
+				UIApplication.shared.open(musicURL)
+			}
+			tableView.deselectRow(at: indexPath, animated: true)
+		case .oneOrMoreCollections:
+			super.tableView(
+				tableView,
+				didSelectRowAt: indexPath)
+		}
+	}
+	
+	private func didSelectAllowAccessRow(at indexPath: IndexPath) {
 		switch MPMediaLibrary.authorizationStatus() {
-		case .authorized:
-			break
 		case .notDetermined: // The golden opportunity.
 			MPMediaLibrary.requestAuthorization { newStatus in // iOS 15: Use async/await
 				switch newStatus {
@@ -204,19 +254,13 @@ extension CollectionsTVC {
 					}
 				}
 			}
+		case .authorized:
+			break
 		default: // Denied or restricted.
-			openSettingsURL()
+			if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+				UIApplication.shared.open(settingsURL)
+			}
 			tableView.deselectRow(at: indexPath, animated: true)
-		}
-		
-		super.tableView(
-			tableView,
-			didSelectRowAt: indexPath)
-	}
-	
-	private func openSettingsURL() {
-		if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-			UIApplication.shared.open(settingsURL)
 		}
 	}
 	

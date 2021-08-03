@@ -7,10 +7,13 @@
 /* Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on. */
 "[alert title] did_enqueue_one_song" = "「%@」將稍後播放";
 
-/* Options screen → Tip Jar section footer */
+/* Section footer */
 "[footer] options_tip_jar" = "您好，我是H。您自願的贊助能夠支持我改進Songpocket。我會特別感謝您在App更新之後的贊助！";
 
-/* Options section header */
+/* Placeholder for when the app has no collections */
+"[placeholder] no_collections" = "請將音樂加入您的Apple Music資料庫，或將音樂從您的電腦同步至您的裝置。";
+
+/* Section header */
 "Accent Color" = "強調顏色";
 
 /* Accessibility label */
@@ -37,7 +40,7 @@
 /* Accent color */
 "Lime" = "萊姆";
 
-/* Status message */
+/* No comment provided by engineer. */
 "Loading…" = "載入中⋯";
 
 /* Button */
@@ -55,7 +58,7 @@
 /* Alert title */
 "New Collection [alert title]" = "新增合集";
 
-/* Default title for a collection if you make or rename a collection and don’t provide a title. */
+/* Default title for a collection if you make a collection and don’t provide a title. */
 "New Collection [default title for collection]" = "新合集";
 
 /* Sort option */
@@ -121,7 +124,7 @@
 /* Accent color */
 "Tangerine" = "橘子";
 
-/* Options section header */
+/* Section header */
 "Tip Jar" = "贊助Songpocket";
 
 /* The word for the name of a collection, album, or song. Also the name of a sort option. */
@@ -130,9 +133,9 @@
 /* Sort option */
 "Track Number" = "音軌編號";
 
-/* Placeholder for unknown album title */
+/* No comment provided by engineer. */
 "Unknown Album" = "未知的專輯";
 
-/* Placeholder for unknown album artist */
+/* No comment provided by engineer. */
 "Unknown Album Artist" = "未知的專輯藝人";
 

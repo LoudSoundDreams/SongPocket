@@ -11,32 +11,6 @@ extension LibraryTVC {
 	
 	// MARK: - Numbers
 	
-	override func tableView(
-		_ tableView: UITableView,
-		numberOfRowsInSection section: Int
-	) -> Int {
-		// Set the "no items" placeholder in numberOfRowsInSection (here), not in numberOfSections.
-		// - If you put it in numberOfSections, VoiceOver moves focus from the tab bar directly to the navigation bar title, skipping over the placeholder. (It will move focus to the placeholder if you tap there, but then you won't be able to move focus out until you tap elsewhere.)
-		// - If you put it in numberOfRowsInSection, VoiceOver moves focus from the tab bar to the placeholder, then to the navigation bar title, as expected.
-		if sectionOfLibraryItems.isEmpty() {
-			tableView.backgroundView = placeholderNoItemsView // Don't use dequeueReusableCell here to create the placeholder view as needed, because that might call numberOfRowsInSection, creating an infinite loop.
-			return 0
-		} else {
-			tableView.backgroundView = nil
-			return sectionOfLibraryItems.items.count + numberOfRowsInSectionAboveLibraryItems
-		}
-	}
-	
-	// MARK: - Cells
-	
-	// All subclasses should override this.
-	override func tableView(
-		_ tableView: UITableView,
-		cellForRowAt indexPath: IndexPath
-	) -> UITableViewCell {
-		return UITableViewCell()
-	}
-	
 	// MARK: - Editing
 	
 	final override func tableView(
@@ -81,7 +55,7 @@ extension LibraryTVC {
 	
 	// MARK: - Selecting
 	
-	// Subclasses that override this method must call super (this implementation).
+	// Overrides of this method should call super (this implementation).
 	override func tableView(
 		_ tableView: UITableView,
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
@@ -104,8 +78,8 @@ extension LibraryTVC {
 	}
 	
 	// To disable selection for a row, it's simpler to set cell.isUserInteractionEnabled = false.
-	// However, you can select a multiple-selection interaction on a cell that does allow user interaction, and swipe over a cell that doesn't allow user interaction, to select it too.
-	// Therefore, with multiple-selection interactions, you must use this method to disable selection for certain rows.
+	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and shouldBeginMultipleSelectionInteractionAt, and swipe over a cell that doesn't allow user interaction, to select it too.
+	// Therefore, if you support multiple-selection interactions, you must use this method to disable selection for certain rows.
 	final override func tableView(
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
@@ -116,7 +90,7 @@ extension LibraryTVC {
 		return indexPath
 	}
 	
-	// Subclasses that override this method must call super (this implementation).
+	// Overrides of this method should call super (this implementation).
 	override func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath

@@ -279,7 +279,7 @@
                                     <segue destination="DGZ-AG-uNY" kind="show" identifier="Drill Down in Library" id="Egm-ag-jV8"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Placeholder" rowHeight="100" id="i5d-DX-vvS">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections Placeholder - Old" rowHeight="100" id="i5d-DX-vvS">
                                 <rect key="frame" x="0.0" y="193.66666221618652" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="i5d-DX-vvS" id="ilp-7P-A9C">
@@ -299,6 +299,22 @@
                                         <constraint firstItem="w6S-PX-Sod" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ilp-7P-A9C" secondAttribute="trailingMargin" id="RKH-zr-2Ou"/>
                                         <constraint firstItem="w6S-PX-Sod" firstAttribute="centerY" secondItem="ilp-7P-A9C" secondAttribute="centerY" id="hs1-AS-pTq"/>
                                     </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections Placeholder" id="mzT-zR-eZV">
+                                <rect key="frame" x="0.0" y="293.66666221618652" width="375" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mzT-zR-eZV" id="f3p-dq-Qcd">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Open Music" id="vHm-Xl-haX">
+                                <rect key="frame" x="0.0" y="337.33333015441895" width="375" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vHm-Xl-haX" id="FlR-gp-e3B">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -472,7 +488,7 @@
                                     <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="7xD-nn-FhG"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Placeholder" rowHeight="100" id="RmC-40-dsA">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Albums Placeholder" rowHeight="100" id="RmC-40-dsA">
                                 <rect key="frame" x="0.0" y="309.33332252502441" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RmC-40-dsA" id="ENJ-uS-m8G">
@@ -731,7 +747,7 @@
                                     <outlet property="trackNumberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Items Placeholder" rowHeight="100" id="X3n-qN-qq8">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Songs Placeholder" rowHeight="100" id="X3n-qN-qq8">
                                 <rect key="frame" x="0.0" y="299.66666603088379" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">

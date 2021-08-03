@@ -10,6 +10,22 @@ import MediaPlayer
 
 extension AlbumsTVC {
 	
+	// MARK: - Numbers
+	
+	// Identical to counterpart in SongsTVC.
+	final override func tableView(
+		_ tableView: UITableView,
+		numberOfRowsInSection section: Int
+	) -> Int {
+		setOrRemoveNoItemsBackground()
+		
+		if sectionOfLibraryItems.isEmpty() {
+			return 0
+		} else {
+			return sectionOfLibraryItems.items.count + numberOfRowsInSectionAboveLibraryItems
+		}
+	}
+	
 	// MARK: - Cells
 	
 	final override func tableView(

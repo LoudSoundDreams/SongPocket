@@ -68,9 +68,6 @@ class LibraryTVC:
 	// "Constants" that subclasses should not change
 	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	let cellReuseIdentifier = "Cell"
-	lazy var placeholderNoItemsView = {
-		return tableView?.dequeueReusableCell(withIdentifier: "No Items Placeholder") // Every subclass needs a placeholder cell in the storyboard with this reuse identifier.
-	}()
 	lazy var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort,
 		menu: sortOptionsMenu())
@@ -230,7 +227,13 @@ class LibraryTVC:
 	
 	// MARK: - Refreshing Table View
 	
+	// Easy to override. Overrides of this method should not call super (this implementation).
+	func refreshToReflectNoItems() {
+		deleteAllRowsThenExit()
+	}
+	
 	// Deletes all rows, including any rows not for library items, then performs an unwind segue.
+	// For AlbumsTVC and SongsTVC only; not for CollectionsTVC, because it doesn't have a "Removed All Contents" segue.
 	private func deleteAllRowsThenExit() {
 		let allIndexPaths = tableView.allIndexPaths()
 		
@@ -239,10 +242,7 @@ class LibraryTVC:
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
 		} completion: { _ in
 			self.isAnimatingDuringRefreshTableView -= 1
-			if
-				self.isAnimatingDuringRefreshTableView == 0, // See matching comment in setItemsAndRefreshTableView.
-				!(self is CollectionsTVC)
-			{
+			if self.isAnimatingDuringRefreshTableView == 0 { // See matching comment in setItemsAndRefreshToMatch.
 				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move Albums to…" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
 					self.performSegue(
 						withIdentifier: "Removed All Contents",
@@ -254,7 +254,7 @@ class LibraryTVC:
 		didChangeRowsOrSelectedRows() // Do this before the completion closure, so that we disable all the editing buttons during the animation.
 	}
 	
-	final func setItemsAndRefreshTableView(
+	final func setItemsAndRefreshToMatch(
 //		section: Int,
 		newItems: [NSManagedObject],
 		indexesOfNewItemsToSelect: [Int] = [Int](),
@@ -270,7 +270,7 @@ class LibraryTVC:
 		sectionOfLibraryItems.setItems(newItems)
 		
 		guard !newItems.isEmpty else {
-			deleteAllRowsThenExit()
+			refreshToReflectNoItems()
 			return
 		}
 		

@@ -157,7 +157,9 @@ extension OptionsTVC {
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
 		let indexOfAccentColor = indexPath.row
 		let selectedAccentColor = AccentColor.all[indexOfAccentColor]
-		selectedAccentColor.set(in: view.window)
+		if let window = view.window {
+			selectedAccentColor.set(in: window)
+		}
 		selectedAccentColor.saveAsPreference()
 		
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
@@ -246,7 +248,7 @@ extension OptionsTVC {
 			return UITableViewCell()
 		}
 		
-		cell.reloadLabel.textColor = view.window?.tintColor
+		cell.reloadLabel.textColor = .tintColor(maybeResortTo: view.window)
 		
 		return cell
 	}
@@ -264,7 +266,7 @@ extension OptionsTVC {
 		}
 		
 		cell.tipNameLabel.text = tipProduct.localizedTitle
-		cell.tipNameLabel.textColor = view.window?.tintColor
+		cell.tipNameLabel.textColor = .tintColor(maybeResortTo: view.window)
 		
 		let localizedPriceString = tipPriceFormatter.string(from: tipProduct.price)
 		cell.tipPriceLabel.text = localizedPriceString

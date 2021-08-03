@@ -23,6 +23,8 @@
 		07267A2025537C5800C914A3 /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* PlayerManager.swift */; };
 		072C04992692A67400F44AC5 /* extension UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C04982692A67400F44AC5 /* extension UIAlertAction.swift */; };
 		072C049B2692AB4400F44AC5 /* extension UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */; };
+		072F859F26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */; };
+		072F85A126B7872F0062323C /* extension UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072F85A026B7872F0062323C /* extension UIColor.swift */; };
 		0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */; };
 		0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Albums - Views.swift */; };
 		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
@@ -119,6 +121,8 @@
 		07267A1F25537C5800C914A3 /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
 		072C04982692A67400F44AC5 /* extension UIAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIAlertAction.swift"; sourceTree = "<group>"; };
 		072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIAlertController.swift"; sourceTree = "<group>"; };
+		072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NoItemsBackgroundManager.swift"; sourceTree = "<group>"; };
+		072F85A026B7872F0062323C /* extension UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIColor.swift"; sourceTree = "<group>"; };
 		0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIBarButtonItem.swift"; sourceTree = "<group>"; };
 		0732DDBF257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		0732DDC0257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -262,10 +266,10 @@
 			children = (
 				07642C7D268FFEDC00B66BB8 /* protocol SectionOfLibraryItems.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
-				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
-				073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */,
 				0719B57B2511A61F00748371 /* protocol PlaybackController.swift */,
 				0719B57D2511CD4E00748371 /* LibraryTVC + PlaybackController.swift */,
+				073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */,
+				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
 				07DC1B1C24F339E000AAEEDB /* LibraryTVC - Editing.swift */,
 			);
@@ -348,6 +352,7 @@
 				070E194624F3434600B21307 /* Moving Albums */,
 				07DC1B1E24F33C5100AAEEDB /* Collections Level */,
 				0706ABDE24D946870090EB21 /* Options */,
+				072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */,
 				07DC1B2124F33DF400AAEEDB /* Albums Level */,
 				070E194224F340C500B21307 /* Songs Level */,
 			);
@@ -430,6 +435,7 @@
 				07566CE92692261800257DB4 /* extension UIMenu.swift */,
 				072C04982692A67400F44AC5 /* extension UIAlertAction.swift */,
 				072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */,
+				072F85A026B7872F0062323C /* extension UIColor.swift */,
 			);
 			path = "extensions to UIKit";
 			sourceTree = "<group>";
@@ -589,6 +595,7 @@
 				07642C7C268FFC1600B66BB8 /* SectionOfSongs.swift in Sources */,
 				0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */,
 				0720A43525017C6C00E0A28A /* AlbumsTVC - Notifications.swift in Sources */,
+				072F85A126B7872F0062323C /* extension UIColor.swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Moving Albums” Mode.swift in Sources */,
 				07D157ED24D952A600FDF26A /* protocol AlbumMover.swift in Sources */,
@@ -628,6 +635,7 @@
 				07F1B91925F15EDB008591C7 /* SectionOfCollectionsOrAlbums.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				07031303269254B600134B06 /* extension UIImage.swift in Sources */,
+				072F859F26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift in Sources */,
 				07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */,
 				07FD6E17259925EF00826447 /* Options - Views.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
@@ -860,7 +868,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 174;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -883,7 +891,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 173;
+				CURRENT_PROJECT_VERSION = 174;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

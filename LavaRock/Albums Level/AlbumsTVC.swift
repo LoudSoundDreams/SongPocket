@@ -12,7 +12,8 @@ import MediaPlayer
 
 final class AlbumsTVC:
 	LibraryTVC,
-	AlbumMover
+	AlbumMover,
+	NoItemsBackgroundManager
 {
 	
 	// MARK: - Properties
@@ -27,6 +28,9 @@ final class AlbumsTVC:
 			title: LocalizedString.move,
 			primaryAction: action)
 	}()
+	
+	// "Constants" for NoItemsBackgroundManager
+	lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
 	
 	// MARK: "Moving Albums" Mode
 	
