@@ -226,8 +226,8 @@ extension LibraryTVC {
 			return items.reversed()
 			
 		default:
-			print("The user tried to sort by “\(sortOptionLocalizedName ?? "")”, which isn’t a supported option. It might be misspelled.")
 			return items
+			
 		}
 	}
 	

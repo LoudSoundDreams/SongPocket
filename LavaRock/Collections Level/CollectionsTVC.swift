@@ -61,27 +61,31 @@ final class CollectionsTVC:
 		if shouldContentStateBeBlank { // You must check shouldContentStateBeBlank before checking isImportingChanges.
 			return .blank
 		}
-		if
-			isImportingChanges,
-			sectionOfLibraryItems.isEmpty()
-		{
-			return .loading
+		if isImportingChanges {
+			if sectionOfLibraryItems.isEmpty() {
+				return .loading
+			} else {
+				return .oneOrMoreCollections
+			}
+		} else {
+			if sectionOfLibraryItems.isEmpty() {
+				return .noCollections
+			} else {
+				return .oneOrMoreCollections
+			}
 		}
-		if sectionOfLibraryItems.isEmpty() {
-			return .noCollections
-		}
-		return .oneOrMoreCollections
 	}
 	
-	final func deleteSpecialContentStateRows() {
+	final func prepareToRefreshLibraryItems() {
 		if contentState() == .loading || contentState() == .noCollections {
 			shouldContentStateBeBlank = true // contentState() is now .blank
 			refreshToReflectContentState()
-			shouldContentStateBeBlank = false
+			shouldContentStateBeBlank = false // WARNING: Unsafe; contentState() is now .loading, but the UI doesn't reflect that.
 		}
 	}
 	
 	final override func refreshToReflectNoItems() {
+		// isImportingChanges is now false
 		if contentState() == .noCollections {
 			refreshToReflectContentState()
 		}
@@ -98,7 +102,9 @@ final class CollectionsTVC:
 		
 		switch contentState() {
 			
-		case .allowAccess /*Currently unused*/, .loading:
+		case
+				.allowAccess, // Currently unused
+				.loading:
 			let sectionForCollections = 0
 			let newNumberOfRowsInSectionForCollections = newNumberOfRows(forSection: sectionForCollections)
 			let newIndexPaths = Array(0..<newNumberOfRowsInSectionForCollections).map {

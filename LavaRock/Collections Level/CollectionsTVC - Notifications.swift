@@ -44,7 +44,7 @@ extension CollectionsTVC {
 	final override func refreshLibraryItems() {
 		if albumMoverClipboard != nil {
 		} else {
-			deleteSpecialContentStateRows()
+			prepareToRefreshLibraryItems()
 			
 			if sectionOfCollectionsBeforeCombining != nil { // If the "Combine Collections" dialog is presented.
 				fatalError()
