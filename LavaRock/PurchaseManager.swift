@@ -22,7 +22,11 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	// MARK: - Types
 	
 	enum TipStatus {
-		case notYetFirstLoaded, loading, reload, ready, confirming
+		case notYetFirstLoaded
+		case loading
+		case reload
+		case ready
+		case confirming
 	}
 	
 	// MARK: - Properties

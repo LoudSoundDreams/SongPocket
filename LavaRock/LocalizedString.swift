@@ -43,6 +43,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	
 	static let tipJar = NSLocalizedString("Tip Jar", comment: "Section header")
+	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let tipJarFooter = NSLocalizedString(
 		"[footer] options_tip_jar",
 		value: "Hi, I’m H. Tips are an optional way to help me improve Songpocket. I would especially appreciate tips after updates to the app!",

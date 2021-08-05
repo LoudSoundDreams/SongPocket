@@ -84,7 +84,6 @@
 		07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */; };
 		07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E092599227C00826447 /* PurchaseManager.swift */; };
 		07FD6E122599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift */; };
-		07FD6E17259925EF00826447 /* Options - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E16259925EF00826447 /* Options - Views.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,7 +196,6 @@
 		07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07FD6E092599227C00826447 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		07FD6E112599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC + PurchaseManagerTipDelegate.swift"; sourceTree = "<group>"; };
-		07FD6E16259925EF00826447 /* Options - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Options - Views.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,7 +230,6 @@
 				073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */,
 				0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */,
 				07FD6E112599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift */,
-				07FD6E16259925EF00826447 /* Options - Views.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -637,7 +634,6 @@
 				07031303269254B600134B06 /* extension UIImage.swift in Sources */,
 				072F859F26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift in Sources */,
 				07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */,
-				07FD6E17259925EF00826447 /* Options - Views.swift in Sources */,
 				072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */,
 				0719B57E2511CD4E00748371 /* LibraryTVC + PlaybackController.swift in Sources */,
 				075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */,
@@ -868,7 +864,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 175;
+				CURRENT_PROJECT_VERSION = 177;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -891,7 +887,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 175;
+				CURRENT_PROJECT_VERSION = 177;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

@@ -58,9 +58,7 @@ extension AlbumsTVC {
 		// Make, configure, and return the cell.
 		
 		if let releaseDateText = releaseDateText {
-			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: cellReuseIdentifier,
-				for: indexPath)
+			guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 					as? AlbumCell
 			else {
 				return UITableViewCell()
@@ -81,9 +79,7 @@ extension AlbumsTVC {
 			return cell
 			
 		} else { // We couldn't determine the album's release date.
-			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: "Cell Without Release Date",
-				for: indexPath)
+			guard var cell = tableView.dequeueReusableCell(withIdentifier: "Cell Without Release Date", for: indexPath)
 					as? AlbumCellWithoutReleaseDate
 			else {
 				return UITableViewCell()

@@ -1,52 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19115.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vm6-Uf-Akz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19150" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vm6-Uf-Akz">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19107.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19134"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Collections-->
-        <scene sceneID="gyW-IV-cUa">
-            <objects>
-                <viewController id="Fmw-eg-u4E" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8EM-dt-gqK">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="BhZ-PG-QXS"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <toolbarItems>
-                        <barButtonItem enabled="NO" id="Cpw-gQ-ceL">
-                            <imageReference key="image" image="backward.end.fill" catalog="system"/>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="sXT-W9-OjR"/>
-                        <barButtonItem enabled="NO" id="lxo-Bn-TMV">
-                            <imageReference key="image" image="arrow.counterclockwise.circle.fill" catalog="system"/>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Zbb-le-IEt"/>
-                        <barButtonItem enabled="NO" id="MSK-Wt-OWL">
-                            <imageReference key="image" image="play.fill" catalog="system"/>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="deT-cZ-FS6"/>
-                        <barButtonItem enabled="NO" id="k83-rG-aEg">
-                            <imageReference key="image" image="forward.end.fill" catalog="system"/>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Collections" id="BVQ-2l-f4R">
-                        <barButtonItem key="leftBarButtonItem" title="Options" id="5w2-4I-c6Q"/>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="edit" id="2bF-07-a56"/>
-                    </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3Bf-ID-c2v" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2676" y="1604"/>
-        </scene>
         <!--View Controller-->
         <scene sceneID="Rcv-jZ-mbV">
             <objects>
@@ -140,28 +103,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QmI-eW-0BQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1734" y="3024"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="jhU-dz-eIw">
-            <objects>
-                <navigationController storyboardIdentifier="With text (but iOS 14 misaligns it)" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="nkN-1c-kHy" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="A0h-YG-iq8">
-                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8fo-u5-0q6">
-                        <rect key="frame" x="0.0" y="729" width="375" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="Fmw-eg-u4E" kind="relationship" relationship="rootViewController" id="H31-1h-GYd"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="98Z-Jb-bxn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1734" y="1603"/>
         </scene>
     </scenes>
     <resources>

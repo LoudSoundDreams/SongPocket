@@ -24,11 +24,11 @@ extension MusicLibraryManager {
 			// WARNING: This leaves gaps in the Song indexes within each Album. You must reindex the Songs within each Album later.
 		}
 		
-		deleteEmptyAlbums_WithoutReindex()
+		deleteEmptyAlbums_withoutReindex()
 		Collection.deleteAllEmpty(via: managedObjectContext)
 	}
 	
-	private func deleteEmptyAlbums_WithoutReindex() {
+	private func deleteEmptyAlbums_withoutReindex() {
 		let allAlbums = Album.allFetched(
 			via: managedObjectContext,
 			ordered: false)

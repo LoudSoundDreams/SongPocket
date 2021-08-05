@@ -80,7 +80,7 @@ final class CollectionsTVC:
 		if contentState() == .loading || contentState() == .noCollections {
 			shouldContentStateBeBlank = true // contentState() is now .blank
 			refreshToReflectContentState()
-			shouldContentStateBeBlank = false // WARNING: Unsafe; contentState() is now .loading, but the UI doesn't reflect that.
+			shouldContentStateBeBlank = false // WARNING: Unsafe; contentState() is now .loading or .noCollections, but the UI doesn't reflect that.
 		}
 	}
 	

@@ -60,9 +60,7 @@ extension CollectionsTVC {
 	// MARK: "Allow Access" or "Loading…" Cell
 	
 	private func allowAccessOrLoadingCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Allow Access or Loading Cell",
-			for: indexPath)
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading Cell", for: indexPath)
 				as? AllowAccessOrLoadingCell
 		else {
 			return UITableViewCell()
@@ -90,25 +88,31 @@ extension CollectionsTVC {
 	
 	// MARK: "No Collections" Cells
 	
+	// The cell in the storyboard is completely default except for the reuse identifier.
 	private func noCollectionsPlaceholderCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "No Collections Placeholder", for: indexPath)
 		
-		var contentConfiguration = UIListContentConfiguration.cell()
-		contentConfiguration.text = LocalizedString.noCollectionsPlaceholder
-		contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: .body)
-		contentConfiguration.textProperties.color = .secondaryLabel
-		cell.contentConfiguration = contentConfiguration
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.noCollectionsPlaceholder
+		configuration.textProperties.font = UIFont.preferredFont(forTextStyle: .body)
+		configuration.textProperties.color = .secondaryLabel
+		cell.contentConfiguration = configuration
+		
+		cell.isUserInteractionEnabled = false
 		
 		return cell
 	}
 	
+	// The cell in the storyboard is completely default except for the reuse identifier.
 	private func openMusicCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Open Music", for: indexPath)
 		
-		var contentConfiguration = UIListContentConfiguration.cell()
-		contentConfiguration.text = LocalizedString.openMusic
-		contentConfiguration.textProperties.color = .tintColor(maybeResortTo: view.window)
-		cell.contentConfiguration = contentConfiguration
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.openMusic
+		configuration.textProperties.color = .tintColor(maybeResortTo: view.window)
+		cell.contentConfiguration = configuration
+		
+		cell.accessibilityTraits.formUnion(.button)
 		
 		return cell
 	}
@@ -123,9 +127,7 @@ extension CollectionsTVC {
 		
 		// Make, configure, and return the cell.
 		
-		guard var cell = tableView.dequeueReusableCell(
-			withIdentifier: cellReuseIdentifier,
-			for: indexPath)
+		guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 				as? CollectionCell
 		else {
 			return UITableViewCell()

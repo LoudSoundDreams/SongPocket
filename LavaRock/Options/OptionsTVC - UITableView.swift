@@ -7,14 +7,22 @@
 
 import UIKit
 
-// MARK: - All Sections
-
 extension OptionsTVC {
+	
+	// MARK: - Types
 	
 	private enum Section: Int, CaseIterable {
 		case accentColor
 		case tipJar
 	}
+	
+	// MARK: - Events
+	
+	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
+		dismiss(animated: true)
+	}
+	
+	// MARK: - All Sections
 	
 	// MARK: Numbers
 	
@@ -114,34 +122,23 @@ extension OptionsTVC {
 		}
 	}
 	
-	// MARK: Events
-	
-	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
-		dismiss(animated: true)
-	}
-	
-}
-
-// MARK: - Accent Color Section
-
-extension OptionsTVC {
+	// MARK: - Accent Color Section
 	
 	// MARK: Cells
 	
+	// The cell in the storyboard is completely default except for the reuse identifier.
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let index = indexPath.row
-		let rowAccentColor = AccentColor.all[index]
+		let indexOfAccentColor = indexPath.row
+		let accentColor = AccentColor.all[indexOfAccentColor]
 		
-		let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Color Cell",
-			for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Accent Color", for: indexPath)
 		
 		var configuration = UIListContentConfiguration.cell()
-		configuration.text = rowAccentColor.displayName
-		configuration.textProperties.color = rowAccentColor.uiColor
+		configuration.text = accentColor.displayName
+		configuration.textProperties.color = accentColor.uiColor
 		cell.contentConfiguration = configuration
 		
-		if rowAccentColor == AccentColor.savedPreference() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowAccentColor.uiColor.
+		if accentColor == AccentColor.savedPreference() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowAccentColor.uiColor.
 			cell.accessoryType = .checkmark
 		} else {
 			cell.accessoryType = .none
@@ -208,21 +205,14 @@ extension OptionsTVC {
 			with: .none)
 	}
 	
-}
-
-// MARK: - Tip Jar Section
-
-extension OptionsTVC {
+	// MARK: - Tip Jar Section
 	
 	// MARK: Cells
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch PurchaseManager.shared.tipStatus {
 		case .notYetFirstLoaded, .loading:
-			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Tip Loading",
-				for: indexPath)
-			return cell
+			return tipLoadingCell(forRowAt: indexPath)
 		case .reload:
 			return tipReloadCell(forRowAt: indexPath)
 		case .ready:
@@ -232,63 +222,67 @@ extension OptionsTVC {
 				return tipReadyCell(forRowAt: indexPath)
 			}
 		case .confirming:
-			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Tip Purchasing",
-				for: indexPath)
-			return cell
+			return tipConfirmingCell(forRowAt: indexPath)
 		}
 	}
 	
+	private func tipLoadingCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		return tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
+	}
+	
+	// The cell in the storyboard is completely default except for the reuse identifier.
 	private func tipReloadCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Tip Reload",
-			for: indexPath)
-				as? TipReloadCell
-		else {
-			return UITableViewCell()
-		}
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Reload", for: indexPath)
 		
-		cell.reloadLabel.textColor = .tintColor(maybeResortTo: view.window)
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.reload
+		configuration.textProperties.color = .tintColor(maybeResortTo: view.window)
+		cell.contentConfiguration = configuration
+		
+		cell.accessibilityTraits.formUnion(.button)
 		
 		return cell
 	}
 	
+	// The cell in the storyboard is completely default except for the reuse identifier.
 	private func tipReadyCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard
-			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Tip Ready",
-				for: indexPath)
-				as? TipReadyCell,
 			let tipProduct = PurchaseManager.shared.tipProduct,
 			let tipPriceFormatter = PurchaseManager.shared.tipPriceFormatter
 		else {
 			return UITableViewCell()
 		}
 		
-		cell.tipNameLabel.text = tipProduct.localizedTitle
-		cell.tipNameLabel.textColor = .tintColor(maybeResortTo: view.window)
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Ready", for: indexPath)
 		
-		let localizedPriceString = tipPriceFormatter.string(from: tipProduct.price)
-		cell.tipPriceLabel.text = localizedPriceString
+		var configuration = UIListContentConfiguration.valueCell()
+		configuration.text = tipProduct.localizedTitle
+		configuration.textProperties.color = .tintColor(maybeResortTo: view.window)
+		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
+		cell.contentConfiguration = configuration
+		
+		cell.accessibilityTraits.formUnion(.button)
 		
 		return cell
 	}
 	
+	private func tipConfirmingCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		return tableView.dequeueReusableCell(withIdentifier: "Tip Confirming", for: indexPath)
+	}
+	
+	// The cell in the storyboard is completely default except for the reuse identifier.
 	private func tipThankYouCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Tip Thank You",
-			for: indexPath)
-				as? TipThankYouCell
-		else {
-			return UITableViewCell()
-		}
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Thank You", for: indexPath)
 		
+		var configuration = UIListContentConfiguration.cell()
 		let heartEmoji = AccentColor.savedPreference().heartEmoji
-		let thankYouMessage
-		= heartEmoji
-		+ LocalizedString.tipThankYouMessageWithPaddingSpaces
-		+ heartEmoji
-		cell.thankYouLabel.text = thankYouMessage
+		let thankYouMessage = heartEmoji + LocalizedString.tipThankYouMessageWithPaddingSpaces + heartEmoji
+		configuration.text = thankYouMessage
+		configuration.textProperties.color = .secondaryLabel
+		configuration.textProperties.alignment = .center
+		cell.contentConfiguration = configuration
+		
+		cell.isUserInteractionEnabled = false
 		
 		return cell
 	}
