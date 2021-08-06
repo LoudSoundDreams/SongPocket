@@ -74,10 +74,10 @@ extension MusicLibraryManager {
 				] = newAlbum
 			}
 			if let newCollection = newCollection {
-				let titleOfNewCollection = newCollection.title!
-				var collectionsWithSameTitle = existingCollectionsByTitle[titleOfNewCollection] ?? []
-				collectionsWithSameTitle.insert(newCollection, at: 0)
-				existingCollectionsByTitle[titleOfNewCollection] = collectionsWithSameTitle
+				let newCollectionTitle = newCollection.title!
+				let existingCollectionsWithSameTitle = existingCollectionsByTitle[newCollectionTitle] ?? []
+				let newCollectionsWithSameTitle = [newCollection] + existingCollectionsWithSameTitle
+				existingCollectionsByTitle[newCollectionTitle] = newCollectionsWithSameTitle
 			}
 			os_signpost(.end, log: createLog, name: "Make one group of Songs and containers")
 		}
