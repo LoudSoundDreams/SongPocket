@@ -57,12 +57,7 @@ extension MusicLibraryManager {
 		}
 		var existingAlbumsByAlbumPersistentID
 		= Dictionary(uniqueKeysWithValues: entriesForExistingAlbums)
-		let entriesForExistingCollections = existingCollections.map {
-			($0.title!,
-			$0)
-		}
-		var existingCollectionsByTitle
-		= Dictionary(uniqueKeysWithValues: entriesForExistingCollections)
+		var existingCollectionsByTitle = Dictionary(grouping: existingCollections) { $0.title! }
 		
 		os_signpost(.begin, log: createLog, name: "Make all the Songs and containers")
 		mediaItemGroups.forEach { mediaItemGroup in
@@ -70,7 +65,7 @@ extension MusicLibraryManager {
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: mediaItemGroup,
 				   existingAlbums: existingAlbumsByAlbumPersistentID,
-				   existingCollections: existingCollectionsByTitle,
+				   existingCollectionsByTitle: existingCollectionsByTitle,
 				   isFirstImport: isFirstImport)
 			
 			if let newAlbum = newAlbum {
@@ -79,7 +74,10 @@ extension MusicLibraryManager {
 				] = newAlbum
 			}
 			if let newCollection = newCollection {
-				existingCollectionsByTitle[newCollection.title!] = newCollection
+				let titleOfNewCollection = newCollection.title!
+				var collectionsWithSameTitle = existingCollectionsByTitle[titleOfNewCollection] ?? []
+				collectionsWithSameTitle.insert(newCollection, at: 0)
+				existingCollectionsByTitle[titleOfNewCollection] = collectionsWithSameTitle
 			}
 			os_signpost(.end, log: createLog, name: "Make one group of Songs and containers")
 		}
@@ -126,7 +124,7 @@ extension MusicLibraryManager {
 	private func createSongsAndReturnNewContainers(
 		for mediaItemGroup: [MPMediaItem],
 		existingAlbums: [MPMediaEntityPersistentID: Album],
-		existingCollections: [String: Collection],
+		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (Album?, Collection?) {
 		let firstMediaItemInAlbum = mediaItemGroup.first!
@@ -145,7 +143,7 @@ extension MusicLibraryManager {
 			} else {
 				createSongs(
 					for: mediaItemGroup,
-					atBeginningOf: matchingExistingAlbum)
+					   atBeginningOf: matchingExistingAlbum)
 			}
 			
 			return (nil, nil)
@@ -155,8 +153,8 @@ extension MusicLibraryManager {
 			os_signpost(.begin, log: createLog, name: "Create a new Album and maybe new Collection")
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
 				for: firstMediaItemInAlbum,
-				existingCollections: existingCollections,
-				isFirstImport: isFirstImport)
+				   existingCollectionsByTitle: existingCollectionsByTitle,
+				   isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
 			os_signpost(.end,log: createLog, name: "Create a new Album and maybe new Collection")
 			
@@ -218,13 +216,13 @@ extension MusicLibraryManager {
 	
 	private func newAlbumAndMaybeNewCollectionMade(
 		for newMediaItem: MPMediaItem,
-		existingCollections: [String: Collection],
+		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
 		// If we already have a matching Collection to add the Album to …
 		let collectionTitleToLookUp
 		= newMediaItem.albumArtist ?? Album.placeholderAlbumArtist
-		if let matchingExistingCollection = existingCollections[collectionTitleToLookUp] {
+		if let matchingExistingCollection = existingCollectionsByTitle[collectionTitleToLookUp]?.first {
 			
 			// … then add the Album to that Collection.
 			let newAlbum: Album = {
@@ -245,14 +243,20 @@ extension MusicLibraryManager {
 			// Otherwise, make the Collection to add the Album to …
 			let newCollection: Collection = {
 				if isFirstImport {
+					os_signpost(.begin, log: createLog, name: "Count all the Collections so far")
+					let existingCollectionsCount
+					= existingCollectionsByTitle.reduce(0) { partialResult, entry in
+						partialResult + entry.value.count
+					}
+					os_signpost(.end, log: createLog, name: "Count all the Collections so far")
 					return newCollectionMade(
 						for: newMediaItem,
-						   afterAllExistingCollectionsCount: existingCollections.count)
+						   afterAllExistingCollectionsCount: existingCollectionsCount)
 				} else {
-					let collections = existingCollections.map { $0.value }
+					let existingCollections = existingCollectionsByTitle.flatMap { $0.value }
 					return newCollectionMade(
 						for: newMediaItem,
-						   above: collections)
+						   above: existingCollections)
 				}
 			}()
 			
