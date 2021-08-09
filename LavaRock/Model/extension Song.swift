@@ -19,18 +19,59 @@ extension Song {
 		subsystem: "LavaRock.Song",
 		category: .pointsOfInterest)
 	
+	// MARK: - Initializers
+	
+	convenience init(
+		for mediaItem: MPMediaItem,
+		atEndOf album: Album,
+		context: NSManagedObjectContext
+	) {
+		os_signpost(.begin, log: Self.log, name: "Make a Song at the bottom")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make a Song at the bottom")
+		}
+		
+		self.init(context: context)
+		
+		persistentID = Int64(bitPattern: mediaItem.persistentID)
+		index = Int64(album.contents?.count ?? 0)
+		
+		container = album
+	}
+	
+	// Use init(for:atEndOf:context:) if possible. It's faster.
+	convenience init(
+		for mediaItem: MPMediaItem,
+		atBeginningOf album: Album,
+		context: NSManagedObjectContext
+	) {
+		os_signpost(.begin, log: Self.log, name: "Make a Song at the top")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make a Song at the top")
+		}
+		
+		album.songs(sorted: false).forEach { $0.index += 1 }
+		
+		self.init(context: context)
+		
+		persistentID = Int64(bitPattern: mediaItem.persistentID)
+		index = 0
+		
+		container = album
+	}
+	
 	// MARK: - Core Data
 	
 	// Similar to Collection.allFetched and Album.allFetched.
 	static func allFetched(
-		via managedObjectContext: NSManagedObjectContext,
-		ordered: Bool = true
+		ordered: Bool = true,
+		context: NSManagedObjectContext
 	) -> [Song] {
 		let fetchRequest: NSFetchRequest<Song> = fetchRequest()
 		if ordered {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
-		return managedObjectContext.objectsFetched(for: fetchRequest)
+		return context.objectsFetched(for: fetchRequest)
 	}
 	
 	// MARK: - Media Player

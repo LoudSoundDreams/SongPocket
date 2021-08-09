@@ -46,7 +46,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		songsFetchRequest.predicate = NSPredicate(
 			format: "persistentID == %lld",
 			currentPersistentID_asInt64)
-		let songsInPlayer = managedObjectContext.objectsFetched(for: songsFetchRequest)
+		let songsInPlayer = context.objectsFetched(for: songsFetchRequest)
 		
 		guard
 			songsInPlayer.count == 1,
@@ -63,7 +63,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	// MARK: - Properties
 	
 	// Constants
-	private static let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	private static let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	// MARK: - Teardown
 	

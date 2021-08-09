@@ -82,7 +82,7 @@ extension CollectionsTVC {
 		}
 		let didChangeTitle = renamedCollection.title != oldTitle
 		
-		managedObjectContext.tryToSave()
+		context.tryToSave()
 		
 		if didChangeTitle {
 			tableView.reloadRows(at: [indexPath], with: .fade)
@@ -130,10 +130,10 @@ extension CollectionsTVC {
 			selectedCollections,
 			title: LocalizedString.combinedCollectionDefaultTitle,
 			index: Int64(indexOfCombinedCollection),
-			via: managedObjectContext)
+			context: context)
 		// WARNING: We still need to delete empty Collections and reindex all Collections.
 		// Do that later, when we commit, because if we revert, we have to restore the original Collections, and Core Data warns you if you mutate managed objects after deleting them.
-		try? managedObjectContext.obtainPermanentIDs( // SIDE EFFECT
+		try? context.obtainPermanentIDs( // SIDE EFFECT
 			for: [combinedCollection]) // So that the "now playing" indicator can appear on the combined Collection.
 		
 		// Make a new data source.
@@ -197,7 +197,7 @@ extension CollectionsTVC {
 		
 		// Revert sectionOfLibraryItems to sectionOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
 		copyOfOriginalSection.setItems(sectionOfLibraryItems.items) // To match the currently onscreen items. Should cause no side effects.
-		managedObjectContext.rollback() // SIDE EFFECT
+		context.rollback() // SIDE EFFECT
 		sectionOfLibraryItems = copyOfOriginalSection // SIDE EFFECT
 		
 		let indexesOfOriginalSelectedCollections = originalSelectedIndexPaths.map {
@@ -223,9 +223,9 @@ extension CollectionsTVC {
 		}
 		let didChangeTitle = combinedCollection.title != oldTitle
 		
-		Collection.deleteAllEmpty(via: managedObjectContext)
+		Collection.deleteAllEmpty(context: context)
 		
-		managedObjectContext.tryToSave()
+		context.tryToSave()
 		
 		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		

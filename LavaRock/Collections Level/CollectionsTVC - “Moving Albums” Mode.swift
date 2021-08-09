@@ -33,7 +33,7 @@ extension CollectionsTVC {
 		withSuggestedTitle suggestedTitle: String?
 	) {
 		// Create the new Collection.
-		let newCollection = Collection(context: managedObjectContext) // Since we're in "moving Albums" mode, this should be a child managed object context.
+		let newCollection = Collection(context: context) // Since we're in "moving Albums" mode, this should be a child managed object context.
 		newCollection.title = suggestedTitle ?? LocalizedString.newCollectionDefaultTitle
 		// When we set sectionOfLibraryItems.items, the property observer will set the "index" attribute of each Collection for us.
 		
@@ -97,7 +97,7 @@ extension CollectionsTVC {
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = false
 		
-		managedObjectContext.delete(collection)
+		context.delete(collection)
 		
 		// Update the data source and table view.
 		var newItems = sectionOfLibraryItems.items
@@ -149,14 +149,14 @@ extension CollectionsTVC {
 		}
 		return Self.suggestedCollectionTitle(
 			considering: albumIDs,
-			in: managedObjectContext,
-			notMatching: existingCollectionTitles)
+			notMatching: existingCollectionTitles,
+			context: context)
 	}
 	
 	private static func suggestedCollectionTitle(
 		considering albumIDs: [NSManagedObjectID],
-		in managedObjectContext: NSManagedObjectContext,
-		notMatching existingCollectionTitles: [String]
+		notMatching existingCollectionTitles: [String],
+		context: NSManagedObjectContext
 	) -> String? {
 		let albumPropertyKeyPaths = [
 			// Order matters. First, we'll see if all the Albums have the same album artist; if they don't, then we'll try the next case, and so on.
@@ -165,9 +165,9 @@ extension CollectionsTVC {
 		for albumPropertyKeyPath in albumPropertyKeyPaths {
 			if let suggestion = suggestedCollectionTitle(
 				considering: albumIDs,
-				in: managedObjectContext,
 				notMatching: existingCollectionTitles,
-				albumPropertyKeyPath: albumPropertyKeyPath
+				albumPropertyKeyPath: albumPropertyKeyPath,
+				context: context
 			) {
 				return suggestion
 			}
@@ -177,14 +177,14 @@ extension CollectionsTVC {
 	
 	private static func suggestedCollectionTitle(
 		considering albumIDs: [NSManagedObjectID],
-		in managedObjectContext: NSManagedObjectContext,
 		notMatching existingCollectionTitles: [String],
-		albumPropertyKeyPath: KeyPath<MPMediaItem, String?>
+		albumPropertyKeyPath: KeyPath<MPMediaItem, String?>,
+		context: NSManagedObjectContext
 	) -> String? {
 		// If we have no albumIDs, return nil.
 		guard
 			let firstAlbumID = albumIDs.first,
-			let firstAlbum = managedObjectContext.object(with: firstAlbumID) as? Album
+			let firstAlbum = context.object(with: firstAlbumID) as? Album
 		else {
 			return nil
 		}
@@ -205,9 +205,9 @@ extension CollectionsTVC {
 			let restOfAlbumIDs = Array(albumIDs.dropFirst())
 			let suggestedCollectionTitleForRestOfAlbums = suggestedCollectionTitle(
 				considering: restOfAlbumIDs,
-				in: managedObjectContext,
 				notMatching: existingCollectionTitles,
-				albumPropertyKeyPath: albumPropertyKeyPath)
+				albumPropertyKeyPath: albumPropertyKeyPath,
+				context: context)
 			
 			guard metadataValueForFirstAlbum == suggestedCollectionTitleForRestOfAlbums else {
 				return nil

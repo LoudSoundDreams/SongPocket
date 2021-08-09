@@ -14,7 +14,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	// Constants
 	static let shared = MusicLibraryManager()
-	let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	// Constants for Instruments
 	private static let subsystemName = "LavaRock.MusicLibraryManager"

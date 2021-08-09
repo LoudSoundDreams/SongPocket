@@ -23,18 +23,90 @@ extension Album {
 		subsystem: "LavaRock.Album",
 		category: .pointsOfInterest)
 	
+	// MARK: - Initializers
+	
+	convenience init(
+		for mediaItem: MPMediaItem,
+		atEndOf collection: Collection,
+		context: NSManagedObjectContext
+	) {
+		os_signpost(.begin, log: Self.log, name: "Make an Album at the bottom")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make an Album at the bottom")
+		}
+		
+		self.init(context: context)
+		
+		albumPersistentID = Int64(bitPattern: mediaItem.albumPersistentID)
+		index = Int64(collection.contents?.count ?? 0)
+		
+		container = collection
+	}
+	
+	// Use init(for:atEndOf:context:) if possible. It's faster.
+	convenience init(
+		for mediaItem: MPMediaItem,
+		atBeginningOf collection: Collection,
+		context: NSManagedObjectContext
+	) {
+		os_signpost(.begin, log: Self.log, name: "Make an Album at the top")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make an Album at the top")
+		}
+		
+		collection.albums(sorted: false).forEach { $0.index += 1 }
+		
+		self.init(context: context)
+		
+		albumPersistentID = Int64(bitPattern: mediaItem.albumPersistentID)
+		index = 0
+		
+		container = collection
+	}
+	
+	// MARK: - Adding Contents
+	
+	final func makeSongsAtEnd(for mediaItems: [MPMediaItem]) {
+		os_signpost(.begin, log: Self.log, name: "Make Songs at the bottom")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make Songs at the bottom")
+		}
+		
+		mediaItems.forEach {
+			let _ = Song(
+				for: $0,
+				   atEndOf: self,
+				   context: managedObjectContext!)
+		}
+	}
+	
+	// Use makeSongsAtEnd(for:) if possible. It's faster.
+	final func makeSongsAtBeginning(for mediaItems: [MPMediaItem]) {
+		os_signpost(.begin, log: Self.log, name: "Make Songs at the top")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make Songs at the top")
+		}
+		
+		mediaItems.reversed().forEach {
+			let _ = Song(
+				for: $0,
+				   atBeginningOf: self,
+				   context: managedObjectContext!)
+		}
+	}
+	
 	// MARK: - Core Data
 	
 	// Similar to Collection.allFetched and Song.allFetched.
 	static func allFetched(
-		via managedObjectContext: NSManagedObjectContext,
-		ordered: Bool = true
+		ordered: Bool = true,
+		context: NSManagedObjectContext
 	) -> [Album] {
 		let fetchRequest: NSFetchRequest<Album> = fetchRequest()
 		if ordered {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
-		return managedObjectContext.objectsFetched(for: fetchRequest)
+		return context.objectsFetched(for: fetchRequest)
 	}
 	
 	// Similar to Collection.albums(sorted:).

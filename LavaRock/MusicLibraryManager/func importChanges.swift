@@ -18,7 +18,7 @@ extension MusicLibraryManager {
 			os_signpost(.end, log: importLog, name: "1. Import Changes Main")
 		}
 		
-		managedObjectContext.performAndWait {
+		context.performAndWait {
 			importChangesMethodBody()
 		}
 	}
@@ -31,7 +31,7 @@ extension MusicLibraryManager {
 		else { return }
 		
 		os_signpost(.begin, log: importLog, name: "Initial parse")
-		let existingSongs = Song.allFetched(via: managedObjectContext, ordered: false)
+		let existingSongs = Song.allFetched(ordered: false, context: context)
 		
 		let defaults = UserDefaults.standard
 		let defaultsKeyHasEverImported = LRUserDefaultsKey.hasEverImportedFromMusic.rawValue
@@ -73,10 +73,8 @@ extension MusicLibraryManager {
 			// This might also leave behind empty Albums, because all the Songs in them were moved to other Albums; but we won't delete those empty Albums for now, so that if the user also added other Songs to those empty Albums, we can keep those Albums in the same place, instead of re-adding them to the top.
 			songsToUpdateAndFreshMediaItems: songsToUpdateAndFreshMediaItems)
 		
-		let existingAlbums = Album.allFetched(
-			via: managedObjectContext,
-			ordered: false) // Order doesn't matter, because we identify Albums by their albumPersistentID.
-		let existingCollections = Collection.allFetched(via: managedObjectContext) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
+		let existingAlbums = Album.allFetched(ordered: false, context: context) // Order doesn't matter, because we identify Albums by their albumPersistentID.
+		let existingCollections = Collection.allFetched(context: context) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
 		
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, which we shouldn't do yet, as mentioned above.
 			// This might make new Albums, and if it does, it might make new Collections.
@@ -98,8 +96,7 @@ extension MusicLibraryManager {
 			true,
 			forKey: defaultsKeyHasEverImported)
 		
-		managedObjectContext.tryToSave()
-//		managedObjectContext.parent!.tryToSave()
+		context.tryToSave()
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
@@ -116,12 +113,8 @@ extension MusicLibraryManager {
 	) {
 		os_signpost(.begin, log: importLog, name: "5. Cleanup")
 		
-		let allCollections = Collection.allFetched(
-			via: managedObjectContext,
-			ordered: false) // Order doesn't matter, because this is for reindexing the Albums within each Collection.
-		let allAlbums = Album.allFetched(
-			via: managedObjectContext,
-			ordered: false) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
+		let allCollections = Collection.allFetched(ordered: false, context: context) // Order doesn't matter, because this is for reindexing the Albums within each Collection.
+		let allAlbums = Album.allFetched(ordered: false, context: context) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		
 		os_signpost(.begin, log: cleanupLog, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
@@ -157,7 +150,6 @@ extension MusicLibraryManager {
 		let mediaItemsWithReleaseDates = mediaItems.filter { $0.releaseDate != nil }
 		os_signpost(.end, log: cleanupLog, name: "Filter out MPMediaItems without releaseDates")
 		
-		// Note: We have a copy of this in createManagedObjects: groupedByAlbumPersistentID.
 		os_signpost(.begin, log: cleanupLog, name: "Group MPMediaItems by albumPersistentID")
 		let mediaItemsByAlbumPersistentID
 		= Dictionary(grouping: mediaItemsWithReleaseDates) { $0.albumPersistentID }
@@ -173,9 +165,11 @@ extension MusicLibraryManager {
 			
 			os_signpost(.begin, log: cleanupLog, name: "Find the release dates associated with this Album")
 			// For Albums with no release dates, using `guard` to return early is slightly faster than optional chaining.
-			guard let matchingMediaItems = mediaItemsByAlbumPersistentID[
-				MPMediaEntityPersistentID(bitPattern: album.albumPersistentID)
-			] else {
+			guard
+				let matchingMediaItems = mediaItemsByAlbumPersistentID[
+					MPMediaEntityPersistentID(bitPattern: album.albumPersistentID)
+				]
+			else {
 				os_signpost(.end, log: cleanupLog, name: "Find the release dates associated with this Album")
 				return
 			}

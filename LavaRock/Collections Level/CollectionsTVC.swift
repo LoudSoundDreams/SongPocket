@@ -156,11 +156,14 @@ final class CollectionsTVC:
 			completion?()
 		}
 		
-		if contentState() == .noCollections {
+		switch contentState() {
+		case .allowAccess, .loading, .blank, .noCollections:
 			setEditing(false, animated: true)
+		case .oneOrMoreCollections:
+			break
 		}
 		
-		didChangeRowsOrSelectedRows() // Disables the "Edit" button if contentState() == .noCollections
+		didChangeRowsOrSelectedRows() // Refreshes the "Edit" button
 	}
 	
 	// MARK: - Setup

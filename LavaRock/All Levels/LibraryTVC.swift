@@ -58,7 +58,7 @@ class LibraryTVC:
 	var sortOptionsGrouped = [[SortOption]]()
 	
 	// "Constants" that subclasses can optionally customize
-	var managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child context when in "moving Albums" mode.
+	var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child context when in "moving Albums" mode.
 	var numberOfRowsInSectionAboveLibraryItems = 0
 	var viewingModeTopLeftButtons = [UIBarButtonItem]()
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
@@ -138,8 +138,8 @@ class LibraryTVC:
 	lazy var sectionOfLibraryItems: SectionOfLibraryItems
 	= SectionOfCollectionsOrAlbums( // Default value for CollectionsTVC
 		entityName: entityName,
-		managedObjectContext: managedObjectContext,
-		container: nil)
+		container: nil,
+		context: context)
 	var isImportingChanges = false
 	var needsRefreshLibraryItemsOnViewDidAppear = false
 	var isAnimatingDuringRefreshTableView = 0
@@ -383,12 +383,12 @@ class LibraryTVC:
 			let libraryTVC = segue.destination as? LibraryTVC,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
-			libraryTVC.managedObjectContext = managedObjectContext
+			libraryTVC.context = context
 			let selectedItem = libraryItem(for: selectedIndexPath)
 			libraryTVC.sectionOfLibraryItems = SectionOfCollectionsOrAlbums(
 				entityName: libraryTVC.entityName,
-				managedObjectContext: managedObjectContext,
-				container: selectedItem)
+				container: selectedItem,
+				context: context)
 		}
 		
 		super.prepare(for: segue, sender: sender)

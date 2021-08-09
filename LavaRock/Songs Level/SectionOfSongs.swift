@@ -14,19 +14,17 @@ struct SectionOfSongs: SectionOfLibraryItems {
 	
 	// Variables
 	var shouldShowDiscNumbers = false
-//	var mpMediaItems = [NSManagedObjectID: MPMediaItem]()
 	
 	// MARK: - Methods
 	
 	init(
-		managedObjectContext: NSManagedObjectContext,
-		container: NSManagedObject?
+		container: NSManagedObject?,
+		context: NSManagedObjectContext
 	) {
 		self.container = container
 		
-		private_items = itemsFetched(via: managedObjectContext) // Doesn't trigger the property observer
+		private_items = itemsFetched(context: context) // Doesn't trigger the property observer
 		refreshShouldShowDiscNumbers()
-//		refreshMPMediaItems()
 	}
 	
 	private mutating func refreshShouldShowDiscNumbers() {
@@ -36,38 +34,6 @@ struct SectionOfSongs: SectionOfLibraryItems {
 		let result = !containsOnlyOneDisc
 		shouldShowDiscNumbers = result
 	}
-	
-//	private mutating func refreshMPMediaItems() {
-//		mpMediaItems.removeAll() //
-//
-//
-//		let keyValuePairs: [(NSManagedObjectID, MPMediaItem)] = items.compactMap {
-//			guard let mpMediaItem = ($0 as? Song)?.mpMediaItem() else { // SHOW-STOPPER: MPMediaItem properties are outdated
-//				return nil
-//			}
-//			print("")
-//			print(String(describing: mpMediaItem.title))
-//			print(String(describing: mpMediaItem.albumArtist))
-//			print(String(describing: mpMediaItem.artist))
-//			return ($0.objectID, mpMediaItem)
-//		}
-//		let newDictionary = Dictionary(uniqueKeysWithValues: keyValuePairs)
-//		mpMediaItems = newDictionary
-//	}
-	
-//	func mpMediaItemFast(for song: NSManagedObject) -> MPMediaItem? {
-//		if let cachedMPMediaItem = mpMediaItems[song.objectID] {
-//			return cachedMPMediaItem
-//		} else {
-//			return (song as? Song)?.mpMediaItem()
-//		}
-//	}
-//
-//	func mpMediaItemsCompactFast(for songs: [NSManagedObject]) -> [MPMediaItem] {
-//		return songs.compactMap {
-//			mpMediaItemFast(for: $0)
-//		}
-//	}
 	
 	// MARK: - SectionOfLibraryItems
 	
@@ -86,7 +52,6 @@ struct SectionOfSongs: SectionOfLibraryItems {
 			}
 			
 			refreshShouldShowDiscNumbers()
-//			refreshMPMediaItems()
 		}
 	}
 	

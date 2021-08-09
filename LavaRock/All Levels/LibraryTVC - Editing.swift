@@ -15,7 +15,7 @@ extension LibraryTVC {
 		animated: Bool
 	) {
 		if isEditing {
-			managedObjectContext.tryToSave()
+			context.tryToSave()
 		}
 		
 		super.setEditing(

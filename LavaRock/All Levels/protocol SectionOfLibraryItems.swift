@@ -48,9 +48,7 @@ extension SectionOfLibraryItems {
 	}
 	
 	// Similar to allFetched in Collection, in Album, and in Song.
-	func itemsFetched(
-		via managedObjectContext: NSManagedObjectContext
-	) -> [NSManagedObject] {
+	func itemsFetched(context: NSManagedObjectContext) -> [NSManagedObject] {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		if let container = container {
@@ -58,14 +56,12 @@ extension SectionOfLibraryItems {
 				format: "container == %@",
 				container)
 		}
-		return managedObjectContext.objectsFetched(for: fetchRequest)
+		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	func refreshContainer(
-		via managedObjectContext: NSManagedObjectContext
-	) {
+	func refreshContainer(context: NSManagedObjectContext) {
 		guard let container = container else { return }
-		managedObjectContext.refresh(container, mergeChanges: true)
+		context.refresh(container, mergeChanges: true)
 	}
 	
 }

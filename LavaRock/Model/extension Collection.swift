@@ -6,6 +6,8 @@
 //
 
 import CoreData
+import MediaPlayer
+import OSLog
 
 extension Collection: LibraryItem {
 	// Enables [Collection].reindex()
@@ -16,6 +18,10 @@ extension Collection: LibraryContainer {
 }
 
 extension Collection {
+	
+	static let log = OSLog(
+		subsystem: "LavaRock.Collection",
+		category: .pointsOfInterest)
 	
 	// If nil, `proposedTitle` was nil or "".
 	static func validatedTitleOptional(
@@ -36,18 +42,55 @@ extension Collection {
 		}
 	}
 	
+	// MARK: - Initializers
+	
+	convenience init(
+		for mediaItem: MPMediaItem,
+		afterAllExistingCollectionsCount numberOfExistingCollections: Int,
+		context: NSManagedObjectContext
+	) {
+		os_signpost(.begin, log: Self.log, name: "Make a Collection at the bottom")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make a Collection at the bottom")
+		}
+		
+		self.init(context: context)
+		
+		title = mediaItem.albumArtist ?? Album.placeholderAlbumArtist
+		index = Int64(numberOfExistingCollections)
+	}
+	
+	// Use init(for:afterAllExistingCollectionsCount:context:) if possible. It's faster.
+	convenience init(
+		for mediaItem: MPMediaItem,
+		before collectionsToInsertBefore: [Collection],
+		context: NSManagedObjectContext
+	) {
+		os_signpost(.begin, log: Self.log, name: "Make a Collection at the top")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make a Collection at the top")
+		}
+		
+		collectionsToInsertBefore.forEach { $0.index += 1 }
+		
+		self.init(context: context)
+		
+		title = mediaItem.albumArtist ?? Album.placeholderAlbumArtist
+		index = 0
+	}
+	
 	// MARK: - Core Data
 	
 	// Similar to Album.allFetched and Song.allFetched.
 	static func allFetched(
-		via managedObjectContext: NSManagedObjectContext,
-		ordered: Bool = true
+		ordered: Bool = true,
+		context: NSManagedObjectContext
 	) -> [Collection] {
 		let fetchRequest: NSFetchRequest<Collection> = fetchRequest()
 		if ordered {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
-		return managedObjectContext.objectsFetched(for: fetchRequest)
+		return context.objectsFetched(for: fetchRequest)
 	}
 	
 	// Similar to Album.songs(sorted:).
@@ -67,15 +110,13 @@ extension Collection {
 		}
 	}
 	
-	static func deleteAllEmpty(
-		via managedObjectContext: NSManagedObjectContext
-	) {
-		var allCollections = Collection.allFetched(via: managedObjectContext)
+	static func deleteAllEmpty(context: NSManagedObjectContext) {
+		var allCollections = Collection.allFetched(context: context)
 		
 		allCollections.indices.reversed().forEach { index in
 			let collection = allCollections[index]
 			if collection.isEmpty() {
-				managedObjectContext.delete(collection)
+				context.delete(collection)
 				allCollections.remove(at: index)
 			}
 		}
@@ -89,14 +130,14 @@ extension Collection {
 		_ selectedCollections: [Collection],
 		title titleOfCombinedCollection: String,
 		index indexOfCombinedCollection: Int64,
-		via managedObjectContext: NSManagedObjectContext
+		context: NSManagedObjectContext
 	) -> Collection {
 		var selectedAlbums = selectedCollections.flatMap { selectedCollection in
 			selectedCollection.albums()
 		}
 		selectedAlbums.reindex()
 		
-		let combinedCollection = Collection(context: managedObjectContext)
+		let combinedCollection = Collection(context: context)
 		combinedCollection.index = indexOfCombinedCollection
 		combinedCollection.title = titleOfCombinedCollection
 		selectedAlbums.forEach { $0.container = combinedCollection }

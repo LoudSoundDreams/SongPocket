@@ -11,13 +11,13 @@ struct SectionOfCollectionsOrAlbums: SectionOfLibraryItems {
 	
 	init(
 		entityName: String,
-		managedObjectContext: NSManagedObjectContext,
-		container: NSManagedObject?
+		container: NSManagedObject?,
+		context: NSManagedObjectContext
 	) {
 		self.entityName = entityName
 		self.container = container
 		
-		private_items = itemsFetched(via: managedObjectContext) // Doesn't trigger the property observer
+		private_items = itemsFetched(context: context) // Doesn't trigger the property observer
 	}
 	
 	// MARK: - SectionOfLibraryItems

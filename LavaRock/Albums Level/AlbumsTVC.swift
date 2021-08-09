@@ -126,11 +126,11 @@ final class AlbumsTVC:
 			let songsTVC = segue.destination as? SongsTVC,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
-			songsTVC.managedObjectContext = managedObjectContext
+			songsTVC.context = context
 			let selectedItem = libraryItem(for: selectedIndexPath)
 			songsTVC.sectionOfLibraryItems = SectionOfSongs(
-				managedObjectContext: managedObjectContext,
-				container: selectedItem)
+				container: selectedItem,
+				context: context)
 			
 			return
 		}

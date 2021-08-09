@@ -58,13 +58,13 @@ extension MusicLibraryManager {
 		}
 		os_signpost(.end, log: updateLog, name: "Initial sort")
 		
-		os_signpost(.begin, log: updateLog, name: "Initialize existingAlbumsByAlbumPersistentID")
+		os_signpost(.begin, log: updateLog, name: "Initialize existingAlbums")
 		var existingAlbums_byInt64 = [Int64: Album]()
 		sortedFilteredTuples.forEach { (song, _) in
 			let oldAlbum = song.container!
-			existingAlbums_byInt64[oldAlbum.albumPersistentID] = oldAlbum
+			existingAlbums_byInt64[oldAlbum.albumPersistentID] = oldAlbum // Note: I've seen an obscure bug where we had two Albums with the same albumPersistentID.
 		}
-		os_signpost(.end, log: updateLog, name: "Initialize existingAlbumsByAlbumPersistentID")
+		os_signpost(.end, log: updateLog, name: "Initialize existingAlbums")
 		
 		sortedFilteredTuples.reversed().forEach { (song, mediaItem) in
 			os_signpost(.begin, log: updateLog, name: "Update one Album–Song relationship")
@@ -78,9 +78,8 @@ extension MusicLibraryManager {
 			os_signpost(.end, log: updateLog, name: "Get one Song's fresh albumPersistentID")
 			
 			// If this Song's albumPersistentID has stayed the same, move on to the next one.
-			let oldAlbumPersistentID = song.container!.albumPersistentID
 			guard
-				newAlbumPersistentID_asInt64 != oldAlbumPersistentID
+				newAlbumPersistentID_asInt64 != song.container!.albumPersistentID
 			else { return }
 			
 			// This Song's albumPersistentID has changed.
@@ -96,15 +95,11 @@ extension MusicLibraryManager {
 			} else {
 				// Otherwise, make the Album to move the Song to …
 				os_signpost(.begin, log: updateLog, name: "Move a Song to a new Album")
-				
 				let existingCollection = song.container!.container!
-				existingCollection.albums(sorted: false).forEach { $0.index += 1 }
-				
-				let newAlbum = Album(context: managedObjectContext)
-				newAlbum.albumPersistentID = newAlbumPersistentID_asInt64
-				newAlbum.index = 0
-				newAlbum.container = existingCollection
-				// We'll set releaseDateEstimate later.
+				let newAlbum = Album(
+					for: mediaItem,
+					   atBeginningOf: existingCollection,
+					   context: context)
 				
 				// … and then move the Song to that Album.
 				song.index = 0
@@ -117,7 +112,7 @@ extension MusicLibraryManager {
 			}
 		}
 		
-		// We'll delete empty Albums and Collections and reindex Songs and Albums later.
+		// We'll delete empty Albums and Collections later.
 	}
 	
 }
