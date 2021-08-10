@@ -53,7 +53,7 @@ extension CollectionsTVC {
 				at: .top,
 				animated: true)
 		} completion: { _ in
-			self.setItemsAndRefreshToMatch(newItems: newItems)
+			self.setItemsAndRefresh(newItems: newItems)
 		}
 	}
 	
@@ -102,7 +102,7 @@ extension CollectionsTVC {
 		// Update the data source and table view.
 		var newItems = sectionOfLibraryItems.items
 		newItems.remove(at: indexOfNewCollection)
-		setItemsAndRefreshToMatch(newItems: newItems)
+		setItemsAndRefresh(newItems: newItems)
 	}
 	
 	private func renameAndOpenNewCollection(

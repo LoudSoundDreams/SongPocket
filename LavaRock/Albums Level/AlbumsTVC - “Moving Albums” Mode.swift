@@ -47,7 +47,7 @@ extension AlbumsTVC {
 		Collection.deleteAllEmpty(context: context) // Note: This checks the contents of and reindexes destinationCollection, too.
 		
 		// Update the table view.
-		setItemsAndRefreshToMatch(newItems: newItems) {
+		setItemsAndRefresh(newItems: newItems) {
 			self.context.tryToSave()
 			self.context.parent!.tryToSave() // Save the main context now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.
 			

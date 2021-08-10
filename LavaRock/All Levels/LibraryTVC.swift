@@ -142,7 +142,7 @@ class LibraryTVC:
 		context: context)
 	var isImportingChanges = false
 	var needsRefreshLibraryItemsOnViewDidAppear = false
-	var isAnimatingDuringRefreshTableView = 0
+	var isAnimatingDuringSetItemsAndRefresh = 0
 	
 	// MARK: - Setup
 	
@@ -169,13 +169,13 @@ class LibraryTVC:
 			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		}
 		
-		refreshNavigationItemTitle()
+		refreshToReflectContainer()
 		
 		setBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
 	}
 	
 	// Easy to override.
-	func refreshNavigationItemTitle() {
+	func refreshToReflectContainer() {
 	}
 	
 	// MARK: Setup Events
@@ -237,12 +237,12 @@ class LibraryTVC:
 	private func deleteAllRowsThenExit() {
 		let allIndexPaths = tableView.allIndexPaths()
 		
-		isAnimatingDuringRefreshTableView += 1
+		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
 		} completion: { _ in
-			self.isAnimatingDuringRefreshTableView -= 1
-			if self.isAnimatingDuringRefreshTableView == 0 { // See matching comment in setItemsAndRefreshToMatch.
+			self.isAnimatingDuringSetItemsAndRefresh -= 1
+			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See matching comment in setItemsAndRefresh.
 				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move Albums to…" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
 					self.performSegue(
 						withIdentifier: "Removed All Contents",
@@ -254,7 +254,7 @@ class LibraryTVC:
 		didChangeRowsOrSelectedRows() // Do this before the completion closure, so that we disable all the editing buttons during the animation.
 	}
 	
-	final func setItemsAndRefreshToMatch(
+	final func setItemsAndRefresh(
 //		section: Int,
 		newItems: [NSManagedObject],
 		indexesOfNewItemsToSelect: [Int] = [Int](),
@@ -299,7 +299,7 @@ class LibraryTVC:
 				indexOfSectionOfLibraryItem: section)
 		}
 		
-		isAnimatingDuringRefreshTableView += 1
+		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
 			tableView.insertRows(at: indexPathsToInsert, with: .middle)
@@ -307,8 +307,8 @@ class LibraryTVC:
 				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
 		} completion: { _ in
-			self.isAnimatingDuringRefreshTableView -= 1
-			if self.isAnimatingDuringRefreshTableView == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
+			self.isAnimatingDuringSetItemsAndRefresh -= 1
+			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
 				completion?()
 			}
 		}

@@ -79,7 +79,7 @@ extension LibraryTVC {
 		selectedItems.reversed().forEach { newItems.insert($0, at: 0) }
 		
 		// Update the data source and table view.
-		setItemsAndRefreshToMatch(newItems: newItems) {
+		setItemsAndRefresh(newItems: newItems) {
 			self.tableView.deselectAllRows(animated: true)
 			self.didChangeRowsOrSelectedRows()
 		}
@@ -101,7 +101,7 @@ extension LibraryTVC {
 		selectedItems.forEach { newItems.append($0) }
 		
 		// Update the data source and table view.
-		setItemsAndRefreshToMatch(newItems: newItems) {
+		setItemsAndRefresh(newItems: newItems) {
 			self.tableView.deselectAllRows(animated: true)
 			self.didChangeRowsOrSelectedRows()
 		}
@@ -156,7 +156,7 @@ extension LibraryTVC {
 		}
 		
 		// Update the data source and table view.
-		setItemsAndRefreshToMatch(newItems: newItems) {
+		setItemsAndRefresh(newItems: newItems) {
 			self.tableView.deselectAllRows(animated: true)
 			self.didChangeRowsOrSelectedRows()
 		}

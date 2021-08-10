@@ -13,7 +13,7 @@ extension AlbumsTVC: AlbumMoverDelegate {
 	// That timing looks good: we remove the Albums while dismissing the sheet, so you catch just a glimpse of the Albums disappearing, even though it technically doesn't make sense.
 	final func didMoveAlbumsThenCommitDismiss() {
 		let newItems = sectionOfLibraryItems.itemsFetched(context: context)
-		setItemsAndRefreshToMatch(newItems: newItems)
+		setItemsAndRefresh(newItems: newItems)
 	}
 	
 }

@@ -43,7 +43,7 @@ final class CollectionsTVC:
 	}()
 	
 	// Variables
-	var shouldContentStateBeBlank = false
+	var isAboutToSetItemsAndRefresh = false
 	var sectionOfCollectionsBeforeCombining: SectionOfLibraryItems?
 	
 	// MARK: "Moving Albums" Mode
@@ -58,7 +58,7 @@ final class CollectionsTVC:
 		if MPMediaLibrary.authorizationStatus() != .authorized {
 			return .allowAccess
 		}
-		if shouldContentStateBeBlank { // You must check shouldContentStateBeBlank before checking isImportingChanges.
+		if isAboutToSetItemsAndRefresh { // You must check this before checking isImportingChanges.
 			return .blank
 		}
 		if isImportingChanges {
@@ -78,9 +78,9 @@ final class CollectionsTVC:
 	
 	final func prepareToRefreshLibraryItems() {
 		if contentState() == .loading || contentState() == .noCollections {
-			shouldContentStateBeBlank = true // contentState() is now .blank
+			isAboutToSetItemsAndRefresh = true // contentState() is now .blank
 			refreshToReflectContentState()
-			shouldContentStateBeBlank = false // WARNING: Unsafe; contentState() is now .loading or .noCollections, but the UI doesn't reflect that.
+			isAboutToSetItemsAndRefresh = false // WARNING: Unsafe; contentState() is now .loading or .noCollections, but the UI doesn't reflect that.
 		}
 	}
 	

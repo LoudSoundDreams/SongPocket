@@ -96,7 +96,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-	final override func refreshNavigationItemTitle() {
+	final override func refreshToReflectContainer() {
 		guard let containingCollection = sectionOfLibraryItems.container as? Collection else { return }
 		title = containingCollection.title
 	}
