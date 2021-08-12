@@ -9,15 +9,13 @@ import UIKit
 
 extension LibraryTVC {
 	
-	// MARK: - Numbers
-	
 	// MARK: - Editing
 	
 	final override func tableView(
 		_ tableView: UITableView,
 		canEditRowAt indexPath: IndexPath
 	) -> Bool {
-		return indexPath.row >= numberOfRowsInSectionAboveLibraryItems
+		return indexPath.row >= numberOfRowsAboveLibraryItemsInSection
 	}
 	
 	// MARK: Reordering
@@ -44,7 +42,7 @@ extension LibraryTVC {
 		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
 		toProposedIndexPath proposedDestinationIndexPath: IndexPath
 	) -> IndexPath {
-		if proposedDestinationIndexPath.row < numberOfRowsInSectionAboveLibraryItems {
+		if proposedDestinationIndexPath.row < numberOfRowsAboveLibraryItemsInSection {
 			return indexPathFor(
 				indexOfLibraryItem: 0,
 				indexOfSectionOfLibraryItem: proposedDestinationIndexPath.section)
@@ -60,7 +58,7 @@ extension LibraryTVC {
 		_ tableView: UITableView,
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
-		guard indexPath.row >= numberOfRowsInSectionAboveLibraryItems else {
+		guard indexPath.row >= numberOfRowsAboveLibraryItemsInSection else {
 			return false
 		}
 		return true
@@ -84,7 +82,7 @@ extension LibraryTVC {
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
-		guard indexPath.row >= numberOfRowsInSectionAboveLibraryItems else {
+		guard indexPath.row >= numberOfRowsAboveLibraryItemsInSection else {
 			return nil
 		}
 		return indexPath

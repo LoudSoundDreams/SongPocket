@@ -28,7 +28,7 @@ extension CollectionsTVC {
 		case .noCollections:
 			return 2
 		case .oneOrMoreCollections:
-			return sectionOfLibraryItems.items.count + numberOfRowsInSectionAboveLibraryItems
+			return sectionOfLibraryItems.items.count + numberOfRowsAboveLibraryItemsInSection
 		}
 	}
 	

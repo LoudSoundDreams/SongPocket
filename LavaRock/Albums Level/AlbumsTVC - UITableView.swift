@@ -22,7 +22,7 @@ extension AlbumsTVC {
 		if sectionOfLibraryItems.isEmpty() {
 			return 0
 		} else {
-			return sectionOfLibraryItems.items.count + numberOfRowsInSectionAboveLibraryItems
+			return sectionOfLibraryItems.items.count + numberOfRowsAboveLibraryItemsInSection
 		}
 	}
 	

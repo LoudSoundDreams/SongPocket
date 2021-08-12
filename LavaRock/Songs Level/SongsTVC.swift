@@ -30,7 +30,7 @@ final class SongsTVC:
 			[.reverse],
 		]
 		
-		numberOfRowsInSectionAboveLibraryItems = 2
+		numberOfRowsAboveLibraryItemsInSection = 2
 	}
 	
 	// MARK: Setting Up UI

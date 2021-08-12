@@ -58,8 +58,8 @@ class LibraryTVC:
 	var sortOptionsGrouped = [[SortOption]]()
 	
 	// "Constants" that subclasses can optionally customize
-	var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // Replace this with a child context when in "moving Albums" mode.
-	var numberOfRowsInSectionAboveLibraryItems = 0
+	var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	var numberOfRowsAboveLibraryItemsInSection = 0
 	var viewingModeTopLeftButtons = [UIBarButtonItem]()
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
 	lazy var topRightButtons = [editButtonItem]
@@ -197,7 +197,7 @@ class LibraryTVC:
 	
 	// MARK: - Accessing Data
 	
-	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsInSectionAboveLibraryItems.
+	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItemsInSection.
 	// That's a hack to let us include rows for album artwork and album info in SongsTVC, above the rows for library items.
 	final func libraryItem(for indexPath: IndexPath) -> NSManagedObject {
 		let indexOfLibraryItem = indexOfLibraryItem(for: indexPath)
@@ -205,7 +205,7 @@ class LibraryTVC:
 	}
 	
 	final func indexOfLibraryItem(for indexPath: IndexPath) -> Int {
-		return indexPath.row - numberOfRowsInSectionAboveLibraryItems
+		return indexPath.row - numberOfRowsAboveLibraryItemsInSection
 	}
 	
 	final func indexPaths(
@@ -213,7 +213,7 @@ class LibraryTVC:
 	) -> [IndexPath] {
 		return tableView.indexPathsForRows(
 			inSection: 0, // Multisection: Get the right SectionOfLibraryItems.
-			firstRow: numberOfRowsInSectionAboveLibraryItems)
+			firstRow: numberOfRowsAboveLibraryItemsInSection)
 	}
 	
 	final func indexPathFor(
@@ -221,7 +221,7 @@ class LibraryTVC:
 		indexOfSectionOfLibraryItem: Int
 	) -> IndexPath {
 		return IndexPath(
-			row: indexOfLibraryItem + numberOfRowsInSectionAboveLibraryItems,
+			row: indexOfLibraryItem + numberOfRowsAboveLibraryItemsInSection,
 			section: indexOfSectionOfLibraryItem)
 	}
 	
