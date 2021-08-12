@@ -25,6 +25,7 @@
 		072C049B2692AB4400F44AC5 /* extension UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */; };
 		072F859F26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */; };
 		072F85A126B7872F0062323C /* extension UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072F85A026B7872F0062323C /* extension UIColor.swift */; };
+		072FD02726C30BB90053369B /* func cleanUpManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* func cleanUpManagedObjects.swift */; };
 		0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */; };
 		0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Albums - Views.swift */; };
 		0736E3EA24B95FD600A15420 /* extension Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* extension Album.swift */; };
@@ -122,6 +123,7 @@
 		072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIAlertController.swift"; sourceTree = "<group>"; };
 		072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NoItemsBackgroundManager.swift"; sourceTree = "<group>"; };
 		072F85A026B7872F0062323C /* extension UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIColor.swift"; sourceTree = "<group>"; };
+		072FD02626C30BB90053369B /* func cleanUpManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func cleanUpManagedObjects.swift"; sourceTree = "<group>"; };
 		0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIBarButtonItem.swift"; sourceTree = "<group>"; };
 		0732DDBF257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		0732DDC0257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				07A4F9042519E72C0065C87E /* func updateManagedObjects.swift */,
 				07A4F9092519E7D20065C87E /* func createManagedObjects.swift */,
 				07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */,
+				072FD02626C30BB90053369B /* func cleanUpManagedObjects.swift */,
 			);
 			path = MusicLibraryManager;
 			sourceTree = "<group>";
@@ -597,6 +600,7 @@
 				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Moving Albums” Mode.swift in Sources */,
 				07D157ED24D952A600FDF26A /* protocol AlbumMover.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* func createManagedObjects.swift in Sources */,
+				072FD02726C30BB90053369B /* func cleanUpManagedObjects.swift in Sources */,
 				07642C7E268FFEDC00B66BB8 /* protocol SectionOfLibraryItems.swift in Sources */,
 				07865B322567031C00DBEB26 /* CollectionsTVC + NowPlayingIndicatorManager.swift in Sources */,
 				078FDD0F2638872100779AF2 /* extension Array.swift in Sources */,
