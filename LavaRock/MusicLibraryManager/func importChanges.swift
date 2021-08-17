@@ -40,21 +40,22 @@ extension MusicLibraryManager {
 		
 		// Find out which Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems that we don't have Songs for. We'll make new managed objects for them.
-		var songsToUpdateAndFreshMediaItems = [(Song, MPMediaItem)]() // We'll sort these eventually.
+		var potentiallyOutdatedSongsAndFreshMediaItems = [(Song, MPMediaItem)]() // We'll sort these eventually.
 		var songsToDelete = Set<Song>()
 		
-		let mediaItemTuples = queriedMediaItems.map { mediaItem in
+		let tuplesForMediaItems = queriedMediaItems.map { mediaItem in
 			(Int64(bitPattern: mediaItem.persistentID),
 			 mediaItem)
 		}
-		var mediaItems_byInt64 = Dictionary(uniqueKeysWithValues: mediaItemTuples)
+		var mediaItems_byInt64 = Dictionary(uniqueKeysWithValues: tuplesForMediaItems)
 		
 		existingSongs.forEach { existingSong in
 			let persistentID_asInt64 = existingSong.persistentID
 			if let potentiallyUpdatedMediaItem = mediaItems_byInt64[persistentID_asInt64] {
 				// We have an existing Song for this MPMediaItem. We might need to update it.
-				songsToUpdateAndFreshMediaItems.append(
-					(existingSong, potentiallyUpdatedMediaItem)
+				potentiallyOutdatedSongsAndFreshMediaItems.append(
+					(existingSong,
+					 potentiallyUpdatedMediaItem)
 				)
 				
 				mediaItems_byInt64[persistentID_asInt64] = nil
@@ -68,14 +69,14 @@ extension MusicLibraryManager {
 		os_signpost(.end, log: importLog, name: "Initial parse")
 		
 		updateManagedObjects( // Update before creating and deleting, so that we can easily put new Songs above modified Songs.
-			// This might make new Albums, but not new Collections or Songs.
-			// This doesn't delete any Songs, Albums, or Collections.
-			// This might also leave behind empty Albums, because all the Songs in them were moved to other Albums; but we won't delete those empty Albums for now, so that if the user also added other Songs to those empty Albums, we can keep those Albums in the same place, instead of re-adding them to the top.
-			songsToUpdateAndFreshMediaItems: songsToUpdateAndFreshMediaItems)
+			// This also deletes all but one Album with any given albumPersistentID.
+			// This might create Albums, but not Collections or Songs.
+			// This might delete Albums, but not Collections or Songs.
+			// This also might leave behind empty Albums, because all the Songs in them were moved to other Albums. We don't delete those empty Albums here, so that if the user also added other Songs to those Albums, we can keep those Albums in the same place, instead of re-adding them to the top.
+			potentiallyOutdatedSongsAndFreshMediaItems: potentiallyOutdatedSongsAndFreshMediaItems)
 		
 		let existingAlbums = Album.allFetched(ordered: false, context: context) // Order doesn't matter, because we identify Albums by their albumPersistentID.
 		let existingCollections = Collection.allFetched(context: context) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
-		
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, which we shouldn't do yet, as mentioned above.
 			// This might make new Albums, and if it does, it might make new Collections.
 			for: newMediaItems,

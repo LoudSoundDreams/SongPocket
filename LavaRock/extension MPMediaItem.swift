@@ -134,15 +134,15 @@ extension MPMediaItem {
 		}
 		
 		// Include disc number
-		let discNumberText = String(discNumber)
-		let trackNumberText: String = {
+		let discNumberString = String(discNumber)
+		let trackNumberString: String = {
 			if albumTrackNumber == Self.unknownTrackNumber {
 				return ""
 			} else {
 				return String(albumTrackNumber)
 			}
 		}()
-		return discNumberText + "-" /*hyphen*/ + trackNumberText
+		return discNumberString + "-" /*hyphen*/ + trackNumberString
 	}
 	
 }

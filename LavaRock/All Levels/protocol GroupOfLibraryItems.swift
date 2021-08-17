@@ -1,5 +1,5 @@
 //
-//  protocol SectionOfLibraryItems.swift
+//  protocol GroupOfLibraryItems.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-02.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-protocol SectionOfLibraryItems {
+protocol GroupOfLibraryItems {
 	var entityName: String { get }
 	var container: NSManagedObject? { get }
 	
@@ -41,11 +41,7 @@ protocol SectionOfLibraryItems {
 	// Also reindexes the `index` attribute on each item.
 }
 
-extension SectionOfLibraryItems {
-	
-	func isEmpty() -> Bool {
-		return items.isEmpty
-	}
+extension GroupOfLibraryItems {
 	
 	// Similar to allFetched in Collection, in Album, and in Song.
 	func itemsFetched(context: NSManagedObjectContext) -> [NSManagedObject] {

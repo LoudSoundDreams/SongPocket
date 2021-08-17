@@ -7,6 +7,12 @@
 
 import UIKit
 
+final class AllCollectionsCell: UITableViewCell {
+	@IBOutlet var allLabel: UILabel!
+	
+	// ? set accessibilityTrait to .button
+}
+
 final class AllowAccessOrLoadingCell: UITableViewCell {
 	@IBOutlet var allowAccessOrLoadingLabel: UILabel!
 	@IBOutlet var spinnerView: UIActivityIndicatorView!

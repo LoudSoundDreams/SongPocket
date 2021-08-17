@@ -1,5 +1,5 @@
 //
-//  SectionOfCollectionsOrAlbums.swift
+//  GroupOfCollectionsOrAlbums.swift
 //  LavaRock
 //
 //  Created by h on 2021-03-04.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-struct SectionOfCollectionsOrAlbums: SectionOfLibraryItems {
+struct GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
 	
 	init(
 		entityName: String,
@@ -20,7 +20,7 @@ struct SectionOfCollectionsOrAlbums: SectionOfLibraryItems {
 		private_items = itemsFetched(context: context) // Doesn't trigger the property observer
 	}
 	
-	// MARK: - SectionOfLibraryItems
+	// MARK: - GroupOfLibraryItems
 	
 	// Constants
 	let entityName: String

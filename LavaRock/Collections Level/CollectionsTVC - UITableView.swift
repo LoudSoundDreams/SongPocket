@@ -12,6 +12,10 @@ extension CollectionsTVC {
 	
 	// MARK: - Numbers
 	
+//	final override func numberOfSections(in tableView: UITableView) -> Int {
+//		return Section.allCases.count
+//	}
+	
 	final override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
@@ -20,17 +24,48 @@ extension CollectionsTVC {
 	}
 	
 	final func newNumberOfRows(forSection section: Int) -> Int {
-		switch contentState() {
-		case .allowAccess, .loading:
-			return 1
-		case .blank:
-			return 0
-		case .noCollections:
-			return 2
-		case .oneOrMoreCollections:
-			return sectionOfLibraryItems.items.count + numberOfRowsAboveLibraryItemsInSection
-		}
+//		guard let sectionCase = Section(rawValue: section) else {
+//			return 0
+//		}
+//
+//		switch sectionCase {
+//		case .all:
+//			return 1
+//		case .collections:
+			
+			
+			switch contentState() {
+			case .allowAccess, .loading:
+				return 1
+			case .blank:
+				return 0
+			case .noCollections:
+				return 2
+			case .oneOrMoreCollections:
+				return viewModel.numberOfRows(inSection: section)
+			}
+			
+			
+//		}
 	}
+	
+	// MARK: - Headers
+	
+//	final override func tableView(
+//		_ tableView: UITableView,
+//		titleForHeaderInSection section: Int
+//	) -> String? {
+//		guard let sectionCase = Section(rawValue: section) else {
+//			return nil
+//		}
+//
+//		switch sectionCase {
+//		case .all:
+//			return nil
+//		case .collections:
+//			return "Collections" // TO DO: Localize
+//		}
+//	}
 	
 	// MARK: - Cells
 	
@@ -38,29 +73,78 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		switch contentState() {
-		case .allowAccess, .loading:
-			return allowAccessOrLoadingCell(forRowAt: indexPath)
-		case .blank: // Should never run
-			return UITableViewCell()
-		case .noCollections:
-			switch indexPath.row {
-			case 0:
-				return noCollectionsPlaceholderCell(forRowAt: indexPath)
-			case 1:
-				return openMusicCell(forRowAt: indexPath)
-			default: // Should never run
+//		guard let sectionCase = Section(rawValue: indexPath.section) else {
+//			return UITableViewCell()
+//		}
+//
+//		switch sectionCase {
+//		case .all:
+//			return allCell(forRowAt: indexPath)
+//		case .collections:
+			
+			
+			switch contentState() {
+			case .allowAccess, .loading:
+				return allowAccessOrLoadingCell(forRowAt: indexPath)
+			case .blank: // Should never run
 				return UITableViewCell()
+			case .noCollections:
+				switch indexPath.row {
+				case 0:
+					return noCollectionsPlaceholderCell(forRowAt: indexPath)
+				case 1:
+					return openMusicCell(forRowAt: indexPath)
+				default: // Should never run
+					return UITableViewCell()
+				}
+			case .oneOrMoreCollections:
+				return collectionCell(forRowAt: indexPath)
 			}
-		case .oneOrMoreCollections:
-			return collectionCell(forRowAt: indexPath)
+			
+			
+//		}
+	}
+	
+	
+	// MARK: "All" Cell
+	
+	private func allCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "All", for: indexPath)
+				as? AllCollectionsCell
+		else {
+			return UITableViewCell()
 		}
+		
+		func disable() {
+			cell.allLabel.textColor = .placeholderText
+			cell.isUserInteractionEnabled = false
+			cell.accessoryType = .none
+		}
+		
+		func enable() {
+			cell.allLabel.textColor = .label
+			cell.isUserInteractionEnabled = true
+			cell.accessoryType = .disclosureIndicator
+		}
+		
+		if isEditing {
+			disable()
+		} else {
+			switch contentState() {
+			case .allowAccess, .loading, .blank, .noCollections:
+				disable()
+			case .oneOrMoreCollections:
+				enable()
+			}
+		}
+		
+		return cell
 	}
 	
 	// MARK: "Allow Access" or "Loading…" Cell
 	
 	private func allowAccessOrLoadingCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading Cell", for: indexPath)
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading", for: indexPath)
 				as? AllowAccessOrLoadingCell
 		else {
 			return UITableViewCell()
@@ -120,10 +204,19 @@ extension CollectionsTVC {
 	// MARK: Collection Cell
 	
 	private func collectionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		// Get the data to put into the cell.
-		guard let collection = libraryItem(for: indexPath) as? Collection else {
+		guard let collection = viewModel.item(for: indexPath) as? Collection else {
 			return UITableViewCell()
 		}
+		
+		// Title
+		let collectionTitle = collection.title
+		
+		// "Now playing" indicator
+		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
+		let isPlaying = sharedPlayer?.playbackState == .playing
+		let nowPlayingIndicator = NowPlayingIndicator(
+			isInPlayer: isInPlayer,
+			isPlaying: isPlaying)
 		
 		// Make, configure, and return the cell.
 		
@@ -133,12 +226,7 @@ extension CollectionsTVC {
 			return UITableViewCell()
 		}
 		
-		cell.titleLabel.text = collection.title
-		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
-		let isPlaying = sharedPlayer?.playbackState == .playing
-		let nowPlayingIndicator = NowPlayingIndicator(
-			isInPlayer: isInPlayer,
-			isPlaying: isPlaying)
+		cell.titleLabel.text = collectionTitle
 		cell.apply(nowPlayingIndicator)
 		
 		if let albumMoverClipboard = albumMoverClipboard {
@@ -173,7 +261,7 @@ extension CollectionsTVC {
 	private func renameFocusedCollectionHandler(
 		_ sender: UIAccessibilityCustomAction
 	) -> Bool {
-		let indexPathsOfAllCollections = indexPaths(forIndexOfSectionOfLibraryItems: 0)
+		let indexPathsOfAllCollections = viewModel.indexPathsForAllItems()
 		let focusedIndexPath = indexPathsOfAllCollections.first {
 			let cell = tableView.cellForRow(at: $0)
 			return cell?.accessibilityElementIsFocused() ?? false
@@ -188,6 +276,22 @@ extension CollectionsTVC {
 	}
 	
 	// MARK: - Editing
+	
+//	final override func tableView(
+//		_ tableView: UITableView,
+//		canEditRowAt indexPath: IndexPath
+//	) -> Bool {
+//		guard let sectionCase = Section(rawValue: indexPath.section) else {
+//			return false
+//		}
+//		
+//		switch sectionCase {
+//		case .all:
+//			return false
+//		case .collections:
+//			return super.tableView(tableView, canEditRowAt: indexPath)
+//		}
+//	}
 	
 	final override func tableView(
 		_ tableView: UITableView,
@@ -218,6 +322,26 @@ extension CollectionsTVC {
 					shouldBeginMultipleSelectionInteractionAt: indexPath)
 			}
 		}
+	}
+	
+	final override func tableView(
+		_ tableView: UITableView,
+		willSelectRowAt indexPath: IndexPath
+	) -> IndexPath? {
+		switch contentState() {
+		case .allowAccess:
+			break
+		case .loading:
+			break
+		case .blank: // Should never run
+			break
+		case .noCollections:
+			break
+		case .oneOrMoreCollections:
+			return super.tableView(tableView, willSelectRowAt: indexPath)
+		}
+		
+		return indexPath
 	}
 	
 	final override func tableView(

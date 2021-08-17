@@ -19,11 +19,7 @@ extension SongsTVC {
 	) -> Int {
 		setOrRemoveNoItemsBackground()
 		
-		if sectionOfLibraryItems.isEmpty() {
-			return 0
-		} else {
-			return sectionOfLibraryItems.items.count + numberOfRowsAboveLibraryItemsInSection
-		}
+		return viewModel.numberOfRows(inSection: section)
 	}
 	
 	// MARK: - Cells
@@ -49,62 +45,71 @@ extension SongsTVC {
 	// MARK: Album Artwork Cell
 	
 	private func albumArtworkCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		// Get the data to put into the cell.
-		guard let album = sectionOfLibraryItems.container as? Album else {
+		guard let album = (viewModel as? SongsViewModel)?.container(forSection: indexPath.section) else {
 			return UITableViewCell()
 		}
+		
+		// Artwork
 		let representativeItem = album.mpMediaItemCollection()?.representativeItem
-		let cellImage = representativeItem?.artwork?.image(at: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
+		let artworkImage = representativeItem?.artwork?.image(at: CGSize(
+			width: UIScreen.main.bounds.width,
+			height: UIScreen.main.bounds.width))
 		
 		// Make, configure, and return the cell.
 		
-		guard let albumArtworkCell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell", for: indexPath)
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell", for: indexPath)
 				as? AlbumArtworkCell
 		else {
 			return UITableViewCell()
 		}
-		albumArtworkCell.artworkImageView.image = cellImage
 		
-		albumArtworkCell.accessibilityUserInputLabels = [""]
+		cell.artworkImageView.image = artworkImage
 		
-		return albumArtworkCell
+		cell.accessibilityUserInputLabels = [""]
+		
+		return cell
 	}
 	
 	// MARK: Album Info Cell
 	
 	private func albumInfoCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		// Get the data to put into the cell.
-		guard let album = sectionOfLibraryItems.container as? Album else {
+		guard let album = (viewModel as? SongsViewModel)?.container(forSection: indexPath.section) else {
 			return UITableViewCell()
 		}
-		let cellHeading: String = album.albumArtistFormattedOrPlaceholder() // Don't let this be nil.
-		let cellSubtitle = album.releaseDateEstimateFormatted()
+		
+		// Album artist
+		let albumArtist: String = album.albumArtistFormattedOrPlaceholder() // Don't let this be nil.
+		
+		// Release date
+		let releaseDateString = album.releaseDateEstimateFormatted()
 		
 		// Make, configure, and return the cell.
-		if let cellSubtitle = cellSubtitle {
-			guard let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell", for: indexPath)
+		if let releaseDateString = releaseDateString {
+			guard let cell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell", for: indexPath)
 					as? AlbumInfoCell
 			else {
 				return UITableViewCell()
 			}
-			albumInfoCell.albumArtistLabel.text = cellHeading
-			albumInfoCell.releaseDateLabel.text = cellSubtitle
 			
-			albumInfoCell.accessibilityUserInputLabels = [""]
+			cell.albumArtistLabel.text = albumArtist
+			cell.releaseDateLabel.text = releaseDateString
 			
-			return albumInfoCell
+			cell.accessibilityUserInputLabels = [""]
+			
+			return cell
 			
 		} else { // We couldn't determine the album's release date.
-			guard let albumInfoCell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell Without Release Date", for: indexPath)
+			guard let cell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell Without Release Date", for: indexPath)
 					as? AlbumInfoCellWithoutReleaseDate
 			else {
 				return UITableViewCell()
 			}
-			albumInfoCell.albumArtistLabel.text = cellHeading
 			
-			albumInfoCell.accessibilityUserInputLabels = [""]
+			cell.albumArtistLabel.text = albumArtist
 			
-			return albumInfoCell
+			cell.accessibilityUserInputLabels = [""]
+			
+			return cell
 		}
 	}
 	
@@ -112,27 +117,38 @@ extension SongsTVC {
 	
 	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Get the data to put into the cell.
-		guard let song = libraryItem(for: indexPath) as? Song else {
+		guard let song = viewModel.item(for: indexPath) as? Song else {
 			return UITableViewCell()
 		}
+		
 		let mediaItem = song.mpMediaItem()
 		
+		// Title
 		let songTitle: String // Don't let this be nil.
 		= mediaItem?.title ?? MPMediaItem.placeholderTitle
 		
+		// "Now playing" indicator
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
 		
-		let shouldShowDiscNumbers = (sectionOfLibraryItems as? SectionOfSongs)?.shouldShowDiscNumbers ?? false
-		let trackNumberText: String // Don't let this be nil.
+		guard let viewModel = viewModel as? SongsViewModel else {
+			return UITableViewCell()
+		}
+		
+		// Track number
+		let shouldShowDiscNumbers = viewModel.shouldShowDiscNumbers(forSection: indexPath.section)
+		let trackNumberString: String // Don't let this be nil.
 		= mediaItem?.trackNumberFormatted(includeDisc: shouldShowDiscNumbers)
 		?? MPMediaItem.placeholderTrackNumber
 		
+		// Artist
+		let album = viewModel.container(forSection: indexPath.section)
+		let albumArtist = album.albumArtist() // Can be nil
+		
 		// Make, configure, and return the cell.
-		let albumArtist = (sectionOfLibraryItems.container as? Album)?.albumArtist() // Can be nil
 		if
 			let songArtist = mediaItem?.artist,
 			songArtist != albumArtist
@@ -148,7 +164,7 @@ extension SongsTVC {
 			cell.artistLabel.text = songArtist
 			
 			cell.apply(nowPlayingIndicator)
-			cell.trackNumberLabel.text = trackNumberText
+			cell.trackNumberLabel.text = trackNumberString
 			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
 			
 			cell.accessibilityUserInputLabels = [songTitle]
@@ -165,7 +181,7 @@ extension SongsTVC {
 			cell.titleLabel.text = songTitle
 			
 			cell.apply(nowPlayingIndicator)
-			cell.trackNumberLabel.text = trackNumberText
+			cell.trackNumberLabel.text = trackNumberString
 			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
 			
 			cell.accessibilityUserInputLabels = [songTitle]
@@ -182,7 +198,7 @@ extension SongsTVC {
 	) {
 		if isEditing {
 		} else {
-			guard let song = libraryItem(for: indexPath) as? Song else { return }
+			guard let song = viewModel.item(for: indexPath) as? Song else { return }
 			if let selectedCell = tableView.cellForRow(at: indexPath) {
 				showSongActions(for: song, popoverAnchorView: selectedCell)
 			}

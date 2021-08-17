@@ -96,9 +96,13 @@ final class AlbumsTVC:
 		}
 	}
 	
-	final override func refreshToReflectContainer() {
-		guard let containingCollection = sectionOfLibraryItems.container as? Collection else { return }
-		title = containingCollection.title
+	final override func refreshNavigationItemTitle() {
+		if
+			viewModel.groups.count == 1,
+			let containingCollection = viewModel.groups[0].container as? Collection
+		{
+			title = containingCollection.title
+		}
 	}
 	
 	// MARK: Setup Events
@@ -111,8 +115,12 @@ final class AlbumsTVC:
 	final override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		
-		moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
-		moveButton.isEnabled = allowsMove()
+		let viewModel = viewModel as? AlbumsViewModel
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		moveOrOrganizeButton.isEnabled = viewModel?.allowsMoveOrOrganize(
+			selectedIndexPaths: selectedIndexPaths) ?? false
+		moveButton.isEnabled = viewModel?.allowsMove(
+			selectedIndexPaths: selectedIndexPaths) ?? false
 	}
 	
 	// MARK: - Navigation
@@ -127,15 +135,15 @@ final class AlbumsTVC:
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
 			songsTVC.context = context
-			let selectedItem = libraryItem(for: selectedIndexPath)
-			songsTVC.sectionOfLibraryItems = SectionOfSongs(
-				container: selectedItem,
-				context: context)
-			
-			return
+			let container = viewModel.item(for: selectedIndexPath)
+			let sections = [
+				GroupOfSongs(
+					container: container,
+					context: context)
+			]
+			songsTVC.viewModel = SongsViewModel(
+				groups: sections)
 		}
-		
-		super.prepare(for: segue, sender: sender)
 	}
 	
 }

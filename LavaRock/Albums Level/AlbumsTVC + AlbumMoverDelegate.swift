@@ -12,8 +12,20 @@ extension AlbumsTVC: AlbumMoverDelegate {
 	// Call this from the "move Albums to…" sheet after completing the animation for inserting the Albums we moved. Here, in the non-modal AlbumsTVC, this method removes the rows for those Albums.
 	// That timing looks good: we remove the Albums while dismissing the sheet, so you catch just a glimpse of the Albums disappearing, even though it technically doesn't make sense.
 	final func didMoveAlbumsThenCommitDismiss() {
-		let newItems = sectionOfLibraryItems.itemsFetched(context: context)
-		setItemsAndRefresh(newItems: newItems)
+		// similar to refreshLibraryItemsPart2
+		let numberOfGroups = viewModel.groups.count
+		let indicesOfAllGroups = Array(0 ..< numberOfGroups)
+		let sectionsAndNewItems = indicesOfAllGroups.map { indexOfGroup in
+			(
+				indexOfGroup + viewModel.numberOfSectionsAboveLibraryItems,
+				viewModel.groups[indexOfGroup].itemsFetched(context: context)
+			)
+		}
+		sectionsAndNewItems.forEach { (section, newItems) in
+			setItemsAndRefresh(
+				newItems: newItems,
+				section: section)
+		}
 	}
 	
 }

@@ -58,7 +58,11 @@ extension SongsTVC {
 		}
 		
 		// Disable the actions that we shouldn't offer for the last Song in the section.
-		if song == sectionOfLibraryItems.items.last {
+		if
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
+			let lastSongInGroup = viewModel.group(forSection: selectedIndexPath.section).items.last,
+			song == lastSongInGroup
+		{
 			enqueueAlbumStartingHereAction.isEnabled = false
 		}
 		
@@ -85,8 +89,7 @@ extension SongsTVC {
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		
-		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
-		let chosenSongs = sectionOfLibraryItems.items[indexOfSelectedSong...]
+		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
 		os_signpost(
 			.begin,
 			log: Self.log,
@@ -94,14 +97,6 @@ extension SongsTVC {
 		let chosenMediaItems = chosenSongs.compactMap {
 			($0 as? Song)?.mpMediaItem()
 		}
-//		let chosenMediaItems: [MPMediaItem] = {
-//			guard let sectionOfSongs = sectionOfLibraryItems as? SectionOfSongs else {
-//				return chosenSongs.compactMap {
-//					($0 as? Song)?.mpMediaItem()
-//				}
-//			}
-//			return sectionOfSongs.mpMediaItemsCompactFast(for: Array(chosenSongs))
-//		}()
 		os_signpost(
 			.end,
 			log: Self.log,
@@ -126,8 +121,7 @@ extension SongsTVC {
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		
-		let indexOfSelectedSong = indexOfLibraryItem(for: selectedIndexPath)
-		let chosenSongs = sectionOfLibraryItems.items[indexOfSelectedSong...]
+		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
 		os_signpost(
 			.begin,
 			log: Self.log,
@@ -135,14 +129,6 @@ extension SongsTVC {
 		let chosenMediaItems = chosenSongs.compactMap {
 			($0 as? Song)?.mpMediaItem()
 		}
-//		let chosenMediaItems: [MPMediaItem] = {
-//			guard let sectionOfSongs = sectionOfLibraryItems as? SectionOfSongs else {
-//				return chosenSongs.compactMap {
-//					($0 as? Song)?.mpMediaItem()
-//				}
-//			}
-//			return sectionOfSongs.mpMediaItemsCompactFast(for: Array(chosenSongs))
-//		}()
 		os_signpost(
 			.end,
 			log: Self.log,
@@ -161,7 +147,7 @@ extension SongsTVC {
 		}
 		
 		if
-			let selectedSong = libraryItem(for: selectedIndexPath) as? Song,
+			let selectedSong = viewModel.item(for: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		{
 			let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
@@ -177,9 +163,8 @@ extension SongsTVC {
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		else { return }
 		
-		let indexOfSong = indexOfLibraryItem(for: selectedIndexPath)
 		guard
-			let selectedSong = sectionOfLibraryItems.items[indexOfSong] as? Song,
+			let selectedSong = viewModel.item(for: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		else { return }
 		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])

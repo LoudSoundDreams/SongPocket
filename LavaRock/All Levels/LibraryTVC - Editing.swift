@@ -10,101 +10,19 @@ import CoreData
 
 extension LibraryTVC {
 	
-	final override func setEditing(
-		_ editing: Bool,
-		animated: Bool
-	) {
+	// Overrides of this method should call super (this implementation).
+//	override func setEditing(_ editing: Bool, animated: Bool) {
+	final override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
 			context.tryToSave()
 		}
 		
-		super.setEditing(
-			editing,
-			animated: animated)
+		super.setEditing(editing, animated: animated)
 		
 		setBarButtons(animated: animated)
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they'll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
 		// During WWDC 2021, I did a lab in UIKit where the Apple engineer said that this is the best practice for doing this.
-	}
-	
-	// MARK: - Allowing
-	
-	// You should only be allowed to sort contiguous items within the same SectionOfLibraryItems.
-	final func allowsSort() -> Bool {
-		guard !sectionOfLibraryItems.isEmpty() else {
-			return false
-		}
-		
-		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			return true // Multisection: Only if we have exactly 1 SectionOfLibraryItems.
-		} else {
-			return tableView.indexPathsForSelectedRowsNonNil.isContiguousWithinSameSection()
-		}
-	}
-	
-	final func allowsMoveToTopOrBottom() -> Bool {
-		return allowsFloat()
-	}
-	
-	final func allowsFloat() -> Bool {
-		guard !sectionOfLibraryItems.isEmpty() else {
-			return false
-		}
-		
-		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			return false
-		} else {
-			return tableView.indexPathsForSelectedRowsNonNil.isWithinSameSection()
-		}
-	}
-	
-	final func allowsSink() -> Bool {
-		return allowsFloat()
-	}
-	
-	// MARK: - Moving to Top
-	
-	final func floatSelectedItemsToTopOfSection() {
-		guard allowsFloat() else { return }
-		
-		// Make a new data source.
-		
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
-		let indexesOfSelectedItems = selectedIndexPaths.map { indexOfLibraryItem(for: $0) }
-		let selectedItems = selectedIndexPaths.map { libraryItem(for: $0) }
-		var newItems = sectionOfLibraryItems.items
-		indexesOfSelectedItems.reversed().forEach { newItems.remove(at: $0) }
-		
-		selectedItems.reversed().forEach { newItems.insert($0, at: 0) }
-		
-		// Update the data source and table view.
-		setItemsAndRefresh(newItems: newItems) {
-			self.tableView.deselectAllRows(animated: true)
-			self.didChangeRowsOrSelectedRows()
-		}
-	}
-	
-	// MARK: - Moving to Bottom
-	
-	final func sinkSelectedItemsToBottomOfSection() {
-		guard allowsSink() else { return }
-		
-		// Make a new data source.
-		
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
-		let indexesOfSelectedItems = selectedIndexPaths.map { indexOfLibraryItem(for: $0) }
-		let selectedItems = selectedIndexPaths.map { libraryItem(for: $0) }
-		var newItems = sectionOfLibraryItems.items
-		indexesOfSelectedItems.reversed().forEach { newItems.remove(at: $0) }
-		
-		selectedItems.forEach { newItems.append($0) }
-		
-		// Update the data source and table view.
-		setItemsAndRefresh(newItems: newItems) {
-			self.tableView.deselectAllRows(animated: true)
-			self.didChangeRowsOrSelectedRows()
-		}
 	}
 	
 	// MARK: - Sorting
@@ -126,108 +44,91 @@ extension LibraryTVC {
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
-		guard allowsSort() else { return }
-		
-		// Get the indexes of the items to sort.
-		let sourceIndexPaths: [IndexPath] = {
-			if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-				return indexPaths(forIndexOfSectionOfLibraryItems: 0)
+		// Get the rows to sort.
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		let indexPathsToSort: [IndexPath] = {
+			if selectedIndexPaths.isEmpty {
+				if viewModel.groups.count == 1 {
+					return viewModel.indexPaths(forIndexOfGroup: 0)
+				} else {
+					return []
+				}
 			} else {
-				return tableView.indexPathsForSelectedRowsNonNil.sorted()
+				return selectedIndexPaths
 			}
 		}()
-		let sourceIndexesOfItems = sourceIndexPaths.map { indexOfLibraryItem(for: $0) }
 		
-		// Get the items to sort.
-		let itemsToSort = sourceIndexesOfItems.map { sectionOfLibraryItems.items[$0] }
-		
-		// Sort the items.
-		let sortedItems = sorted(
-			itemsToSort,
-			sortOptionLocalizedName: sortOptionLocalizedName)
+		guard
+			viewModel.allowsSort(selectedIndexPaths: selectedIndexPaths),
+			let section = indexPathsToSort.first?.section
+		else { return }
 		
 		// Make a new data source.
-		var newItems = sectionOfLibraryItems.items
-		sourceIndexesOfItems.reversed().forEach { newItems.remove(at: $0) }
-		sortedItems.indices.forEach {
-			let sortedItem = sortedItems[$0]
-			let destinationIndex = sourceIndexesOfItems[$0]
-			newItems.insert(sortedItem, at: destinationIndex)
-		}
+		let rowsToSort = indexPathsToSort.map { $0.row }
+		let newItems = viewModel.itemsAfterSorting(
+			rows: rowsToSort,
+			section: section,
+			sortOptionLocalizedName: sortOptionLocalizedName)
 		
 		// Update the data source and table view.
-		setItemsAndRefresh(newItems: newItems) {
+		setItemsAndRefresh(
+			newItems: newItems,
+			section: section
+		) {
 			self.tableView.deselectAllRows(animated: true)
 			self.didChangeRowsOrSelectedRows()
 		}
 	}
 	
-	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
-	private func sorted(
-		_ items: [NSManagedObject],
-		sortOptionLocalizedName: String?
-	) -> [NSManagedObject] {
-		switch sortOptionLocalizedName {
+	// MARK: - Moving to Top
+	
+	final func floatSelectedItemsToTopOfSection() {
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		
-		case LocalizedString.title:
-			guard let collections = items as? [Collection] else {
-				return items
-			}
-			return collections.sorted {
-				let collectionTitle0 = $0.title ?? ""
-				let collectionTitle1 = $1.title ?? ""
-				return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
-			}
+		guard
+			viewModel.allowsFloat(selectedIndexPaths: selectedIndexPaths),
+			let section = selectedIndexPaths.first?.section
+		else { return }
 		
-		// Albums only
-		case LocalizedString.newestFirst:
-			guard let albums = items as? [Album] else {
-				return items
-			}
-			return albums.sortedMaintainingOrderWhen {
-				$0.releaseDateEstimate == $1.releaseDateEstimate
-			} areInOrder: {
-				$0.precedesForSortOptionNewestFirst($1)
-			}
-		case LocalizedString.oldestFirst:
-			guard let albums = items as? [Album] else {
-				return items
-			}
-			return albums.sortedMaintainingOrderWhen {
-				$0.releaseDateEstimate == $1.releaseDateEstimate
-			} areInOrder: {
-				$0.precedesForSortOptionOldestFirst($1)
-			}
-			
-		// Songs only
-		case LocalizedString.trackNumber:
-			guard let songs = items as? [Song] else {
-				return items
-			}
-			// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
-			let songsAndMediaItems = songs.map { ($0, $0.mpMediaItem()) }
-			let sorted = songsAndMediaItems.sortedMaintainingOrderWhen {
-				let leftMediaItem = $0.1
-				let rightMediaItem = $1.1
-				return leftMediaItem?.discNumber == rightMediaItem?.discNumber
-				&& leftMediaItem?.albumTrackNumber == rightMediaItem?.albumTrackNumber
-			} areInOrder: {
-				guard
-					let leftMediaItem = $0.1,
-					let rightMediaItem = $1.1
-				else {
-					return true
-				}
-				return leftMediaItem.precedesForSortOptionTrackNumber(rightMediaItem)
-			}
-			return sorted.map { $0.0 }
-			
-		case LocalizedString.reverse:
-			return items.reversed()
-			
-		default:
-			return items
-			
+		// Make a new data source.
+		let selectedRows = selectedIndexPaths.map { $0.row }
+		let newItems = viewModel.itemsAfterFloatingToTop(
+			selectedRows: selectedRows,
+			section: section)
+		
+		// Update the data source and table view.
+		setItemsAndRefresh(
+			newItems: newItems,
+			section: section
+		) {
+			self.tableView.deselectAllRows(animated: true)
+			self.didChangeRowsOrSelectedRows() // Can we do this all the time, automatically, in setItemsAndRefresh?
+		}
+	}
+	
+	// MARK: - Moving to Bottom
+	
+	final func sinkSelectedItemsToBottomOfSection() {
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		
+		guard
+			viewModel.allowsSink(selectedIndexPaths: selectedIndexPaths),
+			let section = selectedIndexPaths.first?.section
+		else { return }
+		
+		// Make a new data source.
+		let selectedRows = selectedIndexPaths.map { $0.row }
+		let newItems = viewModel.itemsAfterSinkingToBottom(
+			selectedRows: selectedRows,
+			section: section)
+		
+		// Update the data source and table view.
+		setItemsAndRefresh(
+			newItems: newItems,
+			section: section
+		) {
+			self.tableView.deselectAllRows(animated: true)
+			self.didChangeRowsOrSelectedRows()
 		}
 	}
 	

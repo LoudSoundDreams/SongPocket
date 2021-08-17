@@ -25,6 +25,11 @@ final class CollectionsTVC:
 		case oneOrMoreCollections
 	}
 	
+//	enum Section: Int, CaseIterable {
+//		case all
+//		case collections
+//	}
+	
 	// MARK: - Properties
 	
 	// "Constants"
@@ -44,7 +49,7 @@ final class CollectionsTVC:
 	
 	// Variables
 	var isAboutToSetItemsAndRefresh = false
-	var sectionOfCollectionsBeforeCombining: SectionOfLibraryItems?
+	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
 	
 	// MARK: "Moving Albums" Mode
 	
@@ -62,13 +67,13 @@ final class CollectionsTVC:
 			return .blank
 		}
 		if isImportingChanges {
-			if sectionOfLibraryItems.isEmpty() {
+			if viewModel.isEmpty() {
 				return .loading
 			} else {
 				return .oneOrMoreCollections
 			}
 		} else {
-			if sectionOfLibraryItems.isEmpty() {
+			if viewModel.isEmpty() {
 				return .noCollections
 			} else {
 				return .oneOrMoreCollections
@@ -80,7 +85,7 @@ final class CollectionsTVC:
 		if contentState() == .loading || contentState() == .noCollections {
 			isAboutToSetItemsAndRefresh = true // contentState() is now .blank
 			refreshToReflectContentState()
-			isAboutToSetItemsAndRefresh = false // WARNING: Unsafe; contentState() is now .loading or .noCollections, but the UI doesn't reflect that.
+			isAboutToSetItemsAndRefresh = false // WARNING: contentState() is now .loading or .noCollections, but the UI doesn't reflect that.
 		}
 	}
 	
@@ -94,64 +99,83 @@ final class CollectionsTVC:
 	private func refreshToReflectContentState(
 		completion: (() -> Void)? = nil
 	) {
-		let indexPathsToDelete: [IndexPath]
-		let indexPathsToInsert: [IndexPath]
-		let indexPathsToReload: [IndexPath]
+		let toDelete: [IndexPath]
+		let toInsert: [IndexPath]
+		let toReload: [IndexPath]
+		let animationForReload: UITableView.RowAnimation
 		
-		let oldIndexPaths = tableView.allIndexPaths()
+//		let inAllSection = tableView.indexPathsForRows(
+//			inSection: Section.all.rawValue,
+//			firstRow: 0)
+//		let indexOfCollectionsSection = Section.collections.rawValue
+		let indexOfCollectionsSection = 0
+		let oldInCollectionsSection = tableView.indexPathsForRows(
+			inSection: indexOfCollectionsSection,
+			firstRow: 0)
 		
 		switch contentState() {
 			
 		case
 				.allowAccess, // Currently unused
 				.loading:
-			let sectionForCollections = 0
-			let newNumberOfRowsInSectionForCollections = newNumberOfRows(forSection: sectionForCollections)
-			let newIndexPaths = Array(0..<newNumberOfRowsInSectionForCollections).map {
-				IndexPath(row: $0, section: sectionForCollections)
+			let newNumberOfRowsInCollectionsSection = newNumberOfRows(forSection: indexOfCollectionsSection)
+			let newInCollectionsSection
+			= Array(0 ..< newNumberOfRowsInCollectionsSection).map { indexOfRow in
+				IndexPath(row: indexOfRow, section: indexOfCollectionsSection)
 			}
-			switch tableView.numberOfRows(inSection: sectionForCollections) {
+			switch oldInCollectionsSection.count {
 			case 0: // Currently unused
-				indexPathsToDelete = oldIndexPaths // Empty
-				indexPathsToInsert = newIndexPaths
-				indexPathsToReload = []
+				toDelete = oldInCollectionsSection // Empty
+				toInsert = newInCollectionsSection
+//				toReload = inAllSection
+				toReload = []
+				animationForReload = .none
 			case 1: // "Allow Access" -> "Loading…"
-				indexPathsToDelete = []
-				indexPathsToInsert = []
-				indexPathsToReload = newIndexPaths
+				toDelete = []
+				toInsert = []
+//				toReload = inAllSection + newInCollectionsSection
+				toReload = newInCollectionsSection
+				animationForReload = .fade
 			default: // "No Collections" -> "Loading…"
-				indexPathsToDelete = oldIndexPaths
-				indexPathsToInsert = newIndexPaths
-				indexPathsToReload = []
+				toDelete = oldInCollectionsSection
+				toInsert = newInCollectionsSection
+//				toReload = inAllSection
+				toReload = []
+				animationForReload = .none
 			}
 			
 		case .blank: // "Loading…" or "No Collections" -> blank
-			indexPathsToDelete = oldIndexPaths
-			indexPathsToInsert = []
-			indexPathsToReload = []
+			toDelete = oldInCollectionsSection
+			toInsert = []
+//			toReload = inAllSection
+			toReload = []
+			animationForReload = .none
 			
 		case .noCollections:
-			indexPathsToDelete = oldIndexPaths
-			indexPathsToReload = []
+			toDelete = oldInCollectionsSection
 			
-			let sectionForCollections = 0
-			let newNumberOfRows = newNumberOfRows(forSection: sectionForCollections)
-			let newIndexPaths = Array(0..<newNumberOfRows).map {
-				IndexPath(row: $0, section: sectionForCollections)
+//			toReload = inAllSection
+			toReload = []
+			animationForReload = .none
+			
+			let newNumberOfRows = newNumberOfRows(forSection: indexOfCollectionsSection)
+			let newIndexPaths = Array(0 ..< newNumberOfRows).map { indexOfRow in
+				IndexPath(row: indexOfRow, section: indexOfCollectionsSection)
 			}
-			indexPathsToInsert = newIndexPaths
+			toInsert = newIndexPaths
 			
 		case .oneOrMoreCollections: // Importing changes with existing Collections
-			indexPathsToDelete = []
-			indexPathsToInsert = []
-			indexPathsToReload = []
+			toDelete = []
+			toInsert = []
+			toReload = []
+			animationForReload = .none
 			
 		}
 		
 		tableView.performBatchUpdates {
-			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
-			tableView.insertRows(at: indexPathsToInsert, with: .middle)
-			tableView.reloadRows(at: indexPathsToReload, with: .fade)
+			tableView.deleteRows(at: toDelete, with: .middle)
+			tableView.insertRows(at: toInsert, with: .middle)
+			tableView.reloadRows(at: toReload, with: animationForReload) // move this outside the block?
 		} completion: { _ in
 			completion?()
 		}
@@ -175,6 +199,11 @@ final class CollectionsTVC:
 			[.title],
 			[.reverse],
 		]
+		
+//		numberOfSectionsAboveLibraryItems = 1
+//
+//
+//		title = "Library" // TO DO: Localize
 	}
 	
 	final override func viewDidLoad() {
@@ -273,7 +302,10 @@ final class CollectionsTVC:
 	final override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		
-		combineButton.isEnabled = allowsCombine()
+		let viewModel = viewModel as? CollectionsViewModel
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		combineButton.isEnabled = viewModel?.allowsCombine(
+			selectedIndexPaths: selectedIndexPaths) ?? false
 	}
 	
 	// MARK: - Navigation
@@ -284,12 +316,22 @@ final class CollectionsTVC:
 	) {
 		if
 			segue.identifier == "Drill Down in Library",
-			let albumsTVC = segue.destination as? AlbumsTVC
+			let albumsTVC = segue.destination as? AlbumsTVC,
+			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
 			albumsTVC.albumMoverClipboard = albumMoverClipboard
+			
+			albumsTVC.context = context
+			let container = viewModel.item(for: selectedIndexPath)
+			let sections = [
+				GroupOfCollectionsOrAlbums(
+					entityName: albumsTVC.entityName,
+					container: container,
+					context: context)
+			]
+			albumsTVC.viewModel = AlbumsViewModel(
+				groups: sections)
 		}
-		
-		super.prepare(for: segue, sender: sender)
 	}
 	
 }

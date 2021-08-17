@@ -59,7 +59,6 @@ class LibraryTVC:
 	
 	// "Constants" that subclasses can optionally customize
 	var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-	var numberOfRowsAboveLibraryItemsInSection = 0
 	var viewingModeTopLeftButtons = [UIBarButtonItem]()
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
 	lazy var topRightButtons = [editButtonItem]
@@ -135,11 +134,16 @@ class LibraryTVC:
 	
 	// MARK: Variables
 	
-	lazy var sectionOfLibraryItems: SectionOfLibraryItems
-	= SectionOfCollectionsOrAlbums( // Default value for CollectionsTVC
-		entityName: entityName,
-		container: nil,
-		context: context)
+	lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
+		let groups = [
+			GroupOfCollectionsOrAlbums(
+				entityName: entityName,
+				container: nil,
+				context: context)
+		]
+		return CollectionsViewModel(
+			groups: groups)
+	}()
 	var isImportingChanges = false
 	var needsRefreshLibraryItemsOnViewDidAppear = false
 	var isAnimatingDuringSetItemsAndRefresh = 0
@@ -169,13 +173,13 @@ class LibraryTVC:
 			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		}
 		
-		refreshToReflectContainer()
+		refreshNavigationItemTitle()
 		
 		setBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
 	}
 	
 	// Easy to override.
-	func refreshToReflectContainer() {
+	func refreshNavigationItemTitle() {
 	}
 	
 	// MARK: Setup Events
@@ -193,36 +197,6 @@ class LibraryTVC:
 	
 	deinit {
 		endObservingNotifications()
-	}
-	
-	// MARK: - Accessing Data
-	
-	// WARNING: Never use sectionOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItemsInSection.
-	// That's a hack to let us include rows for album artwork and album info in SongsTVC, above the rows for library items.
-	final func libraryItem(for indexPath: IndexPath) -> NSManagedObject {
-		let indexOfLibraryItem = indexOfLibraryItem(for: indexPath)
-		return sectionOfLibraryItems.items[indexOfLibraryItem] // Multisection: Get the right SectionOfLibraryItems.
-	}
-	
-	final func indexOfLibraryItem(for indexPath: IndexPath) -> Int {
-		return indexPath.row - numberOfRowsAboveLibraryItemsInSection
-	}
-	
-	final func indexPaths(
-		forIndexOfSectionOfLibraryItems indexOfSectionOfLibraryItems: Int
-	) -> [IndexPath] {
-		return tableView.indexPathsForRows(
-			inSection: 0, // Multisection: Get the right SectionOfLibraryItems.
-			firstRow: numberOfRowsAboveLibraryItemsInSection)
-	}
-	
-	final func indexPathFor(
-		indexOfLibraryItem: Int,
-		indexOfSectionOfLibraryItem: Int
-	) -> IndexPath {
-		return IndexPath(
-			row: indexOfLibraryItem + numberOfRowsAboveLibraryItemsInSection,
-			section: indexOfSectionOfLibraryItem)
 	}
 	
 	// MARK: - Refreshing Table View
@@ -255,55 +229,45 @@ class LibraryTVC:
 	}
 	
 	final func setItemsAndRefresh(
-//		section: Int,
 		newItems: [NSManagedObject],
 		indexesOfNewItemsToSelect: [Int] = [Int](),
+		section: Int,
 		completion: (() -> Void)? = nil
 	) {
-		let section = 0
-		
-		let oldItems = sectionOfLibraryItems.items
+		let oldItems = viewModel.group(forSection: section).items
 		let changes = oldItems.indexesOfChanges(toMatch: newItems) { oldItem, newItem in
 			oldItem.objectID == newItem.objectID
 		}
 		
-		sectionOfLibraryItems.setItems(newItems)
+		let indexOfGroup = viewModel.indexOfGroup(forSection: section)
+		
+		viewModel.groups[indexOfGroup].setItems(newItems)
 		
 		guard !newItems.isEmpty else {
 			refreshToReflectNoItems()
 			return
 		}
 		
-		let indexPathsToDelete = changes.deletes.map {
-			indexPathFor(
-				indexOfLibraryItem: $0,
-				indexOfSectionOfLibraryItem: section)
+		let toDelete = changes.deletes.map {
+			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
 		}
-		let indexPathsToInsert = changes.inserts.map {
-			indexPathFor(
-				indexOfLibraryItem: $0,
-				indexOfSectionOfLibraryItem: section)
+		let toInsert = changes.inserts.map {
+			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
 		}
-		let indexPathsToMove = changes.moves.map { oldIndex, newIndex in
-			(indexPathFor(
-				indexOfLibraryItem: oldIndex,
-				indexOfSectionOfLibraryItem: section),
-			 indexPathFor(
-				indexOfLibraryItem: newIndex,
-				indexOfSectionOfLibraryItem: section))
+		let toMove = changes.moves.map { oldIndex, newIndex in
+			(viewModel.indexPathFor(indexOfItemInGroup: oldIndex, indexOfGroup: indexOfGroup),
+			 viewModel.indexPathFor(indexOfItemInGroup: newIndex, indexOfGroup: indexOfGroup))
 		}
 		
-		let indexPathsToSelect = indexesOfNewItemsToSelect.map {
-			indexPathFor(
-				indexOfLibraryItem: $0,
-				indexOfSectionOfLibraryItem: section)
+		let toSelect = indexesOfNewItemsToSelect.map {
+			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
 		}
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates {
-			tableView.deleteRows(at: indexPathsToDelete, with: .middle)
-			tableView.insertRows(at: indexPathsToInsert, with: .middle)
-			indexPathsToMove.forEach { sourceIndexPath, destinationIndexPath in
+			tableView.deleteRows(at: toDelete, with: .middle)
+			tableView.insertRows(at: toInsert, with: .middle)
+			toMove.forEach { sourceIndexPath, destinationIndexPath in
 				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
 		} completion: { _ in
@@ -313,7 +277,7 @@ class LibraryTVC:
 			}
 		}
 		
-		indexPathsToSelect.forEach {
+		toSelect.forEach {
 			tableView.selectRow( // Do this after performBatchUpdates's main closure, because otherwise it doesn't work on newly inserted rows.
 				at: $0,
 				animated: false,
@@ -358,11 +322,15 @@ class LibraryTVC:
 	func refreshEditingButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
 		
-		editButtonItem.isEnabled = !sectionOfLibraryItems.isEmpty()
+		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
-		sortButton.isEnabled = allowsSort()
-		floatToTopButton.isEnabled = allowsFloat()
-		sinkToBottomButton.isEnabled = allowsSink()
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		sortButton.isEnabled = viewModel.allowsSort(
+			selectedIndexPaths: selectedIndexPaths)
+		floatToTopButton.isEnabled = viewModel.allowsFloat(
+			selectedIndexPaths: selectedIndexPaths)
+		sinkToBottomButton.isEnabled = viewModel.allowsSink(
+			selectedIndexPaths: selectedIndexPaths)
 	}
 	
 	// MARK: - Navigation
@@ -372,26 +340,6 @@ class LibraryTVC:
 		sender: Any?
 	) -> Bool {
 		return !isEditing
-	}
-	
-	override func prepare(
-		for segue: UIStoryboardSegue,
-		sender: Any?
-	) {
-		if
-			segue.identifier == "Drill Down in Library",
-			let libraryTVC = segue.destination as? LibraryTVC,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
-		{
-			libraryTVC.context = context
-			let selectedItem = libraryItem(for: selectedIndexPath)
-			libraryTVC.sectionOfLibraryItems = SectionOfCollectionsOrAlbums(
-				entityName: libraryTVC.entityName,
-				container: selectedItem,
-				context: context)
-		}
-		
-		super.prepare(for: segue, sender: sender)
 	}
 	
 }

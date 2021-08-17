@@ -19,11 +19,7 @@ extension AlbumsTVC {
 	) -> Int {
 		setOrRemoveNoItemsBackground()
 		
-		if sectionOfLibraryItems.isEmpty() {
-			return 0
-		} else {
-			return sectionOfLibraryItems.items.count + numberOfRowsAboveLibraryItemsInSection
-		}
+		return viewModel.numberOfRows(inSection: section)
 	}
 	
 	// MARK: - Cells
@@ -40,15 +36,17 @@ extension AlbumsTVC {
 	}
 	
 	private func albumCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		// Get the data to put into the cell.
-		
-		guard let album = libraryItem(for: indexPath) as? Album else {
+		guard let album = viewModel.item(for: indexPath) as? Album else {
 			return UITableViewCell()
 		}
-		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
+		// Title
 		let albumTitle: String = album.titleFormattedOrPlaceholder() // Don't let this be nil.
-		let releaseDateText = album.releaseDateEstimateFormatted()
+		
+		// Release date
+		let releaseDateString = album.releaseDateEstimateFormatted()
+		
+		// "Now playing" indicator
 		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
@@ -56,23 +54,25 @@ extension AlbumsTVC {
 			isPlaying: isPlaying)
 		
 		// Make, configure, and return the cell.
-		
-		if let releaseDateText = releaseDateText {
+		let artwork = album.mpMediaItemCollection()?.representativeItem?.artwork // Can be nil
+		if let releaseDateString = releaseDateString {
 			guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 					as? AlbumCell
 			else {
 				return UITableViewCell()
 			}
-			cell.releaseDateLabel.text = releaseDateText
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
-			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
-			cell.artworkImageView.image = cellImage
+			cell.artworkImageView.image = artwork?.image(at: CGSize(
+				width: artworkMaxWidthAndHeight,
+				height: artworkMaxWidthAndHeight))
 			cell.titleLabel.text = albumTitle
 			cell.apply(nowPlayingIndicator)
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
+			
+			cell.releaseDateLabel.text = releaseDateString
 			
 			cell.accessibilityUserInputLabels = [albumTitle]
 			
@@ -86,8 +86,9 @@ extension AlbumsTVC {
 			}
 			
 			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
-			let cellImage = representativeItem?.artwork?.image(at: CGSize(width: artworkMaxWidthAndHeight, height: artworkMaxWidthAndHeight))
-			cell.artworkImageView.image = cellImage
+			cell.artworkImageView.image = artwork?.image(at: CGSize(
+				width: artworkMaxWidthAndHeight,
+				height: artworkMaxWidthAndHeight))
 			cell.titleLabel.text = albumTitle
 			cell.apply(nowPlayingIndicator)
 			if albumMoverClipboard != nil {

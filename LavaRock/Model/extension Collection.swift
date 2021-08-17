@@ -93,6 +93,20 @@ extension Collection {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
+	static func deleteAllEmpty(context: NSManagedObjectContext) {
+		var allCollections = Self.allFetched(context: context)
+		
+		allCollections.indices.reversed().forEach { index in
+			let collection = allCollections[index]
+			if collection.isEmpty() {
+				context.delete(collection)
+				allCollections.remove(at: index)
+			}
+		}
+		
+		allCollections.reindex()
+	}
+	
 	// Similar to Album.songs(sorted:).
 	final func albums(
 		sorted: Bool = true
@@ -110,21 +124,7 @@ extension Collection {
 		}
 	}
 	
-	static func deleteAllEmpty(context: NSManagedObjectContext) {
-		var allCollections = Collection.allFetched(context: context)
-		
-		allCollections.indices.reversed().forEach { index in
-			let collection = allCollections[index]
-			if collection.isEmpty() {
-				context.delete(collection)
-				allCollections.remove(at: index)
-			}
-		}
-		
-		allCollections.reindex()
-	}
-	
-	// WARNING: Unsafe; leaves Collections in an incoherent state.
+	// WARNING: Leaves Collections in an incoherent state.
 	// After calling this, you must delete empty Collections and reindex all Collections.
 	static func makeByCombining_withoutDeletingOrReindexing(
 		_ selectedCollections: [Collection],
@@ -143,6 +143,41 @@ extension Collection {
 		selectedAlbums.forEach { $0.container = combinedCollection }
 		
 		return combinedCollection
+	}
+	
+	// Works even if any of the Albums are already in this Collection.
+	func moveHere(
+		albumsWith albumIDs: [NSManagedObjectID],
+		context: NSManagedObjectContext
+	) {
+		let albumsToMove: [Album] = albumIDs.compactMap {
+			context.object(with: $0) as? Album
+		}
+		let sourceCollections: Set<Collection> = {
+			var result = Set<Collection>()
+			albumsToMove.forEach {
+				result.insert($0.container!)
+			}
+			return result
+		}()
+		
+		let numberOfAlbumsToMove = albumsToMove.count
+		albums().forEach { $0.index += Int64(numberOfAlbumsToMove) }
+		albumsToMove.indices.forEach { index in
+			let album = albumsToMove[index]
+			album.container = self
+			album.index = Int64(index)
+		}
+		// In case we moved any Albums to this Collection that were already in this Collection.
+		var newContents = albums()
+		newContents.reindex()
+		
+		sourceCollections.forEach {
+			var contents = $0.albums()
+			contents.reindex()
+		}
+		
+		Collection.deleteAllEmpty(context: context) // Also reindexes self
 	}
 	
 }

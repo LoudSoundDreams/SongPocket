@@ -24,19 +24,8 @@ extension MusicLibraryManager {
 			// WARNING: This leaves gaps in the Song indexes within each Album. You must reindex the Songs within each Album later.
 		}
 		
-		deleteEmptyAlbums_withoutReindex()
+		Album.deleteAllEmpty_withoutReindex(context: context)
 		Collection.deleteAllEmpty(context: context)
-	}
-	
-	private func deleteEmptyAlbums_withoutReindex() {
-		let allAlbums = Album.allFetched(ordered: false, context: context)
-		
-		allAlbums.forEach { album in
-			if album.isEmpty() {
-				context.delete(album)
-				// WARNING: This leaves gaps in the Album indexes within each Collection. You must reindex the Albums within each Collection later.
-			}
-		}
 	}
 	
 }

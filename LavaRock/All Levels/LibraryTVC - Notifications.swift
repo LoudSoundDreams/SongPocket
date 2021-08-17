@@ -84,7 +84,7 @@ extension LibraryTVC {
 		isInPlayerDeterminer: (IndexPath) -> Bool
 	) {
 		let isPlaying = sharedPlayer?.playbackState == .playing
-		indexPaths(forIndexOfSectionOfLibraryItems: 0).forEach { indexPath in
+		viewModel.indexPathsForAllItems().forEach { indexPath in
 			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicatorDisplayer else { return }
 			let isInPlayer = isInPlayerDeterminer(indexPath)
 			let indicator = NowPlayingIndicator(
@@ -136,12 +136,35 @@ extension LibraryTVC {
 	}
 	
 	private func refreshLibraryItemsPart2() {
-		let newItems = sectionOfLibraryItems.itemsFetched(context: context)
-		sectionOfLibraryItems.refreshContainer(context: context)
-		setItemsAndRefresh(newItems: newItems) {
-			self.refreshToReflectContainer()
-			self.tableView.reloadData() // Update the data within each row, which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
-			self.didChangeRowsOrSelectedRows() // Because reloadData deselects all rows.
+		let numberOfGroups = viewModel.groups.count
+		let indicesOfAllGroups = Array(0 ..< numberOfGroups)
+		let sectionsAndNewItems = indicesOfAllGroups.map { indexOfGroup in
+			(
+				indexOfGroup + viewModel.numberOfSectionsAboveLibraryItems,
+				viewModel.groups[indexOfGroup].itemsFetched(context: context)
+			)
+		}
+		viewModel.groups.forEach {
+			$0.refreshContainer(context: context)
+		}
+		sectionsAndNewItems.forEach { (section, newItems) in
+			
+			setItemsAndRefresh(
+				newItems: newItems,
+				section: section
+			) {
+				if self.viewModel.indexOfGroup(forSection: section) == 0 {
+					self.refreshNavigationItemTitle()
+					self.tableView.reloadData() // Update the data within each row, which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
+					
+					
+					// is that the only way to reload headers?
+					
+					
+					self.didChangeRowsOrSelectedRows() // Because reloadData deselects all rows.
+				}
+			}
+			
 		}
 	}
 	

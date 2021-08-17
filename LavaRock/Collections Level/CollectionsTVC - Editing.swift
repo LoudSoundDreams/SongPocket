@@ -11,14 +11,18 @@ import CoreData
 extension CollectionsTVC {
 	
 //	override func setEditing(_ editing: Bool, animated: Bool) {
-//		super.setEditing(
-//			editing,
-//			animated: animated)
+//		super.setEditing(editing, animated: animated)
 //
-//		refreshVoiceControlNamesForAllCells()
+//		let indexOfAllSection = Section.all.rawValue
+//		let indexPathsInAllSection = tableView.indexPathsForRows(
+//			inSection: indexOfAllSection,
+//			firstRow: 0)
+//		tableView.reloadRows(at: indexPathsInAllSection, with: .fade) //
+//
+////		refreshVoiceControlNamesForCollectionCells()
 //	}
 	
-//	private func refreshVoiceControlNamesForAllCells() {
+//	private func refreshVoiceControlNamesForCollectionCells() {
 //		indexPaths(forIndexOfSectionOfLibraryItems: 0).forEach {
 //			guard let cell = tableView.cellForRow(at: $0) else { return }
 //			
@@ -26,21 +30,11 @@ extension CollectionsTVC {
 //		}
 //	}
 	
-	// MARK: - Allowing
-	
-	final func allowsCombine() -> Bool {
-		guard !sectionOfLibraryItems.isEmpty() else {
-			return false
-		}
-		
-		return tableView.indexPathsForSelectedRowsNonNil.count >= 2
-	}
-	
 	// MARK: - Renaming
 	
 	// Match presentDialogToMakeNewCollection and presentDialogToCombineCollections.
 	final func presentDialogToRenameCollection(at indexPath: IndexPath) {
-		guard let collection = libraryItem(for: indexPath) as? Collection else { return }
+		guard let collection = viewModel.item(for: indexPath) as? Collection else { return }
 		
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
 		
@@ -97,12 +91,16 @@ extension CollectionsTVC {
 	
 	// MARK: - Combining
 	
+	final func isPreviewingCombineCollections() -> Bool {
+		return groupOfCollectionsBeforeCombining != nil
+	}
+	
 	final func previewCombineSelectedCollectionsAndPresentDialog() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
-			allowsCombine(),
-			sectionOfCollectionsBeforeCombining == nil, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
-			// You must reset sectionOfCollectionsBeforeCombining = nil during both reverting and committing.
+			(viewModel as? CollectionsViewModel)?.allowsCombine(selectedIndexPaths: selectedIndexPaths) ?? false,
+			!isPreviewingCombineCollections(), // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
+			// You must reset groupOfCollectionsBeforeCombining = nil during both reverting and committing.
 			let indexPathOfCombinedCollection = selectedIndexPaths.first
 		else { return }
 		
@@ -118,37 +116,27 @@ extension CollectionsTVC {
 		from selectedIndexPaths: [IndexPath],
 		into indexPathOfCombinedCollection: IndexPath
 	) {
-		// Save the existing SectionOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
-		sectionOfCollectionsBeforeCombining = sectionOfLibraryItems // SIDE EFFECT
+		guard let viewModel = viewModel as? CollectionsViewModel else { return } // TO DO: Don't continue to presentDialogToCombineCollections if this fails.
 		
-		// Create the combined Collection.
-		let selectedLibraryItems = selectedIndexPaths.map { libraryItem(for: $0) }
-		guard let selectedCollections = selectedLibraryItems as? [Collection] else { return }
-		let indexOfCombinedCollection = indexOfLibraryItem(
-			for: indexPathOfCombinedCollection)
-		let combinedCollection = Collection.makeByCombining_withoutDeletingOrReindexing( // SIDE EFFECT
-			selectedCollections,
-			title: LocalizedString.combinedCollectionDefaultTitle,
-			index: Int64(indexOfCombinedCollection),
+		// Save the existing GroupOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
+		groupOfCollectionsBeforeCombining = viewModel.group // SIDE EFFECT
+		
+		// Create the combined Collection, and make a new data source.
+		// SIDE EFFECTS:
+		// - Creates Collection
+		// - Modifies Albums
+		let newItems = viewModel.itemsAfterCombiningCollections(
+			from: selectedIndexPaths,
+			into: indexPathOfCombinedCollection,
 			context: context)
-		// WARNING: We still need to delete empty Collections and reindex all Collections.
-		// Do that later, when we commit, because if we revert, we have to restore the original Collections, and Core Data warns you if you mutate managed objects after deleting them.
-		try? context.obtainPermanentIDs( // SIDE EFFECT
-			for: [combinedCollection]) // So that the "now playing" indicator can appear on the combined Collection.
-		
-		// Make a new data source.
-		var newItems = sectionOfLibraryItems.items
-		let indexesOfSelectedCollections = selectedIndexPaths.map {
-			indexOfLibraryItem(for: $0)
-		}
-		indexesOfSelectedCollections.reversed().forEach { newItems.remove(at: $0) }
-		newItems.insert(combinedCollection, at: indexOfCombinedCollection)
 		
 		// Update the data source and table view.
+		let indexOfCombinedCollection = viewModel.indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
+		let section = viewModel.numberOfSectionsAboveLibraryItems
 		setItemsAndRefresh(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
-			indexesOfNewItemsToSelect: [indexOfCombinedCollection]
-		)
+			indexesOfNewItemsToSelect: [indexOfCombinedCollection],
+			section: section)
 		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
 		// We could hack refreshEditingButtons to disable all the editing buttons during the animation, but that would clearly break separation of concerns.
 	}
@@ -190,22 +178,25 @@ extension CollectionsTVC {
 		completion: (() -> Void)? = nil
 	) {
 		guard
-			var copyOfOriginalSection = sectionOfCollectionsBeforeCombining,
-			let originalItems = sectionOfCollectionsBeforeCombining?.items
+			var copyOfOriginalGroup = groupOfCollectionsBeforeCombining,
+			let originalItems = groupOfCollectionsBeforeCombining?.items
 		else { return } //
-		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
+		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
-		// Revert sectionOfLibraryItems to sectionOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
-		copyOfOriginalSection.setItems(sectionOfLibraryItems.items) // To match the currently onscreen items. Should cause no side effects.
+		let indexOfGroup = CollectionsViewModel.indexOfGroup
+		
+		// Revert sectionOfLibraryItems to groupOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
+		copyOfOriginalGroup.setItems(viewModel.groups[indexOfGroup].items) // To match the currently onscreen items. Should cause no side effects.
 		context.rollback() // SIDE EFFECT
-		sectionOfLibraryItems = copyOfOriginalSection // SIDE EFFECT
+		viewModel.groups[indexOfGroup] = copyOfOriginalGroup // SIDE EFFECT
 		
 		let indexesOfOriginalSelectedCollections = originalSelectedIndexPaths.map {
-			indexOfLibraryItem(for: $0)
+			viewModel.indexOfItemInGroup(forRow: $0.row)
 		}
 		setItemsAndRefresh(
 			newItems: originalItems, // SIDE EFFECT
-			indexesOfNewItemsToSelect: indexesOfOriginalSelectedCollections
+			indexesOfNewItemsToSelect: indexesOfOriginalSelectedCollections,
+			section: viewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfGroup
 		) {
 			completion?()
 		}
@@ -215,7 +206,7 @@ extension CollectionsTVC {
 		into indexPathOfCombinedCollection: IndexPath,
 		withProposedTitle proposedTitle: String?
 	) {
-		guard let combinedCollection = libraryItem(for: indexPathOfCombinedCollection) as? Collection else { return }
+		guard let combinedCollection = viewModel.item(for: indexPathOfCombinedCollection) as? Collection else { return }
 		
 		let oldTitle = combinedCollection.title
 		if let newTitle = Collection.validatedTitleOptional(from: proposedTitle) {
@@ -227,7 +218,7 @@ extension CollectionsTVC {
 		
 		context.tryToSave()
 		
-		sectionOfCollectionsBeforeCombining = nil // SIDE EFFECT
+		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
 		if didChangeTitle {
 			tableView.reloadRows(at: [indexPathOfCombinedCollection], with: .fade)

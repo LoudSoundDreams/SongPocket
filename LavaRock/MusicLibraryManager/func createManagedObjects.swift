@@ -51,7 +51,11 @@ extension MusicLibraryManager {
 			// We'll sort Songs within each Album later, because it depends on whether the existing Songs in each Album are in album order.
 		}()
 		
-		var existingAlbums_byInt64 = Dictionary(grouping: existingAlbums) { $0.albumPersistentID } // We ought to be able to use Dictionary(uniqueKeysWithValues:) for this, but I've seen an obscure bug where we had two Albums with the same albumPersistentID (probably caused by a bug when I was editing data in Music for Mac, where one song appeared twice in its album). Be defensive here.
+		let tuplesForExistingAlbums = existingAlbums.map { album in
+			(album.albumPersistentID,
+			 album)
+		}
+		var existingAlbums_byInt64 = Dictionary(uniqueKeysWithValues: tuplesForExistingAlbums)
 		var existingCollectionsByTitle = Dictionary(grouping: existingCollections) { $0.title! }
 		
 		os_signpost(.begin, log: createLog, name: "Make all the Songs and containers")
@@ -64,16 +68,13 @@ extension MusicLibraryManager {
 				   isFirstImport: isFirstImport)
 			
 			if let newAlbum = newAlbum {
-				let newAlbumPersistentID_asInt64 = newAlbum.albumPersistentID
-				let existingAlbumsWithSameAlbumPersistentID = existingAlbums_byInt64[newAlbumPersistentID_asInt64] ?? []
-				let newAlbumsWithSameAlbumPersistentID = [newAlbum] + existingAlbumsWithSameAlbumPersistentID
-				existingAlbums_byInt64[newAlbumPersistentID_asInt64] = newAlbumsWithSameAlbumPersistentID
+				existingAlbums_byInt64[newAlbum.albumPersistentID] = newAlbum
 			}
 			if let newCollection = newCollection {
-				let newCollectionTitle = newCollection.title!
-				let existingCollectionsWithSameTitle = existingCollectionsByTitle[newCollectionTitle] ?? []
-				let newCollectionsWithSameTitle = [newCollection] + existingCollectionsWithSameTitle
-				existingCollectionsByTitle[newCollectionTitle] = newCollectionsWithSameTitle
+				let title = newCollection.title!
+				let oldBucketOfCollections = existingCollectionsByTitle[title] ?? []
+				let newBucketOfCollections = [newCollection] + oldBucketOfCollections
+				existingCollectionsByTitle[title] = newBucketOfCollections
 			}
 			os_signpost(.end, log: createLog, name: "Make one group of Songs and containers")
 		}
@@ -119,7 +120,7 @@ extension MusicLibraryManager {
 	
 	private func createSongsAndReturnNewContainers(
 		for mediaItemGroup: [MPMediaItem],
-		existingAlbums_byInt64: [Int64: [Album]],
+		existingAlbums_byInt64: [Int64: Album],
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (Album?, Collection?) {
@@ -127,7 +128,7 @@ extension MusicLibraryManager {
 		
 		// If we already have a matching Album to add the Songs to …
 		let albumPersistentID_asInt64 = Int64(bitPattern: firstMediaItemInAlbum.albumPersistentID)
-		if let matchingExistingAlbum = existingAlbums_byInt64[albumPersistentID_asInt64]?.first {
+		if let matchingExistingAlbum = existingAlbums_byInt64[albumPersistentID_asInt64] {
 			
 			// … then add the Songs to that Album.
 			if matchingExistingAlbum.areSongsInDefaultOrder() {

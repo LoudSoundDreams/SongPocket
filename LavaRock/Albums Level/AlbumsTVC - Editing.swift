@@ -10,32 +10,6 @@ import CoreData
 
 extension AlbumsTVC {
 	
-	// MARK: - Allowing
-	
-	final func allowsMoveOrOrganize() -> Bool {
-		guard !sectionOfLibraryItems.isEmpty() else {
-			return false
-		}
-		
-		return true
-	}
-	
-	final func allowsOrganize() -> Bool {
-		guard !sectionOfLibraryItems.isEmpty() else {
-			return false
-		}
-		
-		return true
-	}
-	
-	final func allowsMove() -> Bool {
-		guard !sectionOfLibraryItems.isEmpty() else {
-			return false
-		}
-		
-		return true
-	}
-	
 	// MARK: - Moving or Organizing
 	
 	final func moveOrOrganizeMenu() -> UIMenu {
@@ -62,43 +36,45 @@ extension AlbumsTVC {
 	
 	final func startMovingAlbums() {
 		
-		// Prepare a Collections view to present modally.
+		guard
+			let viewModel = viewModel as? AlbumsViewModel,
+			viewModel.allowsMove(selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+		else { return }
 		
+		// Prepare a Collections view to present modally.
 		guard
 			let modalCollectionsNC = storyboard!.instantiateViewController(withIdentifier: "Collections NC") as? UINavigationController,
 			let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as? CollectionsTVC
 		else { return }
 		
-		// Initialize an AlbumMoverClipboard for the modal Collections view.
-		
-		guard let idOfSourceCollection = sectionOfLibraryItems.container?.objectID else { return }
-		
-		// Note the Albums to move, and to not move.
-		var idsOfAlbumsToMove = [NSManagedObjectID]()
-		var idsOfAlbumsToNotMove = [NSManagedObjectID]()
-		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			idsOfAlbumsToMove = sectionOfLibraryItems.items.map { $0.objectID }
-		} else {
-			indexPaths(forIndexOfSectionOfLibraryItems: 0).forEach { indexPath in
-				let album = libraryItem(for: indexPath)
-				if tableView.indexPathsForSelectedRowsNonNil.contains(indexPath) {
-					// The row is selected.
-					idsOfAlbumsToMove.append(album.objectID)
+		// Get the rows to move.
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		let indexPathsToMove: [IndexPath] = {
+			if selectedIndexPaths.isEmpty {
+				if viewModel.groups.count == 1 {
+					return viewModel.indexPaths(forIndexOfGroup: 0)
 				} else {
-					// The row is not selected.
-					idsOfAlbumsToNotMove.append(album.objectID)
+					return []
 				}
+			} else {
+				return selectedIndexPaths
 			}
+		}()
+		guard let section = indexPathsToMove.first?.section else { return }
+		
+		// Initialize an AlbumMoverClipboard for the modal Collections view.
+		let sourceCollection = viewModel.container(forSection: section)
+		let idOfSourceCollection = sourceCollection.objectID
+		let idsOfAlbumsToMove = indexPathsToMove.map {
+			viewModel.item(for: $0).objectID
 		}
 		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
 			idOfSourceCollection: idOfSourceCollection,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
-			idsOfAlbumsNotBeingMoved: idsOfAlbumsToNotMove,
 			delegate: self)
 		
 		// Make the "move Albums to…" sheet use a child managed object context, so that we can cancel without having to revert our changes.
-		let childContext = NSManagedObjectContext(
-			concurrencyType: .mainQueueConcurrencyType)
+		let childContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		childContext.parent = context
 		modalCollectionsTVC.context = childContext
 		

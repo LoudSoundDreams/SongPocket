@@ -46,7 +46,7 @@ extension CollectionsTVC {
 		} else {
 			prepareToRefreshLibraryItems()
 			
-			if sectionOfCollectionsBeforeCombining != nil { // If the "Combine Collections" dialog is presented.
+			if isPreviewingCombineCollections() {
 				fatalError()
 				
 				

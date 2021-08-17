@@ -11,44 +11,47 @@ extension LibraryTVC {
 	
 	// MARK: - Editing
 	
+	// Overrides of this method should call super (this implementation).
+//	override func tableView(
 	final override func tableView(
 		_ tableView: UITableView,
 		canEditRowAt indexPath: IndexPath
 	) -> Bool {
-		return indexPath.row >= numberOfRowsAboveLibraryItemsInSection
+		return viewModel.canEditRow(at: indexPath)
 	}
 	
 	// MARK: Reordering
 	
 	final override func tableView(
 		_ tableView: UITableView,
-		moveRowAt fromIndexPath: IndexPath,
-		to: IndexPath
-	) {
-		let fromItemIndex = indexOfLibraryItem(for: fromIndexPath)
-		let toItemIndex = indexOfLibraryItem(for: to)
-		
-		let itemBeingMoved = sectionOfLibraryItems.items[fromItemIndex]
-		var newItems = sectionOfLibraryItems.items
-		newItems.remove(at: fromItemIndex)
-		newItems.insert(itemBeingMoved, at: toItemIndex)
-		sectionOfLibraryItems.setItems(newItems)
-		
-		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the "Sort" button. If you made all the selected rows contiguous, that should enable the "Sort" button.
+		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
+		toProposedIndexPath proposedDestinationIndexPath: IndexPath
+	) -> IndexPath {
+		return viewModel.targetIndexPathForMovingRow(
+			at: sourceIndexPath,
+			to: proposedDestinationIndexPath)
 	}
 	
 	final override func tableView(
 		_ tableView: UITableView,
-		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
-		toProposedIndexPath proposedDestinationIndexPath: IndexPath
-	) -> IndexPath {
-		if proposedDestinationIndexPath.row < numberOfRowsAboveLibraryItemsInSection {
-			return indexPathFor(
-				indexOfLibraryItem: 0,
-				indexOfSectionOfLibraryItem: proposedDestinationIndexPath.section)
-		} else {
-			return proposedDestinationIndexPath
+		moveRowAt fromIndexPath: IndexPath,
+		to: IndexPath
+	) {
+		let (
+			newItemsInSourceSection,
+			newItemsInDestinationSection
+		) = viewModel.itemsAfterMovingRow(at: fromIndexPath, to: to)
+		
+		setItemsAndRefresh(
+			newItems: newItemsInSourceSection,
+			section: fromIndexPath.section)
+		if let newItemsInDestinationSection = newItemsInDestinationSection {
+			setItemsAndRefresh(
+				newItems: newItemsInDestinationSection,
+				section: to.section)
 		}
+		
+		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the "Sort" button. If you made all the selected rows contiguous, that should enable the "Sort" button.
 	}
 	
 	// MARK: - Selecting
@@ -58,10 +61,7 @@ extension LibraryTVC {
 		_ tableView: UITableView,
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
-		guard indexPath.row >= numberOfRowsAboveLibraryItemsInSection else {
-			return false
-		}
-		return true
+		return viewModel.shouldBeginMultipleSelectionInteraction(at: indexPath)
 	}
 
 	final override func tableView(
@@ -75,17 +75,15 @@ extension LibraryTVC {
 		}
 	}
 	
+	// Overrides of this method should call super (this implementation).
 	// To disable selection for a row, it's simpler to set cell.isUserInteractionEnabled = false.
 	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and shouldBeginMultipleSelectionInteractionAt, and swipe over a cell that doesn't allow user interaction, to select it too.
 	// Therefore, if you support multiple-selection interactions, you must use this method to disable selection for certain rows.
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
-		guard indexPath.row >= numberOfRowsAboveLibraryItemsInSection else {
-			return nil
-		}
-		return indexPath
+		return viewModel.willSelectRow(at: indexPath)
 	}
 	
 	// Overrides of this method should call super (this implementation).

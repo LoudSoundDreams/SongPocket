@@ -29,8 +29,6 @@ final class SongsTVC:
 			[.trackNumber],
 			[.reverse],
 		]
-		
-		numberOfRowsAboveLibraryItemsInSection = 2
 	}
 	
 	// MARK: Setting Up UI
@@ -48,9 +46,13 @@ final class SongsTVC:
 		]
 	}
 	
-	final override func refreshToReflectContainer() {
-		guard let containingAlbum = sectionOfLibraryItems.container as? Album else { return }
-		title = containingAlbum.titleFormattedOrPlaceholder()
+	final override func refreshNavigationItemTitle() {
+		if
+			viewModel.groups.count == 1,
+			let containingAlbum = viewModel.groups[0].container as? Album
+		{
+			title = containingAlbum.titleFormattedOrPlaceholder()
+		}
 	}
 	
 }

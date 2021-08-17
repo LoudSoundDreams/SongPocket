@@ -1,5 +1,5 @@
 //
-//  SectionOfSongs.swift
+//  GroupOfSongs.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-02.
@@ -8,7 +8,7 @@
 import CoreData
 import MediaPlayer
 
-struct SectionOfSongs: SectionOfLibraryItems {
+struct GroupOfSongs: GroupOfLibraryItems {
 	
 	// MARK: - Properties
 	
@@ -35,7 +35,7 @@ struct SectionOfSongs: SectionOfLibraryItems {
 		shouldShowDiscNumbers = result
 	}
 	
-	// MARK: - SectionOfLibraryItems
+	// MARK: - GroupOfLibraryItems
 	
 	// Constants
 	let entityName = "Song"

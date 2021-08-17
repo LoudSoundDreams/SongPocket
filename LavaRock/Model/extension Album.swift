@@ -126,6 +126,19 @@ extension Album {
 		}
 	}
 	
+	// WARNING: This leaves gaps in the Album indexes within each Collection. You must reindex the Albums within each Collection later.
+	static func deleteAllEmpty_withoutReindex(
+		context: NSManagedObjectContext
+	) {
+		let allAlbums = Self.allFetched(ordered: false, context: context) // Use `ordered: true` if you ever make a variant of this method that does reindex the remaining Albums.
+		
+		allAlbums.forEach { album in
+			if album.isEmpty() {
+				context.delete(album)
+			}
+		}
+	}
+	
 	final func areSongsInDefaultOrder() -> Bool {
 		let mediaItems = songs().compactMap { $0.mpMediaItem() }
 		// mpMediaItem() returns nil if the media item is no longer in the Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
