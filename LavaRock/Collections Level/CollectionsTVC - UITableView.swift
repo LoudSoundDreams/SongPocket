@@ -63,7 +63,7 @@ extension CollectionsTVC {
 //		case .all:
 //			return nil
 //		case .collections:
-//			return "Collections" // TO DO: Localize
+//			return LocalizedString.collections
 //		}
 //	}
 	

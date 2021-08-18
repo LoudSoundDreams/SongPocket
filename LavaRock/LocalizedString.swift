@@ -73,8 +73,9 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Collections View
 	
-	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
+	static let collections = NSLocalizedString("Collections", comment: "Section header")
 	
+	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let noCollectionsPlaceholder = NSLocalizedString(
 		"[placeholder] no_collections",
 		value: "Add some music to your Apple Music library, or sync some music from your computer.",

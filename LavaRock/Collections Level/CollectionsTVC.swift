@@ -200,9 +200,7 @@ final class CollectionsTVC:
 			[.reverse],
 		]
 		
-//		numberOfSectionsAboveLibraryItems = 1
-//
-//
+		
 //		title = "Library" // TO DO: Localize
 	}
 	

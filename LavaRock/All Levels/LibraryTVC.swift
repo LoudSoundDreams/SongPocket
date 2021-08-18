@@ -166,6 +166,10 @@ class LibraryTVC:
 	func setUpUI() {
 		if #available(iOS 15, *) {
 			// In iOS 15, by default, tableView.fillerRowHeight is 0, which removes the blank rows below the last row.
+			
+			// Xcode 13
+			// —
+			
 			// Xcode 12
 			tableView.tableFooterView = UIView()
 		} else {

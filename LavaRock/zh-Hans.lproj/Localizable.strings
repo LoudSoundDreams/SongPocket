@@ -28,6 +28,9 @@
 /* Button */
 "Cancel" = "取消";
 
+/* Section header */
+"Collections" = "合集";
+
 /* Button */
 "Don’t Show Again" = "不再显示";
 
