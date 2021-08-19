@@ -28,16 +28,15 @@ extension AlbumsTVC {
 		let indexOfGroup = 0 //
 		let newItems = viewModel.itemsAfterMovingHere(
 			albumsWith: albumMoverClipboard.idsOfAlbumsBeingMoved,
-			indexOfGroup: indexOfGroup, //
-			context: context)
+			indexOfGroup: indexOfGroup) //
 		
 		// Update the table view.
 		setItemsAndRefresh(
 			newItems: newItems,
 			section: viewModel.numberOfSectionsAboveLibraryItems
 		) {
-			self.context.tryToSave()
-			self.context.parent!.tryToSave() // Save the main context now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.
+			self.viewModel.context.tryToSave()
+			self.viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.
 			
 			NotificationCenter.default.post(
 				Notification(name: .LRDidMoveAlbums)

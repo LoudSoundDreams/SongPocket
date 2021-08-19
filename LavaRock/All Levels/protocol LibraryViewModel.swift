@@ -9,6 +9,9 @@ import UIKit
 import CoreData
 
 protocol LibraryViewModel {
+	static var entityName: String { get }
+	
+	var context: NSManagedObjectContext { get }
 	var numberOfSectionsAboveLibraryItems: Int { get }
 	var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
@@ -20,6 +23,27 @@ extension LibraryViewModel {
 	func isEmpty() -> Bool {
 		return groups.reduce(true) { werePreviousGroupsEmpty, group in
 			werePreviousGroupsEmpty && group.items.isEmpty
+		}
+	}
+	
+	func sectionsAndNewItems() -> [
+		(section: Int,
+		 newItems: [NSManagedObject])
+	] {
+		let result = groups.indices.map { indexOfGroup in
+			(
+				numberOfSectionsAboveLibraryItems + indexOfGroup,
+				groups[indexOfGroup].itemsFetched(
+					entityName: Self.entityName,
+					context: context)
+			)
+		}
+		return result
+	}
+	
+	func refreshContainers() {
+		groups.forEach {
+			$0.refreshContainer(context: context)
 		}
 	}
 	

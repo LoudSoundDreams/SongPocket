@@ -10,35 +10,9 @@ import MediaPlayer
 
 struct GroupOfSongs: GroupOfLibraryItems {
 	
-	// MARK: - Properties
-	
-	// Variables
-	var shouldShowDiscNumbers = false
-	
-	// MARK: - Methods
-	
-	init(
-		container: NSManagedObject?,
-		context: NSManagedObjectContext
-	) {
-		self.container = container
-		
-		private_items = itemsFetched(context: context) // Doesn't trigger the property observer
-		refreshShouldShowDiscNumbers()
-	}
-	
-	private mutating func refreshShouldShowDiscNumbers() {
-		let album = container as? Album
-		let representativeItem = album?.mpMediaItemCollection()?.representativeItem
-		let containsOnlyOneDisc = representativeItem?.discCount ?? 1 == 1
-		let result = !containsOnlyOneDisc
-		shouldShowDiscNumbers = result
-	}
-	
 	// MARK: - GroupOfLibraryItems
 	
 	// Constants
-	let entityName = "Song"
 	let container: NSManagedObject?
 	
 	// Variables
@@ -57,6 +31,31 @@ struct GroupOfSongs: GroupOfLibraryItems {
 	
 	mutating func setItems(_ newItems: [NSManagedObject]) {
 		private_items = newItems
+	}
+	
+	// MARK: - Miscellaneous
+	
+	var shouldShowDiscNumbers = false
+	
+	init(
+		entityName: String,
+		container: NSManagedObject?,
+		context: NSManagedObjectContext
+	) {
+		self.container = container
+		
+		private_items = itemsFetched( // Doesn't trigger the property observer
+			entityName: entityName,
+			context: context)
+		refreshShouldShowDiscNumbers()
+	}
+	
+	private mutating func refreshShouldShowDiscNumbers() {
+		let album = container as? Album
+		let representativeItem = album?.mpMediaItemCollection()?.representativeItem
+		let containsOnlyOneDisc = representativeItem?.discCount ?? 1 == 1
+		let result = !containsOnlyOneDisc
+		shouldShowDiscNumbers = result
 	}
 	
 }

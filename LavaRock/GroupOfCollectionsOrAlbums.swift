@@ -9,21 +9,9 @@ import CoreData
 
 struct GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
 	
-	init(
-		entityName: String,
-		container: NSManagedObject?,
-		context: NSManagedObjectContext
-	) {
-		self.entityName = entityName
-		self.container = container
-		
-		private_items = itemsFetched(context: context) // Doesn't trigger the property observer
-	}
-	
 	// MARK: - GroupOfLibraryItems
 	
 	// Constants
-	let entityName: String
 	let container: NSManagedObject?
 	
 	// Variables
@@ -40,6 +28,20 @@ struct GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
 	
 	mutating func setItems(_ newItems: [NSManagedObject]) {
 		private_items = newItems
+	}
+	
+	// MARK: - Miscellaneous
+	
+	init(
+		entityName: String,
+		container: NSManagedObject?,
+		context: NSManagedObjectContext
+	) {
+		self.container = container
+		
+		private_items = itemsFetched( // Doesn't trigger the property observer
+			entityName: entityName,
+			context: context)
 	}
 	
 }

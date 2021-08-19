@@ -76,7 +76,7 @@ extension CollectionsTVC {
 		}
 		let didChangeTitle = renamedCollection.title != oldTitle
 		
-		context.tryToSave()
+		viewModel.context.tryToSave()
 		
 		if didChangeTitle {
 			tableView.reloadRows(at: [indexPath], with: .fade)
@@ -127,8 +127,7 @@ extension CollectionsTVC {
 		// - Modifies Albums
 		let newItems = viewModel.itemsAfterCombiningCollections(
 			from: selectedIndexPaths,
-			into: indexPathOfCombinedCollection,
-			context: context)
+			into: indexPathOfCombinedCollection)
 		
 		// Update the data source and table view.
 		let indexOfCombinedCollection = viewModel.indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
@@ -187,7 +186,7 @@ extension CollectionsTVC {
 		
 		// Revert sectionOfLibraryItems to groupOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
 		copyOfOriginalGroup.setItems(viewModel.groups[indexOfGroup].items) // To match the currently onscreen items. Should cause no side effects.
-		context.rollback() // SIDE EFFECT
+		viewModel.context.rollback() // SIDE EFFECT
 		viewModel.groups[indexOfGroup] = copyOfOriginalGroup // SIDE EFFECT
 		
 		let indexesOfOriginalSelectedCollections = originalSelectedIndexPaths.map {
@@ -214,9 +213,9 @@ extension CollectionsTVC {
 		}
 		let didChangeTitle = combinedCollection.title != oldTitle
 		
-		Collection.deleteAllEmpty(context: context)
+		Collection.deleteAllEmpty(context: viewModel.context)
 		
-		context.tryToSave()
+		viewModel.context.tryToSave()
 		
 		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		

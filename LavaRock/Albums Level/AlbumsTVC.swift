@@ -52,7 +52,6 @@ final class AlbumsTVC:
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		entityName = "Album"
 		sortOptionsGrouped = [
 			[.newestFirst, .oldestFirst],
 			[.reverse],
@@ -134,15 +133,11 @@ final class AlbumsTVC:
 			let songsTVC = segue.destination as? SongsTVC,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
-			songsTVC.context = context
 			let container = viewModel.item(for: selectedIndexPath)
-			let sections = [
-				GroupOfSongs(
-					container: container,
-					context: context)
-			]
+			let context = viewModel.context
 			songsTVC.viewModel = SongsViewModel(
-				groups: sections)
+				containers: [container],
+				context: context)
 		}
 	}
 	

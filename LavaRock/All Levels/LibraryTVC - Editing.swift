@@ -14,7 +14,7 @@ extension LibraryTVC {
 //	override func setEditing(_ editing: Bool, animated: Bool) {
 	final override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
-			context.tryToSave()
+			viewModel.context.tryToSave()
 		}
 		
 		super.setEditing(editing, animated: animated)

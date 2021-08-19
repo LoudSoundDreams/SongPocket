@@ -28,7 +28,7 @@ extension CollectionsTVC {
 		}
 		let suggestedTitle = albumMoverClipboard.suggestedCollectionTitle(
 			notMatching: Set(existingCollectionTitles),
-			context: context)
+			context: viewModel.context)
 		previewMakeNewCollection(
 			suggestedTitle: suggestedTitle)
 		presentDialogToMakeNewCollection(
@@ -43,10 +43,9 @@ extension CollectionsTVC {
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
 		
 		// Make a new data source.
-		let newItems = viewModel.itemsAfterMakingNewCollection(
+		let newItems = viewModel.itemsAfterMakingNewCollection( // Since we're in "moving Albums" mode, CollectionsViewModel should do this in a child managed object context.
 			suggestedTitle: suggestedTitle,
-			indexOfNewCollection: indexOfNewCollection,
-			context: context) // Since we're in "moving Albums" mode, this should be a child managed object context.
+			indexOfNewCollection: indexOfNewCollection)
 		
 		// Update the data source and table view.
 		let indexPathOfNewCollection = viewModel.indexPathFor(
@@ -105,8 +104,7 @@ extension CollectionsTVC {
 		
 		// Update the data source and table view.
 		let newItems = viewModel.itemsAfterDeletingCollection(
-			indexOfCollection: indexOfNewCollection,
-			context: context)
+			indexOfCollection: indexOfNewCollection)
 		let indexPathOfDeletedCollection = viewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,
 			indexOfGroup: CollectionsViewModel.indexOfGroup)
@@ -123,8 +121,7 @@ extension CollectionsTVC {
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
 		let didChangeTitle = viewModel.renameCollection(
 			proposedTitle: proposedTitle,
-			indexOfCollection: indexOfNewCollection,
-			context: context)
+			indexOfCollection: indexOfNewCollection)
 		
 		let indexPathOfNewCollection = viewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,

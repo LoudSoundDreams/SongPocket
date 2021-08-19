@@ -10,10 +10,30 @@ import CoreData
 
 struct AlbumsViewModel: LibraryViewModel {
 	
+	// MARK: - LibraryViewModel
+	
+	static let entityName = "Album"
+	
+	let context: NSManagedObjectContext
 	let numberOfSectionsAboveLibraryItems = 0 //
 	let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	var groups: [GroupOfLibraryItems]
+	
+	// MARK: - Miscellaneous
+	
+	init(
+		containers: [NSManagedObject],
+		context: NSManagedObjectContext
+	) {
+		self.context = context
+		groups = containers.map {
+			GroupOfCollectionsOrAlbums(
+				entityName: Self.entityName,
+				container: $0,
+				context: context)
+		}
+	}
 	
 	// Similar to SongsViewModel.container.
 	func container(forSection section: Int) -> Collection { // "container"? could -> Collection satisfy a protocol requirement -> NSManagedObject as a covariant?
@@ -51,8 +71,7 @@ struct AlbumsViewModel: LibraryViewModel {
 	
 	func itemsAfterMovingHere(
 		albumsWith albumIDs: [NSManagedObjectID],
-		indexOfGroup: Int, //
-		context: NSManagedObjectContext
+		indexOfGroup: Int //
 	) -> [NSManagedObject] {
 		guard let destinationCollection = groups[indexOfGroup].container as? Collection else {
 			return groups[indexOfGroup].items
@@ -62,7 +81,7 @@ struct AlbumsViewModel: LibraryViewModel {
 			albumsWith: albumIDs,
 			context: context)
 		
-		let newItems = groups[indexOfGroup].itemsFetched(context: context)
+		let newItems = destinationCollection.albums()
 		return newItems
 	}
 	

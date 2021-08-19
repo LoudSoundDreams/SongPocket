@@ -10,15 +10,34 @@ import CoreData
 
 struct CollectionsViewModel: LibraryViewModel {
 	
-	static let indexOfGroup = 0
+	// MARK: - LibraryViewModel
 	
+	static let entityName = "Collection"
+	
+	let context: NSManagedObjectContext
 	let numberOfSectionsAboveLibraryItems = 0 //
 	let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	var groups: [GroupOfLibraryItems] //
+	
+	// MARK: - Miscellaneous
+	
+	static let indexOfGroup = 0 //
+	
+	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] } //
 //	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
 	
-	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] }
+	init(
+		context: NSManagedObjectContext
+	) {
+		self.context = context
+		groups = [ // CollectionsViewModel will only have one GroupOfLibraryItems
+			GroupOfCollectionsOrAlbums(
+				entityName: Self.entityName,
+				container: nil,
+				context: context)
+		]
+	}
 	
 	// MARK: - Editing
 	
@@ -42,8 +61,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	func itemsAfterCombiningCollections(
 		from selectedIndexPaths: [IndexPath],
-		into indexPathOfCombinedCollection: IndexPath,
-		context: NSManagedObjectContext
+		into indexPathOfCombinedCollection: IndexPath
 	) -> [NSManagedObject] {
 //		// Save the existing GroupOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
 //		groupOfCollectionsBeforeCombining = group // SIDE EFFECT
@@ -77,8 +95,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	func itemsAfterMakingNewCollection(
 		suggestedTitle: String?,
-		indexOfNewCollection: Int,
-		context: NSManagedObjectContext
+		indexOfNewCollection: Int
 	) -> [NSManagedObject] { // ? [Collection]
 		let newCollection = Collection(context: context)
 		newCollection.title = suggestedTitle ?? LocalizedString.newCollectionDefaultTitle
@@ -92,8 +109,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	// MARK: Deleting New
 	
 	func itemsAfterDeletingCollection(
-		indexOfCollection: Int,
-		context: NSManagedObjectContext
+		indexOfCollection: Int
 	) -> [NSManagedObject] { // ? [Collection]
 		let oldItems = group.items
 		guard
@@ -115,8 +131,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	// Return value: whether this method changed the Collection's title.
 	func renameCollection(
 		proposedTitle: String?,
-		indexOfCollection: Int,
-		context: NSManagedObjectContext
+		indexOfCollection: Int
 	) -> Bool {
 		guard let collection = group.items[indexOfCollection] as? Collection else {
 			return false //

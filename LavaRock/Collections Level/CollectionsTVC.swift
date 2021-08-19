@@ -319,16 +319,11 @@ final class CollectionsTVC:
 		{
 			albumsTVC.albumMoverClipboard = albumMoverClipboard
 			
-			albumsTVC.context = context
 			let container = viewModel.item(for: selectedIndexPath)
-			let sections = [
-				GroupOfCollectionsOrAlbums(
-					entityName: albumsTVC.entityName,
-					container: container,
-					context: context)
-			]
+			let context = viewModel.context
 			albumsTVC.viewModel = AlbumsViewModel(
-				groups: sections)
+				containers: [container],
+				context: context)
 		}
 	}
 	

@@ -136,17 +136,8 @@ extension LibraryTVC {
 	}
 	
 	private func refreshLibraryItemsPart2() {
-		let numberOfGroups = viewModel.groups.count
-		let indicesOfAllGroups = Array(0 ..< numberOfGroups)
-		let sectionsAndNewItems = indicesOfAllGroups.map { indexOfGroup in
-			(
-				indexOfGroup + viewModel.numberOfSectionsAboveLibraryItems,
-				viewModel.groups[indexOfGroup].itemsFetched(context: context)
-			)
-		}
-		viewModel.groups.forEach {
-			$0.refreshContainer(context: context)
-		}
+		let sectionsAndNewItems = viewModel.sectionsAndNewItems()
+		viewModel.refreshContainers()
 		sectionsAndNewItems.forEach { (section, newItems) in
 			
 			setItemsAndRefresh(

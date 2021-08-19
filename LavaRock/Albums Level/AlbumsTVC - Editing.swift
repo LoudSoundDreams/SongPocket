@@ -75,8 +75,8 @@ extension AlbumsTVC {
 		
 		// Make the "move Albums to…" sheet use a child managed object context, so that we can cancel without having to revert our changes.
 		let childContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-		childContext.parent = context
-		modalCollectionsTVC.context = childContext
+		childContext.parent = viewModel.context
+		modalCollectionsTVC.viewModel = CollectionsViewModel(context: childContext)
 		
 		present(modalCollectionsNC, animated: true)
 		

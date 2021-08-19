@@ -8,7 +8,6 @@
 import CoreData
 
 protocol GroupOfLibraryItems {
-	var entityName: String { get }
 	var container: NSManagedObject? { get }
 	
 	var items: [NSManagedObject] { get }
@@ -43,8 +42,11 @@ protocol GroupOfLibraryItems {
 
 extension GroupOfLibraryItems {
 	
-	// Similar to allFetched in Collection, in Album, and in Song.
-	func itemsFetched(context: NSManagedObjectContext) -> [NSManagedObject] {
+	// Similar to Collection.allFetched, Album.allFetched, and Song.allFetched.
+	func itemsFetched(
+		entityName: String,
+		context: NSManagedObjectContext
+	) -> [NSManagedObject] {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		if let container = container {
