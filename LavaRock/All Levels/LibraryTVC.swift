@@ -50,19 +50,28 @@ class LibraryTVC:
 	
 	// MARK: - Properties
 	
-	// MARK: "Constants"
+	// MARK: Subclasses Should Customize
 	
-	// "Constants" that subclasses should customize
+	// "Constants"
 	var editingModeToolbarButtons = [UIBarButtonItem]()
 	var sortOptionsGrouped = [[SortOption]]()
 	
-	// "Constants" that subclasses can optionally customize
+	lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
+		let mainContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		return CollectionsViewModel(context: mainContext)
+	}()
+	
+	// MARK: Subclasses Can Optionally Customize
+	
+	// "Constants"
 	var viewingModeTopLeftButtons = [UIBarButtonItem]()
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
 	lazy var topRightButtons = [editButtonItem]
 	lazy var viewingModeToolbarButtons = playbackButtons
 	
-	// "Constants" that subclasses should not customize
+	// MARK: Subclasses Should Not Customize
+	
+	// "Constants"
 	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	let cellReuseIdentifier = "Cell"
 	lazy var sortButton = UIBarButtonItem(
@@ -91,7 +100,7 @@ class LibraryTVC:
 			primaryAction: action)
 	}()
 	
-	// "Constants" that subclasses should not change, for PlaybackController
+	// "Constants" for PlaybackController
 	final lazy var playbackButtons = [
 		previousSongButton,
 		.flexibleSpace(),
@@ -130,15 +139,6 @@ class LibraryTVC:
 		return button
 	}()
 	
-	// MARK: Variables
-	
-	// Variables that subclasses should customize
-	lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
-		let mainContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		return CollectionsViewModel(context: mainContext)
-	}()
-	
-	// Variables that subclasses should not customize
 	var isImportingChanges = false
 	var needsRefreshLibraryItemsOnViewDidAppear = false
 	var isAnimatingDuringSetItemsAndRefresh = 0

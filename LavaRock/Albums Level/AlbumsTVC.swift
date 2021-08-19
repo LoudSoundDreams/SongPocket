@@ -44,7 +44,6 @@ final class AlbumsTVC:
 		return button
 	}()
 	
-	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
 	
 	// MARK: - Setup
@@ -114,11 +113,11 @@ final class AlbumsTVC:
 	final override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		
-		let viewModel = viewModel as? AlbumsViewModel
+		let albumsViewModel = viewModel as? AlbumsViewModel
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		moveOrOrganizeButton.isEnabled = viewModel?.allowsMoveOrOrganize(
+		moveOrOrganizeButton.isEnabled = albumsViewModel?.allowsMoveOrOrganize(
 			selectedIndexPaths: selectedIndexPaths) ?? false
-		moveButton.isEnabled = viewModel?.allowsMove(
+		moveButton.isEnabled = albumsViewModel?.allowsMove(
 			selectedIndexPaths: selectedIndexPaths) ?? false
 	}
 	

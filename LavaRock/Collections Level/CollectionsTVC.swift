@@ -47,13 +47,11 @@ final class CollectionsTVC:
 			primaryAction: action)
 	}()
 	
-	// Variables
 	var isAboutToSetItemsAndRefresh = false
 	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
 	
 	// MARK: "Moving Albums" Mode
 	
-	// Variables
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var didMoveAlbums = false
 	
@@ -300,9 +298,9 @@ final class CollectionsTVC:
 	final override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		
-		let viewModel = viewModel as? CollectionsViewModel
+		let collectionsViewModel = viewModel as? CollectionsViewModel
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		combineButton.isEnabled = viewModel?.allowsCombine(
+		combineButton.isEnabled = collectionsViewModel?.allowsCombine(
 			selectedIndexPaths: selectedIndexPaths) ?? false
 	}
 	

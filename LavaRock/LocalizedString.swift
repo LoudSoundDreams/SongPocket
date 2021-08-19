@@ -17,14 +17,12 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: - Without Variables
 	
-	// MARK: Standard Buttons
+	// MARK: Standard
 	
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
 	static let save = NSLocalizedString("Save", comment: "Button")
 	static let done = NSLocalizedString("Done", comment: "Button")
 	static let ok = NSLocalizedString("OK", comment: "Button")
-	
-	// MARK: Standard Phrases
 	
 	static let loadingWithEllipsis = NSLocalizedString("Loading…", comment: "")
 	
@@ -63,7 +61,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let nowPlaying = NSLocalizedString("Now playing", comment: "Accessibility label")
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
 	
-	// MARK: Editing Mode
+	// MARK: Editing
 	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let sortBy = NSLocalizedString("Sort By", comment: "Action sheet title")

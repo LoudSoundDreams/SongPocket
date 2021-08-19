@@ -116,7 +116,6 @@ extension SongsTVC {
 	// MARK: Song Cell
 	
 	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		// Get the data to put into the cell.
 		guard let song = viewModel.item(for: indexPath) as? Song else {
 			return UITableViewCell()
 		}
@@ -134,18 +133,18 @@ extension SongsTVC {
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
 		
-		guard let viewModel = viewModel as? SongsViewModel else {
+		guard let songsViewModel = viewModel as? SongsViewModel else {
 			return UITableViewCell()
 		}
 		
 		// Track number
-		let shouldShowDiscNumbers = viewModel.shouldShowDiscNumbers(forSection: indexPath.section)
+		let shouldShowDiscNumbers = songsViewModel.shouldShowDiscNumbers(forSection: indexPath.section)
 		let trackNumberString: String // Don't let this be nil.
 		= mediaItem?.trackNumberFormatted(includeDisc: shouldShowDiscNumbers)
 		?? MPMediaItem.placeholderTrackNumber
 		
 		// Artist
-		let album = viewModel.container(forSection: indexPath.section)
+		let album = songsViewModel.container(forSection: indexPath.section)
 		let albumArtist = album.albumArtist() // Can be nil
 		
 		// Make, configure, and return the cell.

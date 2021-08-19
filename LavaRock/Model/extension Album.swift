@@ -198,9 +198,8 @@ extension Album {
 		let otherReleaseDate = other.releaseDateEstimate
 		// Either can be nil
 		
-		// At this point, leave Albums in the same order if they both have no release date, or the same release date.
-		// However, as of iOS 14.7, when using sorted(by:), returning `true` in the closure doesn't always keep the elements in the same order.
-		// Use sortedMaintainingOrderWhen(areEqual:areInOrder:) to guarantee stable sorting.
+		// At this point, leave elements in the same order if they both have no release date, or the same release date.
+		// However, as of iOS 14.7, when using sorted(by:), returning `true` here doesn't always keep the elements in the same order. Use sortedMaintainingOrderWhen(areEqual:areInOrder:) to guarantee stable sorting.
 //		guard myReleaseDate != otherReleaseDate else {
 //			return true
 //		}

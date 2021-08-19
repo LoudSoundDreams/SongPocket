@@ -16,7 +16,7 @@ extension SongsTVC {
 		subsystem: "LavaRock.Song",
 		category: .pointsOfInterest)
 	
-	// MARK: - Presenting Actions
+	// MARK: - Presenting
 	
 	final func showSongActions(
 		for song: Song,
@@ -79,9 +79,7 @@ extension SongsTVC {
 		present(actionSheet, animated: true)
 	}
 	
-	// MARK: - Actions
-	
-	// MARK: Play
+	// MARK: - Play
 	
 	private func playAllStartingAtSelectedSong() {
 		guard
@@ -186,7 +184,7 @@ extension SongsTVC {
 			numberOfSongsEnqueued: 1)
 	}
 	
-	// MARK: Explaining Enqueue Actions
+	// MARK: - Explaining Enqueue Actions
 	
 	private func showExplanationForEnqueueActionIfNecessary(
 		titleOfSelectedSong: String,

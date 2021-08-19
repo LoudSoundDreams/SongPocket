@@ -15,7 +15,7 @@ extension CollectionsTVC {
 	
 	final func previewMakeNewCollectionAndPresentDialog() {
 		guard
-			let viewModel = viewModel as? CollectionsViewModel,
+			let collectionsViewModel = viewModel as? CollectionsViewModel,
 			let albumMoverClipboard = albumMoverClipboard,
 			!albumMoverClipboard.didAlreadyMakeNewCollection // Without this, if you're fast, you can finish making a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
 				// You must reset didAlreadyMakeNewCollection = false both during reverting and if we exit the empty new Collection.
@@ -23,12 +23,12 @@ extension CollectionsTVC {
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = true
 		
-		let existingCollectionTitles = viewModel.group.items.compactMap {
+		let existingCollectionTitles = collectionsViewModel.group.items.compactMap {
 			($0 as? Collection)?.title
 		}
 		let suggestedTitle = albumMoverClipboard.suggestedCollectionTitle(
 			notMatching: Set(existingCollectionTitles),
-			context: viewModel.context)
+			context: collectionsViewModel.context)
 		previewMakeNewCollection(
 			suggestedTitle: suggestedTitle)
 		presentDialogToMakeNewCollection(
@@ -38,17 +38,17 @@ extension CollectionsTVC {
 	private func previewMakeNewCollection(
 		suggestedTitle: String?
 	) {
-		guard let viewModel = viewModel as? CollectionsViewModel else { return } // don't continue to presentDialogToMakeNewCollection if this fails
+		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return } // don't continue to presentDialogToMakeNewCollection if this fails
 		
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
 		
 		// Make a new data source.
-		let newItems = viewModel.itemsAfterMakingNewCollection( // Since we're in "moving Albums" mode, CollectionsViewModel should do this in a child managed object context.
+		let newItems = collectionsViewModel.itemsAfterMakingNewCollection( // Since we're in "moving Albums" mode, CollectionsViewModel should do this in a child managed object context.
 			suggestedTitle: suggestedTitle,
 			indexOfNewCollection: indexOfNewCollection)
 		
 		// Update the data source and table view.
-		let indexPathOfNewCollection = viewModel.indexPathFor(
+		let indexPathOfNewCollection = collectionsViewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,
 			indexOfGroup: CollectionsViewModel.indexOfGroup)
 		tableView.performBatchUpdates {
@@ -95,7 +95,7 @@ extension CollectionsTVC {
 	final func revertMakeNewCollectionIfEmpty() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
-			let viewModel = viewModel as? CollectionsViewModel
+			let collectionsViewModel = viewModel as? CollectionsViewModel
 		else { return }
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = false
@@ -103,9 +103,9 @@ extension CollectionsTVC {
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
 		
 		// Update the data source and table view.
-		let newItems = viewModel.itemsAfterDeletingCollection(
+		let newItems = collectionsViewModel.itemsAfterDeletingCollection(
 			indexOfCollection: indexOfNewCollection)
-		let indexPathOfDeletedCollection = viewModel.indexPathFor(
+		let indexPathOfDeletedCollection = collectionsViewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,
 			indexOfGroup: CollectionsViewModel.indexOfGroup)
 		setItemsAndRefresh(
@@ -116,14 +116,14 @@ extension CollectionsTVC {
 	private func renameAndOpenNewCollection(
 		proposedTitle: String?
 	) {
-		guard let viewModel = viewModel as? CollectionsViewModel else { return }
+		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
-		let didChangeTitle = viewModel.renameCollection(
+		let didChangeTitle = collectionsViewModel.renameCollection(
 			proposedTitle: proposedTitle,
 			indexOfCollection: indexOfNewCollection)
 		
-		let indexPathOfNewCollection = viewModel.indexPathFor(
+		let indexPathOfNewCollection = collectionsViewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,
 			indexOfGroup: CollectionsViewModel.indexOfGroup)
 		tableView.performBatchUpdates {

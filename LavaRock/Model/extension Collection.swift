@@ -79,6 +79,27 @@ extension Collection {
 		index = 0
 	}
 	
+	// WARNING: Leaves Collections in an incoherent state.
+	// After calling this, you must delete empty Collections and reindex all Collections.
+	static func makeByCombining_withoutDeletingOrReindexing(
+		_ selectedCollections: [Collection],
+		title titleOfCombinedCollection: String,
+		index indexOfCombinedCollection: Int64,
+		context: NSManagedObjectContext
+	) -> Collection {
+		var selectedAlbums = selectedCollections.flatMap { selectedCollection in
+			selectedCollection.albums()
+		}
+		selectedAlbums.reindex()
+		
+		let combinedCollection = Collection(context: context)
+		combinedCollection.index = indexOfCombinedCollection
+		combinedCollection.title = titleOfCombinedCollection
+		selectedAlbums.forEach { $0.container = combinedCollection }
+		
+		return combinedCollection
+	}
+	
 	// MARK: - Core Data
 	
 	// Similar to Album.allFetched and Song.allFetched.
@@ -122,27 +143,6 @@ extension Collection {
 		} else {
 			return unsortedAlbums
 		}
-	}
-	
-	// WARNING: Leaves Collections in an incoherent state.
-	// After calling this, you must delete empty Collections and reindex all Collections.
-	static func makeByCombining_withoutDeletingOrReindexing(
-		_ selectedCollections: [Collection],
-		title titleOfCombinedCollection: String,
-		index indexOfCombinedCollection: Int64,
-		context: NSManagedObjectContext
-	) -> Collection {
-		var selectedAlbums = selectedCollections.flatMap { selectedCollection in
-			selectedCollection.albums()
-		}
-		selectedAlbums.reindex()
-		
-		let combinedCollection = Collection(context: context)
-		combinedCollection.index = indexOfCombinedCollection
-		combinedCollection.title = titleOfCombinedCollection
-		selectedAlbums.forEach { $0.container = combinedCollection }
-		
-		return combinedCollection
 	}
 	
 	// Works even if any of the Albums are already in this Collection.

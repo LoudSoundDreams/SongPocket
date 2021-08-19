@@ -31,10 +31,8 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	
 	// MARK: - Properties
 	
-	// Constants
 	static let shared = PurchaseManager() // We can't make everything in this class static, because StoreKit only works with instances, not types.
 	
-	// Variables
 	private(set) lazy var tipStatus: TipStatus = .notYetFirstLoaded
 	private(set) lazy var tipProduct: SKProduct? = nil
 	private(set) lazy var tipPriceFormatter: NumberFormatter? = nil
@@ -46,7 +44,7 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 		SKPaymentQueue.default().add(self) // We can't make this method static, because StoreKit needs an instance here, not a type.
 	}
 	
-	// MARK: - Other
+	// MARK: - Miscellaneous
 	
 	final func requestAllSKProducts() {
 		tipStatus = .loading
@@ -82,7 +80,6 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	
 	// MARK: - Properties
 	
-	// Variables
 	private lazy var savedSKProductsRequest: SKProductsRequest? = nil
 	// For testing only
 //	private lazy var isTestingDidFailToReceiveAnySKProducts = true

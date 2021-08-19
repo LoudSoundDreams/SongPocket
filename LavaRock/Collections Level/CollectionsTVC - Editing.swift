@@ -116,22 +116,22 @@ extension CollectionsTVC {
 		from selectedIndexPaths: [IndexPath],
 		into indexPathOfCombinedCollection: IndexPath
 	) {
-		guard let viewModel = viewModel as? CollectionsViewModel else { return } // TO DO: Don't continue to presentDialogToCombineCollections if this fails.
+		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return } // TO DO: Don't continue to presentDialogToCombineCollections if this fails.
 		
 		// Save the existing GroupOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
-		groupOfCollectionsBeforeCombining = viewModel.group // SIDE EFFECT
+		groupOfCollectionsBeforeCombining = collectionsViewModel.group // SIDE EFFECT
 		
 		// Create the combined Collection, and make a new data source.
 		// SIDE EFFECTS:
 		// - Creates Collection
 		// - Modifies Albums
-		let newItems = viewModel.itemsAfterCombiningCollections(
+		let newItems = collectionsViewModel.itemsAfterCombiningCollections(
 			from: selectedIndexPaths,
 			into: indexPathOfCombinedCollection)
 		
 		// Update the data source and table view.
-		let indexOfCombinedCollection = viewModel.indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
-		let section = viewModel.numberOfSectionsAboveLibraryItems
+		let indexOfCombinedCollection = collectionsViewModel.indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
+		let section = collectionsViewModel.numberOfSectionsAboveLibraryItems
 		setItemsAndRefresh(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
 			indexesOfNewItemsToSelect: [indexOfCombinedCollection],

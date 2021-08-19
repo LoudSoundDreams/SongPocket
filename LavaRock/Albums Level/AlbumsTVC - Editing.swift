@@ -37,8 +37,8 @@ extension AlbumsTVC {
 	final func startMovingAlbums() {
 		
 		guard
-			let viewModel = viewModel as? AlbumsViewModel,
-			viewModel.allowsMove(selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+			let albumsViewModel = viewModel as? AlbumsViewModel,
+			albumsViewModel.allowsMove(selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		else { return }
 		
 		// Prepare a Collections view to present modally.
@@ -51,8 +51,8 @@ extension AlbumsTVC {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		let indexPathsToMove: [IndexPath] = {
 			if selectedIndexPaths.isEmpty {
-				if viewModel.groups.count == 1 {
-					return viewModel.indexPaths(forIndexOfGroup: 0)
+				if albumsViewModel.groups.count == 1 {
+					return albumsViewModel.indexPaths(forIndexOfGroup: 0)
 				} else {
 					return []
 				}
@@ -63,10 +63,10 @@ extension AlbumsTVC {
 		guard let section = indexPathsToMove.first?.section else { return }
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
-		let sourceCollection = viewModel.container(forSection: section)
+		let sourceCollection = albumsViewModel.container(forSection: section)
 		let idOfSourceCollection = sourceCollection.objectID
 		let idsOfAlbumsToMove = indexPathsToMove.map {
-			viewModel.item(for: $0).objectID
+			albumsViewModel.item(for: $0).objectID
 		}
 		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
 			idOfSourceCollection: idOfSourceCollection,
@@ -75,7 +75,7 @@ extension AlbumsTVC {
 		
 		// Make the "move Albums to…" sheet use a child managed object context, so that we can cancel without having to revert our changes.
 		let childContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-		childContext.parent = viewModel.context
+		childContext.parent = albumsViewModel.context
 		modalCollectionsTVC.viewModel = CollectionsViewModel(context: childContext)
 		
 		present(modalCollectionsNC, animated: true)

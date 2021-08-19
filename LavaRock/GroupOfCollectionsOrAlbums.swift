@@ -11,10 +11,8 @@ struct GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
 	
 	// MARK: - GroupOfLibraryItems
 	
-	// Constants
 	let container: NSManagedObject?
 	
-	// Variables
 	var items: [NSManagedObject] { private_items }
 	private var private_items = [NSManagedObject]() {
 		didSet {

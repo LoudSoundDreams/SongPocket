@@ -16,7 +16,6 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	
 	// MARK: - Properties
 	
-	// Variables
 	private(set) static var player: MPMusicPlayerController?
 	private(set) static var songInPlayer: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
 	
@@ -30,7 +29,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		refreshSongInPlayer()
 	}
 	
-	// MARK: - Other
+	// MARK: - Miscellaneous
 	
 	static func refreshSongInPlayer() {
 		guard
@@ -62,7 +61,6 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	
 	// MARK: - Properties
 	
-	// Constants
 	private static let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	// MARK: - Teardown

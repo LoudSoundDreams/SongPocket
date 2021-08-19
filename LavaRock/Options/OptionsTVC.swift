@@ -11,7 +11,6 @@ final class OptionsTVC: UITableViewController {
 	
 	// MARK: - Properties
 	
-	// Variables
 	final var isTipJarShowingThankYou = false
 	
 	// MARK: - Setup

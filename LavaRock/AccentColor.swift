@@ -21,14 +21,10 @@ struct AccentColor: Equatable { // You can't make this an enum, because raw valu
 	
 	// MARK: - Properties
 	
-	// MARK: Instance Properties
-	
 	let valueCase: ValueCase
 	let displayName: String
 	let uiColor: UIColor
 	let heartEmoji: String
-	
-	// MARK: Type Properties
 	
 	static let all = [
 		Self(
@@ -91,7 +87,7 @@ struct AccentColor: Equatable { // You can't make this an enum, because raw valu
 		uiColor: .systemBlue,
 		heartEmoji: "💙")
 	
-	// MARK: - Methods
+	// MARK: - Restoring
 	
 	private static func savedValueCase() -> ValueCase {
 		defaults.register(defaults: [
