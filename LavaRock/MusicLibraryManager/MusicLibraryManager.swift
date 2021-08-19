@@ -29,7 +29,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	// MARK: - Setup and Teardown
 	
-	private init() { }
+	private init() {}
 	
 	final func setUpAndImportChanges() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }

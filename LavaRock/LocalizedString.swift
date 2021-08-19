@@ -13,7 +13,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// Don't pass arguments to the Foundation function NSLocalizedString, because when you choose Editor -> Export for Localization…, Xcode won't include those calls.
 	
-	private init() { }
+	private init() {}
 	
 	// MARK: - Without Variables
 	

@@ -15,7 +15,7 @@ protocol PurchaseManagerTipDelegate: AnyObject {
 
 final class PurchaseManager: NSObject { // This type inherits from NSObject because that makes it easier to make it conform to SKProductsRequestDelegate and SKPaymentTransactionObserver, which inherit from NSObjectProtocol.
 	
-	private override init() { }
+	private override init() {}
 	
 	// MARK: - NON-PRIVATE
 	
