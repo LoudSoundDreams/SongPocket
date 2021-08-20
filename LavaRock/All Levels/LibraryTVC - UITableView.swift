@@ -42,13 +42,25 @@ extension LibraryTVC {
 			newItemsInDestinationSection
 		) = viewModel.itemsAfterMovingRow(at: fromIndexPath, to: to)
 		
-		setItemsAndRefresh(
-			newItems: newItemsInSourceSection,
-			section: fromIndexPath.section)
-		if let newItemsInDestinationSection = newItemsInDestinationSection {
+		// Here, the refresh in setItemsAndRefresh is unnecessary because we don't have to move, select, or reload any rows for the user; all we really need is GroupOfLibraryItems.setItems. However, setItemsAndRefresh still works, and doesn't actively break anything.
+		// … except that, as of iOS 14.7.1, setItemsAndRefresh's table view updates make the separator below the cell you moved disappear. That doesn't happen on iOS 15 developer beta 6.
+		if #available(iOS 15, *) {
 			setItemsAndRefresh(
-				newItems: newItemsInDestinationSection,
-				section: to.section)
+				newItems: newItemsInSourceSection,
+				section: fromIndexPath.section)
+		} else {
+			let indexOfSourceGroup = viewModel.indexOfGroup(forSection: fromIndexPath.section)
+			viewModel.groups[indexOfSourceGroup].setItems(newItemsInSourceSection)
+		}
+		if let newItemsInDestinationSection = newItemsInDestinationSection {
+			if #available(iOS 15, *) {
+				setItemsAndRefresh(
+					newItems: newItemsInDestinationSection,
+					section: to.section)
+			} else {
+				let indexOfDestinationGroup = viewModel.indexOfGroup(forSection: to.section)
+				viewModel.groups[indexOfDestinationGroup].setItems(newItemsInDestinationSection)
+			}
 		}
 		
 		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the "Sort" button. If you made all the selected rows contiguous, that should enable the "Sort" button.
@@ -69,7 +81,7 @@ extension LibraryTVC {
 		didBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) {
 		if !isEditing {
-			setEditing(true, animated: true) // As of iOS 14.7 beta 2, with LavaRock's codebase as of build 144, starting a multiple-selection interaction sometimes causes the table view to crash when our override of setEditing calls tableView.performBatchUpdates(nil), with "[Assert] Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed."
+			setEditing(true, animated: true) // As of iOS 14.7 developer beta 2, with LavaRock's codebase as of build 144, starting a multiple-selection interaction sometimes causes the table view to crash when our override of setEditing calls tableView.performBatchUpdates(nil), with "[Assert] Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed."
 			// During WWDC 2021, I did a lab in UIKit where the Apple engineer was pretty sure that this was a bug in UITableView.
 			// By checking isEditing first, we either prevent that or make it very rare.
 		}
