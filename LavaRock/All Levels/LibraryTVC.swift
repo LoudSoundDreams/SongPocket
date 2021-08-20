@@ -198,7 +198,7 @@ class LibraryTVC:
 		endObservingNotifications()
 	}
 	
-	// MARK: - Refreshing Table View
+	// MARK: - Setting Items and Refreshing
 	
 	// Easy to override. Overrides of this method should not call super (this implementation).
 	func refreshToReflectNoItems() {
@@ -324,12 +324,9 @@ class LibraryTVC:
 		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		sortButton.isEnabled = viewModel.allowsSort(
-			selectedIndexPaths: selectedIndexPaths)
-		floatToTopButton.isEnabled = viewModel.allowsFloat(
-			selectedIndexPaths: selectedIndexPaths)
-		sinkToBottomButton.isEnabled = viewModel.allowsSink(
-			selectedIndexPaths: selectedIndexPaths)
+		sortButton.isEnabled = viewModel.allowsSort(selectedIndexPaths: selectedIndexPaths)
+		floatToTopButton.isEnabled = viewModel.allowsFloat(selectedIndexPaths: selectedIndexPaths)
+		sinkToBottomButton.isEnabled = viewModel.allowsSink(selectedIndexPaths: selectedIndexPaths)
 	}
 	
 	// MARK: - Navigation

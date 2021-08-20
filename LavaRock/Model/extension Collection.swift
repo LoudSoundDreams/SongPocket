@@ -133,7 +133,7 @@ extension Collection {
 		sorted: Bool = true
 	) -> [Album] {
 		guard let contents = contents else {
-			return [Album]()
+			return []
 		}
 		
 		let unsortedAlbums = contents.map { $0 as! Album }

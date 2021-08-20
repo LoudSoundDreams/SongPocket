@@ -173,7 +173,7 @@ extension OptionsTVC {
 //				animated: false,
 //				scrollPosition: .none)
 //		} completion: { _ in
-//			self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.7 beta 2, this animation is broken (under some conditions). The row stays completely highlighted for the period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
+//			self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.7 developer beta 2, this animation is broken (under some conditions). The row stays completely highlighted for the period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
 //		}
 		
 		
@@ -193,7 +193,7 @@ extension OptionsTVC {
 				tableView.deselectRow(at: selectedIndexPath, animated: true)
 			} else {
 //				tableView.reloadRows(at: [colorIndexPath], with: .none)
-				colorCell.accessoryType = .none // Don't use reloadRows, because as of iOS 14.7 beta 2, that breaks tableView.deselectRow's animation.
+				colorCell.accessoryType = .none // Don't use reloadRows, because as of iOS 14.7 developer beta 2, that breaks tableView.deselectRow's animation.
 			}
 		}
 		

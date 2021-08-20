@@ -12,7 +12,7 @@ extension UITableView {
 	// MARK: - Asking About Selected IndexPaths
 	
 	final var indexPathsForSelectedRowsNonNil: [IndexPath] {
-		return indexPathsForSelectedRows ?? [IndexPath]()
+		return indexPathsForSelectedRows ?? []
 	}
 	
 	// MARK: - Getting IndexPaths
@@ -29,7 +29,7 @@ extension UITableView {
 		let lastRow = numberOfRows(inSection: section) - 1
 		guard lastRow >= 0 else {
 			// The section has 0 rows.
-			return [IndexPath]()
+			return []
 		}
 		return indexPathsForRows(
 			inSection: section,
@@ -47,7 +47,7 @@ extension UITableView {
 	
 	final func deselectAllRows(animated: Bool) {
 		indexPathsForSelectedRowsNonNil.forEach {
-			deselectRow(at: $0, animated: animated) // As of iOS 14.2 beta 1, this doesn't animate for some reason. It works right on iOS 13.5.1.
+			deselectRow(at: $0, animated: animated) // As of iOS 14.2 developer beta 1, this doesn't animate for some reason. It works right on iOS 13.5.1.
 		}
 	}
 	

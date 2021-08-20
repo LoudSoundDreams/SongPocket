@@ -14,10 +14,10 @@ extension CollectionsTVC {
 //		super.setEditing(editing, animated: animated)
 //
 //		let indexOfAllSection = Section.all.rawValue
-//		let indexPathsInAllSection = tableView.indexPathsForRows(
+//		let allSection = tableView.indexPathsForRows(
 //			inSection: indexOfAllSection,
 //			firstRow: 0)
-//		tableView.reloadRows(at: indexPathsInAllSection, with: .fade) //
+//		tableView.reloadRows(at: allSection, with: .fade) //
 //
 ////		refreshVoiceControlNamesForCollectionCells()
 //	}
@@ -121,7 +121,7 @@ extension CollectionsTVC {
 		// Save the existing GroupOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
 		groupOfCollectionsBeforeCombining = collectionsViewModel.group // SIDE EFFECT
 		
-		// Create the combined Collection, and make a new data source.
+		// Make a new data source.
 		// SIDE EFFECTS:
 		// - Creates Collection
 		// - Modifies Albums

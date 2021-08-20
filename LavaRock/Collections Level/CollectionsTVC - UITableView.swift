@@ -109,8 +109,9 @@ extension CollectionsTVC {
 	// MARK: "All" Cell
 	
 	private func allCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "All", for: indexPath)
-				as? AllCollectionsCell
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "All",
+			for: indexPath) as? AllCollectionsCell
 		else {
 			return UITableViewCell()
 		}
@@ -144,8 +145,9 @@ extension CollectionsTVC {
 	// MARK: "Allow Access" or "Loading…" Cell
 	
 	private func allowAccessOrLoadingCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access or Loading", for: indexPath)
-				as? AllowAccessOrLoadingCell
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Allow Access or Loading",
+			for: indexPath) as? AllowAccessOrLoadingCell
 		else {
 			return UITableViewCell()
 		}
@@ -220,8 +222,9 @@ extension CollectionsTVC {
 		
 		// Make, configure, and return the cell.
 		
-		guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-				as? CollectionCell
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: Self.libraryItemCellReuseIdentifier,
+			for: indexPath) as? CollectionCell
 		else {
 			return UITableViewCell()
 		}

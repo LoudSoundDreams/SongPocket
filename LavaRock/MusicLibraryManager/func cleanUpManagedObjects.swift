@@ -103,7 +103,7 @@ extension MusicLibraryManager {
 		albumsInCollection.reindex()
 	}
 	
-	// Verified as of build 154 on iOS 14.7 beta 5.
+	// Verified as of build 154 on iOS 14.7 developer beta 5.
 	private func sortedByNewestFirstAndUnknownReleaseDateLast(
 		_ albums: [Album]
 	) -> [Album] {

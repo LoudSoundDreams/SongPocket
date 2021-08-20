@@ -97,14 +97,14 @@ extension LibraryTVC {
 	}
 	
 	final func goToPreviousSong() {
-//		sharedPlayer?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackButtons(), but as of iOS 14.4 beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
+//		sharedPlayer?.currentPlaybackTime = 0 // Changing the now-playing item triggers refreshPlaybackButtons(), but as of iOS 14.4 developer beta 1, without this line of code, we can actually finish all that before currentPlaybackTime actually changes to 0 for the new song, which causes us to not disable the "restart current song" button when we should.
 		// Actually, that line of code makes this method take forever to return; it repeatedly prints "SYNC-WATCHDOG-1: Attempting to wake up the remote process" and "SYNC-WATCHDOG-2: Tearing down connection". That happens whether we set currentPlaybackTime = 0 before or after changing the song.
 		
 		sharedPlayer?.skipToPreviousItem()
 	}
 	
 	final func rewind() {
-		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 14.4 beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
+		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 14.4 developer beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
 //		sharedPlayer?.skipToBeginning()
 //		sharedPlayer?.prepareToPlay()
 		

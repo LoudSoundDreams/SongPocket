@@ -173,7 +173,7 @@ final class CollectionsTVC:
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: toDelete, with: .middle)
 			tableView.insertRows(at: toInsert, with: .middle)
-			tableView.reloadRows(at: toReload, with: animationForReload) // move this outside the block?
+			tableView.reloadRows(at: toReload, with: animationForReload)
 		} completion: { _ in
 			completion?()
 		}

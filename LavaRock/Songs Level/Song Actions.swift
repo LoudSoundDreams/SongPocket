@@ -104,7 +104,7 @@ extension SongsTVC {
 		
 		sharedPlayer?.setQueue(with: queueDescriptor)
 		
-		// As of iOS 14.7 beta 1, you must set repeatMode and shuffleMode after calling setQueue, or else the repeat mode and shuffle mode won't actually apply.
+		// As of iOS 14.7 developer beta 1, you must set repeatMode and shuffleMode after calling setQueue, or else the repeat mode and shuffle mode won't actually apply.
 		sharedPlayer?.repeatMode = .none
 		sharedPlayer?.shuffleMode = .off
 		
@@ -139,7 +139,7 @@ extension SongsTVC {
 		sharedPlayer?.repeatMode = .none
 		sharedPlayer?.shuffleMode = .off
 		
-		// As of iOS 14.7 beta 1, you must do this in case the user force quit the built-in Music app recently.
+		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
 		if sharedPlayer?.playbackState != .playing {
 			sharedPlayer?.prepareToPlay()
 		}
@@ -173,7 +173,7 @@ extension SongsTVC {
 		sharedPlayer?.repeatMode = .none
 		sharedPlayer?.shuffleMode = .off
 		
-		// As of iOS 14.7 beta 1, you must do this in case the user force quit the built-in Music app recently.
+		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
 		if sharedPlayer?.playbackState != .playing {
 			sharedPlayer?.prepareToPlay()
 		}

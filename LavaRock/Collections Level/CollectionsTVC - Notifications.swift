@@ -52,7 +52,7 @@ extension CollectionsTVC {
 				
 //				print("Reverting “Combine Collections”.")
 //				revertCombineCollections(
-//					from: [IndexPath]() //
+//					from: [] //
 //				) {
 //					print("Reverted. Refreshing library items.")
 //					super.refreshLibraryItems()

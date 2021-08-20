@@ -57,8 +57,9 @@ extension SongsTVC {
 		
 		// Make, configure, and return the cell.
 		
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "Album Artwork Cell", for: indexPath)
-				as? AlbumArtworkCell
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Album Artwork Cell",
+			for: indexPath) as? AlbumArtworkCell
 		else {
 			return UITableViewCell()
 		}
@@ -85,8 +86,9 @@ extension SongsTVC {
 		
 		// Make, configure, and return the cell.
 		if let releaseDateString = releaseDateString {
-			guard let cell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell", for: indexPath)
-					as? AlbumInfoCell
+			guard let cell = tableView.dequeueReusableCell(
+				withIdentifier: "Album Info Cell",
+				for: indexPath) as? AlbumInfoCell
 			else {
 				return UITableViewCell()
 			}
@@ -99,8 +101,9 @@ extension SongsTVC {
 			return cell
 			
 		} else { // We couldn't determine the album's release date.
-			guard let cell = tableView.dequeueReusableCell(withIdentifier: "Album Info Cell Without Release Date", for: indexPath)
-					as? AlbumInfoCellWithoutReleaseDate
+			guard let cell = tableView.dequeueReusableCell(
+				withIdentifier: "Album Info Cell Without Release Date",
+				for: indexPath) as? AlbumInfoCellWithoutReleaseDate
 			else {
 				return UITableViewCell()
 			}
@@ -152,8 +155,9 @@ extension SongsTVC {
 			let songArtist = mediaItem?.artist,
 			songArtist != albumArtist
 		{
-			guard var cell = tableView.dequeueReusableCell(withIdentifier: "Cell with Different Artist", for: indexPath)
-					as? SongCellWithDifferentArtist
+			guard var cell = tableView.dequeueReusableCell(
+				withIdentifier: "Cell with Different Artist",
+				for: indexPath) as? SongCellWithDifferentArtist
 			else {
 				return UITableViewCell()
 			}
@@ -171,8 +175,9 @@ extension SongsTVC {
 			return cell
 			
 		} else { // The song's artist is not useful, or it's the same as the album artist.
-			guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-					as? SongCell
+			guard var cell = tableView.dequeueReusableCell(
+				withIdentifier: Self.libraryItemCellReuseIdentifier,
+				for: indexPath) as? SongCell
 			else {
 				return UITableViewCell()
 			}

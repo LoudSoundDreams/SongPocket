@@ -114,7 +114,7 @@ extension Album {
 		sorted: Bool = true
 	) -> [Song] {
 		guard let contents = contents else {
-			return [Song]()
+			return []
 		}
 		
 		let unsortedSongs = contents.map { $0 as! Song }

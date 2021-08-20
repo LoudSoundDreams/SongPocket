@@ -11,13 +11,13 @@ extension MPMediaItem {
 	
 	// MARK: - Properties
 	
-	// As of iOS 14.7 beta 5, MediaPlayer reports unknown track numbers as 0.
+	// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown track numbers as 0.
 	private static let unknownTrackNumber = 0
 	
 	// MARK: - Predicates for Sorting
 	
 	// Note: Behavior is undefined if you compare with an MPMediaItem from the same album.
-	// Verified as of build 157 on iOS 14.7 beta 5.
+	// Verified as of build 157 on iOS 14.7 developer beta 5.
 	final func precedesInDefaultOrder(inDifferentAlbum other: MPMediaItem) -> Bool {
 		let myAlbumArtist = albumArtist
 		let otherAlbumArtist = other.albumArtist
@@ -33,7 +33,7 @@ extension MPMediaItem {
 			}
 			
 			// Move unknown album title to end
-			// As of iOS 14.7 beta 5, MediaPlayer reports unknown album titles as "".
+			// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown album titles as "".
 			guard otherAlbumTitle != "", let otherAlbumTitle = otherAlbumTitle else {
 				return true
 			}
@@ -46,7 +46,7 @@ extension MPMediaItem {
 		}
 		
 		// Move unknown album artist to end
-		// As of iOS 14.7 beta 5, MediaPlayer reports unknown album artists as nil.
+		// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown album artists as nil.
 		guard let otherAlbumArtist = otherAlbumArtist, otherAlbumArtist != "" else {
 			return true
 		}
@@ -71,14 +71,14 @@ extension MPMediaItem {
 	}
 	
 	// Note: Behavior is undefined if you compare with an MPMediaItem from a different album.
-	// Verified as of build 154 on iOS 14.7 beta 5.
+	// Verified as of build 154 on iOS 14.7 developer beta 5.
 	private func precedesInDisplayOrder(
 		inSameAlbum other: MPMediaItem,
 		shouldResortToTitle: Bool
 	) -> Bool {
 		// Sort by disc number
 		// Music for Mac as of version 1.1.5.74 changes disc number 0 to blank, so we shouldn't need to move disc 0 to the end.
-		// Note: As of iOS 14.7 beta 5, MediaPlayer reports unknown disc numbers as 1.
+		// Note: As of iOS 14.7 developer beta 5, MediaPlayer reports unknown disc numbers as 1.
 		let myDisc = discNumber
 		let otherDisc = other.discNumber
 		guard myDisc == otherDisc else {

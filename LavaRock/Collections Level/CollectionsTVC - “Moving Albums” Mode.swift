@@ -102,12 +102,14 @@ extension CollectionsTVC {
 		
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
 		
-		// Update the data source and table view.
+		// Make a new data source.
 		let newItems = collectionsViewModel.itemsAfterDeletingCollection(
 			indexOfCollection: indexOfNewCollection)
 		let indexPathOfDeletedCollection = collectionsViewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,
 			indexOfGroup: CollectionsViewModel.indexOfGroup)
+		
+		// Update the data source and table view.
 		setItemsAndRefresh(
 			newItems: newItems,
 			section: indexPathOfDeletedCollection.section)
