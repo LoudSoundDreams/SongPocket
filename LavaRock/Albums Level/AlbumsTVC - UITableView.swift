@@ -56,8 +56,9 @@ extension AlbumsTVC {
 		// Make, configure, and return the cell.
 		let artwork = album.mpMediaItemCollection()?.representativeItem?.artwork // Can be nil
 		if let releaseDateString = releaseDateString {
-			guard var cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-					as? AlbumCell
+			guard var cell = tableView.dequeueReusableCell(
+				withIdentifier: Self.libraryItemCellReuseIdentifier,
+				for: indexPath) as? AlbumCell
 			else {
 				return UITableViewCell()
 			}

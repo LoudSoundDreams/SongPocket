@@ -52,7 +52,7 @@ extension CollectionsTVC {
 			let proposedTitle = dialog.textFields?[0].text
 			self.rename(
 				collection,
-				withProposedTitle: proposedTitle,
+				proposedTitle: proposedTitle,
 				at: indexPath,
 				thenSelectRow: wasRowSelectedBeforeRenaming)
 		}
@@ -65,27 +65,32 @@ extension CollectionsTVC {
 	}
 	
 	private func rename(
-		_ renamedCollection: Collection,
-		withProposedTitle proposedTitle: String?,
+		_ collection: Collection,
+		proposedTitle: String?,
 		at indexPath: IndexPath,
 		thenSelectRow: Bool
 	) {
-		let oldTitle = renamedCollection.title
-		if let newTitle = Collection.validatedTitleOptional(from: proposedTitle) {
-			renamedCollection.title = newTitle
-		}
-		let didChangeTitle = renamedCollection.title != oldTitle
+		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		viewModel.context.tryToSave()
+		// Make a new data source.
+		let indexOfGroup = collectionsViewModel.indexOfGroup(forSection: indexPath.section)
+		let indexOfCollection = collectionsViewModel.indexOfItemInGroup(forRow: indexPath.row)
+		let (newItems, didChangeTitle) = collectionsViewModel.itemsAfterRenamingCollection(
+			proposedTitle: proposedTitle,
+			indexOfGroup: indexOfGroup,
+			indexOfCollection: indexOfCollection)
 		
-		if didChangeTitle {
-			tableView.reloadRows(at: [indexPath], with: .fade)
-		}
-		if thenSelectRow {
-			tableView.selectRow(
-				at: indexPath,
-				animated: false,
-				scrollPosition: .none)
+		let toReload = didChangeTitle ? [indexOfCollection] : []
+		let toSelect = thenSelectRow ? [indexOfCollection] : []
+		
+		// Update the data source and table view.
+		setItemsAndRefresh(
+			newItems: newItems,
+			indicesOfNewItemsToReload: toReload,
+			indicesOfNewItemsToSelect: toSelect,
+			section: indexPath.section
+		) {
+			self.viewModel.context.tryToSave()
 		}
 	}
 	
@@ -134,7 +139,7 @@ extension CollectionsTVC {
 		let section = collectionsViewModel.numberOfSectionsAboveLibraryItems
 		setItemsAndRefresh(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
-			indexesOfNewItemsToSelect: [indexOfCombinedCollection],
+			indicesOfNewItemsToSelect: [indexOfCombinedCollection],
 			section: section)
 		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
 		// We could hack refreshEditingButtons to disable all the editing buttons during the animation, but that would clearly break separation of concerns.
@@ -162,7 +167,7 @@ extension CollectionsTVC {
 			let proposedTitle = dialog.textFields?[0].text
 			self.commitCombineCollections(
 				into: indexPathOfCombinedCollection,
-				withProposedTitle: proposedTitle)
+				proposedTitle: proposedTitle)
 		}
 		
 		dialog.addAction(cancelAction)
@@ -194,7 +199,7 @@ extension CollectionsTVC {
 		}
 		setItemsAndRefresh(
 			newItems: originalItems, // SIDE EFFECT
-			indexesOfNewItemsToSelect: indexesOfOriginalSelectedCollections,
+			indicesOfNewItemsToSelect: indexesOfOriginalSelectedCollections,
 			section: viewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfGroup
 		) {
 			completion?()
@@ -203,29 +208,34 @@ extension CollectionsTVC {
 	
 	private func commitCombineCollections(
 		into indexPathOfCombinedCollection: IndexPath,
-		withProposedTitle proposedTitle: String?
+		proposedTitle: String?
 	) {
-		guard let combinedCollection = viewModel.item(for: indexPathOfCombinedCollection) as? Collection else { return }
+		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let oldTitle = combinedCollection.title
-		if let newTitle = Collection.validatedTitleOptional(from: proposedTitle) {
-			combinedCollection.title = newTitle
-		}
-		let didChangeTitle = combinedCollection.title != oldTitle
+		// Make a new data source.
+		let indexOfGroup = collectionsViewModel.indexOfGroup(forSection: indexPathOfCombinedCollection.section)
+		let indexOfCollection = collectionsViewModel.indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
+		let (newItems, didChangeTitle) = collectionsViewModel.itemsAfterRenamingCollection( // SIDE EFFECT
+			proposedTitle: proposedTitle,
+			indexOfGroup: indexOfGroup,
+			indexOfCollection: indexOfCollection)
 		
-		Collection.deleteAllEmpty(context: viewModel.context)
-		
-		viewModel.context.tryToSave()
+		Collection.deleteAllEmpty(context: viewModel.context) // SIDE EFFECT
 		
 		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
-		if didChangeTitle {
-			tableView.reloadRows(at: [indexPathOfCombinedCollection], with: .fade)
+		let toReload = didChangeTitle ? [indexOfCollection] : []
+		let toSelect = [indexOfCollection]
+		
+		// Update the data source and table view.
+		setItemsAndRefresh(
+			newItems: newItems,
+			indicesOfNewItemsToReload: toReload,
+			indicesOfNewItemsToSelect: toSelect,
+			section: indexPathOfCombinedCollection.section
+		) {
+			self.viewModel.context.tryToSave()
 		}
-		tableView.selectRow(
-			at: indexPathOfCombinedCollection,
-			animated: false,
-			scrollPosition: .none)
 	}
 	
 }

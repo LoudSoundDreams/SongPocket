@@ -120,19 +120,26 @@ extension CollectionsTVC {
 	) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
+		let indexOfGroup = CollectionsViewModel.indexOfGroup
+		
+		// Make a new data source.
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
-		let didChangeTitle = collectionsViewModel.renameCollection(
+		let (newItems, didChangeTitle) = collectionsViewModel.itemsAfterRenamingCollection(
 			proposedTitle: proposedTitle,
+			indexOfGroup: indexOfGroup,
 			indexOfCollection: indexOfNewCollection)
 		
-		let indexPathOfNewCollection = collectionsViewModel.indexPathFor(
+		let toReload = didChangeTitle ? [indexOfNewCollection] : []
+		let indexPathOfNewCollection = viewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,
-			indexOfGroup: CollectionsViewModel.indexOfGroup)
-		tableView.performBatchUpdates {
-			if didChangeTitle {
-				tableView.reloadRows(at: [indexPathOfNewCollection], with: .fade)
-			}
-		} completion: { _ in
+			indexOfGroup: indexOfGroup)
+		
+		// Update the data source and table view.
+		setItemsAndRefresh(
+			newItems: newItems,
+			indicesOfNewItemsToReload: toReload,
+			section: indexPathOfNewCollection.section
+		) {
 			self.tableView.selectRow(
 				at: indexPathOfNewCollection,
 				animated: true,

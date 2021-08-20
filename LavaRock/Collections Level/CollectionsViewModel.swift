@@ -89,6 +89,32 @@ struct CollectionsViewModel: LibraryViewModel {
 		return newItems
 	}
 	
+	// MARK: - Renaming
+	
+	// Works for renaming an existing Collection, after combining Collections, and after making a new Collection.
+	func itemsAfterRenamingCollection(
+		proposedTitle: String?,
+		indexOfGroup: Int, //
+		indexOfCollection: Int
+	) -> (
+		newItems: [NSManagedObject],
+		didChangeTitle: Bool
+	) {
+		let items = groups[indexOfGroup].items
+		
+		guard let collection = items[indexOfCollection] as? Collection else {
+			return (items, false)
+		}
+		
+		let oldTitle = collection.title
+		if let newTitle = Collection.validatedTitleOptional(from: proposedTitle) {
+			collection.title = newTitle
+		}
+		let didChangeTitle = oldTitle != collection.title
+		
+		return (items, didChangeTitle)
+	}
+	
 	// MARK: - “Moving Albums” Mode
 	
 	// MARK: Making New
@@ -124,26 +150,6 @@ struct CollectionsViewModel: LibraryViewModel {
 		var newItems = group.items
 		newItems.remove(at: indexOfCollection)
 		return newItems
-	}
-	
-	// MARK: Renaming
-	
-	// Return value: whether this method changed the Collection's title.
-	func renameCollection(
-		proposedTitle: String?,
-		indexOfCollection: Int
-	) -> Bool {
-		guard let collection = group.items[indexOfCollection] as? Collection else {
-			return false //
-		}
-		
-		let oldTitle = collection.title
-		if let newTitle = Collection.validatedTitleOptional(from: proposedTitle) {
-			collection.title = newTitle
-		}
-		let didChangeTitle = oldTitle != collection.title
-		
-		return didChangeTitle
 	}
 	
 }

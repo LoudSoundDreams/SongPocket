@@ -71,9 +71,10 @@ class LibraryTVC:
 	
 	// MARK: Subclasses Should Not Customize
 	
+	static let libraryItemCellReuseIdentifier = "Cell"
+	
 	// "Constants"
 	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
-	let cellReuseIdentifier = "Cell"
 	lazy var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort,
 		menu: sortOptionsMenu())
@@ -229,7 +230,8 @@ class LibraryTVC:
 	
 	final func setItemsAndRefresh(
 		newItems: [NSManagedObject],
-		indexesOfNewItemsToSelect: [Int] = [Int](),
+		indicesOfNewItemsToReload: [Int] = [],
+		indicesOfNewItemsToSelect: [Int] = [],
 		section: Int,
 		completion: (() -> Void)? = nil
 	) {
@@ -257,8 +259,11 @@ class LibraryTVC:
 			(viewModel.indexPathFor(indexOfItemInGroup: oldIndex, indexOfGroup: indexOfGroup),
 			 viewModel.indexPathFor(indexOfItemInGroup: newIndex, indexOfGroup: indexOfGroup))
 		}
+		let toReload = indicesOfNewItemsToReload.map {
+			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
+		}
 		
-		let toSelect = indexesOfNewItemsToSelect.map {
+		let toSelect = indicesOfNewItemsToSelect.map {
 			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
 		}
 		
@@ -269,6 +274,7 @@ class LibraryTVC:
 			toMove.forEach { sourceIndexPath, destinationIndexPath in
 				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
+			tableView.reloadRows(at: toReload, with: .fade) // are we doing the table view updates in the right order?
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
