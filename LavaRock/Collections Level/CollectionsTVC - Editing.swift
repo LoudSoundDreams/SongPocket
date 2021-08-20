@@ -194,12 +194,12 @@ extension CollectionsTVC {
 		viewModel.context.rollback() // SIDE EFFECT
 		viewModel.groups[indexOfGroup] = copyOfOriginalGroup // SIDE EFFECT
 		
-		let indexesOfOriginalSelectedCollections = originalSelectedIndexPaths.map {
+		let indicesOfOriginalSelectedCollections = originalSelectedIndexPaths.map {
 			viewModel.indexOfItemInGroup(forRow: $0.row)
 		}
 		setItemsAndRefresh(
 			newItems: originalItems, // SIDE EFFECT
-			indicesOfNewItemsToSelect: indexesOfOriginalSelectedCollections,
+			indicesOfNewItemsToSelect: indicesOfOriginalSelectedCollections,
 			section: viewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfGroup
 		) {
 			completion?()

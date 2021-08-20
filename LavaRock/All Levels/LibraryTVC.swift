@@ -236,7 +236,7 @@ class LibraryTVC:
 		completion: (() -> Void)? = nil
 	) {
 		let oldItems = viewModel.group(forSection: section).items
-		let changes = oldItems.indexesOfChanges(toMatch: newItems) { oldItem, newItem in
+		let changes = oldItems.indicesOfChanges(toMatch: newItems) { oldItem, newItem in
 			oldItem.objectID == newItem.objectID
 		}
 		

@@ -47,7 +47,7 @@ extension Array {
 	
 	// MARK: Diffing
 	
-	func indexesOfChanges(
+	func indicesOfChanges(
 		toMatch newArray: [Element],
 		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
 	) -> (
@@ -61,33 +61,33 @@ extension Array {
 			areEquivalent(oldItem, newItem)
 		}.inferringMoves()
 		
-		var indexesOfOldItemsToDelete = [Int]()
-		var indexesOfNewItemsToInsert = [Int]()
-		var indexesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
+		var indicesOfOldItemsToDelete = [Int]()
+		var indicesOfNewItemsToInsert = [Int]()
+		var indicesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
 		
 		difference.forEach { change in
 			// If a Change's `associatedWith:` value is non-nil, then it has a counterpart Change in the CollectionDifference, and the two Changes together represent a move, rather than a remove and an insert.
 			switch change {
 			case .remove(let offset, _, let associatedOffset):
 				if let associatedOffset = associatedOffset {
-					indexesOfItemsToMove.append(
+					indicesOfItemsToMove.append(
 						(oldIndex: offset,
 						 newIndex: associatedOffset)
 					)
 				} else {
-					indexesOfOldItemsToDelete.append(offset)
+					indicesOfOldItemsToDelete.append(offset)
 				}
 			case .insert(let offset, _, let associatedOffset):
 				if associatedOffset == nil {
-					indexesOfNewItemsToInsert.append(offset)
+					indicesOfNewItemsToInsert.append(offset)
 				}
 			}
 		}
 		
 		return (
-			indexesOfOldItemsToDelete,
-			indexesOfNewItemsToInsert,
-			indexesOfItemsToMove
+			indicesOfOldItemsToDelete,
+			indicesOfNewItemsToInsert,
+			indicesOfItemsToMove
 		)
 	}
 	
@@ -135,9 +135,9 @@ extension Array {
 		guard isWithinSameSection() else {
 			return false
 		}
-		let rowIndexes = map { $0.row }
-		let sortedRowIndexes = rowIndexes.sorted()
-		return sortedRowIndexes.isConsecutive()
+		let rows = map { $0.row }
+		let sortedRows = rows.sorted()
+		return sortedRows.isConsecutive()
 	}
 	
 	// Returns whether the integers you provide are in increasing consecutive order.

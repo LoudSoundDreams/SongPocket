@@ -126,7 +126,7 @@ extension Album {
 		}
 	}
 	
-	// WARNING: This leaves gaps in the Album indexes within each Collection. You must reindex the Albums within each Collection later.
+	// WARNING: This leaves gaps in the Album indices within each Collection. You must reindex the Albums within each Collection later.
 	static func deleteAllEmpty_withoutReindex(
 		context: NSManagedObjectContext
 	) {
