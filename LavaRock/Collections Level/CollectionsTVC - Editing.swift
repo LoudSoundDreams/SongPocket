@@ -181,14 +181,15 @@ extension CollectionsTVC {
 	) {
 		guard
 			var copyOfOriginalGroup = groupOfCollectionsBeforeCombining,
-			let originalItems = groupOfCollectionsBeforeCombining?.items
+			let originalItems = groupOfCollectionsBeforeCombining?.items,
+			let onscreenItems = (viewModel as? CollectionsViewModel)?.group.items
 		else { return } //
 		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
 		let indexOfGroup = CollectionsViewModel.indexOfGroup
 		
 		// Revert sectionOfLibraryItems to groupOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
-		copyOfOriginalGroup.setItems(viewModel.groups[indexOfGroup].items) // To match the currently onscreen items. Should cause no side effects.
+		copyOfOriginalGroup.setItems(onscreenItems) // Should cause no side effects.
 		viewModel.context.rollback() // SIDE EFFECT
 		viewModel.groups[indexOfGroup] = copyOfOriginalGroup // SIDE EFFECT
 		

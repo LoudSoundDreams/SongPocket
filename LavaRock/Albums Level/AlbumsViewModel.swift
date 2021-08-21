@@ -54,7 +54,7 @@ struct AlbumsViewModel: LibraryViewModel {
 	
 	// MARK: - Editing
 	
-	// MARK: Allowing
+	// MARK: Moving or Organizing
 	
 	func allowsMoveOrOrganize(
 		selectedIndexPaths: [IndexPath]
@@ -69,6 +69,8 @@ struct AlbumsViewModel: LibraryViewModel {
 			return selectedIndexPaths.isWithinSameSection()
 		}
 	}
+	
+	// MARK: Starting Moving
 	
 	func allowsMove(
 		selectedIndexPaths: [IndexPath]

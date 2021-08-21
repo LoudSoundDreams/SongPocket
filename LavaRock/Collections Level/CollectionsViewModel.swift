@@ -20,7 +20,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	weak var reflector: LibraryViewModelReflecting?
 	
-	var groups: [GroupOfLibraryItems] //
+	var groups: [GroupOfLibraryItems]
 	
 	func navigationItemTitleOptional() -> String? {
 //		return "Library" // TO DO: Localize
@@ -31,7 +31,12 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	static let indexOfGroup = 0 //
 	
-	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] } //
+//	var group: GroupOfLibraryItems {
+//		get { groups[0] }
+//		set { groups[0] = newValue }
+//	}
+//	var group: GroupOfLibraryItems { groups[0] }
+	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] }
 //	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
 	
 	init(
@@ -50,7 +55,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	// MARK: - Editing
 	
-	// MARK: Allowing
+	// MARK: Combining
 	
 	func allowsCombine(
 		selectedIndexPaths: [IndexPath]
@@ -61,8 +66,6 @@ struct CollectionsViewModel: LibraryViewModel {
 		
 		return selectedIndexPaths.count >= 2
 	}
-	
-	// MARK: Combining
 	
 //	func isPreviewingCombineCollections() -> Bool {
 //		return groupOfCollectionsBeforeCombining != nil

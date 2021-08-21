@@ -11,7 +11,7 @@ extension OptionsTVC {
 	
 	// MARK: - Types
 	
-	private enum Section: Int, CaseIterable {
+	private enum OptionsSection: Int, CaseIterable {
 		case accentColor
 		case tipJar
 	}
@@ -27,14 +27,14 @@ extension OptionsTVC {
 	// MARK: Numbers
 	
 	final override func numberOfSections(in tableView: UITableView) -> Int {
-		return Section.allCases.count
+		return OptionsSection.allCases.count
 	}
 	
 	final override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		guard let sectionCase = Section(rawValue: section) else {
+		guard let sectionCase = OptionsSection(rawValue: section) else {
 			return 0
 		}
 		switch sectionCase {
@@ -51,7 +51,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
 	) -> String? {
-		guard let sectionCase = Section(rawValue: section) else {
+		guard let sectionCase = OptionsSection(rawValue: section) else {
 			return nil
 		}
 		switch sectionCase {
@@ -66,7 +66,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		titleForFooterInSection section: Int
 	) -> String? {
-		guard let sectionCase = Section(rawValue: section) else {
+		guard let sectionCase = OptionsSection(rawValue: section) else {
 			return nil
 		}
 		switch sectionCase {
@@ -83,7 +83,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let sectionCase = Section(rawValue: indexPath.section) else {
+		guard let sectionCase = OptionsSection(rawValue: indexPath.section) else {
 			return UITableViewCell()
 		}
 		switch sectionCase {
@@ -101,7 +101,7 @@ extension OptionsTVC {
 	) {
 		if
 			PurchaseManager.shared.tipStatus == .confirming,
-			indexPath.section == Section.tipJar.rawValue
+			indexPath.section == OptionsSection.tipJar.rawValue
 		{
 			cell.isSelected = true
 		}
@@ -113,7 +113,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
-		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
+		guard let sectionCase = OptionsSection(rawValue: indexPath.section) else { return }
 		switch sectionCase {
 		case .accentColor:
 			didSelectAccentColorRow(at: indexPath)
@@ -179,7 +179,7 @@ extension OptionsTVC {
 		
 		// Move the checkmark to the selected accent color.
 		let colorIndexPaths = tableView.indexPathsForRows(
-			inSection: Section.accentColor.rawValue,
+			inSection: OptionsSection.accentColor.rawValue,
 			firstRow: 0)
 		colorIndexPaths.forEach { colorIndexPath in
 			guard let colorCell = tableView.cellForRow(at: colorIndexPath) else {
@@ -198,7 +198,7 @@ extension OptionsTVC {
 		}
 		
 		// Reload all other rows, which might depend on the selected accent color.
-		let allOtherSections = Section.allCases.filter { $0 != .accentColor }
+		let allOtherSections = OptionsSection.allCases.filter { $0 != .accentColor }
 		let allOtherSectionsAsInts = allOtherSections.map { $0.rawValue }
 		tableView.reloadSections(
 			IndexSet(allOtherSectionsAsInts),
@@ -317,7 +317,7 @@ extension OptionsTVC {
 	
 	final func refreshTipJarRows() {
 		let tipJarIndexPaths = tableView.indexPathsForRows(
-			inSection: Section.tipJar.rawValue,
+			inSection: OptionsSection.tipJar.rawValue,
 			firstRow: 0)
 		tableView.reloadRows(at: tipJarIndexPaths, with: .fade)
 	}
