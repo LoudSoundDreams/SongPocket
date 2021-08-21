@@ -197,9 +197,6 @@ final class CollectionsTVC:
 			[.title],
 			[.reverse],
 		]
-		
-		
-//		title = "Library" // TO DO: Localize
 	}
 	
 	final override func viewDidLoad() {
@@ -317,7 +314,7 @@ final class CollectionsTVC:
 		{
 			albumsTVC.albumMoverClipboard = albumMoverClipboard
 			
-			let container = viewModel.item(for: selectedIndexPath)
+			let container = viewModel.item(at: selectedIndexPath)
 			let context = viewModel.context
 			albumsTVC.viewModel = AlbumsViewModel(
 				containers: [container],

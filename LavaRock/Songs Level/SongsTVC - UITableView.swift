@@ -119,7 +119,7 @@ extension SongsTVC {
 	// MARK: Song Cell
 	
 	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let song = viewModel.item(for: indexPath) as? Song else {
+		guard let song = viewModel.item(at: indexPath) as? Song else {
 			return UITableViewCell()
 		}
 		
@@ -202,7 +202,7 @@ extension SongsTVC {
 	) {
 		if isEditing {
 		} else {
-			guard let song = viewModel.item(for: indexPath) as? Song else { return }
+			guard let song = viewModel.item(at: indexPath) as? Song else { return }
 			if let selectedCell = tableView.cellForRow(at: indexPath) {
 				showSongActions(for: song, popoverAnchorView: selectedCell)
 			}

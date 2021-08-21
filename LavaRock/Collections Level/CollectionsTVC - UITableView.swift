@@ -206,7 +206,7 @@ extension CollectionsTVC {
 	// MARK: Collection Cell
 	
 	private func collectionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let collection = viewModel.item(for: indexPath) as? Collection else {
+		guard let collection = viewModel.item(at: indexPath) as? Collection else {
 			return UITableViewCell()
 		}
 		

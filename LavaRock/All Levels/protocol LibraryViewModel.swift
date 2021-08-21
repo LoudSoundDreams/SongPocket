@@ -19,7 +19,7 @@ protocol LibraryViewModel {
 	
 	var groups: [GroupOfLibraryItems] { get set }
 	
-	func containerTitles() -> [String]
+	func navigationItemTitleOptional() -> String?
 }
 
 extension LibraryViewModel {
@@ -32,8 +32,7 @@ extension LibraryViewModel {
 	
 	func refreshContainersAndReflect() {
 		groups.forEach { $0.refreshContainer(context: context) }
-		let containerTitles = containerTitles()
-		reflector?.reflectContainerTitles(containerTitles)
+		reflector?.reflectContainerTitles()
 	}
 	
 	func newItemsAndSections() -> [(
@@ -67,7 +66,7 @@ extension LibraryViewModel {
 		return Array(items[selectedIndexOfItemInGroup...])
 	}
 	
-	func item(for indexPath: IndexPath) -> NSManagedObject {
+	func item(at indexPath: IndexPath) -> NSManagedObject {
 		let items = group(forSection: indexPath.section).items
 		let indexOfItemInGroup = indexOfItemInGroup(forRow: indexPath.row)
 		return items[indexOfItemInGroup]
@@ -230,19 +229,19 @@ extension LibraryViewModel {
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath
 	) {
-		let indexOfSourceGroup = indexOfGroup(forSection: sourceIndexPath.section)
-		let sourceIndexOfItemInGroup = indexOfItemInGroup(forRow: sourceIndexPath.row)
+		let sourceIndexOfGroup = indexOfGroup(forSection: sourceIndexPath.section)
+		let sourceIndexOfItem = indexOfItemInGroup(forRow: sourceIndexPath.row)
 		
-		var newItemsInSourceGroup = groups[indexOfSourceGroup].items
-		let item = newItemsInSourceGroup.remove(at: sourceIndexOfItemInGroup)
-		groups[indexOfSourceGroup].setItems(newItemsInSourceGroup)
+		var sourceItems = groups[sourceIndexOfGroup].items
+		let item = sourceItems.remove(at: sourceIndexOfItem)
+		groups[sourceIndexOfGroup].setItems(sourceItems)
 		
-		let indexOfDestinationGroup = indexOfGroup(forSection: destinationIndexPath.section)
-		let destinationIndexOfItemInGroup = indexOfItemInGroup(forRow: destinationIndexPath.row)
+		let destinationIndexOfGroup = indexOfGroup(forSection: destinationIndexPath.section)
+		let destinationIndexOfItem = indexOfItemInGroup(forRow: destinationIndexPath.row)
 		
-		var newItemsInDestinationGroup = groups[indexOfDestinationGroup].items
-		newItemsInDestinationGroup.insert(item, at: destinationIndexOfItemInGroup)
-		groups[indexOfDestinationGroup].setItems(newItemsInDestinationGroup)
+		var destinationItems = groups[destinationIndexOfGroup].items
+		destinationItems.insert(item, at: destinationIndexOfItem)
+		groups[destinationIndexOfGroup].setItems(destinationItems)
 	}
 	
 	// MARK: Sorting

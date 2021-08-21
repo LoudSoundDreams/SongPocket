@@ -34,7 +34,7 @@ extension CollectionsTVC {
 	
 	// Match presentDialogToMakeNewCollection and presentDialogToCombineCollections.
 	final func presentDialogToRenameCollection(at indexPath: IndexPath) {
-		guard let collection = viewModel.item(for: indexPath) as? Collection else { return }
+		guard let collection = viewModel.item(at: indexPath) as? Collection else { return }
 		
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
 		
@@ -73,13 +73,11 @@ extension CollectionsTVC {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
 		// Make a new data source.
-		let indexOfGroup = collectionsViewModel.indexOfGroup(forSection: indexPath.section)
-		let indexOfCollection = collectionsViewModel.indexOfItemInGroup(forRow: indexPath.row)
 		let (newItems, didChangeTitle) = collectionsViewModel.itemsAfterRenamingCollection(
-			proposedTitle: proposedTitle,
-			indexOfGroup: indexOfGroup,
-			indexOfCollection: indexOfCollection)
+			at: indexPath,
+			proposedTitle: proposedTitle)
 		
+		let indexOfCollection = collectionsViewModel.indexOfItemInGroup(forRow: indexPath.row)
 		let toReload = didChangeTitle ? [indexOfCollection] : []
 		let toSelect = thenSelectRow ? [indexOfCollection] : []
 		
@@ -213,17 +211,15 @@ extension CollectionsTVC {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
 		// Make a new data source.
-		let indexOfGroup = collectionsViewModel.indexOfGroup(forSection: indexPathOfCombinedCollection.section)
-		let indexOfCollection = collectionsViewModel.indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
 		let (newItems, didChangeTitle) = collectionsViewModel.itemsAfterRenamingCollection( // SIDE EFFECT
-			proposedTitle: proposedTitle,
-			indexOfGroup: indexOfGroup,
-			indexOfCollection: indexOfCollection)
+			at: indexPathOfCombinedCollection,
+			proposedTitle: proposedTitle)
 		
 		Collection.deleteAllEmpty(context: viewModel.context) // SIDE EFFECT
 		
 		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
+		let indexOfCollection = collectionsViewModel.indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
 		let toReload = didChangeTitle ? [indexOfCollection] : []
 		let toSelect = [indexOfCollection]
 		

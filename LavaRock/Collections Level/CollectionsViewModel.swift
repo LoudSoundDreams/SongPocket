@@ -22,8 +22,9 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	var groups: [GroupOfLibraryItems] //
 	
-	func containerTitles() -> [String] {
-		return []
+	func navigationItemTitleOptional() -> String? {
+//		return "Library" // TO DO: Localize
+		return nil
 	}
 	
 	// MARK: - Miscellaneous
@@ -75,7 +76,7 @@ struct CollectionsViewModel: LibraryViewModel {
 //		groupOfCollectionsBeforeCombining = group // SIDE EFFECT
 		
 		// Create the combined Collection.
-		let selectedCollections = selectedIndexPaths.compactMap { item(for: $0) as? Collection }
+		let selectedCollections = selectedIndexPaths.compactMap { item(at: $0) as? Collection }
 		let indexOfCombinedCollection = indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
 		let combinedCollection = Collection.makeByCombining_withoutDeletingOrReindexing( // SIDE EFFECT
 			selectedCollections,
@@ -101,16 +102,15 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	// Works for renaming an existing Collection, after combining Collections, and after making a new Collection.
 	func itemsAfterRenamingCollection(
-		proposedTitle: String?,
-		indexOfGroup: Int, //
-		indexOfCollection: Int
+		at indexPath: IndexPath,
+		proposedTitle: String?
 	) -> (
-		newItems: [NSManagedObject],
+		items: [NSManagedObject],
 		didChangeTitle: Bool
 	) {
-		let items = groups[indexOfGroup].items
+		let items = group(forSection: indexPath.section).items
 		
-		guard let collection = items[indexOfCollection] as? Collection else {
+		guard let collection = item(at: indexPath) as? Collection else {
 			return (items, false)
 		}
 		

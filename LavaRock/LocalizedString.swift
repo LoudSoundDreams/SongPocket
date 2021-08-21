@@ -44,7 +44,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let tipJarFooter = NSLocalizedString(
 		"[footer] options_tip_jar",
-		value: "Hi, I’m H. Tips are an optional way to help me improve Songpocket. I would especially appreciate tips after updates to the app!",
+		value: "Hi! I’m H. You can help me improve Songpocket by leaving a tip when I add features that you like.",
 		comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	

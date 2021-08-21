@@ -145,7 +145,7 @@ extension SongsTVC {
 		}
 		
 		if
-			let selectedSong = viewModel.item(for: selectedIndexPath) as? Song,
+			let selectedSong = viewModel.item(at: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		{
 			let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
@@ -162,7 +162,7 @@ extension SongsTVC {
 		else { return }
 		
 		guard
-			let selectedSong = viewModel.item(for: selectedIndexPath) as? Song,
+			let selectedSong = viewModel.item(at: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		else { return }
 		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])

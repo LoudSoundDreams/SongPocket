@@ -57,7 +57,7 @@ extension AlbumsTVC {
 		let sourceCollection = albumsViewModel.container(forSection: section)
 		let idOfSourceCollection = sourceCollection.objectID
 		let idsOfAlbumsToMove = indexPathsToMove.map {
-			albumsViewModel.item(for: $0).objectID
+			albumsViewModel.item(at: $0).objectID
 		}
 		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
 			idOfSourceCollection: idOfSourceCollection,

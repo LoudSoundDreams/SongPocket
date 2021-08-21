@@ -36,7 +36,7 @@ extension AlbumsTVC {
 	}
 	
 	private func albumCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let album = viewModel.item(for: indexPath) as? Album else {
+		guard let album = viewModel.item(at: indexPath) as? Album else {
 			return UITableViewCell()
 		}
 		

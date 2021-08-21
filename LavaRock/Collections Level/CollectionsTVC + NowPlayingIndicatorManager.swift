@@ -11,7 +11,7 @@ extension CollectionsTVC: NowPlayingIndicatorManager {
 	
 	final func isInPlayer(libraryItemFor indexPath: IndexPath) -> Bool {
 		if
-			let rowCollection = viewModel.item(for: indexPath) as? Collection,
+			let rowCollection = viewModel.item(at: indexPath) as? Collection,
 			rowCollection.objectID == PlayerManager.songInPlayer?.container?.container?.objectID
 		{
 			return true

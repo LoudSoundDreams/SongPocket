@@ -175,9 +175,7 @@ class LibraryTVC:
 			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		}
 		
-//		viewModel.refreshContainersAndReflect()
-		let containerTitles = viewModel.containerTitles()
-		reflectContainerTitles(containerTitles)
+		reflectContainerTitles()
 		
 		setBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
 	}
@@ -274,7 +272,7 @@ class LibraryTVC:
 			toMove.forEach { sourceIndexPath, destinationIndexPath in
 				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
-			tableView.reloadRows(at: toReload, with: .fade) // are we doing the table view updates in the right order?
+			tableView.reloadRows(at: toReload, with: .fade)
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).

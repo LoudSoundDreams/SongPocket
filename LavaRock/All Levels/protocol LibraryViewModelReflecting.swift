@@ -9,5 +9,19 @@ import UIKit
 import CoreData
 
 protocol LibraryViewModelReflecting: AnyObject {
-	func reflectContainerTitles(_ containerTitles: [String])
+	var viewModel: LibraryViewModel { get set }
+	var title: String? { get set }
+}
+
+extension LibraryViewModelReflecting {
+	
+	func reflectContainerTitles() {
+		if let navigationItemTitle = viewModel.navigationItemTitleOptional() {
+			title = navigationItemTitle
+		}
+	}
+	
+}
+
+extension LibraryTVC: LibraryViewModelReflecting {
 }

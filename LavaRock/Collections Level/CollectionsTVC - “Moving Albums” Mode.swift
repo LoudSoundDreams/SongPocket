@@ -121,18 +121,17 @@ extension CollectionsTVC {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
 		let indexOfGroup = CollectionsViewModel.indexOfGroup
-		
-		// Make a new data source.
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
-		let (newItems, didChangeTitle) = collectionsViewModel.itemsAfterRenamingCollection(
-			proposedTitle: proposedTitle,
-			indexOfGroup: indexOfGroup,
-			indexOfCollection: indexOfNewCollection)
-		
-		let toReload = didChangeTitle ? [indexOfNewCollection] : []
 		let indexPathOfNewCollection = viewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,
 			indexOfGroup: indexOfGroup)
+		
+		// Make a new data source.
+		let (newItems, didChangeTitle) = collectionsViewModel.itemsAfterRenamingCollection(
+			at: indexPathOfNewCollection,
+			proposedTitle: proposedTitle)
+		
+		let toReload = didChangeTitle ? [indexOfNewCollection] : []
 		
 		// Update the data source and table view.
 		setItemsAndRefresh(

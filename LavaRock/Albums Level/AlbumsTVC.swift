@@ -123,7 +123,7 @@ final class AlbumsTVC:
 			let songsTVC = segue.destination as? SongsTVC,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
-			let container = viewModel.item(for: selectedIndexPath)
+			let container = viewModel.item(at: selectedIndexPath)
 			let context = viewModel.context
 			songsTVC.viewModel = SongsViewModel(
 				containers: [container],

@@ -22,8 +22,11 @@ struct AlbumsViewModel: LibraryViewModel {
 	
 	var groups: [GroupOfLibraryItems]
 	
-	func containerTitles() -> [String] {
-		return groups.compactMap { ($0.container as? Collection)?.title }
+	func navigationItemTitleOptional() -> String? {
+		guard groups.count == 1 else {
+			return nil
+		}
+		return (groups[0].container as? Collection)?.title
 	}
 	
 	// MARK: - Miscellaneous
