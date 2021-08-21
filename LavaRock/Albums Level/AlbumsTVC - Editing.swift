@@ -49,17 +49,8 @@ extension AlbumsTVC {
 		
 		// Get the rows to move.
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		let indexPathsToMove: [IndexPath] = {
-			if selectedIndexPaths.isEmpty {
-				if albumsViewModel.groups.count == 1 {
-					return albumsViewModel.indexPaths(forIndexOfGroup: 0)
-				} else {
-					return []
-				}
-			} else {
-				return selectedIndexPaths
-			}
-		}()
+		let indexPathsToMove = albumsViewModel.selectedOrAllIndexPathsInOnlyGroup(
+			selectedIndexPaths: selectedIndexPaths)
 		guard let section = indexPathsToMove.first?.section else { return }
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
@@ -76,7 +67,9 @@ extension AlbumsTVC {
 		// Make the "move Albums to…" sheet use a child managed object context, so that we can cancel without having to revert our changes.
 		let childContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		childContext.parent = albumsViewModel.context
-		modalCollectionsTVC.viewModel = CollectionsViewModel(context: childContext)
+		modalCollectionsTVC.viewModel = CollectionsViewModel(
+			context: childContext,
+			reflector: modalCollectionsTVC)
 		
 		present(modalCollectionsNC, animated: true)
 		

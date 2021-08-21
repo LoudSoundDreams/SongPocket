@@ -15,7 +15,11 @@ protocol LibraryViewModel {
 	var numberOfSectionsAboveLibraryItems: Int { get }
 	var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
+	var reflector: LibraryViewModelReflecting? { get }
+	
 	var groups: [GroupOfLibraryItems] { get set }
+	
+	func containerTitles() -> [String]
 }
 
 extension LibraryViewModel {
@@ -26,25 +30,25 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func sectionsAndNewItems() -> [
-		(section: Int,
-		 newItems: [NSManagedObject])
-	] {
+	func refreshContainersAndReflect() {
+		groups.forEach { $0.refreshContainer(context: context) }
+		let containerTitles = containerTitles()
+		reflector?.reflectContainerTitles(containerTitles)
+	}
+	
+	func newItemsAndSections() -> [(
+		newItems: [NSManagedObject],
+		section: Int
+	)] {
 		let result = groups.indices.map { indexOfGroup in
 			(
-				numberOfSectionsAboveLibraryItems + indexOfGroup,
 				groups[indexOfGroup].itemsFetched(
 					entityName: Self.entityName,
-					context: context)
+					context: context),
+				numberOfSectionsAboveLibraryItems + indexOfGroup
 			)
 		}
 		return result
-	}
-	
-	func refreshContainers() {
-		groups.forEach {
-			$0.refreshContainer(context: context)
-		}
 	}
 	
 	// MARK: - Elements
@@ -80,6 +84,20 @@ extension LibraryViewModel {
 	}
 	
 	// MARK: IndexPaths
+	
+	func selectedOrAllIndexPathsInOnlyGroup(
+		selectedIndexPaths: [IndexPath]
+	) -> [IndexPath] {
+		if selectedIndexPaths.isEmpty {
+			if groups.count == 1 {
+				return indexPaths(forIndexOfGroup: 0)
+			} else {
+				return []
+			}
+		} else {
+			return selectedIndexPaths
+		}
+	}
 	
 	func indexPathsForAllItems() -> [IndexPath] {
 		let result = groups.indices.flatMap { indexOfGroup in
@@ -206,7 +224,28 @@ extension LibraryViewModel {
 	
 	// MARK: - Editing
 	
-	// MARK: Allowing
+	// MARK: Reordering
+	
+	mutating func moveItem(
+		at sourceIndexPath: IndexPath,
+		to destinationIndexPath: IndexPath
+	) {
+		let indexOfSourceGroup = indexOfGroup(forSection: sourceIndexPath.section)
+		let sourceIndexOfItemInGroup = indexOfItemInGroup(forRow: sourceIndexPath.row)
+		
+		var newItemsInSourceGroup = groups[indexOfSourceGroup].items
+		let item = newItemsInSourceGroup.remove(at: sourceIndexOfItemInGroup)
+		groups[indexOfSourceGroup].setItems(newItemsInSourceGroup)
+		
+		let indexOfDestinationGroup = indexOfGroup(forSection: destinationIndexPath.section)
+		let destinationIndexOfItemInGroup = indexOfItemInGroup(forRow: destinationIndexPath.row)
+		
+		var newItemsInDestinationGroup = groups[indexOfDestinationGroup].items
+		newItemsInDestinationGroup.insert(item, at: destinationIndexOfItemInGroup)
+		groups[indexOfDestinationGroup].setItems(newItemsInDestinationGroup)
+	}
+	
+	// MARK: Sorting
 	
 	// You should only be allowed to sort contiguous items within the same GroupOfLibraryItems.
 	func allowsSort(
@@ -223,101 +262,38 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func allowsFloat(
-		selectedIndexPaths: [IndexPath]
-	) -> Bool {
-		guard !isEmpty() else {
-			return false
-		}
-		
-		if selectedIndexPaths.isEmpty {
-			return false
-		} else {
-			return selectedIndexPaths.isWithinSameSection()
-		}
-	}
-	
-	func allowsSink(
-		selectedIndexPaths: [IndexPath]
-	) -> Bool {
-		return allowsFloat(selectedIndexPaths: selectedIndexPaths)
-	}
-	
-	// MARK: Reordering
-	
-	func itemsAfterMovingRow(
-		at sourceIndexPath: IndexPath,
-		to destinationIndexPath: IndexPath
-	) -> (
-		sourceSection: [NSManagedObject],
-		destinationSection: [NSManagedObject]?
-	) {
-		let item = item(for: sourceIndexPath)
-//		let indexOfSourceGroup = indexOfGroup(forSection: sourceIndexPath.section)
-//		let indexOfDestinationGroup = indexOfGroup(forSection: destinationIndexPath.section)
-		let sourceIndexOfItemInGroup = indexOfItemInGroup(forRow: sourceIndexPath.row)
-		let destinationIndexOfItemInGroup = indexOfItemInGroup(forRow: destinationIndexPath.row)
-		
-//		groups[indexOfSourceGroup].items.remove(at: sourceIndexOfItemInGroup)
-//		groups[indexOfDestinationGroup].items.insert(item, at: destinationIndexOfItemInGroup)
-		
-		let isMovingWithinSameSection = sourceIndexPath.section == destinationIndexPath.section
-		
-		let newItemsInSourceGroup: [NSManagedObject]
-		let newItemsInDestinationGroup: [NSManagedObject]?
-		if isMovingWithinSameSection {
-			var newItems = group(forSection: sourceIndexPath.section).items
-			newItems.remove(at: sourceIndexOfItemInGroup)
-			newItems.insert(item, at: destinationIndexOfItemInGroup)
-			
-			newItemsInSourceGroup = newItems
-			newItemsInDestinationGroup = nil
-		} else {
-			var newSourceItems = group(forSection: sourceIndexPath.section).items
-			newSourceItems.remove(at: sourceIndexOfItemInGroup)
-			
-			var newDestinationItems = group(forSection: destinationIndexPath.section).items
-			newDestinationItems.insert(item, at: destinationIndexOfItemInGroup)
-			
-			newItemsInSourceGroup = newSourceItems
-			newItemsInDestinationGroup = newDestinationItems
-		}
-		
-		return (
-			newItemsInSourceGroup,
-			newItemsInDestinationGroup
-		)
-	}
-	
-	// MARK: Sorting
-	
-	func itemsAfterSorting(
-		rows: [Int],
-		section: Int,
+	func itemsAndSectionAfterSorting(
+		selectedIndexPaths: [IndexPath],
 		sortOptionLocalizedName: String
-	) -> [NSManagedObject] {
-		let oldItems = group(forSection: section).items
-		let rows = rows.sorted()
-		let sourceIndicesOfItems = rows.map {
-			indexOfItemInGroup(forRow: $0)
+	) -> (
+		items: [NSManagedObject],
+		section: Int
+	)? {
+		// Get the rows to sort.
+		let indexPathsToSort = selectedOrAllIndexPathsInOnlyGroup(
+			selectedIndexPaths: selectedIndexPaths)
+		
+		guard
+			allowsSort(selectedIndexPaths: selectedIndexPaths),
+			let section = indexPathsToSort.first?.section
+		else {
+			return nil
 		}
+		
+		// Make a new data source.
+		let rowsToSort = indexPathsToSort.map { $0.row }.sorted()
+		let sourceIndicesOfItems = rowsToSort.map { row in
+			indexOfItemInGroup(forRow: row)
+		}
+		let oldItems = group(forSection: section).items
 		let itemsToSort = sourceIndicesOfItems.map {
 			oldItems[$0]
 		}
-		let sortedItems = sorted(
+		let newItems = sorted(
 			itemsToSort,
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		
-		var newItems = oldItems
-		sourceIndicesOfItems.reversed().forEach {
-			newItems.remove(at: $0)
-		}
-		sortedItems.indices.forEach { indexOfSortedItem in
-			let sortedItem = sortedItems[indexOfSortedItem]
-			let destinationIndexOfItem = sourceIndicesOfItems[indexOfSortedItem]
-			newItems.insert(sortedItem, at: destinationIndexOfItem)
-		}
-		return newItems
+		return (newItems, section)
 	}
 	
 	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
@@ -391,19 +367,43 @@ extension LibraryViewModel {
 	
 	// MARK: Moving to Top
 	
-	func itemsAfterFloatingToTop(
-		selectedRows: [Int],
+	func allowsFloat(
+		selectedIndexPaths: [IndexPath]
+	) -> Bool {
+		guard !isEmpty() else {
+			return false
+		}
+		
+		if selectedIndexPaths.isEmpty {
+			return false
+		} else {
+			return selectedIndexPaths.isWithinSameSection()
+		}
+	}
+	
+	func itemsAndSectionAfterFloatingSelectedItemsToTop(
+		selectedIndexPaths: [IndexPath]
+	) -> (
+		items: [NSManagedObject],
 		section: Int
-	) -> [NSManagedObject] {
-		let oldItems = group(forSection: section).items
-		let selectedRows = selectedRows.sorted()
+	)? {
+		guard
+			allowsFloat(selectedIndexPaths: selectedIndexPaths),
+			let section = selectedIndexPaths.first?.section
+		else {
+			return nil
+		}
+		
+		let selectedRows = selectedIndexPaths.map { $0.row }.sorted()
 		let indicesOfSelectedItems = selectedRows.map {
 			indexOfItemInGroup(forRow: $0)
 		}
+		let oldItems = group(forSection: section).items
 		let selectedItems = indicesOfSelectedItems.map {
 			oldItems[$0]
 		}
 		
+		// Make a new data source.
 		var newItems = oldItems
 		indicesOfSelectedItems.reversed().forEach {
 			newItems.remove(at: $0)
@@ -411,24 +411,41 @@ extension LibraryViewModel {
 		selectedItems.reversed().forEach {
 			newItems.insert($0, at: 0)
 		}
-		return newItems
+		
+		return (newItems, section)
 	}
 	
 	// MARK: Moving to Bottom
 	
-	func itemsAfterSinkingToBottom(
-		selectedRows: [Int],
+	func allowsSink(
+		selectedIndexPaths: [IndexPath]
+	) -> Bool {
+		return allowsFloat(selectedIndexPaths: selectedIndexPaths)
+	}
+	
+	func itemsAndSectionAfterSinkingSelectedItemsToBottom(
+		selectedIndexPaths: [IndexPath]
+	) -> (
+		items: [NSManagedObject],
 		section: Int
-	) -> [NSManagedObject] {
-		let oldItems = group(forSection: section).items
-		let selectedRows = selectedRows.sorted()
+	)? {
+		guard
+			allowsSink(selectedIndexPaths: selectedIndexPaths),
+			let section = selectedIndexPaths.first?.section
+		else {
+			return nil
+		}
+		
+		let selectedRows = selectedIndexPaths.map { $0.row }.sorted()
 		let indicesOfSelectedItems = selectedRows.map {
 			indexOfItemInGroup(forRow: $0)
 		}
+		let oldItems = group(forSection: section).items
 		let selectedItems = indicesOfSelectedItems.map {
 			oldItems[$0]
 		}
 		
+		// Make a new data source.
 		var newItems = oldItems
 		indicesOfSelectedItems.reversed().forEach {
 			newItems.remove(at: $0)
@@ -436,7 +453,8 @@ extension LibraryViewModel {
 		selectedItems.forEach {
 			newItems.append($0)
 		}
-		return newItems
+		
+		return (newItems, section)
 	}
 	
 }

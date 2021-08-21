@@ -94,15 +94,6 @@ final class AlbumsTVC:
 		}
 	}
 	
-	final override func refreshNavigationItemTitle() {
-		if
-			viewModel.groups.count == 1,
-			let containingCollection = viewModel.groups[0].container as? Collection
-		{
-			title = containingCollection.title
-		}
-	}
-	
 	// MARK: Setup Events
 	
 	@IBAction func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
@@ -136,7 +127,8 @@ final class AlbumsTVC:
 			let context = viewModel.context
 			songsTVC.viewModel = SongsViewModel(
 				containers: [container],
-				context: context)
+				context: context,
+				reflector: songsTVC)
 		}
 	}
 	

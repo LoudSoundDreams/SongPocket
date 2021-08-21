@@ -18,7 +18,13 @@ struct CollectionsViewModel: LibraryViewModel {
 	let numberOfSectionsAboveLibraryItems = 0 //
 	let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
+	weak var reflector: LibraryViewModelReflecting?
+	
 	var groups: [GroupOfLibraryItems] //
+	
+	func containerTitles() -> [String] {
+		return []
+	}
 	
 	// MARK: - Miscellaneous
 	
@@ -28,9 +34,11 @@ struct CollectionsViewModel: LibraryViewModel {
 //	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
 	
 	init(
-		context: NSManagedObjectContext
+		context: NSManagedObjectContext,
+		reflector: LibraryViewModelReflecting
 	) {
 		self.context = context
+		self.reflector = reflector
 		groups = [ // CollectionsViewModel will only have one GroupOfLibraryItems
 			GroupOfCollectionsOrAlbums(
 				entityName: Self.entityName,

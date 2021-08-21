@@ -18,15 +18,23 @@ struct AlbumsViewModel: LibraryViewModel {
 	let numberOfSectionsAboveLibraryItems = 0 //
 	let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
+	weak var reflector: LibraryViewModelReflecting?
+	
 	var groups: [GroupOfLibraryItems]
+	
+	func containerTitles() -> [String] {
+		return groups.compactMap { ($0.container as? Collection)?.title }
+	}
 	
 	// MARK: - Miscellaneous
 	
 	init(
 		containers: [NSManagedObject],
-		context: NSManagedObjectContext
+		context: NSManagedObjectContext,
+		reflector: LibraryViewModelReflecting
 	) {
 		self.context = context
+		self.reflector = reflector
 		groups = containers.map {
 			GroupOfCollectionsOrAlbums(
 				entityName: Self.entityName,

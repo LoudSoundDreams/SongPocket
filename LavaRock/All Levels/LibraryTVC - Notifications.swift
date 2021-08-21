@@ -128,34 +128,31 @@ extension LibraryTVC {
 		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 		if !shouldNotDismissAnyModalViewControllers {
 			view.window?.rootViewController?.dismiss(animated: true) {
-				self.refreshLibraryItemsPart2()
+				refreshLibraryItemsPart2()
 			}
 		} else {
 			refreshLibraryItemsPart2()
 		}
-	}
-	
-	private func refreshLibraryItemsPart2() {
-		let sectionsAndNewItems = viewModel.sectionsAndNewItems()
-		viewModel.refreshContainers()
-		sectionsAndNewItems.forEach { (section, newItems) in
-			
-			setItemsAndRefresh(
-				newItems: newItems,
-				section: section
-			) {
-				if self.viewModel.indexOfGroup(forSection: section) == 0 {
-					self.refreshNavigationItemTitle()
-					self.tableView.reloadData() // Update the data within each row, which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
-					
-					
-					// is that the only way to reload headers?
-					
-					
-					self.didChangeRowsOrSelectedRows() // Because reloadData deselects all rows.
+		
+		func refreshLibraryItemsPart2() {
+			let newItemsAndSections = viewModel.newItemsAndSections()
+			newItemsAndSections.reversed().forEach { (newItems, section) in
+				
+				setItemsAndRefresh(
+					newItems: newItems,
+					section: section
+				) {
+					if self.viewModel.indexOfGroup(forSection: section) == 0 { // So that we only do this once.
+						self.viewModel.refreshContainersAndReflect()
+						
+						self.tableView.reloadData() // Update the data within each row, which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
+						// Also reloads headers. (Is that the only way?)
+						
+						self.didChangeRowsOrSelectedRows() // Because reloadData deselects all rows.
+					}
 				}
+				
 			}
-			
 		}
 	}
 	

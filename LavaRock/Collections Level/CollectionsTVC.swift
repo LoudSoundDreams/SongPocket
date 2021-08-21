@@ -321,7 +321,8 @@ final class CollectionsTVC:
 			let context = viewModel.context
 			albumsTVC.viewModel = AlbumsViewModel(
 				containers: [container],
-				context: context)
+				context: context,
+				reflector: albumsTVC)
 		}
 	}
 	

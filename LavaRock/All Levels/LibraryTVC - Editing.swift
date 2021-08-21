@@ -44,33 +44,12 @@ extension LibraryTVC {
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
-		// Get the rows to sort.
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		let indexPathsToSort: [IndexPath] = {
-			if selectedIndexPaths.isEmpty {
-				if viewModel.groups.count == 1 {
-					return viewModel.indexPaths(forIndexOfGroup: 0)
-				} else {
-					return []
-				}
-			} else {
-				return selectedIndexPaths
-			}
-		}()
-		
-		guard
-			viewModel.allowsSort(selectedIndexPaths: selectedIndexPaths),
-			let section = indexPathsToSort.first?.section
+		guard let (newItems, section) = viewModel.itemsAndSectionAfterSorting(
+			selectedIndexPaths: selectedIndexPaths,
+			sortOptionLocalizedName: sortOptionLocalizedName)
 		else { return }
 		
-		// Make a new data source.
-		let rowsToSort = indexPathsToSort.map { $0.row }
-		let newItems = viewModel.itemsAfterSorting(
-			rows: rowsToSort,
-			section: section,
-			sortOptionLocalizedName: sortOptionLocalizedName)
-		
-		// Update the data source and table view.
 		setItemsAndRefresh(
 			newItems: newItems,
 			section: section
@@ -84,19 +63,10 @@ extension LibraryTVC {
 	
 	final func floatSelectedItemsToTopOfSection() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		
-		guard
-			viewModel.allowsFloat(selectedIndexPaths: selectedIndexPaths),
-			let section = selectedIndexPaths.first?.section
+		guard let (newItems, section) = viewModel.itemsAndSectionAfterFloatingSelectedItemsToTop(
+			selectedIndexPaths: selectedIndexPaths)
 		else { return }
 		
-		// Make a new data source.
-		let selectedRows = selectedIndexPaths.map { $0.row }
-		let newItems = viewModel.itemsAfterFloatingToTop(
-			selectedRows: selectedRows,
-			section: section)
-		
-		// Update the data source and table view.
 		setItemsAndRefresh(
 			newItems: newItems,
 			section: section
@@ -110,19 +80,10 @@ extension LibraryTVC {
 	
 	final func sinkSelectedItemsToBottomOfSection() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		
-		guard
-			viewModel.allowsSink(selectedIndexPaths: selectedIndexPaths),
-			let section = selectedIndexPaths.first?.section
+		guard let (newItems, section) = viewModel.itemsAndSectionAfterSinkingSelectedItemsToBottom(
+			selectedIndexPaths: selectedIndexPaths)
 		else { return }
 		
-		// Make a new data source.
-		let selectedRows = selectedIndexPaths.map { $0.row }
-		let newItems = viewModel.itemsAfterSinkingToBottom(
-			selectedRows: selectedRows,
-			section: section)
-		
-		// Update the data source and table view.
 		setItemsAndRefresh(
 			newItems: newItems,
 			section: section

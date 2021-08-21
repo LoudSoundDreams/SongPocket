@@ -37,31 +37,7 @@ extension LibraryTVC {
 		moveRowAt fromIndexPath: IndexPath,
 		to: IndexPath
 	) {
-		let (
-			newItemsInSourceSection,
-			newItemsInDestinationSection
-		) = viewModel.itemsAfterMovingRow(at: fromIndexPath, to: to)
-		
-		// Here, the refresh in setItemsAndRefresh is unnecessary because we don't have to move, select, or reload any rows for the user; all we really need is GroupOfLibraryItems.setItems. However, setItemsAndRefresh still works, and doesn't actively break anything.
-		// … except that, as of iOS 14.7.1, setItemsAndRefresh's table view updates make the separator below the cell you moved disappear. That doesn't happen on iOS 15 developer beta 6.
-		if #available(iOS 15, *) {
-			setItemsAndRefresh(
-				newItems: newItemsInSourceSection,
-				section: fromIndexPath.section)
-		} else {
-			let indexOfSourceGroup = viewModel.indexOfGroup(forSection: fromIndexPath.section)
-			viewModel.groups[indexOfSourceGroup].setItems(newItemsInSourceSection)
-		}
-		if let newItemsInDestinationSection = newItemsInDestinationSection {
-			if #available(iOS 15, *) {
-				setItemsAndRefresh(
-					newItems: newItemsInDestinationSection,
-					section: to.section)
-			} else {
-				let indexOfDestinationGroup = viewModel.indexOfGroup(forSection: to.section)
-				viewModel.groups[indexOfDestinationGroup].setItems(newItemsInDestinationSection)
-			}
-		}
+		viewModel.moveItem(at: fromIndexPath, to: to)
 		
 		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the "Sort" button. If you made all the selected rows contiguous, that should enable the "Sort" button.
 	}

@@ -46,13 +46,4 @@ final class SongsTVC:
 		]
 	}
 	
-	final override func refreshNavigationItemTitle() {
-		if
-			viewModel.groups.count == 1,
-			let containingAlbum = viewModel.groups[0].container as? Album
-		{
-			title = containingAlbum.titleFormattedOrPlaceholder()
-		}
-	}
-	
 }

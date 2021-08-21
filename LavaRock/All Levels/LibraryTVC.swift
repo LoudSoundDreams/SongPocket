@@ -58,7 +58,9 @@ class LibraryTVC:
 	
 	lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
 		let mainContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		return CollectionsViewModel(context: mainContext)
+		return CollectionsViewModel(
+			context: mainContext,
+			reflector: self)
 	}()
 	
 	// MARK: Subclasses Can Optionally Customize
@@ -173,13 +175,11 @@ class LibraryTVC:
 			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		}
 		
-		refreshNavigationItemTitle()
+//		viewModel.refreshContainersAndReflect()
+		let containerTitles = viewModel.containerTitles()
+		reflectContainerTitles(containerTitles)
 		
 		setBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
-	}
-	
-	// Easy to override.
-	func refreshNavigationItemTitle() {
 	}
 	
 	// MARK: Setup Events
