@@ -10,10 +10,7 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-class LibraryTVC:
-	UITableViewController,
-	PlaybackController
-{
+class LibraryTVC: UITableViewController {
 	
 	// MARK: - Types
 	
@@ -103,7 +100,7 @@ class LibraryTVC:
 			primaryAction: action)
 	}()
 	
-	// "Constants" for PlaybackController
+	// "Constants" for controlling playback
 	final lazy var playbackButtons = [
 		previousSongButton,
 		.flexibleSpace(),
