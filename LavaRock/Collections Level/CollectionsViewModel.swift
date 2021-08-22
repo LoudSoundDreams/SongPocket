@@ -68,7 +68,32 @@ struct CollectionsViewModel: LibraryViewModel {
 		return CollectionsSection.allCases.count
 	}
 	
-	// MARK: Numbers
+	func numberOfRows(
+		forSection section: Int,
+		contentState: CollectionsContentState
+	) -> Int {
+		guard let sectionCase = CollectionsSection(rawValue: section) else {
+			return 0
+		}
+		
+		switch sectionCase {
+		case .all:
+			return 1
+		case .collections:
+			switch contentState {
+			case .allowAccess, .loading:
+				return 1
+			case .blank:
+				return 0
+			case .noCollections:
+				return 2
+			case .oneOrMoreCollections:
+				return (self as LibraryViewModel).numberOfRows(forSection: section)
+			}
+		}
+	}
+	
+	// MARK: Headers
 	
 	func header(
 		forSection section: Int

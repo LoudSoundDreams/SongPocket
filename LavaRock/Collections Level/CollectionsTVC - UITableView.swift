@@ -20,33 +20,26 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	)-> Int {
+//		return (viewModel as? CollectionsViewModel)?.numberOfRows(
+//			forSection: section,
+//			contentState: contentState())
+//		?? 0
+		
+		
 		return newNumberOfRows(forSection: section)
 	}
 	
 	final func newNumberOfRows(forSection section: Int) -> Int {
-//		guard let sectionCase = CollectionsSection(rawValue: section) else {
-//			return 0
-//		}
-//
-//		switch sectionCase {
-//		case .all:
-//			return 1
-//		case .collections:
-			
-			
-			switch contentState() {
-			case .allowAccess, .loading:
-				return 1
-			case .blank:
-				return 0
-			case .noCollections:
-				return 2
-			case .oneOrMoreCollections:
-				return viewModel.numberOfRows(inSection: section)
-			}
-			
-			
-//		}
+		switch contentState() {
+		case .allowAccess, .loading:
+			return 1
+		case .blank:
+			return 0
+		case .noCollections:
+			return 2
+		case .oneOrMoreCollections:
+			return viewModel.numberOfRows(forSection: section)
+		}
 	}
 	
 	// MARK: - Headers
@@ -224,7 +217,7 @@ extension CollectionsTVC {
 		cell.apply(nowPlayingIndicator)
 		
 		if let albumMoverClipboard = albumMoverClipboard {
-			if collection.objectID == albumMoverClipboard.ifOfSourceCollection {
+			if collection.objectID == albumMoverClipboard.idOfSourceCollection {
 				cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 				cell.isUserInteractionEnabled = false
 				cell.accessibilityTraits.formUnion(.notEnabled)

@@ -18,7 +18,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		\MPMediaItem.albumArtist,
 	]
 	
-	final let ifOfSourceCollection: NSManagedObjectID
+	final let idOfSourceCollection: NSManagedObjectID
 	final let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	
 	// "Constants"
@@ -41,7 +41,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		idsOfAlbumsBeingMoved: [NSManagedObjectID],
 		delegate: AlbumMoverDelegate?
 	) {
-		self.ifOfSourceCollection = idOfSourceCollection
+		self.idOfSourceCollection = idOfSourceCollection
 		self.idsOfAlbumsBeingMoved = idsOfAlbumsBeingMoved
 		self.delegate = delegate
 	}

@@ -19,7 +19,7 @@ extension SongsTVC {
 	) -> Int {
 		setOrRemoveNoItemsBackground()
 		
-		return viewModel.numberOfRows(inSection: section)
+		return viewModel.numberOfRows(forSection: section)
 	}
 	
 	// MARK: - Cells

@@ -10,20 +10,18 @@ import UIKit
 import CoreData
 import MediaPlayer
 
+enum CollectionsContentState {
+	case allowAccess
+	case loading
+	case blank
+	case noCollections
+	case oneOrMoreCollections
+}
+
 final class CollectionsTVC:
 	LibraryTVC,
 	AlbumMover
 {
-	
-	// MARK: - Types
-	
-	enum ContentState {
-		case allowAccess
-		case loading
-		case blank
-		case noCollections
-		case oneOrMoreCollections
-	}
 	
 	// MARK: - Properties
 	
@@ -52,7 +50,7 @@ final class CollectionsTVC:
 	
 	// MARK: - Content State
 	
-	final func contentState() -> ContentState {
+	final func contentState() -> CollectionsContentState {
 		if MPMediaLibrary.authorizationStatus() != .authorized {
 			return .allowAccess
 		}
@@ -111,6 +109,9 @@ final class CollectionsTVC:
 		case
 				.allowAccess, // Currently unused
 				.loading:
+//			let newNumberOfRowsInCollectionsSection = (viewModel as? CollectionsViewModel)?.numberOfRows(
+//				forSection: indexOfCollectionsSection,
+//				contentState: contentState()) ?? 0
 			let newNumberOfRowsInCollectionsSection = newNumberOfRows(forSection: indexOfCollectionsSection)
 			let newInCollectionsSection
 			= Array(0 ..< newNumberOfRowsInCollectionsSection).map { indexOfRow in
@@ -151,8 +152,11 @@ final class CollectionsTVC:
 			toReload = []
 			animationForReload = .none
 			
-			let newNumberOfRows = newNumberOfRows(forSection: indexOfCollectionsSection)
-			let newIndexPaths = Array(0 ..< newNumberOfRows).map { indexOfRow in
+//			let newNumberOfRowsInCollectionsSection = (viewModel as? CollectionsViewModel)?.numberOfRows(
+//				forSection: indexOfCollectionsSection,
+//				contentState: contentState()) ?? 0
+			let newNumberOfRowsInCollectionsSection = newNumberOfRows(forSection: indexOfCollectionsSection)
+			let newIndexPaths = Array(0 ..< newNumberOfRowsInCollectionsSection).map { indexOfRow in
 				IndexPath(row: indexOfRow, section: indexOfCollectionsSection)
 			}
 			toInsert = newIndexPaths

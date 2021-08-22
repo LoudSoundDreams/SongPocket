@@ -133,7 +133,7 @@ extension LibraryViewModel {
 		return Self.numberOfSectionsAboveLibraryItems + groups.count
 	}
 	
-	func numberOfRows(inSection section: Int) -> Int {
+	func numberOfRows(forSection section: Int) -> Int {
 		let group = group(forSection: section)
 		if group.items.isEmpty {
 			return 0 // Without numberOfRowsAboveLibraryItemsInEachSection
