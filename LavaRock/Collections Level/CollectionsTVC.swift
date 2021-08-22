@@ -25,11 +25,6 @@ final class CollectionsTVC:
 		case oneOrMoreCollections
 	}
 	
-//	enum Section: Int, CaseIterable {
-//		case all
-//		case collections
-//	}
-	
 	// MARK: - Properties
 	
 	// "Constants"
@@ -103,9 +98,9 @@ final class CollectionsTVC:
 		let animationForReload: UITableView.RowAnimation
 		
 //		let inAllSection = tableView.indexPathsForRows(
-//			inSection: Section.all.rawValue,
+//			inSection: CollectionsSection.all.rawValue,
 //			firstRow: 0)
-//		let indexOfCollectionsSection = Section.collections.rawValue
+//		let indexOfCollectionsSection = CollectionsSection.collections.rawValue
 		let indexOfCollectionsSection = 0
 		let oldInCollectionsSection = tableView.indexPathsForRows(
 			inSection: indexOfCollectionsSection,

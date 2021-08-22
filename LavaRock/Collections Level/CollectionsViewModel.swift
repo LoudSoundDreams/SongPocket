@@ -13,10 +13,11 @@ struct CollectionsViewModel: LibraryViewModel {
 	// MARK: - LibraryViewModel
 	
 	static let entityName = "Collection"
+//	static let numberOfSectionsAboveLibraryItems = 1
+	static let numberOfSectionsAboveLibraryItems = 0
+	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	let context: NSManagedObjectContext
-	let numberOfSectionsAboveLibraryItems = 0 //
-	let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	weak var reflector: LibraryViewModelReflecting?
 	
@@ -28,6 +29,11 @@ struct CollectionsViewModel: LibraryViewModel {
 	}
 	
 	// MARK: - Miscellaneous
+	
+//	private enum CollectionsSection: Int, CaseIterable {
+//		case all
+//		case collections
+//	}
 	
 	static let indexOfGroup = 0 //
 	
@@ -52,6 +58,70 @@ struct CollectionsViewModel: LibraryViewModel {
 				context: context)
 		]
 	}
+	
+	/*
+	// MARK: - UITableView
+	
+	// MARK: Numbers
+	
+	func numberOfSections() -> Int {
+		return CollectionsSection.allCases.count
+	}
+	
+	// MARK: Numbers
+	
+	func header(
+		forSection section: Int
+	) -> String? {
+		guard let sectionCase = CollectionsSection(rawValue: section) else {
+			return nil
+		}
+		
+		switch sectionCase {
+		case .all:
+			return nil
+		case .collections:
+			return LocalizedString.collections
+		}
+	}
+	
+	// MARK: Editing
+	
+	func canEditRow(
+		at indexPath: IndexPath
+	) -> Bool {
+		guard let sectionCase = CollectionsSection(rawValue: indexPath.section) else {
+			return false
+		}
+		
+		switch sectionCase {
+		case .all:
+			return false
+		case .collections:
+			return (self as LibraryViewModel).canEditRow(at: indexPath) // TO DO: Does this work?
+		}
+	}
+	
+	// MARK: Reordering
+	
+	func targetIndexPathForMovingRow(
+		at sourceIndexPath: IndexPath,
+		to proposedDestinationIndexPath: IndexPath
+	) -> IndexPath {
+		guard let proposedSectionCase = CollectionsSection(rawValue: proposedDestinationIndexPath.section) else {
+			return sourceIndexPath
+		}
+		
+		switch proposedSectionCase {
+		case .all:
+			return sourceIndexPath
+		case .collections:
+			return (self as LibraryViewModel).targetIndexPathForMovingRow( // TO DO: Does this work?
+				at: sourceIndexPath,
+				to: proposedDestinationIndexPath)
+		}
+	}
+	*/
 	
 	// MARK: - Editing
 	

@@ -13,10 +13,10 @@ struct SongsViewModel: LibraryViewModel {
 	// MARK: - LibraryViewModel
 	
 	static let entityName = "Song"
+	static let numberOfSectionsAboveLibraryItems = 0
+	static let numberOfRowsAboveLibraryItemsInEachSection = 2
 	
 	let context: NSManagedObjectContext
-	let numberOfSectionsAboveLibraryItems = 0
-	let numberOfRowsAboveLibraryItemsInEachSection = 2
 	
 	weak var reflector: LibraryViewModelReflecting?
 	

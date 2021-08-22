@@ -33,7 +33,7 @@ extension AlbumsTVC {
 		// Update the table view.
 		setItemsAndRefresh(
 			newItems: newItems,
-			section: albumsViewModel.numberOfSectionsAboveLibraryItems
+			section: AlbumsViewModel.numberOfSectionsAboveLibraryItems + indexOfGroup
 		) {
 			self.viewModel.context.tryToSave()
 			self.viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.

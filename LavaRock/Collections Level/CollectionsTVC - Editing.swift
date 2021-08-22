@@ -13,7 +13,7 @@ extension CollectionsTVC {
 //	override func setEditing(_ editing: Bool, animated: Bool) {
 //		super.setEditing(editing, animated: animated)
 //
-//		let indexOfAllSection = Section.all.rawValue
+//		let indexOfAllSection = CollectionsSection.all.rawValue
 //		let allSection = tableView.indexPathsForRows(
 //			inSection: indexOfAllSection,
 //			firstRow: 0)
@@ -134,11 +134,10 @@ extension CollectionsTVC {
 		
 		// Update the data source and table view.
 		let indexOfCombinedCollection = collectionsViewModel.indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
-		let section = collectionsViewModel.numberOfSectionsAboveLibraryItems
 		setItemsAndRefresh(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
 			indicesOfNewItemsToSelect: [indexOfCombinedCollection],
-			section: section)
+			section: indexPathOfCombinedCollection.section)
 		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
 		// We could hack refreshEditingButtons to disable all the editing buttons during the animation, but that would clearly break separation of concerns.
 	}
@@ -199,7 +198,7 @@ extension CollectionsTVC {
 		setItemsAndRefresh(
 			newItems: originalItems, // SIDE EFFECT
 			indicesOfNewItemsToSelect: indicesOfOriginalSelectedCollections,
-			section: viewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfGroup
+			section: CollectionsViewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfGroup
 		) {
 			completion?()
 		}

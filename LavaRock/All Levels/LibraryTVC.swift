@@ -325,7 +325,7 @@ class LibraryTVC:
 	func refreshEditingButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
 		
-		editButtonItem.isEnabled = !viewModel.isEmpty()
+		editButtonItem.isEnabled = viewModel.allowsEdit()
 		
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		sortButton.isEnabled = viewModel.allowsSort(selectedIndexPaths: selectedIndexPaths)

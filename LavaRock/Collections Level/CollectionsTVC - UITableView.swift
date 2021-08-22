@@ -13,7 +13,7 @@ extension CollectionsTVC {
 	// MARK: - Numbers
 	
 //	final override func numberOfSections(in tableView: UITableView) -> Int {
-//		return Section.allCases.count
+//		return (viewModel as? CollectionsViewModel)?.numberOfSections() ?? 0
 //	}
 	
 	final override func tableView(
@@ -24,7 +24,7 @@ extension CollectionsTVC {
 	}
 	
 	final func newNumberOfRows(forSection section: Int) -> Int {
-//		guard let sectionCase = Section(rawValue: section) else {
+//		guard let sectionCase = CollectionsSection(rawValue: section) else {
 //			return 0
 //		}
 //
@@ -55,16 +55,7 @@ extension CollectionsTVC {
 //		_ tableView: UITableView,
 //		titleForHeaderInSection section: Int
 //	) -> String? {
-//		guard let sectionCase = Section(rawValue: section) else {
-//			return nil
-//		}
-//
-//		switch sectionCase {
-//		case .all:
-//			return nil
-//		case .collections:
-//			return LocalizedString.collections
-//		}
+//		return (viewModel as? CollectionsViewModel)?.header(forSection: section)
 //	}
 	
 	// MARK: - Cells
@@ -73,7 +64,7 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-//		guard let sectionCase = Section(rawValue: indexPath.section) else {
+//		guard let sectionCase = CollectionsSection(rawValue: indexPath.section) else {
 //			return UITableViewCell()
 //		}
 //
@@ -284,16 +275,18 @@ extension CollectionsTVC {
 //		_ tableView: UITableView,
 //		canEditRowAt indexPath: IndexPath
 //	) -> Bool {
-//		guard let sectionCase = Section(rawValue: indexPath.section) else {
-//			return false
-//		}
-//		
-//		switch sectionCase {
-//		case .all:
-//			return false
-//		case .collections:
-//			return super.tableView(tableView, canEditRowAt: indexPath)
-//		}
+//		return (viewModel as? CollectionsViewModel)?.canEditRow(at: indexPath) ?? false
+//	}
+	
+//	final override func tableView(
+//		_ tableView: UITableView,
+//		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
+//		toProposedIndexPath proposedDestinationIndexPath: IndexPath
+//	) -> IndexPath {
+//		return (viewModel as? CollectionsViewModel)?.targetIndexPathForMovingRow(
+//			at: sourceIndexPath,
+//			to: proposedDestinationIndexPath)
+//		?? sourceIndexPath
 //	}
 	
 	final override func tableView(
