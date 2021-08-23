@@ -1,5 +1,5 @@
 //
-//  SongsTVC + NowPlayingIndicatorManager.swift
+//  SongsTVC + NowPlayingDetermining.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-07.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-extension SongsTVC: NowPlayingIndicatorManager {
+extension SongsTVC: NowPlayingDetermining {
 	
-	final func isInPlayer(libraryItemFor indexPath: IndexPath) -> Bool {
+	final func isInPlayer(libraryItemAt indexPath: IndexPath) -> Bool {
 		if
 			let rowSong = viewModel.item(at: indexPath) as? Song,
 			rowSong.objectID == PlayerManager.songInPlayer?.objectID

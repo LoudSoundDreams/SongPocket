@@ -70,8 +70,6 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: Subclasses Should Not Customize
 	
-	static let libraryItemCellReuseIdentifier = "Cell"
-	
 	// "Constants"
 	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	lazy var sortButton = UIBarButtonItem(

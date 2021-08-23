@@ -47,7 +47,7 @@ extension AlbumsTVC {
 		let releaseDateString = album.releaseDateEstimateFormatted()
 		
 		// "Now playing" indicator
-		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
+		let isInPlayer = isInPlayer(libraryItemAt: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
@@ -57,7 +57,7 @@ extension AlbumsTVC {
 		let artwork = album.mpMediaItemCollection()?.representativeItem?.artwork // Can be nil
 		if let releaseDateString = releaseDateString {
 			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: Self.libraryItemCellReuseIdentifier,
+				withIdentifier: "Album",
 				for: indexPath) as? AlbumCell
 			else {
 				return UITableViewCell()
@@ -68,7 +68,7 @@ extension AlbumsTVC {
 				width: artworkMaxWidthAndHeight,
 				height: artworkMaxWidthAndHeight))
 			cell.titleLabel.text = albumTitle
-			cell.apply(nowPlayingIndicator)
+			cell.applyNowPlayingIndicator(nowPlayingIndicator)
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}
@@ -81,7 +81,7 @@ extension AlbumsTVC {
 			
 		} else { // We couldn't determine the album's release date.
 			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: "Cell Without Release Date",
+				withIdentifier: "Album Without Release Date",
 				for: indexPath) as? AlbumCellWithoutReleaseDate
 			else {
 				return UITableViewCell()
@@ -92,7 +92,7 @@ extension AlbumsTVC {
 				width: artworkMaxWidthAndHeight,
 				height: artworkMaxWidthAndHeight))
 			cell.titleLabel.text = albumTitle
-			cell.apply(nowPlayingIndicator)
+			cell.applyNowPlayingIndicator(nowPlayingIndicator)
 			if albumMoverClipboard != nil {
 				cell.accessoryType = .none
 			}

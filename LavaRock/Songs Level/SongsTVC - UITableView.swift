@@ -130,7 +130,7 @@ extension SongsTVC {
 		= mediaItem?.title ?? MPMediaItem.placeholderTitle
 		
 		// "Now playing" indicator
-		let isInPlayer = isInPlayer(libraryItemFor: indexPath)
+		let isInPlayer = isInPlayer(libraryItemAt: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
@@ -156,7 +156,7 @@ extension SongsTVC {
 			songArtist != albumArtist
 		{
 			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: "Cell with Different Artist",
+				withIdentifier: "Song with Different Artist",
 				for: indexPath) as? SongCellWithDifferentArtist
 			else {
 				return UITableViewCell()
@@ -166,7 +166,7 @@ extension SongsTVC {
 			
 			cell.artistLabel.text = songArtist
 			
-			cell.apply(nowPlayingIndicator)
+			cell.applyNowPlayingIndicator(nowPlayingIndicator)
 			cell.trackNumberLabel.text = trackNumberString
 			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
 			
@@ -176,7 +176,7 @@ extension SongsTVC {
 			
 		} else { // The song's artist is not useful, or it's the same as the album artist.
 			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: Self.libraryItemCellReuseIdentifier,
+				withIdentifier: "Song",
 				for: indexPath) as? SongCell
 			else {
 				return UITableViewCell()
@@ -184,7 +184,7 @@ extension SongsTVC {
 			
 			cell.titleLabel.text = songTitle
 			
-			cell.apply(nowPlayingIndicator)
+			cell.applyNowPlayingIndicator(nowPlayingIndicator)
 			cell.trackNumberLabel.text = trackNumberString
 			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
 			

@@ -28,10 +28,7 @@ final class AlbumInfoCellWithoutReleaseDate: UITableViewCell {
 	@IBOutlet var albumArtistLabel: UILabel!
 }
 
-final class SongCell:
-	UITableViewCell,
-	NowPlayingIndicatorDisplayer
-{
+final class SongCell: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	@IBOutlet var trackNumberLabel: UILabel!
@@ -43,10 +40,10 @@ final class SongCell:
 	}
 }
 
-final class SongCellWithDifferentArtist:
-	UITableViewCell,
-	NowPlayingIndicatorDisplayer
-{
+extension SongCell: NowPlayingIndicating {
+}
+
+final class SongCellWithDifferentArtist: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var artistLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
@@ -57,4 +54,7 @@ final class SongCellWithDifferentArtist:
 		
 		accessibilityTraits.formUnion(.button)
 	}
+}
+
+extension SongCellWithDifferentArtist: NowPlayingIndicating {
 }

@@ -41,9 +41,7 @@ struct CollectionsViewModel: LibraryViewModel {
 //		get { groups[0] }
 //		set { groups[0] = newValue }
 //	}
-//	var group: GroupOfLibraryItems { groups[0] }
 	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] }
-//	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
 	
 	init(
 		context: NSManagedObjectContext,
@@ -51,7 +49,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	) {
 		self.context = context
 		self.reflector = reflector
-		groups = [ // CollectionsViewModel will only have one GroupOfLibraryItems
+		groups = [
 			GroupOfCollectionsOrAlbums(
 				entityName: Self.entityName,
 				container: nil,
@@ -59,55 +57,271 @@ struct CollectionsViewModel: LibraryViewModel {
 		]
 	}
 	
-	/*
 	// MARK: - UITableView
 	
 	// MARK: Numbers
 	
 	func numberOfSections() -> Int {
-		return CollectionsSection.allCases.count
+//		return CollectionsSection.allCases.count
+		
+		
+		return 1
 	}
 	
 	func numberOfRows(
 		forSection section: Int,
 		contentState: CollectionsContentState
 	) -> Int {
-		guard let sectionCase = CollectionsSection(rawValue: section) else {
+//		guard let sectionCase = CollectionsSection(rawValue: section) else {
+//			return 0
+//		}
+//
+//		switch sectionCase {
+//		case .all:
+//			return 1
+//		case .collections:
+		
+		
+		switch contentState {
+		case .allowAccess, .loading:
+			return 1
+		case .blank:
 			return 0
+		case .noCollections:
+			return 2
+		case .oneOrMoreCollections:
+			return (self as LibraryViewModel).numberOfRows(forSection: section)
 		}
 		
-		switch sectionCase {
-		case .all:
-			return 1
-		case .collections:
-			switch contentState {
-			case .allowAccess, .loading:
-				return 1
-			case .blank:
-				return 0
-			case .noCollections:
-				return 2
-			case .oneOrMoreCollections:
-				return (self as LibraryViewModel).numberOfRows(forSection: section)
-			}
-		}
+		
+//		}
 	}
 	
 	// MARK: Headers
 	
-	func header(
-		forSection section: Int
-	) -> String? {
-		guard let sectionCase = CollectionsSection(rawValue: section) else {
-			return nil
+	func header(forSection section: Int) -> String? {
+//		guard let sectionCase = CollectionsSection(rawValue: section) else {
+//			return nil
+//		}
+//
+//		switch sectionCase {
+//		case .all:
+//			return nil
+//		case .collections:
+//			return LocalizedString.collections
+//		}
+		
+		
+		return nil
+	}
+	
+	// MARK: Cells
+	
+	func cell(
+		forRowAt indexPath: IndexPath,
+		contentState: CollectionsContentState,
+		isEditing: Bool,
+		albumMoverClipboard: AlbumMoverClipboard?,
+		isPlaying: Bool,
+		renameFocusedCollectionAction: UIAccessibilityCustomAction,
+		tintColor: UIColor,
+		tableView: UITableView
+	) -> UITableViewCell {
+//		guard let sectionCase = CollectionsSection(rawValue: indexPath.section) else {
+//			return UITableViewCell()
+//		}
+//
+//		switch sectionCase {
+//		case .all:
+//			return allCell(
+//				forRowAt: indexPath,
+//				contentState: contentState,
+//				isEditing: isEditing,
+//				tableView: tableView)
+//		case .collections:
+		
+		
+		switch contentState {
+		case .allowAccess, .loading:
+			return allowAccessOrLoadingCell(
+				forRowAt: indexPath,
+				contentState: contentState,
+				tintColor: tintColor,
+				tableView: tableView)
+		case .blank: // Should never run
+			return UITableViewCell()
+		case .noCollections:
+			switch indexPath.row {
+			case 0:
+				return noCollectionsPlaceholderCell(
+					forRowAt: indexPath,
+					tableView: tableView)
+			case 1:
+				return openMusicCell(
+					forRowAt: indexPath,
+					tintColor: tintColor,
+					tableView: tableView)
+			default: // Should never run
+				return UITableViewCell()
+			}
+		case .oneOrMoreCollections:
+			return collectionCell(
+				forRowAt: indexPath,
+				albumMoverClipboard: albumMoverClipboard,
+				isPlaying: isPlaying,
+				renameFocusedCollectionAction: renameFocusedCollectionAction,
+				tableView: tableView)
 		}
 		
-		switch sectionCase {
-		case .all:
-			return nil
-		case .collections:
-			return LocalizedString.collections
+		
+//		}
+	}
+	
+	private func allCell(
+		forRowAt indexPath: IndexPath,
+		contentState: CollectionsContentState,
+		isEditing: Bool,
+		tableView: UITableView
+	) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "All",
+			for: indexPath) as? AllCollectionsCell
+		else {
+			return UITableViewCell()
 		}
+		
+		if isEditing {
+			cell.accessoryType = .none
+		} else {
+			cell.accessoryType = .disclosureIndicator
+			
+			switch contentState {
+			case .allowAccess, .loading, .blank, .noCollections:
+				cell.allLabel.textColor = .placeholderText
+				cell.disableWithAccessibilityTrait()
+			case .oneOrMoreCollections:
+				cell.allLabel.textColor = .label
+				cell.enableWithAccessibilityTrait()
+			}
+		}
+		
+		return cell
+	}
+	
+	private func allowAccessOrLoadingCell(
+		forRowAt indexPath: IndexPath,
+		contentState: CollectionsContentState,
+		tintColor: UIColor,
+		tableView: UITableView
+	) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Allow Access or Loading",
+			for: indexPath) as? AllowAccessOrLoadingCell
+		else {
+			return UITableViewCell()
+		}
+		
+		switch contentState {
+		case .allowAccess:
+			cell.allowAccessOrLoadingLabel.text = LocalizedString.allowAccessToMusic
+			cell.allowAccessOrLoadingLabel.textColor = tintColor
+			cell.spinnerView.stopAnimating()
+			cell.isUserInteractionEnabled = true
+			cell.accessibilityTraits.formUnion(.button)
+			return cell
+		case .loading:
+			cell.allowAccessOrLoadingLabel.text = LocalizedString.loadingWithEllipsis
+			cell.allowAccessOrLoadingLabel.textColor = .secondaryLabel
+			cell.spinnerView.startAnimating()
+			cell.isUserInteractionEnabled = false
+			cell.accessibilityTraits.remove(.button)
+			return cell
+		case .blank, .noCollections, .oneOrMoreCollections: // Should never run
+			return UITableViewCell()
+		}
+	}
+	
+	// The cell in the storyboard is completely default except for the reuse identifier.
+	private func noCollectionsPlaceholderCell(
+		forRowAt indexPath: IndexPath,
+		tableView: UITableView
+	) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "No Collections Placeholder", for: indexPath)
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.noCollectionsPlaceholder
+		configuration.textProperties.font = UIFont.preferredFont(forTextStyle: .body)
+		configuration.textProperties.color = .secondaryLabel
+		cell.contentConfiguration = configuration
+		
+		cell.isUserInteractionEnabled = false
+		
+		return cell
+	}
+	
+	// The cell in the storyboard is completely default except for the reuse identifier.
+	private func openMusicCell(
+		forRowAt indexPath: IndexPath,
+		tintColor: UIColor,
+		tableView: UITableView
+	) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Open Music", for: indexPath)
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.openMusic
+		configuration.textProperties.color = tintColor
+		cell.contentConfiguration = configuration
+		
+		cell.accessibilityTraits.formUnion(.button)
+		
+		return cell
+	}
+	
+	private func collectionCell(
+		forRowAt indexPath: IndexPath,
+		albumMoverClipboard: AlbumMoverClipboard?,
+		isPlaying: Bool,
+		renameFocusedCollectionAction: UIAccessibilityCustomAction,
+		tableView: UITableView
+	) -> UITableViewCell {
+		guard let collection = item(at: indexPath) as? Collection else {
+			return UITableViewCell()
+		}
+		
+		// Title
+		let collectionTitle = collection.title
+		
+		// "Now playing" indicator
+		let isInPlayer = isInPlayer(libraryItemAt: indexPath)
+		let nowPlayingIndicator = NowPlayingIndicator(
+			isInPlayer: isInPlayer,
+			isPlaying: isPlaying)
+		
+		// Make, configure, and return the cell.
+		
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: "Collection",
+			for: indexPath) as? CollectionCell
+		else {
+			return UITableViewCell()
+		}
+		
+		cell.titleLabel.text = collectionTitle
+		cell.applyNowPlayingIndicator(nowPlayingIndicator)
+		
+		if let albumMoverClipboard = albumMoverClipboard {
+			if collection.objectID == albumMoverClipboard.idOfSourceCollection {
+				cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+				cell.disableWithAccessibilityTrait()
+			} else { // Undo changes made to the disabled cell
+				cell.titleLabel.textColor = UIColor.label
+				cell.enableWithAccessibilityTrait()
+			}
+		} else {
+			cell.accessibilityCustomActions = [renameFocusedCollectionAction]
+		}
+		
+		return cell
 	}
 	
 	// MARK: Editing
@@ -115,16 +329,20 @@ struct CollectionsViewModel: LibraryViewModel {
 	func canEditRow(
 		at indexPath: IndexPath
 	) -> Bool {
-		guard let sectionCase = CollectionsSection(rawValue: indexPath.section) else {
-			return false
-		}
+//		guard let sectionCase = CollectionsSection(rawValue: indexPath.section) else {
+//			return false
+//		}
+//
+//		switch sectionCase {
+//		case .all:
+//			return false
+//		case .collections:
 		
-		switch sectionCase {
-		case .all:
-			return false
-		case .collections:
-			return (self as LibraryViewModel).canEditRow(at: indexPath) // TO DO: Does this work?
-		}
+		
+		return (self as LibraryViewModel).canEditRow(at: indexPath)
+		
+		
+//		}
 	}
 	
 	// MARK: Reordering
@@ -133,20 +351,23 @@ struct CollectionsViewModel: LibraryViewModel {
 		at sourceIndexPath: IndexPath,
 		to proposedDestinationIndexPath: IndexPath
 	) -> IndexPath {
-		guard let proposedSectionCase = CollectionsSection(rawValue: proposedDestinationIndexPath.section) else {
-			return sourceIndexPath
-		}
+//		guard let proposedSectionCase = CollectionsSection(rawValue: proposedDestinationIndexPath.section) else {
+//			return sourceIndexPath
+//		}
+//
+//		switch proposedSectionCase {
+//		case .all:
+//			return sourceIndexPath
+//		case .collections:
 		
-		switch proposedSectionCase {
-		case .all:
-			return sourceIndexPath
-		case .collections:
-			return (self as LibraryViewModel).targetIndexPathForMovingRow( // TO DO: Does this work?
-				at: sourceIndexPath,
-				to: proposedDestinationIndexPath)
-		}
+		
+		return (self as LibraryViewModel).targetIndexPathForMovingRow(
+			at: sourceIndexPath,
+			to: proposedDestinationIndexPath)
+		
+		
+//		}
 	}
-	*/
 	
 	// MARK: - Editing
 	

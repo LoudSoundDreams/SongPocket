@@ -36,7 +36,9 @@ extension CollectionsTVC {
 	final override func refreshToReflectPlaybackState() {
 		super.refreshToReflectPlaybackState()
 		
-		refreshNowPlayingIndicators(isInPlayerDeterminer: isInPlayer(libraryItemFor:))
+		if let viewModel = viewModel as? NowPlayingDetermining {
+			refreshNowPlayingIndicators(nowPlayingDetermining: viewModel)
+		}
 	}
 	
 	// MARK: - Refreshing Library Items

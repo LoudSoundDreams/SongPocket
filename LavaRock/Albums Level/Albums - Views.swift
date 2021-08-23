@@ -7,10 +7,7 @@
 
 import UIKit
 
-final class AlbumCell:
-	UITableViewCell,
-	NowPlayingIndicatorDisplayer
-{
+final class AlbumCell: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var releaseDateLabel: UILabel!
@@ -23,10 +20,10 @@ final class AlbumCell:
 	}
 }
 
-final class AlbumCellWithoutReleaseDate:
-	UITableViewCell,
-	NowPlayingIndicatorDisplayer
-{
+extension AlbumCell: NowPlayingIndicating {
+}
+
+final class AlbumCellWithoutReleaseDate: UITableViewCell {
 	@IBOutlet var artworkImageView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
@@ -36,4 +33,7 @@ final class AlbumCellWithoutReleaseDate:
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true
 	}
+}
+
+extension AlbumCellWithoutReleaseDate: NowPlayingIndicating {
 }

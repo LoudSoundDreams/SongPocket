@@ -18,16 +18,6 @@ extension CollectionsTVC {
 //			inSection: indexOfAllSection,
 //			firstRow: 0)
 //		tableView.reloadRows(at: allSection, with: .fade) //
-//
-////		refreshVoiceControlNamesForCollectionCells()
-//	}
-	
-//	private func refreshVoiceControlNamesForCollectionCells() {
-//		indexPaths(forIndexOfSectionOfLibraryItems: 0).forEach {
-//			guard let cell = tableView.cellForRow(at: $0) else { return }
-//			
-//			refreshVoiceControlNames(for: cell)
-//		}
 //	}
 	
 	// MARK: - Renaming

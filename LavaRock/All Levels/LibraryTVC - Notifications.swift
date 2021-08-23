@@ -81,16 +81,16 @@ extension LibraryTVC {
 	
 	// LibraryTVC itself doesn't call this, but its subclasses might want to.
 	final func refreshNowPlayingIndicators(
-		isInPlayerDeterminer: (IndexPath) -> Bool
+		nowPlayingDetermining: NowPlayingDetermining
 	) {
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		viewModel.indexPathsForAllItems().forEach { indexPath in
-			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicatorDisplayer else { return }
-			let isInPlayer = isInPlayerDeterminer(indexPath)
+			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicating else { return }
+			let isInPlayer = nowPlayingDetermining.isInPlayer(libraryItemAt: indexPath)
 			let indicator = NowPlayingIndicator(
 				isInPlayer: isInPlayer,
 				isPlaying: isPlaying)
-			cell.apply(indicator)
+			cell.applyNowPlayingIndicator(indicator)
 		}
 	}
 	

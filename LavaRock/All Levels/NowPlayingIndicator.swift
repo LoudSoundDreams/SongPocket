@@ -7,26 +7,23 @@
 
 import UIKit
 
-protocol NowPlayingIndicatorDisplayer {
+protocol NowPlayingIndicating {
 	var nowPlayingIndicatorImageView: UIImageView! { get set }
 //	var accessibilityLabel: String? { get set }
 	var accessibilityValue: String? { get set }
 	
-	mutating func apply(_ indicator: NowPlayingIndicator)
+	mutating func applyNowPlayingIndicator(_ indicator: NowPlayingIndicator)
 }
 
-extension NowPlayingIndicatorDisplayer {
-	mutating func apply(_ indicator: NowPlayingIndicator) {
+extension NowPlayingIndicating {
+	mutating func applyNowPlayingIndicator(_ indicator: NowPlayingIndicator) {
 		nowPlayingIndicatorImageView.image = indicator.image
-		accessibilityValue = indicator.accessibilityLabel
+		accessibilityValue = indicator.accessibilityLabel // For some reason, UITableViewCell.accessibilityLabel is nil at this point.
 	}
 }
 
-protocol NowPlayingIndicatorManager {
-	func refreshNowPlayingIndicators(
-		isInPlayerDeterminer: (IndexPath) -> Bool
-	)
-	func isInPlayer(libraryItemFor indexPath: IndexPath) -> Bool
+protocol NowPlayingDetermining {
+	func isInPlayer(libraryItemAt indexPath: IndexPath) -> Bool
 }
 
 struct NowPlayingIndicator {

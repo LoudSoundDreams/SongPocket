@@ -18,10 +18,10 @@ final class AllowAccessOrLoadingCell: UITableViewCell {
 	@IBOutlet var spinnerView: UIActivityIndicatorView!
 }
 
-final class CollectionCell:
-	UITableViewCell,
-	NowPlayingIndicatorDisplayer
-{
+final class CollectionCell: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
+}
+
+extension CollectionCell: NowPlayingIndicating {
 }

@@ -189,7 +189,7 @@
                                     <outlet property="allLabel" destination="gN8-Kg-nRJ" id="kWy-OS-j8v"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Collection" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="150.33333015441895" width="375" height="43.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sQR-13-z5i" id="oWs-S1-Xp1">
@@ -324,7 +324,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="rhl-vL-Ze4" customClass="AlbumCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album" id="rhl-vL-Ze4" customClass="AlbumCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="132.33332824707031"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rhl-vL-Ze4" id="JHd-Pq-eAK">
@@ -387,7 +387,7 @@
                                     <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="yEs-VP-boX"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell Without Release Date" id="NoT-yd-Ur5" customClass="AlbumCellWithoutReleaseDate" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album Without Release Date" id="NoT-yd-Ur5" customClass="AlbumCellWithoutReleaseDate" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="176.9999942779541" width="375" height="132.33332824707031"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NoT-yd-Ur5" id="S5B-ql-lwZ">
@@ -579,7 +579,7 @@
                                     <outlet property="albumArtistLabel" destination="PgD-ST-isZ" id="f37-Rx-A7v"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Orn-Ku-PFM" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song" id="Orn-Ku-PFM" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="194.33333015441895" width="375" height="44.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Orn-Ku-PFM" id="Fg6-10-nMy">
@@ -633,7 +633,7 @@
                                     <outlet property="trackNumberLabel" destination="gGs-MB-auE" id="eZ1-8X-3si"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell with Different Artist" id="J5T-0G-4uX" customClass="SongCellWithDifferentArtist" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song with Different Artist" id="J5T-0G-4uX" customClass="SongCellWithDifferentArtist" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="238.99999809265137" width="375" height="60.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">

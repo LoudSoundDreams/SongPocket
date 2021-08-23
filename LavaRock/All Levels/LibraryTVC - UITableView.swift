@@ -11,9 +11,7 @@ extension LibraryTVC {
 	
 	// MARK: - Editing
 	
-	// Overrides of this method should call super (this implementation).
-//	override func tableView(
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		canEditRowAt indexPath: IndexPath
 	) -> Bool {
@@ -22,7 +20,7 @@ extension LibraryTVC {
 	
 	// MARK: Reordering
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
 		toProposedIndexPath proposedDestinationIndexPath: IndexPath
