@@ -273,7 +273,7 @@ extension LibraryViewModel {
 		items: [NSManagedObject],
 		section: Int
 	)? {
-		// Get the rows to sort.
+		// Decide which rows to sort.
 		let indexPathsToSort = selectedOrAllIndexPathsInOnlyGroup(
 			selectedIndexPaths: selectedIndexPaths)
 		
@@ -284,18 +284,33 @@ extension LibraryViewModel {
 			return nil
 		}
 		
-		// Make a new data source.
+		// Get all the items in the group for the rows to sort.
+		let oldItems = group(forSection: section).items
+		
+		// Get the indices of the items to sort.
 		let rowsToSort = indexPathsToSort.map { $0.row }.sorted()
 		let sourceIndicesOfItems = rowsToSort.map { row in
 			indexOfItemInGroup(forRow: row)
 		}
-		let oldItems = group(forSection: section).items
+		
+		// Sort the items.
 		let itemsToSort = sourceIndicesOfItems.map {
 			oldItems[$0]
 		}
-		let newItems = sorted(
+		let sortedItems = sorted(
 			itemsToSort,
 			sortOptionLocalizedName: sortOptionLocalizedName)
+		
+		// Make a new data source.
+		var newItems = oldItems
+		sourceIndicesOfItems.reversed().forEach {
+			newItems.remove(at: $0)
+		}
+		sortedItems.indices.forEach {
+			let sortedItem = sortedItems[$0]
+			let destinationIndex = sourceIndicesOfItems[$0]
+			newItems.insert(sortedItem, at: destinationIndex)
+		}
 		
 		return (newItems, section)
 	}
