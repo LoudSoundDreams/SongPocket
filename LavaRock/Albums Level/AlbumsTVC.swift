@@ -78,17 +78,12 @@ final class AlbumsTVC:
 			tableView.allowsSelection = false
 		} else {
 			editingModeToolbarButtons = [
-//				moveOrOrganizeButton,
-//				.flexibleSpace(),
+//				moveOrOrganizeButton, .flexibleSpace(),
 				
-				moveButton,
-				.flexibleSpace(),
 				
-				sortButton,
-				.flexibleSpace(),
-				
-				floatToTopButton,
-				.flexibleSpace(),
+				moveButton, .flexibleSpace(),
+				sortButton, .flexibleSpace(),
+				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,
 			]
 		}

@@ -23,25 +23,6 @@ extension Collection {
 		subsystem: "LavaRock.Collection",
 		category: .pointsOfInterest)
 	
-	// If nil, `proposedTitle` was nil or "".
-	static func validatedTitleOptional(
-		from proposedTitle: String?
-	) -> String? {
-		guard
-			let proposedTitle = proposedTitle,
-			proposedTitle != ""
-		else {
-			return nil
-		}
-
-		let trimmedTitle = proposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
-		if trimmedTitle != proposedTitle {
-			return trimmedTitle + "…" // TO DO: Localize?
-		} else {
-			return String(trimmedTitle)
-		}
-	}
-	
 	// MARK: - Initializers
 	
 	convenience init(
@@ -100,7 +81,7 @@ extension Collection {
 		return combinedCollection
 	}
 	
-	// MARK: - Core Data
+	// MARK: - All Collections
 	
 	// Similar to Album.allFetched and Song.allFetched.
 	static func allFetched(
@@ -127,6 +108,8 @@ extension Collection {
 		
 		allCollections.reindex()
 	}
+	
+	// MARK: - Albums
 	
 	// Similar to Album.songs(sorted:).
 	final func albums(
@@ -178,6 +161,41 @@ extension Collection {
 		}
 		
 		Collection.deleteAllEmpty(context: context) // Also reindexes self
+	}
+	
+	// MARK: - Renaming
+	
+	// Return value: whether this method changed this Collection's title.
+	// This method won't rename this Collection if validatedTitleOptional returns nil.
+	func rename(
+		toProposedTitle proposedTitle: String?
+	) -> Bool {
+		let oldTitle = title
+		if let newTitle = Self.validatedTitleOptional(fromProposedTitle: proposedTitle) {
+			title = newTitle
+		}
+		let didChangeTitle = oldTitle != title
+		
+		return didChangeTitle
+	}
+	
+	// Returns nil if proposedTitle is nil or "".
+	private static func validatedTitleOptional(
+		fromProposedTitle proposedTitle: String?
+	) -> String? {
+		guard
+			let proposedTitle = proposedTitle,
+			proposedTitle != ""
+		else {
+			return nil
+		}
+		
+		let trimmedTitle = proposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
+		if trimmedTitle != proposedTitle {
+			return trimmedTitle + "…" // TO DO: Localize?
+		} else {
+			return String(trimmedTitle)
+		}
 	}
 	
 }

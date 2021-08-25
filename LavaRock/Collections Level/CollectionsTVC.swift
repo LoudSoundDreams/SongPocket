@@ -249,14 +249,11 @@ final class CollectionsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 		} else {
 			editingModeToolbarButtons = [
-//				combineButton,
-//				.flexibleSpace(),
+//				combineButton, .flexibleSpace(),
 				
-				sortButton,
-				.flexibleSpace(),
 				
-				floatToTopButton,
-				.flexibleSpace(),
+				sortButton, .flexibleSpace(),
+				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,
 			]
 		}

@@ -64,38 +64,7 @@ extension Album {
 		container = collection
 	}
 	
-	// MARK: - Adding Contents
-	
-	final func makeSongsAtEnd(for mediaItems: [MPMediaItem]) {
-		os_signpost(.begin, log: Self.log, name: "Make Songs at the bottom")
-		defer {
-			os_signpost(.end, log: Self.log, name: "Make Songs at the bottom")
-		}
-		
-		mediaItems.forEach {
-			let _ = Song(
-				for: $0,
-				   atEndOf: self,
-				   context: managedObjectContext!)
-		}
-	}
-	
-	// Use makeSongsAtEnd(for:) if possible. It's faster.
-	final func makeSongsAtBeginning(for mediaItems: [MPMediaItem]) {
-		os_signpost(.begin, log: Self.log, name: "Make Songs at the top")
-		defer {
-			os_signpost(.end, log: Self.log, name: "Make Songs at the top")
-		}
-		
-		mediaItems.reversed().forEach {
-			let _ = Song(
-				for: $0,
-				   atBeginningOf: self,
-				   context: managedObjectContext!)
-		}
-	}
-	
-	// MARK: - Core Data
+	// MARK: - All Albums
 	
 	// Similar to Collection.allFetched and Song.allFetched.
 	static func allFetched(
@@ -108,6 +77,21 @@ extension Album {
 		}
 		return context.objectsFetched(for: fetchRequest)
 	}
+	
+	// WARNING: This leaves gaps in the Album indices within each Collection. You must reindex the Albums within each Collection later.
+	static func deleteAllEmpty_withoutReindex(
+		context: NSManagedObjectContext
+	) {
+		let allAlbums = Self.allFetched(ordered: false, context: context) // Use `ordered: true` if you ever make a variant of this method that does reindex the remaining Albums.
+		
+		allAlbums.forEach { album in
+			if album.isEmpty() {
+				context.delete(album)
+			}
+		}
+	}
+	
+	// MARK: - Songs
 	
 	// Similar to Collection.albums(sorted:).
 	final func songs(
@@ -123,19 +107,6 @@ extension Album {
 			return sortedSongs
 		} else {
 			return unsortedSongs
-		}
-	}
-	
-	// WARNING: This leaves gaps in the Album indices within each Collection. You must reindex the Albums within each Collection later.
-	static func deleteAllEmpty_withoutReindex(
-		context: NSManagedObjectContext
-	) {
-		let allAlbums = Self.allFetched(ordered: false, context: context) // Use `ordered: true` if you ever make a variant of this method that does reindex the remaining Albums.
-		
-		allAlbums.forEach { album in
-			if album.isEmpty() {
-				context.delete(album)
-			}
 		}
 	}
 	
@@ -178,6 +149,37 @@ extension Album {
 		var sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
 		
 		sortedSongs.reindex()
+	}
+	
+	// MARK: Creating
+	
+	final func makeSongsAtEnd(for mediaItems: [MPMediaItem]) {
+		os_signpost(.begin, log: Self.log, name: "Make Songs at the bottom")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make Songs at the bottom")
+		}
+		
+		mediaItems.forEach {
+			let _ = Song(
+				for: $0,
+				   atEndOf: self,
+				   context: managedObjectContext!)
+		}
+	}
+	
+	// Use makeSongsAtEnd(for:) if possible. It's faster.
+	final func makeSongsAtBeginning(for mediaItems: [MPMediaItem]) {
+		os_signpost(.begin, log: Self.log, name: "Make Songs at the top")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Make Songs at the top")
+		}
+		
+		mediaItems.reversed().forEach {
+			let _ = Song(
+				for: $0,
+				   atBeginningOf: self,
+				   context: managedObjectContext!)
+		}
 	}
 	
 	// MARK: - Predicates for Sorting

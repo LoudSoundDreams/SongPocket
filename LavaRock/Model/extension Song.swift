@@ -60,7 +60,7 @@ extension Song {
 		container = album
 	}
 	
-	// MARK: - Core Data
+	// MARK: - All Songs
 	
 	// Similar to Collection.allFetched and Album.allFetched.
 	static func allFetched(

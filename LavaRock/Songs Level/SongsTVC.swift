@@ -37,11 +37,8 @@ final class SongsTVC:
 		super.setUpUI()
 		
 		editingModeToolbarButtons = [
-			sortButton,
-			.flexibleSpace(),
-			
-			floatToTopButton,
-			.flexibleSpace(),
+			sortButton, .flexibleSpace(),
+			floatToTopButton, .flexibleSpace(),
 			sinkToBottomButton,
 		]
 	}

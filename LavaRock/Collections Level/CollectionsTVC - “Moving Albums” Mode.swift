@@ -126,26 +126,17 @@ extension CollectionsTVC {
 			indexOfItemInGroup: indexOfNewCollection,
 			indexOfGroup: indexOfGroup)
 		
-		// Make a new data source.
-		let (newItems, didChangeTitle) = collectionsViewModel.itemsAfterRenamingCollection(
+		let didChangeTitle = collectionsViewModel.rename(
 			at: indexPathOfNewCollection,
 			proposedTitle: proposedTitle)
 		
-		let toReload = didChangeTitle ? [indexOfNewCollection] : []
-		
-		// Update the data source and table view.
-		setItemsAndRefresh(
-			newItems: newItems,
-			indicesOfNewItemsToReload: toReload,
-			section: indexPathOfNewCollection.section
-		) {
-			self.tableView.selectRow(
-				at: indexPathOfNewCollection,
-				animated: true,
-				scrollPosition: .none)
-			self.performSegue(
-				withIdentifier: "Drill Down in Library",
-				sender: nil)
+		tableView.performBatchUpdates {
+			if didChangeTitle {
+				tableView.reloadRows(at: [indexPathOfNewCollection], with: .fade)
+			}
+		} completion: { _ in
+			self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .none)
+			self.performSegue(withIdentifier: "Drill Down in Library", sender: nil)
 		}
 	}
 	

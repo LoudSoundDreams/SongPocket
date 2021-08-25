@@ -100,12 +100,9 @@ class LibraryTVC: UITableViewController {
 	
 	// "Constants" for controlling playback
 	final lazy var playbackButtons = [
-		previousSongButton,
-		.flexibleSpace(),
-		rewindButton,
-		.flexibleSpace(),
-		playPauseButton,
-		.flexibleSpace(),
+		previousSongButton, .flexibleSpace(),
+		rewindButton, .flexibleSpace(),
+		playPauseButton, .flexibleSpace(),
 		nextSongButton,
 	]
 	final lazy var previousSongButton: UIBarButtonItem = {
@@ -223,8 +220,7 @@ class LibraryTVC: UITableViewController {
 	
 	final func setItemsAndRefresh(
 		newItems: [NSManagedObject],
-		indicesOfNewItemsToReload: [Int] = [],
-		indicesOfNewItemsToSelect: [Int] = [],
+		thenSelect toSelect: [IndexPath] = [],
 		section: Int,
 		completion: (() -> Void)? = nil
 	) {
@@ -252,13 +248,6 @@ class LibraryTVC: UITableViewController {
 			(viewModel.indexPathFor(indexOfItemInGroup: oldIndex, indexOfGroup: indexOfGroup),
 			 viewModel.indexPathFor(indexOfItemInGroup: newIndex, indexOfGroup: indexOfGroup))
 		}
-		let toReload = indicesOfNewItemsToReload.map {
-			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
-		}
-		
-		let toSelect = indicesOfNewItemsToSelect.map {
-			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
-		}
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates {
@@ -267,7 +256,6 @@ class LibraryTVC: UITableViewController {
 			toMove.forEach { sourceIndexPath, destinationIndexPath in
 				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
-			tableView.reloadRows(at: toReload, with: .fade)
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
@@ -275,11 +263,10 @@ class LibraryTVC: UITableViewController {
 			}
 		}
 		
+		// Do this after performBatchUpdates's main closure, because otherwise it doesn't work on newly inserted rows.
+		// This method should do this so that callers don't need to call didChangeRowsOrSelectedRows.
 		toSelect.forEach {
-			tableView.selectRow( // Do this after performBatchUpdates's main closure, because otherwise it doesn't work on newly inserted rows.
-				at: $0,
-				animated: false,
-				scrollPosition: .none)
+			tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
 		}
 		
 		didChangeRowsOrSelectedRows()

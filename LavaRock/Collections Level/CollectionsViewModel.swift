@@ -419,27 +419,18 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	// MARK: - Renaming
 	
+	// Return value: whether this method changed the Collection's title.
 	// Works for renaming an existing Collection, after combining Collections, and after making a new Collection.
-	func itemsAfterRenamingCollection(
+	func rename(
 		at indexPath: IndexPath,
 		proposedTitle: String?
-	) -> (
-		items: [NSManagedObject],
-		didChangeTitle: Bool
-	) {
-		let items = group(forSection: indexPath.section).items
-		
+	) -> Bool {
 		guard let collection = item(at: indexPath) as? Collection else {
-			return (items, false)
+			return false
 		}
 		
-		let oldTitle = collection.title
-		if let newTitle = Collection.validatedTitleOptional(from: proposedTitle) {
-			collection.title = newTitle
-		}
-		let didChangeTitle = oldTitle != collection.title
-		
-		return (items, didChangeTitle)
+		let didChangeTitle = collection.rename(toProposedTitle: proposedTitle)
+		return didChangeTitle
 	}
 	
 	// MARK: - “Moving Albums” Mode
