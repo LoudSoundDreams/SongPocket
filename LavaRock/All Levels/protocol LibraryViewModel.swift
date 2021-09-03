@@ -262,7 +262,7 @@ extension LibraryViewModel {
 		if selectedIndexPaths.isEmpty {
 			return groups.count == 1
 		} else {
-			return selectedIndexPaths.isWithinSameSection()
+			return selectedIndexPaths.isContiguousWithinSameSection()
 		}
 	}
 	

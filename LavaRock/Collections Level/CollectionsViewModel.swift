@@ -443,7 +443,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	) -> [NSManagedObject] { // ? [Collection]
 		let newCollection = Collection(context: context)
 		newCollection.title = suggestedTitle ?? LocalizedString.newCollectionDefaultTitle
-		// When we call setItemsAndRefresh, the property observer will set the "index" attribute of each Collection for us.
+		// When we call setItemsAndMoveRows, the property observer will set the "index" attribute of each Collection for us.
 		
 		var newItems = group.items
 		newItems.insert(newCollection, at: indexOfNewCollection)

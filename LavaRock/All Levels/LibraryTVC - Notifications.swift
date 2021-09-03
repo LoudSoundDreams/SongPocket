@@ -138,7 +138,7 @@ extension LibraryTVC {
 			let newItemsAndSections = viewModel.newItemsAndSections()
 			newItemsAndSections.reversed().forEach { (newItems, section) in
 				
-				setItemsAndRefresh(
+				setItemsAndMoveRows(
 					newItems: newItems,
 					section: section
 				) {

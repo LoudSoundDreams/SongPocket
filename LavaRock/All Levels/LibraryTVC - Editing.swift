@@ -50,7 +50,7 @@ extension LibraryTVC {
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		else { return }
 		
-		setItemsAndRefresh(
+		setItemsAndMoveRows(
 			newItems: newItems,
 			section: section
 		) {
@@ -67,12 +67,12 @@ extension LibraryTVC {
 			selectedIndexPaths: selectedIndexPaths)
 		else { return }
 		
-		setItemsAndRefresh(
+		setItemsAndMoveRows(
 			newItems: newItems,
 			section: section
 		) {
 			self.tableView.deselectAllRows(animated: true)
-			self.didChangeRowsOrSelectedRows() // Can we do this all the time, automatically, in setItemsAndRefresh?
+			self.didChangeRowsOrSelectedRows()
 		}
 	}
 	
@@ -84,7 +84,7 @@ extension LibraryTVC {
 			selectedIndexPaths: selectedIndexPaths)
 		else { return }
 		
-		setItemsAndRefresh(
+		setItemsAndMoveRows(
 			newItems: newItems,
 			section: section
 		) {

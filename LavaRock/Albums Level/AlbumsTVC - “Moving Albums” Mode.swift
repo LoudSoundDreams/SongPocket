@@ -31,7 +31,7 @@ extension AlbumsTVC {
 			indexOfGroup: indexOfGroup) //
 		
 		// Update the table view.
-		setItemsAndRefresh(
+		setItemsAndMoveRows(
 			newItems: newItems,
 			section: AlbumsViewModel.numberOfSectionsAboveLibraryItems + indexOfGroup
 		) {

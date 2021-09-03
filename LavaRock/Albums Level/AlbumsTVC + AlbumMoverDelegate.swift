@@ -15,7 +15,7 @@ extension AlbumsTVC: AlbumMoverDelegate {
 	final func didMoveAlbumsThenCommitDismiss() {
 		let newItemsAndSections = viewModel.newItemsAndSections()
 		newItemsAndSections.forEach { (newItems, section) in
-			setItemsAndRefresh(
+			setItemsAndMoveRows(
 				newItems: newItems,
 				section: section)
 		}

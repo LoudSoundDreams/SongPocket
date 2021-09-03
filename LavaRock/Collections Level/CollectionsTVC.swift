@@ -29,6 +29,22 @@ final class CollectionsTVC:
 	lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
 		name: LocalizedString.rename,
 		actionHandler: renameFocusedCollectionHandler)
+	private func renameFocusedCollectionHandler(
+		_ sender: UIAccessibilityCustomAction
+	) -> Bool {
+		let indexPathsOfAllCollections = viewModel.indexPathsForAllItems()
+		let focusedIndexPath = indexPathsOfAllCollections.first {
+			let cell = tableView.cellForRow(at: $0)
+			return cell?.accessibilityElementIsFocused() ?? false
+		}
+		
+		if let focusedIndexPath = focusedIndexPath {
+			presentDialogToRenameCollection(at: focusedIndexPath)
+			return true
+		} else {
+			return false
+		}
+	}
 	@IBOutlet private var optionsButton: UIBarButtonItem!
 	private lazy var combineButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.previewCombineSelectedCollectionsAndPresentDialog() }
@@ -285,25 +301,6 @@ final class CollectionsTVC:
 		}
 		
 		super.viewDidAppear(animated)
-	}
-	
-	// MARK: - Miscellaneous
-	
-	private func renameFocusedCollectionHandler(
-		_ sender: UIAccessibilityCustomAction
-	) -> Bool {
-		let indexPathsOfAllCollections = viewModel.indexPathsForAllItems()
-		let focusedIndexPath = indexPathsOfAllCollections.first {
-			let cell = tableView.cellForRow(at: $0)
-			return cell?.accessibilityElementIsFocused() ?? false
-		}
-		
-		if let focusedIndexPath = focusedIndexPath {
-			presentDialogToRenameCollection(at: focusedIndexPath)
-			return true
-		} else {
-			return false
-		}
 	}
 	
 	// MARK: - Refreshing Buttons

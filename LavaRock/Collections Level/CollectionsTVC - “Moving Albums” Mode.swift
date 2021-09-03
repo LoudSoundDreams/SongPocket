@@ -57,7 +57,7 @@ extension CollectionsTVC {
 				at: .top,
 				animated: true)
 		} completion: { _ in
-			self.setItemsAndRefresh(
+			self.setItemsAndMoveRows(
 				newItems: newItems,
 				section: indexPathOfNewCollection.section)
 		}
@@ -110,7 +110,7 @@ extension CollectionsTVC {
 			indexOfGroup: CollectionsViewModel.indexOfGroup)
 		
 		// Update the data source and table view.
-		setItemsAndRefresh(
+		setItemsAndMoveRows(
 			newItems: newItems,
 			section: indexPathOfDeletedCollection.section)
 	}

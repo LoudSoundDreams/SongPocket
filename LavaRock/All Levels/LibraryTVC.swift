@@ -206,7 +206,7 @@ class LibraryTVC: UITableViewController {
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
-			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See matching comment in setItemsAndRefresh.
+			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See matching comment in setItemsAndMoveRows.
 				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move Albums to…" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
 					self.performSegue(
 						withIdentifier: "Removed All Contents",
@@ -218,7 +218,7 @@ class LibraryTVC: UITableViewController {
 		didChangeRowsOrSelectedRows() // Do this before the completion closure, so that we disable all the editing buttons during the animation.
 	}
 	
-	final func setItemsAndRefresh(
+	final func setItemsAndMoveRows(
 		newItems: [NSManagedObject],
 		thenSelect toSelect: [IndexPath] = [],
 		section: Int,

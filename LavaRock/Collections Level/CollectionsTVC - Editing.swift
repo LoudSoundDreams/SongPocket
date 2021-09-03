@@ -117,7 +117,7 @@ extension CollectionsTVC {
 			into: indexPathOfCombinedCollection)
 		
 		// Update the data source and table view.
-		setItemsAndRefresh(
+		setItemsAndMoveRows(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
 			thenSelect: [indexPathOfCombinedCollection],
 			section: indexPathOfCombinedCollection.section)
@@ -175,7 +175,7 @@ extension CollectionsTVC {
 		viewModel.context.rollback() // SIDE EFFECT
 		viewModel.groups[indexOfGroup] = copyOfOriginalGroup // SIDE EFFECT
 		
-		setItemsAndRefresh(
+		setItemsAndMoveRows(
 			newItems: originalItems, // SIDE EFFECT
 			thenSelect: originalSelectedIndexPaths,
 			section: CollectionsViewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfGroup
