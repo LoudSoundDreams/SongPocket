@@ -288,7 +288,7 @@ final class CollectionsTVC:
 			if didMoveAlbums {
 				// Replace this with refreshToReflectMusicLibrary()?
 				refreshToReflectPlaybackState()
-				refreshLibraryItemsWhenVisible() // Note: This re-animates adding the Collections we made while moving Albums, even though we already saw them get added in the "move Albums to…" sheet.
+				refreshLibraryItemsWhenVisible()
 				
 				didMoveAlbums = false
 			}

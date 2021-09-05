@@ -78,7 +78,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 		"[placeholder] no_collections",
 		value: "Add some music to your Apple Music library, or sync some music from your computer.",
 		comment: "Placeholder for when the app has no collections")
-	static let openMusic = NSLocalizedString("Open Music", comment: "Button") // TO DO: Localize
+	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
 	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
 	

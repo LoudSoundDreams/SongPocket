@@ -8,10 +8,10 @@
 "[alert title] did_enqueue_one_song" = "“%@”将稍后播放";
 
 /* Section footer */
-"[footer] options_tip_jar" = "您好，我是H。您自愿的赞助能够支持我改进Songpocket。我会特别感谢您在App更新之后的赞助！";
+"[footer] options_tip_jar" = "您好！我是H。当我新增您喜欢的功能时，您的赞助可以支持我改进Songpocket。";
 
 /* Placeholder for when the app has no collections */
-"[placeholder] no_collections" = "请添加音乐到您的Apple Music资料库，或从您的电脑同步音乐。";
+"[placeholder] no_collections" = "请将音乐添加到您的Apple Music资料库，或从您的电脑同步音乐。";
 
 /* Section header */
 "Accent Color" = "强调色";
@@ -78,6 +78,9 @@
 
 /* Sort option */
 "Oldest First" = "最旧的排最前";
+
+/* Button */
+"Open Music" = "打开音乐";
 
 /* Button */
 "Pause" = "暂停";

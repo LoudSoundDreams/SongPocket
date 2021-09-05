@@ -10,11 +10,15 @@ import UIKit
 extension UIColor {
 	
 	static func tintColor(maybeResortTo window: UIWindow?) -> UIColor {
-		if #available(iOS 15, *) {
-			return .tintColor
-		} else {
-			return window?.tintColor ?? AccentColor.savedPreference().uiColor
-		}
+		// Xcode 13
+//		if #available(iOS 15, *) {
+//			return .tintColor
+//		} else {
+//			return window?.tintColor ?? AccentColor.savedPreference().uiColor
+//		}
+		
+		// Xcode 12
+		return window?.tintColor ?? AccentColor.savedPreference().uiColor
 	}
 	
 }
