@@ -11,14 +11,14 @@ extension UIColor {
 	
 	static func tintColor(maybeResortTo window: UIWindow?) -> UIColor {
 		// Xcode 13
-//		if #available(iOS 15, *) {
-//			return .tintColor
-//		} else {
-//			return window?.tintColor ?? AccentColor.savedPreference().uiColor
-//		}
+		if #available(iOS 15, *) {
+			return .tintColor
+		} else {
+			return window?.tintColor ?? AccentColor.savedPreference().uiColor
+		}
 		
 		// Xcode 12
-		return window?.tintColor ?? AccentColor.savedPreference().uiColor
+//		return window?.tintColor ?? AccentColor.savedPreference().uiColor
 	}
 	
 }
