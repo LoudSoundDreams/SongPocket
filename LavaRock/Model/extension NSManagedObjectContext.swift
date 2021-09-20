@@ -15,22 +15,21 @@ extension NSManagedObjectContext {
 			do {
 				try save()
 			} catch {
-				print("Crashed while trying to save changes synchronously.")
-				fatalError("\(error)")
+				fatalError("Crashed while trying to save changes synchronously.")
 			}
 		}
 	}
 	
 	final func objectsFetched<T>(for request: NSFetchRequest<T>) -> [T] {
-		var results = [T]()
+		var result = [T]()
 		performAndWait {
 			do {
-				results = try fetch(request)
+				result = try fetch(request)
 			} catch {
 				fatalError("Couldn't load items from Core Data using the fetch request: \(request)")
 			}
 		}
-		return results
+		return result
 	}
 	
 }
