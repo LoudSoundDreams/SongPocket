@@ -23,10 +23,10 @@ struct SongsViewModel: LibraryViewModel {
 	var groups: [GroupOfLibraryItems]
 	
 	func navigationItemTitleOptional() -> String? {
-		guard groups.count == 1 else {
+		guard let onlyGroup = onlyGroup else {
 			return nil
 		}
-		return (groups[0].container as? Album)?.titleFormattedOrPlaceholder()
+		return (onlyGroup.container as? Album)?.titleFormattedOrPlaceholder()
 	}
 	
 	// MARK: - Miscellaneous

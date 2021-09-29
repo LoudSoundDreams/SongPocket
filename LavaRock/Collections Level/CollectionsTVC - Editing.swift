@@ -39,7 +39,7 @@ extension CollectionsTVC {
 			title: LocalizedString.save,
 			style: .default
 		) { _ in
-			let proposedTitle = dialog.textFields?[0].text
+			let proposedTitle = dialog.textFields?.first?.text
 			self.rename(
 				collection,
 				proposedTitle: proposedTitle,
@@ -144,7 +144,7 @@ extension CollectionsTVC {
 			title: LocalizedString.save,
 			style: .default
 		) { _ in
-			let proposedTitle = dialog.textFields?[0].text
+			let proposedTitle = dialog.textFields?.first?.text
 			self.commitCombineCollections(
 				into: indexPathOfCombinedCollection,
 				proposedTitle: proposedTitle)

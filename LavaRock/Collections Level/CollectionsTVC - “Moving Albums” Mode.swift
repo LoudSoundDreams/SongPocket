@@ -80,7 +80,7 @@ extension CollectionsTVC {
 			title: LocalizedString.save,
 			style: .default
 		) { _ in
-			let proposedTitle = dialog.textFields?[0].text
+			let proposedTitle = dialog.textFields?.first?.text
 			self.renameAndOpenNewCollection(
 				proposedTitle: proposedTitle)
 		}

@@ -19,11 +19,32 @@ protocol LibraryViewModel {
 	var reflector: LibraryViewModelReflecting? { get }
 	
 	var groups: [GroupOfLibraryItems] { get set }
+	var onlyGroup: GroupOfLibraryItems? { get }//set }
 	
 	func navigationItemTitleOptional() -> String?
 }
 
 extension LibraryViewModel {
+	
+	var onlyGroup: GroupOfLibraryItems? {
+//		get {
+			guard
+				let firstGroup = groups.first,
+				groups.count == 1
+			else {
+				return nil
+			}
+			return firstGroup
+//		}
+//		set {
+//			guard groups.count == 1 else { return }
+//			if let newValue = newValue {
+//				groups[0] = newValue
+//			} else {
+//				groups.removeAll()
+//			}
+//		}
+	}
 	
 	func isEmpty() -> Bool {
 		return groups.allSatisfy { group in
@@ -40,13 +61,12 @@ extension LibraryViewModel {
 		newItems: [NSManagedObject],
 		section: Int
 	)] {
-		let result = groups.indices.map { indexOfGroup in
-			(
-				groups[indexOfGroup].itemsFetched(
-					entityName: Self.entityName,
-					context: context),
-				Self.numberOfSectionsAboveLibraryItems + indexOfGroup
-			)
+		let result: [([NSManagedObject], Int)] = groups.indices.map { indexOfGroup in
+			let newItems = groups[indexOfGroup].itemsFetched(
+				entityName: Self.entityName,
+				context: context)
+			let section = Self.numberOfSectionsAboveLibraryItems + indexOfGroup
+			return (newItems, section)
 		}
 		return result
 	}

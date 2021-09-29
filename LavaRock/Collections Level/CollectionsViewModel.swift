@@ -37,10 +37,6 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	static let indexOfGroup = 0 //
 	
-//	var group: GroupOfLibraryItems {
-//		get { groups[0] }
-//		set { groups[0] = newValue }
-//	}
 	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] }
 	
 	init(
