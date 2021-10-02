@@ -134,6 +134,7 @@ class LibraryTVC: UITableViewController {
 		return button
 	}()
 	
+	// Variables
 	var isImportingChanges = false
 	var needsRefreshLibraryItemsOnViewDidAppear = false
 	var isAnimatingDuringSetItemsAndRefresh = 0

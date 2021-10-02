@@ -110,43 +110,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Allow Access or Loading" id="L5C-ZS-F6h" customClass="AllowAccessOrLoadingCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="62.333332061767578"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Allow Access" id="uMe-5J-Us3">
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L5C-ZS-F6h" id="HcT-lr-sMI">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="62.333332061767578"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uMe-5J-Us3" id="VDn-EB-nFQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder “Allow Access to Music” or “Loading…” Message" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXV-wh-Iio">
-                                            <rect key="frame" x="15.999999999999986" y="12.333333333333336" width="255.66666666666663" height="36"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="QHx-ha-bUB">
-                                            <rect key="frame" x="339" y="20.333333333333332" width="20" height="19.999999999999996"/>
-                                        </activityIndicatorView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="bottomMargin" constant="1" id="2A7-ym-KZd"/>
-                                        <constraint firstItem="QHx-ha-bUB" firstAttribute="trailing" secondItem="HcT-lr-sMI" secondAttribute="trailingMargin" id="2gW-Ec-taF"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="leading" secondItem="HcT-lr-sMI" secondAttribute="leadingMargin" id="BZI-NY-qqx"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="topMargin" constant="1" id="GmW-rI-9HN"/>
-                                        <constraint firstItem="QHx-ha-bUB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="MXV-wh-Iio" secondAttribute="trailing" constant="8" symbolic="YES" id="Izh-Zv-DrP"/>
-                                        <constraint firstItem="QHx-ha-bUB" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="bottomMargin" id="X9u-1r-RhB"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="trailingMargin" id="dff-3P-mjb"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="centerY" secondItem="HcT-lr-sMI" secondAttribute="centerY" constant="-1" id="eMk-Ij-pNy"/>
-                                        <constraint firstItem="MXV-wh-Iio" firstAttribute="centerY" secondItem="QHx-ha-bUB" secondAttribute="centerY" id="rM7-3A-NGU"/>
-                                        <constraint firstItem="QHx-ha-bUB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HcT-lr-sMI" secondAttribute="topMargin" id="sEf-XF-Yd1"/>
-                                    </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="allowAccessOrLoadingLabel" destination="MXV-wh-Iio" id="Hgh-pZ-1sv"/>
-                                    <outlet property="spinnerView" destination="QHx-ha-bUB" id="1Ke-f3-iBZ"/>
-                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Loading" id="Ljp-Lh-fGA">
+                                <rect key="frame" x="0.0" y="88.333333969116211" width="375" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ljp-Lh-fGA" id="lmG-GX-Ike">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="All" editingAccessoryType="detailButton" id="tft-PU-cry" customClass="AllCollectionsCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="106.99999809265137" width="375" height="43.333332061767578"/>
+                                <rect key="frame" x="0.0" y="132.00000190734863" width="375" height="43.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tft-PU-cry" id="u8K-ya-z0T">
                                     <rect key="frame" x="0.0" y="0.0" width="349.33333333333331" height="43.333332061767578"/>
@@ -190,7 +171,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Collection" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="150.33333015441895" width="375" height="43.333332061767578"/>
+                                <rect key="frame" x="0.0" y="175.33333396911621" width="375" height="43.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sQR-13-z5i" id="oWs-S1-Xp1">
                                     <rect key="frame" x="0.0" y="0.0" width="349.33333333333331" height="43.333332061767578"/>
@@ -229,8 +210,8 @@
                                     <segue destination="DGZ-AG-uNY" kind="show" identifier="Drill Down in Library" id="Egm-ag-jV8"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections Placeholder" id="Ztw-H3-VnV">
-                                <rect key="frame" x="0.0" y="193.66666221618652" width="375" height="43.666667938232422"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections" id="Ztw-H3-VnV">
+                                <rect key="frame" x="0.0" y="218.66666603088379" width="375" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ztw-H3-VnV" id="XEx-Fb-t1a">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -238,7 +219,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Open Music" id="cBm-gc-Icm">
-                                <rect key="frame" x="0.0" y="237.33333015441895" width="375" height="43.666667938232422"/>
+                                <rect key="frame" x="0.0" y="262.33333396911621" width="375" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cBm-gc-Icm" id="5wx-YV-cio">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -246,7 +227,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections Placeholder - Old" rowHeight="100" id="i5d-DX-vvS">
-                                <rect key="frame" x="0.0" y="280.99999809265137" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="306.00000190734863" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="i5d-DX-vvS" id="ilp-7P-A9C">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -324,30 +305,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album" id="rhl-vL-Ze4" customClass="AlbumCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album" id="Oup-sP-GRt" customClass="AlbumCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="132.33332824707031"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rhl-vL-Ze4" id="JHd-Pq-eAK">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oup-sP-GRt" id="iGY-ne-R75">
                                     <rect key="frame" x="0.0" y="0.0" width="349.33333333333331" height="132.33332824707031"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dHe-RO-OqD">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yes-WF-ch7">
                                             <rect key="frame" x="16" y="0.3333333333333286" width="132" height="132"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="132" id="AWN-1K-OoY"/>
-                                                <constraint firstAttribute="width" secondItem="dHe-RO-OqD" secondAttribute="height" multiplier="1:1" id="OfB-jb-OJR"/>
+                                                <constraint firstAttribute="width" secondItem="Yes-WF-ch7" secondAttribute="height" multiplier="1:1" id="ErN-CO-cSG"/>
+                                                <constraint firstAttribute="width" constant="132" id="v23-cN-gVI"/>
                                             </constraints>
                                         </imageView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="WsP-na-zLq">
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="FvH-z3-4g9">
                                             <rect key="frame" x="160" y="38.666666666666657" width="80.333333333333314" height="53.333333333333343"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder Album Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ebr-IM-9g1">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder Album Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9p-7F-fvA">
                                                     <rect key="frame" x="0.0" y="0.0" width="80.333333333333329" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Izv-yI-Ddf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JF7-jj-iqD">
                                                     <rect key="frame" x="0.0" y="40.000000000000007" width="80.333333333333329" height="13.333333333333336"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -355,36 +336,35 @@
                                                 </label>
                                             </subviews>
                                         </stackView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="5XX-Pg-W27">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1O8-NN-Los">
                                             <rect key="frame" x="317.33333333333331" y="57" width="24" height="16.666666666666671"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="dHe-RO-OqD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="top" id="00N-x6-WOU"/>
-                                        <constraint firstItem="WsP-na-zLq" firstAttribute="centerY" secondItem="JHd-Pq-eAK" secondAttribute="centerY" constant="-1" id="5Jg-6s-U63"/>
-                                        <constraint firstItem="WsP-na-zLq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="topMargin" id="CRe-OQ-FIo"/>
-                                        <constraint firstItem="dHe-RO-OqD" firstAttribute="centerY" secondItem="JHd-Pq-eAK" secondAttribute="centerY" id="Jj8-1i-IEE"/>
-                                        <constraint firstItem="WsP-na-zLq" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="trailingMargin" id="NLs-tr-2ss"/>
-                                        <constraint firstItem="WsP-na-zLq" firstAttribute="leading" secondItem="dHe-RO-OqD" secondAttribute="trailing" constant="12" id="PSJ-SP-Hmu"/>
-                                        <constraint firstItem="5XX-Pg-W27" firstAttribute="centerY" secondItem="WsP-na-zLq" secondAttribute="centerY" id="Uyh-TP-5th"/>
-                                        <constraint firstItem="dHe-RO-OqD" firstAttribute="leading" secondItem="JHd-Pq-eAK" secondAttribute="leadingMargin" id="lHx-8k-pqf"/>
-                                        <constraint firstItem="5XX-Pg-W27" firstAttribute="leading" secondItem="JHd-Pq-eAK" secondAttribute="trailingMargin" constant="-24" id="mx7-ru-AnG"/>
-                                        <constraint firstItem="5XX-Pg-W27" firstAttribute="trailing" secondItem="JHd-Pq-eAK" secondAttribute="trailingMargin" id="tva-8V-aoI"/>
-                                        <constraint firstItem="5XX-Pg-W27" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WsP-na-zLq" secondAttribute="trailing" constant="8" symbolic="YES" id="wB1-32-snM"/>
-                                        <constraint firstItem="WsP-na-zLq" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="JHd-Pq-eAK" secondAttribute="bottomMargin" id="yg3-Ml-9wl"/>
+                                        <constraint firstItem="1O8-NN-Los" firstAttribute="trailing" secondItem="iGY-ne-R75" secondAttribute="trailingMargin" id="10Y-Uf-e2G"/>
+                                        <constraint firstItem="FvH-z3-4g9" firstAttribute="leading" secondItem="Yes-WF-ch7" secondAttribute="trailing" constant="12" id="8yo-26-9QM"/>
+                                        <constraint firstItem="1O8-NN-Los" firstAttribute="centerY" secondItem="FvH-z3-4g9" secondAttribute="centerY" id="BX1-ff-AM7"/>
+                                        <constraint firstItem="Yes-WF-ch7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iGY-ne-R75" secondAttribute="top" id="IaA-4z-Elh"/>
+                                        <constraint firstItem="Yes-WF-ch7" firstAttribute="leading" secondItem="iGY-ne-R75" secondAttribute="leadingMargin" id="Lpz-Dw-dyA"/>
+                                        <constraint firstItem="1O8-NN-Los" firstAttribute="leading" secondItem="iGY-ne-R75" secondAttribute="trailingMargin" constant="-24" id="OCi-O1-5sd"/>
+                                        <constraint firstItem="FvH-z3-4g9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iGY-ne-R75" secondAttribute="topMargin" id="coA-sE-cgj"/>
+                                        <constraint firstItem="FvH-z3-4g9" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="iGY-ne-R75" secondAttribute="trailingMargin" id="mcr-9C-hAj"/>
+                                        <constraint firstItem="1O8-NN-Los" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FvH-z3-4g9" secondAttribute="trailing" constant="8" symbolic="YES" id="rbP-Wu-Ml1"/>
+                                        <constraint firstItem="Yes-WF-ch7" firstAttribute="centerY" secondItem="iGY-ne-R75" secondAttribute="centerY" id="vsF-hB-MTV"/>
+                                        <constraint firstItem="FvH-z3-4g9" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="iGY-ne-R75" secondAttribute="bottomMargin" id="vuo-ti-bPn"/>
+                                        <constraint firstItem="FvH-z3-4g9" firstAttribute="centerY" secondItem="iGY-ne-R75" secondAttribute="centerY" constant="-1" id="yX8-eB-Gdy"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="tva-8V-aoI"/>
+                                            <exclude reference="10Y-Uf-e2G"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="artworkImageView" destination="dHe-RO-OqD" id="MxJ-gU-xuo"/>
-                                    <outlet property="nowPlayingIndicatorImageView" destination="5XX-Pg-W27" id="xvU-hP-ixe"/>
-                                    <outlet property="releaseDateLabel" destination="Izv-yI-Ddf" id="HTq-aZ-cB9"/>
-                                    <outlet property="titleLabel" destination="Ebr-IM-9g1" id="12z-03-Qgo"/>
-                                    <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="yEs-VP-boX"/>
+                                    <outlet property="artworkImageView" destination="Yes-WF-ch7" id="llx-tU-Qzu"/>
+                                    <outlet property="nowPlayingIndicatorImageView" destination="1O8-NN-Los" id="Fy9-NX-aDE"/>
+                                    <outlet property="releaseDateLabel" destination="JF7-jj-iqD" id="JjK-5s-kD5"/>
+                                    <outlet property="titleLabel" destination="w9p-7F-fvA" id="UQ1-Yz-94n"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album Without Release Date" id="NoT-yd-Ur5" customClass="AlbumCellWithoutReleaseDate" customModule="LavaRock" customModuleProvider="target">
@@ -756,9 +736,6 @@
             <point key="canvasLocation" x="5167" y="-601"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="7xD-nn-FhG"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>

@@ -142,13 +142,13 @@ final class CollectionsTVC:
 //				toReload = inAllSection
 				toReload = []
 				animationForReload = .none
-			case 1: // "Allow Access" -> "Loading…"
+			case 1:
 				toDelete = []
 				toInsert = []
 //				toReload = inAllSection + newInCollectionsSection
 				toReload = newInCollectionsSection
 				animationForReload = .fade
-			default: // "No Collections" -> "Loading…"
+			default:
 				toDelete = oldInCollectionsSection
 				toInsert = newInCollectionsSection
 //				toReload = inAllSection
@@ -156,7 +156,7 @@ final class CollectionsTVC:
 				animationForReload = .none
 			}
 			
-		case .blank: // "Loading…" or "No Collections" -> blank
+		case .blank:
 			toDelete = oldInCollectionsSection
 			toInsert = []
 //			toReload = inAllSection

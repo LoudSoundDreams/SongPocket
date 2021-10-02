@@ -13,11 +13,6 @@ final class AllCollectionsCell: UITableViewCell {
 	// ? set accessibilityTrait to .button
 }
 
-final class AllowAccessOrLoadingCell: UITableViewCell {
-	@IBOutlet var allowAccessOrLoadingLabel: UILabel!
-	@IBOutlet var spinnerView: UIActivityIndicatorView!
-}
-
 final class CollectionCell: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!

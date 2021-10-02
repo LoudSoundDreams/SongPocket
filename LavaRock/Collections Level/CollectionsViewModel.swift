@@ -138,11 +138,14 @@ struct CollectionsViewModel: LibraryViewModel {
 		
 		
 		switch contentState {
-		case .allowAccess, .loading:
-			return allowAccessOrLoadingCell(
+		case .allowAccess:
+			return allowAccessCell(
 				forRowAt: indexPath,
-				contentState: contentState,
 				tintColor: tintColor,
+				tableView: tableView)
+		case .loading:
+			return loadingCell(
+				forRowAt: indexPath,
 				tableView: tableView)
 		case .blank: // Should never run
 			return UITableViewCell()
@@ -204,37 +207,43 @@ struct CollectionsViewModel: LibraryViewModel {
 		return cell
 	}
 	
-	private func allowAccessOrLoadingCell(
+	// The cell in the storyboard is completely default except for the reuse identifier.
+	private func allowAccessCell(
 		forRowAt indexPath: IndexPath,
-		contentState: CollectionsContentState,
 		tintColor: UIColor,
 		tableView: UITableView
 	) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Allow Access or Loading",
-			for: indexPath) as? AllowAccessOrLoadingCell
-		else {
-			return UITableViewCell()
-		}
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access", for: indexPath)
 		
-		switch contentState {
-		case .allowAccess:
-			cell.allowAccessOrLoadingLabel.text = LocalizedString.allowAccessToMusic
-			cell.allowAccessOrLoadingLabel.textColor = tintColor
-			cell.spinnerView.stopAnimating()
-			cell.isUserInteractionEnabled = true
-			cell.accessibilityTraits.formUnion(.button)
-			return cell
-		case .loading:
-			cell.allowAccessOrLoadingLabel.text = LocalizedString.loadingWithEllipsis
-			cell.allowAccessOrLoadingLabel.textColor = .secondaryLabel
-			cell.spinnerView.startAnimating()
-			cell.isUserInteractionEnabled = false
-			cell.accessibilityTraits.remove(.button)
-			return cell
-		case .blank, .noCollections, .oneOrMoreCollections: // Should never run
-			return UITableViewCell()
-		}
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.allowAccessToMusic
+		configuration.textProperties.color = tintColor
+		cell.contentConfiguration = configuration
+		
+		cell.accessibilityTraits.formUnion(.button)
+		
+		return cell
+	}
+	
+	// The cell in the storyboard is completely default except for the reuse identifier.
+	private func loadingCell(
+		forRowAt indexPath: IndexPath,
+		tableView: UITableView
+	) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Loading", for: indexPath)
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.loadingWithEllipsis
+		configuration.textProperties.color = .secondaryLabel
+		cell.contentConfiguration = configuration
+		
+		cell.isUserInteractionEnabled = false
+		let spinnerView = UIActivityIndicatorView()
+		spinnerView.startAnimating()
+		spinnerView.sizeToFit() // Without this line of code, UIKit centers the UIActivityIndicatorView at the top-left corner of the cell.
+		cell.accessoryView = spinnerView
+		
+		return cell
 	}
 	
 	// The cell in the storyboard is completely default except for the reuse identifier.
@@ -242,7 +251,7 @@ struct CollectionsViewModel: LibraryViewModel {
 		forRowAt indexPath: IndexPath,
 		tableView: UITableView
 	) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "No Collections Placeholder", for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: "No Collections", for: indexPath)
 		
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.noCollectionsPlaceholder
