@@ -79,7 +79,8 @@ extension SongsTVC {
 		}
 		
 		// Album artist
-		let albumArtist: String = album.albumArtistFormattedOrPlaceholder() // Don't let this be nil.
+		let albumArtist: String // Don't let this be nil.
+		= album.albumArtistFormattedOrPlaceholder()
 		
 		// Release date
 		let releaseDateString = album.releaseDateEstimateFormatted()

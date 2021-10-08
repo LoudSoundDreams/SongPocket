@@ -362,63 +362,13 @@
                                     <outlet property="artworkImageView" destination="Yes-WF-ch7" id="llx-tU-Qzu"/>
                                     <outlet property="nowPlayingIndicatorImageView" destination="1O8-NN-Los" id="Fy9-NX-aDE"/>
                                     <outlet property="releaseDateLabel" destination="JF7-jj-iqD" id="JjK-5s-kD5"/>
+                                    <outlet property="textStackView" destination="FvH-z3-4g9" id="AXd-EH-2al"/>
                                     <outlet property="titleLabel" destination="w9p-7F-fvA" id="UQ1-Yz-94n"/>
                                     <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="COy-dp-1gL"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album Without Release Date" id="NoT-yd-Ur5" customClass="AlbumCellWithoutReleaseDate" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="176.9999942779541" width="375" height="132.33332824707031"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NoT-yd-Ur5" id="S5B-ql-lwZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="349.33333333333331" height="132.33332824707031"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="flP-P1-X1o">
-                                            <rect key="frame" x="16" y="0.3333333333333286" width="132" height="132"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="flP-P1-X1o" secondAttribute="height" multiplier="1:1" id="ZQ9-vV-0Vj"/>
-                                                <constraint firstAttribute="width" constant="132" id="aRW-9R-oFm"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder Album Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rXc-N2-njc">
-                                            <rect key="frame" x="160" y="47.333333333333343" width="80.333333333333314" height="36"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="FWg-a3-lhS">
-                                            <rect key="frame" x="317.33333333333331" y="57" width="24" height="16.666666666666671"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="FWg-a3-lhS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rXc-N2-njc" secondAttribute="trailing" constant="8" symbolic="YES" id="HMC-tZ-ZUB"/>
-                                        <constraint firstItem="FWg-a3-lhS" firstAttribute="trailing" secondItem="S5B-ql-lwZ" secondAttribute="trailingMargin" id="Q3S-xw-f9u"/>
-                                        <constraint firstItem="flP-P1-X1o" firstAttribute="leading" secondItem="S5B-ql-lwZ" secondAttribute="leadingMargin" id="QW0-6w-LBN"/>
-                                        <constraint firstItem="rXc-N2-njc" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="bottomMargin" id="Stc-w7-4ke"/>
-                                        <constraint firstItem="rXc-N2-njc" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="trailingMargin" id="ZOP-im-REP"/>
-                                        <constraint firstItem="rXc-N2-njc" firstAttribute="centerY" secondItem="FWg-a3-lhS" secondAttribute="centerY" id="byM-hM-d2x"/>
-                                        <constraint firstItem="rXc-N2-njc" firstAttribute="centerY" secondItem="S5B-ql-lwZ" secondAttribute="centerY" constant="-1" id="cZb-xa-Ibk"/>
-                                        <constraint firstItem="flP-P1-X1o" firstAttribute="top" relation="greaterThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="top" id="elQ-EB-w3H"/>
-                                        <constraint firstItem="rXc-N2-njc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="S5B-ql-lwZ" secondAttribute="topMargin" id="jvn-26-ve4"/>
-                                        <constraint firstItem="rXc-N2-njc" firstAttribute="leading" secondItem="flP-P1-X1o" secondAttribute="trailing" constant="12" id="mtK-5U-jlH"/>
-                                        <constraint firstItem="FWg-a3-lhS" firstAttribute="leading" secondItem="S5B-ql-lwZ" secondAttribute="trailingMargin" constant="-24" id="ops-RN-MNd"/>
-                                        <constraint firstItem="flP-P1-X1o" firstAttribute="centerY" secondItem="S5B-ql-lwZ" secondAttribute="centerY" id="zSQ-zs-dSH"/>
-                                    </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="Q3S-xw-f9u"/>
-                                        </mask>
-                                    </variation>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="artworkImageView" destination="flP-P1-X1o" id="icF-WO-8AU"/>
-                                    <outlet property="nowPlayingIndicatorImageView" destination="FWg-a3-lhS" id="8Ru-hR-Q1H"/>
-                                    <outlet property="titleLabel" destination="rXc-N2-njc" id="84F-7s-y0D"/>
-                                    <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="7xD-nn-FhG"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Albums Placeholder" rowHeight="100" id="RmC-40-dsA">
-                                <rect key="frame" x="0.0" y="309.33332252502441" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="176.9999942779541" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RmC-40-dsA" id="ENJ-uS-m8G">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -682,9 +632,6 @@
             <point key="canvasLocation" x="5167" y="-601"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="COy-dp-1gL"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="archivebox.fill" catalog="system" width="128" height="106"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>

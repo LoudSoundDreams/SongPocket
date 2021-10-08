@@ -40,12 +40,6 @@ extension AlbumsTVC {
 			return UITableViewCell()
 		}
 		
-		// Title
-		let albumTitle: String = album.titleFormattedOrPlaceholder() // Don't let this be nil.
-		
-		// Release date
-		let releaseDateString = album.releaseDateEstimateFormatted()
-		
 		// "Now playing" indicator
 		let isInPlayer = isInPlayer(libraryItemAt: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
@@ -54,53 +48,21 @@ extension AlbumsTVC {
 			isPlaying: isPlaying)
 		
 		// Make, configure, and return the cell.
-		let artwork = album.mpMediaItemCollection()?.representativeItem?.artwork // Can be nil
-		if let releaseDateString = releaseDateString {
-			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: "Album",
-				for: indexPath) as? AlbumCell
-			else {
-				return UITableViewCell()
-			}
-			
-			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
-			cell.artworkImageView.image = artwork?.image(at: CGSize(
-				width: artworkMaxWidthAndHeight,
-				height: artworkMaxWidthAndHeight))
-			cell.titleLabel.text = albumTitle
-			cell.applyNowPlayingIndicator(nowPlayingIndicator)
-			if albumMoverClipboard != nil {
-				cell.accessoryType = .none
-			}
-			
-			cell.releaseDateLabel.text = releaseDateString
-			
-			cell.accessibilityUserInputLabels = [albumTitle]
-			
-			return cell
-			
-		} else { // We couldn't determine the album's release date.
-			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: "Album Without Release Date",
-				for: indexPath) as? AlbumCellWithoutReleaseDate
-			else {
-				return UITableViewCell()
-			}
-			
-			let artworkMaxWidthAndHeight = cell.artworkImageView.bounds.width
-			cell.artworkImageView.image = artwork?.image(at: CGSize(
-				width: artworkMaxWidthAndHeight,
-				height: artworkMaxWidthAndHeight))
-			cell.titleLabel.text = albumTitle
-			cell.applyNowPlayingIndicator(nowPlayingIndicator)
-			if albumMoverClipboard != nil {
-				cell.accessoryType = .none
-			}
-			
-			cell.accessibilityUserInputLabels = [albumTitle]
-			
-			return cell
+		
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: "Album",
+			for: indexPath) as? AlbumCell
+		else {
+			return UITableViewCell()
 		}
+		
+		let isInMovingAlbumsMode = albumMoverClipboard != nil
+		cell.configure(
+			with: album,
+			isInMovingAlbumsMode: isInMovingAlbumsMode)
+		cell.applyNowPlayingIndicator(nowPlayingIndicator)
+		
+		return cell
 	}
 	
 	// MARK: - Selecting
