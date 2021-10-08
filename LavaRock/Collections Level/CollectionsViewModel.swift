@@ -255,7 +255,7 @@ struct CollectionsViewModel: LibraryViewModel {
 		
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.noCollectionsPlaceholder
-		configuration.textProperties.font = UIFont.preferredFont(forTextStyle: .body)
+		configuration.textProperties.font = .preferredFont(forTextStyle: .body)
 		configuration.textProperties.color = .secondaryLabel
 		cell.contentConfiguration = configuration
 		

@@ -126,8 +126,25 @@ extension SongsTVC {
 		let mediaItem = song.mpMediaItem()
 		
 		// Title
-		let songTitle: String // Don't let this be nil.
-		= mediaItem?.title ?? MPMediaItem.placeholderTitle
+		let songTitle = mediaItem?.title
+		
+		guard let songsViewModel = viewModel as? SongsViewModel else {
+			return UITableViewCell()
+		}
+		
+		// Artist
+		let songArtist: String? = {
+			let album = songsViewModel.container(forSection: indexPath.section)
+			let albumArtist = album.albumArtist() // Can be nil
+			if
+				let songArtist = mediaItem?.artist,
+				songArtist != albumArtist
+			{
+				return songArtist
+			} else {
+				return nil
+			}
+		}()
 		
 		// "Now playing" indicator
 		let isInPlayer = isInPlayer(libraryItemAt: indexPath)
@@ -136,62 +153,28 @@ extension SongsTVC {
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
 		
-		guard let songsViewModel = viewModel as? SongsViewModel else {
-			return UITableViewCell()
-		}
-		
 		// Track number
 		let shouldShowDiscNumbers = songsViewModel.shouldShowDiscNumbers(forSection: indexPath.section)
 		let trackNumberString: String // Don't let this be nil.
 		= mediaItem?.trackNumberFormatted(includeDisc: shouldShowDiscNumbers)
 		?? MPMediaItem.placeholderTrackNumber
 		
-		// Artist
-		let album = songsViewModel.container(forSection: indexPath.section)
-		let albumArtist = album.albumArtist() // Can be nil
-		
 		// Make, configure, and return the cell.
-		if
-			let songArtist = mediaItem?.artist,
-			songArtist != albumArtist
-		{
-			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: "Song with Different Artist",
-				for: indexPath) as? SongCellWithDifferentArtist
-			else {
-				return UITableViewCell()
-			}
-			
-			cell.titleLabel.text = songTitle
-			
-			cell.artistLabel.text = songArtist
-			
-			cell.applyNowPlayingIndicator(nowPlayingIndicator)
-			cell.trackNumberLabel.text = trackNumberString
-			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
-			
-			cell.accessibilityUserInputLabels = [songTitle]
-			
-			return cell
-			
-		} else { // The song's artist is not useful, or it's the same as the album artist.
-			guard var cell = tableView.dequeueReusableCell(
-				withIdentifier: "Song",
-				for: indexPath) as? SongCell
-			else {
-				return UITableViewCell()
-			}
-			
-			cell.titleLabel.text = songTitle
-			
-			cell.applyNowPlayingIndicator(nowPlayingIndicator)
-			cell.trackNumberLabel.text = trackNumberString
-			cell.trackNumberLabel.font = UIFont.bodyWithMonospacedNumbers // This doesn't work if you set it in cell.awakeFromNib().
-			
-			cell.accessibilityUserInputLabels = [songTitle]
-			
-			return cell
+		
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: "Song",
+			for: indexPath) as? SongCell
+		else {
+			return UITableViewCell()
 		}
+		
+		cell.configureWith(
+			title: songTitle,
+			artist: songArtist,
+			trackNumberString: trackNumberString)
+		cell.applyNowPlayingIndicator(nowPlayingIndicator)
+		
+		return cell
 	}
 	
 	// MARK: - Selecting
