@@ -49,25 +49,14 @@ extension SongsTVC {
 			return UITableViewCell()
 		}
 		
-		// Artwork
-		let representativeItem = album.mpMediaItemCollection()?.representativeItem
-		let artworkImage = representativeItem?.artwork?.image(at: CGSize(
-			width: UIScreen.main.bounds.width,
-			height: UIScreen.main.bounds.width))
-		
 		// Make, configure, and return the cell.
-		
 		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Album Artwork Cell",
+			withIdentifier: "Album Artwork",
 			for: indexPath) as? AlbumArtworkCell
 		else {
 			return UITableViewCell()
 		}
-		
-		cell.artworkImageView.image = artworkImage
-		
-		cell.accessibilityUserInputLabels = [""]
-		
+		cell.configure(with: album)
 		return cell
 	}
 	
@@ -78,43 +67,15 @@ extension SongsTVC {
 			return UITableViewCell()
 		}
 		
-		// Album artist
-		let albumArtist: String // Don't let this be nil.
-		= album.albumArtistFormattedOrPlaceholder()
-		
-		// Release date
-		let releaseDateString = album.releaseDateEstimateFormatted()
-		
 		// Make, configure, and return the cell.
-		if let releaseDateString = releaseDateString {
-			guard let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Album Info Cell",
-				for: indexPath) as? AlbumInfoCell
-			else {
-				return UITableViewCell()
-			}
-			
-			cell.albumArtistLabel.text = albumArtist
-			cell.releaseDateLabel.text = releaseDateString
-			
-			cell.accessibilityUserInputLabels = [""]
-			
-			return cell
-			
-		} else { // We couldn't determine the album's release date.
-			guard let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Album Info Cell Without Release Date",
-				for: indexPath) as? AlbumInfoCellWithoutReleaseDate
-			else {
-				return UITableViewCell()
-			}
-			
-			cell.albumArtistLabel.text = albumArtist
-			
-			cell.accessibilityUserInputLabels = [""]
-			
-			return cell
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Album Info",
+			for: indexPath) as? AlbumInfoCell
+		else {
+			return UITableViewCell()
 		}
+		cell.configure(with: album)
+		return cell
 	}
 	
 	// MARK: Song Cell

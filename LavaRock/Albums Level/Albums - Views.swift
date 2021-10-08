@@ -25,14 +25,10 @@ final class AlbumCell: UITableViewCell {
 		isInMovingAlbumsMode: Bool
 	) {
 		// Artwork
-		let artworkImage: UIImage? = {
-			let artwork = album.mpMediaItemCollection()?.representativeItem?.artwork
-			let maxWidthAndHeight = artworkImageView.bounds.width
-			return artwork?.image(
-				at: CGSize(
-					width: maxWidthAndHeight,
-					height: maxWidthAndHeight))
-		}()
+		let maxWidthAndHeight = artworkImageView.bounds.width
+		let artworkImage = album.artworkImage(at: CGSize( // Can be nil
+			width: maxWidthAndHeight,
+			height: maxWidthAndHeight))
 		
 		// Title
 		let title: String // Don't let this be nil.
