@@ -42,7 +42,6 @@ extension CollectionsTVC {
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		let isPlaying = sharedPlayer?.playbackState == .playing
-		let tintColor = UIColor.tintColor(maybeResortTo: view.window)
 		return (viewModel as? CollectionsViewModel)?.cell(
 			forRowAt: indexPath,
 			contentState: contentState(),
@@ -50,7 +49,7 @@ extension CollectionsTVC {
 			albumMoverClipboard: albumMoverClipboard,
 			isPlaying: isPlaying,
 			renameFocusedCollectionAction: renameFocusedCollectionAction,
-			tintColor: tintColor,
+			accentColor: AccentColor.savedPreference(),
 			tableView: tableView)
 		?? UITableViewCell()
 	}

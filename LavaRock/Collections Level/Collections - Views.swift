@@ -17,12 +17,14 @@ final class AllowAccessCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
+		accessibilityTraits.formUnion(.button)
+	}
+	
+	final func configure(with accentColor: AccentColor) {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.allowAccessToMusic
-		configuration.textProperties.color = tintColor
+		configuration.textProperties.color = accentColor.uiColor
 		contentConfiguration = configuration
-		
-		accessibilityTraits.formUnion(.button)
 	}
 }
 
@@ -64,12 +66,14 @@ final class OpenMusicCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
+		accessibilityTraits.formUnion(.button)
+	}
+	
+	final func configure(with accentColor: AccentColor) {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.openMusic
-		configuration.textProperties.color = tintColor
+		configuration.textProperties.color = accentColor.uiColor
 		contentConfiguration = configuration
-		
-		accessibilityTraits.formUnion(.button)
 	}
 }
 
@@ -90,15 +94,15 @@ final class CollectionCell: UITableViewCell {
 		if let idOfSourceCollection = idOfSourceCollection {
 			// This cell is appearing in "moving Albums" mode.
 			if idOfSourceCollection == collection.objectID {
-				titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+				titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 				disableWithAccessibilityTrait()
 			} else {
-				titleLabel.textColor = UIColor.label
+				titleLabel.textColor = .label
 				enableWithAccessibilityTrait()
 			}
 			accessibilityCustomActions = []
 		} else {
-			titleLabel.textColor = UIColor.label
+			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
 			
 			accessibilityCustomActions = [renameFocusedCollectionAction]

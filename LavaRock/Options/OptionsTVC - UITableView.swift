@@ -233,7 +233,7 @@ extension OptionsTVC {
 		
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.reload
-		configuration.textProperties.color = .tintColor(maybeResortTo: view.window)
+		configuration.textProperties.color = AccentColor.savedPreference().uiColor
 		cell.contentConfiguration = configuration
 		
 		cell.accessibilityTraits.formUnion(.button)
@@ -254,7 +254,7 @@ extension OptionsTVC {
 		
 		var configuration = UIListContentConfiguration.valueCell()
 		configuration.text = tipProduct.localizedTitle
-		configuration.textProperties.color = .tintColor(maybeResortTo: view.window)
+		configuration.textProperties.color = AccentColor.savedPreference().uiColor
 		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
 		cell.contentConfiguration = configuration
 		

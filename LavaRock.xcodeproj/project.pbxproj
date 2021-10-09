@@ -23,7 +23,6 @@
 		072C04992692A67400F44AC5 /* extension UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C04982692A67400F44AC5 /* extension UIAlertAction.swift */; };
 		072C049B2692AB4400F44AC5 /* extension UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */; };
 		072F859F26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */; };
-		072F85A126B7872F0062323C /* extension UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072F85A026B7872F0062323C /* extension UIColor.swift */; };
 		072FD02726C30BB90053369B /* func cleanUpManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* func cleanUpManagedObjects.swift */; };
 		0731ADA02592F2300077C895 /* extension UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */; };
 		0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Albums - Views.swift */; };
@@ -126,7 +125,6 @@
 		072C04982692A67400F44AC5 /* extension UIAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIAlertAction.swift"; sourceTree = "<group>"; };
 		072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIAlertController.swift"; sourceTree = "<group>"; };
 		072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NoItemsBackgroundManager.swift"; sourceTree = "<group>"; };
-		072F85A026B7872F0062323C /* extension UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIColor.swift"; sourceTree = "<group>"; };
 		072FD02626C30BB90053369B /* func cleanUpManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func cleanUpManagedObjects.swift"; sourceTree = "<group>"; };
 		0731AD9F2592F2300077C895 /* extension UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIBarButtonItem.swift"; sourceTree = "<group>"; };
 		0732DDBF257F046F005FBEA7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -449,7 +447,6 @@
 				07566CE92692261800257DB4 /* extension UIMenu.swift */,
 				072C04982692A67400F44AC5 /* extension UIAlertAction.swift */,
 				072C049A2692AB4400F44AC5 /* extension UIAlertController.swift */,
-				072F85A026B7872F0062323C /* extension UIColor.swift */,
 				0750C01426D2E27700B3E899 /* extension UITableViewCell.swift */,
 			);
 			path = "extensions to UIKit";
@@ -613,7 +610,6 @@
 				07642C7C268FFC1600B66BB8 /* GroupOfSongs.swift in Sources */,
 				0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */,
 				0720A43525017C6C00E0A28A /* AlbumsTVC - Notifications.swift in Sources */,
-				072F85A126B7872F0062323C /* extension UIColor.swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Moving Albums” Mode.swift in Sources */,
 				07D157ED24D952A600FDF26A /* protocol AlbumMover.swift in Sources */,
