@@ -120,7 +120,6 @@ struct CollectionsViewModel: LibraryViewModel {
 		albumMoverClipboard: AlbumMoverClipboard?,
 		isPlaying: Bool,
 		renameFocusedCollectionAction: UIAccessibilityCustomAction,
-		accentColor: AccentColor,
 		tableView: UITableView
 	) -> UITableViewCell {
 //		guard let sectionCase = CollectionsSection(rawValue: indexPath.section) else {
@@ -139,14 +138,9 @@ struct CollectionsViewModel: LibraryViewModel {
 		
 		switch contentState {
 		case .allowAccess:
-			guard let cell = tableView.dequeueReusableCell(
+			return tableView.dequeueReusableCell(
 				withIdentifier: "Allow Access",
-				for: indexPath) as? AllowAccessCell
-			else {
-				return UITableViewCell()
-			}
-			cell.configure(with: accentColor)
-			return cell
+				for: indexPath) as? AllowAccessCell ?? UITableViewCell()
 		case .loading:
 			return tableView.dequeueReusableCell(
 				withIdentifier: "Loading",
@@ -160,14 +154,9 @@ struct CollectionsViewModel: LibraryViewModel {
 					withIdentifier: "No Collections",
 					for: indexPath) as? NoCollectionsPlaceholderCell ?? UITableViewCell()
 			case 1:
-				guard let cell = tableView.dequeueReusableCell(
+				return tableView.dequeueReusableCell(
 					withIdentifier: "Open Music",
-					for: indexPath) as? OpenMusicCell
-				else {
-					return UITableViewCell()
-				}
-				cell.configure(with: accentColor)
-				return cell
+					for: indexPath) as? OpenMusicCell ?? UITableViewCell()
 			default: // Should never run
 				return UITableViewCell()
 			}

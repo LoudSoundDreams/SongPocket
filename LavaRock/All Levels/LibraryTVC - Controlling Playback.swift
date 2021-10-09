@@ -120,7 +120,7 @@ extension LibraryTVC {
 	}
 	
 	final func goToNextSong() {
-//		sharedPlayer?.currentPlaybackTime = 0 // See comment in goToPreviousSong().
+//		sharedPlayer?.currentPlaybackTime = 0 // See corresponding comment in goToPreviousSong().
 		
 		sharedPlayer?.skipToNextItem()
 	}

@@ -18,13 +18,23 @@ final class AllowAccessCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)
+		
+		configure()
 	}
 	
-	final func configure(with accentColor: AccentColor) {
+	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.allowAccessToMusic
-		configuration.textProperties.color = accentColor.uiColor
+		configuration.textProperties.color = tintColor // As of iOS 15.1 beta 3:
+		// - Don't use `AccentColor.savedPreference().uiColor`, `window?.tintColor`, or `contentView.window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
+		// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although if you change the `window.tintColor` later, it is dimmed.
 		contentConfiguration = configuration
+	}
+	
+	final override func tintColorDidChange() {
+		super.tintColorDidChange()
+		
+		configure()
 	}
 }
 
@@ -67,13 +77,21 @@ final class OpenMusicCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)
+		
+		configure()
 	}
 	
-	final func configure(with accentColor: AccentColor) {
+	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.openMusic
-		configuration.textProperties.color = accentColor.uiColor
+		configuration.textProperties.color = tintColor // See corresponding comment in `AllowAccessCell.configure`.
 		contentConfiguration = configuration
+	}
+	
+	final override func tintColorDidChange() {
+		super.tintColorDidChange()
+		
+		configure()
 	}
 }
 

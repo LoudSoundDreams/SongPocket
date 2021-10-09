@@ -19,12 +19,6 @@ extension LibraryTVC {
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(refreshToReflectAccentColor),
-			name: Notification.Name.LRDidChangeAccentColor,
-			object: nil)
-		
-		NotificationCenter.default.addObserver(
-			self,
 			selector: #selector(didImportChanges),
 			name: Notification.Name.LRDidImportChanges,
 			object: nil)
@@ -53,10 +47,6 @@ extension LibraryTVC {
 	}
 	
 	// MARK: - Responding
-	
-	@objc private func refreshToReflectAccentColor() {
-		tableView.reloadData()
-	}
 	
 	@objc private func didImportChanges() {
 		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.

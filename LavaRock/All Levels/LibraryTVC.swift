@@ -205,7 +205,7 @@ class LibraryTVC: UITableViewController {
 			tableView.deleteRows(at: allIndexPaths, with: .middle)
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
-			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See matching comment in setItemsAndMoveRows.
+			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See corresponding comment in setItemsAndMoveRows.
 				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move Albums to…" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
 					self.performSegue(
 						withIdentifier: "Removed All Contents",

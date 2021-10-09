@@ -154,10 +154,10 @@ extension OptionsTVC {
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
 		let indexOfAccentColor = indexPath.row
 		let selectedAccentColor = AccentColor.all[indexOfAccentColor]
+		selectedAccentColor.saveAsPreference() // Do this before calling `AccentColor.set`, so that instances that override `tintColorDidChange` will get the new value for `AccentColor.savedPreference`.
 		if let window = view.window {
 			selectedAccentColor.set(in: window)
 		}
-		selectedAccentColor.saveAsPreference()
 		
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
 			// Should never run

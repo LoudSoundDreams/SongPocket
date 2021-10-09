@@ -49,7 +49,6 @@ extension CollectionsTVC {
 			albumMoverClipboard: albumMoverClipboard,
 			isPlaying: isPlaying,
 			renameFocusedCollectionAction: renameFocusedCollectionAction,
-			accentColor: AccentColor.savedPreference(),
 			tableView: tableView)
 		?? UITableViewCell()
 	}
