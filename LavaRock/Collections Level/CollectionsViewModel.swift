@@ -293,9 +293,6 @@ struct CollectionsViewModel: LibraryViewModel {
 			return UITableViewCell()
 		}
 		
-		// Title
-		let collectionTitle = collection.title
-		
 		// "Now playing" indicator
 		let isInPlayer = isInPlayer(libraryItemAt: indexPath)
 		let nowPlayingIndicator = NowPlayingIndicator(
@@ -311,20 +308,12 @@ struct CollectionsViewModel: LibraryViewModel {
 			return UITableViewCell()
 		}
 		
-		cell.titleLabel.text = collectionTitle
+		let idOfSourceCollection = albumMoverClipboard?.idOfSourceCollection
+		cell.configure(
+			with: collection,
+			isMovingAlbumsFromCollectionWith: idOfSourceCollection,
+			renameFocusedCollectionAction: renameFocusedCollectionAction)
 		cell.applyNowPlayingIndicator(nowPlayingIndicator)
-		
-		if let albumMoverClipboard = albumMoverClipboard {
-			if collection.objectID == albumMoverClipboard.idOfSourceCollection {
-				cell.titleLabel.textColor = UIColor.placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
-				cell.disableWithAccessibilityTrait()
-			} else { // Undo changes made to the disabled cell
-				cell.titleLabel.textColor = UIColor.label
-				cell.enableWithAccessibilityTrait()
-			}
-		} else {
-			cell.accessibilityCustomActions = [renameFocusedCollectionAction]
-		}
 		
 		return cell
 	}

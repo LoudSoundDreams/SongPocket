@@ -8,7 +8,7 @@
 import Foundation
 
 enum LRUserDefaultsKey: String, CaseIterable {
-	// Remember: These case names are also their raw values as strings.
+	// Note: These case names are also their raw values as strings.
 	case accentColorName
 	case hasEverImportedFromMusic
 	case shouldExplainQueueAction
@@ -17,7 +17,7 @@ enum LRUserDefaultsKey: String, CaseIterable {
 extension UserDefaults {
 	
 	final func deleteAllEntriesExcept(withKeys keysToKeep: [String]) {
-		let oldEntries = dictionaryRepresentation() // Remember: This method operates on the instance of UserDefaults we're calling it on.
+		let oldEntries = dictionaryRepresentation()
 		
 		var newEntries = oldEntries
 		newEntries.removeAll() // To match the type of oldEntries

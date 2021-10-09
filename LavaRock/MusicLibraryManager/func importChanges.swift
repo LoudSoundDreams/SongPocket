@@ -23,7 +23,7 @@ extension MusicLibraryManager {
 		}
 	}
 	
-	// Remember: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
+	// WARNING: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
 	private func importChangesMethodBody() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
