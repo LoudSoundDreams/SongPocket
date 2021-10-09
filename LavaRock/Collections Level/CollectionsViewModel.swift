@@ -139,27 +139,25 @@ struct CollectionsViewModel: LibraryViewModel {
 		
 		switch contentState {
 		case .allowAccess:
-			return allowAccessCell(
-				forRowAt: indexPath,
-				tintColor: tintColor,
-				tableView: tableView)
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Allow Access",
+				for: indexPath) as? AllowAccessCell ?? UITableViewCell()
 		case .loading:
-			return loadingCell(
-				forRowAt: indexPath,
-				tableView: tableView)
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Loading",
+				for: indexPath) as? LoadingCell ?? UITableViewCell()
 		case .blank: // Should never run
 			return UITableViewCell()
 		case .noCollections:
 			switch indexPath.row {
 			case 0:
-				return noCollectionsPlaceholderCell(
-					forRowAt: indexPath,
-					tableView: tableView)
+				return tableView.dequeueReusableCell(
+					withIdentifier: "No Collections",
+					for: indexPath) as? NoCollectionsPlaceholderCell ?? UITableViewCell()
 			case 1:
-				return openMusicCell(
-					forRowAt: indexPath,
-					tintColor: tintColor,
-					tableView: tableView)
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Open Music",
+					for: indexPath) as? OpenMusicCell ?? UITableViewCell()
 			default: // Should never run
 				return UITableViewCell()
 			}
@@ -203,81 +201,6 @@ struct CollectionsViewModel: LibraryViewModel {
 				cell.enableWithAccessibilityTrait()
 			}
 		}
-		
-		return cell
-	}
-	
-	// The cell in the storyboard is completely default except for the reuse identifier.
-	private func allowAccessCell(
-		forRowAt indexPath: IndexPath,
-		tintColor: UIColor,
-		tableView: UITableView
-	) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access", for: indexPath)
-		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.allowAccessToMusic
-		configuration.textProperties.color = tintColor
-		cell.contentConfiguration = configuration
-		
-		cell.accessibilityTraits.formUnion(.button)
-		
-		return cell
-	}
-	
-	// The cell in the storyboard is completely default except for the reuse identifier.
-	private func loadingCell(
-		forRowAt indexPath: IndexPath,
-		tableView: UITableView
-	) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Loading", for: indexPath)
-		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.loadingWithEllipsis
-		configuration.textProperties.color = .secondaryLabel
-		cell.contentConfiguration = configuration
-		
-		cell.isUserInteractionEnabled = false
-		let spinnerView = UIActivityIndicatorView()
-		spinnerView.startAnimating()
-		spinnerView.sizeToFit() // Without this line of code, UIKit centers the UIActivityIndicatorView at the top-left corner of the cell.
-		cell.accessoryView = spinnerView
-		
-		return cell
-	}
-	
-	// The cell in the storyboard is completely default except for the reuse identifier.
-	private func noCollectionsPlaceholderCell(
-		forRowAt indexPath: IndexPath,
-		tableView: UITableView
-	) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "No Collections", for: indexPath)
-		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.noCollectionsPlaceholder
-		configuration.textProperties.font = .preferredFont(forTextStyle: .body)
-		configuration.textProperties.color = .secondaryLabel
-		cell.contentConfiguration = configuration
-		
-		cell.isUserInteractionEnabled = false
-		
-		return cell
-	}
-	
-	// The cell in the storyboard is completely default except for the reuse identifier.
-	private func openMusicCell(
-		forRowAt indexPath: IndexPath,
-		tintColor: UIColor,
-		tableView: UITableView
-	) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Open Music", for: indexPath)
-		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.openMusic
-		configuration.textProperties.color = tintColor
-		cell.contentConfiguration = configuration
-		
-		cell.accessibilityTraits.formUnion(.button)
 		
 		return cell
 	}

@@ -12,6 +12,67 @@ final class AllCollectionsCell: UITableViewCell {
 	@IBOutlet var allLabel: UILabel!
 }
 
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
+final class AllowAccessCell: UITableViewCell {
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.allowAccessToMusic
+		configuration.textProperties.color = tintColor
+		contentConfiguration = configuration
+		
+		accessibilityTraits.formUnion(.button)
+	}
+}
+
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
+final class LoadingCell: UITableViewCell {
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.loadingWithEllipsis
+		configuration.textProperties.color = .secondaryLabel
+		contentConfiguration = configuration
+		
+		isUserInteractionEnabled = false
+		let spinnerView = UIActivityIndicatorView()
+		spinnerView.startAnimating()
+		spinnerView.sizeToFit() // Without this line of code, UIKit centers the UIActivityIndicatorView at the top-left corner of the cell.
+		accessoryView = spinnerView
+	}
+}
+
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
+final class NoCollectionsPlaceholderCell: UITableViewCell {
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.noCollectionsPlaceholder
+		configuration.textProperties.font = .preferredFont(forTextStyle: .body)
+		configuration.textProperties.color = .secondaryLabel
+		contentConfiguration = configuration
+		
+		isUserInteractionEnabled = false
+	}
+}
+
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
+final class OpenMusicCell: UITableViewCell {
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.openMusic
+		configuration.textProperties.color = tintColor
+		contentConfiguration = configuration
+		
+		accessibilityTraits.formUnion(.button)
+	}
+}
+
 final class CollectionCell: UITableViewCell {
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
