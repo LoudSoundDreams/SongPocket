@@ -117,13 +117,12 @@ extension PurchaseManager: SKProductsRequestDelegate {
 			return
 		}
 		
-		if let priceLocale = response.products.first?.priceLocale {
-			setUpPriceFormatter(locale: priceLocale)
-		}
 		response.products.forEach { product in
-			guard let productIdentifier = ProductIdentifier(rawValue: product.productIdentifier) else { return }
+			let rawIdentifier = product.productIdentifier
+			guard let productIdentifier = ProductIdentifier(rawValue: rawIdentifier) else { return }
 			switch productIdentifier {
 			case .tip:
+				tipPriceFormatter = makePriceFormatter(locale: product.priceLocale)
 				tipProduct = product
 				tipStatus = .ready
 				tipDelegate?.didReceiveTipProduct(product)
@@ -150,11 +149,11 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		}
 	}
 	
-	private func setUpPriceFormatter(locale: Locale) {
+	private func makePriceFormatter(locale: Locale) -> NumberFormatter {
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .currency
 		formatter.locale = locale
-		tipPriceFormatter = formatter
+		return formatter
 	}
 	
 }

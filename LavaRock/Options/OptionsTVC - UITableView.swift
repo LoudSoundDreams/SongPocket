@@ -152,12 +152,15 @@ extension OptionsTVC {
 	// MARK: Selecting
 	
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
+		// Set the new accent color.
 		let indexOfAccentColor = indexPath.row
 		let selectedAccentColor = AccentColor.all[indexOfAccentColor]
 		selectedAccentColor.saveAsPreference() // Do this before calling `AccentColor.set`, so that instances that override `tintColorDidChange` will get the new value for `AccentColor.savedPreference`.
 		if let window = view.window {
 			selectedAccentColor.set(in: window)
 		}
+		
+		// Refresh the UI.
 		
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
 			// Should never run
@@ -193,13 +196,6 @@ extension OptionsTVC {
 				colorCell.accessoryType = .none // Don't use reloadRows, because as of iOS 14.7 developer beta 2, that breaks tableView.deselectRow's animation.
 			}
 		}
-		
-		// Reload all other rows, which might depend on the selected accent color.
-		let allOtherSections = OptionsSection.allCases.filter { $0 != .accentColor }
-		let allOtherSectionsAsInts = allOtherSections.map { $0.rawValue }
-		tableView.reloadSections(
-			IndexSet(allOtherSectionsAsInts),
-			with: .none)
 	}
 	
 	// MARK: - Tip Jar Section
@@ -209,79 +205,24 @@ extension OptionsTVC {
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch PurchaseManager.shared.tipStatus {
 		case .notYetFirstLoaded, .loading:
-			return tipLoadingCell(forRowAt: indexPath)
+			return tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
 		case .reload:
-			return tipReloadCell(forRowAt: indexPath)
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Tip Reload",
+				for: indexPath) as? TipReloadCell ?? UITableViewCell()
 		case .ready:
 			if isTipJarShowingThankYou {
-				return tipThankYouCell(forRowAt: indexPath)
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Tip Thank You",
+					for: indexPath) as? TipThankYouCell ?? UITableViewCell()
 			} else {
-				return tipReadyCell(forRowAt: indexPath)
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Tip Ready",
+					for: indexPath) as? TipReadyCell ?? UITableViewCell()
 			}
 		case .confirming:
-			return tipConfirmingCell(forRowAt: indexPath)
+			return tableView.dequeueReusableCell(withIdentifier: "Tip Confirming", for: indexPath)
 		}
-	}
-	
-	private func tipLoadingCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		return tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
-	}
-	
-	// The cell in the storyboard is completely default except for the reuse identifier.
-	private func tipReloadCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Reload", for: indexPath)
-		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.reload
-		configuration.textProperties.color = AccentColor.savedPreference().uiColor
-		cell.contentConfiguration = configuration
-		
-		cell.accessibilityTraits.formUnion(.button)
-		
-		return cell
-	}
-	
-	// The cell in the storyboard is completely default except for the reuse identifier.
-	private func tipReadyCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard
-			let tipProduct = PurchaseManager.shared.tipProduct,
-			let tipPriceFormatter = PurchaseManager.shared.tipPriceFormatter
-		else {
-			return UITableViewCell()
-		}
-		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Ready", for: indexPath)
-		
-		var configuration = UIListContentConfiguration.valueCell()
-		configuration.text = tipProduct.localizedTitle
-		configuration.textProperties.color = AccentColor.savedPreference().uiColor
-		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
-		cell.contentConfiguration = configuration
-		
-		cell.accessibilityTraits.formUnion(.button)
-		
-		return cell
-	}
-	
-	private func tipConfirmingCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		return tableView.dequeueReusableCell(withIdentifier: "Tip Confirming", for: indexPath)
-	}
-	
-	// The cell in the storyboard is completely default except for the reuse identifier.
-	private func tipThankYouCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Thank You", for: indexPath)
-		
-		var configuration = UIListContentConfiguration.cell()
-		let heartEmoji = AccentColor.savedPreference().heartEmoji
-		let thankYouMessage = heartEmoji + LocalizedString.tipThankYouMessageWithPaddingSpaces + heartEmoji
-		configuration.text = thankYouMessage
-		configuration.textProperties.color = .secondaryLabel
-		configuration.textProperties.alignment = .center
-		cell.contentConfiguration = configuration
-		
-		cell.isUserInteractionEnabled = false
-		
-		return cell
 	}
 	
 	// MARK: Selecting

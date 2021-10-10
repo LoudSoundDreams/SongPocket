@@ -32,7 +32,7 @@ final class AllowAccessCell: UITableViewCell {
 			// Don't confuse this with `UIColor.tintColor`.
 			configuration.textProperties.color = self.tintColor // Dims and undims when we present and dismiss a modal view, but instantaneously and only after the animation completes.
 			// As of iOS 15.1 beta 3:
-			// - Don't use `AccentColor.savedPreference().uiColor`, `window?.tintColor`, or `contentView.window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
+			// - Don't use `AccentColor.savedPreference().uiColor` or `window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
 			// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although it is dimmed if you change `window.tintColor` later.
 		}
 		contentConfiguration = configuration
