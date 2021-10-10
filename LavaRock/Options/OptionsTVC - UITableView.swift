@@ -126,7 +126,6 @@ extension OptionsTVC {
 	
 	// MARK: Cells
 	
-	// The cell in the storyboard is completely default except for the reuse identifier.
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		let indexOfAccentColor = indexPath.row
 		let accentColor = AccentColor.all[indexOfAccentColor]
@@ -148,7 +147,7 @@ extension OptionsTVC {
 		// Set the new accent color.
 		let indexOfAccentColor = indexPath.row
 		let selectedAccentColor = AccentColor.all[indexOfAccentColor]
-		selectedAccentColor.saveAsPreference() // Do this before calling `AccentColor.set`, so that instances that override `tintColorDidChange` will get the new value for `AccentColor.savedPreference`.
+		selectedAccentColor.saveAsPreference() // Do this before calling `AccentColor.set`, so that instances that override `tintColorDidChange` can get the new value for `AccentColor.savedPreference`.
 		if let window = view.window {
 			selectedAccentColor.set(in: window)
 		}

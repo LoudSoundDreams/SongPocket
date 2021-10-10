@@ -10,6 +10,7 @@ import StoreKit
 
 // MARK: - Accent Color Section
 
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AccentColorCell: UITableViewCell {
 	final var accentColor: AccentColor? = nil {
 		didSet {
