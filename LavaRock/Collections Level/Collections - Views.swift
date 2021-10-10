@@ -25,16 +25,27 @@ final class AllowAccessCell: UITableViewCell {
 	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.allowAccessToMusic
-		configuration.textProperties.color = tintColor // As of iOS 15.1 beta 3:
-		// - Don't use `AccentColor.savedPreference().uiColor`, `window?.tintColor`, or `contentView.window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
-		// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although if you change the `window.tintColor` later, it is dimmed.
+		if #available(iOS 15, *) {
+			// Don't confuse this with `self.tintColor`.
+			configuration.textProperties.color = UIColor.tintColor // As of iOS 15.1 beta 3, this dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
+		} else {
+			// Don't confuse this with `UIColor.tintColor`.
+			configuration.textProperties.color = self.tintColor // Dims and undims when we present and dismiss a modal view, but instantaneously and only after the animation completes.
+			// As of iOS 15.1 beta 3:
+			// - Don't use `AccentColor.savedPreference().uiColor`, `window?.tintColor`, or `contentView.window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
+			// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although it is dimmed if you change `window.tintColor` later.
+		}
 		contentConfiguration = configuration
 	}
 	
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		configure()
+		if #available(iOS 15, *) {
+			// See comment in `configure()`.
+		} else {
+			configure()
+		}
 	}
 }
 
@@ -84,14 +95,21 @@ final class OpenMusicCell: UITableViewCell {
 	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.openMusic
-		configuration.textProperties.color = tintColor // See corresponding comment in `AllowAccessCell.configure`.
+		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
+			configuration.textProperties.color = UIColor.tintColor
+		} else {
+			configuration.textProperties.color = self.tintColor
+		}
 		contentConfiguration = configuration
 	}
 	
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		configure()
+		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
+		} else {
+			configure()
+		}
 	}
 }
 

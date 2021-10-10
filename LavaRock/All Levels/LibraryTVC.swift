@@ -155,16 +155,12 @@ class LibraryTVC: UITableViewController {
 	// MARK: Setting Up UI
 	
 	func setUpUI() {
-		// Xcode 13
 		if #available(iOS 15, *) {
 			// In iOS 15, by default, tableView.fillerRowHeight is 0, which removes the blank rows below the last row.
 		} else {
 			tableView.tableFooterView = UIView() // Removes the blank rows below the last row.
 			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		}
-		
-		// Xcode 12
-//		tableView.tableFooterView = UIView()
 		
 		reflectContainerTitles()
 		
