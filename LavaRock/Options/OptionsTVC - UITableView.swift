@@ -131,21 +131,14 @@ extension OptionsTVC {
 		let indexOfAccentColor = indexPath.row
 		let accentColor = AccentColor.all[indexOfAccentColor]
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Accent Color", for: indexPath)
-		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = accentColor.displayName
-		configuration.textProperties.color = accentColor.uiColor
-		cell.contentConfiguration = configuration
-		
-		if accentColor == AccentColor.savedPreference() { // Don't use view.window.tintColor, because if Increase Contrast is enabled, it won't match any rowAccentColor.uiColor.
-			cell.accessoryType = .checkmark
-		} else {
-			cell.accessoryType = .none
+		// Make, configure, and return the cell.
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Accent Color",
+			for: indexPath) as? AccentColorCell
+		else {
+			return UITableViewCell()
 		}
-		
-		cell.accessibilityTraits.formUnion(.button)
-		
+		cell.accentColor = accentColor
 		return cell
 	}
 	
@@ -161,42 +154,7 @@ extension OptionsTVC {
 		}
 		
 		// Refresh the UI.
-		
-		guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
-			// Should never run
-			tableView.reloadData()
-			return
-		}
-		
-		// Move the checkmark to the selected accent color.
-		
-		
-//		tableView.reloadData()
-//		tableView.performBatchUpdates {
-//			tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
-//		} completion: { _ in
-//			self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 15.1 developer beta 3, this animation is broken.
-//		}
-		
-		
-		let colorIndexPaths = tableView.indexPathsForRows(
-			inSection: OptionsSection.accentColor.rawValue,
-			firstRow: 0)
-		colorIndexPaths.forEach { indexPath in
-			guard let cell = tableView.cellForRow(at: indexPath) else {
-				// Should never run
-				tableView.reloadRows(at: [indexPath], with: .none)
-				return
-			}
-			
-			if indexPath == selectedIndexPath {
-				cell.accessoryType = .checkmark
-				tableView.deselectRow(at: selectedIndexPath, animated: true)
-			} else {
-//				tableView.reloadRows(at: [indexPath], with: .none) // As of iOS 15.1 developer beta 3, this breaks `tableView.deselectRow`'s animation.
-				cell.accessoryType = .none
-			}
-		}
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
 	// MARK: - Tip Jar Section

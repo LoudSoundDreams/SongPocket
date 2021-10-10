@@ -8,6 +8,48 @@
 import UIKit
 import StoreKit
 
+// MARK: - Accent Color Section
+
+final class AccentColorCell: UITableViewCell {
+	final var accentColor: AccentColor? = nil {
+		didSet {
+			configure()
+		}
+	}
+	
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		accessibilityTraits.formUnion(.button)
+	}
+	
+	private func configure() {
+		guard let accentColor = accentColor else {
+			contentConfiguration = defaultContentConfiguration()
+			return
+		}
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = accentColor.displayName
+		configuration.textProperties.color = accentColor.uiColor
+		contentConfiguration = configuration
+		
+		if accentColor == AccentColor.savedPreference() { // Don't use `self.tintColor`, because if Increase Contrast is enabled, it won't match any `AccentColor.uiColor`.
+			accessoryType = .checkmark
+		} else {
+			accessoryType = .none
+		}
+	}
+	
+	final override func tintColorDidChange() {
+		super.tintColorDidChange()
+		
+		configure()
+	}
+}
+
+// MARK: - Tip Jar Section
+
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipReloadCell: UITableViewCell {
 	final override func awakeFromNib() {
@@ -63,7 +105,7 @@ final class TipReadyCell: UITableViewCell {
 		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
 			configuration.textProperties.color = UIColor.tintColor
 		} else {
-			configuration.textProperties.color = AccentColor.savedPreference().uiColor
+			configuration.textProperties.color = self.tintColor
 		}
 		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
 		contentConfiguration = configuration
