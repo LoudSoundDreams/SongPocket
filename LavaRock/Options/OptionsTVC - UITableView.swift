@@ -168,32 +168,33 @@ extension OptionsTVC {
 			return
 		}
 		
+		// Move the checkmark to the selected accent color.
+		
 		
 //		tableView.reloadData()
 //		tableView.performBatchUpdates {
 //			tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
 //		} completion: { _ in
-//			self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 14.7 developer beta 2, this animation is broken (under some conditions). The row stays completely highlighted for the period of time when it should be animating, then un-highlights instantly with no animation, which looks terrible.
+//			self.tableView.deselectRow(at: selectedIndexPath, animated: true) // As of iOS 15.1 developer beta 3, this animation is broken.
 //		}
 		
 		
-		// Move the checkmark to the selected accent color.
 		let colorIndexPaths = tableView.indexPathsForRows(
 			inSection: OptionsSection.accentColor.rawValue,
 			firstRow: 0)
-		colorIndexPaths.forEach { colorIndexPath in
-			guard let colorCell = tableView.cellForRow(at: colorIndexPath) else {
+		colorIndexPaths.forEach { indexPath in
+			guard let cell = tableView.cellForRow(at: indexPath) else {
 				// Should never run
-				tableView.reloadRows(at: [colorIndexPath], with: .none)
+				tableView.reloadRows(at: [indexPath], with: .none)
 				return
 			}
 			
-			if colorIndexPath == selectedIndexPath {
-				colorCell.accessoryType = .checkmark
+			if indexPath == selectedIndexPath {
+				cell.accessoryType = .checkmark
 				tableView.deselectRow(at: selectedIndexPath, animated: true)
 			} else {
-//				tableView.reloadRows(at: [colorIndexPath], with: .none)
-				colorCell.accessoryType = .none // Don't use reloadRows, because as of iOS 14.7 developer beta 2, that breaks tableView.deselectRow's animation.
+//				tableView.reloadRows(at: [indexPath], with: .none) // As of iOS 15.1 developer beta 3, this breaks `tableView.deselectRow`'s animation.
+				cell.accessoryType = .none
 			}
 		}
 	}

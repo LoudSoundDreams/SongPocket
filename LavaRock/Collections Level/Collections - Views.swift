@@ -27,11 +27,11 @@ final class AllowAccessCell: UITableViewCell {
 		configuration.text = LocalizedString.allowAccessToMusic
 		if #available(iOS 15, *) {
 			// Don't confuse this with `self.tintColor`.
-			configuration.textProperties.color = UIColor.tintColor // As of iOS 15.1 beta 3, this dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
+			configuration.textProperties.color = UIColor.tintColor // As of iOS 15.1 developer beta 3, this dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
 		} else {
 			// Don't confuse this with `UIColor.tintColor`.
 			configuration.textProperties.color = self.tintColor // Dims and undims when we present and dismiss a modal view, but instantaneously and only after the animation completes.
-			// As of iOS 15.1 beta 3:
+			// As of iOS 15.1 developer beta 3:
 			// - Don't use `AccentColor.savedPreference().uiColor` or `window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
 			// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although it is dimmed if you change `window.tintColor` later.
 		}
