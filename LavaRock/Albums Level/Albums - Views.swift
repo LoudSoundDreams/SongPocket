@@ -8,8 +8,9 @@
 import UIKit
 
 final class AlbumCell: UITableViewCell {
-	@IBOutlet var textStackView: UIStackView!
+	@IBOutlet var albumStackView: UIStackView!
 	@IBOutlet var artworkImageView: UIImageView!
+	@IBOutlet var textStackView: UIStackView!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var releaseDateLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
@@ -18,6 +19,8 @@ final class AlbumCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true
+		
+		configureForTraitCollection()
 	}
 	
 	final func configure(
@@ -55,6 +58,31 @@ final class AlbumCell: UITableViewCell {
 		}
 		
 		accessibilityUserInputLabels = [title]
+	}
+	
+	private func configureForTraitCollection() {
+		if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+			albumStackView.axis = .vertical
+			albumStackView.alignment = .leading
+			albumStackView.spacing = UIStackView.spacingUseSystem
+		} else {
+			albumStackView.axis = .horizontal
+			albumStackView.alignment = .center
+			albumStackView.spacing = 12
+		}
+	}
+	
+	final override func traitCollectionDidChange(
+		_ previousTraitCollection: UITraitCollection?
+	) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		
+		if
+			previousTraitCollection?.preferredContentSizeCategory
+				!= traitCollection.preferredContentSizeCategory
+		{
+			configureForTraitCollection()
+		}
 	}
 }
 
