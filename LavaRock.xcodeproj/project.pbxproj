@@ -61,6 +61,7 @@
 		07865B252566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B242566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift */; };
 		078F65B62638CA75007FE538 /* extension String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078F65B52638CA75007FE538 /* extension String.swift */; };
 		078FDD0F2638872100779AF2 /* extension Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FDD0E2638872100779AF2 /* extension Array.swift */; };
+		07942DA1271CAD350030F14A /* LibraryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07942DA0271CAD350030F14A /* LibraryState.swift */; };
 		079B2C9524E227BF00A949FA /* MusicLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */; };
 		07A3FBCF258EB9B2000B450E /* extension UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A3FBCE258EB9B2000B450E /* extension UIFont.swift */; };
 		07A4A006269A7432007B0085 /* extension MPMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4A005269A7432007B0085 /* extension MPMediaItem.swift */; };
@@ -176,6 +177,7 @@
 		07865B242566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + NowPlayingDetermining.swift"; sourceTree = "<group>"; };
 		078F65B52638CA75007FE538 /* extension String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension String.swift"; sourceTree = "<group>"; };
 		078FDD0E2638872100779AF2 /* extension Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Array.swift"; sourceTree = "<group>"; };
+		07942DA0271CAD350030F14A /* LibraryState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryState.swift; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicLibraryManager.swift; sourceTree = "<group>"; };
 		07A3FBCE258EB9B2000B450E /* extension UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIFont.swift"; sourceTree = "<group>"; };
 		07A4A005269A7432007B0085 /* extension MPMediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension MPMediaItem.swift"; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 		07DC1B1E24F33C5100AAEEDB /* Collections Level */ = {
 			isa = PBXGroup;
 			children = (
+				07942DA0271CAD350030F14A /* LibraryState.swift */,
 				07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */,
 				0750C01626D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift */,
 				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
@@ -619,6 +622,7 @@
 				07A4F90A2519E7D20065C87E /* func createManagedObjects.swift in Sources */,
 				072FD02726C30BB90053369B /* func cleanUpManagedObjects.swift in Sources */,
 				07642C7E268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift in Sources */,
+				07942DA1271CAD350030F14A /* LibraryState.swift in Sources */,
 				078FDD0F2638872100779AF2 /* extension Array.swift in Sources */,
 				07FD6E122599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift in Sources */,
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
@@ -888,7 +892,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 223;
+				CURRENT_PROJECT_VERSION = 224;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -911,7 +915,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 223;
+				CURRENT_PROJECT_VERSION = 224;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

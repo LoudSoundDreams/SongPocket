@@ -244,10 +244,6 @@ extension LibraryViewModel {
 	
 	// MARK: - Editing
 	
-	func allowsEdit() -> Bool {
-		return !isEmpty()
-	}
-	
 	// MARK: Reordering
 	
 	mutating func moveItem(
@@ -271,21 +267,6 @@ extension LibraryViewModel {
 	
 	// MARK: Sorting
 	
-	// You should only be allowed to sort contiguous items within the same GroupOfLibraryItems.
-	func allowsSort(
-		selectedIndexPaths: [IndexPath]
-	) -> Bool {
-		guard !isEmpty() else {
-			return false
-		}
-		
-		if selectedIndexPaths.isEmpty {
-			return groups.count == 1
-		} else {
-			return selectedIndexPaths.isContiguousWithinSameSection()
-		}
-	}
-	
 	func itemsAndSectionAfterSorting(
 		selectedIndexPaths: [IndexPath],
 		sortOptionLocalizedName: String
@@ -297,10 +278,7 @@ extension LibraryViewModel {
 		let indexPathsToSort = selectedOrAllIndexPathsInOnlyGroup(
 			selectedIndexPaths: selectedIndexPaths)
 		
-		guard
-			allowsSort(selectedIndexPaths: selectedIndexPaths),
-			let section = indexPathsToSort.first?.section
-		else {
+		guard let section = indexPathsToSort.first?.section else {
 			return nil
 		}
 		
@@ -406,30 +384,13 @@ extension LibraryViewModel {
 	
 	// MARK: Moving to Top
 	
-	func allowsFloat(
-		selectedIndexPaths: [IndexPath]
-	) -> Bool {
-		guard !isEmpty() else {
-			return false
-		}
-		
-		if selectedIndexPaths.isEmpty {
-			return false
-		} else {
-			return selectedIndexPaths.isWithinSameSection()
-		}
-	}
-	
 	func itemsAndSectionAfterFloatingSelectedItemsToTop(
 		selectedIndexPaths: [IndexPath]
 	) -> (
 		items: [NSManagedObject],
 		section: Int
 	)? {
-		guard
-			allowsFloat(selectedIndexPaths: selectedIndexPaths),
-			let section = selectedIndexPaths.first?.section
-		else {
+		guard let section = selectedIndexPaths.first?.section else {
 			return nil
 		}
 		
@@ -456,22 +417,13 @@ extension LibraryViewModel {
 	
 	// MARK: Moving to Bottom
 	
-	func allowsSink(
-		selectedIndexPaths: [IndexPath]
-	) -> Bool {
-		return allowsFloat(selectedIndexPaths: selectedIndexPaths)
-	}
-	
 	func itemsAndSectionAfterSinkingSelectedItemsToBottom(
 		selectedIndexPaths: [IndexPath]
 	) -> (
 		items: [NSManagedObject],
 		section: Int
 	)? {
-		guard
-			allowsSink(selectedIndexPaths: selectedIndexPaths),
-			let section = selectedIndexPaths.first?.section
-		else {
+		guard let section = selectedIndexPaths.first?.section else {
 			return nil
 		}
 		

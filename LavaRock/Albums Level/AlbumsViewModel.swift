@@ -52,32 +52,6 @@ struct AlbumsViewModel: LibraryViewModel {
 		return group.container as! Collection
 	}
 	
-	// MARK: - Editing
-	
-	// MARK: Moving or Organizing
-	
-	func allowsMoveOrOrganize(
-		selectedIndexPaths: [IndexPath]
-	) -> Bool {
-		guard !isEmpty() else {
-			return false
-		}
-		
-		if selectedIndexPaths.isEmpty {
-			return groups.count == 1
-		} else {
-			return true
-		}
-	}
-	
-	// MARK: Starting Moving
-	
-	func allowsMove(
-		selectedIndexPaths: [IndexPath]
-	) -> Bool {
-		return allowsMoveOrOrganize(selectedIndexPaths: selectedIndexPaths)
-	}
-	
 	// MARK: - “Moving Albums” Mode
 	
 	// MARK: Ending Moving

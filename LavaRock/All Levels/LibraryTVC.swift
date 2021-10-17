@@ -302,12 +302,46 @@ class LibraryTVC: UITableViewController {
 	func refreshEditingButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
 		
-		editButtonItem.isEnabled = viewModel.allowsEdit()
+		editButtonItem.isEnabled = allowsEdit()
+		
+		sortButton.isEnabled = allowsSort()
+		floatToTopButton.isEnabled = allowsFloat()
+		sinkToBottomButton.isEnabled = allowsSink()
+	}
+	
+	private func allowsEdit() -> Bool {
+		return !viewModel.isEmpty()
+	}
+	
+	// You should only be allowed to sort contiguous items within the same GroupOfLibraryItems.
+	private func allowsSort() -> Bool {
+		guard !viewModel.isEmpty() else {
+			return false
+		}
 		
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		sortButton.isEnabled = viewModel.allowsSort(selectedIndexPaths: selectedIndexPaths)
-		floatToTopButton.isEnabled = viewModel.allowsFloat(selectedIndexPaths: selectedIndexPaths)
-		sinkToBottomButton.isEnabled = viewModel.allowsSink(selectedIndexPaths: selectedIndexPaths)
+		if selectedIndexPaths.isEmpty {
+			return viewModel.groups.count == 1
+		} else {
+			return selectedIndexPaths.isContiguousWithinSameSection()
+		}
+	}
+	
+	private func allowsFloat() -> Bool {
+		guard !viewModel.isEmpty() else {
+			return false
+		}
+		
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		if selectedIndexPaths.isEmpty {
+			return false
+		} else {
+			return selectedIndexPaths.isWithinSameSection()
+		}
+	}
+	
+	private func allowsSink() -> Bool {
+		return allowsFloat()
 	}
 	
 	// MARK: - Navigation

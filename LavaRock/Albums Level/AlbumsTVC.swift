@@ -99,12 +99,24 @@ final class AlbumsTVC:
 	final override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		
-		let albumsViewModel = viewModel as? AlbumsViewModel
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		moveOrOrganizeButton.isEnabled = albumsViewModel?.allowsMoveOrOrganize(
-			selectedIndexPaths: selectedIndexPaths) ?? false
-		moveButton.isEnabled = albumsViewModel?.allowsMove(
-			selectedIndexPaths: selectedIndexPaths) ?? false
+		moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
+		moveButton.isEnabled = allowsMove()
+	}
+	
+	private func allowsMoveOrOrganize() -> Bool {
+		guard !viewModel.isEmpty() else {
+			return false
+		}
+		
+		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
+			return viewModel.groups.count == 1
+		} else {
+			return true
+		}
+	}
+	
+	private func allowsMove() -> Bool {
+		return allowsMoveOrOrganize()
 	}
 	
 	// MARK: - Navigation

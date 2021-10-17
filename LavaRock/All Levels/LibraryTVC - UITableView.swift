@@ -49,7 +49,7 @@ extension LibraryTVC {
 	) -> Bool {
 		return viewModel.shouldBeginMultipleSelectionInteraction(at: indexPath)
 	}
-
+	
 	final override func tableView(
 		_ tableView: UITableView,
 		didBeginMultipleSelectionInteractionAt indexPath: IndexPath

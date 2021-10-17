@@ -36,10 +36,7 @@ extension AlbumsTVC {
 	
 	final func startMovingAlbums() {
 		
-		guard
-			let albumsViewModel = viewModel as? AlbumsViewModel,
-			albumsViewModel.allowsMove(selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
-		else { return }
+		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
 		
 		// Prepare a Collections view to present modally.
 		guard

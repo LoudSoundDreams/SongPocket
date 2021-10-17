@@ -13,7 +13,7 @@ extension CollectionsTVC {
 //	override func setEditing(_ editing: Bool, animated: Bool) {
 //		super.setEditing(editing, animated: animated)
 //
-//		let indexOfAllSection = CollectionsSection.all.rawValue
+//		let indexOfAllSection = Section.all.rawValue
 //		let allSection = tableView.indexPathsForRows(
 //			inSection: indexOfAllSection,
 //			firstRow: 0)
@@ -85,7 +85,6 @@ extension CollectionsTVC {
 	final func previewCombineSelectedCollectionsAndPresentDialog() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
-			(viewModel as? CollectionsViewModel)?.allowsCombine(selectedIndexPaths: selectedIndexPaths) ?? false,
 			!isPreviewingCombineCollections(), // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
 			// You must reset groupOfCollectionsBeforeCombining = nil during both reverting and committing.
 			let indexPathOfCombinedCollection = selectedIndexPaths.first
