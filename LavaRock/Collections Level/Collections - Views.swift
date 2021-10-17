@@ -74,7 +74,6 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 		
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.noCollectionsPlaceholder
-		configuration.textProperties.font = .preferredFont(forTextStyle: .body)
 		configuration.textProperties.color = .secondaryLabel
 		contentConfiguration = configuration
 		

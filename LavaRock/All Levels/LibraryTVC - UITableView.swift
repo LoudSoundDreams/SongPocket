@@ -42,14 +42,6 @@ extension LibraryTVC {
 	
 	// MARK: - Selecting
 	
-	// Overrides of this method should call super (this implementation).
-	override func tableView(
-		_ tableView: UITableView,
-		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
-	) -> Bool {
-		return viewModel.shouldBeginMultipleSelectionInteraction(at: indexPath)
-	}
-	
 	final override func tableView(
 		_ tableView: UITableView,
 		didBeginMultipleSelectionInteractionAt indexPath: IndexPath
@@ -59,17 +51,6 @@ extension LibraryTVC {
 			// During WWDC 2021, I did a lab in UIKit where the Apple engineer was pretty sure that this was a bug in UITableView.
 			// By checking isEditing first, we either prevent that or make it very rare.
 		}
-	}
-	
-	// Overrides of this method should call super (this implementation).
-	// To disable selection for a row, it's simpler to set cell.isUserInteractionEnabled = false.
-	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and shouldBeginMultipleSelectionInteractionAt, and swipe over a cell that doesn't allow user interaction, to select it too.
-	// Therefore, if you support multiple-selection interactions, you must use this method to disable selection for certain rows.
-	override func tableView(
-		_ tableView: UITableView,
-		willSelectRowAt indexPath: IndexPath
-	) -> IndexPath? {
-		return viewModel.willSelectRow(at: indexPath)
 	}
 	
 	// Overrides of this method should call super (this implementation).

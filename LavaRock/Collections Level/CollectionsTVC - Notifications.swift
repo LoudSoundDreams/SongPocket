@@ -33,8 +33,8 @@ extension CollectionsTVC {
 	
 	// MARK: - After Possible Playback State Change
 	
-	final override func refreshToReflectPlaybackState() {
-		super.refreshToReflectPlaybackState()
+	final override func reflectPlaybackState() {
+		super.reflectPlaybackState()
 		
 		if let viewModel = viewModel as? NowPlayingDetermining {
 			refreshNowPlayingIndicators(nowPlayingDetermining: viewModel)
@@ -48,17 +48,8 @@ extension CollectionsTVC {
 		} else {
 			prepareToRefreshLibraryItems()
 			
-			if isPreviewingCombineCollections() {
+			if isPreviewingCombineCollections {
 				fatalError()
-				
-				
-//				print("Reverting “Combine Collections”.")
-//				revertCombineCollections(
-//					from: [] //
-//				) {
-//					print("Reverted. Refreshing library items.")
-//					super.refreshLibraryItems()
-//				}
 			} else {
 				super.refreshLibraryItems()
 			}

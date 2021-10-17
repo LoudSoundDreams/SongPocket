@@ -78,14 +78,10 @@ extension CollectionsTVC {
 	
 	// MARK: - Combining
 	
-	final func isPreviewingCombineCollections() -> Bool {
-		return groupOfCollectionsBeforeCombining != nil
-	}
-	
 	final func previewCombineSelectedCollectionsAndPresentDialog() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
-			!isPreviewingCombineCollections(), // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
+			!isPreviewingCombineCollections, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
 			// You must reset groupOfCollectionsBeforeCombining = nil during both reverting and committing.
 			let indexPathOfCombinedCollection = selectedIndexPaths.first
 		else { return }

@@ -79,6 +79,7 @@ final class CollectionsTVC:
 		}
 	}
 	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
+	var isPreviewingCombineCollections: Bool { groupOfCollectionsBeforeCombining != nil }
 	
 	// MARK: "Moving Albums" Mode
 	
@@ -274,7 +275,7 @@ final class CollectionsTVC:
 		} else {
 			if didMoveAlbums {
 				// Replace this with refreshToReflectMusicLibrary()?
-				refreshToReflectPlaybackState()
+				reflectPlaybackState()
 				refreshLibraryItemsWhenVisible()
 				
 				didMoveAlbums = false

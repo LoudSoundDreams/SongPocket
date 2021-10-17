@@ -166,9 +166,7 @@ extension LibraryViewModel {
 	
 	// Identical to shouldBeginMultipleSelectionInteraction.
 	// Similar to willSelectRow.
-	func canEditRow(
-		at indexPath: IndexPath
-	) -> Bool {
+	func canEditRow(at indexPath: IndexPath) -> Bool {
 		let indexOfGroup = indexOfGroup(forSection: indexPath.section)
 		guard 0 <= indexOfGroup, indexOfGroup < groups.count else {
 			return false
@@ -207,9 +205,7 @@ extension LibraryViewModel {
 	
 	// Identical to canEditRow.
 	// Similar to willSelectRow.
-	func shouldBeginMultipleSelectionInteraction(
-		at indexPath: IndexPath
-	) -> Bool {
+	func shouldBeginMultipleSelectionInteraction(at indexPath: IndexPath) -> Bool {
 		let indexOfGroup = indexOfGroup(forSection: indexPath.section)
 		guard 0 <= indexOfGroup, indexOfGroup < groups.count else {
 			return false
@@ -225,9 +221,10 @@ extension LibraryViewModel {
 	}
 	
 	// Similar to canEditRow and shouldBeginMultipleSelectionInteraction.
-	func willSelectRow(
-		at indexPath: IndexPath
-	) -> IndexPath? {
+	// To disable selection for a row, it's simpler to set cell.isUserInteractionEnabled = false.
+	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and shouldBeginMultipleSelectionInteractionAt, and swipe over a cell that doesn't allow user interaction, to select it too.
+	// Therefore, if you support multiple-selection interactions, you must use this method to disable selection for certain rows.
+	func willSelectRow(at indexPath: IndexPath) -> IndexPath? {
 		let indexOfGroup = indexOfGroup(forSection: indexPath.section)
 		guard 0 <= indexOfGroup, indexOfGroup < groups.count else {
 			return nil

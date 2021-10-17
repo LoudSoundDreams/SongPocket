@@ -71,7 +71,7 @@ final class SongCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		trackNumberLabel.font = .bodyWithMonospacedNumbers
+		trackNumberLabel.font = .bodyWithMonospacedDigits
 		
 		accessibilityTraits.formUnion(.button)
 	}

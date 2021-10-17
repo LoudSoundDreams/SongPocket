@@ -249,9 +249,7 @@ extension CollectionsTVC {
 			case .noMusic:
 				return false
 			case .someMusic:
-				return super.tableView(
-					tableView,
-					shouldBeginMultipleSelectionInteractionAt: indexPath)
+				return viewModel.shouldBeginMultipleSelectionInteraction(at: indexPath)
 			}
 		}
 	}
@@ -270,7 +268,7 @@ extension CollectionsTVC {
 		case .noMusic:
 			break
 		case .someMusic:
-			return super.tableView(tableView, willSelectRowAt: indexPath)
+			return viewModel.willSelectRow(at: indexPath)
 		}
 		
 		return indexPath
