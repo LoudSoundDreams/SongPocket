@@ -187,7 +187,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Setting Items and Refreshing
 	
 	// Easy to override. Overrides of this method should not call super (this implementation).
-	func refreshToReflectNoItems() {
+	func reflectNoItems() {
 		deleteAllRowsThenExit()
 	}
 	
@@ -229,7 +229,7 @@ class LibraryTVC: UITableViewController {
 		viewModel.groups[indexOfGroup].setItems(newItems)
 		
 		guard !newItems.isEmpty else {
-			refreshToReflectNoItems()
+			reflectNoItems()
 			return
 		}
 		

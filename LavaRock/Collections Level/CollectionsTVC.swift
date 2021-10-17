@@ -57,16 +57,7 @@ final class CollectionsTVC:
 	}()
 	
 	var isAboutToSetItemsAndRefresh = false
-	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
-	
-	// MARK: "Moving Albums" Mode
-	
-	var albumMoverClipboard: AlbumMoverClipboard?
-	var didMoveAlbums = false
-	
-	// MARK: - Content State
-	
-	final func libraryState() -> LibraryState {
+	var libraryState: LibraryState {
 		if MPMediaLibrary.authorizationStatus() != .authorized {
 			return .allowAccess
 		}
@@ -87,18 +78,26 @@ final class CollectionsTVC:
 			}
 		}
 	}
+	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
+	
+	// MARK: "Moving Albums" Mode
+	
+	var albumMoverClipboard: AlbumMoverClipboard?
+	var didMoveAlbums = false
+	
+	// MARK: - Library State
 	
 	final func prepareToRefreshLibraryItems() {
-		if libraryState() == .loading || libraryState() == .noMusic {
-			isAboutToSetItemsAndRefresh = true // libraryState() is now .blank
+		if libraryState == .loading || libraryState == .noMusic {
+			isAboutToSetItemsAndRefresh = true // libraryState is now .blank
 			reflectLibraryState()
-			isAboutToSetItemsAndRefresh = false // WARNING: libraryState() is now .loading or .noMusic, but the UI doesn't reflect that.
+			isAboutToSetItemsAndRefresh = false // WARNING: libraryState is now .loading or .noMusic, but the UI doesn't reflect that.
 		}
 	}
 	
-	final override func refreshToReflectNoItems() {
+	final override func reflectNoItems() {
 		// isImportingChanges is now false
-		if libraryState() == .noMusic {
+		if libraryState == .noMusic {
 			reflectLibraryState()
 		}
 	}
@@ -109,7 +108,6 @@ final class CollectionsTVC:
 		let toDelete: [IndexPath]
 		let toInsert: [IndexPath]
 		let toReload: [IndexPath]
-		let animationForReload: UITableView.RowAnimation
 		
 //		let inAllSection = tableView.indexPathsForRows(
 //			inSection: Section.all.rawValue,
@@ -120,7 +118,7 @@ final class CollectionsTVC:
 			inSection: indexOfCollectionsSection,
 			firstRow: 0)
 		
-		switch libraryState() {
+		switch libraryState {
 			
 		case
 				.allowAccess, // Currently unused
@@ -136,19 +134,16 @@ final class CollectionsTVC:
 				toInsert = newInCollectionsSection
 //				toReload = inAllSection
 				toReload = []
-				animationForReload = .none
 			case 1:
 				toDelete = []
 				toInsert = []
 //				toReload = inAllSection + newInCollectionsSection
 				toReload = newInCollectionsSection
-				animationForReload = .fade
 			default:
 				toDelete = oldInCollectionsSection
 				toInsert = newInCollectionsSection
 //				toReload = inAllSection
 				toReload = []
-				animationForReload = .none
 			}
 			
 		case .blank:
@@ -156,14 +151,10 @@ final class CollectionsTVC:
 			toInsert = []
 //			toReload = inAllSection
 			toReload = []
-			animationForReload = .none
 			
 		case .noMusic:
-			toDelete = oldInCollectionsSection
 			
-//			toReload = inAllSection
-			toReload = []
-			animationForReload = .none
+			toDelete = oldInCollectionsSection
 			
 			let newNumberOfRowsInCollectionsSection = numberOfRows(forSection: indexOfCollectionsSection)
 			let newIndexPaths = Array(0 ..< newNumberOfRowsInCollectionsSection).map { indexOfRow in
@@ -171,23 +162,26 @@ final class CollectionsTVC:
 			}
 			toInsert = newIndexPaths
 			
+//			toReload = inAllSection
+			toReload = []
+			
 		case .someMusic: // Importing changes with existing Collections
 			toDelete = []
 			toInsert = []
 			toReload = []
-			animationForReload = .none
 			
 		}
 		
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: toDelete, with: .middle)
 			tableView.insertRows(at: toInsert, with: .middle)
+			let animationForReload: UITableView.RowAnimation = toReload.isEmpty ? .none : .fade
 			tableView.reloadRows(at: toReload, with: animationForReload)
 		} completion: { _ in
 			completion?()
 		}
 		
-		switch libraryState() {
+		switch libraryState {
 		case .allowAccess, .loading, .blank, .noMusic:
 			setEditing(false, animated: true)
 		case .someMusic:
@@ -229,7 +223,7 @@ final class CollectionsTVC:
 	private func integrateWithBuiltInMusicApp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		isImportingChanges = true // libraryState() is now .loading or .someMusic (updating)
+		isImportingChanges = true // libraryState is now .loading or .someMusic (updating)
 		reflectLibraryState {
 			MusicLibraryManager.shared.setUpAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes.
 			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
