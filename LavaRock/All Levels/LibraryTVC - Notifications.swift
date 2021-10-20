@@ -46,8 +46,6 @@ extension LibraryTVC {
 		NotificationCenter.default.removeObserver(self)
 	}
 	
-	// MARK: Responding
-	
 	@objc private func didImportChanges() {
 		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
 		refreshToReflectMusicLibrary()
@@ -91,7 +89,7 @@ extension LibraryTVC {
 		refreshLibraryItemsWhenVisible()
 	}
 	
-	// MARK: Refreshing Library Items
+	// MARK: - Refreshing Library Items
 	
 	final func refreshLibraryItemsWhenVisible() {
 		if view.window == nil {

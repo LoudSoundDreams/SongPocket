@@ -8,8 +8,6 @@
 import UIKit
 import StoreKit
 
-// MARK: - Accent Color Section
-
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AccentColorCell: UITableViewCell {
 	final var accentColor: AccentColor? = nil {
@@ -48,8 +46,6 @@ final class AccentColorCell: UITableViewCell {
 		configure()
 	}
 }
-
-// MARK: - Tip Jar Section
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipReloadCell: UITableViewCell {

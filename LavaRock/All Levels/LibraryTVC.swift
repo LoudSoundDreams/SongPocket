@@ -175,7 +175,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: Teardown
+	// MARK: - Teardown
 	
 	deinit {
 		endObservingNotifications()

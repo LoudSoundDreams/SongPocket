@@ -50,7 +50,19 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	// MARK: - Editing
 	
-	// MARK: Combining
+	// Return value: whether this method changed the Collection's title.
+	// Works for renaming an existing Collection, after combining Collections, and after making a new Collection.
+	func rename(
+		at indexPath: IndexPath,
+		proposedTitle: String?
+	) -> Bool {
+		guard let collection = item(at: indexPath) as? Collection else {
+			return false
+		}
+		
+		let didChangeTitle = collection.rename(toProposedTitle: proposedTitle)
+		return didChangeTitle
+	}
 	
 //	func isPreviewingCombineCollections() -> Bool {
 //		return groupOfCollectionsBeforeCombining != nil
@@ -84,22 +96,6 @@ struct CollectionsViewModel: LibraryViewModel {
 		indicesOfSelectedCollections.reversed().forEach { newItems.remove(at: $0) }
 		newItems.insert(combinedCollection, at: indexOfCombinedCollection)
 		return newItems
-	}
-	
-	// MARK: Renaming
-	
-	// Return value: whether this method changed the Collection's title.
-	// Works for renaming an existing Collection, after combining Collections, and after making a new Collection.
-	func rename(
-		at indexPath: IndexPath,
-		proposedTitle: String?
-	) -> Bool {
-		guard let collection = item(at: indexPath) as? Collection else {
-			return false
-		}
-		
-		let didChangeTitle = collection.rename(toProposedTitle: proposedTitle)
-		return didChangeTitle
 	}
 	
 	// MARK: - “Moving Albums” Mode

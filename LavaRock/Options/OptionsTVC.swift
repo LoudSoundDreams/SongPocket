@@ -25,4 +25,8 @@ final class OptionsTVC: UITableViewController {
 		}
 	}
 	
+	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
+		dismiss(animated: true)
+	}
+	
 }

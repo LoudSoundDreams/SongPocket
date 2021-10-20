@@ -164,7 +164,7 @@ extension MusicLibraryManager {
 		}
 	}
 	
-	// MARK: - Creating Containers
+	// MARK: Creating Containers
 	
 	private func newAlbumAndMaybeNewCollectionMade(
 		for newMediaItem: MPMediaItem,

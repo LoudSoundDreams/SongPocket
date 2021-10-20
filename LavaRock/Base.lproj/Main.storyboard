@@ -186,7 +186,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZA8-cG-C8X">
-                                            <rect key="frame" x="317.33333333333326" y="12.333333333333336" width="24" height="17.000000000000014"/>
+                                            <rect key="frame" x="317.33333333333331" y="12.333333333333336" width="24" height="17.000000000000014"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -358,7 +358,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XXR-SF-A9b">
-                                            <rect key="frame" x="317.33333333333326" y="58" width="24" height="16.666666666666671"/>
+                                            <rect key="frame" x="317.33333333333331" y="58" width="24" height="16.666666666666671"/>
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="kNY-CW-ua6">
                                             <rect key="frame" x="16" y="0.0" width="293.33333333333331" height="132.33333333333334"/>
@@ -423,7 +423,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Albums" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waM-mg-RNh">
-                                            <rect key="frame" x="128.33333333333337" y="35" width="118.66666666666666" height="30"/>
+                                            <rect key="frame" x="128.33333333333334" y="35" width="118.66666666666666" height="30"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                             <color key="textColor" systemColor="placeholderTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -538,7 +538,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="400" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAq-AF-bpj">
-                                            <rect key="frame" x="332.33333333333326" y="21" width="26.666666666666686" height="17"/>
+                                            <rect key="frame" x="332.33333333333331" y="21" width="26.666666666666686" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
@@ -561,7 +561,7 @@
                                             </subviews>
                                         </stackView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WdO-9k-h95">
-                                            <rect key="frame" x="300.33333333333326" y="21.333333333333332" width="24" height="16.666666666666668"/>
+                                            <rect key="frame" x="300.33333333333331" y="21.333333333333332" width="24" height="16.666666666666668"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -656,9 +656,10 @@
         <!--Tab Bar Controller-->
         <scene sceneID="ze3-Yp-Aak">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="Tab Bar C" automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bdc-Yk-4pi">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>

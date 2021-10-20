@@ -14,10 +14,11 @@ extension OptionsTVC {
 		case tipJar
 	}
 	
-	// MARK: - Events
-	
-	@IBAction func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
-		dismiss(animated: true)
+	final func refreshTipJarRows() {
+		let tipJarIndexPaths = tableView.indexPathsForRows(
+			inSection: OptionsSection.tipJar.rawValue,
+			firstRow: 0)
+		tableView.reloadRows(at: tipJarIndexPaths, with: .fade)
 	}
 	
 	// MARK: - All Sections
@@ -205,15 +206,6 @@ extension OptionsTVC {
 		PurchaseManager.shared.addToPaymentQueue(tipProduct)
 		
 		refreshTipJarRows()
-	}
-	
-	// MARK: Events
-	
-	final func refreshTipJarRows() {
-		let tipJarIndexPaths = tableView.indexPathsForRows(
-			inSection: OptionsSection.tipJar.rawValue,
-			firstRow: 0)
-		tableView.reloadRows(at: tipJarIndexPaths, with: .fade)
 	}
 	
 }
