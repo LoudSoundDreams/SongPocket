@@ -9,8 +9,6 @@ import MediaPlayer
 
 extension MPMediaItem {
 	
-	// MARK: - Properties
-	
 	// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown track numbers as 0.
 	private static let unknownTrackNumber = 0
 	

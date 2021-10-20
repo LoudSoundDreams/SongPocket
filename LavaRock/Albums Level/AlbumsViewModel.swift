@@ -54,8 +54,6 @@ struct AlbumsViewModel: LibraryViewModel {
 	
 	// MARK: - “Moving Albums” Mode
 	
-	// MARK: Ending Moving
-	
 	func itemsAfterMovingHere(
 		albumsWith albumIDs: [NSManagedObjectID],
 		indexOfGroup: Int //

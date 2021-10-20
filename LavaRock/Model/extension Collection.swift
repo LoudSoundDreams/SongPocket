@@ -23,8 +23,6 @@ extension Collection {
 		subsystem: "LavaRock.Collection",
 		category: .pointsOfInterest)
 	
-	// MARK: - Initializers
-	
 	convenience init(
 		for mediaItem: MPMediaItem,
 		afterAllExistingCollectionsCount numberOfExistingCollections: Int,
@@ -81,7 +79,7 @@ extension Collection {
 		return combinedCollection
 	}
 	
-	// MARK: - All Collections
+	// MARK: - All Instances
 	
 	// Similar to Album.allFetched and Song.allFetched.
 	static func allFetched(

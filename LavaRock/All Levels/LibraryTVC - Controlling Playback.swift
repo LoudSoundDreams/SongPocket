@@ -10,10 +10,7 @@ import MediaPlayer
 
 extension LibraryTVC {
 	
-	// MARK: - Events
-	
 	final func refreshPlaybackButtons() {
-		
 		let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
 		
 		func configurePlayButton() {
@@ -34,10 +31,7 @@ extension LibraryTVC {
 			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
 		}
 		
-		guard
-			MPMediaLibrary.authorizationStatus() == .authorized,
-			let player = sharedPlayer
-		else {
+		guard let player = sharedPlayer else {
 			configurePlayButton()
 			playbackButtons.forEach { $0.disableWithAccessibilityTrait() }
 			return
@@ -75,8 +69,6 @@ extension LibraryTVC {
 		nextSongButton.enableWithAccessibilityTrait()
 	}
 	
-	// MARK: - Controlling Playback
-	
 	final override func accessibilityPerformMagicTap() -> Bool {
 		guard sharedPlayer != nil else {
 			return false
@@ -90,9 +82,9 @@ extension LibraryTVC {
 		guard let player = sharedPlayer else { return }
 		
 		if player.playbackState == .playing {
-			player.pause()
+			pause()
 		} else {
-			player.play()
+			play()
 		}
 	}
 	

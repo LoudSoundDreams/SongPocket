@@ -13,8 +13,6 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	private init() {}
 	static let shared = MusicLibraryManager()
 	
-	// MARK: - Properties
-	
 	// For Instruments
 	private static let subsystemName = "LavaRock.MusicLibraryManager"
 	let importLog = OSLog(subsystem: subsystemName, category: "1. Main")
@@ -27,8 +25,6 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	private var library: MPMediaLibrary?
 	
-	// MARK: - Setup and Teardown
-	
 	final func setUpAndImportChanges() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
@@ -40,8 +36,6 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	deinit {
 		endGeneratingNotifications()
 	}
-	
-	// MARK: - Notifications
 	
 	private func beginGeneratingNotifications() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
@@ -61,8 +55,6 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		
 		library?.endGeneratingLibraryChangeNotifications()
 	}
-	
-	// MARK: Responding
 	
 	@objc private func mediaLibraryDidChange() {
 		importChanges()

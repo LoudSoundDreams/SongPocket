@@ -86,7 +86,7 @@ struct CollectionsViewModel: LibraryViewModel {
 		return newItems
 	}
 	
-	// MARK: - Renaming
+	// MARK: Renaming
 	
 	// Return value: whether this method changed the Collection's title.
 	// Works for renaming an existing Collection, after combining Collections, and after making a new Collection.
@@ -104,8 +104,6 @@ struct CollectionsViewModel: LibraryViewModel {
 	
 	// MARK: - “Moving Albums” Mode
 	
-	// MARK: Making New
-	
 	func itemsAfterMakingNewCollection(
 		suggestedTitle: String?,
 		indexOfNewCollection: Int
@@ -118,8 +116,6 @@ struct CollectionsViewModel: LibraryViewModel {
 		newItems.insert(newCollection, at: indexOfNewCollection)
 		return newItems
 	}
-	
-	// MARK: Deleting New
 	
 	func itemsAfterDeletingCollection(
 		indexOfCollection: Int

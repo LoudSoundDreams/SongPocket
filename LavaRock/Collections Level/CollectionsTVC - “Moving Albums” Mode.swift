@@ -11,8 +11,6 @@ import MediaPlayer
 
 extension CollectionsTVC {
 	
-	// MARK: - Making New Collection
-	
 	final func previewMakeNewCollectionAndPresentDialog() {
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,

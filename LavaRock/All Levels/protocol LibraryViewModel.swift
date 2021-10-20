@@ -241,8 +241,6 @@ extension LibraryViewModel {
 	
 	// MARK: - Editing
 	
-	// MARK: Reordering
-	
 	mutating func moveItem(
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath
@@ -261,8 +259,6 @@ extension LibraryViewModel {
 		destinationItems.insert(item, at: destinationIndexOfItem)
 		groups[destinationIndexOfGroup].setItems(destinationItems)
 	}
-	
-	// MARK: Sorting
 	
 	func itemsAndSectionAfterSorting(
 		selectedIndexPaths: [IndexPath],
@@ -379,8 +375,6 @@ extension LibraryViewModel {
 		}
 	}
 	
-	// MARK: Moving to Top
-	
 	func itemsAndSectionAfterFloatingSelectedItemsToTop(
 		selectedIndexPaths: [IndexPath]
 	) -> (
@@ -411,8 +405,6 @@ extension LibraryViewModel {
 		
 		return (newItems, section)
 	}
-	
-	// MARK: Moving to Bottom
 	
 	func itemsAndSectionAfterSinkingSelectedItemsToBottom(
 		selectedIndexPaths: [IndexPath]

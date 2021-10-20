@@ -9,8 +9,6 @@ import UIKit
 
 struct AccentColor: Equatable { // You can't make this an enum, because raw values for enum cases need to be literals.
 	
-	// MARK: - Types
-	
 	enum ValueCase: String, CaseIterable {
 		case strawberry = "Strawberry"
 		case tangerine = "Tangerine"
@@ -18,8 +16,6 @@ struct AccentColor: Equatable { // You can't make this an enum, because raw valu
 		case blueberry = "Blueberry"
 		case grape = "Grape"
 	}
-	
-	// MARK: - Properties
 	
 	let valueCase: ValueCase
 	let displayName: String
@@ -73,8 +69,6 @@ struct AccentColor: Equatable { // You can't make this an enum, because raw valu
 	}
 	
 	// MARK: - PRIVATE
-	
-	// MARK: - Properties
 	
 	private static let defaults = UserDefaults.standard
 	private static let defaultsKey = LRUserDefaultsKey.accentColorName.rawValue

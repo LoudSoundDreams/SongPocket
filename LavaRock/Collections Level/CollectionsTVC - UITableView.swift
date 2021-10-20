@@ -284,8 +284,8 @@ extension CollectionsTVC {
 		case .loading, .blank: // Should never run
 			return
 		case .noMusic:
-			if let musicURL = URL(string: "music://") {
-				UIApplication.shared.open(musicURL)
+			if let cell = tableView.cellForRow(at: indexPath) as? OpenMusicCell {
+				cell.didSelect()
 			}
 			tableView.deselectRow(at: indexPath, animated: true)
 		case .someMusic:

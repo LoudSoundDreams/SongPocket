@@ -18,7 +18,7 @@ final class AlbumsTVC:
 	
 	// MARK: - Properties
 	
-	// "Constants"
+	// Controls
 	private lazy var moveOrOrganizeButton = UIBarButtonItem(
 		title: LocalizedString.move,
 		menu: moveOrOrganizeMenu())
@@ -29,12 +29,12 @@ final class AlbumsTVC:
 			primaryAction: action)
 	}()
 	
-	// "Constants" for NoItemsBackgroundManager
+	// NoItemsBackgroundManager
 	lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
 	
 	// MARK: "Moving Albums" Mode
 	
-	// "Constants"
+	// Controls
 	private lazy var moveHereButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.moveAlbumsHere() }
 		let button = UIBarButtonItem(
@@ -56,8 +56,6 @@ final class AlbumsTVC:
 			[.reverse],
 		]
 	}
-	
-	// MARK: Setting Up UI
 	
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.

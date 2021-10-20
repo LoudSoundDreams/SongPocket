@@ -70,6 +70,8 @@
 		07A4F90F2519E8410065C87E /* func deleteManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */; };
 		07AE2AA4258C09D900C3A314 /* extension Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* extension Collection.swift */; };
 		07AF836726D007260081A298 /* protocol LibraryViewModelReflecting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AF836626D007260081A298 /* protocol LibraryViewModelReflecting.swift */; };
+		07B1EC40271FB7F600EA8E29 /* PlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */; };
+		07B1EC42271FBA4000EA8E29 /* extension URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC41271FBA4000EA8E29 /* extension URL.swift */; };
 		07C8CC76271281B70061A9AD /* OptionsTVC - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */; };
 		07CAB24724EA227F008AC34C /* extension Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* extension Song.swift */; };
 		07CD588926B35B300054598A /* extension CaseIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD588826B35B300054598A /* extension CaseIterable.swift */; };
@@ -186,6 +188,8 @@
 		07A4F90E2519E8410065C87E /* func deleteManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func deleteManagedObjects.swift"; sourceTree = "<group>"; };
 		07AE2AA3258C09D900C3A314 /* extension Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Collection.swift"; sourceTree = "<group>"; };
 		07AF836626D007260081A298 /* protocol LibraryViewModelReflecting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryViewModelReflecting.swift"; sourceTree = "<group>"; };
+		07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerVC.swift; sourceTree = "<group>"; };
+		07B1EC41271FBA4000EA8E29 /* extension URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension URL.swift"; sourceTree = "<group>"; };
 		07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC - Views.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
 		07CC4267268EC81C00D27E8C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
@@ -370,6 +374,7 @@
 				072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */,
 				07DC1B2124F33DF400AAEEDB /* Albums Level */,
 				070E194224F340C500B21307 /* Songs Level */,
+				07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */,
 			);
 			path = LavaRock;
 			sourceTree = "<group>";
@@ -397,6 +402,7 @@
 			children = (
 				07140604259D6958003CA92C /* extension UserDefaults.swift */,
 				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
+				07B1EC41271FBA4000EA8E29 /* extension URL.swift */,
 			);
 			path = "extensions to Foundation";
 			sourceTree = "<group>";
@@ -630,6 +636,7 @@
 				07865B252566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift in Sources */,
 				07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Moving Albums” Mode.swift in Sources */,
 				073E6A9225574B99003C84A5 /* NowPlayingIndicator.swift in Sources */,
+				07B1EC42271FBA4000EA8E29 /* extension URL.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* LibraryTVC - Editing.swift in Sources */,
 				0781F1FA25991B3300781CF8 /* OptionsTVC - UITableView.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumsTVC + AlbumMoverDelegate.swift in Sources */,
@@ -669,6 +676,7 @@
 				07A4A006269A7432007B0085 /* extension MPMediaItem.swift in Sources */,
 				07CAB24724EA227F008AC34C /* extension Song.swift in Sources */,
 				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
+				07B1EC40271FB7F600EA8E29 /* PlayerVC.swift in Sources */,
 				0706ABE124D947850090EB21 /* AlbumMoverClipboard.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				072017132557987E0019CA3E /* SongsTVC + NowPlayingDetermining.swift in Sources */,

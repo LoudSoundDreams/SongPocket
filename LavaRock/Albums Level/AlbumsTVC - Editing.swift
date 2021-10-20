@@ -10,8 +10,6 @@ import CoreData
 
 extension AlbumsTVC {
 	
-	// MARK: - Moving or Organizing
-	
 	final func moveOrOrganizeMenu() -> UIMenu {
 		let organizeAction = UIAction(
 			title: "Organize Into New Collections…", // TO DO: Localize
@@ -25,14 +23,10 @@ extension AlbumsTVC {
 		].reversed())
 	}
 	
-	// MARK: - Starting Organizing
-	
 	final func startOrganizingAlbums() {
 		
 		
 	}
-	
-	// MARK: - Starting Moving
 	
 	final func startMovingAlbums() {
 		

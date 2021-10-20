@@ -25,8 +25,6 @@ extension LibraryTVC {
 		// During WWDC 2021, I did a lab in UIKit where the Apple engineer said that this is the best practice for doing this.
 	}
 	
-	// MARK: - Sorting
-	
 	final func sortOptionsMenu() -> UIMenu {
 		let groupedChildren: [[UIAction]] = sortOptionsGrouped.map { sortOptionGroup in
 			let groupOfChildren = sortOptionGroup.map { sortOption in
@@ -59,8 +57,6 @@ extension LibraryTVC {
 		}
 	}
 	
-	// MARK: - Moving to Top
-	
 	final func floatSelectedItemsToTopOfSection() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		guard let (newItems, section) = viewModel.itemsAndSectionAfterFloatingSelectedItemsToTop(
@@ -75,8 +71,6 @@ extension LibraryTVC {
 			self.didChangeRowsOrSelectedRows()
 		}
 	}
-	
-	// MARK: - Moving to Bottom
 	
 	final func sinkSelectedItemsToBottomOfSection() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil

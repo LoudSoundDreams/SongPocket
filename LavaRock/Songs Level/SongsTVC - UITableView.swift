@@ -42,8 +42,6 @@ extension SongsTVC {
 		}
 	}
 	
-	// MARK: Album Artwork Cell
-	
 	private func albumArtworkCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let album = (viewModel as? SongsViewModel)?.container(forSection: indexPath.section) else {
 			return UITableViewCell()
@@ -60,8 +58,6 @@ extension SongsTVC {
 		return cell
 	}
 	
-	// MARK: Album Info Cell
-	
 	private func albumInfoCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let album = (viewModel as? SongsViewModel)?.container(forSection: indexPath.section) else {
 			return UITableViewCell()
@@ -77,8 +73,6 @@ extension SongsTVC {
 		cell.configure(with: album)
 		return cell
 	}
-	
-	// MARK: Song Cell
 	
 	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let song = viewModel.item(at: indexPath) as? Song else {
@@ -147,8 +141,10 @@ extension SongsTVC {
 	) {
 		if isEditing {
 		} else {
-			guard let song = viewModel.item(at: indexPath) as? Song else { return }
-			if let selectedCell = tableView.cellForRow(at: indexPath) {
+			if
+				let song = viewModel.item(at: indexPath) as? Song,
+				let selectedCell = tableView.cellForRow(at: indexPath)
+			{
 				showSongActions(for: song, popoverAnchorView: selectedCell)
 			}
 			// This leaves the row selected while the action sheet is onscreen, which I prefer.

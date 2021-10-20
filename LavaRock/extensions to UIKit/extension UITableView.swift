@@ -9,13 +9,11 @@ import UIKit
 
 extension UITableView {
 	
-	// MARK: - Asking About Selected IndexPaths
+	// MARK: - IndexPaths
 	
 	final var indexPathsForSelectedRowsNonNil: [IndexPath] {
 		return indexPathsForSelectedRows ?? []
 	}
-	
-	// MARK: - Getting IndexPaths
 	
 	final func allIndexPaths() -> [IndexPath] {
 		let sections = Array(0 ..< numberOfSections)
@@ -43,7 +41,7 @@ extension UITableView {
 		return result
 	}
 	
-	// MARK: - Taking Action on Rows
+	// MARK: - Rows
 	
 	final func deselectAllRows(animated: Bool) {
 		indexPathsForSelectedRowsNonNil.forEach {

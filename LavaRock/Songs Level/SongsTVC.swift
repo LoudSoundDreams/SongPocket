@@ -17,7 +17,7 @@ final class SongsTVC:
 	
 	// MARK: - Properties
 	
-	// "Constants" for NoItemsBackgroundManager
+	// NoItemsBackgroundManager
 	lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Songs Placeholder")
 	
 	// MARK: - Setup
@@ -30,8 +30,6 @@ final class SongsTVC:
 			[.reverse],
 		]
 	}
-	
-	// MARK: Setting Up UI
 	
 	final override func setUpUI() {
 		super.setUpUI()

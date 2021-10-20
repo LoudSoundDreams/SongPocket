@@ -22,7 +22,7 @@ final class CollectionsTVC:
 	
 	// MARK: - Properties
 	
-	// "Constants"
+	// Actions
 	lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
 		name: LocalizedString.rename,
 		actionHandler: renameFocusedCollectionHandler)
@@ -42,6 +42,8 @@ final class CollectionsTVC:
 			return false
 		}
 	}
+	
+	// Controls
 	@IBOutlet private var optionsButton: UIBarButtonItem!
 	private lazy var combineButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.previewCombineSelectedCollectionsAndPresentDialog() }
@@ -49,13 +51,8 @@ final class CollectionsTVC:
 			title: LocalizedString.combine,
 			primaryAction: action)
 	}()
-	private lazy var makeNewCollectionButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.previewMakeNewCollectionAndPresentDialog() }
-		return UIBarButtonItem(
-			systemItem: .add,
-			primaryAction: action)
-	}()
 	
+	// State
 	var isAboutToSetItemsAndRefresh = false
 	var libraryState: LibraryState {
 		if MPMediaLibrary.authorizationStatus() != .authorized {
@@ -83,6 +80,15 @@ final class CollectionsTVC:
 	
 	// MARK: "Moving Albums" Mode
 	
+	// Controls
+	private lazy var makeNewCollectionButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.previewMakeNewCollectionAndPresentDialog() }
+		return UIBarButtonItem(
+			systemItem: .add,
+			primaryAction: action)
+	}()
+	
+	// State
 	var albumMoverClipboard: AlbumMoverClipboard?
 	var didMoveAlbums = false
 	
@@ -230,8 +236,6 @@ final class CollectionsTVC:
 			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
 		}
 	}
-	
-	// MARK: Setting Up UI
 	
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.

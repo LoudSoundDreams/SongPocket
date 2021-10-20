@@ -79,7 +79,7 @@ extension SongsTVC {
 		present(actionSheet, animated: true)
 	}
 	
-	// MARK: - Play
+	// MARK: - Actions
 	
 	private func playAllStartingAtSelectedSong() {
 		guard
@@ -110,8 +110,6 @@ extension SongsTVC {
 		
 		sharedPlayer?.play() // Calls prepareToPlay auomatically
 	}
-	
-	// MARK: Enqueue
 	
 	private func enqueueAlbumStartingAtSelectedSong() {
 		guard

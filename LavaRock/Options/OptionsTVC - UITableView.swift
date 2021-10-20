@@ -9,8 +9,6 @@ import UIKit
 
 extension OptionsTVC {
 	
-	// MARK: - Types
-	
 	private enum OptionsSection: Int, CaseIterable {
 		case accentColor
 		case tipJar

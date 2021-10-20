@@ -110,6 +110,10 @@ final class OpenMusicCell: UITableViewCell {
 			configure()
 		}
 	}
+	
+	final func didSelect() {
+		URL.music?.open()
+	}
 }
 
 final class CollectionCell: UITableViewCell {

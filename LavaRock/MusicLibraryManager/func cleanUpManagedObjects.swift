@@ -88,7 +88,7 @@ extension MusicLibraryManager {
 		}
 	}
 	
-	// MARK: - Reindexing Albums
+	// MARK: - Reindexing
 	
 	private func reindexAlbums(
 		in collection: Collection,
@@ -120,8 +120,6 @@ extension MusicLibraryManager {
 		}
 		return albumsCopy
 	}
-	
-	// MARK: Reindexing Songs
 	
 	private func reindexSongs(in album: Album) {
 		var songsInAlbum = album.songs()

@@ -19,8 +19,6 @@ extension Song {
 		subsystem: "LavaRock.Song",
 		category: .pointsOfInterest)
 	
-	// MARK: - Initializers
-	
 	convenience init(
 		for mediaItem: MPMediaItem,
 		atEndOf album: Album,
@@ -60,7 +58,7 @@ extension Song {
 		container = album
 	}
 	
-	// MARK: - All Songs
+	// MARK: - All Instances
 	
 	// Similar to Collection.allFetched and Album.allFetched.
 	static func allFetched(

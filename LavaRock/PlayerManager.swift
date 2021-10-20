@@ -12,14 +12,8 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	
 	private init() {}
 	
-	// MARK: - NON-PRIVATE
-	
-	// MARK: - Properties
-	
 	private(set) static var player: MPMusicPlayerController?
 	private(set) static var songInPlayer: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
-	
-	// MARK: - Setup
 	
 	static func setUp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
@@ -28,8 +22,6 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		beginGeneratingNotifications()
 		refreshSongInPlayer()
 	}
-	
-	// MARK: - Miscellaneous
 	
 	static func refreshSongInPlayer() {
 		guard
@@ -59,11 +51,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	
 	// MARK: - PRIVATE
 	
-	// MARK: - Properties
-	
 	private static let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-	
-	// MARK: - Teardown
 	
 	deinit {
 		Self.endGeneratingNotifications()

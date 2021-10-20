@@ -10,18 +10,18 @@ import MediaPlayer
 
 final class AlbumMoverClipboard { // This is a class and not a struct because we use it to share information.
 	
-	// MARK: - Properties
-	
+	// Static
 	static let indexOfNewCollection = 0
 	static let albumMetadataKeyPathsForSuggestingCollectionTitle = [
 		// Order matters. First, we'll see if all the Albums have the same album artist; if they don't, then we'll try the next case, and so on.
 		\MPMediaItem.albumArtist,
 	]
 	
+	// Instance
 	final let idOfSourceCollection: NSManagedObjectID
 	final let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	
-	// "Constants"
+	// Helpers
 	final var navigationItemPrompt: String {
 		let formatString = LocalizedString.formatChooseACollectionPrompt
 		let number = idsOfAlbumsBeingMoved.count
@@ -31,10 +31,9 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	}
 	final weak var delegate: AlbumMoverDelegate?
 	
+	// State
 	final var didAlreadyMakeNewCollection = false
 	final var didAlreadyCommitMoveAlbums = false
-	
-	// MARK: - Methods
 	
 	init(
 		idOfSourceCollection: NSManagedObjectID,
@@ -45,8 +44,6 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		self.idsOfAlbumsBeingMoved = idsOfAlbumsBeingMoved
 		self.delegate = delegate
 	}
-	
-	// MARK: - Suggesting Title for New Collection
 	
 	final func suggestedCollectionTitle(
 		notMatching existingTitles: Set<String>,

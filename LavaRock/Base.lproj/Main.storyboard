@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -99,7 +101,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oIe-eH-Gmx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6018" y="-601"/>
+            <point key="canvasLocation" x="6961" y="-655"/>
         </scene>
         <!--Collections-->
         <scene sceneID="X0R-Et-kVe">
@@ -184,7 +186,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZA8-cG-C8X">
-                                            <rect key="frame" x="317.33333333333331" y="12.333333333333336" width="24" height="17.000000000000014"/>
+                                            <rect key="frame" x="317.33333333333326" y="12.333333333333336" width="24" height="17.000000000000014"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -269,13 +271,13 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Toq-AT-hvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6018.3999999999996" y="193.5960591133005"/>
+            <point key="canvasLocation" x="6960.8000000000002" y="193.5960591133005"/>
         </scene>
         <!--Collections-->
         <scene sceneID="Ha5-Ct-70h">
             <objects>
                 <navigationController storyboardIdentifier="Collections NC" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="YiT-J8-VtB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collections" image="archivebox.fill" catalog="system" id="48j-Zp-q5X"/>
+                    <tabBarItem key="tabBarItem" title="Collections" image="square.stack.fill" catalog="system" id="48j-Zp-q5X"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uLz-8K-DqV">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
@@ -292,7 +294,52 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1lQ-Rz-Im1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
+            <point key="canvasLocation" x="6109.6000000000004" y="193.5960591133005"/>
+        </scene>
+        <!--Player-->
+        <scene sceneID="cl4-Xv-0cf">
+            <objects>
+                <viewController id="OA4-QZ-1pA" customClass="PlayerVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9gW-kt-mSP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cod-D3-acc">
+                                <rect key="frame" x="61.333333333333329" y="269.66666666666663" width="252.33333333333337" height="277.66666666666663"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="play.fill" catalog="system" symbolScale="default"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="288"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Npg-CN-dfQ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="cod-D3-acc" firstAttribute="centerX" secondItem="Npg-CN-dfQ" secondAttribute="centerX" id="ERB-5Z-d6i"/>
+                            <constraint firstItem="cod-D3-acc" firstAttribute="centerY" secondItem="Npg-CN-dfQ" secondAttribute="centerY" id="HDc-V7-9sN"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Player" id="4UM-VT-l36">
+                        <barButtonItem key="leftBarButtonItem" title="Clear" id="9dq-pP-MYY">
+                            <connections>
+                                <action selector="clearRecents:" destination="OA4-QZ-1pA" id="nUr-Nh-8OB"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="arrow.up.forward.square" catalog="system" id="ZcH-nq-Bjj">
+                            <connections>
+                                <action selector="openMusic:" destination="OA4-QZ-1pA" id="99Z-4i-XED"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="playPauseButton" destination="cod-D3-acc" id="Tqv-fC-ZcS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0RZ-8F-INt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6961" y="1038"/>
         </scene>
         <!--Placeholder Albums View Title-->
         <scene sceneID="27e-fe-8g7">
@@ -311,7 +358,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XXR-SF-A9b">
-                                            <rect key="frame" x="317.33333333333331" y="58" width="24" height="16.666666666666671"/>
+                                            <rect key="frame" x="317.33333333333326" y="58" width="24" height="16.666666666666671"/>
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="kNY-CW-ua6">
                                             <rect key="frame" x="16" y="0.0" width="293.33333333333331" height="132.33333333333334"/>
@@ -376,7 +423,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Albums" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waM-mg-RNh">
-                                            <rect key="frame" x="128.33333333333334" y="35" width="118.66666666666666" height="30"/>
+                                            <rect key="frame" x="128.33333333333337" y="35" width="118.66666666666666" height="30"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                             <color key="textColor" systemColor="placeholderTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -406,7 +453,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DLy-Uy-9MG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="GFi-fJ-75x" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6727.1999999999998" y="193.5960591133005"/>
+            <point key="canvasLocation" x="7669.6000000000004" y="193.5960591133005"/>
         </scene>
         <!--Placeholder Songs View Title-->
         <scene sceneID="qH4-7z-FvM">
@@ -491,7 +538,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="400" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="888" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAq-AF-bpj">
-                                            <rect key="frame" x="332.33333333333331" y="21" width="26.666666666666686" height="17"/>
+                                            <rect key="frame" x="332.33333333333326" y="21" width="26.666666666666686" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
@@ -514,7 +561,7 @@
                                             </subviews>
                                         </stackView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WdO-9k-h95">
-                                            <rect key="frame" x="300.33333333333331" y="21.333333333333332" width="24" height="16.666666666666668"/>
+                                            <rect key="frame" x="300.33333333333326" y="21.333333333333332" width="24" height="16.666666666666668"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -586,7 +633,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hsb-JF-X0J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="gme-PH-Cgo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="7432.8000000000002" y="192.85714285714286"/>
+            <point key="canvasLocation" x="8375.2000000000007" y="192.85714285714286"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="z3s-Xj-IYX">
@@ -604,12 +651,51 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6MC-5z-aRG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5167" y="-601"/>
+            <point key="canvasLocation" x="6110" y="-655"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="ze3-Yp-Aak">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bdc-Yk-4pi">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="FoW-M4-bXT"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="COP-4z-pT2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
+        </scene>
+        <!--Player-->
+        <scene sceneID="esw-Ah-g0b">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Player" image="playpause.fill" catalog="system" id="Znw-JR-K00"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Dxa-wg-csy">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="OA4-QZ-1pA" kind="relationship" relationship="rootViewController" id="Oih-IS-C86"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XsM-y7-fuq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6110" y="1039"/>
         </scene>
     </scenes>
     <resources>
-        <image name="archivebox.fill" catalog="system" width="128" height="106"/>
+        <image name="arrow.up.forward.square" catalog="system" width="128" height="114"/>
+        <image name="play.fill" catalog="system" width="116" height="128"/>
+        <image name="playpause.fill" catalog="system" width="128" height="70"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>
+        <image name="square.stack.fill" catalog="system" width="113" height="128"/>
         <systemColor name="placeholderTextColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

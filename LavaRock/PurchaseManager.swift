@@ -17,10 +17,6 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	
 	private override init() {}
 	
-	// MARK: - NON-PRIVATE
-	
-	// MARK: - Types
-	
 	enum TipStatus {
 		case notYetFirstLoaded
 		case loading
@@ -29,8 +25,6 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 		case confirming
 	}
 	
-	// MARK: - Properties
-	
 	static let shared = PurchaseManager() // We can't make everything in this class static, because StoreKit only works with instances, not types.
 	
 	private(set) lazy var tipStatus: TipStatus = .notYetFirstLoaded
@@ -38,13 +32,9 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	private(set) lazy var tipPriceFormatter: NumberFormatter? = nil
 	weak var tipDelegate: PurchaseManagerTipDelegate?
 	
-	// MARK: - Setup
-	
 	final func beginObservingPaymentTransactions() {
 		SKPaymentQueue.default().add(self) // We can't make this method static, because StoreKit needs an instance here, not a type.
 	}
-	
-	// MARK: - Miscellaneous
 	
 	final func requestAllSKProducts() {
 		tipStatus = .loading
@@ -72,19 +62,13 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	
 	// MARK: - PRIVATE
 	
-	// MARK: - Types
-	
 	private enum ProductIdentifier: String, CaseIterable {
 		case tip = "com.loudsounddreams.LavaRock.tip"
 	}
 	
-	// MARK: - Properties
-	
 	private lazy var savedSKProductsRequest: SKProductsRequest? = nil
 	// For testing only
 //	private lazy var isTestingDidFailToReceiveAnySKProducts = true
-	
-	// MARK: - Teardown
 	
 	deinit {
 		endObservingPaymentTransactions()
@@ -95,8 +79,6 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	}
 	
 }
-
-// MARK: - SKProductsRequestDelegate
 
 extension PurchaseManager: SKProductsRequestDelegate {
 	
@@ -157,8 +139,6 @@ extension PurchaseManager: SKProductsRequestDelegate {
 	}
 	
 }
-
-// MARK: SKPaymentTransasctionObserver
 
 extension PurchaseManager: SKPaymentTransactionObserver {
 	

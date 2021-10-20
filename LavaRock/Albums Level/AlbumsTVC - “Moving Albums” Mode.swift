@@ -10,8 +10,6 @@ import CoreData
 
 extension AlbumsTVC {
 	
-	// MARK: - Ending Moving
-	
 	final func moveAlbumsHere() {
 		
 		guard

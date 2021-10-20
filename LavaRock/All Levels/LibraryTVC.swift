@@ -12,8 +12,6 @@ import MediaPlayer
 
 class LibraryTVC: UITableViewController {
 	
-	// MARK: - Types
-	
 	enum SortOption {
 		// For Collections only
 		case title
@@ -49,56 +47,30 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: Subclasses Should Customize
 	
-	// "Constants"
-	var editingModeToolbarButtons = [UIBarButtonItem]()
-	var sortOptionsGrouped = [[SortOption]]()
-	
-	lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
+	// Data
+	final lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
 		let mainContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		return CollectionsViewModel(
 			context: mainContext,
 			reflector: self)
 	}()
 	
+	// Controls
+	final var editingModeToolbarButtons = [UIBarButtonItem]()
+	final var sortOptionsGrouped = [[SortOption]]()
+	
 	// MARK: Subclasses Can Optionally Customize
 	
-	// "Constants"
-	var viewingModeTopLeftButtons = [UIBarButtonItem]()
+	// Controls
+	final var viewingModeTopLeftButtons = [UIBarButtonItem]()
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
-	lazy var topRightButtons = [editButtonItem]
-	lazy var viewingModeToolbarButtons = playbackButtons
+	final lazy var topRightButtons = [editButtonItem]
+	final lazy var viewingModeToolbarButtons = playbackButtons
 	
 	// MARK: Subclasses Should Not Customize
 	
-	// "Constants"
-	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
-	lazy var sortButton = UIBarButtonItem(
-		title: LocalizedString.sort,
-		menu: sortOptionsMenu())
-	lazy var floatToTopButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.floatSelectedItemsToTopOfSection() }
-		let button = UIBarButtonItem(
-			image: UIImage.floatToTopSymbol,
-			primaryAction: action)
-		button.accessibilityLabel = LocalizedString.moveToTop
-		return button
-	}()
-	lazy var sinkToBottomButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.sinkSelectedItemsToBottomOfSection() }
-		let button = UIBarButtonItem(
-			image: UIImage.sinkToBottomSymbol,
-			primaryAction: action)
-		button.accessibilityLabel = LocalizedString.moveToBottom
-		return button
-	}()
-	lazy var cancelMoveAlbumsButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.dismiss(animated: true) }
-		return UIBarButtonItem(
-			systemItem: .cancel,
-			primaryAction: action)
-	}()
-	
-	// "Constants" for controlling playback
+	// Playback
+	final var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	final lazy var playbackButtons = [
 		previousSongButton, .flexibleSpace(),
 		rewindButton, .flexibleSpace(),
@@ -125,7 +97,7 @@ class LibraryTVC: UITableViewController {
 	}()
 	final lazy var playPauseButton = UIBarButtonItem()
 	final lazy var nextSongButton: UIBarButtonItem = {
-	let action = UIAction { _ in self.goToNextSong() }
+		let action = UIAction { _ in self.goToNextSong() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
 			primaryAction: action)
@@ -134,10 +106,37 @@ class LibraryTVC: UITableViewController {
 		return button
 	}()
 	
-	// Variables
-	var isImportingChanges = false
-	var needsRefreshLibraryItemsOnViewDidAppear = false
-	var isAnimatingDuringSetItemsAndRefresh = 0
+	// Controls
+	final lazy var sortButton = UIBarButtonItem(
+		title: LocalizedString.sort,
+		menu: sortOptionsMenu())
+	final lazy var floatToTopButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.floatSelectedItemsToTopOfSection() }
+		let button = UIBarButtonItem(
+			image: UIImage.floatToTopSymbol,
+			primaryAction: action)
+		button.accessibilityLabel = LocalizedString.moveToTop
+		return button
+	}()
+	final lazy var sinkToBottomButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.sinkSelectedItemsToBottomOfSection() }
+		let button = UIBarButtonItem(
+			image: UIImage.sinkToBottomSymbol,
+			primaryAction: action)
+		button.accessibilityLabel = LocalizedString.moveToBottom
+		return button
+	}()
+	final lazy var cancelMoveAlbumsButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.dismiss(animated: true) }
+		return UIBarButtonItem(
+			systemItem: .cancel,
+			primaryAction: action)
+	}()
+	
+	// State
+	final var isImportingChanges = false
+	final var needsRefreshLibraryItemsOnViewDidAppear = false
+	final var isAnimatingDuringSetItemsAndRefresh = 0
 	
 	// MARK: - Setup
 	
@@ -151,8 +150,6 @@ class LibraryTVC: UITableViewController {
 		beginObservingNotifications()
 		setUpUI()
 	}
-	
-	// MARK: Setting Up UI
 	
 	func setUpUI() {
 		if #available(iOS 15, *) {

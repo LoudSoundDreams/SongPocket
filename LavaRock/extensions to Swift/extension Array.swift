@@ -45,8 +45,6 @@ extension Array {
 			predicate: predicate)
 	}
 	
-	// MARK: Diffing
-	
 	func indicesOfChanges(
 		toMatch newArray: [Element],
 		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
@@ -91,8 +89,6 @@ extension Array {
 		)
 	}
 	
-	// MARK: Sorting
-	
 	func sortedMaintainingOrderWhen(
 		areEqual: (Element, Element) -> Bool,
 		areInOrder: (Element, Element) -> Bool
@@ -107,7 +103,7 @@ extension Array {
 		return sortedEnumerated.map { $0.element }
 	}
 	
-	// MARK: - Sorting
+	// MARK: Miscellaneous
 	
 	func sortedStably() -> Self
 	where Element: Comparable
@@ -126,7 +122,7 @@ extension Array {
 		}
 	}
 	
-	// MARK: - Element == IndexPath
+	// MARK: Element == IndexPath
 	
 	// Returns whether the IndexPaths form a block of rows all next to each other in the same section. You can provide the IndexPaths in any order.
 	func isContiguousWithinSameSection() -> Bool
