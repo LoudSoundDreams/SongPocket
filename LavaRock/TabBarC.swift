@@ -26,13 +26,6 @@ final class TabBarC: UITabBarController {
 		
 		PlayerManager.addObserver(self)
 		
-		// `PlayerManager.player` is `nil` until `CollectionsTVC` makes `PlayerManager` set it up.
-//		NotificationCenter.default.addObserver(
-//			self,
-//			selector: #selector(playerManagerDidSetUp),
-//			name: Notification.Name.LRPlayerManagerDidSetUp,
-//			object: nil)
-		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		NotificationCenter.default.addObserver(
@@ -42,16 +35,9 @@ final class TabBarC: UITabBarController {
 			object: nil)
 	}
 	
-//	@objc private func playerManagerDidSetUp() {
-//		reflectPlaybackState()
-//	}
-	
 	@objc private func playbackStateMaybeDidChange() {
 		reflectPlaybackState()
 	}
-	
-	private let notPlayingImage = UIImage(systemName: "speaker.fill")
-	private let playingImage = UIImage(systemName: "speaker.wave.2.fill")
 	
 	private func reflectPlaybackState() {
 		guard
@@ -65,12 +51,16 @@ final class TabBarC: UITabBarController {
 			tabBarItem.image = notPlayingImage
 		}
 	}
+	private let notPlayingImage = UIImage(systemName: "speaker.fill")
+	private let playingImage = UIImage(systemName: "speaker.wave.2.fill")
 	
 }
 
 extension TabBarC: PlayerManagerObserving {
 	
+	// `PlayerManager.player` is `nil` until `CollectionsTVC` makes `PlayerManager` set it up.
 	func playerManagerDidSetUp() {
+		beginObservingNotifications()
 		reflectPlaybackState()
 	}
 	

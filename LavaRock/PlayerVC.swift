@@ -12,6 +12,7 @@ final class PlayerVC: UIViewController {
 	
 	// Controls
 	@IBOutlet private var playPauseButton: UIButton!
+	@IBOutlet private var rewindButton: UIButton!
 	
 	private var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	
@@ -20,14 +21,26 @@ final class PlayerVC: UIViewController {
 		
 		beginObservingNotifications()
 		
+		let rewindAction = UIAction { _ in self.rewind() }
+		rewindButton.addAction(rewindAction, for: .touchUpInside)
+		rewindButton.setImage(rewindImage, for: .normal)
+		
 		let togglePlayPauseAction = UIAction { _ in self.togglePlayPause() }
 		playPauseButton.addAction(togglePlayPauseAction, for: .touchUpInside)
 		
 		reflectPlaybackState()
 	}
+	private let rewindImage: UIImage? = {
+		UIImage(
+			systemName: "arrow.counterclockwise.circle.fill",
+			withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 48))
+	}()
 	
 	private func beginObservingNotifications() {
+		PlayerManager.removeObserver(self)
 		NotificationCenter.default.removeObserver(self)
+		
+		PlayerManager.addObserver(self)
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
@@ -48,14 +61,21 @@ final class PlayerVC: UIViewController {
 		} else {
 			playPauseButton.setImage(playImage, for: .normal)
 		}
+		
+		rewindButton.isEnabled = sharedPlayer != nil
+		playPauseButton.isEnabled = sharedPlayer != nil
 	}
 	private lazy var playImage: UIImage? = {
-		UIImage(systemName: "play.fill", withConfiguration: giantSymbolConfiguration)
+		UIImage(systemName: "play.fill", withConfiguration: playPauseSymbolConfiguration)
 	}()
 	private lazy var pauseImage: UIImage? = {
-		UIImage(systemName: "pause.fill", withConfiguration: giantSymbolConfiguration)
+		UIImage(systemName: "pause.fill", withConfiguration: playPauseSymbolConfiguration)
 	}()
-	private let giantSymbolConfiguration = UIImage.SymbolConfiguration.init(pointSize: 288)
+	private let playPauseSymbolConfiguration = UIImage.SymbolConfiguration.init(pointSize: 96)
+	
+	private func rewind() {
+		sharedPlayer?.currentPlaybackTime = 0
+	}
 	
 	private func togglePlayPause() {
 		if sharedPlayer?.playbackState == .playing {
@@ -65,13 +85,23 @@ final class PlayerVC: UIViewController {
 		}
 	}
 	
+	@IBAction func clearRecents(_ sender: UIBarButtonItem) {
+		
+		
+	}
+	
 	@IBAction func openMusic(_ sender: UIBarButtonItem) {
 		URL.music?.open()
 	}
 	
-	@IBAction func clearRecents(_ sender: UIBarButtonItem) {
-		
-		
+}
+
+extension PlayerVC: PlayerManagerObserving {
+	
+	// `PlayerManager.player` is `nil` until `CollectionsTVC` makes `PlayerManager` set it up.
+	func playerManagerDidSetUp() {
+		beginObservingNotifications()
+		reflectPlaybackState()
 	}
 	
 }

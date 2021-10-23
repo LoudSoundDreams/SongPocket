@@ -17,11 +17,9 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	private init() {}
 	
 	private static var observers = [PlayerManagerObserving]()
-	
 	static func addObserver(_ observer: PlayerManagerObserving) {
 		observers.append(observer)
 	}
-	
 	static func removeObserver(_ observer: PlayerManagerObserving) {
 		if let indexOfMatchingObserver = observers.firstIndex(where: { $0 === observer }) {
 			observers.remove(at: indexOfMatchingObserver)
@@ -37,10 +35,6 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		player = .systemMusicPlayer
 		beginGeneratingNotifications()
 		refreshSongInPlayer()
-		
-//		NotificationCenter.default.post(
-//			Notification(name: .LRPlayerManagerDidSetUp)
-//		)
 		
 		observers.forEach { $0.playerManagerDidSetUp() }
 	}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jlm-2z-OVs">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -285,7 +285,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="j5X-IY-plX">
-                        <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                        <rect key="frame" x="0.0" y="680" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -296,7 +296,7 @@
             </objects>
             <point key="canvasLocation" x="6109.6000000000004" y="193.5960591133005"/>
         </scene>
-        <!--Now Playing-->
+        <!--Player-->
         <scene sceneID="cl4-Xv-0cf">
             <objects>
                 <viewController id="OA4-QZ-1pA" customClass="PlayerVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -305,12 +305,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cod-D3-acc">
-                                <rect key="frame" x="61.333333333333329" y="269.66666666666663" width="252.33333333333337" height="277.66666666666663"/>
+                                <rect key="frame" x="156" y="578" width="63.333333333333343" height="69.666666666666629"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal">
-                                    <imageReference key="image" image="play.fill" catalog="system" symbolScale="default"/>
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="288"/>
+                                    <imageReference key="image" image="play.fill" catalog="system"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="72"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tJY-K3-GqY">
+                                <rect key="frame" x="166.66666666666666" y="385.66666666666669" width="42" height="41"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="arrow.counterclockwise.circle.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="36"/>
                                 </state>
                             </button>
                         </subviews>
@@ -318,16 +326,18 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="cod-D3-acc" firstAttribute="centerX" secondItem="Npg-CN-dfQ" secondAttribute="centerX" id="ERB-5Z-d6i"/>
-                            <constraint firstItem="cod-D3-acc" firstAttribute="centerY" secondItem="Npg-CN-dfQ" secondAttribute="centerY" id="HDc-V7-9sN"/>
+                            <constraint firstItem="cod-D3-acc" firstAttribute="centerY" secondItem="Npg-CN-dfQ" secondAttribute="centerY" multiplier="1.5" id="HDc-V7-9sN"/>
+                            <constraint firstItem="tJY-K3-GqY" firstAttribute="centerY" secondItem="9gW-kt-mSP" secondAttribute="centerY" id="eUC-WY-8Yp"/>
+                            <constraint firstItem="tJY-K3-GqY" firstAttribute="centerX" secondItem="9gW-kt-mSP" secondAttribute="centerX" id="hyI-vE-2Mr"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Now Playing" id="4UM-VT-l36">
+                    <navigationItem key="navigationItem" title="Player" id="4UM-VT-l36">
                         <barButtonItem key="leftBarButtonItem" title="Clear" id="9dq-pP-MYY">
                             <connections>
                                 <action selector="clearRecents:" destination="OA4-QZ-1pA" id="nUr-Nh-8OB"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="arrow.up.forward.square" catalog="system" id="ZcH-nq-Bjj">
+                        <barButtonItem key="rightBarButtonItem" title="Music" id="ZcH-nq-Bjj">
                             <connections>
                                 <action selector="openMusic:" destination="OA4-QZ-1pA" id="99Z-4i-XED"/>
                             </connections>
@@ -335,6 +345,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="playPauseButton" destination="cod-D3-acc" id="Tqv-fC-ZcS"/>
+                        <outlet property="rewindButton" destination="tJY-K3-GqY" id="P29-H5-57Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0RZ-8F-INt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -664,18 +675,19 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="8LQ-72-5CR"/>
+                        <segue destination="YiT-J8-VtB" kind="relationship" relationship="viewControllers" id="29G-MT-PcW"/>
+                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="8aV-6h-A1b"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="COP-4z-pT2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
         </scene>
-        <!--Now Playing-->
+        <!--Player-->
         <scene sceneID="esw-Ah-g0b">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Now Playing" image="speaker.fill" catalog="system" id="Znw-JR-K00"/>
+                    <tabBarItem key="tabBarItem" title="Player" image="speaker.fill" catalog="system" id="Znw-JR-K00"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Dxa-wg-csy">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -692,7 +704,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.up.forward.square" catalog="system" width="128" height="114"/>
+        <image name="arrow.counterclockwise.circle.fill" catalog="system" width="128" height="121"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="speaker.fill" catalog="system" width="128" height="128"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>
