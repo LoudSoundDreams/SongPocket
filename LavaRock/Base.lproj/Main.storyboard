@@ -296,7 +296,7 @@
             </objects>
             <point key="canvasLocation" x="6109.6000000000004" y="193.5960591133005"/>
         </scene>
-        <!--Player-->
+        <!--Now Playing-->
         <scene sceneID="cl4-Xv-0cf">
             <objects>
                 <viewController id="OA4-QZ-1pA" customClass="PlayerVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -321,7 +321,7 @@
                             <constraint firstItem="cod-D3-acc" firstAttribute="centerY" secondItem="Npg-CN-dfQ" secondAttribute="centerY" id="HDc-V7-9sN"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Player" id="4UM-VT-l36">
+                    <navigationItem key="navigationItem" title="Now Playing" id="4UM-VT-l36">
                         <barButtonItem key="leftBarButtonItem" title="Clear" id="9dq-pP-MYY">
                             <connections>
                                 <action selector="clearRecents:" destination="OA4-QZ-1pA" id="nUr-Nh-8OB"/>
@@ -653,10 +653,10 @@
             </objects>
             <point key="canvasLocation" x="6110" y="-655"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab BarC-->
         <scene sceneID="ze3-Yp-Aak">
             <objects>
-                <tabBarController storyboardIdentifier="Tab Bar C" automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="Tab Bar C" automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" customClass="TabBarC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bdc-Yk-4pi">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -664,18 +664,18 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="FoW-M4-bXT"/>
+                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="8LQ-72-5CR"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="COP-4z-pT2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
         </scene>
-        <!--Player-->
+        <!--Now Playing-->
         <scene sceneID="esw-Ah-g0b">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Player" image="playpause.fill" catalog="system" id="Znw-JR-K00"/>
+                    <tabBarItem key="tabBarItem" title="Now Playing" image="speaker.fill" catalog="system" id="Znw-JR-K00"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Dxa-wg-csy">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -694,7 +694,7 @@
     <resources>
         <image name="arrow.up.forward.square" catalog="system" width="128" height="114"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
-        <image name="playpause.fill" catalog="system" width="128" height="70"/>
+        <image name="speaker.fill" catalog="system" width="128" height="128"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>
         <image name="square.stack.fill" catalog="system" width="113" height="128"/>
         <systemColor name="placeholderTextColor">

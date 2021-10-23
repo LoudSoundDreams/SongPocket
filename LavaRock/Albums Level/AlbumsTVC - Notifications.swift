@@ -12,8 +12,8 @@ extension AlbumsTVC {
 	
 	// MARK: - After Possible Playback State Change
 	
-	final override func reflectPlaybackState() {
-		super.reflectPlaybackState()
+	final override func reflectPlaybackStateAndNowPlayingItem() {
+		super.reflectPlaybackStateAndNowPlayingItem()
 		
 		refreshNowPlayingIndicators(nowPlayingDetermining: self)
 	}

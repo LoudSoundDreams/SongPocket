@@ -8,9 +8,25 @@
 import MediaPlayer
 import CoreData
 
+protocol PlayerManagerObserving: AnyObject {
+	func playerManagerDidSetUp()
+}
+
 final class PlayerManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	
 	private init() {}
+	
+	private static var observers = [PlayerManagerObserving]()
+	
+	static func addObserver(_ observer: PlayerManagerObserving) {
+		observers.append(observer)
+	}
+	
+	static func removeObserver(_ observer: PlayerManagerObserving) {
+		if let indexOfMatchingObserver = observers.firstIndex(where: { $0 === observer }) {
+			observers.remove(at: indexOfMatchingObserver)
+		}
+	}
 	
 	private(set) static var player: MPMusicPlayerController?
 	private(set) static var songInPlayer: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
@@ -21,6 +37,12 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		player = .systemMusicPlayer
 		beginGeneratingNotifications()
 		refreshSongInPlayer()
+		
+//		NotificationCenter.default.post(
+//			Notification(name: .LRPlayerManagerDidSetUp)
+//		)
+		
+		observers.forEach { $0.playerManagerDidSetUp() }
 	}
 	
 	static func refreshSongInPlayer() {

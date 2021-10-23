@@ -72,6 +72,7 @@
 		07AF836726D007260081A298 /* protocol LibraryViewModelReflecting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AF836626D007260081A298 /* protocol LibraryViewModelReflecting.swift */; };
 		07B1EC40271FB7F600EA8E29 /* PlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */; };
 		07B1EC42271FBA4000EA8E29 /* extension URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC41271FBA4000EA8E29 /* extension URL.swift */; };
+		07B1EC442723B52A00EA8E29 /* TabBarC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC432723B52A00EA8E29 /* TabBarC.swift */; };
 		07C8CC76271281B70061A9AD /* OptionsTVC - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */; };
 		07CAB24724EA227F008AC34C /* extension Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* extension Song.swift */; };
 		07CD588926B35B300054598A /* extension CaseIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD588826B35B300054598A /* extension CaseIterable.swift */; };
@@ -190,6 +191,7 @@
 		07AF836626D007260081A298 /* protocol LibraryViewModelReflecting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryViewModelReflecting.swift"; sourceTree = "<group>"; };
 		07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerVC.swift; sourceTree = "<group>"; };
 		07B1EC41271FBA4000EA8E29 /* extension URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension URL.swift"; sourceTree = "<group>"; };
+		07B1EC432723B52A00EA8E29 /* TabBarC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarC.swift; sourceTree = "<group>"; };
 		07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC - Views.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* extension Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension Song.swift"; sourceTree = "<group>"; };
 		07CC4267268EC81C00D27E8C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
+				07B1EC432723B52A00EA8E29 /* TabBarC.swift */,
 				070E194524F3424500B21307 /* All Levels */,
 				07F1B91825F15EDB008591C7 /* GroupOfCollectionsOrAlbums.swift */,
 				070E194624F3434600B21307 /* Moving Albums */,
@@ -655,6 +658,7 @@
 				07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* extension Collection.swift in Sources */,
+				07B1EC442723B52A00EA8E29 /* TabBarC.swift in Sources */,
 				07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
 				07A4F90F2519E8410065C87E /* func deleteManagedObjects.swift in Sources */,
@@ -900,7 +904,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 227;
+				CURRENT_PROJECT_VERSION = 228;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -923,7 +927,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 227;
+				CURRENT_PROJECT_VERSION = 228;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

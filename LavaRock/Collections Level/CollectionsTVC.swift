@@ -279,7 +279,7 @@ final class CollectionsTVC:
 		} else {
 			if didMoveAlbums {
 				// Replace this with refreshToReflectMusicLibrary()?
-				reflectPlaybackState()
+				reflectPlaybackStateAndNowPlayingItem()
 				refreshLibraryItemsWhenVisible()
 				
 				didMoveAlbums = false

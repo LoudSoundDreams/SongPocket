@@ -27,17 +27,17 @@ extension LibraryTVC {
 		
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(playbackStateMaybeDidChange),
+			selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
 			name: UIApplication.didBecomeActiveNotification,
 			object: nil)
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(playbackStateMaybeDidChange),
+			selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
 			name: Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
 			object: nil)
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(playbackStateMaybeDidChange),
+			selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
 			name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: nil)
 	}
@@ -51,18 +51,18 @@ extension LibraryTVC {
 		refreshToReflectMusicLibrary()
 	}
 	
-	@objc private func playbackStateMaybeDidChange(
+	@objc private func playbackStateOrNowPlayingItemMaybeDidChange(
 		accordingTo notification: Notification
 	) {
 //		print(notification.name)
 		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
-		reflectPlaybackState()
+		reflectPlaybackStateAndNowPlayingItem()
 	}
 	
 	// MARK: - After Possible Playback State Change
 	
 	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
-	@objc func reflectPlaybackState() {
+	@objc func reflectPlaybackStateAndNowPlayingItem() {
 		// We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
 		refreshPlaybackButtons()
 	}
@@ -85,7 +85,7 @@ extension LibraryTVC {
 	// MARK: - After Importing Changes from Music Library
 	
 	private func refreshToReflectMusicLibrary() {
-		reflectPlaybackState() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
+		reflectPlaybackStateAndNowPlayingItem() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
 		refreshLibraryItemsWhenVisible()
 	}
 	

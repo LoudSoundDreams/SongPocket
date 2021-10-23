@@ -18,44 +18,50 @@ final class PlayerVC: UIViewController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		configurePlayPauseButton()
+		beginObservingNotifications()
+		
+		let togglePlayPauseAction = UIAction { _ in self.togglePlayPause() }
+		playPauseButton.addAction(togglePlayPauseAction, for: .touchUpInside)
+		
+		reflectPlaybackState()
 	}
 	
-	private lazy var playAction = UIAction(
-//		image: UIImage(systemName: "play.fill")
-	) { _ in
-		self.sharedPlayer?.play()
-		self.configurePlayPauseButton()
+	private func beginObservingNotifications() {
+		NotificationCenter.default.removeObserver(self)
+		
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(playbackStateMaybeDidChange),
+			name: Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
+			object: nil)
 	}
 	
-	private lazy var pauseAction = UIAction(
-//		image: UIImage(systemName: "pause.fill")
-	) { _ in
-		self.sharedPlayer?.pause()
-		self.configurePlayPauseButton()
+	@objc private func playbackStateMaybeDidChange() {
+		reflectPlaybackState()
 	}
 	
-	private func configurePlayPauseButton() {
+	private func reflectPlaybackState() {
 		if sharedPlayer?.playbackState == .playing {
-			
-			
-			playPauseButton.removeAction(playAction, for: .touchUpInside)
-			
-			
-			playPauseButton.addAction(pauseAction, for: .touchUpInside)
-			
-			
-			playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+			playPauseButton.setImage(pauseImage, for: .normal)
 		} else {
-			
-			
-			playPauseButton.removeAction(pauseAction, for: .touchUpInside)
-			
-			
-			playPauseButton.addAction(playAction, for: .touchUpInside)
-			
-			
-			playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+			playPauseButton.setImage(playImage, for: .normal)
+		}
+	}
+	private lazy var playImage: UIImage? = {
+		UIImage(systemName: "play.fill", withConfiguration: giantSymbolConfiguration)
+	}()
+	private lazy var pauseImage: UIImage? = {
+		UIImage(systemName: "pause.fill", withConfiguration: giantSymbolConfiguration)
+	}()
+	private let giantSymbolConfiguration = UIImage.SymbolConfiguration.init(pointSize: 288)
+	
+	private func togglePlayPause() {
+		if sharedPlayer?.playbackState == .playing {
+			sharedPlayer?.pause()
+		} else {
+			sharedPlayer?.play()
 		}
 	}
 	
