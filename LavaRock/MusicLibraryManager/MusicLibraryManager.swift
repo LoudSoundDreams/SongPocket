@@ -30,27 +30,18 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		
 		library = MPMediaLibrary.default()
 		importChanges()
-		beginGeneratingNotifications()
-	}
-	
-	deinit {
-		endGeneratingNotifications()
-	}
-	
-	private func beginGeneratingNotifications() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		NotificationCenter.default.removeObserver(self)
-		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(mediaLibraryDidChange),
-			name: Notification.Name.MPMediaLibraryDidChange,
+			name: .MPMediaLibraryDidChange,
 			object: nil)
+		
 		library?.beginGeneratingLibraryChangeNotifications()
 	}
 	
-	private func endGeneratingNotifications() {
+	deinit {
 		NotificationCenter.default.removeObserver(self)
 		
 		library?.endGeneratingLibraryChangeNotifications()

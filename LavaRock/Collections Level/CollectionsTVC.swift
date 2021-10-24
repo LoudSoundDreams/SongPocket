@@ -55,7 +55,7 @@ final class CollectionsTVC:
 	// State
 	var isAboutToSetItemsAndRefresh = false
 	var libraryState: LibraryState {
-		if MPMediaLibrary.authorizationStatus() != .authorized {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
 		if isAboutToSetItemsAndRefresh { // You must check this before checking isImportingChanges.

@@ -11,15 +11,23 @@ import MediaPlayer
 final class PlayerVC: UIViewController {
 	
 	// Controls
-	@IBOutlet private var playPauseButton: UIButton!
 	@IBOutlet private var rewindButton: UIButton!
+	private let rewindImage = UIImage(
+			systemName: "arrow.counterclockwise.circle.fill",
+			withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 48))
+	@IBOutlet private var playPauseButton: UIButton!
+	private lazy var playImage = UIImage(
+		systemName: "play.fill",
+		withConfiguration: playPauseSymbolConfiguration)
+	private lazy var pauseImage = UIImage(
+		systemName: "pause.fill",
+		withConfiguration: playPauseSymbolConfiguration)
+	private let playPauseSymbolConfiguration = UIImage.SymbolConfiguration.init(pointSize: 96)
 	
 	private var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		beginObservingNotifications()
 		
 		let rewindAction = UIAction { _ in self.rewind() }
 		rewindButton.addAction(rewindAction, for: .touchUpInside)
@@ -28,27 +36,26 @@ final class PlayerVC: UIViewController {
 		let togglePlayPauseAction = UIAction { _ in self.togglePlayPause() }
 		playPauseButton.addAction(togglePlayPauseAction, for: .touchUpInside)
 		
+		setUp()
+	}
+	
+	private func setUp() {
+		beginObservingNotifications()
 		reflectPlaybackState()
 	}
-	private let rewindImage: UIImage? = {
-		UIImage(
-			systemName: "arrow.counterclockwise.circle.fill",
-			withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 48))
-	}()
 	
 	private func beginObservingNotifications() {
 		PlayerManager.removeObserver(self)
-		NotificationCenter.default.removeObserver(self)
-		
 		PlayerManager.addObserver(self)
 		
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(playbackStateMaybeDidChange),
-			name: Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
-			object: nil)
+		NotificationCenter.default.removeObserver(self)
+		if MPMediaLibrary.authorizationStatus() == .authorized {
+			NotificationCenter.default.addObserver(
+				self,
+				selector: #selector(playbackStateMaybeDidChange),
+				name: .MPMusicPlayerControllerPlaybackStateDidChange,
+				object: nil)
+		}
 	}
 	
 	@objc private func playbackStateMaybeDidChange() {
@@ -65,13 +72,6 @@ final class PlayerVC: UIViewController {
 		rewindButton.isEnabled = sharedPlayer != nil
 		playPauseButton.isEnabled = sharedPlayer != nil
 	}
-	private lazy var playImage: UIImage? = {
-		UIImage(systemName: "play.fill", withConfiguration: playPauseSymbolConfiguration)
-	}()
-	private lazy var pauseImage: UIImage? = {
-		UIImage(systemName: "pause.fill", withConfiguration: playPauseSymbolConfiguration)
-	}()
-	private let playPauseSymbolConfiguration = UIImage.SymbolConfiguration.init(pointSize: 96)
 	
 	private func rewind() {
 		sharedPlayer?.currentPlaybackTime = 0
@@ -85,12 +85,12 @@ final class PlayerVC: UIViewController {
 		}
 	}
 	
-	@IBAction func clearRecents(_ sender: UIBarButtonItem) {
+	@IBAction private func clearRecents(_ sender: UIBarButtonItem) {
 		
 		
 	}
 	
-	@IBAction func openMusic(_ sender: UIBarButtonItem) {
+	@IBAction private func openMusic(_ sender: UIBarButtonItem) {
 		URL.music?.open()
 	}
 	
@@ -99,9 +99,8 @@ final class PlayerVC: UIViewController {
 extension PlayerVC: PlayerManagerObserving {
 	
 	// `PlayerManager.player` is `nil` until `CollectionsTVC` makes `PlayerManager` set it up.
-	func playerManagerDidSetUp() {
-		beginObservingNotifications()
-		reflectPlaybackState()
+	final func playerManagerDidSetUp() {
+		setUp()
 	}
 	
 }

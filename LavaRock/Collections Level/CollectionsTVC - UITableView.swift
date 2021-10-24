@@ -304,7 +304,11 @@ extension CollectionsTVC {
 					DispatchQueue.main.async {
 						self.didReceiveAuthorizationForMusicLibrary()
 					}
-				default:
+				case .notDetermined, .denied, .restricted:
+					DispatchQueue.main.async {
+						self.tableView.deselectRow(at: indexPath, animated: true)
+					}
+				@unknown default:
 					DispatchQueue.main.async {
 						self.tableView.deselectRow(at: indexPath, animated: true)
 					}

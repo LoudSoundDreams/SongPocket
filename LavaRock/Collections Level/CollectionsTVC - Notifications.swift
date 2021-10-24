@@ -20,7 +20,7 @@ extension CollectionsTVC {
 			NotificationCenter.default.addObserver(
 				self,
 				selector: #selector(didObserveLRDidMoveAlbums),
-				name: Notification.Name.LRDidMoveAlbums,
+				name: .LRDidMoveAlbums,
 				object: nil)
 		}
 	}

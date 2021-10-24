@@ -28,14 +28,6 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return UITableViewCell()
-		}
-		
-		return albumCell(forRowAt: indexPath)
-	}
-	
-	private func albumCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let album = viewModel.item(at: indexPath) as? Album else {
 			return UITableViewCell()
 		}

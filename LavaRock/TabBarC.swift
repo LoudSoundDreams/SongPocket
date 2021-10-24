@@ -12,27 +12,29 @@ final class TabBarC: UITabBarController {
 	
 	private var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 
-    override func viewDidLoad() {
+    final override func viewDidLoad() {
         super.viewDidLoad()
 
-        beginObservingNotifications()
-		
-		reflectPlaybackState()
+		setUp()
     }
+	
+	private func setUp() {
+		beginObservingNotifications()
+		reflectPlaybackState()
+	}
 	
 	private func beginObservingNotifications() {
 		PlayerManager.removeObserver(self)
-		NotificationCenter.default.removeObserver(self)
-		
 		PlayerManager.addObserver(self)
 		
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(playbackStateMaybeDidChange),
-			name: Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
-			object: nil)
+		NotificationCenter.default.removeObserver(self)
+		if MPMediaLibrary.authorizationStatus() == .authorized {
+			NotificationCenter.default.addObserver(
+				self,
+				selector: #selector(playbackStateMaybeDidChange),
+				name: .MPMusicPlayerControllerPlaybackStateDidChange,
+				object: nil)
+		}
 	}
 	
 	@objc private func playbackStateMaybeDidChange() {
@@ -59,9 +61,8 @@ final class TabBarC: UITabBarController {
 extension TabBarC: PlayerManagerObserving {
 	
 	// `PlayerManager.player` is `nil` until `CollectionsTVC` makes `PlayerManager` set it up.
-	func playerManagerDidSetUp() {
-		beginObservingNotifications()
-		reflectPlaybackState()
+	final func playerManagerDidSetUp() {
+		setUp()
 	}
 	
 }

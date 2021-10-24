@@ -15,31 +15,31 @@ extension LibraryTVC {
 	
 	// Overrides of this method should call super (this implementation) at the beginning.
 	@objc func beginObservingNotifications() {
-		NotificationCenter.default.removeObserver(self)
+		NotificationCenter.default.removeObserver(self) // So that we observe each kind of `Notification` at most once.
 		
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didImportChanges),
-			name: Notification.Name.LRDidImportChanges,
+			name: .LRDidImportChanges,
 			object: nil)
 		
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
-			name: UIApplication.didBecomeActiveNotification,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
-			name: Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
-			name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
-			object: nil)
+		if MPMediaLibrary.authorizationStatus() == .authorized {
+			NotificationCenter.default.addObserver(
+				self,
+				selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
+				name: UIApplication.didBecomeActiveNotification,
+				object: nil)
+			NotificationCenter.default.addObserver(
+				self,
+				selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
+				name: .MPMusicPlayerControllerPlaybackStateDidChange,
+				object: nil)
+			NotificationCenter.default.addObserver(
+				self,
+				selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
+				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
+				object: nil)
+		}
 	}
 	
 	final func endObservingNotifications() {

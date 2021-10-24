@@ -82,10 +82,7 @@ extension SongsTVC {
 	// MARK: - Actions
 	
 	private func playAllStartingAtSelectedSong() {
-		guard
-			MPMediaLibrary.authorizationStatus() == .authorized,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
-		else { return }
+		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
 		
 		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
 		os_signpost(
@@ -112,10 +109,7 @@ extension SongsTVC {
 	}
 	
 	private func enqueueAlbumStartingAtSelectedSong() {
-		guard
-			MPMediaLibrary.authorizationStatus() == .authorized,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
-		else { return }
+		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
 		
 		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
 		os_signpost(
@@ -155,11 +149,7 @@ extension SongsTVC {
 	
 	private func enqueueSelectedSong() {
 		guard
-			MPMediaLibrary.authorizationStatus() == .authorized,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
-		else { return }
-		
-		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let selectedSong = viewModel.item(at: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		else { return }

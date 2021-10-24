@@ -33,17 +33,14 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player = .systemMusicPlayer
-		beginGeneratingNotifications()
+		player?.beginGeneratingPlaybackNotifications()
 		refreshSongInPlayer()
 		
 		observers.forEach { $0.playerManagerDidSetUp() }
 	}
 	
 	static func refreshSongInPlayer() {
-		guard
-			MPMediaLibrary.authorizationStatus() == .authorized,
-			let nowPlayingItem = player?.nowPlayingItem
-		else {
+		guard let nowPlayingItem = player?.nowPlayingItem else {
 			songInPlayer = nil
 			return
 		}
@@ -70,19 +67,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	private static let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	deinit {
-		Self.endGeneratingNotifications()
-	}
-	
-	private static func beginGeneratingNotifications() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		player?.beginGeneratingPlaybackNotifications()
-	}
-	
-	private static func endGeneratingNotifications() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		player?.endGeneratingPlaybackNotifications()
+		Self.player?.endGeneratingPlaybackNotifications()
 	}
 	
 }

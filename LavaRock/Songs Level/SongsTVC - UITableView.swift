@@ -28,10 +28,6 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return UITableViewCell()
-		}
-		
 		switch indexPath.row {
 		case 0:
 			return albumArtworkCell(forRowAt: indexPath)
