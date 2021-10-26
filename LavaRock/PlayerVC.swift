@@ -24,8 +24,6 @@ final class PlayerVC: UIViewController {
 		withConfiguration: playPauseSymbolConfiguration)
 	private let playPauseSymbolConfiguration = UIImage.SymbolConfiguration.init(pointSize: 96)
 	
-	private var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
-	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -36,41 +34,11 @@ final class PlayerVC: UIViewController {
 		let togglePlayPauseAction = UIAction { _ in self.togglePlayPause() }
 		playPauseButton.addAction(togglePlayPauseAction, for: .touchUpInside)
 		
-		setUp()
+		setUpPlaybackStateReflecting()
 	}
 	
-	private func setUp() {
-		beginObservingNotifications()
-		reflectPlaybackState()
-	}
-	
-	private func beginObservingNotifications() {
-		PlayerManager.removeObserver(self)
-		PlayerManager.addObserver(self)
-		
-		NotificationCenter.default.removeObserver(self)
-		if MPMediaLibrary.authorizationStatus() == .authorized {
-			NotificationCenter.default.addObserver(
-				self,
-				selector: #selector(playbackStateMaybeDidChange),
-				name: .MPMusicPlayerControllerPlaybackStateDidChange,
-				object: nil)
-		}
-	}
-	
-	@objc private func playbackStateMaybeDidChange() {
-		reflectPlaybackState()
-	}
-	
-	private func reflectPlaybackState() {
-		if sharedPlayer?.playbackState == .playing {
-			playPauseButton.setImage(pauseImage, for: .normal)
-		} else {
-			playPauseButton.setImage(playImage, for: .normal)
-		}
-		
-		rewindButton.isEnabled = sharedPlayer != nil
-		playPauseButton.isEnabled = sharedPlayer != nil
+	deinit {
+		endObservingPlaybackStateChanges()
 	}
 	
 	private func rewind() {
@@ -96,11 +64,17 @@ final class PlayerVC: UIViewController {
 	
 }
 
-extension PlayerVC: PlayerManagerObserving {
+extension PlayerVC: PlaybackStateReflecting {
 	
-	// `PlayerManager.player` is `nil` until `CollectionsTVC` makes `PlayerManager` set it up.
-	final func playerManagerDidSetUp() {
-		setUp()
+	func reflectPlaybackState() {
+		if sharedPlayer?.playbackState == .playing {
+			playPauseButton.setImage(pauseImage, for: .normal)
+		} else {
+			playPauseButton.setImage(playImage, for: .normal)
+		}
+		
+		rewindButton.isEnabled = sharedPlayer != nil
+		playPauseButton.isEnabled = sharedPlayer != nil
 	}
 	
 }

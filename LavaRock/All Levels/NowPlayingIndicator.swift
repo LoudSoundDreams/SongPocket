@@ -41,10 +41,10 @@ struct NowPlayingIndicator {
 		}
 		
 		if isPlaying {
-			image = UIImage(systemName: "speaker.wave.2.fill")
+			image = .waveSpeakerSymbol
 			accessibilityLabel = LocalizedString.nowPlaying
 		} else {
-			image = UIImage(systemName: "speaker.fill")
+			image = .noWaveSpeakerSymbol
 			accessibilityLabel = LocalizedString.paused
 		}
 	}

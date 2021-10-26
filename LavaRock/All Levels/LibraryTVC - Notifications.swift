@@ -15,7 +15,7 @@ extension LibraryTVC {
 	
 	// Overrides of this method should call super (this implementation) at the beginning.
 	@objc func beginObservingNotifications() {
-		NotificationCenter.default.removeObserver(self) // So that we observe each kind of `Notification` at most once.
+		endObservingNotifications() // So that we observe each kind of `Notification` at most once.
 		
 		NotificationCenter.default.addObserver(
 			self,
@@ -112,9 +112,9 @@ extension LibraryTVC {
 		 - Song actions (SongsTVC)
 		 - (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)
 		 */
-		let shouldNotDismissAnyModalViewControllers
+		let shouldNotDismissAnyModalVCs
 		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
-		if !shouldNotDismissAnyModalViewControllers {
+		if !shouldNotDismissAnyModalVCs {
 			view.window?.rootViewController?.dismiss(animated: true) {
 				refreshLibraryItemsPart2()
 			}

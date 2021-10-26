@@ -675,7 +675,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="8aV-6h-A1b"/>
+                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="0IH-ti-cxt"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="COP-4z-pT2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
