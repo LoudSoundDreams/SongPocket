@@ -9,57 +9,56 @@ import UIKit
 import MediaPlayer
 import CoreData
 
+extension LibraryTVC: PlaybackStateReflecting {
+	
+	func reflectPlaybackState() {
+		playbackStateOrNowPlayingItemChanged()
+	}
+	
+}
+
 extension LibraryTVC {
 	
 	// MARK: - Setup and Teardown
 	
 	// Overrides of this method should call super (this implementation) at the beginning.
 	@objc func beginObservingNotifications() {
-		endObservingNotifications() // So that we observe each kind of `Notification` at most once.
+		// Observe each kind of `Notification` at most once.
 		
+		NotificationCenter.default.removeObserver(
+			self,
+			name: .LRDidImportChanges,
+			object: nil)
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(didImportChanges),
 			name: .LRDidImportChanges,
 			object: nil)
 		
+		NotificationCenter.default.removeObserver(
+			self,
+			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
+			object: nil)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserver(
 				self,
-				selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
-				name: UIApplication.didBecomeActiveNotification,
-				object: nil)
-			NotificationCenter.default.addObserver(
-				self,
-				selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
-				name: .MPMusicPlayerControllerPlaybackStateDidChange,
-				object: nil)
-			NotificationCenter.default.addObserver(
-				self,
-				selector: #selector(playbackStateOrNowPlayingItemMaybeDidChange),
+				selector: #selector(playbackStateOrNowPlayingItemChanged),
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 				object: nil)
 		}
 	}
 	
-	final func endObservingNotifications() {
-		NotificationCenter.default.removeObserver(self)
-	}
-	
 	@objc private func didImportChanges() {
 		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
-		refreshToReflectMusicLibrary()
+		refreshLibraryItemsAndReflect()
 	}
 	
-	@objc private func playbackStateOrNowPlayingItemMaybeDidChange(
-		accordingTo notification: Notification
-	) {
-//		print(notification.name)
+	@objc private func playbackStateOrNowPlayingItemChanged() {
 		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
 		reflectPlaybackStateAndNowPlayingItem()
 	}
 	
-	// MARK: - After Possible Playback State Change
+	// MARK: - After Playback State or Now-Playing Item Changes
 	
 	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func reflectPlaybackStateAndNowPlayingItem() {
@@ -84,7 +83,7 @@ extension LibraryTVC {
 	
 	// MARK: - After Importing Changes from Music Library
 	
-	private func refreshToReflectMusicLibrary() {
+	private func refreshLibraryItemsAndReflect() {
 		reflectPlaybackStateAndNowPlayingItem() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
 		refreshLibraryItemsWhenVisible()
 	}

@@ -131,7 +131,7 @@ extension MusicLibraryManager {
 		if let matchingExistingAlbum = existingAlbums_byInt64[albumPersistentID_asInt64] {
 			
 			// … then add the Songs to that Album.
-			if matchingExistingAlbum.areSongsInDefaultOrder() {
+			if matchingExistingAlbum.songsAreInDefaultOrder() {
 				matchingExistingAlbum.makeSongsAtBeginning(for: mediaItemGroup)
 				os_signpost(.begin, log: createLog, name: "Put the existing Album back in order")
 				matchingExistingAlbum.sortSongsByDefaultOrder()

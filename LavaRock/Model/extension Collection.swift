@@ -110,9 +110,7 @@ extension Collection {
 	// MARK: - Albums
 	
 	// Similar to Album.songs(sorted:).
-	final func albums(
-		sorted: Bool = true
-	) -> [Album] {
+	final func albums(sorted: Bool = true) -> [Album] {
 		guard let contents = contents else {
 			return []
 		}

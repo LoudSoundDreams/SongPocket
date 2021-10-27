@@ -70,7 +70,6 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses Should Not Customize
 	
 	// Playback
-	final var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	final lazy var playbackButtons = [
 		previousSongButton, .flexibleSpace(),
 		rewindButton, .flexibleSpace(),
@@ -143,6 +142,8 @@ class LibraryTVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		setUpPlaybackStateReflecting()
+		
 		setUp()
 	}
 	
@@ -178,7 +179,9 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Teardown
 	
 	deinit {
-		endObservingNotifications()
+		endObservingPlaybackStateChanges()
+		
+		NotificationCenter.default.removeObserver(self)
 	}
 	
 	// MARK: - Setting Items and Refreshing

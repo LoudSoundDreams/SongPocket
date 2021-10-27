@@ -93,14 +93,14 @@ extension Array {
 		areEqual: (Element, Element) -> Bool,
 		areInOrder: (Element, Element) -> Bool
 	) -> Self {
-		let sortedEnumerated = enumerated().sorted {
+		let sortedIndicesAndElements = enumerated().sorted {
 			if areEqual($0.element, $1.element) {
 				return $0.offset < $1.offset
 			} else {
 				return areInOrder($0.element, $1.element)
 			}
 		}
-		return sortedEnumerated.map { $0.element }
+		return sortedIndicesAndElements.map { $0.element }
 	}
 	
 	// MARK: Miscellaneous

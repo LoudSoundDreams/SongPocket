@@ -92,9 +92,7 @@ extension Album {
 	// MARK: - Songs
 	
 	// Similar to Collection.albums(sorted:).
-	final func songs(
-		sorted: Bool = true
-	) -> [Song] {
+	final func songs(sorted: Bool = true) -> [Song] {
 		guard let contents = contents else {
 			return []
 		}
@@ -108,7 +106,7 @@ extension Album {
 		}
 	}
 	
-	final func areSongsInDefaultOrder() -> Bool {
+	final func songsAreInDefaultOrder() -> Bool {
 		let mediaItems = songs().compactMap { $0.mpMediaItem() }
 		// mpMediaItem() returns nil if the media item is no longer in the Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
 		

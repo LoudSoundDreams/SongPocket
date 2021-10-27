@@ -278,7 +278,7 @@ final class CollectionsTVC:
 		if albumMoverClipboard != nil {
 		} else {
 			if didMoveAlbums {
-				// Replace this with refreshToReflectMusicLibrary()?
+				// Replace this with refreshLibraryItemsAndReflect()?
 				reflectPlaybackStateAndNowPlayingItem()
 				refreshLibraryItemsWhenVisible()
 				

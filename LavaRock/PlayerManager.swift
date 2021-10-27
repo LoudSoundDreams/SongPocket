@@ -9,7 +9,7 @@ import MediaPlayer
 import CoreData
 
 @objc protocol PlaybackStateReflecting: AnyObject {
-	// Conforming types should …
+	// Conforming types must …
 	// - Call `setUpPlaybackStateReflecting` before they need to reflect playback state.
 	// - Call `endObservingPlaybackStateChanges` within their deinitializer.
 	func reflectPlaybackState()
