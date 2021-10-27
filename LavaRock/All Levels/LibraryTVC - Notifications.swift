@@ -23,24 +23,14 @@ extension LibraryTVC {
 	
 	// Overrides of this method should call super (this implementation) at the beginning.
 	@objc func beginObservingNotifications() {
-		// Observe each kind of `Notification` at most once.
-		
-		NotificationCenter.default.removeObserver(
-			self,
-			name: .LRDidImportChanges,
-			object: nil)
-		NotificationCenter.default.addObserver(
+		NotificationCenter.default.removeAndAddObserver(
 			self,
 			selector: #selector(didImportChanges),
 			name: .LRDidImportChanges,
 			object: nil)
 		
-		NotificationCenter.default.removeObserver(
-			self,
-			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
-			object: nil)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
-			NotificationCenter.default.addObserver(
+			NotificationCenter.default.removeAndAddObserver(
 				self,
 				selector: #selector(playbackStateOrNowPlayingItemChanged),
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
@@ -58,7 +48,7 @@ extension LibraryTVC {
 		reflectPlaybackStateAndNowPlayingItem()
 	}
 	
-	// MARK: - After Playback State or Now-Playing Item Changes
+	// MARK: - After Playback State or "Now Playing" Item Changes
 	
 	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func reflectPlaybackStateAndNowPlayingItem() {

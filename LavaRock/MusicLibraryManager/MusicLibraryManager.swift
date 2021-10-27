@@ -31,11 +31,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		library = MPMediaLibrary.default()
 		importChanges()
 		
-		NotificationCenter.default.removeObserver(
-			self,
-			name: .MPMediaLibraryDidChange,
-			object: nil)
-		NotificationCenter.default.addObserver(
+		NotificationCenter.default.removeAndAddObserver(
 			self,
 			selector: #selector(mediaLibraryDidChange),
 			name: .MPMediaLibraryDidChange,

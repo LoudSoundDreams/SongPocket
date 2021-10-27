@@ -34,10 +34,8 @@ extension Album {
 		}
 		
 		self.init(context: context)
-		
 		albumPersistentID = Int64(bitPattern: mediaItem.albumPersistentID)
 		index = Int64(collection.contents?.count ?? 0)
-		
 		container = collection
 	}
 	
@@ -52,14 +50,12 @@ extension Album {
 			os_signpost(.end, log: Self.log, name: "Make an Album at the top")
 		}
 		
-		collection.albums(sorted: false).forEach { $0.index += 1 }
-		
 		self.init(context: context)
-		
 		albumPersistentID = Int64(bitPattern: mediaItem.albumPersistentID)
 		index = 0
-		
 		container = collection
+		
+		collection.albums(sorted: false).forEach { $0.index += 1 }
 	}
 	
 	// MARK: - All Instances

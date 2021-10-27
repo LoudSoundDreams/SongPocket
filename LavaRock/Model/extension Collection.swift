@@ -34,7 +34,6 @@ extension Collection {
 		}
 		
 		self.init(context: context)
-		
 		title = mediaItem.albumArtist ?? Album.placeholderAlbumArtist
 		index = Int64(numberOfExistingCollections)
 	}
@@ -50,33 +49,30 @@ extension Collection {
 			os_signpost(.end, log: Self.log, name: "Make a Collection at the top")
 		}
 		
-		collectionsToInsertBefore.forEach { $0.index += 1 }
-		
 		self.init(context: context)
-		
 		title = mediaItem.albumArtist ?? Album.placeholderAlbumArtist
 		index = 0
+		
+		collectionsToInsertBefore.forEach { $0.index += 1 }
 	}
 	
 	// WARNING: Leaves Collections in an incoherent state.
 	// After calling this, you must delete empty Collections and reindex all Collections.
-	static func makeByCombining_withoutDeletingOrReindexing(
-		_ selectedCollections: [Collection],
-		title titleOfCombinedCollection: String,
-		index indexOfCombinedCollection: Int64,
+	convenience init(
+		combining_withoutDeletingOrReindexing selectedCollections: [Collection],
+		title: String,
+		index: Int64,
 		context: NSManagedObjectContext
-	) -> Collection {
+	) {
+		self.init(context: context)
+		self.index = index
+		self.title = title
+		
 		var selectedAlbums = selectedCollections.flatMap { selectedCollection in
 			selectedCollection.albums()
 		}
 		selectedAlbums.reindex()
-		
-		let combinedCollection = Collection(context: context)
-		combinedCollection.index = indexOfCombinedCollection
-		combinedCollection.title = titleOfCombinedCollection
-		selectedAlbums.forEach { $0.container = combinedCollection }
-		
-		return combinedCollection
+		selectedAlbums.forEach { $0.container = self }
 	}
 	
 	// MARK: - All Instances
@@ -156,16 +152,14 @@ extension Collection {
 			contents.reindex()
 		}
 		
-		Collection.deleteAllEmpty(context: context) // Also reindexes self
+		Self.deleteAllEmpty(context: context) // Also reindexes self
 	}
 	
 	// MARK: - Renaming
 	
 	// Return value: whether this method changed this Collection's title.
 	// This method won't rename this Collection if validatedTitleOptional returns nil.
-	func rename(
-		toProposedTitle proposedTitle: String?
-	) -> Bool {
+	func rename(toProposedTitle proposedTitle: String?) -> Bool {
 		let oldTitle = title
 		if let newTitle = Self.validatedTitleOptional(fromProposedTitle: proposedTitle) {
 			title = newTitle

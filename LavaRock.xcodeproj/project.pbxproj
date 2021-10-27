@@ -18,6 +18,7 @@
 		0719B57E2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */; };
 		072017132557987E0019CA3E /* SongsTVC + NowPlayingDetermining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072017122557987E0019CA3E /* SongsTVC + NowPlayingDetermining.swift */; };
 		0720A43525017C6C00E0A28A /* AlbumsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A43425017C6C00E0A28A /* AlbumsTVC - Notifications.swift */; };
+		0720A61227290102002B696D /* extension NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A61127290102002B696D /* extension NotificationCenter.swift */; };
 		072429C424DC786500F62AF6 /* extension UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072429C324DC786500F62AF6 /* extension UITableView.swift */; };
 		07267A2025537C5800C914A3 /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* PlayerManager.swift */; };
 		072C04992692A67400F44AC5 /* extension UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072C04982692A67400F44AC5 /* extension UIAlertAction.swift */; };
@@ -125,6 +126,7 @@
 		0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - Controlling Playback.swift"; sourceTree = "<group>"; };
 		072017122557987E0019CA3E /* SongsTVC + NowPlayingDetermining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC + NowPlayingDetermining.swift"; sourceTree = "<group>"; };
 		0720A43425017C6C00E0A28A /* AlbumsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - Notifications.swift"; sourceTree = "<group>"; };
+		0720A61127290102002B696D /* extension NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension NotificationCenter.swift"; sourceTree = "<group>"; };
 		072429C324DC786500F62AF6 /* extension UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UITableView.swift"; sourceTree = "<group>"; };
 		07267A1F25537C5800C914A3 /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
 		072C04982692A67400F44AC5 /* extension UIAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIAlertAction.swift"; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 			children = (
 				07140604259D6958003CA92C /* extension UserDefaults.swift */,
 				07E92A132510682C00E9073B /* extension Notification.Name.swift */,
+				0720A61127290102002B696D /* extension NotificationCenter.swift */,
 				07B1EC41271FBA4000EA8E29 /* extension URL.swift */,
 			);
 			path = "extensions to Foundation";
@@ -659,6 +662,7 @@
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* extension Collection.swift in Sources */,
 				07B1EC442723B52A00EA8E29 /* TabBarC.swift in Sources */,
+				0720A61227290102002B696D /* extension NotificationCenter.swift in Sources */,
 				07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
 				07A4F90F2519E8410065C87E /* func deleteManagedObjects.swift in Sources */,
@@ -904,7 +908,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 231;
+				CURRENT_PROJECT_VERSION = 232;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -927,7 +931,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 231;
+				CURRENT_PROJECT_VERSION = 232;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

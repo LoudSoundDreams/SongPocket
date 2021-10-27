@@ -30,10 +30,8 @@ extension Song {
 		}
 		
 		self.init(context: context)
-		
 		persistentID = Int64(bitPattern: mediaItem.persistentID)
 		index = Int64(album.contents?.count ?? 0)
-		
 		container = album
 	}
 	
@@ -48,14 +46,12 @@ extension Song {
 			os_signpost(.end, log: Self.log, name: "Make a Song at the top")
 		}
 		
-		album.songs(sorted: false).forEach { $0.index += 1 }
-		
 		self.init(context: context)
-		
 		persistentID = Int64(bitPattern: mediaItem.persistentID)
 		index = 0
-		
 		container = album
+		
+		album.songs(sorted: false).forEach { $0.index += 1 }
 	}
 	
 	// MARK: - All Instances
@@ -70,6 +66,25 @@ extension Song {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
 		return context.objectsFetched(for: fetchRequest)
+	}
+	
+	// MARK: - Predicates for Sorting
+	
+	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
+		// Checking Song index first and Collection index last is slightly faster than vice versa.
+		guard index == other.index else {
+			return index < other.index
+		}
+		
+		let myAlbum = container!
+		let otherAlbum = other.container!
+		guard myAlbum.index == other.index else {
+			return myAlbum.index < otherAlbum.index
+		}
+		
+		let myCollection = myAlbum.container!
+		let otherCollection = otherAlbum.container!
+		return myCollection.index < otherCollection.index
 	}
 	
 	// MARK: - Media Player

@@ -77,20 +77,8 @@ extension MusicLibraryManager {
 		// Songs will very rarely make it past this point.
 		
 		os_signpost(.begin, log: updateLog, name: "Sort Songs in cloned Albums")
-		let songsToMove = unsortedSongsToMove.sorted { leftSong, rightSong in
-			guard leftSong.index == rightSong.index else {
-				return leftSong.index < rightSong.index
-			}
-			
-			let leftAlbum = leftSong.container!
-			let rightAlbum = rightSong.container!
-			guard leftAlbum.index == rightAlbum.index else {
-				return leftAlbum.index < rightAlbum.index
-			}
-			
-			let leftCollection = leftAlbum.container!
-			let rightCollection = rightAlbum.container!
-			return leftCollection.index < rightCollection.index
+		let songsToMove = unsortedSongsToMove.sorted {
+			$0.precedesInUserCustomOrder($1)
 		}
 		os_signpost(.end, log: updateLog, name: "Sort Songs in cloned Albums")
 		
@@ -124,22 +112,7 @@ extension MusicLibraryManager {
 		// Sort the existing Songs by the order they appeared in in the app.
 		os_signpost(.begin, log: updateLog, name: "Sort Songs moved to different Albums")
 		let outdatedTuples = unsortedOutdatedTuples.sorted { leftTuple, rightTuple in
-			// Checking Song index first and Collection index last is slightly faster than vice versa.
-			let leftSong = leftTuple.0
-			let rightSong = rightTuple.0
-			guard leftSong.index == rightSong.index else {
-				return leftSong.index < rightSong.index
-			}
-			
-			let leftAlbum = leftSong.container!
-			let rightAlbum = rightSong.container!
-			guard leftAlbum.index == rightAlbum.index else {
-				return leftAlbum.index < rightAlbum.index
-			}
-			
-			let leftCollection = leftAlbum.container!
-			let rightCollection = rightAlbum.container!
-			return leftCollection.index < rightCollection.index
+			leftTuple.0.precedesInUserCustomOrder(rightTuple.0)
 		}
 		os_signpost(.end, log: updateLog, name: "Sort Songs moved to different Albums")
 		

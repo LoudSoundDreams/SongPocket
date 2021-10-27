@@ -78,8 +78,8 @@ struct CollectionsViewModel: LibraryViewModel {
 		// Create the combined Collection.
 		let selectedCollections = selectedIndexPaths.compactMap { item(at: $0) as? Collection }
 		let indexOfCombinedCollection = indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
-		let combinedCollection = Collection.makeByCombining_withoutDeletingOrReindexing( // SIDE EFFECT
-			selectedCollections,
+		let combinedCollection = Collection( // SIDE EFFECT
+			combining_withoutDeletingOrReindexing: selectedCollections,
 			title: LocalizedString.combinedCollectionDefaultTitle,
 			index: Int64(indexOfCombinedCollection),
 			context: context)
