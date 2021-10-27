@@ -1,11 +1,11 @@
 //
-//  LibraryState.swift
+//  CollectionsViewState.swift
 //  LavaRock
 //
 //  Created by h on 2021-10-17.
 //
 
-enum LibraryState {
+enum CollectionsViewState {
 	case allowAccess
 	case loading
 	case blank

@@ -37,7 +37,7 @@ extension CollectionsTVC {
 //		case .collections:
 		
 		
-		switch libraryState {
+		switch viewState {
 		case .allowAccess, .loading:
 			return 1
 		case .blank:
@@ -89,7 +89,7 @@ extension CollectionsTVC {
 //		case .collections:
 		
 		
-		switch libraryState {
+		switch viewState {
 		case .allowAccess:
 			return tableView.dequeueReusableCell(
 				withIdentifier: "Allow Access",
@@ -135,7 +135,7 @@ extension CollectionsTVC {
 		} else {
 			cell.accessoryType = .disclosureIndicator
 			
-			switch libraryState {
+			switch viewState {
 			case .allowAccess, .loading, .blank, .noMusic:
 				cell.allLabel.textColor = .placeholderText
 				cell.disableWithAccessibilityTrait()
@@ -241,7 +241,7 @@ extension CollectionsTVC {
 		if albumMoverClipboard != nil {
 			return false
 		} else {
-			switch libraryState {
+			switch viewState {
 			case .allowAccess, .loading:
 				return false
 			case .blank: // Should never run
@@ -258,7 +258,7 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
-		switch libraryState {
+		switch viewState {
 		case .allowAccess:
 			break
 		case .loading:
@@ -278,7 +278,7 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
-		switch libraryState {
+		switch viewState {
 		case .allowAccess:
 			didSelectAllowAccessRow(at: indexPath)
 		case .loading, .blank: // Should never run

@@ -54,7 +54,7 @@ final class CollectionsTVC:
 	
 	// State
 	var isAboutToSetItemsAndRefresh = false
-	var libraryState: LibraryState {
+	var viewState: CollectionsViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
@@ -95,21 +95,21 @@ final class CollectionsTVC:
 	// MARK: - Library State
 	
 	final func prepareToRefreshLibraryItems() {
-		if libraryState == .loading || libraryState == .noMusic {
-			isAboutToSetItemsAndRefresh = true // libraryState is now .blank
-			reflectLibraryState()
-			isAboutToSetItemsAndRefresh = false // WARNING: libraryState is now .loading or .noMusic, but the UI doesn't reflect that.
+		if viewState == .loading || viewState == .noMusic {
+			isAboutToSetItemsAndRefresh = true // viewState is now .blank
+			reflectViewState()
+			isAboutToSetItemsAndRefresh = false // WARNING: viewState is now .loading or .noMusic, but the UI doesn't reflect that.
 		}
 	}
 	
 	final override func reflectNoItems() {
 		// isImportingChanges is now false
-		if libraryState == .noMusic {
-			reflectLibraryState()
+		if viewState == .noMusic {
+			reflectViewState()
 		}
 	}
 	
-	private func reflectLibraryState(
+	private func reflectViewState(
 		completion: (() -> Void)? = nil
 	) {
 		let toDelete: [IndexPath]
@@ -125,7 +125,7 @@ final class CollectionsTVC:
 			inSection: indexOfCollectionsSection,
 			firstRow: 0)
 		
-		switch libraryState {
+		switch viewState {
 			
 		case
 				.allowAccess, // Currently unused
@@ -188,7 +188,7 @@ final class CollectionsTVC:
 			completion?()
 		}
 		
-		switch libraryState {
+		switch viewState {
 		case .allowAccess, .loading, .blank, .noMusic:
 			setEditing(false, animated: true)
 		case .someMusic:
@@ -230,8 +230,8 @@ final class CollectionsTVC:
 	private func integrateWithBuiltInMusicApp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		isImportingChanges = true // libraryState is now .loading or .someMusic (updating)
-		reflectLibraryState {
+		isImportingChanges = true // viewState is now .loading or .someMusic (updating)
+		reflectViewState {
 			MusicLibraryManager.shared.setUpAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes.
 			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
 		}
