@@ -9,6 +9,6 @@ enum CollectionsViewState {
 	case allowAccess
 	case loading
 	case blank
-	case noMusic
-	case someMusic
+	case noCollections
+	case someCollections
 }

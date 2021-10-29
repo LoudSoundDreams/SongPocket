@@ -42,9 +42,9 @@ extension CollectionsTVC {
 			return 1
 		case .blank:
 			return 0
-		case .noMusic:
+		case .noCollections:
 			return 2
-		case .someMusic:
+		case .someCollections:
 			return viewModel.numberOfRows(forSection: section)
 		}
 		
@@ -100,7 +100,7 @@ extension CollectionsTVC {
 				for: indexPath) as? LoadingCell ?? UITableViewCell()
 		case .blank: // Should never run
 			return UITableViewCell()
-		case .noMusic:
+		case .noCollections:
 			switch indexPath.row {
 			case 0:
 				return tableView.dequeueReusableCell(
@@ -113,7 +113,7 @@ extension CollectionsTVC {
 			default: // Should never run
 				return UITableViewCell()
 			}
-		case .someMusic:
+		case .someCollections:
 			return collectionCell(forRowAt: indexPath)
 		}
 		
@@ -136,10 +136,10 @@ extension CollectionsTVC {
 			cell.accessoryType = .disclosureIndicator
 			
 			switch viewState {
-			case .allowAccess, .loading, .blank, .noMusic:
+			case .allowAccess, .loading, .blank, .noCollections:
 				cell.allLabel.textColor = .placeholderText
 				cell.disableWithAccessibilityTrait()
-			case .someMusic:
+			case .someCollections:
 				cell.allLabel.textColor = .label
 				cell.enableWithAccessibilityTrait()
 			}
@@ -246,9 +246,9 @@ extension CollectionsTVC {
 				return false
 			case .blank: // Should never run
 				return false
-			case .noMusic:
+			case .noCollections:
 				return false
-			case .someMusic:
+			case .someCollections:
 				return viewModel.shouldBeginMultipleSelectionInteraction(at: indexPath)
 			}
 		}
@@ -265,9 +265,9 @@ extension CollectionsTVC {
 			break
 		case .blank: // Should never run
 			break
-		case .noMusic:
+		case .noCollections:
 			break
-		case .someMusic:
+		case .someCollections:
 			return viewModel.willSelectRow(at: indexPath)
 		}
 		
@@ -283,12 +283,12 @@ extension CollectionsTVC {
 			didSelectAllowAccessRow(at: indexPath)
 		case .loading, .blank: // Should never run
 			return
-		case .noMusic:
+		case .noCollections:
 			if let cell = tableView.cellForRow(at: indexPath) as? OpenMusicCell {
 				cell.didSelect()
 			}
 			tableView.deselectRow(at: indexPath, animated: true)
-		case .someMusic:
+		case .someCollections:
 			super.tableView(
 				tableView,
 				didSelectRowAt: indexPath)

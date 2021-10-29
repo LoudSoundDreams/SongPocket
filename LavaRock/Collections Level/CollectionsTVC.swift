@@ -53,25 +53,25 @@ final class CollectionsTVC:
 	}()
 	
 	// State
-	var isAboutToSetItemsAndRefresh = false
+	var isAboutToSetItemsAndMoveRows = false
 	var viewState: CollectionsViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
-		if isAboutToSetItemsAndRefresh { // You must check this before checking isImportingChanges.
+		if isAboutToSetItemsAndMoveRows { // You must check this before checking isImportingChanges.
 			return .blank
 		}
 		if isImportingChanges {
 			if viewModel.isEmpty() {
 				return .loading
 			} else {
-				return .someMusic
+				return .someCollections
 			}
 		} else {
 			if viewModel.isEmpty() {
-				return .noMusic
+				return .noCollections
 			} else {
-				return .someMusic
+				return .someCollections
 			}
 		}
 	}
@@ -95,17 +95,32 @@ final class CollectionsTVC:
 	// MARK: - Library State
 	
 	final func prepareToRefreshLibraryItems() {
-		if viewState == .loading || viewState == .noMusic {
-			isAboutToSetItemsAndRefresh = true // viewState is now .blank
+		switch viewState {
+		case
+				.loading,
+				.noCollections:
+			isAboutToSetItemsAndMoveRows = true // viewState is now .blank
 			reflectViewState()
-			isAboutToSetItemsAndRefresh = false // WARNING: viewState is now .loading or .noMusic, but the UI doesn't reflect that.
+			isAboutToSetItemsAndMoveRows = false // WARNING: viewState is now .loading or .noCollections, but the UI doesn't reflect that.
+		case
+				.allowAccess,
+				.blank,
+				.someCollections:
+			break
 		}
 	}
 	
 	final override func reflectNoItems() {
 		// isImportingChanges is now false
-		if viewState == .noMusic {
+		switch viewState {
+		case .noCollections:
 			reflectViewState()
+		case
+				.allowAccess,
+				.loading,
+				.blank,
+				.someCollections:
+			break
 		}
 	}
 	
@@ -116,63 +131,54 @@ final class CollectionsTVC:
 		let toInsert: [IndexPath]
 		let toReload: [IndexPath]
 		
+		
 //		let inAllSection = tableView.indexPathsForRows(
 //			inSection: Section.all.rawValue,
 //			firstRow: 0)
 //		let indexOfCollectionsSection = Section.collections.rawValue
+		
+		
 		let indexOfCollectionsSection = 0
 		let oldInCollectionsSection = tableView.indexPathsForRows(
 			inSection: indexOfCollectionsSection,
 			firstRow: 0)
+		let newInCollectionsSection: [IndexPath] = {
+			let newNumberOfRowsInCollectionsSection = numberOfRows(forSection: indexOfCollectionsSection)
+			return Array(0 ..< newNumberOfRowsInCollectionsSection).map { indexOfRow in
+				IndexPath(row: indexOfRow, section: indexOfCollectionsSection)
+			}
+		}()
 		
 		switch viewState {
 			
 		case
-				.allowAccess, // Currently unused
+				.allowAccess,
 				.loading:
-			let newNumberOfRowsInCollectionsSection = numberOfRows(forSection: indexOfCollectionsSection)
-			let newInCollectionsSection
-			= Array(0 ..< newNumberOfRowsInCollectionsSection).map { indexOfRow in
-				IndexPath(row: indexOfRow, section: indexOfCollectionsSection)
-			}
-			switch oldInCollectionsSection.count {
-			case 0: // Currently unused
-				toDelete = oldInCollectionsSection // Empty
-				toInsert = newInCollectionsSection
-//				toReload = inAllSection
-				toReload = []
-			case 1:
+			if oldInCollectionsSection.count == newInCollectionsSection.count {
 				toDelete = []
 				toInsert = []
 //				toReload = inAllSection + newInCollectionsSection
 				toReload = newInCollectionsSection
-			default:
-				toDelete = oldInCollectionsSection
+			} else {
+				toDelete = oldInCollectionsSection // Can be empty
 				toInsert = newInCollectionsSection
 //				toReload = inAllSection
 				toReload = []
 			}
 			
-		case .blank:
+		case .blank: // TO DO: Change this?
 			toDelete = oldInCollectionsSection
-			toInsert = []
+			toInsert = newInCollectionsSection // Empty
 //			toReload = inAllSection
 			toReload = []
 			
-		case .noMusic:
-			
+		case .noCollections: // TO DO: Change this?
 			toDelete = oldInCollectionsSection
-			
-			let newNumberOfRowsInCollectionsSection = numberOfRows(forSection: indexOfCollectionsSection)
-			let newIndexPaths = Array(0 ..< newNumberOfRowsInCollectionsSection).map { indexOfRow in
-				IndexPath(row: indexOfRow, section: indexOfCollectionsSection)
-			}
-			toInsert = newIndexPaths
-			
+			toInsert = newInCollectionsSection
 //			toReload = inAllSection
 			toReload = []
 			
-		case .someMusic: // Importing changes with existing Collections
+		case .someCollections: // Importing changes with existing Collections
 			toDelete = []
 			toInsert = []
 			toReload = []
@@ -182,16 +188,16 @@ final class CollectionsTVC:
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: toDelete, with: .middle)
 			tableView.insertRows(at: toInsert, with: .middle)
-			let animationForReload: UITableView.RowAnimation = toReload.isEmpty ? .none : .fade
+			let animationForReload: UITableView.RowAnimation = toReload.isEmpty ? .none : .fade // TO DO: Always reload the "All" row with animation `.none`?
 			tableView.reloadRows(at: toReload, with: animationForReload)
 		} completion: { _ in
 			completion?()
 		}
 		
 		switch viewState {
-		case .allowAccess, .loading, .blank, .noMusic:
+		case .allowAccess, .loading, .blank, .noCollections:
 			setEditing(false, animated: true)
-		case .someMusic:
+		case .someCollections:
 			break
 		}
 		
@@ -230,7 +236,7 @@ final class CollectionsTVC:
 	private func integrateWithBuiltInMusicApp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		isImportingChanges = true // viewState is now .loading or .someMusic (updating)
+		isImportingChanges = true // viewState is now .loading or .someCollections (updating)
 		reflectViewState {
 			MusicLibraryManager.shared.setUpAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes.
 			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
