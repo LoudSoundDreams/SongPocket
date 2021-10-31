@@ -8,7 +8,7 @@
 enum CollectionsViewState {
 	case allowAccess
 	case loading
-	case blank
+	case wasLoadingOrNoCollections
 	case noCollections
 	case someCollections
 }

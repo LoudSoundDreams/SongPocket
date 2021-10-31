@@ -19,6 +19,9 @@
 /* Accessibility label */
 "Album artwork" = "专辑插图";
 
+/* Section header */
+"Albums" = "专辑";
+
 /* Button */
 "Allow Access to Music" = "允许访问音乐";
 
@@ -39,6 +42,9 @@
 
 /* Accent color */
 "Grape" = "葡萄";
+
+/* Large title */
+"Library" = "资料库";
 
 /* Accent color */
 "Lime" = "青柠";

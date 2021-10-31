@@ -15,10 +15,10 @@ final class CollectionsTVC:
 	AlbumMover
 {
 	
-//	enum Section: Int, CaseIterable {
-//		case all
-//		case collections
-//	}
+	enum Section: Int, CaseIterable {
+		case all
+		case collections
+	}
 	
 	// MARK: - Properties
 	
@@ -53,13 +53,13 @@ final class CollectionsTVC:
 	}()
 	
 	// State
-	var isAboutToSetItemsAndMoveRows = false
+	var needsRemoveRowsInCollectionsSection = false
 	var viewState: CollectionsViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
-		if isAboutToSetItemsAndMoveRows { // You must check this before checking isImportingChanges.
-			return .blank
+		if needsRemoveRowsInCollectionsSection { // You must check this before checking isImportingChanges.
+			return .wasLoadingOrNoCollections
 		}
 		if isImportingChanges {
 			if viewModel.isEmpty() {
@@ -94,17 +94,18 @@ final class CollectionsTVC:
 	
 	// MARK: - Library State
 	
-	final func prepareToRefreshLibraryItems() {
+	final func willRefreshLibraryItems() {
 		switch viewState {
 		case
 				.loading,
 				.noCollections:
-			isAboutToSetItemsAndMoveRows = true // viewState is now .blank
+			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
+			needsRemoveRowsInCollectionsSection = true // viewState is now .wasLoadingOrNoCollections
 			reflectViewState()
-			isAboutToSetItemsAndMoveRows = false // WARNING: viewState is now .loading or .noCollections, but the UI doesn't reflect that.
+			needsRemoveRowsInCollectionsSection = false // WARNING: viewState is now .loading or .noCollections, but the UI doesn't reflect that.
 		case
 				.allowAccess,
-				.blank,
+				.wasLoadingOrNoCollections,
 				.someCollections:
 			break
 		}
@@ -118,7 +119,7 @@ final class CollectionsTVC:
 		case
 				.allowAccess,
 				.loading,
-				.blank,
+				.wasLoadingOrNoCollections,
 				.someCollections:
 			break
 		}
@@ -129,74 +130,68 @@ final class CollectionsTVC:
 	) {
 		let toDelete: [IndexPath]
 		let toInsert: [IndexPath]
-		let toReload: [IndexPath]
+		let toReloadInCollectionsSection: [IndexPath]
 		
-		
-//		let inAllSection = tableView.indexPathsForRows(
-//			inSection: Section.all.rawValue,
-//			firstRow: 0)
-//		let indexOfCollectionsSection = Section.collections.rawValue
-		
-		
-		let indexOfCollectionsSection = 0
+		let indexOfCollectionsSection = FeatureFlag.allRow ? Section.collections.rawValue : 0
 		let oldInCollectionsSection = tableView.indexPathsForRows(
 			inSection: indexOfCollectionsSection,
 			firstRow: 0)
 		let newInCollectionsSection: [IndexPath] = {
-			let newNumberOfRowsInCollectionsSection = numberOfRows(forSection: indexOfCollectionsSection)
-			return Array(0 ..< newNumberOfRowsInCollectionsSection).map { indexOfRow in
+			let numberOfRows = numberOfRows(forSection: indexOfCollectionsSection)
+			let indicesOfRows = Array(0 ..< numberOfRows)
+			return indicesOfRows.map { indexOfRow in
 				IndexPath(row: indexOfRow, section: indexOfCollectionsSection)
 			}
 		}()
 		
 		switch viewState {
-			
 		case
 				.allowAccess,
 				.loading:
 			if oldInCollectionsSection.count == newInCollectionsSection.count {
 				toDelete = []
 				toInsert = []
-//				toReload = inAllSection + newInCollectionsSection
-				toReload = newInCollectionsSection
+				toReloadInCollectionsSection = newInCollectionsSection
 			} else {
 				toDelete = oldInCollectionsSection // Can be empty
 				toInsert = newInCollectionsSection
-//				toReload = inAllSection
-				toReload = []
+				toReloadInCollectionsSection = []
 			}
-			
-		case .blank: // TO DO: Change this?
+		case .wasLoadingOrNoCollections:
 			toDelete = oldInCollectionsSection
 			toInsert = newInCollectionsSection // Empty
-//			toReload = inAllSection
-			toReload = []
-			
-		case .noCollections: // TO DO: Change this?
+			toReloadInCollectionsSection = []
+		case .noCollections:
 			toDelete = oldInCollectionsSection
 			toInsert = newInCollectionsSection
-//			toReload = inAllSection
-			toReload = []
-			
+			toReloadInCollectionsSection = []
 		case .someCollections: // Importing changes with existing Collections
 			toDelete = []
 			toInsert = []
-			toReload = []
-			
+			toReloadInCollectionsSection = []
 		}
 		
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: toDelete, with: .middle)
 			tableView.insertRows(at: toInsert, with: .middle)
-			let animationForReload: UITableView.RowAnimation = toReload.isEmpty ? .none : .fade // TO DO: Always reload the "All" row with animation `.none`?
-			tableView.reloadRows(at: toReload, with: animationForReload)
+			if FeatureFlag.allRow {
+				tableView.reloadSections([Section.all.rawValue], with: .none)
+			}
+			let animationForReload: UITableView.RowAnimation = toReloadInCollectionsSection.isEmpty ? .none : .fade
+			tableView.reloadRows(at: toReloadInCollectionsSection, with: animationForReload)
 		} completion: { _ in
 			completion?()
 		}
 		
 		switch viewState {
-		case .allowAccess, .loading, .blank, .noCollections:
-			setEditing(false, animated: true)
+		case
+				.allowAccess,
+				.loading,
+				.wasLoadingOrNoCollections,
+				.noCollections:
+			if isEditing {
+				setEditing(false, animated: true)
+			}
 		case .someCollections:
 			break
 		}
@@ -275,7 +270,7 @@ final class CollectionsTVC:
 	
 	// MARK: Setup Events
 	
-	@IBAction func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
+	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
 	final override func viewWillAppear(_ animated: Bool) {

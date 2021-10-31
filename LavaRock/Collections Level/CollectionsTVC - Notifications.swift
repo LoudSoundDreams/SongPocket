@@ -46,7 +46,7 @@ extension CollectionsTVC {
 	final override func refreshLibraryItems() {
 		if albumMoverClipboard != nil {
 		} else {
-			prepareToRefreshLibraryItems()
+			willRefreshLibraryItems()
 			
 			if isPreviewingCombineCollections {
 				fatalError()

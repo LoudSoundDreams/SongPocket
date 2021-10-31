@@ -10,15 +10,17 @@ import CoreData
 
 extension CollectionsTVC {
 	
-//	override func setEditing(_ editing: Bool, animated: Bool) {
-//		super.setEditing(editing, animated: animated)
-//
-//		let indexOfAllSection = Section.all.rawValue
-//		let allSection = tableView.indexPathsForRows(
-//			inSection: indexOfAllSection,
-//			firstRow: 0)
-//		tableView.reloadRows(at: allSection, with: .fade) //
-//	}
+	final override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		
+		if FeatureFlag.allRow {
+			if #available(iOS 15, *) {
+				tableView.reloadSections([Section.all.rawValue], with: .none) // `.fade` looks perfect on iOS 14, but as of iOS 15.2 developer beta 1, it makes the old row disappear instantly without an animation (while fading in the new row), which looks terrible.
+			} else {
+				tableView.reloadSections([Section.all.rawValue], with: .fade) // Reload the row manually, because since we return `false` in `canEditRowAt`.
+			}
+		}
+	}
 	
 	// MARK: - Renaming
 	

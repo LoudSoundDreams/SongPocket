@@ -11,8 +11,7 @@ import CoreData
 extension LibraryTVC {
 	
 	// Overrides of this method should call super (this implementation).
-//	override func setEditing(_ editing: Bool, animated: Bool) {
-	final override func setEditing(_ editing: Bool, animated: Bool) {
+	override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
 			viewModel.context.tryToSave()
 		}

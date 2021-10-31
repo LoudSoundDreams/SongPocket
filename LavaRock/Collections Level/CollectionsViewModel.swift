@@ -13,8 +13,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	// MARK: - LibraryViewModel
 	
 	static let entityName = "Collection"
-//	static let numberOfSectionsAboveLibraryItems = 1
-	static let numberOfSectionsAboveLibraryItems = 0
+	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	let context: NSManagedObjectContext
@@ -24,8 +23,7 @@ struct CollectionsViewModel: LibraryViewModel {
 	var groups: [GroupOfLibraryItems]
 	
 	func navigationItemTitleOptional() -> String? {
-//		return "Library" // TO DO: Localize
-		return nil
+		FeatureFlag.allRow ? LocalizedString.library : nil
 	}
 	
 	// MARK: - Miscellaneous

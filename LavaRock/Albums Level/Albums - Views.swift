@@ -8,11 +8,11 @@
 import UIKit
 
 final class AlbumCell: UITableViewCell {
-	@IBOutlet var albumStackView: UIStackView!
-	@IBOutlet var artworkImageView: UIImageView!
-	@IBOutlet var textStackView: UIStackView!
-	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var releaseDateLabel: UILabel!
+	@IBOutlet private var albumStackView: UIStackView!
+	@IBOutlet private var artworkImageView: UIImageView!
+	@IBOutlet private var textStackView: UIStackView!
+	@IBOutlet private var titleLabel: UILabel!
+	@IBOutlet private var releaseDateLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	
 	final override func awakeFromNib() {

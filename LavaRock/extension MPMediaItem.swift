@@ -139,7 +139,7 @@ extension MPMediaItem {
 				return String(albumTrackNumber)
 			}
 		}()
-		return discNumberString + "-" /*hyphen*/ + trackNumberString
+		return "\(discNumberString)-\(trackNumberString)" // That's a hyphen.
 	}
 	
 }

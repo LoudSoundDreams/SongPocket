@@ -9,16 +9,13 @@ import UIKit
 
 extension OptionsTVC {
 	
-	private enum OptionsSection: Int, CaseIterable {
+	private enum Section: Int, CaseIterable {
 		case accentColor
 		case tipJar
 	}
 	
 	final func refreshTipJarRows() {
-		let tipJarIndexPaths = tableView.indexPathsForRows(
-			inSection: OptionsSection.tipJar.rawValue,
-			firstRow: 0)
-		tableView.reloadRows(at: tipJarIndexPaths, with: .fade)
+		tableView.reloadSections([Section.tipJar.rawValue], with: .fade)
 	}
 	
 	// MARK: - All Sections
@@ -26,14 +23,14 @@ extension OptionsTVC {
 	// MARK: Numbers
 	
 	final override func numberOfSections(in tableView: UITableView) -> Int {
-		return OptionsSection.allCases.count
+		return Section.allCases.count
 	}
 	
 	final override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		guard let sectionCase = OptionsSection(rawValue: section) else {
+		guard let sectionCase = Section(rawValue: section) else {
 			return 0
 		}
 		switch sectionCase {
@@ -50,7 +47,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
 	) -> String? {
-		guard let sectionCase = OptionsSection(rawValue: section) else {
+		guard let sectionCase = Section(rawValue: section) else {
 			return nil
 		}
 		switch sectionCase {
@@ -65,7 +62,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		titleForFooterInSection section: Int
 	) -> String? {
-		guard let sectionCase = OptionsSection(rawValue: section) else {
+		guard let sectionCase = Section(rawValue: section) else {
 			return nil
 		}
 		switch sectionCase {
@@ -82,7 +79,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let sectionCase = OptionsSection(rawValue: indexPath.section) else {
+		guard let sectionCase = Section(rawValue: indexPath.section) else {
 			return UITableViewCell()
 		}
 		switch sectionCase {
@@ -100,7 +97,7 @@ extension OptionsTVC {
 	) {
 		if
 			PurchaseManager.shared.tipStatus == .confirming,
-			indexPath.section == OptionsSection.tipJar.rawValue
+			indexPath.section == Section.tipJar.rawValue
 		{
 			cell.isSelected = true
 		}
@@ -112,7 +109,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
-		guard let sectionCase = OptionsSection(rawValue: indexPath.section) else { return }
+		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
 		case .accentColor:
 			didSelectAccentColorRow(at: indexPath)
@@ -186,7 +183,11 @@ extension OptionsTVC {
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
 		switch PurchaseManager.shared.tipStatus {
-		case .notYetFirstLoaded, .loading, .confirming: // Should never run
+		case
+				.notYetFirstLoaded,
+				.loading,
+				.confirming:
+			// Should never run
 			break
 		case .reload:
 			reloadTipProduct()

@@ -71,6 +71,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Collections View
 	
+	static let library = NSLocalizedString("Library", comment: "Large title")
 	static let collections = NSLocalizedString("Collections", comment: "Section header")
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
@@ -99,6 +100,8 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 		comment: "Default title for a collection if you make a collection and don’t provide a title.")
 	
 	// MARK: Albums View
+	
+	static let albums = NSLocalizedString("Albums", comment: "Section header")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")

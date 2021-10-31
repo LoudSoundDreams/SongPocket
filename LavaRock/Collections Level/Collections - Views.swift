@@ -9,7 +9,30 @@ import UIKit
 import CoreData
 
 final class AllCollectionsCell: UITableViewCell {
-	@IBOutlet var allLabel: UILabel!
+	@IBOutlet private var allLabel: UILabel!
+	
+	enum Mode {
+		case enabled
+		case disabled
+		case editing // Don't use `UITableViewCell.isEditing`; it's always `false` because that's what we return in `canEditRowAt`.
+	}
+	
+	final func configure(mode: Mode) {
+		switch mode {
+		case .enabled:
+			allLabel.textColor = .label
+			enableWithAccessibilityTrait()
+			accessoryType = .disclosureIndicator
+		case .disabled:
+			allLabel.textColor = .placeholderText
+			disableWithAccessibilityTrait()
+			accessoryType = .disclosureIndicator
+		case .editing:
+			allLabel.textColor = .placeholderText
+			disableWithAccessibilityTrait()
+			accessoryType = .none
+		}
+	}
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
@@ -117,7 +140,7 @@ final class OpenMusicCell: UITableViewCell {
 }
 
 final class CollectionCell: UITableViewCell {
-	@IBOutlet var titleLabel: UILabel!
+	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	
 	final func configure(

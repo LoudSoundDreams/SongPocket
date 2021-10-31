@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 
 final class AlbumArtworkCell: UITableViewCell {
-	@IBOutlet var artworkImageView: UIImageView!
+	@IBOutlet private var artworkImageView: UIImageView!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -31,9 +31,9 @@ final class AlbumArtworkCell: UITableViewCell {
 }
 
 final class AlbumInfoCell: UITableViewCell {
-	@IBOutlet var stackView: UIStackView!
-	@IBOutlet var albumArtistLabel: UILabel!
-	@IBOutlet var releaseDateLabel: UILabel!
+	@IBOutlet private var stackView: UIStackView!
+	@IBOutlet private var albumArtistLabel: UILabel!
+	@IBOutlet private var releaseDateLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -62,11 +62,11 @@ final class AlbumInfoCell: UITableViewCell {
 }
 
 final class SongCell: UITableViewCell {
-	@IBOutlet var textStackView: UIStackView!
-	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var artistLabel: UILabel!
+	@IBOutlet private var textStackView: UIStackView!
+	@IBOutlet private var titleLabel: UILabel!
+	@IBOutlet private var artistLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
-	@IBOutlet var trackNumberLabel: UILabel!
+	@IBOutlet private var trackNumberLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()

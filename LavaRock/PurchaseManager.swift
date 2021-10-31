@@ -153,7 +153,11 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 				switch transaction.transactionState {
 				case .purchasing:
 					break
-				case .deferred, .failed, .purchased, .restored:
+				case
+						.deferred,
+						.failed,
+						.purchased,
+						.restored:
 					tipStatus = .ready
 				@unknown default:
 					fatalError()

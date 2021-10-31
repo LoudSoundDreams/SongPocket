@@ -41,6 +41,7 @@
 		075218B7257C52390077AE9B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 075218B5257C52390077AE9B /* InfoPlist.strings */; };
 		075218BA257C52390077AE9B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 075218B8257C52390077AE9B /* Localizable.strings */; };
 		07566CEA2692261800257DB4 /* extension UIMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07566CE92692261800257DB4 /* extension UIMenu.swift */; };
+		0759DC81272CD37300FDA7D7 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0759DC80272CD37300FDA7D7 /* FeatureFlag.swift */; };
 		07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */; };
 		07642C7C268FFC1600B66BB8 /* GroupOfSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */; };
 		07642C7E268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */; };
@@ -154,6 +155,7 @@
 		075218B6257C52390077AE9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		075218B9257C52390077AE9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		07566CE92692261800257DB4 /* extension UIMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIMenu.swift"; sourceTree = "<group>"; };
+		0759DC80272CD37300FDA7D7 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryItem.swift"; sourceTree = "<group>"; };
 		07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOfSongs.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol GroupOfLibraryItems.swift"; sourceTree = "<group>"; };
@@ -369,6 +371,7 @@
 				07E92A15251068E500E9073B /* extensions to UIKit */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
+				0759DC80272CD37300FDA7D7 /* FeatureFlag.swift */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				07B1EC432723B52A00EA8E29 /* TabBarC.swift */,
 				070E194524F3424500B21307 /* All Levels */,
@@ -636,6 +639,7 @@
 				07642C7E268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift in Sources */,
 				07942DA1271CAD350030F14A /* CollectionsViewState.swift in Sources */,
 				078FDD0F2638872100779AF2 /* extension Array.swift in Sources */,
+				0759DC81272CD37300FDA7D7 /* FeatureFlag.swift in Sources */,
 				07FD6E122599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift in Sources */,
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */,
@@ -908,7 +912,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 232;
+				CURRENT_PROJECT_VERSION = 236;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -931,7 +935,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 232;
+				CURRENT_PROJECT_VERSION = 236;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

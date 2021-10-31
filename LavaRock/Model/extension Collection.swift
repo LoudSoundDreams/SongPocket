@@ -182,9 +182,9 @@ extension Collection {
 		
 		let trimmedTitle = proposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
 		if trimmedTitle != proposedTitle {
-			return trimmedTitle + "…" // TO DO: Localize?
+			return "\(trimmedTitle)…" // TO DO: Localize?
 		} else {
-			return String(trimmedTitle)
+			return "\(trimmedTitle)"
 		}
 	}
 	
