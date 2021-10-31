@@ -23,6 +23,7 @@ final class CollectionsTVC:
 	// MARK: - Properties
 	
 	// Actions
+	static let openCollectionSegueIdentifier = "Open Collection"
 	lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
 		name: LocalizedString.rename,
 		actionHandler: renameFocusedCollectionHandler)
@@ -319,7 +320,7 @@ final class CollectionsTVC:
 		sender: Any?
 	) {
 		if
-			segue.identifier == "Open Collection",
+			segue.identifier == Self.openCollectionSegueIdentifier,
 			let albumsTVC = segue.destination as? AlbumsTVC,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{
