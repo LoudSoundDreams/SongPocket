@@ -10,11 +10,11 @@ import MediaPlayer
 
 final class TabBarC: UITabBarController {
 	
-    final override func viewDidLoad() {
-        super.viewDidLoad()
+	final override func viewDidLoad() {
+		super.viewDidLoad()
 		
 		setUpPlaybackStateReflecting()
-    }
+	}
 	
 	deinit {
 		endObservingPlaybackStateChanges()
