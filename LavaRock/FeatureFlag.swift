@@ -9,6 +9,6 @@ struct FeatureFlag{
 	
 	private init() {}
 	
-	static let allRow = false
+	static let allRow = true
 	
 }

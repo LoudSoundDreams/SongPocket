@@ -319,7 +319,7 @@ final class CollectionsTVC:
 		sender: Any?
 	) {
 		if
-			segue.identifier == "Drill Down in Library",
+			segue.identifier == "Open Collection",
 			let albumsTVC = segue.destination as? AlbumsTVC,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{

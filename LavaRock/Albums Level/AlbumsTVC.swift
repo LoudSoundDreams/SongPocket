@@ -124,7 +124,7 @@ final class AlbumsTVC:
 		sender: Any?
 	) {
 		if
-			segue.identifier == "Drill Down in Library",
+			segue.identifier == "Open Album",
 			let songsTVC = segue.destination as? SongsTVC,
 			let selectedIndexPath = tableView.indexPathForSelectedRow
 		{

@@ -209,7 +209,7 @@
                                 <connections>
                                     <outlet property="nowPlayingIndicatorImageView" destination="ZA8-cG-C8X" id="nDR-0V-1wC"/>
                                     <outlet property="titleLabel" destination="SFb-dV-xDe" id="IjH-9w-2tc"/>
-                                    <segue destination="DGZ-AG-uNY" kind="show" identifier="Drill Down in Library" id="Egm-ag-jV8"/>
+                                    <segue destination="DGZ-AG-uNY" kind="show" identifier="Open Collection" id="Egm-ag-jV8"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections" id="Ztw-H3-VnV" customClass="NoCollectionsPlaceholderCell" customModule="LavaRock" customModuleProvider="target">
@@ -409,6 +409,8 @@
                                         <constraint firstItem="XXR-SF-A9b" firstAttribute="centerY" secondItem="aoi-DX-wbp" secondAttribute="centerY" id="WTl-Cd-51w"/>
                                         <constraint firstItem="XXR-SF-A9b" firstAttribute="trailing" secondItem="aoi-DX-wbp" secondAttribute="trailingMargin" id="hRI-RC-f6j"/>
                                         <constraint firstItem="XXR-SF-A9b" firstAttribute="leading" secondItem="kNY-CW-ua6" secondAttribute="trailing" constant="8" symbolic="YES" id="ihi-mt-GeH"/>
+                                        <constraint firstItem="rpv-eB-T27" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="aoi-DX-wbp" secondAttribute="bottomMargin" id="xSH-wt-X72"/>
+                                        <constraint firstItem="rpv-eB-T27" firstAttribute="top" relation="greaterThanOrEqual" secondItem="aoi-DX-wbp" secondAttribute="topMargin" id="zXJ-Sm-4LY"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -423,7 +425,7 @@
                                     <outlet property="releaseDateLabel" destination="Odq-7C-PJs" id="Djy-aJ-kFm"/>
                                     <outlet property="textStackView" destination="rpv-eB-T27" id="RwD-OZ-pAI"/>
                                     <outlet property="titleLabel" destination="CCX-T2-D40" id="rwi-B7-0P5"/>
-                                    <segue destination="Uik-rz-IBd" kind="show" identifier="Drill Down in Library" id="vdq-GE-p3h"/>
+                                    <segue destination="Uik-rz-IBd" kind="show" identifier="Open Album" id="vdq-GE-p3h"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Albums Placeholder" rowHeight="100" id="RmC-40-dsA">
