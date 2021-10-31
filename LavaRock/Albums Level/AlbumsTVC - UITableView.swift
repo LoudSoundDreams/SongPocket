@@ -66,7 +66,9 @@ extension AlbumsTVC {
 		if albumMoverClipboard != nil {
 			return false
 		} else {
-			return viewModel.shouldBeginMultipleSelectionInteraction(at: indexPath)
+			return super.tableView(
+				tableView,
+				shouldBeginMultipleSelectionInteractionAt: indexPath)
 		}
 	}
 	

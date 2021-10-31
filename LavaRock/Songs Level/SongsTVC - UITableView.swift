@@ -147,9 +147,7 @@ extension SongsTVC {
 			// You must eventually deselect the row in every possible branch from here.
 		}
 		
-		super.tableView(
-			tableView,
-			didSelectRowAt: indexPath)
+		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
 	
 }

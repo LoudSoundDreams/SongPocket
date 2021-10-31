@@ -17,7 +17,7 @@ extension CollectionsTVC {
 			if #available(iOS 15, *) {
 				tableView.reloadSections([Section.all.rawValue], with: .none) // `.fade` looks perfect on iOS 14, but as of iOS 15.2 developer beta 1, it makes the old row disappear instantly without an animation (while fading in the new row), which looks terrible.
 			} else {
-				tableView.reloadSections([Section.all.rawValue], with: .fade) // Reload the row manually, because since we return `false` in `canEditRowAt`.
+				tableView.reloadSections([Section.all.rawValue], with: .fade) // Reload the row manually, because since we return `false` in `canEditRowAt`. That's the only way to disable checkmark selection for certain rows in a table view, but not others. Unfortunately, it means that we need to reload and configure the row manually when we enter and exit editing mode.
 			}
 		}
 	}

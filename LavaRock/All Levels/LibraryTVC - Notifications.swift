@@ -21,7 +21,7 @@ extension LibraryTVC {
 	
 	// MARK: - Setup and Teardown
 	
-	// Overrides of this method should call super (this implementation) at the beginning.
+	// Overrides of this method should call super (this implementation).
 	@objc func beginObservingNotifications() {
 		NotificationCenter.default.removeAndAddObserver(
 			self,

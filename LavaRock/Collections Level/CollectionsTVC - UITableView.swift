@@ -192,55 +192,6 @@ extension CollectionsTVC {
 	
 	final override func tableView(
 		_ tableView: UITableView,
-		canEditRowAt indexPath: IndexPath
-	) -> Bool {
-		func canEditRowInCollectionsSection() -> Bool {
-			return viewModel.canEditRow(at: indexPath)
-		}
-		
-		if FeatureFlag.allRow {
-			guard let sectionCase = Section(rawValue: indexPath.section) else {
-				return false
-			}
-			switch sectionCase {
-			case .all:
-				return false // This is the only way to disable checkmark selection for certain rows in a table view, but not others. Unfortunately, it means that we need to reload and configure the row manually when we enter and exit editing mode.
-			case .collections:
-				return canEditRowInCollectionsSection()
-			}
-		} else {
-			return canEditRowInCollectionsSection()
-		}
-	}
-	
-	final override func tableView(
-		_ tableView: UITableView,
-		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
-		toProposedIndexPath proposedDestinationIndexPath: IndexPath
-	) -> IndexPath {
-		func targetIndexPathWithoutAllSection() -> IndexPath {
-			return viewModel.targetIndexPathForMovingRow(
-				at: sourceIndexPath,
-				to: proposedDestinationIndexPath)
-		}
-		
-		if FeatureFlag.allRow {
-			guard let proposedSectionCase = Section(rawValue: proposedDestinationIndexPath.section) else {
-				return sourceIndexPath
-			}
-			switch proposedSectionCase {
-			case .all:
-				return sourceIndexPath
-			case .collections:
-				return targetIndexPathWithoutAllSection()
-			}
-		} else {
-			return targetIndexPathWithoutAllSection()
-		}
-	}
-	
-	final override func tableView(
-		_ tableView: UITableView,
 		accessoryButtonTappedForRowWith indexPath: IndexPath
 	) {
 		presentDialogToRenameCollection(at: indexPath)
@@ -258,14 +209,14 @@ extension CollectionsTVC {
 			switch viewState {
 			case
 					.allowAccess,
-					.loading:
-				return false
-			case .wasLoadingOrNoCollections: // Should never run
-				return false
-			case .noCollections:
+					.loading,
+					.wasLoadingOrNoCollections, // Should never run
+					.noCollections:
 				return false
 			case .someCollections:
-				return viewModel.shouldBeginMultipleSelectionInteraction(at: indexPath)
+				return super.tableView(
+					tableView,
+					shouldBeginMultipleSelectionInteractionAt: indexPath)
 			}
 		}
 	}
@@ -275,19 +226,15 @@ extension CollectionsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch viewState {
-		case .allowAccess:
-			break
-		case .loading:
-			break
-		case .wasLoadingOrNoCollections: // Should never run
-			break
-		case .noCollections:
-			break
+		case
+				.allowAccess,
+				.loading, // Should never run
+				.wasLoadingOrNoCollections, // Should never run
+				.noCollections: // Should never run for `NoCollectionsPlaceholderCell`
+			return indexPath
 		case .someCollections:
-			return viewModel.willSelectRow(at: indexPath)
+			return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
-		
-		return indexPath
 	}
 	
 	final override func tableView(
@@ -307,9 +254,7 @@ extension CollectionsTVC {
 			}
 			tableView.deselectRow(at: indexPath, animated: true)
 		case .someCollections:
-			super.tableView(
-				tableView,
-				didSelectRowAt: indexPath)
+			super.tableView(tableView, didSelectRowAt: indexPath)
 		}
 	}
 	

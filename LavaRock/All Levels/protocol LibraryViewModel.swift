@@ -93,6 +93,19 @@ extension LibraryViewModel {
 		return items[indexOfItemInGroup]
 	}
 	
+	func pointsToSomeItem(_ indexPath: IndexPath) -> Bool {
+		let indexOfGroup = indexOfGroup(forSection: indexPath.section)
+		guard 0 <= indexOfGroup, indexOfGroup < groups.count else {
+			return false
+		}
+		let items = groups[indexOfGroup].items
+		let indexOfItemInGroup = indexOfItemInGroup(forRow: indexPath.row)
+		guard 0 <= indexOfItemInGroup, indexOfItemInGroup < items.count else {
+			return false
+		}
+		return true
+	}
+	
 	// MARK: Indices
 	
 	func indexOfGroup(forSection section: Int) -> Int {
@@ -160,83 +173,6 @@ extension LibraryViewModel {
 		} else {
 			return Self.numberOfRowsAboveLibraryItemsInEachSection + group.items.count
 		}
-	}
-	
-	// MARK: Editing
-	
-	// Identical to shouldBeginMultipleSelectionInteraction.
-	// Similar to willSelectRow.
-	func canEditRow(at indexPath: IndexPath) -> Bool {
-		let indexOfGroup = indexOfGroup(forSection: indexPath.section)
-		guard 0 <= indexOfGroup, indexOfGroup < groups.count else {
-			return false
-		}
-		let items = groups[indexOfGroup].items
-		
-		let indexOfItemInGroup = indexOfItemInGroup(forRow: indexPath.row)
-		guard 0 <= indexOfItemInGroup, indexOfItemInGroup < items.count else {
-			return false
-		}
-		
-		return true
-	}
-	
-	// MARK: Reordering
-	
-	func targetIndexPathForMovingRow(
-		at sourceIndexPath: IndexPath,
-		to proposedDestinationIndexPath: IndexPath
-	) -> IndexPath {
-		let proposedSection = proposedDestinationIndexPath.section
-		if
-			proposedSection == sourceIndexPath.section,
-			proposedDestinationIndexPath.row < Self.numberOfRowsAboveLibraryItemsInEachSection
-		{
-			let indexOfGroup = indexOfGroup(forSection: proposedSection)
-			return indexPathFor(
-				indexOfItemInGroup: 0,
-				indexOfGroup: indexOfGroup)
-		} else {
-			return proposedDestinationIndexPath
-		}
-	}
-	
-	// MARK: Selecting
-	
-	// Identical to canEditRow.
-	// Similar to willSelectRow.
-	func shouldBeginMultipleSelectionInteraction(at indexPath: IndexPath) -> Bool {
-		let indexOfGroup = indexOfGroup(forSection: indexPath.section)
-		guard 0 <= indexOfGroup, indexOfGroup < groups.count else {
-			return false
-		}
-		let items = groups[indexOfGroup].items
-		
-		let indexOfItemInGroup = indexOfItemInGroup(forRow: indexPath.row)
-		guard 0 <= indexOfItemInGroup, indexOfItemInGroup < items.count else {
-			return false
-		}
-		
-		return true
-	}
-	
-	// Similar to canEditRow and shouldBeginMultipleSelectionInteraction.
-	// To disable selection for a row, it's simpler to set cell.isUserInteractionEnabled = false.
-	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and shouldBeginMultipleSelectionInteractionAt, and swipe over a cell that doesn't allow user interaction, to select it too.
-	// Therefore, if you support multiple-selection interactions, you must use this method to disable selection for certain rows.
-	func willSelectRow(at indexPath: IndexPath) -> IndexPath? {
-		let indexOfGroup = indexOfGroup(forSection: indexPath.section)
-		guard 0 <= indexOfGroup, indexOfGroup < groups.count else {
-			return nil
-		}
-		let items = groups[indexOfGroup].items
-		
-		let indexOfItemInGroup = indexOfItemInGroup(forRow: indexPath.row)
-		guard 0 <= indexOfItemInGroup, indexOfItemInGroup < items.count else {
-			return nil
-		}
-		
-		return indexPath
 	}
 	
 	// MARK: - Editing
