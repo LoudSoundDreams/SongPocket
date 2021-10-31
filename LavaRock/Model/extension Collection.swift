@@ -49,11 +49,11 @@ extension Collection {
 			os_signpost(.end, log: Self.log, name: "Make a Collection at the top")
 		}
 		
+		collectionsToInsertBefore.forEach { $0.index += 1 }
+		
 		self.init(context: context)
 		title = mediaItem.albumArtist ?? Album.placeholderAlbumArtist
 		index = 0
-		
-		collectionsToInsertBefore.forEach { $0.index += 1 }
 	}
 	
 	// WARNING: Leaves Collections in an incoherent state.

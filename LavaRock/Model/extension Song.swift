@@ -46,12 +46,12 @@ extension Song {
 			os_signpost(.end, log: Self.log, name: "Make a Song at the top")
 		}
 		
+		album.songs(sorted: false).forEach { $0.index += 1 }
+		
 		self.init(context: context)
 		persistentID = Int64(bitPattern: mediaItem.persistentID)
 		index = 0
 		container = album
-		
-		album.songs(sorted: false).forEach { $0.index += 1 }
 	}
 	
 	// MARK: - All Instances
