@@ -111,7 +111,7 @@ struct CollectionsViewModel: LibraryViewModel {
 		return newItems
 	}
 	
-	func itemsAfterDeletingCollection(
+	func itemsAfterDeletingCollectionIfEmpty(
 		indexOfCollection: Int
 	) -> [NSManagedObject] { // ? [Collection]
 		let oldItems = group.items

@@ -72,7 +72,7 @@ extension CollectionsTVC {
 		dialog.addTextFieldForCollectionTitle(defaultTitle: suggestedTitle)
 		
 		let cancelAction = UIAlertAction.cancel { _ in
-			self.revertMakeNewCollectionIfEmpty()
+			self.revertMakeNewCollection()
 		}
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
@@ -90,7 +90,7 @@ extension CollectionsTVC {
 		present(dialog, animated: true)
 	}
 	
-	final func revertMakeNewCollectionIfEmpty() {
+	final func revertMakeNewCollection() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			let collectionsViewModel = viewModel as? CollectionsViewModel
@@ -101,7 +101,7 @@ extension CollectionsTVC {
 		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
 		
 		// Make a new data source.
-		let newItems = collectionsViewModel.itemsAfterDeletingCollection(
+		let newItems = collectionsViewModel.itemsAfterDeletingCollectionIfEmpty(
 			indexOfCollection: indexOfNewCollection)
 		let indexPathOfDeletedCollection = collectionsViewModel.indexPathFor(
 			indexOfItemInGroup: indexOfNewCollection,

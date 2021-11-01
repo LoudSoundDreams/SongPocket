@@ -116,8 +116,11 @@ extension CollectionsTVC {
 		// Update the data source and table view.
 		setItemsAndMoveRows(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
-			thenSelect: [indexPathOfCombinedCollection],
+//			thenSelect: [indexPathOfCombinedCollection],
 			section: indexPathOfCombinedCollection.section)
+		
+		// TO DO: Deselect rows and refresh editing buttons?
+		
 		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
 		// We could hack refreshEditingButtons to disable all the editing buttons during the animation, but that would clearly break separation of concerns.
 	}
@@ -174,11 +177,13 @@ extension CollectionsTVC {
 		
 		setItemsAndMoveRows(
 			newItems: originalItems, // SIDE EFFECT
-			thenSelect: originalSelectedIndexPaths,
+//			thenSelect: originalSelectedIndexPaths,
 			section: CollectionsViewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfGroup
 		) {
 			completion?()
 		}
+		
+		// TO DO: Deselect rows and refresh editing buttons?
 	}
 	
 	private func commitCombineCollections(

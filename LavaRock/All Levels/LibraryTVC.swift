@@ -213,7 +213,6 @@ class LibraryTVC: UITableViewController {
 	
 	final func setItemsAndMoveRows(
 		newItems: [NSManagedObject],
-		thenSelect toSelect: [IndexPath] = [],
 		section: Int,
 		completion: (() -> Void)? = nil
 	) {
@@ -256,12 +255,7 @@ class LibraryTVC: UITableViewController {
 			}
 		}
 		
-		// Do this after performBatchUpdates's main closure, because otherwise it doesn't work on newly inserted rows.
-		// This method should do this so that callers don't need to call didChangeRowsOrSelectedRows.
-		toSelect.forEach {
-			tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
-		}
-		
+		tableView.deselectSection(section, animated: true)
 		didChangeRowsOrSelectedRows()
 	}
 	
@@ -297,6 +291,7 @@ class LibraryTVC: UITableViewController {
 		refreshEditingButtons()
 	}
 	
+	// Overrides of this method should call super (this implementation).
 	func refreshEditingButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
 		

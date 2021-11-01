@@ -291,7 +291,7 @@ final class CollectionsTVC:
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		if albumMoverClipboard != nil {
-			revertMakeNewCollectionIfEmpty()
+			revertMakeNewCollection()
 		}
 		
 		super.viewDidAppear(animated)

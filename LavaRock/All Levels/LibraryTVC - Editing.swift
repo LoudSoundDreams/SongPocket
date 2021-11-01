@@ -49,11 +49,7 @@ extension LibraryTVC {
 		
 		setItemsAndMoveRows(
 			newItems: newItems,
-			section: section
-		) {
-			self.tableView.deselectAllRows(animated: true)
-			self.didChangeRowsOrSelectedRows()
-		}
+			section: section)
 	}
 	
 	final func floatSelectedItemsToTopOfSection() {
@@ -64,11 +60,7 @@ extension LibraryTVC {
 		
 		setItemsAndMoveRows(
 			newItems: newItems,
-			section: section
-		) {
-			self.tableView.deselectAllRows(animated: true)
-			self.didChangeRowsOrSelectedRows()
-		}
+			section: section)
 	}
 	
 	final func sinkSelectedItemsToBottomOfSection() {
@@ -79,11 +71,7 @@ extension LibraryTVC {
 		
 		setItemsAndMoveRows(
 			newItems: newItems,
-			section: section
-		) {
-			self.tableView.deselectAllRows(animated: true)
-			self.didChangeRowsOrSelectedRows()
-		}
+			section: section)
 	}
 	
 }
