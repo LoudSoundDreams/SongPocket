@@ -39,7 +39,6 @@ struct NowPlayingIndicator {
 			accessibilityLabel = nil
 			return
 		}
-		
 		if isPlaying {
 			image = .waveSpeakerSymbol
 			accessibilityLabel = LocalizedString.nowPlaying

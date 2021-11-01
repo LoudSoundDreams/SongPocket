@@ -73,14 +73,12 @@ extension LibraryTVC {
 		guard sharedPlayer != nil else {
 			return false
 		}
-		
 		togglePlayPause()
 		return true
 	}
 	
 	private func togglePlayPause() {
 		guard let player = sharedPlayer else { return }
-		
 		if player.playbackState == .playing {
 			pause()
 		} else {

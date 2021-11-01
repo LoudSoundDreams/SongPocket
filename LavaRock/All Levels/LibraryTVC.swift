@@ -311,7 +311,6 @@ class LibraryTVC: UITableViewController {
 		guard !viewModel.isEmpty() else {
 			return false
 		}
-		
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		if selectedIndexPaths.isEmpty {
 			return viewModel.groups.count == 1
@@ -324,7 +323,6 @@ class LibraryTVC: UITableViewController {
 		guard !viewModel.isEmpty() else {
 			return false
 		}
-		
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		if selectedIndexPaths.isEmpty {
 			return false

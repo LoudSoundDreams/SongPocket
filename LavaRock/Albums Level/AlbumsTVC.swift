@@ -105,7 +105,6 @@ final class AlbumsTVC:
 		guard !viewModel.isEmpty() else {
 			return false
 		}
-		
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
 			return viewModel.groups.count == 1
 		} else {

@@ -110,7 +110,6 @@ extension Collection {
 		guard let contents = contents else {
 			return []
 		}
-		
 		let unsortedAlbums = contents.map { $0 as! Album }
 		if sorted {
 			let sortedAlbums = unsortedAlbums.sorted { $0.index < $1.index }
@@ -179,7 +178,6 @@ extension Collection {
 		else {
 			return nil
 		}
-		
 		let trimmedTitle = proposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
 		if trimmedTitle != proposedTitle {
 			return "\(trimmedTitle)…" // TO DO: Localize?

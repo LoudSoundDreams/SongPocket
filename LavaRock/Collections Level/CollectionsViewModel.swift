@@ -57,7 +57,6 @@ struct CollectionsViewModel: LibraryViewModel {
 		guard let collection = item(at: indexPath) as? Collection else {
 			return false
 		}
-		
 		let didChangeTitle = collection.rename(toProposedTitle: proposedTitle)
 		return didChangeTitle
 	}

@@ -92,7 +92,6 @@ extension Album {
 		guard let contents = contents else {
 			return []
 		}
-		
 		let unsortedSongs = contents.map { $0 as! Song }
 		if sorted {
 			let sortedSongs = unsortedSongs.sorted { $0.index < $1.index }

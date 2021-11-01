@@ -46,7 +46,6 @@ extension LibraryTVC {
 			selectedIndexPaths: selectedIndexPaths,
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		else { return }
-		
 		setItemsAndMoveRows(
 			newItems: newItems,
 			section: section)
@@ -57,7 +56,6 @@ extension LibraryTVC {
 		guard let (newItems, section) = viewModel.itemsAndSectionAfterFloatingSelectedItemsToTop(
 			selectedIndexPaths: selectedIndexPaths)
 		else { return }
-		
 		setItemsAndMoveRows(
 			newItems: newItems,
 			section: section)
@@ -68,7 +66,6 @@ extension LibraryTVC {
 		guard let (newItems, section) = viewModel.itemsAndSectionAfterSinkingSelectedItemsToBottom(
 			selectedIndexPaths: selectedIndexPaths)
 		else { return }
-		
 		setItemsAndMoveRows(
 			newItems: newItems,
 			section: section)
