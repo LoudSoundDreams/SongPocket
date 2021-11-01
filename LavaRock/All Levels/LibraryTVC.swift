@@ -194,11 +194,11 @@ class LibraryTVC: UITableViewController {
 	// Deletes all rows, including any rows not for library items, then performs an unwind segue.
 	// For AlbumsTVC and SongsTVC only; not for CollectionsTVC, because it doesn't have a "Removed All Contents" segue.
 	private func deleteAllRowsThenExit() {
-		let allIndexPaths = tableView.allIndexPaths()
+		let allSections = IndexSet(integersIn: 0 ..< tableView.numberOfSections)
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates {
-			tableView.deleteRows(at: allIndexPaths, with: .middle)
+			tableView.deleteSections(allSections, with: .middle)
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See corresponding comment in setItemsAndMoveRows.

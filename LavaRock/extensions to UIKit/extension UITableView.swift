@@ -15,15 +15,10 @@ extension UITableView {
 		return indexPathsForSelectedRows ?? []
 	}
 	
-	final func allIndexPaths() -> [IndexPath] {
-		let sections = Array(0 ..< numberOfSections)
-		let result = sections.flatMap { section in
-			indexPathsForRows(inSection: section, firstRow: 0)
-		}
-		return result
-	}
-	
-	final func indexPathsForRows(inSection section: Int, firstRow: Int) -> [IndexPath] {
+	final func indexPathsForRows(
+		inSection section: Int,
+		firstRow: Int
+	) -> [IndexPath] {
 		let lastRow = numberOfRows(inSection: section) - 1
 		guard lastRow >= 0 else {
 			// The section has 0 rows.
@@ -35,21 +30,25 @@ extension UITableView {
 			lastRow: lastRow)
 	}
 	
-	private func indexPathsForRows(inSection section: Int, firstRow: Int, lastRow: Int) -> [IndexPath] {
+	private func indexPathsForRows(
+		inSection section: Int,
+		firstRow: Int,
+		lastRow: Int
+	) -> [IndexPath] {
 		let rows = Array(firstRow ... lastRow)
 		let result = rows.map { IndexPath(row: $0, section: section) }
 		return result
 	}
 	
-	// MARK: - Rows
+	// MARK: - Deselecting
 	
 	final func deselectAllRows(animated: Bool) {
 		deselectRows(at: indexPathsForSelectedRowsNonNil, animated: animated)
 	}
 	
 	final func deselectSection(_ section: Int, animated: Bool) {
-		let inSection = indexPathsForRows(inSection: section, firstRow: 0)
-		deselectRows(at: inSection, animated: animated)
+		let selectedInSection = indexPathsForSelectedRowsNonNil.filter { $0.section == section }
+		deselectRows(at: selectedInSection, animated: animated)
 	}
 	
 	private func deselectRows(at indexPaths: [IndexPath], animated: Bool) {
