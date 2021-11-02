@@ -16,6 +16,21 @@ final class AlbumsTVC:
 	NoItemsBackgroundManager
 {
 	
+	enum SectionKind { // It'd be nice if raw values could be of type `Int?`.
+		case all
+		case groupOfAlbums
+		
+		static let valueForCaseAll = 0
+		
+		init(forSection section: Int) {
+			if section == Self.valueForCaseAll {
+				self = .all
+			} else {
+				self = .groupOfAlbums
+			}
+		}
+	}
+	
 	// MARK: - Properties
 	
 	// Controls
@@ -92,7 +107,24 @@ final class AlbumsTVC:
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
-	// MARK: - Refreshing Buttons
+	// MARK: - Refreshing UI
+	
+	final func reloadAllRow(with animation: UITableView.RowAnimation) {
+		tableView.reloadSections([SectionKind.valueForCaseAll], with: animation)
+	}
+	
+	final override func reflectViewModelIsEmpty() {
+		if FeatureFlag.allRow {
+			let toDelete = tableView.allIndexPaths().filter {
+				$0.section != SectionKind.valueForCaseAll
+			}
+			deleteThenExit(rowsAt: toDelete)
+			reloadAllRow(with: .none)
+		} else {
+			let toDelete = tableView.allIndexPaths()
+			deleteThenExit(rowsAt: toDelete)
+		}
+	}
 	
 	final override func refreshEditingButtons() {
 		super.refreshEditingButtons()
@@ -122,10 +154,11 @@ final class AlbumsTVC:
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {
+		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
+		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if
-			segue.identifier == "Open Album",
-			let songsTVC = segue.destination as? SongsTVC,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
+			selectedCell is AlbumCell,
+			let songsTVC = segue.destination as? SongsTVC
 		{
 			let container = viewModel.item(at: selectedIndexPath)
 			let context = viewModel.context

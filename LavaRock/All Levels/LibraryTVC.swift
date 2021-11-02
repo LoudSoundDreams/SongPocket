@@ -184,32 +184,7 @@ class LibraryTVC: UITableViewController {
 		NotificationCenter.default.removeObserver(self)
 	}
 	
-	// MARK: - Setting Items and Refreshing
-	
-	// Easy to override. Overrides of this method should not call super (this implementation).
-	func reflectNoItems() {
-		deleteAllRowsThenExit()
-	}
-	
-	// Deletes all rows, including any rows not for library items, then performs an unwind segue.
-	// For AlbumsTVC and SongsTVC only; not for CollectionsTVC, because it doesn't have a "Removed All Contents" segue.
-	private func deleteAllRowsThenExit() {
-		let allSections = IndexSet(integersIn: 0 ..< tableView.numberOfSections)
-		
-		isAnimatingDuringSetItemsAndRefresh += 1
-		tableView.performBatchUpdates {
-			tableView.deleteSections(allSections, with: .middle)
-		} completion: { _ in
-			self.isAnimatingDuringSetItemsAndRefresh -= 1
-			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See corresponding comment in setItemsAndMoveRows.
-				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move Albums to…" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
-					self.performSegue(withIdentifier: "Removed All Contents", sender: nil)
-				}
-			}
-		}
-		
-		didChangeRowsOrSelectedRows() // Do this before the completion closure, so that we disable all the editing buttons during the animation.
-	}
+	// MARK: - Setting Items
 	
 	final func setItemsAndMoveRows(
 		newItems: [NSManagedObject],
@@ -225,8 +200,8 @@ class LibraryTVC: UITableViewController {
 		
 		viewModel.groups[indexOfGroup].setItems(newItems)
 		
-		guard !newItems.isEmpty else {
-			reflectNoItems()
+		guard !viewModel.isEmpty() else {
+			reflectViewModelIsEmpty()
 			return
 		}
 		
@@ -240,6 +215,8 @@ class LibraryTVC: UITableViewController {
 			(viewModel.indexPathFor(indexOfItemInGroup: oldIndex, indexOfGroup: indexOfGroup),
 			 viewModel.indexPathFor(indexOfItemInGroup: newIndex, indexOfGroup: indexOfGroup))
 		}
+		
+		tableView.deselectSection(section, animated: true)
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates {
@@ -255,11 +232,33 @@ class LibraryTVC: UITableViewController {
 			}
 		}
 		
-		tableView.deselectSection(section, animated: true)
 		didChangeRowsOrSelectedRows()
 	}
 	
-	// MARK: - Refreshing Buttons
+	// MARK: - Refreshing UI
+	
+	func reflectViewModelIsEmpty() {
+		fatalError()
+	}
+	
+	// `LibraryTVC` itself doesn't call this, but its subclasses might want to.
+	final func deleteThenExit(rowsAt toDelete: [IndexPath]) {
+		tableView.deselectAllRows(animated: true)
+		
+		isAnimatingDuringSetItemsAndRefresh += 1
+		tableView.performBatchUpdates {
+			tableView.deleteRows(at: toDelete, with: .middle)
+		} completion: { _ in
+			self.isAnimatingDuringSetItemsAndRefresh -= 1
+			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See corresponding comment in setItemsAndMoveRows.
+				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move Albums to…" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
+					self.performSegue(withIdentifier: "Removed All Contents", sender: self)
+				}
+			}
+		}
+		
+		didChangeRowsOrSelectedRows() // Do this before the completion closure, so that we disable all the editing buttons during the animation.
+	}
 	
 	final func setBarButtons(animated: Bool) {
 		refreshEditingButtons()
@@ -286,7 +285,6 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// For clarity, call this rather than refreshEditingButtons directly, whenever appropriate.
 	final func didChangeRowsOrSelectedRows() {
 		refreshEditingButtons()
 	}

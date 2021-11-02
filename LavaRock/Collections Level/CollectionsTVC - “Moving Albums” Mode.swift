@@ -134,7 +134,7 @@ extension CollectionsTVC {
 			}
 		} completion: { _ in
 			self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .none)
-			self.performSegue(withIdentifier: Self.openCollectionSegueIdentifier, sender: nil)
+			self.performSegue(withIdentifier: "Open Collection", sender: self)
 		}
 	}
 	

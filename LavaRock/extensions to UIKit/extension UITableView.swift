@@ -15,6 +15,14 @@ extension UITableView {
 		return indexPathsForSelectedRows ?? []
 	}
 	
+	final func allIndexPaths() -> [IndexPath] {
+		let sections = Array(0 ..< numberOfSections)
+		let result = sections.flatMap { section in
+			indexPathsForRows(inSection: section, firstRow: 0)
+		}
+		return result
+	}
+	
 	final func indexPathsForRows(
 		inSection section: Int,
 		firstRow: Int

@@ -60,11 +60,7 @@ final class TipReloadCell: UITableViewCell {
 	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.reload
-		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
-			configuration.textProperties.color = UIColor.tintColor
-		} else {
-			configuration.textProperties.color = self.tintColor
-		}
+		configuration.textProperties.color = .tintColor_compatibleWithiOS14(self) // See comments in `AllowAccessCell`.
 		contentConfiguration = configuration
 	}
 	
@@ -99,11 +95,7 @@ final class TipReadyCell: UITableViewCell {
 		
 		var configuration = UIListContentConfiguration.valueCell()
 		configuration.text = tipProduct.localizedTitle
-		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
-			configuration.textProperties.color = UIColor.tintColor
-		} else {
-			configuration.textProperties.color = self.tintColor
-		}
+		configuration.textProperties.color = .tintColor_compatibleWithiOS14(self) // See comments in `AllowAccessCell`.
 		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
 		contentConfiguration = configuration
 	}

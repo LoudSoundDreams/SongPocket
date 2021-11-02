@@ -5,7 +5,7 @@
 //  Created by h on 2021-10-29.
 //
 
-struct FeatureFlag{
+struct FeatureFlag {
 	
 	private init() {}
 	

@@ -8,33 +8,6 @@
 import UIKit
 import CoreData
 
-final class AllCollectionsCell: UITableViewCell {
-	@IBOutlet private var allLabel: UILabel!
-	
-	enum Mode {
-		case enabled
-		case disabled
-		case editing // Don't use `UITableViewCell.isEditing`; it's always `false` because that's what we return in `canEditRowAt`.
-	}
-	
-	final func configure(mode: Mode) {
-		switch mode {
-		case .enabled:
-			allLabel.textColor = .label
-			enableWithAccessibilityTrait()
-			accessoryType = .disclosureIndicator
-		case .disabled:
-			allLabel.textColor = .placeholderText
-			disableWithAccessibilityTrait()
-			accessoryType = .disclosureIndicator
-		case .editing:
-			allLabel.textColor = .placeholderText
-			disableWithAccessibilityTrait()
-			accessoryType = .none
-		}
-	}
-}
-
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AllowAccessCell: UITableViewCell {
 	final override func awakeFromNib() {
@@ -48,16 +21,10 @@ final class AllowAccessCell: UITableViewCell {
 	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.allowAccessToMusic
-		if #available(iOS 15, *) {
-			// Don't confuse this with `self.tintColor`.
-			configuration.textProperties.color = UIColor.tintColor // As of iOS 15.1 developer beta 3, this dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
-		} else {
-			// Don't confuse this with `UIColor.tintColor`.
-			configuration.textProperties.color = self.tintColor // Dims and undims when we present and dismiss a modal view, but instantaneously and only after the animation completes.
-			// As of iOS 15.1 developer beta 3:
-			// - Don't use `AccentColor.savedPreference().uiColor` or `window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
-			// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although it is dimmed if you change `window.tintColor` later.
-		}
+		configuration.textProperties.color = .tintColor_compatibleWithiOS14(self) // As of iOS 15.1 developer beta 3, `UIColor.tintColor` dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
+		// - `self.tintColor`dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
+		// - Don't use `AccentColor.savedPreference().uiColor` or `window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
+		// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although it is dimmed if you change `window.tintColor` later.
 		contentConfiguration = configuration
 	}
 	
@@ -117,11 +84,7 @@ final class OpenMusicCell: UITableViewCell {
 	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.openMusic
-		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
-			configuration.textProperties.color = UIColor.tintColor
-		} else {
-			configuration.textProperties.color = self.tintColor
-		}
+		configuration.textProperties.color = .tintColor_compatibleWithiOS14(self)
 		contentConfiguration = configuration
 	}
 	

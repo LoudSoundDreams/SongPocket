@@ -9,6 +9,12 @@ import UIKit
 
 extension LibraryTVC {
 	
+	// MARK: - Numbers
+	
+	final override func numberOfSections(in tableView: UITableView) -> Int {
+		return viewModel.numberOfSections()
+	}
+	
 	// MARK: - Editing
 	
 	final override func tableView(
@@ -25,7 +31,10 @@ extension LibraryTVC {
 		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
 		toProposedIndexPath proposedDestinationIndexPath: IndexPath
 	) -> IndexPath {
-		if viewModel.pointsToSomeItem(proposedDestinationIndexPath) {
+		if
+			viewModel.pointsToSomeItem(proposedDestinationIndexPath),
+			sourceIndexPath.section == proposedDestinationIndexPath.section
+		{
 			return proposedDestinationIndexPath
 		} else {
 			return sourceIndexPath

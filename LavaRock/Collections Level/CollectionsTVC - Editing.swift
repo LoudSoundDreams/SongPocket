@@ -10,15 +10,14 @@ import CoreData
 
 extension CollectionsTVC {
 	
+	// Similar to counterpart in `AlbumsTVC`.
 	final override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
 		if FeatureFlag.allRow {
-			if #available(iOS 15, *) {
-				tableView.reloadSections([Section.all.rawValue], with: .none) // `.fade` looks perfect on iOS 14, but as of iOS 15.2 developer beta 1, it makes the old row disappear instantly without an animation (while fading in the new row), which looks terrible.
-			} else {
-				tableView.reloadSections([Section.all.rawValue], with: .fade) // Reload the row manually, because since we return `false` in `canEditRowAt`. That's the only way to disable checkmark selection for certain rows in a table view, but not others. Unfortunately, it means that we need to reload and configure the row manually when we enter and exit editing mode.
-			}
+			reloadAllRow(with: .fade) // Reload the row manually, because we return `false` in `canEditRowAt`. That's the only way to disable checkmark selection for certain rows in a table view, but not others. Unfortunately, that means that we need to reload the row manually when we enter and exit editing mode, but this is also the only way to get the `fade` animation anyway.
+			// As of iOS 15.2 developer beta 1, `.fade` makes the old row disappear instantly without an animation (while fading in the new row), which looks terrible.
+			// For some reason, the exact same thing in `AlbumsTVC.setEditing` looks right, sometimes.
 		}
 	}
 	
@@ -122,7 +121,6 @@ extension CollectionsTVC {
 		// TO DO: Deselect rows and refresh editing buttons?
 		
 		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
-		// We could hack refreshEditingButtons to disable all the editing buttons during the animation, but that would clearly break separation of concerns.
 	}
 	
 	// Match presentDialogToRenameCollection and presentDialogToMakeNewCollection.

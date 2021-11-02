@@ -56,7 +56,7 @@ extension LibraryTVC {
 		refreshPlaybackButtons()
 	}
 	
-	// LibraryTVC itself doesn't call this, but its subclasses might want to.
+	// `LibraryTVC` itself doesn't call this, but its subclasses might want to.
 	final func refreshNowPlayingIndicators(
 		nowPlayingDetermining: NowPlayingDetermining
 	) {

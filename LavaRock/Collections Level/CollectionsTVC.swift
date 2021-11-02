@@ -15,7 +15,7 @@ final class CollectionsTVC:
 	AlbumMover
 {
 	
-	enum Section: Int, CaseIterable {
+	enum Section: Int {
 		case all
 		case collections
 	}
@@ -23,7 +23,6 @@ final class CollectionsTVC:
 	// MARK: - Properties
 	
 	// Actions
-	static let openCollectionSegueIdentifier = "Open Collection"
 	lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
 		name: LocalizedString.rename,
 		actionHandler: renameFocusedCollectionHandler)
@@ -112,20 +111,6 @@ final class CollectionsTVC:
 		}
 	}
 	
-	final override func reflectNoItems() {
-		// isImportingChanges is now false
-		switch viewState {
-		case .noCollections:
-			reflectViewState()
-		case
-				.allowAccess,
-				.loading,
-				.wasLoadingOrNoCollections,
-				.someCollections:
-			break
-		}
-	}
-	
 	private func reflectViewState(
 		completion: (() -> Void)? = nil
 	) {
@@ -176,7 +161,7 @@ final class CollectionsTVC:
 			tableView.deleteRows(at: toDelete, with: .middle)
 			tableView.insertRows(at: toInsert, with: .middle)
 			if FeatureFlag.allRow {
-				tableView.reloadSections([Section.all.rawValue], with: .none)
+				reloadAllRow(with: .none)
 			}
 			let animationForReload: UITableView.RowAnimation = toReloadInCollectionsSection.isEmpty ? .none : .fade
 			tableView.reloadRows(at: toReloadInCollectionsSection, with: animationForReload)
@@ -297,7 +282,15 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
-	// MARK: - Refreshing Buttons
+	// MARK: - Refreshing UI
+	
+	final func reloadAllRow(with animation: UITableView.RowAnimation) {
+		tableView.reloadSections([Section.all.rawValue], with: animation)
+	}
+	
+	final override func reflectViewModelIsEmpty() {
+		reflectViewState()
+	}
 	
 	final override func refreshEditingButtons() {
 		super.refreshEditingButtons()
@@ -318,10 +311,11 @@ final class CollectionsTVC:
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {
+		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
+		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if
-			segue.identifier == Self.openCollectionSegueIdentifier,
-			let albumsTVC = segue.destination as? AlbumsTVC,
-			let selectedIndexPath = tableView.indexPathForSelectedRow
+			selectedCell is CollectionCell,
+			let albumsTVC = segue.destination as? AlbumsTVC
 		{
 			albumsTVC.albumMoverClipboard = albumMoverClipboard
 			
@@ -329,6 +323,19 @@ final class CollectionsTVC:
 			let context = viewModel.context
 			albumsTVC.viewModel = AlbumsViewModel(
 				containers: [container],
+				context: context,
+				reflector: albumsTVC)
+		} else if
+			selectedCell is TheseContainersCell,
+			let albumsTVC = segue.destination as? AlbumsTVC,
+			let containers = viewModel.onlyGroup?.items
+		{
+			albumsTVC.albumMoverClipboard = albumMoverClipboard
+			albumsTVC.title = title
+			
+			let context = viewModel.context
+			albumsTVC.viewModel = AlbumsViewModel(
+				containers: containers,
 				context: context,
 				reflector: albumsTVC)
 		}

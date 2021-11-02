@@ -19,7 +19,48 @@ extension AlbumsTVC {
 	) -> Int {
 		setOrRemoveNoItemsBackground()
 		
-		return viewModel.numberOfRows(forSection: section)
+		func numberOfRowsForAlbumGroupSection() -> Int {
+			return viewModel.numberOfRows(forSection: section)
+		}
+		
+		if FeatureFlag.allRow {
+			let sectionKind = SectionKind(forSection: section)
+			switch sectionKind {
+			case .all:
+				return 1
+			case .groupOfAlbums:
+				return numberOfRowsForAlbumGroupSection()
+			}
+		} else {
+			return numberOfRowsForAlbumGroupSection()
+		}
+	}
+	
+	// MARK: - Headers
+	
+	final override func tableView(
+		_ tableView: UITableView,
+		titleForHeaderInSection section: Int
+	) -> String? {
+		if FeatureFlag.allRow {
+			let sectionKind = SectionKind(forSection: section)
+			switch sectionKind {
+			case .all:
+				return nil
+			case .groupOfAlbums:
+				if viewModel.groups.count == 1 {
+					return LocalizedString.albums
+				} else {
+					guard let viewModel = viewModel as? AlbumsViewModel else {
+						return nil
+					}
+					let containingCollection = viewModel.container(forSection: section)
+					return containingCollection.title
+				}
+			}
+		} else {
+			return nil
+		}
 	}
 	
 	// MARK: - Cells
@@ -28,6 +69,49 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
+		func cellForRowInAlbumGroupSection() -> UITableViewCell {
+			return albumCell(forRowAt: indexPath)
+		}
+		
+		if FeatureFlag.allRow {
+			let sectionKind = SectionKind(forSection: indexPath.section)
+			switch sectionKind {
+			case .all:
+				return allCell(forRowAt: indexPath)
+			case .groupOfAlbums:
+				return cellForRowInAlbumGroupSection()
+			}
+		} else {
+			return cellForRowInAlbumGroupSection()
+		}
+	}
+	
+	private func allCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "These Albums",
+			for: indexPath) as? TheseContainersCell
+		else {
+			return UITableViewCell()
+		}
+		
+		if albumMoverClipboard != nil {
+			cell.configure(mode: .disabledWithNoDisclosureIndicator)
+		} else {
+			if isEditing {
+				cell.configure(mode: .disabledWithNoDisclosureIndicator)
+			} else {
+				if viewModel.isEmpty() {
+					cell.configure(mode: .disabledWithDisclosureIndicator)
+				} else {
+					cell.configure(mode: .enabled)
+				}
+			}
+		}
+		
+		return cell
+	}
+	
+	private func albumCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let album = viewModel.item(at: indexPath) as? Album else {
 			return UITableViewCell()
 		}

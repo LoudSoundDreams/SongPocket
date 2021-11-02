@@ -12,10 +12,6 @@ extension CollectionsTVC {
 	
 	// MARK: - Numbers
 	
-	final override func numberOfSections(in tableView: UITableView) -> Int {
-		FeatureFlag.allRow ? Section.allCases.count : 1
-	}
-	
 	final override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
@@ -128,24 +124,24 @@ extension CollectionsTVC {
 	
 	private func allCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "All",
-			for: indexPath) as? AllCollectionsCell
+			withIdentifier: "These Collections",
+			for: indexPath) as? TheseContainersCell
 		else {
 			return UITableViewCell()
 		}
 		
 		if albumMoverClipboard != nil {
-			cell.configure(mode: .disabled)
+			cell.configure(mode: .disabledWithDisclosureIndicator)
 		} else {
 			if isEditing {
-				cell.configure(mode: .editing)
+				cell.configure(mode: .disabledWithNoDisclosureIndicator)
 			} else {
 				switch viewState {
 				case
 						.allowAccess,
 						.loading,
 						.noCollections:
-					cell.configure(mode: .disabled)
+					cell.configure(mode: .disabledWithDisclosureIndicator)
 				case
 						.wasLoadingOrNoCollections, // This isn't strictly correct, because it (imperceptibly briefly) enables the row if `refreshLibraryItems` still leaves us with `viewState == .noCollections`. However, if `refreshLibraryItems` does leave us with `viewState == .someCollections`, we should enable the row at the beginning of the table view animation.
 						.someCollections:
@@ -225,15 +221,31 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
-		switch viewState {
-		case
-				.allowAccess,
-				.loading, // Should never run
-				.wasLoadingOrNoCollections, // Should never run
-				.noCollections: // Should never run for `NoCollectionsPlaceholderCell`
-			return indexPath
-		case .someCollections:
-			return super.tableView(tableView, willSelectRowAt: indexPath)
+		func canSelectInCollectionsSection() -> IndexPath? {
+			switch viewState {
+			case
+					.allowAccess,
+					.loading, // Should never run
+					.wasLoadingOrNoCollections, // Should never run
+					.noCollections: // Should never run for `NoCollectionsPlaceholderCell`
+				return indexPath
+			case .someCollections:
+				return super.tableView(tableView, willSelectRowAt: indexPath)
+			}
+		}
+		
+		if FeatureFlag.allRow {
+			guard let sectionCase = Section(rawValue: indexPath.section) else {
+				return nil
+			}
+			switch sectionCase {
+			case .all:
+				return indexPath // `TheseContainersCell` controls its own `isUserInteractionEnabled`.
+			case .collections:
+				return canSelectInCollectionsSection()
+			}
+		} else {
+			return canSelectInCollectionsSection()
 		}
 	}
 	

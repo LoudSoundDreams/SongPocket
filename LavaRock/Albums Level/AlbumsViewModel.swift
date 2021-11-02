@@ -13,7 +13,7 @@ struct AlbumsViewModel: LibraryViewModel {
 	// MARK: - LibraryViewModel
 	
 	static let entityName = "Album"
-	static let numberOfSectionsAboveLibraryItems = 0 //
+	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	let context: NSManagedObjectContext
