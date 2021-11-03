@@ -29,7 +29,7 @@ extension SongsTVC {
 		
 		// Create the actions.
 		let playAllStartingHereAction = UIAlertAction(
-			title: LocalizedString.playAllStartingHere,
+			title: LocalizedString.playAlbumStartingHere,
 			style: .default,
 			handler: { _ in
 				self.playAllStartingAtSelectedSong()

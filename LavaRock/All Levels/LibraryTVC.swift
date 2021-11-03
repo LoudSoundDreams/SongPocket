@@ -63,7 +63,7 @@ class LibraryTVC: UITableViewController {
 	final var viewingModeTopLeftButtons = [UIBarButtonItem]()
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
 	final lazy var topRightButtons = [editButtonItem]
-	final lazy var viewingModeToolbarButtons = playbackButtons
+	final lazy var viewingModeToolbarButtons = FeatureFlag.tabBar ? editingModeToolbarButtons : playbackButtons
 	
 	// MARK: Subclasses Should Not Customize
 	
@@ -161,6 +161,10 @@ class LibraryTVC: UITableViewController {
 		refreshNavigationItemTitle()
 		
 		setBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
+		
+		if FeatureFlag.tabBar {
+			hideToolbar()
+		}
 	}
 	
 	// MARK: Setup Events
@@ -262,28 +266,32 @@ class LibraryTVC: UITableViewController {
 		title = viewModel.navigationItemTitle
 	}
 	
+	func showToolbar() {
+//		hidesBottomBarWhenPushed = true
+		
+		navigationController?.isToolbarHidden = false
+//		navigationController?.toolbar.isHidden = false
+	}
+	
+	func hideToolbar() {
+//		hidesBottomBarWhenPushed = false
+		
+		navigationController?.isToolbarHidden = true
+//		navigationController?.toolbar.isHidden = true
+	}
+	
 	final func setBarButtons(animated: Bool) {
 		refreshEditingButtons()
-		navigationItem.setRightBarButtonItems(
-			topRightButtons,
-			animated: animated)
+		navigationItem.setRightBarButtonItems(topRightButtons, animated: animated)
 		
 		if isEditing {
-			navigationItem.setLeftBarButtonItems(
-				editingModeTopLeftButtons,
-				animated: animated)
-			setToolbarItems(
-				editingModeToolbarButtons,
-				animated: animated)
+			navigationItem.setLeftBarButtonItems(editingModeTopLeftButtons, animated: animated)
+			setToolbarItems(editingModeToolbarButtons, animated: animated)
 		} else {
-			navigationItem.setLeftBarButtonItems(
-				viewingModeTopLeftButtons,
-				animated: animated)
+			navigationItem.setLeftBarButtonItems(viewingModeTopLeftButtons,animated: animated)
 			
 			refreshPlaybackButtons()
-			setToolbarItems(
-				viewingModeToolbarButtons,
-				animated: animated)
+			setToolbarItems(viewingModeToolbarButtons, animated: animated)
 		}
 	}
 	

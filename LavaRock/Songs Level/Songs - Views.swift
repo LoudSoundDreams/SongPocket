@@ -94,7 +94,7 @@ final class SongCell: UITableViewCell {
 			textStackView.spacing = 4
 		}
 		
-		accessibilityUserInputLabels = [title ?? MPMediaItem.placeholderTitle] // TO DO: Use something speakable; add (disc and) track numbers as labels too
+		accessibilityUserInputLabels = [title ?? MPMediaItem.placeholderTitle]
 	}
 }
 

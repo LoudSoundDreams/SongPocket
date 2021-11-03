@@ -242,6 +242,10 @@ final class CollectionsTVC:
 		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
+			
+			if FeatureFlag.tabBar {
+				showToolbar()
+			}
 		} else {
 			editingModeToolbarButtons = [
 //				combineButton, .flexibleSpace(),

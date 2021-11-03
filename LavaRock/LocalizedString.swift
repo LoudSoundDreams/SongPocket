@@ -112,7 +112,9 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	static let playAllStartingHere = NSLocalizedString("Play All Starting Here", comment: "Button")
-	static let queueAlbumStartingHere = NSLocalizedString("Queue All Starting Here", comment: "Button")
+	static let playAlbumStartingHere = NSLocalizedString("Play Album Starting Here", comment: "Button") // TO DO: Localize
+	static let queueAllStartingHere = NSLocalizedString("Queue All Starting Here", comment: "Button")
+	static let queueAlbumStartingHere = NSLocalizedString("Queue Album Starting Here", comment: "Button") // TO DO: Localize
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let didEnqueueSongsAlertMessage = NSLocalizedString(
 		"[alert message] did_enqueue_songs",

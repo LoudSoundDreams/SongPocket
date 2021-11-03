@@ -89,6 +89,10 @@ final class AlbumsTVC:
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			
 			tableView.allowsSelection = false
+			
+			if FeatureFlag.tabBar {
+				showToolbar()
+			}
 		} else {
 			editingModeToolbarButtons = [
 //				moveOrOrganizeButton, .flexibleSpace(),

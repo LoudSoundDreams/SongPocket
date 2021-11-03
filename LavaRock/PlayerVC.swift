@@ -11,21 +11,39 @@ import MediaPlayer
 final class PlayerVC: UIViewController {
 	
 	// Controls
+	
+	@IBOutlet private  var previousSongButton: UIButton!
+	private lazy var previousImage = UIImage(
+		systemName: "backward.end.fill",
+		withConfiguration: config48)
+	
 	@IBOutlet private var rewindButton: UIButton!
-	private let rewindImage = UIImage(
-			systemName: "arrow.counterclockwise.circle.fill",
-			withConfiguration: UIImage.SymbolConfiguration.init(pointSize: 48))
+	private lazy var rewindImage = UIImage(
+		systemName: "arrow.counterclockwise.circle.fill",
+		withConfiguration: config48)
+	
 	@IBOutlet private var playPauseButton: UIButton!
 	private lazy var playImage = UIImage(
 		systemName: "play.fill",
-		withConfiguration: playPauseSymbolConfiguration)
+		withConfiguration: config96)
 	private lazy var pauseImage = UIImage(
 		systemName: "pause.fill",
-		withConfiguration: playPauseSymbolConfiguration)
-	private let playPauseSymbolConfiguration = UIImage.SymbolConfiguration.init(pointSize: 96)
+		withConfiguration: config96)
+	
+	@IBOutlet private var nextSongButton: UIButton!
+	private lazy var nextImage = UIImage(
+		systemName: "forward.end.fill",
+		withConfiguration: config48)
+	
+	private let config48 = UIImage.SymbolConfiguration.init(pointSize: 48)
+	private let config96 = UIImage.SymbolConfiguration.init(pointSize: 96)
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		let previousAction = UIAction { _ in self.goToPreviousSong() }
+		previousSongButton.addAction(previousAction, for: .touchUpInside)
+		previousSongButton.setImage(previousImage, for: .normal)
 		
 		let rewindAction = UIAction { _ in self.rewind() }
 		rewindButton.addAction(rewindAction, for: .touchUpInside)
@@ -34,11 +52,19 @@ final class PlayerVC: UIViewController {
 		let togglePlayPauseAction = UIAction { _ in self.togglePlayPause() }
 		playPauseButton.addAction(togglePlayPauseAction, for: .touchUpInside)
 		
+		let nextAction = UIAction { _ in self.goToNextSong() }
+		nextSongButton.addAction(nextAction, for: .touchUpInside)
+		nextSongButton.setImage(nextImage, for: .normal)
+		
 		setUpPlaybackStateReflecting()
 	}
 	
 	deinit {
 		endObservingPlaybackStateChanges()
+	}
+	
+	private func goToPreviousSong() {
+		sharedPlayer?.skipToPreviousItem()
 	}
 	
 	private func rewind() {
@@ -51,6 +77,10 @@ final class PlayerVC: UIViewController {
 		} else {
 			sharedPlayer?.play()
 		}
+	}
+	
+	private func goToNextSong() {
+		sharedPlayer?.skipToNextItem()
 	}
 	
 	@IBAction private func clearRecents(_ sender: UIBarButtonItem) {
@@ -73,8 +103,18 @@ extension PlayerVC: PlaybackStateReflecting {
 			playPauseButton.setImage(playImage, for: .normal)
 		}
 		
+		if
+			sharedPlayer != nil
+//			let player = sharedPlayer,
+//			player.indexOfNowPlayingItem != 0
+		{
+			previousSongButton.isEnabled = true
+		} else {
+			previousSongButton.isEnabled = false
+		}
 		rewindButton.isEnabled = sharedPlayer != nil
 		playPauseButton.isEnabled = sharedPlayer != nil
+		nextSongButton.isEnabled = sharedPlayer != nil
 	}
 	
 }

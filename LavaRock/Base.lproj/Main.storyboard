@@ -322,14 +322,34 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="36"/>
                                 </state>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fTF-g2-1ps">
+                                <rect key="frame" x="317" y="389.33333333333331" width="42" height="33.333333333333314"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="forward.end.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="36"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rTj-EO-tZT">
+                                <rect key="frame" x="16" y="389" width="42" height="34"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="backward.end.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="36"/>
+                                </state>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Npg-CN-dfQ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="rTj-EO-tZT" firstAttribute="centerY" secondItem="tJY-K3-GqY" secondAttribute="centerY" id="4vD-nZ-oud"/>
+                            <constraint firstItem="fTF-g2-1ps" firstAttribute="centerY" secondItem="tJY-K3-GqY" secondAttribute="centerY" id="DTs-CI-tgl"/>
                             <constraint firstItem="cod-D3-acc" firstAttribute="centerX" secondItem="Npg-CN-dfQ" secondAttribute="centerX" id="ERB-5Z-d6i"/>
                             <constraint firstItem="cod-D3-acc" firstAttribute="centerY" secondItem="Npg-CN-dfQ" secondAttribute="centerY" multiplier="1.5" id="HDc-V7-9sN"/>
                             <constraint firstItem="tJY-K3-GqY" firstAttribute="centerY" secondItem="9gW-kt-mSP" secondAttribute="centerY" id="eUC-WY-8Yp"/>
+                            <constraint firstItem="rTj-EO-tZT" firstAttribute="leading" secondItem="9gW-kt-mSP" secondAttribute="leadingMargin" id="hEL-9G-pZy"/>
                             <constraint firstItem="tJY-K3-GqY" firstAttribute="centerX" secondItem="9gW-kt-mSP" secondAttribute="centerX" id="hyI-vE-2Mr"/>
+                            <constraint firstItem="fTF-g2-1ps" firstAttribute="trailing" secondItem="9gW-kt-mSP" secondAttribute="trailingMargin" id="tB0-TJ-tT3"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Player" id="4UM-VT-l36">
@@ -345,7 +365,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="nextSongButton" destination="fTF-g2-1ps" id="dwj-oR-zMK"/>
                         <outlet property="playPauseButton" destination="cod-D3-acc" id="Tqv-fC-ZcS"/>
+                        <outlet property="previousSongButton" destination="rTj-EO-tZT" id="oW9-Sg-tgo"/>
                         <outlet property="rewindButton" destination="tJY-K3-GqY" id="P29-H5-57Y"/>
                     </connections>
                 </viewController>
@@ -395,10 +417,10 @@
                                             <exclude reference="5Ai-cB-TjZ"/>
                                         </mask>
                                         <mask key="constraints">
-                                            <exclude reference="lEi-qc-NXb"/>
                                             <exclude reference="TPR-Ss-YWB"/>
                                             <exclude reference="VUt-My-VzZ"/>
                                             <exclude reference="cEh-ks-4fT"/>
+                                            <exclude reference="lEi-qc-NXb"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -722,7 +744,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="0IH-ti-cxt"/>
+                        <segue destination="smq-UV-5Rd" kind="relationship" relationship="viewControllers" id="iub-xh-sIr"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="COP-4z-pT2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -754,6 +776,8 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.counterclockwise.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="backward.end.fill" catalog="system" width="128" height="102"/>
+        <image name="forward.end.fill" catalog="system" width="128" height="102"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="speaker.fill" catalog="system" width="128" height="128"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>

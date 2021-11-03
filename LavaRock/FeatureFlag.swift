@@ -9,6 +9,7 @@ struct FeatureFlag {
 	
 	private init() {}
 	
-	static let allRow = false
+	static let allRow = 1 == 0
+	static let tabBar = 1 == 0
 	
 }

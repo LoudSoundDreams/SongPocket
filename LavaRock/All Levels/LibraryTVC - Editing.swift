@@ -18,7 +18,19 @@ extension LibraryTVC {
 		
 		super.setEditing(editing, animated: animated)
 		
-		setBarButtons(animated: animated)
+		if FeatureFlag.tabBar {
+			setBarButtons(animated: false) // TO DO: Breaks the animation for showing and hiding the toolbar.
+		} else {
+			setBarButtons(animated: animated)
+		}
+		
+		if FeatureFlag.tabBar {
+			if editing {
+				showToolbar()
+			} else {
+				hideToolbar()
+			}
+		}
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they'll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
 		// During WWDC 2021, I did a lab in UIKit where the Apple engineer said that this is the best practice for doing this.
