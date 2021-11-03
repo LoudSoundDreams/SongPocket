@@ -311,33 +311,34 @@ final class CollectionsTVC:
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {
-		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
-		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-		if
-			selectedCell is CollectionCell,
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let albumsTVC = segue.destination as? AlbumsTVC
-		{
+		else { return }
+		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
+		
+		if selectedCell is TheseContainersCell {
+			
+			guard let onlyGroup = viewModel.onlyGroup else { return }
+			
 			albumsTVC.albumMoverClipboard = albumMoverClipboard
 			
-			let container = viewModel.item(at: selectedIndexPath)
-			let context = viewModel.context
+			let collections = onlyGroup.items
 			albumsTVC.viewModel = AlbumsViewModel(
-				containers: [container],
-				context: context,
-				reflector: albumsTVC)
-		} else if
-			selectedCell is TheseContainersCell,
-			let albumsTVC = segue.destination as? AlbumsTVC,
-			let containers = viewModel.onlyGroup?.items
-		{
-			albumsTVC.albumMoverClipboard = albumMoverClipboard
-			albumsTVC.title = title
+				lastDeliberatelyOpenedContainer: nil,
+				containers: collections,
+				context: viewModel.context)
 			
-			let context = viewModel.context
+		} else if selectedCell is CollectionCell {
+			
+			albumsTVC.albumMoverClipboard = albumMoverClipboard
+			
+			let collection = viewModel.item(at: selectedIndexPath)
 			albumsTVC.viewModel = AlbumsViewModel(
-				containers: containers,
-				context: context,
-				reflector: albumsTVC)
+				lastDeliberatelyOpenedContainer: collection as? Collection,
+				containers: [collection],
+				context: viewModel.context)
+			
 		}
 	}
 	

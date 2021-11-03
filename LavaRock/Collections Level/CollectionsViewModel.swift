@@ -8,42 +8,33 @@
 import UIKit
 import CoreData
 
-struct CollectionsViewModel: LibraryViewModel {
-	
-	// MARK: - LibraryViewModel
-	
+struct CollectionsViewModel {
+	// LibraryViewModel
+	let lastDeliberatelyOpenedContainer: LibraryContainer? = nil
+	let context: NSManagedObjectContext
+	var groups: [GroupOfLibraryItems]
+}
+
+extension CollectionsViewModel: LibraryViewModel {
 	static let entityName = "Collection"
 	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
-	
-	let context: NSManagedObjectContext
-	
-	weak var reflector: LibraryViewModelReflecting?
-	
-	var groups: [GroupOfLibraryItems]
-	
-	func navigationItemTitleOptional() -> String? {
-		FeatureFlag.allRow ? LocalizedString.library : nil
-	}
-	
-	// MARK: - Miscellaneous
+}
+
+extension CollectionsViewModel {
 	
 	static let indexOfGroup = 0 //
 	
-	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] }
+	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] } //
 	
-	init(
-		context: NSManagedObjectContext,
-		reflector: LibraryViewModelReflecting
-	) {
-		self.context = context
-		self.reflector = reflector
+	init(context: NSManagedObjectContext) {
 		groups = [
 			GroupOfCollectionsOrAlbums(
 				entityName: Self.entityName,
 				container: nil,
 				context: context)
 		]
+		self.context = context
 	}
 	
 	// MARK: - Editing

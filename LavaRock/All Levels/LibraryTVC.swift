@@ -50,9 +50,7 @@ class LibraryTVC: UITableViewController {
 	// Data
 	final lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
 		let mainContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		return CollectionsViewModel(
-			context: mainContext,
-			reflector: self)
+		return CollectionsViewModel(context: mainContext)
 	}()
 	
 	// Controls
@@ -160,7 +158,7 @@ class LibraryTVC: UITableViewController {
 			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		}
 		
-		reflectContainerTitles()
+		refreshNavigationItemTitle()
 		
 		setBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
 	}
@@ -258,6 +256,10 @@ class LibraryTVC: UITableViewController {
 		}
 		
 		didChangeRowsOrSelectedRows() // Do this before the completion closure, so that we disable all the editing buttons during the animation.
+	}
+	
+	final func refreshNavigationItemTitle() {
+		title = viewModel.navigationItemTitle
 	}
 	
 	final func setBarButtons(animated: Bool) {

@@ -48,14 +48,12 @@ extension AlbumsTVC {
 			case .all:
 				return nil
 			case .groupOfAlbums:
-				if viewModel.groups.count == 1 {
-					return LocalizedString.albums
+				if viewModel.lastDeliberatelyOpenedContainer == nil {
+					// We're showing an "All" view, so use container titles for each group of `Album`s.
+					return (viewModel as? AlbumsViewModel)?.container(forSection: section).title
 				} else {
-					guard let viewModel = viewModel as? AlbumsViewModel else {
-						return nil
-					}
-					let containingCollection = viewModel.container(forSection: section)
-					return containingCollection.title
+					// We're showing a single `Collection`, and the user deliberately chose it.
+					return LocalizedString.albums
 				}
 			}
 		} else {

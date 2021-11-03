@@ -13,37 +13,30 @@ protocol LibraryViewModel {
 	static var numberOfSectionsAboveLibraryItems: Int { get }
 	static var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
+	var lastDeliberatelyOpenedContainer: LibraryContainer? { get }
 	var context: NSManagedObjectContext { get }
 	
-	// weak
-	var reflector: LibraryViewModelReflecting? { get }
-	
 	var groups: [GroupOfLibraryItems] { get set }
-	var onlyGroup: GroupOfLibraryItems? { get }//set }
-	
-	func navigationItemTitleOptional() -> String?
 }
 
 extension LibraryViewModel {
 	
+	var navigationItemTitle: String {
+		if let titleOfDeliberatelyOpened = lastDeliberatelyOpenedContainer?.libraryTitle {
+			return titleOfDeliberatelyOpened
+		} else {
+			return FeatureFlag.allRow ? LocalizedString.library : LocalizedString.collections
+		}
+	}
+	
 	var onlyGroup: GroupOfLibraryItems? {
-//		get {
-			guard
-				let firstGroup = groups.first,
-				groups.count == 1
-			else {
-				return nil
-			}
-			return firstGroup
-//		}
-//		set {
-//			guard groups.count == 1 else { return }
-//			if let newValue = newValue {
-//				groups[0] = newValue
-//			} else {
-//				groups.removeAll()
-//			}
-//		}
+		guard
+			let firstGroup = groups.first,
+			groups.count == 1
+		else {
+			return nil
+		}
+		return firstGroup
 	}
 	
 	func isEmpty() -> Bool {
@@ -52,9 +45,8 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func refreshContainersAndReflect() {
+	func refreshContainers() {
 		groups.forEach { $0.refreshContainer(context: context) }
-		reflector?.reflectContainerTitles()
 	}
 	
 	func newItemsAndSections() -> [(

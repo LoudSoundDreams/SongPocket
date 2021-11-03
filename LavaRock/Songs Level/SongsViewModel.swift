@@ -8,42 +8,34 @@
 import UIKit
 import CoreData
 
-struct SongsViewModel: LibraryViewModel {
-	
-	// MARK: - LibraryViewModel
-	
+struct SongsViewModel {
+	// LibraryViewModel
+	let lastDeliberatelyOpenedContainer: LibraryContainer?
+	let context: NSManagedObjectContext
+	var groups: [GroupOfLibraryItems]
+}
+
+extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
 	static let numberOfSectionsAboveLibraryItems = 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 2
-	
-	let context: NSManagedObjectContext
-	
-	weak var reflector: LibraryViewModelReflecting?
-	
-	var groups: [GroupOfLibraryItems]
-	
-	func navigationItemTitleOptional() -> String? {
-		guard let onlyGroup = onlyGroup else {
-			return nil
-		}
-		return (onlyGroup.container as? Album)?.titleFormattedOrPlaceholder()
-	}
-	
-	// MARK: - Miscellaneous
+}
+
+extension SongsViewModel {
 	
 	init(
+		lastDeliberatelyOpenedContainer: LibraryContainer?,
 		containers: [NSManagedObject],
-		context: NSManagedObjectContext,
-		reflector: LibraryViewModelReflecting
+		context: NSManagedObjectContext
 	) {
-		self.context = context
-		self.reflector = reflector
+		self.lastDeliberatelyOpenedContainer = lastDeliberatelyOpenedContainer
 		groups = containers.map {
 			GroupOfSongs(
 				entityName: Self.entityName,
 				container: $0,
 				context: context)
 		}
+		self.context = context
 	}
 	
 	// Similar to AlbumsViewModel.container.

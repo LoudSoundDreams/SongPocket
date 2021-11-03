@@ -120,10 +120,9 @@ extension LibraryTVC {
 					section: section
 				) {
 					if self.viewModel.indexOfGroup(forSection: section) == 0 { // So that we only do this once.
-						self.viewModel.refreshContainersAndReflect()
-						
-						self.tableView.reloadData() // Update the data within each row, which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
-						// Also reloads headers. (Is that the only way?)
+						self.viewModel.refreshContainers()
+						self.refreshNavigationItemTitle()
+						self.tableView.reloadData() // Update the data within each row (and header), which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
 					}
 				}
 				

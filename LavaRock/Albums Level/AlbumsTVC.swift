@@ -154,18 +154,19 @@ final class AlbumsTVC:
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {
-		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
+			let songsTVC = segue.destination as? SongsTVC,
+			let albumsViewModel = viewModel as? AlbumsViewModel
+		else { return }
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-		if
-			selectedCell is AlbumCell,
-			let songsTVC = segue.destination as? SongsTVC
-		{
-			let container = viewModel.item(at: selectedIndexPath)
-			let context = viewModel.context
+		
+		if selectedCell is AlbumCell {
+			let album = albumsViewModel.item(at: selectedIndexPath)
 			songsTVC.viewModel = SongsViewModel(
-				containers: [container],
-				context: context,
-				reflector: songsTVC)
+				lastDeliberatelyOpenedContainer: album as? Album,
+				containers: [album],
+				context: viewModel.context)
 		}
 	}
 	

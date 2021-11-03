@@ -14,6 +14,8 @@ extension Album: LibraryItem {
 }
 
 extension Album: LibraryContainer {
+	var libraryTitle: String { titleFormattedOrPlaceholder() }
+	
 	// Enables isEmpty()
 }
 
