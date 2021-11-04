@@ -46,12 +46,15 @@ extension AlbumsViewModel {
 	
 	// MARK: - “Moving Albums” Mode
 	
-	func itemsAfterMovingHere(
-		albumsWith albumIDs: [NSManagedObjectID],
-		indexOfGroup: Int //
-	) -> [NSManagedObject] {
-		guard let destinationCollection = groups[indexOfGroup].container as? Collection else {
-			return groups[indexOfGroup].items
+	// Returns `nil` if this instance has multiple groups.
+	func itemsAfterMovingIntoOnlyGroup(
+		albumsWith albumIDs: [NSManagedObjectID]
+	) -> [Album]? {
+		guard
+			let onlyGroup = onlyGroup,
+			let destinationCollection = onlyGroup.container as? Collection
+		else {
+			return nil
 		}
 		
 		destinationCollection.moveHere(

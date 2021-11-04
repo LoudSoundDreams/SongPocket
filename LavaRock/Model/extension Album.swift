@@ -14,7 +14,7 @@ extension Album: LibraryItem {
 }
 
 extension Album: LibraryContainer {
-	var libraryTitle: String { titleFormattedOrPlaceholder() }
+	var libraryTitle: String? { titleFormattedOptional() }
 	
 	// Enables isEmpty()
 }
@@ -260,7 +260,7 @@ extension Album {
 		return artwork?.image(at: size)
 	}
 	
-	final func titleFormattedOrPlaceholder() -> String {
+	final func titleFormattedOptional() -> String? {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
 			let fetchedAlbumTitle = representativeItem.albumTitle,
@@ -268,8 +268,23 @@ extension Album {
 		{
 			return fetchedAlbumTitle
 		} else {
-			return LocalizedString.unknownAlbum
+			return nil
 		}
+	}
+	
+	final func titleFormattedOrPlaceholder() -> String {
+		return titleFormattedOptional() ?? LocalizedString.unknownAlbum
+		
+		
+//		if
+//			let representativeItem = mpMediaItemCollection()?.representativeItem,
+//			let fetchedAlbumTitle = representativeItem.albumTitle,
+//			fetchedAlbumTitle != ""
+//		{
+//			return fetchedAlbumTitle
+//		} else {
+//			return LocalizedString.unknownAlbum
+//		}
 	}
 	
 	final func albumArtistFormattedOrPlaceholder() -> String {

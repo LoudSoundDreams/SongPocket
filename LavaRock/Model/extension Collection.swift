@@ -14,7 +14,7 @@ extension Collection: LibraryItem {
 }
 
 extension Collection: LibraryContainer {
-	var libraryTitle: String { title ?? Album.placeholderAlbumArtist }
+	var libraryTitle: String? { title }
 	
 	// Enables isEmpty()
 }

@@ -142,7 +142,7 @@ final class AlbumsTVC:
 			return false
 		}
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			return viewModel.groups.count == 1
+			return !viewModel.isAllView
 		} else {
 			return true
 		}

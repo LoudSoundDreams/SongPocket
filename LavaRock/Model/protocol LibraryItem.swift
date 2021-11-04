@@ -12,7 +12,7 @@ protocol LibraryItem {
 }
 
 protocol LibraryContainer {
-	var libraryTitle: String { get }
+	var libraryTitle: String? { get }
 	var contents: NSSet? { get set }
 }
 

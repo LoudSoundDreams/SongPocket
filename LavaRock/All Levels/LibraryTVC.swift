@@ -321,7 +321,7 @@ class LibraryTVC: UITableViewController {
 		}
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		if selectedIndexPaths.isEmpty {
-			return viewModel.groups.count == 1
+			return !viewModel.isAllView
 		} else {
 			return selectedIndexPaths.isContiguousWithinSameSection()
 		}

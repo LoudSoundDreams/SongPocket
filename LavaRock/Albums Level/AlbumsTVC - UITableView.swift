@@ -48,7 +48,7 @@ extension AlbumsTVC {
 			case .all:
 				return nil
 			case .groupOfAlbums:
-				if viewModel.lastDeliberatelyOpenedContainer == nil {
+				if viewModel.isAllView {
 					// We're showing an "All" view, so use container titles for each group of `Album`s.
 					return (viewModel as? AlbumsViewModel)?.container(forSection: section).title
 				} else {

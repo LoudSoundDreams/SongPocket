@@ -21,6 +21,10 @@ protocol LibraryViewModel {
 
 extension LibraryViewModel {
 	
+	var isAllView: Bool {
+		return !(self is CollectionsViewModel) && lastDeliberatelyOpenedContainer == nil
+	}
+	
 	var navigationItemTitle: String {
 		if let titleOfDeliberatelyOpened = lastDeliberatelyOpenedContainer?.libraryTitle {
 			return titleOfDeliberatelyOpened

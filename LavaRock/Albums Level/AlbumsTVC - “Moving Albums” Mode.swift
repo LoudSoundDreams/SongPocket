@@ -13,25 +13,22 @@ extension AlbumsTVC {
 	final func moveAlbumsHere() {
 		
 		guard
-			viewModel.groups.count == 1,
 			let albumsViewModel = viewModel as? AlbumsViewModel,
 			let albumMoverClipboard = albumMoverClipboard,
-			!albumMoverClipboard.didAlreadyCommitMoveAlbums // Without this, if you tap the "Move Here" button more than once, the app will crash.
-				// You won't obviate this hack even if you put as much of this logic as possible onto a background queue to get to the animation sooner. The animation *is* the slow part. If I set a breakpoint before the animation, I can't even tap the "Move Here" button twice before hitting that breakpoint.
+			!albumMoverClipboard.didAlreadyCommitMoveAlbums // Without this, if you tap the "Move Here" button more than once, the app crashes. You can tap that button more than once because it receives events during table view updates, which run asynchronously.
 		else { return }
 		
 		albumMoverClipboard.didAlreadyCommitMoveAlbums = true
 		
 		// Make a new data source.
-		let indexOfGroup = 0 //
-		let newItems = albumsViewModel.itemsAfterMovingHere(
-			albumsWith: albumMoverClipboard.idsOfAlbumsBeingMoved,
-			indexOfGroup: indexOfGroup) //
+		guard let newItems = albumsViewModel.itemsAfterMovingIntoOnlyGroup(
+			albumsWith: albumMoverClipboard.idsOfAlbumsBeingMoved)
+		else { return }
 		
 		// Update the table view.
 		setItemsAndMoveRows(
 			newItems: newItems,
-			section: AlbumsViewModel.numberOfSectionsAboveLibraryItems + indexOfGroup
+			section: AlbumsViewModel.numberOfSectionsAboveLibraryItems
 		) {
 			self.viewModel.context.tryToSave()
 			self.viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven't exited editing mode, because if you moved all the Albums out of a Collection, we'll close the Collection and exit editing mode shortly.
