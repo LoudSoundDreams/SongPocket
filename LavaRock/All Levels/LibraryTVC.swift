@@ -188,44 +188,112 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Setting Items
 	
-	final func setItemsAndMoveRows(
-		newItems: [NSManagedObject],
-		section: Int,
+	final func setViewModelAndMoveRows(
+		_ newViewModel: LibraryViewModel,
 		completion: (() -> Void)? = nil
 	) {
-		let oldItems = viewModel.group(forSection: section).items
-		let changes = oldItems.indicesOfChanges(toMatch: newItems) { oldItem, newItem in
-			oldItem.objectID == newItem.objectID
-		}
-		
-		let indexOfGroup = viewModel.indexOfGroup(forSection: section)
-		
-		viewModel.groups[indexOfGroup].setItems(newItems)
-		
-		guard !viewModel.isEmpty() else {
+		guard !newViewModel.isEmpty() else {
+			viewModel = newViewModel
 			reflectViewModelIsEmpty()
 			return
 		}
 		
-		let toDelete = changes.deletes.map {
-			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
-		}
-		let toInsert = changes.inserts.map {
-			viewModel.indexPathFor(indexOfItemInGroup: $0, indexOfGroup: indexOfGroup)
-		}
-		let toMove = changes.moves.map { oldIndex, newIndex in
-			(viewModel.indexPathFor(indexOfItemInGroup: oldIndex, indexOfGroup: indexOfGroup),
-			 viewModel.indexPathFor(indexOfItemInGroup: newIndex, indexOfGroup: indexOfGroup))
+		let newGroups = newViewModel.groups
+		
+		let oldViewModel = viewModel
+		let oldGroups = oldViewModel.groups
+		let changes: (
+			deletes: [Int],
+			inserts: [Int],
+			moves: [(Int, Int)]
+		)?
+		let reorderedOldGroups: [GroupOfLibraryItems]
+		if
+			let albumsViewModel = oldViewModel as? AlbumsViewModel,
+			let oldGroups = oldGroups as? [GroupOfCollectionsOrAlbums],
+			let newGroups = newGroups as? [GroupOfCollectionsOrAlbums]
+		{
+			let differenceOfGroups = albumsViewModel.differenceOfGroupsInferringMoves(
+				toMatch: newGroups)
+			changes = differenceOfGroups.indicesOfDeletesInsertsAndMoves()
+			let reordered = oldGroups.applying(differenceOfGroups)!
+			reorderedOldGroups = reordered
+		} else if
+			let songsViewModel = oldViewModel as? SongsViewModel,
+			let oldGroups = oldGroups as? [GroupOfSongs],
+			let newGroups = newGroups as? [GroupOfSongs]
+		{
+			let differenceOfGroups = songsViewModel.differenceOfGroupsInferringMoves(
+				toMatch: newGroups)
+			changes = differenceOfGroups.indicesOfDeletesInsertsAndMoves()
+			let reordered = oldGroups.applying(differenceOfGroups)!
+			reorderedOldGroups = reordered
+		} else {
+			changes = nil
+			reorderedOldGroups = oldGroups
 		}
 		
-		tableView.deselectSection(section, animated: true)
+		let oldNumberOfSectionsAbove = type(of: oldViewModel).numberOfSectionsAboveLibraryItems
+		let newNumberOfSectionsAbove = type(of: newViewModel).numberOfSectionsAboveLibraryItems
+		let sectionsToDelete = changes?.deletes.map { oldNumberOfSectionsAbove + $0 } ?? []
+		let sectionsToInsert = changes?.inserts.map { newNumberOfSectionsAbove + $0 } ?? []
+		let sectionsToMove = changes?.moves.map { (oldIndex, newIndex) in
+			(oldNumberOfSectionsAbove + oldIndex,
+			 newNumberOfSectionsAbove + newIndex)
+		} ?? []
+		
+		viewModel = newViewModel
+		
+		var rowsToDelete = [IndexPath]()
+		var rowsToInsert = [IndexPath]()
+		var rowsToMove = [(IndexPath, IndexPath)]()
+		let tuplesForContainersAndOldIndicesOfGroups: [(NSManagedObject?, Int)]
+		= oldGroups.indices.map {
+			let oldGroup = oldGroups[$0]
+			return (
+				oldGroup.container, // Yes, you can use `nil` as a `Dictionary` key.
+				$0
+			)
+		}
+		let oldIndicesOfGroupsByContainer = Dictionary(
+			uniqueKeysWithValues: tuplesForContainersAndOldIndicesOfGroups)
+		newGroups.indices.reversed().forEach { newIndexOfGroup in
+			let newGroup = newGroups[newIndexOfGroup]
+			
+			let oldItems = reorderedOldGroups[newIndexOfGroup].items
+			let container = newGroup.container // Is `nil` if we're inserting a new group
+			let oldIndexOfGroup = oldIndicesOfGroupsByContainer[container]
+			
+			let newItems = newGroup.items
+			
+			let rows = rowsToDeleteInsertAndMove(
+				oldItems: oldItems,
+				oldIndexOfGroup: oldIndexOfGroup,
+				newItems: newItems,
+				newIndexOfGroup: newIndexOfGroup)
+			rowsToDelete.append(contentsOf: rows.toDelete)
+			rowsToInsert.append(contentsOf: rows.toInsert)
+			rowsToMove.append(contentsOf: rows.toMove)
+		}
+		
+		tableView.deselectAllRows(animated: true)
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates {
-			tableView.deleteRows(at: toDelete, with: .middle)
-			tableView.insertRows(at: toInsert, with: .middle)
-			toMove.forEach { sourceIndexPath, destinationIndexPath in
-				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
+			tableView.deleteSections(IndexSet(sectionsToDelete), with: .middle)
+			tableView.insertSections(IndexSet(sectionsToInsert), with: .middle)
+			sectionsToMove.forEach { (oldSection, newSection) in
+				if oldSection != newSection {
+					tableView.moveSection(oldSection, toSection: newSection)
+				}
+			}
+			
+			tableView.deleteRows(at: rowsToDelete, with: .middle)
+			tableView.insertRows(at: rowsToInsert, with: .middle)
+			rowsToMove.forEach { sourceIndexPath, destinationIndexPath in
+				if sourceIndexPath != destinationIndexPath {
+					tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
+				}
 			}
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
@@ -235,6 +303,57 @@ class LibraryTVC: UITableViewController {
 		}
 		
 		didChangeRowsOrSelectedRows()
+	}
+	
+	// WARNING: You must update `viewModel` first.
+	private func rowsToDeleteInsertAndMove(
+		oldItems: [NSManagedObject],
+		oldIndexOfGroup: Int?,
+		newItems: [NSManagedObject],
+		newIndexOfGroup: Int
+	) -> (
+		toDelete: [IndexPath],
+		toInsert: [IndexPath],
+		toMove: [(IndexPath, IndexPath)]
+	) {
+		let changes = oldItems.indicesOfDeletesInsertsAndMoves(
+			toMatch: newItems
+		) { oldItem, newItem in
+			oldItem.objectID == newItem.objectID
+		}
+		
+		let toDelete: [IndexPath] = changes.deletes.compactMap {
+			guard let oldIndexOfGroup = oldIndexOfGroup else {
+				return nil
+			}
+			return viewModel.indexPathFor(
+				indexOfItemInGroup: $0,
+				indexOfGroup: oldIndexOfGroup)
+		}
+		let toInsert = changes.inserts.map {
+			viewModel.indexPathFor(
+				indexOfItemInGroup: $0,
+				indexOfGroup: newIndexOfGroup)
+		}
+		let toMove: [(IndexPath, IndexPath)] = changes.moves.compactMap { (oldIndex, newIndex) in
+			guard let oldIndexOfGroup = oldIndexOfGroup else {
+				return nil
+			}
+			return (
+				viewModel.indexPathFor(
+					indexOfItemInGroup: oldIndex,
+					indexOfGroup: oldIndexOfGroup),
+				viewModel.indexPathFor(
+					indexOfItemInGroup: newIndex,
+					indexOfGroup: newIndexOfGroup)
+			)
+		}
+		
+		return (
+			toDelete,
+			toInsert,
+			toMove
+		)
 	}
 	
 	// MARK: - Refreshing UI
@@ -267,15 +386,11 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	func showToolbar() {
-//		hidesBottomBarWhenPushed = true
-		
 		navigationController?.isToolbarHidden = false
 //		navigationController?.toolbar.isHidden = false
 	}
 	
 	func hideToolbar() {
-//		hidesBottomBarWhenPushed = false
-		
 		navigationController?.isToolbarHidden = true
 //		navigationController?.toolbar.isHidden = true
 	}

@@ -19,10 +19,34 @@ extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
 	static let numberOfSectionsAboveLibraryItems = 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 2
+	
+	func refreshed() -> Self {
+		// Check `lastDeliberatelyOpenedContainer` to figure out which `Song`s to show.
+		if let album = lastDeliberatelyOpenedContainer as? Album {
+			return Self(
+				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				containers: [album],
+				context: context)
+		} else if let collection = lastDeliberatelyOpenedContainer as? Collection {
+			let albums = collection.albums()
+			return Self(
+				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				containers: albums,
+				context: context)
+		} else {
+			// `lastDeliberatelyOpenedContainer == nil`. We're showing all `Song`s.
+			let allAlbums = Album.allFetched(context: context)
+			return Self(
+				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				containers: allAlbums,
+				context: context)
+		}
+	}
 }
 
 extension SongsViewModel {
 	
+	// TO DO: Put the contents of `refreshed()` here?
 	init(
 		lastDeliberatelyOpenedContainer: LibraryContainer?,
 		containers: [NSManagedObject],
@@ -38,10 +62,21 @@ extension SongsViewModel {
 		self.context = context
 	}
 	
-	// Similar to AlbumsViewModel.container.
-	func container(forSection section: Int) -> Album { // "container"? could -> Album satisfy a protocol requirement -> NSManagedObject as a covariant?
+	// Similar to `AlbumsViewModel.collection`.
+	func album(forSection section: Int) -> Album {
 		let group = group(forSection: section)
 		return group.container as! Album
+	}
+	
+	// Similar to counterpart in `AlbumsViewModel`.
+	func differenceOfGroupsInferringMoves(
+		toMatch newGroups: [GroupOfSongs]
+	) -> CollectionDifference<GroupOfSongs> {
+		let oldGroups = groups as! [GroupOfSongs]
+		let difference = newGroups.difference(from: oldGroups) { oldGroup, newGroup in
+			oldGroup.container!.objectID == newGroup.container!.objectID
+		}.inferringMoves()
+		return difference
 	}
 	
 	func shouldShowDiscNumbers(forSection section: Int) -> Bool {

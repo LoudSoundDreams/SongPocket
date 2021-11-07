@@ -10,12 +10,12 @@ import MediaPlayer
 import OSLog
 
 extension Album: LibraryItem {
+	var libraryTitle: String? { titleFormattedOptional() }
+	
 	// Enables [Album].reindex()
 }
 
 extension Album: LibraryContainer {
-	var libraryTitle: String? { titleFormattedOptional() }
-	
 	// Enables isEmpty()
 }
 

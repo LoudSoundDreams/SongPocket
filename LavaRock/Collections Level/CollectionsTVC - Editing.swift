@@ -99,6 +99,7 @@ extension CollectionsTVC {
 		from selectedIndexPaths: [IndexPath],
 		into indexPathOfCombinedCollection: IndexPath
 	) {
+		/*
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return } // TO DO: Don't continue to presentDialogToCombineCollections if this fails.
 		
 		// Save the existing GroupOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
@@ -121,6 +122,7 @@ extension CollectionsTVC {
 		// TO DO: Deselect rows and refresh editing buttons?
 		
 		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
+		 */
 	}
 	
 	// Match presentDialogToRenameCollection and presentDialogToMakeNewCollection.
@@ -159,6 +161,7 @@ extension CollectionsTVC {
 		thenSelectRowsAt originalSelectedIndexPaths: [IndexPath],
 		completion: (() -> Void)? = nil
 	) {
+		/*
 		guard
 			var copyOfOriginalGroup = groupOfCollectionsBeforeCombining,
 			let originalItems = groupOfCollectionsBeforeCombining?.items,
@@ -166,7 +169,7 @@ extension CollectionsTVC {
 		else { return } //
 		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
-		let indexOfGroup = CollectionsViewModel.indexOfGroup
+		let indexOfGroup = CollectionsViewModel.indexOfOnlyGroup
 		
 		// Revert sectionOfLibraryItems to groupOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
 		copyOfOriginalGroup.setItems(onscreenItems) // Should cause no side effects.
@@ -176,12 +179,13 @@ extension CollectionsTVC {
 		setItemsAndMoveRows(
 			newItems: originalItems, // SIDE EFFECT
 //			thenSelect: originalSelectedIndexPaths,
-			section: CollectionsViewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfGroup
+			section: CollectionsViewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfOnlyGroup
 		) {
 			completion?()
 		}
 		
 		// TO DO: Deselect rows and refresh editing buttons?
+		*/
 	}
 	
 	private func commitCombineCollections(

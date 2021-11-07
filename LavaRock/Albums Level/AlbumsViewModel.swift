@@ -19,10 +19,28 @@ extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
 	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
+	
+	func refreshed() -> Self {
+		// Check `lastDeliberatelyOpenedContainer` to figure out which `Album`s to show.
+		if let collection = lastDeliberatelyOpenedContainer as? Collection {
+			return Self(
+				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				containers: [collection],
+				context: context)
+		} else {
+			// `lastDeliberatelyOpenedContainer == nil`. We're showing all `Album`s.
+			let allCollections = Collection.allFetched(context: context)
+			return Self(
+				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				containers: allCollections,
+				context: context)
+		}
+	}
 }
 
 extension AlbumsViewModel {
 	
+	// TO DO: Put the contents of `refreshed()` here?
 	init(
 		lastDeliberatelyOpenedContainer: LibraryContainer?,
 		containers: [NSManagedObject],
@@ -38,31 +56,41 @@ extension AlbumsViewModel {
 		self.context = context
 	}
 	
-	// Similar to SongsViewModel.container.
-	func container(forSection section: Int) -> Collection { // "container"? could -> Collection satisfy a protocol requirement -> NSManagedObject as a covariant?
+	// Similar to `SongsViewModel.album`.
+	func collection(forSection section: Int) -> Collection {
 		let group = group(forSection: section)
 		return group.container as! Collection
 	}
 	
+	// Similar to counterpart in `AlbumsViewModel`.
+	func differenceOfGroupsInferringMoves(
+		toMatch newGroups: [GroupOfCollectionsOrAlbums]
+	) -> CollectionDifference<GroupOfCollectionsOrAlbums> {
+		let oldGroups = groups as! [GroupOfCollectionsOrAlbums]
+		let difference = newGroups.difference(from: oldGroups) { oldGroup, newGroup in
+			oldGroup.container!.objectID == newGroup.container!.objectID
+		}.inferringMoves()
+		return difference
+	}
+	
 	// MARK: - “Moving Albums” Mode
 	
-	// Returns `nil` if this instance has multiple groups.
-	func itemsAfterMovingIntoOnlyGroup(
+	func updatedAfterMovingIntoOnlyGroup(
 		albumsWith albumIDs: [NSManagedObjectID]
-	) -> [Album]? {
-		guard
-			let onlyGroup = onlyGroup,
-			let destinationCollection = onlyGroup.container as? Collection
-		else {
-			return nil
+	) -> Self {
+		guard let destinationCollection = onlyGroup?.container as? Collection else {
+			return self
 		}
 		
 		destinationCollection.moveHere(
 			albumsWith: albumIDs,
 			context: context)
 		
-		let newItems = destinationCollection.albums()
-		return newItems
+		let newItemsForOnlyGroup = destinationCollection.albums()
+		
+		var twin = self
+		twin.groups[0].setItems(newItemsForOnlyGroup)
+		return twin
 	}
 	
 }

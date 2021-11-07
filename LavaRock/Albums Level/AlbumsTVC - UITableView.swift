@@ -50,7 +50,7 @@ extension AlbumsTVC {
 			case .groupOfAlbums:
 				if viewModel.isAllView {
 					// We're showing an "All" view, so use container titles for each group of `Album`s.
-					return (viewModel as? AlbumsViewModel)?.container(forSection: section).title
+					return (viewModel as? AlbumsViewModel)?.collection(forSection: section).title
 				} else {
 					// We're showing a single `Collection`, and the user deliberately chose it.
 					return LocalizedString.albums

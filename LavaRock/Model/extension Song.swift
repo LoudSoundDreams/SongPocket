@@ -10,6 +10,8 @@ import MediaPlayer
 import OSLog
 
 extension Song: LibraryItem {
+	var libraryTitle: String? { mpMediaItem()?.title }
+	
 	// Enables [Song].reindex()
 }
 

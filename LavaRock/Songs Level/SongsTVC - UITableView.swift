@@ -39,7 +39,7 @@ extension SongsTVC {
 	}
 	
 	private func albumArtworkCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let album = (viewModel as? SongsViewModel)?.container(forSection: indexPath.section) else {
+		guard let album = (viewModel as? SongsViewModel)?.album(forSection: indexPath.section) else {
 			return UITableViewCell()
 		}
 		
@@ -55,7 +55,7 @@ extension SongsTVC {
 	}
 	
 	private func albumInfoCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let album = (viewModel as? SongsViewModel)?.container(forSection: indexPath.section) else {
+		guard let album = (viewModel as? SongsViewModel)?.album(forSection: indexPath.section) else {
 			return UITableViewCell()
 		}
 		
@@ -86,7 +86,7 @@ extension SongsTVC {
 		
 		// Artist
 		let songArtist: String? = {
-			let album = songsViewModel.container(forSection: indexPath.section)
+			let album = songsViewModel.album(forSection: indexPath.section)
 			let albumArtist = album.albumArtist() // Can be nil
 			if
 				let songArtist = mediaItem?.artist,

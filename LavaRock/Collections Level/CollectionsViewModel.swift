@@ -19,13 +19,13 @@ extension CollectionsViewModel: LibraryViewModel {
 	static let entityName = "Collection"
 	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
+	
+	func refreshed() -> Self {
+		return Self(context: context)
+	}
 }
 
 extension CollectionsViewModel {
-	
-	static let indexOfGroup = 0 //
-	
-	var group: GroupOfLibraryItems { groups[Self.indexOfGroup] } //
 	
 	init(context: NSManagedObjectContext) {
 		groups = [
@@ -35,6 +35,16 @@ extension CollectionsViewModel {
 				context: context)
 		]
 		self.context = context
+	}
+	
+	private static let indexOfOnlyGroup = 0 //
+	
+	var group: GroupOfLibraryItems { groups[Self.indexOfOnlyGroup] } //
+	
+	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
+		var twin = self
+		twin.groups[Self.indexOfOnlyGroup].setItems(newItems)
+		return twin
 	}
 	
 	// MARK: - Editing
@@ -88,7 +98,29 @@ extension CollectionsViewModel {
 	
 	// MARK: - “Moving Albums” Mode
 	
-	func itemsAfterMakingNewCollection(
+	private static let indexOfNewCollection = 0
+	var indexPathOfNewCollection: IndexPath { // TO DO: Should be static
+		return indexPathFor(
+			indexOfItemInGroup: Self.indexOfNewCollection,
+			indexOfGroup: Self.indexOfOnlyGroup)
+	}
+	
+	func updatedAfterCreatingNewCollectionInOnlyGroup(
+		suggestedTitle: String?
+	) -> (Self, IndexPath) {
+		let newCollection = Collection(context: context)
+		newCollection.title = suggestedTitle ?? LocalizedString.newCollectionDefaultTitle
+		// When we call setItemsAndMoveRows, the property observer will set the "index" attribute of each Collection for us.
+		
+		var newItems = group.items
+		newItems.insert(newCollection, at: Self.indexOfNewCollection)
+		
+		let twin = updatedWithItemsInOnlyGroup(newItems)
+		let indexPath = indexPathOfNewCollection
+		return (twin, indexPath)
+	}
+	
+	private func itemsAfterMakingNewCollection(
 		suggestedTitle: String?,
 		indexOfNewCollection: Int
 	) -> [NSManagedObject] { // ? [Collection]
@@ -101,12 +133,17 @@ extension CollectionsViewModel {
 		return newItems
 	}
 	
-	func itemsAfterDeletingCollectionIfEmpty(
-		indexOfCollection: Int
-	) -> [NSManagedObject] { // ? [Collection]
+	func updatedAfterDeletingNewCollection() -> Self {
+		let newItems = itemsAfterDeletingNewCollection()
+		
+		let twin = updatedWithItemsInOnlyGroup(newItems)
+		return twin
+	}
+	
+	private func itemsAfterDeletingNewCollection() -> [NSManagedObject] { // ? [Collection]
 		let oldItems = group.items
 		guard
-			let collection = oldItems[indexOfCollection] as? Collection,
+			let collection = oldItems[Self.indexOfNewCollection] as? Collection,
 			collection.isEmpty()
 		else {
 			return oldItems
@@ -115,7 +152,7 @@ extension CollectionsViewModel {
 		context.delete(collection)
 		
 		var newItems = group.items
-		newItems.remove(at: indexOfCollection)
+		newItems.remove(at: Self.indexOfNewCollection)
 		return newItems
 	}
 	

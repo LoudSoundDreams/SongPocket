@@ -33,38 +33,26 @@ extension CollectionsTVC {
 			suggestedTitle: suggestedTitle)
 	}
 	
-	private func previewMakeNewCollection(
-		suggestedTitle: String?
-	) {
-		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return } // don't continue to presentDialogToMakeNewCollection if this fails
-		
-		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
+	private func previewMakeNewCollection(suggestedTitle: String?) {
+		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return } // TO DO: Don't continue to presentDialogToMakeNewCollection if this fails
 		
 		// Make a new data source.
-		let newItems = collectionsViewModel.itemsAfterMakingNewCollection( // Since we're in "moving Albums" mode, CollectionsViewModel should do this in a child managed object context.
-			suggestedTitle: suggestedTitle,
-			indexOfNewCollection: indexOfNewCollection)
+		let (newViewModel, indexPathOfNewCollection) = collectionsViewModel.updatedAfterCreatingNewCollectionInOnlyGroup(
+			suggestedTitle: suggestedTitle)
 		
 		// Update the data source and table view.
-		let indexPathOfNewCollection = collectionsViewModel.indexPathFor(
-			indexOfItemInGroup: indexOfNewCollection,
-			indexOfGroup: CollectionsViewModel.indexOfGroup)
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(
 				at: indexPathOfNewCollection,
 				at: .top,
 				animated: true)
 		} completion: { _ in
-			self.setItemsAndMoveRows(
-				newItems: newItems,
-				section: indexPathOfNewCollection.section)
+			self.setViewModelAndMoveRows(newViewModel)
 		}
 	}
 	
 	// Match presentDialogToRenameCollection and presentDialogToCombineCollections.
-	private func presentDialogToMakeNewCollection(
-		suggestedTitle: String?
-	) {
+	private func presentDialogToMakeNewCollection(suggestedTitle: String?) {
 		let dialog = UIAlertController(
 			title: LocalizedString.newCollectionAlertTitle,
 			message: nil,
@@ -98,42 +86,28 @@ extension CollectionsTVC {
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = false
 		
-		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
-		
 		// Make a new data source.
-		let newItems = collectionsViewModel.itemsAfterDeletingCollectionIfEmpty(
-			indexOfCollection: indexOfNewCollection)
-		let indexPathOfDeletedCollection = collectionsViewModel.indexPathFor(
-			indexOfItemInGroup: indexOfNewCollection,
-			indexOfGroup: CollectionsViewModel.indexOfGroup)
+		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		
 		// Update the data source and table view.
-		setItemsAndMoveRows(
-			newItems: newItems,
-			section: indexPathOfDeletedCollection.section)
+		setViewModelAndMoveRows(newViewModel)
 	}
 	
-	private func renameAndOpenNewCollection(
-		proposedTitle: String?
-	) {
+	private func renameAndOpenNewCollection(proposedTitle: String?) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let indexOfGroup = CollectionsViewModel.indexOfGroup
-		let indexOfNewCollection = AlbumMoverClipboard.indexOfNewCollection
-		let indexPathOfNewCollection = viewModel.indexPathFor(
-			indexOfItemInGroup: indexOfNewCollection,
-			indexOfGroup: indexOfGroup)
+		let indexPath = collectionsViewModel.indexPathOfNewCollection
 		
 		let didChangeTitle = collectionsViewModel.rename(
-			at: indexPathOfNewCollection,
+			at: indexPath,
 			proposedTitle: proposedTitle)
 		
 		tableView.performBatchUpdates {
 			if didChangeTitle {
-				tableView.reloadRows(at: [indexPathOfNewCollection], with: .fade)
+				tableView.reloadRows(at: [indexPath], with: .fade)
 			}
 		} completion: { _ in
-			self.tableView.selectRow(at: indexPathOfNewCollection, animated: true, scrollPosition: .none)
+			self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
 			self.performSegue(withIdentifier: "Open Collection", sender: self)
 		}
 	}

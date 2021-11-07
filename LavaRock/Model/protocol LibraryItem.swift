@@ -8,11 +8,11 @@
 import CoreData
 
 protocol LibraryItem {
+	var libraryTitle: String? { get }
 	var index: Int64 { get set }
 }
 
 protocol LibraryContainer {
-	var libraryTitle: String? { get }
 	var contents: NSSet? { get set }
 }
 

@@ -54,7 +54,7 @@ extension AlbumsTVC {
 		guard let section = indexPathsToMove.first?.section else { return }
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
-		let sourceCollection = albumsViewModel.container(forSection: section)
+		let sourceCollection = albumsViewModel.collection(forSection: section)
 		let idOfSourceCollection = sourceCollection.objectID
 		let idsOfAlbumsToMove = indexPathsToMove.map {
 			albumsViewModel.item(at: $0).objectID

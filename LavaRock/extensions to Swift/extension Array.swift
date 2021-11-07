@@ -45,7 +45,7 @@ extension Array {
 			predicate: predicate)
 	}
 	
-	func indicesOfChanges(
+	func indicesOfDeletesInsertsAndMoves(
 		toMatch newArray: [Element],
 		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
 	) -> (
@@ -58,35 +58,7 @@ extension Array {
 		let difference = newArray.difference(from: self) { oldItem, newItem in
 			areEquivalent(oldItem, newItem)
 		}.inferringMoves()
-		
-		var indicesOfOldItemsToDelete = [Int]()
-		var indicesOfNewItemsToInsert = [Int]()
-		var indicesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
-		
-		difference.forEach { change in
-			// If a Change's `associatedWith:` value is non-nil, then it has a counterpart Change in the CollectionDifference, and the two Changes together represent a move, rather than a remove and an insert.
-			switch change {
-			case .remove(let offset, _, let associatedOffset):
-				if let associatedOffset = associatedOffset {
-					indicesOfItemsToMove.append(
-						(oldIndex: offset,
-						 newIndex: associatedOffset)
-					)
-				} else {
-					indicesOfOldItemsToDelete.append(offset)
-				}
-			case .insert(let offset, _, let associatedOffset):
-				if associatedOffset == nil {
-					indicesOfNewItemsToInsert.append(offset)
-				}
-			}
-		}
-		
-		return (
-			indicesOfOldItemsToDelete,
-			indicesOfNewItemsToInsert,
-			indicesOfItemsToMove
-		)
+		return difference.indicesOfDeletesInsertsAndMoves()
 	}
 	
 	func sortedMaintainingOrderWhen(

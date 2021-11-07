@@ -10,12 +10,11 @@ import MediaPlayer
 import OSLog
 
 extension Collection: LibraryItem {
+	var libraryTitle: String? { title }
 	// Enables [Collection].reindex()
 }
 
 extension Collection: LibraryContainer {
-	var libraryTitle: String? { title }
-	
 	// Enables isEmpty()
 }
 

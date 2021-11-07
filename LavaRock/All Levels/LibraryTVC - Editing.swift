@@ -13,13 +13,17 @@ extension LibraryTVC {
 	// Overrides of this method should call super (this implementation).
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
+			// Delete empty groups if we reordered all the items out of them.
+			let newViewModel = viewModel.refreshed()
+			setViewModelAndMoveRows(newViewModel)
+			
 			viewModel.context.tryToSave()
 		}
 		
 		super.setEditing(editing, animated: animated)
 		
 		if FeatureFlag.tabBar {
-			setBarButtons(animated: false) // TO DO: Breaks the animation for showing and hiding the toolbar.
+			setBarButtons(animated: false)
 		} else {
 			setBarButtons(animated: animated)
 		}
@@ -53,34 +57,22 @@ extension LibraryTVC {
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		guard let (newItems, section) = viewModel.itemsAndSectionAfterSorting(
-			selectedIndexPaths: selectedIndexPaths,
+		let newViewModel = viewModel.updatedAfterSorting(
+			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil,
 			sortOptionLocalizedName: sortOptionLocalizedName)
-		else { return }
-		setItemsAndMoveRows(
-			newItems: newItems,
-			section: section)
+		setViewModelAndMoveRows(newViewModel)
 	}
 	
 	final func floatSelectedItemsToTopOfSection() {
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		guard let (newItems, section) = viewModel.itemsAndSectionAfterFloatingSelectedItemsToTop(
-			selectedIndexPaths: selectedIndexPaths)
-		else { return }
-		setItemsAndMoveRows(
-			newItems: newItems,
-			section: section)
+		let newViewModel = viewModel.updatedAfterFloatingItemsToTopOfSection(
+			from: tableView.indexPathsForSelectedRowsNonNil)
+		setViewModelAndMoveRows(newViewModel)
 	}
 	
 	final func sinkSelectedItemsToBottomOfSection() {
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		guard let (newItems, section) = viewModel.itemsAndSectionAfterSinkingSelectedItemsToBottom(
-			selectedIndexPaths: selectedIndexPaths)
-		else { return }
-		setItemsAndMoveRows(
-			newItems: newItems,
-			section: section)
+		let newViewModel = viewModel.updatedAfterSinkingItemsToBottomOfSection(
+			from: tableView.indexPathsForSelectedRowsNonNil)
+		setViewModelAndMoveRows(newViewModel)
 	}
 	
 }

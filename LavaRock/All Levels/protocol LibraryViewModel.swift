@@ -17,6 +17,8 @@ protocol LibraryViewModel {
 	var context: NSManagedObjectContext { get }
 	
 	var groups: [GroupOfLibraryItems] { get set }
+	
+	func refreshed() -> Self
 }
 
 extension LibraryViewModel {
@@ -26,8 +28,8 @@ extension LibraryViewModel {
 	}
 	
 	var navigationItemTitle: String {
-		if let titleOfDeliberatelyOpened = lastDeliberatelyOpenedContainer?.libraryTitle {
-			return titleOfDeliberatelyOpened
+		if let ofDeliberatelyOpened = (lastDeliberatelyOpenedContainer as? LibraryItem)?.libraryTitle{
+			return ofDeliberatelyOpened
 		} else {
 			return FeatureFlag.allRow ? LocalizedString.library : LocalizedString.collections
 		}
@@ -49,22 +51,17 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func refreshContainers() {
-		groups.forEach { $0.refreshContainer(context: context) }
-	}
-	
-	func newItemsAndSections() -> [(
+	func newItemsAndSection(
+		forIndexOfGroup indexOfGroup: Int
+	) -> (
 		newItems: [NSManagedObject],
 		section: Int
-	)] {
-		let result: [([NSManagedObject], Int)] = groups.indices.map { indexOfGroup in
-			let newItems = groups[indexOfGroup].itemsFetched(
-				entityName: Self.entityName,
-				context: context)
-			let section = Self.numberOfSectionsAboveLibraryItems + indexOfGroup
-			return (newItems, section)
-		}
-		return result
+	) {
+		let newItems = groups[indexOfGroup].itemsFetched(
+			entityName: Self.entityName,
+			context: context)
+		let section = Self.numberOfSectionsAboveLibraryItems + indexOfGroup
+		return (newItems, section)
 	}
 	
 	// MARK: - Elements
@@ -112,6 +109,8 @@ extension LibraryViewModel {
 		return row - Self.numberOfRowsAboveLibraryItemsInEachSection
 	}
 	
+	// TO DO: Indices of sections and rows
+	
 	// MARK: IndexPaths
 	
 	func selectedOrAllIndexPathsInOnlyGroup(
@@ -145,6 +144,7 @@ extension LibraryViewModel {
 		}
 	}
 	
+	// TO DO: Should be static
 	func indexPathFor(
 		indexOfItemInGroup: Int,
 		indexOfGroup: Int
@@ -173,6 +173,7 @@ extension LibraryViewModel {
 	
 	// MARK: - Editing
 	
+	// WARNING: Leaves a group empty if you move all the items out of it. You must call `refreshed()` later to delete empty groups.
 	mutating func moveItem(
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath
@@ -192,7 +193,26 @@ extension LibraryViewModel {
 		groups[destinationIndexOfGroup].setItems(destinationItems)
 	}
 	
-	func itemsAndSectionAfterSorting(
+	func updatedAfterSorting(
+		selectedIndexPaths: [IndexPath],
+		sortOptionLocalizedName: String
+	) -> Self {
+		
+		
+		guard let (newItems, section) = itemsAndSectionAfterSorting(
+			selectedIndexPaths: selectedIndexPaths,
+			sortOptionLocalizedName: sortOptionLocalizedName)
+		else {
+			return self
+		}
+		
+		var twin = self
+		let indexOfGroup = indexOfGroup(forSection: section)
+		twin.groups[indexOfGroup].setItems(newItems)
+		return twin
+	}
+	
+	private func itemsAndSectionAfterSorting(
 		selectedIndexPaths: [IndexPath],
 		sortOptionLocalizedName: String
 	) -> (
@@ -238,7 +258,7 @@ extension LibraryViewModel {
 		return (newItems, section)
 	}
 	
-	// Sorting should be stable! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
+	// Sort stably! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
 	private func sorted(
 		_ items: [NSManagedObject],
 		sortOptionLocalizedName: String
@@ -307,7 +327,24 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func itemsAndSectionAfterFloatingSelectedItemsToTop(
+	func updatedAfterFloatingItemsToTopOfSection(
+		from selectedIndexPaths: [IndexPath]
+	) -> Self {
+		
+		
+		guard let (newItems, section) = itemsAndSectionAfterFloatingSelectedItemsToTop(
+			selectedIndexPaths: selectedIndexPaths)
+		else {
+			return self
+		}
+		
+		var twin = self
+		let indexOfGroup = indexOfGroup(forSection: section)
+		twin.groups[indexOfGroup].setItems(newItems)
+		return twin
+	}
+	
+	private func itemsAndSectionAfterFloatingSelectedItemsToTop(
 		selectedIndexPaths: [IndexPath]
 	) -> (
 		items: [NSManagedObject],
@@ -338,7 +375,24 @@ extension LibraryViewModel {
 		return (newItems, section)
 	}
 	
-	func itemsAndSectionAfterSinkingSelectedItemsToBottom(
+	func updatedAfterSinkingItemsToBottomOfSection(
+		from selectedIndexPaths: [IndexPath]
+	) -> Self {
+		
+		
+		guard let (newItems, section) = itemsAndSectionAfterSinkingSelectedItemsToBottom(
+			selectedIndexPaths: selectedIndexPaths)
+		else {
+			return self
+		}
+		
+		var twin = self
+		let indexOfGroup = indexOfGroup(forSection: section)
+		twin.groups[indexOfGroup].setItems(newItems)
+		return twin
+	}
+	
+	private func itemsAndSectionAfterSinkingSelectedItemsToBottom(
 		selectedIndexPaths: [IndexPath]
 	) -> (
 		items: [NSManagedObject],

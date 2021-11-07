@@ -98,19 +98,19 @@
 "Play" = "播放";
 
 /* Button */
-"Play Album Starting Here" = "从此歌曲播放";
+"Play All Starting Here" = "从此歌曲播放";
 
 /* Button */
-"Play All Starting Here" = "从此歌曲播放";
+"Play Rest of Album" = "播放至专辑结尾";
 
 /* Button */
 "Previous track" = "上一个音轨";
 
 /* Button */
-"Queue Album Starting Here" = "从此歌曲待播";
+"Queue All Starting Here" = "从此歌曲待播";
 
 /* Button */
-"Queue All Starting Here" = "从此歌曲待播";
+"Queue Rest of Album" = "待播至专辑结尾";
 
 /* Button */
 "Queue Song" = "待播";

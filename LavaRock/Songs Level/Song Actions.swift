@@ -28,17 +28,17 @@ extension SongsTVC {
 		}
 		
 		// Create the actions.
-		let playAllStartingHereAction = UIAlertAction(
-			title: LocalizedString.playAlbumStartingHere,
+		let playRestOfAlbumAction = UIAlertAction(
+			title: LocalizedString.playRestOfAlbum,
 			style: .default,
 			handler: { _ in
-				self.playAllStartingAtSelectedSong()
+				self.playAlbumStartingAtSelectedSong()
 				deselectSelectedSong()
 			}
 		)
-//		playAllStartingHereAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
-		let enqueueAlbumStartingHereAction = UIAlertAction(
-			title: LocalizedString.queueAlbumStartingHere,
+//		playAlbumStartingAtSelectedSongAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
+		let enqueueRestOfAlbumAction = UIAlertAction(
+			title: LocalizedString.queueRestOfAlbum,
 			style: .default,
 			handler: { _ in
 				self.enqueueAlbumStartingAtSelectedSong()
@@ -63,7 +63,7 @@ extension SongsTVC {
 			let lastSongInGroup = viewModel.group(forSection: selectedIndexPath.section).items.last,
 			song == lastSongInGroup
 		{
-			enqueueAlbumStartingHereAction.isEnabled = false
+			enqueueRestOfAlbumAction.isEnabled = false
 		}
 		
 		// Create and present the action sheet.
@@ -71,8 +71,8 @@ extension SongsTVC {
 			title: nil,
 			message: nil,
 			preferredStyle: .actionSheet)
-		actionSheet.addAction(playAllStartingHereAction)
-		actionSheet.addAction(enqueueAlbumStartingHereAction)
+		actionSheet.addAction(playRestOfAlbumAction)
+		actionSheet.addAction(enqueueRestOfAlbumAction)
 		actionSheet.addAction(enqueueSongAction)
 		actionSheet.addAction(cancelAction)
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
@@ -81,7 +81,7 @@ extension SongsTVC {
 	
 	// MARK: - Actions
 	
-	private func playAllStartingAtSelectedSong() {
+	private func playAlbumStartingAtSelectedSong() {
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
 		
 		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)

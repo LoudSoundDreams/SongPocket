@@ -8,6 +8,10 @@
 import CoreData
 import MediaPlayer
 
+extension GroupOfSongs: Hashable {
+	// Enables `[GroupOfSongs].difference(from:by:)`
+}
+
 struct GroupOfSongs: GroupOfLibraryItems {
 	
 	// MARK: - GroupOfLibraryItems

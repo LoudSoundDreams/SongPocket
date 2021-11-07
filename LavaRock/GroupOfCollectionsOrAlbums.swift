@@ -7,6 +7,10 @@
 
 import CoreData
 
+extension GroupOfCollectionsOrAlbums: Hashable {
+	// Enables `[GroupOfCollectionsOrAlbums].difference(from:by:)`
+}
+
 struct GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
 	
 	// MARK: - GroupOfLibraryItems

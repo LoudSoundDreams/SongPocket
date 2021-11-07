@@ -11,7 +11,6 @@ import MediaPlayer
 final class AlbumMoverClipboard { // This is a class and not a struct because we use it to share information.
 	
 	// Static
-	static let indexOfNewCollection = 0
 	static let albumMetadataKeyPathsForSuggestingCollectionTitle = [
 		// Order matters. First, we'll see if all the Albums have the same album artist; if they don't, then we'll try the next case, and so on.
 		\MPMediaItem.albumArtist,
