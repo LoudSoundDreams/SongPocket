@@ -419,8 +419,8 @@ class LibraryTVC: UITableViewController {
 		editButtonItem.isEnabled = allowsEdit()
 		
 		sortButton.isEnabled = allowsSort()
-		floatToTopButton.isEnabled = allowsFloat()
-		sinkToBottomButton.isEnabled = allowsSink()
+		floatToTopButton.isEnabled = allowsFloatAndSink()
+		sinkToBottomButton.isEnabled = allowsFloatAndSink()
 	}
 	
 	private func allowsEdit() -> Bool {
@@ -440,7 +440,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	private func allowsFloat() -> Bool {
+	private func allowsFloatAndSink() -> Bool {
 		guard !viewModel.isEmpty() else {
 			return false
 		}
@@ -448,12 +448,8 @@ class LibraryTVC: UITableViewController {
 		if selectedIndexPaths.isEmpty {
 			return false
 		} else {
-			return selectedIndexPaths.isWithinSameSection()
+			return true
 		}
-	}
-	
-	private func allowsSink() -> Bool {
-		return allowsFloat()
 	}
 	
 	// MARK: - Navigation

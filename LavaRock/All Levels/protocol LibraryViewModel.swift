@@ -316,29 +316,28 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func updatedAfterFloatingToTopOfSection(
+	func updatedAfterFloatingToTopsOfSections(
 		selectedIndexPaths: [IndexPath]
 	) -> Self {
-		guard let section = selectedIndexPaths.first?.section else {
-			return self
-		}
-		
-		let newItems = itemsAfterFloatingToTop(
-			selectedIndexPaths: selectedIndexPaths,
-			inSection: section)
+		let rowsBySection = selectedIndexPaths.makeDictionaryOfRowsBySection()
 		
 		var twin = self
-		let indexOfGroup = indexOfGroup(forSection: section)
-		twin.groups[indexOfGroup].setItems(newItems)
+		rowsBySection.forEach { (section, rows) in
+			let newItems = itemsAfterFloatingToTop(
+				itemsAtRows: rows,
+				inSection: section)
+			let indexOfGroup = indexOfGroup(forSection: section)
+			twin.groups[indexOfGroup].setItems(newItems)
+		}
 		return twin
 	}
 	
 	private func itemsAfterFloatingToTop(
-		selectedIndexPaths: [IndexPath],
+		itemsAtRows rows: [Int],
 		inSection section: Int
 	) -> [NSManagedObject] {
-		let selectedRows = selectedIndexPaths.map { $0.row }.sorted()
-		let indicesOfSelectedItems = selectedRows.map {
+		let rows = rows.sorted()
+		let indicesOfSelectedItems = rows.map {
 			indexOfItemInGroup(forRow: $0)
 		}
 		let oldItems = group(forSection: section).items
@@ -358,29 +357,28 @@ extension LibraryViewModel {
 		return newItems
 	}
 	
-	func updatedAfterSinkingToBottomOfSection(
+	func updatedAfterSinkingToBottomsOfSections(
 		selectedIndexPaths: [IndexPath]
 	) -> Self {
-		guard let section = selectedIndexPaths.first?.section else {
-			return self
-		}
-		
-		let newItems = itemsAfterSinkingToBottom(
-			selectedIndexPaths: selectedIndexPaths,
-			inSection: section)
+		let rowsBySection = selectedIndexPaths.makeDictionaryOfRowsBySection()
 		
 		var twin = self
-		let indexOfGroup = indexOfGroup(forSection: section)
-		twin.groups[indexOfGroup].setItems(newItems)
+		rowsBySection.forEach { (section, rows) in
+			let newItems = itemsAfterSinkingToBottom(
+				itemsAtRows: rows,
+				inSection: section)
+			let indexOfGroup = indexOfGroup(forSection: section)
+			twin.groups[indexOfGroup].setItems(newItems)
+		}
 		return twin
 	}
 	
 	private func itemsAfterSinkingToBottom(
-		selectedIndexPaths: [IndexPath],
+		itemsAtRows rows: [Int],
 		inSection section: Int
 	) -> [NSManagedObject] {
-		let selectedRows = selectedIndexPaths.map { $0.row }.sorted()
-		let indicesOfSelectedItems = selectedRows.map {
+		let rows = rows.sorted()
+		let indicesOfSelectedItems = rows.map {
 			indexOfItemInGroup(forRow: $0)
 		}
 		let oldItems = group(forSection: section).items

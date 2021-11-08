@@ -123,12 +123,4 @@ extension Array {
 		return allNeighborsSatisfy { $0 + 1 == $1 }
 	}
 	
-	func isWithinSameSection() -> Bool
-	where Element == IndexPath
-	{
-		let section = first?.section
-		let result = allSatisfy { $0.section == section }
-		return result
-	}
-	
 }

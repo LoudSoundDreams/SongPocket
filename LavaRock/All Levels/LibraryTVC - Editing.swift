@@ -64,13 +64,13 @@ extension LibraryTVC {
 	}
 	
 	final func floatSelectedItemsToTopOfSection() {
-		let newViewModel = viewModel.updatedAfterFloatingToTopOfSection(
+		let newViewModel = viewModel.updatedAfterFloatingToTopsOfSections(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		setViewModelAndMoveRows(newViewModel)
 	}
 	
 	final func sinkSelectedItemsToBottomOfSection() {
-		let newViewModel = viewModel.updatedAfterSinkingToBottomOfSection(
+		let newViewModel = viewModel.updatedAfterSinkingToBottomsOfSections(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		setViewModelAndMoveRows(newViewModel)
 	}
