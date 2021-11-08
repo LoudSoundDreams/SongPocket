@@ -103,12 +103,18 @@ final class OpenMusicCell: UITableViewCell {
 }
 
 final class CollectionCell: UITableViewCell {
+	enum Mode {
+		case normal
+		case movingAlbumsModeAndNotSourceOfAlbums
+		case movingAlbumsModeAndSourceOfAlbums
+	}
+	
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	
 	final func configure(
 		with collection: Collection,
-		isMovingAlbumsFromCollectionWith idOfSourceCollection: NSManagedObjectID?,
+		mode: Mode,
 		renameFocusedCollectionAction: UIAccessibilityCustomAction
 	) {
 		// Title
@@ -116,21 +122,31 @@ final class CollectionCell: UITableViewCell {
 		
 		titleLabel.text = collectionTitle
 		
-		if let idOfSourceCollection = idOfSourceCollection {
-			// This cell is appearing in "moving Albums" mode.
-			if idOfSourceCollection == collection.objectID {
-				titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
-				disableWithAccessibilityTrait()
+		switch mode {
+		case .normal:
+			if FeatureFlag.allRow {
+				backgroundColor = nil
+			} else {
+				titleLabel.textColor = .label
+				enableWithAccessibilityTrait()
+			}
+			accessibilityCustomActions = [renameFocusedCollectionAction]
+		case .movingAlbumsModeAndNotSourceOfAlbums:
+			if FeatureFlag.allRow {
+				backgroundColor = nil
 			} else {
 				titleLabel.textColor = .label
 				enableWithAccessibilityTrait()
 			}
 			accessibilityCustomActions = []
-		} else {
-			titleLabel.textColor = .label
-			enableWithAccessibilityTrait()
-			
-			accessibilityCustomActions = [renameFocusedCollectionAction]
+		case .movingAlbumsModeAndSourceOfAlbums:
+			if FeatureFlag.allRow {
+				backgroundColor = .tintColorTranslucent_compatibleWithiOS14(self)
+			} else {
+				titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+				disableWithAccessibilityTrait()
+			}
+			accessibilityCustomActions = []
 		}
 	}
 }

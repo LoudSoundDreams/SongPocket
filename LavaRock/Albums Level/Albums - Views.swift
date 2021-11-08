@@ -8,6 +8,12 @@
 import UIKit
 
 final class AlbumCell: UITableViewCell {
+	enum Mode {
+		case normal
+		case movingAlbumsModeAndNotBeingMoved
+		case movingAlbumsModeAndBeingMoved
+	}
+	
 	@IBOutlet private var albumStackView: UIStackView!
 	@IBOutlet private var artworkImageView: UIImageView!
 	@IBOutlet private var textStackView: UIStackView!
@@ -25,7 +31,7 @@ final class AlbumCell: UITableViewCell {
 	
 	final func configure(
 		with album: Album,
-		isInMovingAlbumsMode: Bool
+		mode: Mode
 	) {
 		// Artwork
 		let maxWidthAndHeight = artworkImageView.bounds.width
@@ -51,10 +57,22 @@ final class AlbumCell: UITableViewCell {
 			textStackView.spacing = 4
 		}
 		
-		if isInMovingAlbumsMode {
-			accessoryType = .none
-		} else {
+		switch mode {
+		case .normal:
+			if FeatureFlag.allRow {
+				backgroundColor = nil
+			}
 			accessoryType = .disclosureIndicator
+		case .movingAlbumsModeAndNotBeingMoved:
+			if FeatureFlag.allRow {
+				backgroundColor = nil
+			}
+			accessoryType = .none
+		case .movingAlbumsModeAndBeingMoved:
+			if FeatureFlag.allRow {
+				backgroundColor = .tintColorTranslucent_compatibleWithiOS14(self)
+			}
+			accessoryType = .none
 		}
 		
 		accessibilityUserInputLabels = [title]

@@ -174,10 +174,20 @@ extension CollectionsTVC {
 			return UITableViewCell()
 		}
 		
-		let idOfSourceCollection = albumMoverClipboard?.idOfSourceCollection
+		let mode: CollectionCell.Mode = {
+			if let albumMoverClipboard = albumMoverClipboard {
+				if albumMoverClipboard.idsOfSourceCollections.contains(collection.objectID) {
+					return .movingAlbumsModeAndSourceOfAlbums
+				} else {
+					return .movingAlbumsModeAndNotSourceOfAlbums
+				}
+			} else {
+				return .normal
+			}
+		}()
 		cell.configure(
 			with: collection,
-			isMovingAlbumsFromCollectionWith: idOfSourceCollection,
+			mode: mode,
 			renameFocusedCollectionAction: renameFocusedCollectionAction)
 		cell.applyNowPlayingIndicator(nowPlayingIndicator)
 		

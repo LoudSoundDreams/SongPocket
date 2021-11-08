@@ -17,8 +17,9 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	]
 	
 	// Instance
-	final let idOfSourceCollection: NSManagedObjectID
+	final let idsOfSourceCollections: Set<NSManagedObjectID>
 	final let idsOfAlbumsBeingMoved: [NSManagedObjectID]
+	final let idsOfAlbumsBeingMoved_asSet: Set<NSManagedObjectID>
 	
 	// Helpers
 	final var navigationItemPrompt: String {
@@ -35,12 +36,13 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	final var didAlreadyCommitMoveAlbums = false
 	
 	init(
-		idOfSourceCollection: NSManagedObjectID,
+		idsOfSourceCollections: Set<NSManagedObjectID>,
 		idsOfAlbumsBeingMoved: [NSManagedObjectID],
 		delegate: AlbumMoverDelegate?
 	) {
-		self.idOfSourceCollection = idOfSourceCollection
+		self.idsOfSourceCollections = idsOfSourceCollections
 		self.idsOfAlbumsBeingMoved = idsOfAlbumsBeingMoved
+		idsOfAlbumsBeingMoved_asSet = Set(idsOfAlbumsBeingMoved)
 		self.delegate = delegate
 	}
 	

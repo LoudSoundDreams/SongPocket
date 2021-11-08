@@ -51,16 +51,16 @@ extension AlbumsTVC {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		let indexPathsToMove = albumsViewModel.selectedOrAllIndexPathsInOnlyGroup(
 			selectedIndexPaths: selectedIndexPaths)
-		guard let section = indexPathsToMove.first?.section else { return }
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
-		let sourceCollection = albumsViewModel.collection(forSection: section)
-		let idOfSourceCollection = sourceCollection.objectID
+		let idsOfSourceCollections = Set(indexPathsToMove.map {
+			albumsViewModel.collection(forSection: $0.section).objectID
+		})
 		let idsOfAlbumsToMove = indexPathsToMove.map {
 			albumsViewModel.item(at: $0).objectID
 		}
 		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
-			idOfSourceCollection: idOfSourceCollection,
+			idsOfSourceCollections: idsOfSourceCollections,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
 			delegate: self)
 		

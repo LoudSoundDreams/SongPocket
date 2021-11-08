@@ -8,14 +8,14 @@
 import UIKit
 
 final class TheseContainersCell: UITableViewCell {
-	@IBOutlet private var allLabel: UILabel!
-	
 	enum Mode {
 		case enabled
 		case disabledWithDisclosureIndicator
 		case disabledWithNoDisclosureIndicator // Don't use `UITableViewCell.isEditing`; it's always `false` because that's what we return in `LibraryTVC.tableView(_:canEditRowAt:)`.
 		// You must also reload the row yourself when entering and exiting editing mode.
 	}
+	
+	@IBOutlet private var allLabel: UILabel!
 	
 	final func configure(mode: Mode) {
 		switch mode {

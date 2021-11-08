@@ -130,10 +130,20 @@ extension AlbumsTVC {
 			return UITableViewCell()
 		}
 		
-		let isInMovingAlbumsMode = albumMoverClipboard != nil
+		let mode: AlbumCell.Mode = {
+			if let albumMoverClipboard = albumMoverClipboard {
+				if albumMoverClipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
+					return .movingAlbumsModeAndBeingMoved
+				} else {
+					return .movingAlbumsModeAndNotBeingMoved
+				}
+			} else {
+				return .normal
+			}
+		}()
 		cell.configure(
 			with: album,
-			isInMovingAlbumsMode: isInMovingAlbumsMode)
+			mode: mode)
 		cell.applyNowPlayingIndicator(nowPlayingIndicator)
 		
 		return cell
