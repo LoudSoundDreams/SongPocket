@@ -128,13 +128,7 @@ extension Collection {
 		let albumsToMove: [Album] = albumIDs.compactMap {
 			context.object(with: $0) as? Album
 		}
-		let sourceCollections: Set<Collection> = {
-			var result = Set<Collection>()
-			albumsToMove.forEach {
-				result.insert($0.container!)
-			}
-			return result
-		}()
+		let sourceCollections = Set(albumsToMove.map { $0.container! })
 		
 		let numberOfAlbumsToMove = albumsToMove.count
 		albums().forEach { $0.index += Int64(numberOfAlbumsToMove) }

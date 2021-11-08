@@ -280,20 +280,18 @@ class LibraryTVC: UITableViewController {
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates {
+			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
+			
 			tableView.deleteSections(IndexSet(sectionsToDelete), with: .middle)
 			tableView.insertSections(IndexSet(sectionsToInsert), with: .middle)
 			sectionsToMove.forEach { (oldSection, newSection) in
-				if oldSection != newSection {
-					tableView.moveSection(oldSection, toSection: newSection)
-				}
+				tableView.moveSection(oldSection, toSection: newSection)
 			}
 			
 			tableView.deleteRows(at: rowsToDelete, with: .middle)
 			tableView.insertRows(at: rowsToInsert, with: .middle)
 			rowsToMove.forEach { sourceIndexPath, destinationIndexPath in
-				if sourceIndexPath != destinationIndexPath {
-					tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
-				}
+				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
