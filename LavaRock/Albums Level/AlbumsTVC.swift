@@ -142,7 +142,7 @@ final class AlbumsTVC:
 			return false
 		}
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			return !viewModel.isAllView
+			return viewModel.isSpecificallyOpenedContainer
 		} else {
 			return true
 		}

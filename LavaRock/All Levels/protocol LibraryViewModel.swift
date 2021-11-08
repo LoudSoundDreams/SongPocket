@@ -23,8 +23,20 @@ protocol LibraryViewModel {
 
 extension LibraryViewModel {
 	
-	var isAllView: Bool {
-		return !(self is CollectionsViewModel) && lastSpecificallyOpenedContainer == nil
+	var isSpecificallyOpenedContainer: Bool {
+		if FeatureFlag.allRow {
+			if self is CollectionsViewModel {
+				return true
+			} else if self is AlbumsViewModel {
+				return lastSpecificallyOpenedContainer is Collection
+			} else if self is SongsViewModel {
+				return lastSpecificallyOpenedContainer is Album
+			} else {
+				fatalError("Unknown type conforming to `LibraryViewModel` called `isSpecificallyOpenedContainer`.")
+			}
+		} else {
+			return true
+		}
 	}
 	
 	var navigationItemTitle: String {
@@ -113,11 +125,11 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	func selectedOrAllIndexPathsInOnlyGroup(
+	func selectedOrAllIndexPathsIfSpecificallyOpened(
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
-			if groups.count == 1 {
+			if isSpecificallyOpenedContainer {
 				return indexPaths(forIndexOfGroup: 0)
 			} else {
 				return []
@@ -197,7 +209,10 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath],
 		sortOptionLocalizedName: String
 	) -> Self {
-		let rowsBySection = selectedIndexPaths.makeDictionaryOfRowsBySection()
+		let indexPathsToSort = selectedOrAllIndexPathsIfSpecificallyOpened(
+			selectedIndexPaths: selectedIndexPaths)
+		
+		let rowsBySection = indexPathsToSort.makeDictionaryOfRowsBySection()
 		
 		var twin = self
 		rowsBySection.forEach { (section, rows) in

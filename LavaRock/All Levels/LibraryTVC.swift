@@ -209,6 +209,11 @@ class LibraryTVC: UITableViewController {
 		)?
 		let reorderedOldGroups: [GroupOfLibraryItems]
 		if
+			viewModel is CollectionsViewModel
+		{
+			changes = nil
+			reorderedOldGroups = oldGroups
+		} else if
 			let albumsViewModel = oldViewModel as? AlbumsViewModel,
 			let oldGroups = oldGroups as? [GroupOfCollectionsOrAlbums],
 			let newGroups = newGroups as? [GroupOfCollectionsOrAlbums]
@@ -229,8 +234,7 @@ class LibraryTVC: UITableViewController {
 			let reordered = oldGroups.applying(differenceOfGroups)!
 			reorderedOldGroups = reordered
 		} else {
-			changes = nil
-			reorderedOldGroups = oldGroups
+			fatalError("`LibraryTVC` with an unknown type for `viewModel` called `setViewModelAndMoveRows`.")
 		}
 		
 		let oldNumberOfSectionsAbove = type(of: oldViewModel).numberOfSectionsAboveLibraryItems
@@ -434,7 +438,7 @@ class LibraryTVC: UITableViewController {
 		}
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		if selectedIndexPaths.isEmpty {
-			return !viewModel.isAllView
+			return viewModel.isSpecificallyOpenedContainer
 		} else {
 			return selectedIndexPaths.isContiguousWithinEachSection()
 		}

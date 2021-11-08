@@ -49,7 +49,7 @@ extension AlbumsTVC {
 		
 		// Get the rows to move.
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		let indexPathsToMove = albumsViewModel.selectedOrAllIndexPathsInOnlyGroup(
+		let indexPathsToMove = albumsViewModel.selectedOrAllIndexPathsIfSpecificallyOpened(
 			selectedIndexPaths: selectedIndexPaths)
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
