@@ -10,7 +10,7 @@ import CoreData
 
 struct CollectionsViewModel {
 	// LibraryViewModel
-	let lastDeliberatelyOpenedContainer: LibraryContainer? = nil
+	let lastSpecificallyOpenedContainer: LibraryContainer? = nil
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -120,19 +120,6 @@ extension CollectionsViewModel {
 		return (twin, indexPath)
 	}
 	
-	private func itemsAfterMakingNewCollection(
-		suggestedTitle: String?,
-		indexOfNewCollection: Int
-	) -> [NSManagedObject] { // ? [Collection]
-		let newCollection = Collection(context: context)
-		newCollection.title = suggestedTitle ?? LocalizedString.newCollectionDefaultTitle
-		// When we call setItemsAndMoveRows, the property observer will set the "index" attribute of each Collection for us.
-		
-		var newItems = group.items
-		newItems.insert(newCollection, at: indexOfNewCollection)
-		return newItems
-	}
-	
 	func updatedAfterDeletingNewCollection() -> Self {
 		let newItems = itemsAfterDeletingNewCollection()
 		
@@ -140,7 +127,7 @@ extension CollectionsViewModel {
 		return twin
 	}
 	
-	private func itemsAfterDeletingNewCollection() -> [NSManagedObject] { // ? [Collection]
+	private func itemsAfterDeletingNewCollection() -> [NSManagedObject] {
 		let oldItems = group.items
 		guard
 			let collection = oldItems[Self.indexOfNewCollection] as? Collection,

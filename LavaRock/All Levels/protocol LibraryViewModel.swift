@@ -13,7 +13,7 @@ protocol LibraryViewModel {
 	static var numberOfSectionsAboveLibraryItems: Int { get }
 	static var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
-	var lastDeliberatelyOpenedContainer: LibraryContainer? { get }
+	var lastSpecificallyOpenedContainer: LibraryContainer? { get }
 	var context: NSManagedObjectContext { get }
 	
 	var groups: [GroupOfLibraryItems] { get set }
@@ -24,12 +24,12 @@ protocol LibraryViewModel {
 extension LibraryViewModel {
 	
 	var isAllView: Bool {
-		return !(self is CollectionsViewModel) && lastDeliberatelyOpenedContainer == nil
+		return !(self is CollectionsViewModel) && lastSpecificallyOpenedContainer == nil
 	}
 	
 	var navigationItemTitle: String {
-		if let ofDeliberatelyOpened = (lastDeliberatelyOpenedContainer as? LibraryItem)?.libraryTitle{
-			return ofDeliberatelyOpened
+		if let ofSpecificallyOpened = (lastSpecificallyOpenedContainer as? LibraryItem)?.libraryTitle{
+			return ofSpecificallyOpened
 		} else {
 			return FeatureFlag.allRow ? LocalizedString.library : LocalizedString.collections
 		}
@@ -197,14 +197,18 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath],
 		sortOptionLocalizedName: String
 	) -> Self {
+		// Decide which rows to sort.
+		let indexPathsToSort = selectedOrAllIndexPathsInOnlyGroup(
+			selectedIndexPaths: selectedIndexPaths)
 		
-		
-		guard let (newItems, section) = itemsAndSectionAfterSorting(
-			selectedIndexPaths: selectedIndexPaths,
-			sortOptionLocalizedName: sortOptionLocalizedName)
-		else {
+		guard let section = indexPathsToSort.first?.section else {
 			return self
 		}
+		
+		let newItems = itemsAfterSorting(
+			itemsAtIndexPaths: indexPathsToSort,
+			inSection: section,
+			sortOptionLocalizedName: sortOptionLocalizedName)
 		
 		var twin = self
 		let indexOfGroup = indexOfGroup(forSection: section)
@@ -212,26 +216,16 @@ extension LibraryViewModel {
 		return twin
 	}
 	
-	private func itemsAndSectionAfterSorting(
-		selectedIndexPaths: [IndexPath],
+	private func itemsAfterSorting(
+		itemsAtIndexPaths indexPaths: [IndexPath],
+		inSection section: Int, //
 		sortOptionLocalizedName: String
-	) -> (
-		items: [NSManagedObject],
-		section: Int
-	)? {
-		// Decide which rows to sort.
-		let indexPathsToSort = selectedOrAllIndexPathsInOnlyGroup(
-			selectedIndexPaths: selectedIndexPaths)
-		
-		guard let section = indexPathsToSort.first?.section else {
-			return nil
-		}
-		
+	) -> [NSManagedObject] {
 		// Get all the items in the group for the rows to sort.
 		let oldItems = group(forSection: section).items
 		
 		// Get the indices of the items to sort.
-		let rowsToSort = indexPathsToSort.map { $0.row }.sorted()
+		let rowsToSort = indexPaths.map { $0.row }.sorted()
 		let sourceIndicesOfItems = rowsToSort.map { row in
 			indexOfItemInGroup(forRow: row)
 		}
@@ -255,7 +249,7 @@ extension LibraryViewModel {
 			newItems.insert(sortedItem, at: destinationIndex)
 		}
 		
-		return (newItems, section)
+		return newItems
 	}
 	
 	// Sort stably! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
@@ -327,16 +321,16 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func updatedAfterFloatingItemsToTopOfSection(
-		from selectedIndexPaths: [IndexPath]
+	func updatedAfterFloatingToTopOfSection(
+		selectedIndexPaths: [IndexPath]
 	) -> Self {
-		
-		
-		guard let (newItems, section) = itemsAndSectionAfterFloatingSelectedItemsToTop(
-			selectedIndexPaths: selectedIndexPaths)
-		else {
+		guard let section = selectedIndexPaths.first?.section else {
 			return self
 		}
+		
+		let newItems = itemsAfterFloatingToTop(
+			selectedIndexPaths: selectedIndexPaths,
+			inSection: section)
 		
 		var twin = self
 		let indexOfGroup = indexOfGroup(forSection: section)
@@ -344,16 +338,10 @@ extension LibraryViewModel {
 		return twin
 	}
 	
-	private func itemsAndSectionAfterFloatingSelectedItemsToTop(
-		selectedIndexPaths: [IndexPath]
-	) -> (
-		items: [NSManagedObject],
-		section: Int
-	)? {
-		guard let section = selectedIndexPaths.first?.section else {
-			return nil
-		}
-		
+	private func itemsAfterFloatingToTop(
+		selectedIndexPaths: [IndexPath],
+		inSection section: Int
+	) -> [NSManagedObject] {
 		let selectedRows = selectedIndexPaths.map { $0.row }.sorted()
 		let indicesOfSelectedItems = selectedRows.map {
 			indexOfItemInGroup(forRow: $0)
@@ -372,19 +360,19 @@ extension LibraryViewModel {
 			newItems.insert($0, at: 0)
 		}
 		
-		return (newItems, section)
+		return newItems
 	}
 	
-	func updatedAfterSinkingItemsToBottomOfSection(
-		from selectedIndexPaths: [IndexPath]
+	func updatedAfterSinkingToBottomOfSection(
+		selectedIndexPaths: [IndexPath]
 	) -> Self {
-		
-		
-		guard let (newItems, section) = itemsAndSectionAfterSinkingSelectedItemsToBottom(
-			selectedIndexPaths: selectedIndexPaths)
-		else {
+		guard let section = selectedIndexPaths.first?.section else {
 			return self
 		}
+		
+		let newItems = itemsAfterSinkingToBottom(
+			selectedIndexPaths: selectedIndexPaths,
+			inSection: section)
 		
 		var twin = self
 		let indexOfGroup = indexOfGroup(forSection: section)
@@ -392,16 +380,10 @@ extension LibraryViewModel {
 		return twin
 	}
 	
-	private func itemsAndSectionAfterSinkingSelectedItemsToBottom(
-		selectedIndexPaths: [IndexPath]
-	) -> (
-		items: [NSManagedObject],
-		section: Int
-	)? {
-		guard let section = selectedIndexPaths.first?.section else {
-			return nil
-		}
-		
+	private func itemsAfterSinkingToBottom(
+		selectedIndexPaths: [IndexPath],
+		inSection section: Int
+	) -> [NSManagedObject] {
 		let selectedRows = selectedIndexPaths.map { $0.row }.sorted()
 		let indicesOfSelectedItems = selectedRows.map {
 			indexOfItemInGroup(forRow: $0)
@@ -420,7 +402,7 @@ extension LibraryViewModel {
 			newItems.append($0)
 		}
 		
-		return (newItems, section)
+		return newItems
 	}
 	
 }

@@ -168,7 +168,7 @@ final class AlbumsTVC:
 		if selectedCell is AlbumCell {
 			let album = albumsViewModel.item(at: selectedIndexPath)
 			songsTVC.viewModel = SongsViewModel(
-				lastDeliberatelyOpenedContainer: album as? Album,
+				lastSpecificallyOpenedContainer: album as? Album,
 				containers: [album],
 				context: viewModel.context)
 		}

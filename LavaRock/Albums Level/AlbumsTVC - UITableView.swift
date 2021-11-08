@@ -52,7 +52,7 @@ extension AlbumsTVC {
 					// We're showing an "All" view, so use container titles for each group of `Album`s.
 					return (viewModel as? AlbumsViewModel)?.collection(forSection: section).title
 				} else {
-					// We're showing a single `Collection`, and the user deliberately chose it.
+					// We're showing a single `Collection`, and the user specifically chose it.
 					return LocalizedString.albums
 				}
 			}

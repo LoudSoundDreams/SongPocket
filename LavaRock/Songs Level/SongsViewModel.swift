@@ -10,7 +10,7 @@ import CoreData
 
 struct SongsViewModel {
 	// LibraryViewModel
-	let lastDeliberatelyOpenedContainer: LibraryContainer?
+	let lastSpecificallyOpenedContainer: LibraryContainer?
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -21,23 +21,23 @@ extension SongsViewModel: LibraryViewModel {
 	static let numberOfRowsAboveLibraryItemsInEachSection = 2
 	
 	func refreshed() -> Self {
-		// Check `lastDeliberatelyOpenedContainer` to figure out which `Song`s to show.
-		if let album = lastDeliberatelyOpenedContainer as? Album {
+		// Check `lastSpecificallyOpenedContainer` to figure out which `Song`s to show.
+		if let album = lastSpecificallyOpenedContainer as? Album {
 			return Self(
-				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
 				containers: [album],
 				context: context)
-		} else if let collection = lastDeliberatelyOpenedContainer as? Collection {
+		} else if let collection = lastSpecificallyOpenedContainer as? Collection {
 			let albums = collection.albums()
 			return Self(
-				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
 				containers: albums,
 				context: context)
 		} else {
-			// `lastDeliberatelyOpenedContainer == nil`. We're showing all `Song`s.
+			// `lastSpecificallyOpenedContainer == nil`. We're showing all `Song`s.
 			let allAlbums = Album.allFetched(context: context)
 			return Self(
-				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
 				containers: allAlbums,
 				context: context)
 		}
@@ -48,11 +48,11 @@ extension SongsViewModel {
 	
 	// TO DO: Put the contents of `refreshed()` here?
 	init(
-		lastDeliberatelyOpenedContainer: LibraryContainer?,
+		lastSpecificallyOpenedContainer: LibraryContainer?,
 		containers: [NSManagedObject],
 		context: NSManagedObjectContext
 	) {
-		self.lastDeliberatelyOpenedContainer = lastDeliberatelyOpenedContainer
+		self.lastSpecificallyOpenedContainer = lastSpecificallyOpenedContainer
 		groups = containers.map {
 			GroupOfSongs(
 				entityName: Self.entityName,

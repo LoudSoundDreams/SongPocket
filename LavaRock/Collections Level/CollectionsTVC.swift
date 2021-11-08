@@ -329,7 +329,7 @@ final class CollectionsTVC:
 			
 			let collections = onlyGroup.items
 			albumsTVC.viewModel = AlbumsViewModel(
-				lastDeliberatelyOpenedContainer: nil,
+				lastSpecificallyOpenedContainer: nil,
 				containers: collections,
 				context: viewModel.context)
 			
@@ -339,7 +339,7 @@ final class CollectionsTVC:
 			
 			let collection = viewModel.item(at: selectedIndexPath)
 			albumsTVC.viewModel = AlbumsViewModel(
-				lastDeliberatelyOpenedContainer: collection as? Collection,
+				lastSpecificallyOpenedContainer: collection as? Collection,
 				containers: [collection],
 				context: viewModel.context)
 			

@@ -10,7 +10,7 @@ import CoreData
 
 struct AlbumsViewModel {
 	// LibraryViewModel
-	let lastDeliberatelyOpenedContainer: LibraryContainer?
+	let lastSpecificallyOpenedContainer: LibraryContainer?
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -21,17 +21,17 @@ extension AlbumsViewModel: LibraryViewModel {
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	func refreshed() -> Self {
-		// Check `lastDeliberatelyOpenedContainer` to figure out which `Album`s to show.
-		if let collection = lastDeliberatelyOpenedContainer as? Collection {
+		// Check `lastSpecificallyOpenedContainer` to figure out which `Album`s to show.
+		if let collection = lastSpecificallyOpenedContainer as? Collection {
 			return Self(
-				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
 				containers: [collection],
 				context: context)
 		} else {
-			// `lastDeliberatelyOpenedContainer == nil`. We're showing all `Album`s.
+			// `lastSpecificallyOpenedContainer == nil`. We're showing all `Album`s.
 			let allCollections = Collection.allFetched(context: context)
 			return Self(
-				lastDeliberatelyOpenedContainer: lastDeliberatelyOpenedContainer,
+				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
 				containers: allCollections,
 				context: context)
 		}
@@ -42,11 +42,11 @@ extension AlbumsViewModel {
 	
 	// TO DO: Put the contents of `refreshed()` here?
 	init(
-		lastDeliberatelyOpenedContainer: LibraryContainer?,
+		lastSpecificallyOpenedContainer: LibraryContainer?,
 		containers: [NSManagedObject],
 		context: NSManagedObjectContext
 	) {
-		self.lastDeliberatelyOpenedContainer = lastDeliberatelyOpenedContainer
+		self.lastSpecificallyOpenedContainer = lastSpecificallyOpenedContainer
 		groups = containers.map {
 			GroupOfCollectionsOrAlbums(
 				entityName: Self.entityName,
