@@ -436,7 +436,7 @@ class LibraryTVC: UITableViewController {
 		if selectedIndexPaths.isEmpty {
 			return !viewModel.isAllView
 		} else {
-			return selectedIndexPaths.isContiguousWithinSameSection()
+			return selectedIndexPaths.isContiguousWithinEachSection()
 		}
 	}
 	

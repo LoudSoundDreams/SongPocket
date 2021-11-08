@@ -96,16 +96,24 @@ extension Array {
 	
 	// MARK: Element == IndexPath
 	
-	// Returns whether the IndexPaths form a block of rows all next to each other in the same section. You can provide the IndexPaths in any order.
-	func isContiguousWithinSameSection() -> Bool
+	func makeDictionaryOfRowsBySection() -> [Int: [Int]]
 	where Element == IndexPath
 	{
-		guard isWithinSameSection() else {
-			return false
+		let indexPathsBySection = Dictionary(grouping: self) { $0.section }
+		let result = indexPathsBySection.mapValues { indexPaths in
+			indexPaths.map { $0.row }
 		}
-		let rows = map { $0.row }
-		let sortedRows = rows.sorted()
-		return sortedRows.isConsecutive()
+		return result
+	}
+	
+	// Returns whether the IndexPaths form a block of rows next to each other in whatever section they're in. You can provide the IndexPaths in any order.
+	func isContiguousWithinEachSection() -> Bool
+	where Element == IndexPath
+	{
+		let rowsBySection = makeDictionaryOfRowsBySection()
+		return rowsBySection.allSatisfy { (_, rows) in
+			rows.sorted().isConsecutive()
+		}
 	}
 	
 	// Returns whether the integers you provide are in increasing consecutive order.

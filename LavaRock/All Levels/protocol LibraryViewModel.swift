@@ -197,36 +197,31 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath],
 		sortOptionLocalizedName: String
 	) -> Self {
-		// Decide which rows to sort.
-		let indexPathsToSort = selectedOrAllIndexPathsInOnlyGroup(
-			selectedIndexPaths: selectedIndexPaths)
-		
-		guard let section = indexPathsToSort.first?.section else {
-			return self
-		}
-		
-		let newItems = itemsAfterSorting(
-			itemsAtIndexPaths: indexPathsToSort,
-			inSection: section,
-			sortOptionLocalizedName: sortOptionLocalizedName)
+		let rowsBySection = selectedIndexPaths.makeDictionaryOfRowsBySection()
 		
 		var twin = self
-		let indexOfGroup = indexOfGroup(forSection: section)
-		twin.groups[indexOfGroup].setItems(newItems)
+		rowsBySection.forEach { (section, rows) in
+			let newItems = itemsAfterSorting(
+				itemsAtRows: rows,
+				inSection: section,
+				sortOptionLocalizedName: sortOptionLocalizedName)
+			let indexOfGroup = indexOfGroup(forSection: section)
+			twin.groups[indexOfGroup].setItems(newItems)
+		}
 		return twin
 	}
 	
 	private func itemsAfterSorting(
-		itemsAtIndexPaths indexPaths: [IndexPath],
-		inSection section: Int, //
+		itemsAtRows rows: [Int],
+		inSection section: Int,
 		sortOptionLocalizedName: String
 	) -> [NSManagedObject] {
 		// Get all the items in the group for the rows to sort.
 		let oldItems = group(forSection: section).items
 		
 		// Get the indices of the items to sort.
-		let rowsToSort = indexPaths.map { $0.row }.sorted()
-		let sourceIndicesOfItems = rowsToSort.map { row in
+		let rows = rows.sorted()
+		let sourceIndicesOfItems = rows.map { row in
 			indexOfItemInGroup(forRow: row)
 		}
 		
