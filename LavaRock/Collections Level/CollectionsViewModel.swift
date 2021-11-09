@@ -28,13 +28,14 @@ extension CollectionsViewModel: LibraryViewModel {
 extension CollectionsViewModel {
 	
 	init(context: NSManagedObjectContext) {
+		self.context = context
+		
 		groups = [
 			GroupOfCollectionsOrAlbums(
 				entityName: Self.entityName,
 				container: nil,
 				context: context)
 		]
-		self.context = context
 	}
 	
 	private static let indexOfOnlyGroup = 0 //
@@ -86,7 +87,6 @@ extension CollectionsViewModel {
 		try? context.obtainPermanentIDs( // SIDE EFFECT
 			for: [combinedCollection]) // So that the "now playing" indicator can appear on the combined Collection.
 		
-		// Make a new data source.
 		var newItems = group.items
 		let indicesOfSelectedCollections = selectedIndexPaths.map {
 			indexOfItemInGroup(forRow: $0.row)

@@ -319,30 +319,19 @@ final class CollectionsTVC:
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let albumsTVC = segue.destination as? AlbumsTVC
 		else { return }
-		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		
+		albumsTVC.albumMoverClipboard = albumMoverClipboard
+		
+		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if selectedCell is TheseContainersCell {
-			
-			guard let onlyGroup = viewModel.onlyGroup else { return }
-			
-			albumsTVC.albumMoverClipboard = albumMoverClipboard
-			
-			let collections = onlyGroup.items
 			albumsTVC.viewModel = AlbumsViewModel(
-				lastSpecificallyOpenedContainer: nil,
-				containers: collections,
+				lastSpecificallyOpenedContainer: viewModel.lastSpecificallyOpenedContainer,
 				context: viewModel.context)
-			
 		} else if selectedCell is CollectionCell {
-			
-			albumsTVC.albumMoverClipboard = albumMoverClipboard
-			
 			let collection = viewModel.item(at: selectedIndexPath)
 			albumsTVC.viewModel = AlbumsViewModel(
 				lastSpecificallyOpenedContainer: collection as? Collection,
-				containers: [collection],
 				context: viewModel.context)
-			
 		}
 	}
 	

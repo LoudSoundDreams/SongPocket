@@ -248,7 +248,6 @@ extension LibraryViewModel {
 			itemsToSort,
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		
-		// Make a new data source.
 		var newItems = oldItems
 		sourceIndicesOfItems.reversed().forEach {
 			newItems.remove(at: $0)
@@ -360,7 +359,6 @@ extension LibraryViewModel {
 			oldItems[$0]
 		}
 		
-		// Make a new data source.
 		var newItems = oldItems
 		indicesOfSelectedItems.reversed().forEach {
 			newItems.remove(at: $0)
@@ -401,7 +399,6 @@ extension LibraryViewModel {
 			oldItems[$0]
 		}
 		
-		// Make a new data source.
 		var newItems = oldItems
 		indicesOfSelectedItems.reversed().forEach {
 			newItems.remove(at: $0)

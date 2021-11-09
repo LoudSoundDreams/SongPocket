@@ -27,27 +27,29 @@ extension CollectionsTVC {
 		let suggestedTitle = albumMoverClipboard.suggestedCollectionTitle(
 			notMatching: Set(existingCollectionTitles),
 			context: collectionsViewModel.context)
-		previewMakeNewCollection(
-			suggestedTitle: suggestedTitle)
-		presentDialogToMakeNewCollection(
-			suggestedTitle: suggestedTitle)
+		previewMakeNewCollection(suggestedTitle: suggestedTitle) {
+			self.presentDialogToMakeNewCollection(suggestedTitle: suggestedTitle)
+		}
 	}
 	
-	private func previewMakeNewCollection(suggestedTitle: String?) {
-		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return } // TO DO: Don't continue to presentDialogToMakeNewCollection if this fails
+	private func previewMakeNewCollection(
+		suggestedTitle: String?,
+		completion: (() -> Void)?
+	) {
+		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		// Make a new data source.
 		let (newViewModel, indexPathOfNewCollection) = collectionsViewModel.updatedAfterCreatingNewCollectionInOnlyGroup(
 			suggestedTitle: suggestedTitle)
 		
-		// Update the data source and table view.
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(
 				at: indexPathOfNewCollection,
-				at: .top,
+				at: .none,
 				animated: true)
 		} completion: { _ in
-			self.setViewModelAndMoveRows(newViewModel)
+			self.setViewModelAndMoveRows(newViewModel) {
+				completion?()
+			}
 		}
 	}
 	
@@ -86,10 +88,8 @@ extension CollectionsTVC {
 		
 		albumMoverClipboard.didAlreadyMakeNewCollection = false
 		
-		// Make a new data source.
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		
-		// Update the data source and table view.
 		setViewModelAndMoveRows(newViewModel)
 	}
 	

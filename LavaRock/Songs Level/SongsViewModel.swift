@@ -20,27 +20,11 @@ extension SongsViewModel: LibraryViewModel {
 	static let numberOfSectionsAboveLibraryItems = 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 2
 	
+	// Identical to counterpart in `AlbumsViewModel`.
 	func refreshed() -> Self {
-		// Check `lastSpecificallyOpenedContainer` to figure out which `Song`s to show.
-		if let album = lastSpecificallyOpenedContainer as? Album {
-			return Self(
-				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
-				containers: [album],
-				context: context)
-		} else if let collection = lastSpecificallyOpenedContainer as? Collection {
-			let albums = collection.albums()
-			return Self(
-				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
-				containers: albums,
-				context: context)
-		} else {
-			// `lastSpecificallyOpenedContainer == nil`. We're showing all `Song`s.
-			let allAlbums = Album.allFetched(context: context)
-			return Self(
-				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
-				containers: allAlbums,
-				context: context)
-		}
+		return Self(
+			lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
+			context: context)
 	}
 }
 
@@ -49,17 +33,32 @@ extension SongsViewModel {
 	// TO DO: Put the contents of `refreshed()` here?
 	init(
 		lastSpecificallyOpenedContainer: LibraryContainer?,
-		containers: [NSManagedObject],
 		context: NSManagedObjectContext
 	) {
 		self.lastSpecificallyOpenedContainer = lastSpecificallyOpenedContainer
+		self.context = context
+		
+		// Check `lastSpecificallyOpenedContainer` to figure out which `Song`s to show.
+		let containers: [NSManagedObject] = {
+			if let album = lastSpecificallyOpenedContainer as? Album {
+				return [album]
+			} else if let collection = lastSpecificallyOpenedContainer as? Collection {
+				let albums = collection.albums()
+				return albums
+			} else if lastSpecificallyOpenedContainer == nil {
+				// We're showing all `Song`s.
+				let allAlbums = Album.allFetched(context: context)
+				return allAlbums
+			} else {
+				fatalError("`SongsViewModel.refreshed()` with unknown type for `lastSpecificallyOpenedContainer`.")
+			}
+		}()
 		groups = containers.map {
 			GroupOfSongs(
 				entityName: Self.entityName,
 				container: $0,
 				context: context)
 		}
-		self.context = context
 	}
 	
 	// Similar to `AlbumsViewModel.collection`.

@@ -20,40 +20,41 @@ extension AlbumsViewModel: LibraryViewModel {
 	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
+	// Identical to counterpart in `SongsViewModel`.
 	func refreshed() -> Self {
-		// Check `lastSpecificallyOpenedContainer` to figure out which `Album`s to show.
-		if let collection = lastSpecificallyOpenedContainer as? Collection {
-			return Self(
-				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
-				containers: [collection],
-				context: context)
-		} else {
-			// `lastSpecificallyOpenedContainer == nil`. We're showing all `Album`s.
-			let allCollections = Collection.allFetched(context: context)
-			return Self(
-				lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
-				containers: allCollections,
-				context: context)
-		}
+		return Self(
+			lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
+			context: context)
 	}
 }
 
 extension AlbumsViewModel {
 	
-	// TO DO: Put the contents of `refreshed()` here?
 	init(
 		lastSpecificallyOpenedContainer: LibraryContainer?,
-		containers: [NSManagedObject],
 		context: NSManagedObjectContext
 	) {
 		self.lastSpecificallyOpenedContainer = lastSpecificallyOpenedContainer
+		self.context = context
+		
+		// Check `lastSpecificallyOpenedContainer` to figure out which `Album`s to show.
+		let containers: [NSManagedObject] = {
+			if let collection = lastSpecificallyOpenedContainer as? Collection {
+				return [collection]
+			} else if lastSpecificallyOpenedContainer == nil {
+				// We're showing all `Album`s.
+				let allCollections = Collection.allFetched(context: context)
+				return allCollections
+			} else {
+				fatalError("`AlbumsViewModel.refreshed()` with unknown type for `lastSpecificallyOpenedContainer`.")
+			}
+		}()
 		groups = containers.map {
 			GroupOfCollectionsOrAlbums(
 				entityName: Self.entityName,
 				container: $0,
 				context: context)
 		}
-		self.context = context
 	}
 	
 	// Similar to `SongsViewModel.album`.

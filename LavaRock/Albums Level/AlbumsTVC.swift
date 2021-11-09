@@ -163,13 +163,12 @@ final class AlbumsTVC:
 			let songsTVC = segue.destination as? SongsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
-		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		
+		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if selectedCell is AlbumCell {
 			let album = albumsViewModel.item(at: selectedIndexPath)
 			songsTVC.viewModel = SongsViewModel(
 				lastSpecificallyOpenedContainer: album as? Album,
-				containers: [album],
 				context: viewModel.context)
 		}
 	}

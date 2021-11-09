@@ -105,7 +105,6 @@ extension CollectionsTVC {
 		// Save the existing GroupOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
 		groupOfCollectionsBeforeCombining = collectionsViewModel.group // SIDE EFFECT
 		
-		// Make a new data source.
 		// SIDE EFFECTS:
 		// - Creates Collection
 		// - Modifies Albums
@@ -113,7 +112,6 @@ extension CollectionsTVC {
 			from: selectedIndexPaths,
 			into: indexPathOfCombinedCollection)
 		
-		// Update the data source and table view.
 		setItemsAndMoveRows(
 			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
 //			thenSelect: [indexPathOfCombinedCollection],
@@ -122,6 +120,7 @@ extension CollectionsTVC {
 		// TO DO: Deselect rows and refresh editing buttons?
 		
 		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
+		 // Whatever you do, use the same timing for presenting the "New Collection" dialog.
 		 */
 	}
 	

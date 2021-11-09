@@ -90,19 +90,6 @@ extension OptionsTVC {
 		}
 	}
 	
-	final override func tableView(
-		_ tableView: UITableView,
-		willDisplay cell: UITableViewCell,
-		forRowAt indexPath: IndexPath
-	) {
-		if
-			PurchaseManager.shared.tipStatus == .confirming,
-			indexPath.section == Section.tipJar.rawValue
-		{
-			cell.isSelected = true
-		}
-	}
-	
 	// MARK: Selecting
 	
 	final override func tableView(
