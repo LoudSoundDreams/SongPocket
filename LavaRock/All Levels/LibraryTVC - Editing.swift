@@ -10,7 +10,7 @@ import CoreData
 
 extension LibraryTVC {
 	
-	// Overrides of this method should call super (this implementation).
+	// Overrides should call super (this implementation).
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
 			// Delete empty groups if we reordered all the items out of them.

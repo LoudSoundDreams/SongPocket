@@ -64,7 +64,7 @@ extension LibraryTVC {
 	
 	// MARK: - Selecting
 	
-	// Overrides of this method should call super (this implementation) as a last resort.
+	// Overrides should call super (this implementation) as a last resort.
 	override func tableView(
 		_ tableView: UITableView,
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
@@ -83,7 +83,7 @@ extension LibraryTVC {
 		}
 	}
 	
-	// Overrides of this method should call super (this implementation) as a last resort.
+	// Overrides should call super (this implementation) as a last resort.
 	// To disable selection for a row, it's simpler to set cell.isUserInteractionEnabled = false.
 	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and shouldBeginMultipleSelectionInteractionAt, and swipe over a cell that doesn't allow user interaction, to select it too.
 	// Therefore, if you support multiple-selection interactions, you must use this method to disable selection for certain rows.
@@ -94,7 +94,7 @@ extension LibraryTVC {
 		return viewModel.pointsToSomeItem(indexPath) ? indexPath : nil
 	}
 	
-	// Overrides of this method should call super (this implementation).
+	// Overrides should call super (this implementation).
 	override func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath

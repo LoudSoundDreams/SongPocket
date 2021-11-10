@@ -416,7 +416,7 @@ class LibraryTVC: UITableViewController {
 		refreshEditingButtons()
 	}
 	
-	// Overrides of this method should call super (this implementation).
+	// Overrides should call super (this implementation).
 	func refreshEditingButtons() {
 		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
 		

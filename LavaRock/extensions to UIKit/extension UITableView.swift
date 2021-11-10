@@ -9,6 +9,12 @@ import UIKit
 
 extension UITableView {
 	
+	// MARK: - Sections
+	
+	final func allSections() -> [Int] {
+		return Array(0 ..< numberOfSections)
+	}
+	
 	// MARK: - IndexPaths
 	
 	final var indexPathsForSelectedRowsNonNil: [IndexPath] {
@@ -16,8 +22,7 @@ extension UITableView {
 	}
 	
 	final func allIndexPaths() -> [IndexPath] {
-		let sections = Array(0 ..< numberOfSections)
-		let result = sections.flatMap { section in
+		let result = allSections().flatMap { section in
 			indexPathsForRows(inSection: section, firstRow: 0)
 		}
 		return result
