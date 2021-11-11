@@ -42,6 +42,23 @@ extension AlbumsTVC {
 	
 	// MARK: - Headers
 	
+//	final override func tableView(
+//		_ tableView: UITableView,
+//		viewForHeaderInSection section: Int
+//	) -> UIView? {
+//		
+//		
+//		// Make, configure, and return the cell.
+//		guard let cell = tableView.dequeueReusableCell(
+//			withIdentifier: "Album Group Header")
+//				//				as?
+//		else {
+//			return UITableViewCell()
+//		}
+//		
+//		return cell
+//	}
+	
 	final override func tableView(
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
