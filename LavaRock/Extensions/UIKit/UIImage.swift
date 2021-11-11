@@ -1,5 +1,5 @@
 //
-//  extension UIImage.swift
+//  UIImage.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-04.

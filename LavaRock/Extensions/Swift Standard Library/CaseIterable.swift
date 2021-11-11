@@ -1,5 +1,5 @@
 //
-//  extension CaseIterable.swift
+//  CaseIterable.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-29.

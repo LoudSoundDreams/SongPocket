@@ -1,5 +1,5 @@
 //
-//  extension UIColor.swift
+//  UIColor.swift
 //  LavaRock
 //
 //  Created by h on 2021-11-01.

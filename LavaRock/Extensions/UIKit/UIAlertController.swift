@@ -1,5 +1,5 @@
 //
-//  extension UIAlertController.swift
+//  UIAlertController.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-04.

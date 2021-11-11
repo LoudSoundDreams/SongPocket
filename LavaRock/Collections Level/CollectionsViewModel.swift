@@ -1,6 +1,6 @@
 //
 //  CollectionsViewModel.swift
-//  CollectionsViewModel
+//  LavaRock
 //
 //  Created by h on 2021-08-14.
 //

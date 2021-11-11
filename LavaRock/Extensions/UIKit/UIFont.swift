@@ -1,5 +1,5 @@
 //
-//  extension UIFont.swift
+//  UIFont.swift
 //  LavaRock
 //
 //  Created by h on 2020-12-19.

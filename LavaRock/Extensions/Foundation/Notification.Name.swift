@@ -1,5 +1,5 @@
 //
-//  extension Notification.Name.swift
+//  Notification.Name.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-14.

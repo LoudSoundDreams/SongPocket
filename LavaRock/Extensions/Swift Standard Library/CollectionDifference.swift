@@ -1,5 +1,5 @@
 //
-//  extension CollectionDifference.swift
+//  CollectionDifference.swift
 //  LavaRock
 //
 //  Created by h on 2021-11-04.

@@ -1,6 +1,6 @@
 //
-//  extension UITableViewCell.swift
-//  extension UITableViewCell
+//  UITableViewCell.swift
+//  LavaRock
 //
 //  Created by h on 2021-08-22.
 //

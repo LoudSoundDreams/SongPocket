@@ -1,5 +1,5 @@
 //
-//  extension String.swift
+//  String.swift
 //  LavaRock
 //
 //  Created by h on 2021-04-27.

@@ -1,5 +1,5 @@
 //
-//  extension Array.swift
+//  Array.swift
 //  LavaRock
 //
 //  Created by h on 2021-04-27.

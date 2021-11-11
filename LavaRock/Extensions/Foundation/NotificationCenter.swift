@@ -1,5 +1,5 @@
 //
-//  extension NotificationCenter.swift
+//  NotificationCenter.swift
 //  LavaRock
 //
 //  Created by h on 2021-10-26.

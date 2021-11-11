@@ -1,5 +1,5 @@
 //
-//  extension Collection.swift
+//  Collection.swift
 //  LavaRock
 //
 //  Created by h on 2020-12-17.

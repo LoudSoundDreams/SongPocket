@@ -1,5 +1,5 @@
 //
-//  extension UIAlertAction.swift
+//  UIAlertAction.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-04.
