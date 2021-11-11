@@ -325,12 +325,12 @@ final class CollectionsTVC:
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if selectedCell is TheseContainersCell {
 			albumsTVC.viewModel = AlbumsViewModel(
-				lastSpecificallyOpenedContainer: viewModel.lastSpecificallyOpenedContainer,
+				lastSpecificContainer: viewModel.lastSpecificContainer,
 				context: viewModel.context)
 		} else if selectedCell is CollectionCell {
 			let collection = viewModel.item(at: selectedIndexPath)
 			albumsTVC.viewModel = AlbumsViewModel(
-				lastSpecificallyOpenedContainer: collection as? Collection,
+				lastSpecificContainer: collection as? Collection,
 				context: viewModel.context)
 		}
 	}

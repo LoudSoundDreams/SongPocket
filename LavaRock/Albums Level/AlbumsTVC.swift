@@ -119,14 +119,12 @@ final class AlbumsTVC:
 	
 	final override func reflectViewModelIsEmpty() {
 		if FeatureFlag.allRow {
-			let toDelete = tableView.allIndexPaths().filter {
-				$0.section != SectionKind.valueForCaseAll
-			}
-			deleteThenExit(rowsAt: toDelete)
+			let toDelete = tableView.allSections().filter { $0 != SectionKind.valueForCaseAll }
+			deleteThenExit(sections: toDelete)
 			reloadAllRow(with: .none)
 		} else {
-			let toDelete = tableView.allIndexPaths()
-			deleteThenExit(rowsAt: toDelete)
+			let toDelete = tableView.allSections()
+			deleteThenExit(sections: toDelete)
 		}
 	}
 	
@@ -165,10 +163,14 @@ final class AlbumsTVC:
 		else { return }
 		
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-		if selectedCell is AlbumCell {
+		if selectedCell is TheseContainersCell {
+			songsTVC.viewModel = SongsViewModel(
+				lastSpecificContainer: viewModel.lastSpecificContainer,
+				context: viewModel.context)
+		} else if selectedCell is AlbumCell {
 			let album = albumsViewModel.item(at: selectedIndexPath)
 			songsTVC.viewModel = SongsViewModel(
-				lastSpecificallyOpenedContainer: album as? Album,
+				lastSpecificContainer: album as? Album,
 				context: viewModel.context)
 		}
 	}

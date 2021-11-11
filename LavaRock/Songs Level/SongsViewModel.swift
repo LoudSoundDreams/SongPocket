@@ -10,7 +10,7 @@ import CoreData
 
 struct SongsViewModel {
 	// LibraryViewModel
-	let lastSpecificallyOpenedContainer: LibraryContainer?
+	let lastSpecificContainer: LibraryContainer?
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -22,35 +22,39 @@ extension SongsViewModel: LibraryViewModel {
 	
 	// Identical to counterpart in `AlbumsViewModel`.
 	func refreshed() -> Self {
+		let managedObject = lastSpecificContainer as? NSManagedObject
+		let wasDeleted = managedObject?.managedObjectContext == nil // WARNING: You must check this, or the initializer will create groups with no items.
+		let refreshedLastSpecificContainer = wasDeleted ? nil : lastSpecificContainer
+		
 		return Self(
-			lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
+			lastSpecificContainer: refreshedLastSpecificContainer,
 			context: context)
 	}
 }
 
 extension SongsViewModel {
 	
-	// TO DO: Put the contents of `refreshed()` here?
 	init(
-		lastSpecificallyOpenedContainer: LibraryContainer?,
+		lastSpecificContainer: LibraryContainer?,
 		context: NSManagedObjectContext
 	) {
-		self.lastSpecificallyOpenedContainer = lastSpecificallyOpenedContainer
+		self.lastSpecificContainer = lastSpecificContainer
 		self.context = context
 		
-		// Check `lastSpecificallyOpenedContainer` to figure out which `Song`s to show.
+		// Check `lastSpecificContainer` to figure out which `Song`s to show.
 		let containers: [NSManagedObject] = {
-			if let album = lastSpecificallyOpenedContainer as? Album {
+			if let album = lastSpecificContainer as? Album {
 				return [album]
-			} else if let collection = lastSpecificallyOpenedContainer as? Collection {
+			} else if let collection = lastSpecificContainer as? Collection {
 				let albums = collection.albums()
 				return albums
-			} else if lastSpecificallyOpenedContainer == nil {
+			} else if lastSpecificContainer == nil {
 				// We're showing all `Song`s.
-				let allAlbums = Album.allFetched(context: context)
+				let allCollections = Collection.allFetched(context: context)
+				let allAlbums = allCollections.flatMap { $0.albums() }
 				return allAlbums
 			} else {
-				fatalError("`SongsViewModel.refreshed()` with unknown type for `lastSpecificallyOpenedContainer`.")
+				fatalError("`SongsViewModel.init` with unknown type for `lastSpecificContainer`.")
 			}
 		}()
 		groups = containers.map {

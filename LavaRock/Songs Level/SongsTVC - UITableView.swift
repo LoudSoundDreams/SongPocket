@@ -12,14 +12,56 @@ extension SongsTVC {
 	
 	// MARK: - Numbers
 	
-	// Identical to counterpart in AlbumsTVC.
+	// Identical to counterpart in `AlbumsTVC`.
+	final override func numberOfSections(in tableView: UITableView) -> Int {
+		setOrRemoveNoItemsBackground()
+		
+		return super.numberOfSections(in: tableView)
+	}
+	
 	final override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		setOrRemoveNoItemsBackground()
-		
 		return viewModel.numberOfRows(forSection: section)
+	}
+	
+	// MARK: - Headers
+	
+//	final override func tableView(
+//		_ tableView: UITableView,
+//		viewForHeaderInSection section: Int
+//	) -> UIView? {
+//		guard let album = (viewModel as? SongsViewModel)?.album(forSection: section) else {
+//			return UITableViewCell()
+//		}
+//
+//		// Make, configure, and return the cell.
+//		guard let cell = tableView.dequeueReusableCell(
+//			withIdentifier: "Album Info")
+//				as? AlbumInfoCell
+//		else {
+//			return UITableViewCell()
+//		}
+//		cell.configure(with: album)
+//		return cell
+//	}
+	
+	final override func tableView(
+		_ tableView: UITableView,
+		titleForHeaderInSection section: Int
+	) -> String? {
+		if FeatureFlag.allRow {
+			if viewModel.isSpecificallyOpenedContainer {
+				// We're showing a single `Album`, and the user specifically chose it.
+				return nil
+			} else {
+				// The user tapped "All" at some point to get here, so use container titles for each group of `Song`s.
+				return (viewModel as? SongsViewModel)?.album(forSection: section).titleFormattedOptional()
+			}
+		} else {
+			return nil
+		}
 	}
 	
 	// MARK: - Cells

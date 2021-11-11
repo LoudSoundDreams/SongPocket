@@ -10,7 +10,7 @@ import CoreData
 
 struct AlbumsViewModel {
 	// LibraryViewModel
-	let lastSpecificallyOpenedContainer: LibraryContainer?
+	let lastSpecificContainer: LibraryContainer?
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -22,8 +22,12 @@ extension AlbumsViewModel: LibraryViewModel {
 	
 	// Identical to counterpart in `SongsViewModel`.
 	func refreshed() -> Self {
+		let managedObject = lastSpecificContainer as? NSManagedObject
+		let wasDeleted = managedObject?.managedObjectContext == nil
+		let refreshedLastSpecificContainer = wasDeleted ? nil : lastSpecificContainer
+		
 		return Self(
-			lastSpecificallyOpenedContainer: lastSpecificallyOpenedContainer,
+			lastSpecificContainer: refreshedLastSpecificContainer,
 			context: context)
 	}
 }
@@ -31,22 +35,22 @@ extension AlbumsViewModel: LibraryViewModel {
 extension AlbumsViewModel {
 	
 	init(
-		lastSpecificallyOpenedContainer: LibraryContainer?,
+		lastSpecificContainer: LibraryContainer?,
 		context: NSManagedObjectContext
 	) {
-		self.lastSpecificallyOpenedContainer = lastSpecificallyOpenedContainer
+		self.lastSpecificContainer = lastSpecificContainer
 		self.context = context
 		
-		// Check `lastSpecificallyOpenedContainer` to figure out which `Album`s to show.
+		// Check `lastSpecificContainer` to figure out which `Album`s to show.
 		let containers: [NSManagedObject] = {
-			if let collection = lastSpecificallyOpenedContainer as? Collection {
+			if let collection = lastSpecificContainer as? Collection {
 				return [collection]
-			} else if lastSpecificallyOpenedContainer == nil {
+			} else if lastSpecificContainer == nil {
 				// We're showing all `Album`s.
 				let allCollections = Collection.allFetched(context: context)
 				return allCollections
 			} else {
-				fatalError("`AlbumsViewModel.refreshed()` with unknown type for `lastSpecificallyOpenedContainer`.")
+				fatalError("`AlbumsViewModel.init` with unknown type for `lastSpecificContainer`.")
 			}
 		}()
 		groups = containers.map {

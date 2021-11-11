@@ -13,7 +13,7 @@ protocol LibraryViewModel {
 	static var numberOfSectionsAboveLibraryItems: Int { get }
 	static var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
-	var lastSpecificallyOpenedContainer: LibraryContainer? { get }
+	var lastSpecificContainer: LibraryContainer? { get }
 	var context: NSManagedObjectContext { get }
 	
 	var groups: [GroupOfLibraryItems] { get set }
@@ -28,9 +28,9 @@ extension LibraryViewModel {
 			if self is CollectionsViewModel {
 				return true
 			} else if self is AlbumsViewModel {
-				return lastSpecificallyOpenedContainer is Collection
+				return lastSpecificContainer is Collection
 			} else if self is SongsViewModel {
-				return lastSpecificallyOpenedContainer is Album
+				return lastSpecificContainer is Album
 			} else {
 				fatalError("Unknown type conforming to `LibraryViewModel` called `isSpecificallyOpenedContainer`.")
 			}
@@ -40,8 +40,8 @@ extension LibraryViewModel {
 	}
 	
 	var navigationItemTitle: String {
-		if let ofSpecificallyOpened = (lastSpecificallyOpenedContainer as? LibraryItem)?.libraryTitle{
-			return ofSpecificallyOpened
+		if let specificTitle = (lastSpecificContainer as? LibraryItem)?.libraryTitle{
+			return specificTitle
 		} else {
 			return FeatureFlag.allRow ? LocalizedString.library : LocalizedString.collections
 		}

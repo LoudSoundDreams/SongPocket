@@ -12,13 +12,17 @@ extension AlbumsTVC {
 	
 	// MARK: - Numbers
 	
-	// Identical to counterpart in SongsTVC.
+	// Identical to counterpart in `SongsTVC`.
+	final override func numberOfSections(in tableView: UITableView) -> Int {
+		setOrRemoveNoItemsBackground()
+		
+		return super.numberOfSections(in: tableView)
+	}
+	
 	final override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		setOrRemoveNoItemsBackground()
-		
 		func numberOfRowsForAlbumGroupSection() -> Int {
 			return viewModel.numberOfRows(forSection: section)
 		}
@@ -161,6 +165,27 @@ extension AlbumsTVC {
 			return super.tableView(
 				tableView,
 				shouldBeginMultipleSelectionInteractionAt: indexPath)
+		}
+	}
+	
+	final override func tableView(
+		_ tableView: UITableView,
+		willSelectRowAt indexPath: IndexPath
+	) -> IndexPath? {
+		func canSelectRowInAlbumGroupSection() -> IndexPath? {
+			return super.tableView(tableView, willSelectRowAt: indexPath)
+		}
+		
+		if FeatureFlag.allRow {
+			let sectionKind = SectionKind(forSection: indexPath.section)
+			switch sectionKind {
+			case .all:
+				return indexPath
+			case .groupOfAlbums:
+				return canSelectRowInAlbumGroupSection()
+			}
+		} else {
+			return canSelectRowInAlbumGroupSection()
 		}
 	}
 	

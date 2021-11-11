@@ -10,7 +10,7 @@ import CoreData
 
 struct CollectionsViewModel {
 	// LibraryViewModel
-	let lastSpecificallyOpenedContainer: LibraryContainer? = nil
+	let lastSpecificContainer: LibraryContainer? = nil
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }

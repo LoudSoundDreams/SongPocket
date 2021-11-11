@@ -11,8 +11,16 @@ extension LibraryTVC {
 	
 	// MARK: - Numbers
 	
-	final override func numberOfSections(in tableView: UITableView) -> Int {
+	// Overrides should call super (this implementation) as a last resort.
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return viewModel.numberOfSections()
+	}
+	
+	override func tableView(
+		_ tableView: UITableView,
+		numberOfRowsInSection section: Int
+	) -> Int {
+		return 0
 	}
 	
 	// MARK: - Editing

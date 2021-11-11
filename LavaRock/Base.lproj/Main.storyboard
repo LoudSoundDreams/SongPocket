@@ -170,7 +170,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="allLabel" destination="gN8-Kg-nRJ" id="kWy-OS-j8v"/>
-                                    <segue destination="DGZ-AG-uNY" kind="show" identifier="Open These Collections" id="MYb-gA-DVh"/>
+                                    <segue destination="DGZ-AG-uNY" kind="show" identifier="" id="MYb-gA-DVh"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Collection" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
@@ -426,6 +426,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="allLabel" destination="tYA-4M-2y7" id="4WP-YS-uRK"/>
+                                    <segue destination="Uik-rz-IBd" kind="show" id="2Kj-2a-Q0h"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album" id="7XI-b6-UIz" customClass="AlbumCell" customModule="LavaRock" customModuleProvider="target">
@@ -492,7 +493,7 @@
                                     <outlet property="releaseDateLabel" destination="Odq-7C-PJs" id="Djy-aJ-kFm"/>
                                     <outlet property="textStackView" destination="rpv-eB-T27" id="RwD-OZ-pAI"/>
                                     <outlet property="titleLabel" destination="CCX-T2-D40" id="rwi-B7-0P5"/>
-                                    <segue destination="Uik-rz-IBd" kind="show" identifier="Open Album" id="vdq-GE-p3h"/>
+                                    <segue destination="Uik-rz-IBd" kind="show" identifier="" id="vdq-GE-p3h"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Albums Placeholder" rowHeight="100" id="RmC-40-dsA">
@@ -772,7 +773,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="MYb-gA-DVh"/>
+        <segue reference="vdq-GE-p3h"/>
+        <segue reference="Egm-ag-jV8"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.counterclockwise.circle.fill" catalog="system" width="128" height="121"/>

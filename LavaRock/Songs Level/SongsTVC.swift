@@ -44,8 +44,8 @@ final class SongsTVC:
 	// MARK: - Refreshing UI
 	
 	final override func reflectViewModelIsEmpty() {
-		let toDelete = tableView.allIndexPaths()
-		deleteThenExit(rowsAt: toDelete)
+		let toDelete = tableView.allSections()
+		deleteThenExit(sections: toDelete)
 	}
 	
 }
