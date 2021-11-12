@@ -8,12 +8,33 @@
 import UIKit
 import CoreData
 
+enum OpenedContainer {
+	case library
+	case collection(Collection)
+	case album(Album)
+	case deleted
+	
+	func wasDeleted() -> Bool {
+		switch self {
+		case .library:
+			return false
+		case .collection(let collection):
+			return collection.managedObjectContext == nil
+		case .album(let album):
+			return album.managedObjectContext == nil
+		case .deleted:
+			return true
+		}
+	}
+}
+
 protocol LibraryViewModel {
 	static var entityName: String { get }
 	static var numberOfSectionsAboveLibraryItems: Int { get }
 	static var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
-	var lastSpecificContainer: LibraryContainer? { get }
+	var lastSpecificContainer: OpenedContainer { get }
+	var isSpecificallyOpenedContainer: Bool { get }
 	var context: NSManagedObjectContext { get }
 	
 	var groups: [GroupOfLibraryItems] { get set }
@@ -23,27 +44,18 @@ protocol LibraryViewModel {
 
 extension LibraryViewModel {
 	
-	var isSpecificallyOpenedContainer: Bool {
-		if FeatureFlag.allRow {
-			if self is CollectionsViewModel {
-				return true
-			} else if self is AlbumsViewModel {
-				return lastSpecificContainer is Collection
-			} else if self is SongsViewModel {
-				return lastSpecificContainer is Album
-			} else {
-				fatalError("Unknown type conforming to `LibraryViewModel` called `isSpecificallyOpenedContainer`.")
-			}
-		} else {
-			return true
-		}
-	}
-	
 	var navigationItemTitle: String {
-		if let specificTitle = (lastSpecificContainer as? LibraryItem)?.libraryTitle{
-			return specificTitle
-		} else {
-			return FeatureFlag.allRow ? LocalizedString.library : LocalizedString.collections
+		let defaultTitle = FeatureFlag.allRow ? LocalizedString.library : LocalizedString.collections
+		
+		switch lastSpecificContainer {
+		case .library:
+			return defaultTitle
+		case .collection(let collection):
+			return collection.libraryTitle ?? defaultTitle
+		case .album(let album):
+			return album.libraryTitle ?? defaultTitle
+		case .deleted:
+			return defaultTitle
 		}
 	}
 	

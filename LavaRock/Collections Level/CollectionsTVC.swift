@@ -328,9 +328,9 @@ final class CollectionsTVC:
 				lastSpecificContainer: viewModel.lastSpecificContainer,
 				context: viewModel.context)
 		} else if selectedCell is CollectionCell {
-			let collection = viewModel.item(at: selectedIndexPath)
+			let collection = viewModel.item(at: selectedIndexPath) as! Collection
 			albumsTVC.viewModel = AlbumsViewModel(
-				lastSpecificContainer: collection as? Collection,
+				lastSpecificContainer: .collection(collection),
 				context: viewModel.context)
 		}
 	}

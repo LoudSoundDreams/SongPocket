@@ -45,20 +45,16 @@ extension Array {
 			predicate: predicate)
 	}
 	
-	func indicesOfDeletesInsertsAndMoves(
+	func batchUpdates(
 		toMatch newArray: [Element],
 		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
-	) -> (
-		deletes: [Int],
-		inserts: [Int],
-		moves: [(Int, Int)]
-	)
+	) -> BatchUpdates<Int>
 	where Element: Hashable
 	{
 		let difference = newArray.difference(from: self) { oldItem, newItem in
 			areEquivalent(oldItem, newItem)
 		}.inferringMoves()
-		return difference.indicesOfDeletesInsertsAndMoves()
+		return difference.batchUpdates()
 	}
 	
 	func sortedMaintainingOrderWhen(

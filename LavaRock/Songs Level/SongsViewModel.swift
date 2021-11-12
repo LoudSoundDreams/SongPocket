@@ -10,7 +10,7 @@ import CoreData
 
 struct SongsViewModel {
 	// LibraryViewModel
-	let lastSpecificContainer: LibraryContainer?
+	let lastSpecificContainer: OpenedContainer
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -20,14 +20,30 @@ extension SongsViewModel: LibraryViewModel {
 	static let numberOfSectionsAboveLibraryItems = 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 2
 	
+	var isSpecificallyOpenedContainer: Bool {
+		if FeatureFlag.allRow {
+			switch lastSpecificContainer {
+			case
+					.library,
+					.collection:
+				return false
+			case .album:
+				return true
+			case .deleted:
+				return false
+			}
+		} else {
+			return true
+		}
+	}
+	
 	// Identical to counterpart in `AlbumsViewModel`.
 	func refreshed() -> Self {
-		let managedObject = lastSpecificContainer as? NSManagedObject
-		let wasDeleted = managedObject?.managedObjectContext == nil // WARNING: You must check this, or the initializer will create groups with no items.
-		let refreshedLastSpecificContainer = wasDeleted ? nil : lastSpecificContainer
+		let wasDeleted = lastSpecificContainer.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
+		let newLastSpecificContainer: OpenedContainer = wasDeleted ? .deleted : lastSpecificContainer
 		
 		return Self(
-			lastSpecificContainer: refreshedLastSpecificContainer,
+			lastSpecificContainer: newLastSpecificContainer,
 			context: context)
 	}
 }
@@ -35,7 +51,7 @@ extension SongsViewModel: LibraryViewModel {
 extension SongsViewModel {
 	
 	init(
-		lastSpecificContainer: LibraryContainer?,
+		lastSpecificContainer: OpenedContainer,
 		context: NSManagedObjectContext
 	) {
 		self.lastSpecificContainer = lastSpecificContainer
@@ -43,18 +59,18 @@ extension SongsViewModel {
 		
 		// Check `lastSpecificContainer` to figure out which `Song`s to show.
 		let containers: [NSManagedObject] = {
-			if let album = lastSpecificContainer as? Album {
-				return [album]
-			} else if let collection = lastSpecificContainer as? Collection {
-				let albums = collection.albums()
-				return albums
-			} else if lastSpecificContainer == nil {
-				// We're showing all `Song`s.
+			switch lastSpecificContainer {
+			case .library:
 				let allCollections = Collection.allFetched(context: context)
 				let allAlbums = allCollections.flatMap { $0.albums() }
 				return allAlbums
-			} else {
-				fatalError("`SongsViewModel.init` with unknown type for `lastSpecificContainer`.")
+			case .collection(let collection):
+				let albums = collection.albums()
+				return albums
+			case .album(let album):
+				return [album]
+			case .deleted:
+				return []
 			}
 		}()
 		groups = containers.map {

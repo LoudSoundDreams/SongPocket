@@ -202,16 +202,12 @@ class LibraryTVC: UITableViewController {
 		
 		let oldViewModel = viewModel
 		let oldGroups = oldViewModel.groups
-		let changes: (
-			deletes: [Int],
-			inserts: [Int],
-			moves: [(Int, Int)]
-		)?
+		let updatesOfGroups: BatchUpdates<Int>?
 		let reorderedOldGroups: [GroupOfLibraryItems]
 		if
 			viewModel is CollectionsViewModel
 		{
-			changes = nil
+			updatesOfGroups = nil
 			reorderedOldGroups = oldGroups
 		} else if
 			let albumsViewModel = oldViewModel as? AlbumsViewModel,
@@ -220,9 +216,8 @@ class LibraryTVC: UITableViewController {
 		{
 			let differenceOfGroups = albumsViewModel.differenceOfGroupsInferringMoves(
 				toMatch: newGroups)
-			changes = differenceOfGroups.indicesOfDeletesInsertsAndMoves()
-			let reordered = oldGroups.applying(differenceOfGroups)!
-			reorderedOldGroups = reordered
+			updatesOfGroups = differenceOfGroups.batchUpdates()
+			reorderedOldGroups = oldGroups.applying(differenceOfGroups)!
 		} else if
 			let songsViewModel = oldViewModel as? SongsViewModel,
 			let oldGroups = oldGroups as? [GroupOfSongs],
@@ -230,18 +225,17 @@ class LibraryTVC: UITableViewController {
 		{
 			let differenceOfGroups = songsViewModel.differenceOfGroupsInferringMoves(
 				toMatch: newGroups)
-			changes = differenceOfGroups.indicesOfDeletesInsertsAndMoves()
-			let reordered = oldGroups.applying(differenceOfGroups)!
-			reorderedOldGroups = reordered
+			updatesOfGroups = differenceOfGroups.batchUpdates()
+			reorderedOldGroups = oldGroups.applying(differenceOfGroups)!
 		} else {
 			fatalError("`LibraryTVC` with an unknown type for `viewModel` called `setViewModelAndMoveRows`.")
 		}
 		
 		let oldNumberOfSectionsAbove = type(of: oldViewModel).numberOfSectionsAboveLibraryItems
 		let newNumberOfSectionsAbove = type(of: newViewModel).numberOfSectionsAboveLibraryItems
-		let sectionsToDelete = changes?.deletes.map { oldNumberOfSectionsAbove + $0 } ?? []
-		let sectionsToInsert = changes?.inserts.map { newNumberOfSectionsAbove + $0 } ?? []
-		let sectionsToMove = changes?.moves.map { (oldIndex, newIndex) in
+		let sectionsToDelete = updatesOfGroups?.toDelete.map { oldNumberOfSectionsAbove + $0 } ?? []
+		let sectionsToInsert = updatesOfGroups?.toInsert.map { newNumberOfSectionsAbove + $0 } ?? []
+		let sectionsToMove = updatesOfGroups?.toMove.map { (oldIndex, newIndex) in
 			(oldNumberOfSectionsAbove + oldIndex,
 			 newNumberOfSectionsAbove + newIndex)
 		} ?? []
@@ -270,34 +264,27 @@ class LibraryTVC: UITableViewController {
 			
 			let newItems = newGroup.items
 			
-			let rows = rowsToDeleteInsertAndMove(
+			let updates = batchUpdatesOfRows(
 				oldItems: oldItems,
 				oldIndexOfGroup: oldIndexOfGroup,
 				newItems: newItems,
 				newIndexOfGroup: newIndexOfGroup)
-			rowsToDelete.append(contentsOf: rows.toDelete)
-			rowsToInsert.append(contentsOf: rows.toInsert)
-			rowsToMove.append(contentsOf: rows.toMove)
+			rowsToDelete.append(contentsOf: updates.toDelete)
+			rowsToInsert.append(contentsOf: updates.toInsert)
+			rowsToMove.append(contentsOf: updates.toMove)
 		}
 		
 		tableView.deselectAllRows(animated: true)
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
-		tableView.performBatchUpdates {
-			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
-			
-			tableView.deleteSections(IndexSet(sectionsToDelete), with: .middle)
-			tableView.insertSections(IndexSet(sectionsToInsert), with: .middle)
-			sectionsToMove.forEach { (oldSection, newSection) in
-				tableView.moveSection(oldSection, toSection: newSection)
-			}
-			
-			tableView.deleteRows(at: rowsToDelete, with: .middle)
-			tableView.insertRows(at: rowsToInsert, with: .middle)
-			rowsToMove.forEach { sourceIndexPath, destinationIndexPath in
-				tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
-			}
-		} completion: { _ in
+		tableView.performBatchUpdates(
+			deletingSections: sectionsToDelete,
+			deletingRows: rowsToDelete,
+			insertingSections: sectionsToInsert,
+			insertingRows: rowsToInsert,
+			movingSections: sectionsToMove,
+			movingRows: rowsToMove
+		) {
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
 				completion?()
@@ -308,23 +295,19 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	// WARNING: You must update `viewModel` first.
-	private func rowsToDeleteInsertAndMove(
+	private func batchUpdatesOfRows(
 		oldItems: [NSManagedObject],
 		oldIndexOfGroup: Int?,
 		newItems: [NSManagedObject],
 		newIndexOfGroup: Int
-	) -> (
-		toDelete: [IndexPath],
-		toInsert: [IndexPath],
-		toMove: [(IndexPath, IndexPath)]
-	) {
-		let changes = oldItems.indicesOfDeletesInsertsAndMoves(
+	) -> BatchUpdates<IndexPath> {
+		let updatesOfIndicesOfItems = oldItems.batchUpdates(
 			toMatch: newItems
 		) { oldItem, newItem in
 			oldItem.objectID == newItem.objectID
 		}
 		
-		let toDelete: [IndexPath] = changes.deletes.compactMap {
+		let toDelete: [IndexPath] = updatesOfIndicesOfItems.toDelete.compactMap {
 			guard let oldIndexOfGroup = oldIndexOfGroup else {
 				return nil
 			}
@@ -332,12 +315,12 @@ class LibraryTVC: UITableViewController {
 				indexOfItemInGroup: $0,
 				indexOfGroup: oldIndexOfGroup)
 		}
-		let toInsert = changes.inserts.map {
+		let toInsert = updatesOfIndicesOfItems.toInsert.map {
 			viewModel.indexPathFor(
 				indexOfItemInGroup: $0,
 				indexOfGroup: newIndexOfGroup)
 		}
-		let toMove: [(IndexPath, IndexPath)] = changes.moves.compactMap { (oldIndex, newIndex) in
+		let toMove: [(IndexPath, IndexPath)] = updatesOfIndicesOfItems.toMove.compactMap { (oldIndex, newIndex) in
 			guard let oldIndexOfGroup = oldIndexOfGroup else {
 				return nil
 			}
@@ -351,11 +334,10 @@ class LibraryTVC: UITableViewController {
 			)
 		}
 		
-		return (
-			toDelete,
-			toInsert,
-			toMove
-		)
+		return BatchUpdates<IndexPath>(
+			toDelete: toDelete,
+			toInsert: toInsert,
+			toMove: toMove)
 	}
 	
 	// MARK: - Refreshing UI

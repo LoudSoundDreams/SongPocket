@@ -9,6 +9,34 @@ import UIKit
 
 extension UITableView {
 	
+	final func performBatchUpdates(
+		deletingSections sectionsToDelete: [Int],
+		deletingRows rowsToDelete: [IndexPath],
+		insertingSections sectionsToInsert: [Int],
+		insertingRows rowsToInsert: [IndexPath],
+		movingSections sectionsToMove: [(Int, Int)],
+		movingRows rowsToMove: [(IndexPath, IndexPath)],
+		completion: (() -> Void)? = nil
+	) {
+		performBatchUpdates {
+			deleteSections(IndexSet(sectionsToDelete), with: .middle)
+			deleteRows(at: rowsToDelete, with: .middle)
+			
+			insertSections(IndexSet(sectionsToInsert), with: .middle)
+			insertRows(at: rowsToInsert, with: .middle)
+			
+			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
+			sectionsToMove.forEach { (sourceIndex, destinationIndex) in
+				moveSection(sourceIndex, toSection: destinationIndex)
+			}
+			rowsToMove.forEach { (sourceIndexPath, destinationIndexPath) in
+				moveRow(at: sourceIndexPath, to: destinationIndexPath)
+			}
+		} completion: { _ in
+			completion?()
+		}
+	}
+	
 	// MARK: - Sections
 	
 	final func allSections() -> [Int] {

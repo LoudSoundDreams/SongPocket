@@ -168,9 +168,9 @@ final class AlbumsTVC:
 				lastSpecificContainer: viewModel.lastSpecificContainer,
 				context: viewModel.context)
 		} else if selectedCell is AlbumCell {
-			let album = albumsViewModel.item(at: selectedIndexPath)
+			let album = albumsViewModel.item(at: selectedIndexPath) as! Album
 			songsTVC.viewModel = SongsViewModel(
-				lastSpecificContainer: album as? Album,
+				lastSpecificContainer: .album(album),
 				context: viewModel.context)
 		}
 	}

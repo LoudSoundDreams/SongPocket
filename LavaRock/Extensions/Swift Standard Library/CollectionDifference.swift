@@ -5,14 +5,15 @@
 //  Created by h on 2021-11-04.
 //
 
+struct BatchUpdates<Identifier> {
+	let toDelete: [Identifier]
+	let toInsert: [Identifier]
+	let toMove: [(Identifier, Identifier)]
+}
+
 extension CollectionDifference {
 	
-	func indicesOfDeletesInsertsAndMoves(
-	) -> (
-		deletes: [Int],
-		inserts: [Int],
-		moves: [(Int, Int)]
-	) {
+	func batchUpdates() -> BatchUpdates<Int> {
 		var indicesOfOldItemsToDelete = [Int]()
 		var indicesOfNewItemsToInsert = [Int]()
 		var indicesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
@@ -36,11 +37,10 @@ extension CollectionDifference {
 			}
 		}
 		
-		return (
-			indicesOfOldItemsToDelete,
-			indicesOfNewItemsToInsert,
-			indicesOfItemsToMove
-		)
+		return BatchUpdates(
+			toDelete: indicesOfOldItemsToDelete,
+			toInsert: indicesOfNewItemsToInsert,
+			toMove: indicesOfItemsToMove)
 	}
 	
 }
