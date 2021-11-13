@@ -47,21 +47,18 @@ extension AlbumsTVC {
 			let modalCollectionsTVC = modalCollectionsNC.viewControllers.first as? CollectionsTVC
 		else { return }
 		
-		// Get the rows to move.
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		let indexPathsToMove = albumsViewModel.selectedOrAllIndexPathsIfSpecificallyOpened(
-			selectedIndexPaths: selectedIndexPaths)
-		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
-		let idsOfSourceCollections = Set(indexPathsToMove.map {
-			albumsViewModel.collection(forSection: $0.section).objectID
-		})
+		let indexPathsToMove = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndSpecificallyOpened(
+			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		let idsOfAlbumsToMove = indexPathsToMove.map {
 			albumsViewModel.item(at: $0).objectID
 		}
+		let idsOfSourceCollections = Set(indexPathsToMove.map {
+			albumsViewModel.collection(forSection: $0.section).objectID
+		})
 		modalCollectionsTVC.albumMoverClipboard = AlbumMoverClipboard(
-			idsOfSourceCollections: idsOfSourceCollections,
 			idsOfAlbumsBeingMoved: idsOfAlbumsToMove,
+			idsOfSourceCollections: idsOfSourceCollections,
 			delegate: self)
 		
 		// Make the "move Albums to…" sheet use a child managed object context, so that we can cancel without having to revert our changes.

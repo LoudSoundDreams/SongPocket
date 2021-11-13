@@ -137,7 +137,7 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	func selectedOrAllIndexPathsIfSpecificallyOpened(
+	func sortedOrForAllItemsIfNoneSelectedAndSpecificallyOpened(
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
@@ -147,7 +147,7 @@ extension LibraryViewModel {
 				return []
 			}
 		} else {
-			return selectedIndexPaths
+			return selectedIndexPaths.sorted()
 		}
 	}
 	
@@ -221,7 +221,7 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath],
 		sortOptionLocalizedName: String
 	) -> Self {
-		let indexPathsToSort = selectedOrAllIndexPathsIfSpecificallyOpened(
+		let indexPathsToSort = sortedOrForAllItemsIfNoneSelectedAndSpecificallyOpened(
 			selectedIndexPaths: selectedIndexPaths)
 		
 		let rowsBySection = indexPathsToSort.makeDictionaryOfRowsBySection()
@@ -229,7 +229,7 @@ extension LibraryViewModel {
 		var twin = self
 		rowsBySection.forEach { (section, rows) in
 			let newItems = itemsAfterSorting(
-				itemsAtRows: rows,
+				itemsAtRowsInOrder: rows,
 				inSection: section,
 				sortOptionLocalizedName: sortOptionLocalizedName)
 			let indexOfGroup = indexOfGroup(forSection: section)
@@ -239,7 +239,7 @@ extension LibraryViewModel {
 	}
 	
 	private func itemsAfterSorting(
-		itemsAtRows rows: [Int],
+		itemsAtRowsInOrder rowsInOrder: [Int],
 		inSection section: Int,
 		sortOptionLocalizedName: String
 	) -> [NSManagedObject] {
@@ -247,8 +247,7 @@ extension LibraryViewModel {
 		let oldItems = group(forSection: section).items
 		
 		// Get the indices of the items to sort.
-		let rows = rows.sorted()
-		let sourceIndicesOfItems = rows.map { row in
+		let sourceIndicesOfItems = rowsInOrder.map { row in
 			indexOfItemInGroup(forRow: row)
 		}
 		
@@ -350,7 +349,7 @@ extension LibraryViewModel {
 		var twin = self
 		rowsBySection.forEach { (section, rows) in
 			let newItems = itemsAfterFloatingToTop(
-				itemsAtRows: rows,
+				itemsAtRowsInAnyOrder: rows,
 				inSection: section)
 			let indexOfGroup = indexOfGroup(forSection: section)
 			twin.groups[indexOfGroup].setItems(newItems)
@@ -359,10 +358,10 @@ extension LibraryViewModel {
 	}
 	
 	private func itemsAfterFloatingToTop(
-		itemsAtRows rows: [Int],
+		itemsAtRowsInAnyOrder rowsInAnyOrder: [Int],
 		inSection section: Int
 	) -> [NSManagedObject] {
-		let rows = rows.sorted()
+		let rows = rowsInAnyOrder.sorted()
 		let indicesOfSelectedItems = rows.map {
 			indexOfItemInGroup(forRow: $0)
 		}
@@ -390,7 +389,7 @@ extension LibraryViewModel {
 		var twin = self
 		rowsBySection.forEach { (section, rows) in
 			let newItems = itemsAfterSinkingToBottom(
-				itemsAtRows: rows,
+				itemsAtRowsInAnyOrder: rows,
 				inSection: section)
 			let indexOfGroup = indexOfGroup(forSection: section)
 			twin.groups[indexOfGroup].setItems(newItems)
@@ -399,10 +398,10 @@ extension LibraryViewModel {
 	}
 	
 	private func itemsAfterSinkingToBottom(
-		itemsAtRows rows: [Int],
+		itemsAtRowsInAnyOrder rowsInAnyOrder: [Int],
 		inSection section: Int
 	) -> [NSManagedObject] {
-		let rows = rows.sorted()
+		let rows = rowsInAnyOrder.sorted()
 		let indicesOfSelectedItems = rows.map {
 			indexOfItemInGroup(forRow: $0)
 		}
