@@ -46,8 +46,8 @@ extension AlbumsTVC {
 //		_ tableView: UITableView,
 //		viewForHeaderInSection section: Int
 //	) -> UIView? {
-//		
-//		
+//
+//
 //		// Make, configure, and return the cell.
 //		guard let cell = tableView.dequeueReusableCell(
 //			withIdentifier: "Album Group Header")
@@ -55,7 +55,7 @@ extension AlbumsTVC {
 //		else {
 //			return UITableViewCell()
 //		}
-//		
+//
 //		return cell
 //	}
 	
@@ -69,8 +69,7 @@ extension AlbumsTVC {
 			case .all:
 				return nil
 			case .groupOfAlbums:
-				if viewModel.isSpecificallyOpenedContainer {
-					// We're showing a single `Collection`, and the user specifically chose it.
+				if viewModel.viewContainerIsSpecific {
 					return LocalizedString.albums
 				} else {
 					// The user tapped "All" at some point to get here, so use container titles for each group of `Album`s.

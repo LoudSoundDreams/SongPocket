@@ -140,7 +140,7 @@ final class AlbumsTVC:
 			return false
 		}
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			return viewModel.isSpecificallyOpenedContainer
+			return viewModel.viewContainerIsSpecific
 		} else {
 			return true
 		}
@@ -165,12 +165,12 @@ final class AlbumsTVC:
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if selectedCell is TheseContainersCell {
 			songsTVC.viewModel = SongsViewModel(
-				lastSpecificContainer: viewModel.lastSpecificContainer,
+				viewContainer: viewModel.viewContainer,
 				context: viewModel.context)
 		} else if selectedCell is AlbumCell {
 			let album = albumsViewModel.item(at: selectedIndexPath) as! Album
 			songsTVC.viewModel = SongsViewModel(
-				lastSpecificContainer: .album(album),
+				viewContainer: .album(album),
 				context: viewModel.context)
 		}
 	}

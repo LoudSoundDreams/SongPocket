@@ -10,7 +10,7 @@ import CoreData
 
 struct AlbumsViewModel {
 	// LibraryViewModel
-	let lastSpecificContainer: OpenedContainer
+	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -20,9 +20,9 @@ extension AlbumsViewModel: LibraryViewModel {
 	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
-	var isSpecificallyOpenedContainer: Bool {
+	var viewContainerIsSpecific: Bool {
 		if FeatureFlag.allRow {
-			switch lastSpecificContainer {
+			switch viewContainer {
 			case .library:
 				return false
 			case .collection:
@@ -39,11 +39,11 @@ extension AlbumsViewModel: LibraryViewModel {
 	
 	// Identical to counterpart in `SongsViewModel`.
 	func refreshed() -> Self {
-		let wasDeleted = lastSpecificContainer.wasDeleted()
-		let newLastSpecificContainer: OpenedContainer = wasDeleted ? .deleted : lastSpecificContainer
+		let wasDeleted = viewContainer.wasDeleted()
+		let newViewContainer: LibraryViewContainer = wasDeleted ? .deleted : viewContainer
 		
 		return Self(
-			lastSpecificContainer: newLastSpecificContainer,
+			viewContainer: newViewContainer,
 			context: context)
 	}
 }
@@ -51,22 +51,22 @@ extension AlbumsViewModel: LibraryViewModel {
 extension AlbumsViewModel {
 	
 	init(
-		lastSpecificContainer: OpenedContainer,
+		viewContainer: LibraryViewContainer,
 		context: NSManagedObjectContext
 	) {
-		self.lastSpecificContainer = lastSpecificContainer
+		self.viewContainer = viewContainer
 		self.context = context
 		
-		// Check `lastSpecificContainer` to figure out which `Album`s to show.
+		// Check `viewContainer` to figure out which `Album`s to show.
 		let containers: [NSManagedObject] = {
-			switch lastSpecificContainer {
+			switch viewContainer {
 			case .library:
 				let allCollections = Collection.allFetched(context: context)
 				return allCollections
 			case .collection(let collection):
 				return [collection]
 			case .album:
-				fatalError("`AlbumsViewModel.init` with an `Album` for `lastSpecificContainer`.")
+				fatalError("`AlbumsViewModel.init` with an `Album` for `viewContainer`.")
 			case .deleted:
 				return []
 			}

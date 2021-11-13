@@ -10,7 +10,7 @@ import CoreData
 
 struct SongsViewModel {
 	// LibraryViewModel
-	let lastSpecificContainer: OpenedContainer
+	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -20,9 +20,9 @@ extension SongsViewModel: LibraryViewModel {
 	static let numberOfSectionsAboveLibraryItems = 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 2
 	
-	var isSpecificallyOpenedContainer: Bool {
+	var viewContainerIsSpecific: Bool {
 		if FeatureFlag.allRow {
-			switch lastSpecificContainer {
+			switch viewContainer {
 			case
 					.library,
 					.collection:
@@ -39,11 +39,11 @@ extension SongsViewModel: LibraryViewModel {
 	
 	// Identical to counterpart in `AlbumsViewModel`.
 	func refreshed() -> Self {
-		let wasDeleted = lastSpecificContainer.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
-		let newLastSpecificContainer: OpenedContainer = wasDeleted ? .deleted : lastSpecificContainer
+		let wasDeleted = viewContainer.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
+		let newViewContainer: LibraryViewContainer = wasDeleted ? .deleted : viewContainer
 		
 		return Self(
-			lastSpecificContainer: newLastSpecificContainer,
+			viewContainer: newViewContainer,
 			context: context)
 	}
 }
@@ -51,15 +51,15 @@ extension SongsViewModel: LibraryViewModel {
 extension SongsViewModel {
 	
 	init(
-		lastSpecificContainer: OpenedContainer,
+		viewContainer: LibraryViewContainer,
 		context: NSManagedObjectContext
 	) {
-		self.lastSpecificContainer = lastSpecificContainer
+		self.viewContainer = viewContainer
 		self.context = context
 		
-		// Check `lastSpecificContainer` to figure out which `Song`s to show.
+		// Check `viewContainer` to figure out which `Song`s to show.
 		let containers: [NSManagedObject] = {
-			switch lastSpecificContainer {
+			switch viewContainer {
 			case .library:
 				let allCollections = Collection.allFetched(context: context)
 				let allAlbums = allCollections.flatMap { $0.albums() }

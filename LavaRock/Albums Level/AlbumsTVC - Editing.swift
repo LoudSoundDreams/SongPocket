@@ -48,7 +48,7 @@ extension AlbumsTVC {
 		else { return }
 		
 		// Initialize an AlbumMoverClipboard for the modal Collections view.
-		let indexPathsToMove = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndSpecificallyOpened(
+		let indexPathsToMove = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		let idsOfAlbumsToMove = indexPathsToMove.map {
 			albumsViewModel.item(at: $0).objectID

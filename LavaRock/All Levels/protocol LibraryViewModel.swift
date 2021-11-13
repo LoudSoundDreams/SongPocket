@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-enum OpenedContainer {
+enum LibraryViewContainer {
 	case library
 	case collection(Collection)
 	case album(Album)
@@ -33,8 +33,8 @@ protocol LibraryViewModel {
 	static var numberOfSectionsAboveLibraryItems: Int { get }
 	static var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
-	var lastSpecificContainer: OpenedContainer { get }
-	var isSpecificallyOpenedContainer: Bool { get }
+	var viewContainer: LibraryViewContainer { get }
+	var viewContainerIsSpecific: Bool { get }
 	var context: NSManagedObjectContext { get }
 	
 	var groups: [GroupOfLibraryItems] { get set }
@@ -47,7 +47,7 @@ extension LibraryViewModel {
 	var navigationItemTitle: String {
 		let defaultTitle = FeatureFlag.allRow ? LocalizedString.library : LocalizedString.collections
 		
-		switch lastSpecificContainer {
+		switch viewContainer {
 		case .library:
 			return defaultTitle
 		case .collection(let collection):
@@ -137,11 +137,11 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	func sortedOrForAllItemsIfNoneSelectedAndSpecificallyOpened(
+	func sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
-			if isSpecificallyOpenedContainer {
+			if viewContainerIsSpecific {
 				return indexPaths(forIndexOfGroup: 0)
 			} else {
 				return []
@@ -221,7 +221,7 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath],
 		sortOptionLocalizedName: String
 	) -> Self {
-		let indexPathsToSort = sortedOrForAllItemsIfNoneSelectedAndSpecificallyOpened(
+		let indexPathsToSort = sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: selectedIndexPaths)
 		
 		let rowsBySection = indexPathsToSort.makeDictionaryOfRowsBySection()

@@ -10,7 +10,7 @@ import CoreData
 
 struct CollectionsViewModel {
 	// LibraryViewModel
-	let lastSpecificContainer: OpenedContainer = .library
+	let viewContainer: LibraryViewContainer = .library
 	let context: NSManagedObjectContext
 	var groups: [GroupOfLibraryItems]
 }
@@ -20,7 +20,7 @@ extension CollectionsViewModel: LibraryViewModel {
 	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
-	var isSpecificallyOpenedContainer: Bool {
+	var viewContainerIsSpecific: Bool {
 		return true
 	}
 	

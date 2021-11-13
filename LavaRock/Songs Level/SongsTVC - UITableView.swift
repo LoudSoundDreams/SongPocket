@@ -52,8 +52,7 @@ extension SongsTVC {
 		titleForHeaderInSection section: Int
 	) -> String? {
 		if FeatureFlag.allRow {
-			if viewModel.isSpecificallyOpenedContainer {
-				// We're showing a single `Album`, and the user specifically chose it.
+			if viewModel.viewContainerIsSpecific {
 				return nil
 			} else {
 				// The user tapped "All" at some point to get here, so use container titles for each group of `Song`s.
