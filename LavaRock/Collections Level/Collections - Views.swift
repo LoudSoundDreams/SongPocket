@@ -63,7 +63,7 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.noCollectionsPlaceholder
+		configuration.text = LocalizedString.emptyDatabasePlaceholder
 		configuration.textProperties.color = .secondaryLabel
 		contentConfiguration = configuration
 		

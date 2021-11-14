@@ -23,7 +23,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	
 	// Helpers
 	final var navigationItemPrompt: String {
-		let formatString = LocalizedString.formatChooseACollectionPrompt
+		let formatString = FeatureFlag.multicollection ? LocalizedString.formatChooseASectionPrompt : LocalizedString.formatChooseACollectionPrompt
 		let number = idsOfAlbumsBeingMoved.count
 		return String.localizedStringWithFormat(
 			formatString,

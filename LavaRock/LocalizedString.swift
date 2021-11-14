@@ -69,41 +69,52 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let moveToTop = NSLocalizedString("Move to Top", comment: "Button")
 	static let moveToBottom = NSLocalizedString("Move to Bottom", comment: "Button")
 	
-	// MARK: Collections View
+	// MARK: Sections View
 	
 	static let sections = NSLocalizedString("Sections", comment: "Big title")
-	static let collections = NSLocalizedString("Collections", comment: "Big title")
+	static let collections = NSLocalizedString("Collections", comment: "Big title") // TO DO: Delete after multicollection
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
-	static let noCollectionsPlaceholder = NSLocalizedString(
+	static let emptyDatabasePlaceholder = NSLocalizedString(
 		"[placeholder] empty_database",
 		value: "Add some music to your Apple Music library, or sync some music from your computer.",
 		comment: "Placeholder for when the app's database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
+	static let title = NSLocalizedString("Title", comment: "The word for the name of a section, album, or song. Also the name of a sort option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title")
+	static let renameSectionAlertTitle = NSLocalizedString("Rename Section", comment: "Alert title")
+	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title") // TO DO: Delete after multicollection
 	
-	static let combine = NSLocalizedString("Combine", comment: "Button") // TO DO: Localize
-	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title") // TO DO: Localize
-	static let combinedCollectionDefaultTitle = "Combined Collection" // TO DO: Localize
+	static let combine = NSLocalizedString("Combine", comment: "Button")
+	static let combineSectionsAlertTitle = NSLocalizedString("Combine Sections", comment: "Alert title")
+	static let combinedSectionDefaultTitle = "Combined Section"
 	
+	static let newSectionAlertTitle = NSLocalizedString(
+		"New Section [alert title]",
+		value: "New Section",
+		comment: "Alert title")
 	static let newCollectionAlertTitle = NSLocalizedString(
 		"New Collection [alert title]",
 		value: "New Collection",
-		comment: "Alert title")
+		comment: "Alert title") // TO DO: Delete after multicollection
+	static let newSectionDefaultTitle = NSLocalizedString(
+		"New Section [default title for section]",
+		value: "New Section",
+		comment: "Default title for a section if you create one and don’t provide a title.")
 	static let newCollectionDefaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
 		value: "New Collection",
-		comment: "Default title for a collection if you make a collection and don’t provide a title.")
+		comment: "Default title for a collection if you create one and don’t provide a title.") // TO DO: Delete after multicollection
 	
 	// MARK: Albums View
 	
 	static let albums = NSLocalizedString("Albums", comment: "Big title")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
+	static let organizeIntoNewSections = NSLocalizedString("Organize Into New Sections…", comment: "Menu option")
+	static let moveTo = NSLocalizedString("Move To…", comment: "Menu option")
 	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
 	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Sort option")
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
@@ -134,11 +145,14 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
 	
-	// MARK: Albums View
+	// MARK: Sections and Albums Views
 	
-	static let formatChooseACollectionPrompt = NSLocalizedString(
-		"plural - move_albums_to",
+	static let formatChooseASectionPrompt = NSLocalizedString(
+		"plural - move_albums_to_section",
 		comment: "Prompt that appears at the top of the “move albums to…” sheet. Include the number of albums you’re moving.")
+	static let formatChooseACollectionPrompt = NSLocalizedString(
+		"plural - move_albums_to_collection",
+		comment: "Prompt that appears at the top of the “move albums to…” sheet. Include the number of albums you’re moving.") // TO DO: Delete after multicollection
 	
 	// MARK: Songs View
 	

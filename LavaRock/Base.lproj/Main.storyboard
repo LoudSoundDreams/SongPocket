@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -103,7 +103,7 @@
             </objects>
             <point key="canvasLocation" x="6961" y="-655"/>
         </scene>
-        <!--Collections-->
+        <!--Placeholder Sections View Title-->
         <scene sceneID="X0R-Et-kVe">
             <objects>
                 <tableViewController id="Vce-TP-hYI" customClass="CollectionsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -128,56 +128,11 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="These Collections" id="tft-PU-cry" customClass="TheseContainersCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Collection" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="132.00000190734863" width="375" height="43.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tft-PU-cry" id="u8K-ya-z0T">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.333332061767578"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="All" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gN8-Kg-nRJ">
-                                            <rect key="frame" x="15.999999999999998" y="12.333333333333336" width="16.333333333333329" height="17"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="22A-2P-2Xf">
-                                            <rect key="frame" x="317.33333333333331" y="12.333333333333336" width="24" height="17.000000000000014"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="centerY" secondItem="u8K-ya-z0T" secondAttribute="centerY" constant="-1" id="8F6-VM-Wfc"/>
-                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="u8K-ya-z0T" secondAttribute="trailingMargin" id="A3E-lT-avB"/>
-                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="u8K-ya-z0T" secondAttribute="topMargin" constant="1" id="C6h-Ql-mFA"/>
-                                        <constraint firstItem="22A-2P-2Xf" firstAttribute="trailing" secondItem="u8K-ya-z0T" secondAttribute="trailingMargin" id="CtS-bG-Frc"/>
-                                        <constraint firstItem="22A-2P-2Xf" firstAttribute="leading" secondItem="u8K-ya-z0T" secondAttribute="trailingMargin" constant="-24" id="NLD-lk-GGW"/>
-                                        <constraint firstItem="22A-2P-2Xf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gN8-Kg-nRJ" secondAttribute="trailing" constant="8" symbolic="YES" id="XDR-lI-Zw2"/>
-                                        <constraint firstItem="22A-2P-2Xf" firstAttribute="centerY" secondItem="gN8-Kg-nRJ" secondAttribute="centerY" id="i5p-Rh-mUs"/>
-                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="leading" secondItem="u8K-ya-z0T" secondAttribute="leadingMargin" id="isU-0L-QBq"/>
-                                        <constraint firstItem="gN8-Kg-nRJ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="u8K-ya-z0T" secondAttribute="bottomMargin" constant="1" id="l1H-wI-Ebo"/>
-                                    </constraints>
-                                    <variation key="default">
-                                        <mask key="subviews">
-                                            <exclude reference="22A-2P-2Xf"/>
-                                        </mask>
-                                        <mask key="constraints">
-                                            <exclude reference="CtS-bG-Frc"/>
-                                            <exclude reference="NLD-lk-GGW"/>
-                                            <exclude reference="XDR-lI-Zw2"/>
-                                            <exclude reference="i5p-Rh-mUs"/>
-                                        </mask>
-                                    </variation>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="allLabel" destination="gN8-Kg-nRJ" id="kWy-OS-j8v"/>
-                                    <segue destination="DGZ-AG-uNY" kind="show" identifier="" id="MYb-gA-DVh"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Collection" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="175.33333396911621" width="375" height="43.333332061767578"/>
-                                <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sQR-13-z5i" id="oWs-S1-Xp1">
-                                    <rect key="frame" x="0.0" y="0.0" width="349.33333333333331" height="43.333332061767578"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="350.33333333333331" height="43.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder Collection Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFb-dV-xDe">
@@ -187,7 +142,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZA8-cG-C8X">
-                                            <rect key="frame" x="317.33333333333331" y="12.333333333333336" width="24" height="17.000000000000014"/>
+                                            <rect key="frame" x="318.33333333333331" y="12.333333333333336" width="24" height="17.000000000000014"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -214,7 +169,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections" id="Ztw-H3-VnV" customClass="NoCollectionsPlaceholderCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="218.66666603088379" width="375" height="43.666667938232422"/>
+                                <rect key="frame" x="0.0" y="175.33333396911621" width="375" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ztw-H3-VnV" id="XEx-Fb-t1a">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -222,7 +177,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Open Music" id="cBm-gc-Icm" customClass="OpenMusicCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="262.33333396911621" width="375" height="43.666667938232422"/>
+                                <rect key="frame" x="0.0" y="219.00000190734863" width="375" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cBm-gc-Icm" id="5wx-YV-cio">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -230,14 +185,14 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections Placeholder - Old" rowHeight="100" id="i5d-DX-vvS">
-                                <rect key="frame" x="0.0" y="306.00000190734863" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="262.66666984558105" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="i5d-DX-vvS" id="ilp-7P-A9C">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add some music to your Apple Music library, or sync some music from your computer." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6S-PX-Sod">
-                                            <rect key="frame" x="17" y="32" width="341.33333333333331" height="36"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder empty database message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6S-PX-Sod">
+                                            <rect key="frame" x="64.666666666666686" y="41.666666666666664" width="246" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
@@ -258,7 +213,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Collections" id="aA7-bf-O8G">
+                    <navigationItem key="navigationItem" title="Placeholder Sections View Title" id="aA7-bf-O8G">
                         <barButtonItem key="leftBarButtonItem" title="Options" id="mpR-tt-C6X">
                             <connections>
                                 <segue destination="Wty-xL-YQX" kind="presentation" identifier="" modalPresentationStyle="formSheet" id="aqr-v5-Bgu"/>
@@ -384,53 +339,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="These Albums" id="J4i-rN-3Fb" customClass="TheseContainersCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="43.333332061767578"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J4i-rN-3Fb" id="Wbv-gg-wli">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.333332061767578"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="All" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tYA-4M-2y7">
-                                            <rect key="frame" x="15.999999999999998" y="12.333333333333336" width="16.333333333333329" height="17"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="5Ai-cB-TjZ">
-                                            <rect key="frame" x="317.33333333333331" y="12.333333333333336" width="24" height="17.000000000000014"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="5Ai-cB-TjZ" firstAttribute="leading" secondItem="Wbv-gg-wli" secondAttribute="trailingMargin" constant="-24" id="TPR-Ss-YWB"/>
-                                        <constraint firstItem="5Ai-cB-TjZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tYA-4M-2y7" secondAttribute="trailing" constant="8" symbolic="YES" id="VUt-My-VzZ"/>
-                                        <constraint firstItem="tYA-4M-2y7" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Wbv-gg-wli" secondAttribute="bottomMargin" constant="1" id="baU-ny-wRN"/>
-                                        <constraint firstItem="5Ai-cB-TjZ" firstAttribute="centerY" secondItem="tYA-4M-2y7" secondAttribute="centerY" id="cEh-ks-4fT"/>
-                                        <constraint firstItem="5Ai-cB-TjZ" firstAttribute="trailing" secondItem="Wbv-gg-wli" secondAttribute="trailingMargin" id="lEi-qc-NXb"/>
-                                        <constraint firstItem="tYA-4M-2y7" firstAttribute="centerY" secondItem="Wbv-gg-wli" secondAttribute="centerY" constant="-1" id="mav-LF-Urf"/>
-                                        <constraint firstItem="tYA-4M-2y7" firstAttribute="leading" secondItem="Wbv-gg-wli" secondAttribute="leadingMargin" id="sSz-C7-HP9"/>
-                                        <constraint firstItem="tYA-4M-2y7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Wbv-gg-wli" secondAttribute="topMargin" constant="1" id="tvR-3Q-ZLD"/>
-                                        <constraint firstItem="tYA-4M-2y7" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Wbv-gg-wli" secondAttribute="trailingMargin" id="wJq-EY-aag"/>
-                                    </constraints>
-                                    <variation key="default">
-                                        <mask key="subviews">
-                                            <exclude reference="5Ai-cB-TjZ"/>
-                                        </mask>
-                                        <mask key="constraints">
-                                            <exclude reference="TPR-Ss-YWB"/>
-                                            <exclude reference="VUt-My-VzZ"/>
-                                            <exclude reference="cEh-ks-4fT"/>
-                                            <exclude reference="lEi-qc-NXb"/>
-                                        </mask>
-                                    </variation>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="allLabel" destination="tYA-4M-2y7" id="4WP-YS-uRK"/>
-                                    <segue destination="Uik-rz-IBd" kind="show" id="2Kj-2a-Q0h"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Group Header" id="w3D-pZ-NSc">
-                                <rect key="frame" x="0.0" y="87.999998092651367" width="375" height="45.333332061767578"/>
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="45.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w3D-pZ-NSc" id="08q-WV-QUF">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="45.333332061767578"/>
@@ -464,17 +374,17 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album" id="7XI-b6-UIz" customClass="AlbumCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="133.33333015441895" width="375" height="132.33332824707031"/>
+                                <rect key="frame" x="0.0" y="89.999998092651367" width="375" height="132.33332824707031"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7XI-b6-UIz" id="aoi-DX-wbp">
-                                    <rect key="frame" x="0.0" y="0.0" width="349.33333333333331" height="132.33332824707031"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="350.33333333333331" height="132.33332824707031"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XXR-SF-A9b">
-                                            <rect key="frame" x="317.33333333333331" y="58" width="24" height="16.666666666666671"/>
+                                            <rect key="frame" x="318.33333333333331" y="58" width="24" height="16.666666666666671"/>
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="kNY-CW-ua6">
-                                            <rect key="frame" x="16" y="0.0" width="293.33333333333331" height="132.33333333333334"/>
+                                            <rect key="frame" x="16" y="0.0" width="294.33333333333331" height="132.33333333333334"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cCZ-Du-afk">
                                                     <rect key="frame" x="0.0" y="0.3333333333333286" width="132" height="132"/>
@@ -484,16 +394,16 @@
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="rpv-eB-T27">
-                                                    <rect key="frame" x="144" y="39.666666666666657" width="149.33333333333337" height="53.333333333333343"/>
+                                                    <rect key="frame" x="144" y="39.666666666666657" width="150.33333333333337" height="53.333333333333343"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder Album Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCX-T2-D40">
-                                                            <rect key="frame" x="0.0" y="0.0" width="149.33333333333334" height="36"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="150.33333333333334" height="36"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="1999" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Odq-7C-PJs">
-                                                            <rect key="frame" x="0.0" y="40.000000000000007" width="149.33333333333334" height="13.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="40.000000000000007" width="150.33333333333334" height="13.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
@@ -531,7 +441,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Albums Placeholder" rowHeight="100" id="RmC-40-dsA">
-                                <rect key="frame" x="0.0" y="265.66665840148926" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="222.33332633972168" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RmC-40-dsA" id="ENJ-uS-m8G">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -613,10 +523,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="vtt-TP-3k8">
-                                            <rect key="frame" x="16" y="11.333333333333332" width="211" height="38.333333333333343"/>
+                                            <rect key="frame" x="16" y="11.333333333333332" width="210.66666666666666" height="38.333333333333343"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Placeholder Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0qU-Rc-iEX">
-                                                    <rect key="frame" x="0.0" y="0.0" width="211" height="17"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="210.66666666666666" height="17"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -806,10 +716,6 @@
             <point key="canvasLocation" x="6110" y="1039"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="vdq-GE-p3h"/>
-        <segue reference="Egm-ag-jV8"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.counterclockwise.circle.fill" catalog="system" width="128" height="121"/>
         <image name="backward.end.fill" catalog="system" width="128" height="102"/>

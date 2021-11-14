@@ -56,7 +56,7 @@ extension CollectionsTVC {
 	// Match presentDialogToRenameCollection and presentDialogToCombineCollections.
 	private func presentDialogToMakeNewCollection(suggestedTitle: String?) {
 		let dialog = UIAlertController(
-			title: LocalizedString.newCollectionAlertTitle,
+			title: FeatureFlag.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextFieldForCollectionTitle(defaultTitle: suggestedTitle)

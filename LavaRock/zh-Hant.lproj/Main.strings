@@ -4,9 +4,6 @@
 /* Class = "UILabel"; text = "Loading…"; ObjectID = "67e-Ol-SlR"; */
 "67e-Ol-SlR.text" = "載入中⋯";
 
-/* Class = "UINavigationItem"; title = "Collections"; ObjectID = "aA7-bf-O8G"; */
-"aA7-bf-O8G.title" = "合集";
-
 /* Class = "UIBarButtonItem"; title = "Options"; ObjectID = "mpR-tt-C6X"; */
 "mpR-tt-C6X.title" = "選項";
 
@@ -18,9 +15,6 @@
 
 /* Class = "UILabel"; text = "Confirming…"; ObjectID = "RvL-wm-fb7"; */
 "RvL-wm-fb7.text" = "確認中⋯";
-
-/* Class = "UILabel"; text = "Add some music to your Apple Music library, or sync some music from your computer."; ObjectID = "w6S-PX-Sod"; */
-"w6S-PX-Sod.text" = "請將音樂加入您的Apple Music資料庫，或將音樂從您的電腦同步至您的裝置。";
 
 /* Class = "UILabel"; text = "No Albums"; ObjectID = "waM-mg-RNh"; */
 "waM-mg-RNh.text" = "沒有專輯";

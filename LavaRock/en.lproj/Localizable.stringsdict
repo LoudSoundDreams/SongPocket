@@ -18,7 +18,7 @@
 			<string>%lld More Songs</string>
 		</dict>
 	</dict>
-	<key>plural - move_albums_to</key>
+	<key>plural - move_albums_to_collection</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
@@ -32,6 +32,22 @@
 			<string>Choose a collection to move %lld album to.</string>
 			<key>other</key>
 			<string>Choose a collection to move %lld albums to.</string>
+		</dict>
+	</dict>
+	<key>plural - move_albums_to_section</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CHOOSE_A_SECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
+		<key>CHOOSE_A_SECTION_TO_MOVE_NUMBER_ALBUMS_TO</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>Choose a section to move %lld album to.</string>
+			<key>other</key>
+			<string>Choose a section to move %lld albums to.</string>
 		</dict>
 	</dict>
 </dict>

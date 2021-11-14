@@ -86,7 +86,7 @@ extension CollectionsViewModel {
 		let indexOfCombinedCollection = indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
 		let combinedCollection = Collection( // SIDE EFFECT
 			combining_withoutDeletingOrReindexing: selectedCollections,
-			title: LocalizedString.combinedCollectionDefaultTitle,
+			title: LocalizedString.combinedSectionDefaultTitle,
 			index: Int64(indexOfCombinedCollection),
 			context: context)
 		// WARNING: We still need to delete empty Collections and reindex all Collections.
@@ -116,7 +116,7 @@ extension CollectionsViewModel {
 		suggestedTitle: String?
 	) -> (Self, IndexPath) {
 		let newCollection = Collection(context: context)
-		newCollection.title = suggestedTitle ?? LocalizedString.newCollectionDefaultTitle
+		newCollection.title = suggestedTitle ?? (FeatureFlag.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
 		// When we call setItemsAndMoveRows, the property observer will set the "index" attribute of each Collection for us.
 		
 		var newItems = group.items

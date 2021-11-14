@@ -12,10 +12,10 @@ extension AlbumsTVC {
 	
 	final func moveOrOrganizeMenu() -> UIMenu {
 		let organizeAction = UIAction(
-			title: "Organize Into New Collections…", // TO DO: Localize
+			title: LocalizedString.organizeIntoNewSections,
 			handler: { _ in self.startOrganizingAlbums() })
 		let moveAction = UIAction(
-			title: "Move To…", // TO DO: Localize
+			title: LocalizedString.moveTo,
 			handler: { _ in self.startMovingAlbums() })
 		return UIMenu(children: [
 			organizeAction,
