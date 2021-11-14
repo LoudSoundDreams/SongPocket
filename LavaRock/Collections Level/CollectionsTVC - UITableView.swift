@@ -20,54 +20,17 @@ extension CollectionsTVC {
 	}
 	
 	final func numberOfRows(forSection section: Int) -> Int {
-		func numberOfRowsForCollectionsSection() -> Int {
-			switch viewState {
-			case
-					.allowAccess,
-					.loading:
-				return 1
-			case .wasLoadingOrNoCollections:
-				return 0
-			case .noCollections:
-				return 2
-			case .someCollections:
-				return viewModel.numberOfRows(forSection: section)
-			}
-		}
-		
-		if FeatureFlag.allRow {
-			guard let sectionCase = Section(rawValue: section) else {
-				return 0
-			}
-			switch sectionCase {
-			case .all:
-				return 1
-			case .collections:
-				return numberOfRowsForCollectionsSection()
-			}
-		} else {
-			return numberOfRowsForCollectionsSection()
-		}
-	}
-	
-	// MARK: - Headers
-	
-	final override func tableView(
-		_ tableView: UITableView,
-		titleForHeaderInSection section: Int
-	) -> String? {
-		if FeatureFlag.allRow {
-			guard let sectionCase = Section(rawValue: section) else {
-				return nil
-			}
-			switch sectionCase {
-			case .all:
-				return nil
-			case .collections:
-				return LocalizedString.collections
-			}
-		} else {
-			return nil
+		switch viewState {
+		case
+				.allowAccess,
+				.loading:
+			return 1
+		case .wasLoadingOrNoCollections:
+			return 0
+		case .noCollections:
+			return 2
+		case .someCollections:
+			return viewModel.numberOfRows(forSection: section)
 		}
 	}
 	
@@ -77,80 +40,33 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		func cellForCollectionsSection() -> UITableViewCell {
-			switch viewState {
-			case .allowAccess:
-				return tableView.dequeueReusableCell(
-					withIdentifier: "Allow Access",
-					for: indexPath) as? AllowAccessCell ?? UITableViewCell()
-			case .loading:
-				return tableView.dequeueReusableCell(
-					withIdentifier: "Loading",
-					for: indexPath) as? LoadingCell ?? UITableViewCell()
-			case .wasLoadingOrNoCollections: // Should never run
-				return UITableViewCell()
-			case .noCollections:
-				switch indexPath.row {
-				case 0:
-					return tableView.dequeueReusableCell(
-						withIdentifier: "No Collections",
-						for: indexPath) as? NoCollectionsPlaceholderCell ?? UITableViewCell()
-				case 1:
-					return tableView.dequeueReusableCell(
-						withIdentifier: "Open Music",
-						for: indexPath) as? OpenMusicCell ?? UITableViewCell()
-				default: // Should never run
-					return UITableViewCell()
-				}
-			case .someCollections:
-				return collectionCell(forRowAt: indexPath)
-			}
-		}
-		
-		if FeatureFlag.allRow {
-			guard let sectionCase = Section(rawValue: indexPath.section) else {
-				return UITableViewCell()
-			}
-			switch sectionCase {
-			case .all:
-				return allCell(forRowAt: indexPath)
-			case .collections:
-				return cellForCollectionsSection()
-			}
-		} else {
-			return cellForCollectionsSection()
-		}
-	}
-	
-	private func allCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "These Collections",
-			for: indexPath) as? TheseContainersCell
-		else {
+		switch viewState {
+		case .allowAccess:
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Allow Access",
+				for: indexPath) as? AllowAccessCell ?? UITableViewCell()
+		case .loading:
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Loading",
+				for: indexPath) as? LoadingCell ?? UITableViewCell()
+		case .wasLoadingOrNoCollections: // Should never run
 			return UITableViewCell()
-		}
-		
-		if albumMoverClipboard != nil {
-			cell.configure(mode: .disabledWithDisclosureIndicator)
-		} else {
-			if isEditing {
-				cell.configure(mode: .disabledWithNoDisclosureIndicator)
-			} else {
-				switch viewState {
-				case
-						.allowAccess,
-						.loading,
-						.noCollections:
-					cell.configure(mode: .disabledWithDisclosureIndicator)
-				case
-						.wasLoadingOrNoCollections, // This isn't strictly correct, because it (imperceptibly briefly) enables the row if `refreshLibraryItems` still leaves us with `viewState == .noCollections`. However, if `refreshLibraryItems` does leave us with `viewState == .someCollections`, we should enable the row at the beginning of the table view animation.
-						.someCollections:
-					cell.configure(mode: .enabled)
-				}
+		case .noCollections:
+			switch indexPath.row {
+			case 0:
+				return tableView.dequeueReusableCell(
+					withIdentifier: "No Collections",
+					for: indexPath) as? NoCollectionsPlaceholderCell ?? UITableViewCell()
+			case 1:
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Open Music",
+					for: indexPath) as? OpenMusicCell ?? UITableViewCell()
+			default: // Should never run
+				return UITableViewCell()
 			}
+		case .someCollections:
+			return collectionCell(forRowAt: indexPath)
 		}
-		
-		return cell
 	}
 	
 	private func collectionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -231,31 +147,15 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
-		func canSelectInCollectionsSection() -> IndexPath? {
-			switch viewState {
-			case
-					.allowAccess,
-					.loading, // Should never run
-					.wasLoadingOrNoCollections, // Should never run
-					.noCollections: // Should never run for `NoCollectionsPlaceholderCell`
-				return indexPath
-			case .someCollections:
-				return super.tableView(tableView, willSelectRowAt: indexPath)
-			}
-		}
-		
-		if FeatureFlag.allRow {
-			guard let sectionCase = Section(rawValue: indexPath.section) else {
-				return nil
-			}
-			switch sectionCase {
-			case .all:
-				return indexPath // `TheseContainersCell` controls its own `isUserInteractionEnabled`.
-			case .collections:
-				return canSelectInCollectionsSection()
-			}
-		} else {
-			return canSelectInCollectionsSection()
+		switch viewState {
+		case
+				.allowAccess,
+				.loading, // Should never run
+				.wasLoadingOrNoCollections, // Should never run
+				.noCollections: // Should never run for `NoCollectionsPlaceholderCell`
+			return indexPath
+		case .someCollections:
+			return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
 	}
 	

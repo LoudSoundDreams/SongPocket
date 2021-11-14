@@ -7,19 +7,21 @@
 
 import CoreData
 
-protocol LibraryItem {
+protocol LibraryItem: NSManagedObject {
 	var libraryTitle: String? { get }
 	var index: Int64 { get set }
 }
 
-protocol LibraryContainer {
+protocol LibraryContainer: LibraryItem {
 	var contents: NSSet? { get set }
 }
 
 extension LibraryContainer {
-	
 	func isEmpty() -> Bool {
 		return contents == nil || contents?.count == 0
 	}
 	
+	func wasDeleted() -> Bool {
+		return managedObjectContext == nil
+	}
 }

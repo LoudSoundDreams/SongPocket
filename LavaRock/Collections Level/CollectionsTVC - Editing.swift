@@ -10,17 +10,6 @@ import CoreData
 
 extension CollectionsTVC {
 	
-	// Similar to counterpart in `AlbumsTVC`.
-	final override func setEditing(_ editing: Bool, animated: Bool) {
-		super.setEditing(editing, animated: animated)
-		
-		if FeatureFlag.allRow {
-			reloadAllRow(with: .fade) // Reload the row manually, because we return `false` in `canEditRowAt`. That's the only way to disable checkmark selection for certain rows in a table view, but not others. Unfortunately, that means that we need to reload the row manually when we enter and exit editing mode, but this is also the only way to get the `fade` animation anyway.
-			// As of iOS 15.2 developer beta 1, `.fade` makes the old row disappear instantly without an animation (while fading in the new row), which looks terrible.
-			// For some reason, the exact same thing in `AlbumsTVC.setEditing` looks right, sometimes.
-		}
-	}
-	
 	// MARK: - Renaming
 	
 	// Match presentDialogToMakeNewCollection and presentDialogToCombineCollections.

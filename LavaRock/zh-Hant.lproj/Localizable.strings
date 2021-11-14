@@ -10,8 +10,8 @@
 /* Section footer */
 "[footer] options_tip_jar" = "您好！我是H。當我新增您喜歡的功能時，您的贊助可以支持我改進Songpocket。";
 
-/* Placeholder for when the app has no collections */
-"[placeholder] no_collections" = "請將音樂加入您的Apple Music資料庫，或從您的電腦同步音樂。";
+/* Placeholder for when the app's database is empty */
+"[placeholder] empty_database" = "請將音樂加入您的Apple Music資料庫，或從您的電腦同步音樂。";
 
 /* Section header */
 "Accent Color" = "強調顏色";
@@ -19,7 +19,7 @@
 /* Accessibility label */
 "Album artwork" = "專輯插圖";
 
-/* Section header */
+/* Big title */
 "Albums" = "專輯";
 
 /* Button */
@@ -31,7 +31,7 @@
 /* Button */
 "Cancel" = "取消";
 
-/* Section header */
+/* Big title */
 "Collections" = "合集";
 
 /* Button */
@@ -42,9 +42,6 @@
 
 /* Accent color */
 "Grape" = "葡萄";
-
-/* Large title */
-"Library" = "資料庫";
 
 /* Accent color */
 "Lime" = "萊姆";
@@ -98,16 +95,10 @@
 "Play" = "播放";
 
 /* Button */
-"Play All Starting Here" = "從此歌曲播放";
-
-/* Button */
 "Play Rest of Album" = "播放至專輯結尾";
 
 /* Button */
 "Previous track" = "上一個音軌";
-
-/* Button */
-"Queue All Starting Here" = "從此歌曲待播";
 
 /* Button */
 "Queue Rest of Album" = "待播至專輯結尾";
@@ -132,6 +123,9 @@
 
 /* Button */
 "Save" = "儲存";
+
+/* Big title */
+"Songs" = "歌曲";
 
 /* Button */
 "Sort" = "排序";

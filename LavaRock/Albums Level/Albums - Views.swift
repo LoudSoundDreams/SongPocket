@@ -59,17 +59,17 @@ final class AlbumCell: UITableViewCell {
 		
 		switch mode {
 		case .normal:
-			if FeatureFlag.allRow {
+			if FeatureFlag.multicollection {
 				backgroundColor = nil
 			}
 			accessoryType = .disclosureIndicator
 		case .movingAlbumsModeAndNotBeingMoved:
-			if FeatureFlag.allRow {
+			if FeatureFlag.multicollection {
 				backgroundColor = nil
 			}
 			accessoryType = .none
 		case .movingAlbumsModeAndBeingMoved:
-			if FeatureFlag.allRow {
+			if FeatureFlag.multicollection {
 				backgroundColor = .tintColorTranslucent_compatibleWithiOS14(self)
 			}
 			accessoryType = .none

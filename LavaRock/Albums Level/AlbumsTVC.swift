@@ -16,21 +16,6 @@ final class AlbumsTVC:
 	NoItemsBackgroundManager
 {
 	
-	enum SectionKind { // It'd be nice if raw values could be of type `Int?`.
-		case all
-		case groupOfAlbums
-		
-		static let valueForCaseAll = 0
-		
-		init(forSection section: Int) {
-			if section == Self.valueForCaseAll {
-				self = .all
-			} else {
-				self = .groupOfAlbums
-			}
-		}
-	}
-	
 	// MARK: - Properties
 	
 	// Controls
@@ -113,19 +98,9 @@ final class AlbumsTVC:
 	
 	// MARK: - Refreshing UI
 	
-	final func reloadAllRow(with animation: UITableView.RowAnimation) {
-		tableView.reloadSections([SectionKind.valueForCaseAll], with: animation)
-	}
-	
 	final override func reflectViewModelIsEmpty() {
-		if FeatureFlag.allRow {
-			let toDelete = tableView.allSections().filter { $0 != SectionKind.valueForCaseAll }
-			deleteThenExit(sections: toDelete)
-			reloadAllRow(with: .none)
-		} else {
-			let toDelete = tableView.allSections()
-			deleteThenExit(sections: toDelete)
-		}
+		let toDelete = tableView.allSections()
+		deleteThenExit(sections: toDelete)
 	}
 	
 	final override func refreshEditingButtons() {
@@ -163,15 +138,21 @@ final class AlbumsTVC:
 		else { return }
 		
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-		if selectedCell is TheseContainersCell {
-			songsTVC.viewModel = SongsViewModel(
-				viewContainer: viewModel.viewContainer,
-				context: viewModel.context)
-		} else if selectedCell is AlbumCell {
-			let album = albumsViewModel.item(at: selectedIndexPath) as! Album
-			songsTVC.viewModel = SongsViewModel(
-				viewContainer: .album(album),
-				context: viewModel.context)
+		if selectedCell is AlbumCell {
+			if FeatureFlag.multialbum {
+//				let album = albumsViewModel.item(at: selectedIndexPath) as! Album
+				// TO DO: Make the `SongsTVC` scroll to the section for the selected `Album` before it appears.
+				
+				
+				songsTVC.viewModel = SongsViewModel(
+					viewContainer: .library,
+					context: viewModel.context)
+			} else {
+				let album = albumsViewModel.item(at: selectedIndexPath) as! Album
+				songsTVC.viewModel = SongsViewModel(
+					viewContainer: .container(album),
+					context: viewModel.context)
+			}
 		}
 	}
 	

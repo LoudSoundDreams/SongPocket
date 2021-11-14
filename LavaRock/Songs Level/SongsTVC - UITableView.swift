@@ -51,13 +51,8 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
 	) -> String? {
-		if FeatureFlag.allRow {
-			if viewModel.viewContainerIsSpecific {
-				return nil
-			} else {
-				// The user tapped "All" at some point to get here, so use container titles for each group of `Song`s.
-				return (viewModel as? SongsViewModel)?.album(forSection: section).titleFormattedOptional()
-			}
+		if FeatureFlag.multialbum {
+			return (viewModel as? SongsViewModel)?.album(forSection: section).titleFormattedOrPlaceholder()
 		} else {
 			return nil
 		}

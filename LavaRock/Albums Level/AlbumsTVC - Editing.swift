@@ -10,15 +10,6 @@ import CoreData
 
 extension AlbumsTVC {
 	
-	// Similar to counterpart in `CollectionsTVC`.
-	final override func setEditing(_ editing: Bool, animated: Bool) {
-		super.setEditing(editing, animated: animated)
-		
-		if FeatureFlag.allRow {
-			reloadAllRow(with: .fade)
-		}
-	}
-	
 	final func moveOrOrganizeMenu() -> UIMenu {
 		let organizeAction = UIAction(
 			title: "Organize Into New Collections…", // TO DO: Localize

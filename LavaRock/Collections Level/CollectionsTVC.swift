@@ -15,11 +15,6 @@ final class CollectionsTVC:
 	AlbumMover
 {
 	
-	enum Section: Int {
-		case all
-		case collections
-	}
-	
 	// MARK: - Properties
 	
 	// Actions
@@ -118,7 +113,7 @@ final class CollectionsTVC:
 		let toInsert: [IndexPath]
 		let toReloadInCollectionsSection: [IndexPath]
 		
-		let indexOfCollectionsSection = FeatureFlag.allRow ? Section.collections.rawValue : 0
+		let indexOfCollectionsSection = 0
 		let oldInCollectionsSection = tableView.indexPathsForRows(
 			inSection: indexOfCollectionsSection,
 			firstRow: 0)
@@ -160,9 +155,6 @@ final class CollectionsTVC:
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: toDelete, with: .middle)
 			tableView.insertRows(at: toInsert, with: .middle)
-			if FeatureFlag.allRow {
-				reloadAllRow(with: .none)
-			}
 			let animationForReload: UITableView.RowAnimation = toReloadInCollectionsSection.isEmpty ? .none : .fade
 			tableView.reloadRows(at: toReloadInCollectionsSection, with: animationForReload)
 		} completion: { _ in
@@ -288,10 +280,6 @@ final class CollectionsTVC:
 	
 	// MARK: - Refreshing UI
 	
-	final func reloadAllRow(with animation: UITableView.RowAnimation) {
-		tableView.reloadSections([Section.all.rawValue], with: animation)
-	}
-	
 	final override func reflectViewModelIsEmpty() {
 		reflectViewState()
 	}
@@ -323,15 +311,21 @@ final class CollectionsTVC:
 		albumsTVC.albumMoverClipboard = albumMoverClipboard
 		
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-		if selectedCell is TheseContainersCell {
-			albumsTVC.viewModel = AlbumsViewModel(
-				viewContainer: viewModel.viewContainer,
-				context: viewModel.context)
-		} else if selectedCell is CollectionCell {
-			let collection = viewModel.item(at: selectedIndexPath) as! Collection
-			albumsTVC.viewModel = AlbumsViewModel(
-				viewContainer: .collection(collection),
-				context: viewModel.context)
+		if selectedCell is CollectionCell {
+			if FeatureFlag.multicollection {
+//				let collection = viewModel.item(at: selectedIndexPath) as! Collection
+				// TO DO: Make the `AlbumsTVC` scroll to the section for the selected `Collection` before it appears.
+				
+				
+				albumsTVC.viewModel = AlbumsViewModel(
+					viewContainer: .library,
+					context: viewModel.context)
+			} else {
+				let collection = viewModel.item(at: selectedIndexPath) as! Collection
+				albumsTVC.viewModel = AlbumsViewModel(
+					viewContainer: .container(collection),
+					context: viewModel.context)
+			}
 		}
 	}
 	

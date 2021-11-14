@@ -21,29 +21,24 @@ extension SongsViewModel: LibraryViewModel {
 	static let numberOfRowsAboveLibraryItemsInEachSection = 2
 	
 	var viewContainerIsSpecific: Bool {
-		if FeatureFlag.allRow {
-			switch viewContainer {
-			case
-					.library,
-					.collection:
-				return false
-			case .album:
-				return true
-			case .deleted:
-				return false
-			}
-		} else {
-			return true
+		FeatureFlag.multialbum ? false : true
+	}
+	var navigationItemTitle: String {
+		switch viewContainer {
+		case .library:
+			return LocalizedString.songs
+		case
+				.container(let container),
+				.deleted(let container):
+			let album = container as! Album
+			return album.titleFormattedOrPlaceholder()
 		}
 	}
 	
-	// Identical to counterpart in `AlbumsViewModel`.
 	func refreshed() -> Self {
-		let wasDeleted = viewContainer.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
-		let newViewContainer: LibraryViewContainer = wasDeleted ? .deleted : viewContainer
-		
+		let refreshedViewContainer = viewContainer.refreshed()
 		return Self(
-			viewContainer: newViewContainer,
+			viewContainer: refreshedViewContainer,
 			context: context)
 	}
 }
@@ -64,10 +59,8 @@ extension SongsViewModel {
 				let allCollections = Collection.allFetched(context: context)
 				let allAlbums = allCollections.flatMap { $0.albums() }
 				return allAlbums
-			case .collection(let collection):
-				let albums = collection.albums()
-				return albums
-			case .album(let album):
+			case .container(let container):
+				let album = container as! Album
 				return [album]
 			case .deleted:
 				return []

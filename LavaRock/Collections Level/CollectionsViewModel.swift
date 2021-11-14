@@ -17,11 +17,14 @@ struct CollectionsViewModel {
 
 extension CollectionsViewModel: LibraryViewModel {
 	static let entityName = "Collection"
-	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
+	static let numberOfSectionsAboveLibraryItems = 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	var viewContainerIsSpecific: Bool {
 		return true
+	}
+	var navigationItemTitle: String {
+		FeatureFlag.multicollection ? LocalizedString.sections : LocalizedString.collections
 	}
 	
 	func refreshed() -> Self {

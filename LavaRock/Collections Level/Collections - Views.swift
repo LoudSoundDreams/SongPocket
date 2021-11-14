@@ -124,7 +124,7 @@ final class CollectionCell: UITableViewCell {
 		
 		switch mode {
 		case .normal:
-			if FeatureFlag.allRow {
+			if FeatureFlag.multicollection {
 				backgroundColor = nil
 			} else {
 				titleLabel.textColor = .label
@@ -132,7 +132,7 @@ final class CollectionCell: UITableViewCell {
 			}
 			accessibilityCustomActions = [renameFocusedCollectionAction]
 		case .movingAlbumsModeAndNotSourceOfAlbums:
-			if FeatureFlag.allRow {
+			if FeatureFlag.multicollection {
 				backgroundColor = nil
 			} else {
 				titleLabel.textColor = .label
@@ -140,7 +140,7 @@ final class CollectionCell: UITableViewCell {
 			}
 			accessibilityCustomActions = []
 		case .movingAlbumsModeAndSourceOfAlbums:
-			if FeatureFlag.allRow {
+			if FeatureFlag.multicollection {
 				backgroundColor = .tintColorTranslucent_compatibleWithiOS14(self)
 			} else {
 				titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.

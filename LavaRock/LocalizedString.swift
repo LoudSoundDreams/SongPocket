@@ -71,14 +71,14 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Collections View
 	
-	static let library = NSLocalizedString("Library", comment: "Large title")
-	static let collections = NSLocalizedString("Collections", comment: "Section header")
+	static let sections = NSLocalizedString("Sections", comment: "Big title")
+	static let collections = NSLocalizedString("Collections", comment: "Big title")
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let noCollectionsPlaceholder = NSLocalizedString(
-		"[placeholder] no_collections",
+		"[placeholder] empty_database",
 		value: "Add some music to your Apple Music library, or sync some music from your computer.",
-		comment: "Placeholder for when the app has no collections")
+		comment: "Placeholder for when the app's database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
 	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
@@ -101,7 +101,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Albums View
 	
-	static let albums = NSLocalizedString("Albums", comment: "Section header")
+	static let albums = NSLocalizedString("Albums", comment: "Big title")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
@@ -110,10 +110,10 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Songs View
 	
+	static let songs = NSLocalizedString("Songs", comment: "Big title")
+	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
-	static let playAllStartingHere = NSLocalizedString("Play All Starting Here", comment: "Button")
 	static let playRestOfAlbum = NSLocalizedString("Play Rest of Album", comment: "Button")
-	static let queueAllStartingHere = NSLocalizedString("Queue All Starting Here", comment: "Button")
 	static let queueRestOfAlbum = NSLocalizedString("Queue Rest of Album", comment: "Button")
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let didEnqueueSongsAlertMessage = NSLocalizedString(

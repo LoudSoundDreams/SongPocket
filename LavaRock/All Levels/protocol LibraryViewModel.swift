@@ -10,20 +10,21 @@ import CoreData
 
 enum LibraryViewContainer {
 	case library
-	case collection(Collection)
-	case album(Album)
-	case deleted
+	case container(LibraryContainer)
+	case deleted(LibraryContainer)
 	
-	func wasDeleted() -> Bool {
+	func refreshed() -> Self {
 		switch self {
 		case .library:
-			return false
-		case .collection(let collection):
-			return collection.managedObjectContext == nil
-		case .album(let album):
-			return album.managedObjectContext == nil
-		case .deleted:
-			return true
+			return .library
+		case .container(let container):
+			if container.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
+				return .deleted(container)
+			} else {
+				return .container(container)
+			}
+		case .deleted(let container):
+			return .deleted(container)
 		}
 	}
 }
@@ -34,30 +35,16 @@ protocol LibraryViewModel {
 	static var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
 	var viewContainer: LibraryViewContainer { get }
-	var viewContainerIsSpecific: Bool { get }
 	var context: NSManagedObjectContext { get }
-	
 	var groups: [GroupOfLibraryItems] { get set }
+	
+	var viewContainerIsSpecific: Bool { get }
+	var navigationItemTitle: String { get }
 	
 	func refreshed() -> Self
 }
 
 extension LibraryViewModel {
-	
-	var navigationItemTitle: String {
-		let defaultTitle = FeatureFlag.allRow ? LocalizedString.library : LocalizedString.collections
-		
-		switch viewContainer {
-		case .library:
-			return defaultTitle
-		case .collection(let collection):
-			return collection.libraryTitle ?? defaultTitle
-		case .album(let album):
-			return album.libraryTitle ?? defaultTitle
-		case .deleted:
-			return defaultTitle
-		}
-	}
 	
 	var onlyGroup: GroupOfLibraryItems? {
 		guard

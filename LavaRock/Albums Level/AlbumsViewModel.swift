@@ -17,33 +17,28 @@ struct AlbumsViewModel {
 
 extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
-	static let numberOfSectionsAboveLibraryItems = FeatureFlag.allRow ? 1 : 0
+	static let numberOfSectionsAboveLibraryItems = 0
 	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
 	var viewContainerIsSpecific: Bool {
-		if FeatureFlag.allRow {
-			switch viewContainer {
-			case .library:
-				return false
-			case .collection:
-				return true
-			case
-					.album,
-					.deleted:
-				return false
-			}
-		} else {
-			return true
+		FeatureFlag.multicollection ? false : true
+	}
+	var navigationItemTitle: String {
+		switch viewContainer {
+		case .library:
+			return LocalizedString.albums
+		case
+				.container(let container),
+				.deleted(let container):
+			let collection = container as! Collection
+			return collection.title ?? LocalizedString.albums
 		}
 	}
 	
-	// Identical to counterpart in `SongsViewModel`.
 	func refreshed() -> Self {
-		let wasDeleted = viewContainer.wasDeleted()
-		let newViewContainer: LibraryViewContainer = wasDeleted ? .deleted : viewContainer
-		
+		let refreshedViewContainer = viewContainer.refreshed()
 		return Self(
-			viewContainer: newViewContainer,
+			viewContainer: refreshedViewContainer,
 			context: context)
 	}
 }
@@ -63,10 +58,9 @@ extension AlbumsViewModel {
 			case .library:
 				let allCollections = Collection.allFetched(context: context)
 				return allCollections
-			case .collection(let collection):
+			case .container(let container):
+				let collection = container as! Collection
 				return [collection]
-			case .album:
-				fatalError("`AlbumsViewModel.init` with an `Album` for `viewContainer`.")
 			case .deleted:
 				return []
 			}
