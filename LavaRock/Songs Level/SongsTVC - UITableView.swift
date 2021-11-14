@@ -36,7 +36,6 @@ extension SongsTVC {
 //			return UITableViewCell()
 //		}
 //
-//		// Make, configure, and return the cell.
 //		guard let cell = tableView.dequeueReusableCell(
 //			withIdentifier: "Album Info")
 //				as? AlbumInfoCell
@@ -79,7 +78,6 @@ extension SongsTVC {
 			return UITableViewCell()
 		}
 		
-		// Make, configure, and return the cell.
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Album Artwork",
 			for: indexPath) as? AlbumArtworkCell
@@ -95,7 +93,6 @@ extension SongsTVC {
 			return UITableViewCell()
 		}
 		
-		// Make, configure, and return the cell.
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Album Info",
 			for: indexPath) as? AlbumInfoCell
@@ -146,8 +143,6 @@ extension SongsTVC {
 		let trackNumberString: String // Don't let this be nil.
 		= mediaItem?.trackNumberFormatted(includeDisc: shouldShowDiscNumbers)
 		?? MPMediaItem.placeholderTrackNumber
-		
-		// Make, configure, and return the cell.
 		
 		guard var cell = tableView.dequeueReusableCell(
 			withIdentifier: "Song",

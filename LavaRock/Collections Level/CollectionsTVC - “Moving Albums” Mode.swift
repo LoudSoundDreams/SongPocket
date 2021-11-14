@@ -11,15 +11,15 @@ import MediaPlayer
 
 extension CollectionsTVC {
 	
-	final func previewMakeNewCollectionAndPresentDialog() {
+	final func previewCreateCollectionAndPresentDialog() {
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
 			let albumMoverClipboard = albumMoverClipboard,
-			!albumMoverClipboard.didAlreadyMakeNewCollection // Without this, if you're fast, you can finish making a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
-				// You must reset didAlreadyMakeNewCollection = false both during reverting and if we exit the empty new Collection.
+			!albumMoverClipboard.didAlreadyCreateCollection // Without this, if you're fast, you can finish making a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
+				// You must reset didAlreadyCreateCollection = false both during reverting and if we exit the empty new Collection.
 		else { return }
 		
-		albumMoverClipboard.didAlreadyMakeNewCollection = true
+		albumMoverClipboard.didAlreadyCreateCollection = true
 		
 		let existingCollectionTitles = collectionsViewModel.group.items.compactMap {
 			($0 as? Collection)?.title
@@ -27,12 +27,12 @@ extension CollectionsTVC {
 		let suggestedTitle = albumMoverClipboard.suggestedCollectionTitle(
 			notMatching: Set(existingCollectionTitles),
 			context: collectionsViewModel.context)
-		previewMakeNewCollection(suggestedTitle: suggestedTitle) {
-			self.presentDialogToMakeNewCollection(suggestedTitle: suggestedTitle)
+		previewCreateCollection(suggestedTitle: suggestedTitle) {
+			self.presentDialogToCreateCollection(suggestedTitle: suggestedTitle)
 		}
 	}
 	
-	private func previewMakeNewCollection(
+	private func previewCreateCollection(
 		suggestedTitle: String?,
 		completion: (() -> Void)?
 	) {
@@ -54,7 +54,7 @@ extension CollectionsTVC {
 	}
 	
 	// Match presentDialogToRenameCollection and presentDialogToCombineCollections.
-	private func presentDialogToMakeNewCollection(suggestedTitle: String?) {
+	private func presentDialogToCreateCollection(suggestedTitle: String?) {
 		let dialog = UIAlertController(
 			title: FeatureFlag.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
 			message: nil,
@@ -62,7 +62,7 @@ extension CollectionsTVC {
 		dialog.addTextFieldForCollectionTitle(defaultTitle: suggestedTitle)
 		
 		let cancelAction = UIAlertAction.cancel { _ in
-			self.revertMakeNewCollection()
+			self.revertCreateCollection()
 		}
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
@@ -80,13 +80,13 @@ extension CollectionsTVC {
 		present(dialog, animated: true)
 	}
 	
-	final func revertMakeNewCollection() {
+	final func revertCreateCollection() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			let collectionsViewModel = viewModel as? CollectionsViewModel
 		else { return }
 		
-		albumMoverClipboard.didAlreadyMakeNewCollection = false
+		albumMoverClipboard.didAlreadyCreateCollection = false
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		

@@ -34,7 +34,6 @@ extension AlbumsTVC {
 //	) -> UIView? {
 //
 //
-//		// Make, configure, and return the cell.
 //		guard let cell = tableView.dequeueReusableCell(
 //			withIdentifier: "Album Group Header")
 //				//				as?
@@ -76,8 +75,6 @@ extension AlbumsTVC {
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
-		
-		// Make, configure, and return the cell.
 		
 		guard var cell = tableView.dequeueReusableCell(
 			withIdentifier: "Album",

@@ -12,7 +12,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Renaming
 	
-	// Match presentDialogToMakeNewCollection and presentDialogToCombineCollections.
+	// Match presentDialogToCreateCollection and presentDialogToCombineCollections.
 	final func presentDialogToRenameCollection(at indexPath: IndexPath) {
 		guard let collection = viewModel.item(at: indexPath) as? Collection else { return }
 		
@@ -71,7 +71,7 @@ extension CollectionsTVC {
 	final func previewCombineSelectedCollectionsAndPresentDialog() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
-			!isPreviewingCombineCollections, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyMakeNewCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
+			!isPreviewingCombineCollections, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCreateCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
 			// You must reset groupOfCollectionsBeforeCombining = nil during both reverting and committing.
 			let indexPathOfCombinedCollection = selectedIndexPaths.first
 		else { return }
@@ -113,7 +113,7 @@ extension CollectionsTVC {
 		 */
 	}
 	
-	// Match presentDialogToRenameCollection and presentDialogToMakeNewCollection.
+	// Match presentDialogToRenameCollection and presentDialogToCreateCollection.
 	private func presentDialogToCombineCollections(
 		from originalSelectedIndexPaths: [IndexPath],
 		into indexPathOfCombinedCollection: IndexPath

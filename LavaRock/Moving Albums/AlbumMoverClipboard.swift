@@ -32,7 +32,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	final weak var delegate: AlbumMoverDelegate?
 	
 	// State
-	final var didAlreadyMakeNewCollection = false
+	final var didAlreadyCreateCollection = false
 	final var didAlreadyCommitMoveAlbums = false
 	
 	init(

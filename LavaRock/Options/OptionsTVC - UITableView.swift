@@ -113,7 +113,6 @@ extension OptionsTVC {
 		let indexOfAccentColor = indexPath.row
 		let accentColor = AccentColor.all[indexOfAccentColor]
 		
-		// Make, configure, and return the cell.
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Accent Color",
 			for: indexPath) as? AccentColorCell

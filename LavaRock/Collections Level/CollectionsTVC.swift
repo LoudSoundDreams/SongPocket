@@ -76,8 +76,8 @@ final class CollectionsTVC:
 	// MARK: "Moving Albums" Mode
 	
 	// Controls
-	private lazy var makeNewCollectionButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.previewMakeNewCollectionAndPresentDialog() }
+	private lazy var createCollectionButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.previewCreateCollectionAndPresentDialog() }
 		return UIBarButtonItem(
 			systemItem: .add,
 			primaryAction: action)
@@ -223,7 +223,7 @@ final class CollectionsTVC:
 			topRightButtons = [cancelMoveAlbumsButton]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
-				makeNewCollectionButton,
+				createCollectionButton,
 				.flexibleSpace(),
 			]
 		} else {
@@ -272,7 +272,7 @@ final class CollectionsTVC:
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		if albumMoverClipboard != nil {
-			revertMakeNewCollection()
+			revertCreateCollection()
 		}
 		
 		super.viewDidAppear(animated)

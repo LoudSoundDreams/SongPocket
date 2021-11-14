@@ -81,8 +81,6 @@ extension CollectionsTVC {
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
 		
-		// Make, configure, and return the cell.
-		
 		guard var cell = tableView.dequeueReusableCell(
 			withIdentifier: "Collection",
 			for: indexPath) as? CollectionCell
