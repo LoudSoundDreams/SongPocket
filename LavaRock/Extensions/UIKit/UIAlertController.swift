@@ -9,12 +9,10 @@ import UIKit
 
 extension UIAlertController {
 	
-	final func addTextFieldForCollectionTitle(
-		defaultTitle: String?
-	) {
+	final func addTextFieldForRenamingCollection(withText textFieldText: String?) {
 		addTextField { textField in
 			// UITextField
-			textField.text = defaultTitle
+			textField.text = textFieldText
 			textField.placeholder = LocalizedString.title
 			textField.clearButtonMode = .whileEditing
 			

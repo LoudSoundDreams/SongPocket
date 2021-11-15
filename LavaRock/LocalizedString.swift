@@ -78,7 +78,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let emptyDatabasePlaceholder = NSLocalizedString(
 		"[placeholder] empty_database",
 		value: "Add some music to your Apple Music library, or sync some music from your computer.",
-		comment: "Placeholder for when the app's database is empty")
+		comment: "Placeholder for when the app’s database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
 	static let title = NSLocalizedString("Title", comment: "The word for the name of a section, album, or song. Also the name of a sort option.")

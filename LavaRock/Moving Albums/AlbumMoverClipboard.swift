@@ -46,7 +46,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		self.delegate = delegate
 	}
 	
-	final func suggestedCollectionTitle(
+	final func smartCollectionTitle(
 		notMatching existingTitles: Set<String>,
 		context: NSManagedObjectContext
 	) -> String? {
@@ -55,7 +55,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		}
 		for albumMetadataKeyPath in Self.albumMetadataKeyPathsForSuggestingCollectionTitle {
 			if
-				let suggestion = suggestedCollectionTitle(
+				let suggestion = smartCollectionTitle(
 					albumMetadataKeyPath: albumMetadataKeyPath,
 					albums: albums,
 					context: context),
@@ -67,7 +67,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		return nil
 	}
 	
-	private func suggestedCollectionTitle(
+	private func smartCollectionTitle(
 		albumMetadataKeyPath: KeyPath<MPMediaItem, String?>,
 		albums: [Album],
 		context: NSManagedObjectContext

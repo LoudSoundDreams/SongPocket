@@ -24,22 +24,22 @@ extension CollectionsTVC {
 		let existingCollectionTitles = collectionsViewModel.group.items.compactMap {
 			($0 as? Collection)?.title
 		}
-		let suggestedTitle = albumMoverClipboard.suggestedCollectionTitle(
+		let smartTitle = albumMoverClipboard.smartCollectionTitle(
 			notMatching: Set(existingCollectionTitles),
 			context: collectionsViewModel.context)
-		previewCreateCollection(suggestedTitle: suggestedTitle) {
-			self.presentDialogToCreateCollection(suggestedTitle: suggestedTitle)
+		previewCreateCollection(smartTitle: smartTitle) {
+			self.presentDialogToCreateCollection(smartTitle: smartTitle)
 		}
 	}
 	
 	private func previewCreateCollection(
-		suggestedTitle: String?,
+		smartTitle: String?,
 		completion: (() -> Void)?
 	) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let (newViewModel, indexPathOfNewCollection) = collectionsViewModel.updatedAfterCreatingNewCollectionInOnlyGroup(
-			suggestedTitle: suggestedTitle)
+		let (newViewModel, indexPathOfNewCollection) = collectionsViewModel.updatedAfterCreatingCollectionInOnlyGroup(
+			smartTitle: smartTitle)
 		
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(
@@ -54,12 +54,12 @@ extension CollectionsTVC {
 	}
 	
 	// Match presentDialogToRenameCollection and presentDialogToCombineCollections.
-	private func presentDialogToCreateCollection(suggestedTitle: String?) {
+	private func presentDialogToCreateCollection(smartTitle: String?) {
 		let dialog = UIAlertController(
 			title: FeatureFlag.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
 			message: nil,
 			preferredStyle: .alert)
-		dialog.addTextFieldForCollectionTitle(defaultTitle: suggestedTitle)
+		dialog.addTextFieldForRenamingCollection(withText: smartTitle)
 		
 		let cancelAction = UIAlertAction.cancel { _ in
 			self.revertCreateCollection()
@@ -69,8 +69,7 @@ extension CollectionsTVC {
 			style: .default
 		) { _ in
 			let proposedTitle = dialog.textFields?.first?.text
-			self.renameAndOpenNewCollection(
-				proposedTitle: proposedTitle)
+			self.renameAndOpenNewCollection(proposedTitle: proposedTitle)
 		}
 		
 		dialog.addAction(cancelAction)
@@ -98,12 +97,12 @@ extension CollectionsTVC {
 		
 		let indexPath = collectionsViewModel.indexPathOfNewCollection
 		
-		let didChangeTitle = collectionsViewModel.rename(
+		let didRename = collectionsViewModel.didRename(
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		
 		tableView.performBatchUpdates {
-			if didChangeTitle {
+			if didRename {
 				tableView.reloadRows(at: [indexPath], with: .fade)
 			}
 		} completion: { _ in

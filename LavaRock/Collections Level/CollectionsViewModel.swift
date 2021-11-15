@@ -59,15 +59,17 @@ extension CollectionsViewModel {
 	
 	// Return value: whether this method changed the Collection's title.
 	// Works for renaming an existing Collection, after combining Collections, and after making a new Collection.
-	func rename(
+	func didRename(
 		at indexPath: IndexPath,
 		proposedTitle: String?
 	) -> Bool {
 		guard let collection = item(at: indexPath) as? Collection else {
 			return false
 		}
-		let didChangeTitle = collection.rename(toProposedTitle: proposedTitle)
-		return didChangeTitle
+		let oldTitle = collection.title
+		collection.tryToRename(proposedTitle: proposedTitle)
+		let newTitle = collection.title
+		return oldTitle != newTitle
 	}
 	
 //	func isPreviewingCombineCollections() -> Bool {
@@ -112,11 +114,11 @@ extension CollectionsViewModel {
 			indexOfGroup: Self.indexOfOnlyGroup)
 	}
 	
-	func updatedAfterCreatingNewCollectionInOnlyGroup(
-		suggestedTitle: String?
+	func updatedAfterCreatingCollectionInOnlyGroup(
+		smartTitle: String?
 	) -> (Self, IndexPath) {
 		let newCollection = Collection(context: context)
-		newCollection.title = suggestedTitle ?? (FeatureFlag.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
+		newCollection.title = smartTitle ?? (FeatureFlag.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
 		// When we call setItemsAndMoveRows, the property observer will set the "index" attribute of each Collection for us.
 		
 		var newItems = group.items

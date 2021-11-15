@@ -121,7 +121,7 @@ extension Collection {
 	}
 	
 	// Works even if any of the Albums are already in this Collection.
-	func moveHere(
+	final func moveHere(
 		albumsWith albumIDs: [NSManagedObjectID],
 		context: NSManagedObjectContext
 	) {
@@ -151,22 +151,14 @@ extension Collection {
 	
 	// MARK: - Renaming
 	
-	// Return value: whether this method changed this Collection's title.
-	// This method won't rename this Collection if validatedTitleOptional returns nil.
-	func rename(toProposedTitle proposedTitle: String?) -> Bool {
-		let oldTitle = title
-		if let newTitle = Self.validatedTitleOptional(fromProposedTitle: proposedTitle) {
+	final func tryToRename(proposedTitle: String?) {
+		if let newTitle = Self.validatedTitleIfPossible(proposedTitle: proposedTitle) {
 			title = newTitle
 		}
-		let didChangeTitle = oldTitle != title
-		
-		return didChangeTitle
 	}
 	
 	// Returns nil if proposedTitle is nil or "".
-	private static func validatedTitleOptional(
-		fromProposedTitle proposedTitle: String?
-	) -> String? {
+	private static func validatedTitleIfPossible(proposedTitle: String?) -> String? {
 		guard
 			let proposedTitle = proposedTitle,
 			proposedTitle != ""

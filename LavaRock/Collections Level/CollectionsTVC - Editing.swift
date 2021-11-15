@@ -22,7 +22,7 @@ extension CollectionsTVC {
 			title: FeatureFlag.multicollection ? LocalizedString.renameSectionAlertTitle : LocalizedString.renameCollectionAlertTitle,
 			message: nil,
 			preferredStyle: .alert)
-		dialog.addTextFieldForCollectionTitle(defaultTitle: collection.title)
+		dialog.addTextFieldForRenamingCollection(withText: collection.title)
 		
 		let cancelAction = UIAlertAction.cancel(handler: nil)
 		let saveAction = UIAlertAction(
@@ -52,13 +52,13 @@ extension CollectionsTVC {
 	) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let didChangeTitle = collectionsViewModel.rename(
+		let didRename = collectionsViewModel.didRename(
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		
 		collectionsViewModel.context.tryToSave()
 		
-		if didChangeTitle {
+		if didRename {
 			tableView.reloadRows(at: [indexPath], with: .fade)
 		}
 		if thenSelectRow {
@@ -122,7 +122,7 @@ extension CollectionsTVC {
 			title: LocalizedString.combineSectionsAlertTitle,
 			message: nil,
 			preferredStyle: .alert)
-		dialog.addTextFieldForCollectionTitle(defaultTitle: nil)
+		dialog.addTextFieldForRenamingCollection(withText: nil)
 		
 		let cancelAction = UIAlertAction.cancel { _ in
 			self.revertCombineCollections(
@@ -182,7 +182,7 @@ extension CollectionsTVC {
 	) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let didChangeTitle = collectionsViewModel.rename(
+		let didRename = collectionsViewModel.didRename(
 			at: indexPathOfCombinedCollection,
 			proposedTitle: proposedTitle)
 		
@@ -192,7 +192,7 @@ extension CollectionsTVC {
 		
 		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
 		
-		if didChangeTitle {
+		if didRename {
 			tableView.reloadRows(at: [indexPathOfCombinedCollection], with: .fade)
 		}
 		tableView.selectRow(at: indexPathOfCombinedCollection, animated: false, scrollPosition: .none)

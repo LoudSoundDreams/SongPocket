@@ -10,7 +10,7 @@
 /* Section footer */
 "[footer] options_tip_jar" = "您好！我是H。當我新增您喜歡的功能時，您的贊助可以支持我改進Songpocket。";
 
-/* Placeholder for when the app's database is empty */
+/* Placeholder for when the app’s database is empty */
 "[placeholder] empty_database" = "請將音樂加入您的Apple Music資料庫，或從您的電腦同步音樂。";
 
 /* Section header */
