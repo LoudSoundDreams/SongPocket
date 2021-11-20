@@ -313,9 +313,9 @@ final class CollectionsTVC:
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if selectedCell is CollectionCell {
 			if FeatureFlag.multicollection {
-//				let collection = viewModel.item(at: selectedIndexPath) as! Collection
-				// TO DO: Make the `AlbumsTVC` scroll to the section for the selected `Collection` before it appears.
-				
+				let collection = viewModel.item(at: selectedIndexPath) as! Collection
+				let indexOfSelectedCollection = collection.index
+				albumsTVC.indexOfOpenedCollection = Int(indexOfSelectedCollection)
 				
 				albumsTVC.viewModel = AlbumsViewModel(
 					viewContainer: .library,

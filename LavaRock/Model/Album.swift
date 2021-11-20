@@ -78,7 +78,7 @@ extension Album {
 	static func deleteAllEmpty_withoutReindex(
 		context: NSManagedObjectContext
 	) {
-		let allAlbums = Self.allFetched(ordered: false, context: context) // Use `ordered: true` if you ever make a variant of this method that does reindex the remaining Albums.
+		let allAlbums = allFetched(ordered: false, context: context) // Use `ordered: true` if you ever make a variant of this method that does reindex the remaining Albums.
 		
 		allAlbums.forEach { album in
 			if album.isEmpty() {

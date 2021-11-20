@@ -18,6 +18,9 @@ final class AlbumsTVC:
 	
 	// MARK: - Properties
 	
+	// NoItemsBackgroundManager
+	lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
+	
 	// Controls
 	private lazy var moveOrOrganizeButton = UIBarButtonItem(
 		title: LocalizedString.move,
@@ -29,8 +32,8 @@ final class AlbumsTVC:
 			primaryAction: action)
 	}()
 	
-	// NoItemsBackgroundManager
-	lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
+	// State
+	var indexOfOpenedCollection: Int? = nil
 	
 	// MARK: "Moving Albums" Mode
 	
@@ -95,6 +98,26 @@ final class AlbumsTVC:
 	
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
+	
+	final override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		if let collectionIndex = indexOfOpenedCollection {
+			indexOfOpenedCollection = nil
+			let sectionToAppearAt = AlbumsViewModel.numberOfSectionsAboveLibraryItems + collectionIndex
+			let indexPathToAppearAt = IndexPath(row: 0, section: sectionToAppearAt)
+			tableView.scrollToRow(at: indexPathToAppearAt, at: .top, animated: false)
+//			print("")
+//			print(tableView.adjustedContentInset)
+//			print(tableView.contentOffset)
+		}
+	}
+	
+//	final override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//		print("Scrolled.")
+//		print(tableView.adjustedContentInset)
+//		print(tableView.contentOffset)
+//	}
 	
 	// MARK: - Refreshing UI
 	

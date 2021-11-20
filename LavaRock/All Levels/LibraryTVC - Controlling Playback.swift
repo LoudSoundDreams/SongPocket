@@ -15,7 +15,7 @@ extension LibraryTVC {
 		
 		func configurePlayButton() {
 			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: "play.fill")
+				image: UIImage(systemName: "play.circle.fill")
 			) { _ in self.play() }
 //			playPauseButton.width = 10.0 // As of iOS 14.7.1, even when you set the width of each button manually, the "pause.fill" button is still narrower than the "play.fill" button.
 			playPauseButton.accessibilityLabel = LocalizedString.play
@@ -24,7 +24,7 @@ extension LibraryTVC {
 		
 		func configurePauseButton() {
 			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: "pause.fill")
+				image: UIImage(systemName: "pause.circle.fill")
 			) { _ in self.pause() }
 //			playPauseButton.width = 10.0
 			playPauseButton.accessibilityLabel = LocalizedString.pause

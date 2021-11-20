@@ -91,7 +91,7 @@ extension Collection {
 	}
 	
 	static func deleteAllEmpty(context: NSManagedObjectContext) {
-		var allCollections = Self.allFetched(context: context)
+		var allCollections = allFetched(context: context)
 		
 		allCollections.indices.reversed().forEach { index in
 			let collection = allCollections[index]

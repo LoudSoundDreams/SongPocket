@@ -17,8 +17,10 @@ extension UIColor {
 		}
 	}
 	
+	static let opacityForTranslucent: CGFloat = 1/16
+	
 	static func tintColorTranslucent_compatibleWithiOS14(_ view: UIView) -> UIColor {
-		return .tintColor_compatibleWithiOS14(view).withAlphaComponent(1/16)
+		return .tintColor_compatibleWithiOS14(view).withAlphaComponent(opacityForTranslucent)
 	}
 	
 }
