@@ -73,6 +73,10 @@ final class AlbumsTVC:
 		
 		super.setUpUI()
 		
+		if FeatureFlag.multicollection {
+			navigationItem.largeTitleDisplayMode = .never
+		}
+		
 		if let albumMoverClipboard = albumMoverClipboard {
 			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
 			
@@ -163,9 +167,8 @@ final class AlbumsTVC:
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if selectedCell is AlbumCell {
 			if FeatureFlag.multialbum {
-//				let album = albumsViewModel.item(at: selectedIndexPath) as! Album
-				// TO DO: Make the `SongsTVC` scroll to the section for the selected `Album` before it appears.
-				
+				let album = albumsViewModel.item(at: selectedIndexPath) as! Album
+				songsTVC.openedAlbum = album
 				
 				songsTVC.viewModel = SongsViewModel(
 					viewContainer: .library,

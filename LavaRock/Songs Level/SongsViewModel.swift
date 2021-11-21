@@ -74,6 +74,19 @@ extension SongsViewModel {
 		}
 	}
 	
+	// Time complexity: O(n), where "n" is the number of groups
+	func indexPath(for album: Album) -> IndexPath? {
+		if let indexOfMatchingGroup = groups.firstIndex(where: { group in
+			group.container?.objectID == album.objectID
+		}) {
+			return IndexPath(
+				row: 0,
+				section: Self.numberOfSectionsAboveLibraryItems + indexOfMatchingGroup)
+		} else {
+			return nil
+		}
+	}
+	
 	// Similar to `AlbumsViewModel.collection`.
 	func album(forSection section: Int) -> Album {
 		let group = group(forSection: section)

@@ -20,6 +20,9 @@ final class SongsTVC:
 	// NoItemsBackgroundManager
 	lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Songs Placeholder")
 	
+	// State
+	var openedAlbum: Album? = nil
+	
 	// MARK: - Setup
 	
 	required init?(coder: NSCoder) {
@@ -34,11 +37,28 @@ final class SongsTVC:
 	final override func setUpUI() {
 		super.setUpUI()
 		
+		if FeatureFlag.multialbum {
+			navigationItem.largeTitleDisplayMode = .never
+		}
+		
 		editingModeToolbarButtons = [
 			sortButton, .flexibleSpace(),
 			floatToTopButton, .flexibleSpace(),
 			sinkToBottomButton,
 		]
+	}
+	
+	// MARK: Setup Events
+	
+	final override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		if let album = openedAlbum {
+			openedAlbum = nil
+			if let indexPath = (viewModel as? SongsViewModel)?.indexPath(for: album) {
+				tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+			}
+		}
 	}
 	
 	// MARK: - Refreshing UI
