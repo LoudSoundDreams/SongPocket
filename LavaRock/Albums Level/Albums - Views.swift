@@ -70,7 +70,7 @@ final class AlbumCell: UITableViewCell {
 			accessoryType = .none
 		case .movingAlbumsModeAndBeingMoved:
 			if FeatureFlag.multicollection {
-				backgroundColor = .tintColorTranslucent_compatibleWithiOS14(self)
+				backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
 			}
 			accessoryType = .none
 		}

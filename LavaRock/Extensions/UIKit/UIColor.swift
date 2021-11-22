@@ -9,18 +9,17 @@ import UIKit
 
 extension UIColor {
 	
-	static func tintColor_compatibleWithiOS14(_ view: UIView) -> UIColor {
+	static func tintColor(ifiOS14 accentColor: AccentColor) -> UIColor {
 		if #available(iOS 15, *) {
 			return .tintColor
 		} else {
-			return view.tintColor
+			return accentColor.uiColor
 		}
 	}
 	
-	static let opacityForTranslucent: CGFloat = 1/16
-	
-	static func tintColorTranslucent_compatibleWithiOS14(_ view: UIView) -> UIColor {
-		return .tintColor_compatibleWithiOS14(view).withAlphaComponent(opacityForTranslucent)
+	private static let opacityForTranslucent: CGFloat = 1/16
+	static func tintColorTranslucent(ifiOS14 accentColor: AccentColor) -> UIColor {
+		return .tintColor(ifiOS14: accentColor).withAlphaComponent(opacityForTranslucent)
 	}
 	
 }

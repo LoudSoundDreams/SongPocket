@@ -21,7 +21,7 @@ final class AllowAccessCell: UITableViewCell {
 	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.allowAccessToMusic
-		configuration.textProperties.color = .tintColor_compatibleWithiOS14(self) // As of iOS 15.1 developer beta 3, `UIColor.tintColor` dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
+		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference()) // As of iOS 15.1 developer beta 3, `UIColor.tintColor` dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
 		// - `self.tintColor`dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
 		// - Don't use `AccentColor.savedPreference().uiColor` or `window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
 		// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although it is dimmed if you change `window.tintColor` later.
@@ -84,7 +84,7 @@ final class OpenMusicCell: UITableViewCell {
 	private func configure() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = LocalizedString.openMusic
-		configuration.textProperties.color = .tintColor_compatibleWithiOS14(self)
+		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
 		contentConfiguration = configuration
 	}
 	
@@ -141,7 +141,7 @@ final class CollectionCell: UITableViewCell {
 			accessibilityCustomActions = []
 		case .movingAlbumsModeAndSourceOfAlbums:
 			if FeatureFlag.multicollection {
-				backgroundColor = .tintColorTranslucent_compatibleWithiOS14(self)
+				backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
 			} else {
 				titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 				disableWithAccessibilityTrait()
