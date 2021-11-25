@@ -65,12 +65,12 @@ extension AlbumsTVC {
 	}
 	
 	private func albumCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let album = viewModel.item(at: indexPath) as? Album else {
+		guard let album = viewModel.itemNonNil(at: indexPath) as? Album else {
 			return UITableViewCell()
 		}
 		
 		// "Now playing" indicator
-		let isInPlayer = isInPlayer(libraryItemAt: indexPath)
+		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,

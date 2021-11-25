@@ -14,7 +14,7 @@ extension CollectionsTVC {
 	
 	// Match presentDialogToCreateCollection and presentDialogToCombineCollections.
 	final func presentDialogToRenameCollection(at indexPath: IndexPath) {
-		guard let collection = viewModel.item(at: indexPath) as? Collection else { return }
+		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
 		
 		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
 		

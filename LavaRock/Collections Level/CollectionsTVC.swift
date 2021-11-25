@@ -313,7 +313,7 @@ final class CollectionsTVC:
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if selectedCell is CollectionCell {
 			if FeatureFlag.multicollection {
-				let collection = viewModel.item(at: selectedIndexPath) as! Collection
+				let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
 				let indexOfSelectedCollection = collection.index
 				albumsTVC.indexOfOpenedCollection = Int(indexOfSelectedCollection)
 				
@@ -321,7 +321,7 @@ final class CollectionsTVC:
 					viewContainer: .library,
 					context: viewModel.context)
 			} else {
-				let collection = viewModel.item(at: selectedIndexPath) as! Collection
+				let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
 				albumsTVC.viewModel = AlbumsViewModel(
 					viewContainer: .container(collection),
 					context: viewModel.context)

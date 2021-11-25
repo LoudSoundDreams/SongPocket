@@ -23,7 +23,7 @@ extension NowPlayingIndicating {
 }
 
 protocol NowPlayingDetermining {
-	func isInPlayer(libraryItemAt indexPath: IndexPath) -> Bool
+	func isInPlayer(anyIndexPath: IndexPath) -> Bool
 }
 
 struct NowPlayingIndicator {

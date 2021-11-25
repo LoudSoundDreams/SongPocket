@@ -63,7 +63,7 @@ extension CollectionsViewModel {
 		at indexPath: IndexPath,
 		proposedTitle: String?
 	) -> Bool {
-		guard let collection = item(at: indexPath) as? Collection else {
+		guard let collection = itemNonNil(at: indexPath) as? Collection else {
 			return false
 		}
 		let oldTitle = collection.title
@@ -84,7 +84,7 @@ extension CollectionsViewModel {
 //		groupOfCollectionsBeforeCombining = group // SIDE EFFECT
 		
 		// Create the combined Collection.
-		let selectedCollections = selectedIndexPaths.compactMap { item(at: $0) as? Collection }
+		let selectedCollections = selectedIndexPaths.compactMap { itemNonNil(at: $0) as? Collection }
 		let indexOfCombinedCollection = indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
 		let combinedCollection = Collection( // SIDE EFFECT
 			combining_withoutDeletingOrReindexing: selectedCollections,

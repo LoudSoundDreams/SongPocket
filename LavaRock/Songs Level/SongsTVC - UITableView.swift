@@ -104,7 +104,7 @@ extension SongsTVC {
 	}
 	
 	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let song = viewModel.item(at: indexPath) as? Song else {
+		guard let song = viewModel.itemNonNil(at: indexPath) as? Song else {
 			return UITableViewCell()
 		}
 		
@@ -132,7 +132,7 @@ extension SongsTVC {
 		}()
 		
 		// "Now playing" indicator
-		let isInPlayer = isInPlayer(libraryItemAt: indexPath)
+		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
@@ -169,7 +169,7 @@ extension SongsTVC {
 		if isEditing {
 		} else {
 			if
-				let song = viewModel.item(at: indexPath) as? Song,
+				let song = viewModel.itemNonNil(at: indexPath) as? Song,
 				let selectedCell = tableView.cellForRow(at: indexPath)
 			{
 				showSongActions(for: song, popoverAnchorView: selectedCell)

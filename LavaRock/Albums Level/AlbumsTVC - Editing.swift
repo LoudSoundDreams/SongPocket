@@ -42,7 +42,7 @@ extension AlbumsTVC {
 		let indexPathsToMove = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		let idsOfAlbumsToMove = indexPathsToMove.map {
-			albumsViewModel.item(at: $0).objectID
+			albumsViewModel.itemNonNil(at: $0).objectID
 		}
 		let idsOfSourceCollections = Set(indexPathsToMove.map {
 			albumsViewModel.collection(forSection: $0.section).objectID

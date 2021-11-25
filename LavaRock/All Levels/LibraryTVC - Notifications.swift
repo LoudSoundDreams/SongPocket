@@ -61,9 +61,9 @@ extension LibraryTVC {
 		nowPlayingDetermining: NowPlayingDetermining
 	) {
 		let isPlaying = sharedPlayer?.playbackState == .playing
-		viewModel.indexPathsForAllItems().forEach { indexPath in
-			guard var cell = tableView.cellForRow(at: indexPath) as? NowPlayingIndicating else { return }
-			let isInPlayer = nowPlayingDetermining.isInPlayer(libraryItemAt: indexPath)
+		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
+			guard var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating else { return }
+			let isInPlayer = nowPlayingDetermining.isInPlayer(anyIndexPath: visibleIndexPath)
 			let indicator = NowPlayingIndicator(
 				isInPlayer: isInPlayer,
 				isPlaying: isPlaying)
@@ -115,7 +115,14 @@ extension LibraryTVC {
 			let newViewModel = viewModel.refreshed()
 			setViewModelAndMoveRows(newViewModel) {
 				self.refreshNavigationItemTitle()
-				self.tableView.reloadData() // Update the data within each row (and header), which might be outdated. This infamously has no animation, but we animated the deletes, inserts, and moves earlier, so here, it just changes the contents of the rows after they stop moving, which looks fine.
+				
+				// Update the data within each row (and header), which might be outdated.
+				// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
+				if #available(iOS 15, *) {
+					self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
+				} else {
+					self.tableView.reloadRows(at: self.tableView.indexPathsForVisibleRowsNonNil, with: .none)
+				}
 			}
 		}
 		

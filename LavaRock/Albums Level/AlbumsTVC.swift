@@ -167,14 +167,14 @@ final class AlbumsTVC:
 		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
 		if selectedCell is AlbumCell {
 			if FeatureFlag.multialbum {
-				let album = albumsViewModel.item(at: selectedIndexPath) as! Album
+				let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
 				songsTVC.openedAlbum = album
 				
 				songsTVC.viewModel = SongsViewModel(
 					viewContainer: .library,
 					context: viewModel.context)
 			} else {
-				let album = albumsViewModel.item(at: selectedIndexPath) as! Album
+				let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
 				songsTVC.viewModel = SongsViewModel(
 					viewContainer: .container(album),
 					context: viewModel.context)

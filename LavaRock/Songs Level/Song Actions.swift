@@ -105,7 +105,7 @@ extension SongsTVC {
 		sharedPlayer?.repeatMode = .none
 		sharedPlayer?.shuffleMode = .off
 		
-		sharedPlayer?.play() // Calls prepareToPlay auomatically
+		sharedPlayer?.play() // Calls `prepareToPlay` automatically
 	}
 	
 	private func enqueueAlbumStartingAtSelectedSong() {
@@ -137,7 +137,7 @@ extension SongsTVC {
 		}
 		
 		if
-			let selectedSong = viewModel.item(at: selectedIndexPath) as? Song,
+			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		{
 			let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
@@ -150,7 +150,7 @@ extension SongsTVC {
 	private func enqueueSelectedSong() {
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let selectedSong = viewModel.item(at: selectedIndexPath) as? Song,
+			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		else { return }
 		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])

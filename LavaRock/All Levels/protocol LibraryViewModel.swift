@@ -91,12 +91,6 @@ extension LibraryViewModel {
 		return Array(items[selectedIndexOfItemInGroup...])
 	}
 	
-	func item(at indexPath: IndexPath) -> NSManagedObject {
-		let items = group(forSection: indexPath.section).items
-		let indexOfItemInGroup = indexOfItemInGroup(forRow: indexPath.row)
-		return items[indexOfItemInGroup]
-	}
-	
 	func pointsToSomeItem(_ indexPath: IndexPath) -> Bool {
 		let indexOfGroup = indexOfGroup(forSection: indexPath.section)
 		guard 0 <= indexOfGroup, indexOfGroup < groups.count else {
@@ -108,6 +102,19 @@ extension LibraryViewModel {
 			return false
 		}
 		return true
+	}
+	
+	func itemOptional(at indexPath: IndexPath) -> NSManagedObject? {
+		guard pointsToSomeItem(indexPath) else {
+			return nil
+		}
+		return itemNonNil(at: indexPath)
+	}
+	
+	func itemNonNil(at indexPath: IndexPath) -> NSManagedObject {
+		let items = group(forSection: indexPath.section).items
+		let indexOfItemInGroup = indexOfItemInGroup(forRow: indexPath.row)
+		return items[indexOfItemInGroup]
 	}
 	
 	// MARK: Indices

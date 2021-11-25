@@ -70,12 +70,12 @@ extension CollectionsTVC {
 	}
 	
 	private func collectionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let collection = viewModel.item(at: indexPath) as? Collection else {
+		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else {
 			return UITableViewCell()
 		}
 		
 		// "Now playing" indicator
-		let isInPlayer = (viewModel as? CollectionsViewModel)?.isInPlayer(libraryItemAt: indexPath) ?? false
+		let isInPlayer = (viewModel as? CollectionsViewModel)?.isInPlayer(anyIndexPath: indexPath) ?? false
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,

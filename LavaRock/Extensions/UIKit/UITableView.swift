@@ -45,6 +45,10 @@ extension UITableView {
 	
 	// MARK: - IndexPaths
 	
+	final var indexPathsForVisibleRowsNonNil: [IndexPath] {
+		return indexPathsForVisibleRows ?? []
+	}
+	
 	final var indexPathsForSelectedRowsNonNil: [IndexPath] {
 		return indexPathsForSelectedRows ?? []
 	}
