@@ -311,12 +311,12 @@ class LibraryTVC: UITableViewController {
 			guard let oldIndexOfGroup = oldIndexOfGroup else {
 				return nil
 			}
-			return viewModel.indexPathFor(
+			return type(of: viewModel).indexPathFor(
 				indexOfItemInGroup: $0,
 				indexOfGroup: oldIndexOfGroup)
 		}
 		let toInsert = updatesOfIndicesOfItems.toInsert.map {
-			viewModel.indexPathFor(
+			type(of: viewModel).indexPathFor(
 				indexOfItemInGroup: $0,
 				indexOfGroup: newIndexOfGroup)
 		}
@@ -325,10 +325,10 @@ class LibraryTVC: UITableViewController {
 				return nil
 			}
 			return (
-				viewModel.indexPathFor(
+				type(of: viewModel).indexPathFor(
 					indexOfItemInGroup: oldIndex,
 					indexOfGroup: oldIndexOfGroup),
-				viewModel.indexPathFor(
+				type(of: viewModel).indexPathFor(
 					indexOfItemInGroup: newIndex,
 					indexOfGroup: newIndexOfGroup)
 			)

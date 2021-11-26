@@ -29,9 +29,9 @@ extension Collection {
 		afterAllExistingCollectionsCount numberOfExistingCollections: Int,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Make a Collection at the bottom")
+		os_signpost(.begin, log: Self.log, name: "Create a Collection at the bottom")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Make a Collection at the bottom")
+			os_signpost(.end, log: Self.log, name: "Create a Collection at the bottom")
 		}
 		
 		self.init(context: context)
@@ -45,9 +45,9 @@ extension Collection {
 		before collectionsToInsertBefore: [Collection],
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Make a Collection at the top")
+		os_signpost(.begin, log: Self.log, name: "Create a Collection at the top")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Make a Collection at the top")
+			os_signpost(.end, log: Self.log, name: "Create a Collection at the top")
 		}
 		
 		collectionsToInsertBefore.forEach { $0.index += 1 }

@@ -162,8 +162,7 @@ extension LibraryViewModel {
 		}
 	}
 	
-	// TO DO: Should be static
-	func indexPathFor(
+	static func indexPathFor(
 		indexOfItemInGroup: Int,
 		indexOfGroup: Int
 	) -> IndexPath {

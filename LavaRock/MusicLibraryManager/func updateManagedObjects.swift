@@ -144,7 +144,7 @@ extension MusicLibraryManager {
 				song.container = existingAlbum
 				os_signpost(.end, log: updateLog, name: "Move a Song to an existing Album")
 			} else {
-				// Otherwise, make the Album to move the Song to …
+				// Otherwise, create the Album to move the Song to …
 				os_signpost(.begin, log: updateLog, name: "Move a Song to a new Album")
 				let existingCollection = song.container!.container!
 				let newAlbum = Album(

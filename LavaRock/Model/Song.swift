@@ -26,9 +26,9 @@ extension Song {
 		atEndOf album: Album,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Make a Song at the bottom")
+		os_signpost(.begin, log: Self.log, name: "Create a Song at the bottom")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Make a Song at the bottom")
+			os_signpost(.end, log: Self.log, name: "Create a Song at the bottom")
 		}
 		
 		self.init(context: context)
@@ -43,9 +43,9 @@ extension Song {
 		atBeginningOf album: Album,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Make a Song at the top")
+		os_signpost(.begin, log: Self.log, name: "Create a Song at the top")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Make a Song at the top")
+			os_signpost(.end, log: Self.log, name: "Create a Song at the top")
 		}
 		
 		album.songs(sorted: false).forEach { $0.index += 1 }

@@ -39,7 +39,7 @@ extension MusicLibraryManager {
 		let isFirstImport = !hasEverImportedFromMusic
 		
 		// Find out which Songs we need to delete, and which we need to potentially update.
-		// Meanwhile, isolate the MPMediaItems that we don't have Songs for. We'll make new managed objects for them.
+		// Meanwhile, isolate the MPMediaItems that we don't have Songs for. We'll create new managed objects for them.
 		var potentiallyOutdatedSongsAndFreshMediaItems = [(Song, MPMediaItem)]() // We'll sort these eventually.
 		var songsToDelete = Set<Song>()
 		
@@ -64,7 +64,7 @@ extension MusicLibraryManager {
 				songsToDelete.insert(existingSong)
 			}
 		}
-		// mediaItems_byInt64 now holds the MPMediaItems that we don't have Songs for. We'll make new Songs (and maybe new Albums and Collections) for them.
+		// mediaItems_byInt64 now holds the MPMediaItems that we don't have Songs for. We'll create new Songs (and maybe new Albums and Collections) for them.
 		let newMediaItems = mediaItems_byInt64.map { $0.value }
 		os_signpost(.end, log: importLog, name: "Initial parse")
 		
@@ -78,7 +78,7 @@ extension MusicLibraryManager {
 		let existingAlbums = Album.allFetched(ordered: false, context: context) // Order doesn't matter, because we identify Albums by their albumPersistentID.
 		let existingCollections = Collection.allFetched(context: context) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, which we shouldn't do yet, as mentioned above.
-			// This might make new Albums, and if it does, it might make new Collections.
+			// This might create new Albums, and if it does, it might create new Collections.
 			for: newMediaItems,
 			existingAlbums: existingAlbums,
 			existingCollections: existingCollections,

@@ -30,9 +30,9 @@ extension Album {
 		atEndOf collection: Collection,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Make an Album at the bottom")
+		os_signpost(.begin, log: Self.log, name: "Create an Album at the bottom")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Make an Album at the bottom")
+			os_signpost(.end, log: Self.log, name: "Create an Album at the bottom")
 		}
 		
 		self.init(context: context)
@@ -47,9 +47,9 @@ extension Album {
 		atBeginningOf collection: Collection,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Make an Album at the top")
+		os_signpost(.begin, log: Self.log, name: "Create an Album at the top")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Make an Album at the top")
+			os_signpost(.end, log: Self.log, name: "Create an Album at the top")
 		}
 		
 		collection.albums(sorted: false).forEach { $0.index += 1 }
@@ -146,10 +146,10 @@ extension Album {
 	
 	// MARK: Creating
 	
-	final func makeSongsAtEnd(for mediaItems: [MPMediaItem]) {
-		os_signpost(.begin, log: Self.log, name: "Make Songs at the bottom")
+	final func createSongsAtEnd(for mediaItems: [MPMediaItem]) {
+		os_signpost(.begin, log: Self.log, name: "Create Songs at the bottom")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Make Songs at the bottom")
+			os_signpost(.end, log: Self.log, name: "Create Songs at the bottom")
 		}
 		
 		mediaItems.forEach {
@@ -160,11 +160,11 @@ extension Album {
 		}
 	}
 	
-	// Use makeSongsAtEnd(for:) if possible. It's faster.
-	final func makeSongsAtBeginning(for mediaItems: [MPMediaItem]) {
-		os_signpost(.begin, log: Self.log, name: "Make Songs at the top")
+	// Use createSongsAtEnd(for:) if possible. It's faster.
+	final func createSongsAtBeginning(for mediaItems: [MPMediaItem]) {
+		os_signpost(.begin, log: Self.log, name: "Create Songs at the top")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Make Songs at the top")
+			os_signpost(.end, log: Self.log, name: "Create Songs at the top")
 		}
 		
 		mediaItems.reversed().forEach {

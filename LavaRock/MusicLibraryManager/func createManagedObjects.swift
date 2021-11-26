@@ -11,7 +11,7 @@ import OSLog
 
 extension MusicLibraryManager {
 	
-	// Make new managed objects for the new media items, including new Albums and Collections to put them in if necessary.
+	// Create new managed objects for the new media items, including new Albums and Collections to put them in if necessary.
 	final func createManagedObjects(
 		for newMediaItems: [MPMediaItem],
 		existingAlbums: [Album],
@@ -58,9 +58,9 @@ extension MusicLibraryManager {
 		var existingAlbums_byInt64 = Dictionary(uniqueKeysWithValues: tuplesForExistingAlbums)
 		var existingCollectionsByTitle = Dictionary(grouping: existingCollections) { $0.title! }
 		
-		os_signpost(.begin, log: createLog, name: "Make all the Songs and containers")
+		os_signpost(.begin, log: createLog, name: "Create all the Songs and containers")
 		mediaItemGroups.forEach { mediaItemGroup in
-			os_signpost(.begin, log: createLog, name: "Make one group of Songs and containers")
+			os_signpost(.begin, log: createLog, name: "Create one group of Songs and containers")
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: mediaItemGroup,
 				   existingAlbums_byInt64: existingAlbums_byInt64,
@@ -76,9 +76,9 @@ extension MusicLibraryManager {
 				let newBucketOfCollections = [newCollection] + oldBucketOfCollections
 				existingCollectionsByTitle[title] = newBucketOfCollections
 			}
-			os_signpost(.end, log: createLog, name: "Make one group of Songs and containers")
+			os_signpost(.end, log: createLog, name: "Create one group of Songs and containers")
 		}
-		os_signpost(.end, log: createLog, name: "Make all the Songs and containers")
+		os_signpost(.end, log: createLog, name: "Create all the Songs and containers")
 	}
 	
 	// MARK: - Grouping MPMediaItems
@@ -132,18 +132,18 @@ extension MusicLibraryManager {
 			
 			// … then add the Songs to that Album.
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
-				matchingExistingAlbum.makeSongsAtBeginning(for: mediaItemGroup)
+				matchingExistingAlbum.createSongsAtBeginning(for: mediaItemGroup)
 				os_signpost(.begin, log: createLog, name: "Put the existing Album back in order")
 				matchingExistingAlbum.sortSongsByDefaultOrder()
 				os_signpost(.end, log: createLog, name: "Put the existing Album back in order")
 			} else {
-				matchingExistingAlbum.makeSongsAtBeginning(for: mediaItemGroup)
+				matchingExistingAlbum.createSongsAtBeginning(for: mediaItemGroup)
 			}
 			
 			return (nil, nil)
 			
 		} else {
-			// Otherwise, make the Album to add the Songs to …
+			// Otherwise, create the Album to add the Songs to …
 			os_signpost(.begin, log: createLog, name: "Create a new Album and maybe new Collection")
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
 				for: firstMediaItemInAlbum,
@@ -158,7 +158,7 @@ extension MusicLibraryManager {
 				$0.precedesInDefaultOrder(inSameAlbum: $1)
 			}
 			os_signpost(.end, log: createLog, name: "Sort the Songs for the new Album")
-			newAlbum.makeSongsAtEnd(for: sortedMediaItemGroup)
+			newAlbum.createSongsAtEnd(for: sortedMediaItemGroup)
 			
 			return newContainers
 		}
@@ -194,7 +194,7 @@ extension MusicLibraryManager {
 			return (newAlbum, nil)
 			
 		} else {
-			// Otherwise, make the Collection to add the Album to …
+			// Otherwise, create the Collection to add the Album to …
 			let newCollection: Collection = {
 				if isFirstImport {
 					os_signpost(.begin, log: createLog, name: "Count all the Collections so far")

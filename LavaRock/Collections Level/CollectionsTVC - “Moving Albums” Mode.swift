@@ -15,7 +15,7 @@ extension CollectionsTVC {
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
 			let albumMoverClipboard = albumMoverClipboard,
-			!albumMoverClipboard.didAlreadyCreateCollection // Without this, if you're fast, you can finish making a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
+			!albumMoverClipboard.didAlreadyCreateCollection // Without this, if you're fast, you can finish creating a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
 				// You must reset didAlreadyCreateCollection = false both during reverting and if we exit the empty new Collection.
 		else { return }
 		
@@ -95,7 +95,7 @@ extension CollectionsTVC {
 	private func renameAndOpenNewCollection(proposedTitle: String?) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let indexPath = collectionsViewModel.indexPathOfNewCollection
+		let indexPath = CollectionsViewModel.indexPathOfNewCollection
 		
 		let didRename = collectionsViewModel.didRename(
 			at: indexPath,

@@ -58,7 +58,7 @@ extension CollectionsViewModel {
 	// MARK: - Editing
 	
 	// Return value: whether this method changed the Collection's title.
-	// Works for renaming an existing Collection, after combining Collections, and after making a new Collection.
+	// Works for renaming an existing Collection, after combining Collections, and after creating a new Collection.
 	func didRename(
 		at indexPath: IndexPath,
 		proposedTitle: String?
@@ -108,11 +108,9 @@ extension CollectionsViewModel {
 	// MARK: - “Moving Albums” Mode
 	
 	private static let indexOfNewCollection = 0
-	var indexPathOfNewCollection: IndexPath { // TO DO: Should be static
-		return indexPathFor(
-			indexOfItemInGroup: Self.indexOfNewCollection,
-			indexOfGroup: Self.indexOfOnlyGroup)
-	}
+	static let indexPathOfNewCollection = indexPathFor(
+		indexOfItemInGroup: Self.indexOfNewCollection,
+		indexOfGroup: Self.indexOfOnlyGroup)
 	
 	func updatedAfterCreatingCollectionInOnlyGroup(
 		smartTitle: String?
@@ -125,7 +123,7 @@ extension CollectionsViewModel {
 		newItems.insert(newCollection, at: Self.indexOfNewCollection)
 		
 		let twin = updatedWithItemsInOnlyGroup(newItems)
-		let indexPath = indexPathOfNewCollection
+		let indexPath = Self.indexPathOfNewCollection
 		return (twin, indexPath)
 	}
 	
