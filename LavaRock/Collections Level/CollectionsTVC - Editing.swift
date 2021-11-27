@@ -12,47 +12,33 @@ extension CollectionsTVC {
 	
 	// MARK: - Renaming
 	
-	// Match presentDialogToCreateCollection and presentDialogToCombineCollections.
-	final func presentDialogToRenameCollection(at indexPath: IndexPath) {
+	final func confirmRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
 		
-		let wasRowSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
+		let rowWasSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
 		
-		let dialog = UIAlertController(
-			title: FeatureFlag.multicollection ? LocalizedString.renameSectionAlertTitle : LocalizedString.renameCollectionAlertTitle,
-			message: nil,
-			preferredStyle: .alert)
-		dialog.addTextFieldForRenamingCollection(withText: collection.title)
-		
-		let cancelAction = UIAlertAction.cancel(handler: nil)
-		let saveAction = UIAlertAction(
-			title: LocalizedString.save,
-			style: .default
-		) { _ in
-			let proposedTitle = dialog.textFields?.first?.text
-			self.rename(
-				collection,
-				proposedTitle: proposedTitle,
-				at: indexPath,
-				thenSelectRow: wasRowSelectedBeforeRenaming)
-		}
-		
-		dialog.addAction(cancelAction)
-		dialog.addAction(saveAction)
-		dialog.preferredAction = saveAction
-		
+		let dialog = UIAlertController.forEditingCollectionTitle(
+			alertTitle: FeatureFlag.multicollection ? LocalizedString.renameSectionAlertTitle : LocalizedString.renameCollectionAlertTitle,
+			textFieldText: collection.title,
+			cancelHandler: nil,
+			saveHandler: { textFieldText in
+				self.rename(
+					at: indexPath,
+					proposedTitle: textFieldText,
+					andSelectRowIf: rowWasSelectedBeforeRenaming)
+			}
+		)
 		present(dialog, animated: true)
 	}
 	
 	private func rename(
-		_ collection: Collection,
-		proposedTitle: String?,
 		at indexPath: IndexPath,
-		thenSelectRow: Bool
+		proposedTitle: String?,
+		andSelectRowIf shouldSelectRow: Bool
 	) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let didRename = collectionsViewModel.didRename(
+		let didRename = collectionsViewModel.rename(
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		
@@ -61,141 +47,109 @@ extension CollectionsTVC {
 		if didRename {
 			tableView.reloadRows(at: [indexPath], with: .fade)
 		}
-		if thenSelectRow {
+		if shouldSelectRow {
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 		}
 	}
 	
 	// MARK: - Combining
 	
-	final func previewCombineSelectedCollectionsAndPresentDialog() {
+	final func combineAndConfirm() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
-			!isPreviewingCombineCollections, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCreateCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
-			// You must reset groupOfCollectionsBeforeCombining = nil during both reverting and committing.
-			let indexPathOfCombinedCollection = selectedIndexPaths.first
+			let collectionsViewModel = viewModel as? CollectionsViewModel,
+			viewModelBeforeCombining == nil, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCreateCollection` when we tap "New Collection", and `didAlreadyCommitMoveAlbums` for "Move (Albums) Here".
+			// You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
+			let indexPathOfCombined = selectedIndexPaths.first
 		else { return }
 		
-		previewCombineCollections(
-			from: selectedIndexPaths,
-			into: indexPathOfCombinedCollection)
-		presentDialogToCombineCollections(
-			from: selectedIndexPaths,
-			into: indexPathOfCombinedCollection)
+		let selectedCollections = selectedIndexPaths.map {
+			collectionsViewModel.itemNonNil(at: $0) as! Collection
+		}
+		let smartTitle = collectionsViewModel.smartTitle(combining: selectedCollections)
+		combine(
+			fromCollectionsInOrder: selectedCollections,
+			into: indexPathOfCombined,
+			smartTitle: smartTitle)
+		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during the table view animation, you can tap other editing buttons, which can put our app into an incoherent state.
+		// Whatever the case, creating a new `Collection` should use the same animation timing.
+		confirmCombine(
+			fromIndexPathsInOrder: selectedIndexPaths,
+			into: indexPathOfCombined,
+			smartTitle: smartTitle)
 	}
 	
-	private func previewCombineCollections(
-		from selectedIndexPaths: [IndexPath],
-		into indexPathOfCombinedCollection: IndexPath
+	private func combine(
+		fromCollectionsInOrder collections: [Collection],
+		into indexPathOfCombined: IndexPath,
+		smartTitle: String?
 	) {
-		/*
-		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return } // TO DO: Don't continue to presentDialogToCombineCollections if this fails.
+		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
-		// Save the existing GroupOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
-		groupOfCollectionsBeforeCombining = collectionsViewModel.group // SIDE EFFECT
+		viewModelBeforeCombining = collectionsViewModel
 		
-		// SIDE EFFECTS:
-		// - Creates Collection
-		// - Modifies Albums
-		let newItems = collectionsViewModel.itemsAfterCombiningCollections(
-			from: selectedIndexPaths,
-			into: indexPathOfCombinedCollection)
-		
-		setItemsAndMoveRows(
-			newItems: newItems, // SIDE EFFECT: Reindexes each Collection's `index` attribute
-//			thenSelect: [indexPathOfCombinedCollection],
-			section: indexPathOfCombinedCollection.section)
-		
-		// TO DO: Deselect rows and refresh editing buttons?
-		
-		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during that animation, you can tap "Move to Top" or "Move to Bottom", or "Sort" if the uncombined Collections were contiguous, which causes us to not present the dialog, which puts our app into an incoherent state.
-		 // Whatever you do, use the same timing for presenting the "New Collection" dialog.
-		 */
+		let title = smartTitle ?? (FeatureFlag.multicollection ? LocalizedString.combinedSectionDefaultTitle : LocalizedString.combinedCollectionDefaultTitle)
+		let newViewModel = collectionsViewModel.updatedAfterCombining_inNewChildContext(
+			fromCollectionsInOrder: collections,
+			into: indexPathOfCombined,
+			title: title)
+		setViewModelAndMoveRows(newViewModel)
 	}
 	
-	// Match presentDialogToRenameCollection and presentDialogToCreateCollection.
-	private func presentDialogToCombineCollections(
-		from originalSelectedIndexPaths: [IndexPath],
-		into indexPathOfCombinedCollection: IndexPath
+	private func confirmCombine(
+		fromIndexPathsInOrder originalSelectedIndexPaths: [IndexPath],
+		into indexPathOfCombined: IndexPath,
+		smartTitle: String?
 	) {
-		let dialog = UIAlertController(
-			title: LocalizedString.combineSectionsAlertTitle,
-			message: nil,
-			preferredStyle: .alert)
-		dialog.addTextFieldForRenamingCollection(withText: nil)
-		
-		let cancelAction = UIAlertAction.cancel { _ in
-			self.revertCombineCollections(
-				thenSelectRowsAt: originalSelectedIndexPaths)
-		}
-		let saveAction = UIAlertAction(
-			title: LocalizedString.save,
-			style: .default
-		) { _ in
-			let proposedTitle = dialog.textFields?.first?.text
-			self.commitCombineCollections(
-				into: indexPathOfCombinedCollection,
-				proposedTitle: proposedTitle)
-		}
-		
-		dialog.addAction(cancelAction)
-		dialog.addAction(saveAction)
-		dialog.preferredAction = saveAction
-		
+		let dialog = UIAlertController.forEditingCollectionTitle(
+			alertTitle: FeatureFlag.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
+			textFieldText: smartTitle,
+			cancelHandler: {
+				self.revertCombine(andSelectRowsAt: originalSelectedIndexPaths)
+			},
+			saveHandler: { textFieldText in
+				self.commitCombine(
+					into: indexPathOfCombined,
+					proposedTitle: textFieldText)
+			}
+		)
 		present(dialog, animated: true)
 	}
 	
-	final func revertCombineCollections(
-		thenSelectRowsAt originalSelectedIndexPaths: [IndexPath],
-		completion: (() -> Void)? = nil
+	final func revertCombine(
+		andSelectRowsAt originalSelectedIndexPaths: [IndexPath]
 	) {
-		/*
-		guard
-			var copyOfOriginalGroup = groupOfCollectionsBeforeCombining,
-			let originalItems = groupOfCollectionsBeforeCombining?.items,
-			let onscreenItems = (viewModel as? CollectionsViewModel)?.group.items
-		else { return } //
-		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
+		guard let originalViewModel = viewModelBeforeCombining else { return }
 		
-		let indexOfGroup = CollectionsViewModel.indexOfOnlyGroup
+		viewModelBeforeCombining = nil
 		
-		// Revert sectionOfLibraryItems to groupOfCollectionsBeforeCombining, but give it the currently onscreen `items`, so that we can animate the change.
-		copyOfOriginalGroup.setItems(onscreenItems) // Should cause no side effects.
-		viewModel.context.rollback() // SIDE EFFECT
-		viewModel.groups[indexOfGroup] = copyOfOriginalGroup // SIDE EFFECT
-		
-		setItemsAndMoveRows(
-			newItems: originalItems, // SIDE EFFECT
-//			thenSelect: originalSelectedIndexPaths,
-			section: CollectionsViewModel.numberOfSectionsAboveLibraryItems + CollectionsViewModel.indexOfOnlyGroup
-		) {
-			completion?()
-		}
-		
-		// TO DO: Deselect rows and refresh editing buttons?
-		*/
+		setViewModelAndMoveRows(
+			originalViewModel,
+			andSelectRowsAt: Set(originalSelectedIndexPaths))
 	}
 	
-	private func commitCombineCollections(
-		into indexPathOfCombinedCollection: IndexPath,
+	private func commitCombine(
+		into indexPathOfCombined: IndexPath,
 		proposedTitle: String?
 	) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let didRename = collectionsViewModel.didRename(
-			at: indexPathOfCombinedCollection,
+		viewModelBeforeCombining = nil
+		
+		let didRename = collectionsViewModel.rename(
+			at: indexPathOfCombined,
 			proposedTitle: proposedTitle)
 		
-		Collection.deleteAllEmpty(context: collectionsViewModel.context) // SIDE EFFECT
-		
 		collectionsViewModel.context.tryToSave()
+		collectionsViewModel.context.parent!.tryToSave()
 		
-		groupOfCollectionsBeforeCombining = nil // SIDE EFFECT
+		let newViewModel = CollectionsViewModel(context: collectionsViewModel.context.parent!)
+		setViewModelAndMoveRows(newViewModel)
 		
 		if didRename {
-			tableView.reloadRows(at: [indexPathOfCombinedCollection], with: .fade)
+			tableView.reloadRows(at: [indexPathOfCombined], with: .fade)
 		}
-		tableView.selectRow(at: indexPathOfCombinedCollection, animated: false, scrollPosition: .none)
+		tableView.selectRow(at: indexPathOfCombined, animated: false, scrollPosition: .none)
 	}
 	
 }

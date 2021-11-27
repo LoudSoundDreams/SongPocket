@@ -48,11 +48,11 @@ extension CollectionsTVC {
 		} else {
 			willRefreshLibraryItems()
 			
-			if isPreviewingCombineCollections {
-				fatalError()
-			} else {
-				super.refreshLibraryItems()
+			if viewModelBeforeCombining != nil {
+				revertCombine(andSelectRowsAt: [])
 			}
+			
+			super.refreshLibraryItems()
 		}
 	}
 	

@@ -123,7 +123,7 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
 	}()
-	final lazy var cancelMoveAlbumsButton: UIBarButtonItem = {
+	final lazy var cancelAndDismissButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.dismiss(animated: true) }
 		return UIBarButtonItem(
 			systemItem: .cancel,
@@ -190,6 +190,7 @@ class LibraryTVC: UITableViewController {
 	
 	final func setViewModelAndMoveRows(
 		_ newViewModel: LibraryViewModel,
+		andSelectRowsAt toSelect: Set<IndexPath> = [],
 		completion: (() -> Void)? = nil
 	) {
 		guard !newViewModel.isEmpty() else {
@@ -274,8 +275,6 @@ class LibraryTVC: UITableViewController {
 			rowsToMove.append(contentsOf: updates.toMove)
 		}
 		
-		tableView.deselectAllRows(animated: true)
-		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates(
 			deletingSections: sectionsToDelete,
@@ -289,6 +288,17 @@ class LibraryTVC: UITableViewController {
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
 				completion?()
 			}
+		}
+		
+		tableView.indexPathsForSelectedRowsNonNil.forEach {
+			if !toSelect.contains($0) {
+				tableView.deselectRow(at: $0, animated: true)
+			}
+		}
+		toSelect.forEach {
+			// Do this after `performBatchUpdates`’s main closure, because otherwise it doesn’t work on newly inserted rows.
+			// This method should do this so that callers don’t need to call `didChangeRowsOrSelectedRows`.
+			tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
 		}
 		
 		didChangeRowsOrSelectedRows()

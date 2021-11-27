@@ -11,7 +11,7 @@ import MediaPlayer
 
 extension CollectionsTVC {
 	
-	final func previewCreateCollectionAndPresentDialog() {
+	final func createAndConfirm() {
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
 			let albumMoverClipboard = albumMoverClipboard,
@@ -27,19 +27,19 @@ extension CollectionsTVC {
 		let smartTitle = albumMoverClipboard.smartCollectionTitle(
 			notMatching: Set(existingCollectionTitles),
 			context: collectionsViewModel.context)
-		previewCreateCollection(smartTitle: smartTitle) {
-			self.presentDialogToCreateCollection(smartTitle: smartTitle)
+		create(smartTitle: smartTitle) {
+			self.confirmCreate(smartTitle: smartTitle)
 		}
 	}
 	
-	private func previewCreateCollection(
+	private func create(
 		smartTitle: String?,
-		completion: (() -> Void)?
+		didScroll: (() -> Void)?
 	) {
-		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
+		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
-		let (newViewModel, indexPathOfNewCollection) = collectionsViewModel.updatedAfterCreatingCollectionInOnlyGroup(
-			smartTitle: smartTitle)
+		let title = smartTitle ?? (FeatureFlag.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
+		let (newViewModel, indexPathOfNewCollection) = collectionsViewModel.updatedAfterCreating(title: title)
 		
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(
@@ -47,39 +47,24 @@ extension CollectionsTVC {
 				at: .none,
 				animated: true)
 		} completion: { _ in
-			self.setViewModelAndMoveRows(newViewModel) {
-				completion?()
-			}
+			self.setViewModelAndMoveRows(newViewModel)
+			didScroll?()
 		}
 	}
 	
-	// Match presentDialogToRenameCollection and presentDialogToCombineCollections.
-	private func presentDialogToCreateCollection(smartTitle: String?) {
-		let dialog = UIAlertController(
-			title: FeatureFlag.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
-			message: nil,
-			preferredStyle: .alert)
-		dialog.addTextFieldForRenamingCollection(withText: smartTitle)
-		
-		let cancelAction = UIAlertAction.cancel { _ in
-			self.revertCreateCollection()
-		}
-		let saveAction = UIAlertAction(
-			title: LocalizedString.save,
-			style: .default
-		) { _ in
-			let proposedTitle = dialog.textFields?.first?.text
-			self.renameAndOpenNewCollection(proposedTitle: proposedTitle)
-		}
-		
-		dialog.addAction(cancelAction)
-		dialog.addAction(saveAction)
-		dialog.preferredAction = saveAction
-		
+	private func confirmCreate(smartTitle: String?) {
+		let dialog = UIAlertController.forEditingCollectionTitle(
+			alertTitle: FeatureFlag.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
+			textFieldText: smartTitle,
+			cancelHandler: revertCreate,
+			saveHandler: { textFieldText in
+				self.renameAndOpenCreated(proposedTitle: textFieldText)
+			}
+		)
 		present(dialog, animated: true)
 	}
 	
-	final func revertCreateCollection() {
+	final func revertCreate() {
 		guard
 			let albumMoverClipboard = albumMoverClipboard,
 			let collectionsViewModel = viewModel as? CollectionsViewModel
@@ -88,16 +73,15 @@ extension CollectionsTVC {
 		albumMoverClipboard.didAlreadyCreateCollection = false
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
-		
 		setViewModelAndMoveRows(newViewModel)
 	}
 	
-	private func renameAndOpenNewCollection(proposedTitle: String?) {
+	private func renameAndOpenCreated(proposedTitle: String?) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
 		let indexPath = CollectionsViewModel.indexPathOfNewCollection
 		
-		let didRename = collectionsViewModel.didRename(
+		let didRename = collectionsViewModel.rename(
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		

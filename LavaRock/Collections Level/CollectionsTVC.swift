@@ -31,7 +31,7 @@ final class CollectionsTVC:
 		}
 		
 		if let focusedIndexPath = focusedIndexPath {
-			presentDialogToRenameCollection(at: focusedIndexPath)
+			confirmRename(at: focusedIndexPath)
 			return true
 		} else {
 			return false
@@ -41,7 +41,7 @@ final class CollectionsTVC:
 	// Controls
 	@IBOutlet private var optionsButton: UIBarButtonItem!
 	private lazy var combineButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.previewCombineSelectedCollectionsAndPresentDialog() }
+		let action = UIAction { _ in self.combineAndConfirm() }
 		return UIBarButtonItem(
 			title: LocalizedString.combine,
 			primaryAction: action)
@@ -70,14 +70,13 @@ final class CollectionsTVC:
 			}
 		}
 	}
-	var groupOfCollectionsBeforeCombining: GroupOfLibraryItems?
-	var isPreviewingCombineCollections: Bool { groupOfCollectionsBeforeCombining != nil }
+	var viewModelBeforeCombining: CollectionsViewModel?
 	
 	// MARK: "Moving Albums" Mode
 	
 	// Controls
-	private lazy var createCollectionButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.previewCreateCollectionAndPresentDialog() }
+	private lazy var createButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.createAndConfirm() }
 		return UIBarButtonItem(
 			systemItem: .add,
 			primaryAction: action)
@@ -220,10 +219,10 @@ final class CollectionsTVC:
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		if albumMoverClipboard != nil {
 			viewingModeTopLeftButtons = []
-			topRightButtons = [cancelMoveAlbumsButton]
+			topRightButtons = [cancelAndDismissButton]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
-				createCollectionButton,
+				createButton,
 				.flexibleSpace(),
 			]
 		} else {
@@ -240,7 +239,7 @@ final class CollectionsTVC:
 			}
 		} else {
 			editingModeToolbarButtons = [
-//				combineButton, .flexibleSpace(),
+				combineButton, .flexibleSpace(),
 				
 				
 				sortButton, .flexibleSpace(),
@@ -272,7 +271,7 @@ final class CollectionsTVC:
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		if albumMoverClipboard != nil {
-			revertCreateCollection()
+			revertCreate()
 		}
 		
 		super.viewDidAppear(animated)

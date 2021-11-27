@@ -88,16 +88,7 @@ extension UITableView {
 	// MARK: - Deselecting
 	
 	final func deselectAllRows(animated: Bool) {
-		deselectRows(at: indexPathsForSelectedRowsNonNil, animated: animated)
-	}
-	
-	final func deselectSection(_ section: Int, animated: Bool) {
-		let selectedInSection = indexPathsForSelectedRowsNonNil.filter { $0.section == section }
-		deselectRows(at: selectedInSection, animated: animated)
-	}
-	
-	private func deselectRows(at indexPaths: [IndexPath], animated: Bool) {
-		indexPaths.forEach {
+		indexPathsForSelectedRowsNonNil.forEach {
 			deselectRow(at: $0, animated: animated) // As of iOS 14.2 developer beta 1, this doesn't animate for some reason. It works right on iOS 13.5.1.
 		}
 	}

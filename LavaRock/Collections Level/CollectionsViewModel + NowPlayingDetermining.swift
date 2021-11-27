@@ -10,14 +10,15 @@ import UIKit
 extension CollectionsViewModel: NowPlayingDetermining {
 	
 	func isInPlayer(anyIndexPath: IndexPath) -> Bool {
-		if
+		guard
 			let rowCollection = itemOptional(at: anyIndexPath) as? Collection,
-			rowCollection.objectID == PlayerManager.songInPlayer?.container?.container?.objectID
-		{
-			return true
-		} else {
+			let songInPlayer = PlayerManager.songInPlayer(context: context)
+		else {
 			return false
 		}
+		
+		let result = rowCollection.objectID == songInPlayer.container?.container?.objectID
+		return result
 	}
 	
 }

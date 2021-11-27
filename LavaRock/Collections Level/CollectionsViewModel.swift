@@ -59,7 +59,7 @@ extension CollectionsViewModel {
 	
 	// Return value: whether this method changed the Collection's title.
 	// Works for renaming an existing Collection, after combining Collections, and after creating a new Collection.
-	func didRename(
+	func rename(
 		at indexPath: IndexPath,
 		proposedTitle: String?
 	) -> Bool {
@@ -72,37 +72,36 @@ extension CollectionsViewModel {
 		return oldTitle != newTitle
 	}
 	
-//	func isPreviewingCombineCollections() -> Bool {
-//		return groupOfCollectionsBeforeCombining != nil
-//	}
+	func updatedAfterCombining_inNewChildContext(
+		fromCollectionsInOrder collections: [Collection],
+		into indexPathOfCombined: IndexPath,
+		title: String
+	) -> Self {
+		let collectionIDs = collections.map { $0.objectID }
+		let index = indexOfItemInGroup(forRow: indexPathOfCombined.row)
+		let childContext = NSManagedObjectContext.withParent(context)
+		childContext.parent = context
+		let combinedCollection = Collection(
+			combiningCollectionsinOrderWith: collectionIDs,
+			title: title,
+			index: Int64(index),
+			context: childContext)
+		
+		try? childContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don't unnecessarily remove and reinsert the row later.
+		
+		let twin = Self.init(context: childContext)
+		return twin
+	}
 	
-	func itemsAfterCombiningCollections(
-		from selectedIndexPaths: [IndexPath],
-		into indexPathOfCombinedCollection: IndexPath
-	) -> [NSManagedObject] {
-//		// Save the existing GroupOfCollectionsOrAlbums for if we need to revert, and to prevent ourselves from starting another preview while we're already previewing.
-//		groupOfCollectionsBeforeCombining = group // SIDE EFFECT
-		
-		// Create the combined Collection.
-		let selectedCollections = selectedIndexPaths.compactMap { itemNonNil(at: $0) as? Collection }
-		let indexOfCombinedCollection = indexOfItemInGroup(forRow: indexPathOfCombinedCollection.row)
-		let combinedCollection = Collection( // SIDE EFFECT
-			combining_withoutDeletingOrReindexing: selectedCollections,
-			title: LocalizedString.combinedSectionDefaultTitle,
-			index: Int64(indexOfCombinedCollection),
-			context: context)
-		// WARNING: We still need to delete empty Collections and reindex all Collections.
-		// Do that later, when we commit, because if we revert, we have to restore the original Collections, and Core Data warns you if you mutate managed objects after deleting them.
-		try? context.obtainPermanentIDs( // SIDE EFFECT
-			for: [combinedCollection]) // So that the "now playing" indicator can appear on the combined Collection.
-		
-		var newItems = group.items
-		let indicesOfSelectedCollections = selectedIndexPaths.map {
-			indexOfItemInGroup(forRow: $0.row)
+	func smartTitle(combining collections: [Collection]) -> String? {
+		guard let firstTitle = collections.first?.title else {
+			return nil
 		}
-		indicesOfSelectedCollections.reversed().forEach { newItems.remove(at: $0) }
-		newItems.insert(combinedCollection, at: indexOfCombinedCollection)
-		return newItems
+		if collections.dropFirst().allSatisfy({ $0.title == firstTitle }) {
+			return firstTitle
+		} else {
+			return nil
+		}
 	}
 	
 	// MARK: - “Moving Albums” Mode
@@ -112,11 +111,9 @@ extension CollectionsViewModel {
 		indexOfItemInGroup: Self.indexOfNewCollection,
 		indexOfGroup: Self.indexOfOnlyGroup)
 	
-	func updatedAfterCreatingCollectionInOnlyGroup(
-		smartTitle: String?
-	) -> (Self, IndexPath) {
+	func updatedAfterCreating(title: String) -> (Self, IndexPath) {
 		let newCollection = Collection(context: context)
-		newCollection.title = smartTitle ?? (FeatureFlag.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
+		newCollection.title = title
 		// When we call setItemsAndMoveRows, the property observer will set the "index" attribute of each Collection for us.
 		
 		var newItems = group.items

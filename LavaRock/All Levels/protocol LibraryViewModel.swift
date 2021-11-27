@@ -232,7 +232,7 @@ extension LibraryViewModel {
 	}
 	
 	private func itemsAfterSorting(
-		itemsAtRowsInOrder rowsInOrder: [Int],
+		itemsAtRowsInOrder rows: [Int],
 		inSection section: Int,
 		sortOptionLocalizedName: String
 	) -> [NSManagedObject] {
@@ -240,7 +240,7 @@ extension LibraryViewModel {
 		let oldItems = group(forSection: section).items
 		
 		// Get the indices of the items to sort.
-		let sourceIndicesOfItems = rowsInOrder.map { row in
+		let sourceIndicesOfItems = rows.map { row in
 			indexOfItemInGroup(forRow: row)
 		}
 		

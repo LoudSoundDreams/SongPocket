@@ -64,22 +64,19 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	}
 	
 	private(set) static var player: MPMusicPlayerController?
-	private(set) static var songInPlayer: Song? // This could be a computed variable, but every time we compute it, we need the managed object context to fetch, and I'm paranoid about that taking too long.
 	
 	static func setUp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player = .systemMusicPlayer
 		player?.beginGeneratingPlaybackNotifications()
-		refreshSongInPlayer()
 		
 		observers.forEach { $0.playerManagerDidSetUp() }
 	}
 	
-	static func refreshSongInPlayer() {
+	static func songInPlayer(context: NSManagedObjectContext) -> Song? {
 		guard let nowPlayingItem = player?.nowPlayingItem else {
-			songInPlayer = nil
-			return
+			return nil
 		}
 		
 		let currentPersistentID_asInt64 = Int64(bitPattern: nowPlayingItem.persistentID)
@@ -93,15 +90,10 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 			songsInPlayer.count == 1,
 			let song = songsInPlayer.first
 		else {
-			songInPlayer = nil
-			return
+			return nil
 		}
-		songInPlayer = song
+		return song
 	}
-	
-	// MARK: - PRIVATE
-	
-	private static let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	deinit {
 		Self.player?.endGeneratingPlaybackNotifications()

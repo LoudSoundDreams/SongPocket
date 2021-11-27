@@ -57,23 +57,22 @@ extension Collection {
 		index = 0
 	}
 	
-	// WARNING: Leaves Collections in an incoherent state.
-	// After calling this, you must delete empty Collections and reindex all Collections.
 	convenience init(
-		combining_withoutDeletingOrReindexing selectedCollections: [Collection],
+		combiningCollectionsinOrderWith idsOfCollectionsToCombine: [NSManagedObjectID],
 		title: String,
 		index: Int64,
 		context: NSManagedObjectContext
 	) {
 		self.init(context: context)
-		self.index = index
 		self.title = title
+		self.index = index
 		
-		var selectedAlbums = selectedCollections.flatMap { selectedCollection in
-			selectedCollection.albums()
-		}
-		selectedAlbums.reindex()
-		selectedAlbums.forEach { $0.container = self }
+		let collectionsToCombine = idsOfCollectionsToCombine.map { context.object(with: $0) as! Collection }
+		var newContents = collectionsToCombine.flatMap { $0.albums() }
+		newContents.reindex()
+		newContents.forEach { $0.container = self }
+		
+		Self.deleteAllEmpty(context: context)
 	}
 	
 	// MARK: - All Instances

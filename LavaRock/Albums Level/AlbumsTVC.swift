@@ -26,7 +26,7 @@ final class AlbumsTVC:
 		title: LocalizedString.move,
 		menu: moveOrOrganizeMenu())
 	private lazy var moveButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.startMovingAlbums() }
+		let action = UIAction { _ in self.startMoving() }
 		return UIBarButtonItem(
 			title: LocalizedString.move,
 			primaryAction: action)
@@ -39,7 +39,7 @@ final class AlbumsTVC:
 	
 	// Controls
 	private lazy var moveHereButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.moveAlbumsHere() }
+		let action = UIAction { _ in self.moveHere() }
 		let button = UIBarButtonItem(
 			title: LocalizedString.moveHere,
 			primaryAction: action)
@@ -63,7 +63,7 @@ final class AlbumsTVC:
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		if albumMoverClipboard != nil {
-			topRightButtons = [cancelMoveAlbumsButton]
+			topRightButtons = [cancelAndDismissButton]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				moveHereButton,

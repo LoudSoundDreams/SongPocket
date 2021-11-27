@@ -9,7 +9,35 @@ import UIKit
 
 extension UIAlertController {
 	
-	final func addTextFieldForRenamingCollection(withText textFieldText: String?) {
+	static func forEditingCollectionTitle(
+		alertTitle: String,
+		textFieldText: String?,
+		cancelHandler: (() -> Void)?,
+		saveHandler: @escaping (_ textFieldText: String?) -> Void
+	) -> Self {
+		let dialog = Self(
+			title: alertTitle,
+			message: nil,
+			preferredStyle: .alert)
+		dialog.addTextFieldForEditingCollectionTitle(textFieldText: textFieldText)
+		
+		let cancelAction = UIAlertAction.cancel { _ in cancelHandler?() }
+		let saveAction = UIAlertAction(
+			title: LocalizedString.save,
+			style: .default
+		) { _ in
+			let textFieldText = dialog.textFields?.first?.text
+			saveHandler(textFieldText)
+		}
+		
+		dialog.addAction(cancelAction)
+		dialog.addAction(saveAction)
+		dialog.preferredAction = saveAction
+		
+		return dialog
+	}
+	
+	private func addTextFieldForEditingCollectionTitle(textFieldText: String?) {
 		addTextField { textField in
 			// UITextField
 			textField.text = textFieldText

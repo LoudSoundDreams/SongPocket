@@ -10,14 +10,15 @@ import UIKit
 extension AlbumsTVC: NowPlayingDetermining {
 	
 	final func isInPlayer(anyIndexPath: IndexPath) -> Bool {
-		if
+		guard
 			let rowAlbum = viewModel.itemOptional(at: anyIndexPath) as? Album,
-			rowAlbum.objectID == PlayerManager.songInPlayer?.container?.objectID
-		{
-			return true
-		} else {
+			let songInPlayer = PlayerManager.songInPlayer(context: viewModel.context)
+		else {
 			return false
 		}
+		
+		let result = rowAlbum.objectID == songInPlayer.container?.objectID
+		return result
 	}
 	
 }

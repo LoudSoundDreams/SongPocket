@@ -16,7 +16,7 @@ extension AlbumsTVC {
 			handler: { _ in self.startOrganizingAlbums() })
 		let moveAction = UIAction(
 			title: LocalizedString.moveTo,
-			handler: { _ in self.startMovingAlbums() })
+			handler: { _ in self.startMoving() })
 		return UIMenu(children: [
 			organizeAction,
 			moveAction,
@@ -28,8 +28,7 @@ extension AlbumsTVC {
 		
 	}
 	
-	final func startMovingAlbums() {
-		
+	final func startMoving() {
 		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
 		
 		// Prepare a Collections view to present modally.
@@ -53,12 +52,10 @@ extension AlbumsTVC {
 			delegate: self)
 		
 		// Make the "move Albums to…" sheet use a child managed object context, so that we can cancel without having to revert our changes.
-		let childContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-		childContext.parent = albumsViewModel.context
+		let childContext = NSManagedObjectContext.withParent(albumsViewModel.context)
 		modalCollectionsTVC.viewModel = CollectionsViewModel(context: childContext)
 		
 		present(modalCollectionsNC, animated: true)
-		
 	}
 	
 }

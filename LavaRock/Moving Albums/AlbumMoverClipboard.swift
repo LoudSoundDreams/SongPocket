@@ -11,9 +11,9 @@ import MediaPlayer
 final class AlbumMoverClipboard { // This is a class and not a struct because we use it to share information.
 	
 	// Static
-	static let albumMetadataKeyPathsForSuggestingCollectionTitle = [
+	static let metadataKeyPathsForSmartCollectionTitle: [KeyPath<MPMediaItem, String?>] = [
 		// Order matters. First, we'll see if all the Albums have the same album artist; if they don't, then we'll try the next case, and so on.
-		\MPMediaItem.albumArtist,
+		\.albumArtist,
 	]
 	
 	// Instance
@@ -53,37 +53,41 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		let albums = idsOfAlbumsBeingMoved.compactMap {
 			context.object(with: $0) as? Album
 		}
-		for albumMetadataKeyPath in Self.albumMetadataKeyPathsForSuggestingCollectionTitle {
+		for keyPath in Self.metadataKeyPathsForSmartCollectionTitle {
 			if
-				let suggestion = smartCollectionTitle(
-					albumMetadataKeyPath: albumMetadataKeyPath,
-					albums: albums,
-					context: context),
-				!existingTitles.contains(suggestion)
+				let suggestedTitle = suggestedCollectionTitle(metadataKeyPath: keyPath, albums: albums),
+				!existingTitles.contains(suggestedTitle)
 			{
-				return suggestion
+				return suggestedTitle
 			}
 		}
 		return nil
 	}
 	
-	private func smartCollectionTitle(
-		albumMetadataKeyPath: KeyPath<MPMediaItem, String?>,
-		albums: [Album],
-		context: NSManagedObjectContext
+	private func suggestedCollectionTitle(
+		metadataKeyPath: KeyPath<MPMediaItem, String?>,
+		albums: [Album]
 	) -> String? {
-		var runningSuggestion: String? = nil
-		for album in albums {
-			guard let suggestion = album.mpMediaItemCollection()?.representativeItem?[keyPath: albumMetadataKeyPath] else { continue }
-			if suggestion != runningSuggestion {
-				if runningSuggestion == nil {
-					runningSuggestion = suggestion
-				} else {
-					return nil
-				}
-			}
+		guard let firstSuggestion = albums.first?.suggestedCollectionTitle(metadataKeyPath: metadataKeyPath) else {
+			return nil
 		}
-		return runningSuggestion
+		if albums.dropFirst().allSatisfy({
+			$0.suggestedCollectionTitle(metadataKeyPath: metadataKeyPath) == firstSuggestion
+		}) {
+			return firstSuggestion
+		} else {
+			return nil
+		}
+	}
+	
+}
+
+private extension Album {
+	
+	final func suggestedCollectionTitle(
+		metadataKeyPath: KeyPath<MPMediaItem, String?>
+	) -> String? {
+		return mpMediaItemCollection()?.representativeItem?[keyPath: metadataKeyPath]
 	}
 	
 }

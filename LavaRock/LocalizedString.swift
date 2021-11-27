@@ -89,7 +89,9 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	static let combineSectionsAlertTitle = NSLocalizedString("Combine Sections", comment: "Alert title")
-	static let combinedSectionDefaultTitle = "Combined Section"
+	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title") // TO DO: Delete after multicollection
+	static let combinedSectionDefaultTitle = NSLocalizedString("Combined Section", comment: "Alert title")
+	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title") // TO DO: Delete after multicollection
 	
 	static let newSectionAlertTitle = NSLocalizedString(
 		"New Section [alert title]",

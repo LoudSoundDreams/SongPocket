@@ -39,12 +39,10 @@ extension LibraryTVC {
 	}
 	
 	@objc private func didImportChanges() {
-		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
 		refreshLibraryItemsAndReflect()
 	}
 	
 	@objc private func playbackStateOrNowPlayingItemChanged() {
-		PlayerManager.refreshSongInPlayer() // Call this from here, not from within PlayerManager, because this instance needs to guarantee that this has been done before it continues.
 		reflectPlaybackStateAndNowPlayingItem()
 	}
 	
