@@ -13,7 +13,7 @@ extension AlbumsTVC {
 	final func moveOrOrganizeMenu() -> UIMenu {
 		let organizeAction = UIAction(
 			title: LocalizedString.organizeIntoNewSections,
-			handler: { _ in self.startOrganizingAlbums() })
+			handler: { _ in self.startOrganizing() })
 		let moveAction = UIAction(
 			title: LocalizedString.moveTo,
 			handler: { _ in self.startMoving() })
@@ -23,7 +23,7 @@ extension AlbumsTVC {
 		].reversed())
 	}
 	
-	final func startOrganizingAlbums() {
+	private func startOrganizing() {
 		
 		
 	}

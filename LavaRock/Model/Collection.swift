@@ -58,7 +58,7 @@ extension Collection {
 	}
 	
 	convenience init(
-		combiningCollectionsinOrderWith idsOfCollectionsToCombine: [NSManagedObjectID],
+		combiningCollectionsInOrderWith idsOfCollectionsToCombine: [NSManagedObjectID],
 		title: String,
 		index: Int64,
 		context: NSManagedObjectContext

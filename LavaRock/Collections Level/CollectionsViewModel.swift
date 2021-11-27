@@ -73,7 +73,7 @@ extension CollectionsViewModel {
 	}
 	
 	func updatedAfterCombining_inNewChildContext(
-		fromCollectionsInOrder collections: [Collection],
+		fromInOrder collections: [Collection],
 		into indexPathOfCombined: IndexPath,
 		title: String
 	) -> Self {
@@ -82,7 +82,7 @@ extension CollectionsViewModel {
 		let childContext = NSManagedObjectContext.withParent(context)
 		childContext.parent = context
 		let combinedCollection = Collection(
-			combiningCollectionsinOrderWith: collectionIDs,
+			combiningCollectionsInOrderWith: collectionIDs,
 			title: title,
 			index: Int64(index),
 			context: childContext)
