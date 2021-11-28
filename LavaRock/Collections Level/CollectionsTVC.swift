@@ -53,7 +53,7 @@ final class CollectionsTVC:
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
-		if needsRemoveRowsInCollectionsSection { // You must check this before checking isImportingChanges.
+		if needsRemoveRowsInCollectionsSection { // You must check this before checking `isImportingChanges`.
 			return .wasLoadingOrNoCollections
 		}
 		if isImportingChanges {
@@ -309,8 +309,8 @@ final class CollectionsTVC:
 		
 		albumsTVC.albumMoverClipboard = albumMoverClipboard
 		
-		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-		if selectedCell is CollectionCell {
+//		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
+//		if selectedCell is CollectionCell {
 			if FeatureFlag.multicollection {
 				let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
 				let indexOfSelectedCollection = collection.index
@@ -325,7 +325,7 @@ final class CollectionsTVC:
 					viewContainer: .container(collection),
 					context: viewModel.context)
 			}
-		}
+//		}
 	}
 	
 }

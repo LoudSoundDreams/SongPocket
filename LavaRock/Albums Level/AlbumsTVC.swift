@@ -37,6 +37,9 @@ final class AlbumsTVC:
 	
 	// MARK: "Moving Albums" Mode
 	
+	// Data
+	var albumMoverClipboard: AlbumMoverClipboard? = nil
+	
 	// Controls
 	private lazy var moveHereButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.moveHere() }
@@ -46,8 +49,6 @@ final class AlbumsTVC:
 		button.style = .done
 		return button
 	}()
-	
-	var albumMoverClipboard: AlbumMoverClipboard?
 	
 	// MARK: - Setup
 	
@@ -164,8 +165,8 @@ final class AlbumsTVC:
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
-		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-		if selectedCell is AlbumCell {
+//		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
+//		if selectedCell is AlbumCell {
 			if FeatureFlag.multialbum {
 				let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
 				songsTVC.openedAlbum = album
@@ -179,7 +180,7 @@ final class AlbumsTVC:
 					viewContainer: .container(album),
 					context: viewModel.context)
 			}
-		}
+//		}
 	}
 	
 }

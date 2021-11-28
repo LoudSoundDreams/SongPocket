@@ -17,7 +17,7 @@ extension UIColor {
 		}
 	}
 	
-	private static let opacityForTranslucent: CGFloat = 1/16
+	private static let opacityForTranslucent: CGFloat = 1/8
 	static func tintColorTranslucent(ifiOS14 accentColor: AccentColor) -> UIColor {
 		return .tintColor(ifiOS14: accentColor).withAlphaComponent(opacityForTranslucent)
 	}

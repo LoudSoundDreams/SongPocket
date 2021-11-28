@@ -94,7 +94,7 @@ extension LibraryTVC {
 		 - Sort options (LibraryTVC)
 		 - "Rename Collection" dialog (CollectionsTVC)
 		 - "Combine Collections" dialog (CollectionsTVC)
-		 - "Move Albums to…" sheet (CollectionsTVC and AlbumsTVC when in "moving Albums" mode)
+		 - "Move albums to…" sheet (CollectionsTVC and AlbumsTVC when in "moving Albums" mode)
 		 - "New Collection" dialog (CollectionsTVC when in "moving Albums" mode)
 		 - Song actions (SongsTVC)
 		 - (Editing mode is a special state, but refreshing in editing mode is fine (with no other "breath-holding modes" presented).)

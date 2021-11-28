@@ -63,7 +63,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		}
 	}
 	
-	private(set) static var player: MPMusicPlayerController?
+	private(set) static var player: MPMusicPlayerController? = nil
 	
 	static func setUp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }

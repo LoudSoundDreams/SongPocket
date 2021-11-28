@@ -30,7 +30,7 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	private(set) lazy var tipStatus: TipStatus = .notYetFirstLoaded
 	private(set) lazy var tipProduct: SKProduct? = nil
 	private(set) lazy var tipPriceFormatter: NumberFormatter? = nil
-	weak var tipDelegate: PurchaseManagerTipDelegate?
+	weak var tipDelegate: PurchaseManagerTipDelegate? = nil
 	
 	final func beginObservingPaymentTransactions() {
 		SKPaymentQueue.default().add(self) // We can't make this method static, because StoreKit needs an instance here, not a type.

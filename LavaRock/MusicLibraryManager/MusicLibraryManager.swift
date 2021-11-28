@@ -23,7 +23,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	
 	let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
-	private var library: MPMediaLibrary?
+	private var library: MPMediaLibrary? = nil
 	
 	final func setUpAndImportChanges() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }

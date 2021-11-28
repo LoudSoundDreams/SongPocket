@@ -55,7 +55,7 @@ extension CollectionsViewModel {
 		return twin
 	}
 	
-	// MARK: - Editing
+	// MARK: - Renaming
 	
 	// Return value: whether this method changed the Collection's title.
 	// Works for renaming an existing Collection, after combining Collections, and after creating a new Collection.
@@ -71,6 +71,8 @@ extension CollectionsViewModel {
 		let newTitle = collection.title
 		return oldTitle != newTitle
 	}
+	
+	// MARK: Combining
 	
 	func updatedAfterCombining_inNewChildContext(
 		fromInOrder collections: [Collection],

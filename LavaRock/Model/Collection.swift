@@ -136,7 +136,7 @@ extension Collection {
 			album.container = self
 			album.index = Int64(index)
 		}
-		// In case we moved any Albums to this Collection that were already in this Collection.
+		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
 		var newContents = albums()
 		newContents.reindex()
 		
@@ -145,7 +145,7 @@ extension Collection {
 			contents.reindex()
 		}
 		
-		Self.deleteAllEmpty(context: context) // Also reindexes self
+		Self.deleteAllEmpty(context: context) // Also reindexes `self`
 	}
 	
 	// MARK: - Renaming

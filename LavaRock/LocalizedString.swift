@@ -69,7 +69,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let moveToTop = NSLocalizedString("Move to Top", comment: "Button")
 	static let moveToBottom = NSLocalizedString("Move to Bottom", comment: "Button")
 	
-	// MARK: Sections View
+	// MARK: Collections View // TO DO: Edit after multicollection
 	
 	static let sections = NSLocalizedString("Sections", comment: "Big title")
 	static let collections = NSLocalizedString("Collections", comment: "Big title") // TO DO: Delete after multicollection
@@ -81,7 +81,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 		comment: "Placeholder for when the app’s database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a section, album, or song. Also the name of a sort option.")
+	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.") // TO DO: Edit after multicollection
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let renameSectionAlertTitle = NSLocalizedString("Rename Section", comment: "Alert title")
