@@ -12,9 +12,15 @@ import MediaPlayer
 
 final class AlbumsTVC:
 	LibraryTVC,
-	AlbumMover,
-	NoItemsBackgroundManager
+	NoItemsBackgroundManager,
+	AlbumOrganizer
 {
+	
+	enum Purpose {
+		case organizingAlbums(AlbumOrganizerClipboard)
+		case movingAlbums(AlbumMoverClipboard)
+		case browsing
+	}
 	
 	// MARK: - Properties
 	
@@ -32,8 +38,27 @@ final class AlbumsTVC:
 			primaryAction: action)
 	}()
 	
+	// Purpose
+	var purpose: Purpose {
+		if let clipboard = albumOrganizerClipboard {
+			return .organizingAlbums(clipboard)
+		}
+		if let clipboard = albumMoverClipboard {
+			return .movingAlbums(clipboard)
+		}
+		return .browsing
+	}
+	
 	// State
 	var indexOfOpenedCollection: Int? = nil
+	
+	// MARK: "Organizing Albums" Mode
+	
+	// Data
+	var albumOrganizerClipboard: AlbumOrganizerClipboard? = nil
+	
+	// Controls
+	private lazy var commitOrganizeButton = makeCommitOrganizeButton()
 	
 	// MARK: "Moving Albums" Mode
 	
@@ -63,13 +88,23 @@ final class AlbumsTVC:
 	
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
-		if albumMoverClipboard != nil {
+		switch purpose {
+		case .organizingAlbums:
+			topRightButtons = [cancelAndDismissButton]
+			viewingModeToolbarButtons = [
+				.flexibleSpace(),
+				commitOrganizeButton,
+				.flexibleSpace(),
+			]
+		case .movingAlbums:
 			topRightButtons = [cancelAndDismissButton]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				moveHereButton,
 				.flexibleSpace(),
 			]
+		case .browsing:
+			break
 		}
 		
 		super.setUpUI()
@@ -78,20 +113,23 @@ final class AlbumsTVC:
 			navigationItem.largeTitleDisplayMode = .never
 		}
 		
-		if let albumMoverClipboard = albumMoverClipboard {
-			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
+		switch purpose {
+		case .organizingAlbums(let clipboard):
+			navigationItem.prompt = clipboard.prompt
+		case .movingAlbums(let clipboard):
+			navigationItem.prompt = clipboard.prompt
 			
 			tableView.allowsSelection = false
 			
 			if FeatureFlag.tabBar {
 				showToolbar()
 			}
-		} else {
+		case .browsing:
 			editingModeToolbarButtons = [
-//				moveOrOrganizeButton, .flexibleSpace(),
+				moveOrOrganizeButton, .flexibleSpace(),
+//				moveButton, .flexibleSpace(),
 				
 				
-				moveButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
 				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,

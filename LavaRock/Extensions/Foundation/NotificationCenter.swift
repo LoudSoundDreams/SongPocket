@@ -9,7 +9,7 @@ import Foundation
 
 extension NotificationCenter {
 	
-	// Helps observers observe each kind of `Notification` at most once.
+	// Helps callers observe each kind of `Notification` exactly once.
 	final func removeAndAddObserver(
 		_ observer: Any,
 		selector: Selector,

@@ -45,7 +45,7 @@ final class LoadingCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.loadingWithEllipsis
+		configuration.text = LocalizedString.loadingEllipsis
 		configuration.textProperties.color = .secondaryLabel
 		contentConfiguration = configuration
 		
@@ -105,8 +105,10 @@ final class OpenMusicCell: UITableViewCell {
 final class CollectionCell: UITableViewCell {
 	enum Mode {
 		case normal
-		case movingAlbumsModeAndNotSourceOfAlbums
-		case movingAlbumsModeAndSourceOfAlbums
+		case modalNotTinted
+		case modalTinted
+//		case movingAlbumsModeAndNotSourceOfAlbums
+//		case movingAlbumsModeAndSourceOfAlbums
 	}
 	
 	@IBOutlet private var titleLabel: UILabel!
@@ -124,28 +126,30 @@ final class CollectionCell: UITableViewCell {
 		
 		switch mode {
 		case .normal:
-			if FeatureFlag.multicollection {
+//			if FeatureFlag.multicollection {
 				backgroundColor = nil
-			} else {
-				titleLabel.textColor = .label
-				enableWithAccessibilityTrait()
-			}
+//			} else {
+//				titleLabel.textColor = .label
+//				enableWithAccessibilityTrait()
+//			}
 			accessibilityCustomActions = [renameFocusedCollectionAction]
-		case .movingAlbumsModeAndNotSourceOfAlbums:
-			if FeatureFlag.multicollection {
+		case .modalNotTinted:
+//		case .movingAlbumsModeAndNotSourceOfAlbums:
+//			if FeatureFlag.multicollection {
 				backgroundColor = nil
-			} else {
-				titleLabel.textColor = .label
-				enableWithAccessibilityTrait()
-			}
+//			} else {
+//				titleLabel.textColor = .label
+//				enableWithAccessibilityTrait()
+//			}
 			accessibilityCustomActions = []
-		case .movingAlbumsModeAndSourceOfAlbums:
-			if FeatureFlag.multicollection {
+		case .modalTinted:
+//		case .movingAlbumsModeAndSourceOfAlbums:
+//			if FeatureFlag.multicollection {
 				backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
-			} else {
-				titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
-				disableWithAccessibilityTrait()
-			}
+//			} else {
+//				titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+//				disableWithAccessibilityTrait()
+//			}
 			accessibilityCustomActions = []
 		}
 	}

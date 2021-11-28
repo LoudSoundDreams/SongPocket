@@ -25,8 +25,8 @@ extension Collection {
 		category: .pointsOfInterest)
 	
 	convenience init(
-		for mediaItem: MPMediaItem,
-		afterAllExistingCollectionsCount numberOfExistingCollections: Int,
+		afterAllOtherCollectionsCount numberOfExistingCollections: Int,
+		title: String,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: Self.log, name: "Create a Collection at the bottom")
@@ -35,14 +35,14 @@ extension Collection {
 		}
 		
 		self.init(context: context)
-		title = mediaItem.albumArtist ?? Album.placeholderAlbumArtist
+		self.title = title
 		index = Int64(numberOfExistingCollections)
 	}
 	
-	// Use init(for:afterAllExistingCollectionsCount:context:) if possible. It's faster.
+	// Use `init(afterAllOtherCollectionsCount:title:context:)` if possible. It’s faster.
 	convenience init(
-		for mediaItem: MPMediaItem,
-		before collectionsToInsertBefore: [Collection],
+		beforeAllOtherCollections allOtherCollections: [Collection],
+		title: String,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: Self.log, name: "Create a Collection at the top")
@@ -50,10 +50,10 @@ extension Collection {
 			os_signpost(.end, log: Self.log, name: "Create a Collection at the top")
 		}
 		
-		collectionsToInsertBefore.forEach { $0.index += 1 }
+		allOtherCollections.forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		title = mediaItem.albumArtist ?? Album.placeholderAlbumArtist
+		self.title = title
 		index = 0
 	}
 	
@@ -119,9 +119,9 @@ extension Collection {
 		}
 	}
 	
-	// Works even if any of the Albums are already in this Collection.
-	final func moveHere(
-		albumsWith albumIDs: [NSManagedObjectID],
+	// Works even if any of the `Album`s are already in this `Collection`.
+	final func moveAlbumsToBeginning(
+		with albumIDs: [NSManagedObjectID],
 		context: NSManagedObjectContext
 	) {
 		let albumsToMove: [Album] = albumIDs.compactMap {
@@ -166,7 +166,7 @@ extension Collection {
 		}
 		let trimmedTitle = proposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
 		if trimmedTitle != proposedTitle {
-			return "\(trimmedTitle)…" // TO DO: Localize?
+			return "\(trimmedTitle)\(LocalizedString.ellipsis)"
 		} else {
 			return "\(trimmedTitle)"
 		}

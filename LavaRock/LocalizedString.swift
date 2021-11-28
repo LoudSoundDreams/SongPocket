@@ -24,7 +24,9 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let done = NSLocalizedString("Done", comment: "Button")
 	static let ok = NSLocalizedString("OK", comment: "Button")
 	
-	static let loadingWithEllipsis = NSLocalizedString("Loading…", comment: "")
+	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
+	
+	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "")
 	
 	// MARK: Albums
 	
@@ -115,8 +117,8 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let albums = NSLocalizedString("Albums", comment: "Big title")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
-	static let organizeIntoNewSections = NSLocalizedString("Organize Into New Sections…", comment: "Menu option")
-	static let moveTo = NSLocalizedString("Move To…", comment: "Menu option")
+	static let organizeEllipsis = NSLocalizedString("Organize…", comment: "Menu option")
+	static let moveToEllipsis = NSLocalizedString("Move To…", comment: "Menu option")
 	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
 	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Sort option")
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
@@ -147,7 +149,11 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
 	
-	// MARK: Sections and Albums Views
+	// MARK: Collections and Albums Views // TO DO: Edit after multicollection
+	
+	static let formatOrganizeAlbumsPrompt = NSLocalizedString(
+		"plural - organize_albums_into_collections",
+		comment: "Prompt that appears at the top of the “organize albums?” sheet. Include the number of albums you’re organizing, and the number of new collections the app created.")
 	
 	static let formatChooseASectionPrompt = NSLocalizedString(
 		"plural - move_albums_to_section",

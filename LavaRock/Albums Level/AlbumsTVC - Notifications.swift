@@ -21,8 +21,12 @@ extension AlbumsTVC {
 	// MARK: - Refreshing Library Items
 	
 	final override func refreshLibraryItems() {
-		if albumMoverClipboard != nil {
-		} else {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			break
+		case .browsing:
 			super.refreshLibraryItems()
 		}
 	}

@@ -84,13 +84,22 @@ extension AlbumsTVC {
 		}
 		
 		let mode: AlbumCell.Mode = {
-			if let albumMoverClipboard = albumMoverClipboard {
-				if albumMoverClipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
-					return .movingAlbumsModeAndBeingMoved
+			switch purpose {
+			case .organizingAlbums(let clipboard):
+				if clipboard.idsOfOrganizedAlbums.contains(album.objectID) {
+					return .modalTinted
 				} else {
-					return .movingAlbumsModeAndNotBeingMoved
+					return .modalNotTinted
 				}
-			} else {
+			case .movingAlbums(let clipboard):
+				if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
+					return .modalTinted
+//					return .movingAlbumsModeAndBeingMoved
+				} else {
+					return .modalNotTinted
+//					return .movingAlbumsModeAndNotBeingMoved
+				}
+			case .browsing:
 				return .normal
 			}
 		}()
@@ -108,9 +117,12 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
-		if albumMoverClipboard != nil {
+		switch purpose {
+		case .organizingAlbums:
 			return false
-		} else {
+		case .movingAlbums:
+			return false
+		case .browsing:
 			return super.tableView(
 				tableView,
 				shouldBeginMultipleSelectionInteractionAt: indexPath)

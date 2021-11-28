@@ -11,6 +11,7 @@ struct FeatureFlag {
 	
 	static let multicollection = 1 == 0
 	static let multialbum = multicollection && 1 == 1
+	static let combine = 1 == 1
 	static let tabBar = 1 == 0
 	
 }

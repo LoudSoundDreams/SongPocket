@@ -12,8 +12,14 @@ import MediaPlayer
 
 final class CollectionsTVC:
 	LibraryTVC,
-	AlbumMover
+	AlbumOrganizer
 {
+	
+	enum Purpose {
+		case organizingAlbums(AlbumOrganizerClipboard)
+		case movingAlbums(AlbumMoverClipboard)
+		case browsing
+	}
 	
 	// MARK: - Properties
 	
@@ -47,6 +53,17 @@ final class CollectionsTVC:
 			primaryAction: action)
 	}()
 	
+	// Purpose
+	var purpose: Purpose {
+		if let clipboard = albumOrganizerClipboard {
+			return .organizingAlbums(clipboard)
+		}
+		if let clipboard = albumMoverClipboard {
+			return .movingAlbums(clipboard)
+		}
+		return .browsing
+	}
+	
 	// State
 	var needsRemoveRowsInCollectionsSection = false
 	var viewState: CollectionsViewState {
@@ -70,9 +87,21 @@ final class CollectionsTVC:
 			}
 		}
 	}
-	var viewModelBeforeCombining: CollectionsViewModel?
+	var viewModelBeforeCombining: CollectionsViewModel? = nil
+	var needsReflectDatabase = false
+	
+	// MARK: "Organizing Albums" Mode
+	
+	// Data
+	var albumOrganizerClipboard: AlbumOrganizerClipboard? = nil
+	
+	// Controls
+	private lazy var commitOrganizeButton = makeCommitOrganizeButton()
 	
 	// MARK: "Moving Albums" Mode
+	
+	// Data
+	var albumMoverClipboard: AlbumMoverClipboard? = nil
 	
 	// Controls
 	private lazy var createButton: UIBarButtonItem = {
@@ -82,11 +111,7 @@ final class CollectionsTVC:
 			primaryAction: action)
 	}()
 	
-	// State
-	var albumMoverClipboard: AlbumMoverClipboard?
-	var didMoveAlbums = false
-	
-	// MARK: - Library State
+	// MARK: - View State
 	
 	final func willRefreshLibraryItems() {
 		switch viewState {
@@ -190,8 +215,12 @@ final class CollectionsTVC:
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if albumMoverClipboard != nil {
-		} else {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			break
+		case .browsing:
 			DispatchQueue.main.async {
 				self.integrateWithBuiltInMusicApp()
 			}
@@ -217,7 +246,16 @@ final class CollectionsTVC:
 	
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
-		if albumMoverClipboard != nil {
+		switch purpose {
+		case .organizingAlbums:
+			viewingModeTopLeftButtons = []
+			topRightButtons = [cancelAndDismissButton]
+			viewingModeToolbarButtons = [
+				.flexibleSpace(),
+				commitOrganizeButton,
+				.flexibleSpace()
+			]
+		case .movingAlbums:
 			viewingModeTopLeftButtons = []
 			topRightButtons = [cancelAndDismissButton]
 			viewingModeToolbarButtons = [
@@ -225,27 +263,30 @@ final class CollectionsTVC:
 				createButton,
 				.flexibleSpace(),
 			]
-		} else {
+		case .browsing:
 			viewingModeTopLeftButtons = [optionsButton]
 		}
 		
 		super.setUpUI()
 		
-		if let albumMoverClipboard = albumMoverClipboard {
-			navigationItem.prompt = albumMoverClipboard.navigationItemPrompt
+		switch purpose {
+		case .organizingAlbums(let clipboard):
+			navigationItem.prompt = clipboard.prompt
+		case .movingAlbums(let clipboard):
+			navigationItem.prompt = clipboard.prompt
 			
 			if FeatureFlag.tabBar {
 				showToolbar()
 			}
-		} else {
+		case .browsing:
 			editingModeToolbarButtons = [
-				combineButton, .flexibleSpace(),
-				
-				
 				sortButton, .flexibleSpace(),
 				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,
 			]
+			if FeatureFlag.combine {
+				editingModeToolbarButtons = [combineButton, .flexibleSpace()] + editingModeToolbarButtons
+			}
 		}
 	}
 	
@@ -257,21 +298,27 @@ final class CollectionsTVC:
 	final override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if albumMoverClipboard != nil {
-		} else {
-			if didMoveAlbums {
-				// Replace this with refreshLibraryItemsAndReflect()?
-				reflectPlaybackStateAndNowPlayingItem()
-				refreshLibraryItemsWhenVisible()
-				
-				didMoveAlbums = false
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			break
+		case .browsing:
+			if needsReflectDatabase {
+				needsReflectDatabase = false
+				reflectDatabase()
 			}
 		}
 	}
 	
 	final override func viewDidAppear(_ animated: Bool) {
-		if albumMoverClipboard != nil {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
 			revertCreate()
+		case .browsing:
+			break
 		}
 		
 		super.viewDidAppear(animated)
@@ -307,6 +354,7 @@ final class CollectionsTVC:
 			let albumsTVC = segue.destination as? AlbumsTVC
 		else { return }
 		
+		albumsTVC.albumOrganizerClipboard = albumOrganizerClipboard
 		albumsTVC.albumMoverClipboard = albumMoverClipboard
 		
 //		let selectedCell = tableView.cellForRow(at: selectedIndexPath)

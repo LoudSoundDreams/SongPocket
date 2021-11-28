@@ -26,8 +26,8 @@ extension Album {
 		category: .pointsOfInterest)
 	
 	convenience init(
-		for mediaItem: MPMediaItem,
 		atEndOf collection: Collection,
+		for mediaItem: MPMediaItem,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: Self.log, name: "Create an Album at the bottom")
@@ -41,10 +41,10 @@ extension Album {
 		container = collection
 	}
 	
-	// Use init(for:atEndOf:context:) if possible. It's faster.
+	// Use `init(atEndOf:for:context:)` if possible. It’s faster.
 	convenience init(
-		for mediaItem: MPMediaItem,
 		atBeginningOf collection: Collection,
+		for mediaItem: MPMediaItem,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: Self.log, name: "Create an Album at the top")

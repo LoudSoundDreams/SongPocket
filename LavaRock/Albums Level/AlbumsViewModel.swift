@@ -90,6 +90,50 @@ extension AlbumsViewModel {
 		return difference
 	}
 	
+	// MARK: - Organizing
+	
+	func makeCollectionsViewModel_inNewChildContext(
+		organizingIntoNewCollections albumsToOrganize: [Album]
+	) -> CollectionsViewModel {
+		let childContext = NSManagedObjectContext.withParent(context)
+		
+		// Organize the `Album`s into new `Collection`s.
+		var allCollections = Collection.allFetched(
+			ordered: false,
+			context: childContext)
+		var newCollectionsByTitle: [String: Collection] = [:]
+		albumsToOrganize.reversed().forEach { album in
+			// Similar to `newAlbumAndMaybeNewCollectionMade`.
+			
+			let titleOfDestinationCollection
+			= album.mpMediaItemCollection()?.representativeItem?.albumArtist
+			?? Album.placeholderAlbumArtist
+			
+			// If we've already created a new `Collection` to put the `Album` into …
+			if let matchingCollection = newCollectionsByTitle[titleOfDestinationCollection] {
+				// … then put the `Album` into that `Collection`.
+				matchingCollection.moveAlbumsToBeginning(
+					with: [album.objectID],
+					context: childContext)
+			} else {
+				// Otherwise, create the new `Collection` to put the `Album` into …
+				let newCollection = Collection(
+					beforeAllOtherCollections: allCollections,
+					title: titleOfDestinationCollection,
+					context: childContext)
+				allCollections.append(newCollection)
+				newCollectionsByTitle[titleOfDestinationCollection] = newCollection
+				
+				// … and then put the `Album` into that `Collection`.
+				newCollection.moveAlbumsToBeginning(
+					with: [album.objectID],
+					context: childContext)
+			}
+		}
+		
+		return CollectionsViewModel(context: childContext)
+	}
+	
 	// MARK: - “Moving Albums” Mode
 	
 	func updatedAfterMovingIntoOnlyGroup(
@@ -99,8 +143,8 @@ extension AlbumsViewModel {
 			return self
 		}
 		
-		destinationCollection.moveHere(
-			albumsWith: albumIDs,
+		destinationCollection.moveAlbumsToBeginning(
+			with: albumIDs,
 			context: context)
 		
 		let newItemsForOnlyGroup = destinationCollection.albums()

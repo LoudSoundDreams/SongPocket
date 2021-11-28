@@ -15,20 +15,25 @@ extension CollectionsTVC {
 	final override func beginObservingNotifications() {
 		super.beginObservingNotifications()
 		
-		if albumMoverClipboard != nil {
-		} else {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			break
+		case .browsing:
 			NotificationCenter.default.addObserver(
 				self,
-				selector: #selector(didObserveLRDidMoveAlbums),
-				name: .LRDidMoveAlbums,
+				selector: #selector(userDidUpdateDatabase),
+				name: .LRUserDidUpdateDatabase,
 				object: nil)
 		}
 	}
 	
 	// MARK: - After Moving Albums
 	
-	@objc private func didObserveLRDidMoveAlbums() {
-		didMoveAlbums = true
+	// TO DO: Obviate this.
+	@objc private func userDidUpdateDatabase() {
+		needsReflectDatabase = true
 	}
 	
 	// MARK: - After Playback State or "Now Playing" Item Changes
@@ -44,8 +49,12 @@ extension CollectionsTVC {
 	// MARK: - Refreshing Library Items
 	
 	final override func refreshLibraryItems() {
-		if albumMoverClipboard != nil {
-		} else {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			break
+		case .browsing:
 			willRefreshLibraryItems()
 			
 			if viewModelBeforeCombining != nil {

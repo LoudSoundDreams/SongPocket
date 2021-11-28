@@ -148,9 +148,9 @@ extension MusicLibraryManager {
 				os_signpost(.begin, log: updateLog, name: "Move a Song to a new Album")
 				let existingCollection = song.container!.container!
 				let newAlbum = Album(
+					atBeginningOf: existingCollection,
 					for: mediaItem,
-					   atBeginningOf: existingCollection,
-					   context: context)
+					context: context)
 				
 				// … and then move the Song to that Album.
 				song.index = 0

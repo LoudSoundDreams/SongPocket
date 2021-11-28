@@ -14,17 +14,17 @@ extension CollectionsTVC {
 	final func createAndConfirm() {
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
-			let albumMoverClipboard = albumMoverClipboard,
-			!albumMoverClipboard.didAlreadyCreateCollection // Without this, if you're fast, you can finish creating a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
-				// You must reset didAlreadyCreateCollection = false both during reverting and if we exit the empty new Collection.
+			case let .movingAlbums(clipboard) = purpose,
+			!clipboard.didAlreadyCreate // Without this, if you're fast, you can finish creating a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
+				// You must reset didAlreadyCreate = false both during reverting and if we exit the empty new Collection.
 		else { return }
 		
-		albumMoverClipboard.didAlreadyCreateCollection = true
+		clipboard.didAlreadyCreate = true
 		
 		let existingCollectionTitles = collectionsViewModel.group.items.compactMap {
 			($0 as? Collection)?.title
 		}
-		let smartTitle = albumMoverClipboard.smartCollectionTitle(
+		let smartTitle = clipboard.smartCollectionTitle(
 			notMatching: Set(existingCollectionTitles),
 			context: collectionsViewModel.context)
 		create(smartTitle: smartTitle) {
@@ -66,11 +66,11 @@ extension CollectionsTVC {
 	
 	final func revertCreate() {
 		guard
-			let albumMoverClipboard = albumMoverClipboard,
+			case let .movingAlbums(clipboard) = purpose,
 			let collectionsViewModel = viewModel as? CollectionsViewModel
 		else { return }
 		
-		albumMoverClipboard.didAlreadyCreateCollection = false
+		clipboard.didAlreadyCreate = false
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		setViewModelAndMoveRows(newViewModel)

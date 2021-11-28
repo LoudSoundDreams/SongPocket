@@ -8,45 +8,47 @@
 import CoreData
 import MediaPlayer
 
+protocol AlbumMoverDelegate: AnyObject {
+	func didMoveThenDismiss()
+}
+
 final class AlbumMoverClipboard { // This is a class and not a struct because we use it to share information.
 	
 	// Static
 	static let metadataKeyPathsForSmartCollectionTitle: [KeyPath<MPMediaItem, String?>] = [
-		// Order matters. First, we'll see if all the Albums have the same album artist; if they don't, then we'll try the next case, and so on.
 		\.albumArtist,
 	]
 	
-	// Instance
-	final let idsOfAlbumsBeingMoved: [NSManagedObjectID]
-	final let idsOfAlbumsBeingMoved_asSet: Set<NSManagedObjectID>
-	final let idsOfSourceCollections: Set<NSManagedObjectID>
+	// Data
+	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
+	let idsOfAlbumsBeingMoved_asSet: Set<NSManagedObjectID>
+	let idsOfSourceCollections: Set<NSManagedObjectID>
 	
 	// Helpers
-	final var navigationItemPrompt: String {
+	weak var delegate: AlbumMoverDelegate? = nil
+	var prompt: String {
 		let formatString = FeatureFlag.multicollection ? LocalizedString.formatChooseASectionPrompt : LocalizedString.formatChooseACollectionPrompt
 		let number = idsOfAlbumsBeingMoved.count
 		return String.localizedStringWithFormat(
 			formatString,
 			number)
 	}
-	final weak var delegate: AlbumMoverDelegate?
 	
 	// State
-	final var didAlreadyCreateCollection = false
-	final var didAlreadyCommitMoveAlbums = false
+	var didAlreadyCreate = false
+	var didAlreadyCommitMove = false
 	
 	init(
-		idsOfAlbumsBeingMoved: [NSManagedObjectID],
-		idsOfSourceCollections: Set<NSManagedObjectID>,
-		delegate: AlbumMoverDelegate?
+		albumsBeingMoved: [Album],
+		delegate: AlbumMoverDelegate
 	) {
-		self.idsOfAlbumsBeingMoved = idsOfAlbumsBeingMoved
+		idsOfAlbumsBeingMoved = albumsBeingMoved.map { $0.objectID }
 		idsOfAlbumsBeingMoved_asSet = Set(idsOfAlbumsBeingMoved)
-		self.idsOfSourceCollections = idsOfSourceCollections
+		idsOfSourceCollections = Set(albumsBeingMoved.map { $0.container!.objectID })
 		self.delegate = delegate
 	}
 	
-	final func smartCollectionTitle(
+	func smartCollectionTitle(
 		notMatching existingTitles: Set<String>,
 		context: NSManagedObjectContext
 	) -> String? {
@@ -55,7 +57,9 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		}
 		for keyPath in Self.metadataKeyPathsForSmartCollectionTitle {
 			if
-				let suggestedTitle = suggestedCollectionTitle(metadataKeyPath: keyPath, albums: albums),
+				let suggestedTitle = suggestedCollectionTitle(
+					metadataKeyPath: keyPath,
+					albums: albums),
 				!existingTitles.contains(suggestedTitle)
 			{
 				return suggestedTitle
@@ -68,11 +72,15 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		metadataKeyPath: KeyPath<MPMediaItem, String?>,
 		albums: [Album]
 	) -> String? {
-		guard let firstSuggestion = albums.first?.suggestedCollectionTitle(metadataKeyPath: metadataKeyPath) else {
+		guard let firstSuggestion = albums.first?.suggestedCollectionTitle(
+			metadataKeyPath: metadataKeyPath
+		) else {
 			return nil
 		}
 		if albums.dropFirst().allSatisfy({
-			$0.suggestedCollectionTitle(metadataKeyPath: metadataKeyPath) == firstSuggestion
+			$0.suggestedCollectionTitle(
+				metadataKeyPath: metadataKeyPath
+			) == firstSuggestion
 		}) {
 			return firstSuggestion
 		} else {

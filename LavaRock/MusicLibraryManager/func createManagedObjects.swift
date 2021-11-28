@@ -181,14 +181,14 @@ extension MusicLibraryManager {
 			let newAlbum: Album = {
 				if isFirstImport {
 					return Album(
+						atEndOf: matchingExistingCollection,
 						for: newMediaItem,
-						   atEndOf: matchingExistingCollection,
-						   context: context)
+						context: context)
 				} else {
 					return Album(
+						atBeginningOf: matchingExistingCollection,
 						for: newMediaItem,
-						   atBeginningOf: matchingExistingCollection,
-						   context: context)
+						context: context)
 				}
 			}()
 			
@@ -197,6 +197,7 @@ extension MusicLibraryManager {
 		} else {
 			// Otherwise, create the `Collection` to put the `Album` into …
 			let newCollection: Collection = {
+				let newCollectionTitle = newMediaItem.albumArtist ?? Album.placeholderAlbumArtist
 				if isFirstImport {
 					os_signpost(.begin, log: createLog, name: "Count all the Collections so far")
 					let existingCollectionsCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
@@ -204,23 +205,23 @@ extension MusicLibraryManager {
 					}
 					os_signpost(.end, log: createLog, name: "Count all the Collections so far")
 					return Collection(
-						for: newMediaItem,
-						   afterAllExistingCollectionsCount: existingCollectionsCount,
-						   context: context)
+						afterAllOtherCollectionsCount: existingCollectionsCount,
+						title: newCollectionTitle,
+						context: context)
 				} else {
 					let existingCollections = existingCollectionsByTitle.flatMap { $0.value }
 					return Collection(
-						for: newMediaItem,
-						   before: existingCollections,
-						   context: context)
+						beforeAllOtherCollections: existingCollections,
+						title: newCollectionTitle,
+						context: context)
 				}
 			}()
 			
 			// … and then put the `Album` into that `Collection`.
 			let newAlbum = Album(
+				atEndOf: newCollection,
 				for: newMediaItem,
-				   atEndOf: newCollection,
-				   context: context)
+				context: context)
 			
 			return (newAlbum, newCollection)
 		}

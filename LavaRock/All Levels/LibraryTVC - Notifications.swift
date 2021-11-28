@@ -39,7 +39,7 @@ extension LibraryTVC {
 	}
 	
 	@objc private func didImportChanges() {
-		refreshLibraryItemsAndReflect()
+		reflectDatabase()
 	}
 	
 	@objc private func playbackStateOrNowPlayingItemChanged() {
@@ -71,7 +71,7 @@ extension LibraryTVC {
 	
 	// MARK: - After Importing Changes from Music Library
 	
-	private func refreshLibraryItemsAndReflect() {
+	final func reflectDatabase() {
 		reflectPlaybackStateAndNowPlayingItem() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
 		refreshLibraryItemsWhenVisible()
 	}

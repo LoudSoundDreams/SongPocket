@@ -10,8 +10,10 @@ import UIKit
 final class AlbumCell: UITableViewCell {
 	enum Mode {
 		case normal
-		case movingAlbumsModeAndNotBeingMoved
-		case movingAlbumsModeAndBeingMoved
+		case modalNotTinted
+		case modalTinted
+//		case movingAlbumsModeAndNotBeingMoved
+//		case movingAlbumsModeAndBeingMoved
 	}
 	
 	@IBOutlet private var albumStackView: UIStackView!
@@ -59,19 +61,21 @@ final class AlbumCell: UITableViewCell {
 		
 		switch mode {
 		case .normal:
-			if FeatureFlag.multicollection {
+//			if FeatureFlag.multicollection {
 				backgroundColor = nil
-			}
+//			}
 			accessoryType = .disclosureIndicator
-		case .movingAlbumsModeAndNotBeingMoved:
-			if FeatureFlag.multicollection {
+		case .modalNotTinted:
+//		case .movingAlbumsModeAndNotBeingMoved:
+//			if FeatureFlag.multicollection {
 				backgroundColor = nil
-			}
+//			}
 			accessoryType = .none
-		case .movingAlbumsModeAndBeingMoved:
-			if FeatureFlag.multicollection {
+		case .modalTinted:
+//		case .movingAlbumsModeAndBeingMoved:
+//			if FeatureFlag.multicollection {
 				backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
-			}
+//			}
 			accessoryType = .none
 		}
 		
