@@ -37,9 +37,10 @@ final class AlbumCell: UITableViewCell {
 	) {
 		// Artwork
 		let maxWidthAndHeight = artworkImageView.bounds.width
-		let artworkImage = album.artworkImage(at: CGSize( // Can be nil
-			width: maxWidthAndHeight,
-			height: maxWidthAndHeight))
+		let artworkImage = album.artworkImage( // Can be nil
+			at: CGSize(
+				width: maxWidthAndHeight,
+				height: maxWidthAndHeight))
 		
 		// Title
 		let title: String // Don't let this be nil.
@@ -65,18 +66,21 @@ final class AlbumCell: UITableViewCell {
 				backgroundColor = nil
 //			}
 			accessoryType = .disclosureIndicator
+			enableWithAccessibilityTrait()
 		case .modalNotTinted:
 //		case .movingAlbumsModeAndNotBeingMoved:
 //			if FeatureFlag.multicollection {
 				backgroundColor = nil
 //			}
 			accessoryType = .none
+			disableWithAccessibilityTrait()
 		case .modalTinted:
 //		case .movingAlbumsModeAndBeingMoved:
 //			if FeatureFlag.multicollection {
 				backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
 //			}
 			accessoryType = .none
+			disableWithAccessibilityTrait()
 		}
 		
 		accessibilityUserInputLabels = [title]

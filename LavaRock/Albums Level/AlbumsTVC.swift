@@ -119,17 +119,12 @@ final class AlbumsTVC:
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
 			
-			tableView.allowsSelection = false
-			
 			if FeatureFlag.tabBar {
 				showToolbar()
 			}
 		case .browsing:
 			editingModeToolbarButtons = [
 				moveOrOrganizeButton, .flexibleSpace(),
-//				moveButton, .flexibleSpace(),
-				
-				
 				sortButton, .flexibleSpace(),
 				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,

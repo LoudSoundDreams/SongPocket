@@ -22,9 +22,10 @@ final class AlbumArtworkCell: UITableViewCell {
 	
 	final func configure(with album: Album) {
 		// Artwork
-		let artworkImage = album.artworkImage(at: CGSize( // Can be nil
-			width: UIScreen.main.bounds.width,
-			height: UIScreen.main.bounds.width))
+		let artworkImage = album.artworkImage( // Can be nil
+			at: CGSize(
+				width: UIScreen.main.bounds.width,
+				height: UIScreen.main.bounds.width))
 		
 		artworkImageView.image = artworkImage
 	}

@@ -279,13 +279,11 @@ final class CollectionsTVC:
 			}
 		case .browsing:
 			editingModeToolbarButtons = [
+				combineButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
 				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,
 			]
-			if FeatureFlag.combine {
-				editingModeToolbarButtons = [combineButton, .flexibleSpace()] + editingModeToolbarButtons
-			}
 		}
 	}
 	
