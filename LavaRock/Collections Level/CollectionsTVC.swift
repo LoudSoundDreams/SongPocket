@@ -88,7 +88,6 @@ final class CollectionsTVC:
 		}
 	}
 	var viewModelBeforeCombining: CollectionsViewModel? = nil
-	var needsReflectDatabase = false
 	
 	// MARK: "Organizing Albums" Mode
 	
@@ -295,22 +294,6 @@ final class CollectionsTVC:
 	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
-	final override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		switch purpose {
-		case .organizingAlbums:
-			break
-		case .movingAlbums:
-			break
-		case .browsing:
-			if needsReflectDatabase {
-				needsReflectDatabase = false
-				reflectDatabase()
-			}
-		}
-	}
-	
 	final override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
 		case .organizingAlbums:
@@ -357,23 +340,20 @@ final class CollectionsTVC:
 		albumsTVC.albumOrganizerClipboard = albumOrganizerClipboard
 		albumsTVC.albumMoverClipboard = albumMoverClipboard
 		
-//		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-//		if selectedCell is CollectionCell {
-			if FeatureFlag.multicollection {
-				let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
-				let indexOfSelectedCollection = collection.index
-				albumsTVC.indexOfOpenedCollection = Int(indexOfSelectedCollection)
-				
-				albumsTVC.viewModel = AlbumsViewModel(
-					viewContainer: .library,
-					context: viewModel.context)
-			} else {
-				let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
-				albumsTVC.viewModel = AlbumsViewModel(
-					viewContainer: .container(collection),
-					context: viewModel.context)
-			}
-//		}
+		if FeatureFlag.multicollection {
+			let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
+			let indexOfSelectedCollection = collection.index
+			albumsTVC.indexOfOpenedCollection = Int(indexOfSelectedCollection)
+			
+			albumsTVC.viewModel = AlbumsViewModel(
+				viewContainer: .library,
+				context: viewModel.context)
+		} else {
+			let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
+			albumsTVC.viewModel = AlbumsViewModel(
+				viewContainer: .container(collection),
+				context: viewModel.context)
+		}
 	}
 	
 }

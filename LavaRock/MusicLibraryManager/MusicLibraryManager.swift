@@ -39,15 +39,12 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		
 		library?.beginGeneratingLibraryChangeNotifications()
 	}
+	@objc private func mediaLibraryDidChange() { importChanges() }
 	
 	deinit {
 		NotificationCenter.default.removeObserver(self)
 		
 		library?.endGeneratingLibraryChangeNotifications()
-	}
-	
-	@objc private func mediaLibraryDidChange() {
-		importChanges()
 	}
 	
 }

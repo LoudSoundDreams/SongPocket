@@ -28,18 +28,12 @@ extension CollectionsTVC {
 				object: nil)
 		}
 	}
-	
-	// MARK: - After Moving Albums
-	
-	// TO DO: Obviate this.
-	@objc private func userDidUpdateDatabase() {
-		needsReflectDatabase = true
-	}
+	@objc private func userDidUpdateDatabase() { reflectDatabase() }
 	
 	// MARK: - After Playback State or "Now Playing" Item Changes
 	
-	final override func reflectPlaybackStateAndNowPlayingItem() {
-		super.reflectPlaybackStateAndNowPlayingItem()
+	final override func reflectPlayer() {
+		super.reflectPlayer()
 		
 		if let viewModel = viewModel as? NowPlayingDetermining {
 			refreshNowPlayingIndicators(nowPlayingDetermining: viewModel)

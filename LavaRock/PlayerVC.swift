@@ -96,7 +96,7 @@ final class PlayerVC: UIViewController {
 
 extension PlayerVC: PlaybackStateReflecting {
 	
-	func reflectPlaybackState() {
+	func playbackStateDidChange() {
 		if sharedPlayer?.playbackState == .playing {
 			playPauseButton.setImage(pauseImage, for: .normal)
 		} else {

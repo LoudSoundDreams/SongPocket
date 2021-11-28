@@ -11,8 +11,8 @@ import CoreData
 
 extension LibraryTVC: PlaybackStateReflecting {
 	
-	func reflectPlaybackState() {
-		playbackStateOrNowPlayingItemChanged()
+	func playbackStateDidChange() {
+		reflectPlayer()
 	}
 	
 }
@@ -32,24 +32,25 @@ extension LibraryTVC {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.removeAndAddObserver(
 				self,
-				selector: #selector(playbackStateOrNowPlayingItemChanged),
+				selector: #selector(nowPlayingItemDidChange),
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 				object: nil)
 		}
 	}
+	@objc private func didImportChanges() { reflectDatabase() }
+	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
 	
-	@objc private func didImportChanges() {
-		reflectDatabase()
-	}
+	// MARK: - After Updating Database
 	
-	@objc private func playbackStateOrNowPlayingItemChanged() {
-		reflectPlaybackStateAndNowPlayingItem()
+	final func reflectDatabase() {
+		reflectPlayer() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
+		refreshLibraryItemsWhenVisible()
 	}
 	
 	// MARK: - After Playback State or "Now Playing" Item Changes
 	
 	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
-	@objc func reflectPlaybackStateAndNowPlayingItem() {
+	@objc func reflectPlayer() {
 		// We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
 		refreshPlaybackButtons()
 	}
@@ -67,13 +68,6 @@ extension LibraryTVC {
 				isPlaying: isPlaying)
 			cell.applyNowPlayingIndicator(indicator)
 		}
-	}
-	
-	// MARK: - After Importing Changes from Music Library
-	
-	final func reflectDatabase() {
-		reflectPlaybackStateAndNowPlayingItem() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
-		refreshLibraryItemsWhenVisible()
 	}
 	
 	// MARK: - Refreshing Library Items

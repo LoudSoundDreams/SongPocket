@@ -203,22 +203,19 @@ final class AlbumsTVC:
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
-//		let selectedCell = tableView.cellForRow(at: selectedIndexPath)
-//		if selectedCell is AlbumCell {
-			if FeatureFlag.multialbum {
-				let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
-				songsTVC.openedAlbum = album
-				
-				songsTVC.viewModel = SongsViewModel(
-					viewContainer: .library,
-					context: viewModel.context)
-			} else {
-				let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
-				songsTVC.viewModel = SongsViewModel(
-					viewContainer: .container(album),
-					context: viewModel.context)
-			}
-//		}
+		if FeatureFlag.multialbum {
+			let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
+			songsTVC.openedAlbum = album
+			
+			songsTVC.viewModel = SongsViewModel(
+				viewContainer: .library,
+				context: viewModel.context)
+		} else {
+			let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
+			songsTVC.viewModel = SongsViewModel(
+				viewContainer: .container(album),
+				context: viewModel.context)
+		}
 	}
 	
 }

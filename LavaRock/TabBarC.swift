@@ -24,7 +24,7 @@ final class TabBarC: UITabBarController {
 
 extension TabBarC: PlaybackStateReflecting {
 	
-	func reflectPlaybackState() {
+	func playbackStateDidChange() {
 		guard
 			let nc = viewControllers?.last as? UINavigationController,
 			nc.viewControllers.first is PlayerVC,

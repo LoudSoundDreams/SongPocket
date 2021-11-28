@@ -12,8 +12,8 @@ extension SongsTVC {
 	
 	// MARK: - After Playback State or "Now Playing" Item Changes
 	
-	final override func reflectPlaybackStateAndNowPlayingItem() {
-		super.reflectPlaybackStateAndNowPlayingItem()
+	final override func reflectPlayer() {
+		super.reflectPlayer()
 		
 		refreshNowPlayingIndicators(nowPlayingDetermining: self)
 	}

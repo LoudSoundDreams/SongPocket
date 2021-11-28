@@ -12,7 +12,7 @@ import CoreData
 	// Conforming types must …
 	// - Call `setUpPlaybackStateReflecting` before they need to reflect playback state.
 	// - Call `endObservingPlaybackStateChanges` within their deinitializer.
-	func reflectPlaybackState()
+	func playbackStateDidChange()
 }
 
 extension PlaybackStateReflecting {
@@ -20,7 +20,7 @@ extension PlaybackStateReflecting {
 	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	
 	func setUpPlaybackStateReflecting() {
-		reflectPlaybackState()
+		playbackStateDidChange()
 		
 		endObservingPlaybackStateChanges()
 		
@@ -28,7 +28,7 @@ extension PlaybackStateReflecting {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserver(
 				self,
-				selector: #selector(reflectPlaybackState),
+				selector: #selector(playbackStateDidChange),
 				name: .MPMusicPlayerControllerPlaybackStateDidChange,
 				object: nil)
 		}
