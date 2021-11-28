@@ -84,11 +84,11 @@ extension AlbumsTVC {
 			viewModel.itemNonNil(at: $0) as! Album
 		}
 		
-		// Preview the data changes in a child managed object context, and make "organize albums?" sheet show them.
+		// Preview the data changes in a child managed object context, and make "organize albums" sheet show them.
 		collectionsTVC.viewModel = albumsViewModel.makeCollectionsViewModel_inNewChildContext(
 			organizingIntoNewCollections: albumsToOrganize)
 		
-		// Provide the extra data that the "organize albums?" sheet needs.
+		// Provide the extra data that the "organize albums" sheet needs.
 		let idsOfOrganizedAlbums = albumsToOrganize.map { $0.objectID }
 		collectionsTVC.albumOrganizerClipboard = AlbumOrganizerClipboard(
 			idsOfOrganizedAlbums: idsOfOrganizedAlbums,
@@ -106,7 +106,7 @@ extension AlbumsTVC {
 			let collectionsTVC = collectionsNC.viewControllers.first as? CollectionsTVC
 		else { return }
 		
-		// Provide the extra data that the "move albums to…" sheet needs.
+		// Provide the extra data that the "move albums" sheet needs.
 		let indexPathsToMove = viewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		let albumsToMove = indexPathsToMove.map {
@@ -116,7 +116,7 @@ extension AlbumsTVC {
 			albumsBeingMoved: albumsToMove,
 			delegate: self)
 		
-		// Make the "move albums to…" sheet use a child managed object context, so that we can cancel without having to revert our changes.
+		// Make the "move albums" sheet use a child managed object context, so that we can cancel without having to revert our changes.
 		let childContext = NSManagedObjectContext.withParent(viewModel.context)
 		collectionsTVC.viewModel = CollectionsViewModel(context: childContext)
 		

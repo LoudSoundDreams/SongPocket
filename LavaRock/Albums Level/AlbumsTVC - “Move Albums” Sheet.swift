@@ -1,5 +1,5 @@
 //
-//  AlbumsTVC - “Move Albums To…” Sheet.swift
+//  AlbumsTVC - “Move Albums” Sheet.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-23.

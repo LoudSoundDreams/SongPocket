@@ -160,7 +160,7 @@ class LibraryTVC: UITableViewController {
 		
 		refreshNavigationItemTitle()
 		
-		setBarButtons(animated: true) // So that when we open a Collection in the "move albums to…" sheet, the change is animated.
+		setBarButtons(animated: true) // So that when we open a Collection in the "move albums" sheet, the change is animated.
 		
 		if FeatureFlag.tabBar {
 			hideToolbar()
@@ -366,7 +366,7 @@ class LibraryTVC: UITableViewController {
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See corresponding comment in setItemsAndMoveRows.
-				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move albums to…" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
+				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move albums" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
 					self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 				}
 			}
