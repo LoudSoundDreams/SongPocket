@@ -136,7 +136,7 @@ final class AlbumsTVC:
 		
 		if let collectionIndex = indexOfOpenedCollection {
 			indexOfOpenedCollection = nil
-			let sectionToAppearAt = AlbumsViewModel.numberOfSectionsAboveLibraryItems + collectionIndex
+			let sectionToAppearAt = viewModel.numberOfSectionsAboveLibraryItems + collectionIndex
 			let indexPathToAppearAt = IndexPath(row: 0, section: sectionToAppearAt)
 			tableView.scrollToRow(at: indexPathToAppearAt, at: .top, animated: false)
 //			print("")
@@ -169,7 +169,7 @@ final class AlbumsTVC:
 			return false
 		}
 		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
-			return viewModel.viewContainerIsSpecific
+			return viewModel.viewContainerIsSpecific()
 		} else {
 			return true
 		}

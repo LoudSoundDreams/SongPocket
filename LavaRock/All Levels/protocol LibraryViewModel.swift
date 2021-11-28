@@ -31,16 +31,16 @@ enum LibraryViewContainer {
 
 protocol LibraryViewModel {
 	static var entityName: String { get }
-	static var numberOfSectionsAboveLibraryItems: Int { get }
-	static var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
 	
 	var viewContainer: LibraryViewContainer { get }
 	var context: NSManagedObjectContext { get }
+	var numberOfSectionsAboveLibraryItems: Int { get }
+	var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
+	
 	var groups: [GroupOfLibraryItems] { get set }
 	
-	var viewContainerIsSpecific: Bool { get }
-	var navigationItemTitle: String { get }
-	
+	func viewContainerIsSpecific() -> Bool
+	func bigTitle() -> String
 	func refreshed() -> Self
 }
 
@@ -71,7 +71,7 @@ extension LibraryViewModel {
 		let newItems = groups[indexOfGroup].itemsFetched(
 			entityName: Self.entityName,
 			context: context)
-		let section = Self.numberOfSectionsAboveLibraryItems + indexOfGroup
+		let section = numberOfSectionsAboveLibraryItems + indexOfGroup
 		return (newItems, section)
 	}
 	
@@ -120,22 +120,22 @@ extension LibraryViewModel {
 	// MARK: Indices
 	
 	func indexOfGroup(forSection section: Int) -> Int {
-		return section - Self.numberOfSectionsAboveLibraryItems
+		return section - numberOfSectionsAboveLibraryItems
 	}
 	
 	func indexOfItemInGroup(forRow row: Int) -> Int {
-		return row - Self.numberOfRowsAboveLibraryItemsInEachSection
+		return row - numberOfRowsAboveLibraryItemsInEachSection
 	}
 	
-	// TO DO: Indices of sections and rows
-	
 	// MARK: IndexPaths
+	
+	// TO DO: Indices of sections and rows
 	
 	func countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
 		selectedItemsCount: Int
 	) -> Int {
 		if selectedItemsCount == 0 {
-			if viewContainerIsSpecific {
+			if viewContainerIsSpecific() {
 				return groups[0].items.count
 			} else {
 				return 0
@@ -149,7 +149,7 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
-			if viewContainerIsSpecific {
+			if viewContainerIsSpecific() {
 				return indexPaths(forIndexOfGroup: 0)
 			} else {
 				return []
@@ -171,18 +171,18 @@ extension LibraryViewModel {
 		let indices = groups[indexOfGroup].items.indices
 		return indices.map {
 			IndexPath(
-				row: Self.numberOfRowsAboveLibraryItemsInEachSection + $0,
-				section: Self.numberOfSectionsAboveLibraryItems + indexOfGroup)
+				row: numberOfRowsAboveLibraryItemsInEachSection + $0,
+				section: numberOfSectionsAboveLibraryItems + indexOfGroup)
 		}
 	}
 	
-	static func indexPathFor(
+	func indexPathFor(
 		indexOfItemInGroup: Int,
 		indexOfGroup: Int
 	) -> IndexPath {
 		return IndexPath(
-			row: indexOfItemInGroup + Self.numberOfRowsAboveLibraryItemsInEachSection,
-			section: indexOfGroup + Self.numberOfSectionsAboveLibraryItems)
+			row: indexOfItemInGroup + numberOfRowsAboveLibraryItemsInEachSection,
+			section: indexOfGroup + numberOfSectionsAboveLibraryItems)
 	}
 	
 	// MARK: - UITableView
@@ -190,7 +190,7 @@ extension LibraryViewModel {
 	// MARK: Numbers
 	
 	func numberOfSections() -> Int {
-		return Self.numberOfSectionsAboveLibraryItems + groups.count
+		return numberOfSectionsAboveLibraryItems + groups.count
 	}
 	
 	func numberOfRows(forSection section: Int) -> Int {
@@ -198,7 +198,7 @@ extension LibraryViewModel {
 		if group.items.isEmpty {
 			return 0 // Without numberOfRowsAboveLibraryItemsInEachSection
 		} else {
-			return Self.numberOfRowsAboveLibraryItemsInEachSection + group.items.count
+			return numberOfRowsAboveLibraryItemsInEachSection + group.items.count
 		}
 	}
 	

@@ -12,18 +12,19 @@ struct SongsViewModel {
 	// LibraryViewModel
 	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
+	let numberOfSectionsAboveLibraryItems = 0
+	let numberOfRowsAboveLibraryItemsInEachSection = 2
 	var groups: [GroupOfLibraryItems]
 }
 
 extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
-	static let numberOfSectionsAboveLibraryItems = 0
-	static let numberOfRowsAboveLibraryItemsInEachSection = 2
 	
-	var viewContainerIsSpecific: Bool {
-		FeatureFlag.multialbum ? false : true
+	func viewContainerIsSpecific() -> Bool {
+		return FeatureFlag.multialbum ? false : true
 	}
-	var navigationItemTitle: String {
+	
+	func bigTitle() -> String {
 		switch viewContainer {
 		case .library:
 			return LocalizedString.songs
@@ -81,7 +82,7 @@ extension SongsViewModel {
 		}) {
 			return IndexPath(
 				row: 0,
-				section: Self.numberOfSectionsAboveLibraryItems + indexOfMatchingGroup)
+				section: numberOfSectionsAboveLibraryItems + indexOfMatchingGroup)
 		} else {
 			return nil
 		}

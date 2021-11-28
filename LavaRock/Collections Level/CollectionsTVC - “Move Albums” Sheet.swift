@@ -79,7 +79,7 @@ extension CollectionsTVC {
 	private func renameAndOpenCreated(proposedTitle: String?) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let indexPath = CollectionsViewModel.indexPathOfNewCollection
+		let indexPath = collectionsViewModel.indexPathOfNewCollection
 		
 		let didRename = collectionsViewModel.rename(
 			at: indexPath,

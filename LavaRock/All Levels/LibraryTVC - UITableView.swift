@@ -48,12 +48,12 @@ extension LibraryTVC {
 			let section = sourceIndexPath.section
 			let indexOfSourceGroup = viewModel.indexOfGroup(forSection: section)
 			if proposedDestinationIndexPath < sourceIndexPath {
-				return type(of: viewModel).indexPathFor(
+				return viewModel.indexPathFor(
 					indexOfItemInGroup: 0,
 					indexOfGroup: indexOfSourceGroup)
 			} else {
 				let indexOfItem = viewModel.groups[indexOfSourceGroup].items.indices.last ?? 0
-				return type(of: viewModel).indexPathFor(
+				return viewModel.indexPathFor(
 					indexOfItemInGroup: indexOfItem,
 					indexOfGroup: indexOfSourceGroup)
 			}

@@ -12,18 +12,19 @@ struct AlbumsViewModel {
 	// LibraryViewModel
 	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
+	let numberOfSectionsAboveLibraryItems = 0
+	let numberOfRowsAboveLibraryItemsInEachSection = 0
 	var groups: [GroupOfLibraryItems]
 }
 
 extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
-	static let numberOfSectionsAboveLibraryItems = 0
-	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
-	var viewContainerIsSpecific: Bool {
-		FeatureFlag.multicollection ? false : true
+	func viewContainerIsSpecific() -> Bool {
+		return FeatureFlag.multicollection ? false : true
 	}
-	var navigationItemTitle: String {
+	
+	func bigTitle() -> String {
 		switch viewContainer {
 		case .library:
 			return LocalizedString.albums

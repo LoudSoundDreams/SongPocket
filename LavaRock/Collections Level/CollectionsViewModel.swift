@@ -12,19 +12,20 @@ struct CollectionsViewModel {
 	// LibraryViewModel
 	let viewContainer: LibraryViewContainer = .library
 	let context: NSManagedObjectContext
+	let numberOfSectionsAboveLibraryItems = 0
+	let numberOfRowsAboveLibraryItemsInEachSection = 0
 	var groups: [GroupOfLibraryItems]
 }
 
 extension CollectionsViewModel: LibraryViewModel {
 	static let entityName = "Collection"
-	static let numberOfSectionsAboveLibraryItems = 0
-	static let numberOfRowsAboveLibraryItemsInEachSection = 0
 	
-	var viewContainerIsSpecific: Bool {
+	func viewContainerIsSpecific() -> Bool {
 		return true
 	}
-	var navigationItemTitle: String {
-		FeatureFlag.multicollection ? LocalizedString.sections : LocalizedString.collections
+	
+	func bigTitle() -> String {
+		return FeatureFlag.multicollection ? LocalizedString.sections : LocalizedString.collections
 	}
 	
 	func refreshed() -> Self {
@@ -109,9 +110,11 @@ extension CollectionsViewModel {
 	// MARK: - “Move Albums” Sheet
 	
 	private static let indexOfNewCollection = 0
-	static let indexPathOfNewCollection = indexPathFor(
-		indexOfItemInGroup: Self.indexOfNewCollection,
-		indexOfGroup: Self.indexOfOnlyGroup)
+	var indexPathOfNewCollection: IndexPath {
+		return indexPathFor(
+			indexOfItemInGroup: Self.indexOfNewCollection,
+			indexOfGroup: Self.indexOfOnlyGroup)
+	}
 	
 	func updatedAfterCreating(title: String) -> (Self, IndexPath) {
 		let newCollection = Collection(context: context)
@@ -122,7 +125,7 @@ extension CollectionsViewModel {
 		newItems.insert(newCollection, at: Self.indexOfNewCollection)
 		
 		let twin = updatedWithItemsInOnlyGroup(newItems)
-		let indexPath = Self.indexPathOfNewCollection
+		let indexPath = indexPathOfNewCollection
 		return (twin, indexPath)
 	}
 	

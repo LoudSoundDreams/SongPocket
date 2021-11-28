@@ -232,8 +232,8 @@ class LibraryTVC: UITableViewController {
 			fatalError("`LibraryTVC` with an unknown type for `viewModel` called `setViewModelAndMoveRows`.")
 		}
 		
-		let oldNumberOfSectionsAbove = type(of: oldViewModel).numberOfSectionsAboveLibraryItems
-		let newNumberOfSectionsAbove = type(of: newViewModel).numberOfSectionsAboveLibraryItems
+		let oldNumberOfSectionsAbove = oldViewModel.numberOfSectionsAboveLibraryItems
+		let newNumberOfSectionsAbove = newViewModel.numberOfSectionsAboveLibraryItems
 		let sectionsToDelete = updatesOfGroups?.toDelete.map { oldNumberOfSectionsAbove + $0 } ?? []
 		let sectionsToInsert = updatesOfGroups?.toInsert.map { newNumberOfSectionsAbove + $0 } ?? []
 		let sectionsToMove = updatesOfGroups?.toMove.map { (oldIndex, newIndex) in
@@ -321,12 +321,12 @@ class LibraryTVC: UITableViewController {
 			guard let oldIndexOfGroup = oldIndexOfGroup else {
 				return nil
 			}
-			return type(of: viewModel).indexPathFor(
+			return viewModel.indexPathFor(
 				indexOfItemInGroup: $0,
 				indexOfGroup: oldIndexOfGroup)
 		}
 		let toInsert = updatesOfIndicesOfItems.toInsert.map {
-			type(of: viewModel).indexPathFor(
+			viewModel.indexPathFor(
 				indexOfItemInGroup: $0,
 				indexOfGroup: newIndexOfGroup)
 		}
@@ -335,10 +335,10 @@ class LibraryTVC: UITableViewController {
 				return nil
 			}
 			return (
-				type(of: viewModel).indexPathFor(
+				viewModel.indexPathFor(
 					indexOfItemInGroup: oldIndex,
 					indexOfGroup: oldIndexOfGroup),
-				type(of: viewModel).indexPathFor(
+				viewModel.indexPathFor(
 					indexOfItemInGroup: newIndex,
 					indexOfGroup: newIndexOfGroup)
 			)
@@ -376,7 +376,7 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	final func refreshNavigationItemTitle() {
-		title = viewModel.navigationItemTitle
+		title = viewModel.bigTitle()
 	}
 	
 	func showToolbar() {
@@ -430,7 +430,7 @@ class LibraryTVC: UITableViewController {
 		}
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
 		if selectedIndexPaths.isEmpty {
-			return viewModel.viewContainerIsSpecific
+			return viewModel.viewContainerIsSpecific()
 		} else {
 			return selectedIndexPaths.isContiguousWithinEachSection()
 		}
