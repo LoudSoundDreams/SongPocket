@@ -131,6 +131,20 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
+	func countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
+		selectedItemsCount: Int
+	) -> Int {
+		if selectedItemsCount == 0 {
+			if viewContainerIsSpecific {
+				return groups[0].items.count
+			} else {
+				return 0
+			}
+		} else {
+			return selectedItemsCount
+		}
+	}
+	
 	func sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {

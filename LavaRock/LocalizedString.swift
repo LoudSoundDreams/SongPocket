@@ -162,6 +162,15 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 		"plural - move_albums_to_collection",
 		comment: "Prompt that appears at the top of the “move albums to…” sheet. Include the number of albums you’re moving.") // TO DO: Delete after multicollection
 	
+	// MARK: Albums View
+	
+	static let formatOrganizeXAlbums = NSLocalizedString(
+		"plural - organize_X_ albums",
+		comment: "Button title")
+	static let formatMoveXAlbums = NSLocalizedString(
+		"plural - move_x_albums",
+		comment: "Button title")
+	
 	// MARK: Songs View
 	
 	static let formatDidEnqueueMultipleSongsAlertTitle = NSLocalizedString(

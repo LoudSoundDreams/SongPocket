@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>plural - organize_X_ albums</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Organize %#@NUMBER_ALBUMS@</string>
+		<key>NUMBER_ALBUMS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Album</string>
+			<key>other</key>
+			<string>%lld Albums</string>
+		</dict>
+	</dict>
+	<key>plural - move_x_albums</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Move %#@NUMBER_ALBUMS@</string>
+		<key>NUMBER_ALBUMS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Album</string>
+			<key>other</key>
+			<string>%lld Albums</string>
+		</dict>
+	</dict>
 	<key>plural - organize_albums_into_collections</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -27,22 +59,6 @@
 			<string>%lld new collection</string>
 			<key>other</key>
 			<string>%lld new collections</string>
-		</dict>
-	</dict>
-	<key>plural - did_enqueue_multiple_songs</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>“%@” and %#@NUMBER_MORE_SONGS@ Will Play Later</string>
-		<key>NUMBER_MORE_SONGS</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>one</key>
-			<string>%lld More Song</string>
-			<key>other</key>
-			<string>%lld More Songs</string>
 		</dict>
 	</dict>
 	<key>plural - move_albums_to_collection</key>
@@ -75,6 +91,22 @@
 			<string>Choose a section to move %lld album to.</string>
 			<key>other</key>
 			<string>Choose a section to move %lld albums to.</string>
+		</dict>
+	</dict>
+	<key>plural - did_enqueue_multiple_songs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>“%@” and %#@NUMBER_MORE_SONGS@ Will Play Later</string>
+		<key>NUMBER_MORE_SONGS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld More Song</string>
+			<key>other</key>
+			<string>%lld More Songs</string>
 		</dict>
 	</dict>
 </dict>

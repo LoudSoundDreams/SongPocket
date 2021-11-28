@@ -10,21 +10,62 @@ import CoreData
 
 extension AlbumsTVC {
 	
-	final func moveOrOrganizeMenu() -> UIMenu {
-		let organizeAction = UIAction(
-			title: LocalizedString.organizeEllipsis,
-//			image: UIImage(systemName: "tray.2"),
-//			image: UIImage(systemName: "plus.rectangle.on.folder"),
-			handler: { _ in self.startOrganizing() })
-		let moveAction = UIAction(
-			title: LocalizedString.moveToEllipsis,
-//			image: UIImage(systemName: "tray"),
-//			image: UIImage(systemName: "folder"),
-			handler: { _ in self.startMoving() })
+	final func makeMoveOrOrganizeMenu() -> UIMenu {
+		let organizeElement: UIMenuElement = {
+			if #available(iOS 15, *) {
+				// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
+				return UIDeferredMenuElement.uncached({ useMenuElements in
+					let dynamicOrganizeAction = self.makeDynamicOrganizeAction()
+					useMenuElements([dynamicOrganizeAction])
+				})
+			} else {
+				let organizeAction = makeDynamicOrganizeAction()
+				organizeAction.title = LocalizedString.organizeEllipsis
+				return organizeAction
+			}
+		}()
+		let moveElement: UIMenuElement = {
+			if #available(iOS 15, *) {
+				return UIDeferredMenuElement.uncached({ useMenuElements in
+					let dynamicMoveAction = self.makeDynamicMoveAction()
+					useMenuElements([dynamicMoveAction])
+				})
+			} else {
+				let moveAction = makeDynamicMoveAction()
+				moveAction.title = LocalizedString.moveToEllipsis
+				return moveAction
+			}
+		}()
 		return UIMenu(children: [
-			organizeAction,
-			moveAction,
+			organizeElement,
+			moveElement,
 		].reversed())
+	}
+	
+	private func makeDynamicOrganizeAction() -> UIAction {
+		let formatString = LocalizedString.formatOrganizeXAlbums
+		let numberToOrganize = viewModel.countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
+			selectedItemsCount: tableView.indexPathsForSelectedRowsNonNil.count)
+		let title = String.localizedStringWithFormat(
+			formatString,
+			numberToOrganize)
+		return UIAction(
+			title: title,
+			image: UIImage(systemName: "plus.rectangle.on.folder"),
+			handler: { _ in self.startOrganizing() })
+	}
+	
+	private func makeDynamicMoveAction() -> UIAction {
+		let formatString = LocalizedString.formatMoveXAlbums
+		let numberToMove = viewModel.countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
+			selectedItemsCount: tableView.indexPathsForSelectedRowsNonNil.count)
+		let title = String.localizedStringWithFormat(
+			formatString,
+			numberToMove)
+		return UIAction(
+			title: title,
+			image: UIImage(systemName: "folder"),
+			handler: { _ in self.startMoving() })
 	}
 	
 	private func startOrganizing() {
@@ -57,9 +98,7 @@ extension AlbumsTVC {
 		present(collectionsNC, animated: true)
 	}
 	
-//	private
-	final
-	func startMoving() {
+	private func startMoving() {
 		// Prepare a Collections view to present modally.
 		guard
 			let collectionsNC = storyboard?.instantiateViewController(

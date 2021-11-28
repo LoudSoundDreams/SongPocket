@@ -86,8 +86,8 @@
 		07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */; };
 		07DC1B1A24F20C9E00AAEEDB /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1924F20C9E00AAEEDB /* NSManagedObjectContext.swift */; };
 		07DC1B1D24F339E000AAEEDB /* LibraryTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1C24F339E000AAEEDB /* LibraryTVC - Editing.swift */; };
-		07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Moving Albums” Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Moving Albums” Mode.swift */; };
-		07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Moving Albums” Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Moving Albums” Mode.swift */; };
+		07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums To…” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums To…” Sheet.swift */; };
+		07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums To…” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums To…” Sheet.swift */; };
 		07E92A0E2510497B00E9073B /* Song Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0D2510497B00E9073B /* Song Actions.swift */; };
 		07E92A142510682C00E9073B /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A132510682C00E9073B /* Notification.Name.swift */; };
 		07EC01E826C84BC700954E08 /* CollectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */; };
@@ -214,8 +214,8 @@
 		07D9DBFB257CA34D007EEB87 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		07DC1B1924F20C9E00AAEEDB /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
 		07DC1B1C24F339E000AAEEDB /* LibraryTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - Editing.swift"; sourceTree = "<group>"; };
-		07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Moving Albums” Mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - “Moving Albums” Mode.swift"; sourceTree = "<group>"; };
-		07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Moving Albums” Mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - “Moving Albums” Mode.swift"; sourceTree = "<group>"; };
+		07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums To…” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - “Move Albums To…” Sheet.swift"; sourceTree = "<group>"; };
+		07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums To…” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - “Move Albums To…” Sheet.swift"; sourceTree = "<group>"; };
 		07E92A0D2510497B00E9073B /* Song Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Song Actions.swift"; sourceTree = "<group>"; };
 		07E92A132510682C00E9073B /* Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 		07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsViewModel.swift; sourceTree = "<group>"; };
@@ -447,7 +447,7 @@
 				07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */,
 				07F36BC124FC3F450064282D /* CollectionsTVC - UITableView.swift */,
 				070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */,
-				07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Moving Albums” Mode.swift */,
+				07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums To…” Sheet.swift */,
 				073E6A8625562B93003C84A5 /* Collections - Views.swift */,
 			);
 			path = "Collections Level";
@@ -463,7 +463,7 @@
 				07865B242566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift */,
 				0703130026923D2600134B06 /* AlbumsTVC - Editing.swift */,
 				077BCEAF275314BE0066DE96 /* AlbumsTVC + AlbumOrganizerDelegate.swift */,
-				07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Moving Albums” Mode.swift */,
+				07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums To…” Sheet.swift */,
 				078307B32512BC59005CDA67 /* AlbumsTVC + AlbumMoverDelegate.swift */,
 				0736E3A624B8415400A15420 /* Albums - Views.swift */,
 			);
@@ -645,7 +645,7 @@
 				0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */,
 				0720A43525017C6C00E0A28A /* AlbumsTVC - Notifications.swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */,
-				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Moving Albums” Mode.swift in Sources */,
+				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums To…” Sheet.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* func createManagedObjects.swift in Sources */,
 				072FD02726C30BB90053369B /* func cleanUpManagedObjects.swift in Sources */,
 				07642C7E268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift in Sources */,
@@ -659,7 +659,7 @@
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */,
 				07865B252566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift in Sources */,
-				07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Moving Albums” Mode.swift in Sources */,
+				07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums To…” Sheet.swift in Sources */,
 				073E6A9225574B99003C84A5 /* NowPlayingIndicator.swift in Sources */,
 				07B1EC42271FBA4000EA8E29 /* URL.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* LibraryTVC - Editing.swift in Sources */,
@@ -928,7 +928,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 286;
+				CURRENT_PROJECT_VERSION = 287;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -951,7 +951,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 286;
+				CURRENT_PROJECT_VERSION = 287;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

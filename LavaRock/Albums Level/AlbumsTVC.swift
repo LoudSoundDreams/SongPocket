@@ -30,13 +30,7 @@ final class AlbumsTVC:
 	// Controls
 	private lazy var moveOrOrganizeButton = UIBarButtonItem(
 		title: LocalizedString.move,
-		menu: moveOrOrganizeMenu())
-	private lazy var moveButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.startMoving() }
-		return UIBarButtonItem(
-			title: LocalizedString.move,
-			primaryAction: action)
-	}()
+		menu: makeMoveOrOrganizeMenu())
 	
 	// Purpose
 	var purpose: Purpose {
@@ -168,7 +162,6 @@ final class AlbumsTVC:
 		super.refreshEditingButtons()
 		
 		moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
-		moveButton.isEnabled = allowsMove()
 	}
 	
 	private func allowsMoveOrOrganize() -> Bool {
