@@ -134,7 +134,7 @@ extension AlbumsViewModel {
 		return CollectionsViewModel(context: childContext)
 	}
 	
-	// MARK: - “Moving Albums” Mode
+	// MARK: - “Move Albums To…” Sheet
 	
 	func updatedAfterMovingIntoOnlyGroup(
 		albumsWith albumIDs: [NSManagedObjectID]

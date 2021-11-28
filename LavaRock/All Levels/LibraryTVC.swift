@@ -160,7 +160,7 @@ class LibraryTVC: UITableViewController {
 		
 		refreshNavigationItemTitle()
 		
-		setBarButtons(animated: true) // So that when we open a Collection in "moving Albums" mode, the change is animated.
+		setBarButtons(animated: true) // So that when we open a Collection in the "move albums to…" sheet, the change is animated.
 		
 		if FeatureFlag.tabBar {
 			hideToolbar()

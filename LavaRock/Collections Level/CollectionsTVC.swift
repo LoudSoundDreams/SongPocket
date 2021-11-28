@@ -89,7 +89,7 @@ final class CollectionsTVC:
 	}
 	var viewModelBeforeCombining: CollectionsViewModel? = nil
 	
-	// MARK: "Organizing Albums" Mode
+	// MARK: “Organize Albums?” Sheet
 	
 	// Data
 	var albumOrganizerClipboard: AlbumOrganizerClipboard? = nil
@@ -97,7 +97,7 @@ final class CollectionsTVC:
 	// Controls
 	private lazy var commitOrganizeButton = makeCommitOrganizeButton()
 	
-	// MARK: "Moving Albums" Mode
+	// MARK: “Move Albums To…” Sheet
 	
 	// Data
 	var albumMoverClipboard: AlbumMoverClipboard? = nil

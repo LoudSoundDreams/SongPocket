@@ -27,7 +27,7 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 	// Helpers
 	weak var delegate: AlbumMoverDelegate? = nil
 	var prompt: String {
-		let formatString = FeatureFlag.multicollection ? LocalizedString.formatChooseASectionPrompt : LocalizedString.formatChooseACollectionPrompt
+		let formatString = FeatureFlag.multicollection ? LocalizedString.formatChooseASectiontoMoveXAlbumsTo : LocalizedString.formatChooseACollectionToMoveXAlbumsTo
 		let number = idsOfAlbumsBeingMoved.count
 		return String.localizedStringWithFormat(
 			formatString,

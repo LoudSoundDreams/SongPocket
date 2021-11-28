@@ -52,7 +52,7 @@ final class AlbumsTVC:
 	// State
 	var indexOfOpenedCollection: Int? = nil
 	
-	// MARK: "Organizing Albums" Mode
+	// MARK: “Organize Albums?” Sheet
 	
 	// Data
 	var albumOrganizerClipboard: AlbumOrganizerClipboard? = nil
@@ -60,7 +60,7 @@ final class AlbumsTVC:
 	// Controls
 	private lazy var commitOrganizeButton = makeCommitOrganizeButton()
 	
-	// MARK: "Moving Albums" Mode
+	// MARK: “Move Albums To…” Sheet
 	
 	// Data
 	var albumMoverClipboard: AlbumMoverClipboard? = nil

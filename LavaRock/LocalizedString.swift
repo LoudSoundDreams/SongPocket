@@ -151,14 +151,14 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: Collections and Albums Views // TO DO: Edit after multicollection
 	
-	static let formatOrganizeAlbumsPrompt = NSLocalizedString(
+	static let formatOrganizeXAlbumsIntoYCollections = NSLocalizedString(
 		"plural - organize_albums_into_collections",
 		comment: "Prompt that appears at the top of the “organize albums?” sheet. Include the number of albums you’re organizing, and the number of new collections the app created.")
 	
-	static let formatChooseASectionPrompt = NSLocalizedString(
+	static let formatChooseASectiontoMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_section",
 		comment: "Prompt that appears at the top of the “move albums to…” sheet. Include the number of albums you’re moving.")
-	static let formatChooseACollectionPrompt = NSLocalizedString(
+	static let formatChooseACollectionToMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_collection",
 		comment: "Prompt that appears at the top of the “move albums to…” sheet. Include the number of albums you’re moving.") // TO DO: Delete after multicollection
 	

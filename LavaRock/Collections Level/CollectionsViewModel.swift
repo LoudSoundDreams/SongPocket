@@ -106,7 +106,7 @@ extension CollectionsViewModel {
 		}
 	}
 	
-	// MARK: - “Moving Albums” Mode
+	// MARK: - “Move Albums To…” Sheet
 	
 	private static let indexOfNewCollection = 0
 	static let indexPathOfNewCollection = indexPathFor(

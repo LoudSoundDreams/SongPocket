@@ -20,7 +20,7 @@ final class AlbumOrganizerClipboard {
 	// Helpers
 	weak var delegate: AlbumOrganizerDelegate? = nil
 	var prompt: String {
-		let formatString = LocalizedString.formatOrganizeAlbumsPrompt
+		let formatString = LocalizedString.formatOrganizeXAlbumsIntoYCollections
 		let numberOfAlbums = idsOfOrganizedAlbums.count
 		let numberOfNewCollections = idsOfNewCollections.count
 		return String.localizedStringWithFormat(
