@@ -102,9 +102,8 @@ final class OpenMusicCell: UITableViewCell {
 	}
 }
 
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class CreateCollectionCell: UITableViewCell {
-	@IBOutlet private var newCollectionLabel: UILabel!
-	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -114,7 +113,10 @@ final class CreateCollectionCell: UITableViewCell {
 	}
 	
 	private func configure() {
-		newCollectionLabel.textColor = .tintColor(ifiOS14: AccentColor.savedPreference())
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.newCollectionButtonTitle
+		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
+		contentConfiguration = configuration
 	}
 	
 	final override func tintColorDidChange() {

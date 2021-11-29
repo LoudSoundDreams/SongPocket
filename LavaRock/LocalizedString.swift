@@ -95,6 +95,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let combinedSectionDefaultTitle = NSLocalizedString("Combined Section", comment: "Alert title")
 	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title") // MC2DO: Delete
 	
+	static let newCollectionButtonTitle = NSLocalizedString("New Collection", comment: "Button title") // MC2DO: Edit
 	static let newSectionAlertTitle = NSLocalizedString(
 		"New Section [alert title]",
 		value: "New Section",
