@@ -71,10 +71,10 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let moveToTop = NSLocalizedString("Move to Top", comment: "Button")
 	static let moveToBottom = NSLocalizedString("Move to Bottom", comment: "Button")
 	
-	// MARK: Collections View // TO DO: Edit after multicollection
+	// MARK: Collections View // MC2DO: Edit
 	
 	static let sections = NSLocalizedString("Sections", comment: "Big title")
-	static let collections = NSLocalizedString("Collections", comment: "Big title") // TO DO: Delete after multicollection
+	static let collections = NSLocalizedString("Collections", comment: "Big title") // MC2DO: Delete
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
@@ -83,17 +83,17 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 		comment: "Placeholder for when the app’s database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.") // TO DO: Edit after multicollection
+	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.") // MC2DO: Edit
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let renameSectionAlertTitle = NSLocalizedString("Rename Section", comment: "Alert title")
-	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title") // TO DO: Delete after multicollection
+	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title") // MC2DO: Delete
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	static let combineSectionsAlertTitle = NSLocalizedString("Combine Sections", comment: "Alert title")
-	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title") // TO DO: Delete after multicollection
+	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title") // MC2DO: Delete
 	static let combinedSectionDefaultTitle = NSLocalizedString("Combined Section", comment: "Alert title")
-	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title") // TO DO: Delete after multicollection
+	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title") // MC2DO: Delete
 	
 	static let newSectionAlertTitle = NSLocalizedString(
 		"New Section [alert title]",
@@ -102,7 +102,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let newCollectionAlertTitle = NSLocalizedString(
 		"New Collection [alert title]",
 		value: "New Collection",
-		comment: "Alert title") // TO DO: Delete after multicollection
+		comment: "Alert title") // MC2DO: Delete
 	static let newSectionDefaultTitle = NSLocalizedString(
 		"New Section [default title for section]",
 		value: "New Section",
@@ -110,7 +110,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	static let newCollectionDefaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
 		value: "New Collection",
-		comment: "Default title for a collection if you create one and don’t provide a title.") // TO DO: Delete after multicollection
+		comment: "Default title for a collection if you create one and don’t provide a title.") // MC2DO: Delete
 	
 	// MARK: Albums View
 	
@@ -149,7 +149,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
 	
-	// MARK: Collections and Albums Views // TO DO: Edit after multicollection
+	// MARK: Collections and Albums Views // MC2DO: Edit
 	
 	static let formatOrganizeXAlbumsIntoYCollections = NSLocalizedString(
 		"plural - organize_albums_into_collections",
@@ -160,7 +160,7 @@ struct LocalizedString { // You can't make this an enum, because raw values for 
 		comment: "Prompt that appears at the top of the “move albums” sheet. Include the number of albums you’re moving.")
 	static let formatChooseACollectionToMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_collection",
-		comment: "Prompt that appears at the top of the “move albums” sheet. Include the number of albums you’re moving.") // TO DO: Delete after multicollection
+		comment: "Prompt that appears at the top of the “move albums” sheet. Include the number of albums you’re moving.") // MC2DO: Delete
 	
 	// MARK: Albums View
 	
