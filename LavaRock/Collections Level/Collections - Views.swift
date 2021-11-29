@@ -102,6 +102,31 @@ final class OpenMusicCell: UITableViewCell {
 	}
 }
 
+final class CreateCollectionCell: UITableViewCell {
+	@IBOutlet private var newCollectionLabel: UILabel!
+	
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		accessibilityTraits.formUnion(.button)
+		
+		configure()
+	}
+	
+	private func configure() {
+		newCollectionLabel.textColor = .tintColor(ifiOS14: AccentColor.savedPreference())
+	}
+	
+	final override func tintColorDidChange() {
+		super.tintColorDidChange()
+		
+		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
+		} else {
+			configure()
+		}
+	}
+}
+
 final class CollectionCell: UITableViewCell {
 	enum Mode {
 		case normal

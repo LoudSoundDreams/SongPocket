@@ -12,8 +12,8 @@ struct CollectionsViewModel {
 	// LibraryViewModel
 	let viewContainer: LibraryViewContainer = .library
 	let context: NSManagedObjectContext
-	let numberOfSectionsAboveLibraryItems = 0
-	let numberOfRowsAboveLibraryItemsInEachSection = 0
+	let numberOfPresections = 0
+	private(set) var numberOfPrerowsPerSection: Int
 	var groups: [GroupOfLibraryItems]
 }
 
@@ -28,15 +28,21 @@ extension CollectionsViewModel: LibraryViewModel {
 		return FeatureFlag.multicollection ? LocalizedString.sections : LocalizedString.collections
 	}
 	
-	func refreshed() -> Self {
-		return Self(context: context)
+	func updatedWithRefreshedData() -> Self {
+		return Self(
+			context: context,
+			numberOfPrerowsPerSection: numberOfPrerowsPerSection)
 	}
 }
 
 extension CollectionsViewModel {
 	
-	init(context: NSManagedObjectContext) {
+	init(
+		context: NSManagedObjectContext,
+		numberOfPrerowsPerSection: Int
+	) {
 		self.context = context
+		self.numberOfPrerowsPerSection = numberOfPrerowsPerSection
 		
 		groups = [
 			GroupOfCollectionsOrAlbums(
@@ -92,7 +98,9 @@ extension CollectionsViewModel {
 		
 		try? childContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don't unnecessarily remove and reinsert the row later.
 		
-		let twin = Self.init(context: childContext)
+		let twin = Self.init(
+			context: childContext,
+			numberOfPrerowsPerSection: numberOfPrerowsPerSection)
 		return twin
 	}
 	

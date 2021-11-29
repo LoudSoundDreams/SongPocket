@@ -102,7 +102,7 @@ extension LibraryTVC {
 		return viewModel.pointsToSomeItem(indexPath) ? indexPath : nil
 	}
 	
-	// Overrides should call super (this implementation).
+	// Overrides should call super (this implementation) if `viewModel.pointsToSomeItem(indexPath)`.
 	override func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath

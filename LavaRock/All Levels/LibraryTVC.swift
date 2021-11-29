@@ -50,7 +50,9 @@ class LibraryTVC: UITableViewController {
 	// Data
 	final lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
 		let mainContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		return CollectionsViewModel(context: mainContext)
+		return CollectionsViewModel(
+			context: mainContext,
+			numberOfPrerowsPerSection: 0)
 	}()
 	
 	// Controls
@@ -232,13 +234,13 @@ class LibraryTVC: UITableViewController {
 			fatalError("`LibraryTVC` with an unknown type for `viewModel` called `setViewModelAndMoveRows`.")
 		}
 		
-		let oldNumberOfSectionsAbove = oldViewModel.numberOfSectionsAboveLibraryItems
-		let newNumberOfSectionsAbove = newViewModel.numberOfSectionsAboveLibraryItems
-		let sectionsToDelete = updatesOfGroups?.toDelete.map { oldNumberOfSectionsAbove + $0 } ?? []
-		let sectionsToInsert = updatesOfGroups?.toInsert.map { newNumberOfSectionsAbove + $0 } ?? []
+		let oldNumberOfPresections = oldViewModel.numberOfPresections
+		let newNumberOfPresections = newViewModel.numberOfPresections
+		let sectionsToDelete = updatesOfGroups?.toDelete.map { oldNumberOfPresections + $0 } ?? []
+		let sectionsToInsert = updatesOfGroups?.toInsert.map { newNumberOfPresections + $0 } ?? []
 		let sectionsToMove = updatesOfGroups?.toMove.map { (oldIndex, newIndex) in
-			(oldNumberOfSectionsAbove + oldIndex,
-			 newNumberOfSectionsAbove + newIndex)
+			(oldNumberOfPresections + oldIndex,
+			 newNumberOfPresections + newIndex)
 		} ?? []
 		
 		viewModel = newViewModel

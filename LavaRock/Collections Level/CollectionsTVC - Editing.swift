@@ -143,7 +143,9 @@ extension CollectionsTVC {
 		collectionsViewModel.context.tryToSave()
 		collectionsViewModel.context.parent!.tryToSave()
 		
-		let newViewModel = CollectionsViewModel(context: collectionsViewModel.context.parent!)
+		let newViewModel = CollectionsViewModel(
+			context: collectionsViewModel.context.parent!,
+			numberOfPrerowsPerSection: collectionsViewModel.numberOfPrerowsPerSection)
 		viewModel = newViewModel // As of iOS 15.2 developer beta 3, even though `setViewModelAndMoveRows` also sets `viewModel` and doesn't move any rows, it breaks the animation for `reloadRows` below.
 		
 		if didRename {

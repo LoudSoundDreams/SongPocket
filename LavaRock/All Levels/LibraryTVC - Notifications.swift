@@ -106,7 +106,7 @@ extension LibraryTVC {
 		}
 		
 		func refreshLibraryItemsPart2() {
-			let newViewModel = viewModel.refreshed()
+			let newViewModel = viewModel.updatedWithRefreshedData()
 			setViewModelAndMoveRows(newViewModel) {
 				self.refreshNavigationItemTitle()
 				

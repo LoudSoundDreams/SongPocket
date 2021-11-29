@@ -12,8 +12,8 @@ struct AlbumsViewModel {
 	// LibraryViewModel
 	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
-	let numberOfSectionsAboveLibraryItems = 0
-	let numberOfRowsAboveLibraryItemsInEachSection = 0
+	let numberOfPresections = 0
+	private(set) var numberOfPrerowsPerSection: Int
 	var groups: [GroupOfLibraryItems]
 }
 
@@ -36,11 +36,12 @@ extension AlbumsViewModel: LibraryViewModel {
 		}
 	}
 	
-	func refreshed() -> Self {
+	func updatedWithRefreshedData() -> Self {
 		let refreshedViewContainer = viewContainer.refreshed()
 		return Self(
 			viewContainer: refreshedViewContainer,
-			context: context)
+			context: context,
+			numberOfPrerowsPerSection: numberOfPrerowsPerSection)
 	}
 }
 
@@ -48,10 +49,12 @@ extension AlbumsViewModel {
 	
 	init(
 		viewContainer: LibraryViewContainer,
-		context: NSManagedObjectContext
+		context: NSManagedObjectContext,
+		numberOfPrerowsPerSection: Int
 	) {
 		self.viewContainer = viewContainer
 		self.context = context
+		self.numberOfPrerowsPerSection = numberOfPrerowsPerSection
 		
 		// Check `viewContainer` to figure out which `Album`s to show.
 		let containers: [NSManagedObject] = {
@@ -132,7 +135,9 @@ extension AlbumsViewModel {
 			}
 		}
 		
-		return CollectionsViewModel(context: childContext)
+		return CollectionsViewModel(
+			context: childContext,
+			numberOfPrerowsPerSection: 0)
 	}
 	
 	// MARK: - “Move Albums” Sheet
@@ -151,6 +156,11 @@ extension AlbumsViewModel {
 		let newItemsForOnlyGroup = destinationCollection.albums()
 		
 		var twin = self
+		
+		
+		twin.numberOfPrerowsPerSection = 0
+		
+		
 		twin.groups[0].setItems(newItemsForOnlyGroup)
 		return twin
 	}

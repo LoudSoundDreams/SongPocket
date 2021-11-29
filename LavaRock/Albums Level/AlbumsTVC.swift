@@ -136,7 +136,7 @@ final class AlbumsTVC:
 		
 		if let collectionIndex = indexOfOpenedCollection {
 			indexOfOpenedCollection = nil
-			let sectionToAppearAt = viewModel.numberOfSectionsAboveLibraryItems + collectionIndex
+			let sectionToAppearAt = viewModel.numberOfPresections + collectionIndex
 			let indexPathToAppearAt = IndexPath(row: 0, section: sectionToAppearAt)
 			tableView.scrollToRow(at: indexPathToAppearAt, at: .top, animated: false)
 //			print("")

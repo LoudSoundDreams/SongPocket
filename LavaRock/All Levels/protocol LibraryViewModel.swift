@@ -34,14 +34,14 @@ protocol LibraryViewModel {
 	
 	var viewContainer: LibraryViewContainer { get }
 	var context: NSManagedObjectContext { get }
-	var numberOfSectionsAboveLibraryItems: Int { get }
-	var numberOfRowsAboveLibraryItemsInEachSection: Int { get }
+	var numberOfPresections: Int { get }
+	var numberOfPrerowsPerSection: Int { get }
 	
 	var groups: [GroupOfLibraryItems] { get set }
 	
 	func viewContainerIsSpecific() -> Bool
 	func bigTitle() -> String
-	func refreshed() -> Self
+	func updatedWithRefreshedData() -> Self
 }
 
 extension LibraryViewModel {
@@ -71,14 +71,13 @@ extension LibraryViewModel {
 		let newItems = groups[indexOfGroup].itemsFetched(
 			entityName: Self.entityName,
 			context: context)
-		let section = numberOfSectionsAboveLibraryItems + indexOfGroup
+		let section = numberOfPresections + indexOfGroup
 		return (newItems, section)
 	}
 	
 	// MARK: - Elements
 	
-	// WARNING: Never use GroupOfLibraryItems.items[indexPath.row]. That might return the wrong library item, because IndexPaths are offset by numberOfRowsAboveLibraryItemsInEachSection.
-	// That's a hack to let us use rows for album artwork and album info in SongsTVC, above the rows for library items.
+	// WARNING: Never use `GroupOfLibraryItems.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `numberOfPrerowsPerSection`.
 	
 	func group(forSection section: Int) -> GroupOfLibraryItems {
 		let indexOfGroup = indexOfGroup(forSection: section)
@@ -120,11 +119,11 @@ extension LibraryViewModel {
 	// MARK: Indices
 	
 	func indexOfGroup(forSection section: Int) -> Int {
-		return section - numberOfSectionsAboveLibraryItems
+		return section - numberOfPresections
 	}
 	
 	func indexOfItemInGroup(forRow row: Int) -> Int {
-		return row - numberOfRowsAboveLibraryItemsInEachSection
+		return row - numberOfPrerowsPerSection
 	}
 	
 	// MARK: IndexPaths
@@ -171,8 +170,8 @@ extension LibraryViewModel {
 		let indices = groups[indexOfGroup].items.indices
 		return indices.map {
 			IndexPath(
-				row: numberOfRowsAboveLibraryItemsInEachSection + $0,
-				section: numberOfSectionsAboveLibraryItems + indexOfGroup)
+				row: numberOfPrerowsPerSection + $0,
+				section: numberOfPresections + indexOfGroup)
 		}
 	}
 	
@@ -181,8 +180,8 @@ extension LibraryViewModel {
 		indexOfGroup: Int
 	) -> IndexPath {
 		return IndexPath(
-			row: indexOfItemInGroup + numberOfRowsAboveLibraryItemsInEachSection,
-			section: indexOfGroup + numberOfSectionsAboveLibraryItems)
+			row: indexOfItemInGroup + numberOfPrerowsPerSection,
+			section: indexOfGroup + numberOfPresections)
 	}
 	
 	// MARK: - UITableView
@@ -190,21 +189,21 @@ extension LibraryViewModel {
 	// MARK: Numbers
 	
 	func numberOfSections() -> Int {
-		return numberOfSectionsAboveLibraryItems + groups.count
+		return numberOfPresections + groups.count
 	}
 	
 	func numberOfRows(forSection section: Int) -> Int {
 		let group = group(forSection: section)
 		if group.items.isEmpty {
-			return 0 // Without numberOfRowsAboveLibraryItemsInEachSection
+			return 0 // Without `numberOfPrerowsPerSection`
 		} else {
-			return numberOfRowsAboveLibraryItemsInEachSection + group.items.count
+			return numberOfPrerowsPerSection + group.items.count
 		}
 	}
 	
 	// MARK: - Editing
 	
-	// WARNING: Leaves a group empty if you move all the items out of it. You must call `refreshed()` later to delete empty groups.
+	// WARNING: Leaves a group empty if you move all the items out of it. You must call `updatedWithRefreshedData()` later to delete empty groups.
 	mutating func moveItem(
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath

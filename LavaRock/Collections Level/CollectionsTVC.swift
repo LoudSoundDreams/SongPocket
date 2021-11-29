@@ -338,6 +338,16 @@ final class CollectionsTVC:
 		albumsTVC.albumOrganizerClipboard = albumOrganizerClipboard
 		albumsTVC.albumMoverClipboard = albumMoverClipboard
 		
+		let numberOfPrerows: Int = {
+			switch purpose {
+			case .organizingAlbums:
+				return 0
+			case .movingAlbums:
+				return 0//RB2DO: 1
+			case .browsing:
+				return 0
+			}
+		}()
 		if FeatureFlag.multicollection {
 			let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
 			let indexOfSelectedCollection = collection.index
@@ -345,12 +355,14 @@ final class CollectionsTVC:
 			
 			albumsTVC.viewModel = AlbumsViewModel(
 				viewContainer: .library,
-				context: viewModel.context)
+				context: viewModel.context,
+				numberOfPrerowsPerSection: numberOfPrerows)
 		} else {
 			let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
 			albumsTVC.viewModel = AlbumsViewModel(
 				viewContainer: .container(collection),
-				context: viewModel.context)
+				context: viewModel.context,
+				numberOfPrerowsPerSection: numberOfPrerows)
 		}
 	}
 	

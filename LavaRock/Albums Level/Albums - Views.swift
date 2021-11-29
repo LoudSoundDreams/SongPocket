@@ -7,6 +7,36 @@
 
 import UIKit
 
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
+final class MoveHereCell: UITableViewCell {
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		accessibilityTraits.formUnion(.button)
+		
+		configure()
+	}
+	
+	private func configure() {
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.moveHere
+		configuration.textProperties.font = .preferredFont(
+			forTextStyle: .headline,
+			compatibleWith: traitCollection)
+		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
+		contentConfiguration = configuration
+	}
+	
+	final override func tintColorDidChange() {
+		super.tintColorDidChange()
+		
+		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
+		} else {
+			configure()
+		}
+	}
+}
+
 final class AlbumCell: UITableViewCell {
 	enum Mode {
 		case normal

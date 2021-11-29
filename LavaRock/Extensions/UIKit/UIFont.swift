@@ -9,9 +9,15 @@ import UIKit
 
 extension UIFont {
 	
-	static let bodyWithMonospacedDigits: UIFont = {
-		let bodyFont = UIFont.preferredFont(forTextStyle: .body)
-		return .monospacedDigitSystemFont(ofSize: bodyFont.pointSize, weight: .regular)
-	}()
+	static func bodyWithMonospacedDigits(
+		compatibleWith traitCollection: UITraitCollection?
+	) -> UIFont {
+		let bodyFont = UIFont.preferredFont(
+			forTextStyle: .body,
+			compatibleWith: traitCollection)
+		return .monospacedDigitSystemFont(
+			ofSize: bodyFont.pointSize,
+			weight: .regular)
+	}
 	
 }

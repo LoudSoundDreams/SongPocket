@@ -8,7 +8,7 @@
 extension AlbumsTVC: AlbumOrganizerDelegate {
 	
 	final func didCommitOrganizeThenDismiss() {
-		let newViewModel = viewModel.refreshed()
+		let newViewModel = viewModel.updatedWithRefreshedData()
 		setViewModelAndMoveRows(newViewModel)
 	}
 	

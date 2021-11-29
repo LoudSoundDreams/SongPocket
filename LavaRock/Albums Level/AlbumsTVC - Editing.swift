@@ -118,7 +118,9 @@ extension AlbumsTVC {
 		
 		// Make the "move albums" sheet use a child managed object context, so that we can cancel without having to revert our changes.
 		let childContext = NSManagedObjectContext.withParent(viewModel.context)
-		collectionsTVC.viewModel = CollectionsViewModel(context: childContext)
+		collectionsTVC.viewModel = CollectionsViewModel(
+			context: childContext,
+			numberOfPrerowsPerSection: 0)// RB2DO: 1)
 		
 		present(collectionsNC, animated: true)
 	}

@@ -40,6 +40,21 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Create Collection",
+					for: indexPath) as? CreateCollectionCell ?? UITableViewCell()
+			} else {
+				break
+			}
+		case .browsing:
+			break
+		}
+		
 		switch viewState {
 		case .allowAccess:
 			return tableView.dequeueReusableCell(
@@ -157,6 +172,19 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+				return indexPath
+			} else {
+				break
+			}
+		case .browsing:
+			break
+		}
+		
 		switch viewState {
 		case
 				.allowAccess,
@@ -173,6 +201,19 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+				tableView.deselectRow(at: indexPath, animated: true) // RB2DO
+			} else {
+				break
+			}
+		case .browsing:
+			break
+		}
+		
 		switch viewState {
 		case .allowAccess:
 			didSelectAllowAccessRow(at: indexPath)

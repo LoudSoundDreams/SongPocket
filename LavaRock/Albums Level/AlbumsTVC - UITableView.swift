@@ -61,6 +61,21 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Move Here",
+					for: indexPath) as? MoveHereCell ?? UITableViewCell()
+			} else {
+				break
+			}
+		case .browsing:
+			break
+		}
+		
 		return albumCell(forRowAt: indexPath)
 	}
 	
@@ -127,6 +142,46 @@ extension AlbumsTVC {
 				tableView,
 				shouldBeginMultipleSelectionInteractionAt: indexPath)
 		}
+	}
+	
+	final override func tableView(
+		_ tableView: UITableView,
+		willSelectRowAt indexPath: IndexPath
+	) -> IndexPath? {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+				return indexPath
+			} else {
+				break
+			}
+		case .browsing:
+			break
+		}
+		
+		return super.tableView(tableView, willSelectRowAt: indexPath)
+	}
+	
+	final override func tableView(
+		_ tableView: UITableView,
+		didSelectRowAt indexPath: IndexPath
+	) {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+				moveHere()
+			} else {
+				break
+			}
+		case .browsing:
+			break
+		}
+		
+		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
 	
 }

@@ -12,8 +12,8 @@ struct SongsViewModel {
 	// LibraryViewModel
 	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
-	let numberOfSectionsAboveLibraryItems = 0
-	let numberOfRowsAboveLibraryItemsInEachSection = 2
+	let numberOfPresections = 0
+	let numberOfPrerowsPerSection = 2
 	var groups: [GroupOfLibraryItems]
 }
 
@@ -36,7 +36,7 @@ extension SongsViewModel: LibraryViewModel {
 		}
 	}
 	
-	func refreshed() -> Self {
+	func updatedWithRefreshedData() -> Self {
 		let refreshedViewContainer = viewContainer.refreshed()
 		return Self(
 			viewContainer: refreshedViewContainer,
@@ -82,7 +82,7 @@ extension SongsViewModel {
 		}) {
 			return IndexPath(
 				row: 0,
-				section: numberOfSectionsAboveLibraryItems + indexOfMatchingGroup)
+				section: numberOfPresections + indexOfMatchingGroup)
 		} else {
 			return nil
 		}

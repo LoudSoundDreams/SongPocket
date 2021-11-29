@@ -14,7 +14,7 @@ extension LibraryTVC {
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
 			// Delete empty groups if we reordered all the items out of them.
-			let newViewModel = viewModel.refreshed()
+			let newViewModel = viewModel.updatedWithRefreshedData()
 			setViewModelAndMoveRows(newViewModel)
 			
 			viewModel.context.tryToSave()
