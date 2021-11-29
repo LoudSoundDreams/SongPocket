@@ -187,8 +187,6 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	// TO DO: Indices of sections and rows
-	
 	func countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
 		selectedItemsCount: Int
 	) -> Int {
@@ -224,6 +222,22 @@ extension LibraryViewModel {
 		return result
 	}
 	
+	func isPresection(indexPath: IndexPath) -> Bool {
+		return indexPath.section < numberOfPresections
+	}
+	
+	func isPrerow(indexPath: IndexPath) -> Bool {
+		return indexPath.row < numberOfPrerowsPerSection
+	}
+	
+	func section(forIndexOfGroup indexOfGroup: Int) -> Int {
+		return numberOfPresections + indexOfGroup
+	}
+	
+	func row(forIndexOfItemInGroup indexOfItemInGroup: Int) -> Int {
+		return numberOfPrerowsPerSection + indexOfItemInGroup
+	}
+	
 	// Similar to UITableView.indexPathsForRows.
 	func indexPaths(forIndexOfGroup indexOfGroup: Int) -> [IndexPath] {
 		let indices = groups[indexOfGroup].items.indices
@@ -239,8 +253,8 @@ extension LibraryViewModel {
 		indexOfGroup: Int
 	) -> IndexPath {
 		return IndexPath(
-			row: indexOfItemInGroup + numberOfPrerowsPerSection,
-			section: indexOfGroup + numberOfPresections)
+			row: numberOfPrerowsPerSection + indexOfItemInGroup,
+			section: numberOfPresections + indexOfGroup)
 	}
 	
 	// MARK: - UITableView

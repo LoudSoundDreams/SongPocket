@@ -145,11 +145,7 @@ extension AlbumsViewModel {
 		let newItemsForOnlyGroup = destinationCollection.albums()
 		
 		var twin = self
-		
-		
 		twin.numberOfPrerowsPerSection = 0
-		
-		
 		twin.groups[0].setItems(newItemsForOnlyGroup)
 		return twin
 	}

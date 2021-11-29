@@ -120,7 +120,8 @@ extension AlbumsTVC {
 		let childContext = NSManagedObjectContext.withParent(viewModel.context)
 		collectionsTVC.viewModel = CollectionsViewModel(
 			context: childContext,
-			numberOfPrerowsPerSection: 0)// RB2DO: 1)
+//			numberOfPrerowsPerSection: 1)
+			numberOfPrerowsPerSection: 0) // RB2DO: Delete this
 		
 		present(collectionsNC, animated: true)
 	}

@@ -44,7 +44,7 @@ extension CollectionsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+			if viewModel.isPrerow(indexPath: indexPath) {
 				return tableView.dequeueReusableCell(
 					withIdentifier: "Create Collection",
 					for: indexPath) as? CreateCollectionCell ?? UITableViewCell()
@@ -176,7 +176,7 @@ extension CollectionsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+			if viewModel.isPrerow(indexPath: indexPath) {
 				return indexPath
 			} else {
 				break
@@ -205,7 +205,7 @@ extension CollectionsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+			if viewModel.isPrerow(indexPath: indexPath) {
 				tableView.deselectRow(at: indexPath, animated: true) // RB2DO
 			} else {
 				break

@@ -65,7 +65,7 @@ extension AlbumsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+			if viewModel.isPrerow(indexPath: indexPath) {
 				return tableView.dequeueReusableCell(
 					withIdentifier: "Move Here",
 					for: indexPath) as? MoveHereCell ?? UITableViewCell()
@@ -152,7 +152,7 @@ extension AlbumsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if indexPath.row < viewModel.numberOfPrerowsPerSection {
+			if viewModel.isPrerow(indexPath: indexPath) {
 				return indexPath
 			} else {
 				break

@@ -343,7 +343,8 @@ final class CollectionsTVC:
 			case .organizingAlbums:
 				return 0
 			case .movingAlbums:
-				return 0//RB2DO: 1
+//				return 1
+				return 0 // RB2DO: Delete this
 			case .browsing:
 				return 0
 			}
