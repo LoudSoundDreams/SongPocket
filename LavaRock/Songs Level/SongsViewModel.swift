@@ -94,17 +94,6 @@ extension SongsViewModel {
 		return group.container as! Album
 	}
 	
-	// Similar to counterpart in `AlbumsViewModel`.
-	func differenceOfGroupsInferringMoves(
-		toMatch newGroups: [GroupOfSongs]
-	) -> CollectionDifference<GroupOfSongs> {
-		let oldGroups = groups as! [GroupOfSongs]
-		let difference = newGroups.difference(from: oldGroups) { oldGroup, newGroup in
-			oldGroup.container!.objectID == newGroup.container!.objectID
-		}.inferringMoves()
-		return difference
-	}
-	
 	func shouldShowDiscNumbers(forSection section: Int) -> Bool {
 		let group = group(forSection: section) as? GroupOfSongs
 		return group?.shouldShowDiscNumbers ?? false

@@ -45,16 +45,15 @@ extension Array {
 			predicate: predicate)
 	}
 	
-	func batchUpdates(
+	func differenceInferringMoves(
 		toMatch newArray: [Element],
 		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
-	) -> BatchUpdates<Int>
+	) -> CollectionDifference<Element>
 	where Element: Hashable
 	{
-		let difference = newArray.difference(from: self) { oldItem, newItem in
+		return newArray.difference(from: self) { oldItem, newItem in
 			areEquivalent(oldItem, newItem)
 		}.inferringMoves()
-		return difference.batchUpdates()
 	}
 	
 	func sortedMaintainingOrderWhen(

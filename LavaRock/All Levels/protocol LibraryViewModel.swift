@@ -44,6 +44,17 @@ protocol LibraryViewModel {
 	func updatedWithRefreshedData() -> Self
 }
 
+enum LibrarySectionIdentifier: Hashable {
+//	case presection(Int)
+	case groupWithNoContainer
+	case groupWithContainer(NSManagedObjectID)
+}
+
+enum LibraryRowIdentifier: Hashable {
+	case prerow(Int)
+	case libraryItem(NSManagedObjectID)
+}
+
 extension LibraryViewModel {
 	
 	var onlyGroup: GroupOfLibraryItems? {
@@ -73,6 +84,54 @@ extension LibraryViewModel {
 			context: context)
 		let section = numberOfPresections + indexOfGroup
 		return (newItems, section)
+	}
+	
+	func sectionStructures() -> [
+		SectionStructure<LibrarySectionIdentifier, LibraryRowIdentifier>
+	] {
+		typealias LibrarySectionStructure = SectionStructure<
+			LibrarySectionIdentifier,
+			LibraryRowIdentifier
+		>
+		
+//		let presectionIndices = Array(0 ..< numberOfPresections)
+//		let presectionStructures: [LibrarySectionStructure] = presectionIndices.map { index in
+//			let sectionIdentifier = LibrarySectionIdentifier.presection(index)
+//
+//			// TO DO: Actually support presections.
+//
+//			return SectionStructure(
+//				identifier: sectionIdentifier,
+//				rowIdentifiers: [])
+//		}
+		
+		let groupSectionStructures: [LibrarySectionStructure] = groups.map { group in
+			let sectionIdentifier: LibrarySectionIdentifier = {
+				if let containerID = group.container?.objectID {
+					return .groupWithContainer(containerID)
+				} else {
+					return .groupWithNoContainer
+				}
+			}()
+			
+			let prerowIndices = Array(0 ..< numberOfPrerowsPerSection)
+			let prerowIdentifiers = prerowIndices.map { index in
+				LibraryRowIdentifier.prerow(index) // RB2DO: Give different prerows different identifiers.
+			}
+			
+			let itemRowIdentifiers = group.items.map { item in
+				LibraryRowIdentifier.libraryItem(item.objectID)
+			}
+			
+			let rowIdentifiers = prerowIdentifiers + itemRowIdentifiers
+			
+			return SectionStructure(
+				identifier: sectionIdentifier,
+				rowIdentifiers: rowIdentifiers)
+		}
+		
+//		return presectionStructures + groupSectionStructures
+		return groupSectionStructures
 	}
 	
 	// MARK: - Elements

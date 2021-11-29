@@ -131,6 +131,7 @@ final class AlbumsTVC:
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
+	/*
 	final override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -144,6 +145,7 @@ final class AlbumsTVC:
 //			print(tableView.contentOffset)
 		}
 	}
+	*/
 	
 //	final override func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //		print("Scrolled.")

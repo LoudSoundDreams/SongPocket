@@ -80,6 +80,7 @@
 		07B1EC42271FBA4000EA8E29 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC41271FBA4000EA8E29 /* URL.swift */; };
 		07B1EC442723B52A00EA8E29 /* TabBarC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC432723B52A00EA8E29 /* TabBarC.swift */; };
 		07B2CD832741A218004A0743 /* GroupOfCollectionsOrAlbums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B2CD822741A217004A0743 /* GroupOfCollectionsOrAlbums.swift */; };
+		07C1AA2C2754618700ACE15A /* SectionStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C1AA2B2754618700ACE15A /* SectionStructure.swift */; };
 		07C8CC76271281B70061A9AD /* OptionsTVC - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */; };
 		07CAB24724EA227F008AC34C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* Song.swift */; };
 		07CD588926B35B300054598A /* CaseIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD588826B35B300054598A /* CaseIterable.swift */; };
@@ -205,6 +206,7 @@
 		07B1EC41271FBA4000EA8E29 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		07B1EC432723B52A00EA8E29 /* TabBarC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarC.swift; sourceTree = "<group>"; };
 		07B2CD822741A217004A0743 /* GroupOfCollectionsOrAlbums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOfCollectionsOrAlbums.swift; sourceTree = "<group>"; };
+		07C1AA2B2754618700ACE15A /* SectionStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionStructure.swift; sourceTree = "<group>"; };
 		07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC - Views.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		07CC4267268EC81C00D27E8C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 			children = (
 				07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */,
 				0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */,
+				07C1AA2B2754618700ACE15A /* SectionStructure.swift */,
 				073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */,
@@ -418,8 +421,8 @@
 			children = (
 				07CD588826B35B300054598A /* CaseIterable.swift */,
 				078FDD0E2638872100779AF2 /* Array.swift */,
-				078F65B52638CA75007FE538 /* String.swift */,
 				07619EE427342FC9003F95AE /* CollectionDifference.swift */,
+				078F65B52638CA75007FE538 /* String.swift */,
 			);
 			path = "Swift Standard Library";
 			sourceTree = "<group>";
@@ -634,6 +637,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07EC01EC26C895CB00954E08 /* SongsViewModel.swift in Sources */,
+				07C1AA2C2754618700ACE15A /* SectionStructure.swift in Sources */,
 				07AB7028273C989A002B5098 /* Print.swift in Sources */,
 				07566CEA2692261800257DB4 /* UIMenu.swift in Sources */,
 				07EC01E826C84BC700954E08 /* CollectionsViewModel.swift in Sources */,
@@ -928,7 +932,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 288;
+				CURRENT_PROJECT_VERSION = 289;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -951,7 +955,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 288;
+				CURRENT_PROJECT_VERSION = 289;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

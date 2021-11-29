@@ -83,17 +83,6 @@ extension AlbumsViewModel {
 		return group.container as! Collection
 	}
 	
-	// Similar to counterpart in `AlbumsViewModel`.
-	func differenceOfGroupsInferringMoves(
-		toMatch newGroups: [GroupOfCollectionsOrAlbums]
-	) -> CollectionDifference<GroupOfCollectionsOrAlbums> {
-		let oldGroups = groups as! [GroupOfCollectionsOrAlbums]
-		let difference = newGroups.difference(from: oldGroups) { oldGroup, newGroup in
-			oldGroup.container!.objectID == newGroup.container!.objectID
-		}.inferringMoves()
-		return difference
-	}
-	
 	// MARK: - Organizing
 	
 	func makeCollectionsViewModel_inNewChildContext(

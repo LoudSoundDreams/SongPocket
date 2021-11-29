@@ -10,23 +10,23 @@ import UIKit
 extension UITableView {
 	
 	final func performBatchUpdates(
-		deletingSections sectionsToDelete: [Int],
-		deletingRows rowsToDelete: [IndexPath],
-		insertingSections sectionsToInsert: [Int],
-		insertingRows rowsToInsert: [IndexPath],
-		movingSections sectionsToMove: [(Int, Int)],
-		movingRows rowsToMove: [(IndexPath, IndexPath)],
+		sections: BatchUpdates<Int>,
+		rows: [BatchUpdates<IndexPath>],
 		completion: (() -> Void)? = nil
 	) {
+		let rowsToDelete = rows.flatMap { $0.toDelete }
+		let rowsToInsert = rows.flatMap { $0.toInsert }
+		let rowsToMove = rows.flatMap { $0.toMove }
+		
 		performBatchUpdates {
-			deleteSections(IndexSet(sectionsToDelete), with: .middle)
+			deleteSections(IndexSet(sections.toDelete), with: .middle)
 			deleteRows(at: rowsToDelete, with: .middle)
 			
-			insertSections(IndexSet(sectionsToInsert), with: .middle)
+			insertSections(IndexSet(sections.toInsert), with: .middle)
 			insertRows(at: rowsToInsert, with: .middle)
 			
 			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
-			sectionsToMove.forEach { (sourceIndex, destinationIndex) in
+			sections.toMove.forEach { (sourceIndex, destinationIndex) in
 				moveSection(sourceIndex, toSection: destinationIndex)
 			}
 			rowsToMove.forEach { (sourceIndexPath, destinationIndexPath) in

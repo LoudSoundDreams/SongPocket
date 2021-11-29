@@ -195,96 +195,49 @@ class LibraryTVC: UITableViewController {
 		andSelectRowsAt toSelect: Set<IndexPath> = [],
 		completion: (() -> Void)? = nil
 	) {
+		let oldViewModel = viewModel
+		
+		viewModel = newViewModel
+		
 		guard !newViewModel.isEmpty() else {
-			viewModel = newViewModel
 			reflectViewModelIsEmpty()
 			return
 		}
 		
-		let newGroups = newViewModel.groups
+		let oldSections = oldViewModel.sectionStructures()
+		let newSections = newViewModel.sectionStructures()
+		let sectionBatchUpdates = oldSections.differenceInferringMoves(toMatch: newSections) {
+			oldSection, newSection in
+			oldSection.identifier == newSection.identifier
+		}.batchUpdates()
 		
-		let oldViewModel = viewModel
-		let oldGroups = oldViewModel.groups
-		let updatesOfGroups: BatchUpdates<Int>?
-		let reorderedOldGroups: [GroupOfLibraryItems]
-		if
-			viewModel is CollectionsViewModel
-		{
-			updatesOfGroups = nil
-			reorderedOldGroups = oldGroups
-		} else if
-			let albumsViewModel = oldViewModel as? AlbumsViewModel,
-			let oldGroups = oldGroups as? [GroupOfCollectionsOrAlbums],
-			let newGroups = newGroups as? [GroupOfCollectionsOrAlbums]
-		{
-			let differenceOfGroups = albumsViewModel.differenceOfGroupsInferringMoves(
-				toMatch: newGroups)
-			updatesOfGroups = differenceOfGroups.batchUpdates()
-			reorderedOldGroups = oldGroups.applying(differenceOfGroups)!
-		} else if
-			let songsViewModel = oldViewModel as? SongsViewModel,
-			let oldGroups = oldGroups as? [GroupOfSongs],
-			let newGroups = newGroups as? [GroupOfSongs]
-		{
-			let differenceOfGroups = songsViewModel.differenceOfGroupsInferringMoves(
-				toMatch: newGroups)
-			updatesOfGroups = differenceOfGroups.batchUpdates()
-			reorderedOldGroups = oldGroups.applying(differenceOfGroups)!
-		} else {
-			fatalError("`LibraryTVC` with an unknown type for `viewModel` called `setViewModelAndMoveRows`.")
-		}
-		
-		let oldNumberOfPresections = oldViewModel.numberOfPresections
-		let newNumberOfPresections = newViewModel.numberOfPresections
-		let sectionsToDelete = updatesOfGroups?.toDelete.map { oldNumberOfPresections + $0 } ?? []
-		let sectionsToInsert = updatesOfGroups?.toInsert.map { newNumberOfPresections + $0 } ?? []
-		let sectionsToMove = updatesOfGroups?.toMove.map { (oldIndex, newIndex) in
-			(oldNumberOfPresections + oldIndex,
-			 newNumberOfPresections + newIndex)
-		} ?? []
-		
-		viewModel = newViewModel
-		
-		var rowsToDelete = [IndexPath]()
-		var rowsToInsert = [IndexPath]()
-		var rowsToMove = [(IndexPath, IndexPath)]()
-		let tuplesForContainersAndOldIndicesOfGroups: [(NSManagedObject?, Int)]
-		= oldGroups.indices.map {
-			let oldGroup = oldGroups[$0]
-			return (
-				oldGroup.container, // Yes, you can use `nil` as a `Dictionary` key.
-				$0
-			)
-		}
-		let oldIndicesOfGroupsByContainer = Dictionary(
-			uniqueKeysWithValues: tuplesForContainersAndOldIndicesOfGroups)
-		newGroups.indices.reversed().forEach { newIndexOfGroup in
-			let newGroup = newGroups[newIndexOfGroup]
+		let oldSectionIdentifiersAndIndices = zip(
+			oldSections.map { $0.identifier },
+			oldSections.indices)
+		let oldSectionIndicesByIdentifier = Dictionary(
+			uniqueKeysWithValues: oldSectionIdentifiersAndIndices)
+		var rowBatchUpdates: [BatchUpdates<IndexPath>] = []
+		newSections.indices.forEach { newSectionIndex in
+			let sectionIdentifier = newSections[newSectionIndex].identifier
+			// We never delete, insert, or move rows into or out of deleted or inserted sections, because when we delete or insert sections, we also delete or insert all the rows within them.
+			// We also never move rows between sections with different identifiers, because we only compare sections with equivalent identifiers.
+			guard let oldSectionIndex = oldSectionIndicesByIdentifier[sectionIdentifier] else { return }
+			let oldRowIdentifiers = oldSections[oldSectionIndex].rowIdentifiers
 			
-			let oldItems = reorderedOldGroups[newIndexOfGroup].items
-			let container = newGroup.container // Is `nil` if we're inserting a new group
-			let oldIndexOfGroup = oldIndicesOfGroupsByContainer[container]
+			let newRowIdentifiers = newSections[newSectionIndex].rowIdentifiers
 			
-			let newItems = newGroup.items
-			
-			let updates = batchUpdatesOfRows(
-				oldItems: oldItems,
-				oldIndexOfGroup: oldIndexOfGroup,
-				newItems: newItems,
-				newIndexOfGroup: newIndexOfGroup)
-			rowsToDelete.append(contentsOf: updates.toDelete)
-			rowsToInsert.append(contentsOf: updates.toInsert)
-			rowsToMove.append(contentsOf: updates.toMove)
+			let rowBatchUpdatesInSection = batchUpdatesOfRows(
+				oldSection: oldSectionIndex,
+				oldIdentifiers: oldRowIdentifiers,
+				newSection: newSectionIndex,
+				newIdentifiers: newRowIdentifiers)
+			rowBatchUpdates.append(rowBatchUpdatesInSection)
 		}
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates(
-			deletingSections: sectionsToDelete,
-			deletingRows: rowsToDelete,
-			insertingSections: sectionsToInsert,
-			insertingRows: rowsToInsert,
-			movingSections: sectionsToMove,
-			movingRows: rowsToMove
+			sections: sectionBatchUpdates,
+			rows: rowBatchUpdates
 		) {
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
@@ -306,47 +259,24 @@ class LibraryTVC: UITableViewController {
 		didChangeRowsOrSelectedRows()
 	}
 	
-	// WARNING: You must update `viewModel` first.
-	private func batchUpdatesOfRows(
-		oldItems: [NSManagedObject],
-		oldIndexOfGroup: Int?,
-		newItems: [NSManagedObject],
-		newIndexOfGroup: Int
+	private func batchUpdatesOfRows<Identifier: Hashable>(
+		oldSection: Int,
+		oldIdentifiers: [Identifier],
+		newSection: Int,
+		newIdentifiers: [Identifier]
 	) -> BatchUpdates<IndexPath> {
-		let updatesOfIndicesOfItems = oldItems.batchUpdates(
-			toMatch: newItems
-		) { oldItem, newItem in
-			oldItem.objectID == newItem.objectID
-		}
+		let updates = oldIdentifiers.differenceInferringMoves(
+			toMatch: newIdentifiers,
+			by: ==)
+			.batchUpdates()
 		
-		let toDelete: [IndexPath] = updatesOfIndicesOfItems.toDelete.compactMap {
-			guard let oldIndexOfGroup = oldIndexOfGroup else {
-				return nil
-			}
-			return viewModel.indexPathFor(
-				indexOfItemInGroup: $0,
-				indexOfGroup: oldIndexOfGroup)
+		let toDelete = updates.toDelete.map { IndexPath(row: $0, section: oldSection) }
+		let toInsert = updates.toInsert.map { IndexPath(row: $0, section: newSection) }
+		let toMove = updates.toMove.map { (oldRow, newRow) in
+			(IndexPath(row: oldRow, section: oldSection),
+			 IndexPath(row: newRow, section: newSection))
 		}
-		let toInsert = updatesOfIndicesOfItems.toInsert.map {
-			viewModel.indexPathFor(
-				indexOfItemInGroup: $0,
-				indexOfGroup: newIndexOfGroup)
-		}
-		let toMove: [(IndexPath, IndexPath)] = updatesOfIndicesOfItems.toMove.compactMap { (oldIndex, newIndex) in
-			guard let oldIndexOfGroup = oldIndexOfGroup else {
-				return nil
-			}
-			return (
-				viewModel.indexPathFor(
-					indexOfItemInGroup: oldIndex,
-					indexOfGroup: oldIndexOfGroup),
-				viewModel.indexPathFor(
-					indexOfItemInGroup: newIndex,
-					indexOfGroup: newIndexOfGroup)
-			)
-		}
-		
-		return BatchUpdates<IndexPath>(
+		return BatchUpdates(
 			toDelete: toDelete,
 			toInsert: toInsert,
 			toMove: toMove)
