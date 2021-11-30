@@ -14,6 +14,19 @@ extension AlbumsTVC {
 	
 	// Identical to counterpart in `SongsTVC`.
 	final override func numberOfSections(in tableView: UITableView) -> Int {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums(let clipboard):
+			if clipboard.didAlreadyCreate {
+				return viewModel.numberOfPresections + 1
+			} else {
+				break
+			}
+		case .browsing:
+			break
+		}
+		
 		setOrRemoveNoItemsBackground()
 		
 		return super.numberOfSections(in: tableView)
@@ -23,6 +36,22 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
+		switch purpose {
+		case .organizingAlbums:
+			break
+		case .movingAlbums(let clipboard):
+			// RB2DO: Refactor this
+			if clipboard.didAlreadyCommitMove { // You must check this before checking `didAlreadyCreate`.
+				break
+			} else if clipboard.didAlreadyCreate {
+				return viewModel.numberOfPrerowsPerSection
+			} else {
+				break
+			}
+		case .browsing:
+			break
+		}
+		
 		return viewModel.numberOfRows(forSection: section)
 	}
 	
@@ -107,12 +136,14 @@ extension AlbumsTVC {
 					return .modalNotTinted
 				}
 			case .movingAlbums(let clipboard):
-				if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
-					return .modalTinted
-//					return .movingAlbumsModeAndBeingMoved
+				if FeatureFlag.multicollection {
+					if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
+						return .modalTinted
+					} else {
+						return .modalNotTinted
+					}
 				} else {
 					return .modalNotTinted
-//					return .movingAlbumsModeAndNotBeingMoved
 				}
 			case .browsing:
 				return .normal
@@ -174,6 +205,7 @@ extension AlbumsTVC {
 		case .movingAlbums:
 			if indexPath.row < viewModel.numberOfPrerowsPerSection {
 				moveHere()
+				return
 			} else {
 				break
 			}

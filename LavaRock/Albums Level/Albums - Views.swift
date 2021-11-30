@@ -7,8 +7,9 @@
 
 import UIKit
 
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class MoveHereCell: UITableViewCell {
+	@IBOutlet private var moveHereLabel: UILabel!
+	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -18,13 +19,15 @@ final class MoveHereCell: UITableViewCell {
 	}
 	
 	private func configure() {
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.moveHere
-		configuration.textProperties.font = .preferredFont(
-			forTextStyle: .headline,
-			compatibleWith: traitCollection)
-		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
-		contentConfiguration = configuration
+//		var configuration = UIListContentConfiguration.cell()
+//		configuration.text = LocalizedString.moveHere
+//		configuration.textProperties.font = .preferredFont(
+//			forTextStyle: .headline,
+//			compatibleWith: traitCollection)
+//		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
+//		contentConfiguration = configuration
+		
+		moveHereLabel.textColor = .tintColor(ifiOS14: AccentColor.savedPreference())
 	}
 	
 	final override func tintColorDidChange() {
@@ -42,8 +45,6 @@ final class AlbumCell: UITableViewCell {
 		case normal
 		case modalNotTinted
 		case modalTinted
-//		case movingAlbumsModeAndNotBeingMoved
-//		case movingAlbumsModeAndBeingMoved
 	}
 	
 	@IBOutlet private var albumStackView: UIStackView!
@@ -92,23 +93,15 @@ final class AlbumCell: UITableViewCell {
 		
 		switch mode {
 		case .normal:
-//			if FeatureFlag.multicollection {
-				backgroundColor = nil
-//			}
+			backgroundColor = nil
 			accessoryType = .disclosureIndicator
 			enableWithAccessibilityTrait()
 		case .modalNotTinted:
-//		case .movingAlbumsModeAndNotBeingMoved:
-//			if FeatureFlag.multicollection {
-				backgroundColor = nil
-//			}
+			backgroundColor = nil
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		case .modalTinted:
-//		case .movingAlbumsModeAndBeingMoved:
-//			if FeatureFlag.multicollection {
-				backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
-//			}
+			backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		}

@@ -12,6 +12,7 @@ extension UITableView {
 	final func performBatchUpdates(
 		sections: BatchUpdates<Int>,
 		rows: [BatchUpdates<IndexPath>],
+		with animation: RowAnimation,
 		completion: (() -> Void)? = nil
 	) {
 		let rowsToDelete = rows.flatMap { $0.toDelete }
@@ -19,11 +20,11 @@ extension UITableView {
 		let rowsToMove = rows.flatMap { $0.toMove }
 		
 		performBatchUpdates {
-			deleteSections(IndexSet(sections.toDelete), with: .middle)
-			deleteRows(at: rowsToDelete, with: .middle)
+			deleteSections(IndexSet(sections.toDelete), with: animation)
+			deleteRows(at: rowsToDelete, with: animation)
 			
-			insertSections(IndexSet(sections.toInsert), with: .middle)
-			insertRows(at: rowsToInsert, with: .middle)
+			insertSections(IndexSet(sections.toInsert), with: animation)
+			insertRows(at: rowsToInsert, with: animation)
 			
 			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
 			sections.toMove.forEach { (sourceIndex, destinationIndex) in

@@ -92,11 +92,12 @@ final class AlbumsTVC:
 			]
 		case .movingAlbums:
 			topRightButtons = [cancelAndDismissButton]
-			viewingModeToolbarButtons = [
-				.flexibleSpace(),
-				moveHereButton,
-				.flexibleSpace(),
-			]
+			navigationController?.toolbar.isHidden = true
+//			viewingModeToolbarButtons = [ // RB2DO: Delete this
+//				.flexibleSpace(),
+//				moveHereButton,
+//				.flexibleSpace(),
+//			]
 		case .browsing:
 			break
 		}

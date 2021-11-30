@@ -19,7 +19,7 @@ extension NoItemsBackgroundManager {
 	// Call this in `UITableViewDataSource.numberOfSections(in:)`.
 	func setOrRemoveNoItemsBackground() {
 		if viewModel.isEmpty() {
-			tableView.backgroundView = noItemsBackgroundView // Don't use dequeueReusableCell within numberOfRowsInSection to create the placeholder view as needed, because that might call numberOfRowsInSection, causing an infinite loop.
+			tableView.backgroundView = noItemsBackgroundView // Don’t use `dequeueReusableCell` within `numberOfRowsInSection` to create the placeholder view as needed, because that might call `numberOfRowsInSection`, causing an infinite loop.
 		} else {
 			tableView.backgroundView = nil
 		}

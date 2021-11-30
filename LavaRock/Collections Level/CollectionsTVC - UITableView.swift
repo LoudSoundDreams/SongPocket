@@ -112,12 +112,18 @@ extension CollectionsTVC {
 					return .modalNotTinted
 				}
 			case .movingAlbums(let clipboard):
-				if clipboard.idsOfSourceCollections.contains(collection.objectID) {
-					return .modalTinted
-//					return .movingAlbumsModeAndSourceOfAlbums
+				if FeatureFlag.multicollection {
+					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
+						return .modalTinted
+					} else {
+						return .modalNotTinted
+					}
 				} else {
-					return .modalNotTinted
-//					return .movingAlbumsModeAndNotSourceOfAlbums
+					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
+						return .modalDisabled
+					} else {
+						return .modalNotTinted
+					}
 				}
 			case .browsing:
 				return .normal
@@ -206,7 +212,8 @@ extension CollectionsTVC {
 			break
 		case .movingAlbums:
 			if viewModel.isPrerow(indexPath: indexPath) {
-				tableView.deselectRow(at: indexPath, animated: true) // RB2DO
+				createAndConfirm()
+				return
 			} else {
 				break
 			}

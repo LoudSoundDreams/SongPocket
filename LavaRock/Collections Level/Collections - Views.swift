@@ -102,8 +102,9 @@ final class OpenMusicCell: UITableViewCell {
 	}
 }
 
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class CreateCollectionCell: UITableViewCell {
+	@IBOutlet private var newCollectionLabel: UILabel!
+	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -113,10 +114,12 @@ final class CreateCollectionCell: UITableViewCell {
 	}
 	
 	private func configure() {
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.newCollectionButtonTitle
-		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
-		contentConfiguration = configuration
+//		var configuration = UIListContentConfiguration.cell()
+//		configuration.text = LocalizedString.newCollectionButtonTitle
+//		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
+//		contentConfiguration = configuration
+		
+		newCollectionLabel.textColor = .tintColor(ifiOS14: AccentColor.savedPreference())
 	}
 	
 	final override func tintColorDidChange() {
@@ -134,8 +137,9 @@ final class CollectionCell: UITableViewCell {
 		case normal
 		case modalNotTinted
 		case modalTinted
-//		case movingAlbumsModeAndNotSourceOfAlbums
-//		case movingAlbumsModeAndSourceOfAlbums
+		
+		
+		case modalDisabled
 	}
 	
 	@IBOutlet private var titleLabel: UILabel!
@@ -153,31 +157,31 @@ final class CollectionCell: UITableViewCell {
 		
 		switch mode {
 		case .normal:
-//			if FeatureFlag.multicollection {
-				backgroundColor = nil
-//			} else {
-//				titleLabel.textColor = .label
-//				enableWithAccessibilityTrait()
-//			}
 			accessibilityCustomActions = [renameFocusedCollectionAction]
+			backgroundColor = nil
+			
+			titleLabel.textColor = .label
+			enableWithAccessibilityTrait()
 		case .modalNotTinted:
-//		case .movingAlbumsModeAndNotSourceOfAlbums:
-//			if FeatureFlag.multicollection {
-				backgroundColor = nil
-//			} else {
-//				titleLabel.textColor = .label
-//				enableWithAccessibilityTrait()
-//			}
 			accessibilityCustomActions = []
+			backgroundColor = nil
+			
+			titleLabel.textColor = .label
+			enableWithAccessibilityTrait()
 		case .modalTinted:
-//		case .movingAlbumsModeAndSourceOfAlbums:
-//			if FeatureFlag.multicollection {
-				backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
-//			} else {
-//				titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
-//				disableWithAccessibilityTrait()
-//			}
 			accessibilityCustomActions = []
+			backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
+			
+			titleLabel.textColor = .label
+			enableWithAccessibilityTrait()
+			
+			
+		case .modalDisabled:
+			accessibilityCustomActions = []
+			backgroundColor = nil
+			
+			titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+			disableWithAccessibilityTrait()
 		}
 	}
 }

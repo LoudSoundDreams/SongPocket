@@ -34,7 +34,7 @@ extension CollectionsTVC {
 	
 	private func create(
 		smartTitle: String?,
-		didScroll: (() -> Void)?
+		completion: (() -> Void)?
 	) {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
@@ -47,8 +47,11 @@ extension CollectionsTVC {
 				at: .none,
 				animated: true)
 		} completion: { _ in
+//			self.setViewModelAndMoveRows(
+//				newViewModel,
+//				with: .fade)
 			self.setViewModelAndMoveRows(newViewModel)
-			didScroll?()
+			completion?()
 		}
 	}
 	
@@ -73,6 +76,9 @@ extension CollectionsTVC {
 		clipboard.didAlreadyCreate = false
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
+//		setViewModelAndMoveRows(
+//			newViewModel,
+//			with: .fade)
 		setViewModelAndMoveRows(newViewModel)
 	}
 	

@@ -257,11 +257,12 @@ final class CollectionsTVC:
 		case .movingAlbums:
 			viewingModeTopLeftButtons = []
 			topRightButtons = [cancelAndDismissButton]
-			viewingModeToolbarButtons = [
-				.flexibleSpace(),
-				createButton,
-				.flexibleSpace(),
-			]
+			navigationController?.toolbar.isHidden = true
+//			viewingModeToolbarButtons = [ // RB2DO: Delete this
+//				.flexibleSpace(),
+//				createButton,
+//				.flexibleSpace(),
+//			]
 		case .browsing:
 			viewingModeTopLeftButtons = [optionsButton]
 		}
@@ -343,8 +344,8 @@ final class CollectionsTVC:
 			case .organizingAlbums:
 				return 0
 			case .movingAlbums:
-//				return 1
-				return 0 // RB2DO: Delete this
+				return 1
+//				return 0 // RB2DO: Delete this
 			case .browsing:
 				return 0
 			}

@@ -132,7 +132,8 @@ extension CollectionsViewModel {
 		var newItems = group.items
 		newItems.insert(newCollection, at: Self.indexOfNewCollection)
 		
-		let twin = updatedWithItemsInOnlyGroup(newItems)
+		var twin = updatedWithItemsInOnlyGroup(newItems)
+		twin.numberOfPrerowsPerSection = 0
 		let indexPath = indexPathOfNewCollection
 		return (twin, indexPath)
 	}
@@ -140,7 +141,8 @@ extension CollectionsViewModel {
 	func updatedAfterDeletingNewCollection() -> Self {
 		let newItems = itemsAfterDeletingNewCollection()
 		
-		let twin = updatedWithItemsInOnlyGroup(newItems)
+		var twin = updatedWithItemsInOnlyGroup(newItems)
+		twin.numberOfPrerowsPerSection = 1
 		return twin
 	}
 	
