@@ -61,8 +61,8 @@ extension Album {
 	
 	// MARK: - Miscellaneous
 	
-	final func isInCollectionWithTitleMatchingAlbumArtist() -> Bool {
-		return container?.title == albumArtist()
+	final func isInCollectionMatchingAlbumArtist() -> Bool {
+		return container?.title == albumArtist() ?? Self.placeholderAlbumArtist
 	}
 	
 	// MARK: - All Instances
@@ -79,8 +79,8 @@ extension Album {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	// WARNING: This leaves gaps in the `Album` indices within each `Collection`. You must reindex the `Album`s within each `Collection` later.
-	static func deleteAllEmpty_withoutReindex(
+	// WARNING: This leaves gaps in the `Album` indices within each `Collection`, and might leave empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	static func deleteAllEmpty_withoutReindexOrCascade(
 		via context: NSManagedObjectContext
 	) {
 		let allAlbums = allFetched(ordered: false, via: context) // Use `ordered: true` if you ever create a variant of this method that does reindex the remaining `Album`s.

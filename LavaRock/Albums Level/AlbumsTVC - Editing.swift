@@ -16,14 +16,6 @@ extension AlbumsTVC {
 				// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
 				return UIDeferredMenuElement.uncached({ useMenuElements in
 					let organizeAction = self.makeOrganizeAction()
-					
-//					let formatString = LocalizedString.formatOrganizeXAlbums
-//					let numberToOrganize = viewModel.countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
-//						selectedItemsCount: tableView.indexPathsForSelectedRowsNonNil.count)
-//					organizeAction.title = String.localizedStringWithFormat(
-//						formatString,
-//						numberToOrganize)
-					
 					let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
 						selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
 					organizeAction.attributes = allowed ? [] : .disabled
@@ -79,8 +71,10 @@ extension AlbumsTVC {
 		
 		// Provide the extra data that the "organize albums" sheet needs.
 		let idsOfOrganizedAlbums = albumsToOrganize.map { $0.objectID }
+		let idsOfSourceCollections = Set(albumsToOrganize.map { $0.container!.objectID })
 		collectionsTVC.albumOrganizerClipboard = AlbumOrganizerClipboard(
 			idsOfOrganizedAlbums: idsOfOrganizedAlbums,
+			idsOfSourceCollections: idsOfSourceCollections,
 			context: collectionsTVC.viewModel.context,
 			delegate: self)
 		

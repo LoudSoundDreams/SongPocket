@@ -171,11 +171,11 @@ extension MusicLibraryManager {
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
+		let titleOfDestinationCollection
+		= newMediaItem.albumArtist ?? Album.placeholderAlbumArtist
+		
 		// If we already have a matching `Collection` to put the `Album` into …
-		let collectionTitleToLookUp
-		= newMediaItem.albumArtist
-		?? Album.placeholderAlbumArtist
-		if let matchingExistingCollection = existingCollectionsByTitle[collectionTitleToLookUp]?.first {
+		if let matchingExistingCollection = existingCollectionsByTitle[titleOfDestinationCollection]?.first {
 			
 			// … then put the `Album` into that `Collection`.
 			let newAlbum: Album = {
@@ -197,7 +197,6 @@ extension MusicLibraryManager {
 		} else {
 			// Otherwise, create the `Collection` to put the `Album` into …
 			let newCollection: Collection = {
-				let newCollectionTitle = newMediaItem.albumArtist ?? Album.placeholderAlbumArtist
 				if isFirstImport {
 					os_signpost(.begin, log: createLog, name: "Count all the Collections so far")
 					let existingCollectionsCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
@@ -206,13 +205,13 @@ extension MusicLibraryManager {
 					os_signpost(.end, log: createLog, name: "Count all the Collections so far")
 					return Collection(
 						afterAllOtherCollectionsCount: existingCollectionsCount,
-						title: newCollectionTitle,
+						title: titleOfDestinationCollection,
 						context: context)
 				} else {
 					let existingCollections = existingCollectionsByTitle.flatMap { $0.value }
 					return Collection(
 						beforeAllOtherCollections: existingCollections,
-						title: newCollectionTitle,
+						title: titleOfDestinationCollection,
 						context: context)
 				}
 			}()

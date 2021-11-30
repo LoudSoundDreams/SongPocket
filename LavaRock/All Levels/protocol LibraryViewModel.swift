@@ -276,7 +276,7 @@ extension LibraryViewModel {
 	
 	// MARK: - Editing
 	
-	// WARNING: Leaves a group empty if you move all the items out of it. You must call `updatedWithRefreshedData()` later to delete empty groups.
+	// WARNING: Leaves a group empty if you move all the items out of it. You must call `updatedWithRefreshedData` later to delete empty groups.
 	mutating func moveItem(
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath

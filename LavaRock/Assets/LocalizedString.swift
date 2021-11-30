@@ -144,7 +144,7 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	// MARK: Songs View
 	
-	static let formatDidEnqueueOneSongAlertTitle = NSLocalizedString(
+	static let format_didEnqueueOneSongAlertTitle = NSLocalizedString(
 		"[alert title] did_enqueue_one_song",
 		value: "“%@” Will Play Later",
 		comment: "Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on.")
@@ -153,29 +153,23 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit
 	
-	static let formatOrganizeXAlbumsIntoYCollectionsQuestionMark = NSLocalizedString(
+	static let format_organizeXAlbumsByAlbumArtistQuestionMark = NSLocalizedString(
+		"plural - organize_albums_by_album_artist",
+		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of albums you’re organizing.")
+	static let format_organizeXAlbumsIntoYNewCollectionsQuestionMark = NSLocalizedString(
 		"plural - organize_albums_into_collections",
 		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of albums you’re organizing, and the number of new collections the app created.")
 	
-	static let formatChooseASectiontoMoveXAlbumsTo = NSLocalizedString(
+	static let format_chooseASectiontoMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_section",
 		comment: "Prompt that appears at the top of the “move albums” sheet. Include the number of albums you’re moving.")
-	static let formatChooseACollectionToMoveXAlbumsTo = NSLocalizedString(
+	static let format_chooseACollectionToMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_collection",
 		comment: "Prompt that appears at the top of the “move albums” sheet. Include the number of albums you’re moving.") // MC2DO: Delete
 	
-	// MARK: Albums View
-	
-//	static let formatOrganizeXAlbums = NSLocalizedString(
-//		"plural - organize_X_ albums",
-//		comment: "Button title")
-//	static let formatMoveXAlbums = NSLocalizedString(
-//		"plural - move_x_albums",
-//		comment: "Button title")
-	
 	// MARK: Songs View
 	
-	static let formatDidEnqueueMultipleSongsAlertTitle = NSLocalizedString(
+	static let format_didEnqueueMultipleSongsAlertTitle = NSLocalizedString(
 		"plural - did_enqueue_multiple_songs",
 		comment: "Title of the alert that appears after the user adds multiple songs to the queue. Include the title of the song. Also, if the user added 2 songs, include “and 1 More Song”, and if they added 3 songs, include “and 2 More Songs”, and so on.")
 	

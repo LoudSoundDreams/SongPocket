@@ -21,10 +21,10 @@ extension MusicLibraryManager {
 		
 		songs.forEach {
 			context.delete($0)
-			// WARNING: This leaves gaps in the Song indices within each Album. You must reindex the Songs within each Album later.
+			// WARNING: This leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s. Later, you must delete empty `Album`s and reindex the `Song`s within each `Album`.
 		}
 		
-		Album.deleteAllEmpty_withoutReindex(via: context)
+		Album.deleteAllEmpty_withoutReindexOrCascade(via: context)
 		Collection.deleteAllEmpty(via: context)
 	}
 	

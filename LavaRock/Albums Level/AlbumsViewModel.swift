@@ -98,13 +98,13 @@ extension AlbumsViewModel {
 			guard let albums = items as? [Album] else {
 				return false
 			}
-			return albums.contains { !$0.isInCollectionWithTitleMatchingAlbumArtist() }
+			return albums.contains { !$0.isInCollectionMatchingAlbumArtist() }
 		} else {
 			let items = selectedIndexPaths.map { itemNonNil(at: $0) }
 			guard let albums = items as? [Album] else {
 				return false
 			}
-			return albums.contains { !$0.isInCollectionWithTitleMatchingAlbumArtist() }
+			return albums.contains { !$0.isInCollectionMatchingAlbumArtist() }
 		}
 	}
 	
@@ -113,35 +113,37 @@ extension AlbumsViewModel {
 	) -> CollectionsViewModel {
 		let childContext = NSManagedObjectContext.withParent(context)
 		
-		// Organize the `Album`s into new `Collection`s.
-		var allCollections = Collection.allFetched(
-			ordered: false,
-			via: childContext)
-		var newCollectionsByTitle: [String: Collection] = [:]
+		// Move each `Album` to the first `Collection` with a title that matches the album artist.
+		// If an `Album` is already in a `Collection` with a matching title, then leave it there.
+		// If no `Collection` has a matching title, then create one.
+		// Go from the bottom `Album` to the top.
+		var allCollections = Collection.allFetched(via: childContext)
+		var allCollectionsGroupedByTitle = Dictionary(grouping: allCollections) { $0.title! }
 		albumsToOrganize.reversed().forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
 			let titleOfDestinationCollection
-			= album.mpMediaItemCollection()?.representativeItem?.albumArtist
-			?? Album.placeholderAlbumArtist
+			= album.albumArtist() ?? Album.placeholderAlbumArtist
 			
-			// If we've already created a new `Collection` to put the `Album` into …
-			if let matchingCollection = newCollectionsByTitle[titleOfDestinationCollection] {
-				// … then put the `Album` into that `Collection`.
-				matchingCollection.moveAlbumsToBeginning(
-					with: [album.objectID],
+			guard album.container!.title != titleOfDestinationCollection else { return }
+			
+			// If we already have a matching `Collection` to put the `Album` into …
+			if let matchingCollection = allCollectionsGroupedByTitle[titleOfDestinationCollection]?.first {
+				// … then move the `Album` to that `Collection`.
+				matchingCollection.moveAlbumsToBeginning_withoutDelete(
+					with: [album.objectID], // It might be faster to `Album`s by their album artist first, then move whole groups at once.
 					via: childContext)
 			} else {
-				// Otherwise, create the new `Collection` to put the `Album` into …
+				// Otherwise, create the `Collection` to move the `Album` to …
 				let newCollection = Collection(
 					beforeAllOtherCollections: allCollections,
 					title: titleOfDestinationCollection,
 					context: childContext)
 				allCollections.append(newCollection)
-				newCollectionsByTitle[titleOfDestinationCollection] = newCollection
+				allCollectionsGroupedByTitle[titleOfDestinationCollection] = [newCollection]
 				
-				// … and then put the `Album` into that `Collection`.
-				newCollection.moveAlbumsToBeginning(
+				// … and then move the `Album` to that `Collection`.
+				newCollection.moveAlbumsToBeginning_withoutDelete(
 					with: [album.objectID],
 					via: childContext)
 			}

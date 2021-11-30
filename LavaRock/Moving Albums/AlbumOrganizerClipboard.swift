@@ -15,17 +15,17 @@ final class AlbumOrganizerClipboard {
 	
 	// Data
 	let idsOfOrganizedAlbums: [NSManagedObjectID]
-	let idsOfNewCollections: Set<NSManagedObjectID>
+	let idsOfDestinationCollections: Set<NSManagedObjectID>
+	let idsOfSourceCollections: Set<NSManagedObjectID> // Is empty if organizing would delete the source `Collection`.
 	
 	// Helpers
 	weak var delegate: AlbumOrganizerDelegate? = nil
 	var prompt: String {
-		let formatString = LocalizedString.formatOrganizeXAlbumsIntoYCollectionsQuestionMark
+		let formatString = LocalizedString.format_organizeXAlbumsByAlbumArtistQuestionMark
 		let numberOfAlbums = idsOfOrganizedAlbums.count
-		let numberOfNewCollections = idsOfNewCollections.count
 		return String.localizedStringWithFormat(
 			formatString,
-			numberOfAlbums, numberOfNewCollections)
+			numberOfAlbums)
 	}
 	
 	// State
@@ -33,14 +33,16 @@ final class AlbumOrganizerClipboard {
 	
 	init(
 		idsOfOrganizedAlbums: [NSManagedObjectID],
+		idsOfSourceCollections: Set<NSManagedObjectID>,
 		context: NSManagedObjectContext,
 		delegate: AlbumOrganizerDelegate
 	) {
 		self.idsOfOrganizedAlbums = idsOfOrganizedAlbums
+		self.idsOfSourceCollections = idsOfSourceCollections
 		let organizedAlbums = idsOfOrganizedAlbums.map {
 			context.object(with: $0) as! Album
 		}
-		idsOfNewCollections = Set(organizedAlbums.map { $0.container!.objectID })
+		idsOfDestinationCollections = Set(organizedAlbums.map { $0.container!.objectID })
 		self.delegate = delegate
 	}
 	

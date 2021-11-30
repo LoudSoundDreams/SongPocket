@@ -122,6 +122,7 @@ final class CollectionCell: UITableViewCell {
 		
 		
 		case modalDisabled
+		case modalDisabledTinted
 	}
 	
 	@IBOutlet private var titleLabel: UILabel!
@@ -161,6 +162,12 @@ final class CollectionCell: UITableViewCell {
 		case .modalDisabled:
 			accessibilityCustomActions = []
 			backgroundColor = nil
+			
+			titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+			disableWithAccessibilityTrait()
+		case .modalDisabledTinted:
+			accessibilityCustomActions = []
+			backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
 			
 			titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 			disableWithAccessibilityTrait()

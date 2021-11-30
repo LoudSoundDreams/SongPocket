@@ -31,6 +31,8 @@ extension AlbumOrganizer {
 		
 		clipboard.didAlreadyCommitOrganize = true
 		
+		Collection.deleteAllEmpty(via: viewModel.context)
+		
 		viewModel.context.tryToSave()
 		viewModel.context.parent!.tryToSave()
 		

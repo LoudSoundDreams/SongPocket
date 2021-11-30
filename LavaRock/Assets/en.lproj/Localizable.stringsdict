@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>plural - organize_X_ albums</key>
+	<key>plural - organize_albums_by_album_artist</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Organize %#@NUMBER_ALBUMS@</string>
+		<string>Organize %#@NUMBER_ALBUMS@ by album artist?</string>
 		<key>NUMBER_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -13,25 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld Album</string>
+			<string>%lld album</string>
 			<key>other</key>
-			<string>%lld Albums</string>
-		</dict>
-	</dict>
-	<key>plural - move_x_albums</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>Move %#@NUMBER_ALBUMS@</string>
-		<key>NUMBER_ALBUMS</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>one</key>
-			<string>%lld Album</string>
-			<key>other</key>
-			<string>%lld Albums</string>
+			<string>%lld albums</string>
 		</dict>
 	</dict>
 	<key>plural - organize_albums_into_collections</key>

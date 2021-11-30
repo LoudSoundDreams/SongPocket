@@ -124,9 +124,21 @@ extension Collection {
 		with albumIDs: [NSManagedObjectID],
 		via context: NSManagedObjectContext
 	) {
-		let albumsToMove: [Album] = albumIDs.compactMap {
-			context.object(with: $0) as? Album
-		}
+		moveAlbumsToBeginning_withoutDelete(
+			with: albumIDs,
+			via: context)
+		
+		Self.deleteAllEmpty(via: context) // Also reindexes `self`
+	}
+	
+	// WARNING: Might leave empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	final func moveAlbumsToBeginning_withoutDelete(
+		with albumIDs: [NSManagedObjectID],
+		via context: NSManagedObjectContext
+	) {
+		let albumsToMove = albumIDs.map {
+			context.object(with: $0)
+		} as! [Album]
 		let sourceCollections = Set(albumsToMove.map { $0.container! })
 		
 		let numberOfAlbumsToMove = albumsToMove.count
@@ -144,8 +156,6 @@ extension Collection {
 			var contents = $0.albums()
 			contents.reindex()
 		}
-		
-		Self.deleteAllEmpty(via: context) // Also reindexes `self`
 	}
 	
 	// MARK: - Renaming

@@ -92,7 +92,7 @@ extension MusicLibraryManager {
 		}
 		os_signpost(.end, log: updateLog, name: "Move Songs from cloned Albums")
 		
-		Album.deleteAllEmpty_withoutReindex(via: context)
+		Album.deleteAllEmpty_withoutReindexOrCascade(via: context)
 		
 		return uniqueAlbums_byInt64
 	}

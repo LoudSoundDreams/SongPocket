@@ -106,10 +106,18 @@ extension CollectionsTVC {
 		let mode: CollectionCell.Mode = {
 			switch purpose {
 			case .organizingAlbums(let clipboard):
-				if clipboard.idsOfNewCollections.contains(collection.objectID) {
-					return .modalTinted
+				if clipboard.idsOfSourceCollections.contains(collection.objectID) {
+					if clipboard.idsOfDestinationCollections.contains(collection.objectID) {
+						return .modalDisabledTinted
+					} else {
+						return .modalDisabled
+					}
 				} else {
-					return .modal
+					if clipboard.idsOfDestinationCollections.contains(collection.objectID) {
+						return .modalTinted
+					} else {
+						return .modal
+					}
 				}
 			case .movingAlbums(let clipboard):
 				if FeatureFlag.multicollection {
