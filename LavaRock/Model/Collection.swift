@@ -11,11 +11,11 @@ import OSLog
 
 extension Collection: LibraryItem {
 	var libraryTitle: String? { title }
-	// Enables [Collection].reindex()
+	
+	// Enables `[Collection].reindex()`
 }
 
 extension Collection: LibraryContainer {
-	// Enables isEmpty()
 }
 
 extension Collection {
@@ -72,15 +72,15 @@ extension Collection {
 		newContents.reindex()
 		newContents.forEach { $0.container = self }
 		
-		Self.deleteAllEmpty(context: context)
+		Self.deleteAllEmpty(via: context)
 	}
 	
 	// MARK: - All Instances
 	
-	// Similar to Album.allFetched and Song.allFetched.
+	// Similar to `Album.allFetched` and `Song.allFetched`.
 	static func allFetched(
 		ordered: Bool = true,
-		context: NSManagedObjectContext
+		via context: NSManagedObjectContext
 	) -> [Collection] {
 		let fetchRequest: NSFetchRequest<Collection> = fetchRequest()
 		if ordered {
@@ -89,8 +89,8 @@ extension Collection {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	static func deleteAllEmpty(context: NSManagedObjectContext) {
-		var allCollections = allFetched(context: context)
+	static func deleteAllEmpty(via context: NSManagedObjectContext) {
+		var allCollections = allFetched(via: context)
 		
 		allCollections.indices.reversed().forEach { index in
 			let collection = allCollections[index]
@@ -105,7 +105,7 @@ extension Collection {
 	
 	// MARK: - Albums
 	
-	// Similar to Album.songs(sorted:).
+	// Similar to `Album.songs(sorted:)`.
 	final func albums(sorted: Bool = true) -> [Album] {
 		guard let contents = contents else {
 			return []
@@ -122,7 +122,7 @@ extension Collection {
 	// Works even if any of the `Album`s are already in this `Collection`.
 	final func moveAlbumsToBeginning(
 		with albumIDs: [NSManagedObjectID],
-		context: NSManagedObjectContext
+		via context: NSManagedObjectContext
 	) {
 		let albumsToMove: [Album] = albumIDs.compactMap {
 			context.object(with: $0) as? Album
@@ -145,7 +145,7 @@ extension Collection {
 			contents.reindex()
 		}
 		
-		Self.deleteAllEmpty(context: context) // Also reindexes `self`
+		Self.deleteAllEmpty(via: context) // Also reindexes `self`
 	}
 	
 	// MARK: - Renaming
@@ -156,7 +156,7 @@ extension Collection {
 		}
 	}
 	
-	// Returns nil if proposedTitle is nil or "".
+	// Returns `nil` if `proposedTitle` is `nil` or `""`.
 	private static func validatedTitleIfPossible(proposedTitle: String?) -> String? {
 		guard
 			let proposedTitle = proposedTitle,

@@ -24,8 +24,8 @@ extension MusicLibraryManager {
 			// WARNING: This leaves gaps in the Song indices within each Album. You must reindex the Songs within each Album later.
 		}
 		
-		Album.deleteAllEmpty_withoutReindex(context: context)
-		Collection.deleteAllEmpty(context: context)
+		Album.deleteAllEmpty_withoutReindex(via: context)
+		Collection.deleteAllEmpty(via: context)
 	}
 	
 }

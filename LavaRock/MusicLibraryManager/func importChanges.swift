@@ -31,7 +31,7 @@ extension MusicLibraryManager {
 		else { return }
 		
 		os_signpost(.begin, log: importLog, name: "Initial parse")
-		let existingSongs = Song.allFetched(ordered: false, context: context)
+		let existingSongs = Song.allFetched(ordered: false, via: context)
 		
 		let defaults = UserDefaults.standard
 		let defaultsKeyHasEverImported = LRUserDefaultsKey.hasEverImportedFromMusic.rawValue
@@ -40,7 +40,7 @@ extension MusicLibraryManager {
 		
 		// Find out which Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems that we don't have Songs for. We'll create new managed objects for them.
-		var potentiallyOutdatedSongsAndFreshMediaItems = [(Song, MPMediaItem)]() // We'll sort these eventually.
+		var potentiallyOutdatedSongsAndFreshMediaItems: [(Song, MPMediaItem)] = [] // We'll sort these eventually.
 		var songsToDelete = Set<Song>()
 		
 		let tuplesForMediaItems = queriedMediaItems.map { mediaItem in
@@ -75,8 +75,8 @@ extension MusicLibraryManager {
 			// This also might leave behind empty Albums, because all the Songs in them were moved to other Albums. We don't delete those empty Albums here, so that if the user also added other Songs to those Albums, we can keep those Albums in the same place, instead of re-adding them to the top.
 			potentiallyOutdatedSongsAndFreshMediaItems: potentiallyOutdatedSongsAndFreshMediaItems)
 		
-		let existingAlbums = Album.allFetched(ordered: false, context: context) // Order doesn't matter, because we identify Albums by their albumPersistentID.
-		let existingCollections = Collection.allFetched(context: context) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
+		let existingAlbums = Album.allFetched(ordered: false, via: context) // Order doesn't matter, because we identify Albums by their albumPersistentID.
+		let existingCollections = Collection.allFetched(via: context) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
 		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, which we shouldn't do yet, as mentioned above.
 			// This might create new Albums, and if it does, it might create new Collections.
 			for: newMediaItems,

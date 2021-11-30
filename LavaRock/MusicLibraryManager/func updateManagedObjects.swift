@@ -46,7 +46,7 @@ extension MusicLibraryManager {
 		// Specifically, if a Song's Album isn't the uppermost one in the user's custom arrangement with that albumPersistentID, then move it to the end of that Album.
 		
 		os_signpost(.begin, log: updateLog, name: "Fetch all Albums")
-		let allAlbums = Album.allFetched(context: context)
+		let allAlbums = Album.allFetched(ordered: true, via: context)
 		os_signpost(.end, log: updateLog, name: "Fetch all Albums")
 		
 		os_signpost(.begin, log: updateLog, name: "Initialize uniqueAlbums")
@@ -92,7 +92,7 @@ extension MusicLibraryManager {
 		}
 		os_signpost(.end, log: updateLog, name: "Move Songs from cloned Albums")
 		
-		Album.deleteAllEmpty_withoutReindex(context: context)
+		Album.deleteAllEmpty_withoutReindex(via: context)
 		
 		return uniqueAlbums_byInt64
 	}

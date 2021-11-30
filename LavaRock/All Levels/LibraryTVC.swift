@@ -56,13 +56,13 @@ class LibraryTVC: UITableViewController {
 	}()
 	
 	// Controls
-	final var editingModeToolbarButtons = [UIBarButtonItem]()
-	final var sortOptionsGrouped = [[SortOption]]()
+	final var editingModeToolbarButtons: [UIBarButtonItem] = []
+	final var sortOptionsGrouped: [[SortOption]] = []
 	
 	// MARK: Subclasses Can Optionally Customize
 	
 	// Controls
-	final var viewingModeTopLeftButtons = [UIBarButtonItem]()
+	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
 	final lazy var topRightButtons = [editButtonItem]
 	final lazy var viewingModeToolbarButtons = FeatureFlag.tabBar ? editingModeToolbarButtons : playbackButtons

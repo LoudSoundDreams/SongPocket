@@ -16,7 +16,7 @@ protocol GroupOfLibraryItems {
 	 
 	 It would be nice to make `items` `private(set)`, but then it couldn't satisfy the protocol requirement. Instead, include …
 	 var items: [NSManagedObject] { private_items }
-	 private var private_items = [NSManagedObject]()
+	 private var private_items: [NSManagedObject] = []
 	 
 	 For safety, disable the default memberwise initializer (for structs), to prevent callers from initializing `private_items` incorrectly. Include this in your custom initializer:
 	 private_items = fetchedItems()

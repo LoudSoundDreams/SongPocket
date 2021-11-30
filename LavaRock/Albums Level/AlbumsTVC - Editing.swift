@@ -84,7 +84,7 @@ extension AlbumsTVC {
 			viewModel.itemNonNil(at: $0) as! Album
 		}
 		
-		// Preview the data changes in a child managed object context, and make "organize albums" sheet show them.
+		// Preview the data changes in a child managed object context, and make the "organize albums" sheet show them.
 		collectionsTVC.viewModel = albumsViewModel.makeCollectionsViewModel_inNewChildContext(
 			organizingIntoNewCollections: albumsToOrganize)
 		

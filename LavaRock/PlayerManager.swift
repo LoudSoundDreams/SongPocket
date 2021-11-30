@@ -53,7 +53,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	
 	private init() {}
 	
-	private static var observers = [PlaybackStateReflecting]()
+	private static var observers: [PlaybackStateReflecting] = []
 	static func addObserver(_ observer: PlaybackStateReflecting) {
 		observers.append(observer)
 	}

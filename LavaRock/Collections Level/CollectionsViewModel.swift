@@ -52,9 +52,9 @@ extension CollectionsViewModel {
 		]
 	}
 	
-	private static let indexOfOnlyGroup = 0 //
+	private static let indexOfOnlyGroup = 0
 	
-	var group: GroupOfLibraryItems { groups[Self.indexOfOnlyGroup] } //
+	var group: GroupOfLibraryItems { groups[Self.indexOfOnlyGroup] }
 	
 	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
 		var twin = self

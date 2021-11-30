@@ -12,11 +12,10 @@ import OSLog
 extension Album: LibraryItem {
 	var libraryTitle: String? { titleFormattedOptional() }
 	
-	// Enables [Album].reindex()
+	// Enables `[Album].reindex()`
 }
 
 extension Album: LibraryContainer {
-	// Enables isEmpty()
 }
 
 extension Album {
@@ -62,10 +61,10 @@ extension Album {
 	
 	// MARK: - All Instances
 	
-	// Similar to Collection.allFetched and Song.allFetched.
+	// Similar to `Collection.allFetched` and `Song.allFetched`.
 	static func allFetched(
-		ordered: Bool = true,
-		context: NSManagedObjectContext
+		ordered: Bool,
+		via context: NSManagedObjectContext
 	) -> [Album] {
 		let fetchRequest: NSFetchRequest<Album> = fetchRequest()
 		if ordered {
@@ -74,11 +73,11 @@ extension Album {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	// WARNING: This leaves gaps in the Album indices within each Collection. You must reindex the Albums within each Collection later.
+	// WARNING: This leaves gaps in the `Album` indices within each `Collection`. You must reindex the `Album`s within each `Collection` later.
 	static func deleteAllEmpty_withoutReindex(
-		context: NSManagedObjectContext
+		via context: NSManagedObjectContext
 	) {
-		let allAlbums = allFetched(ordered: false, context: context) // Use `ordered: true` if you ever make a variant of this method that does reindex the remaining Albums.
+		let allAlbums = allFetched(ordered: false, via: context) // Use `ordered: true` if you ever create a variant of this method that does reindex the remaining `Album`s.
 		
 		allAlbums.forEach { album in
 			if album.isEmpty() {
@@ -89,7 +88,7 @@ extension Album {
 	
 	// MARK: - Songs
 	
-	// Similar to Collection.albums(sorted:).
+	// Similar to `Collection.albums(sorted:)`.
 	final func songs(sorted: Bool = true) -> [Song] {
 		guard let contents = contents else {
 			return []
@@ -105,7 +104,7 @@ extension Album {
 	
 	final func songsAreInDefaultOrder() -> Bool {
 		let mediaItems = songs().compactMap { $0.mpMediaItem() }
-		// mpMediaItem() returns nil if the media item is no longer in the Music library. Don't let Songs that we'll delete later disrupt an otherwise in-order Album; just skip over them.
+		// `mpMediaItem()` returns `nil` if the media item is no longer in the Music library. Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
 		
 		let sortedMediaItems = mediaItems.sorted {
 			$0.precedesInDefaultOrder(inSameAlbum: $1)
@@ -117,12 +116,12 @@ extension Album {
 	final func sortSongsByDefaultOrder() {
 		let songs = songs(sorted: false)
 		
-		// Note: Behavior is undefined if you compare Songs that correspond to MPMediaItems from different albums.
-		// Note: Songs that don't have a corresponding MPMediaItem in the user's Music library will end up at an undefined position in the result. Songs that do will still be in the correct order relative to each other.
+		// Note: Behavior is undefined if you compare `Song`s that correspond to `MPMediaItem`s from different albums.
+		// Note: `Song`s that don’t have a corresponding `MPMediaItem` in the user’s Music library will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
 		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
 			var songsAndMediaItems = songs.map {
 				($0,
-				 $0.mpMediaItem()) // Can be nil
+				 $0.mpMediaItem()) // Can be `nil`
 			}
 			
 			songsAndMediaItems.sort { leftTuple, rightTuple in
@@ -154,13 +153,13 @@ extension Album {
 		
 		mediaItems.forEach {
 			let _ = Song(
+				atEndOf: self,
 				for: $0,
-				   atEndOf: self,
-				   context: managedObjectContext!)
+				context: managedObjectContext!)
 		}
 	}
 	
-	// Use createSongsAtEnd(for:) if possible. It's faster.
+	// Use `createSongsAtEnd(for:)` if possible. It’s faster.
 	final func createSongsAtBeginning(for mediaItems: [MPMediaItem]) {
 		os_signpost(.begin, log: Self.log, name: "Create Songs at the top")
 		defer {
@@ -169,9 +168,9 @@ extension Album {
 		
 		mediaItems.reversed().forEach {
 			let _ = Song(
+				atBeginningOf: self,
 				for: $0,
-				   atBeginningOf: self,
-				   context: managedObjectContext!)
+				context: managedObjectContext!)
 		}
 	}
 	
@@ -191,10 +190,10 @@ extension Album {
 	) -> Bool {
 		let myReleaseDate = releaseDateEstimate
 		let otherReleaseDate = other.releaseDateEstimate
-		// Either can be nil
+		// Either can be `nil`
 		
 		// At this point, leave elements in the same order if they both have no release date, or the same release date.
-		// However, as of iOS 14.7, when using sorted(by:), returning `true` here doesn't always keep the elements in the same order. Use sortedMaintainingOrderWhen(areEqual:areInOrder:) to guarantee stable sorting.
+		// However, as of iOS 14.7, when using `sorted(by:)`, returning `true` here doesn’t always keep the elements in the same order. Use `sortedMaintainingOrderWhen(areEqual:areInOrder:)` to guarantee stable sorting.
 //		guard myReleaseDate != otherReleaseDate else {
 //			return true
 //		}

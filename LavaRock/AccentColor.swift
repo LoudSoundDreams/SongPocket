@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct AccentColor: Equatable { // You can't make this an enum, because raw values for enum cases need to be literals.
+struct AccentColor: Equatable { // You can't turn this into an enum, because raw values for enum cases need to be literals.
 	
 	enum ValueCase: String, CaseIterable {
 		case strawberry = "Strawberry"

@@ -14,9 +14,9 @@ struct BatchUpdates<Identifier> {
 extension CollectionDifference {
 	
 	func batchUpdates() -> BatchUpdates<Int> {
-		var indicesOfOldItemsToDelete = [Int]()
-		var indicesOfNewItemsToInsert = [Int]()
-		var indicesOfItemsToMove = [(oldIndex: Int, newIndex: Int)]()
+		var indicesOfOldItemsToDelete: [Int] = []
+		var indicesOfNewItemsToInsert: [Int] = []
+		var indicesOfItemsToMove: [(oldIndex: Int, newIndex: Int)] = []
 		
 		forEach { change in
 			// If a `Change`'s `associatedWith:` value is non-nil, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.

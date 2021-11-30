@@ -19,7 +19,7 @@ struct GroupOfSongs: GroupOfLibraryItems {
 	let container: NSManagedObject?
 	
 	var items: [NSManagedObject] { private_items }
-	private var private_items = [NSManagedObject]() {
+	private var private_items: [NSManagedObject] = [] {
 		didSet {
 			private_items.indices.forEach { currentIndex in
 				private_items[currentIndex].setValue(

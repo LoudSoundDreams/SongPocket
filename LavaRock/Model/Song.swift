@@ -12,7 +12,7 @@ import OSLog
 extension Song: LibraryItem {
 	var libraryTitle: String? { mpMediaItem()?.title }
 	
-	// Enables [Song].reindex()
+	// Enables `[Song].reindex()`
 }
 
 extension Song {
@@ -22,8 +22,8 @@ extension Song {
 		category: .pointsOfInterest)
 	
 	convenience init(
-		for mediaItem: MPMediaItem,
 		atEndOf album: Album,
+		for mediaItem: MPMediaItem,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: Self.log, name: "Create a Song at the bottom")
@@ -37,10 +37,10 @@ extension Song {
 		container = album
 	}
 	
-	// Use init(for:atEndOf:context:) if possible. It's faster.
+	// Use `init(atEndOf:for:context:)` if possible. It’s faster.
 	convenience init(
-		for mediaItem: MPMediaItem,
 		atBeginningOf album: Album,
+		for mediaItem: MPMediaItem,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: Self.log, name: "Create a Song at the top")
@@ -58,10 +58,10 @@ extension Song {
 	
 	// MARK: - All Instances
 	
-	// Similar to Collection.allFetched and Album.allFetched.
+	// Similar to `Collection.allFetched` and `Album.allFetched`.
 	static func allFetched(
-		ordered: Bool = true,
-		context: NSManagedObjectContext
+		ordered: Bool,
+		via context: NSManagedObjectContext
 	) -> [Song] {
 		let fetchRequest: NSFetchRequest<Song> = fetchRequest()
 		if ordered {
@@ -73,7 +73,7 @@ extension Song {
 	// MARK: - Predicates for Sorting
 	
 	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
-		// Checking Song index first and Collection index last is slightly faster than vice versa.
+		// Checking `Song` index first and `Collection` index last is slightly faster than vice versa.
 		guard index == other.index else {
 			return index < other.index
 		}

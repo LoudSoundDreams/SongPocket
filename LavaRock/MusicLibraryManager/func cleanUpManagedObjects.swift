@@ -20,8 +20,8 @@ extension MusicLibraryManager {
 			os_signpost(.end, log: importLog, name: "5. Cleanup")
 		}
 		
-		let allCollections = Collection.allFetched(ordered: false, context: context) // Order doesn't matter, because this is for reindexing the Albums within each Collection.
-		let allAlbums = Album.allFetched(ordered: false, context: context) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
+		let allCollections = Collection.allFetched(ordered: false, via: context) // Order doesn't matter, because this is for reindexing the Albums within each Collection.
+		let allAlbums = Album.allFetched(ordered: false, via: context) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
 		
 		os_signpost(.begin, log: cleanupLog, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(

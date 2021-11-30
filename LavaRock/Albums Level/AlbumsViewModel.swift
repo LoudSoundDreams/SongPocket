@@ -60,7 +60,7 @@ extension AlbumsViewModel {
 		let containers: [NSManagedObject] = {
 			switch viewContainer {
 			case .library:
-				let allCollections = Collection.allFetched(context: context)
+				let allCollections = Collection.allFetched(via: context)
 				return allCollections
 			case .container(let container):
 				let collection = container as! Collection
@@ -93,7 +93,7 @@ extension AlbumsViewModel {
 		// Organize the `Album`s into new `Collection`s.
 		var allCollections = Collection.allFetched(
 			ordered: false,
-			context: childContext)
+			via: childContext)
 		var newCollectionsByTitle: [String: Collection] = [:]
 		albumsToOrganize.reversed().forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
@@ -107,7 +107,7 @@ extension AlbumsViewModel {
 				// … then put the `Album` into that `Collection`.
 				matchingCollection.moveAlbumsToBeginning(
 					with: [album.objectID],
-					context: childContext)
+					via: childContext)
 			} else {
 				// Otherwise, create the new `Collection` to put the `Album` into …
 				let newCollection = Collection(
@@ -120,7 +120,7 @@ extension AlbumsViewModel {
 				// … and then put the `Album` into that `Collection`.
 				newCollection.moveAlbumsToBeginning(
 					with: [album.objectID],
-					context: childContext)
+					via: childContext)
 			}
 		}
 		
@@ -140,7 +140,7 @@ extension AlbumsViewModel {
 		
 		destinationCollection.moveAlbumsToBeginning(
 			with: albumIDs,
-			context: context)
+			via: context)
 		
 		let newItemsForOnlyGroup = destinationCollection.albums()
 		

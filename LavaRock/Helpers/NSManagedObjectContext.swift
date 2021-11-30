@@ -14,7 +14,7 @@ extension NSManagedObjectContext {
 	) -> NSManagedObjectContext {
 		let result: NSManagedObjectContext = {
 			if #available(iOS 15, *) {
-				// When we require iOS 15, we can make turn this method into an initializer.
+				// When we require iOS 15, we can turn this method into an initializer.
 				return NSManagedObjectContext(.mainQueue)
 			} else {
 				return Self(concurrencyType: .mainQueueConcurrencyType)
@@ -36,7 +36,7 @@ extension NSManagedObjectContext {
 	}
 	
 	final func objectsFetched<T>(for request: NSFetchRequest<T>) -> [T] {
-		var result = [T]()
+		var result: [T] = []
 		performAndWait {
 			do {
 				result = try fetch(request)

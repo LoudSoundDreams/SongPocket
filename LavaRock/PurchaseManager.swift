@@ -25,7 +25,7 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 		case confirming
 	}
 	
-	static let shared = PurchaseManager() // We can't make everything in this class static, because StoreKit only works with instances, not types.
+	static let shared = PurchaseManager() // We can't turn everything in this class static, because StoreKit only works with instances, not types.
 	
 	private(set) lazy var tipStatus: TipStatus = .notYetFirstLoaded
 	private(set) lazy var tipProduct: SKProduct? = nil
@@ -33,14 +33,14 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	weak var tipDelegate: PurchaseManagerTipDelegate? = nil
 	
 	final func beginObservingPaymentTransactions() {
-		SKPaymentQueue.default().add(self) // We can't make this method static, because StoreKit needs an instance here, not a type.
+		SKPaymentQueue.default().add(self) // We can't turn this method static, because StoreKit needs an instance here, not a type.
 	}
 	
 	final func requestAllSKProducts() {
 		tipStatus = .loading
 		let identifiers = ProductIdentifier.allCases.map { $0.rawValue }
 		let productsRequest = SKProductsRequest(productIdentifiers: Set(identifiers))
-		productsRequest.delegate = self // We can't make this method static, because StoreKit needs an instance here, not a type.
+		productsRequest.delegate = self // We can't turn this method static, because StoreKit needs an instance here, not a type.
 		productsRequest.start()
 		savedSKProductsRequest = productsRequest
 	}
