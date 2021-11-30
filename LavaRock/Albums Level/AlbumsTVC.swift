@@ -30,7 +30,7 @@ final class AlbumsTVC:
 	// Controls
 	private lazy var moveOrOrganizeButton = UIBarButtonItem(
 		title: LocalizedString.move,
-		menu: makeMoveOrOrganizeMenu())
+		menu: makeOrganizeOrMoveMenu())
 	
 	// Purpose
 	var purpose: Purpose {
@@ -176,10 +176,6 @@ final class AlbumsTVC:
 		} else {
 			return true
 		}
-	}
-	
-	private func allowsMove() -> Bool {
-		return allowsMoveOrOrganize()
 	}
 	
 	// MARK: - Navigation

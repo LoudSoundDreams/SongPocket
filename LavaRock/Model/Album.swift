@@ -59,6 +59,12 @@ extension Album {
 		container = collection
 	}
 	
+	// MARK: - Miscellaneous
+	
+	final func isInCollectionWithTitleMatchingAlbumArtist() -> Bool {
+		return container?.title == albumArtist()
+	}
+	
 	// MARK: - All Instances
 	
 	// Similar to `Collection.allFetched` and `Song.allFetched`.

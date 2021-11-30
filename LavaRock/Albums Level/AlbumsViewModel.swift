@@ -85,6 +85,29 @@ extension AlbumsViewModel {
 	
 	// MARK: - Organizing
 	
+	// Returns `true` if the albums to organize have at least 2 different album artists.
+	// The "albums to organize" are the selected albums, if any, or all the albums, if this is a specifically opened `Collection`.
+	func allowsOrganize(
+		selectedIndexPaths: [IndexPath]
+	) -> Bool {
+		if selectedIndexPaths.isEmpty {
+			guard viewContainerIsSpecific() else {
+				return false
+			}
+			let items = groups.flatMap({ $0.items })
+			guard let albums = items as? [Album] else {
+				return false
+			}
+			return albums.contains { !$0.isInCollectionWithTitleMatchingAlbumArtist() }
+		} else {
+			let items = selectedIndexPaths.map { itemNonNil(at: $0) }
+			guard let albums = items as? [Album] else {
+				return false
+			}
+			return albums.contains { !$0.isInCollectionWithTitleMatchingAlbumArtist() }
+		}
+	}
+	
 	func makeCollectionsViewModel_inNewChildContext(
 		organizingIntoNewCollections albumsToOrganize: [Album]
 	) -> CollectionsViewModel {
