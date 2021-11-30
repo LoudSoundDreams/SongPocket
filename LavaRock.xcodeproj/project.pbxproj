@@ -371,9 +371,7 @@
 				07B1EC432723B52A00EA8E29 /* TabBarC.swift */,
 				070E194524F3424500B21307 /* All Levels */,
 				07B2CD822741A217004A0743 /* GroupOfCollectionsOrAlbums.swift */,
-				077BCEAD2752F6DE0066DE96 /* AlbumOrganizerClipboard.swift */,
-				077BCEB1275316AD0066DE96 /* protocol AlbumOrganizer.swift */,
-				0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */,
+				0777D6832756880300BA0C87 /* Moving Albums */,
 				07DC1B1E24F33C5100AAEEDB /* Collections Level */,
 				0706ABDE24D946870090EB21 /* Options */,
 				072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */,
@@ -411,6 +409,16 @@
 				07B1EC41271FBA4000EA8E29 /* URL.swift */,
 			);
 			path = Foundation;
+			sourceTree = "<group>";
+		};
+		0777D6832756880300BA0C87 /* Moving Albums */ = {
+			isa = PBXGroup;
+			children = (
+				077BCEAD2752F6DE0066DE96 /* AlbumOrganizerClipboard.swift */,
+				077BCEB1275316AD0066DE96 /* protocol AlbumOrganizer.swift */,
+				0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */,
+			);
+			path = "Moving Albums";
 			sourceTree = "<group>";
 		};
 		07AB7029273C9A52002B5098 /* Basic */ = {
