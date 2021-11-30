@@ -57,21 +57,14 @@ final class TipReloadCell: UITableViewCell {
 		configure()
 	}
 	
-	private func configure() {
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.reload
-		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference()) // See comments in `AllowAccessCell`.
-		contentConfiguration = configuration
-	}
-	
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
-		} else {
-			configure()
-		}
+		reflectAccentColor()
 	}
+}
+extension TipReloadCell: ButtonCell {
+	static let buttonText = LocalizedString.reload
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
@@ -95,7 +88,7 @@ final class TipReadyCell: UITableViewCell {
 		
 		var configuration = UIListContentConfiguration.valueCell()
 		configuration.text = tipProduct.localizedTitle
-		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference()) // See comments in `AllowAccessCell`.
+		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
 		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
 		contentConfiguration = configuration
 	}
@@ -103,7 +96,7 @@ final class TipReadyCell: UITableViewCell {
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
+		if #available(iOS 15, *) {
 		} else {
 			configure()
 		}

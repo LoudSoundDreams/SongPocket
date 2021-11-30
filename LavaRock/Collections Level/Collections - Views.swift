@@ -18,25 +18,14 @@ final class AllowAccessCell: UITableViewCell {
 		configure()
 	}
 	
-	private func configure() {
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.allowAccessToMusic
-		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference()) // As of iOS 15.1 developer beta 3, `UIColor.tintColor` dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
-		// - `self.tintColor`dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
-		// - Don't use `AccentColor.savedPreference().uiColor` or `window?.tintColor`, because when we have a modal view presented, they aren't dimmed.
-		// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although it is dimmed if you change `window.tintColor` later.
-		contentConfiguration = configuration
-	}
-	
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		if #available(iOS 15, *) {
-			// See comment in `configure()`.
-		} else {
-			configure()
-		}
+		reflectAccentColor()
 	}
+}
+extension AllowAccessCell: ButtonCell {
+	static let buttonText = LocalizedString.allowAccessToMusic
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
@@ -81,25 +70,18 @@ final class OpenMusicCell: UITableViewCell {
 		configure()
 	}
 	
-	private func configure() {
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.openMusic
-		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
-		contentConfiguration = configuration
-	}
-	
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
-		} else {
-			configure()
-		}
+		reflectAccentColor()
 	}
 	
 	final func didSelect() {
 		URL.music?.open()
 	}
+}
+extension OpenMusicCell: ButtonCell {
+	static let buttonText = LocalizedString.openMusic
 }
 
 final class CreateCollectionCell: UITableViewCell {
@@ -125,7 +107,7 @@ final class CreateCollectionCell: UITableViewCell {
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
+		if #available(iOS 15, *) {
 		} else {
 			configure()
 		}
@@ -135,7 +117,7 @@ final class CreateCollectionCell: UITableViewCell {
 final class CollectionCell: UITableViewCell {
 	enum Mode {
 		case normal
-		case modalNotTinted
+		case modal
 		case modalTinted
 		
 		
@@ -162,7 +144,7 @@ final class CollectionCell: UITableViewCell {
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
-		case .modalNotTinted:
+		case .modal:
 			accessibilityCustomActions = []
 			backgroundColor = nil
 			

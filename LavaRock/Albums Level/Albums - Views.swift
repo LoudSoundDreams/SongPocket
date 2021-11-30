@@ -33,7 +33,7 @@ final class MoveHereCell: UITableViewCell {
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		if #available(iOS 15, *) { // See comments in `AllowAccessCell`.
+		if #available(iOS 15, *) {
 		} else {
 			configure()
 		}
@@ -43,7 +43,7 @@ final class MoveHereCell: UITableViewCell {
 final class AlbumCell: UITableViewCell {
 	enum Mode {
 		case normal
-		case modalNotTinted
+		case modal
 		case modalTinted
 	}
 	
@@ -96,7 +96,7 @@ final class AlbumCell: UITableViewCell {
 			backgroundColor = nil
 			accessoryType = .disclosureIndicator
 			enableWithAccessibilityTrait()
-		case .modalNotTinted:
+		case .modal:
 			backgroundColor = nil
 			accessoryType = .none
 			disableWithAccessibilityTrait()

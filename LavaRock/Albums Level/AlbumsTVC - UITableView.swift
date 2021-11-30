@@ -133,17 +133,17 @@ extension AlbumsTVC {
 				if clipboard.idsOfOrganizedAlbums.contains(album.objectID) {
 					return .modalTinted
 				} else {
-					return .modalNotTinted
+					return .modal
 				}
 			case .movingAlbums(let clipboard):
 				if FeatureFlag.multicollection {
 					if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
 						return .modalTinted
 					} else {
-						return .modalNotTinted
+						return .modal
 					}
 				} else {
-					return .modalNotTinted
+					return .modal
 				}
 			case .browsing:
 				return .normal

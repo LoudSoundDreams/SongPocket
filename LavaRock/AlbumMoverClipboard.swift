@@ -91,11 +91,9 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 }
 
 private extension Album {
-	
 	final func suggestedCollectionTitle(
 		metadataKeyPath: KeyPath<MPMediaItem, String?>
 	) -> String? {
 		return mpMediaItemCollection()?.representativeItem?[keyPath: metadataKeyPath]
 	}
-	
 }
