@@ -12,29 +12,29 @@ extension AlbumsTVC {
 	
 	final func makeMoveOrOrganizeMenu() -> UIMenu {
 		let organizeElement: UIMenuElement = {
-			if #available(iOS 15, *) {
-				// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
-				return UIDeferredMenuElement.uncached({ useMenuElements in
-					let dynamicOrganizeAction = self.makeDynamicOrganizeAction()
-					useMenuElements([dynamicOrganizeAction])
-				})
-			} else {
+//			if #available(iOS 15, *) {
+//				// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
+//				return UIDeferredMenuElement.uncached({ useMenuElements in
+//					let dynamicOrganizeAction = self.makeDynamicOrganizeAction()
+//					useMenuElements([dynamicOrganizeAction])
+//				})
+//			} else {
 				let organizeAction = makeDynamicOrganizeAction()
-				organizeAction.title = LocalizedString.organizeEllipsis
+//				organizeAction.title = LocalizedString.organizeEllipsis
 				return organizeAction
-			}
+//			}
 		}()
 		let moveElement: UIMenuElement = {
-			if #available(iOS 15, *) {
-				return UIDeferredMenuElement.uncached({ useMenuElements in
-					let dynamicMoveAction = self.makeDynamicMoveAction()
-					useMenuElements([dynamicMoveAction])
-				})
-			} else {
+//			if #available(iOS 15, *) {
+//				return UIDeferredMenuElement.uncached({ useMenuElements in
+//					let dynamicMoveAction = self.makeDynamicMoveAction()
+//					useMenuElements([dynamicMoveAction])
+//				})
+//			} else {
 				let moveAction = makeDynamicMoveAction()
-				moveAction.title = LocalizedString.moveToEllipsis
+//				moveAction.title = LocalizedString.moveToEllipsis
 				return moveAction
-			}
+//			}
 		}()
 		return UIMenu(children: [
 			organizeElement,
@@ -43,27 +43,29 @@ extension AlbumsTVC {
 	}
 	
 	private func makeDynamicOrganizeAction() -> UIAction {
-		let formatString = LocalizedString.formatOrganizeXAlbums
-		let numberToOrganize = viewModel.countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
-			selectedItemsCount: tableView.indexPathsForSelectedRowsNonNil.count)
-		let title = String.localizedStringWithFormat(
-			formatString,
-			numberToOrganize)
+//		let formatString = LocalizedString.formatOrganizeXAlbums
+//		let numberToOrganize = viewModel.countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
+//			selectedItemsCount: tableView.indexPathsForSelectedRowsNonNil.count)
+//		let title = String.localizedStringWithFormat(
+//			formatString,
+//			numberToOrganize)
 		return UIAction(
-			title: title,
+			title: LocalizedString.organizeByAlbumArtistEllipsis,
+//			title: title,
 			image: UIImage(systemName: "plus.rectangle.on.folder"),
 			handler: { _ in self.startOrganizing() })
 	}
 	
 	private func makeDynamicMoveAction() -> UIAction {
-		let formatString = LocalizedString.formatMoveXAlbums
-		let numberToMove = viewModel.countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
-			selectedItemsCount: tableView.indexPathsForSelectedRowsNonNil.count)
-		let title = String.localizedStringWithFormat(
-			formatString,
-			numberToMove)
+//		let formatString = LocalizedString.formatMoveXAlbums
+//		let numberToMove = viewModel.countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
+//			selectedItemsCount: tableView.indexPathsForSelectedRowsNonNil.count)
+//		let title = String.localizedStringWithFormat(
+//			formatString,
+//			numberToMove)
 		return UIAction(
-			title: title,
+			title: LocalizedString.moveToEllipsis,
+//			title: title,
 			image: UIImage(systemName: "folder"),
 			handler: { _ in self.startMoving() })
 	}

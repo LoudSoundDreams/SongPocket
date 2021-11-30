@@ -301,7 +301,6 @@
 			children = (
 				07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */,
 				0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */,
-				07C1AA2B2754618700ACE15A /* SectionStructure.swift */,
 				073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */,
@@ -359,12 +358,8 @@
 			isa = PBXGroup;
 			children = (
 				0768309924B42DEE0033E3CC /* Info.plist */,
-				075218B5257C52390077AE9B /* InfoPlist.strings */,
-				076830CF24B42E510033E3CC /* Assets.xcassets */,
+				07ED6A8B2755D57C00085493 /* Assets */,
 				07CD588A26B35B520054598A /* Helpers */,
-				075218A1257C498D0077AE9B /* LocalizedString.swift */,
-				075218B8257C52390077AE9B /* Localizable.strings */,
-				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
 				07267A1F25537C5800C914A3 /* PlayerManager.swift */,
@@ -485,11 +480,24 @@
 				07566CE92692261800257DB4 /* UIMenu.swift */,
 				072C04982692A67400F44AC5 /* UIAlertAction.swift */,
 				072C049A2692AB4400F44AC5 /* UIAlertController.swift */,
-				0750C01426D2E27700B3E899 /* UITableViewCell.swift */,
 				07ED6A892755CCE700085493 /* protocol ButtonCell.swift */,
+				0750C01426D2E27700B3E899 /* UITableViewCell.swift */,
+				07C1AA2B2754618700ACE15A /* SectionStructure.swift */,
 				072429C324DC786500F62AF6 /* UITableView.swift */,
 			);
 			path = UIKit;
+			sourceTree = "<group>";
+		};
+		07ED6A8B2755D57C00085493 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				075218B5257C52390077AE9B /* InfoPlist.strings */,
+				076830CF24B42E510033E3CC /* Assets.xcassets */,
+				075218A1257C498D0077AE9B /* LocalizedString.swift */,
+				075218B8257C52390077AE9B /* Localizable.strings */,
+				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
@@ -936,7 +944,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 294;
+				CURRENT_PROJECT_VERSION = 295;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -959,7 +967,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 294;
+				CURRENT_PROJECT_VERSION = 295;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

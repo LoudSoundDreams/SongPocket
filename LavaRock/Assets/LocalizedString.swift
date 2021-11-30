@@ -118,7 +118,8 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let albums = NSLocalizedString("Albums", comment: "Big title")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
-	static let organizeEllipsis = NSLocalizedString("Organize…", comment: "Menu option")
+	static let organizeByAlbumArtistEllipsis = NSLocalizedString("Organize by Album Artist…", comment: "Menu option")
+//	static let organizeEllipsis = NSLocalizedString("Organize…", comment: "Menu option")
 	static let moveToEllipsis = NSLocalizedString("Move To…", comment: "Menu option")
 	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
 	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Sort option")
@@ -152,7 +153,7 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit
 	
-	static let formatOrganizeXAlbumsIntoYCollections = NSLocalizedString(
+	static let formatOrganizeXAlbumsIntoYCollectionsQuestionMark = NSLocalizedString(
 		"plural - organize_albums_into_collections",
 		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of albums you’re organizing, and the number of new collections the app created.")
 	
@@ -165,12 +166,12 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	// MARK: Albums View
 	
-	static let formatOrganizeXAlbums = NSLocalizedString(
-		"plural - organize_X_ albums",
-		comment: "Button title")
-	static let formatMoveXAlbums = NSLocalizedString(
-		"plural - move_x_albums",
-		comment: "Button title")
+//	static let formatOrganizeXAlbums = NSLocalizedString(
+//		"plural - organize_X_ albums",
+//		comment: "Button title")
+//	static let formatMoveXAlbums = NSLocalizedString(
+//		"plural - move_x_albums",
+//		comment: "Button title")
 	
 	// MARK: Songs View
 	
