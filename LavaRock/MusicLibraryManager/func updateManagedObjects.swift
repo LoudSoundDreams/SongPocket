@@ -19,12 +19,7 @@ extension MusicLibraryManager {
 			os_signpost(.end, log: importLog, name: "2. Update Managed Objects")
 		}
 		
-		// Here, you can update any attributes on each Song. But it's best to not store data on each Song in the first place unless we have to, because we'll have to manually keep it up to date.
-		
-		
 		os_signpost(.begin, log: updateLog, name: "Merge Albums with the same albumPersistentID")
-		// can we do this after moveSongsToUpdatedAlbums? initializing uniqueAlbums is slow
-		// ^ would that change anything?
 		let uniqueAlbums_byInt64 = mergeClonedAlbumsAndReturnUniqueAlbums_byInt64(
 			potentiallyOutdatedSongsAndFreshMediaItems: potentiallyOutdatedSongsAndFreshMediaItems)
 		os_signpost(.end, log: updateLog, name: "Merge Albums with the same albumPersistentID")
@@ -39,11 +34,11 @@ extension MusicLibraryManager {
 	private func mergeClonedAlbumsAndReturnUniqueAlbums_byInt64(
 		potentiallyOutdatedSongsAndFreshMediaItems: [(Song, MPMediaItem)]
 	) -> [Int64: Album] {
-		// I've seen an obscure bug where we had two Albums with the same albumPersistentID, probably caused by a bug in Music for Mac when I was editing metadata (once, one song appeared twice in its album).
-		// We never should have ended up with two Albums with the same albumPersistentID in the first place, but this makes the importer resilient to that mistake.
+		// I've seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
+		// We never should have ended up with two `Album`s with the same `albumPersistentID` in the first place, but this makes the importer resilient to that mistake.
 		
-		// To merge Albums, we'll move their Songs into one Album, then delete empty Albums.
-		// Specifically, if a Song's Album isn't the uppermost one in the user's custom arrangement with that albumPersistentID, then move it to the end of that Album.
+		// To merge `Album`s, we'll move their `Song`s into one `Album`, then delete empty `Album`s.
+		// Specifically, if a `Song`'s `Album` isn't the uppermost one in the user's custom arrangement with that `albumPersistentID`, then move it to the end of that `Album`.
 		
 		os_signpost(.begin, log: updateLog, name: "Fetch all Albums")
 		let allAlbums = Album.allFetched(ordered: true, via: context)
@@ -84,7 +79,6 @@ extension MusicLibraryManager {
 		
 		os_signpost(.begin, log: updateLog, name: "Move Songs from cloned Albums")
 		songsToMove.forEach { song in
-			
 			let targetAlbum = uniqueAlbums_byInt64[song.container!.albumPersistentID]!
 			let newIndexOfSong = targetAlbum.contents?.count ?? 0
 			song.container = targetAlbum

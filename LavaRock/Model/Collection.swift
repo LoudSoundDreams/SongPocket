@@ -41,7 +41,8 @@ extension Collection {
 	
 	// Use `init(afterAllOtherCollectionsCount:title:context:)` if possible. It’s faster.
 	convenience init(
-		beforeAllOtherCollections allOtherCollections: [Collection],
+		index: Int64,
+		before displacedCollections: [Collection],
 		title: String,
 		context: NSManagedObjectContext
 	) {
@@ -50,11 +51,11 @@ extension Collection {
 			os_signpost(.end, log: Self.log, name: "Create a Collection at the top")
 		}
 		
-		allOtherCollections.forEach { $0.index += 1 }
+		displacedCollections.forEach { $0.index += 1 }
 		
 		self.init(context: context)
 		self.title = title
-		index = 0
+		self.index = index
 	}
 	
 	convenience init(
@@ -147,6 +148,32 @@ extension Collection {
 			let album = albumsToMove[index]
 			album.container = self
 			album.index = Int64(index)
+		}
+		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
+		var newContents = albums()
+		newContents.reindex()
+		
+		sourceCollections.forEach {
+			var contents = $0.albums()
+			contents.reindex()
+		}
+	}
+	
+	// WARNING: Might leave empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	final func moveAlbumsToEnd_withoutDelete(
+		with albumIDs: [NSManagedObjectID],
+		via context: NSManagedObjectContext
+	) {
+		let albumsToMove = albumIDs.map {
+			context.object(with: $0)
+		} as! [Album]
+		let sourceCollections = Set(albumsToMove.map { $0.container! })
+		
+		let oldNumberOfAlbums = albums().count
+		albumsToMove.indices.forEach { index in
+			let album = albumsToMove[index]
+			album.container = self
+			album.index = Int64(oldNumberOfAlbums + index)
 		}
 		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
 		var newContents = albums()

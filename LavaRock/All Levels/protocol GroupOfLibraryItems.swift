@@ -57,9 +57,4 @@ extension GroupOfLibraryItems {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	func refreshContainer(context: NSManagedObjectContext) {
-		guard let container = container else { return }
-		context.refresh(container, mergeChanges: true)
-	}
-	
 }

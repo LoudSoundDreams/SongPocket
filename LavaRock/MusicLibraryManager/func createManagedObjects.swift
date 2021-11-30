@@ -210,7 +210,8 @@ extension MusicLibraryManager {
 				} else {
 					let existingCollections = existingCollectionsByTitle.flatMap { $0.value }
 					return Collection(
-						beforeAllOtherCollections: existingCollections,
+						index: 0,
+						before: existingCollections,
 						title: titleOfDestinationCollection,
 						context: context)
 				}

@@ -298,7 +298,7 @@ final class CollectionsTVC:
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			revertCreate()
+			revertCreate() // Do this before calling `super`, because `super` calls `refreshLibraryItems`.
 		case .browsing:
 			break
 		}
