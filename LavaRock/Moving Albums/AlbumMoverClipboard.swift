@@ -14,11 +14,6 @@ protocol AlbumMoverDelegate: AnyObject {
 
 final class AlbumMoverClipboard { // This is a class and not a struct because we use it to share information.
 	
-	// Static
-	static let metadataKeyPathsForSmartCollectionTitle: [KeyPath<MPMediaItem, String?>] = [
-		\.albumArtist,
-	]
-	
 	// Data
 	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	let idsOfAlbumsBeingMoved_asSet: Set<NSManagedObjectID>
@@ -55,32 +50,25 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		let albums = idsOfAlbumsBeingMoved.compactMap {
 			context.object(with: $0) as? Album
 		}
-		for keyPath in Self.metadataKeyPathsForSmartCollectionTitle {
-			if
-				let suggestedTitle = suggestedCollectionTitle(
-					metadataKeyPath: keyPath,
-					albums: albums),
-				!existingTitles.contains(suggestedTitle)
-			{
-				return suggestedTitle
-			}
+		if
+			let suggestedTitle = suggestedCollectionTitle(albums: albums),
+			!existingTitles.contains(suggestedTitle)
+		{
+			return suggestedTitle
+		} else {
+			return nil
 		}
-		return nil
 	}
 	
 	private func suggestedCollectionTitle(
-		metadataKeyPath: KeyPath<MPMediaItem, String?>,
 		albums: [Album]
 	) -> String? {
-		guard let firstSuggestion = albums.first?.suggestedCollectionTitle(
-			metadataKeyPath: metadataKeyPath
-		) else {
-			return nil
-		}
+		guard let firstAlbum = albums.first else { return nil }
+		
+		let firstSuggestion = firstAlbum.albumArtistFormattedOrPlaceholder()
+		
 		if albums.dropFirst().allSatisfy({
-			$0.suggestedCollectionTitle(
-				metadataKeyPath: metadataKeyPath
-			) == firstSuggestion
+			$0.albumArtistFormattedOrPlaceholder() == firstSuggestion
 		}) {
 			return firstSuggestion
 		} else {
@@ -88,12 +76,4 @@ final class AlbumMoverClipboard { // This is a class and not a struct because we
 		}
 	}
 	
-}
-
-private extension Album {
-	final func suggestedCollectionTitle(
-		metadataKeyPath: KeyPath<MPMediaItem, String?>
-	) -> String? {
-		return mpMediaItemCollection()?.representativeItem?[keyPath: metadataKeyPath]
-	}
 }

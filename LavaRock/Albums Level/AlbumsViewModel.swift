@@ -142,7 +142,7 @@ extension AlbumsViewModel {
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
 			let titleOfDestinationCollection
-			= album.albumArtist() ?? Album.placeholderAlbumArtist
+			= album.albumArtist() ?? Album.unknownAlbumArtistPlaceholder
 			
 			guard album.container!.title != titleOfDestinationCollection else { return }
 			

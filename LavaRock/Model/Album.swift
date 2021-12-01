@@ -62,7 +62,7 @@ extension Album {
 	// MARK: - Miscellaneous
 	
 	final func isInCollectionMatchingAlbumArtist() -> Bool {
-		return container?.title == albumArtist() ?? Self.placeholderAlbumArtist
+		return container?.title == albumArtist() ?? Self.unknownAlbumArtistPlaceholder
 	}
 	
 	// MARK: - All Instances
@@ -258,7 +258,7 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	static let placeholderAlbumArtist = LocalizedString.unknownAlbumArtist
+	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownAlbumArtist
 	
 	final func artworkImage(at size: CGSize) -> UIImage? {
 		let artwork = mpMediaItemCollection()?.representativeItem?.artwork
@@ -293,7 +293,7 @@ extension Album {
 	}
 	
 	final func albumArtistFormattedOrPlaceholder() -> String {
-		return albumArtist() ?? Self.placeholderAlbumArtist
+		return albumArtist() ?? Self.unknownAlbumArtistPlaceholder
 	}
 	
 	final func albumArtist() -> String? {

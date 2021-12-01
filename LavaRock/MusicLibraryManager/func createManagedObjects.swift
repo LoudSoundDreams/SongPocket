@@ -172,7 +172,7 @@ extension MusicLibraryManager {
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
 		let titleOfDestinationCollection
-		= newMediaItem.albumArtist ?? Album.placeholderAlbumArtist
+		= newMediaItem.albumArtist ?? Album.unknownAlbumArtistPlaceholder
 		
 		// If we already have a matching `Collection` to put the `Album` into …
 		if let matchingExistingCollection = existingCollectionsByTitle[titleOfDestinationCollection]?.first {
