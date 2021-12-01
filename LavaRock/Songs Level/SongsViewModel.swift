@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import MediaPlayer
 
 struct SongsViewModel {
 	// LibraryViewModel
@@ -33,6 +34,38 @@ extension SongsViewModel: LibraryViewModel {
 				.deleted(let container):
 			let album = container as! Album
 			return album.titleFormattedOrPlaceholder()
+		}
+	}
+	
+	func allowsSortOption(
+		_ sortOption: LibraryTVC.SortOption,
+		forItems items: [NSManagedObject]
+	) -> Bool {
+		switch sortOption {
+		case
+				.title,
+				.newestFirst,
+				.oldestFirst:
+			return false
+		case
+				.trackNumber:
+			return true
+			
+//			guard let songs = items as? [Song] else {
+//				return false
+//			}
+//			return songs.contains {
+//				// Return `true` if the `Song` has any useful metadata for sorting.
+//				guard let mediaItem = $0.mpMediaItem() else {
+//					return false
+//				}
+//				if mediaItem.albumTrackNumber != MPMediaItem.unknownTrackNumber {
+//					return true
+//				}
+//				return mediaItem.discNumber != 0 // As of iOS 14.7 developer beta 5, MediaPlayer reports unknown disc numbers as 1.
+//			}
+		case .reverse:
+			return true
 		}
 	}
 	
@@ -75,6 +108,16 @@ extension SongsViewModel {
 		}
 	}
 	
+	func songNonNil(at indexPath: IndexPath) -> Song {
+		return itemNonNil(at: indexPath) as! Song
+	}
+	
+	// Similar to `AlbumsViewModel.collection`.
+	func album(forSection section: Int) -> Album {
+		let group = group(forSection: section)
+		return group.container as! Album
+	}
+	
 	// Time complexity: O(n), where "n" is the number of groups
 	func indexPath(for album: Album) -> IndexPath? {
 		if let indexOfMatchingGroup = groups.firstIndex(where: { group in
@@ -86,17 +129,6 @@ extension SongsViewModel {
 		} else {
 			return nil
 		}
-	}
-	
-	// Similar to `AlbumsViewModel.collection`.
-	func album(forSection section: Int) -> Album {
-		let group = group(forSection: section)
-		return group.container as! Album
-	}
-	
-	func shouldShowDiscNumbers(forSection section: Int) -> Bool {
-		let group = group(forSection: section) as? GroupOfSongs
-		return group?.shouldShowDiscNumbers ?? false
 	}
 	
 }

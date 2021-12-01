@@ -10,7 +10,7 @@ import MediaPlayer
 extension MPMediaItem {
 	
 	// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown track numbers as 0.
-	private static let unknownTrackNumber = 0
+	static let unknownTrackNumber = 0
 	
 	// MARK: - Predicates for Sorting
 	
@@ -75,8 +75,7 @@ extension MPMediaItem {
 		shouldResortToTitle: Bool
 	) -> Bool {
 		// Sort by disc number
-		// Music for Mac as of version 1.1.5.74 changes disc number 0 to blank, so we shouldn't need to move disc 0 to the end.
-		// Note: As of iOS 14.7 developer beta 5, MediaPlayer reports unknown disc numbers as 1.
+		// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown disc numbers as 1.
 		let myDisc = discNumber
 		let otherDisc = other.discNumber
 		guard myDisc == otherDisc else {
@@ -117,29 +116,22 @@ extension MPMediaItem {
 	
 	// MARK: - Formatted Attributes
 	
-	static let placeholderTitle = "—" // Em dash
-	static let placeholderTrackNumber = "‒" // Figure dash
+	static let unknownTitlePlaceholder = "—" // Em dash
+	static let unknownTrackNumberPlaceholder = "‒" // Figure dash
 	
-	final func trackNumberFormatted(includeDisc: Bool) -> String {
-		guard includeDisc else {
-			// Don't include disc number
-			if albumTrackNumber == Self.unknownTrackNumber {
-				return Self.placeholderTrackNumber
-			} else {
-				return String(albumTrackNumber)
-			}
-		}
-		
-		// Include disc number
+	final func discAndTrackNumberFormatted() -> String {
 		let discNumberString = String(discNumber)
-		let trackNumberString: String = {
-			if albumTrackNumber == Self.unknownTrackNumber {
-				return ""
-			} else {
-				return String(albumTrackNumber)
-			}
-		}()
+		let trackNumberString
+		= (albumTrackNumber == Self.unknownTrackNumber)
+		? ""
+		: String(albumTrackNumber)
 		return "\(discNumberString)-\(trackNumberString)" // That's a hyphen.
+	}
+	
+	final func trackNumberFormatted() -> String {
+		return (albumTrackNumber == Self.unknownTrackNumber)
+		? Self.unknownTrackNumberPlaceholder
+		: String(albumTrackNumber)
 	}
 	
 }

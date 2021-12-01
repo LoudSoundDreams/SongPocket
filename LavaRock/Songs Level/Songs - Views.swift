@@ -78,24 +78,55 @@ final class SongCell: UITableViewCell {
 	}
 	
 	final func configureWith(
-//		song: Song,
-//		album: Album
-		title: String?,
-		artist: String?, // Pass in `nil` if the song's artist is empty, or if it's the same as the album artist.
-		trackNumberString: String
+		mediaItem: MPMediaItem?,
+		albumRepresentative representativeItem: MPMediaItem?
 	) {
-		titleLabel.text = title ?? MPMediaItem.placeholderTitle
-		artistLabel.text = artist
+		let titleText = mediaItem?.title ?? MPMediaItem.unknownTitlePlaceholder
+		let artistText: String? = {
+			let albumArtist = representativeItem?.albumArtist // Can be `nil`
+			if
+				let songArtist = mediaItem?.artist,
+				songArtist != albumArtist
+			{
+				return songArtist
+			} else {
+				return nil
+			}
+		}()
+		let trackNumberString: String = { // Don't let this be nil.
+			guard
+				let mediaItem = mediaItem,
+				let representativeItem = representativeItem
+			else { return MPMediaItem.unknownTrackNumberPlaceholder }
+			
+			let discNumber = representativeItem.discNumber
+			let discCount = representativeItem.discCount
+			// Show disc numbers if the disc count is more than 1, or if the disc count isn't more than 1 but the disc number is.
+			let shouldShowDiscNumber: Bool = {
+				discCount > 1 // As of iOS 15.0 RC, MediaPlayer sometimes reports `discCount == 0` for albums with 1 disc.
+				? true
+				: discNumber > 1
+			}()
+			
+			if shouldShowDiscNumber {
+				return mediaItem.discAndTrackNumberFormatted()
+			} else {
+				return mediaItem.trackNumberFormatted()
+			}
+		}()
+		
+		titleLabel.text = titleText
+		artistLabel.text = artistText
 //		applyNowPlayingIndicator(nowPlayingIndicator) // Cannot use mutating member on immutable value: 'self' is immutable
 		trackNumberLabel.text = trackNumberString
 		
-		if artist == nil {
+		if artistText == nil {
 			textStackView.spacing = 0
 		} else {
 			textStackView.spacing = 4
 		}
 		
-		accessibilityUserInputLabels = [title ?? MPMediaItem.placeholderTitle]
+		accessibilityUserInputLabels = [mediaItem?.title].compactMap { $0 }
 	}
 }
 

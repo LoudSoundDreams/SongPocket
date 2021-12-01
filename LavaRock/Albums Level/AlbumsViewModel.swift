@@ -36,6 +36,27 @@ extension AlbumsViewModel: LibraryViewModel {
 		}
 	}
 	
+	func allowsSortOption(
+		_ sortOption: LibraryTVC.SortOption,
+		forItems items: [NSManagedObject]
+	) -> Bool {
+		switch sortOption {
+		case .title:
+			return false
+		case
+				.newestFirst,
+				.oldestFirst:
+			guard let albums = items as? [Album] else {
+				return false
+			}
+			return albums.contains { $0.releaseDateEstimate != nil }
+		case .trackNumber:
+			return false
+		case .reverse:
+			return true
+		}
+	}
+	
 	func updatedWithRefreshedData() -> Self {
 		let refreshedViewContainer = viewContainer.refreshed()
 		return Self(
@@ -77,6 +98,10 @@ extension AlbumsViewModel {
 		}
 	}
 	
+	func albumNonNil(at indexPath: IndexPath) -> Album {
+		return itemNonNil(at: indexPath) as! Album
+	}
+	
 	// Similar to `SongsViewModel.album`.
 	func collection(forSection section: Int) -> Collection {
 		let group = group(forSection: section)
@@ -90,22 +115,15 @@ extension AlbumsViewModel {
 	func allowsOrganize(
 		selectedIndexPaths: [IndexPath]
 	) -> Bool {
-		if selectedIndexPaths.isEmpty {
-			guard viewContainerIsSpecific() else {
-				return false
-			}
-			let items = groups.flatMap({ $0.items })
-			guard let albums = items as? [Album] else {
-				return false
-			}
-			return albums.contains { !$0.isInCollectionMatchingAlbumArtist() }
-		} else {
-			let items = selectedIndexPaths.map { itemNonNil(at: $0) }
-			guard let albums = items as? [Album] else {
-				return false
-			}
-			return albums.contains { !$0.isInCollectionMatchingAlbumArtist() }
+		let indexPathsToOrganize = unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+			selectedIndexPaths: selectedIndexPaths)
+		guard let albumsToOrganize = indexPathsToOrganize.map({
+			itemNonNil(at: $0)
+		}) as? [Album]
+		else {
+			return false
 		}
+		return albumsToOrganize.contains { !$0.isInCollectionMatchingAlbumArtist() }
 	}
 	
 	func makeCollectionsViewModel_inNewChildContext(

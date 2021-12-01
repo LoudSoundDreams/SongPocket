@@ -28,6 +28,23 @@ extension CollectionsViewModel: LibraryViewModel {
 		return FeatureFlag.multicollection ? LocalizedString.sections : LocalizedString.collections
 	}
 	
+	func allowsSortOption(
+		_ sortOption: LibraryTVC.SortOption,
+		forItems items: [NSManagedObject]
+	) -> Bool {
+		switch sortOption {
+		case .title:
+			return true
+		case
+				.newestFirst,
+				.oldestFirst,
+				.trackNumber:
+			return false
+		case .reverse:
+			return true
+		}
+	}
+	
 	func updatedWithRefreshedData() -> Self {
 		return Self(
 			context: context,
@@ -50,6 +67,10 @@ extension CollectionsViewModel {
 				container: nil,
 				context: context)
 		]
+	}
+	
+	func collectionNonNil(at indexPath: IndexPath) -> Collection {
+		return itemNonNil(at: indexPath) as! Collection
 	}
 	
 	private static let indexOfOnlyGroup = 0

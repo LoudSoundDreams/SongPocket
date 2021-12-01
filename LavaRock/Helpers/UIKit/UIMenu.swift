@@ -10,26 +10,26 @@ import UIKit
 extension UIMenu {
 	
 	convenience init(
-		presentsUpward: Bool, // As of iOS 14.7 developer beta 2, when you present a UIMenu from lower down on the screen, the UIMenu shows its children from the bottom upward. Call this with `presentUpward: true` to reverse all the actions.
-		groupedChildren: [[UIAction]]
+		presentsUpward: Bool, // As of iOS 14.7 developer beta 2, when you present a `UIMenu` from lower down on the screen, the `UIMenu` shows its children from the bottom upward. Call this with `presentUpward: true` to reverse all the actions.
+		groupedElements: [[UIMenuElement]]
 	) {
-		let groupedChildrenReordered: [[UIAction]] = {
+		let groupedElementsReordered: [[UIMenuElement]] = {
 			if presentsUpward {
-				var groupedChildrenCopy = groupedChildren
-				groupedChildrenCopy.reverse()
-				groupedChildrenCopy.indices.forEach {
-					groupedChildrenCopy[$0].reverse()
+				var groupedElements = groupedElements
+				groupedElements.reverse()
+				groupedElements.indices.forEach {
+					groupedElements[$0].reverse()
 				}
-				return groupedChildrenCopy
+				return groupedElements
 			} else {
-				return groupedChildren
+				return groupedElements
 			}
 		}()
 		
-		let submenus = groupedChildrenReordered.map { groupOfChildren in
+		let submenus = groupedElementsReordered.map { groupOfElements in
 			UIMenu(
 				options: .displayInline,
-				children: groupOfChildren)
+				children: groupOfElements)
 		}
 		
 		self.init(children: submenus)

@@ -41,6 +41,10 @@ protocol LibraryViewModel {
 	
 	func viewContainerIsSpecific() -> Bool
 	func bigTitle() -> String
+	func allowsSortOption(
+		_ sortOption: LibraryTVC.SortOption,
+		forItems items: [NSManagedObject]
+	) -> Bool
 	func updatedWithRefreshedData() -> Self
 }
 
@@ -187,17 +191,17 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	func countOrAllItemsCountIfNoneSelectedAndViewContainerIsSpecific(
-		selectedItemsCount: Int
-	) -> Int {
-		if selectedItemsCount == 0 {
+	func unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+		selectedIndexPaths: [IndexPath]
+	) -> [IndexPath] {
+		if selectedIndexPaths.isEmpty {
 			if viewContainerIsSpecific() {
-				return groups[0].items.count
+				return indexPathsForAllItems()
 			} else {
-				return 0
+				return []
 			}
 		} else {
-			return selectedItemsCount
+			return selectedIndexPaths
 		}
 	}
 	
@@ -206,7 +210,7 @@ extension LibraryViewModel {
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
 			if viewContainerIsSpecific() {
-				return indexPaths(forIndexOfGroup: 0)
+				return indexPathsForAllItems()
 			} else {
 				return []
 			}

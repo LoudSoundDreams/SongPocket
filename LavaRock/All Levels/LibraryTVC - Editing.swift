@@ -37,23 +37,39 @@ extension LibraryTVC {
 		}
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they'll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
-		// During WWDC 2021, I did a lab in UIKit where the Apple engineer said that this is the best practice for doing this.
+		// During WWDC 2021, I did a lab in UIKit where the Apple engineer said that this is the best practice for doing that.
 	}
 	
-	final func sortOptionsMenu() -> UIMenu {
-		let groupedChildren: [[UIAction]] = sortOptionsGrouped.map { sortOptionGroup in
-			let groupOfChildren = sortOptionGroup.map { sortOption in
-				UIAction(
+	final func makeSortOptionsMenu() -> UIMenu {
+		let groupedElements: [[UIMenuElement]] = sortOptionsGrouped.map { sortOptionGroup in
+			let groupOfChildren: [UIMenuElement] = sortOptionGroup.map { sortOption in
+				let action = UIAction(
 					title: sortOption.localizedName()
 				) { action in
 					self.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
 				}
+				
+				guard #available(iOS 15, *) else {
+					return action
+				}
+				return UIDeferredMenuElement.uncached({ useMenuElements in
+					let allowed: Bool = {
+						let viewModel = self.viewModel
+						let indexPathsToSort = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+							selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil)
+						let items = indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
+						return viewModel.allowsSortOption(sortOption, forItems: items)
+					}()
+					action.attributes = allowed ? [] : .disabled
+					useMenuElements([action])
+				})
 			}
 			return groupOfChildren
 		}
+		
 		return UIMenu(
 			presentsUpward: true,
-			groupedChildren: groupedChildren)
+			groupedElements: groupedElements)
 	}
 	
 	private func sortSelectedOrAllItems(sortOptionLocalizedName: String) {

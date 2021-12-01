@@ -104,32 +104,14 @@ extension SongsTVC {
 	}
 	
 	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let song = viewModel.itemNonNil(at: indexPath) as? Song else {
-			return UITableViewCell()
-		}
+		guard let songsViewModel = viewModel as? SongsViewModel
+		else { return UITableViewCell() }
 		
-		let mediaItem = song.mpMediaItem()
+		let song = songsViewModel.songNonNil(at: indexPath)
+		let mediaItem = song.mpMediaItem() // Can be `nil` if the user recently deleted the media item from their library
 		
-		// Title
-		let songTitle = mediaItem?.title
-		
-		guard let songsViewModel = viewModel as? SongsViewModel else {
-			return UITableViewCell()
-		}
-		
-		// Artist
-		let songArtist: String? = {
-			let album = songsViewModel.album(forSection: indexPath.section)
-			let albumArtist = album.albumArtist() // Can be nil
-			if
-				let songArtist = mediaItem?.artist,
-				songArtist != albumArtist
-			{
-				return songArtist
-			} else {
-				return nil
-			}
-		}()
+		let album = songsViewModel.album(forSection: indexPath.section)
+		let representativeItem = album.mpMediaItemCollection()?.representativeItem
 		
 		// "Now playing" indicator
 		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
@@ -137,12 +119,6 @@ extension SongsTVC {
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
-		
-		// Track number
-		let shouldShowDiscNumbers = songsViewModel.shouldShowDiscNumbers(forSection: indexPath.section)
-		let trackNumberString: String // Don't let this be nil.
-		= mediaItem?.trackNumberFormatted(includeDisc: shouldShowDiscNumbers)
-		?? MPMediaItem.placeholderTrackNumber
 		
 		guard var cell = tableView.dequeueReusableCell(
 			withIdentifier: "Song",
@@ -152,9 +128,8 @@ extension SongsTVC {
 		}
 		
 		cell.configureWith(
-			title: songTitle,
-			artist: songArtist,
-			trackNumberString: trackNumberString)
+			mediaItem: mediaItem,
+			albumRepresentative: representativeItem)
 		cell.applyNowPlayingIndicator(nowPlayingIndicator)
 		
 		return cell

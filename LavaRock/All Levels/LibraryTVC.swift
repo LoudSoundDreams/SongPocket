@@ -108,7 +108,7 @@ class LibraryTVC: UITableViewController {
 	// Controls
 	final lazy var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort,
-		menu: sortOptionsMenu())
+		menu: makeSortOptionsMenu())
 	final lazy var floatToTopButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.floatSelectedItemsToTopOfSection() }
 		let button = UIBarButtonItem(

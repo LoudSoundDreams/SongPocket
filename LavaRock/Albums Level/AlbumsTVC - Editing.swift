@@ -12,41 +12,32 @@ extension AlbumsTVC {
 	
 	final func makeOrganizeOrMoveMenu() -> UIMenu {
 		let organizeElement: UIMenuElement = {
-			if #available(iOS 15, *) {
-				// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
-				return UIDeferredMenuElement.uncached({ useMenuElements in
-					let organizeAction = self.makeOrganizeAction()
-					let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
-						selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
-					organizeAction.attributes = allowed ? [] : .disabled
-					
-					useMenuElements([organizeAction])
-				})
-			} else {
-				return makeOrganizeAction()
+			let organizeAction = UIAction(
+				title: LocalizedString.organizeByAlbumArtistEllipsis,
+				handler: { _ in self.startOrganizing() })
+			
+			guard #available(iOS 15, *) else {
+				return organizeAction
 			}
+			// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
+			return UIDeferredMenuElement.uncached({ useMenuElements in
+				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
+					selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
+				organizeAction.attributes = allowed ? [] : .disabled
+				useMenuElements([organizeAction])
+			})
 		}()
-		let moveElement = makeMoveAction()
+		
+		let moveElement = UIAction(
+			title: LocalizedString.moveToEllipsis,
+			handler: { _ in self.startMoving() })
+		
 		return UIMenu(
 			children: [
 				organizeElement,
 				moveElement,
 			].reversed()
 		)
-	}
-	
-	private func makeOrganizeAction() -> UIAction {
-		return UIAction(
-			title: LocalizedString.organizeByAlbumArtistEllipsis,
-			image: UIImage(systemName: "plus.rectangle.on.folder"),
-			handler: { _ in self.startOrganizing() })
-	}
-	
-	private func makeMoveAction() -> UIAction {
-		return UIAction(
-			title: LocalizedString.moveToEllipsis,
-			image: UIImage(systemName: "folder"),
-			handler: { _ in self.startMoving() })
 	}
 	
 	private func startOrganizing() {

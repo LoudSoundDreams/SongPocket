@@ -140,7 +140,7 @@ extension SongsTVC {
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
 			let selectedMediaItem = selectedSong.mpMediaItem()
 		{
-			let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
+			let selectedTitle = selectedMediaItem.title ?? MPMediaItem.unknownTitlePlaceholder
 			showExplanationForEnqueueActionIfNecessary(
 				titleOfSelectedSong: selectedTitle,
 				numberOfSongsEnqueued: chosenMediaItems.count)
@@ -166,7 +166,7 @@ extension SongsTVC {
 			sharedPlayer?.prepareToPlay()
 		}
 		
-		let selectedTitle = selectedMediaItem.title ?? MPMediaItem.placeholderTitle
+		let selectedTitle = selectedMediaItem.title ?? MPMediaItem.unknownTitlePlaceholder
 		showExplanationForEnqueueActionIfNecessary(
 			titleOfSelectedSong: selectedTitle,
 			numberOfSongsEnqueued: 1)
