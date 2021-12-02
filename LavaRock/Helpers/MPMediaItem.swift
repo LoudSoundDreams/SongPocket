@@ -125,7 +125,7 @@ extension MPMediaItem {
 		= (albumTrackNumber == Self.unknownTrackNumber)
 		? ""
 		: String(albumTrackNumber)
-		return "\(discNumberString)-\(trackNumberString)" // That's a hyphen.
+		return "\(discNumberString)·\(trackNumberString)" // That’s an interpunct.
 	}
 	
 	final func trackNumberFormatted() -> String {

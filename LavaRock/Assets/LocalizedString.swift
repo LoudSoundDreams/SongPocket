@@ -135,7 +135,7 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let didEnqueueSongsAlertMessage = NSLocalizedString(
 		"[alert message] did_enqueue_songs",
-		value: "You can edit the queue in the built-in Music app.",
+		value: "Open the Music app to edit the queue.",
 		comment: "Body text of the alert that appears after the user adds songs to the queue.")
 	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button")
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")

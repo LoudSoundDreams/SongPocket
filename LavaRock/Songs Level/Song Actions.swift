@@ -27,32 +27,28 @@ extension SongsTVC {
 			tableView.deselectAllRows(animated: true)
 		}
 		
-		// Create the actions.
 		let playRestOfAlbumAction = UIAlertAction(
 			title: LocalizedString.playRestOfAlbum,
-			style: .default,
-			handler: { _ in
-				self.playAlbumStartingAtSelectedSong()
-				deselectSelectedSong()
-			}
-		)
+			style: .default
+		) { _ in
+			self.playAlbumStartingAtSelectedSong()
+			deselectSelectedSong()
+		}
 //		playAlbumStartingAtSelectedSongAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
 		let enqueueRestOfAlbumAction = UIAlertAction(
 			title: LocalizedString.queueRestOfAlbum,
-			style: .default,
-			handler: { _ in
-				self.enqueueAlbumStartingAtSelectedSong()
-				deselectSelectedSong()
-			}
-		)
+			style: .default
+		) { _ in
+			self.enqueueAlbumStartingAtSelectedSong()
+			deselectSelectedSong()
+		}
 		let enqueueSongAction = UIAlertAction(
 			title: LocalizedString.queueSong,
-			style: .default,
-			handler: { _ in
-				self.enqueueSelectedSong()
-				deselectSelectedSong()
-			}
-		)
+			style: .default
+		) { _ in
+			self.enqueueSelectedSong()
+			deselectSelectedSong()
+		}
 		let cancelAction = UIAlertAction.cancel { _ in
 			deselectSelectedSong()
 		}
@@ -66,16 +62,18 @@ extension SongsTVC {
 			enqueueRestOfAlbumAction.isEnabled = false
 		}
 		
-		// Create and present the action sheet.
 		let actionSheet = UIAlertController(
 			title: nil,
 			message: nil,
 			preferredStyle: .actionSheet)
+		
 		actionSheet.addAction(playRestOfAlbumAction)
 		actionSheet.addAction(enqueueRestOfAlbumAction)
 		actionSheet.addAction(enqueueSongAction)
 		actionSheet.addAction(cancelAction)
+		
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
+		
 		present(actionSheet, animated: true)
 	}
 	
@@ -207,20 +205,28 @@ extension SongsTVC {
 			preferredStyle: .alert)
 		let dontShowAgainAction = UIAlertAction(
 			title: LocalizedString.dontShowAgain,
-			style: .default,
-			handler: { _ in
-				defaults.set(
-					false,
-					forKey: defaultsKey)
-			}
-		)
+			style: .default
+		) { _ in
+			defaults.set(
+				false,
+				forKey: defaultsKey)
+		}
+		let openMusicAction = UIAlertAction(
+			title: LocalizedString.openMusic,
+			style: .default
+		) { _ in
+			URL.music?.open()
+		}
 		let okAction = UIAlertAction(
 			title: LocalizedString.ok,
 			style: .default,
 			handler: nil)
+		
 		alert.addAction(dontShowAgainAction)
+		alert.addAction(openMusicAction)
 		alert.addAction(okAction)
 		alert.preferredAction = okAction
+		
 		present(alert, animated: true)
 	}
 	
