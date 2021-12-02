@@ -95,7 +95,10 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let combinedSectionDefaultTitle = NSLocalizedString("Combined Section", comment: "Alert title")
 	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title") // MC2DO: Delete
 	
-	static let newCollectionButtonTitle = NSLocalizedString("New Collection", comment: "Button title") // MC2DO: Edit
+	static let newCollectionButtonTitle = NSLocalizedString(
+		"New Collection [button title]",
+		value: "New Collection",
+		comment: "Button title") // MC2DO: Edit
 	static let newSectionAlertTitle = NSLocalizedString(
 		"New Section [alert title]",
 		value: "New Section",
@@ -119,7 +122,6 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let organizeByAlbumArtistEllipsis = NSLocalizedString("Organize by Album Artist…", comment: "Menu option")
-//	static let organizeEllipsis = NSLocalizedString("Organize…", comment: "Menu option")
 	static let moveToEllipsis = NSLocalizedString("Move To…", comment: "Menu option")
 	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
 	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Sort option")
