@@ -58,14 +58,14 @@ struct AccentColor: Equatable { // You can't turn this into an enum, because raw
 	
 	// MARK: - Setting
 	
-	func set(in window: UIWindow) {
-		window.tintColor = uiColor
-	}
-	
 	func saveAsPreference() {
 		Self.defaults.set(
 			valueCase.rawValue,
 			forKey: Self.defaultsKey)
+	}
+	
+	func set(in window: UIWindow) {
+		window.tintColor = uiColor
 	}
 	
 	// MARK: - PRIVATE

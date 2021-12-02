@@ -10,6 +10,7 @@ import UIKit
 extension OptionsTVC {
 	
 	private enum Section: Int, CaseIterable {
+		case appearance
 		case accentColor
 		case tipJar
 	}
@@ -34,6 +35,8 @@ extension OptionsTVC {
 			return 0
 		}
 		switch sectionCase {
+		case .appearance:
+			return 1
 		case .accentColor:
 			return AccentColor.all.count
 		case .tipJar:
@@ -51,6 +54,8 @@ extension OptionsTVC {
 			return nil
 		}
 		switch sectionCase {
+		case .appearance:
+			return LocalizedString.appearance
 		case .accentColor:
 			return LocalizedString.accentColor
 		case .tipJar:
@@ -66,6 +71,8 @@ extension OptionsTVC {
 			return nil
 		}
 		switch sectionCase {
+		case .appearance:
+			return nil
 		case .accentColor:
 			return nil
 		case .tipJar:
@@ -83,6 +90,10 @@ extension OptionsTVC {
 			return UITableViewCell()
 		}
 		switch sectionCase {
+		case .appearance:
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Appearance",
+				for: indexPath) as? AppearanceCell ?? UITableViewCell()
 		case .accentColor:
 			return accentColorCell(forRowAt: indexPath)
 		case .tipJar:
@@ -94,16 +105,39 @@ extension OptionsTVC {
 	
 	final override func tableView(
 		_ tableView: UITableView,
+		willSelectRowAt indexPath: IndexPath
+	) -> IndexPath? {
+		guard let sectionCase = Section(rawValue: indexPath.section) else {
+			return nil
+		}
+		switch sectionCase {
+		case .appearance:
+			return nil
+		case .accentColor:
+			return indexPath
+		case .tipJar:
+			return indexPath
+		}
+	}
+	
+	final override func tableView(
+		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
+		case .appearance:
+			tableView.deselectRow(at: indexPath, animated: true)
 		case .accentColor:
 			didSelectAccentColorRow(at: indexPath)
 		case .tipJar:
 			didSelectTipJarRow(at: indexPath)
 		}
 	}
+	
+	// MARK: - Appearance Section
+	
+	
 	
 	// MARK: - Accent Color Section
 	
