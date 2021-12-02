@@ -1,21 +1,18 @@
 /* Class = "UITabBarItem"; title = "Collections"; ObjectID = "48j-Zp-q5X"; */
 "48j-Zp-q5X.title" = "合集";
 
-/* Class = "UILabel"; text = "Loading…"; ObjectID = "67e-Ol-SlR"; */
-"67e-Ol-SlR.text" = "載入中⋯";
+/* Class = "UILabel"; text = "New Collection"; ObjectID = "CrC-id-Dob"; */
+"CrC-id-Dob.text" = "新增合集";
 
 /* Class = "UIBarButtonItem"; title = "Options"; ObjectID = "mpR-tt-C6X"; */
 "mpR-tt-C6X.title" = "選項";
 
-/* Class = "UINavigationItem"; title = "Options"; ObjectID = "oU6-xG-PqK"; */
-"oU6-xG-PqK.title" = "選項";
-
 /* Class = "UILabel"; text = "No Songs"; ObjectID = "r4Y-7C-QjD"; */
 "r4Y-7C-QjD.text" = "沒有歌曲";
 
-/* Class = "UILabel"; text = "Confirming…"; ObjectID = "RvL-wm-fb7"; */
-"RvL-wm-fb7.text" = "確認中⋯";
-
 /* Class = "UILabel"; text = "No Albums"; ObjectID = "waM-mg-RNh"; */
 "waM-mg-RNh.text" = "沒有專輯";
+
+/* Class = "UILabel"; text = "Move Here"; ObjectID = "YE2-yb-FIr"; */
+"YE2-yb-FIr.text" = "搬移至此";
 

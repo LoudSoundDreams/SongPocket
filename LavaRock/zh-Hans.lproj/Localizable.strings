@@ -64,6 +64,9 @@
 /* Alert title */
 "New Collection [alert title]" = "新建合集";
 
+/* Button title */
+"New Collection [button title]" = "新建合集";
+
 /* Default title for a collection if you create one and don’t provide a title. */
 "New Collection [default title for collection]" = "新合集";
 
@@ -142,7 +145,7 @@
 /* Section header */
 "Tip Jar" = "赞助Songpocket";
 
-/* The word for the name of a section, album, or song. Also the name of a sort option. */
+/* The word for the name of a collection, album, or song. Also the name of a sort option. */
 "Title" = "名称";
 
 /* Sort option */

@@ -33,8 +33,8 @@
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Collections - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Collections - Views.swift */; };
 		073E6A9225574B99003C84A5 /* NowPlayingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */; };
-		073FB55527588B03000FAF5F /* Options.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55427588B03000FAF5F /* Options.storyboard */; };
-		073FB55727588B23000FAF5F /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55627588B23000FAF5F /* Player.storyboard */; };
+		073FB55927588B81000FAF5F /* Options.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* Options.storyboard */; };
+		073FB56027588BC5000FAF5F /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB56227588BC5000FAF5F /* Player.storyboard */; };
 		0750C01526D2E27700B3E899 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0750C01426D2E27700B3E899 /* UITableViewCell.swift */; };
 		0750C01726D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0750C01626D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift */; };
 		0751DE3926C5C6E800AA14DA /* protocol LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */; };
@@ -154,8 +154,12 @@
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Collections - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections - Views.swift"; sourceTree = "<group>"; };
 		073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingIndicator.swift; sourceTree = "<group>"; };
-		073FB55427588B03000FAF5F /* Options.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Options.storyboard; sourceTree = "<group>"; };
-		073FB55627588B23000FAF5F /* Player.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Player.storyboard; sourceTree = "<group>"; };
+		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Options.storyboard; sourceTree = "<group>"; };
+		073FB55D27588B85000FAF5F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Options.strings"; sourceTree = "<group>"; };
+		073FB55F27588BB5000FAF5F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Options.strings"; sourceTree = "<group>"; };
+		073FB56127588BC5000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Player.storyboard; sourceTree = "<group>"; };
+		073FB56427588BC9000FAF5F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Player.strings"; sourceTree = "<group>"; };
+		073FB56627588BCB000FAF5F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Player.strings"; sourceTree = "<group>"; };
 		0750C01426D2E27700B3E899 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		0750C01626D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsViewModel + NowPlayingDetermining.swift"; sourceTree = "<group>"; };
 		0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryViewModel.swift"; sourceTree = "<group>"; };
@@ -267,7 +271,7 @@
 		0706ABDE24D946870090EB21 /* Options */ = {
 			isa = PBXGroup;
 			children = (
-				073FB55427588B03000FAF5F /* Options.storyboard */,
+				073FB55B27588B81000FAF5F /* Options.storyboard */,
 				073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */,
 				0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */,
 				07FD6E112599246700826447 /* OptionsTVC + PurchaseManagerTipDelegate.swift */,
@@ -322,6 +326,15 @@
 				0781F1F02599181800781CF8 /* StoreKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		073FB55827588B76000FAF5F /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				073FB56227588BC5000FAF5F /* Player.storyboard */,
+				07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		0748AEAF24F394F9000FBC61 /* MusicLibraryManager */ = {
@@ -386,8 +399,7 @@
 				072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */,
 				07DC1B2124F33DF400AAEEDB /* Albums Level */,
 				070E194224F340C500B21307 /* Songs Level */,
-				073FB55627588B23000FAF5F /* Player.storyboard */,
-				07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */,
+				073FB55827588B76000FAF5F /* Player */,
 			);
 			path = LavaRock;
 			sourceTree = "<group>";
@@ -623,12 +635,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				073FB55527588B03000FAF5F /* Options.storyboard in Resources */,
+				073FB55927588B81000FAF5F /* Options.storyboard in Resources */,
 				075218BA257C52390077AE9B /* Localizable.strings in Resources */,
 				075218AD257C4C0C0077AE9B /* Main.storyboard in Resources */,
 				075218B7257C52390077AE9B /* InfoPlist.strings in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
-				073FB55727588B23000FAF5F /* Player.storyboard in Resources */,
+				073FB56027588BC5000FAF5F /* Player.storyboard in Resources */,
 				0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */,
 				07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */,
 			);
@@ -776,6 +788,26 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		073FB55B27588B81000FAF5F /* Options.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				073FB55A27588B81000FAF5F /* Base */,
+				073FB55D27588B85000FAF5F /* zh-Hans */,
+				073FB55F27588BB5000FAF5F /* zh-Hant */,
+			);
+			name = Options.storyboard;
+			sourceTree = "<group>";
+		};
+		073FB56227588BC5000FAF5F /* Player.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				073FB56127588BC5000FAF5F /* Base */,
+				073FB56427588BC9000FAF5F /* zh-Hans */,
+				073FB56627588BCB000FAF5F /* zh-Hant */,
+			);
+			name = Player.storyboard;
+			sourceTree = "<group>";
+		};
 		075218AF257C4C0C0077AE9B /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

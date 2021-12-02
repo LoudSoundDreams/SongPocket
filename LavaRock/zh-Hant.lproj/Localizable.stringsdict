@@ -44,5 +44,42 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CHOOSE_A_SECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
 	</dict>
+	<key>plural - organize_albums_by_album_artist</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Organize %#@NUMBER_ALBUMS@ by album artist?</string>
+		<key>NUMBER_ALBUMS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>%lld albums</string>
+		</dict>
+	</dict>
+	<key>plural - organize_albums_into_collections</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Organize %#@NUMBER_ALBUMS@ into %#@NUMBER_NEW_COLLECTIONS@?</string>
+		<key>NUMBER_ALBUMS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>%lld albums</string>
+		</dict>
+		<key>NUMBER_NEW_COLLECTIONS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>%lld new collections</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
