@@ -10,10 +10,13 @@ import UIKit
 extension OptionsTVC {
 	
 	private enum Section: Int, CaseIterable {
-		case appearance
-		case accentColor
+		case theme
 		case tipJar
 	}
+	
+	static let indexPathsOfAppearanceRows = [
+		IndexPath(row: 0, section: Section.theme.rawValue),
+	]
 	
 	final func refreshTipJarRows() {
 		tableView.reloadSections([Section.tipJar.rawValue], with: .fade)
@@ -35,10 +38,8 @@ extension OptionsTVC {
 			return 0
 		}
 		switch sectionCase {
-		case .appearance:
-			return 1
-		case .accentColor:
-			return AccentColor.all.count
+		case .theme:
+			return Self.indexPathsOfAppearanceRows.count + AccentColor.all.count
 		case .tipJar:
 			return 1
 		}
@@ -54,10 +55,8 @@ extension OptionsTVC {
 			return nil
 		}
 		switch sectionCase {
-		case .appearance:
-			return LocalizedString.appearance
-		case .accentColor:
-			return LocalizedString.accentColor
+		case .theme:
+			return LocalizedString.theme
 		case .tipJar:
 			return LocalizedString.tipJar
 		}
@@ -71,9 +70,7 @@ extension OptionsTVC {
 			return nil
 		}
 		switch sectionCase {
-		case .appearance:
-			return nil
-		case .accentColor:
+		case .theme:
 			return nil
 		case .tipJar:
 			return LocalizedString.tipJarFooter
@@ -90,12 +87,14 @@ extension OptionsTVC {
 			return UITableViewCell()
 		}
 		switch sectionCase {
-		case .appearance:
-			return tableView.dequeueReusableCell(
-				withIdentifier: "Appearance",
-				for: indexPath) as? AppearanceCell ?? UITableViewCell()
-		case .accentColor:
-			return accentColorCell(forRowAt: indexPath)
+		case .theme:
+			if Self.indexPathsOfAppearanceRows.contains(indexPath) {
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Appearance",
+					for: indexPath) as? AppearanceCell ?? UITableViewCell()
+			} else {
+				return accentColorCell(forRowAt: indexPath)
+			}
 		case .tipJar:
 			return tipJarCell(forRowAt: indexPath)
 		}
@@ -111,10 +110,12 @@ extension OptionsTVC {
 			return nil
 		}
 		switch sectionCase {
-		case .appearance:
-			return nil
-		case .accentColor:
-			return indexPath
+		case .theme:
+			if Self.indexPathsOfAppearanceRows.contains(indexPath) {
+				return nil
+			} else {
+				return indexPath
+			}
 		case .tipJar:
 			return indexPath
 		}
@@ -126,25 +127,21 @@ extension OptionsTVC {
 	) {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
-		case .appearance:
-			tableView.deselectRow(at: indexPath, animated: true)
-		case .accentColor:
-			didSelectAccentColorRow(at: indexPath)
+		case .theme:
+			if Self.indexPathsOfAppearanceRows.contains(indexPath) {
+				tableView.deselectRow(at: indexPath, animated: true)
+			} else {
+				didSelectAccentColorRow(at: indexPath)
+			}
 		case .tipJar:
 			didSelectTipJarRow(at: indexPath)
 		}
 	}
 	
-	// MARK: - Appearance Section
-	
-	
-	
 	// MARK: - Accent Color Section
 	
-	// MARK: Cells
-	
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let indexOfAccentColor = indexPath.row
+		let indexOfAccentColor = indexPath.row - Self.indexPathsOfAppearanceRows.count
 		let accentColor = AccentColor.all[indexOfAccentColor]
 		
 		guard let cell = tableView.dequeueReusableCell(
@@ -157,11 +154,9 @@ extension OptionsTVC {
 		return cell
 	}
 	
-	// MARK: Selecting
-	
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
 		// Set the new accent color.
-		let indexOfAccentColor = indexPath.row
+		let indexOfAccentColor = indexPath.row - Self.indexPathsOfAppearanceRows.count
 		let selectedAccentColor = AccentColor.all[indexOfAccentColor]
 		selectedAccentColor.saveAsPreference() // Do this before calling `AccentColor.set`, so that instances that override `tintColorDidChange` can get the new value for `AccentColor.savedPreference`.
 		if let window = view.window {
@@ -173,8 +168,6 @@ extension OptionsTVC {
 	}
 	
 	// MARK: - Tip Jar Section
-	
-	// MARK: Cells
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch PurchaseManager.shared.tipStatus {
@@ -198,8 +191,6 @@ extension OptionsTVC {
 			return tableView.dequeueReusableCell(withIdentifier: "Tip Confirming", for: indexPath)
 		}
 	}
-	
-	// MARK: Selecting
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
 		switch PurchaseManager.shared.tipStatus {
