@@ -126,25 +126,28 @@ extension AlbumsViewModel {
 		return albumsToOrganize.contains { !$0.isInCollectionMatchingAlbumArtist() }
 	}
 	
-	func makeCollectionsViewModel_inNewChildContext(
-		organizingIntoNewCollections albumsToOrganize: [Album]
-	) -> CollectionsViewModel {
-		let context = NSManagedObjectContext.withParent(context) // Shadowing so that we don't accidentally refer to `self.context`.
-		
+	func idsOfUnmovedAlbumsAfterOrganizingSomeIntoNewCollections(
+		_ albumsToMaybeOrganize: [Album],
+		via context: NSManagedObjectContext
+	) -> Set<NSManagedObjectID> {
 		// If an `Album` is already in a `Collection` with a title that matches its album artist, then leave it there.
 		// Otherwise, move the `Album` to the first `Collection` with a matching title.
 		// If there is no matching `Collection`, then create one.
-		// New `Collection`s should go at the top, in the order of the first `Album` we're moving with each album artist.
+		// Put new `Collection`s at the top, in the order that the album artists first appear among the `Album`s we're moving.
+		var idsOfUnmovedAlbums: Set<NSManagedObjectID> = []
 		var newCollectionsByTitle: [String: Collection] = [:]
 		let existingCollections = Collection.allFetched(via: context)
 		let existingCollectionsByTitle = Dictionary(grouping: existingCollections) { $0.title! }
-		albumsToOrganize.forEach { album in
+		albumsToMaybeOrganize.forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
 			let titleOfDestinationCollection
 			= album.albumArtist() ?? Album.unknownAlbumArtistPlaceholder
 			
-			guard album.container!.title != titleOfDestinationCollection else { return }
+			guard album.container!.title != titleOfDestinationCollection else {
+				idsOfUnmovedAlbums.insert(album.objectID)
+				return
+			}
 			
 			// If we've created a matching `Collection` …
 			if let matchingNewCollection = newCollectionsByTitle[titleOfDestinationCollection] {
@@ -175,9 +178,7 @@ extension AlbumsViewModel {
 			}
 		}
 		
-		return CollectionsViewModel(
-			context: context,
-			numberOfPrerowsPerSection: 0)
+		return idsOfUnmovedAlbums
 	}
 	
 	// MARK: - “Move Albums” Sheet

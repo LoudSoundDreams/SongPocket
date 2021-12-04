@@ -45,6 +45,7 @@ final class AlbumsTVC:
 	
 	// State
 	var indexOfOpenedCollection: Int? = nil
+	var idsOfAlbumsToKeepSelected: Set<NSManagedObjectID> = []
 	
 	// MARK: “Organize Albums” Sheet
 	

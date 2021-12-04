@@ -34,13 +34,13 @@ final class AlbumOrganizerClipboard {
 	init(
 		idsOfOrganizedAlbums: [NSManagedObjectID],
 		idsOfSourceCollections: Set<NSManagedObjectID>,
-		context: NSManagedObjectContext,
+		contextPreviewingChanges: NSManagedObjectContext,
 		delegate: AlbumOrganizerDelegate
 	) {
 		self.idsOfOrganizedAlbums = idsOfOrganizedAlbums
 		self.idsOfSourceCollections = idsOfSourceCollections
 		let organizedAlbums = idsOfOrganizedAlbums.map {
-			context.object(with: $0) as! Album
+			contextPreviewingChanges.object(with: $0) as! Album
 		}
 		idsOfDestinationCollections = Set(organizedAlbums.map { $0.container!.objectID })
 		self.delegate = delegate

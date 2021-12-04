@@ -56,17 +56,29 @@ extension AlbumsTVC {
 			viewModel.itemNonNil(at: $0) as! Album
 		}
 		
-		// Preview the data changes in a child managed object context, and make the "organize albums" sheet show them.
-		collectionsTVC.viewModel = albumsViewModel.makeCollectionsViewModel_inNewChildContext(
-			organizingIntoNewCollections: albumsToOrganize)
+		// Create a child managed object context to begin the changes in.
+		let childContext = NSManagedObjectContext.withParent(albumsViewModel.context)
+		
+		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
+		idsOfAlbumsToKeepSelected
+		= albumsViewModel.idsOfUnmovedAlbumsAfterOrganizingSomeIntoNewCollections(
+			albumsToOrganize,
+			via: childContext)
+		
+		// Make the "organize albums" sheet show the child context.
+		collectionsTVC.viewModel = CollectionsViewModel(
+			context: childContext,
+			numberOfPrerowsPerSection: 0)
 		
 		// Provide the extra data that the "organize albums" sheet needs.
-		let idsOfOrganizedAlbums = albumsToOrganize.map { $0.objectID }
+		let idsOfOrganizedAlbums = albumsToOrganize
+			.map { $0.objectID }
+			.filter { !idsOfAlbumsToKeepSelected.contains($0) }
 		let idsOfSourceCollections = Set(albumsToOrganize.map { $0.container!.objectID })
 		collectionsTVC.albumOrganizerClipboard = AlbumOrganizerClipboard(
 			idsOfOrganizedAlbums: idsOfOrganizedAlbums,
 			idsOfSourceCollections: idsOfSourceCollections,
-			context: collectionsTVC.viewModel.context,
+			contextPreviewingChanges: childContext,
 			delegate: self)
 		
 		present(collectionsNC, animated: true)

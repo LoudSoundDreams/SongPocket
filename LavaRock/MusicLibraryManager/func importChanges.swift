@@ -41,7 +41,7 @@ extension MusicLibraryManager {
 		// Find out which Songs we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the MPMediaItems that we don't have Songs for. We'll create new managed objects for them.
 		var potentiallyOutdatedSongsAndFreshMediaItems: [(Song, MPMediaItem)] = [] // We'll sort these eventually.
-		var songsToDelete = Set<Song>()
+		var songsToDelete: Set<Song> = []
 		
 		let tuplesForMediaItems = queriedMediaItems.map { mediaItem in
 			(Int64(bitPattern: mediaItem.persistentID),
