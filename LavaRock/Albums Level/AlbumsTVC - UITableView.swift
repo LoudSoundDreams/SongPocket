@@ -136,12 +136,8 @@ extension AlbumsTVC {
 					return .modal
 				}
 			case .movingAlbums(let clipboard):
-				if FeatureFlag.multicollection {
-					if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
-						return .modalTinted
-					} else {
-						return .modal
-					}
+				if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
+					return .modalTinted
 				} else {
 					return .modal
 				}
