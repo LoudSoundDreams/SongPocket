@@ -68,7 +68,7 @@ final class AccentColorCell: UITableViewCell {
 	
 	private func refreshSelectedBackgroundView() {
 		let colorView = UIView()
-		colorView.backgroundColor = accentColor?.uiColor.translucentVibrant()
+		colorView.backgroundColor = accentColor?.uiColor.translucent()
 		selectedBackgroundView = colorView
 	}
 	

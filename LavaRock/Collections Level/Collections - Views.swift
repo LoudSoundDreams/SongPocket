@@ -96,11 +96,6 @@ final class CreateCollectionCell: LRTableCell {
 	}
 	
 	private func configure() {
-//		var configuration = UIListContentConfiguration.cell()
-//		configuration.text = LocalizedString.newCollectionButtonTitle
-//		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
-//		contentConfiguration = configuration
-		
 		newCollectionLabel.textColor = .tintColor_()
 	}
 	
@@ -124,6 +119,26 @@ final class CollectionCell: LRTableCell {
 		case modalDisabled
 	}
 	
+	/*
+	private static let defaultBackgroundView: UIView = {
+		let view = UIView()
+		view.backgroundColor = .systemBackground
+//		view.alpha = 0.01
+		var float1: CGFloat = 0
+		var float2: CGFloat = 0
+		var float3: CGFloat = 0
+		var float4: CGFloat = 0
+		if view.backgroundColor!.getHue(&float1, saturation: &float2, brightness: &float3, alpha: &float4) {
+			print(float1)
+			print(float2)
+			print(float3)
+			print(float4)
+		}
+		print("defaultBackgroundView has alpha: \(view.alpha)")
+		return view
+	}()
+	*/
+	
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
 	
@@ -140,13 +155,40 @@ final class CollectionCell: LRTableCell {
 		switch mode {
 		case .normal:
 			accessibilityCustomActions = [renameFocusedCollectionAction]
-			backgroundColor = nil
+			/*
+			backgroundView = Self.defaultBackgroundView
+			backgroundView?.alpha = 0.01
+			var float1: CGFloat = 0
+			var float2: CGFloat = 0
+			var float3: CGFloat = 0
+			var float4: CGFloat = 0
+			print("")
+			if backgroundView!.backgroundColor!.getHue(&float1, saturation: &float2, brightness: &float3, alpha: &float4) {
+				print(float1)
+				print(float2)
+				print(float3)
+				print(float4)
+			}
+			print("_defaultBackgroundView has alpha: \(backgroundView?.alpha)")
+			if
+				let contentBackgroundColor = contentView.backgroundColor,
+				contentBackgroundColor.getHue(&float1, saturation: &float2, brightness: &float3, alpha: &float4)
+			{
+				print(float1)
+				print(float2)
+				print(float3)
+				print(float4)
+			}
+			*/
+			backgroundView = nil // Use this to reset `backgroundColor`, not `backgroundColor = nil`, because that makes the cell transparent.
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
 		case .modal:
 			accessibilityCustomActions = []
-			backgroundColor = nil
+//			backgroundView = Self.defaultBackgroundView
+//			backgroundView?.alpha = 0.01
+			backgroundView = nil
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
@@ -160,7 +202,9 @@ final class CollectionCell: LRTableCell {
 			
 		case .modalDisabled:
 			accessibilityCustomActions = []
-			backgroundColor = nil
+//			backgroundView = Self.defaultBackgroundView
+//			backgroundView?.alpha = 0.01
+			backgroundView = nil
 			
 			titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
 			disableWithAccessibilityTrait()

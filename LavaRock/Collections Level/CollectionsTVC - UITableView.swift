@@ -108,12 +108,10 @@ extension CollectionsTVC {
 			case .organizingAlbums(let clipboard):
 				if clipboard.idsOfSourceCollections.contains(collection.objectID) {
 					return .modalDisabled
+				} else if clipboard.idsOfDestinationCollections.contains(collection.objectID) {
+					return .modalTinted
 				} else {
-					if clipboard.idsOfDestinationCollections.contains(collection.objectID) {
-						return .modalTinted
-					} else {
-						return .modal
-					}
+					return .modal
 				}
 			case .movingAlbums(let clipboard):
 				if FeatureFlag.multicollection {

@@ -19,14 +19,6 @@ final class MoveHereCell: LRTableCell {
 	}
 	
 	private func configure() {
-//		var configuration = UIListContentConfiguration.cell()
-//		configuration.text = LocalizedString.moveHere
-//		configuration.textProperties.font = .preferredFont(
-//			forTextStyle: .headline,
-//			compatibleWith: traitCollection)
-//		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
-//		contentConfiguration = configuration
-		
 		moveHereLabel.textColor = .tintColor_()
 	}
 	
@@ -93,11 +85,11 @@ final class AlbumCell: LRTableCell {
 		
 		switch mode {
 		case .normal:
-			backgroundColor = nil
+			backgroundView = nil
 			accessoryType = .disclosureIndicator
 			enableWithAccessibilityTrait()
 		case .modal:
-			backgroundColor = nil
+			backgroundView = nil
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		case .modalTinted:
