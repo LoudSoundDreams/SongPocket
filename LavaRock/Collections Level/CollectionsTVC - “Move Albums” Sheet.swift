@@ -47,9 +47,6 @@ extension CollectionsTVC {
 				at: .none,
 				animated: true)
 		} completion: { _ in
-//			self.setViewModelAndMoveRows(
-//				newViewModel,
-//				with: .fade)
 			self.setViewModelAndMoveRows(newViewModel)
 			completion?()
 		}
@@ -76,9 +73,6 @@ extension CollectionsTVC {
 		clipboard.didAlreadyCreate = false
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
-//		setViewModelAndMoveRows(
-//			newViewModel,
-//			with: .fade)
 		setViewModelAndMoveRows(newViewModel)
 	}
 	
@@ -96,7 +90,7 @@ extension CollectionsTVC {
 				tableView.reloadRows(at: [indexPath], with: .fade)
 			}
 		} completion: { _ in
-			self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+			self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			self.performSegue(withIdentifier: "Open Collection", sender: self)
 		}
 	}
