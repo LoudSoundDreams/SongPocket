@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MoveHereCell: UITableViewCell {
+final class MoveHereCell: LRTableCell {
 	@IBOutlet private var moveHereLabel: UILabel!
 	
 	final override func awakeFromNib() {
@@ -27,7 +27,7 @@ final class MoveHereCell: UITableViewCell {
 //		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
 //		contentConfiguration = configuration
 		
-		moveHereLabel.textColor = .tintColor(ifiOS14: AccentColor.savedPreference())
+		moveHereLabel.textColor = .tintColor_()
 	}
 	
 	final override func tintColorDidChange() {
@@ -40,7 +40,7 @@ final class MoveHereCell: UITableViewCell {
 	}
 }
 
-final class AlbumCell: UITableViewCell {
+final class AlbumCell: LRTableCell {
 	enum Mode {
 		case normal
 		case modal
@@ -101,7 +101,7 @@ final class AlbumCell: UITableViewCell {
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		case .modalTinted:
-			backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
+			backgroundColor = .tintColor_().translucentFaint()
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		}

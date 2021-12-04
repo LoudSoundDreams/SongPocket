@@ -62,7 +62,7 @@ final class AlbumInfoCell: UITableViewCell {
 	}
 }
 
-final class SongCell: UITableViewCell {
+final class SongCell: LRTableCell {
 	@IBOutlet private var textStackView: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var artistLabel: UILabel!

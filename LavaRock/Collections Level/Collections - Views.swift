@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class AllowAccessCell: UITableViewCell {
+final class AllowAccessCell: LRTableCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -61,7 +61,7 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class OpenMusicCell: UITableViewCell {
+final class OpenMusicCell: LRTableCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -84,7 +84,7 @@ extension OpenMusicCell: ButtonCell {
 	static let buttonText = LocalizedString.openMusic
 }
 
-final class CreateCollectionCell: UITableViewCell {
+final class CreateCollectionCell: LRTableCell {
 	@IBOutlet private var newCollectionLabel: UILabel!
 	
 	final override func awakeFromNib() {
@@ -101,7 +101,7 @@ final class CreateCollectionCell: UITableViewCell {
 //		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
 //		contentConfiguration = configuration
 		
-		newCollectionLabel.textColor = .tintColor(ifiOS14: AccentColor.savedPreference())
+		newCollectionLabel.textColor = .tintColor_()
 	}
 	
 	final override func tintColorDidChange() {
@@ -114,7 +114,7 @@ final class CreateCollectionCell: UITableViewCell {
 	}
 }
 
-final class CollectionCell: UITableViewCell {
+final class CollectionCell: LRTableCell {
 	enum Mode {
 		case normal
 		case modal
@@ -152,7 +152,7 @@ final class CollectionCell: UITableViewCell {
 			enableWithAccessibilityTrait()
 		case .modalTinted:
 			accessibilityCustomActions = []
-			backgroundColor = .tintColorTranslucent(ifiOS14: AccentColor.savedPreference())
+			backgroundColor = .tintColor_().translucentFaint()
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()

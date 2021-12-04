@@ -89,6 +89,14 @@ final class AccentColorCell: UITableViewCell {
 		} else {
 			accessoryType = .none
 		}
+		
+		refreshSelectedBackgroundView()
+	}
+	
+	private func refreshSelectedBackgroundView() {
+		let colorView = UIView()
+		colorView.backgroundColor = accentColor?.uiColor.translucentVibrant()
+		selectedBackgroundView = colorView
 	}
 	
 	final override func tintColorDidChange() {
@@ -96,10 +104,18 @@ final class AccentColorCell: UITableViewCell {
 		
 		configure()
 	}
+	
+	final override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		
+		if previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+			refreshSelectedBackgroundView()
+		}
+	}
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReloadCell: UITableViewCell {
+final class TipReloadCell: LRTableCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -119,7 +135,7 @@ extension TipReloadCell: ButtonCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReadyCell: UITableViewCell {
+final class TipReadyCell: LRTableCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -139,7 +155,7 @@ final class TipReadyCell: UITableViewCell {
 		
 		var configuration = UIListContentConfiguration.valueCell()
 		configuration.text = tipProduct.localizedTitle
-		configuration.textProperties.color = .tintColor(ifiOS14: AccentColor.savedPreference())
+		configuration.textProperties.color = .tintColor_()
 		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
 		contentConfiguration = configuration
 	}
