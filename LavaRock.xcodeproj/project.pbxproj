@@ -12,6 +12,7 @@
 		0703ED2524E8D0DA002EF1B4 /* func importChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */; };
 		0706ABE124D947850090EB21 /* AlbumMoverClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */; };
 		0708201B275B49D000F48D13 /* LRTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708201A275B49D000F48D13 /* LRTableCell.swift */; };
+		0708201D275BEE1C00F48D13 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708201C275BEE1C00F48D13 /* Appearance.swift */; };
 		070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */; };
 		07140605259D6958003CA92C /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07140604259D6958003CA92C /* UserDefaults.swift */; };
 		071701FF250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */; };
@@ -130,6 +131,7 @@
 		0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func importChanges.swift"; sourceTree = "<group>"; };
 		0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumMoverClipboard.swift; sourceTree = "<group>"; };
 		0708201A275B49D000F48D13 /* LRTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRTableCell.swift; sourceTree = "<group>"; };
+		0708201C275BEE1C00F48D13 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Editing.swift"; sourceTree = "<group>"; };
 		07140604259D6958003CA92C /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - Notifications.swift"; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				0748AEAF24F394F9000FBC61 /* MusicLibraryManager */,
 				07267A1F25537C5800C914A3 /* PlayerManager.swift */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
+				0708201C275BEE1C00F48D13 /* Appearance.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				070BEA8724C6BD6A008D5299 /* Life Cycle */,
 				0759DC80272CD37300FDA7D7 /* FeatureFlag.swift */,
@@ -721,6 +724,7 @@
 				07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */,
+				0708201D275BEE1C00F48D13 /* Appearance.swift in Sources */,
 				07B1EC442723B52A00EA8E29 /* TabBarC.swift in Sources */,
 				0720A61227290102002B696D /* NotificationCenter.swift in Sources */,
 				07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */,

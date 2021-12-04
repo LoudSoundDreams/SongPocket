@@ -35,7 +35,7 @@ extension MusicLibraryManager {
 		
 		let defaults = UserDefaults.standard
 		let defaultsKeyHasEverImported = LRUserDefaultsKey.hasEverImportedFromMusic.rawValue
-		let hasEverImportedFromMusic = defaults.bool(forKey: defaultsKeyHasEverImported) // defaults to false
+		let hasEverImportedFromMusic = defaults.bool(forKey: defaultsKeyHasEverImported) // Returns `false` if there's no saved value
 		let isFirstImport = !hasEverImportedFromMusic
 		
 		// Find out which Songs we need to delete, and which we need to potentially update.

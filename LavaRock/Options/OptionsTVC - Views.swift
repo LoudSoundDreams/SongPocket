@@ -11,25 +11,6 @@ import StoreKit
 final class AppearanceCell: UITableViewCell {
 	@IBOutlet private var segmentedControl: UISegmentedControl!
 	
-	enum Appearance: Int, CaseIterable {
-		// Match the order of the segmented controls in the storyboard.
-		// Raw values are the raw values of `UIUserInterfaceStyle`, which we also persist in `UserDefaults`.
-		case light = 1
-		case dark = 2
-		case system = 0
-		
-		static func indexInDisplayOrder(_ style: UIUserInterfaceStyle) -> Int {
-			let result = Self.allCases.firstIndex { preferredAppearance in
-				preferredAppearance.rawValue == style.rawValue
-			}!
-			return result
-		}
-		
-		init(indexInDisplayOrder: Int) {
-			self = Self.allCases[indexInDisplayOrder]
-		}
-	}
-	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -40,22 +21,14 @@ final class AppearanceCell: UITableViewCell {
 			action: #selector(saveAndSetAppearance),
 			for: .valueChanged)
 		
-		let savedStyleValue = UserDefaults.standard.integer(
-			forKey: LRUserDefaultsKey.appearance.rawValue) // Returns `0` when there's no saved value, which happens to be `.unspecified`, which is what we want.
-		let savedStyle = UIUserInterfaceStyle(rawValue: savedStyleValue)!
-		segmentedControl.selectedSegmentIndex = Appearance.indexInDisplayOrder(savedStyle)
+		segmentedControl.selectedSegmentIndex = Appearance.savedPreference().indexInDisplayOrder()
 	}
 	
 	@objc private func saveAndSetAppearance() {
-		let selectedAppearance = Appearance(
+		let selected = Appearance(
 			indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
-		
-		UserDefaults.standard.set(
-			selectedAppearance.rawValue,
-			forKey: LRUserDefaultsKey.appearance.rawValue)
-		
-		window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(
-			rawValue: selectedAppearance.rawValue)!
+		selected.saveAsPreference()
+		window?.overrideUserInterfaceStyle = selected.uiUserInterfaceStyle()
 	}
 }
 

@@ -21,9 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		
 		
-		if let window = window {
-			AccentColor.savedPreference().set(in: window)
-		}
+		window?.overrideUserInterfaceStyle = Appearance.savedPreference().uiUserInterfaceStyle()
+		window?.tintColor = AccentColor.savedPreference().uiColor
 		
 		
 	}
