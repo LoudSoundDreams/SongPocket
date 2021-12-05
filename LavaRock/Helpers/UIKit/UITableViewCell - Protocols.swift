@@ -1,5 +1,5 @@
 //
-//  protocol ButtonCell.swift
+//  UITableViewCell - Protocols.swift
 //  LavaRock
 //
 //  Created by h on 2021-11-29.
@@ -7,13 +7,24 @@
 
 import UIKit
 
+protocol TranslucentBackgroundCell: UITableViewCell {
+	// Conforming types must …
+	// - Override `awakeFromNib` and call `setNormalBackground`.
+	// - Call `setNormalBackground` instead of `backgroundView = nil`.
+}
+
+extension TranslucentBackgroundCell {
+	func setNormalBackground() {
+		backgroundColor = nil
+//		backgroundColor = .systemBackground.translucentFaint()
+	}
+}
+
 protocol ButtonCell: UITableViewCell {
 	// Conforming types must …
 	// - Override `awakeFromNib` and call `configure`.
 	// - Override `tintColorDidChange` and call `reflectAccentColor`.
-	
 	static var buttonText: String { get }
-	
 	var contentConfiguration: UIContentConfiguration? { get set }
 }
 

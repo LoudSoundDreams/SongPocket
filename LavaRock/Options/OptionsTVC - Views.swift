@@ -88,7 +88,7 @@ final class AccentColorCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReloadCell: LRTableCell {
+final class TipReloadCell: AccentColorSelectedCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -108,7 +108,7 @@ extension TipReloadCell: ButtonCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReadyCell: LRTableCell {
+final class TipReadyCell: AccentColorSelectedCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		

@@ -11,7 +11,7 @@
 		07031303269254B600134B06 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07031302269254B600134B06 /* UIImage.swift */; };
 		0703ED2524E8D0DA002EF1B4 /* func importChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */; };
 		0706ABE124D947850090EB21 /* AlbumMoverClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */; };
-		0708201B275B49D000F48D13 /* LRTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708201A275B49D000F48D13 /* LRTableCell.swift */; };
+		0708201B275B49D000F48D13 /* AccentColorSelectedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708201A275B49D000F48D13 /* AccentColorSelectedCell.swift */; };
 		0708201D275BEE1C00F48D13 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708201C275BEE1C00F48D13 /* Appearance.swift */; };
 		070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */; };
 		07140605259D6958003CA92C /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07140604259D6958003CA92C /* UserDefaults.swift */; };
@@ -98,7 +98,7 @@
 		07EC01E826C84BC700954E08 /* CollectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */; };
 		07EC01EA26C8958300954E08 /* AlbumsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E926C8958300954E08 /* AlbumsViewModel.swift */; };
 		07EC01EC26C895CB00954E08 /* SongsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01EB26C895CB00954E08 /* SongsViewModel.swift */; };
-		07ED6A8A2755CCE700085493 /* protocol ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ED6A892755CCE700085493 /* protocol ButtonCell.swift */; };
+		07ED6A8A2755CCE700085493 /* UITableViewCell - Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ED6A892755CCE700085493 /* UITableViewCell - Protocols.swift */; };
 		07EE8CDC273050D000938556 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EE8CDB273050D000938556 /* UIColor.swift */; };
 		07F36BBE24FC3CCA0064282D /* LibraryTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */; };
 		07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC124FC3F450064282D /* CollectionsTVC - UITableView.swift */; };
@@ -130,7 +130,7 @@
 		07031302269254B600134B06 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		0703ED2424E8D0DA002EF1B4 /* func importChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "func importChanges.swift"; sourceTree = "<group>"; };
 		0706ABE024D947850090EB21 /* AlbumMoverClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumMoverClipboard.swift; sourceTree = "<group>"; };
-		0708201A275B49D000F48D13 /* LRTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRTableCell.swift; sourceTree = "<group>"; };
+		0708201A275B49D000F48D13 /* AccentColorSelectedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorSelectedCell.swift; sourceTree = "<group>"; };
 		0708201C275BEE1C00F48D13 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Editing.swift"; sourceTree = "<group>"; };
 		07140604259D6958003CA92C /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
@@ -236,7 +236,7 @@
 		07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsViewModel.swift; sourceTree = "<group>"; };
 		07EC01E926C8958300954E08 /* AlbumsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewModel.swift; sourceTree = "<group>"; };
 		07EC01EB26C895CB00954E08 /* SongsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsViewModel.swift; sourceTree = "<group>"; };
-		07ED6A892755CCE700085493 /* protocol ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol ButtonCell.swift"; sourceTree = "<group>"; };
+		07ED6A892755CCE700085493 /* UITableViewCell - Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell - Protocols.swift"; sourceTree = "<group>"; };
 		07EE8CDB273050D000938556 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC124FC3F450064282D /* CollectionsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - UITableView.swift"; sourceTree = "<group>"; };
@@ -516,8 +516,8 @@
 				072C04982692A67400F44AC5 /* UIAlertAction.swift */,
 				072C049A2692AB4400F44AC5 /* UIAlertController.swift */,
 				0750C01426D2E27700B3E899 /* UITableViewCell.swift */,
-				0708201A275B49D000F48D13 /* LRTableCell.swift */,
-				07ED6A892755CCE700085493 /* protocol ButtonCell.swift */,
+				0708201A275B49D000F48D13 /* AccentColorSelectedCell.swift */,
+				07ED6A892755CCE700085493 /* UITableViewCell - Protocols.swift */,
 				07C1AA2B2754618700ACE15A /* SectionStructure.swift */,
 				072429C324DC786500F62AF6 /* UITableView.swift */,
 			);
@@ -717,8 +717,8 @@
 				079B2C9524E227BF00A949FA /* MusicLibraryManager.swift in Sources */,
 				077BCEAE2752F6DE0066DE96 /* AlbumOrganizerClipboard.swift in Sources */,
 				07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */,
-				07ED6A8A2755CCE700085493 /* protocol ButtonCell.swift in Sources */,
-				0708201B275B49D000F48D13 /* LRTableCell.swift in Sources */,
+				07ED6A8A2755CCE700085493 /* UITableViewCell - Protocols.swift in Sources */,
+				0708201B275B49D000F48D13 /* AccentColorSelectedCell.swift in Sources */,
 				071701FF250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift in Sources */,
 				07170201250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift in Sources */,
 				07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */,
@@ -992,7 +992,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 311;
+				CURRENT_PROJECT_VERSION = 313;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1015,7 +1015,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 311;
+				CURRENT_PROJECT_VERSION = 313;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

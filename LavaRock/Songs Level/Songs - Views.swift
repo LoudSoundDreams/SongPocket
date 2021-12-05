@@ -62,7 +62,10 @@ final class AlbumInfoCell: UITableViewCell {
 	}
 }
 
-final class SongCell: LRTableCell {
+final class SongCell:
+	AccentColorSelectedCell,
+	TranslucentBackgroundCell
+{
 	@IBOutlet private var textStackView: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var artistLabel: UILabel!
@@ -71,6 +74,9 @@ final class SongCell: LRTableCell {
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		// TranslucentBackgroundCell
+		setNormalBackground()
 		
 		trackNumberLabel.font = .bodyWithMonospacedDigits(compatibleWith: traitCollection)
 		

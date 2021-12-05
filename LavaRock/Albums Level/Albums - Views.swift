@@ -7,11 +7,17 @@
 
 import UIKit
 
-final class MoveHereCell: LRTableCell {
+final class MoveHereCell:
+	AccentColorSelectedCell,
+	TranslucentBackgroundCell
+{
 	@IBOutlet private var moveHereLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		// TranslucentBackgroundCell
+		setNormalBackground()
 		
 		accessibilityTraits.formUnion(.button)
 		
@@ -32,7 +38,10 @@ final class MoveHereCell: LRTableCell {
 	}
 }
 
-final class AlbumCell: LRTableCell {
+final class AlbumCell:
+	AccentColorSelectedCell,
+	TranslucentBackgroundCell
+{
 	enum Mode {
 		case normal
 		case modal
@@ -48,6 +57,9 @@ final class AlbumCell: LRTableCell {
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		// TranslucentBackgroundCell
+		setNormalBackground()
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true
 		
@@ -85,11 +97,11 @@ final class AlbumCell: LRTableCell {
 		
 		switch mode {
 		case .normal:
-			backgroundView = nil
+			setNormalBackground()
 			accessoryType = .disclosureIndicator
 			enableWithAccessibilityTrait()
 		case .modal:
-			backgroundView = nil
+			setNormalBackground()
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		case .modalTinted:

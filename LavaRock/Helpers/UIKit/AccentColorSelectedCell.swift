@@ -1,5 +1,5 @@
 //
-//  LRTableCell.swift
+//  AccentColorSelectedCell.swift
 //  LavaRock
 //
 //  Created by h on 2021-12-03.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LRTableCell: UITableViewCell {
+class AccentColorSelectedCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
