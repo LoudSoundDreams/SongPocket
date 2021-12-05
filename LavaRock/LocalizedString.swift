@@ -93,6 +93,8 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let renameSectionAlertTitle = NSLocalizedString("Rename Section", comment: "Alert title")
 	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title") // MC2DO: Delete
 	
+	static let separate = NSLocalizedString("Separate", comment: "Button")
+	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	static let combineSectionsAlertTitle = NSLocalizedString("Combine Sections", comment: "Alert title")
 	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title") // MC2DO: Delete
@@ -100,9 +102,9 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title") // MC2DO: Delete
 	
 	static let newCollectionButtonTitle = NSLocalizedString(
-		"New Collection [button title]",
+		"New Collection [button]",
 		value: "New Collection",
-		comment: "Button title") // MC2DO: Edit
+		comment: "Button") // MC2DO: Edit
 	static let newSectionAlertTitle = NSLocalizedString(
 		"New Section [alert title]",
 		value: "New Section",
@@ -156,6 +158,17 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 		comment: "Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on.")
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
+	
+	// MARK: Collections Views
+	
+	static let format_separateIntoXCollectionsByAlbumArtistQuestionMark = NSLocalizedString(
+		"plural - separate_into_X_collections",
+		
+		
+		value: "Separate into 3 collections by album artist?",
+		
+		
+		comment: "Prompt that appears at the top of the “separate collection” sheet. Include the number of collections that the app moved albums to.") // SP2DO
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit
 	

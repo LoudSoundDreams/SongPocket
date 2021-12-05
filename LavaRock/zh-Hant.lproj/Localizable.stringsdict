@@ -39,15 +39,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>other</key>
-			<string>Choose a section to move %lld albums to.</string>
+			<string></string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CHOOSE_A_SECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
+		<string></string>
 	</dict>
 	<key>plural - organize_albums_by_album_artist</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Organize %#@NUMBER_ALBUMS@ by album artist?</string>
+		<string></string>
 		<key>NUMBER_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -55,13 +55,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>other</key>
-			<string>%lld albums</string>
+			<string></string>
 		</dict>
 	</dict>
 	<key>plural - organize_albums_into_collections</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Organize %#@NUMBER_ALBUMS@ into %#@NUMBER_NEW_COLLECTIONS@?</string>
+		<string></string>
 		<key>NUMBER_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -69,7 +69,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>other</key>
-			<string>%lld albums</string>
+			<string></string>
 		</dict>
 		<key>NUMBER_NEW_COLLECTIONS</key>
 		<dict>
@@ -78,7 +78,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>other</key>
-			<string>%lld new collections</string>
+			<string></string>
 		</dict>
 	</dict>
 </dict>

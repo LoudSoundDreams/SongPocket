@@ -46,6 +46,12 @@ final class CollectionsTVC:
 	
 	// Controls
 	@IBOutlet private var optionsButton: UIBarButtonItem!
+	private lazy var separateOrCombineButton: UIBarButtonItem = {
+		let action = UIAction { _ in self.separateOrCombine() }
+		return UIBarButtonItem(
+			title: LocalizedString.separate,
+			primaryAction: action)
+	}()
 	private lazy var combineButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.combineAndConfirm() }
 		return UIBarButtonItem(
@@ -280,6 +286,7 @@ final class CollectionsTVC:
 			}
 		case .browsing:
 			editingModeToolbarButtons = [
+//				separateOrCombineButton, .flexibleSpace(),
 				combineButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
 				floatToTopButton, .flexibleSpace(),
@@ -315,7 +322,16 @@ final class CollectionsTVC:
 	final override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		
+		separateOrCombineButton.title = tableView.indexPathsForSelectedRowsNonNil.count <= 1 ? LocalizedString.separate : LocalizedString.combine
+		separateOrCombineButton.isEnabled = allowsSeparateOrCombine()
 		combineButton.isEnabled = allowsCombine()
+	}
+	
+	private func allowsSeparateOrCombine() -> Bool {
+		guard !viewModel.isEmpty() else {
+			return false
+		}
+		return !tableView.indexPathsForSelectedRowsNonNil.isEmpty
 	}
 	
 	private func allowsCombine() -> Bool {

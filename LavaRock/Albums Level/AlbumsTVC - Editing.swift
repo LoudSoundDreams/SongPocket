@@ -41,8 +41,6 @@ extension AlbumsTVC {
 	}
 	
 	private func startOrganizing() {
-		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
-		
 		// Prepare a Collections view to present modally.
 		guard
 			let collectionsNC = storyboard?.instantiateViewController(
@@ -57,11 +55,11 @@ extension AlbumsTVC {
 		}
 		
 		// Create a child managed object context to begin the changes in.
-		let childContext = NSManagedObjectContext.withParent(albumsViewModel.context)
+		let childContext = NSManagedObjectContext.withParent(viewModel.context)
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
 		idsOfAlbumsToKeepSelected
-		= albumsViewModel.idsOfUnmovedAlbumsAfterOrganizingSomeIntoNewCollections(
+		= AlbumsViewModel.idsOfUnmovedAlbumsAfterOrganizingSomeIntoNewCollections(
 			albumsToOrganize,
 			via: childContext)
 		

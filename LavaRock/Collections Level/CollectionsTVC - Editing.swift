@@ -52,6 +52,27 @@ extension CollectionsTVC {
 		}
 	}
 	
+	// MARK: - Separating
+	
+	final func separateOrCombine() {
+		if tableView.indexPathsForSelectedRowsNonNil.count <= 1 {
+			startSeparating()
+		} else {
+			combineAndConfirm()
+		}
+	}
+	
+	final func startSeparating() {
+		// Prepare a Collections view to present modally.
+//		guard
+//			let collectionsNC = storyboard?.instantiateViewController(
+//				withIdentifier: "Collections NC") as? UINavigationController,
+//			let collectionsTVC = collectionsNC.viewControllers.first as? CollectionsTVC
+//		else { return }
+		
+		
+	}
+	
 	// MARK: - Combining
 	
 	final func combineAndConfirm() {

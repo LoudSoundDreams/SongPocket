@@ -126,7 +126,7 @@ extension AlbumsViewModel {
 		return albumsToOrganize.contains { !$0.isInCollectionMatchingAlbumArtist() }
 	}
 	
-	func idsOfUnmovedAlbumsAfterOrganizingSomeIntoNewCollections(
+	static func idsOfUnmovedAlbumsAfterOrganizingSomeIntoNewCollections(
 		_ albumsToMaybeOrganize: [Album],
 		via context: NSManagedObjectContext
 	) -> Set<NSManagedObjectID> {
