@@ -415,6 +415,9 @@ extension LibraryViewModel {
 			}
 			return sorted.map { $0.0 }
 			
+		case LocalizedString.random:
+			return items.shuffled()
+			
 		case LocalizedString.reverse:
 			return items.reversed()
 			

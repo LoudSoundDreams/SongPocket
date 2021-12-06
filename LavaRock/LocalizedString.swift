@@ -71,6 +71,7 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let sortBy = NSLocalizedString("Sort By", comment: "Action sheet title")
+	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
 	static let moveToTop = NSLocalizedString("Move to Top", comment: "Button")
 	static let moveToBottom = NSLocalizedString("Move to Bottom", comment: "Button")

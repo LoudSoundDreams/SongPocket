@@ -40,7 +40,9 @@ extension CollectionsViewModel: LibraryViewModel {
 				.oldestFirst,
 				.trackNumber:
 			return false
-		case .reverse:
+		case
+				.random,
+				.reverse:
 			return true
 		}
 	}

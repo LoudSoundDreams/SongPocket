@@ -52,7 +52,9 @@ extension AlbumsViewModel: LibraryViewModel {
 			return albums.contains { $0.releaseDateEstimate != nil }
 		case .trackNumber:
 			return false
-		case .reverse:
+		case
+				.random,
+				.reverse:
 			return true
 		}
 	}

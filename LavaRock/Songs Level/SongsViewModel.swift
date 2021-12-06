@@ -64,7 +64,9 @@ extension SongsViewModel: LibraryViewModel {
 //				}
 //				return mediaItem.discNumber != 0 // As of iOS 14.7 developer beta 5, MediaPlayer reports unknown disc numbers as 1.
 //			}
-		case .reverse:
+		case
+				.random,
+				.reverse:
 			return true
 		}
 	}
