@@ -8,7 +8,7 @@
 import UIKit
 
 enum Appearance: Int, CaseIterable {
-	// Match the order of the segmented controls in the storyboard.
+	// Cases are in the order that they appear in in the UI.
 	// Raw values are the raw values of `UIUserInterfaceStyle`, which we also persist in `UserDefaults`.
 	case light = 1
 	case dark = 2
@@ -39,5 +39,40 @@ enum Appearance: Int, CaseIterable {
 			appearance == self
 		}!
 		return result
+	}
+	
+	func image() -> UIImage {
+		switch self {
+		case .light:
+			let image = UIImage(systemName: "sun.max.fill")!
+			image.accessibilityLabel = LocalizedString.light
+			return image
+		case .dark:
+			let image = UIImage(systemName: "moon.fill")!
+			image.accessibilityLabel = LocalizedString.dark
+			return image
+		case .system:
+			let image: UIImage = {
+				let idiom = UIDevice.current.userInterfaceIdiom
+				switch idiom {
+				case .unspecified:
+					return UIImage(systemName: "iphone")!
+				case .phone:
+					return UIImage(systemName: "iphone")!
+				case .pad:
+					return UIImage(systemName: "ipad")!
+				case .tv:
+					return UIImage(systemName: "tv")!
+				case .carPlay:
+					return UIImage(systemName: "iphone")!
+				case .mac:
+					return UIImage(systemName: "desktopcomputer")!
+				@unknown default:
+					return UIImage(systemName: "iphone")!
+				}
+			}()
+			image.accessibilityLabel = LocalizedString.system
+			return image
+		}
 	}
 }

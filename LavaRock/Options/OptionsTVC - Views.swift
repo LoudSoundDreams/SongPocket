@@ -16,6 +16,11 @@ final class AppearanceCell: UITableViewCell {
 		
 		selectionStyle = .none
 		
+		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
+			let appearance = Appearance(indexInDisplayOrder: indexOfSegment)
+			segmentedControl.setImage(appearance.image(), forSegmentAt: indexOfSegment)
+		}
+		
 		segmentedControl.addTarget(
 			self,
 			action: #selector(saveAndSetAppearance),

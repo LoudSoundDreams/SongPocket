@@ -416,7 +416,14 @@ extension LibraryViewModel {
 			return sorted.map { $0.0 }
 			
 		case LocalizedString.random:
-			return items.shuffled()
+			guard items.count >= 2 else {
+				return items
+			}
+			var shuffled: [NSManagedObject]
+			repeat {
+				shuffled = items.shuffled()
+			} while shuffled.elementsEqual(items)
+			return shuffled
 			
 		case LocalizedString.reverse:
 			return items.reversed()
