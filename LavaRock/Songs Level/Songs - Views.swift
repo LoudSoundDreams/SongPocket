@@ -63,7 +63,7 @@ final class AlbumInfoCell: UITableViewCell {
 }
 
 final class SongCell:
-	AccentColorSelectedCell,
+	TintedSelectedCell,
 	TranslucentBackgroundCell
 {
 	@IBOutlet private var textStackView: UIStackView!

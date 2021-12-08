@@ -9,7 +9,7 @@ import UIKit
 
 final class OptionsTVC: UITableViewController {
 	
-	final var isTipJarShowingThankYou = false
+	final var tipJarIsShowingThankYou = false
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)

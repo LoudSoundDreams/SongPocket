@@ -8,7 +8,7 @@
 import UIKit
 
 final class MoveHereCell:
-	AccentColorSelectedCell,
+	TintedSelectedCell,
 	TranslucentBackgroundCell
 {
 	@IBOutlet private var moveHereLabel: UILabel!
@@ -39,7 +39,7 @@ final class MoveHereCell:
 }
 
 final class AlbumCell:
-	AccentColorSelectedCell,
+	TintedSelectedCell,
 	TranslucentBackgroundCell
 {
 	enum Mode {

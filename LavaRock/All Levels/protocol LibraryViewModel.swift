@@ -422,7 +422,7 @@ extension LibraryViewModel {
 			var shuffled: [NSManagedObject]
 			repeat {
 				shuffled = items.shuffled()
-			} while shuffled.elementsEqual(items)
+			} while shuffled == items
 			return shuffled
 			
 		case LocalizedString.reverse:

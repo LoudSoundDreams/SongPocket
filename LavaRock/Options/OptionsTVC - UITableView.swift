@@ -176,7 +176,7 @@ extension OptionsTVC {
 				withIdentifier: "Tip Reload",
 				for: indexPath) as? TipReloadCell ?? UITableViewCell()
 		case .ready:
-			if isTipJarShowingThankYou {
+			if tipJarIsShowingThankYou {
 				return tableView.dequeueReusableCell(
 					withIdentifier: "Tip Thank You",
 					for: indexPath) as? TipThankYouCell ?? UITableViewCell()

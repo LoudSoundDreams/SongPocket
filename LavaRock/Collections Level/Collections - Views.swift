@@ -10,7 +10,7 @@ import CoreData
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AllowAccessCell:
-	AccentColorSelectedCell,
+	TintedSelectedCell,
 	TranslucentBackgroundCell
 {
 	final override func awakeFromNib() {
@@ -68,7 +68,7 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class OpenMusicCell:
-	AccentColorSelectedCell,
+	TintedSelectedCell,
 	TranslucentBackgroundCell
 {
 	final override func awakeFromNib() {
@@ -97,7 +97,7 @@ extension OpenMusicCell: ButtonCell {
 }
 
 final class CreateCollectionCell:
-	AccentColorSelectedCell,
+	TintedSelectedCell,
 	TranslucentBackgroundCell
 {
 	@IBOutlet private var newCollectionLabel: UILabel!
@@ -128,7 +128,7 @@ final class CreateCollectionCell:
 }
 
 final class CollectionCell:
-	AccentColorSelectedCell,
+	TintedSelectedCell,
 	TranslucentBackgroundCell
 {
 	enum Mode {
