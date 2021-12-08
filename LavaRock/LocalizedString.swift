@@ -53,7 +53,7 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let tipJarFooter = NSLocalizedString(
 		"[footer] options_tip_jar",
-		value: "Hi! I’m H. You can help me improve Songpocket by leaving a tip when I add features that you like.",
+		value: "Thank you for using Songpocket, my pride and joy. —H",
 		comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
@@ -96,8 +96,6 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let renameSectionAlertTitle = NSLocalizedString("Rename Section", comment: "Alert title")
 	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title") // MC2DO: Delete
-	
-	static let separate = NSLocalizedString("Separate", comment: "Button")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	static let combineSectionsAlertTitle = NSLocalizedString("Combine Sections", comment: "Alert title")
@@ -162,17 +160,6 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 		comment: "Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on.")
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
-	
-	// MARK: Collections Views
-	
-	static let format_separateIntoXCollectionsByAlbumArtistQuestionMark = NSLocalizedString(
-		"plural - separate_into_X_collections",
-		
-		
-		value: "Separate into 3 collections by album artist?",
-		
-		
-		comment: "Prompt that appears at the top of the “separate collection” sheet. Include the number of collections that the app moved albums to.") // SP2DO
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit
 	

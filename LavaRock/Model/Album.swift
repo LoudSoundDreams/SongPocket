@@ -21,7 +21,7 @@ extension Album: LibraryContainer {
 extension Album {
 	
 	static let log = OSLog(
-		subsystem: "LavaRock.Album",
+		subsystem: "Album",
 		category: .pointsOfInterest)
 	
 	convenience init(
@@ -59,12 +59,6 @@ extension Album {
 		container = collection
 	}
 	
-	// MARK: - Miscellaneous
-	
-	final func isInCollectionMatchingAlbumArtist() -> Bool {
-		return container?.title == albumArtist() ?? Self.unknownAlbumArtistPlaceholder
-	}
-	
 	// MARK: - All Instances
 	
 	// Similar to `Collection.allFetched` and `Song.allFetched`.
@@ -79,7 +73,7 @@ extension Album {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	// WARNING: This leaves gaps in the `Album` indices within each `Collection`, and might leave empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	// WARNING: Leaves gaps in the `Album` indices within `Collection`s, and doesn't delete empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
 	static func deleteAllEmpty_withoutReindexOrCascade(
 		via context: NSManagedObjectContext
 	) {
@@ -95,7 +89,7 @@ extension Album {
 	// MARK: - Songs
 	
 	// Similar to `Collection.albums(sorted:)`.
-	final func songs(sorted: Bool = true) -> [Song] {
+	final func songs(sorted: Bool) -> [Song] {
 		guard let contents = contents else {
 			return []
 		}
@@ -109,7 +103,7 @@ extension Album {
 	}
 	
 	final func songsAreInDefaultOrder() -> Bool {
-		let mediaItems = songs().compactMap { $0.mpMediaItem() }
+		let mediaItems = songs(sorted: true).compactMap { $0.mpMediaItem() }
 		// `mpMediaItem()` returns `nil` if the media item is no longer in the Music library. Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
 		
 		let sortedMediaItems = mediaItems.sorted {
@@ -122,8 +116,8 @@ extension Album {
 	final func sortSongsByDefaultOrder() {
 		let songs = songs(sorted: false)
 		
-		// Note: Behavior is undefined if you compare `Song`s that correspond to `MPMediaItem`s from different albums.
-		// Note: `Song`s that don’t have a corresponding `MPMediaItem` in the user’s Music library will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
+		// Behavior is undefined if you compare `Song`s that correspond to `MPMediaItem`s from different albums.
+		// `Song`s that don’t have a corresponding `MPMediaItem` in the user’s Music library will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
 		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
 			var songsAndMediaItems = songs.map {
 				($0,
@@ -222,29 +216,27 @@ extension Album {
 	
 	// MARK: - Media Player
 	
-	// Note: Slow.
+	// Slow.
 	final func mpMediaItemCollection() -> MPMediaItemCollection? {
-		os_signpost(
-			.begin,
-			log: Self.log,
-			name: "mpMediaItemCollection()")
+		os_signpost(.begin, log: Self.log, name: "mpMediaItemCollection()")
 		defer {
-			os_signpost(
-				.end,
-				log: Self.log,
-				name: "mpMediaItemCollection()")
+			os_signpost(.end, log: Self.log, name: "mpMediaItemCollection()")
 		}
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
-		let albumsQuery = MPMediaQuery.albums() // Does this leave out any songs?
+		let albumsQuery = MPMediaQuery.albums()
 		albumsQuery.addFilterPredicate(
 			MPMediaPropertyPredicate(
 				value: albumPersistentID,
 				forProperty: MPMediaItemPropertyAlbumPersistentID)
 		)
 		
+		os_signpost(.begin, log: Self.log, name: "Process query")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Process query")
+		}
 		if
 			let queriedAlbums = albumsQuery.collections,
 			queriedAlbums.count == 1,
@@ -265,7 +257,11 @@ extension Album {
 		return artwork?.image(at: size)
 	}
 	
-	final func titleFormattedOptional() -> String? {
+	final func titleFormattedOrPlaceholder() -> String {
+		return titleFormattedOptional() ?? LocalizedString.unknownAlbum
+	}
+	
+	private func titleFormattedOptional() -> String? {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
 			let fetchedAlbumTitle = representativeItem.albumTitle,
@@ -277,33 +273,14 @@ extension Album {
 		}
 	}
 	
-	final func titleFormattedOrPlaceholder() -> String {
-		return titleFormattedOptional() ?? LocalizedString.unknownAlbum
-		
-		
-//		if
-//			let representativeItem = mpMediaItemCollection()?.representativeItem,
-//			let fetchedAlbumTitle = representativeItem.albumTitle,
-//			fetchedAlbumTitle != ""
-//		{
-//			return fetchedAlbumTitle
-//		} else {
-//			return LocalizedString.unknownAlbum
-//		}
-	}
-	
 	final func albumArtistFormattedOrPlaceholder() -> String {
-		return albumArtist() ?? Self.unknownAlbumArtistPlaceholder
-	}
-	
-	final func albumArtist() -> String? {
 		if
 			let representativeItem = mpMediaItemCollection()?.representativeItem,
 			let fetchedAlbumArtist = representativeItem.albumArtist // As of iOS 14.0 developer beta 5, even if the "album artist" field is blank in Music for Mac (and other tag editors), .albumArtist can still return something: it probably reads the "artist" field from one of the songs. Currently, it returns the same as what's in the album's header in Music for iOS.
 		{
 			return fetchedAlbumArtist
 		} else {
-			return nil
+			return Self.unknownAlbumArtistPlaceholder
 		}
 	}
 	
@@ -315,11 +292,10 @@ extension Album {
 	}()
 	
 	final func releaseDateEstimateFormatted() -> String? {
-		if let releaseDateEstimate = releaseDateEstimate {
-			return Self.releaseDateFormatter.string(from: releaseDateEstimate)
-		} else {
+		guard let releaseDateEstimate = releaseDateEstimate else {
 			return nil
 		}
+		return Self.releaseDateFormatter.string(from: releaseDateEstimate)
 	}
 	
 }

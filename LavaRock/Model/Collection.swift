@@ -21,7 +21,7 @@ extension Collection: LibraryContainer {
 extension Collection {
 	
 	static let log = OSLog(
-		subsystem: "LavaRock.Collection",
+		subsystem: "Collection",
 		category: .pointsOfInterest)
 	
 	convenience init(
@@ -68,8 +68,8 @@ extension Collection {
 		self.title = title
 		self.index = index
 		
-		let collectionsToCombine = idsOfCollectionsToCombine.map { context.object(with: $0) as! Collection }
-		var newContents = collectionsToCombine.flatMap { $0.albums() }
+		let collectionsToCombine = idsOfCollectionsToCombine.map { context.object(with: $0) } as! [Collection]
+		var newContents = collectionsToCombine.flatMap { $0.albums(sorted: true) }
 		newContents.reindex()
 		newContents.forEach { $0.container = self }
 		
@@ -107,7 +107,7 @@ extension Collection {
 	// MARK: - Albums
 	
 	// Similar to `Album.songs(sorted:)`.
-	final func albums(sorted: Bool = true) -> [Album] {
+	final func albums(sorted: Bool) -> [Album] {
 		guard let contents = contents else {
 			return []
 		}
@@ -120,68 +120,77 @@ extension Collection {
 		}
 	}
 	
-	// Works even if any of the `Album`s are already in this `Collection`.
 	final func moveAlbumsToBeginning(
 		with albumIDs: [NSManagedObjectID],
+		possiblyToSameCollection: Bool,
 		via context: NSManagedObjectContext
 	) {
-		moveAlbumsToBeginning_withoutDelete(
+		moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
 			with: albumIDs,
+			possiblyToSameCollection: possiblyToSameCollection,
 			via: context)
 		
 		Self.deleteAllEmpty(via: context) // Also reindexes `self`
 	}
 	
-	// WARNING: Might leave empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
-	final func moveAlbumsToBeginning_withoutDelete(
+	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn't delete empty source `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	final func moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
 		with albumIDs: [NSManagedObjectID],
+		possiblyToSameCollection: Bool,
 		via context: NSManagedObjectContext
 	) {
 		let albumsToMove = albumIDs.map {
 			context.object(with: $0)
 		} as! [Album]
-		let sourceCollections = Set(albumsToMove.map { $0.container! })
 		
 		let numberOfAlbumsToMove = albumsToMove.count
-		albums().forEach { $0.index += Int64(numberOfAlbumsToMove) }
+		albums(sorted: false).forEach { $0.index += Int64(numberOfAlbumsToMove) }
+		
 		albumsToMove.indices.forEach { index in
 			let album = albumsToMove[index]
 			album.container = self
 			album.index = Int64(index)
 		}
-		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
-		var newContents = albums()
-		newContents.reindex()
 		
-		sourceCollections.forEach {
-			var contents = $0.albums()
-			contents.reindex()
+		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
+		if possiblyToSameCollection {
+			var newContents = albums(sorted: true)
+			newContents.reindex()
 		}
 	}
 	
 	// WARNING: Might leave empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
-	final func moveAlbumsToEnd_withoutDelete(
+	final func moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
 		with albumIDs: [NSManagedObjectID],
+		possiblyToSameCollection: Bool,
 		via context: NSManagedObjectContext
 	) {
+		os_signpost(.begin, log: Self.log, name: "Move Albums to end")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Move Albums to end")
+		}
+		
+		os_signpost(.begin, log: Self.log, name: "Fetch Albums")
 		let albumsToMove = albumIDs.map {
 			context.object(with: $0)
 		} as! [Album]
-		let sourceCollections = Set(albumsToMove.map { $0.container! })
+		os_signpost(.end, log: Self.log, name: "Fetch Albums")
 		
-		let oldNumberOfAlbums = albums().count
+		os_signpost(.begin, log: Self.log, name: "Count Albums already in this Collection")
+		let oldNumberOfAlbums = albums(sorted: false).count
+		os_signpost(.end, log: Self.log, name: "Count Albums already in this Collection")
 		albumsToMove.indices.forEach { index in
+			os_signpost(.begin, log: Self.log, name: "Update Album attributes")
 			let album = albumsToMove[index]
 			album.container = self
 			album.index = Int64(oldNumberOfAlbums + index)
+			os_signpost(.end, log: Self.log, name: "Update Album attributes")
 		}
-		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
-		var newContents = albums()
-		newContents.reindex()
 		
-		sourceCollections.forEach {
-			var contents = $0.albums()
-			contents.reindex()
+		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
+		if possiblyToSameCollection {
+			var newContents = albums(sorted: true)
+			newContents.reindex()
 		}
 	}
 	

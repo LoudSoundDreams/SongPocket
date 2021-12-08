@@ -18,7 +18,7 @@ extension Song: LibraryItem {
 extension Song {
 	
 	static let log = OSLog(
-		subsystem: "LavaRock.Song",
+		subsystem: "Song",
 		category: .pointsOfInterest)
 	
 	convenience init(
@@ -91,17 +91,11 @@ extension Song {
 	
 	// MARK: - Media Player
 	
-	// Note: Slow.
+	// Slow.
 	final func mpMediaItem() -> MPMediaItem? {
-		os_signpost(
-			.begin,
-			log: Self.log,
-			name: "mpMediaItem()")
+		os_signpost(.begin, log: Self.log, name: "mpMediaItem()")
 		defer {
-			os_signpost(
-				.end,
-				log: Self.log,
-				name: "mpMediaItem()")
+			os_signpost(.end, log: Self.log, name: "mpMediaItem()")
 		}
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
@@ -114,6 +108,10 @@ extension Song {
 				forProperty: MPMediaItemPropertyPersistentID)
 		)
 		
+		os_signpost(.begin, log: Self.log, name: "Process query")
+		defer {
+			os_signpost(.end, log: Self.log, name: "Process query")
+		}
 		if
 			let queriedSongs = songsQuery.items,
 			queriedSongs.count == 1,

@@ -102,7 +102,7 @@ final class TipReloadCell: TintedSelectedCell {
 		reflectAccentColor()
 	}
 }
-extension TipReloadCell: ButtonCell {
+extension TipReloadCell: CellActingAsButton {
 	static let buttonText = LocalizedString.reload
 }
 

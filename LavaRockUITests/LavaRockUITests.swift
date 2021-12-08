@@ -5,6 +5,7 @@
 //  Created by h on 2020-07-07.
 //
 
+/*
 import XCTest
 
 class LavaRockUITests: XCTestCase {
@@ -38,3 +39,4 @@ class LavaRockUITests: XCTestCase {
 		}
 	}
 }
+*/
