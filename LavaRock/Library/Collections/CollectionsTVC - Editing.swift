@@ -38,13 +38,13 @@ extension CollectionsTVC {
 	) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
-		let didRename = collectionsViewModel.rename(
+		let didChangeTitle = collectionsViewModel.renameAndReturnDidChangeTitle(
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		
 		collectionsViewModel.context.tryToSave()
 		
-		if didRename {
+		if didChangeTitle {
 			tableView.reloadRows(at: [indexPath], with: .fade)
 		}
 		if shouldSelectRow {
@@ -184,7 +184,7 @@ extension CollectionsTVC {
 		
 		viewModelBeforeCombining = nil
 		
-		let didRename = collectionsViewModel.rename(
+		let didChangeTitle = collectionsViewModel.renameAndReturnDidChangeTitle(
 			at: indexPathOfCombined,
 			proposedTitle: proposedTitle)
 		
@@ -196,7 +196,7 @@ extension CollectionsTVC {
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		viewModel = newViewModel // As of iOS 15.2 developer beta 3, even though `setViewModelAndMoveRows` also sets `viewModel` and doesn't move any rows, it breaks the animation for `reloadRows` below.
 		
-		if didRename {
+		if didChangeTitle {
 			tableView.reloadRows(at: [indexPathOfCombined], with: .fade)
 		}
 	}

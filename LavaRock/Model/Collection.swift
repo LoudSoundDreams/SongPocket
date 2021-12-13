@@ -194,28 +194,4 @@ extension Collection {
 		}
 	}
 	
-	// MARK: - Renaming
-	
-	final func tryToRename(proposedTitle: String?) {
-		if let newTitle = Self.validatedTitleIfPossible(proposedTitle: proposedTitle) {
-			title = newTitle
-		}
-	}
-	
-	// Returns `nil` if `proposedTitle` is `nil` or `""`.
-	private static func validatedTitleIfPossible(proposedTitle: String?) -> String? {
-		guard
-			let proposedTitle = proposedTitle,
-			proposedTitle != ""
-		else {
-			return nil
-		}
-		let trimmedTitle = proposedTitle.prefix(255) // In case the user pastes a dangerous amount of text
-		if trimmedTitle != proposedTitle {
-			return "\(trimmedTitle)\(LocalizedString.ellipsis)"
-		} else {
-			return "\(trimmedTitle)"
-		}
-	}
-	
 }

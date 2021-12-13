@@ -96,19 +96,22 @@ extension CollectionsViewModel {
 	
 	// MARK: - Renaming
 	
-	// Return value: whether this method changed the Collection's title.
-	// Works for renaming an existing Collection, after combining Collections, and after creating a new Collection.
-	func rename(
+	func renameAndReturnDidChangeTitle(
 		at indexPath: IndexPath,
 		proposedTitle: String?
 	) -> Bool {
-		guard let collection = itemNonNil(at: indexPath) as? Collection else {
+		guard
+			let proposedTitle = proposedTitle,
+			proposedTitle != ""
+		else {
 			return false
 		}
+		let newTitle = proposedTitle.truncatedIfLonger(than: 256) // In case the user entered a dangerous amount of text
+		
+		let collection = collectionNonNil(at: indexPath)
 		let oldTitle = collection.title
-		collection.tryToRename(proposedTitle: proposedTitle)
-		let newTitle = collection.title
-		return oldTitle != newTitle
+		collection.title = newTitle
+		return oldTitle != collection.title
 	}
 	
 	// MARK: Combining

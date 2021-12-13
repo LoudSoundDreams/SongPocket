@@ -7,6 +7,15 @@
 
 extension String {
 	
+	func truncatedIfLonger(than maxLength: Int) -> String {
+		let trimmed = prefix(maxLength - 1)
+		if self == trimmed {
+			return self
+		} else {
+			return "\(trimmed)\(LocalizedString.ellipsis)"
+		}
+	}
+	
 	func trimmingWhitespaceAtEnd() -> String {
 		var runningResult = self
 		while
