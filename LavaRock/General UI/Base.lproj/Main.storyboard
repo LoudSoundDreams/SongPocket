@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Placeholder Sections View Title-->
+        <!--Placeholder Collections View Title-->
         <scene sceneID="X0R-Et-kVe">
             <objects>
                 <tableViewController id="Vce-TP-hYI" customClass="CollectionsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -52,7 +52,6 @@
                                         <constraint firstItem="CrC-id-Dob" firstAttribute="centerY" secondItem="jwB-bK-htM" secondAttribute="centerY" constant="-1" id="96E-UV-Yxr"/>
                                         <constraint firstItem="CrC-id-Dob" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="jwB-bK-htM" secondAttribute="trailingMargin" id="EOb-w8-TBN"/>
                                         <constraint firstItem="CrC-id-Dob" firstAttribute="top" relation="greaterThanOrEqual" secondItem="jwB-bK-htM" secondAttribute="topMargin" constant="1" id="LmV-QW-bxH"/>
-                                        <constraint firstItem="CrC-id-Dob" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="jwB-bK-htM" secondAttribute="bottomMargin" constant="1" id="PaY-wU-chS"/>
                                         <constraint firstItem="CrC-id-Dob" firstAttribute="leading" secondItem="jwB-bK-htM" secondAttribute="leadingMargin" id="fcx-QD-hm2"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -80,19 +79,12 @@
                                     <constraints>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="trailingMargin" id="2ZV-8o-FlI"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="topMargin" constant="1" id="3Qu-eC-zjq"/>
-                                        <constraint firstItem="SFb-dV-xDe" firstAttribute="centerY" secondItem="ZA8-cG-C8X" secondAttribute="centerY" id="D3a-34-mMr"/>
+                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="centerY" secondItem="SFb-dV-xDe" secondAttribute="centerY" id="D3a-34-mMr"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="centerY" secondItem="oWs-S1-Xp1" secondAttribute="centerY" constant="-1" id="Ocg-3j-RGz"/>
                                         <constraint firstItem="ZA8-cG-C8X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SFb-dV-xDe" secondAttribute="trailing" constant="8" symbolic="YES" id="WqS-HV-ixF"/>
-                                        <constraint firstItem="SFb-dV-xDe" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="bottomMargin" constant="1" id="XQs-Us-IGO"/>
-                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="trailing" secondItem="oWs-S1-Xp1" secondAttribute="trailingMargin" id="faf-Cb-auV"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="leading" secondItem="oWs-S1-Xp1" secondAttribute="leadingMargin" id="rL2-ls-1fc"/>
                                         <constraint firstItem="ZA8-cG-C8X" firstAttribute="leading" secondItem="oWs-S1-Xp1" secondAttribute="trailingMargin" constant="-24" id="xFs-3y-QVY"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="faf-Cb-auV"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="nowPlayingImageView" destination="ZA8-cG-C8X" id="OTE-6h-7FT"/>
@@ -116,28 +108,6 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections Placeholder - Old" rowHeight="100" id="i5d-DX-vvS">
-                                <rect key="frame" x="0.0" y="306.00000190734863" width="375" height="100"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="i5d-DX-vvS" id="ilp-7P-A9C">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder empty database message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6S-PX-Sod">
-                                            <rect key="frame" x="64.666666666666686" y="41.666666666666664" width="246" height="17"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" systemColor="secondaryLabelColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="w6S-PX-Sod" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ilp-7P-A9C" secondAttribute="leadingMargin" id="FNu-UG-z7q"/>
-                                        <constraint firstItem="w6S-PX-Sod" firstAttribute="centerX" secondItem="ilp-7P-A9C" secondAttribute="centerX" id="ISO-oy-Tec"/>
-                                        <constraint firstItem="w6S-PX-Sod" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ilp-7P-A9C" secondAttribute="trailingMargin" id="RKH-zr-2Ou"/>
-                                        <constraint firstItem="w6S-PX-Sod" firstAttribute="centerY" secondItem="ilp-7P-A9C" secondAttribute="centerY" id="hs1-AS-pTq"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Vce-TP-hYI" id="FlR-Gu-MG5"/>
@@ -145,7 +115,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Placeholder Sections View Title" id="aA7-bf-O8G">
+                    <navigationItem key="navigationItem" title="Placeholder Collections View Title" id="aA7-bf-O8G">
                         <barButtonItem key="leftBarButtonItem" title="Options" id="mpR-tt-C6X">
                             <connections>
                                 <segue destination="PZK-NP-HeE" kind="presentation" identifier="" modalPresentationStyle="formSheet" id="aqr-v5-Bgu"/>
@@ -242,7 +212,6 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="YE2-yb-FIr" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="WyF-JV-Qq5" secondAttribute="bottomMargin" constant="1" id="5dy-bD-G3d"/>
                                         <constraint firstItem="YE2-yb-FIr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WyF-JV-Qq5" secondAttribute="topMargin" constant="1" id="QeH-4S-Su6"/>
                                         <constraint firstItem="YE2-yb-FIr" firstAttribute="leading" secondItem="WyF-JV-Qq5" secondAttribute="leadingMargin" id="bG1-BM-kag"/>
                                         <constraint firstItem="YE2-yb-FIr" firstAttribute="centerY" secondItem="WyF-JV-Qq5" secondAttribute="centerY" constant="-1" id="hZF-jz-Gft"/>
@@ -270,10 +239,10 @@
                                                     <rect key="frame" x="0.0" y="0.3333333333333286" width="132" height="132"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="cCZ-Du-afk" secondAttribute="height" multiplier="1:1" id="pte-Gb-UTb"/>
-                                                        <constraint firstAttribute="width" constant="132" id="rUI-Lc-NRl"/>
+                                                        <constraint firstAttribute="width" priority="900" constant="132" id="rUI-Lc-NRl"/>
                                                     </constraints>
                                                 </imageView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="rpv-eB-T27">
+                                                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="800" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="rpv-eB-T27">
                                                     <rect key="frame" x="144" y="39.666666666666657" width="150.33333333333337" height="53.333333333333343"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder Album Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCX-T2-D40">
@@ -289,6 +258,9 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="88" id="hee-Sk-CHN"/>
+                                                    </constraints>
                                                 </stackView>
                                             </subviews>
                                         </stackView>
@@ -299,16 +271,10 @@
                                         <constraint firstItem="XXR-SF-A9b" firstAttribute="leading" secondItem="aoi-DX-wbp" secondAttribute="trailingMargin" constant="-24" id="Nv6-Bm-noi"/>
                                         <constraint firstItem="kNY-CW-ua6" firstAttribute="leading" secondItem="aoi-DX-wbp" secondAttribute="leadingMargin" id="U94-JA-g6V"/>
                                         <constraint firstItem="XXR-SF-A9b" firstAttribute="centerY" secondItem="aoi-DX-wbp" secondAttribute="centerY" id="WTl-Cd-51w"/>
-                                        <constraint firstItem="XXR-SF-A9b" firstAttribute="trailing" secondItem="aoi-DX-wbp" secondAttribute="trailingMargin" id="hRI-RC-f6j"/>
                                         <constraint firstItem="XXR-SF-A9b" firstAttribute="leading" secondItem="kNY-CW-ua6" secondAttribute="trailing" constant="8" symbolic="YES" id="ihi-mt-GeH"/>
                                         <constraint firstItem="rpv-eB-T27" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="aoi-DX-wbp" secondAttribute="bottomMargin" id="xSH-wt-X72"/>
                                         <constraint firstItem="rpv-eB-T27" firstAttribute="top" relation="greaterThanOrEqual" secondItem="aoi-DX-wbp" secondAttribute="topMargin" id="zXJ-Sm-4LY"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="hRI-RC-f6j"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artworkImageView" destination="cCZ-Du-afk" id="hG9-Zc-xKc"/>
@@ -425,7 +391,6 @@
                                         <constraint firstItem="vtt-TP-3k8" firstAttribute="centerY" secondItem="SF6-nk-KdW" secondAttribute="centerY" constant="-1" id="eAa-3b-WRM"/>
                                         <constraint firstItem="vtt-TP-3k8" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="SF6-nk-KdW" secondAttribute="trailingMargin" id="iBF-YW-QZB"/>
                                         <constraint firstItem="vtt-TP-3k8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SF6-nk-KdW" secondAttribute="topMargin" id="rvo-8b-xzg"/>
-                                        <constraint firstItem="vtt-TP-3k8" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="SF6-nk-KdW" secondAttribute="bottomMargin" id="tey-mE-bmW"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -471,7 +436,6 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="0Fl-Si-GIs"/>
-                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" constant="1" id="3JO-c4-DJ4"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="centerY" secondItem="TU5-RY-n4A" secondAttribute="centerY" constant="-1" id="BBp-wO-3RZ"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="8" symbolic="YES" id="KTq-lY-q0D"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="trailing" secondItem="TU5-RY-n4A" secondAttribute="trailingMargin" id="PSF-tJ-k9f"/>
@@ -480,17 +444,10 @@
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="Z5x-M8-pLQ"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="bE3-fw-Fd1"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="dES-oz-vrb"/>
-                                        <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="16" id="eKz-tl-nIv"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="leading" constant="32" id="hTM-vu-gtP"/>
-                                        <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="trailing" constant="8" symbolic="YES" id="ovV-hE-qLr"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="x27-Sp-4dc"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" constant="1" id="yme-ol-E5x"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="ovV-hE-qLr"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artistLabel" destination="4ZB-Qq-JY2" id="0Ih-29-wU1"/>
