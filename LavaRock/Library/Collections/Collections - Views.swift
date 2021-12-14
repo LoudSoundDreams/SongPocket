@@ -123,7 +123,7 @@ final class CollectionCell:
 	}
 	
 	@IBOutlet private var titleLabel: UILabel!
-	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
+	@IBOutlet var nowPlayingImageView: UIImageView!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()

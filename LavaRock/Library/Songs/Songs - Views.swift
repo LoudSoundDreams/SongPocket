@@ -32,7 +32,7 @@ final class AlbumArtworkCell: UITableViewCell {
 }
 
 final class AlbumInfoCell: UITableViewCell {
-	@IBOutlet private var stackView: UIStackView!
+	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var albumArtistLabel: UILabel!
 	@IBOutlet private var releaseDateLabel: UILabel!
 	
@@ -55,9 +55,9 @@ final class AlbumInfoCell: UITableViewCell {
 		
 		if releaseDateString == nil {
 			// We couldn't determine the album's release date.
-			stackView.spacing = 0
+			textStack.spacing = 0
 		} else {
-			stackView.spacing = UIStackView.spacingUseSystem
+			textStack.spacing = UIStackView.spacingUseSystem
 		}
 	}
 }
@@ -66,18 +66,18 @@ final class SongCell:
 	TintedSelectedCell,
 	CellHavingTransparentBackground
 {
-	@IBOutlet private var textStackView: UIStackView!
+	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var artistLabel: UILabel!
-	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
-	@IBOutlet private var trackNumberLabel: UILabel!
+	@IBOutlet var nowPlayingImageView: UIImageView!
+	@IBOutlet private var trackLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		setNormalBackground()
 		
-		trackNumberLabel.font = .bodyWithMonospacedDigits(compatibleWith: traitCollection)
+		trackLabel.font = .bodyWithMonospacedDigits(compatibleWith: traitCollection)
 		
 		accessibilityTraits.formUnion(.button)
 	}
@@ -123,12 +123,12 @@ final class SongCell:
 		titleLabel.text = titleText
 		artistLabel.text = artistText
 //		applyNowPlayingIndicator(nowPlayingIndicator) // Cannot use mutating member on immutable value: 'self' is immutable
-		trackNumberLabel.text = trackNumberString
+		trackLabel.text = trackNumberString
 		
 		if artistText == nil {
-			textStackView.spacing = 0
+			textStack.spacing = 0
 		} else {
-			textStackView.spacing = 4
+			textStack.spacing = 4
 		}
 		
 		accessibilityUserInputLabels = [mediaItem?.title].compactMap { $0 }

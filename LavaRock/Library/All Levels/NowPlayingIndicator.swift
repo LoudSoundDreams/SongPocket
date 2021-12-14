@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NowPlayingIndicating {
-	var nowPlayingIndicatorImageView: UIImageView! { get set }
+	var nowPlayingImageView: UIImageView! { get set }
 //	var accessibilityLabel: String? { get set }
 	var accessibilityValue: String? { get set }
 	
@@ -17,7 +17,7 @@ protocol NowPlayingIndicating {
 
 extension NowPlayingIndicating {
 	mutating func applyNowPlayingIndicator(_ indicator: NowPlayingIndicator) {
-		nowPlayingIndicatorImageView.image = indicator.image
+		nowPlayingImageView.image = indicator.image
 		accessibilityValue = indicator.accessibilityLabel // For some reason, UITableViewCell.accessibilityLabel is nil at this point.
 	}
 }

@@ -42,12 +42,12 @@ final class AlbumCell:
 		case modalTinted
 	}
 	
-	@IBOutlet private var albumStackView: UIStackView!
+	@IBOutlet private var mainStack: UIStackView!
 	@IBOutlet private var artworkImageView: UIImageView!
-	@IBOutlet private var textStackView: UIStackView!
+	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var releaseDateLabel: UILabel!
-	@IBOutlet var nowPlayingIndicatorImageView: UIImageView!
+	@IBOutlet var nowPlayingImageView: UIImageView!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -83,9 +83,9 @@ final class AlbumCell:
 		 
 		if releaseDateString == nil {
 			// We couldn't determine the album's release date.
-			textStackView.spacing = 0
+			textStack.spacing = 0
 		} else {
-			textStackView.spacing = 4
+			textStack.spacing = 4
 		}
 		
 		switch mode {
@@ -108,13 +108,13 @@ final class AlbumCell:
 	
 	private func configureForTraitCollection() {
 		if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-			albumStackView.axis = .vertical
-			albumStackView.alignment = .leading
-			albumStackView.spacing = UIStackView.spacingUseSystem
+			mainStack.axis = .vertical
+			mainStack.alignment = .leading
+			mainStack.spacing = UIStackView.spacingUseSystem
 		} else {
-			albumStackView.axis = .horizontal
-			albumStackView.alignment = .center
-			albumStackView.spacing = 12
+			mainStack.axis = .horizontal
+			mainStack.alignment = .center
+			mainStack.spacing = 12
 		}
 	}
 	
