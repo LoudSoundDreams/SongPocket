@@ -15,28 +15,25 @@ final class PlayerVC: UIViewController {
 	@IBOutlet private  var previousSongButton: UIButton!
 	private lazy var previousImage = UIImage(
 		systemName: "backward.end.fill",
-		withConfiguration: config48)
+		withConfiguration: UIImage.SymbolConfiguration.initWithPointSize48())
 	
 	@IBOutlet private var rewindButton: UIButton!
 	private lazy var rewindImage = UIImage(
 		systemName: "arrow.counterclockwise.circle.fill",
-		withConfiguration: config48)
+		withConfiguration: UIImage.SymbolConfiguration.initWithPointSize48())
 	
 	@IBOutlet private var playPauseButton: UIButton!
 	private lazy var playImage = UIImage(
 		systemName: "play.fill",
-		withConfiguration: config96)
+		withConfiguration: UIImage.SymbolConfiguration.initWithPointSize96())
 	private lazy var pauseImage = UIImage(
 		systemName: "pause.fill",
-		withConfiguration: config96)
+		withConfiguration: UIImage.SymbolConfiguration.initWithPointSize96())
 	
 	@IBOutlet private var nextSongButton: UIButton!
 	private lazy var nextImage = UIImage(
 		systemName: "forward.end.fill",
-		withConfiguration: config48)
-	
-	private let config48 = UIImage.SymbolConfiguration.init(pointSize: 48)
-	private let config96 = UIImage.SymbolConfiguration.init(pointSize: 96)
+		withConfiguration: UIImage.SymbolConfiguration.initWithPointSize48())
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()

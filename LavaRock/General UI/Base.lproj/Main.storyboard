@@ -336,24 +336,24 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Artwork" id="a9Z-XZ-BCJ" customClass="AlbumArtworkCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="43.666667938232422"/>
+                                <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="375.33334350585938"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a9Z-XZ-BCJ" id="nUq-na-guy">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="375.33334350585938"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AJa-zb-mTO">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.33333333333334281" width="375" height="375"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" relation="lessThanOrEqual" secondItem="AJa-zb-mTO" secondAttribute="width" multiplier="1:1" priority="999" identifier="Album artwork cell - aspect ratio" id="dfW-Eo-ZNH"/>
+                                                <constraint firstAttribute="height" secondItem="AJa-zb-mTO" secondAttribute="width" multiplier="1:1" id="Eyk-5K-EaO"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="top" secondItem="nUq-na-guy" secondAttribute="top" identifier="Album artwork cell - top" id="8rb-8Z-seI"/>
-                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="bottom" secondItem="nUq-na-guy" secondAttribute="bottom" identifier="Album artwork cell - bottom" id="Hkd-qB-5D8"/>
-                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="leading" secondItem="nUq-na-guy" secondAttribute="leading" identifier="Album artwork cell - leading" id="JFH-iP-iHY"/>
-                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="trailing" secondItem="nUq-na-guy" secondAttribute="trailing" identifier="Album artwork cell - trailing" id="tlD-B6-PZa"/>
+                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="top" secondItem="nUq-na-guy" secondAttribute="top" priority="999" id="8rb-8Z-seI"/>
+                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="centerX" secondItem="nUq-na-guy" secondAttribute="centerX" id="DOP-Ky-wNx"/>
+                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="leading" secondItem="nUq-na-guy" secondAttribute="leading" id="JFH-iP-iHY"/>
+                                        <constraint firstItem="AJa-zb-mTO" firstAttribute="centerY" secondItem="nUq-na-guy" secondAttribute="centerY" id="gWn-3d-wvo"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -362,7 +362,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info" id="LjU-Kh-dPv" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88.333333969116211" width="375" height="62.666667938232422"/>
+                                <rect key="frame" x="0.0" y="420.00000953674316" width="375" height="62.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LjU-Kh-dPv" id="SF6-nk-KdW">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="62.666667938232422"/>
@@ -401,7 +401,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song" id="J5T-0G-4uX" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="151.00000190734863" width="375" height="60.666667938232422"/>
+                                <rect key="frame" x="0.0" y="482.66667747497559" width="375" height="60.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60.666667938232422"/>
@@ -458,7 +458,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Songs Placeholder" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="211.66666984558105" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="543.33334541320801" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
