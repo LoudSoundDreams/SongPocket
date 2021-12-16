@@ -104,17 +104,17 @@ extension CollectionsTVC {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		let title = smartTitle ?? (FeatureFlag.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
-		let (newViewModel, indexPathOfNewCollection) = collectionsViewModel.updatedAfterCreating(title: title)
+		let (newViewModel, _) = collectionsViewModel.updatedAfterCreating(title: title) // TO DO: We don't need the second return value anymore.
 		
-		tableView.performBatchUpdates {
-			tableView.scrollToRow(
-				at: indexPathOfNewCollection,
-				at: .none,
-				animated: true)
-		} completion: { _ in
+//		tableView.performBatchUpdates {
+//			tableView.scrollToRow( // TO DO: We don't need this anymore because we're using a row as the "New Collection" button.
+//				at: indexPathOfNewCollection,
+//				at: .none,
+//				animated: true)
+//		} completion: { _ in
 			self.setViewModelAndMoveRows(newViewModel)
 			completion?()
-		}
+//		}
 	}
 	
 	private func confirmCreate(smartTitle: String?) {

@@ -199,6 +199,7 @@ extension CollectionsTVC {
 		if didChangeTitle {
 			tableView.reloadRows(at: [indexPathOfCombined], with: .fade)
 		}
+		tableView.selectRow(at: indexPathOfCombined, animated: false, scrollPosition: .none)
 	}
 	
 }
