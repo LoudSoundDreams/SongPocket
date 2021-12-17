@@ -102,14 +102,6 @@ final class CollectionsTVC:
 	// Data
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
-	// Controls
-	private lazy var createButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.createAndConfirm() }
-		return UIBarButtonItem(
-			systemItem: .add,
-			primaryAction: action)
-	}()
-	
 	// MARK: - View State
 	
 	final func willRefreshLibraryItems() {
@@ -258,11 +250,6 @@ final class CollectionsTVC:
 			viewingModeTopLeftButtons = []
 			topRightButtons = [cancelAndDismissButton]
 			navigationController?.toolbar.isHidden = true
-//			viewingModeToolbarButtons = [
-//				.flexibleSpace(),
-//				createButton,
-//				.flexibleSpace(),
-//			]
 		case .browsing:
 			viewingModeTopLeftButtons = [optionsButton]
 		}
@@ -316,6 +303,11 @@ final class CollectionsTVC:
 		super.refreshEditingButtons()
 		
 		combineButton.isEnabled = allowsCombine()
+		
+		// Prevent the user from using any editing buttons while we're animating combining `Collection`s, before we present the dialog.
+		if viewModelBeforeCombining != nil {
+			editingModeToolbarButtons.forEach { $0.isEnabled = false }
+		}
 	}
 	
 	private func allowsCombine() -> Bool {

@@ -12,7 +12,7 @@ import OSLog
 extension MusicLibraryManager {
 	
 	final func cleanUpManagedObjects(
-		allMediaItems: Set<MPMediaItem>,
+		allMediaItems: Set<MPMediaItem>, // TO DO: Don't require a `Set` here.
 		isFirstImport: Bool
 	) {
 		os_signpost(.begin, log: importLog, name: "5. Cleanup")
@@ -48,7 +48,7 @@ extension MusicLibraryManager {
 	// Instead, we'll estimate the albums' release dates and keep the estimates up to date.
 	private func recalculateReleaseDateEstimates(
 		for albums: [Album],
-		considering mediaItems: Set<MPMediaItem>
+		considering mediaItems: Set<MPMediaItem> // TO DO: Don't require a `Set` here.
 	) {
 		os_signpost(.begin, log: cleanupLog, name: "Filter out MPMediaItems without releaseDates")
 		// This is pretty slow, but can save time later.

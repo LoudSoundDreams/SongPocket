@@ -12,19 +12,21 @@ extension UITableView {
 	final func performBatchUpdates(
 		sections: BatchUpdates<Int>,
 		rows: [BatchUpdates<IndexPath>],
-		with animation: RowAnimation,
-		completion: (() -> Void)? = nil
+		movingWith moveAnimation: RowAnimation,
+		reloading toReload: [IndexPath],
+		reloadingWith reloadAnimation: RowAnimation,
+		completion: @escaping () -> Void
 	) {
 		let rowsToDelete = rows.flatMap { $0.toDelete }
 		let rowsToInsert = rows.flatMap { $0.toInsert }
 		let rowsToMove = rows.flatMap { $0.toMove }
 		
 		performBatchUpdates {
-			deleteSections(IndexSet(sections.toDelete), with: animation)
-			deleteRows(at: rowsToDelete, with: animation)
+			deleteSections(IndexSet(sections.toDelete), with: moveAnimation)
+			deleteRows(at: rowsToDelete, with: moveAnimation)
 			
-			insertSections(IndexSet(sections.toInsert), with: animation)
-			insertRows(at: rowsToInsert, with: animation)
+			insertSections(IndexSet(sections.toInsert), with: moveAnimation)
+			insertRows(at: rowsToInsert, with: moveAnimation)
 			
 			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
 			sections.toMove.forEach { (sourceIndex, destinationIndex) in
@@ -33,8 +35,10 @@ extension UITableView {
 			rowsToMove.forEach { (sourceIndexPath, destinationIndexPath) in
 				moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
+			
+			reloadRows(at: toReload, with: reloadAnimation)
 		} completion: { _ in
-			completion?()
+			completion()
 		}
 	}
 	

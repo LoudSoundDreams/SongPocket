@@ -60,16 +60,6 @@ final class AlbumsTVC:
 	// Data
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
-	// Controls
-	private lazy var moveHereButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.moveHere() }
-		let button = UIBarButtonItem(
-			title: LocalizedString.moveHere,
-			primaryAction: action)
-		button.style = .done
-		return button
-	}()
-	
 	// MARK: - Setup
 	
 	required init?(coder: NSCoder) {
@@ -94,11 +84,6 @@ final class AlbumsTVC:
 		case .movingAlbums:
 			topRightButtons = [cancelAndDismissButton]
 			navigationController?.toolbar.isHidden = true
-//			viewingModeToolbarButtons = [
-//				.flexibleSpace(),
-//				moveHereButton,
-//				.flexibleSpace(),
-//			]
 		case .browsing:
 			break
 		}

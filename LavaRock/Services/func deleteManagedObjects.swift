@@ -12,7 +12,7 @@ extension MusicLibraryManager {
 	
 	// Delete Songs for media items that are no longer in the Music library, and then any empty Albums, and then any empty Collections.
 	final func deleteManagedObjects(
-		for songs: Set<Song>
+		for songs: Set<Song> // TO DO: Don't require a `Set` here.
 	) {
 		os_signpost(.begin, log: importLog, name: "4. Delete Managed Objects")
 		defer {

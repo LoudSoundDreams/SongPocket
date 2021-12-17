@@ -70,13 +70,13 @@ extension CollectionsTVC {
 		combine(
 			inOrder: selectedCollections,
 			into: indexPathOfCombined,
-			smartTitle: smartTitle)
-		// I would prefer waiting for the table view to complete its animation before presenting the dialog. However, during the table view animation, you can tap other editing buttons, which can put our app into an incoherent state.
-		// Whatever the case, creating a new `Collection` should use the same animation timing.
-		confirmCombine(
-			fromInOrder: selectedIndexPaths,
-			into: indexPathOfCombined,
-			smartTitle: smartTitle)
+			smartTitle: smartTitle
+		) {
+			self.confirmCombine(
+				fromInOrder: selectedIndexPaths,
+				into: indexPathOfCombined,
+				smartTitle: smartTitle)
+		}
 	}
 	
 	private static func smartCollectionTitle(
@@ -128,7 +128,8 @@ extension CollectionsTVC {
 	private func combine(
 		inOrder collections: [Collection],
 		into indexPathOfCombined: IndexPath,
-		smartTitle: String?
+		smartTitle: String?,
+		completion: @escaping () -> Void
 	) {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
@@ -139,9 +140,19 @@ extension CollectionsTVC {
 			fromInOrder: collections,
 			into: indexPathOfCombined,
 			title: title)
-		setViewModelAndMoveRows(
-			newViewModel,
-			andSelectRowsAt: [indexPathOfCombined])
+		tableView.performBatchUpdates {
+			tableView.scrollToRow(
+				at: indexPathOfCombined,
+				at: .none,
+				animated: true)
+		} completion: { _ in
+			self.setViewModelAndMoveRows(
+				newViewModel,
+				andSelectRowsAt: [indexPathOfCombined]
+			) {
+				completion()
+			}
+		}
 	}
 	
 	private func confirmCombine(
@@ -194,12 +205,11 @@ extension CollectionsTVC {
 		let newViewModel = CollectionsViewModel(
 			context: collectionsViewModel.context.parent!,
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
-		viewModel = newViewModel // As of iOS 15.2 developer beta 3, even though `setViewModelAndMoveRows` also sets `viewModel` and doesn't move any rows, it breaks the animation for `reloadRows` below.
-		
-		if didChangeTitle {
-			tableView.reloadRows(at: [indexPathOfCombined], with: .fade)
-		}
-		tableView.selectRow(at: indexPathOfCombined, animated: false, scrollPosition: .none)
+		let toReload = didChangeTitle ? [indexPathOfCombined] : []
+		setViewModelAndMoveRows(
+			newViewModel,
+			reloading: toReload,
+			andSelectRowsAt: [indexPathOfCombined])
 	}
 	
 }
