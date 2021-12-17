@@ -206,7 +206,7 @@ extension SongsTVC {
 			URL.music?.open()
 		}
 		let okAction = UIAlertAction(
-			title: LocalizedString.ok,
+			title: LocalizedString.close,
 			style: .default,
 			handler: nil)
 		

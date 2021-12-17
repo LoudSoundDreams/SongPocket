@@ -22,6 +22,7 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
 	static let save = NSLocalizedString("Save", comment: "Button")
 	static let done = NSLocalizedString("Done", comment: "Button")
+	static let close = NSLocalizedString("Close", comment: "Button")
 	static let ok = NSLocalizedString("OK", comment: "Button")
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
