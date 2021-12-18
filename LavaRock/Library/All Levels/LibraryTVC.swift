@@ -172,6 +172,7 @@ class LibraryTVC: UITableViewController {
 			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		}
 		
+		navigationItem.largeTitleDisplayMode = .always
 		refreshNavigationItemTitle()
 		
 		setBarButtons(animated: true) // So that when we open a Collection in the "move albums" sheet, the change is animated.
@@ -205,7 +206,7 @@ class LibraryTVC: UITableViewController {
 	final func setViewModelAndMoveRows(
 		_ newViewModel: LibraryViewModel,
 		reloading toReload: [IndexPath] = [],
-		andSelectRowsAt toSelect: Set<IndexPath> = [], // TO DO: Don't require a `Set` here.
+		thenSelect toSelect: Set<IndexPath> = [], // TO DO: Don't require a `Set` here.
 		completion: (() -> Void)? = nil
 	) {
 		let oldViewModel = viewModel

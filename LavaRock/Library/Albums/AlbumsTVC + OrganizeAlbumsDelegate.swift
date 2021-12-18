@@ -17,7 +17,7 @@ extension AlbumsTVC: OrganizeAlbumsDelegate {
 		}
 		setViewModelAndMoveRows(
 			viewModel,
-			andSelectRowsAt: Set(toSelect))
+			thenSelect: Set(toSelect))
 	}
 	
 }

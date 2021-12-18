@@ -52,7 +52,7 @@ extension CollectionsTVC {
 			willRefreshLibraryItems()
 			
 			if viewModelBeforeCombining != nil {
-				revertCombine(andSelectRowsAt: [])
+				revertCombine(thenSelect: [])
 			}
 			
 			super.refreshLibraryItems()

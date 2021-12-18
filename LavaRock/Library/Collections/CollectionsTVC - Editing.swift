@@ -25,7 +25,7 @@ extension CollectionsTVC {
 				self.rename(
 					at: indexPath,
 					proposedTitle: textFieldText,
-					andSelectRowIf: rowWasSelectedBeforeRenaming)
+					thenSelectIf: rowWasSelectedBeforeRenaming)
 			}
 		)
 		present(dialog, animated: true)
@@ -34,7 +34,7 @@ extension CollectionsTVC {
 	private func rename(
 		at indexPath: IndexPath,
 		proposedTitle: String?,
-		andSelectRowIf shouldSelectRow: Bool
+		thenSelectIf shouldSelectRow: Bool
 	) {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
 		
@@ -148,7 +148,7 @@ extension CollectionsTVC {
 		} completion: { _ in
 			self.setViewModelAndMoveRows(
 				newViewModel,
-				andSelectRowsAt: [indexPathOfCombined]
+				thenSelect: [indexPathOfCombined]
 			) {
 				completion()
 			}
@@ -164,7 +164,7 @@ extension CollectionsTVC {
 			alertTitle: FeatureFlag.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
 			textFieldText: smartTitle,
 			cancelHandler: {
-				self.revertCombine(andSelectRowsAt: originalSelectedIndexPaths)
+				self.revertCombine(thenSelect: originalSelectedIndexPaths)
 			},
 			saveHandler: { textFieldText in
 				self.commitCombine(
@@ -176,7 +176,7 @@ extension CollectionsTVC {
 	}
 	
 	final func revertCombine(
-		andSelectRowsAt originalSelectedIndexPaths: [IndexPath]
+		thenSelect originalSelectedIndexPaths: [IndexPath]
 	) {
 		guard let originalViewModel = viewModelBeforeCombining else { return }
 		
@@ -184,7 +184,7 @@ extension CollectionsTVC {
 		
 		setViewModelAndMoveRows(
 			originalViewModel,
-			andSelectRowsAt: Set(originalSelectedIndexPaths))
+			thenSelect: Set(originalSelectedIndexPaths))
 	}
 	
 	private func commitCombine(
@@ -209,7 +209,7 @@ extension CollectionsTVC {
 		setViewModelAndMoveRows(
 			newViewModel,
 			reloading: toReload,
-			andSelectRowsAt: [indexPathOfCombined])
+			thenSelect: [indexPathOfCombined])
 	}
 	
 }
