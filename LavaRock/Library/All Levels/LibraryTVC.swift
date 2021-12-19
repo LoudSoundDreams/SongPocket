@@ -172,7 +172,6 @@ class LibraryTVC: UITableViewController {
 			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
 		}
 		
-		navigationItem.largeTitleDisplayMode = .always
 		refreshNavigationItemTitle()
 		
 		setBarButtons(animated: true) // So that when we open a Collection in the "move albums" sheet, the change is animated.
