@@ -21,11 +21,9 @@ final class OrganizeAlbumsClipboard {
 	// Helpers
 	weak var delegate: OrganizeAlbumsDelegate? = nil
 	var prompt: String {
-		let formatString = LocalizedString.format_organizeXAlbumsByAlbumArtistQuestionMark
-		let numberOfAlbums = idsOfMovedAlbums.count
 		return String.localizedStringWithFormat(
-			formatString,
-			numberOfAlbums)
+			LocalizedString.format_organizeIntoXCollectionsByAlbumArtistQuestionMark,
+			idsOfDestinationCollections.count)
 	}
 	
 	// State

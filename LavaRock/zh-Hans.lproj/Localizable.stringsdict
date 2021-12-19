@@ -44,41 +44,18 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string></string>
 	</dict>
-	<key>plural - organize_albums_by_album_artist</key>
+	<key>plural - organize_into_X_collections_by_album_artist</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string></string>
-		<key>NUMBER_ALBUMS</key>
+		<string>Organize into %#@NUMBER_COLLECTIONS@ by album artist?</string>
+		<key>NUMBER_COLLECTIONS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>other</key>
-			<string></string>
-		</dict>
-	</dict>
-	<key>plural - organize_albums_into_collections</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string></string>
-		<key>NUMBER_ALBUMS</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>other</key>
-			<string></string>
-		</dict>
-		<key>NUMBER_NEW_COLLECTIONS</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>other</key>
-			<string></string>
+			<string>%lld collections</string>
 		</dict>
 	</dict>
 </dict>

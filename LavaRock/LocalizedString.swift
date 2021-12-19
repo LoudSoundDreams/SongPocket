@@ -164,12 +164,9 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit
 	
-	static let format_organizeXAlbumsByAlbumArtistQuestionMark = NSLocalizedString(
-		"plural - organize_albums_by_album_artist",
-		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of albums you’re organizing.")
-	static let format_organizeXAlbumsIntoYNewCollectionsQuestionMark = NSLocalizedString(
-		"plural - organize_albums_into_collections",
-		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of albums you’re organizing, and the number of new collections the app created.")
+	static let format_organizeIntoXCollectionsByAlbumArtistQuestionMark = NSLocalizedString(
+		"plural - organize_into_X_collections_by_album_artist",
+		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of collections the app is moving the albums into.")
 	
 	static let format_chooseASectiontoMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_section",
