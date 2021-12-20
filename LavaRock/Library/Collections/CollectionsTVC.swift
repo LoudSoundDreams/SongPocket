@@ -24,7 +24,7 @@ final class CollectionsTVC:
 	// MARK: - Properties
 	
 	// Actions
-	lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
+	private(set) lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
 		name: LocalizedString.rename,
 		actionHandler: renameFocusedCollectionHandler)
 	private func renameFocusedCollectionHandler(
@@ -65,7 +65,7 @@ final class CollectionsTVC:
 	}
 	
 	// State
-	var needsRemoveRowsInCollectionsSection = false
+	private var needsRemoveRowsInCollectionsSection = false
 	var viewState: CollectionsViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess

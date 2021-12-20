@@ -12,7 +12,7 @@ final class PlayerVC: UIViewController {
 	
 	// Controls
 	
-	@IBOutlet private  var previousSongButton: UIButton!
+	@IBOutlet private var previousSongButton: UIButton!
 	private lazy var previousImage = UIImage(
 		systemName: "backward.end.fill",
 		withConfiguration: UIImage.SymbolConfiguration.initWithPointSize48())

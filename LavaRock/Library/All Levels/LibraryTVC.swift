@@ -82,13 +82,13 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses Should Not Customize
 	
 	// Playback
-	final lazy var playbackButtons = [
+	final private(set) lazy var playbackButtons = [
 		previousSongButton, .flexibleSpace(),
 		rewindButton, .flexibleSpace(),
 		playPauseButton, .flexibleSpace(),
 		nextSongButton,
 	]
-	final lazy var previousSongButton: UIBarButtonItem = {
+	final private(set) lazy var previousSongButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.goToPreviousSong() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
@@ -97,7 +97,7 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	final lazy var rewindButton: UIBarButtonItem = {
+	final private(set) lazy var rewindButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.rewind() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
@@ -106,8 +106,8 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	final lazy var playPauseButton = UIBarButtonItem()
-	final lazy var nextSongButton: UIBarButtonItem = {
+	final private(set) lazy var playPauseButton = UIBarButtonItem()
+	final private(set) lazy var nextSongButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.goToNextSong() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
@@ -118,10 +118,10 @@ class LibraryTVC: UITableViewController {
 	}()
 	
 	// Controls
-	final lazy var sortButton = UIBarButtonItem(
+	final private(set) lazy var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort,
 		menu: makeSortOptionsMenu())
-	final lazy var floatToTopButton: UIBarButtonItem = {
+	final private(set) lazy var floatToTopButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.floatSelectedItemsToTopOfSection() }
 		let button = UIBarButtonItem(
 			image: UIImage.floatToTopSymbol,
@@ -129,7 +129,7 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
 	}()
-	final lazy var sinkToBottomButton: UIBarButtonItem = {
+	final private(set) lazy var sinkToBottomButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.sinkSelectedItemsToBottomOfSection() }
 		let button = UIBarButtonItem(
 			image: UIImage.sinkToBottomSymbol,
@@ -137,7 +137,7 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
 	}()
-	final lazy var cancelAndDismissButton: UIBarButtonItem = {
+	final private(set) lazy var cancelAndDismissButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.dismiss(animated: true) }
 		return UIBarButtonItem(
 			systemItem: .cancel,
@@ -147,7 +147,7 @@ class LibraryTVC: UITableViewController {
 	// State
 	final var isImportingChanges = false
 	final var needsRefreshLibraryItemsOnViewDidAppear = false
-	final var isAnimatingDuringSetItemsAndRefresh = 0
+	final private var isAnimatingDuringSetItemsAndRefresh = 0
 	
 	// MARK: - Setup
 	

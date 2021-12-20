@@ -25,7 +25,7 @@ final class AlbumsTVC:
 	// MARK: - Properties
 	
 	// NoItemsBackgroundManager
-	lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
+	private(set) lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
 	
 	// Controls
 	private lazy var moveOrOrganizeButton = UIBarButtonItem(
