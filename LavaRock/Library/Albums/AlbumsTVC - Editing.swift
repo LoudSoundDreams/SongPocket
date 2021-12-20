@@ -90,9 +90,18 @@ extension AlbumsTVC {
 				let collection = oldCollectionsViewModel.collectionNonNil(at: $0)
 				return clipboard.idsOfDestinationCollections.contains(collection.objectID)
 			}
+			// Similar to `reflectDatabase`.
 			collectionsTVC.setViewModelAndMoveRows(
 				firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
-				collectionsViewModelPreviewingOrganizeAlbums)
+				collectionsViewModelPreviewingOrganizeAlbums
+			) {
+				if #available(iOS 15, *) {
+					self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
+				} else {
+					self.tableView.reloadRows(at: self.tableView.indexPathsForVisibleRowsNonNil, with: .none)
+				}
+			}
+			collectionsTVC.reflectPlayer()
 		}
 	}
 	
