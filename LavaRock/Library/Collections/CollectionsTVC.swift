@@ -16,7 +16,7 @@ final class CollectionsTVC:
 {
 	
 	enum Purpose {
-		case organizingAlbums(OrganizeAlbumsClipboard)
+		case organizingAlbums(OrganizeAlbumsClipboard?)
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
 	}
@@ -55,8 +55,8 @@ final class CollectionsTVC:
 	
 	// Purpose
 	var purpose: Purpose {
-		if let clipboard = organizeAlbumsClipboard {
-			return .organizingAlbums(clipboard)
+		if willOrganizeAlbumsStickyNote != nil {
+			return .organizingAlbums(organizeAlbumsClipboard) // Temporarily, `organizeAlbumsClipboard == nil`.
 		}
 		if let clipboard = moveAlbumsClipboard {
 			return .movingAlbums(clipboard)
@@ -92,6 +92,7 @@ final class CollectionsTVC:
 	// MARK: “Organize Albums” Sheet
 	
 	// Data
+	var willOrganizeAlbumsStickyNote: WillOrganizeAlbumsStickyNote? = nil
 	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? = nil
 	
 	// Controls
@@ -168,10 +169,10 @@ final class CollectionsTVC:
 		}
 		
 		tableView.performBatchUpdates {
-			tableView.deleteRows(at: toDelete, with: .middle)
-			tableView.insertRows(at: toInsert, with: .middle)
 			let animationForReload: UITableView.RowAnimation = toReloadInCollectionsSection.isEmpty ? .none : .fade
 			tableView.reloadRows(at: toReloadInCollectionsSection, with: animationForReload)
+			tableView.deleteRows(at: toDelete, with: .middle)
+			tableView.insertRows(at: toInsert, with: .middle)
 		} completion: { _ in
 			completion?()
 		}
@@ -257,8 +258,8 @@ final class CollectionsTVC:
 		super.setUpUI()
 		
 		switch purpose {
-		case .organizingAlbums(let clipboard):
-			navigationItem.prompt = clipboard.prompt
+		case .organizingAlbums:
+			navigationItem.prompt = willOrganizeAlbumsStickyNote?.prompt
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
 			

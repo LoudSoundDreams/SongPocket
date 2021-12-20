@@ -148,7 +148,7 @@ extension CollectionsTVC {
 				tableView.reloadRows(at: [indexPath], with: .fade)
 			}
 		} completion: { _ in
-			self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+			self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
 			self.performSegue(withIdentifier: "Open Collection", sender: self)
 		}
 	}

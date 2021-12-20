@@ -203,9 +203,9 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Setting Items
 	
 	final func setViewModelAndMoveRows(
+		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
-		reloading toReload: [IndexPath] = [],
-		thenSelect toSelect: Set<IndexPath> = [], // TO DO: Don't require a `Set` here.
+		thenSelecting toSelect: Set<IndexPath> = [], // TO DO: Don't require a `Set` here.
 		completion: (() -> Void)? = nil
 	) {
 		let oldViewModel = viewModel
@@ -249,11 +249,11 @@ class LibraryTVC: UITableViewController {
 		
 		isAnimatingDuringSetItemsAndRefresh += 1
 		tableView.performBatchUpdates(
-			sections: sectionBatchUpdates,
-			rows: rowBatchUpdates,
-			movingWith: .middle,
-			reloading: toReload,
-			reloadingWith: .fade
+			firstReloading: toReload,
+			with: .fade,
+			thenMovingSections: sectionBatchUpdates,
+			andRows: rowBatchUpdates,
+			with: .middle
 		) {
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
 			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).

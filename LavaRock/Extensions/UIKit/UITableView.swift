@@ -10,33 +10,33 @@ import UIKit
 extension UITableView {
 	
 	final func performBatchUpdates(
-		sections: BatchUpdates<Int>,
-		rows: [BatchUpdates<IndexPath>],
-		movingWith moveAnimation: RowAnimation,
-		reloading toReload: [IndexPath],
-		reloadingWith reloadAnimation: RowAnimation,
+		firstReloading toReload: [IndexPath],
+		with reloadAnimation: RowAnimation,
+		thenMovingSections sectionUpdates: BatchUpdates<Int>,
+		andRows rowUpdates: [BatchUpdates<IndexPath>],
+		with moveAnimation: RowAnimation,
 		completion: @escaping () -> Void
 	) {
-		let rowsToDelete = rows.flatMap { $0.toDelete }
-		let rowsToInsert = rows.flatMap { $0.toInsert }
-		let rowsToMove = rows.flatMap { $0.toMove }
+		let rowsToDelete = rowUpdates.flatMap { $0.toDelete }
+		let rowsToInsert = rowUpdates.flatMap { $0.toInsert }
+		let rowsToMove = rowUpdates.flatMap { $0.toMove }
 		
 		performBatchUpdates {
-			deleteSections(IndexSet(sections.toDelete), with: moveAnimation)
+			reloadRows(at: toReload, with: reloadAnimation)
+			
+			deleteSections(IndexSet(sectionUpdates.toDelete), with: moveAnimation)
 			deleteRows(at: rowsToDelete, with: moveAnimation)
 			
-			insertSections(IndexSet(sections.toInsert), with: moveAnimation)
+			insertSections(IndexSet(sectionUpdates.toInsert), with: moveAnimation)
 			insertRows(at: rowsToInsert, with: moveAnimation)
 			
 			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
-			sections.toMove.forEach { (sourceIndex, destinationIndex) in
+			sectionUpdates.toMove.forEach { (sourceIndex, destinationIndex) in
 				moveSection(sourceIndex, toSection: destinationIndex)
 			}
 			rowsToMove.forEach { (sourceIndexPath, destinationIndexPath) in
 				moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
-			
-			reloadRows(at: toReload, with: reloadAnimation)
 		} completion: { _ in
 			completion()
 		}

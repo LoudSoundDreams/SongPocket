@@ -11,15 +11,21 @@ protocol OrganizeAlbumsDelegate: AnyObject {
 	func didSaveOrganizeThenDismiss()
 }
 
+struct WillOrganizeAlbumsStickyNote {
+	let prompt: String
+	let idsOfSourceCollections: Set<NSManagedObjectID>
+}
+
 final class OrganizeAlbumsClipboard {
 	
 	// Data
+	let idsOfSourceCollections: Set<NSManagedObjectID>
+	let idsOfUnmovedAlbums: Set<NSManagedObjectID>
 	let idsOfMovedAlbums: Set<NSManagedObjectID>
 	let idsOfDestinationCollections: Set<NSManagedObjectID>
-	let idsOfSourceCollections: Set<NSManagedObjectID>
 	
 	// Helpers
-	weak var delegate: OrganizeAlbumsDelegate? = nil
+	private(set) weak var delegate: OrganizeAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
 			LocalizedString.format_organizeIntoXCollectionsByAlbumArtistQuestionMark,
@@ -30,20 +36,16 @@ final class OrganizeAlbumsClipboard {
 	var didAlreadyCommitOrganize = false
 	
 	init(
-		idsOfMovedAlbums: Set<NSManagedObjectID>,
 		idsOfSourceCollections: Set<NSManagedObjectID>,
-		contextPreviewingChanges: NSManagedObjectContext,
+		idsOfUnmovedAlbums: Set<NSManagedObjectID>,
+		idsOfMovedAlbums: Set<NSManagedObjectID>,
+		idsOfDestinationCollections: Set<NSManagedObjectID>,
 		delegate: OrganizeAlbumsDelegate
 	) {
-		self.idsOfMovedAlbums = idsOfMovedAlbums
-		
 		self.idsOfSourceCollections = idsOfSourceCollections
-		
-		let movedAlbums = idsOfMovedAlbums.map {
-			contextPreviewingChanges.object(with: $0) as! Album
-		}
-		idsOfDestinationCollections = Set(movedAlbums.map { $0.container!.objectID })
-		
+		self.idsOfUnmovedAlbums = idsOfUnmovedAlbums
+		self.idsOfMovedAlbums = idsOfMovedAlbums
+		self.idsOfDestinationCollections = idsOfDestinationCollections
 		self.delegate = delegate
 	}
 	

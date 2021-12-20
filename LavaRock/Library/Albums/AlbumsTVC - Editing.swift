@@ -58,35 +58,42 @@ extension AlbumsTVC {
 		let childContext = NSManagedObjectContext.withParent(viewModel.context)
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
-		let albumIDs = AlbumsViewModel.organizeByAlbumArtist(
+		let clipboard = AlbumsViewModel.organizeByAlbumArtistAndReturnClipboard(
 			albumsToOrganize,
-			via: childContext)
+			via: childContext,
+			delegateForClipboard: self)
 		let selectedItems = tableView.indexPathsForSelectedRowsNonNil.compactMap {
 			viewModel.itemOptional(at: $0)
 		}
 		idsOfAlbumsToKeepSelected = Set(selectedItems.compactMap {
 			let selectedAlbumID = $0.objectID
-			if albumIDs.idsOfUnmovedAlbums.contains(selectedAlbumID) {
+			if clipboard.idsOfUnmovedAlbums.contains(selectedAlbumID) {
 				return selectedAlbumID
 			} else {
 				return nil
 			}
 		})
 		
-		// Provide the extra data that the "organize albums" sheet needs.
-		let idsOfSourceCollections = Set(albumsToOrganize.map { $0.container!.objectID })
-		collectionsTVC.organizeAlbumsClipboard = OrganizeAlbumsClipboard(
-			idsOfMovedAlbums: albumIDs.idsOfMovedAlbums,
-			idsOfSourceCollections: idsOfSourceCollections,
-			contextPreviewingChanges: childContext,
-			delegate: self)
+		collectionsTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
+			prompt: clipboard.prompt,
+			idsOfSourceCollections: clipboard.idsOfSourceCollections)
 		
-		// Make the "organize albums" sheet show the child context.
-		collectionsTVC.viewModel = CollectionsViewModel(
-			context: childContext,
-			prerowsInEachSection: [])
-		
-		present(collectionsNC, animated: true)
+		// Make the "organize albums" sheet show the child context, but only after we present it.
+		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? CollectionsViewModel else { return }
+		present(collectionsNC, animated: true) {
+			collectionsTVC.organizeAlbumsClipboard = clipboard
+			
+			let collectionsViewModelPreviewingOrganizeAlbums = CollectionsViewModel(
+				context: childContext,
+				prerowsInEachSection: [])
+			let indexPathsOfDestinationCollectionsThatAlreadyExisted = oldCollectionsViewModel.indexPathsForAllItems().filter {
+				let collection = oldCollectionsViewModel.collectionNonNil(at: $0)
+				return clipboard.idsOfDestinationCollections.contains(collection.objectID)
+			}
+			collectionsTVC.setViewModelAndMoveRows(
+				firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
+				collectionsViewModelPreviewingOrganizeAlbums)
+		}
 	}
 	
 	private func startMoving() {

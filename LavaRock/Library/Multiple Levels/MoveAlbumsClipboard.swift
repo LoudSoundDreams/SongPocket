@@ -20,7 +20,7 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	
 	// Helpers
-	weak var delegate: MoveAlbumsDelegate? = nil
+	private(set) weak var delegate: MoveAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
 			FeatureFlag.multicollection ? LocalizedString.format_chooseASectiontoMoveXAlbumsTo : LocalizedString.format_chooseACollectionToMoveXAlbumsTo,

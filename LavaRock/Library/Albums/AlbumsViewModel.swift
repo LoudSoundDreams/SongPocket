@@ -140,13 +140,11 @@ extension AlbumsViewModel {
 		}
 	}
 	
-	static func organizeByAlbumArtist(
+	static func organizeByAlbumArtistAndReturnClipboard(
 		_ albumsToOrganize: [Album],
-		via context: NSManagedObjectContext
-	) -> (
-		idsOfMovedAlbums: Set<NSManagedObjectID>,
-		idsOfUnmovedAlbums: Set<NSManagedObjectID>
-	) {
+		via context: NSManagedObjectContext,
+		delegateForClipboard: OrganizeAlbumsDelegate
+	) -> OrganizeAlbumsClipboard {
 		let log = OSLog(
 			subsystem: "Organize Albums",
 			category: .pointsOfInterest)
@@ -161,7 +159,7 @@ extension AlbumsViewModel {
 		// Put new `Collection`s at the top, in the order that the album artists first appear among the `Album`s we're moving.
 		
 		// Results
-		var idsOfMovedAlbums: Set<NSManagedObjectID> = []
+		var movedAlbums: Set<Album> = []
 		var idsOfUnmovedAlbums: Set<NSManagedObjectID> = []
 		
 		// Work notes
@@ -179,7 +177,7 @@ extension AlbumsViewModel {
 				return
 			}
 			
-			idsOfMovedAlbums.insert(album.objectID)
+			movedAlbums.insert(album)
 			
 			// If we've created a matching `Collection` …
 			if let matchingNewCollection = newCollectionsByTitle[titleOfDestinationCollection] {
@@ -219,10 +217,18 @@ extension AlbumsViewModel {
 			}
 		}
 		
-		return (
-			idsOfMovedAlbums,
-			idsOfUnmovedAlbums
-		)
+		// Create the `OrganizeAlbumsClipboard` to return.
+		let idsOfSourceCollections = Set(albumsToOrganize.map { $0.container!.objectID })
+		let idsOfMovedAlbums = Set(movedAlbums.map { $0.objectID })
+		let idsOfDestinationCollections = Set(idsOfMovedAlbums.map {
+			(context.object(with: $0) as! Album).container!.objectID
+		})
+		return OrganizeAlbumsClipboard(
+			idsOfSourceCollections: idsOfSourceCollections,
+			idsOfUnmovedAlbums: idsOfUnmovedAlbums,
+			idsOfMovedAlbums: idsOfMovedAlbums,
+			idsOfDestinationCollections: idsOfDestinationCollections,
+			delegate: delegateForClipboard)
 	}
 	
 	// MARK: - “Move Albums” Sheet

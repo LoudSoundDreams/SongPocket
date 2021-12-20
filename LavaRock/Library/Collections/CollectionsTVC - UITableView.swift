@@ -106,6 +106,16 @@ extension CollectionsTVC {
 		let mode: CollectionCell.Mode = {
 			switch purpose {
 			case .organizingAlbums(let clipboard):
+				guard let clipboard = clipboard else {
+					guard let stickyNote = willOrganizeAlbumsStickyNote else {
+						return .modal
+					}
+					if stickyNote.idsOfSourceCollections.contains(collection.objectID) {
+						return .modalDisabled
+					} else {
+						return .modal
+					}
+				}
 				if clipboard.idsOfSourceCollections.contains(collection.objectID) {
 					return .modalDisabled
 				} else if clipboard.idsOfDestinationCollections.contains(collection.objectID) {
