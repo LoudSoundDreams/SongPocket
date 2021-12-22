@@ -7,6 +7,7 @@
 
 import UIKit
 import MediaPlayer
+import OSLog
 
 final class AlbumArtworkCell: UITableViewCell {
 	@IBOutlet private var artworkImageView: UIImageView!
@@ -22,12 +23,16 @@ final class AlbumArtworkCell: UITableViewCell {
 	
 	final func configure(with album: Album) {
 		// Artwork
+		os_signpost(.begin, log: .songsView, name: "Draw artwork image")
 		let artworkImage = album.artworkImage( // Can be nil
 			at: CGSize(
 				width: UIScreen.main.bounds.width,
 				height: UIScreen.main.bounds.width))
+		os_signpost(.end, log: .songsView, name: "Draw artwork image")
 		
+		os_signpost(.begin, log: .songsView, name: "Set artwork image")
 		artworkImageView.image = artworkImage
+		os_signpost(.end, log: .songsView, name: "Set artwork image")
 	}
 }
 
@@ -108,7 +113,7 @@ final class SongCell:
 			let discCount = representativeItem.discCount
 			// Show disc numbers if the disc count is more than 1, or if the disc count isn't more than 1 but the disc number is.
 			let shouldShowDiscNumber: Bool = {
-				discCount > 1 // As of iOS 15.0 RC, MediaPlayer sometimes reports `discCount == 0` for albums with 1 disc.
+				discCount > 1 // As of iOS 15.0 RC, Media Player sometimes reports `discCount == 0` for albums with 1 disc.
 				? true
 				: discNumber > 1
 			}()

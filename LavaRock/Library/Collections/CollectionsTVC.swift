@@ -70,10 +70,10 @@ final class CollectionsTVC:
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
-		if needsRemoveRowsInCollectionsSection { // You must check this before checking `isImportingChanges`.
+		if needsRemoveRowsInCollectionsSection { // You must check this before checking `isMergingChanges`.
 			return .wasLoadingOrNoCollections
 		}
-		if isImportingChanges {
+		if isMergingChanges {
 			if viewModel.isEmpty() {
 				return .loading
 			} else {
@@ -162,7 +162,7 @@ final class CollectionsTVC:
 			toDelete = oldInCollectionsSection
 			toInsert = newInCollectionsSection
 			toReloadInCollectionsSection = []
-		case .someCollections: // Importing changes with existing Collections
+		case .someCollections: // Merging changes with existing Collections
 			toDelete = []
 			toInsert = []
 			toReloadInCollectionsSection = []
@@ -229,10 +229,10 @@ final class CollectionsTVC:
 	private func integrateWithBuiltInMusicApp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		isImportingChanges = true // viewState is now .loading or .someCollections (updating)
+		isMergingChanges = true // viewState is now .loading or .someCollections (updating)
 		reflectViewState {
-			MusicLibraryManager.shared.setUpAndImportChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the import completes.
-			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after importing changes (above) does.
+			MusicLibraryManager.shared.setUpAndMergeChanges() // You must finish LibraryTVC's beginObservingNotifications() before this, because we need to observe the notification after the merge completes.
+			PlayerManager.setUp() // This actually doesn't trigger refreshing the playback toolbar; refreshing after merging changes (above) does.
 		}
 	}
 	

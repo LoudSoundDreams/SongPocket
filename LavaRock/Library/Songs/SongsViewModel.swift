@@ -72,7 +72,7 @@ extension SongsViewModel: LibraryViewModel {
 //				if mediaItem.albumTrackNumber != MPMediaItem.unknownTrackNumber {
 //					return true
 //				}
-//				return mediaItem.discNumber != 0 // As of iOS 14.7 developer beta 5, MediaPlayer reports unknown disc numbers as 1.
+//				return mediaItem.discNumber != 0 // As of iOS 14.7 developer beta 5, Media Player reports unknown disc numbers as 1.
 //			}
 		case
 				.random,

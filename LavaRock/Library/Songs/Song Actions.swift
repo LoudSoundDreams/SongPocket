@@ -12,10 +12,6 @@ import OSLog
 
 extension SongsTVC {
 	
-	static let log = OSLog(
-		subsystem: "SongsTVC",
-		category: .pointsOfInterest)
-	
 	// MARK: - Presenting
 	
 	final func showSongActions(
@@ -83,11 +79,11 @@ extension SongsTVC {
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
 		
 		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
-		os_signpost(.begin, log: Self.log, name: "Get chosen MPMediaItems")
+		os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
 		let chosenMediaItems = chosenSongs.compactMap {
 			($0 as? Song)?.mpMediaItem()
 		}
-		os_signpost(.end, log: Self.log, name: "Get chosen MPMediaItems")
+		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
@@ -104,11 +100,11 @@ extension SongsTVC {
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
 		
 		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
-		os_signpost(.begin, log: Self.log, name: "Get chosen MPMediaItems")
+		os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
 		let chosenMediaItems = chosenSongs.compactMap {
 			($0 as? Song)?.mpMediaItem()
 		}
-		os_signpost(.end, log: Self.log, name: "Get chosen MPMediaItems")
+		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		

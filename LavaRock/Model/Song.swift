@@ -17,18 +17,14 @@ extension Song: LibraryItem {
 
 extension Song {
 	
-	static let log = OSLog(
-		subsystem: "Song",
-		category: .pointsOfInterest)
-	
 	convenience init(
 		atEndOf album: Album,
 		for mediaItem: MPMediaItem,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Create a Song at the bottom")
+		os_signpost(.begin, log: .song, name: "Create a Song at the bottom")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Create a Song at the bottom")
+			os_signpost(.end, log: .song, name: "Create a Song at the bottom")
 		}
 		
 		self.init(context: context)
@@ -43,9 +39,9 @@ extension Song {
 		for mediaItem: MPMediaItem,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Create a Song at the top")
+		os_signpost(.begin, log: .song, name: "Create a Song at the top")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Create a Song at the top")
+			os_signpost(.end, log: .song, name: "Create a Song at the top")
 		}
 		
 		album.songs(sorted: false).forEach { $0.index += 1 }
@@ -93,9 +89,9 @@ extension Song {
 	
 	// Slow.
 	final func mpMediaItem() -> MPMediaItem? {
-		os_signpost(.begin, log: Self.log, name: "mpMediaItem()")
+		os_signpost(.begin, log: .song, name: "Query for MPMediaItem")
 		defer {
-			os_signpost(.end, log: Self.log, name: "mpMediaItem()")
+			os_signpost(.end, log: .song, name: "Query for MPMediaItem")
 		}
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
@@ -108,9 +104,9 @@ extension Song {
 				forProperty: MPMediaItemPropertyPersistentID)
 		)
 		
-		os_signpost(.begin, log: Self.log, name: "Process query")
+		os_signpost(.begin, log: .song, name: "Process query")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Process query")
+			os_signpost(.end, log: .song, name: "Process query")
 		}
 		if
 			let queriedSongs = songsQuery.items,

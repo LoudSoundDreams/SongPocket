@@ -145,7 +145,7 @@ class LibraryTVC: UITableViewController {
 	}()
 	
 	// State
-	final var isImportingChanges = false
+	final var isMergingChanges = false
 	final var needsRefreshLibraryItemsOnViewDidAppear = false
 	final private var isAnimatingDuringSetItemsAndRefresh = 0
 	

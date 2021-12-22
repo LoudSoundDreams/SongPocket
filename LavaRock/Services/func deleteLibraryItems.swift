@@ -1,5 +1,5 @@
 //
-//  func deleteManagedObjects.swift
+//  func deleteLibraryItems.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-22.
@@ -11,12 +11,12 @@ import OSLog
 extension MusicLibraryManager {
 	
 	// Delete Songs for media items that are no longer in the Music library, and then any empty Albums, and then any empty Collections.
-	final func deleteManagedObjects(
+	final func deleteLibraryItems(
 		for songs: Set<Song> // TO DO: Don't require a `Set` here.
 	) {
-		os_signpost(.begin, log: importLog, name: "4. Delete Managed Objects")
+		os_signpost(.begin, log: .merge, name: "4. Delete library items")
 		defer {
-			os_signpost(.end, log: importLog, name: "4. Delete Managed Objects")
+			os_signpost(.end, log: .merge, name: "4. Delete library items")
 		}
 		
 		songs.forEach {

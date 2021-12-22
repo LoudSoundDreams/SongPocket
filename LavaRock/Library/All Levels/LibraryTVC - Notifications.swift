@@ -25,8 +25,8 @@ extension LibraryTVC {
 	@objc func beginObservingNotifications() {
 		NotificationCenter.default.removeAndAddObserver(
 			self,
-			selector: #selector(didImportChanges),
-			name: .LRDidImportChanges,
+			selector: #selector(didMergeChanges),
+			name: .LRDidMergeChanges,
 			object: nil)
 		
 		if MPMediaLibrary.authorizationStatus() == .authorized {
@@ -37,7 +37,7 @@ extension LibraryTVC {
 				object: nil)
 		}
 	}
-	@objc private func didImportChanges() { reflectDatabase() }
+	@objc private func didMergeChanges() { reflectDatabase() }
 	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
 	
 	// MARK: - After Updating Database
@@ -81,7 +81,7 @@ extension LibraryTVC {
 	}
 	
 	@objc func refreshLibraryItems() {
-		isImportingChanges = false
+		isMergingChanges = false
 		
 		/*
 		 // When we need to refresh, you might be in the middle of a content-dependent task. Cancel those content-dependent tasks.

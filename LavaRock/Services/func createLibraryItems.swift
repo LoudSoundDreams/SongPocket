@@ -1,5 +1,5 @@
 //
-//  func createManagedObjects.swift
+//  func createLibraryItems.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-22.
@@ -12,15 +12,15 @@ import OSLog
 extension MusicLibraryManager {
 	
 	// Create new managed objects for the new media items, including new Albums and Collections to put them in if necessary.
-	final func createManagedObjects(
+	final func createLibraryItems(
 		for newMediaItems: [MPMediaItem],
 		existingAlbums: [Album],
 		existingCollections: [Collection],
 		isFirstImport: Bool
 	) {
-		os_signpost(.begin, log: importLog, name: "3. Create Managed Objects")
+		os_signpost(.begin, log: .merge, name: "3. Create library items")
 		defer {
-			os_signpost(.end, log: importLog, name: "3. Create Managed Objects")
+			os_signpost(.end, log: .merge, name: "3. Create library items")
 		}
 		
 		// Group the MPMediaItems into albums, sorted by the order we'll add them to our database in.
@@ -29,23 +29,23 @@ extension MusicLibraryManager {
 				// Since our database is empty, we'll add items from the top down, because it's faster.
 				let dictionary = groupedByAlbumPersistentID(newMediaItems)
 				let groups = dictionary.map { $0.value }
-				os_signpost(.begin, log: createLog, name: "Initial sort")
+				os_signpost(.begin, log: .create, name: "Initial sort")
 				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(mediaItemGroups: groups)
 				// We'll sort Albums by release date later.
-				os_signpost(.end, log: createLog, name: "Initial sort")
+				os_signpost(.end, log: .create, name: "Initial sort")
 				return sortedGroups
 			} else {
 				// Since our database isn't empty, we'll insert items at the top from the bottom up, because it's simpler.
-				os_signpost(.begin, log: createLog, name: "Initial sort")
+				os_signpost(.begin, log: .create, name: "Initial sort")
 				let sortedMediaItems = newMediaItems.sorted { $0.dateAdded < $1.dateAdded }
-				os_signpost(.end, log: createLog, name: "Initial sort")
+				os_signpost(.end, log: .create, name: "Initial sort")
 				let dictionary = groupedByAlbumPersistentID(sortedMediaItems)
 				let groupsOfSortedMediaItems = dictionary.map { $0.value }
-				os_signpost(.begin, log: createLog, name: "Initial sort 2")
+				os_signpost(.begin, log: .create, name: "Initial sort 2")
 				let sortedGroups = groupsOfSortedMediaItems.sorted { leftGroup, rightGroup in
 					leftGroup.first!.dateAdded < rightGroup.first!.dateAdded
 				}
-				os_signpost(.end, log: createLog, name: "Initial sort 2")
+				os_signpost(.end, log: .create, name: "Initial sort 2")
 				return sortedGroups
 			}
 			// We'll sort Songs within each Album later, because it depends on whether the existing Songs in each Album are in album order.
@@ -58,9 +58,9 @@ extension MusicLibraryManager {
 		var existingAlbums_byInt64 = Dictionary(uniqueKeysWithValues: tuplesForExistingAlbums)
 		var existingCollectionsByTitle = Dictionary(grouping: existingCollections) { $0.title! }
 		
-		os_signpost(.begin, log: createLog, name: "Create all the Songs and containers")
+		os_signpost(.begin, log: .create, name: "Create all the Songs and containers")
 		mediaItemGroups.forEach { mediaItemGroup in
-			os_signpost(.begin, log: createLog, name: "Create one group of Songs and containers")
+			os_signpost(.begin, log: .create, name: "Create one group of Songs and containers")
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: mediaItemGroup,
 				   existingAlbums_byInt64: existingAlbums_byInt64,
@@ -76,9 +76,9 @@ extension MusicLibraryManager {
 				let newBucketOfCollections = [newCollection] + oldBucketOfCollections
 				existingCollectionsByTitle[title] = newBucketOfCollections
 			}
-			os_signpost(.end, log: createLog, name: "Create one group of Songs and containers")
+			os_signpost(.end, log: .create, name: "Create one group of Songs and containers")
 		}
-		os_signpost(.end, log: createLog, name: "Create all the Songs and containers")
+		os_signpost(.end, log: .create, name: "Create all the Songs and containers")
 	}
 	
 	// MARK: - Grouping MPMediaItems
@@ -86,9 +86,9 @@ extension MusicLibraryManager {
 	private func groupedByAlbumPersistentID(
 		_ mediaItems: [MPMediaItem]
 	) -> [MPMediaEntityPersistentID: [MPMediaItem]] {
-		os_signpost(.begin, log: createLog, name: "Initial group")
+		os_signpost(.begin, log: .create, name: "Initial group")
 		defer {
-			os_signpost(.end, log: createLog, name: "Initial group")
+			os_signpost(.end, log: .create, name: "Initial group")
 		}
 		
 		return Dictionary(grouping: mediaItems) { $0.albumPersistentID }
@@ -133,9 +133,9 @@ extension MusicLibraryManager {
 			// … then add the Songs to that Album.
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
 				matchingExistingAlbum.createSongsAtBeginning(for: mediaItemGroup)
-				os_signpost(.begin, log: createLog, name: "Put the existing Album back in order")
+				os_signpost(.begin, log: .create, name: "Put the existing Album back in order")
 				matchingExistingAlbum.sortSongsByDefaultOrder()
-				os_signpost(.end, log: createLog, name: "Put the existing Album back in order")
+				os_signpost(.end, log: .create, name: "Put the existing Album back in order")
 			} else {
 				matchingExistingAlbum.createSongsAtBeginning(for: mediaItemGroup)
 			}
@@ -144,20 +144,20 @@ extension MusicLibraryManager {
 			
 		} else {
 			// Otherwise, create the Album to add the Songs to …
-			os_signpost(.begin, log: createLog, name: "Create a new Album and maybe new Collection")
+			os_signpost(.begin, log: .create, name: "Create a new Album and maybe new Collection")
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
 				for: firstMediaItemInAlbum,
 				   existingCollectionsByTitle: existingCollectionsByTitle,
 				   isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
-			os_signpost(.end,log: createLog, name: "Create a new Album and maybe new Collection")
+			os_signpost(.end,log: .create, name: "Create a new Album and maybe new Collection")
 			
 			// … and then add the Songs to that Album.
-			os_signpost(.begin, log: createLog, name: "Sort the Songs for the new Album")
+			os_signpost(.begin, log: .create, name: "Sort the Songs for the new Album")
 			let sortedMediaItemGroup = mediaItemGroup.sorted {
 				$0.precedesInDefaultOrder(inSameAlbum: $1)
 			}
-			os_signpost(.end, log: createLog, name: "Sort the Songs for the new Album")
+			os_signpost(.end, log: .create, name: "Sort the Songs for the new Album")
 			newAlbum.createSongsAtEnd(for: sortedMediaItemGroup)
 			
 			return newContainers
@@ -198,11 +198,11 @@ extension MusicLibraryManager {
 			// Otherwise, create the `Collection` to put the `Album` into …
 			let newCollection: Collection = {
 				if isFirstImport {
-					os_signpost(.begin, log: createLog, name: "Count all the Collections so far")
+					os_signpost(.begin, log: .create, name: "Count all the Collections so far")
 					let existingCollectionsCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
 						partialResult + entry.value.count
 					}
-					os_signpost(.end, log: createLog, name: "Count all the Collections so far")
+					os_signpost(.end, log: .create, name: "Count all the Collections so far")
 					return Collection(
 						afterAllOtherCollectionsCount: existingCollectionsCount,
 						title: titleOfDestinationCollection,

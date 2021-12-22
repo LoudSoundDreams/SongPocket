@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import OSLog
 
 final class MoveHereCell: TintedSelectedCell {
 	@IBOutlet private var moveHereLabel: UILabel!
@@ -56,10 +57,12 @@ final class AlbumCell:
 	) {
 		// Artwork
 		let maxWidthAndHeight = artworkImageView.bounds.width
+		os_signpost(.begin, log: .albumsView, name: "Draw artwork image")
 		let artworkImage = album.artworkImage( // Can be nil
 			at: CGSize(
 				width: maxWidthAndHeight,
 				height: maxWidthAndHeight))
+		os_signpost(.end, log: .albumsView, name: "Draw artwork image")
 		
 		// Title
 		let title: String // Don't let this be nil.
@@ -68,7 +71,9 @@ final class AlbumCell:
 		// Release date
 		let releaseDateString = album.releaseDateEstimateFormatted() // Can be nil
 		
+		os_signpost(.begin, log: .albumsView, name: "Set artwork image")
 		artworkImageView.image = artworkImage
+		os_signpost(.end, log: .albumsView, name: "Set artwork image")
 		titleLabel.text = title
 		releaseDateLabel.text = releaseDateString
 		 

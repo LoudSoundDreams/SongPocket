@@ -9,7 +9,7 @@ import MediaPlayer
 
 extension MPMediaItem {
 	
-	// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown track numbers as 0.
+	// As of iOS 14.7 developer beta 5, Media Player reports unknown track numbers as 0.
 	static let unknownTrackNumber = 0
 	
 	// MARK: - Predicates for Sorting
@@ -31,7 +31,7 @@ extension MPMediaItem {
 			}
 			
 			// Move unknown album title to end
-			// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown album titles as "".
+			// As of iOS 14.7 developer beta 5, Media Player reports unknown album titles as "".
 			guard otherAlbumTitle != "", let otherAlbumTitle = otherAlbumTitle else {
 				return true
 			}
@@ -44,7 +44,7 @@ extension MPMediaItem {
 		}
 		
 		// Move unknown album artist to end
-		// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown album artists as nil.
+		// As of iOS 14.7 developer beta 5, Media Player reports unknown album artists as nil.
 		guard let otherAlbumArtist = otherAlbumArtist, otherAlbumArtist != "" else {
 			return true
 		}
@@ -75,7 +75,7 @@ extension MPMediaItem {
 		shouldResortToTitle: Bool
 	) -> Bool {
 		// Sort by disc number
-		// As of iOS 14.7 developer beta 5, MediaPlayer reports unknown disc numbers as 1.
+		// As of iOS 14.7 developer beta 5, Media Player reports unknown disc numbers as 1.
 		let myDisc = discNumber
 		let otherDisc = other.discNumber
 		guard myDisc == otherDisc else {
@@ -88,7 +88,7 @@ extension MPMediaItem {
 		if shouldResortToTitle {
 			guard myTrack != otherTrack else {
 				// Sort by song title
-				// Music for Mac as of version 1.1.5.74 doesn't allow blank song titles, so we shouldn't need to move unknown song titles to the end. We don't know whether MediaPlayer would report unknown song titles as nil or "".
+				// Music for Mac as of version 1.1.5.74 doesn't allow blank song titles, so we shouldn't need to move unknown song titles to the end. We don't know whether Media Player would report unknown song titles as nil or "".
 				let myTitle = title ?? ""
 				let otherTitle = other.title ?? ""
 				return myTitle.precedesAlphabeticallyFinderStyle(otherTitle)

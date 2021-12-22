@@ -1,5 +1,5 @@
 //
-//  func importChanges.swift
+//  func mergeChanges.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-15.
@@ -11,26 +11,26 @@ import OSLog
 
 extension MusicLibraryManager {
 	
-	// This is where the magic happens. This is the engine that keeps our data structures matched up with the library in the built-in Music app.
-	final func importChanges() {
-		os_signpost(.begin, log: importLog, name: "1. Import Changes Main")
+	// Keep our database matched up with the user’s library in the built-in Music app.
+	final func mergeChanges() {
+		os_signpost(.begin, log: .merge, name: "1. Merge changes")
 		defer {
-			os_signpost(.end, log: importLog, name: "1. Import Changes Main")
+			os_signpost(.end, log: .merge, name: "1. Merge changes")
 		}
 		
 		context.performAndWait {
-			importChangesMethodBody()
+			mergeChanges_()
 		}
 	}
 	
-	// WARNING: persistentIDs and albumPersistentIDs from the MediaPlayer framework are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
-	private func importChangesMethodBody() {
+	// WARNING: persistentIDs and albumPersistentIDs from Media Player are UInt64s, whereas we store them in Core Data as Int64s, so always use Int64(bitPattern: persistentID) when you deal with both Core Data and persistentIDs.
+	private func mergeChanges_() {
 		guard
 			MPMediaLibrary.authorizationStatus() == .authorized,
 			let queriedMediaItems = MPMediaQuery.songs().items
 		else { return }
 		
-		os_signpost(.begin, log: importLog, name: "Initial parse")
+		os_signpost(.begin, log: .merge, name: "Initial parse")
 		let existingSongs = Song.allFetched(ordered: false, via: context)
 		
 		let defaults = UserDefaults.standard
@@ -66,9 +66,9 @@ extension MusicLibraryManager {
 		}
 		// mediaItems_byInt64 now holds the MPMediaItems that we don't have Songs for. We'll create new Songs (and maybe new Albums and Collections) for them.
 		let newMediaItems = mediaItems_byInt64.map { $0.value }
-		os_signpost(.end, log: importLog, name: "Initial parse")
+		os_signpost(.end, log: .merge, name: "Initial parse")
 		
-		updateManagedObjects( // Update before creating and deleting, so that we can easily put new Songs above modified Songs.
+		updateLibraryItems( // Update before creating and deleting, so that we can easily put new Songs above modified Songs.
 			// This also deletes all but one Album with any given albumPersistentID.
 			// This might create Albums, but not Collections or Songs.
 			// This might delete Albums, but not Collections or Songs.
@@ -77,19 +77,19 @@ extension MusicLibraryManager {
 		
 		let existingAlbums = Album.allFetched(ordered: false, via: context) // Order doesn't matter, because we identify Albums by their albumPersistentID.
 		let existingCollections = Collection.allFetched(via: context) // Order matters, because we'll try to add new Albums to the first Collection with a matching title.
-		createManagedObjects( // Create before deleting, because deleting also cleans up empty Albums and Collections, which we shouldn't do yet, as mentioned above.
+		createLibraryItems( // Create before deleting, because deleting also cleans up empty Albums and Collections, which we shouldn't do yet, as mentioned above.
 			// This might create new Albums, and if it does, it might create new Collections.
 			for: newMediaItems,
 			existingAlbums: existingAlbums,
 			existingCollections: existingCollections,
 			isFirstImport: isFirstImport)
-		deleteManagedObjects(
+		deleteLibraryItems(
 			for: songsToDelete)
 		
-		os_signpost(.begin, log: importLog, name: "Convert Array to Set")
+		os_signpost(.begin, log: .merge, name: "Convert Array to Set")
 		let setOfQueriedMediaItems = Set(queriedMediaItems)
-		os_signpost(.end, log: importLog, name: "Convert Array to Set")
-		cleanUpManagedObjects(
+		os_signpost(.end, log: .merge, name: "Convert Array to Set")
+		cleanUpLibraryItems(
 			allMediaItems: setOfQueriedMediaItems,
 			isFirstImport: isFirstImport)
 		
@@ -101,7 +101,7 @@ extension MusicLibraryManager {
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
-				Notification(name: .LRDidImportChanges)
+				Notification(name: .LRDidMergeChanges)
 			)
 		}
 	}

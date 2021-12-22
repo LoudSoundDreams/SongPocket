@@ -20,18 +20,14 @@ extension Collection: LibraryContainer {
 
 extension Collection {
 	
-	static let log = OSLog(
-		subsystem: "Collection",
-		category: .pointsOfInterest)
-	
 	convenience init(
 		afterAllOtherCollectionsCount numberOfExistingCollections: Int,
 		title: String,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Create a Collection at the bottom")
+		os_signpost(.begin, log: .collection, name: "Create a Collection at the bottom")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Create a Collection at the bottom")
+			os_signpost(.end, log: .collection, name: "Create a Collection at the bottom")
 		}
 		
 		self.init(context: context)
@@ -46,9 +42,9 @@ extension Collection {
 		title: String,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Create a Collection at the top")
+		os_signpost(.begin, log: .collection, name: "Create a Collection at the top")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Create a Collection at the top")
+			os_signpost(.end, log: .collection, name: "Create a Collection at the top")
 		}
 		
 		displacedCollections.forEach { $0.index += 1 }
@@ -165,26 +161,26 @@ extension Collection {
 		possiblyToSameCollection: Bool,
 		via context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Move Albums to end")
+		os_signpost(.begin, log: .collection, name: "Move Albums to end")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Move Albums to end")
+			os_signpost(.end, log: .collection, name: "Move Albums to end")
 		}
 		
-		os_signpost(.begin, log: Self.log, name: "Fetch Albums")
+		os_signpost(.begin, log: .collection, name: "Fetch Albums")
 		let albumsToMove = albumIDs.map {
 			context.object(with: $0)
 		} as! [Album]
-		os_signpost(.end, log: Self.log, name: "Fetch Albums")
+		os_signpost(.end, log: .collection, name: "Fetch Albums")
 		
-		os_signpost(.begin, log: Self.log, name: "Count Albums already in this Collection")
+		os_signpost(.begin, log: .collection, name: "Count Albums already in this Collection")
 		let oldNumberOfAlbums = albums(sorted: false).count
-		os_signpost(.end, log: Self.log, name: "Count Albums already in this Collection")
+		os_signpost(.end, log: .collection, name: "Count Albums already in this Collection")
 		albumsToMove.indices.forEach { index in
-			os_signpost(.begin, log: Self.log, name: "Update Album attributes")
+			os_signpost(.begin, log: .collection, name: "Update Album attributes")
 			let album = albumsToMove[index]
 			album.container = self
 			album.index = Int64(oldNumberOfAlbums + index)
-			os_signpost(.end, log: Self.log, name: "Update Album attributes")
+			os_signpost(.end, log: .collection, name: "Update Album attributes")
 		}
 		
 		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.

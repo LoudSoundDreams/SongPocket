@@ -145,9 +145,7 @@ extension AlbumsViewModel {
 		via context: NSManagedObjectContext,
 		delegateForClipboard: OrganizeAlbumsDelegate
 	) -> OrganizeAlbumsClipboard {
-		let log = OSLog(
-			subsystem: "Organize Albums",
-			category: .pointsOfInterest)
+		let log = OSLog.albumsView
 		os_signpost(.begin, log: log, name: "Preview organizing Albums")
 		defer {
 			os_signpost(.end, log: log, name: "Preview organizing Albums")

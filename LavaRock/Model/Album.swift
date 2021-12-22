@@ -20,18 +20,14 @@ extension Album: LibraryContainer {
 
 extension Album {
 	
-	static let log = OSLog(
-		subsystem: "Album",
-		category: .pointsOfInterest)
-	
 	convenience init(
 		atEndOf collection: Collection,
 		for mediaItem: MPMediaItem,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Create an Album at the bottom")
+		os_signpost(.begin, log: .album, name: "Create an Album at the bottom")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Create an Album at the bottom")
+			os_signpost(.end, log: .album, name: "Create an Album at the bottom")
 		}
 		
 		self.init(context: context)
@@ -46,9 +42,9 @@ extension Album {
 		for mediaItem: MPMediaItem,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: Self.log, name: "Create an Album at the top")
+		os_signpost(.begin, log: .album, name: "Create an Album at the top")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Create an Album at the top")
+			os_signpost(.end, log: .album, name: "Create an Album at the top")
 		}
 		
 		collection.albums(sorted: false).forEach { $0.index += 1 }
@@ -146,9 +142,9 @@ extension Album {
 	// MARK: Creating
 	
 	final func createSongsAtEnd(for mediaItems: [MPMediaItem]) {
-		os_signpost(.begin, log: Self.log, name: "Create Songs at the bottom")
+		os_signpost(.begin, log: .album, name: "Create Songs at the bottom")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Create Songs at the bottom")
+			os_signpost(.end, log: .album, name: "Create Songs at the bottom")
 		}
 		
 		mediaItems.forEach {
@@ -161,9 +157,9 @@ extension Album {
 	
 	// Use `createSongsAtEnd(for:)` if possible. It’s faster.
 	final func createSongsAtBeginning(for mediaItems: [MPMediaItem]) {
-		os_signpost(.begin, log: Self.log, name: "Create Songs at the top")
+		os_signpost(.begin, log: .album, name: "Create Songs at the top")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Create Songs at the top")
+			os_signpost(.end, log: .album, name: "Create Songs at the top")
 		}
 		
 		mediaItems.reversed().forEach {
@@ -218,9 +214,9 @@ extension Album {
 	
 	// Slow.
 	final func mpMediaItemCollection() -> MPMediaItemCollection? {
-		os_signpost(.begin, log: Self.log, name: "mpMediaItemCollection()")
+		os_signpost(.begin, log: .album, name: "Query for MPMediaItemCollection")
 		defer {
-			os_signpost(.end, log: Self.log, name: "mpMediaItemCollection()")
+			os_signpost(.end, log: .album, name: "Query for MPMediaItemCollection")
 		}
 		
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
@@ -233,9 +229,9 @@ extension Album {
 				forProperty: MPMediaItemPropertyAlbumPersistentID)
 		)
 		
-		os_signpost(.begin, log: Self.log, name: "Process query")
+		os_signpost(.begin, log: .album, name: "Process query")
 		defer {
-			os_signpost(.end, log: Self.log, name: "Process query")
+			os_signpost(.end, log: .album, name: "Process query")
 		}
 		if
 			let queriedAlbums = albumsQuery.collections,
