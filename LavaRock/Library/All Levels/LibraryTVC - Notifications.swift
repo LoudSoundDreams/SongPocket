@@ -112,11 +112,7 @@ extension LibraryTVC {
 				
 				// Update the data within each row (and header), which might be outdated.
 				// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
-				if #available(iOS 15, *) {
-					self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
-				} else {
-					self.tableView.reloadRows(at: self.tableView.indexPathsForVisibleRowsNonNil, with: .none)
-				}
+				self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
 			}
 		}
 		

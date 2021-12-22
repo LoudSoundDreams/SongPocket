@@ -19,16 +19,7 @@ final class MoveHereCell: TintedSelectedCell {
 	}
 	
 	private func configure() {
-		moveHereLabel.textColor = .tintColor_()
-	}
-	
-	final override func tintColorDidChange() {
-		super.tintColorDidChange()
-		
-		if #available(iOS 15, *) {
-		} else {
-			configure()
-		}
+		moveHereLabel.textColor = .tintColor
 	}
 }
 
@@ -98,7 +89,7 @@ final class AlbumCell:
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		case .modalTinted:
-			backgroundColor = .tintColor_().translucentFaint()
+			backgroundColor = .tintColor.translucentFaint()
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		}

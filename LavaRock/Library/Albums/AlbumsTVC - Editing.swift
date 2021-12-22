@@ -16,9 +16,6 @@ extension AlbumsTVC {
 				title: LocalizedString.organizeByAlbumArtistEllipsis,
 				handler: { _ in self.startOrganizing() })
 			
-			guard #available(iOS 15, *) else {
-				return organizeAction
-			}
 			// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
 			return UIDeferredMenuElement.uncached({ useMenuElements in
 				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
@@ -95,11 +92,7 @@ extension AlbumsTVC {
 				firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
 				collectionsViewModelPreviewingOrganizeAlbums
 			) {
-				if #available(iOS 15, *) {
-					self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
-				} else {
-					self.tableView.reloadRows(at: self.tableView.indexPathsForVisibleRowsNonNil, with: .none)
-				}
+				self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
 			}
 			collectionsTVC.reflectPlayer()
 		}

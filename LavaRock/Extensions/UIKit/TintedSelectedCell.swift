@@ -16,7 +16,7 @@ class TintedSelectedCell: UITableViewCell {
 	
 	private func refreshSelectedBackgroundView() {
 		let colorView = UIView()
-		colorView.backgroundColor = .tintColor_().translucent() // Reflects "Increase Contrast" setting automatically.
+		colorView.backgroundColor = .tintColor.translucent() // Reflects "Increase Contrast" setting automatically.
 		selectedBackgroundView = colorView
 	}
 }

@@ -9,14 +9,6 @@ import UIKit
 
 extension UIColor {
 	
-	static func tintColor_() -> UIColor {
-		if #available(iOS 15, *) {
-			return .tintColor
-		} else {
-			return AccentColor.savedPreference().uiColor
-		}
-	}
-	
 	final func translucentFaint() -> UIColor {
 		return withAlphaComponent(1/8)
 	}

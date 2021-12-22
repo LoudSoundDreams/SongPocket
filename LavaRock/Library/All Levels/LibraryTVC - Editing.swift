@@ -49,9 +49,6 @@ extension LibraryTVC {
 					self.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
 				}
 				
-				guard #available(iOS 15, *) else {
-					return action
-				}
 				return UIDeferredMenuElement.uncached({ useMenuElements in
 					let allowed: Bool = {
 						let viewModel = self.viewModel

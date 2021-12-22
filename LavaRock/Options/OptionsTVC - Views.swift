@@ -93,13 +93,7 @@ final class TipReloadCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configure()
-	}
-	
-	final override func tintColorDidChange() {
-		super.tintColorDidChange()
-		
-		reflectAccentColor()
+		configureAsCellActingAsButton()
 	}
 }
 extension TipReloadCell: CellActingAsButton {
@@ -127,18 +121,9 @@ final class TipReadyCell: TintedSelectedCell {
 		
 		var configuration = UIListContentConfiguration.valueCell()
 		configuration.text = tipProduct.localizedTitle
-		configuration.textProperties.color = .tintColor_()
+		configuration.textProperties.color = .tintColor
 		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
 		contentConfiguration = configuration
-	}
-	
-	final override func tintColorDidChange() {
-		super.tintColorDidChange()
-		
-		if #available(iOS 15, *) {
-		} else {
-			configure()
-		}
 	}
 }
 

@@ -15,13 +15,7 @@ final class AllowAccessCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configure()
-	}
-	
-	final override func tintColorDidChange() {
-		super.tintColorDidChange()
-		
-		reflectAccentColor()
+		configureAsCellActingAsButton()
 	}
 }
 extension AllowAccessCell: CellActingAsButton {
@@ -67,13 +61,7 @@ final class OpenMusicCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configure()
-	}
-	
-	final override func tintColorDidChange() {
-		super.tintColorDidChange()
-		
-		reflectAccentColor()
+		configureAsCellActingAsButton()
 	}
 	
 	final func didSelect() {
@@ -96,16 +84,7 @@ final class CreateCollectionCell: TintedSelectedCell {
 	}
 	
 	private func configure() {
-		newCollectionLabel.textColor = .tintColor_()
-	}
-	
-	final override func tintColorDidChange() {
-		super.tintColorDidChange()
-		
-		if #available(iOS 15, *) {
-		} else {
-			configure()
-		}
+		newCollectionLabel.textColor = .tintColor
 	}
 }
 
@@ -156,7 +135,7 @@ final class CollectionCell:
 			enableWithAccessibilityTrait()
 		case .modalTinted:
 			accessibilityCustomActions = []
-			backgroundColor = .tintColor_().translucentFaint() // Note: `backgroundColor = nil` sets a transparent background; `backgroundView = nil` sets the default background.
+			backgroundColor = .tintColor.translucentFaint() // Note: `backgroundColor = nil` sets a transparent background; `backgroundView = nil` sets the default background.
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()

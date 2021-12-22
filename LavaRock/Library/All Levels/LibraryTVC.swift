@@ -124,7 +124,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var floatToTopButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.floatSelectedItemsToTopOfSection() }
 		let button = UIBarButtonItem(
-			image: UIImage.floatToTopSymbol,
+			image: UIImage(systemName: "arrow.up.to.line.compact"), // As of iOS 15, this is the vertically short one; .alt doesn't exist anymore; arrow.up.to.line is the taller one,
 			primaryAction: action)
 		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
@@ -132,7 +132,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var sinkToBottomButton: UIBarButtonItem = {
 		let action = UIAction { _ in self.sinkSelectedItemsToBottomOfSection() }
 		let button = UIBarButtonItem(
-			image: UIImage.sinkToBottomSymbol,
+			image: UIImage(systemName: "arrow.down.to.line.compact"),
 			primaryAction: action)
 		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
@@ -165,13 +165,6 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	func setUpUI() {
-		if #available(iOS 15, *) {
-			// In iOS 15, by default, tableView.fillerRowHeight is 0, which removes the blank rows below the last row.
-		} else {
-			tableView.tableFooterView = UIView() // Removes the blank rows below the last row.
-			// You can also drag in an empty View below the table view in the storyboard, but that also removes the separator below the last cell.
-		}
-		
 		refreshNavigationItemTitle()
 		
 		setBarButtons(animated: true) // So that when we open a Collection in the "move albums" sheet, the change is animated.
