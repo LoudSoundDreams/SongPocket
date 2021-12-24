@@ -53,11 +53,11 @@ final class PlayerVC: UIViewController {
 		nextSongButton.addAction(nextAction, for: .touchUpInside)
 		nextSongButton.setImage(nextImage, for: .normal)
 		
-		setUpPlaybackStateReflecting()
+		beginReflectingPlaybackState()
 	}
 	
 	deinit {
-		endObservingPlaybackStateChanges()
+		endReflectingPlaybackState()
 	}
 	
 	private func goToPreviousSong() {
@@ -93,7 +93,7 @@ final class PlayerVC: UIViewController {
 
 extension PlayerVC: PlaybackStateReflecting {
 	
-	func playbackStateDidChange() {
+	func reflectPlaybackState() {
 		if sharedPlayer?.playbackState == .playing {
 			playPauseButton.setImage(pauseImage, for: .normal)
 		} else {

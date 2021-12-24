@@ -13,18 +13,18 @@ final class TabBarC: UITabBarController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		setUpPlaybackStateReflecting()
+		beginReflectingPlaybackState()
 	}
 	
 	deinit {
-		endObservingPlaybackStateChanges()
+		endReflectingPlaybackState()
 	}
 	
 }
 
 extension TabBarC: PlaybackStateReflecting {
 	
-	func playbackStateDidChange() {
+	func reflectPlaybackState() {
 		guard
 			let nc = viewControllers?.last as? UINavigationController,
 			nc.viewControllers.first is PlayerVC,

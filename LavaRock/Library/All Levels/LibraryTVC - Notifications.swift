@@ -11,7 +11,7 @@ import CoreData
 
 extension LibraryTVC: PlaybackStateReflecting {
 	
-	func playbackStateDidChange() {
+	func reflectPlaybackState() {
 		reflectPlayer()
 	}
 	

@@ -154,7 +154,7 @@ class LibraryTVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		setUpPlaybackStateReflecting()
+		beginReflectingPlaybackState()
 		
 		setUp()
 	}
@@ -188,7 +188,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Teardown
 	
 	deinit {
-		endObservingPlaybackStateChanges()
+		endReflectingPlaybackState()
 		
 		NotificationCenter.default.removeObserver(self)
 	}

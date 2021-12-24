@@ -10,52 +10,54 @@ import CoreData
 
 @objc protocol PlaybackStateReflecting: AnyObject {
 	// Conforming types must …
-	// - Call `setUpPlaybackStateReflecting` before they need to reflect playback state.
-	// - Call `endObservingPlaybackStateChanges` within their deinitializer.
-	func playbackStateDidChange()
+	// - Call `beginReflectingPlaybackState` before they need to reflect playback state.
+	// - Call `endReflectingPlaybackState` within their deinitializer.
+	
+	// Reflect `PlayerManager.player`, and show a disabled state if it's `nil`. (Call `PlayerManager.setUp` to set up `PlayerManager.player`.)
+	func reflectPlaybackState()
 }
 
 extension PlaybackStateReflecting {
-	
 	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
 	
-	func setUpPlaybackStateReflecting() {
-		playbackStateDidChange()
+	func beginReflectingPlaybackState() {
+		reflectPlaybackState()
 		
-		endObservingPlaybackStateChanges()
+		endReflectingPlaybackState()
 		
 		PlayerManager.addObserver(self)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserver(
 				self,
-				selector: #selector(playbackStateDidChange),
+				selector: #selector(reflectPlaybackState),
 				name: .MPMusicPlayerControllerPlaybackStateDidChange,
 				object: nil)
 		}
 	}
 	
-	// `PlayerManager.player` is `nil` until `PlayerManager` sets it up.
-	func playerManagerDidSetUp() {
-		setUpPlaybackStateReflecting()
-	}
-	
-	func endObservingPlaybackStateChanges() {
+	func endReflectingPlaybackState() {
 		PlayerManager.removeObserver(self)
 		NotificationCenter.default.removeObserver(
 			self,
 			name: .MPMusicPlayerControllerPlaybackStateDidChange,
 			object: nil)
 	}
-	
 }
 
 final class PlayerManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
-	
 	private init() {}
 	
-	private static var observers: [PlaybackStateReflecting] = []
+	private final class WeakPlaybackStateReflecting {
+		weak var observer: PlaybackStateReflecting? = nil
+		
+		init(observer: PlaybackStateReflecting) {
+			self.observer = observer
+		}
+	}
+	private static var observers: [WeakPlaybackStateReflecting] = []
 	static func addObserver(_ observer: PlaybackStateReflecting) {
-		observers.append(observer)
+		let weakObserver = WeakPlaybackStateReflecting(observer: observer)
+		observers.append(weakObserver)
 	}
 	static func removeObserver(_ observer: PlaybackStateReflecting) {
 		if let indexOfMatchingObserver = observers.firstIndex(where: { $0 === observer }) {
@@ -71,7 +73,13 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 		player = .systemMusicPlayer
 		player?.beginGeneratingPlaybackNotifications()
 		
-		observers.forEach { $0.playerManagerDidSetUp() }
+		observers.removeAll { $0.observer == nil }
+		// Because before anyone called this method, `player` was `nil`.
+		observers.forEach {
+			if let observer = $0.observer {
+				observer.beginReflectingPlaybackState()
+			}
+		}
 	}
 	
 	static func songInPlayer(context: NSManagedObjectContext) -> Song? {
@@ -98,5 +106,4 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	deinit {
 		Self.player?.endGeneratingPlaybackNotifications()
 	}
-	
 }
