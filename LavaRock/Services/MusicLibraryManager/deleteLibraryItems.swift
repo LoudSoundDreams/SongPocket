@@ -1,5 +1,5 @@
 //
-//  func deleteLibraryItems.swift
+//  deleteLibraryItems.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-22.

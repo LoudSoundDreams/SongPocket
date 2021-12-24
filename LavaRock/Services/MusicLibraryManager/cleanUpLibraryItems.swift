@@ -1,5 +1,5 @@
 //
-//  func cleanUpLibraryItems.swift
+//  cleanUpLibraryItems.swift
 //  LavaRock
 //
 //  Created by h on 2021-08-10.
