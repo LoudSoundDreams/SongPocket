@@ -104,7 +104,7 @@ extension CollectionsTVC {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		let title = smartTitle ?? (FeatureFlag.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
-		let (newViewModel, _) = collectionsViewModel.updatedAfterCreating(title: title)
+		let newViewModel = collectionsViewModel.updatedAfterCreating(title: title)
 		setViewModelAndMoveRows(newViewModel) {
 			completion()
 		}

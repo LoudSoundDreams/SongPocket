@@ -148,7 +148,7 @@ extension CollectionsViewModel {
 			indexOfGroup: Self.indexOfOnlyGroup)
 	}
 	
-	func updatedAfterCreating(title: String) -> (Self, IndexPath) {
+	func updatedAfterCreating(title: String) -> Self {
 		let newCollection = Collection(context: context)
 		newCollection.title = title
 		// When we call setItemsAndMoveRows, the property observer will set the "index" attribute of each Collection for us.
@@ -158,8 +158,7 @@ extension CollectionsViewModel {
 		
 		var twin = updatedWithItemsInOnlyGroup(newItems)
 		twin.prerowsInEachSection = []
-		let indexPath = indexPathOfNewCollection
-		return (twin, indexPath)
+		return twin
 	}
 	
 	func updatedAfterDeletingNewCollection() -> Self {
