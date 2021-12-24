@@ -19,7 +19,10 @@ extension OptionsTVC {
 	]
 	
 	final func refreshTipJarRows() {
-		tableView.reloadSections([Section.tipJar.rawValue], with: .fade)
+		let tipJarIndexPaths = tableView.indexPathsForRows(
+			inSection: Section.tipJar.rawValue,
+			firstRow: 0)
+		tableView.reloadRows(at: tipJarIndexPaths, with: .fade) // Don't use `reloadSections`, because that makes the header and footer fade out and back in.
 	}
 	
 	// MARK: - All Sections
@@ -170,7 +173,9 @@ extension OptionsTVC {
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch PurchaseManager.shared.tipStatus {
 		case .notYetFirstLoaded, .loading:
-			return tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Tip Loading",
+				for: indexPath) as? TipLoadingCell ?? UITableViewCell()
 		case .reload:
 			return tableView.dequeueReusableCell(
 				withIdentifier: "Tip Reload",
@@ -186,7 +191,9 @@ extension OptionsTVC {
 					for: indexPath) as? TipReadyCell ?? UITableViewCell()
 			}
 		case .confirming:
-			return tableView.dequeueReusableCell(withIdentifier: "Tip Confirming", for: indexPath)
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Tip Confirming",
+				for: indexPath) as? TipConfirmingCell ?? UITableViewCell()
 		}
 	}
 	

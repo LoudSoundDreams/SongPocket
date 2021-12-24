@@ -16,10 +16,6 @@ final class MoveHereCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configure()
-	}
-	
-	private func configure() {
 		moveHereLabel.textColor = .tintColor
 	}
 }

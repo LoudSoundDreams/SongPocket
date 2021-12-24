@@ -87,6 +87,20 @@ final class AccentColorCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
+final class TipLoadingCell: UITableViewCell {
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		disableWithAccessibilityTrait()
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.loadingEllipsis
+		configuration.textProperties.color = .secondaryLabel
+		contentConfiguration = configuration
+	}
+}
+
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipReloadCell: TintedSelectedCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -107,10 +121,6 @@ final class TipReadyCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configure()
-	}
-	
-	private func configure() {
 		guard
 			let tipProduct = PurchaseManager.shared.tipProduct,
 			let tipPriceFormatter = PurchaseManager.shared.tipPriceFormatter
@@ -118,11 +128,24 @@ final class TipReadyCell: TintedSelectedCell {
 			contentConfiguration = defaultContentConfiguration()
 			return
 		}
-		
 		var configuration = UIListContentConfiguration.valueCell()
 		configuration.text = tipProduct.localizedTitle
 		configuration.textProperties.color = .tintColor
 		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
+		contentConfiguration = configuration
+	}
+}
+
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
+final class TipConfirmingCell: UITableViewCell {
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		disableWithAccessibilityTrait()
+		
+		var configuration = UIListContentConfiguration.cell()
+		configuration.text = LocalizedString.confirmingEllipsis
+		configuration.textProperties.color = .secondaryLabel
 		contentConfiguration = configuration
 	}
 }

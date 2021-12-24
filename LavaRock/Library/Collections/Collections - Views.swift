@@ -80,10 +80,6 @@ final class CreateCollectionCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configure()
-	}
-	
-	private func configure() {
 		newCollectionLabel.textColor = .tintColor
 	}
 }
@@ -145,7 +141,7 @@ final class CollectionCell:
 			accessibilityCustomActions = []
 			setNormalBackground()
 			
-			titleLabel.textColor = .placeholderText // A proper way to make cells look disabled would be better. This is slightly different from the old cell.textLabel.isEnabled = false.
+			titleLabel.textColor = .placeholderText
 			disableWithAccessibilityTrait()
 		}
 	}
