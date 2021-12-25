@@ -6,13 +6,12 @@
 //
 
 import CoreData
-import MediaPlayer
 import OSLog
 
 extension MusicLibraryManager {
 	
 	final func cleanUpLibraryItems(
-		allMediaItems: Set<MPMediaItem>, // TO DO: Don't require a `Set` here.
+		allSongFiles: [SongFile],
 		isFirstImport: Bool
 	) {
 		os_signpost(.begin, log: .merge, name: "5. Clean up library items")
@@ -26,7 +25,7 @@ extension MusicLibraryManager {
 		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
 			for: allAlbums,
-			   considering: allMediaItems)
+			   considering: allSongFiles)
 		os_signpost(.end, log: .cleanup, name: "Recalculate Album release date estimates")
 		
 		os_signpost(.begin, log: .cleanup, name: "Reindex all Albums and Songs")
@@ -43,47 +42,42 @@ extension MusicLibraryManager {
 	
 	// MARK: - Recalculating Release Date Estimates
 	
-	// Only MPMediaItems have release dates, and those can't be albums.
-	// An MPMediaItemCollection has a property representativeItem, but that item's release date doesn't necessarily represent the album's release date.
-	// Instead, we'll estimate the albums' release dates and keep the estimates up to date.
+	// Only `MPMediaItem`s have release dates, and those can’t be albums.
+	// `MPMediaItemCollection.representativeItem.releaseDate` doesn’t necessarily represent the album’s release date.
+	// Instead, use the most recent release date among the `MPMediaItemCollection`’s `MPMediaItem`s, and recalculate it whenever necessary.
 	private func recalculateReleaseDateEstimates(
 		for albums: [Album],
-		considering mediaItems: Set<MPMediaItem> // TO DO: Don't require a `Set` here.
+		considering songFiles: [SongFile]
 	) {
-		os_signpost(.begin, log: .cleanup, name: "Filter out MPMediaItems without releaseDates")
+		os_signpost(.begin, log: .cleanup, name: "Filter out SongFiles without release dates")
 		// This is pretty slow, but can save time later.
-		let mediaItemsWithReleaseDates = mediaItems.filter { $0.releaseDate != nil }
-		os_signpost(.end, log: .cleanup, name: "Filter out MPMediaItems without releaseDates")
+		let songFilesWithReleaseDates = songFiles.filter { $0.releaseDateOnDisk != nil }
+		os_signpost(.end, log: .cleanup, name: "Filter out SongFiles without release dates")
 		
-		os_signpost(.begin, log: .cleanup, name: "Group MPMediaItems by albumPersistentID")
-		let mediaItemsByAlbumPersistentID
-		= Dictionary(grouping: mediaItemsWithReleaseDates) { $0.albumPersistentID }
-		os_signpost(.end, log: .cleanup, name: "Group MPMediaItems by albumPersistentID")
+		os_signpost(.begin, log: .cleanup, name: "Group SongFiles by album")
+		let songFilesByAlbumFolderID
+		= Dictionary(grouping: songFilesWithReleaseDates) { $0.albumFolderID }
+		os_signpost(.end, log: .cleanup, name: "Group SongFiles by album")
 		
 		albums.forEach { album in
-			os_signpost(.begin, log: .cleanup, name: "Recalculate release date estimate for one Album")
+			os_signpost(.begin, log: .cleanup, name: "Reestimate release date for one Album")
 			defer {
-				os_signpost(.end, log: .cleanup, name: "Recalculate release date estimate for one Album")
+				os_signpost(.end, log: .cleanup, name: "Reestimate release date for one Album")
 			}
 			
 			album.releaseDateEstimate = nil
 			
 			os_signpost(.begin, log: .cleanup, name: "Find the release dates associated with this Album")
 			// For Albums with no release dates, using `guard` to return early is slightly faster than optional chaining.
-			guard
-				let matchingMediaItems = mediaItemsByAlbumPersistentID[
-					MPMediaEntityPersistentID(bitPattern: album.albumPersistentID)
-				]
-			else {
+			guard let matchingSongFiles = songFilesByAlbumFolderID[album.albumPersistentID] else {
 				os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 				return
 			}
-			let matchingReleaseDates = matchingMediaItems.compactMap { $0.releaseDate }
+			let matchingReleaseDates = matchingSongFiles.compactMap { $0.releaseDateOnDisk }
 			os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 			
 			os_signpost(.begin, log: .cleanup, name: "Find the latest of those release dates")
-			let latestReleaseDate = matchingReleaseDates.max()
-			album.releaseDateEstimate = latestReleaseDate
+			album.releaseDateEstimate = matchingReleaseDates.max()
 			os_signpost(.end, log: .cleanup, name: "Find the latest of those release dates")
 		}
 	}

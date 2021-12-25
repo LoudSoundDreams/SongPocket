@@ -10,7 +10,7 @@ import MediaPlayer
 import OSLog
 
 extension Song: LibraryItem {
-	var libraryTitle: String? { mpMediaItem()?.title }
+	var libraryTitle: String? { songFile()?.titleOnDisk }
 	
 	// Enables `[Song].reindex()`
 }
@@ -19,7 +19,7 @@ extension Song {
 	
 	convenience init(
 		atEndOf album: Album,
-		for mediaItem: MPMediaItem,
+		fileID: SongFileID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .song, name: "Create a Song at the bottom")
@@ -28,15 +28,15 @@ extension Song {
 		}
 		
 		self.init(context: context)
-		persistentID = Int64(bitPattern: mediaItem.persistentID)
+		persistentID = fileID
 		index = Int64(album.contents?.count ?? 0)
 		container = album
 	}
 	
-	// Use `init(atEndOf:for:context:)` if possible. It’s faster.
+	// Use `init(atEndOf:fileID:context:)` if possible. It’s faster.
 	convenience init(
 		atBeginningOf album: Album,
-		for mediaItem: MPMediaItem,
+		fileID: SongFileID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .song, name: "Create a Song at the top")
@@ -47,7 +47,7 @@ extension Song {
 		album.songs(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		persistentID = Int64(bitPattern: mediaItem.persistentID)
+		persistentID = fileID
 		index = 0
 		container = album
 	}
@@ -87,13 +87,12 @@ extension Song {
 	
 	// MARK: - Media Player
 	
+	final func songFile() -> SongFile? {
+		return mpMediaItem()
+	}
+	
 	// Slow.
-	final func mpMediaItem() -> MPMediaItem? {
-		os_signpost(.begin, log: .song, name: "Query for MPMediaItem")
-		defer {
-			os_signpost(.end, log: .song, name: "Query for MPMediaItem")
-		}
-		
+	private func mpMediaItem() -> MPMediaItem? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
@@ -104,9 +103,9 @@ extension Song {
 				forProperty: MPMediaItemPropertyPersistentID)
 		)
 		
-		os_signpost(.begin, log: .song, name: "Process query")
+		os_signpost(.begin, log: .song, name: "Query for MPMediaItem")
 		defer {
-			os_signpost(.end, log: .song, name: "Process query")
+			os_signpost(.end, log: .song, name: "Query for MPMediaItem")
 		}
 		if
 			let queriedSongs = songsQuery.items,

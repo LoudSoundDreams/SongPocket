@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 
 extension SongsTVC {
 	
@@ -108,10 +107,10 @@ extension SongsTVC {
 		else { return UITableViewCell() }
 		
 		let song = songsViewModel.songNonNil(at: indexPath)
-		let mediaItem = song.mpMediaItem() // Can be `nil` if the user recently deleted the media item from their library
+		let songFile = song.songFile() // Can be `nil` if the user recently deleted the `SongFile` from their library
 		
 		let album = songsViewModel.album(forSection: indexPath.section)
-		let representativeItem = album.mpMediaItemCollection()?.representativeItem
+		let representative = album.representativeMPMediaItem()
 		
 		// "Now playing" indicator
 		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
@@ -128,8 +127,8 @@ extension SongsTVC {
 		}
 		
 		cell.configureWith(
-			mediaItem: mediaItem,
-			albumRepresentative: representativeItem)
+			songFile: songFile,
+			albumRepresentative: representative)
 		cell.applyNowPlayingIndicator(nowPlayingIndicator)
 		
 		return cell

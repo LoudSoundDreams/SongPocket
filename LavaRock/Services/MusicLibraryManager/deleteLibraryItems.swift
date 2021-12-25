@@ -10,7 +10,6 @@ import OSLog
 
 extension MusicLibraryManager {
 	
-	// Delete Songs for media items that are no longer in the Music library, and then any empty Albums, and then any empty Collections.
 	final func deleteLibraryItems(
 		for songs: Set<Song> // TO DO: Don't require a `Set` here.
 	) {

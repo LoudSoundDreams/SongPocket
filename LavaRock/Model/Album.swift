@@ -22,7 +22,7 @@ extension Album {
 	
 	convenience init(
 		atEndOf collection: Collection,
-		for mediaItem: MPMediaItem,
+		albumFolderID: AlbumFolderID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .album, name: "Create an Album at the bottom")
@@ -31,15 +31,15 @@ extension Album {
 		}
 		
 		self.init(context: context)
-		albumPersistentID = Int64(bitPattern: mediaItem.albumPersistentID)
+		albumPersistentID = albumFolderID
 		index = Int64(collection.contents?.count ?? 0)
 		container = collection
 	}
 	
-	// Use `init(atEndOf:for:context:)` if possible. It’s faster.
+	// Use `init(atEndOf:albumFolderID:context:)` if possible. It’s faster.
 	convenience init(
 		atBeginningOf collection: Collection,
-		for mediaItem: MPMediaItem,
+		albumFolderID: AlbumFolderID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .album, name: "Create an Album at the top")
@@ -50,7 +50,7 @@ extension Album {
 		collection.albums(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		albumPersistentID = Int64(bitPattern: mediaItem.albumPersistentID)
+		albumPersistentID = albumFolderID
 		index = 0
 		container = collection
 	}
@@ -99,38 +99,39 @@ extension Album {
 	}
 	
 	final func songsAreInDefaultOrder() -> Bool {
-		let mediaItems = songs(sorted: true).compactMap { $0.mpMediaItem() }
-		// `mpMediaItem()` returns `nil` if the media item is no longer in the Music library. Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
+		let songFiles = songs(sorted: true).compactMap { $0.songFile() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
 		
-		let sortedMediaItems = mediaItems.sorted {
+		let sortedSongFiles = songFiles.sorted {
 			$0.precedesInDefaultOrder(inSameAlbum: $1)
 		}
 		
-		return mediaItems == sortedMediaItems
+		return songFiles.indices.allSatisfy { index in
+			songFiles[index].fileID == sortedSongFiles[index].fileID
+		}
 	}
 	
 	final func sortSongsByDefaultOrder() {
 		let songs = songs(sorted: false)
 		
-		// Behavior is undefined if you compare `Song`s that correspond to `MPMediaItem`s from different albums.
-		// `Song`s that don’t have a corresponding `MPMediaItem` in the user’s Music library will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
+		// Behavior is undefined if you compare `Song`s that correspond to `SongFile`s from different albums.
+		// `Song`s that don’t have a corresponding `SongFile` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
 		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
-			var songsAndMediaItems = songs.map {
+			var songsAndSongFiles = songs.map {
 				($0,
-				 $0.mpMediaItem()) // Can be `nil`
+				 $0.songFile()) // Can be `nil`
 			}
 			
-			songsAndMediaItems.sort { leftTuple, rightTuple in
+			songsAndSongFiles.sort { leftTuple, rightTuple in
 				guard
-					let leftMediaItem = leftTuple.1,
-					let rightMediaItem = rightTuple.1
+					let leftSongFile = leftTuple.1,
+					let rightSongFile = rightTuple.1
 				else {
 					return true
 				}
-				return leftMediaItem.precedesInDefaultOrder(inSameAlbum: rightMediaItem)
+				return leftSongFile.precedesInDefaultOrder(inSameAlbum: rightSongFile)
 			}
 			
-			let result = songsAndMediaItems.map { tuple in tuple.0 }
+			let result = songsAndSongFiles.map { tuple in tuple.0 }
 			return result
 		}
 		
@@ -141,31 +142,31 @@ extension Album {
 	
 	// MARK: Creating
 	
-	final func createSongsAtEnd(for mediaItems: [MPMediaItem]) {
+	final func createSongsAtEnd(for songFiles: [SongFile]) {
 		os_signpost(.begin, log: .album, name: "Create Songs at the bottom")
 		defer {
 			os_signpost(.end, log: .album, name: "Create Songs at the bottom")
 		}
 		
-		mediaItems.forEach {
+		songFiles.forEach {
 			let _ = Song(
 				atEndOf: self,
-				for: $0,
+				fileID: $0.fileID,
 				context: managedObjectContext!)
 		}
 	}
 	
 	// Use `createSongsAtEnd(for:)` if possible. It’s faster.
-	final func createSongsAtBeginning(for mediaItems: [MPMediaItem]) {
+	final func createSongsAtBeginning(for songFiles: [SongFile]) {
 		os_signpost(.begin, log: .album, name: "Create Songs at the top")
 		defer {
 			os_signpost(.end, log: .album, name: "Create Songs at the top")
 		}
 		
-		mediaItems.reversed().forEach {
+		songFiles.reversed().forEach {
 			let _ = Song(
 				atBeginningOf: self,
-				for: $0,
+				fileID: $0.fileID,
 				context: managedObjectContext!)
 		}
 	}
@@ -189,10 +190,7 @@ extension Album {
 		// Either can be `nil`
 		
 		// At this point, leave elements in the same order if they both have no release date, or the same release date.
-		// However, as of iOS 14.7, when using `sorted(by:)`, returning `true` here doesn’t always keep the elements in the same order. Use `sortedMaintainingOrderWhen(areEqual:areInOrder:)` to guarantee stable sorting.
-//		guard myReleaseDate != otherReleaseDate else {
-//			return true
-//		}
+		// However, as of iOS 14.7, when using `sorted(by:)`, using `guard myReleaseDate != otherReleaseDate else { return true }` here doesn’t always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
 		
 		// Move unknown release date to the end
 		guard let otherReleaseDate = otherReleaseDate else {
@@ -212,13 +210,12 @@ extension Album {
 	
 	// MARK: - Media Player
 	
+	final func representativeMPMediaItem() -> MPMediaItem? {
+		return mpMediaItemCollection()?.representativeItem
+	}
+	
 	// Slow.
-	final func mpMediaItemCollection() -> MPMediaItemCollection? {
-		os_signpost(.begin, log: .album, name: "Query for MPMediaItemCollection")
-		defer {
-			os_signpost(.end, log: .album, name: "Query for MPMediaItemCollection")
-		}
-		
+	private final func mpMediaItemCollection() -> MPMediaItemCollection? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
@@ -229,9 +226,9 @@ extension Album {
 				forProperty: MPMediaItemPropertyAlbumPersistentID)
 		)
 		
-		os_signpost(.begin, log: .album, name: "Process query")
+		os_signpost(.begin, log: .album, name: "Query for MPMediaItemCollection")
 		defer {
-			os_signpost(.end, log: .album, name: "Process query")
+			os_signpost(.end, log: .album, name: "Query for MPMediaItemCollection")
 		}
 		if
 			let queriedAlbums = albumsQuery.collections,
@@ -249,8 +246,8 @@ extension Album {
 	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownAlbumArtist
 	
 	final func artworkImage(at size: CGSize) -> UIImage? {
-		let artwork = mpMediaItemCollection()?.representativeItem?.artwork
-		return artwork?.image(at: size)
+		let representative = representativeMPMediaItem()
+		return representative?.artworkImage(at: size)
 	}
 	
 	final func titleFormattedOrPlaceholder() -> String {
@@ -259,8 +256,8 @@ extension Album {
 	
 	private func titleFormattedOptional() -> String? {
 		if
-			let representativeItem = mpMediaItemCollection()?.representativeItem,
-			let fetchedAlbumTitle = representativeItem.albumTitle,
+			let representative = representativeMPMediaItem(),
+			let fetchedAlbumTitle = representative.albumTitleOnDisk,
 			fetchedAlbumTitle != ""
 		{
 			return fetchedAlbumTitle
@@ -271,8 +268,8 @@ extension Album {
 	
 	final func albumArtistFormattedOrPlaceholder() -> String {
 		if
-			let representativeItem = mpMediaItemCollection()?.representativeItem,
-			let fetchedAlbumArtist = representativeItem.albumArtist // As of iOS 14.0 developer beta 5, even if the "album artist" field is blank in Music for Mac (and other tag editors), .albumArtist can still return something: it probably reads the "artist" field from one of the songs. Currently, it returns the same as what's in the album's header in Music for iOS.
+			let representative = representativeMPMediaItem(),
+			let fetchedAlbumArtist = representative.albumArtistOnDisk // As of iOS 14.0 developer beta 5, even if the "album artist" field is blank in Music for Mac (and other tag editors), .albumArtist can still return something: it probably reads the "artist" field from one of the songs. Currently, it returns the same as what's in the album's header in Music for iOS.
 		{
 			return fetchedAlbumArtist
 		} else {

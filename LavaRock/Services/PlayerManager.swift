@@ -87,11 +87,11 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 			return nil
 		}
 		
-		let currentPersistentID_asInt64 = Int64(bitPattern: nowPlayingItem.persistentID)
+		let currentSongFileID = SongFileID(bitPattern: nowPlayingItem.persistentID)
 		let songsFetchRequest: NSFetchRequest<Song> = Song.fetchRequest()
 		songsFetchRequest.predicate = NSPredicate(
 			format: "persistentID == %lld",
-			currentPersistentID_asInt64)
+			currentSongFileID)
 		let songsInPlayer = context.objectsFetched(for: songsFetchRequest)
 		
 		guard

@@ -6,13 +6,12 @@
 //
 
 import CoreData
-import MediaPlayer
 import OSLog
 
 extension MusicLibraryManager {
 	
 	final func updateLibraryItems(
-		potentiallyOutdatedSongsAndFreshMediaItems: [(Song, MPMediaItem)]
+		potentiallyOutdatedSongsAndFreshSongFiles: [(Song, SongFile)]
 	) {
 		os_signpost(.begin, log: .merge, name: "2. Update library items")
 		defer {
@@ -20,20 +19,20 @@ extension MusicLibraryManager {
 		}
 		
 		os_signpost(.begin, log: .update, name: "Merge Albums with the same albumPersistentID")
-		let uniqueAlbums_byInt64 = mergeClonedAlbumsAndReturnUniqueAlbums_byInt64(
-			potentiallyOutdatedSongsAndFreshMediaItems: potentiallyOutdatedSongsAndFreshMediaItems)
+		let uniqueAlbumsByID = mergeClonedAlbumsAndReturnUniqueAlbumsByID(
+			potentiallyOutdatedSongsAndFreshSongFiles: potentiallyOutdatedSongsAndFreshSongFiles)
 		os_signpost(.end, log: .update, name: "Merge Albums with the same albumPersistentID")
 		
 		os_signpost(.begin, log: .update, name: "Move Songs to updated Albums")
 		moveSongsToUpdatedAlbums(
-			potentiallyOutdatedSongsAndFreshMediaItems: potentiallyOutdatedSongsAndFreshMediaItems,
-			uniqueAlbums_byInt64: uniqueAlbums_byInt64)
+			potentiallyOutdatedSongsAndFreshSongFiles: potentiallyOutdatedSongsAndFreshSongFiles,
+			uniqueAlbumsByID: uniqueAlbumsByID)
 		os_signpost(.end, log: .update, name: "Move Songs to updated Albums")
 	}
 	
-	private func mergeClonedAlbumsAndReturnUniqueAlbums_byInt64(
-		potentiallyOutdatedSongsAndFreshMediaItems: [(Song, MPMediaItem)]
-	) -> [Int64: Album] {
+	private func mergeClonedAlbumsAndReturnUniqueAlbumsByID(
+		potentiallyOutdatedSongsAndFreshSongFiles: [(Song, SongFile)]
+	) -> [AlbumFolderID: Album] {
 		// I've seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
 		// We never should have ended up with two `Album`s with the same `albumPersistentID` in the first place, but this makes the merger resilient to that mistake.
 		
@@ -45,23 +44,23 @@ extension MusicLibraryManager {
 		os_signpost(.end, log: .update, name: "Fetch all Albums")
 		
 		os_signpost(.begin, log: .update, name: "Initialize uniqueAlbums")
-		// We only really need a Set<Album> here, but moveSongsToUpdatedAlbums uses a [Int64: Album], so we can reuse this.
-		let tuplesForAllAlbums = allAlbums.map { album in
-			(album.albumPersistentID,
-			album)
-		}
-		let uniqueAlbums_byInt64 = Dictionary(tuplesForAllAlbums) { leftAlbum, _ in
-			leftAlbum // Because we fetched all Albums in sorted order.
-		}
+		// We only really need a `Set<Album>` here, but `moveSongsToUpdatedAlbums` needs a `[AlbumFolderID: Album]`, so we can reuse this.
+		let uniqueAlbumsByID: Dictionary<AlbumFolderID, Album> = {
+			let tuplesForAllAlbums = allAlbums.map { album in
+				(album.albumPersistentID, album)
+			}
+			return Dictionary(tuplesForAllAlbums, uniquingKeysWith: { (leftAlbum, _) in leftAlbum })
+		}()
 		os_signpost(.end, log: .update, name: "Initialize uniqueAlbums")
 		
 		os_signpost(.begin, log: .update, name: "Filter to Songs in cloned Albums")
 		// Don't actually move the Songs we need to move yet, because we haven't sorted them yet.
 		// Filter before sorting. Don't sort first, because that's slower.
 		let unsortedSongsToMove: [Song]
-		= potentiallyOutdatedSongsAndFreshMediaItems.compactMap { (song, _) in
-			let currentAlbum = song.container!
-			if uniqueAlbums_byInt64[currentAlbum.albumPersistentID] == currentAlbum {
+		= potentiallyOutdatedSongsAndFreshSongFiles.compactMap { (song, _) in
+			let potentiallyClonedAlbum = song.container!
+			let canonicalAlbum = uniqueAlbumsByID[potentiallyClonedAlbum.albumPersistentID]
+			if potentiallyClonedAlbum.objectID == canonicalAlbum?.objectID {
 				return nil
 			} else {
 				return song
@@ -79,7 +78,7 @@ extension MusicLibraryManager {
 		
 		os_signpost(.begin, log: .update, name: "Move Songs from cloned Albums")
 		songsToMove.forEach { song in
-			let targetAlbum = uniqueAlbums_byInt64[song.container!.albumPersistentID]!
+			let targetAlbum = uniqueAlbumsByID[song.container!.albumPersistentID]!
 			let newIndexOfSong = targetAlbum.contents?.count ?? 0
 			song.container = targetAlbum
 			song.index = Int64(newIndexOfSong)
@@ -88,18 +87,18 @@ extension MusicLibraryManager {
 		
 		Album.deleteAllEmpty_withoutReindexOrCascade(via: context)
 		
-		return uniqueAlbums_byInt64
+		return uniqueAlbumsByID
 	}
 	
 	private func moveSongsToUpdatedAlbums(
-		potentiallyOutdatedSongsAndFreshMediaItems: [(Song, MPMediaItem)],
-		uniqueAlbums_byInt64: [Int64: Album]
+		potentiallyOutdatedSongsAndFreshSongFiles: [(Song, SongFile)],
+		uniqueAlbumsByID: [AlbumFolderID: Album]
 	) {
-		// If a Song's Album's albumPersistentID is no longer matches its MPMediaItem's albumPersistentID, move that Song to an existing or new Album with the up-to-date albumPersistentID.
+		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongFile.albumFolderID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
 		
 		os_signpost(.begin, log: .update, name: "Filter to Songs moved to different Albums")
-		let unsortedOutdatedTuples = potentiallyOutdatedSongsAndFreshMediaItems.filter { (song, mediaItem) in
-			song.container!.albumPersistentID != Int64(bitPattern: mediaItem.albumPersistentID)
+		let unsortedOutdatedTuples = potentiallyOutdatedSongsAndFreshSongFiles.filter { (song, songFile) in
+			song.container!.albumPersistentID != songFile.albumFolderID
 		}
 		os_signpost(.end, log: .update, name: "Filter to Songs moved to different Albums")
 		
@@ -110,8 +109,8 @@ extension MusicLibraryManager {
 		}
 		os_signpost(.end, log: .update, name: "Sort Songs moved to different Albums")
 		
-		var existingAlbums_byInt64 = uniqueAlbums_byInt64
-		outdatedTuples.reversed().forEach { (song, mediaItem) in
+		var existingAlbumsByID = uniqueAlbumsByID
+		outdatedTuples.reversed().forEach { (song, songFile) in
 			os_signpost(.begin, log: .update, name: "Move one Song to its up-to-date Album")
 			defer {
 				os_signpost(.end, log: .update, name: "Move one Song to its up-to-date Album")
@@ -119,17 +118,17 @@ extension MusicLibraryManager {
 			
 			// Get this Song's fresh albumPersistentID.
 			os_signpost(.begin, log: .update, name: "Get one Song's fresh albumPersistentID")
-			let newAlbumPersistentID_asInt64 = Int64(bitPattern: mediaItem.albumPersistentID)
+			let newAlbumFolderID = songFile.albumFolderID
 			os_signpost(.end, log: .update, name: "Get one Song's fresh albumPersistentID")
 			
 			// If this Song's albumPersistentID has stayed the same, move on to the next one.
 			guard
-				newAlbumPersistentID_asInt64 != song.container!.albumPersistentID
+				newAlbumFolderID != song.container!.albumPersistentID
 			else { return }
 			
 			// This Song's albumPersistentID has changed.
 			// If we already have a matching Album to move the Song to …
-			if let existingAlbum = existingAlbums_byInt64[newAlbumPersistentID_asInt64] {
+			if let existingAlbum = existingAlbumsByID[newAlbumFolderID] {
 				// … then move the Song to that Album.
 				os_signpost(.begin, log: .update, name: "Move a Song to an existing Album")
 				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
@@ -143,7 +142,7 @@ extension MusicLibraryManager {
 				let existingCollection = song.container!.container!
 				let newAlbum = Album(
 					atBeginningOf: existingCollection,
-					for: mediaItem,
+					albumFolderID: songFile.albumFolderID,
 					context: context)
 				
 				// … and then move the Song to that Album.
@@ -151,7 +150,7 @@ extension MusicLibraryManager {
 				song.container = newAlbum
 				
 				// Make a note of the new Album.
-				existingAlbums_byInt64[newAlbumPersistentID_asInt64] = newAlbum
+				existingAlbumsByID[newAlbumFolderID] = newAlbum
 				
 				os_signpost(.end, log: .update, name: "Move a Song to a new Album")
 			}

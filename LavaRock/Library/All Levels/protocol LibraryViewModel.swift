@@ -403,20 +403,20 @@ extension LibraryViewModel {
 				return items
 			}
 			// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
-			let songsAndMediaItems = songs.map { ($0, $0.mpMediaItem()) }
-			let sorted = songsAndMediaItems.sortedMaintainingOrderWhen {
-				let leftMediaItem = $0.1
-				let rightMediaItem = $1.1
-				return leftMediaItem?.discNumber == rightMediaItem?.discNumber
-				&& leftMediaItem?.albumTrackNumber == rightMediaItem?.albumTrackNumber
+			let songsAndSongFiles = songs.map { ($0, $0.songFile()) }
+			let sorted = songsAndSongFiles.sortedMaintainingOrderWhen {
+				let leftSongFile = $0.1
+				let rightSongFile = $1.1
+				return leftSongFile?.discNumberOnDisk == rightSongFile?.discNumberOnDisk
+				&& leftSongFile?.trackNumberOnDisk == rightSongFile?.trackNumberOnDisk
 			} areInOrder: {
 				guard
-					let leftMediaItem = $0.1,
-					let rightMediaItem = $1.1
+					let leftSongFile = $0.1,
+					let rightSongFile = $1.1
 				else {
 					return true
 				}
-				return leftMediaItem.precedesForSortOptionTrackNumber(rightMediaItem)
+				return leftSongFile.precedesForSortOptionTrackNumber(rightSongFile)
 			}
 			return sorted.map { $0.0 }
 			

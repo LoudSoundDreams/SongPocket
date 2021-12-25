@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 import OSLog
 
 final class AlbumArtworkCell: UITableViewCell {
@@ -88,14 +87,14 @@ final class SongCell:
 	}
 	
 	final func configureWith(
-		mediaItem: MPMediaItem?,
-		albumRepresentative representativeItem: MPMediaItem?
+		songFile: SongFile?,
+		albumRepresentative representative: SongFile?
 	) {
-		let titleText = mediaItem?.title ?? MPMediaItem.unknownTitlePlaceholder
+		let titleText = songFile?.titleOnDisk ?? SongFileExtras.unknownTitlePlaceholder
 		let artistText: String? = {
-			let albumArtist = representativeItem?.albumArtist // Can be `nil`
+			let albumArtist = representative?.albumArtistOnDisk // Can be `nil`
 			if
-				let songArtist = mediaItem?.artist,
+				let songArtist = songFile?.artistOnDisk,
 				songArtist != albumArtist
 			{
 				return songArtist
@@ -105,23 +104,21 @@ final class SongCell:
 		}()
 		let trackNumberString: String = { // Don't let this be nil.
 			guard
-				let mediaItem = mediaItem,
-				let representativeItem = representativeItem
-			else { return MPMediaItem.unknownTrackNumberPlaceholder }
+				let songFile = songFile,
+				let representative = representative
+			else {
+				return SongFileExtras.unknownTrackNumberPlaceholder
+			}
 			
-			let discNumber = representativeItem.discNumber
-			let discCount = representativeItem.discCount
+			let discNumber = representative.discNumberOnDisk
+			let discCount = representative.discCountOnDisk
 			// Show disc numbers if the disc count is more than 1, or if the disc count isn't more than 1 but the disc number is.
-			let shouldShowDiscNumber: Bool = {
-				discCount > 1 // As of iOS 15.0 RC, Media Player sometimes reports `discCount == 0` for albums with 1 disc.
-				? true
-				: discNumber > 1
-			}()
+			let shouldShowDiscNumber = (discCount > 1) ? true : (discNumber > 1)
 			
 			if shouldShowDiscNumber {
-				return mediaItem.discAndTrackNumberFormatted()
+				return songFile.discAndTrackNumberFormatted()
 			} else {
-				return mediaItem.trackNumberFormatted()
+				return songFile.trackNumberFormatted()
 			}
 		}()
 		
@@ -136,7 +133,7 @@ final class SongCell:
 			textStack.spacing = 4
 		}
 		
-		accessibilityUserInputLabels = [mediaItem?.title].compactMap { $0 }
+		accessibilityUserInputLabels = [songFile?.titleOnDisk].compactMap { $0 }
 	}
 }
 

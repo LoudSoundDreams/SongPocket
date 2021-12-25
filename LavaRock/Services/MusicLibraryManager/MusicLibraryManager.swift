@@ -6,6 +6,7 @@
 //
 
 import MediaPlayer
+import OSLog
 
 final class MusicLibraryManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	
@@ -31,6 +32,18 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		library?.beginGeneratingLibraryChangeNotifications()
 	}
 	@objc private func mediaLibraryDidChange() { mergeChanges() }
+	
+	final func mergeChanges() {
+		os_signpost(.begin, log: .merge, name: "1. Merge changes")
+		defer {
+			os_signpost(.end, log: .merge, name: "1. Merge changes")
+		}
+		
+		guard let freshMediaItems = MPMediaQuery.songs().items else { return }
+		context.performAndWait {
+			mergeChanges(toMatch: freshMediaItems)
+		}
+	}
 	
 	deinit {
 		NotificationCenter.default.removeObserver(self)

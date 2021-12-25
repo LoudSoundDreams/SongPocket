@@ -81,7 +81,7 @@ extension SongsTVC {
 		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
 		os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
 		let chosenMediaItems = chosenSongs.compactMap {
-			($0 as? Song)?.mpMediaItem()
+			($0 as? Song)?.songFile() as? MPMediaItem
 		}
 		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
@@ -102,7 +102,7 @@ extension SongsTVC {
 		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
 		os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
 		let chosenMediaItems = chosenSongs.compactMap {
-			($0 as? Song)?.mpMediaItem()
+			($0 as? Song)?.songFile() as? MPMediaItem
 		}
 		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
@@ -120,9 +120,9 @@ extension SongsTVC {
 		
 		if
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
-			let selectedMediaItem = selectedSong.mpMediaItem()
+			let selectedSongFile = selectedSong.songFile()
 		{
-			let selectedTitle = selectedMediaItem.title ?? MPMediaItem.unknownTitlePlaceholder
+			let selectedTitle = selectedSongFile.titleOnDisk ?? SongFileExtras.unknownTitlePlaceholder
 			showExplanationForEnqueueActionIfNecessary(
 				titleOfSelectedSong: selectedTitle,
 				numberOfSongsEnqueued: chosenMediaItems.count)
@@ -133,7 +133,7 @@ extension SongsTVC {
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
-			let selectedMediaItem = selectedSong.mpMediaItem()
+			let selectedMediaItem = selectedSong.songFile() as? MPMediaItem
 		else { return }
 		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
@@ -148,7 +148,7 @@ extension SongsTVC {
 			sharedPlayer?.prepareToPlay()
 		}
 		
-		let selectedTitle = selectedMediaItem.title ?? MPMediaItem.unknownTitlePlaceholder
+		let selectedTitle = selectedMediaItem.title ?? SongFileExtras.unknownTitlePlaceholder
 		showExplanationForEnqueueActionIfNecessary(
 			titleOfSelectedSong: selectedTitle,
 			numberOfSongsEnqueued: 1)
