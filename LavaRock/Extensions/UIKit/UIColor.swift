@@ -10,11 +10,11 @@ import UIKit
 extension UIColor {
 	
 	final func translucentFaint() -> UIColor {
-		return withAlphaComponent(1/8)
+		return withAlphaComponent(0.125)
 	}
 	
 	final func translucent() -> UIColor {
-		return withAlphaComponent(1/2)
+		return withAlphaComponent(0.5)
 	}
 	
 	/*

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 
 extension AlbumsTVC {
 	

@@ -7,7 +7,6 @@
 
 import UIKit
 import CoreData
-import MediaPlayer
 
 struct SongsViewModel {
 	// LibraryViewModel
@@ -60,20 +59,6 @@ extension SongsViewModel: LibraryViewModel {
 		case
 				.trackNumber:
 			return true
-			
-//			guard let songs = items as? [Song] else {
-//				return false
-//			}
-//			return songs.contains {
-//				// Return `true` if the `Song` has any useful metadata for sorting.
-//				guard let mediaItem = $0.mpMediaItem() else {
-//					return false
-//				}
-//				if mediaItem.albumTrackNumber != MPMediaItem.unknownTrackNumber {
-//					return true
-//				}
-//				return mediaItem.discNumber != 0 // As of iOS 14.7 developer beta 5, Media Player reports unknown disc numbers as 1.
-//			}
 		case
 				.random,
 				.reverse:

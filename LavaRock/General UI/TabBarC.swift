@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 
 final class TabBarC: UITabBarController {
 	

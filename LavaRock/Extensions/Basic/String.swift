@@ -35,7 +35,7 @@ extension String {
 		return next.isWhitespace
 	}
 	
-	// Don't sort Strings by <. That puts all capital letters before all lowercase letters, meaning "Z" comes before "a".
+	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
 	func precedesAlphabeticallyFinderStyle(_ other: Self) -> Bool {
 		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
 		return comparisonResult == .orderedAscending

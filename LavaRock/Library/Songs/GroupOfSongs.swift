@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import MediaPlayer
 
 struct GroupOfSongs: GroupOfLibraryItems {
 	

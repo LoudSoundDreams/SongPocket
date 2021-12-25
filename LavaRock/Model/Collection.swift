@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import MediaPlayer
 import OSLog
 
 extension Collection: LibraryItem {
