@@ -40,7 +40,7 @@ extension MusicLibraryManager {
 		os_signpost(.end, log: .cleanup, name: "Reindex all Albums and Songs")
 	}
 	
-	// MARK: - Recalculating Release Date Estimates
+	// MARK: Recalculating Release Date Estimates
 	
 	// Only `MPMediaItem`s have release dates, and those can’t be albums.
 	// `MPMediaItemCollection.representativeItem.releaseDate` doesn’t necessarily represent the album’s release date.
@@ -82,7 +82,7 @@ extension MusicLibraryManager {
 		}
 	}
 	
-	// MARK: - Reindexing
+	// MARK: Reindexing
 	
 	private func reindexAlbums(
 		in collection: Collection,

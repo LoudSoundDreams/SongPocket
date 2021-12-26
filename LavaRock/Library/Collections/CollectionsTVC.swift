@@ -276,8 +276,6 @@ final class CollectionsTVC:
 		}
 	}
 	
-	// MARK: Setup Events
-	
 	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
 	}
 	

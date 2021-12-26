@@ -10,7 +10,7 @@ import CoreData
 
 extension SongsTVC {
 	
-	// MARK: - After Playback State or "Now Playing" Item Changes
+	// MARK: - Player
 	
 	final override func reflectPlayer() {
 		super.reflectPlayer()

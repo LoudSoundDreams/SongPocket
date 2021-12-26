@@ -30,7 +30,7 @@ extension CollectionsTVC {
 	}
 	@objc private func userDidUpdateDatabase() { reflectDatabase() }
 	
-	// MARK: - After Playback State or "Now Playing" Item Changes
+	// MARK: - Player
 	
 	final override func reflectPlayer() {
 		super.reflectPlayer()
@@ -40,7 +40,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	// MARK: - Refreshing Library Items
+	// MARK: Library Items
 	
 	final override func refreshLibraryItems() {
 		switch purpose {

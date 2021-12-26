@@ -112,8 +112,6 @@ final class AlbumsTVC:
 		}
 	}
 	
-	// MARK: Setup Events
-	
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
 	

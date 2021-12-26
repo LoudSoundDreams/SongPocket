@@ -9,7 +9,7 @@ import CoreData
 
 struct GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
 	
-	// MARK: - GroupOfLibraryItems
+	// MARK: GroupOfLibraryItems
 	
 	let container: NSManagedObject?
 	
@@ -28,7 +28,7 @@ struct GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
 		private_items = newItems
 	}
 	
-	// MARK: - Miscellaneous
+	// MARK: Miscellaneous
 	
 	init(
 		entityName: String,

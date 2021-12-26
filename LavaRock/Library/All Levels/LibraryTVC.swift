@@ -173,8 +173,6 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: Setup Events
-	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
@@ -184,7 +182,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: - Teardown
+	// MARK: Teardown
 	
 	deinit {
 		endReflectingPlaybackState()

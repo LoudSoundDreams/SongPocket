@@ -10,16 +10,14 @@ import MediaPlayer
 import CoreData
 
 extension LibraryTVC: PlaybackStateReflecting {
-	
 	func reflectPlaybackState() {
 		reflectPlayer()
 	}
-	
 }
 
 extension LibraryTVC {
 	
-	// MARK: - Setup and Teardown
+	// MARK: - Setup
 	
 	// Overrides should call super (this implementation).
 	@objc func beginObservingNotifications() {
@@ -40,14 +38,14 @@ extension LibraryTVC {
 	@objc private func didMergeChanges() { reflectDatabase() }
 	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
 	
-	// MARK: - After Updating Database
+	// MARK: - Database
 	
 	final func reflectDatabase() {
 		reflectPlayer() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
 		refreshLibraryItemsWhenVisible()
 	}
 	
-	// MARK: - After Playback State or "Now Playing" Item Changes
+	// MARK: Player
 	
 	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func reflectPlayer() {
@@ -70,7 +68,7 @@ extension LibraryTVC {
 		}
 	}
 	
-	// MARK: - Refreshing Library Items
+	// MARK: Library Items
 	
 	final func refreshLibraryItemsWhenVisible() {
 		if view.window == nil {

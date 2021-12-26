@@ -47,8 +47,6 @@ final class SongsTVC:
 		]
 	}
 	
-	// MARK: Setup Events
-	
 	final override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		

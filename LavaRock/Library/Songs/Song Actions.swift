@@ -12,7 +12,7 @@ import OSLog
 
 extension SongsTVC {
 	
-	// MARK: - Presenting
+	// MARK: Presenting
 	
 	final func showSongActions(
 		for song: Song,
@@ -73,7 +73,7 @@ extension SongsTVC {
 		present(actionSheet, animated: true)
 	}
 	
-	// MARK: - Actions
+	// MARK: Actions
 	
 	private func playAlbumStartingAtSelectedSong() {
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
@@ -154,7 +154,7 @@ extension SongsTVC {
 			numberOfSongsEnqueued: 1)
 	}
 	
-	// MARK: - Explaining Enqueue Actions
+	// MARK: Explaining Enqueue Actions
 	
 	private func showExplanationForEnqueueActionIfNecessary(
 		titleOfSelectedSong: String,

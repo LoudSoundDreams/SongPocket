@@ -10,7 +10,7 @@ import CoreData
 
 extension CollectionsTVC {
 	
-	// MARK: - Renaming
+	// MARK: Renaming
 	
 	final func confirmRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
@@ -52,7 +52,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	// MARK: - Combining
+	// MARK: Combining
 	
 	final func combineAndConfirm() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()

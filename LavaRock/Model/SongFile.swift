@@ -29,7 +29,7 @@ protocol SongFile {
 
 extension SongFile {
 	
-	// MARK: - Predicates for Sorting
+	// MARK: Predicates for Sorting
 	
 	// Behavior is undefined if you compare with a `SongFile` from the same album.
 	// Verified with `MPMediaItem`s as of build 157 on iOS 14.7 developer beta 5.
@@ -126,7 +126,7 @@ extension SongFile {
 		return myTrack < otherTrack
 	}
 	
-	// MARK: - Formatted Attributes
+	// MARK: Formatted Attributes
 	
 	func discAndTrackNumberFormatted() -> String {
 		let trackNumberString: String = {

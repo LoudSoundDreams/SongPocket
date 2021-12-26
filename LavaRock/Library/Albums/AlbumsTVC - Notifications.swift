@@ -10,7 +10,7 @@ import CoreData
 
 extension AlbumsTVC {
 	
-	// MARK: - After Playback State or "Now Playing" Item Changes
+	// MARK: - Player
 	
 	final override func reflectPlayer() {
 		super.reflectPlayer()
@@ -18,7 +18,7 @@ extension AlbumsTVC {
 		refreshNowPlayingIndicators(nowPlayingDetermining: self)
 	}
 	
-	// MARK: - Refreshing Library Items
+	// MARK: Library Items
 	
 	final override func refreshLibraryItems() {
 		switch purpose {
