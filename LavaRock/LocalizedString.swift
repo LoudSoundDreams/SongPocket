@@ -105,10 +105,10 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let combinedSectionDefaultTitle = NSLocalizedString("Combined Section", comment: "Alert title")
 	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title") // MC2DO: Delete
 	
-	static let newCollectionButtonTitle = NSLocalizedString(
-		"New Collection [button]",
-		value: "New Collection",
-		comment: "Button") // MC2DO: Edit
+	static let newSectionButtonTitle = NSLocalizedString(
+		"New Section [button]",
+		value: "New Section",
+		comment: "Button") // MC2DO: Obviate
 	static let newSectionAlertTitle = NSLocalizedString(
 		"New Section [alert title]",
 		value: "New Section",
@@ -165,9 +165,12 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit
 	
+	static let format_organizeIntoXSectionsByAlbumArtistQuestionMark = NSLocalizedString(
+		"plural - organize_into_X_sections_by_album_artist",
+		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of sections the app is moving the albums into.")
 	static let format_organizeIntoXCollectionsByAlbumArtistQuestionMark = NSLocalizedString(
 		"plural - organize_into_X_collections_by_album_artist",
-		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of collections the app is moving the albums into.")
+		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of collections the app is moving the albums into.") // MC2DO: Delete
 	
 	static let format_chooseASectiontoMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_section",

@@ -2,6 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>plural - organize_into_X_sections_by_album_artist</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Organize into %#@NUMBER_SECTIONS@ by album artist?</string>
+		<key>NUMBER_SECTIONS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld section</string>
+			<key>other</key>
+			<string>%lld sections</string>
+		</dict>
+	</dict>
 	<key>plural - organize_into_X_collections_by_album_artist</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

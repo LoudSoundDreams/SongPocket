@@ -15,10 +15,10 @@ final class AllowAccessCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configureAsCellActingAsButton()
+		configureAsButton()
 	}
 }
-extension AllowAccessCell: CellActingAsButton {
+extension AllowAccessCell: CellConfiguredAsButton {
 	static let buttonText = LocalizedString.allowAccessToMusic
 }
 
@@ -61,14 +61,14 @@ final class OpenMusicCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configureAsCellActingAsButton()
+		configureAsButton()
 	}
 	
 	final func didSelect() {
 		URL.music?.open()
 	}
 }
-extension OpenMusicCell: CellActingAsButton {
+extension OpenMusicCell: CellConfiguredAsButton {
 	static let buttonText = LocalizedString.openMusic
 }
 
@@ -81,6 +81,10 @@ final class CreateCollectionCell: TintedSelectedCell {
 		accessibilityTraits.formUnion(.button)
 		
 		newCollectionLabel.textColor = .tintColor
+		
+		if FeatureFlag.multicollection {
+			newCollectionLabel.text = LocalizedString.newSectionButtonTitle
+		}
 	}
 }
 

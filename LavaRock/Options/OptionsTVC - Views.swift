@@ -107,10 +107,10 @@ final class TipReloadCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		configureAsCellActingAsButton()
+		configureAsButton()
 	}
 }
-extension TipReloadCell: CellActingAsButton {
+extension TipReloadCell: CellConfiguredAsButton {
 	static let buttonText = LocalizedString.reload
 }
 
