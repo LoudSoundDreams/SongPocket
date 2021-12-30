@@ -322,6 +322,8 @@ final class CollectionsTVC:
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {
+		let collectionsViewModel = viewModel as! CollectionsViewModel
+		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let albumsTVC = segue.destination as? AlbumsTVC
@@ -341,7 +343,7 @@ final class CollectionsTVC:
 			}
 		}()
 		if FeatureFlag.multicollection {
-			let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
+			let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
 			let indexOfSelectedCollection = collection.index
 			albumsTVC.indexOfOpenedCollection = Int(indexOfSelectedCollection)
 			
@@ -350,7 +352,7 @@ final class CollectionsTVC:
 				context: viewModel.context,
 				prerowsInEachSection: prerowsInEachSection)
 		} else {
-			let collection = viewModel.itemNonNil(at: selectedIndexPath) as! Collection
+			let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
 			albumsTVC.viewModel = AlbumsViewModel(
 				viewContainer: .container(collection),
 				context: viewModel.context,

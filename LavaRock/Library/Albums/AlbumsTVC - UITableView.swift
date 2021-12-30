@@ -49,9 +49,7 @@ extension AlbumsTVC {
 //		guard let cell = tableView.dequeueReusableCell(
 //			withIdentifier: "Album Group Header")
 //				//				as?
-//		else {
-//			return UITableViewCell()
-//		}
+//		else { UITableViewCell() }
 //
 //		return cell
 //	}
@@ -73,6 +71,8 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
+		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return UITableViewCell() }
+		
 		switch purpose {
 		case .organizingAlbums:
 			break
@@ -87,13 +87,13 @@ extension AlbumsTVC {
 		case .browsing:
 			break
 		}
-		return albumCell(forRowAt: indexPath)
-	}
-	
-	private func albumCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let album = viewModel.itemNonNil(at: indexPath) as? Album else {
-			return UITableViewCell()
-		}
+		
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: "Album",
+			for: indexPath) as? AlbumCell
+		else { return UITableViewCell() }
+		
+		let album = albumsViewModel.albumNonNil(at: indexPath)
 		
 		// "Now playing" indicator
 		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
@@ -101,13 +101,6 @@ extension AlbumsTVC {
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
-		
-		guard var cell = tableView.dequeueReusableCell(
-			withIdentifier: "Album",
-			for: indexPath) as? AlbumCell
-		else {
-			return UITableViewCell()
-		}
 		
 		let mode: AlbumCell.Mode = {
 			switch purpose {

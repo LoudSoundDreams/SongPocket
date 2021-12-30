@@ -129,12 +129,7 @@ extension AlbumsViewModel {
 	) -> Bool {
 		let indexPathsToOrganize = unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: selectedIndexPaths)
-		guard let albumsToOrganize = indexPathsToOrganize.map({
-			itemNonNil(at: $0)
-		}) as? [Album]
-		else {
-			return false
-		}
+		let albumsToOrganize = indexPathsToOrganize.map { albumNonNil(at: $0) }
 		return albumsToOrganize.contains {
 			$0.albumArtistFormattedOrPlaceholder() != $0.container?.title
 		}

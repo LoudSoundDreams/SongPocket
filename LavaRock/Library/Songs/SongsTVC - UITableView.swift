@@ -27,24 +27,6 @@ extension SongsTVC {
 	
 	// MARK: - Headers
 	
-//	final override func tableView(
-//		_ tableView: UITableView,
-//		viewForHeaderInSection section: Int
-//	) -> UIView? {
-//		guard let album = (viewModel as? SongsViewModel)?.album(forSection: section) else {
-//			return UITableViewCell()
-//		}
-//
-//		guard let cell = tableView.dequeueReusableCell(
-//			withIdentifier: "Album Info")
-//				as? AlbumInfoCell
-//		else {
-//			return UITableViewCell()
-//		}
-//		cell.configure(with: album)
-//		return cell
-//	}
-	
 	final override func tableView(
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int

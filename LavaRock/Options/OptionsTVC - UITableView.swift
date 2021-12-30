@@ -86,9 +86,7 @@ extension OptionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let sectionCase = Section(rawValue: indexPath.section) else {
-			return UITableViewCell()
-		}
+		guard let sectionCase = Section(rawValue: indexPath.section) else { return UITableViewCell() }
 		switch sectionCase {
 		case .theme:
 			if Self.indexPathsOfAppearanceRows.contains(indexPath) {
@@ -150,9 +148,7 @@ extension OptionsTVC {
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Accent Color",
 			for: indexPath) as? AccentColorCell
-		else {
-			return UITableViewCell()
-		}
+		else { return UITableViewCell() }
 		cell.accentColor = accentColor
 		return cell
 	}

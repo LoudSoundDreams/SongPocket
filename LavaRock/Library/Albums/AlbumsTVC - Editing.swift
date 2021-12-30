@@ -42,27 +42,26 @@ extension AlbumsTVC {
 		guard
 			let collectionsNC = storyboard?.instantiateViewController(
 				withIdentifier: "Collections NC") as? UINavigationController,
-			let collectionsTVC = collectionsNC.viewControllers.first as? CollectionsTVC
+			let collectionsTVC = collectionsNC.viewControllers.first as? CollectionsTVC,
+			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
-		let indexPathsToOrganize = viewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+		let indexPathsToOrganize = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
-		let albumsToOrganize = indexPathsToOrganize.map {
-			viewModel.itemNonNil(at: $0) as! Album
-		}
+		let albumsToOrganize = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
 		
 		// Create a child managed object context to begin the changes in.
-		let childContext = NSManagedObjectContext.withParent(viewModel.context)
+		let childContext = NSManagedObjectContext.withParent(albumsViewModel.context)
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
 		let clipboard = AlbumsViewModel.organizeByAlbumArtistAndReturnClipboard(
 			albumsToOrganize,
 			via: childContext,
 			delegateForClipboard: self)
-		let selectedItems = tableView.indexPathsForSelectedRowsNonNil.compactMap {
-			viewModel.itemOptional(at: $0)
+		let selectedAlbums = tableView.indexPathsForSelectedRowsNonNil.map {
+			albumsViewModel.albumNonNil(at: $0)
 		}
-		idsOfAlbumsToKeepSelected = Set(selectedItems.compactMap {
+		idsOfAlbumsToKeepSelected = Set(selectedAlbums.compactMap {
 			let selectedAlbumID = $0.objectID
 			if clipboard.idsOfUnmovedAlbums.contains(selectedAlbumID) {
 				return selectedAlbumID
@@ -103,21 +102,20 @@ extension AlbumsTVC {
 		guard
 			let collectionsNC = storyboard?.instantiateViewController(
 				withIdentifier: "Collections NC") as? UINavigationController,
-			let collectionsTVC = collectionsNC.viewControllers.first as? CollectionsTVC
+			let collectionsTVC = collectionsNC.viewControllers.first as? CollectionsTVC,
+			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
 		// Provide the extra data that the "move albums" sheet needs.
-		let indexPathsToMove = viewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+		let indexPathsToMove = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
-		let albumsToMove = indexPathsToMove.map {
-			viewModel.itemNonNil(at: $0) as! Album
-		}
+		let albumsToMove = indexPathsToMove.map { albumsViewModel.albumNonNil(at: $0) }
 		collectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
 			albumsBeingMoved: albumsToMove,
 			delegate: self)
 		
 		// Make the "move albums" sheet use a child managed object context, so that we can cancel without having to revert our changes.
-		let childContext = NSManagedObjectContext.withParent(viewModel.context)
+		let childContext = NSManagedObjectContext.withParent(albumsViewModel.context)
 		collectionsTVC.viewModel = CollectionsViewModel(
 			context: childContext,
 			prerowsInEachSection: [.createCollection])

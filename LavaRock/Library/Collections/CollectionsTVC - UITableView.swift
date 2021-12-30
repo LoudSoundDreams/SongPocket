@@ -40,6 +40,8 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
+		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return UITableViewCell() }
+		
 		switch purpose {
 		case .organizingAlbums:
 			break
@@ -80,14 +82,15 @@ extension CollectionsTVC {
 				return UITableViewCell()
 			}
 		case .someCollections:
-			return collectionCell(forRowAt: indexPath)
+			break
 		}
-	}
-	
-	private func collectionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else {
-			return UITableViewCell()
-		}
+		
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: "Collection",
+			for: indexPath) as? CollectionCell
+		else { return UITableViewCell() }
+		
+		let collection = collectionsViewModel.collectionNonNil(at: indexPath)
 		
 		// "Now playing" indicator
 		let isInPlayer = (viewModel as? CollectionsViewModel)?.isInPlayer(anyIndexPath: indexPath) ?? false
@@ -95,13 +98,6 @@ extension CollectionsTVC {
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
-		
-		guard var cell = tableView.dequeueReusableCell(
-			withIdentifier: "Collection",
-			for: indexPath) as? CollectionCell
-		else {
-			return UITableViewCell()
-		}
 		
 		let mode: CollectionCell.Mode = {
 			switch purpose {

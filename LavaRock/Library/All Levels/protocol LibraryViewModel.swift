@@ -61,7 +61,6 @@ enum LibraryRowIdentifier: Hashable {
 }
 
 extension LibraryViewModel {
-	
 	var onlyGroup: GroupOfLibraryItems? {
 		guard
 			let firstGroup = groups.first,
@@ -513,5 +512,4 @@ extension LibraryViewModel {
 		
 		return newItems
 	}
-	
 }

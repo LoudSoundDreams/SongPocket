@@ -167,21 +167,22 @@ final class AlbumsTVC:
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {
+		let albumsViewModel = viewModel as! AlbumsViewModel
+		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let songsTVC = segue.destination as? SongsTVC,
-			let albumsViewModel = viewModel as? AlbumsViewModel
+			let songsTVC = segue.destination as? SongsTVC
 		else { return }
 		
 		if FeatureFlag.multialbum {
-			let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
+			let album = albumsViewModel.albumNonNil(at: selectedIndexPath)
 			songsTVC.openedAlbum = album
 			
 			songsTVC.viewModel = SongsViewModel(
 				viewContainer: .library,
 				context: viewModel.context)
 		} else {
-			let album = albumsViewModel.itemNonNil(at: selectedIndexPath) as! Album
+			let album = albumsViewModel.albumNonNil(at: selectedIndexPath)
 			songsTVC.viewModel = SongsViewModel(
 				viewContainer: .container(album),
 				context: viewModel.context)
