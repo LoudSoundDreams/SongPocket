@@ -84,6 +84,20 @@ extension CollectionsViewModel {
 		return itemNonNil(at: indexPath) as! Collection
 	}
 	
+	enum RowCase {
+		case prerow(Prerow)
+		case collection
+	}
+	func rowCase(for indexPath: IndexPath) -> RowCase {
+		let row = indexPath.row
+		if row < numberOfPrerowsPerSection {
+			let associatedValue = prerowsInEachSection[row]
+			return .prerow(associatedValue)
+		} else {
+			return .collection
+		}
+	}
+	
 	private static let indexOfOnlyGroup = 0
 	
 	var group: GroupOfLibraryItems { groups[Self.indexOfOnlyGroup] }
@@ -123,7 +137,7 @@ extension CollectionsViewModel {
 	) -> Self {
 		let collectionIDs = collections.map { $0.objectID }
 		let index = indexOfItemInGroup(forRow: indexPathOfCombined.row)
-		let childContext = NSManagedObjectContext.withParent(context)
+		let childContext = NSManagedObjectContext(.mainQueue)
 		childContext.parent = context
 		let combinedCollection = Collection(
 			combiningCollectionsInOrderWith: collectionIDs,

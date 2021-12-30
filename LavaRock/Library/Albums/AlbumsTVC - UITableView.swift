@@ -77,11 +77,16 @@ extension AlbumsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if viewModel.isPrerow(indexPath: indexPath) {
-				return tableView.dequeueReusableCell(
-					withIdentifier: "Move Here",
-					for: indexPath) as? MoveHereCell ?? UITableViewCell()
-			} else {
+			let rowCase = albumsViewModel.rowCase(for: indexPath)
+			switch rowCase {
+			case .prerow(let prerow):
+				switch prerow {
+				case .moveHere:
+					return tableView.dequeueReusableCell(
+						withIdentifier: "Move Here",
+						for: indexPath) as? MoveHereCell ?? UITableViewCell()
+				}
+			case .album:
 				break
 			}
 		case .browsing:
@@ -154,9 +159,17 @@ extension AlbumsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if viewModel.isPrerow(indexPath: indexPath) {
-				return indexPath
-			} else {
+			guard let albumsViewModel = viewModel as? AlbumsViewModel else {
+				return nil
+			}
+			let rowCase = albumsViewModel.rowCase(for: indexPath)
+			switch rowCase {
+			case .prerow(let prerow):
+				switch prerow {
+				case .moveHere:
+					return indexPath
+				}
+			case .album:
 				break
 			}
 		case .browsing:
@@ -174,10 +187,16 @@ extension AlbumsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if viewModel.isPrerow(indexPath: indexPath) {
-				moveHere()
-				return
-			} else {
+			guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
+			let rowCase = albumsViewModel.rowCase(for: indexPath)
+			switch rowCase {
+			case .prerow(let prerow):
+				switch prerow {
+				case .moveHere:
+					moveHere()
+					return
+				}
+			case .album:
 				break
 			}
 		case .browsing:

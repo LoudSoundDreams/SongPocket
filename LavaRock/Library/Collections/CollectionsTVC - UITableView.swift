@@ -46,11 +46,16 @@ extension CollectionsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if viewModel.isPrerow(indexPath: indexPath) {
-				return tableView.dequeueReusableCell(
-					withIdentifier: "Create Collection",
-					for: indexPath) as? CreateCollectionCell ?? UITableViewCell()
-			} else {
+			let rowCase = collectionsViewModel.rowCase(for: indexPath)
+			switch rowCase {
+			case .prerow(let prerow):
+				switch prerow {
+				case .createCollection:
+					return tableView.dequeueReusableCell(
+						withIdentifier: "Create Collection",
+						for: indexPath) as? CreateCollectionCell ?? UITableViewCell()
+				}
+			case .collection:
 				break
 			}
 		case .browsing:
@@ -190,9 +195,17 @@ extension CollectionsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if viewModel.isPrerow(indexPath: indexPath) {
-				return indexPath
-			} else {
+			guard let collectionsViewModel = viewModel as? CollectionsViewModel else {
+				return nil
+			}
+			let rowCase = collectionsViewModel.rowCase(for: indexPath)
+			switch rowCase {
+			case .prerow(let prerow):
+				switch prerow {
+				case .createCollection:
+					return indexPath
+				}
+			case .collection:
 				break
 			}
 		case .browsing:
@@ -219,10 +232,16 @@ extension CollectionsTVC {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			if viewModel.isPrerow(indexPath: indexPath) {
-				createAndConfirm()
-				return
-			} else {
+			guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
+			let rowCase = collectionsViewModel.rowCase(for: indexPath)
+			switch rowCase {
+			case .prerow(let prerow):
+				switch prerow {
+				case .createCollection:
+					createAndConfirm()
+					return
+				}
+			case .collection:
 				break
 			}
 		case .browsing:

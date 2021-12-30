@@ -44,48 +44,35 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		switch indexPath.row {
-		case 0:
-			return albumArtworkCell(forRowAt: indexPath)
-		case 1:
-			return albumInfoCell(forRowAt: indexPath)
-		default:
-			return songCell(forRowAt: indexPath)
-		}
-	}
-	
-	private func albumArtworkCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let album = (viewModel as? SongsViewModel)?.album(forSection: indexPath.section) else {
-			return UITableViewCell()
-		}
-		
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Album Artwork",
-			for: indexPath) as? AlbumArtworkCell
-		else {
-			return UITableViewCell()
-		}
-		cell.configure(with: album)
-		return cell
-	}
-	
-	private func albumInfoCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let album = (viewModel as? SongsViewModel)?.album(forSection: indexPath.section) else {
-			return UITableViewCell()
+		guard let songsViewModel = viewModel as? SongsViewModel else { return UITableViewCell() }
+		let rowCase = songsViewModel.rowCase(for: indexPath)
+		switch rowCase {
+		case .prerow(let prerow):
+			switch prerow {
+			case .albumArtwork:
+				guard let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Album Artwork",
+					for: indexPath) as? AlbumArtworkCell
+				else { return UITableViewCell() }
+				let album = songsViewModel.album(forSection: indexPath.section)
+				cell.configure(with: album)
+				return cell
+			case .albumInfo:
+				guard let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Album Info",
+					for: indexPath) as? AlbumInfoCell
+				else { return UITableViewCell() }
+				let album = songsViewModel.album(forSection: indexPath.section)
+				cell.configure(with: album)
+				return cell
+			}
+		case .song:
+			break
 		}
 		
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Album Info",
-			for: indexPath) as? AlbumInfoCell
-		else {
-			return UITableViewCell()
-		}
-		cell.configure(with: album)
-		return cell
-	}
-	
-	private func songCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let songsViewModel = viewModel as? SongsViewModel
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: "Song",
+			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
 		
 		let song = songsViewModel.songNonNil(at: indexPath)
@@ -100,13 +87,6 @@ extension SongsTVC {
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)
-		
-		guard var cell = tableView.dequeueReusableCell(
-			withIdentifier: "Song",
-			for: indexPath) as? SongCell
-		else {
-			return UITableViewCell()
-		}
 		
 		cell.configureWith(
 			songFile: songFile,

@@ -115,6 +115,20 @@ extension SongsViewModel {
 		return group.container as! Album
 	}
 	
+	enum RowCase {
+		case prerow(Prerow)
+		case song
+	}
+	func rowCase(for indexPath: IndexPath) -> RowCase {
+		let row = indexPath.row
+		if row < numberOfPrerowsPerSection {
+			let associatedValue = prerowsInEachSection[row]
+			return .prerow(associatedValue)
+		} else {
+			return .song
+		}
+	}
+	
 	// Time complexity: O(n), where "n" is the number of groups
 	func indexPath(for album: Album) -> IndexPath? {
 		if let indexOfMatchingGroup = groups.firstIndex(where: { group in

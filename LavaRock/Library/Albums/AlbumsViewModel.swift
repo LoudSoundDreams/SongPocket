@@ -120,6 +120,20 @@ extension AlbumsViewModel {
 		return group.container as! Collection
 	}
 	
+	enum RowCase {
+		case prerow(Prerow)
+		case album
+	}
+	func rowCase(for indexPath: IndexPath) -> RowCase {
+		let row = indexPath.row
+		if row < numberOfPrerowsPerSection {
+			let associatedValue = prerowsInEachSection[row]
+			return .prerow(associatedValue)
+		} else {
+			return .album
+		}
+	}
+	
 	// MARK: - Organizing
 	
 	// Returns `true` if the albums to organize have at least 2 different album artists.

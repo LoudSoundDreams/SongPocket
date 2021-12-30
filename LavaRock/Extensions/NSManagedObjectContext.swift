@@ -9,21 +9,6 @@ import CoreData
 
 extension NSManagedObjectContext {
 	
-	static func withParent(
-		_ parent: NSManagedObjectContext
-	) -> NSManagedObjectContext {
-		let result: NSManagedObjectContext = {
-			if #available(iOS 15, *) {
-				// When we require iOS 15, we can turn this method into an initializer.
-				return NSManagedObjectContext(.mainQueue)
-			} else {
-				return Self(concurrencyType: .mainQueueConcurrencyType)
-			}
-		}()
-		result.parent = parent
-		return result
-	}
-	
 	final func tryToSave() {
 		performAndWait {
 			guard hasChanges else { return }

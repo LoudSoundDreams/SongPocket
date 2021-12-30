@@ -111,11 +111,10 @@ extension LibraryViewModel {
 		
 		let groupSectionStructures: [LibrarySectionStructure] = groups.map { group in
 			let sectionIdentifier: LibrarySectionIdentifier = {
-				if let containerID = group.container?.objectID {
-					return .groupWithContainer(containerID)
-				} else {
+				guard let containerID = group.container?.objectID else {
 					return .groupWithNoContainer
 				}
+				return .groupWithContainer(containerID)
 			}()
 			
 			let prerowIdentifiers = prerowIdentifiersInEachSection().map {
@@ -223,14 +222,6 @@ extension LibraryViewModel {
 			indexPaths(forIndexOfGroup: indexOfGroup)
 		}
 		return result
-	}
-	
-	func isPresection(indexPath: IndexPath) -> Bool {
-		return indexPath.section < numberOfPresections
-	}
-	
-	func isPrerow(indexPath: IndexPath) -> Bool {
-		return indexPath.row < numberOfPrerowsPerSection
 	}
 	
 	func section(forIndexOfGroup indexOfGroup: Int) -> Int {

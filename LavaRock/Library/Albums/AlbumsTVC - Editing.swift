@@ -51,7 +51,8 @@ extension AlbumsTVC {
 		let albumsToOrganize = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
 		
 		// Create a child managed object context to begin the changes in.
-		let childContext = NSManagedObjectContext.withParent(albumsViewModel.context)
+		let childContext = NSManagedObjectContext(.mainQueue)
+		childContext.parent = albumsViewModel.context
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
 		let clipboard = AlbumsViewModel.organizeByAlbumArtistAndReturnClipboard(
@@ -115,7 +116,8 @@ extension AlbumsTVC {
 			delegate: self)
 		
 		// Make the "move albums" sheet use a child managed object context, so that we can cancel without having to revert our changes.
-		let childContext = NSManagedObjectContext.withParent(albumsViewModel.context)
+		let childContext = NSManagedObjectContext(.mainQueue)
+		childContext.parent = albumsViewModel.context
 		collectionsTVC.viewModel = CollectionsViewModel(
 			context: childContext,
 			prerowsInEachSection: [.createCollection])
