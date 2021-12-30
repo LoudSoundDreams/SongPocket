@@ -64,7 +64,6 @@ extension CollectionsViewModel: LibraryViewModel {
 }
 
 extension CollectionsViewModel {
-	
 	init(
 		context: NSManagedObjectContext,
 		prerowsInEachSection: [Prerow]
@@ -198,5 +197,4 @@ extension CollectionsViewModel {
 		newItems.remove(at: Self.indexOfNewCollection)
 		return newItems
 	}
-	
 }

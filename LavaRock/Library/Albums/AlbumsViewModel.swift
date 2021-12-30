@@ -79,7 +79,6 @@ extension AlbumsViewModel: LibraryViewModel {
 }
 
 extension AlbumsViewModel {
-	
 	init(
 		viewContainer: LibraryViewContainer,
 		context: NSManagedObjectContext,
@@ -259,5 +258,4 @@ extension AlbumsViewModel {
 		twin.groups[0].setItems(newItemsForOnlyGroup)
 		return twin
 	}
-	
 }

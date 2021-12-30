@@ -75,7 +75,6 @@ extension SongsViewModel: LibraryViewModel {
 }
 
 extension SongsViewModel {
-	
 	init(
 		viewContainer: LibraryViewContainer,
 		context: NSManagedObjectContext
@@ -141,5 +140,4 @@ extension SongsViewModel {
 			return nil
 		}
 	}
-	
 }

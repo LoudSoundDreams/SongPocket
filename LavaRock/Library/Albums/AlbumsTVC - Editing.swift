@@ -46,22 +46,22 @@ extension AlbumsTVC {
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
+		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		
 		let indexPathsToOrganize = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
-			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+			selectedIndexPaths: selectedIndexPaths)
 		let albumsToOrganize = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
 		
 		// Create a child managed object context to begin the changes in.
 		let childContext = NSManagedObjectContext(.mainQueue)
-		childContext.parent = albumsViewModel.context
+		childContext.parent = viewModel.context
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
 		let clipboard = AlbumsViewModel.organizeByAlbumArtistAndReturnClipboard(
 			albumsToOrganize,
 			via: childContext,
 			delegateForClipboard: self)
-		let selectedAlbums = tableView.indexPathsForSelectedRowsNonNil.map {
-			albumsViewModel.albumNonNil(at: $0)
-		}
+		let selectedAlbums = selectedIndexPaths.map { albumsViewModel.albumNonNil(at: $0) }
 		idsOfAlbumsToKeepSelected = Set(selectedAlbums.compactMap {
 			let selectedAlbumID = $0.objectID
 			if clipboard.idsOfUnmovedAlbums.contains(selectedAlbumID) {
@@ -117,7 +117,7 @@ extension AlbumsTVC {
 		
 		// Make the "move albums" sheet use a child managed object context, so that we can cancel without having to revert our changes.
 		let childContext = NSManagedObjectContext(.mainQueue)
-		childContext.parent = albumsViewModel.context
+		childContext.parent = viewModel.context
 		collectionsTVC.viewModel = CollectionsViewModel(
 			context: childContext,
 			prerowsInEachSection: [.createCollection])

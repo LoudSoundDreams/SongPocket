@@ -42,7 +42,7 @@ extension CollectionsTVC {
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		
-		collectionsViewModel.context.tryToSave()
+		viewModel.context.tryToSave()
 		
 		if didChangeTitle {
 			tableView.reloadRows(at: [indexPath], with: .fade)
@@ -63,9 +63,7 @@ extension CollectionsTVC {
 			let indexPathOfCombined = selectedIndexPaths.first
 		else { return }
 		
-		let selectedCollections = selectedIndexPaths.map {
-			collectionsViewModel.collectionNonNil(at: $0)
-		}
+		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
 		let smartTitle = Self.smartCollectionTitle(combining: selectedCollections)
 		combine(
 			inOrder: selectedCollections,
@@ -199,11 +197,11 @@ extension CollectionsTVC {
 			at: indexPathOfCombined,
 			proposedTitle: proposedTitle)
 		
-		collectionsViewModel.context.tryToSave()
-		collectionsViewModel.context.parent!.tryToSave()
+		viewModel.context.tryToSave()
+		viewModel.context.parent!.tryToSave()
 		
 		let newViewModel = CollectionsViewModel(
-			context: collectionsViewModel.context.parent!,
+			context: viewModel.context.parent!,
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		let toReload = didChangeTitle ? [indexPathOfCombined] : []
 		setViewModelAndMoveRows(

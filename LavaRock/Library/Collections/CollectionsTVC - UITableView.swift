@@ -98,7 +98,7 @@ extension CollectionsTVC {
 		let collection = collectionsViewModel.collectionNonNil(at: indexPath)
 		
 		// "Now playing" indicator
-		let isInPlayer = (viewModel as? CollectionsViewModel)?.isInPlayer(anyIndexPath: indexPath) ?? false
+		let isInPlayer = collectionsViewModel.isInPlayer(anyIndexPath: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
