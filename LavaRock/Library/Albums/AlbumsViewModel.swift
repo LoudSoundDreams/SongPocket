@@ -239,23 +239,21 @@ extension AlbumsViewModel {
 	
 	// MARK: - “Move Albums” Sheet
 	
-	func updatedAfterMovingIntoOnlyGroup(
-		albumsWith albumIDs: [NSManagedObjectID]
+	func updatedAfterMoving(
+		albumsWith albumIDs: [NSManagedObjectID],
+		toSection section: Int
 	) -> Self {
-		guard let destinationCollection = onlyGroup?.container as? Collection else {
-			return self
-		}
+		let destinationCollection = collection(forSection: section)
 		
 		destinationCollection.moveAlbumsToBeginning(
 			with: albumIDs,
 			possiblyToSameCollection: true,
 			via: context)
 		
-		let newItemsForOnlyGroup = destinationCollection.albums(sorted: true)
-		
-		var twin = self
-		twin.prerowsInEachSection = []
-		twin.groups[0].setItems(newItemsForOnlyGroup)
-		return twin
+		let result = AlbumsViewModel(
+			viewContainer: viewContainer,
+			context: context,
+			prerowsInEachSection: [])
+		return result
 	}
 }

@@ -193,7 +193,7 @@ extension AlbumsTVC {
 			case .prerow(let prerow):
 				switch prerow {
 				case .moveHere:
-					moveHere()
+					moveHere(to: indexPath)
 					return
 				}
 			case .album:
