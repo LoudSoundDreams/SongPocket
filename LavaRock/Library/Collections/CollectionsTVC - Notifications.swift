@@ -20,7 +20,7 @@ extension CollectionsTVC {
 		case .movingAlbums:
 			break
 		case .browsing:
-			NotificationCenter.default.addObserver(
+			NotificationCenter.default.addObserverOnce(
 				self,
 				selector: #selector(userDidUpdateDatabase),
 				name: .LRUserDidUpdateDatabase,

@@ -27,7 +27,7 @@ extension PlaybackStateReflecting {
 		
 		PlayerManager.addObserver(self)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
-			NotificationCenter.default.addObserver(
+			NotificationCenter.default.addObserverOnce(
 				self,
 				selector: #selector(reflectPlaybackState),
 				name: .MPMusicPlayerControllerPlaybackStateDidChange,

@@ -20,14 +20,14 @@ extension LibraryTVC {
 	
 	// Overrides should call super (this implementation).
 	@objc func beginObservingNotifications() {
-		NotificationCenter.default.removeAndAddObserver(
+		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(didMergeChanges),
 			name: .LRDidMergeChanges,
 			object: nil)
 		
 		if MPMediaLibrary.authorizationStatus() == .authorized {
-			NotificationCenter.default.removeAndAddObserver(
+			NotificationCenter.default.addObserverOnce(
 				self,
 				selector: #selector(nowPlayingItemDidChange),
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,

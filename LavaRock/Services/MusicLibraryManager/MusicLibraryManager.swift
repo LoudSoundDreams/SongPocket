@@ -22,7 +22,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 		library = MPMediaLibrary.default()
 		mergeChanges()
 		
-		NotificationCenter.default.removeAndAddObserver(
+		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(mediaLibraryDidChange),
 			name: .MPMediaLibraryDidChange,
