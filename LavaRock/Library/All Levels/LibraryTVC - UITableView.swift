@@ -8,7 +8,6 @@
 import UIKit
 
 extension LibraryTVC {
-	
 	// MARK: - Numbers
 	
 	// Overrides should call super (this implementation) as a last resort.
@@ -126,5 +125,4 @@ extension LibraryTVC {
 		}
 		didChangeRowsOrSelectedRows()
 	}
-	
 }

@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 
 extension CollectionsTVC {
-	
 	final func createAndConfirm() {
 		guard
 			case let .movingAlbums(clipboard) = purpose,
@@ -150,5 +149,4 @@ extension CollectionsTVC {
 			self.performSegue(withIdentifier: "Open Collection", sender: self)
 		}
 	}
-	
 }

@@ -8,7 +8,6 @@
 import UIKit
 
 extension OptionsTVC {
-	
 	private enum Section: Int, CaseIterable {
 		case theme
 		case tipJar
@@ -220,5 +219,4 @@ extension OptionsTVC {
 		
 		refreshTipJarRows()
 	}
-	
 }

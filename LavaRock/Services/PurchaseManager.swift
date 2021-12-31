@@ -14,7 +14,6 @@ protocol PurchaseManagerTipDelegate: AnyObject {
 }
 
 final class PurchaseManager: NSObject { // This type inherits from NSObject because that makes it easier to make it conform to SKProductsRequestDelegate and SKPaymentTransactionObserver, which inherit from NSObjectProtocol.
-	
 	private override init() {}
 	
 	enum TipStatus {
@@ -77,11 +76,9 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 	private func endObservingPaymentTransactions() {
 		SKPaymentQueue.default().remove(self)
 	}
-	
 }
 
 extension PurchaseManager: SKProductsRequestDelegate {
-	
 	final func productsRequest(
 		_ request: SKProductsRequest,
 		didReceive response: SKProductsResponse
@@ -137,11 +134,9 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		formatter.locale = locale
 		return formatter
 	}
-	
 }
 
 extension PurchaseManager: SKPaymentTransactionObserver {
-	
 	final func paymentQueue(
 		_ queue: SKPaymentQueue,
 		updatedTransactions transactions: [SKPaymentTransaction])
@@ -166,5 +161,4 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 			}
 		}
 	}
-	
 }

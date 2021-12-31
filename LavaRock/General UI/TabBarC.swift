@@ -8,7 +8,6 @@
 import UIKit
 
 final class TabBarC: UITabBarController {
-	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -18,11 +17,9 @@ final class TabBarC: UITabBarController {
 	deinit {
 		endReflectingPlaybackState()
 	}
-	
 }
 
 extension TabBarC: PlaybackStateReflecting {
-	
 	func reflectPlaybackState() {
 		guard
 			let nc = viewControllers?.last as? UINavigationController,
@@ -35,5 +32,4 @@ extension TabBarC: PlaybackStateReflecting {
 			tabBarItem.image = .noWaveSpeakerSymbol
 		}
 	}
-	
 }

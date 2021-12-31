@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 class LibraryTVC: UITableViewController {
-	
 	enum SortOption: CaseIterable {
 		// For Collections only
 		case title
@@ -421,5 +420,4 @@ class LibraryTVC: UITableViewController {
 	) -> Bool {
 		return !isEditing
 	}
-	
 }

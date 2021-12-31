@@ -12,7 +12,6 @@ struct BatchUpdates<Identifier> {
 }
 
 extension CollectionDifference {
-	
 	func batchUpdates() -> BatchUpdates<Int> {
 		var indicesOfOldItemsToDelete: [Int] = []
 		var indicesOfNewItemsToInsert: [Int] = []
@@ -42,5 +41,4 @@ extension CollectionDifference {
 			toInsert: indicesOfNewItemsToInsert,
 			toMove: indicesOfItemsToMove)
 	}
-	
 }

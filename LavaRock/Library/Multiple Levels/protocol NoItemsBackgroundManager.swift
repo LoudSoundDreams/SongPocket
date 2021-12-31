@@ -15,7 +15,6 @@ protocol NoItemsBackgroundManager {
 }
 
 extension NoItemsBackgroundManager {
-	
 	// Call this in `UITableViewDataSource.numberOfSections(in:)`.
 	func setOrRemoveNoItemsBackground() {
 		if viewModel.isEmpty() {
@@ -24,5 +23,4 @@ extension NoItemsBackgroundManager {
 			tableView.backgroundView = nil
 		}
 	}
-	
 }

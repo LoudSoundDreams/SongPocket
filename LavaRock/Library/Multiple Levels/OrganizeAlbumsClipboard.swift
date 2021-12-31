@@ -17,7 +17,6 @@ struct WillOrganizeAlbumsStickyNote {
 }
 
 final class OrganizeAlbumsClipboard {
-	
 	// Data
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	let idsOfUnmovedAlbums: Set<NSManagedObjectID>
@@ -48,5 +47,4 @@ final class OrganizeAlbumsClipboard {
 		self.idsOfDestinationCollections = idsOfDestinationCollections
 		self.delegate = delegate
 	}
-	
 }

@@ -18,7 +18,6 @@ enum LRUserDefaultsKey: String, CaseIterable {
 }
 
 extension UserDefaults {
-	
 	final func deleteAllEntriesExcept(withKeys keysToKeep: [String]) {
 		let oldEntries = dictionaryRepresentation()
 		
@@ -31,5 +30,4 @@ extension UserDefaults {
 		
 		setPersistentDomain(newEntries, forName: Bundle.main.bundleIdentifier!)
 	}
-	
 }

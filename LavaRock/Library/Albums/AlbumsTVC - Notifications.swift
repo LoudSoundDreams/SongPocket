@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 
 extension AlbumsTVC {
-	
 	// MARK: - Player
 	
 	final override func reflectPlayer() {
@@ -30,5 +29,4 @@ extension AlbumsTVC {
 			super.refreshLibraryItems()
 		}
 	}
-	
 }

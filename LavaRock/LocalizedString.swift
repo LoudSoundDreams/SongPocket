@@ -10,10 +10,9 @@ import Foundation
 // Putting all the keys we pass to NSLocalizedString in one place (here) helps us keep them unique, which we must do to ensure predictable behavior.
 // It also helps us use the same phrases in multiple places if appropriate.
 struct LocalizedString { // You can't turn this into an enum, because raw values for enum cases need to be literals.
+	private init() {}
 	
 	// Don't pass arguments to the Foundation function NSLocalizedString, because when you choose Editor -> Export for Localization…, Xcode won't include those calls.
-	
-	private init() {}
 	
 	// MARK: - Without Variables
 	
@@ -184,5 +183,4 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let format_didEnqueueMultipleSongsAlertTitle = NSLocalizedString(
 		"plural - did_enqueue_multiple_songs",
 		comment: "Title of the alert that appears after the user adds multiple songs to the queue. Include the title of the song. Also, if the user added 2 songs, include “and 1 More Song”, and if they added 3 songs, include “and 2 More Songs”, and so on.")
-	
 }

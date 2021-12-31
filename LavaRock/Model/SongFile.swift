@@ -28,7 +28,6 @@ protocol SongFile {
 }
 
 extension SongFile {
-	
 	// MARK: Predicates for Sorting
 	
 	// Behavior is undefined if you compare with a `SongFile` from the same album.
@@ -144,7 +143,6 @@ extension SongFile {
 		}
 		return String(trackNumberOnDisk)
 	}
-	
 }
 
 struct SongFileExtras {

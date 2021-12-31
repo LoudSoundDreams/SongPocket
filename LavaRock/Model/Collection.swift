@@ -18,7 +18,6 @@ extension Collection: LibraryContainer {
 }
 
 extension Collection {
-	
 	convenience init(
 		afterAllOtherCollectionsCount numberOfExistingCollections: Int,
 		title: String,
@@ -188,5 +187,4 @@ extension Collection {
 			newContents.reindex()
 		}
 	}
-	
 }

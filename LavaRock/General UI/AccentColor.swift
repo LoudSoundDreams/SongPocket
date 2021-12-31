@@ -8,9 +8,8 @@
 import UIKit
 
 struct AccentColor: Equatable { // You can't turn this into an enum, because raw values for enum cases need to be literals.
-	
-	// We persist the raw values in `UserDefaults`.
 	enum ValueCase: String, CaseIterable {
+		// We persist these raw values in `UserDefaults`.
 		case strawberry = "Strawberry"
 		case tangerine = "Tangerine"
 		case lime = "Lime"
@@ -75,5 +74,4 @@ struct AccentColor: Equatable { // You can't turn this into an enum, because raw
 		displayName: LocalizedString.blueberry,
 		uiColor: .systemBlue,
 		heartEmoji: "💙")
-	
 }

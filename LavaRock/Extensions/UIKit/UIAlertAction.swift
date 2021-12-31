@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIAlertAction {
-	
 	static func cancel(
 		handler: ((UIAlertAction) -> Void)?
 	) -> UIAlertAction {
@@ -17,5 +16,4 @@ extension UIAlertAction {
 			style: .cancel,
 			handler: handler)
 	}
-	
 }

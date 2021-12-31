@@ -13,7 +13,6 @@ final class SongsTVC:
 	LibraryTVC,
 	NoItemsBackgroundManager
 {
-	
 	// MARK: - Properties
 	
 	// NoItemsBackgroundManager
@@ -64,5 +63,4 @@ final class SongsTVC:
 		let toDelete = tableView.allSections()
 		deleteThenExit(sections: toDelete)
 	}
-	
 }

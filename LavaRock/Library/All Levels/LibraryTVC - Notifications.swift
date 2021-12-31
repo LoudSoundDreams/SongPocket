@@ -16,7 +16,6 @@ extension LibraryTVC: PlaybackStateReflecting {
 }
 
 extension LibraryTVC {
-	
 	// MARK: - Setup
 	
 	// Overrides should call super (this implementation).
@@ -115,5 +114,4 @@ extension LibraryTVC {
 		}
 		
 	}
-	
 }

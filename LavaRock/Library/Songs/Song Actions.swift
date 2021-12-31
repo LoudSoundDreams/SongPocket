@@ -11,7 +11,6 @@ import MediaPlayer
 import OSLog
 
 extension SongsTVC {
-	
 	// MARK: Presenting
 	
 	final func showSongActions(
@@ -211,5 +210,4 @@ extension SongsTVC {
 		
 		present(alert, animated: true)
 	}
-	
 }

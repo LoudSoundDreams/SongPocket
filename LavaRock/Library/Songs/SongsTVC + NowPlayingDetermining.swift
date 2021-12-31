@@ -8,7 +8,6 @@
 import UIKit
 
 extension SongsTVC: NowPlayingDetermining {
-	
 	final func isInPlayer(anyIndexPath: IndexPath) -> Bool {
 		guard
 			let rowSong = viewModel.itemOptional(at: anyIndexPath) as? Song,
@@ -20,5 +19,4 @@ extension SongsTVC: NowPlayingDetermining {
 		let result = rowSong.objectID == songInPlayer.objectID
 		return result
 	}
-	
 }

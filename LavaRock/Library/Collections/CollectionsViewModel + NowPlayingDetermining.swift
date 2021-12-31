@@ -8,7 +8,6 @@
 import UIKit
 
 extension CollectionsViewModel: NowPlayingDetermining {
-	
 	func isInPlayer(anyIndexPath: IndexPath) -> Bool {
 		guard
 			let rowCollection = itemOptional(at: anyIndexPath) as? Collection,
@@ -20,5 +19,4 @@ extension CollectionsViewModel: NowPlayingDetermining {
 		let result = rowCollection.objectID == songInPlayer.container?.container?.objectID
 		return result
 	}
-	
 }

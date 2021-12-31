@@ -8,7 +8,6 @@
 import UIKit
 
 extension Array {
-	
 	// MARK: - Element: LibraryItem
 	
 	// Needs to match the property observer on GroupOfLibraryItems.items.
@@ -174,5 +173,4 @@ extension Array {
 			rest: rest,
 			predicate: predicate)
 	}
-	
 }

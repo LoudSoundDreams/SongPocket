@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIFont {
-	
 	static func bodyWithMonospacedDigits(
 		compatibleWith traitCollection: UITraitCollection?
 	) -> UIFont {
@@ -19,5 +18,4 @@ extension UIFont {
 			ofSize: bodyFont.pointSize,
 			weight: .regular)
 	}
-	
 }

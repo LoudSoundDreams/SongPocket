@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIAlertController {
-	
 	static func forEditingCollectionTitle(
 		alertTitle: String,
 		textFieldText: String?,
@@ -51,5 +50,4 @@ extension UIAlertController {
 			textField.smartDashesType = .yes
 		}
 	}
-	
 }

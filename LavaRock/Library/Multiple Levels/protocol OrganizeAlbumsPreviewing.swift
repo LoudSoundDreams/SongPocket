@@ -13,7 +13,6 @@ protocol OrganizeAlbumsPreviewing: UIViewController {
 }
 
 extension OrganizeAlbumsPreviewing {
-	
 	func makeSaveOrganizeButton() -> UIBarButtonItem {
 		let action = UIAction { _ in self.commitOrganize() }
 		let button = UIBarButtonItem(
@@ -43,5 +42,4 @@ extension OrganizeAlbumsPreviewing {
 		dismiss(animated: true)
 		clipboard.delegate?.didSaveOrganizeThenDismiss()
 	}
-	
 }

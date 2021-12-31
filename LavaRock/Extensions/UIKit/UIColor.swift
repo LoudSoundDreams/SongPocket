@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIColor {
-	
 	final func translucentFaint() -> UIColor {
 		return withAlphaComponent(0.125)
 	}
@@ -55,5 +54,4 @@ extension UIColor {
 			alpha: mutableAlpha)
 	}
 	*/
-	
 }

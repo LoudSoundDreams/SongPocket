@@ -8,7 +8,6 @@
 import UIKit
 
 final class OptionsTVC: UITableViewController {
-	
 	final var tipJarIsShowingThankYou = false
 	
 	required init?(coder: NSCoder) {
@@ -28,5 +27,4 @@ final class OptionsTVC: UITableViewController {
 	@IBAction private func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
 		dismiss(animated: true)
 	}
-	
 }

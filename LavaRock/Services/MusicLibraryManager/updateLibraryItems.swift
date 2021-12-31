@@ -9,7 +9,6 @@ import CoreData
 import OSLog
 
 extension MusicLibraryManager {
-	
 	final func updateLibraryItems(
 		potentiallyOutdatedSongsAndFreshSongFiles: [(Song, SongFile)]
 	) {
@@ -158,5 +157,4 @@ extension MusicLibraryManager {
 		
 		// We'll delete empty Albums and Collections later.
 	}
-	
 }

@@ -9,7 +9,6 @@ import UIKit
 import MediaPlayer
 
 extension CollectionsTVC {
-	
 	// MARK: - Numbers
 	
 	final override func tableView(
@@ -300,5 +299,4 @@ extension CollectionsTVC {
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
 	}
-	
 }

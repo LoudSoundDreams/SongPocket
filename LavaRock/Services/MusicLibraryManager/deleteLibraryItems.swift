@@ -9,7 +9,6 @@ import CoreData
 import OSLog
 
 extension MusicLibraryManager {
-	
 	final func deleteLibraryItems(
 		for songs: Set<Song> // TO DO: Don't require a `Set` here.
 	) {
@@ -26,5 +25,4 @@ extension MusicLibraryManager {
 		Album.deleteAllEmpty_withoutReindexOrCascade(via: context)
 		Collection.deleteAllEmpty(via: context)
 	}
-	
 }

@@ -9,7 +9,6 @@ import CoreData
 import OSLog
 
 extension MusicLibraryManager {
-	
 	final func cleanUpLibraryItems(
 		allSongFiles: [SongFile],
 		isFirstImport: Bool
@@ -120,5 +119,4 @@ extension MusicLibraryManager {
 		
 		songsInAlbum.reindex()
 	}
-	
 }

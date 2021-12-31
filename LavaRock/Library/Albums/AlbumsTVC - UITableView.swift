@@ -8,7 +8,6 @@
 import UIKit
 
 extension AlbumsTVC {
-	
 	// MARK: - Numbers
 	
 	// Identical to counterpart in `SongsTVC`.
@@ -205,5 +204,4 @@ extension AlbumsTVC {
 		
 		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
-	
 }

@@ -8,7 +8,6 @@
 import CoreData
 
 extension NSManagedObjectContext {
-	
 	final func tryToSave() {
 		performAndWait {
 			guard hasChanges else { return }
@@ -31,5 +30,4 @@ extension NSManagedObjectContext {
 		}
 		return result
 	}
-	
 }

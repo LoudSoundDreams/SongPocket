@@ -8,11 +8,9 @@
 import UIKit
 
 extension URL {
-	
 	static let music = Self(string: "music://")
 	
 	func open() {
 		UIApplication.shared.open(self)
 	}
-	
 }

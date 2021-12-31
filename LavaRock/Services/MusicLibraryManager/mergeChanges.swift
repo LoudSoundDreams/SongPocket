@@ -9,7 +9,6 @@ import CoreData
 import OSLog
 
 extension MusicLibraryManager {
-	
 	// Updates our database in a sensible way to reflect the fresh `SongFile`s.
 	final func mergeChanges(toMatch freshSongFiles: [SongFile]) {
 		os_signpost(.begin, log: .merge, name: "Initial parse")
@@ -82,5 +81,4 @@ extension MusicLibraryManager {
 			)
 		}
 	}
-	
 }

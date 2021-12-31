@@ -10,7 +10,6 @@ import CoreData
 import OSLog
 
 extension AlbumsTVC {
-	
 	final func makeOrganizeOrMoveMenu() -> UIMenu {
 		let organizeElement: UIMenuElement = {
 			let organizeAction = UIAction(
@@ -214,5 +213,4 @@ extension AlbumsTVC {
 		
 		present(libraryNC, animated: true)
 	}
-	
 }

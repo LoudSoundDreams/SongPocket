@@ -12,6 +12,4 @@ struct SectionStructure<
 	let identifier: Identifier
 	let rowIdentifiers: [RowIdentifier]
 }
-
-extension SectionStructure: Hashable {
-}
+extension SectionStructure: Hashable {}

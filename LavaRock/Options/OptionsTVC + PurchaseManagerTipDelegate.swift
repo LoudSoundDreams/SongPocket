@@ -8,7 +8,6 @@
 import StoreKit
 
 extension OptionsTVC: PurchaseManagerTipDelegate {
-	
 	final func didReceiveTipProduct(_ tipProduct: SKProduct) {
 		DispatchQueue.main.async {
 			self.refreshTipJarRows()
@@ -59,5 +58,4 @@ extension OptionsTVC: PurchaseManagerTipDelegate {
 	private func finish(tipTransaction: SKPaymentTransaction) {
 		SKPaymentQueue.default().finishTransaction(tipTransaction)
 	}
-	
 }

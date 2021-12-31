@@ -14,7 +14,6 @@ final class AlbumsTVC:
 	NoItemsBackgroundManager,
 	OrganizeAlbumsPreviewing
 {
-	
 	enum Purpose {
 		case organizingAlbums(OrganizeAlbumsClipboard)
 		case movingAlbums(MoveAlbumsClipboard)
@@ -188,5 +187,4 @@ final class AlbumsTVC:
 				context: viewModel.context)
 		}
 	}
-	
 }

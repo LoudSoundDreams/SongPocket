@@ -8,7 +8,6 @@
 import UIKit
 
 extension UITableView {
-	
 	// MARK: - Sections
 	
 	final func allSections() -> [Int] {
@@ -97,5 +96,4 @@ extension UITableView {
 			deselectRow(at: $0, animated: animated) // As of iOS 14.2 developer beta 1, this doesn't animate for some reason. It works right on iOS 13.5.1.
 		}
 	}
-	
 }

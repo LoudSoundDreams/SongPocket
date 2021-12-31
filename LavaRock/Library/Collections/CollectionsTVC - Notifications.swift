@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 
 extension CollectionsTVC {
-	
 	// MARK: - Setup
 	
 	final override func beginObservingNotifications() {
@@ -58,5 +57,4 @@ extension CollectionsTVC {
 			super.refreshLibraryItems()
 		}
 	}
-	
 }

@@ -8,7 +8,6 @@
 import CoreData
 
 struct GroupOfSongs: GroupOfLibraryItems {
-	
 	// MARK: GroupOfLibraryItems
 	
 	let container: NSManagedObject?
@@ -41,5 +40,4 @@ struct GroupOfSongs: GroupOfLibraryItems {
 			entityName: entityName,
 			context: context)
 	}
-	
 }

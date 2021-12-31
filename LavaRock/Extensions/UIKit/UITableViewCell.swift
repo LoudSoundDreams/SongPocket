@@ -8,7 +8,6 @@
 import UIKit
 
 extension UITableViewCell {
-	
 	// Similar to UIBarButtonItem.disableWithAccessibilityTrait.
 	final func disableWithAccessibilityTrait() {
 		isUserInteractionEnabled = false
@@ -20,5 +19,4 @@ extension UITableViewCell {
 		isUserInteractionEnabled = true
 		accessibilityTraits.subtract(.notEnabled)
 	}
-	
 }

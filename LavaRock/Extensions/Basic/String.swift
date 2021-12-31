@@ -6,7 +6,6 @@
 //
 
 extension String {
-	
 	func truncatedIfLonger(than maxLength: Int) -> String {
 		let trimmed = prefix(maxLength - 1)
 		if self == trimmed {
@@ -40,5 +39,4 @@ extension String {
 		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
 		return comparisonResult == .orderedAscending
 	}
-	
 }

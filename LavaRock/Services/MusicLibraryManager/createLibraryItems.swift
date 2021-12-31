@@ -9,7 +9,6 @@ import CoreData
 import OSLog
 
 extension MusicLibraryManager {
-	
 	// Create new managed objects for the new `SongFile`s, including new Albums and Collections to put them in if necessary.
 	final func createLibraryItems(
 		for newSongFiles: [SongFile],
@@ -223,5 +222,4 @@ extension MusicLibraryManager {
 			return (newAlbum, newCollection)
 		}
 	}
-	
 }

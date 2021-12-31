@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 
 extension CollectionsTVC {
-	
 	// MARK: Renaming
 	
 	final func confirmRename(at indexPath: IndexPath) {
@@ -209,5 +208,4 @@ extension CollectionsTVC {
 			newViewModel,
 			thenSelecting: [indexPathOfCombined])
 	}
-	
 }

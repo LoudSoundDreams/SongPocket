@@ -19,7 +19,6 @@ extension Album: LibraryContainer {
 }
 
 extension Album {
-	
 	convenience init(
 		atEndOf collection: Collection,
 		albumFolderID: AlbumFolderID,
@@ -290,5 +289,4 @@ extension Album {
 		}
 		return Self.releaseDateFormatter.string(from: releaseDateEstimate)
 	}
-	
 }

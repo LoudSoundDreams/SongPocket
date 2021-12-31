@@ -16,7 +16,6 @@ extension Song: LibraryItem {
 }
 
 extension Song {
-	
 	convenience init(
 		atEndOf album: Album,
 		fileID: SongFileID,
@@ -117,5 +116,4 @@ extension Song {
 			return nil
 		}
 	}
-	
 }

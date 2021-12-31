@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 
 extension AlbumsTVC {
-	
 	final func moveHere(to indexPath: IndexPath) {
 		guard
 			case let .movingAlbums(clipboard) = purpose,
@@ -34,5 +33,4 @@ extension AlbumsTVC {
 			clipboard.delegate?.didMoveThenDismiss()
 		}
 	}
-	
 }

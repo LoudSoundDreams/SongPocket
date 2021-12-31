@@ -8,7 +8,6 @@
 import UIKit
 
 final class PlayerVC: UIViewController {
-	
 	// Controls
 	
 	@IBOutlet private var previousSongButton: UIButton!
@@ -87,11 +86,9 @@ final class PlayerVC: UIViewController {
 	@IBAction private func openMusic(_ sender: UIBarButtonItem) {
 		URL.music?.open()
 	}
-	
 }
 
 extension PlayerVC: PlaybackStateReflecting {
-	
 	func reflectPlaybackState() {
 		if sharedPlayer?.playbackState == .playing {
 			playPauseButton.setImage(pauseImage, for: .normal)
@@ -112,5 +109,4 @@ extension PlayerVC: PlaybackStateReflecting {
 		playPauseButton.isEnabled = sharedPlayer != nil
 		nextSongButton.isEnabled = sharedPlayer != nil
 	}
-	
 }

@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 
 extension SongsTVC {
-	
 	// MARK: - Player
 	
 	final override func reflectPlayer() {
@@ -17,5 +16,4 @@ extension SongsTVC {
 		
 		refreshNowPlayingIndicators(nowPlayingDetermining: self)
 	}
-	
 }

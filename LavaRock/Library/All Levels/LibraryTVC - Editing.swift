@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 
 extension LibraryTVC {
-	
 	final func makeSortOptionsMenu() -> UIMenu {
 		let groupedElements: [[UIMenuElement]] = sortOptionsGrouped.map { sortOptionGroup in
 			let groupOfChildren: [UIMenuElement] = sortOptionGroup.map { sortOption in
@@ -57,5 +56,4 @@ extension LibraryTVC {
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		setViewModelAndMoveRows(newViewModel)
 	}
-	
 }

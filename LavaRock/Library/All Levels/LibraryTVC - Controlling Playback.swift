@@ -8,7 +8,6 @@
 import UIKit
 
 extension LibraryTVC {
-	
 	final func refreshPlaybackButtons() {
 		let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
 		
@@ -113,5 +112,4 @@ extension LibraryTVC {
 		
 		sharedPlayer?.skipToNextItem()
 	}
-	
 }

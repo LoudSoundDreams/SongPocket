@@ -41,7 +41,6 @@ protocol GroupOfLibraryItems {
 }
 
 extension GroupOfLibraryItems {
-	
 	// Similar to Collection.allFetched, Album.allFetched, and Song.allFetched.
 	func itemsFetched(
 		entityName: String,
@@ -56,5 +55,4 @@ extension GroupOfLibraryItems {
 		}
 		return context.objectsFetched(for: fetchRequest)
 	}
-	
 }
