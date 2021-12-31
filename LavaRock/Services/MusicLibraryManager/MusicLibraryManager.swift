@@ -13,7 +13,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	private init() {}
 	static let shared = MusicLibraryManager()
 	
-	let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	let context = Persistence.viewContext
 	
 	private var library: MPMediaLibrary? = nil
 	

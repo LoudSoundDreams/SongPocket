@@ -60,9 +60,8 @@ class LibraryTVC: UITableViewController {
 	
 	// Data
 	final lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
-		let mainContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		return CollectionsViewModel(
-			context: mainContext,
+			context: Persistence.viewContext,
 			prerowsInEachSection: [])
 	}()
 	

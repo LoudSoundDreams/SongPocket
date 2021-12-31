@@ -15,6 +15,8 @@
 		071701FF250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */; };
 		07170201250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */; };
 		0719B57E2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */; };
+		071A0BA0277E832C0017F76D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9F277E832C0017F76D /* Persistence.swift */; };
+		071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0BA1277E83CB0017F76D /* LibraryNC.swift */; };
 		072017132557987E0019CA3E /* SongsTVC + NowPlayingDetermining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072017122557987E0019CA3E /* SongsTVC + NowPlayingDetermining.swift */; };
 		0720A43525017C6C00E0A28A /* AlbumsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A43425017C6C00E0A28A /* AlbumsTVC - Notifications.swift */; };
 		07267A2025537C5800C914A3 /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* PlayerManager.swift */; };
@@ -135,6 +137,8 @@
 		071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - Notifications.swift"; sourceTree = "<group>"; };
 		07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Notifications.swift"; sourceTree = "<group>"; };
 		0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - Controlling Playback.swift"; sourceTree = "<group>"; };
+		071A0B9F277E832C0017F76D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		071A0BA1277E83CB0017F76D /* LibraryNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryNC.swift; sourceTree = "<group>"; };
 		072017122557987E0019CA3E /* SongsTVC + NowPlayingDetermining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC + NowPlayingDetermining.swift"; sourceTree = "<group>"; };
 		0720A43425017C6C00E0A28A /* AlbumsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - Notifications.swift"; sourceTree = "<group>"; };
 		07267A1F25537C5800C914A3 /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
@@ -295,6 +299,7 @@
 				07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */,
 				0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */,
 				073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */,
+				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */,
 				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
@@ -325,9 +330,10 @@
 			isa = PBXGroup;
 			children = (
 				0759DC80272CD37300FDA7D7 /* FeatureFlag.swift */,
+				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07DF65D027766B7B003B2EA3 /* MusicLibraryManager */,
 				07267A1F25537C5800C914A3 /* PlayerManager.swift */,
-				07FD6E092599227C00826447 /* PurchaseManager.swift */,
+				071A0B9F277E832C0017F76D /* Persistence.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -706,6 +712,7 @@
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */,
 				07865B252566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift in Sources */,
+				071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */,
 				07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */,
 				073E6A9225574B99003C84A5 /* NowPlayingIndicator.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* LibraryTVC - Editing.swift in Sources */,
@@ -737,6 +744,7 @@
 				07B1EC442723B52A00EA8E29 /* TabBarC.swift in Sources */,
 				07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */,
 				07E0BBF92765678F0010117E /* UIAlertController.swift in Sources */,
+				071A0BA0277E832C0017F76D /* Persistence.swift in Sources */,
 				076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */,
 				077BCEB2275316AD0066DE96 /* protocol OrganizeAlbumsPreviewing.swift in Sources */,
 				07A4F90F2519E8410065C87E /* deleteLibraryItems.swift in Sources */,

@@ -40,9 +40,9 @@ extension AlbumsTVC {
 	private func startOrganizing() {
 		// Prepare a Collections view to present modally.
 		guard
-			let collectionsNC = storyboard?.instantiateViewController(
-				withIdentifier: "Collections NC") as? UINavigationController,
-			let collectionsTVC = collectionsNC.viewControllers.first as? CollectionsTVC,
+			let libraryNC = storyboard?.instantiateViewController(
+				withIdentifier: LibraryNC.identifier) as? UINavigationController,
+			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
@@ -77,7 +77,7 @@ extension AlbumsTVC {
 		
 		// Make the "organize albums" sheet show the child context, but only after we present it.
 		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? CollectionsViewModel else { return }
-		present(collectionsNC, animated: true) {
+		present(libraryNC, animated: true) {
 			collectionsTVC.organizeAlbumsClipboard = clipboard
 			
 			let collectionsViewModelPreviewingOrganizeAlbums = CollectionsViewModel(
@@ -101,9 +101,9 @@ extension AlbumsTVC {
 	private func startMoving() {
 		// Prepare a Collections view to present modally.
 		guard
-			let collectionsNC = storyboard?.instantiateViewController(
-				withIdentifier: "Collections NC") as? UINavigationController,
-			let collectionsTVC = collectionsNC.viewControllers.first as? CollectionsTVC,
+			let libraryNC = storyboard?.instantiateViewController(
+				withIdentifier: LibraryNC.identifier) as? UINavigationController,
+			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
@@ -122,7 +122,7 @@ extension AlbumsTVC {
 			context: childContext,
 			prerowsInEachSection: [.createCollection])
 		
-		present(collectionsNC, animated: true)
+		present(libraryNC, animated: true)
 	}
 	
 }

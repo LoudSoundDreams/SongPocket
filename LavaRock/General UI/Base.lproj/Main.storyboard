@@ -133,7 +133,7 @@
         <!--Collections-->
         <scene sceneID="Ha5-Ct-70h">
             <objects>
-                <navigationController storyboardIdentifier="Collections NC" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="YiT-J8-VtB" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Library NC" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="YiT-J8-VtB" customClass="LibraryNC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Collections" image="square.stack.fill" catalog="system" id="48j-Zp-q5X"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uLz-8K-DqV">
