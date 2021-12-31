@@ -42,10 +42,7 @@
 		07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* CollectionDifference.swift */; };
 		07642C7C268FFC1600B66BB8 /* GroupOfSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */; };
 		07642C7E268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */; };
-		0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308824B42DEC0033E3CC /* AppDelegate.swift */; };
-		0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768308A24B42DEC0033E3CC /* SceneDelegate.swift */; };
 		0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */; };
-		0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0768309624B42DEE0033E3CC /* LaunchScreen.storyboard */; };
 		076830A324B42DEE0033E3CC /* LavaRockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830A224B42DEE0033E3CC /* LavaRockTests.swift */; };
 		076830AE24B42DEF0033E3CC /* LavaRockUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */; };
 		076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BB24B42E3E0033E3CC /* LibraryTVC.swift */; };
@@ -166,10 +163,7 @@
 		07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOfSongs.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol GroupOfLibraryItems.swift"; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0768308824B42DEC0033E3CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0768308A24B42DEC0033E3CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0768309224B42DEC0033E3CC /* LavaRock.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LavaRock.xcdatamodel; sourceTree = "<group>"; };
-		0768309724B42DEE0033E3CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0768309924B42DEE0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0768309E24B42DEE0033E3CC /* LavaRockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LavaRockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		076830A224B42DEE0033E3CC /* LavaRockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LavaRockTests.swift; sourceTree = "<group>"; };
@@ -518,9 +512,6 @@
 				0708201C275BEE1C00F48D13 /* Appearance.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
-				0768308824B42DEC0033E3CC /* AppDelegate.swift */,
-				0768308A24B42DEC0033E3CC /* SceneDelegate.swift */,
-				0768309624B42DEE0033E3CC /* LaunchScreen.storyboard */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				07B1EC432723B52A00EA8E29 /* TabBarC.swift */,
 			);
@@ -659,7 +650,6 @@
 				075218AD257C4C0C0077AE9B /* Main.storyboard in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				073FB56027588BC5000FAF5F /* Player.storyboard in Resources */,
-				0768309824B42DEE0033E3CC /* LaunchScreen.storyboard in Resources */,
 				07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -722,7 +712,6 @@
 				0781F1FA25991B3300781CF8 /* OptionsTVC - UITableView.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
-				0768308924B42DEC0033E3CC /* AppDelegate.swift in Sources */,
 				07267A2025537C5800C914A3 /* PlayerManager.swift in Sources */,
 				07E0BBE0276567760010117E /* UserDefaults.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* mergeChanges.swift in Sources */,
@@ -763,7 +752,6 @@
 				0719B57E2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift in Sources */,
 				075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,
-				0768308B24B42DEC0033E3CC /* SceneDelegate.swift in Sources */,
 				07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */,
 				07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */,
 				07B1EC40271FB7F600EA8E29 /* PlayerVC.swift in Sources */,
@@ -836,14 +824,6 @@
 				075218AE257C4C0C0077AE9B /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0768309624B42DEE0033E3CC /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0768309724B42DEE0033E3CC /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 		07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */ = {
@@ -982,7 +962,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 352;
+				CURRENT_PROJECT_VERSION = 353;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1004,7 +984,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 352;
+				CURRENT_PROJECT_VERSION = 353;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
