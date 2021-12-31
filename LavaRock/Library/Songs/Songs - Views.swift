@@ -79,7 +79,7 @@ final class SongCell:
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		setNormalBackground()
+		setTransparentBackground()
 		
 		trackLabel.font = .bodyWithMonospacedDigits(compatibleWith: traitCollection)
 		

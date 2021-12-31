@@ -9,12 +9,12 @@ import UIKit
 
 protocol CellHavingTransparentBackground: UITableViewCell {
 	// Conforming types must …
-	// - Override `awakeFromNib` and call `setNormalBackground`.
-	// - Call `setNormalBackground` instead of `backgroundView = nil`.
+	// - Override `awakeFromNib` and call `setTransparentBackground`.
+	// - Call `setTransparentBackground` instead of `backgroundView = nil`.
 }
 
 extension CellHavingTransparentBackground {
-	func setNormalBackground() {
+	func setTransparentBackground() {
 		backgroundColor = nil
 	}
 }

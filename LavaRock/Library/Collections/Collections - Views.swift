@@ -107,7 +107,7 @@ final class CollectionCell:
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		setNormalBackground()
+		setTransparentBackground()
 	}
 	
 	final func configure(
@@ -123,13 +123,13 @@ final class CollectionCell:
 		switch mode {
 		case .normal:
 			accessibilityCustomActions = [renameFocusedCollectionAction]
-			setNormalBackground()
+			setTransparentBackground()
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
 		case .modal:
 			accessibilityCustomActions = []
-			setNormalBackground()
+			setTransparentBackground()
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
@@ -143,7 +143,7 @@ final class CollectionCell:
 			
 		case .modalDisabled:
 			accessibilityCustomActions = []
-			setNormalBackground()
+			setTransparentBackground()
 			
 			titleLabel.textColor = .placeholderText
 			disableWithAccessibilityTrait()
