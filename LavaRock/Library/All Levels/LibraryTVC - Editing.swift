@@ -36,8 +36,8 @@ extension LibraryTVC {
 			}
 		}
 		
-		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they'll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
-		// During WWDC 2021, I did a lab in UIKit where the Apple engineer said that this is the best practice for doing that.
+		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
+		// During a WWDC 2021 lab, a UIKit engineer said that this is the best practice for doing that.
 	}
 	
 	final func makeSortOptionsMenu() -> UIMenu {
