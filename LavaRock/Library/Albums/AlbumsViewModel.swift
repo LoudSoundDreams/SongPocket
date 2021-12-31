@@ -7,7 +7,6 @@
 
 import UIKit
 import CoreData
-import OSLog
 
 struct AlbumsViewModel {
 	// LibraryViewModel
@@ -146,95 +145,6 @@ extension AlbumsViewModel {
 		return albumsToOrganize.contains {
 			$0.albumArtistFormattedOrPlaceholder() != $0.container?.title
 		}
-	}
-	
-	static func organizeByAlbumArtistAndReturnClipboard(
-		_ albumsToOrganize: [Album],
-		via context: NSManagedObjectContext,
-		delegateForClipboard: OrganizeAlbumsDelegate
-	) -> OrganizeAlbumsClipboard {
-		let log = OSLog.albumsView
-		os_signpost(.begin, log: log, name: "Preview organizing Albums")
-		defer {
-			os_signpost(.end, log: log, name: "Preview organizing Albums")
-		}
-		
-		// If an `Album` is already in a `Collection` with a title that matches its album artist, then leave it there.
-		// Otherwise, move the `Album` to the first `Collection` with a matching title.
-		// If there is no matching `Collection`, then create one.
-		// Put new `Collection`s at the top, in the order that the album artists first appear among the `Album`s we're moving.
-		
-		// Results
-		var movedAlbums: Set<Album> = []
-		var idsOfUnmovedAlbums: Set<NSManagedObjectID> = []
-		
-		// Work notes
-		var newCollectionsByTitle: [String: Collection] = [:]
-		let existingCollections = Collection.allFetched(via: context)
-		let existingCollectionsByTitle = Dictionary(grouping: existingCollections) { $0.title! }
-		
-		albumsToOrganize.forEach { album in
-			// Similar to `newAlbumAndMaybeNewCollectionMade`.
-			
-			let titleOfDestinationCollection = album.albumArtistFormattedOrPlaceholder()
-			
-			guard album.container!.title != titleOfDestinationCollection else {
-				idsOfUnmovedAlbums.insert(album.objectID)
-				return
-			}
-			
-			movedAlbums.insert(album)
-			
-			// If we've created a matching `Collection` …
-			if let matchingNewCollection = newCollectionsByTitle[titleOfDestinationCollection] {
-				// … then move the `Album` to the end of that `Collection`.
-				os_signpost(.begin, log: log, name: "Move Album to matching new Collection")
-				matchingNewCollection.moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
-					with: [album.objectID],
-					possiblyToSameCollection: false,
-					via: context)
-				os_signpost(.end, log: log, name: "Move Album to matching new Collection")
-			} else if // Otherwise, if we previously had a matching `Collection` …
-				let matchingExistingCollection = existingCollectionsByTitle[titleOfDestinationCollection]?.first
-			{
-				// … then move the `Album` to the beginning of that `Collection`.
-				os_signpost(.begin, log: log, name: "Move Album to matching existing Collection")
-				matchingExistingCollection.moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
-					with: [album.objectID],
-					possiblyToSameCollection: false,
-					via: context)
-				os_signpost(.end, log: log, name: "Move Album to matching existing Collection")
-			} else {
-				// Otherwise, create a matching `Collection`…
-				let newCollection = Collection(
-					index: Int64(newCollectionsByTitle.count),
-					before: existingCollections,
-					title: titleOfDestinationCollection,
-					context: context)
-				newCollectionsByTitle[titleOfDestinationCollection] = newCollection
-				
-				// … and then move the `Album` to that `Collection`.
-				os_signpost(.begin, log: log, name: "Move Album to new Collection")
-				newCollection.moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
-					with: [album.objectID],
-					possiblyToSameCollection: false,
-					via: context)
-				os_signpost(.end, log: log, name: "Move Album to new Collection")
-			}
-		}
-		
-		// Create the `OrganizeAlbumsClipboard` to return.
-		let idsOfSourceCollections = Set(albumsToOrganize.map { $0.container!.objectID })
-		let idsOfMovedAlbums = Set(movedAlbums.map { $0.objectID })
-		let idsOfDestinationCollections = Set(idsOfMovedAlbums.map {
-			(context.object(with: $0) as! Album).container!.objectID
-		})
-		return OrganizeAlbumsClipboard(
-			idsOfSourceCollections: idsOfSourceCollections,
-			idsOfUnmovedAlbums: idsOfUnmovedAlbums,
-			idsOfMovedAlbums: idsOfMovedAlbums,
-			idsOfDestinationCollections: idsOfDestinationCollections,
-			delegate: delegateForClipboard)
 	}
 	
 	// MARK: - “Move Albums” Sheet
