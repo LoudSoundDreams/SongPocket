@@ -324,7 +324,7 @@ class LibraryTVC: UITableViewController {
 		navigationController?.toolbar.isHidden = true
 	}
 	
-	final func setBarButtons(animated: Bool) {
+	private func setBarButtons(animated: Bool) {
 		refreshEditingButtons()
 		navigationItem.setRightBarButtonItems(topRightButtons, animated: animated)
 		
@@ -356,6 +356,36 @@ class LibraryTVC: UITableViewController {
 	
 	private func allowsEdit() -> Bool {
 		return !viewModel.isEmpty()
+	}
+	
+	// Overrides should call super (this implementation).
+	final override func setEditing(_ editing: Bool, animated: Bool) {
+		if isEditing {
+			// Delete empty groups if we reordered all the items out of them.
+			let newViewModel = viewModel.updatedWithRefreshedData()
+			setViewModelAndMoveRows(newViewModel)
+			
+			viewModel.context.tryToSave()
+		}
+		
+		super.setEditing(editing, animated: animated)
+		
+		if FeatureFlag.tabBar {
+			setBarButtons(animated: false)
+		} else {
+			setBarButtons(animated: animated)
+		}
+		
+		if FeatureFlag.tabBar {
+			if editing {
+				showToolbar()
+			} else {
+				hideToolbar()
+			}
+		}
+		
+		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
+		// During a WWDC 2021 lab, a UIKit engineer said that this is the best practice for doing that.
 	}
 	
 	// You should only be allowed to sort contiguous items within the same GroupOfLibraryItems.
