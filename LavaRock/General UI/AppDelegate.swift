@@ -4,11 +4,11 @@
 //
 //  Created by h on 2020-07-07.
 //
-
+/*
 import UIKit
 import CoreData
 
-@main
+//@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(
@@ -99,3 +99,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 }
+*/
