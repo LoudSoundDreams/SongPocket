@@ -41,7 +41,7 @@ extension AlbumsTVC {
 		// Prepare a Collections view to present modally.
 		guard
 			let libraryNC = storyboard?.instantiateViewController(
-				withIdentifier: LibraryNC.identifier) as? UINavigationController,
+				withIdentifier: LibraryNC.storyboardID) as? UINavigationController,
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
@@ -191,7 +191,7 @@ extension AlbumsTVC {
 		// Prepare a Collections view to present modally.
 		guard
 			let libraryNC = storyboard?.instantiateViewController(
-				withIdentifier: LibraryNC.identifier) as? UINavigationController,
+				withIdentifier: LibraryNC.storyboardID) as? UINavigationController,
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }

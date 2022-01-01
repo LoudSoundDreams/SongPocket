@@ -8,7 +8,7 @@
 import UIKit
 
 final class LibraryNC: UINavigationController {
-	static let identifier = "Library NC"
+	static let storyboardID = "Library NC"
 	
 	private static var didStartSettingTheme = false
 	final override func viewDidLoad() {

@@ -34,7 +34,7 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		context: Context
 	) -> ViewControllerType {
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
-		let result = storyboard.instantiateViewController(withIdentifier: LibraryNC.identifier)
+		let result = storyboard.instantiateViewController(withIdentifier: LibraryNC.storyboardID)
 		return result
 	}
 	
