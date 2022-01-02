@@ -86,7 +86,7 @@ extension SongsViewModel {
 		let containers: [NSManagedObject] = {
 			switch viewContainer {
 			case .library:
-				let allCollections = Collection.allFetched(via: context)
+				let allCollections = Collection.allFetched(ordered: true, via: context)
 				let allAlbums = allCollections.flatMap { $0.albums(sorted: true) }
 				return allAlbums
 			case .container(let container):

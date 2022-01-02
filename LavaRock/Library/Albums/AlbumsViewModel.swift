@@ -91,7 +91,7 @@ extension AlbumsViewModel {
 		let containers: [NSManagedObject] = {
 			switch viewContainer {
 			case .library:
-				let allCollections = Collection.allFetched(via: context)
+				let allCollections = Collection.allFetched(ordered: true, via: context)
 				return allCollections
 			case .container(let container):
 				let collection = container as! Collection

@@ -112,16 +112,28 @@ extension AlbumsTVC {
 		// If an `Album` is already in a `Collection` with a title that matches its album artist, then leave it there.
 		// Otherwise, move the `Album` to the first `Collection` with a matching title.
 		// If there is no matching `Collection`, then create one.
-		// Put new `Collection`s at the top, in the order that the album artists first appear among the `Album`s we're moving.
+		// Put new `Collection`s above the source `Collection`, in the order that the album artists first appear among the `Album`s we're moving.
 		
 		// Results
 		var movedAlbums: Set<Album> = []
 		var idsOfUnmovedAlbums: Set<NSManagedObjectID> = []
 		
 		// Work notes
+		let indexOfSourceCollection = albumsToOrganize.first!.container!.index
+		let collectionsToDisplace: [Collection] = {
+			let predicate = NSPredicate(
+				format: "index >= %lld",
+				indexOfSourceCollection)
+			return Collection.allFetched(
+				ordered: true,
+				predicate: predicate,
+				via: context)
+		}()
 		var newCollectionsByTitle: [String: Collection] = [:]
-		let existingCollections = Collection.allFetched(via: context)
-		let existingCollectionsByTitle = Dictionary(grouping: existingCollections) { $0.title! }
+		let existingCollectionsByTitle: [String: [Collection]] = {
+			let existingCollections = Collection.allFetched(ordered: true, via: context)
+			return Dictionary(grouping: existingCollections) { $0.title! }
+		}()
 		
 		albumsToOrganize.forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
@@ -135,7 +147,7 @@ extension AlbumsTVC {
 			
 			movedAlbums.insert(album)
 			
-			// If we've created a matching `Collection` …
+			// If we've created a matching new `Collection` …
 			if let matchingNewCollection = newCollectionsByTitle[titleOfDestinationCollection] {
 				// … then move the `Album` to the end of that `Collection`.
 				os_signpost(.begin, log: log, name: "Move Album to matching new Collection")
@@ -144,7 +156,7 @@ extension AlbumsTVC {
 					possiblyToSameCollection: false,
 					via: context)
 				os_signpost(.end, log: log, name: "Move Album to matching new Collection")
-			} else if // Otherwise, if we previously had a matching `Collection` …
+			} else if // Otherwise, if we already had a matching existing `Collection` …
 				let matchingExistingCollection = existingCollectionsByTitle[titleOfDestinationCollection]?.first
 			{
 				// … then move the `Album` to the beginning of that `Collection`.
@@ -157,8 +169,8 @@ extension AlbumsTVC {
 			} else {
 				// Otherwise, create a matching `Collection`…
 				let newCollection = Collection(
-					index: Int64(newCollectionsByTitle.count),
-					before: existingCollections,
+					index: indexOfSourceCollection + Int64(newCollectionsByTitle.count),
+					before: collectionsToDisplace,
 					title: titleOfDestinationCollection,
 					context: context)
 				newCollectionsByTitle[titleOfDestinationCollection] = newCollection

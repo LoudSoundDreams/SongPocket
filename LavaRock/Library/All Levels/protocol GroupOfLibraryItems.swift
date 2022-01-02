@@ -41,7 +41,7 @@ protocol GroupOfLibraryItems {
 }
 
 extension GroupOfLibraryItems {
-	// Similar to Collection.allFetched, Album.allFetched, and Song.allFetched.
+	// Similar to `Collection.allFetched`, `Album.allFetched`, and `Song.allFetched`.
 	func itemsFetched(
 		entityName: String,
 		context: NSManagedObjectContext

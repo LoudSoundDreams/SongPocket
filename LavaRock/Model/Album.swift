@@ -61,7 +61,7 @@ extension Album {
 		ordered: Bool,
 		via context: NSManagedObjectContext
 	) -> [Album] {
-		let fetchRequest: NSFetchRequest<Album> = fetchRequest()
+		let fetchRequest = Self.fetchRequest()
 		if ordered {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
