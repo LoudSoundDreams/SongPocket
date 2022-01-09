@@ -14,10 +14,9 @@ protocol OrganizeAlbumsPreviewing: UIViewController {
 
 extension OrganizeAlbumsPreviewing {
 	func makeSaveOrganizeButton() -> UIBarButtonItem {
-		let action = UIAction { _ in self.commitOrganize() }
 		let button = UIBarButtonItem(
 			systemItem: .save,
-			primaryAction: action)
+			primaryAction: UIAction { _ in self.commitOrganize() })
 		button.style = .done
 		return button
 	}

@@ -86,29 +86,26 @@ class LibraryTVC: UITableViewController {
 		nextSongButton,
 	]
 	final private(set) lazy var previousSongButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.goToPreviousSong() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "backward.end.fill"),
-			primaryAction: action)
+			primaryAction: UIAction { _ in self.goToPreviousSong() })
 		button.accessibilityLabel = LocalizedString.previousTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final private(set) lazy var rewindButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.rewind() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
-			primaryAction: action)
+			primaryAction: UIAction { _ in self.rewind() })
 		button.accessibilityLabel = LocalizedString.restart
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final private(set) lazy var playPauseButton = UIBarButtonItem()
 	final private(set) lazy var nextSongButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.goToNextSong() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "forward.end.fill"),
-			primaryAction: action)
+			primaryAction: UIAction { _ in self.goToNextSong() })
 		button.accessibilityLabel = LocalizedString.nextTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -119,26 +116,23 @@ class LibraryTVC: UITableViewController {
 		title: LocalizedString.sort,
 		menu: makeSortOptionsMenu())
 	final private(set) lazy var floatToTopButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.floatSelectedItemsToTopOfSection() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.up.to.line.compact"), // As of iOS 15, this is the vertically short one; .alt doesn't exist anymore; arrow.up.to.line is the taller one,
-			primaryAction: action)
+			primaryAction: UIAction { _ in self.floatSelectedItemsToTopOfSection() })
 		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
 	}()
 	final private(set) lazy var sinkToBottomButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.sinkSelectedItemsToBottomOfSection() }
 		let button = UIBarButtonItem(
 			image: UIImage(systemName: "arrow.down.to.line.compact"),
-			primaryAction: action)
+			primaryAction: UIAction { _ in self.sinkSelectedItemsToBottomOfSection() })
 		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
 	}()
 	final private(set) lazy var cancelAndDismissButton: UIBarButtonItem = {
-		let action = UIAction { _ in self.dismiss(animated: true) }
 		return UIBarButtonItem(
 			systemItem: .cancel,
-			primaryAction: action)
+			primaryAction: UIAction { _ in self.dismiss(animated: true) })
 	}()
 	
 	// State

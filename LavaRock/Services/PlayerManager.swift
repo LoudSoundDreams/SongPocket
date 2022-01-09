@@ -49,10 +49,7 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	
 	private final class WeakPlaybackStateReflecting {
 		weak var observer: PlaybackStateReflecting? = nil
-		
-		init(observer: PlaybackStateReflecting) {
-			self.observer = observer
-		}
+		init(observer: PlaybackStateReflecting) { self.observer = observer }
 	}
 	private static var observers: [WeakPlaybackStateReflecting] = []
 	static func addObserver(_ observer: PlaybackStateReflecting) {

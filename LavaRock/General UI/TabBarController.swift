@@ -1,5 +1,5 @@
 //
-//  TabBarC.swift
+//  TabBarController.swift
 //  LavaRock
 //
 //  Created by h on 2021-10-22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TabBarC: UITabBarController {
+final class TabBarController: UITabBarController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -19,7 +19,7 @@ final class TabBarC: UITabBarController {
 	}
 }
 
-extension TabBarC: PlaybackStateReflecting {
+extension TabBarController: PlaybackStateReflecting {
 	func reflectPlaybackState() {
 		guard
 			let nc = viewControllers?.last as? UINavigationController,

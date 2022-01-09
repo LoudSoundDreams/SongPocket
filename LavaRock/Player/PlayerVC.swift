@@ -36,19 +36,15 @@ final class PlayerVC: UIViewController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		let previousAction = UIAction { _ in self.goToPreviousSong() }
-		previousSongButton.addAction(previousAction, for: .touchUpInside)
+		previousSongButton.addAction(UIAction { _ in self.goToPreviousSong() }, for: .touchUpInside)
 		previousSongButton.setImage(previousImage, for: .normal)
 		
-		let rewindAction = UIAction { _ in self.rewind() }
-		rewindButton.addAction(rewindAction, for: .touchUpInside)
+		rewindButton.addAction(UIAction { _ in self.rewind() }, for: .touchUpInside)
 		rewindButton.setImage(rewindImage, for: .normal)
 		
-		let togglePlayPauseAction = UIAction { _ in self.togglePlayPause() }
-		playPauseButton.addAction(togglePlayPauseAction, for: .touchUpInside)
+		playPauseButton.addAction(UIAction { _ in self.togglePlayPause() }, for: .touchUpInside)
 		
-		let nextAction = UIAction { _ in self.goToNextSong() }
-		nextSongButton.addAction(nextAction, for: .touchUpInside)
+		nextSongButton.addAction(UIAction { _ in self.goToNextSong() }, for: .touchUpInside)
 		nextSongButton.setImage(nextImage, for: .normal)
 		
 		beginReflectingPlaybackState()
