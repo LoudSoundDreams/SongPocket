@@ -968,7 +968,6 @@
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Songpocket;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Songpocket works with music in the built-in Music app.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -997,7 +996,6 @@
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Songpocket;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Songpocket works with music in the built-in Music app.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
