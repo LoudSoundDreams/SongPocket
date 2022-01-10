@@ -89,46 +89,46 @@ class LibraryTVC: UITableViewController {
 	]
 	final private(set) lazy var previousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
+			title: LocalizedString.previousTrack,
 //			image: UIImage(systemName: "backward.end"),
 			image: UIImage(systemName: "backward.end.fill"),
 			primaryAction: UIAction { _ in self.goToPreviousSong() })
-		button.accessibilityLabel = LocalizedString.previousTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final private(set) lazy var rewindButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
+			title: LocalizedString.restart,
 			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
 			primaryAction: UIAction { _ in self.rewind() })
-		button.accessibilityLabel = LocalizedString.restart
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final private(set) lazy var skipBackwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
+			title: LocalizedString.skip5SecondsBackwards,
 			image: UIImage(systemName: "gobackward.5"),
 //			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
 			primaryAction: UIAction { _ in self.skipBackward() })
-		button.accessibilityLabel = LocalizedString.skip5SecondsBackwards
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final private(set) lazy var playPauseButton = UIBarButtonItem()
 	final private(set) lazy var skipForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
+			title: LocalizedString.skip5SecondsForward,
 			image: UIImage(systemName: "goforward.5"),
 //			image: UIImage(systemName: "arrow.clockwise.circle.fill"),
 			primaryAction: UIAction { _ in self.skipForward() })
-		button.accessibilityLabel = LocalizedString.skip5SecondsForward
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final private(set) lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
+			title: LocalizedString.nextTrack,
 //			image: UIImage(systemName: "forward.end"),
 			image: UIImage(systemName: "forward.end.fill"),
 			primaryAction: UIAction { _ in self.goToNextSong() })
-		button.accessibilityLabel = LocalizedString.nextTrack
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
@@ -139,16 +139,16 @@ class LibraryTVC: UITableViewController {
 		menu: makeSortOptionsMenu())
 	final private(set) lazy var floatToTopButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			image: UIImage(systemName: "arrow.up.to.line.compact"), // As of iOS 15, this is the vertically short one; .alt doesn't exist anymore; arrow.up.to.line is the taller one,
+			title: LocalizedString.moveToTop,
+			image: UIImage(systemName: "arrow.up.to.line.compact"),
 			primaryAction: UIAction { _ in self.floatSelectedItemsToTopOfSection() })
-		button.accessibilityLabel = LocalizedString.moveToTop
 		return button
 	}()
 	final private(set) lazy var sinkToBottomButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
+			title: LocalizedString.moveToBottom,
 			image: UIImage(systemName: "arrow.down.to.line.compact"),
 			primaryAction: UIAction { _ in self.sinkSelectedItemsToBottomOfSection() })
-		button.accessibilityLabel = LocalizedString.moveToBottom
 		return button
 	}()
 	final private(set) lazy var cancelAndDismissButton: UIBarButtonItem = {

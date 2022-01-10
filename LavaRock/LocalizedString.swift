@@ -60,13 +60,13 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	// MARK: Playback Toolbar
 	
-	static let previousTrack = NSLocalizedString("Previous track", comment: "Button")
-	static let restart = NSLocalizedString("Restart", comment: "Button")
-	static let skip5SecondsBackwards = NSLocalizedString("Skip 5 seconds backwards", comment: "Accessibility label")
-	static let play = NSLocalizedString("Play", comment: "Button")
-	static let pause = NSLocalizedString("Pause", comment: "Button")
-	static let skip5SecondsForward = NSLocalizedString("Skip 5 seconds forward", comment: "Accessibility label")
-	static let nextTrack = NSLocalizedString("Next track", comment: "Button")
+	static let previousTrack = NSLocalizedString("Previous track", comment: "Accessibility label, button")
+	static let restart = NSLocalizedString("Restart", comment: "Accessibility label, button")
+	static let skip5SecondsBackwards = NSLocalizedString("Skip 5 seconds backwards", comment: "Accessibility label, button")
+	static let play = NSLocalizedString("Play", comment: "Accessibility label, button")
+	static let pause = NSLocalizedString("Pause", comment: "Accessibility label, button")
+	static let skip5SecondsForward = NSLocalizedString("Skip 5 seconds forward", comment: "Accessibility label, button")
+	static let nextTrack = NSLocalizedString("Next track", comment: "Accessibility label, button")
 	
 	// MARK: "Now Playing" Indicator
 	
@@ -79,8 +79,8 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	static let sortBy = NSLocalizedString("Sort By", comment: "Action sheet title")
 	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
-	static let moveToTop = NSLocalizedString("Move to Top", comment: "Button")
-	static let moveToBottom = NSLocalizedString("Move to Bottom", comment: "Button")
+	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
+	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
 	// MARK: Collections View // MC2DO: Edit
 	

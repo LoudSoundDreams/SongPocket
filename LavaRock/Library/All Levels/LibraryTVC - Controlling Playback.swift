@@ -12,21 +12,21 @@ extension LibraryTVC {
 		let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
 		
 		func configurePlayButton() {
+			playPauseButton.title = LocalizedString.play
 			playPauseButton.primaryAction = UIAction(
 //				image: UIImage(systemName: "play.circle")
 				image: UIImage(systemName: "play.circle.fill")
 			) { _ in self.play() }
 			// As of iOS 15.3 developer beta 1, even when you set `UIBarButtonItem.width` manually, the "pause.fill" button is still narrower than the "play.fill" button.
-			playPauseButton.accessibilityLabel = LocalizedString.play
 			playPauseButton.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		}
 		
 		func configurePauseButton() {
+			playPauseButton.title = LocalizedString.pause
 			playPauseButton.primaryAction = UIAction(
 //				image: UIImage(systemName: "pause.circle")
 				image: UIImage(systemName: "pause.circle.fill")
 			) { _ in self.pause() }
-			playPauseButton.accessibilityLabel = LocalizedString.pause
 			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
 		}
 		
