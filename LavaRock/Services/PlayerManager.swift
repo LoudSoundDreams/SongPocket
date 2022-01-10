@@ -67,15 +67,14 @@ final class PlayerManager { // This is a class and not a struct because it shoul
 	static func setUp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
+		player?.endGeneratingPlaybackNotifications()
 		player = .systemMusicPlayer
 		player?.beginGeneratingPlaybackNotifications()
 		
 		observers.removeAll { $0.observer == nil }
-		// Because before anyone called this method, `player` was `nil`.
 		observers.forEach {
-			if let observer = $0.observer {
-				observer.beginReflectingPlaybackState()
-			}
+			// Because before anyone called this method, `player` was `nil`.
+			$0.observer?.beginReflectingPlaybackState()
 		}
 	}
 	

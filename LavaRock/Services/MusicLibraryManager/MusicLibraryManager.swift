@@ -19,16 +19,16 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	final func setUpAndMergeChanges() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
+		library?.endGeneratingLibraryChangeNotifications()
 		library = MPMediaLibrary.default()
-		mergeChanges()
-		
+		library?.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(mediaLibraryDidChange),
 			name: .MPMediaLibraryDidChange,
 			object: nil)
 		
-		library?.beginGeneratingLibraryChangeNotifications()
+		mergeChanges()
 	}
 	@objc private func mediaLibraryDidChange() { mergeChanges() }
 	
