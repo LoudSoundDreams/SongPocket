@@ -141,10 +141,22 @@ extension CollectionsTVC {
 				return .normal
 			}
 		}()
+		let accessibilityActions: [UIAccessibilityCustomAction] = {
+			switch mode {
+			case .normal:
+				return [renameFocusedCollectionAction]
+			case .modal:
+				return []
+			case .modalTinted:
+				return []
+			case .modalDisabled:
+				return []
+			}
+		}()
 		cell.configure(
 			with: collection,
 			mode: mode,
-			renameFocusedCollectionAction: renameFocusedCollectionAction)
+			accessibilityActions: accessibilityActions)
 		cell.applyNowPlayingIndicator(nowPlayingIndicator)
 		
 		return cell

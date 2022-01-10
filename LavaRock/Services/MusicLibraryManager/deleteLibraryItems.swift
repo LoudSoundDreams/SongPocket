@@ -10,7 +10,7 @@ import OSLog
 
 extension MusicLibraryManager {
 	final func deleteLibraryItems(
-		for songs: Set<Song> // TO DO: Don't require a `Set` here.
+		for songs: [Song]
 	) {
 		os_signpost(.begin, log: .merge, name: "4. Delete library items")
 		defer {

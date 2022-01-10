@@ -22,7 +22,7 @@ extension MusicLibraryManager {
 		// Find out which `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `SongFile`s that we don't have `Song`s for. We'll create new Songs (and maybe new Albums and Collections) for them.
 		var potentiallyOutdatedSongsAndFreshSongFiles: [(Song, SongFile)] = [] // We'll sort these eventually.
-		var songsToDelete: Set<Song> = []
+		var songsToDelete: [Song] = []
 		
 		var songFilesByID: Dictionary<SongFileID, SongFile> = {
 			let fileIDsAndFiles = freshSongFiles.map { songFile in (songFile.fileID, songFile) }
@@ -40,7 +40,7 @@ extension MusicLibraryManager {
 				songFilesByID[songFileID] = nil
 			} else {
 				// This `Song` no longer corresponds to any `SongFile`. We'll delete it.
-				songsToDelete.insert(existingSong)
+				songsToDelete.append(existingSong)
 			}
 		}
 		// `songFilesByID` now holds the `SongFile`s that we don't have `Song`s for.

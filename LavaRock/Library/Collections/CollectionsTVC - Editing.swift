@@ -90,34 +90,6 @@ extension CollectionsTVC {
 			return firstTitle
 		}
 		
-		// Check whether the titles of the `Collection`s we're combining all start with the same thing.
-		/*
-	titleCommonPrefix: do {
-		let commonPrefixTrimmed = titles.commonPrefix().trimmingWhitespaceAtEnd()
-		
-		guard let context = collections.first?.managedObjectContext else {
-			break titleCommonPrefix
-		}
-		let existingTitles: Set<String> = {
-			let allCollections = Collection.allFetched(ordered: false, via: context)
-			return Set(allCollections.compactMap { $0.title })
-		}()
-		guard !existingTitles.contains(commonPrefixTrimmed) else {
-			break titleCommonPrefix
-		}
-		
-		// If we're combining `Collection`s titled "John Williams" and "Joe", suggesting "Jo" isn't useful and looks stupid.
-		// TO DO: Internationalize. Not all languages separate words with whitespace.
-		let commonPrefixLength = commonPrefixTrimmed.count
-		let commonPrefixTrimmedIsAtWordBoundary = titles.allSatisfy {
-			$0.endsOrHasWhitespaceAfter(dropFirstCount: commonPrefixLength)
-		}
-		if commonPrefixTrimmedIsAtWordBoundary {
-			return commonPrefixTrimmed
-		}
-	}
-		*/
-		
 		// Otherwise, give up.
 		return nil
 	}

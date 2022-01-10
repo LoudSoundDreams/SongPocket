@@ -64,32 +64,6 @@ extension CollectionsTVC {
 		}
 	}
 		
-		// Check whether the album artists of the albums we're moving all start with the same thing.
-		/*
-	albumArtistCommonPrefix: do {
-		let commonPrefixTrimmed = albumsOutOfOrder.commonPrefixLazilyGeneratingStringsToCompare {
-			$0.albumArtistFormattedOrPlaceholder()
-		}.trimmingWhitespaceAtEnd()
-		
-		if
-			let existingTitles = existingTitles,
-			existingTitles.contains(commonPrefixTrimmed)
-		{
-			break albumArtistCommonPrefix
-		}
-		
-		// TO DO: Internationalize
-		let commonPrefixLength = commonPrefixTrimmed.count
-		let commonPrefixTrimmedIsAtWordBoundary = albumsOutOfOrder.allSatisfy {
-			let albumArtist = $0.albumArtistFormattedOrPlaceholder()
-			return albumArtist.endsOrHasWhitespaceAfter(dropFirstCount: commonPrefixLength)
-		}
-		if commonPrefixTrimmedIsAtWordBoundary {
-			return commonPrefixTrimmed
-		}
-	}
-		*/
-		
 		// Otherwise, give up.
 		return nil
 	}

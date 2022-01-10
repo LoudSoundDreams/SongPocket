@@ -102,7 +102,6 @@ extension LibraryViewModel {
 //		let presectionStructures: [LibrarySectionStructure] = presectionIndices.map { index in
 //			let sectionIdentifier = LibrarySectionIdentifier.presection(index)
 //
-//			// TO DO: Actually support presections.
 //
 //			return SectionStructure(
 //				identifier: sectionIdentifier,

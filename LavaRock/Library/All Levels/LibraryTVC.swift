@@ -209,7 +209,7 @@ class LibraryTVC: UITableViewController {
 	final func setViewModelAndMoveRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
-		thenSelecting toSelect: Set<IndexPath> = [], // TO DO: Don't require a `Set` here.
+		thenSelecting toSelect: Set<IndexPath> = [],
 		completion: (() -> Void)? = nil
 	) {
 		let oldViewModel = viewModel

@@ -113,28 +113,26 @@ final class CollectionCell:
 	final func configure(
 		with collection: Collection,
 		mode: Mode,
-		renameFocusedCollectionAction: UIAccessibilityCustomAction // TO DO: Pass in `nil` if you don't want accessibility custom actions.
+		accessibilityActions: [UIAccessibilityCustomAction]
 	) {
 		// Title
 		let collectionTitle = collection.title
 		
 		titleLabel.text = collectionTitle
+		accessibilityCustomActions = accessibilityActions
 		
 		switch mode {
 		case .normal:
-			accessibilityCustomActions = [renameFocusedCollectionAction]
 			setTransparentBackground()
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
 		case .modal:
-			accessibilityCustomActions = []
 			setTransparentBackground()
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
 		case .modalTinted:
-			accessibilityCustomActions = []
 			backgroundColor = .tintColor.translucentFaint() // Note: `backgroundColor = nil` sets a transparent background; `backgroundView = nil` sets the default background.
 			
 			titleLabel.textColor = .label
@@ -142,7 +140,6 @@ final class CollectionCell:
 			
 			
 		case .modalDisabled:
-			accessibilityCustomActions = []
 			setTransparentBackground()
 			
 			titleLabel.textColor = .placeholderText

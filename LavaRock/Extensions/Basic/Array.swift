@@ -48,48 +48,6 @@ extension Array {
 		return allNeighborsSatisfy { $0 + 1 == $1 }
 	}
 	
-	// MARK: - Common Prefix
-	
-	func commonPrefix(
-		options: String.CompareOptions = []
-	) -> String
-	where Element == String
-	{
-		guard let first = first else {
-			return ""
-		}
-		var runningResult = first
-		var rest = dropFirst()
-		while
-			!runningResult.isEmpty,
-			let next = rest.first
-		{
-			rest.removeFirst()
-			runningResult = runningResult.commonPrefix(with: next, options: options)
-		}
-		return runningResult
-	}
-	
-	func commonPrefixLazilyGeneratingStringsToCompare(
-		options: String.CompareOptions = [],
-		stringToCompareFromElement: (Element) -> String
-	) -> String {
-		guard let first = first else {
-			return ""
-		}
-		var runningResult = stringToCompareFromElement(first)
-		var rest = dropFirst()
-		while
-			!runningResult.isEmpty,
-			let next = rest.first
-		{
-			rest.removeFirst()
-			let nextString = stringToCompareFromElement(next)
-			runningResult = runningResult.commonPrefix(with: nextString, options: options)
-		}
-		return runningResult
-	}
-	
 	// MARK: - Ordering
 	
 	func differenceInferringMoves(
@@ -101,12 +59,6 @@ extension Array {
 		return newArray.difference(from: self) { oldItem, newItem in
 			areEquivalent(oldItem, newItem)
 		}.inferringMoves()
-	}
-	
-	func sortedStably() -> Self
-	where Element: Comparable
-	{
-		return sortedMaintainingOrderWhen(areEqual: ==, areInOrder: <)
 	}
 	
 	func sortedMaintainingOrderWhen(
@@ -124,21 +76,6 @@ extension Array {
 	}
 	
 	// MARK: - Miscellaneous
-	
-	func mapDebugPrintingEach<TransformedElement>(
-		firstPrinting header: String? = nil,
-		_ transform: (Element) -> TransformedElement
-	) -> [TransformedElement] {
-		print("")
-		if let header = header {
-			print(header)
-		}
-		return map {
-			let transformed = transform($0)
-			debugPrint(transformed)
-			return transformed
-		}
-	}
 	
 	private func allNeighborsSatisfy(
 		_ predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
