@@ -84,11 +84,10 @@ extension SongsTVC {
 		}
 		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
-		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
-		sharedPlayer?.setQueue(with: queueDescriptor)
+		sharedPlayer?.setQueue(with: mediaItemCollection)
 		
-		// As of iOS 14.7 developer beta 1, you must set repeatMode and shuffleMode after calling setQueue, or else the repeat mode and shuffle mode won't actually apply.
+		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, or they won’t actually apply.
 		sharedPlayer?.repeatMode = .none
 		sharedPlayer?.shuffleMode = .off
 		
@@ -105,8 +104,8 @@ extension SongsTVC {
 		}
 		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
-		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
+		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		sharedPlayer?.append(queueDescriptor)
 		
 		sharedPlayer?.repeatMode = .none
@@ -135,8 +134,8 @@ extension SongsTVC {
 			let selectedMediaItem = selectedSong.songFile() as? MPMediaItem
 		else { return }
 		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])
-		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		
+		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
 		sharedPlayer?.append(queueDescriptor)
 		
 		sharedPlayer?.repeatMode = .none
@@ -168,7 +167,6 @@ extension SongsTVC {
 		
 		let alertTitle: String
 		switch numberOfSongsEnqueued {
-		// The Human Interface Guidelines say to use sentence case and ending punctuation for alert titles that are complete sentences (e.g., "“Song Title” and 1 more song will play later."), but Apple's own apps usually don't do this.
 		case 1:
 			alertTitle = String.localizedStringWithFormat(
 				LocalizedString.format_didEnqueueOneSongAlertTitle,
