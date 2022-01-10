@@ -82,11 +82,14 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var playbackButtons = [
 		previousSongButton, .flexibleSpace(),
 		rewindButton, .flexibleSpace(),
+//		skipBackwardButton, .flexibleSpace(),
 		playPauseButton, .flexibleSpace(),
+//		skipForwardButton, .flexibleSpace(),
 		nextSongButton,
 	]
 	final private(set) lazy var previousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
+//			image: UIImage(systemName: "backward.end"),
 			image: UIImage(systemName: "backward.end.fill"),
 			primaryAction: UIAction { _ in self.goToPreviousSong() })
 		button.accessibilityLabel = LocalizedString.previousTrack
@@ -101,9 +104,28 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
+	final private(set) lazy var skipBackwardButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "gobackward.5"),
+//			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
+			primaryAction: UIAction { _ in self.skipBackward() })
+		button.accessibilityLabel = LocalizedString.skip5SecondsBackwards
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
 	final private(set) lazy var playPauseButton = UIBarButtonItem()
+	final private(set) lazy var skipForwardButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			image: UIImage(systemName: "goforward.5"),
+//			image: UIImage(systemName: "arrow.clockwise.circle.fill"),
+			primaryAction: UIAction { _ in self.skipForward() })
+		button.accessibilityLabel = LocalizedString.skip5SecondsForward
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
 	final private(set) lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
+//			image: UIImage(systemName: "forward.end"),
 			image: UIImage(systemName: "forward.end.fill"),
 			primaryAction: UIAction { _ in self.goToNextSong() })
 		button.accessibilityLabel = LocalizedString.nextTrack

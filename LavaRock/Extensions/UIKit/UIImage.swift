@@ -8,6 +8,8 @@
 import UIKit
 
 extension UIImage {
+//	static let waveSpeakerSymbol = UIImage(systemName: "speaker.wave.2")
 	static let waveSpeakerSymbol = UIImage(systemName: "speaker.wave.2.fill")
+//	static let noWaveSpeakerSymbol = UIImage(systemName: "speaker")
 	static let noWaveSpeakerSymbol = UIImage(systemName: "speaker.fill")
 }

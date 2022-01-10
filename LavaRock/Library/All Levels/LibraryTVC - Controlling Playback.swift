@@ -13,6 +13,7 @@ extension LibraryTVC {
 		
 		func configurePlayButton() {
 			playPauseButton.primaryAction = UIAction(
+//				image: UIImage(systemName: "play.circle")
 				image: UIImage(systemName: "play.circle.fill")
 			) { _ in self.play() }
 			// As of iOS 15.3 developer beta 1, even when you set `UIBarButtonItem.width` manually, the "pause.fill" button is still narrower than the "play.fill" button.
@@ -22,6 +23,7 @@ extension LibraryTVC {
 		
 		func configurePauseButton() {
 			playPauseButton.primaryAction = UIAction(
+//				image: UIImage(systemName: "pause.circle")
 				image: UIImage(systemName: "pause.circle.fill")
 			) { _ in self.pause() }
 			playPauseButton.accessibilityLabel = LocalizedString.pause
@@ -69,7 +71,11 @@ extension LibraryTVC {
 	}
 	
 	final func rewind() {
-		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 14.4 developer beta 1, skipToBeginning() doesn't reliably change currentPlaybackTime to 0, which causes us to not disable the "restart current song" when we should; but this line of code does.
+		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 15.3 developer beta 1, neither this, `.skipToBeginning`, `.skipToPreviousItem`, nor `.skipToNextItem` reliably changes `.currentPlaybackTime` to `0`.
+	}
+	
+	final func skipBackward() {
+		sharedPlayer?.currentPlaybackTime -= 5
 	}
 	
 	private func play() {
@@ -78,6 +84,10 @@ extension LibraryTVC {
 	
 	private func pause() {
 		sharedPlayer?.pause()
+	}
+	
+	final func skipForward() {
+		sharedPlayer?.currentPlaybackTime += 5
 	}
 	
 	final func goToNextSong() {
