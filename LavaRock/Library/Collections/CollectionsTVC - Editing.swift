@@ -8,6 +8,12 @@
 import UIKit
 import CoreData
 
+extension CollectionsTVC: UITextFieldDelegate {
+	final func textFieldDidBeginEditing(_ textField: UITextField) {
+		textField.selectAll(nil) // As of iOS 15.3 developer beta 1, the selection works but the highlight doesn’t appear if `textField.text` is long.
+	}
+}
+
 extension CollectionsTVC {
 	// MARK: Renaming
 	
@@ -19,14 +25,14 @@ extension CollectionsTVC {
 		let dialog = UIAlertController.forEditingCollectionTitle(
 			alertTitle: FeatureFlag.multicollection ? LocalizedString.renameSectionAlertTitle : LocalizedString.renameCollectionAlertTitle,
 			textFieldText: collection.title,
+			textFieldDelegate: self,
 			cancelHandler: nil,
 			saveHandler: { textFieldText in
 				self.rename(
 					at: indexPath,
 					proposedTitle: textFieldText,
 					thenSelectIf: rowWasSelectedBeforeRenaming)
-			}
-		)
+			})
 		present(dialog, animated: true)
 	}
 	
@@ -132,6 +138,7 @@ extension CollectionsTVC {
 		let dialog = UIAlertController.forEditingCollectionTitle(
 			alertTitle: FeatureFlag.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
 			textFieldText: smartTitle,
+			textFieldDelegate: self,
 			cancelHandler: {
 				self.revertCombine(thenSelect: originalSelectedIndexPaths)
 			},
@@ -139,8 +146,7 @@ extension CollectionsTVC {
 				self.commitCombine(
 					into: indexPathOfCombined,
 					proposedTitle: textFieldText)
-			}
-		)
+			})
 		present(dialog, animated: true)
 	}
 	

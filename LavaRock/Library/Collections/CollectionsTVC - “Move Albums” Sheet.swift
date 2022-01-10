@@ -85,11 +85,11 @@ extension CollectionsTVC {
 		let dialog = UIAlertController.forEditingCollectionTitle(
 			alertTitle: FeatureFlag.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
 			textFieldText: smartTitle,
+			textFieldDelegate: self,
 			cancelHandler: revertCreate,
 			saveHandler: { textFieldText in
 				self.renameAndOpenCreated(proposedTitle: textFieldText)
-			}
-		)
+			})
 		present(dialog, animated: true)
 	}
 	

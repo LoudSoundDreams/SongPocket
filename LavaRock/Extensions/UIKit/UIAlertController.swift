@@ -11,6 +11,7 @@ extension UIAlertController {
 	static func forEditingCollectionTitle(
 		alertTitle: String,
 		textFieldText: String?,
+		textFieldDelegate: UITextFieldDelegate?,
 		cancelHandler: (() -> Void)?,
 		saveHandler: @escaping (_ textFieldText: String?) -> Void
 	) -> Self {
@@ -18,7 +19,20 @@ extension UIAlertController {
 			title: alertTitle,
 			message: nil,
 			preferredStyle: .alert)
-		dialog.addTextFieldForEditingCollectionTitle(textFieldText: textFieldText)
+		dialog.addTextField { textField in
+			// UITextField
+			textField.text = textFieldText
+			textField.placeholder = LocalizedString.title
+			textField.clearButtonMode = .whileEditing
+			
+			// UITextInputTraits
+			textField.returnKeyType = .done
+			textField.autocapitalizationType = .sentences
+			textField.smartQuotesType = .yes
+			textField.smartDashesType = .yes
+			
+			textField.delegate = textFieldDelegate
+		}
 		
 		let cancelAction = UIAlertAction.cancel { _ in cancelHandler?() }
 		let saveAction = UIAlertAction(
@@ -34,20 +48,5 @@ extension UIAlertController {
 		dialog.preferredAction = saveAction
 		
 		return dialog
-	}
-	
-	private func addTextFieldForEditingCollectionTitle(textFieldText: String?) {
-		addTextField { textField in
-			// UITextField
-			textField.text = textFieldText
-			textField.placeholder = LocalizedString.title
-			textField.clearButtonMode = .whileEditing
-			
-			// UITextInputTraits
-			textField.returnKeyType = .done
-			textField.autocapitalizationType = .sentences
-			textField.smartQuotesType = .yes
-			textField.smartDashesType = .yes
-		}
 	}
 }
