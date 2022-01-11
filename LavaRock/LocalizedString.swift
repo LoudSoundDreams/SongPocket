@@ -62,10 +62,10 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	static let previousTrack = NSLocalizedString("Previous track", comment: "Accessibility label, button")
 	static let restart = NSLocalizedString("Restart", comment: "Accessibility label, button")
-	static let skip5SecondsBackwards = NSLocalizedString("Skip 5 seconds backwards", comment: "Accessibility label, button")
+	static let skip10SecondsBackwards = NSLocalizedString("Skip 10 seconds backwards", comment: "Accessibility label, button")
 	static let play = NSLocalizedString("Play", comment: "Accessibility label, button")
 	static let pause = NSLocalizedString("Pause", comment: "Accessibility label, button")
-	static let skip5SecondsForward = NSLocalizedString("Skip 5 seconds forward", comment: "Accessibility label, button")
+	static let skip10SecondsForward = NSLocalizedString("Skip 10 seconds forward", comment: "Accessibility label, button")
 	static let nextTrack = NSLocalizedString("Next track", comment: "Accessibility label, button")
 	
 	// MARK: "Now Playing" Indicator

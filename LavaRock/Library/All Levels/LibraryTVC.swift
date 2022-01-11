@@ -106,20 +106,18 @@ class LibraryTVC: UITableViewController {
 	}()
 	final private(set) lazy var skipBackwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			title: LocalizedString.skip5SecondsBackwards,
-			image: UIImage(systemName: "gobackward.5"),
-//			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
-			primaryAction: UIAction { _ in self.skipBackward() })
+			title: LocalizedString.skip10SecondsBackwards,
+			image: UIImage(systemName: "gobackward.10"),
+			primaryAction: UIAction { _ in self.skipBackward(seconds: 10) })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final private(set) lazy var playPauseButton = UIBarButtonItem()
 	final private(set) lazy var skipForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			title: LocalizedString.skip5SecondsForward,
-			image: UIImage(systemName: "goforward.5"),
-//			image: UIImage(systemName: "arrow.clockwise.circle.fill"),
-			primaryAction: UIAction { _ in self.skipForward() })
+			title: LocalizedString.skip10SecondsForward,
+			image: UIImage(systemName: "goforward.10"),
+			primaryAction: UIAction { _ in self.skipForward(seconds: 10) })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()

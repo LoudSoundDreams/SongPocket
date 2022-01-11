@@ -74,8 +74,8 @@ extension LibraryTVC {
 		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 15.3 developer beta 1, neither this, `.skipToBeginning`, `.skipToPreviousItem`, nor `.skipToNextItem` reliably changes `.currentPlaybackTime` to `0`.
 	}
 	
-	final func skipBackward() {
-		sharedPlayer?.currentPlaybackTime -= 5
+	final func skipBackward(seconds: Double) {
+		sharedPlayer?.currentPlaybackTime -= seconds
 	}
 	
 	private func play() {
@@ -86,8 +86,8 @@ extension LibraryTVC {
 		sharedPlayer?.pause()
 	}
 	
-	final func skipForward() {
-		sharedPlayer?.currentPlaybackTime += 5
+	final func skipForward(seconds: Double) {
+		sharedPlayer?.currentPlaybackTime += seconds
 	}
 	
 	final func goToNextSong() {
