@@ -36,7 +36,7 @@ extension LibraryTVC {
 			return
 		}
 		
-		if player.playbackState == .playing { // There are many playback states; only show the pause button when the player controller is playing. Otherwise, show the play button.
+		if player.playbackState == .playing {
 			configurePauseButton()
 		} else {
 			configurePlayButton()

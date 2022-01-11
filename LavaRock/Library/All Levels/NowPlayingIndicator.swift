@@ -32,7 +32,7 @@ struct NowPlayingIndicator {
 	
 	init(
 		isInPlayer: Bool,
-		isPlaying: Bool // MPMusicPlayerController.playbackState has more cases than just .playing and .paused. Call this with isPlaying: true if and only if the player is playing. Otherwise, call this with isPlaying: false to get the "in player, but paused" indicator.
+		isPlaying: Bool
 	) {
 		guard isInPlayer else {
 			image = nil
