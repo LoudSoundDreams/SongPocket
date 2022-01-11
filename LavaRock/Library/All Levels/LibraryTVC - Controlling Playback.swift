@@ -14,7 +14,7 @@ extension LibraryTVC {
 		func configurePlayButton() {
 			playPauseButton.title = LocalizedString.play
 			playPauseButton.primaryAction = UIAction(
-				image: FeatureFlag.skipButtons ? UIImage(systemName: "play.circle") : UIImage(systemName: "play.circle.fill")
+				image: Enabling.skipButtons ? UIImage(systemName: "play.circle") : UIImage(systemName: "play.circle.fill")
 			) { _ in self.play() }
 			// As of iOS 15.3 developer beta 1, even when you set `UIBarButtonItem.width` manually, the "pause.fill" button is still narrower than the "play.fill" button.
 			playPauseButton.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
@@ -23,7 +23,7 @@ extension LibraryTVC {
 		func configurePauseButton() {
 			playPauseButton.title = LocalizedString.pause
 			playPauseButton.primaryAction = UIAction(
-				image: FeatureFlag.skipButtons ? UIImage(systemName: "pause.circle") : UIImage(systemName: "pause.circle.fill")
+				image: Enabling.skipButtons ? UIImage(systemName: "pause.circle") : UIImage(systemName: "pause.circle.fill")
 			) { _ in self.pause() }
 			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
 		}
@@ -72,7 +72,7 @@ extension LibraryTVC {
 		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 15.3 developer beta 1, neither this, `.skipToBeginning`, `.skipToPreviousItem`, nor `.skipToNextItem` reliably changes `.currentPlaybackTime` to `0`.
 	}
 	
-	final func skipBackward(seconds: Double) {
+	final func skipBackward(seconds: TimeInterval) {
 		sharedPlayer?.currentPlaybackTime -= seconds
 	}
 	
@@ -84,7 +84,7 @@ extension LibraryTVC {
 		sharedPlayer?.pause()
 	}
 	
-	final func skipForward(seconds: Double) {
+	final func skipForward(seconds: TimeInterval) {
 		sharedPlayer?.currentPlaybackTime += seconds
 	}
 	

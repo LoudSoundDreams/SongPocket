@@ -30,7 +30,7 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
 	) -> String? {
-		if FeatureFlag.multialbum {
+		if Enabling.multialbum {
 			return (viewModel as? SongsViewModel)?.album(forSection: section).titleFormattedOrPlaceholder()
 		} else {
 			return nil

@@ -74,13 +74,13 @@ class LibraryTVC: UITableViewController {
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
 	final lazy var topRightButtons = [editButtonItem]
-	final lazy var viewingModeToolbarButtons = FeatureFlag.tabBar ? editingModeToolbarButtons : playbackButtons
+	final lazy var viewingModeToolbarButtons = Enabling.tabBar ? editingModeToolbarButtons : playbackButtons
 	
 	// MARK: Subclasses Should Not Customize
 	
 	// Playback
 	final private(set) lazy var playbackButtons: [UIBarButtonItem] = {
-		if FeatureFlag.skipButtons {
+		if Enabling.skipButtons {
 			return [
 				previousSongButton, .flexibleSpace(),
 				skipBackwardButton, .flexibleSpace(),
@@ -100,7 +100,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var previousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
-			image: FeatureFlag.skipButtons ? UIImage(systemName: "backward.end") : UIImage(systemName: "backward.end.fill"),
+			image: Enabling.skipButtons ? UIImage(systemName: "backward.end") : UIImage(systemName: "backward.end.fill"),
 			primaryAction: UIAction { _ in self.goToPreviousSong() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -133,7 +133,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
-			image: FeatureFlag.skipButtons ? UIImage(systemName: "forward.end") : UIImage(systemName: "forward.end.fill"),
+			image: Enabling.skipButtons ? UIImage(systemName: "forward.end") : UIImage(systemName: "forward.end.fill"),
 			primaryAction: UIAction { _ in self.goToNextSong() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -188,7 +188,7 @@ class LibraryTVC: UITableViewController {
 		
 		setBarButtons(animated: false)
 		
-		if FeatureFlag.tabBar {
+		if Enabling.tabBar {
 			hideToolbar()
 		}
 	}
@@ -391,13 +391,13 @@ class LibraryTVC: UITableViewController {
 		
 		super.setEditing(editing, animated: animated)
 		
-		if FeatureFlag.tabBar {
+		if Enabling.tabBar {
 			setBarButtons(animated: false)
 		} else {
 			setBarButtons(animated: animated)
 		}
 		
-		if FeatureFlag.tabBar {
+		if Enabling.tabBar {
 			if editing {
 				showToolbar()
 			} else {

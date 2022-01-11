@@ -260,7 +260,7 @@ final class CollectionsTVC:
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
 			
-			if FeatureFlag.tabBar {
+			if Enabling.tabBar {
 				showToolbar()
 			}
 		case .browsing:
@@ -339,7 +339,7 @@ final class CollectionsTVC:
 				return []
 			}
 		}()
-		if FeatureFlag.multicollection {
+		if Enabling.multicollection {
 			let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
 			let indexOfSelectedCollection = collection.index
 			albumsTVC.indexOfOpenedCollection = Int(indexOfSelectedCollection)

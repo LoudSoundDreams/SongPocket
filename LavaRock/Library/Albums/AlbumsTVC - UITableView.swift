@@ -57,7 +57,7 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
 	) -> String? {
-		if FeatureFlag.multicollection {
+		if Enabling.multicollection {
 			return (viewModel as? AlbumsViewModel)?.collection(forSection: section).title
 		} else {
 			return nil

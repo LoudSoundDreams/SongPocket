@@ -23,7 +23,7 @@ extension CollectionsTVC {
 		let rowWasSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
 		
 		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: FeatureFlag.multicollection ? LocalizedString.renameSectionAlertTitle : LocalizedString.renameCollectionAlertTitle,
+			alertTitle: Enabling.multicollection ? LocalizedString.renameSectionAlertTitle : LocalizedString.renameCollectionAlertTitle,
 			textFieldText: collection.title,
 			textFieldDelegate: self,
 			cancelHandler: nil,
@@ -110,7 +110,7 @@ extension CollectionsTVC {
 		
 		viewModelBeforeCombining = collectionsViewModel
 		
-		let title = smartTitle ?? (FeatureFlag.multicollection ? LocalizedString.combinedSectionDefaultTitle : LocalizedString.combinedCollectionDefaultTitle)
+		let title = smartTitle ?? (Enabling.multicollection ? LocalizedString.combinedSectionDefaultTitle : LocalizedString.combinedCollectionDefaultTitle)
 		let newViewModel = collectionsViewModel.updatedAfterCombining_inNewChildContext(
 			fromInOrder: collections,
 			into: indexPathOfCombined,
@@ -136,7 +136,7 @@ extension CollectionsTVC {
 		smartTitle: String?
 	) {
 		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: FeatureFlag.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
+			alertTitle: Enabling.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
 			textFieldText: smartTitle,
 			textFieldDelegate: self,
 			cancelHandler: {

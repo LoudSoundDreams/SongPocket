@@ -35,7 +35,7 @@ final class SongsTVC:
 	final override func setUpUI() {
 		super.setUpUI()
 		
-		if FeatureFlag.multialbum {
+		if Enabling.multialbum {
 			navigationItem.largeTitleDisplayMode = .never
 		}
 		

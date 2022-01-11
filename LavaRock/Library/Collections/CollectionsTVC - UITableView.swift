@@ -124,7 +124,7 @@ extension CollectionsTVC {
 					return .modal
 				}
 			case .movingAlbums(let clipboard):
-				if FeatureFlag.multicollection {
+				if Enabling.multicollection {
 					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
 						return .modalTinted
 					} else {

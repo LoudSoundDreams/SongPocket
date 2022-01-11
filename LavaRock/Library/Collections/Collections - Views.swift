@@ -82,7 +82,7 @@ final class CreateCollectionCell: TintedSelectedCell {
 		
 		newCollectionLabel.textColor = .tintColor
 		
-		if FeatureFlag.multicollection {
+		if Enabling.multicollection {
 			newCollectionLabel.text = LocalizedString.newSectionButtonTitle
 		}
 	}

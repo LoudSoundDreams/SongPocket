@@ -74,7 +74,7 @@ extension CollectionsTVC {
 	) {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
-		let title = smartTitle ?? (FeatureFlag.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
+		let title = smartTitle ?? (Enabling.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
 		let newViewModel = collectionsViewModel.updatedAfterCreating(title: title)
 		setViewModelAndMoveRows(newViewModel) {
 			completion()
@@ -83,7 +83,7 @@ extension CollectionsTVC {
 	
 	private func confirmCreate(smartTitle: String?) {
 		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: FeatureFlag.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
+			alertTitle: Enabling.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
 			textFieldText: smartTitle,
 			textFieldDelegate: self,
 			cancelHandler: revertCreate,

@@ -1,11 +1,11 @@
 //
-//  FeatureFlag.swift
+//  Enabling.swift
 //  LavaRock
 //
 //  Created by h on 2021-10-29.
 //
 
-struct FeatureFlag {
+struct Enabling {
 	private init() {}
 	
 	static let skipButtons = 1 == 0

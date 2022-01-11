@@ -88,7 +88,7 @@ final class AlbumsTVC:
 		
 		super.setUpUI()
 		
-		if FeatureFlag.multicollection {
+		if Enabling.multicollection {
 			navigationItem.largeTitleDisplayMode = .never
 		}
 		
@@ -98,7 +98,7 @@ final class AlbumsTVC:
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
 			
-			if FeatureFlag.tabBar {
+			if Enabling.tabBar {
 				showToolbar()
 			}
 		case .browsing:
@@ -173,7 +173,7 @@ final class AlbumsTVC:
 			let songsTVC = segue.destination as? SongsTVC
 		else { return }
 		
-		if FeatureFlag.multialbum {
+		if Enabling.multialbum {
 			let album = albumsViewModel.albumNonNil(at: selectedIndexPath)
 			songsTVC.openedAlbum = album
 			

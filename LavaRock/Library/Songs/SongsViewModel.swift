@@ -27,7 +27,7 @@ extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
 	
 	func viewContainerIsSpecific() -> Bool {
-		return FeatureFlag.multialbum ? false : true
+		return Enabling.multialbum ? false : true
 	}
 	
 	func bigTitle() -> String {
