@@ -79,19 +79,28 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses Should Not Customize
 	
 	// Playback
-	final private(set) lazy var playbackButtons = [
-		previousSongButton, .flexibleSpace(),
-		rewindButton, .flexibleSpace(),
-//		skipBackwardButton, .flexibleSpace(),
-		playPauseButton, .flexibleSpace(),
-//		skipForwardButton, .flexibleSpace(),
-		nextSongButton,
-	]
+	final private(set) lazy var playbackButtons: [UIBarButtonItem] = {
+		if FeatureFlag.skipButtons {
+			return [
+				previousSongButton, .flexibleSpace(),
+				skipBackwardButton, .flexibleSpace(),
+				playPauseButton, .flexibleSpace(),
+				skipForwardButton, .flexibleSpace(),
+				nextSongButton,
+			]
+		} else {
+			return [
+				previousSongButton, .flexibleSpace(),
+				rewindButton, .flexibleSpace(),
+				playPauseButton, .flexibleSpace(),
+				nextSongButton,
+			]
+		}
+	}()
 	final private(set) lazy var previousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
-//			image: UIImage(systemName: "backward.end"),
-			image: UIImage(systemName: "backward.end.fill"),
+			image: FeatureFlag.skipButtons ? UIImage(systemName: "backward.end") : UIImage(systemName: "backward.end.fill"),
 			primaryAction: UIAction { _ in self.goToPreviousSong() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -124,8 +133,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
-//			image: UIImage(systemName: "forward.end"),
-			image: UIImage(systemName: "forward.end.fill"),
+			image: FeatureFlag.skipButtons ? UIImage(systemName: "forward.end") : UIImage(systemName: "forward.end.fill"),
 			primaryAction: UIAction { _ in self.goToNextSong() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
