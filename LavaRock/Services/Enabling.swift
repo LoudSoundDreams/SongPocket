@@ -8,8 +8,6 @@
 struct Enabling {
 	private init() {}
 	
-	static let skipButtons = 1 == 0
-	
 	static let multicollection = 1 == 0
 	static let multialbum = multicollection && 1 == 1
 	

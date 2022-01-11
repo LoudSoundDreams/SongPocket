@@ -79,28 +79,18 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses Should Not Customize
 	
 	// Playback
-	final private(set) lazy var playbackButtons: [UIBarButtonItem] = {
-		if Enabling.skipButtons {
-			return [
-				previousSongButton, .flexibleSpace(),
-				skipBackwardButton, .flexibleSpace(),
-				playPauseButton, .flexibleSpace(),
-				skipForwardButton, .flexibleSpace(),
-				nextSongButton,
-			]
-		} else {
-			return [
-				previousSongButton, .flexibleSpace(),
-				rewindButton, .flexibleSpace(),
-				playPauseButton, .flexibleSpace(),
-				nextSongButton,
-			]
-		}
-	}()
+	final private(set) lazy var playbackButtons = [
+		previousSongButton, .flexibleSpace(),
+		rewindButton, .flexibleSpace(),
+//		skipBackwardButton, .flexibleSpace(),
+		playPauseButton, .flexibleSpace(),
+//		skipForwardButton, .flexibleSpace(),
+		nextSongButton,
+	]
 	final private(set) lazy var previousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
-			image: Enabling.skipButtons ? UIImage(systemName: "backward.end") : UIImage(systemName: "backward.end.fill"),
+			image: UIImage(systemName: "backward.end"),
 			primaryAction: UIAction { _ in self.goToPreviousSong() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -108,7 +98,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var rewindButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.restart,
-			image: UIImage(systemName: "arrow.counterclockwise.circle.fill"),
+			image: UIImage(systemName: "arrow.counterclockwise.circle"),
 			primaryAction: UIAction { _ in self.rewind() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -133,7 +123,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
-			image: Enabling.skipButtons ? UIImage(systemName: "forward.end") : UIImage(systemName: "forward.end.fill"),
+			image: UIImage(systemName: "forward.end"),
 			primaryAction: UIAction { _ in self.goToNextSong() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
