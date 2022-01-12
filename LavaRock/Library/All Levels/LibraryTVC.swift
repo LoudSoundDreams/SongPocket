@@ -72,7 +72,7 @@ class LibraryTVC: UITableViewController {
 	
 	// Controls
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
-	private lazy var editingModeTopLeftButtons = [UIBarButtonItem.flexibleSpace()]
+	private lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [.flexibleSpace()]
 	final lazy var topRightButtons = [editButtonItem]
 	final lazy var viewingModeToolbarButtons = Enabling.tabBar ? editingModeToolbarButtons : playbackButtons
 	
@@ -133,25 +133,17 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort,
 		menu: makeSortOptionsMenu())
-	final private(set) lazy var floatToTopButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LocalizedString.moveToTop,
-			image: UIImage(systemName: "arrow.up.to.line.compact"),
-			primaryAction: UIAction { _ in self.floatSelectedItemsToTopOfSection() })
-		return button
-	}()
-	final private(set) lazy var sinkToBottomButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LocalizedString.moveToBottom,
-			image: UIImage(systemName: "arrow.down.to.line.compact"),
-			primaryAction: UIAction { _ in self.sinkSelectedItemsToBottomOfSection() })
-		return button
-	}()
-	final private(set) lazy var cancelAndDismissButton: UIBarButtonItem = {
-		return UIBarButtonItem(
-			systemItem: .cancel,
-			primaryAction: UIAction { _ in self.dismiss(animated: true) })
-	}()
+	final private(set) lazy var floatToTopButton = UIBarButtonItem(
+		title: LocalizedString.moveToTop,
+		image: UIImage(systemName: "arrow.up.to.line.compact"),
+		primaryAction: UIAction { _ in self.floatSelectedItemsToTopOfSection() })
+	final private(set) lazy var sinkToBottomButton = UIBarButtonItem(
+		title: LocalizedString.moveToBottom,
+		image: UIImage(systemName: "arrow.down.to.line.compact"),
+		primaryAction: UIAction { _ in self.sinkSelectedItemsToBottomOfSection() })
+	final private(set) lazy var cancelAndDismissButton = UIBarButtonItem(
+		systemItem: .cancel,
+		primaryAction: UIAction { _ in self.dismiss(animated: true) })
 	
 	// State
 	final var isMergingChanges = false

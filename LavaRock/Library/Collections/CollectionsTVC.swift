@@ -45,11 +45,9 @@ final class CollectionsTVC:
 	
 	// Controls
 	@IBOutlet private var optionsButton: UIBarButtonItem!
-	private lazy var combineButton: UIBarButtonItem = {
-		return UIBarButtonItem(
-			title: LocalizedString.combine,
-			primaryAction: UIAction { _ in self.combineAndConfirm() })
-	}()
+	private lazy var combineButton = UIBarButtonItem(
+		title: LocalizedString.combine,
+		primaryAction: UIAction { _ in self.combineAndConfirm() })
 	
 	// Purpose
 	var purpose: Purpose {
