@@ -9,11 +9,30 @@ import SwiftUI
 
 struct OptionsView: View {
 	@Environment(\.dismiss) private var dismiss
+	@AppStorage(LRUserDefaultsKey.appearance.rawValue) private var savedAppearance = Appearance.savedPreference().rawValue
+	var uiWindow: UIWindow
 	
 	var body: some View {
 		NavigationView {
-			List {
-				Text("Options View")
+			Form {
+				
+				Section(LocalizedString.theme) {
+					Picker("", selection: $savedAppearance) {
+						ForEach(Appearance.allCases) { appearance in
+							Image(systemName: appearance.sfSymbolName)
+								.accessibilityLabel(appearance.name)
+								.tag(appearance.rawValue)
+						}
+					}
+					.pickerStyle(.segmented)
+					
+					Text("accent color")
+				}
+				
+				Section(LocalizedString.tipJar) {
+					Text("tip")
+				}
+				
 			}
 			.navigationTitle(LocalizedString.options)
 			.navigationBarTitleDisplayMode(.inline)
@@ -24,11 +43,9 @@ struct OptionsView: View {
 			}
 		}
 		.navigationViewStyle(.stack)
-	}
-}
-
-struct OptionsView_Previews: PreviewProvider {
-	static var previews: some View {
-		OptionsView()
+		
+		.onChange(of: savedAppearance) { newSavedAppearance in
+			uiWindow.overrideUserInterfaceStyle = Appearance(rawValue: newSavedAppearance)!.uiUserInterfaceStyle
+		}
 	}
 }
