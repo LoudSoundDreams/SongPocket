@@ -8,7 +8,11 @@
 import UIKit
 
 final class OptionsTVC: UITableViewController {
-	final var tipJarIsShowingThankYou = false
+	final var tipJarIsShowingThankYou = false {
+		didSet {
+			refreshTipJarRows()
+		}
+	}
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)

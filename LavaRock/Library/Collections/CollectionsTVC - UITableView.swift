@@ -278,24 +278,21 @@ extension CollectionsTVC {
 	
 	private func didSelectAllowAccessRow(at indexPath: IndexPath) {
 		switch MPMediaLibrary.authorizationStatus() {
-		case .notDetermined: // The golden opportunity.
-			MPMediaLibrary.requestAuthorization { newStatus in // iOS 15: Use async/await
-				switch newStatus {
+		case .notDetermined:
+			// The golden opportunity.
+			Task {
+				let authorizationStatus = await MPMediaLibrary.requestAuthorization()
+				
+				switch authorizationStatus {
 				case .authorized:
-					DispatchQueue.main.async {
-						self.didReceiveAuthorizationForMusicLibrary()
-					}
+					didReceiveAuthorizationForMusicLibrary()
 				case
 						.notDetermined,
 						.denied,
 						.restricted:
-					DispatchQueue.main.async {
-						self.tableView.deselectRow(at: indexPath, animated: true)
-					}
+					tableView.deselectRow(at: indexPath, animated: true)
 				@unknown default:
-					DispatchQueue.main.async {
-						self.tableView.deselectRow(at: indexPath, animated: true)
-					}
+					tableView.deselectRow(at: indexPath, animated: true)
 				}
 			}
 		case .authorized:

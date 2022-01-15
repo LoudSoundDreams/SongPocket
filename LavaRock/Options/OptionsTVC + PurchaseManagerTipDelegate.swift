@@ -44,10 +44,10 @@ extension OptionsTVC: PurchaseManagerTipDelegate {
 	
 	private func didReceiveTip() {
 		tipJarIsShowingThankYou = true
-		refreshTipJarRows()
-		DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
-			self?.tipJarIsShowingThankYou = false
-			self?.refreshTipJarRows()
+		Task {
+			try? await Task.sleep(nanoseconds: 10_000_000_000)
+			
+			tipJarIsShowingThankYou = false
 		}
 	}
 	
