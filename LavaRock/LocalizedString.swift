@@ -35,6 +35,8 @@ struct LocalizedString { // You can't turn this into an enum, because raw values
 	
 	// MARK: Options
 	
+	static let options = NSLocalizedString("Options", comment: "Big title")
+	
 	static let theme = NSLocalizedString("Theme", comment: "Section header")
 	
 	static let appearance = NSLocalizedString("Appearance", comment: "Section header")

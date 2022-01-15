@@ -115,15 +115,23 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Placeholder Collections View Title" id="aA7-bf-O8G">
-                        <barButtonItem key="leftBarButtonItem" title="Options" id="mpR-tt-C6X">
-                            <connections>
-                                <segue destination="PZK-NP-HeE" kind="presentation" identifier="" modalPresentationStyle="formSheet" id="aqr-v5-Bgu"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem title="Options" id="mpR-tt-C6X">
+                                <connections>
+                                    <segue destination="PZK-NP-HeE" kind="presentation" identifier="" modalPresentationStyle="formSheet" id="aqr-v5-Bgu"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Options" id="dlm-8d-Mjf">
+                                <connections>
+                                    <action selector="openOptions:" destination="Vce-TP-hYI" id="hJS-AO-FPy"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="optionsButton" destination="mpR-tt-C6X" id="rCs-Xg-uZH"/>
+                        <outlet property="optionsButton_SwiftUI" destination="dlm-8d-Mjf" id="DDi-Ce-cSk"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Toq-AT-hvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -520,7 +528,7 @@
                 <viewControllerPlaceholder storyboardName="Options" id="PZK-NP-HeE" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z5t-1I-RYz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6110" y="-655"/>
+            <point key="canvasLocation" x="6723" y="-174"/>
         </scene>
         <!--Player-->
         <scene sceneID="pHC-Lv-e5S">
@@ -530,7 +538,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qvV-lu-Otm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5864" y="613"/>
+            <point key="canvasLocation" x="5702" y="281"/>
         </scene>
     </scenes>
     <resources>

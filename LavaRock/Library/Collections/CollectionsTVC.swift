@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import MediaPlayer
+import SwiftUI
 
 final class CollectionsTVC:
 	LibraryTVC,
@@ -45,6 +46,7 @@ final class CollectionsTVC:
 	
 	// Controls
 	@IBOutlet private var optionsButton: UIBarButtonItem!
+	@IBOutlet private var optionsButton_SwiftUI: UIBarButtonItem!
 	private lazy var combineButton = UIBarButtonItem(
 		title: LocalizedString.combine,
 		primaryAction: UIAction { _ in self.combineAndConfirm() })
@@ -247,6 +249,7 @@ final class CollectionsTVC:
 			topRightButtons = [cancelAndDismissButton]
 			navigationController?.toolbar.isHidden = true
 		case .browsing:
+//			viewingModeTopLeftButtons = [optionsButton_SwiftUI]
 			viewingModeTopLeftButtons = [optionsButton]
 		}
 		
@@ -312,6 +315,12 @@ final class CollectionsTVC:
 	}
 	
 	// MARK: - Navigation
+	
+	@IBAction func openOptions(_ sender: UIBarButtonItem) {
+		let hostingController = UIHostingController(rootView: OptionsView())
+		hostingController.modalPresentationStyle = .formSheet
+		present(hostingController, animated: true)
+	}
 	
 	final override func prepare(
 		for segue: UIStoryboardSegue,
