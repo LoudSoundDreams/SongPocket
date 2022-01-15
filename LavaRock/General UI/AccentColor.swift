@@ -5,9 +5,9 @@
 //  Created by h on 2020-07-29.
 //
 
-import UIKit
+import SwiftUI
 
-struct AccentColor: Equatable { // You can't turn this into an enum, because raw values for enum cases need to be literals.
+struct AccentColor: Equatable { // You can’t turn this into an enum, because raw values for enum cases need to be literals.
 	enum ValueCase: String, CaseIterable {
 		// We persist these raw values in `UserDefaults`.
 		case strawberry = "Strawberry"
@@ -19,24 +19,24 @@ struct AccentColor: Equatable { // You can't turn this into an enum, because raw
 	
 	let valueCase: ValueCase
 	let displayName: String
-	let uiColor: UIColor
+	let color: Color
 	let heartEmoji: String
 	
 	static let all = [
 		Self(
 			valueCase: .strawberry,
 			displayName: LocalizedString.strawberry,
-			uiColor: .systemPink,
+			color: .pink,
 			heartEmoji: "❤️"),
 		Self(
 			valueCase: .tangerine,
 			displayName: LocalizedString.tangerine,
-			uiColor: .systemOrange,
+			color: .orange,
 			heartEmoji: "🧡"),
 		Self(
 			valueCase: .lime,
 			displayName: LocalizedString.lime,
-			uiColor: .systemGreen,
+			color: .green,
 			heartEmoji: "💚"),
 		
 		defaultSelf,
@@ -44,7 +44,7 @@ struct AccentColor: Equatable { // You can't turn this into an enum, because raw
 		Self(
 			valueCase: .grape,
 			displayName: LocalizedString.grape,
-			uiColor: .systemPurple,
+			color: .purple,
 			heartEmoji: "💜"),
 	]
 	
@@ -72,6 +72,18 @@ struct AccentColor: Equatable { // You can't turn this into an enum, because raw
 	private static let defaultSelf = Self(
 		valueCase: .blueberry,
 		displayName: LocalizedString.blueberry,
-		uiColor: .systemBlue,
+		color: .blue,
 		heartEmoji: "💙")
+}
+
+extension AccentColor: Identifiable {
+	var id: ValueCase { valueCase }
+}
+
+extension AccentColor {
+	init(persistentRawValue: ValueCase.RawValue) {
+		self = Self.all.first { accentColor in
+			accentColor.valueCase.rawValue == persistentRawValue
+		}!
+	}
 }

@@ -45,7 +45,7 @@ final class CollectionsTVC:
 	}
 	
 	// Controls
-	@IBOutlet private var optionsButton: UIBarButtonItem!
+	@IBOutlet private var optionsButton_UIKit: UIBarButtonItem!
 	@IBOutlet private var optionsButton_SwiftUI: UIBarButtonItem!
 	private lazy var combineButton = UIBarButtonItem(
 		title: LocalizedString.combine,
@@ -250,7 +250,7 @@ final class CollectionsTVC:
 			navigationController?.toolbar.isHidden = true
 		case .browsing:
 //			viewingModeTopLeftButtons = [optionsButton_SwiftUI]
-			viewingModeTopLeftButtons = [optionsButton]
+			viewingModeTopLeftButtons = [optionsButton_UIKit]
 		}
 		
 		super.setUpUI()

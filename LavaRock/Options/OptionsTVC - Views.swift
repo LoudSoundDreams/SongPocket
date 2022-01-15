@@ -61,10 +61,10 @@ final class AccentColorCell: UITableViewCell {
 		
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = accentColor.displayName
-		configuration.textProperties.color = accentColor.uiColor
+		configuration.textProperties.color = accentColor.uiColor // Don’t use `UIColor(accentColor.color)`, because it doesn’t respect “Increase Contrast”.
 		contentConfiguration = configuration
 		
-		if accentColor == AccentColor.savedPreference() { // Don't use `self.tintColor`, because if Increase Contrast is enabled, it won't match any `AccentColor.uiColor`.
+		if accentColor == AccentColor.savedPreference() { // Don’t use `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
 			accessoryType = .checkmark
 		} else {
 			accessoryType = .none
@@ -76,15 +76,34 @@ final class AccentColorCell: UITableViewCell {
 	// Similar to counterpart in `TintedSelectedCell`.
 	private func refreshSelectedBackgroundView() {
 		let colorView = UIView()
-		colorView.backgroundColor = accentColor?.uiColor.resolvedColor(with: traitCollection).translucent() // For some reason, you must use `resolvedColor` here, or this won't reflect the "Increase Contrast" setting, even though the text does reflect the setting without it.
+		// Don’t use `UIColor(accentColor.color).resolvedColor`, because it doesn’t respect “Increase Contrast”.
+		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
+		colorView.backgroundColor = accentColor?.uiColor.resolvedColor(with: traitCollection).translucent()
 		selectedBackgroundView = colorView
 	}
 	
-	// UIKit also calls this when the "Increase Contrast" setting changes.
+	// UIKit does call this when “Increase Contrast” changes.
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
 		configure()
+	}
+}
+
+private extension AccentColor {
+	var uiColor: UIColor {
+		switch valueCase {
+		case .strawberry:
+			return .systemPink
+		case .tangerine:
+			return .systemOrange
+		case .lime:
+			return .systemGreen
+		case .blueberry:
+			return .systemBlue
+		case .grape:
+			return .systemPurple
+		}
 	}
 }
 

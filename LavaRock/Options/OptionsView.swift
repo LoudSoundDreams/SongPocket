@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct OptionsView: View {
-	@Environment(\.dismiss) private var dismiss
-	@AppStorage(LRUserDefaultsKey.appearance.rawValue) private var savedAppearance = Appearance.savedPreference().rawValue
 	var uiWindow: UIWindow
+	
+	@AppStorage(LRUserDefaultsKey.appearance.rawValue) private var savedAppearance = Appearance.savedPreference().rawValue
+	@AppStorage(LRUserDefaultsKey.accentColorName.rawValue) private var savedAccentColor = AccentColor.savedPreference().valueCase.rawValue
+	@Environment(\.dismiss) private var dismiss
 	
 	var body: some View {
 		NavigationView {
@@ -26,13 +29,30 @@ struct OptionsView: View {
 					}
 					.pickerStyle(.segmented)
 					
-					Text("accent color")
+					Picker(selection: $savedAccentColor) {
+						ForEach(AccentColor.all) { accentColor in
+							Text(accentColor.displayName)
+								.foregroundColor(accentColor.color)
+								.tag(accentColor.valueCase.rawValue)
+						}
+					} label: { EmptyView() }
+					.pickerStyle(.inline)
 				}
 				
-				Section(LocalizedString.tipJar) {
-					Text("tip")
+				Section {
+					HStack {
+						Text("tip")
+							.foregroundColor(.accentColor)
+						Spacer()
+						Text("0¢")
+							.foregroundColor(.secondary)
+					}
+				} header: {
+					Text(LocalizedString.tipJar)
+				} footer: {
+					Text(LocalizedString.tipJarFooter)
 				}
-				
+
 			}
 			.navigationTitle(LocalizedString.options)
 			.navigationBarTitleDisplayMode(.inline)
@@ -44,8 +64,11 @@ struct OptionsView: View {
 		}
 		.navigationViewStyle(.stack)
 		
-		.onChange(of: savedAppearance) { newSavedAppearance in
-			uiWindow.overrideUserInterfaceStyle = Appearance(rawValue: newSavedAppearance)!.uiUserInterfaceStyle
+		.onChange(of: savedAppearance) { newAppearance in
+			uiWindow.overrideUserInterfaceStyle = Appearance(rawValue: newAppearance)!.uiUserInterfaceStyle
+		}
+		.onChange(of: savedAccentColor) { newAccentColor in
+			uiWindow.tintColor = UIColor(AccentColor(persistentRawValue: newAccentColor).color)
 		}
 	}
 }
