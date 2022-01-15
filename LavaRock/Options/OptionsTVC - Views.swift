@@ -18,7 +18,9 @@ final class AppearanceCell: UITableViewCell {
 		
 		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
 			let appearance = Appearance(indexInDisplayOrder: indexOfSegment)
-			segmentedControl.setImage(appearance.image(), forSegmentAt: indexOfSegment)
+			let image = UIImage(systemName: appearance.sfSymbolName)
+			image?.accessibilityLabel = appearance.name
+			segmentedControl.setImage(image, forSegmentAt: indexOfSegment)
 		}
 		
 		segmentedControl.addTarget(
@@ -26,14 +28,14 @@ final class AppearanceCell: UITableViewCell {
 			action: #selector(saveAndSetAppearance),
 			for: .valueChanged)
 		
-		segmentedControl.selectedSegmentIndex = Appearance.savedPreference().indexInDisplayOrder()
+		segmentedControl.selectedSegmentIndex = Appearance.savedPreference().indexInDisplayOrder
 	}
 	
 	@objc private func saveAndSetAppearance() {
 		let selected = Appearance(
 			indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
 		selected.saveAsPreference()
-		window?.overrideUserInterfaceStyle = selected.uiUserInterfaceStyle()
+		window?.overrideUserInterfaceStyle = selected.uiUserInterfaceStyle
 	}
 }
 

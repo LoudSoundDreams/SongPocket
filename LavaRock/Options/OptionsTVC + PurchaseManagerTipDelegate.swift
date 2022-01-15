@@ -45,7 +45,7 @@ extension OptionsTVC: PurchaseManagerTipDelegate {
 	private func didReceiveTip() {
 		tipJarIsShowingThankYou = true
 		Task {
-			try? await Task.sleep(nanoseconds: 10_000_000_000)
+			try await Task.sleep(nanoseconds: 10_000_000_000)
 			
 			tipJarIsShowingThankYou = false
 		}

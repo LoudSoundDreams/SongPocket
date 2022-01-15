@@ -10,7 +10,7 @@ import SwiftUI
 struct OptionsView: View {
 	@Environment(\.dismiss) private var dismiss
 	
-    var body: some View {
+	var body: some View {
 		NavigationView {
 			List {
 				Text("Options View")
@@ -24,11 +24,11 @@ struct OptionsView: View {
 			}
 		}
 		.navigationViewStyle(.stack)
-    }
+	}
 }
 
 struct OptionsView_Previews: PreviewProvider {
-    static var previews: some View {
-        OptionsView()
-    }
+	static var previews: some View {
+		OptionsView()
+	}
 }

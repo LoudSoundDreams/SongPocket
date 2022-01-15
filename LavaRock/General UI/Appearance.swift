@@ -8,11 +8,57 @@
 import UIKit
 
 enum Appearance: Int, CaseIterable {
-	// Cases are in the order that they appear in in the UI.
 	// Raw values are the raw values of `UIUserInterfaceStyle`, which we also persist in `UserDefaults`.
+	// Cases are in the order that they appear in in the UI.
 	case light = 1
 	case dark = 2
 	case system = 0
+	
+	var indexInDisplayOrder: Int {
+		return Self.allCases.firstIndex { $0 == self }!
+	}
+	
+	var uiUserInterfaceStyle: UIUserInterfaceStyle {
+		return UIUserInterfaceStyle(rawValue: rawValue)!
+	}
+	
+	var sfSymbolName: String {
+		switch self {
+		case .light:
+			return "sun.max.fill"
+		case .dark:
+			return "moon.fill"
+		case .system:
+			let idiom = UIDevice.current.userInterfaceIdiom
+			switch idiom {
+			case .unspecified:
+				return "iphone"
+			case .phone:
+				return "iphone"
+			case .pad:
+				return "ipad"
+			case .tv:
+				return "tv"
+			case .carPlay:
+				return "iphone"
+			case .mac:
+				return "desktopcomputer"
+			@unknown default:
+				return "iphone"
+			}
+		}
+	}
+	
+	var name: String {
+		switch self {
+		case .light:
+			return LocalizedString.light
+		case .dark:
+			return LocalizedString.dark
+		case .system:
+			return LocalizedString.system
+		}
+	}
 	
 	init(indexInDisplayOrder: Int) {
 		self = Self.allCases[indexInDisplayOrder]
@@ -29,50 +75,8 @@ enum Appearance: Int, CaseIterable {
 			rawValue,
 			forKey: LRUserDefaultsKey.appearance.rawValue)
 	}
-	
-	func uiUserInterfaceStyle() -> UIUserInterfaceStyle {
-		return UIUserInterfaceStyle(rawValue: rawValue)!
-	}
-	
-	func indexInDisplayOrder() -> Int {
-		let result = Self.allCases.firstIndex { appearance in
-			appearance == self
-		}!
-		return result
-	}
-	
-	func image() -> UIImage {
-		switch self {
-		case .light:
-			let image = UIImage(systemName: "sun.max.fill")!
-			image.accessibilityLabel = LocalizedString.light
-			return image
-		case .dark:
-			let image = UIImage(systemName: "moon.fill")!
-			image.accessibilityLabel = LocalizedString.dark
-			return image
-		case .system:
-			let image: UIImage = {
-				let idiom = UIDevice.current.userInterfaceIdiom
-				switch idiom {
-				case .unspecified:
-					return UIImage(systemName: "iphone")!
-				case .phone:
-					return UIImage(systemName: "iphone")!
-				case .pad:
-					return UIImage(systemName: "ipad")!
-				case .tv:
-					return UIImage(systemName: "tv")!
-				case .carPlay:
-					return UIImage(systemName: "iphone")!
-				case .mac:
-					return UIImage(systemName: "desktopcomputer")!
-				@unknown default:
-					return UIImage(systemName: "iphone")!
-				}
-			}()
-			image.accessibilityLabel = LocalizedString.system
-			return image
-		}
-	}
+}
+
+extension Appearance: Identifiable {
+	var id: RawValue { rawValue }
 }
