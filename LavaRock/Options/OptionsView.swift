@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OptionsView: View {
-	@Environment(\.dismiss) var dismiss
+	@Environment(\.dismiss) private var dismiss
 	
     var body: some View {
 		NavigationView {
@@ -18,7 +18,9 @@ struct OptionsView: View {
 			.navigationTitle(LocalizedString.options)
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
-				Button { dismiss() } label: { Text(LocalizedString.done).bold() }
+				ToolbarItem(placement: .confirmationAction) {
+					Button(LocalizedString.done) { dismiss() }
+				}
 			}
 		}
 		.navigationViewStyle(.stack)
