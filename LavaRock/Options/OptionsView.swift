@@ -12,7 +12,7 @@ struct OptionsView: View {
 	var uiWindow: UIWindow
 	
 	@AppStorage(LRUserDefaultsKey.appearance.rawValue) private var savedAppearance = Appearance.savedPreference().rawValue
-	@AppStorage(LRUserDefaultsKey.accentColorName.rawValue) private var savedAccentColor = AccentColor.savedPreference().valueCase.rawValue
+	@AppStorage(LRUserDefaultsKey.accentColorName.rawValue) private var savedAccentColor = AccentColor.savedPreference().persistentValue.rawValue
 	@Environment(\.dismiss) private var dismiss
 	
 	var body: some View {
@@ -33,7 +33,7 @@ struct OptionsView: View {
 						ForEach(AccentColor.all) { accentColor in
 							Text(accentColor.displayName)
 								.foregroundColor(accentColor.color)
-								.tag(accentColor.valueCase.rawValue)
+								.tag(accentColor.persistentValue.rawValue)
 						}
 					} label: { EmptyView() }
 					.pickerStyle(.inline)

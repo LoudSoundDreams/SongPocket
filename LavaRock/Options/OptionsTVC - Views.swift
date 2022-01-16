@@ -92,7 +92,7 @@ final class AccentColorCell: UITableViewCell {
 
 private extension AccentColor {
 	var uiColor: UIColor {
-		switch valueCase {
+		switch persistentValue {
 		case .strawberry:
 			return .systemPink
 		case .tangerine:

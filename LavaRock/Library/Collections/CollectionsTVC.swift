@@ -316,7 +316,7 @@ final class CollectionsTVC:
 	
 	// MARK: - Navigation
 	
-	@IBAction func openOptions(_ sender: UIBarButtonItem) {
+	@IBAction func openOptions_SwiftUI(_ sender: UIBarButtonItem) {
 		guard let window = view.window else { return }
 		let hostingController = UIHostingController(rootView: OptionsView(
 			uiWindow: window))

@@ -7,8 +7,13 @@
 
 import UIKit
 
+extension Appearance: Identifiable {
+	var id: RawValue { rawValue }
+}
+
 enum Appearance: Int, CaseIterable {
-	// Raw values are the raw values of `UIUserInterfaceStyle`, which we also persist in `UserDefaults`.
+	// We persist these raw values in `UserDefaults`.
+	// These raw values happen to match the raw values of `UIUserInterfaceStyle`.
 	// Cases are in the order that they appear in in the UI.
 	case light = 1
 	case dark = 2
@@ -75,8 +80,4 @@ enum Appearance: Int, CaseIterable {
 			rawValue,
 			forKey: LRUserDefaultsKey.appearance.rawValue)
 	}
-}
-
-extension Appearance: Identifiable {
-	var id: RawValue { rawValue }
 }

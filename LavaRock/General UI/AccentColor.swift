@@ -7,8 +7,20 @@
 
 import SwiftUI
 
+extension AccentColor: Identifiable {
+	var id: PersistentValue { persistentValue }
+}
+
+extension AccentColor {
+	init(persistentRawValue: PersistentValue.RawValue) {
+		self = Self.all.first { accentColor in
+			accentColor.persistentValue.rawValue == persistentRawValue
+		}!
+	}
+}
+
 struct AccentColor: Equatable { // You can’t turn this into an enum, because raw values for enum cases need to be literals.
-	enum ValueCase: String, CaseIterable {
+	enum PersistentValue: String, CaseIterable {
 		// We persist these raw values in `UserDefaults`.
 		case strawberry = "Strawberry"
 		case tangerine = "Tangerine"
@@ -17,24 +29,24 @@ struct AccentColor: Equatable { // You can’t turn this into an enum, because r
 		case grape = "Grape"
 	}
 	
-	let valueCase: ValueCase
+	let persistentValue: PersistentValue
 	let displayName: String
 	let color: Color
 	let heartEmoji: String
 	
 	static let all = [
 		Self(
-			valueCase: .strawberry,
+			persistentValue: .strawberry,
 			displayName: LocalizedString.strawberry,
 			color: .pink,
 			heartEmoji: "❤️"),
 		Self(
-			valueCase: .tangerine,
+			persistentValue: .tangerine,
 			displayName: LocalizedString.tangerine,
 			color: .orange,
 			heartEmoji: "🧡"),
 		Self(
-			valueCase: .lime,
+			persistentValue: .lime,
 			displayName: LocalizedString.lime,
 			color: .green,
 			heartEmoji: "💚"),
@@ -42,7 +54,7 @@ struct AccentColor: Equatable { // You can’t turn this into an enum, because r
 		defaultSelf,
 		
 		Self(
-			valueCase: .grape,
+			persistentValue: .grape,
 			displayName: LocalizedString.grape,
 			color: .purple,
 			heartEmoji: "💜"),
@@ -50,18 +62,18 @@ struct AccentColor: Equatable { // You can’t turn this into an enum, because r
 	
 	static func savedPreference() -> Self {
 		userDefaults.register(defaults: [
-			userDefaultsKey: defaultSelf.valueCase.rawValue
+			userDefaultsKey: defaultSelf.persistentValue.rawValue
 		])
 		let savedRawValue = userDefaults.string(forKey: userDefaultsKey)!
-		let savedValueCase = ValueCase(rawValue: savedRawValue)!
+		let savedValueCase = PersistentValue(rawValue: savedRawValue)!
 		
-		let result = all.first { $0.valueCase == savedValueCase }!
+		let result = all.first { $0.persistentValue == savedValueCase }!
 		return result
 	}
 	
 	func saveAsPreference() {
 		Self.userDefaults.set(
-			valueCase.rawValue,
+			persistentValue.rawValue,
 			forKey: Self.userDefaultsKey)
 	}
 	
@@ -70,20 +82,8 @@ struct AccentColor: Equatable { // You can’t turn this into an enum, because r
 	private static let userDefaults = UserDefaults.standard
 	private static let userDefaultsKey = LRUserDefaultsKey.accentColorName.rawValue
 	private static let defaultSelf = Self(
-		valueCase: .blueberry,
+		persistentValue: .blueberry,
 		displayName: LocalizedString.blueberry,
 		color: .blue,
 		heartEmoji: "💙")
-}
-
-extension AccentColor: Identifiable {
-	var id: ValueCase { valueCase }
-}
-
-extension AccentColor {
-	init(persistentRawValue: ValueCase.RawValue) {
-		self = Self.all.first { accentColor in
-			accentColor.valueCase.rawValue == persistentRawValue
-		}!
-	}
 }
