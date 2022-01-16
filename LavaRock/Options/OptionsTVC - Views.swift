@@ -61,10 +61,11 @@ final class AccentColorCell: UITableViewCell {
 		
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = accentColor.displayName
-		configuration.textProperties.color = accentColor.uiColor // Don’t use `UIColor(accentColor.color)`, because it doesn’t respect “Increase Contrast”.
+		configuration.textProperties.color = accentColor.uiColor
 		contentConfiguration = configuration
 		
-		if accentColor == AccentColor.savedPreference() { // Don’t use `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
+		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
+		if accentColor == AccentColor.savedPreference() {
 			accessoryType = .checkmark
 		} else {
 			accessoryType = .none
@@ -73,10 +74,9 @@ final class AccentColorCell: UITableViewCell {
 		refreshSelectedBackgroundView()
 	}
 	
-	// Similar to counterpart in `TintedSelectedCell`.
+	// Similar to counterpart in `TintedSelectedCell`, except we need to call this manually to reflect “Increase Contrast”.
 	private func refreshSelectedBackgroundView() {
 		let colorView = UIView()
-		// Don’t use `UIColor(accentColor.color).resolvedColor`, because it doesn’t respect “Increase Contrast”.
 		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
 		colorView.backgroundColor = accentColor?.uiColor.resolvedColor(with: traitCollection).translucent()
 		selectedBackgroundView = colorView
@@ -87,23 +87,6 @@ final class AccentColorCell: UITableViewCell {
 		super.tintColorDidChange()
 		
 		configure()
-	}
-}
-
-private extension AccentColor {
-	var uiColor: UIColor {
-		switch persistentValue {
-		case .strawberry:
-			return .systemPink
-		case .tangerine:
-			return .systemOrange
-		case .lime:
-			return .systemGreen
-		case .blueberry:
-			return .systemBlue
-		case .grape:
-			return .systemPurple
-		}
 	}
 }
 

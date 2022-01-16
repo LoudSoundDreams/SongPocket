@@ -12,10 +12,30 @@ extension AccentColor: Identifiable {
 }
 
 extension AccentColor {
-	init(persistentRawValue: PersistentValue.RawValue) {
-		self = Self.all.first { accentColor in
-			accentColor.persistentValue.rawValue == persistentRawValue
-		}!
+	init?(persistentRawValue: PersistentValue.RawValue) {
+		guard let matchingAccentColor = Self.all.first(where: { accentColor in
+			persistentRawValue == accentColor.persistentValue.rawValue
+		}) else {
+			return nil
+		}
+		self = matchingAccentColor
+	}
+}
+
+extension AccentColor {
+	var uiColor: UIColor {
+		switch persistentValue {
+		case .strawberry:
+			return .systemPink
+		case .tangerine:
+			return .systemOrange
+		case .lime:
+			return .systemGreen
+		case .blueberry:
+			return .systemBlue
+		case .grape:
+			return .systemPurple
+		}
 	}
 }
 
@@ -65,10 +85,8 @@ struct AccentColor: Equatable { // You can’t turn this into an enum, because r
 			userDefaultsKey: defaultSelf.persistentValue.rawValue
 		])
 		let savedRawValue = userDefaults.string(forKey: userDefaultsKey)!
-		let savedValueCase = PersistentValue(rawValue: savedRawValue)!
-		
-		let result = all.first { $0.persistentValue == savedValueCase }!
-		return result
+		let savedValue = PersistentValue(rawValue: savedRawValue)!
+		return all.first { savedValue == $0.persistentValue }!
 	}
 	
 	func saveAsPreference() {
@@ -80,7 +98,7 @@ struct AccentColor: Equatable { // You can’t turn this into an enum, because r
 	// MARK: - PRIVATE
 	
 	private static let userDefaults = UserDefaults.standard
-	private static let userDefaultsKey = LRUserDefaultsKey.accentColorName.rawValue
+	private static let userDefaultsKey = LRUserDefaultsKey.accentColor.rawValue
 	private static let defaultSelf = Self(
 		persistentValue: .blueberry,
 		displayName: LocalizedString.blueberry,

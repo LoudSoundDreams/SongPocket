@@ -11,9 +11,12 @@ import UIKit
 struct OptionsView: View {
 	var uiWindow: UIWindow
 	
-	@AppStorage(LRUserDefaultsKey.appearance.rawValue) private var savedAppearance = Appearance.savedPreference().rawValue
-	@AppStorage(LRUserDefaultsKey.accentColorName.rawValue) private var savedAccentColor = AccentColor.savedPreference().persistentValue.rawValue
-	@Environment(\.dismiss) private var dismiss
+	@AppStorage(LRUserDefaultsKey.appearance.rawValue)
+	private var savedAppearance = Appearance.savedPreference().rawValue
+	@AppStorage(LRUserDefaultsKey.accentColor.rawValue)
+	private var savedAccentColor = AccentColor.savedPreference().persistentValue.rawValue
+	@Environment(\.dismiss)
+	private var dismiss
 	
 	var body: some View {
 		NavigationView {
@@ -64,11 +67,11 @@ struct OptionsView: View {
 		}
 		.navigationViewStyle(.stack)
 		
-		.onChange(of: savedAppearance) { newAppearance in
-			uiWindow.overrideUserInterfaceStyle = Appearance(rawValue: newAppearance)!.uiUserInterfaceStyle
+		.onChange(of: savedAppearance) { newValue in
+			uiWindow.overrideUserInterfaceStyle = Appearance(rawValue: newValue)!.uiUserInterfaceStyle
 		}
 		.onChange(of: savedAccentColor) { newAccentColor in
-			uiWindow.tintColor = UIColor(AccentColor(persistentRawValue: newAccentColor).color)
+			uiWindow.tintColor = UIColor(AccentColor(persistentRawValue: newAccentColor)!.color)
 		}
 	}
 }

@@ -30,11 +30,7 @@ extension CellConfiguredAsButton {
 	func configureAsButton() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = Self.buttonText
-		configuration.textProperties.color = .tintColor // As of iOS 15.1 developer beta 3, `UIColor.tintColor` dims and undims with animations when we present and dismiss a modal view. It also automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
-		// - `AccentColor.savedPreference().uiColor` or `window?.tintColor` don't dim when we have a modal view presented.
-		// - `UITableViewCell.tintColor`dims and undims with animations when we present and dismiss a modal view, but it returns the wrong color if you call it too early. It automatically matches `window?.tintColor`, even if you don't override `tintColorDidChange()`.
-		// - Also don't use `contentView.tintColor`, because when we present a modal view, it doesn't dim, although it is dimmed if you change `window.tintColor` later.
+		configuration.textProperties.color = .tintColor
 		contentConfiguration = configuration
 	}
 }
-

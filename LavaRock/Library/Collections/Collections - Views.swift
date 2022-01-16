@@ -133,7 +133,7 @@ final class CollectionCell:
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()
 		case .modalTinted:
-			backgroundColor = .tintColor.translucentFaint() // Note: `backgroundColor = nil` sets a transparent background; `backgroundView = nil` sets the default background.
+			backgroundColor = .tintColor.translucentFaint()
 			
 			titleLabel.textColor = .label
 			enableWithAccessibilityTrait()

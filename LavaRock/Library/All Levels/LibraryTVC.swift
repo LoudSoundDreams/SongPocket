@@ -45,7 +45,7 @@ class LibraryTVC: UITableViewController {
 		
 		init?(localizedName: String) {
 			guard let matchingCase = Self.allCases.first(where: {
-				$0.localizedName() == localizedName
+				localizedName == $0.localizedName()
 			}) else {
 				return nil
 			}
