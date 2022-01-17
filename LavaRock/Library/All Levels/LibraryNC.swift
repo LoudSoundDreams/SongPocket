@@ -17,7 +17,7 @@ final class LibraryNC: UINavigationController {
 		if !Self.didStartSettingTheme {
 			Self.didStartSettingTheme = true
 			view.overrideUserInterfaceStyle = Appearance.savedPreference().uiUserInterfaceStyle
-			view.tintColor = UIColor(AccentColor.savedPreference().color)
+			view.tintColor = AccentColor.savedPreference().uiColor
 		}
 	}
 	
