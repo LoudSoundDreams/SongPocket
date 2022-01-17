@@ -8,9 +8,8 @@
 import Foundation
 
 enum LRUserDefaultsKey: String, CaseIterable {
-	// These case names are also their raw values as strings.
-	case appearance
-	case accentColor
+	case appearance = "appearance"
+	case accentColor = "accentColorName"
 	
 	case hasEverImportedFromMusic
 	
