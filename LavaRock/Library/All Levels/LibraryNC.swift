@@ -31,7 +31,7 @@ final class LibraryNC: UINavigationController {
 			view.window?.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
 			view.overrideUserInterfaceStyle = .unspecified
 			view.window?.tintColor = view.tintColor
-			view.tintColor = nil
+			view.tintColor = nil // TO DO: Applies “Increase Contrast” twice.
 		}
 	}
 }

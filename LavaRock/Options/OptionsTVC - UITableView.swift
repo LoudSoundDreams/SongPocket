@@ -41,7 +41,7 @@ extension OptionsTVC {
 		}
 		switch sectionCase {
 		case .theme:
-			return Self.indexPathsOfAppearanceRows.count + AccentColor.all.count
+			return Self.indexPathsOfAppearanceRows.count + AccentColor.allCases.count
 		case .tipJar:
 			return 1
 		}
@@ -142,7 +142,7 @@ extension OptionsTVC {
 	
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		let indexOfAccentColor = indexPath.row - Self.indexPathsOfAppearanceRows.count
-		let accentColor = AccentColor.all[indexOfAccentColor]
+		let accentColor = AccentColor.allCases[indexOfAccentColor]
 		
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Accent Color",
@@ -155,7 +155,7 @@ extension OptionsTVC {
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
 		// Set the new accent color.
 		let indexOfAccentColor = indexPath.row - Self.indexPathsOfAppearanceRows.count
-		let selected = AccentColor.all[indexOfAccentColor]
+		let selected = AccentColor.allCases[indexOfAccentColor]
 		selected.saveAsPreference() // Do this before actually setting `window.tintColor`, so that instances that override `tintColorDidChange` can get the new value for `AccentColor.savedPreference`.
 		view.window?.tintColor = selected.uiColor
 		

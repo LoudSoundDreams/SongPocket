@@ -14,7 +14,7 @@ struct OptionsView: View {
 	@AppStorage(LRUserDefaultsKey.appearance.rawValue)
 	private var savedAppearance = Appearance.savedPreference().rawValue
 	@AppStorage(LRUserDefaultsKey.accentColor.rawValue)
-	private var savedAccentColor = AccentColor.savedPreference().persistentValue.rawValue
+	private var savedAccentColor = AccentColor.savedPreference().rawValue
 	@Environment(\.dismiss)
 	private var dismiss
 	
@@ -33,10 +33,10 @@ struct OptionsView: View {
 					.pickerStyle(.segmented)
 					
 					Picker(selection: $savedAccentColor) {
-						ForEach(AccentColor.all) { accentColor in
+						ForEach(AccentColor.allCases) { accentColor in
 							Text(accentColor.displayName)
-								.foregroundColor(accentColor.color)
-								.tag(accentColor.persistentValue.rawValue)
+								.foregroundColor(Color(accentColor.uiColor))
+								.tag(accentColor.rawValue)
 						}
 					} label: { EmptyView() }
 					.pickerStyle(.inline)
@@ -68,10 +68,12 @@ struct OptionsView: View {
 		.navigationViewStyle(.stack)
 		
 		.onChange(of: savedAppearance) { newValue in
-			uiWindow.overrideUserInterfaceStyle = Appearance(rawValue: newValue)!.uiUserInterfaceStyle
+			let appearance = Appearance(rawValue: newValue)!
+			uiWindow.overrideUserInterfaceStyle = appearance.uiUserInterfaceStyle
 		}
-		.onChange(of: savedAccentColor) { newAccentColor in
-			uiWindow.tintColor = UIColor(AccentColor(persistentRawValue: newAccentColor)!.color)
+		.onChange(of: savedAccentColor) { newValue in
+			let accentColor = AccentColor(rawValue: newValue)!
+			uiWindow.tintColor = accentColor.uiColor
 		}
 	}
 }

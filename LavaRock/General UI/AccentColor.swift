@@ -6,25 +6,70 @@
 //
 
 import SwiftUI
+import UIKit
 
 extension AccentColor: Identifiable {
-	var id: PersistentValue { persistentValue }
+	var id: RawValue { rawValue }
 }
 
-extension AccentColor {
-	init?(persistentRawValue: PersistentValue.RawValue) {
-		guard let matchingAccentColor = Self.all.first(where: { accentColor in
-			persistentRawValue == accentColor.persistentValue.rawValue
-		}) else {
-			return nil
-		}
-		self = matchingAccentColor
+enum AccentColor: String, CaseIterable {
+	// We persist these raw values in `UserDefaults`.
+	case strawberry = "Strawberry"
+	case tangerine = "Tangerine"
+	case lime = "Lime"
+	case blueberry = "Blueberry"
+	case grape = "Grape"
+	
+	private static let userDefaults = UserDefaults.standard
+	private static let userDefaultsKey = LRUserDefaultsKey.accentColor.rawValue
+	
+	static func savedPreference() -> Self {
+		userDefaults.register(defaults: [
+			userDefaultsKey: blueberry.rawValue
+		])
+		let savedRawValue = userDefaults.string(forKey: userDefaultsKey)!
+		return Self(rawValue: savedRawValue)!
 	}
-}
-
-extension AccentColor {
+	
+	func saveAsPreference() {
+		Self.userDefaults.set(
+			rawValue,
+			forKey: Self.userDefaultsKey)
+	}
+	
+	var displayName: String {
+		switch self {
+		case .strawberry:
+			return LocalizedString.strawberry
+		case .tangerine:
+			return LocalizedString.tangerine
+		case .lime:
+			return LocalizedString.lime
+		case .blueberry:
+			return LocalizedString.blueberry
+		case .grape:
+			return LocalizedString.grape
+		}
+	}
+	
+	private
+	var color: Color {
+		switch self {
+		case .strawberry:
+			return .pink
+		case .tangerine:
+			return .orange
+		case .lime:
+			return .green
+		case .blueberry:
+			return .blue
+		case .grape:
+			return .purple
+		}
+	}
+	
 	var uiColor: UIColor {
-		switch persistentValue {
+		switch self {
 		case .strawberry:
 			return .systemPink
 		case .tangerine:
@@ -37,71 +82,19 @@ extension AccentColor {
 			return .systemPurple
 		}
 	}
-}
-
-struct AccentColor: Equatable { // You can’t turn this into an enum, because raw values for enum cases need to be literals.
-	enum PersistentValue: String, CaseIterable {
-		// We persist these raw values in `UserDefaults`.
-		case strawberry = "Strawberry"
-		case tangerine = "Tangerine"
-		case lime = "Lime"
-		case blueberry = "Blueberry"
-		case grape = "Grape"
+	
+	var heartEmoji: String {
+		switch self {
+		case .strawberry:
+			return "❤️"
+		case .tangerine:
+			return "🧡"
+		case .lime:
+			return "💚"
+		case .blueberry:
+			return "💙"
+		case .grape:
+			return "💜"
+		}
 	}
-	
-	let persistentValue: PersistentValue
-	let displayName: String
-	let color: Color
-	let heartEmoji: String
-	
-	static let all = [
-		Self(
-			persistentValue: .strawberry,
-			displayName: LocalizedString.strawberry,
-			color: .pink,
-			heartEmoji: "❤️"),
-		Self(
-			persistentValue: .tangerine,
-			displayName: LocalizedString.tangerine,
-			color: .orange,
-			heartEmoji: "🧡"),
-		Self(
-			persistentValue: .lime,
-			displayName: LocalizedString.lime,
-			color: .green,
-			heartEmoji: "💚"),
-		
-		defaultSelf,
-		
-		Self(
-			persistentValue: .grape,
-			displayName: LocalizedString.grape,
-			color: .purple,
-			heartEmoji: "💜"),
-	]
-	
-	static func savedPreference() -> Self {
-		userDefaults.register(defaults: [
-			userDefaultsKey: defaultSelf.persistentValue.rawValue
-		])
-		let savedRawValue = userDefaults.string(forKey: userDefaultsKey)!
-		let savedValue = PersistentValue(rawValue: savedRawValue)!
-		return all.first { savedValue == $0.persistentValue }!
-	}
-	
-	func saveAsPreference() {
-		Self.userDefaults.set(
-			persistentValue.rawValue,
-			forKey: Self.userDefaultsKey)
-	}
-	
-	// MARK: - PRIVATE
-	
-	private static let userDefaults = UserDefaults.standard
-	private static let userDefaultsKey = LRUserDefaultsKey.accentColor.rawValue
-	private static let defaultSelf = Self(
-		persistentValue: .blueberry,
-		displayName: LocalizedString.blueberry,
-		color: .blue,
-		heartEmoji: "💙")
 }
