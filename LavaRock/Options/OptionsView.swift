@@ -9,14 +9,13 @@ import SwiftUI
 import UIKit
 
 struct OptionsView: View {
-	var uiWindow: UIWindow
+	let uiWindow: UIWindow
+	@Environment(\.dismiss) private var dismiss
 	
 	@AppStorage(LRUserDefaultsKey.appearance.rawValue)
 	private var savedAppearance = Appearance.savedPreference().rawValue
 	@AppStorage(LRUserDefaultsKey.accentColor.rawValue)
 	private var savedAccentColor = AccentColor.savedPreference().rawValue
-	@Environment(\.dismiss)
-	private var dismiss
 	
 	var body: some View {
 		NavigationView {
@@ -35,17 +34,26 @@ struct OptionsView: View {
 					Picker(selection: $savedAccentColor) {
 						ForEach(AccentColor.allCases) { accentColor in
 							Text(accentColor.displayName)
-								.foregroundColor(Color(accentColor.uiColor))
+								.foregroundColor(accentColor.color)
 								.tag(accentColor.rawValue)
 						}
 					} label: { EmptyView() }
-					.pickerStyle(.inline)
+//					.pickerStyle(.inline)
+					// TO DO: These all apply “Increase Contrast” twice.
+//					.tint(.accentColor)
+//					.foregroundColor(.accentColor)
+//					.tint(AccentColor.savedPreference().color)
+//					.foregroundColor(AccentColor.savedPreference().color)
+//					.tint(Color(uiWindow.tintColor))
+//					.foregroundColor(Color(uiWindow.tintColor))
+					
+					.pickerStyle(.wheel)
 				}
 				
 				Section {
 					HStack {
 						Text("tip")
-							.foregroundColor(.accentColor)
+							.foregroundColor(AccentColor.savedPreference().color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
 						Spacer()
 						Text("0¢")
 							.foregroundColor(.secondary)
@@ -66,6 +74,7 @@ struct OptionsView: View {
 			}
 		}
 		.navigationViewStyle(.stack)
+		.tint(AccentColor.savedPreference().color) // Without this, SwiftUI applies “Increase Contrast” twice.
 		
 		.onChange(of: savedAppearance) { newValue in
 			let appearance = Appearance(rawValue: newValue)!

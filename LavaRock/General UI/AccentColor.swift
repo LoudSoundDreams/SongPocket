@@ -52,7 +52,6 @@ enum AccentColor: String, CaseIterable {
 		}
 	}
 	
-	private
 	var color: Color {
 		switch self {
 		case .strawberry:
