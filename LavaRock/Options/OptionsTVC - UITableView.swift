@@ -166,7 +166,7 @@ extension OptionsTVC {
 	// MARK: - Tip Jar Section
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch PurchaseManager.shared.tipStatus {
+		switch TipJarViewModel.shared.status {
 		case .notYetFirstLoaded, .loading:
 			return tableView.dequeueReusableCell(
 				withIdentifier: "Tip Loading",
@@ -193,7 +193,7 @@ extension OptionsTVC {
 	}
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
-		switch PurchaseManager.shared.tipStatus {
+		switch TipJarViewModel.shared.status {
 		case
 				.notYetFirstLoaded,
 				.loading,
@@ -209,14 +209,12 @@ extension OptionsTVC {
 	
 	private func reloadTipProduct() {
 		PurchaseManager.shared.requestAllSKProducts()
-		
 		refreshTipJarRows()
 	}
 	
 	private func beginleaveTip() {
 		let tipProduct = PurchaseManager.shared.tipProduct
 		PurchaseManager.shared.addToPaymentQueue(tipProduct)
-		
 		refreshTipJarRows()
 	}
 }

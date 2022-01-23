@@ -17,13 +17,13 @@ final class OptionsTVC: UITableViewController {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		PurchaseManager.shared.tipDelegate = self
+		TipJarViewModel.shared.delegate = self
 	}
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if PurchaseManager.shared.tipStatus == .notYetFirstLoaded {
+		if TipJarViewModel.shared.status == .notYetFirstLoaded {
 			PurchaseManager.shared.requestAllSKProducts()
 		}
 	}

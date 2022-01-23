@@ -7,39 +7,22 @@
 
 import StoreKit
 
-protocol PurchaseManagerTipDelegate: AnyObject {
-	func didReceiveTipProduct(_ tipProduct: SKProduct)
-	func didFailToReceiveTipProduct()
-	func didUpdateTipTransaction(_ tipTransaction: SKPaymentTransaction)
-}
-
-final class PurchaseManager: NSObject { // This type inherits from NSObject because that makes it easier to make it conform to SKProductsRequestDelegate and SKPaymentTransactionObserver, which inherit from NSObjectProtocol.
+final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easily conform to `SKProductsRequestDelegate` and `SKPaymentTransactionObserver`, which inherit from `NSObjectProtocol`.
 	private override init() {}
+	static let shared = PurchaseManager() // We can’t turn everything in this class static, because StoreKit only works with instances, not types.
 	
-	enum TipStatus {
-		case notYetFirstLoaded
-		case loading
-		case reload
-		case ready
-		case confirming
-	}
-	
-	static let shared = PurchaseManager() // We can't turn everything in this class static, because StoreKit only works with instances, not types.
-	
-	private(set) lazy var tipStatus: TipStatus = .notYetFirstLoaded
 	private(set) lazy var tipProduct: SKProduct? = nil
 	private(set) lazy var tipPriceFormatter: NumberFormatter? = nil
-	weak var tipDelegate: PurchaseManagerTipDelegate? = nil
 	
 	final func beginObservingPaymentTransactions() {
-		SKPaymentQueue.default().add(self) // We can't turn this method static, because StoreKit needs an instance here, not a type.
+		SKPaymentQueue.default().add(self) // We can’t turn this method static, because StoreKit needs an instance here, not a type.
 	}
 	
 	final func requestAllSKProducts() {
-		tipStatus = .loading
+		TipJarViewModel.shared.status = .loading
 		let identifiers = ProductIdentifier.allCases.map { $0.rawValue }
 		let productsRequest = SKProductsRequest(productIdentifiers: Set(identifiers))
-		productsRequest.delegate = self // We can't turn this method static, because StoreKit needs an instance here, not a type.
+		productsRequest.delegate = self // We can’t turn this method static, because StoreKit needs an instance here, not a type.
 		productsRequest.start()
 		savedSKProductsRequest = productsRequest
 	}
@@ -49,7 +32,7 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 		
 		switch skProduct {
 		case tipProduct:
-			tipStatus = .confirming
+			TipJarViewModel.shared.status = .confirming
 		default:
 			break
 		}
@@ -70,41 +53,38 @@ final class PurchaseManager: NSObject { // This type inherits from NSObject beca
 //	private lazy var isTestingDidFailToReceiveAnySKProducts = true
 	
 	deinit {
-		endObservingPaymentTransactions()
-	}
-	
-	private func endObservingPaymentTransactions() {
 		SKPaymentQueue.default().remove(self)
 	}
 }
 
+// StoreKit can call `SKProductsRequestDelegate` methods on any thread.
 extension PurchaseManager: SKProductsRequestDelegate {
 	final func productsRequest(
 		_ request: SKProductsRequest,
 		didReceive response: SKProductsResponse
 	) {
-		// For testing only
-//		if isTestingDidFailToReceiveAnySKProducts {
-//			isTestingDidFailToReceiveAnySKProducts = false
-//
-//			didFailToReceiveAnySKProducts()
-//			return
-//		}
-		
-		guard !response.products.isEmpty else {
-			didFailToReceiveAnySKProducts()
-			return
-		}
-		
-		response.products.forEach { product in
-			let rawIdentifier = product.productIdentifier
-			guard let productIdentifier = ProductIdentifier(rawValue: rawIdentifier) else { return }
-			switch productIdentifier {
-			case .tip:
-				tipPriceFormatter = makePriceFormatter(locale: product.priceLocale)
-				tipProduct = product
-				tipStatus = .ready
-				tipDelegate?.didReceiveTipProduct(product)
+		DispatchQueue.main.async {
+			// For testing only
+//			if self.isTestingDidFailToReceiveAnySKProducts {
+//				self.isTestingDidFailToReceiveAnySKProducts = false
+//				self.didFailToReceiveAnySKProducts()
+//				return
+//			}
+			
+			guard !response.products.isEmpty else {
+				self.didFailToReceiveAnySKProducts()
+				return
+			}
+			
+			response.products.forEach { product in
+				let rawIdentifier = product.productIdentifier
+				guard let productIdentifier = ProductIdentifier(rawValue: rawIdentifier) else { return }
+				switch productIdentifier {
+				case .tip:
+					self.tipPriceFormatter = self.makePriceFormatter(locale: product.priceLocale)
+					self.tipProduct = product
+					TipJarViewModel.shared.status = .ready(nil)
+				}
 			}
 		}
 	}
@@ -113,8 +93,10 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		_ request: SKRequest,
 		didFailWithError error: Error
 	) {
-		if request == savedSKProductsRequest {
-			didFailToReceiveAnySKProducts()
+		DispatchQueue.main.async {
+			if request == self.savedSKProductsRequest {
+				self.didFailToReceiveAnySKProducts()
+			}
 		}
 	}
 	
@@ -122,8 +104,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		ProductIdentifier.allCases.forEach {
 			switch $0 {
 			case .tip:
-				tipStatus = .reload
-				tipDelegate?.didFailToReceiveTipProduct()
+				TipJarViewModel.shared.status = .reload
 			}
 		}
 	}
@@ -153,11 +134,10 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 						.failed,
 						.purchased,
 						.restored:
-					tipStatus = .ready
+					TipJarViewModel.shared.status = .ready(transaction)
 				@unknown default:
 					fatalError()
 				}
-				tipDelegate?.didUpdateTipTransaction(transaction)
 			}
 		}
 	}
