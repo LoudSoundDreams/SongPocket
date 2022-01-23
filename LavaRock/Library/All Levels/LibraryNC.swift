@@ -28,8 +28,10 @@ final class LibraryNC: UINavigationController {
 		// Until `viewDidAppear`, `view.window == nil`.
 		if !Self.didFinishSettingTheme {
 			Self.didFinishSettingTheme = true
+			
 			view.window?.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
 			view.overrideUserInterfaceStyle = .unspecified
+			
 			view.window?.tintColor = view.tintColor
 			view.tintColor = nil // TO DO: Applies “Increase Contrast” twice.
 		}

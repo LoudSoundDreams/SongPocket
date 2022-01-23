@@ -14,4 +14,3 @@ extension AlbumsTVC: MoveAlbumsDelegate {
 		setViewModelAndMoveRows(newViewModel)
 	}
 }
-

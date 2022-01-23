@@ -91,7 +91,7 @@ struct OptionsView: View {
 				} footer: {
 					Text(LocalizedString.tipJarFooter)
 				}
-
+				
 			}
 			.navigationTitle(LocalizedString.options)
 			.navigationBarTitleDisplayMode(.inline)
