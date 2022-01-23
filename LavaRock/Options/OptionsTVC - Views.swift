@@ -32,10 +32,9 @@ final class AppearanceCell: UITableViewCell {
 	}
 	
 	@objc private func saveAndSetAppearance() {
-		let selected = Appearance(
-			indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
+		let selected = Appearance(indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
 		selected.saveAsPreference()
-		window?.overrideUserInterfaceStyle = selected.uiUserInterfaceStyle
+		ActiveTheme.shared.appearance = selected
 	}
 }
 

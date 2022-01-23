@@ -10,24 +10,13 @@ import UIKit
 final class LibraryNC: UINavigationController {
 	static let storyboardID = "Library NC"
 	
-	private static var didStartSettingTheme = false
-	final override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		if !Self.didStartSettingTheme {
-			Self.didStartSettingTheme = true
-			view.overrideUserInterfaceStyle = Appearance.savedPreference().uiUserInterfaceStyle
-			view.tintColor = AccentColor.savedPreference().uiColor
-		}
-	}
-	
-	private static var didFinishSettingTheme = false
+	private static var didMoveThemeToWindow = false
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
 		// Until `viewDidAppear`, `view.window == nil`.
-		if !Self.didFinishSettingTheme {
-			Self.didFinishSettingTheme = true
+		if !Self.didMoveThemeToWindow {
+			Self.didMoveThemeToWindow = true
 			
 			view.window?.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
 			view.overrideUserInterfaceStyle = .unspecified

@@ -9,7 +9,6 @@ import SwiftUI
 import UIKit
 
 struct OptionsView: View {
-	let uiWindow: UIWindow
 	@Environment(\.dismiss) private var dismiss
 	
 	@AppStorage(LRUserDefaultsKey.appearance.rawValue)
@@ -18,9 +17,7 @@ struct OptionsView: View {
 	private var savedAccentColor = AccentColor.savedPreference().rawValue
 	@ObservedObject private var tipJarViewModel = TipJarViewModel.shared
 	
-	init(uiWindow: UIWindow) {
-		self.uiWindow = uiWindow
-		
+	init() {
 		if tipJarViewModel.status == .notYetFirstLoaded {
 			PurchaseManager.shared.requestAllSKProducts()
 		}
@@ -53,8 +50,8 @@ struct OptionsView: View {
 //					.foregroundColor(.accentColor)
 //					.tint(AccentColor.savedPreference().color)
 //					.foregroundColor(AccentColor.savedPreference().color)
-//					.tint(Color(uiWindow.tintColor))
-//					.foregroundColor(Color(uiWindow.tintColor))
+//					.tint(ActiveTheme.shared.accentColor.color)
+//					.foregroundColor(ActiveTheme.shared.accentColor.color)
 					
 					.pickerStyle(.wheel)
 				}
@@ -84,7 +81,11 @@ struct OptionsView: View {
 					case .confirming:
 						Text(LocalizedString.confirmingEllipsis).foregroundColor(.secondary)
 					case .thankYou:
-						Text(thankYouMessage()).foregroundColor(.secondary)
+						HStack {
+							Spacer()
+							Text(thankYouMessage()).foregroundColor(.secondary)
+							Spacer()
+						}
 					}
 				} header: {
 					Text(LocalizedString.tipJar)
@@ -106,11 +107,11 @@ struct OptionsView: View {
 		
 		.onChange(of: savedAppearance) { newAppearance in
 			let appearance = Appearance(rawValue: newAppearance)!
-			uiWindow.overrideUserInterfaceStyle = appearance.uiUserInterfaceStyle
+			ActiveTheme.shared.appearance = appearance
 		}
 		.onChange(of: savedAccentColor) { newAccentColor in
 			let accentColor = AccentColor(rawValue: newAccentColor)!
-			uiWindow.tintColor = accentColor.uiColor
+			ActiveTheme.shared.accentColor = accentColor
 		}
 	}
 	

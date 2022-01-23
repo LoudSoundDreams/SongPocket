@@ -5,6 +5,7 @@
 //  Created by h on 2021-12-04.
 //
 
+import SwiftUI
 import UIKit
 
 extension Appearance: Identifiable {
@@ -13,18 +14,28 @@ extension Appearance: Identifiable {
 
 enum Appearance: Int, CaseIterable {
 	// We persist these raw values in `UserDefaults`.
-	// These raw values happen to match the raw values of `UIUserInterfaceStyle`.
 	// Cases are in the order that they appear in in the UI.
 	case light = 1
 	case dark = 2
 	case system = 0
 	
-	var indexInDisplayOrder: Int {
-		return Self.allCases.firstIndex { $0 == self }!
+	static func savedPreference() -> Self {
+		let savedRawValue = UserDefaults.standard.integer(forKey: LRUserDefaultsKey.appearance.rawValue) // Returns `0` when there’s no saved value, which is `.system`, which is what we want.
+		return Self(rawValue: savedRawValue)!
 	}
 	
-	var uiUserInterfaceStyle: UIUserInterfaceStyle {
-		return UIUserInterfaceStyle(rawValue: rawValue)!
+	func saveAsPreference() {
+		UserDefaults.standard.set(
+			rawValue,
+			forKey: LRUserDefaultsKey.appearance.rawValue)
+	}
+	
+	init(indexInDisplayOrder: Int) {
+		self = Self.allCases[indexInDisplayOrder]
+	}
+	
+	var indexInDisplayOrder: Int {
+		return Self.allCases.firstIndex { $0 == self }!
 	}
 	
 	var sfSymbolName: String {
@@ -65,19 +76,14 @@ enum Appearance: Int, CaseIterable {
 		}
 	}
 	
-	init(indexInDisplayOrder: Int) {
-		self = Self.allCases[indexInDisplayOrder]
-	}
-	
-	static func savedPreference() -> Self {
-		let savedStyleValue = UserDefaults.standard.integer(
-			forKey: LRUserDefaultsKey.appearance.rawValue) // Returns `0` when there's no saved value, which happens to be `UIUserInterfaceStyle.unspecified`, which is what we want.
-		return Self(rawValue: savedStyleValue)!
-	}
-	
-	func saveAsPreference() {
-		UserDefaults.standard.set(
-			rawValue,
-			forKey: LRUserDefaultsKey.appearance.rawValue)
+	var colorScheme: ColorScheme? {
+		switch self {
+		case .light:
+			return .light
+		case .dark:
+			return .dark
+		case .system:
+			return nil
+		}
 	}
 }

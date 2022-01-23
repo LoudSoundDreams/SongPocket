@@ -317,9 +317,7 @@ final class CollectionsTVC:
 	// MARK: - Navigation
 	
 	@IBAction func openOptions_SwiftUI(_ sender: UIBarButtonItem) {
-		guard let window = view.window else { return }
-		let hostingController = UIHostingController(rootView: OptionsView(
-			uiWindow: window))
+		let hostingController = UIHostingController(rootView: OptionsView())
 		hostingController.modalPresentationStyle = .formSheet
 		present(hostingController, animated: true)
 	}

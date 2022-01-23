@@ -10,10 +10,14 @@ import CoreData
 
 @main
 struct LavaRockApp: App {
+	@ObservedObject private var activeTheme: ActiveTheme = .shared
+	
 	var body: some Scene {
 		WindowGroup {
 			RootViewControllerRepresentable()
 				.edgesIgnoringSafeArea(.all)
+				.preferredColorScheme(activeTheme.appearance.colorScheme)
+				.tint(activeTheme.accentColor.color)
 		}
 	}
 	
@@ -30,16 +34,25 @@ struct LavaRockApp: App {
 struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	typealias ViewControllerType = UIViewController
 	
+	@ObservedObject private var activeTheme: ActiveTheme = .shared
+	
 	func makeUIViewController(
 		context: Context
 	) -> ViewControllerType {
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let result = storyboard.instantiateInitialViewController()!
+		
+		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(activeTheme.appearance.colorScheme)
+		result.view.tintColor = activeTheme.accentColor.uiColor
+		
 		return result
 	}
 	
 	func updateUIViewController(
 		_ uiViewController: ViewControllerType,
 		context: Context
-	) {}
+	) {
+		uiViewController.view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(activeTheme.appearance.colorScheme)
+		uiViewController.view.window?.tintColor = activeTheme.accentColor.uiColor
+	}
 }
