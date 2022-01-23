@@ -16,6 +16,15 @@ struct OptionsView: View {
 	private var savedAppearance = Appearance.savedPreference().rawValue
 	@AppStorage(LRUserDefaultsKey.accentColor.rawValue)
 	private var savedAccentColor = AccentColor.savedPreference().rawValue
+	@ObservedObject private var tipJarViewModel = TipJarViewModel.shared
+	
+	init(uiWindow: UIWindow) {
+		self.uiWindow = uiWindow
+		
+		if tipJarViewModel.status == .notYetFirstLoaded {
+			PurchaseManager.shared.requestAllSKProducts()
+		}
+	}
 	
 	var body: some View {
 		NavigationView {
@@ -51,12 +60,31 @@ struct OptionsView: View {
 				}
 				
 				Section {
-					HStack {
-						Text("tip")
-							.foregroundColor(AccentColor.savedPreference().color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
-						Spacer()
-						Text("0¢")
-							.foregroundColor(.secondary)
+					switch tipJarViewModel.status {
+					case .notYetFirstLoaded, .loading:
+						Text(LocalizedString.loadingEllipsis).foregroundColor(.secondary)
+					case .reload:
+						Button {
+							PurchaseManager.shared.requestAllSKProducts()
+						} label: {
+							Text(LocalizedString.reload).foregroundColor(AccentColor.savedPreference().color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
+						}
+					case .ready:
+						Button {
+							if let tipProduct = PurchaseManager.shared.tipProduct {
+								PurchaseManager.shared.addToPaymentQueue(tipProduct)
+							}
+						} label: {
+							HStack {
+								Text("tip").foregroundColor(AccentColor.savedPreference().color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
+								Spacer()
+								Text("0¢").foregroundColor(.secondary)
+							}
+						}
+					case .confirming:
+						Text(LocalizedString.confirmingEllipsis).foregroundColor(.secondary)
+					case .thankYou:
+						Text(thankYouMessage()).foregroundColor(.secondary)
 					}
 				} header: {
 					Text(LocalizedString.tipJar)
@@ -76,13 +104,18 @@ struct OptionsView: View {
 		.navigationViewStyle(.stack)
 		.tint(AccentColor.savedPreference().color) // Without this, SwiftUI applies “Increase Contrast” twice.
 		
-		.onChange(of: savedAppearance) { newValue in
-			let appearance = Appearance(rawValue: newValue)!
+		.onChange(of: savedAppearance) { newAppearance in
+			let appearance = Appearance(rawValue: newAppearance)!
 			uiWindow.overrideUserInterfaceStyle = appearance.uiUserInterfaceStyle
 		}
-		.onChange(of: savedAccentColor) { newValue in
-			let accentColor = AccentColor(rawValue: newValue)!
+		.onChange(of: savedAccentColor) { newAccentColor in
+			let accentColor = AccentColor(rawValue: newAccentColor)!
 			uiWindow.tintColor = accentColor.uiColor
 		}
+	}
+	
+	private func thankYouMessage() -> String {
+		let heartEmoji = AccentColor.savedPreference().heartEmoji
+		return heartEmoji + LocalizedString.tipThankYouMessageWithPaddingSpaces + heartEmoji
 	}
 }
