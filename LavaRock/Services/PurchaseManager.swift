@@ -83,7 +83,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 				case .tip:
 					self.tipPriceFormatter = self.makePriceFormatter(locale: product.priceLocale)
 					self.tipProduct = product
-					TipJarViewModel.shared.status = .ready(nil)
+					TipJarViewModel.shared.status = .ready
 				}
 			}
 		}
@@ -129,12 +129,16 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 				switch transaction.transactionState {
 				case .purchasing:
 					break
+				case .deferred:
+					TipJarViewModel.shared.status = .ready
 				case
-						.deferred,
 						.failed,
-						.purchased,
 						.restored:
-					TipJarViewModel.shared.status = .ready(transaction)
+					SKPaymentQueue.default().finishTransaction(transaction)
+					TipJarViewModel.shared.status = .ready
+				case .purchased:
+					SKPaymentQueue.default().finishTransaction(transaction)
+					TipJarViewModel.shared.status = .thankYou
 				@unknown default:
 					fatalError()
 				}

@@ -13,7 +13,7 @@ protocol TipJarDelegate: AnyObject {
 	func statusBecameReload()
 	func statusBecameReady()
 	func statusBecameConfirming()
-	func tipTransactionUpdated(_ transaction: SKPaymentTransaction)
+	func statusBecameThankYou()
 }
 
 final class TipJarViewModel: ObservableObject {
@@ -24,8 +24,9 @@ final class TipJarViewModel: ObservableObject {
 		case notYetFirstLoaded
 		case loading
 		case reload
-		case ready(SKPaymentTransaction?)
+		case ready
 		case confirming
+		case thankYou
 	}
 	
 	weak var delegate: TipJarDelegate? = nil
@@ -41,14 +42,17 @@ final class TipJarViewModel: ObservableObject {
 					self.delegate?.statusBecameLoading()
 				case .reload:
 					self.delegate?.statusBecameReload()
-				case .ready(let transaction):
-					if let transaction = transaction {
-						self.delegate?.tipTransactionUpdated(transaction)
-					} else {
-						self.delegate?.statusBecameReady()
-					}
+				case .ready:
+					self.delegate?.statusBecameReady()
 				case .confirming:
 					self.delegate?.statusBecameConfirming()
+				case .thankYou:
+					self.delegate?.statusBecameThankYou()
+					Task {
+						try await Task.sleep(nanoseconds: 10_000_000_000)
+						
+						self.status = .ready
+					}
 				}
 			}
 		}

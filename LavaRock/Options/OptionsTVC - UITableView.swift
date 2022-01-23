@@ -176,19 +176,17 @@ extension OptionsTVC {
 				withIdentifier: "Tip Reload",
 				for: indexPath) as? TipReloadCell ?? UITableViewCell()
 		case .ready:
-			if tipJarIsShowingThankYou {
-				return tableView.dequeueReusableCell(
-					withIdentifier: "Tip Thank You",
-					for: indexPath) as? TipThankYouCell ?? UITableViewCell()
-			} else {
-				return tableView.dequeueReusableCell(
-					withIdentifier: "Tip Ready",
-					for: indexPath) as? TipReadyCell ?? UITableViewCell()
-			}
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Tip Ready",
+				for: indexPath) as? TipReadyCell ?? UITableViewCell()
 		case .confirming:
 			return tableView.dequeueReusableCell(
 				withIdentifier: "Tip Confirming",
 				for: indexPath) as? TipConfirmingCell ?? UITableViewCell()
+		case .thankYou:
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Tip Thank You",
+				for: indexPath) as? TipThankYouCell ?? UITableViewCell()
 		}
 	}
 	
@@ -197,7 +195,8 @@ extension OptionsTVC {
 		case
 				.notYetFirstLoaded,
 				.loading,
-				.confirming:
+				.confirming,
+				.thankYou:
 			// Should never run
 			break
 		case .reload:
