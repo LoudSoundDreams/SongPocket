@@ -9,8 +9,10 @@ import StoreKit
 import Combine
 
 protocol TipJarDelegate: AnyObject {
+	func statusBecameLoading()
 	func statusBecameReload()
 	func statusBecameReady()
+	func statusBecameConfirming()
 	func tipTransactionUpdated(_ transaction: SKPaymentTransaction)
 }
 
@@ -33,9 +35,10 @@ final class TipJarViewModel: ObservableObject {
 			DispatchQueue.main.async {
 				switch self.status {
 				case .notYetFirstLoaded:
+					// Should never run
 					break
 				case .loading:
-					break
+					self.delegate?.statusBecameLoading()
 				case .reload:
 					self.delegate?.statusBecameReload()
 				case .ready(let transaction):
@@ -45,7 +48,7 @@ final class TipJarViewModel: ObservableObject {
 						self.delegate?.statusBecameReady()
 					}
 				case .confirming:
-					break
+					self.delegate?.statusBecameConfirming()
 				}
 			}
 		}

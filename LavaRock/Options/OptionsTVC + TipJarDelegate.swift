@@ -8,13 +8,10 @@
 import StoreKit
 
 extension OptionsTVC: TipJarDelegate {
-	final func statusBecameReload() {
-		refreshTipJarRows()
-	}
-	
-	final func statusBecameReady() {
-		refreshTipJarRows()
-	}
+	final func statusBecameLoading() { refreshTipJarRows() }
+	final func statusBecameReload() { refreshTipJarRows() }
+	final func statusBecameReady() { refreshTipJarRows() }
+	final func statusBecameConfirming() { refreshTipJarRows() }
 	
 	final func tipTransactionUpdated(_ transaction: SKPaymentTransaction) {
 		switch transaction.transactionState {

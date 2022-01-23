@@ -19,16 +19,20 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 	}
 	
 	final func requestAllSKProducts() {
-		TipJarViewModel.shared.status = .loading
 		let identifiers = ProductIdentifier.allCases.map { $0.rawValue }
 		let productsRequest = SKProductsRequest(productIdentifiers: Set(identifiers))
 		productsRequest.delegate = self // We can’t turn this method static, because StoreKit needs an instance here, not a type.
 		productsRequest.start()
 		savedSKProductsRequest = productsRequest
+		
+		TipJarViewModel.shared.status = .loading
 	}
 	
-	final func addToPaymentQueue(_ skProduct: SKProduct?) {
-		guard let skProduct = skProduct else { return }
+	final func addToPaymentQueue(_ skProduct: SKProduct) {
+		let skPayment = SKPayment(product: skProduct)
+//		let skPayment = SKMutablePayment(product: skProduct)
+//		skPayment.simulatesAskToBuyInSandbox = true
+		SKPaymentQueue.default().add(skPayment)
 		
 		switch skProduct {
 		case tipProduct:
@@ -36,10 +40,6 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 		default:
 			break
 		}
-		let skPayment = SKPayment(product: skProduct)
-//		let skPayment = SKMutablePayment(product: skProduct)
-//		skPayment.simulatesAskToBuyInSandbox = true
-		SKPaymentQueue.default().add(skPayment)
 	}
 	
 	// MARK: - PRIVATE

@@ -201,20 +201,11 @@ extension OptionsTVC {
 			// Should never run
 			break
 		case .reload:
-			reloadTipProduct()
+			PurchaseManager.shared.requestAllSKProducts()
 		case .ready:
-			beginleaveTip()
+			if let tipProduct = PurchaseManager.shared.tipProduct {
+				PurchaseManager.shared.addToPaymentQueue(tipProduct)
+			}
 		}
-	}
-	
-	private func reloadTipProduct() {
-		PurchaseManager.shared.requestAllSKProducts()
-		refreshTipJarRows()
-	}
-	
-	private func beginleaveTip() {
-		let tipProduct = PurchaseManager.shared.tipProduct
-		PurchaseManager.shared.addToPaymentQueue(tipProduct)
-		refreshTipJarRows()
 	}
 }
