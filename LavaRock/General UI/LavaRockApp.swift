@@ -31,6 +31,14 @@ struct LavaRockApp: App {
 	}
 }
 
+final class ActiveTheme: ObservableObject {
+	private init() {}
+	static let shared = ActiveTheme()
+	
+	@Published var appearance: Appearance = .savedPreference()
+	@Published var accentColor: AccentColor = .savedPreference()
+}
+
 struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	typealias ViewControllerType = UIViewController
 	
