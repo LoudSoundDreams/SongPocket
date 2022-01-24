@@ -157,7 +157,7 @@ extension OptionsTVC {
 		let indexOfAccentColor = indexPath.row - Self.indexPathsOfAppearanceRows.count
 		let selected = AccentColor.allCases[indexOfAccentColor]
 		selected.saveAsPreference() // Do this before actually setting `window.tintColor`, so that instances that override `tintColorDidChange` can get the new value for `AccentColor.savedPreference`.
-		ActiveTheme.shared.accentColor = selected
+		view.window?.tintColor = selected.uiColor // As of build 380, setting `ActiveTheme.shared.accentColor` triggers `updateUIViewController`, which breaks the animation for deselecting the row.
 		
 		// Refresh the UI.
 		tableView.deselectRow(at: indexPath, animated: true)
