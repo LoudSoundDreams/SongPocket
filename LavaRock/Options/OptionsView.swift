@@ -11,8 +11,8 @@ import UIKit
 struct OptionsView: View {
 	@Environment(\.dismiss) private var dismiss
 	
-	@AppStorage(LRUserDefaultsKey.appearance.rawValue)
-	private var savedAppearance = Appearance.savedPreference().rawValue
+	@AppStorage(LRUserDefaultsKey.lighting.rawValue)
+	private var savedLighting = Lighting.savedPreference().rawValue
 	@AppStorage(LRUserDefaultsKey.accentColor.rawValue)
 	private var savedAccentColor = AccentColor.savedPreference().rawValue
 	@ObservedObject private var tipJarViewModel = TipJarViewModel.shared
@@ -28,11 +28,11 @@ struct OptionsView: View {
 			Form {
 				
 				Section(LocalizedString.theme) {
-					Picker("", selection: $savedAppearance) {
-						ForEach(Appearance.allCases) { appearance in
-							Image(systemName: appearance.sfSymbolName)
-								.accessibilityLabel(appearance.name)
-								.tag(appearance.rawValue)
+					Picker("", selection: $savedLighting) {
+						ForEach(Lighting.allCases) { lighting in
+							Image(systemName: lighting.sfSymbolName)
+								.accessibilityLabel(lighting.name)
+								.tag(lighting.rawValue)
 						}
 					}
 					.pickerStyle(.segmented)
@@ -105,9 +105,9 @@ struct OptionsView: View {
 		.navigationViewStyle(.stack)
 		.tint(AccentColor.savedPreference().color) // Without this, SwiftUI applies “Increase Contrast” twice.
 		
-		.onChange(of: savedAppearance) { newAppearance in
-			let appearance = Appearance(rawValue: newAppearance)!
-			ActiveTheme.shared.appearance = appearance
+		.onChange(of: savedLighting) { newLighting in
+			let lighting = Lighting(rawValue: newLighting)!
+			ActiveTheme.shared.lighting = lighting
 		}
 		.onChange(of: savedAccentColor) { newAccentColor in
 			let accentColor = AccentColor(rawValue: newAccentColor)!

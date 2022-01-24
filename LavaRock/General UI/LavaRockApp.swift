@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoreData
 
 @main
 struct LavaRockApp: App {
@@ -16,7 +15,7 @@ struct LavaRockApp: App {
 		WindowGroup {
 			RootViewControllerRepresentable()
 				.edgesIgnoringSafeArea(.all)
-				.preferredColorScheme(activeTheme.appearance.colorScheme)
+				.preferredColorScheme(activeTheme.lighting.colorScheme)
 				.tint(activeTheme.accentColor.color)
 		}
 	}
@@ -35,7 +34,7 @@ final class ActiveTheme: ObservableObject {
 	private init() {}
 	static let shared = ActiveTheme()
 	
-	@Published var appearance: Appearance = .savedPreference()
+	@Published var lighting: Lighting = .savedPreference()
 	@Published var accentColor: AccentColor = .savedPreference()
 }
 
@@ -50,7 +49,7 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let result = storyboard.instantiateInitialViewController()!
 		
-		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(activeTheme.appearance.colorScheme)
+		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(activeTheme.lighting.colorScheme)
 		result.view.tintColor = activeTheme.accentColor.uiColor
 		
 		return result
@@ -60,7 +59,7 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		_ uiViewController: ViewControllerType,
 		context: Context
 	) {
-		uiViewController.view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(activeTheme.appearance.colorScheme)
+		uiViewController.view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(activeTheme.lighting.colorScheme)
 		if Enabling.swiftUIOptions {
 			uiViewController.view.window?.tintColor = activeTheme.accentColor.uiColor
 		}

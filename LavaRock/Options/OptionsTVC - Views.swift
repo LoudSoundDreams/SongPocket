@@ -8,7 +8,7 @@
 import UIKit
 import StoreKit
 
-final class AppearanceCell: UITableViewCell {
+final class LightingCell: UITableViewCell {
 	@IBOutlet private var segmentedControl: UISegmentedControl!
 	
 	final override func awakeFromNib() {
@@ -17,24 +17,24 @@ final class AppearanceCell: UITableViewCell {
 		selectionStyle = .none
 		
 		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
-			let appearance = Appearance(indexInDisplayOrder: indexOfSegment)
-			let image = UIImage(systemName: appearance.sfSymbolName)
-			image?.accessibilityLabel = appearance.name
+			let lighting = Lighting(indexInDisplayOrder: indexOfSegment)
+			let image = UIImage(systemName: lighting.sfSymbolName)
+			image?.accessibilityLabel = lighting.name
 			segmentedControl.setImage(image, forSegmentAt: indexOfSegment)
 		}
 		
 		segmentedControl.addTarget(
 			self,
-			action: #selector(saveAndSetAppearance),
+			action: #selector(saveAndSetLighting),
 			for: .valueChanged)
 		
-		segmentedControl.selectedSegmentIndex = Appearance.savedPreference().indexInDisplayOrder
+		segmentedControl.selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
 	}
 	
-	@objc private func saveAndSetAppearance() {
-		let selected = Appearance(indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
+	@objc private func saveAndSetLighting() {
+		let selected = Lighting(indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
 		selected.saveAsPreference()
-		ActiveTheme.shared.appearance = selected
+		ActiveTheme.shared.lighting = selected
 	}
 }
 

@@ -1,5 +1,5 @@
 //
-//  Appearance.swift
+//  Lighting.swift
 //  LavaRock
 //
 //  Created by h on 2021-12-04.
@@ -8,11 +8,11 @@
 import SwiftUI
 import UIKit
 
-extension Appearance: Identifiable {
+extension Lighting: Identifiable {
 	var id: RawValue { rawValue }
 }
 
-enum Appearance: Int, CaseIterable {
+enum Lighting: Int, CaseIterable {
 	// We persist these raw values in `UserDefaults`.
 	// Cases are in the order that they appear in in the UI.
 	case light = 1
@@ -20,14 +20,14 @@ enum Appearance: Int, CaseIterable {
 	case system = 0
 	
 	static func savedPreference() -> Self {
-		let savedRawValue = UserDefaults.standard.integer(forKey: LRUserDefaultsKey.appearance.rawValue) // Returns `0` when there’s no saved value, which is `.system`, which is what we want.
+		let savedRawValue = UserDefaults.standard.integer(forKey: LRUserDefaultsKey.lighting.rawValue) // Returns `0` when there’s no saved value, which is `.system`, which is what we want.
 		return Self(rawValue: savedRawValue)!
 	}
 	
 	func saveAsPreference() {
 		UserDefaults.standard.set(
 			rawValue,
-			forKey: LRUserDefaultsKey.appearance.rawValue)
+			forKey: LRUserDefaultsKey.lighting.rawValue)
 	}
 	
 	init(indexInDisplayOrder: Int) {

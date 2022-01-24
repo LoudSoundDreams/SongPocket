@@ -10,7 +10,7 @@
 		0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703130026923D2600134B06 /* AlbumsTVC - Editing.swift */; };
 		0703ED2524E8D0DA002EF1B4 /* mergeChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* mergeChanges.swift */; };
 		0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */; };
-		0708201D275BEE1C00F48D13 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708201C275BEE1C00F48D13 /* Appearance.swift */; };
+		0708201D275BEE1C00F48D13 /* Lighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708201C275BEE1C00F48D13 /* Lighting.swift */; };
 		070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */; };
 		071701FF250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */; };
 		07170201250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */; };
@@ -132,7 +132,7 @@
 		0703130026923D2600134B06 /* AlbumsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - Editing.swift"; sourceTree = "<group>"; };
 		0703ED2424E8D0DA002EF1B4 /* mergeChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mergeChanges.swift; sourceTree = "<group>"; };
 		0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAlbumsClipboard.swift; sourceTree = "<group>"; };
-		0708201C275BEE1C00F48D13 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
+		0708201C275BEE1C00F48D13 /* Lighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lighting.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Editing.swift"; sourceTree = "<group>"; };
 		071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - Notifications.swift"; sourceTree = "<group>"; };
 		07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Notifications.swift"; sourceTree = "<group>"; };
@@ -515,7 +515,7 @@
 		07E0BBFF276569480010117E /* General UI */ = {
 			isa = PBXGroup;
 			children = (
-				0708201C275BEE1C00F48D13 /* Appearance.swift */,
+				0708201C275BEE1C00F48D13 /* Lighting.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
@@ -739,7 +739,7 @@
 				07E0BBF72765678F0010117E /* UIMenu.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */,
-				0708201D275BEE1C00F48D13 /* Appearance.swift in Sources */,
+				0708201D275BEE1C00F48D13 /* Lighting.swift in Sources */,
 				07B1EC442723B52A00EA8E29 /* TabBarController.swift in Sources */,
 				07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */,
 				07E0BBF92765678F0010117E /* UIAlertController.swift in Sources */,

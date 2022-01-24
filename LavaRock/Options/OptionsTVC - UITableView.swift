@@ -13,7 +13,7 @@ extension OptionsTVC {
 		case tipJar
 	}
 	
-	static let indexPathsOfAppearanceRows = [
+	static let indexPathsOfLightingRows = [
 		IndexPath(row: 0, section: Section.theme.rawValue),
 	]
 	
@@ -41,7 +41,7 @@ extension OptionsTVC {
 		}
 		switch sectionCase {
 		case .theme:
-			return Self.indexPathsOfAppearanceRows.count + AccentColor.allCases.count
+			return Self.indexPathsOfLightingRows.count + AccentColor.allCases.count
 		case .tipJar:
 			return 1
 		}
@@ -88,10 +88,10 @@ extension OptionsTVC {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return UITableViewCell() }
 		switch sectionCase {
 		case .theme:
-			if Self.indexPathsOfAppearanceRows.contains(indexPath) {
+			if Self.indexPathsOfLightingRows.contains(indexPath) {
 				return tableView.dequeueReusableCell(
-					withIdentifier: "Appearance",
-					for: indexPath) as? AppearanceCell ?? UITableViewCell()
+					withIdentifier: "Lighting",
+					for: indexPath) as? LightingCell ?? UITableViewCell()
 			} else {
 				return accentColorCell(forRowAt: indexPath)
 			}
@@ -111,7 +111,7 @@ extension OptionsTVC {
 		}
 		switch sectionCase {
 		case .theme:
-			if Self.indexPathsOfAppearanceRows.contains(indexPath) {
+			if Self.indexPathsOfLightingRows.contains(indexPath) {
 				return nil
 			} else {
 				return indexPath
@@ -128,7 +128,7 @@ extension OptionsTVC {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
 		case .theme:
-			if Self.indexPathsOfAppearanceRows.contains(indexPath) {
+			if Self.indexPathsOfLightingRows.contains(indexPath) {
 				tableView.deselectRow(at: indexPath, animated: true)
 			} else {
 				didSelectAccentColorRow(at: indexPath)
@@ -141,7 +141,7 @@ extension OptionsTVC {
 	// MARK: - Accent Color Section
 	
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let indexOfAccentColor = indexPath.row - Self.indexPathsOfAppearanceRows.count
+		let indexOfAccentColor = indexPath.row - Self.indexPathsOfLightingRows.count
 		let accentColor = AccentColor.allCases[indexOfAccentColor]
 		
 		guard let cell = tableView.dequeueReusableCell(
@@ -154,7 +154,7 @@ extension OptionsTVC {
 	
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
 		// Set the new accent color.
-		let indexOfAccentColor = indexPath.row - Self.indexPathsOfAppearanceRows.count
+		let indexOfAccentColor = indexPath.row - Self.indexPathsOfLightingRows.count
 		let selected = AccentColor.allCases[indexOfAccentColor]
 		selected.saveAsPreference() // Do this before actually setting `window.tintColor`, so that instances that override `tintColorDidChange` can get the new value for `AccentColor.savedPreference`.
 		view.window?.tintColor = selected.uiColor // As of build 380, setting `ActiveTheme.shared.accentColor` triggers `updateUIViewController`, which breaks the animation for deselecting the row.

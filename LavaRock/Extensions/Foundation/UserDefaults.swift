@@ -8,12 +8,11 @@
 import Foundation
 
 enum LRUserDefaultsKey: String, CaseIterable {
-	case appearance = "appearance"
+	case lighting = "appearance"
 	case accentColor = "accentColorName"
 	
-	case hasEverImportedFromMusic
-	
-	case shouldExplainQueueAction
+	case hasEverImportedFromMusic = "hasEverImportedFromMusic"
+	case shouldExplainQueueAction = "shouldExplainQueueAction"
 }
 
 extension UserDefaults {
