@@ -249,8 +249,11 @@ final class CollectionsTVC:
 			topRightButtons = [cancelAndDismissButton]
 			navigationController?.toolbar.isHidden = true
 		case .browsing:
-//			viewingModeTopLeftButtons = [optionsButton_SwiftUI]
-			viewingModeTopLeftButtons = [optionsButton_UIKit]
+			if Enabling.swiftUIOptions {
+				viewingModeTopLeftButtons = [optionsButton_SwiftUI]
+			} else {
+				viewingModeTopLeftButtons = [optionsButton_UIKit]
+			}
 		}
 		
 		super.setUpUI()
