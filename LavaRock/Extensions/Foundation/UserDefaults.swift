@@ -16,16 +16,11 @@ enum LRUserDefaultsKey: String, CaseIterable {
 }
 
 extension UserDefaults {
-	final func deleteAllEntriesExcept(withKeys keysToKeep: [String]) {
-		let oldEntries = dictionaryRepresentation()
-		
-		var newEntries = oldEntries
-		newEntries.removeAll() // To match the type of oldEntries
-		keysToKeep.forEach { key in
-			let value = oldEntries[key]
-			newEntries[key] = value
+	final func deleteAllValuesExcept(forKeys keysToKeep: Set<String>) {
+		dictionaryRepresentation().forEach { (key, _) in
+			if !keysToKeep.contains(key) {
+				removeObject(forKey: key)
+			}
 		}
-		
-		setPersistentDomain(newEntries, forName: Bundle.main.bundleIdentifier!)
 	}
 }

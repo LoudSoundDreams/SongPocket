@@ -15,7 +15,8 @@ struct OptionsView: View {
 	private var savedLighting = Lighting.savedPreference().rawValue
 	@AppStorage(LRUserDefaultsKey.accentColor.rawValue)
 	private var savedAccentColor = AccentColor.savedPreference().rawValue
-	@ObservedObject private var tipJarViewModel = TipJarViewModel.shared
+	
+	@ObservedObject private var tipJarViewModel: TipJarViewModel = .shared
 	
 	init() {
 		if tipJarViewModel.status == .notYetFirstLoaded {

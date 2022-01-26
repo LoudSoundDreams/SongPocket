@@ -16,6 +16,7 @@ extension MusicLibraryManager {
 		
 		let defaults = UserDefaults.standard
 		let defaultsKeyHasEverImported = LRUserDefaultsKey.hasEverImportedFromMusic.rawValue
+		
 		let hasEverImportedFromMusic = defaults.bool(forKey: defaultsKeyHasEverImported) // Returns `false` if there's no saved value
 		let isFirstImport = !hasEverImportedFromMusic
 		

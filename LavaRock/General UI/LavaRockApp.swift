@@ -24,8 +24,7 @@ struct LavaRockApp: App {
 		PurchaseManager.shared.beginObservingPaymentTransactions()
 		
 		DispatchQueue.global(qos: .utility).async {
-			UserDefaults.standard.deleteAllEntriesExcept(
-				withKeys: LRUserDefaultsKey.rawValues())
+			UserDefaults.standard.deleteAllValuesExcept(forKeys: Set(LRUserDefaultsKey.rawValues()))
 		}
 	}
 }
