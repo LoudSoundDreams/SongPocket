@@ -25,7 +25,7 @@ extension CollectionsTVC {
 			return Self.smartCollectionTitle(moving: albumsBeingMoved)
 		}()
 		create(smartTitle: smartTitle) {
-			self.confirmCreate(smartTitle: smartTitle)
+			self.promptCreate(smartTitle: smartTitle)
 		}
 	}
 	
@@ -81,7 +81,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func confirmCreate(smartTitle: String?) {
+	private func promptCreate(smartTitle: String?) {
 		let dialog = UIAlertController.forEditingCollectionTitle(
 			alertTitle: Enabling.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
 			textFieldText: smartTitle,

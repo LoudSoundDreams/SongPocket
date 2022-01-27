@@ -17,7 +17,7 @@ extension CollectionsTVC: UITextFieldDelegate {
 extension CollectionsTVC {
 	// MARK: Renaming
 	
-	final func confirmRename(at indexPath: IndexPath) {
+	final func promptRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
 		
 		let rowWasSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
@@ -28,7 +28,7 @@ extension CollectionsTVC {
 			textFieldDelegate: self,
 			cancelHandler: nil,
 			saveHandler: { textFieldText in
-				self.rename(
+				self.commitRename(
 					at: indexPath,
 					proposedTitle: textFieldText,
 					thenSelectIf: rowWasSelectedBeforeRenaming)
@@ -36,7 +36,7 @@ extension CollectionsTVC {
 		present(dialog, animated: true)
 	}
 	
-	private func rename(
+	private func commitRename(
 		at indexPath: IndexPath,
 		proposedTitle: String?,
 		thenSelectIf shouldSelectRow: Bool
@@ -75,7 +75,7 @@ extension CollectionsTVC {
 			into: indexPathOfCombined,
 			smartTitle: smartTitle
 		) {
-			self.confirmCombine(
+			self.promptCombine(
 				fromInOrder: selectedIndexPaths,
 				into: indexPathOfCombined,
 				smartTitle: smartTitle)
@@ -130,7 +130,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func confirmCombine(
+	private func promptCombine(
 		fromInOrder originalSelectedIndexPaths: [IndexPath],
 		into indexPathOfCombined: IndexPath,
 		smartTitle: String?

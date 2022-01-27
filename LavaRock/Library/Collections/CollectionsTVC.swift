@@ -37,7 +37,7 @@ final class CollectionsTVC:
 		}
 		
 		if let focusedIndexPath = focusedIndexPath {
-			confirmRename(at: focusedIndexPath)
+			promptRename(at: focusedIndexPath)
 			return true
 		} else {
 			return false

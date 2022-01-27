@@ -168,7 +168,7 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		accessoryButtonTappedForRowWith indexPath: IndexPath
 	) {
-		confirmRename(at: indexPath)
+		promptRename(at: indexPath)
 	}
 	
 	// MARK: - Selecting
