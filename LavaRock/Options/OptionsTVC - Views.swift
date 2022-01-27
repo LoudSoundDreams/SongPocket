@@ -22,19 +22,16 @@ final class LightingCell: UITableViewCell {
 			image?.accessibilityLabel = lighting.name
 			segmentedControl.setImage(image, forSegmentAt: indexOfSegment)
 		}
-		
 		segmentedControl.addTarget(
 			self,
 			action: #selector(saveAndSetLighting),
 			for: .valueChanged)
-		
 		segmentedControl.selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
 	}
 	
 	@objc private func saveAndSetLighting() {
 		let selected = Lighting(indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
-		selected.saveAsPreference()
-		ActiveTheme.shared.lighting = selected
+		Theme.shared.lighting = selected
 	}
 }
 

@@ -9,14 +9,14 @@ import SwiftUI
 
 @main
 struct LavaRockApp: App {
-	@ObservedObject private var activeTheme: ActiveTheme = .shared
+	@ObservedObject private var theme: Theme = .shared
 	
 	var body: some Scene {
 		WindowGroup {
 			RootViewControllerRepresentable()
 				.edgesIgnoringSafeArea(.all)
-				.preferredColorScheme(activeTheme.lighting.colorScheme)
-				.tint(activeTheme.accentColor.color)
+				.preferredColorScheme(theme.lighting.colorScheme)
+				.tint(theme.accentColor.color)
 		}
 	}
 	
@@ -29,18 +29,22 @@ struct LavaRockApp: App {
 	}
 }
 
-final class ActiveTheme: ObservableObject {
+final class Theme: ObservableObject {
 	private init() {}
-	static let shared = ActiveTheme()
+	static let shared = Theme()
 	
-	@Published var lighting: Lighting = .savedPreference()
-	@Published var accentColor: AccentColor = .savedPreference()
+	@Published var lighting: Lighting = .savedPreference() {
+		didSet { lighting.saveAsPreference() }
+	}
+	@Published var accentColor: AccentColor = .savedPreference() {
+		didSet { accentColor.saveAsPreference() }
+	}
 }
 
 struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	typealias ViewControllerType = UIViewController
 	
-	@ObservedObject private var activeTheme: ActiveTheme = .shared
+	@ObservedObject private var theme: Theme = .shared
 	
 	func makeUIViewController(
 		context: Context
@@ -48,8 +52,8 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let result = storyboard.instantiateInitialViewController()!
 		
-		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(activeTheme.lighting.colorScheme)
-		result.view.tintColor = activeTheme.accentColor.uiColor
+		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
+		result.view.tintColor = theme.accentColor.uiColor
 		
 		return result
 	}
@@ -58,9 +62,9 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		_ uiViewController: ViewControllerType,
 		context: Context
 	) {
-		uiViewController.view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(activeTheme.lighting.colorScheme)
+		uiViewController.view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 		if Enabling.swiftUIOptions {
-			uiViewController.view.window?.tintColor = activeTheme.accentColor.uiColor
+			uiViewController.view.window?.tintColor = theme.accentColor.uiColor
 		}
 	}
 }

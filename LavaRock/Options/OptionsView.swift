@@ -11,11 +11,7 @@ import UIKit
 struct OptionsView: View {
 	@Environment(\.dismiss) private var dismiss
 	
-	@AppStorage(LRUserDefaultsKey.lighting.rawValue)
-	private var savedLighting = Lighting.savedPreference().rawValue
-	@AppStorage(LRUserDefaultsKey.accentColor.rawValue)
-	private var savedAccentColor = AccentColor.savedPreference().rawValue
-	
+	@ObservedObject private var theme: Theme = .shared
 	@ObservedObject private var tipJarViewModel: TipJarViewModel = .shared
 	
 	init() {
@@ -29,20 +25,20 @@ struct OptionsView: View {
 			Form {
 				
 				Section(LocalizedString.theme) {
-					Picker("", selection: $savedLighting) {
+					Picker("", selection: $theme.lighting) {
 						ForEach(Lighting.allCases) { lighting in
 							Image(systemName: lighting.sfSymbolName)
 								.accessibilityLabel(lighting.name)
-								.tag(lighting.rawValue)
+								.tag(lighting)
 						}
 					}
 					.pickerStyle(.segmented)
 					
-					Picker(selection: $savedAccentColor) {
+					Picker(selection: $theme.accentColor) {
 						ForEach(AccentColor.allCases) { accentColor in
 							Text(accentColor.displayName)
 								.foregroundColor(accentColor.color)
-								.tag(accentColor.rawValue)
+								.tag(accentColor)
 						}
 					} label: { EmptyView() }
 //					.pickerStyle(.inline)
@@ -51,8 +47,8 @@ struct OptionsView: View {
 //					.foregroundColor(.accentColor)
 //					.tint(AccentColor.savedPreference().color)
 //					.foregroundColor(AccentColor.savedPreference().color)
-//					.tint(ActiveTheme.shared.accentColor.color)
-//					.foregroundColor(ActiveTheme.shared.accentColor.color)
+//					.tint(Theme.shared.accentColor.color)
+//					.foregroundColor(Theme.shared.accentColor.color)
 					
 					.pickerStyle(.wheel)
 				}
@@ -65,7 +61,7 @@ struct OptionsView: View {
 						Button {
 							PurchaseManager.shared.requestAllSKProducts()
 						} label: {
-							Text(LocalizedString.reload).foregroundColor(AccentColor.savedPreference().color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
+							Text(LocalizedString.reload).foregroundColor(theme.accentColor.color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
 						}
 					case .ready:
 						Button {
@@ -74,7 +70,7 @@ struct OptionsView: View {
 							}
 						} label: {
 							HStack {
-								Text("tip").foregroundColor(AccentColor.savedPreference().color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
+								Text("tip").foregroundColor(theme.accentColor.color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
 								Spacer()
 								Text("0¢").foregroundColor(.secondary)
 							}
@@ -104,20 +100,11 @@ struct OptionsView: View {
 			}
 		}
 		.navigationViewStyle(.stack)
-		.tint(AccentColor.savedPreference().color) // Without this, SwiftUI applies “Increase Contrast” twice.
-		
-		.onChange(of: savedLighting) { newLighting in
-			let lighting = Lighting(rawValue: newLighting)!
-			ActiveTheme.shared.lighting = lighting
-		}
-		.onChange(of: savedAccentColor) { newAccentColor in
-			let accentColor = AccentColor(rawValue: newAccentColor)!
-			ActiveTheme.shared.accentColor = accentColor
-		}
+		.tint(theme.accentColor.color) // Without this, SwiftUI applies “Increase Contrast” twice.
 	}
 	
 	private func thankYouMessage() -> String {
-		let heartEmoji = AccentColor.savedPreference().heartEmoji
+		let heartEmoji = theme.accentColor.heartEmoji
 		return heartEmoji + LocalizedString.tipThankYouMessageWithPaddingSpaces + heartEmoji
 	}
 }
