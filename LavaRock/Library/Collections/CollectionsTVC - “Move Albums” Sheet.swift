@@ -25,7 +25,15 @@ extension CollectionsTVC {
 			return Self.smartCollectionTitle(moving: albumsBeingMoved)
 		}()
 		create(smartTitle: smartTitle) {
-			self.promptCreate(smartTitle: smartTitle)
+			let dialog = UIAlertController.forEditingCollectionTitle(
+				alertTitle: Enabling.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
+				textFieldText: smartTitle,
+				textFieldDelegate: self,
+				cancelHandler: self.revertCreate,
+				saveHandler: { textFieldText in
+					self.renameAndOpenCreated(proposedTitle: textFieldText)
+				})
+			self.present(dialog, animated: true)
 		}
 	}
 	
@@ -79,18 +87,6 @@ extension CollectionsTVC {
 		setViewModelAndMoveRows(newViewModel) {
 			completion()
 		}
-	}
-	
-	private func promptCreate(smartTitle: String?) {
-		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: Enabling.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
-			textFieldText: smartTitle,
-			textFieldDelegate: self,
-			cancelHandler: revertCreate,
-			saveHandler: { textFieldText in
-				self.renameAndOpenCreated(proposedTitle: textFieldText)
-			})
-		present(dialog, animated: true)
 	}
 	
 	final func revertCreate() {

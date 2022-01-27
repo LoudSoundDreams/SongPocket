@@ -75,10 +75,19 @@ extension CollectionsTVC {
 			into: indexPathOfCombined,
 			smartTitle: smartTitle
 		) {
-			self.promptCombine(
-				fromInOrder: selectedIndexPaths,
-				into: indexPathOfCombined,
-				smartTitle: smartTitle)
+			let dialog = UIAlertController.forEditingCollectionTitle(
+				alertTitle: Enabling.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
+				textFieldText: smartTitle,
+				textFieldDelegate: self,
+				cancelHandler: {
+					self.revertCombine(thenSelect: selectedIndexPaths)
+				},
+				saveHandler: { textFieldText in
+					self.commitCombine(
+						into: indexPathOfCombined,
+						proposedTitle: textFieldText)
+				})
+			self.present(dialog, animated: true)
 		}
 	}
 	
@@ -128,26 +137,6 @@ extension CollectionsTVC {
 				completion()
 			}
 		}
-	}
-	
-	private func promptCombine(
-		fromInOrder originalSelectedIndexPaths: [IndexPath],
-		into indexPathOfCombined: IndexPath,
-		smartTitle: String?
-	) {
-		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: Enabling.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
-			textFieldText: smartTitle,
-			textFieldDelegate: self,
-			cancelHandler: {
-				self.revertCombine(thenSelect: originalSelectedIndexPaths)
-			},
-			saveHandler: { textFieldText in
-				self.commitCombine(
-					into: indexPathOfCombined,
-					proposedTitle: textFieldText)
-			})
-		present(dialog, animated: true)
 	}
 	
 	final func revertCombine(
