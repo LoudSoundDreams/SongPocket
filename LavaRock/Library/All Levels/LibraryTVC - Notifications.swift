@@ -82,7 +82,7 @@ extension LibraryTVC {
 		isMergingChanges = false
 		
 		/*
-		 // When we need to refresh, you might be in the middle of a content-dependent task. Cancel those content-dependent tasks.
+		 // When we need to refresh, you might be in the middle of a content-dependent task. Cancel such tasks, for simplicity.
 		 - Sort options (LibraryTVC)
 		 - “Rename Collection” dialog (CollectionsTVC)
 		 - “Combine Collections” dialog (CollectionsTVC)

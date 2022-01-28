@@ -211,8 +211,8 @@ final class CollectionsTVC:
 		case .movingAlbums:
 			break
 		case .browsing:
-			DispatchQueue.main.async {
-				self.integrateWithBuiltInMusicApp()
+			Task {
+				integrateWithBuiltInMusicApp()
 			}
 		}
 	}

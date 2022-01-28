@@ -132,12 +132,6 @@ extension CollectionsTVC {
 					animated: true)
 			}
 			
-//			await setViewModelAndMoveRows(
-//				newViewModel,
-//				thenSelecting: [indexPathOfCombined])
-//
-//			completion()
-			
 			setViewModelAndMoveRows(
 				newViewModel,
 				thenSelecting: [indexPathOfCombined]

@@ -10,7 +10,9 @@ import UIKit
 extension UIViewController {
 	final func dismiss_async(animated: Bool) async {
 		await withCheckedContinuation { continuation in
-			dismiss(animated: animated) { continuation.resume() }
+			dismiss(animated: animated) {
+				continuation.resume()
+			}
 		}
 	}
 }

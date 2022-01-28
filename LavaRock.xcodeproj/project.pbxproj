@@ -24,7 +24,6 @@
 		072F859F26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */; };
 		072FD02726C30BB90053369B /* cleanUpLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */; };
 		073198CD279D204100E5FD44 /* TipJarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073198CC279D204100E5FD44 /* TipJarViewModel.swift */; };
-		0732E662276417CE002A0E37 /* StringPrefixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0732E661276417CE002A0E37 /* StringPrefixTests.swift */; };
 		0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Albums - Views.swift */; };
 		0736E3EA24B95FD600A15420 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* Album.swift */; };
 		073AF48A24D16647000C1A6D /* AccentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* AccentColor.swift */; };
@@ -147,7 +146,6 @@
 		072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NoItemsBackgroundManager.swift"; sourceTree = "<group>"; };
 		072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cleanUpLibraryItems.swift; sourceTree = "<group>"; };
 		073198CC279D204100E5FD44 /* TipJarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarViewModel.swift; sourceTree = "<group>"; };
-		0732E661276417CE002A0E37 /* StringPrefixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringPrefixTests.swift; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* Albums - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Albums - Views.swift"; sourceTree = "<group>"; };
 		0736E3E924B95FD600A15420 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		073AF48924D16647000C1A6D /* AccentColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColor.swift; sourceTree = "<group>"; };
@@ -387,7 +385,6 @@
 			children = (
 				076830A424B42DEE0033E3CC /* Info.plist */,
 				076830A224B42DEE0033E3CC /* LavaRockTests.swift */,
-				0732E661276417CE002A0E37 /* StringPrefixTests.swift */,
 			);
 			path = LavaRockTests;
 			sourceTree = "<group>";
@@ -785,7 +782,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0732E662276417CE002A0E37 /* StringPrefixTests.swift in Sources */,
 				076830A324B42DEE0033E3CC /* LavaRockTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -977,7 +973,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 385;
+				CURRENT_PROJECT_VERSION = 389;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
@@ -1005,7 +1001,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 385;
+				CURRENT_PROJECT_VERSION = 389;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
