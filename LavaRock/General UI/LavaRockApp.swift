@@ -21,11 +21,9 @@ struct LavaRockApp: App {
 	}
 	
 	init() {
-		PurchaseManager.shared.beginObservingPaymentTransactions()
+		UserDefaults.standard.deleteAllValuesExceptForLRUserDefaultsKeys()
 		
-		DispatchQueue.global(qos: .utility).async {
-			UserDefaults.standard.deleteAllValuesExcept(forKeys: Set(LRUserDefaultsKey.rawValues()))
-		}
+		PurchaseManager.shared.beginObservingPaymentTransactions()
 	}
 }
 

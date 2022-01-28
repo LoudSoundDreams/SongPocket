@@ -16,7 +16,8 @@ enum LRUserDefaultsKey: String, CaseIterable {
 }
 
 extension UserDefaults {
-	final func deleteAllValuesExcept(forKeys keysToKeep: Set<String>) {
+	final func deleteAllValuesExceptForLRUserDefaultsKeys() {
+		let keysToKeep = Set(LRUserDefaultsKey.allCases.map { $0.rawValue })
 		dictionaryRepresentation().forEach { (key, _) in
 			if !keysToKeep.contains(key) {
 				removeObject(forKey: key)
