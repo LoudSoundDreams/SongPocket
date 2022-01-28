@@ -11,7 +11,7 @@ final class OptionsTVC: UITableViewController {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		TipJarViewModel.shared.delegate = self
+		TipJarViewModel.shared.ui = self
 	}
 	
 	final override func viewDidLoad() {

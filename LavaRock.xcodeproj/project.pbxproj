@@ -107,7 +107,7 @@
 		07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */; };
 		07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */; };
 		07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E092599227C00826447 /* PurchaseManager.swift */; };
-		07FD6E122599246700826447 /* OptionsTVC + TipJarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* OptionsTVC + TipJarDelegate.swift */; };
+		07FD6E122599246700826447 /* OptionsTVC + TipJarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -235,7 +235,7 @@
 		07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07FD6E092599227C00826447 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
-		07FD6E112599246700826447 /* OptionsTVC + TipJarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC + TipJarDelegate.swift"; sourceTree = "<group>"; };
+		07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC + TipJarUI.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,7 +272,7 @@
 				073FB55B27588B81000FAF5F /* Options.storyboard */,
 				073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */,
 				0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */,
-				07FD6E112599246700826447 /* OptionsTVC + TipJarDelegate.swift */,
+				07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */,
 				07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */,
 			);
 			path = Options;
@@ -703,7 +703,7 @@
 				0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */,
 				07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */,
 				07E0BBF32765678F0010117E /* UITableView.swift in Sources */,
-				07FD6E122599246700826447 /* OptionsTVC + TipJarDelegate.swift in Sources */,
+				07FD6E122599246700826447 /* OptionsTVC + TipJarUI.swift in Sources */,
 				076B4DED27738FF4004B523D /* OSLog.swift in Sources */,
 				077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */,
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,

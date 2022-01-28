@@ -9,7 +9,7 @@ import StoreKit
 import Combine
 
 @MainActor
-protocol TipJarDelegate: AnyObject {
+protocol TipJarUI: AnyObject {
 	func statusBecameLoading()
 	func statusBecameReload()
 	func statusBecameReady()
@@ -31,7 +31,7 @@ final class TipJarViewModel: ObservableObject {
 		case thankYou
 	}
 	
-	weak var delegate: TipJarDelegate? = nil
+	weak var ui: TipJarUI? = nil
 	
 	@Published var status: Status = .notYetFirstLoaded {
 		didSet {
@@ -40,15 +40,15 @@ final class TipJarViewModel: ObservableObject {
 				// Should never run
 				break
 			case .loading:
-				delegate?.statusBecameLoading()
+				ui?.statusBecameLoading()
 			case .reload:
-				delegate?.statusBecameReload()
+				ui?.statusBecameReload()
 			case .ready:
-				delegate?.statusBecameReady()
+				ui?.statusBecameReady()
 			case .confirming:
-				delegate?.statusBecameConfirming()
+				ui?.statusBecameConfirming()
 			case .thankYou:
-				delegate?.statusBecameThankYou()
+				ui?.statusBecameThankYou()
 				Task {
 					try await Task.sleep(nanoseconds: 10_000_000_000)
 					
