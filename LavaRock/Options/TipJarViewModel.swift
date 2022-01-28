@@ -16,6 +16,7 @@ protocol TipJarDelegate: AnyObject {
 	func statusBecameThankYou()
 }
 
+@MainActor
 final class TipJarViewModel: ObservableObject {
 	private init() {}
 	static let shared = TipJarViewModel()
@@ -33,26 +34,24 @@ final class TipJarViewModel: ObservableObject {
 	
 	@Published var status: Status = .notYetFirstLoaded {
 		didSet {
-			DispatchQueue.main.async {
-				switch self.status {
-				case .notYetFirstLoaded:
-					// Should never run
-					break
-				case .loading:
-					self.delegate?.statusBecameLoading()
-				case .reload:
-					self.delegate?.statusBecameReload()
-				case .ready:
-					self.delegate?.statusBecameReady()
-				case .confirming:
-					self.delegate?.statusBecameConfirming()
-				case .thankYou:
-					self.delegate?.statusBecameThankYou()
-					Task {
-						try await Task.sleep(nanoseconds: 10_000_000_000)
-						
-						self.status = .ready
-					}
+			switch self.status {
+			case .notYetFirstLoaded:
+				// Should never run
+				break
+			case .loading:
+				delegate?.statusBecameLoading()
+			case .reload:
+				delegate?.statusBecameReload()
+			case .ready:
+				delegate?.statusBecameReady()
+			case .confirming:
+				delegate?.statusBecameConfirming()
+			case .thankYou:
+				delegate?.statusBecameThankYou()
+				Task {
+					try await Task.sleep(nanoseconds: 10_000_000_000)
+					
+					status = .ready
 				}
 			}
 		}

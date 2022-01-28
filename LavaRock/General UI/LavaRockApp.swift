@@ -29,6 +29,7 @@ struct LavaRockApp: App {
 	}
 }
 
+@MainActor
 final class Theme: ObservableObject {
 	private init() {}
 	static let shared = Theme()

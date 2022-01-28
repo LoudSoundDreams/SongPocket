@@ -18,6 +18,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 		SKPaymentQueue.default().add(self) // We can’t turn this method static, because StoreKit needs an instance here, not a type.
 	}
 	
+	@MainActor
 	final func requestAllSKProducts() {
 		let identifiers = ProductIdentifier.allCases.map { $0.rawValue }
 		let productsRequest = SKProductsRequest(productIdentifiers: Set(identifiers))
@@ -28,6 +29,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 		TipJarViewModel.shared.status = .loading
 	}
 	
+	@MainActor
 	final func addToPaymentQueue(_ skProduct: SKProduct) {
 		let skPayment = SKPayment(product: skProduct)
 //		let skPayment = SKMutablePayment(product: skProduct)
@@ -106,6 +108,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		}
 	}
 	
+	@MainActor
 	private func didFailToReceiveAnySKProducts() {
 		ProductIdentifier.allCases.forEach {
 			switch $0 {
@@ -121,25 +124,27 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 		_ queue: SKPaymentQueue,
 		updatedTransactions transactions: [SKPaymentTransaction])
 	{
-		transactions.forEach { transaction in
-			guard let productIdentifier = ProductIdentifier(rawValue: transaction.payment.productIdentifier) else { return }
-			switch productIdentifier {
-			case .tip:
-				switch transaction.transactionState {
-				case .purchasing:
-					break
-				case .deferred:
-					TipJarViewModel.shared.status = .ready
-				case
-						.failed,
-						.restored:
-					SKPaymentQueue.default().finishTransaction(transaction)
-					TipJarViewModel.shared.status = .ready
-				case .purchased:
-					SKPaymentQueue.default().finishTransaction(transaction)
-					TipJarViewModel.shared.status = .thankYou
-				@unknown default:
-					fatalError()
+		DispatchQueue.main.async {
+			transactions.forEach { transaction in
+				guard let productIdentifier = ProductIdentifier(rawValue: transaction.payment.productIdentifier) else { return }
+				switch productIdentifier {
+				case .tip:
+					switch transaction.transactionState {
+					case .purchasing:
+						break
+					case .deferred:
+						TipJarViewModel.shared.status = .ready
+					case
+							.failed,
+							.restored:
+						SKPaymentQueue.default().finishTransaction(transaction)
+						TipJarViewModel.shared.status = .ready
+					case .purchased:
+						SKPaymentQueue.default().finishTransaction(transaction)
+						TipJarViewModel.shared.status = .thankYou
+					@unknown default:
+						fatalError()
+					}
 				}
 			}
 		}
