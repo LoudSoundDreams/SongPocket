@@ -5,8 +5,7 @@
 //  Created by h on 2020-12-27.
 //
 
-import StoreKit
-
+@MainActor
 extension OptionsTVC: TipJarDelegate {
 	final func statusBecameLoading() {
 		refreshTipJarRows()

@@ -8,6 +8,7 @@
 import StoreKit
 import Combine
 
+@MainActor
 protocol TipJarDelegate: AnyObject {
 	func statusBecameLoading()
 	func statusBecameReload()
