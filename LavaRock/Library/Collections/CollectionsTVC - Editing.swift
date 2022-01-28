@@ -70,7 +70,7 @@ extension CollectionsTVC {
 		
 		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
 		let smartTitle = Self.smartCollectionTitle(combining: selectedCollections)
-		combine(
+		previewCombine(
 			inOrder: selectedCollections,
 			into: indexPathOfCombined,
 			smartTitle: smartTitle
@@ -109,7 +109,7 @@ extension CollectionsTVC {
 		return nil
 	}
 	
-	private func combine(
+	private func previewCombine(
 		inOrder collections: [Collection],
 		into indexPathOfCombined: IndexPath,
 		smartTitle: String?,

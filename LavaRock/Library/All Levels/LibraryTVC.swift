@@ -58,11 +58,9 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses Should Customize
 	
 	// Data
-	final lazy var viewModel: LibraryViewModel = { // Default value for CollectionsTVC
-		return CollectionsViewModel(
-			context: Persistence.viewContext,
-			prerowsInEachSection: [])
-	}()
+	final lazy var viewModel: LibraryViewModel = CollectionsViewModel(
+		context: Persistence.viewContext,
+		prerowsInEachSection: [])
 	
 	// Controls
 	final var editingModeToolbarButtons: [UIBarButtonItem] = []
@@ -305,8 +303,8 @@ class LibraryTVC: UITableViewController {
 			tableView.deleteSections(IndexSet(toDelete), with: .middle)
 		} completion: { _ in
 			self.isAnimatingDuringSetItemsAndRefresh -= 1
-			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See corresponding comment in setItemsAndMoveRows.
-				self.dismiss(animated: true) { // If we moved all the Albums out of a Collection, we need to wait until we've completely dismissed the "move albums" sheet before we exit. Otherwise, we'll fail to exit and get trapped in a blank AlbumsTVC.
+			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See corresponding comment in `setItemsAndMoveRows`.
+				self.dismiss(animated: true) { // If we moved all the `Album`s out of a `Collection`, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
 					self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 				}
 			}
