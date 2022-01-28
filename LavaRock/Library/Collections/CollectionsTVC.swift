@@ -109,9 +109,9 @@ final class CollectionsTVC:
 				.loading,
 				.noCollections:
 			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
-			needsRemoveRowsInCollectionsSection = true // viewState is now .wasLoadingOrNoCollections
+			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.wasLoadingOrNoCollections`
 			reflectViewState()
-			needsRemoveRowsInCollectionsSection = false // WARNING: viewState is now .loading or .noCollections, but the UI doesn't reflect that.
+			needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
 		case
 				.allowAccess,
 				.wasLoadingOrNoCollections,
@@ -160,7 +160,7 @@ final class CollectionsTVC:
 			toDelete = oldInCollectionsSection
 			toInsert = newInCollectionsSection
 			toReloadInCollectionsSection = []
-		case .someCollections: // Merging changes with existing Collections
+		case .someCollections: // Merging changes with existing `Collection`s
 			toDelete = []
 			toInsert = []
 			toReloadInCollectionsSection = []
@@ -188,7 +188,7 @@ final class CollectionsTVC:
 			break
 		}
 		
-		didChangeRowsOrSelectedRows() // Refreshes the "Edit" button
+		didChangeRowsOrSelectedRows() // Refreshes the “Edit” button
 	}
 	
 	// MARK: - Setup
@@ -226,7 +226,7 @@ final class CollectionsTVC:
 	private func integrateWithBuiltInMusicApp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
-		isMergingChanges = true // viewState is now .loading or .someCollections (updating)
+		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
 		reflectViewState {
 			MusicLibraryManager.shared.setUpAndMergeChanges() // You must finish `LibraryTVC.beginObservingNotifications` before this, because we need to observe the notification after the merge completes.
 			PlayerManager.setUp()
