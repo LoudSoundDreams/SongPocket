@@ -59,7 +59,7 @@ extension CollectionsTVC {
 	
 	// MARK: Combining
 	
-	final func combineAndConfirm() {
+	final func previewCombineAndPrompt() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,

@@ -49,7 +49,7 @@ final class CollectionsTVC:
 	@IBOutlet private var optionsButton_SwiftUI: UIBarButtonItem!
 	private lazy var combineButton = UIBarButtonItem(
 		title: LocalizedString.combine,
-		primaryAction: UIAction { _ in self.combineAndConfirm() })
+		primaryAction: UIAction { _ in self.previewCombineAndPrompt() })
 	
 	// Purpose
 	var purpose: Purpose {

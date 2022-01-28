@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 extension CollectionsTVC {
-	final func createAndConfirm() {
+	final func previewCreateAndPrompt() {
 		guard
 			case let .movingAlbums(clipboard) = purpose,
 			!clipboard.didAlreadyCreate // Without this, if you're fast, you can finish creating a new Collection by tapping "Save" in the dialog, and then tap "New Collection" to bring up another dialog before we enter the first Collection you made.
