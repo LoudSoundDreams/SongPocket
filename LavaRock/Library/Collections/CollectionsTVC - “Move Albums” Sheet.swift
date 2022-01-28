@@ -110,13 +110,14 @@ extension CollectionsTVC {
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		
-		tableView.performBatchUpdates {
-			if didChangeTitle {
-				tableView.reloadRows(at: [indexPath], with: .fade)
+		Task {
+			let _ = await tableView.performBatchUpdates_async {
+				guard didChangeTitle else { return }
+				self.tableView.reloadRows(at: [indexPath], with: .fade)
 			}
-		} completion: { _ in
-			self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-			self.performSegue(withIdentifier: "Open Collection", sender: self)
+			
+			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+			performSegue(withIdentifier: "Open Collection", sender: self)
 		}
 	}
 }

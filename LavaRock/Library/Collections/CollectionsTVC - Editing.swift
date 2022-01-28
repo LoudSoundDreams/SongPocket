@@ -124,13 +124,21 @@ extension CollectionsTVC {
 			fromInOrder: collections,
 			into: indexPathOfCombined,
 			title: title)
-		tableView.performBatchUpdates {
-			tableView.scrollToRow(
-				at: indexPathOfCombined,
-				at: .none,
-				animated: true)
-		} completion: { _ in
-			self.setViewModelAndMoveRows(
+		Task {
+			let _ = await tableView.performBatchUpdates_async {
+				self.tableView.scrollToRow(
+					at: indexPathOfCombined,
+					at: .none,
+					animated: true)
+			}
+			
+//			await setViewModelAndMoveRows(
+//				newViewModel,
+//				thenSelecting: [indexPathOfCombined])
+//
+//			completion()
+			
+			setViewModelAndMoveRows(
 				newViewModel,
 				thenSelecting: [indexPathOfCombined]
 			) {
