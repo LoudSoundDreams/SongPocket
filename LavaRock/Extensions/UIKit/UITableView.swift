@@ -70,25 +70,23 @@ extension UITableView {
 		let rowsToInsert = rowUpdates.flatMap { $0.toInsert }
 		let rowsToMove = rowUpdates.flatMap { $0.toMove }
 		
-		Task {
-			let _ = await performBatchUpdates_async {
-				self.reloadRows(at: toReload, with: reloadAnimation)
-				
-				self.deleteSections(IndexSet(sectionUpdates.toDelete), with: moveAnimation)
-				self.deleteRows(at: rowsToDelete, with: moveAnimation)
-				
-				self.insertSections(IndexSet(sectionUpdates.toInsert), with: moveAnimation)
-				self.insertRows(at: rowsToInsert, with: moveAnimation)
-				
-				// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
-				sectionUpdates.toMove.forEach { (sourceIndex, destinationIndex) in
-					self.moveSection(sourceIndex, toSection: destinationIndex)
-				}
-				rowsToMove.forEach { (sourceIndexPath, destinationIndexPath) in
-					self.moveRow(at: sourceIndexPath, to: destinationIndexPath)
-				}
-			}
+		performBatchUpdates {
+			reloadRows(at: toReload, with: reloadAnimation)
 			
+			deleteSections(IndexSet(sectionUpdates.toDelete), with: moveAnimation)
+			deleteRows(at: rowsToDelete, with: moveAnimation)
+			
+			insertSections(IndexSet(sectionUpdates.toInsert), with: moveAnimation)
+			insertRows(at: rowsToInsert, with: moveAnimation)
+			
+			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
+			sectionUpdates.toMove.forEach { (sourceIndex, destinationIndex) in
+				moveSection(sourceIndex, toSection: destinationIndex)
+			}
+			rowsToMove.forEach { (sourceIndexPath, destinationIndexPath) in
+				moveRow(at: sourceIndexPath, to: destinationIndexPath)
+			}
+		} completion: { _ in
 			completion()
 		}
 	}
