@@ -57,8 +57,9 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 	}
 }
 
-// StoreKit can call `SKProductsRequestDelegate` methods on any thread.
 extension PurchaseManager: SKProductsRequestDelegate {
+	// StoreKit can call `SKProductsRequestDelegate` methods on any thread.
+	
 	final func productsRequest(
 		_ request: SKProductsRequest,
 		didReceive response: SKProductsResponse
@@ -81,8 +82,13 @@ extension PurchaseManager: SKProductsRequestDelegate {
 				guard let productIdentifier = ProductIdentifier(rawValue: rawIdentifier) else { return }
 				switch productIdentifier {
 				case .tip:
-					self.tipPriceFormatter = self.makePriceFormatter(locale: product.priceLocale)
 					self.tipProduct = product
+					
+					let formatter = NumberFormatter()
+					formatter.numberStyle = .currency
+					formatter.locale = product.priceLocale
+					self.tipPriceFormatter = formatter
+					
 					TipJarViewModel.shared.status = .ready
 				}
 			}
@@ -107,13 +113,6 @@ extension PurchaseManager: SKProductsRequestDelegate {
 				TipJarViewModel.shared.status = .reload
 			}
 		}
-	}
-	
-	private func makePriceFormatter(locale: Locale) -> NumberFormatter {
-		let formatter = NumberFormatter()
-		formatter.numberStyle = .currency
-		formatter.locale = locale
-		return formatter
 	}
 }
 
