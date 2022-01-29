@@ -96,24 +96,23 @@ extension LibraryTVC {
 		let shouldNotDismissAnyModalVCs
 		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 		|| presentedViewController is UIHostingController<OptionsView>
-		if !shouldNotDismissAnyModalVCs {
-			view.window?.rootViewController?.dismiss(animated: true) {
-				refreshLibraryItemsPart2()
-			}
-		} else {
+		if shouldNotDismissAnyModalVCs {
 			refreshLibraryItemsPart2()
-		}
-		
-		func refreshLibraryItemsPart2() {
-			let newViewModel = viewModel.updatedWithRefreshedData()
-			setViewModelAndMoveRows(newViewModel) {
-				self.refreshNavigationItemTitle()
-				
-				// Update the data within each row (and header), which might be outdated.
-				// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
-				self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
+		} else {
+			view.window?.rootViewController?.dismiss(animated: true) {
+				self.refreshLibraryItemsPart2()
 			}
 		}
-		
+	}
+	
+	private func refreshLibraryItemsPart2() {
+		let newViewModel = viewModel.updatedWithRefreshedData()
+		setViewModelAndMoveRows(newViewModel) {
+			self.refreshNavigationItemTitle()
+			
+			// Update the data within each row (and header), which might be outdated.
+			// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
+			self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
+		}
 	}
 }
