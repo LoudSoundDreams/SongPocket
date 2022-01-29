@@ -190,19 +190,12 @@ extension SongsTVC {
 				false,
 				forKey: defaultsKey)
 		}
-		let openMusicAction = UIAlertAction(
-			title: LocalizedString.openMusic,
-			style: .default
-		) { _ in
-			URL.music?.open()
-		}
 		let okAction = UIAlertAction(
-			title: LocalizedString.close,
+			title: LocalizedString.ok,
 			style: .default,
 			handler: nil)
 		
 		alert.addAction(dontShowAgainAction)
-		alert.addAction(openMusicAction)
 		alert.addAction(okAction)
 		alert.preferredAction = okAction
 		
