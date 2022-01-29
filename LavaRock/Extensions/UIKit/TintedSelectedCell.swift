@@ -11,10 +11,10 @@ class TintedSelectedCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		refreshSelectedBackgroundView()
+		freshenSelectedBackgroundView()
 	}
 	
-	private func refreshSelectedBackgroundView() {
+	private func freshenSelectedBackgroundView() {
 		let colorView = UIView()
 		colorView.backgroundColor = .tintColor.translucent()
 		selectedBackgroundView = colorView

@@ -56,7 +56,7 @@ extension CollectionsViewModel: LibraryViewModel {
 		}
 	}
 	
-	func updatedWithRefreshedData() -> Self {
+	func updatedWithFreshenedData() -> Self {
 		return Self(
 			context: context,
 			prerowsInEachSection: prerowsInEachSection)

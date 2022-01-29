@@ -7,18 +7,18 @@
 
 extension OptionsTVC: TipJarUI {
 	final func statusBecameLoading() {
-		refreshTipJarRows()
+		freshenTipJarRows()
 	}
 	final func statusBecameReload() {
-		refreshTipJarRows()
+		freshenTipJarRows()
 	}
 	final func statusBecameReady() {
-		refreshTipJarRows()
+		freshenTipJarRows()
 	}
 	final func statusBecameConfirming() {
-		refreshTipJarRows()
+		freshenTipJarRows()
 	}
 	final func statusBecameThankYou() {
-		refreshTipJarRows()
+		freshenTipJarRows()
 	}
 }

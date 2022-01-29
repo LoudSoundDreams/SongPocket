@@ -14,19 +14,19 @@ extension AlbumsTVC {
 	final override func reflectPlayer() {
 		super.reflectPlayer()
 		
-		refreshNowPlayingIndicators(nowPlayingDetermining: self)
+		freshenNowPlayingIndicators(accordingTo: self)
 	}
 	
 	// MARK: Library Items
 	
-	final override func refreshLibraryItems() {
+	final override func freshenLibraryItems() {
 		switch purpose {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
 			break
 		case .browsing:
-			super.refreshLibraryItems()
+			super.freshenLibraryItems()
 		}
 	}
 }

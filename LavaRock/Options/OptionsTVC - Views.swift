@@ -67,11 +67,11 @@ final class AccentColorCell: UITableViewCell {
 			accessoryType = .none
 		}
 		
-		refreshSelectedBackgroundView()
+		freshenSelectedBackgroundView()
 	}
 	
 	// Similar to counterpart in `TintedSelectedCell`, except we need to call this manually to reflect “Increase Contrast”.
-	private func refreshSelectedBackgroundView() {
+	private func freshenSelectedBackgroundView() {
 		let colorView = UIView()
 		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
 		colorView.backgroundColor = accentColor?.uiColor.resolvedColor(with: traitCollection).translucent()

@@ -42,20 +42,25 @@ extension LibraryTVC {
 	
 	final func reflectDatabase() {
 		reflectPlayer() // Do this even for views that aren’t visible, so that when we reveal them by going back, the “now playing” indicators and playback toolbar are already updated.
-		refreshLibraryItemsWhenVisible()
+		
+		if view.window == nil {
+			needsFreshenLibraryItemsOnAppear = true
+		} else {
+			freshenLibraryItems()
+		}
 	}
 	
 	// MARK: Player
 	
 	// Subclasses that show a “now playing” indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func reflectPlayer() {
-		// We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren’t onscreen. This works; it’s just unusual.
-		refreshPlaybackButtons()
+		// We want every `LibraryTVC` to have its playback toolbar freshened before it appears. This tells all `LibraryTVC`s to freshen, even if they aren’t onscreen. This works; it’s just unusual.
+		freshenPlaybackButtons()
 	}
 	
 	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
-	final func refreshNowPlayingIndicators(
-		nowPlayingDetermining: NowPlayingDetermining
+	final func freshenNowPlayingIndicators(
+		accordingTo nowPlayingDetermining: NowPlayingDetermining
 	) {
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
@@ -70,28 +75,20 @@ extension LibraryTVC {
 	
 	// MARK: Library Items
 	
-	final func refreshLibraryItemsWhenVisible() {
-		if view.window == nil {
-			needsRefreshLibraryItemsOnViewDidAppear = true
-		} else {
-			refreshLibraryItems()
-		}
-	}
-	
-	@objc func refreshLibraryItems() {
+	@objc func freshenLibraryItems() {
 		isMergingChanges = false
 		
 		/*
-		 // When we need to refresh, you might be in the middle of a content-dependent task. Cancel such tasks, for simplicity.
-		 - Sort options (LibraryTVC)
-		 - “Rename Collection” dialog (CollectionsTVC)
-		 - “Combine Collections” dialog (CollectionsTVC)
-		 - “Organize or move albums?” menu (AlbumsTVC)
-		 - “Organize albums” sheet (CollectionsTVC and AlbumsTVC when in “organize albums” sheet)
-		 - “Move albums” sheet (CollectionsTVC and AlbumsTVC when in “move albums” sheet)
-		 - “New Collection” dialog (CollectionsTVC when in “move albums” sheet)
-		 - Song actions (SongsTVC)
-		 - (Editing mode is a special state, but refreshing in editing mode is fine (with no other “breath-holding modes” presented).)
+		 // When we need to freshen, you might be in the middle of a content-dependent task. Cancel such tasks, for simplicity.
+		 - Sort options (`LibraryTVC`)
+		 - “Rename Collection” dialog (`CollectionsTVC`)
+		 - “Combine Collections” dialog (`CollectionsTVC`)
+		 - “Organize or move albums?” menu (`AlbumsTVC`)
+		 - “Organize albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “organize albums” sheet)
+		 - “Move albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “move albums” sheet)
+		 - “New Collection” dialog (`CollectionsTVC` when in “move albums” sheet)
+		 - Song actions (`SongsTVC`)
+		 - (Editing mode is a special state, but freshening in editing mode is fine (with no other “breath-holding modes” presented).)
 		 */
 		let shouldNotDismissAnyModalVCs
 		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
@@ -101,10 +98,10 @@ extension LibraryTVC {
 				await view.window?.rootViewController?.dismiss_async(animated: true)
 			}
 			
-			let newViewModel = viewModel.updatedWithRefreshedData()
+			let newViewModel = viewModel.updatedWithFreshenedData()
 			await setViewModelAndMoveRows(newViewModel)
 			
-			refreshNavigationItemTitle()
+			freshenNavigationItemTitle()
 			// Update the data within each row (and header), which might be outdated.
 			// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
 			tableView.reconfigureRows(at: tableView.indexPathsForVisibleRowsNonNil)

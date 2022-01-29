@@ -103,7 +103,7 @@ final class CollectionsTVC:
 	
 	// MARK: - View State
 	
-	final func willRefreshLibraryItems() {
+	final func willFreshenLibraryItems() {
 		switch viewState {
 		case
 				.loading,
@@ -188,7 +188,7 @@ final class CollectionsTVC:
 			break
 		}
 		
-		didChangeRowsOrSelectedRows() // Refreshes the “Edit” button
+		didChangeRowsOrSelectedRows() // Freshens “Edit” button
 	}
 	
 	// MARK: - Setup
@@ -285,7 +285,7 @@ final class CollectionsTVC:
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			revertCreate() // Do this before calling `super`, because `super` calls `refreshLibraryItems`.
+			revertCreate() // Do this before calling `super`, because `super` calls `freshenLibraryItems`.
 		case .browsing:
 			break
 		}
@@ -293,14 +293,14 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
-	// MARK: - Refreshing UI
+	// MARK: - Freshening UI
 	
 	final override func reflectViewModelIsEmpty() {
 		reflectViewState()
 	}
 	
-	final override func refreshEditingButtons() {
-		super.refreshEditingButtons()
+	final override func freshenEditingButtons() {
+		super.freshenEditingButtons()
 		
 		combineButton.isEnabled = allowsCombine()
 		

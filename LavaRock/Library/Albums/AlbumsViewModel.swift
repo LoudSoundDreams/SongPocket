@@ -68,10 +68,10 @@ extension AlbumsViewModel: LibraryViewModel {
 		}
 	}
 	
-	func updatedWithRefreshedData() -> Self {
-		let refreshedViewContainer = viewContainer.refreshed()
+	func updatedWithFreshenedData() -> Self {
+		let freshenedViewContainer = viewContainer.freshened()
 		return Self(
-			viewContainer: refreshedViewContainer,
+			viewContainer: freshenedViewContainer,
 			context: context,
 			prerowsInEachSection: prerowsInEachSection)
 	}

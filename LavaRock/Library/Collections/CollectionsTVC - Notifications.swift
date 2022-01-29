@@ -35,26 +35,26 @@ extension CollectionsTVC {
 		super.reflectPlayer()
 		
 		if let viewModel = viewModel as? NowPlayingDetermining {
-			refreshNowPlayingIndicators(nowPlayingDetermining: viewModel)
+			freshenNowPlayingIndicators(accordingTo: viewModel)
 		}
 	}
 	
 	// MARK: Library Items
 	
-	final override func refreshLibraryItems() {
+	final override func freshenLibraryItems() {
 		switch purpose {
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
 			break
 		case .browsing:
-			willRefreshLibraryItems()
+			willFreshenLibraryItems()
 			
 			if viewModelBeforeCombining != nil {
 				revertCombine(thenSelect: [])
 			}
 			
-			super.refreshLibraryItems()
+			super.freshenLibraryItems()
 		}
 	}
 }

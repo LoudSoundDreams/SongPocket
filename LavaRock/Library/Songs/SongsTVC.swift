@@ -57,7 +57,7 @@ final class SongsTVC:
 		}
 	}
 	
-	// MARK: - Refreshing UI
+	// MARK: - Freshening UI
 	
 	final override func reflectViewModelIsEmpty() {
 		let toDelete = tableView.allSections()

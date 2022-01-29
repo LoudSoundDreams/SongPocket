@@ -145,8 +145,8 @@ class LibraryTVC: UITableViewController {
 	
 	// State
 	final var isMergingChanges = false
-	final var needsRefreshLibraryItemsOnViewDidAppear = false
-	final private var isAnimatingDuringSetItemsAndRefresh = 0
+	final var needsFreshenLibraryItemsOnAppear = false
+	final private var isAnimatingBatchUpdates = 0
 	
 	// MARK: - Setup
 	
@@ -164,7 +164,7 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	func setUpUI() {
-		refreshNavigationItemTitle()
+		freshenNavigationItemTitle()
 		
 		setBarButtons(animated: false)
 		
@@ -176,9 +176,9 @@ class LibraryTVC: UITableViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if needsRefreshLibraryItemsOnViewDidAppear {
-			needsRefreshLibraryItemsOnViewDidAppear = false
-			refreshLibraryItems()
+		if needsFreshenLibraryItemsOnAppear {
+			needsFreshenLibraryItemsOnAppear = false
+			freshenLibraryItems()
 		}
 	}
 	
@@ -255,7 +255,7 @@ class LibraryTVC: UITableViewController {
 			rowBatchUpdates.append(rowBatchUpdatesInSection)
 		}
 		
-		isAnimatingDuringSetItemsAndRefresh += 1
+		isAnimatingBatchUpdates += 1
 		tableView.performBatchUpdates(
 			firstReloading: toReload,
 			with: .fade,
@@ -263,8 +263,8 @@ class LibraryTVC: UITableViewController {
 			andRows: rowBatchUpdates,
 			with: .middle
 		) {
-			self.isAnimatingDuringSetItemsAndRefresh -= 1
-			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // If we start multiple refreshes in quick succession, refreshes after the first one can beat the first one to the completion closure, because they don't have to animate anything in performBatchUpdates. This line of code lets us wait for the animations to finish before we execute the completion closure (once).
+			self.isAnimatingBatchUpdates -= 1
+			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate anything. Here, we wait for the animations to finish before we run the completion closure (once).
 				completion?()
 			}
 		}
@@ -306,7 +306,7 @@ class LibraryTVC: UITableViewController {
 			toMove: toMove)
 	}
 	
-	// MARK: - Refreshing UI
+	// MARK: - Freshening UI
 	
 	func reflectViewModelIsEmpty() {
 		fatalError()
@@ -316,12 +316,12 @@ class LibraryTVC: UITableViewController {
 	final func deleteThenExit(sections toDelete: [Int]) {
 		tableView.deselectAllRows(animated: true)
 		
-		isAnimatingDuringSetItemsAndRefresh += 1
+		isAnimatingBatchUpdates += 1
 		tableView.performBatchUpdates {
 			tableView.deleteSections(IndexSet(toDelete), with: .middle)
 		} completion: { _ in
-			self.isAnimatingDuringSetItemsAndRefresh -= 1
-			if self.isAnimatingDuringSetItemsAndRefresh == 0 { // See corresponding comment in `setItemsAndMoveRows`.
+			self.isAnimatingBatchUpdates -= 1
+			if self.isAnimatingBatchUpdates == 0 { // See corresponding comment in `setItemsAndMoveRows`.
 				self.dismiss(animated: true) { // If we moved all the `Album`s out of a `Collection`, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
 					self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 				}
@@ -331,7 +331,7 @@ class LibraryTVC: UITableViewController {
 		didChangeRowsOrSelectedRows()
 	}
 	
-	final func refreshNavigationItemTitle() {
+	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()
 	}
 	
@@ -344,7 +344,7 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	private func setBarButtons(animated: Bool) {
-		refreshEditingButtons()
+		freshenEditingButtons()
 		navigationItem.setRightBarButtonItems(topRightButtons, animated: animated)
 		
 		if isEditing {
@@ -353,18 +353,18 @@ class LibraryTVC: UITableViewController {
 		} else {
 			navigationItem.setLeftBarButtonItems(viewingModeTopLeftButtons, animated: animated)
 			
-			refreshPlaybackButtons()
+			freshenPlaybackButtons()
 			setToolbarItems(viewingModeToolbarButtons, animated: animated)
 		}
 	}
 	
 	final func didChangeRowsOrSelectedRows() {
-		refreshEditingButtons()
+		freshenEditingButtons()
 	}
 	
 	// Overrides should call super (this implementation).
-	func refreshEditingButtons() {
-		// There can momentarily be 0 library items if we're refreshing to reflect changes in the Music library.
+	func freshenEditingButtons() {
+		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
 		
 		editButtonItem.isEnabled = allowsEdit()
 		
@@ -380,7 +380,7 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	final override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
-			let newViewModel = viewModel.updatedWithRefreshedData() // Deletes empty groups if we reordered all the items out of them.
+			let newViewModel = viewModel.updatedWithFreshenedData() // Deletes empty groups if we reordered all the items out of them.
 			_setViewModelAndMoveRows(newViewModel) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
 			// As of iOS 15.4 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
 			

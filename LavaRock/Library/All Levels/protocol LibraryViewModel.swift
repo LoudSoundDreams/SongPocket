@@ -13,7 +13,7 @@ enum LibraryViewContainer {
 	case container(LibraryContainer)
 	case deleted(LibraryContainer)
 	
-	func refreshed() -> Self {
+	func freshened() -> Self {
 		switch self {
 		case .library:
 			return .library
@@ -46,7 +46,7 @@ protocol LibraryViewModel {
 		_ sortOption: LibraryTVC.SortOption,
 		forItems items: [NSManagedObject]
 	) -> Bool
-	func updatedWithRefreshedData() -> Self
+	func updatedWithFreshenedData() -> Self
 }
 
 enum LibrarySectionIdentifier: Hashable {
@@ -271,7 +271,7 @@ extension LibraryViewModel {
 	
 	// MARK: - Editing
 	
-	// WARNING: Leaves a group empty if you move all the items out of it. You must call `updatedWithRefreshedData` later to delete empty groups.
+	// WARNING: Leaves a group empty if you move all the items out of it. You must call `updatedWithFreshenedData` later to delete empty groups.
 	mutating func moveItem(
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath

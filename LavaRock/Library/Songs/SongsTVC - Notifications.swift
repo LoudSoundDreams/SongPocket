@@ -14,6 +14,6 @@ extension SongsTVC {
 	final override func reflectPlayer() {
 		super.reflectPlayer()
 		
-		refreshNowPlayingIndicators(nowPlayingDetermining: self)
+		freshenNowPlayingIndicators(accordingTo: self)
 	}
 }

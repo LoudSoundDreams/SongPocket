@@ -8,7 +8,7 @@
 import UIKit
 
 extension LibraryTVC {
-	final func refreshPlaybackButtons() {
+	final func freshenPlaybackButtons() {
 		let playButtonAdditionalAccessibilityTraits: UIAccessibilityTraits = .startsMediaSession
 		
 		func configurePlayButton() {

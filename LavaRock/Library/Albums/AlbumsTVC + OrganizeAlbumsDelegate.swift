@@ -7,7 +7,7 @@
 
 extension AlbumsTVC: OrganizeAlbumsDelegate {
 	final func didSaveOrganizeThenDismiss() {
-		let viewModel = viewModel.updatedWithRefreshedData() as! AlbumsViewModel // Shadowing so that we don't accidentally refer to `self.viewModel`, which is incoherent at this point.
+		let viewModel = viewModel.updatedWithFreshenedData() as! AlbumsViewModel // Shadowing so that we don't accidentally refer to `self.viewModel`, which is incoherent at this point.
 		let toKeepSelected = idsOfAlbumsToKeepSelected
 		idsOfAlbumsToKeepSelected = []
 		let toSelect = viewModel.indexPathsForAllItems().filter {
