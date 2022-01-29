@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 import OSLog
 
+@MainActor
 extension AlbumsTVC {
 	final func makeOrganizeOrMoveMenu() -> UIMenu {
 		let organizeElement: UIMenuElement = {
@@ -88,13 +89,16 @@ extension AlbumsTVC {
 				return clipboard.idsOfDestinationCollections.contains(collection.objectID)
 			}
 			// Similar to `reflectDatabase`.
-			collectionsTVC.setViewModelAndMoveRows(
-				firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
-				collectionsViewModelPreviewingOrganizeAlbums
-			) {
+			Task {
+				await collectionsTVC.setViewModelAndMoveRows_async(
+					firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
+					collectionsViewModelPreviewingOrganizeAlbums,
+					runningBeforeContinuation: {
+						collectionsTVC.reflectPlayer()
+					})
+				
 				self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
 			}
-			collectionsTVC.reflectPlayer()
 		}
 	}
 	

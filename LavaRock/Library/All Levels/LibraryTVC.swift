@@ -196,9 +196,10 @@ class LibraryTVC: UITableViewController {
 	final func setViewModelAndMoveRows_async(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
-		thenSelecting toSelect: Set<IndexPath> = []
+		thenSelecting toSelect: Set<IndexPath> = [],
+		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async {
-		await withCheckedContinuation { continuation in
+		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
 			setViewModelAndMoveRows(
 				firstReloading: toReload,
 				newViewModel,
@@ -206,6 +207,7 @@ class LibraryTVC: UITableViewController {
 			) {
 				continuation.resume()
 			}
+			beforeContinuation?()
 		}
 	}
 	
