@@ -86,13 +86,30 @@ extension CollectionsTVC {
 			let indexPathOfCombined = selectedIndexPaths.first
 		else { return }
 		
+		viewModelBeforeCombining = collectionsViewModel
+		
 		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
 		let smartTitle = Self.smartCollectionTitle(combining: selectedCollections)
+		
+		let title = smartTitle ?? (
+			Enabling.multicollection
+			? LocalizedString.combinedSectionDefaultTitle
+			: LocalizedString.combinedCollectionDefaultTitle)
+		let newViewModel = collectionsViewModel.updatedAfterCombining_inNewChildContext(
+			fromInOrder: selectedCollections,
+			into: indexPathOfCombined,
+			title: title)
 		Task {
-			await previewCombine(
-				inOrder: selectedCollections,
-				into: indexPathOfCombined,
-				smartTitle: smartTitle)
+			let _ = await tableView.performBatchUpdates_async {
+				self.tableView.scrollToRow(
+					at: indexPathOfCombined,
+					at: .none,
+					animated: true)
+			}
+			
+			await setViewModelAndMoveRows_async(
+				newViewModel,
+				thenSelecting: [indexPathOfCombined])
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: Enabling.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
@@ -108,32 +125,6 @@ extension CollectionsTVC {
 				})
 			present(dialog, animated: true)
 		}
-	}
-	
-	private func previewCombine(
-		inOrder collections: [Collection],
-		into indexPathOfCombined: IndexPath,
-		smartTitle: String?
-	) async {
-		let collectionsViewModel = viewModel as! CollectionsViewModel
-		
-		viewModelBeforeCombining = collectionsViewModel
-		
-		let title = smartTitle ?? (Enabling.multicollection ? LocalizedString.combinedSectionDefaultTitle : LocalizedString.combinedCollectionDefaultTitle)
-		let newViewModel = collectionsViewModel.updatedAfterCombining_inNewChildContext(
-			fromInOrder: collections,
-			into: indexPathOfCombined,
-			title: title)
-		let _ = await tableView.performBatchUpdates_async {
-			self.tableView.scrollToRow(
-				at: indexPathOfCombined,
-				at: .none,
-				animated: true)
-		}
-		
-		await setViewModelAndMoveRows_async(
-			newViewModel,
-			thenSelecting: [indexPathOfCombined])
 	}
 	
 	final func revertCombine(
