@@ -468,9 +468,9 @@
 		07E0BBD8276567760010117E /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				07E0BBDC276567760010117E /* UserDefaults.swift */,
 				07E0BBDA276567760010117E /* NotificationCenter.swift */,
 				07E0BBD9276567760010117E /* Notification.Name.swift */,
-				07E0BBDC276567760010117E /* UserDefaults.swift */,
 				07E0BBDB276567760010117E /* URL.swift */,
 			);
 			path = Foundation;

@@ -379,7 +379,7 @@ class LibraryTVC: UITableViewController {
 	
 	// Overrides should call super (this implementation).
 	final override func setEditing(_ editing: Bool, animated: Bool) {
-		if isEditing {
+		if !editing {
 			let newViewModel = viewModel.updatedWithRefreshedData() // Deletes empty groups if we reordered all the items out of them.
 			_setViewModelAndMoveRows(newViewModel) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
 			// As of iOS 15.4 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
