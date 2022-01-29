@@ -8,7 +8,6 @@
 import UIKit
 
 extension UIViewController {
-	// TO DO: Do we need `@MainActor` on this?
 	final func dismiss_async(
 		animated: Bool
 	) async {

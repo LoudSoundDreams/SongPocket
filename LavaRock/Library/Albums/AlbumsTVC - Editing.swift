@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 import OSLog
 
-@MainActor
 extension AlbumsTVC {
 	final func makeOrganizeOrMoveMenu() -> UIMenu {
 		let organizeElement: UIMenuElement = {

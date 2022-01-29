@@ -8,7 +8,6 @@
 import UIKit
 import CoreData
 
-@MainActor
 extension AlbumsTVC {
 	final func moveHere(to indexPath: IndexPath) {
 		guard

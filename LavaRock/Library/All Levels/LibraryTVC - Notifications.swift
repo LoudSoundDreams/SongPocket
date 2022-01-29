@@ -78,7 +78,6 @@ extension LibraryTVC {
 		}
 	}
 	
-	@MainActor
 	@objc func refreshLibraryItems() {
 		isMergingChanges = false
 		

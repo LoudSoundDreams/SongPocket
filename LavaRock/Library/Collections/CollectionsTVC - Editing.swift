@@ -14,7 +14,6 @@ extension CollectionsTVC: UITextFieldDelegate {
 	}
 }
 
-@MainActor
 extension CollectionsTVC {
 	// MARK: Renaming
 	

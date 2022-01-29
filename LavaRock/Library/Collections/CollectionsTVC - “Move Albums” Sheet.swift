@@ -8,7 +8,6 @@
 import UIKit
 import CoreData
 
-@MainActor
 extension CollectionsTVC {
 	private static func smartCollectionTitle(
 		moving albumsOutOfOrder: [Album]

@@ -192,7 +192,6 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Setting Items
 	
-	@MainActor
 	final func setViewModelAndMoveRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
