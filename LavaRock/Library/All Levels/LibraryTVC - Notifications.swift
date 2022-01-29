@@ -97,14 +97,12 @@ extension LibraryTVC {
 		let shouldNotDismissAnyModalVCs
 		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 		|| presentedViewController is UIHostingController<OptionsView>
-		if shouldNotDismissAnyModalVCs {
-			refreshLibraryItemsPart2()
-		} else {
-			Task {
+		Task {
+			if !shouldNotDismissAnyModalVCs {
 				await view.window?.rootViewController?.dismiss_async(animated: true)
-				
-				refreshLibraryItemsPart2()
 			}
+			
+			refreshLibraryItemsPart2()
 		}
 	}
 	
