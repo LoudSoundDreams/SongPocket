@@ -75,7 +75,7 @@ extension AlbumsTVC {
 			prompt: clipboard.prompt,
 			idsOfSourceCollections: clipboard.idsOfSourceCollections)
 		
-		// Make the "organize albums" sheet show the child context, but only after we present it.
+		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? CollectionsViewModel else { return }
 		present(libraryNC, animated: true) {
 			collectionsTVC.organizeAlbumsClipboard = clipboard
@@ -208,7 +208,7 @@ extension AlbumsTVC {
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
-		// Provide the extra data that the "move albums" sheet needs.
+		// Provide the extra data that the “move albums” sheet needs.
 		let indexPathsToMove = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		let albumsToMove = indexPathsToMove.map { albumsViewModel.albumNonNil(at: $0) }
@@ -216,7 +216,7 @@ extension AlbumsTVC {
 			albumsBeingMoved: albumsToMove,
 			delegate: self)
 		
-		// Make the "move albums" sheet use a child managed object context, so that we can cancel without having to revert our changes.
+		// Make the “move albums” sheet use a child managed object context, so that we can cancel without having to revert our changes.
 		let childContext = NSManagedObjectContext(.mainQueue)
 		childContext.parent = viewModel.context
 		collectionsTVC.viewModel = CollectionsViewModel(

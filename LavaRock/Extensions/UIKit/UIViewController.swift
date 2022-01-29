@@ -8,7 +8,10 @@
 import UIKit
 
 extension UIViewController {
-	final func dismiss_async(animated: Bool) async {
+	// TO DO: Do we need `@MainActor` on this?
+	final func dismiss_async(
+		animated: Bool
+	) async {
 		await withCheckedContinuation { continuation in
 			dismiss(animated: animated) {
 				continuation.resume()

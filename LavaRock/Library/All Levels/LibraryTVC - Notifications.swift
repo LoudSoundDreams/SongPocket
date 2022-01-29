@@ -41,19 +41,19 @@ extension LibraryTVC {
 	// MARK: - Database
 	
 	final func reflectDatabase() {
-		reflectPlayer() // Do this even for views that aren't visible, so that when we reveal them by going back, the "now playing" indicators and playback toolbar are already updated.
+		reflectPlayer() // Do this even for views that aren’t visible, so that when we reveal them by going back, the “now playing” indicators and playback toolbar are already updated.
 		refreshLibraryItemsWhenVisible()
 	}
 	
 	// MARK: Player
 	
-	// Subclasses that show a "now playing" indicator should override this method, call super (this implementation), and update that indicator.
+	// Subclasses that show a “now playing” indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func reflectPlayer() {
-		// We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren't onscreen. This works; it's just unusual.
+		// We want every LibraryTVC to have its playback toolbar refreshed before it appears. This tells all LibraryTVCs to refresh, even if they aren’t onscreen. This works; it’s just unusual.
 		refreshPlaybackButtons()
 	}
 	
-	// `LibraryTVC` itself doesn't call this, but its subclasses might want to.
+	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
 	final func refreshNowPlayingIndicators(
 		nowPlayingDetermining: NowPlayingDetermining
 	) {

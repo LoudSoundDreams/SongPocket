@@ -99,7 +99,7 @@ extension AlbumsTVC {
 		
 		let album = albumsViewModel.albumNonNil(at: indexPath)
 		
-		// "Now playing" indicator
+		// “Now playing” indicator
 		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(

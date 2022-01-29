@@ -80,7 +80,7 @@ extension SongsTVC {
 		let album = songsViewModel.album(forSection: indexPath.section)
 		let representative = album.representativeMPMediaItem()
 		
-		// "Now playing" indicator
+		// “Now playing” indicator
 		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
 		let isPlaying = sharedPlayer?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
