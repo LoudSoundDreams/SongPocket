@@ -111,9 +111,10 @@ extension CollectionsTVC {
 			proposedTitle: proposedTitle)
 		
 		Task {
-			let _ = await tableView.performBatchUpdates_async {
-				guard didChangeTitle else { return }
-				self.tableView.reloadRows(at: [indexPath], with: .fade)
+			if didChangeTitle {
+				let _ = await tableView.performBatchUpdates_async {
+					self.tableView.reloadRows(at: [indexPath], with: .fade)
+				}
 			}
 			
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
