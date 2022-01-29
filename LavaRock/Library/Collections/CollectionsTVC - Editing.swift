@@ -42,7 +42,7 @@ extension CollectionsTVC {
 		proposedTitle: String?,
 		thenSelectIf shouldSelectRow: Bool
 	) {
-		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
+		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		let didChangeTitle = collectionsViewModel.renameAndReturnDidChangeTitle(
 			at: indexPath,
@@ -60,12 +60,29 @@ extension CollectionsTVC {
 	
 	// MARK: Combining
 	
+	private static func smartCollectionTitle(
+		combining collections: [Collection]
+	) -> String? {
+		let titles = collections.compactMap { $0.title }
+		guard let firstTitle = titles.first else {
+			return nil
+		}
+		let restOfTitles = titles.dropFirst()
+		
+		// Check whether the titles of the `Collection`s we're combining are all identical.
+		if restOfTitles.allSatisfy({ $0 == firstTitle }) {
+			return firstTitle
+		}
+		
+		// Otherwise, give up.
+		return nil
+	}
+	
 	final func previewCombineAndPrompt() {
 		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
-			viewModelBeforeCombining == nil, // Prevents you from using the "Combine" button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCreate` when we tap "New Collection", `didAlreadyCommitMove` for "Move (Albums) Here", and `didAlreadyCommitOrganize` for "Save (Preview of Organized Albums)".
-			// You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
+			viewModelBeforeCombining == nil, // Prevents you from using the “Combine” button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCreate` when we tap “New Collection”, `didAlreadyCommitMove` for “Move (Albums) Here”, and `didAlreadyCommitOrganize` for “Save (Preview of Organized Albums)”. You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
 			let indexPathOfCombined = selectedIndexPaths.first
 		else { return }
 		
@@ -91,24 +108,6 @@ extension CollectionsTVC {
 				})
 			present(dialog, animated: true)
 		}
-	}
-	
-	private static func smartCollectionTitle(
-		combining collections: [Collection]
-	) -> String? {
-		let titles = collections.compactMap { $0.title }
-		guard let firstTitle = titles.first else {
-			return nil
-		}
-		let restOfTitles = titles.dropFirst()
-		
-		// Check whether the titles of the `Collection`s we're combining are all identical.
-		if restOfTitles.allSatisfy({ $0 == firstTitle }) {
-			return firstTitle
-		}
-		
-		// Otherwise, give up.
-		return nil
 	}
 	
 	private func previewCombine(
@@ -140,7 +139,7 @@ extension CollectionsTVC {
 	final func revertCombine(
 		thenSelect originalSelectedIndexPaths: [IndexPath]
 	) {
-		guard let originalViewModel = viewModelBeforeCombining else { return }
+		let originalViewModel = viewModelBeforeCombining!
 		
 		viewModelBeforeCombining = nil
 		
@@ -153,7 +152,7 @@ extension CollectionsTVC {
 		into indexPathOfCombined: IndexPath,
 		proposedTitle: String?
 	) {
-		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
+		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		viewModelBeforeCombining = nil
 		
