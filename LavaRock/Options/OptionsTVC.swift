@@ -18,7 +18,7 @@ final class OptionsTVC: UITableViewController {
 		super.viewDidLoad()
 		
 		if TipJarViewModel.shared.status == .notYetFirstLoaded {
-			PurchaseManager.shared.requestAllSKProducts()
+			PurchaseManager.shared.requestTipProduct()
 		}
 	}
 	

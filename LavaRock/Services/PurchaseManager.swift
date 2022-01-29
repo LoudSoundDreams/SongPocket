@@ -11,51 +11,57 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 	private override init() {}
 	static let shared = PurchaseManager() // We can’t turn everything in this class static, because StoreKit only works with instances, not types.
 	
-	private(set) lazy var tipProduct: SKProduct? = nil
-	private(set) lazy var tipPriceFormatter: NumberFormatter? = nil
-	
 	final func beginObservingPaymentTransactions() {
-		SKPaymentQueue.default().add(self) // We can’t turn this method static, because StoreKit needs an instance here, not a type.
+		Self.paymentQueue.add(self) // We can’t turn this method static, because StoreKit needs an instance here, not a type.
 	}
 	
 	@MainActor
-	final func requestAllSKProducts() {
-		let identifiers = ProductIdentifier.allCases.map { $0.rawValue }
-		let productsRequest = SKProductsRequest(productIdentifiers: Set(identifiers))
-		productsRequest.delegate = self // We can’t turn this method static, because StoreKit needs an instance here, not a type.
-		productsRequest.start()
-		savedSKProductsRequest = productsRequest
+	final func requestTipProduct() {
+		tipProductRequest.start()
 		
 		TipJarViewModel.shared.status = .loading
 	}
 	
-	@MainActor
-	final func addToPaymentQueue(_ skProduct: SKProduct) {
-		let skPayment = SKPayment(product: skProduct)
-//		let skPayment = SKMutablePayment(product: skProduct)
-//		skPayment.simulatesAskToBuyInSandbox = true
-		SKPaymentQueue.default().add(skPayment)
+	final var tipTitle: String? {
+		guard let tipProduct = tipProduct else { return nil }
+		return tipProduct.localizedTitle
+	}
+	
+	final var tipPrice: String? {
+		guard let tipProduct = tipProduct else { return nil }
 		
-		switch skProduct {
-		case tipProduct:
-			TipJarViewModel.shared.status = .confirming
-		default:
-			break
-		}
+		let formatter = NumberFormatter()
+		formatter.numberStyle = .currency
+		formatter.locale = tipProduct.priceLocale
+		
+		return formatter.string(from: tipProduct.price)
+	}
+	
+	@MainActor
+	final func buyTip() {
+		guard let tipProduct = tipProduct else { return }
+		let payment = SKPayment(product: tipProduct)
+//		let payment = SKMutablePayment(product: tipProduct)
+//		payment.simulatesAskToBuyInSandbox = true
+		Self.paymentQueue.add(payment)
+		
+		TipJarViewModel.shared.status = .confirming
 	}
 	
 	// MARK: - PRIVATE
 	
-	private enum ProductIdentifier: String, CaseIterable {
-		case tip = "com.loudsounddreams.LavaRock.tip"
-	}
-	
-	private lazy var savedSKProductsRequest: SKProductsRequest? = nil
-	// For testing only
-//	private lazy var isTestingDidFailToReceiveAnySKProducts = true
+	private static let tipProductID = "com.loudsounddreams.LavaRock.tip"
+	private lazy var tipProductRequest: SKProductsRequest = {
+		let productIdentifiers: Set<String> = [Self.tipProductID]
+		let result = SKProductsRequest(productIdentifiers: productIdentifiers)
+		result.delegate = self
+		return result
+	}()
+	private lazy var tipProduct: SKProduct? = nil
+	private static let paymentQueue: SKPaymentQueue = .default()
 	
 	deinit {
-		SKPaymentQueue.default().remove(self)
+		Self.paymentQueue.remove(self)
 	}
 }
 
@@ -67,31 +73,14 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		didReceive response: SKProductsResponse
 	) {
 		DispatchQueue.main.async {
-			// For testing only
-//			if self.isTestingDidFailToReceiveAnySKProducts {
-//				self.isTestingDidFailToReceiveAnySKProducts = false
-//				self.didFailToReceiveAnySKProducts()
-//				return
-//			}
-			
-			guard !response.products.isEmpty else {
-				self.didFailToReceiveAnySKProducts()
-				return
-			}
-			
 			response.products.forEach { product in
-				let rawIdentifier = product.productIdentifier
-				guard let productIdentifier = ProductIdentifier(rawValue: rawIdentifier) else { return }
-				switch productIdentifier {
-				case .tip:
+				switch product.productIdentifier {
+				case Self.tipProductID:
 					self.tipProduct = product
 					
-					let formatter = NumberFormatter()
-					formatter.numberStyle = .currency
-					formatter.locale = product.priceLocale
-					self.tipPriceFormatter = formatter
-					
 					TipJarViewModel.shared.status = .ready
+				default:
+					break
 				}
 			}
 		}
@@ -102,17 +91,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		didFailWithError error: Error
 	) {
 		DispatchQueue.main.async {
-			if request == self.savedSKProductsRequest {
-				self.didFailToReceiveAnySKProducts()
-			}
-		}
-	}
-	
-	@MainActor
-	private func didFailToReceiveAnySKProducts() {
-		ProductIdentifier.allCases.forEach {
-			switch $0 {
-			case .tip:
+			if self.tipProductRequest == request {
 				TipJarViewModel.shared.status = .reload
 			}
 		}
@@ -126,27 +105,33 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 	{
 		DispatchQueue.main.async {
 			transactions.forEach { transaction in
-				guard let productIdentifier = ProductIdentifier(rawValue: transaction.payment.productIdentifier) else { return }
-				switch productIdentifier {
-				case .tip:
-					switch transaction.transactionState {
-					case .purchasing:
-						break
-					case .deferred:
-						TipJarViewModel.shared.status = .ready
-					case
-							.failed,
-							.restored:
-						SKPaymentQueue.default().finishTransaction(transaction)
-						TipJarViewModel.shared.status = .ready
-					case .purchased:
-						SKPaymentQueue.default().finishTransaction(transaction)
-						TipJarViewModel.shared.status = .thankYou
-					@unknown default:
-						fatalError()
-					}
+				switch transaction.payment.productIdentifier {
+				case Self.tipProductID:
+					self.handleTipTransaction(transaction)
+				default:
+					break
 				}
 			}
+		}
+	}
+	
+	@MainActor
+	private func handleTipTransaction(_ tipTransaction: SKPaymentTransaction) {
+		switch tipTransaction.transactionState {
+		case .purchasing:
+			break
+		case .deferred:
+			TipJarViewModel.shared.status = .ready
+		case
+				.failed,
+				.restored:
+			Self.paymentQueue.finishTransaction(tipTransaction)
+			TipJarViewModel.shared.status = .ready
+		case .purchased:
+			Self.paymentQueue.finishTransaction(tipTransaction)
+			TipJarViewModel.shared.status = .thankYou
+		@unknown default:
+			fatalError()
 		}
 	}
 }

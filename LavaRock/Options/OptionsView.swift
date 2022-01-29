@@ -16,7 +16,7 @@ struct OptionsView: View {
 	
 	init() {
 		if tipJarViewModel.status == .notYetFirstLoaded {
-			PurchaseManager.shared.requestAllSKProducts()
+			PurchaseManager.shared.requestTipProduct()
 		}
 	}
 	
@@ -59,15 +59,13 @@ struct OptionsView: View {
 						Text(LocalizedString.loadingEllipsis).foregroundColor(.secondary)
 					case .reload:
 						Button {
-							PurchaseManager.shared.requestAllSKProducts()
+							PurchaseManager.shared.requestTipProduct()
 						} label: {
 							Text(LocalizedString.reload).foregroundColor(theme.accentColor.color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.
 						}
 					case .ready:
 						Button {
-							if let tipProduct = PurchaseManager.shared.tipProduct {
-								PurchaseManager.shared.addToPaymentQueue(tipProduct)
-							}
+							PurchaseManager.shared.buyTip()
 						} label: {
 							HStack {
 								Text("tip").foregroundColor(theme.accentColor.color) // Don’t use `.accentColor`, because SwiftUI applies “Increase Contrast” twice.

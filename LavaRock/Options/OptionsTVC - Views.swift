@@ -121,17 +121,10 @@ final class TipReadyCell: TintedSelectedCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		guard
-			let tipProduct = PurchaseManager.shared.tipProduct,
-			let tipPriceFormatter = PurchaseManager.shared.tipPriceFormatter
-		else {
-			contentConfiguration = defaultContentConfiguration()
-			return
-		}
 		var configuration = UIListContentConfiguration.valueCell()
-		configuration.text = tipProduct.localizedTitle
+		configuration.text = PurchaseManager.shared.tipTitle
 		configuration.textProperties.color = .tintColor
-		configuration.secondaryText = tipPriceFormatter.string(from: tipProduct.price)
+		configuration.secondaryText = PurchaseManager.shared.tipPrice
 		contentConfiguration = configuration
 	}
 }
