@@ -249,7 +249,7 @@ extension CollectionsTVC {
 			case .prerow(let prerow):
 				switch prerow {
 				case .createCollection:
-					previewCreateAndPrompt()
+					createAndPrompt()
 					return
 				}
 			case .collection:
