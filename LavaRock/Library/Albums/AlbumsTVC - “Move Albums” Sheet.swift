@@ -8,6 +8,7 @@
 import UIKit
 import CoreData
 
+@MainActor
 extension AlbumsTVC {
 	final func moveHere(to indexPath: IndexPath) {
 		guard
@@ -21,13 +22,15 @@ extension AlbumsTVC {
 		let newViewModel = albumsViewModel.updatedAfterMoving(
 			albumsWith: clipboard.idsOfAlbumsBeingMoved,
 			toSection: indexPath.section)
-		setViewModelAndMoveRows(newViewModel) {
-			self.viewModel.context.tryToSave()
-			self.viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven't exited editing mode, because if you moved all the `Album`s out of a `Collection`, we'll close the `Collection` and exit editing mode shortly.
+		Task {
+			await setViewModelAndMoveRows_async(newViewModel)
+			
+			viewModel.context.tryToSave()
+			viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven’t exited editing mode, because if you moved all the `Album`s out of a `Collection`, we’ll close the `Collection` and exit editing mode shortly.
 			
 			NotificationCenter.default.post(Notification(name: .LRUserDidUpdateDatabase))
 			
-			self.dismiss(animated: true)
+			dismiss(animated: true)
 			clipboard.delegate?.didMoveThenDismiss()
 		}
 	}
