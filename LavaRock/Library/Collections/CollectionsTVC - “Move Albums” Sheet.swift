@@ -88,10 +88,11 @@ extension CollectionsTVC {
 	}
 	
 	final func revertCreate() {
-		guard
-			case let .movingAlbums(clipboard) = purpose,
-			let collectionsViewModel = viewModel as? CollectionsViewModel
-		else { return }
+		guard case let .movingAlbums(clipboard) = purpose else {
+			fatalError()
+		}
+		
+		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		clipboard.didAlreadyCreate = false
 		
@@ -100,7 +101,7 @@ extension CollectionsTVC {
 	}
 	
 	private func renameAndOpenCreated(proposedTitle: String?) {
-		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
+		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		let indexPath = collectionsViewModel.indexPathOfNewCollection
 		

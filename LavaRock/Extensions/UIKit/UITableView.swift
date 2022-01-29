@@ -103,7 +103,7 @@ extension UITableView {
 	
 	final func deselectAllRows(animated: Bool) {
 		indexPathsForSelectedRowsNonNil.forEach {
-			deselectRow(at: $0, animated: animated) // As of iOS 14.2 developer beta 1, this doesn't animate for some reason. It works right on iOS 13.5.1.
+			deselectRow(at: $0, animated: animated)
 		}
 	}
 }

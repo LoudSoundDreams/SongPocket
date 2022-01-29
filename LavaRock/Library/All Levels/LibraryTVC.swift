@@ -383,31 +383,29 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	final override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
-			// Delete empty groups if we reordered all the items out of them.
-			let newViewModel = viewModel.updatedWithRefreshedData()
-			setViewModelAndMoveRows(newViewModel)
+			let newViewModel = viewModel.updatedWithRefreshedData() // Deletes empty groups if we reordered all the items out of them.
+			setViewModelAndMoveRows(newViewModel) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
+			// As of iOS 15.4 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
 			
-			viewModel.context.tryToSave()
+			newViewModel.context.tryToSave()
 		}
 		
 		super.setEditing(editing, animated: animated)
 		
 		if Enabling.tabBar {
 			setBarButtons(animated: false)
-		} else {
-			setBarButtons(animated: animated)
-		}
-		
-		if Enabling.tabBar {
 			if editing {
 				showToolbar()
 			} else {
 				hideToolbar()
 			}
+		} else {
+			setBarButtons(animated: animated)
 		}
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
-		// During a WWDC 2021 lab, a UIKit engineer said that this is the best practice for doing that.
+		// During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
+		// As of iOS 15.4 developer beta 1, you must do this after `super.setEditing`, not before.
 	}
 	
 	// You should only be allowed to sort contiguous items within the same GroupOfLibraryItems.
