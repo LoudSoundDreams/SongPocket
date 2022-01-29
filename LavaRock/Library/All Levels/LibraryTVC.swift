@@ -192,7 +192,25 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Setting Items
 	
-	final func setViewModelAndMoveRows(
+	final func setViewModelAndMoveRows_async(
+		firstReloading toReload: [IndexPath] = [],
+		_ newViewModel: LibraryViewModel,
+		thenSelecting toSelect: Set<IndexPath> = []
+	) async {
+		await withCheckedContinuation { continuation in
+			setViewModelAndMoveRows(
+				firstReloading: toReload,
+				newViewModel,
+				thenSelecting: toSelect
+			) {
+				continuation.resume()
+			}
+		}
+	}
+	
+//	private
+	final
+	func setViewModelAndMoveRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],

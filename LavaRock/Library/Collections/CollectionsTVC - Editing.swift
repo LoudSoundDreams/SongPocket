@@ -14,6 +14,7 @@ extension CollectionsTVC: UITextFieldDelegate {
 	}
 }
 
+@MainActor
 extension CollectionsTVC {
 	// MARK: Renaming
 	
@@ -70,11 +71,12 @@ extension CollectionsTVC {
 		
 		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
 		let smartTitle = Self.smartCollectionTitle(combining: selectedCollections)
-		previewCombine(
-			inOrder: selectedCollections,
-			into: indexPathOfCombined,
-			smartTitle: smartTitle
-		) {
+		Task {
+			await previewCombine(
+				inOrder: selectedCollections,
+				into: indexPathOfCombined,
+				smartTitle: smartTitle)
+			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: Enabling.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
 				textFieldText: smartTitle,
@@ -87,7 +89,7 @@ extension CollectionsTVC {
 						into: indexPathOfCombined,
 						proposedTitle: textFieldText)
 				})
-			self.present(dialog, animated: true)
+			present(dialog, animated: true)
 		}
 	}
 	
@@ -112,9 +114,8 @@ extension CollectionsTVC {
 	private func previewCombine(
 		inOrder collections: [Collection],
 		into indexPathOfCombined: IndexPath,
-		smartTitle: String?,
-		completion: @escaping () -> Void
-	) {
+		smartTitle: String?
+	) async {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		viewModelBeforeCombining = collectionsViewModel
@@ -124,21 +125,16 @@ extension CollectionsTVC {
 			fromInOrder: collections,
 			into: indexPathOfCombined,
 			title: title)
-		Task {
-			let _ = await tableView.performBatchUpdates_async {
-				self.tableView.scrollToRow(
-					at: indexPathOfCombined,
-					at: .none,
-					animated: true)
-			}
-			
-			setViewModelAndMoveRows(
-				newViewModel,
-				thenSelecting: [indexPathOfCombined]
-			) {
-				completion()
-			}
+		let _ = await tableView.performBatchUpdates_async {
+			self.tableView.scrollToRow(
+				at: indexPathOfCombined,
+				at: .none,
+				animated: true)
 		}
+		
+		await setViewModelAndMoveRows_async(
+			newViewModel,
+			thenSelecting: [indexPathOfCombined])
 	}
 	
 	final func revertCombine(
