@@ -42,18 +42,24 @@ extension LibraryTVC {
 		let newViewModel = viewModel.updatedAfterSorting(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil,
 			sortOptionLocalizedName: sortOptionLocalizedName)
-		setViewModelAndMoveRows(newViewModel)
+		Task {
+			await setViewModelAndMoveRows(newViewModel)
+		}
 	}
 	
 	final func floatSelectedItemsToTopOfSection() {
 		let newViewModel = viewModel.updatedAfterFloatingToTopsOfSections(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
-		setViewModelAndMoveRows(newViewModel)
+		Task {
+			await setViewModelAndMoveRows(newViewModel)
+		}
 	}
 	
 	final func sinkSelectedItemsToBottomOfSection() {
 		let newViewModel = viewModel.updatedAfterSinkingToBottomsOfSections(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
-		setViewModelAndMoveRows(newViewModel)
+		Task {
+			await setViewModelAndMoveRows(newViewModel)
+		}
 	}
 }

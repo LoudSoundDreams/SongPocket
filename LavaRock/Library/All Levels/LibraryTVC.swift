@@ -193,14 +193,14 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Setting Items
 	
 	@MainActor
-	final func setViewModelAndMoveRows_async(
+	final func setViewModelAndMoveRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async {
 		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-			setViewModelAndMoveRows(
+			_setViewModelAndMoveRows(
 				firstReloading: toReload,
 				newViewModel,
 				thenSelecting: toSelect
@@ -211,9 +211,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-//	private
-	final
-	func setViewModelAndMoveRows(
+	private func _setViewModelAndMoveRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
@@ -384,7 +382,7 @@ class LibraryTVC: UITableViewController {
 	final override func setEditing(_ editing: Bool, animated: Bool) {
 		if isEditing {
 			let newViewModel = viewModel.updatedWithRefreshedData() // Deletes empty groups if we reordered all the items out of them.
-			setViewModelAndMoveRows(newViewModel) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
+			_setViewModelAndMoveRows(newViewModel) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
 			// As of iOS 15.4 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
 			
 			newViewModel.context.tryToSave()

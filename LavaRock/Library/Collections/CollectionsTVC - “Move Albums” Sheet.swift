@@ -71,7 +71,7 @@ extension CollectionsTVC {
 			: LocalizedString.newCollectionDefaultTitle)
 		let newViewModel = collectionsViewModel.updatedAfterCreating(title: title)
 		Task {
-			await setViewModelAndMoveRows_async(newViewModel)
+			await setViewModelAndMoveRows(newViewModel)
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: Enabling.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
@@ -97,7 +97,9 @@ extension CollectionsTVC {
 		clipboard.didAlreadyCreate = false
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
-		setViewModelAndMoveRows(newViewModel)
+		Task {
+			await setViewModelAndMoveRows(newViewModel)
+		}
 	}
 	
 	private func renameAndOpenCreated(proposedTitle: String?) {

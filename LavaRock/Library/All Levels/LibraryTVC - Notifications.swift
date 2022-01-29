@@ -103,7 +103,7 @@ extension LibraryTVC {
 			}
 			
 			let newViewModel = viewModel.updatedWithRefreshedData()
-			await setViewModelAndMoveRows_async(newViewModel)
+			await setViewModelAndMoveRows(newViewModel)
 			
 			refreshNavigationItemTitle()
 			// Update the data within each row (and header), which might be outdated.

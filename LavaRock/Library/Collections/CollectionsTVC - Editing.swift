@@ -107,7 +107,7 @@ extension CollectionsTVC {
 					animated: true)
 			}
 			
-			await setViewModelAndMoveRows_async(
+			await setViewModelAndMoveRows(
 				newViewModel,
 				thenSelecting: [indexPathOfCombined])
 			
@@ -134,9 +134,11 @@ extension CollectionsTVC {
 		
 		viewModelBeforeCombining = nil
 		
-		setViewModelAndMoveRows(
-			originalViewModel,
-			thenSelecting: Set(originalSelectedIndexPaths))
+		Task {
+			await setViewModelAndMoveRows(
+				originalViewModel,
+				thenSelecting: Set(originalSelectedIndexPaths))
+		}
 	}
 	
 	private func commitCombine(
@@ -158,9 +160,11 @@ extension CollectionsTVC {
 			context: viewModel.context.parent!,
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		let toReload = didChangeTitle ? [indexPathOfCombined] : []
-		setViewModelAndMoveRows(
-			firstReloading: toReload,
-			newViewModel,
-			thenSelecting: [indexPathOfCombined])
+		Task {
+			await setViewModelAndMoveRows(
+				firstReloading: toReload,
+				newViewModel,
+				thenSelecting: [indexPathOfCombined])
+		}
 	}
 }

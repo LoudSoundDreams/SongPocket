@@ -90,7 +90,7 @@ extension AlbumsTVC {
 			}
 			// Similar to `reflectDatabase`.
 			Task {
-				await collectionsTVC.setViewModelAndMoveRows_async(
+				await collectionsTVC.setViewModelAndMoveRows(
 					firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
 					collectionsViewModelPreviewingOrganizeAlbums,
 					runningBeforeContinuation: {

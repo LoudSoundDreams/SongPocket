@@ -11,6 +11,8 @@ extension AlbumsTVC: MoveAlbumsDelegate {
 	// That timing looks good: we remove the `Album`s while dismissing the sheet, so you catch just a glimpse of the `Album`s disappearing, even though it technically doesn’t make sense.
 	final func didMoveThenDismiss() {
 		let newViewModel = viewModel.updatedWithRefreshedData()
-		setViewModelAndMoveRows(newViewModel)
+		Task {
+			await setViewModelAndMoveRows(newViewModel)
+		}
 	}
 }

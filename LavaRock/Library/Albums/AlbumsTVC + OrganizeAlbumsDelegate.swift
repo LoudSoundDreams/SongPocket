@@ -14,8 +14,10 @@ extension AlbumsTVC: OrganizeAlbumsDelegate {
 			let idOfAlbum = viewModel.albumNonNil(at: $0).objectID
 			return toKeepSelected.contains(idOfAlbum)
 		}
-		setViewModelAndMoveRows(
-			viewModel,
-			thenSelecting: Set(toSelect))
+		Task {
+			await setViewModelAndMoveRows(
+				viewModel,
+				thenSelecting: Set(toSelect))
+		}
 	}
 }
