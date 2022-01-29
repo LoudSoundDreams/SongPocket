@@ -78,6 +78,7 @@ extension LibraryTVC {
 		}
 	}
 	
+	@MainActor
 	@objc func refreshLibraryItems() {
 		isMergingChanges = false
 		
@@ -99,12 +100,15 @@ extension LibraryTVC {
 		if shouldNotDismissAnyModalVCs {
 			refreshLibraryItemsPart2()
 		} else {
-			view.window?.rootViewController?.dismiss(animated: true) {
-				self.refreshLibraryItemsPart2()
+			Task {
+				await view.window?.rootViewController?.dismiss_async(animated: true)
+				
+				refreshLibraryItemsPart2()
 			}
 		}
 	}
 	
+	@MainActor
 	private func refreshLibraryItemsPart2() {
 		let newViewModel = viewModel.updatedWithRefreshedData()
 		setViewModelAndMoveRows(newViewModel) {
