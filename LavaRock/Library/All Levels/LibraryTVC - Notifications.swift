@@ -111,12 +111,14 @@ extension LibraryTVC {
 	@MainActor
 	private func refreshLibraryItemsPart2() {
 		let newViewModel = viewModel.updatedWithRefreshedData()
-		setViewModelAndMoveRows(newViewModel) {
-			self.refreshNavigationItemTitle()
+		Task {
+			await setViewModelAndMoveRows_async(newViewModel)
+			
+			refreshNavigationItemTitle()
 			
 			// Update the data within each row (and header), which might be outdated.
 			// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
-			self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
+			tableView.reconfigureRows(at: tableView.indexPathsForVisibleRowsNonNil)
 		}
 	}
 }
