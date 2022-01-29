@@ -8,11 +8,13 @@
 import UIKit
 import CoreData
 
+@MainActor
 extension CollectionsTVC {
 	final func createAndPrompt() {
 		guard
 			case let .movingAlbums(clipboard) = purpose,
-			!clipboard.didAlreadyCreate // Without this, if you’re fast, you can tap “Save” to create a new `Collection`, then tap “New Collection” to bring up another dialog before we open the first `Collection` you made. You must reset `didAlreadyCreate = false` both during reverting and if we exit the empty new `Collection`.
+			!clipboard.didAlreadyCreate, // Without this, if you’re fast, you can tap “Save” to create a new `Collection`, then tap “New Collection” to bring up another dialog before we open the first `Collection` you made. You must reset `didAlreadyCreate = false` both during reverting and if we exit the empty new `Collection`.
+			let collectionsViewModel = viewModel as? CollectionsViewModel
 		else { return }
 		
 		clipboard.didAlreadyCreate = true
@@ -23,16 +25,22 @@ extension CollectionsTVC {
 			}
 			return Self.smartCollectionTitle(moving: albumsBeingMoved)
 		}()
-		create(smartTitle: smartTitle) {
+		let title = smartTitle ?? (Enabling.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
+		let newViewModel = collectionsViewModel.updatedAfterCreating(title: title)
+		Task {
+			await setViewModelAndMoveRows_async(newViewModel)
+			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: Enabling.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
 				textFieldText: smartTitle,
 				textFieldDelegate: self,
-				cancelHandler: self.revertCreate,
+				cancelHandler: {
+					self.revertCreate()
+				},
 				saveHandler: { textFieldText in
 					self.renameAndOpenCreated(proposedTitle: textFieldText)
 				})
-			self.present(dialog, animated: true)
+			present(dialog, animated: true)
 		}
 	}
 	
@@ -73,19 +81,6 @@ extension CollectionsTVC {
 		
 		// Otherwise, give up.
 		return nil
-	}
-	
-	private func create(
-		smartTitle: String?,
-		completion: @escaping () -> Void
-	) {
-		let collectionsViewModel = viewModel as! CollectionsViewModel
-		
-		let title = smartTitle ?? (Enabling.multicollection ? LocalizedString.newSectionDefaultTitle : LocalizedString.newCollectionDefaultTitle)
-		let newViewModel = collectionsViewModel.updatedAfterCreating(title: title)
-		setViewModelAndMoveRows(newViewModel) {
-			completion()
-		}
 	}
 	
 	final func revertCreate() {
