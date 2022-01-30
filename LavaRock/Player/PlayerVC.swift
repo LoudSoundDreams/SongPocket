@@ -8,44 +8,30 @@
 import UIKit
 
 final class PlayerVC: UIViewController {
-	// Controls
-	
 	@IBOutlet private var previousSongButton: UIButton!
-	private lazy var previousImage = UIImage(
-		systemName: "backward.end.fill",
-		withConfiguration: .symbol48)
-	
 	@IBOutlet private var rewindButton: UIButton!
-	private lazy var rewindImage = UIImage(
-		systemName: "arrow.counterclockwise.circle.fill",
-		withConfiguration: .symbol48)
-	
 	@IBOutlet private var playPauseButton: UIButton!
-	private lazy var playImage = UIImage(
-		systemName: "play.fill",
-		withConfiguration: .symbol96)
-	private lazy var pauseImage = UIImage(
-		systemName: "pause.fill",
-		withConfiguration: .symbol96)
-	
 	@IBOutlet private var nextSongButton: UIButton!
-	private lazy var nextImage = UIImage(
-		systemName: "forward.end.fill",
-		withConfiguration: .symbol48)
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		previousSongButton.addAction(UIAction { _ in self.goToPreviousSong() }, for: .touchUpInside)
-		previousSongButton.setImage(previousImage, for: .normal)
+		previousSongButton.setImage(
+			UIImage(systemName: .SFPreviousTrack, withConfiguration: .symbol48),
+			for: .normal)
 		
 		rewindButton.addAction(UIAction { _ in self.rewind() }, for: .touchUpInside)
-		rewindButton.setImage(rewindImage, for: .normal)
+		rewindButton.setImage(
+			UIImage(systemName: .SFRewind, withConfiguration: .symbol48),
+			for: .normal)
 		
 		playPauseButton.addAction(UIAction { _ in self.togglePlayPause() }, for: .touchUpInside)
 		
 		nextSongButton.addAction(UIAction { _ in self.goToNextSong() }, for: .touchUpInside)
-		nextSongButton.setImage(nextImage, for: .normal)
+		nextSongButton.setImage(
+			UIImage(systemName: .SFNextTrack, withConfiguration: .symbol48),
+			for: .normal)
 		
 		beginReflectingPlaybackState()
 	}
@@ -87,9 +73,13 @@ final class PlayerVC: UIViewController {
 extension PlayerVC: PlaybackStateReflecting {
 	func reflectPlaybackState() {
 		if sharedPlayer?.playbackState == .playing {
-			playPauseButton.setImage(pauseImage, for: .normal)
+			playPauseButton.setImage(
+				UIImage(systemName: .SFPause, withConfiguration: .symbol96),
+				for: .normal)
 		} else {
-			playPauseButton.setImage(playImage, for: .normal)
+			playPauseButton.setImage(
+				UIImage(systemName: .SFPlay, withConfiguration: .symbol96),
+				for: .normal)
 		}
 		
 		if

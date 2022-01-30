@@ -87,7 +87,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var previousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
-			image: UIImage(systemName: "backward.end"),
+			image: UIImage(systemName: .SFPreviousTrack),
 			primaryAction: UIAction { _ in self.goToPreviousSong() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -95,7 +95,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var rewindButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.restart,
-			image: UIImage(systemName: "arrow.counterclockwise.circle"),
+			image: UIImage(systemName: .SFRewind),
 			primaryAction: UIAction { _ in self.rewind() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -103,7 +103,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var skipBackwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsBackwards,
-			image: UIImage(systemName: "gobackward.10"),
+			image: UIImage(systemName: .SFSkipBack10),
 			primaryAction: UIAction { _ in self.skipBackward(seconds: 10) })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -112,7 +112,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var skipForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsForward,
-			image: UIImage(systemName: "goforward.10"),
+			image: UIImage(systemName: .SFSkipForward10),
 			primaryAction: UIAction { _ in self.skipForward(seconds: 10) })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -120,7 +120,7 @@ class LibraryTVC: UITableViewController {
 	final private(set) lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
-			image: UIImage(systemName: "forward.end"),
+			image: UIImage(systemName: .SFNextTrack),
 			primaryAction: UIAction { _ in self.goToNextSong() })
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button

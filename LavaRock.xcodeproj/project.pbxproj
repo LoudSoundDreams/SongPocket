@@ -91,7 +91,6 @@
 		07E0BBF22765678F0010117E /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE62765678F0010117E /* UIColor.swift */; };
 		07E0BBF32765678F0010117E /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE72765678F0010117E /* UITableView.swift */; };
 		07E0BBF42765678F0010117E /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE82765678F0010117E /* UITableViewCell.swift */; };
-		07E0BBF52765678F0010117E /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE92765678F0010117E /* UIImage.swift */; };
 		07E0BBF62765678F0010117E /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBEA2765678F0010117E /* UIFont.swift */; };
 		07E0BBF72765678F0010117E /* UIMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBEB2765678F0010117E /* UIMenu.swift */; };
 		07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBEC2765678F0010117E /* SectionStructure.swift */; };
@@ -219,7 +218,6 @@
 		07E0BBE62765678F0010117E /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		07E0BBE72765678F0010117E /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		07E0BBE82765678F0010117E /* UITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
-		07E0BBE92765678F0010117E /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		07E0BBEA2765678F0010117E /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		07E0BBEB2765678F0010117E /* UIMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMenu.swift; sourceTree = "<group>"; };
 		07E0BBEC2765678F0010117E /* SectionStructure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionStructure.swift; sourceTree = "<group>"; };
@@ -480,7 +478,6 @@
 			isa = PBXGroup;
 			children = (
 				07E0BBE62765678F0010117E /* UIColor.swift */,
-				07E0BBE92765678F0010117E /* UIImage.swift */,
 				079D73242768514100301327 /* UIImage.Configuration.swift */,
 				07E0BBEA2765678F0010117E /* UIFont.swift */,
 				07E0BBE52765678F0010117E /* UIBarButtonItem.swift */,
@@ -683,7 +680,6 @@
 				07E0BBF42765678F0010117E /* UITableViewCell.swift in Sources */,
 				0751DE3926C5C6E800AA14DA /* protocol LibraryViewModel.swift in Sources */,
 				077E089824FB7AFF007C2479 /* LibraryTVC - Notifications.swift in Sources */,
-				07E0BBF52765678F0010117E /* UIImage.swift in Sources */,
 				07642C7C268FFC1600B66BB8 /* GroupOfSongs.swift in Sources */,
 				0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */,
 				0720A43525017C6C00E0A28A /* AlbumsTVC - Notifications.swift in Sources */,
@@ -969,7 +965,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 399;
+				CURRENT_PROJECT_VERSION = 400;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
@@ -997,7 +993,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 399;
+				CURRENT_PROJECT_VERSION = 400;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;

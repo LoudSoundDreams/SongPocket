@@ -27,9 +27,9 @@ extension TabBarController: PlaybackStateReflecting {
 			let tabBarItem = nc.tabBarItem
 		else { return }
 		if sharedPlayer?.playbackState == .playing {
-			tabBarItem.image = .waveSpeakerSymbol
+			tabBarItem.image = UIImage(systemName: .SFSpeakerWave)
 		} else {
-			tabBarItem.image = .noWaveSpeakerSymbol
+			tabBarItem.image = UIImage(systemName: .SFSpeakerNoWave)
 		}
 	}
 }
