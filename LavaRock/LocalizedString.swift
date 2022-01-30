@@ -9,10 +9,10 @@ import Foundation
 
 // Putting all the keys we pass to NSLocalizedString in one place (here) helps us keep them unique, which we must do to ensure predictable behavior.
 // It also helps us use the same phrases in multiple places if appropriate.
-struct LocalizedString { // You can't turn this into an enum, because raw values for enum cases need to be literals.
+struct LocalizedString {
 	private init() {}
 	
-	// Don't pass arguments to the Foundation function NSLocalizedString, because when you choose Editor -> Export for Localization…, Xcode won't include those calls.
+	// Don’t pass arguments to the Foundation function `NSLocalizedString`, because when you choose Editor -> Export for Localization…, Xcode won’t include those calls.
 	
 	// MARK: - Without Variables
 	

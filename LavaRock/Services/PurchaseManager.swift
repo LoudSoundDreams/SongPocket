@@ -9,10 +9,10 @@ import StoreKit
 
 final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easily conform to `SKProductsRequestDelegate` and `SKPaymentTransactionObserver`, which inherit from `NSObjectProtocol`.
 	private override init() {}
-	static let shared = PurchaseManager() // We can’t turn everything in this class static, because StoreKit only works with instances, not types.
+	static let shared = PurchaseManager()
 	
 	final func beginObservingPaymentTransactions() {
-		Self.paymentQueue.add(self) // We can’t turn this method static, because StoreKit needs an instance here, not a type.
+		Self.paymentQueue.add(self)
 	}
 	
 	@MainActor
@@ -23,8 +23,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 	}
 	
 	final var tipTitle: String? {
-		guard let tipProduct = tipProduct else { return nil }
-		return tipProduct.localizedTitle
+		return tipProduct?.localizedTitle
 	}
 	
 	final var tipPrice: String? {

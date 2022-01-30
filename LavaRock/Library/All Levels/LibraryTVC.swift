@@ -25,7 +25,6 @@ class LibraryTVC: UITableViewController {
 		case random
 		case reverse
 		
-		// You can't have each LocalizedString be a raw value for an enum case, because raw values for enum cases must be literals.
 		func localizedName() -> String {
 			switch self {
 			case .title:
