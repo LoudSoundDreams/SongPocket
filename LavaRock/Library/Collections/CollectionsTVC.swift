@@ -263,10 +263,6 @@ final class CollectionsTVC:
 			navigationItem.prompt = willOrganizeAlbumsStickyNote?.prompt
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
-			
-			if Enabling.tabBar {
-				showToolbar()
-			}
 		case .browsing:
 			editingModeToolbarButtons = [
 				combineButton, .flexibleSpace(),

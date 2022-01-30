@@ -97,10 +97,6 @@ final class AlbumsTVC:
 			navigationItem.prompt = clipboard.prompt
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
-			
-			if Enabling.tabBar {
-				showToolbar()
-			}
 		case .browsing:
 			editingModeToolbarButtons = [
 				moveOrOrganizeButton, .flexibleSpace(),

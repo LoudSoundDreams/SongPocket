@@ -71,7 +71,7 @@ class LibraryTVC: UITableViewController {
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	private lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [.flexibleSpace()]
 	final lazy var topRightButtons = [editButtonItem]
-	final lazy var viewingModeToolbarButtons = Enabling.tabBar ? editingModeToolbarButtons : playbackButtons
+	final lazy var viewingModeToolbarButtons = playbackButtons
 	
 	// MARK: Subclasses Should Not Customize
 	
@@ -166,10 +166,6 @@ class LibraryTVC: UITableViewController {
 		freshenNavigationItemTitle()
 		
 		setBarButtons(animated: false)
-		
-		if Enabling.tabBar {
-			hideToolbar()
-		}
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -388,16 +384,7 @@ class LibraryTVC: UITableViewController {
 		
 		super.setEditing(editing, animated: animated)
 		
-		if Enabling.tabBar {
-			setBarButtons(animated: false)
-			if editing {
-				showToolbar()
-			} else {
-				hideToolbar()
-			}
-		} else {
-			setBarButtons(animated: animated)
-		}
+		setBarButtons(animated: animated)
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
 		// During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
