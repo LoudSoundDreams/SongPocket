@@ -20,14 +20,6 @@ extension LibraryTVC {
 			playPauseButton.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		}
 		
-		func configurePauseButton() {
-			playPauseButton.title = LocalizedString.pause
-			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: .SFPause)
-			) { _ in self.pause() }
-			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
-		}
-		
 		guard let player = sharedPlayer else {
 			configurePlayButton()
 			playbackButtons.forEach { $0.disableWithAccessibilityTrait() }
@@ -35,7 +27,11 @@ extension LibraryTVC {
 		}
 		
 		if player.playbackState == .playing {
-			configurePauseButton()
+			playPauseButton.title = LocalizedString.pause
+			playPauseButton.primaryAction = UIAction(
+				image: UIImage(systemName: .SFPause)
+			) { _ in self.pause() }
+			playPauseButton.accessibilityTraits.subtract(playButtonAdditionalAccessibilityTraits)
 		} else {
 			configurePlayButton()
 		}
@@ -48,32 +44,15 @@ extension LibraryTVC {
 	}
 	
 	final override func accessibilityPerformMagicTap() -> Bool {
-		guard sharedPlayer != nil else {
+		guard let player = sharedPlayer else {
 			return false
 		}
-		togglePlayPause()
-		return true
-	}
-	
-	private func togglePlayPause() {
-		guard let player = sharedPlayer else { return }
 		if player.playbackState == .playing {
 			pause()
 		} else {
 			play()
 		}
-	}
-	
-	final func goToPreviousSong() {
-		sharedPlayer?.skipToPreviousItem()
-	}
-	
-	final func rewind() {
-		sharedPlayer?.currentPlaybackTime = 0 // As of iOS 15.3 developer beta 1, neither this, `.skipToBeginning`, `.skipToPreviousItem`, nor `.skipToNextItem` reliably changes `.currentPlaybackTime` to `0`.
-	}
-	
-	final func skipBackward(seconds: TimeInterval) {
-		sharedPlayer?.currentPlaybackTime -= seconds
+		return true
 	}
 	
 	private func play() {
@@ -82,13 +61,5 @@ extension LibraryTVC {
 	
 	private func pause() {
 		sharedPlayer?.pause()
-	}
-	
-	final func skipForward(seconds: TimeInterval) {
-		sharedPlayer?.currentPlaybackTime += seconds
-	}
-	
-	final func goToNextSong() {
-		sharedPlayer?.skipToNextItem()
 	}
 }

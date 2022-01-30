@@ -88,7 +88,9 @@ class LibraryTVC: UITableViewController {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
 			image: UIImage(systemName: .SFPreviousTrack),
-			primaryAction: UIAction { _ in self.goToPreviousSong() })
+			primaryAction: UIAction { _ in
+				self.sharedPlayer?.skipToPreviousItem()
+			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
@@ -96,7 +98,9 @@ class LibraryTVC: UITableViewController {
 		let button = UIBarButtonItem(
 			title: LocalizedString.restart,
 			image: UIImage(systemName: .SFRewind),
-			primaryAction: UIAction { _ in self.rewind() })
+			primaryAction: UIAction { _ in
+				self.sharedPlayer?.currentPlaybackTime = 0 // As of iOS 15.3 developer beta 1, neither this, `.skipToBeginning`, `.skipToPreviousItem`, nor `.skipToNextItem` reliably changes `.currentPlaybackTime` to `0`.
+			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
@@ -104,24 +108,30 @@ class LibraryTVC: UITableViewController {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsBackwards,
 			image: UIImage(systemName: .SFSkipBack10),
-			primaryAction: UIAction { _ in self.skipBackward(seconds: 10) })
+			primaryAction: UIAction { _ in
+				self.sharedPlayer?.currentPlaybackTime -= 10
+			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	final private(set) lazy var playPauseButton = UIBarButtonItem()
-	final private(set) lazy var skipForwardButton: UIBarButtonItem = {
+	final private lazy var skipForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsForward,
 			image: UIImage(systemName: .SFSkipForward10),
-			primaryAction: UIAction { _ in self.skipForward(seconds: 10) })
+			primaryAction: UIAction { _ in
+				self.sharedPlayer?.currentPlaybackTime += 10
+			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	final private(set) lazy var nextSongButton: UIBarButtonItem = {
+	final private lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
 			image: UIImage(systemName: .SFNextTrack),
-			primaryAction: UIAction { _ in self.goToNextSong() })
+			primaryAction: UIAction { _ in
+				self.sharedPlayer?.skipToNextItem()
+			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
