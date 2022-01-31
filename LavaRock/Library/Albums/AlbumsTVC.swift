@@ -81,7 +81,6 @@ final class AlbumsTVC:
 			]
 		case .movingAlbums:
 			topRightButtons = [cancelAndDismissButton]
-			navigationController?.toolbar.isHidden = true
 		case .browsing:
 			break
 		}
@@ -97,6 +96,7 @@ final class AlbumsTVC:
 			navigationItem.prompt = clipboard.prompt
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
+			navigationController?.toolbar.isHidden = true
 		case .browsing:
 			editingModeToolbarButtons = [
 				moveOrOrganizeButton, .flexibleSpace(),

@@ -79,7 +79,7 @@ extension LibraryTVC {
 		isMergingChanges = false
 		
 		/*
-		 // When we need to freshen, you might be in the middle of a content-dependent task. Cancel such tasks, for simplicity.
+		 // When we need to freshen, you might be in the middle of a content-dependent task. For simplicity, cancel such tasks.
 		 - Sort options (`LibraryTVC`)
 		 - “Rename Collection” dialog (`CollectionsTVC`)
 		 - “Combine Collections” dialog (`CollectionsTVC`)

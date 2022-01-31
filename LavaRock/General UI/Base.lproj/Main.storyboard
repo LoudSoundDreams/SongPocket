@@ -128,7 +128,6 @@
                             </barButtonItem>
                         </leftBarButtonItems>
                     </navigationItem>
-                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="optionsButton_SwiftUI" destination="dlm-8d-Mjf" id="DDi-Ce-cSk"/>
                         <outlet property="optionsButton_UIKit" destination="mpR-tt-C6X" id="rCs-Xg-uZH"/>

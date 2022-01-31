@@ -169,12 +169,15 @@ class LibraryTVC: UITableViewController {
 	
 	final func setUp() {
 		beginObservingNotifications()
+		freshenNavigationItemTitle()
 		setUpUI()
 	}
 	
+	final func freshenNavigationItemTitle() {
+		title = viewModel.bigTitle()
+	}
+	
 	func setUpUI() {
-		freshenNavigationItemTitle()
-		
 		setBarButtons(animated: false)
 	}
 	
@@ -336,10 +339,6 @@ class LibraryTVC: UITableViewController {
 		didChangeRowsOrSelectedRows()
 	}
 	
-	final func freshenNavigationItemTitle() {
-		title = viewModel.bigTitle()
-	}
-	
 	func showToolbar() {
 		navigationController?.toolbar.isHidden = false
 	}
@@ -354,6 +353,7 @@ class LibraryTVC: UITableViewController {
 		
 		if isEditing {
 			navigationItem.setLeftBarButtonItems(editingModeTopLeftButtons, animated: animated)
+			
 			setToolbarItems(editingModeToolbarButtons, animated: animated)
 		} else {
 			navigationItem.setLeftBarButtonItems(viewingModeTopLeftButtons, animated: animated)
@@ -363,6 +363,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
+	// For clarity, call this rather than `freshenEditingButtons` directly, whenever possible.
 	final func didChangeRowsOrSelectedRows() {
 		freshenEditingButtons()
 	}

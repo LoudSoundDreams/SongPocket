@@ -242,12 +242,11 @@ final class CollectionsTVC:
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				saveOrganizeButton,
-				.flexibleSpace()
+				.flexibleSpace(),
 			]
 		case .movingAlbums:
 			viewingModeTopLeftButtons = []
 			topRightButtons = [cancelAndDismissButton]
-			navigationController?.toolbar.isHidden = true
 		case .browsing:
 			if Enabling.swiftUIOptions {
 				viewingModeTopLeftButtons = [optionsButton_SwiftUI]
@@ -263,6 +262,7 @@ final class CollectionsTVC:
 			navigationItem.prompt = willOrganizeAlbumsStickyNote?.prompt
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
+			navigationController?.toolbar.isHidden = true
 		case .browsing:
 			editingModeToolbarButtons = [
 				combineButton, .flexibleSpace(),
