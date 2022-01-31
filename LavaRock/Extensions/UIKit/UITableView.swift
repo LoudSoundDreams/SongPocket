@@ -40,13 +40,13 @@ extension UITableView {
 			// The section has 0 rows.
 			return []
 		}
-		return indexPathsForRows(
+		return Self.indexPathsForRows(
 			inSection: section,
 			firstRow: firstRow,
 			lastRow: lastRow)
 	}
 	
-	private func indexPathsForRows(
+	private static func indexPathsForRows(
 		inSection section: Int,
 		firstRow: Int,
 		lastRow: Int

@@ -255,7 +255,7 @@ class LibraryTVC: UITableViewController {
 			
 			let newRowIdentifiers = newSections[newSectionIndex].rowIdentifiers
 			
-			let rowBatchUpdatesInSection = batchUpdatesOfRows(
+			let rowBatchUpdatesInSection = Self.batchUpdatesOfRows(
 				oldSection: oldSectionIndex,
 				oldIdentifiers: oldRowIdentifiers,
 				newSection: newSectionIndex,
@@ -291,7 +291,7 @@ class LibraryTVC: UITableViewController {
 		didChangeRowsOrSelectedRows()
 	}
 	
-	private func batchUpdatesOfRows<Identifier: Hashable>(
+	private static func batchUpdatesOfRows<Identifier: Hashable>(
 		oldSection: Int,
 		oldIdentifiers: [Identifier],
 		newSection: Int,

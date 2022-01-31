@@ -329,7 +329,7 @@ extension LibraryViewModel {
 		let itemsToSort = sourceIndicesOfItems.map {
 			oldItems[$0]
 		}
-		let sortedItems = sorted(
+		let sortedItems = Self.sorted(
 			itemsToSort,
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		
@@ -347,7 +347,7 @@ extension LibraryViewModel {
 	}
 	
 	// Sort stably! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
-	private func sorted(
+	private static func sorted(
 		_ items: [NSManagedObject],
 		sortOptionLocalizedName: String
 	) -> [NSManagedObject] {
