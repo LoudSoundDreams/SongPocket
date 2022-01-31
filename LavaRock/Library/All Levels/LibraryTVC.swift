@@ -70,7 +70,6 @@ class LibraryTVC: UITableViewController {
 	// Controls
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	private lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [.flexibleSpace()]
-	final lazy var topRightButtons = [editButtonItem]
 	final lazy var viewingModeToolbarButtons = playbackButtons
 	
 	// MARK: Subclasses Should Not Customize
@@ -170,6 +169,7 @@ class LibraryTVC: UITableViewController {
 	final func setUp() {
 		beginObservingNotifications()
 		freshenNavigationItemTitle()
+		navigationItem.rightBarButtonItem = editButtonItem
 		setUpUI()
 	}
 	
@@ -339,17 +339,8 @@ class LibraryTVC: UITableViewController {
 		didChangeRowsOrSelectedRows()
 	}
 	
-	func showToolbar() {
-		navigationController?.toolbar.isHidden = false
-	}
-	
-	func hideToolbar() {
-		navigationController?.toolbar.isHidden = true
-	}
-	
 	private func setBarButtons(animated: Bool) {
 		freshenEditingButtons()
-		navigationItem.setRightBarButtonItems(topRightButtons, animated: animated)
 		
 		if isEditing {
 			navigationItem.setLeftBarButtonItems(editingModeTopLeftButtons, animated: animated)
@@ -372,15 +363,11 @@ class LibraryTVC: UITableViewController {
 	func freshenEditingButtons() {
 		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
 		
-		editButtonItem.isEnabled = allowsEdit()
+		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
 		sortButton.isEnabled = allowsSort()
 		floatToTopButton.isEnabled = allowsFloatAndSink()
 		sinkToBottomButton.isEnabled = allowsFloatAndSink()
-	}
-	
-	private func allowsEdit() -> Bool {
-		return !viewModel.isEmpty()
 	}
 	
 	// Overrides should call super (this implementation).

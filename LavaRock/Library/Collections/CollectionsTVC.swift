@@ -238,7 +238,6 @@ final class CollectionsTVC:
 		switch purpose {
 		case .organizingAlbums:
 			viewingModeTopLeftButtons = []
-			topRightButtons = [cancelAndDismissButton]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				saveOrganizeButton,
@@ -246,7 +245,6 @@ final class CollectionsTVC:
 			]
 		case .movingAlbums:
 			viewingModeTopLeftButtons = []
-			topRightButtons = [cancelAndDismissButton]
 		case .browsing:
 			if Enabling.swiftUIOptions {
 				viewingModeTopLeftButtons = [optionsButton_SwiftUI]
@@ -260,8 +258,10 @@ final class CollectionsTVC:
 		switch purpose {
 		case .organizingAlbums:
 			navigationItem.prompt = willOrganizeAlbumsStickyNote?.prompt
+			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
+			navigationItem.rightBarButtonItem = cancelAndDismissButton
 			navigationController?.toolbar.isHidden = true
 		case .browsing:
 			editingModeToolbarButtons = [

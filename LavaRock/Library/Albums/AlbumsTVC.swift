@@ -73,14 +73,13 @@ final class AlbumsTVC:
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		switch purpose {
 		case .organizingAlbums:
-			topRightButtons = [cancelAndDismissButton]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
 		case .movingAlbums:
-			topRightButtons = [cancelAndDismissButton]
+			break
 		case .browsing:
 			break
 		}
@@ -94,8 +93,10 @@ final class AlbumsTVC:
 		switch purpose {
 		case .organizingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
+			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
+			navigationItem.rightBarButtonItem = cancelAndDismissButton
 			navigationController?.toolbar.isHidden = true
 		case .browsing:
 			editingModeToolbarButtons = [
