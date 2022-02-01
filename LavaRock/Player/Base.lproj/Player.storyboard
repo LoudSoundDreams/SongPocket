@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cod-D3-acc">
-                                <rect key="frame" x="164.5" y="671.5" width="85" height="82"/>
+                                <rect key="frame" x="164.5" y="635" width="85" height="82"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal">
@@ -65,16 +65,8 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Player" id="4UM-VT-l36">
-                        <barButtonItem key="leftBarButtonItem" title="Clear" id="9dq-pP-MYY">
-                            <connections>
-                                <action selector="clearRecents:" destination="OA4-QZ-1pA" id="nUr-Nh-8OB"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Music" id="ZcH-nq-Bjj">
-                            <connections>
-                                <action selector="openMusic:" destination="OA4-QZ-1pA" id="99Z-4i-XED"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" title="Shuffle" id="9dq-pP-MYY"/>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Apply" id="ZcH-nq-Bjj"/>
                     </navigationItem>
                     <connections>
                         <outlet property="nextSongButton" destination="fTF-g2-1ps" id="dwj-oR-zMK"/>
@@ -90,9 +82,10 @@
         <!--Player-->
         <scene sceneID="esw-Ah-g0b">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Player" image="speaker.fill" catalog="system" id="Znw-JR-K00"/>
+                <navigationController storyboardIdentifier="UIKit" automaticallyAdjustsScrollViewInsets="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Player" image="hifispeaker.fill" catalog="system" id="flc-hx-2s9"/>
                     <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Dxa-wg-csy">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -106,13 +99,24 @@
             </objects>
             <point key="canvasLocation" x="6110" y="1039"/>
         </scene>
+        <!--Player-->
+        <scene sceneID="cf7-k9-3eU">
+            <objects>
+                <hostingController storyboardIdentifier="SwiftUI" id="gLf-WF-cuy" customClass="PlayerHostingController" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Player" image="hifispeaker.fill" catalog="system" id="UQU-8T-mbb"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </hostingController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="81Z-P3-61S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4949" y="1039"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow.counterclockwise.circle" catalog="system" width="128" height="121"/>
         <image name="backward.end" catalog="system" width="128" height="120"/>
         <image name="forward.end" catalog="system" width="128" height="120"/>
+        <image name="hifispeaker.fill" catalog="system" width="111" height="128"/>
         <image name="play.circle" catalog="system" width="128" height="121"/>
-        <image name="speaker.fill" catalog="system" width="128" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
