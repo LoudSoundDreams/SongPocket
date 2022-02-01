@@ -31,7 +31,7 @@ extension Array {
 		return result
 	}
 	
-	// Returns whether the IndexPaths form a block of rows next to each other in whatever section they're in. You can provide the IndexPaths in any order.
+	// Whether the index paths form a block of rows next to each other in whatever section they’re in. You can provide the index paths in any order.
 	func isContiguousWithinEachSection() -> Bool
 	where Element == IndexPath
 	{
@@ -41,7 +41,7 @@ extension Array {
 		}
 	}
 	
-	// Returns whether the integers you provide are in increasing consecutive order.
+	// Whether the integers are in increasing consecutive order.
 	private func isConsecutive() -> Bool
 	where Element == Int
 	{

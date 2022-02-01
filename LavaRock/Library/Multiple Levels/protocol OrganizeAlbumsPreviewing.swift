@@ -37,6 +37,6 @@ extension OrganizeAlbumsPreviewing {
 		NotificationCenter.default.post(Notification(name: .LRUserDidUpdateDatabase))
 		
 		dismiss(animated: true)
-		clipboard.delegate?.didSaveOrganizeThenDismiss()
+		clipboard.delegate?.didOrganize()
 	}
 }

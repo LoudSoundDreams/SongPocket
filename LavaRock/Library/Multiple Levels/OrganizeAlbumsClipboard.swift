@@ -8,7 +8,7 @@
 import CoreData
 
 protocol OrganizeAlbumsDelegate: AnyObject {
-	func didSaveOrganizeThenDismiss()
+	func didOrganize()
 }
 
 struct WillOrganizeAlbumsStickyNote {

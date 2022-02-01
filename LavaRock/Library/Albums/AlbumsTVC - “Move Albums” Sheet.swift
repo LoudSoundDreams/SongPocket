@@ -30,7 +30,7 @@ extension AlbumsTVC {
 			NotificationCenter.default.post(Notification(name: .LRUserDidUpdateDatabase))
 			
 			dismiss(animated: true)
-			clipboard.delegate?.didMoveThenDismiss()
+			clipboard.delegate?.didMove()
 		}
 	}
 }

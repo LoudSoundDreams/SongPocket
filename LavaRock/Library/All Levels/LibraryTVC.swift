@@ -75,7 +75,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses Should Not Customize
 	
 	// Playback
-	final private(set) lazy var playbackButtons = [
+	private(set) final lazy var playbackButtons = [
 		previousSongButton, .flexibleSpace(),
 		rewindButton, .flexibleSpace(),
 //		skipBackwardButton, .flexibleSpace(),
@@ -83,7 +83,7 @@ class LibraryTVC: UITableViewController {
 //		skipForwardButton, .flexibleSpace(),
 		nextSongButton,
 	]
-	final private(set) lazy var previousSongButton: UIBarButtonItem = {
+	private(set) final lazy var previousSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
 			image: UIImage(systemName: .SFPreviousTrack),
@@ -93,7 +93,7 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	final private(set) lazy var rewindButton: UIBarButtonItem = {
+	private(set) final lazy var rewindButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.restart,
 			image: UIImage(systemName: .SFRewind),
@@ -103,7 +103,7 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	final private(set) lazy var skipBackwardButton: UIBarButtonItem = {
+	private(set) final lazy var skipBackwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsBackwards,
 			image: UIImage(systemName: .SFSkipBack10),
@@ -113,8 +113,8 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	final private(set) lazy var playPauseButton = UIBarButtonItem()
-	final private lazy var skipForwardButton: UIBarButtonItem = {
+	private(set) final lazy var playPauseButton = UIBarButtonItem()
+	private final lazy var skipForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsForward,
 			image: UIImage(systemName: .SFSkipForward10),
@@ -124,7 +124,7 @@ class LibraryTVC: UITableViewController {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	final private lazy var nextSongButton: UIBarButtonItem = {
+	private final lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
 			image: UIImage(systemName: .SFNextTrack),
@@ -136,25 +136,25 @@ class LibraryTVC: UITableViewController {
 	}()
 	
 	// Controls
-	final private(set) lazy var sortButton = UIBarButtonItem(
+	private(set) final lazy var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort,
 		menu: makeSortOptionsMenu())
-	final private(set) lazy var floatToTopButton = UIBarButtonItem(
+	private(set) final lazy var floatToTopButton = UIBarButtonItem(
 		title: LocalizedString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line.compact"),
 		primaryAction: UIAction { _ in self.floatSelectedItemsToTopOfSection() })
-	final private(set) lazy var sinkToBottomButton = UIBarButtonItem(
+	private(set) final lazy var sinkToBottomButton = UIBarButtonItem(
 		title: LocalizedString.moveToBottom,
 		image: UIImage(systemName: "arrow.down.to.line.compact"),
 		primaryAction: UIAction { _ in self.sinkSelectedItemsToBottomOfSection() })
-	final private(set) lazy var cancelAndDismissButton = UIBarButtonItem(
+	private(set) final lazy var cancelAndDismissButton = UIBarButtonItem(
 		systemItem: .cancel,
 		primaryAction: UIAction { _ in self.dismiss(animated: true) })
 	
 	// State
 	final var isMergingChanges = false
 	final var needsFreshenLibraryItemsOnAppear = false
-	final private var isAnimatingBatchUpdates = 0
+	private final var isAnimatingBatchUpdates = 0
 	
 	// MARK: - Setup
 	
@@ -177,6 +177,7 @@ class LibraryTVC: UITableViewController {
 		title = viewModel.bigTitle()
 	}
 	
+	// Overrides should call super (this implementation).
 	func setUpUI() {
 		setBarButtons(animated: false)
 	}
@@ -212,7 +213,9 @@ class LibraryTVC: UITableViewController {
 				newViewModel,
 				thenSelecting: toSelect
 			) {
+//				Task { await MainActor.run { // This might be necessary. https://www.swiftbysundell.com/articles/the-main-actor-attribute/
 				continuation.resume()
+//				}}
 			}
 			beforeContinuation?()
 		}

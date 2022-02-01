@@ -8,7 +8,7 @@
 import CoreData
 
 protocol MoveAlbumsDelegate: AnyObject {
-	func didMoveThenDismiss()
+	func didMove()
 }
 
 final class MoveAlbumsClipboard { // This is a class and not a struct because we use it to share information.

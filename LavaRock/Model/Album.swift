@@ -214,7 +214,7 @@ extension Album {
 	}
 	
 	// Slow.
-	private final func mpMediaItemCollection() -> MPMediaItemCollection? {
+	private func mpMediaItemCollection() -> MPMediaItemCollection? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
