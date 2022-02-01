@@ -201,20 +201,21 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Setting Items
 	
-	final func setViewModelAndMoveRows(
+	// Returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
+	final func setViewModelAndMoveRowsAndShouldContinue(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
-	) async {
-		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+	) async -> Bool {
+		return await withCheckedContinuation { continuation in
 			_setViewModelAndMoveRows(
 				firstReloading: toReload,
 				newViewModel,
 				thenSelecting: toSelect
-			) {
+			) { shouldContinue in
 //				Task { await MainActor.run { // This might be necessary. https://www.swiftbysundell.com/articles/the-main-actor-attribute/
-				continuation.resume()
+				continuation.resume(returning: shouldContinue)
 //				}}
 			}
 			beforeContinuation?()
@@ -225,13 +226,14 @@ class LibraryTVC: UITableViewController {
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
-		completion: (() -> Void)? = nil
+		completionIfShouldRun: ((Bool) -> Void)? // We used to use `completion: (() -> Void)?` here and just not run it every time, but that leaked `CheckedContinuation` if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler. Hence, this method always runs the completion handler, and callers should pass in completion handlers that return immediately if the parameter is `false`.
 	) {
 		let oldViewModel = viewModel
 		
 		viewModel = newViewModel
 		
 		guard !newViewModel.isEmpty() else {
+			completionIfShouldRun?(false)
 			reflectViewModelIsEmpty()
 			return
 		}
@@ -276,7 +278,9 @@ class LibraryTVC: UITableViewController {
 		) {
 			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate anything. Here, we wait for the animations to finish before we run the completion closure (once).
-				completion?()
+				completionIfShouldRun?(true)
+			} else {
+				completionIfShouldRun?(false)
 			}
 		}
 		
@@ -377,7 +381,7 @@ class LibraryTVC: UITableViewController {
 	final override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
 			let newViewModel = viewModel.updatedWithFreshenedData() // Deletes empty groups if we reordered all the items out of them.
-			_setViewModelAndMoveRows(newViewModel) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
+			_setViewModelAndMoveRows(newViewModel, completionIfShouldRun: { shouldRun in }) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
 			// As of iOS 15.4 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
 			
 			newViewModel.context.tryToSave()

@@ -43,7 +43,7 @@ extension LibraryTVC {
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil,
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		Task {
-			await setViewModelAndMoveRows(newViewModel)
+			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
 		}
 	}
 	
@@ -51,7 +51,7 @@ extension LibraryTVC {
 		let newViewModel = viewModel.updatedAfterFloatingToTopsOfSections(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		Task {
-			await setViewModelAndMoveRows(newViewModel)
+			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
 		}
 	}
 	
@@ -59,7 +59,7 @@ extension LibraryTVC {
 		let newViewModel = viewModel.updatedAfterSinkingToBottomsOfSections(
 			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 		Task {
-			await setViewModelAndMoveRows(newViewModel)
+			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
 		}
 	}
 }

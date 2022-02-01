@@ -106,9 +106,10 @@ extension CollectionsTVC {
 					animated: true)
 			}
 			
-			await setViewModelAndMoveRows(
+			guard await setViewModelAndMoveRowsAndShouldContinue(
 				newViewModel,
 				thenSelecting: [indexPathOfCombined])
+			else { return }
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: Enabling.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
@@ -134,7 +135,7 @@ extension CollectionsTVC {
 		viewModelBeforeCombining = nil
 		
 		Task {
-			await setViewModelAndMoveRows(
+			let _ = await setViewModelAndMoveRowsAndShouldContinue(
 				originalViewModel,
 				thenSelecting: Set(originalSelectedIndexPaths))
 		}
@@ -160,7 +161,7 @@ extension CollectionsTVC {
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		let toReload = didChangeTitle ? [indexPathOfCombined] : []
 		Task {
-			await setViewModelAndMoveRows(
+			let _ = await setViewModelAndMoveRowsAndShouldContinue(
 				firstReloading: toReload,
 				newViewModel,
 				thenSelecting: [indexPathOfCombined])

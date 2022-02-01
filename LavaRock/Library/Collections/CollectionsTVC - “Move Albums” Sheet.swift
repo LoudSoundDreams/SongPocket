@@ -70,7 +70,7 @@ extension CollectionsTVC {
 			: LocalizedString.newCollectionDefaultTitle)
 		let newViewModel = collectionsViewModel.updatedAfterCreating(title: title)
 		Task {
-			await setViewModelAndMoveRows(newViewModel)
+			guard await setViewModelAndMoveRowsAndShouldContinue(newViewModel) else { return }
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: Enabling.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
@@ -97,7 +97,7 @@ extension CollectionsTVC {
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		Task {
-			await setViewModelAndMoveRows(newViewModel)
+			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
 		}
 	}
 	

@@ -22,7 +22,7 @@ extension AlbumsTVC {
 			albumsWith: clipboard.idsOfAlbumsBeingMoved,
 			toSection: indexPath.section)
 		Task {
-			await setViewModelAndMoveRows(newViewModel)
+			guard await setViewModelAndMoveRowsAndShouldContinue(newViewModel) else { return }
 			
 			viewModel.context.tryToSave()
 			viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven’t exited editing mode, because if you moved all the `Album`s out of a `Collection`, we’ll close the `Collection` and exit editing mode shortly.
