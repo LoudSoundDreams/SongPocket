@@ -20,7 +20,7 @@ extension LibraryTVC {
 			playPauseButton.accessibilityTraits.formUnion(playButtonAdditionalAccessibilityTraits)
 		}
 		
-		guard let player = sharedPlayer else {
+		guard let player = player else {
 			configurePlayButton()
 			playbackButtons.forEach { $0.disableWithAccessibilityTrait() }
 			return
@@ -44,7 +44,7 @@ extension LibraryTVC {
 	}
 	
 	final override func accessibilityPerformMagicTap() -> Bool {
-		guard let player = sharedPlayer else {
+		guard let player = player else {
 			return false
 		}
 		if player.playbackState == .playing {
@@ -56,10 +56,10 @@ extension LibraryTVC {
 	}
 	
 	private func play() {
-		sharedPlayer?.play()
+		player?.play()
 	}
 	
 	private func pause() {
-		sharedPlayer?.pause()
+		player?.pause()
 	}
 }

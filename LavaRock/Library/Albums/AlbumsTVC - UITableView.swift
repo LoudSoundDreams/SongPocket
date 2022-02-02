@@ -101,7 +101,7 @@ extension AlbumsTVC {
 		
 		// “Now playing” indicator
 		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
-		let isPlaying = sharedPlayer?.playbackState == .playing
+		let isPlaying = player?.playbackState == .playing
 		let nowPlayingIndicator = NowPlayingIndicator(
 			isInPlayer: isInPlayer,
 			isPlaying: isPlaying)

@@ -8,6 +8,8 @@
 import UIKit
 
 final class PlayerVC: UIViewController {
+	
+	
 	@IBOutlet private var previousSongButton: UIButton!
 	@IBOutlet private var rewindButton: UIButton!
 	@IBOutlet private var playPauseButton: UIButton!
@@ -15,6 +17,13 @@ final class PlayerVC: UIViewController {
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		previousSongButton.removeFromSuperview()
+		rewindButton.removeFromSuperview()
+		playPauseButton.removeFromSuperview()
+		nextSongButton.removeFromSuperview()
+		
+		
 		
 		previousSongButton.addAction(UIAction { _ in self.goToPreviousSong() }, for: .touchUpInside)
 		previousSongButton.setImage(
@@ -41,38 +50,29 @@ final class PlayerVC: UIViewController {
 	}
 	
 	private func goToPreviousSong() {
-		sharedPlayer?.skipToPreviousItem()
+		player?.skipToPreviousItem()
 	}
 	
 	private func rewind() {
-		sharedPlayer?.currentPlaybackTime = 0
+		player?.currentPlaybackTime = 0
 	}
 	
 	private func togglePlayPause() {
-		if sharedPlayer?.playbackState == .playing {
-			sharedPlayer?.pause()
+		if player?.playbackState == .playing {
+			player?.pause()
 		} else {
-			sharedPlayer?.play()
+			player?.play()
 		}
 	}
 	
 	private func goToNextSong() {
-		sharedPlayer?.skipToNextItem()
-	}
-	
-	@IBAction private func clearRecents(_ sender: UIBarButtonItem) {
-		
-		
-	}
-	
-	@IBAction private func openMusic(_ sender: UIBarButtonItem) {
-		URL.music?.open()
+		player?.skipToNextItem()
 	}
 }
 
 extension PlayerVC: PlaybackStateReflecting {
 	func reflectPlaybackState() {
-		if sharedPlayer?.playbackState == .playing {
+		if player?.playbackState == .playing {
 			playPauseButton.setImage(
 				UIImage(systemName: .SFPause, withConfiguration: .symbol96),
 				for: .normal)
@@ -83,16 +83,16 @@ extension PlayerVC: PlaybackStateReflecting {
 		}
 		
 		if
-			sharedPlayer != nil
-//			let player = sharedPlayer,
+			player != nil
+//			let player = player,
 //			player.indexOfNowPlayingItem != 0
 		{
 			previousSongButton.isEnabled = true
 		} else {
 			previousSongButton.isEnabled = false
 		}
-		rewindButton.isEnabled = sharedPlayer != nil
-		playPauseButton.isEnabled = sharedPlayer != nil
-		nextSongButton.isEnabled = sharedPlayer != nil
+		rewindButton.isEnabled = player != nil
+		playPauseButton.isEnabled = player != nil
+		nextSongButton.isEnabled = player != nil
 	}
 }

@@ -85,13 +85,13 @@ extension SongsTVC {
 		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		
-		sharedPlayer?.setQueue(with: mediaItemCollection)
+		player?.setQueue(with: mediaItemCollection)
 		
 		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, or they won’t actually apply.
-		sharedPlayer?.repeatMode = .none
-		sharedPlayer?.shuffleMode = .off
+		player?.repeatMode = .none
+		player?.shuffleMode = .off
 		
-		sharedPlayer?.play() // Calls `prepareToPlay` automatically
+		player?.play() // Calls `prepareToPlay` automatically
 	}
 	
 	private func enqueueAlbumStartingAtSelectedSong() {
@@ -106,14 +106,14 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		sharedPlayer?.append(queueDescriptor)
+		player?.append(queueDescriptor)
 		
-		sharedPlayer?.repeatMode = .none
-		sharedPlayer?.shuffleMode = .off
+		player?.repeatMode = .none
+		player?.shuffleMode = .off
 		
 		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
-		if sharedPlayer?.playbackState != .playing {
-			sharedPlayer?.prepareToPlay()
+		if player?.playbackState != .playing {
+			player?.prepareToPlay()
 		}
 		
 		if
@@ -136,14 +136,14 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])
 		
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		sharedPlayer?.append(queueDescriptor)
+		player?.append(queueDescriptor)
 		
-		sharedPlayer?.repeatMode = .none
-		sharedPlayer?.shuffleMode = .off
+		player?.repeatMode = .none
+		player?.shuffleMode = .off
 		
 		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
-		if sharedPlayer?.playbackState != .playing {
-			sharedPlayer?.prepareToPlay()
+		if player?.playbackState != .playing {
+			player?.prepareToPlay()
 		}
 		
 		let selectedTitle = selectedMediaItem.title ?? SongFileExtras.unknownTitlePlaceholder

@@ -18,7 +18,7 @@ import CoreData
 }
 
 extension PlaybackStateReflecting {
-	var sharedPlayer: MPMusicPlayerController? { PlayerManager.player }
+	var player: MPMusicPlayerController? { PlayerManager.player }
 	
 	func beginReflectingPlaybackState() {
 		reflectPlaybackState()

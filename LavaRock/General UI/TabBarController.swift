@@ -21,15 +21,15 @@ final class TabBarController: UITabBarController {
 
 extension TabBarController: PlaybackStateReflecting {
 	func reflectPlaybackState() {
-		guard
-			let nc = viewControllers?.last as? UINavigationController,
-			nc.viewControllers.first is PlayerVC,
-			let tabBarItem = nc.tabBarItem
-		else { return }
-		if sharedPlayer?.playbackState == .playing {
-			tabBarItem.image = UIImage(systemName: .SFSpeakerWave)
-		} else {
-			tabBarItem.image = UIImage(systemName: .SFSpeakerNoWave)
-		}
+//		guard
+//			let nc = viewControllers?.last as? UINavigationController,
+//			nc.viewControllers.first is PlayerVC,
+//			let tabBarItem = nc.tabBarItem
+//		else { return }
+//		if player?.playbackState == .playing {
+//			tabBarItem.image = UIImage(systemName: .SFSpeakerWave)
+//		} else {
+//			tabBarItem.image = UIImage(systemName: .SFSpeakerNoWave)
+//		}
 	}
 }

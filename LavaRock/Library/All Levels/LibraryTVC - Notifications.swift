@@ -62,7 +62,7 @@ extension LibraryTVC {
 	final func freshenNowPlayingIndicators(
 		accordingTo nowPlayingDetermining: NowPlayingDetermining
 	) {
-		let isPlaying = sharedPlayer?.playbackState == .playing
+		let isPlaying = player?.playbackState == .playing
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating else { return }
 			let isInPlayer = nowPlayingDetermining.isInPlayer(anyIndexPath: visibleIndexPath)
