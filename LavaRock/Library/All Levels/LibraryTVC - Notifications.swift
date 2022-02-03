@@ -22,7 +22,7 @@ extension LibraryTVC {
 		reflectPlayer() // Do this even for views that aren’t visible, so that when we reveal them by going back, the “now playing” indicators and playback toolbar are already updated.
 		
 		if view.window == nil {
-			needsFreshenLibraryItemsOnAppear = true
+			needsFreshenLibraryItemsOnViewDidAppear = true
 		} else {
 			freshenLibraryItems()
 		}

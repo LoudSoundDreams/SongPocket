@@ -154,7 +154,7 @@ class LibraryTVC: UITableViewController {
 	
 	// State
 	final var isMergingChanges = false
-	final var needsFreshenLibraryItemsOnAppear = false
+	final var needsFreshenLibraryItemsOnViewDidAppear = false
 	private final var isAnimatingBatchUpdates = 0
 	
 	// MARK: - Setup
@@ -201,8 +201,8 @@ class LibraryTVC: UITableViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if needsFreshenLibraryItemsOnAppear {
-			needsFreshenLibraryItemsOnAppear = false
+		if needsFreshenLibraryItemsOnViewDidAppear {
+			needsFreshenLibraryItemsOnViewDidAppear = false
 			freshenLibraryItems()
 		}
 	}
