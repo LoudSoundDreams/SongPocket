@@ -285,7 +285,8 @@ extension CollectionsTVC {
 				
 				switch authorizationStatus {
 				case .authorized:
-					receivedAccessToMusicApp()
+						setUpMusicAppDependentFunctionality()
+						integrateWithMusicApp()
 				case
 						.notDetermined,
 						.denied,

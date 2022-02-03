@@ -231,22 +231,6 @@ final class CollectionsTVC:
 	}
 	@objc private func userDidUpdateDatabase() { reflectDatabase() }
 	
-	final func receivedAccessToMusicApp() {
-		setUpMusicAppDependentFunctionality()
-		
-		integrateWithMusicApp()
-	}
-	
-	private func integrateWithMusicApp() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
-		reflectViewState {
-			MusicLibraryManager.shared.setUpAndMergeChanges() // You must finish `LibraryTVC.beginObservingNotifications` before this, because we need to observe the notification after the merge completes.
-			PlayerManager.setUp()
-		}
-	}
-	
 	final override func setUpUI() {
 		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
 		switch purpose {
@@ -284,6 +268,16 @@ final class CollectionsTVC:
 				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,
 			]
+		}
+	}
+	
+	final func integrateWithMusicApp() {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
+		reflectViewState {
+			MusicLibraryManager.shared.setUpAndMergeChanges() // You must finish `LibraryTVC.beginObservingNotifications` before this, because we need to observe the notification after the merge completes.
+			PlayerManager.setUp()
 		}
 	}
 	
