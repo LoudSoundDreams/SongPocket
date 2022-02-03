@@ -32,12 +32,16 @@ final class SongsTVC:
 		]
 	}
 	
-	final override func setUpBarButtons() {
-		super.setUpBarButtons()
+	final override func viewDidLoad() {
+		super.viewDidLoad()
 		
 		if Enabling.multialbum {
 			navigationItem.largeTitleDisplayMode = .never
 		}
+	}
+	
+	final override func setUpBarButtons() {
+		super.setUpBarButtons()
 		
 		editingModeToolbarButtons = [
 			sortButton, .flexibleSpace(),

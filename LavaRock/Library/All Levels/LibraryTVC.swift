@@ -178,10 +178,6 @@ class LibraryTVC: UITableViewController {
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
 	
-	final func freshenNavigationItemTitle() {
-		title = viewModel.bigTitle()
-	}
-	
 	final func setUpMusicAppDependentFunctionality() {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
@@ -192,6 +188,10 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
+	
+	final func freshenNavigationItemTitle() {
+		title = viewModel.bigTitle()
+	}
 	
 	// Overrides should call super (this implementation).
 	func setUpBarButtons() {

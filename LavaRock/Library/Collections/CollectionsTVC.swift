@@ -207,9 +207,9 @@ final class CollectionsTVC:
 		
 		switch purpose {
 		case .organizingAlbums:
-			break
-		case .movingAlbums:
-			break
+			navigationItem.prompt = willOrganizeAlbumsStickyNote?.prompt
+		case .movingAlbums(let clipboard):
+			navigationItem.prompt = clipboard.prompt
 		case .browsing:
 			Task {
 				integrateWithMusicApp()
@@ -254,10 +254,8 @@ final class CollectionsTVC:
 		
 		switch purpose {
 		case .organizingAlbums:
-			navigationItem.prompt = willOrganizeAlbumsStickyNote?.prompt
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
-		case .movingAlbums(let clipboard):
-			navigationItem.prompt = clipboard.prompt
+		case .movingAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 			navigationController?.toolbar.isHidden = true
 		case .browsing:

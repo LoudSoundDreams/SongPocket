@@ -69,6 +69,23 @@ final class AlbumsTVC:
 		]
 	}
 	
+	final override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		if Enabling.multicollection {
+			navigationItem.largeTitleDisplayMode = .never
+		}
+		
+		switch purpose {
+		case .organizingAlbums(let clipboard):
+			navigationItem.prompt = clipboard.prompt
+		case .movingAlbums(let clipboard):
+			navigationItem.prompt = clipboard.prompt
+		case .browsing:
+			break
+		}
+	}
+	
 	final override func setUpBarButtons() {
 		switch purpose {
 		case .organizingAlbums:
@@ -85,16 +102,10 @@ final class AlbumsTVC:
 		
 		super.setUpBarButtons()
 		
-		if Enabling.multicollection {
-			navigationItem.largeTitleDisplayMode = .never
-		}
-		
 		switch purpose {
-		case .organizingAlbums(let clipboard):
-			navigationItem.prompt = clipboard.prompt
+		case .organizingAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
-		case .movingAlbums(let clipboard):
-			navigationItem.prompt = clipboard.prompt
+		case .movingAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 			navigationController?.toolbar.isHidden = true
 		case .browsing:
