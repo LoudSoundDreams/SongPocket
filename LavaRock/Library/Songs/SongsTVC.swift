@@ -32,8 +32,8 @@ final class SongsTVC:
 		]
 	}
 	
-	final override func setUpUI() {
-		super.setUpUI()
+	final override func setUpBarButtons() {
+		super.setUpBarButtons()
 		
 		if Enabling.multialbum {
 			navigationItem.largeTitleDisplayMode = .never

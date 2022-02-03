@@ -170,10 +170,11 @@ class LibraryTVC: UITableViewController {
 			name: .LRDidMergeChanges,
 			object: nil)
 		
+		setUpMusicAppDependentFunctionality()
+		
 		freshenNavigationItemTitle()
 		navigationItem.rightBarButtonItem = editButtonItem
-		
-		setUpMusicAppDependentFunctionality()
+		setUpBarButtons()
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
 	
@@ -189,13 +190,11 @@ class LibraryTVC: UITableViewController {
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 				object: nil)
 		}
-		
-		setUpUI()
 	}
 	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
 	
 	// Overrides should call super (this implementation).
-	func setUpUI() {
+	func setUpBarButtons() {
 		setBarButtons(animated: false)
 	}
 	

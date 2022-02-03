@@ -69,8 +69,7 @@ final class AlbumsTVC:
 		]
 	}
 	
-	final override func setUpUI() {
-		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
+	final override func setUpBarButtons() {
 		switch purpose {
 		case .organizingAlbums:
 			viewingModeToolbarButtons = [
@@ -84,7 +83,7 @@ final class AlbumsTVC:
 			break
 		}
 		
-		super.setUpUI()
+		super.setUpBarButtons()
 		
 		if Enabling.multicollection {
 			navigationItem.largeTitleDisplayMode = .never

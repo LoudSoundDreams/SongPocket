@@ -231,8 +231,7 @@ final class CollectionsTVC:
 	}
 	@objc private func userDidUpdateDatabase() { reflectDatabase() }
 	
-	final override func setUpUI() {
-		// Choose our buttons for the navigation bar and toolbar before calling super, because super sets those buttons.
+	final override func setUpBarButtons() {
 		switch purpose {
 		case .organizingAlbums:
 			viewingModeTopLeftButtons = []
@@ -251,7 +250,7 @@ final class CollectionsTVC:
 			}
 		}
 		
-		super.setUpUI()
+		super.setUpBarButtons()
 		
 		switch purpose {
 		case .organizingAlbums:
