@@ -42,6 +42,8 @@ extension CollectionsTVC {
 		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return UITableViewCell() }
 		
 		switch purpose {
+		case .willOrganizeAlbums:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
@@ -105,17 +107,13 @@ extension CollectionsTVC {
 		
 		let mode: CollectionCell.Mode = {
 			switch purpose {
-			case .organizingAlbums(let clipboard):
-				guard let clipboard = clipboard else {
-					guard let stickyNote = willOrganizeAlbumsStickyNote else {
-						return .modal
-					}
-					if stickyNote.idsOfSourceCollections.contains(collection.objectID) {
-						return .modalDisabled
-					} else {
-						return .modal
-					}
+			case .willOrganizeAlbums(let stickyNote):
+				if stickyNote.idsOfSourceCollections.contains(collection.objectID) {
+					return .modalDisabled
+				} else {
+					return .modal
 				}
+			case .organizingAlbums(let clipboard):
 				if clipboard.idsOfSourceCollections.contains(collection.objectID) {
 					return .modalDisabled
 				} else if clipboard.idsOfDestinationCollections.contains(collection.objectID) {
@@ -178,6 +176,8 @@ extension CollectionsTVC {
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
+		case .willOrganizeAlbums:
+			return false
 		case .organizingAlbums:
 			return false
 		case .movingAlbums:
@@ -203,6 +203,8 @@ extension CollectionsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch purpose {
+		case .willOrganizeAlbums:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
@@ -240,6 +242,8 @@ extension CollectionsTVC {
 		didSelectRowAt indexPath: IndexPath
 	) {
 		switch purpose {
+		case .willOrganizeAlbums:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums:

@@ -23,6 +23,8 @@ extension CollectionsTVC {
 	
 	final override func freshenLibraryItems() {
 		switch purpose {
+		case .willOrganizeAlbums:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums:

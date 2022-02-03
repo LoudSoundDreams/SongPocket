@@ -16,7 +16,8 @@ final class CollectionsTVC:
 	OrganizeAlbumsPreviewing
 {
 	enum Purpose {
-		case organizingAlbums(OrganizeAlbumsClipboard?)
+		case willOrganizeAlbums(WillOrganizeAlbumsStickyNote)
+		case organizingAlbums(OrganizeAlbumsClipboard)
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
 	}
@@ -53,10 +54,11 @@ final class CollectionsTVC:
 	
 	// Purpose
 	var purpose: Purpose {
-		if willOrganizeAlbumsStickyNote != nil {
-			return .organizingAlbums(organizeAlbumsClipboard) // Temporarily, `organizeAlbumsClipboard == nil`.
-		}
-		if let clipboard = moveAlbumsClipboard {
+		if let clipboard = organizeAlbumsClipboard { // You must check this before checking `willOrganizeAlbumsStickyNote`.
+			return .organizingAlbums(clipboard)
+		} else if let stickyNote = willOrganizeAlbumsStickyNote {
+			return .willOrganizeAlbums(stickyNote)
+		} else if let clipboard = moveAlbumsClipboard {
 			return .movingAlbums(clipboard)
 		}
 		return .browsing
@@ -206,8 +208,11 @@ final class CollectionsTVC:
 		super.viewDidLoad()
 		
 		switch purpose {
+		case .willOrganizeAlbums(let stickyNote):
+			navigationItem.prompt = stickyNote.prompt
 		case .organizingAlbums:
-			navigationItem.prompt = willOrganizeAlbumsStickyNote?.prompt
+			// Should never run
+			break
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
 		case .browsing:
@@ -216,6 +221,8 @@ final class CollectionsTVC:
 			}
 			
 			switch purpose {
+			case .willOrganizeAlbums:
+				break
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
@@ -233,13 +240,16 @@ final class CollectionsTVC:
 	
 	final override func setUpBarButtons() {
 		switch purpose {
-		case .organizingAlbums:
+		case .willOrganizeAlbums:
 			viewingModeTopLeftButtons = []
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
+		case .organizingAlbums:
+			// Should never run
+			break
 		case .movingAlbums:
 			viewingModeTopLeftButtons = []
 		case .browsing:
@@ -253,8 +263,11 @@ final class CollectionsTVC:
 		super.setUpBarButtons()
 		
 		switch purpose {
-		case .organizingAlbums:
+		case .willOrganizeAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
+		case .organizingAlbums:
+			// Should never run
+			break
 		case .movingAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 			navigationController?.toolbar.isHidden = true
@@ -283,10 +296,12 @@ final class CollectionsTVC:
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
+		case .willOrganizeAlbums:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
-			revertCreate() // Do this before calling `super`, because `super` calls `freshenLibraryItems`.
+			revertCreate()
 		case .browsing:
 			break
 		}
@@ -342,6 +357,8 @@ final class CollectionsTVC:
 		
 		let prerowsInEachSection: [AlbumsViewModel.Prerow] = {
 			switch purpose {
+			case .willOrganizeAlbums:
+				return []
 			case .organizingAlbums:
 				return []
 			case .movingAlbums:
