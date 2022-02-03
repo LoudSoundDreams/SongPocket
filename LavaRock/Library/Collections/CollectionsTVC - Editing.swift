@@ -68,7 +68,7 @@ extension CollectionsTVC {
 		}
 		let restOfTitles = titles.dropFirst()
 		
-		// Check whether the titles of the `Collection`s we're combining are all identical.
+		// Check whether the titles of the `Collection`s we’re combining are all identical.
 		if restOfTitles.allSatisfy({ $0 == firstTitle }) {
 			return firstTitle
 		}

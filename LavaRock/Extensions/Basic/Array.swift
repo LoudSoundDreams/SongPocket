@@ -91,7 +91,7 @@ extension Array {
 				let first = first,
 				let second = rest.first
 			else {
-				// We've reached the end.
+				// We’ve reached the end.
 				return true
 			}
 			guard predicate(first, second) else {

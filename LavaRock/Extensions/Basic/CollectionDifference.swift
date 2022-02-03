@@ -18,7 +18,7 @@ extension CollectionDifference {
 		var indicesOfItemsToMove: [(oldIndex: Int, newIndex: Int)] = []
 		
 		forEach { change in
-			// If a `Change`'s `associatedWith:` value is non-nil, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
+			// If a `Change`’s `associatedWith:` value is non-nil, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
 			switch change {
 			case .remove(let offset, _, let associatedOffset):
 				if let associatedOffset = associatedOffset {

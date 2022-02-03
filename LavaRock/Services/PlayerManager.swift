@@ -13,8 +13,8 @@ import CoreData
 	// - Call `beginReflectingPlaybackState` before they need to reflect playback state.
 	// - Call `endReflectingPlaybackState` within their deinitializer.
 	
-	// Reflect `PlayerManager.player`, and show a disabled state if it's `nil`. (Call `PlayerManager.setUp` to set up `PlayerManager.player`.)
 	func reflectPlaybackState()
+	// Reflect `PlayerManager.player`, and show a disabled state if it’s `nil`. (Call `PlayerManager.setUp` to set up `PlayerManager.player`.)
 }
 
 extension PlaybackStateReflecting {

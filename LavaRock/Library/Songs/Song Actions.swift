@@ -17,7 +17,7 @@ extension SongsTVC {
 		for song: Song,
 		popoverAnchorView: UIView
 	) {
-		// Keep the row for the selected Song selected until we complete or cancel an action for it. That means we also need to deselect it in every possible branch from here. Use this function for convenience.
+		// Keep the row for the selected `Song` selected until we complete or cancel an action for it. That means we also need to deselect it in every possible branch from here. Use this function for convenience.
 		func deselectSelectedSong() {
 			tableView.deselectAllRows(animated: true)
 		}
@@ -29,7 +29,7 @@ extension SongsTVC {
 			self.playAlbumStartingAtSelectedSong()
 			deselectSelectedSong()
 		}
-//		playAlbumStartingAtSelectedSongAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn't do it.
+//		playAlbumStartingAtSelectedSongAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn’t do it.
 		let enqueueRestOfAlbumAction = UIAlertAction(
 			title: LocalizedString.queueRestOfAlbum,
 			style: .default
@@ -48,7 +48,7 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		
-		// Disable the actions that we shouldn't offer for the last Song in the section.
+		// Disable the actions that we shouldn’t offer for the last `Song` in the section.
 		if
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let lastSongInGroup = viewModel.group(forSection: selectedIndexPath.section).items.last,
@@ -87,7 +87,7 @@ extension SongsTVC {
 		
 		player?.setQueue(with: mediaItemCollection)
 		
-		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, or they won’t actually apply.
+		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
 		player?.repeatMode = .none
 		player?.shuffleMode = .off
 		

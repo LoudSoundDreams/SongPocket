@@ -320,7 +320,7 @@ final class CollectionsTVC:
 		
 		combineButton.isEnabled = allowsCombine()
 		
-		// Prevent the user from using any editing buttons while we're animating combining `Collection`s, before we present the dialog.
+		// Prevent the user from using any editing buttons while we’re animating combining `Collection`s, before we present the dialog.
 		if viewModelBeforeCombining != nil {
 			editingModeToolbarButtons.forEach { $0.isEnabled = false }
 		}

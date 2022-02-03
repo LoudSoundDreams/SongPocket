@@ -17,7 +17,7 @@ extension MPMediaItem: SongFile {
 	var discCountOnDisk: Int { discCount } // … `0`, as of iOS 15.0 RC.
 	var discNumberOnDisk: Int { discNumber } // … `1`, as of iOS 14.7 developer beta 5.
 	var trackNumberOnDisk: Int { albumTrackNumber } // … `0`, as of iOS 14.7 developer beta 5.
-	var titleOnDisk: String? { title } // … we don't know, because Music for Mac as of version 1.1.5.74 doesn't allow blank song titles. But that means we shouldn't need to move unknown song titles to the end.
+	var titleOnDisk: String? { title } // … we don’t know, because Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
 	var artistOnDisk: String? { artist }
 	var releaseDateOnDisk: Date? { releaseDate }
 	var dateAddedOnDisk: Date { dateAdded }

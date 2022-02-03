@@ -68,7 +68,7 @@ extension Album {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	// WARNING: Leaves gaps in the `Album` indices within `Collection`s, and doesn't delete empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	// WARNING: Leaves gaps in the `Album` indices within `Collection`s, and doesn’t delete empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
 	static func deleteAllEmpty_withoutReindexOrCascade(
 		via context: NSManagedObjectContext
 	) {
@@ -83,7 +83,7 @@ extension Album {
 	
 	// MARK: - Songs
 	
-	// Similar to `Collection.albums(sorted:)`.
+	// Similar to `Collection.albums`.
 	final func songs(sorted: Bool) -> [Song] {
 		guard let contents = contents else {
 			return []
@@ -155,7 +155,7 @@ extension Album {
 		}
 	}
 	
-	// Use `createSongsAtEnd(for:)` if possible. It’s faster.
+	// Use `createSongsAtEnd` if possible. It’s faster.
 	final func createSongsAtBeginning(for songFiles: [SongFile]) {
 		os_signpost(.begin, log: .album, name: "Create Songs at the top")
 		defer {
@@ -268,7 +268,7 @@ extension Album {
 	final func albumArtistFormattedOrPlaceholder() -> String {
 		if
 			let representative = representativeMPMediaItem(),
-			let fetchedAlbumArtist = representative.albumArtistOnDisk // As of iOS 14.0 developer beta 5, even if the "album artist" field is blank in Music for Mac (and other tag editors), .albumArtist can still return something: it probably reads the "artist" field from one of the songs. Currently, it returns the same as what's in the album's header in Music for iOS.
+			let fetchedAlbumArtist = representative.albumArtistOnDisk // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
 		{
 			return fetchedAlbumArtist
 		} else {

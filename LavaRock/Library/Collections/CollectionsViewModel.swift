@@ -144,7 +144,7 @@ extension CollectionsViewModel {
 			index: Int64(index),
 			context: childContext)
 		
-		try? childContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don't unnecessarily remove and reinsert the row later.
+		try? childContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
 		
 		let twin = Self.init(
 			context: childContext,

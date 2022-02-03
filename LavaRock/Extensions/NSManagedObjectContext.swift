@@ -25,7 +25,7 @@ extension NSManagedObjectContext {
 			do {
 				result = try fetch(request)
 			} catch {
-				fatalError("Couldn't load items from Core Data using the fetch request: \(request)")
+				fatalError("Couldn’t load items from Core Data using the fetch request: \(request)")
 			}
 		}
 		return result

@@ -102,7 +102,7 @@ extension Collection {
 	
 	// MARK: - Albums
 	
-	// Similar to `Album.songs(sorted:)`.
+	// Similar to `Album.songs`.
 	final func albums(sorted: Bool) -> [Album] {
 		guard let contents = contents else {
 			return []
@@ -129,7 +129,7 @@ extension Collection {
 		Self.deleteAllEmpty(via: context) // Also reindexes `self`
 	}
 	
-	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn't delete empty source `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn’t delete empty source `Collection`s. You must call `Collection.deleteAllEmpty` later.
 	final func moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
 		with albumIDs: [NSManagedObjectID],
 		possiblyToSameCollection: Bool,

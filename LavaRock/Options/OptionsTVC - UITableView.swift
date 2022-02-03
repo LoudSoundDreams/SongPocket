@@ -21,7 +21,7 @@ extension OptionsTVC {
 		let tipJarIndexPaths = tableView.indexPathsForRows(
 			inSection: Section.tipJar.rawValue,
 			firstRow: 0)
-		tableView.reloadRows(at: tipJarIndexPaths, with: .fade) // Don't use `reloadSections`, because that makes the header and footer fade out and back in.
+		tableView.reloadRows(at: tipJarIndexPaths, with: .fade) // Don’t use `reloadSections`, because that makes the header and footer fade out and back in.
 	}
 	
 	// MARK: - All Sections

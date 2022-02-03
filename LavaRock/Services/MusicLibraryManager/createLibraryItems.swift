@@ -9,7 +9,7 @@ import CoreData
 import OSLog
 
 extension MusicLibraryManager {
-	// Create new managed objects for the new `SongFile`s, including new Albums and Collections to put them in if necessary.
+	// Create new managed objects for the new `SongFile`s, including new `Album`s and `Collection`s to put them in if necessary.
 	final func createLibraryItems(
 		for newSongFiles: [SongFile],
 		existingAlbums: [Album],
@@ -31,19 +31,19 @@ extension MusicLibraryManager {
 			return Dictionary(grouping: songFiles) { $0.albumFolderID }
 		}
 		
-		// Group the `SongFile`s into albums, sorted by the order we'll add them to our database in.
+		// Group the `SongFile`s into albums, sorted by the order we’ll add them to our database in.
 		let songFileGroups: [[SongFile]] = {
 			if isFirstImport {
-				// Since our database is empty, we'll add items from the top down, because it's faster.
+				// Since our database is empty, we’ll add items from the top down, because it’s faster.
 				let dictionary = groupedByAlbumFolderID(newSongFiles)
 				let groups = dictionary.map { $0.value }
 				os_signpost(.begin, log: .create, name: "Initial sort")
 				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(songFileGroups: groups)
-				// We'll sort Albums by release date later.
+				// We’ll sort `Album`s by release date later.
 				os_signpost(.end, log: .create, name: "Initial sort")
 				return sortedGroups
 			} else {
-				// Since our database isn't empty, we'll insert items at the top from the bottom up, because it's simpler.
+				// Since our database isn’t empty, we’ll insert items at the top from the bottom up, because it’s simpler.
 				os_signpost(.begin, log: .create, name: "Initial sort")
 				let sortedSongFiles = newSongFiles.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
 				os_signpost(.end, log: .create, name: "Initial sort")
@@ -56,7 +56,7 @@ extension MusicLibraryManager {
 				os_signpost(.end, log: .create, name: "Initial sort 2")
 				return sortedGroups
 			}
-			// We'll sort Songs within each Album later, because it depends on whether the existing Songs in each Album are in album order.
+			// We’ll sort `Song`s within each `Album` later, because it depends on whether the existing `Song`s in each `Album` are in album order.
 		}()
 		
 		var existingAlbumsByID: Dictionary<AlbumFolderID, Album> = {
@@ -93,7 +93,7 @@ extension MusicLibraryManager {
 	// MARK: Sorting Groups of `SongFile`s
 	
 	// 1. Group by album artists, sorted alphabetically.
-	// - "Unknown Album Artist" should go at the end.
+	// - “Unknown Album Artist” should go at the end.
 	// 2. Within each album artist, group by albums, sorted by most recent first.
 	
 	private func sortedByAlbumArtistNameThenAlbumTitle(
@@ -122,11 +122,11 @@ extension MusicLibraryManager {
 	) -> (Album?, Collection?) {
 		let firstSongFileInAlbum = songFileGroup.first!
 		
-		// If we already have a matching Album to add the Songs to …
+		// If we already have a matching `Album` to add the `Song`s to …
 		let albumFolderID = firstSongFileInAlbum.albumFolderID
 		if let matchingExistingAlbum = existingAlbumsByID[albumFolderID] {
 			
-			// … then add the Songs to that Album.
+			// … then add the `Song`s to that `Album`.
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
 				matchingExistingAlbum.createSongsAtBeginning(for: songFileGroup)
 				os_signpost(.begin, log: .create, name: "Put the existing Album back in order")
@@ -139,7 +139,7 @@ extension MusicLibraryManager {
 			return (nil, nil)
 			
 		} else {
-			// Otherwise, create the Album to add the Songs to …
+			// Otherwise, create the `Album` to add the `Song`s to …
 			os_signpost(.begin, log: .create, name: "Create a new Album and maybe new Collection")
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
 				for: firstSongFileInAlbum,
@@ -148,7 +148,7 @@ extension MusicLibraryManager {
 			let newAlbum = newContainers.album
 			os_signpost(.end,log: .create, name: "Create a new Album and maybe new Collection")
 			
-			// … and then add the Songs to that Album.
+			// … and then add the `Song`s to that `Album`.
 			os_signpost(.begin, log: .create, name: "Sort the Songs for the new Album")
 			let sortedSongFileGroup = songFileGroup.sorted {
 				$0.precedesInDefaultOrder(inSameAlbum: $1)

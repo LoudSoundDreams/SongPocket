@@ -85,14 +85,14 @@ extension LibraryTVC {
 	) {
 		if !isEditing {
 			setEditing(true, animated: true) // As of iOS 14.7 developer beta 2 and LavaRock build 144, starting a multiple-selection interaction sometimes causes the table view to crash when our override of `setEditing` calls `tableView.performBatchUpdates(nil)`, with “[Assert] Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed.”
-			// During a WWDC 2021 lab, a UIKit engineer told me that this seemed like a bug in UITableView.
+			// During a WWDC 2021 lab, a UIKit engineer told me that this seemed like a bug in `UITableView`.
 			// By checking `isEditing` first, we either prevent that or make it very rare.
 		}
 	}
 	
 	// Overrides should call super (this implementation) as a last resort.
-	// To disable selection for a row, it's simpler to set cell.isUserInteractionEnabled = false.
-	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and shouldBeginMultipleSelectionInteractionAt, and swipe over a cell that doesn't allow user interaction, to select it too.
+	// To disable selection for a row, it’s simpler to set `cell.isUserInteractionEnabled = false`.
+	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and `shouldBeginMultipleSelectionInteractionAt`, and swipe over a cell that doesn’t allow user interaction, to select it too.
 	// Therefore, if you support multiple-selection interactions, you must use this method to disable selection for certain rows.
 	override func tableView(
 		_ tableView: UITableView,

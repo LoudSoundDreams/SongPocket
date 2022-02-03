@@ -48,7 +48,7 @@ final class AlbumInfoCell: UITableViewCell {
 	
 	final func configure(with album: Album) {
 		// Album artist
-		let albumArtist: String // Don't let this be nil.
+		let albumArtist: String // Don’t let this be nil.
 		= album.albumArtistFormattedOrPlaceholder()
 		
 		// Release date
@@ -58,7 +58,7 @@ final class AlbumInfoCell: UITableViewCell {
 		releaseDateLabel.text = releaseDateString
 		
 		if releaseDateString == nil {
-			// We couldn't determine the album's release date.
+			// We couldn’t determine the album’s release date.
 			textStack.spacing = 0
 		} else {
 			textStack.spacing = UIStackView.spacingUseSystem
@@ -102,7 +102,7 @@ final class SongCell:
 				return nil
 			}
 		}()
-		let trackNumberString: String = { // Don't let this be nil.
+		let trackNumberString: String = { // Don’t let this be nil.
 			guard
 				let songFile = songFile,
 				let representative = representative
@@ -112,7 +112,7 @@ final class SongCell:
 			
 			let discNumber = representative.discNumberOnDisk
 			let discCount = representative.discCountOnDisk
-			// Show disc numbers if the disc count is more than 1, or if the disc count isn't more than 1 but the disc number is.
+			// Show disc numbers if the disc count is more than 1, or if the disc count isn’t more than 1 but the disc number is.
 			let shouldShowDiscNumber = (discCount > 1) ? true : (discNumber > 1)
 			
 			if shouldShowDiscNumber {
@@ -124,7 +124,6 @@ final class SongCell:
 		
 		titleLabel.text = titleText
 		artistLabel.text = artistText
-//		applyNowPlayingIndicator(nowPlayingIndicator) // Cannot use mutating member on immutable value: 'self' is immutable
 		trackLabel.text = trackNumberString
 		
 		if artistText == nil {

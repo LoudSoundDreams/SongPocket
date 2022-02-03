@@ -346,7 +346,7 @@ extension LibraryViewModel {
 		return newItems
 	}
 	
-	// Sort stably! Multiple items with the same name, disc number, or whatever property we're sorting by should stay in the same order.
+	// Sort stably! Multiple items with the same name, disc number, or whatever property we’re sorting by should stay in the same order.
 	private static func sorted(
 		_ items: [NSManagedObject],
 		sortOptionLocalizedName: String

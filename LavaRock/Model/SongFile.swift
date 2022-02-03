@@ -107,7 +107,7 @@ extension SongFile {
 			}
 		} else {
 			// At this point, leave elements in the same order if they both have no release date, or the same release date.
-			// However, as of iOS 14.7, when using `sorted(by:)`, returning `true` here doesn't always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
+			// However, as of iOS 14.7, when using `sorted(by:)`, returning `true` here doesn’t always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
 			guard myTrack != otherTrack else {
 				return true
 			}

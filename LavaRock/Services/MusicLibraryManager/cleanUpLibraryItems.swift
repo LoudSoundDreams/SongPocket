@@ -18,8 +18,8 @@ extension MusicLibraryManager {
 			os_signpost(.end, log: .merge, name: "5. Clean up library items")
 		}
 		
-		let allCollections = Collection.allFetched(ordered: false, via: context) // Order doesn't matter, because this is for reindexing the Albums within each Collection.
-		let allAlbums = Album.allFetched(ordered: false, via: context) // Order doesn't matter, because this is for recalculating each Album's release date estimate, and reindexing the Songs within each Album.
+		let allCollections = Collection.allFetched(ordered: false, via: context) // Order doesn’t matter, because this is for reindexing the `Album`s within each `Collection`.
+		let allAlbums = Album.allFetched(ordered: false, via: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
 		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
@@ -67,7 +67,7 @@ extension MusicLibraryManager {
 			album.releaseDateEstimate = nil
 			
 			os_signpost(.begin, log: .cleanup, name: "Find the release dates associated with this Album")
-			// For Albums with no release dates, using `guard` to return early is slightly faster than optional chaining.
+			// For `Album`s with no release dates, using `guard` to return early is slightly faster than optional chaining.
 			guard let matchingSongFiles = songFilesByAlbumFolderID[album.albumPersistentID] else {
 				os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 				return
@@ -87,7 +87,7 @@ extension MusicLibraryManager {
 		in collection: Collection,
 		shouldSortByNewestFirst: Bool
 	) {
-		var albumsInCollection = collection.albums(sorted: true) // Sorted by index here, even if we're going to sort by release date later; this keeps Albums whose releaseDateEstimate is nil in their previous order.
+		var albumsInCollection = collection.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
 		
 		if shouldSortByNewestFirst {
 			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInCollection)
@@ -103,12 +103,12 @@ extension MusicLibraryManager {
 		var albumsCopy = albums
 		let commonDate = Date()
 		albumsCopy.sort {
-			// Reverses the order of all Albums whose releaseDateEstimate is nil.
+			// Reverses the order of all `Album`s whose `releaseDateEstimate` is `nil`.
 			$0.releaseDateEstimate ?? commonDate
 			>= $1.releaseDateEstimate ?? commonDate
 		}
 		albumsCopy.sort { _, rightAlbum in
-			// Re-reverses the order of all Albums whose releaseDateEstimate is nil.
+			// Re-reverses the order of all `Album`s whose `releaseDateEstimate` is `nil`.
 			rightAlbum.releaseDateEstimate == nil
 		}
 		return albumsCopy

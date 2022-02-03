@@ -61,7 +61,7 @@ final class AlbumCell:
 		os_signpost(.end, log: .albumsView, name: "Draw artwork image")
 		
 		// Title
-		let title: String // Don't let this be nil.
+		let title: String // Don’t let this be nil.
 		= album.titleFormattedOrPlaceholder()
 		
 		// Release date
@@ -74,7 +74,7 @@ final class AlbumCell:
 		releaseDateLabel.text = releaseDateString
 		 
 		if releaseDateString == nil {
-			// We couldn't determine the album's release date.
+			// We couldn’t determine the album’s release date.
 			textStack.spacing = 0
 		} else {
 			textStack.spacing = 4

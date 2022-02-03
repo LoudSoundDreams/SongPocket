@@ -116,7 +116,7 @@ extension AlbumsTVC {
 		// If an `Album` is already in a `Collection` with a title that matches its album artist, then leave it there.
 		// Otherwise, move the `Album` to the first `Collection` with a matching title.
 		// If there is no matching `Collection`, then create one.
-		// Put new `Collection`s above the source `Collection`, in the order that the album artists first appear among the `Album`s we're moving.
+		// Put new `Collection`s above the source `Collection`, in the order that the album artists first appear among the `Album`s we’re moving.
 		
 		// Results
 		var movedAlbums: Set<Album> = []
@@ -151,7 +151,7 @@ extension AlbumsTVC {
 			
 			movedAlbums.insert(album)
 			
-			// If we've created a matching new `Collection` …
+			// If we’ve created a matching new `Collection` …
 			if let matchingNewCollection = newCollectionsByTitle[titleOfDestinationCollection] {
 				// … then move the `Album` to the end of that `Collection`.
 				os_signpost(.begin, log: log, name: "Move Album to matching new Collection")

@@ -290,7 +290,7 @@ class LibraryTVC: UITableViewController {
 		fatalError()
 	}
 	
-	// `LibraryTVC` itself doesn't call this, but its subclasses might want to.
+	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
 	final func deleteThenExit(sections toDelete: [Int]) {
 		tableView.deselectAllRows(animated: true)
 		

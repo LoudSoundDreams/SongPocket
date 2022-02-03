@@ -32,11 +32,11 @@ extension MusicLibraryManager {
 	private func mergeClonedAlbumsAndReturnUniqueAlbumsByID(
 		potentiallyOutdatedSongsAndFreshSongFiles: [(Song, SongFile)]
 	) -> [AlbumFolderID: Album] {
-		// I've seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
+		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
 		// We never should have ended up with two `Album`s with the same `albumPersistentID` in the first place, but this makes the merger resilient to that mistake.
 		
-		// To merge `Album`s, we'll move their `Song`s into one `Album`, then delete empty `Album`s.
-		// Specifically, if a `Song`'s `Album` isn't the uppermost one in the user's custom arrangement with that `albumPersistentID`, then move it to the end of that `Album`.
+		// To merge `Album`s, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
+		// Specifically, if a `Song`’s `Album` isn’t the uppermost one in the user’s custom arrangement with that `albumPersistentID`, then move it to the end of that `Album`.
 		
 		os_signpost(.begin, log: .update, name: "Fetch all Albums")
 		let allAlbums = Album.allFetched(ordered: true, via: context)
@@ -53,8 +53,8 @@ extension MusicLibraryManager {
 		os_signpost(.end, log: .update, name: "Initialize uniqueAlbums")
 		
 		os_signpost(.begin, log: .update, name: "Filter to Songs in cloned Albums")
-		// Don't actually move the Songs we need to move yet, because we haven't sorted them yet.
-		// Filter before sorting. Don't sort first, because that's slower.
+		// Don’t actually move the `Song`s we need to move yet, because we haven’t sorted them yet.
+		// Filter before sorting. Don’t sort first, because that’s slower.
 		let unsortedSongsToMove: [Song]
 		= potentiallyOutdatedSongsAndFreshSongFiles.compactMap { (song, _) in
 			let potentiallyClonedAlbum = song.container!
@@ -67,7 +67,7 @@ extension MusicLibraryManager {
 		}
 		os_signpost(.end, log: .update, name: "Filter to Songs in cloned Albums")
 		
-		// Songs will very rarely make it past this point.
+		// `Song`s will very rarely make it past this point.
 		
 		os_signpost(.begin, log: .update, name: "Sort Songs in cloned Albums")
 		let songsToMove = unsortedSongsToMove.sorted {
@@ -101,7 +101,7 @@ extension MusicLibraryManager {
 		}
 		os_signpost(.end, log: .update, name: "Filter to Songs moved to different Albums")
 		
-		// Sort the existing Songs by the order they appeared in in the app.
+		// Sort the existing `Song`s by the order they appeared in in the app.
 		os_signpost(.begin, log: .update, name: "Sort Songs moved to different Albums")
 		let outdatedTuples = unsortedOutdatedTuples.sorted { leftTuple, rightTuple in
 			leftTuple.0.precedesInUserCustomOrder(rightTuple.0)
@@ -115,20 +115,20 @@ extension MusicLibraryManager {
 				os_signpost(.end, log: .update, name: "Move one Song to its up-to-date Album")
 			}
 			
-			// Get this Song's fresh albumPersistentID.
-			os_signpost(.begin, log: .update, name: "Get one Song's fresh albumPersistentID")
+			// Get this `Song`’s fresh `albumPersistentID`.
+			os_signpost(.begin, log: .update, name: "Get one Song’s fresh albumPersistentID")
 			let newAlbumFolderID = songFile.albumFolderID
-			os_signpost(.end, log: .update, name: "Get one Song's fresh albumPersistentID")
+			os_signpost(.end, log: .update, name: "Get one Song’s fresh albumPersistentID")
 			
-			// If this Song's albumPersistentID has stayed the same, move on to the next one.
+			// If this Song’s `albumPersistentID` has stayed the same, move on to the next one.
 			guard
 				newAlbumFolderID != song.container!.albumPersistentID
 			else { return }
 			
-			// This Song's albumPersistentID has changed.
-			// If we already have a matching Album to move the Song to …
+			// This `Song`’s `albumPersistentID` has changed.
+			// If we already have a matching `Album` to move the `Song` to …
 			if let existingAlbum = existingAlbumsByID[newAlbumFolderID] {
-				// … then move the Song to that Album.
+				// … then move the `Song` to that `Album`.
 				os_signpost(.begin, log: .update, name: "Move a Song to an existing Album")
 				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
 				
@@ -136,7 +136,7 @@ extension MusicLibraryManager {
 				song.container = existingAlbum
 				os_signpost(.end, log: .update, name: "Move a Song to an existing Album")
 			} else {
-				// Otherwise, create the Album to move the Song to …
+				// Otherwise, create the `Album` to move the `Song` to …
 				os_signpost(.begin, log: .update, name: "Move a Song to a new Album")
 				let existingCollection = song.container!.container!
 				let newAlbum = Album(
@@ -144,17 +144,17 @@ extension MusicLibraryManager {
 					albumFolderID: songFile.albumFolderID,
 					context: context)
 				
-				// … and then move the Song to that Album.
+				// … and then move the `Song` to that `Album`.
 				song.index = 0
 				song.container = newAlbum
 				
-				// Make a note of the new Album.
+				// Make a note of the new `Album`.
 				existingAlbumsByID[newAlbumFolderID] = newAlbum
 				
 				os_signpost(.end, log: .update, name: "Move a Song to a new Album")
 			}
 		}
 		
-		// We'll delete empty Albums and Collections later.
+		// We’ll delete empty `Album`s and `Collection`s later.
 	}
 }

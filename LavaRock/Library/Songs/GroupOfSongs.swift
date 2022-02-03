@@ -36,7 +36,7 @@ struct GroupOfSongs: GroupOfLibraryItems {
 	) {
 		self.container = container
 		
-		private_items = itemsFetched( // Doesn't trigger the property observer
+		private_items = itemsFetched( // Doesn’t trigger the property observer
 			entityName: entityName,
 			context: context)
 	}

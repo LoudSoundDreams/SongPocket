@@ -16,7 +16,7 @@ extension CollectionsTVC {
 			return nil
 		}
 		let otherAlbums = albumsOutOfOrder.dropFirst()
-		// Don't query for all the album artists upfront, because that's slow.
+		// Don’t query for all the album artists upfront, because that’s slow.
 		
 		let existingTitles: Set<String>? = {
 			guard let context = someAlbum.managedObjectContext else {
@@ -26,7 +26,7 @@ extension CollectionsTVC {
 			return Set(allCollections.compactMap { $0.title })
 		}()
 		
-		// Check whether the album artists of the albums we're moving are all identical.
+		// Check whether the album artists of the albums we’re moving are all identical.
 	albumArtistIdentical: do {
 		let someAlbumArtist = someAlbum.albumArtistFormattedOrPlaceholder()
 		
