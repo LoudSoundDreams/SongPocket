@@ -506,7 +506,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="ze3-Yp-Aak">
             <objects>
-                <tabBarController storyboardIdentifier="-" automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" customClass="TabBarController" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="-" automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bdc-Yk-4pi">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -514,7 +514,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="cEm-HZ-58e" kind="relationship" relationship="viewControllers" id="rv2-g8-KBd"/>
+                        <segue destination="cEm-HZ-58e" kind="relationship" relationship="viewControllers" id="l69-jK-bJT"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="COP-4z-pT2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
