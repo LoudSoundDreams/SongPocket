@@ -68,12 +68,6 @@
                         <barButtonItem key="leftBarButtonItem" title="Shuffle" id="9dq-pP-MYY"/>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Apply" id="ZcH-nq-Bjj"/>
                     </navigationItem>
-                    <connections>
-                        <outlet property="nextSongButton" destination="fTF-g2-1ps" id="dwj-oR-zMK"/>
-                        <outlet property="playPauseButton" destination="cod-D3-acc" id="Tqv-fC-ZcS"/>
-                        <outlet property="previousSongButton" destination="rTj-EO-tZT" id="oW9-Sg-tgo"/>
-                        <outlet property="rewindButton" destination="tJY-K3-GqY" id="P29-H5-57Y"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0RZ-8F-INt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -82,15 +76,19 @@
         <!--Player-->
         <scene sceneID="esw-Ah-g0b">
             <objects>
-                <navigationController storyboardIdentifier="UIKit" automaticallyAdjustsScrollViewInsets="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="UIKit" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Player" image="hifispeaker.fill" catalog="system" id="flc-hx-2s9"/>
                     <toolbarItems/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Dxa-wg-csy">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y1P-08-OIo">
+                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="OA4-QZ-1pA" kind="relationship" relationship="rootViewController" id="Oih-IS-C86"/>
                     </connections>

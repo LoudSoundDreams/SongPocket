@@ -8,28 +8,7 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-	final override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		beginReflectingPlaybackState()
-	}
-	
-	deinit {
-		endReflectingPlaybackState()
-	}
-}
-
-extension TabBarController: PlaybackStateReflecting {
-	func reflectPlaybackState() {
-//		guard
-//			let nc = viewControllers?.last as? UINavigationController,
-//			nc.viewControllers.first is PlayerVC,
-//			let tabBarItem = nc.tabBarItem
-//		else { return }
-//		if player?.playbackState == .playing {
-//			tabBarItem.image = UIImage(systemName: .SFSpeakerWave)
-//		} else {
-//			tabBarItem.image = UIImage(systemName: .SFSpeakerNoWave)
-//		}
+	final override func accessibilityPerformMagicTap() -> Bool {
+		return false // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles playback in the built-in Music app. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 	}
 }

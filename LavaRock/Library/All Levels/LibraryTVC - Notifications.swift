@@ -15,6 +15,8 @@ extension LibraryTVC: PlaybackStateReflecting {
 	}
 }
 
+extension LibraryTVC: PlaybackToolbarManaging {}
+
 extension LibraryTVC {
 	// MARK: - Database
 	
@@ -33,7 +35,7 @@ extension LibraryTVC {
 	// Subclasses that show a “now playing” indicator should override this method, call super (this implementation), and update that indicator.
 	@objc func reflectPlayer() {
 		// We want every `LibraryTVC` to have its playback toolbar freshened before it appears. This tells all `LibraryTVC`s to freshen, even if they aren’t onscreen. This works; it’s just unusual.
-		freshenPlaybackButtons()
+		freshenPlaybackToolbar()
 	}
 	
 	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.

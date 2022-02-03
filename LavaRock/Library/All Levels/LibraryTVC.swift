@@ -71,70 +71,17 @@ class LibraryTVC: UITableViewController {
 	// Controls
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	private lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [.flexibleSpace()]
-	final lazy var viewingModeToolbarButtons = playbackButtons
+	final lazy var viewingModeToolbarButtons = playbackToolbarButtons
 	
 	// MARK: Subclasses Should Not Customize
 	
-	// Playback
-	private(set) final lazy var playbackButtons = [
-		previousSongButton, .flexibleSpace(),
-		rewindButton, .flexibleSpace(),
-//		skipBackwardButton, .flexibleSpace(),
-		playPauseButton, .flexibleSpace(),
-//		skipForwardButton, .flexibleSpace(),
-		nextSongButton,
-	]
-	private(set) final lazy var previousSongButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LocalizedString.previousTrack,
-			image: UIImage(systemName: .SFPreviousTrack),
-			primaryAction: UIAction { _ in
-				self.player?.skipToPreviousItem()
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	private(set) final lazy var rewindButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LocalizedString.restart,
-			image: UIImage(systemName: .SFRewind),
-			primaryAction: UIAction { _ in
-				self.player?.currentPlaybackTime = 0 // As of iOS 15.3 developer beta 1, neither this, `.skipToBeginning`, `.skipToPreviousItem`, nor `.skipToNextItem` reliably changes `.currentPlaybackTime` to `0`.
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	private(set) final lazy var skipBackwardButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LocalizedString.skip10SecondsBackwards,
-			image: UIImage(systemName: .SFSkipBack10),
-			primaryAction: UIAction { _ in
-				self.player?.currentPlaybackTime -= 10
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	private(set) final lazy var playPauseButton = UIBarButtonItem()
-	private final lazy var skipForwardButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LocalizedString.skip10SecondsForward,
-			image: UIImage(systemName: .SFSkipForward10),
-			primaryAction: UIAction { _ in
-				self.player?.currentPlaybackTime += 10
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	private final lazy var nextSongButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LocalizedString.nextTrack,
-			image: UIImage(systemName: .SFNextTrack),
-			primaryAction: UIAction { _ in
-				self.player?.skipToNextItem()
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
+	// PlaybackToolbarManaging
+	private(set) lazy var previousSongButton = makePreviousSongButton()
+	private(set) lazy var rewindButton = makeRewindButton()
+	private(set) lazy var skipBackwardButton = makeSkipBackwardButton()
+	private(set) lazy var playPauseButton = UIBarButtonItem()
+	private(set) lazy var skipForwardButton = makeSkipForwardButton()
+	private(set) lazy var nextSongButton = makeNextSongButton()
 	
 	// Controls
 	private(set) final lazy var sortButton = UIBarButtonItem(
@@ -372,7 +319,7 @@ class LibraryTVC: UITableViewController {
 		} else {
 			navigationItem.setLeftBarButtonItems(viewingModeTopLeftButtons, animated: animated)
 			
-			freshenPlaybackButtons()
+			freshenPlaybackToolbar()
 			setToolbarItems(viewingModeToolbarButtons, animated: animated)
 		}
 	}

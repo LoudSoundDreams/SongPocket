@@ -14,7 +14,6 @@
 		070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */; };
 		071701FF250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */; };
 		07170201250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */; };
-		0719B57E2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */; };
 		071A0B9E277E76510017F76D /* LavaRockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* LavaRockApp.swift */; };
 		071A0BA0277E832C0017F76D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9F277E832C0017F76D /* Persistence.swift */; };
 		071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0BA1277E83CB0017F76D /* LibraryNC.swift */; };
@@ -33,6 +32,7 @@
 		073E6A9225574B99003C84A5 /* NowPlayingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */; };
 		073FB55927588B81000FAF5F /* Options.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* Options.storyboard */; };
 		073FB56027588BC5000FAF5F /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB56227588BC5000FAF5F /* Player.storyboard */; };
+		07499A8627AB72CF00A2D712 /* PlaybackToolbarManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07499A8527AB72CF00A2D712 /* PlaybackToolbarManaging.swift */; };
 		0750C01726D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0750C01626D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift */; };
 		0751DE3926C5C6E800AA14DA /* protocol LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */; };
 		075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LocalizedString.swift */; };
@@ -135,7 +135,6 @@
 		070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Editing.swift"; sourceTree = "<group>"; };
 		071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - Notifications.swift"; sourceTree = "<group>"; };
 		07170200250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Notifications.swift"; sourceTree = "<group>"; };
-		0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - Controlling Playback.swift"; sourceTree = "<group>"; };
 		071A0B9D277E76510017F76D /* LavaRockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LavaRockApp.swift; sourceTree = "<group>"; };
 		071A0B9F277E832C0017F76D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		071A0BA1277E83CB0017F76D /* LibraryNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryNC.swift; sourceTree = "<group>"; };
@@ -154,6 +153,7 @@
 		073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingIndicator.swift; sourceTree = "<group>"; };
 		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Options.storyboard; sourceTree = "<group>"; };
 		073FB56127588BC5000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Player.storyboard; sourceTree = "<group>"; };
+		07499A8527AB72CF00A2D712 /* PlaybackToolbarManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackToolbarManaging.swift; sourceTree = "<group>"; };
 		0750C01626D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsViewModel + NowPlayingDetermining.swift"; sourceTree = "<group>"; };
 		0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryViewModel.swift"; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
@@ -301,7 +301,6 @@
 				073E6A9125574B98003C84A5 /* NowPlayingIndicator.swift */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
-				0719B57D2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift */,
 				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
 				07DC1B1C24F339E000AAEEDB /* LibraryTVC - Editing.swift */,
@@ -517,6 +516,7 @@
 				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
 				075218AF257C4C0C0077AE9B /* Main.storyboard */,
 				07B1EC432723B52A00EA8E29 /* TabBarController.swift */,
+				07499A8527AB72CF00A2D712 /* PlaybackToolbarManaging.swift */,
 			);
 			path = "General UI";
 			sourceTree = "<group>";
@@ -753,9 +753,9 @@
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				072F859F26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift in Sources */,
 				07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */,
-				0719B57E2511CD4E00748371 /* LibraryTVC - Controlling Playback.swift in Sources */,
 				075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,
+				07499A8627AB72CF00A2D712 /* PlaybackToolbarManaging.swift in Sources */,
 				0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */,
 				07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */,
 				07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */,
@@ -969,7 +969,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
@@ -997,7 +997,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
