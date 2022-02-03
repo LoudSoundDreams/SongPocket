@@ -212,18 +212,32 @@ final class CollectionsTVC:
 			break
 		case .browsing:
 			Task {
-				integrateWithBuiltInMusicApp()
+				integrateWithMusicApp()
+			}
+			
+			switch purpose {
+			case .organizingAlbums:
+				break
+			case .movingAlbums:
+				break
+			case .browsing:
+				NotificationCenter.default.addObserverOnce(
+					self,
+					selector: #selector(userDidUpdateDatabase),
+					name: .LRUserDidUpdateDatabase,
+					object: nil)
 			}
 		}
 	}
+	@objc private func userDidUpdateDatabase() { reflectDatabase() }
 	
-	final func didReceiveAuthorizationForMusicLibrary() {
-		setUp()
+	final func receivedAccessToMusicApp() {
+		setUpMusicAppDependentFunctionality()
 		
-		integrateWithBuiltInMusicApp()
+		integrateWithMusicApp()
 	}
 	
-	private func integrateWithBuiltInMusicApp() {
+	private func integrateWithMusicApp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)

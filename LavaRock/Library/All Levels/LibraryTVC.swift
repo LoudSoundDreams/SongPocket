@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MediaPlayer
 
 class LibraryTVC: UITableViewController {
 	enum SortOption: CaseIterable {
@@ -163,19 +164,35 @@ class LibraryTVC: UITableViewController {
 		
 		beginReflectingPlaybackState()
 		
-		setUp()
-	}
-	
-	final func setUp() {
-		beginObservingNotifications()
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(didMergeChanges),
+			name: .LRDidMergeChanges,
+			object: nil)
+		
 		freshenNavigationItemTitle()
 		navigationItem.rightBarButtonItem = editButtonItem
-		setUpUI()
+		
+		setUpMusicAppDependentFunctionality()
 	}
+	@objc private func didMergeChanges() { reflectDatabase() }
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()
 	}
+	
+	final func setUpMusicAppDependentFunctionality() {
+		if MPMediaLibrary.authorizationStatus() == .authorized {
+			NotificationCenter.default.addObserverOnce(
+				self,
+				selector: #selector(nowPlayingItemDidChange),
+				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
+				object: nil)
+		}
+		
+		setUpUI()
+	}
+	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
 	
 	// Overrides should call super (this implementation).
 	func setUpUI() {

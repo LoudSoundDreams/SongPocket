@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 import CoreData
 import SwiftUI
 
@@ -17,27 +16,6 @@ extension LibraryTVC: PlaybackStateReflecting {
 }
 
 extension LibraryTVC {
-	// MARK: - Setup
-	
-	// Overrides should call super (this implementation).
-	@objc func beginObservingNotifications() {
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(didMergeChanges),
-			name: .LRDidMergeChanges,
-			object: nil)
-		
-		if MPMediaLibrary.authorizationStatus() == .authorized {
-			NotificationCenter.default.addObserverOnce(
-				self,
-				selector: #selector(nowPlayingItemDidChange),
-				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
-				object: nil)
-		}
-	}
-	@objc private func didMergeChanges() { reflectDatabase() }
-	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
-	
 	// MARK: - Database
 	
 	final func reflectDatabase() {

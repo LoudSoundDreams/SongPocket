@@ -9,26 +9,6 @@ import UIKit
 import CoreData
 
 extension CollectionsTVC {
-	// MARK: - Setup
-	
-	final override func beginObservingNotifications() {
-		super.beginObservingNotifications()
-		
-		switch purpose {
-		case .organizingAlbums:
-			break
-		case .movingAlbums:
-			break
-		case .browsing:
-			NotificationCenter.default.addObserverOnce(
-				self,
-				selector: #selector(userDidUpdateDatabase),
-				name: .LRUserDidUpdateDatabase,
-				object: nil)
-		}
-	}
-	@objc private func userDidUpdateDatabase() { reflectDatabase() }
-	
 	// MARK: - Player
 	
 	final override func reflectPlayer() {
