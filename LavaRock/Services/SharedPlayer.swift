@@ -1,5 +1,5 @@
 //
-//  PlayerManager.swift
+//  SharedPlayer.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-04.
@@ -14,18 +14,18 @@ import CoreData
 	// - Call `endReflectingPlaybackState` within their deinitializer.
 	
 	func reflectPlaybackState()
-	// Reflect `PlayerManager.player`, and show a disabled state if it’s `nil`. (Call `PlayerManager.setUp` to set up `PlayerManager.player`.)
+	// Reflect `SharedPlayer.player`, and show a disabled state if it’s `nil`. (Call `SharedPlayer.setUp` to set up `SharedPlayer.player`.)
 }
 
 extension PlaybackStateReflecting {
-	var player: MPMusicPlayerController? { PlayerManager.player }
+	var player: MPMusicPlayerController? { SharedPlayer.player }
 	
 	func beginReflectingPlaybackState() {
 		reflectPlaybackState()
 		
 		endReflectingPlaybackState()
 		
-		PlayerManager.addObserver(self)
+		SharedPlayer.addObserver(self)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
@@ -36,7 +36,7 @@ extension PlaybackStateReflecting {
 	}
 	
 	func endReflectingPlaybackState() {
-		PlayerManager.removeObserver(self)
+		SharedPlayer.removeObserver(self)
 		NotificationCenter.default.removeObserver(
 			self,
 			name: .MPMusicPlayerControllerPlaybackStateDidChange,
@@ -44,7 +44,7 @@ extension PlaybackStateReflecting {
 	}
 }
 
-final class PlayerManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
+final class SharedPlayer { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	private init() {}
 	
 	private final class WeakPlaybackStateReflecting {

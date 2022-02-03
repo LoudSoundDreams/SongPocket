@@ -11,7 +11,7 @@ extension CollectionsViewModel: NowPlayingDetermining {
 	func isInPlayer(anyIndexPath: IndexPath) -> Bool {
 		guard
 			let rowCollection = itemOptional(at: anyIndexPath) as? Collection,
-			let songInPlayer = PlayerManager.songInPlayer(context: context)
+			let songInPlayer = SharedPlayer.songInPlayer(context: context)
 		else {
 			return false
 		}
