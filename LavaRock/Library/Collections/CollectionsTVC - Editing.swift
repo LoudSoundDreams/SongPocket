@@ -23,7 +23,9 @@ extension CollectionsTVC {
 		let rowWasSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
 		
 		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: Enabling.multicollection ? LocalizedString.renameSectionAlertTitle : LocalizedString.renameCollectionAlertTitle,
+			alertTitle: Enabling.multicollection
+			? LocalizedString.renameSectionAlertTitle
+			: LocalizedString.renameCollectionAlertTitle,
 			textFieldText: collection.title,
 			textFieldDelegate: self,
 			cancelHandler: nil,
@@ -112,7 +114,9 @@ extension CollectionsTVC {
 			else { return }
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
-				alertTitle: Enabling.multicollection ? LocalizedString.combineSectionsAlertTitle : LocalizedString.combineCollectionsAlertTitle,
+				alertTitle: Enabling.multicollection
+				? LocalizedString.combineSectionsAlertTitle
+				: LocalizedString.combineCollectionsAlertTitle,
 				textFieldText: smartTitle,
 				textFieldDelegate: self,
 				cancelHandler: {

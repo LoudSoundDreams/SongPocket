@@ -73,7 +73,9 @@ extension CollectionsTVC {
 			guard await setViewModelAndMoveRowsAndShouldContinue(newViewModel) else { return }
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
-				alertTitle: Enabling.multicollection ? LocalizedString.newSectionAlertTitle : LocalizedString.newCollectionAlertTitle,
+				alertTitle: Enabling.multicollection
+				? LocalizedString.newSectionAlertTitle
+				: LocalizedString.newCollectionAlertTitle,
 				textFieldText: smartTitle,
 				textFieldDelegate: self,
 				cancelHandler: {

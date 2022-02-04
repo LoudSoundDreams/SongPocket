@@ -21,7 +21,9 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 	private(set) weak var delegate: MoveAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
-			Enabling.multicollection ? LocalizedString.format_chooseASectiontoMoveXAlbumsTo : LocalizedString.format_chooseACollectionToMoveXAlbumsTo,
+			Enabling.multicollection
+			? LocalizedString.format_chooseASectiontoMoveXAlbumsTo
+			: LocalizedString.format_chooseACollectionToMoveXAlbumsTo,
 			idsOfAlbumsBeingMoved.count)
 	}
 	

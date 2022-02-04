@@ -50,7 +50,7 @@ extension AlbumsTVC {
 		
 		let indexPathsToOrganize = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: selectedIndexPaths)
-		let albumsToOrganize = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
+		let albumsToMaybeMove = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
 		
 		// Create a child managed object context to begin the changes in.
 		let childContext = NSManagedObjectContext(.mainQueue)
@@ -58,7 +58,7 @@ extension AlbumsTVC {
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
 		let clipboard = Self.organizeByAlbumArtistAndReturnClipboard(
-			albumsToOrganize,
+			albumsToMaybeMove,
 			via: childContext,
 			delegateForClipboard: self)
 		let selectedAlbums = selectedIndexPaths.map { albumsViewModel.albumNonNil(at: $0) }
@@ -80,7 +80,7 @@ extension AlbumsTVC {
 		present(libraryNC, animated: true) {
 			collectionsTVC.organizeAlbumsClipboard = clipboard
 			
-			let collectionsViewModelPreviewingOrganizeAlbums = CollectionsViewModel(
+			let previewOfChanges = CollectionsViewModel(
 				context: childContext,
 				prerowsInEachSection: [])
 			let indexPathsOfDestinationCollectionsThatAlreadyExisted = oldCollectionsViewModel.indexPathsForAllItems().filter {
@@ -91,7 +91,7 @@ extension AlbumsTVC {
 			Task {
 				let _ = await collectionsTVC.setViewModelAndMoveRowsAndShouldContinue(
 					firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
-					collectionsViewModelPreviewingOrganizeAlbums,
+					previewOfChanges,
 					runningBeforeContinuation: {
 						collectionsTVC.reflectPlayer()
 					})
@@ -100,7 +100,7 @@ extension AlbumsTVC {
 	}
 	
 	private static func organizeByAlbumArtistAndReturnClipboard(
-		_ albumsToOrganize: [Album],
+		_ albumsToMaybeMove: [Album],
 		via context: NSManagedObjectContext,
 		delegateForClipboard: OrganizeAlbumsDelegate
 	) -> OrganizeAlbumsClipboard {
@@ -120,7 +120,7 @@ extension AlbumsTVC {
 		var idsOfUnmovedAlbums: Set<NSManagedObjectID> = []
 		
 		// Work notes
-		let indexOfSourceCollection = albumsToOrganize.first!.container!.index
+		let indexOfSourceCollection = albumsToMaybeMove.first!.container!.index
 		let collectionsToDisplace: [Collection] = {
 			let predicate = NSPredicate(
 				format: "index >= %lld",
@@ -136,7 +136,7 @@ extension AlbumsTVC {
 			return Dictionary(grouping: existingCollections) { $0.title! }
 		}()
 		
-		albumsToOrganize.forEach { album in
+		albumsToMaybeMove.forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
 			let titleOfDestinationCollection = album.albumArtistFormattedOrPlaceholder()
@@ -187,7 +187,7 @@ extension AlbumsTVC {
 		}
 		
 		// Create the `OrganizeAlbumsClipboard` to return.
-		let idsOfSourceCollections = Set(albumsToOrganize.map { $0.container!.objectID })
+		let idsOfSourceCollections = Set(albumsToMaybeMove.map { $0.container!.objectID })
 		let idsOfMovedAlbums = Set(movedAlbums.map { $0.objectID })
 		let idsOfDestinationCollections = Set(idsOfMovedAlbums.map {
 			(context.object(with: $0) as! Album).container!.objectID
