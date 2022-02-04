@@ -130,8 +130,7 @@ extension Album {
 				return leftSongFile.precedesInDefaultOrder(inSameAlbum: rightSongFile)
 			}
 			
-			let result = songsAndSongFiles.map { tuple in tuple.0 }
-			return result
+			return songsAndSongFiles.map { tuple in tuple.0 }
 		}
 		
 		var sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)

@@ -160,10 +160,9 @@ extension AlbumsViewModel {
 			possiblyToSameCollection: true,
 			via: context)
 		
-		let result = AlbumsViewModel(
+		return AlbumsViewModel(
 			viewContainer: viewContainer,
 			context: context,
 			prerowsInEachSection: [])
-		return result
 	}
 }

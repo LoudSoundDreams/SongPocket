@@ -25,10 +25,9 @@ extension Array {
 	where Element == IndexPath
 	{
 		let indexPathsBySection = Dictionary(grouping: self) { $0.section }
-		let result = indexPathsBySection.mapValues { indexPaths in
+		return indexPathsBySection.mapValues { indexPaths in
 			indexPaths.map { $0.row }
 		}
-		return result
 	}
 	
 	// Whether the index paths form a block of rows next to each other in whatever section they’re in. You can provide the index paths in any order.

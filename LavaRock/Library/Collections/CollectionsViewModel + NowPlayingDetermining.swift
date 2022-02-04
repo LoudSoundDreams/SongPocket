@@ -15,8 +15,6 @@ extension CollectionsViewModel: NowPlayingDetermining {
 		else {
 			return false
 		}
-		
-		let result = rowCollection.objectID == songInPlayer.container?.container?.objectID
-		return result
+		return rowCollection.objectID == songInPlayer.container?.container?.objectID
 	}
 }

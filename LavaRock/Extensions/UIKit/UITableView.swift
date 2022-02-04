@@ -25,10 +25,9 @@ extension UITableView {
 	}
 	
 	final func allIndexPaths() -> [IndexPath] {
-		let result = allSections().flatMap { section in
+		return allSections().flatMap { section in
 			indexPathsForRows(inSection: section, firstRow: 0)
 		}
-		return result
 	}
 	
 	final func indexPathsForRows(
@@ -52,8 +51,7 @@ extension UITableView {
 		lastRow: Int
 	) -> [IndexPath] {
 		let rows = Array(firstRow ... lastRow)
-		let result = rows.map { IndexPath(row: $0, section: section) }
-		return result
+		return rows.map { IndexPath(row: $0, section: section) }
 	}
 	
 	// MARK: - Updating

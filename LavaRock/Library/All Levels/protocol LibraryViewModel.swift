@@ -217,10 +217,9 @@ extension LibraryViewModel {
 	}
 	
 	func indexPathsForAllItems() -> [IndexPath] {
-		let result = groups.indices.flatMap { indexOfGroup in
+		return groups.indices.flatMap { indexOfGroup in
 			indexPaths(forIndexOfGroup: indexOfGroup)
 		}
-		return result
 	}
 	
 	func section(forIndexOfGroup indexOfGroup: Int) -> Int {

@@ -15,8 +15,6 @@ extension SongsTVC: NowPlayingDetermining {
 		else {
 			return false
 		}
-		
-		let result = rowSong.objectID == songInPlayer.objectID
-		return result
+		return rowSong.objectID == songInPlayer.objectID
 	}
 }
