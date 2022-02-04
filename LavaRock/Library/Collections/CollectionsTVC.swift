@@ -51,7 +51,7 @@ final class CollectionsTVC:
 	
 	// Purpose
 	var purpose: Purpose {
-		if let clipboard = organizeAlbumsClipboard { // You must check this before checking `willOrganizeAlbumsStickyNote`.
+		if let clipboard = organizeAlbumsClipboard {
 			return .organizingAlbums(clipboard)
 		} else if let stickyNote = willOrganizeAlbumsStickyNote {
 			return .willOrganizeAlbums(stickyNote)

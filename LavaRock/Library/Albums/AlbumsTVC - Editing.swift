@@ -79,6 +79,7 @@ extension AlbumsTVC {
 		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? CollectionsViewModel else { return }
 		present(libraryNC, animated: true) {
 			collectionsTVC.organizeAlbumsClipboard = clipboard
+			collectionsTVC.willOrganizeAlbumsStickyNote = nil
 			
 			let previewOfChanges = CollectionsViewModel(
 				context: childContext,
