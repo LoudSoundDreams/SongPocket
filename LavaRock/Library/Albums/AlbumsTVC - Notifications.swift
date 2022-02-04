@@ -22,9 +22,9 @@ extension AlbumsTVC {
 	final override func freshenLibraryItems() {
 		switch purpose {
 		case .organizingAlbums:
-			break
+			return
 		case .movingAlbums:
-			break
+			return
 		case .browsing:
 			super.freshenLibraryItems()
 		}

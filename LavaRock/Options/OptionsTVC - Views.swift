@@ -29,7 +29,8 @@ final class LightingCell: UITableViewCell {
 		segmentedControl.selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
 	}
 	
-	@objc private func saveAndSetLighting() {
+	@objc
+	private func saveAndSetLighting() {
 		let selected = Lighting(indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
 		Theme.shared.lighting = selected
 	}

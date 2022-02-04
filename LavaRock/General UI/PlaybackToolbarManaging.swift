@@ -87,18 +87,18 @@ extension PlaybackToolbarManaging {
 		return button
 	}
 	
-	func freshenPlaybackToolbar() {
-		func configurePlayButton() {
-			playPauseButton.title = LocalizedString.play
-			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: .SFPlay)
-			) { _ in
-				self.player?.play()
-			}
-			// As of iOS 15.3 developer beta 1, even when you set `UIBarButtonItem.width` manually, the “pause.fill” button is still narrower than the “play.fill” button.
-			playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
+	private func configurePlayButton() {
+		playPauseButton.title = LocalizedString.play
+		playPauseButton.primaryAction = UIAction(
+			image: UIImage(systemName: .SFPlay)
+		) { _ in
+			self.player?.play()
 		}
-		
+		// As of iOS 15.3 developer beta 1, even when you set `UIBarButtonItem.width` manually, the “pause.fill” button is still narrower than the “play.fill” button.
+		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
+	}
+	
+	func freshenPlaybackToolbar() {
 		guard let player = player else {
 			configurePlayButton()
 			playbackToolbarButtons.forEach { $0.disableWithAccessibilityTrait() }

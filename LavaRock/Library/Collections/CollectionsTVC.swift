@@ -32,17 +32,14 @@ final class CollectionsTVC:
 		_ sender: UIAccessibilityCustomAction
 	) -> Bool {
 		let indexPathsOfAllCollections = viewModel.indexPathsForAllItems()
-		let focusedIndexPath = indexPathsOfAllCollections.first {
+		guard let focusedIndexPath = indexPathsOfAllCollections.first(where: {
 			let cell = tableView.cellForRow(at: $0)
 			return cell?.accessibilityElementIsFocused() ?? false
-		}
-		
-		if let focusedIndexPath = focusedIndexPath {
-			promptRename(at: focusedIndexPath)
-			return true
-		} else {
+		}) else {
 			return false
 		}
+		promptRename(at: focusedIndexPath)
+		return true
 	}
 	
 	// Controls

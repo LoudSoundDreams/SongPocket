@@ -131,7 +131,7 @@ extension SongsViewModel {
 	// Time complexity: O(n), where "n" is the number of groups
 	func indexPath(for album: Album) -> IndexPath? {
 		if let indexOfMatchingGroup = groups.firstIndex(where: { group in
-			group.container?.objectID == album.objectID
+			album.objectID == group.container?.objectID
 		}) {
 			return IndexPath(
 				row: 0,
