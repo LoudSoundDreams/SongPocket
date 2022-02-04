@@ -21,6 +21,7 @@ extension NowPlayingIndicating {
 	}
 }
 
+@MainActor
 protocol NowPlayingDetermining {
 	func isInPlayer(anyIndexPath: IndexPath) -> Bool
 }

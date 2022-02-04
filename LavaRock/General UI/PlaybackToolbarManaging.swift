@@ -8,6 +8,7 @@
 import UIKit
 import MediaPlayer
 
+@MainActor
 protocol PlaybackToolbarManaging: PlaybackStateReflecting {
 	// Conforming types might want to …
 	// - Override `accessibilityPerformMagicTap` and toggle playback.

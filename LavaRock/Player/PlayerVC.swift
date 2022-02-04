@@ -25,7 +25,9 @@ final class PlayerVC: UIViewController {
 	}
 	
 	deinit {
-		endReflectingPlaybackState()
+		DispatchQueue.main.sync {
+			endReflectingPlaybackState()
+		}
 	}
 }
 

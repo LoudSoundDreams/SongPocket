@@ -9,6 +9,7 @@ import MediaPlayer
 import CoreData
 
 @objc
+@MainActor
 protocol PlaybackStateReflecting: AnyObject {
 	// Conforming types must …
 	// - Call `beginReflectingPlaybackState` before they need to reflect playback state.
@@ -45,6 +46,7 @@ extension PlaybackStateReflecting {
 	}
 }
 
+@MainActor
 final class SharedPlayer { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	private init() {}
 	
@@ -109,6 +111,8 @@ final class SharedPlayer { // This is a class and not a struct because it should
 	private static var reflectors: [Weak<PlaybackStateReflecting>] = []
 	
 	deinit {
-		Self.player?.endGeneratingPlaybackNotifications()
+		DispatchQueue.main.sync {
+			Self.player?.endGeneratingPlaybackNotifications()
+		}
 	}
 }
