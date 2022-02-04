@@ -8,7 +8,8 @@
 import MediaPlayer
 import CoreData
 
-@objc protocol PlaybackStateReflecting: AnyObject {
+@objc
+protocol PlaybackStateReflecting: AnyObject {
 	// Conforming types must …
 	// - Call `beginReflectingPlaybackState` before they need to reflect playback state.
 	// - Call `endReflectingPlaybackState` within their deinitializer.
@@ -25,7 +26,7 @@ extension PlaybackStateReflecting {
 		
 		endReflectingPlaybackState()
 		
-		SharedPlayer.addObserver(self)
+		SharedPlayer.addReflector(self)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
@@ -36,7 +37,7 @@ extension PlaybackStateReflecting {
 	}
 	
 	func endReflectingPlaybackState() {
-		SharedPlayer.removeObserver(self)
+		SharedPlayer.removeReflector(self)
 		NotificationCenter.default.removeObserver(
 			self,
 			name: .MPMusicPlayerControllerPlaybackStateDidChange,
@@ -47,18 +48,13 @@ extension PlaybackStateReflecting {
 final class SharedPlayer { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	private init() {}
 	
-	private final class WeakPlaybackStateReflecting {
-		weak var observer: PlaybackStateReflecting? = nil
-		init(observer: PlaybackStateReflecting) { self.observer = observer }
+	static func addReflector(_ reflector: PlaybackStateReflecting) {
+		let weakReflector = Weak(reflector)
+		reflectors.append(weakReflector)
 	}
-	private static var observers: [WeakPlaybackStateReflecting] = []
-	static func addObserver(_ observer: PlaybackStateReflecting) {
-		let weakObserver = WeakPlaybackStateReflecting(observer: observer)
-		observers.append(weakObserver)
-	}
-	static func removeObserver(_ observer: PlaybackStateReflecting) {
-		if let indexOfMatchingObserver = observers.firstIndex(where: { $0 === observer }) {
-			observers.remove(at: indexOfMatchingObserver)
+	static func removeReflector(_ reflector: PlaybackStateReflecting) {
+		if let indexOfMatchingReflector = reflectors.firstIndex(where: { reflector === $0 }) {
+			reflectors.remove(at: indexOfMatchingReflector)
 		}
 	}
 	
@@ -75,10 +71,10 @@ final class SharedPlayer { // This is a class and not a struct because it should
 		}
 		player?.beginGeneratingPlaybackNotifications()
 		
-		observers.removeAll { $0.observer == nil }
-		observers.forEach {
+		reflectors.removeAll { $0.referencee == nil }
+		reflectors.forEach {
 			// Because before anyone called this method, `player` was `nil`.
-			$0.observer?.beginReflectingPlaybackState()
+			$0.referencee?.beginReflectingPlaybackState()
 		}
 	}
 	
@@ -102,6 +98,15 @@ final class SharedPlayer { // This is a class and not a struct because it should
 		}
 		return song
 	}
+	
+	// MARK: - Private
+	
+	private final class Weak<Referencee: AnyObject> {
+		weak var referencee: Referencee? = nil
+		init(_ referencee: Referencee) { self.referencee = referencee }
+	}
+	
+	private static var reflectors: [Weak<PlaybackStateReflecting>] = []
 	
 	deinit {
 		Self.player?.endGeneratingPlaybackNotifications()

@@ -47,7 +47,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 		TipJarViewModel.shared.status = .confirming
 	}
 	
-	// MARK: - PRIVATE
+	// MARK: - Private
 	
 	private static let tipProductID = "com.loudsounddreams.LavaRock.tip"
 	private lazy var tipProductRequest: SKProductsRequest = {
