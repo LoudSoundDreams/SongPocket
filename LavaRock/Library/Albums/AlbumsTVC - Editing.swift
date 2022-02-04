@@ -50,7 +50,7 @@ extension AlbumsTVC {
 		
 		let indexPathsToOrganize = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: selectedIndexPaths)
-		let albumsToMaybeMove = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
+		let albumsInOriginalContextToMaybeMove = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
 		
 		// Create a child managed object context to begin the changes in.
 		let childContext = NSManagedObjectContext(.mainQueue)
@@ -58,7 +58,7 @@ extension AlbumsTVC {
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
 		let clipboard = Self.organizeByAlbumArtistAndReturnClipboard(
-			albumsToMaybeMove,
+			albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
 			via: childContext,
 			delegateForClipboard: self)
 		let selectedAlbums = selectedIndexPaths.map { albumsViewModel.albumNonNil(at: $0) }
@@ -101,7 +101,7 @@ extension AlbumsTVC {
 	}
 	
 	private static func organizeByAlbumArtistAndReturnClipboard(
-		_ albumsToMaybeMove: [Album],
+		albumsInOriginalContextToMaybeMove: [Album],
 		via context: NSManagedObjectContext,
 		delegateForClipboard: OrganizeAlbumsDelegate
 	) -> OrganizeAlbumsClipboard {
@@ -117,11 +117,11 @@ extension AlbumsTVC {
 		// Put new `Collection`s above the source `Collection`, in the order that the album artists first appear among the `Album`s we’re moving.
 		
 		// Results
-		var movedAlbums: Set<Album> = []
+		var movedAlbumsInOriginalContext: Set<Album> = []
 		var idsOfUnmovedAlbums: Set<NSManagedObjectID> = []
 		
 		// Work notes
-		let indexOfSourceCollection = albumsToMaybeMove.first!.container!.index
+		let indexOfSourceCollection = albumsInOriginalContextToMaybeMove.first!.container!.index
 		let collectionsToDisplace: [Collection] = {
 			let predicate = NSPredicate(
 				format: "index >= %lld",
@@ -137,7 +137,7 @@ extension AlbumsTVC {
 			return Dictionary(grouping: existingCollections) { $0.title! }
 		}()
 		
-		albumsToMaybeMove.forEach { album in
+		albumsInOriginalContextToMaybeMove.forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
 			let titleOfDestinationCollection = album.albumArtistFormattedOrPlaceholder()
@@ -147,7 +147,7 @@ extension AlbumsTVC {
 				return
 			}
 			
-			movedAlbums.insert(album)
+			movedAlbumsInOriginalContext.insert(album)
 			
 			// If we’ve created a matching new `Collection` …
 			if let matchingNewCollection = newCollectionsByTitle[titleOfDestinationCollection] {
@@ -188,8 +188,8 @@ extension AlbumsTVC {
 		}
 		
 		// Create the `OrganizeAlbumsClipboard` to return.
-		let idsOfSourceCollections = Set(albumsToMaybeMove.map { $0.container!.objectID })
-		let idsOfMovedAlbums = Set(movedAlbums.map { $0.objectID })
+		let idsOfSourceCollections = Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID })
+		let idsOfMovedAlbums = Set(movedAlbumsInOriginalContext.map { $0.objectID })
 		let idsOfCollectionsContainingMovedAlbums = Set(idsOfMovedAlbums.map {
 			(context.object(with: $0) as! Album).container!.objectID
 		})
