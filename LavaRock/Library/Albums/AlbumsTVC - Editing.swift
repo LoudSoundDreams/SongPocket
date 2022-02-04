@@ -89,15 +89,12 @@ extension AlbumsTVC {
 			}
 			// Similar to `reflectDatabase`.
 			Task {
-				guard await collectionsTVC.setViewModelAndMoveRowsAndShouldContinue(
+				let _ = await collectionsTVC.setViewModelAndMoveRowsAndShouldContinue(
 					firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
 					collectionsViewModelPreviewingOrganizeAlbums,
 					runningBeforeContinuation: {
 						collectionsTVC.reflectPlayer()
 					})
-				else { return }
-				
-				self.tableView.reconfigureRows(at: self.tableView.indexPathsForVisibleRowsNonNil)
 			}
 		}
 	}
