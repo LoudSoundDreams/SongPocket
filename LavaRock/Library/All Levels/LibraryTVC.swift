@@ -75,7 +75,7 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: Subclasses Should Not Customize
 	
-	// PlaybackToolbarManaging
+	// `PlaybackToolbarManaging`
 	private(set) lazy var previousSongButton = makePreviousSongButton()
 	private(set) lazy var rewindButton = makeRewindButton()
 	private(set) lazy var skipBackwardButton = makeSkipBackwardButton()
@@ -359,7 +359,7 @@ class LibraryTVC: UITableViewController {
 		// As of iOS 15.4 developer beta 1, you must do this after `super.setEditing`, not before.
 	}
 	
-	// You should only be allowed to sort contiguous items within the same GroupOfLibraryItems.
+	// You should only be allowed to sort contiguous items within the same `GroupOfLibraryItems`.
 	private func allowsSort() -> Bool {
 		guard !viewModel.isEmpty() else {
 			return false

@@ -8,7 +8,7 @@
 import UIKit
 
 final class PlayerVC: UIViewController {
-	// PlaybackToolbarManaging
+	// `PlaybackToolbarManaging`
 	private(set) lazy var previousSongButton = makePreviousSongButton()
 	private(set) lazy var rewindButton = makeRewindButton()
 	private(set) lazy var skipBackwardButton = makeSkipBackwardButton()

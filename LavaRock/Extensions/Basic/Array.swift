@@ -10,7 +10,7 @@ import UIKit
 extension Array {
 	// MARK: - Element: LibraryItem
 	
-	// Needs to match the property observer on GroupOfLibraryItems.items.
+	// Needs to match the property observer on `GroupOfLibraryItems.items`.
 	mutating func reindex()
 	where Element: LibraryItem
 	{

@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 struct AlbumsViewModel {
-	// LibraryViewModel
+	// `LibraryViewModel`
 	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
 	let numberOfPresections = 0

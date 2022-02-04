@@ -8,7 +8,7 @@
 import CoreData
 
 struct GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
-	// MARK: GroupOfLibraryItems
+	// MARK: `GroupOfLibraryItems`
 	
 	let container: NSManagedObject?
 	

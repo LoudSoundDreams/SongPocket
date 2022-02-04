@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 struct CollectionsViewModel {
-	// LibraryViewModel
+	// `LibraryViewModel`
 	let viewContainer: LibraryViewContainer = .library
 	let context: NSManagedObjectContext
 	let numberOfPresections = 0

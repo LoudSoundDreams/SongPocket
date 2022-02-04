@@ -22,7 +22,7 @@ final class AlbumsTVC:
 	
 	// MARK: - Properties
 	
-	// NoItemsBackgroundManager
+	// `NoItemsBackgroundManager`
 	private(set) lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
 	
 	// Controls
