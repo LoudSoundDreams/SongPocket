@@ -83,14 +83,15 @@ extension AlbumsTVC {
 			let previewOfChanges = CollectionsViewModel(
 				context: childContext,
 				prerowsInEachSection: [])
-			let indexPathsOfDestinationCollectionsThatAlreadyExisted = oldCollectionsViewModel.indexPathsForAllItems().filter {
-				let collection = oldCollectionsViewModel.collectionNonNil(at: $0)
-				return clipboard.idsOfDestinationCollections.contains(collection.objectID)
+			// We might have moved `Album`s into any existing `Collection` other than the source. If so, fade in a highlight on those rows.
+			let originalIndexPathsOfDestinationCollectionsThatAlreadyExisted = oldCollectionsViewModel.indexPathsForAllItems().filter {
+				let collectionID = oldCollectionsViewModel.collectionNonNil(at: $0).objectID
+				return clipboard.idsOfCollectionsContainingMovedAlbums.contains(collectionID)
 			}
 			// Similar to `reflectDatabase`.
 			Task {
 				let _ = await collectionsTVC.setViewModelAndMoveRowsAndShouldContinue(
-					firstReloading: indexPathsOfDestinationCollectionsThatAlreadyExisted,
+					firstReloading: originalIndexPathsOfDestinationCollectionsThatAlreadyExisted,
 					previewOfChanges,
 					runningBeforeContinuation: {
 						collectionsTVC.reflectPlayer()
@@ -189,14 +190,14 @@ extension AlbumsTVC {
 		// Create the `OrganizeAlbumsClipboard` to return.
 		let idsOfSourceCollections = Set(albumsToMaybeMove.map { $0.container!.objectID })
 		let idsOfMovedAlbums = Set(movedAlbums.map { $0.objectID })
-		let idsOfDestinationCollections = Set(idsOfMovedAlbums.map {
+		let idsOfCollectionsContainingMovedAlbums = Set(idsOfMovedAlbums.map {
 			(context.object(with: $0) as! Album).container!.objectID
 		})
 		return OrganizeAlbumsClipboard(
 			idsOfSourceCollections: idsOfSourceCollections,
 			idsOfUnmovedAlbums: idsOfUnmovedAlbums,
 			idsOfMovedAlbums: idsOfMovedAlbums,
-			idsOfDestinationCollections: idsOfDestinationCollections,
+			idsOfCollectionsContainingMovedAlbums: idsOfCollectionsContainingMovedAlbums,
 			delegate: delegateForClipboard)
 	}
 	

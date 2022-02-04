@@ -116,7 +116,7 @@ extension CollectionsTVC {
 			case .organizingAlbums(let clipboard):
 				if clipboard.idsOfSourceCollections.contains(collection.objectID) {
 					return .modalDisabled
-				} else if clipboard.idsOfDestinationCollections.contains(collection.objectID) {
+				} else if clipboard.idsOfCollectionsContainingMovedAlbums.contains(collection.objectID) {
 					return .modalTinted
 				} else {
 					return .modal

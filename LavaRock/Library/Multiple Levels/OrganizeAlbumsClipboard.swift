@@ -21,7 +21,7 @@ final class OrganizeAlbumsClipboard {
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	let idsOfUnmovedAlbums: Set<NSManagedObjectID>
 	let idsOfMovedAlbums: Set<NSManagedObjectID>
-	let idsOfDestinationCollections: Set<NSManagedObjectID>
+	let idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>
 	
 	// Helpers
 	private(set) weak var delegate: OrganizeAlbumsDelegate? = nil
@@ -30,7 +30,7 @@ final class OrganizeAlbumsClipboard {
 			Enabling.multicollection
 			? LocalizedString.format_organizeIntoXSectionsByAlbumArtistQuestionMark
 			: LocalizedString.format_organizeIntoXCollectionsByAlbumArtistQuestionMark,
-			idsOfDestinationCollections.count)
+			idsOfCollectionsContainingMovedAlbums.count)
 	}
 	
 	// State
@@ -40,13 +40,13 @@ final class OrganizeAlbumsClipboard {
 		idsOfSourceCollections: Set<NSManagedObjectID>,
 		idsOfUnmovedAlbums: Set<NSManagedObjectID>,
 		idsOfMovedAlbums: Set<NSManagedObjectID>,
-		idsOfDestinationCollections: Set<NSManagedObjectID>,
+		idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>,
 		delegate: OrganizeAlbumsDelegate
 	) {
 		self.idsOfSourceCollections = idsOfSourceCollections
 		self.idsOfUnmovedAlbums = idsOfUnmovedAlbums
 		self.idsOfMovedAlbums = idsOfMovedAlbums
-		self.idsOfDestinationCollections = idsOfDestinationCollections
+		self.idsOfCollectionsContainingMovedAlbums = idsOfCollectionsContainingMovedAlbums
 		self.delegate = delegate
 	}
 }
