@@ -68,7 +68,11 @@ final class SharedPlayer { // This is a class and not a struct because it should
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player?.endGeneratingPlaybackNotifications()
-		player = .systemMusicPlayer
+		if Enabling.appQueuePlayer {
+			player = .applicationQueuePlayer
+		} else {
+			player = .systemMusicPlayer
+		}
 		player?.beginGeneratingPlaybackNotifications()
 		
 		observers.removeAll { $0.observer == nil }
