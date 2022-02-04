@@ -13,5 +13,5 @@ struct Enabling {
 	
 	static let swiftUIOptions = 1 == 0
 	
-	static let appQueuePlayer = 1 == 0
+	static let queue = 1 == 0
 }

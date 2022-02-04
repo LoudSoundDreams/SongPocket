@@ -166,7 +166,7 @@ extension CollectionsViewModel {
 	func updatedAfterCreating(title: String) -> Self {
 		let newCollection = Collection(context: context)
 		newCollection.title = title
-		// When we call setItemsAndMoveRows, the property observer will set the "index" attribute of each Collection for us.
+		// When we call `setItemsAndMoveRows`, the property observer will set the `index` attribute of each `Collection` for us.
 		
 		var newItems = group.items
 		newItems.insert(newCollection, at: Self.indexOfNewCollection)

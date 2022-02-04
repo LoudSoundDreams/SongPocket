@@ -31,7 +31,7 @@ protocol GroupOfLibraryItems {
 	 ```
 	 … but you’ll have to make `items` `mutating get`, and you’ll still have to disable the default memberwise initializer to be safe.
 	 
-	 You should also give `private_items` a property observer that sets the `index` attribute on each NSManagedObject, exactly like [LibraryItem].reindex():
+	 You should also give `private_items` a property observer that sets the `index` attribute on each `NSManagedObject`, exactly like `[LibraryItem].reindex`:
 	 //	didSet {
 	 //		private_items.indices.forEach { currentIndex in
 	 //			private_items[currentIndex].setValue(

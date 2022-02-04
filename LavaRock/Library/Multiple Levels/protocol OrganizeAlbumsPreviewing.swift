@@ -29,7 +29,7 @@ extension OrganizeAlbumsPreviewing {
 		
 		clipboard.didAlreadyCommitOrganize = true
 		
-		Collection.deleteAllEmpty(via: viewModel.context)
+		Collection.deleteAllEmpty(via: viewModel.context) // You must do this because when we previewed changes in the context, we didn’t delete the source `Collection` even if we moved all the `Album`s out of it.
 		
 		viewModel.context.tryToSave()
 		viewModel.context.parent!.tryToSave()
