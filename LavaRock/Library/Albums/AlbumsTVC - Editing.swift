@@ -85,14 +85,14 @@ extension AlbumsTVC {
 				context: childContext,
 				prerowsInEachSection: [])
 			// We might have moved `Album`s into any existing `Collection` other than the source. If so, fade in a highlight on those rows.
-			let originalIndexPathsOfDestinationCollectionsThatAlreadyExisted = oldCollectionsViewModel.indexPathsForAllItems().filter {
+			let originalIndexPathsOfCollectionsContainingMovedAlbums = oldCollectionsViewModel.indexPathsForAllItems().filter {
 				let collectionID = oldCollectionsViewModel.collectionNonNil(at: $0).objectID
 				return clipboard.idsOfCollectionsContainingMovedAlbums.contains(collectionID)
 			}
 			// Similar to `reflectDatabase`.
 			Task {
 				let _ = await collectionsTVC.setViewModelAndMoveRowsAndShouldContinue(
-					firstReloading: originalIndexPathsOfDestinationCollectionsThatAlreadyExisted,
+					firstReloading: originalIndexPathsOfCollectionsContainingMovedAlbums,
 					previewOfChanges,
 					runningBeforeContinuation: {
 						collectionsTVC.reflectPlayer()
@@ -189,16 +189,17 @@ extension AlbumsTVC {
 		}
 		
 		// Create the `OrganizeAlbumsClipboard` to return.
-		let idsOfSourceCollections = Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID })
-		let idsOfMovedAlbums = Set(movedAlbumsInOriginalContext.map { $0.objectID })
-		let idsOfCollectionsContainingMovedAlbums = Set(idsOfMovedAlbums.map {
-			(context.object(with: $0) as! Album).container!.objectID
-		})
 		return OrganizeAlbumsClipboard(
-			idsOfSourceCollections: idsOfSourceCollections,
+			idsOfSubjectedAlbums: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
+			idsOfSourceCollections: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
 			idsOfUnmovedAlbums: idsOfUnmovedAlbums,
-			idsOfMovedAlbums: idsOfMovedAlbums,
-			idsOfCollectionsContainingMovedAlbums: idsOfCollectionsContainingMovedAlbums,
+			idsOfCollectionsContainingMovedAlbums: {
+				let idsOfMovedAlbums = movedAlbumsInOriginalContext.map { $0.objectID }
+				return Set(idsOfMovedAlbums.map {
+					let albumInThisContext = context.object(with: $0) as! Album
+					return albumInThisContext.container!.objectID
+				})
+			}(),
 			delegate: delegateForClipboard)
 	}
 	

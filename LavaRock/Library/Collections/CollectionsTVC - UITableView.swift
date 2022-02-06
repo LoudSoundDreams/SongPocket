@@ -204,7 +204,7 @@ extension CollectionsTVC {
 	) -> IndexPath? {
 		switch purpose {
 		case .willOrganizeAlbums:
-			break
+			return nil
 		case .organizingAlbums:
 			break
 		case .movingAlbums:

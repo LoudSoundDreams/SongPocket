@@ -18,9 +18,9 @@ struct WillOrganizeAlbumsStickyNote {
 
 final class OrganizeAlbumsClipboard {
 	// Data
+	let idsOfSubjectedAlbums: Set<NSManagedObjectID>
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	let idsOfUnmovedAlbums: Set<NSManagedObjectID>
-	let idsOfMovedAlbums: Set<NSManagedObjectID>
 	let idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>
 	
 	// Helpers
@@ -37,15 +37,15 @@ final class OrganizeAlbumsClipboard {
 	var didAlreadyCommitOrganize = false
 	
 	init(
+		idsOfSubjectedAlbums: Set<NSManagedObjectID>,
 		idsOfSourceCollections: Set<NSManagedObjectID>,
 		idsOfUnmovedAlbums: Set<NSManagedObjectID>,
-		idsOfMovedAlbums: Set<NSManagedObjectID>,
 		idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>,
 		delegate: OrganizeAlbumsDelegate
 	) {
+		self.idsOfSubjectedAlbums = idsOfSubjectedAlbums
 		self.idsOfSourceCollections = idsOfSourceCollections
 		self.idsOfUnmovedAlbums = idsOfUnmovedAlbums
-		self.idsOfMovedAlbums = idsOfMovedAlbums
 		self.idsOfCollectionsContainingMovedAlbums = idsOfCollectionsContainingMovedAlbums
 		self.delegate = delegate
 	}

@@ -109,7 +109,7 @@ extension AlbumsTVC {
 		let mode: AlbumCell.Mode = {
 			switch purpose {
 			case .organizingAlbums(let clipboard):
-				if clipboard.idsOfMovedAlbums.contains(album.objectID) {
+				if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
 					return .modalTinted
 				} else {
 					return .modal
