@@ -8,6 +8,8 @@
 struct Enabling {
 	private init() {}
 	
+	static let jumpButtons = 1 == 0
+	
 	static let multicollection = 1 == 0
 	static let multialbum = multicollection && 1 == 1
 	

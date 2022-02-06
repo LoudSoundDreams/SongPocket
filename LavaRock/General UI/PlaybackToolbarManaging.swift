@@ -23,14 +23,22 @@ protocol PlaybackToolbarManaging: PlaybackStateReflecting {
 
 extension PlaybackToolbarManaging {
 	var playbackToolbarButtons: [UIBarButtonItem] {
-		return [
-			previousSongButton, .flexibleSpace(),
-			rewindButton, .flexibleSpace(),
-//			skipBackwardButton, .flexibleSpace(),
-			playPauseButton, .flexibleSpace(),
-//			skipForwardButton, .flexibleSpace(),
-			nextSongButton,
-		]
+		if Enabling.jumpButtons {
+			return [
+				previousSongButton, .flexibleSpace(),
+				skipBackwardButton, .flexibleSpace(),
+				playPauseButton, .flexibleSpace(),
+				skipForwardButton, .flexibleSpace(),
+				nextSongButton,
+			]
+		} else {
+			return [
+				previousSongButton, .flexibleSpace(),
+				rewindButton, .flexibleSpace(),
+				playPauseButton, .flexibleSpace(),
+				nextSongButton,
+			]
+		}
 	}
 	
 	func makePreviousSongButton() -> UIBarButtonItem {
