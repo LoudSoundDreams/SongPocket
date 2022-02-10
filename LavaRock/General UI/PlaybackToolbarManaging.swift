@@ -14,7 +14,6 @@ protocol PlaybackToolbarManaging: PlaybackStateReflecting {
 	// - Override `accessibilityPerformMagicTap` and toggle playback.
 	// However, as of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles playback in the built-in Music app. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 	var previousSongButton: UIBarButtonItem { get }
-	var rewindButton: UIBarButtonItem { get }
 	var skipBackwardButton: UIBarButtonItem { get }
 	var playPauseButton: UIBarButtonItem { get }
 	var skipForwardButton: UIBarButtonItem { get }
@@ -23,22 +22,13 @@ protocol PlaybackToolbarManaging: PlaybackStateReflecting {
 
 extension PlaybackToolbarManaging {
 	var playbackToolbarButtons: [UIBarButtonItem] {
-		if Enabling.jumpButtons {
-			return [
-				previousSongButton, .flexibleSpace(),
-				skipBackwardButton, .flexibleSpace(),
-				playPauseButton, .flexibleSpace(),
-				skipForwardButton, .flexibleSpace(),
-				nextSongButton,
-			]
-		} else {
-			return [
-				previousSongButton, .flexibleSpace(),
-				rewindButton, .flexibleSpace(),
-				playPauseButton, .flexibleSpace(),
-				nextSongButton,
-			]
-		}
+		return [
+			previousSongButton, .flexibleSpace(),
+			skipBackwardButton, .flexibleSpace(),
+			playPauseButton, .flexibleSpace(),
+			skipForwardButton, .flexibleSpace(),
+			nextSongButton,
+		]
 	}
 	
 	func makePreviousSongButton() -> UIBarButtonItem {
@@ -47,17 +37,6 @@ extension PlaybackToolbarManaging {
 			image: UIImage(systemName: .SFPreviousTrack),
 			primaryAction: UIAction { _ in
 				self.player?.skipToPreviousItem()
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}
-	
-	func makeRewindButton() -> UIBarButtonItem {
-		let button = UIBarButtonItem(
-			title: LocalizedString.restart,
-			image: UIImage(systemName: .SFRewind),
-			primaryAction: UIAction { _ in
-				self.player?.currentPlaybackTime = 0 // As of iOS 15.3 developer beta 1, neither this, `.skipToBeginning`, `.skipToPreviousItem`, nor `.skipToNextItem` reliably changes `.currentPlaybackTime` to `0`.
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
