@@ -89,8 +89,7 @@ extension Collection {
 	static func deleteAllEmpty(via context: NSManagedObjectContext) {
 		var allCollections = allFetched(ordered: true, via: context)
 		
-		allCollections.indices.reversed().forEach { index in
-			let collection = allCollections[index]
+		allCollections.enumerated().reversed().forEach { (index, collection) in
 			if collection.isEmpty() {
 				context.delete(collection)
 				allCollections.remove(at: index)
@@ -142,8 +141,7 @@ extension Collection {
 		let numberOfAlbumsToMove = albumsToMove.count
 		albums(sorted: false).forEach { $0.index += Int64(numberOfAlbumsToMove) }
 		
-		albumsToMove.indices.forEach { index in
-			let album = albumsToMove[index]
+		albumsToMove.enumerated().forEach { (index, album) in
 			album.container = self
 			album.index = Int64(index)
 		}
@@ -175,9 +173,8 @@ extension Collection {
 		os_signpost(.begin, log: .collection, name: "Count Albums already in this Collection")
 		let oldNumberOfAlbums = albums(sorted: false).count
 		os_signpost(.end, log: .collection, name: "Count Albums already in this Collection")
-		albumsToMove.indices.forEach { index in
+		albumsToMove.enumerated().forEach { (index, album) in
 			os_signpost(.begin, log: .collection, name: "Update Album attributes")
-			let album = albumsToMove[index]
 			album.container = self
 			album.index = Int64(oldNumberOfAlbums + index)
 			os_signpost(.end, log: .collection, name: "Update Album attributes")

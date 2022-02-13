@@ -33,8 +33,8 @@ protocol GroupOfLibraryItems {
 	 
 	 You should also give `private_items` a property observer that sets the `index` attribute on each `NSManagedObject`, exactly like `[LibraryItem].reindex`:
 	 //	didSet {
-	 //		private_items.indices.forEach { currentIndex in
-	 //			private_items[currentIndex].setValue(
+	 //		private_items.enumerated().forEach { (currentIndex, libraryItem) in
+	 //			libraryItem.setValue(
 	 //				Int64(currentIndex),
 	 //				forKey: "index")
 	 //		}

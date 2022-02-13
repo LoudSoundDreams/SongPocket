@@ -15,8 +15,8 @@ struct GroupOfSongs: GroupOfLibraryItems {
 	var items: [NSManagedObject] { private_items }
 	private var private_items: [NSManagedObject] = [] {
 		didSet {
-			private_items.indices.forEach { currentIndex in
-				private_items[currentIndex].setValue(
+			private_items.enumerated().forEach { (currentIndex, libraryItem) in
+				libraryItem.setValue(
 					Int64(currentIndex),
 					forKey: "Index")
 			}

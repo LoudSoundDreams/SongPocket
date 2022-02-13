@@ -316,32 +316,31 @@ extension LibraryViewModel {
 		inSection section: Int,
 		sortOptionLocalizedName: String
 	) -> [NSManagedObject] {
-		// Get all the items in the group for the rows to sort.
+		// Get all the items in the subjected group.
 		let oldItems = group(forSection: section).items
 		
 		// Get the indices of the items to sort.
-		let sourceIndicesOfItems = rows.map { row in
+		let subjectedIndices = rows.map { row in
 			indexOfItemInGroup(forRow: row)
 		}
 		
-		// Sort the items.
-		let itemsToSort = sourceIndicesOfItems.map {
-			oldItems[$0]
-		}
-		let sortedItems = Self.sorted(
-			itemsToSort,
-			sortOptionLocalizedName: sortOptionLocalizedName)
+		// Get just the items to sort, and get them sorted in a separate `Array`.
+		let sortedItems: [NSManagedObject] = {
+			let itemsToSort = subjectedIndices.map { oldItems[$0] }
+			return Self.sorted(
+				itemsToSort,
+				sortOptionLocalizedName: sortOptionLocalizedName)
+		}()
 		
-		var newItems = oldItems
-		sourceIndicesOfItems.reversed().forEach {
-			newItems.remove(at: $0)
-		}
-		sortedItems.indices.forEach {
-			let sortedItem = sortedItems[$0]
-			let destinationIndex = sourceIndicesOfItems[$0]
-			newItems.insert(sortedItem, at: destinationIndex)
-		}
-		
+		// Create the new `Array` of items for the subjected group.
+		let newItems: [NSManagedObject] = {
+			var result = oldItems
+			sortedItems.enumerated().forEach { (indexOfSortedItem, sortedItem) in
+				let destinationIndex = subjectedIndices[indexOfSortedItem]
+				result[destinationIndex] = sortedItem
+			}
+			return result
+		}()
 		return newItems
 	}
 	

@@ -14,8 +14,8 @@ extension Array {
 	mutating func reindex()
 	where Element: LibraryItem
 	{
-		indices.forEach { currentIndex in
-			self[currentIndex].index = Int64(currentIndex)
+		enumerated().forEach { (currentIndex, libraryItem) in
+			libraryItem.index = Int64(currentIndex)
 		}
 	}
 	
@@ -64,14 +64,14 @@ extension Array {
 		areEqual: (Element, Element) -> Bool,
 		areInOrder: (Element, Element) -> Bool
 	) -> Self {
-		let sortedIndicesAndElements = enumerated().sorted {
+		let sortedTuples = enumerated().sorted {
 			if areEqual($0.element, $1.element) {
 				return $0.offset < $1.offset
 			} else {
 				return areInOrder($0.element, $1.element)
 			}
 		}
-		return sortedIndicesAndElements.map { $0.element }
+		return sortedTuples.map { $0.element }
 	}
 	
 	// MARK: - Miscellaneous

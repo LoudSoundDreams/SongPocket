@@ -190,14 +190,14 @@ class LibraryTVC: UITableViewController {
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
-		completionIfShouldRun: ((Bool) -> Void)? // We used to use `completion: (() -> Void)?` here and just not run it every time, but that leaked `CheckedContinuation` if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler. Hence, this method always runs the completion handler, and callers should pass in completion handlers that return immediately if the parameter is `false`.
+		completionIfShouldRun: @escaping (Bool) -> Void // We used to use `completion: @escaping () -> Void` here and just not run it every time, but that leaked `CheckedContinuation` if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler. Hence, this method always runs the completion handler, and callers should pass in completion handlers that return immediately if the parameter is `false`.
 	) {
 		let oldViewModel = viewModel
 		
 		viewModel = newViewModel
 		
 		guard !newViewModel.isEmpty() else {
-			completionIfShouldRun?(false)
+			completionIfShouldRun(false)
 			reflectViewModelIsEmpty()
 			return
 		}
@@ -209,26 +209,23 @@ class LibraryTVC: UITableViewController {
 			oldSection.identifier == newSection.identifier
 		}.batchUpdates()
 		
+		// Determine the batch updates for the rows within each section.
 		let oldSectionIdentifiersAndIndices = zip(
 			oldSections.map { $0.identifier },
 			oldSections.indices)
-		let oldSectionIndicesByIdentifier = Dictionary(
-			uniqueKeysWithValues: oldSectionIdentifiersAndIndices)
+		let oldSectionIndicesByIdentifier = Dictionary(uniqueKeysWithValues: oldSectionIdentifiersAndIndices)
 		var rowBatchUpdates: [BatchUpdates<IndexPath>] = []
-		newSections.indices.forEach { newSectionIndex in
-			let sectionIdentifier = newSections[newSectionIndex].identifier
+		newSections.enumerated().forEach { (newSectionIndex, newSection) in
+			let sectionIdentifier = newSection.identifier
 			// We never delete, insert, or move rows into or out of deleted or inserted sections, because when we delete or insert sections, we also delete or insert all the rows within them.
 			// We also never move rows between sections with different identifiers, because we only compare sections with equivalent identifiers.
 			guard let oldSectionIndex = oldSectionIndicesByIdentifier[sectionIdentifier] else { return }
-			let oldRowIdentifiers = oldSections[oldSectionIndex].rowIdentifiers
-			
-			let newRowIdentifiers = newSections[newSectionIndex].rowIdentifiers
 			
 			let rowBatchUpdatesInSection = Self.batchUpdatesOfRows(
 				oldSection: oldSectionIndex,
-				oldIdentifiers: oldRowIdentifiers,
+				oldIdentifiers: oldSections[oldSectionIndex].rowIdentifiers,
 				newSection: newSectionIndex,
-				newIdentifiers: newRowIdentifiers)
+				newIdentifiers: newSection.rowIdentifiers)
 			rowBatchUpdates.append(rowBatchUpdatesInSection)
 		}
 		
@@ -242,9 +239,9 @@ class LibraryTVC: UITableViewController {
 		) {
 			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate anything. Here, we wait for the animations to finish before we run the completion closure (once).
-				completionIfShouldRun?(true)
+				completionIfShouldRun(true)
 			} else {
-				completionIfShouldRun?(false)
+				completionIfShouldRun(false)
 			}
 		}
 		
