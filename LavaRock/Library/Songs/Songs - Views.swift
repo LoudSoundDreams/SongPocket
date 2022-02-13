@@ -48,11 +48,11 @@ final class AlbumInfoCell: UITableViewCell {
 	
 	final func configure(with album: Album) {
 		// Album artist
-		let albumArtist: String // Don’t let this be nil.
+		let albumArtist: String // Don’t let this be `nil`.
 		= album.albumArtistFormattedOrPlaceholder()
 		
 		// Release date
-		let releaseDateString = album.releaseDateEstimateFormatted() // Can be nil
+		let releaseDateString = album.releaseDateEstimateFormatted() // Can be `nil`
 		
 		albumArtistLabel.text = albumArtist
 		releaseDateLabel.text = releaseDateString
@@ -102,7 +102,7 @@ final class SongCell:
 				return nil
 			}
 		}()
-		let trackNumberString: String = { // Don’t let this be nil.
+		let trackNumberString: String = { // Don’t let this be `nil`.
 			guard
 				let songFile = songFile,
 				let representative = representative
