@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct LavaRockApp: App {
-	@ObservedObject private var theme: Theme = .shared
+	@ObservedObject private var theme: Theme
 	
 	var body: some Scene {
 		WindowGroup {
@@ -21,6 +21,8 @@ struct LavaRockApp: App {
 	}
 	
 	init() {
+		theme = .shared
+		
 		UserDefaults.standard.deleteAllValuesExceptForLRUserDefaultsKeys()
 		
 		PurchaseManager.shared.beginObservingPaymentTransactions()
@@ -43,7 +45,11 @@ final class Theme: ObservableObject {
 struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	typealias ViewControllerType = UIViewController
 	
-	@ObservedObject private var theme: Theme = .shared
+	@ObservedObject private var theme: Theme
+	
+	init() {
+		theme = .shared
+	}
 	
 	func makeUIViewController(
 		context: Context

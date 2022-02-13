@@ -11,10 +11,13 @@ import UIKit
 struct OptionsView: View {
 	@Environment(\.dismiss) private var dismiss
 	
-	@ObservedObject private var theme: Theme = .shared
-	@ObservedObject private var tipJarViewModel: TipJarViewModel = .shared
+	@ObservedObject private var theme: Theme
+	@ObservedObject private var tipJarViewModel: TipJarViewModel
 	
 	init() {
+		theme = .shared
+		tipJarViewModel = .shared
+		
 		if tipJarViewModel.status == .notYetFirstLoaded {
 			PurchaseManager.shared.requestTipProduct()
 		}
