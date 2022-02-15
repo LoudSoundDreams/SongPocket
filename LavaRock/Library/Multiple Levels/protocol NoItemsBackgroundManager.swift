@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol NoItemsBackgroundManager {
 	var noItemsBackgroundView: UITableViewCell? { get }
 	
