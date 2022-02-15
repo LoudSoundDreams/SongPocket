@@ -92,7 +92,7 @@ struct LocalizedString {
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
 		"[placeholder] empty_database",
-		value: "Add some music to your Apple Music library, or sync some music from your computer.",
+		value: "Add music to your library from Apple Music, your computer, or the iTunes Store.",
 		comment: "Placeholder for when the app’s database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
