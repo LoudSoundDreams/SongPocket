@@ -134,7 +134,7 @@ extension CollectionsTVC {
 	final func revertCombine(
 		thenSelect originalSelectedIndexPaths: [IndexPath]
 	) {
-		let originalViewModel = viewModelBeforeCombining!
+		guard let originalViewModel = viewModelBeforeCombining else { return }
 		
 		viewModelBeforeCombining = nil
 		
