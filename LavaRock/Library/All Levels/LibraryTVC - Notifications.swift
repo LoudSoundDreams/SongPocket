@@ -56,26 +56,28 @@ extension LibraryTVC {
 	// MARK: Library Items
 	
 	@objc
+	func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
+		return true
+	}
+	
+	@objc
 	func freshenLibraryItems() {
 		isMergingChanges = false
 		
-		/*
-		 // When we need to freshen, you might be in the middle of a content-dependent task. For simplicity, cancel such tasks.
-		 - Sort options (`LibraryTVC`)
-		 - “Rename Collection” dialog (`CollectionsTVC`)
-		 - “Combine Collections” dialog (`CollectionsTVC`)
-		 - “Organize or move albums?” menu (`AlbumsTVC`)
-		 - “Organize albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “organize albums” sheet)
-		 - “Move albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “move albums” sheet)
-		 - “New Collection” dialog (`CollectionsTVC` when in “move albums” sheet)
-		 - Song actions (`SongsTVC`)
-		 - (Editing mode is a special state, but freshening in editing mode is fine (with no other “breath-holding modes” presented).)
-		 */
-		let shouldNotDismissAnyModalVCs
-		= (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
-		|| presentedViewController is UIHostingController<OptionsView>
 		Task {
-			if !shouldNotDismissAnyModalVCs {
+			/*
+			 // When we need to freshen, you might be in the middle of a content-dependent task. For simplicity, cancel such tasks.
+			 - Sort options (`LibraryTVC`)
+			 - “Rename Collection” dialog (`CollectionsTVC`)
+			 - “Combine Collections” dialog (`CollectionsTVC`)
+			 - “Organize or move albums?” menu (`AlbumsTVC`)
+			 - “Organize albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “organize albums” sheet)
+			 - “Move albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “move albums” sheet)
+			 - “New Collection” dialog (`CollectionsTVC` when in “move albums” sheet)
+			 - Song actions (`SongsTVC`)
+			 - (Editing mode is a special state, but freshening in editing mode is fine (with no other “breath-holding modes” presented).)
+			 */
+			if shouldDismissAllViewControllersBeforeFreshenLibraryItems() {
 				await view.window?.rootViewController?.dismiss_async(animated: true)
 			}
 			

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension CollectionsTVC {
 	// MARK: - Player
@@ -19,6 +20,16 @@ extension CollectionsTVC {
 	}
 	
 	// MARK: Library Items
+	
+	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
+		if (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
+			|| presentedViewController is UIHostingController<OptionsView>
+		{
+			return false
+		}
+		
+		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
+	}
 	
 	final override func freshenLibraryItems() {
 		switch purpose {

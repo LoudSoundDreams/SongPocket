@@ -120,7 +120,7 @@ extension SongsTVC {
 			let selectedSongFile = selectedSong.songFile()
 		{
 			let selectedTitle = selectedSongFile.titleOnDisk ?? SongFileExtras.unknownTitlePlaceholder
-			showExplanationForEnqueueActionIfNecessary(
+			presentWillPlayLaterAlertIfShould(
 				titleOfSelectedSong: selectedTitle,
 				numberOfSongsEnqueued: chosenMediaItems.count)
 		}
@@ -146,14 +146,14 @@ extension SongsTVC {
 		}
 		
 		let selectedTitle = selectedMediaItem.title ?? SongFileExtras.unknownTitlePlaceholder
-		showExplanationForEnqueueActionIfNecessary(
+		presentWillPlayLaterAlertIfShould(
 			titleOfSelectedSong: selectedTitle,
 			numberOfSongsEnqueued: 1)
 	}
 	
 	// MARK: Explaining Enqueue Actions
 	
-	private func showExplanationForEnqueueActionIfNecessary(
+	private func presentWillPlayLaterAlertIfShould(
 		titleOfSelectedSong: String,
 		numberOfSongsEnqueued: Int
 	) {
@@ -185,6 +185,7 @@ extension SongsTVC {
 			title: LocalizedString.dontShowAgain,
 			style: .default
 		) { _ in
+			self.willPlayLaterAlertIsPresented = false
 			defaults.set(
 				false,
 				forKey: defaultsKey)
@@ -192,12 +193,15 @@ extension SongsTVC {
 		let okAction = UIAlertAction(
 			title: LocalizedString.ok,
 			style: .default,
-			handler: nil)
+			handler: { _ in
+				self.willPlayLaterAlertIsPresented = false
+			})
 		
 		alert.addAction(dontShowAgainAction)
 		alert.addAction(okAction)
 		alert.preferredAction = okAction
 		
+		willPlayLaterAlertIsPresented = true
 		present(alert, animated: true)
 	}
 }

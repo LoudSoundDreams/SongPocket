@@ -19,6 +19,7 @@ final class SongsTVC:
 	
 	// State
 	var openedAlbum: Album? = nil
+	var willPlayLaterAlertIsPresented = false
 	
 	// MARK: - Setup
 	
