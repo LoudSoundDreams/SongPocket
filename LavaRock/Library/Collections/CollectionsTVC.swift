@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 import MediaPlayer
 import SwiftUI
 

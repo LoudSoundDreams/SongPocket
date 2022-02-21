@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AllowAccessCell: TintedSelectedCell {

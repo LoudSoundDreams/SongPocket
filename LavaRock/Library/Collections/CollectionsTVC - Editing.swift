@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 extension CollectionsTVC: UITextFieldDelegate {
 	final func textFieldDidBeginEditing(_ textField: UITextField) {

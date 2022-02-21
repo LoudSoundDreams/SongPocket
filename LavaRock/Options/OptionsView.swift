@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct OptionsView: View {
 	@Environment(\.dismiss) private var dismiss

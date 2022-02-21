@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 extension AlbumsTVC {
 	// MARK: - Player

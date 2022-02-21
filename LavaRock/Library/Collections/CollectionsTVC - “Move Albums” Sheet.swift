@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 extension CollectionsTVC {
 	private static func smartCollectionTitle(

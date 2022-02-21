@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 extension AlbumsTVC {
 	final func moveHere(to indexPath: IndexPath) {

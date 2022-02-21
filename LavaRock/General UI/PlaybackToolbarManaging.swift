@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 
 @MainActor
 protocol PlaybackToolbarManaging: PlaybackStateReflecting {
