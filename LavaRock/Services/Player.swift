@@ -1,5 +1,5 @@
 //
-//  SharedPlayer.swift
+//  Player.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-04.
@@ -9,22 +9,24 @@ import MediaPlayer
 import CoreData
 
 @MainActor
-final class SharedPlayer { // This is a class and not a struct because it should end observing notifications in a deinitializer.
+final class Player { // This is a class and not a struct because it should end observing notifications in a deinitializer.
 	private init() {}
+	static let shared = Player()
 	
-	static func addReflector(_ reflector: PlaybackStateReflecting) {
+	final func addReflector(_ reflector: PlayerReflecting) {
 		let weakReflector = Weak(reflector)
 		reflectors.append(weakReflector)
 	}
-	static func removeReflector(_ reflector: PlaybackStateReflecting) {
+	
+	final func removeReflector(_ reflector: PlayerReflecting) {
 		if let indexOfMatchingReflector = reflectors.firstIndex(where: { reflector === $0 }) {
 			reflectors.remove(at: indexOfMatchingReflector)
 		}
 	}
 	
-	private(set) static var player: MPMusicPlayerController? = nil
+	private(set) var player: MPMusicPlayerController? = nil
 	
-	static func setUp() {
+	final func setUp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player?.endGeneratingPlaybackNotifications()
@@ -42,7 +44,7 @@ final class SharedPlayer { // This is a class and not a struct because it should
 		}
 	}
 	
-	static func songInPlayer(context: NSManagedObjectContext) -> Song? {
+	final func songInPlayer(context: NSManagedObjectContext) -> Song? {
 		guard let nowPlayingItem = player?.nowPlayingItem else {
 			return nil
 		}
@@ -65,11 +67,9 @@ final class SharedPlayer { // This is a class and not a struct because it should
 	
 	// MARK: - Private
 	
-	private static var reflectors: [Weak<PlaybackStateReflecting>] = []
+	private var reflectors: [Weak<PlayerReflecting>] = []
 	
 	deinit {
-		DispatchQueue.main.sync {
-			Self.player?.endGeneratingPlaybackNotifications()
-		}
+		player?.endGeneratingPlaybackNotifications()
 	}
 }

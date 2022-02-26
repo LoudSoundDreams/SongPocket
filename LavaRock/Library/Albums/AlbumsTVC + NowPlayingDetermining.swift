@@ -11,7 +11,7 @@ extension AlbumsTVC: NowPlayingDetermining {
 	final func isInPlayer(anyIndexPath: IndexPath) -> Bool {
 		guard
 			let rowAlbum = viewModel.itemOptional(at: anyIndexPath) as? Album,
-			let songInPlayer = SharedPlayer.songInPlayer(context: viewModel.context)
+			let songInPlayer = Player.shared.songInPlayer(context: viewModel.context)
 		else {
 			return false
 		}
