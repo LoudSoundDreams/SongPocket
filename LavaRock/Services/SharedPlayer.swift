@@ -103,11 +103,6 @@ final class SharedPlayer { // This is a class and not a struct because it should
 	
 	// MARK: - Private
 	
-	private final class Weak<Referencee: AnyObject> {
-		weak var referencee: Referencee? = nil
-		init(_ referencee: Referencee) { self.referencee = referencee }
-	}
-	
 	private static var reflectors: [Weak<PlaybackStateReflecting>] = []
 	
 	deinit {
