@@ -15,8 +15,13 @@ final class PlayerVC: UIViewController {
 	private(set) lazy var skipForwardButton = makeSkipForwardButton()
 	private(set) lazy var nextSongButton = makeNextSongButton()
 	
+	@IBOutlet private var queueTable: UITableView!
+	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		queueTable.dataSource = self
+		queueTable.delegate = self
 		
 		beginReflectingPlaybackState()
 		
@@ -37,3 +42,29 @@ extension PlayerVC: PlaybackStateReflecting {
 }
 
 extension PlayerVC: PlaybackToolbarManaging {}
+
+extension PlayerVC: UITableViewDataSource {
+	func tableView(
+		_ tableView: UITableView,
+		numberOfRowsInSection section: Int
+	) -> Int {
+		return 10
+	}
+	
+	func tableView(
+		_ tableView: UITableView,
+		cellForRowAt indexPath: IndexPath
+	) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Song in Queue", for: indexPath)
+		
+		var content = UIListContentConfiguration.cell()
+		content.text = "song in queue"
+		cell.contentConfiguration = content
+		
+		return cell
+	}
+}
+
+extension PlayerVC: UITableViewDelegate {
+	
+}
