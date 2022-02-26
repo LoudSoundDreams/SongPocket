@@ -44,21 +44,33 @@ extension PlayerVC: PlaybackStateReflecting {
 extension PlayerVC: PlaybackToolbarManaging {}
 
 extension PlayerVC: UITableViewDataSource {
-	func tableView(
+	final func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
 		return 10
 	}
 	
-	func tableView(
+	final func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
+		switch indexPath.row {
+		case 5:
+			return tableView.dequeueReusableCell(withIdentifier: "Then", for: indexPath)
+		case 9:
+			return tableView.dequeueReusableCell(withIdentifier: "Last", for: indexPath)
+		default:
+			break
+		}
+		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Song in Queue", for: indexPath)
 		
 		var content = UIListContentConfiguration.cell()
-		content.text = "song in queue"
+		content.image = UIImage(named: "AppIcon")
+		content.text = "Song Title"
+		content.secondaryText = "Artist Name"
+		content.secondaryTextProperties.color = .secondaryLabel
 		cell.contentConfiguration = content
 		
 		return cell
@@ -66,5 +78,10 @@ extension PlayerVC: UITableViewDataSource {
 }
 
 extension PlayerVC: UITableViewDelegate {
-	
+	final func tableView(
+		_ tableView: UITableView,
+		didSelectRowAt indexPath: IndexPath
+	) {
+		tableView.deselectRow(at: indexPath, animated: true)
+	}
 }

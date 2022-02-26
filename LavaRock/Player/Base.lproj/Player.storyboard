@@ -28,6 +28,75 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Then" id="TSm-6J-wcM">
+                                        <rect key="frame" x="0.0" y="88" width="414" height="53.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TSm-6J-wcM" id="DRm-MJ-gQR">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="53.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dTr-cT-L4E">
+                                                    <rect key="frame" x="66" y="11.5" width="328" height="32"/>
+                                                    <segments>
+                                                        <segment title="" image="repeat.1" catalog="system"/>
+                                                        <segment title="" image="pause.fill" catalog="system"/>
+                                                        <segment title="" image="play.fill" catalog="system"/>
+                                                    </segments>
+                                                </segmentedControl>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zbm-xJ-AWG">
+                                                    <rect key="frame" x="20" y="18.5" width="34" height="17"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="zbm-xJ-AWG" firstAttribute="leading" secondItem="DRm-MJ-gQR" secondAttribute="leadingMargin" id="2aS-Qe-7BH"/>
+                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="trailing" secondItem="DRm-MJ-gQR" secondAttribute="trailingMargin" id="9CC-NR-bkV"/>
+                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="leading" secondItem="zbm-xJ-AWG" secondAttribute="trailing" constant="12" id="Bvz-05-Pfo"/>
+                                                <constraint firstItem="zbm-xJ-AWG" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="DRm-MJ-gQR" secondAttribute="bottomMargin" id="DHv-bt-JZb"/>
+                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="centerY" secondItem="DRm-MJ-gQR" secondAttribute="centerY" id="HJA-CH-aHm"/>
+                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DRm-MJ-gQR" secondAttribute="topMargin" id="Mi0-i6-7b1"/>
+                                                <constraint firstItem="zbm-xJ-AWG" firstAttribute="centerY" secondItem="dTr-cT-L4E" secondAttribute="centerY" id="Z96-em-dKs"/>
+                                                <constraint firstItem="zbm-xJ-AWG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DRm-MJ-gQR" secondAttribute="topMargin" id="ita-Fo-Ujk"/>
+                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="DRm-MJ-gQR" secondAttribute="bottomMargin" id="vSv-nC-f0r"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Last" id="FBz-OC-wnA">
+                                        <rect key="frame" x="0.0" y="141.5" width="414" height="53.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FBz-OC-wnA" id="eve-kV-kW5">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="53.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pjl-Mb-V24">
+                                                    <rect key="frame" x="61" y="11.5" width="333" height="32"/>
+                                                    <segments>
+                                                        <segment title="" image="repeat" catalog="system"/>
+                                                        <segment title="" image="stop.fill" catalog="system"/>
+                                                    </segments>
+                                                </segmentedControl>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Lj-lr-F4m">
+                                                    <rect key="frame" x="20" y="18.5" width="29" height="17"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="eve-kV-kW5" secondAttribute="bottomMargin" id="6Wc-EL-IfW"/>
+                                                <constraint firstItem="4Lj-lr-F4m" firstAttribute="leading" secondItem="eve-kV-kW5" secondAttribute="leadingMargin" id="81O-JX-uDx"/>
+                                                <constraint firstItem="4Lj-lr-F4m" firstAttribute="centerY" secondItem="pjl-Mb-V24" secondAttribute="centerY" id="KSO-1I-53S"/>
+                                                <constraint firstItem="4Lj-lr-F4m" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eve-kV-kW5" secondAttribute="topMargin" id="KzU-wP-VXX"/>
+                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eve-kV-kW5" secondAttribute="topMargin" id="Oyd-wP-UTn"/>
+                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="trailing" secondItem="eve-kV-kW5" secondAttribute="trailingMargin" id="Ywb-at-nWx"/>
+                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="leading" secondItem="4Lj-lr-F4m" secondAttribute="trailing" constant="12" id="eEt-Kp-YC7"/>
+                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="centerY" secondItem="eve-kV-kW5" secondAttribute="centerY" id="unE-Oi-u41"/>
+                                                <constraint firstItem="4Lj-lr-F4m" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="eve-kV-kW5" secondAttribute="bottomMargin" id="wsB-sE-iEi"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
@@ -50,7 +119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0RZ-8F-INt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6960.8695652173919" y="1037.9464285714284"/>
+            <point key="canvasLocation" x="6960.8695652173919" y="1037.2767857142858"/>
         </scene>
         <!--Player-->
         <scene sceneID="esw-Ah-g0b">
@@ -90,6 +159,11 @@
     </scenes>
     <resources>
         <image name="hifispeaker.fill" catalog="system" width="111" height="128"/>
+        <image name="pause.fill" catalog="system" width="116" height="128"/>
+        <image name="play.fill" catalog="system" width="116" height="128"/>
+        <image name="repeat" catalog="system" width="128" height="98"/>
+        <image name="repeat.1" catalog="system" width="128" height="101"/>
+        <image name="stop.fill" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
