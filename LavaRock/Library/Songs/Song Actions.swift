@@ -76,12 +76,16 @@ extension SongsTVC {
 	private func playAlbumStartingAtSelectedSong() {
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
 		
-		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
-		os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
-		let chosenMediaItems = chosenSongs.compactMap {
-			($0 as? Song)?.songFile() as? MPMediaItem
-		}
-		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
+		let chosenMediaItems: [MPMediaItem] = {
+			let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
+			os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
+			defer {
+				os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
+			}
+			return chosenSongs.compactMap {
+				($0 as? Song)?.songFile() as? MPMediaItem
+			}
+		}()
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		
 		player?.setQueue(with: mediaItemCollection)
@@ -96,12 +100,16 @@ extension SongsTVC {
 	private func enqueueAlbumStartingAtSelectedSong() {
 		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
 		
-		let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
-		os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
-		let chosenMediaItems = chosenSongs.compactMap {
-			($0 as? Song)?.songFile() as? MPMediaItem
-		}
-		os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
+		let chosenMediaItems: [MPMediaItem] = {
+			let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
+			os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
+			defer {
+				os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
+			}
+			return chosenSongs.compactMap {
+				($0 as? Song)?.songFile() as? MPMediaItem
+			}
+		}()
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
