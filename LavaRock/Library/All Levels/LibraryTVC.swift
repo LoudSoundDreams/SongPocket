@@ -100,7 +100,7 @@ class LibraryTVC: UITableViewController {
 	// State
 	final var isMergingChanges = false
 	final var needsFreshenLibraryItemsOnViewDidAppear = false
-	private final var isAnimatingBatchUpdates = 0
+	private var isAnimatingBatchUpdates = 0
 	
 	// MARK: - Setup
 	

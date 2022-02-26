@@ -8,8 +8,10 @@
 import UIKit
 import SwiftUI
 
-extension LibraryTVC: PlaybackStateReflecting {
+extension LibraryTVC: PlayerReflecting {
 	func reflectPlaybackState() {
+		print("observed playback state changed: \(self)")
+		
 		reflectPlayer()
 	}
 }

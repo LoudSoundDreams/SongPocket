@@ -35,7 +35,7 @@ final class PlayerVC: UIViewController {
 	}
 }
 
-extension PlayerVC: PlaybackStateReflecting {
+extension PlayerVC: PlayerReflecting {
 	func reflectPlaybackState() {
 		freshenPlaybackToolbar()
 	}

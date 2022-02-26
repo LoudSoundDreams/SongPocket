@@ -1,5 +1,5 @@
 //
-//  protocol PlaybackStateReflecting.swift
+//  protocol PlayerReflecting.swift
 //  LavaRock
 //
 //  Created by h on 2022-02-26.
@@ -9,24 +9,24 @@ import MediaPlayer
 
 @objc
 @MainActor
-protocol PlaybackStateReflecting: AnyObject {
+protocol PlayerReflecting: AnyObject {
 	// Conforming types must …
 	// - Call `beginReflectingPlaybackState` before they need to reflect playback state.
 	// - Call `endReflectingPlaybackState` within their deinitializer.
 	
 	func reflectPlaybackState()
-	// Reflect `SharedPlayer.player`, and show a disabled state if it’s `nil`. (Call `SharedPlayer.setUp` to set up `SharedPlayer.player`.)
+	// Reflect `Player.shared.player`, and show a disabled state if it’s `nil`. (Call `Player.shared.setUp` to set up `Player.shared.player`.)
 }
 
-extension PlaybackStateReflecting {
-	var player: MPMusicPlayerController? { SharedPlayer.player }
+extension PlayerReflecting {
+	var player: MPMusicPlayerController? { Player.shared.player }
 	
 	func beginReflectingPlaybackState() {
 		reflectPlaybackState()
 		
 		endReflectingPlaybackState()
 		
-		SharedPlayer.addReflector(self)
+		Player.shared.addReflector(self)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
@@ -37,7 +37,7 @@ extension PlaybackStateReflecting {
 	}
 	
 	func endReflectingPlaybackState() {
-		SharedPlayer.removeReflector(self)
+		Player.shared.removeReflector(self)
 		NotificationCenter.default.removeObserver(
 			self,
 			name: .MPMusicPlayerControllerPlaybackStateDidChange,
