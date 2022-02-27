@@ -105,19 +105,22 @@ extension SongsTVC {
 			let player = player
 		else { return }
 		
-		let chosenMediaItems: [MPMediaItem] = {
-			let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
-				.compactMap { $0 as? Song }
-			os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
-			defer {
-				os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
-			}
-			return chosenSongs.compactMap { $0.mpMediaItem() }
-		}()
-		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
+		let chosenItems = viewModel.itemsInGroup(startingAt: selectedIndexPath)
 		
-		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		player.append(queueDescriptor)
+		player.append(
+			MPMusicPlayerMediaItemQueueDescriptor(
+				itemCollection: MPMediaItemCollection(
+					items: {
+						let chosenSongs = chosenItems.compactMap { $0 as? Song }
+						os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
+						defer {
+							os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
+						}
+						return chosenSongs.compactMap { $0.mpMediaItem() }
+					}()
+				)
+			)
+		)
 		
 		player.repeatMode = .none
 		player.shuffleMode = .off
@@ -134,7 +137,7 @@ extension SongsTVC {
 			let selectedTitle = selectedMetadata.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 			presentWillPlayLaterAlertIfShould(
 				titleOfSelectedSong: selectedTitle,
-				numberOfSongsEnqueued: chosenMediaItems.count)
+				numberOfSongsEnqueued: chosenItems.count)
 		}
 	}
 	
@@ -142,19 +145,24 @@ extension SongsTVC {
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
-			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem
+			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem,
+			let player = player
 		else { return }
-		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])
 		
-		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		player?.append(queueDescriptor)
+		player.append(
+			MPMusicPlayerMediaItemQueueDescriptor(
+				itemCollection: MPMediaItemCollection(
+					items: [selectedMediaItem]
+				)
+			)
+		)
 		
-		player?.repeatMode = .none
-		player?.shuffleMode = .off
+		player.repeatMode = .none
+		player.shuffleMode = .off
 		
 		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
-		if player?.playbackState != .playing {
-			player?.prepareToPlay()
+		if player.playbackState != .playing {
+			player.prepareToPlay()
 		}
 		
 		let selectedTitle = selectedMediaItem.title ?? SongMetadatumExtras.unknownTitlePlaceholder
