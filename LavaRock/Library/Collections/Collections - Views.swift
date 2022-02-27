@@ -147,6 +147,4 @@ final class CollectionCell:
 		}
 	}
 }
-
-extension CollectionCell: NowPlayingIndicating {
-}
+extension CollectionCell: NowPlayingIndicating {}

@@ -98,18 +98,6 @@ final class AlbumCell:
 		accessibilityUserInputLabels = [title]
 	}
 	
-	private func configureForTraitCollection() {
-		if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-			mainStack.axis = .vertical
-			mainStack.alignment = .leading
-			mainStack.spacing = UIStackView.spacingUseSystem
-		} else {
-			mainStack.axis = .horizontal
-			mainStack.alignment = .center
-			mainStack.spacing = 12
-		}
-	}
-	
 	final override func traitCollectionDidChange(
 		_ previousTraitCollection: UITraitCollection?
 	) {
@@ -122,7 +110,17 @@ final class AlbumCell:
 			configureForTraitCollection()
 		}
 	}
+	
+	private func configureForTraitCollection() {
+		if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+			mainStack.axis = .vertical
+			mainStack.alignment = .leading
+			mainStack.spacing = UIStackView.spacingUseSystem
+		} else {
+			mainStack.axis = .horizontal
+			mainStack.alignment = .center
+			mainStack.spacing = 12
+		}
+	}
 }
-
-extension AlbumCell: NowPlayingIndicating {
-}
+extension AlbumCell: NowPlayingIndicating {}

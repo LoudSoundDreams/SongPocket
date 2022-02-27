@@ -74,7 +74,10 @@ extension SongsTVC {
 	// MARK: Actions
 	
 	private func playAlbumStartingAtSelectedSong() {
-		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
+			let player = player
+		else { return }
 		
 		let chosenMediaItems: [MPMediaItem] = {
 			let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
@@ -87,17 +90,20 @@ extension SongsTVC {
 		}()
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		
-		player?.setQueue(with: mediaItemCollection)
+		player.setQueue(with: mediaItemCollection)
 		
 		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
-		player?.repeatMode = .none
-		player?.shuffleMode = .off
+		player.repeatMode = .none
+		player.shuffleMode = .off
 		
-		player?.play() // Calls `prepareToPlay` automatically
+		player.play() // Calls `prepareToPlay` automatically
 	}
 	
 	private func enqueueAlbumStartingAtSelectedSong() {
-		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
+			let player = player
+		else { return }
 		
 		let chosenMediaItems: [MPMediaItem] = {
 			let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
@@ -111,14 +117,14 @@ extension SongsTVC {
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		
 		let queueDescriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: mediaItemCollection)
-		player?.append(queueDescriptor)
+		player.append(queueDescriptor)
 		
-		player?.repeatMode = .none
-		player?.shuffleMode = .off
+		player.repeatMode = .none
+		player.shuffleMode = .off
 		
 		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
-		if player?.playbackState != .playing {
-			player?.prepareToPlay()
+		if player.playbackState != .playing {
+			player.prepareToPlay()
 		}
 		
 		if

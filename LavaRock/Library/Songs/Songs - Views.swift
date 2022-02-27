@@ -135,6 +135,4 @@ final class SongCell:
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
 	}
 }
-
-extension SongCell: NowPlayingIndicating {
-}
+extension SongCell: NowPlayingIndicating {}
