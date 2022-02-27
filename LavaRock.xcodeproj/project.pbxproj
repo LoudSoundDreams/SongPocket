@@ -51,6 +51,7 @@
 		076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C024B42E3F0033E3CC /* SongsTVC.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
+		0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
 		077BCEB2275316AD0066DE96 /* protocol OrganizeAlbumsPreviewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEB1275316AD0066DE96 /* protocol OrganizeAlbumsPreviewing.swift */; };
@@ -178,6 +179,7 @@
 		076830C024B42E3F0033E3CC /* SongsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsTVC.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
+		0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUserDefaultsKey.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
 		077BCEB1275316AD0066DE96 /* protocol OrganizeAlbumsPreviewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol OrganizeAlbumsPreviewing.swift"; sourceTree = "<group>"; };
@@ -326,7 +328,7 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
-		0748AEAF24F394F9000FBC61 /* Services */ = {
+		0748AEAF24F394F9000FBC61 /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
@@ -336,7 +338,7 @@
 				07267A1F25537C5800C914A3 /* Player.swift */,
 				07CD864E27CAA54600286E6A /* protocol PlayerReflecting.swift */,
 			);
-			path = Services;
+			path = Features;
 			sourceTree = "<group>";
 		};
 		0768307C24B42DEC0033E3CC = {
@@ -368,9 +370,9 @@
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				075218A1257C498D0077AE9B /* LocalizedString.swift */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
-				07E0BBFE2765680C0010117E /* Extensions */,
+				07E0BBFE2765680C0010117E /* Helpers */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				0748AEAF24F394F9000FBC61 /* Services */,
+				0748AEAF24F394F9000FBC61 /* Features */,
 				07E0BBFF276569480010117E /* General UI */,
 				0706ABDE24D946870090EB21 /* Options */,
 				07E0BC0027656C300010117E /* Library */,
@@ -397,6 +399,15 @@
 			path = LavaRockUITests;
 			sourceTree = "<group>";
 		};
+		0774C88627CBECA300230F22 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				07CD864C27CAA3CC00286E6A /* Weak.swift */,
+				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
 		0777D6832756880300BA0C87 /* Multiple Levels */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,7 +427,6 @@
 				078FDD0E2638872100779AF2 /* Array.swift */,
 				07619EE427342FC9003F95AE /* CollectionDifference.swift */,
 				076B4DEC27738FF4004B523D /* OSLog.swift */,
-				07CD864C27CAA3CC00286E6A /* Weak.swift */,
 			);
 			path = Basic;
 			sourceTree = "<group>";
@@ -498,15 +508,16 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
-		07E0BBFE2765680C0010117E /* Extensions */ = {
+		07E0BBFE2765680C0010117E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				07AB7029273C9A52002B5098 /* Basic */,
 				07E0BBD8276567760010117E /* Foundation */,
 				07E0BBE12765678F0010117E /* UIKit */,
 				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
+				0774C88627CBECA300230F22 /* Custom */,
 			);
-			path = Extensions;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		07E0BBFF276569480010117E /* General UI */ = {
@@ -694,6 +705,7 @@
 				072FD02726C30BB90053369B /* cleanUpLibraryItems.swift in Sources */,
 				07642C7E268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift in Sources */,
 				07942DA1271CAD350030F14A /* CollectionsViewState.swift in Sources */,
+				0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Array.swift in Sources */,
 				07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */,
 				079D73252768514100301327 /* UIImage.Configuration.swift in Sources */,
