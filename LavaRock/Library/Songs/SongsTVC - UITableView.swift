@@ -105,9 +105,9 @@ extension SongsTVC {
 				let selectedCell = tableView.cellForRow(at: indexPath)
 			{
 				showSongActions(for: song, popoverAnchorView: selectedCell)
+				// This leaves the row selected while the action sheet is onscreen, which I prefer.
+				// You must eventually deselect the row in every possible branch from here.
 			}
-			// This leaves the row selected while the action sheet is onscreen, which I prefer.
-			// You must eventually deselect the row in every possible branch from here.
 		}
 		
 		super.tableView(tableView, didSelectRowAt: indexPath)
