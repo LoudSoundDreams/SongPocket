@@ -21,7 +21,7 @@ extension Album: LibraryContainer {
 extension Album {
 	convenience init(
 		atEndOf collection: Collection,
-		albumFolderID: AlbumFolderID,
+		mpAlbumID: MPAlbumID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .album, name: "Create an Album at the bottom")
@@ -30,15 +30,15 @@ extension Album {
 		}
 		
 		self.init(context: context)
-		albumPersistentID = albumFolderID
+		albumPersistentID = mpAlbumID
 		index = Int64(collection.contents?.count ?? 0)
 		container = collection
 	}
 	
-	// Use `init(atEndOf:albumFolderID:context:)` if possible. It’s faster.
+	// Use `init(atEndOf:mpAlbumID:context:)` if possible. It’s faster.
 	convenience init(
 		atBeginningOf collection: Collection,
-		albumFolderID: AlbumFolderID,
+		mpAlbumID: MPAlbumID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .album, name: "Create an Album at the top")
@@ -49,7 +49,7 @@ extension Album {
 		collection.albums(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		albumPersistentID = albumFolderID
+		albumPersistentID = mpAlbumID
 		index = 0
 		container = collection
 	}
@@ -98,39 +98,39 @@ extension Album {
 	}
 	
 	final func songsAreInDefaultOrder() -> Bool {
-		let songFiles = songs(sorted: true).compactMap { $0.songFile() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
+		let metadata = songs(sorted: true).compactMap { $0.metadatum() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
 		
-		let sortedSongFiles = songFiles.sorted {
+		let sortedMetadata = metadata.sorted {
 			$0.precedesInDefaultOrder(inSameAlbum: $1)
 		}
 		
-		return songFiles.indices.allSatisfy { index in
-			songFiles[index].fileID == sortedSongFiles[index].fileID
+		return metadata.indices.allSatisfy { index in
+			metadata[index].mpSongID == sortedMetadata[index].mpSongID
 		}
 	}
 	
 	final func sortSongsByDefaultOrder() {
 		let songs = songs(sorted: false)
 		
-		// Behavior is undefined if you compare `Song`s that correspond to `SongFile`s from different albums.
-		// `Song`s that don’t have a corresponding `SongFile` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
+		// Behavior is undefined if you compare `Song`s that correspond to `SongMetadatum`s from different albums.
+		// `Song`s that don’t have a corresponding `SongMetadatum` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
 		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
-			var songsAndSongFiles = songs.map {
-				($0,
-				 $0.songFile()) // Can be `nil`
+			var songsAndMetadata = songs.map {
+				(song: $0,
+				 metadatum: $0.metadatum()) // Can be `nil`
 			}
 			
-			songsAndSongFiles.sort { leftTuple, rightTuple in
+			songsAndMetadata.sort { leftTuple, rightTuple in
 				guard
-					let leftSongFile = leftTuple.1,
-					let rightSongFile = rightTuple.1
+					let leftMetadatum = leftTuple.metadatum,
+					let rightMetadatum = rightTuple.metadatum
 				else {
 					return true
 				}
-				return leftSongFile.precedesInDefaultOrder(inSameAlbum: rightSongFile)
+				return leftMetadatum.precedesInDefaultOrder(inSameAlbum: rightMetadatum)
 			}
 			
-			return songsAndSongFiles.map { tuple in tuple.0 }
+			return songsAndMetadata.map { tuple in tuple.song }
 		}
 		
 		var sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
@@ -140,31 +140,31 @@ extension Album {
 	
 	// MARK: Creating
 	
-	final func createSongsAtEnd(for songFiles: [SongFile]) {
+	final func createSongsAtEnd(withMPSongIDs mpSongIDs: [MPSongID]) {
 		os_signpost(.begin, log: .album, name: "Create Songs at the bottom")
 		defer {
 			os_signpost(.end, log: .album, name: "Create Songs at the bottom")
 		}
 		
-		songFiles.forEach {
+		mpSongIDs.forEach {
 			let _ = Song(
 				atEndOf: self,
-				fileID: $0.fileID,
+				mpSongID: $0,
 				context: managedObjectContext!)
 		}
 	}
 	
 	// Use `createSongsAtEnd` if possible. It’s faster.
-	final func createSongsAtBeginning(for songFiles: [SongFile]) {
+	final func createSongsAtBeginning(withMPSongIDs mpSongIDs: [MPSongID]) {
 		os_signpost(.begin, log: .album, name: "Create Songs at the top")
 		defer {
 			os_signpost(.end, log: .album, name: "Create Songs at the top")
 		}
 		
-		songFiles.reversed().forEach {
+		mpSongIDs.reversed().forEach {
 			let _ = Song(
 				atBeginningOf: self,
-				fileID: $0.fileID,
+				mpSongID: $0,
 				context: managedObjectContext!)
 		}
 	}

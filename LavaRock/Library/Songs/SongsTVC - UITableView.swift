@@ -74,23 +74,19 @@ extension SongsTVC {
 			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
 		
-		let song = songsViewModel.songNonNil(at: indexPath)
-		let songFile = song.songFile() // Can be `nil` if the user recently deleted the `SongFile` from their library
-		
-		let album = songsViewModel.album(forSection: indexPath.section)
-		let representative = album.representativeMPMediaItem()
-		
-		// “Now playing” indicator
-		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
-		let isPlaying = player?.playbackState == .playing
-		let nowPlayingIndicator = NowPlayingIndicator(
-			isInPlayer: isInPlayer,
-			isPlaying: isPlaying)
-		
 		cell.configureWith(
-			songFile: songFile,
-			albumRepresentative: representative)
-		cell.applyNowPlayingIndicator(nowPlayingIndicator)
+			metadatum: {
+				let song = songsViewModel.songNonNil(at: indexPath)
+				return song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
+			}(),
+			albumRepresentative: {
+				let album = songsViewModel.album(forSection: indexPath.section)
+				return album.representativeMPMediaItem()
+			}())
+		cell.applyNowPlayingIndicator(
+			NowPlayingIndicator(
+				isInPlayer: isInPlayer(anyIndexPath: indexPath),
+				isPlaying: player?.playbackState == .playing))
 		
 		return cell
 	}

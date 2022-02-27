@@ -10,7 +10,7 @@ import OSLog
 
 extension MusicLibraryManager {
 	final func cleanUpLibraryItems(
-		allSongFiles: [SongFile],
+		allMetadata: [SongMetadatum],
 		isFirstImport: Bool
 	) {
 		os_signpost(.begin, log: .merge, name: "5. Clean up library items")
@@ -24,7 +24,7 @@ extension MusicLibraryManager {
 		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
 			for: allAlbums,
-			   considering: allSongFiles)
+			   considering: allMetadata)
 		os_signpost(.end, log: .cleanup, name: "Recalculate Album release date estimates")
 		
 		os_signpost(.begin, log: .cleanup, name: "Reindex all Albums and Songs")
@@ -46,17 +46,17 @@ extension MusicLibraryManager {
 	// Instead, use the most recent release date among the `MPMediaItemCollection`’s `MPMediaItem`s, and recalculate it whenever necessary.
 	private func recalculateReleaseDateEstimates(
 		for albums: [Album],
-		considering songFiles: [SongFile]
+		considering metadata: [SongMetadatum]
 	) {
-		os_signpost(.begin, log: .cleanup, name: "Filter out SongFiles without release dates")
+		os_signpost(.begin, log: .cleanup, name: "Filter out metadata without release dates")
 		// This is pretty slow, but can save time later.
-		let songFilesWithReleaseDates = songFiles.filter { $0.releaseDateOnDisk != nil }
-		os_signpost(.end, log: .cleanup, name: "Filter out SongFiles without release dates")
+		let metadataWithReleaseDates = metadata.filter { $0.releaseDateOnDisk != nil }
+		os_signpost(.end, log: .cleanup, name: "Filter out metadata without release dates")
 		
-		os_signpost(.begin, log: .cleanup, name: "Group SongFiles by album")
-		let songFilesByAlbumFolderID
-		= Dictionary(grouping: songFilesWithReleaseDates) { $0.albumFolderID }
-		os_signpost(.end, log: .cleanup, name: "Group SongFiles by album")
+		os_signpost(.begin, log: .cleanup, name: "Group metadata by album")
+		let metadataByMPAlbumID
+		= Dictionary(grouping: metadataWithReleaseDates) { $0.mpAlbumID }
+		os_signpost(.end, log: .cleanup, name: "Group metadata by album")
 		
 		albums.forEach { album in
 			os_signpost(.begin, log: .cleanup, name: "Reestimate release date for one Album")
@@ -68,11 +68,11 @@ extension MusicLibraryManager {
 			
 			os_signpost(.begin, log: .cleanup, name: "Find the release dates associated with this Album")
 			// For `Album`s with no release dates, using `guard` to return early is slightly faster than optional chaining.
-			guard let matchingSongFiles = songFilesByAlbumFolderID[album.albumPersistentID] else {
+			guard let matchingMetadata = metadataByMPAlbumID[album.albumPersistentID] else {
 				os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 				return
 			}
-			let matchingReleaseDates = matchingSongFiles.compactMap { $0.releaseDateOnDisk }
+			let matchingReleaseDates = matchingMetadata.compactMap { $0.releaseDateOnDisk }
 			os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 			
 			os_signpost(.begin, log: .cleanup, name: "Find the latest of those release dates")

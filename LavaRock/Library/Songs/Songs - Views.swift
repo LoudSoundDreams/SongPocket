@@ -87,14 +87,14 @@ final class SongCell:
 	}
 	
 	final func configureWith(
-		songFile: SongFile?,
-		albumRepresentative representative: SongFile?
+		metadatum: SongMetadatum?,
+		albumRepresentative representative: SongMetadatum?
 	) {
-		let titleText = songFile?.titleOnDisk ?? SongFileExtras.unknownTitlePlaceholder
+		let titleText = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 		let artistText: String? = {
 			let albumArtist = representative?.albumArtistOnDisk // Can be `nil`
 			if
-				let songArtist = songFile?.artistOnDisk,
+				let songArtist = metadatum?.artistOnDisk,
 				songArtist != albumArtist
 			{
 				return songArtist
@@ -104,10 +104,10 @@ final class SongCell:
 		}()
 		let trackNumberString: String = { // Don’t let this be `nil`.
 			guard
-				let songFile = songFile,
+				let metadatum = metadatum,
 				let representative = representative
 			else {
-				return SongFileExtras.unknownTrackNumberPlaceholder
+				return SongMetadatumExtras.unknownTrackNumberPlaceholder
 			}
 			
 			let discNumber = representative.discNumberOnDisk
@@ -116,9 +116,9 @@ final class SongCell:
 			let shouldShowDiscNumber = (discCount > 1) ? true : (discNumber > 1)
 			
 			if shouldShowDiscNumber {
-				return songFile.discAndTrackNumberFormatted()
+				return metadatum.discAndTrackNumberFormatted()
 			} else {
-				return songFile.trackNumberFormatted()
+				return metadatum.trackNumberFormatted()
 			}
 		}()
 		
@@ -132,7 +132,7 @@ final class SongCell:
 			textStack.spacing = 4
 		}
 		
-		accessibilityUserInputLabels = [songFile?.titleOnDisk].compactMap { $0 }
+		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
 	}
 }
 

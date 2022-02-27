@@ -388,22 +388,25 @@ extension LibraryViewModel {
 				return items
 			}
 			// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
-			let songsAndSongFiles = songs.map { ($0, $0.songFile()) }
-			let sorted = songsAndSongFiles.sortedMaintainingOrderWhen {
-				let leftSongFile = $0.1
-				let rightSongFile = $1.1
-				return leftSongFile?.discNumberOnDisk == rightSongFile?.discNumberOnDisk
-				&& leftSongFile?.trackNumberOnDisk == rightSongFile?.trackNumberOnDisk
+			let songsAndMetadata = songs.map {
+				(song: $0,
+				 metadatum: $0.metadatum())
+			}
+			let sorted = songsAndMetadata.sortedMaintainingOrderWhen {
+				let leftMetadatum = $0.metadatum
+				let rightMetadatum = $1.metadatum
+				return leftMetadatum?.discNumberOnDisk == rightMetadatum?.discNumberOnDisk
+				&& leftMetadatum?.trackNumberOnDisk == rightMetadatum?.trackNumberOnDisk
 			} areInOrder: {
 				guard
-					let leftSongFile = $0.1,
-					let rightSongFile = $1.1
+					let leftMetadatum = $0.metadatum,
+					let rightMetadatum = $1.metadatum
 				else {
 					return true
 				}
-				return leftSongFile.precedesForSortOptionTrackNumber(rightSongFile)
+				return leftMetadatum.precedesForSortOptionTrackNumber(rightMetadatum)
 			}
-			return sorted.map { $0.0 }
+			return sorted.map { $0.song }
 			
 		case .random:
 			guard items.count >= 2 else {

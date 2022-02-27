@@ -78,13 +78,12 @@ extension SongsTVC {
 		
 		let chosenMediaItems: [MPMediaItem] = {
 			let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
+				.compactMap { $0 as? Song }
 			os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
 			defer {
 				os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 			}
-			return chosenSongs.compactMap {
-				($0 as? Song)?.songFile() as? MPMediaItem
-			}
+			return chosenSongs.compactMap { $0.mpMediaItem() }
 		}()
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		
@@ -102,13 +101,12 @@ extension SongsTVC {
 		
 		let chosenMediaItems: [MPMediaItem] = {
 			let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
+				.compactMap { $0 as? Song }
 			os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
 			defer {
 				os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 			}
-			return chosenSongs.compactMap {
-				($0 as? Song)?.songFile() as? MPMediaItem
-			}
+			return chosenSongs.compactMap { $0.mpMediaItem() }
 		}()
 		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
 		
@@ -125,9 +123,9 @@ extension SongsTVC {
 		
 		if
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
-			let selectedSongFile = selectedSong.songFile()
+			let selectedMetadata = selectedSong.metadatum()
 		{
-			let selectedTitle = selectedSongFile.titleOnDisk ?? SongFileExtras.unknownTitlePlaceholder
+			let selectedTitle = selectedMetadata.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 			presentWillPlayLaterAlertIfShould(
 				titleOfSelectedSong: selectedTitle,
 				numberOfSongsEnqueued: chosenMediaItems.count)
@@ -138,7 +136,7 @@ extension SongsTVC {
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
-			let selectedMediaItem = selectedSong.songFile() as? MPMediaItem
+			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem
 		else { return }
 		let mediaItemCollection = MPMediaItemCollection(items: [selectedMediaItem])
 		
@@ -153,7 +151,7 @@ extension SongsTVC {
 			player?.prepareToPlay()
 		}
 		
-		let selectedTitle = selectedMediaItem.title ?? SongFileExtras.unknownTitlePlaceholder
+		let selectedTitle = selectedMediaItem.title ?? SongMetadatumExtras.unknownTitlePlaceholder
 		presentWillPlayLaterAlertIfShould(
 			titleOfSelectedSong: selectedTitle,
 			numberOfSongsEnqueued: 1)

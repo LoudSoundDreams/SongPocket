@@ -1,5 +1,5 @@
 //
-//  protocol SongFile.swift
+//  protocol SongMetadatum.swift
 //  LavaRock
 //
 //  Created by h on 2021-12-24.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-typealias AlbumFolderID = Int64
-typealias SongFileID = Int64
+typealias MPAlbumID = Int64
+typealias MPSongID = Int64
 
-protocol SongFile {
-	var albumFolderID: AlbumFolderID { get }
-	var fileID: SongFileID { get }
+protocol SongMetadatum {
+	var mpAlbumID: MPAlbumID { get }
+	var mpSongID: MPSongID { get }
 	
 	var albumArtistOnDisk: String? { get }
 	var albumTitleOnDisk: String? { get }
@@ -27,12 +27,41 @@ protocol SongFile {
 	func artworkImage(at size: CGSize) -> UIImage?
 }
 
-extension SongFile {
+import MediaPlayer
+extension MPMediaItem: SongMetadatum {
+	var mpAlbumID: MPAlbumID { MPAlbumID(bitPattern: albumPersistentID) }
+	var mpSongID: MPSongID { MPSongID(bitPattern: persistentID) }
+	
+	// Media Player reports unknown values as …
+	var albumArtistOnDisk: String? { albumArtist } // … `nil`, as of iOS 14.7 developer beta 5.
+	var albumTitleOnDisk: String? { albumTitle } // … `""`, as of iOS 14.7 developer beta 5.
+	var discCountOnDisk: Int { discCount } // … `0`, as of iOS 15.0 RC.
+	var discNumberOnDisk: Int { discNumber } // … `1`, as of iOS 14.7 developer beta 5.
+	var trackNumberOnDisk: Int { albumTrackNumber } // … `0`, as of iOS 14.7 developer beta 5.
+	var titleOnDisk: String? { title } // … we don’t know, because Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
+	var artistOnDisk: String? { artist }
+	var releaseDateOnDisk: Date? { releaseDate }
+	var dateAddedOnDisk: Date { dateAdded }
+	
+	func artworkImage(at size: CGSize) -> UIImage? {
+		return artwork?.image(at: size)
+	}
+}
+
+struct SongMetadatumExtras {
+	private init() {}
+	
+	static let unknownTitlePlaceholder = "—" // Em dash
+	static let unknownTrackNumber = 0
+	static let unknownTrackNumberPlaceholder = "‒" // Figure dash
+}
+
+extension SongMetadatum {
 	// MARK: Predicates for Sorting
 	
-	// Behavior is undefined if you compare with a `SongFile` from the same album.
+	// Behavior is undefined if you compare with a `SongMetadatum` from the same album.
 	// Verified with `MPMediaItem`s as of build 157 on iOS 14.7 developer beta 5.
-	func precedesInDefaultOrder(inDifferentAlbum other: SongFile) -> Bool {
+	func precedesInDefaultOrder(inDifferentAlbum other: SongMetadatum) -> Bool {
 		let myAlbumArtist = albumArtistOnDisk
 		let otherAlbumArtist = other.albumArtistOnDisk
 		// Either can be `nil`
@@ -70,22 +99,22 @@ extension SongFile {
 		return myAlbumArtist.precedesAlphabeticallyFinderStyle(otherAlbumArtist)
 	}
 	
-	func precedesInDefaultOrder(inSameAlbum other: SongFile) -> Bool {
+	func precedesInDefaultOrder(inSameAlbum other: SongMetadatum) -> Bool {
 		return precedesInDisplayOrder(
 			inSameAlbum: other,
 			shouldResortToTitle: true)
 	}
 	
-	func precedesForSortOptionTrackNumber(_ other: SongFile) -> Bool {
+	func precedesForSortOptionTrackNumber(_ other: SongMetadatum) -> Bool {
 		return precedesInDisplayOrder(
 			inSameAlbum: other,
 			shouldResortToTitle: false)
 	}
 	
-	// Behavior is undefined if you compare with a `SongFile` from a different album.
+	// Behavior is undefined if you compare with a `SongMetadatum` from a different album.
 	// Verified with `MPMediaItem`s as of build 154 on iOS 14.7 developer beta 5.
 	private func precedesInDisplayOrder(
-		inSameAlbum other: SongFile,
+		inSameAlbum other: SongMetadatum,
 		shouldResortToTitle: Bool
 	) -> Bool {
 		// Sort by disc number
@@ -114,10 +143,10 @@ extension SongFile {
 		}
 		
 		// Move unknown track number to the end
-		guard otherTrack != SongFileExtras.unknownTrackNumber else {
+		guard otherTrack != SongMetadatumExtras.unknownTrackNumber else {
 			return true
 		}
-		guard myTrack != SongFileExtras.unknownTrackNumber else {
+		guard myTrack != SongMetadatumExtras.unknownTrackNumber else {
 			return false
 		}
 		
@@ -129,7 +158,7 @@ extension SongFile {
 	
 	func discAndTrackNumberFormatted() -> String {
 		let trackNumberString: String = {
-			guard trackNumberOnDisk != SongFileExtras.unknownTrackNumber else {
+			guard trackNumberOnDisk != SongMetadatumExtras.unknownTrackNumber else {
 				return ""
 			}
 			return String(trackNumberOnDisk)
@@ -138,17 +167,9 @@ extension SongFile {
 	}
 	
 	func trackNumberFormatted() -> String {
-		guard trackNumberOnDisk != SongFileExtras.unknownTrackNumber else {
-			return SongFileExtras.unknownTrackNumberPlaceholder
+		guard trackNumberOnDisk != SongMetadatumExtras.unknownTrackNumber else {
+			return SongMetadatumExtras.unknownTrackNumberPlaceholder
 		}
 		return String(trackNumberOnDisk)
 	}
-}
-
-struct SongFileExtras {
-	private init() {}
-
-	static let unknownTitlePlaceholder = "—" // Em dash
-	static let unknownTrackNumber = 0
-	static let unknownTrackNumberPlaceholder = "‒" // Figure dash
 }

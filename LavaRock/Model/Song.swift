@@ -10,7 +10,7 @@ import MediaPlayer
 import OSLog
 
 extension Song: LibraryItem {
-	var libraryTitle: String? { songFile()?.titleOnDisk }
+	var libraryTitle: String? { metadatum()?.titleOnDisk }
 	
 	// Enables `[Song].reindex()`
 }
@@ -18,7 +18,7 @@ extension Song: LibraryItem {
 extension Song {
 	convenience init(
 		atEndOf album: Album,
-		fileID: SongFileID,
+		mpSongID: MPSongID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .song, name: "Create a Song at the bottom")
@@ -27,15 +27,15 @@ extension Song {
 		}
 		
 		self.init(context: context)
-		persistentID = fileID
+		persistentID = mpSongID
 		index = Int64(album.contents?.count ?? 0)
 		container = album
 	}
 	
-	// Use `init(atEndOf:fileID:context:)` if possible. It’s faster.
+	// Use `init(atEndOf:mpSongID:context:)` if possible. It’s faster.
 	convenience init(
 		atBeginningOf album: Album,
-		fileID: SongFileID,
+		mpSongID: MPSongID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .song, name: "Create a Song at the top")
@@ -46,7 +46,7 @@ extension Song {
 		album.songs(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		persistentID = fileID
+		persistentID = mpSongID
 		index = 0
 		container = album
 	}
@@ -86,12 +86,12 @@ extension Song {
 	
 	// MARK: - Media Player
 	
-	final func songFile() -> SongFile? {
+	final func metadatum() -> SongMetadatum? {
 		return mpMediaItem()
 	}
 	
 	// Slow.
-	private func mpMediaItem() -> MPMediaItem? {
+	final func mpMediaItem() -> MPMediaItem? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
