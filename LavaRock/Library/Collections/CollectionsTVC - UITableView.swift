@@ -97,14 +97,6 @@ extension CollectionsTVC {
 		else { return UITableViewCell() }
 		
 		let collection = collectionsViewModel.collectionNonNil(at: indexPath)
-		
-		// “Now playing” indicator
-		let isInPlayer = collectionsViewModel.isInPlayer(anyIndexPath: indexPath)
-		let isPlaying = player?.playbackState == .playing
-		let nowPlayingIndicator = NowPlayingIndicator(
-			isInPlayer: isInPlayer,
-			isPlaying: isPlaying)
-		
 		let mode: CollectionCell.Mode = {
 			switch purpose {
 			case .willOrganizeAlbums(let stickyNote):
@@ -155,7 +147,10 @@ extension CollectionsTVC {
 			with: collection,
 			mode: mode,
 			accessibilityActions: accessibilityActions)
-		cell.applyNowPlayingIndicator(nowPlayingIndicator)
+		cell.applyNowPlayingIndicator(
+			NowPlayingIndicator(
+				isInPlayer: collectionsViewModel.isInPlayer(anyIndexPath: indexPath),
+				isPlaying: player?.playbackState == .playing))
 		
 		return cell
 	}

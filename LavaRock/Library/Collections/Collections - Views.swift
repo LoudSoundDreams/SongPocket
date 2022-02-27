@@ -114,11 +114,9 @@ final class CollectionCell:
 		mode: Mode,
 		accessibilityActions: [UIAccessibilityCustomAction]
 	) {
-		// Title
-		let title: String // Don’t let this be `nil`.
-		= collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
-		
-		titleLabel.text = title
+		titleLabel.text = { () -> String in // Don’t let this be `nil`.
+			return collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
+		}()
 		accessibilityCustomActions = accessibilityActions
 		
 		switch mode {

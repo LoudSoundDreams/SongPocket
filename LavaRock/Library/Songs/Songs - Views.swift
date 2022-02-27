@@ -23,7 +23,7 @@ final class AlbumArtworkCell: UITableViewCell {
 	final func configure(with album: Album) {
 		// Artwork
 		os_signpost(.begin, log: .songsView, name: "Draw artwork image")
-		let artworkImage = album.artworkImage( // Can be nil
+		let artworkImage = album.artworkImage(
 			at: CGSize(
 				width: UIScreen.main.bounds.width,
 				height: UIScreen.main.bounds.width))
@@ -47,17 +47,12 @@ final class AlbumInfoCell: UITableViewCell {
 	}
 	
 	final func configure(with album: Album) {
-		// Album artist
-		let albumArtist: String // Don’t let this be `nil`.
-		= album.albumArtistFormattedOrPlaceholder()
+		albumArtistLabel.text = { () -> String in // Don’t let this be `nil`.
+			return album.albumArtistFormattedOrPlaceholder()
+		}()
+		releaseDateLabel.text = album.releaseDateEstimateFormatted() // Can be `nil`
 		
-		// Release date
-		let releaseDateString = album.releaseDateEstimateFormatted() // Can be `nil`
-		
-		albumArtistLabel.text = albumArtist
-		releaseDateLabel.text = releaseDateString
-		
-		if releaseDateString == nil {
+		if releaseDateLabel.text == nil {
 			// We couldn’t determine the album’s release date.
 			textStack.spacing = 0
 		} else {
@@ -90,8 +85,8 @@ final class SongCell:
 		metadatum: SongMetadatum?,
 		albumRepresentative representative: SongMetadatum?
 	) {
-		let titleText = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
-		let artistText: String? = {
+		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+		artistLabel.text = {
 			let albumArtist = representative?.albumArtistOnDisk // Can be `nil`
 			if
 				let songArtist = metadatum?.artistOnDisk,
@@ -102,7 +97,7 @@ final class SongCell:
 				return nil
 			}
 		}()
-		let trackNumberString: String = { // Don’t let this be `nil`.
+		trackLabel.text = { () -> String in // Don’t let this be `nil`.
 			guard
 				let metadatum = metadatum,
 				let representative = representative
@@ -122,11 +117,7 @@ final class SongCell:
 			}
 		}()
 		
-		titleLabel.text = titleText
-		artistLabel.text = artistText
-		trackLabel.text = trackNumberString
-		
-		if artistText == nil {
+		if artistLabel.text == nil {
 			textStack.spacing = 0
 		} else {
 			textStack.spacing = 4

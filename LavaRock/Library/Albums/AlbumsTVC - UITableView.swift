@@ -98,36 +98,31 @@ extension AlbumsTVC {
 		else { return UITableViewCell() }
 		
 		let album = albumsViewModel.albumNonNil(at: indexPath)
-		
-		// “Now playing” indicator
-		let isInPlayer = isInPlayer(anyIndexPath: indexPath)
-		let isPlaying = player?.playbackState == .playing
-		let nowPlayingIndicator = NowPlayingIndicator(
-			isInPlayer: isInPlayer,
-			isPlaying: isPlaying)
-		
-		let mode: AlbumCell.Mode = {
-			switch purpose {
-			case .organizingAlbums(let clipboard):
-				if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
-					return .modalTinted
-				} else {
-					return .modal
-				}
-			case .movingAlbums(let clipboard):
-				if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
-					return .modalTinted
-				} else {
-					return .modal
-				}
-			case .browsing:
-				return .normal
-			}
-		}()
 		cell.configure(
 			with: album,
-			mode: mode)
-		cell.applyNowPlayingIndicator(nowPlayingIndicator)
+			mode: {
+				switch purpose {
+				case .organizingAlbums(let clipboard):
+					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
+						return .modalTinted
+					} else {
+						return .modal
+					}
+				case .movingAlbums(let clipboard):
+					if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
+						return .modalTinted
+					} else {
+						return .modal
+					}
+				case .browsing:
+					return .normal
+				}
+			}()
+		)
+		cell.applyNowPlayingIndicator(
+			NowPlayingIndicator(
+				isInPlayer: isInPlayer(anyIndexPath: indexPath),
+				isPlaying: player?.playbackState == .playing))
 		
 		return cell
 	}

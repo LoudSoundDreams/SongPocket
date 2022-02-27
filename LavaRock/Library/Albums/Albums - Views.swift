@@ -51,29 +51,21 @@ final class AlbumCell:
 		with album: Album,
 		mode: Mode
 	) {
-		// Artwork
-		let maxWidthAndHeight = artworkImageView.bounds.width
-		os_signpost(.begin, log: .albumsView, name: "Draw artwork image")
-		let artworkImage = album.artworkImage( // Can be `nil`
-			at: CGSize(
-				width: maxWidthAndHeight,
-				height: maxWidthAndHeight))
-		os_signpost(.end, log: .albumsView, name: "Draw artwork image")
+		let title: String = album.titleFormattedOrPlaceholder() // Don’t let this be `nil`.
 		
-		// Title
-		let title: String // Don’t let this be `nil`.
-		= album.titleFormattedOrPlaceholder()
-		
-		// Release date
-		let releaseDateString = album.releaseDateEstimateFormatted() // Can be `nil`
-		
-		os_signpost(.begin, log: .albumsView, name: "Set artwork image")
-		artworkImageView.image = artworkImage
-		os_signpost(.end, log: .albumsView, name: "Set artwork image")
+		os_signpost(.begin, log: .albumsView, name: "Draw and set artwork image")
+		artworkImageView.image = {
+			let maxWidthAndHeight = artworkImageView.bounds.width
+			return album.artworkImage(
+				at: CGSize(
+					width: maxWidthAndHeight,
+					height: maxWidthAndHeight))
+		}()
+		os_signpost(.end, log: .albumsView, name: "Draw and set artwork image")
 		titleLabel.text = title
-		releaseDateLabel.text = releaseDateString
+		releaseDateLabel.text = album.releaseDateEstimateFormatted()
 		 
-		if releaseDateString == nil {
+		if releaseDateLabel.text == nil {
 			// We couldn’t determine the album’s release date.
 			textStack.spacing = 0
 		} else {
