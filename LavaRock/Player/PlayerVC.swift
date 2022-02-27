@@ -23,6 +23,8 @@ final class PlayerVC: UIViewController {
 		queueTable.dataSource = self
 		queueTable.delegate = self
 		
+		SongQueue.tableView = queueTable
+		
 		beginReflectingPlaybackState()
 		
 		toolbarItems = playbackToolbarButtons
@@ -48,28 +50,21 @@ extension PlayerVC: UITableViewDataSource {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return 10
+		return SongQueue.songs.count
 	}
 	
 	final func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		switch indexPath.row {
-		case 5:
-			return tableView.dequeueReusableCell(withIdentifier: "Then", for: indexPath)
-		case 9:
-			return tableView.dequeueReusableCell(withIdentifier: "Last", for: indexPath)
-		default:
-			break
-		}
-		
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Song in Queue", for: indexPath)
 		
 		var content = UIListContentConfiguration.cell()
-		content.image = UIImage(named: "AppIcon")
-		content.text = "Song Title"
-		content.secondaryText = "Artist Name"
+		let metadatum = SongQueue.songs[indexPath.row].metadatum()
+		content.image = metadatum?.artworkImage(
+			at: CGSize(width: 5, height: 5))
+		content.text = metadatum?.titleOnDisk
+		content.secondaryText = metadatum?.artistOnDisk
 		content.secondaryTextProperties.color = .secondaryLabel
 		cell.contentConfiguration = content
 		

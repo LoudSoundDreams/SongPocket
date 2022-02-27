@@ -33,6 +33,7 @@
 		073FB55927588B81000FAF5F /* Options.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* Options.storyboard */; };
 		073FB56027588BC5000FAF5F /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB56227588BC5000FAF5F /* Player.storyboard */; };
 		07499A8627AB72CF00A2D712 /* protocol PlaybackToolbarManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07499A8527AB72CF00A2D712 /* protocol PlaybackToolbarManaging.swift */; };
+		074AB85E27CAD9C3007B63D2 /* SongQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074AB85D27CAD9C3007B63D2 /* SongQueue.swift */; };
 		0750C01726D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0750C01626D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift */; };
 		0751DE3926C5C6E800AA14DA /* protocol LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */; };
 		075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LocalizedString.swift */; };
@@ -155,6 +156,7 @@
 		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Options.storyboard; sourceTree = "<group>"; };
 		073FB56127588BC5000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Player.storyboard; sourceTree = "<group>"; };
 		07499A8527AB72CF00A2D712 /* protocol PlaybackToolbarManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol PlaybackToolbarManaging.swift"; sourceTree = "<group>"; };
+		074AB85D27CAD9C3007B63D2 /* SongQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongQueue.swift; sourceTree = "<group>"; };
 		0750C01626D303BB00B3E899 /* CollectionsViewModel + NowPlayingDetermining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsViewModel + NowPlayingDetermining.swift"; sourceTree = "<group>"; };
 		0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryViewModel.swift"; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				07DF65D027766B7B003B2EA3 /* MusicLibraryManager */,
 				07267A1F25537C5800C914A3 /* Player.swift */,
 				07CD864E27CAA54600286E6A /* protocol PlayerReflecting.swift */,
+				074AB85D27CAD9C3007B63D2 /* SongQueue.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -749,6 +752,7 @@
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */,
 				0708201D275BEE1C00F48D13 /* Lighting.swift in Sources */,
+				074AB85E27CAD9C3007B63D2 /* SongQueue.swift in Sources */,
 				07CD864D27CAA3CC00286E6A /* Weak.swift in Sources */,
 				07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */,
 				07E0BBF92765678F0010117E /* UIAlertController.swift in Sources */,

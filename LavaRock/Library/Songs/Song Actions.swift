@@ -79,18 +79,26 @@ extension SongsTVC {
 			let player = player
 		else { return }
 		
-		let chosenMediaItems: [MPMediaItem] = {
-			let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
-				.compactMap { $0 as? Song }
-			os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
-			defer {
-				os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
-			}
-			return chosenSongs.compactMap { $0.mpMediaItem() }
-		}()
-		let mediaItemCollection = MPMediaItemCollection(items: chosenMediaItems)
-		
-		player.setQueue(with: mediaItemCollection)
+		if Enabling.playerUI {
+			SongQueue.set(
+				songs: viewModel.itemsInGroup(startingAt: selectedIndexPath)
+					.compactMap { $0 as? Song },
+				thenApplyTo: player)
+		} else {
+			player.setQueue(
+				with: MPMediaItemCollection(
+					items: {
+						let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
+							.compactMap { $0 as? Song }
+						os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
+						defer {
+							os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
+						}
+						return chosenSongs.compactMap { $0.mpMediaItem() }
+					}()
+				)
+			)
+		}
 		
 		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
 		player.repeatMode = .none
