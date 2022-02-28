@@ -99,6 +99,12 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JmH-0T-GLg">
+                                <rect key="frame" x="20" y="786" width="23.5" height="19"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="repeat.1" catalog="system"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Npg-CN-dfQ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -107,6 +113,8 @@
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="leading" secondItem="Npg-CN-dfQ" secondAttribute="leading" id="5Js-ge-qkZ"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="top" secondItem="Npg-CN-dfQ" secondAttribute="top" id="PRH-9Q-W4C"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="height" secondItem="Npg-CN-dfQ" secondAttribute="height" multiplier="0.5" id="fsx-Xr-KI2"/>
+                            <constraint firstItem="JmH-0T-GLg" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" constant="-8" id="m66-w6-p8N"/>
+                            <constraint firstItem="JmH-0T-GLg" firstAttribute="leading" secondItem="9gW-kt-mSP" secondAttribute="leadingMargin" id="w26-ar-c7k"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Player" id="4UM-VT-l36">
