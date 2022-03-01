@@ -409,14 +409,7 @@ extension LibraryViewModel {
 			return sorted.map { $0.song }
 			
 		case .random:
-			guard items.count >= 2 else {
-				return items
-			}
-			var shuffled: [NSManagedObject]
-			repeat {
-				shuffled = items.shuffled()
-			} while shuffled == items
-			return shuffled
+			return items.inAnyOtherOrder()
 			
 		case .reverse:
 			return items.reversed()

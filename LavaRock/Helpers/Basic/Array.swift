@@ -10,6 +10,19 @@ import UIKit
 extension Array {
 	// MARK: - Ordering
 	
+	func inAnyOtherOrder() -> Self
+	where Element: Equatable
+	{
+		guard count >= 2 else {
+			return self
+		}
+		var result: Self
+		repeat {
+			result = shuffled()
+		} while result == self
+		return result
+	}
+	
 	func differenceInferringMoves(
 		toMatch newArray: [Element],
 		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
