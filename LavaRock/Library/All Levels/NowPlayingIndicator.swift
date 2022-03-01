@@ -8,14 +8,14 @@
 import UIKit
 
 protocol NowPlayingIndicating {
+	var spacerSpeakerImageView: UIImageView! { get set }
 	var speakerImageView: UIImageView! { get set }
 	var accessibilityValue: String? { get set }
-	
-	mutating func applyNowPlayingIndicator(_ indicator: NowPlayingIndicator)
 }
 
 extension NowPlayingIndicating {
 	mutating func applyNowPlayingIndicator(_ indicator: NowPlayingIndicator) {
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		
 		speakerImageView.image = indicator.image

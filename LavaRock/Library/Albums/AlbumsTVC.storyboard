@@ -145,6 +145,7 @@
                                     <outlet property="artworkImageView" destination="cCZ-Du-afk" id="hG9-Zc-xKc"/>
                                     <outlet property="mainStack" destination="kNY-CW-ua6" id="1Fd-xl-tyE"/>
                                     <outlet property="releaseDateLabel" destination="Odq-7C-PJs" id="Djy-aJ-kFm"/>
+                                    <outlet property="spacerSpeakerImageView" destination="XXR-SF-A9b" id="ZFa-FG-nSd"/>
                                     <outlet property="speakerImageView" destination="hkc-qD-DmK" id="zYx-tT-hRS"/>
                                     <outlet property="textStack" destination="rpv-eB-T27" id="RwD-OZ-pAI"/>
                                     <outlet property="titleLabel" destination="CCX-T2-D40" id="rwi-B7-0P5"/>

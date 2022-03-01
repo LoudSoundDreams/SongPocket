@@ -100,8 +100,11 @@ final class CollectionCell:
 		case modalDisabled
 	}
 	
-	@IBOutlet private var titleLabel: UILabel!
+	// `NowPlayingIndicating`
+	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
+	
+	@IBOutlet private var titleLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()

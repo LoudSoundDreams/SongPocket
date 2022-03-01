@@ -98,6 +98,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="spacerSpeakerImageView" destination="ZA8-cG-C8X" id="hJk-4n-kZQ"/>
                                     <outlet property="speakerImageView" destination="uca-y1-fcm" id="r6D-eI-mDX"/>
                                     <outlet property="titleLabel" destination="SFb-dV-xDe" id="IjH-9w-2tc"/>
                                     <segue destination="6Yx-HL-vln" kind="show" identifier="Open Collection" id="Egm-ag-jV8"/>

@@ -30,12 +30,15 @@ final class AlbumCell:
 		case modalTinted
 	}
 	
+	// `NowPlayingIndicating`
+	@IBOutlet var spacerSpeakerImageView: UIImageView!
+	@IBOutlet var speakerImageView: UIImageView!
+	
 	@IBOutlet private var mainStack: UIStackView!
 	@IBOutlet private var artworkImageView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var releaseDateLabel: UILabel!
-	@IBOutlet var speakerImageView: UIImageView!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()

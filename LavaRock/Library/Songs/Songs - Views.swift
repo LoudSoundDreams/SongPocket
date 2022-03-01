@@ -151,10 +151,13 @@ final class SongCell:
 	TintedSelectedCell,
 	CellHavingTransparentBackground
 {
+	// `NowPlayingIndicating`
+	@IBOutlet var spacerSpeakerImageView: UIImageView!
+	@IBOutlet var speakerImageView: UIImageView!
+	
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var artistLabel: UILabel!
-	@IBOutlet var speakerImageView: UIImageView!
 	@IBOutlet private var numberLabel: UILabel!
 	
 	final override func awakeFromNib() {
