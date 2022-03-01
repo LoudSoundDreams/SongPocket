@@ -134,9 +134,9 @@
                                 <connections>
                                     <outlet property="artistLabel" destination="4ZB-Qq-JY2" id="0Ih-29-wU1"/>
                                     <outlet property="nowPlayingImageView" destination="WdO-9k-h95" id="oTp-dr-qgV"/>
+                                    <outlet property="numberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                     <outlet property="textStack" destination="Ngy-rH-NbP" id="32w-x2-ya1"/>
                                     <outlet property="titleLabel" destination="DAu-f6-M3i" id="RBU-KW-LbW"/>
-                                    <outlet property="trackLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Songs Placeholder" rowHeight="100" id="X3n-qN-qq8">

@@ -69,14 +69,14 @@ final class SongCell:
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var artistLabel: UILabel!
 	@IBOutlet var nowPlayingImageView: UIImageView!
-	@IBOutlet private var trackLabel: UILabel!
+	@IBOutlet private var numberLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		setTransparentBackground()
 		
-		trackLabel.font = .bodyWithMonospacedDigits(compatibleWith: traitCollection)
+		numberLabel.font = .bodyWithMonospacedDigits(compatibleWith: traitCollection)
 		
 		accessibilityTraits.formUnion(.button)
 	}
@@ -97,7 +97,7 @@ final class SongCell:
 				return nil
 			}
 		}()
-		trackLabel.text = { () -> String in // Don’t let this be `nil`.
+		numberLabel.text = { () -> String in // Don’t let this be `nil`.
 			guard
 				let metadatum = metadatum,
 				let representative = representative
