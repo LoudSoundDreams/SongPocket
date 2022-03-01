@@ -85,7 +85,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="nowPlayingImageView" destination="ZA8-cG-C8X" id="OTE-6h-7FT"/>
+                                    <outlet property="speakerImageView" destination="ZA8-cG-C8X" id="IyP-tt-yur"/>
                                     <outlet property="titleLabel" destination="SFb-dV-xDe" id="IjH-9w-2tc"/>
                                     <segue destination="6Yx-HL-vln" kind="show" identifier="Open Collection" id="Egm-ag-jV8"/>
                                 </connections>

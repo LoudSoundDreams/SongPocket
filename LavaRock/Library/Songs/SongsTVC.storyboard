@@ -133,8 +133,8 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artistLabel" destination="4ZB-Qq-JY2" id="0Ih-29-wU1"/>
-                                    <outlet property="nowPlayingImageView" destination="WdO-9k-h95" id="oTp-dr-qgV"/>
                                     <outlet property="numberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
+                                    <outlet property="speakerImageView" destination="WdO-9k-h95" id="ahR-1N-mnd"/>
                                     <outlet property="textStack" destination="Ngy-rH-NbP" id="32w-x2-ya1"/>
                                     <outlet property="titleLabel" destination="DAu-f6-M3i" id="RBU-KW-LbW"/>
                                 </connections>

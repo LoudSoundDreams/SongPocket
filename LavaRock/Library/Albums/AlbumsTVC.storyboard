@@ -133,8 +133,8 @@
                                 <connections>
                                     <outlet property="artworkImageView" destination="cCZ-Du-afk" id="hG9-Zc-xKc"/>
                                     <outlet property="mainStack" destination="kNY-CW-ua6" id="1Fd-xl-tyE"/>
-                                    <outlet property="nowPlayingImageView" destination="XXR-SF-A9b" id="6L2-hD-meT"/>
                                     <outlet property="releaseDateLabel" destination="Odq-7C-PJs" id="Djy-aJ-kFm"/>
+                                    <outlet property="speakerImageView" destination="XXR-SF-A9b" id="EGA-1o-C8v"/>
                                     <outlet property="textStack" destination="rpv-eB-T27" id="RwD-OZ-pAI"/>
                                     <outlet property="titleLabel" destination="CCX-T2-D40" id="rwi-B7-0P5"/>
                                     <segue destination="v3s-iD-Mt5" kind="show" identifier="" id="vdq-GE-p3h"/>

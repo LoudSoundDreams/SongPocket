@@ -68,7 +68,7 @@ final class SongCell:
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var artistLabel: UILabel!
-	@IBOutlet var nowPlayingImageView: UIImageView!
+	@IBOutlet var speakerImageView: UIImageView!
 	@IBOutlet private var numberLabel: UILabel!
 	
 	final override func awakeFromNib() {

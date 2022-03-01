@@ -101,7 +101,7 @@ final class CollectionCell:
 	}
 	
 	@IBOutlet private var titleLabel: UILabel!
-	@IBOutlet var nowPlayingImageView: UIImageView!
+	@IBOutlet var speakerImageView: UIImageView!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()

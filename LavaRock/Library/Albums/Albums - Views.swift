@@ -35,7 +35,7 @@ final class AlbumCell:
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var releaseDateLabel: UILabel!
-	@IBOutlet var nowPlayingImageView: UIImageView!
+	@IBOutlet var speakerImageView: UIImageView!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
