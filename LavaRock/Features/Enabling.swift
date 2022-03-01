@@ -13,7 +13,7 @@ struct Enabling {
 	
 	static let playerUI = 1 == 0
 	
-	static let playAlbumShuffleAlbum = 1 == 0
+	static let wholeAlbumButtons = 1 == 0
 	
 	static let swiftUIOptions = 1 == 0
 }

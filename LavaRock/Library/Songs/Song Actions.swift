@@ -62,7 +62,7 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		let appendSong = UIAlertAction(
-			title: Enabling.playAlbumShuffleAlbum
+			title: Enabling.wholeAlbumButtons
 			? "Play Last" // TO DO: Localize
 			: LocalizedString.queueSong,
 			style: .default
@@ -80,7 +80,7 @@ extension SongsTVC {
 			message: nil,
 			preferredStyle: .actionSheet)
 		
-		if Enabling.playAlbumShuffleAlbum {
+		if Enabling.wholeAlbumButtons {
 			actionSheet.addAction(playSong)
 			actionSheet.addAction(prependSong)
 			actionSheet.addAction(appendSong)

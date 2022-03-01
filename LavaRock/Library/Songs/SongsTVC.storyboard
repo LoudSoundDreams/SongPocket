@@ -43,8 +43,155 @@
                                     <outlet property="artworkImageView" destination="AJa-zb-mTO" id="K6Z-Cx-6ka"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info" id="UcJ-Is-cwz" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info with Buttons" id="4ur-1c-aPI" customClass="AlbumInfoCell_withWholeAlbumButtons" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="420.00000953674316" width="375" height="62.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4ur-1c-aPI" id="Seo-n9-OQY">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="62.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Dqf-I2-MGS">
+                                            <rect key="frame" x="16" y="11.333333333333332" width="210.66666666666666" height="38.333333333333343"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Placeholder Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4g-aC-X53">
+                                                    <rect key="frame" x="0.0" y="0.0" width="210.66666666666666" height="17"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Oct 23, 2001" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l34-Is-rNp">
+                                                    <rect key="frame" x="0.0" y="25" width="68" height="13.333333333333336"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G3y-Ag-tO8">
+                                            <rect key="frame" x="262.33333333333331" y="15.000000000000002" width="44.333333333333314" height="30.666666666666671"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="tinted" image="play.fill" catalog="system">
+                                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" scale="medium">
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                </preferredSymbolConfiguration>
+                                            </buttonConfiguration>
+                                            <connections>
+                                                <action selector="playAlbum:" destination="4ur-1c-aPI" eventType="touchUpInside" id="u5u-jo-Jcp"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8xi-9F-Use">
+                                            <rect key="frame" x="314.66666666666669" y="15.000000000000002" width="44.333333333333314" height="30.666666666666671"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="tinted" image="shuffle" catalog="system">
+                                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" scale="medium">
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                </preferredSymbolConfiguration>
+                                            </buttonConfiguration>
+                                            <connections>
+                                                <action selector="shuffleAlbum:" destination="4ur-1c-aPI" eventType="touchUpInside" id="YzK-hS-ju4"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="G3y-Ag-tO8" firstAttribute="centerY" secondItem="8xi-9F-Use" secondAttribute="centerY" id="3jI-BN-nGF"/>
+                                        <constraint firstItem="8xi-9F-Use" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Seo-n9-OQY" secondAttribute="topMargin" id="40l-uN-D83"/>
+                                        <constraint firstItem="G3y-Ag-tO8" firstAttribute="width" secondItem="8xi-9F-Use" secondAttribute="width" id="GV8-Gc-ryh"/>
+                                        <constraint firstItem="G3y-Ag-tO8" firstAttribute="height" secondItem="8xi-9F-Use" secondAttribute="height" id="KQ2-mK-Yfd"/>
+                                        <constraint firstItem="8xi-9F-Use" firstAttribute="trailing" secondItem="Seo-n9-OQY" secondAttribute="trailingMargin" id="MY0-rv-nIv"/>
+                                        <constraint firstItem="Dqf-I2-MGS" firstAttribute="centerY" secondItem="Seo-n9-OQY" secondAttribute="centerY" constant="-1" id="Ppw-HE-OHv"/>
+                                        <constraint firstItem="8xi-9F-Use" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Seo-n9-OQY" secondAttribute="bottomMargin" id="Wi5-Zp-K89"/>
+                                        <constraint firstItem="Dqf-I2-MGS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Seo-n9-OQY" secondAttribute="topMargin" id="XZ9-O0-obK"/>
+                                        <constraint firstItem="8xi-9F-Use" firstAttribute="leading" secondItem="G3y-Ag-tO8" secondAttribute="trailing" constant="8" symbolic="YES" id="YL4-Op-Ffc"/>
+                                        <constraint firstItem="Dqf-I2-MGS" firstAttribute="leading" secondItem="Seo-n9-OQY" secondAttribute="leadingMargin" id="idj-Rw-mj3"/>
+                                        <constraint firstItem="8xi-9F-Use" firstAttribute="centerY" secondItem="Dqf-I2-MGS" secondAttribute="centerY" id="j6M-eI-yG2"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="albumArtistLabel" destination="s4g-aC-X53" id="oql-mI-1Yx"/>
+                                    <outlet property="playAlbumButton" destination="G3y-Ag-tO8" id="wCY-kt-SRq"/>
+                                    <outlet property="releaseDateLabel" destination="l34-Is-rNp" id="M9F-IM-DfM"/>
+                                    <outlet property="shuffleAlbumButton" destination="8xi-9F-Use" id="SWs-9Z-5i8"/>
+                                    <outlet property="textStack" destination="Dqf-I2-MGS" id="yKk-TW-6hP"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info with Buttons, Split" id="c0l-gF-WqF" customClass="AlbumInfoCell_withWholeAlbumButtons" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="482.66667747497559" width="375" height="62.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c0l-gF-WqF" id="U3f-q9-x99">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="62.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Sbp-MG-Cso">
+                                            <rect key="frame" x="16" y="11.333333333333332" width="343" height="38.333333333333343"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xv6-ns-eRV">
+                                                    <rect key="frame" x="0.0" y="3.6666666666666661" width="44.333333333333336" height="30.666666666666671"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="tinted" image="play.fill" catalog="system">
+                                                        <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" scale="medium">
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        </preferredSymbolConfiguration>
+                                                    </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="playAlbum:" destination="c0l-gF-WqF" eventType="touchUpInside" id="kqQ-8r-UEb"/>
+                                                    </connections>
+                                                </button>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="fu7-E2-0N0">
+                                                    <rect key="frame" x="66.333333333333329" y="0.0" width="210.66666666666669" height="38.333333333333336"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Placeholder Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0cM-pQ-8e0">
+                                                            <rect key="frame" x="0.0" y="0.0" width="210.66666666666666" height="17"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Oct 23, 2001" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pj7-io-6qh">
+                                                            <rect key="frame" x="71.333333333333329" y="25" width="67.999999999999986" height="13.333333333333336"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cO-ed-Xgi">
+                                                    <rect key="frame" x="298.66666666666669" y="3.6666666666666661" width="44.333333333333314" height="30.666666666666671"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="tinted" image="shuffle" catalog="system">
+                                                        <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" scale="medium">
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        </preferredSymbolConfiguration>
+                                                    </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="shuffleAlbum:" destination="c0l-gF-WqF" eventType="touchUpInside" id="nT8-8A-dws"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Xv6-ns-eRV" firstAttribute="width" secondItem="7cO-ed-Xgi" secondAttribute="width" id="36r-2j-adC"/>
+                                                <constraint firstItem="7cO-ed-Xgi" firstAttribute="height" secondItem="Xv6-ns-eRV" secondAttribute="height" id="WxF-UQ-3Nu"/>
+                                            </constraints>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Sbp-MG-Cso" firstAttribute="top" relation="greaterThanOrEqual" secondItem="U3f-q9-x99" secondAttribute="topMargin" id="6YY-Sm-9dr"/>
+                                        <constraint firstItem="Sbp-MG-Cso" firstAttribute="centerY" secondItem="U3f-q9-x99" secondAttribute="centerY" constant="-1" id="GR0-R4-6tY"/>
+                                        <constraint firstItem="Sbp-MG-Cso" firstAttribute="leading" secondItem="U3f-q9-x99" secondAttribute="leadingMargin" id="NbV-e1-3NY"/>
+                                        <constraint firstItem="Sbp-MG-Cso" firstAttribute="trailing" secondItem="U3f-q9-x99" secondAttribute="trailingMargin" id="g7s-XC-fyV"/>
+                                        <constraint firstItem="Sbp-MG-Cso" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="U3f-q9-x99" secondAttribute="bottomMargin" id="jYC-SO-mXI"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="albumArtistLabel" destination="0cM-pQ-8e0" id="45N-pe-s9J"/>
+                                    <outlet property="playAlbumButton" destination="Xv6-ns-eRV" id="QpY-hj-Q7w"/>
+                                    <outlet property="releaseDateLabel" destination="Pj7-io-6qh" id="FxW-XR-GV6"/>
+                                    <outlet property="shuffleAlbumButton" destination="7cO-ed-Xgi" id="ysj-2q-Q7c"/>
+                                    <outlet property="textStack" destination="fu7-E2-0N0" id="A7I-Q2-Ihh"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info" id="UcJ-Is-cwz" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="545.33334541320801" width="375" height="62.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UcJ-Is-cwz" id="IYe-t7-e8W">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="62.666667938232422"/>
@@ -83,7 +230,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song" id="J5T-0G-4uX" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="482.66667747497559" width="375" height="60.666667938232422"/>
+                                <rect key="frame" x="0.0" y="608.00001335144043" width="375" height="60.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60.666667938232422"/>
@@ -149,7 +296,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Songs Placeholder" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="543.33334541320801" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="668.66668128967285" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
@@ -185,10 +332,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hsb-JF-X0J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="gme-PH-Cgo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="8373.9130434782619" y="192.85714285714286"/>
+            <point key="canvasLocation" x="8373.6000000000004" y="192.85714285714286"/>
         </scene>
     </scenes>
     <resources>
+        <image name="play.fill" catalog="system" width="116" height="128"/>
+        <image name="shuffle" catalog="system" width="128" height="95"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>
         <systemColor name="placeholderTextColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MediaPlayer
 import OSLog
 
 final class AlbumArtworkCell: UITableViewCell {
@@ -32,6 +33,91 @@ final class AlbumArtworkCell: UITableViewCell {
 		os_signpost(.begin, log: .songsView, name: "Set artwork image")
 		artworkImageView.image = artworkImage
 		os_signpost(.end, log: .songsView, name: "Set artwork image")
+	}
+}
+
+final class AlbumInfoCell_withWholeAlbumButtons: UITableViewCell {
+	@IBOutlet private var textStack: UIStackView!
+	@IBOutlet private var albumArtistLabel: UILabel!
+	@IBOutlet private var releaseDateLabel: UILabel!
+	@IBOutlet var playAlbumButton: UIButton! // TO DO: Add accessibility label
+	@IBOutlet var shuffleAlbumButton: UIButton! // TO DO: Add accessibility label
+	
+	final var album: Album? = nil {
+		didSet {
+			guard let album = album else {
+				playAlbumButton.isEnabled = false
+				shuffleAlbumButton.isEnabled = false
+				return
+			}
+			
+			albumArtistLabel.text = { () -> String in // Don’t let this be `nil`.
+				return album.albumArtistFormattedOrPlaceholder()
+			}()
+			releaseDateLabel.text = album.releaseDateEstimateFormatted() // Can be `nil`
+			
+			if releaseDateLabel.text == nil {
+				// We couldn’t determine the album’s release date.
+				textStack.spacing = 0
+			} else {
+				textStack.spacing = UIStackView.spacingUseSystem
+			}
+			
+			playAlbumButton.isEnabled = true
+			shuffleAlbumButton.isEnabled = (album.contents?.count ?? 0) >= 2
+		}
+	}
+	
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		playAlbumButton.maximumContentSizeCategory = .extraExtraExtraLarge
+		shuffleAlbumButton.maximumContentSizeCategory = .extraExtraExtraLarge
+		
+		accessibilityUserInputLabels = [""]
+	}
+	
+	@IBAction func playAlbum(_ sender: UIButton) {
+		guard
+			let album = album,
+			let player = Player.shared.player
+		else { return }
+		
+		player.setQueue(
+			with: MPMediaItemCollection(
+				items: {
+					let songs = album.songs(sorted: true)
+					return songs.compactMap { $0.mpMediaItem() }
+				}()
+			)
+		)
+		
+		player.repeatMode = .none
+		player.shuffleMode = .off
+		
+		player.play()
+	}
+	
+	@IBAction func shuffleAlbum(_ sender: UIButton) {
+		guard
+			let album = album,
+			let player = Player.shared.player
+		else { return }
+		
+		player.setQueue(
+			with: MPMediaItemCollection(
+				items: {
+					let songs = album.songs(sorted: true)
+					let mediaItems = songs.compactMap { $0.mpMediaItem() }
+					return mediaItems.inAnyOtherOrder()
+				}()
+			)
+		)
+		
+		player.repeatMode = .none
+		player.shuffleMode = .off
+		
+		player.play()
 	}
 }
 
