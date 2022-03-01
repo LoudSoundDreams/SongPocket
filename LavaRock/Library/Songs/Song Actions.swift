@@ -21,39 +21,58 @@ extension SongsTVC {
 			tableView.deselectAllRows(animated: true)
 		}
 		
-		let playRestOfAlbumAction = UIAlertAction(
+		let playRestOfAlbum = UIAlertAction(
 			title: LocalizedString.playRestOfAlbum,
 			style: .default
 		) { _ in
 			self.playAlbumStartingAtSelectedSong()
 			deselectSelectedSong()
 		}
-//		playAlbumStartingAtSelectedSongAction.accessibilityTraits = .startsMediaSession // I want to silence VoiceOver after you choose this action, but this line of code doesn’t do it.
-		let enqueueRestOfAlbumAction = UIAlertAction(
-			title: LocalizedString.queueRestOfAlbum,
+		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
+		let appendRestOfAlbum: UIAlertAction = {
+			let result = UIAlertAction(
+				title: LocalizedString.queueRestOfAlbum,
+				style: .default
+			) { _ in
+				self.appendAlbumStartingAtSelectedSong()
+				deselectSelectedSong()
+			}
+			if
+				let selectedIndexPath = tableView.indexPathForSelectedRow,
+				let lastSongInGroup = viewModel.group(forSection: selectedIndexPath.section).items.last,
+				song == lastSongInGroup
+			{
+				result.isEnabled = false
+			}
+			return result
+		}()
+		
+		let playSong = UIAlertAction(
+			title: "Play Song", // TO DO: Localize
 			style: .default
 		) { _ in
-			self.enqueueAlbumStartingAtSelectedSong()
+			self.playSelectedSong()
 			deselectSelectedSong()
 		}
-		let enqueueSongAction = UIAlertAction(
-			title: LocalizedString.queueSong,
+		let prependSong = UIAlertAction(
+			title: "Play Next", // TO DO: Localize
 			style: .default
 		) { _ in
-			self.enqueueSelectedSong()
+			self.prependSelectedSong()
 			deselectSelectedSong()
 		}
-		let cancelAction = UIAlertAction.cancel { _ in
+		let appendSong = UIAlertAction(
+			title: Enabling.playAlbumShuffleAlbum
+			? "Play Last" // TO DO: Localize
+			: LocalizedString.queueSong,
+			style: .default
+		) { _ in
+			self.appendSelectedSong()
 			deselectSelectedSong()
 		}
 		
-		// Disable the actions that we shouldn’t offer for the last `Song` in the section.
-		if
-			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let lastSongInGroup = viewModel.group(forSection: selectedIndexPath.section).items.last,
-			song == lastSongInGroup
-		{
-			enqueueRestOfAlbumAction.isEnabled = false
+		let cancel = UIAlertAction.cancel { _ in
+			deselectSelectedSong()
 		}
 		
 		let actionSheet = UIAlertController(
@@ -61,10 +80,16 @@ extension SongsTVC {
 			message: nil,
 			preferredStyle: .actionSheet)
 		
-		actionSheet.addAction(playRestOfAlbumAction)
-		actionSheet.addAction(enqueueRestOfAlbumAction)
-		actionSheet.addAction(enqueueSongAction)
-		actionSheet.addAction(cancelAction)
+		if Enabling.playAlbumShuffleAlbum {
+			actionSheet.addAction(playSong)
+			actionSheet.addAction(prependSong)
+			actionSheet.addAction(appendSong)
+		} else {
+			actionSheet.addAction(playRestOfAlbum)
+			actionSheet.addAction(appendRestOfAlbum)
+			actionSheet.addAction(appendSong)
+		}
+		actionSheet.addAction(cancel)
 		
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		
@@ -107,7 +132,7 @@ extension SongsTVC {
 		player.play() // Calls `prepareToPlay` automatically
 	}
 	
-	private func enqueueAlbumStartingAtSelectedSong() {
+	private func appendAlbumStartingAtSelectedSong() {
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let player = player
@@ -148,7 +173,46 @@ extension SongsTVC {
 		}
 	}
 	
-	private func enqueueSelectedSong() {
+	private func playSelectedSong() {
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
+			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
+			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem,
+			let player = player
+		else { return }
+		
+		player.setQueue(
+			with: MPMediaItemCollection(
+				items: [selectedMediaItem]
+			)
+		)
+		
+		player.repeatMode = .none
+		player.shuffleMode = .off
+		
+		player.play()
+	}
+	
+	private func prependSelectedSong() {
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
+			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
+			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem,
+			let player = player
+		else { return }
+		
+		player.repeatMode = .none
+		
+		player.prepend(
+			MPMusicPlayerMediaItemQueueDescriptor(
+				itemCollection: MPMediaItemCollection(
+					items: [selectedMediaItem]
+				)
+			)
+		)
+	}
+	
+	private func appendSelectedSong() {
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
