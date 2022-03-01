@@ -16,6 +16,8 @@ protocol NowPlayingIndicating {
 
 extension NowPlayingIndicating {
 	mutating func applyNowPlayingIndicator(_ indicator: NowPlayingIndicator) {
+		speakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		
 		speakerImageView.image = indicator.image
 		accessibilityValue = indicator.accessibilityLabel // For some reason, `UITableViewCell.accessibilityLabel` is `nil` at this point.
 	}
