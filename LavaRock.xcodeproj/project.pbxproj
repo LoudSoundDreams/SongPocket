@@ -64,6 +64,7 @@
 		07865B252566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07865B242566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift */; };
 		0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0787CB0927A376400068C2E5 /* UIViewController.swift */; };
 		078FDD0F2638872100779AF2 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FDD0E2638872100779AF2 /* Array.swift */; };
+		07934CF827CDBE04002B2444 /* SongsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF727CDBE04002B2444 /* SongsTVC.storyboard */; };
 		07942DA1271CAD350030F14A /* CollectionsViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07942DA0271CAD350030F14A /* CollectionsViewState.swift */; };
 		079B2C9524E227BF00A949FA /* MusicLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */; };
 		079D73252768514100301327 /* UIImage.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079D73242768514100301327 /* UIImage.Configuration.swift */; };
@@ -194,6 +195,7 @@
 		07865B242566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + NowPlayingDetermining.swift"; sourceTree = "<group>"; };
 		0787CB0927A376400068C2E5 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		078FDD0E2638872100779AF2 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		07934CF727CDBE04002B2444 /* SongsTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SongsTVC.storyboard; sourceTree = "<group>"; };
 		07942DA0271CAD350030F14A /* CollectionsViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsViewState.swift; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicLibraryManager.swift; sourceTree = "<group>"; };
 		079D73242768514100301327 /* UIImage.Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.Configuration.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 			children = (
 				07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */,
 				07EC01EB26C895CB00954E08 /* SongsViewModel.swift */,
+				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
 				071701FE250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift */,
 				07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */,
@@ -666,6 +669,7 @@
 				073FB55927588B81000FAF5F /* Options.storyboard in Resources */,
 				075218AD257C4C0C0077AE9B /* Main.storyboard in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
+				07934CF827CDBE04002B2444 /* SongsTVC.storyboard in Resources */,
 				073FB56027588BC5000FAF5F /* Player.storyboard in Resources */,
 				07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */,
 			);
