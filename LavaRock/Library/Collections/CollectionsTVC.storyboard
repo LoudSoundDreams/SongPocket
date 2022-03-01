@@ -58,40 +58,47 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Collection" editingAccessoryType="detailButton" id="sQR-13-z5i" customClass="CollectionCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="175.33333396911621" width="375" height="43.333332061767578"/>
+                                <rect key="frame" x="0.0" y="175.33333396911621" width="375" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sQR-13-z5i" id="oWs-S1-Xp1">
-                                    <rect key="frame" x="0.0" y="0.0" width="350.33333333333331" height="43.333332061767578"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="350.33333333333331" height="45"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder Collection Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFb-dV-xDe">
-                                            <rect key="frame" x="16" y="12.333333333333336" width="177" height="17"/>
+                                            <rect key="frame" x="16" y="13" width="177" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZA8-cG-C8X">
-                                            <rect key="frame" x="318.33333333333331" y="12.333333333333336" width="24" height="17.000000000000014"/>
+                                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZA8-cG-C8X">
+                                            <rect key="frame" x="318.33333333333331" y="13.333333333333336" width="24" height="17.000000000000014"/>
+                                        </imageView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="uca-y1-fcm">
+                                            <rect key="frame" x="318.33333333333331" y="13.333333333333336" width="24" height="17.000000000000014"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="trailingMargin" id="2ZV-8o-FlI"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="topMargin" constant="1" id="3Qu-eC-zjq"/>
                                         <constraint firstItem="ZA8-cG-C8X" firstAttribute="centerY" secondItem="SFb-dV-xDe" secondAttribute="centerY" id="D3a-34-mMr"/>
+                                        <constraint firstItem="uca-y1-fcm" firstAttribute="leading" secondItem="ZA8-cG-C8X" secondAttribute="leading" id="H34-X1-mCI"/>
+                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="topMargin" id="KzF-eK-Ho7"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="centerY" secondItem="oWs-S1-Xp1" secondAttribute="centerY" constant="-1" id="Ocg-3j-RGz"/>
                                         <constraint firstItem="ZA8-cG-C8X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SFb-dV-xDe" secondAttribute="trailing" constant="8" symbolic="YES" id="WqS-HV-ixF"/>
+                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="trailing" secondItem="oWs-S1-Xp1" secondAttribute="trailingMargin" id="XlQ-KV-9W0"/>
+                                        <constraint firstItem="uca-y1-fcm" firstAttribute="centerY" secondItem="ZA8-cG-C8X" secondAttribute="centerY" id="pll-2M-ijT"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="leading" secondItem="oWs-S1-Xp1" secondAttribute="leadingMargin" id="rL2-ls-1fc"/>
-                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="leading" secondItem="oWs-S1-Xp1" secondAttribute="trailingMargin" constant="-24" id="xFs-3y-QVY"/>
+                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="bottomMargin" id="xn3-2d-fAK"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="speakerImageView" destination="ZA8-cG-C8X" id="IyP-tt-yur"/>
+                                    <outlet property="speakerImageView" destination="uca-y1-fcm" id="r6D-eI-mDX"/>
                                     <outlet property="titleLabel" destination="SFb-dV-xDe" id="IjH-9w-2tc"/>
                                     <segue destination="6Yx-HL-vln" kind="show" identifier="Open Collection" id="Egm-ag-jV8"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Collections" id="Ztw-H3-VnV" customClass="NoCollectionsPlaceholderCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="218.66666603088379" width="375" height="43.666667938232422"/>
+                                <rect key="frame" x="0.0" y="220.33333396911621" width="375" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ztw-H3-VnV" id="XEx-Fb-t1a">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -99,7 +106,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Open Music" id="cBm-gc-Icm" customClass="OpenMusicCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="262.33333396911621" width="375" height="43.666667938232422"/>
+                                <rect key="frame" x="0.0" y="264.00000190734863" width="375" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cBm-gc-Icm" id="5wx-YV-cio">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
