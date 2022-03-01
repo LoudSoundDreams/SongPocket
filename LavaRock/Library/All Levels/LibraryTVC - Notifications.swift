@@ -80,7 +80,7 @@ extension LibraryTVC {
 			 - (Editing mode is a special state, but freshening in editing mode is fine (with no other “breath-holding modes” presented).)
 			 */
 			if shouldDismissAllViewControllersBeforeFreshenLibraryItems() {
-				await view.window?.rootViewController?.dismiss_async(animated: true)
+				await view.window?.rootViewController?.dismiss__async(animated: true)
 			}
 			
 			let newViewModel = viewModel.updatedWithFreshenedData()

@@ -95,12 +95,12 @@ extension CollectionsTVC {
 			Enabling.multicollection
 			? LocalizedString.combinedSectionDefaultTitle
 			: LocalizedString.combinedCollectionDefaultTitle)
-		let newViewModel = collectionsViewModel.updatedAfterCombining_inNewChildContext(
+		let newViewModel = collectionsViewModel.updatedAfterCombiningInNewChildContext(
 			fromInOrder: selectedCollections,
 			into: indexPathOfCombined,
 			title: title)
 		Task {
-			let _ = await tableView.performBatchUpdates_async {
+			let _ = await tableView.performBatchUpdates__async {
 				self.tableView.scrollToRow(
 					at: indexPathOfCombined,
 					at: .none,

@@ -71,13 +71,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZA8-cG-C8X">
-                                            <rect key="frame" x="326.66666666666669" y="15.000000000000004" width="15.666666666666686" height="11.666666666666668"/>
+                                            <rect key="frame" x="327" y="15" width="15.333333333333314" height="11.999999999999996"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="uca-y1-fcm">
-                                            <rect key="frame" x="326.66666666666669" y="15.000000000000004" width="15.666666666666686" height="11.666666666666668"/>
+                                            <rect key="frame" x="327" y="15" width="15.333333333333314" height="11.999999999999996"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
@@ -142,8 +142,8 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="optionsButton_SwiftUI" destination="dlm-8d-Mjf" id="DDi-Ce-cSk"/>
-                        <outlet property="optionsButton_UIKit" destination="mpR-tt-C6X" id="rCs-Xg-uZH"/>
+                        <outlet property="optionsButton__SwiftUI" destination="dlm-8d-Mjf" id="DDi-Ce-cSk"/>
+                        <outlet property="optionsButton__UIKit" destination="mpR-tt-C6X" id="rCs-Xg-uZH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Toq-AT-hvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -89,7 +89,7 @@ extension UITableView {
 		}
 	}
 	
-	final func performBatchUpdates_async(
+	final func performBatchUpdates__async(
 		_ updates: (() -> Void)?
 	) async -> Bool {
 		await withCheckedContinuation { continuation in

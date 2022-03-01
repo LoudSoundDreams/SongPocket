@@ -131,7 +131,7 @@ extension CollectionsViewModel {
 	
 	// MARK: Combining
 	
-	func updatedAfterCombining_inNewChildContext(
+	func updatedAfterCombiningInNewChildContext(
 		fromInOrder collections: [Collection],
 		into indexPathOfCombined: IndexPath,
 		title: String

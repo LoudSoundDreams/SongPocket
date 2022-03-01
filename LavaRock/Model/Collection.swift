@@ -120,7 +120,7 @@ extension Collection {
 		possiblyToSameCollection: Bool,
 		via context: NSManagedObjectContext
 	) {
-		moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
+		unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
 			with: albumIDs,
 			possiblyToSameCollection: possiblyToSameCollection,
 			via: context)
@@ -129,7 +129,7 @@ extension Collection {
 	}
 	
 	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn’t delete empty source `Collection`s. You must call `Collection.deleteAllEmpty` later.
-	final func moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
+	final func unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
 		with albumIDs: [NSManagedObjectID],
 		possiblyToSameCollection: Bool,
 		via context: NSManagedObjectContext
@@ -153,8 +153,8 @@ extension Collection {
 		}
 	}
 	
-	// WARNING: Might leave empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
-	final func moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
+	// WARNING: Leaves empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	final func unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
 		with albumIDs: [NSManagedObjectID],
 		possiblyToSameCollection: Bool,
 		via context: NSManagedObjectContext

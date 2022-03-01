@@ -9,12 +9,12 @@ import UIKit
 
 extension CollectionsTVC {
 	private static func smartCollectionTitle(
-		moving albumsOutOfOrder: [Album]
+		movingAlbumsInAnyOrder albumsInAnyOrder: [Album]
 	) -> String? {
-		guard let someAlbum = albumsOutOfOrder.first else {
+		guard let someAlbum = albumsInAnyOrder.first else {
 			return nil
 		}
-		let otherAlbums = albumsOutOfOrder.dropFirst()
+		let otherAlbums = albumsInAnyOrder.dropFirst()
 		// Don’t query for all the album artists upfront, because that’s slow.
 		
 		let existingTitles: Set<String>? = {
@@ -57,10 +57,10 @@ extension CollectionsTVC {
 		clipboard.didAlreadyCreate = true
 		
 		let smartTitle: String? = {
-			let albumsBeingMoved = clipboard.idsOfAlbumsBeingMoved.compactMap {
+			let albumsBeingMoved = clipboard.idsOfAlbumsBeingMovedAsSet.compactMap {
 				viewModel.context.object(with: $0) as? Album
 			}
-			return Self.smartCollectionTitle(moving: albumsBeingMoved)
+			return Self.smartCollectionTitle(movingAlbumsInAnyOrder: albumsBeingMoved)
 		}()
 		
 		let title = smartTitle ?? (
@@ -113,7 +113,7 @@ extension CollectionsTVC {
 		
 		Task {
 			if didChangeTitle {
-				let _ = await tableView.performBatchUpdates_async {
+				let _ = await tableView.performBatchUpdates__async {
 					self.tableView.reloadRows(at: [indexPath], with: .fade)
 				}
 			}

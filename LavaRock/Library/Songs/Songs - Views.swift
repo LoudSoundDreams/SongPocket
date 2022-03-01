@@ -36,7 +36,7 @@ final class AlbumArtworkCell: UITableViewCell {
 	}
 }
 
-final class AlbumInfoCell_withWholeAlbumButtons: UITableViewCell {
+final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var albumArtistLabel: UILabel!
 	@IBOutlet private var releaseDateLabel: UILabel!

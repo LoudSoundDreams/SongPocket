@@ -42,8 +42,8 @@ final class CollectionsTVC:
 	}
 	
 	// Controls
-	@IBOutlet private var optionsButton_UIKit: UIBarButtonItem!
-	@IBOutlet private var optionsButton_SwiftUI: UIBarButtonItem!
+	@IBOutlet private var optionsButton__UIKit: UIBarButtonItem!
+	@IBOutlet private var optionsButton__SwiftUI: UIBarButtonItem!
 	private lazy var combineButton = UIBarButtonItem(
 		title: LocalizedString.combine,
 		primaryAction: UIAction { _ in self.previewCombineAndPrompt() })
@@ -250,9 +250,9 @@ final class CollectionsTVC:
 			viewingModeTopLeftButtons = []
 		case .browsing:
 			if Enabling.swiftUIOptions {
-				viewingModeTopLeftButtons = [optionsButton_SwiftUI]
+				viewingModeTopLeftButtons = [optionsButton__SwiftUI]
 			} else {
-				viewingModeTopLeftButtons = [optionsButton_UIKit]
+				viewingModeTopLeftButtons = [optionsButton__UIKit]
 			}
 		}
 		

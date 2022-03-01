@@ -43,7 +43,7 @@
                                     <outlet property="artworkImageView" destination="AJa-zb-mTO" id="K6Z-Cx-6ka"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info with Buttons" id="4ur-1c-aPI" customClass="AlbumInfoCell_withWholeAlbumButtons" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info with Buttons" id="4ur-1c-aPI" customClass="AlbumInfoCell__withWholeAlbumButtons" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="420.00000953674316" width="375" height="62.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4ur-1c-aPI" id="Seo-n9-OQY">
@@ -115,7 +115,7 @@
                                     <outlet property="textStack" destination="Dqf-I2-MGS" id="yKk-TW-6hP"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info with Buttons, Split" id="c0l-gF-WqF" customClass="AlbumInfoCell_withWholeAlbumButtons" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info with Buttons, Split" id="c0l-gF-WqF" customClass="AlbumInfoCell__withWholeAlbumButtons" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="482.66667747497559" width="375" height="62.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c0l-gF-WqF" id="U3f-q9-x99">

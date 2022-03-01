@@ -109,7 +109,7 @@ extension AlbumsTVC {
 						return .modal
 					}
 				case .movingAlbums(let clipboard):
-					if clipboard.idsOfAlbumsBeingMoved_asSet.contains(album.objectID) {
+					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
 						return .modalTinted
 					} else {
 						return .modal

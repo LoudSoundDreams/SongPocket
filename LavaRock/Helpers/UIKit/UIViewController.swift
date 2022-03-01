@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIViewController {
-//	final func present_async(
+//	final func present__async(
 //		_ viewControllerToPresent: UIViewController,
 //		animated: Bool
 //	) async {
@@ -19,7 +19,7 @@ extension UIViewController {
 //		}
 //	}
 	
-	final func dismiss_async(
+	final func dismiss__async(
 		animated: Bool
 	) async {
 		await withCheckedContinuation { continuation in

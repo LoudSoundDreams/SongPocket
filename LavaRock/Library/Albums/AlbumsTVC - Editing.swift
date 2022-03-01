@@ -155,7 +155,7 @@ extension AlbumsTVC {
 			if let matchingNewCollection = newCollectionsByTitle[titleOfDestinationCollection] {
 				// … then move the `Album` to the end of that `Collection`.
 				os_signpost(.begin, log: log, name: "Move Album to matching new Collection")
-				matchingNewCollection.moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
+				matchingNewCollection.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
 					with: [album.objectID],
 					possiblyToSameCollection: false,
 					via: context)
@@ -165,7 +165,7 @@ extension AlbumsTVC {
 			{
 				// … then move the `Album` to the beginning of that `Collection`.
 				os_signpost(.begin, log: log, name: "Move Album to matching existing Collection")
-				matchingExistingCollection.moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
+				matchingExistingCollection.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
 					with: [album.objectID],
 					possiblyToSameCollection: false,
 					via: context)
@@ -181,7 +181,7 @@ extension AlbumsTVC {
 				
 				// … and then move the `Album` to that `Collection`.
 				os_signpost(.begin, log: log, name: "Move Album to new Collection")
-				newCollection.moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
+				newCollection.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
 					with: [album.objectID],
 					possiblyToSameCollection: false,
 					via: context)

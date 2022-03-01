@@ -14,7 +14,7 @@ protocol MoveAlbumsDelegate: AnyObject {
 final class MoveAlbumsClipboard { // This is a class and not a struct because we use it to share information.
 	// Data
 	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
-	let idsOfAlbumsBeingMoved_asSet: Set<NSManagedObjectID>
+	let idsOfAlbumsBeingMovedAsSet: Set<NSManagedObjectID>
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	
 	// Helpers
@@ -24,7 +24,7 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 			Enabling.multicollection
 			? LocalizedString.format_chooseASectiontoMoveXAlbumsTo
 			: LocalizedString.format_chooseACollectionToMoveXAlbumsTo,
-			idsOfAlbumsBeingMoved.count)
+			idsOfAlbumsBeingMovedAsSet.count)
 	}
 	
 	// State
@@ -36,7 +36,7 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 		delegate: MoveAlbumsDelegate
 	) {
 		idsOfAlbumsBeingMoved = albumsBeingMoved.map { $0.objectID }
-		idsOfAlbumsBeingMoved_asSet = Set(idsOfAlbumsBeingMoved)
+		idsOfAlbumsBeingMovedAsSet = Set(idsOfAlbumsBeingMoved)
 		idsOfSourceCollections = Set(albumsBeingMoved.map { $0.container!.objectID })
 		self.delegate = delegate
 	}

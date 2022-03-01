@@ -60,7 +60,7 @@ extension SongsTVC {
 				if Enabling.wholeAlbumButtons {
 					guard let cell = tableView.dequeueReusableCell(
 						withIdentifier: "Album Info with Buttons, Split",
-						for: indexPath) as? AlbumInfoCell_withWholeAlbumButtons
+						for: indexPath) as? AlbumInfoCell__withWholeAlbumButtons
 					else { return UITableViewCell() }
 					let album = songsViewModel.album(forSection: indexPath.section)
 					cell.album = album

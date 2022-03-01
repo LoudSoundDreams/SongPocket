@@ -69,7 +69,7 @@ extension Album {
 	}
 	
 	// WARNING: Leaves gaps in the `Album` indices within `Collection`s, and doesn’t delete empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
-	static func deleteAllEmpty_withoutReindexOrCascade(
+	static func unsafe_deleteAllEmpty_withoutReindexOrCascade(
 		via context: NSManagedObjectContext
 	) {
 		let allAlbums = allFetched(ordered: false, via: context) // Use `ordered: true` if you ever create a variant of this method that does reindex the remaining `Album`s.
