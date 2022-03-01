@@ -8,6 +8,33 @@
 import UIKit
 
 extension Array {
+	// MARK: - Ordering
+	
+	func differenceInferringMoves(
+		toMatch newArray: [Element],
+		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
+	) -> CollectionDifference<Element>
+	where Element: Hashable
+	{
+		return newArray.difference(from: self) { oldItem, newItem in
+			areEquivalent(oldItem, newItem)
+		}.inferringMoves()
+	}
+	
+	func sortedMaintainingOrderWhen(
+		areEqual: (Element, Element) -> Bool,
+		areInOrder: (Element, Element) -> Bool
+	) -> Self {
+		let sortedTuples = enumerated().sorted {
+			if areEqual($0.element, $1.element) {
+				return $0.offset < $1.offset
+			} else {
+				return areInOrder($0.element, $1.element)
+			}
+		}
+		return sortedTuples.map { $0.element }
+	}
+	
 	// MARK: - Element: LibraryItem
 	
 	// Needs to match the property observer on `GroupOfLibraryItems.items`.
@@ -45,33 +72,6 @@ extension Array {
 	where Element == Int
 	{
 		return allNeighborsSatisfy { $0 + 1 == $1 }
-	}
-	
-	// MARK: - Ordering
-	
-	func differenceInferringMoves(
-		toMatch newArray: [Element],
-		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
-	) -> CollectionDifference<Element>
-	where Element: Hashable
-	{
-		return newArray.difference(from: self) { oldItem, newItem in
-			areEquivalent(oldItem, newItem)
-		}.inferringMoves()
-	}
-	
-	func sortedMaintainingOrderWhen(
-		areEqual: (Element, Element) -> Bool,
-		areInOrder: (Element, Element) -> Bool
-	) -> Self {
-		let sortedTuples = enumerated().sorted {
-			if areEqual($0.element, $1.element) {
-				return $0.offset < $1.offset
-			} else {
-				return areInOrder($0.element, $1.element)
-			}
-		}
-		return sortedTuples.map { $0.element }
 	}
 	
 	// MARK: - Miscellaneous
