@@ -8,7 +8,7 @@
 import UIKit
 
 extension CollectionsTVC {
-	private static func smartCollectionTitle(
+	private static func suggestedCollectionTitle(
 		movingAlbumsInAnyOrder albumsInAnyOrder: [Album]
 	) -> String? {
 		guard let someAlbum = albumsInAnyOrder.first else {
@@ -56,18 +56,17 @@ extension CollectionsTVC {
 		
 		clipboard.didAlreadyCreate = true
 		
-		let smartTitle: String? = {
+		let titleForNewCollection: String = {
 			let albumsBeingMoved = clipboard.idsOfAlbumsBeingMovedAsSet.compactMap {
 				viewModel.context.object(with: $0) as? Album
 			}
-			return Self.smartCollectionTitle(movingAlbumsInAnyOrder: albumsBeingMoved)
+			let suggestedTitle = Self.suggestedCollectionTitle(movingAlbumsInAnyOrder: albumsBeingMoved)
+			return suggestedTitle ?? (
+				Enabling.multicollection
+				? LocalizedString.newSectionDefaultTitle
+				: LocalizedString.newCollectionDefaultTitle)
 		}()
-		
-		let title = smartTitle ?? (
-			Enabling.multicollection
-			? LocalizedString.newSectionDefaultTitle
-			: LocalizedString.newCollectionDefaultTitle)
-		let newViewModel = collectionsViewModel.updatedAfterCreating(title: title)
+		let newViewModel = collectionsViewModel.updatedAfterCreating(title: titleForNewCollection)
 		Task {
 			guard await setViewModelAndMoveRowsAndShouldContinue(newViewModel) else { return }
 			
@@ -75,7 +74,7 @@ extension CollectionsTVC {
 				alertTitle: Enabling.multicollection
 				? LocalizedString.newSectionAlertTitle
 				: LocalizedString.newCollectionAlertTitle,
-				textFieldText: smartTitle,
+				textFieldText: titleForNewCollection,
 				textFieldDelegate: self,
 				cancelHandler: {
 					self.revertCreate()

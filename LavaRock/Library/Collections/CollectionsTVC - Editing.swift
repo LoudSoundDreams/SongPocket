@@ -60,7 +60,7 @@ extension CollectionsTVC {
 	
 	// MARK: Combining
 	
-	private static func smartCollectionTitle(
+	private static func suggestedCollectionTitle(
 		combining collections: [Collection]
 	) -> String? {
 		let titles = collections.compactMap { $0.title }
@@ -89,16 +89,15 @@ extension CollectionsTVC {
 		viewModelBeforeCombining = collectionsViewModel
 		
 		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
-		let smartTitle = Self.smartCollectionTitle(combining: selectedCollections)
-		
-		let title = smartTitle ?? (
+		let titleForCombinedCollection = Self.suggestedCollectionTitle(combining: selectedCollections) ?? (
 			Enabling.multicollection
 			? LocalizedString.combinedSectionDefaultTitle
 			: LocalizedString.combinedCollectionDefaultTitle)
+		
 		let newViewModel = collectionsViewModel.updatedAfterCombiningInNewChildContext(
 			fromInOrder: selectedCollections,
 			into: indexPathOfCombined,
-			title: title)
+			title: titleForCombinedCollection)
 		Task {
 			let _ = await tableView.performBatchUpdates__async {
 				self.tableView.scrollToRow(
@@ -116,7 +115,7 @@ extension CollectionsTVC {
 				alertTitle: Enabling.multicollection
 				? LocalizedString.combineSectionsAlertTitle
 				: LocalizedString.combineCollectionsAlertTitle,
-				textFieldText: smartTitle,
+				textFieldText: titleForCombinedCollection,
 				textFieldDelegate: self,
 				cancelHandler: {
 					self.revertCombine(thenSelect: selectedIndexPaths)
