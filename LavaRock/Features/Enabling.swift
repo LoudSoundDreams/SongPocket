@@ -8,12 +8,12 @@
 struct Enabling {
 	private init() {}
 	
-	static let multicollection = 9 == 8
-	static let multialbum = multicollection && 9 == 9
+	static let multicollection = 10 == 1
+	static let multialbum = multicollection && 10 == 10
 	
-	static let playerScreen = 9 == 8
+	static let playerScreen = 10 == 1
 	
-	static let wholeAlbumButtons = 9 == 8
+	static let wholeAlbumButtons = 10 == 1
 	
-	static let swiftUIOptions = 9 == 8
+	static let swiftUIOptions = 10 == 1
 }
