@@ -11,7 +11,7 @@ struct Enabling {
 	static let multicollection = 1 == 0
 	static let multialbum = multicollection && 1 == 1
 	
-	static let playerUI = 1 == 0
+	static let playerScreen = 1 == 0
 	
 	static let wholeAlbumButtons = 1 == 0
 	

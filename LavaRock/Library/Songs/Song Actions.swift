@@ -104,7 +104,7 @@ extension SongsTVC {
 			let player = player
 		else { return }
 		
-		if Enabling.playerUI {
+		if Enabling.playerScreen {
 			SongQueue.set(
 				songs: viewModel.itemsInGroup(startingAt: selectedIndexPath)
 					.compactMap { $0 as? Song },

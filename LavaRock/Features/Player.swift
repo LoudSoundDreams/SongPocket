@@ -30,7 +30,7 @@ final class Player { // This is a class and not a struct because it should end o
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player?.endGeneratingPlaybackNotifications()
-		if Enabling.playerUI {
+		if Enabling.playerScreen {
 			player = .applicationQueuePlayer
 		} else {
 			player = .systemMusicPlayer
