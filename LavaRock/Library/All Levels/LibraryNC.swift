@@ -8,8 +8,6 @@
 import UIKit
 
 final class LibraryNC: UINavigationController {
-	static let storyboardID = "Library NC"
-	
 	private static var didMoveThemeToWindow = false
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)

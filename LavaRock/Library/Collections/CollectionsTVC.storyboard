@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vce-TP-hYI">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20019"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -151,13 +151,13 @@
             </objects>
             <point key="canvasLocation" x="6960.8000000000002" y="193.5960591133005"/>
         </scene>
-        <!--Options-->
+        <!--Options View-->
         <scene sceneID="kWJ-ko-gxE">
             <objects>
-                <viewControllerPlaceholder storyboardName="Options" id="PZK-NP-HeE" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Options View" id="PZK-NP-HeE" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z5t-1I-RYz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7451" y="141"/>
+            <point key="canvasLocation" x="7528" y="122"/>
         </scene>
         <!--AlbumsTVC-->
         <scene sceneID="SIF-U4-dUB">
@@ -167,7 +167,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uyo-Ry-d4U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7646" y="232"/>
+            <point key="canvasLocation" x="7528" y="222"/>
         </scene>
     </scenes>
     <resources>

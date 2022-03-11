@@ -9,7 +9,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="ze3-Yp-Aak">
             <objects>
-                <tabBarController storyboardIdentifier="-" automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="jlm-2z-OVs" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bdc-Yk-4pi">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -25,25 +25,25 @@
             </objects>
             <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
         </scene>
-        <!--Player-->
+        <!--Player View-->
         <scene sceneID="pHC-Lv-e5S">
             <objects>
-                <viewControllerPlaceholder storyboardName="Player" id="cEm-HZ-58e" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Player View" id="cEm-HZ-58e" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="EzW-Nq-4md"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qvV-lu-Otm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5701" y="238"/>
+            <point key="canvasLocation" x="5788" y="231"/>
         </scene>
-        <!--Library NC-->
+        <!--Library View-->
         <scene sceneID="RMa-4C-Ux6">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="Library NC" storyboardName="LibraryNC" referencedIdentifier="Library NC" id="eiw-zQ-SfW" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Library View" id="eiw-zQ-SfW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="bxV-nx-2f0"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uwB-bw-Hqp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5722" y="165"/>
+            <point key="canvasLocation" x="5787" y="168"/>
         </scene>
     </scenes>
 </document>
