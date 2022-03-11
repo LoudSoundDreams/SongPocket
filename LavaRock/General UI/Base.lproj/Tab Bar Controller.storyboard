@@ -35,16 +35,6 @@
             </objects>
             <point key="canvasLocation" x="5701" y="238"/>
         </scene>
-        <!--CollectionsTVC-->
-        <scene sceneID="TKr-Af-Bcs">
-            <objects>
-                <viewControllerPlaceholder storyboardName="CollectionsTVC" id="5wp-Ah-I5Y" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="mEL-ps-BST"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JHF-Ex-wLh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6607" y="194"/>
-        </scene>
         <!--Library NC-->
         <scene sceneID="RMa-4C-Ux6">
             <objects>
