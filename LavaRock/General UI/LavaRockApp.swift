@@ -54,7 +54,9 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	func makeUIViewController(
 		context: Context
 	) -> ViewControllerType {
-		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		let storyboard = Enabling.playerScreen
+		? UIStoryboard(name: "Tab Bar Controller", bundle: nil)
+		: UIStoryboard(name: "LibraryNC", bundle: nil)
 		let result = storyboard.instantiateInitialViewController()!
 		
 		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)

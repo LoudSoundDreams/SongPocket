@@ -1,34 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YiT-J8-VtB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jlm-2z-OVs">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20019"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Collections-->
-        <scene sceneID="Ha5-Ct-70h">
-            <objects>
-                <navigationController storyboardIdentifier="Library NC" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="YiT-J8-VtB" customClass="LibraryNC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collections" image="square.stack.fill" catalog="system" id="48j-Zp-q5X"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uLz-8K-DqV">
-                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="j5X-IY-plX">
-                        <rect key="frame" x="0.0" y="729" width="375" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="5wp-Ah-I5Y" kind="relationship" relationship="rootViewController" id="Hfu-KY-eda"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1lQ-Rz-Im1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6109.6000000000004" y="193.5960591133005"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="ze3-Yp-Aak">
             <objects>
@@ -40,7 +17,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="cEm-HZ-58e" kind="relationship" relationship="viewControllers" id="l69-jK-bJT"/>
+                        <segue destination="eiw-zQ-SfW" kind="relationship" relationship="viewControllers" id="ApW-Kv-9Tw"/>
+                        <segue destination="cEm-HZ-58e" kind="relationship" relationship="viewControllers" id="t1m-z0-3MK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="COP-4z-pT2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -55,7 +33,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qvV-lu-Otm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5702" y="281"/>
+            <point key="canvasLocation" x="5701" y="238"/>
         </scene>
         <!--CollectionsTVC-->
         <scene sceneID="TKr-Af-Bcs">
@@ -67,8 +45,15 @@
             </objects>
             <point key="canvasLocation" x="6607" y="194"/>
         </scene>
+        <!--Library NC-->
+        <scene sceneID="RMa-4C-Ux6">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="Library NC" storyboardName="LibraryNC" referencedIdentifier="Library NC" id="eiw-zQ-SfW" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="bxV-nx-2f0"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uwB-bw-Hqp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5722" y="165"/>
+        </scene>
     </scenes>
-    <resources>
-        <image name="square.stack.fill" catalog="system" width="113" height="128"/>
-    </resources>
 </document>

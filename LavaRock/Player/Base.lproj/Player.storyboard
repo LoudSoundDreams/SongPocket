@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="mMv-Oy-bR1">
-                                <rect key="frame" x="0.0" y="88" width="375" height="296"/>
+                                <rect key="frame" x="0.0" y="88" width="375" height="320.66666666666669"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song in Queue" id="g2h-4Q-QUJ">
@@ -100,7 +100,7 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JmH-0T-GLg">
-                                <rect key="frame" x="16" y="653" width="23.666666666666671" height="19"/>
+                                <rect key="frame" x="16" y="702" width="23.666666666666671" height="19"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="repeat.1" catalog="system"/>
@@ -132,7 +132,7 @@
         <!--Player-->
         <scene sceneID="esw-Ah-g0b">
             <objects>
-                <navigationController storyboardIdentifier="UIKit" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="UIKit" automaticallyAdjustsScrollViewInsets="NO" id="smq-UV-5Rd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Player" image="hifispeaker.fill" catalog="system" id="QAV-ht-O8k"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -142,7 +142,6 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y1P-08-OIo">
-                        <rect key="frame" x="0.0" y="680" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>

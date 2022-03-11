@@ -119,6 +119,7 @@ class LibraryTVC: UITableViewController {
 		
 		freshenNavigationItemTitle()
 		navigationItem.rightBarButtonItem = editButtonItem
+		navigationController?.setToolbarHidden(false, animated: false) // As of iOS 15.4 RC, for some reason, `toolbar.isHidden = false` doesn’t work.
 		setUpBarButtons()
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }

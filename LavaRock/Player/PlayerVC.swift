@@ -27,6 +27,7 @@ final class PlayerVC: UIViewController {
 		
 		beginReflectingPlaybackState()
 		
+		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons
 	}
 	
