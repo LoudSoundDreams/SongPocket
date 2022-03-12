@@ -28,8 +28,8 @@ extension CollectionsTVC {
 			textFieldText: collection.title,
 			textFieldDelegate: self,
 			cancelHandler: nil,
-			saveHandler: { textFieldText in
-				self.commitRename(
+			saveHandler: { [weak self] textFieldText in
+				self?.commitRename(
 					at: indexPath,
 					proposedTitle: textFieldText,
 					thenSelectIf: rowWasSelectedBeforeRenaming)
@@ -117,11 +117,11 @@ extension CollectionsTVC {
 				: LocalizedString.combineCollectionsAlertTitle,
 				textFieldText: titleForCombinedCollection,
 				textFieldDelegate: self,
-				cancelHandler: {
-					self.revertCombine(thenSelect: selectedIndexPaths)
+				cancelHandler: { [weak self] in
+					self?.revertCombine(thenSelect: selectedIndexPaths)
 				},
-				saveHandler: { textFieldText in
-					self.commitCombine(
+				saveHandler: { [weak self] textFieldText in
+					self?.commitCombine(
 						into: indexPathOfCombined,
 						proposedTitle: textFieldText)
 				})

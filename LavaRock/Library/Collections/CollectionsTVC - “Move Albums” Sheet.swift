@@ -76,11 +76,11 @@ extension CollectionsTVC {
 				: LocalizedString.newCollectionAlertTitle,
 				textFieldText: titleForNewCollection,
 				textFieldDelegate: self,
-				cancelHandler: {
-					self.revertCreate()
+				cancelHandler: { [weak self] in
+					self?.revertCreate()
 				},
-				saveHandler: { textFieldText in
-					self.renameAndOpenCreated(proposedTitle: textFieldText)
+				saveHandler: { [weak self] textFieldText in
+					self?.renameAndOpenCreated(proposedTitle: textFieldText)
 				})
 			present(dialog, animated: true)
 		}
