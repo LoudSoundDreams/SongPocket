@@ -34,8 +34,8 @@ extension PlaybackToolbarManaging {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
 			image: UIImage(systemName: .SFPreviousTrack),
-			primaryAction: UIAction { _ in
-				self.player?.skipToPreviousItem()
+			primaryAction: UIAction { [weak self] _ in
+				self?.player?.skipToPreviousItem()
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -45,8 +45,8 @@ extension PlaybackToolbarManaging {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsBackwards,
 			image: UIImage(systemName: .SFSkipBack10),
-			primaryAction: UIAction { _ in
-				self.player?.currentPlaybackTime -= 10
+			primaryAction: UIAction { [weak self] _ in
+				self?.player?.currentPlaybackTime -= 10
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -56,8 +56,8 @@ extension PlaybackToolbarManaging {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsForward,
 			image: UIImage(systemName: .SFSkipForward10),
-			primaryAction: UIAction { _ in
-				self.player?.currentPlaybackTime += 10
+			primaryAction: UIAction { [weak self] _ in
+				self?.player?.currentPlaybackTime += 10
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -67,8 +67,8 @@ extension PlaybackToolbarManaging {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
 			image: UIImage(systemName: .SFNextTrack),
-			primaryAction: UIAction { _ in
-				self.player?.skipToNextItem()
+			primaryAction: UIAction { [weak self] _ in
+				self?.player?.skipToNextItem()
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -78,8 +78,8 @@ extension PlaybackToolbarManaging {
 		playPauseButton.title = LocalizedString.play
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: .SFPlay)
-		) { _ in
-			self.player?.play()
+		) { [weak self] _ in
+			self?.player?.play()
 		}
 		// As of iOS 15.3 developer beta 1, even when you set `UIBarButtonItem.width` manually, the “pause.fill” button is still narrower than the “play.fill” button.
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
@@ -96,8 +96,8 @@ extension PlaybackToolbarManaging {
 			playPauseButton.title = LocalizedString.pause
 			playPauseButton.primaryAction = UIAction(
 				image: UIImage(systemName: .SFPause)
-			) { _ in
-				self.player?.pause()
+			) { [weak self] _ in
+				self?.player?.pause()
 			}
 			playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 		} else {
