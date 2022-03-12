@@ -30,12 +30,6 @@ final class PlayerVC: UIViewController {
 		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons
 	}
-	
-	deinit {
-		DispatchQueue.main.sync {
-			endReflectingPlaybackState()
-		}
-	}
 }
 
 extension PlayerVC: PlayerReflecting {

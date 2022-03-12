@@ -12,7 +12,6 @@ import MediaPlayer
 protocol PlayerReflecting: AnyObject {
 	// Conforming types must …
 	// - Call `beginReflectingPlaybackState` before they need to reflect playback state.
-	// - Call `endReflectingPlaybackState` within their deinitializer.
 	
 	func reflectPlaybackState()
 	// Reflect `player`, and show a disabled state if it’s `nil`. (Call `Player.shared.setUp` to set it up.)
@@ -24,8 +23,6 @@ extension PlayerReflecting {
 	func beginReflectingPlaybackState() {
 		reflectPlaybackState()
 		
-		endReflectingPlaybackState()
-		
 		Player.shared.addReflector(weaklyReferencing: self)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
@@ -34,13 +31,6 @@ extension PlayerReflecting {
 				name: .MPMusicPlayerControllerPlaybackStateDidChange,
 				object: player)
 		}
-	}
-	
-	func endReflectingPlaybackState() {
-		NotificationCenter.default.removeObserver(
-			self,
-			name: .MPMusicPlayerControllerPlaybackStateDidChange,
-			object: player)
 	}
 }
 

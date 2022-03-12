@@ -156,10 +156,6 @@ class LibraryTVC: UITableViewController {
 	// MARK: Teardown
 	
 	deinit {
-		DispatchQueue.main.sync {
-			endReflectingPlaybackState()
-		}
-		
 		NotificationCenter.default.removeObserver(self)
 	}
 	
