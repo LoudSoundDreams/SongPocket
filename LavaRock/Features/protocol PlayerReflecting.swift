@@ -15,7 +15,7 @@ protocol PlayerReflecting: AnyObject {
 	// - Call `endReflectingPlaybackState` within their deinitializer.
 	
 	func reflectPlaybackState()
-	// Reflect `Player.shared.player`, and show a disabled state if it’s `nil`. (Call `Player.shared.setUp` to set up `Player.shared.player`.)
+	// Reflect `player`, and show a disabled state if it’s `nil`. (Call `Player.shared.setUp` to set it up.)
 }
 
 extension PlayerReflecting {
@@ -32,7 +32,7 @@ extension PlayerReflecting {
 				self,
 				selector: #selector(reflectPlaybackState),
 				name: .MPMusicPlayerControllerPlaybackStateDidChange,
-				object: nil)
+				object: player)
 		}
 	}
 	
@@ -40,7 +40,7 @@ extension PlayerReflecting {
 		NotificationCenter.default.removeObserver(
 			self,
 			name: .MPMusicPlayerControllerPlaybackStateDidChange,
-			object: nil)
+			object: player)
 	}
 }
 
