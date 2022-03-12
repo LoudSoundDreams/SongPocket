@@ -26,7 +26,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 			self,
 			selector: #selector(mediaLibraryDidChange),
 			name: .MPMediaLibraryDidChange,
-			object: nil)
+			object: library)
 		
 		mergeChanges()
 	}

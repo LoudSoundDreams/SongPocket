@@ -113,7 +113,7 @@ class LibraryTVC: UITableViewController {
 			self,
 			selector: #selector(didMergeChanges),
 			name: .LRDidMergeChanges,
-			object: nil)
+			object: MusicLibraryManager.shared)
 		
 		setUpMusicAppDependentFunctionality()
 		
@@ -130,7 +130,7 @@ class LibraryTVC: UITableViewController {
 				self,
 				selector: #selector(nowPlayingItemDidChange),
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
-				object: nil)
+				object: player)
 		}
 	}
 	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
