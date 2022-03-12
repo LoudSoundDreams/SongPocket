@@ -13,8 +13,8 @@ extension LibraryTVC {
 			let groupOfChildren: [UIMenuElement] = sortOptionGroup.map { sortOption in
 				let action = UIAction(
 					title: sortOption.localizedName()
-				) { action in
-					self.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
+				) { [weak self] action in
+					self?.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
 				}
 				
 				return UIDeferredMenuElement.uncached({ useMenuElements in
