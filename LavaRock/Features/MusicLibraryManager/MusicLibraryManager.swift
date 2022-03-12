@@ -45,8 +45,6 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	}
 	
 	deinit {
-		NotificationCenter.default.removeObserver(self)
-		
 		library?.endGeneratingLibraryChangeNotifications()
 	}
 }

@@ -153,12 +153,6 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: Teardown
-	
-	deinit {
-		NotificationCenter.default.removeObserver(self)
-	}
-	
 	// MARK: - Setting Items
 	
 	// Returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
