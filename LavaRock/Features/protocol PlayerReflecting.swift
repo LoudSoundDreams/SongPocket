@@ -26,7 +26,7 @@ extension PlayerReflecting {
 		
 		endReflectingPlaybackState()
 		
-		Player.shared.addReflector(self)
+		Player.shared.addReflector(weaklyReferencing: self)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
@@ -37,7 +37,6 @@ extension PlayerReflecting {
 	}
 	
 	func endReflectingPlaybackState() {
-		Player.shared.removeReflector(self)
 		NotificationCenter.default.removeObserver(
 			self,
 			name: .MPMusicPlayerControllerPlaybackStateDidChange,
