@@ -18,6 +18,7 @@ extension AlbumsTVC {
 			
 			// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
 			return UIDeferredMenuElement.uncached({ useMenuElements in
+				// ARC2DO
 				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
 					selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
 				organizeAction.attributes = allowed ? [] : .disabled
@@ -78,6 +79,7 @@ extension AlbumsTVC {
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? CollectionsViewModel else { return }
 		present(libraryNC, animated: true) {
+			// ARC2DO
 			collectionsTVC.organizeAlbumsClipboard = clipboard
 			collectionsTVC.willOrganizeAlbumsStickyNote = nil
 			

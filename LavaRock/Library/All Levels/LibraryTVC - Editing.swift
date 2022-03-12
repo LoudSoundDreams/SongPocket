@@ -19,6 +19,7 @@ extension LibraryTVC {
 				
 				return UIDeferredMenuElement.uncached({ useMenuElements in
 					let allowed: Bool = {
+						// ARC2DO
 						let viewModel = self.viewModel
 						let indexPathsToSort = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 							selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil)

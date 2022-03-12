@@ -100,7 +100,7 @@ extension CollectionsTVC {
 			title: titleForCombinedCollection)
 		Task {
 			let _ = await tableView.performBatchUpdates__async {
-				self.tableView.scrollToRow(
+				self.tableView.scrollToRow( // ARC2DO
 					at: indexPathOfCombined,
 					at: .none,
 					animated: true)

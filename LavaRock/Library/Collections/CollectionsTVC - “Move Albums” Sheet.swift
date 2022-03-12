@@ -113,7 +113,7 @@ extension CollectionsTVC {
 		Task {
 			if didChangeTitle {
 				let _ = await tableView.performBatchUpdates__async {
-					self.tableView.reloadRows(at: [indexPath], with: .fade)
+					self.tableView.reloadRows(at: [indexPath], with: .fade) // ARC2DO
 				}
 			}
 			
