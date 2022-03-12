@@ -14,7 +14,7 @@ extension AlbumsTVC {
 		let organizeElement: UIMenuElement = {
 			let organizeAction = UIAction(
 				title: LocalizedString.organizeByAlbumArtistEllipsis,
-				handler: { _ in self.startOrganizing() })
+				handler: { [weak self] _ in self?.startOrganizing() })
 			
 			// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
 			return UIDeferredMenuElement.uncached({ useMenuElements in
@@ -27,7 +27,7 @@ extension AlbumsTVC {
 		
 		let moveElement = UIAction(
 			title: LocalizedString.moveToEllipsis,
-			handler: { _ in self.startMoving() })
+			handler: { [weak self] _ in self?.startMoving() })
 		
 		return UIMenu(
 			children: [
