@@ -77,7 +77,7 @@ extension MusicLibraryManager {
 		context.tryToSave()
 		
 		DispatchQueue.main.async {
-			NotificationCenter.default.post(Notification(name: .LRDidMergeChanges))
+			NotificationCenter.default.post(name: .LRDidMergeChanges, object: self)
 		}
 	}
 }
