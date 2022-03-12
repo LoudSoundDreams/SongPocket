@@ -17,9 +17,9 @@ extension LibraryTVC {
 					self?.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
 				}
 				
-				return UIDeferredMenuElement.uncached({ useMenuElements in
+				return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
+					guard let self = self else { return }
 					let allowed: Bool = {
-						// ARC2DO
 						let viewModel = self.viewModel
 						let indexPathsToSort = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 							selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil)
