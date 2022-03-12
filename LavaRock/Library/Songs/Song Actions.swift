@@ -281,10 +281,10 @@ extension SongsTVC {
 		}
 		let okAction = UIAlertAction(
 			title: LocalizedString.ok,
-			style: .default,
-			handler: { _ in
-				self.willPlayLaterAlertIsPresented = false
-			})
+			style: .default
+		) { _ in
+			self.willPlayLaterAlertIsPresented = false
+		}
 		
 		alert.addAction(dontShowAgainAction)
 		alert.addAction(okAction)
