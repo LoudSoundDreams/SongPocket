@@ -287,8 +287,7 @@ final class CollectionsTVC:
 		}
 	}
 	
-	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-	}
+	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {}
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		switch purpose {

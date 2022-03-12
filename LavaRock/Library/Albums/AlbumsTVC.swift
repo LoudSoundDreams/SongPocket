@@ -118,8 +118,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
-	}
+	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {}
 	
 	/*
 	final override func viewWillAppear(_ animated: Bool) {
