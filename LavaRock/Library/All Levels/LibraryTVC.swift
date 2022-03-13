@@ -11,14 +11,14 @@ import MediaPlayer
 
 class LibraryTVC: UITableViewController {
 	enum SortOption: CaseIterable {
-		// For Collections only
+		// For `Collection`s only
 		case title
 		
-		// For Albums only
+		// For `Album`s only
 		case newestFirst
 		case oldestFirst
 		
-		// For Songs only
+		// For `Song`s only
 		case trackNumber
 		
 		// For all types
