@@ -188,8 +188,7 @@ extension MusicLibraryManager {
 						atBeginningOf: matchingExistingCollection,
 						mpAlbumID: newMetadatum.mpAlbumID,
 						context: context)
-				}
-			}()
+				}}()
 			
 			return (newAlbum, nil)
 			
@@ -213,8 +212,7 @@ extension MusicLibraryManager {
 						before: existingCollections,
 						title: titleOfDestinationCollection,
 						context: context)
-				}
-			}()
+				}}()
 			
 			// … and then put the `Album` into that `Collection`.
 			let newAlbum = Album(

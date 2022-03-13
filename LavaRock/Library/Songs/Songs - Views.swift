@@ -88,9 +88,7 @@ final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 				items: {
 					let songs = album.songs(sorted: true)
 					return songs.compactMap { $0.mpMediaItem() }
-				}()
-			)
-		)
+				}()))
 		
 		player.repeatMode = .none
 		player.shuffleMode = .off
@@ -110,9 +108,7 @@ final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 					let songs = album.songs(sorted: true)
 					let mediaItems = songs.compactMap { $0.mpMediaItem() }
 					return mediaItems.inAnyOtherOrder()
-				}()
-			)
-		)
+				}()))
 		
 		player.repeatMode = .none
 		player.shuffleMode = .off
@@ -184,8 +180,7 @@ final class SongCell:
 				return songArtist
 			} else {
 				return nil
-			}
-		}()
+			}}()
 		numberLabel.text = { () -> String in // Don’t let this be `nil`.
 			guard
 				let metadatum = metadatum,
@@ -203,8 +198,7 @@ final class SongCell:
 				return metadatum.discAndTrackNumberFormatted()
 			} else {
 				return metadatum.trackNumberFormatted()
-			}
-		}()
+			}}()
 		
 		if artistLabel.text == nil {
 			textStack.spacing = 0

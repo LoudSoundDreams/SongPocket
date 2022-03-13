@@ -94,8 +94,7 @@ extension SongsViewModel {
 				return [album]
 			case .deleted:
 				return []
-			}
-		}()
+			}}()
 		groups = containers.map {
 			GroupOfSongs(
 				entityName: Self.entityName,

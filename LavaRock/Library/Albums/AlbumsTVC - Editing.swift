@@ -23,8 +23,7 @@ extension AlbumsTVC {
 					selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
 				organizeAction.attributes = allowed ? [] : .disabled
 				useMenuElements([organizeAction])
-			})
-		}()
+			})}()
 		
 		let moveElement = UIAction(
 			title: LocalizedString.moveToEllipsis,
@@ -199,8 +198,7 @@ extension AlbumsTVC {
 				return Set(idsOfMovedAlbums.map {
 					let albumInThisContext = context.object(with: $0) as! Album
 					return albumInThisContext.container!.objectID
-				})
-			}(),
+				})}(),
 			delegate: delegateForClipboard)
 	}
 	

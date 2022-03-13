@@ -22,8 +22,7 @@ extension UIMenu {
 				return groupedElements
 			} else {
 				return groupedElements
-			}
-		}()
+			}}()
 		
 		let submenus = groupedElementsReordered.map { groupOfElements in
 			UIMenu(

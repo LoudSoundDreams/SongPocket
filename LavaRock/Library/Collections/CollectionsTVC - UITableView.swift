@@ -129,8 +129,7 @@ extension CollectionsTVC {
 				}
 			case .browsing:
 				return .normal
-			}
-		}()
+			}}()
 		let accessibilityActions: [UIAccessibilityCustomAction] = {
 			switch mode {
 			case .normal:
@@ -141,8 +140,7 @@ extension CollectionsTVC {
 				return []
 			case .modalDisabled:
 				return []
-			}
-		}()
+			}}()
 		cell.configure(
 			with: collection,
 			mode: mode,

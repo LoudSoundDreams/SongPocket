@@ -134,8 +134,7 @@ final class CollectionsTVC:
 			let indicesOfRows = Array(0 ..< numberOfRows)
 			return indicesOfRows.map { indexOfRow in
 				IndexPath(row: indexOfRow, section: indexOfCollectionsSection)
-			}
-		}()
+			}}()
 		
 		switch viewState {
 		case
@@ -360,8 +359,7 @@ final class CollectionsTVC:
 				return [.moveHere]
 			case .browsing:
 				return []
-			}
-		}()
+			}}()
 		if Enabling.multicollection {
 			let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
 			let indexOfSelectedCollection = collection.index

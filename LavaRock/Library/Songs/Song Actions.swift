@@ -120,9 +120,7 @@ extension SongsTVC {
 							os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 						}
 						return chosenSongs.compactMap { $0.mpMediaItem() }
-					}()
-				)
-			)
+					}()))
 		}
 		
 		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
@@ -150,10 +148,7 @@ extension SongsTVC {
 							os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
 						}
 						return chosenSongs.compactMap { $0.mpMediaItem() }
-					}()
-				)
-			)
-		)
+					}())))
 		
 		player.repeatMode = .none
 		

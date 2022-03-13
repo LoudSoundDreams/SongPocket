@@ -98,8 +98,7 @@ extension AlbumsViewModel {
 				return [collection]
 			case .deleted:
 				return []
-			}
-		}()
+			}}()
 		groups = containers.map {
 			GroupOfCollectionsOrAlbums(
 				entityName: Self.entityName,
