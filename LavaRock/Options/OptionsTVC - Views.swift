@@ -14,8 +14,6 @@ final class LightingCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		selectionStyle = .none
-		
 		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
 			segmentedControl.setAction(
 				{
