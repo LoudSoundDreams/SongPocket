@@ -30,17 +30,6 @@ final class ThenModeCell: UITableViewCell {
 		segmentedControl.insertSegment(
 			action: UIAction(
 				image: {
-					let image = UIImage(systemName: "pause.fill")
-					image?.accessibilityLabel = "Pause" // L2DO
-					return image
-				}()) { _ in
-					
-				},
-			at: segmentedControl.numberOfSegments,
-			animated: false)
-		segmentedControl.insertSegment(
-			action: UIAction(
-				image: {
 					let image = UIImage(systemName: "play.fill")
 					image?.accessibilityLabel = "Continue" // L2DO
 					return image
@@ -55,7 +44,7 @@ final class ThenModeCell: UITableViewCell {
 					if player.repeatMode == .one {
 						return 0
 					} else {
-						return 2
+						return 1
 					}}()
 			}
 		}}
