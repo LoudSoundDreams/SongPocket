@@ -14,21 +14,21 @@ final class LightingCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
-			segmentedControl.setAction(
-				{
-					let lighting = Lighting(indexInDisplayOrder: indexOfSegment)
-					return UIAction(
-						image: {
-							let image = lighting.uiImage
-							image.accessibilityLabel = lighting.name
-							return image
-						}()) { _ in
-							Task { await MainActor.run {
-								Theme.shared.lighting = lighting
-							}}
-						}}(),
-				forSegmentAt: indexOfSegment)
+		segmentedControl.removeAllSegments()
+		Lighting.allCases.forEach { lighting in
+			segmentedControl.insertSegment(
+				action: UIAction(
+					image: {
+						let image = lighting.uiImage
+						image.accessibilityLabel = lighting.name
+						return image
+					}()) { _ in
+						Task { await MainActor.run {
+							Theme.shared.lighting = lighting
+						}}
+					},
+				at: segmentedControl.numberOfSegments,
+				animated: false)
 		}
 		segmentedControl.selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
 	}
