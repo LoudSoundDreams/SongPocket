@@ -17,22 +17,22 @@ final class LightingCell: UITableViewCell {
 		selectionStyle = .none
 		
 		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
-			let lighting = Lighting(indexInDisplayOrder: indexOfSegment)
-			let image = lighting.uiImage
-			image.accessibilityLabel = lighting.name
-			segmentedControl.setImage(image, forSegmentAt: indexOfSegment)
+			segmentedControl.setAction(
+				{
+					let lighting = Lighting(indexInDisplayOrder: indexOfSegment)
+					return UIAction(
+						image: {
+							let image = lighting.uiImage
+							image.accessibilityLabel = lighting.name
+							return image
+						}()) { _ in
+							Task { await MainActor.run {
+								Theme.shared.lighting = lighting
+							}}
+						}}(),
+				forSegmentAt: indexOfSegment)
 		}
-		segmentedControl.addTarget(
-			self,
-			action: #selector(saveAndSetLighting),
-			for: .valueChanged)
 		segmentedControl.selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
-	}
-	
-	@objc
-	private func saveAndSetLighting() {
-		let selected = Lighting(indexInDisplayOrder: segmentedControl.selectedSegmentIndex)
-		Theme.shared.lighting = selected
 	}
 }
 
