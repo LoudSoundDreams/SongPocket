@@ -42,6 +42,7 @@
 		07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */; };
 		07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* CollectionDifference.swift */; };
 		07622F0E27DAEA9D00B953EA /* Library View.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07622F0D27DAEA9D00B953EA /* Library View.storyboard */; };
+		07622F1427DE439D00B953EA /* Player - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07622F1327DE439D00B953EA /* Player - Views.swift */; };
 		07642C7C268FFC1600B66BB8 /* GroupOfSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */; };
 		07642C7E268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */; };
 		0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */; };
@@ -169,6 +170,7 @@
 		07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryItem.swift"; sourceTree = "<group>"; };
 		07619EE427342FC9003F95AE /* CollectionDifference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDifference.swift; sourceTree = "<group>"; };
 		07622F0D27DAEA9D00B953EA /* Library View.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Library View.storyboard"; sourceTree = "<group>"; };
+		07622F1327DE439D00B953EA /* Player - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Player - Views.swift"; sourceTree = "<group>"; };
 		07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOfSongs.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol GroupOfLibraryItems.swift"; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -336,6 +338,7 @@
 				073FB56227588BC5000FAF5F /* Player View.storyboard */,
 				07A7989027A8ABB1007B70AA /* PlayerView.swift */,
 				07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */,
+				07622F1327DE439D00B953EA /* Player - Views.swift */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 				07E0BBEF2765678F0010117E /* TintedSelectedCell.swift in Sources */,
 				07170201250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift in Sources */,
 				07E0BBF22765678F0010117E /* UIColor.swift in Sources */,
+				07622F1427DE439D00B953EA /* Player - Views.swift in Sources */,
 				07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */,
 				07E0BBF72765678F0010117E /* UIMenu.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,

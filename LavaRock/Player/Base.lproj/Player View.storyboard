@@ -28,14 +28,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Then" id="TSm-6J-wcM">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Then" id="BHe-8l-f1x" customClass="ThenModeCell" customModule="LavaRock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="88.333333969116211" width="375" height="53.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TSm-6J-wcM" id="DRm-MJ-gQR">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BHe-8l-f1x" id="Vj0-Hn-8GQ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="53.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dTr-cT-L4E">
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="w73-VW-rxT">
                                                     <rect key="frame" x="62" y="11.333333333333336" width="297" height="32"/>
                                                     <segments>
                                                         <segment title="" image="repeat.1" catalog="system"/>
@@ -43,59 +43,87 @@
                                                         <segment title="" image="play.fill" catalog="system"/>
                                                     </segments>
                                                 </segmentedControl>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zbm-xJ-AWG">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZk-q7-vFn">
                                                     <rect key="frame" x="16" y="18.333333333333332" width="34" height="16.999999999999996"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHD-1w-ITc">
+                                                    <rect key="frame" x="21" y="18.333333333333332" width="29" height="16.999999999999996"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <color key="textColor" systemColor="systemRedColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="zbm-xJ-AWG" firstAttribute="leading" secondItem="DRm-MJ-gQR" secondAttribute="leadingMargin" id="2aS-Qe-7BH"/>
-                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="trailing" secondItem="DRm-MJ-gQR" secondAttribute="trailingMargin" id="9CC-NR-bkV"/>
-                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="leading" secondItem="zbm-xJ-AWG" secondAttribute="trailing" constant="12" id="Bvz-05-Pfo"/>
-                                                <constraint firstItem="zbm-xJ-AWG" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="DRm-MJ-gQR" secondAttribute="bottomMargin" id="DHv-bt-JZb"/>
-                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="centerY" secondItem="DRm-MJ-gQR" secondAttribute="centerY" id="HJA-CH-aHm"/>
-                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DRm-MJ-gQR" secondAttribute="topMargin" id="Mi0-i6-7b1"/>
-                                                <constraint firstItem="zbm-xJ-AWG" firstAttribute="centerY" secondItem="dTr-cT-L4E" secondAttribute="centerY" id="Z96-em-dKs"/>
-                                                <constraint firstItem="zbm-xJ-AWG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DRm-MJ-gQR" secondAttribute="topMargin" id="ita-Fo-Ujk"/>
-                                                <constraint firstItem="dTr-cT-L4E" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="DRm-MJ-gQR" secondAttribute="bottomMargin" id="vSv-nC-f0r"/>
+                                                <constraint firstItem="w73-VW-rxT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="topMargin" id="1We-BC-fmb"/>
+                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="leadingMargin" id="2JP-R9-N8I"/>
+                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="topMargin" id="3oj-O4-rHL"/>
+                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="bottomMargin" id="9WE-Eg-K5l"/>
+                                                <constraint firstItem="w73-VW-rxT" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="bottomMargin" id="BQH-xm-Mjv"/>
+                                                <constraint firstItem="LHD-1w-ITc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="leadingMargin" id="KQM-Hp-fGd"/>
+                                                <constraint firstItem="LHD-1w-ITc" firstAttribute="centerY" secondItem="PZk-q7-vFn" secondAttribute="centerY" id="Us4-87-vEo"/>
+                                                <constraint firstItem="LHD-1w-ITc" firstAttribute="trailing" secondItem="PZk-q7-vFn" secondAttribute="trailing" id="Zub-0T-dNM"/>
+                                                <constraint firstItem="w73-VW-rxT" firstAttribute="leading" secondItem="PZk-q7-vFn" secondAttribute="trailing" constant="12" id="qk6-tj-KVq"/>
+                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="leading" secondItem="Vj0-Hn-8GQ" secondAttribute="leadingMargin" priority="250" id="r61-Xg-Uzg"/>
+                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="centerY" secondItem="w73-VW-rxT" secondAttribute="centerY" id="rNA-B0-Sfa"/>
+                                                <constraint firstItem="LHD-1w-ITc" firstAttribute="leading" secondItem="Vj0-Hn-8GQ" secondAttribute="leadingMargin" priority="250" id="rh7-93-TUi"/>
+                                                <constraint firstItem="w73-VW-rxT" firstAttribute="trailing" secondItem="Vj0-Hn-8GQ" secondAttribute="trailingMargin" id="tgi-kE-hhy"/>
+                                                <constraint firstItem="w73-VW-rxT" firstAttribute="centerY" secondItem="Vj0-Hn-8GQ" secondAttribute="centerY" id="zff-YP-uEb"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="segmentedControl" destination="w73-VW-rxT" id="sdu-5D-EkK"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Last" id="FBz-OC-wnA">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Last" id="y8x-Qi-Yd7" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="141.66666603088379" width="375" height="53.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FBz-OC-wnA" id="eve-kV-kW5">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y8x-Qi-Yd7" id="zEd-US-8gC">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="53.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pjl-Mb-V24">
-                                                    <rect key="frame" x="57" y="11.333333333333336" width="302" height="32"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1zE-7R-5yX">
+                                                    <rect key="frame" x="62" y="11.333333333333336" width="297" height="32"/>
                                                     <segments>
                                                         <segment title="" image="repeat" catalog="system"/>
                                                         <segment title="" image="stop.fill" catalog="system"/>
                                                     </segments>
                                                 </segmentedControl>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Lj-lr-F4m">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="29" height="16.999999999999996"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="stO-U3-Ggl">
+                                                    <rect key="frame" x="21" y="18.333333333333332" width="29" height="16.999999999999996"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zgc-US-Qv2">
+                                                    <rect key="frame" x="16" y="18.333333333333332" width="34" height="16.999999999999996"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <color key="textColor" systemColor="systemRedColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="eve-kV-kW5" secondAttribute="bottomMargin" id="6Wc-EL-IfW"/>
-                                                <constraint firstItem="4Lj-lr-F4m" firstAttribute="leading" secondItem="eve-kV-kW5" secondAttribute="leadingMargin" id="81O-JX-uDx"/>
-                                                <constraint firstItem="4Lj-lr-F4m" firstAttribute="centerY" secondItem="pjl-Mb-V24" secondAttribute="centerY" id="KSO-1I-53S"/>
-                                                <constraint firstItem="4Lj-lr-F4m" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eve-kV-kW5" secondAttribute="topMargin" id="KzU-wP-VXX"/>
-                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eve-kV-kW5" secondAttribute="topMargin" id="Oyd-wP-UTn"/>
-                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="trailing" secondItem="eve-kV-kW5" secondAttribute="trailingMargin" id="Ywb-at-nWx"/>
-                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="leading" secondItem="4Lj-lr-F4m" secondAttribute="trailing" constant="12" id="eEt-Kp-YC7"/>
-                                                <constraint firstItem="pjl-Mb-V24" firstAttribute="centerY" secondItem="eve-kV-kW5" secondAttribute="centerY" id="unE-Oi-u41"/>
-                                                <constraint firstItem="4Lj-lr-F4m" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="eve-kV-kW5" secondAttribute="bottomMargin" id="wsB-sE-iEi"/>
+                                                <constraint firstItem="Zgc-US-Qv2" firstAttribute="leading" secondItem="zEd-US-8gC" secondAttribute="leadingMargin" priority="250" id="0r9-c4-lYV"/>
+                                                <constraint firstItem="Zgc-US-Qv2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="leadingMargin" id="3tl-nX-Wej"/>
+                                                <constraint firstItem="Zgc-US-Qv2" firstAttribute="centerY" secondItem="stO-U3-Ggl" secondAttribute="centerY" id="7NJ-sO-8LI"/>
+                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="trailing" secondItem="zEd-US-8gC" secondAttribute="trailingMargin" id="8V9-Xk-foh"/>
+                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="centerY" secondItem="zEd-US-8gC" secondAttribute="centerY" id="8hy-c4-wPd"/>
+                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="centerY" secondItem="1zE-7R-5yX" secondAttribute="centerY" id="8yI-Yc-nKN"/>
+                                                <constraint firstItem="Zgc-US-Qv2" firstAttribute="trailing" secondItem="stO-U3-Ggl" secondAttribute="trailing" id="Bd4-5b-NTa"/>
+                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="topMargin" id="GRI-aD-5bO"/>
+                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="leading" secondItem="zEd-US-8gC" secondAttribute="leadingMargin" priority="250" id="JZo-MF-fb0"/>
+                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="bottomMargin" id="MDa-OF-1Vj"/>
+                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="leading" secondItem="stO-U3-Ggl" secondAttribute="trailing" constant="12" id="OpE-3Y-Gbe"/>
+                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="topMargin" id="alm-DB-U8S"/>
+                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="leadingMargin" id="f40-dG-ZW4"/>
+                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="bottomMargin" id="mny-Ix-ND6"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="segmentedControl" destination="1zE-7R-5yX" id="BKw-tG-ICx"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -173,6 +201,9 @@
         <image name="stop.fill" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
