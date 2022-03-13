@@ -107,7 +107,7 @@ class LibraryTVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		beginReflectingPlaybackState()
+		reflectPlaybackStateFromNowOn()
 		
 		NotificationCenter.default.addObserverOnce(
 			self,

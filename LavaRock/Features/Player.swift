@@ -39,7 +39,7 @@ final class Player { // This is a class and not a struct because it should end o
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {
 			// Because before anyone called this method, `player` was `nil`.
-			$0.referencee?.beginReflectingPlaybackState()
+			$0.referencee?.reflectPlaybackStateFromNowOn()
 		}
 	}
 	

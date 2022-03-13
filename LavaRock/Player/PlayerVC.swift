@@ -25,7 +25,7 @@ final class PlayerVC: UIViewController {
 		
 		SongQueue.tableView = queueTable
 		
-		beginReflectingPlaybackState()
+		reflectPlaybackStateFromNowOn()
 		
 		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons

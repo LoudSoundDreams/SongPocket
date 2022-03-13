@@ -50,7 +50,7 @@ final class ThenModeCell: UITableViewCell {
 			animated: false)
 		
 		Task { await MainActor.run {
-			beginReflectingPlaybackState()
+			reflectPlaybackStateFromNowOn()
 		}}
 	}
 }
