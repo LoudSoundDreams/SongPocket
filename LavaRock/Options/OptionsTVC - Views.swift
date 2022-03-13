@@ -18,8 +18,8 @@ final class LightingCell: UITableViewCell {
 		
 		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
 			let lighting = Lighting(indexInDisplayOrder: indexOfSegment)
-			let image = UIImage(systemName: lighting.sfSymbolName)
-			image?.accessibilityLabel = lighting.name
+			let image = lighting.uiImage
+			image.accessibilityLabel = lighting.name
 			segmentedControl.setImage(image, forSegmentAt: indexOfSegment)
 		}
 		segmentedControl.addTarget(

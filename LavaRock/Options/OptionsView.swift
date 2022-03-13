@@ -29,7 +29,7 @@ struct OptionsView: View {
 				Section(LocalizedString.theme) {
 					Picker("", selection: $theme.lighting) {
 						ForEach(Lighting.allCases) { lighting in
-							Image(systemName: lighting.sfSymbolName)
+							lighting.image
 								.accessibilityLabel(lighting.name)
 								.tag(lighting)
 						}

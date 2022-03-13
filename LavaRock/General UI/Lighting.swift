@@ -41,7 +41,15 @@ enum Lighting: Int, CaseIterable {
 		return Self.allCases.firstIndex { $0 == self }!
 	}
 	
-	var sfSymbolName: String {
+	var uiImage: UIImage {
+		return UIImage(systemName: sfSymbolName)!
+	}
+	
+	var image: Image {
+		return Image(systemName: sfSymbolName)
+	}
+	
+	private var sfSymbolName: String {
 		switch self {
 		case .light:
 			return "sun.max.fill"
