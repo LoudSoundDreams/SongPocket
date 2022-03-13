@@ -11,7 +11,7 @@ import MediaPlayer
 @MainActor
 protocol PlayerReflecting: AnyObject {
 	// Conforming types must …
-	// - Call `beginReflectingPlaybackState` before they need to reflect playback state.
+	// - Call `beginReflectingPlaybackState` as soon as their implementation of `reflectPlaybackState` will work.
 	
 	func reflectPlaybackState()
 	// Reflect `player`, and show a disabled state if it’s `nil`. (Call `Player.shared.setUp` to set it up.)

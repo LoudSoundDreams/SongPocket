@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 final class ThenModeCell: UITableViewCell {
 	@IBOutlet var segmentedControl: UISegmentedControl!
@@ -21,8 +22,9 @@ final class ThenModeCell: UITableViewCell {
 					image?.accessibilityLabel = "Repeat one" // L2DO
 					return image
 				}()) { _ in
+					// ARC2DO
 					Task { await MainActor.run {
-						Player.shared.player?.repeatMode = .one
+						self.player?.repeatMode = .one
 					}}
 				},
 			at: segmentedControl.numberOfSegments,
@@ -34,20 +36,44 @@ final class ThenModeCell: UITableViewCell {
 					image?.accessibilityLabel = "Continue" // L2DO
 					return image
 				}()) { _ in
-					
+					// ARC2DO
+					Task { await MainActor.run {
+						switch LastMode.current {
+						case .repeatAll:
+							self.player?.repeatMode = .all
+						case .stop:
+							self.player?.repeatMode = .none
+						}
+					}}
 				},
 			at: segmentedControl.numberOfSegments,
 			animated: false)
+		
 		Task { await MainActor.run {
-			if let player = Player.shared.player {
-				segmentedControl.selectedSegmentIndex = {
-					if player.repeatMode == .one {
-						return 0
-					} else {
-						return 1
-					}}()
-			}
+			beginReflectingPlaybackState()
 		}}
+	}
+}
+
+// TO DO: We don’t actually want to reflect playback state; we want to reflect whether the player is available, and if so, its repeat mode.
+extension ThenModeCell: PlayerReflecting {
+	final func reflectPlaybackState() {
+		guard let player = player else {
+			(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
+				segmentedControl.setEnabled(false, forSegmentAt: indexOfSegment)
+			}
+			segmentedControl.selectedSegmentIndex = 1
+			return
+		}
+		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
+			segmentedControl.setEnabled(true, forSegmentAt: indexOfSegment)
+		}
+		segmentedControl.selectedSegmentIndex = {
+			if player.repeatMode == .one {
+				return 0
+			} else {
+				return 1
+			}}()
 	}
 }
 
