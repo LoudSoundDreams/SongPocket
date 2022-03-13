@@ -23,7 +23,7 @@ extension PlayerReflecting {
 	func beginReflectingPlaybackState() {
 		reflectPlaybackState()
 		
-		Player.shared.addReflector(weaklyReferencing: self)
+		Player.shared.addReflectorOnce(weaklyReferencing: self)
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,

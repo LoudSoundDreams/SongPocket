@@ -13,9 +13,14 @@ final class Player { // This is a class and not a struct because it should end o
 	private init() {}
 	static let shared = Player()
 	
-	final func addReflector(weaklyReferencing reflector: PlayerReflecting) {
-		let weakReflector = Weak(reflector)
-		reflectors.append(weakReflector)
+	final func addReflectorOnce(weaklyReferencing newReflector: PlayerReflecting) {
+		if let indexOfMatchingReflector = reflectors.firstIndex(where: { weakReflector in
+			newReflector === weakReflector.referencee
+		}) {
+			reflectors.remove(at: indexOfMatchingReflector)
+		}
+		
+		reflectors.append(Weak(newReflector))
 	}
 	
 	private(set) var player: MPMusicPlayerController? = nil
