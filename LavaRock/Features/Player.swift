@@ -35,13 +35,15 @@ final class Player { // This is a class and not a struct because it should end o
 			player = .systemMusicPlayer
 		}
 		player?.beginGeneratingPlaybackNotifications()
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(playbackStateDidChange),
+			name: .MPMusicPlayerControllerPlaybackStateDidChange,
+			object: player)
 		
-		reflectors.removeAll { $0.referencee == nil }
-		reflectors.forEach {
-			// Because before anyone called this method, `player` was `nil`.
-			$0.referencee?.reflectPlaybackStateFromNowOn()
-		}
+		reflectPlaybackStateEverywhere() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
 	}
+	@objc private func playbackStateDidChange() { reflectPlaybackStateEverywhere() }
 	
 	final func songInPlayer(context: NSManagedObjectContext) -> Song? {
 		guard let nowPlayingItem = player?.nowPlayingItem else {
@@ -67,6 +69,13 @@ final class Player { // This is a class and not a struct because it should end o
 	// MARK: - Private
 	
 	private var reflectors: [Weak<PlayerReflecting>] = []
+	
+	private func reflectPlaybackStateEverywhere() {
+		reflectors.removeAll { $0.referencee == nil }
+		reflectors.forEach {
+			$0.referencee?.reflectPlaybackState()
+		}
+	}
 	
 	deinit {
 		player?.endGeneratingPlaybackNotifications()

@@ -7,7 +7,7 @@
 
 import MediaPlayer
 
-@objc
+@objc // “generic class 'Weak' requires that 'PlayerReflecting' be a class type”
 @MainActor
 protocol PlayerReflecting: AnyObject {
 	// Conforming types must …
@@ -24,13 +24,6 @@ extension PlayerReflecting {
 		reflectPlaybackState()
 		
 		Player.shared.addReflectorOnce(weaklyReferencing: self)
-		if MPMediaLibrary.authorizationStatus() == .authorized {
-			NotificationCenter.default.addObserverOnce(
-				self,
-				selector: #selector(reflectPlaybackState),
-				name: .MPMusicPlayerControllerPlaybackStateDidChange,
-				object: player)
-		}
 	}
 }
 
