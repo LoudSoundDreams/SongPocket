@@ -48,14 +48,14 @@ extension SongsTVC {
 		}()
 		
 		let playSong = UIAlertAction(
-			title: "Play Song", // TO DO: Localize
+			title: "Play Song", // L2DO
 			style: .default
 		) { _ in
 			self.playSelectedSong()
 			deselectSelectedSong()
 		}
 		let prependSong = UIAlertAction(
-			title: "Play Next", // TO DO: Localize
+			title: "Play Next", // L2DO
 			style: .default
 		) { _ in
 			self.prependSelectedSong()
@@ -63,7 +63,7 @@ extension SongsTVC {
 		}
 		let appendSong = UIAlertAction(
 			title: Enabling.wholeAlbumButtons
-			? "Play Last" // TO DO: Localize
+			? "Play Last" // L2DO
 			: LocalizedString.queueSong,
 			style: .default
 		) { _ in

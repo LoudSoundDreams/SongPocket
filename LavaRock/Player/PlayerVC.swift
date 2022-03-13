@@ -29,6 +29,8 @@ final class PlayerVC: UIViewController {
 		
 		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons
+		
+		view.backgroundColor = .systemFill // TO DO: Delete
 	}
 }
 
