@@ -28,7 +28,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Then" id="BHe-8l-f1x" customClass="ThenModeCell" customModule="LavaRock" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Then" id="BHe-8l-f1x" customClass="ThenModeCell" customModule="LavaRock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="88.333333969116211" width="375" height="53.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BHe-8l-f1x" id="Vj0-Hn-8GQ">
@@ -77,7 +77,7 @@
                                             <outlet property="segmentedControl" destination="w73-VW-rxT" id="sdu-5D-EkK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Last" id="y8x-Qi-Yd7" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Last" id="y8x-Qi-Yd7" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="141.66666603088379" width="375" height="53.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y8x-Qi-Yd7" id="zEd-US-8gC">
@@ -125,7 +125,7 @@
                                             <outlet property="segmentedControl" destination="1zE-7R-5yX" id="BKw-tG-ICx"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Then, Trailing" id="Ism-Yk-eE9" customClass="ThenModeCell" customModule="LavaRock" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Then, Trailing" id="Ism-Yk-eE9" customClass="ThenModeCell" customModule="LavaRock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="194.99999809265137" width="375" height="53.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ism-Yk-eE9" id="cXx-1p-wtE">
@@ -174,7 +174,7 @@
                                             <outlet property="segmentedControl" destination="0eY-yZ-g7p" id="mSG-VI-zYu"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Last, Trailing" id="Pau-wZ-8og" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Last, Trailing" id="Pau-wZ-8og" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="248.33333015441895" width="375" height="53.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Pau-wZ-8og" id="4RJ-s3-tsG">
