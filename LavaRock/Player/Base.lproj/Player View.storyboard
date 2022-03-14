@@ -28,7 +28,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Then" id="BHe-8l-f1x" customClass="ThenModeCell" customModule="LavaRock" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Next Mode" id="BHe-8l-f1x" customClass="NextModeCell" customModule="LavaRock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="88.333333969116211" width="375" height="53.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BHe-8l-f1x" id="Vj0-Hn-8GQ">
@@ -36,15 +36,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="w73-VW-rxT">
-                                                    <rect key="frame" x="62" y="11.333333333333336" width="297" height="32"/>
+                                                    <rect key="frame" x="59.666666666666657" y="11.333333333333336" width="299.33333333333337" height="32"/>
                                                     <segments>
                                                         <segment title="" image="repeat.1" catalog="system"/>
                                                         <segment title="" image="pause.fill" catalog="system"/>
                                                         <segment title="" image="play.fill" catalog="system"/>
                                                     </segments>
                                                 </segmentedControl>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZk-q7-vFn">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="34" height="16.999999999999996"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZk-q7-vFn">
+                                                    <rect key="frame" x="16" y="18.333333333333332" width="31.666666666666671" height="16.999999999999996"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -77,7 +77,7 @@
                                             <outlet property="segmentedControl" destination="w73-VW-rxT" id="sdu-5D-EkK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Last" id="y8x-Qi-Yd7" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Last Mode" id="y8x-Qi-Yd7" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="141.66666603088379" width="375" height="53.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y8x-Qi-Yd7" id="zEd-US-8gC">
@@ -85,7 +85,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1zE-7R-5yX">
-                                                    <rect key="frame" x="62" y="11.333333333333336" width="297" height="32"/>
+                                                    <rect key="frame" x="59.666666666666657" y="11.333333333333336" width="299.33333333333337" height="32"/>
                                                     <segments>
                                                         <segment title="" image="repeat" catalog="system"/>
                                                         <segment title="" image="stop.fill" catalog="system"/>
@@ -97,8 +97,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zgc-US-Qv2">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="34" height="16.999999999999996"/>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zgc-US-Qv2">
+                                                    <rect key="frame" x="16" y="18.333333333333332" width="31.666666666666671" height="16.999999999999996"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <color key="textColor" systemColor="systemRedColor"/>
                                                     <nil key="highlightedColor"/>
@@ -123,103 +123,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="segmentedControl" destination="1zE-7R-5yX" id="BKw-tG-ICx"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Then, Trailing" id="Ism-Yk-eE9" customClass="ThenModeCell" customModule="LavaRock" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="194.99999809265137" width="375" height="53.333332061767578"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ism-Yk-eE9" id="cXx-1p-wtE">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53.333332061767578"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="0eY-yZ-g7p">
-                                                    <rect key="frame" x="62" y="11.333333333333336" width="297" height="32"/>
-                                                    <segments>
-                                                        <segment title="" image="repeat.1" catalog="system"/>
-                                                        <segment title="" image="pause.fill" catalog="system"/>
-                                                        <segment title="" image="play.fill" catalog="system"/>
-                                                    </segments>
-                                                </segmentedControl>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJC-3a-eqp">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="34" height="16.999999999999996"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNp-D6-VBF">
-                                                    <rect key="frame" x="21" y="18.333333333333332" width="29" height="16.999999999999996"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <color key="textColor" systemColor="systemRedColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="bNp-D6-VBF" firstAttribute="trailing" secondItem="DJC-3a-eqp" secondAttribute="trailing" id="0gq-o7-dO8"/>
-                                                <constraint firstItem="DJC-3a-eqp" firstAttribute="centerY" secondItem="0eY-yZ-g7p" secondAttribute="centerY" id="22N-dr-2CX"/>
-                                                <constraint firstItem="0eY-yZ-g7p" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cXx-1p-wtE" secondAttribute="topMargin" id="3k4-y1-8Ed"/>
-                                                <constraint firstItem="0eY-yZ-g7p" firstAttribute="centerY" secondItem="cXx-1p-wtE" secondAttribute="centerY" id="9pS-hE-g6C"/>
-                                                <constraint firstItem="bNp-D6-VBF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cXx-1p-wtE" secondAttribute="leadingMargin" id="J15-sf-IBa"/>
-                                                <constraint firstItem="0eY-yZ-g7p" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="cXx-1p-wtE" secondAttribute="bottomMargin" id="Jjy-Ob-e5M"/>
-                                                <constraint firstItem="bNp-D6-VBF" firstAttribute="leading" secondItem="cXx-1p-wtE" secondAttribute="leadingMargin" priority="250" id="OTy-k5-juc"/>
-                                                <constraint firstItem="bNp-D6-VBF" firstAttribute="centerY" secondItem="DJC-3a-eqp" secondAttribute="centerY" id="PQ7-7R-9rn"/>
-                                                <constraint firstItem="DJC-3a-eqp" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="cXx-1p-wtE" secondAttribute="bottomMargin" id="avo-8Y-dLD"/>
-                                                <constraint firstItem="0eY-yZ-g7p" firstAttribute="trailing" secondItem="cXx-1p-wtE" secondAttribute="trailingMargin" id="cdu-Tr-2l7"/>
-                                                <constraint firstItem="DJC-3a-eqp" firstAttribute="leading" secondItem="cXx-1p-wtE" secondAttribute="leadingMargin" priority="250" id="cpT-4m-PUU"/>
-                                                <constraint firstItem="DJC-3a-eqp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cXx-1p-wtE" secondAttribute="topMargin" id="eQb-nQ-mFa"/>
-                                                <constraint firstItem="0eY-yZ-g7p" firstAttribute="leading" secondItem="DJC-3a-eqp" secondAttribute="trailing" constant="12" id="r5u-A8-0PL"/>
-                                                <constraint firstItem="DJC-3a-eqp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cXx-1p-wtE" secondAttribute="leadingMargin" id="szZ-DE-cdW"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="segmentedControl" destination="0eY-yZ-g7p" id="mSG-VI-zYu"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Last, Trailing" id="Pau-wZ-8og" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="248.33333015441895" width="375" height="53.333332061767578"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Pau-wZ-8og" id="4RJ-s3-tsG">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53.333332061767578"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mNV-GS-T0h">
-                                                    <rect key="frame" x="62" y="11.333333333333336" width="297" height="32"/>
-                                                    <segments>
-                                                        <segment title="" image="repeat" catalog="system"/>
-                                                        <segment title="" image="stop.fill" catalog="system"/>
-                                                    </segments>
-                                                </segmentedControl>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qVB-5y-gvL">
-                                                    <rect key="frame" x="21" y="18.333333333333332" width="29" height="16.999999999999996"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Then" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cQT-Ul-jh2">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="34" height="16.999999999999996"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <color key="textColor" systemColor="systemRedColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="qVB-5y-gvL" firstAttribute="centerY" secondItem="mNV-GS-T0h" secondAttribute="centerY" id="0N6-Ny-FnU"/>
-                                                <constraint firstItem="qVB-5y-gvL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="4RJ-s3-tsG" secondAttribute="topMargin" id="0m0-C1-Vaq"/>
-                                                <constraint firstItem="cQT-Ul-jh2" firstAttribute="centerY" secondItem="qVB-5y-gvL" secondAttribute="centerY" id="3BJ-fT-cvj"/>
-                                                <constraint firstItem="qVB-5y-gvL" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="4RJ-s3-tsG" secondAttribute="bottomMargin" id="DAJ-ax-9MR"/>
-                                                <constraint firstItem="cQT-Ul-jh2" firstAttribute="leading" secondItem="4RJ-s3-tsG" secondAttribute="leadingMargin" priority="250" id="DLs-eq-o86"/>
-                                                <constraint firstItem="mNV-GS-T0h" firstAttribute="top" relation="greaterThanOrEqual" secondItem="4RJ-s3-tsG" secondAttribute="topMargin" id="EUw-Ee-WtM"/>
-                                                <constraint firstItem="mNV-GS-T0h" firstAttribute="leading" secondItem="qVB-5y-gvL" secondAttribute="trailing" constant="12" id="Grv-Cn-LQT"/>
-                                                <constraint firstItem="cQT-Ul-jh2" firstAttribute="trailing" secondItem="qVB-5y-gvL" secondAttribute="trailing" id="Jtd-Sx-ZRW"/>
-                                                <constraint firstItem="cQT-Ul-jh2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4RJ-s3-tsG" secondAttribute="leadingMargin" id="T2e-w4-mzt"/>
-                                                <constraint firstItem="qVB-5y-gvL" firstAttribute="leading" secondItem="4RJ-s3-tsG" secondAttribute="leadingMargin" priority="250" id="Zfc-GM-i9x"/>
-                                                <constraint firstItem="mNV-GS-T0h" firstAttribute="trailing" secondItem="4RJ-s3-tsG" secondAttribute="trailingMargin" id="hqc-J6-os8"/>
-                                                <constraint firstItem="mNV-GS-T0h" firstAttribute="centerY" secondItem="4RJ-s3-tsG" secondAttribute="centerY" id="mrm-mD-ccg"/>
-                                                <constraint firstItem="qVB-5y-gvL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4RJ-s3-tsG" secondAttribute="leadingMargin" id="pVA-V0-Yav"/>
-                                                <constraint firstItem="mNV-GS-T0h" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="4RJ-s3-tsG" secondAttribute="bottomMargin" id="seY-rU-dDX"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="segmentedControl" destination="mNV-GS-T0h" id="17J-lt-evG"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

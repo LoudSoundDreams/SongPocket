@@ -8,7 +8,7 @@
 import UIKit
 import MediaPlayer
 
-final class ThenModeCell: UITableViewCell {
+final class NextModeCell: UITableViewCell {
 	@IBOutlet var segmentedControl: UISegmentedControl!
 	
 	final override func awakeFromNib() {
@@ -56,7 +56,7 @@ final class ThenModeCell: UITableViewCell {
 }
 
 // TO DO: We don’t actually want to reflect playback state; we want to reflect whether the player is available, and if so, its repeat mode.
-extension ThenModeCell: PlayerReflecting {
+extension NextModeCell: PlayerReflecting {
 	final func reflectPlaybackState() {
 		guard let player = player else {
 			(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in

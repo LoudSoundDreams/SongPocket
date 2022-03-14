@@ -44,16 +44,16 @@ extension PlayerVC: PlaybackToolbarManaging {}
 
 extension PlayerVC: UITableViewDataSource {
 	private enum RowCase: CaseIterable {
-		case then
-		case last
+		case nextMode
+		case lastMode
 		case song
 		
 		init(rowIndex: Int) {
 			switch rowIndex {
 			case 0:
-				self = .then
+				self = .nextMode
 			case 1:
-				self = .last
+				self = .lastMode
 			default:
 				self = .song
 			}
@@ -72,16 +72,16 @@ extension PlayerVC: UITableViewDataSource {
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		switch RowCase(rowIndex: indexPath.row) {
-		case .then:
+		case .nextMode:
 			guard let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Then",
-				for: indexPath) as? ThenModeCell
+				withIdentifier: "Next Mode",
+				for: indexPath) as? NextModeCell
 			else { return UITableViewCell() }
 			
 			return cell
-		case .last:
+		case .lastMode:
 			guard let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Last",
+				withIdentifier: "Last Mode",
 				for: indexPath) as? LastModeCell
 			else { return UITableViewCell() }
 			
@@ -112,9 +112,9 @@ extension PlayerVC: UITableViewDelegate {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch RowCase(rowIndex: indexPath.row) {
-		case .then:
+		case .nextMode:
 			return nil
-		case .last:
+		case .lastMode:
 			return nil
 		case .song:
 			return indexPath
