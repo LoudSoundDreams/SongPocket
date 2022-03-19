@@ -12,7 +12,7 @@ struct SongQueue {
 	
 	static weak var tableView: UITableView? = nil
 	
-	private(set) static var songs: [Song] = [] {
+	private(set) static var contents: [Song] = [] {
 		didSet {
 			tableView?.reloadData()
 		}
@@ -22,22 +22,17 @@ struct SongQueue {
 		songs: [Song],
 		thenApplyTo player: MPMusicPlayerController
 	) {
-		self.songs = songs
+		contents = songs
 		
-		player.setQueue(
-			with: MPMediaItemCollection(
-				items: Self.songs.compactMap { $0.mpMediaItem() }))
+		player.setQueue(with: songs)
 	}
 	
 	static func append(
 		songs: [Song],
 		thenApplyTo player: MPMusicPlayerController
 	) {
-		self.songs.append(contentsOf: songs)
+		contents.append(contentsOf: songs)
 		
-		player.append(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(
-					items: songs.compactMap { $0.mpMediaItem() })))
+		player.appendToQueue(songs)
 	}
 }

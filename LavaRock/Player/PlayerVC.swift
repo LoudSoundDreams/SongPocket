@@ -64,7 +64,7 @@ extension PlayerVC: UITableViewDataSource {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return SongQueue.songs.count + (RowCase.allCases.count - 1)
+		return SongQueue.contents.count + (RowCase.allCases.count - 1)
 	}
 	
 	final func tableView(
@@ -93,8 +93,8 @@ extension PlayerVC: UITableViewDataSource {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Song in Queue", for: indexPath)
 		
 		var content = UIListContentConfiguration.cell()
-		let metadatum = SongQueue.songs[indexPath.row - 2].metadatum()
-//		let metadatum = SongQueue.songs[indexPath.row].metadatum()
+		let metadatum = SongQueue.contents[indexPath.row - 2].metadatum()
+//		let metadatum = SongQueue.contents[indexPath.row].metadatum()
 		content.image = metadatum?.artworkImage(
 			at: CGSize(width: 5, height: 5))
 		content.text = metadatum?.titleOnDisk
