@@ -21,11 +21,13 @@ extension SongsTVC {
 			tableView.deselectAllRows(animated: true)
 		}
 		
+		guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
+		
 		let playRestOfAlbum = UIAlertAction(
 			title: LocalizedString.playRestOfAlbum,
 			style: .default
 		) { _ in
-			self.playAlbumStartingAtSelectedSong()
+			self.playAlbumStartingAt(selectedIndexPath)
 			deselectSelectedSong()
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
@@ -34,7 +36,7 @@ extension SongsTVC {
 				title: LocalizedString.queueRestOfAlbum,
 				style: .default
 			) { _ in
-				self.appendAlbumStartingAtSelectedSong()
+				self.appendAlbumStartingAt(selectedIndexPath)
 				deselectSelectedSong()
 			}
 			if
@@ -51,14 +53,14 @@ extension SongsTVC {
 			title: "Play Song", // L2DO
 			style: .default
 		) { _ in
-			self.playSelectedSong()
+			self.playSong(at: selectedIndexPath)
 			deselectSelectedSong()
 		}
 		let prependSong = UIAlertAction(
 			title: "Play Next", // L2DO
 			style: .default
 		) { _ in
-			self.prependSelectedSong()
+			self.prependSong(at: selectedIndexPath)
 			deselectSelectedSong()
 		}
 		let appendSong = UIAlertAction(
@@ -67,7 +69,7 @@ extension SongsTVC {
 			: LocalizedString.queueSong,
 			style: .default
 		) { _ in
-			self.appendSelectedSong()
+			self.appendSong(at: selectedIndexPath)
 			deselectSelectedSong()
 		}
 		
@@ -98,19 +100,16 @@ extension SongsTVC {
 	
 	// MARK: Actions
 	
-	private func playAlbumStartingAtSelectedSong() {
-		guard
-			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let player = player
-		else { return }
+	private func playAlbumStartingAt(_ indexPath: IndexPath) {
+		guard let player = player else { return }
 		
 		if Enabling.playerScreen {
 			SongQueue.set(
-				songs: viewModel.itemsInGroup(startingAt: selectedIndexPath)
+				songs: viewModel.itemsInGroup(startingAt: indexPath)
 					.compactMap { $0 as? Song },
 				thenApplyTo: player)
 		} else {
-			player.setQueue(with: viewModel.itemsInGroup(startingAt: selectedIndexPath)
+			player.setQueue(with: viewModel.itemsInGroup(startingAt: indexPath)
 				.compactMap { $0 as? Song })
 		}
 		
@@ -121,20 +120,18 @@ extension SongsTVC {
 		player.play() // Calls `prepareToPlay` automatically
 	}
 	
-	private func appendAlbumStartingAtSelectedSong() {
-		guard
-			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let player = player
-		else { return }
+	private func appendAlbumStartingAt(_ indexPath: IndexPath) {
+		guard let player = player else { return }
 		
-		let chosenItems = viewModel.itemsInGroup(startingAt: selectedIndexPath)
+		let chosenSongs = viewModel.itemsInGroup(startingAt: indexPath)
+			.compactMap { $0 as? Song }
 		
 		if Enabling.playerScreen {
 			SongQueue.append(
-				songs: chosenItems.compactMap { $0 as? Song },
+				songs: chosenSongs,
 				thenApplyTo: player)
 		} else {
-			player.appendToQueue(chosenItems.compactMap { $0 as? Song })
+			player.appendToQueue(chosenSongs)
 		}
 		
 		player.repeatMode = .none
@@ -147,21 +144,20 @@ extension SongsTVC {
 		if Enabling.playerScreen {
 		} else {
 			if
-				let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
+				let selectedSong = viewModel.itemNonNil(at: indexPath) as? Song,
 				let selectedMetadata = selectedSong.metadatum()
 			{
 				let selectedTitle = selectedMetadata.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 				presentWillPlayLaterAlertIfShould(
 					titleOfSelectedSong: selectedTitle,
-					numberOfSongsEnqueued: chosenItems.count)
+					numberOfSongsEnqueued: chosenSongs.count)
 			}
 		}
 	}
 	
-	private func playSelectedSong() {
+	private func playSong(at indexPath: IndexPath) {
 		guard
-			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
+			let selectedSong = viewModel.itemNonNil(at: indexPath) as? Song,
 			let player = player
 		else { return }
 		
@@ -173,10 +169,9 @@ extension SongsTVC {
 		player.play()
 	}
 	
-	private func prependSelectedSong() {
+	private func prependSong(at indexPath: IndexPath) {
 		guard
-			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
+			let selectedSong = viewModel.itemNonNil(at: indexPath) as? Song,
 			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem,
 			let player = player
 		else { return }
@@ -189,10 +184,9 @@ extension SongsTVC {
 					items: [selectedMediaItem])))
 	}
 	
-	private func appendSelectedSong() {
+	private func appendSong(at indexPath: IndexPath) {
 		guard
-			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
+			let selectedSong = viewModel.itemNonNil(at: indexPath) as? Song,
 			let player = player
 		else { return }
 		
