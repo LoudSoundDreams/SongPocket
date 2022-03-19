@@ -46,10 +46,7 @@ extension SongsTVC {
 				self.append(selectedSongAndBelow, using: player)
 				deselectSelectedSong()
 			}
-			if
-				let lastSongInGroup = viewModel.group(forSection: selectedIndexPath.section).items.last,
-				song == lastSongInGroup
-			{
+			if selectedSongAndBelow.count == 1 {
 				result.isEnabled = false
 			}
 			return result
@@ -59,7 +56,7 @@ extension SongsTVC {
 			title: "Play Song", // L2DO
 			style: .default
 		) { _ in
-			self.play(selectedSong, using: player)
+			self.play([selectedSong], using: player)
 			deselectSelectedSong()
 		}
 		let prependSong = UIAlertAction(
@@ -75,7 +72,7 @@ extension SongsTVC {
 			: LocalizedString.queueSong,
 			style: .default
 		) { _ in
-			self.append(selectedSong, using: player)
+			self.append([selectedSong], using: player)
 			deselectSelectedSong()
 		}
 		
@@ -158,18 +155,6 @@ extension SongsTVC {
 		}
 	}
 	
-	private func play(
-		_ song: Song,
-		using player: MPMusicPlayerController
-	) {
-		player.setQueue(with: [song])
-		
-		player.repeatMode = .none
-		player.shuffleMode = .off
-		
-		player.play()
-	}
-	
 	private func prepend(
 		_ song: Song,
 		using player: MPMusicPlayerController
@@ -184,35 +169,6 @@ extension SongsTVC {
 			MPMusicPlayerMediaItemQueueDescriptor(
 				itemCollection: MPMediaItemCollection(
 					items: [selectedMediaItem])))
-	}
-	
-	private func append(
-		_ song: Song,
-		using player: MPMusicPlayerController
-	) {
-		if Enabling.playerScreen {
-			SongQueue.append(
-				songs: [song],
-				thenApplyTo: player)
-		} else {
-			player.appendToQueue([song])
-		}
-		
-		player.repeatMode = .none
-		
-		if player.playbackState != .playing {
-			player.prepareToPlay()
-		}
-		
-		if Enabling.playerScreen {
-		} else {
-			presentWillPlayLaterAlertIfShould(
-				titleOfSelectedSong: {
-					let mediaItem = song.metadatum() as? MPMediaItem
-					return mediaItem?.title ?? SongMetadatumExtras.unknownTitlePlaceholder
-				}(),
-				numberOfSongsEnqueued: 1)
-		}
 	}
 	
 	// MARK: Explaining Enqueue Actions
