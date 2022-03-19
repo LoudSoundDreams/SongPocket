@@ -110,17 +110,8 @@ extension SongsTVC {
 					.compactMap { $0 as? Song },
 				thenApplyTo: player)
 		} else {
-			player.setQueue(
-				with: MPMediaItemCollection(
-					items: {
-						let chosenSongs = viewModel.itemsInGroup(startingAt: selectedIndexPath)
-							.compactMap { $0 as? Song }
-						os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
-						defer {
-							os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
-						}
-						return chosenSongs.compactMap { $0.mpMediaItem() }
-					}()))
+			player.setQueue(with: viewModel.itemsInGroup(startingAt: selectedIndexPath)
+				.compactMap { $0 as? Song })
 		}
 		
 		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
@@ -143,17 +134,7 @@ extension SongsTVC {
 				songs: chosenItems.compactMap { $0 as? Song },
 				thenApplyTo: player)
 		} else {
-			player.append(
-				MPMusicPlayerMediaItemQueueDescriptor(
-					itemCollection: MPMediaItemCollection(
-						items: {
-							let chosenSongs = chosenItems.compactMap { $0 as? Song }
-							os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
-							defer {
-								os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
-							}
-							return chosenSongs.compactMap { $0.mpMediaItem() }
-						}())))
+			player.appendToQueue(chosenItems.compactMap { $0 as? Song })
 		}
 		
 		player.repeatMode = .none
@@ -181,13 +162,10 @@ extension SongsTVC {
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
-			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem,
 			let player = player
 		else { return }
 		
-		player.setQueue(
-			with: MPMediaItemCollection(
-				items: [selectedMediaItem]))
+		player.setQueue(with: [selectedSong])
 		
 		player.repeatMode = .none
 		player.shuffleMode = .off
@@ -215,7 +193,6 @@ extension SongsTVC {
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
 			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
-			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem,
 			let player = player
 		else { return }
 		
@@ -224,10 +201,7 @@ extension SongsTVC {
 				songs: [selectedSong],
 				thenApplyTo: player)
 		} else {
-			player.append(
-				MPMusicPlayerMediaItemQueueDescriptor(
-					itemCollection: MPMediaItemCollection(
-						items: [selectedMediaItem])))
+			player.appendToQueue([selectedSong])
 		}
 		
 		player.repeatMode = .none
@@ -236,11 +210,13 @@ extension SongsTVC {
 			player.prepareToPlay()
 		}
 		
-		let selectedTitle = selectedMediaItem.title ?? SongMetadatumExtras.unknownTitlePlaceholder
 		if Enabling.playerScreen {
 		} else {
 			presentWillPlayLaterAlertIfShould(
-				titleOfSelectedSong: selectedTitle,
+				titleOfSelectedSong: {
+					let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem
+					return selectedMediaItem?.title ?? SongMetadatumExtras.unknownTitlePlaceholder
+				}(),
 				numberOfSongsEnqueued: 1)
 		}
 	}
