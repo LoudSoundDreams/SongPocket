@@ -23,6 +23,7 @@ extension SongsTVC {
 		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
+			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
 			let player = player
 		else { return }
 		
@@ -47,7 +48,6 @@ extension SongsTVC {
 				deselectSelectedSong()
 			}
 			if
-				let selectedIndexPath = tableView.indexPathForSelectedRow,
 				let lastSongInGroup = viewModel.group(forSection: selectedIndexPath.section).items.last,
 				song == lastSongInGroup
 			{
@@ -60,18 +60,14 @@ extension SongsTVC {
 			title: "Play Song", // L2DO
 			style: .default
 		) { _ in
-			self.playSong(
-				at: selectedIndexPath,
-				using: player)
+			self.play(selectedSong, using: player)
 			deselectSelectedSong()
 		}
 		let prependSong = UIAlertAction(
 			title: "Play Next", // L2DO
 			style: .default
 		) { _ in
-			self.prependSong(
-				at: selectedIndexPath,
-				using: player)
+			self.prepend(selectedSong, using: player)
 			deselectSelectedSong()
 		}
 		let appendSong = UIAlertAction(
@@ -80,9 +76,7 @@ extension SongsTVC {
 			: LocalizedString.queueSong,
 			style: .default
 		) { _ in
-			self.appendSong(
-				at: selectedIndexPath,
-				using: player)
+			self.append(selectedSong, using: player)
 			deselectSelectedSong()
 		}
 		
@@ -170,15 +164,11 @@ extension SongsTVC {
 		}
 	}
 	
-	private func playSong(
-		at indexPath: IndexPath,
+	private func play(
+		_ song: Song,
 		using player: MPMusicPlayerController
 	) {
-		guard
-			let selectedSong = viewModel.itemNonNil(at: indexPath) as? Song
-		else { return }
-		
-		player.setQueue(with: [selectedSong])
+		player.setQueue(with: [song])
 		
 		player.repeatMode = .none
 		player.shuffleMode = .off
@@ -186,13 +176,12 @@ extension SongsTVC {
 		player.play()
 	}
 	
-	private func prependSong(
-		at indexPath: IndexPath,
+	private func prepend(
+		_ song: Song,
 		using player: MPMusicPlayerController
 	) {
 		guard
-			let selectedSong = viewModel.itemNonNil(at: indexPath) as? Song,
-			let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem
+			let selectedMediaItem = song.metadatum() as? MPMediaItem
 		else { return }
 		
 		player.repeatMode = .none
@@ -203,20 +192,16 @@ extension SongsTVC {
 					items: [selectedMediaItem])))
 	}
 	
-	private func appendSong(
-		at indexPath: IndexPath,
+	private func append(
+		_ song: Song,
 		using player: MPMusicPlayerController
 	) {
-		guard
-			let selectedSong = viewModel.itemNonNil(at: indexPath) as? Song
-		else { return }
-		
 		if Enabling.playerScreen {
 			SongQueue.append(
-				songs: [selectedSong],
+				songs: [song],
 				thenApplyTo: player)
 		} else {
-			player.appendToQueue([selectedSong])
+			player.appendToQueue([song])
 		}
 		
 		player.repeatMode = .none
@@ -229,8 +214,8 @@ extension SongsTVC {
 		} else {
 			presentWillPlayLaterAlertIfShould(
 				titleOfSelectedSong: {
-					let selectedMediaItem = selectedSong.metadatum() as? MPMediaItem
-					return selectedMediaItem?.title ?? SongMetadatumExtras.unknownTitlePlaceholder
+					let mediaItem = song.metadatum() as? MPMediaItem
+					return mediaItem?.title ?? SongMetadatumExtras.unknownTitlePlaceholder
 				}(),
 				numberOfSongsEnqueued: 1)
 		}
