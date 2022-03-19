@@ -27,13 +27,14 @@ extension SongsTVC {
 			let player = player
 		else { return }
 		
+		let selectedSongAndBelow: [Song] = viewModel
+			.itemsInGroup(startingAt: selectedIndexPath)
+			.compactMap { $0 as? Song }
 		let playRestOfAlbum = UIAlertAction(
 			title: LocalizedString.playRestOfAlbum,
 			style: .default
 		) { _ in
-			self.playAlbumStartingAt(
-				selectedIndexPath,
-				using: player)
+			self.play(selectedSongAndBelow, using: player)
 			deselectSelectedSong()
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
@@ -42,9 +43,7 @@ extension SongsTVC {
 				title: LocalizedString.queueRestOfAlbum,
 				style: .default
 			) { _ in
-				self.appendAlbumStartingAt(
-					selectedIndexPath,
-					using: player)
+				self.append(selectedSongAndBelow, using: player)
 				deselectSelectedSong()
 			}
 			if
@@ -107,18 +106,16 @@ extension SongsTVC {
 	
 	// MARK: Actions
 	
-	private func playAlbumStartingAt(
-		_ indexPath: IndexPath,
+	private func play(
+		_ songs: [Song],
 		using player: MPMusicPlayerController
 	) {
 		if Enabling.playerScreen {
 			SongQueue.set(
-				songs: viewModel.itemsInGroup(startingAt: indexPath)
-					.compactMap { $0 as? Song },
+				songs: songs,
 				thenApplyTo: player)
 		} else {
-			player.setQueue(with: viewModel.itemsInGroup(startingAt: indexPath)
-				.compactMap { $0 as? Song })
+			player.setQueue(with: songs)
 		}
 		
 		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
@@ -128,19 +125,16 @@ extension SongsTVC {
 		player.play() // Calls `prepareToPlay` automatically
 	}
 	
-	private func appendAlbumStartingAt(
-		_ indexPath: IndexPath,
+	private func append(
+		_ songs: [Song],
 		using player: MPMusicPlayerController
 	) {
-		let chosenSongs = viewModel.itemsInGroup(startingAt: indexPath)
-			.compactMap { $0 as? Song }
-		
 		if Enabling.playerScreen {
 			SongQueue.append(
-				songs: chosenSongs,
+				songs: songs,
 				thenApplyTo: player)
 		} else {
-			player.appendToQueue(chosenSongs)
+			player.appendToQueue(songs)
 		}
 		
 		player.repeatMode = .none
@@ -153,13 +147,13 @@ extension SongsTVC {
 		if Enabling.playerScreen {
 		} else {
 			if
-				let selectedSong = viewModel.itemNonNil(at: indexPath) as? Song,
+				let selectedSong = songs.first,
 				let selectedMetadata = selectedSong.metadatum()
 			{
 				let selectedTitle = selectedMetadata.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 				presentWillPlayLaterAlertIfShould(
 					titleOfSelectedSong: selectedTitle,
-					numberOfSongsEnqueued: chosenSongs.count)
+					numberOfSongsEnqueued: songs.count)
 			}
 		}
 	}
