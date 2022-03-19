@@ -415,13 +415,13 @@
 			path = LavaRockUITests;
 			sourceTree = "<group>";
 		};
-		0774C88627CBECA300230F22 /* Custom */ = {
+		0774C88627CBECA300230F22 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				07CD864C27CAA3CC00286E6A /* Weak.swift */,
 				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
 			);
-			path = Custom;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		0777D6832756880300BA0C87 /* Multiple Levels */ = {
@@ -436,15 +436,14 @@
 			path = "Multiple Levels";
 			sourceTree = "<group>";
 		};
-		07AB7029273C9A52002B5098 /* Basic */ = {
+		07AB7029273C9A52002B5098 /* Standard Library */ = {
 			isa = PBXGroup;
 			children = (
 				07E0BBD6276567490010117E /* String.swift */,
 				078FDD0E2638872100779AF2 /* Array.swift */,
 				07619EE427342FC9003F95AE /* CollectionDifference.swift */,
-				076B4DEC27738FF4004B523D /* OSLog.swift */,
 			);
-			path = Basic;
+			path = "Standard Library";
 			sourceTree = "<group>";
 		};
 		07DC1B1E24F33C5100AAEEDB /* Collections */ = {
@@ -529,11 +528,12 @@
 		07E0BBFE2765680C0010117E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				07AB7029273C9A52002B5098 /* Basic */,
+				07AB7029273C9A52002B5098 /* Standard Library */,
+				076B4DEC27738FF4004B523D /* OSLog.swift */,
 				07E0BBD8276567760010117E /* Foundation */,
 				07E0BBE12765678F0010117E /* UIKit */,
 				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
-				0774C88627CBECA300230F22 /* Custom */,
+				0774C88627CBECA300230F22 /* Helpers */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
