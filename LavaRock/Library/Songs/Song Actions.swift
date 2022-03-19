@@ -178,9 +178,7 @@ extension SongsTVC {
 		
 		player.setQueue(
 			with: MPMediaItemCollection(
-				items: [selectedMediaItem]
-			)
-		)
+				items: [selectedMediaItem]))
 		
 		player.repeatMode = .none
 		player.shuffleMode = .off
@@ -201,10 +199,7 @@ extension SongsTVC {
 		player.prepend(
 			MPMusicPlayerMediaItemQueueDescriptor(
 				itemCollection: MPMediaItemCollection(
-					items: [selectedMediaItem]
-				)
-			)
-		)
+					items: [selectedMediaItem])))
 	}
 	
 	private func appendSelectedSong() {
@@ -218,10 +213,7 @@ extension SongsTVC {
 		player.append(
 			MPMusicPlayerMediaItemQueueDescriptor(
 				itemCollection: MPMediaItemCollection(
-					items: [selectedMediaItem]
-				)
-			)
-		)
+					items: [selectedMediaItem])))
 		
 		player.repeatMode = .none
 		
