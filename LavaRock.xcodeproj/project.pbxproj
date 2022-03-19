@@ -54,6 +54,8 @@
 		076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C024B42E3F0033E3CC /* SongsTVC.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
+		076F1C0027E66D9D00220C2B /* MPMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1BFF27E66D9D00220C2B /* MPMediaItem.swift */; };
+		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
 		0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
@@ -188,6 +190,8 @@
 		076830C024B42E3F0033E3CC /* SongsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsTVC.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
+		076F1BFF27E66D9D00220C2B /* MPMediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMediaItem.swift; sourceTree = "<group>"; };
+		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUserDefaultsKey.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
@@ -416,6 +420,15 @@
 			path = LavaRockUITests;
 			sourceTree = "<group>";
 		};
+		076F1C0327E66DB600220C2B /* MediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				076F1BFF27E66D9D00220C2B /* MPMediaItem.swift */,
+				076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */,
+			);
+			path = MediaPlayer;
+			sourceTree = "<group>";
+		};
 		0774C88627CBECA300230F22 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -534,6 +547,7 @@
 				07E0BBD8276567760010117E /* Foundation */,
 				07E0BBE12765678F0010117E /* UIKit */,
 				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
+				076F1C0327E66DB600220C2B /* MediaPlayer */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -749,6 +763,7 @@
 				0781F1FA25991B3300781CF8 /* OptionsTVC - UITableView.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
+				076F1C0027E66D9D00220C2B /* MPMediaItem.swift in Sources */,
 				07267A2025537C5800C914A3 /* Player.swift in Sources */,
 				07E0BBE0276567760010117E /* UserDefaults.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* mergeChanges.swift in Sources */,
@@ -769,6 +784,7 @@
 				07622F1427DE439D00B953EA /* Player - Views.swift in Sources */,
 				07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */,
 				07E0BBF72765678F0010117E /* UIMenu.swift in Sources */,
+				076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */,
 				0708201D275BEE1C00F48D13 /* Lighting.swift in Sources */,
