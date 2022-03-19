@@ -386,7 +386,8 @@
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				075218A1257C498D0077AE9B /* LocalizedString.swift */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
-				07E0BBFE2765680C0010117E /* Helpers */,
+				07E0BBFE2765680C0010117E /* Extensions */,
+				0774C88627CBECA300230F22 /* Helpers */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				0748AEAF24F394F9000FBC61 /* Features */,
 				07E0BBFF276569480010117E /* General UI */,
@@ -525,7 +526,7 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
-		07E0BBFE2765680C0010117E /* Helpers */ = {
+		07E0BBFE2765680C0010117E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				07AB7029273C9A52002B5098 /* Standard Library */,
@@ -533,9 +534,8 @@
 				07E0BBD8276567760010117E /* Foundation */,
 				07E0BBE12765678F0010117E /* UIKit */,
 				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
-				0774C88627CBECA300230F22 /* Helpers */,
 			);
-			path = Helpers;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		07E0BBFF276569480010117E /* General UI */ = {
