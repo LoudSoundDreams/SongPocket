@@ -138,17 +138,23 @@ extension SongsTVC {
 		
 		let chosenItems = viewModel.itemsInGroup(startingAt: selectedIndexPath)
 		
-		player.append(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(
-					items: {
-						let chosenSongs = chosenItems.compactMap { $0 as? Song }
-						os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
-						defer {
-							os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
-						}
-						return chosenSongs.compactMap { $0.mpMediaItem() }
-					}())))
+		if Enabling.playerScreen {
+			SongQueue.append(
+				songs: chosenItems.compactMap { $0 as? Song },
+				thenApplyTo: player)
+		} else {
+			player.append(
+				MPMusicPlayerMediaItemQueueDescriptor(
+					itemCollection: MPMediaItemCollection(
+						items: {
+							let chosenSongs = chosenItems.compactMap { $0 as? Song }
+							os_signpost(.begin, log: .songsView, name: "Get chosen MPMediaItems")
+							defer {
+								os_signpost(.end, log: .songsView, name: "Get chosen MPMediaItems")
+							}
+							return chosenSongs.compactMap { $0.mpMediaItem() }
+						}())))
+		}
 		
 		player.repeatMode = .none
 		
@@ -157,14 +163,17 @@ extension SongsTVC {
 			player.prepareToPlay()
 		}
 		
-		if
-			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
-			let selectedMetadata = selectedSong.metadatum()
-		{
-			let selectedTitle = selectedMetadata.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
-			presentWillPlayLaterAlertIfShould(
-				titleOfSelectedSong: selectedTitle,
-				numberOfSongsEnqueued: chosenItems.count)
+		if Enabling.playerScreen {
+		} else {
+			if
+				let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
+				let selectedMetadata = selectedSong.metadatum()
+			{
+				let selectedTitle = selectedMetadata.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+				presentWillPlayLaterAlertIfShould(
+					titleOfSelectedSong: selectedTitle,
+					numberOfSongsEnqueued: chosenItems.count)
+			}
 		}
 	}
 	
@@ -210,10 +219,16 @@ extension SongsTVC {
 			let player = player
 		else { return }
 		
-		player.append(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(
-					items: [selectedMediaItem])))
+		if Enabling.playerScreen {
+			SongQueue.append(
+				songs: [selectedSong],
+				thenApplyTo: player)
+		} else {
+			player.append(
+				MPMusicPlayerMediaItemQueueDescriptor(
+					itemCollection: MPMediaItemCollection(
+						items: [selectedMediaItem])))
+		}
 		
 		player.repeatMode = .none
 		
@@ -222,9 +237,12 @@ extension SongsTVC {
 		}
 		
 		let selectedTitle = selectedMediaItem.title ?? SongMetadatumExtras.unknownTitlePlaceholder
-		presentWillPlayLaterAlertIfShould(
-			titleOfSelectedSong: selectedTitle,
-			numberOfSongsEnqueued: 1)
+		if Enabling.playerScreen {
+		} else {
+			presentWillPlayLaterAlertIfShould(
+				titleOfSelectedSong: selectedTitle,
+				numberOfSongsEnqueued: 1)
+		}
 	}
 	
 	// MARK: Explaining Enqueue Actions

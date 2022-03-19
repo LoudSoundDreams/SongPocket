@@ -28,4 +28,16 @@ struct SongQueue {
 			with: MPMediaItemCollection(
 				items: Self.songs.compactMap { $0.mpMediaItem() }))
 	}
+	
+	static func append(
+		songs: [Song],
+		thenApplyTo player: MPMusicPlayerController
+	) {
+		self.songs.append(contentsOf: songs)
+		
+		player.append(
+			MPMusicPlayerMediaItemQueueDescriptor(
+				itemCollection: MPMediaItemCollection(
+					items: songs.compactMap { $0.mpMediaItem() })))
+	}
 }
