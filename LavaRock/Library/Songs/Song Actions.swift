@@ -46,7 +46,9 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		if selectedSongAndBelow.count == 1 {
-			playRestOfAlbum.isEnabled = false
+			if Enabling.wholeAlbumButtons {
+				playRestOfAlbum.isEnabled = false
+			}
 			appendRestOfAlbum.isEnabled = false
 		}
 		
@@ -74,19 +76,15 @@ extension SongsTVC {
 			message: nil,
 			preferredStyle: .actionSheet)
 		
-		if Enabling.wholeAlbumButtons {
-			actionSheet.addAction(playRestOfAlbum)
-			actionSheet.addAction(appendRestOfAlbum)
-			actionSheet.addAction(playSong)
-			actionSheet.addAction(appendSong)
-		} else {
-			actionSheet.addAction(playRestOfAlbum)
-			actionSheet.addAction(appendRestOfAlbum)
-			actionSheet.addAction(appendSong)
-		}
-		actionSheet.addAction(cancel)
-		
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
+		
+		actionSheet.addAction(playRestOfAlbum)
+		actionSheet.addAction(appendRestOfAlbum)
+		if Enabling.wholeAlbumButtons {
+			actionSheet.addAction(playSong)
+		}
+		actionSheet.addAction(appendSong)
+		actionSheet.addAction(cancel)
 		
 		present(actionSheet, animated: true)
 	}
