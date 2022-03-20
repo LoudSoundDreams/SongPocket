@@ -83,18 +83,11 @@ final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 			let player = Player.shared.player
 		else { return }
 		
+		let songs = album.songs(sorted: true)
 		if Enabling.playerScreen {
-			SongQueue.set(
-				songs: album.songs(sorted: true),
-				thenApplyTo: player)
-		} else {
-			player.setQueue(with: album.songs(sorted: true))
+			SongQueue.contents = songs
 		}
-		
-		player.repeatMode = .none
-		player.shuffleMode = .off
-		
-		player.play()
+		player.play(songs)
 	}
 	
 	@IBAction func shuffleAlbum(_ sender: UIButton) {
@@ -103,21 +96,12 @@ final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 			let player = Player.shared.player
 		else { return }
 		
+		let songs = album.songs(sorted: true)
+			.inAnyOtherOrder()
 		if Enabling.playerScreen {
-			SongQueue.set(
-				songs: album.songs(sorted: true)
-					.inAnyOtherOrder(),
-				thenApplyTo: player)
-		} else {
-			player.setQueue(
-				with: album.songs(sorted: true)
-					.inAnyOtherOrder())
+			SongQueue.contents = songs
 		}
-		
-		player.repeatMode = .none
-		player.shuffleMode = .off
-		
-		player.play()
+		player.play(songs)
 	}
 }
 

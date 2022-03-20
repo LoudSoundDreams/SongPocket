@@ -8,16 +8,15 @@
 import MediaPlayer
 
 extension MPMusicPlayerController {
-	func setQueue(with songs: [Song]) {
+	func play(_ songs: [Song]) {
 		setQueue(
 			with: MPMediaItemCollection(
 				items: songs.compactMap { $0.mpMediaItem() }))
-	}
-	
-	func appendToQueue(_ songs: [Song]) {
-		append(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(
-					items: songs.compactMap { $0.mpMediaItem() })))
+		
+		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
+		repeatMode = .none
+		shuffleMode = .off
+		
+		play() // Calls `prepareToPlay` automatically
 	}
 }

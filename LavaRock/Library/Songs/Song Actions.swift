@@ -34,7 +34,10 @@ extension SongsTVC {
 			title: LocalizedString.playRestOfAlbum,
 			style: .default
 		) { _ in
-			self.play(selectedSongAndBelow, using: player)
+			if Enabling.playerScreen {
+				SongQueue.contents = selectedSongAndBelow
+			}
+			player.play(selectedSongAndBelow)
 			deselectSelectedSong()
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
@@ -54,7 +57,10 @@ extension SongsTVC {
 			title: "Play Song", // L2DO
 			style: .default
 		) { _ in
-			self.play([selectedSong], using: player)
+			if Enabling.playerScreen {
+				SongQueue.contents = [selectedSong]
+			}
+			player.play([selectedSong])
 			deselectSelectedSong()
 		}
 		let appendSong = UIAlertAction(
@@ -93,36 +99,17 @@ extension SongsTVC {
 	
 	// MARK: Actions
 	
-	private func play(
-		_ songs: [Song],
-		using player: MPMusicPlayerController
-	) {
-		if Enabling.playerScreen {
-			SongQueue.set(
-				songs: songs,
-				thenApplyTo: player)
-		} else {
-			player.setQueue(with: songs)
-		}
-		
-		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
-		player.repeatMode = .none
-		player.shuffleMode = .off
-		
-		player.play() // Calls `prepareToPlay` automatically
-	}
-	
 	private func append(
 		_ songs: [Song],
 		using player: MPMusicPlayerController
 	) {
 		if Enabling.playerScreen {
-			SongQueue.append(
-				songs: songs,
-				thenApplyTo: player)
-		} else {
-			player.appendToQueue(songs)
+			SongQueue.contents.append(contentsOf: songs)
 		}
+		player.append(
+			MPMusicPlayerMediaItemQueueDescriptor(
+				itemCollection: MPMediaItemCollection(
+					items: songs.compactMap { $0.mpMediaItem() })))
 		
 		player.repeatMode = .none
 		
