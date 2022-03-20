@@ -83,12 +83,13 @@ final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 			let player = Player.shared.player
 		else { return }
 		
-		player.setQueue(
-			with: MPMediaItemCollection(
-				items: {
-					let songs = album.songs(sorted: true)
-					return songs.compactMap { $0.mpMediaItem() }
-				}()))
+		if Enabling.playerScreen {
+			SongQueue.set(
+				songs: album.songs(sorted: true),
+				thenApplyTo: player)
+		} else {
+			player.setQueue(with: album.songs(sorted: true))
+		}
 		
 		player.repeatMode = .none
 		player.shuffleMode = .off
@@ -102,13 +103,16 @@ final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 			let player = Player.shared.player
 		else { return }
 		
-		player.setQueue(
-			with: MPMediaItemCollection(
-				items: {
-					let songs = album.songs(sorted: true)
-					let mediaItems = songs.compactMap { $0.mpMediaItem() }
-					return mediaItems.inAnyOtherOrder()
-				}()))
+		if Enabling.playerScreen {
+			SongQueue.set(
+				songs: album.songs(sorted: true)
+					.inAnyOtherOrder(),
+				thenApplyTo: player)
+		} else {
+			player.setQueue(
+				with: album.songs(sorted: true)
+					.inAnyOtherOrder())
+		}
 		
 		player.repeatMode = .none
 		player.shuffleMode = .off
