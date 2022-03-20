@@ -36,17 +36,15 @@ final class AlbumArtworkCell: UITableViewCell {
 	}
 }
 
-final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
+final class AlbumInfoCell__withShuffleButton: UITableViewCell {
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var albumArtistLabel: UILabel!
 	@IBOutlet private var releaseDateLabel: UILabel!
-	@IBOutlet var playAlbumButton: UIButton! // TO DO: Add accessibility label
 	@IBOutlet var shuffleAlbumButton: UIButton! // TO DO: Add accessibility label
 	
 	final var album: Album? = nil {
 		didSet {
 			guard let album = album else {
-				playAlbumButton.isEnabled = false
 				shuffleAlbumButton.isEnabled = false
 				return
 			}
@@ -63,7 +61,6 @@ final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 				textStack.spacing = UIStackView.spacingUseSystem
 			}
 			
-			playAlbumButton.isEnabled = true
 			shuffleAlbumButton.isEnabled = (album.contents?.count ?? 0) >= 2
 		}
 	}
@@ -71,19 +68,9 @@ final class AlbumInfoCell__withWholeAlbumButtons: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		playAlbumButton.maximumContentSizeCategory = .extraExtraExtraLarge
 		shuffleAlbumButton.maximumContentSizeCategory = .extraExtraExtraLarge
 		
 		accessibilityUserInputLabels = [""]
-	}
-	
-	@IBAction func playAlbum(_ sender: UIButton) {
-		guard
-			let album = album,
-			let player = Player.shared.player
-		else { return }
-		
-		player.play(album.songs(sorted: true))
 	}
 	
 	@IBAction func shuffleAlbum(_ sender: UIButton) {

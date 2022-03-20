@@ -57,10 +57,10 @@ extension SongsTVC {
 				cell.configure(with: album)
 				return cell
 			case .albumInfo:
-				if Enabling.wholeAlbumButtons {
+				if Enabling.shuffleAlbum {
 					guard let cell = tableView.dequeueReusableCell(
-						withIdentifier: "Album Info with Buttons",
-						for: indexPath) as? AlbumInfoCell__withWholeAlbumButtons
+						withIdentifier: "Album Info with Shuffle Button",
+						for: indexPath) as? AlbumInfoCell__withShuffleButton
 					else { return UITableViewCell() }
 					let album = songsViewModel.album(forSection: indexPath.section)
 					cell.album = album

@@ -46,7 +46,7 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		if selectedSongAndBelow.count == 1 {
-			if Enabling.wholeAlbumButtons {
+			if Enabling.playSong {
 				playRestOfAlbum.isEnabled = false
 			}
 			appendRestOfAlbum.isEnabled = false
@@ -80,7 +80,7 @@ extension SongsTVC {
 		
 		actionSheet.addAction(playRestOfAlbum)
 		actionSheet.addAction(appendRestOfAlbum)
-		if Enabling.wholeAlbumButtons {
+		if Enabling.playSong {
 			actionSheet.addAction(playSong)
 		}
 		actionSheet.addAction(appendSong)

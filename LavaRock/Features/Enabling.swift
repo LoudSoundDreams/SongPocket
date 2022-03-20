@@ -13,7 +13,8 @@ struct Enabling {
 	
 	static let playerScreen = 10 == 1
 	
-	static let wholeAlbumButtons = 10 == 1
+	static let shuffleAlbum = 10 == 1
+	static let playSong = 10 == 1
 	
 	static let swiftUIOptions = 10 == 1
 }
