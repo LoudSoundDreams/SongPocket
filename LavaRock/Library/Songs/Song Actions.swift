@@ -122,6 +122,22 @@ extension SongsTVC {
 		player.play() // Calls `prepareToPlay` automatically
 	}
 	
+	private func prepend(
+		_ song: Song,
+		using player: MPMusicPlayerController
+	) {
+		guard
+			let selectedMediaItem = song.metadatum() as? MPMediaItem
+		else { return }
+		
+		player.repeatMode = .none
+		
+		player.prepend(
+			MPMusicPlayerMediaItemQueueDescriptor(
+				itemCollection: MPMediaItemCollection(
+					items: [selectedMediaItem])))
+	}
+	
 	private func append(
 		_ songs: [Song],
 		using player: MPMusicPlayerController
@@ -155,23 +171,7 @@ extension SongsTVC {
 		}
 	}
 	
-	private func prepend(
-		_ song: Song,
-		using player: MPMusicPlayerController
-	) {
-		guard
-			let selectedMediaItem = song.metadatum() as? MPMediaItem
-		else { return }
-		
-		player.repeatMode = .none
-		
-		player.prepend(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(
-					items: [selectedMediaItem])))
-	}
-	
-	// MARK: Explaining Enqueue Actions
+	// MARK: “Will Play Later” Alert
 	
 	private func presentWillPlayLaterAlertIfShould(
 		titleOfSelectedSong: String,
