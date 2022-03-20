@@ -34,9 +34,6 @@ extension SongsTVC {
 			title: LocalizedString.playRestOfAlbum,
 			style: .default
 		) { _ in
-			if Enabling.playerScreen {
-				SongQueue.contents = selectedSongAndBelow
-			}
 			player.play(selectedSongAndBelow)
 			deselectSelectedSong()
 		}
@@ -57,9 +54,6 @@ extension SongsTVC {
 			title: "Play Song", // L2DO
 			style: .default
 		) { _ in
-			if Enabling.playerScreen {
-				SongQueue.contents = [selectedSong]
-			}
 			player.play([selectedSong])
 			deselectSelectedSong()
 		}

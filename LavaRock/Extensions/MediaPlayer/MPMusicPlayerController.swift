@@ -9,6 +9,9 @@ import MediaPlayer
 
 extension MPMusicPlayerController {
 	func play(_ songs: [Song]) {
+		if Enabling.playerScreen {
+			SongQueue.contents = songs
+		}
 		setQueue(
 			with: MPMediaItemCollection(
 				items: songs.compactMap { $0.mpMediaItem() }))
