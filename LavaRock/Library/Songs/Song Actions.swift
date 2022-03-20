@@ -38,19 +38,17 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
-		let appendRestOfAlbum: UIAlertAction = {
-			let result = UIAlertAction(
-				title: LocalizedString.queueRestOfAlbum,
-				style: .default
-			) { _ in
-				self.append(selectedSongAndBelow, using: player)
-				deselectSelectedSong()
-			}
-			if selectedSongAndBelow.count == 1 {
-				result.isEnabled = false
-			}
-			return result
-		}()
+		let appendRestOfAlbum = UIAlertAction(
+			title: LocalizedString.queueRestOfAlbum,
+			style: .default
+		) { _ in
+			self.append(selectedSongAndBelow, using: player)
+			deselectSelectedSong()
+		}
+		if selectedSongAndBelow.count == 1 {
+			playRestOfAlbum.isEnabled = false
+			appendRestOfAlbum.isEnabled = false
+		}
 		
 		let playSong = UIAlertAction(
 			title: "Play Song", // L2DO
@@ -59,17 +57,8 @@ extension SongsTVC {
 			self.play([selectedSong], using: player)
 			deselectSelectedSong()
 		}
-		let prependSong = UIAlertAction(
-			title: "Play Next", // L2DO
-			style: .default
-		) { _ in
-			self.prepend(selectedSong, using: player)
-			deselectSelectedSong()
-		}
 		let appendSong = UIAlertAction(
-			title: Enabling.wholeAlbumButtons
-			? "Play Last" // L2DO
-			: LocalizedString.queueSong,
+			title: LocalizedString.queueSong,
 			style: .default
 		) { _ in
 			self.append([selectedSong], using: player)
@@ -86,8 +75,9 @@ extension SongsTVC {
 			preferredStyle: .actionSheet)
 		
 		if Enabling.wholeAlbumButtons {
+			actionSheet.addAction(playRestOfAlbum)
+			actionSheet.addAction(appendRestOfAlbum)
 			actionSheet.addAction(playSong)
-			actionSheet.addAction(prependSong)
 			actionSheet.addAction(appendSong)
 		} else {
 			actionSheet.addAction(playRestOfAlbum)
@@ -120,22 +110,6 @@ extension SongsTVC {
 		player.shuffleMode = .off
 		
 		player.play() // Calls `prepareToPlay` automatically
-	}
-	
-	private func prepend(
-		_ song: Song,
-		using player: MPMusicPlayerController
-	) {
-		guard
-			let selectedMediaItem = song.metadatum() as? MPMediaItem
-		else { return }
-		
-		player.repeatMode = .none
-		
-		player.prepend(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(
-					items: [selectedMediaItem])))
 	}
 	
 	private func append(
