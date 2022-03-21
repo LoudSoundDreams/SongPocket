@@ -147,7 +147,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Queue" id="4UM-VT-l36">
                         <barButtonItem key="leftBarButtonItem" title="Shuffle" id="9dq-pP-MYY"/>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Apply" style="done" id="ZcH-nq-Bjj"/>
                     </navigationItem>
                     <connections>
                         <outlet property="queueTable" destination="mMv-Oy-bR1" id="Qj5-jH-aer"/>

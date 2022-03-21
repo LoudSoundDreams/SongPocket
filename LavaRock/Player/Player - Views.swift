@@ -65,7 +65,7 @@ final class NextModeCell: UITableViewCell {
 			at: chooser.numberOfSegments,
 			animated: false)
 		chooser.disable()
-		chooser.selectedSegmentIndex = NextMode.continueQueue.rawValue
+		chooser.selectedSegmentIndex = NextMode.current.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
@@ -136,7 +136,7 @@ final class LastModeCell: UITableViewCell {
 			at: chooser.numberOfSegments,
 			animated: false)
 		chooser.disable()
-		chooser.selectedSegmentIndex = LastMode.stop.rawValue
+		chooser.selectedSegmentIndex = LastMode.current.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
