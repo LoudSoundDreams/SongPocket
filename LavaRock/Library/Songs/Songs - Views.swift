@@ -36,54 +36,6 @@ final class AlbumArtworkCell: UITableViewCell {
 	}
 }
 
-final class AlbumInfoCell__withShuffleButton: UITableViewCell {
-	@IBOutlet private var textStack: UIStackView!
-	@IBOutlet private var albumArtistLabel: UILabel!
-	@IBOutlet private var releaseDateLabel: UILabel!
-	@IBOutlet var shuffleAlbumButton: UIButton! // TO DO: Add accessibility label
-	
-	final var album: Album? = nil {
-		didSet {
-			guard let album = album else {
-				shuffleAlbumButton.isEnabled = false
-				return
-			}
-			
-			albumArtistLabel.text = { () -> String in // Don’t let this be `nil`.
-				return album.albumArtistFormattedOrPlaceholder()
-			}()
-			releaseDateLabel.text = album.releaseDateEstimateFormatted() // Can be `nil`
-			
-			if releaseDateLabel.text == nil {
-				// We couldn’t determine the album’s release date.
-				textStack.spacing = 0
-			} else {
-				textStack.spacing = UIStackView.spacingUseSystem
-			}
-			
-			shuffleAlbumButton.isEnabled = (album.contents?.count ?? 0) >= 2
-		}
-	}
-	
-	final override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		shuffleAlbumButton.maximumContentSizeCategory = .extraExtraExtraLarge
-		
-		accessibilityUserInputLabels = [""]
-	}
-	
-	@IBAction func shuffleAlbum(_ sender: UIButton) {
-		guard
-			let album = album,
-			let player = Player.shared.player
-		else { return }
-		
-		player.play(album.songs(sorted: true)
-			.inAnyOtherOrder())
-	}
-}
-
 final class AlbumInfoCell: UITableViewCell {
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var albumArtistLabel: UILabel!

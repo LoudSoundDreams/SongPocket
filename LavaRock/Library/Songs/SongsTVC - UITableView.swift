@@ -57,23 +57,13 @@ extension SongsTVC {
 				cell.configure(with: album)
 				return cell
 			case .albumInfo:
-				if Enabling.shuffleAlbum {
-					guard let cell = tableView.dequeueReusableCell(
-						withIdentifier: "Album Info with Shuffle Button",
-						for: indexPath) as? AlbumInfoCell__withShuffleButton
-					else { return UITableViewCell() }
-					let album = songsViewModel.album(forSection: indexPath.section)
-					cell.album = album
-					return cell
-				} else {
-					guard let cell = tableView.dequeueReusableCell(
-						withIdentifier: "Album Info",
-						for: indexPath) as? AlbumInfoCell
-					else { return UITableViewCell() }
-					let album = songsViewModel.album(forSection: indexPath.section)
-					cell.configure(with: album)
-					return cell
-				}
+				guard let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Album Info",
+					for: indexPath) as? AlbumInfoCell
+				else { return UITableViewCell() }
+				let album = songsViewModel.album(forSection: indexPath.section)
+				cell.configure(with: album)
+				return cell
 			}
 		case .song:
 			break
