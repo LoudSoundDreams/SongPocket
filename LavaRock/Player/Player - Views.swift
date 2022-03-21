@@ -8,14 +8,14 @@
 import UIKit
 import MediaPlayer
 
-enum NextMode {
+private enum NextMode {
 	case repeatOne
 	case continueQueue
 	
 	static var current: Self = .continueQueue
 }
 
-enum LastMode {
+private enum LastMode: Int {
 	case repeatAll
 	case stop
 	
@@ -38,6 +38,7 @@ final class NextModeCell: UITableViewCell {
 				}()) { _ in
 					// ARC2DO
 					Task { await MainActor.run {
+						NextMode.current = .repeatOne
 						self.player?.repeatMode = .one
 					}}
 				},
@@ -52,6 +53,7 @@ final class NextModeCell: UITableViewCell {
 				}()) { _ in
 					// ARC2DO
 					Task { await MainActor.run {
+						NextMode.current = .continueQueue
 						switch LastMode.current {
 						case .repeatAll:
 							self.player?.repeatMode = .all
@@ -69,7 +71,6 @@ final class NextModeCell: UITableViewCell {
 	}
 }
 
-// TO DO: We don’t actually want to reflect playback state; we want to reflect whether the player is available, and if so, its repeat mode.
 extension NextModeCell: PlayerReflecting {
 	final func reflectPlaybackState() {
 		guard let player = player else {
@@ -103,6 +104,7 @@ final class LastModeCell: UITableViewCell {
 				}()) { _ in
 					// ARC2DO
 					Task { await MainActor.run {
+						LastMode.current = .repeatAll
 						self.player?.repeatMode = .all
 					}}
 				},
@@ -117,6 +119,7 @@ final class LastModeCell: UITableViewCell {
 				}()) { _ in
 					// ARC2DO
 					Task { await MainActor.run {
+						LastMode.current = .stop
 						switch NextMode.current {
 						case .repeatOne:
 							self.player?.repeatMode = .one
@@ -134,7 +137,6 @@ final class LastModeCell: UITableViewCell {
 	}
 }
 
-// TO DO: We don’t actually want to reflect playback state; we want to reflect whether the player is available, and if so, its repeat mode.
 extension LastModeCell: PlayerReflecting {
 	func reflectPlaybackState() {
 		guard let player = player else {
@@ -142,12 +144,20 @@ extension LastModeCell: PlayerReflecting {
 			segmentedControl.selectedSegmentIndex = 1
 			return
 		}
-		segmentedControl.enable()
-		segmentedControl.selectedSegmentIndex = {
-			if player.repeatMode == .all {
-				return 0
-			} else {
-				return 1
-			}}()
+		switch player.repeatMode {
+		case .default:
+			fatalError("`MPMusicPlayerController.repeatMode == .default")
+		case .one:
+			segmentedControl.disable()
+			segmentedControl.selectedSegmentIndex = LastMode.current.rawValue
+		case .all:
+			segmentedControl.enable()
+			segmentedControl.selectedSegmentIndex = 0
+		case .none:
+			segmentedControl.enable()
+			segmentedControl.selectedSegmentIndex = 1
+		@unknown default:
+			fatalError("Unknown value for `MPMusicPlayerController.repeatMode")
+		}
 	}
 }
