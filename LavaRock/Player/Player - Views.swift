@@ -23,13 +23,13 @@ private enum LastMode: Int {
 }
 
 final class NextModeCell: UITableViewCell {
-	@IBOutlet var segmentedControl: UISegmentedControl!
+	@IBOutlet var chooser: UISegmentedControl!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		segmentedControl.removeAllSegments()
-		segmentedControl.insertSegment(
+		chooser.removeAllSegments()
+		chooser.insertSegment(
 			action: UIAction(
 				image: {
 					let image = UIImage(systemName: "repeat.1")
@@ -42,9 +42,9 @@ final class NextModeCell: UITableViewCell {
 						self.player?.repeatMode = .one
 					}}
 				},
-			at: segmentedControl.numberOfSegments,
+			at: chooser.numberOfSegments,
 			animated: false)
-		segmentedControl.insertSegment(
+		chooser.insertSegment(
 			action: UIAction(
 				image: {
 					let image = UIImage(systemName: "play.fill")
@@ -62,10 +62,10 @@ final class NextModeCell: UITableViewCell {
 						}
 					}}
 				},
-			at: segmentedControl.numberOfSegments,
+			at: chooser.numberOfSegments,
 			animated: false)
-		segmentedControl.disable()
-		segmentedControl.selectedSegmentIndex = NextMode.continueQueue.rawValue
+		chooser.disable()
+		chooser.selectedSegmentIndex = NextMode.continueQueue.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
@@ -79,12 +79,12 @@ extension NextModeCell: PlayerReflecting {
 			let player = player,
 			!SongQueue.contents.isEmpty
 		else {
-			segmentedControl.disable()
-			segmentedControl.selectedSegmentIndex = NextMode.continueQueue.rawValue
+			chooser.disable()
+			chooser.selectedSegmentIndex = NextMode.continueQueue.rawValue
 			return
 		}
-		segmentedControl.enable()
-		segmentedControl.selectedSegmentIndex = {
+		chooser.enable()
+		chooser.selectedSegmentIndex = {
 			if player.repeatMode == .one {
 				return NextMode.repeatOne.rawValue
 			} else {
@@ -94,13 +94,13 @@ extension NextModeCell: PlayerReflecting {
 }
 
 final class LastModeCell: UITableViewCell {
-	@IBOutlet var segmentedControl: UISegmentedControl!
+	@IBOutlet var chooser: UISegmentedControl!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		segmentedControl.removeAllSegments()
-		segmentedControl.insertSegment(
+		chooser.removeAllSegments()
+		chooser.insertSegment(
 			action: UIAction(
 				image: {
 					let image = UIImage(systemName: "repeat")
@@ -113,9 +113,9 @@ final class LastModeCell: UITableViewCell {
 						self.player?.repeatMode = .all
 					}}
 				},
-			at: segmentedControl.numberOfSegments,
+			at: chooser.numberOfSegments,
 			animated: false)
-		segmentedControl.insertSegment(
+		chooser.insertSegment(
 			action: UIAction(
 				image: {
 					let image = UIImage(systemName: "stop.fill")
@@ -133,10 +133,10 @@ final class LastModeCell: UITableViewCell {
 						}
 					}}
 				},
-			at: segmentedControl.numberOfSegments,
+			at: chooser.numberOfSegments,
 			animated: false)
-		segmentedControl.disable()
-		segmentedControl.selectedSegmentIndex = LastMode.stop.rawValue
+		chooser.disable()
+		chooser.selectedSegmentIndex = LastMode.stop.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
@@ -150,22 +150,22 @@ extension LastModeCell: PlayerReflecting {
 			let player = player,
 			!SongQueue.contents.isEmpty
 		else {
-			segmentedControl.disable()
-			segmentedControl.selectedSegmentIndex = LastMode.stop.rawValue
+			chooser.disable()
+			chooser.selectedSegmentIndex = LastMode.stop.rawValue
 			return
 		}
 		switch player.repeatMode {
 		case .default:
 			fatalError("`MPMusicPlayerController.repeatMode == .default")
 		case .one:
-			segmentedControl.disable()
-			segmentedControl.selectedSegmentIndex = LastMode.current.rawValue
+			chooser.disable()
+			chooser.selectedSegmentIndex = LastMode.current.rawValue
 		case .all:
-			segmentedControl.enable()
-			segmentedControl.selectedSegmentIndex = LastMode.repeatAll.rawValue
+			chooser.enable()
+			chooser.selectedSegmentIndex = LastMode.repeatAll.rawValue
 		case .none:
-			segmentedControl.enable()
-			segmentedControl.selectedSegmentIndex = LastMode.stop.rawValue
+			chooser.enable()
+			chooser.selectedSegmentIndex = LastMode.stop.rawValue
 		@unknown default:
 			fatalError("Unknown value for `MPMusicPlayerController.repeatMode")
 		}

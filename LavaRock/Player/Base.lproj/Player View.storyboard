@@ -74,7 +74,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="segmentedControl" destination="w73-VW-rxT" id="sdu-5D-EkK"/>
+                                            <outlet property="chooser" destination="w73-VW-rxT" id="sdu-5D-EkK"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Last Mode" id="y8x-Qi-Yd7" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
@@ -122,7 +122,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="segmentedControl" destination="1zE-7R-5yX" id="BKw-tG-ICx"/>
+                                            <outlet property="chooser" destination="1zE-7R-5yX" id="BKw-tG-ICx"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
