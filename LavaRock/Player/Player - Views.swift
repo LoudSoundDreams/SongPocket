@@ -73,7 +73,10 @@ final class NextModeCell: UITableViewCell {
 
 extension NextModeCell: PlayerReflecting {
 	final func reflectPlaybackState() {
-		guard let player = player else {
+		guard
+			let player = player,
+			!SongQueue.contents.isEmpty
+		else {
 			segmentedControl.disable()
 			segmentedControl.selectedSegmentIndex = 1
 			return
@@ -139,7 +142,10 @@ final class LastModeCell: UITableViewCell {
 
 extension LastModeCell: PlayerReflecting {
 	func reflectPlaybackState() {
-		guard let player = player else {
+		guard
+			let player = player,
+			!SongQueue.contents.isEmpty
+		else {
 			segmentedControl.disable()
 			segmentedControl.selectedSegmentIndex = 1
 			return
