@@ -128,19 +128,20 @@ final class AlbumsTVC:
 			let sectionToAppearAt = viewModel.numberOfPresections + collectionIndex
 			let indexPathToAppearAt = IndexPath(row: 0, section: sectionToAppearAt)
 			tableView.scrollToRow(at: indexPathToAppearAt, at: .top, animated: false)
-			print("")
-			print("will appear - \(self)")
-			print(tableView.adjustedContentInset)
-			print(tableView.contentOffset)
+			
+//			print("")
+//			print("will appear - \(self)")
+//			print(tableView.adjustedContentInset)
+//			print(tableView.contentOffset)
 		}
 	}
 	
-	final override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		print("")
-		print("scrolled - \(self)")
-		print(tableView.adjustedContentInset)
-		print(tableView.contentOffset)
-	}
+//	final override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//		print("")
+//		print("scrolled - \(self)")
+//		print(tableView.adjustedContentInset)
+//		print(tableView.contentOffset)
+//	}
 	
 	// MARK: - Freshening UI
 	

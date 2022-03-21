@@ -38,7 +38,7 @@ final class Player { // This is a class and not a struct because it should end o
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(playbackStateDidChange),
-			name: .MPMusicPlayerControllerPlaybackStateDidChange,
+			name: .MPMusicPlayerControllerPlaybackStateDidChange, // As of iOS 15.4, Media Player also posts this when the repeat or shuffle mode changes.
 			object: player)
 		
 		reflectPlaybackStateEverywhere() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
@@ -71,6 +71,10 @@ final class Player { // This is a class and not a struct because it should end o
 	private var reflectors: [Weak<PlayerReflecting>] = []
 	
 	private func reflectPlaybackStateEverywhere() {
+//		print("")
+//		print("playback state changed.")
+//		print(player.debugDescription)
+		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {
 			$0.referencee?.reflectPlaybackState()
