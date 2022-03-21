@@ -8,6 +8,20 @@
 import UIKit
 import MediaPlayer
 
+enum NextMode {
+	case repeatOne
+	case continueQueue
+	
+	static var current: Self = .continueQueue
+}
+
+enum LastMode {
+	case repeatAll
+	case stop
+	
+	static var current: Self = .stop
+}
+
 final class NextModeCell: UITableViewCell {
 	@IBOutlet var segmentedControl: UISegmentedControl!
 	
@@ -77,14 +91,71 @@ extension NextModeCell: PlayerReflecting {
 	}
 }
 
-enum LastMode {
-	case repeatAll
-	case stop
-	
-	static var current: Self = .stop
-}
-
 final class LastModeCell: UITableViewCell {
 	@IBOutlet var segmentedControl: UISegmentedControl!
 	
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		segmentedControl.removeAllSegments()
+		segmentedControl.insertSegment(
+			action: UIAction(
+				image: {
+					let image = UIImage(systemName: "repeat")
+					image?.accessibilityLabel = "Repeat all" // L2DO
+					return image
+				}()) { _ in
+					// ARC2DO
+					Task { await MainActor.run {
+						self.player?.repeatMode = .all
+					}}
+				},
+			at: segmentedControl.numberOfSegments,
+			animated: false)
+		segmentedControl.insertSegment(
+			action: UIAction(
+				image: {
+					let image = UIImage(systemName: "stop.fill")
+					image?.accessibilityLabel = "stop" // L2DO
+					return image
+				}()) { _ in
+					// ARC2DO
+					Task { await MainActor.run {
+						switch NextMode.current {
+						case .repeatOne:
+							self.player?.repeatMode = .one
+						case .continueQueue:
+							self.player?.repeatMode = .none
+						}
+					}}
+				},
+			at: segmentedControl.numberOfSegments,
+			animated: false)
+		
+		Task { await MainActor.run {
+			reflectPlaybackStateFromNowOn()
+		}}
+	}
+}
+
+// TO DO: We don’t actually want to reflect playback state; we want to reflect whether the player is available, and if so, its repeat mode.
+extension LastModeCell: PlayerReflecting {
+	func reflectPlaybackState() {
+		guard let player = player else {
+			(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
+				segmentedControl.setEnabled(false, forSegmentAt: indexOfSegment)
+			}
+			segmentedControl.selectedSegmentIndex = 1
+			return
+		}
+		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
+			segmentedControl.setEnabled(true, forSegmentAt: indexOfSegment)
+		}
+		segmentedControl.selectedSegmentIndex = {
+			if player.repeatMode == .all {
+				return 0
+			} else {
+				return 1
+			}}()
+	}
 }
