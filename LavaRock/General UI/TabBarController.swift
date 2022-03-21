@@ -1,13 +1,13 @@
 //
-//  LibraryNC.swift
+//  TabBarController.swift
 //  LavaRock
 //
-//  Created by h on 2021-12-30.
+//  Created by h on 2022-03-21.
 //
 
 import UIKit
 
-final class LibraryNC: UINavigationController {
+final class TabBarController: UITabBarController {
 	// `MovesThemeToWindow`
 	static var didMoveThemeToWindow = false
 	
@@ -17,4 +17,4 @@ final class LibraryNC: UINavigationController {
 		moveThemeToWindow()
 	}
 }
-extension LibraryNC: MovesThemeToWindow {}
+extension TabBarController: MovesThemeToWindow {}

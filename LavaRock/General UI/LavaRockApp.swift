@@ -42,6 +42,26 @@ final class Theme: ObservableObject {
 	}
 }
 
+protocol MovesThemeToWindow: UIViewController {
+	// Adopting types must …
+	// - Call `moveThemeToWindow` during `viewDidAppear`.
+	static var didMoveThemeToWindow: Bool { get set }
+}
+extension MovesThemeToWindow {
+	// Call this during `viewDidAppear`, because before then, `view.window == nil`.
+	func moveThemeToWindow() {
+		if !Self.didMoveThemeToWindow {
+			Self.didMoveThemeToWindow = true
+			
+			view.window?.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
+			view.overrideUserInterfaceStyle = .unspecified
+			
+			view.window?.tintColor = view.tintColor
+			view.tintColor = nil // TO DO: Applies “Increase Contrast” twice.
+		}
+	}
+}
+
 struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	typealias ViewControllerType = UIViewController
 	
