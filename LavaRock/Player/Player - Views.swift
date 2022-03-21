@@ -8,7 +8,7 @@
 import UIKit
 import MediaPlayer
 
-private enum NextMode {
+private enum NextMode: Int {
 	case repeatOne
 	case continueQueue
 	
@@ -64,6 +64,8 @@ final class NextModeCell: UITableViewCell {
 				},
 			at: segmentedControl.numberOfSegments,
 			animated: false)
+		segmentedControl.disable()
+		segmentedControl.selectedSegmentIndex = NextMode.continueQueue.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
@@ -78,15 +80,15 @@ extension NextModeCell: PlayerReflecting {
 			!SongQueue.contents.isEmpty
 		else {
 			segmentedControl.disable()
-			segmentedControl.selectedSegmentIndex = 1
+			segmentedControl.selectedSegmentIndex = NextMode.continueQueue.rawValue
 			return
 		}
 		segmentedControl.enable()
 		segmentedControl.selectedSegmentIndex = {
 			if player.repeatMode == .one {
-				return 0
+				return NextMode.repeatOne.rawValue
 			} else {
-				return 1
+				return NextMode.continueQueue.rawValue
 			}}()
 	}
 }
@@ -133,6 +135,8 @@ final class LastModeCell: UITableViewCell {
 				},
 			at: segmentedControl.numberOfSegments,
 			animated: false)
+		segmentedControl.disable()
+		segmentedControl.selectedSegmentIndex = LastMode.stop.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
@@ -147,7 +151,7 @@ extension LastModeCell: PlayerReflecting {
 			!SongQueue.contents.isEmpty
 		else {
 			segmentedControl.disable()
-			segmentedControl.selectedSegmentIndex = 1
+			segmentedControl.selectedSegmentIndex = LastMode.stop.rawValue
 			return
 		}
 		switch player.repeatMode {
@@ -158,10 +162,10 @@ extension LastModeCell: PlayerReflecting {
 			segmentedControl.selectedSegmentIndex = LastMode.current.rawValue
 		case .all:
 			segmentedControl.enable()
-			segmentedControl.selectedSegmentIndex = 0
+			segmentedControl.selectedSegmentIndex = LastMode.repeatAll.rawValue
 		case .none:
 			segmentedControl.enable()
-			segmentedControl.selectedSegmentIndex = 1
+			segmentedControl.selectedSegmentIndex = LastMode.stop.rawValue
 		@unknown default:
 			fatalError("Unknown value for `MPMusicPlayerController.repeatMode")
 		}
