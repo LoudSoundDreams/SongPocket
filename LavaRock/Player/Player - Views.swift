@@ -73,15 +73,11 @@ final class NextModeCell: UITableViewCell {
 extension NextModeCell: PlayerReflecting {
 	final func reflectPlaybackState() {
 		guard let player = player else {
-			(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
-				segmentedControl.setEnabled(false, forSegmentAt: indexOfSegment)
-			}
+			segmentedControl.disable()
 			segmentedControl.selectedSegmentIndex = 1
 			return
 		}
-		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
-			segmentedControl.setEnabled(true, forSegmentAt: indexOfSegment)
-		}
+		segmentedControl.enable()
 		segmentedControl.selectedSegmentIndex = {
 			if player.repeatMode == .one {
 				return 0
@@ -142,15 +138,11 @@ final class LastModeCell: UITableViewCell {
 extension LastModeCell: PlayerReflecting {
 	func reflectPlaybackState() {
 		guard let player = player else {
-			(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
-				segmentedControl.setEnabled(false, forSegmentAt: indexOfSegment)
-			}
+			segmentedControl.disable()
 			segmentedControl.selectedSegmentIndex = 1
 			return
 		}
-		(0 ..< segmentedControl.numberOfSegments).forEach { indexOfSegment in
-			segmentedControl.setEnabled(true, forSegmentAt: indexOfSegment)
-		}
+		segmentedControl.enable()
 		segmentedControl.selectedSegmentIndex = {
 			if player.repeatMode == .all {
 				return 0
