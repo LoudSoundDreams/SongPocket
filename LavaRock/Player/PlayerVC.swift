@@ -29,6 +29,11 @@ final class PlayerVC: UIViewController {
 		
 		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons
+		if Enabling.playerScreen {
+			if let toolbar = navigationController?.toolbar {
+				toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+			}
+		}
 		
 		view.backgroundColor = .systemFill // TO DO: Delete
 	}

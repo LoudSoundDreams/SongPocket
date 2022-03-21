@@ -253,6 +253,11 @@ final class CollectionsTVC:
 			} else {
 				viewingModeTopLeftButtons = [optionsButton__UIKit]
 			}
+			if Enabling.playerScreen {
+				if let toolbar = navigationController?.toolbar {
+					toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+				}
+			}
 		}
 		
 		super.setUpBarButtons()
