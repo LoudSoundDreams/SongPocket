@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="mMv-Oy-bR1">
-                                <rect key="frame" x="0.0" y="88" width="414" height="362.5"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="435"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song in Queue" id="g2h-4Q-QUJ">
@@ -140,7 +140,7 @@
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="trailing" secondItem="Npg-CN-dfQ" secondAttribute="trailing" id="0mt-Ka-Nr8"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="leading" secondItem="Npg-CN-dfQ" secondAttribute="leading" id="5Js-ge-qkZ"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="top" secondItem="Npg-CN-dfQ" secondAttribute="top" id="PRH-9Q-W4C"/>
-                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="height" secondItem="Npg-CN-dfQ" secondAttribute="height" multiplier="0.5" id="fsx-Xr-KI2"/>
+                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="height" secondItem="Npg-CN-dfQ" secondAttribute="height" multiplier="0.6" id="fsx-Xr-KI2"/>
                             <constraint firstItem="JmH-0T-GLg" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" constant="-8" id="m66-w6-p8N"/>
                             <constraint firstItem="JmH-0T-GLg" firstAttribute="leading" secondItem="9gW-kt-mSP" secondAttribute="leadingMargin" id="w26-ar-c7k"/>
                         </constraints>
