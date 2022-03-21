@@ -10,8 +10,6 @@ import MediaPlayer
 import OSLog
 
 extension SongsTVC {
-	// MARK: Presenting
-	
 	final func showSongActions(
 		for song: Song,
 		popoverAnchorView: UIView
@@ -27,6 +25,7 @@ extension SongsTVC {
 			let player = player
 		else { return }
 		
+		// Rest of album
 		let selectedSongAndBelow: [Song] = viewModel
 			.itemsInGroup(startingAt: selectedIndexPath)
 			.compactMap { $0 as? Song }
@@ -46,19 +45,10 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		if selectedSongAndBelow.count == 1 {
-			if Enabling.playSong {
-				playRestOfAlbum.isEnabled = false
-			}
 			appendRestOfAlbum.isEnabled = false
 		}
 		
-		let playSong = UIAlertAction(
-			title: "Play Song", // L2DO
-			style: .default
-		) { _ in
-			player.play([selectedSong])
-			deselectSelectedSong()
-		}
+		// Single song
 		let appendSong = UIAlertAction(
 			title: LocalizedString.queueSong,
 			style: .default
@@ -75,21 +65,13 @@ extension SongsTVC {
 			title: nil,
 			message: nil,
 			preferredStyle: .actionSheet)
-		
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
-		
 		actionSheet.addAction(playRestOfAlbum)
 		actionSheet.addAction(appendRestOfAlbum)
-		if Enabling.playSong {
-			actionSheet.addAction(playSong)
-		}
 		actionSheet.addAction(appendSong)
 		actionSheet.addAction(cancel)
-		
 		present(actionSheet, animated: true)
 	}
-	
-	// MARK: Actions
 	
 	private func append(
 		_ songs: [Song],
@@ -123,8 +105,6 @@ extension SongsTVC {
 			}
 		}
 	}
-	
-	// MARK: “Will Play Later” Alert
 	
 	private func presentWillPlayLaterAlertIfShould(
 		titleOfSelectedSong: String,
