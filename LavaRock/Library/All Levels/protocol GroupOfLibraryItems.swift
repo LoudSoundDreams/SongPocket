@@ -43,7 +43,6 @@ protocol GroupOfLibraryItems {
 	
 	mutating func setItems(_ newItems: [NSManagedObject])
 }
-
 extension GroupOfLibraryItems {
 	// Similar to `Collection.allFetched`, `Album.allFetched`, and `Song.allFetched`.
 	func itemsFetched(

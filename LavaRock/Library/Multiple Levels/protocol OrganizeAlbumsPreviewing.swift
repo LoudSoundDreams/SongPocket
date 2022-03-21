@@ -11,7 +11,6 @@ protocol OrganizeAlbumsPreviewing: UIViewController {
 	var viewModel: LibraryViewModel { get }
 	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? { get }
 }
-
 extension OrganizeAlbumsPreviewing {
 	func makeSaveOrganizeButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(

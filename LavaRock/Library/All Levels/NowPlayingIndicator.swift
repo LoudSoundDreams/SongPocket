@@ -12,7 +12,6 @@ protocol NowPlayingIndicating {
 	var speakerImageView: UIImageView! { get set }
 	var accessibilityValue: String? { get set }
 }
-
 extension NowPlayingIndicating {
 	mutating func applyNowPlayingIndicator(_ indicator: NowPlayingIndicator) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge

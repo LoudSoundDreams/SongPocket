@@ -14,7 +14,6 @@ protocol NoItemsBackgroundManager {
 	var tableView: UITableView! { get }
 	var viewModel: LibraryViewModel { get }
 }
-
 extension NoItemsBackgroundManager {
 	// Call this in `UITableViewDataSource.numberOfSections(in:)`.
 	func setOrRemoveNoItemsBackground() {

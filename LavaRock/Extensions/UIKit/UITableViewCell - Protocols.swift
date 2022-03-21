@@ -8,11 +8,10 @@
 import UIKit
 
 protocol CellHavingTransparentBackground: UITableViewCell {
-	// Conforming types must …
+	// Adopting types must …
 	// - Override `awakeFromNib` and call `setTransparentBackground`.
 	// - Call `setTransparentBackground` instead of `backgroundView = nil`.
 }
-
 extension CellHavingTransparentBackground {
 	func setTransparentBackground() {
 		backgroundColor = nil
@@ -20,12 +19,11 @@ extension CellHavingTransparentBackground {
 }
 
 protocol CellConfiguredAsButton: UITableViewCell {
-	// Conforming types must …
+	// Adopting types must …
 	// - Override `awakeFromNib` and call `configureAsButton`.
 	static var buttonText: String { get }
 	var contentConfiguration: UIContentConfiguration? { get set }
 }
-
 extension CellConfiguredAsButton {
 	func configureAsButton() {
 		var configuration = UIListContentConfiguration.cell()
