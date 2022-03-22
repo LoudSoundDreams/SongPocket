@@ -75,6 +75,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="chooser" destination="w73-VW-rxT" id="sdu-5D-EkK"/>
+                                            <outlet property="nextLabel" destination="PZk-q7-vFn" id="Rpo-7e-pJw"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Last Mode" id="y8x-Qi-Yd7" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
@@ -123,6 +124,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="chooser" destination="1zE-7R-5yX" id="BKw-tG-ICx"/>
+                                            <outlet property="lastLabel" destination="stO-U3-Ggl" id="xaM-Lm-IDA"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

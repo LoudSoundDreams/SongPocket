@@ -23,6 +23,7 @@ private enum LastMode: Int {
 }
 
 final class NextModeCell: UITableViewCell {
+	@IBOutlet var nextLabel: UILabel!
 	@IBOutlet var chooser: UISegmentedControl!
 	
 	final override func awakeFromNib() {
@@ -64,12 +65,22 @@ final class NextModeCell: UITableViewCell {
 				},
 			at: chooser.numberOfSegments,
 			animated: false)
-		chooser.disable()
+		disable()
 		chooser.selectedSegmentIndex = NextMode.current.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
 		}}
+	}
+	
+	private func disable() {
+		nextLabel.textColor = .placeholderText
+		chooser.disable()
+	}
+	
+	private func enable() {
+		nextLabel.textColor = .label
+		chooser.enable()
 	}
 }
 
@@ -79,11 +90,11 @@ extension NextModeCell: PlayerReflecting {
 			let player = player,
 			!SongQueue.contents.isEmpty
 		else {
-			chooser.disable()
+			disable()
 			chooser.selectedSegmentIndex = NextMode.continueQueue.rawValue
 			return
 		}
-		chooser.enable()
+		enable()
 		chooser.selectedSegmentIndex = {
 			if player.repeatMode == .one {
 				return NextMode.repeatOne.rawValue
@@ -94,6 +105,7 @@ extension NextModeCell: PlayerReflecting {
 }
 
 final class LastModeCell: UITableViewCell {
+	@IBOutlet var lastLabel: UILabel!
 	@IBOutlet var chooser: UISegmentedControl!
 	
 	final override func awakeFromNib() {
@@ -135,22 +147,32 @@ final class LastModeCell: UITableViewCell {
 				},
 			at: chooser.numberOfSegments,
 			animated: false)
-		chooser.disable()
+		disable()
 		chooser.selectedSegmentIndex = LastMode.current.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
 		}}
 	}
+	
+	private func disable() {
+		lastLabel.textColor = .placeholderText
+		chooser.disable()
+	}
+	
+	private func enable() {
+		lastLabel.textColor = .label
+		chooser.enable()
+	}
 }
 
 extension LastModeCell: PlayerReflecting {
-	func reflectPlaybackState() {
+	final func reflectPlaybackState() {
 		guard
 			let player = player,
 			!SongQueue.contents.isEmpty
 		else {
-			chooser.disable()
+			disable()
 			chooser.selectedSegmentIndex = LastMode.stop.rawValue
 			return
 		}
@@ -158,13 +180,13 @@ extension LastModeCell: PlayerReflecting {
 		case .default:
 			fatalError("`MPMusicPlayerController.repeatMode == .default")
 		case .one:
-			chooser.disable()
+			disable()
 			chooser.selectedSegmentIndex = LastMode.current.rawValue
 		case .all:
-			chooser.enable()
+			enable()
 			chooser.selectedSegmentIndex = LastMode.repeatAll.rawValue
 		case .none:
-			chooser.enable()
+			enable()
 			chooser.selectedSegmentIndex = LastMode.stop.rawValue
 		@unknown default:
 			fatalError("Unknown value for `MPMusicPlayerController.repeatMode")
