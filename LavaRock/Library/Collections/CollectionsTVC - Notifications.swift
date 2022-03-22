@@ -15,7 +15,7 @@ extension CollectionsTVC {
 		super.reflectPlayer()
 		
 		if let viewModel = viewModel as? NowPlayingDetermining {
-			freshenNowPlayingIndicators(accordingTo: viewModel)
+			indicateNowPlaying(accordingTo: viewModel)
 		}
 	}
 	

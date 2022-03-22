@@ -13,7 +13,7 @@ extension SongsTVC {
 	final override func reflectPlayer() {
 		super.reflectPlayer()
 		
-		freshenNowPlayingIndicators(accordingTo: self)
+		indicateNowPlaying(accordingTo: self)
 	}
 	
 	// MARK: - Library Items
