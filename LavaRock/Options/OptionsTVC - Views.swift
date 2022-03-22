@@ -9,14 +9,14 @@ import UIKit
 import StoreKit
 
 final class LightingCell: UITableViewCell {
-	@IBOutlet private var segmentedControl: UISegmentedControl!
+	@IBOutlet private var chooser: UISegmentedControl!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		segmentedControl.removeAllSegments()
+		chooser.removeAllSegments()
 		Lighting.allCases.forEach { lighting in
-			segmentedControl.insertSegment(
+			chooser.insertSegment(
 				action: UIAction(
 					image: {
 						let image = lighting.uiImage
@@ -27,10 +27,10 @@ final class LightingCell: UITableViewCell {
 							Theme.shared.lighting = lighting
 						}}
 					},
-				at: segmentedControl.numberOfSegments,
+				at: chooser.numberOfSegments,
 				animated: false)
 		}
-		segmentedControl.selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
+		chooser.selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
 	}
 }
 

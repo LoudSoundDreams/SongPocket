@@ -38,7 +38,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="segmentedControl" destination="Lgv-Ul-PtU" id="a4F-kg-GmF"/>
+                                    <outlet property="chooser" destination="Lgv-Ul-PtU" id="a4F-kg-GmF"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Accent Color" id="EMH-XS-TPH" customClass="AccentColorCell" customModule="LavaRock" customModuleProvider="target">
