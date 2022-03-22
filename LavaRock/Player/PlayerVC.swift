@@ -35,7 +35,7 @@ final class PlayerVC: UIViewController {
 			}
 		}
 		
-		view.backgroundColor = .systemFill // TO DO: Delete
+		view.backgroundColor = .red.translucent() // TO DO: Delete
 	}
 }
 
