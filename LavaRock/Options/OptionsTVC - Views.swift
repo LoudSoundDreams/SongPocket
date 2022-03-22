@@ -8,15 +8,13 @@
 import UIKit
 import StoreKit
 
-final class LightingCell: UITableViewCell {
-	@IBOutlet private var chooser: UISegmentedControl!
-	
+final class LightingChooser: UISegmentedControl {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		chooser.removeAllSegments()
+		removeAllSegments()
 		Lighting.allCases.forEach { lighting in
-			chooser.insertSegment(
+			insertSegment(
 				action: UIAction(
 					image: {
 						let image = lighting.uiImage
@@ -27,10 +25,10 @@ final class LightingCell: UITableViewCell {
 							Theme.shared.lighting = lighting
 						}}
 					},
-				at: chooser.numberOfSegments,
+				at: numberOfSegments,
 				animated: false)
 		}
-		chooser.selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
+		selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
 	}
 }
 

@@ -14,32 +14,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Lighting" id="zaH-GC-Rqy" customClass="LightingCell" customModule="LavaRock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Lighting" id="zaH-GC-Rqy">
                                 <rect key="frame" x="16" y="49" width="343" height="53.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zaH-GC-Rqy" id="wNH-sK-cfh">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="53.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="Lgv-Ul-PtU">
+                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="XQk-uC-Jbg" customClass="LightingChooser" customModule="LavaRock" customModuleProvider="target">
                                             <rect key="frame" x="16" y="11" width="311" height="32.333333333333329"/>
                                             <segments>
-                                                <segment title="Light"/>
-                                                <segment title="Dark"/>
-                                                <segment title="System"/>
+                                                <segment title="First"/>
+                                                <segment title="Second"/>
                                             </segments>
                                         </segmentedControl>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Lgv-Ul-PtU" secondAttribute="bottom" id="LlT-Kv-bCO"/>
-                                        <constraint firstItem="Lgv-Ul-PtU" firstAttribute="leading" secondItem="wNH-sK-cfh" secondAttribute="leadingMargin" id="MQV-1h-GTV"/>
-                                        <constraint firstItem="Lgv-Ul-PtU" firstAttribute="trailing" secondItem="wNH-sK-cfh" secondAttribute="trailingMargin" id="YyC-c6-YVL"/>
-                                        <constraint firstItem="Lgv-Ul-PtU" firstAttribute="top" secondItem="wNH-sK-cfh" secondAttribute="topMargin" id="k3g-Xj-nxH"/>
+                                        <constraint firstItem="XQk-uC-Jbg" firstAttribute="bottom" secondItem="wNH-sK-cfh" secondAttribute="bottomMargin" id="PGH-d1-6p9"/>
+                                        <constraint firstItem="XQk-uC-Jbg" firstAttribute="leading" secondItem="wNH-sK-cfh" secondAttribute="leadingMargin" id="SQk-kS-fgv"/>
+                                        <constraint firstItem="XQk-uC-Jbg" firstAttribute="top" secondItem="wNH-sK-cfh" secondAttribute="topMargin" id="f2h-Li-xmX"/>
+                                        <constraint firstItem="XQk-uC-Jbg" firstAttribute="trailing" secondItem="wNH-sK-cfh" secondAttribute="trailingMargin" id="zhy-D2-q1z"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="chooser" destination="Lgv-Ul-PtU" id="a4F-kg-GmF"/>
-                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Accent Color" id="EMH-XS-TPH" customClass="AccentColorCell" customModule="LavaRock" customModuleProvider="target">
                                 <rect key="frame" x="16" y="102.33333206176758" width="343" height="43.666667938232422"/>
