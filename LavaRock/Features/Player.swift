@@ -45,7 +45,7 @@ final class Player { // This is a class and not a struct because it should end o
 	}
 	@objc private func playbackStateDidChange() { reflectPlaybackStateEverywhere() }
 	
-	final func songInPlayer(context: NSManagedObjectContext) -> Song? {
+	final func currentSong(context: NSManagedObjectContext) -> Song? {
 		guard let nowPlayingItem = player?.nowPlayingItem else {
 			return nil
 		}

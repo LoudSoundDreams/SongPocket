@@ -11,10 +11,10 @@ extension AlbumsTVC: NowPlayingDetermining {
 	final func isInPlayer(anyIndexPath: IndexPath) -> Bool {
 		guard
 			let rowAlbum = viewModel.itemOptional(at: anyIndexPath) as? Album,
-			let songInPlayer = Player.shared.songInPlayer(context: viewModel.context)
+			let currentSong = Player.shared.currentSong(context: viewModel.context)
 		else {
 			return false
 		}
-		return rowAlbum.objectID == songInPlayer.container?.objectID
+		return rowAlbum.objectID == currentSong.container?.objectID
 	}
 }

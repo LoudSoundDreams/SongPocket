@@ -11,10 +11,10 @@ extension SongsTVC: NowPlayingDetermining {
 	final func isInPlayer(anyIndexPath: IndexPath) -> Bool {
 		guard
 			let rowSong = viewModel.itemOptional(at: anyIndexPath) as? Song,
-			let songInPlayer = Player.shared.songInPlayer(context: viewModel.context)
+			let currentSong = Player.shared.currentSong(context: viewModel.context)
 		else {
 			return false
 		}
-		return rowSong.objectID == songInPlayer.objectID
+		return rowSong.objectID == currentSong.objectID
 	}
 }

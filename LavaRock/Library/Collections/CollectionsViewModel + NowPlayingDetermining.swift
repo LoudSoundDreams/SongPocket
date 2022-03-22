@@ -11,10 +11,10 @@ extension CollectionsViewModel: NowPlayingDetermining {
 	func isInPlayer(anyIndexPath: IndexPath) -> Bool {
 		guard
 			let rowCollection = itemOptional(at: anyIndexPath) as? Collection,
-			let songInPlayer = Player.shared.songInPlayer(context: context)
+			let currentSong = Player.shared.currentSong(context: context)
 		else {
 			return false
 		}
-		return rowCollection.objectID == songInPlayer.container?.container?.objectID
+		return rowCollection.objectID == currentSong.container?.container?.objectID
 	}
 }
