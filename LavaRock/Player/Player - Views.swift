@@ -8,6 +8,21 @@
 import UIKit
 import MediaPlayer
 
+final class SongInQueueCell: UITableViewCell {
+	// `NowPlayingIndicating`
+	@IBOutlet var spacerSpeakerImageView: UIImageView!
+	@IBOutlet var speakerImageView: UIImageView!
+	
+	@IBOutlet var titleLabel: UILabel!
+	@IBOutlet var artistLabel: UILabel!
+	
+	final func configure(with metadatum: SongMetadatum?) {
+		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+		artistLabel.text = metadatum?.artistOnDisk ?? "Unknown Artist" // L2DO
+	}
+}
+extension SongInQueueCell: NowPlayingIndicating {}
+
 final class FutureModeChooser: UISegmentedControl {
 	private enum Position: Int {
 		case repeatOne

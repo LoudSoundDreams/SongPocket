@@ -72,16 +72,15 @@ extension PlayerVC: UITableViewDataSource {
 			break
 		}
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Song in Queue", for: indexPath)
+		guard var cell = tableView.dequeueReusableCell(
+			withIdentifier: "Song in Queue",
+			for: indexPath) as? SongInQueueCell
+		else { return UITableViewCell() }
 		
-		var content = UIListContentConfiguration.cell()
-		let metadatum = SongQueue.contents[indexPath.row].metadatum()
-		content.image = metadatum?.artworkImage(
-			at: CGSize(width: 5, height: 5))
-		content.text = metadatum?.titleOnDisk
-		content.secondaryText = metadatum?.artistOnDisk
-		content.secondaryTextProperties.color = .secondaryLabel
-		cell.contentConfiguration = content
+		cell.configure(with: SongQueue.contents[indexPath.row].metadatum())
+		cell.indicateNowPlaying(
+			isInPlayer: Int.random(in: 1...2) == 1,
+			isPlaying: Int.random(in: 1...2) == 1)
 		
 		return cell
 	}
