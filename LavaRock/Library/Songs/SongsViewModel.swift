@@ -22,7 +22,6 @@ struct SongsViewModel {
 	}
 	let prerowsInEachSection: [Prerow] = [.albumArtwork, .albumInfo]
 }
-
 extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
 	
@@ -73,7 +72,6 @@ extension SongsViewModel: LibraryViewModel {
 			context: context)
 	}
 }
-
 extension SongsViewModel {
 	init(
 		viewContainer: LibraryViewContainer,

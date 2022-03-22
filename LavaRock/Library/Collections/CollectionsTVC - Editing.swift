@@ -12,7 +12,6 @@ extension CollectionsTVC: UITextFieldDelegate {
 		textField.selectAll(nil) // As of iOS 15.3 developer beta 1, the selection works but the highlight doesn’t appear if `textField.text` is long.
 	}
 }
-
 extension CollectionsTVC {
 	// MARK: Renaming
 	

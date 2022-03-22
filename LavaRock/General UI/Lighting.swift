@@ -11,7 +11,6 @@ import UIKit
 extension Lighting: Identifiable {
 	var id: RawValue { rawValue }
 }
-
 enum Lighting: Int, CaseIterable {
 	// We persist these raw values in `UserDefaults`.
 	// Cases are in the order that they appear in in the UI.

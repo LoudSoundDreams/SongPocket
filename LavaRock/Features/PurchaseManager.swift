@@ -63,7 +63,6 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 		Self.paymentQueue.remove(self)
 	}
 }
-
 extension PurchaseManager: SKProductsRequestDelegate {
 	// StoreKit can call `SKProductsRequestDelegate` methods on any thread.
 	
@@ -96,7 +95,6 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		}
 	}
 }
-
 extension PurchaseManager: SKPaymentTransactionObserver {
 	final func paymentQueue(
 		_ queue: SKPaymentQueue,

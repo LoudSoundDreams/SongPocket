@@ -14,7 +14,6 @@ extension Song: LibraryItem {
 	
 	// Enables `[Song].reindex()`
 }
-
 extension Song {
 	convenience init(
 		atEndOf album: Album,

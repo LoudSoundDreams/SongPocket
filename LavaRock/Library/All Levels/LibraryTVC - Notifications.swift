@@ -13,9 +13,7 @@ extension LibraryTVC: PlayerReflecting {
 		reflectPlayer()
 	}
 }
-
 extension LibraryTVC: PlaybackToolbarManaging {}
-
 extension LibraryTVC {
 	// MARK: - Database
 	

@@ -16,14 +16,15 @@ final class PlayerVC: UIViewController {
 	private(set) lazy var nextSongButton = makeNextSongButton()
 	
 	@IBOutlet private var queueTable: UITableView!
-	@IBOutlet var futureModeChooser: UISegmentedControl!
+	@IBOutlet private var futureModeChooser: UISegmentedControl!
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		view.backgroundColor = .red.translucent() // TO DO: Delete
+		
 		queueTable.dataSource = self
 		queueTable.delegate = self
-		
 		SongQueue.tableView = queueTable
 		
 		reflectPlaybackStateFromNowOn()
@@ -35,19 +36,14 @@ final class PlayerVC: UIViewController {
 				toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 			}
 		}
-		
-		view.backgroundColor = .red.translucent() // TO DO: Delete
 	}
 }
-
 extension PlayerVC: PlayerReflecting {
 	func reflectPlaybackState() {
 		freshenPlaybackToolbar()
 	}
 }
-
 extension PlayerVC: PlaybackToolbarManaging {}
-
 extension PlayerVC: UITableViewDataSource {
 	private enum RowCase: CaseIterable {
 		case nextMode
@@ -111,7 +107,6 @@ extension PlayerVC: UITableViewDataSource {
 		return cell
 	}
 }
-
 extension PlayerVC: UITableViewDelegate {
 	final func tableView(
 		_ tableView: UITableView,

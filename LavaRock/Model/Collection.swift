@@ -13,10 +13,7 @@ extension Collection: LibraryItem {
 	
 	// Enables `[Collection].reindex()`
 }
-
-extension Collection: LibraryContainer {
-}
-
+extension Collection: LibraryContainer {}
 extension Collection {
 	convenience init(
 		afterAllOtherCollectionsCount numberOfExistingCollections: Int,

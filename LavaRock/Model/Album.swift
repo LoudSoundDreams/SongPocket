@@ -14,10 +14,7 @@ extension Album: LibraryItem {
 	
 	// Enables `[Album].reindex()`
 }
-
-extension Album: LibraryContainer {
-}
-
+extension Album: LibraryContainer {}
 extension Album {
 	convenience init(
 		atEndOf collection: Collection,

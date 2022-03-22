@@ -11,7 +11,6 @@ import UIKit
 extension AccentColor: Identifiable {
 	var id: RawValue { rawValue }
 }
-
 enum AccentColor: String, CaseIterable {
 	// We persist these raw values in `UserDefaults`.
 	case strawberry = "Strawberry"

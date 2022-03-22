@@ -21,7 +21,6 @@ struct CollectionsViewModel {
 	}
 	var prerowsInEachSection: [Prerow]
 }
-
 extension CollectionsViewModel: LibraryViewModel {
 	static let entityName = "Collection"
 	
@@ -64,7 +63,6 @@ extension CollectionsViewModel: LibraryViewModel {
 			prerowsInEachSection: prerowsInEachSection)
 	}
 }
-
 extension CollectionsViewModel {
 	init(
 		context: NSManagedObjectContext,

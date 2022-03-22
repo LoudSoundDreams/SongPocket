@@ -23,8 +23,8 @@ private enum LastMode: Int {
 }
 
 final class NextModeCell: UITableViewCell {
-	@IBOutlet var nextLabel: UILabel!
-	@IBOutlet var chooser: UISegmentedControl!
+	@IBOutlet private var nextLabel: UILabel!
+	@IBOutlet private var chooser: UISegmentedControl!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -83,7 +83,6 @@ final class NextModeCell: UITableViewCell {
 		chooser.enable()
 	}
 }
-
 extension NextModeCell: PlayerReflecting {
 	final func reflectPlaybackState() {
 		guard
@@ -105,8 +104,8 @@ extension NextModeCell: PlayerReflecting {
 }
 
 final class LastModeCell: UITableViewCell {
-	@IBOutlet var lastLabel: UILabel!
-	@IBOutlet var chooser: UISegmentedControl!
+	@IBOutlet private var lastLabel: UILabel!
+	@IBOutlet private var chooser: UISegmentedControl!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -165,7 +164,6 @@ final class LastModeCell: UITableViewCell {
 		chooser.enable()
 	}
 }
-
 extension LastModeCell: PlayerReflecting {
 	final func reflectPlaybackState() {
 		guard

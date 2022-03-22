@@ -21,7 +21,6 @@ struct AlbumsViewModel {
 	}
 	var prerowsInEachSection: [Prerow]
 }
-
 extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
 	
@@ -76,7 +75,6 @@ extension AlbumsViewModel: LibraryViewModel {
 			prerowsInEachSection: prerowsInEachSection)
 	}
 }
-
 extension AlbumsViewModel {
 	init(
 		viewContainer: LibraryViewContainer,
