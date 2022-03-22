@@ -28,105 +28,6 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Next Mode" id="BHe-8l-f1x" customClass="NextModeCell" customModule="LavaRock" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="88.333333969116211" width="375" height="53.333332061767578"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BHe-8l-f1x" id="Vj0-Hn-8GQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53.333332061767578"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="w73-VW-rxT">
-                                                    <rect key="frame" x="59.666666666666657" y="11.333333333333336" width="299.33333333333337" height="32"/>
-                                                    <segments>
-                                                        <segment title="" image="repeat.1" catalog="system"/>
-                                                        <segment title="" image="pause.fill" catalog="system"/>
-                                                        <segment title="" image="play.fill" catalog="system"/>
-                                                    </segments>
-                                                </segmentedControl>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZk-q7-vFn">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="31.666666666666671" height="16.999999999999996"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHD-1w-ITc">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="29" height="16.999999999999996"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <color key="textColor" systemColor="systemRedColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="w73-VW-rxT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="topMargin" id="1We-BC-fmb"/>
-                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="topMargin" id="3oj-O4-rHL"/>
-                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="bottomMargin" id="9WE-Eg-K5l"/>
-                                                <constraint firstItem="w73-VW-rxT" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Vj0-Hn-8GQ" secondAttribute="bottomMargin" id="BQH-xm-Mjv"/>
-                                                <constraint firstItem="LHD-1w-ITc" firstAttribute="centerY" secondItem="PZk-q7-vFn" secondAttribute="centerY" id="Us4-87-vEo"/>
-                                                <constraint firstItem="w73-VW-rxT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LHD-1w-ITc" secondAttribute="trailing" constant="12" id="VC5-zV-A4F"/>
-                                                <constraint firstItem="w73-VW-rxT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="PZk-q7-vFn" secondAttribute="trailing" constant="12" id="XkD-Sk-SxV"/>
-                                                <constraint firstItem="w73-VW-rxT" firstAttribute="leading" secondItem="LHD-1w-ITc" secondAttribute="trailing" priority="250" constant="12" id="cOs-Q7-KfD"/>
-                                                <constraint firstItem="w73-VW-rxT" firstAttribute="leading" secondItem="PZk-q7-vFn" secondAttribute="trailing" priority="250" constant="12" id="qk6-tj-KVq"/>
-                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="leading" secondItem="Vj0-Hn-8GQ" secondAttribute="leadingMargin" id="r61-Xg-Uzg"/>
-                                                <constraint firstItem="PZk-q7-vFn" firstAttribute="centerY" secondItem="w73-VW-rxT" secondAttribute="centerY" id="rNA-B0-Sfa"/>
-                                                <constraint firstItem="LHD-1w-ITc" firstAttribute="leading" secondItem="Vj0-Hn-8GQ" secondAttribute="leadingMargin" id="rh7-93-TUi"/>
-                                                <constraint firstItem="w73-VW-rxT" firstAttribute="trailing" secondItem="Vj0-Hn-8GQ" secondAttribute="trailingMargin" id="tgi-kE-hhy"/>
-                                                <constraint firstItem="w73-VW-rxT" firstAttribute="centerY" secondItem="Vj0-Hn-8GQ" secondAttribute="centerY" id="zff-YP-uEb"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="chooser" destination="w73-VW-rxT" id="sdu-5D-EkK"/>
-                                            <outlet property="nextLabel" destination="PZk-q7-vFn" id="Rpo-7e-pJw"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Last Mode" id="y8x-Qi-Yd7" customClass="LastModeCell" customModule="LavaRock" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="141.66666603088379" width="375" height="53.333332061767578"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y8x-Qi-Yd7" id="zEd-US-8gC">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53.333332061767578"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1zE-7R-5yX">
-                                                    <rect key="frame" x="59.666666666666657" y="11.333333333333336" width="299.33333333333337" height="32"/>
-                                                    <segments>
-                                                        <segment title="" image="repeat" catalog="system"/>
-                                                        <segment title="" image="stop.fill" catalog="system"/>
-                                                    </segments>
-                                                </segmentedControl>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="stO-U3-Ggl">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="29" height="16.999999999999996"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zgc-US-Qv2">
-                                                    <rect key="frame" x="16" y="18.333333333333332" width="31.666666666666671" height="16.999999999999996"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <color key="textColor" systemColor="systemRedColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Zgc-US-Qv2" firstAttribute="leading" secondItem="zEd-US-8gC" secondAttribute="leadingMargin" id="3tl-nX-Wej"/>
-                                                <constraint firstItem="Zgc-US-Qv2" firstAttribute="centerY" secondItem="stO-U3-Ggl" secondAttribute="centerY" id="7NJ-sO-8LI"/>
-                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="trailing" secondItem="zEd-US-8gC" secondAttribute="trailingMargin" id="8V9-Xk-foh"/>
-                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="centerY" secondItem="zEd-US-8gC" secondAttribute="centerY" id="8hy-c4-wPd"/>
-                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="centerY" secondItem="1zE-7R-5yX" secondAttribute="centerY" id="8yI-Yc-nKN"/>
-                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="topMargin" id="GRI-aD-5bO"/>
-                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="leading" secondItem="stO-U3-Ggl" secondAttribute="trailing" priority="250" constant="12" id="Lvm-wA-CtV"/>
-                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="bottomMargin" id="MDa-OF-1Vj"/>
-                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="stO-U3-Ggl" secondAttribute="trailing" constant="12" id="OpE-3Y-Gbe"/>
-                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="topMargin" id="alm-DB-U8S"/>
-                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="leading" secondItem="zEd-US-8gC" secondAttribute="leadingMargin" id="f40-dG-ZW4"/>
-                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Zgc-US-Qv2" secondAttribute="trailing" constant="12" id="fsm-1k-zmI"/>
-                                                <constraint firstItem="stO-U3-Ggl" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="zEd-US-8gC" secondAttribute="bottomMargin" id="mny-Ix-ND6"/>
-                                                <constraint firstItem="1zE-7R-5yX" firstAttribute="leading" secondItem="Zgc-US-Qv2" secondAttribute="trailing" priority="250" constant="12" id="r2w-6d-p4e"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="chooser" destination="1zE-7R-5yX" id="BKw-tG-ICx"/>
-                                            <outlet property="lastLabel" destination="stO-U3-Ggl" id="xaM-Lm-IDA"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JmH-0T-GLg">
@@ -207,16 +108,9 @@
     </scenes>
     <resources>
         <image name="hifispeaker.fill" catalog="system" width="111" height="128"/>
-        <image name="pause.fill" catalog="system" width="116" height="128"/>
-        <image name="play.fill" catalog="system" width="116" height="128"/>
-        <image name="repeat" catalog="system" width="128" height="98"/>
         <image name="repeat.1" catalog="system" width="128" height="101"/>
-        <image name="stop.fill" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

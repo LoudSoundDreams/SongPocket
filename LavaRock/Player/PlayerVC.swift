@@ -46,16 +46,10 @@ extension PlayerVC: PlayerReflecting {
 extension PlayerVC: PlaybackToolbarManaging {}
 extension PlayerVC: UITableViewDataSource {
 	private enum RowCase: CaseIterable {
-		case nextMode
-		case lastMode
 		case song
 		
 		init(rowIndex: Int) {
 			switch rowIndex {
-			case 0:
-				self = .nextMode
-			case 1:
-				self = .lastMode
 			default:
 				self = .song
 			}
@@ -74,20 +68,6 @@ extension PlayerVC: UITableViewDataSource {
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		switch RowCase(rowIndex: indexPath.row) {
-		case .nextMode:
-			guard let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Next Mode",
-				for: indexPath) as? NextModeCell
-			else { return UITableViewCell() }
-			
-			return cell
-		case .lastMode:
-			guard let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Last Mode",
-				for: indexPath) as? LastModeCell
-			else { return UITableViewCell() }
-			
-			return cell
 		case .song:
 			break
 		}
@@ -95,8 +75,7 @@ extension PlayerVC: UITableViewDataSource {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Song in Queue", for: indexPath)
 		
 		var content = UIListContentConfiguration.cell()
-		let metadatum = SongQueue.contents[indexPath.row - 2].metadatum()
-//		let metadatum = SongQueue.contents[indexPath.row].metadatum()
+		let metadatum = SongQueue.contents[indexPath.row].metadatum()
 		content.image = metadatum?.artworkImage(
 			at: CGSize(width: 5, height: 5))
 		content.text = metadatum?.titleOnDisk
@@ -113,10 +92,6 @@ extension PlayerVC: UITableViewDelegate {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch RowCase(rowIndex: indexPath.row) {
-		case .nextMode:
-			return nil
-		case .lastMode:
-			return nil
 		case .song:
 			return indexPath
 		}
