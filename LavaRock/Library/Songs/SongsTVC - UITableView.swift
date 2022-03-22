@@ -83,10 +83,9 @@ extension SongsTVC {
 				let album = songsViewModel.album(forSection: indexPath.section)
 				return album.representativeMPMediaItem()
 			}())
-		cell.applyNowPlayingIndicator(
-			NowPlayingIndicator(
-				isInPlayer: isInPlayer(anyIndexPath: indexPath),
-				isPlaying: player?.playbackState == .playing))
+		cell.indicateNowPlaying(
+			isInPlayer: isInPlayer(anyIndexPath: indexPath),
+			isPlaying: player?.playbackState == .playing)
 		
 		return cell
 	}

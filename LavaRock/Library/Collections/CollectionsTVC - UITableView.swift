@@ -145,10 +145,9 @@ extension CollectionsTVC {
 			with: collection,
 			mode: mode,
 			accessibilityActions: accessibilityActions)
-		cell.applyNowPlayingIndicator(
-			NowPlayingIndicator(
-				isInPlayer: collectionsViewModel.isInPlayer(anyIndexPath: indexPath),
-				isPlaying: player?.playbackState == .playing))
+		cell.indicateNowPlaying(
+			isInPlayer: collectionsViewModel.isInPlayer(anyIndexPath: indexPath),
+			isPlaying: player?.playbackState == .playing)
 		
 		return cell
 	}

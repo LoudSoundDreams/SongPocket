@@ -117,10 +117,9 @@ extension AlbumsTVC {
 				case .browsing:
 					return .normal
 				}}())
-		cell.applyNowPlayingIndicator(
-			NowPlayingIndicator(
-				isInPlayer: isInPlayer(anyIndexPath: indexPath),
-				isPlaying: player?.playbackState == .playing))
+		cell.indicateNowPlaying(
+			isInPlayer: isInPlayer(anyIndexPath: indexPath),
+			isPlaying: player?.playbackState == .playing)
 		
 		return cell
 	}

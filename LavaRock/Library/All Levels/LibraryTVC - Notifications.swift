@@ -40,14 +40,11 @@ extension LibraryTVC {
 	final func freshenNowPlayingIndicators(
 		accordingTo nowPlayingDetermining: NowPlayingDetermining
 	) {
-		let isPlaying = player?.playbackState == .playing
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating else { return }
-			let isInPlayer = nowPlayingDetermining.isInPlayer(anyIndexPath: visibleIndexPath)
-			let indicator = NowPlayingIndicator(
-				isInPlayer: isInPlayer,
-				isPlaying: isPlaying)
-			cell.applyNowPlayingIndicator(indicator)
+			cell.indicateNowPlaying(
+				isInPlayer: nowPlayingDetermining.isInPlayer(anyIndexPath: visibleIndexPath),
+				isPlaying: player?.playbackState == .playing)
 		}
 	}
 	
