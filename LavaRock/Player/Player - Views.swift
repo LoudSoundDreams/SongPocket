@@ -8,13 +8,13 @@
 import UIKit
 import MediaPlayer
 
-private enum FutureMode: Int {
-	case repeatOne
-	case repeatAll
-	case normal
-}
-
 final class FutureModeChooser: UISegmentedControl {
+	private enum Position: Int {
+		case repeatOne
+		case repeatAll
+		case normal
+	}
+	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -62,7 +62,7 @@ final class FutureModeChooser: UISegmentedControl {
 			at: numberOfSegments,
 			animated: false)
 		disable()
-		selectedSegmentIndex = FutureMode.normal.rawValue
+		selectedSegmentIndex = Position.normal.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackStateFromNowOn()
@@ -76,7 +76,7 @@ extension FutureModeChooser: PlayerReflecting {
 			!SongQueue.contents.isEmpty
 		else {
 			disable()
-			selectedSegmentIndex = FutureMode.normal.rawValue
+			selectedSegmentIndex = Position.normal.rawValue
 			return
 		}
 		enable()
@@ -84,11 +84,11 @@ extension FutureModeChooser: PlayerReflecting {
 		case .default:
 			fatalError("`MPMusicPlayerController.repeatMode == .default")
 		case .one:
-			selectedSegmentIndex = FutureMode.repeatOne.rawValue
+			selectedSegmentIndex = Position.repeatOne.rawValue
 		case .all:
-			selectedSegmentIndex = FutureMode.repeatAll.rawValue
+			selectedSegmentIndex = Position.repeatAll.rawValue
 		case .none:
-			selectedSegmentIndex = FutureMode.normal.rawValue
+			selectedSegmentIndex = Position.normal.rawValue
 		@unknown default:
 			fatalError("Unknown value for `MPMusicPlayerController.repeatMode")
 		}

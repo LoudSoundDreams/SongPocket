@@ -14,6 +14,14 @@ final class CollectionsTVC:
 	LibraryTVC,
 	OrganizeAlbumsPreviewing
 {
+	enum CollectionsViewState {
+		case allowAccess
+		case loading
+		case wasLoadingOrNoCollections
+		case noCollections
+		case someCollections
+	}
+	
 	enum Purpose {
 		case willOrganizeAlbums(WillOrganizeAlbumsStickyNote)
 		case organizingAlbums(OrganizeAlbumsClipboard)
