@@ -16,7 +16,7 @@ final class PlayerVC: UIViewController {
 	private(set) lazy var nextSongButton = makeNextSongButton()
 	
 	@IBOutlet private var queueTable: UITableView!
-	@IBOutlet private var futureModeChooser: UISegmentedControl!
+	@IBOutlet private var futureModeChooser: FutureModeChooser!
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
