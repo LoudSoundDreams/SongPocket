@@ -8,7 +8,7 @@
 import MediaPlayer
 import OSLog
 
-final class MusicLibraryManager { // This is a class and not a struct because it should end observing notifications in a deinitializer.
+final class MusicLibraryManager { // This is a class and not a struct because it needs a deinitializer.
 	private init() {}
 	static let shared = MusicLibraryManager()
 	

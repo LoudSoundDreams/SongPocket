@@ -37,7 +37,7 @@ extension LibraryTVC {
 	}
 	
 	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
-	final func indicateNowPlaying(
+	final func indicateNowPlayingOnVisibleCells(
 		accordingTo determining: NowPlayingDetermining
 	) {
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
@@ -61,7 +61,7 @@ extension LibraryTVC {
 		
 		Task {
 			/*
-			 // When we need to freshen, you might be in the middle of a content-dependent task. For simplicity, cancel such tasks.
+			 When we need to freshen, you might be in the middle of a content-dependent task. For simplicity, cancel such tasks.
 			 - Sort options (`LibraryTVC`)
 			 - “Rename Collection” dialog (`CollectionsTVC`)
 			 - “Combine Collections” dialog (`CollectionsTVC`)

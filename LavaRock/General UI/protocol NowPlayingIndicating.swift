@@ -1,5 +1,5 @@
 //
-//  NowPlayingIndicating.swift
+//  protocol NowPlayingIndicating.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-07.

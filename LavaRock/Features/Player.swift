@@ -9,7 +9,7 @@ import MediaPlayer
 import CoreData
 
 @MainActor
-final class Player { // This is a class and not a struct because it should end observing notifications in a deinitializer.
+final class Player { // This is a class and not a struct because it needs a deinitializer.
 	private init() {}
 	static let shared = Player()
 	

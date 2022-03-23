@@ -29,7 +29,7 @@
 		073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Collections - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Collections - Views.swift */; };
-		073E6A9225574B99003C84A5 /* NowPlayingIndicating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* NowPlayingIndicating.swift */; };
+		073E6A9225574B99003C84A5 /* protocol NowPlayingIndicating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* protocol NowPlayingIndicating.swift */; };
 		073FB55927588B81000FAF5F /* Options View.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* Options View.storyboard */; };
 		073FB56027588BC5000FAF5F /* Player View.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB56227588BC5000FAF5F /* Player View.storyboard */; };
 		07499A8627AB72CF00A2D712 /* protocol PlaybackToolbarManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07499A8527AB72CF00A2D712 /* protocol PlaybackToolbarManaging.swift */; };
@@ -159,7 +159,7 @@
 		073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Collections - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections - Views.swift"; sourceTree = "<group>"; };
-		073E6A9125574B98003C84A5 /* NowPlayingIndicating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingIndicating.swift; sourceTree = "<group>"; };
+		073E6A9125574B98003C84A5 /* protocol NowPlayingIndicating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NowPlayingIndicating.swift"; sourceTree = "<group>"; };
 		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Options View.storyboard"; sourceTree = "<group>"; };
 		073FB56127588BC5000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Player View.storyboard"; sourceTree = "<group>"; };
 		07499A8527AB72CF00A2D712 /* protocol PlaybackToolbarManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol PlaybackToolbarManaging.swift"; sourceTree = "<group>"; };
@@ -317,7 +317,6 @@
 			children = (
 				07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */,
 				0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */,
-				073E6A9125574B98003C84A5 /* NowPlayingIndicating.swift */,
 				07622F0D27DAEA9D00B953EA /* Library View.storyboard */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
@@ -552,6 +551,7 @@
 				075218AF257C4C0C0077AE9B /* Tab Bar.storyboard */,
 				076F1C0627E903A500220C2B /* TabBarController.swift */,
 				07499A8527AB72CF00A2D712 /* protocol PlaybackToolbarManaging.swift */,
+				073E6A9125574B98003C84A5 /* protocol NowPlayingIndicating.swift */,
 			);
 			path = "General UI";
 			sourceTree = "<group>";
@@ -750,7 +750,7 @@
 				07865B252566FBC600DBEB26 /* AlbumsTVC + NowPlayingDetermining.swift in Sources */,
 				071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */,
 				07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */,
-				073E6A9225574B99003C84A5 /* NowPlayingIndicating.swift in Sources */,
+				073E6A9225574B99003C84A5 /* protocol NowPlayingIndicating.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* LibraryTVC - Editing.swift in Sources */,
 				0781F1FA25991B3300781CF8 /* OptionsTVC - UITableView.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */,
