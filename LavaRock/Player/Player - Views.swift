@@ -80,12 +80,12 @@ final class FutureModeChooser: UISegmentedControl {
 		selectedSegmentIndex = Position.normal.rawValue
 		
 		Task { await MainActor.run {
-			reflectPlaybackStateFromNowOn()
+			beginReflectingPlaybackState()
 		}}
 	}
 }
 extension FutureModeChooser: PlayerReflecting {
-	func reflectPlaybackState() {
+	func playbackStateDidChange() {
 		guard
 			let player = player,
 			!SongQueue.contents.isEmpty

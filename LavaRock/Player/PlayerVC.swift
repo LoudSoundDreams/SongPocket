@@ -25,7 +25,7 @@ final class PlayerVC: UIViewController {
 		queueTable.delegate = self
 		SongQueue.tableView = queueTable
 		
-		reflectPlaybackStateFromNowOn()
+		beginReflectingPlaybackState()
 		
 		// TO DO: Respond to “now playing item changed” notifications
 		// • Freshen playback toolbar
@@ -39,7 +39,7 @@ final class PlayerVC: UIViewController {
 	}
 }
 extension PlayerVC: PlayerReflecting {
-	func reflectPlaybackState() {
+	func playbackStateDidChange() {
 		queueTable.reloadData() // TO DO
 		freshenPlaybackToolbar()
 	}

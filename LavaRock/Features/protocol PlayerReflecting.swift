@@ -11,16 +11,16 @@ import MediaPlayer
 @MainActor
 protocol PlayerReflecting: AnyObject {
 	// Adopting types must …
-	// - Call `reflectPlaybackStateFromNowOn` as soon as their implementation of `reflectPlaybackState` will work.
+	// - Call `beginReflectingPlaybackState` as soon as their implementation of `playbackStateDidChange` will work.
 	
-	func reflectPlaybackState()
+	func playbackStateDidChange()
 	// Reflect `player`, and show a disabled state if it’s `nil`. (Call `Player.shared.setUp` to set it up.)
 }
 extension PlayerReflecting {
 	var player: MPMusicPlayerController? { Player.shared.player }
 	
-	func reflectPlaybackStateFromNowOn() {
-		reflectPlaybackState()
+	func beginReflectingPlaybackState() {
+		playbackStateDidChange()
 		
 		Player.shared.addReflectorOnce(weaklyReferencing: self)
 	}

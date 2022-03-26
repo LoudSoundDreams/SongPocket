@@ -37,13 +37,24 @@ final class Player { // This is a class and not a struct because it needs a dein
 		player?.beginGeneratingPlaybackNotifications()
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(playbackStateDidChange),
+			selector: #selector(broadcastPlaybackStateDidChange),
 			name: .MPMusicPlayerControllerPlaybackStateDidChange, // As of iOS 15.4, Media Player also posts this when the repeat or shuffle mode changes.
 			object: player)
 		
-		reflectPlaybackStateEverywhere() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
+		broadcastPlaybackStateDidChange() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
 	}
-	@objc private func playbackStateDidChange() { reflectPlaybackStateEverywhere() }
+	
+	@objc
+	private func broadcastPlaybackStateDidChange() {
+//		print("")
+//		print("playback state changed.")
+//		print(player.debugDescription)
+		
+		reflectors.removeAll { $0.referencee == nil }
+		reflectors.forEach {
+			$0.referencee?.playbackStateDidChange()
+		}
+	}
 	
 	final func currentSong(context: NSManagedObjectContext) -> Song? {
 		guard let nowPlayingItem = player?.nowPlayingItem else {
@@ -69,17 +80,6 @@ final class Player { // This is a class and not a struct because it needs a dein
 	// MARK: - Private
 	
 	private var reflectors: [Weak<PlayerReflecting>] = []
-	
-	private func reflectPlaybackStateEverywhere() {
-//		print("")
-//		print("playback state changed.")
-//		print(player.debugDescription)
-		
-		reflectors.removeAll { $0.referencee == nil }
-		reflectors.forEach {
-			$0.referencee?.reflectPlaybackState()
-		}
-	}
 	
 	deinit {
 		player?.endGeneratingPlaybackNotifications()

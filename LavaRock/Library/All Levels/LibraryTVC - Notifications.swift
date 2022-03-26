@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 extension LibraryTVC: PlayerReflecting {
-	func reflectPlaybackState() {
+	func playbackStateDidChange() {
 		reflectPlayer()
 	}
 }
