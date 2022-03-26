@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="mMv-Oy-bR1">
-                                <rect key="frame" x="0.0" y="88.000000000000028" width="375" height="384.66666666666674"/>
+                                <rect key="frame" x="0.0" y="88" width="375" height="320.66666666666669"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song in Queue" id="uxc-K4-bwq" customClass="SongInQueueCell" customModule="LavaRock" customModuleProvider="target">
@@ -86,7 +86,7 @@
                                 <state key="normal" image="repeat.1" catalog="system"/>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hB7-Xq-sOQ" customClass="FutureModeChooser" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="480.66666666666669" width="343" height="32"/>
+                                <rect key="frame" x="16" y="416.66666666666669" width="343" height="32"/>
                                 <segments>
                                     <segment title="First"/>
                                     <segment title="Second"/>
@@ -103,7 +103,7 @@
                             <constraint firstItem="hB7-Xq-sOQ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="9gW-kt-mSP" secondAttribute="bottomMargin" id="FMz-84-4M5"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="top" secondItem="Npg-CN-dfQ" secondAttribute="top" id="PRH-9Q-W4C"/>
                             <constraint firstItem="hB7-Xq-sOQ" firstAttribute="trailing" secondItem="9gW-kt-mSP" secondAttribute="trailingMargin" id="WI3-OM-f05"/>
-                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="height" secondItem="Npg-CN-dfQ" secondAttribute="height" multiplier="0.6" id="fsx-Xr-KI2"/>
+                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="height" secondItem="Npg-CN-dfQ" secondAttribute="height" multiplier="0.5" id="fsx-Xr-KI2"/>
                             <constraint firstItem="JmH-0T-GLg" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" constant="-8" id="m66-w6-p8N"/>
                             <constraint firstItem="JmH-0T-GLg" firstAttribute="leading" secondItem="9gW-kt-mSP" secondAttribute="leadingMargin" id="w26-ar-c7k"/>
                         </constraints>

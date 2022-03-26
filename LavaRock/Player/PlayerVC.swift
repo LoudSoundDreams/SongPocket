@@ -21,13 +21,15 @@ final class PlayerVC: UIViewController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = .red.translucent() // TO DO: Delete
-		
 		queueTable.dataSource = self
 		queueTable.delegate = self
 		SongQueue.tableView = queueTable
 		
 		reflectPlaybackStateFromNowOn()
+		
+		// TO DO: Respond to “now playing item changed” notifications
+		// • Freshen playback toolbar
+		// • Update “now playing” indicator [?]
 		
 		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons

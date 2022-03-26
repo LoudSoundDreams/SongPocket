@@ -14,7 +14,7 @@ struct SongQueue {
 	
 	static var contents: [Song] = [] {
 		didSet {
-			tableView?.reloadData()
+			tableView?.reloadData() // TO DO
 		}
 	}
 }
