@@ -14,9 +14,7 @@ extension CollectionsTVC {
 	final override func reflectPlayer() {
 		super.reflectPlayer()
 		
-		if let viewModel = viewModel as? NowPlayingDetermining {
-			indicateNowPlayingOnVisibleCells(accordingTo: viewModel)
-		}
+		indicateNowPlayingOnVisibleCells()
 	}
 	
 	// MARK: Library Items

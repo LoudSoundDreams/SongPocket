@@ -118,7 +118,7 @@ extension AlbumsTVC {
 					return .normal
 				}}())
 		cell.indicateNowPlaying(
-			isInPlayer: isInPlayer(anyIndexPath: indexPath))
+			isInPlayer: albumsViewModel.itemIsOrContainsCurrentSong(anyIndexPath: indexPath))
 		
 		return cell
 	}

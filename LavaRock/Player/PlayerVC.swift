@@ -80,7 +80,7 @@ extension PlayerVC: UITableViewDataSource {
 		
 		cell.configure(with: SongQueue.contents[indexPath.row].metadatum())
 		cell.indicateNowPlaying(
-			isInPlayer: Int.random(in: 1...2) == 1)
+			isInPlayer: true)
 		
 		return cell
 	}

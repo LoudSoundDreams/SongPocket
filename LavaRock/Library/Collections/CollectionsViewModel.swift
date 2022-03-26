@@ -34,6 +34,17 @@ extension CollectionsViewModel: LibraryViewModel {
 		: LocalizedString.collections
 	}
 	
+	@MainActor
+	func itemIsOrContainsCurrentSong(anyIndexPath: IndexPath) -> Bool {
+		guard
+			let rowCollection = itemOptional(at: anyIndexPath) as? Collection,
+			let currentSong = Player.shared.currentSong(context: context)
+		else {
+			return false
+		}
+		return rowCollection.objectID == currentSong.container?.container?.objectID
+	}
+	
 	func prerowIdentifiersInEachSection() -> [AnyHashable] {
 		return prerowsInEachSection
 	}

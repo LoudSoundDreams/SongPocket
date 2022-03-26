@@ -40,6 +40,17 @@ extension AlbumsViewModel: LibraryViewModel {
 		}
 	}
 	
+	@MainActor
+	func itemIsOrContainsCurrentSong(anyIndexPath: IndexPath) -> Bool {
+		guard
+			let rowAlbum = itemOptional(at: anyIndexPath) as? Album,
+			let currentSong = Player.shared.currentSong(context: context)
+		else {
+			return false
+		}
+		return rowAlbum.objectID == currentSong.container?.objectID
+	}
+	
 	func prerowIdentifiersInEachSection() -> [AnyHashable] {
 		return prerowsInEachSection
 	}

@@ -41,6 +41,7 @@ protocol LibraryViewModel {
 	
 	func viewContainerIsSpecific() -> Bool
 	func bigTitle() -> String
+	func itemIsOrContainsCurrentSong(anyIndexPath: IndexPath) -> Bool
 	func prerowIdentifiersInEachSection() -> [AnyHashable]
 	func allowsSortOption(
 		_ sortOption: LibraryTVC.SortOption,

@@ -37,13 +37,11 @@ extension LibraryTVC {
 	}
 	
 	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
-	final func indicateNowPlayingOnVisibleCells(
-		accordingTo determining: NowPlayingDetermining
-	) {
+	final func indicateNowPlayingOnVisibleCells() {
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating else { return }
 			cell.indicateNowPlaying(
-				isInPlayer: determining.isInPlayer(anyIndexPath: visibleIndexPath))
+				isInPlayer: viewModel.itemIsOrContainsCurrentSong(anyIndexPath: visibleIndexPath))
 		}
 	}
 	

@@ -8,11 +8,6 @@
 import UIKit
 
 @MainActor
-protocol NowPlayingDetermining {
-	func isInPlayer(anyIndexPath: IndexPath) -> Bool
-}
-
-@MainActor
 protocol NowPlayingIndicating {
 	var spacerSpeakerImageView: UIImageView! { get set }
 	var speakerImageView: UIImageView! { get set }
