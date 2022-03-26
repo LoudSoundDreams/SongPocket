@@ -40,6 +40,7 @@ final class PlayerVC: UIViewController {
 }
 extension PlayerVC: PlayerReflecting {
 	func reflectPlaybackState() {
+		queueTable.reloadData() // TO DO
 		freshenPlaybackToolbar()
 	}
 }
@@ -79,8 +80,7 @@ extension PlayerVC: UITableViewDataSource {
 		
 		cell.configure(with: SongQueue.contents[indexPath.row].metadatum())
 		cell.indicateNowPlaying(
-			isInPlayer: Int.random(in: 1...2) == 1,
-			isPlaying: Int.random(in: 1...2) == 1)
+			isInPlayer: Int.random(in: 1...2) == 1)
 		
 		return cell
 	}

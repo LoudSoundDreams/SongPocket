@@ -43,8 +43,7 @@ extension LibraryTVC {
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating else { return }
 			cell.indicateNowPlaying(
-				isInPlayer: determining.isInPlayer(anyIndexPath: visibleIndexPath),
-				isPlaying: player?.playbackState == .playing)
+				isInPlayer: determining.isInPlayer(anyIndexPath: visibleIndexPath))
 		}
 	}
 	

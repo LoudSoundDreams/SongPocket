@@ -84,8 +84,7 @@ extension SongsTVC {
 				return album.representativeMPMediaItem()
 			}())
 		cell.indicateNowPlaying(
-			isInPlayer: isInPlayer(anyIndexPath: indexPath),
-			isPlaying: player?.playbackState == .playing)
+			isInPlayer: isInPlayer(anyIndexPath: indexPath))
 		
 		return cell
 	}
