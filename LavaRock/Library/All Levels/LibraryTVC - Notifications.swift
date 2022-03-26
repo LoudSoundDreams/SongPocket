@@ -10,7 +10,7 @@ import SwiftUI
 
 extension LibraryTVC: PlayerReflecting {
 	func playbackStateDidChange() {
-		reflectPlayer()
+		freshenPlaybackToolbarAndNowPlayingIndicators()
 	}
 }
 extension LibraryTVC: PlaybackToolbarManaging {}
@@ -18,7 +18,7 @@ extension LibraryTVC {
 	// MARK: - Database
 	
 	final func reflectDatabase() {
-		reflectPlayer() // Do this even for views that aren’t visible, so that when we reveal them by going back, the “now playing” indicators and playback toolbar are already updated.
+		freshenPlaybackToolbarAndNowPlayingIndicators() // Do this even for views that aren’t visible, so that when we reveal them by going back, the “now playing” indicators and playback toolbar are already updated.
 		
 		if view.window == nil {
 			needsFreshenLibraryItemsOnViewDidAppear = true
@@ -30,7 +30,7 @@ extension LibraryTVC {
 	// MARK: Player
 	
 	@objc
-	func reflectPlayer() {
+	func freshenPlaybackToolbarAndNowPlayingIndicators() {
 		freshenPlaybackToolbar() // Do this even if the view isn’t visible, so that the playback toolbar is freshened before it appears. This works; it’s just unusual.
 		
 		// Freshen “now playing” indicators

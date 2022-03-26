@@ -56,7 +56,7 @@ final class Player { // This is a class and not a struct because it needs a dein
 		}
 	}
 	
-	final func currentSong(context: NSManagedObjectContext) -> Song? {
+	final func songInPlayer(context: NSManagedObjectContext) -> Song? {
 		guard let nowPlayingItem = player?.nowPlayingItem else {
 			return nil
 		}

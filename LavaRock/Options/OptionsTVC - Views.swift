@@ -107,7 +107,7 @@ final class TipReloadCell: TintedSelectedCell {
 		configureAsButton()
 	}
 }
-extension TipReloadCell: CellConfiguredAsButton {
+extension TipReloadCell: CellConfigurableAsButton {
 	static let buttonText = LocalizedString.reload
 }
 

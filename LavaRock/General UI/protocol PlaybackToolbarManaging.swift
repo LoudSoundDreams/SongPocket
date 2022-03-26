@@ -92,6 +92,7 @@ extension PlaybackToolbarManaging {
 		}
 		
 		if player.playbackState == .playing {
+			// Configure “pause” button
 			playPauseButton.title = LocalizedString.pause
 			playPauseButton.primaryAction = UIAction(
 				image: UIImage(systemName: .SFPause)

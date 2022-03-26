@@ -17,7 +17,7 @@ final class AllowAccessCell: TintedSelectedCell {
 		configureAsButton()
 	}
 }
-extension AllowAccessCell: CellConfiguredAsButton {
+extension AllowAccessCell: CellConfigurableAsButton {
 	static let buttonText = LocalizedString.allowAccessToMusic
 }
 
@@ -67,7 +67,7 @@ final class OpenMusicCell: TintedSelectedCell {
 		URL.music?.open()
 	}
 }
-extension OpenMusicCell: CellConfiguredAsButton {
+extension OpenMusicCell: CellConfigurableAsButton {
 	static let buttonText = LocalizedString.openMusic
 }
 

@@ -115,7 +115,7 @@ class LibraryTVC: UITableViewController {
 			name: .LRDidMergeChanges,
 			object: MusicLibraryManager.shared)
 		
-		setUpMusicAppDependentFunctionality()
+		beginObservingNowPlayingItemDidChange()
 		
 		freshenNavigationItemTitle()
 		navigationItem.rightBarButtonItem = editButtonItem
@@ -124,7 +124,7 @@ class LibraryTVC: UITableViewController {
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
 	
-	final func setUpMusicAppDependentFunctionality() {
+	final func beginObservingNowPlayingItemDidChange() {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
@@ -133,7 +133,7 @@ class LibraryTVC: UITableViewController {
 				object: player)
 		}
 	}
-	@objc private func nowPlayingItemDidChange() { reflectPlayer() }
+	@objc private func nowPlayingItemDidChange() { freshenPlaybackToolbarAndNowPlayingIndicators() }
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()

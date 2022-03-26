@@ -95,7 +95,7 @@ extension AlbumsTVC {
 					firstReloading: originalIndexPathsOfCollectionsContainingMovedAlbums,
 					previewOfChanges,
 					runningBeforeContinuation: {
-						collectionsTVC.reflectPlayer()
+						collectionsTVC.freshenPlaybackToolbarAndNowPlayingIndicators()
 					})
 			}
 		}

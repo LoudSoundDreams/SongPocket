@@ -18,13 +18,13 @@ extension CellHavingTransparentBackground {
 	}
 }
 
-protocol CellConfiguredAsButton: UITableViewCell {
+protocol CellConfigurableAsButton: UITableViewCell {
 	// Adopting types must …
 	// - Override `awakeFromNib` and call `configureAsButton`.
 	static var buttonText: String { get }
 	var contentConfiguration: UIContentConfiguration? { get set }
 }
-extension CellConfiguredAsButton {
+extension CellConfigurableAsButton {
 	func configureAsButton() {
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = Self.buttonText
