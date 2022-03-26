@@ -10,6 +10,8 @@ import CoreData
 protocol LibraryItem: NSManagedObject {
 	var libraryTitle: String? { get }
 	var index: Int64 { get set }
+	
+	func isInPlayer() -> Bool
 }
 
 protocol LibraryContainer: LibraryItem {

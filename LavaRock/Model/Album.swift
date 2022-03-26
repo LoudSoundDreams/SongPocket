@@ -13,6 +13,17 @@ extension Album: LibraryItem {
 	// Enables `[Album].reindex()`
 	
 	var libraryTitle: String? { titleFormattedOptional() }
+	
+	@MainActor
+	final func isInPlayer() -> Bool {
+		guard
+			let context = managedObjectContext,
+			let songInPlayer = Player.shared.currentSong(context: context)
+		else {
+			return false
+		}
+		return objectID == songInPlayer.container?.objectID
+	}
 }
 extension Album: LibraryContainer {}
 extension Album {

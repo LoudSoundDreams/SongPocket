@@ -74,17 +74,14 @@ extension SongsTVC {
 			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
 		
+		let song = songsViewModel.songNonNil(at: indexPath)
 		cell.configureWith(
-			metadatum: {
-				let song = songsViewModel.songNonNil(at: indexPath)
-				return song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
-			}(),
+			metadatum: song.metadatum(), // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
 			albumRepresentative: {
 				let album = songsViewModel.album(forSection: indexPath.section)
 				return album.representativeMPMediaItem()
 			}())
-		cell.indicateNowPlaying(
-			isInPlayer: songsViewModel.itemIsOrContainsCurrentSong(anyIndexPath: indexPath))
+		cell.indicateNowPlaying(isInPlayer: song.isInPlayer())
 		
 		return cell
 	}

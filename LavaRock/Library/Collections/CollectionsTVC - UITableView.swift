@@ -145,8 +145,7 @@ extension CollectionsTVC {
 			with: collection,
 			mode: mode,
 			accessibilityActions: accessibilityActions)
-		cell.indicateNowPlaying(
-			isInPlayer: collectionsViewModel.itemIsOrContainsCurrentSong(anyIndexPath: indexPath))
+		cell.indicateNowPlaying(isInPlayer: collection.isInPlayer())
 		
 		return cell
 	}

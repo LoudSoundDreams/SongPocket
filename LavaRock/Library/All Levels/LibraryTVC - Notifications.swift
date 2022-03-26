@@ -29,17 +29,17 @@ extension LibraryTVC {
 	
 	// MARK: Player
 	
-	// Subclasses that show a “now playing” indicator should override this method, call super (this implementation), and update that indicator.
 	@objc
 	func reflectPlayer() {
-		// We want every `LibraryTVC` to have its playback toolbar freshened before it appears. This tells all `LibraryTVC`s to freshen, even if they aren’t onscreen. This works; it’s just unusual.
-		freshenPlaybackToolbar()
+		freshenPlaybackToolbar() // Do this even if the view isn’t visible, so that the playback toolbar is freshened before it appears. This works; it’s just unusual.
 		
 		// Freshen “now playing” indicators
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
-			guard var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating else { return }
-			cell.indicateNowPlaying(
-				isInPlayer: viewModel.itemIsOrContainsCurrentSong(anyIndexPath: visibleIndexPath))
+			guard
+				var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating,
+				let libraryItem = viewModel.itemOptional(at: visibleIndexPath) as? LibraryItem
+			else { return }
+			cell.indicateNowPlaying(isInPlayer: libraryItem.isInPlayer())
 		}
 	}
 	

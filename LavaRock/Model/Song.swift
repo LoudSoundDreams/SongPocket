@@ -13,6 +13,17 @@ extension Song: LibraryItem {
 	// Enables `[Song].reindex()`
 	
 	var libraryTitle: String? { metadatum()?.titleOnDisk }
+	
+	@MainActor
+	final func isInPlayer() -> Bool {
+		guard
+			let context = managedObjectContext,
+			let songInPlayer = Player.shared.currentSong(context: context)
+		else {
+			return false
+		}
+		return objectID == songInPlayer.objectID
+	}
 }
 extension Song {
 	convenience init(

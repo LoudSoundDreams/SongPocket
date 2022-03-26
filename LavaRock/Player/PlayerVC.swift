@@ -78,9 +78,9 @@ extension PlayerVC: UITableViewDataSource {
 			for: indexPath) as? SongInQueueCell
 		else { return UITableViewCell() }
 		
-		cell.configure(with: SongQueue.contents[indexPath.row].metadatum())
-		cell.indicateNowPlaying(
-			isInPlayer: true)
+		let song = SongQueue.contents[indexPath.row]
+		cell.configure(with: song.metadatum())
+		cell.indicateNowPlaying(isInPlayer: song.isInPlayer())
 		
 		return cell
 	}

@@ -12,6 +12,17 @@ extension Collection: LibraryItem {
 	// Enables `[Collection].reindex()`
 	
 	var libraryTitle: String? { title }
+	
+	@MainActor
+	final func isInPlayer() -> Bool {
+		guard
+			let context = managedObjectContext,
+			let songInPlayer = Player.shared.currentSong(context: context)
+		else {
+			return false
+		}
+		return objectID == songInPlayer.container?.container?.objectID
+	}
 }
 extension Collection: LibraryContainer {}
 extension Collection {
