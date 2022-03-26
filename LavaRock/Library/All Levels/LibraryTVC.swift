@@ -272,8 +272,6 @@ class LibraryTVC: UITableViewController {
 			toMove: toMove)
 	}
 	
-	// MARK: - Freshening UI
-	
 	func reflectViewModelIsEmpty() {
 		fatalError()
 	}
@@ -296,6 +294,8 @@ class LibraryTVC: UITableViewController {
 		
 		didChangeRowsOrSelectedRows()
 	}
+	
+	// MARK: - Freshening UI
 	
 	private func setBarButtons(animated: Bool) {
 		freshenEditingButtons()

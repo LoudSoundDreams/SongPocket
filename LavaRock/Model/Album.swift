@@ -10,9 +10,9 @@ import MediaPlayer
 import OSLog
 
 extension Album: LibraryItem {
-	var libraryTitle: String? { titleFormattedOptional() }
-	
 	// Enables `[Album].reindex()`
+	
+	var libraryTitle: String? { titleFormattedOptional() }
 }
 extension Album: LibraryContainer {}
 extension Album {

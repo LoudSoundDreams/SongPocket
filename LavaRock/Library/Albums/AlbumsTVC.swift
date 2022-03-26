@@ -143,12 +143,14 @@ final class AlbumsTVC:
 //		print(tableView.contentOffset)
 //	}
 	
-	// MARK: - Freshening UI
+	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
 		let toDelete = tableView.allSections()
 		deleteThenExit(sections: toDelete)
 	}
+	
+	// MARK: - Freshening UI
 	
 	final override func freshenEditingButtons() {
 		super.freshenEditingButtons()

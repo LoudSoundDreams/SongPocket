@@ -9,9 +9,9 @@ import CoreData
 import OSLog
 
 extension Collection: LibraryItem {
-	var libraryTitle: String? { title }
-	
 	// Enables `[Collection].reindex()`
+	
+	var libraryTitle: String? { title }
 }
 extension Collection: LibraryContainer {}
 extension Collection {

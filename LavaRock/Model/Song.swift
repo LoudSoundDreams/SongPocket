@@ -10,9 +10,9 @@ import MediaPlayer
 import OSLog
 
 extension Song: LibraryItem {
-	var libraryTitle: String? { metadatum()?.titleOnDisk }
-	
 	// Enables `[Song].reindex()`
+	
+	var libraryTitle: String? { metadatum()?.titleOnDisk }
 }
 extension Song {
 	convenience init(

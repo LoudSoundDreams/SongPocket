@@ -316,11 +316,13 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
-	// MARK: - Freshening UI
+	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
 		reflectViewState()
 	}
+	
+	// MARK: - Freshening UI
 	
 	final override func freshenEditingButtons() {
 		super.freshenEditingButtons()
