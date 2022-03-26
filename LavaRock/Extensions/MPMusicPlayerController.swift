@@ -8,7 +8,7 @@
 import MediaPlayer
 
 extension MPMusicPlayerController {
-	func play(_ songs: [Song]) {
+	final func play(_ songs: [Song]) {
 		if Enabling.playerScreen {
 			SongQueue.contents = songs
 		}

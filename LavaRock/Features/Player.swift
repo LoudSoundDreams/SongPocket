@@ -50,13 +50,13 @@ final class Player { // This is a class and not a struct because it needs a dein
 			return nil
 		}
 		
-		let currentMPSongID = MPSongID(bitPattern: nowPlayingItem.persistentID)
-		let songsFetchRequest = Song.fetchRequest()
-		songsFetchRequest.predicate = NSPredicate(
-			format: "persistentID == %lld",
-			currentMPSongID)
-		let songsInPlayer = context.objectsFetched(for: songsFetchRequest)
-		
+		let songsInPlayer = context.objectsFetched(for: { () -> NSFetchRequest<Song> in
+			let request = Song.fetchRequest()
+			request.predicate = NSPredicate(
+				format: "persistentID == %lld",
+				MPSongID(bitPattern: nowPlayingItem.persistentID))
+			return request
+		}())
 		guard
 			songsInPlayer.count == 1,
 			let song = songsInPlayer.first
