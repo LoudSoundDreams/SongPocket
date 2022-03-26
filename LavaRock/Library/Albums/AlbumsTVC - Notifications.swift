@@ -8,14 +8,6 @@
 import UIKit
 
 extension AlbumsTVC {
-	// MARK: - Player
-	
-	final override func reflectPlayer() {
-		super.reflectPlayer()
-		
-		indicateNowPlayingOnVisibleCells()
-	}
-	
 	// MARK: Library Items
 	
 	final override func freshenLibraryItems() {

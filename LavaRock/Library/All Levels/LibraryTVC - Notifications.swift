@@ -34,10 +34,8 @@ extension LibraryTVC {
 	func reflectPlayer() {
 		// We want every `LibraryTVC` to have its playback toolbar freshened before it appears. This tells all `LibraryTVC`s to freshen, even if they aren’t onscreen. This works; it’s just unusual.
 		freshenPlaybackToolbar()
-	}
-	
-	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
-	final func indicateNowPlayingOnVisibleCells() {
+		
+		// Freshen “now playing” indicators
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating else { return }
 			cell.indicateNowPlaying(

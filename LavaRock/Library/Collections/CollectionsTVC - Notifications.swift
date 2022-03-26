@@ -9,14 +9,6 @@ import UIKit
 import SwiftUI
 
 extension CollectionsTVC {
-	// MARK: - Player
-	
-	final override func reflectPlayer() {
-		super.reflectPlayer()
-		
-		indicateNowPlayingOnVisibleCells()
-	}
-	
 	// MARK: Library Items
 	
 	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
