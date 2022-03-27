@@ -38,6 +38,11 @@ final class PlayerVC: UIViewController {
 		
 		toolbarItems = playbackToolbarButtons
 		navigationController?.setToolbarHidden(false, animated: false)
+		if let toolbar = navigationController?.toolbar {
+			let appearance = toolbar.standardAppearance
+			appearance.configureWithTransparentBackground()
+			toolbar.standardAppearance = appearance
+		}
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
 		beginObservingNowPlayingItemDidChange_PVC()
