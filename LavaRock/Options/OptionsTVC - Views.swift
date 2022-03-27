@@ -64,14 +64,11 @@ final class AccentColorCell: UITableViewCell {
 			accessoryType = .none
 		}
 		
-		freshenSelectedBackgroundView()
-	}
-	
-	// Similar to counterpart in `TintedSelectedCell`, except we need to call this manually to reflect “Increase Contrast”.
-	private func freshenSelectedBackgroundView() {
+	// Freshen `selectedBackgroundView`
+	// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
 		let colorView = UIView()
 		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
-		colorView.backgroundColor = accentColor?.uiColor.resolvedColor(with: traitCollection).translucent()
+		colorView.backgroundColor = accentColor.uiColor.resolvedColor(with: traitCollection).translucent()
 		selectedBackgroundView = colorView
 	}
 	
@@ -98,9 +95,11 @@ final class TipLoadingCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReloadCell: TintedSelectedCell {
+final class TipReloadCell: UITableViewCell, CellTintingWhenSelected {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		accessibilityTraits.formUnion(.button)
 		
@@ -112,9 +111,11 @@ extension TipReloadCell: CellConfigurableAsButton {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReadyCell: TintedSelectedCell {
+final class TipReadyCell: UITableViewCell, CellTintingWhenSelected {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		accessibilityTraits.formUnion(.button)
 		

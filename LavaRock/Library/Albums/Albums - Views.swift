@@ -8,11 +8,13 @@
 import UIKit
 import OSLog
 
-final class MoveHereCell: TintedSelectedCell {
+final class MoveHereCell: UITableViewCell, CellTintingWhenSelected {
 	@IBOutlet private var moveHereLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		accessibilityTraits.formUnion(.button)
 		
@@ -20,10 +22,7 @@ final class MoveHereCell: TintedSelectedCell {
 	}
 }
 
-final class AlbumCell:
-	TintedSelectedCell,
-	CellHavingTransparentBackground
-{
+final class AlbumCell: UITableViewCell, CellTintingWhenSelected, CellHavingTransparentBackground {
 	enum Mode {
 		case normal
 		case modal
@@ -42,6 +41,8 @@ final class AlbumCell:
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		removeBackground()
 		

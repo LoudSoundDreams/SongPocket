@@ -62,10 +62,7 @@ final class AlbumInfoCell: UITableViewCell {
 	}
 }
 
-final class SongCell:
-	TintedSelectedCell,
-	CellHavingTransparentBackground
-{
+final class SongCell: UITableViewCell, CellTintingWhenSelected, CellHavingTransparentBackground {
 	// `NowPlayingIndicating`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -77,6 +74,8 @@ final class SongCell:
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		removeBackground()
 		

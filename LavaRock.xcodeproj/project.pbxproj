@@ -93,7 +93,6 @@
 		07E0BBDF276567760010117E /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDB276567760010117E /* URL.swift */; };
 		07E0BBE0276567760010117E /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDC276567760010117E /* UserDefaults.swift */; };
 		07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE22765678F0010117E /* UIAlertAction.swift */; };
-		07E0BBEF2765678F0010117E /* TintedSelectedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE32765678F0010117E /* TintedSelectedCell.swift */; };
 		07E0BBF02765678F0010117E /* UITableViewCell - Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */; };
 		07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE52765678F0010117E /* UIBarButtonItem.swift */; };
 		07E0BBF22765678F0010117E /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE62765678F0010117E /* UIColor.swift */; };
@@ -227,7 +226,6 @@
 		07E0BBDB276567760010117E /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		07E0BBDC276567760010117E /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		07E0BBE22765678F0010117E /* UIAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertAction.swift; sourceTree = "<group>"; };
-		07E0BBE32765678F0010117E /* TintedSelectedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintedSelectedCell.swift; sourceTree = "<group>"; };
 		07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell - Protocols.swift"; sourceTree = "<group>"; };
 		07E0BBE52765678F0010117E /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		07E0BBE62765678F0010117E /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -511,7 +509,6 @@
 				07E0BBE22765678F0010117E /* UIAlertAction.swift */,
 				07E0BBED2765678F0010117E /* UIAlertController.swift */,
 				07E0BBE82765678F0010117E /* UITableViewCell.swift */,
-				07E0BBE32765678F0010117E /* TintedSelectedCell.swift */,
 				07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */,
 				07E0BBEC2765678F0010117E /* SectionStructure.swift */,
 				07E0BBE72765678F0010117E /* UITableView.swift */,
@@ -759,7 +756,6 @@
 				07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */,
 				07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */,
 				071701FF250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift in Sources */,
-				07E0BBEF2765678F0010117E /* TintedSelectedCell.swift in Sources */,
 				07170201250B3E9700CBC4C5 /* CollectionsTVC - Notifications.swift in Sources */,
 				07E0BBF22765678F0010117E /* UIColor.swift in Sources */,
 				07622F1427DE439D00B953EA /* Player - Views.swift in Sources */,

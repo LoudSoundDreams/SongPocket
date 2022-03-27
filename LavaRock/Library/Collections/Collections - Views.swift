@@ -8,9 +8,11 @@
 import UIKit
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class AllowAccessCell: TintedSelectedCell {
+final class AllowAccessCell: UITableViewCell, CellTintingWhenSelected {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		accessibilityTraits.formUnion(.button)
 		
@@ -54,9 +56,11 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class OpenMusicCell: TintedSelectedCell {
+final class OpenMusicCell: UITableViewCell, CellTintingWhenSelected {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		accessibilityTraits.formUnion(.button)
 		
@@ -71,11 +75,13 @@ extension OpenMusicCell: CellConfigurableAsButton {
 	static let buttonText = LocalizedString.openMusic
 }
 
-final class CreateCollectionCell: TintedSelectedCell {
+final class CreateCollectionCell: UITableViewCell, CellTintingWhenSelected {
 	@IBOutlet private var newCollectionLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		accessibilityTraits.formUnion(.button)
 		
@@ -87,10 +93,7 @@ final class CreateCollectionCell: TintedSelectedCell {
 	}
 }
 
-final class CollectionCell:
-	TintedSelectedCell,
-	CellHavingTransparentBackground
-{
+final class CollectionCell: UITableViewCell, CellTintingWhenSelected, CellHavingTransparentBackground {
 	enum Mode {
 		case normal
 		case modal
@@ -108,6 +111,8 @@ final class CollectionCell:
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		tintSelectedBackgroundView()
 		
 		removeBackground()
 	}
