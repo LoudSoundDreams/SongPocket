@@ -93,7 +93,7 @@ extension MusicLibraryManager {
 	// MARK: Sorting Groups of `SongMetadatum`s
 	
 	// 1. Group by album artists, sorted alphabetically.
-	// - “Unknown Album Artist” should go at the end.
+	// • “Unknown Album Artist” should go at the end.
 	// 2. Within each album artist, group by albums, sorted by most recent first.
 	
 	private func sortedByAlbumArtistNameThenAlbumTitle(

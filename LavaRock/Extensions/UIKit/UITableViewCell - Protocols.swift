@@ -9,18 +9,18 @@ import UIKit
 
 protocol CellHavingTransparentBackground: UITableViewCell {
 	// Adopting types must …
-	// - Override `awakeFromNib` and call `setTransparentBackground`.
-	// - Call `setTransparentBackground` instead of `backgroundView = nil`.
+	// • Override `awakeFromNib` and call `removeBackground`.
+	// • Call `removeBackground` instead of `backgroundView = nil`.
 }
 extension CellHavingTransparentBackground {
-	func setTransparentBackground() {
+	func removeBackground() {
 		backgroundColor = nil
 	}
 }
 
 protocol CellConfigurableAsButton: UITableViewCell {
 	// Adopting types must …
-	// - Override `awakeFromNib` and call `configureAsButton`.
+	// • Override `awakeFromNib` and call `configureAsButton`.
 	static var buttonText: String { get }
 	var contentConfiguration: UIContentConfiguration? { get set }
 }

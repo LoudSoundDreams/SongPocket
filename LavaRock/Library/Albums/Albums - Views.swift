@@ -43,7 +43,7 @@ final class AlbumCell:
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		setTransparentBackground()
+		removeBackground()
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true
 		
@@ -77,11 +77,11 @@ final class AlbumCell:
 		
 		switch mode {
 		case .normal:
-			setTransparentBackground()
+			removeBackground()
 			accessoryType = .disclosureIndicator
 			enableWithAccessibilityTrait()
 		case .modal:
-			setTransparentBackground()
+			removeBackground()
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		case .modalTinted:

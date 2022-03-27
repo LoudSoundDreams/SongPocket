@@ -78,7 +78,7 @@ final class SongCell:
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		setTransparentBackground()
+		removeBackground()
 		
 		numberLabel.font = .bodyWithMonospacedDigits(compatibleWith: traitCollection)
 		
