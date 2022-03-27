@@ -42,7 +42,7 @@ final class FutureModeChooser: UISegmentedControl {
 			action: UIAction(
 				image: {
 					let image = UIImage(systemName: "repeat.1")
-					image?.accessibilityLabel = "Repeat one" // L2DO
+					image?.accessibilityLabel = LocalizedString.repeat1
 					return image
 				}()) { _ in
 					// ARC2DO
@@ -56,7 +56,7 @@ final class FutureModeChooser: UISegmentedControl {
 			action: UIAction(
 				image: {
 					let image = UIImage(systemName: "repeat")
-					image?.accessibilityLabel = "Repeat all" // L2DO
+					image?.accessibilityLabel = LocalizedString.repeatAll
 					return image
 				}()) { _ in
 					// ARC2DO
@@ -70,7 +70,7 @@ final class FutureModeChooser: UISegmentedControl {
 			action: UIAction(
 				image: {
 					let image = UIImage(systemName: "play.fill")
-					image?.accessibilityLabel = "Repeat off" // L2DO
+					image?.accessibilityLabel = LocalizedString.repeatOff
 					return image
 				}()) { _ in
 					// ARC2DO

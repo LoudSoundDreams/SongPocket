@@ -300,11 +300,9 @@ class LibraryTVC: UITableViewController {
 		
 		if isEditing {
 			navigationItem.setLeftBarButtonItems(editingModeTopLeftButtons, animated: animated)
-			
 			setToolbarItems(editingModeToolbarButtons, animated: animated)
 		} else {
 			navigationItem.setLeftBarButtonItems(viewingModeTopLeftButtons, animated: animated)
-			
 			freshenPlaybackToolbar()
 			setToolbarItems(viewingModeToolbarButtons, animated: animated)
 		}
