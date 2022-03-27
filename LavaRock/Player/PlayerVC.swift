@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 final class PlayerVC: UIViewController {
 	// `PlaybackToolbarManaging`
@@ -27,9 +28,13 @@ final class PlayerVC: UIViewController {
 		
 		beginReflectingPlaybackState()
 		
-		// TO DO: Respond to “now playing item changed” notifications
-		// • Freshen playback toolbar
-		// • Update “now playing” indicator [?]
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(mediaLibraryAuthorizationStatusDidChange),
+			name: .LRMediaLibraryAuthorizationStatusDidChange,
+			object: nil)
+		
+		beginObservingNowPlayingItemDidChange_PVC()
 		
 		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons
@@ -37,11 +42,39 @@ final class PlayerVC: UIViewController {
 			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		}
 	}
+	@objc private func mediaLibraryAuthorizationStatusDidChange() {
+		beginObservingNowPlayingItemDidChange_PVC()
+	}
+	
+	private func beginObservingNowPlayingItemDidChange_PVC() {
+		if MPMediaLibrary.authorizationStatus() == .authorized {
+			NotificationCenter.default.addObserverOnce(
+				self,
+				selector: #selector(nowPlayingItemDidChange),
+				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
+				object: player)
+		}
+	}
+	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() }
+	
+	private func freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() {
+		queueTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
+			guard var cell = queueTable.cellForRow(
+				at: visibleIndexPath) as? NowPlayingIndicating
+			else { return }
+			cell.indicateNowPlaying(isInPlayer: song(at: visibleIndexPath).isInPlayer())
+		}
+		
+		freshenPlaybackToolbar()
+	}
+	
+	private func song(at indexPath: IndexPath) -> Song {
+		return SongQueue.contents[indexPath.row]
+	}
 }
 extension PlayerVC: PlayerReflecting {
 	func playbackStateDidChange() {
-		queueTable.reloadData() // TO DO
-		freshenPlaybackToolbar()
+		freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC()
 	}
 }
 extension PlayerVC: PlaybackToolbarManaging {}
@@ -78,7 +111,7 @@ extension PlayerVC: UITableViewDataSource {
 			for: indexPath) as? SongInQueueCell
 		else { return UITableViewCell() }
 		
-		let song = SongQueue.contents[indexPath.row]
+		let song = song(at: indexPath)
 		cell.configure(with: song.metadatum())
 		cell.indicateNowPlaying(isInPlayer: song.isInPlayer()) // TO DO
 		
