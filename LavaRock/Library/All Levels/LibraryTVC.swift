@@ -118,7 +118,6 @@ class LibraryTVC: UITableViewController {
 		beginObservingNowPlayingItemDidChange()
 		
 		freshenNavigationItemTitle()
-		navigationItem.rightBarButtonItem = editButtonItem
 		navigationController?.setToolbarHidden(false, animated: false)
 		setUpBarButtons()
 	}

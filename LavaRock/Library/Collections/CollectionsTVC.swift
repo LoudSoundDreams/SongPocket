@@ -275,6 +275,7 @@ final class CollectionsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 			navigationController?.setToolbarHidden(true, animated: false)
 		case .browsing:
+			navigationItem.rightBarButtonItem = editButtonItem
 			editingModeToolbarButtons = [
 				combineButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
