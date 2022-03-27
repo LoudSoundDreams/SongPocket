@@ -62,10 +62,17 @@ final class PlayerVC: UIViewController {
 			guard var cell = queueTable.cellForRow(
 				at: visibleIndexPath) as? NowPlayingIndicating
 			else { return }
-			cell.indicateNowPlaying(isInPlayer: song(at: visibleIndexPath).isInPlayer())
+			cell.indicateNowPlaying(isInPlayer: isInPlayer(visibleIndexPath))
 		}
 		
 		freshenPlaybackToolbar()
+	}
+	
+	private func isInPlayer(_ indexPath: IndexPath) -> Bool {
+		guard let player = player else {
+			return false
+		}
+		return player.indexOfNowPlayingItem == indexPath.row
 	}
 	
 	private func song(at indexPath: IndexPath) -> Song {
@@ -111,9 +118,8 @@ extension PlayerVC: UITableViewDataSource {
 			for: indexPath) as? SongInQueueCell
 		else { return UITableViewCell() }
 		
-		let song = song(at: indexPath)
-		cell.configure(with: song.metadatum())
-		cell.indicateNowPlaying(isInPlayer: song.isInPlayer()) // TO DO
+		cell.configure(with: song(at: indexPath).metadatum())
+		cell.indicateNowPlaying(isInPlayer: isInPlayer(indexPath))
 		
 		return cell
 	}
