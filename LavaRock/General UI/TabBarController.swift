@@ -11,12 +11,6 @@ final class TabBarController: UITabBarController {
 	// `MovesThemeToWindow`
 	static var didMoveThemeToWindow = false
 	
-	final override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		tabBar.scrollEdgeAppearance = tabBar.standardAppearance
-	}
-	
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		

@@ -38,9 +38,6 @@ final class PlayerVC: UIViewController {
 		
 		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons
-		if let toolbar = navigationController?.toolbar {
-			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-		}
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
 		beginObservingNowPlayingItemDidChange_PVC()
