@@ -15,7 +15,7 @@ protocol LibraryItem: NSManagedObject {
 }
 
 protocol LibraryContainer: LibraryItem {
-	var contents: NSSet? { get set }
+	var contents: NSSet? { get }
 }
 extension LibraryContainer {
 	func isEmpty() -> Bool {

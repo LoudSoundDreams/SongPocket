@@ -9,8 +9,8 @@ import UIKit
 
 @MainActor
 protocol NowPlayingIndicating {
-	var spacerSpeakerImageView: UIImageView! { get set }
-	var speakerImageView: UIImageView! { get set }
+	var spacerSpeakerImageView: UIImageView! { get }
+	var speakerImageView: UIImageView! { get }
 	var accessibilityValue: String? { get set }
 }
 extension NowPlayingIndicating {
