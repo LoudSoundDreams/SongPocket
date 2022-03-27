@@ -8,13 +8,17 @@
 import UIKit
 import MediaPlayer
 
-final class SongInQueueCell: UITableViewCell {
+final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 	// `NowPlayingIndicating`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var artistLabel: UILabel!
+	
+	final override func awakeFromNib() {
+		tintSelectedBackgroundView()
+	}
 	
 	final func configure(with metadatum: SongMetadatum?) {
 		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
