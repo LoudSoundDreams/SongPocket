@@ -16,7 +16,7 @@ final class PlayerVC: UIViewController {
 	private(set) lazy var skipForwardButton = makeSkipForwardButton()
 	private(set) lazy var nextSongButton = makeNextSongButton()
 	
-	@IBOutlet private var queueTable: UITableView!
+	@IBOutlet final var queueTable: UITableView!
 	@IBOutlet private var futureModeChooser: FutureModeChooser!
 	
 	final override func viewDidLoad() {
@@ -57,88 +57,10 @@ final class PlayerVC: UIViewController {
 	}
 	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() }
 	
-	private func freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() {
-		queueTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
-			guard var cell = queueTable.cellForRow(
-				at: visibleIndexPath) as? NowPlayingIndicating
-			else { return }
-			cell.indicateNowPlaying(isInPlayer: isInPlayer(visibleIndexPath))
-		}
-		
-		freshenPlaybackToolbar()
-	}
-	
-	private func isInPlayer(_ indexPath: IndexPath) -> Bool {
+	final func songInQueueIsInPlayer(at indexPath: IndexPath) -> Bool {
 		guard let player = player else {
 			return false
 		}
 		return player.indexOfNowPlayingItem == indexPath.row
-	}
-	
-	private func song(at indexPath: IndexPath) -> Song {
-		return SongQueue.contents[indexPath.row]
-	}
-}
-extension PlayerVC: PlayerReflecting {
-	func playbackStateDidChange() {
-		freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC()
-	}
-}
-extension PlayerVC: PlaybackToolbarManaging {}
-extension PlayerVC: UITableViewDataSource {
-	private enum RowCase: CaseIterable {
-		case song
-		
-		init(rowIndex: Int) {
-			switch rowIndex {
-			default:
-				self = .song
-			}
-		}
-	}
-	
-	final func tableView(
-		_ tableView: UITableView,
-		numberOfRowsInSection section: Int
-	) -> Int {
-		return SongQueue.contents.count + (RowCase.allCases.count - 1)
-	}
-	
-	final func tableView(
-		_ tableView: UITableView,
-		cellForRowAt indexPath: IndexPath
-	) -> UITableViewCell {
-		switch RowCase(rowIndex: indexPath.row) {
-		case .song:
-			break
-		}
-		
-		guard var cell = tableView.dequeueReusableCell(
-			withIdentifier: "Song in Queue",
-			for: indexPath) as? SongInQueueCell
-		else { return UITableViewCell() }
-		
-		cell.configure(with: song(at: indexPath).metadatum())
-		cell.indicateNowPlaying(isInPlayer: isInPlayer(indexPath))
-		
-		return cell
-	}
-}
-extension PlayerVC: UITableViewDelegate {
-	final func tableView(
-		_ tableView: UITableView,
-		willSelectRowAt indexPath: IndexPath
-	) -> IndexPath? {
-		switch RowCase(rowIndex: indexPath.row) {
-		case .song:
-			return indexPath
-		}
-	}
-	
-	final func tableView(
-		_ tableView: UITableView,
-		didSelectRowAt indexPath: IndexPath
-	) {
-		tableView.deselectRow(at: indexPath, animated: true)
 	}
 }
