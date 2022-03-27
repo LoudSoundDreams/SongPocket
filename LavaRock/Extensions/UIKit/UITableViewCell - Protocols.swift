@@ -34,10 +34,13 @@ protocol CellConfigurableAsButton: UITableViewCell {
 	// Adopting types must …
 	// • Override `awakeFromNib` and call `configureAsButton`.
 	static var buttonText: String { get }
+	var accessibilityTraits: UIAccessibilityTraits { get }
 	var contentConfiguration: UIContentConfiguration? { get }
 }
 extension CellConfigurableAsButton {
 	func configureAsButton() {
+		accessibilityTraits.formUnion(.button)
+		
 		var configuration = UIListContentConfiguration.cell()
 		configuration.text = Self.buttonText
 		configuration.textProperties.color = .tintColor

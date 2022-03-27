@@ -101,8 +101,6 @@ final class TipReloadCell: UITableViewCell, CellTintingWhenSelected {
 		
 		tintSelectedBackgroundView()
 		
-		accessibilityTraits.formUnion(.button)
-		
 		configureAsButton()
 	}
 }

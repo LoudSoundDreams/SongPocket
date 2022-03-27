@@ -14,8 +14,6 @@ final class AllowAccessCell: UITableViewCell, CellTintingWhenSelected {
 		
 		tintSelectedBackgroundView()
 		
-		accessibilityTraits.formUnion(.button)
-		
 		configureAsButton()
 	}
 }
@@ -61,8 +59,6 @@ final class OpenMusicCell: UITableViewCell, CellTintingWhenSelected {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
-		
-		accessibilityTraits.formUnion(.button)
 		
 		configureAsButton()
 	}
