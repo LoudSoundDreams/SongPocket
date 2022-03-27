@@ -18,18 +18,18 @@ enum Lighting: Int, CaseIterable {
 	case dark = 2
 	case system = 0
 	
-	private static let userDefaults = UserDefaults.standard
-	private static let userDefaultsKey = LRUserDefaultsKey.lighting.rawValue
+	private static let defaults = UserDefaults.standard
+	private static let defaultsKey = LRUserDefaultsKey.lighting.rawValue
 	
 	static func savedPreference() -> Self {
-		let savedRawValue = userDefaults.integer(forKey: userDefaultsKey) // Returns `0` when there’s no saved value, which is `.system`, which is what we want.
+		let savedRawValue = defaults.integer(forKey: defaultsKey) // Returns `0` when there’s no saved value, which is `.system`, which is what we want.
 		return Self(rawValue: savedRawValue)!
 	}
 	
 	func saveAsPreference() {
-		Self.userDefaults.set(
+		Self.defaults.set(
 			rawValue,
-			forKey: Self.userDefaultsKey)
+			forKey: Self.defaultsKey)
 	}
 	
 	init(indexInDisplayOrder: Int) {

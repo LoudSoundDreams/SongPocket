@@ -19,19 +19,19 @@ enum AccentColor: String, CaseIterable {
 	case blueberry = "Blueberry"
 	case grape = "Grape"
 	
-	private static let userDefaults = UserDefaults.standard
-	private static let userDefaultsKey = LRUserDefaultsKey.accentColor.rawValue
+	private static let defaults = UserDefaults.standard
+	private static let defaultsKey = LRUserDefaultsKey.accentColor.rawValue
 	
 	static func savedPreference() -> Self {
-		userDefaults.register(defaults: [userDefaultsKey: blueberry.rawValue])
-		let savedRawValue = userDefaults.string(forKey: userDefaultsKey)!
+		defaults.register(defaults: [defaultsKey: blueberry.rawValue])
+		let savedRawValue = defaults.string(forKey: defaultsKey)!
 		return Self(rawValue: savedRawValue)!
 	}
 	
 	func saveAsPreference() {
-		Self.userDefaults.set(
+		Self.defaults.set(
 			rawValue,
-			forKey: Self.userDefaultsKey)
+			forKey: Self.defaultsKey)
 	}
 	
 	var displayName: String {
