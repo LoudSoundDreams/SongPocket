@@ -276,16 +276,16 @@ final class CollectionsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			if Enabling.playerScreen {
-			} else {
-				navigationController?.setToolbarHidden(false, animated: false)
-			}
 			editingModeToolbarButtons = [
 				combineButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
 				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,
 			]
+			if Enabling.playerScreen {
+			} else {
+				navigationController?.setToolbarHidden(false, animated: false)
+			}
 		}
 	}
 	

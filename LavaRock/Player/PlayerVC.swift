@@ -36,8 +36,8 @@ final class PlayerVC: UIViewController {
 		
 		beginObservingNowPlayingItemDidChange_PVC()
 		
-		navigationController?.setToolbarHidden(false, animated: false)
 		toolbarItems = playbackToolbarButtons
+		navigationController?.setToolbarHidden(false, animated: false)
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
 		beginObservingNowPlayingItemDidChange_PVC()

@@ -44,15 +44,15 @@ final class SongsTVC:
 		super.setUpBarButtons()
 		
 		navigationItem.rightBarButtonItem = editButtonItem
-		if Enabling.playerScreen {
-		} else {
-			navigationController?.setToolbarHidden(false, animated: false)
-		}
 		editingModeToolbarButtons = [
 			sortButton, .flexibleSpace(),
 			floatToTopButton, .flexibleSpace(),
 			sinkToBottomButton,
 		]
+		if Enabling.playerScreen {
+		} else {
+			navigationController?.setToolbarHidden(false, animated: false)
+		}
 	}
 	
 	final override func viewWillAppear(_ animated: Bool) {

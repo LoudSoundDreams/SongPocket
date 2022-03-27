@@ -109,16 +109,16 @@ final class AlbumsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			if Enabling.playerScreen {
-			} else {
-				navigationController?.setToolbarHidden(false, animated: false)
-			}
 			editingModeToolbarButtons = [
 				moveOrOrganizeButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
 				floatToTopButton, .flexibleSpace(),
 				sinkToBottomButton,
 			]
+			if Enabling.playerScreen {
+			} else {
+				navigationController?.setToolbarHidden(false, animated: false)
+			}
 		}
 	}
 	
