@@ -118,7 +118,6 @@ class LibraryTVC: UITableViewController {
 		beginObservingNowPlayingItemDidChange()
 		
 		freshenNavigationItemTitle()
-		navigationController?.setToolbarHidden(false, animated: false)
 		setUpBarButtons()
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }

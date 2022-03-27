@@ -107,9 +107,9 @@ final class AlbumsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .movingAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
-			navigationController?.setToolbarHidden(true, animated: false)
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
+			navigationController?.setToolbarHidden(false, animated: false)
 			editingModeToolbarButtons = [
 				moveOrOrganizeButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),

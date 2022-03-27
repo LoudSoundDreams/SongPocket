@@ -44,6 +44,7 @@ final class SongsTVC:
 		super.setUpBarButtons()
 		
 		navigationItem.rightBarButtonItem = editButtonItem
+		navigationController?.setToolbarHidden(false, animated: false)
 		editingModeToolbarButtons = [
 			sortButton, .flexibleSpace(),
 			floatToTopButton, .flexibleSpace(),

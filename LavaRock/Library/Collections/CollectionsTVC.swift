@@ -268,14 +268,15 @@ final class CollectionsTVC:
 		switch purpose {
 		case .willOrganizeAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
+			navigationController?.setToolbarHidden(false, animated: false)
 		case .organizingAlbums:
 			// Should never run
 			break
 		case .movingAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
-			navigationController?.setToolbarHidden(true, animated: false)
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
+			navigationController?.setToolbarHidden(false, animated: false)
 			editingModeToolbarButtons = [
 				combineButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
