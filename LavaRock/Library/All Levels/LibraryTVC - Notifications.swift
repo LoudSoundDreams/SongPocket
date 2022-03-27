@@ -10,7 +10,7 @@ import SwiftUI
 
 extension LibraryTVC: PlayerReflecting {
 	func playbackStateDidChange() {
-		freshenPlaybackToolbarAndNowPlayingIndicators()
+		freshenNowPlayingIndicatorsAndPlaybackToolbar()
 	}
 }
 extension LibraryTVC: PlaybackToolbarManaging {}
@@ -18,7 +18,7 @@ extension LibraryTVC {
 	// MARK: - Database
 	
 	final func reflectDatabase() {
-		freshenPlaybackToolbarAndNowPlayingIndicators() // Do this even for views that aren’t visible, so that when we reveal them by going back, the “now playing” indicators and playback toolbar are already updated.
+		freshenNowPlayingIndicatorsAndPlaybackToolbar() // Do this even for views that aren’t visible, so that when we reveal them by going back, the “now playing” indicators and playback toolbar are already updated.
 		
 		if view.window == nil {
 			needsFreshenLibraryItemsOnViewDidAppear = true
@@ -30,9 +30,7 @@ extension LibraryTVC {
 	// MARK: Player
 	
 	@objc
-	func freshenPlaybackToolbarAndNowPlayingIndicators() {
-		freshenPlaybackToolbar() // Do this even if the view isn’t visible, so that the playback toolbar is freshened before it appears. This works; it’s just unusual.
-		
+	func freshenNowPlayingIndicatorsAndPlaybackToolbar() {
 		// Freshen “now playing” indicators
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard
@@ -41,6 +39,8 @@ extension LibraryTVC {
 			else { return }
 			cell.indicateNowPlaying(isInPlayer: libraryItem.isInPlayer())
 		}
+		
+		freshenPlaybackToolbar() // Do this even if the view isn’t visible, so that the playback toolbar is freshened before it appears. This works; it’s just unusual.
 	}
 	
 	// MARK: Library Items

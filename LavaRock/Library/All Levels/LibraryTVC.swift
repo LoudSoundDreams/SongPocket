@@ -133,7 +133,7 @@ class LibraryTVC: UITableViewController {
 				object: player)
 		}
 	}
-	@objc private func nowPlayingItemDidChange() { freshenPlaybackToolbarAndNowPlayingIndicators() }
+	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndPlaybackToolbar() }
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()
