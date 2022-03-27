@@ -85,7 +85,10 @@ extension PlaybackToolbarManaging {
 	}
 	
 	func freshenPlaybackToolbar() {
-		guard let player = player else {
+		guard
+			let player = player,
+			!SongQueue.contents.isEmpty
+		else {
 			configurePlayButton()
 			playbackToolbarButtons.forEach { $0.disableWithAccessibilityTrait() }
 			return
