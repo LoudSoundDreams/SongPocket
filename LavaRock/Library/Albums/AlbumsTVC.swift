@@ -109,7 +109,10 @@ final class AlbumsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			navigationController?.setToolbarHidden(false, animated: false)
+			if Enabling.playerScreen {
+			} else {
+				navigationController?.setToolbarHidden(false, animated: false)
+			}
 			editingModeToolbarButtons = [
 				moveOrOrganizeButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
@@ -119,7 +122,11 @@ final class AlbumsTVC:
 		}
 	}
 	
-	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {}
+	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
+		if Enabling.playerScreen {
+			navigationController?.setToolbarHidden(true, animated: true)
+		}
+	}
 	
 	final override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)

@@ -276,7 +276,10 @@ final class CollectionsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			navigationController?.setToolbarHidden(false, animated: false)
+			if Enabling.playerScreen {
+			} else {
+				navigationController?.setToolbarHidden(false, animated: false)
+			}
 			editingModeToolbarButtons = [
 				combineButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),
@@ -296,7 +299,11 @@ final class CollectionsTVC:
 		}
 	}
 	
-	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {}
+	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
+		if Enabling.playerScreen {
+			navigationController?.setToolbarHidden(true, animated: true)
+		}
+	}
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		switch purpose {

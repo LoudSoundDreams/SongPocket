@@ -339,6 +339,9 @@ class LibraryTVC: UITableViewController {
 		super.setEditing(editing, animated: animated)
 		
 		setBarButtons(animated: animated)
+		if Enabling.playerScreen {
+			navigationController?.setToolbarHidden(!editing, animated: true)
+		}
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
 		// During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.

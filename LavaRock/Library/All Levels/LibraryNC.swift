@@ -16,5 +16,16 @@ final class LibraryNC: UINavigationController {
 		
 		moveThemeToWindow()
 	}
+	
+	final override func popToRootViewController(
+		animated: Bool
+	) -> [UIViewController]? {
+		let result = super.popToRootViewController(animated: animated)
+		let didPopAnyViewControllers = !(result ?? []).isEmpty
+		if didPopAnyViewControllers {
+			setToolbarHidden(true, animated: true)
+		}
+		return result
+	}
 }
 extension LibraryNC: MovesThemeToWindow {}
