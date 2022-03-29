@@ -261,6 +261,12 @@ final class CollectionsTVC:
 			} else {
 				viewingModeTopLeftButtons = [optionsButton__UIKit]
 			}
+			editingModeToolbarButtons = [
+				combineButton, .flexibleSpace(),
+				sortButton, .flexibleSpace(),
+				floatToTopButton, .flexibleSpace(),
+				sinkToBottomButton,
+			]
 		}
 		
 		super.setUpBarButtons()
@@ -276,12 +282,6 @@ final class CollectionsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			editingModeToolbarButtons = [
-				combineButton, .flexibleSpace(),
-				sortButton, .flexibleSpace(),
-				floatToTopButton, .flexibleSpace(),
-				sinkToBottomButton,
-			]
 			if Enabling.playerScreen {
 			} else {
 				navigationController?.setToolbarHidden(false, animated: false)

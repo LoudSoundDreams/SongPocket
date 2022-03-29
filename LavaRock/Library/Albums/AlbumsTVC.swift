@@ -97,7 +97,12 @@ final class AlbumsTVC:
 		case .movingAlbums:
 			break
 		case .browsing:
-			break
+			editingModeToolbarButtons = [
+				moveOrOrganizeButton, .flexibleSpace(),
+				sortButton, .flexibleSpace(),
+				floatToTopButton, .flexibleSpace(),
+				sinkToBottomButton,
+			]
 		}
 		
 		super.setUpBarButtons()
@@ -109,12 +114,6 @@ final class AlbumsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			editingModeToolbarButtons = [
-				moveOrOrganizeButton, .flexibleSpace(),
-				sortButton, .flexibleSpace(),
-				floatToTopButton, .flexibleSpace(),
-				sinkToBottomButton,
-			]
 			if Enabling.playerScreen {
 			} else {
 				navigationController?.setToolbarHidden(false, animated: false)
