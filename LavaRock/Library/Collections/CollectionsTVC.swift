@@ -250,6 +250,9 @@ final class CollectionsTVC:
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
+			if Enabling.playerScreen {
+				editingModeToolbarButtons = viewingModeToolbarButtons // A hack
+			}
 		case .organizingAlbums:
 			// Should never run
 			break

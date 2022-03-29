@@ -140,6 +140,9 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	func setUpBarButtons() {
 		setBarButtons(animated: false)
+		if Enabling.playerScreen {
+			setToolbarItems(editingModeToolbarButtons, animated: false)
+		}
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -303,8 +306,11 @@ class LibraryTVC: UITableViewController {
 			setToolbarItems(editingModeToolbarButtons, animated: animated)
 		} else {
 			navigationItem.setLeftBarButtonItems(viewingModeTopLeftButtons, animated: animated)
-			freshenPlaybackToolbar()
-			setToolbarItems(viewingModeToolbarButtons, animated: animated)
+			if Enabling.playerScreen {
+			} else {
+				freshenPlaybackToolbar()
+				setToolbarItems(viewingModeToolbarButtons, animated: animated)
+			}
 		}
 	}
 	
@@ -336,9 +342,10 @@ class LibraryTVC: UITableViewController {
 		
 		super.setEditing(editing, animated: animated)
 		
-		setBarButtons(animated: animated)
 		if Enabling.playerScreen {
 			navigationController?.setToolbarHidden(!editing, animated: true)
+		} else {
+			setBarButtons(animated: animated)
 		}
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.

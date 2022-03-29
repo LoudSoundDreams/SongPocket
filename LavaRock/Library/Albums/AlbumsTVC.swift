@@ -94,6 +94,9 @@ final class AlbumsTVC:
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
+			if Enabling.playerScreen {
+				editingModeToolbarButtons = viewingModeToolbarButtons
+			}
 		case .movingAlbums:
 			break
 		case .browsing:
