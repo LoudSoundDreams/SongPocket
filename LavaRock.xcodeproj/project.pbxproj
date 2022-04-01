@@ -473,7 +473,7 @@
 			path = Albums;
 			sourceTree = "<group>";
 		};
-		07DF65D027766B7B003B2EA3 /* MusicLibraryManager */ = {
+		07DF65D027766B7B003B2EA3 /* MusicLibraryWatcher */ = {
 			isa = PBXGroup;
 			children = (
 				079B2C9424E227BF00A949FA /* MusicLibraryManager.swift */,
@@ -483,7 +483,7 @@
 				07A4F90E2519E8410065C87E /* deleteLibraryItems.swift */,
 				072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */,
 			);
-			path = MusicLibraryManager;
+			path = MusicLibraryWatcher;
 			sourceTree = "<group>";
 		};
 		07E0BBD8276567760010117E /* Foundation */ = {
@@ -568,7 +568,7 @@
 				075218A1257C498D0077AE9B /* LocalizedString.swift */,
 				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
 				071A0B9F277E832C0017F76D /* Persistence.swift */,
-				07DF65D027766B7B003B2EA3 /* MusicLibraryManager */,
+				07DF65D027766B7B003B2EA3 /* MusicLibraryWatcher */,
 				07F1881E27F6B14E0074809D /* Player */,
 				074AB85D27CAD9C3007B63D2 /* SongQueue.swift */,
 			);
