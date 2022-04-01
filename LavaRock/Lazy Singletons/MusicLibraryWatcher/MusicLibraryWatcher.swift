@@ -1,5 +1,5 @@
 //
-//  MusicLibraryManager.swift
+//  MusicLibraryWatcher.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-10.
@@ -8,9 +8,9 @@
 import MediaPlayer
 import OSLog
 
-final class MusicLibraryManager { // This is a class and not a struct because it needs a deinitializer.
+final class MusicLibraryWatcher { // This is a class and not a struct because it needs a deinitializer.
 	private init() {}
-	static let shared = MusicLibraryManager()
+	static let shared = MusicLibraryWatcher()
 	
 	let context = Persistence.viewContext
 	

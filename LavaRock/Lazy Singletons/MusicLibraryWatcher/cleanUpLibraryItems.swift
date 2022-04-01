@@ -8,7 +8,7 @@
 import CoreData
 import OSLog
 
-extension MusicLibraryManager {
+extension MusicLibraryWatcher {
 	final func cleanUpLibraryItems(
 		allMetadata: [SongMetadatum],
 		isFirstImport: Bool

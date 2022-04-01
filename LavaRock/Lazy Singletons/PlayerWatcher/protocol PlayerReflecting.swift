@@ -14,15 +14,15 @@ protocol PlayerReflecting: AnyObject {
 	// • Call `beginReflectingPlaybackState` as soon as their implementation of `playbackStateDidChange` will work.
 	
 	func playbackStateDidChange()
-	// Reflect `player`, and show a disabled state if it’s `nil`. (Call `Player.shared.setUp` to set it up.)
+	// Reflect `player`, and show a disabled state if it’s `nil`. (Call `PlayerWatcher.shared.setUp` to set it up.)
 }
 extension PlayerReflecting {
-	var player: MPMusicPlayerController? { Player.shared.player }
+	var player: MPMusicPlayerController? { PlayerWatcher.shared.player }
 	
 	func beginReflectingPlaybackState() {
 		playbackStateDidChange()
 		
-		Player.shared.addReflectorOnce(weaklyReferencing: self)
+		PlayerWatcher.shared.addReflectorOnce(weaklyReferencing: self)
 	}
 }
 

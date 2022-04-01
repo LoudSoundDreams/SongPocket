@@ -113,7 +113,7 @@ class LibraryTVC: UITableViewController {
 			self,
 			selector: #selector(didMergeChanges),
 			name: .LRDidMergeChanges,
-			object: MusicLibraryManager.shared)
+			object: MusicLibraryWatcher.shared)
 		
 		beginObservingNowPlayingItemDidChange()
 		

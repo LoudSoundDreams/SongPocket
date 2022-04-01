@@ -17,7 +17,7 @@ extension NowPlayingIndicating {
 	mutating func indicateNowPlaying(isInPlayer: Bool) {
 		guard
 			isInPlayer,
-			let player = Player.shared.player
+			let player = PlayerWatcher.shared.player
 		else {
 			speakerImageView.image = nil
 			accessibilityValue = nil

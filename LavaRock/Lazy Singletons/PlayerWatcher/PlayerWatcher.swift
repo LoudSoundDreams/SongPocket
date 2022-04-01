@@ -9,9 +9,9 @@ import MediaPlayer
 import CoreData
 
 @MainActor
-final class Player { // This is a class and not a struct because it needs a deinitializer.
+final class PlayerWatcher { // This is a class and not a struct because it needs a deinitializer.
 	private init() {}
-	static let shared = Player()
+	static let shared = PlayerWatcher()
 	
 	final func addReflectorOnce(weaklyReferencing newReflector: PlayerReflecting) {
 		if let indexOfMatchingReflector = reflectors.firstIndex(where: { weakReflector in
