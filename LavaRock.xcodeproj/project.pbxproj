@@ -93,7 +93,6 @@
 		07E0BBDD276567760010117E /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD9276567760010117E /* Notification.Name.swift */; };
 		07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* NotificationCenter.swift */; };
 		07E0BBDF276567760010117E /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDB276567760010117E /* URL.swift */; };
-		07E0BBE0276567760010117E /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDC276567760010117E /* UserDefaults.swift */; };
 		07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE22765678F0010117E /* UIAlertAction.swift */; };
 		07E0BBF02765678F0010117E /* UITableViewCell - Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */; };
 		07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE52765678F0010117E /* UIBarButtonItem.swift */; };
@@ -228,7 +227,6 @@
 		07E0BBD9276567760010117E /* Notification.Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 		07E0BBDA276567760010117E /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		07E0BBDB276567760010117E /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
-		07E0BBDC276567760010117E /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		07E0BBE22765678F0010117E /* UIAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertAction.swift; sourceTree = "<group>"; };
 		07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell - Protocols.swift"; sourceTree = "<group>"; };
 		07E0BBE52765678F0010117E /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
@@ -343,17 +341,15 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
-		0748AEAF24F394F9000FBC61 /* Singletons */ = {
+		0748AEAF24F394F9000FBC61 /* Launch Singletons */ = {
 			isa = PBXGroup;
 			children = (
-				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
+				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
-				071A0B9F277E832C0017F76D /* Persistence.swift */,
-				07DF65D027766B7B003B2EA3 /* MusicLibraryManager */,
-				07F1881E27F6B14E0074809D /* Player */,
-				074AB85D27CAD9C3007B63D2 /* SongQueue.swift */,
+				075218AF257C4C0C0077AE9B /* Tab Bar.storyboard */,
+				076F1C0627E903A500220C2B /* TabBarController.swift */,
 			);
-			path = Singletons;
+			path = "Launch Singletons";
 			sourceTree = "<group>";
 		};
 		0768307C24B42DEC0033E3CC = {
@@ -383,12 +379,12 @@
 			children = (
 				0768309924B42DEE0033E3CC /* Info.plist */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
-				075218A1257C498D0077AE9B /* LocalizedString.swift */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				07E0BBFE2765680C0010117E /* Extensions */,
 				0774C88627CBECA300230F22 /* Helpers */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				0748AEAF24F394F9000FBC61 /* Singletons */,
+				0748AEAF24F394F9000FBC61 /* Launch Singletons */,
+				07F1881F27F6B3750074809D /* Lazy Singletons */,
 				07E0BBFF276569480010117E /* General UI */,
 				0706ABDE24D946870090EB21 /* Options */,
 				07E0BC0027656C300010117E /* Library */,
@@ -419,7 +415,6 @@
 			isa = PBXGroup;
 			children = (
 				07CD864C27CAA3CC00286E6A /* Weak.swift */,
-				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -494,7 +489,6 @@
 		07E0BBD8276567760010117E /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				07E0BBDC276567760010117E /* UserDefaults.swift */,
 				07E0BBDA276567760010117E /* NotificationCenter.swift */,
 				07E0BBD9276567760010117E /* Notification.Name.swift */,
 				07E0BBDB276567760010117E /* URL.swift */,
@@ -540,9 +534,6 @@
 			children = (
 				0708201C275BEE1C00F48D13 /* Lighting.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
-				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
-				075218AF257C4C0C0077AE9B /* Tab Bar.storyboard */,
-				076F1C0627E903A500220C2B /* TabBarController.swift */,
 				07499A8527AB72CF00A2D712 /* protocol PlaybackToolbarManaging.swift */,
 				073E6A9125574B98003C84A5 /* protocol NowPlayingIndicating.swift */,
 			);
@@ -568,6 +559,20 @@
 				07CD864E27CAA54600286E6A /* protocol PlayerReflecting.swift */,
 			);
 			path = Player;
+			sourceTree = "<group>";
+		};
+		07F1881F27F6B3750074809D /* Lazy Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
+				075218A1257C498D0077AE9B /* LocalizedString.swift */,
+				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
+				071A0B9F277E832C0017F76D /* Persistence.swift */,
+				07DF65D027766B7B003B2EA3 /* MusicLibraryManager */,
+				07F1881E27F6B14E0074809D /* Player */,
+				074AB85D27CAD9C3007B63D2 /* SongQueue.swift */,
+			);
+			path = "Lazy Singletons";
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
@@ -757,7 +762,6 @@
 				078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				07267A2025537C5800C914A3 /* Player.swift in Sources */,
-				07E0BBE0276567760010117E /* UserDefaults.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* mergeChanges.swift in Sources */,
 				07A4F9052519E72C0065C87E /* updateLibraryItems.swift in Sources */,
 				07E0BBF02765678F0010117E /* UITableViewCell - Protocols.swift in Sources */,

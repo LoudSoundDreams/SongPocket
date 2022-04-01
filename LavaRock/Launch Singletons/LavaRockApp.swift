@@ -23,7 +23,15 @@ struct LavaRockApp: App {
 	init() {
 		theme = .shared
 		
-		UserDefaults.standard.deleteAllValuesExceptForLRUserDefaultsKeys()
+		// Delete unused entries in `UserDefaults`
+		let defaults = UserDefaults.standard
+		defaults.dictionaryRepresentation().forEach { (key, _object) in
+			if !Set(
+				LRUserDefaultsKey.allCases.map { $0.rawValue }
+			).contains(key) {
+				defaults.removeObject(forKey: key)
+			}
+		}
 		
 		PurchaseManager.shared.beginObservingPaymentTransactions()
 	}
