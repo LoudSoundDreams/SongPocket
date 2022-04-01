@@ -343,18 +343,17 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
-		0748AEAF24F394F9000FBC61 /* Features */ = {
+		0748AEAF24F394F9000FBC61 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
 				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				071A0B9F277E832C0017F76D /* Persistence.swift */,
 				07DF65D027766B7B003B2EA3 /* MusicLibraryManager */,
-				07267A1F25537C5800C914A3 /* Player.swift */,
-				07CD864E27CAA54600286E6A /* protocol PlayerReflecting.swift */,
+				07F1881E27F6B14E0074809D /* Player */,
 				074AB85D27CAD9C3007B63D2 /* SongQueue.swift */,
 			);
-			path = Features;
+			path = Singletons;
 			sourceTree = "<group>";
 		};
 		0768307C24B42DEC0033E3CC = {
@@ -389,7 +388,7 @@
 				07E0BBFE2765680C0010117E /* Extensions */,
 				0774C88627CBECA300230F22 /* Helpers */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				0748AEAF24F394F9000FBC61 /* Features */,
+				0748AEAF24F394F9000FBC61 /* Singletons */,
 				07E0BBFF276569480010117E /* General UI */,
 				0706ABDE24D946870090EB21 /* Options */,
 				07E0BC0027656C300010117E /* Library */,
@@ -560,6 +559,15 @@
 				070E194224F340C500B21307 /* Songs */,
 			);
 			path = Library;
+			sourceTree = "<group>";
+		};
+		07F1881E27F6B14E0074809D /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				07267A1F25537C5800C914A3 /* Player.swift */,
+				07CD864E27CAA54600286E6A /* protocol PlayerReflecting.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
