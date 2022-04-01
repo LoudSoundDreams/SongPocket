@@ -32,7 +32,7 @@ final class MusicLibraryManager { // This is a class and not a struct because it
 	}
 	@objc private func mediaLibraryDidChange() { mergeChanges() }
 	
-	final func mergeChanges() {
+	private func mergeChanges() {
 		os_signpost(.begin, log: .merge, name: "1. Merge changes")
 		defer {
 			os_signpost(.end, log: .merge, name: "1. Merge changes")
