@@ -341,7 +341,7 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
-		0748AEAF24F394F9000FBC61 /* Launch Singletons */ = {
+		0748AEAF24F394F9000FBC61 /* Launch */ = {
 			isa = PBXGroup;
 			children = (
 				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
@@ -349,7 +349,7 @@
 				075218AF257C4C0C0077AE9B /* Tab Bar.storyboard */,
 				076F1C0627E903A500220C2B /* TabBarController.swift */,
 			);
-			path = "Launch Singletons";
+			path = Launch;
 			sourceTree = "<group>";
 		};
 		0768307C24B42DEC0033E3CC = {
@@ -381,10 +381,10 @@
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				07E0BBFE2765680C0010117E /* Extensions */,
-				0774C88627CBECA300230F22 /* Helpers */,
+				07CD864C27CAA3CC00286E6A /* Weak.swift */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				0748AEAF24F394F9000FBC61 /* Launch Singletons */,
-				07F1881F27F6B3750074809D /* Lazy Singletons */,
+				0748AEAF24F394F9000FBC61 /* Launch */,
+				07F1881F27F6B3750074809D /* Singletons */,
 				07E0BBFF276569480010117E /* General UI */,
 				0706ABDE24D946870090EB21 /* Options */,
 				07E0BC0027656C300010117E /* Library */,
@@ -409,14 +409,6 @@
 				076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */,
 			);
 			path = LavaRockUITests;
-			sourceTree = "<group>";
-		};
-		0774C88627CBECA300230F22 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				07CD864C27CAA3CC00286E6A /* Weak.swift */,
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 		0777D6832756880300BA0C87 /* Multiple Levels */ = {
@@ -561,7 +553,7 @@
 			path = PlayerWatcher;
 			sourceTree = "<group>";
 		};
-		07F1881F27F6B3750074809D /* Lazy Singletons */ = {
+		07F1881F27F6B3750074809D /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
 				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
@@ -572,7 +564,7 @@
 				07F1881E27F6B14E0074809D /* PlayerWatcher */,
 				074AB85D27CAD9C3007B63D2 /* SongQueue.swift */,
 			);
-			path = "Lazy Singletons";
+			path = Singletons;
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
