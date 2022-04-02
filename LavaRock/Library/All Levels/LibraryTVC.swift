@@ -76,6 +76,7 @@ class LibraryTVC: UITableViewController {
 	
 	// `PlaybackToolbarManaging`
 	private(set) lazy var previousSongButton = makePreviousSongButton()
+	private(set) lazy var rewindButton = makeRewindButton()
 	private(set) lazy var skipBackwardButton = makeSkipBackwardButton()
 	private(set) lazy var playPauseButton = UIBarButtonItem()
 	private(set) lazy var skipForwardButton = makeSkipForwardButton()

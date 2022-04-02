@@ -13,6 +13,7 @@ protocol PlaybackToolbarManaging: PlayerReflecting {
 	// • Override `accessibilityPerformMagicTap` and toggle playback.
 	// However, as of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles playback in the built-in Music app. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 	var previousSongButton: UIBarButtonItem { get }
+	var rewindButton: UIBarButtonItem { get }
 	var skipBackwardButton: UIBarButtonItem { get }
 	var playPauseButton: UIBarButtonItem { get }
 	var skipForwardButton: UIBarButtonItem { get }
@@ -20,13 +21,22 @@ protocol PlaybackToolbarManaging: PlayerReflecting {
 }
 extension PlaybackToolbarManaging {
 	var playbackToolbarButtons: [UIBarButtonItem] {
-		return [
-			previousSongButton, .flexibleSpace(),
-			skipBackwardButton, .flexibleSpace(),
-			playPauseButton, .flexibleSpace(),
-			skipForwardButton, .flexibleSpace(),
-			nextSongButton,
-		]
+		if Enabling.playerScreen {
+			return [
+				previousSongButton, .flexibleSpace(),
+				skipBackwardButton, .flexibleSpace(),
+				playPauseButton, .flexibleSpace(),
+				skipForwardButton, .flexibleSpace(),
+				nextSongButton,
+			]
+		} else {
+			return [
+				previousSongButton, .flexibleSpace(),
+				rewindButton, .flexibleSpace(),
+				playPauseButton, .flexibleSpace(),
+				nextSongButton,
+			]
+		}
 	}
 	
 	func makePreviousSongButton() -> UIBarButtonItem {
@@ -35,6 +45,17 @@ extension PlaybackToolbarManaging {
 			image: UIImage(systemName: "backward.end"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.skipToPreviousItem()
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}
+	
+	func makeRewindButton() -> UIBarButtonItem {
+		let button = UIBarButtonItem(
+			title: LocalizedString.restart,
+			image: UIImage(systemName: "arrow.counterclockwise.circle"),
+			primaryAction: UIAction { [weak self] _ in
+				self?.player?.skipToBeginning()
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
