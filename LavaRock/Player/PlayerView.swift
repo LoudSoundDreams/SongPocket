@@ -16,17 +16,21 @@ final class PlayerHostingController: UIHostingController<PlayerView> {
 struct PlayerView: View {
     var body: some View {
 		NavigationView {
-			Text("Controls")
-			
-			.navigationTitle("Player")
+			VStack {
+				
+				Spacer()
+				Text("queue")
+				Spacer()
+				
+				TransportBar()
+				
+				Spacer()
+			}
+			.navigationTitle("Queue")
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarLeading) {
 					Button("Shuffle") {}
-				}
-				ToolbarItem(placement: .navigationBarTrailing) {
-					Button("Apply") {}
-					.disabled(true)
 				}
 			}
 		}
