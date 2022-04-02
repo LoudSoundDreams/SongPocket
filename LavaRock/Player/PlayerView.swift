@@ -29,33 +29,6 @@ struct PlayerView: View {
 					.disabled(true)
 				}
 			}
-			.toolbar {
-				ToolbarItemGroup(placement: .bottomBar) {
-					Button {
-						
-					} label: {
-						Image(systemName: .SFPreviousTrack)
-					}
-					Spacer()
-					Button {
-						
-					} label: {
-						Image(systemName: .SFRewind)
-					}
-					Spacer()
-					Button {
-						
-					} label: {
-						Image(systemName: .SFPlay)
-					}
-					Spacer()
-					Button {
-						
-					} label: {
-						Image(systemName: .SFNextTrack)
-					}
-				}
-			}
 		}
     }
 }

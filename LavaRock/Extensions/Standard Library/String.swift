@@ -6,17 +6,6 @@
 //
 
 extension String {
-	static let SFSpeakerWave = "speaker.wave.2.fill"
-	static let SFSpeakerNoWave = "speaker.fill"
-	
-	static let SFPreviousTrack = "backward.end"
-	static let SFRewind = "arrow.counterclockwise.circle"
-	static let SFSkipBack10 = "gobackward.10"
-	static let SFPlay = "play.circle"
-	static let SFPause = "pause.circle"
-	static let SFSkipForward10 = "goforward.10"
-	static let SFNextTrack = "forward.end"
-	
 	func truncatedIfLonger(than maxLength: Int) -> String {
 		let trimmed = prefix(maxLength - 1)
 		if self == trimmed {

@@ -32,7 +32,7 @@ extension PlaybackToolbarManaging {
 	func makePreviousSongButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
-			image: UIImage(systemName: .SFPreviousTrack),
+			image: UIImage(systemName: "backward.end"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.skipToPreviousItem()
 			})
@@ -43,7 +43,7 @@ extension PlaybackToolbarManaging {
 	func makeSkipBackwardButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsBackwards,
-			image: UIImage(systemName: .SFSkipBack10),
+			image: UIImage(systemName: "gobackward.10"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.currentPlaybackTime -= 10
 			})
@@ -54,7 +54,7 @@ extension PlaybackToolbarManaging {
 	func makeSkipForwardButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsForward,
-			image: UIImage(systemName: .SFSkipForward10),
+			image: UIImage(systemName: "goforward.10"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.currentPlaybackTime += 10
 			})
@@ -65,7 +65,7 @@ extension PlaybackToolbarManaging {
 	func makeNextSongButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
-			image: UIImage(systemName: .SFNextTrack),
+			image: UIImage(systemName: "forward.end"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.skipToNextItem()
 			})
@@ -76,7 +76,7 @@ extension PlaybackToolbarManaging {
 	private func configurePlayButton() {
 		playPauseButton.title = LocalizedString.play
 		playPauseButton.primaryAction = UIAction(
-			image: UIImage(systemName: .SFPlay)
+			image: UIImage(systemName: "play.circle")
 		) { [weak self] _ in
 			self?.player?.play()
 		}
@@ -98,7 +98,7 @@ extension PlaybackToolbarManaging {
 			// Configure “pause” button
 			playPauseButton.title = LocalizedString.pause
 			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: .SFPause)
+				image: UIImage(systemName: "pause.circle")
 			) { [weak self] _ in
 				self?.player?.pause()
 			}

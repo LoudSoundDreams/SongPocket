@@ -24,10 +24,10 @@ extension NowPlayingIndicating {
 			return
 		}
 		if player.playbackState == .playing {
-			speakerImageView.image = UIImage(systemName: .SFSpeakerWave)
+			speakerImageView.image = UIImage(systemName: "speaker.wave.2.fill")
 			accessibilityValue = LocalizedString.nowPlaying // For some reason, `UITableViewCell.accessibilityLabel == nil` at this point.
 		} else {
-			speakerImageView.image = UIImage(systemName: .SFSpeakerNoWave)
+			speakerImageView.image = UIImage(systemName: "speaker.fill")
 			accessibilityValue = LocalizedString.paused
 		}
 	}
