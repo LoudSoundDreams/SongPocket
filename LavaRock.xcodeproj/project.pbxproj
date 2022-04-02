@@ -383,6 +383,7 @@
 				0768309924B42DEE0033E3CC /* Info.plist */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
+				07FF1DDF27F8FF0300DF9B78 /* Static */,
 				07E0BBFE2765680C0010117E /* Extensions */,
 				07CD864C27CAA3CC00286E6A /* Weak.swift */,
 				07FC970A24BAC1050036DD3D /* Model */,
@@ -559,9 +560,6 @@
 		07F1881F27F6B3750074809D /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
-				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
-				075218A1257C498D0077AE9B /* LocalizedString.swift */,
-				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
 				071A0B9F277E832C0017F76D /* Persistence.swift */,
 				07DF65D027766B7B003B2EA3 /* MusicLibraryWatcher */,
 				07F1881E27F6B14E0074809D /* PlayerWatcher */,
@@ -581,6 +579,16 @@
 				07AE2AA3258C09D900C3A314 /* Collection.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		07FF1DDF27F8FF0300DF9B78 /* Static */ = {
+			isa = PBXGroup;
+			children = (
+				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
+				075218A1257C498D0077AE9B /* LocalizedString.swift */,
+				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
+			);
+			path = Static;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

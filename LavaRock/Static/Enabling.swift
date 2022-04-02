@@ -12,6 +12,7 @@ struct Enabling {
 	static let multialbum = multicollection && 10 == 10
 	
 	static let playerScreen = 10 == 1
+	static let ps_swiftUI = playerScreen && 10 == 10
 	
 	static let swiftUIOptions = 10 == 1
 }
