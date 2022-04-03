@@ -7,6 +7,7 @@
 
 import MediaPlayer
 
+//@MainActor // TO DO
 struct SongQueue {
 	private init() {}
 	
@@ -16,6 +17,10 @@ struct SongQueue {
 	private(set) static var contents: [Song] = [] {
 		didSet {
 			Task { await MainActor.run {
+				NotificationCenter.default.post(
+					name: .LRSongQueueDidChange,
+					object: nil)
+				
 				tableView?.reloadData() // TO DO
 			}}
 		}

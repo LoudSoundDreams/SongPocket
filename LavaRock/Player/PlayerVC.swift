@@ -34,6 +34,11 @@ final class PlayerVC: UIViewController {
 			selector: #selector(mediaLibraryAuthorizationStatusDidChange),
 			name: .LRMediaLibraryAuthorizationStatusDidChange,
 			object: nil)
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(songQueueDidChange),
+			name: .LRSongQueueDidChange,
+			object: nil)
 		
 		beginObservingNowPlayingItemDidChange_PVC()
 		
@@ -47,6 +52,9 @@ final class PlayerVC: UIViewController {
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
 		beginObservingNowPlayingItemDidChange_PVC()
+	}
+	@objc private func songQueueDidChange() {
+		freshenPlaybackToolbar()
 	}
 	
 	private func beginObservingNowPlayingItemDidChange_PVC() {

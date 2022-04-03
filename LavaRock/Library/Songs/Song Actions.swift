@@ -32,7 +32,7 @@ extension SongsTVC {
 			title: LocalizedString.playRestOfAlbum,
 			style: .default
 		) { _ in
-			player.play(selectedSongAndBelow)
+			player.playNow(selectedSongAndBelow)
 			deselectSelectedSong()
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
@@ -40,7 +40,7 @@ extension SongsTVC {
 			title: LocalizedString.queueRestOfAlbum,
 			style: .default
 		) { _ in
-			player.append(selectedSongAndBelow)
+			player.playLast(selectedSongAndBelow)
 			self.presentWillPlayLaterAlertIfShould(havingAppended: selectedSongAndBelow)
 			deselectSelectedSong()
 		}
@@ -53,14 +53,14 @@ extension SongsTVC {
 			title: LocalizedString.playSong,
 			style: .default
 		) { _ in
-			player.play([selectedSong])
+			player.playNow([selectedSong])
 			deselectSelectedSong()
 		}
 		let appendSong = UIAlertAction(
 			title: LocalizedString.queueSong,
 			style: .default
 		) { _ in
-			player.append([selectedSong])
+			player.playLast([selectedSong])
 			self.presentWillPlayLaterAlertIfShould(havingAppended: [selectedSong])
 			deselectSelectedSong()
 		}

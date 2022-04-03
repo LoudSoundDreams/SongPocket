@@ -115,6 +115,11 @@ class LibraryTVC: UITableViewController {
 			selector: #selector(didMergeChanges),
 			name: .LRDidMergeChanges,
 			object: MusicLibraryWatcher.shared)
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(songQueueDidChange),
+			name: .LRSongQueueDidChange,
+			object: nil)
 		
 		beginObservingNowPlayingItemDidChange()
 		
@@ -122,6 +127,9 @@ class LibraryTVC: UITableViewController {
 		setUpBarButtons()
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
+	@objc private func songQueueDidChange() {
+		freshenPlaybackToolbar()
+	}
 	
 	final func beginObservingNowPlayingItemDidChange() {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
