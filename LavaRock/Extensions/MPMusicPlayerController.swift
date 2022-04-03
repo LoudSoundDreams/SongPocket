@@ -22,4 +22,21 @@ extension MPMusicPlayerController {
 		
 		play() // Calls `prepareToPlay` automatically
 	}
+	
+	final func append(_ songs: [Song]) {
+		if Enabling.playerScreen {
+			SongQueue.append(contentsOf: songs)
+		}
+		append(
+			MPMusicPlayerMediaItemQueueDescriptor(
+				itemCollection: MPMediaItemCollection(
+					items: songs.compactMap { $0.mpMediaItem() })))
+		
+		repeatMode = .none
+		
+		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
+		if playbackState != .playing {
+			prepareToPlay()
+		}
+	}
 }

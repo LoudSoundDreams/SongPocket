@@ -41,7 +41,8 @@ extension SongsTVC {
 			title: LocalizedString.queueRestOfAlbum,
 			style: .default
 		) { _ in
-			self.append(selectedSongAndBelow, using: player)
+			player.append(selectedSongAndBelow)
+			self.presentWillPlayLaterAlertIfShould(havingAppended: selectedSongAndBelow)
 			deselectSelectedSong()
 		}
 		if selectedSongAndBelow.count == 1 {
@@ -53,7 +54,8 @@ extension SongsTVC {
 			title: LocalizedString.queueSong,
 			style: .default
 		) { _ in
-			self.append([selectedSong], using: player)
+			player.append([selectedSong])
+			self.presentWillPlayLaterAlertIfShould(havingAppended: [selectedSong])
 			deselectSelectedSong()
 		}
 		
@@ -73,67 +75,19 @@ extension SongsTVC {
 		present(actionSheet, animated: true)
 	}
 	
-	private func append(
-		_ songs: [Song],
-		using player: MPMusicPlayerController
-	) {
-		if Enabling.playerScreen {
-			SongQueue.append(contentsOf: songs)
-		}
-		player.append(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(
-					items: songs.compactMap { $0.mpMediaItem() })))
-		
-		player.repeatMode = .none
-		
-		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
-		if player.playbackState != .playing {
-			player.prepareToPlay()
-		}
-		
-		if Enabling.playerScreen {
-		} else {
-			if
-				let selectedSong = songs.first,
-				let selectedMetadata = selectedSong.metadatum()
-			{
-				let selectedTitle = selectedMetadata.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
-				presentWillPlayLaterAlertIfShould(
-					titleOfSelectedSong: selectedTitle,
-					numberOfSongsEnqueued: songs.count)
-			}
-		}
-	}
-	
 	private func presentWillPlayLaterAlertIfShould(
-		titleOfSelectedSong: String,
-		numberOfSongsEnqueued: Int
+		havingAppended songs: [Song]
 	) {
 		let defaults = UserDefaults.standard
 		let defaultsKey = LRUserDefaultsKey.shouldExplainQueueAction.rawValue
 		
 		defaults.register(defaults: [defaultsKey: true])
-		let shouldShowExplanation = defaults.bool(forKey: defaultsKey)
-		guard shouldShowExplanation else { return }
+		guard
+			!Enabling.playerScreen,
+			defaults.bool(forKey: defaultsKey),
+			let titleOfSelectedSong = songs.first?.metadatum()?.titleOnDisk
+		else { return }
 		
-		let alertTitle: String
-		switch numberOfSongsEnqueued {
-		case 1:
-			alertTitle = String.localizedStringWithFormat(
-				LocalizedString.format_didEnqueueOneSongAlertTitle,
-				titleOfSelectedSong)
-		default:
-			alertTitle = String.localizedStringWithFormat(
-				LocalizedString.format_didEnqueueMultipleSongsAlertTitle,
-				titleOfSelectedSong, numberOfSongsEnqueued - 1)
-		}
-		let alertMessage = LocalizedString.didEnqueueSongsAlertMessage
-		
-		let alert = UIAlertController(
-			title: alertTitle,
-			message: alertMessage,
-			preferredStyle: .alert)
 		let dontShowAgainAction = UIAlertAction(
 			title: LocalizedString.dontShowAgain,
 			style: .default
@@ -150,10 +104,23 @@ extension SongsTVC {
 			self.willPlayLaterAlertIsPresented = false
 		}
 		
+		let alert = UIAlertController(
+			title: {
+				switch songs.count {
+				case 1:
+					return String.localizedStringWithFormat(
+						LocalizedString.format_didEnqueueOneSongAlertTitle,
+						titleOfSelectedSong)
+				default:
+					return String.localizedStringWithFormat(
+						LocalizedString.format_didEnqueueMultipleSongsAlertTitle,
+						titleOfSelectedSong, songs.count - 1)
+				}}(),
+			message: LocalizedString.didEnqueueSongsAlertMessage,
+			preferredStyle: .alert)
 		alert.addAction(dontShowAgainAction)
 		alert.addAction(okAction)
 		alert.preferredAction = okAction
-		
 		willPlayLaterAlertIsPresented = true
 		present(alert, animated: true)
 	}
