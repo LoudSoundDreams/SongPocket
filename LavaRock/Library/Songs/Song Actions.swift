@@ -78,7 +78,7 @@ extension SongsTVC {
 		using player: MPMusicPlayerController
 	) {
 		if Enabling.playerScreen {
-			SongQueue.contents.append(contentsOf: songs)
+			SongQueue.append(contentsOf: songs)
 		}
 		player.append(
 			MPMusicPlayerMediaItemQueueDescriptor(

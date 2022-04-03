@@ -12,9 +12,17 @@ struct SongQueue {
 	
 	static weak var tableView: UITableView? = nil
 	
-	static var contents: [Song] = [] {
+	private(set) static var contents: [Song] = [] {
 		didSet {
 			tableView?.reloadData() // TO DO
 		}
+	}
+	
+	static func setContents(_ newContents: [Song]) {
+		contents = newContents
+	}
+	
+	static func append(contentsOf newContents: [Song]) {
+		contents.append(contentsOf: newContents)
 	}
 }
