@@ -10,11 +10,14 @@ import MediaPlayer
 struct SongQueue {
 	private init() {}
 	
+	@MainActor
 	static weak var tableView: UITableView? = nil
 	
 	private(set) static var contents: [Song] = [] {
 		didSet {
-			tableView?.reloadData() // TO DO
+			Task { await MainActor.run {
+				tableView?.reloadData() // TO DO
+			}}
 		}
 	}
 	
