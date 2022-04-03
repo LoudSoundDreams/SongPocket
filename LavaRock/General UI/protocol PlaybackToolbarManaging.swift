@@ -21,7 +21,7 @@ protocol PlaybackToolbarManaging: PlayerReflecting {
 }
 extension PlaybackToolbarManaging {
 	var playbackToolbarButtons: [UIBarButtonItem] {
-		if Enabling.playerScreen {
+		if Enabling.jumpButtons {
 			return [
 				previousSongButton, .flexibleSpace(),
 				skipBackwardButton, .flexibleSpace(),
