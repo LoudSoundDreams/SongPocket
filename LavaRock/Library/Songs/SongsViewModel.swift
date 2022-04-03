@@ -46,7 +46,7 @@ extension SongsViewModel: LibraryViewModel {
 	}
 	
 	func allowsSortOption(
-		_ sortOption: LibraryTVC.SortOption,
+		_ sortOption: LibrarySortOption,
 		forItems items: [NSManagedObject]
 	) -> Bool {
 		switch sortOption {
