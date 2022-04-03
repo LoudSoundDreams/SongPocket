@@ -7,7 +7,6 @@
 
 import UIKit
 import MediaPlayer
-import OSLog
 
 extension SongsTVC {
 	final func showSongActions(
@@ -50,6 +49,13 @@ extension SongsTVC {
 		}
 		
 		// Single song
+		let playSong = UIAlertAction(
+			title: LocalizedString.playSong,
+			style: .default
+		) { _ in
+			player.play([selectedSong])
+			deselectSelectedSong()
+		}
 		let appendSong = UIAlertAction(
 			title: LocalizedString.queueSong,
 			style: .default
@@ -70,6 +76,9 @@ extension SongsTVC {
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		actionSheet.addAction(playRestOfAlbum)
 		actionSheet.addAction(appendRestOfAlbum)
+		if Enabling.playSong {
+			actionSheet.addAction(playSong)
+		}
 		actionSheet.addAction(appendSong)
 		actionSheet.addAction(cancel)
 		present(actionSheet, animated: true)

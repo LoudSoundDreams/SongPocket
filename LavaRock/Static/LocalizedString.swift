@@ -147,6 +147,7 @@ struct LocalizedString {
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	static let playRestOfAlbum = NSLocalizedString("Play Rest of Album", comment: "Button")
 	static let queueRestOfAlbum = NSLocalizedString("Queue Rest of Album", comment: "Button")
+	static let playSong = NSLocalizedString("Play Song", comment: "Button")
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let didEnqueueSongsAlertMessage = NSLocalizedString(
 		"[alert message] did_enqueue_songs",
