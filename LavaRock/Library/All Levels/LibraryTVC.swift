@@ -30,15 +30,32 @@ class LibraryTVC: UITableViewController {
 			case .title:
 				return LocalizedString.title
 			case .newestFirst:
-				return LocalizedString.newestFirst
+				return LocalizedString.newest
 			case .oldestFirst:
-				return LocalizedString.oldestFirst
+				return LocalizedString.oldest
 			case .trackNumber:
 				return LocalizedString.trackNumber
 			case .random:
 				return LocalizedString.random
 			case .reverse:
 				return LocalizedString.reverse
+			}
+		}
+		
+		func uiImage() -> UIImage? {
+			switch self {
+			case .title:
+				return UIImage(systemName: "textformat.abc")
+			case .newestFirst:
+				return UIImage(systemName: "hourglass.bottomhalf.filled")
+			case .oldestFirst:
+				return UIImage(systemName: "hourglass.tophalf.filled")
+			case .trackNumber:
+				return UIImage(systemName: "textformat.123")
+			case .random:
+				return UIImage(systemName: "questionmark")
+			case .reverse:
+				return UIImage(systemName: "arrow.uturn.up")
 			}
 		}
 		

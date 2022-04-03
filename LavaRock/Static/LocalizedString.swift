@@ -75,6 +75,7 @@ struct LocalizedString {
 	// MARK: Editing
 	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
+	static let shuffle = NSLocalizedString("Shuffle", comment: "Sort option")
 	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
 	
@@ -134,8 +135,8 @@ struct LocalizedString {
 	static let organizeByAlbumArtistEllipsis = NSLocalizedString("Organize by Album Artist…", comment: "Menu option")
 	static let moveToEllipsis = NSLocalizedString("Move To…", comment: "Menu option")
 	
-	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
-	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Sort option")
+	static let newest = NSLocalizedString("Newest", comment: "Sort option")
+	static let oldest = NSLocalizedString("Oldest", comment: "Sort option")
 	
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	

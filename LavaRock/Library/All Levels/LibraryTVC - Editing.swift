@@ -12,7 +12,8 @@ extension LibraryTVC {
 		let groupedElements: [[UIMenuElement]] = sortOptionsGrouped.map { sortOptionGroup in
 			let groupOfChildren: [UIMenuElement] = sortOptionGroup.map { sortOption in
 				let action = UIAction(
-					title: sortOption.localizedName()
+					title: sortOption.localizedName(),
+					image: sortOption.uiImage()
 				) { [weak self] action in
 					self?.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
 				}

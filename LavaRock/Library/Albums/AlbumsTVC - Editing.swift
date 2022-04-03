@@ -14,7 +14,10 @@ extension AlbumsTVC {
 		let organizeElement: UIMenuElement = {
 			let organizeAction = UIAction(
 				title: LocalizedString.organizeByAlbumArtistEllipsis,
-				handler: { [weak self] _ in self?.startOrganizing() })
+				image: UIImage(systemName: "folder.badge.gearshape")
+			) { [weak self] _ in
+				self?.startOrganizing()
+			}
 			
 			// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
 			return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
@@ -27,7 +30,10 @@ extension AlbumsTVC {
 		
 		let moveElement = UIAction(
 			title: LocalizedString.moveToEllipsis,
-			handler: { [weak self] _ in self?.startMoving() })
+			image: UIImage(systemName: "folder")
+			) { [weak self] _ in
+				self?.startMoving()
+			}
 		
 		return UIMenu(
 			children: [
