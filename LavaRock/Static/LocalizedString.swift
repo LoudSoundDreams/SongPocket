@@ -21,7 +21,6 @@ struct LocalizedString {
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
 	static let save = NSLocalizedString("Save", comment: "Button")
 	static let done = NSLocalizedString("Done", comment: "Button")
-	static let close = NSLocalizedString("Close", comment: "Button")
 	static let ok = NSLocalizedString("OK", comment: "Button")
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
@@ -39,12 +38,10 @@ struct LocalizedString {
 	
 	static let theme = NSLocalizedString("Theme", comment: "Section header")
 	
-	static let appearance = NSLocalizedString("Appearance", comment: "Section header")
 	static let light = NSLocalizedString("Light", comment: "Appearance option")
 	static let dark = NSLocalizedString("Dark", comment: "Appearance option")
 	static let system = NSLocalizedString("System", comment: "Appearance option")
 	
-	static let accentColor = NSLocalizedString("Accent Color", comment: "Section header")
 	static let strawberry = NSLocalizedString("Strawberry", comment: "Accent color")
 	static let tangerine = NSLocalizedString("Tangerine", comment: "Accent color")
 	static let lime = NSLocalizedString("Lime", comment: "Accent color")
@@ -78,9 +75,9 @@ struct LocalizedString {
 	// MARK: Editing
 	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
-	static let sortBy = NSLocalizedString("Sort By", comment: "Action sheet title")
 	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
+	
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
@@ -136,8 +133,10 @@ struct LocalizedString {
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let organizeByAlbumArtistEllipsis = NSLocalizedString("Organize by Album Artist…", comment: "Menu option")
 	static let moveToEllipsis = NSLocalizedString("Move To…", comment: "Menu option")
+	
 	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
 	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Sort option")
+	
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
 	// MARK: Songs View
