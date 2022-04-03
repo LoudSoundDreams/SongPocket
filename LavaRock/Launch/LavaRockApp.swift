@@ -52,7 +52,8 @@ final class Theme: ObservableObject {
 
 protocol MovesThemeToWindow: UIViewController {
 	// Adopting types must …
-	// • Call `moveThemeToWindow` during `viewDidAppear`.
+	// • Override `viewDidAppear` and call `moveThemeToWindow`.
+	
 	static var didMoveThemeToWindow: Bool { get set }
 }
 extension MovesThemeToWindow {

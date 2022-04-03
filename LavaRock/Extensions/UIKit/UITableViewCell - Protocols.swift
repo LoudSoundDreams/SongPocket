@@ -33,6 +33,7 @@ extension CellHavingTransparentBackground {
 protocol CellConfigurableAsButton: UITableViewCell {
 	// Adopting types must …
 	// • Override `awakeFromNib` and call `configureAsButton`.
+	
 	static var buttonText: String { get }
 	var accessibilityTraits: UIAccessibilityTraits { get }
 	var contentConfiguration: UIContentConfiguration? { get }
