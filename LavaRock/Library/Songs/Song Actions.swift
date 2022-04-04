@@ -51,14 +51,14 @@ extension SongsTVC {
 		
 		// Single song
 		let playSong = UIAlertAction(
-			title: LocalizedString.play,
+			title: LocalizedString.playSong,
 			style: .default
 		) { _ in
 			player.playNow([selectedSong])
 			deselectSelectedSong()
 		}
 		let appendSong = UIAlertAction(
-			title: LocalizedString.queue__verb,
+			title: LocalizedString.queueSong,
 			style: .default
 		) { _ in
 			player.playLast([selectedSong])
