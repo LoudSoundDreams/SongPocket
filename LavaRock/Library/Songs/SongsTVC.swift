@@ -28,7 +28,7 @@ final class SongsTVC:
 		
 		sortOptionsGrouped = [
 			[.trackNumber],
-			[.random, .reverse],
+			[.shuffle, .reverse],
 		]
 	}
 	

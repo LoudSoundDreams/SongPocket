@@ -51,7 +51,7 @@ extension CollectionsViewModel: LibraryViewModel {
 				.trackNumber:
 			return false
 		case
-				.random,
+				.shuffle,
 				.reverse:
 			return true
 		}

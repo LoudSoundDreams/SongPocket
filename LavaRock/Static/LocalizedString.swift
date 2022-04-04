@@ -76,7 +76,6 @@ struct LocalizedString {
 	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let shuffle = NSLocalizedString("Shuffle", comment: "Sort option")
-	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
 	
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")

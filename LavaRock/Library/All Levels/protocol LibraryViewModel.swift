@@ -41,7 +41,7 @@ enum LibrarySortOption: CaseIterable {
 	case trackNumber
 	
 	// For all types
-	case random
+	case shuffle
 	case reverse
 	
 	func localizedName() -> String {
@@ -54,8 +54,8 @@ enum LibrarySortOption: CaseIterable {
 			return LocalizedString.oldest
 		case .trackNumber:
 			return LocalizedString.trackNumber
-		case .random:
-			return LocalizedString.random
+		case .shuffle:
+			return LocalizedString.shuffle
 		case .reverse:
 			return LocalizedString.reverse
 		}
@@ -71,8 +71,8 @@ enum LibrarySortOption: CaseIterable {
 			return UIImage(systemName: "hourglass.tophalf.filled")
 		case .trackNumber:
 			return UIImage(systemName: "textformat.123")
-		case .random:
-			return UIImage(systemName: "questionmark")
+		case .shuffle:
+			return UIImage(systemName: "suit.spade")
 		case .reverse:
 			return UIImage(systemName: "arrow.uturn.up")
 		}
@@ -467,7 +467,7 @@ extension LibraryViewModel {
 			}
 			return sorted.map { $0.song }
 			
-		case .random:
+		case .shuffle:
 			return items.inAnyOtherOrder()
 			
 		case .reverse:
