@@ -45,6 +45,9 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		if selectedSongAndBelow.count == 1 {
+			if Enabling.playSong {
+				playRestOfAlbum.isEnabled = false
+			}
 			appendRestOfAlbum.isEnabled = false
 		}
 		
