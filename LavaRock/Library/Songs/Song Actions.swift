@@ -45,9 +45,7 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		if selectedSongAndBelow.count == 1 {
-			if Enabling.playSong {
-				playRestOfAlbum.isEnabled = false
-			}
+			playRestOfAlbum.isEnabled = false
 			appendRestOfAlbum.isEnabled = false
 		}
 		
@@ -79,9 +77,7 @@ extension SongsTVC {
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		actionSheet.addAction(playRestOfAlbum)
 		actionSheet.addAction(appendRestOfAlbum)
-		if Enabling.playSong {
-			actionSheet.addAction(playSong)
-		}
+		actionSheet.addAction(playSong)
 		actionSheet.addAction(appendSong)
 		actionSheet.addAction(cancel)
 		present(actionSheet, animated: true)
