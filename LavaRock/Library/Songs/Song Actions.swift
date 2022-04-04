@@ -41,7 +41,7 @@ extension SongsTVC {
 			style: .default
 		) { _ in
 			player.playLast(selectedSongAndBelow)
-			self.presentWillPlayLaterAlertIfShould(havingAppended: selectedSongAndBelow)
+			self.alertWillPlayLaterIfShould(havingAppended: selectedSongAndBelow)
 			deselectSelectedSong()
 		}
 		if selectedSongAndBelow.count == 1 {
@@ -61,7 +61,7 @@ extension SongsTVC {
 			style: .default
 		) { _ in
 			player.playLast([selectedSong])
-			self.presentWillPlayLaterAlertIfShould(havingAppended: [selectedSong])
+			self.alertWillPlayLaterIfShould(havingAppended: [selectedSong])
 			deselectSelectedSong()
 		}
 		
@@ -84,7 +84,7 @@ extension SongsTVC {
 		present(actionSheet, animated: true)
 	}
 	
-	private func presentWillPlayLaterAlertIfShould(
+	private func alertWillPlayLaterIfShould(
 		havingAppended songs: [Song]
 	) {
 		let defaults = UserDefaults.standard
