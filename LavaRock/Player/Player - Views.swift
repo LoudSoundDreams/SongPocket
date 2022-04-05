@@ -18,6 +18,8 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 	
 	final override func awakeFromNib() {
 		tintSelectedBackgroundView()
+		
+		backgroundColor = .clear
 	}
 	
 	final func configure(with metadatum: SongMetadatum?) {

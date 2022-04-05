@@ -26,7 +26,7 @@ protocol CellHavingTransparentBackground: UITableViewCell {
 }
 extension CellHavingTransparentBackground {
 	func removeBackground() {
-		backgroundColor = nil
+		backgroundColor = .clear
 	}
 }
 
