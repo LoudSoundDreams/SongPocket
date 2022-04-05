@@ -44,10 +44,6 @@ final class AlbumInfoCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		if Enabling.iso8601Dates {
-			releaseDateLabel.font = .caption1WithMonospacedDigits(compatibleWith: traitCollection)
-		}
-		
 		accessibilityUserInputLabels = [""]
 	}
 	
