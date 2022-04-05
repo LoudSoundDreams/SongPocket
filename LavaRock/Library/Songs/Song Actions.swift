@@ -76,8 +76,8 @@ extension SongsTVC {
 			preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		actionSheet.addAction(playRestOfAlbum)
-		actionSheet.addAction(appendRestOfAlbum)
 		actionSheet.addAction(playSong)
+		actionSheet.addAction(appendRestOfAlbum)
 		actionSheet.addAction(appendSong)
 		actionSheet.addAction(cancel)
 		present(actionSheet, animated: true)
