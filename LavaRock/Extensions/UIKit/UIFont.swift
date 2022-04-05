@@ -11,11 +11,24 @@ extension UIFont {
 	static func bodyWithMonospacedDigits(
 		compatibleWith traitCollection: UITraitCollection?
 	) -> UIFont {
-		let bodyFont = UIFont.preferredFont(
-			forTextStyle: .body,
-			compatibleWith: traitCollection)
 		return .monospacedDigitSystemFont(
-			ofSize: bodyFont.pointSize,
+			ofSize:
+				UIFont.preferredFont(
+					forTextStyle: .body,
+					compatibleWith: traitCollection)
+				.pointSize,
+			weight: .regular)
+	}
+	
+	static func caption1WithMonospacedDigits(
+		compatibleWith traitCollection: UITraitCollection?
+	) -> UIFont {
+		return .monospacedDigitSystemFont(
+			ofSize:
+				UIFont.preferredFont(
+					forTextStyle: .caption1,
+					compatibleWith: traitCollection)
+				.pointSize,
 			weight: .regular)
 	}
 }

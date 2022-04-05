@@ -47,6 +47,9 @@ final class AlbumCell: UITableViewCell, CellTintingWhenSelected, CellHavingTrans
 		removeBackground()
 		
 		artworkImageView.accessibilityIgnoresInvertColors = true
+		if Enabling.iso8601Dates {
+			releaseDateLabel.font = .caption1WithMonospacedDigits(compatibleWith: traitCollection)
+		}
 		
 		configureForTraitCollection()
 	}

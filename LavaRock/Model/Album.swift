@@ -283,17 +283,28 @@ extension Album {
 		}
 	}
 	
+	private static let iso8601__releaseDateFormatter: ISO8601DateFormatter = {
+		let dateFormatter = ISO8601DateFormatter()
+		dateFormatter.formatOptions = [
+			.withFullDate,
+			.withDashSeparatorInDate,
+		]
+		return dateFormatter
+	}()
 	private static let releaseDateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateStyle = .medium
 		dateFormatter.timeStyle = .none
 		return dateFormatter
 	}()
-	
 	final func releaseDateEstimateFormatted() -> String? {
 		guard let releaseDateEstimate = releaseDateEstimate else {
 			return nil
 		}
-		return Self.releaseDateFormatter.string(from: releaseDateEstimate)
+		if Enabling.iso8601Dates {
+			return Self.iso8601__releaseDateFormatter.string(from: releaseDateEstimate)
+		} else {
+			return Self.releaseDateFormatter.string(from: releaseDateEstimate)
+		}
 	}
 }
