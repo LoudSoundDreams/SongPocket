@@ -259,7 +259,7 @@ final class CollectionsTVC:
 		case .movingAlbums:
 			viewingModeTopLeftButtons = []
 		case .browsing:
-			if Enabling.swiftUI__Options {
+			if Enabling.swiftUI__options {
 				viewingModeTopLeftButtons = [optionsButton__SwiftUI]
 			} else {
 				viewingModeTopLeftButtons = [optionsButton__UIKit]

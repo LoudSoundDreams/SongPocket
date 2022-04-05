@@ -12,8 +12,8 @@ struct Enabling {
 	static let multialbum = multicollection && 10 == 10
 	
 	static let playerScreen = 10 == 1
-	static let swiftUI__PlayerScreen = playerScreen && 10 == 1
+	static let swiftUI__playerScreen = playerScreen && 10 == 1
 	static let jumpButtons = (10 == 1) || (playerScreen && 10 == 10)
 	
-	static let swiftUI__Options = 10 == 1
+	static let swiftUI__options = 10 == 1
 }

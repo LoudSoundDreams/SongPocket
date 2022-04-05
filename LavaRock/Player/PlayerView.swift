@@ -8,8 +8,8 @@
 import SwiftUI
 
 final class PlayerHostingController: UIHostingController<PlayerView> {
-	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder, rootView: PlayerView())
+	required init?(coder: NSCoder) {
+		super.init(coder: coder, rootView: PlayerView())
 	}
 }
 
@@ -34,11 +34,5 @@ struct PlayerView: View {
 				}
 			}
 		}
-    }
-}
-
-struct PlayerView_Previews: PreviewProvider {
-    static var previews: some View {
-        PlayerView()
     }
 }
