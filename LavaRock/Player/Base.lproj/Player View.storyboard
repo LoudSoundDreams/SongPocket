@@ -166,17 +166,6 @@
             </objects>
             <point key="canvasLocation" x="6110" y="1039"/>
         </scene>
-        <!--Player-->
-        <scene sceneID="cf7-k9-3eU">
-            <objects>
-                <hostingController storyboardIdentifier="SwiftUI" id="gLf-WF-cuy" customClass="PlayerHostingController" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Player" image="hifispeaker.fill" catalog="system" id="UQU-8T-mbb"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                </hostingController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="81Z-P3-61S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6961" y="272"/>
-        </scene>
     </scenes>
     <resources>
         <image name="hifispeaker.fill" catalog="system" width="111" height="128"/>

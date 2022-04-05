@@ -333,9 +333,9 @@
 		073FB55827588B76000FAF5F /* Player */ = {
 			isa = PBXGroup;
 			children = (
-				073FB56227588BC5000FAF5F /* Player View.storyboard */,
 				07A7989027A8ABB1007B70AA /* PlayerView.swift */,
 				07FF1DDD27F8F81000DF9B78 /* TransportBar.swift */,
+				073FB56227588BC5000FAF5F /* Player View.storyboard */,
 				07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */,
 				075D904327F02F5B00BD8F3E /* PlayerVC - Notifications.swift */,
 				075D904127F02EF700BD8F3E /* PlayerVC - UITableView.swift */,

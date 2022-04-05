@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class TabBarController: UITabBarController {
 	// `MovesThemeToWindow`
@@ -25,6 +26,41 @@ final class TabBarController: UITabBarController {
 				appearance.configureWithTransparentBackground()
 				tabBar.standardAppearance = appearance
 			}
+		}
+	}
+	
+	final override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		if Enabling.swiftUI__playerScreen {
+			guard let viewControllers = viewControllers else {
+				return
+			}
+			guard let indexOfPlayerScreen = viewControllers.firstIndex(where: { viewController in
+				if
+					let navigationController = viewController as? UINavigationController,
+					navigationController.viewControllers.first is PlayerVC
+				{
+					return true
+				} else {
+					return false
+				}
+			}) else {
+				return
+			}
+			var copyOfViewControllers = viewControllers
+			copyOfViewControllers.remove(at: indexOfPlayerScreen)
+			copyOfViewControllers.insert(
+				{
+					let hostingController = UIHostingController(rootView: PlayerView())
+					hostingController.tabBarItem = UITabBarItem(
+						title: "Player",
+						image: UIImage(systemName: "hifispeaker.fill"),
+						selectedImage: nil)
+					return hostingController
+				}(),
+				at: indexOfPlayerScreen)
+			setViewControllers(copyOfViewControllers, animated: false)
 		}
 	}
 	
