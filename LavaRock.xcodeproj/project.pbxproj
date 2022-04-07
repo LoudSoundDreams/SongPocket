@@ -114,7 +114,7 @@
 		07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */; };
 		07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E092599227C00826447 /* PurchaseManager.swift */; };
 		07FD6E122599246700826447 /* OptionsTVC + TipJarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */; };
-		07FF1DDE27F8F81000DF9B78 /* TransportBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF1DDD27F8F81000DF9B78 /* TransportBar.swift */; };
+		07FF1DDE27F8F81000DF9B78 /* TransportPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -249,7 +249,7 @@
 		07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07FD6E092599227C00826447 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC + TipJarUI.swift"; sourceTree = "<group>"; };
-		07FF1DDD27F8F81000DF9B78 /* TransportBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBar.swift; sourceTree = "<group>"; };
+		07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportPanel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,7 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				07A7989027A8ABB1007B70AA /* PlayerView.swift */,
-				07FF1DDD27F8F81000DF9B78 /* TransportBar.swift */,
+				07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */,
 				073FB56227588BC5000FAF5F /* Player View.storyboard */,
 				07B1EC3F271FB7F600EA8E29 /* PlayerVC.swift */,
 				075D904327F02F5B00BD8F3E /* PlayerVC - Notifications.swift */,
@@ -774,7 +774,7 @@
 				079B2C9524E227BF00A949FA /* MusicLibraryWatcher.swift in Sources */,
 				077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */,
 				07CD864F27CAA54600286E6A /* protocol PlayerReflecting.swift in Sources */,
-				07FF1DDE27F8F81000DF9B78 /* TransportBar.swift in Sources */,
+				07FF1DDE27F8F81000DF9B78 /* TransportPanel.swift in Sources */,
 				07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */,
 				07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */,
 				071701FF250AAE0E00CBC4C5 /* SongsTVC - Notifications.swift in Sources */,
@@ -1021,7 +1021,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 455;
+				CURRENT_PROJECT_VERSION = 456;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
@@ -1049,7 +1049,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 455;
+				CURRENT_PROJECT_VERSION = 456;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;

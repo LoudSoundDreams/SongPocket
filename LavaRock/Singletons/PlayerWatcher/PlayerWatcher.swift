@@ -9,6 +9,32 @@ import MediaPlayer
 import CoreData
 
 @MainActor
+final class PlayerStatusBoard: ObservableObject {
+	struct Status {
+		let isInPlayMode: Bool
+	}
+	
+	static let shared = PlayerStatusBoard()
+	private init() {
+		freshen()
+	}
+	
+	@Published var currentStatus: Status? = nil
+	
+	final func freshen() {
+		guard
+			let player = PlayerWatcher.shared.player,
+			!(Enabling.playerScreen && SongQueue.contents.isEmpty)
+		else {
+			currentStatus = nil
+			return
+		}
+		currentStatus = Status(
+			isInPlayMode: player.playbackState == .playing)
+	}
+}
+
+@MainActor
 final class PlayerWatcher { // This is a class and not a struct because it needs a deinitializer.
 	static let shared = PlayerWatcher()
 	private init() {}
@@ -49,6 +75,8 @@ final class PlayerWatcher { // This is a class and not a struct because it needs
 //		print("")
 //		print("playback state changed.")
 //		print(player.debugDescription)
+		
+		PlayerStatusBoard.shared.freshen()
 		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {

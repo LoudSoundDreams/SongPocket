@@ -17,14 +17,16 @@ struct PlayerView: View {
     var body: some View {
 		NavigationView {
 			VStack {
-				
-				Spacer()
-				Text("queue")
-				Spacer()
-				
-				TransportBar()
-				
-				Spacer()
+				List {
+					Text("song title")
+					Text("song title")
+					Text("song title")
+					Text("song title")
+					Text("song title")
+					Text("song title")
+				}
+				TransportPanel()
+					.padding()
 			}
 			.navigationTitle("Queue")
 			.navigationBarTitleDisplayMode(.inline)
