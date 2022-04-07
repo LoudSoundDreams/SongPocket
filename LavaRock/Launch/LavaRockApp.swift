@@ -83,9 +83,7 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		context: Context
 	) {
 		uiViewController.view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
-		if Enabling.swiftUI__options {
-			uiViewController.view.window?.tintColor = theme.accentColor.uiColor
-		}
+		uiViewController.view.window?.tintColor = theme.accentColor.uiColor
 	}
 }
 
