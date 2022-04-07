@@ -10,8 +10,8 @@ import CoreData
 
 @MainActor
 final class PlayerWatcher { // This is a class and not a struct because it needs a deinitializer.
-	private init() {}
 	static let shared = PlayerWatcher()
+	private init() {}
 	
 	final func addReflectorOnce(weaklyReferencing newReflector: PlayerReflecting) {
 		if let indexOfMatchingReflector = reflectors.firstIndex(where: { weakReflector in

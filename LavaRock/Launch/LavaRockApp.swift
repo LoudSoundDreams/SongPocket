@@ -39,38 +39,18 @@ struct LavaRockApp: App {
 
 @MainActor
 final class Theme: ObservableObject {
-	private init() {}
 	static let shared = Theme()
+	private init() {}
 	
 	@Published var lighting: Lighting = .savedPreference() {
 		didSet {
+			// This runs before `ObservableObject.objectWillChange` emits.
 			lighting.saveAsPreference()
 		}
 	}
 	@Published var accentColor: AccentColor = .savedPreference() {
 		didSet {
 			accentColor.saveAsPreference()
-		}
-	}
-}
-
-protocol MovesThemeToWindow: UIViewController {
-	// Adopting types must …
-	// • Override `viewDidAppear` and call `moveThemeToWindow`.
-	
-	static var didMoveThemeToWindow: Bool { get set }
-}
-extension MovesThemeToWindow {
-	// Call this during `viewDidAppear`, because before then, `view.window == nil`.
-	func moveThemeToWindow() {
-		if !Self.didMoveThemeToWindow {
-			Self.didMoveThemeToWindow = true
-			
-			view.window?.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
-			view.overrideUserInterfaceStyle = .unspecified
-			
-			view.window?.tintColor = view.tintColor
-			view.tintColor = nil // TO DO: Applies “Increase Contrast” twice.
 		}
 	}
 }
@@ -105,6 +85,27 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		uiViewController.view.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 		if Enabling.swiftUI__options {
 			uiViewController.view.window?.tintColor = theme.accentColor.uiColor
+		}
+	}
+}
+
+protocol MovesThemeToWindow: UIViewController {
+	// Adopting types must …
+	// • Override `viewDidAppear` and call `moveThemeToWindow`.
+	
+	static var didMoveThemeToWindow: Bool { get set }
+}
+extension MovesThemeToWindow {
+	// Call this during `viewDidAppear`, because before then, `view.window == nil`.
+	func moveThemeToWindow() {
+		if !Self.didMoveThemeToWindow {
+			Self.didMoveThemeToWindow = true
+			
+			view.window?.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
+			view.overrideUserInterfaceStyle = .unspecified
+			
+			view.window?.tintColor = view.tintColor
+			view.tintColor = nil // TO DO: Applies “Increase Contrast” twice.
 		}
 	}
 }

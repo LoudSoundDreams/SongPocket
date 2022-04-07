@@ -44,14 +44,6 @@ struct OptionsView: View {
 						}
 					} label: { EmptyView() }
 //					.pickerStyle(.inline)
-					// TO DO: These all apply “Increase Contrast” twice.
-//					.tint(.accentColor)
-//					.foregroundColor(.accentColor)
-//					.tint(AccentColor.savedPreference().color)
-//					.foregroundColor(AccentColor.savedPreference().color)
-//					.tint(Theme.shared.accentColor.color)
-//					.foregroundColor(Theme.shared.accentColor.color)
-					
 					.pickerStyle(.wheel)
 				}
 				

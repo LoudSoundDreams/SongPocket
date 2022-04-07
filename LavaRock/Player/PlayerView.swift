@@ -30,7 +30,9 @@ struct PlayerView: View {
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarLeading) {
-					Button("Shuffle") {}
+					Button("Shuffle") {
+						
+					}
 				}
 			}
 		}

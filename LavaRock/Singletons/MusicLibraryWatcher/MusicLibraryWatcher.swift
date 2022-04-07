@@ -9,8 +9,8 @@ import MediaPlayer
 import OSLog
 
 final class MusicLibraryWatcher { // This is a class and not a struct because it needs a deinitializer.
-	private init() {}
 	static let shared = MusicLibraryWatcher()
+	private init() {}
 	
 	let context = Persistence.viewContext
 	
