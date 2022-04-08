@@ -14,6 +14,7 @@ struct TransportPanel: View {
 		playerStatusBoard = .shared
 	}
 	
+	private let eight: CGFloat = 8
 	private var player: MPMusicPlayerController? { PlayerWatcher.shared.player }
 	var body: some View {
 		VStack(spacing: 0) {
@@ -23,14 +24,14 @@ struct TransportPanel: View {
 					player?.skipToPreviousItem()
 				} label: {
 					Image(systemName: "arrowtriangle.up.circle")
-						.font(.system(size: 32))
+						.font(.system(size: eight * 4))
 				}
 				Spacer()
 				Button {
 					player?.skipToNextItem()
 				} label: {
 					Image(systemName: "arrowtriangle.down.circle")
-						.font(.system(size: 32))
+						.font(.system(size: eight * 4))
 				}
 			}
 			
@@ -47,10 +48,10 @@ struct TransportPanel: View {
 					status.isInPlayMode
 				{
 					Image(systemName: "circle")
-						.font(.system(size: 96))
+						.font(.system(size: eight * 12))
 				} else {
 					Image(systemName: "circle.fill")
-						.font(.system(size: 96))
+						.font(.system(size: eight * 12))
 				}
 			}
 			
@@ -59,14 +60,14 @@ struct TransportPanel: View {
 					player?.currentPlaybackTime -= 10
 				} label: {
 					Image(systemName: "gobackward.10")
-						.font(.system(size: 32))
+						.font(.system(size: eight * 4))
 				}
 				Spacer()
 				Button {
 					player?.currentPlaybackTime += 10
 				} label: {
 					Image(systemName: "goforward.10")
-						.font(.system(size: 32))
+						.font(.system(size: eight * 4))
 				}
 			}
 			
