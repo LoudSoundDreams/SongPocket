@@ -27,7 +27,7 @@ final class PlayerVC: UIViewController {
 		queueTable.dataSource = self
 		queueTable.delegate = self
 		SongQueue.tableView = queueTable
-		queueTable.backgroundColor = .tertiarySystemFill // As of iOS 15.4, this is closest to the background of a segmented control. The next-closest is `.secondarySystemBackground`.
+		queueTable.backgroundColor = .quaternarySystemFill
 		
 		if let transportPanel = UIHostingController(rootView: TransportPanel().padding()).view {
 			view.addSubview(transportPanel)

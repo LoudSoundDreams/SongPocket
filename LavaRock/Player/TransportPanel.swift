@@ -22,14 +22,14 @@ struct TransportPanel: View {
 				Button {
 					player?.skipToPreviousItem()
 				} label: {
-					Image(systemName: "backward.end")
+					Image(systemName: "arrowtriangle.up.circle")
 						.font(.system(size: 32))
 				}
 				Spacer()
 				Button {
 					player?.skipToNextItem()
 				} label: {
-					Image(systemName: "forward.end")
+					Image(systemName: "arrowtriangle.down.circle")
 						.font(.system(size: 32))
 				}
 			}
@@ -46,10 +46,10 @@ struct TransportPanel: View {
 					let status = playerStatusBoard.currentStatus,
 					status.isInPlayMode
 				{
-					Image(systemName: "pause.circle")
+					Image(systemName: "circle")
 						.font(.system(size: 96))
 				} else {
-					Image(systemName: "play.circle")
+					Image(systemName: "circle.fill")
 						.font(.system(size: 96))
 				}
 			}
