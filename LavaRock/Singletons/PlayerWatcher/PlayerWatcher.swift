@@ -12,6 +12,7 @@ import CoreData
 final class PlayerStatusBoard: ObservableObject {
 	struct Status {
 		let isInPlayMode: Bool
+		let isPlayingFirstSongInQueue: Bool
 	}
 	
 	static let shared = PlayerStatusBoard()
@@ -19,7 +20,7 @@ final class PlayerStatusBoard: ObservableObject {
 		freshen()
 	}
 	
-	@Published var currentStatus: Status? = nil
+	@Published private(set) var currentStatus: Status? = nil
 	
 	final func freshen() {
 		guard
@@ -30,7 +31,8 @@ final class PlayerStatusBoard: ObservableObject {
 			return
 		}
 		currentStatus = Status(
-			isInPlayMode: player.playbackState == .playing)
+			isInPlayMode: player.playbackState == .playing,
+			isPlayingFirstSongInQueue: player.indexOfNowPlayingItem == 0)
 	}
 }
 
@@ -66,8 +68,17 @@ final class PlayerWatcher { // This is a class and not a struct because it needs
 			selector: #selector(broadcastPlaybackStateDidChange),
 			name: .MPMusicPlayerControllerPlaybackStateDidChange, // As of iOS 15.4, Media Player also posts this when the repeat or shuffle mode changes.
 			object: player)
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(nowPlayingItemDidChange),
+			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
+			object: player)
 		
 		broadcastPlaybackStateDidChange() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
+	}
+	@objc
+	private func nowPlayingItemDidChange() {
+		PlayerStatusBoard.shared.freshen()
 	}
 	
 	@objc
