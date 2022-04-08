@@ -25,12 +25,6 @@ struct TransportPanel: View {
 					Image(systemName: "arrowtriangle.up.circle")
 						.font(.system(size: 32))
 				}
-				.disabled({
-					guard let status = playerStatusBoard.currentStatus else {
-						return true
-					}
-					return status.isPlayingFirstSongInQueue
-				}())
 				Spacer()
 				Button {
 					player?.skipToNextItem()
