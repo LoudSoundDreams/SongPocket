@@ -30,60 +30,55 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 extension SongInQueueCell: NowPlayingIndicating {}
 
 final class FutureModeChooser: UISegmentedControl {
-	private enum Position: Int {
+	private enum FutureMode: Int, CaseIterable {
 		case repeatOne
 		case repeatAll
 		case normal
+		
+		var uiImage: UIImage {
+			switch self {
+			case .repeatOne:
+				return UIImage(systemName: "repeat.1")!
+			case .repeatAll:
+				return UIImage(systemName: "repeat")!
+			case .normal:
+				return UIImage(systemName: "play.fill")!
+			}
+		}
+		
+		func apply(to player: MPMusicPlayerController) {
+			switch self {
+			case .repeatOne:
+				player.repeatMode = .one
+			case .repeatAll:
+				player.repeatMode = .all
+			case .normal:
+				player.repeatMode = .none
+			}
+		}
 	}
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		removeAllSegments()
-		insertSegment(
-			action: UIAction(
-				image: {
-					let image = UIImage(systemName: "repeat.1")
-					image?.accessibilityLabel = LocalizedString.repeat1
-					return image
-				}()) { _ in
+		FutureMode.allCases.forEach { futureMode in
+			insertSegment(
+				action: UIAction(
+					image: futureMode.uiImage
+				) { _ in
 					// ARC2DO
 					Task { await MainActor.run {
-						self.player?.repeatMode = .one
+						if let player = self.player {
+							futureMode.apply(to: player)
+						}
 					}}
 				},
-			at: numberOfSegments,
-			animated: false)
-		insertSegment(
-			action: UIAction(
-				image: {
-					let image = UIImage(systemName: "repeat")
-					image?.accessibilityLabel = LocalizedString.repeatAll
-					return image
-				}()) { _ in
-					// ARC2DO
-					Task { await MainActor.run {
-						self.player?.repeatMode = .all
-					}}
-				},
-			at: numberOfSegments,
-			animated: false)
-		insertSegment(
-			action: UIAction(
-				image: {
-					let image = UIImage(systemName: "play.fill")
-					image?.accessibilityLabel = LocalizedString.repeatOff
-					return image
-				}()) { _ in
-					// ARC2DO
-					Task { await MainActor.run {
-						self.player?.repeatMode = .none
-					}}
-				},
-			at: numberOfSegments,
-			animated: false)
+				at: numberOfSegments,
+				animated: false)
+		}
 		disable()
-		selectedSegmentIndex = Position.normal.rawValue
+		selectedSegmentIndex = FutureMode.normal.rawValue
 		
 		Task { await MainActor.run {
 			beginReflectingPlaybackState()
@@ -97,7 +92,7 @@ extension FutureModeChooser: PlayerReflecting {
 			!SongQueue.contents.isEmpty
 		else {
 			disable()
-			selectedSegmentIndex = Position.normal.rawValue
+			selectedSegmentIndex = FutureMode.normal.rawValue
 			return
 		}
 		enable()
@@ -105,11 +100,11 @@ extension FutureModeChooser: PlayerReflecting {
 		case .default:
 			fatalError("`MPMusicPlayerController.repeatMode == .default")
 		case .one:
-			selectedSegmentIndex = Position.repeatOne.rawValue
+			selectedSegmentIndex = FutureMode.repeatOne.rawValue
 		case .all:
-			selectedSegmentIndex = Position.repeatAll.rawValue
+			selectedSegmentIndex = FutureMode.repeatAll.rawValue
 		case .none:
-			selectedSegmentIndex = Position.normal.rawValue
+			selectedSegmentIndex = FutureMode.normal.rawValue
 		@unknown default:
 			fatalError("Unknown value for `MPMusicPlayerController.repeatMode")
 		}
