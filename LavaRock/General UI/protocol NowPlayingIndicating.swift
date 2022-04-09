@@ -15,6 +15,9 @@ protocol NowPlayingIndicating {
 }
 extension NowPlayingIndicating {
 	mutating func indicateNowPlaying(isInPlayer: Bool) {
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = .extraExtraLarge
+		
 		guard
 			isInPlayer,
 			let player = PlayerWatcher.shared.player
