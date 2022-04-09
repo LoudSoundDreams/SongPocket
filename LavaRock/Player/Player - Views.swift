@@ -14,6 +14,8 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
+	@IBOutlet private var artworkImageView: UIImageView!
+	@IBOutlet private var gapBetweenArtworkAndText: NSLayoutConstraint!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var artistLabel: UILabel!
@@ -22,9 +24,21 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 		tintSelectedBackgroundView()
 		
 		backgroundColor = .clear
+		
+		let previousInset = separatorInset
+		separatorInset = UIEdgeInsets(
+			top: previousInset.top,
+			left: artworkImageView.frame.width + gapBetweenArtworkAndText.constant,
+			bottom: previousInset.bottom,
+			right: previousInset.right)
 	}
 	
 	final func configure(with metadatum: SongMetadatum?) {
+		artworkImageView.image = metadatum?.artworkImage(
+			at: CGSize(
+				width: artworkImageView.frame.width,
+				height: artworkImageView.frame.height))
+		
 		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 		artistLabel.text = nil
 		
