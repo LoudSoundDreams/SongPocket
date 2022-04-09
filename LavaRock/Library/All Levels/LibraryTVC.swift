@@ -266,18 +266,25 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Freshening UI
 	
 	private func setBarButtons(animated: Bool) {
-		freshenEditingButtons()
+		let editing = isEditing
 		
-		if isEditing {
-			navigationItem.setLeftBarButtonItems(editingModeTopLeftButtons, animated: animated)
-			setToolbarItems(editingModeToolbarButtons, animated: animated)
+		editing
+		? freshenEditingButtons()
+		: freshenPlaybackToolbar()
+		
+		navigationItem.setLeftBarButtonItems(
+			editing
+			? editingModeTopLeftButtons
+			: viewingModeTopLeftButtons,
+			animated: animated)
+		
+		if Enabling.playerScreen {
 		} else {
-			navigationItem.setLeftBarButtonItems(viewingModeTopLeftButtons, animated: animated)
-			if Enabling.playerScreen {
-			} else {
-				freshenPlaybackToolbar()
-				setToolbarItems(viewingModeToolbarButtons, animated: animated)
-			}
+			setToolbarItems(
+				editing
+				? editingModeToolbarButtons
+				: viewingModeToolbarButtons,
+				animated: animated)
 		}
 	}
 	
@@ -309,10 +316,9 @@ class LibraryTVC: UITableViewController {
 		
 		super.setEditing(editing, animated: animated)
 		
+		setBarButtons(animated: animated)
 		if Enabling.playerScreen {
 			navigationController?.setToolbarHidden(!editing, animated: true)
-		} else {
-			setBarButtons(animated: animated)
 		}
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
