@@ -8,13 +8,15 @@
 import UIKit
 import MediaPlayer
 
+// Similar to `AlbumCell` and `SongCell`.
 final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 	// `NowPlayingIndicating`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
-	@IBOutlet var titleLabel: UILabel!
-	@IBOutlet var artistLabel: UILabel!
+	@IBOutlet private var textStack: UIStackView!
+	@IBOutlet private var titleLabel: UILabel!
+	@IBOutlet private var artistLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		tintSelectedBackgroundView()
@@ -24,7 +26,14 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 	
 	final func configure(with metadatum: SongMetadatum?) {
 		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
-		artistLabel.text = metadatum?.artistOnDisk ?? "Unknown Artist" // L2DO
+		
+		artistLabel.text = nil
+		
+		if artistLabel.text == nil {
+			textStack.spacing = 0
+		} else {
+			textStack.spacing = 4
+		}
 	}
 }
 extension SongInQueueCell: NowPlayingIndicating {}

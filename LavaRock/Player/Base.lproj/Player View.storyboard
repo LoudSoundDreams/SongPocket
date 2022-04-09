@@ -75,6 +75,7 @@
                                             <outlet property="artistLabel" destination="mcD-xF-zGC" id="01w-OG-MEX"/>
                                             <outlet property="spacerSpeakerImageView" destination="a8a-8Z-0zp" id="evY-9G-3pS"/>
                                             <outlet property="speakerImageView" destination="8T1-aG-ORD" id="iUa-q9-B7U"/>
+                                            <outlet property="textStack" destination="WkY-gQ-K1c" id="75j-27-FpP"/>
                                             <outlet property="titleLabel" destination="Ovi-Se-odr" id="di6-CI-nEn"/>
                                         </connections>
                                     </tableViewCell>
