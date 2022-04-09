@@ -17,23 +17,24 @@ struct TransportPanel: View {
 	private let eight: CGFloat = 8
 	private var player: MPMusicPlayerController? { PlayerWatcher.shared.player }
 	var body: some View {
-		VStack(spacing: 0) {
-			
-			HStack {
-				Button {
-					player?.skipToPreviousItem()
-				} label: {
-					Image(systemName: "arrowtriangle.up.circle")
-						.font(.system(size: eight * 4))
-				}
-				Spacer()
-				Button {
-					player?.skipToNextItem()
-				} label: {
-					Image(systemName: "arrowtriangle.down.circle")
-						.font(.system(size: eight * 4))
-				}
+		HStack {
+			Button {
+				player?.skipToPreviousItem()
+			} label: {
+				Image(systemName: "arrowtriangle.up.circle")
+					.font(.system(size: eight * 4))
 			}
+			
+			Spacer()
+			
+			Button {
+				player?.currentPlaybackTime -= 10
+			} label: {
+				Image(systemName: "gobackward.10")
+					.font(.system(size: eight * 4))
+			}
+			
+			Spacer()
 			
 			Button {
 				guard let status = playerStatusBoard.currentStatus else { return }
@@ -48,30 +49,32 @@ struct TransportPanel: View {
 					status.isInPlayMode
 				{
 					Image(systemName: "circle")
-						.font(.system(size: eight * 12))
+						.font(.system(size: eight * 8))
 				} else {
 					Image(systemName: "circle.fill")
-						.font(.system(size: eight * 12))
+						.font(.system(size: eight * 8))
 				}
 			}
 			
-			HStack {
-				Button {
-					player?.currentPlaybackTime -= 10
-				} label: {
-					Image(systemName: "gobackward.10")
-						.font(.system(size: eight * 4))
-				}
-				Spacer()
-				Button {
-					player?.currentPlaybackTime += 10
-				} label: {
-					Image(systemName: "goforward.10")
-						.font(.system(size: eight * 4))
-				}
+			Spacer()
+			
+			Button {
+				player?.currentPlaybackTime += 10
+			} label: {
+				Image(systemName: "goforward.10")
+					.font(.system(size: eight * 4))
 			}
 			
+			Spacer()
+			
+			Button {
+				player?.skipToNextItem()
+			} label: {
+				Image(systemName: "arrowtriangle.down.circle")
+					.font(.system(size: eight * 4))
+			}
 		}
+		.padding([.top, .bottom], eight * 6)
 		.disabled(playerStatusBoard.currentStatus == nil)
-    }
+	}
 }
