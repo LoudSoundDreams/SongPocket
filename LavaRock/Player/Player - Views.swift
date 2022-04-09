@@ -26,7 +26,6 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 	
 	final func configure(with metadatum: SongMetadatum?) {
 		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
-		
 		artistLabel.text = nil
 		
 		if artistLabel.text == nil {

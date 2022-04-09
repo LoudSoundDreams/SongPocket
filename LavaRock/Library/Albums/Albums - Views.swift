@@ -33,7 +33,7 @@ final class AlbumCell: UITableViewCell, CellTintingWhenSelected, CellHavingTrans
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
-	@IBOutlet private var mainStack: UIStackView!
+	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `artworkImageView` and `textStack` at very large text sizes.
 	@IBOutlet private var artworkImageView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
