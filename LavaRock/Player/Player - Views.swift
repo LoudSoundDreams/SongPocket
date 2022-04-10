@@ -28,7 +28,7 @@ final class SongInQueueCell: UITableViewCell {
 		artworkImageView.layer.cornerCurve = .continuous
 		artworkImageView.layer.cornerRadius = 3
 		
-		separatorInset.left = artworkImageView.frame.width + gapBetweenArtworkAndText.constant
+		separatorInset.left = textStack.frame.minX
 	}
 	
 	final func configure(with metadatum: SongMetadatum?) {

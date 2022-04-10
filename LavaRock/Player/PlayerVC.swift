@@ -27,7 +27,6 @@ final class PlayerVC: UIViewController {
 		queueTable.dataSource = self
 		queueTable.delegate = self
 		SongQueue.tableView = queueTable
-		queueTable.separatorInsetReference = .fromAutomaticInsets
 		queueTable.backgroundColor = .quaternarySystemFill
 		
 		if let transportPanel = UIHostingController(rootView: TransportPanel().padding()).view {
