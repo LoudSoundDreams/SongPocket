@@ -134,7 +134,7 @@
                                     <constraints>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="RAq-AF-bpj" secondAttribute="trailing" constant="12" id="2b4-mj-YkB"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="centerY" secondItem="TU5-RY-n4A" secondAttribute="centerY" constant="-1" id="BBp-wO-3RZ"/>
-                                        <constraint firstItem="ATM-N6-nhM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="leading" constant="4" id="E3u-58-7k9"/>
+                                        <constraint firstItem="ATM-N6-nhM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="E3u-58-7k9"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="8" symbolic="YES" id="KTq-lY-q0D"/>
                                         <constraint firstItem="NBN-dN-oQT" firstAttribute="centerY" secondItem="WdO-9k-h95" secondAttribute="centerY" id="OuF-Vy-8zh"/>
                                         <constraint firstItem="NBN-dN-oQT" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="leading" id="SFw-uF-mXA"/>
