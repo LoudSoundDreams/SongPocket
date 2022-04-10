@@ -8,27 +8,9 @@
 import UIKit
 
 extension UIFont {
-	static func bodyWithMonospacedDigits(
-		compatibleWith traitCollection: UITraitCollection?
-	) -> UIFont {
+	static func monospacedDigitSystemFont(forTextStyle style: TextStyle) -> UIFont {
 		return .monospacedDigitSystemFont(
-			ofSize:
-				UIFont.preferredFont(
-					forTextStyle: .body,
-					compatibleWith: traitCollection)
-				.pointSize,
-			weight: .regular)
-	}
-	
-	static func caption1WithMonospacedDigits(
-		compatibleWith traitCollection: UITraitCollection?
-	) -> UIFont {
-		return .monospacedDigitSystemFont(
-			ofSize:
-				UIFont.preferredFont(
-					forTextStyle: .caption1,
-					compatibleWith: traitCollection)
-				.pointSize,
+			ofSize: UIFont.preferredFont(forTextStyle: style).pointSize,
 			weight: .regular)
 	}
 }

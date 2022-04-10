@@ -124,8 +124,6 @@ final class AlbumCell: UITableViewCell {
 		super.layoutSubviews()
 		
 		separatorInset.left = {
-			// Works when `UITableView.separatorInsetReference == .fromCellEdges`
-			
 			let selfLeadingToContentLeading = contentView.frame.minX // Non-editing mode: 0. Editing mode: ~44.
 			let contentLeadingToCoverArtLeading = mainStack.frame.minX // 16
 			let coverArtWidth = artworkImageView.frame.width // 132

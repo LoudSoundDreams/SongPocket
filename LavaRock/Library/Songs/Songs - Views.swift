@@ -79,7 +79,7 @@ final class SongCell: UITableViewCell {
 		
 		removeBackground()
 		
-		numberLabel.font = .bodyWithMonospacedDigits(compatibleWith: traitCollection)
+		numberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
 		
 		accessibilityTraits.formUnion(.button)
 	}
