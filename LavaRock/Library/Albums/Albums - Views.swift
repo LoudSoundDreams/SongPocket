@@ -8,7 +8,7 @@
 import UIKit
 import OSLog
 
-final class MoveHereCell: UITableViewCell, CellTintingWhenSelected {
+final class MoveHereCell: UITableViewCell {
 	@IBOutlet private var moveHereLabel: UILabel!
 	
 	final override func awakeFromNib() {
@@ -21,8 +21,9 @@ final class MoveHereCell: UITableViewCell, CellTintingWhenSelected {
 		moveHereLabel.textColor = .tintColor
 	}
 }
+extension MoveHereCell: CellTintingWhenSelected {}
 
-final class AlbumCell: UITableViewCell, CellTintingWhenSelected, CellHavingTransparentBackground {
+final class AlbumCell: UITableViewCell {
 	enum Mode {
 		case normal
 		case modal
@@ -119,4 +120,8 @@ final class AlbumCell: UITableViewCell, CellTintingWhenSelected, CellHavingTrans
 		}
 	}
 }
-extension AlbumCell: NowPlayingIndicating {}
+extension AlbumCell:
+	NowPlayingIndicating,
+	CellTintingWhenSelected,
+	CellHavingTransparentBackground
+{}

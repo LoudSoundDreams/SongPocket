@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 
 // Similar to `AlbumCell` and `SongCell`.
-final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
+final class SongInQueueCell: UITableViewCell {
 	// `NowPlayingIndicating`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -23,7 +23,7 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 	final override func awakeFromNib() {
 		tintSelectedBackgroundView()
 		
-		backgroundColor = .clear
+		removeBackground()
 		
 		let previousInset = separatorInset
 		separatorInset = UIEdgeInsets(
@@ -51,7 +51,11 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 		}
 	}
 }
-extension SongInQueueCell: NowPlayingIndicating {}
+extension SongInQueueCell:
+	NowPlayingIndicating,
+	CellTintingWhenSelected,
+	CellHavingTransparentBackground
+{}
 
 final class FutureModeChooser: UISegmentedControl {
 	private enum FutureMode: Int, CaseIterable {

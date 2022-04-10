@@ -62,7 +62,7 @@ final class AlbumInfoCell: UITableViewCell {
 	}
 }
 
-final class SongCell: UITableViewCell, CellTintingWhenSelected, CellHavingTransparentBackground {
+final class SongCell: UITableViewCell {
 	// `NowPlayingIndicating`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -127,4 +127,8 @@ final class SongCell: UITableViewCell, CellTintingWhenSelected, CellHavingTransp
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
 	}
 }
-extension SongCell: NowPlayingIndicating {}
+extension SongCell:
+	NowPlayingIndicating,
+	CellTintingWhenSelected,
+	CellHavingTransparentBackground
+{}

@@ -54,7 +54,7 @@ extension MusicLibraryWatcher {
 		
 		os_signpost(.begin, log: .update, name: "Filter to Songs in cloned Albums")
 		// Don’t actually move the `Song`s we need to move yet, because we haven’t sorted them yet.
-		// Filter before sorting. Don’t sort first, because that’s slower.
+		// Filter before sorting. It’s faster.
 		let unsortedSongsToMove: [Song]
 		= potentiallyOutdatedSongsAndFreshMetadata.compactMap { (song, _) in
 			let potentiallyClonedAlbum = song.container!

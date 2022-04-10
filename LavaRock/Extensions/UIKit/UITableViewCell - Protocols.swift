@@ -35,8 +35,6 @@ protocol CellConfigurableAsButton: UITableViewCell {
 	// • Override `awakeFromNib` and call `configureAsButton`.
 	
 	static var buttonText: String { get }
-	var accessibilityTraits: UIAccessibilityTraits { get }
-	var contentConfiguration: UIContentConfiguration? { get }
 }
 extension CellConfigurableAsButton {
 	func configureAsButton() {

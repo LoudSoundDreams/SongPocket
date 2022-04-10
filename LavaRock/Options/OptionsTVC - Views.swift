@@ -95,7 +95,7 @@ final class TipLoadingCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReloadCell: UITableViewCell, CellTintingWhenSelected {
+final class TipReloadCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -104,12 +104,13 @@ final class TipReloadCell: UITableViewCell, CellTintingWhenSelected {
 		configureAsButton()
 	}
 }
+extension TipReloadCell: CellTintingWhenSelected {}
 extension TipReloadCell: CellConfigurableAsButton {
 	static let buttonText = LocalizedString.reload
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReadyCell: UITableViewCell, CellTintingWhenSelected {
+final class TipReadyCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -124,6 +125,7 @@ final class TipReadyCell: UITableViewCell, CellTintingWhenSelected {
 		contentConfiguration = configuration
 	}
 }
+extension TipReadyCell: CellTintingWhenSelected {}
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipConfirmingCell: UITableViewCell {

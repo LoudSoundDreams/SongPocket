@@ -8,7 +8,7 @@
 import UIKit
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class AllowAccessCell: UITableViewCell, CellTintingWhenSelected {
+final class AllowAccessCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -17,6 +17,7 @@ final class AllowAccessCell: UITableViewCell, CellTintingWhenSelected {
 		configureAsButton()
 	}
 }
+extension AllowAccessCell: CellTintingWhenSelected {}
 extension AllowAccessCell: CellConfigurableAsButton {
 	static let buttonText = LocalizedString.allowAccessToMusic
 }
@@ -54,7 +55,7 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class OpenMusicCell: UITableViewCell, CellTintingWhenSelected {
+final class OpenMusicCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -67,11 +68,12 @@ final class OpenMusicCell: UITableViewCell, CellTintingWhenSelected {
 		URL.music?.open()
 	}
 }
+extension OpenMusicCell: CellTintingWhenSelected {}
 extension OpenMusicCell: CellConfigurableAsButton {
 	static let buttonText = LocalizedString.openMusic
 }
 
-final class CreateCollectionCell: UITableViewCell, CellTintingWhenSelected {
+final class CreateCollectionCell: UITableViewCell {
 	@IBOutlet private var newCollectionLabel: UILabel!
 	
 	final override func awakeFromNib() {
@@ -88,8 +90,9 @@ final class CreateCollectionCell: UITableViewCell, CellTintingWhenSelected {
 		}
 	}
 }
+extension CreateCollectionCell: CellTintingWhenSelected {}
 
-final class CollectionCell: UITableViewCell, CellTintingWhenSelected, CellHavingTransparentBackground {
+final class CollectionCell: UITableViewCell {
 	enum Mode {
 		case normal
 		case modal
@@ -149,4 +152,8 @@ final class CollectionCell: UITableViewCell, CellTintingWhenSelected, CellHaving
 		}
 	}
 }
-extension CollectionCell: NowPlayingIndicating {}
+extension CollectionCell:
+	NowPlayingIndicating,
+	CellTintingWhenSelected,
+	CellHavingTransparentBackground
+{}
