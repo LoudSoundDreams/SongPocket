@@ -119,6 +119,25 @@ final class AlbumCell: UITableViewCell {
 			mainStack.spacing = 12
 		}
 	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.left = {
+			// Works when `UITableView.separatorInsetReference == .fromCellEdges`
+			
+			let selfLeadingToContentLeading = contentView.frame.minX // Non-editing mode: 0. Editing mode: ~44.
+			let contentLeadingToCoverArtLeading = mainStack.frame.minX // 16
+			let coverArtWidth = artworkImageView.frame.width // 132
+			let coverArtTrailingToTextLeading = mainStack.spacing // 12
+			
+			return 0
+			+ selfLeadingToContentLeading
+			+ contentLeadingToCoverArtLeading
+			+ coverArtWidth
+			+ coverArtTrailingToTextLeading
+		}()
+	}
 }
 extension AlbumCell:
 	NowPlayingIndicating,
