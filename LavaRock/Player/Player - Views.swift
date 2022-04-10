@@ -18,7 +18,7 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 	@IBOutlet private var gapBetweenArtworkAndText: NSLayoutConstraint!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
-	@IBOutlet private var artistLabel: UILabel!
+	@IBOutlet private var secondaryLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		tintSelectedBackgroundView()
@@ -39,10 +39,12 @@ final class SongInQueueCell: UITableViewCell, CellTintingWhenSelected {
 				width: artworkImageView.frame.width,
 				height: artworkImageView.frame.height))
 		
-		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
-		artistLabel.text = nil
+		titleLabel.text = { () -> String in // Don’t let this be `nil`.
+			metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+		}()
+		secondaryLabel.text = metadatum?.artistOnDisk
 		
-		if artistLabel.text == nil {
+		if secondaryLabel.text == nil {
 			textStack.spacing = 0
 		} else {
 			textStack.spacing = 4
