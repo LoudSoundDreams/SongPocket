@@ -84,7 +84,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="artworkImageView" destination="7Bg-s2-hCP" id="qr9-AK-sqe"/>
-                                            <outlet property="gapBetweenArtworkAndText" destination="DUx-jC-D1f" id="MWf-lq-VAO"/>
                                             <outlet property="secondaryLabel" destination="mcD-xF-zGC" id="01w-OG-MEX"/>
                                             <outlet property="spacerSpeakerImageView" destination="a8a-8Z-0zp" id="evY-9G-3pS"/>
                                             <outlet property="speakerImageView" destination="8T1-aG-ORD" id="iUa-q9-B7U"/>

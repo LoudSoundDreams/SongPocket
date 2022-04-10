@@ -15,7 +15,6 @@ final class SongInQueueCell: UITableViewCell {
 	@IBOutlet var speakerImageView: UIImageView!
 	
 	@IBOutlet private var artworkImageView: UIImageView!
-	@IBOutlet private var gapBetweenArtworkAndText: NSLayoutConstraint!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var secondaryLabel: UILabel!
