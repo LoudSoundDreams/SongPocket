@@ -70,6 +70,7 @@ final class SongCell: UITableViewCell {
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var artistLabel: UILabel!
+	@IBOutlet private var spacerNumberLabel: UILabel!
 	@IBOutlet private var numberLabel: UILabel!
 	
 	final override func awakeFromNib() {
@@ -79,7 +80,8 @@ final class SongCell: UITableViewCell {
 		
 		removeBackground()
 		
-		numberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
+		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
+		numberLabel.font = spacerNumberLabel.font
 		
 		accessibilityTraits.formUnion(.button)
 	}
@@ -125,6 +127,16 @@ final class SongCell: UITableViewCell {
 		}
 		
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
+	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.left = {
+			return 0
+			+ contentView.frame.minX // Non-editing mode: 0. Editing mode: ~44.
+			+ textStack.frame.minX
+		}()
 	}
 }
 extension SongCell:
