@@ -24,10 +24,11 @@ extension SongsTVC {
 			let player = player
 		else { return }
 		
-		// Rest of album
 		let selectedSongAndBelow: [Song] = viewModel
 			.itemsInGroup(startingAt: selectedIndexPath)
 			.compactMap { $0 as? Song }
+		
+		// Play now
 		let playRestOfAlbum = UIAlertAction(
 			title: LocalizedString.playRestOfAlbum,
 			style: .default
@@ -35,26 +36,22 @@ extension SongsTVC {
 			player.playNow(selectedSongAndBelow)
 			deselectSelectedSong()
 		}
+		let playSong = UIAlertAction(
+			title: LocalizedString.playSong,
+			style: .default
+		) { _ in
+			player.playNow([selectedSong])
+			deselectSelectedSong()
+		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
+		
+		// Play last
 		let appendRestOfAlbum = UIAlertAction(
 			title: LocalizedString.queueRestOfAlbum,
 			style: .default
 		) { _ in
 			player.playLast(selectedSongAndBelow)
 			self.alertWillPlayLaterIfShould(havingAppended: selectedSongAndBelow)
-			deselectSelectedSong()
-		}
-		if selectedSongAndBelow.count == 1 {
-			playRestOfAlbum.isEnabled = false
-			appendRestOfAlbum.isEnabled = false
-		}
-		
-		// Single song
-		let playSong = UIAlertAction(
-			title: LocalizedString.playSong,
-			style: .default
-		) { _ in
-			player.playNow([selectedSong])
 			deselectSelectedSong()
 		}
 		let appendSong = UIAlertAction(
@@ -64,6 +61,11 @@ extension SongsTVC {
 			player.playLast([selectedSong])
 			self.alertWillPlayLaterIfShould(havingAppended: [selectedSong])
 			deselectSelectedSong()
+		}
+		
+		if selectedSongAndBelow.count == 1 {
+			playRestOfAlbum.isEnabled = false
+			appendRestOfAlbum.isEnabled = false
 		}
 		
 		let cancel = UIAlertAction.cancel { _ in

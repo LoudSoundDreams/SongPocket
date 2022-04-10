@@ -36,7 +36,10 @@ extension MPMusicPlayerController {
 			append(songs)
 		}
 		
-		repeatMode = .none
+		if Enabling.playerScreen {
+		} else {
+			repeatMode = .none
+		}
 		
 		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
 		if playbackState != .playing {
