@@ -28,12 +28,7 @@ final class SongInQueueCell: UITableViewCell {
 		artworkImageView.layer.cornerCurve = .continuous
 		artworkImageView.layer.cornerRadius = 3
 		
-		let previousInset = separatorInset
-		separatorInset = UIEdgeInsets(
-			top: previousInset.top,
-			left: artworkImageView.frame.width + gapBetweenArtworkAndText.constant,
-			bottom: previousInset.bottom,
-			right: previousInset.right)
+		separatorInset.left = artworkImageView.frame.width + gapBetweenArtworkAndText.constant
 	}
 	
 	final func configure(with metadatum: SongMetadatum?) {
