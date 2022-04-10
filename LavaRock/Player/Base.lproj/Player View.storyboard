@@ -22,33 +22,33 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song in Queue" id="uxc-K4-bwq" customClass="SongInQueueCell" customModule="LavaRock" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="56.333332061767578"/>
+                                        <rect key="frame" x="0.0" y="44.666666030883789" width="375" height="60.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uxc-K4-bwq" id="Y38-vV-GgI">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="56.333332061767578"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="a8a-8Z-0zp">
-                                                    <rect key="frame" x="343.33333333333331" y="21.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                                    <rect key="frame" x="343.33333333333331" y="23.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     </preferredSymbolConfiguration>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8T1-aG-ORD">
-                                                    <rect key="frame" x="343.33333333333331" y="21.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                                    <rect key="frame" x="343.33333333333331" y="23.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     </preferredSymbolConfiguration>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Bg-s2-hCP">
-                                                    <rect key="frame" x="16.000000000000004" y="6" width="44.333333333333343" height="44.333333333333336"/>
+                                                    <rect key="frame" x="16" y="8.3333333333333357" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="7Bg-s2-hCP" secondAttribute="height" multiplier="1:1" id="8y5-0M-Ybc"/>
                                                         <constraint firstAttribute="width" priority="900" constant="44" id="XAQ-B0-L4e"/>
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="WkY-gQ-K1c">
-                                                    <rect key="frame" x="72.333333333333329" y="11.999999999999998" width="145.33333333333337" height="30.333333333333329"/>
+                                                    <rect key="frame" x="72.000000000000014" y="12.333333333333332" width="145.33333333333337" height="34.333333333333343"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder Song Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ovi-Se-odr">
                                                             <rect key="frame" x="0.0" y="0.0" width="145.33333333333334" height="17"/>
@@ -57,7 +57,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="260" text="Placeholder Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mcD-xF-zGC">
-                                                            <rect key="frame" x="0.0" y="21" width="127.33333333333333" height="9.3333333333333357"/>
+                                                            <rect key="frame" x="0.0" y="21" width="127.33333333333333" height="13.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
@@ -68,18 +68,19 @@
                                             <constraints>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottomMargin" id="5in-zc-url"/>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="topMargin" constant="1" id="6rY-ql-Blz"/>
+                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="centerY" secondItem="Y38-vV-GgI" secondAttribute="centerY" id="7Ad-Ls-HP7"/>
                                                 <constraint firstItem="8T1-aG-ORD" firstAttribute="centerY" secondItem="a8a-8Z-0zp" secondAttribute="centerY" id="9vB-UB-5vD"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WkY-gQ-K1c" secondAttribute="trailing" constant="8" symbolic="YES" id="Ade-ua-v0o"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="trailing" secondItem="Y38-vV-GgI" secondAttribute="trailingMargin" id="CB9-Qm-s2H"/>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="leading" secondItem="7Bg-s2-hCP" secondAttribute="trailing" constant="12" id="DUx-jC-D1f"/>
-                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" secondItem="Y38-vV-GgI" secondAttribute="top" constant="6" id="EHT-Li-tzH"/>
+                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="top" constant="6" id="EHT-Li-tzH"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="topMargin" id="HBR-lJ-gNQ"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="width" secondItem="7Bg-s2-hCP" secondAttribute="height" multiplier="1:1" id="I8A-oy-gNc"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="leading" secondItem="Y38-vV-GgI" secondAttribute="leadingMargin" id="KgT-xs-EsM"/>
                                                 <constraint firstItem="8T1-aG-ORD" firstAttribute="leading" secondItem="a8a-8Z-0zp" secondAttribute="leading" id="a2J-aj-ONt"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="centerY" secondItem="WkY-gQ-K1c" secondAttribute="centerY" id="i89-CJ-mdR"/>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="centerY" secondItem="Y38-vV-GgI" secondAttribute="centerY" constant="-1" id="jJ2-3h-ndd"/>
-                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="bottom" secondItem="Y38-vV-GgI" secondAttribute="bottom" constant="-6" id="lpE-Se-Poo"/>
+                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottom" constant="-6" id="lpE-Se-Poo"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
