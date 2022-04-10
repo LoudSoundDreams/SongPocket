@@ -25,6 +25,9 @@ final class SongInQueueCell: UITableViewCell {
 		
 		removeBackground()
 		
+		artworkImageView.layer.cornerCurve = .continuous
+		artworkImageView.layer.cornerRadius = 3
+		
 		let previousInset = separatorInset
 		separatorInset = UIEdgeInsets(
 			top: previousInset.top,
