@@ -29,8 +29,8 @@ extension SongsTVC {
 			.compactMap { $0 as? Song }
 		
 		// Play now
-		let playRestOfAlbum = UIAlertAction(
-			title: LocalizedString.playRestOfAlbum,
+		let playSongAndBelow = UIAlertAction(
+			title: LocalizedString.playSongAndBelow,
 			style: .default
 		) { _ in
 			player.playNow(selectedSongAndBelow)
@@ -46,8 +46,8 @@ extension SongsTVC {
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
 		
 		// Play last
-		let appendRestOfAlbum = UIAlertAction(
-			title: LocalizedString.queueRestOfAlbum,
+		let appendSongAndBelow = UIAlertAction(
+			title: LocalizedString.queueSongAndBelow,
 			style: .default
 		) { _ in
 			player.playLast(selectedSongAndBelow)
@@ -63,11 +63,6 @@ extension SongsTVC {
 			deselectSelectedSong()
 		}
 		
-		if selectedSongAndBelow.count == 1 {
-			playRestOfAlbum.isEnabled = false
-			appendRestOfAlbum.isEnabled = false
-		}
-		
 		let cancel = UIAlertAction.cancel { _ in
 			deselectSelectedSong()
 		}
@@ -77,9 +72,13 @@ extension SongsTVC {
 			message: nil,
 			preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
-		actionSheet.addAction(playRestOfAlbum)
+		if selectedSongAndBelow.count == 1 {
+			playSongAndBelow.isEnabled = false
+			appendSongAndBelow.isEnabled = false
+		}
+		actionSheet.addAction(playSongAndBelow)
 		actionSheet.addAction(playSong)
-		actionSheet.addAction(appendRestOfAlbum)
+		actionSheet.addAction(appendSongAndBelow)
 		actionSheet.addAction(appendSong)
 		actionSheet.addAction(cancel)
 		present(actionSheet, animated: true)

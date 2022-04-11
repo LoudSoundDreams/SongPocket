@@ -29,8 +29,4 @@ struct SongQueue {
 	static func setContents(_ newContents: [Song]) {
 		contents = newContents
 	}
-	
-	static func append(contentsOf newContents: [Song]) {
-		contents.append(contentsOf: newContents)
-	}
 }

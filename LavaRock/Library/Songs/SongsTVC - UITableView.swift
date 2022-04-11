@@ -76,7 +76,7 @@ extension SongsTVC {
 		
 		let song = songsViewModel.songNonNil(at: indexPath)
 		cell.configureWith(
-			metadatum: song.metadatum(), // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
+			song: song, // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
 			albumRepresentative: {
 				let album = songsViewModel.album(forSection: indexPath.section)
 				return album.representativeMPMediaItem()

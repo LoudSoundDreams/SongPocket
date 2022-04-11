@@ -87,9 +87,10 @@ final class SongCell: UITableViewCell {
 	}
 	
 	final func configureWith(
-		metadatum: SongMetadatum?,
+		song: Song?,
 		albumRepresentative representative: SongMetadatum?
 	) {
+		let metadatum = song?.metadatum()
 		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 		artistLabel.text = {
 			let albumArtist = representative?.albumArtistOnDisk // Can be `nil`
