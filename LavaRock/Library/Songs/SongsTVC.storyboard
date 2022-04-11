@@ -107,13 +107,13 @@
                                             </subviews>
                                         </stackView>
                                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WdO-9k-h95">
-                                            <rect key="frame" x="343.33333333333331" y="23.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                            <rect key="frame" x="315.66666666666669" y="23.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="NBN-dN-oQT">
-                                            <rect key="frame" x="343.33333333333331" y="23.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                            <rect key="frame" x="315.66666666666669" y="23.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
@@ -130,27 +130,45 @@
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ASX-qJ-uK1">
+                                            <rect key="frame" x="343.33333333333331" y="2" width="15.666666666666686" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="55" id="BPB-tm-hVX"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <color key="tintColor" systemColor="labelColor"/>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" image="ellipsis" catalog="system">
+                                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font">
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                </preferredSymbolConfiguration>
+                                            </state>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="RAq-AF-bpj" secondAttribute="trailing" constant="12" id="2b4-mj-YkB"/>
+                                        <constraint firstItem="ASX-qJ-uK1" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="trailing" constant="12" id="8Vl-wx-2QL"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="centerY" secondItem="TU5-RY-n4A" secondAttribute="centerY" constant="-1" id="BBp-wO-3RZ"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="E3u-58-7k9"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="8" symbolic="YES" id="KTq-lY-q0D"/>
                                         <constraint firstItem="NBN-dN-oQT" firstAttribute="centerY" secondItem="WdO-9k-h95" secondAttribute="centerY" id="OuF-Vy-8zh"/>
+                                        <constraint firstItem="ASX-qJ-uK1" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="S3I-Fz-ciH"/>
                                         <constraint firstItem="NBN-dN-oQT" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="leading" id="SFw-uF-mXA"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="WRf-Sw-FoQ"/>
+                                        <constraint firstItem="ASX-qJ-uK1" firstAttribute="trailing" secondItem="TU5-RY-n4A" secondAttribute="trailingMargin" id="Y4c-Zm-A8s"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="trailing" secondItem="RAq-AF-bpj" secondAttribute="trailing" id="YVn-tk-h1O"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="Z5x-M8-pLQ"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="bE3-fw-Fd1"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="dES-oz-vrb"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="centerY" secondItem="RAq-AF-bpj" secondAttribute="centerY" id="hVa-OV-pVP"/>
-                                        <constraint firstItem="WdO-9k-h95" firstAttribute="trailing" secondItem="TU5-RY-n4A" secondAttribute="trailingMargin" id="izo-kq-VVN"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="x27-Sp-4dc"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" constant="1" id="yme-ol-E5x"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ASX-qJ-uK1" secondAttribute="trailing" id="ymz-l3-Mn5"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artistLabel" destination="4ZB-Qq-JY2" id="0Ih-29-wU1"/>
+                                    <outlet property="dotDotDotButton" destination="ASX-qJ-uK1" id="Pov-GT-V3a"/>
                                     <outlet property="numberLabel" destination="ATM-N6-nhM" id="cNu-A7-tj6"/>
                                     <outlet property="spacerNumberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                     <outlet property="spacerSpeakerImageView" destination="WdO-9k-h95" id="uiI-23-DKw"/>
@@ -200,7 +218,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="speaker.wave.2.fill" catalog="system" width="128" height="90"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="placeholderTextColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

@@ -47,7 +47,9 @@ extension SongsTVC {
 		
 		// Play last
 		let appendSongAndBelow = UIAlertAction(
-			title: LocalizedString.queueSongAndBelow,
+			title: Enabling.songDotDotDot
+			? LocalizedString.playSongAndBelowLater
+			: LocalizedString.queueSongAndBelow,
 			style: .default
 		) { _ in
 			player.playLast(selectedSongAndBelow)
@@ -72,14 +74,18 @@ extension SongsTVC {
 			message: nil,
 			preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
-		if selectedSongAndBelow.count == 1 {
-			playSongAndBelow.isEnabled = false
-			appendSongAndBelow.isEnabled = false
+		if Enabling.songDotDotDot {
+			actionSheet.addAction(playSongAndBelow)
+		} else {
+			if selectedSongAndBelow.count == 1 {
+				playSongAndBelow.isEnabled = false
+				appendSongAndBelow.isEnabled = false
+			}
+			actionSheet.addAction(playSongAndBelow)
+			actionSheet.addAction(playSong)
+			actionSheet.addAction(appendSongAndBelow)
+			actionSheet.addAction(appendSong)
 		}
-		actionSheet.addAction(playSongAndBelow)
-		actionSheet.addAction(playSong)
-		actionSheet.addAction(appendSongAndBelow)
-		actionSheet.addAction(appendSong)
 		actionSheet.addAction(cancel)
 		present(actionSheet, animated: true)
 	}

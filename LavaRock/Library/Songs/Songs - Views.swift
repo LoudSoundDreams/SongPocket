@@ -72,6 +72,7 @@ final class SongCell: UITableViewCell {
 	@IBOutlet private var artistLabel: UILabel!
 	@IBOutlet private var spacerNumberLabel: UILabel!
 	@IBOutlet private var numberLabel: UILabel!
+	@IBOutlet private var dotDotDotButton: UIButton!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -82,6 +83,14 @@ final class SongCell: UITableViewCell {
 		
 		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
 		numberLabel.font = spacerNumberLabel.font
+		
+		if Enabling.songDotDotDot {
+		} else {
+			dotDotDotButton.removeFromSuperview()
+			NSLayoutConstraint.activate([
+				spacerSpeakerImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: 0),
+			])
+		}
 		
 		accessibilityTraits.formUnion(.button)
 	}
@@ -128,6 +137,46 @@ final class SongCell: UITableViewCell {
 		}
 		
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
+		guard
+			Enabling.songDotDotDot,
+			let song = song
+		else {
+			// TO DO: Prevent the button from highlighting itself when you touch it
+			dotDotDotButton.tintColor = .placeholderText
+			dotDotDotButton.menu = nil
+			return
+		}
+		dotDotDotButton.tintColor = .label
+		dotDotDotButton.menu = UIMenu(
+			presentsUpward: false,
+			groupedElements: [
+				[
+					// TO DO: Disable these if there are no songs below.
+					UIAction(
+						title: LocalizedString.playSongAndBelowLater,
+						image: UIImage(systemName: "text.append")
+					) { _ in
+						// ARC2DO
+						PlayerWatcher.shared.player?.playLast([song]) // to do
+					},
+				],
+				[
+					UIAction(
+						title: LocalizedString.play,
+						image: UIImage(systemName: "play") // TO DO: Reconsider
+					) { _ in
+						// ARC2DO
+						PlayerWatcher.shared.player?.playNow([song])
+					},
+					UIAction(
+						title: LocalizedString.playLater,
+						image: UIImage(systemName: "arrow.turn.down.right")
+					) { _ in
+						// ARC2DO
+						PlayerWatcher.shared.player?.playLast([song])
+					},
+				],
+			])
 	}
 	
 	final override func layoutSubviews() {
