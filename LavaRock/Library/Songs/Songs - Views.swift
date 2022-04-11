@@ -88,7 +88,7 @@ final class SongCell: UITableViewCell {
 		} else {
 			dotDotDotButton.removeFromSuperview()
 			NSLayoutConstraint.activate([
-				spacerSpeakerImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: 0),
+				spacerSpeakerImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
 			])
 		}
 		
@@ -155,14 +155,14 @@ final class SongCell: UITableViewCell {
 						image: UIImage(systemName: "text.insert")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playNext([song]) // to do
+						PlayerWatcher.shared.player?.playNext([song]) // TO DO
 					},
 					UIAction(
 						title: LocalizedString.playSongAndBelowLater,
 						image: UIImage(systemName: "text.append")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playLast([song]) // to do
+						PlayerWatcher.shared.player?.playLast([song]) // TO DO
 					},
 				],
 				[
@@ -194,16 +194,11 @@ final class SongCell: UITableViewCell {
 	final override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		let previousInset = separatorInset
-		separatorInset = UIEdgeInsets(
-			top: previousInset.top,
-			left: {
-				return 0
-				+ contentView.frame.minX // Non-editing mode: 0. Editing mode: ~44.
-				+ textStack.frame.minX
-			}(),
-			bottom: previousInset.bottom,
-			right: previousInset.right)
+		separatorInset.left = {
+			return 0
+			+ contentView.frame.minX
+			+ textStack.frame.minX
+		}()
 	}
 }
 extension SongCell:
