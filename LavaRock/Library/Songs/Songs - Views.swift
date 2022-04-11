@@ -137,6 +137,7 @@ final class SongCell: UITableViewCell {
 		}
 		
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
+		
 		guard Enabling.songDotDotDot else { return }
 		guard let song = song else {
 			// TO DO: Prevent the button from highlighting itself when you touch it
@@ -198,6 +199,15 @@ final class SongCell: UITableViewCell {
 			return 0
 			+ contentView.frame.minX
 			+ textStack.frame.minX
+		}()
+		separatorInset.right = {
+			if isEditing {
+				return 0
+			} else {
+				return 0
+				+ contentView.directionalLayoutMargins.trailing // Non-editing mode: 16. Editing mode: 8.
+				+ frame.maxX - contentView.frame.maxX
+			}
 		}()
 	}
 }
