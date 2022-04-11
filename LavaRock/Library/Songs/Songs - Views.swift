@@ -137,10 +137,8 @@ final class SongCell: UITableViewCell {
 		}
 		
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
-		guard
-			Enabling.songDotDotDot,
-			let song = song
-		else {
+		guard Enabling.songDotDotDot else { return }
+		guard let song = song else {
 			// TO DO: Prevent the button from highlighting itself when you touch it
 			dotDotDotButton.tintColor = .placeholderText
 			dotDotDotButton.menu = nil
@@ -152,6 +150,13 @@ final class SongCell: UITableViewCell {
 			groupedElements: [
 				[
 					// TO DO: Disable these if there are no songs below.
+					UIAction(
+						title: LocalizedString.playSongAndBelowNext,
+						image: UIImage(systemName: "text.insert")
+					) { _ in
+						// ARC2DO
+						PlayerWatcher.shared.player?.playNext([song]) // to do
+					},
 					UIAction(
 						title: LocalizedString.playSongAndBelowLater,
 						image: UIImage(systemName: "text.append")
@@ -169,6 +174,13 @@ final class SongCell: UITableViewCell {
 						PlayerWatcher.shared.player?.playNow([song])
 					},
 					UIAction(
+						title: LocalizedString.playNext,
+						image: UIImage(systemName: "arrow.turn.up.right")
+					) { _ in
+						// ARC2DO
+						PlayerWatcher.shared.player?.playNext([song])
+					},
+					UIAction(
 						title: LocalizedString.playLater,
 						image: UIImage(systemName: "arrow.turn.down.right")
 					) { _ in
@@ -182,11 +194,16 @@ final class SongCell: UITableViewCell {
 	final override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		separatorInset.left = {
-			return 0
-			+ contentView.frame.minX // Non-editing mode: 0. Editing mode: ~44.
-			+ textStack.frame.minX
-		}()
+		let previousInset = separatorInset
+		separatorInset = UIEdgeInsets(
+			top: previousInset.top,
+			left: {
+				return 0
+				+ contentView.frame.minX // Non-editing mode: 0. Editing mode: ~44.
+				+ textStack.frame.minX
+			}(),
+			bottom: previousInset.bottom,
+			right: previousInset.right)
 	}
 }
 extension SongCell:

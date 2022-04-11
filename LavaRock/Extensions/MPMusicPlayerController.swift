@@ -39,6 +39,37 @@ extension MPMusicPlayerController {
 		play() // Calls `prepareToPlay` automatically
 	}
 	
+	final func playNext(_ songs: [Song]) {
+		if Enabling.playerScreen {
+			if SongQueue.contents.isEmpty {
+				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
+				SongQueue.setContents(songs)
+				
+				setQueue(with: songs)
+			} else {
+				var newContents = SongQueue.contents
+				newContents.insert(
+					contentsOf: songs,
+					at: indexOfNowPlayingItem + 1) // TO DO
+				SongQueue.setContents(newContents)
+				
+				prepend(songs)
+			}
+		} else {
+			prepend(songs)
+		}
+		
+		if Enabling.playerScreen {
+		} else {
+			repeatMode = .none
+		}
+		
+		// TO DO: Do we need this? (See `playLast`)
+		if playbackState != .playing {
+			prepareToPlay()
+		}
+	}
+	
 	final func playLast(_ songs: [Song]) {
 		if Enabling.playerScreen {
 			if SongQueue.contents.isEmpty {

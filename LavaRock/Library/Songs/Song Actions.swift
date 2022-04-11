@@ -45,6 +45,16 @@ extension SongsTVC {
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
 		
+		// Play next
+		let prependSongAndBelow = UIAlertAction(
+			title: LocalizedString.playSongAndBelowNext,
+			style: .default
+		) { _ in
+			player.playNext(selectedSongAndBelow)
+			// TO DO: Show “Will Play Next” alert if not enabling Player screen
+			deselectSelectedSong()
+		}
+		
 		// Play last
 		let appendSongAndBelow = UIAlertAction(
 			title: Enabling.songDotDotDot
@@ -79,6 +89,7 @@ extension SongsTVC {
 		} else {
 			if selectedSongAndBelow.count == 1 {
 				playSongAndBelow.isEnabled = false
+				prependSongAndBelow.isEnabled = false
 				appendSongAndBelow.isEnabled = false
 			}
 			actionSheet.addAction(playSongAndBelow)
