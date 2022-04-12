@@ -160,13 +160,6 @@ final class CollectionCell: UITableViewCell {
 			+ contentView.frame.minX
 			+ titleLabel.frame.minX
 		}()
-		separatorInset.right = {
-			if isEditing {
-				return 0
-			} else {
-				return directionalLayoutMargins.trailing
-			}
-		}()
 	}
 }
 extension CollectionCell:
