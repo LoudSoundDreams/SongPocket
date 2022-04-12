@@ -93,6 +93,8 @@ final class AlbumCell: UITableViewCell {
 		}
 		
 		accessibilityUserInputLabels = [title]
+		
+		indicateNowPlaying(isInPlayer: album.isInPlayer())
 	}
 	
 	final override func traitCollectionDidChange(

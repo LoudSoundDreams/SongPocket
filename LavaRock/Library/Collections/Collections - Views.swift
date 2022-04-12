@@ -150,6 +150,8 @@ final class CollectionCell: UITableViewCell {
 			titleLabel.textColor = .placeholderText
 			disableWithAccessibilityTrait()
 		}
+		
+		indicateNowPlaying(isInPlayer: collection.isInPlayer())
 	}
 	
 	final override func layoutSubviews() {

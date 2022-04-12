@@ -34,7 +34,7 @@ extension LibraryTVC {
 		// Freshen “now playing” indicators
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard
-				var cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating,
+				let cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating,
 				let libraryItem = viewModel.itemOptional(at: visibleIndexPath) as? LibraryItem
 			else { return }
 			cell.indicateNowPlaying(isInPlayer: libraryItem.isInPlayer())

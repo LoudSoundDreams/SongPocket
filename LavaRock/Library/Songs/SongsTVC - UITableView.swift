@@ -69,19 +69,17 @@ extension SongsTVC {
 			break
 		}
 		
-		guard var cell = tableView.dequeueReusableCell(
+		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Song",
 			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
 		
-		let song = songsViewModel.songNonNil(at: indexPath)
 		cell.configureWith(
-			song: song, // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
+			song: songsViewModel.songNonNil(at: indexPath),
 			albumRepresentative: {
 				let album = songsViewModel.album(forSection: indexPath.section)
 				return album.representativeMPMediaItem()
 			}())
-		cell.indicateNowPlaying(isInPlayer: song.isInPlayer())
 		
 		return cell
 	}

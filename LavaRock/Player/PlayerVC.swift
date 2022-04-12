@@ -81,8 +81,8 @@ final class PlayerVC: UIViewController {
 	}
 	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() }
 	
-	final func songInQueueIsInPlayer(at indexPath: IndexPath) -> Bool {
-		guard let player = player else {
+	static func songInQueueIsInPlayer(at indexPath: IndexPath) -> Bool {
+		guard let player = PlayerWatcher.shared.player else {
 			return false
 		}
 		return player.indexOfNowPlayingItem == indexPath.row

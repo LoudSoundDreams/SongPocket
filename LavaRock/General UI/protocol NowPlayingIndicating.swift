@@ -8,13 +8,13 @@
 import UIKit
 
 @MainActor
-protocol NowPlayingIndicating {
+protocol NowPlayingIndicating: AnyObject {
 	var spacerSpeakerImageView: UIImageView! { get }
 	var speakerImageView: UIImageView! { get }
 	var accessibilityValue: String? { get set }
 }
 extension NowPlayingIndicating {
-	mutating func indicateNowPlaying(isInPlayer: Bool) {
+	func indicateNowPlaying(isInPlayer: Bool) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		

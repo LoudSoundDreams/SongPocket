@@ -18,10 +18,11 @@ extension PlayerVC {
 	
 	final func freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() {
 		queueTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
-			guard var cell = queueTable.cellForRow(
+			guard let cell = queueTable.cellForRow(
 				at: visibleIndexPath) as? NowPlayingIndicating
 			else { return }
-			cell.indicateNowPlaying(isInPlayer: songInQueueIsInPlayer(at: visibleIndexPath))
+			cell.indicateNowPlaying(
+				isInPlayer: Self.songInQueueIsInPlayer(at: visibleIndexPath))
 		}
 		
 		freshenPlaybackToolbar()

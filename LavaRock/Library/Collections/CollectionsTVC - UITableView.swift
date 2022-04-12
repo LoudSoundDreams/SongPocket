@@ -91,7 +91,7 @@ extension CollectionsTVC {
 			break
 		}
 		
-		guard var cell = tableView.dequeueReusableCell(
+		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Collection",
 			for: indexPath) as? CollectionCell
 		else { return UITableViewCell() }
@@ -145,7 +145,6 @@ extension CollectionsTVC {
 			with: collection,
 			mode: mode,
 			accessibilityActions: accessibilityActions)
-		cell.indicateNowPlaying(isInPlayer: collection.isInPlayer())
 		
 		return cell
 	}

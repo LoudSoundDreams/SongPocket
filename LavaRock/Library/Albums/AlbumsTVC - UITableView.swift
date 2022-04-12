@@ -92,7 +92,7 @@ extension AlbumsTVC {
 			break
 		}
 		
-		guard var cell = tableView.dequeueReusableCell(
+		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Album",
 			for: indexPath) as? AlbumCell
 		else { return UITableViewCell() }
@@ -117,7 +117,6 @@ extension AlbumsTVC {
 				case .browsing:
 					return .normal
 				}}())
-		cell.indicateNowPlaying(isInPlayer: album.isInPlayer())
 		
 		return cell
 	}

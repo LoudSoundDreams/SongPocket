@@ -35,13 +35,14 @@ extension PlayerVC: UITableViewDataSource {
 			break
 		}
 		
-		guard var cell = tableView.dequeueReusableCell(
+		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Song in Queue",
 			for: indexPath) as? SongInQueueCell
 		else { return UITableViewCell() }
 		
 		cell.configure(with: song(at: indexPath).metadatum())
-		cell.indicateNowPlaying(isInPlayer: songInQueueIsInPlayer(at: indexPath))
+		cell.indicateNowPlaying(
+			isInPlayer: Self.songInQueueIsInPlayer(at: indexPath))
 		
 		return cell
 	}

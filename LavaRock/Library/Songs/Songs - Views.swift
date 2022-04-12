@@ -107,10 +107,10 @@ final class SongCell: UITableViewCell {
 	}
 	
 	final func configureWith(
-		song: Song?,
+		song: Song,
 		albumRepresentative representative: SongMetadatum?
 	) {
-		let metadatum = song?.metadatum()
+		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
 		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 		artistLabel.text = {
 			let albumArtist = representative?.albumArtistOnDisk // Can be `nil`
@@ -149,8 +149,10 @@ final class SongCell: UITableViewCell {
 		
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
 		
+		indicateNowPlaying(isInPlayer: song.isInPlayer())
+		
 		guard Enabling.songDotDotDot else { return }
-		guard let song = song else {
+		guard metadatum != nil else { // TO DO: Actually use the `SongMetadatum`?
 			// TO DO: Prevent the button from highlighting itself when you touch it
 			dotDotDotButton.tintColor = .placeholderText
 			dotDotDotButton.menu = nil
