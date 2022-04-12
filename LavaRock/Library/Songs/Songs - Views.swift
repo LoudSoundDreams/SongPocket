@@ -216,8 +216,8 @@ final class SongCell: UITableViewCell {
 				return 0
 			} else {
 				return 0
-				+ contentView.directionalLayoutMargins.trailing // Non-editing mode: 16. Editing mode: 8.
-				+ frame.maxX - contentView.frame.maxX
+				+ contentView.directionalLayoutMargins.trailing // Distance from content view’s trailing edge to layout margin. Non-editing mode: 16. Editing mode: 8.
+				+ frame.maxX - contentView.frame.maxX // Distance from cell’s trailing edge to content view’s trailing edge
 			}
 		}()
 	}

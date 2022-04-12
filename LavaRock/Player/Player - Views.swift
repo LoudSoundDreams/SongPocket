@@ -26,8 +26,6 @@ final class SongInQueueCell: UITableViewCell {
 		
 		artworkImageView.layer.cornerCurve = .continuous
 		artworkImageView.layer.cornerRadius = 3
-		
-		separatorInset.left = textStack.frame.minX
 	}
 	
 	final func configure(with metadatum: SongMetadatum?) {
@@ -46,6 +44,17 @@ final class SongInQueueCell: UITableViewCell {
 		} else {
 			textStack.spacing = 4
 		}
+	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.left = textStack.frame.minX
+		separatorInset.right = {
+			return 0
+			+ contentView.directionalLayoutMargins.trailing
+			+ frame.maxX - contentView.frame.maxX
+		}()
 	}
 }
 extension SongInQueueCell:
