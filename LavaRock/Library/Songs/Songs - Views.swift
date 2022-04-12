@@ -60,6 +60,17 @@ final class AlbumInfoCell: UITableViewCell {
 			textStack.spacing = UIStackView.spacingUseSystem
 		}
 	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.left = {
+			return directionalLayoutMargins.leading
+		}()
+		separatorInset.right = {
+			return directionalLayoutMargins.trailing
+		}()
+	}
 }
 
 final class SongCell: UITableViewCell {
