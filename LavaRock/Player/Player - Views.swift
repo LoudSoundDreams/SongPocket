@@ -49,11 +49,11 @@ final class SongInQueueCell: UITableViewCell {
 	final override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		separatorInset.left = textStack.frame.minX
+		separatorInset.left = {
+			return textStack.frame.minX
+		}()
 		separatorInset.right = {
-			return 0
-			+ contentView.directionalLayoutMargins.trailing
-			+ frame.maxX - contentView.frame.maxX
+			return directionalLayoutMargins.trailing
 		}()
 	}
 }
