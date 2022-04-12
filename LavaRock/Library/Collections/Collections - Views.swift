@@ -151,6 +151,23 @@ final class CollectionCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.left = {
+			return 0
+			+ contentView.frame.minX
+			+ titleLabel.frame.minX
+		}()
+		separatorInset.right = {
+			if isEditing {
+				return 0
+			} else {
+				return directionalLayoutMargins.trailing
+			}
+		}()
+	}
 }
 extension CollectionCell:
 	NowPlayingIndicating,
