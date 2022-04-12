@@ -53,7 +53,7 @@ struct LocalizedString {
 	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "")
 	static let tipJarFooter = NSLocalizedString(
 		"[footer] options_tip_jar",
-		value: "a Loud Sound Dreams production",
+		value: "Made by Loud Sound Dreams",
 		comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
