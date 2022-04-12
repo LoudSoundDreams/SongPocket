@@ -162,6 +162,9 @@ final class CollectionCell: UITableViewCell {
 			+ contentView.frame.minX
 			+ titleLabel.frame.minX
 		}()
+		separatorInset.right = {
+			return directionalLayoutMargins.trailing
+		}()
 	}
 }
 extension CollectionCell:

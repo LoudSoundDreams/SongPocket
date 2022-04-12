@@ -137,6 +137,9 @@ final class AlbumCell: UITableViewCell {
 			+ coverArtWidth
 			+ coverArtTrailingToTextLeading
 		}()
+		separatorInset.right = {
+			return directionalLayoutMargins.trailing
+		}()
 	}
 }
 extension AlbumCell:
