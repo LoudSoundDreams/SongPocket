@@ -295,17 +295,6 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	// Overrides should call super (this implementation).
-	func freshenEditingButtons() {
-		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
-		
-		editButtonItem.isEnabled = !viewModel.isEmpty()
-		
-		sortButton.isEnabled = allowsSort()
-		floatToTopButton.isEnabled = allowsFloatAndSink()
-		sinkToBottomButton.isEnabled = allowsFloatAndSink()
-	}
-	
-	// Overrides should call super (this implementation).
 	final override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
 			let newViewModel = viewModel.updatedWithFreshenedData() // Deletes empty groups if we reordered all the items out of them.
@@ -325,6 +314,17 @@ class LibraryTVC: UITableViewController {
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
 		// During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
 		// As of iOS 15.4 developer beta 1, you must do this after `super.setEditing`, not before.
+	}
+	
+	// Overrides should call super (this implementation).
+	func freshenEditingButtons() {
+		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
+		
+		editButtonItem.isEnabled = !viewModel.isEmpty()
+		
+		sortButton.isEnabled = allowsSort()
+		floatToTopButton.isEnabled = allowsFloatAndSink()
+		sinkToBottomButton.isEnabled = allowsFloatAndSink()
 	}
 	
 	// You should only be allowed to sort contiguous items within the same `GroupOfLibraryItems`.
