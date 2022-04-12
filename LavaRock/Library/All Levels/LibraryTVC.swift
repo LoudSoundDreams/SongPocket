@@ -268,9 +268,10 @@ class LibraryTVC: UITableViewController {
 	private func setBarButtons(animated: Bool) {
 		let editing = isEditing
 		
-		editing
-		? freshenEditingButtons()
-		: freshenPlaybackToolbar()
+		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
+		if !editing {
+			freshenPlaybackToolbar()
+		}
 		
 		navigationItem.setLeftBarButtonItems(
 			editing
