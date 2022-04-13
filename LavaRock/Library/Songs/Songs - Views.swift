@@ -67,9 +67,6 @@ final class AlbumInfoCell: UITableViewCell {
 		separatorInset.left = {
 			return directionalLayoutMargins.leading
 		}()
-		separatorInset.right = {
-			return directionalLayoutMargins.trailing
-		}()
 	}
 }
 
@@ -212,9 +209,6 @@ final class SongCell: UITableViewCell {
 			return 0
 			+ contentView.frame.minX // Distance from content view’s leading edge to cell’s leading edge
 			+ textStack.frame.minX // Distance from text stack’s leading edge to content view’s leading edge
-		}()
-		separatorInset.right = {
-			return directionalLayoutMargins.trailing
 		}()
 	}
 }

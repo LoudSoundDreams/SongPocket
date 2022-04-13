@@ -52,9 +52,6 @@ final class SongInQueueCell: UITableViewCell {
 		separatorInset.left = {
 			return textStack.frame.minX
 		}()
-		separatorInset.right = {
-			return directionalLayoutMargins.trailing
-		}()
 	}
 }
 extension SongInQueueCell:
