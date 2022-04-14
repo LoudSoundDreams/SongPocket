@@ -110,8 +110,12 @@ final class AlbumCell: UITableViewCell {
 		}
 	}
 	
+	private var sizeCategoryIsAccessibility: Bool {
+		return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+	}
+	
 	private func configureForTraitCollection() {
-		if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+		if sizeCategoryIsAccessibility {
 			mainStack.axis = .vertical
 			mainStack.alignment = .leading
 			mainStack.spacing = UIStackView.spacingUseSystem
@@ -129,7 +133,7 @@ final class AlbumCell: UITableViewCell {
 		+ contentView.frame.minX
 		+ mainStack.frame.minX // 16
 		+ artworkImageView.frame.width // 132
-		+ mainStack.spacing // 12
+		+ (sizeCategoryIsAccessibility ? 12 : mainStack.spacing /*12*/)
 	}
 }
 extension AlbumCell:
