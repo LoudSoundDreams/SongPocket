@@ -125,18 +125,11 @@ final class AlbumCell: UITableViewCell {
 	final override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		separatorInset.left = {
-			let selfLeadingToContentLeading = contentView.frame.minX
-			let contentLeadingToCoverArtLeading = mainStack.frame.minX // 16
-			let coverArtWidth = artworkImageView.frame.width // 132
-			let coverArtTrailingToTextLeading = mainStack.spacing // 12
-			
-			return 0
-			+ selfLeadingToContentLeading
-			+ contentLeadingToCoverArtLeading
-			+ coverArtWidth
-			+ coverArtTrailingToTextLeading
-		}()
+		separatorInset.left = 0
+		+ contentView.frame.minX
+		+ mainStack.frame.minX // 16
+		+ artworkImageView.frame.width // 132
+		+ mainStack.spacing // 12
 	}
 }
 extension AlbumCell:

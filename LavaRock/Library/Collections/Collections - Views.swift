@@ -157,11 +157,9 @@ final class CollectionCell: UITableViewCell {
 	final override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		separatorInset.left = {
-			return 0
-			+ contentView.frame.minX
-			+ titleLabel.frame.minX
-		}()
+		separatorInset.left = 0
+		+ contentView.frame.minX
+		+ titleLabel.frame.minX
 	}
 }
 extension CollectionCell:

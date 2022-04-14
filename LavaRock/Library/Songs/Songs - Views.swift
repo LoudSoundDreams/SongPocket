@@ -64,9 +64,7 @@ final class AlbumInfoCell: UITableViewCell {
 	final override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		separatorInset.left = {
-			return directionalLayoutMargins.leading
-		}()
+		separatorInset.left = directionalLayoutMargins.leading
 	}
 }
 
@@ -205,11 +203,9 @@ final class SongCell: UITableViewCell {
 	final override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		separatorInset.left = {
-			return 0
-			+ contentView.frame.minX // Distance from content view’s leading edge to cell’s leading edge
-			+ textStack.frame.minX // Distance from text stack’s leading edge to content view’s leading edge
-		}()
+		separatorInset.left = 0
+		+ contentView.frame.minX // Content view’s leading edge to cell’s leading edge
+		+ textStack.frame.minX // Text stack’s leading edge to content view’s leading edge
 	}
 }
 extension SongCell:
