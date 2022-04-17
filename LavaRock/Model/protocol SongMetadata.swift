@@ -24,7 +24,7 @@ protocol SongMetadatum {
 	var releaseDateOnDisk: Date? { get }
 	var dateAddedOnDisk: Date { get }
 	
-	func artworkImage(at size: CGSize) -> UIImage?
+	func coverArt(at size: CGSize) -> UIImage?
 }
 
 import MediaPlayer
@@ -43,7 +43,7 @@ extension MPMediaItem: SongMetadatum {
 	var releaseDateOnDisk: Date? { releaseDate }
 	var dateAddedOnDisk: Date { dateAdded }
 	
-	func artworkImage(at size: CGSize) -> UIImage? {
+	func coverArt(at size: CGSize) -> UIImage? {
 		return artwork?.image(at: size)
 	}
 }

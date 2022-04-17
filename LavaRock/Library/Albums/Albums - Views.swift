@@ -34,8 +34,8 @@ final class AlbumCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
-	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `artworkImageView` and `textStack` at very large text sizes.
-	@IBOutlet private var artworkImageView: UIImageView!
+	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `coverArtView` and `textStack` at very large text sizes.
+	@IBOutlet private var coverArtView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var releaseDateLabel: UILabel!
@@ -47,7 +47,7 @@ final class AlbumCell: UITableViewCell {
 		
 		removeBackground()
 		
-		artworkImageView.accessibilityIgnoresInvertColors = true
+		coverArtView.accessibilityIgnoresInvertColors = true
 		
 		configureForTraitCollection()
 	}
@@ -58,15 +58,15 @@ final class AlbumCell: UITableViewCell {
 	) {
 		let title: String = album.titleFormattedOrPlaceholder() // Don’t let this be `nil`.
 		
-		os_signpost(.begin, log: .albumsView, name: "Draw and set artwork image")
-		artworkImageView.image = {
-			let maxWidthAndHeight = artworkImageView.bounds.width
-			return album.artworkImage(
+		os_signpost(.begin, log: .albumsView, name: "Draw and set cover art")
+		coverArtView.image = {
+			let maxWidthAndHeight = coverArtView.bounds.width
+			return album.coverArt(
 				at: CGSize(
 					width: maxWidthAndHeight,
 					height: maxWidthAndHeight))
 		}()
-		os_signpost(.end, log: .albumsView, name: "Draw and set artwork image")
+		os_signpost(.end, log: .albumsView, name: "Draw and set cover art")
 		titleLabel.text = title
 		releaseDateLabel.text = album.releaseDateEstimateFormatted()
 		 
@@ -132,7 +132,7 @@ final class AlbumCell: UITableViewCell {
 		separatorInset.left = 0
 		+ contentView.frame.minX
 		+ mainStack.frame.minX // 16
-		+ artworkImageView.frame.width // 132
+		+ coverArtView.frame.width // 132
 		+ (sizeCategoryIsAccessibility ? 12 : mainStack.spacing /*12*/)
 	}
 }

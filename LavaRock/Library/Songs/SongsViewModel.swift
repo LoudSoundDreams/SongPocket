@@ -17,10 +17,10 @@ struct SongsViewModel {
 	var groups: [GroupOfLibraryItems]
 	
 	enum Prerow {
-		case albumArtwork
+		case coverArt
 		case albumInfo
 	}
-	let prerowsInEachSection: [Prerow] = [.albumArtwork, .albumInfo]
+	let prerowsInEachSection: [Prerow] = [.coverArt, .albumInfo]
 }
 extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"

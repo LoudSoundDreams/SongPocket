@@ -251,9 +251,9 @@ extension Album {
 	
 	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownAlbumArtist
 	
-	final func artworkImage(at size: CGSize) -> UIImage? {
+	final func coverArt(at size: CGSize) -> UIImage? {
 		let representative = representativeMPMediaItem()
-		return representative?.artworkImage(at: size)
+		return representative?.coverArt(at: size)
 	}
 	
 	final func titleFormattedOrPlaceholder() -> String {

@@ -14,7 +14,7 @@ final class SongInQueueCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
-	@IBOutlet private var artworkImageView: UIImageView!
+	@IBOutlet private var coverArtView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var secondaryLabel: UILabel!
@@ -24,15 +24,15 @@ final class SongInQueueCell: UITableViewCell {
 		
 		removeBackground()
 		
-		artworkImageView.layer.cornerCurve = .continuous
-		artworkImageView.layer.cornerRadius = 3
+		coverArtView.layer.cornerCurve = .continuous
+		coverArtView.layer.cornerRadius = 3
 	}
 	
 	final func configure(with metadatum: SongMetadatum?) {
-		artworkImageView.image = metadatum?.artworkImage(
+		coverArtView.image = metadatum?.coverArt(
 			at: CGSize(
-				width: artworkImageView.frame.width,
-				height: artworkImageView.frame.height))
+				width: coverArtView.frame.width,
+				height: coverArtView.frame.height))
 		
 		titleLabel.text = { () -> String in // Don’t let this be `nil`.
 			metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder

@@ -48,10 +48,10 @@ extension SongsTVC {
 		switch rowCase {
 		case .prerow(let prerow):
 			switch prerow {
-			case .albumArtwork:
+			case .coverArt:
 				guard let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Album Artwork",
-					for: indexPath) as? AlbumArtworkCell
+					withIdentifier: "Cover Art",
+					for: indexPath) as? CoverArtCell
 				else { return UITableViewCell() }
 				let album = songsViewModel.album(forSection: indexPath.section)
 				cell.configure(with: album)

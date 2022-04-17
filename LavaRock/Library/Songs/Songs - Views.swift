@@ -9,30 +9,30 @@ import UIKit
 import MediaPlayer
 import OSLog
 
-final class AlbumArtworkCell: UITableViewCell {
-	@IBOutlet private var artworkImageView: UIImageView!
+final class CoverArtCell: UITableViewCell {
+	@IBOutlet private var coverArtView: UIImageView!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		artworkImageView.accessibilityIgnoresInvertColors = true
+		coverArtView.accessibilityIgnoresInvertColors = true
 		accessibilityLabel = LocalizedString.albumArtwork
 		accessibilityUserInputLabels = [""]
 		accessibilityTraits.formUnion(.image)
 	}
 	
 	final func configure(with album: Album) {
-		// Artwork
-		os_signpost(.begin, log: .songsView, name: "Draw artwork image")
-		let artworkImage = album.artworkImage(
+		// Cover art
+		os_signpost(.begin, log: .songsView, name: "Draw cover art")
+		let coverArt = album.coverArt(
 			at: CGSize(
 				width: UIScreen.main.bounds.width,
 				height: UIScreen.main.bounds.width))
-		os_signpost(.end, log: .songsView, name: "Draw artwork image")
+		os_signpost(.end, log: .songsView, name: "Draw cover art")
 		
-		os_signpost(.begin, log: .songsView, name: "Set artwork image")
-		artworkImageView.image = artworkImage
-		os_signpost(.end, log: .songsView, name: "Set artwork image")
+		os_signpost(.begin, log: .songsView, name: "Set cover art")
+		coverArtView.image = coverArt
+		os_signpost(.end, log: .songsView, name: "Set cover art")
 	}
 }
 
