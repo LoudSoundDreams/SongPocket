@@ -39,6 +39,7 @@ final class SongInQueueCell: UITableViewCell {
 		}()
 		secondaryLabel.text = metadatum?.artistOnDisk
 		
+		// Update constraints
 		if secondaryLabel.text == nil {
 			textStack.spacing = 0
 		} else {

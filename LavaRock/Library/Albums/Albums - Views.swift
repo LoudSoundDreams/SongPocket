@@ -56,7 +56,8 @@ final class AlbumCell: UITableViewCell {
 		with album: Album,
 		mode: Mode
 	) {
-		let title: String = album.titleFormattedOrPlaceholder() // Don’t let this be `nil`.
+		let title: String // Don’t let this be `nil`.
+		= album.titleFormattedOrPlaceholder()
 		
 		os_signpost(.begin, log: .albumsView, name: "Draw and set cover art")
 		coverArtView.image = {

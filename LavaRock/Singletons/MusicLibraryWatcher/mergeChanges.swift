@@ -77,7 +77,9 @@ extension MusicLibraryWatcher {
 		context.tryToSave()
 		
 		DispatchQueue.main.async {
-			NotificationCenter.default.post(name: .LRDidMergeChanges, object: self)
+			NotificationCenter.default.post(
+				name: .LRDidMergeChanges,
+				object: nil)
 		}
 	}
 }

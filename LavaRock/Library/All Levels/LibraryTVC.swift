@@ -72,7 +72,7 @@ class LibraryTVC: UITableViewController {
 			self,
 			selector: #selector(didMergeChanges),
 			name: .LRDidMergeChanges,
-			object: MusicLibraryWatcher.shared)
+			object: nil)
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(songQueueDidChange),

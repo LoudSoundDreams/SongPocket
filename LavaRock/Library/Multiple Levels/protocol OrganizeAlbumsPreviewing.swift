@@ -33,7 +33,9 @@ extension OrganizeAlbumsPreviewing {
 		viewModel.context.tryToSave()
 		viewModel.context.parent!.tryToSave()
 		
-		NotificationCenter.default.post(name: .LRUserDidUpdateDatabase, object: nil)
+		NotificationCenter.default.post(
+			name: .LRUserDidUpdateDatabase,
+			object: nil)
 		
 		dismiss(animated: true)
 		clipboard.delegate?.didOrganize()

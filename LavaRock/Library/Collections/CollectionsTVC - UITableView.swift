@@ -289,7 +289,9 @@ extension CollectionsTVC {
 					tableView.deselectRow(at: indexPath, animated: true)
 				}
 				
-				NotificationCenter.default.post(name: .LRMediaLibraryAuthorizationStatusDidChange, object: nil)
+				NotificationCenter.default.post(
+					name: .LRMediaLibraryAuthorizationStatusDidChange,
+					object: nil)
 			}
 		case .authorized:
 			break
