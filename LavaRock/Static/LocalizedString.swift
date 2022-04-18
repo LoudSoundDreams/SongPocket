@@ -61,7 +61,7 @@ struct LocalizedString {
 		comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
-	// MARK: Playback Toolbar
+	// MARK: Transport Toolbar
 	
 	static let previousTrack = NSLocalizedString("Previous track", comment: "Accessibility label, button")
 	static let restart = NSLocalizedString("Restart", comment: "Accessibility label, button")

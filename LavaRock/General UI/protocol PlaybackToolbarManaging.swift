@@ -1,5 +1,5 @@
 //
-//  protocol PlaybackToolbarManaging.swift
+//  protocol TransportToolbarManaging.swift
 //  LavaRock
 //
 //  Created by h on 2022-02-02.
@@ -8,9 +8,9 @@
 import UIKit
 
 @MainActor
-protocol PlaybackToolbarManaging: PlayerReflecting {
+protocol TransportToolbarManaging: PlayerReflecting {
 	// Adopting types must …
-	// • Respond to `LRReelDidChange` `Notification`s and call `freshenPlaybackToolbar`.
+	// • Respond to `LRReelDidChange` `Notification`s and call `freshenTransportToolbar`.
 	
 	// Adopting types might want to …
 	// • Override `accessibilityPerformMagicTap` and toggle playback.
@@ -23,8 +23,8 @@ protocol PlaybackToolbarManaging: PlayerReflecting {
 	var skipForwardButton: UIBarButtonItem { get }
 	var nextSongButton: UIBarButtonItem { get }
 }
-extension PlaybackToolbarManaging {
-	var playbackToolbarButtons: [UIBarButtonItem] {
+extension TransportToolbarManaging {
+	var transportButtons: [UIBarButtonItem] {
 		if Enabling.jumpButtons {
 			return [
 				previousSongButton, .flexibleSpace(),
@@ -109,13 +109,13 @@ extension PlaybackToolbarManaging {
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
 	
-	func freshenPlaybackToolbar() {
+	func freshenTransportToolbar() {
 		guard
 			let player = player,
 			!(Enabling.console && Reel.mediaItems.isEmpty)
 		else {
 			configurePlayButton()
-			playbackToolbarButtons.forEach { $0.disableWithAccessibilityTrait() }
+			transportButtons.forEach { $0.disableWithAccessibilityTrait() }
 			return
 		}
 		
@@ -133,7 +133,7 @@ extension PlaybackToolbarManaging {
 		}
 		
 		// Enable or disable each button as appropriate
-		playbackToolbarButtons.forEach { $0.enableWithAccessibilityTrait() }
+		transportButtons.forEach { $0.enableWithAccessibilityTrait() }
 		if player.indexOfNowPlayingItem == 0 {
 			previousSongButton.disableWithAccessibilityTrait()
 		}

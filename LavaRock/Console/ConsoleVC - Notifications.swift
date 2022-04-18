@@ -12,7 +12,7 @@ extension ConsoleVC: PlayerReflecting {
 		freshenNowPlayingIndicatorsAndTransportToolbar_console()
 	}
 }
-extension ConsoleVC: PlaybackToolbarManaging {}
+extension ConsoleVC: TransportToolbarManaging {}
 extension ConsoleVC {
 	// MARK: - Player
 	
@@ -25,6 +25,6 @@ extension ConsoleVC {
 				isInPlayer: Self.songInQueueIsInPlayer(at: visibleIndexPath))
 		}
 		
-		freshenPlaybackToolbar()
+		freshenTransportToolbar()
 	}
 }

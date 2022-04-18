@@ -10,7 +10,7 @@ import MediaPlayer
 import SwiftUI
 
 final class ConsoleVC: UIViewController {
-	// `PlaybackToolbarManaging`
+	// `TransportToolbarManaging`
 	private(set) lazy var previousSongButton = makePreviousSongButton()
 	private(set) lazy var rewindButton = makeRewindButton()
 	private(set) lazy var skipBackwardButton = makeSkipBackwardButton()
@@ -55,7 +55,7 @@ final class ConsoleVC: UIViewController {
 		
 		beginObservingNowPlayingItemDidChange_console()
 		
-		toolbarItems = playbackToolbarButtons
+		toolbarItems = transportButtons
 //		navigationController?.setToolbarHidden(false, animated: false)
 		if let toolbar = navigationController?.toolbar {
 			let appearance = toolbar.standardAppearance
@@ -67,7 +67,7 @@ final class ConsoleVC: UIViewController {
 		beginObservingNowPlayingItemDidChange_console()
 	}
 	@objc private func reelDidChange() {
-		freshenPlaybackToolbar()
+		freshenTransportToolbar()
 	}
 	
 	private func beginObservingNowPlayingItemDidChange_console() {
