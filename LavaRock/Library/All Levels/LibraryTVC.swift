@@ -16,7 +16,7 @@ class LibraryTVC: UITableViewController {
 	
 	// Data
 	final lazy var viewModel: LibraryViewModel = CollectionsViewModel(
-		context: Persistence.viewContext,
+		context: Database.viewContext,
 		prerowsInEachSection: [])
 	
 	// Controls

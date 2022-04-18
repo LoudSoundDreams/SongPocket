@@ -12,7 +12,7 @@ final class MusicLibraryWatcher { // This is a class and not a struct because it
 	static let shared = MusicLibraryWatcher()
 	private init() {}
 	
-	let context = Persistence.viewContext
+	let context = Database.viewContext
 	
 	private var library: MPMediaLibrary? = nil
 	

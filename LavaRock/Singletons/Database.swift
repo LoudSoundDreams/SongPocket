@@ -1,5 +1,5 @@
 //
-//  Persistence.swift
+//  Database.swift
 //  LavaRock
 //
 //  Created by h on 2021-12-30.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-struct Persistence {
+struct Database {
 	private init() {}
 	
 	static let viewContext = container.viewContext
