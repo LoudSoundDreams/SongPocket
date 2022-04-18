@@ -23,7 +23,7 @@ extension PlayerVC: UITableViewDataSource {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return SongQueue.contents.count + (RowCase.allCases.count - 1)
+		return SongQueue.mediaItems.count + (RowCase.allCases.count - 1)
 	}
 	
 	final func tableView(
@@ -40,15 +40,12 @@ extension PlayerVC: UITableViewDataSource {
 			for: indexPath) as? SongInQueueCell
 		else { return UITableViewCell() }
 		
-		cell.configure(with: song(at: indexPath).metadatum())
+		cell.configure(
+			with: SongQueue.mediaItems[indexPath.row] as SongMetadatum)
 		cell.indicateNowPlaying(
 			isInPlayer: Self.songInQueueIsInPlayer(at: indexPath))
 		
 		return cell
-	}
-	
-	private func song(at indexPath: IndexPath) -> Song {
-		return SongQueue.contents[indexPath.row]
 	}
 }
 extension PlayerVC: UITableViewDelegate {

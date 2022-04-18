@@ -14,7 +14,7 @@ struct SongQueue {
 	@MainActor
 	static weak var tableView: UITableView? = nil
 	
-	private(set) static var contents: [Song] = [] {
+	private(set) static var mediaItems: [MPMediaItem] = [] {
 		didSet {
 			Task { await MainActor.run {
 				NotificationCenter.default.post(
@@ -26,7 +26,7 @@ struct SongQueue {
 		}
 	}
 	
-	static func setContents(_ newContents: [Song]) {
-		contents = newContents
+	static func setMediaItems(_ newMediaItems: [MPMediaItem]) {
+		mediaItems = newMediaItems
 	}
 }

@@ -147,7 +147,7 @@ final class SongCell: UITableViewCell {
 		indicateNowPlaying(isInPlayer: song.isInPlayer())
 		
 		guard Enabling.songDotDotDot else { return }
-		guard metadatum != nil else { // TO DO: Actually use the `SongMetadatum`?
+		guard let mediaItem = song.mpMediaItem() else {
 			// TO DO: Prevent the button from highlighting itself when you touch it
 			dotDotDotButton.tintColor = .placeholderText
 			dotDotDotButton.menu = nil
@@ -164,14 +164,14 @@ final class SongCell: UITableViewCell {
 						image: UIImage(systemName: "text.insert")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playNext([song]) // TO DO
+						PlayerWatcher.shared.player?.playNext([mediaItem]) // TO DO
 					},
 					UIAction(
 						title: LocalizedString.playSongAndBelowLater,
 						image: UIImage(systemName: "text.append")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playLast([song]) // TO DO
+						PlayerWatcher.shared.player?.playLast([mediaItem]) // TO DO
 					},
 				],
 				[
@@ -180,21 +180,21 @@ final class SongCell: UITableViewCell {
 						image: UIImage(systemName: "play") // TO DO: Reconsider
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playNow([song])
+						PlayerWatcher.shared.player?.playNow([mediaItem])
 					},
 					UIAction(
 						title: LocalizedString.playNext,
 						image: UIImage(systemName: "arrow.turn.up.right")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playNext([song])
+						PlayerWatcher.shared.player?.playNext([mediaItem])
 					},
 					UIAction(
 						title: LocalizedString.playLater,
 						image: UIImage(systemName: "arrow.turn.down.right")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playLast([song])
+						PlayerWatcher.shared.player?.playLast([mediaItem])
 					},
 				],
 			])

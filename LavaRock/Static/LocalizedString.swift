@@ -32,6 +32,10 @@ struct LocalizedString {
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
 	static let unknownAlbumArtist = NSLocalizedString("Unknown Album Artist", comment: "")
 	
+	// MARK: Songs
+	
+	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
+	
 	// MARK: Options
 	
 	static let options = NSLocalizedString("Options", comment: "Big title")

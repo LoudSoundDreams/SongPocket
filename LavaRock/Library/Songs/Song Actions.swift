@@ -20,27 +20,28 @@ extension SongsTVC {
 		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let selectedSong = viewModel.itemNonNil(at: selectedIndexPath) as? Song,
+			let selectedMediaItem = (viewModel.itemNonNil(at: selectedIndexPath) as? Song)?.mpMediaItem(),
 			let player = player
 		else { return }
 		
-		let selectedSongAndBelow: [Song] = viewModel
+		let selectedMediaItemAndBelow: [MPMediaItem]
+		= viewModel
 			.itemsInGroup(startingAt: selectedIndexPath)
-			.compactMap { $0 as? Song }
+			.compactMap { ($0 as? Song)?.mpMediaItem() }
 		
 		// Play now
 		let playSongAndBelow = UIAlertAction(
 			title: LocalizedString.playSongAndBelow,
 			style: .default
 		) { _ in
-			player.playNow(selectedSongAndBelow)
+			player.playNow(selectedMediaItemAndBelow)
 			deselectSelectedSong()
 		}
 		let playSong = UIAlertAction(
 			title: LocalizedString.playSong,
 			style: .default
 		) { _ in
-			player.playNow([selectedSong])
+			player.playNow([selectedMediaItem])
 			deselectSelectedSong()
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
@@ -50,28 +51,35 @@ extension SongsTVC {
 			title: LocalizedString.playSongAndBelowNext,
 			style: .default
 		) { _ in
-			player.playNext(selectedSongAndBelow)
+			player.playNext(selectedMediaItemAndBelow)
 			// TO DO: Show “Will Play Next” alert if not enabling Player screen
 			deselectSelectedSong()
 		}
 		
 		// Play last
+		let firstSongTitle: String = {
+			(selectedMediaItem as SongMetadatum).titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+		}()
 		let appendSongAndBelow = UIAlertAction(
 			title: Enabling.songDotDotDot
 			? LocalizedString.playSongAndBelowLater
 			: LocalizedString.queueSongAndBelow,
 			style: .default
 		) { _ in
-			player.playLast(selectedSongAndBelow)
-			self.alertWillPlayLaterIfShould(havingAppended: selectedSongAndBelow)
+			player.playLast(selectedMediaItemAndBelow)
+			self.alertWillPlayLaterIfShould(
+				havingAppendedSongCount: selectedMediaItemAndBelow.count,
+				firstSongTitle: firstSongTitle)
 			deselectSelectedSong()
 		}
 		let appendSong = UIAlertAction(
 			title: LocalizedString.queueSong,
 			style: .default
 		) { _ in
-			player.playLast([selectedSong])
-			self.alertWillPlayLaterIfShould(havingAppended: [selectedSong])
+			player.playLast([selectedMediaItem])
+			self.alertWillPlayLaterIfShould(
+				havingAppendedSongCount: 1,
+				firstSongTitle: firstSongTitle)
 			deselectSelectedSong()
 		}
 		
@@ -87,7 +95,7 @@ extension SongsTVC {
 		if Enabling.songDotDotDot {
 			actionSheet.addAction(playSongAndBelow)
 		} else {
-			if selectedSongAndBelow.count == 1 {
+			if selectedMediaItemAndBelow.count == 1 {
 				playSongAndBelow.isEnabled = false
 				prependSongAndBelow.isEnabled = false
 				appendSongAndBelow.isEnabled = false
@@ -102,7 +110,8 @@ extension SongsTVC {
 	}
 	
 	private func alertWillPlayLaterIfShould(
-		havingAppended songs: [Song]
+		havingAppendedSongCount songCount: Int,
+		firstSongTitle: String
 	) {
 		let defaults = UserDefaults.standard
 		let defaultsKey = LRUserDefaultsKey.shouldExplainQueueAction.rawValue
@@ -110,8 +119,7 @@ extension SongsTVC {
 		defaults.register(defaults: [defaultsKey: true])
 		guard
 			!Enabling.playerScreen,
-			defaults.bool(forKey: defaultsKey),
-			let titleOfSelectedSong = songs.first?.metadatum()?.titleOnDisk
+			defaults.bool(forKey: defaultsKey)
 		else { return }
 		
 		let dontShowAgainAction = UIAlertAction(
@@ -132,16 +140,16 @@ extension SongsTVC {
 		
 		let alert = UIAlertController(
 			title: {
-				switch songs.count {
-				case 1:
+				if songCount == 1 {
 					return String.localizedStringWithFormat(
 						LocalizedString.format_didEnqueueOneSongAlertTitle,
-						titleOfSelectedSong)
-				default:
+						firstSongTitle)
+				} else {
 					return String.localizedStringWithFormat(
 						LocalizedString.format_didEnqueueMultipleSongsAlertTitle,
-						titleOfSelectedSong, songs.count - 1)
-				}}(),
+						firstSongTitle, songCount - 1)
+				}
+			}(),
 			message: LocalizedString.didEnqueueSongsAlertMessage,
 			preferredStyle: .alert)
 		alert.addAction(dontShowAgainAction)

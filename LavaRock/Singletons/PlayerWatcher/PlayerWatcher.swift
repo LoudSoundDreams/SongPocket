@@ -25,7 +25,7 @@ final class PlayerStatusBoard: ObservableObject {
 	final func freshen() {
 		guard
 			let player = PlayerWatcher.shared.player,
-			!(Enabling.playerScreen && SongQueue.contents.isEmpty)
+			!(Enabling.playerScreen && SongQueue.mediaItems.isEmpty)
 		else {
 			currentStatus = nil
 			return

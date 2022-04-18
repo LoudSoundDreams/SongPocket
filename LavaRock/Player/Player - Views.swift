@@ -28,16 +28,19 @@ final class SongInQueueCell: UITableViewCell {
 		coverArtView.layer.cornerRadius = 3
 	}
 	
-	final func configure(with metadatum: SongMetadatum?) {
-		coverArtView.image = metadatum?.coverArt(
+	final func configure(with metadatum: SongMetadatum) {
+		coverArtView.image = metadatum.coverArt(
 			at: CGSize(
 				width: coverArtView.frame.width,
 				height: coverArtView.frame.height))
 		
-		titleLabel.text = { () -> String in // Don’t let this be `nil`.
-			metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+		// Don’t let these be `nil`.
+		titleLabel.text = { () -> String in
+			metadatum.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 		}()
-		secondaryLabel.text = metadatum?.artistOnDisk
+		secondaryLabel.text = { () -> String in
+			metadatum.artistOnDisk ?? LocalizedString.unknownArtist
+		}()
 		
 		// Update constraints
 		if secondaryLabel.text == nil {
@@ -119,7 +122,7 @@ extension FutureModeChooser: PlayerReflecting {
 	func playbackStateDidChange() {
 		guard
 			let player = player,
-			!SongQueue.contents.isEmpty
+			!SongQueue.mediaItems.isEmpty
 		else {
 			disable()
 			selectedSegmentIndex = FutureMode.normal.rawValue

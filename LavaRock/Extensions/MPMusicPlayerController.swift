@@ -8,29 +8,24 @@
 import MediaPlayer
 
 extension MPMusicPlayerController {
-	private func setQueue(with songs: [Song]) {
-		setQueue(
-			with: MPMediaItemCollection(
-				items: songs.compactMap { $0.mpMediaItem() }))
+	final func setQueue(with mediaItems: [MPMediaItem]) {
+		setQueue(with: MPMediaItemCollection(items: mediaItems))
 	}
-	private func prepend(_ songs: [Song]) {
+	final func prepend(_ mediaItems: [MPMediaItem]) {
 		prepend(MPMusicPlayerMediaItemQueueDescriptor(
-			itemCollection: MPMediaItemCollection(
-				items: songs.compactMap { $0.mpMediaItem() })))
+			itemCollection: MPMediaItemCollection(items: mediaItems)))
 	}
-	private func append(_ songs: [Song]) {
-		append(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(
-					items: songs.compactMap { $0.mpMediaItem() })))
+	final func append(_ mediaItems: [MPMediaItem]) {
+		append(MPMusicPlayerMediaItemQueueDescriptor(
+			itemCollection: MPMediaItemCollection(items: mediaItems)))
 	}
 	
-	final func playNow(_ songs: [Song]) {
+	final func playNow(_ mediaItems: [MPMediaItem]) {
 		if Enabling.playerScreen {
-			SongQueue.setContents(songs)
+			SongQueue.setMediaItems(mediaItems)
 		}
 		
-		setQueue(with: songs)
+		setQueue(with: mediaItems)
 		
 		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
 		repeatMode = .none
@@ -39,24 +34,24 @@ extension MPMusicPlayerController {
 		play() // Calls `prepareToPlay` automatically
 	}
 	
-	final func playNext(_ songs: [Song]) {
+	final func playNext(_ mediaItems: [MPMediaItem]) {
 		if Enabling.playerScreen {
-			if SongQueue.contents.isEmpty {
+			if SongQueue.mediaItems.isEmpty {
 				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
-				SongQueue.setContents(songs)
+				SongQueue.setMediaItems(mediaItems)
 				
-				setQueue(with: songs)
+				setQueue(with: mediaItems)
 			} else {
-				var newContents = SongQueue.contents
-				newContents.insert(
-					contentsOf: songs,
+				var newMediaItems = SongQueue.mediaItems
+				newMediaItems.insert(
+					contentsOf: mediaItems,
 					at: indexOfNowPlayingItem + 1) // TO DO
-				SongQueue.setContents(newContents)
+				SongQueue.setMediaItems(newMediaItems)
 				
-				prepend(songs)
+				prepend(mediaItems)
 			}
 		} else {
-			prepend(songs)
+			prepend(mediaItems)
 		}
 		
 		if Enabling.playerScreen {
@@ -70,23 +65,23 @@ extension MPMusicPlayerController {
 		}
 	}
 	
-	final func playLast(_ songs: [Song]) {
+	final func playLast(_ mediaItems: [MPMediaItem]) {
 		if Enabling.playerScreen {
-			if SongQueue.contents.isEmpty {
+			if SongQueue.mediaItems.isEmpty {
 				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
-				SongQueue.setContents(songs)
+				SongQueue.setMediaItems(mediaItems)
 				
-				setQueue(with: songs)
+				setQueue(with: mediaItems)
 			} else {
-				var newContents = SongQueue.contents
-				newContents.append(contentsOf: songs)
-				SongQueue.setContents(newContents)
+				var newMediaItems = SongQueue.mediaItems
+				newMediaItems.append(contentsOf: mediaItems)
+				SongQueue.setMediaItems(newMediaItems)
 				
-				append(songs)
+				append(mediaItems)
 			}
 		} else {
 			// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
-			append(songs)
+			append(mediaItems)
 		}
 		
 		if Enabling.playerScreen {
