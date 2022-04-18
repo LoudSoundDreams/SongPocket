@@ -469,7 +469,7 @@
 			path = Albums;
 			sourceTree = "<group>";
 		};
-		07DF65D027766B7B003B2EA3 /* MusicLibraryWatcher */ = {
+		07DF65D027766B7B003B2EA3 /* MusicFolder */ = {
 			isa = PBXGroup;
 			children = (
 				079B2C9424E227BF00A949FA /* MusicFolder.swift */,
@@ -479,7 +479,7 @@
 				07A4F90E2519E8410065C87E /* deleteLibraryItems.swift */,
 				072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */,
 			);
-			path = MusicLibraryWatcher;
+			path = MusicFolder;
 			sourceTree = "<group>";
 		};
 		07E0BBD8276567760010117E /* Foundation */ = {
@@ -561,7 +561,7 @@
 			isa = PBXGroup;
 			children = (
 				071A0B9F277E832C0017F76D /* Database.swift */,
-				07DF65D027766B7B003B2EA3 /* MusicLibraryWatcher */,
+				07DF65D027766B7B003B2EA3 /* MusicFolder */,
 				07F1881E27F6B14E0074809D /* TapeDeck */,
 				074AB85D27CAD9C3007B63D2 /* SongQueue.swift */,
 			);
