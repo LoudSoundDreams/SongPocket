@@ -1,5 +1,5 @@
 //
-//  Player.swift
+//  TapeDeck.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-04.
@@ -9,13 +9,13 @@ import MediaPlayer
 import CoreData
 
 @MainActor
-final class PlayerStatusBoard: ObservableObject {
+final class TapeDeckDisplay: ObservableObject {
 	struct Status {
 		let isInPlayMode: Bool
 		let isPlayingFirstSongInQueue: Bool
 	}
 	
-	static let shared = PlayerStatusBoard()
+	static let shared = TapeDeckDisplay()
 	private init() {
 		freshen()
 	}
@@ -78,7 +78,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	}
 	@objc
 	private func nowPlayingItemDidChange() {
-		PlayerStatusBoard.shared.freshen()
+		TapeDeckDisplay.shared.freshen()
 	}
 	
 	@objc
@@ -87,7 +87,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 //		print("playback state changed.")
 //		print(player.debugDescription)
 		
-		PlayerStatusBoard.shared.freshen()
+		TapeDeckDisplay.shared.freshen()
 		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {

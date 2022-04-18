@@ -9,9 +9,9 @@ import SwiftUI
 import MediaPlayer
 
 struct TransportPanel: View {
-	@ObservedObject private var playerStatusBoard: PlayerStatusBoard
+	@ObservedObject private var tapeDeckDisplay: TapeDeckDisplay
 	init() {
-		playerStatusBoard = .shared
+		tapeDeckDisplay = .shared
 	}
 	
 	private let eight: CGFloat = 8
@@ -37,7 +37,7 @@ struct TransportPanel: View {
 			Spacer()
 			
 			Button {
-				guard let status = playerStatusBoard.currentStatus else { return }
+				guard let status = tapeDeckDisplay.currentStatus else { return }
 				if status.isInPlayMode {
 					player?.pause()
 				} else {
@@ -45,7 +45,7 @@ struct TransportPanel: View {
 				}
 			} label: {
 				if
-					let status = playerStatusBoard.currentStatus,
+					let status = tapeDeckDisplay.currentStatus,
 					status.isInPlayMode
 				{
 					Image(systemName: "circle")
@@ -75,6 +75,6 @@ struct TransportPanel: View {
 			}
 		}
 		.padding([.top, .bottom], eight * 6)
-		.disabled(playerStatusBoard.currentStatus == nil)
+		.disabled(tapeDeckDisplay.currentStatus == nil)
 	}
 }
