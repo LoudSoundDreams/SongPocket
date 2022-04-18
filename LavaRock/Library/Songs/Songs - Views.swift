@@ -164,14 +164,14 @@ final class SongCell: UITableViewCell {
 						image: UIImage(systemName: "text.insert")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playNext([mediaItem]) // TO DO
+						TapeDeck.shared.player?.playNext([mediaItem]) // TO DO
 					},
 					UIAction(
 						title: LocalizedString.playSongAndBelowLater,
 						image: UIImage(systemName: "text.append")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playLast([mediaItem]) // TO DO
+						TapeDeck.shared.player?.playLast([mediaItem]) // TO DO
 					},
 				],
 				[
@@ -180,21 +180,21 @@ final class SongCell: UITableViewCell {
 						image: UIImage(systemName: "play") // TO DO: Reconsider
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playNow([mediaItem])
+						TapeDeck.shared.player?.playNow([mediaItem])
 					},
 					UIAction(
 						title: LocalizedString.playNext,
 						image: UIImage(systemName: "arrow.turn.up.right")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playNext([mediaItem])
+						TapeDeck.shared.player?.playNext([mediaItem])
 					},
 					UIAction(
 						title: LocalizedString.playLater,
 						image: UIImage(systemName: "arrow.turn.down.right")
 					) { _ in
 						// ARC2DO
-						PlayerWatcher.shared.player?.playLast([mediaItem])
+						TapeDeck.shared.player?.playLast([mediaItem])
 					},
 				],
 			])

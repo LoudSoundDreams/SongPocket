@@ -298,7 +298,7 @@ final class CollectionsTVC:
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
 		reflectViewState {
 			MusicLibraryWatcher.shared.setUpAndMergeChanges() // You must finish `LibraryTVC.beginObservingNotifications` before this, because we need to observe the notification after the merge completes.
-			PlayerWatcher.shared.setUp()
+			TapeDeck.shared.setUp()
 		}
 	}
 	

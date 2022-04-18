@@ -17,7 +17,7 @@ extension Collection: LibraryItem {
 	final func isInPlayer() -> Bool {
 		guard
 			let context = managedObjectContext,
-			let songInPlayer = PlayerWatcher.shared.songInPlayer(context: context)
+			let songInPlayer = TapeDeck.shared.songInPlayer(context: context)
 		else {
 			return false
 		}

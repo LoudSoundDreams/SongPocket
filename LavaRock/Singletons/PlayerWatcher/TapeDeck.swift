@@ -24,7 +24,7 @@ final class PlayerStatusBoard: ObservableObject {
 	
 	final func freshen() {
 		guard
-			let player = PlayerWatcher.shared.player,
+			let player = TapeDeck.shared.player,
 			!(Enabling.playerScreen && SongQueue.mediaItems.isEmpty)
 		else {
 			currentStatus = nil
@@ -37,8 +37,8 @@ final class PlayerStatusBoard: ObservableObject {
 }
 
 @MainActor
-final class PlayerWatcher { // This is a class and not a struct because it needs a deinitializer.
-	static let shared = PlayerWatcher()
+final class TapeDeck { // This is a class and not a struct because it needs a deinitializer.
+	static let shared = TapeDeck()
 	private init() {}
 	
 	final func addReflectorOnce(weaklyReferencing newReflector: PlayerReflecting) {

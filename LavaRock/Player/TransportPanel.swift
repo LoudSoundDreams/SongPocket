@@ -15,7 +15,7 @@ struct TransportPanel: View {
 	}
 	
 	private let eight: CGFloat = 8
-	private var player: MPMusicPlayerController? { PlayerWatcher.shared.player }
+	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
 		HStack {
 			Button {

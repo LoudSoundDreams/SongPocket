@@ -18,7 +18,7 @@
 		071A0BA0277E832C0017F76D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9F277E832C0017F76D /* Persistence.swift */; };
 		071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0BA1277E83CB0017F76D /* LibraryNC.swift */; };
 		0720A43525017C6C00E0A28A /* AlbumsTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0720A43425017C6C00E0A28A /* AlbumsTVC - Notifications.swift */; };
-		07267A2025537C5800C914A3 /* PlayerWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* PlayerWatcher.swift */; };
+		07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* TapeDeck.swift */; };
 		072F859F26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */; };
 		072FD02726C30BB90053369B /* cleanUpLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */; };
 		073198CD279D204100E5FD44 /* TipJarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073198CC279D204100E5FD44 /* TipJarViewModel.swift */; };
@@ -146,7 +146,7 @@
 		071A0B9F277E832C0017F76D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		071A0BA1277E83CB0017F76D /* LibraryNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryNC.swift; sourceTree = "<group>"; };
 		0720A43425017C6C00E0A28A /* AlbumsTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - Notifications.swift"; sourceTree = "<group>"; };
-		07267A1F25537C5800C914A3 /* PlayerWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerWatcher.swift; sourceTree = "<group>"; };
+		07267A1F25537C5800C914A3 /* TapeDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeck.swift; sourceTree = "<group>"; };
 		072F859E26B74A5D0062323C /* protocol NoItemsBackgroundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol NoItemsBackgroundManager.swift"; sourceTree = "<group>"; };
 		072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cleanUpLibraryItems.swift; sourceTree = "<group>"; };
 		073198CC279D204100E5FD44 /* TipJarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarViewModel.swift; sourceTree = "<group>"; };
@@ -551,7 +551,7 @@
 		07F1881E27F6B14E0074809D /* PlayerWatcher */ = {
 			isa = PBXGroup;
 			children = (
-				07267A1F25537C5800C914A3 /* PlayerWatcher.swift */,
+				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
 				07CD864E27CAA54600286E6A /* protocol PlayerReflecting.swift */,
 			);
 			path = PlayerWatcher;
@@ -764,7 +764,7 @@
 				0781F1FA25991B3300781CF8 /* OptionsTVC - UITableView.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
-				07267A2025537C5800C914A3 /* PlayerWatcher.swift in Sources */,
+				07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* mergeChanges.swift in Sources */,
 				07A4F9052519E72C0065C87E /* updateLibraryItems.swift in Sources */,
 				07E0BBF02765678F0010117E /* UITableViewCell - Protocols.swift in Sources */,

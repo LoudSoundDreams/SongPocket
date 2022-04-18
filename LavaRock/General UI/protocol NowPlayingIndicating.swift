@@ -20,7 +20,7 @@ extension NowPlayingIndicating {
 		
 		guard
 			isInPlayer,
-			let player = PlayerWatcher.shared.player
+			let player = TapeDeck.shared.player
 		else {
 			speakerImageView.image = nil
 			accessibilityValue = nil

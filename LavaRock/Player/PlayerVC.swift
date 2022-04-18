@@ -82,7 +82,7 @@ final class PlayerVC: UIViewController {
 	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() }
 	
 	static func songInQueueIsInPlayer(at indexPath: IndexPath) -> Bool {
-		guard let player = PlayerWatcher.shared.player else {
+		guard let player = TapeDeck.shared.player else {
 			return false
 		}
 		return player.indexOfNowPlayingItem == indexPath.row
