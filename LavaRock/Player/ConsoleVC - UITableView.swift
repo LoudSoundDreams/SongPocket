@@ -1,5 +1,5 @@
 //
-//  PlayerVC - UITableView.swift
+//  ConsoleVC - UITableView.swift
 //  LavaRock
 //
 //  Created by h on 2022-03-27.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension PlayerVC: UITableViewDataSource {
+extension ConsoleVC: UITableViewDataSource {
 	private enum RowCase: CaseIterable {
 		case song
 		
@@ -48,7 +48,7 @@ extension PlayerVC: UITableViewDataSource {
 		return cell
 	}
 }
-extension PlayerVC: UITableViewDelegate {
+extension ConsoleVC: UITableViewDelegate {
 	final func tableView(
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath

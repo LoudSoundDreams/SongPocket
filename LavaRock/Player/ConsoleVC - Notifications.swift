@@ -1,5 +1,5 @@
 //
-//  PlayerVC - Notifications.swift
+//  ConsoleVC - Notifications.swift
 //  LavaRock
 //
 //  Created by h on 2022-03-27.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-extension PlayerVC: PlayerReflecting {
+extension ConsoleVC: PlayerReflecting {
 	func playbackStateDidChange() {
 		freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC()
 	}
 }
-extension PlayerVC: PlaybackToolbarManaging {}
-extension PlayerVC {
+extension ConsoleVC: PlaybackToolbarManaging {}
+extension ConsoleVC {
 	// MARK: - Player
 	
 	final func freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() {

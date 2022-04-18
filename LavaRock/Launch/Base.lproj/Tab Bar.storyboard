@@ -25,15 +25,15 @@
             </objects>
             <point key="canvasLocation" x="5167.1999999999998" y="193.5960591133005"/>
         </scene>
-        <!--Player View-->
+        <!--Console-->
         <scene sceneID="pHC-Lv-e5S">
             <objects>
-                <viewControllerPlaceholder storyboardName="Player View" id="cEm-HZ-58e" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Console" id="cEm-HZ-58e" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="EzW-Nq-4md"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qvV-lu-Otm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5788" y="231"/>
+            <point key="canvasLocation" x="5764" y="231"/>
         </scene>
         <!--Library View-->
         <scene sceneID="RMa-4C-Ux6">

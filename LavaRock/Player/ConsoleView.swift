@@ -1,5 +1,5 @@
 //
-//  PlayerView.swift
+//  ConsoleView.swift
 //  LavaRock
 //
 //  Created by h on 2022-01-31.
@@ -7,13 +7,7 @@
 
 import SwiftUI
 
-final class PlayerHostingController: UIHostingController<PlayerView> {
-	required init?(coder: NSCoder) {
-		super.init(coder: coder, rootView: PlayerView())
-	}
-}
-
-struct PlayerView: View {
+struct ConsoleView: View {
     var body: some View {
 		NavigationView {
 			VStack {

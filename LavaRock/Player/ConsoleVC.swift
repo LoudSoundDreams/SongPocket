@@ -1,5 +1,5 @@
 //
-//  PlayerVC.swift
+//  ConsoleVC.swift
 //  LavaRock
 //
 //  Created by h on 2021-10-19.
@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 import SwiftUI
 
-final class PlayerVC: UIViewController {
+final class ConsoleVC: UIViewController {
 	// `PlaybackToolbarManaging`
 	private(set) lazy var previousSongButton = makePreviousSongButton()
 	private(set) lazy var rewindButton = makeRewindButton()

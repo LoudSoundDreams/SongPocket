@@ -20,7 +20,7 @@ final class TabBarController: UITabBarController {
 				tabBar.standardAppearance = appearance
 			} else if
 				let playerNC = selectedViewController as? UINavigationController,
-				playerNC.viewControllers.first is PlayerVC
+				playerNC.viewControllers.first is ConsoleVC
 			{
 				let appearance = tabBar.standardAppearance
 				appearance.configureWithTransparentBackground()
@@ -39,7 +39,7 @@ final class TabBarController: UITabBarController {
 			guard let indexOfPlayerScreen = viewControllers.firstIndex(where: { viewController in
 				if
 					let navigationController = viewController as? UINavigationController,
-					navigationController.viewControllers.first is PlayerVC
+					navigationController.viewControllers.first is ConsoleVC
 				{
 					return true
 				} else {
@@ -52,7 +52,7 @@ final class TabBarController: UITabBarController {
 			copyOfViewControllers.remove(at: indexOfPlayerScreen)
 			copyOfViewControllers.insert(
 				{
-					let hostingController = UIHostingController(rootView: PlayerView())
+					let hostingController = UIHostingController(rootView: ConsoleView())
 					hostingController.tabBarItem = UITabBarItem(
 						title: "Player",
 						image: UIImage(systemName: "hifispeaker.fill"),
