@@ -26,7 +26,7 @@ final class PlayerVC: UIViewController {
 		
 		queueTable.dataSource = self
 		queueTable.delegate = self
-		SongQueue.tableView = queueTable
+		Reel.tableView = queueTable
 		queueTable.backgroundColor = .quaternarySystemFill
 		
 		if let transportPanel = UIHostingController(rootView: TransportPanel().padding()).view {
@@ -49,8 +49,8 @@ final class PlayerVC: UIViewController {
 			object: nil)
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(songQueueDidChange),
-			name: .LRSongQueueDidChange,
+			selector: #selector(reelDidChange),
+			name: .LRReelDidChange,
 			object: nil)
 		
 		beginObservingNowPlayingItemDidChange_PVC()
@@ -66,7 +66,7 @@ final class PlayerVC: UIViewController {
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
 		beginObservingNowPlayingItemDidChange_PVC()
 	}
-	@objc private func songQueueDidChange() {
+	@objc private func reelDidChange() {
 		freshenPlaybackToolbar()
 	}
 	

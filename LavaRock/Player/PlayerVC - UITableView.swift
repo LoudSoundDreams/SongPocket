@@ -23,7 +23,7 @@ extension PlayerVC: UITableViewDataSource {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return SongQueue.mediaItems.count + (RowCase.allCases.count - 1)
+		return Reel.mediaItems.count + (RowCase.allCases.count - 1)
 	}
 	
 	final func tableView(
@@ -41,7 +41,7 @@ extension PlayerVC: UITableViewDataSource {
 		else { return UITableViewCell() }
 		
 		cell.configure(
-			with: SongQueue.mediaItems[indexPath.row] as SongMetadatum)
+			with: Reel.mediaItems[indexPath.row] as SongMetadatum)
 		cell.indicateNowPlaying(
 			isInPlayer: Self.songInQueueIsInPlayer(at: indexPath))
 		

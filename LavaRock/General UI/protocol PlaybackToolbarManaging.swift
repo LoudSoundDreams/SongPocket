@@ -10,7 +10,7 @@ import UIKit
 @MainActor
 protocol PlaybackToolbarManaging: PlayerReflecting {
 	// Adopting types must …
-	// • Respond to `LRSongQueueDidChange` `Notification`s and call `freshenPlaybackToolbar`.
+	// • Respond to `LRReelDidChange` `Notification`s and call `freshenPlaybackToolbar`.
 	
 	// Adopting types might want to …
 	// • Override `accessibilityPerformMagicTap` and toggle playback.
@@ -112,7 +112,7 @@ extension PlaybackToolbarManaging {
 	func freshenPlaybackToolbar() {
 		guard
 			let player = player,
-			!(Enabling.playerScreen && SongQueue.mediaItems.isEmpty)
+			!(Enabling.playerScreen && Reel.mediaItems.isEmpty)
 		else {
 			configurePlayButton()
 			playbackToolbarButtons.forEach { $0.disableWithAccessibilityTrait() }

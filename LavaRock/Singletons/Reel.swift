@@ -1,5 +1,5 @@
 //
-//  SongQueue.swift
+//  Reel.swift
 //  LavaRock
 //
 //  Created by h on 2022-02-26.
@@ -8,7 +8,7 @@
 import MediaPlayer
 
 //@MainActor // TO DO
-struct SongQueue {
+struct Reel {
 	private init() {}
 	
 	@MainActor
@@ -18,7 +18,7 @@ struct SongQueue {
 		didSet {
 			Task { await MainActor.run {
 				NotificationCenter.default.post(
-					name: .LRSongQueueDidChange,
+					name: .LRReelDidChange,
 					object: nil)
 				
 				tableView?.reloadData() // TO DO

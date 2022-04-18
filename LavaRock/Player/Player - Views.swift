@@ -122,7 +122,7 @@ extension FutureModeChooser: PlayerReflecting {
 	func playbackStateDidChange() {
 		guard
 			let player = player,
-			!SongQueue.mediaItems.isEmpty
+			!Reel.mediaItems.isEmpty
 		else {
 			disable()
 			selectedSegmentIndex = FutureMode.normal.rawValue

@@ -75,8 +75,8 @@ class LibraryTVC: UITableViewController {
 			object: nil)
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(songQueueDidChange),
-			name: .LRSongQueueDidChange,
+			selector: #selector(reelDidChange),
+			name: .LRReelDidChange,
 			object: nil)
 		
 		beginObservingNowPlayingItemDidChange()
@@ -85,7 +85,7 @@ class LibraryTVC: UITableViewController {
 		setUpBarButtons()
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
-	@objc private func songQueueDidChange() {
+	@objc private func reelDidChange() {
 		freshenPlaybackToolbar()
 	}
 	

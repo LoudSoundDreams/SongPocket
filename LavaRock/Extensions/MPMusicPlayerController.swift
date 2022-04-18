@@ -22,7 +22,7 @@ extension MPMusicPlayerController {
 	
 	final func playNow(_ mediaItems: [MPMediaItem]) {
 		if Enabling.playerScreen {
-			SongQueue.setMediaItems(mediaItems)
+			Reel.setMediaItems(mediaItems)
 		}
 		
 		setQueue(with: mediaItems)
@@ -36,17 +36,17 @@ extension MPMusicPlayerController {
 	
 	final func playNext(_ mediaItems: [MPMediaItem]) {
 		if Enabling.playerScreen {
-			if SongQueue.mediaItems.isEmpty {
+			if Reel.mediaItems.isEmpty {
 				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
-				SongQueue.setMediaItems(mediaItems)
+				Reel.setMediaItems(mediaItems)
 				
 				setQueue(with: mediaItems)
 			} else {
-				var newMediaItems = SongQueue.mediaItems
+				var newMediaItems = Reel.mediaItems
 				newMediaItems.insert(
 					contentsOf: mediaItems,
 					at: indexOfNowPlayingItem + 1) // TO DO
-				SongQueue.setMediaItems(newMediaItems)
+				Reel.setMediaItems(newMediaItems)
 				
 				prepend(mediaItems)
 			}
@@ -67,15 +67,15 @@ extension MPMusicPlayerController {
 	
 	final func playLast(_ mediaItems: [MPMediaItem]) {
 		if Enabling.playerScreen {
-			if SongQueue.mediaItems.isEmpty {
+			if Reel.mediaItems.isEmpty {
 				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
-				SongQueue.setMediaItems(mediaItems)
+				Reel.setMediaItems(mediaItems)
 				
 				setQueue(with: mediaItems)
 			} else {
-				var newMediaItems = SongQueue.mediaItems
+				var newMediaItems = Reel.mediaItems
 				newMediaItems.append(contentsOf: mediaItems)
-				SongQueue.setMediaItems(newMediaItems)
+				Reel.setMediaItems(newMediaItems)
 				
 				append(mediaItems)
 			}
