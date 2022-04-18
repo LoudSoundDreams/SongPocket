@@ -548,13 +548,13 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
-		07F1881E27F6B14E0074809D /* PlayerWatcher */ = {
+		07F1881E27F6B14E0074809D /* TapeDeck */ = {
 			isa = PBXGroup;
 			children = (
 				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
 				07CD864E27CAA54600286E6A /* protocol PlayerReflecting.swift */,
 			);
-			path = PlayerWatcher;
+			path = TapeDeck;
 			sourceTree = "<group>";
 		};
 		07F1881F27F6B3750074809D /* Singletons */ = {
@@ -562,7 +562,7 @@
 			children = (
 				071A0B9F277E832C0017F76D /* Persistence.swift */,
 				07DF65D027766B7B003B2EA3 /* MusicLibraryWatcher */,
-				07F1881E27F6B14E0074809D /* PlayerWatcher */,
+				07F1881E27F6B14E0074809D /* TapeDeck */,
 				074AB85D27CAD9C3007B63D2 /* SongQueue.swift */,
 			);
 			path = Singletons;
