@@ -8,7 +8,7 @@
 import CoreData
 import OSLog
 
-extension MusicLibraryWatcher {
+extension MusicFolder {
 	final func deleteLibraryItems(
 		for songs: [Song]
 	) {

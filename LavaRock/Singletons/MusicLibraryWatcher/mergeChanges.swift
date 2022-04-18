@@ -8,7 +8,7 @@
 import CoreData
 import OSLog
 
-extension MusicLibraryWatcher {
+extension MusicFolder {
 	// Updates our database in a sensible way to reflect the fresh `SongMetadatum`s.
 	final func mergeChanges(toMatch freshMetadata: [SongMetadatum]) {
 		os_signpost(.begin, log: .merge, name: "Initial parse")
