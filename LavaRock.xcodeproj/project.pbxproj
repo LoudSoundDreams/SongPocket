@@ -330,7 +330,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		073FB55827588B76000FAF5F /* Player */ = {
+		073FB55827588B76000FAF5F /* Console */ = {
 			isa = PBXGroup;
 			children = (
 				07A7989027A8ABB1007B70AA /* ConsoleView.swift */,
@@ -341,7 +341,7 @@
 				075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */,
 				07622F1327DE439D00B953EA /* Console - Views.swift */,
 			);
-			path = Player;
+			path = Console;
 			sourceTree = "<group>";
 		};
 		0748AEAF24F394F9000FBC61 /* Launch */ = {
@@ -392,7 +392,7 @@
 				07E0BBFF276569480010117E /* General UI */,
 				0706ABDE24D946870090EB21 /* Options */,
 				07E0BC0027656C300010117E /* Library */,
-				073FB55827588B76000FAF5F /* Player */,
+				073FB55827588B76000FAF5F /* Console */,
 			);
 			path = LavaRock;
 			sourceTree = "<group>";
