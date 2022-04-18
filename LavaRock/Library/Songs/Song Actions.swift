@@ -118,7 +118,7 @@ extension SongsTVC {
 		
 		defaults.register(defaults: [defaultsKey: true])
 		guard
-			!Enabling.playerScreen,
+			!Enabling.console,
 			defaults.bool(forKey: defaultsKey)
 		else { return }
 		

@@ -9,14 +9,14 @@ import Foundation
 
 extension ConsoleVC: PlayerReflecting {
 	func playbackStateDidChange() {
-		freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC()
+		freshenNowPlayingIndicatorsAndTransportToolbar_console()
 	}
 }
 extension ConsoleVC: PlaybackToolbarManaging {}
 extension ConsoleVC {
 	// MARK: - Player
 	
-	final func freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() {
+	final func freshenNowPlayingIndicatorsAndTransportToolbar_console() {
 		queueTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard let cell = queueTable.cellForRow(
 				at: visibleIndexPath) as? NowPlayingIndicating

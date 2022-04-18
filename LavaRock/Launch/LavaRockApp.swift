@@ -67,7 +67,7 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	func makeUIViewController(
 		context: Context
 	) -> ViewControllerType {
-		let storyboard = Enabling.playerScreen
+		let storyboard = Enabling.console
 		? UIStoryboard(name: "Tab Bar", bundle: nil)
 		: UIStoryboard(name: "Library View", bundle: nil)
 		let result = storyboard.instantiateInitialViewController()!

@@ -163,7 +163,7 @@ struct LocalizedString {
 	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button")
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
-	// MARK: Player Screen
+	// MARK: Console
 	
 	static let repeat1 = NSLocalizedString("Repeat one", comment: "Accessibility label")
 	static let repeatAll = NSLocalizedString("Repeat all", comment: "Accessibility label")

@@ -53,7 +53,7 @@ final class ConsoleVC: UIViewController {
 			name: .LRReelDidChange,
 			object: nil)
 		
-		beginObservingNowPlayingItemDidChange_PVC()
+		beginObservingNowPlayingItemDidChange_console()
 		
 		toolbarItems = playbackToolbarButtons
 //		navigationController?.setToolbarHidden(false, animated: false)
@@ -64,13 +64,13 @@ final class ConsoleVC: UIViewController {
 		}
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
-		beginObservingNowPlayingItemDidChange_PVC()
+		beginObservingNowPlayingItemDidChange_console()
 	}
 	@objc private func reelDidChange() {
 		freshenPlaybackToolbar()
 	}
 	
-	private func beginObservingNowPlayingItemDidChange_PVC() {
+	private func beginObservingNowPlayingItemDidChange_console() {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
@@ -79,7 +79,7 @@ final class ConsoleVC: UIViewController {
 				object: player)
 		}
 	}
-	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndPlaybackToolbar_PVC() }
+	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndTransportToolbar_console() }
 	
 	static func songInQueueIsInPlayer(at indexPath: IndexPath) -> Bool {
 		guard let player = TapeDeck.shared.player else {

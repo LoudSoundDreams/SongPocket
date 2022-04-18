@@ -94,7 +94,7 @@ final class AlbumsTVC:
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
-			if Enabling.playerScreen {
+			if Enabling.console {
 				editingModeToolbarButtons = viewingModeToolbarButtons
 			}
 		case .movingAlbums:
@@ -117,7 +117,7 @@ final class AlbumsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			if Enabling.playerScreen {
+			if Enabling.console {
 			} else {
 				navigationController?.setToolbarHidden(false, animated: false)
 			}
@@ -125,7 +125,7 @@ final class AlbumsTVC:
 	}
 	
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
-		if Enabling.playerScreen {
+		if Enabling.console {
 			navigationController?.setToolbarHidden(true, animated: true)
 		}
 	}

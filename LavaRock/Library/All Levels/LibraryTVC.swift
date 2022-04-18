@@ -107,7 +107,7 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	func setUpBarButtons() {
 		setBarButtons(animated: false)
-		if Enabling.playerScreen {
+		if Enabling.console {
 			setToolbarItems(editingModeToolbarButtons, animated: false)
 		}
 	}
@@ -279,7 +279,7 @@ class LibraryTVC: UITableViewController {
 			: viewingModeTopLeftButtons,
 			animated: animated)
 		
-		if Enabling.playerScreen {
+		if Enabling.console {
 		} else {
 			setToolbarItems(
 				editing
@@ -307,7 +307,7 @@ class LibraryTVC: UITableViewController {
 		super.setEditing(editing, animated: animated)
 		
 		setBarButtons(animated: animated)
-		if Enabling.playerScreen {
+		if Enabling.console {
 			navigationController?.setToolbarHidden(!editing, animated: true)
 		}
 		

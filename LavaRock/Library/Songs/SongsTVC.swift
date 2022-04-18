@@ -50,7 +50,7 @@ final class SongsTVC:
 		super.setUpBarButtons()
 		
 		navigationItem.rightBarButtonItem = editButtonItem
-		if Enabling.playerScreen {
+		if Enabling.console {
 		} else {
 			navigationController?.setToolbarHidden(false, animated: false)
 		}

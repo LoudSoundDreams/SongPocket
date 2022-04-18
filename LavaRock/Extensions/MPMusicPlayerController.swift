@@ -21,7 +21,7 @@ extension MPMusicPlayerController {
 	}
 	
 	final func playNow(_ mediaItems: [MPMediaItem]) {
-		if Enabling.playerScreen {
+		if Enabling.console {
 			Reel.setMediaItems(mediaItems)
 		}
 		
@@ -35,7 +35,7 @@ extension MPMusicPlayerController {
 	}
 	
 	final func playNext(_ mediaItems: [MPMediaItem]) {
-		if Enabling.playerScreen {
+		if Enabling.console {
 			if Reel.mediaItems.isEmpty {
 				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
 				Reel.setMediaItems(mediaItems)
@@ -54,7 +54,7 @@ extension MPMusicPlayerController {
 			prepend(mediaItems)
 		}
 		
-		if Enabling.playerScreen {
+		if Enabling.console {
 		} else {
 			repeatMode = .none
 		}
@@ -66,7 +66,7 @@ extension MPMusicPlayerController {
 	}
 	
 	final func playLast(_ mediaItems: [MPMediaItem]) {
-		if Enabling.playerScreen {
+		if Enabling.console {
 			if Reel.mediaItems.isEmpty {
 				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
 				Reel.setMediaItems(mediaItems)
@@ -84,7 +84,7 @@ extension MPMusicPlayerController {
 			append(mediaItems)
 		}
 		
-		if Enabling.playerScreen {
+		if Enabling.console {
 		} else {
 			repeatMode = .none
 		}

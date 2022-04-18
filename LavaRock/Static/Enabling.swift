@@ -13,9 +13,9 @@ struct Enabling {
 	
 	static let songDotDotDot = 10 == 1
 	
-	static let playerScreen = 10 == 1
-	static let swiftUI__playerScreen = playerScreen && 10 == 1
-	static let jumpButtons = (10 == 1) || (playerScreen && 10 == 10)
+	static let console = 10 == 1
+	static let swiftUI__console = console && 10 == 1
+	static let jumpButtons = (10 == 1) || (console && 10 == 10)
 	
 	static let swiftUI__options = 10 == 1
 }

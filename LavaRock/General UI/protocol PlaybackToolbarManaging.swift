@@ -112,7 +112,7 @@ extension PlaybackToolbarManaging {
 	func freshenPlaybackToolbar() {
 		guard
 			let player = player,
-			!(Enabling.playerScreen && Reel.mediaItems.isEmpty)
+			!(Enabling.console && Reel.mediaItems.isEmpty)
 		else {
 			configurePlayButton()
 			playbackToolbarButtons.forEach { $0.disableWithAccessibilityTrait() }

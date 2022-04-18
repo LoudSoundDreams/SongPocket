@@ -32,7 +32,7 @@ final class TabBarController: UITabBarController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if Enabling.swiftUI__playerScreen {
+		if Enabling.swiftUI__console {
 			guard let viewControllers = viewControllers else {
 				return
 			}

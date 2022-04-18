@@ -250,7 +250,7 @@ final class CollectionsTVC:
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
-			if Enabling.playerScreen {
+			if Enabling.console {
 				editingModeToolbarButtons = viewingModeToolbarButtons // A hack
 			}
 		case .organizingAlbums:
@@ -285,7 +285,7 @@ final class CollectionsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			if Enabling.playerScreen {
+			if Enabling.console {
 			} else {
 				navigationController?.setToolbarHidden(false, animated: false)
 			}
@@ -303,7 +303,7 @@ final class CollectionsTVC:
 	}
 	
 	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-		if Enabling.playerScreen {
+		if Enabling.console {
 			navigationController?.setToolbarHidden(true, animated: true)
 		}
 	}

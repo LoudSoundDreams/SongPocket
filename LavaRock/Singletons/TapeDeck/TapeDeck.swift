@@ -25,7 +25,7 @@ final class TapeDeckDisplay: ObservableObject {
 	final func freshen() {
 		guard
 			let player = TapeDeck.shared.player,
-			!(Enabling.playerScreen && Reel.mediaItems.isEmpty)
+			!(Enabling.console && Reel.mediaItems.isEmpty)
 		else {
 			currentStatus = nil
 			return
@@ -57,7 +57,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player?.endGeneratingPlaybackNotifications()
-		if Enabling.playerScreen {
+		if Enabling.console {
 			player = .applicationQueuePlayer
 		} else {
 			player = .systemMusicPlayer
