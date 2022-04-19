@@ -9,19 +9,19 @@ import Foundation
 
 extension ConsoleVC: PlayerReflecting {
 	func playbackStateDidChange() {
-		freshenNowPlayingIndicatorsAndTransportToolbar_console()
+		reflectPlayheadAndFreshenTransportToolbar_console()
 	}
 }
 extension ConsoleVC: TransportToolbarManaging {}
 extension ConsoleVC {
 	// MARK: - Player
 	
-	final func freshenNowPlayingIndicatorsAndTransportToolbar_console() {
+	final func reflectPlayheadAndFreshenTransportToolbar_console() {
 		queueTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard let cell = queueTable.cellForRow(
-				at: visibleIndexPath) as? NowPlayingIndicating
+				at: visibleIndexPath) as? PlayheadReflectable
 			else { return }
-			cell.indicateNowPlaying(
+			cell.reflectPlayhead(
 				containsPlayhead: Self.rowContainsPlayhead(at: visibleIndexPath))
 		}
 		

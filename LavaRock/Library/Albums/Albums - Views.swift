@@ -30,7 +30,7 @@ final class AlbumCell: UITableViewCell {
 		case modalTinted
 	}
 	
-	// `NowPlayingIndicating`
+	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -95,7 +95,7 @@ final class AlbumCell: UITableViewCell {
 		
 		accessibilityUserInputLabels = [title]
 		
-		indicateNowPlaying(containsPlayhead: album.containsPlayhead())
+		reflectPlayhead(containsPlayhead: album.containsPlayhead())
 	}
 	
 	final override func traitCollectionDidChange(
@@ -138,7 +138,7 @@ final class AlbumCell: UITableViewCell {
 	}
 }
 extension AlbumCell:
-	NowPlayingIndicating,
+	PlayheadReflectable,
 	CellTintingWhenSelected,
 	CellHavingTransparentBackground
 {}

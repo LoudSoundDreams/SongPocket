@@ -79,7 +79,7 @@ class LibraryTVC: UITableViewController {
 			name: .LRReelDidChange,
 			object: nil)
 		
-		beginObservingNowPlayingItemDidChange()
+		beginReflectingNowPlayingItem_library()
 		
 		freshenNavigationItemTitle()
 		setUpBarButtons()
@@ -89,16 +89,16 @@ class LibraryTVC: UITableViewController {
 		freshenTransportToolbar()
 	}
 	
-	final func beginObservingNowPlayingItemDidChange() {
+	final func beginReflectingNowPlayingItem_library() {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
-				selector: #selector(nowPlayingItemDidChange),
+				selector: #selector(reflectNowPlayingItem),
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 				object: player)
 		}
 	}
-	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndTransportToolbar() }
+	@objc private func reflectNowPlayingItem() { reflectPlayheadAndFreshenTransportToolbar_library() }
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()

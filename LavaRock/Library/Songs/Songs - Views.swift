@@ -69,7 +69,7 @@ final class AlbumInfoCell: UITableViewCell {
 }
 
 final class SongCell: UITableViewCell {
-	// `NowPlayingIndicating`
+	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -144,7 +144,7 @@ final class SongCell: UITableViewCell {
 		
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
 		
-		indicateNowPlaying(containsPlayhead: song.containsPlayhead())
+		reflectPlayhead(containsPlayhead: song.containsPlayhead())
 		
 		guard Enabling.songDotDotDot else { return }
 		guard let mediaItem = song.mpMediaItem() else {
@@ -209,7 +209,7 @@ final class SongCell: UITableViewCell {
 	}
 }
 extension SongCell:
-	NowPlayingIndicating,
+	PlayheadReflectable,
 	CellTintingWhenSelected,
 	CellHavingTransparentBackground
 {}

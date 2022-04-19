@@ -1,5 +1,5 @@
 //
-//  protocol NowPlayingIndicating.swift
+//  protocol PlayheadReflectable.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-07.
@@ -8,13 +8,13 @@
 import UIKit
 
 @MainActor
-protocol NowPlayingIndicating: AnyObject {
+protocol PlayheadReflectable: AnyObject {
 	var spacerSpeakerImageView: UIImageView! { get }
 	var speakerImageView: UIImageView! { get }
 	var accessibilityValue: String? { get set }
 }
-extension NowPlayingIndicating {
-	func indicateNowPlaying(containsPlayhead: Bool) {
+extension PlayheadReflectable {
+	func reflectPlayhead(containsPlayhead: Bool) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		

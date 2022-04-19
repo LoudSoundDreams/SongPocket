@@ -10,7 +10,7 @@ import MediaPlayer
 
 // Similar to `AlbumCell` and `SongCell`.
 final class SongInQueueCell: UITableViewCell {
-	// `NowPlayingIndicating`
+	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -57,7 +57,7 @@ final class SongInQueueCell: UITableViewCell {
 	}
 }
 extension SongInQueueCell:
-	NowPlayingIndicating,
+	PlayheadReflectable,
 	CellTintingWhenSelected,
 	CellHavingTransparentBackground
 {}

@@ -102,7 +102,7 @@ final class CollectionCell: UITableViewCell {
 		case modalDisabled
 	}
 	
-	// `NowPlayingIndicating`
+	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -151,7 +151,7 @@ final class CollectionCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 		
-		indicateNowPlaying(containsPlayhead: collection.containsPlayhead())
+		reflectPlayhead(containsPlayhead: collection.containsPlayhead())
 	}
 	
 	final override func layoutSubviews() {
@@ -163,7 +163,7 @@ final class CollectionCell: UITableViewCell {
 	}
 }
 extension CollectionCell:
-	NowPlayingIndicating,
+	PlayheadReflectable,
 	CellTintingWhenSelected,
 	CellHavingTransparentBackground
 {}
