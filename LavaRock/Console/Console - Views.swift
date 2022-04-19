@@ -119,7 +119,7 @@ final class FutureModeChooser: UISegmentedControl {
 	}
 }
 extension FutureModeChooser: PlayerReflecting {
-	func playbackStateDidChange() {
+	func reflectPlaybackState() {
 		guard
 			let player = player,
 			!Reel.mediaItems.isEmpty

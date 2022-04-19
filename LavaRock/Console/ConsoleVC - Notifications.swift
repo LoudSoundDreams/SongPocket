@@ -8,7 +8,7 @@
 import Foundation
 
 extension ConsoleVC: PlayerReflecting {
-	func playbackStateDidChange() {
+	func reflectPlaybackState() {
 		reflectPlayheadAndFreshenTransportToolbar_console()
 	}
 }

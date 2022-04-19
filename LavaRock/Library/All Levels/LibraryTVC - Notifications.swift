@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 extension LibraryTVC: PlayerReflecting {
-	func playbackStateDidChange() {
+	func reflectPlaybackState() {
 		reflectPlayheadAndFreshenTransportToolbar_library()
 	}
 }
