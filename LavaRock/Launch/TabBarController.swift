@@ -19,8 +19,8 @@ final class TabBarController: UITabBarController {
 				appearance.configureWithDefaultBackground()
 				tabBar.standardAppearance = appearance
 			} else if
-				let playerNC = selectedViewController as? UINavigationController,
-				playerNC.viewControllers.first is ConsoleVC
+				(selectedViewController as? UINavigationController)?
+					.viewControllers.first is ConsoleVC
 			{
 				let appearance = tabBar.standardAppearance
 				appearance.configureWithTransparentBackground()
@@ -36,7 +36,7 @@ final class TabBarController: UITabBarController {
 			guard let viewControllers = viewControllers else {
 				return
 			}
-			guard let indexOfPlayerScreen = viewControllers.firstIndex(where: { viewController in
+			guard let indexOfConsole = viewControllers.firstIndex(where: { viewController in
 				if
 					let navigationController = viewController as? UINavigationController,
 					navigationController.viewControllers.first is ConsoleVC
@@ -49,7 +49,7 @@ final class TabBarController: UITabBarController {
 				return
 			}
 			var copyOfViewControllers = viewControllers
-			copyOfViewControllers.remove(at: indexOfPlayerScreen)
+			copyOfViewControllers.remove(at: indexOfConsole)
 			copyOfViewControllers.insert(
 				{
 					let hostingController = UIHostingController(rootView: ConsoleView())
@@ -59,7 +59,7 @@ final class TabBarController: UITabBarController {
 						selectedImage: nil)
 					return hostingController
 				}(),
-				at: indexOfPlayerScreen)
+				at: indexOfConsole)
 			setViewControllers(copyOfViewControllers, animated: false)
 		}
 	}
