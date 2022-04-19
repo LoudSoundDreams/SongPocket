@@ -11,7 +11,7 @@ import MediaPlayer
 @MainActor
 protocol TransportToolbarManaging: AnyObject {
 	// Adopting types must …
-	// • Respond to `LRReelDidChange` `Notification`s and call `freshenTransportToolbar`.
+	// • Respond to `LRModifiedReel` `Notification`s and call `freshenTransportToolbar`.
 	
 	// Adopting types might want to …
 	// • Override `accessibilityPerformMagicTap` and toggle playback.

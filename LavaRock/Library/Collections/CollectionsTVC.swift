@@ -234,7 +234,7 @@ final class CollectionsTVC:
 				NotificationCenter.default.addObserverOnce(
 					self,
 					selector: #selector(userDidUpdateDatabase),
-					name: .LRUserDidUpdateDatabase,
+					name: .LRUserUpdatedDatabase,
 					object: nil)
 			}
 		}

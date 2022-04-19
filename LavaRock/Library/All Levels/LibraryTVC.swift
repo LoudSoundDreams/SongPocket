@@ -73,12 +73,12 @@ class LibraryTVC: UITableViewController {
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(didMergeChanges),
-			name: .LRDidMergeChanges,
+			name: .LRMergedChanges,
 			object: nil)
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(reelDidChange),
-			name: .LRReelDidChange,
+			name: .LRModifiedReel,
 			object: nil)
 		
 		beginReflectingNowPlayingItem_library()

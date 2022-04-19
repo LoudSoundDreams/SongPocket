@@ -27,7 +27,7 @@ extension AlbumsTVC {
 			viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven’t exited editing mode, because if you moved all the `Album`s out of a `Collection`, we’ll close the `Collection` and exit editing mode shortly.
 			
 			NotificationCenter.default.post(
-				name: .LRUserDidUpdateDatabase,
+				name: .LRUserUpdatedDatabase,
 				object: nil)
 			
 			dismiss(animated: true)

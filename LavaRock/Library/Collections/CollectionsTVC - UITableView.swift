@@ -290,7 +290,7 @@ extension CollectionsTVC {
 				}
 				
 				NotificationCenter.default.post(
-					name: .LRMediaLibraryAuthorizationStatusDidChange,
+					name: .LRUserRespondedToAllowAccessToMediaLibrary,
 					object: nil)
 			}
 		case .authorized:

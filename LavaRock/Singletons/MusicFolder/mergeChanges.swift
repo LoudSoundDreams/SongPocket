@@ -78,7 +78,7 @@ extension MusicFolder {
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
-				name: .LRDidMergeChanges,
+				name: .LRMergedChanges,
 				object: nil)
 		}
 	}

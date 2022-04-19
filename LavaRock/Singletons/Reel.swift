@@ -18,7 +18,7 @@ struct Reel {
 		didSet {
 			Task { await MainActor.run {
 				NotificationCenter.default.post(
-					name: .LRReelDidChange,
+					name: .LRModifiedReel,
 					object: nil)
 				
 				tableView?.reloadData() // TO DO

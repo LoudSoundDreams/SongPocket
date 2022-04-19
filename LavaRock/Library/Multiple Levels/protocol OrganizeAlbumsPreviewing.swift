@@ -34,7 +34,7 @@ extension OrganizeAlbumsPreviewing {
 		viewModel.context.parent!.tryToSave()
 		
 		NotificationCenter.default.post(
-			name: .LRUserDidUpdateDatabase,
+			name: .LRUserUpdatedDatabase,
 			object: nil)
 		
 		dismiss(animated: true)

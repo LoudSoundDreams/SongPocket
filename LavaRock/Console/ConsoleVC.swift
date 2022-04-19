@@ -47,12 +47,12 @@ final class ConsoleVC: UIViewController {
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(mediaLibraryAuthorizationStatusDidChange),
-			name: .LRMediaLibraryAuthorizationStatusDidChange,
+			name: .LRUserRespondedToAllowAccessToMediaLibrary,
 			object: nil)
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(reelDidChange),
-			name: .LRReelDidChange,
+			name: .LRModifiedReel,
 			object: nil)
 		
 		beginReflectingNowPlayingItem_console()
