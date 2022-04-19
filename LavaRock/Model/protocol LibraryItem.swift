@@ -11,7 +11,7 @@ protocol LibraryItem: NSManagedObject {
 	var libraryTitle: String? { get }
 	var index: Int64 { get set }
 	
-	func isInPlayer() -> Bool
+	func containsPlayhead() -> Bool
 }
 
 protocol LibraryContainer: LibraryItem {

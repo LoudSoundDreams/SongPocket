@@ -95,12 +95,12 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 		}
 	}
 	
-	final func songInPlayer(context: NSManagedObjectContext) -> Song? {
+	final func songContainingPlayhead(via: NSManagedObjectContext) -> Song? {
 		guard let nowPlayingItem = player?.nowPlayingItem else {
 			return nil
 		}
 		
-		let songsInPlayer = context.objectsFetched(for: { () -> NSFetchRequest<Song> in
+		let songsContainingPlayhead = via.objectsFetched(for: { () -> NSFetchRequest<Song> in
 			let request = Song.fetchRequest()
 			request.predicate = NSPredicate(
 				format: "persistentID == %lld",
@@ -108,8 +108,8 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 			return request
 		}())
 		guard
-			songsInPlayer.count == 1,
-			let song = songsInPlayer.first
+			songsContainingPlayhead.count == 1,
+			let song = songsContainingPlayhead.first
 		else {
 			return nil
 		}

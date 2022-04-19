@@ -43,7 +43,7 @@ extension ConsoleVC: UITableViewDataSource {
 		cell.configure(
 			with: Reel.mediaItems[indexPath.row] as SongMetadatum)
 		cell.indicateNowPlaying(
-			isInPlayer: Self.songInQueueIsInPlayer(at: indexPath))
+			containsPlayhead: Self.rowContainsPlayhead(at: indexPath))
 		
 		return cell
 	}

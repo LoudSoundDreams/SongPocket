@@ -37,7 +37,7 @@ extension LibraryTVC {
 				let cell = tableView.cellForRow(at: visibleIndexPath) as? NowPlayingIndicating,
 				let libraryItem = viewModel.itemOptional(at: visibleIndexPath) as? LibraryItem
 			else { return }
-			cell.indicateNowPlaying(isInPlayer: libraryItem.isInPlayer())
+			cell.indicateNowPlaying(containsPlayhead: libraryItem.containsPlayhead())
 		}
 		
 		freshenTransportToolbar() // Do this even if the view isn’t visible, so that the transport toolbar is freshened before it appears. This works; it’s just unusual.

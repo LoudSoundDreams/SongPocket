@@ -14,14 +14,14 @@ extension Collection: LibraryItem {
 	var libraryTitle: String? { title }
 	
 	@MainActor
-	final func isInPlayer() -> Bool {
+	final func containsPlayhead() -> Bool {
 		guard
 			let context = managedObjectContext,
-			let songInPlayer = TapeDeck.shared.songInPlayer(context: context)
+			let containingSong = TapeDeck.shared.songContainingPlayhead(via: context)
 		else {
 			return false
 		}
-		return objectID == songInPlayer.container?.container?.objectID
+		return objectID == containingSong.container?.container?.objectID
 	}
 }
 extension Collection: LibraryContainer {}

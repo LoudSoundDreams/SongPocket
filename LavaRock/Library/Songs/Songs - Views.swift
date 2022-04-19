@@ -144,7 +144,7 @@ final class SongCell: UITableViewCell {
 		
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
 		
-		indicateNowPlaying(isInPlayer: song.isInPlayer())
+		indicateNowPlaying(containsPlayhead: song.containsPlayhead())
 		
 		guard Enabling.songDotDotDot else { return }
 		guard let mediaItem = song.mpMediaItem() else {

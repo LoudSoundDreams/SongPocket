@@ -151,7 +151,7 @@ final class CollectionCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 		
-		indicateNowPlaying(isInPlayer: collection.isInPlayer())
+		indicateNowPlaying(containsPlayhead: collection.containsPlayhead())
 	}
 	
 	final override func layoutSubviews() {

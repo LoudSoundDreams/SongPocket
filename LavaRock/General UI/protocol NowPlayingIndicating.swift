@@ -14,12 +14,12 @@ protocol NowPlayingIndicating: AnyObject {
 	var accessibilityValue: String? { get set }
 }
 extension NowPlayingIndicating {
-	func indicateNowPlaying(isInPlayer: Bool) {
+	func indicateNowPlaying(containsPlayhead: Bool) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
 		guard
-			isInPlayer,
+			containsPlayhead,
 			let player = TapeDeck.shared.player
 		else {
 			speakerImageView.image = nil

@@ -15,14 +15,14 @@ extension Song: LibraryItem {
 	var libraryTitle: String? { metadatum()?.titleOnDisk }
 	
 	@MainActor
-	final func isInPlayer() -> Bool {
+	final func containsPlayhead() -> Bool {
 		guard
 			let context = managedObjectContext,
-			let songInPlayer = TapeDeck.shared.songInPlayer(context: context)
+			let containingSong = TapeDeck.shared.songContainingPlayhead(via: context)
 		else {
 			return false
 		}
-		return objectID == songInPlayer.objectID
+		return objectID == containingSong.objectID
 	}
 }
 extension Song {

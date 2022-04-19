@@ -22,7 +22,7 @@ extension ConsoleVC {
 				at: visibleIndexPath) as? NowPlayingIndicating
 			else { return }
 			cell.indicateNowPlaying(
-				isInPlayer: Self.songInQueueIsInPlayer(at: visibleIndexPath))
+				containsPlayhead: Self.rowContainsPlayhead(at: visibleIndexPath))
 		}
 		
 		freshenTransportToolbar()

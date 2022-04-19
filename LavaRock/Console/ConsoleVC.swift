@@ -81,7 +81,7 @@ final class ConsoleVC: UIViewController {
 	}
 	@objc private func nowPlayingItemDidChange() { freshenNowPlayingIndicatorsAndTransportToolbar_console() }
 	
-	static func songInQueueIsInPlayer(at indexPath: IndexPath) -> Bool {
+	static func rowContainsPlayhead(at indexPath: IndexPath) -> Bool {
 		guard let player = TapeDeck.shared.player else {
 			return false
 		}
