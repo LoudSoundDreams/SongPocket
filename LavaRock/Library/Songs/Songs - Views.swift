@@ -164,14 +164,14 @@ final class SongCell: UITableViewCell {
 						image: UIImage(systemName: "text.insert")
 					) { _ in
 						// ARC2DO
-						TapeDeck.shared.player?.playNext([mediaItem]) // TO DO
+						self.player?.playNext([mediaItem]) // TO DO
 					},
 					UIAction(
 						title: LocalizedString.playSongAndBelowLater,
 						image: UIImage(systemName: "text.append")
 					) { _ in
 						// ARC2DO
-						TapeDeck.shared.player?.playLast([mediaItem]) // TO DO
+						self.player?.playLast([mediaItem]) // TO DO
 					},
 				],
 				[
@@ -180,25 +180,26 @@ final class SongCell: UITableViewCell {
 						image: UIImage(systemName: "play") // TO DO: Reconsider
 					) { _ in
 						// ARC2DO
-						TapeDeck.shared.player?.playNow([mediaItem])
+						self.player?.playNow([mediaItem])
 					},
 					UIAction(
 						title: LocalizedString.playNext,
 						image: UIImage(systemName: "arrow.turn.up.right")
 					) { _ in
 						// ARC2DO
-						TapeDeck.shared.player?.playNext([mediaItem])
+						self.player?.playNext([mediaItem])
 					},
 					UIAction(
 						title: LocalizedString.playLater,
 						image: UIImage(systemName: "arrow.turn.down.right")
 					) { _ in
 						// ARC2DO
-						TapeDeck.shared.player?.playLast([mediaItem])
+						self.player?.playLast([mediaItem])
 					},
 				],
 			])
 	}
+	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	final override func layoutSubviews() {
 		super.layoutSubviews()

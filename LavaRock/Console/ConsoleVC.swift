@@ -21,6 +21,8 @@ final class ConsoleVC: UIViewController {
 	@IBOutlet final var queueTable: UITableView!
 	@IBOutlet private var futureModeChooser: FutureModeChooser!
 	
+	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
+	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		

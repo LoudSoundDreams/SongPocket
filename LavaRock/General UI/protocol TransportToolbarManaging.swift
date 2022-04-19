@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import MediaPlayer
 
 @MainActor
-protocol TransportToolbarManaging: PlayerReflecting {
+protocol TransportToolbarManaging: AnyObject {
 	// Adopting types must …
 	// • Respond to `LRReelDidChange` `Notification`s and call `freshenTransportToolbar`.
 	
@@ -24,6 +25,8 @@ protocol TransportToolbarManaging: PlayerReflecting {
 	var nextSongButton: UIBarButtonItem { get }
 }
 extension TransportToolbarManaging {
+	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
+	
 	var transportButtons: [UIBarButtonItem] {
 		if Enabling.jumpButtons {
 			return [

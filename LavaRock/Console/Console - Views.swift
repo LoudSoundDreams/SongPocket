@@ -91,6 +91,8 @@ final class FutureModeChooser: UISegmentedControl {
 		}
 	}
 	
+	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
+	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		

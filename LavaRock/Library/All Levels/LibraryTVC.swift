@@ -32,6 +32,8 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: Subclasses Should Not Customize
 	
+	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
+	
 	// `TransportToolbarManaging`
 	private(set) lazy var previousSongButton = makePreviousSongButton()
 	private(set) lazy var rewindButton = makeRewindButton()
