@@ -59,9 +59,9 @@ extension MusicFolder {
 		os_signpost(.end, log: .cleanup, name: "Group metadata by album")
 		
 		albums.forEach { album in
-			os_signpost(.begin, log: .cleanup, name: "Reestimate release date for one Album")
+			os_signpost(.begin, log: .cleanup, name: "Re-estimate release date for one Album")
 			defer {
-				os_signpost(.end, log: .cleanup, name: "Reestimate release date for one Album")
+				os_signpost(.end, log: .cleanup, name: "Re-estimate release date for one Album")
 			}
 			
 			album.releaseDateEstimate = nil

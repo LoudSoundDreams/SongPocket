@@ -41,7 +41,7 @@ extension ConsoleVC: UITableViewDataSource {
 		else { return UITableViewCell() }
 		
 		cell.configure(
-			with: Reel.mediaItems[indexPath.row] as SongMetadatum)
+			with: Reel.mediaItems[indexPath.row])
 		cell.reflectPlayhead(
 			containsPlayhead: Self.rowContainsPlayhead(at: indexPath))
 		

@@ -236,15 +236,13 @@ extension Album {
 		defer {
 			os_signpost(.end, log: .album, name: "Query for MPMediaItemCollection")
 		}
-		if
+		guard
 			let queriedAlbums = albumsQuery.collections,
-			queriedAlbums.count == 1,
-			let result = queriedAlbums.first
-		{
-			return result
-		} else {
+			queriedAlbums.count == 1
+		else {
 			return nil
 		}
+		return queriedAlbums.first
 	}
 	
 	// MARK: - Formatted Attributes
@@ -252,8 +250,7 @@ extension Album {
 	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownAlbumArtist
 	
 	final func coverArt(at size: CGSize) -> UIImage? {
-		let representative = representativeMPMediaItem()
-		return representative?.coverArt(at: size)
+		return representativeMPMediaItem()?.coverArt(at: size)
 	}
 	
 	final func titleFormattedOrPlaceholder() -> String {
@@ -261,26 +258,22 @@ extension Album {
 	}
 	
 	private func titleFormattedOptional() -> String? {
-		if
-			let representative = representativeMPMediaItem(),
-			let fetchedAlbumTitle = representative.albumTitleOnDisk,
+		guard
+			let fetchedAlbumTitle = representativeMPMediaItem()?.albumTitleOnDisk,
 			fetchedAlbumTitle != ""
-		{
-			return fetchedAlbumTitle
-		} else {
+		else {
 			return nil
 		}
+		return fetchedAlbumTitle
 	}
 	
 	final func albumArtistFormattedOrPlaceholder() -> String {
-		if
-			let representative = representativeMPMediaItem(),
-			let fetchedAlbumArtist = representative.albumArtistOnDisk // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
-		{
-			return fetchedAlbumArtist
-		} else {
+		guard
+			let fetchedAlbumArtist = representativeMPMediaItem()?.albumArtistOnDisk // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
+		else {
 			return Self.unknownAlbumArtistPlaceholder
 		}
+		return fetchedAlbumArtist
 	}
 	
 	private static let releaseDateFormatter: DateFormatter = {

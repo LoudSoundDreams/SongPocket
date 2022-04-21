@@ -116,14 +116,12 @@ extension Song {
 		defer {
 			os_signpost(.end, log: .song, name: "Query for MPMediaItem")
 		}
-		if
+		guard
 			let queriedSongs = songsQuery.items,
-			queriedSongs.count == 1,
-			let result = queriedSongs.first
-		{
-			return result
-		} else {
+			queriedSongs.count == 1
+		else {
 			return nil
 		}
+		return queriedSongs.first
 	}
 }

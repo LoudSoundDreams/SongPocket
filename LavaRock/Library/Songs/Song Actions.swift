@@ -58,7 +58,7 @@ extension SongsTVC {
 		
 		// Play last
 		let firstSongTitle: String = {
-			(selectedMediaItem as SongMetadatum).titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+			selectedMediaItem.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
 		}()
 		let appendSongAndBelow = UIAlertAction(
 			title: Enabling.songDotDotDot
