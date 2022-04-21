@@ -38,11 +38,28 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 			os_signpost(.end, log: .merge, name: "1. Merge changes")
 		}
 		
+#if targetEnvironment(simulator)
+		context.performAndWait {
+			mergeChanges(toMatch: [
+				Sim_SongMetadatum(
+					albumArtistOnDisk: "GFriend",
+					albumTitleOnDisk: "回:Walpurgis Night",
+					discCountOnDisk: 1,
+					discNumberOnDisk: 1,
+					trackNumberOnDisk: 1,
+					titleOnDisk: "Mago",
+					artistOnDisk: "GFriend",
+					releaseDateOnDisk: .now,
+					dateAddedOnDisk: .now),
+			])
+		}
+#else
 		if let freshMediaItems = MPMediaQuery.songs().items {
 			context.performAndWait {
 				mergeChanges(toMatch: freshMediaItems)
 			}
 		}
+#endif
 	}
 	
 	deinit {

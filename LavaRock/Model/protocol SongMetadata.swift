@@ -55,6 +55,7 @@ extension MPMediaItem: SongMetadatum {
 	}
 }
 
+#if targetEnvironment(simulator)
 struct Sim_SongMetadatum: SongMetadatum {
 	let albumID: AlbumID
 	let songID: SongID
@@ -76,6 +77,45 @@ struct Sim_SongMetadatum: SongMetadatum {
 		return nil
 	}
 }
+struct Sim_AlbumIDDispenser {
+	private static var sim_nextAvailable = 1
+	static func takeNumber() -> AlbumID {
+		return AlbumID(sim_nextAvailable)
+	}
+}
+struct Sim_SongIDDispenser {
+	private static var sim_nextAvailable = 1
+	static func takeNumber() -> SongID {
+		return SongID(sim_nextAvailable)
+	}
+}
+extension Sim_SongMetadatum {
+	init(
+		albumArtistOnDisk: String?,
+		albumTitleOnDisk: String?,
+		discCountOnDisk: Int,
+		discNumberOnDisk: Int,
+		trackNumberOnDisk: Int,
+		titleOnDisk: String?,
+		artistOnDisk: String?,
+		releaseDateOnDisk: Date?,
+		dateAddedOnDisk: Date
+	) {
+		self.init(
+			albumID: Sim_AlbumIDDispenser.takeNumber(), // TO DO
+			songID: Sim_SongIDDispenser.takeNumber(),
+			albumArtistOnDisk: albumArtistOnDisk,
+			albumTitleOnDisk: albumTitleOnDisk,
+			discCountOnDisk: discCountOnDisk,
+			discNumberOnDisk: discNumberOnDisk,
+			trackNumberOnDisk: trackNumberOnDisk,
+			titleOnDisk: titleOnDisk,
+			artistOnDisk: artistOnDisk,
+			releaseDateOnDisk: releaseDateOnDisk,
+			dateAddedOnDisk: dateAddedOnDisk)
+	}
+}
+#endif
 
 struct SongMetadatumExtras {
 	private init() {}
