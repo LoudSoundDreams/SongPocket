@@ -97,7 +97,13 @@ extension Song {
 	// MARK: - Media Player
 	
 	final func metadatum() -> SongMetadatum? {
+#if targetEnvironment(simulator)
+		return Sim_Database.songMetadata.first(where: { metadatum in
+			persistentID == metadatum.songID
+		})
+#else
 		return mpMediaItem()
+#endif
 	}
 	
 	// Slow.

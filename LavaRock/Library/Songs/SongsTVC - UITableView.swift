@@ -78,7 +78,7 @@ extension SongsTVC {
 			song: songsViewModel.songNonNil(at: indexPath),
 			albumRepresentative: {
 				let album = songsViewModel.album(forSection: indexPath.section)
-				return album.representativeMPMediaItem()
+				return album.representativeSongMetadatum()
 			}())
 		
 		return cell

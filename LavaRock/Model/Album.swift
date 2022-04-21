@@ -216,8 +216,16 @@ extension Album {
 	
 	// MARK: - Media Player
 	
-	final func representativeMPMediaItem() -> MPMediaItem? {
+	final func representativeSongMetadatum() -> SongMetadatum? {
+#if targetEnvironment(simulator)
+		// To match `mpMediaItemCollection`
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return nil
+		}
+		return songs(sorted: false).first?.metadatum()
+#else
 		return mpMediaItemCollection()?.representativeItem
+#endif
 	}
 	
 	// Slow.
@@ -250,7 +258,7 @@ extension Album {
 	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownAlbumArtist
 	
 	final func coverArt(at size: CGSize) -> UIImage? {
-		return representativeMPMediaItem()?.coverArt(at: size)
+		return representativeSongMetadatum()?.coverArt(at: size)
 	}
 	
 	final func titleFormattedOrPlaceholder() -> String {
@@ -259,7 +267,7 @@ extension Album {
 	
 	private func titleFormattedOptional() -> String? {
 		guard
-			let fetchedAlbumTitle = representativeMPMediaItem()?.albumTitleOnDisk,
+			let fetchedAlbumTitle = representativeSongMetadatum()?.albumTitleOnDisk,
 			fetchedAlbumTitle != ""
 		else {
 			return nil
@@ -269,7 +277,7 @@ extension Album {
 	
 	final func albumArtistFormattedOrPlaceholder() -> String {
 		guard
-			let fetchedAlbumArtist = representativeMPMediaItem()?.albumArtistOnDisk // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
+			let fetchedAlbumArtist = representativeSongMetadatum()?.albumArtistOnDisk // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
 		else {
 			return Self.unknownAlbumArtistPlaceholder
 		}
