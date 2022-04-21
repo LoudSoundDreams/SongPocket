@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 typealias MPAlbumID = Int64
 typealias MPSongID = Int64
@@ -16,30 +17,36 @@ protocol SongMetadatum {
 	
 	var albumArtistOnDisk: String? { get }
 	var albumTitleOnDisk: String? { get }
+	
 	var discCountOnDisk: Int { get }
 	var discNumberOnDisk: Int { get }
 	var trackNumberOnDisk: Int { get }
+	
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
+	
 	var releaseDateOnDisk: Date? { get }
 	var dateAddedOnDisk: Date { get }
 	
 	func coverArt(at size: CGSize) -> UIImage?
 }
 
-import MediaPlayer
 extension MPMediaItem: SongMetadatum {
 	var mpAlbumID: MPAlbumID { MPAlbumID(bitPattern: albumPersistentID) }
 	var mpSongID: MPSongID { MPSongID(bitPattern: persistentID) }
 	
 	// Media Player reports unknown values as …
+	
 	var albumArtistOnDisk: String? { albumArtist } // … `nil`, as of iOS 14.7 developer beta 5.
 	var albumTitleOnDisk: String? { albumTitle } // … `""`, as of iOS 14.7 developer beta 5.
+	
 	var discCountOnDisk: Int { discCount } // … `0`, as of iOS 15.0 RC.
 	var discNumberOnDisk: Int { discNumber } // … `1`, as of iOS 14.7 developer beta 5.
 	var trackNumberOnDisk: Int { albumTrackNumber } // … `0`, as of iOS 14.7 developer beta 5.
+	
 	var titleOnDisk: String? { title } // … we don’t know, because Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
 	var artistOnDisk: String? { artist }
+	
 	var releaseDateOnDisk: Date? { releaseDate }
 	var dateAddedOnDisk: Date { dateAdded }
 	

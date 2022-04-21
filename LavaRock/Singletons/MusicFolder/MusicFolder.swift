@@ -38,9 +38,10 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 			os_signpost(.end, log: .merge, name: "1. Merge changes")
 		}
 		
-		guard let freshMediaItems = MPMediaQuery.songs().items else { return }
-		context.performAndWait {
-			mergeChanges(toMatch: freshMediaItems)
+		if let freshMediaItems = MPMediaQuery.songs().items {
+			context.performAndWait {
+				mergeChanges(toMatch: freshMediaItems)
+			}
 		}
 	}
 	
