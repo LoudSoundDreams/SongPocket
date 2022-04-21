@@ -31,6 +31,21 @@ protocol SongMetadatum {
 	func coverArt(at size: CGSize) -> UIImage?
 }
 
+struct Sim_SongMetadatum: SongMetadatum {
+	let mpAlbumID: MPAlbumID
+	let mpSongID: MPSongID
+	
+	let albumArtistOnDisk, albumTitleOnDisk: String?
+	let discCountOnDisk, discNumberOnDisk, trackNumberOnDisk: Int
+	let titleOnDisk, artistOnDisk: String?
+	let releaseDateOnDisk: Date?
+	let dateAddedOnDisk: Date
+	
+	func coverArt(at size: CGSize) -> UIImage? {
+		return nil
+	}
+}
+
 extension MPMediaItem: SongMetadatum {
 	var mpAlbumID: MPAlbumID { MPAlbumID(bitPattern: albumPersistentID) }
 	var mpSongID: MPSongID { MPSongID(bitPattern: persistentID) }
