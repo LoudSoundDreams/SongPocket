@@ -104,7 +104,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 			let request = Song.fetchRequest()
 			request.predicate = NSPredicate(
 				format: "persistentID == %lld",
-				MPSongID(bitPattern: nowPlayingItem.persistentID))
+				SongID(bitPattern: nowPlayingItem.persistentID))
 			return request
 		}())
 		guard

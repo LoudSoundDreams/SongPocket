@@ -28,7 +28,7 @@ extension Song: LibraryItem {
 extension Song {
 	convenience init(
 		atEndOf album: Album,
-		mpSongID: MPSongID,
+		songID: SongID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .song, name: "Create a Song at the bottom")
@@ -37,15 +37,15 @@ extension Song {
 		}
 		
 		self.init(context: context)
-		persistentID = mpSongID
+		persistentID = songID
 		index = Int64(album.contents?.count ?? 0)
 		container = album
 	}
 	
-	// Use `init(atEndOf:mpSongID:context:)` if possible. It’s faster.
+	// Use `init(atEndOf:songID:context:)` if possible. It’s faster.
 	convenience init(
 		atBeginningOf album: Album,
-		mpSongID: MPSongID,
+		songID: SongID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .song, name: "Create a Song at the top")
@@ -56,7 +56,7 @@ extension Song {
 		album.songs(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		persistentID = mpSongID
+		persistentID = songID
 		index = 0
 		container = album
 	}

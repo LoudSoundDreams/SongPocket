@@ -8,12 +8,12 @@
 import UIKit
 import MediaPlayer
 
-typealias MPAlbumID = Int64
-typealias MPSongID = Int64
+typealias AlbumID = Int64
+typealias SongID = Int64
 
 protocol SongMetadatum {
-	var mpAlbumID: MPAlbumID { get }
-	var mpSongID: MPSongID { get }
+	var albumID: AlbumID { get }
+	var songID: SongID { get }
 	
 	var albumArtistOnDisk: String? { get }
 	var albumTitleOnDisk: String? { get }
@@ -32,8 +32,8 @@ protocol SongMetadatum {
 }
 
 struct Sim_SongMetadatum: SongMetadatum {
-	let mpAlbumID: MPAlbumID
-	let mpSongID: MPSongID
+	let albumID: AlbumID
+	let songID: SongID
 	
 	let albumArtistOnDisk, albumTitleOnDisk: String?
 	let discCountOnDisk, discNumberOnDisk, trackNumberOnDisk: Int
@@ -47,8 +47,8 @@ struct Sim_SongMetadatum: SongMetadatum {
 }
 
 extension MPMediaItem: SongMetadatum {
-	var mpAlbumID: MPAlbumID { MPAlbumID(bitPattern: albumPersistentID) }
-	var mpSongID: MPSongID { MPSongID(bitPattern: persistentID) }
+	var albumID: AlbumID { AlbumID(bitPattern: albumPersistentID) }
+	var songID: SongID { SongID(bitPattern: persistentID) }
 	
 	// Media Player reports unknown values as …
 	

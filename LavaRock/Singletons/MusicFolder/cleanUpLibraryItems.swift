@@ -54,8 +54,8 @@ extension MusicFolder {
 		os_signpost(.end, log: .cleanup, name: "Filter out metadata without release dates")
 		
 		os_signpost(.begin, log: .cleanup, name: "Group metadata by album")
-		let metadataByMPAlbumID
-		= Dictionary(grouping: metadataWithReleaseDates) { $0.mpAlbumID }
+		let metadataByAlbumID
+		= Dictionary(grouping: metadataWithReleaseDates) { $0.albumID }
 		os_signpost(.end, log: .cleanup, name: "Group metadata by album")
 		
 		albums.forEach { album in
@@ -68,7 +68,7 @@ extension MusicFolder {
 			
 			os_signpost(.begin, log: .cleanup, name: "Find the release dates associated with this Album")
 			// For `Album`s with no release dates, using `guard` to return early is slightly faster than optional chaining.
-			guard let matchingMetadata = metadataByMPAlbumID[album.albumPersistentID] else {
+			guard let matchingMetadata = metadataByAlbumID[album.albumPersistentID] else {
 				os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 				return
 			}

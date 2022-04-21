@@ -21,21 +21,21 @@ extension MusicFolder {
 			os_signpost(.end, log: .merge, name: "3. Create library items")
 		}
 		
-		func groupedByMPAlbumID(
+		func groupedByAlbumID(
 			_ metadata: [SongMetadatum]
-		) -> [MPAlbumID: [SongMetadatum]] {
+		) -> [AlbumID: [SongMetadatum]] {
 			os_signpost(.begin, log: .create, name: "Initial group")
 			defer {
 				os_signpost(.end, log: .create, name: "Initial group")
 			}
-			return Dictionary(grouping: metadata) { $0.mpAlbumID }
+			return Dictionary(grouping: metadata) { $0.albumID }
 		}
 		
 		// Group the `SongMetadatum`s into albums, sorted by the order we’ll add them to our database in.
 		let metadataGroups: [[SongMetadatum]] = {
 			if isFirstImport {
 				// Since our database is empty, we’ll add items from the top down, because it’s faster.
-				let dictionary = groupedByMPAlbumID(newMetadata)
+				let dictionary = groupedByAlbumID(newMetadata)
 				let groups = dictionary.map { $0.value }
 				os_signpost(.begin, log: .create, name: "Initial sort")
 				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(metadataGroups: groups)
@@ -47,7 +47,7 @@ extension MusicFolder {
 				os_signpost(.begin, log: .create, name: "Initial sort")
 				let sortedMetadata = newMetadata.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
 				os_signpost(.end, log: .create, name: "Initial sort")
-				let dictionary = groupedByMPAlbumID(sortedMetadata)
+				let dictionary = groupedByAlbumID(sortedMetadata)
 				let groupsOfSortedMetadata = dictionary.map { $0.value }
 				os_signpost(.begin, log: .create, name: "Initial sort 2")
 				let sortedGroups = groupsOfSortedMetadata.sorted { leftGroup, rightGroup in
@@ -59,7 +59,7 @@ extension MusicFolder {
 			// We’ll sort `Song`s within each `Album` later, because it depends on whether the existing `Song`s in each `Album` are in album order.
 		}()
 		
-		var existingAlbumsByID: Dictionary<MPAlbumID, Album> = {
+		var existingAlbumsByID: Dictionary<AlbumID, Album> = {
 			let tuplesForExistingAlbums = existingAlbums.map { album in
 				(album.albumPersistentID, album)
 			}
@@ -116,25 +116,25 @@ extension MusicFolder {
 	
 	private func createSongsAndReturnNewContainers(
 		for metadata: [SongMetadatum],
-		existingAlbumsByID: [MPAlbumID: Album],
+		existingAlbumsByID: [AlbumID: Album],
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (Album?, Collection?) {
 		let firstMetadatum = metadata.first!
 		
 		// If we already have a matching `Album` to add the `Song`s to …
-		let mpAlbumID = firstMetadatum.mpAlbumID
-		if let matchingExistingAlbum = existingAlbumsByID[mpAlbumID] {
+		let albumID = firstMetadatum.albumID
+		if let matchingExistingAlbum = existingAlbumsByID[albumID] {
 			
 			// … then add the `Song`s to that `Album`.
-			let mpSongIDs = metadata.map { $0.mpSongID }
+			let songIDs = metadata.map { $0.songID }
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
-				matchingExistingAlbum.createSongsAtBeginning(withMPSongIDs: mpSongIDs)
+				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
 				os_signpost(.begin, log: .create, name: "Put the existing Album back in order")
 				matchingExistingAlbum.sortSongsByDefaultOrder()
 				os_signpost(.end, log: .create, name: "Put the existing Album back in order")
 			} else {
-				matchingExistingAlbum.createSongsAtBeginning(withMPSongIDs: mpSongIDs)
+				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
 			}
 			
 			return (nil, nil)
@@ -151,13 +151,13 @@ extension MusicFolder {
 			
 			// … and then add the `Song`s to that `Album`.
 			os_signpost(.begin, log: .create, name: "Sort the Songs for the new Album")
-			let sortedMPSongIDs = metadata.sorted {
+			let sortedSongIDs = metadata.sorted {
 				$0.precedesInDefaultOrder(inSameAlbum: $1)
 			}.map {
-				$0.mpSongID
+				$0.songID
 			}
 			os_signpost(.end, log: .create, name: "Sort the Songs for the new Album")
-			newAlbum.createSongsAtEnd(withMPSongIDs: sortedMPSongIDs)
+			newAlbum.createSongsAtEnd(with: sortedSongIDs)
 			
 			return newContainers
 		}
@@ -181,12 +181,12 @@ extension MusicFolder {
 				if isFirstImport {
 					return Album(
 						atEndOf: matchingExistingCollection,
-						mpAlbumID: newMetadatum.mpAlbumID,
+						albumID: newMetadatum.albumID,
 						context: context)
 				} else {
 					return Album(
 						atBeginningOf: matchingExistingCollection,
-						mpAlbumID: newMetadatum.mpAlbumID,
+						albumID: newMetadatum.albumID,
 						context: context)
 				}}()
 			
@@ -217,7 +217,7 @@ extension MusicFolder {
 			// … and then put the `Album` into that `Collection`.
 			let newAlbum = Album(
 				atEndOf: newCollection,
-				mpAlbumID: newMetadatum.mpAlbumID,
+				albumID: newMetadatum.albumID,
 				context: context)
 			
 			return (newAlbum, newCollection)

@@ -25,27 +25,27 @@ extension MusicFolder {
 		var potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)] = [] // We’ll sort these eventually.
 		var songsToDelete: [Song] = []
 		
-		var metadataByMPSongID: Dictionary<MPSongID, SongMetadatum> = {
-			let tuples = freshMetadata.map { metadatum in (metadatum.mpSongID, metadatum) }
+		var metadataBySongID: Dictionary<SongID, SongMetadatum> = {
+			let tuples = freshMetadata.map { metadatum in (metadatum.songID, metadatum) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
 		
 		existingSongs.forEach { existingSong in
-			let mpSongID = existingSong.persistentID
-			if let potentiallyUpdatedMetadatum = metadataByMPSongID[mpSongID] {
+			let songID = existingSong.persistentID
+			if let potentiallyUpdatedMetadatum = metadataBySongID[songID] {
 				// We have an existing `Song` for this `SongMetadatum`. We might need to update it.
 				potentiallyOutdatedSongsAndFreshMetadata.append(
 					(existingSong, potentiallyUpdatedMetadatum)
 				)
 				
-				metadataByMPSongID[mpSongID] = nil
+				metadataBySongID[songID] = nil
 			} else {
 				// This `Song` no longer corresponds to any `SongMetadatum`. We’ll delete it.
 				songsToDelete.append(existingSong)
 			}
 		}
-		// `metadataByMPSongID` now holds the `SongMetadatum`s that we don’t have `Song`s for.
-		let newMetadata = metadataByMPSongID.map { $0.value }
+		// `metadataBySongID` now holds the `SongMetadatum`s that we don’t have `Song`s for.
+		let newMetadata = metadataBySongID.map { $0.value }
 		os_signpost(.end, log: .merge, name: "Initial parse")
 		
 		updateLibraryItems( // Update before creating and deleting, so that we can easily put new `Song`s above modified `Song`s.

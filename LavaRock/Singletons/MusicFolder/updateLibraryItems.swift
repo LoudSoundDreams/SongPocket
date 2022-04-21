@@ -31,7 +31,7 @@ extension MusicFolder {
 	
 	private func mergeClonedAlbumsAndReturnUniqueAlbumsByID(
 		potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)]
-	) -> [MPAlbumID: Album] {
+	) -> [AlbumID: Album] {
 		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
 		// We never should have ended up with two `Album`s with the same `albumPersistentID` in the first place, but this makes the merger resilient to that mistake.
 		
@@ -43,8 +43,8 @@ extension MusicFolder {
 		os_signpost(.end, log: .update, name: "Fetch all Albums")
 		
 		os_signpost(.begin, log: .update, name: "Initialize uniqueAlbums")
-		// We only really need a `Set<Album>` here, but `moveSongsToUpdatedAlbums` needs a `[MPAlbumID: Album]`, so we can reuse this.
-		let uniqueAlbumsByID: Dictionary<MPAlbumID, Album> = {
+		// We only really need a `Set<Album>` here, but `moveSongsToUpdatedAlbums` needs a `[AlbumID: Album]`, so we can reuse this.
+		let uniqueAlbumsByID: Dictionary<AlbumID, Album> = {
 			let tuplesForAllAlbums = allAlbums.map { album in
 				(album.albumPersistentID, album)
 			}
@@ -91,13 +91,13 @@ extension MusicFolder {
 	
 	private func moveSongsToUpdatedAlbums(
 		potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)],
-		uniqueAlbumsByID: [MPAlbumID: Album]
+		uniqueAlbumsByID: [AlbumID: Album]
 	) {
-		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongMetadatum.mpAlbumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
+		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongMetadatum.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
 		
 		os_signpost(.begin, log: .update, name: "Filter to Songs moved to different Albums")
 		let unsortedOutdatedTuples = potentiallyOutdatedSongsAndFreshMetadata.filter { (song, metadatum) in
-			song.container!.albumPersistentID != metadatum.mpAlbumID
+			song.container!.albumPersistentID != metadatum.albumID
 		}
 		os_signpost(.end, log: .update, name: "Filter to Songs moved to different Albums")
 		
@@ -117,17 +117,17 @@ extension MusicFolder {
 			
 			// Get this `Song`’s fresh `albumPersistentID`.
 			os_signpost(.begin, log: .update, name: "Get one Song’s fresh albumPersistentID")
-			let newMPAlbumID = metadatum.mpAlbumID
+			let newAlbumID = metadatum.albumID
 			os_signpost(.end, log: .update, name: "Get one Song’s fresh albumPersistentID")
 			
 			// If this Song’s `albumPersistentID` has stayed the same, move on to the next one.
 			guard
-				newMPAlbumID != song.container!.albumPersistentID
+				newAlbumID != song.container!.albumPersistentID
 			else { return }
 			
 			// This `Song`’s `albumPersistentID` has changed.
 			// If we already have a matching `Album` to move the `Song` to …
-			if let existingAlbum = existingAlbumsByID[newMPAlbumID] {
+			if let existingAlbum = existingAlbumsByID[newAlbumID] {
 				// … then move the `Song` to that `Album`.
 				os_signpost(.begin, log: .update, name: "Move a Song to an existing Album")
 				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
@@ -141,7 +141,7 @@ extension MusicFolder {
 				let existingCollection = song.container!.container!
 				let newAlbum = Album(
 					atBeginningOf: existingCollection,
-					mpAlbumID: metadatum.mpAlbumID,
+					albumID: metadatum.albumID,
 					context: context)
 				
 				// … and then move the `Song` to that `Album`.
@@ -149,7 +149,7 @@ extension MusicFolder {
 				song.container = newAlbum
 				
 				// Make a note of the new `Album`.
-				existingAlbumsByID[newMPAlbumID] = newAlbum
+				existingAlbumsByID[newAlbumID] = newAlbum
 				
 				os_signpost(.end, log: .update, name: "Move a Song to a new Album")
 			}

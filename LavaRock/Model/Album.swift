@@ -29,7 +29,7 @@ extension Album: LibraryContainer {}
 extension Album {
 	convenience init(
 		atEndOf collection: Collection,
-		mpAlbumID: MPAlbumID,
+		albumID: AlbumID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .album, name: "Create an Album at the bottom")
@@ -38,15 +38,15 @@ extension Album {
 		}
 		
 		self.init(context: context)
-		albumPersistentID = mpAlbumID
+		albumPersistentID = albumID
 		index = Int64(collection.contents?.count ?? 0)
 		container = collection
 	}
 	
-	// Use `init(atEndOf:mpAlbumID:context:)` if possible. It’s faster.
+	// Use `init(atEndOf:albumID:context:)` if possible. It’s faster.
 	convenience init(
 		atBeginningOf collection: Collection,
-		mpAlbumID: MPAlbumID,
+		albumID: AlbumID,
 		context: NSManagedObjectContext
 	) {
 		os_signpost(.begin, log: .album, name: "Create an Album at the top")
@@ -57,7 +57,7 @@ extension Album {
 		collection.albums(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		albumPersistentID = mpAlbumID
+		albumPersistentID = albumID
 		index = 0
 		container = collection
 	}
@@ -113,7 +113,7 @@ extension Album {
 		}
 		
 		return metadata.indices.allSatisfy { index in
-			metadata[index].mpSongID == sortedMetadata[index].mpSongID
+			metadata[index].songID == sortedMetadata[index].songID
 		}
 	}
 	
@@ -148,31 +148,31 @@ extension Album {
 	
 	// MARK: Creating
 	
-	final func createSongsAtEnd(withMPSongIDs mpSongIDs: [MPSongID]) {
+	final func createSongsAtEnd(with songIDs: [SongID]) {
 		os_signpost(.begin, log: .album, name: "Create Songs at the bottom")
 		defer {
 			os_signpost(.end, log: .album, name: "Create Songs at the bottom")
 		}
 		
-		mpSongIDs.forEach {
+		songIDs.forEach {
 			let _ = Song(
 				atEndOf: self,
-				mpSongID: $0,
+				songID: $0,
 				context: managedObjectContext!)
 		}
 	}
 	
 	// Use `createSongsAtEnd` if possible. It’s faster.
-	final func createSongsAtBeginning(withMPSongIDs mpSongIDs: [MPSongID]) {
+	final func createSongsAtBeginning(with songIDs: [SongID]) {
 		os_signpost(.begin, log: .album, name: "Create Songs at the top")
 		defer {
 			os_signpost(.end, log: .album, name: "Create Songs at the top")
 		}
 		
-		mpSongIDs.reversed().forEach {
+		songIDs.reversed().forEach {
 			let _ = Song(
 				atBeginningOf: self,
-				mpSongID: $0,
+				songID: $0,
 				context: managedObjectContext!)
 		}
 	}
