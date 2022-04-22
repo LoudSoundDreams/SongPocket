@@ -311,6 +311,13 @@ class LibraryTVC: UITableViewController {
 		setBarButtons(animated: animated)
 		if Enabling.console {
 			navigationController?.setToolbarHidden(!editing, animated: true)
+			
+			tabBarController?.tabBar.tintColor = editing
+			? .placeholderText
+			: .tintColor
+			if let customTBC = tabBarController as? TabBarController {
+				customTBC.allowsSelecting = !editing
+			}
 		}
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.

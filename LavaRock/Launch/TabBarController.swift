@@ -12,6 +12,8 @@ final class TabBarController: UITabBarController {
 	// `MovesThemeToWindow`
 	static var didMoveThemeToWindow = false
 	
+	var allowsSelecting = true
+	
 	final override var selectedViewController: UIViewController? {
 		didSet {
 			if selectedViewController is LibraryNC {
@@ -31,6 +33,8 @@ final class TabBarController: UITabBarController {
 	
 	final override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		delegate = self
 		
 		if Enabling.swiftUI__console {
 			guard let viewControllers = viewControllers else {
@@ -71,3 +75,11 @@ final class TabBarController: UITabBarController {
 	}
 }
 extension TabBarController: MovesThemeToWindow {}
+extension TabBarController: UITabBarControllerDelegate {
+	final func tabBarController(
+		_ tabBarController: UITabBarController,
+		shouldSelect viewController: UIViewController
+	) -> Bool {
+		return allowsSelecting
+	}
+}
