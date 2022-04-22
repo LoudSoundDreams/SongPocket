@@ -16,16 +16,16 @@ final class TabBarController: UITabBarController {
 	
 	final override var selectedViewController: UIViewController? {
 		didSet {
-			if selectedViewController is LibraryNC {
-				let appearance = tabBar.standardAppearance
-				appearance.configureWithDefaultBackground()
-				tabBar.standardAppearance = appearance
-			} else if
+			if
 				(selectedViewController as? UINavigationController)?
 					.viewControllers.first is ConsoleVC
 			{
 				let appearance = tabBar.standardAppearance
 				appearance.configureWithTransparentBackground()
+				tabBar.standardAppearance = appearance
+			} else {
+				let appearance = tabBar.standardAppearance
+				appearance.configureWithDefaultBackground()
 				tabBar.standardAppearance = appearance
 			}
 		}
