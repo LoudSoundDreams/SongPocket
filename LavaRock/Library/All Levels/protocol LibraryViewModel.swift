@@ -136,19 +136,6 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func newItemsAndSection(
-		forIndexOfGroup indexOfGroup: Int
-	) -> (
-		newItems: [NSManagedObject],
-		section: Int
-	) {
-		let newItems = groups[indexOfGroup].itemsFetched(
-			entityName: Self.entityName,
-			context: context)
-		let section = numberOfPresections + indexOfGroup
-		return (newItems, section)
-	}
-	
 	func sectionStructures() -> [
 		SectionStructure<LibrarySectionIdentifier, LibraryRowIdentifier>
 	] {
