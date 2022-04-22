@@ -89,7 +89,9 @@ extension OptionsTVC {
 		switch sectionCase {
 		case .theme:
 			if Self.indexPathsOfLightingRows.contains(indexPath) {
-				return tableView.dequeueReusableCell(withIdentifier: "Lighting", for: indexPath)
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Lighting",
+					for: indexPath) as? LightingCell ?? UITableViewCell()
 			} else {
 				return accentColorCell(forRowAt: indexPath)
 			}

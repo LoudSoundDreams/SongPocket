@@ -8,6 +8,14 @@
 import UIKit
 import StoreKit
 
+final class LightingCell: UITableViewCell {
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
+	}
+}
+
 final class LightingChooser: UISegmentedControl {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -77,6 +85,12 @@ final class AccentColorCell: UITableViewCell {
 		super.tintColorDidChange()
 		
 		configure()
+	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
 
