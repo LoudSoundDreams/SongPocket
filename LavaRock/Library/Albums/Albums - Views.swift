@@ -20,6 +20,12 @@ final class MoveHereCell: UITableViewCell {
 		
 		moveHereLabel.textColor = .tintColor
 	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
+	}
 }
 extension MoveHereCell: CellTintingWhenSelected {}
 

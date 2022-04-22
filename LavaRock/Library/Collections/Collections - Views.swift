@@ -89,6 +89,12 @@ final class CreateCollectionCell: UITableViewCell {
 			newCollectionLabel.text = LocalizedString.newSectionButtonTitle
 		}
 	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
+	}
 }
 extension CreateCollectionCell: CellTintingWhenSelected {}
 
