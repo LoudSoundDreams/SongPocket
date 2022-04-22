@@ -24,6 +24,8 @@ extension SongsTVC {
 			let player = player
 		else { return }
 		
+		// TO DO: Mock `selectedMediaItem` in the Simulator.
+		
 		let selectedMediaItemAndBelow: [MPMediaItem]
 		= viewModel
 			.itemsInGroup(startingAt: selectedIndexPath)
