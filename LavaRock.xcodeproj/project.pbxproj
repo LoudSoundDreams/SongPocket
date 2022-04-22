@@ -388,7 +388,7 @@
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				07FF1DDF27F8FF0300DF9B78 /* Static */,
 				07E0BBFE2765680C0010117E /* Extensions */,
-				07CD864C27CAA3CC00286E6A /* Weak.swift */,
+				07FB52C92813693F00CCCBA5 /* Helpers */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				0748AEAF24F394F9000FBC61 /* Launch */,
 				07F1881F27F6B3750074809D /* Singletons */,
@@ -569,6 +569,14 @@
 				074AB85D27CAD9C3007B63D2 /* Reel.swift */,
 			);
 			path = Singletons;
+			sourceTree = "<group>";
+		};
+		07FB52C92813693F00CCCBA5 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				07CD864C27CAA3CC00286E6A /* Weak.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Model */ = {
