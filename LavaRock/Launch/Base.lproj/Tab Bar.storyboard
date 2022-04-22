@@ -35,15 +35,15 @@
             </objects>
             <point key="canvasLocation" x="5764" y="231"/>
         </scene>
-        <!--Library View-->
+        <!--Library-->
         <scene sceneID="RMa-4C-Ux6">
             <objects>
-                <viewControllerPlaceholder storyboardName="Library View" id="eiw-zQ-SfW" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Library" id="eiw-zQ-SfW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="bxV-nx-2f0"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uwB-bw-Hqp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5787" y="168"/>
+            <point key="canvasLocation" x="5763" y="168"/>
         </scene>
     </scenes>
 </document>

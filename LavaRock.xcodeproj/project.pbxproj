@@ -29,7 +29,7 @@
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Collections - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Collections - Views.swift */; };
 		073E6A9225574B99003C84A5 /* protocol PlayheadReflectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* protocol PlayheadReflectable.swift */; };
-		073FB55927588B81000FAF5F /* Options View.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* Options View.storyboard */; };
+		073FB55927588B81000FAF5F /* Options.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* Options.storyboard */; };
 		073FB56027588BC5000FAF5F /* Console.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB56227588BC5000FAF5F /* Console.storyboard */; };
 		07499A8627AB72CF00A2D712 /* protocol TransportToolbarManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07499A8527AB72CF00A2D712 /* protocol TransportToolbarManaging.swift */; };
 		074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074AB85D27CAD9C3007B63D2 /* Reel.swift */; };
@@ -41,7 +41,7 @@
 		075D904427F02F5B00BD8F3E /* ConsoleVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */; };
 		07602AC82620DC4C00D84123 /* protocol LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */; };
 		07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* CollectionDifference.swift */; };
-		07622F0E27DAEA9D00B953EA /* Library View.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07622F0D27DAEA9D00B953EA /* Library View.storyboard */; };
+		07622F0E27DAEA9D00B953EA /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07622F0D27DAEA9D00B953EA /* Library.storyboard */; };
 		07622F1427DE439D00B953EA /* Console - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07622F1327DE439D00B953EA /* Console - Views.swift */; };
 		07642C7C268FFC1600B66BB8 /* GroupOfSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */; };
 		07642C7E268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */; };
@@ -157,7 +157,7 @@
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Collections - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections - Views.swift"; sourceTree = "<group>"; };
 		073E6A9125574B98003C84A5 /* protocol PlayheadReflectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol PlayheadReflectable.swift"; sourceTree = "<group>"; };
-		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Options View.storyboard"; sourceTree = "<group>"; };
+		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Options.storyboard; sourceTree = "<group>"; };
 		073FB56127588BC5000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Console.storyboard; sourceTree = "<group>"; };
 		07499A8527AB72CF00A2D712 /* protocol TransportToolbarManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol TransportToolbarManaging.swift"; sourceTree = "<group>"; };
 		074AB85D27CAD9C3007B63D2 /* Reel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reel.swift; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 		075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - Notifications.swift"; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol LibraryItem.swift"; sourceTree = "<group>"; };
 		07619EE427342FC9003F95AE /* CollectionDifference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDifference.swift; sourceTree = "<group>"; };
-		07622F0D27DAEA9D00B953EA /* Library View.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Library View.storyboard"; sourceTree = "<group>"; };
+		07622F0D27DAEA9D00B953EA /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Library.storyboard; sourceTree = "<group>"; };
 		07622F1327DE439D00B953EA /* Console - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Console - Views.swift"; sourceTree = "<group>"; };
 		07642C7B268FFC1600B66BB8 /* GroupOfSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOfSongs.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "protocol GroupOfLibraryItems.swift"; sourceTree = "<group>"; };
@@ -283,7 +283,7 @@
 			children = (
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
 				0785C49D2793460100B1E7FC /* OptionsView.swift */,
-				073FB55B27588B81000FAF5F /* Options View.storyboard */,
+				073FB55B27588B81000FAF5F /* Options.storyboard */,
 				073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */,
 				0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */,
 				07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */,
@@ -312,7 +312,7 @@
 			children = (
 				07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */,
 				0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */,
-				07622F0D27DAEA9D00B953EA /* Library View.storyboard */,
+				07622F0D27DAEA9D00B953EA /* Library.storyboard */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
@@ -694,10 +694,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				073FB55927588B81000FAF5F /* Options View.storyboard in Resources */,
+				073FB55927588B81000FAF5F /* Options.storyboard in Resources */,
 				075218AD257C4C0C0077AE9B /* Tab Bar.storyboard in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
-				07622F0E27DAEA9D00B953EA /* Library View.storyboard in Resources */,
+				07622F0E27DAEA9D00B953EA /* Library.storyboard in Resources */,
 				07934CF827CDBE04002B2444 /* SongsTVC.storyboard in Resources */,
 				07934CFC27CDBFFD002B2444 /* CollectionsTVC.storyboard in Resources */,
 				073FB56027588BC5000FAF5F /* Console.storyboard in Resources */,
@@ -858,12 +858,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		073FB55B27588B81000FAF5F /* Options View.storyboard */ = {
+		073FB55B27588B81000FAF5F /* Options.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				073FB55A27588B81000FAF5F /* Base */,
 			);
-			name = "Options View.storyboard";
+			name = Options.storyboard;
 			sourceTree = "<group>";
 		};
 		073FB56227588BC5000FAF5F /* Console.storyboard */ = {

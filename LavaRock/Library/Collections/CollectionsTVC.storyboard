@@ -151,10 +151,10 @@
             </objects>
             <point key="canvasLocation" x="6960.8000000000002" y="193.5960591133005"/>
         </scene>
-        <!--Options View-->
+        <!--Options-->
         <scene sceneID="kWJ-ko-gxE">
             <objects>
-                <viewControllerPlaceholder storyboardName="Options View" id="PZK-NP-HeE" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Options" id="PZK-NP-HeE" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z5t-1I-RYz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7528" y="122"/>
