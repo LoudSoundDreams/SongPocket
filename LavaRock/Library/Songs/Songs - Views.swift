@@ -65,6 +65,7 @@ final class AlbumInfoCell: UITableViewCell {
 		super.layoutSubviews()
 		
 		separatorInset.left = directionalLayoutMargins.leading
+		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
 
@@ -207,6 +208,7 @@ final class SongCell: UITableViewCell {
 		separatorInset.left = 0
 		+ contentView.frame.minX // Content view’s leading edge to cell’s leading edge
 		+ textStack.frame.minX // Text stack’s leading edge to content view’s leading edge
+		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
 extension SongCell:

@@ -135,6 +135,7 @@ final class AlbumCell: UITableViewCell {
 		+ mainStack.frame.minX // 16
 		+ coverArtView.frame.width // 132
 		+ (sizeCategoryIsAccessibility ? 12 : mainStack.spacing /*12*/)
+		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
 extension AlbumCell:

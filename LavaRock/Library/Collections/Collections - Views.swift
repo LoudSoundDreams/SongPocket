@@ -160,6 +160,7 @@ final class CollectionCell: UITableViewCell {
 		separatorInset.left = 0
 		+ contentView.frame.minX
 		+ titleLabel.frame.minX
+		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
 extension CollectionCell:
