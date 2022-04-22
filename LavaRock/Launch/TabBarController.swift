@@ -37,18 +37,15 @@ final class TabBarController: UITabBarController {
 		delegate = self
 		
 		if Enabling.swiftUI__console {
+			replaceConsoleVC()
+		}
+		
+		func replaceConsoleVC() {
 			guard let viewControllers = viewControllers else {
 				return
 			}
 			guard let indexOfConsole = viewControllers.firstIndex(where: { viewController in
-				if
-					let navigationController = viewController as? UINavigationController,
-					navigationController.viewControllers.first is ConsoleVC
-				{
-					return true
-				} else {
-					return false
-				}
+				(viewController as? UINavigationController)?.viewControllers.first is ConsoleVC
 			}) else {
 				return
 			}
