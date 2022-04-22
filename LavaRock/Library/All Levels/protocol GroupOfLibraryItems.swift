@@ -44,6 +44,14 @@ protocol GroupOfLibraryItems {
 	mutating func setItems(_ newItems: [NSManagedObject])
 }
 extension GroupOfLibraryItems {
+	subscript(index: Int) -> NSManagedObject {
+		return items[index]
+	}
+	
+	subscript(range: PartialRangeFrom<Int>) -> [NSManagedObject] {
+		return Array(items[range])
+	}
+	
 	// Similar to `Collection.allFetched`, `Album.allFetched`, and `Song.allFetched`.
 	func itemsFetched(
 		entityName: String,

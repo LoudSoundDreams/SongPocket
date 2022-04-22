@@ -204,9 +204,9 @@ extension LibraryViewModel {
 	}
 	
 	func itemsInGroup(startingAt selectedIndexPath: IndexPath) -> [NSManagedObject] {
-		let items = group(forSection: selectedIndexPath.section).items
+		let group = group(forSection: selectedIndexPath.section)
 		let selectedIndexOfItemInGroup = indexOfItemInGroup(forRow: selectedIndexPath.row)
-		return Array(items[selectedIndexOfItemInGroup...])
+		return group[selectedIndexOfItemInGroup...]
 	}
 	
 	func pointsToSomeItem(_ indexPath: IndexPath) -> Bool {
@@ -230,9 +230,9 @@ extension LibraryViewModel {
 	}
 	
 	func itemNonNil(at indexPath: IndexPath) -> NSManagedObject {
-		let items = group(forSection: indexPath.section).items
+		let group = group(forSection: indexPath.section)
 		let indexOfItemInGroup = indexOfItemInGroup(forRow: indexPath.row)
-		return items[indexOfItemInGroup]
+		return group[indexOfItemInGroup]
 	}
 	
 	// MARK: Indices
