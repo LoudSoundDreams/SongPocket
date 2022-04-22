@@ -69,7 +69,7 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	) -> ViewControllerType {
 		let storyboard = Enabling.console
 		? UIStoryboard(name: "Tab Bar", bundle: nil)
-		: UIStoryboard(name: "Library View", bundle: nil)
+		: UIStoryboard(name: "Library", bundle: nil)
 		let result = storyboard.instantiateInitialViewController()!
 		
 		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
