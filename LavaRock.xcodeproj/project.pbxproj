@@ -576,10 +576,10 @@
 			children = (
 				07DF65D127766C95003B2EA3 /* protocol SongMetadata.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
-				07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */,
 				07CAB24624EA227F008AC34C /* Song.swift */,
 				0736E3E924B95FD600A15420 /* Album.swift */,
 				07AE2AA3258C09D900C3A314 /* Collection.swift */,
+				07602AC72620DC4C00D84123 /* protocol LibraryItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
