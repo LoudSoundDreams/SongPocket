@@ -16,6 +16,12 @@ final class AllowAccessCell: UITableViewCell {
 		
 		configureAsButton()
 	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
+	}
 }
 extension AllowAccessCell: CellTintingWhenSelected {}
 extension AllowAccessCell: CellConfigurableAsButton {
@@ -38,6 +44,12 @@ final class LoadingCell: UITableViewCell {
 		spinnerView.sizeToFit() // Without this line of code, UIKit centers the UIActivityIndicatorView at the top-left corner of the cell.
 		accessoryView = spinnerView
 	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
+	}
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
@@ -52,6 +64,12 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 		
 		isUserInteractionEnabled = false
 	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
+	}
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
@@ -62,6 +80,12 @@ final class OpenMusicCell: UITableViewCell {
 		tintSelectedBackgroundView()
 		
 		configureAsButton()
+	}
+	
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
 	}
 	
 	final func didSelect() {
