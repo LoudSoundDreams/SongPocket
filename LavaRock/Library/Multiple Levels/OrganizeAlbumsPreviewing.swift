@@ -1,5 +1,5 @@
 //
-//  protocol OrganizeAlbumsPreviewing.swift
+//  OrganizeAlbumsPreviewing.swift
 //  LavaRock
 //
 //  Created by h on 2021-11-27.

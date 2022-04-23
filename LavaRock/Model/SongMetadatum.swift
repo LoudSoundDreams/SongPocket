@@ -1,5 +1,5 @@
 //
-//  protocol SongMetadatum.swift
+//  SongMetadatum.swift
 //  LavaRock
 //
 //  Created by h on 2021-12-24.

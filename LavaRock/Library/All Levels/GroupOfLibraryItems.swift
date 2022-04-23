@@ -1,5 +1,5 @@
 //
-//  protocol GroupOfLibraryItems.swift
+//  GroupOfLibraryItems.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-02.

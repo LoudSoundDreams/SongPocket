@@ -1,5 +1,5 @@
 //
-//  protocol LibraryViewModel.swift
+//  LibraryViewModel.swift
 //  LavaRock
 //
 //  Created by h on 2021-08-12.

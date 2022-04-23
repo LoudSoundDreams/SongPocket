@@ -1,5 +1,5 @@
 //
-//  protocol PlayerReflecting.swift
+//  PlayerReflecting.swift
 //  LavaRock
 //
 //  Created by h on 2022-02-26.

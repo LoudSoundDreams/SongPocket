@@ -1,5 +1,5 @@
 //
-//  protocol NoItemsBackgroundManager.swift
+//  NoItemsBackgroundManager.swift
 //  LavaRock
 //
 //  Created by h on 2021-08-01.
