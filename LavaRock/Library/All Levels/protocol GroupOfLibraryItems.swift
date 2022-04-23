@@ -44,8 +44,8 @@ protocol GroupOfLibraryItems {
 	mutating func setItems(_ newItems: [NSManagedObject])
 }
 extension GroupOfLibraryItems {
-	subscript(index: Int) -> NSManagedObject {
-		return items[index]
+	subscript(itemIndex: ItemIndex) -> NSManagedObject {
+		return items[itemIndex.__]
 	}
 	
 	func itemsFrom(_ itemIndex: ItemIndex) -> [NSManagedObject] {

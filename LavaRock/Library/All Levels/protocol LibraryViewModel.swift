@@ -158,7 +158,7 @@ extension LibraryViewModel {
 	
 	func itemNonNil(at indexPath: IndexPath) -> NSManagedObject {
 		let group = group(for: indexPath.sectionIndex)
-		return group[itemIndex(for: indexPath.rowIndex).__]
+		return group[itemIndex(for: indexPath.rowIndex)]
 	}
 	
 	// MARK: Indices

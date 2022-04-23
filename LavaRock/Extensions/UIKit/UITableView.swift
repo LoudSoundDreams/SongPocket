@@ -52,8 +52,7 @@ extension UITableView {
 		first: RowIndex,
 		last: RowIndex
 	) -> [IndexPath] {
-		let rows = Array(first.value ... last.value)
-		return rows.map { row in
+		return (first.value ... last.value).map { row in
 			IndexPath(RowIndex(row), in: section)
 		}
 	}
