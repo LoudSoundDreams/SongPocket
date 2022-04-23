@@ -19,8 +19,8 @@ extension OptionsTVC {
 	
 	final func freshenTipJarRows() {
 		let tipJarIndexPaths = tableView.indexPathsForRows(
-			inSection: Section.tipJar.rawValue,
-			firstRow: 0)
+			in: SectionIndex(Section.tipJar.rawValue),
+			first: RowIndex(0))
 		tableView.reloadRows(at: tipJarIndexPaths, with: .fade) // Don’t use `reloadSections`, because that makes the header and footer fade out and back in.
 	}
 	

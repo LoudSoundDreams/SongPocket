@@ -21,7 +21,7 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return viewModel.numberOfRows(forSection: section)
+		return viewModel.numberOfRows(for: SectionIndex(section))
 	}
 	
 	// MARK: - Headers
@@ -31,7 +31,9 @@ extension SongsTVC {
 		titleForHeaderInSection section: Int
 	) -> String? {
 		if Enabling.multialbum {
-			return (viewModel as? SongsViewModel)?.album(forSection: section).titleFormattedOrPlaceholder()
+			return (viewModel as? SongsViewModel)?
+				.album(for: SectionIndex(section))
+				.titleFormattedOrPlaceholder()
 		} else {
 			return nil
 		}
@@ -53,7 +55,7 @@ extension SongsTVC {
 					withIdentifier: "Cover Art",
 					for: indexPath) as? CoverArtCell
 				else { return UITableViewCell() }
-				let album = songsViewModel.album(forSection: indexPath.section)
+				let album = songsViewModel.album(for: indexPath.sectionIndex)
 				cell.configure(with: album)
 				return cell
 			case .albumInfo:
@@ -61,7 +63,7 @@ extension SongsTVC {
 					withIdentifier: "Album Info",
 					for: indexPath) as? AlbumInfoCell
 				else { return UITableViewCell() }
-				let album = songsViewModel.album(forSection: indexPath.section)
+				let album = songsViewModel.album(for: indexPath.sectionIndex)
 				cell.configure(with: album)
 				return cell
 			}
@@ -77,7 +79,7 @@ extension SongsTVC {
 		cell.configureWith(
 			song: songsViewModel.songNonNil(at: indexPath),
 			albumRepresentative: {
-				let album = songsViewModel.album(forSection: indexPath.section)
+				let album = songsViewModel.album(for: indexPath.sectionIndex)
 				return album.representativeSongMetadatum()
 			}())
 		

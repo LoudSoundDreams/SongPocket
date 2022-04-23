@@ -113,6 +113,7 @@
 		07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC124FC3F450064282D /* CollectionsTVC - UITableView.swift */; };
 		07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */; };
 		07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */; };
+		07FB52C82813692000CCCBA5 /* SectionIndex, RowIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FB52C72813692000CCCBA5 /* SectionIndex, RowIndex.swift */; };
 		07FB52CB2813909400CCCBA5 /* LibrarySortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FB52CA2813909400CCCBA5 /* LibrarySortOption.swift */; };
 		07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E092599227C00826447 /* PurchaseManager.swift */; };
 		07FD6E122599246700826447 /* OptionsTVC + TipJarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */; };
@@ -250,6 +251,7 @@
 		07F36BC124FC3F450064282D /* CollectionsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - UITableView.swift"; sourceTree = "<group>"; };
+		07FB52C72813692000CCCBA5 /* SectionIndex, RowIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SectionIndex, RowIndex.swift"; sourceTree = "<group>"; };
 		07FB52CA2813909400CCCBA5 /* LibrarySortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySortOption.swift; sourceTree = "<group>"; };
 		07FD6E092599227C00826447 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC + TipJarUI.swift"; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				07FF1DDF27F8FF0300DF9B78 /* Static */,
 				07E0BBFE2765680C0010117E /* Extensions */,
+				07FB52C72813692000CCCBA5 /* SectionIndex, RowIndex.swift */,
 				07FB52C92813693F00CCCBA5 /* Helpers */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				0748AEAF24F394F9000FBC61 /* Launch */,
@@ -833,6 +836,7 @@
 				07E0BBD7276567490010117E /* String.swift in Sources */,
 				076F1C0727E903A500220C2B /* TabBarController.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
+				07FB52C82813692000CCCBA5 /* SectionIndex, RowIndex.swift in Sources */,
 				070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */,
 				07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */,
 				073AF48A24D16647000C1A6D /* AccentColor.swift in Sources */,

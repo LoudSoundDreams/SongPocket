@@ -12,8 +12,8 @@ struct CollectionsViewModel {
 	// `LibraryViewModel`
 	let viewContainer: LibraryViewContainer = .library
 	let context: NSManagedObjectContext
-	let numberOfPresections = 0
-	var numberOfPrerowsPerSection: Int { prerowsInEachSection.count }
+	let numberOfPresections = SectionIndex(0)
+	var numberOfPrerowsPerSection: RowIndex { RowIndex(prerowsInEachSection.count) }
 	var groups: [GroupOfLibraryItems]
 	
 	enum Prerow {
@@ -88,10 +88,9 @@ extension CollectionsViewModel {
 		case collection
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
-		let row = indexPath.row
+		let row = indexPath.rowIndex
 		if row < numberOfPrerowsPerSection {
-			let associatedValue = prerowsInEachSection[row]
-			return .prerow(associatedValue)
+			return .prerow(prerowsInEachSection[row.value])
 		} else {
 			return .collection
 		}
@@ -135,7 +134,7 @@ extension CollectionsViewModel {
 		title: String
 	) -> Self {
 		let collectionIDs = collections.map { $0.objectID }
-		let index = indexOfItemInGroup(forRow: indexPathOfCombined.row)
+		let index = indexOfItemInGroup(for: indexPathOfCombined.rowIndex)
 		let childContext = NSManagedObjectContext(.mainQueue)
 		childContext.parent = context
 		let combinedCollection = Collection(

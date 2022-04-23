@@ -61,12 +61,12 @@ extension Array {
 	
 	// MARK: Element == IndexPath
 	
-	func makeDictionaryOfRowsBySection() -> [Int: [Int]]
+	func rowsBySection() -> [SectionIndex: [RowIndex]]
 	where Element == IndexPath
 	{
-		let indexPathsBySection = Dictionary(grouping: self) { $0.section }
+		let indexPathsBySection = Dictionary(grouping: self) { $0.sectionIndex }
 		return indexPathsBySection.mapValues { indexPaths in
-			indexPaths.map { $0.row }
+			indexPaths.map { $0.rowIndex }
 		}
 	}
 	
@@ -74,9 +74,8 @@ extension Array {
 	func isContiguousWithinEachSection() -> Bool
 	where Element == IndexPath
 	{
-		let rowsBySection = makeDictionaryOfRowsBySection()
-		return rowsBySection.allSatisfy { (_, rows) in
-			rows.sorted().isConsecutive()
+		return rowsBySection().allSatisfy { (_, rows) in
+			rows.sorted().map { $0.value }.isConsecutive()
 		}
 	}
 	
