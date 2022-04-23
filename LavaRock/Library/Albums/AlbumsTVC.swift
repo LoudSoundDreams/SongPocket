@@ -156,8 +156,7 @@ final class AlbumsTVC:
 	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
-		let toDelete = tableView.allSections()
-		deleteThenExit(sections: toDelete)
+		deleteThenExit(sections: tableView.allSections())
 	}
 	
 	// MARK: - Freshening UI

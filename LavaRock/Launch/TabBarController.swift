@@ -14,6 +14,24 @@ final class TabBarController: UITabBarController {
 	
 	var allowsSelecting = true
 	
+	final func disable() {
+		setEnabled(false)
+	}
+	
+	final func enable() {
+		setEnabled(true)
+	}
+	
+	private func setEnabled(_ enabling: Bool) {
+		allowsSelecting = enabling
+		
+		tabBar.tintColor = enabling
+		? .tintColor
+		: .placeholderText
+		
+//		view.accessibilityTraits.formUnion(.notEnabled) // TO DO
+	}
+	
 	final override var selectedViewController: UIViewController? {
 		didSet {
 			if

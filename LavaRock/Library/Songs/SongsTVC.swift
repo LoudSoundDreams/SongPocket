@@ -70,7 +70,6 @@ final class SongsTVC:
 	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
-		let toDelete = tableView.allSections()
-		deleteThenExit(sections: toDelete)
+		deleteThenExit(sections: tableView.allSections())
 	}
 }

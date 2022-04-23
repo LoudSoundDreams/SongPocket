@@ -257,6 +257,7 @@ class LibraryTVC: UITableViewController {
 			self.isAnimatingBatchUpdates -= 1 // ARC2DO
 			if self.isAnimatingBatchUpdates == 0 { // See corresponding comment in `setItemsAndMoveRows`.
 				self.dismiss(animated: true) { // If we moved all the `Album`s out of a `Collection`, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
+					(self.tabBarController as? TabBarController)?.enable()
 					self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 				}
 			}
@@ -312,11 +313,10 @@ class LibraryTVC: UITableViewController {
 		if Enabling.console {
 			navigationController?.setToolbarHidden(!editing, animated: true)
 			
-			tabBarController?.tabBar.tintColor = editing
-			? .placeholderText
-			: .tintColor
-			if let customTBC = tabBarController as? TabBarController {
-				customTBC.allowsSelecting = !editing
+			if let tabBarController = tabBarController as? TabBarController {
+				editing
+				? tabBarController.disable()
+				: tabBarController.enable()
 			}
 		}
 		
