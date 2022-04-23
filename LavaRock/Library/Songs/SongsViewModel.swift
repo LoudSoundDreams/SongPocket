@@ -14,7 +14,7 @@ struct SongsViewModel {
 	let context: NSManagedObjectContext
 	let numberOfPresections = SectionIndex(0)
 	var numberOfPrerowsPerSection: RowIndex { RowIndex(prerowsInEachSection.count) }
-	var groups: [GroupOfLibraryItems]
+	var column: ColumnOfLibraryItems
 	
 	enum Prerow {
 		case coverArt
@@ -93,7 +93,7 @@ extension SongsViewModel {
 			case .deleted:
 				return []
 			}}()
-		groups = containers.map {
+		column = containers.map {
 			GroupOfSongs(
 				entityName: Self.entityName,
 				container: $0,
@@ -127,7 +127,7 @@ extension SongsViewModel {
 	
 	// Time complexity: O(n), where “n” is the number of groups
 	func indexPath(for album: Album) -> IndexPath? {
-		if let indexOfMatchingGroup = groups.firstIndex(where: { group in
+		if let indexOfMatchingGroup = column.firstIndex(where: { group in
 			album.objectID == group.container?.objectID
 		}) {
 			return IndexPath(

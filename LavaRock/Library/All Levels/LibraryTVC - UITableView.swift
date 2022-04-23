@@ -52,7 +52,7 @@ extension LibraryTVC {
 			} else {
 				return viewModel.indexPathFor(
 					itemIndex: ItemIndex(
-						viewModel.groups[groupIndex.__].items.indices.last
+						viewModel.column[groupIndex].items.indices.last
 						?? 0),
 					groupIndex: groupIndex)
 			}
