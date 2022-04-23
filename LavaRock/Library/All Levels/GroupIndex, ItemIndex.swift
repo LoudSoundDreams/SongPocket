@@ -9,7 +9,7 @@ struct GroupIndex {
 	let __: Int
 	
 	init(_ value: Int) {
-		self.__ = value
+		__ = value
 	}
 }
 
@@ -17,7 +17,7 @@ struct ItemIndex {
 	let __: Int
 	
 	init(_ value: Int) {
-		self.__ = value
+		__ = value
 	}
 }
 extension ItemIndex: Comparable {

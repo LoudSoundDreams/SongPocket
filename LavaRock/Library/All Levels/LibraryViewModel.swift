@@ -137,13 +137,13 @@ extension LibraryViewModel {
 	}
 	
 	func pointsToSomeItem(_ indexPath: IndexPath) -> Bool {
-		let groupIndex = groupIndex(for: indexPath.sectionIndex).__
-		guard 0 <= groupIndex, groupIndex < groups.count else {
+		let groupIndex__ = groupIndex(for: indexPath.sectionIndex).__
+		guard 0 <= groupIndex__, groupIndex__ < groups.count else {
 			return false
 		}
-		let items = groups[groupIndex].items
-		let itemIndex = itemIndex(for: indexPath.rowIndex).__
-		guard 0 <= itemIndex, itemIndex < items.count else {
+		let items = groups[groupIndex__].items
+		let itemIndex__ = itemIndex(for: indexPath.rowIndex).__
+		guard 0 <= itemIndex__, itemIndex__ < items.count else {
 			return false
 		}
 		return true
@@ -260,19 +260,19 @@ extension LibraryViewModel {
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath
 	) {
-		let sourceGroupIndex = groupIndex(for: sourceIndexPath.sectionIndex).__
+		let sourceGroupIndex__ = groupIndex(for: sourceIndexPath.sectionIndex).__
 		let sourceItemIndex = itemIndex(for: sourceIndexPath.rowIndex)
 		
-		var sourceItems = groups[sourceGroupIndex].items
+		var sourceItems = groups[sourceGroupIndex__].items
 		let item = sourceItems.remove(at: sourceItemIndex.__)
-		groups[sourceGroupIndex].setItems(sourceItems)
+		groups[sourceGroupIndex__].setItems(sourceItems)
 		
-		let destinationGroupIndex = groupIndex(for: destinationIndexPath.sectionIndex).__
+		let destinationGroupIndex__ = groupIndex(for: destinationIndexPath.sectionIndex).__
 		let destinationItemIndex = itemIndex(for: destinationIndexPath.rowIndex)
 		
-		var destinationItems = groups[destinationGroupIndex].items
+		var destinationItems = groups[destinationGroupIndex__].items
 		destinationItems.insert(item, at: destinationItemIndex.__)
-		groups[destinationGroupIndex].setItems(destinationItems)
+		groups[destinationGroupIndex__].setItems(destinationItems)
 	}
 	
 	func updatedAfterSorting(
