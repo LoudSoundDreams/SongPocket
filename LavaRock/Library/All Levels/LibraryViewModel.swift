@@ -144,8 +144,8 @@ extension LibraryViewModel {
 			return false
 		}
 		let items = column[groupIndex].items
-		let itemIndex__ = itemIndex(for: indexPath.rowIndex).__
-		guard 0 <= itemIndex__, itemIndex__ < items.count else {
+		let itemIndex = itemIndex(for: indexPath.rowIndex)
+		guard 0 <= itemIndex.__, itemIndex.__ < items.count else {
 			return false
 		}
 		return true

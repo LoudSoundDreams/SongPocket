@@ -77,17 +77,20 @@ struct Sim_SongMetadatum: SongMetadatum {
 		return nil
 	}
 }
-struct Sim_AlbumIDDispenser {
+private struct Sim_AlbumIDDispenser {
 	private static var sim_nextAvailable = 1
 	static func takeNumber() -> AlbumID {
 		return AlbumID(sim_nextAvailable)
 	}
 }
-struct Sim_SongIDDispenser {
+private struct Sim_SongIDDispenser {
 	private static var sim_nextAvailable = 1
 	static func takeNumber() -> SongID {
 		return SongID(sim_nextAvailable)
 	}
+}
+struct Sim_MusicFolder {
+	static var songMetadata: [SongMetadatum] = []
 }
 extension Sim_SongMetadatum {
 	init(
@@ -116,9 +119,6 @@ extension Sim_SongMetadatum {
 		
 		Sim_MusicFolder.songMetadata.append(self)
 	}
-}
-struct Sim_MusicFolder {
-	static var songMetadata: [SongMetadatum] = []
 }
 #endif
 
