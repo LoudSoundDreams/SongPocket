@@ -98,7 +98,7 @@ extension Song {
 	
 	final func metadatum() -> SongMetadatum? {
 #if targetEnvironment(simulator)
-		return Sim_Database.songMetadata.first(where: { metadatum in
+		return Sim_MusicFolder.songMetadata.first(where: { metadatum in
 			persistentID == metadatum.songID
 		})
 #else

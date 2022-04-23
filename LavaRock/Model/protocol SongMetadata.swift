@@ -114,10 +114,10 @@ extension Sim_SongMetadatum {
 			releaseDateOnDisk: releaseDateOnDisk,
 			dateAddedOnDisk: dateAddedOnDisk)
 		
-		Sim_Database.songMetadata.append(self)
+		Sim_MusicFolder.songMetadata.append(self)
 	}
 }
-struct Sim_Database {
+struct Sim_MusicFolder {
 	static var songMetadata: [SongMetadatum] = []
 }
 #endif
