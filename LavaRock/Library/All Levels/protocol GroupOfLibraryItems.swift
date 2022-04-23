@@ -48,8 +48,8 @@ extension GroupOfLibraryItems {
 		return items[index]
 	}
 	
-	subscript(range: PartialRangeFrom<Int>) -> [NSManagedObject] {
-		return Array(items[range])
+	func itemsFrom(_ itemIndex: ItemIndex) -> [NSManagedObject] {
+		return Array(items[itemIndex.__...])
 	}
 	
 	// Similar to `Collection.allFetched`, `Album.allFetched`, and `Song.allFetched`.

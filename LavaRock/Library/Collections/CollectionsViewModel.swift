@@ -134,13 +134,13 @@ extension CollectionsViewModel {
 		title: String
 	) -> Self {
 		let collectionIDs = collections.map { $0.objectID }
-		let index = indexOfItemInGroup(for: indexPathOfCombined.rowIndex)
+		let index = itemIndex(for: indexPathOfCombined.rowIndex)
 		let childContext = NSManagedObjectContext(.mainQueue)
 		childContext.parent = context
 		let combinedCollection = Collection(
 			combiningCollectionsInOrderWith: collectionIDs,
 			title: title,
-			index: Int64(index),
+			index: Int64(index.__),
 			context: childContext)
 		
 		try? childContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
@@ -156,8 +156,8 @@ extension CollectionsViewModel {
 	private static let indexOfNewCollection = 0
 	var indexPathOfNewCollection: IndexPath {
 		return indexPathFor(
-			indexOfItemInGroup: Self.indexOfNewCollection,
-			indexOfGroup: Self.indexOfOnlyGroup)
+			itemIndex: ItemIndex(Self.indexOfNewCollection),
+			groupIndex: GroupIndex(Self.indexOfOnlyGroup))
 	}
 	
 	func updatedAfterCreating(title: String) -> Self {
