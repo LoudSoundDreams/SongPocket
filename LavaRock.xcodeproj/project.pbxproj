@@ -319,9 +319,9 @@
 		070E194524F3424500B21307 /* All Levels */ = {
 			isa = PBXGroup;
 			children = (
+				07FB52CC2813A65E00CCCBA5 /* GroupIndex, ItemIndex.swift */,
 				07642C7D268FFEDC00B66BB8 /* protocol GroupOfLibraryItems.swift */,
 				07FB52CA2813909400CCCBA5 /* LibrarySortOption.swift */,
-				07FB52CC2813A65E00CCCBA5 /* GroupIndex, ItemIndex.swift */,
 				0751DE3826C5C6E800AA14DA /* protocol LibraryViewModel.swift */,
 				07622F0D27DAEA9D00B953EA /* Library.storyboard */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
