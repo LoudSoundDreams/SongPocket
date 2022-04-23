@@ -33,7 +33,7 @@ typealias ColumnOfLibraryItems = [GroupOfLibraryItems]
 extension ColumnOfLibraryItems {
 	subscript(groupIndex: GroupIndex) -> GroupOfLibraryItems {
 		get {
-			return self[groupIndex.__]
+			self[groupIndex.__]
 		}
 		set {
 			self[groupIndex.__] = newValue
@@ -73,16 +73,6 @@ enum LibraryRowIdentifier: Hashable {
 }
 
 extension LibraryViewModel {
-	var onlyGroup: GroupOfLibraryItems? {
-		guard
-			let firstGroup = groups.first,
-			groups.count == 1
-		else {
-			return nil
-		}
-		return firstGroup
-	}
-	
 	func isEmpty() -> Bool {
 		return column.allSatisfy { group in
 			group.items.isEmpty
