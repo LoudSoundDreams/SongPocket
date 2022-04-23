@@ -396,7 +396,6 @@
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				07FF1DDF27F8FF0300DF9B78 /* Static */,
 				07E0BBFE2765680C0010117E /* Extensions */,
-				07FB52C72813692000CCCBA5 /* SectionIndex, RowIndex.swift */,
 				07FB52C92813693F00CCCBA5 /* Helpers */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				0748AEAF24F394F9000FBC61 /* Launch */,
@@ -584,6 +583,7 @@
 			isa = PBXGroup;
 			children = (
 				07CD864C27CAA3CC00286E6A /* Weak.swift */,
+				07FB52C72813692000CCCBA5 /* SectionIndex, RowIndex.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
