@@ -77,8 +77,8 @@
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
-                                    <outlet property="albumArtistLabel" destination="3iE-oA-DLA" id="Nzf-wY-hYQ"/>
-                                    <outlet property="releaseDateLabel" destination="mUo-6A-8rz" id="3Ul-0J-s86"/>
+                                    <outlet property="mainLabel" destination="3iE-oA-DLA" id="Nzf-wY-hYQ"/>
+                                    <outlet property="secondaryLabel" destination="mUo-6A-8rz" id="3Ul-0J-s86"/>
                                     <outlet property="textStack" destination="XaD-Nu-ixA" id="bvV-Om-e38"/>
                                 </connections>
                             </tableViewCell>

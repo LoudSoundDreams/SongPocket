@@ -38,8 +38,8 @@ final class CoverArtCell: UITableViewCell {
 
 final class AlbumInfoCell: UITableViewCell {
 	@IBOutlet private var textStack: UIStackView!
-	@IBOutlet private var albumArtistLabel: UILabel!
-	@IBOutlet private var releaseDateLabel: UILabel!
+	@IBOutlet private var mainLabel: UILabel!
+	@IBOutlet private var secondaryLabel: UILabel!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()
@@ -48,16 +48,16 @@ final class AlbumInfoCell: UITableViewCell {
 	}
 	
 	final func configure(with album: Album) {
-		albumArtistLabel.text = { () -> String in
+		mainLabel.text = { () -> String in
 			if let albumArtist = album.albumArtistFormattedOptional() {
 				return albumArtist
 			} else {
 				return Album.unknownAlbumArtistPlaceholder
 			}
 		}()
-		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()
+		secondaryLabel.text = album.releaseDateEstimateFormattedOptional()
 		
-		if releaseDateLabel.text == nil {
+		if secondaryLabel.text == nil {
 			// We couldn’t determine the album’s release date.
 			textStack.spacing = 0
 		} else {
