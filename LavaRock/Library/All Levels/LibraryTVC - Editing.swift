@@ -51,8 +51,9 @@ extension LibraryTVC {
 				guard let formatString = formatString else {
 					return ""
 				}
-				let subjectedCount = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
-					selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+				let subjectedCount = viewModel
+					.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+						selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
 					.count
 				return String.localizedStringWithFormat(
 					formatString,
