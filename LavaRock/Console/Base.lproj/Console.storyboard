@@ -29,13 +29,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="a8a-8Z-0zp">
-                                                    <rect key="frame" x="343.33333333333331" y="19.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                                    <rect key="frame" x="343.33333333333331" y="28.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     </preferredSymbolConfiguration>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8T1-aG-ORD">
-                                                    <rect key="frame" x="343.33333333333331" y="19.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                                    <rect key="frame" x="343.33333333333331" y="28.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     </preferredSymbolConfiguration>
@@ -72,7 +72,7 @@
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="leading" secondItem="7Bg-s2-hCP" secondAttribute="trailing" constant="12" id="DUx-jC-D1f"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" secondItem="Y38-vV-GgI" secondAttribute="topMargin" id="EHT-Li-tzH"/>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="topMargin" constant="-3" id="EyH-VG-VCe"/>
-                                                <constraint firstItem="a8a-8Z-0zp" firstAttribute="firstBaseline" secondItem="Ovi-Se-odr" secondAttribute="firstBaseline" id="Jv4-T3-mYk"/>
+                                                <constraint firstItem="a8a-8Z-0zp" firstAttribute="centerY" secondItem="WkY-gQ-K1c" secondAttribute="centerY" id="Jv4-T3-mYk"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="leading" secondItem="Y38-vV-GgI" secondAttribute="leadingMargin" id="KgT-xs-EsM"/>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="centerY" secondItem="Y38-vV-GgI" secondAttribute="centerY" constant="-1" id="L0r-8q-9a0"/>
                                                 <constraint firstItem="8T1-aG-ORD" firstAttribute="leading" secondItem="a8a-8Z-0zp" secondAttribute="leading" id="a2J-aj-ONt"/>
