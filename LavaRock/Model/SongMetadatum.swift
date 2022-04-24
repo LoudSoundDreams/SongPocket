@@ -80,16 +80,20 @@ struct Sim_SongMetadatum: SongMetadatum {
 		return nil
 	}
 }
-private struct Sim_AlbumIDDispenser {
+struct Sim_AlbumIDDispenser {
 	private static var sim_nextAvailable = 1
 	static func takeNumber() -> AlbumID {
-		return AlbumID(sim_nextAvailable)
+		let result = AlbumID(sim_nextAvailable)
+		sim_nextAvailable += 1
+		return result
 	}
 }
 private struct Sim_SongIDDispenser {
 	private static var sim_nextAvailable = 1
 	static func takeNumber() -> SongID {
-		return SongID(sim_nextAvailable)
+		let result = SongID(sim_nextAvailable)
+		sim_nextAvailable += 1
+		return result
 	}
 }
 struct Sim_MusicFolder {
@@ -97,6 +101,7 @@ struct Sim_MusicFolder {
 }
 extension Sim_SongMetadatum {
 	init(
+		albumID: AlbumID,
 		albumArtistOnDisk: String?,
 		albumTitleOnDisk: String?,
 		discCountOnDisk: Int,
@@ -108,7 +113,7 @@ extension Sim_SongMetadatum {
 		dateAddedOnDisk: Date
 	) {
 		self.init(
-			albumID: Sim_AlbumIDDispenser.takeNumber(), // TO DO
+			albumID: albumID,
 			songID: Sim_SongIDDispenser.takeNumber(),
 			albumArtistOnDisk: albumArtistOnDisk,
 			albumTitleOnDisk: albumTitleOnDisk,

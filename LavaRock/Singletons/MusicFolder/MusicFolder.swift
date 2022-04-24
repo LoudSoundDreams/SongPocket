@@ -40,14 +40,27 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 		
 #if targetEnvironment(simulator)
 		context.performAndWait {
+			let walpurgisNightAlbumID = Sim_AlbumIDDispenser.takeNumber()
 			mergeChanges(toMatch: [
 				Sim_SongMetadatum(
+					albumID: walpurgisNightAlbumID,
 					albumArtistOnDisk: "GFriend",
 					albumTitleOnDisk: "回:Walpurgis Night",
 					discCountOnDisk: 1,
 					discNumberOnDisk: 1,
 					trackNumberOnDisk: 1,
 					titleOnDisk: "Mago",
+					artistOnDisk: "GFriend",
+					releaseDateOnDisk: .now,
+					dateAddedOnDisk: .now),
+				Sim_SongMetadatum(
+					albumID: walpurgisNightAlbumID,
+					albumArtistOnDisk: "GFriend",
+					albumTitleOnDisk: "回:Walpurgis Night",
+					discCountOnDisk: 1,
+					discNumberOnDisk: 1,
+					trackNumberOnDisk: 9,
+					titleOnDisk: "Crossroads",
 					artistOnDisk: "GFriend",
 					releaseDateOnDisk: .now,
 					dateAddedOnDisk: .now),
