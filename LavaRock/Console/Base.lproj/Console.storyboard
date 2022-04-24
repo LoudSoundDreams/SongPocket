@@ -29,13 +29,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="a8a-8Z-0zp">
-                                                    <rect key="frame" x="343.33333333333331" y="13.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                                    <rect key="frame" x="343.33333333333331" y="11.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     </preferredSymbolConfiguration>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8T1-aG-ORD">
-                                                    <rect key="frame" x="343.33333333333331" y="13.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                                    <rect key="frame" x="343.33333333333331" y="11.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     </preferredSymbolConfiguration>
@@ -48,7 +48,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="WkY-gQ-K1c">
-                                                    <rect key="frame" x="76.000000000000014" y="11" width="145.33333333333337" height="34.333333333333336"/>
+                                                    <rect key="frame" x="76.000000000000014" y="9" width="145.33333333333337" height="34.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder Song Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ovi-Se-odr">
                                                             <rect key="frame" x="0.0" y="0.0" width="145.33333333333334" height="17"/>
@@ -73,14 +73,18 @@
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WkY-gQ-K1c" secondAttribute="trailing" constant="8" symbolic="YES" id="Ade-ua-v0o"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="trailing" secondItem="Y38-vV-GgI" secondAttribute="trailingMargin" id="CB9-Qm-s2H"/>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="leading" secondItem="7Bg-s2-hCP" secondAttribute="trailing" constant="12" id="DUx-jC-D1f"/>
-                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="topMargin" id="EHT-Li-tzH"/>
+                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" secondItem="Y38-vV-GgI" secondAttribute="topMargin" id="EHT-Li-tzH"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="firstBaseline" secondItem="Ovi-Se-odr" secondAttribute="firstBaseline" id="Jv4-T3-mYk"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="leading" secondItem="Y38-vV-GgI" secondAttribute="leadingMargin" id="KgT-xs-EsM"/>
                                                 <constraint firstItem="8T1-aG-ORD" firstAttribute="leading" secondItem="a8a-8Z-0zp" secondAttribute="leading" id="a2J-aj-ONt"/>
-                                                <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" secondItem="7Bg-s2-hCP" secondAttribute="top" id="ifT-zv-o7t"/>
+                                                <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" secondItem="7Bg-s2-hCP" secondAttribute="top" constant="-2" id="ifT-zv-o7t"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottomMargin" id="lpE-Se-Poo"/>
-                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" secondItem="Y38-vV-GgI" secondAttribute="topMargin" priority="900" id="tNd-zU-lLf"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="0vi-bF-d8T"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="coverArtView" destination="7Bg-s2-hCP" id="qr9-AK-sqe"/>
