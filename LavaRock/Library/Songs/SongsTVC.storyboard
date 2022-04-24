@@ -163,7 +163,6 @@
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="centerY" secondItem="RAq-AF-bpj" secondAttribute="centerY" id="hVa-OV-pVP"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="x27-Sp-4dc"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" constant="1" id="yme-ol-E5x"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="ASX-qJ-uK1" secondAttribute="trailing" id="ymz-l3-Mn5"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
