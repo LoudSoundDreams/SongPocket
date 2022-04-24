@@ -334,6 +334,7 @@ class LibraryTVC: UITableViewController {
 		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
 		sortButton.isEnabled = allowsSort()
+		sortButton.menu = makeSortOptionsMenu()
 		floatToTopButton.isEnabled = allowsFloatAndSink()
 		sinkToBottomButton.isEnabled = allowsFloatAndSink()
 	}

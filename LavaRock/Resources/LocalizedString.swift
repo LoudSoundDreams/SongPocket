@@ -25,7 +25,7 @@ struct LocalizedString {
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
 	
-	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "")
+	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "Status message")
 	
 	// MARK: Albums
 	
@@ -54,7 +54,7 @@ struct LocalizedString {
 	
 	static let tipJar = NSLocalizedString("Tip Jar", comment: "Section header")
 	static let reload = NSLocalizedString("Reload", comment: "Button")
-	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "")
+	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
 	static let tipJarFooter = NSLocalizedString(
 		"[footer] options_tip_jar",
 		value: "Thank you for using Songpocket, my pride and joy.",
@@ -179,6 +179,24 @@ struct LocalizedString {
 		comment: "Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on.")
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
+	
+	// MARK: Collections
+	
+	static let format_xCollections = NSLocalizedString(
+		"plural - x_collections",
+		comment: "Status message")
+	
+	// MARK: Albums
+	
+	static let format_xAlbums = NSLocalizedString(
+		"plural - x_albums",
+		comment: "Status message")
+	
+	// MARK: Songs
+	
+	static let format_xSongs = NSLocalizedString(
+		"plural - x_songs",
+		comment: "Status message")
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit
 	

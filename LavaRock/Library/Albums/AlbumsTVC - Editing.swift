@@ -36,6 +36,14 @@ extension AlbumsTVC {
 			}
 		
 		return UIMenu(
+			title: {
+				let subjectedCount = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+					selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+					.count
+				return String.localizedStringWithFormat(
+					LocalizedString.format_xAlbums,
+					subjectedCount)
+			}(),
 			children: [
 				organizeElement,
 				moveElement,

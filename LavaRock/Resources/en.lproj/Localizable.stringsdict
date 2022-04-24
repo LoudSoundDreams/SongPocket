@@ -2,6 +2,54 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>plural - x_collections</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@NUMBER_COLLECTIONS@</string>
+		<key>NUMBER_COLLECTIONS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Collection</string>
+			<key>other</key>
+			<string>%lld Collections</string>
+		</dict>
+	</dict>
+	<key>plural - x_albums</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@NUMBER_ALBUMS@</string>
+		<key>NUMBER_ALBUMS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Album</string>
+			<key>other</key>
+			<string>Albums</string>
+		</dict>
+	</dict>
+	<key>plural - x_songs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@NUMBER_SONGS@</string>
+		<key>NUMBER_SONGS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Song</string>
+			<key>other</key>
+			<string>%lld Songs</string>
+		</dict>
+	</dict>
 	<key>plural - organize_into_X_sections_by_album_artist</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

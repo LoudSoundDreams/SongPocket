@@ -35,6 +35,29 @@ extension LibraryTVC {
 		}
 		
 		return UIMenu(
+			title: {
+				let formatString: String? = {
+					switch self {
+					case is CollectionsTVC:
+						return LocalizedString.format_xCollections
+					case is AlbumsTVC:
+						return LocalizedString.format_xAlbums
+					case is SongsTVC:
+						return LocalizedString.format_xSongs
+					default:
+						return nil
+					}
+				}()
+				guard let formatString = formatString else {
+					return ""
+				}
+				let subjectedCount = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+					selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+					.count
+				return String.localizedStringWithFormat(
+					formatString,
+					subjectedCount)
+			}(),
 			presentsUpward: true,
 			groupedElements: groupedElements)
 	}
