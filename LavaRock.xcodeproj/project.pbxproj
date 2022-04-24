@@ -355,17 +355,6 @@
 			path = Console;
 			sourceTree = "<group>";
 		};
-		0748AEAF24F394F9000FBC61 /* Launch */ = {
-			isa = PBXGroup;
-			children = (
-				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
-				07FD6E092599227C00826447 /* PurchaseManager.swift */,
-				075218AF257C4C0C0077AE9B /* Tab Bar.storyboard */,
-				076F1C0627E903A500220C2B /* TabBarController.swift */,
-			);
-			path = Launch;
-			sourceTree = "<group>";
-		};
 		0768307C24B42DEC0033E3CC = {
 			isa = PBXGroup;
 			children = (
@@ -397,8 +386,7 @@
 				07E0BBFE2765680C0010117E /* Extensions */,
 				07FB52C92813693F00CCCBA5 /* Helpers */,
 				07FC970A24BAC1050036DD3D /* Model */,
-				0748AEAF24F394F9000FBC61 /* Launch */,
-				07F1881F27F6B3750074809D /* Singletons */,
+				07F1881F27F6B3750074809D /* Player */,
 				07E0BBFF276569480010117E /* General UI */,
 				0706ABDE24D946870090EB21 /* Options */,
 				07E0BC0027656C300010117E /* Library */,
@@ -540,8 +528,13 @@
 			children = (
 				0708201C275BEE1C00F48D13 /* Lighting.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
-				07499A8527AB72CF00A2D712 /* TransportToolbarManaging.swift */,
+				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
+				07FD6E092599227C00826447 /* PurchaseManager.swift */,
+				075218AF257C4C0C0077AE9B /* Tab Bar.storyboard */,
+				076F1C0627E903A500220C2B /* TabBarController.swift */,
+				07CD864E27CAA54600286E6A /* PlayerReflecting.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
+				07499A8527AB72CF00A2D712 /* TransportToolbarManaging.swift */,
 			);
 			path = "General UI";
 			sourceTree = "<group>";
@@ -558,24 +551,13 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
-		07F1881E27F6B14E0074809D /* TapeDeck */ = {
+		07F1881F27F6B3750074809D /* Player */ = {
 			isa = PBXGroup;
 			children = (
 				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
-				07CD864E27CAA54600286E6A /* PlayerReflecting.swift */,
-			);
-			path = TapeDeck;
-			sourceTree = "<group>";
-		};
-		07F1881F27F6B3750074809D /* Singletons */ = {
-			isa = PBXGroup;
-			children = (
-				071A0B9F277E832C0017F76D /* Database.swift */,
-				07DF65D027766B7B003B2EA3 /* MusicFolder */,
-				07F1881E27F6B14E0074809D /* TapeDeck */,
 				074AB85D27CAD9C3007B63D2 /* Reel.swift */,
 			);
-			path = Singletons;
+			path = Player;
 			sourceTree = "<group>";
 		};
 		07FB52C92813693F00CCCBA5 /* Helpers */ = {
@@ -592,10 +574,12 @@
 			children = (
 				07DF65D127766C95003B2EA3 /* SongMetadatum.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
+				071A0B9F277E832C0017F76D /* Database.swift */,
 				07CAB24624EA227F008AC34C /* Song.swift */,
 				0736E3E924B95FD600A15420 /* Album.swift */,
 				07AE2AA3258C09D900C3A314 /* Collection.swift */,
 				07602AC72620DC4C00D84123 /* LibraryItem.swift */,
+				07DF65D027766B7B003B2EA3 /* MusicFolder */,
 			);
 			path = Model;
 			sourceTree = "<group>";
