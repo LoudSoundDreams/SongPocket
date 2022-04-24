@@ -48,10 +48,14 @@ final class AlbumInfoCell: UITableViewCell {
 	}
 	
 	final func configure(with album: Album) {
-		albumArtistLabel.text = { () -> String in // Don’t let this be `nil`.
-			return album.albumArtistFormattedOrPlaceholder()
+		albumArtistLabel.text = { () -> String in
+			if let albumArtist = album.albumArtistFormattedOptional() {
+				return albumArtist
+			} else {
+				return Album.unknownAlbumArtistPlaceholder
+			}
 		}()
-		releaseDateLabel.text = album.releaseDateEstimateFormatted() // Can be `nil`
+		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()
 		
 		if releaseDateLabel.text == nil {
 			// We couldn’t determine the album’s release date.
@@ -107,7 +111,13 @@ final class SongCell: UITableViewCell {
 		albumRepresentative representative: SongMetadatum?
 	) {
 		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
-		titleLabel.text = metadatum?.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+		titleLabel.text = { () -> String in
+			if let songTitle = metadatum?.titleOnDisk {
+				return songTitle
+			} else {
+				return SongMetadatumPlaceholder.unknownTitle
+			}
+		}()
 		artistLabel.text = {
 			let albumArtist = representative?.albumArtistOnDisk // Can be `nil`
 			if
@@ -117,25 +127,34 @@ final class SongCell: UITableViewCell {
 				return songArtist
 			} else {
 				return nil
-			}}()
-		numberLabel.text = { () -> String in // Don’t let this be `nil`.
-			guard
-				let metadatum = metadatum,
-				let representative = representative
-			else {
-				return SongMetadatumExtras.unknownTrackNumberPlaceholder
 			}
-			
-			let discNumber = representative.discNumberOnDisk
-			let discCount = representative.discCountOnDisk
-			// Show disc numbers if the disc count is more than 1, or if the disc count isn’t more than 1 but the disc number is.
-			let shouldShowDiscNumber = (discCount > 1) ? true : (discNumber > 1)
-			
-			if shouldShowDiscNumber {
-				return metadatum.discAndTrackNumberFormatted()
+		}()
+		numberLabel.text = { () -> String in
+			let text: String? = {
+				guard
+					let metadatum = metadatum,
+					let representative = representative
+				else {
+					return nil
+				}
+				
+				let discNumber = representative.discNumberOnDisk
+				let discCount = representative.discCountOnDisk
+				// Show disc numbers if the disc count is more than 1, or if the disc count isn’t more than 1 but the disc number is.
+				let shouldShowDiscNumber = (discCount > 1) ? true : (discNumber > 1)
+				
+				if shouldShowDiscNumber {
+					return metadatum.discAndTrackNumberFormatted()
+				} else {
+					return metadatum.trackNumberFormattedOptional()
+				}
+			}()
+			if let text = text {
+				return text
 			} else {
-				return metadatum.trackNumberFormatted()
-			}}()
+				return "‒" // Figure dash
+			}
+		}()
 		
 		if artistLabel.text == nil {
 			textStack.spacing = 0

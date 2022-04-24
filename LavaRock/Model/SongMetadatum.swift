@@ -21,6 +21,7 @@ protocol SongMetadatum {
 	var discCountOnDisk: Int { get }
 	var discNumberOnDisk: Int { get }
 	var trackNumberOnDisk: Int { get }
+	static var unknownTrackNumber: Int { get }
 	
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
@@ -42,7 +43,8 @@ extension MPMediaItem: SongMetadatum {
 	
 	var discCountOnDisk: Int { discCount } // … `0`, as of iOS 15.0 RC.
 	var discNumberOnDisk: Int { discNumber } // … `1`, as of iOS 14.7 developer beta 5.
-	var trackNumberOnDisk: Int { albumTrackNumber } // … `0`, as of iOS 14.7 developer beta 5.
+	var trackNumberOnDisk: Int { albumTrackNumber }
+	static let unknownTrackNumber = 0 // As of iOS 14.7 developer beta 5.
 	
 	var titleOnDisk: String? { title } // … we don’t know, because Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
 	var artistOnDisk: String? { artist }
@@ -66,6 +68,7 @@ struct Sim_SongMetadatum: SongMetadatum {
 	let discCountOnDisk: Int
 	let discNumberOnDisk: Int
 	let trackNumberOnDisk: Int
+	static let unknownTrackNumber = MPMediaItem.unknownTrackNumber
 	
 	let titleOnDisk: String?
 	let artistOnDisk: String?
@@ -122,12 +125,8 @@ extension Sim_SongMetadatum {
 }
 #endif
 
-struct SongMetadatumExtras {
-	private init() {}
-	
-	static let unknownTitlePlaceholder = "—" // Em dash
-	static let unknownTrackNumber = 0
-	static let unknownTrackNumberPlaceholder = "‒" // Figure dash
+struct SongMetadatumPlaceholder {
+	static let unknownTitle = "—" // Em dash
 }
 
 extension SongMetadatum {
@@ -217,10 +216,10 @@ extension SongMetadatum {
 		}
 		
 		// Move unknown track number to the end
-		guard otherTrack != SongMetadatumExtras.unknownTrackNumber else {
+		guard otherTrack != type(of: other).unknownTrackNumber else {
 			return true
 		}
-		guard myTrack != SongMetadatumExtras.unknownTrackNumber else {
+		guard myTrack != Self.unknownTrackNumber else {
 			return false
 		}
 		
@@ -231,18 +230,14 @@ extension SongMetadatum {
 	// MARK: Formatted Attributes
 	
 	func discAndTrackNumberFormatted() -> String {
-		let trackNumberString: String = {
-			guard trackNumberOnDisk != SongMetadatumExtras.unknownTrackNumber else {
-				return ""
-			}
-			return String(trackNumberOnDisk)
-		}()
-		return "\(discNumberOnDisk)·\(trackNumberString)" // That’s an interpunct.
+		var result = "\(discNumberOnDisk)·" // That’s an interpunct.
+		result += trackNumberFormattedOptional() ?? ""
+		return result
 	}
 	
-	func trackNumberFormatted() -> String {
-		guard trackNumberOnDisk != SongMetadatumExtras.unknownTrackNumber else {
-			return SongMetadatumExtras.unknownTrackNumberPlaceholder
+	func trackNumberFormattedOptional() -> String? {
+		guard trackNumberOnDisk != Self.unknownTrackNumber else {
+			return nil
 		}
 		return String(trackNumberOnDisk)
 	}

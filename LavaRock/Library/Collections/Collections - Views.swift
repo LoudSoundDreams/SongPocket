@@ -151,7 +151,7 @@ final class CollectionCell: UITableViewCell {
 		mode: Mode,
 		accessibilityActions: [UIAccessibilityCustomAction]
 	) {
-		titleLabel.text = { () -> String in // Don’t let this be `nil`.
+		titleLabel.text = { () -> String in
 			return collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
 		}()
 		accessibilityCustomActions = accessibilityActions

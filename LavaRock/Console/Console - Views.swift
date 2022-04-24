@@ -36,10 +36,18 @@ final class SongInQueueCell: UITableViewCell {
 		
 		// Don’t let these be `nil`.
 		titleLabel.text = { () -> String in
-			metadatum.titleOnDisk ?? SongMetadatumExtras.unknownTitlePlaceholder
+			if let songTitle = metadatum.titleOnDisk {
+				return songTitle
+			} else {
+				return SongMetadatumPlaceholder.unknownTitle
+			}
 		}()
 		secondaryLabel.text = { () -> String in
-			metadatum.artistOnDisk ?? LocalizedString.unknownArtist
+			if let albumTitle = metadatum.albumTitleOnDisk {
+				return albumTitle
+			} else {
+				return Album.unknownTitlePlaceholder
+			}
 		}()
 		
 		// Update constraints

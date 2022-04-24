@@ -255,45 +255,54 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	static let unknownAlbumArtistPlaceholder = LocalizedString.unknownAlbumArtist
-	
 	final func coverArt(at size: CGSize) -> UIImage? {
 		return representativeSongMetadatum()?.coverArt(at: size)
 	}
 	
+	static let unknownTitlePlaceholder = LocalizedString.unknownAlbum
 	final func titleFormattedOrPlaceholder() -> String {
-		return titleFormattedOptional() ?? LocalizedString.unknownAlbum
+		guard let title = titleFormattedOptional() else {
+			return Self.unknownTitlePlaceholder
+		}
+		return title
 	}
-	
-	private func titleFormattedOptional() -> String? {
+	final func titleFormattedOptional() -> String? {
 		guard
-			let fetchedAlbumTitle = representativeSongMetadatum()?.albumTitleOnDisk,
-			fetchedAlbumTitle != ""
+			let title = representativeSongMetadatum()?.albumTitleOnDisk,
+			title != ""
 		else {
 			return nil
 		}
-		return fetchedAlbumTitle
+		return title
 	}
 	
+	static let unknownAlbumArtistPlaceholder: String = LocalizedString.unknownAlbumArtist
 	final func albumArtistFormattedOrPlaceholder() -> String {
-		guard
-			let fetchedAlbumArtist = representativeSongMetadatum()?.albumArtistOnDisk // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
-		else {
+		guard let albumArtist = albumArtistFormattedOptional() else {
 			return Self.unknownAlbumArtistPlaceholder
 		}
-		return fetchedAlbumArtist
+		return albumArtist
+	}
+	final func albumArtistFormattedOptional() -> String? {
+		guard
+			let albumArtist = representativeSongMetadatum()?.albumArtistOnDisk, // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
+			albumArtist != ""
+		else {
+			return nil
+		}
+		return albumArtist
 	}
 	
+	final func releaseDateEstimateFormattedOptional() -> String? {
+		guard let releaseDateEstimate = releaseDateEstimate else {
+			return nil
+		}
+		return Self.releaseDateFormatter.string(from: releaseDateEstimate)
+	}
 	private static let releaseDateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateStyle = .medium
 		dateFormatter.timeStyle = .none
 		return dateFormatter
 	}()
-	final func releaseDateEstimateFormatted() -> String? {
-		guard let releaseDateEstimate = releaseDateEstimate else {
-			return nil
-		}
-		return Self.releaseDateFormatter.string(from: releaseDateEstimate)
-	}
 }

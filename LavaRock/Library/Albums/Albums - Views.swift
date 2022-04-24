@@ -62,8 +62,7 @@ final class AlbumCell: UITableViewCell {
 		with album: Album,
 		mode: Mode
 	) {
-		let title: String // Don’t let this be `nil`.
-		= album.titleFormattedOrPlaceholder()
+		let albumTitleOptional = album.titleFormattedOptional()
 		
 		os_signpost(.begin, log: .albumsView, name: "Draw and set cover art")
 		coverArtView.image = {
@@ -74,8 +73,14 @@ final class AlbumCell: UITableViewCell {
 					height: maxWidthAndHeight))
 		}()
 		os_signpost(.end, log: .albumsView, name: "Draw and set cover art")
-		titleLabel.text = title
-		releaseDateLabel.text = album.releaseDateEstimateFormatted()
+		titleLabel.text = { () -> String in
+			if let albumTitle = albumTitleOptional {
+				return albumTitle
+			} else {
+				return Album.unknownTitlePlaceholder
+			}
+		}()
+		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()
 		 
 		if releaseDateLabel.text == nil {
 			// We couldn’t determine the album’s release date.
@@ -99,7 +104,7 @@ final class AlbumCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 		
-		accessibilityUserInputLabels = [title]
+		accessibilityUserInputLabels = [albumTitleOptional].compactMap { $0 }
 		
 		reflectPlayhead(containsPlayhead: album.containsPlayhead())
 	}
