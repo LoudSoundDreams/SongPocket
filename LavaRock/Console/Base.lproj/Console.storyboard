@@ -44,7 +44,7 @@
                                                     <rect key="frame" x="16" y="11" width="48" height="48"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="7Bg-s2-hCP" secondAttribute="height" multiplier="1:1" id="8y5-0M-Ybc"/>
-                                                        <constraint firstAttribute="width" priority="900" constant="48" id="XAQ-B0-L4e"/>
+                                                        <constraint firstAttribute="width" constant="48" id="XAQ-B0-L4e"/>
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="WkY-gQ-K1c">
@@ -67,7 +67,6 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottomMargin" id="0HV-gk-iMY"/>
-                                                <constraint firstItem="a8a-8Z-0zp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="topMargin" id="0vi-bF-d8T"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottomMargin" id="5in-zc-url"/>
                                                 <constraint firstItem="8T1-aG-ORD" firstAttribute="centerY" secondItem="a8a-8Z-0zp" secondAttribute="centerY" id="9vB-UB-5vD"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WkY-gQ-K1c" secondAttribute="trailing" constant="8" symbolic="YES" id="Ade-ua-v0o"/>
@@ -80,11 +79,6 @@
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" secondItem="7Bg-s2-hCP" secondAttribute="top" constant="-3" id="ifT-zv-o7t"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottomMargin" id="lpE-Se-Poo"/>
                                             </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="0vi-bF-d8T"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="coverArtView" destination="7Bg-s2-hCP" id="qr9-AK-sqe"/>
