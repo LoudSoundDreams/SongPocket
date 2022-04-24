@@ -188,7 +188,6 @@ extension LibraryViewModel {
 			return selectedIndexPaths
 		}
 	}
-	
 	func sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
