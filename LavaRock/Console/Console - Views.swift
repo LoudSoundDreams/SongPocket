@@ -43,10 +43,10 @@ final class SongInQueueCell: UITableViewCell {
 			}
 		}()
 		secondaryLabel.text = { () -> String in
-			if let albumTitle = metadatum.albumTitleOnDisk {
-				return albumTitle
+			if let songArtist = metadatum.artistOnDisk {
+				return songArtist
 			} else {
-				return Album.unknownTitlePlaceholder
+				return LocalizedString.unknownArtist
 			}
 		}()
 		
