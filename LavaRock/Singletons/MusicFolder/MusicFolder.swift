@@ -49,8 +49,8 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 					discCountOnDisk: 1,
 					discNumberOnDisk: 1,
 					trackNumberOnDisk: 1,
-					titleOnDisk: "Mago",
-					artistOnDisk: "GFriend",
+					titleOnDisk: "Amazingly few discotheques provide jukeboxes.",
+					artistOnDisk: "Five Boxing Wizards",
 					releaseDateOnDisk: .now,
 					dateAddedOnDisk: .now),
 				Sim_SongMetadatum(
