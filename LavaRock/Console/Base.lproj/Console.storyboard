@@ -29,13 +29,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="a8a-8Z-0zp">
-                                                    <rect key="frame" x="343.33333333333331" y="10.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                                    <rect key="frame" x="343.33333333333331" y="19.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     </preferredSymbolConfiguration>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8T1-aG-ORD">
-                                                    <rect key="frame" x="343.33333333333331" y="10.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
+                                                    <rect key="frame" x="343.33333333333331" y="19.666666666666668" width="15.666666666666686" height="11.666666666666668"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     </preferredSymbolConfiguration>
@@ -48,7 +48,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="WkY-gQ-K1c">
-                                                    <rect key="frame" x="76.000000000000014" y="8" width="145.33333333333337" height="34.333333333333336"/>
+                                                    <rect key="frame" x="76.000000000000014" y="17.000000000000004" width="145.33333333333337" height="34.333333333333343"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder Song Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ovi-Se-odr">
                                                             <rect key="frame" x="0.0" y="0.0" width="145.33333333333334" height="17"/>
@@ -75,8 +75,9 @@
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" secondItem="Y38-vV-GgI" secondAttribute="topMargin" id="EHT-Li-tzH"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="firstBaseline" secondItem="Ovi-Se-odr" secondAttribute="firstBaseline" id="Jv4-T3-mYk"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="leading" secondItem="Y38-vV-GgI" secondAttribute="leadingMargin" id="KgT-xs-EsM"/>
+                                                <constraint firstItem="WkY-gQ-K1c" firstAttribute="centerY" secondItem="Y38-vV-GgI" secondAttribute="centerY" constant="-1" id="L0r-8q-9a0"/>
                                                 <constraint firstItem="8T1-aG-ORD" firstAttribute="leading" secondItem="a8a-8Z-0zp" secondAttribute="leading" id="a2J-aj-ONt"/>
-                                                <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" secondItem="7Bg-s2-hCP" secondAttribute="top" constant="-3" id="ifT-zv-o7t"/>
+                                                <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7Bg-s2-hCP" secondAttribute="top" constant="-3" id="ifT-zv-o7t"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottomMargin" id="lpE-Se-Poo"/>
                                             </constraints>
                                         </tableViewCellContentView>
