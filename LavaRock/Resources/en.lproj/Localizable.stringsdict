@@ -31,7 +31,7 @@
 			<key>one</key>
 			<string>%lld Album</string>
 			<key>other</key>
-			<string>Albums</string>
+			<string>%lld Albums</string>
 		</dict>
 	</dict>
 	<key>plural - x_songs</key>
