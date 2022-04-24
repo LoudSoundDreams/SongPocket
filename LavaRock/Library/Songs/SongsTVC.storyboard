@@ -119,13 +119,13 @@
                                             </preferredSymbolConfiguration>
                                         </imageView>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="400" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="88" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAq-AF-bpj">
-                                            <rect key="frame" x="16" y="21" width="17.666666666666671" height="17"/>
+                                            <rect key="frame" x="16" y="12.333333333333336" width="17.666666666666671" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="400" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ATM-N6-nhM">
-                                            <rect key="frame" x="24.666666666666668" y="21" width="9.0000000000000036" height="17"/>
+                                            <rect key="frame" x="24.666666666666668" y="12.333333333333336" width="9.0000000000000036" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
@@ -158,7 +158,7 @@
                                         <constraint firstItem="ASX-qJ-uK1" firstAttribute="trailing" secondItem="TU5-RY-n4A" secondAttribute="trailingMargin" id="Y4c-Zm-A8s"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="trailing" secondItem="RAq-AF-bpj" secondAttribute="trailing" id="YVn-tk-h1O"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="Z5x-M8-pLQ"/>
-                                        <constraint firstItem="RAq-AF-bpj" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="bE3-fw-Fd1"/>
+                                        <constraint firstItem="RAq-AF-bpj" firstAttribute="firstBaseline" secondItem="Ngy-rH-NbP" secondAttribute="firstBaseline" id="bE3-fw-Fd1"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="dES-oz-vrb"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="centerY" secondItem="RAq-AF-bpj" secondAttribute="centerY" id="hVa-OV-pVP"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="x27-Sp-4dc"/>
