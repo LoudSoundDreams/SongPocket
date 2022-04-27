@@ -52,6 +52,16 @@ final class AccentColorCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)
+		
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(userDidChangeAccentColor),
+			name: .LRUserChangedAccentColor,
+			object: nil)
+	}
+	@objc private func userDidChangeAccentColor() {
+		// Don’t do this during `tintColorDidChange`, because that can break the animation when the table view deselects the row.
+		configure()
 	}
 	
 	private func configure() {
@@ -80,11 +90,15 @@ final class AccentColorCell: UITableViewCell {
 		selectedBackgroundView = colorView
 	}
 	
+	private lazy var previousAccessibilityContrast = traitCollection.accessibilityContrast
 	// UIKit does call this when “Increase Contrast” changes.
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		configure()
+		if previousAccessibilityContrast != traitCollection.accessibilityContrast {
+			previousAccessibilityContrast = traitCollection.accessibilityContrast
+			configure()
+		}
 	}
 	
 	final override func layoutSubviews() {
