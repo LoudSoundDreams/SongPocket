@@ -8,7 +8,7 @@
 import Foundation
 
 extension Notification.Name {
-	static let LRUserRespondedToAllowAccessToMediaLibrary = Self("media library authorization status changed")
+	static let LRUserRespondedToAllowAccessToMediaLibrary = Self("user responded to “allow access to Music” alert")
 	static let LRMergedChanges = Self("merged changes")
 	static let LRUserUpdatedDatabase = Self("user updated database")
 	static let LRModifiedReel = Self("modified reel")
