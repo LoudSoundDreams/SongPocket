@@ -84,17 +84,14 @@
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="SFb-dV-xDe" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="trailingMargin" id="2ZV-8o-FlI"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="topMargin" constant="1" id="3Qu-eC-zjq"/>
                                         <constraint firstItem="ZA8-cG-C8X" firstAttribute="centerY" secondItem="SFb-dV-xDe" secondAttribute="centerY" id="D3a-34-mMr"/>
                                         <constraint firstItem="uca-y1-fcm" firstAttribute="leading" secondItem="ZA8-cG-C8X" secondAttribute="leading" id="H34-X1-mCI"/>
-                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="topMargin" id="KzF-eK-Ho7"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="centerY" secondItem="oWs-S1-Xp1" secondAttribute="centerY" constant="-1" id="Ocg-3j-RGz"/>
                                         <constraint firstItem="ZA8-cG-C8X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SFb-dV-xDe" secondAttribute="trailing" constant="8" symbolic="YES" id="WqS-HV-ixF"/>
                                         <constraint firstItem="ZA8-cG-C8X" firstAttribute="trailing" secondItem="oWs-S1-Xp1" secondAttribute="trailingMargin" id="XlQ-KV-9W0"/>
                                         <constraint firstItem="uca-y1-fcm" firstAttribute="centerY" secondItem="ZA8-cG-C8X" secondAttribute="centerY" id="pll-2M-ijT"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="leading" secondItem="oWs-S1-Xp1" secondAttribute="leadingMargin" id="rL2-ls-1fc"/>
-                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="bottomMargin" id="xn3-2d-fAK"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

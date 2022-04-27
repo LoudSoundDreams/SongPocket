@@ -149,7 +149,6 @@
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="RAq-AF-bpj" secondAttribute="trailing" constant="12" id="2b4-mj-YkB"/>
                                         <constraint firstItem="ASX-qJ-uK1" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="trailing" constant="12" id="8Vl-wx-2QL"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="centerY" secondItem="TU5-RY-n4A" secondAttribute="centerY" constant="-1" id="BBp-wO-3RZ"/>
-                                        <constraint firstItem="ATM-N6-nhM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="E3u-58-7k9"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="8" symbolic="YES" id="KTq-lY-q0D"/>
                                         <constraint firstItem="NBN-dN-oQT" firstAttribute="centerY" secondItem="WdO-9k-h95" secondAttribute="centerY" id="OuF-Vy-8zh"/>
                                         <constraint firstItem="ASX-qJ-uK1" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="S3I-Fz-ciH"/>
@@ -159,9 +158,7 @@
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="trailing" secondItem="RAq-AF-bpj" secondAttribute="trailing" id="YVn-tk-h1O"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="Z5x-M8-pLQ"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="firstBaseline" secondItem="Ngy-rH-NbP" secondAttribute="firstBaseline" id="bE3-fw-Fd1"/>
-                                        <constraint firstItem="WdO-9k-h95" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="dES-oz-vrb"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="centerY" secondItem="RAq-AF-bpj" secondAttribute="centerY" id="hVa-OV-pVP"/>
-                                        <constraint firstItem="WdO-9k-h95" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" id="x27-Sp-4dc"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" constant="1" id="yme-ol-E5x"/>
                                     </constraints>
                                 </tableViewCellContentView>
