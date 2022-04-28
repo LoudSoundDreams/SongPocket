@@ -60,12 +60,6 @@ final class ConsoleVC: UIViewController {
 		if Enabling.transportToolbar {
 			toolbarItems = transportButtons
 			navigationController?.setToolbarHidden(false, animated: false)
-		}
-		if Enabling.opaqueTransportToolbar {
-			if let toolbar = navigationController?.toolbar {
-				toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-			}
-		} else {
 			if let toolbar = navigationController?.toolbar {
 				let appearance = toolbar.standardAppearance
 				appearance.configureWithTransparentBackground()
