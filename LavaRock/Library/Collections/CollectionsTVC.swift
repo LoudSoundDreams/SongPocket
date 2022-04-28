@@ -265,11 +265,6 @@ final class CollectionsTVC:
 			} else {
 				viewingModeTopLeftButtons = [optionsButton__UIKit]
 			}
-
-			if Enabling.optionsInTabBar {
-				viewingModeTopLeftButtons = []
-			}
-			
 			editingModeToolbarButtons = [
 				combineButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),

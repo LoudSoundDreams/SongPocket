@@ -54,19 +54,6 @@ final class TabBarController: UITabBarController {
 		
 		delegate = self
 		
-		if Enabling.optionsInTabBar {
-			if let optionsNC = viewControllers?.last as? OptionsNC {
-				optionsNC.tabBarItem = UITabBarItem(
-					title: LocalizedString.options,
-					image: UIImage(systemName: "switch.2"),
-					selectedImage: nil)
-			}
-		} else {
-			if viewControllers?.last is OptionsNC {
-				viewControllers?.removeLast()
-			}
-		}
-		
 		if Enabling.swiftUI__console {
 			replaceConsoleVC()
 		}

@@ -20,10 +20,6 @@ final class OptionsTVC: UITableViewController {
 		if TipJarViewModel.shared.status == .notYetFirstLoaded {
 			PurchaseManager.shared.requestTipProduct()
 		}
-		
-		if Enabling.optionsInTabBar {
-			navigationItem.rightBarButtonItem = nil
-		}
 	}
 	
 	@IBAction private func doneWithOptionsSheet(_ sender: UIBarButtonItem) {

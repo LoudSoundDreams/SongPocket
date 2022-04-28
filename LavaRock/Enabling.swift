@@ -20,7 +20,6 @@ struct Enabling {
 		: true
 	)
 	static let consoleInToolbar = console && transportToolbar && 10 == 10
-	static let optionsInTabBar = console && !transportToolbar && 10 == 1
 	static let swiftUI__console = console && 10 == 1
 	
 	static let swiftUI__options = 10 == 1
