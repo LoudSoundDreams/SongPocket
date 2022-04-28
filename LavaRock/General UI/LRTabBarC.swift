@@ -1,5 +1,5 @@
 //
-//  TabBarController.swift
+//  LRTabBarC.swift
 //  LavaRock
 //
 //  Created by h on 2022-03-21.
@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-final class TabBarController: UITabBarController {
+final class LRTabBarC: UITabBarController {
 	// `MovesThemeToWindow`
 	static var didMoveThemeToWindow = false
 	
@@ -89,8 +89,8 @@ final class TabBarController: UITabBarController {
 		moveThemeToWindow()
 	}
 }
-extension TabBarController: MovesThemeToWindow {}
-extension TabBarController: UITabBarControllerDelegate {
+extension LRTabBarC: MovesThemeToWindow {}
+extension LRTabBarC: UITabBarControllerDelegate {
 	final func tabBarController(
 		_ tabBarController: UITabBarController,
 		shouldSelect viewController: UIViewController

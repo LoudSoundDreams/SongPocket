@@ -57,7 +57,7 @@
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
 		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
 		076F1C0527E8F79400220C2B /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0427E8F79400220C2B /* UISegmentedControl.swift */; };
-		076F1C0727E903A500220C2B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0627E903A500220C2B /* TabBarController.swift */; };
+		076F1C0727E903A500220C2B /* LRTabBarC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0627E903A500220C2B /* LRTabBarC.swift */; };
 		0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
@@ -196,7 +196,7 @@
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
 		076F1C0427E8F79400220C2B /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
-		076F1C0627E903A500220C2B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		076F1C0627E903A500220C2B /* LRTabBarC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRTabBarC.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUserDefaultsKey.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
@@ -534,7 +534,7 @@
 				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				075218AF257C4C0C0077AE9B /* Tab Bar.storyboard */,
-				076F1C0627E903A500220C2B /* TabBarController.swift */,
+				076F1C0627E903A500220C2B /* LRTabBarC.swift */,
 				07CD864E27CAA54600286E6A /* PlayerReflecting.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
 				07499A8527AB72CF00A2D712 /* TransportToolbarManaging.swift */,
@@ -826,7 +826,7 @@
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				07E0BBDF276567760010117E /* URL.swift in Sources */,
 				07E0BBD7276567490010117E /* String.swift in Sources */,
-				076F1C0727E903A500220C2B /* TabBarController.swift in Sources */,
+				076F1C0727E903A500220C2B /* LRTabBarC.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
 				07FB52C82813692000CCCBA5 /* SectionIndex, RowIndex.swift in Sources */,
 				070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */,
