@@ -257,7 +257,6 @@ class LibraryTVC: UITableViewController {
 			self.isAnimatingBatchUpdates -= 1 // ARC2DO
 			if self.isAnimatingBatchUpdates == 0 { // See corresponding comment in `setItemsAndMoveRows`.
 				self.dismiss(animated: true) { // If we moved all the `Album`s out of a `Collection`, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
-					(self.tabBarController as? LRTabBarC)?.enable()
 					self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 				}
 			}
@@ -307,13 +306,6 @@ class LibraryTVC: UITableViewController {
 		super.setEditing(editing, animated: animated)
 		
 		setBarButtons(animated: animated)
-		if Enabling.console {
-			if let tabBarController = tabBarController as? LRTabBarC {
-				editing
-				? tabBarController.disable()
-				: tabBarController.enable()
-			}
-		}
 		
 		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
 		// During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
