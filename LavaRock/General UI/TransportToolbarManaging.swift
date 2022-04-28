@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 
 @MainActor
-protocol TransportToolbarManaging: UIViewController & UIAdaptivePresentationControllerDelegate {
+protocol TransportToolbarManaging: UIViewController {
 	// Adopting types must …
 	// • Respond to `LRModifiedReel` `Notification`s and call `freshenTransportToolbar`.
 	
@@ -31,10 +31,10 @@ extension TransportToolbarManaging {
 	var transportButtons: [UIBarButtonItem] {
 		if Enabling.consoleInToolbar {
 			return [
-				previousSongButton, .flexibleSpace(),
-				rewindButton, .flexibleSpace(),
-				playPauseButton, .flexibleSpace(),
 				moreButton, .flexibleSpace(),
+				skipBackwardButton, .flexibleSpace(),
+				playPauseButton, .flexibleSpace(),
+				skipForwardButton, .flexibleSpace(),
 				nextSongButton,
 			]
 		}
@@ -118,14 +118,14 @@ extension TransportToolbarManaging {
 				guard let self = self else { return }
 				self.present(
 					{
-						let storyboard = UIStoryboard(name: "Console", bundle: nil)
-						let viewController = storyboard.instantiateInitialViewController()!
-						viewController.modalPresentationStyle = .popover
-						viewController.popoverPresentationController?.barButtonItem = self.moreButton
-						viewController.presentationController?.delegate = self
-						viewController.preferredContentSize = CGSize(
-							width: .eight * 48,
-							height: .eight * 128)
+						let viewController = UIStoryboard(
+							name: "Console",
+							bundle: nil)
+							.instantiateInitialViewController()!
+						if let sheet = viewController.sheetPresentationController {
+							sheet.detents = [.medium(), .large()]
+							sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+						}
 						return viewController
 					}(),
 					animated: true)
@@ -150,6 +150,7 @@ extension TransportToolbarManaging {
 		else {
 			configurePlayButton()
 			transportButtons.forEach { $0.disableWithAccessibilityTrait() }
+			moreButton.enableWithAccessibilityTrait()
 			return
 		}
 		

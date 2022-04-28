@@ -58,6 +58,17 @@ final class ConsoleVC: UIViewController {
 		
 		beginReflectingNowPlayingItem_console()
 		
+		if Enabling.consoleInToolbar {
+			navigationItem.rightBarButtonItem = {
+				let dismissButton = UIBarButtonItem(
+					title: LocalizedString.done,
+					primaryAction: UIAction { [weak self] _ in
+						self?.dismiss(animated: true)
+					})
+				dismissButton.style = .done
+				return dismissButton
+			}()
+		}
 		if Enabling.transportToolbar {
 			toolbarItems = transportButtons
 			if Enabling.consoleInToolbar {

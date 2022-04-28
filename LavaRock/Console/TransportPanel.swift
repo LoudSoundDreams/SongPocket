@@ -18,9 +18,10 @@ struct TransportPanel: View {
 	var body: some View {
 		if Enabling.consoleInToolbar {
 			HStack {
-				skipBackwardButton
+				previousSongButton
+					.padding(.trailing, .eight * 4)
+				rewindButton
 				Spacer()
-				skipForwardButton
 			}
 			.padding([.top, .bottom], .eight * 6)
 			.disabled(tapeDeckDisplay.currentStatus == nil)
