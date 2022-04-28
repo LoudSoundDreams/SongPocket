@@ -53,9 +53,9 @@ extension AlbumsTVC {
 	
 	private func startOrganizing() {
 		// Prepare a Collections view to present modally.
-		let storyboardWithLibraryNC = UIStoryboard(name: "Library", bundle: nil)
 		guard
-			let libraryNC = storyboardWithLibraryNC.instantiateInitialViewController() as? UINavigationController,
+			let libraryNC = UIStoryboard(name: "Library", bundle: nil)
+				.instantiateInitialViewController() as? UINavigationController,
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
@@ -218,10 +218,9 @@ extension AlbumsTVC {
 	
 	private func startMoving() {
 		// Prepare a Collections view to present modally.
-		
-		let storyboardWithLibraryNC = UIStoryboard(name: "Library", bundle: nil)
 		guard
-			let libraryNC = storyboardWithLibraryNC.instantiateInitialViewController() as? UINavigationController,
+			let libraryNC = UIStoryboard(name: "Library", bundle: nil)
+				.instantiateInitialViewController() as? UINavigationController,
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
