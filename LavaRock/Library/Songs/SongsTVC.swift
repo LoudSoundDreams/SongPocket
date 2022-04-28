@@ -50,10 +50,6 @@ final class SongsTVC:
 		super.setUpBarButtons()
 		
 		navigationItem.rightBarButtonItem = editButtonItem
-		if Enabling.console {
-		} else {
-			navigationController?.setToolbarHidden(false, animated: false)
-		}
 	}
 	
 	final override func viewWillAppear(_ animated: Bool) {

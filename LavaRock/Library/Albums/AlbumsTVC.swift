@@ -117,10 +117,6 @@ final class AlbumsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			if Enabling.console {
-			} else {
-				navigationController?.setToolbarHidden(false, animated: false)
-			}
 		}
 	}
 	
