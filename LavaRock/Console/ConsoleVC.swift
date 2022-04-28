@@ -60,15 +60,15 @@ final class ConsoleVC: UIViewController {
 		
 		if Enabling.transportToolbar {
 			toolbarItems = transportButtons
-			navigationController?.setToolbarHidden(false, animated: false)
+			if Enabling.consoleInToolbar {
+			} else {
+				navigationController?.setToolbarHidden(false, animated: false)
+			}
 			if let toolbar = navigationController?.toolbar {
 				let appearance = toolbar.standardAppearance
 				appearance.configureWithTransparentBackground()
 				toolbar.standardAppearance = appearance
 			}
-		}
-		if Enabling.consoleInToolbar {
-			navigationController?.setToolbarHidden(true, animated: false)
 		}
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
