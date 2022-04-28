@@ -14,7 +14,6 @@ struct TransportPanel: View {
 		tapeDeckDisplay = .shared
 	}
 	
-	private let eight: CGFloat = 8
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
 		VStack {
@@ -23,32 +22,30 @@ struct TransportPanel: View {
 					player?.skipToPreviousItem()
 				} label: {
 					Image(systemName: "arrowtriangle.up.circle")
-						.font(.system(size: eight * 4))
+						.font(.system(size: .eight * 4))
 				}
 				Spacer()
 				Button {
 					player?.skipToBeginning()
 				} label: {
 					Image(systemName: "arrow.counterclockwise.circle")
-						.font(.system(size: eight * 4))
+						.font(.system(size: .eight * 4))
 				}
 				Spacer()
 				Button {
 					player?.skipToNextItem()
 				} label: {
 					Image(systemName: "arrowtriangle.down.circle")
-						.font(.system(size: eight * 4))
+						.font(.system(size: .eight * 4))
 				}
 			}
-			
-			Spacer(minLength: eight * 4)
-			
+			Spacer(minLength: .eight * 4)
 			HStack {
 				Button {
 					player?.currentPlaybackTime -= 10
 				} label: {
 					Image(systemName: "gobackward.10")
-						.font(.system(size: eight * 4))
+						.font(.system(size: .eight * 4))
 				}
 				Spacer()
 				Button {
@@ -64,10 +61,10 @@ struct TransportPanel: View {
 						status.isInPlayMode
 					{
 						Image(systemName: "circle")
-							.font(.system(size: eight * 8))
+							.font(.system(size: .eight * 8))
 					} else {
 						Image(systemName: "circle.fill")
-							.font(.system(size: eight * 8))
+							.font(.system(size: .eight * 8))
 					}
 				}
 				Spacer()
@@ -75,11 +72,11 @@ struct TransportPanel: View {
 					player?.currentPlaybackTime += 10
 				} label: {
 					Image(systemName: "goforward.10")
-						.font(.system(size: eight * 4))
+						.font(.system(size: .eight * 4))
 				}
 			}
 		}
-		.padding([.top, .bottom], eight * 6)
+		.padding([.top, .bottom], .eight * 6)
 		.disabled(tapeDeckDisplay.currentStatus == nil)
 	}
 }
