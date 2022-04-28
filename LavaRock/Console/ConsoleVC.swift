@@ -67,7 +67,7 @@ final class ConsoleVC: UIViewController {
 				toolbar.standardAppearance = appearance
 			}
 		}
-		if Enabling.popoverConsole {
+		if Enabling.consoleInToolbar {
 			navigationController?.setToolbarHidden(true, animated: false)
 		}
 	}

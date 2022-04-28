@@ -70,7 +70,7 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		let result = (
 			Enabling.console
 			? (
-				Enabling.popoverConsole
+				Enabling.consoleInToolbar
 				? UIStoryboard(name: "Library", bundle: nil)
 				: UIStoryboard(name: "Tab Bar", bundle: nil)
 			)

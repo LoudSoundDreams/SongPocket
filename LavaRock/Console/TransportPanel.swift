@@ -16,7 +16,7 @@ struct TransportPanel: View {
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
-		if Enabling.popoverConsole {
+		if Enabling.consoleInToolbar {
 			HStack {
 				skipBackwardButton
 				Spacer()
