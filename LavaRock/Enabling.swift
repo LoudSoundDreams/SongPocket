@@ -19,8 +19,7 @@ struct Enabling {
 		? 10 == 10
 		: true
 	)
-	static let jumpButtons = console ? (10 == 1) : (10 == 1)
-	static let consoleInToolbar = console && transportToolbar && !jumpButtons && 10 == 10
+	static let consoleInToolbar = console && transportToolbar && 10 == 10
 	static let optionsInTabBar = console && !transportToolbar && 10 == 1
 	static let swiftUI__console = console && 10 == 1
 	

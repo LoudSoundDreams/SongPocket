@@ -37,22 +37,14 @@ extension TransportToolbarManaging {
 				skipForwardButton, .flexibleSpace(),
 				nextSongButton,
 			]
-		}
-		if Enabling.jumpButtons {
+		} else {
 			return [
 				previousSongButton, .flexibleSpace(),
-				skipBackwardButton, .flexibleSpace(),
+				rewindButton, .flexibleSpace(),
 				playPauseButton, .flexibleSpace(),
-				skipForwardButton, .flexibleSpace(),
 				nextSongButton,
 			]
 		}
-		return [
-			previousSongButton, .flexibleSpace(),
-			rewindButton, .flexibleSpace(),
-			playPauseButton, .flexibleSpace(),
-			nextSongButton,
-		]
 	}
 	
 	func makePreviousSongButton() -> UIBarButtonItem {
