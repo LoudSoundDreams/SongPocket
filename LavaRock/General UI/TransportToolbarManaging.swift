@@ -47,6 +47,9 @@ extension TransportToolbarManaging {
 		}
 	}
 	
+	private static var moreDefaultImage: UIImage { UIImage(systemName: "chevron.up")! }
+	private static var moreRepeat1Image: UIImage { UIImage(systemName: "repeat.1.circle.fill")! }
+	private static var moreRepeatAllImage: UIImage { UIImage(systemName: "repeat.circle.fill")! }
 	func makeMoreButton() -> UIBarButtonItem {
 		return UIBarButtonItem(
 			title: LocalizedString.more,
@@ -142,9 +145,25 @@ extension TransportToolbarManaging {
 		else {
 			configurePlayButton()
 			transportButtons.forEach { $0.disableWithAccessibilityTrait() }
+			moreButton.image = Self.moreDefaultImage
 			moreButton.enableWithAccessibilityTrait()
 			return
 		}
+		
+		moreButton.image = {
+			switch player.repeatMode {
+			case .default:
+				return Self.moreDefaultImage
+			case .none:
+				return Self.moreDefaultImage
+			case .one:
+				return Self.moreRepeat1Image
+			case .all:
+				return Self.moreRepeatAllImage
+			@unknown default:
+				return Self.moreDefaultImage
+			}
+		}()
 		
 		if player.playbackState == .playing {
 			// Configure “pause” button
