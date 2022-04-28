@@ -112,7 +112,7 @@ extension TransportToolbarManaging {
 	
 	func makeMoreButton() -> UIBarButtonItem {
 		return UIBarButtonItem(
-			title: "More", // L2DO
+			title: LocalizedString.more,
 			image: UIImage(systemName: "ellipsis.circle"),
 			primaryAction: UIAction { [weak self] _ in
 				guard let self = self else { return }
