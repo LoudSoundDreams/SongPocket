@@ -67,10 +67,12 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	func makeUIViewController(
 		context: Context
 	) -> ViewControllerType {
-		let storyboard = Enabling.console
-		? UIStoryboard(name: "Tab Bar", bundle: nil)
-		: UIStoryboard(name: "Library", bundle: nil)
-		let result = storyboard.instantiateInitialViewController()!
+		let result = (
+			Enabling.console
+			? UIStoryboard(name: "Tab Bar", bundle: nil)
+			: UIStoryboard(name: "Library", bundle: nil)
+		)
+			.instantiateInitialViewController()!
 		
 		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 		result.view.tintColor = theme.accentColor.uiColor
