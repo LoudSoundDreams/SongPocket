@@ -14,8 +14,8 @@ struct Enabling {
 	static let songDotDotDot = 10 == 1
 	
 	static let console = 10 == 1
-	static let optionsInTabBar = console && 10 == 10
 	static let jumpButtons = console ? (10 == 10) : (10 == 1)
+	static let optionsInTabBar = console && 10 == 10
 	static let swiftUI__console = console && 10 == 1
 	
 	static let swiftUI__options = 10 == 1
