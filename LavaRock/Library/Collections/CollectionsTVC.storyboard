@@ -128,12 +128,12 @@
                         <leftBarButtonItems>
                             <barButtonItem title="Options" id="mpR-tt-C6X">
                                 <connections>
-                                    <segue destination="PZK-NP-HeE" kind="presentation" identifier="" modalPresentationStyle="formSheet" id="aqr-v5-Bgu"/>
+                                    <action selector="presentOptions__UIKit:" destination="Vce-TP-hYI" id="a6n-7y-L6I"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="Options" id="dlm-8d-Mjf">
                                 <connections>
-                                    <action selector="openOptions_SwiftUI:" destination="Vce-TP-hYI" id="71c-mr-oJp"/>
+                                    <action selector="presentOptions__SwiftUI:" destination="Vce-TP-hYI" id="Y5b-my-XQo"/>
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
@@ -147,14 +147,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Toq-AT-hvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6960.8000000000002" y="193.5960591133005"/>
-        </scene>
-        <!--Options-->
-        <scene sceneID="kWJ-ko-gxE">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Options" id="PZK-NP-HeE" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Z5t-1I-RYz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="7528" y="122"/>
         </scene>
         <!--AlbumsTVC-->
         <scene sceneID="SIF-U4-dUB">

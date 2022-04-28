@@ -314,6 +314,24 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
+	@IBAction private func presentOptions__UIKit(_ sender: UIBarButtonItem) {
+		presentOptions()
+	}
+	
+	@IBAction private func presentOptions__SwiftUI(_ sender: UIBarButtonItem) {
+		presentOptions()
+	}
+	
+	private func presentOptions() {
+		let viewController: UIViewController
+		= Enabling.swiftUI__options
+		? UIHostingController(rootView: OptionsView())
+		: UIStoryboard(name: "Options", bundle: nil)
+			.instantiateInitialViewController()!
+		viewController.modalPresentationStyle = .formSheet
+		present(viewController, animated: true)
+	}
+	
 	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
