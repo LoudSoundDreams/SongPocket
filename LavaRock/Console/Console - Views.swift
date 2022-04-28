@@ -73,13 +73,13 @@ extension SongInQueueCell:
 
 final class FutureModeChooser: UISegmentedControl {
 	private enum FutureMode: Int, CaseIterable {
-		case repeatOne
+		case repeat1
 		case repeatAll
 		case normal
 		
 		var uiImage: UIImage {
 			switch self {
-			case .repeatOne:
+			case .repeat1:
 				return UIImage(systemName: "repeat.1")!
 			case .repeatAll:
 				return UIImage(systemName: "repeat")!
@@ -90,7 +90,7 @@ final class FutureModeChooser: UISegmentedControl {
 		
 		func apply(to player: MPMusicPlayerController) {
 			switch self {
-			case .repeatOne:
+			case .repeat1:
 				player.repeatMode = .one
 			case .repeatAll:
 				player.repeatMode = .all
@@ -144,7 +144,7 @@ extension FutureModeChooser: PlayerReflecting {
 		case .default:
 			fatalError("`MPMusicPlayerController.repeatMode == .default")
 		case .one:
-			selectedSegmentIndex = FutureMode.repeatOne.rawValue
+			selectedSegmentIndex = FutureMode.repeat1.rawValue
 		case .all:
 			selectedSegmentIndex = FutureMode.repeatAll.rawValue
 		case .none:

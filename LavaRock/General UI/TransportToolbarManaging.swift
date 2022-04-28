@@ -47,6 +47,28 @@ extension TransportToolbarManaging {
 		}
 	}
 	
+	func makeMoreButton() -> UIBarButtonItem {
+		return UIBarButtonItem(
+			title: LocalizedString.more,
+			image: UIImage(systemName: "chevron.up"),
+			primaryAction: UIAction { [weak self] _ in
+				guard let self = self else { return }
+				self.present(
+					{
+						let viewController = UIStoryboard(
+							name: "Console",
+							bundle: nil)
+							.instantiateInitialViewController()!
+						if let sheet = viewController.sheetPresentationController {
+							sheet.detents = [.medium(), .large()]
+							sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+						}
+						return viewController
+					}(),
+					animated: true)
+			})
+	}
+	
 	func makePreviousSongButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
@@ -100,28 +122,6 @@ extension TransportToolbarManaging {
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
-	}
-	
-	func makeMoreButton() -> UIBarButtonItem {
-		return UIBarButtonItem(
-			title: LocalizedString.more,
-			image: UIImage(systemName: "chevron.up"),
-			primaryAction: UIAction { [weak self] _ in
-				guard let self = self else { return }
-				self.present(
-					{
-						let viewController = UIStoryboard(
-							name: "Console",
-							bundle: nil)
-							.instantiateInitialViewController()!
-						if let sheet = viewController.sheetPresentationController {
-							sheet.detents = [.medium(), .large()]
-							sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-						}
-						return viewController
-					}(),
-					animated: true)
-			})
 	}
 	
 	private func configurePlayButton() {
