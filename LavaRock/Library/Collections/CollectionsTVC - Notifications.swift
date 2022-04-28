@@ -12,8 +12,9 @@ extension CollectionsTVC {
 	// MARK: Library Items
 	
 	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
-		if (presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
-			|| presentedViewController is UIHostingController<OptionsView>
+		if
+			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
+				|| presentedViewController is UIHostingController<OptionsView>
 		{
 			return false
 		}
