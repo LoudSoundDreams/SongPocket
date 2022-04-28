@@ -18,65 +18,89 @@ struct TransportPanel: View {
 	var body: some View {
 		VStack {
 			HStack {
-				Button {
-					player?.skipToPreviousItem()
-				} label: {
-					Image(systemName: "arrowtriangle.up.circle")
-						.font(.system(size: .eight * 4))
-				}
+				previousSongButton
 				Spacer()
-				Button {
-					player?.skipToBeginning()
-				} label: {
-					Image(systemName: "arrow.counterclockwise.circle")
-						.font(.system(size: .eight * 4))
-				}
+				rewindButton
 				Spacer()
-				Button {
-					player?.skipToNextItem()
-				} label: {
-					Image(systemName: "arrowtriangle.down.circle")
-						.font(.system(size: .eight * 4))
-				}
+				nextSongButton
 			}
 			Spacer(minLength: .eight * 4)
 			HStack {
-				Button {
-					player?.currentPlaybackTime -= 10
-				} label: {
-					Image(systemName: "gobackward.10")
-						.font(.system(size: .eight * 4))
-				}
+				skipBackwardButton
 				Spacer()
-				Button {
-					guard let status = tapeDeckDisplay.currentStatus else { return }
-					if status.isInPlayMode {
-						player?.pause()
-					} else {
-						player?.play()
-					}
-				} label: {
-					if
-						let status = tapeDeckDisplay.currentStatus,
-						status.isInPlayMode
-					{
-						Image(systemName: "circle")
-							.font(.system(size: .eight * 8))
-					} else {
-						Image(systemName: "circle.fill")
-							.font(.system(size: .eight * 8))
-					}
-				}
+				playPauseButton
 				Spacer()
-				Button {
-					player?.currentPlaybackTime += 10
-				} label: {
-					Image(systemName: "goforward.10")
-						.font(.system(size: .eight * 4))
-				}
+				skipForwardButton
 			}
 		}
 		.padding([.top, .bottom], .eight * 6)
 		.disabled(tapeDeckDisplay.currentStatus == nil)
+	}
+	
+	private var previousSongButton: some View {
+		Button {
+			player?.skipToPreviousItem()
+		} label: {
+			Image(systemName: "arrowtriangle.up.circle")
+				.font(.system(size: .eight * 4))
+		}
+	}
+	
+	private var rewindButton: some View {
+		Button {
+			player?.skipToBeginning()
+		} label: {
+			Image(systemName: "arrow.counterclockwise.circle")
+				.font(.system(size: .eight * 4))
+		}
+	}
+	
+	private var skipBackwardButton: some View {
+		Button {
+			player?.currentPlaybackTime -= 10
+		} label: {
+			Image(systemName: "gobackward.10")
+				.font(.system(size: .eight * 4))
+		}
+	}
+	
+	private var playPauseButton: some View {
+		Button {
+			guard let status = tapeDeckDisplay.currentStatus else { return }
+			if status.isInPlayMode {
+				player?.pause()
+			} else {
+				player?.play()
+			}
+		} label: {
+			if
+				let status = tapeDeckDisplay.currentStatus,
+				status.isInPlayMode
+			{
+				Image(systemName: "circle")
+					.font(.system(size: .eight * 8))
+			} else {
+				Image(systemName: "circle.fill")
+					.font(.system(size: .eight * 8))
+			}
+		}
+	}
+	
+	private var skipForwardButton: some View {
+		Button {
+			player?.currentPlaybackTime += 10
+		} label: {
+			Image(systemName: "goforward.10")
+				.font(.system(size: .eight * 4))
+		}
+	}
+	
+	private var nextSongButton: some View {
+		Button {
+			player?.skipToNextItem()
+		} label: {
+			Image(systemName: "arrowtriangle.down.circle")
+				.font(.system(size: .eight * 4))
+		}
 	}
 }
