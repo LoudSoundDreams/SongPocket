@@ -250,10 +250,6 @@ final class CollectionsTVC:
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
-			if Enabling.transportToolbar {
-			} else {
-				editingModeToolbarButtons = viewingModeToolbarButtons // A hack
-			}
 		case .organizingAlbums:
 			// Should never run
 			break
@@ -286,9 +282,7 @@ final class CollectionsTVC:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 		case .browsing:
 			navigationItem.rightBarButtonItem = editButtonItem
-			if Enabling.transportToolbar {
-				navigationController?.setToolbarHidden(false, animated: false)
-			}
+			navigationController?.setToolbarHidden(false, animated: false) // TO DO: Move this to `LibraryNC`
 		}
 	}
 	
@@ -303,10 +297,6 @@ final class CollectionsTVC:
 	}
 	
 	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
-		if Enabling.transportToolbar {
-		} else {
-			navigationController?.setToolbarHidden(true, animated: true)
-		}
 	}
 	
 	final override func viewDidAppear(_ animated: Bool) {

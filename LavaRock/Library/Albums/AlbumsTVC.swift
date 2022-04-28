@@ -94,10 +94,6 @@ final class AlbumsTVC:
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
-			if Enabling.transportToolbar {
-			} else {
-				editingModeToolbarButtons = viewingModeToolbarButtons
-			}
 		case .movingAlbums:
 			break
 		case .browsing:
@@ -122,10 +118,6 @@ final class AlbumsTVC:
 	}
 	
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
-		if Enabling.transportToolbar {
-		} else {
-			navigationController?.setToolbarHidden(true, animated: true)
-		}
 	}
 	
 	final override func viewWillAppear(_ animated: Bool) {
