@@ -16,25 +16,35 @@ struct TransportPanel: View {
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
-		VStack {
-			HStack {
-				previousSongButton
-				Spacer()
-				rewindButton
-				Spacer()
-				nextSongButton
-			}
-			Spacer(minLength: .eight * 4)
+		if Enabling.popoverConsole {
 			HStack {
 				skipBackwardButton
 				Spacer()
-				playPauseButton
-				Spacer()
 				skipForwardButton
 			}
+			.padding([.top, .bottom], .eight * 6)
+			.disabled(tapeDeckDisplay.currentStatus == nil)
+		} else {
+			VStack {
+				HStack {
+					previousSongButton
+					Spacer()
+					rewindButton
+					Spacer()
+					nextSongButton
+				}
+				Spacer(minLength: .eight * 4)
+				HStack {
+					skipBackwardButton
+					Spacer()
+					playPauseButton
+					Spacer()
+					skipForwardButton
+				}
+			}
+			.padding([.top, .bottom], .eight * 6)
+			.disabled(tapeDeckDisplay.currentStatus == nil)
 		}
-		.padding([.top, .bottom], .eight * 6)
-		.disabled(tapeDeckDisplay.currentStatus == nil)
 	}
 	
 	private var previousSongButton: some View {
