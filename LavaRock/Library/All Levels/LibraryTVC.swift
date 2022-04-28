@@ -41,6 +41,7 @@ class LibraryTVC: UITableViewController {
 	private(set) lazy var playPauseButton = UIBarButtonItem()
 	private(set) lazy var skipForwardButton = makeSkipForwardButton()
 	private(set) lazy var nextSongButton = makeNextSongButton()
+	private(set) lazy var moreButton = makeMoreButton()
 	
 	// Controls
 	private(set) final lazy var sortButton = UIBarButtonItem(

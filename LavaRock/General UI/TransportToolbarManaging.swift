@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 
 @MainActor
-protocol TransportToolbarManaging: AnyObject {
+protocol TransportToolbarManaging: UIViewController & UIAdaptivePresentationControllerDelegate {
 	// Adopting types must …
 	// • Respond to `LRModifiedReel` `Notification`s and call `freshenTransportToolbar`.
 	
@@ -23,11 +23,21 @@ protocol TransportToolbarManaging: AnyObject {
 	var playPauseButton: UIBarButtonItem { get }
 	var skipForwardButton: UIBarButtonItem { get }
 	var nextSongButton: UIBarButtonItem { get }
+	var moreButton: UIBarButtonItem { get }
 }
 extension TransportToolbarManaging {
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	var transportButtons: [UIBarButtonItem] {
+		if Enabling.popoverConsole {
+			return [
+				previousSongButton, .flexibleSpace(),
+				rewindButton, .flexibleSpace(),
+				playPauseButton, .flexibleSpace(),
+				moreButton, .flexibleSpace(),
+				nextSongButton,
+			]
+		}
 		if Enabling.jumpButtons {
 			return [
 				previousSongButton, .flexibleSpace(),
@@ -36,14 +46,13 @@ extension TransportToolbarManaging {
 				skipForwardButton, .flexibleSpace(),
 				nextSongButton,
 			]
-		} else {
-			return [
-				previousSongButton, .flexibleSpace(),
-				rewindButton, .flexibleSpace(),
-				playPauseButton, .flexibleSpace(),
-				nextSongButton,
-			]
 		}
+		return [
+			previousSongButton, .flexibleSpace(),
+			rewindButton, .flexibleSpace(),
+			playPauseButton, .flexibleSpace(),
+			nextSongButton,
+		]
 	}
 	
 	func makePreviousSongButton() -> UIBarButtonItem {
@@ -99,6 +108,28 @@ extension TransportToolbarManaging {
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
+	}
+	
+	func makeMoreButton() -> UIBarButtonItem {
+		return UIBarButtonItem(
+			title: "More", // L2DO
+			image: UIImage(systemName: "ellipsis.circle"),
+			primaryAction: UIAction { [weak self] _ in
+				guard let self = self else { return }
+				self.present(
+					{
+						let storyboard = UIStoryboard(name: "Console", bundle: nil)
+						let viewController = storyboard.instantiateInitialViewController()!
+						viewController.modalPresentationStyle = .popover
+						viewController.popoverPresentationController?.barButtonItem = self.moreButton
+						viewController.presentationController?.delegate = self
+						viewController.preferredContentSize = CGSize(
+							width: .eight * 48,
+							height: .eight * 128)
+						return viewController
+					}(),
+					animated: true)
+			})
 	}
 	
 	private func configurePlayButton() {

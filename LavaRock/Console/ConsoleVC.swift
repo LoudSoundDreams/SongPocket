@@ -17,6 +17,7 @@ final class ConsoleVC: UIViewController {
 	private(set) lazy var playPauseButton = UIBarButtonItem()
 	private(set) lazy var skipForwardButton = makeSkipForwardButton()
 	private(set) lazy var nextSongButton = makeNextSongButton()
+	private(set) lazy var moreButton = makeMoreButton()
 	
 	@IBOutlet final var queueTable: UITableView!
 	@IBOutlet private var futureModeChooser: FutureModeChooser!
@@ -65,6 +66,9 @@ final class ConsoleVC: UIViewController {
 				appearance.configureWithTransparentBackground()
 				toolbar.standardAppearance = appearance
 			}
+		}
+		if Enabling.popoverConsole {
+			navigationController?.setToolbarHidden(true, animated: false)
 		}
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {

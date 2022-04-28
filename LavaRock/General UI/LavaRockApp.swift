@@ -69,7 +69,11 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	) -> ViewControllerType {
 		let result = (
 			Enabling.console
-			? UIStoryboard(name: "Tab Bar", bundle: nil)
+			? (
+				Enabling.popoverConsole
+				? UIStoryboard(name: "Library", bundle: nil)
+				: UIStoryboard(name: "Tab Bar", bundle: nil)
+			)
 			: UIStoryboard(name: "Library", bundle: nil)
 		)
 			.instantiateInitialViewController()!
