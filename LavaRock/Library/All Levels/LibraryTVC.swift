@@ -109,7 +109,8 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	func setUpBarButtons() {
 		setBarButtons(animated: false)
-		if Enabling.console {
+		if Enabling.transportToolbar {
+		} else {
 			setToolbarItems(editingModeToolbarButtons, animated: false)
 		}
 	}
@@ -284,8 +285,7 @@ class LibraryTVC: UITableViewController {
 			: viewingModeTopLeftButtons,
 			animated: animated)
 		
-		if Enabling.console {
-		} else {
+		if Enabling.transportToolbar {
 			setToolbarItems(
 				editing
 				? editingModeToolbarButtons
@@ -312,9 +312,11 @@ class LibraryTVC: UITableViewController {
 		super.setEditing(editing, animated: animated)
 		
 		setBarButtons(animated: animated)
-		if Enabling.console {
+		if Enabling.transportToolbar {
+		} else {
 			navigationController?.setToolbarHidden(!editing, animated: true)
-			
+		}
+		if Enabling.console {
 			if let tabBarController = tabBarController as? TabBarController {
 				editing
 				? tabBarController.disable()

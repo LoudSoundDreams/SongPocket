@@ -57,12 +57,16 @@ final class ConsoleVC: UIViewController {
 		
 		beginReflectingNowPlayingItem_console()
 		
-		toolbarItems = transportButtons
-//		navigationController?.setToolbarHidden(false, animated: false)
-		if let toolbar = navigationController?.toolbar {
-			let appearance = toolbar.standardAppearance
-			appearance.configureWithTransparentBackground()
-			toolbar.standardAppearance = appearance
+		if Enabling.transportToolbar {
+			toolbarItems = transportButtons
+			
+			navigationController?.setToolbarHidden(false, animated: false)
+			
+			if let toolbar = navigationController?.toolbar {
+				let appearance = toolbar.standardAppearance
+				appearance.configureWithTransparentBackground()
+				toolbar.standardAppearance = appearance
+			}
 		}
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
