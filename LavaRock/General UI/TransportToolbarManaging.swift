@@ -29,7 +29,7 @@ extension TransportToolbarManaging {
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	var transportButtons: [UIBarButtonItem] {
-		if Enabling.consoleInToolbar {
+		if Enabling.console {
 			return [
 				moreButton, .flexibleSpace(),
 				skipBackwardButton, .flexibleSpace(),

@@ -16,7 +16,7 @@ struct TransportPanel: View {
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
-		if Enabling.consoleInToolbar {
+		if Enabling.console {
 			HStack {
 				previousSongButton
 					.padding(.trailing, .eight * 4)
