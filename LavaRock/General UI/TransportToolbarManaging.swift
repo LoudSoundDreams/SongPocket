@@ -47,7 +47,7 @@ extension TransportToolbarManaging {
 		}
 	}
 	
-	private static var moreDefaultImage: UIImage { UIImage(systemName: "chevron.up")! }
+	private static var moreDefaultImage: UIImage { UIImage(systemName: "ellipsis.circle")! }
 	private static var moreRepeat1Image: UIImage { UIImage(systemName: "repeat.1.circle.fill")! }
 	private static var moreRepeatAllImage: UIImage { UIImage(systemName: "repeat.circle.fill")! }
 	func makeMoreButton() -> UIBarButtonItem {
@@ -113,7 +113,7 @@ extension TransportToolbarManaging {
 	func makeNextSongButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
-			image: UIImage(systemName: "forward.end"),
+			image: UIImage(systemName: "chevron.forward.circle"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.skipToNextItem()
 			})
