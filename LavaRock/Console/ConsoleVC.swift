@@ -30,7 +30,7 @@ final class ConsoleVC: UIViewController {
 		queueTable.dataSource = self
 		queueTable.delegate = self
 		Reel.tableView = queueTable
-		queueTable.backgroundColor = .quaternarySystemFill
+		queueTable.backgroundColor = .secondarySystemBackground
 		
 		if let transportPanel = UIHostingController(rootView: TransportPanel().padding()).view {
 			view.addSubview(transportPanel)
