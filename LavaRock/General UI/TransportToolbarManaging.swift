@@ -130,7 +130,9 @@ extension TransportToolbarManaging {
 	private func configurePlayButton() {
 		playPauseButton.title = LocalizedString.play
 		playPauseButton.primaryAction = UIAction(
-			image: UIImage(systemName: "play.circle")
+			image: Enabling.console
+			? UIImage(systemName: "circle.fill")
+			: UIImage(systemName: "play.circle")
 		) { [weak self] _ in
 			self?.player?.play()
 		}
@@ -169,7 +171,9 @@ extension TransportToolbarManaging {
 			// Configure “pause” button
 			playPauseButton.title = LocalizedString.pause
 			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: "pause.circle")
+				image: Enabling.console
+				? UIImage(systemName: "circle")
+				: UIImage(systemName: "pause.circle")
 			) { [weak self] _ in
 				self?.player?.pause()
 			}
