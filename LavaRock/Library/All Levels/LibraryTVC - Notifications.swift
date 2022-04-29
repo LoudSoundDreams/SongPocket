@@ -14,6 +14,13 @@ extension LibraryTVC: PlayerReflecting {
 	}
 }
 extension LibraryTVC: TransportToolbarManaging {}
+extension LibraryTVC: UIAdaptivePresentationControllerDelegate {
+	func adaptivePresentationStyle(
+		for controller: UIPresentationController
+	) -> UIModalPresentationStyle {
+		return .none
+	}
+}
 extension LibraryTVC {
 	// MARK: - Database
 	

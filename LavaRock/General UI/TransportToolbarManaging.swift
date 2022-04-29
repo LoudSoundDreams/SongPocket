@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 
 @MainActor
-protocol TransportToolbarManaging: UIViewController {
+protocol TransportToolbarManaging: UIViewController & UIAdaptivePresentationControllerDelegate {
 	// Adopting types must …
 	// • Respond to `LRModifiedReel` `Notification`s and call `freshenTransportToolbar`.
 	
@@ -62,10 +62,19 @@ extension TransportToolbarManaging {
 							name: "Console",
 							bundle: nil)
 							.instantiateInitialViewController()!
+						
+//						viewController.modalPresentationStyle = .popover
+//						viewController.popoverPresentationController?.barButtonItem = self.moreButton
+//						viewController.presentationController?.delegate = self
+//						viewController.preferredContentSize = CGSize(
+//							width: .eight * 48,
+//							height: .eight * 128)
+						
 						if let sheet = viewController.sheetPresentationController {
 							sheet.detents = [.medium(), .large()]
 							sheet.prefersScrollingExpandsWhenScrolledToEdge = false
 						}
+						
 						return viewController
 					}(),
 					animated: true)
