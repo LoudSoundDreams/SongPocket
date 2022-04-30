@@ -77,10 +77,10 @@ struct TransportPanel: View {
 				let status = tapeDeckDisplay.currentStatus,
 				status.isInPlayMode
 			{
-				Image(systemName: "circle")
+				Image(systemName: "pause.circle")
 					.font(.system(size: .eight * 6))
 			} else {
-				Image(systemName: "circle.fill")
+				Image(systemName: "play.circle")
 					.font(.system(size: .eight * 6))
 			}
 		}
