@@ -89,10 +89,10 @@ struct TransportPanel: View {
 				status.isInPlayMode
 			{
 				Image(systemName: "circle")
-					.font(.system(size: .eight * 8))
+					.font(.system(size: .eight * 6))
 			} else {
 				Image(systemName: "circle.fill")
-					.font(.system(size: .eight * 8))
+					.font(.system(size: .eight * 6))
 			}
 		}
 	}
