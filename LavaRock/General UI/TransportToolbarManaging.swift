@@ -69,7 +69,7 @@ extension TransportToolbarManaging {
 	func makePreviousSongButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
-			image: UIImage(systemName: "backward.end"),
+			image: UIImage(systemName: "chevron.backward.circle"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.skipToPreviousItem()
 			})
