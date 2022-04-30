@@ -14,7 +14,6 @@ struct Enabling {
 	static let songDotDotDot = 10 == 1
 	
 	static let console = 10 == 1
-	static let partialTransportPanel = 10 == 1
 	static let swiftUI__console = console && 10 == 1
 	
 	static let swiftUI__options = 10 == 1

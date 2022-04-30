@@ -16,36 +16,25 @@ struct TransportPanel: View {
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
-		if Enabling.partialTransportPanel {
+		VStack {
 			HStack {
 				previousSongButton
-					.padding(.trailing, .eight * 4)
+				Spacer()
 				rewindButton
 				Spacer()
+				nextSongButton
 			}
-			.padding([.top, .bottom], .eight * 6)
-			.disabled(tapeDeckDisplay.currentStatus == nil)
-		} else {
-			VStack {
-				HStack {
-					previousSongButton
-					Spacer()
-					rewindButton
-					Spacer()
-					nextSongButton
-				}
-				Spacer(minLength: .eight * 4)
-				HStack {
-					skipBackwardButton
-					Spacer()
-					playPauseButton
-					Spacer()
-					skipForwardButton
-				}
+			Spacer(minLength: .eight * 4)
+			HStack {
+				skipBackwardButton
+				Spacer()
+				playPauseButton
+				Spacer()
+				skipForwardButton
 			}
-			.padding([.top, .bottom], .eight * 6)
-			.disabled(tapeDeckDisplay.currentStatus == nil)
 		}
+		.padding([.top, .bottom], .eight * 6)
+		.disabled(tapeDeckDisplay.currentStatus == nil)
 	}
 	
 	private var previousSongButton: some View {
