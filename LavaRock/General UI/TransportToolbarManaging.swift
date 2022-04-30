@@ -47,7 +47,7 @@ extension TransportToolbarManaging {
 		}
 	}
 	
-	private static var moreDefaultImage: UIImage { UIImage(systemName: "ellipsis.circle")! }
+	private static var moreDefaultImage: UIImage { UIImage(systemName: "line.3.horizontal.circle")! }
 	private static var moreRepeat1Image: UIImage { UIImage(systemName: "repeat.1.circle.fill")! }
 	private static var moreRepeatAllImage: UIImage { UIImage(systemName: "repeat.circle.fill")! }
 	func makeMoreButton() -> UIBarButtonItem {
