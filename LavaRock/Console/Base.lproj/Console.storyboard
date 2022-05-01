@@ -97,7 +97,7 @@
                                 <state key="normal" image="repeat.1" catalog="system"/>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hB7-Xq-sOQ" customClass="FutureModeChooser" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="424.66666666666669" width="343" height="32"/>
+                                <rect key="frame" x="122" y="424.66666666666669" width="131" height="32"/>
                                 <segments>
                                     <segment title="First"/>
                                     <segment title="Second"/>
@@ -128,12 +128,11 @@
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="trailing" secondItem="Npg-CN-dfQ" secondAttribute="trailing" id="0mt-Ka-Nr8"/>
                             <constraint firstItem="hB7-Xq-sOQ" firstAttribute="top" secondItem="mMv-Oy-bR1" secondAttribute="bottom" constant="16" id="3fk-LI-yrE"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="leading" secondItem="Npg-CN-dfQ" secondAttribute="leading" id="5Js-ge-qkZ"/>
-                            <constraint firstItem="hB7-Xq-sOQ" firstAttribute="leading" secondItem="9gW-kt-mSP" secondAttribute="leadingMargin" id="DJf-gO-CNO"/>
+                            <constraint firstItem="hB7-Xq-sOQ" firstAttribute="centerX" secondItem="Npg-CN-dfQ" secondAttribute="centerX" id="DRO-cF-yge"/>
                             <constraint firstItem="hB7-Xq-sOQ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="9gW-kt-mSP" secondAttribute="bottomMargin" id="FMz-84-4M5"/>
                             <constraint firstItem="bBO-Pc-YE4" firstAttribute="trailing" secondItem="9gW-kt-mSP" secondAttribute="trailingMargin" id="Oav-aQ-ysT"/>
                             <constraint firstItem="bBO-Pc-YE4" firstAttribute="leading" secondItem="9gW-kt-mSP" secondAttribute="leadingMargin" id="PI8-79-FbX"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="top" secondItem="Npg-CN-dfQ" secondAttribute="top" id="PRH-9Q-W4C"/>
-                            <constraint firstItem="hB7-Xq-sOQ" firstAttribute="trailing" secondItem="9gW-kt-mSP" secondAttribute="trailingMargin" id="WI3-OM-f05"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="height" secondItem="Npg-CN-dfQ" secondAttribute="height" multiplier="0.5" placeholder="YES" id="fsx-Xr-KI2"/>
                             <constraint firstItem="bBO-Pc-YE4" firstAttribute="top" secondItem="hB7-Xq-sOQ" secondAttribute="bottom" constant="8" symbolic="YES" id="jyV-jw-q6N"/>
                             <constraint firstItem="JmH-0T-GLg" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" constant="-8" id="m66-w6-p8N"/>
