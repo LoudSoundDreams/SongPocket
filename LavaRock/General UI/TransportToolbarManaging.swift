@@ -69,7 +69,9 @@ extension TransportToolbarManaging {
 	func makePreviousSongButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.previousTrack,
-			image: UIImage(systemName: "arrow.backward.circle"),
+			image: Enabling.console
+			? UIImage(systemName: "arrow.backward.circle")
+			: UIImage(systemName: "backward.end"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.skipToPreviousItem()
 			})
@@ -113,7 +115,9 @@ extension TransportToolbarManaging {
 	func makeNextSongButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.nextTrack,
-			image: UIImage(systemName: "arrow.forward.circle"),
+			image: Enabling.console
+			? UIImage(systemName: "arrow.forward.circle")
+			: UIImage(systemName: "forward.end"),
 			primaryAction: UIAction { [weak self] _ in
 				self?.player?.skipToNextItem()
 			})
