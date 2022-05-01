@@ -84,7 +84,7 @@ final class FutureModeChooser: UISegmentedControl {
 			case .repeatAll:
 				return UIImage(systemName: "repeat")!
 			case .normal:
-				return UIImage(systemName: "play.fill")!
+				return UIImage(systemName: "arrow.forward")!
 			}
 		}
 		
