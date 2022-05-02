@@ -137,13 +137,7 @@ final class SongCell: UITableViewCell {
 				else {
 					return nil
 				}
-				
-				let discNumber = representative.discNumberOnDisk
-				let discCount = representative.discCountOnDisk
-				// Show disc numbers if the disc count is more than 1, or if the disc count isn’t more than 1 but the disc number is.
-				let shouldShowDiscNumber = (discCount > 1) ? true : (discNumber > 1)
-				
-				if shouldShowDiscNumber {
+				if representative.shouldShowDiscNumber {
 					return metadatum.discAndTrackNumberFormatted()
 				} else {
 					return metadatum.trackNumberFormattedOptional()

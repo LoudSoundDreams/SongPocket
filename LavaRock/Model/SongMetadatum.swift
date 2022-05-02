@@ -234,6 +234,14 @@ extension SongMetadatum {
 	
 	// MARK: Formatted Attributes
 	
+	var shouldShowDiscNumber: Bool {
+		if discCountOnDisk >= 2 {
+			return true
+		} else {
+			return discNumberOnDisk >= 2
+		}
+	}
+	
 	func discAndTrackNumberFormatted() -> String {
 		var result = "\(discNumberOnDisk)·" // That’s an interpunct.
 		result += trackNumberFormattedOptional() ?? ""
