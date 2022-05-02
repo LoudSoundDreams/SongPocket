@@ -98,7 +98,7 @@ extension AlbumsViewModel {
 				return []
 			}}()
 		column = containers.map {
-			GroupOfCollectionsOrAlbums(
+			CollectionsOrAlbumsGroup(
 				entityName: Self.entityName,
 				container: $0,
 				context: context)

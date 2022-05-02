@@ -29,9 +29,9 @@ enum LibraryViewContainer {
 	}
 }
 
-typealias ColumnOfLibraryItems = [GroupOfLibraryItems]
+typealias ColumnOfLibraryItems = [LibraryGroup]
 extension ColumnOfLibraryItems {
-	subscript(groupIndex: GroupIndex) -> GroupOfLibraryItems {
+	subscript(groupIndex: GroupIndex) -> LibraryGroup {
 		get {
 			self[groupIndex.__]
 		}
@@ -126,9 +126,9 @@ extension LibraryViewModel {
 	
 	// MARK: - Elements
 	
-	// WARNING: Never use `GroupOfLibraryItems.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `numberOfPrerowsPerSection`.
+	// WARNING: Never use `LibraryGroup.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `numberOfPrerowsPerSection`.
 	
-	func group(for section: SectionIndex) -> GroupOfLibraryItems {
+	func group(for section: SectionIndex) -> LibraryGroup {
 		return column[groupIndex(for: section)]
 	}
 	

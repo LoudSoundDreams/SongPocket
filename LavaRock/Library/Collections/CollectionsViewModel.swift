@@ -72,7 +72,7 @@ extension CollectionsViewModel {
 		self.prerowsInEachSection = prerowsInEachSection
 		
 		column = [
-			GroupOfCollectionsOrAlbums(
+			CollectionsOrAlbumsGroup(
 				entityName: Self.entityName,
 				container: nil,
 				context: context)
@@ -98,7 +98,7 @@ extension CollectionsViewModel {
 	
 	private static let indexOfOnlyGroup = 0
 	
-	var group: GroupOfLibraryItems {
+	var group: LibraryGroup {
 		get {
 			column[Self.indexOfOnlyGroup]
 		}

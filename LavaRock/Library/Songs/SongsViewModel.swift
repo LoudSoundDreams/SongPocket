@@ -94,7 +94,7 @@ extension SongsViewModel {
 				return []
 			}}()
 		column = containers.map {
-			GroupOfSongs(
+			SongsGroup(
 				entityName: Self.entityName,
 				container: $0,
 				context: context)

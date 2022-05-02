@@ -1,5 +1,5 @@
 //
-//  GroupOfLibraryItems.swift
+//  LibraryGroup.swift
 //  LavaRock
 //
 //  Created by h on 2021-07-02.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-protocol GroupOfLibraryItems {
+protocol LibraryGroup {
 	var container: NSManagedObject? { get }
 	var items: [NSManagedObject] { get }
 	/*
@@ -42,7 +42,7 @@ protocol GroupOfLibraryItems {
 	
 	mutating func setItems(_ newItems: [NSManagedObject])
 }
-extension GroupOfLibraryItems {
+extension LibraryGroup {
 	subscript(itemIndex: ItemIndex) -> NSManagedObject {
 		return items[itemIndex.__]
 	}

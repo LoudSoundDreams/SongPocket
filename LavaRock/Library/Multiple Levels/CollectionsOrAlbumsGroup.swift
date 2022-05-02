@@ -1,5 +1,5 @@
 //
-//  GroupOfCollectionsOrAlbums.swift
+//  CollectionsOrAlbumsGroup.swift
 //  LavaRock
 //
 //  Created by h on 2021-03-04.
@@ -7,8 +7,8 @@
 
 import CoreData
 
-struct GroupOfCollectionsOrAlbums {
-	// `GroupOfLibraryItems`
+struct CollectionsOrAlbumsGroup {
+	// `LibraryGroup`
 	let container: NSManagedObject?
 	var items: [NSManagedObject] { private_items }
 	private var private_items: [NSManagedObject] = [] {
@@ -32,7 +32,7 @@ struct GroupOfCollectionsOrAlbums {
 			context: context)
 	}
 }
-extension GroupOfCollectionsOrAlbums: GroupOfLibraryItems {
+extension CollectionsOrAlbumsGroup: LibraryGroup {
 	mutating func setItems(_ newItems: [NSManagedObject]) {
 		private_items = newItems
 	}
