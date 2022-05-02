@@ -10,27 +10,11 @@ import CoreData
 protocol LibraryGroup {
 	var container: NSManagedObject? { get }
 	var items: [NSManagedObject] { get }
+	mutating func setItems(_ newItems: [NSManagedObject])
 	/*
-	 Force callers to use `setItems` rather than modifying `items` directly. That helps callers keep `items` in a coherent state by forcing them to finalize their changes explicitly.
+	 Don’t let callers modify `items` directly; force them to use `setItems`. That encourages them to make atomic changes.
 	 
-	 It would be nice to make `items` `private(set)`, but then it couldn’t satisfy the protocol requirement. Instead, include …
-	 ```
-	 var items: [NSManagedObject] { private_items }
-	 private var private_items: [NSManagedObject] = []
-	 ```
-	 
-	 For safety, disable the default memberwise initializer (for structs), to prevent callers from initializing `private_items` incorrectly. Include this in your custom initializer:
-	 ```
-	 private_items = fetchedItems()
-	 ```
-	 
-	 You can also use …
-	 ```
-	 private(set) lazy var private_items = fetchedItems()
-	 ```
-	 … but you’ll have to make `items` `mutating get`, and you’ll still have to disable the default memberwise initializer to be safe.
-	 
-	 You should also give `private_items` a property observer that sets the `index` attribute on each `NSManagedObject`, exactly like `[LibraryItem].reindex`:
+	 Also, give `items` a property observer that sets the `index` attribute on each `NSManagedObject`, exactly like `[LibraryItem].reindex`:
 	 //	didSet {
 	 //		private_items.enumerated().forEach { (currentIndex, libraryItem) in
 	 //			libraryItem.setValue(
@@ -40,7 +24,11 @@ protocol LibraryGroup {
 	 //	}
 	 */
 	
-	mutating func setItems(_ newItems: [NSManagedObject])
+	init(
+		entityName: String,
+		container: NSManagedObject?,
+		context: NSManagedObjectContext)
+	// Initialize `items = Self.itemsFetched`.
 }
 extension LibraryGroup {
 	subscript(itemIndex: ItemIndex) -> NSManagedObject {
@@ -52,8 +40,9 @@ extension LibraryGroup {
 	}
 	
 	// Similar to `Collection.allFetched`, `Album.allFetched`, and `Song.allFetched`.
-	func itemsFetched(
+	static func itemsFetched(
 		entityName: String,
+		container: NSManagedObject?,
 		context: NSManagedObjectContext
 	) -> [NSManagedObject] {
 		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)

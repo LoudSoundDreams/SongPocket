@@ -10,30 +10,30 @@ import CoreData
 struct CollectionsOrAlbumsGroup {
 	// `LibraryGroup`
 	let container: NSManagedObject?
-	var items: [NSManagedObject] { private_items }
-	private var private_items: [NSManagedObject] = [] {
+	private(set) var items: [NSManagedObject] {
 		didSet {
-			private_items.enumerated().forEach { (currentIndex, libraryItem) in
+			items.enumerated().forEach { (currentIndex, libraryItem) in
 				libraryItem.setValue(
 					Int64(currentIndex),
 					forKey: "index")
 			}
 		}
 	}
+}
+extension CollectionsOrAlbumsGroup: LibraryGroup {
+	mutating func setItems(_ newItems: [NSManagedObject]) {
+		items = newItems
+	}
+	
 	init(
 		entityName: String,
 		container: NSManagedObject?,
 		context: NSManagedObjectContext
 	) {
-		self.container = container
-		
-		private_items = itemsFetched( // Doesn’t trigger the property observer
+		items = Self.itemsFetched( // Doesn’t trigger the property observer
 			entityName: entityName,
+			container: container,
 			context: context)
-	}
-}
-extension CollectionsOrAlbumsGroup: LibraryGroup {
-	mutating func setItems(_ newItems: [NSManagedObject]) {
-		private_items = newItems
+		self.container = container
 	}
 }
