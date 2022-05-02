@@ -9,7 +9,6 @@ import CoreData
 
 protocol GroupOfLibraryItems {
 	var container: NSManagedObject? { get }
-	
 	var items: [NSManagedObject] { get }
 	/*
 	 Force callers to use `setItems` rather than modifying `items` directly. That helps callers keep `items` in a coherent state by forcing them to finalize their changes explicitly.

@@ -7,11 +7,9 @@
 
 import CoreData
 
-struct GroupOfSongs: GroupOfLibraryItems {
-	// MARK: `GroupOfLibraryItems`
-	
+struct GroupOfSongs {
+	// `GroupOfLibraryItems`
 	let container: NSManagedObject?
-	
 	var items: [NSManagedObject] { private_items }
 	private var private_items: [NSManagedObject] = [] {
 		didSet {
@@ -22,13 +20,6 @@ struct GroupOfSongs: GroupOfLibraryItems {
 			}
 		}
 	}
-	
-	mutating func setItems(_ newItems: [NSManagedObject]) {
-		private_items = newItems
-	}
-	
-	// MARK: Miscellaneous
-	
 	init(
 		entityName: String,
 		container: NSManagedObject?,
@@ -39,5 +30,10 @@ struct GroupOfSongs: GroupOfLibraryItems {
 		private_items = itemsFetched( // Doesn’t trigger the property observer
 			entityName: entityName,
 			context: context)
+	}
+}
+extension GroupOfSongs: GroupOfLibraryItems {
+	mutating func setItems(_ newItems: [NSManagedObject]) {
+		private_items = newItems
 	}
 }
