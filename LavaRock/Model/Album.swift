@@ -222,7 +222,7 @@ extension Album {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
-		return songs(sorted: false).first?.metadatum()
+		return songs(sorted: true).first?.metadatum()
 #else
 		return mpMediaItemCollection()?.representativeItem
 #endif
