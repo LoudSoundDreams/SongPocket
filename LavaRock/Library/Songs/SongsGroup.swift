@@ -43,9 +43,10 @@ extension SongsGroup: LibraryGroup {
 				return nil
 			}
 			let metadata: [SongMetadatum] = items.compactMap { ($0 as? Song)?.metadatum() }
-			// At most, reserve the width of 4 digits plus an interpunct.
+			// At the least, reserve the width of 2 digits (plus an interpunct, if appropriate).
+			// At the most, reserve the width of 4 digits plus an interpunct.
 			if representative.shouldShowDiscNumber {
-				var mostDigits = "0"
+				var mostDigits = "00"
 				for metadatum in metadata {
 					let discAndTrack = ""
 					+ metadatum.discNumberFormatted()
@@ -59,7 +60,7 @@ extension SongsGroup: LibraryGroup {
 				}
 				return LocalizedString.interpunct + mostDigits
 			} else {
-				var mostDigits = "0"
+				var mostDigits = "00"
 				for metadatum in metadata {
 					let track = metadatum.trackNumberFormattedOptional() ?? ""
 					if track.count >= 4 {
