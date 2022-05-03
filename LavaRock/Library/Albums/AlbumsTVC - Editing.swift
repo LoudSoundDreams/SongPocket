@@ -10,48 +10,7 @@ import CoreData
 import OSLog
 
 extension AlbumsTVC {
-	final func makeOrganizeOrMoveMenu() -> UIMenu {
-		let organizeElement: UIMenuElement = {
-			let organizeAction = UIAction(
-				title: LocalizedString.organizeByAlbumArtistEllipsis,
-				image: UIImage(systemName: "folder.badge.gearshape")
-			) { [weak self] _ in
-				self?.startOrganizing()
-			}
-			
-			// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
-			return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
-				guard let self = self else { return }
-				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
-					selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
-				organizeAction.attributes = allowed ? [] : .disabled
-				useMenuElements([organizeAction])
-			})}()
-		
-		let moveElement = UIAction(
-			title: LocalizedString.moveToEllipsis,
-			image: UIImage(systemName: "folder")
-			) { [weak self] _ in
-				self?.startMoving()
-			}
-		
-		return UIMenu(
-			title: {
-				let subjectedCount = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
-					selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
-					.count
-				return String.localizedStringWithFormat(
-					LocalizedString.format_xAlbums,
-					subjectedCount)
-			}(),
-			children: [
-				organizeElement,
-				moveElement,
-			].reversed()
-		)
-	}
-	
-	private func startOrganizing() {
+	final func startOrganizing() {
 		// Prepare a Collections view to present modally.
 		guard
 			let libraryNC = UIStoryboard(name: "Library", bundle: nil)
@@ -216,7 +175,7 @@ extension AlbumsTVC {
 			delegate: delegateForClipboard)
 	}
 	
-	private func startMoving() {
+	final func startMoving() {
 		// Prepare a Collections view to present modally.
 		guard
 			let libraryNC = UIStoryboard(name: "Library", bundle: nil)
