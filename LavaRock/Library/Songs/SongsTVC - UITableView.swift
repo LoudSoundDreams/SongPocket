@@ -81,7 +81,8 @@ extension SongsTVC {
 			albumRepresentative: {
 				let album = songsViewModel.album(for: indexPath.sectionIndex)
 				return album.representativeSongMetadatum()
-			}())
+			}(),
+			spacerTrackNumberText: (songsViewModel.group(for: indexPath.sectionIndex) as? SongsGroup)?.spacerTrackNumberText)
 		
 		return cell
 	}

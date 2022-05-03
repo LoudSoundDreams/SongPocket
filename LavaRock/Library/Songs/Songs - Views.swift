@@ -108,7 +108,8 @@ final class SongCell: UITableViewCell {
 	
 	final func configureWith(
 		song: Song,
-		albumRepresentative representative: SongMetadatum?
+		albumRepresentative representative: SongMetadatum?,
+		spacerTrackNumberText: String?
 	) {
 		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
 		titleLabel.text = { () -> String in
@@ -129,6 +130,7 @@ final class SongCell: UITableViewCell {
 				return nil
 			}
 		}()
+		spacerNumberLabel.text = spacerTrackNumberText
 		numberLabel.text = { () -> String in
 			let text: String? = {
 				guard

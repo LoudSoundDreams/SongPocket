@@ -243,9 +243,16 @@ extension SongMetadatum {
 	}
 	
 	func discAndTrackNumberFormatted() -> String {
-		var result = "\(discNumberOnDisk)·" // That’s an interpunct.
-		result += trackNumberFormattedOptional() ?? ""
+		var result = discNumberFormatted()
+		result += LocalizedString.interpunct
+		if let trackNumber = trackNumberFormattedOptional() {
+			result += trackNumber
+		}
 		return result
+	}
+	
+	func discNumberFormatted() -> String {
+		return String(discNumberOnDisk)
 	}
 	
 	func trackNumberFormattedOptional() -> String? {

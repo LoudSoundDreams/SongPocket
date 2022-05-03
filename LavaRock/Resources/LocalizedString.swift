@@ -25,6 +25,7 @@ struct LocalizedString {
 	static let more = NSLocalizedString("More", comment: "Button")
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
+	static let interpunct = NSLocalizedString("·", comment: "Separator between pieces of information")
 	
 	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "Status message")
 	
