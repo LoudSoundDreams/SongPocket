@@ -57,9 +57,9 @@ struct TransportPanel: View {
 	
 	private var skipBackwardButton: some View {
 		Button {
-			player?.currentPlaybackTime -= 10
+			player?.currentPlaybackTime -= 15
 		} label: {
-			Image(systemName: "gobackward.10")
+			Image(systemName: "gobackward.15")
 				.font(.system(size: .eight * 4))
 		}
 	}
@@ -88,9 +88,9 @@ struct TransportPanel: View {
 	
 	private var skipForwardButton: some View {
 		Button {
-			player?.currentPlaybackTime += 10
+			player?.currentPlaybackTime += 15
 		} label: {
-			Image(systemName: "goforward.10")
+			Image(systemName: "goforward.15")
 				.font(.system(size: .eight * 4))
 		}
 	}

@@ -93,9 +93,9 @@ extension TransportToolbarManaging {
 	func makeJumpBackwardButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsBackwards,
-			image: UIImage(systemName: "gobackward.10"),
+			image: UIImage(systemName: "gobackward.15"),
 			primaryAction: UIAction { [weak self] _ in
-				self?.player?.currentPlaybackTime -= 10
+				self?.player?.currentPlaybackTime -= 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -104,9 +104,9 @@ extension TransportToolbarManaging {
 	func makeJumpForwardButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsForward,
-			image: UIImage(systemName: "goforward.10"),
+			image: UIImage(systemName: "goforward.15"),
 			primaryAction: UIAction { [weak self] _ in
-				self?.player?.currentPlaybackTime += 10
+				self?.player?.currentPlaybackTime += 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
