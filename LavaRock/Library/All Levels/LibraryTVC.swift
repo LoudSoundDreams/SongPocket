@@ -37,9 +37,9 @@ class LibraryTVC: UITableViewController {
 	// `TransportToolbarManaging`
 	private(set) lazy var previousSongButton = makePreviousSongButton()
 	private(set) lazy var rewindButton = makeRewindButton()
-	private(set) lazy var skipBackwardButton = makeSkipBackwardButton()
+	private(set) lazy var jumpBackwardButton = makeJumpBackwardButton()
 	private(set) lazy var playPauseButton = UIBarButtonItem()
-	private(set) lazy var skipForwardButton = makeSkipForwardButton()
+	private(set) lazy var jumpForwardButton = makeJumpForwardButton()
 	private(set) lazy var nextSongButton = makeNextSongButton()
 	private(set) lazy var moreButton = makeMoreButton()
 	

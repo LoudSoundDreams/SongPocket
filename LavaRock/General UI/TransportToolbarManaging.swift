@@ -19,9 +19,9 @@ protocol TransportToolbarManaging: UIViewController {
 	
 	var previousSongButton: UIBarButtonItem { get }
 	var rewindButton: UIBarButtonItem { get }
-	var skipBackwardButton: UIBarButtonItem { get }
+	var jumpBackwardButton: UIBarButtonItem { get }
 	var playPauseButton: UIBarButtonItem { get }
-	var skipForwardButton: UIBarButtonItem { get }
+	var jumpForwardButton: UIBarButtonItem { get }
 	var nextSongButton: UIBarButtonItem { get }
 	var moreButton: UIBarButtonItem { get }
 }
@@ -32,9 +32,9 @@ extension TransportToolbarManaging {
 		if Enabling.console {
 			return [
 				moreButton, .flexibleSpace(),
-				skipBackwardButton, .flexibleSpace(),
+				jumpBackwardButton, .flexibleSpace(),
 				playPauseButton, .flexibleSpace(),
-				skipForwardButton, .flexibleSpace(),
+				jumpForwardButton, .flexibleSpace(),
 				nextSongButton,
 			]
 		} else {
@@ -90,7 +90,7 @@ extension TransportToolbarManaging {
 		return button
 	}
 	
-	func makeSkipBackwardButton() -> UIBarButtonItem {
+	func makeJumpBackwardButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsBackwards,
 			image: UIImage(systemName: "gobackward.10"),
@@ -101,7 +101,7 @@ extension TransportToolbarManaging {
 		return button
 	}
 	
-	func makeSkipForwardButton() -> UIBarButtonItem {
+	func makeJumpForwardButton() -> UIBarButtonItem {
 		let button = UIBarButtonItem(
 			title: LocalizedString.skip10SecondsForward,
 			image: UIImage(systemName: "goforward.10"),
