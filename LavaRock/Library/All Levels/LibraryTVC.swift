@@ -35,13 +35,13 @@ class LibraryTVC: UITableViewController {
 	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	// `TransportToolbarManaging`
-	private(set) lazy var previousSongButton = makePreviousSongButton()
-	private(set) lazy var rewindButton = makeRewindButton()
-	private(set) lazy var jumpBackwardButton = makeJumpBackwardButton()
-	private(set) lazy var playPauseButton = UIBarButtonItem()
-	private(set) lazy var jumpForwardButton = makeJumpForwardButton()
-	private(set) lazy var nextSongButton = makeNextSongButton()
-	private(set) lazy var moreButton = makeMoreButton()
+	private(set) final lazy var previousSongButton = makePreviousSongButton()
+	private(set) final lazy var rewindButton = makeRewindButton()
+	private(set) final lazy var jumpBackwardButton = makeJumpBackwardButton()
+	private(set) final lazy var playPauseButton = UIBarButtonItem()
+	private(set) final lazy var jumpForwardButton = makeJumpForwardButton()
+	private(set) final lazy var nextSongButton = makeNextSongButton()
+	private(set) final lazy var moreButton = makeMoreButton()
 	
 	// Controls
 	private(set) final var sortButton = UIBarButtonItem(

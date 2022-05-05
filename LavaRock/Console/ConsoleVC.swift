@@ -19,8 +19,8 @@ final class ConsoleVC: UIViewController {
 	private(set) lazy var nextSongButton = makeNextSongButton()
 	private(set) lazy var moreButton = makeMoreButton()
 	
-	@IBOutlet final var queueTable: UITableView!
-	@IBOutlet private var futureModeChooser: FutureModeChooser!
+	@IBOutlet private(set) final var queueTable: UITableView!
+	@IBOutlet private final var futureModeChooser: FutureModeChooser!
 	
 	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
