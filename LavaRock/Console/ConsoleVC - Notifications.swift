@@ -12,7 +12,6 @@ extension ConsoleVC: PlayerReflecting {
 		reflectPlayheadAndFreshenTransportToolbar_console()
 	}
 }
-extension ConsoleVC: TransportToolbarManaging {}
 extension ConsoleVC {
 	// MARK: - Player
 	
@@ -24,7 +23,5 @@ extension ConsoleVC {
 			cell.reflectPlayhead(
 				containsPlayhead: Self.rowContainsPlayhead(at: visibleIndexPath))
 		}
-		
-		freshenTransportToolbar()
 	}
 }

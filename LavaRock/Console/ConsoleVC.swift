@@ -10,15 +10,6 @@ import MediaPlayer
 import SwiftUI
 
 final class ConsoleVC: UIViewController {
-	// `TransportToolbarManaging`
-	private(set) lazy var previousSongButton = makePreviousSongButton()
-	private(set) lazy var rewindButton = makeRewindButton()
-	private(set) lazy var jumpBackwardButton = makeJumpBackwardButton()
-	private(set) lazy var playPauseButton = UIBarButtonItem()
-	private(set) lazy var jumpForwardButton = makeJumpForwardButton()
-	private(set) lazy var nextSongButton = makeNextSongButton()
-	private(set) lazy var moreButton = makeMoreButton()
-	
 	@IBOutlet private(set) final var queueTable: UITableView!
 	@IBOutlet private final var futureModeChooser: FutureModeChooser!
 	
@@ -50,11 +41,6 @@ final class ConsoleVC: UIViewController {
 			selector: #selector(mediaLibraryAuthorizationStatusDidChange),
 			name: .LRUserRespondedToAllowAccessToMediaLibrary,
 			object: nil)
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(reelDidChange),
-			name: .LRModifiedReel,
-			object: nil)
 		
 		beginReflectingNowPlayingItem_console()
 		
@@ -70,9 +56,6 @@ final class ConsoleVC: UIViewController {
 	}
 	@objc private func mediaLibraryAuthorizationStatusDidChange() {
 		beginReflectingNowPlayingItem_console()
-	}
-	@objc private func reelDidChange() {
-		freshenTransportToolbar()
 	}
 	
 	private func beginReflectingNowPlayingItem_console() {
