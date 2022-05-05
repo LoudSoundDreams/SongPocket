@@ -24,6 +24,7 @@ protocol TransportToolbarManaging: UIViewController {
 	var jumpForwardButton: UIBarButtonItem { get }
 	var nextSongButton: UIBarButtonItem { get }
 	var moreButton: UIBarButtonItem { get }
+	var moreVC: UIViewController { get }
 }
 extension TransportToolbarManaging {
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
@@ -52,15 +53,14 @@ extension TransportToolbarManaging {
 			title: LocalizedString.more,
 			primaryAction: UIAction { [weak self] _ in
 				guard let self = self else { return }
-				self.present(
-					{
-						return UIStoryboard(
-							name: "Console",
-							bundle: nil)
-							.instantiateInitialViewController()!
-					}(),
-					animated: true)
+				self.present(self.moreVC, animated: true)
 			})
+	}
+	func makeMoreVC() -> UIViewController {
+		return UIStoryboard(
+			name: "Console",
+			bundle: nil)
+		.instantiateInitialViewController()!
 	}
 	
 	func makePreviousSongButton() -> UIBarButtonItem {
