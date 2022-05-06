@@ -67,11 +67,9 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	func makeUIViewController(
 		context: Context
 	) -> ViewControllerType {
-		let result = UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()! as! LibraryNC
-		
+		let result = UIStoryboard(name: "Library", bundle: nil)
+			.instantiateInitialViewController() as! LibraryNC
 		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
-		result.view.tintColor = theme.accentColor.uiColor
-		
 		return result
 	}
 	
@@ -79,30 +77,10 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 		_ uiViewController: ViewControllerType,
 		context: Context
 	) {
+		uiViewController.view.tintColor = theme.accentColor.uiColor
 		if let window = uiViewController.view.window {
 			window.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 			window.tintColor = theme.accentColor.uiColor
-		}
-	}
-}
-
-protocol MovesThemeToWindow: UIViewController {
-	// Adopting types must …
-	// • Override `viewDidAppear` and call `moveThemeToWindow`.
-	
-	static var didMoveThemeToWindow: Bool { get set }
-}
-extension MovesThemeToWindow {
-	// Call this during `viewDidAppear`, because before then, `view.window == nil`.
-	func moveThemeToWindow() {
-		if !Self.didMoveThemeToWindow {
-			Self.didMoveThemeToWindow = true
-			
-			view.window?.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
-			view.overrideUserInterfaceStyle = .unspecified
-			
-			view.window?.tintColor = view.tintColor
-			view.tintColor = nil // TO DO: Applies “Increase Contrast” twice.
 		}
 	}
 }

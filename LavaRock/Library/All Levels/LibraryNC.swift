@@ -8,13 +8,20 @@
 import UIKit
 
 final class LibraryNC: UINavigationController {
-	// `MovesThemeToWindow`
-	static var didMoveThemeToWindow = false
-	
+	private static var movedLightingToWindow = false
+	private static var copiedAccentColorToWindow = false
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
-		moveThemeToWindow()
+		if let window = view.window {
+			if !Self.movedLightingToWindow {
+				Self.movedLightingToWindow = true
+				window.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
+				view.overrideUserInterfaceStyle = .unspecified
+			}
+			if !Self.copiedAccentColorToWindow {
+				Self.copiedAccentColorToWindow = true
+				window.tintColor = view.tintColor
+			}
+		}
 	}
 }
-extension LibraryNC: MovesThemeToWindow {}

@@ -57,10 +57,8 @@ extension TransportToolbarManaging {
 			})
 	}
 	func makeMoreVC() -> UIViewController {
-		return UIStoryboard(
-			name: "Console",
-			bundle: nil)
-		.instantiateInitialViewController()!
+		return UIStoryboard(name: "Console", bundle: nil)
+			.instantiateInitialViewController()!
 	}
 	
 	func makePreviousSongButton() -> UIBarButtonItem {
