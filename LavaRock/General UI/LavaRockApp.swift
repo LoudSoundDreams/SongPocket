@@ -56,7 +56,7 @@ final class Theme: ObservableObject {
 }
 
 struct RootViewControllerRepresentable: UIViewControllerRepresentable {
-	typealias ViewControllerType = UIViewController
+	typealias ViewControllerType = LibraryNC
 	
 	@ObservedObject private var theme: Theme
 	
@@ -67,7 +67,7 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	func makeUIViewController(
 		context: Context
 	) -> ViewControllerType {
-		let result = UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()!
+		let result = UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()! as! LibraryNC
 		
 		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 		result.view.tintColor = theme.accentColor.uiColor
