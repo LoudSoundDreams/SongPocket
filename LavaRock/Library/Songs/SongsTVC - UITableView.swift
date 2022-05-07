@@ -10,7 +10,6 @@ import UIKit
 extension SongsTVC {
 	// MARK: - Numbers
 	
-	// Identical to counterpart in `AlbumsTVC`.
 	final override func numberOfSections(in tableView: UITableView) -> Int {
 		setOrRemoveNoItemsBackground()
 		

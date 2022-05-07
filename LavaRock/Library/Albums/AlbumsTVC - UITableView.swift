@@ -10,8 +10,9 @@ import UIKit
 extension AlbumsTVC {
 	// MARK: - Numbers
 	
-	// Identical to counterpart in `SongsTVC`.
 	final override func numberOfSections(in tableView: UITableView) -> Int {
+		setOrRemoveNoItemsBackground()
+		
 		switch purpose {
 		case .organizingAlbums:
 			break
@@ -24,8 +25,6 @@ extension AlbumsTVC {
 		case .browsing:
 			break
 		}
-		
-		setOrRemoveNoItemsBackground()
 		
 		return super.numberOfSections(in: tableView)
 	}
