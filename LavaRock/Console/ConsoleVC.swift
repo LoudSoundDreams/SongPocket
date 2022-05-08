@@ -11,7 +11,7 @@ import SwiftUI
 
 final class ConsoleVC: UIViewController {
 	@IBOutlet private(set) final var queueTable: UITableView!
-	@IBOutlet private final var futureModeChooser: FutureModeChooser!
+	@IBOutlet private final var futureChooser: FutureChooser!
 	
 	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
@@ -27,7 +27,7 @@ final class ConsoleVC: UIViewController {
 			view.addSubview(transportPanel)
 			transportPanel.translatesAutoresizingMaskIntoConstraints = false
 			NSLayoutConstraint.activate([
-				transportPanel.topAnchor.constraint(equalTo: futureModeChooser.bottomAnchor, constant: 4),
+				transportPanel.topAnchor.constraint(equalTo: futureChooser.bottomAnchor, constant: 4),
 				transportPanel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
 				transportPanel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 				transportPanel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),

@@ -71,8 +71,8 @@ extension SongInQueueCell:
 	CellHavingTransparentBackground
 {}
 
-final class FutureModeChooser: UISegmentedControl {
-	private enum FutureMode: Int, CaseIterable {
+final class FutureChooser: UISegmentedControl {
+	private enum Mode: Int, CaseIterable {
 		case repeat1
 		case repeatAll
 		case normal
@@ -106,15 +106,15 @@ final class FutureModeChooser: UISegmentedControl {
 		super.awakeFromNib()
 		
 		removeAllSegments()
-		FutureMode.allCases.forEach { futureMode in
+		Mode.allCases.forEach { mode in
 			insertSegment(
 				action: UIAction(
-					image: futureMode.uiImage
+					image: mode.uiImage
 				) { _ in
 					// ARC2DO
 					Task { await MainActor.run {
 						if let player = self.player {
-							futureMode.apply(to: player)
+							mode.apply(to: player)
 						}
 					}}
 				},
@@ -122,21 +122,21 @@ final class FutureModeChooser: UISegmentedControl {
 				animated: false)
 		}
 		disable()
-		selectedSegmentIndex = FutureMode.normal.rawValue
+		selectedSegmentIndex = Mode.normal.rawValue
 		
 		Task { await MainActor.run {
 			beginReflectingPlaybackState()
 		}}
 	}
 }
-extension FutureModeChooser: PlayerReflecting {
+extension FutureChooser: PlayerReflecting {
 	func reflectPlaybackState() {
 		guard
 			let player = player,
 			!Reel.mediaItems.isEmpty
 		else {
 			disable()
-			selectedSegmentIndex = FutureMode.normal.rawValue
+			selectedSegmentIndex = Mode.normal.rawValue
 			return
 		}
 		enable()
@@ -144,11 +144,11 @@ extension FutureModeChooser: PlayerReflecting {
 		case .default:
 			fatalError("`MPMusicPlayerController.repeatMode == .default")
 		case .one:
-			selectedSegmentIndex = FutureMode.repeat1.rawValue
+			selectedSegmentIndex = Mode.repeat1.rawValue
 		case .all:
-			selectedSegmentIndex = FutureMode.repeatAll.rawValue
+			selectedSegmentIndex = Mode.repeatAll.rawValue
 		case .none:
-			selectedSegmentIndex = FutureMode.normal.rawValue
+			selectedSegmentIndex = Mode.normal.rawValue
 		@unknown default:
 			fatalError("Unknown value for `MPMusicPlayerController.repeatMode")
 		}
