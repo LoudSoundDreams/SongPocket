@@ -67,7 +67,7 @@ final class ConsoleVC: UIViewController {
 				object: player)
 		}
 	}
-	@objc private func reflectNowPlayingItem() { reflectPlayheadAndFreshenTransportToolbar_console() }
+	@objc private func reflectNowPlayingItem() { reflectPlayhead_console() }
 	
 	static func rowContainsPlayhead(at indexPath: IndexPath) -> Bool {
 		guard let player = TapeDeck.shared.player else {

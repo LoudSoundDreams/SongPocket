@@ -40,7 +40,8 @@ extension LibraryTVC {
 			cell.reflectPlayhead(containsPlayhead: libraryItem.containsPlayhead())
 		}
 		
-		freshenTransportToolbar() // Do this even if the view isn’t visible, so that the transport toolbar is freshened before it appears. This works; it’s just unusual.
+		// Do this even if the view isn’t visible, so that we freshen the transport toolbar before it appears. This works; it’s just unusual.
+		freshenTransportToolbar()
 	}
 	
 	// MARK: Library Items

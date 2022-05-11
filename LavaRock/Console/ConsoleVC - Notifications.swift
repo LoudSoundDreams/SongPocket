@@ -9,13 +9,13 @@ import Foundation
 
 extension ConsoleVC: PlayerReflecting {
 	func reflectPlaybackState() {
-		reflectPlayheadAndFreshenTransportToolbar_console()
+		reflectPlayhead_console()
 	}
 }
 extension ConsoleVC {
 	// MARK: - Player
 	
-	final func reflectPlayheadAndFreshenTransportToolbar_console() {
+	final func reflectPlayhead_console() {
 		queueTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard let cell = queueTable.cellForRow(
 				at: visibleIndexPath) as? PlayheadReflectable
