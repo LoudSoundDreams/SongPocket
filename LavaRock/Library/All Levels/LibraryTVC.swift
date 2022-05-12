@@ -66,11 +66,6 @@ class LibraryTVC: UITableViewController {
 			selector: #selector(didMergeChanges),
 			name: .LRMergedChanges,
 			object: nil)
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(reelDidChange),
-			name: .LRModifiedReel,
-			object: nil)
 		
 		beginReflectingNowPlayingItem_library()
 		
@@ -78,9 +73,6 @@ class LibraryTVC: UITableViewController {
 		setUpBarButtons()
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
-	@objc private func reelDidChange() {
-		(navigationController as? LibraryNC)?.transportBar.freshen()
-	}
 	
 	final func beginReflectingNowPlayingItem_library() {
 		if MPMediaLibrary.authorizationStatus() == .authorized {

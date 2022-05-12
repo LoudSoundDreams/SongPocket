@@ -104,6 +104,15 @@ final class TransportBar {
 			button.accessibilityTraits.formUnion(.startsMediaSession)
 			return button
 		}()
+		
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(reelDidChange),
+			name: .LRModifiedReel,
+			object: nil)
+	}
+	@objc private func reelDidChange() {
+		freshen()
 	}
 	
 	private static let moreDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
