@@ -89,6 +89,7 @@
 		07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */; };
 		07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */; };
 		07DF65D227766C95003B2EA3 /* SongMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF65D127766C95003B2EA3 /* SongMetadatum.swift */; };
+		07DF76E42828D8AB00B03103 /* TransportToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF76E32828D8AB00B03103 /* TransportToolbar.swift */; };
 		07E0BBD7276567490010117E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD6276567490010117E /* String.swift */; };
 		07E0BBDD276567760010117E /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD9276567760010117E /* Notification.Name.swift */; };
 		07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* NotificationCenter.swift */; };
@@ -227,6 +228,7 @@
 		07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
 		07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
 		07DF65D127766C95003B2EA3 /* SongMetadatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongMetadatum.swift; sourceTree = "<group>"; };
+		07DF76E32828D8AB00B03103 /* TransportToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportToolbar.swift; sourceTree = "<group>"; };
 		07E0BBD6276567490010117E /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		07E0BBD9276567760010117E /* Notification.Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 		07E0BBDA276567760010117E /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07CD864E27CAA54600286E6A /* PlayerReflecting.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
+				07DF76E32828D8AB00B03103 /* TransportToolbar.swift */,
 				07499A8527AB72CF00A2D712 /* TransportToolbarManaging.swift */,
 			);
 			path = "General UI";
@@ -767,6 +770,7 @@
 				07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* mergeChanges.swift in Sources */,
 				07A4F9052519E72C0065C87E /* updateLibraryItems.swift in Sources */,
+				07DF76E42828D8AB00B03103 /* TransportToolbar.swift in Sources */,
 				07E0BBF02765678F0010117E /* UITableViewCell - Protocols.swift in Sources */,
 				07C8CC76271281B70061A9AD /* OptionsTVC - Views.swift in Sources */,
 				07B2CD832741A218004A0743 /* CollectionsOrAlbumsGroup.swift in Sources */,
@@ -1017,7 +1021,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 535.1;
+				CURRENT_PROJECT_VERSION = 536.1;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
@@ -1045,7 +1049,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 535.1;
+				CURRENT_PROJECT_VERSION = 536.1;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;

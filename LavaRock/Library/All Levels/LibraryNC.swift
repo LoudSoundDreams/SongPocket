@@ -8,6 +8,20 @@
 import UIKit
 
 final class LibraryNC: UINavigationController {
+	final lazy var transportToolbar = TransportToolbar(
+		moreButtonAction: UIAction { [weak self] _ in
+			guard let self = self else { return }
+			self.present(self.moreVC, animated: true)
+		})
+	private let moreVC: UIViewController
+	
+	required init?(coder: NSCoder) {
+		moreVC = UIStoryboard(name: "Console", bundle: nil)
+			.instantiateInitialViewController()!
+		
+		super.init(coder: coder)
+	}
+	
 	private static var hasMovedLightingToWindow = false
 	private static var hasCopiedAccentColorToWindow = false
 	final override func viewDidAppear(_ animated: Bool) {

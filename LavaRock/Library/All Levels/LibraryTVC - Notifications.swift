@@ -13,7 +13,6 @@ extension LibraryTVC: PlayerReflecting {
 		reflectPlayheadAndFreshenTransportToolbar_library()
 	}
 }
-extension LibraryTVC: TransportToolbarManaging {}
 extension LibraryTVC {
 	// MARK: - Database
 	
@@ -41,7 +40,7 @@ extension LibraryTVC {
 		}
 		
 		// Do this even if the view isn’t visible, so that we freshen the transport toolbar before it appears. This works; it’s just unusual.
-		freshenTransportToolbar()
+		(navigationController as? LibraryNC)?.transportToolbar.freshen()
 	}
 	
 	// MARK: Library Items

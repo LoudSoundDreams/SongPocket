@@ -28,21 +28,11 @@ class LibraryTVC: UITableViewController {
 	// Controls
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	private lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [.flexibleSpace()]
-	final lazy var viewingModeToolbarButtons = transportButtons
+	final lazy var viewingModeToolbarButtons = (navigationController as? LibraryNC)?.transportToolbar.buttons
 	
 	// MARK: Subclasses Should Not Customize
 	
 	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
-	
-	// `TransportToolbarManaging`
-	private(set) final lazy var previousSongButton = makePreviousSongButton()
-	private(set) final lazy var rewindButton = makeRewindButton()
-	private(set) final lazy var jumpBackwardButton = makeJumpBackwardButton()
-	private(set) final lazy var playPauseButton = UIBarButtonItem()
-	private(set) final lazy var jumpForwardButton = makeJumpForwardButton()
-	private(set) final lazy var nextSongButton = makeNextSongButton()
-	private(set) final lazy var moreButton = makeMoreButton()
-	private(set) final lazy var moreVC = makeMoreVC()
 	
 	// Controls
 	private(set) final var sortButton = UIBarButtonItem(
@@ -89,7 +79,7 @@ class LibraryTVC: UITableViewController {
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
 	@objc private func reelDidChange() {
-		freshenTransportToolbar()
+		(navigationController as? LibraryNC)?.transportToolbar.freshen()
 	}
 	
 	final func beginReflectingNowPlayingItem_library() {
@@ -272,7 +262,7 @@ class LibraryTVC: UITableViewController {
 		
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
 		if !editing {
-			freshenTransportToolbar()
+			(navigationController as? LibraryNC)?.transportToolbar.freshen()
 		}
 		
 		navigationItem.setLeftBarButtonItems(
