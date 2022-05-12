@@ -32,7 +32,6 @@
 		073E6A9225574B99003C84A5 /* PlayheadReflectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */; };
 		073FB55927588B81000FAF5F /* Options.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* Options.storyboard */; };
 		073FB56027588BC5000FAF5F /* Console.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB56227588BC5000FAF5F /* Console.storyboard */; };
-		07499A8627AB72CF00A2D712 /* TransportToolbarManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07499A8527AB72CF00A2D712 /* TransportToolbarManaging.swift */; };
 		074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074AB85D27CAD9C3007B63D2 /* Reel.swift */; };
 		0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */; };
 		075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LocalizedString.swift */; };
@@ -164,7 +163,6 @@
 		073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayheadReflectable.swift; sourceTree = "<group>"; };
 		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Options.storyboard; sourceTree = "<group>"; };
 		073FB56127588BC5000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Console.storyboard; sourceTree = "<group>"; };
-		07499A8527AB72CF00A2D712 /* TransportToolbarManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportToolbarManaging.swift; sourceTree = "<group>"; };
 		074AB85D27CAD9C3007B63D2 /* Reel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reel.swift; sourceTree = "<group>"; };
 		0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
@@ -534,7 +532,6 @@
 				07CD864E27CAA54600286E6A /* PlayerReflecting.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
 				07DF76E32828D8AB00B03103 /* TransportToolbar.swift */,
-				07499A8527AB72CF00A2D712 /* TransportToolbarManaging.swift */,
 			);
 			path = "General UI";
 			sourceTree = "<group>";
@@ -813,7 +810,6 @@
 				07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */,
 				075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,
-				07499A8627AB72CF00A2D712 /* TransportToolbarManaging.swift in Sources */,
 				0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */,
 				07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */,
 				07962319281265AB00EE026F /* OptionsNC.swift in Sources */,
