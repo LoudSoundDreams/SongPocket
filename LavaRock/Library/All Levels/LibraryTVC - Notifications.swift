@@ -10,14 +10,15 @@ import SwiftUI
 
 extension LibraryTVC: PlayerReflecting {
 	func reflectPlaybackState() {
-		reflectPlayheadAndFreshenTransportToolbar_library()
+		reflectPlayheadAndFreshenTransportBar_library()
 	}
 }
 extension LibraryTVC {
 	// MARK: - Database
 	
 	final func reflectDatabase() {
-		reflectPlayheadAndFreshenTransportToolbar_library() // Do this even for views that aren’t visible, so that when we reveal them by going back, the “now playing” indicators and transport toolbar are already updated.
+		// Do this even if the view isn’t visible.
+		reflectPlayheadAndFreshenTransportBar_library()
 		
 		if view.window == nil {
 			needsFreshenLibraryItemsOnViewDidAppear = true
@@ -29,7 +30,7 @@ extension LibraryTVC {
 	// MARK: Player
 	
 	@objc
-	func reflectPlayheadAndFreshenTransportToolbar_library() {
+	func reflectPlayheadAndFreshenTransportBar_library() {
 		// Freshen “now playing” indicators
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard
@@ -39,8 +40,8 @@ extension LibraryTVC {
 			cell.reflectPlayhead(containsPlayhead: libraryItem.containsPlayhead())
 		}
 		
-		// Do this even if the view isn’t visible, so that we freshen the transport toolbar before it appears. This works; it’s just unusual.
-		(navigationController as? LibraryNC)?.transportToolbar.freshen()
+		// Do this even if the view isn’t visible.
+		(navigationController as? LibraryNC)?.transportBar.freshen()
 	}
 	
 	// MARK: Library Items

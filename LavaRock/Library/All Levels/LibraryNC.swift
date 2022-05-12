@@ -8,7 +8,7 @@
 import UIKit
 
 final class LibraryNC: UINavigationController {
-	final lazy var transportToolbar = TransportToolbar(
+	final lazy var transportBar = TransportBar(
 		moreButtonAction: UIAction { [weak self] _ in
 			guard let self = self else { return }
 			self.present(self.moreVC, animated: true)

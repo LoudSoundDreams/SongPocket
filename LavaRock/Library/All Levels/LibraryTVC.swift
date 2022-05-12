@@ -28,7 +28,7 @@ class LibraryTVC: UITableViewController {
 	// Controls
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	private lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [.flexibleSpace()]
-	final lazy var viewingModeToolbarButtons = (navigationController as? LibraryNC)?.transportToolbar.buttons
+	final lazy var viewingModeToolbarButtons = (navigationController as? LibraryNC)?.transportBar.buttons
 	
 	// MARK: Subclasses Should Not Customize
 	
@@ -79,7 +79,7 @@ class LibraryTVC: UITableViewController {
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
 	@objc private func reelDidChange() {
-		(navigationController as? LibraryNC)?.transportToolbar.freshen()
+		(navigationController as? LibraryNC)?.transportBar.freshen()
 	}
 	
 	final func beginReflectingNowPlayingItem_library() {
@@ -91,7 +91,7 @@ class LibraryTVC: UITableViewController {
 				object: player)
 		}
 	}
-	@objc private func reflectNowPlayingItem() { reflectPlayheadAndFreshenTransportToolbar_library() }
+	@objc private func reflectNowPlayingItem() { reflectPlayheadAndFreshenTransportBar_library() }
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()
@@ -262,7 +262,7 @@ class LibraryTVC: UITableViewController {
 		
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
 		if !editing {
-			(navigationController as? LibraryNC)?.transportToolbar.freshen()
+			(navigationController as? LibraryNC)?.transportBar.freshen()
 		}
 		
 		navigationItem.setLeftBarButtonItems(

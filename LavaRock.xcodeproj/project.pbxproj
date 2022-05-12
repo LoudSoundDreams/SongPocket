@@ -88,7 +88,7 @@
 		07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */; };
 		07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */; };
 		07DF65D227766C95003B2EA3 /* SongMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF65D127766C95003B2EA3 /* SongMetadatum.swift */; };
-		07DF76E42828D8AB00B03103 /* TransportToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF76E32828D8AB00B03103 /* TransportToolbar.swift */; };
+		07DF76E42828D8AB00B03103 /* TransportBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF76E32828D8AB00B03103 /* TransportBar.swift */; };
 		07E0BBD7276567490010117E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD6276567490010117E /* String.swift */; };
 		07E0BBDD276567760010117E /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD9276567760010117E /* Notification.Name.swift */; };
 		07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* NotificationCenter.swift */; };
@@ -226,7 +226,7 @@
 		07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
 		07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
 		07DF65D127766C95003B2EA3 /* SongMetadatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongMetadatum.swift; sourceTree = "<group>"; };
-		07DF76E32828D8AB00B03103 /* TransportToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportToolbar.swift; sourceTree = "<group>"; };
+		07DF76E32828D8AB00B03103 /* TransportBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBar.swift; sourceTree = "<group>"; };
 		07E0BBD6276567490010117E /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		07E0BBD9276567760010117E /* Notification.Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 		07E0BBDA276567760010117E /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
@@ -323,7 +323,7 @@
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
 				07622F0D27DAEA9D00B953EA /* Library.storyboard */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
-				07DF76E32828D8AB00B03103 /* TransportToolbar.swift */,
+				07DF76E32828D8AB00B03103 /* TransportBar.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
@@ -767,7 +767,7 @@
 				07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */,
 				0703ED2524E8D0DA002EF1B4 /* mergeChanges.swift in Sources */,
 				07A4F9052519E72C0065C87E /* updateLibraryItems.swift in Sources */,
-				07DF76E42828D8AB00B03103 /* TransportToolbar.swift in Sources */,
+				07DF76E42828D8AB00B03103 /* TransportBar.swift in Sources */,
 				07E0BBF02765678F0010117E /* UITableViewCell - Protocols.swift in Sources */,
 				07C8CC76271281B70061A9AD /* OptionsTVC - Views.swift in Sources */,
 				07B2CD832741A218004A0743 /* CollectionsOrAlbumsGroup.swift in Sources */,
