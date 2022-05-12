@@ -12,7 +12,7 @@ struct Reel {
 	private init() {}
 	
 	@MainActor
-	static weak var tableView: UITableView? = nil
+	static weak var table: UITableView? = nil
 	
 	private(set) static var mediaItems: [MPMediaItem] = [] {
 		didSet {
@@ -21,7 +21,7 @@ struct Reel {
 					name: .LRModifiedReel,
 					object: nil)
 				
-				tableView?.reloadData() // TO DO
+				table?.reloadData()
 			}}
 		}
 	}

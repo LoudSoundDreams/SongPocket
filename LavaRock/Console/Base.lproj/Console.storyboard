@@ -145,7 +145,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="futureChooser" destination="hB7-Xq-sOQ" id="Sqg-Sn-YYl"/>
-                        <outlet property="queueTable" destination="mMv-Oy-bR1" id="Qj5-jH-aer"/>
+                        <outlet property="reelTable" destination="mMv-Oy-bR1" id="Qj5-jH-aer"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0RZ-8F-INt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

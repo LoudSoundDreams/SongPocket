@@ -10,7 +10,7 @@ import MediaPlayer
 import SwiftUI
 
 final class ConsoleVC: UIViewController {
-	@IBOutlet private(set) final var queueTable: UITableView!
+	@IBOutlet private(set) final var reelTable: UITableView!
 	@IBOutlet private final var futureChooser: FutureChooser!
 	
 	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
@@ -18,10 +18,10 @@ final class ConsoleVC: UIViewController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		queueTable.dataSource = self
-		queueTable.delegate = self
-		Reel.tableView = queueTable
-		queueTable.backgroundColor = .secondarySystemBackground
+		reelTable.dataSource = self
+		reelTable.delegate = self
+		Reel.table = reelTable // TO DO
+		reelTable.backgroundColor = .secondarySystemBackground
 		
 		if let transportPanel = UIHostingController(rootView: TransportPanel().padding()).view {
 			view.addSubview(transportPanel)

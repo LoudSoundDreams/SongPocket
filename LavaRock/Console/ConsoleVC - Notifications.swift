@@ -16,8 +16,8 @@ extension ConsoleVC {
 	// MARK: - Player
 	
 	final func reflectPlayhead_console() {
-		queueTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
-			guard let cell = queueTable.cellForRow(
+		reelTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
+			guard let cell = reelTable.cellForRow(
 				at: visibleIndexPath) as? PlayheadReflectable
 			else { return }
 			cell.reflectPlayhead(
