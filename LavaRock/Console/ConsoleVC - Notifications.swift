@@ -9,13 +9,13 @@ import Foundation
 
 extension ConsoleVC: PlayerReflecting {
 	func reflectPlaybackState() {
-		reflectPlayhead_console()
+		reflectPlayhead()
 	}
 }
 extension ConsoleVC {
 	// MARK: - Player
 	
-	final func reflectPlayhead_console() {
+	final func reflectPlayhead() {
 		reelTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard let cell = reelTable.cellForRow(
 				at: visibleIndexPath) as? PlayheadReflectable
