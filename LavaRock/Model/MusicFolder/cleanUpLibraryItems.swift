@@ -24,7 +24,7 @@ extension MusicFolder {
 		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
 			for: allAlbums,
-			   considering: allMetadata)
+			considering: allMetadata)
 		os_signpost(.end, log: .cleanup, name: "Recalculate Album release date estimates")
 		
 		os_signpost(.begin, log: .cleanup, name: "Reindex all Albums and Songs")

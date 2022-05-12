@@ -72,9 +72,9 @@ extension MusicFolder {
 			os_signpost(.begin, log: .create, name: "Create one group of Songs and containers")
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: metadataGroup,
-				   existingAlbumsByID: existingAlbumsByID,
-				   existingCollectionsByTitle: existingCollectionsByTitle,
-				   isFirstImport: isFirstImport)
+				existingAlbumsByID: existingAlbumsByID,
+				existingCollectionsByTitle: existingCollectionsByTitle,
+				isFirstImport: isFirstImport)
 			
 			if let newAlbum = newAlbum {
 				existingAlbumsByID[newAlbum.albumPersistentID] = newAlbum
@@ -144,8 +144,8 @@ extension MusicFolder {
 			os_signpost(.begin, log: .create, name: "Create a new Album and maybe new Collection")
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
 				for: firstMetadatum,
-				   existingCollectionsByTitle: existingCollectionsByTitle,
-				   isFirstImport: isFirstImport)
+				existingCollectionsByTitle: existingCollectionsByTitle,
+				isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
 			os_signpost(.end,log: .create, name: "Create a new Album and maybe new Collection")
 			
