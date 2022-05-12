@@ -323,6 +323,7 @@
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
 				07622F0D27DAEA9D00B953EA /* Library.storyboard */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
+				07DF76E32828D8AB00B03103 /* TransportToolbar.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
@@ -531,7 +532,6 @@
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07CD864E27CAA54600286E6A /* PlayerReflecting.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
-				07DF76E32828D8AB00B03103 /* TransportToolbar.swift */,
 			);
 			path = "General UI";
 			sourceTree = "<group>";
