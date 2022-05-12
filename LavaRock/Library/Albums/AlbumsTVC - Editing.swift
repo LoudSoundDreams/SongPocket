@@ -68,7 +68,7 @@ extension AlbumsTVC {
 					firstReloading: originalIndexPathsOfCollectionsContainingMovedAlbums,
 					previewOfChanges,
 					runningBeforeContinuation: {
-						collectionsTVC.reflectPlayheadAndFreshenTransportBar_library()
+						collectionsTVC.reflectPlayheadAndFreshenTransportBar()
 					})
 			}
 		}

@@ -10,7 +10,7 @@ import SwiftUI
 
 extension LibraryTVC: PlayerReflecting {
 	func reflectPlaybackState() {
-		reflectPlayheadAndFreshenTransportBar_library()
+		reflectPlayheadAndFreshenTransportBar()
 	}
 }
 extension LibraryTVC {
@@ -18,7 +18,7 @@ extension LibraryTVC {
 	
 	final func reflectDatabase() {
 		// Do this even if the view isn’t visible.
-		reflectPlayheadAndFreshenTransportBar_library()
+		reflectPlayheadAndFreshenTransportBar()
 		
 		if view.window == nil {
 			needsFreshenLibraryItemsOnViewDidAppear = true
@@ -30,7 +30,7 @@ extension LibraryTVC {
 	// MARK: Player
 	
 	@objc
-	func reflectPlayheadAndFreshenTransportBar_library() {
+	func reflectPlayheadAndFreshenTransportBar() {
 		// Freshen “now playing” indicators
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard

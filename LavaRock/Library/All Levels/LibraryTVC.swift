@@ -83,7 +83,7 @@ class LibraryTVC: UITableViewController {
 				object: player)
 		}
 	}
-	@objc private func reflectNowPlayingItem() { reflectPlayheadAndFreshenTransportBar_library() }
+	@objc private func reflectNowPlayingItem() { reflectPlayheadAndFreshenTransportBar() }
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()
