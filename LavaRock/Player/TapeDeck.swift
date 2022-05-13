@@ -42,23 +42,19 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 			object: player)
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(nowPlayingItemDidChange),
+			selector: #selector(reflectNowPlayingItemEverywhere),
 			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: player)
 		
 		reflectPlaybackStateEverywhere() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
 	}
 	@objc
-	private func nowPlayingItemDidChange() {
+	private func reflectNowPlayingItemEverywhere() {
 		TapeDeckDisplay.shared.freshen()
 	}
 	
 	@objc
 	private func reflectPlaybackStateEverywhere() {
-//		print("")
-//		print("playback state changed.")
-//		print(player.debugDescription)
-		
 		TapeDeckDisplay.shared.freshen()
 		
 		reflectors.removeAll { $0.referencee == nil }

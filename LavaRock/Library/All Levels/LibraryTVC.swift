@@ -78,12 +78,11 @@ class LibraryTVC: UITableViewController {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
-				selector: #selector(reflectNowPlayingItem),
+				selector: #selector(reflectPlayheadAndFreshenTransportBar),
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 				object: player)
 		}
 	}
-	@objc private func reflectNowPlayingItem() { reflectPlayheadAndFreshenTransportBar() }
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()

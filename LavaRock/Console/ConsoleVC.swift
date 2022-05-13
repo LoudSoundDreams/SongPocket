@@ -40,7 +40,7 @@ final class ConsoleVC: UIViewController {
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(mediaLibraryAuthorizationStatusDidChange),
+			selector: #selector(beginReflectingNowPlayingItem_console),
 			name: .LRUserRespondedToAllowAccessToMediaLibrary,
 			object: nil)
 		
@@ -56,20 +56,17 @@ final class ConsoleVC: UIViewController {
 			return dismissButton
 		}()
 	}
-	@objc private func mediaLibraryAuthorizationStatusDidChange() {
-		beginReflectingNowPlayingItem_console()
-	}
 	
+	@objc
 	private func beginReflectingNowPlayingItem_console() {
 		if MPMediaLibrary.authorizationStatus() == .authorized {
 			NotificationCenter.default.addObserverOnce(
 				self,
-				selector: #selector(reflectNowPlayingItem),
+				selector: #selector(reflectPlayhead),
 				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 				object: player)
 		}
 	}
-	@objc private func reflectNowPlayingItem() { reflectPlayhead() }
 	
 	static func rowContainsPlayhead(at indexPath: IndexPath) -> Bool {
 		guard let player = TapeDeck.shared.player else {

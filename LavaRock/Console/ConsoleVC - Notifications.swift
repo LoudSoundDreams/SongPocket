@@ -15,6 +15,7 @@ extension ConsoleVC: TapeDeckReflecting {
 extension ConsoleVC {
 	// MARK: - Player
 	
+	@objc
 	final func reflectPlayhead() {
 		reelTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard let cell = reelTable.cellForRow(
