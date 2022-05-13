@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ConsoleVC: PlayerReflecting {
+extension ConsoleVC: TapeDeckReflecting {
 	func reflectPlaybackState() {
 		reflectPlayhead()
 	}

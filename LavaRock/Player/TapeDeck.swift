@@ -41,7 +41,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	static let shared = TapeDeck()
 	private init() {}
 	
-	final func addReflectorOnce(weaklyReferencing newReflector: PlayerReflecting) {
+	final func addReflectorOnce(weaklyReferencing newReflector: TapeDeckReflecting) {
 		if let indexOfMatchingReflector = reflectors.firstIndex(where: { weakReflector in
 			newReflector === weakReflector.referencee
 		}) {
@@ -118,7 +118,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	
 	// MARK: - Private
 	
-	private var reflectors: [Weak<PlayerReflecting>] = []
+	private var reflectors: [Weak<TapeDeckReflecting>] = []
 	
 	deinit {
 		player?.endGeneratingPlaybackNotifications()

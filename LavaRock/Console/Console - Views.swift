@@ -129,7 +129,7 @@ final class FutureChooser: UISegmentedControl {
 		}}
 	}
 }
-extension FutureChooser: PlayerReflecting {
+extension FutureChooser: TapeDeckReflecting {
 	func reflectPlaybackState() {
 		guard
 			let player = player,
