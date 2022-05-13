@@ -239,9 +239,6 @@ class LibraryTVC: UITableViewController {
 		let editing = isEditing
 		
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
-		if !editing {
-			(navigationController as? LibraryNC)?.transportBar.freshen()
-		}
 		
 		navigationItem.setLeftBarButtonItems(
 			editing

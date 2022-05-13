@@ -105,6 +105,7 @@ final class TransportBar {
 			return button
 		}()
 		
+		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
 		
 		NotificationCenter.default.addObserverOnce(
@@ -116,7 +117,7 @@ final class TransportBar {
 	
 	private static let moreDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
 	@objc
-	final func freshen() {
+	private func freshen() {
 		
 		func configurePlayButton() {
 			playPauseButton.title = LocalizedString.play
