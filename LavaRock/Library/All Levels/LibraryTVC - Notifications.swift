@@ -10,11 +10,11 @@ import SwiftUI
 
 extension LibraryTVC: TapeDeckReflecting {
 	final func reflectPlaybackState() {
-		reflectPlayheadAndFreshenTransportBar()
+		reflectPlayhead_library()
 	}
 	
 	final func reflectNowPlayingItem() {
-		reflectPlayheadAndFreshenTransportBar()
+		reflectPlayhead_library()
 	}
 }
 extension LibraryTVC {
@@ -23,7 +23,7 @@ extension LibraryTVC {
 	@objc
 	final func reflectDatabase() {
 		// Do this even if the view isn’t visible.
-		reflectPlayheadAndFreshenTransportBar()
+		reflectPlayhead_library()
 		
 		if view.window == nil {
 			needsFreshenLibraryItemsOnViewDidAppear = true
@@ -35,8 +35,7 @@ extension LibraryTVC {
 	// MARK: Player
 	
 	@objc
-	func reflectPlayheadAndFreshenTransportBar() {
-		// Freshen “now playing” indicators
+	func reflectPlayhead_library() {
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard
 				let cell = tableView.cellForRow(at: visibleIndexPath) as? PlayheadReflectable,
@@ -44,9 +43,6 @@ extension LibraryTVC {
 			else { return }
 			cell.reflectPlayhead(containsPlayhead: libraryItem.containsPlayhead())
 		}
-		
-		// Do this even if the view isn’t visible.
-		(navigationController as? LibraryNC)?.transportBar.freshen()
 	}
 	
 	// MARK: Library Items

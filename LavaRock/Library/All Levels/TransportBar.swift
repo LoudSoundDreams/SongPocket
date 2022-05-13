@@ -105,6 +105,8 @@ final class TransportBar {
 			return button
 		}()
 		
+		TapeDeck.shared.addReflector(weakly: self)
+		
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(freshen),
@@ -171,5 +173,14 @@ final class TransportBar {
 		if player.indexOfNowPlayingItem == 0 {
 			previousSongButton.disableWithAccessibilityTrait()
 		}
+	}
+}
+extension TransportBar: TapeDeckReflecting {
+	final func reflectPlaybackState() {
+		freshen()
+	}
+	
+	final func reflectNowPlayingItem() {
+		freshen()
 	}
 }
