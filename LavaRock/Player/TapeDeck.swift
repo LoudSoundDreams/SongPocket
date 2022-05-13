@@ -9,34 +9,6 @@ import MediaPlayer
 import CoreData
 
 @MainActor
-final class TapeDeckDisplay: ObservableObject {
-	struct Status {
-		let isInPlayMode: Bool
-		let isPlayingFirstSongInQueue: Bool
-	}
-	
-	static let shared = TapeDeckDisplay()
-	private init() {
-		freshen()
-	}
-	
-	@Published private(set) var currentStatus: Status? = nil
-	
-	final func freshen() {
-		guard
-			let player = TapeDeck.shared.player,
-			!(Enabling.console && Reel.mediaItems.isEmpty)
-		else {
-			currentStatus = nil
-			return
-		}
-		currentStatus = Status(
-			isInPlayMode: player.playbackState == .playing,
-			isPlayingFirstSongInQueue: player.indexOfNowPlayingItem == 0)
-	}
-}
-
-@MainActor
 final class TapeDeck { // This is a class and not a struct because it needs a deinitializer.
 	static let shared = TapeDeck()
 	private init() {}
