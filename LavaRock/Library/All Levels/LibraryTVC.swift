@@ -64,14 +64,13 @@ class LibraryTVC: UITableViewController {
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(didMergeChanges),
+			selector: #selector(reflectDatabase),
 			name: .LRMergedChanges,
 			object: nil)
 		
 		freshenNavigationItemTitle()
 		setUpBarButtons()
 	}
-	@objc private func didMergeChanges() { reflectDatabase() }
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()

@@ -20,6 +20,7 @@ extension LibraryTVC: TapeDeckReflecting {
 extension LibraryTVC {
 	// MARK: - Database
 	
+	@objc
 	final func reflectDatabase() {
 		// Do this even if the view isn’t visible.
 		reflectPlayheadAndFreshenTransportBar()

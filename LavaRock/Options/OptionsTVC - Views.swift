@@ -55,15 +55,12 @@ final class AccentColorCell: UITableViewCell {
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(userDidChangeAccentColor),
-			name: .LRUserChangedAccentColor,
+			selector: #selector(configure),
+			name: .LRUserChangedAccentColor, // Don’t do this during `tintColorDidChange`, because that can break the animation when the table view deselects the row.
 			object: nil)
 	}
-	@objc private func userDidChangeAccentColor() {
-		// Don’t do this during `tintColorDidChange`, because that can break the animation when the table view deselects the row.
-		configure()
-	}
 	
+	@objc
 	private func configure() {
 		guard let accentColor = accentColor else {
 			contentConfiguration = defaultContentConfiguration()

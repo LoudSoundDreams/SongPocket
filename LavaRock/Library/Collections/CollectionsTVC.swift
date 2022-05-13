@@ -233,13 +233,12 @@ final class CollectionsTVC:
 			case .browsing:
 				NotificationCenter.default.addObserverOnce(
 					self,
-					selector: #selector(userDidUpdateDatabase),
+					selector: #selector(reflectDatabase),
 					name: .LRUserUpdatedDatabase,
 					object: nil)
 			}
 		}
 	}
-	@objc private func userDidUpdateDatabase() { reflectDatabase() }
 	
 	final override func setUpBarButtons() {
 		switch purpose {
