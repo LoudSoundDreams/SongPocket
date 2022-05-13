@@ -18,9 +18,11 @@ final class ConsoleVC: UIViewController {
 	final override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		// Snatch dependencies, assuming `self` is the only instance of its type.
+		Reel.table = reelTable
+		
 		reelTable.dataSource = self
 		reelTable.delegate = self
-		Reel.table = reelTable // TO DO
 		reelTable.backgroundColor = .secondarySystemBackground
 		
 		if let transportPanel = UIHostingController(rootView: TransportPanel().padding()).view {
