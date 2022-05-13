@@ -12,6 +12,10 @@ extension LibraryTVC: TapeDeckReflecting {
 	final func reflectPlaybackState() {
 		reflectPlayheadAndFreshenTransportBar()
 	}
+	
+	final func reflectNowPlayingItem() {
+		reflectPlayheadAndFreshenTransportBar()
+	}
 }
 extension LibraryTVC {
 	// MARK: - Database

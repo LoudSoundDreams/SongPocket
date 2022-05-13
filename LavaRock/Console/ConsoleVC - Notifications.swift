@@ -11,6 +11,10 @@ extension ConsoleVC: TapeDeckReflecting {
 	final func reflectPlaybackState() {
 		reflectPlayhead()
 	}
+	
+	final func reflectNowPlayingItem() {
+		reflectPlayhead()
+	}
 }
 extension ConsoleVC {
 	// MARK: - Player

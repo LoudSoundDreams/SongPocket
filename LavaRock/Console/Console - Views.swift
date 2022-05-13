@@ -125,7 +125,8 @@ final class FutureChooser: UISegmentedControl {
 		selectedSegmentIndex = Mode.normal.rawValue
 		
 		Task { await MainActor.run {
-			beginReflectingPlaybackState()
+			reflectPlaybackState()
+			TapeDeck.shared.addReflector(weakly: self)
 		}}
 	}
 }
@@ -153,4 +154,6 @@ extension FutureChooser: TapeDeckReflecting {
 			fatalError("Unknown value for `MPMusicPlayerController.repeatMode")
 		}
 	}
+	
+	func reflectNowPlayingItem() {}
 }

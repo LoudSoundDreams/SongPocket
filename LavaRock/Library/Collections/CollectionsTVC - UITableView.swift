@@ -278,7 +278,6 @@ extension CollectionsTVC {
 				
 				switch authorizationStatus {
 				case .authorized:
-						beginReflectingNowPlayingItem_library()
 						integrateWithMusicApp()
 				case
 						.notDetermined,

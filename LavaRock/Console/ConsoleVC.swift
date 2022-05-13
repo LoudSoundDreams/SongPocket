@@ -36,15 +36,8 @@ final class ConsoleVC: UIViewController {
 			])
 		}
 		
-		beginReflectingPlaybackState()
-		
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(beginReflectingNowPlayingItem_console),
-			name: .LRUserRespondedToAllowAccessToMediaLibrary,
-			object: nil)
-		
-		beginReflectingNowPlayingItem_console()
+		reflectPlaybackState()
+		TapeDeck.shared.addReflector(weakly: self)
 		
 		navigationItem.rightBarButtonItem = {
 			let dismissButton = UIBarButtonItem(
@@ -55,17 +48,6 @@ final class ConsoleVC: UIViewController {
 			dismissButton.style = .done
 			return dismissButton
 		}()
-	}
-	
-	@objc
-	private func beginReflectingNowPlayingItem_console() {
-		if MPMediaLibrary.authorizationStatus() == .authorized {
-			NotificationCenter.default.addObserverOnce(
-				self,
-				selector: #selector(reflectPlayhead),
-				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
-				object: player)
-		}
 	}
 	
 	static func rowContainsPlayhead(at indexPath: IndexPath) -> Bool {

@@ -59,7 +59,8 @@ class LibraryTVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		beginReflectingPlaybackState()
+		reflectPlaybackState()
+		TapeDeck.shared.addReflector(weakly: self)
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
@@ -67,22 +68,10 @@ class LibraryTVC: UITableViewController {
 			name: .LRMergedChanges,
 			object: nil)
 		
-		beginReflectingNowPlayingItem_library()
-		
 		freshenNavigationItemTitle()
 		setUpBarButtons()
 	}
 	@objc private func didMergeChanges() { reflectDatabase() }
-	
-	final func beginReflectingNowPlayingItem_library() {
-		if MPMediaLibrary.authorizationStatus() == .authorized {
-			NotificationCenter.default.addObserverOnce(
-				self,
-				selector: #selector(reflectPlayheadAndFreshenTransportBar),
-				name: .MPMusicPlayerControllerNowPlayingItemDidChange,
-				object: player)
-		}
-	}
 	
 	final func freshenNavigationItemTitle() {
 		title = viewModel.bigTitle()
