@@ -59,7 +59,6 @@ class LibraryTVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		reflectPlaybackState()
 		TapeDeck.shared.addReflector(weakly: self)
 		
 		NotificationCenter.default.addObserverOnce(

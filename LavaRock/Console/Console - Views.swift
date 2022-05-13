@@ -121,8 +121,6 @@ final class FutureChooser: UISegmentedControl {
 				at: numberOfSegments,
 				animated: false)
 		}
-		disable()
-		selectedSegmentIndex = Mode.normal.rawValue
 		
 		Task { await MainActor.run {
 			reflectPlaybackState()

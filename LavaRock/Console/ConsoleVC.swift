@@ -36,7 +36,6 @@ final class ConsoleVC: UIViewController {
 			])
 		}
 		
-		reflectPlaybackState()
 		TapeDeck.shared.addReflector(weakly: self)
 		
 		navigationItem.rightBarButtonItem = {
