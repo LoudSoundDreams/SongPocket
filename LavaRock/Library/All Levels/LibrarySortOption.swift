@@ -50,7 +50,7 @@ enum LibrarySortOption: CaseIterable {
 		case .trackNumber:
 			return UIImage(systemName: "textformat.123")
 		case .shuffle:
-			return UIImage(systemName: "suit.spade")
+			return UIImage(systemName: "shuffle")
 		case .reverse:
 			return UIImage(systemName: "arrow.uturn.up")
 		}
