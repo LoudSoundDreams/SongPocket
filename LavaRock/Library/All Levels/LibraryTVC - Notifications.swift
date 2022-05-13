@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 extension LibraryTVC: TapeDeckReflecting {
-	func reflectPlaybackState() {
+	final func reflectPlaybackState() {
 		reflectPlayheadAndFreshenTransportBar()
 	}
 }
