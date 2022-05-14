@@ -38,6 +38,12 @@ final class ConsoleVC: UIViewController {
 		
 		TapeDeck.shared.addReflector(weakly: self)
 		
+//		navigationItem.leftBarButtonItem = UIBarButtonItem(
+//			title: LocalizedString.clear,
+//			primaryAction: UIAction { _ in
+//				Reel.setMediaItems([])
+//				TapeDeck.shared.player?.setQueue(mediaItems: []) // As of iOS 15.5, this doesn’t do anything.
+//			})
 		navigationItem.rightBarButtonItem = {
 			let dismissButton = UIBarButtonItem(
 				title: LocalizedString.done,

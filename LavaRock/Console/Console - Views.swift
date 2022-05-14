@@ -84,6 +84,9 @@ final class FutureChooser: UISegmentedControl {
 			case .repeatAll:
 				return UIImage(systemName: "repeat")!
 			case .normal:
+//				return UIImage(systemName: "circlebadge")!
+//				return UIImage(systemName: "circle")!
+//				return UIImage(systemName: "circle.slash")!
 				return UIImage(systemName: "arrow.forward")!
 			}
 		}
