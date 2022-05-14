@@ -64,7 +64,7 @@ class LibraryTVC: UITableViewController {
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(reflectDatabase),
-			name: .LRMergedChanges,
+			name: .mergedChanges,
 			object: nil)
 		
 		freshenNavigationItemTitle()

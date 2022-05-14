@@ -168,7 +168,8 @@ final class AlbumsTVC:
 			) { [weak self] _ in
 				self?.startOrganizing()
 			}
-			// UIKit runs `UIDeferredMenuElement.uncached`’s closure every time it uses the menu element.
+			
+			// UIKit runs this closure every time it uses the menu element.
 			return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
 				guard let self = self else { return }
 				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(

@@ -8,7 +8,7 @@
 import MediaPlayer
 
 extension Notification.Name {
-	static let LRModifiedReel = Self("modified reel")
+	static let modifiedReel = Self("modified reel")
 }
 
 //@MainActor // TO DO
@@ -22,7 +22,7 @@ struct Reel {
 		didSet {
 			Task { await MainActor.run {
 				NotificationCenter.default.post( // TO DO: Only post a notification when `mediaItems.isEmpty` changed.
-					name: .LRModifiedReel,
+					name: .modifiedReel,
 					object: nil)
 				
 				table?.reloadData()

@@ -213,7 +213,7 @@ final class CollectionsTVC:
 			NotificationCenter.default.addObserverOnce(
 				self,
 				selector: #selector(reflectDatabase),
-				name: .LRUserUpdatedDatabase,
+				name: .userUpdatedDatabase,
 				object: nil)
 			
 			Task {

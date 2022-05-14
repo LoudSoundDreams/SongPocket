@@ -9,7 +9,7 @@ import CoreData
 import OSLog
 
 extension Notification.Name {
-	static let LRMergedChanges = Self("merged changes")
+	static let mergedChanges = Self("merged changes")
 }
 
 extension MusicFolder {
@@ -82,7 +82,7 @@ extension MusicFolder {
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
-				name: .LRMergedChanges,
+				name: .mergedChanges,
 				object: nil)
 		}
 	}

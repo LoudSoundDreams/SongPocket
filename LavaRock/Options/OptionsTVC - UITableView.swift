@@ -8,7 +8,7 @@
 import UIKit
 
 extension Notification.Name {
-	static let LRUserChangedAccentColor = Self("user changed accent color")
+	static let userChangedAccentColor = Self("user changed accent color")
 }
 
 extension OptionsTVC {
@@ -162,14 +162,14 @@ extension OptionsTVC {
 		
 		/*
 		 Keep these statements in the right order so that the table view animates successfully when it deselects the row.
-		 • Set `Theme.shared.accentColor` before you post `LRUserChangedAccentColor`. That …
+		 • Set `Theme.shared.accentColor` before you post `userChangedAccentColor`. That …
 			• Triggers `AccentColor.saveAsPreference`.
 			• Triggers `updateUIViewController`, which sets the window’s `tintColor`, which triggers `tintColorDidChange`, but not until later.
 				• That happens after `saveAsPreference`, so instances that override `tintColorDidChange` can get the new value for `savedPreference`.
-		 • Post `LRUserChangedAccentColor` before you deselect the row. (Responding instances respond immediately.)
+		 • Post `userChangedAccentColor` before you deselect the row. (Responding instances respond immediately.)
 		 */
 		Theme.shared.accentColor = selected
-		NotificationCenter.default.post(name: .LRUserChangedAccentColor, object: nil)
+		NotificationCenter.default.post(name: .userChangedAccentColor, object: nil)
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 	

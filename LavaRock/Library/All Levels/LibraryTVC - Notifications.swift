@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 extension Notification.Name {
-	static let LRUserUpdatedDatabase = Self("user updated database")
+	static let userUpdatedDatabase = Self("user updated database")
 }
 
 extension LibraryTVC: TapeDeckReflecting {
