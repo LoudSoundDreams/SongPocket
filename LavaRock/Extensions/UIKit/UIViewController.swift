@@ -12,7 +12,7 @@ extension UIViewController {
 		_ viewControllerToPresent: UIViewController,
 		animated: Bool
 	) async {
-		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+		await withCheckedContinuation { continuation in
 			present(viewControllerToPresent, animated: animated) {
 				continuation.resume()
 			}
@@ -24,9 +24,7 @@ extension UIViewController {
 	) async {
 		await withCheckedContinuation { continuation in
 			dismiss(animated: animated) {
-//				Task { await MainActor.run { // This might be necessary. https://www.swiftbysundell.com/articles/the-main-actor-attribute/
 				continuation.resume()
-//				}}
 			}
 		}
 	}

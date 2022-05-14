@@ -96,10 +96,8 @@ extension UITableView {
 		_ updates: (() -> Void)?
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
-			performBatchUpdates(updates) { animationsDidCompleteSuccessfully in
-//				Task { await MainActor.run { // This might be necessary. https://www.swiftbysundell.com/articles/the-main-actor-attribute/
-				continuation.resume(returning: animationsDidCompleteSuccessfully)
-//				}}
+			performBatchUpdates(updates) { didCompleteAnimationsSuccessfully in
+				continuation.resume(returning: didCompleteAnimationsSuccessfully)
 			}
 		}
 	}

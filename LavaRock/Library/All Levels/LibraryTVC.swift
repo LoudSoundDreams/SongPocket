@@ -104,9 +104,7 @@ class LibraryTVC: UITableViewController {
 				newViewModel,
 				thenSelecting: toSelect
 			) { shouldContinue in
-//				Task { await MainActor.run { // This might be necessary. https://www.swiftbysundell.com/articles/the-main-actor-attribute/
 				continuation.resume(returning: shouldContinue)
-//				}}
 			}
 			beforeContinuation?()
 		}
