@@ -56,6 +56,7 @@
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
 		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
 		076F1C0527E8F79400220C2B /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0427E8F79400220C2B /* UISegmentedControl.swift */; };
+		0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB57282F798A0054834F /* BatchUpdates.swift */; };
 		0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
@@ -194,6 +195,7 @@
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
 		076F1C0427E8F79400220C2B /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
+		0772FB57282F798A0054834F /* BatchUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchUpdates.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUserDefaultsKey.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
@@ -384,8 +386,8 @@
 				0768309924B42DEE0033E3CC /* Info.plist */,
 				07FF1DDF27F8FF0300DF9B78 /* Resources */,
 				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
-				07E0BBFE2765680C0010117E /* Extensions */,
 				07FB52C92813693F00CCCBA5 /* Helpers */,
+				07E0BBFE2765680C0010117E /* Extensions */,
 				07FC970A24BAC1050036DD3D /* Model */,
 				07F1881F27F6B3750074809D /* Player */,
 				07E0BBFF276569480010117E /* General UI */,
@@ -504,7 +506,6 @@
 				07E0BBED2765678F0010117E /* UIAlertController.swift */,
 				07E0BBE82765678F0010117E /* UITableViewCell.swift */,
 				07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */,
-				07E0BBEC2765678F0010117E /* SectionStructure.swift */,
 				07E0BBE72765678F0010117E /* UITableView.swift */,
 				0787CB0927A376400068C2E5 /* UIViewController.swift */,
 			);
@@ -565,6 +566,8 @@
 			children = (
 				07CD864C27CAA3CC00286E6A /* Weak.swift */,
 				07FB52C72813692000CCCBA5 /* SectionIndex, RowIndex.swift */,
+				07E0BBEC2765678F0010117E /* SectionStructure.swift */,
+				0772FB57282F798A0054834F /* BatchUpdates.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -741,6 +744,7 @@
 				073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */,
 				07E0BBDD276567760010117E /* Notification.Name.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */,
+				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
 				07A7989127A8ABB1007B70AA /* ConsoleView.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* createLibraryItems.swift in Sources */,
 				072FD02726C30BB90053369B /* cleanUpLibraryItems.swift in Sources */,
