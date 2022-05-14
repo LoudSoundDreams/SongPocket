@@ -7,6 +7,7 @@
 
 import MediaPlayer
 
+@MainActor
 extension MPMusicPlayerController {
 	final func setQueue(with mediaItems: [MPMediaItem]) {
 		setQueue(with: MPMediaItemCollection(items: mediaItems))

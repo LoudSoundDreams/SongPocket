@@ -11,22 +11,19 @@ extension Notification.Name {
 	static let modifiedReel = Self("modified reel")
 }
 
-//@MainActor // TO DO
+@MainActor
 struct Reel {
 	private init() {}
 	
-	@MainActor
 	static weak var table: UITableView? = nil
 	
 	private(set) static var mediaItems: [MPMediaItem] = [] {
 		didSet {
-			Task { await MainActor.run {
-				NotificationCenter.default.post( // TO DO: Only post a notification when `mediaItems.isEmpty` changed.
-					name: .modifiedReel,
-					object: nil)
-				
-				table?.reloadData()
-			}}
+			NotificationCenter.default.post( // TO DO: Only post a notification when `mediaItems.isEmpty` changed.
+				name: .modifiedReel,
+				object: nil)
+			
+			table?.reloadData()
 		}
 	}
 	
