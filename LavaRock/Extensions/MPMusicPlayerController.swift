@@ -9,14 +9,14 @@ import MediaPlayer
 
 @MainActor
 extension MPMusicPlayerController {
-	final func setQueue(with mediaItems: [MPMediaItem]) {
+	private func setQueue(mediaItems: [MPMediaItem]) {
 		setQueue(with: MPMediaItemCollection(items: mediaItems))
 	}
-	final func prepend(_ mediaItems: [MPMediaItem]) {
+	private func prepend(_ mediaItems: [MPMediaItem]) {
 		prepend(MPMusicPlayerMediaItemQueueDescriptor(
 			itemCollection: MPMediaItemCollection(items: mediaItems)))
 	}
-	final func append(_ mediaItems: [MPMediaItem]) {
+	private func append(_ mediaItems: [MPMediaItem]) {
 		append(MPMusicPlayerMediaItemQueueDescriptor(
 			itemCollection: MPMediaItemCollection(items: mediaItems)))
 	}
@@ -26,7 +26,7 @@ extension MPMusicPlayerController {
 			Reel.setMediaItems(mediaItems)
 		}
 		
-		setQueue(with: mediaItems)
+		setQueue(mediaItems: mediaItems)
 		
 		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
 		repeatMode = .none
@@ -40,7 +40,7 @@ extension MPMusicPlayerController {
 			if Reel.mediaItems.isEmpty {
 				Reel.setMediaItems(mediaItems)
 				
-				setQueue(with: mediaItems)
+				setQueue(mediaItems: mediaItems)
 			} else {
 				Reel.setMediaItems({
 					var newMediaItems = Reel.mediaItems
@@ -73,7 +73,7 @@ extension MPMusicPlayerController {
 				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
 				Reel.setMediaItems(mediaItems)
 				
-				setQueue(with: mediaItems)
+				setQueue(mediaItems: mediaItems)
 			} else {
 				Reel.setMediaItems({
 					var newMediaItems = Reel.mediaItems
