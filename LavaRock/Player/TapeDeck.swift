@@ -53,7 +53,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	
 	@objc
 	private func reflectPlaybackStateEverywhere() {
-		TapeDeckDisplay.shared.freshen()
+		TapeDeckDisplay.shared.freshenStatus()
 		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {
@@ -63,7 +63,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	
 	@objc
 	private func reflectNowPlayingItemEverywhere() {
-		TapeDeckDisplay.shared.freshen()
+		TapeDeckDisplay.shared.freshenStatus()
 		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {

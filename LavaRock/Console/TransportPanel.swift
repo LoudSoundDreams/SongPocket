@@ -34,7 +34,7 @@ struct TransportPanel: View {
 			}
 		}
 		.padding([.top, .bottom], .eight * 6)
-		.disabled(tapeDeckDisplay.currentStatus == nil)
+		.disabled(tapeDeckDisplay.status == nil)
 	}
 	
 	private var previousSongButton: some View {
@@ -44,7 +44,7 @@ struct TransportPanel: View {
 			Image(systemName: "arrow.backward.circle")
 				.font(.system(size: .eight * 4))
 		}
-		.disabled(tapeDeckDisplay.currentStatus?.isPlayingFirstSongInQueue ?? false)
+		.disabled(tapeDeckDisplay.status?.isPlayingFirstSongInQueue ?? false)
 	}
 	
 	private var rewindButton: some View {
@@ -67,7 +67,7 @@ struct TransportPanel: View {
 	
 	private var playPauseButton: some View {
 		Button {
-			guard let status = tapeDeckDisplay.currentStatus else { return }
+			guard let status = tapeDeckDisplay.status else { return }
 			if status.isInPlayMode {
 				player?.pause()
 			} else {
@@ -75,7 +75,7 @@ struct TransportPanel: View {
 			}
 		} label: {
 			if
-				let status = tapeDeckDisplay.currentStatus,
+				let status = tapeDeckDisplay.status,
 				status.isInPlayMode
 			{
 				Image(systemName: "pause.circle")

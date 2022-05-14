@@ -15,21 +15,21 @@ final class TapeDeckDisplay: ObservableObject {
 	}
 	
 	static let shared = TapeDeckDisplay()
+	@Published private(set) var status: Status? = nil
+	
 	private init() {
-		freshen()
+		freshenStatus()
 	}
 	
-	@Published private(set) var currentStatus: Status? = nil
-	
-	final func freshen() {
+	final func freshenStatus() {
 		guard
 			let player = TapeDeck.shared.player,
 			!(Enabling.console && Reel.mediaItems.isEmpty)
 		else {
-			currentStatus = nil
+			status = nil
 			return
 		}
-		currentStatus = Status(
+		status = Status(
 			isInPlayMode: player.playbackState == .playing,
 			isPlayingFirstSongInQueue: player.indexOfNowPlayingItem == 0)
 	}
