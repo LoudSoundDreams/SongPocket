@@ -111,7 +111,7 @@ final class TransportBar {
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(freshen),
-			name: .modifiedReel,
+			name: .userChangedReelEmptiness,
 			object: nil)
 	}
 	

@@ -8,7 +8,7 @@
 import MediaPlayer
 
 extension Notification.Name {
-	static let modifiedReel = Self("modified reel")
+	static let userChangedReelEmptiness = Self("user changed reel emptiness")
 }
 
 @MainActor
@@ -19,11 +19,14 @@ struct Reel {
 	
 	private(set) static var mediaItems: [MPMediaItem] = [] {
 		didSet {
-			NotificationCenter.default.post( // TO DO: Only post a notification when `mediaItems.isEmpty` changed.
-				name: .modifiedReel,
-				object: nil)
-			
 			table?.reloadData()
+			
+			let wasEmpty = oldValue.isEmpty
+			if wasEmpty != mediaItems.isEmpty {
+				NotificationCenter.default.post(
+					name: .userChangedReelEmptiness,
+					object: nil)
+			}
 		}
 	}
 	
