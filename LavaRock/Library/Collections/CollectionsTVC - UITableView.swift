@@ -287,10 +287,6 @@ extension CollectionsTVC {
 				@unknown default:
 					tableView.deselectRow(at: indexPath, animated: true)
 				}
-				
-				NotificationCenter.default.post(
-					name: .LRUserRespondedToAllowAccessToMediaLibrary,
-					object: nil)
 			}
 		case .authorized:
 			break

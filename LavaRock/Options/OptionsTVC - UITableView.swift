@@ -7,6 +7,10 @@
 
 import UIKit
 
+extension Notification.Name {
+	static let LRUserChangedAccentColor = Self("user changed accent color")
+}
+
 extension OptionsTVC {
 	private enum Section: Int, CaseIterable {
 		case theme

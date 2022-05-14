@@ -7,6 +7,10 @@
 
 import MediaPlayer
 
+extension Notification.Name {
+	static let LRModifiedReel = Self("modified reel")
+}
+
 //@MainActor // TO DO
 struct Reel {
 	private init() {}

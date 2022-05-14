@@ -8,6 +8,10 @@
 import UIKit
 import SwiftUI
 
+extension Notification.Name {
+	static let LRUserUpdatedDatabase = Self("user updated database")
+}
+
 extension LibraryTVC: TapeDeckReflecting {
 	final func reflectPlaybackState() {
 		reflectPlayhead_library()
