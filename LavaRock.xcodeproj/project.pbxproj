@@ -57,6 +57,7 @@
 		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
 		076F1C0527E8F79400220C2B /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0427E8F79400220C2B /* UISegmentedControl.swift */; };
 		0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB57282F798A0054834F /* BatchUpdates.swift */; };
+		0772FB99283010960054834F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB98283010960054834F /* Theme.swift */; };
 		0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
@@ -196,6 +197,7 @@
 		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
 		076F1C0427E8F79400220C2B /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
 		0772FB57282F798A0054834F /* BatchUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchUpdates.swift; sourceTree = "<group>"; };
+		0772FB98283010960054834F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUserDefaultsKey.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 			children = (
 				0708201C275BEE1C00F48D13 /* Lighting.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
+				0772FB98283010960054834F /* Theme.swift */,
 				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
@@ -761,6 +764,7 @@
 				07FD6E122599246700826447 /* OptionsTVC + TipJarUI.swift in Sources */,
 				076F1C0527E8F79400220C2B /* UISegmentedControl.swift in Sources */,
 				076B4DED27738FF4004B523D /* OSLog.swift in Sources */,
+				0772FB99283010960054834F /* Theme.swift in Sources */,
 				077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */,
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */,
@@ -1025,7 +1029,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 546.1;
+				CURRENT_PROJECT_VERSION = 546.2;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
@@ -1053,7 +1057,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 546.1;
+				CURRENT_PROJECT_VERSION = 546.2;
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;

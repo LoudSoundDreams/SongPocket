@@ -37,24 +37,6 @@ struct LavaRockApp: App {
 	}
 }
 
-@MainActor
-final class Theme: ObservableObject {
-	static let shared = Theme()
-	private init() {}
-	
-	@Published var lighting: Lighting = .savedPreference() {
-		didSet {
-			// This runs before `ObservableObject.objectWillChange` emits.
-			lighting.saveAsPreference()
-		}
-	}
-	@Published var accentColor: AccentColor = .savedPreference() {
-		didSet {
-			accentColor.saveAsPreference()
-		}
-	}
-}
-
 struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 	typealias ViewControllerType = LibraryNC
 	
