@@ -8,16 +8,16 @@
 import UIKit
 
 extension UIViewController {
-//	final func present__async(
-//		_ viewControllerToPresent: UIViewController,
-//		animated: Bool
-//	) async {
-//		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-//			present(viewControllerToPresent, animated: animated) { // “Modifications to the layout engine must not be performed from a background thread after it has been accessed from the main thread.” / “UIViewController.present(_:animated:completion:) must be used from main thread only”
-//				continuation.resume()
-//			}
-//		}
-//	}
+	final func present__async(
+		_ viewControllerToPresent: UIViewController,
+		animated: Bool
+	) async {
+		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+			present(viewControllerToPresent, animated: animated) {
+				continuation.resume()
+			}
+		}
+	}
 	
 	final func dismiss__async(
 		animated: Bool
