@@ -167,7 +167,7 @@ class LibraryTVC: UITableViewController {
 			andRows: rowBatchUpdates,
 			with: .middle
 		) {
-			self.isAnimatingBatchUpdates -= 1 // ARC2DO
+			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate anything. Here, we wait for the animations to finish before we run the completion closure (once).
 				completionIfShouldRun(true)
 			} else {
@@ -222,7 +222,7 @@ class LibraryTVC: UITableViewController {
 				IndexSet(toDelete.map { $0.value }),
 				with: .middle)
 		} completion: { _ in
-			self.isAnimatingBatchUpdates -= 1 // ARC2DO
+			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 { // See corresponding comment in `setItemsAndMoveRows`.
 				self.dismiss(animated: true) { // If we moved all the `Album`s out of a `Collection`, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
 					self.performSegue(withIdentifier: "Removed All Contents", sender: self)

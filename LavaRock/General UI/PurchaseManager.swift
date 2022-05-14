@@ -74,7 +74,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 			response.products.forEach { product in
 				switch product.productIdentifier {
 				case Self.tipProductID:
-					self.tipProduct = product // ARC2DO
+					self.tipProduct = product
 					
 					TipJarViewModel.shared.status = .ready
 				default:
@@ -104,7 +104,7 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 			transactions.forEach { transaction in
 				switch transaction.payment.productIdentifier {
 				case Self.tipProductID:
-					self.handleTipTransaction(transaction) // ARC2DO
+					self.handleTipTransaction(transaction)
 				default:
 					break
 				}

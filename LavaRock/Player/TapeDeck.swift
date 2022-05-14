@@ -23,7 +23,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 		reflectors.append(Weak(newReflector))
 	}
 	
-	private(set) var player: MPMusicPlayerController? = nil
+	private(set) var player: MPMusicPlayerController? = nil // TO DO: Prints noise to the console
 	
 	final func setUp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }

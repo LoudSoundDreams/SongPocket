@@ -21,7 +21,7 @@ struct Reel {
 	private(set) static var mediaItems: [MPMediaItem] = [] {
 		didSet {
 			Task { await MainActor.run {
-				NotificationCenter.default.post(
+				NotificationCenter.default.post( // TO DO: Only post a notification when `mediaItems.isEmpty` changed.
 					name: .LRModifiedReel,
 					object: nil)
 				
