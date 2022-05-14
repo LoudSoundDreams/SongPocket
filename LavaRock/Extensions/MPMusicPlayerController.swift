@@ -9,18 +9,6 @@ import MediaPlayer
 
 @MainActor
 extension MPMusicPlayerController {
-	private func setQueue(mediaItems: [MPMediaItem]) {
-		setQueue(with: MPMediaItemCollection(items: mediaItems))
-	}
-	private func prepend(_ mediaItems: [MPMediaItem]) {
-		prepend(MPMusicPlayerMediaItemQueueDescriptor(
-			itemCollection: MPMediaItemCollection(items: mediaItems)))
-	}
-	private func append(_ mediaItems: [MPMediaItem]) {
-		append(MPMusicPlayerMediaItemQueueDescriptor(
-			itemCollection: MPMediaItemCollection(items: mediaItems)))
-	}
-	
 	final func playNow(_ mediaItems: [MPMediaItem]) {
 		if Enabling.console {
 			Reel.setMediaItems(mediaItems)
@@ -97,5 +85,17 @@ extension MPMusicPlayerController {
 		if playbackState != .playing {
 			prepareToPlay()
 		}
+	}
+	
+	private func setQueue(mediaItems: [MPMediaItem]) {
+		setQueue(with: MPMediaItemCollection(items: mediaItems))
+	}
+	private func prepend(_ mediaItems: [MPMediaItem]) {
+		prepend(MPMusicPlayerMediaItemQueueDescriptor(
+			itemCollection: MPMediaItemCollection(items: mediaItems)))
+	}
+	private func append(_ mediaItems: [MPMediaItem]) {
+		append(MPMusicPlayerMediaItemQueueDescriptor(
+			itemCollection: MPMediaItemCollection(items: mediaItems)))
 	}
 }
