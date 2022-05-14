@@ -40,7 +40,7 @@ extension CollectionsTVC {
 				.noCollections:
 			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
 			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.wasLoadingOrNoCollections`
-			reflectViewState()
+			__reflectViewState()
 			needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
 		case
 				.allowAccess,

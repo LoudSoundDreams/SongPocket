@@ -109,7 +109,15 @@ final class CollectionsTVC:
 	
 	// MARK: - View State
 	
-	final func reflectViewState(
+	final func reflectViewState() async {
+		await withCheckedContinuation { continuation in
+			__reflectViewState {
+				continuation.resume()
+			}
+		}
+	}
+	
+	final func __reflectViewState(
 		completion: (() -> Void)? = nil
 	) {
 		let toDelete: [IndexPath]
@@ -202,23 +210,14 @@ final class CollectionsTVC:
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
 		case .browsing:
-			Task {
-				integrateWithMusicApp()
-			}
+			NotificationCenter.default.addObserverOnce(
+				self,
+				selector: #selector(reflectDatabase),
+				name: .LRUserUpdatedDatabase,
+				object: nil)
 			
-			switch purpose {
-			case .willOrganizeAlbums:
-				break
-			case .organizingAlbums:
-				break
-			case .movingAlbums:
-				break
-			case .browsing:
-				NotificationCenter.default.addObserverOnce(
-					self,
-					selector: #selector(reflectDatabase),
-					name: .LRUserUpdatedDatabase,
-					object: nil)
+			Task {
+				await integrateWithMusicApp()
 			}
 		}
 	}
@@ -268,14 +267,14 @@ final class CollectionsTVC:
 		}
 	}
 	
-	final func integrateWithMusicApp() {
+	final func integrateWithMusicApp() async {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
-		reflectViewState {
-			MusicFolder.shared.setUpAndMergeChanges() // You must finish `LibraryTVC.beginObservingNotifications` before this, because we need to observe the notification after the merge completes.
-			TapeDeck.shared.setUp()
-		}
+		await reflectViewState()
+		
+		MusicFolder.shared.setUpAndMergeChanges() // You must finish `LibraryTVC.beginObservingNotifications` before this, because we need to observe the notification after the merge completes.
+		TapeDeck.shared.setUp()
 	}
 	
 	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
@@ -317,7 +316,9 @@ final class CollectionsTVC:
 	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
-		reflectViewState()
+		Task {
+			await reflectViewState()
+		}
 	}
 	
 	// MARK: - Freshening UI

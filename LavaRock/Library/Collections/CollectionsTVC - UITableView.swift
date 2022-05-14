@@ -254,7 +254,9 @@ extension CollectionsTVC {
 		
 		switch viewState {
 		case .allowAccess:
-			didSelectAllowAccessRow(at: indexPath)
+			Task {
+				await didSelectAllowAccessRow(at: indexPath)
+			}
 		case
 				.loading,
 				.wasLoadingOrNoCollections: // Should never run
@@ -269,24 +271,22 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func didSelectAllowAccessRow(at indexPath: IndexPath) {
+	private func didSelectAllowAccessRow(at indexPath: IndexPath) async {
 		switch MPMediaLibrary.authorizationStatus() {
 		case .notDetermined:
 			// The golden opportunity.
-			Task {
-				let authorizationStatus = await MPMediaLibrary.requestAuthorization()
-				
-				switch authorizationStatus {
-				case .authorized:
-						integrateWithMusicApp()
-				case
-						.notDetermined,
-						.denied,
-						.restricted:
-					tableView.deselectRow(at: indexPath, animated: true)
-				@unknown default:
-					tableView.deselectRow(at: indexPath, animated: true)
-				}
+			let authorizationStatus = await MPMediaLibrary.requestAuthorization()
+			
+			switch authorizationStatus {
+			case .authorized:
+				await integrateWithMusicApp()
+			case
+					.notDetermined,
+					.denied,
+					.restricted:
+				tableView.deselectRow(at: indexPath, animated: true)
+			@unknown default:
+				tableView.deselectRow(at: indexPath, animated: true)
 			}
 		case .authorized:
 			break
@@ -294,7 +294,7 @@ extension CollectionsTVC {
 				.denied,
 				.restricted:
 			if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-				UIApplication.shared.open(settingsURL)
+				await UIApplication.shared.open(settingsURL)
 			}
 			tableView.deselectRow(at: indexPath, animated: true)
 		@unknown default:

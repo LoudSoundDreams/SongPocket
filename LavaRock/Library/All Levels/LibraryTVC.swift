@@ -112,6 +112,10 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
+	func reflectViewModelIsEmpty() {
+		fatalError()
+	}
+	
 	private func __setViewModelAndMoveRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
@@ -206,10 +210,6 @@ class LibraryTVC: UITableViewController {
 			toDelete: toDelete,
 			toInsert: toInsert,
 			toMove: toMove)
-	}
-	
-	func reflectViewModelIsEmpty() {
-		fatalError()
 	}
 	
 	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
