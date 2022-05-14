@@ -31,13 +31,28 @@ extension CollectionsTVC {
 		case .movingAlbums:
 			return
 		case .browsing:
-			willFreshenLibraryItems()
-			
-			if viewModelBeforeCombining != nil {
-				revertCombine(thenSelect: [])
-			}
-			
-			super.freshenLibraryItems()
+			break
 		}
+		
+		switch viewState {
+		case
+				.loading,
+				.noCollections:
+			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
+			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.wasLoadingOrNoCollections`
+			reflectViewState()
+			needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
+		case
+				.allowAccess,
+				.wasLoadingOrNoCollections,
+				.someCollections:
+			break
+		}
+		
+		if viewModelBeforeCombining != nil {
+			revertCombine(thenSelect: [])
+		}
+		
+		super.freshenLibraryItems()
 	}
 }

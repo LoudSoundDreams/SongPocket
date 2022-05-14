@@ -69,7 +69,7 @@ final class CollectionsTVC:
 	}
 	
 	// State
-	private var needsRemoveRowsInCollectionsSection = false
+	var needsRemoveRowsInCollectionsSection = false
 	var viewState: CollectionsViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
@@ -109,24 +109,7 @@ final class CollectionsTVC:
 	
 	// MARK: - View State
 	
-	final func willFreshenLibraryItems() {
-		switch viewState {
-		case
-				.loading,
-				.noCollections:
-			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
-			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.wasLoadingOrNoCollections`
-			reflectViewState()
-			needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
-		case
-				.allowAccess,
-				.wasLoadingOrNoCollections,
-				.someCollections:
-			break
-		}
-	}
-	
-	private func reflectViewState(
+	final func reflectViewState(
 		completion: (() -> Void)? = nil
 	) {
 		let toDelete: [IndexPath]
