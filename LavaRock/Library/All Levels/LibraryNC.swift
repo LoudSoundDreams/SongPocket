@@ -6,17 +6,23 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class LibraryNC: UINavigationController {
 	final lazy var transportBar = TransportBar(
 		moreButtonAction: UIAction { [weak self] _ in
 			guard let self = self else { return }
-			self.present(self.moreVC, animated: true)
+			if Enabling.swiftUI__console {
+				self.present(self.consoleViewHost, animated: true)
+			} else {
+				self.present(self.consoleVC, animated: true)
+			}
 		})
-	private let moreVC: UIViewController
+	private let consoleViewHost = UIHostingController(rootView: ConsoleView())
+	private let consoleVC: UIViewController
 	
 	required init?(coder: NSCoder) {
-		moreVC = UIStoryboard(name: "Console", bundle: nil)
+		consoleVC = UIStoryboard(name: "Console", bundle: nil)
 			.instantiateInitialViewController()!
 		
 		super.init(coder: coder)

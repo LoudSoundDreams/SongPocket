@@ -54,8 +54,8 @@ extension LibraryTVC {
 	@objc
 	func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
 		if
-			(presentedViewController as? UINavigationController)?
-				.viewControllers.first is ConsoleVC
+			(presentedViewController as? UINavigationController)?.viewControllers.first is ConsoleVC
+				|| presentedViewController is UIHostingController<ConsoleView>
 		{
 			return false
 		}
