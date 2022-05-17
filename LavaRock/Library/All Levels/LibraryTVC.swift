@@ -343,7 +343,7 @@ class LibraryTVC: UITableViewController {
 		sinkToBottomButton.isEnabled = allowsFloatAndSink()
 	}
 	
-	// You should only be allowed to sort contiguous items within the same `LibraryGroup`.
+	// You should only be allowed to sort items that are contiguous and within the same `LibraryGroup`.
 	private func allowsSort() -> Bool {
 		guard !viewModel.isEmpty() else {
 			return false
