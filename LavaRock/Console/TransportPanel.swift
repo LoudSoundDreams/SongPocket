@@ -41,7 +41,7 @@ struct TransportPanel: View {
 		Button {
 			player?.skipToPreviousItem()
 		} label: {
-			Image(systemName: "arrow.backward.circle")
+			Image(systemName: "chevron.backward.circle")
 				.font(.system(size: .eight * 4))
 		}
 	}
@@ -99,7 +99,7 @@ struct TransportPanel: View {
 		Button {
 			player?.skipToNextItem()
 		} label: {
-			Image(systemName: "arrow.forward.circle")
+			Image(systemName: "chevron.forward.circle")
 				.font(.system(size: .eight * 4))
 		}
 	}

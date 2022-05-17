@@ -96,7 +96,7 @@ final class TransportBar {
 			let button = UIBarButtonItem(
 				title: LocalizedString.nextTrack,
 				image: Enabling.console
-				? UIImage(systemName: "arrow.forward.circle")
+				? UIImage(systemName: "chevron.forward.circle")
 				: UIImage(systemName: "forward.end"),
 				primaryAction: UIAction { _ in
 					Self.player?.skipToNextItem()
