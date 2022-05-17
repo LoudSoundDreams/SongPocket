@@ -161,6 +161,7 @@ final class CollectionsTVC:
 			toInsert = newInCollectionsSection
 			toReloadInCollectionsSection = []
 		case .someCollections: // Merging changes with existing `Collection`s
+			// TO DO: Is this right?
 			toDelete = []
 			toInsert = []
 			toReloadInCollectionsSection = []
