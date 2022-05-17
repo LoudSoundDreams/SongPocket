@@ -65,6 +65,30 @@ extension UITableView {
 		thenMovingSections sectionUpdates: BatchUpdates<Int>,
 		andRows rowUpdates: [BatchUpdates<IndexPath>],
 		with moveAnimation: RowAnimation,
+		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
+	) async {
+		await withCheckedContinuation { (
+			continuation: CheckedContinuation<Void, _>
+		) in
+			performBatchUpdates__completion(
+				firstReloading: toReload,
+				with: reloadAnimation,
+				thenMovingSections: sectionUpdates,
+				andRows: rowUpdates,
+				with: moveAnimation
+			) {
+				continuation.resume()
+			}
+			beforeContinuation?()
+		}
+	}
+	
+	final func performBatchUpdates__completion(
+		firstReloading toReload: [IndexPath],
+		with reloadAnimation: RowAnimation,
+		thenMovingSections sectionUpdates: BatchUpdates<Int>,
+		andRows rowUpdates: [BatchUpdates<IndexPath>],
+		with moveAnimation: RowAnimation,
 		completion: @escaping () -> Void
 	) {
 		let rowsToDelete = rowUpdates.flatMap { $0.toDelete }
