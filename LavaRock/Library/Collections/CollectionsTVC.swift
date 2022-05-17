@@ -14,19 +14,19 @@ final class CollectionsTVC:
 	LibraryTVC,
 	OrganizeAlbumsPreviewing
 {
+	enum Purpose {
+		case willOrganizeAlbums(WillOrganizeAlbumsStickyNote)
+		case organizingAlbums(OrganizeAlbumsClipboard)
+		case movingAlbums(MoveAlbumsClipboard)
+		case browsing
+	}
+	
 	enum CollectionsViewState {
 		case allowAccess
 		case loading
 		case wasLoadingOrNoCollections
 		case noCollections
 		case someCollections
-	}
-	
-	enum Purpose {
-		case willOrganizeAlbums(WillOrganizeAlbumsStickyNote)
-		case organizingAlbums(OrganizeAlbumsClipboard)
-		case movingAlbums(MoveAlbumsClipboard)
-		case browsing
 	}
 	
 	// MARK: - Properties
@@ -343,6 +343,7 @@ final class CollectionsTVC:
 		}
 		
 		if viewModelBeforeCombining != nil {
+			// We’re previewing how the rows look after combining `Collection`s. Put everything back before `LibraryTVC` calls `setItemsAndMoveRows`.
 			revertCombine(thenSelect: [])
 		}
 		
