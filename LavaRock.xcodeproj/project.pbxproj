@@ -391,6 +391,7 @@
 				07FB52C92813693F00CCCBA5 /* Helpers */,
 				07E0BBFE2765680C0010117E /* Extensions */,
 				07FC970A24BAC1050036DD3D /* Model */,
+				07DF65D027766B7B003B2EA3 /* MusicFolder */,
 				07F1881F27F6B3750074809D /* Player */,
 				07E0BBFF276569480010117E /* General UI */,
 				0706ABDE24D946870090EB21 /* Options */,
@@ -585,7 +586,6 @@
 				0736E3E924B95FD600A15420 /* Album.swift */,
 				07AE2AA3258C09D900C3A314 /* Collection.swift */,
 				07602AC72620DC4C00D84123 /* LibraryItem.swift */,
-				07DF65D027766B7B003B2EA3 /* MusicFolder */,
 			);
 			path = Model;
 			sourceTree = "<group>";
