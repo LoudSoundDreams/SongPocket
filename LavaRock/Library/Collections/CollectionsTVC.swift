@@ -24,7 +24,7 @@ final class CollectionsTVC:
 	enum CollectionsViewState {
 		case allowAccess
 		case loading
-		case wasLoadingOrNoCollections
+		case removingRowsInCollectionsSection
 		case noCollections
 		case someCollections
 	}
@@ -75,7 +75,7 @@ final class CollectionsTVC:
 			return .allowAccess
 		}
 		if needsRemoveRowsInCollectionsSection { // You must check this before checking `isMergingChanges`.
-			return .wasLoadingOrNoCollections
+			return .removingRowsInCollectionsSection
 		}
 		if isMergingChanges {
 			if viewModel.isEmpty() {
@@ -152,7 +152,7 @@ final class CollectionsTVC:
 				toInsert = newInCollectionsSection
 				toReloadInCollectionsSection = []
 			}
-		case .wasLoadingOrNoCollections:
+		case .removingRowsInCollectionsSection:
 			toDelete = oldInCollectionsSection
 			toInsert = newInCollectionsSection // Empty
 			toReloadInCollectionsSection = []
@@ -180,7 +180,7 @@ final class CollectionsTVC:
 		case
 				.allowAccess,
 				.loading,
-				.wasLoadingOrNoCollections,
+				.removingRowsInCollectionsSection,
 				.noCollections:
 			if isEditing {
 				setEditing(false, animated: true)
@@ -337,7 +337,7 @@ final class CollectionsTVC:
 				.loading,
 				.noCollections:
 			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
-			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.wasLoadingOrNoCollections`
+			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.removingRowsInCollectionsSection`
 			Task {
 				await reflectViewState(runningBeforeCompletion: {
 					self.needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
@@ -348,7 +348,7 @@ final class CollectionsTVC:
 			return
 		case
 				.allowAccess,
-				.wasLoadingOrNoCollections,
+				.removingRowsInCollectionsSection,
 				.someCollections:
 			break
 		}
