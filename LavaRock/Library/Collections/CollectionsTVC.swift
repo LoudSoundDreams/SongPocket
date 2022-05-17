@@ -313,6 +313,42 @@ final class CollectionsTVC:
 		present(viewController, animated: true)
 	}
 	
+	// MARK: - Freshening
+	
+	final override func freshenLibraryItems() {
+		switch purpose {
+		case .willOrganizeAlbums:
+			return
+		case .organizingAlbums:
+			return
+		case .movingAlbums:
+			return
+		case .browsing:
+			break
+		}
+		
+		switch viewState {
+		case
+				.loading,
+				.noCollections:
+			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
+			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.wasLoadingOrNoCollections`
+			__reflectViewState()
+			needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
+		case
+				.allowAccess,
+				.wasLoadingOrNoCollections,
+				.someCollections:
+			break
+		}
+		
+		if viewModelBeforeCombining != nil {
+			revertCombine(thenSelect: [])
+		}
+		
+		super.freshenLibraryItems()
+	}
+	
 	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {

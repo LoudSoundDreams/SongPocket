@@ -145,6 +145,19 @@ final class AlbumsTVC:
 //		print(tableView.contentOffset)
 //	}
 	
+	// MARK: - Freshening
+	
+	final override func freshenLibraryItems() {
+		switch purpose {
+		case .organizingAlbums:
+			return
+		case .movingAlbums:
+			return
+		case .browsing:
+			super.freshenLibraryItems()
+		}
+	}
+	
 	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
