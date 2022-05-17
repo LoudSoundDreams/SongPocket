@@ -41,30 +41,34 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 #if targetEnvironment(simulator)
 		context.performAndWait {
 			let walpurgisNightAlbumID = Sim_AlbumIDDispenser.takeNumber()
-			mergeChanges(toMatch: [
-				Sim_SongMetadatum(
-					albumID: walpurgisNightAlbumID,
-					albumArtistOnDisk: "GFriend",
-					albumTitleOnDisk: "回:Walpurgis Night",
-					discCountOnDisk: 2,
-					discNumberOnDisk: 1,
-					trackNumberOnDisk: 1,
-					titleOnDisk: "Amazingly few discotheques provide jukeboxes.",
-					artistOnDisk: "Five Boxing Wizards",
-					releaseDateOnDisk: .now,
-					dateAddedOnDisk: .now),
-				Sim_SongMetadatum(
-					albumID: walpurgisNightAlbumID,
-					albumArtistOnDisk: "GFriend",
-					albumTitleOnDisk: "回:Walpurgis Night",
-					discCountOnDisk: 1,
-					discNumberOnDisk: 1,
-					trackNumberOnDisk: 900,
-					titleOnDisk: "Crossroads",
-					artistOnDisk: "GFriend",
-					releaseDateOnDisk: .now,
-					dateAddedOnDisk: .now),
-			])
+			mergeChanges(toMatch: (
+				Enabling.sim_emptyLibrary
+				? []
+				: [
+					Sim_SongMetadatum(
+						albumID: walpurgisNightAlbumID,
+						albumArtistOnDisk: "GFriend",
+						albumTitleOnDisk: "回:Walpurgis Night",
+						discCountOnDisk: 2,
+						discNumberOnDisk: 1,
+						trackNumberOnDisk: 1,
+						titleOnDisk: "Amazingly few discotheques provide jukeboxes.",
+						artistOnDisk: "Five Boxing Wizards",
+						releaseDateOnDisk: .now,
+						dateAddedOnDisk: .now),
+					Sim_SongMetadatum(
+						albumID: walpurgisNightAlbumID,
+						albumArtistOnDisk: "GFriend",
+						albumTitleOnDisk: "回:Walpurgis Night",
+						discCountOnDisk: 1,
+						discNumberOnDisk: 1,
+						trackNumberOnDisk: 900,
+						titleOnDisk: "Crossroads",
+						artistOnDisk: "GFriend",
+						releaseDateOnDisk: .now,
+						dateAddedOnDisk: .now),
+				]
+			))
 		}
 #else
 		if let freshMediaItems = MPMediaQuery.songs().items {

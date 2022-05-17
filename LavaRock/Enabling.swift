@@ -8,6 +8,8 @@
 struct Enabling {
 	private init() {}
 	
+	static let sim_emptyLibrary = 10 == 1
+	
 	static let multicollection = 10 == 1
 	static let multialbum = multicollection && 10 == 10
 	
