@@ -25,7 +25,7 @@ final class CollectionsTVC:
 		case allowAccess
 		case loading
 		case removingRowsInCollectionsSection
-		case noCollections
+		case emptyPlaceholder
 		case someCollections
 	}
 	
@@ -85,7 +85,7 @@ final class CollectionsTVC:
 			}
 		} else {
 			if viewModel.isEmpty() {
-				return .noCollections
+				return .emptyPlaceholder
 			} else {
 				return .someCollections
 			}
@@ -156,7 +156,7 @@ final class CollectionsTVC:
 			toDelete = oldInCollectionsSection
 			toInsert = newInCollectionsSection // Empty
 			toReloadInCollectionsSection = []
-		case .noCollections:
+		case .emptyPlaceholder:
 			toDelete = oldInCollectionsSection
 			toInsert = newInCollectionsSection
 			toReloadInCollectionsSection = []
@@ -181,7 +181,7 @@ final class CollectionsTVC:
 				.allowAccess,
 				.loading,
 				.removingRowsInCollectionsSection,
-				.noCollections:
+				.emptyPlaceholder:
 			if isEditing {
 				setEditing(false, animated: true)
 			}
@@ -335,12 +335,12 @@ final class CollectionsTVC:
 		switch viewState {
 		case
 				.loading,
-				.noCollections:
+				.emptyPlaceholder:
 			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
 			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.removingRowsInCollectionsSection`
 			Task {
 				await reflectViewState(runningBeforeCompletion: {
-					self.needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
+					self.needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.emptyPlaceholder`, but the UI doesn’t reflect that.
 					
 					super.freshenLibraryItems()
 				})

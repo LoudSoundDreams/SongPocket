@@ -26,7 +26,7 @@ extension CollectionsTVC {
 			return 1
 		case .removingRowsInCollectionsSection:
 			return 0
-		case .noCollections:
+		case .emptyPlaceholder:
 			return 2
 		case .someCollections:
 			return viewModel.numberOfRows(for: section)
@@ -74,7 +74,7 @@ extension CollectionsTVC {
 				for: indexPath) as? LoadingCell ?? UITableViewCell()
 		case .removingRowsInCollectionsSection: // Should never run
 			return UITableViewCell()
-		case .noCollections:
+		case .emptyPlaceholder:
 			switch indexPath.row {
 			case 0:
 				return tableView.dequeueReusableCell(
@@ -177,7 +177,7 @@ extension CollectionsTVC {
 					.allowAccess,
 					.loading,
 					.removingRowsInCollectionsSection, // Should never run
-					.noCollections:
+					.emptyPlaceholder:
 				return false
 			case .someCollections:
 				return super.tableView(
@@ -219,7 +219,7 @@ extension CollectionsTVC {
 				.allowAccess,
 				.loading, // Should never run
 				.removingRowsInCollectionsSection, // Should never run
-				.noCollections: // Should never run for `NoCollectionsPlaceholderCell`
+				.emptyPlaceholder: // Should never run for `NoCollectionsPlaceholderCell`
 			return indexPath
 		case .someCollections:
 			return super.tableView(tableView, willSelectRowAt: indexPath)
@@ -261,7 +261,7 @@ extension CollectionsTVC {
 				.loading,
 				.removingRowsInCollectionsSection: // Should never run
 			return
-		case .noCollections:
+		case .emptyPlaceholder:
 			if let cell = tableView.cellForRow(at: indexPath) as? OpenMusicCell {
 				cell.didSelect()
 			}
