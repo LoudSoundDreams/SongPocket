@@ -109,15 +109,19 @@ final class CollectionsTVC:
 	
 	// MARK: - View State
 	
-	final func reflectViewState() async {
-		await withCheckedContinuation { continuation in
+	final func reflectViewState(
+		runningBeforeCompletion beforeCompletion: (() -> Void)? = nil
+	) async {
+		await withCheckedContinuation { (
+			continuation: CheckedContinuation<Void, _>
+		) in
 			__reflectViewState {
 				continuation.resume()
 			}
+			beforeCompletion?()
 		}
 	}
-	
-	final func __reflectViewState(
+	private func __reflectViewState(
 		completion: (() -> Void)? = nil
 	) {
 		let toDelete: [IndexPath]
@@ -333,8 +337,14 @@ final class CollectionsTVC:
 				.noCollections:
 			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
 			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.wasLoadingOrNoCollections`
-			__reflectViewState()
-			needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
+			Task {
+				await reflectViewState(runningBeforeCompletion: {
+					self.needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.noCollections`, but the UI doesn’t reflect that.
+					
+					super.freshenLibraryItems()
+				})
+			}
+			return
 		case
 				.allowAccess,
 				.wasLoadingOrNoCollections,
