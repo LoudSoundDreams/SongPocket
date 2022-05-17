@@ -117,12 +117,14 @@ extension UITableView {
 	}
 	
 	final func performBatchUpdates__async(
-		_ updates: (() -> Void)?
+		_ updates: (() -> Void)?,
+		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
 			performBatchUpdates(updates) { didCompleteAnimationsSuccessfully in
 				continuation.resume(returning: didCompleteAnimationsSuccessfully)
 			}
+			beforeContinuation?()
 		}
 	}
 	

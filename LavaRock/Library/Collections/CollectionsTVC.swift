@@ -112,18 +112,6 @@ final class CollectionsTVC:
 	final func reflectViewState(
 		runningBeforeCompletion beforeCompletion: (() -> Void)? = nil
 	) async {
-		await withCheckedContinuation { (
-			continuation: CheckedContinuation<Void, _>
-		) in
-			__reflectViewState {
-				continuation.resume()
-			}
-			beforeCompletion?()
-		}
-	}
-	private func __reflectViewState(
-		completion: (() -> Void)? = nil
-	) {
 		let toDelete: [IndexPath]
 		let toInsert: [IndexPath]
 		let toReloadInCollectionsSection: [IndexPath]
@@ -167,29 +155,29 @@ final class CollectionsTVC:
 			toReloadInCollectionsSection = []
 		}
 		
-		tableView.performBatchUpdates {
+		let _ = await tableView.performBatchUpdates__async {
 			let animationForReload: UITableView.RowAnimation = toReloadInCollectionsSection.isEmpty ? .none : .fade
-			tableView.reloadRows(at: toReloadInCollectionsSection, with: animationForReload)
-			tableView.deleteRows(at: toDelete, with: .middle)
-			tableView.insertRows(at: toInsert, with: .middle)
-		} completion: { _ in
-			completion?()
-		}
-		
-		switch viewState {
-		case
-				.allowAccess,
-				.loading,
-				.removingRowsInCollectionsSection,
-				.emptyPlaceholder:
-			if isEditing {
-				setEditing(false, animated: true)
+			self.tableView.reloadRows(at: toReloadInCollectionsSection, with: animationForReload)
+			self.tableView.deleteRows(at: toDelete, with: .middle)
+			self.tableView.insertRows(at: toInsert, with: .middle)
+		} runningBeforeContinuation: {
+			switch self.viewState {
+			case
+					.allowAccess,
+					.loading,
+					.removingRowsInCollectionsSection,
+					.emptyPlaceholder:
+				if self.isEditing {
+					self.setEditing(false, animated: true)
+				}
+			case .someCollections:
+				break
 			}
-		case .someCollections:
-			break
+			
+			self.didChangeRowsOrSelectedRows() // Freshens “Edit” button
+			
+			beforeCompletion?()
 		}
-		
-		didChangeRowsOrSelectedRows() // Freshens “Edit” button
 	}
 	
 	// MARK: - Setup
