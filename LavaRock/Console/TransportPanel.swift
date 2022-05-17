@@ -44,7 +44,6 @@ struct TransportPanel: View {
 			Image(systemName: "arrow.backward.circle")
 				.font(.system(size: .eight * 4))
 		}
-		.disabled(tapeDeckDisplay.status?.isPlayingFirstSongInQueue ?? false)
 	}
 	
 	private var rewindButton: some View {
