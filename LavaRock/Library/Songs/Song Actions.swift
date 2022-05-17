@@ -133,6 +133,12 @@ extension SongsTVC {
 				false,
 				forKey: defaultsKey)
 		}
+		let openMusicAction = UIAlertAction(
+			title: LocalizedString.openMusic,
+			style: .default
+		) { _ in
+			URL.music?.open()
+		}
 		let okAction = UIAlertAction(
 			title: LocalizedString.ok,
 			style: .default
@@ -155,6 +161,7 @@ extension SongsTVC {
 			message: LocalizedString.didEnqueueSongsAlertMessage,
 			preferredStyle: .alert)
 		alert.addAction(dontShowAgainAction)
+		alert.addAction(openMusicAction)
 		alert.addAction(okAction)
 		alert.preferredAction = okAction
 		willPlayLaterAlertIsPresented = true
