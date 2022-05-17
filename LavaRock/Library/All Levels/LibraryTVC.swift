@@ -98,7 +98,7 @@ class LibraryTVC: UITableViewController {
 		thenSelecting toSelect: Set<IndexPath> = [],
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async -> Bool {
-		return await withCheckedContinuation { continuation in
+		await withCheckedContinuation { continuation in
 			__setViewModelAndMoveRows(
 				firstReloading: toReload,
 				newViewModel,

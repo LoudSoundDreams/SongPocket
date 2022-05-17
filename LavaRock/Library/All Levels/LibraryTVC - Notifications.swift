@@ -38,8 +38,7 @@ extension LibraryTVC {
 	
 	// MARK: Player
 	
-	@objc
-	func reflectPlayhead_library() {
+	final func reflectPlayhead_library() {
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard
 				let cell = tableView.cellForRow(at: visibleIndexPath) as? PlayheadReflectable,
