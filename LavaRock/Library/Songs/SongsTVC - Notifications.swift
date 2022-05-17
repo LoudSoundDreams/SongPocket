@@ -8,13 +8,4 @@
 import UIKit
 
 extension SongsTVC {
-	// MARK: - Library Items
-	
-	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
-		if willPlayLaterAlertIsPresented {
-			return false
-		}
-		
-		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
-	}
 }

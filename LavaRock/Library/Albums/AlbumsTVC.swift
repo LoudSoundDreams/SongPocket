@@ -145,7 +145,7 @@ final class AlbumsTVC:
 //		print(tableView.contentOffset)
 //	}
 	
-	// MARK: - Freshening
+	// MARK: - Library Items
 	
 	final override func freshenLibraryItems() {
 		switch purpose {
@@ -157,8 +157,6 @@ final class AlbumsTVC:
 			super.freshenLibraryItems()
 		}
 	}
-	
-	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
 		deleteThenExit(sections: tableView.allSections())

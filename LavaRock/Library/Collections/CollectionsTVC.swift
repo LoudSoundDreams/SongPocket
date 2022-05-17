@@ -205,7 +205,7 @@ final class CollectionsTVC:
 		case .browsing:
 			NotificationCenter.default.addObserverOnce(
 				self,
-				selector: #selector(reflectDatabase),
+				selector: #selector(userUpdatedDatabase),
 				name: .userUpdatedDatabase,
 				object: nil)
 			
@@ -213,6 +213,9 @@ final class CollectionsTVC:
 				await integrateWithMusicApp()
 			}
 		}
+	}
+	@objc private func userUpdatedDatabase() {
+		reflectDatabase()
 	}
 	
 	final override func setUpBarButtons() {
@@ -306,7 +309,18 @@ final class CollectionsTVC:
 		present(viewController, animated: true)
 	}
 	
-	// MARK: - Freshening
+	// MARK: - Library Items
+	
+	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
+		if
+			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
+				|| presentedViewController is UIHostingController<OptionsView>
+		{
+			return false
+		}
+		
+		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
+	}
 	
 	final override func freshenLibraryItems() {
 		switch purpose {
@@ -348,8 +362,6 @@ final class CollectionsTVC:
 		
 		super.freshenLibraryItems()
 	}
-	
-	// MARK: - Setting Items
 	
 	final override func reflectViewModelIsEmpty() {
 		Task {

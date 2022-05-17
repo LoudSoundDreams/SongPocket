@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+import SwiftUI
 
 class LibraryTVC: UITableViewController {
 	// MARK: - Properties
@@ -63,12 +64,15 @@ class LibraryTVC: UITableViewController {
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(reflectDatabase),
+			selector: #selector(mergedChanges),
 			name: .mergedChanges,
 			object: nil)
 		
 		freshenNavigationItemTitle()
 		setUpBarButtons()
+	}
+	@objc private func mergedChanges() {
+		reflectDatabase()
 	}
 	
 	final func freshenNavigationItemTitle() {
@@ -89,7 +93,28 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: - Freshening
+	// MARK: - Library Items
+	
+	final func reflectDatabase() {
+		// Do this even if the view isn’t visible.
+		reflectPlayhead_library()
+		
+		if view.window == nil {
+			needsFreshenLibraryItemsOnViewDidAppear = true
+		} else {
+			freshenLibraryItems()
+		}
+	}
+	
+	func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
+		if
+			(presentedViewController as? UINavigationController)?.viewControllers.first is ConsoleVC
+				|| presentedViewController is UIHostingController<ConsoleView>
+		{
+			return false
+		}
+		return true
+	}
 	
 	func freshenLibraryItems() {
 		isMergingChanges = false
@@ -121,7 +146,9 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: - Setting Items
+	func reflectViewModelIsEmpty() {
+		fatalError()
+	}
 	
 	// Returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
 	final func setViewModelAndMoveRowsAndShouldContinue(
@@ -140,10 +167,6 @@ class LibraryTVC: UITableViewController {
 			}
 			beforeContinuation?()
 		}
-	}
-	
-	func reflectViewModelIsEmpty() {
-		fatalError()
 	}
 	
 	private func __setViewModelAndMoveRows(

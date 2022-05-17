@@ -9,16 +9,4 @@ import UIKit
 import SwiftUI
 
 extension CollectionsTVC {
-	// MARK: Library Items
-	
-	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
-		if
-			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
-				|| presentedViewController is UIHostingController<OptionsView>
-		{
-			return false
-		}
-		
-		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
-	}
 }

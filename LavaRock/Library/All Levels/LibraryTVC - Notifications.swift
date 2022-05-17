@@ -22,20 +22,6 @@ extension LibraryTVC: TapeDeckReflecting {
 	}
 }
 extension LibraryTVC {
-	// MARK: - Database
-	
-	@objc
-	final func reflectDatabase() {
-		// Do this even if the view isn’t visible.
-		reflectPlayhead_library()
-		
-		if view.window == nil {
-			needsFreshenLibraryItemsOnViewDidAppear = true
-		} else {
-			freshenLibraryItems()
-		}
-	}
-	
 	// MARK: Player
 	
 	final func reflectPlayhead_library() {
@@ -46,18 +32,5 @@ extension LibraryTVC {
 			else { return }
 			cell.reflectPlayhead(containsPlayhead: libraryItem.containsPlayhead())
 		}
-	}
-	
-	// MARK: Library Items
-	
-	@objc
-	func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
-		if
-			(presentedViewController as? UINavigationController)?.viewControllers.first is ConsoleVC
-				|| presentedViewController is UIHostingController<ConsoleView>
-		{
-			return false
-		}
-		return true
 	}
 }

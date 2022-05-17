@@ -63,7 +63,15 @@ final class SongsTVC:
 		}
 	}
 	
-	// MARK: - Setting Items
+	// MARK: - Library Items
+	
+	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
+		if willPlayLaterAlertIsPresented {
+			return false
+		}
+		
+		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
+	}
 	
 	final override func reflectViewModelIsEmpty() {
 		deleteThenExit(sections: tableView.allSections())
