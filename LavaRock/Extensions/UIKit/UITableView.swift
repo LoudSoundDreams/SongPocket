@@ -59,7 +59,7 @@ extension UITableView {
 	
 	// MARK: - Updating
 	
-	final func performBatchUpdates(
+	final func update(
 		firstReloading toReload: [IndexPath],
 		with reloadAnimation: RowAnimation,
 		thenMovingSections sectionUpdates: BatchUpdates<Int>,
@@ -70,7 +70,7 @@ extension UITableView {
 		await withCheckedContinuation { (
 			continuation: CheckedContinuation<Void, _>
 		) in
-			performBatchUpdates__completion(
+			update__completion(
 				firstReloading: toReload,
 				with: reloadAnimation,
 				thenMovingSections: sectionUpdates,
@@ -83,7 +83,7 @@ extension UITableView {
 		}
 	}
 	
-	final func performBatchUpdates__completion(
+	final func update__completion(
 		firstReloading toReload: [IndexPath],
 		with reloadAnimation: RowAnimation,
 		thenMovingSections sectionUpdates: BatchUpdates<Int>,
@@ -116,7 +116,7 @@ extension UITableView {
 		}
 	}
 	
-	final func performBatchUpdates__async(
+	final func update__async(
 		_ updates: (() -> Void)?,
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async -> Bool {

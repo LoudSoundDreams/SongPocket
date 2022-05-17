@@ -98,7 +98,7 @@ extension CollectionsTVC {
 			into: indexPathOfCombined,
 			title: titleForCombinedCollection)
 		Task {
-			let _ = await tableView.performBatchUpdates__async {
+			let _ = await tableView.update__async {
 				self.tableView.scrollToRow(
 					at: indexPathOfCombined,
 					at: .none,
