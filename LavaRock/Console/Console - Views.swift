@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 
 // Similar to `AlbumCell` and `SongCell`.
-final class SongInQueueCell: UITableViewCell {
+final class QueueCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -65,7 +65,7 @@ final class SongInQueueCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension SongInQueueCell:
+extension QueueCell:
 	PlayheadReflectable,
 	CellTintingWhenSelected,
 	CellHavingTransparentBackground

@@ -37,7 +37,7 @@ extension ConsoleVC: UITableViewDataSource {
 		
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Song in Queue",
-			for: indexPath) as? SongInQueueCell
+			for: indexPath) as? QueueCell
 		else { return UITableViewCell() }
 		
 		cell.configure(
