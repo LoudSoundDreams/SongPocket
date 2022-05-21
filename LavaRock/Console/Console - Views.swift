@@ -19,6 +19,8 @@ final class QueueCell: UITableViewCell {
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var secondaryLabel: UILabel!
 	
+	@IBOutlet private var textStackTopToCoverArtTop: NSLayoutConstraint!
+	
 	final override func awakeFromNib() {
 		tintSelectedBackgroundView()
 		
@@ -49,6 +51,11 @@ final class QueueCell: UITableViewCell {
 				return LocalizedString.unknownArtist
 			}
 		}()
+		
+		if let font = titleLabel.font {
+			// A `UIFont`’s `lineHeight` equals its `ascender` plus its `descender`.
+			textStackTopToCoverArtTop.constant = -(font.ascender - font.capHeight)
+		}
 		
 		if secondaryLabel.text == nil {
 			textStack.spacing = 0

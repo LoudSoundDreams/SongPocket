@@ -23,7 +23,6 @@ final class ConsoleVC: UIViewController {
 		
 		reelTable.dataSource = self
 		reelTable.delegate = self
-		reelTable.backgroundColor = .secondarySystemBackground
 		
 		if let transportPanel = UIHostingController(rootView: TransportPanel().padding()).view {
 			view.addSubview(transportPanel)
