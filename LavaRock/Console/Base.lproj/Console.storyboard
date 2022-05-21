@@ -70,13 +70,13 @@
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WkY-gQ-K1c" secondAttribute="trailing" constant="8" symbolic="YES" id="Ade-ua-v0o"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="trailing" secondItem="Y38-vV-GgI" secondAttribute="trailingMargin" id="CB9-Qm-s2H"/>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="leading" secondItem="7Bg-s2-hCP" secondAttribute="trailing" constant="12" id="DUx-jC-D1f"/>
-                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" secondItem="Y38-vV-GgI" secondAttribute="topMargin" id="EHT-Li-tzH"/>
-                                                <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="topMargin" constant="-3" id="EyH-VG-VCe"/>
+                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="top" secondItem="Y38-vV-GgI" secondAttribute="top" constant="11" id="EHT-Li-tzH"/>
+                                                <constraint firstItem="WkY-gQ-K1c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="top" constant="8" id="EyH-VG-VCe"/>
                                                 <constraint firstItem="a8a-8Z-0zp" firstAttribute="centerY" secondItem="WkY-gQ-K1c" secondAttribute="centerY" id="Jv4-T3-mYk"/>
                                                 <constraint firstItem="7Bg-s2-hCP" firstAttribute="leading" secondItem="Y38-vV-GgI" secondAttribute="leadingMargin" id="KgT-xs-EsM"/>
                                                 <constraint firstItem="WkY-gQ-K1c" firstAttribute="centerY" secondItem="Y38-vV-GgI" secondAttribute="centerY" constant="-1" id="L0r-8q-9a0"/>
                                                 <constraint firstItem="8T1-aG-ORD" firstAttribute="leading" secondItem="a8a-8Z-0zp" secondAttribute="leading" id="a2J-aj-ONt"/>
-                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottomMargin" id="lpE-Se-Poo"/>
+                                                <constraint firstItem="7Bg-s2-hCP" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Y38-vV-GgI" secondAttribute="bottom" constant="-11" id="lpE-Se-Poo"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
