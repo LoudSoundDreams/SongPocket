@@ -50,7 +50,6 @@ final class QueueCell: UITableViewCell {
 			}
 		}()
 		
-		// Update constraints
 		if secondaryLabel.text == nil {
 			textStack.spacing = 0
 		} else {
