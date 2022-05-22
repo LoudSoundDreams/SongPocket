@@ -218,10 +218,6 @@ extension Album {
 	
 	final func representativeSongMetadatum() -> SongMetadatum? {
 #if targetEnvironment(simulator)
-		// To match `mpMediaItemCollection`
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return nil
-		}
 		return songs(sorted: true).first?.metadatum()
 #else
 		return mpMediaItemCollection()?.representativeItem

@@ -98,6 +98,10 @@ extension Song {
 	
 	final func metadatum() -> SongMetadatum? {
 #if targetEnvironment(simulator)
+		// To match `mpMediaItem`
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return nil
+		}
 		return Sim_SongMetadatum.all.first(where: { metadatum in
 			persistentID == metadatum.songID
 		})

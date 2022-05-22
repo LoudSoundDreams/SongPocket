@@ -59,18 +59,18 @@ extension MPMediaItem: SongMetadatum {
 
 #if targetEnvironment(simulator)
 struct Sim_AlbumIDDispenser {
-	private static var sim_nextAvailable = 1
+	private static var nextAvailable = 1
 	static func takeNumber() -> AlbumID {
-		let result = AlbumID(sim_nextAvailable)
-		sim_nextAvailable += 1
+		let result = AlbumID(nextAvailable)
+		nextAvailable += 1
 		return result
 	}
 }
 private struct Sim_SongIDDispenser {
-	private static var sim_nextAvailable = 1
+	private static var nextAvailable = 1
 	static func takeNumber() -> SongID {
-		let result = SongID(sim_nextAvailable)
-		sim_nextAvailable += 1
+		let result = SongID(nextAvailable)
+		nextAvailable += 1
 		return result
 	}
 }
