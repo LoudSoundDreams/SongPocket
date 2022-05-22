@@ -221,8 +221,8 @@ final class SongCell: UITableViewCell {
 		super.layoutSubviews()
 		
 		separatorInset.left = 0
-		+ contentView.frame.minX // Content view’s leading edge to cell’s leading edge
-		+ textStack.frame.minX // Text stack’s leading edge to content view’s leading edge
+		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
+		+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
