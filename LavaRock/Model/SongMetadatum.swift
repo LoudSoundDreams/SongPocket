@@ -96,10 +96,9 @@ private struct Sim_SongIDDispenser {
 		return result
 	}
 }
-struct Sim_MusicFolder {
-	static var songMetadata: [SongMetadatum] = []
-}
 extension Sim_SongMetadatum {
+	static var all: [Self] = []
+	
 	init(
 		albumID: AlbumID,
 		albumArtistOnDisk: String?,
@@ -125,7 +124,7 @@ extension Sim_SongMetadatum {
 			releaseDateOnDisk: releaseDateOnDisk,
 			dateAddedOnDisk: dateAddedOnDisk)
 		
-		Sim_MusicFolder.songMetadata.append(self)
+		Self.all.append(self)
 	}
 }
 #endif
