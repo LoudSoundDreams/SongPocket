@@ -75,6 +75,8 @@ private struct Sim_SongIDDispenser {
 	}
 }
 struct Sim_SongMetadatum: SongMetadatum {
+	// `SongMetadatum`
+	
 	let albumID: AlbumID
 	let songID: SongID
 	
@@ -93,8 +95,13 @@ struct Sim_SongMetadatum: SongMetadatum {
 	let dateAddedOnDisk: Date
 	
 	func coverArt(at size: CGSize) -> UIImage? {
-		return nil
+		guard let fileName = coverArtFileName else {
+			return nil
+		}
+		return UIImage(named: fileName)
 	}
+	
+	private let coverArtFileName: String?
 }
 extension Sim_SongMetadatum {
 	static var all: [Self] = []
@@ -109,7 +116,8 @@ extension Sim_SongMetadatum {
 		titleOnDisk: String?,
 		artistOnDisk: String?,
 		releaseDateOnDisk: Date?,
-		dateAddedOnDisk: Date
+		dateAddedOnDisk: Date,
+		coverArtFileName: String?
 	) {
 		self.init(
 			albumID: albumID,
@@ -122,7 +130,8 @@ extension Sim_SongMetadatum {
 			titleOnDisk: titleOnDisk,
 			artistOnDisk: artistOnDisk,
 			releaseDateOnDisk: releaseDateOnDisk,
-			dateAddedOnDisk: dateAddedOnDisk)
+			dateAddedOnDisk: dateAddedOnDisk,
+			coverArtFileName: coverArtFileName)
 		
 		Self.all.append(self)
 	}
