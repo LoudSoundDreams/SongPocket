@@ -477,6 +477,7 @@
 		07DF65D027766B7B003B2EA3 /* MusicFolder */ = {
 			isa = PBXGroup;
 			children = (
+				07DF65D127766C95003B2EA3 /* SongMetadatum.swift */,
 				079B2C9424E227BF00A949FA /* MusicFolder.swift */,
 				0703ED2424E8D0DA002EF1B4 /* mergeChanges.swift */,
 				07A4F9042519E72C0065C87E /* updateLibraryItems.swift */,
@@ -580,7 +581,6 @@
 		07FC970A24BAC1050036DD3D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				07DF65D127766C95003B2EA3 /* SongMetadatum.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
 				071A0B9F277E832C0017F76D /* Database.swift */,
 				07602AC72620DC4C00D84123 /* LibraryItem.swift */,
