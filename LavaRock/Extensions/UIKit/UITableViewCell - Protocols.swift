@@ -40,9 +40,9 @@ extension CellConfigurableAsButton {
 	func configureAsButton() {
 		accessibilityTraits.formUnion(.button)
 		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = Self.buttonText
-		configuration.textProperties.color = .tintColor
-		contentConfiguration = configuration
+		var content = UIListContentConfiguration.cell()
+		content.text = Self.buttonText
+		content.textProperties.color = .tintColor
+		contentConfiguration = content
 	}
 }

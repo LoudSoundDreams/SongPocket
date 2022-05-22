@@ -33,10 +33,10 @@ final class LoadingCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.loadingEllipsis
-		configuration.textProperties.color = .secondaryLabel
-		contentConfiguration = configuration
+		var content = UIListContentConfiguration.cell()
+		content.text = LocalizedString.loadingEllipsis
+		content.textProperties.color = .secondaryLabel
+		contentConfiguration = content
 		
 		isUserInteractionEnabled = false
 		let spinnerView = UIActivityIndicatorView()
@@ -57,10 +57,10 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.emptyDatabasePlaceholder
-		configuration.textProperties.color = .secondaryLabel
-		contentConfiguration = configuration
+		var content = UIListContentConfiguration.cell()
+		content.text = LocalizedString.emptyDatabasePlaceholder
+		content.textProperties.color = .secondaryLabel
+		contentConfiguration = content
 		
 		isUserInteractionEnabled = false
 	}

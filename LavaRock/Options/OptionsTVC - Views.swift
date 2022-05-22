@@ -67,10 +67,10 @@ final class AccentColorCell: UITableViewCell {
 			return
 		}
 		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = accentColor.displayName
-		configuration.textProperties.color = accentColor.uiColor
-		contentConfiguration = configuration
+		var content = UIListContentConfiguration.cell()
+		content.text = accentColor.displayName
+		content.textProperties.color = accentColor.uiColor
+		contentConfiguration = content
 		
 		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
 		if accentColor == AccentColor.savedPreference() {
@@ -113,10 +113,10 @@ final class TipLoadingCell: UITableViewCell {
 		
 		disableWithAccessibilityTrait()
 		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.loadingEllipsis
-		configuration.textProperties.color = .secondaryLabel
-		contentConfiguration = configuration
+		var content = UIListContentConfiguration.cell()
+		content.text = LocalizedString.loadingEllipsis
+		content.textProperties.color = .secondaryLabel
+		contentConfiguration = content
 	}
 }
 
@@ -144,11 +144,11 @@ final class TipReadyCell: UITableViewCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
-		var configuration = UIListContentConfiguration.valueCell()
-		configuration.text = PurchaseManager.shared.tipTitle
-		configuration.textProperties.color = .tintColor
-		configuration.secondaryText = PurchaseManager.shared.tipPrice
-		contentConfiguration = configuration
+		var content = UIListContentConfiguration.valueCell()
+		content.text = PurchaseManager.shared.tipTitle
+		content.textProperties.color = .tintColor
+		content.secondaryText = PurchaseManager.shared.tipPrice
+		contentConfiguration = content
 	}
 }
 extension TipReadyCell: CellTintingWhenSelected {}
@@ -160,10 +160,10 @@ final class TipConfirmingCell: UITableViewCell {
 		
 		disableWithAccessibilityTrait()
 		
-		var configuration = UIListContentConfiguration.cell()
-		configuration.text = LocalizedString.confirmingEllipsis
-		configuration.textProperties.color = .secondaryLabel
-		contentConfiguration = configuration
+		var content = UIListContentConfiguration.cell()
+		content.text = LocalizedString.confirmingEllipsis
+		content.textProperties.color = .secondaryLabel
+		contentConfiguration = content
 	}
 }
 
@@ -178,13 +178,13 @@ final class TipThankYouCell: UITableViewCell {
 	}
 	
 	private func configure() {
-		var configuration = UIListContentConfiguration.cell()
+		var content = UIListContentConfiguration.cell()
 		let heartEmoji = AccentColor.savedPreference().heartEmoji
 		let thankYouMessage = heartEmoji + LocalizedString.tipThankYouMessageWithPaddingSpaces + heartEmoji
-		configuration.text = thankYouMessage
-		configuration.textProperties.color = .secondaryLabel
-		configuration.textProperties.alignment = .center
-		contentConfiguration = configuration
+		content.text = thankYouMessage
+		content.textProperties.color = .secondaryLabel
+		content.textProperties.alignment = .center
+		contentConfiguration = content
 	}
 	
 	final override func tintColorDidChange() {
