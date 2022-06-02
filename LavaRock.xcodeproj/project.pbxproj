@@ -109,6 +109,7 @@
 		07EC01E826C84BC700954E08 /* CollectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */; };
 		07EC01EA26C8958300954E08 /* AlbumsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E926C8958300954E08 /* AlbumsViewModel.swift */; };
 		07EC01EC26C895CB00954E08 /* SongsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01EB26C895CB00954E08 /* SongsViewModel.swift */; };
+		07F0E5B92848555D00EF3F81 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F0E5B82848555D00EF3F81 /* UIView.swift */; };
 		07F36BBE24FC3CCA0064282D /* LibraryTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */; };
 		07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC124FC3F450064282D /* CollectionsTVC - UITableView.swift */; };
 		07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */; };
@@ -248,6 +249,7 @@
 		07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsViewModel.swift; sourceTree = "<group>"; };
 		07EC01E926C8958300954E08 /* AlbumsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewModel.swift; sourceTree = "<group>"; };
 		07EC01EB26C895CB00954E08 /* SongsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsViewModel.swift; sourceTree = "<group>"; };
+		07F0E5B82848555D00EF3F81 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC124FC3F450064282D /* CollectionsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - UITableView.swift"; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 				07E0BBEB2765678F0010117E /* UIMenu.swift */,
 				07E0BBE22765678F0010117E /* UIAlertAction.swift */,
 				07E0BBED2765678F0010117E /* UIAlertController.swift */,
+				07F0E5B82848555D00EF3F81 /* UIView.swift */,
 				07E0BBE82765678F0010117E /* UITableViewCell.swift */,
 				07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */,
 				07E0BBE72765678F0010117E /* UITableView.swift */,
@@ -802,6 +805,7 @@
 				0708201D275BEE1C00F48D13 /* Lighting.swift in Sources */,
 				074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */,
 				07CD864D27CAA3CC00286E6A /* Weak.swift in Sources */,
+				07F0E5B92848555D00EF3F81 /* UIView.swift in Sources */,
 				07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */,
 				07E0BBF92765678F0010117E /* UIAlertController.swift in Sources */,
 				071A0BA0277E832C0017F76D /* Database.swift in Sources */,
