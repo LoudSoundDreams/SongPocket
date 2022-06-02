@@ -8,8 +8,13 @@
 import UIKit
 
 extension UIImage.Configuration {
-	static let symbol48 = UIImage.SymbolConfiguration(pointSize: 48)
-	static let symbol96 = UIImage.SymbolConfiguration(pointSize: 96)
+	typealias SymbolConfig = UIImage.SymbolConfiguration
 	
-	static let hierarchical = UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)
+	static var bodySmall: SymbolConfig {
+		SymbolConfig(font: .preferredFont(forTextStyle: .body), scale: .small)
+	}
+	
+	static var hierarchical: SymbolConfig {
+		return SymbolConfig(hierarchicalColor: .tintColor)
+	}
 }
