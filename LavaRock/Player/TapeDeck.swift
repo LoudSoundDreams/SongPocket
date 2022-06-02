@@ -71,12 +71,12 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 		}
 	}
 	
-	final func songContainingPlayhead(via: NSManagedObjectContext) -> Song? {
+	final func songContainingPlayhead(via context: NSManagedObjectContext) -> Song? {
 		guard let nowPlayingItem = player?.nowPlayingItem else {
 			return nil
 		}
 		
-		let songsContainingPlayhead = via.objectsFetched(for: { () -> NSFetchRequest<Song> in
+		let songsContainingPlayhead = context.objectsFetched(for: { () -> NSFetchRequest<Song> in
 			let request = Song.fetchRequest()
 			request.predicate = NSPredicate(
 				format: "persistentID == %lld",

@@ -287,6 +287,18 @@ class LibraryTVC: UITableViewController {
 		didChangeRowsOrSelectedRows()
 	}
 	
+	// MARK: - Player
+	
+	final func reflectPlayhead_library() {
+		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
+			guard
+				let cell = tableView.cellForRow(at: visibleIndexPath) as? PlayheadReflectable,
+				let libraryItem = viewModel.itemOptional(at: visibleIndexPath) as? LibraryItem
+			else { return }
+			cell.reflectPlayhead(containsPlayhead: libraryItem.containsPlayhead())
+		}
+	}
+	
 	// MARK: - Freshening UI
 	
 	private func setBarButtons(animated: Bool) {
