@@ -18,20 +18,27 @@ extension PlayheadReflectable {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
+		let speakerImage: UIImage?
+		let newAccessibilityLabel: String?
+		defer {
+			speakerImageView.image = speakerImage
+			accessibilityValue = newAccessibilityLabel
+		}
+		
 		guard
 			containsPlayhead,
 			let player = TapeDeck.shared.player
 		else {
-			speakerImageView.image = nil
-			accessibilityValue = nil
+			speakerImage = nil
+			newAccessibilityLabel = nil
 			return
 		}
 		if player.playbackState == .playing {
-			speakerImageView.image = UIImage(systemName: "speaker.wave.2.fill")
-			accessibilityValue = LocalizedString.nowPlaying // For some reason, `UITableViewCell.accessibilityLabel == nil` at this point.
+			speakerImage = UIImage(systemName: "speaker.wave.2.fill")
+			newAccessibilityLabel = LocalizedString.nowPlaying
 		} else {
-			speakerImageView.image = UIImage(systemName: "speaker.fill")
-			accessibilityValue = LocalizedString.paused
+			speakerImage = UIImage(systemName: "speaker.fill")
+			newAccessibilityLabel = LocalizedString.paused
 		}
 	}
 }
