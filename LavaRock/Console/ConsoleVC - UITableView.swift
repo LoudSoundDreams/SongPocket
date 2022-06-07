@@ -40,10 +40,8 @@ extension ConsoleVC: UITableViewDataSource {
 			for: indexPath) as? QueueCell
 		else { return UITableViewCell() }
 		
-		cell.configure(
-			with: Reel.mediaItems[indexPath.row])
-		cell.reflectPlayhead(
-			containsPlayhead: Self.rowContainsPlayhead(at: indexPath))
+		cell.configure(with: Reel.mediaItems[indexPath.row])
+		cell.reflectPlayhead(containsPlayhead: Self.rowContainsPlayhead(at: indexPath))
 		
 		return cell
 	}

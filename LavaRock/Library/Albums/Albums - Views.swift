@@ -104,9 +104,9 @@ final class AlbumCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 		
-		accessibilityUserInputLabels = [albumTitleOptional].compactMap { $0 }
-		
 		reflectPlayhead(containsPlayhead: album.containsPlayhead())
+		
+		accessibilityUserInputLabels = [albumTitleOptional].compactMap { $0 }
 	}
 	
 	final override func traitCollectionDidChange(

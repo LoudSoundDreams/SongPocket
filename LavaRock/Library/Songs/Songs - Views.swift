@@ -158,9 +158,9 @@ final class SongCell: UITableViewCell {
 			textStack.spacing = 4
 		}
 		
-		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
-		
 		reflectPlayhead(containsPlayhead: song.containsPlayhead())
+		
+		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
 		
 		guard Enabling.songDotDotDot else { return }
 		guard let mediaItem = song.mpMediaItem() else {
