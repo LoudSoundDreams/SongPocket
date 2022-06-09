@@ -66,11 +66,11 @@ extension Album {
 	
 	// Similar to `Collection.allFetched` and `Song.allFetched`.
 	static func allFetched(
-		ordered: Bool,
+		sortedByIndex: Bool,
 		via context: NSManagedObjectContext
 	) -> [Album] {
 		let fetchRequest = fetchRequest()
-		if ordered {
+		if sortedByIndex {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
 		return context.objectsFetched(for: fetchRequest)
@@ -80,7 +80,7 @@ extension Album {
 	static func unsafe_deleteAllEmpty_withoutReindexOrCascade(
 		via context: NSManagedObjectContext
 	) {
-		let allAlbums = allFetched(ordered: false, via: context) // Use `ordered: true` if you ever create a variant of this method that does reindex the remaining `Album`s.
+		let allAlbums = allFetched(sortedByIndex: false, via: context) // Use `ordered: true` if you ever create a variant of this method that does reindex the remaining `Album`s.
 		
 		allAlbums.forEach { album in
 			if album.isEmpty() {

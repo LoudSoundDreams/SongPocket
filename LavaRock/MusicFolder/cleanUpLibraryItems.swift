@@ -19,7 +19,7 @@ extension MusicFolder {
 		}
 		
 		let allCollections = Collection.allFetched(ordered: false, via: context) // Order doesn’t matter, because this is for reindexing the `Album`s within each `Collection`.
-		let allAlbums = Album.allFetched(ordered: false, via: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
+		let allAlbums = Album.allFetched(sortedByIndex: false, via: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
 		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(

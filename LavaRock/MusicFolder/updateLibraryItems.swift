@@ -39,7 +39,7 @@ extension MusicFolder {
 		// Specifically, if a `Song`’s `Album` isn’t the uppermost one in the user’s custom arrangement with that `albumPersistentID`, then move it to the end of that `Album`.
 		
 		os_signpost(.begin, log: .update, name: "Fetch all Albums")
-		let allAlbums = Album.allFetched(ordered: true, via: context)
+		let allAlbums = Album.allFetched(sortedByIndex: true, via: context)
 		os_signpost(.end, log: .update, name: "Fetch all Albums")
 		
 		os_signpost(.begin, log: .update, name: "Initialize uniqueAlbums")

@@ -59,7 +59,7 @@ extension MusicFolder {
 			// This also might leave behind empty `Album`s. We don’t delete those here, so that if the user also added other `Song`s to those `Album`s, we can keep those `Album`s in the same place, instead of re-adding them to the top.
 			potentiallyOutdatedSongsAndFreshMetadata: potentiallyOutdatedSongsAndFreshMetadata)
 		
-		let existingAlbums = Album.allFetched(ordered: false, via: context) // Order doesn’t matter, because we identify `Album`s by their `albumPersistentID`.
+		let existingAlbums = Album.allFetched(sortedByIndex: false, via: context) // Order doesn’t matter, because we identify `Album`s by their `albumPersistentID`.
 		let existingCollections = Collection.allFetched(ordered: true, via: context) // Order matters, because we’ll try to add new `Album`s to the first `Collection` with a matching title.
 		createLibraryItems( // Create before deleting, because deleting also cleans up empty `Album`s and `Collection`s, which we shouldn’t do yet (see above).
 			// This might create new `Album`s, and if it does, it might create new `Collection`s.
