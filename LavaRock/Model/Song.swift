@@ -68,7 +68,7 @@ extension Song {
 		ordered: Bool,
 		via context: NSManagedObjectContext
 	) -> [Song] {
-		let fetchRequest = Self.fetchRequest()
+		let fetchRequest = fetchRequest()
 		if ordered {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}

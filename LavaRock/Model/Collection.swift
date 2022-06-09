@@ -86,7 +86,7 @@ extension Collection {
 		predicate: NSPredicate? = nil,
 		via context: NSManagedObjectContext
 	) -> [Collection] {
-		let fetchRequest = Self.fetchRequest()
+		let fetchRequest = fetchRequest()
 		if ordered {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
