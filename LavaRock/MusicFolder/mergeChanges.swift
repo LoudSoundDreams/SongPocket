@@ -85,5 +85,15 @@ extension MusicFolder {
 				name: .mergedChanges,
 				object: nil)
 		}
+		
+#if targetEnvironment(simulator)
+		Global.songID = Song.allFetched(ordered: true, via: context).last?.metadatum()?.songID
+#endif
 	}
 }
+
+#if targetEnvironment(simulator)
+struct Global {
+	static var songID: SongID? = nil
+}
+#endif

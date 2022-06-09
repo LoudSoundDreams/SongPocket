@@ -37,6 +37,15 @@ extension _PlayheadReflectable {
 			].compactedAndFormattedAsNarrowList()
 		}
 		
+#if targetEnvironment(simulator)
+		guard containsPlayhead else {
+			speakerImage = nil
+			headOfAccessibilityLabel = nil
+			return
+		}
+		speakerImage = UIImage(systemName: "speaker.fill")
+		headOfAccessibilityLabel = LocalizedString.paused
+#else
 		guard
 			containsPlayhead,
 			let player = TapeDeck.shared.player
@@ -52,5 +61,6 @@ extension _PlayheadReflectable {
 			speakerImage = UIImage(systemName: "speaker.fill")
 			headOfAccessibilityLabel = LocalizedString.paused
 		}
+#endif
 	}
 }
