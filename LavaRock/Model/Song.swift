@@ -102,9 +102,7 @@ extension Song {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
-		return Sim_SongMetadatum.all.first(where: { metadatum in
-			persistentID == metadatum.songID
-		})
+		return Sim_SongMetadatum.dict[persistentID]
 #else
 		return mpMediaItem()
 #endif

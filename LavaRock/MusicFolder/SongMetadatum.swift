@@ -104,7 +104,7 @@ struct Sim_SongMetadatum: SongMetadatum {
 	private let coverArtFileName: String?
 }
 extension Sim_SongMetadatum {
-	static var all: [Self] = []
+	static var dict: [SongID: Self] = [:]
 	
 	init(
 		albumID: AlbumID,
@@ -133,7 +133,7 @@ extension Sim_SongMetadatum {
 			dateAddedOnDisk: dateAddedOnDisk,
 			coverArtFileName: coverArtFileName)
 		
-		Self.all.append(self)
+		Self.dict[self.songID] = self
 	}
 }
 #endif
