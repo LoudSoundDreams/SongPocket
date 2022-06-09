@@ -7,22 +7,34 @@
 
 import UIKit
 
+typealias PlayheadReflectable = _PlayheadReflectable & CachesBodyOfAccessibilityLabel
+
+protocol CachesBodyOfAccessibilityLabel {
+	var bodyOfAccessibilityLabel: String? { get }
+}
+
 @MainActor
-protocol PlayheadReflectable: AnyObject {
+protocol _PlayheadReflectable: AnyObject {
 	var spacerSpeakerImageView: UIImageView! { get }
 	var speakerImageView: UIImageView! { get }
-	var accessibilityValue: String? { get set }
+	var accessibilityLabel: String? { get set }
 }
-extension PlayheadReflectable {
-	func reflectPlayhead(containsPlayhead: Bool) {
+extension _PlayheadReflectable {
+	func reflectPlayhead(
+		containsPlayhead: Bool,
+		bodyOfAccessibilityLabel: String? // Force callers to pass this in manually, to help them remember to update it beforehand.
+	) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
 		let speakerImage: UIImage?
-		let newAccessibilityLabel: String?
+		let headOfAccessibilityLabel: String?
 		defer {
 			speakerImageView.image = speakerImage
-			accessibilityValue = newAccessibilityLabel
+			accessibilityLabel = [
+				headOfAccessibilityLabel,
+				bodyOfAccessibilityLabel,
+			].compactedAndFormattedAsNarrowList()
 		}
 		
 		guard
@@ -30,15 +42,15 @@ extension PlayheadReflectable {
 			let player = TapeDeck.shared.player
 		else {
 			speakerImage = nil
-			newAccessibilityLabel = nil
+			headOfAccessibilityLabel = nil
 			return
 		}
 		if player.playbackState == .playing {
 			speakerImage = UIImage(systemName: "speaker.wave.2.fill")
-			newAccessibilityLabel = LocalizedString.nowPlaying
+			headOfAccessibilityLabel = LocalizedString.nowPlaying
 		} else {
 			speakerImage = UIImage(systemName: "speaker.fill")
-			newAccessibilityLabel = LocalizedString.paused
+			headOfAccessibilityLabel = LocalizedString.paused
 		}
 	}
 }

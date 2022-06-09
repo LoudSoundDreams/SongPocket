@@ -13,6 +13,7 @@ final class QueueCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
+	var bodyOfAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var coverArtView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
@@ -51,6 +52,11 @@ final class QueueCell: UITableViewCell {
 				return LocalizedString.unknownArtist
 			}
 		}()
+		
+		bodyOfAccessibilityLabel = [
+			titleLabel.text,
+			secondaryLabel.text,
+		].compactedAndFormattedAsNarrowList()
 		
 		if let font = titleLabel.font {
 			// TO DO: Localize

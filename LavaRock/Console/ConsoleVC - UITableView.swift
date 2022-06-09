@@ -41,7 +41,9 @@ extension ConsoleVC: UITableViewDataSource {
 		else { return UITableViewCell() }
 		
 		cell.configure(with: Reel.mediaItems[indexPath.row])
-		cell.reflectPlayhead(containsPlayhead: Self.rowContainsPlayhead(at: indexPath))
+		cell.reflectPlayhead(
+			containsPlayhead: Self.rowContainsPlayhead(at: indexPath),
+			bodyOfAccessibilityLabel: cell.bodyOfAccessibilityLabel)
 		
 		return cell
 	}

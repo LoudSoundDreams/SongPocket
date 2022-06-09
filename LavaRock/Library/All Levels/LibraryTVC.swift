@@ -292,12 +292,14 @@ class LibraryTVC: UITableViewController {
 	final func reflectPlayhead_library() {
 		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
 			guard let cell = tableView.cellForRow(at: visibleIndexPath) as? PlayheadReflectable else { return }
-			cell.reflectPlayhead(containsPlayhead: {
-				guard let libraryItem = viewModel.itemOptional(at: visibleIndexPath) as? LibraryItem else {
-					return false
-				}
-				return libraryItem.containsPlayhead()
-			}())
+			cell.reflectPlayhead(
+				containsPlayhead: {
+					guard let libraryItem = viewModel.itemOptional(at: visibleIndexPath) as? LibraryItem else {
+						return false
+					}
+					return libraryItem.containsPlayhead()
+				}(),
+				bodyOfAccessibilityLabel: cell.bodyOfAccessibilityLabel)
 		}
 	}
 	

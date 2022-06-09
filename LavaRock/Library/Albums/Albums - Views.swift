@@ -39,6 +39,7 @@ final class AlbumCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
+	var bodyOfAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `coverArtView` and `textStack` at very large text sizes.
 	@IBOutlet private var coverArtView: UIImageView!
@@ -104,7 +105,14 @@ final class AlbumCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 		
-		reflectPlayhead(containsPlayhead: album.containsPlayhead())
+		bodyOfAccessibilityLabel = [
+			titleLabel.text,
+			releaseDateLabel.text,
+		].compactedAndFormattedAsNarrowList()
+		
+		reflectPlayhead(
+			containsPlayhead: album.containsPlayhead(),
+			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
 		
 		accessibilityUserInputLabels = [albumTitleOptional].compactMap { $0 }
 	}

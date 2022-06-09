@@ -77,6 +77,7 @@ final class SongCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
+	var bodyOfAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
@@ -158,7 +159,15 @@ final class SongCell: UITableViewCell {
 			textStack.spacing = 4
 		}
 		
-		reflectPlayhead(containsPlayhead: song.containsPlayhead())
+		bodyOfAccessibilityLabel = [
+			numberLabel.text,
+			titleLabel.text,
+			artistLabel.text,
+		].compactedAndFormattedAsNarrowList()
+		
+		reflectPlayhead(
+			containsPlayhead: song.containsPlayhead(),
+			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
 		
 		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
 		
