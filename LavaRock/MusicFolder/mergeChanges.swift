@@ -16,7 +16,7 @@ extension MusicFolder {
 	// Updates our database in a sensible way to reflect the fresh `SongMetadatum`s.
 	final func mergeChanges(toMatch freshMetadata: [SongMetadatum]) {
 		os_signpost(.begin, log: .merge, name: "Initial parse")
-		let existingSongs = Song.allFetched(ordered: false, via: context)
+		let existingSongs = Song.allFetched(sortedByIndex: false, via: context)
 		
 		let defaults = UserDefaults.standard
 		let defaultsKeyHasEverImported = LRUserDefaultsKey.hasEverImportedFromMusic.rawValue
@@ -87,7 +87,7 @@ extension MusicFolder {
 		}
 		
 #if targetEnvironment(simulator)
-		Global.songID = Song.allFetched(ordered: true, via: context).last?.metadatum()?.songID
+		Global.songID = Song.allFetched(sortedByIndex: true, via: context).last?.metadatum()?.songID
 #endif
 	}
 }

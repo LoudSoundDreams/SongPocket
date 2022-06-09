@@ -65,11 +65,11 @@ extension Song {
 	
 	// Similar to `Collection.allFetched` and `Album.allFetched`.
 	static func allFetched(
-		ordered: Bool,
+		sortedByIndex: Bool,
 		via context: NSManagedObjectContext
 	) -> [Song] {
 		let fetchRequest = fetchRequest()
-		if ordered {
+		if sortedByIndex {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
 		return context.objectsFetched(for: fetchRequest)
