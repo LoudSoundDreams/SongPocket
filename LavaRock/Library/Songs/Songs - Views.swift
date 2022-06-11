@@ -17,7 +17,7 @@ final class CoverArtCell: UITableViewCell {
 		
 		coverArtView.accessibilityIgnoresInvertColors = true
 		accessibilityLabel = LocalizedString.albumArtwork
-		accessibilityUserInputLabels = [""]
+		accessibilityUserInputLabels = nil // No Voice Control label
 		accessibilityTraits.formUnion(.image)
 	}
 	
@@ -45,7 +45,7 @@ final class AlbumInfoCell: UITableViewCell {
 	final override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		accessibilityUserInputLabels = [""]
+		accessibilityUserInputLabels = nil // No Voice Control label
 	}
 	
 	final func configure(with album: Album) {
@@ -170,7 +170,11 @@ final class SongCell: UITableViewCell {
 			containsPlayhead: song.containsPlayhead(),
 			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
 		
-		accessibilityUserInputLabels = [metadatum?.titleOnDisk].compactMap { $0 }
+		// Only include the song title for Voice Control.
+		// Never include the “unknown title” placeholder, if it’s a dash.
+		accessibilityUserInputLabels = [
+			metadatum?.titleOnDisk,
+		].compactMap { $0 }
 		
 		guard Enabling.songDotDotDot else { return }
 		guard let mediaItem = song.mpMediaItem() else {

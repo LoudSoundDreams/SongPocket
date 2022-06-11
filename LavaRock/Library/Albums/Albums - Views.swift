@@ -63,8 +63,6 @@ final class AlbumCell: UITableViewCell {
 		with album: Album,
 		mode: Mode
 	) {
-		let albumTitleOptional = album.titleFormattedOptional()
-		
 		os_signpost(.begin, log: .albumsView, name: "Set cover art")
 		coverArtView.image = {
 			os_signpost(.begin, log: .albumsView, name: "Draw cover art")
@@ -79,7 +77,7 @@ final class AlbumCell: UITableViewCell {
 		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
 		titleLabel.text = { () -> String in
-			if let albumTitle = albumTitleOptional {
+			if let albumTitle = album.titleFormattedOptional() {
 				return albumTitle
 			} else {
 				return Album.unknownTitlePlaceholder
@@ -119,7 +117,11 @@ final class AlbumCell: UITableViewCell {
 			containsPlayhead: album.containsPlayhead(),
 			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
 		
-		accessibilityUserInputLabels = [albumTitleOptional].compactMap { $0 }
+		// Only include the album title for Voice Control.
+		// Include “Unknown Album” if that’s what we’re showing.
+		accessibilityUserInputLabels = [
+			titleLabel.text,
+		].compactMap { $0 }
 	}
 	
 	final override func traitCollectionDidChange(
