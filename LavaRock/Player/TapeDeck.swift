@@ -105,6 +105,8 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	private var reflectors: [Weak<TapeDeckReflecting>] = []
 	
 	deinit {
-		player?.endGeneratingPlaybackNotifications()
+		Task {
+			await player?.endGeneratingPlaybackNotifications()
+		}
 	}
 }
