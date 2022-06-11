@@ -22,16 +22,17 @@ final class CoverArtCell: UITableViewCell {
 	}
 	
 	final func configure(with album: Album) {
-		// Cover art
-		os_signpost(.begin, log: .songsView, name: "Draw cover art")
-		let coverArt = album.coverArt(
-			at: CGSize(
-				width: UIScreen.main.bounds.width,
-				height: UIScreen.main.bounds.width))
-		os_signpost(.end, log: .songsView, name: "Draw cover art")
-		
 		os_signpost(.begin, log: .songsView, name: "Set cover art")
-		coverArtView.image = coverArt
+		coverArtView.image = {
+			os_signpost(.begin, log: .songsView, name: "Draw cover art")
+			defer {
+				os_signpost(.end, log: .songsView, name: "Draw cover art")
+			}
+			let maxWidthAndHeight = coverArtView.bounds.width
+			return album.coverArt(at: CGSize(
+				width: maxWidthAndHeight,
+				height: maxWidthAndHeight))
+		}()
 		os_signpost(.end, log: .songsView, name: "Set cover art")
 	}
 }
