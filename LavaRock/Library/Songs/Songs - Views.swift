@@ -174,7 +174,7 @@ final class SongCell: UITableViewCell {
 		// Never include the “unknown title” placeholder, if it’s a dash.
 		accessibilityUserInputLabels = [
 			metadatum?.titleOnDisk,
-		].compactMap { $0 }
+		].compacted()
 		
 		guard Enabling.songDotDotDot else { return }
 		guard let mediaItem = song.mpMediaItem() else {

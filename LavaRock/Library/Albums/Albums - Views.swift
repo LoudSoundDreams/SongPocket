@@ -121,7 +121,7 @@ final class AlbumCell: UITableViewCell {
 		// Include “Unknown Album” if that’s what we’re showing.
 		accessibilityUserInputLabels = [
 			titleLabel.text,
-		].compactMap { $0 }
+		].compacted()
 	}
 	
 	final override func traitCollectionDidChange(
