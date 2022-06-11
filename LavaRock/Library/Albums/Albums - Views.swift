@@ -65,15 +65,19 @@ final class AlbumCell: UITableViewCell {
 	) {
 		let albumTitleOptional = album.titleFormattedOptional()
 		
-		os_signpost(.begin, log: .albumsView, name: "Draw and set cover art")
+		os_signpost(.begin, log: .albumsView, name: "Set cover art")
 		coverArtView.image = {
+			os_signpost(.begin, log: .albumsView, name: "Draw cover art")
+			defer {
+				os_signpost(.end, log: .albumsView, name: "Draw cover art")
+			}
 			let maxWidthAndHeight = coverArtView.bounds.width
-			return album.coverArt(
-				at: CGSize(
-					width: maxWidthAndHeight,
-					height: maxWidthAndHeight))
+			return album.coverArt(at: CGSize(
+				width: maxWidthAndHeight,
+				height: maxWidthAndHeight))
 		}()
-		os_signpost(.end, log: .albumsView, name: "Draw and set cover art")
+		os_signpost(.end, log: .albumsView, name: "Set cover art")
+		
 		titleLabel.text = { () -> String in
 			if let albumTitle = albumTitleOptional {
 				return albumTitle
@@ -81,6 +85,7 @@ final class AlbumCell: UITableViewCell {
 				return Album.unknownTitlePlaceholder
 			}
 		}()
+		
 		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()
 		 
 		if releaseDateLabel.text == nil {
