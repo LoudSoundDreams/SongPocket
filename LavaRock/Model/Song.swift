@@ -75,6 +75,22 @@ extension Song {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
+	static func printAllInDatabaseOrder(
+		via context: NSManagedObjectContext
+	) {
+		var allSongs = allFetched(sortedByIndex: true, via: context)
+		allSongs.sort { $0.container!.index < $1.container!.index }
+		allSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
+		allSongs.forEach {
+			print(
+				$0.container!.container!.index,
+				$0.container!.index,
+				$0.index,
+				$0.persistentID,
+				$0.libraryTitle ?? "")
+		}
+	}
+	
 	// MARK: - Predicates for Sorting
 	
 	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
