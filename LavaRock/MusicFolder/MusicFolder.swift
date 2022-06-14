@@ -99,7 +99,8 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 			))
 		}
 #else
-		if let freshMediaItems = MPMediaQuery.songs().items {
+		let songsQuery = MPMediaQuery.songs()
+		if let freshMediaItems = songsQuery.items {
 			context.performAndWait {
 				mergeChanges(toMatch: freshMediaItems)
 			}

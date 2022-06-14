@@ -130,11 +130,9 @@ extension Song {
 			return nil
 		}
 		let songsQuery = MPMediaQuery.songs()
-		songsQuery.addFilterPredicate(
-			MPMediaPropertyPredicate(
-				value: persistentID,
-				forProperty: MPMediaItemPropertyPersistentID)
-		)
+		songsQuery.addFilterPredicate(MPMediaPropertyPredicate(
+			value: persistentID,
+			forProperty: MPMediaItemPropertyPersistentID))
 		
 		os_signpost(.begin, log: .song, name: "Query for MPMediaItem")
 		defer {

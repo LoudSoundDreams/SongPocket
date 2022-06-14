@@ -230,11 +230,9 @@ extension Album {
 			return nil
 		}
 		let albumsQuery = MPMediaQuery.albums()
-		albumsQuery.addFilterPredicate(
-			MPMediaPropertyPredicate(
-				value: albumPersistentID,
-				forProperty: MPMediaItemPropertyAlbumPersistentID)
-		)
+		albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(
+			value: albumPersistentID,
+			forProperty: MPMediaItemPropertyAlbumPersistentID))
 		
 		os_signpost(.begin, log: .album, name: "Query for MPMediaItemCollection")
 		defer {
