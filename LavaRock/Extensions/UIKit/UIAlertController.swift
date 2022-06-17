@@ -23,7 +23,7 @@ extension UIAlertController {
 			// UITextField
 			textField.text = textFieldText
 			textField.placeholder = LocalizedString.title
-			textField.clearButtonMode = .whileEditing
+			textField.clearButtonMode = .always
 			
 			// UITextInputTraits
 			textField.returnKeyType = .done
