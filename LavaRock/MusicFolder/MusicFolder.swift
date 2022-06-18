@@ -56,8 +56,8 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 						trackNumberOnDisk: 1,
 						titleOnDisk: "Amazingly few discotheques provide jukeboxes.",
 						artistOnDisk: "Five Boxing Wizards",
-						releaseDateOnDisk: .now,
 						dateAddedOnDisk: .now,
+						releaseDateOnDisk: .now,
 						coverArtFileName: "Walpurgis Night"),
 					Sim_SongMetadatum(
 						albumID: walpurgisNightAlbumID,
@@ -68,8 +68,8 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 						trackNumberOnDisk: 900,
 						titleOnDisk: "Crossroads",
 						artistOnDisk: "GFriend",
-						releaseDateOnDisk: .now,
 						dateAddedOnDisk: .now,
+						releaseDateOnDisk: .now,
 						coverArtFileName: "Walpurgis Night"),
 					Sim_SongMetadatum(
 						albumID: planetaryPiecesAlbumID,
@@ -80,8 +80,8 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 						trackNumberOnDisk: 0,
 						titleOnDisk: nil,
 						artistOnDisk: nil,
-						releaseDateOnDisk: nil,
 						dateAddedOnDisk: .now,
+						releaseDateOnDisk: nil,
 						coverArtFileName: "Planetary Pieces"),
 					Sim_SongMetadatum(
 						albumID: realAlbumID,
@@ -92,8 +92,8 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 						trackNumberOnDisk: 3,
 						titleOnDisk: "좋은 날",
 						artistOnDisk: "IU",
-						releaseDateOnDisk: nil,
 						dateAddedOnDisk: .now,
+						releaseDateOnDisk: nil,
 						coverArtFileName: "Real"),
 				]
 			))

@@ -26,8 +26,8 @@ protocol SongMetadatum {
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
 	
-	var releaseDateOnDisk: Date? { get }
 	var dateAddedOnDisk: Date { get }
+	var releaseDateOnDisk: Date? { get }
 	
 	func coverArt(at size: CGSize) -> UIImage?
 }
@@ -49,8 +49,8 @@ extension MPMediaItem: SongMetadatum {
 	final var titleOnDisk: String? { title } // … we don’t know, because Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
 	final var artistOnDisk: String? { artist }
 	
-	final var releaseDateOnDisk: Date? { releaseDate }
 	final var dateAddedOnDisk: Date { dateAdded }
+	final var releaseDateOnDisk: Date? { releaseDate }
 	
 	final func coverArt(at size: CGSize) -> UIImage? {
 		return artwork?.image(at: size)
@@ -91,8 +91,8 @@ struct Sim_SongMetadatum: SongMetadatum {
 	let titleOnDisk: String?
 	let artistOnDisk: String?
 	
-	let releaseDateOnDisk: Date?
 	let dateAddedOnDisk: Date
+	let releaseDateOnDisk: Date?
 	
 	func coverArt(at size: CGSize) -> UIImage? {
 		guard let fileName = coverArtFileName else {
@@ -115,8 +115,8 @@ extension Sim_SongMetadatum {
 		trackNumberOnDisk: Int,
 		titleOnDisk: String?,
 		artistOnDisk: String?,
-		releaseDateOnDisk: Date?,
 		dateAddedOnDisk: Date,
+		releaseDateOnDisk: Date?,
 		coverArtFileName: String?
 	) {
 		self.init(
@@ -129,8 +129,8 @@ extension Sim_SongMetadatum {
 			trackNumberOnDisk: trackNumberOnDisk,
 			titleOnDisk: titleOnDisk,
 			artistOnDisk: artistOnDisk,
-			releaseDateOnDisk: releaseDateOnDisk,
 			dateAddedOnDisk: dateAddedOnDisk,
+			releaseDateOnDisk: releaseDateOnDisk,
 			coverArtFileName: coverArtFileName)
 		
 		Self.dict[self.songID] = self
