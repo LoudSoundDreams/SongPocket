@@ -9,6 +9,7 @@ import UIKit
 
 typealias PlayheadReflectable = _PlayheadReflectable & CachesBodyOfAccessibilityLabel
 
+@MainActor
 protocol CachesBodyOfAccessibilityLabel {
 	var bodyOfAccessibilityLabel: String? { get }
 }

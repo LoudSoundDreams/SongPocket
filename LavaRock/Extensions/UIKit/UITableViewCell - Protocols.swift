@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol CellTintingWhenSelected: UITableViewCell {
 	// Adopting types must …
 	// • Override `awakeFromNib` and call `tintSelectedBackgroundView`.
@@ -19,6 +20,7 @@ extension CellTintingWhenSelected {
 	}
 }
 
+@MainActor
 protocol CellHavingTransparentBackground: UITableViewCell {
 	// Adopting types must …
 	// • Override `awakeFromNib` and call `removeBackground`.
@@ -30,6 +32,7 @@ extension CellHavingTransparentBackground {
 	}
 }
 
+@MainActor
 protocol CellConfigurableAsButton: UITableViewCell {
 	// Adopting types must …
 	// • Override `awakeFromNib` and call `configureAsButton`.

@@ -40,14 +40,17 @@ enum Lighting: Int, CaseIterable {
 		return Self.allCases.firstIndex { $0 == self }!
 	}
 	
+	@MainActor
 	var uiImage: UIImage {
 		return UIImage(systemName: sfSymbolName)!
 	}
 	
+	@MainActor
 	var image: Image {
 		return Image(systemName: sfSymbolName)
 	}
 	
+	@MainActor
 	private var sfSymbolName: String {
 		switch self {
 		case .light:

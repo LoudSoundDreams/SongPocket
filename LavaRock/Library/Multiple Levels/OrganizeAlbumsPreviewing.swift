@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol OrganizeAlbumsPreviewing: UIViewController {
 	var viewModel: LibraryViewModel { get }
 	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? { get }

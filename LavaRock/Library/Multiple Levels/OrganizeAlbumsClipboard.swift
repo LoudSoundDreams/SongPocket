@@ -7,6 +7,7 @@
 
 import CoreData
 
+@MainActor
 protocol OrganizeAlbumsDelegate: AnyObject {
 	func didOrganize()
 }
