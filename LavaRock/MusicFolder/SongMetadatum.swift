@@ -146,7 +146,6 @@ extension SongMetadatum {
 	// MARK: Predicates for Sorting
 	
 	// Behavior is undefined if you compare with a `SongMetadatum` from the same album.
-	// Verified with `MPMediaItem`s as of build 157 on iOS 14.7 developer beta 5.
 	func precedesInDefaultOrder(inDifferentAlbum other: SongMetadatum) -> Bool {
 		let myAlbumArtist = albumArtistOnDisk
 		let otherAlbumArtist = other.albumArtistOnDisk
@@ -198,7 +197,6 @@ extension SongMetadatum {
 	}
 	
 	// Behavior is undefined if you compare with a `SongMetadatum` from a different album.
-	// Verified with `MPMediaItem`s as of build 154 on iOS 14.7 developer beta 5.
 	private func precedesInDisplayOrder(
 		inSameAlbum other: SongMetadatum,
 		shouldResortToTitle: Bool

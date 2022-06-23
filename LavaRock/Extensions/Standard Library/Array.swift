@@ -88,7 +88,7 @@ extension Array {
 	
 	// MARK: - Miscellaneous
 	
-	private func allNeighborsSatisfy(
+	func allNeighborsSatisfy(
 		_ predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 	) -> Bool {
 		let rest = dropFirst()
