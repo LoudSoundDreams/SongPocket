@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>plural - x_collections</key>
+	<key>plural - X_collections</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@NUMBER_COLLECTIONS@</string>
@@ -18,7 +18,7 @@
 			<string>%lld Collections</string>
 		</dict>
 	</dict>
-	<key>plural - x_albums</key>
+	<key>plural - X_albums</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@NUMBER_ALBUMS@</string>
@@ -34,7 +34,7 @@
 			<string>%lld Albums</string>
 		</dict>
 	</dict>
-	<key>plural - x_songs</key>
+	<key>plural - X_songs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@NUMBER_SONGS@</string>
@@ -82,22 +82,6 @@
 			<string>%lld collections</string>
 		</dict>
 	</dict>
-	<key>plural - move_albums_to_collection</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
-		<key>CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>one</key>
-			<string>Choose a collection to move %lld album to.</string>
-			<key>other</key>
-			<string>Choose a collection to move %lld albums to.</string>
-		</dict>
-	</dict>
 	<key>plural - move_albums_to_section</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -112,6 +96,22 @@
 			<string>Choose a section to move %lld album to.</string>
 			<key>other</key>
 			<string>Choose a section to move %lld albums to.</string>
+		</dict>
+	</dict>
+	<key>plural - move_albums_to_collection</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
+		<key>CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>Choose a collection to move %lld album to.</string>
+			<key>other</key>
+			<string>Choose a collection to move %lld albums to.</string>
 		</dict>
 	</dict>
 	<key>plural - did_enqueue_multiple_songs</key>

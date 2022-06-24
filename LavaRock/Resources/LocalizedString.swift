@@ -185,19 +185,19 @@ struct LocalizedString {
 	// MARK: Collections
 	
 	static let format_xCollections = NSLocalizedString(
-		"plural - x_collections",
+		"plural - X_collections",
 		comment: "Status message")
 	
 	// MARK: Albums
 	
 	static let format_xAlbums = NSLocalizedString(
-		"plural - x_albums",
+		"plural - X_albums",
 		comment: "Status message")
 	
 	// MARK: Songs
 	
 	static let format_xSongs = NSLocalizedString(
-		"plural - x_songs",
+		"plural - X_songs",
 		comment: "Status message")
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit

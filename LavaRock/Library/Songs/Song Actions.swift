@@ -164,7 +164,8 @@ extension SongsTVC {
 				} else {
 					return String.localizedStringWithFormat(
 						LocalizedString.format_didEnqueueMultipleSongsAlertTitle,
-						firstSongTitle, songCount - 1)
+						firstSongTitle,
+						songCount - 1)
 				}
 			}(),
 			message: LocalizedString.didEnqueueSongsAlertMessage,
