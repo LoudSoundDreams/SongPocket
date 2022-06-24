@@ -124,6 +124,12 @@ final class SongCell: UITableViewCell {
 		accessibilityTraits.formUnion(.button)
 	}
 	
+	final override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		
+		freshenDotDotDotButton()
+	}
+	
 	final func configureWith(
 		song: Song,
 		albumRepresentative representative: SongMetadatum?,
@@ -186,6 +192,8 @@ final class SongCell: UITableViewCell {
 			containsPlayhead: song.containsPlayhead(),
 			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
 		
+		freshenDotDotDotButton()
+		
 		// For Voice Control, only include the song title.
 		// Never include the “unknown title” placeholder, if it’s a dash.
 		accessibilityUserInputLabels = [
@@ -234,6 +242,10 @@ final class SongCell: UITableViewCell {
 			])
 	}
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
+	
+	private func freshenDotDotDotButton() {
+		dotDotDotButton.isEnabled = !isEditing
+	}
 	
 	final override func layoutSubviews() {
 		super.layoutSubviews()
