@@ -177,51 +177,39 @@ final class SongCell: UITableViewCell {
 		].compacted()
 		
 		guard Enabling.songDotDotDot else { return }
+		
+		let menu: UIMenu?
+		defer {
+			dotDotDotButton.menu = menu
+		}
+		
 		guard let mediaItem = song.mpMediaItem() else {
-			// TO DO: Prevent the button from highlighting itself when you touch it
-			dotDotDotButton.tintColor = .placeholderText
-			dotDotDotButton.menu = nil
+			menu = nil
 			return
 		}
-		dotDotDotButton.tintColor = .label
-		dotDotDotButton.menu = UIMenu(
+		menu = UIMenu(
 			presentsUpward: false,
 			groupedElements: [
 				[
-					// TO DO: Disable these if there are no songs below.
-					UIAction(
-						title: LocalizedString.playSongAndBelowNext,
-						image: UIImage(systemName: "text.insert")
-					) { _ in
-						// ARC2DO
-						self.player?.playNext([mediaItem]) // TO DO
-					},
-					UIAction(
-						title: LocalizedString.playSongAndBelowLater,
-						image: UIImage(systemName: "text.append")
-					) { _ in
-						// ARC2DO
-						self.player?.playLast([mediaItem]) // TO DO
-					},
-				],
-				[
 					UIAction(
 						title: LocalizedString.play,
-						image: UIImage(systemName: "play") // TO DO: Reconsider
+						image: UIImage(systemName: "play")
 					) { _ in
 						// ARC2DO
 						self.player?.playNow([mediaItem])
 					},
+				],
+				[
 					UIAction(
 						title: LocalizedString.playNext,
-						image: UIImage(systemName: "arrow.turn.up.right")
+						image: UIImage(systemName: "text.insert")
 					) { _ in
 						// ARC2DO
 						self.player?.playNext([mediaItem])
 					},
 					UIAction(
-						title: LocalizedString.playLater,
-						image: UIImage(systemName: "arrow.turn.down.right")
+						title: LocalizedString.playLast,
+						image: UIImage(systemName: "text.append")
 					) { _ in
 						// ARC2DO
 						self.player?.playLast([mediaItem])

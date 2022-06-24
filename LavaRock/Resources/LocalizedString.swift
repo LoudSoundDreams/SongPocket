@@ -151,12 +151,10 @@ struct LocalizedString {
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	static let playSongAndBelow = NSLocalizedString("Play Song and Below", comment: "Button")
-	static let playSongAndBelowNext = NSLocalizedString("Play Song and Below Next", comment: "Button")
-	static let playSongAndBelowLater = NSLocalizedString("Play Song and Below Later", comment: "Button")
 	static let queueSongAndBelow = NSLocalizedString("Queue Song and Below", comment: "Button")
 	static let playSong = NSLocalizedString("Play Song", comment: "Button")
 	static let playNext = NSLocalizedString("Play Next", comment: "Button")
-	static let playLater = NSLocalizedString("Play Later", comment: "Button")
+	static let playLast = NSLocalizedString("Play Last", comment: "Button")
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let didEnqueueSongsAlertMessage = NSLocalizedString(
 		"[alert message] did_enqueue_songs",

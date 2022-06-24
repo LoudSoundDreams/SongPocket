@@ -33,7 +33,9 @@ extension SongsTVC {
 		
 		// Play now
 		let playSongAndBelow = UIAlertAction(
-			title: LocalizedString.playSongAndBelow,
+			title: Enabling.songDotDotDot
+			? LocalizedString.play
+			: LocalizedString.playSongAndBelow,
 			style: .default
 		) { _ in
 			player.playNow(selectedMediaItemAndBelow)
@@ -48,23 +50,13 @@ extension SongsTVC {
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
 		
-		// Play next
-		let prependSongAndBelow = UIAlertAction(
-			title: LocalizedString.playSongAndBelowNext,
-			style: .default
-		) { _ in
-			player.playNext(selectedMediaItemAndBelow)
-			// TO DO: Show “Will Play Next” alert if not enabling Player screen
-			deselectSelectedSong()
-		}
-		
 		// Play last
 		let firstSongTitle: String = {
 			selectedMediaItem.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
 		}()
 		let appendSongAndBelow = UIAlertAction(
 			title: Enabling.songDotDotDot
-			? LocalizedString.playSongAndBelowLater
+			? LocalizedString.playLast
 			: LocalizedString.queueSongAndBelow,
 			style: .default
 		) { _ in
@@ -95,11 +87,28 @@ extension SongsTVC {
 			preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		if Enabling.songDotDotDot {
+			actionSheet.title = {
+				let subjectedCount = selectedMediaItemAndBelow.count
+				return String.localizedStringWithFormat(
+					LocalizedString.format_xSongs,
+					subjectedCount)
+			}()
 			actionSheet.addAction(playSongAndBelow)
+			actionSheet.addAction(
+				// Play next
+				UIAlertAction(
+					title: LocalizedString.playNext,
+					style: .default
+				) { _ in
+					player.playNext(selectedMediaItemAndBelow)
+					// TO DO: Show “Will Play Next” alert if not enabling Player screen
+					deselectSelectedSong()
+				}
+			)
+			actionSheet.addAction(appendSongAndBelow)
 		} else {
 			if selectedMediaItemAndBelow.count == 1 {
 				playSongAndBelow.isEnabled = false
-				prependSongAndBelow.isEnabled = false
 				appendSongAndBelow.isEnabled = false
 			}
 			actionSheet.addAction(playSongAndBelow)
