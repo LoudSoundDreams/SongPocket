@@ -117,7 +117,7 @@ final class AlbumCell: UITableViewCell {
 			containsPlayhead: album.containsPlayhead(),
 			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
 		
-		// Only include the album title for Voice Control.
+		// For Voice Control, only include the album title.
 		// Include “Unknown Album” if that’s what we’re showing.
 		accessibilityUserInputLabels = [
 			titleLabel.text,

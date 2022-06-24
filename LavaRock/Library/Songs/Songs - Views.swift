@@ -170,7 +170,7 @@ final class SongCell: UITableViewCell {
 			containsPlayhead: song.containsPlayhead(),
 			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
 		
-		// Only include the song title for Voice Control.
+		// For Voice Control, only include the song title.
 		// Never include the “unknown title” placeholder, if it’s a dash.
 		accessibilityUserInputLabels = [
 			metadatum?.titleOnDisk,
