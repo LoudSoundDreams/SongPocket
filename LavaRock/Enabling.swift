@@ -20,3 +20,9 @@ struct Enabling {
 	
 	static let swiftUI__options = 10 == 1
 }
+
+#if targetEnvironment(simulator)
+struct Global {
+	static var songID: SongID? = nil
+}
+#endif

@@ -91,9 +91,3 @@ extension MusicFolder {
 #endif
 	}
 }
-
-#if targetEnvironment(simulator)
-struct Global {
-	static var songID: SongID? = nil
-}
-#endif
