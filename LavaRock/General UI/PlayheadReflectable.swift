@@ -24,6 +24,7 @@ extension _PlayheadReflectable {
 		containsPlayhead: Bool,
 		bodyOfAccessibilityLabel: String? // Force callers to pass this in manually, to help them remember to update it beforehand.
 	) {
+		spacerSpeakerImageView.isHidden = true
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
