@@ -15,8 +15,8 @@ class SortingTests: XCTestCase {
 	override func tearDownWithError() throws {
 	}
 	
-	func testSortStrings() throws {
-		let strings = [
+	func testSortStrings() {
+		let correctlySorted: [String?] = [
 			"",
 			"",
 			" ",
@@ -27,10 +27,68 @@ class SortingTests: XCTestCase {
 			"A",
 			"z",
 			"Z",
+			nil,
+			nil,
 		]
 		XCTAssertTrue(
-			strings.allNeighborsSatisfy { left, right in
-				left.precedesAlphabeticallyFinderStyle(right)
+			correctlySorted.allNeighborsSatisfy { left, right in
+				guard let right = right else {
+					return true
+				}
+				guard let left = left else {
+					return false
+				}
+				return left.precedesAlphabeticallyFinderStyle(right)
+			}
+		)
+	}
+	
+	func testSortStringsStably() {
+		let stringsUnsorted: [String?] = [
+			nil,
+			"",
+			"",
+			nil,
+			"a",
+		]
+		let stringsSorted: [String?] = [
+			"",
+			"",
+			"a",
+			nil,
+			nil,
+		]
+		
+		struct Thing {
+			let string: String?
+			let id: Int
+		}
+		let thingsUnsorted = stringsUnsorted.enumerated().map { index, string in
+			Thing(string: string, id: index)
+		}
+		let thingsSorted = thingsUnsorted.sortedMaintainingOrderWhen {
+			$0.string == $1.string
+		} areInOrder: {
+			let leftString = $0.string
+			let rightString = $1.string
+			// Either can be `nil`
+			
+			guard let rightString = rightString else {
+				return true
+			}
+			guard let leftString = leftString else {
+				return false
+			}
+			return leftString.precedesAlphabeticallyFinderStyle(rightString)
+		}
+		XCTAssertEqual(stringsSorted, thingsSorted.map { $0.string })
+		XCTAssertTrue(
+			thingsSorted.allNeighborsSatisfy { left, right in
+				if left.string == right.string {
+					return left.id < right.id
+				} else {
+					return true
+				}
 			}
 		)
 	}
