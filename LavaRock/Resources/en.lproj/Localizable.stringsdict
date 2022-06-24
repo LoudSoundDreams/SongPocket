@@ -114,6 +114,22 @@
 			<string>Choose a collection to move %lld albums to.</string>
 		</dict>
 	</dict>
+	<key>plural - SONG_TITLE_and_X_more_songs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>“%@” and %#@NUMBER_MORE_SONGS@</string>
+		<key>NUMBER_MORE_SONGS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld More Song</string>
+			<key>other</key>
+			<string>%lld More Songs</string>
+		</dict>
+	</dict>
 	<key>plural - did_enqueue_multiple_songs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

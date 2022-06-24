@@ -175,6 +175,10 @@ struct LocalizedString {
 	
 	// MARK: Songs View
 	
+	static let format_quoted = NSLocalizedString(
+		"quoted",
+		value: "“%@”",
+		comment: "The input string, wrapped in quotation marks.")
 	static let format_didEnqueueOneSongAlertTitle = NSLocalizedString(
 		"[alert title] did_enqueue_one_song",
 		value: "“%@” Will Play Later",
@@ -218,6 +222,9 @@ struct LocalizedString {
 	
 	// MARK: Songs View
 	
+	static let format_songTitleAndXMoreSongs = NSLocalizedString(
+		"plural - SONG_TITLE_and_X_more_songs",
+		comment: "Title of the action sheet that appears after the user taps a song. Include the title of the song. Also, if the actions will apply to 2 songs, include “and 1 More Song”, and if they’ll apply to 3 songs, include “and 2 More Songs”, and so on.")
 	static let format_didEnqueueMultipleSongsAlertTitle = NSLocalizedString(
 		"plural - did_enqueue_multiple_songs",
 		comment: "Title of the alert that appears after the user adds multiple songs to the queue. Include the title of the song. Also, if the user added 2 songs, include “and 1 More Song”, and if they added 3 songs, include “and 2 More Songs”, and so on.")

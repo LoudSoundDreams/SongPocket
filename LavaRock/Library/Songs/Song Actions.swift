@@ -88,10 +88,16 @@ extension SongsTVC {
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		if Enabling.songDotDotDot {
 			actionSheet.title = {
-				let subjectedCount = selectedMediaItemAndBelow.count
-				return String.localizedStringWithFormat(
-					LocalizedString.format_xSongs,
-					subjectedCount)
+				if selectedMediaItemAndBelow.count == 1 {
+					return String.localizedStringWithFormat(
+						LocalizedString.format_quoted,
+						firstSongTitle)
+				} else {
+					return String.localizedStringWithFormat(
+						LocalizedString.format_songTitleAndXMoreSongs,
+						firstSongTitle,
+						selectedMediaItemAndBelow.count - 1)
+				}
 			}()
 			actionSheet.addAction(playSongAndBelow)
 			actionSheet.addAction(
