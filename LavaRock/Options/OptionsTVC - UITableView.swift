@@ -133,6 +133,7 @@ extension OptionsTVC {
 		switch sectionCase {
 		case .theme:
 			if Self.indexPathsOfLightingRows.contains(indexPath) {
+				// Should never run
 				tableView.deselectRow(at: indexPath, animated: true)
 			} else {
 				didSelectAccentColorRow(at: indexPath)
