@@ -262,10 +262,15 @@ extension CollectionsTVC {
 				.removingRowsInCollectionsSection: // Should never run
 			return
 		case .emptyPlaceholder:
-			if let cell = tableView.cellForRow(at: indexPath) as? OpenMusicCell {
-				cell.didSelect()
+			guard tableView.cellForRow(at: indexPath) is OpenMusicCell else {
+				tableView.deselectRow(at: indexPath, animated: true)
+				return
 			}
-			tableView.deselectRow(at: indexPath, animated: true)
+			Task {
+				let _ = await UIApplication.shared.open(.music) // If iOS shows the ‘Restore “Music”?’ alert, this returns `false`, but before the user responds to the alert, not after, unfortunately.
+				
+				tableView.deselectRow(at: indexPath, animated: true)
+			}
 		case .someCollections:
 			super.tableView(tableView, didSelectRowAt: indexPath)
 		}

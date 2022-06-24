@@ -87,10 +87,6 @@ final class OpenMusicCell: UITableViewCell {
 		
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
-	
-	final func didSelect() {
-		UIApplication.shared.open(.music)
-	}
 }
 extension OpenMusicCell: CellTintingWhenSelected {}
 extension OpenMusicCell: CellConfigurableAsButton {
