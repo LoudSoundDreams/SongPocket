@@ -74,6 +74,22 @@ final class AlbumInfoCell: UITableViewCell {
 	}
 }
 
+final class ExpandedTargetButton: UIButton {
+	final override func point(
+		inside point: CGPoint,
+		with event: UIEvent?
+	) -> Bool {
+		let tappableWidth = max(bounds.width, 44)
+		let tappableHeight = max(bounds.height, 55)
+		let tappableRect = CGRect(
+			x: bounds.midX - tappableWidth/2,
+			y: bounds.midY - tappableHeight/2,
+			width: tappableWidth,
+			height: tappableHeight)
+		return tappableRect.contains(point)
+	}
+}
+
 final class SongCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
@@ -85,7 +101,7 @@ final class SongCell: UITableViewCell {
 	@IBOutlet private var artistLabel: UILabel!
 	@IBOutlet private var spacerNumberLabel: UILabel!
 	@IBOutlet private var numberLabel: UILabel!
-	@IBOutlet private var dotDotDotButton: UIButton!
+	@IBOutlet private var dotDotDotButton: ExpandedTargetButton!
 	
 	final override func awakeFromNib() {
 		super.awakeFromNib()

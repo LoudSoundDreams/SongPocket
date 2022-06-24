@@ -133,11 +133,8 @@
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ASX-qJ-uK1">
-                                            <rect key="frame" x="343.33333333333331" y="2" width="15.666666666666686" height="55"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="55" id="BPB-tm-hVX"/>
-                                            </constraints>
+                                        <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ASX-qJ-uK1" customClass="ExpandedTargetButton" customModule="LavaRock" customModuleProvider="target">
+                                            <rect key="frame" x="343.33333333333331" y="21" width="15.666666666666686" height="17"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="tintColor" systemColor="labelColor"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -168,7 +165,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artistLabel" destination="4ZB-Qq-JY2" id="0Ih-29-wU1"/>
-                                    <outlet property="dotDotDotButton" destination="ASX-qJ-uK1" id="Pov-GT-V3a"/>
+                                    <outlet property="dotDotDotButton" destination="ASX-qJ-uK1" id="wO4-uI-cB6"/>
                                     <outlet property="numberLabel" destination="ATM-N6-nhM" id="cNu-A7-tj6"/>
                                     <outlet property="spacerNumberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                     <outlet property="spacerSpeakerImageView" destination="WdO-9k-h95" id="uiI-23-DKw"/>
