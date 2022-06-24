@@ -137,7 +137,7 @@ extension SongsTVC {
 			title: LocalizedString.openMusic,
 			style: .default
 		) { _ in
-			URL.music?.open()
+			UIApplication.shared.open(.music)
 		}
 		let okAction = UIAlertAction(
 			title: LocalizedString.ok,

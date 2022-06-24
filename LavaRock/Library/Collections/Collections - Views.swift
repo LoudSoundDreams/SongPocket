@@ -89,7 +89,7 @@ final class OpenMusicCell: UITableViewCell {
 	}
 	
 	final func didSelect() {
-		URL.music?.open()
+		UIApplication.shared.open(.music)
 	}
 }
 extension OpenMusicCell: CellTintingWhenSelected {}
