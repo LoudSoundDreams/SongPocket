@@ -27,7 +27,7 @@ extension CollectionsTVC {
 		
 		// Check whether the album artists of the albums we’re moving are all identical.
 	albumArtistIdentical: do {
-		let someAlbumArtist = someAlbum.albumArtistFormattedOrPlaceholder()
+		let someAlbumArtist = someAlbum.representativeAlbumArtistFormattedOrPlaceholder()
 		
 		if
 			let existingTitles = existingTitles,
@@ -37,7 +37,7 @@ extension CollectionsTVC {
 		}
 		
 		if otherAlbums.allSatisfy({
-			$0.albumArtistFormattedOrPlaceholder() == someAlbumArtist
+			$0.representativeAlbumArtistFormattedOrPlaceholder() == someAlbumArtist
 		}) {
 			return someAlbumArtist
 		}

@@ -70,14 +70,14 @@ final class AlbumCell: UITableViewCell {
 				os_signpost(.end, log: .albumsView, name: "Draw cover art")
 			}
 			let maxWidthAndHeight = coverArtView.bounds.width
-			return album.coverArt(at: CGSize(
+			return album.representativeCoverArt(at: CGSize(
 				width: maxWidthAndHeight,
 				height: maxWidthAndHeight))
 		}()
 		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
 		titleLabel.text = { () -> String in
-			if let albumTitle = album.titleFormattedOptional() {
+			if let albumTitle = album.representativeTitleFormattedOptional() {
 				return albumTitle
 			} else {
 				return Album.unknownTitlePlaceholder

@@ -29,7 +29,7 @@ final class CoverArtCell: UITableViewCell {
 				os_signpost(.end, log: .songsView, name: "Draw cover art")
 			}
 			let maxWidthAndHeight = coverArtView.bounds.width
-			return album.coverArt(at: CGSize(
+			return album.representativeCoverArt(at: CGSize(
 				width: maxWidthAndHeight,
 				height: maxWidthAndHeight))
 		}()
@@ -50,7 +50,7 @@ final class AlbumInfoCell: UITableViewCell {
 	
 	final func configure(with album: Album) {
 		mainLabel.text = { () -> String in
-			if let albumArtist = album.albumArtistFormattedOptional() {
+			if let albumArtist = album.representativeAlbumArtistFormattedOptional() {
 				return albumArtist
 			} else {
 				return Album.unknownAlbumArtistPlaceholder

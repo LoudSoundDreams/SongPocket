@@ -37,7 +37,7 @@ extension SongsViewModel: LibraryViewModel {
 				.container(let container),
 				.deleted(let container):
 			let album = container as! Album
-			return album.titleFormattedOrPlaceholder()
+			return album.representativeTitleFormattedOrPlaceholder()
 		}
 	}
 	

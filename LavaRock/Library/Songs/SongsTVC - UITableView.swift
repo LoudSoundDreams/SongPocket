@@ -32,7 +32,7 @@ extension SongsTVC {
 		if Enabling.multialbum {
 			return (viewModel as? SongsViewModel)?
 				.album(for: SectionIndex(section))
-				.titleFormattedOrPlaceholder()
+				.representativeTitleFormattedOrPlaceholder()
 		} else {
 			return nil
 		}

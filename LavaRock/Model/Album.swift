@@ -12,7 +12,7 @@ import OSLog
 extension Album: LibraryItem {
 	// Enables `[Album].reindex()`
 	
-	var libraryTitle: String? { titleFormattedOptional() }
+	var libraryTitle: String? { representativeTitleFormattedOptional() }
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {
@@ -249,18 +249,18 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	final func coverArt(at size: CGSize) -> UIImage? {
+	final func representativeCoverArt(at size: CGSize) -> UIImage? {
 		return representativeSongMetadatum()?.coverArt(at: size)
 	}
 	
 	static let unknownTitlePlaceholder = LocalizedString.unknownAlbum
-	final func titleFormattedOrPlaceholder() -> String {
-		guard let title = titleFormattedOptional() else {
+	final func representativeTitleFormattedOrPlaceholder() -> String {
+		guard let title = representativeTitleFormattedOptional() else {
 			return Self.unknownTitlePlaceholder
 		}
 		return title
 	}
-	final func titleFormattedOptional() -> String? {
+	final func representativeTitleFormattedOptional() -> String? {
 		guard
 			let title = representativeSongMetadatum()?.albumTitleOnDisk,
 			title != ""
@@ -271,13 +271,13 @@ extension Album {
 	}
 	
 	static let unknownAlbumArtistPlaceholder: String = LocalizedString.unknownAlbumArtist
-	final func albumArtistFormattedOrPlaceholder() -> String {
-		guard let albumArtist = albumArtistFormattedOptional() else {
+	final func representativeAlbumArtistFormattedOrPlaceholder() -> String {
+		guard let albumArtist = representativeAlbumArtistFormattedOptional() else {
 			return Self.unknownAlbumArtistPlaceholder
 		}
 		return albumArtist
 	}
-	final func albumArtistFormattedOptional() -> String? {
+	final func representativeAlbumArtistFormattedOptional() -> String? {
 		guard
 			let albumArtist = representativeSongMetadatum()?.albumArtistOnDisk, // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
 			albumArtist != ""

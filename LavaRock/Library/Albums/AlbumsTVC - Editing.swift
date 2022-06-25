@@ -115,7 +115,7 @@ extension AlbumsTVC {
 		albumsInOriginalContextToMaybeMove.forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
-			let titleOfDestinationCollection = album.albumArtistFormattedOrPlaceholder()
+			let titleOfDestinationCollection = album.representativeAlbumArtistFormattedOrPlaceholder()
 			
 			guard album.container!.title != titleOfDestinationCollection else {
 				idsOfUnmovedAlbums.insert(album.objectID)
