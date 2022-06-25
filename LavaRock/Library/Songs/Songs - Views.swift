@@ -28,10 +28,10 @@ final class CoverArtCell: UITableViewCell {
 			defer {
 				os_signpost(.end, log: .songsView, name: "Draw cover art")
 			}
-			let maxWidthAndHeight = coverArtView.bounds.width
-			return album.representativeCoverArt(at: CGSize(
-				width: maxWidthAndHeight,
-				height: maxWidthAndHeight))
+			let widthAndHeightInPoints = coverArtView.bounds.width
+			return album.representativeSongMetadatum()?.coverArt(sizeInPoints: CGSize(
+				width: widthAndHeightInPoints,
+				height: widthAndHeightInPoints))
 		}()
 		os_signpost(.end, log: .songsView, name: "Set cover art")
 	}

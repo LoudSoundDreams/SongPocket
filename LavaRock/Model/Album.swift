@@ -249,10 +249,6 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	final func representativeCoverArt(at size: CGSize) -> UIImage? {
-		return representativeSongMetadatum()?.coverArt(at: size)
-	}
-	
 	static let unknownTitlePlaceholder = LocalizedString.unknownAlbum
 	final func representativeTitleFormattedOrPlaceholder() -> String {
 		guard let title = representativeTitleFormattedOptional() else {

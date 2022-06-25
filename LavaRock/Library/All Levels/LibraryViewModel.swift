@@ -425,6 +425,8 @@ extension LibraryViewModel {
 		itemsAtInAnyOrder rowsInAnyOrder: [RowIndex],
 		in section: SectionIndex
 	) -> [NSManagedObject] {
+		// We could use Swift Algorithms's `MutableCollection.stablePartition` for this.
+		
 		let rows = rowsInAnyOrder.sorted()
 		let indicesOfSelectedItems = rows.map {
 			itemIndex(for: $0)

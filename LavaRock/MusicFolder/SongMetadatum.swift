@@ -7,6 +7,7 @@
 
 import UIKit
 import MediaPlayer
+import os
 
 typealias AlbumID = Int64
 typealias SongID = Int64
@@ -29,7 +30,7 @@ protocol SongMetadatum {
 	var dateAddedOnDisk: Date { get }
 	var releaseDateOnDisk: Date? { get }
 	
-	func coverArt(at size: CGSize) -> UIImage?
+	func coverArt(sizeInPoints: CGSize) -> UIImage?
 }
 
 extension MPMediaItem: SongMetadatum {
@@ -52,8 +53,13 @@ extension MPMediaItem: SongMetadatum {
 	final var dateAddedOnDisk: Date { dateAdded }
 	final var releaseDateOnDisk: Date? { releaseDate }
 	
-	final func coverArt(at size: CGSize) -> UIImage? {
-		return artwork?.image(at: size)
+	func coverArt(sizeInPoints: CGSize) -> UIImage? {
+		let signposter = OSSignposter()
+		let state = signposter.beginInterval("Draw cover art")
+		defer {
+			signposter.endInterval("Draw cover art", state)
+		}
+		return artwork?.image(at: sizeInPoints)
 	}
 }
 
@@ -94,7 +100,12 @@ struct Sim_SongMetadatum: SongMetadatum {
 	let dateAddedOnDisk: Date
 	let releaseDateOnDisk: Date?
 	
-	func coverArt(at size: CGSize) -> UIImage? {
+	func coverArt(sizeInPoints: CGSize) -> UIImage? {
+		let signposter = OSSignposter()
+		let state = signposter.beginInterval("Sim: draw cover art")
+		defer {
+			signposter.endInterval("Sim: draw cover art", state)
+		}
 		guard let fileName = coverArtFileName else {
 			return nil
 		}

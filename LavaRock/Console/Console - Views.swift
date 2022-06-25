@@ -32,10 +32,9 @@ final class QueueCell: UITableViewCell {
 	}
 	
 	final func configure(with metadatum: SongMetadatum) {
-		coverArtView.image = metadatum.coverArt(
-			at: CGSize(
-				width: coverArtView.frame.width,
-				height: coverArtView.frame.height))
+		coverArtView.image = metadatum.coverArt(sizeInPoints: CGSize(
+			width: coverArtView.frame.width,
+			height: coverArtView.frame.height))
 		
 		// Don’t let these be `nil`.
 		titleLabel.text = { () -> String in

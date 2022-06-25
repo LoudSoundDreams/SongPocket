@@ -63,16 +63,18 @@ final class AlbumCell: UITableViewCell {
 		with album: Album,
 		mode: Mode
 	) {
+		let representative = album.representativeSongMetadatum() // Can be `nil`
+		
 		os_signpost(.begin, log: .albumsView, name: "Set cover art")
 		coverArtView.image = {
 			os_signpost(.begin, log: .albumsView, name: "Draw cover art")
 			defer {
 				os_signpost(.end, log: .albumsView, name: "Draw cover art")
 			}
-			let maxWidthAndHeight = coverArtView.bounds.width
-			return album.representativeCoverArt(at: CGSize(
-				width: maxWidthAndHeight,
-				height: maxWidthAndHeight))
+			let widthAndHeightInPoints = coverArtView.bounds.width
+			return representative?.coverArt(sizeInPoints: CGSize(
+				width: widthAndHeightInPoints,
+				height: widthAndHeightInPoints))
 		}()
 		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
