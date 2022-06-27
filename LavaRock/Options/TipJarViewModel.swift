@@ -36,8 +36,7 @@ final class TipJarViewModel: ObservableObject {
 	@Published var status: Status = .notYetFirstLoaded {
 		didSet {
 			switch self.status {
-			case .notYetFirstLoaded:
-				// Should never run
+			case .notYetFirstLoaded: // Should never run
 				break
 			case .loading:
 				ui?.statusBecameLoading()

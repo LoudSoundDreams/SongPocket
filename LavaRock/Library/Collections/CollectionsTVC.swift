@@ -197,8 +197,7 @@ final class CollectionsTVC:
 		switch purpose {
 		case .willOrganizeAlbums(let stickyNote):
 			navigationItem.prompt = stickyNote.prompt
-		case .organizingAlbums:
-			// Should never run
+		case .organizingAlbums: // Should never run
 			break
 		case .movingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
@@ -227,8 +226,7 @@ final class CollectionsTVC:
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
-		case .organizingAlbums:
-			// Should never run
+		case .organizingAlbums: // Should never run
 			break
 		case .movingAlbums:
 			viewingModeTopLeftButtons = []
@@ -252,8 +250,7 @@ final class CollectionsTVC:
 		case .willOrganizeAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton
 			navigationController?.setToolbarHidden(false, animated: false)
-		case .organizingAlbums:
-			// Should never run
+		case .organizingAlbums: // Should never run
 			break
 		case .movingAlbums:
 			navigationItem.rightBarButtonItem = cancelAndDismissButton

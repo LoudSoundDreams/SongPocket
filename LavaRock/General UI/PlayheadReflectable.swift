@@ -15,6 +15,9 @@ protocol CachesBodyOfAccessibilityLabel {
 
 @MainActor
 protocol _PlayheadReflectable: AnyObject {
+	// Adopting types must …
+	// • Call `reflectPlayhead` whenever appropriate.
+	
 	var spacerSpeakerImageView: UIImageView! { get }
 	var speakerImageView: UIImageView! { get }
 	var accessibilityLabel: String? { get set }
