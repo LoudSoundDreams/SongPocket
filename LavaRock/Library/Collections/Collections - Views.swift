@@ -157,24 +157,24 @@ final class CollectionCell: UITableViewCell {
 		case .normal:
 			removeBackground()
 			
-			titleLabel.textColor = .label
+			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
 		case .modal:
 			removeBackground()
 			
-			titleLabel.textColor = .label
+			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
 		case .modalTinted:
 			backgroundColor = .tintColor.translucentFaint()
 			
-			titleLabel.textColor = .label
+			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
 			
 			
 		case .modalDisabled:
 			removeBackground()
 			
-			titleLabel.textColor = .placeholderText
+			contentView.layer.opacity = .oneFourth
 			disableWithAccessibilityTrait()
 		}
 		
