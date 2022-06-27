@@ -9,10 +9,10 @@ import UIKit
 
 extension UIColor {
 	final func translucentFaint() -> UIColor {
-		return withAlphaComponent(0.125)
+		return withAlphaComponent(.oneEighth)
 	}
 	
 	final func translucent() -> UIColor {
-		return withAlphaComponent(0.5)
+		return withAlphaComponent(.oneHalf)
 	}
 }
