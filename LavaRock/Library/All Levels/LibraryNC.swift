@@ -28,8 +28,6 @@ final class LibraryNC: UINavigationController {
 		super.init(coder: coder)
 	}
 	
-	private static var hasMovedLightingToWindow = false
-	private static var hasCopiedAccentColorToWindow = false
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		if let window = view.window {
@@ -44,4 +42,6 @@ final class LibraryNC: UINavigationController {
 			}
 		}
 	}
+	private static var hasMovedLightingToWindow = false
+	private static var hasCopiedAccentColorToWindow = false
 }
