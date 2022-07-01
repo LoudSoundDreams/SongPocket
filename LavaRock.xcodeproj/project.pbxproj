@@ -63,6 +63,8 @@
 		0781F1F12599181800781CF8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0781F1F02599181800781CF8 /* StoreKit.framework */; };
 		0781F1FA25991B3300781CF8 /* OptionsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */; };
 		078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078307B32512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift */; };
+		0783DC16286EA65E00A9A4F7 /* Sim_SongMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC15286EA65E00A9A4F7 /* Sim_SongMetadatum.swift */; };
+		0783DC18286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC17286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift */; };
 		07843FEB2851A31D000FA316 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07843FEA2851A31D000FA316 /* Sequence.swift */; };
 		0785C49E2793460100B1E7FC /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785C49D2793460100B1E7FC /* OptionsView.swift */; };
 		0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0787CB0927A376400068C2E5 /* UIViewController.swift */; };
@@ -204,6 +206,8 @@
 		0781F1F52599184700781CF8 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		078307B32512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + MoveAlbumsDelegate.swift"; sourceTree = "<group>"; };
+		0783DC15286EA65E00A9A4F7 /* Sim_SongMetadatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sim_SongMetadatum.swift; sourceTree = "<group>"; };
+		0783DC17286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPMediaItem + SongMetadatum.swift"; sourceTree = "<group>"; };
 		07843FEA2851A31D000FA316 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		0785C49D2793460100B1E7FC /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		0787CB0927A376400068C2E5 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -483,6 +487,8 @@
 			isa = PBXGroup;
 			children = (
 				07DF65D127766C95003B2EA3 /* SongMetadatum.swift */,
+				0783DC15286EA65E00A9A4F7 /* Sim_SongMetadatum.swift */,
+				0783DC17286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift */,
 				079B2C9424E227BF00A949FA /* MusicFolder.swift */,
 				0703ED2424E8D0DA002EF1B4 /* mergeChanges.swift */,
 				07A4F9042519E72C0065C87E /* updateLibraryItems.swift */,
@@ -757,6 +763,7 @@
 				07E0BBDD276567760010117E /* Notification.Name.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */,
 				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
+				0783DC18286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift in Sources */,
 				07A7989127A8ABB1007B70AA /* ConsoleView.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* createLibraryItems.swift in Sources */,
 				072FD02726C30BB90053369B /* cleanUpLibraryItems.swift in Sources */,
@@ -817,6 +824,7 @@
 				07A4F90F2519E8410065C87E /* deleteLibraryItems.swift in Sources */,
 				07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */,
 				071A0B9E277E76510017F76D /* LavaRockApp.swift in Sources */,
+				0783DC16286EA65E00A9A4F7 /* Sim_SongMetadatum.swift in Sources */,
 				075D904427F02F5B00BD8F3E /* ConsoleVC - Notifications.swift in Sources */,
 				07E92A0E2510497B00E9073B /* Song Actions.swift in Sources */,
 				07843FEB2851A31D000FA316 /* Sequence.swift in Sources */,
