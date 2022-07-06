@@ -113,14 +113,6 @@ final class SongCell: UITableViewCell {
 		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
 		numberLabel.font = spacerNumberLabel.font
 		
-		if Enabling.songDotDotDot {
-		} else {
-			dotDotDotButton.removeFromSuperview()
-			NSLayoutConstraint.activate([
-				spacerSpeakerImageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-			])
-		}
-		
 		accessibilityTraits.formUnion(.button)
 	}
 	
@@ -199,8 +191,6 @@ final class SongCell: UITableViewCell {
 		accessibilityUserInputLabels = [
 			metadatum?.titleOnDisk,
 		].compacted()
-		
-		guard Enabling.songDotDotDot else { return }
 		
 		let menu: UIMenu?
 		defer {

@@ -33,19 +33,10 @@ extension SongsTVC {
 		
 		// Play now
 		let playSongAndBelow = UIAlertAction(
-			title: Enabling.songDotDotDot
-			? LocalizedString.play
-			: LocalizedString.playSongAndBelow,
+			title: LocalizedString.play,
 			style: .default
 		) { _ in
 			player.playNow(selectedMediaItemAndBelow)
-			deselectSelectedSong()
-		}
-		let playSong = UIAlertAction(
-			title: LocalizedString.playSong,
-			style: .default
-		) { _ in
-			player.playNow([selectedMediaItem])
 			deselectSelectedSong()
 		}
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
@@ -55,24 +46,12 @@ extension SongsTVC {
 			selectedMediaItem.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
 		}()
 		let appendSongAndBelow = UIAlertAction(
-			title: Enabling.songDotDotDot
-			? LocalizedString.playLast
-			: LocalizedString.queueSongAndBelow,
+			title: LocalizedString.playLast,
 			style: .default
 		) { _ in
 			player.playLast(selectedMediaItemAndBelow)
 			self.alertWillPlayLaterIfShould(
 				havingAppendedSongCount: selectedMediaItemAndBelow.count,
-				firstSongTitle: firstSongTitle)
-			deselectSelectedSong()
-		}
-		let appendSong = UIAlertAction(
-			title: LocalizedString.queueSong,
-			style: .default
-		) { _ in
-			player.playLast([selectedMediaItem])
-			self.alertWillPlayLaterIfShould(
-				havingAppendedSongCount: 1,
 				firstSongTitle: firstSongTitle)
 			deselectSelectedSong()
 		}
@@ -86,42 +65,31 @@ extension SongsTVC {
 			message: nil,
 			preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
-		if Enabling.songDotDotDot {
-			actionSheet.title = {
-				if selectedMediaItemAndBelow.count == 1 {
-					return String.localizedStringWithFormat(
-						LocalizedString.format_quoted,
-						firstSongTitle)
-				} else {
-					return String.localizedStringWithFormat(
-						LocalizedString.format_songTitleAndXMoreSongs,
-						firstSongTitle,
-						selectedMediaItemAndBelow.count - 1)
-				}
-			}()
-			actionSheet.addAction(playSongAndBelow)
-			actionSheet.addAction(
-				// Play next
-				UIAlertAction(
-					title: LocalizedString.playNext,
-					style: .default
-				) { _ in
-					player.playNext(selectedMediaItemAndBelow)
-					// TO DO: Show “Will Play Next” alert if not enabling Player screen
-					deselectSelectedSong()
-				}
-			)
-			actionSheet.addAction(appendSongAndBelow)
-		} else {
+		actionSheet.title = {
 			if selectedMediaItemAndBelow.count == 1 {
-				playSongAndBelow.isEnabled = false
-				appendSongAndBelow.isEnabled = false
+				return String.localizedStringWithFormat(
+					LocalizedString.format_quoted,
+					firstSongTitle)
+			} else {
+				return String.localizedStringWithFormat(
+					LocalizedString.format_songTitleAndXMoreSongs,
+					firstSongTitle,
+					selectedMediaItemAndBelow.count - 1)
 			}
-			actionSheet.addAction(playSongAndBelow)
-			actionSheet.addAction(playSong)
-			actionSheet.addAction(appendSongAndBelow)
-			actionSheet.addAction(appendSong)
-		}
+		}()
+		actionSheet.addAction(playSongAndBelow)
+		actionSheet.addAction(
+			// Play next
+			UIAlertAction(
+				title: LocalizedString.playNext,
+				style: .default
+			) { _ in
+				player.playNext(selectedMediaItemAndBelow)
+				// TO DO: Show “Will Play Next” alert if not enabling Player screen
+				deselectSelectedSong()
+			}
+		)
+		actionSheet.addAction(appendSongAndBelow)
 		actionSheet.addAction(cancel)
 		present(actionSheet, animated: true)
 	}
