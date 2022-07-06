@@ -27,9 +27,8 @@ final class OrganizeAlbumsClipboard {
 	private(set) weak var delegate: OrganizeAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
-			Enabling.multicollection
-			? LocalizedString.format_organizeIntoXSectionsByAlbumArtistQuestionMark
-			: LocalizedString.format_organizeIntoXCollectionsByAlbumArtistQuestionMark,
+			LocalizedString.format_organizeIntoXCollectionsByAlbumArtistQuestionMark,
+			idsOfSubjectedAlbums.count,
 			idsOfCollectionsContainingMovedAlbums.count)
 	}
 	

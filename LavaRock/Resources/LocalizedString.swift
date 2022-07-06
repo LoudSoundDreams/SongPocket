@@ -204,12 +204,9 @@ struct LocalizedString {
 	
 	// MARK: Collections and Albums Views // MC2DO: Edit
 	
-	static let format_organizeIntoXSectionsByAlbumArtistQuestionMark = NSLocalizedString(
-		"plural - organize_into_X_sections_by_album_artist",
-		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of sections the app is moving the albums into.")
 	static let format_organizeIntoXCollectionsByAlbumArtistQuestionMark = NSLocalizedString(
 		"plural - organize_into_X_collections_by_album_artist",
-		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of collections the app is moving the albums into.") // MC2DO: Delete
+		comment: "Prompt that appears at the top of the “organize albums” sheet. Include the number of collections the app is moving the albums into.") // MC2DO: Edit
 	
 	static let format_chooseASectiontoMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_section",
