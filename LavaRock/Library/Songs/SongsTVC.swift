@@ -48,8 +48,6 @@ final class SongsTVC:
 		]
 		
 		super.setUpBarButtons()
-		
-		navigationItem.rightBarButtonItem = editButtonItem
 	}
 	
 	final override func viewWillAppear(_ animated: Bool) {

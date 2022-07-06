@@ -88,13 +88,18 @@ final class AlbumsTVC:
 	final override func setUpBarButtons() {
 		switch purpose {
 		case .organizingAlbums:
+			viewingModeTopRightButtons = [
+				cancelAndDismissButton,
+			]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				saveOrganizeButton,
 				.flexibleSpace(),
 			]
 		case .movingAlbums:
-			break
+			viewingModeTopRightButtons = [
+				cancelAndDismissButton,
+			]
 		case .browsing:
 			editingModeToolbarButtons = [
 				moveOrOrganizeButton, .flexibleSpace(),
@@ -105,15 +110,6 @@ final class AlbumsTVC:
 		}
 		
 		super.setUpBarButtons()
-		
-		switch purpose {
-		case .organizingAlbums:
-			navigationItem.rightBarButtonItem = cancelAndDismissButton
-		case .movingAlbums:
-			navigationItem.rightBarButtonItem = cancelAndDismissButton
-		case .browsing:
-			navigationItem.rightBarButtonItem = editButtonItem
-		}
 	}
 	
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {

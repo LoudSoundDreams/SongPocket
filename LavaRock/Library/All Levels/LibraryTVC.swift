@@ -28,7 +28,16 @@ class LibraryTVC: UITableViewController {
 	
 	// Controls
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
-	private lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [.flexibleSpace()]
+	final lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [
+		.flexibleSpace(),
+	]
+	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = [
+		// Right to left
+		editButtonItem,
+	]
+	final lazy var editingModeTopRightButtons: [UIBarButtonItem] = [
+		editButtonItem,
+	]
 	final lazy var viewingModeToolbarButtons = (navigationController as? LibraryNC)?.transportBar.buttons
 	
 	// MARK: Subclasses Should Not Customize
@@ -315,6 +324,11 @@ class LibraryTVC: UITableViewController {
 			editing
 			? editingModeTopLeftButtons
 			: viewingModeTopLeftButtons,
+			animated: animated)
+		navigationItem.setRightBarButtonItems(
+			editing
+			? editingModeTopRightButtons
+			: viewingModeTopRightButtons,
 			animated: animated)
 		
 		setToolbarItems(

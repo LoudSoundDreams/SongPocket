@@ -222,6 +222,9 @@ final class CollectionsTVC:
 		case .willOrganizeAlbums:
 			viewingModeTopLeftButtons = [
 			]
+			viewingModeTopRightButtons = [
+				cancelAndDismissButton,
+			]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				saveOrganizeButton,
@@ -231,6 +234,9 @@ final class CollectionsTVC:
 			break
 		case .movingAlbums:
 			viewingModeTopLeftButtons = [
+			]
+			viewingModeTopRightButtons = [
+				cancelAndDismissButton,
 			]
 		case .browsing:
 			let optionsButton: UIBarButtonItem = Enabling.swiftUI__options
@@ -251,14 +257,12 @@ final class CollectionsTVC:
 		
 		switch purpose {
 		case .willOrganizeAlbums:
-			navigationItem.rightBarButtonItem = cancelAndDismissButton
 			navigationController?.setToolbarHidden(false, animated: false)
 		case .organizingAlbums: // Should never run
 			break
 		case .movingAlbums:
-			navigationItem.rightBarButtonItem = cancelAndDismissButton
+			break
 		case .browsing:
-			navigationItem.rightBarButtonItem = editButtonItem
 			navigationController?.setToolbarHidden(false, animated: false) // TO DO: Move this to `LibraryNC`
 		}
 	}
