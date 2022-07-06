@@ -53,7 +53,7 @@
 	<key>plural - organize_into_X_collections_by_album_artist</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Organize %#@NUMBER_ALBUMS@ into %#@NUMBER_COLLECTIONS@?</string>
+		<string>Organize %#@NUMBER_ALBUMS@ by %#@NUMBER_COLLECTIONS@?</string>
 		<key>NUMBER_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -72,25 +72,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld collection</string>
+			<string>%lld album artist</string>
 			<key>other</key>
-			<string>%lld collections</string>
-		</dict>
-	</dict>
-	<key>plural - move_albums_to_section</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CHOOSE_A_SECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
-		<key>CHOOSE_A_SECTION_TO_MOVE_NUMBER_ALBUMS_TO</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>one</key>
-			<string>Choose a section to move %lld album to.</string>
-			<key>other</key>
-			<string>Choose a section to move %lld albums to.</string>
+			<string>%lld album artists</string>
 		</dict>
 	</dict>
 	<key>plural - move_albums_to_collection</key>

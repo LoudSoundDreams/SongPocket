@@ -154,12 +154,16 @@ struct LocalizedString {
 	static let playNext = NSLocalizedString("Play Next", comment: "Button")
 	static let playLast = NSLocalizedString("Play Last", comment: "Button")
 //	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
-	static let playingNext = NSLocalizedString("Playing Next", comment: "Alert title")
-	static let playingLast = NSLocalizedString("Playing Last", comment: "Alert title")
-//	static let openMusicToEditTheQueue = NSLocalizedString(
-//		"[alert message] did_enqueue_songs",
-//		value: "Open Music to Edit the Queue",
-//		comment: "Title of the alert that appears after the user adds songs to the queue.")
+	static let prefix_playingNext = NSLocalizedString("Playing Next: ", comment: "Alert title")
+	static let prefix_playingLast = NSLocalizedString("Playing Last: ", comment: "Alert title")
+//	static let playingNext = NSLocalizedString("Playing Next", comment: "Alert title")
+//	static let playingLast = NSLocalizedString("Playing Last", comment: "Alert title")
+	static let sentence_openMusicToEditTheQueue = NSLocalizedString(
+		"Open Music to edit the queue.",
+		comment: "Alert message")
+//	static let title_openMusicToEditTheQueue = NSLocalizedString(
+//		"Open Music to Edit the Queue",
+//		comment: "Alert title")
 	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button")
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
@@ -210,10 +214,10 @@ struct LocalizedString {
 	
 	// MARK: Songs View
 	
-	static let format_sentenceCase_songTitleAndXMoreSongs = NSLocalizedString(
-		"plural - sentence case - SONG_TITLE_and_X_more_songs",
-		comment: "Title of the action sheet that appears after the user taps a song. Include the title of the song. Also, if the actions will apply to 2 songs, include “and 1 More Song”, and if they’ll apply to 3 songs, include “and 2 More Songs”, and so on.")
-	static let format_titleCase_songTitleAndXMoreSongs = NSLocalizedString(
+//	static let format_sentenceCase_songTitleAndXMoreSongs = NSLocalizedString(
+//		"plural - sentence case - SONG_TITLE_and_X_more_songs",
+//		comment: "The title of a song, wrapped in quotation marks, plus “and 1 more song”, “and 2 more songs”, or so on.")
+	static let format_title_songTitleAndXMoreSongs = NSLocalizedString(
 		"plural - title case - SONG_TITLE_and_X_more_songs",
-		comment: "Title of the action sheet that appears after the user taps a song. Include the title of the song. Also, if the actions will apply to 2 songs, include “and 1 More Song”, and if they’ll apply to 3 songs, include “and 2 More Songs”, and so on.")
+		comment: "The title of a song, wrapped in quotation marks, plus “and 1 More Song”, “and 2 More Songs”, or so on.")
 }
