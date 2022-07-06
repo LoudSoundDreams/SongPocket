@@ -58,8 +58,7 @@ struct LocalizedString {
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
 	static let tipJarFooter = NSLocalizedString(
-		"[footer] options_tip_jar",
-		value: "Thank you for using Songpocket, my pride and joy.",
+		"Thank you for using Songpocket, my pride and joy.",
 		comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
@@ -94,8 +93,7 @@ struct LocalizedString {
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
-		"[placeholder] empty_database",
-		value: "Add music to your library from Apple Music, your computer, or the iTunes Store.",
+		"Add music to your library from Apple Music, your computer, or the iTunes Store.",
 		comment: "Placeholder for when the app’s database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
@@ -178,8 +176,7 @@ struct LocalizedString {
 	// MARK: Songs View
 	
 	static let format_quoted = NSLocalizedString(
-		"quoted",
-		value: "“%@”",
+		"“%@”",
 		comment: "The input string, wrapped in quotation marks.")
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
