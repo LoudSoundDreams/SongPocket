@@ -122,18 +122,21 @@ final class SongCell: UITableViewCell {
 		freshenDotDotDotButton()
 	}
 	
-	final func configureWith(
+	final func configureWith<
+		AlertPresenter: CanPresentOpenMusicAlert
+	>(
 		song: Song,
 		albumRepresentative representative: SongMetadatum?,
-		spacerTrackNumberText: String?
+		spacerTrackNumberText: String?,
+		alertPresenter: Weak<AlertPresenter>
 	) {
 		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
+		let songDisplayTitle: String = {
+			metadatum?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
+		}()
+		
 		titleLabel.text = { () -> String in
-			if let songTitle = metadatum?.titleOnDisk {
-				return songTitle
-			} else {
-				return SongMetadatumPlaceholder.unknownTitle
-			}
+			songDisplayTitle
 		}()
 		artistLabel.text = {
 			let albumArtist = representative?.albumArtistOnDisk // Can be `nil`
@@ -208,25 +211,30 @@ final class SongCell: UITableViewCell {
 					UIAction(
 						title: LocalizedString.play,
 						image: UIImage(systemName: "play")
-					) { _ in
-						// ARC2DO
-						self.player?.playNow([mediaItem])
+					) { [weak self] _ in
+						self?.player?.playNow([mediaItem])
 					},
 				],
 				[
 					UIAction(
 						title: LocalizedString.playNext,
 						image: UIImage(systemName: "text.insert")
-					) { _ in
-						// ARC2DO
-						self.player?.playNext([mediaItem])
+					) { [weak self] _ in
+						self?.player?.playNext([mediaItem])
+						alertPresenter.referencee?.maybeAlertOpenMusic(
+							willPlayNextAsOpposedToLast: true,
+							havingVerbedSongCount: 1,
+							firstSongTitle: songDisplayTitle)
 					},
 					UIAction(
 						title: LocalizedString.playLast,
 						image: UIImage(systemName: "text.append")
-					) { _ in
-						// ARC2DO
-						self.player?.playLast([mediaItem])
+					) { [weak self] _ in
+						self?.player?.playLast([mediaItem])
+						alertPresenter.referencee?.maybeAlertOpenMusic(
+							willPlayNextAsOpposedToLast: false,
+							havingVerbedSongCount: 1,
+							firstSongTitle: songDisplayTitle)
 					},
 				],
 			])

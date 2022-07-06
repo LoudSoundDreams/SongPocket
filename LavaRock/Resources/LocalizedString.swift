@@ -152,11 +152,11 @@ struct LocalizedString {
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 //	static let playSongAndBelow = NSLocalizedString("Play Song and Below", comment: "Button")
 //	static let queueSongAndBelow = NSLocalizedString("Queue Song and Below", comment: "Button")
-	static let playSong = NSLocalizedString("Play Song", comment: "Button")
+//	static let playSong = NSLocalizedString("Play Song", comment: "Button")
 	static let playNext = NSLocalizedString("Play Next", comment: "Button")
 	static let playLast = NSLocalizedString("Play Last", comment: "Button")
-	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
-	static let didEnqueueSongsAlertMessage = NSLocalizedString(
+//	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
+	static let openMusicToEditTheQueue = NSLocalizedString(
 		"[alert message] did_enqueue_songs",
 		value: "Open Music to edit the queue.",
 		comment: "Body text of the alert that appears after the user adds songs to the queue.")
@@ -179,10 +179,14 @@ struct LocalizedString {
 		"quoted",
 		value: "“%@”",
 		comment: "The input string, wrapped in quotation marks.")
-	static let format_didEnqueueOneSongAlertTitle = NSLocalizedString(
-		"[alert title] did_enqueue_one_song",
-		value: "“%@” Will Play Later",
-		comment: "Title of the alert that appears after the user adds one song to the queue. Include the title of the song. If the user added 2 or more songs, include “and 1 More Song”, and so on.")
+	static let format_didPrependOneSong = NSLocalizedString(
+		"[alert title] did_prepend_one_song",
+		value: "“%@” Will Play Next",
+		comment: "Title of the alert that appears after the user applies “Play Next” to one song. Include the title of the song.")
+	static let format_didAppendOneSong = NSLocalizedString(
+		"[alert title] did_append_one_song",
+		value: "“%@” Will Play Last",
+		comment: "Title of the alert that appears after the user applies “Play Last” to one song. Include the title of the song.")
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
 	
@@ -225,7 +229,10 @@ struct LocalizedString {
 	static let format_songTitleAndXMoreSongs = NSLocalizedString(
 		"plural - SONG_TITLE_and_X_more_songs",
 		comment: "Title of the action sheet that appears after the user taps a song. Include the title of the song. Also, if the actions will apply to 2 songs, include “and 1 More Song”, and if they’ll apply to 3 songs, include “and 2 More Songs”, and so on.")
-	static let format_didEnqueueMultipleSongsAlertTitle = NSLocalizedString(
-		"plural - did_enqueue_multiple_songs",
-		comment: "Title of the alert that appears after the user adds multiple songs to the queue. Include the title of the song. Also, if the user added 2 songs, include “and 1 More Song”, and if they added 3 songs, include “and 2 More Songs”, and so on.")
+	static let format_didPrependMultipleSongs = NSLocalizedString(
+		"plural - did_prepend_multiple_songs",
+		comment: "Title of the alert that appears after the user applies “Play Next” to multiple songs. Include the title of the first song. If the user added 2 songs, include “and 1 More Song”, and if they added 3 songs, include “and 2 More Songs”, and so on.")
+	static let format_didAppendMultipleSongs = NSLocalizedString(
+		"plural - did_append_multiple_songs",
+		comment: "Title of the alert that appears after the user applies “Play Last” to multiple . Include the title of the first song. If the user added 2 songs, include “and 1 More Song”, and if they added 3 songs, include “and 2 More Songs”, and so on.")
 }

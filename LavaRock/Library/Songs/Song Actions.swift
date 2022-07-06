@@ -30,35 +30,9 @@ extension SongsTVC {
 		= viewModel
 			.itemsInGroup(startingAt: selectedIndexPath)
 			.compactMap { ($0 as? Song)?.mpMediaItem() }
-		
-		// Play now
-		let playSongAndBelow = UIAlertAction(
-			title: LocalizedString.play,
-			style: .default
-		) { _ in
-			player.playNow(selectedMediaItemAndBelow)
-			deselectSelectedSong()
-		}
-		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.
-		
-		// Play last
 		let firstSongTitle: String = {
 			selectedMediaItem.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
 		}()
-		let appendSongAndBelow = UIAlertAction(
-			title: LocalizedString.playLast,
-			style: .default
-		) { _ in
-			player.playLast(selectedMediaItemAndBelow)
-			self.alertWillPlayLaterIfShould(
-				havingAppendedSongCount: selectedMediaItemAndBelow.count,
-				firstSongTitle: firstSongTitle)
-			deselectSelectedSong()
-		}
-		
-		let cancel = UIAlertAction.cancel { _ in
-			deselectSelectedSong()
-		}
 		
 		let actionSheet = UIAlertController(
 			title: nil,
@@ -77,25 +51,54 @@ extension SongsTVC {
 					selectedMediaItemAndBelow.count - 1)
 			}
 		}()
-		actionSheet.addAction(playSongAndBelow)
 		actionSheet.addAction(
-			// Play next
+			UIAlertAction(
+				title: LocalizedString.play,
+				style: .default
+			) { _ in
+				player.playNow(selectedMediaItemAndBelow)
+				deselectSelectedSong()
+			}
+			// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		)
+		actionSheet.addAction(
 			UIAlertAction(
 				title: LocalizedString.playNext,
 				style: .default
 			) { _ in
 				player.playNext(selectedMediaItemAndBelow)
-				// TO DO: Show “Will Play Next” alert if not enabling Player screen
+				self.maybeAlertOpenMusic(
+					willPlayNextAsOpposedToLast: true,
+					havingVerbedSongCount: selectedMediaItemAndBelow.count,
+					firstSongTitle: firstSongTitle)
 				deselectSelectedSong()
 			}
 		)
-		actionSheet.addAction(appendSongAndBelow)
-		actionSheet.addAction(cancel)
+		actionSheet.addAction(
+			UIAlertAction(
+				title: LocalizedString.playLast,
+				style: .default
+			) { _ in
+				player.playLast(selectedMediaItemAndBelow)
+				self.maybeAlertOpenMusic(
+					willPlayNextAsOpposedToLast: false,
+					havingVerbedSongCount: selectedMediaItemAndBelow.count,
+					firstSongTitle: firstSongTitle)
+				deselectSelectedSong()
+			}
+		)
+		actionSheet.addAction(
+			UIAlertAction.cancel { _ in
+				deselectSelectedSong()
+			}
+		)
 		present(actionSheet, animated: true)
 	}
-	
-	private func alertWillPlayLaterIfShould(
-		havingAppendedSongCount songCount: Int,
+}
+extension SongsTVC: CanPresentOpenMusicAlert {
+	func maybeAlertOpenMusic(
+		willPlayNextAsOpposedToLast: Bool,
+		havingVerbedSongCount songCount: Int,
 		firstSongTitle: String
 	) {
 		if Enabling.console {
@@ -133,17 +136,31 @@ extension SongsTVC {
 		let alert = UIAlertController(
 			title: {
 				if songCount == 1 {
+					// No plural rules required.
+					let formatString: String
+					if willPlayNextAsOpposedToLast {
+						formatString = LocalizedString.format_didPrependOneSong
+					} else {
+						formatString = LocalizedString.format_didAppendOneSong
+					}
 					return String.localizedStringWithFormat(
-						LocalizedString.format_didEnqueueOneSongAlertTitle,
+						formatString,
 						firstSongTitle)
 				} else {
+					// Plural rules required.
+					let formatString: String
+					if willPlayNextAsOpposedToLast {
+						formatString = LocalizedString.format_didPrependMultipleSongs
+					} else {
+						formatString = LocalizedString.format_didAppendMultipleSongs
+					}
 					return String.localizedStringWithFormat(
-						LocalizedString.format_didEnqueueMultipleSongsAlertTitle,
+						formatString,
 						firstSongTitle,
 						songCount - 1)
 				}
 			}(),
-			message: LocalizedString.didEnqueueSongsAlertMessage,
+			message: LocalizedString.openMusicToEditTheQueue,
 			preferredStyle: .alert)
 		alert.addAction(dontShowAgainAction)
 		alert.addAction(openMusicAction)
@@ -152,4 +169,11 @@ extension SongsTVC {
 		willPlayLaterAlertIsPresented = true
 		present(alert, animated: true)
 	}
+}
+
+protocol CanPresentOpenMusicAlert: UIViewController {
+	func maybeAlertOpenMusic(
+		willPlayNextAsOpposedToLast: Bool,
+		havingVerbedSongCount songCount: Int,
+		firstSongTitle: String)
 }

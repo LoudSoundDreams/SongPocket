@@ -130,10 +130,26 @@
 			<string>%lld More Songs</string>
 		</dict>
 	</dict>
-	<key>plural - did_enqueue_multiple_songs</key>
+	<key>plural - did_prepend_multiple_songs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>“%@” and %#@NUMBER_MORE_SONGS@ Will Play Later</string>
+		<string>“%@” and %#@NUMBER_MORE_SONGS@ Will Play Next</string>
+		<key>NUMBER_MORE_SONGS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld More Song</string>
+			<key>other</key>
+			<string>%lld More Songs</string>
+		</dict>
+	</dict>
+	<key>plural - did_append_multiple_songs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>“%@” and %#@NUMBER_MORE_SONGS@ Will Play Last</string>
 		<key>NUMBER_MORE_SONGS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
