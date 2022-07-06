@@ -220,7 +220,8 @@ final class CollectionsTVC:
 	final override func setUpBarButtons() {
 		switch purpose {
 		case .willOrganizeAlbums:
-			viewingModeTopLeftButtons = []
+			viewingModeTopLeftButtons = [
+			]
 			viewingModeToolbarButtons = [
 				.flexibleSpace(),
 				saveOrganizeButton,
@@ -229,13 +230,15 @@ final class CollectionsTVC:
 		case .organizingAlbums: // Should never run
 			break
 		case .movingAlbums:
-			viewingModeTopLeftButtons = []
+			viewingModeTopLeftButtons = [
+			]
 		case .browsing:
-			if Enabling.swiftUI__options {
-				viewingModeTopLeftButtons = [optionsButton__SwiftUI]
-			} else {
-				viewingModeTopLeftButtons = [optionsButton__UIKit]
-			}
+			let optionsButton: UIBarButtonItem = Enabling.swiftUI__options
+			? optionsButton__SwiftUI
+			: optionsButton__UIKit
+			viewingModeTopLeftButtons = [
+				optionsButton,
+			]
 			editingModeToolbarButtons = [
 				combineButton, .flexibleSpace(),
 				sortButton, .flexibleSpace(),

@@ -130,14 +130,15 @@ extension SongsTVC {
 		havingAppendedSongCount songCount: Int,
 		firstSongTitle: String
 	) {
+		if Enabling.console {
+			return
+		}
+		
 		let defaults = UserDefaults.standard
 		let defaultsKey = LRUserDefaultsKey.shouldExplainQueueAction.rawValue
 		
 		defaults.register(defaults: [defaultsKey: true])
-		guard
-			!Enabling.console,
-			defaults.bool(forKey: defaultsKey)
-		else { return }
+		guard defaults.bool(forKey: defaultsKey) else { return }
 		
 		let dontShowAgainAction = UIAlertAction(
 			title: LocalizedString.dontShowAgain,

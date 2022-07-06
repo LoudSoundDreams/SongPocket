@@ -37,7 +37,8 @@ class LibraryTVC: UITableViewController {
 	
 	// Controls
 	private(set) final var sortButton = UIBarButtonItem(
-		title: LocalizedString.sort)
+		title: LocalizedString.sort,
+		image: UIImage(systemName: "arrow.up.arrow.down"))
 	private(set) final lazy var floatToTopButton = UIBarButtonItem(
 		title: LocalizedString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line.compact"),
