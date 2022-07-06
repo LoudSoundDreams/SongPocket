@@ -53,33 +53,25 @@ extension SongsTVC: CanPresentOpenMusicAlert {
 		}
 		
 		let alert = UIAlertController(
-			title: {
+			title: (
+				willPlayNextAsOpposedToLast
+				? LocalizedString.playingNext
+				: LocalizedString.playingLast
+			),
+			message: {
 				if songCount == 1 {
 					// No plural rules required.
-					let formatString: String
-					if willPlayNextAsOpposedToLast {
-						formatString = LocalizedString.format_didPrependOneSong
-					} else {
-						formatString = LocalizedString.format_didAppendOneSong
-					}
 					return String.localizedStringWithFormat(
-						formatString,
+						LocalizedString.format_quoted,
 						firstSongTitle)
 				} else {
 					// Plural rules required.
-					let formatString: String
-					if willPlayNextAsOpposedToLast {
-						formatString = LocalizedString.format_didPrependMultipleSongs
-					} else {
-						formatString = LocalizedString.format_didAppendMultipleSongs
-					}
 					return String.localizedStringWithFormat(
-						formatString,
+						LocalizedString.format_sentenceCase_songTitleAndXMoreSongs,
 						firstSongTitle,
 						songCount - 1)
 				}
 			}(),
-			message: LocalizedString.openMusicToEditTheQueue,
 			preferredStyle: .alert)
 		alert.addAction(dontShowAgainAction)
 		alert.addAction(openMusicAction)

@@ -114,7 +114,7 @@
 			<string>Choose a collection to move %lld albums to.</string>
 		</dict>
 	</dict>
-	<key>plural - SONG_TITLE_and_X_more_songs</key>
+	<key>plural - sentence case - SONG_TITLE_and_X_more_songs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>“%@” and %#@NUMBER_MORE_SONGS@</string>
@@ -125,31 +125,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld More Song</string>
+			<string>%lld more song</string>
 			<key>other</key>
-			<string>%lld More Songs</string>
+			<string>%lld more songs</string>
 		</dict>
 	</dict>
-	<key>plural - did_prepend_multiple_songs</key>
+	<key>plural - title case - SONG_TITLE_and_X_more_songs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>“%@” and %#@NUMBER_MORE_SONGS@ Will Play Next</string>
-		<key>NUMBER_MORE_SONGS</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>one</key>
-			<string>%lld More Song</string>
-			<key>other</key>
-			<string>%lld More Songs</string>
-		</dict>
-	</dict>
-	<key>plural - did_append_multiple_songs</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>“%@” and %#@NUMBER_MORE_SONGS@ Will Play Last</string>
+		<string>“%@” and %#@NUMBER_MORE_SONGS@</string>
 		<key>NUMBER_MORE_SONGS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>

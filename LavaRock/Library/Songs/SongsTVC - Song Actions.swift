@@ -46,7 +46,7 @@ extension SongsTVC {
 					firstSongTitle)
 			} else {
 				return String.localizedStringWithFormat(
-					LocalizedString.format_songTitleAndXMoreSongs,
+					LocalizedString.format_titleCase_songTitleAndXMoreSongs,
 					firstSongTitle,
 					selectedMediaItemAndBelow.count - 1)
 			}
