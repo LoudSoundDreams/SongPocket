@@ -70,6 +70,7 @@ extension AlbumsTVC {
 				firstReloading: originalIndexPathsOfCollectionsContainingMovedAlbums,
 				previewOfChanges,
 				runningBeforeContinuation: {
+					// Remove the “now playing” indicator from the source `Collection`, if necessary.
 					collectionsTVC.reflectPlayhead_library()
 				})
 		}

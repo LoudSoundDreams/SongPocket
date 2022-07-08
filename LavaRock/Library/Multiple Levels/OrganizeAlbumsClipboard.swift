@@ -28,7 +28,7 @@ final class OrganizeAlbumsClipboard {
 	var prompt: String {
 		return String.localizedStringWithFormat(
 			LocalizedString.format_organizeIntoXCollectionsByAlbumArtistQuestionMark,
-			idsOfSubjectedAlbums.count,
+			idsOfSubjectedAlbums.count - idsOfUnmovedAlbums.count,
 			idsOfCollectionsContainingMovedAlbums.count)
 	}
 	
