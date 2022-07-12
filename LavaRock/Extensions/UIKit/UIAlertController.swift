@@ -34,7 +34,7 @@ extension UIAlertController {
 			textField.delegate = textFieldDelegate
 		}
 		
-		let cancelAction = UIAlertAction.cancel { _ in cancelHandler?() }
+		let cancelAction = UIAlertAction.cancelWithHandler { _ in cancelHandler?() }
 		let saveAction = UIAlertAction(
 			title: LocalizedString.save,
 			style: .default

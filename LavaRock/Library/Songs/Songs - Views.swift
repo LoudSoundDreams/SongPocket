@@ -151,24 +151,23 @@ final class SongCell: UITableViewCell {
 		}()
 		spacerNumberLabel.text = spacerTrackNumberText
 		numberLabel.text = { () -> String in
-			let text: String? = {
+			let result: String? = {
 				guard
-					let metadatum = metadatum,
-					let representative = representative
+					let representative = representative,
+					let metadatum = metadatum
 				else {
+					// Metadata not available
 					return nil
 				}
 				if representative.shouldShowDiscNumber {
+					// Disc and track number
 					return metadatum.discAndTrackNumberFormatted()
 				} else {
+					// Track number only, which might be blank
 					return metadatum.trackNumberFormattedOptional()
 				}
 			}()
-			if let text = text {
-				return text
-			} else {
-				return "‒" // Figure dash
-			}
+			return result ?? "‒" // Figure dash
 		}()
 		
 		if artistLabel.text == nil {

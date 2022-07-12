@@ -27,7 +27,11 @@ extension LibraryTVC {
 						let items = indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
 						return viewModel.allowsSortOption(sortOption, forItems: items)
 					}()
-					action.attributes = allowed ? [] : .disabled
+					action.attributes = (
+						allowed
+						? []
+						: .disabled
+					)
 					useMenuElements([action])
 				})
 			}

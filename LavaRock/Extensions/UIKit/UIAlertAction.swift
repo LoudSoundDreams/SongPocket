@@ -8,12 +8,9 @@
 import UIKit
 
 extension UIAlertAction {
-	static func cancel(
+	static func cancelWithHandler(
 		handler: ((UIAlertAction) -> Void)?
 	) -> UIAlertAction {
-		UIAlertAction(
-			title: LocalizedString.cancel,
-			style: .cancel,
-			handler: handler)
+		UIAlertAction(title: LocalizedString.cancel, style: .cancel, handler: handler)
 	}
 }

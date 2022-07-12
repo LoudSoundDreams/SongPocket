@@ -34,11 +34,13 @@ extension SongsTVC {
 			selectedMediaItem.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
 		}()
 		
-		let actionSheet = UIAlertController(
-			title: nil,
-			message: nil,
-			preferredStyle: .actionSheet)
+		// Create action sheet
+		
+		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
+		
+		// Add title
+		
 		actionSheet.title = {
 			if selectedMediaItemAndBelow.count == 1 {
 				return String.localizedStringWithFormat(
@@ -51,29 +53,31 @@ extension SongsTVC {
 					selectedMediaItemAndBelow.count - 1)
 			}
 		}()
+		
+		// Add actions
+		
+		// Play
 		actionSheet.addAction(
-			UIAlertAction(
-				title: LocalizedString.play,
-				style: .default
-			) { _ in
+			UIAlertAction(title: LocalizedString.play, style: .default) { _ in
 				player.playNow(selectedMediaItemAndBelow)
 				deselectSelectedSong()
 			}
 			// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
+		
+		// Play next
 		actionSheet.addAction(
-			UIAlertAction(
-				title: LocalizedString.playNext,
-				style: .default
-			) { _ in
+			UIAlertAction(title: LocalizedString.playNext, style: .default) { _ in
 				player.playNext(selectedMediaItemAndBelow)
-				self.maybeAlertOpenMusic(
+				self.presentOpenMusicAlertIfNeeded(
 					willPlayNextAsOpposedToLast: true,
 					havingVerbedSongCount: selectedMediaItemAndBelow.count,
 					firstSongTitle: firstSongTitle)
 				deselectSelectedSong()
 			}
 		)
+		
+		// Play last
 		actionSheet.addAction(
 			UIAlertAction(
 				title: LocalizedString.playLast,
@@ -87,11 +91,16 @@ extension SongsTVC {
 				deselectSelectedSong()
 			}
 		)
+		
+		// Cancel
 		actionSheet.addAction(
-			UIAlertAction.cancel { _ in
+			UIAlertAction.cancelWithHandler { _ in
 				deselectSelectedSong()
 			}
 		)
+		
+		// Present action sheet
+		
 		present(actionSheet, animated: true)
 	}
 }

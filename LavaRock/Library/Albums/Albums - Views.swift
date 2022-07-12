@@ -79,11 +79,7 @@ final class AlbumCell: UITableViewCell {
 		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
 		titleLabel.text = { () -> String in
-			if let albumTitle = album.representativeTitleFormattedOptional() {
-				return albumTitle
-			} else {
-				return Album.unknownTitlePlaceholder
-			}
+			return album.representativeTitleFormattedOptional() ?? Album.unknownTitlePlaceholder
 		}()
 		
 		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()

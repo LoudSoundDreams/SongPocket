@@ -8,14 +8,14 @@
 import UIKit
 
 protocol CanPresentOpenMusicAlert: UIViewController {
-	func maybeAlertOpenMusic(
+	func presentOpenMusicAlertIfNeeded(
 		willPlayNextAsOpposedToLast: Bool,
 		havingVerbedSongCount songCount: Int,
 		firstSongTitle: String)
 }
 
 extension SongsTVC: CanPresentOpenMusicAlert {
-	func maybeAlertOpenMusic(
+	func presentOpenMusicAlertIfNeeded(
 		willPlayNextAsOpposedToLast: Bool,
 		havingVerbedSongCount songCount: Int,
 		firstSongTitle: String

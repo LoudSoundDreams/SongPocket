@@ -168,7 +168,8 @@ final class AlbumsTVC:
 	}
 	
 	private func makeOrganizeOrMoveMenu() -> UIMenu {
-		let organizeElement: UIMenuElement = {
+		// UIKit runs this closure every time it uses the menu element.
+		let organizeElement = UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
 			let organizeAction = UIAction(
 				title: LocalizedString.organizeByAlbumArtistEllipsis,
 				image: UIImage(systemName: "folder.badge.gearshape")
@@ -176,15 +177,16 @@ final class AlbumsTVC:
 				self?.startOrganizing()
 			}
 			
-			// UIKit runs this closure every time it uses the menu element.
-			return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
-				guard let self = self else { return }
-				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
-					selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
-				organizeAction.attributes = allowed ? [] : .disabled
-				useMenuElements([organizeAction])
-			})
-		}()
+			guard let self = self else { return }
+			let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
+				selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
+			organizeAction.attributes = (
+				allowed
+				? []
+				: .disabled
+			)
+			useMenuElements([organizeAction])
+		})
 		
 		let moveElement = UIAction(
 			title: LocalizedString.moveToEllipsis,
