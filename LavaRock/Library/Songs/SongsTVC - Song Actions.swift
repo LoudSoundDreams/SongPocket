@@ -78,19 +78,17 @@ extension SongsTVC {
 		)
 		
 		// Play last
-		actionSheet.addAction(
-			UIAlertAction(
-				title: LocalizedString.playLast,
-				style: .default
-			) { _ in
-				player.playLast(selectedMediaItemAndBelow)
-				self.maybeAlertOpenMusic(
-					willPlayNextAsOpposedToLast: false,
-					havingVerbedSongCount: selectedMediaItemAndBelow.count,
-					firstSongTitle: firstSongTitle)
-				deselectSelectedSong()
-			}
-		)
+		let playLastAction = UIAlertAction(title: LocalizedString.playLast, style: .default) { _ in
+			player.playLast(selectedMediaItemAndBelow)
+			self.presentOpenMusicAlertIfNeeded(
+				willPlayNextAsOpposedToLast: false,
+				havingVerbedSongCount: selectedMediaItemAndBelow.count,
+				firstSongTitle: firstSongTitle)
+			deselectSelectedSong()
+		}
+		// Disable if appropriate
+		playLastAction.isEnabled = Reel.shouldEnablePlayLast()
+		actionSheet.addAction(playLastAction)
 		
 		// Cancel
 		actionSheet.addAction(

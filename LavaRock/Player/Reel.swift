@@ -33,4 +33,20 @@ struct Reel {
 	static func setMediaItems(_ newMediaItems: [MPMediaItem]) {
 		mediaItems = newMediaItems
 	}
+	
+	static func shouldEnablePlayLast() -> Bool {
+		guard Enabling.console else {
+			return true
+		}
+		// Only if there’s at least 1 song after the current song
+		guard let player = TapeDeck.shared.player else {
+			return true
+		}
+		if mediaItems.isEmpty {
+			return false
+		}
+		let indexOfLastSong = mediaItems.count - 1
+		let indexOfCurrentSong = player.indexOfNowPlayingItem // Note: `indexOfNowPlayingItem` returns 0 if the queue is empty
+		return indexOfCurrentSong < indexOfLastSong
+	}
 }

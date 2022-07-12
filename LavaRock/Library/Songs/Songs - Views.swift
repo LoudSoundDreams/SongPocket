@@ -203,40 +203,62 @@ final class SongCell: UITableViewCell {
 			menu = nil
 			return
 		}
-		menu = UIMenu(
-			presentsUpward: false,
-			groupedElements: [
-				[
-					UIAction(
-						title: LocalizedString.play,
-						image: UIImage(systemName: "play")
-					) { [weak self] _ in
-						self?.player?.playNow([mediaItem])
-					},
-				],
-				[
-					UIAction(
-						title: LocalizedString.playNext,
-						image: UIImage(systemName: "text.insert")
-					) { [weak self] _ in
-						self?.player?.playNext([mediaItem])
-						alertPresenter.referencee?.maybeAlertOpenMusic(
-							willPlayNextAsOpposedToLast: true,
-							havingVerbedSongCount: 1,
-							firstSongTitle: songDisplayTitle)
-					},
-					UIAction(
-						title: LocalizedString.playLast,
-						image: UIImage(systemName: "text.append")
-					) { [weak self] _ in
-						self?.player?.playLast([mediaItem])
-						alertPresenter.referencee?.maybeAlertOpenMusic(
-							willPlayNextAsOpposedToLast: false,
-							havingVerbedSongCount: 1,
-							firstSongTitle: songDisplayTitle)
-					},
-				],
-			])
+		
+		// Create menu elements
+		
+		// Play
+		let playAction = UIAction(
+			title: LocalizedString.play,
+			image: UIImage(systemName: "play")
+		) { [weak self] _ in
+			self?.player?.playNow([mediaItem])
+		}
+		
+		// Play next
+		let playNextAction = UIAction(
+			title: LocalizedString.playNext,
+			image: UIImage(systemName: "text.insert")
+		) { [weak self] _ in
+			self?.player?.playNext([mediaItem])
+			alertPresenter.referencee?.presentOpenMusicAlertIfNeeded(
+				willPlayNextAsOpposedToLast: true,
+				havingVerbedSongCount: 1,
+				firstSongTitle: songDisplayTitle)
+		}
+		
+		// Play last
+		let playLastElement = UIDeferredMenuElement.uncached({ useMenuElements in
+			let playLastAction = UIAction(
+				title: LocalizedString.playLast,
+				image: UIImage(systemName: "text.append")
+			) { [weak self] _ in
+				self?.player?.playLast([mediaItem])
+				alertPresenter.referencee?.presentOpenMusicAlertIfNeeded(
+					willPlayNextAsOpposedToLast: false,
+					havingVerbedSongCount: 1,
+					firstSongTitle: songDisplayTitle)
+			}
+			// Disable if appropriate
+			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
+			playLastAction.attributes = (
+				Reel.shouldEnablePlayLast()
+				? []
+				: .disabled
+			)
+			useMenuElements([playLastAction])
+		})
+		
+		// Create and set menu
+		
+		menu = UIMenu(presentsUpward: false, groupedElements: [
+			[
+				playAction,
+			],
+			[
+				playNextAction,
+				playLastElement,
+			],
+		])
 	}
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
