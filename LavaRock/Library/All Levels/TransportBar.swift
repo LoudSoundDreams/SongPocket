@@ -96,7 +96,7 @@ final class TransportBar {
 			let button = UIBarButtonItem(
 				title: LocalizedString.nextTrack,
 				image: Enabling.console
-				? UIImage(systemName: "chevron.forward.circle")
+				? UIImage(systemName: "arrow.forward.circle")
 				: UIImage(systemName: "forward.end"),
 				primaryAction: UIAction { _ in
 					Self.player?.skipToNextItem()
@@ -115,7 +115,7 @@ final class TransportBar {
 			object: nil)
 	}
 	
-	private static let moreDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
+	private static let moreButtonDefaultImage = UIImage(systemName: "chevron.up.circle")!
 	@objc
 	private func freshen() {
 		
@@ -135,7 +135,7 @@ final class TransportBar {
 		else {
 			configurePlayButton()
 			buttons.forEach { $0.disableWithAccessibilityTrait() }
-			moreButton.image = Self.moreDefaultImage
+			moreButton.image = Self.moreButtonDefaultImage
 			moreButton.enableWithAccessibilityTrait()
 			return
 		}
@@ -143,15 +143,15 @@ final class TransportBar {
 		moreButton.image = {
 			switch player.repeatMode {
 			case .default:
-				return Self.moreDefaultImage
+				return Self.moreButtonDefaultImage
 			case .none:
-				return Self.moreDefaultImage
+				return Self.moreButtonDefaultImage
 			case .one:
 				return UIImage(systemName: "repeat.1.circle.fill")!
 			case .all:
 				return UIImage(systemName: "repeat.circle.fill")!
 			@unknown default:
-				return Self.moreDefaultImage
+				return Self.moreButtonDefaultImage
 			}
 		}()
 		
