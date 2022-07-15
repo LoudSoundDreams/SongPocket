@@ -405,12 +405,7 @@ class LibraryTVC: UITableViewController {
 			guard !viewModel.isEmpty() else {
 				return false
 			}
-			let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-			if selectedIndexPaths.isEmpty {
-				return false
-			} else {
-				return true
-			}
+			return !tableView.indexPathsForSelectedRowsNonNil.isEmpty
 		}
 		
 		// Menus
