@@ -380,34 +380,94 @@ class LibraryTVC: UITableViewController {
 		
 		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
-		sortButton.isEnabled = allowsSort()
-		sortButton.menu = makeSortOptionsMenu()
-		floatToTopButton.isEnabled = allowsFloatAndSink()
-		sinkToBottomButton.isEnabled = allowsFloatAndSink()
-	}
-	
-	// You should only be allowed to sort items that are contiguous and within the same `LibraryGroup`.
-	private func allowsSort() -> Bool {
-		guard !viewModel.isEmpty() else {
-			return false
+		sortButton.isEnabled = allows_sort()
+		sortButton.menu = new_sort_options_menu()
+		
+		floatToTopButton.isEnabled = allows_float_and_sink()
+		sinkToBottomButton.isEnabled = allows_float_and_sink()
+		
+		// Enable and disable
+		
+		// You should only be allowed to sort items that are contiguous and within the same `LibraryGroup`.
+		func allows_sort() -> Bool {
+			guard !viewModel.isEmpty() else {
+				return false
+			}
+			let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+			if selectedIndexPaths.isEmpty {
+				return viewModel.viewContainerIsSpecific()
+			} else {
+				return selectedIndexPaths.isContiguousWithinEachSection()
+			}
 		}
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		if selectedIndexPaths.isEmpty {
-			return viewModel.viewContainerIsSpecific()
-		} else {
-			return selectedIndexPaths.isContiguousWithinEachSection()
+		
+		func allows_float_and_sink() -> Bool {
+			guard !viewModel.isEmpty() else {
+				return false
+			}
+			let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+			if selectedIndexPaths.isEmpty {
+				return false
+			} else {
+				return true
+			}
 		}
-	}
-	
-	private func allowsFloatAndSink() -> Bool {
-		guard !viewModel.isEmpty() else {
-			return false
-		}
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
-		if selectedIndexPaths.isEmpty {
-			return false
-		} else {
-			return true
+		
+		// Menus
+		
+		func new_sort_options_menu() -> UIMenu {
+			let groupedElements: [[UIMenuElement]] = sortOptionsGrouped.map { sortOptionGroup in
+				let groupOfChildren: [UIMenuElement] = sortOptionGroup.map { sortOption in
+					let action = UIAction(
+						title: sortOption.localizedName(),
+						image: sortOption.uiImage()
+					) { [weak self] action in
+						self?.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
+					}
+					
+					return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
+						guard let self = self else { return }
+						let allowed: Bool = {
+							let viewModel = self.viewModel
+							let indexPathsToSort = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+								selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil)
+							let items = indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
+							return viewModel.allowsSortOption(sortOption, forItems: items)
+						}()
+						action.attributes = (
+							allowed
+							? []
+							: .disabled
+						)
+						useMenuElements([action])
+					})
+				}
+				return groupOfChildren
+			}
+			
+			return UIMenu(
+				title: {
+					let formatString: String? = {
+						switch self {
+						case is CollectionsTVC: return LocalizedString.format_xCollections
+						case is AlbumsTVC: return LocalizedString.format_xAlbums
+						case is SongsTVC: return LocalizedString.format_xSongs
+						default: return nil
+						}
+					}()
+					guard let formatString = formatString else {
+						return ""
+					}
+					let subjectedCount = viewModel
+						.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+							selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+						.count
+					return String.localizedStringWithFormat(
+						formatString,
+						subjectedCount)
+				}(),
+				presentsUpward: true,
+				groupedElements: groupedElements)
 		}
 	}
 	
