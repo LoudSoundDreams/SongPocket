@@ -179,7 +179,7 @@ final class AlbumsTVC:
 			
 			guard let self = self else { return }
 			let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
-				selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil) ?? false
+				selectedIndexPaths: self.tableView.selectedIndexPaths) ?? false
 			organizeAction.attributes = (
 				allowed
 				? []
@@ -198,7 +198,7 @@ final class AlbumsTVC:
 		return UIMenu(
 			title: {
 				let subjectedCount = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
-					selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+					selectedIndexPaths: tableView.selectedIndexPaths)
 					.count
 				return String.localizedStringWithFormat(
 					LocalizedString.format_xAlbums,
@@ -215,7 +215,7 @@ final class AlbumsTVC:
 		guard !viewModel.isEmpty() else {
 			return false
 		}
-		if tableView.indexPathsForSelectedRowsNonNil.isEmpty {
+		if tableView.selectedIndexPaths.isEmpty {
 			return viewModel.viewContainerIsSpecific()
 		} else {
 			return true

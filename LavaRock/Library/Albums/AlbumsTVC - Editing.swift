@@ -19,7 +19,7 @@ extension AlbumsTVC {
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+		let selectedIndexPaths = tableView.selectedIndexPaths
 		
 		let indexPathsToOrganize = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: selectedIndexPaths)
@@ -188,7 +188,7 @@ extension AlbumsTVC {
 		
 		// Provide the extra data that the “move albums” sheet needs.
 		let indexPathsToMove = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
-			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+			selectedIndexPaths: tableView.selectedIndexPaths)
 		let albumsToMove = indexPathsToMove.map { albumsViewModel.albumNonNil(at: $0) }
 		collectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
 			albumsBeingMoved: albumsToMove,

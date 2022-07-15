@@ -61,7 +61,7 @@ extension Array {
 	
 	// MARK: Element == IndexPath
 	
-	func rowsBySection() -> [SectionIndex: [RowIndex]]
+	func makeDictionaryOfRowsBySection() -> [SectionIndex: [RowIndex]]
 	where Element == IndexPath
 	{
 		let indexPathsBySection = Dictionary(grouping: self) { $0.sectionIndex }
@@ -74,13 +74,13 @@ extension Array {
 	func isContiguousWithinEachSection() -> Bool
 	where Element == IndexPath
 	{
-		return rowsBySection().allSatisfy { (_, rows) in
+		return makeDictionaryOfRowsBySection().allSatisfy { (_, rows) in
 			rows.sorted().map { $0.value }.isConsecutive()
 		}
 	}
 	
 	// Whether the integers are in increasing consecutive order.
-	private func isConsecutive() -> Bool
+	func isConsecutive() -> Bool
 	where Element == Int
 	{
 		return allNeighborsSatisfy { $0 + 1 == $1 }

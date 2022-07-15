@@ -18,11 +18,11 @@ extension UITableView {
 	
 	// MARK: IndexPaths
 	
-	final var indexPathsForVisibleRowsNonNil: [IndexPath] {
+	final var visibleIndexPaths: [IndexPath] {
 		return indexPathsForVisibleRows ?? []
 	}
 	
-	final var indexPathsForSelectedRowsNonNil: [IndexPath] {
+	final var selectedIndexPaths: [IndexPath] {
 		return indexPathsForSelectedRows ?? []
 	}
 	
@@ -129,7 +129,7 @@ extension UITableView {
 	}
 	
 	final func deselectAllRows(animated: Bool) {
-		indexPathsForSelectedRowsNonNil.forEach {
+		selectedIndexPaths.forEach {
 			deselectRow(at: $0, animated: animated)
 		}
 	}

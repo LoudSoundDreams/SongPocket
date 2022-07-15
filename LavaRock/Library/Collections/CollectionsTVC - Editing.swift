@@ -18,7 +18,7 @@ extension CollectionsTVC {
 	final func promptRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
 		
-		let rowWasSelectedBeforeRenaming = tableView.indexPathsForSelectedRowsNonNil.contains(indexPath)
+		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		
 		let dialog = UIAlertController.forEditingCollectionTitle(
 			alertTitle: Enabling.multicollection
@@ -78,7 +78,7 @@ extension CollectionsTVC {
 	}
 	
 	final func previewCombineAndPrompt() {
-		let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil.sorted()
+		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
 			viewModelBeforeCombining == nil, // Prevents you from using the “Combine” button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCreate` when we tap “New Collection”, `didAlreadyCommitMove` for “Move (Albums) Here”, and `didAlreadyCommitOrganize` for “Save (Preview of Organized Albums)”. You must reset `viewModelBeforeCombining = nil` during both reverting and committing.

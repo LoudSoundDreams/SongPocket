@@ -164,7 +164,7 @@ class LibraryTVC: UITableViewController {
 			freshenNavigationItemTitle()
 			// Update the data within each row (and header), which might be outdated.
 			// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
-			tableView.reconfigureRows(at: tableView.indexPathsForVisibleRowsNonNil)
+			tableView.reconfigureRows(at: tableView.visibleIndexPaths)
 		}
 	}
 	
@@ -251,7 +251,7 @@ class LibraryTVC: UITableViewController {
 			}
 		}
 		
-		tableView.indexPathsForSelectedRowsNonNil.forEach {
+		tableView.selectedIndexPaths.forEach {
 			if !toSelect.contains($0) {
 				tableView.deselectRow(at: $0, animated: true)
 			}
@@ -312,7 +312,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Player
 	
 	final func reflectPlayhead_library() {
-		tableView.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
+		tableView.visibleIndexPaths.forEach { visibleIndexPath in
 			guard let cell = tableView.cellForRow(at: visibleIndexPath) as? PlayheadReflectable else { return }
 			cell.reflectPlayhead(
 				containsPlayhead: {
@@ -393,7 +393,7 @@ class LibraryTVC: UITableViewController {
 			guard !viewModel.isEmpty() else {
 				return false
 			}
-			let selectedIndexPaths = tableView.indexPathsForSelectedRowsNonNil
+			let selectedIndexPaths = tableView.selectedIndexPaths
 			if selectedIndexPaths.isEmpty {
 				return viewModel.viewContainerIsSpecific()
 			} else {
@@ -405,7 +405,7 @@ class LibraryTVC: UITableViewController {
 			guard !viewModel.isEmpty() else {
 				return false
 			}
-			return !tableView.indexPathsForSelectedRowsNonNil.isEmpty
+			return !tableView.selectedIndexPaths.isEmpty
 		}
 		
 		// Menus
@@ -425,7 +425,7 @@ class LibraryTVC: UITableViewController {
 						let allowed: Bool = {
 							let viewModel = self.viewModel
 							let indexPathsToSort = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
-								selectedIndexPaths: self.tableView.indexPathsForSelectedRowsNonNil)
+								selectedIndexPaths: self.tableView.selectedIndexPaths)
 							let items = indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
 							return viewModel.allowsSortOption(sortOption, forItems: items)
 						}()
@@ -455,7 +455,7 @@ class LibraryTVC: UITableViewController {
 					}
 					let subjectedCount = viewModel
 						.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
-							selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+							selectedIndexPaths: tableView.selectedIndexPaths)
 						.count
 					return String.localizedStringWithFormat(
 						formatString,

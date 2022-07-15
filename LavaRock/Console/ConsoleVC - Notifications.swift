@@ -20,7 +20,7 @@ extension ConsoleVC {
 	// MARK: - Player
 	
 	final func reflectPlayhead_console() {
-		reelTable.indexPathsForVisibleRowsNonNil.forEach { visibleIndexPath in
+		reelTable.visibleIndexPaths.forEach { visibleIndexPath in
 			guard let cell = reelTable.cellForRow(at: visibleIndexPath) as? PlayheadReflectable else { return }
 			cell.reflectPlayhead(
 				containsPlayhead: Self.rowContainsPlayhead(at: visibleIndexPath),

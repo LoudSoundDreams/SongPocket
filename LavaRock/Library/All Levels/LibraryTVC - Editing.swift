@@ -10,7 +10,7 @@ import UIKit
 extension LibraryTVC {
 	final func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
 		let newViewModel = viewModel.updatedAfterSorting(
-			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil,
+			selectedIndexPaths: tableView.selectedIndexPaths,
 			sortOptionLocalizedName: sortOptionLocalizedName)
 		Task {
 			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
@@ -19,7 +19,7 @@ extension LibraryTVC {
 	
 	final func floatSelectedItemsToTopOfSection() {
 		let newViewModel = viewModel.updatedAfterFloatingToTopsOfSections(
-			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+			selectedIndexPaths: tableView.selectedIndexPaths)
 		Task {
 			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
 		}
@@ -27,7 +27,7 @@ extension LibraryTVC {
 	
 	final func sinkSelectedItemsToBottomOfSection() {
 		let newViewModel = viewModel.updatedAfterSinkingToBottomsOfSections(
-			selectedIndexPaths: tableView.indexPathsForSelectedRowsNonNil)
+			selectedIndexPaths: tableView.selectedIndexPaths)
 		Task {
 			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
 		}

@@ -390,7 +390,7 @@ final class CollectionsTVC:
 		guard !viewModel.isEmpty() else {
 			return false
 		}
-		return tableView.indexPathsForSelectedRowsNonNil.count >= 2
+		return tableView.selectedIndexPaths.count >= 2
 	}
 	
 	// MARK: - Navigation
