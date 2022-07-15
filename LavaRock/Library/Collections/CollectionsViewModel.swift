@@ -14,7 +14,7 @@ struct CollectionsViewModel {
 	let context: NSManagedObjectContext
 	let numberOfPresections = SectionIndex(0)
 	var numberOfPrerowsPerSection: RowIndex { RowIndex(prerowsInEachSection.count) }
-	var column: ColumnOfLibraryItems
+	var groups: ColumnOfLibraryItems
 	
 	enum Prerow {
 		case createCollection
@@ -71,7 +71,7 @@ extension CollectionsViewModel {
 		self.context = context
 		self.prerowsInEachSection = prerowsInEachSection
 		
-		column = [
+		groups = [
 			CollectionsOrAlbumsGroup(
 				entityName: Self.entityName,
 				container: nil,
@@ -100,10 +100,10 @@ extension CollectionsViewModel {
 	
 	var group: LibraryGroup {
 		get {
-			column[Self.indexOfOnlyGroup]
+			groups[Self.indexOfOnlyGroup]
 		}
 		set {
-			column[Self.indexOfOnlyGroup] = newValue
+			groups[Self.indexOfOnlyGroup] = newValue
 		}
 	}
 	

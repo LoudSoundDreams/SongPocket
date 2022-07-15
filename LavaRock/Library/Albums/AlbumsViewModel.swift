@@ -14,7 +14,7 @@ struct AlbumsViewModel {
 	let context: NSManagedObjectContext
 	let numberOfPresections = SectionIndex(0)
 	var numberOfPrerowsPerSection: RowIndex { RowIndex(prerowsInEachSection.count) }
-	var column: ColumnOfLibraryItems
+	var groups: ColumnOfLibraryItems
 	
 	enum Prerow {
 		case moveHere
@@ -97,7 +97,7 @@ extension AlbumsViewModel {
 			case .deleted:
 				return []
 			}}()
-		column = containers.map {
+		groups = containers.map {
 			CollectionsOrAlbumsGroup(
 				entityName: Self.entityName,
 				container: $0,
