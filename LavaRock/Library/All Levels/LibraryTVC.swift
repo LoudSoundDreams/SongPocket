@@ -45,19 +45,32 @@ class LibraryTVC: UITableViewController {
 	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	// Controls
+	
+	private(set) final lazy var cancelAndDismissButton = UIBarButtonItem(
+		systemItem: .cancel,
+		primaryAction: UIAction { [weak self] _ in
+			self?.dismiss(animated: true)
+		}
+	)
+	
 	private(set) final var sortButton = UIBarButtonItem(
 		title: LocalizedString.sort)
+	
 	private(set) final lazy var floatToTopButton = UIBarButtonItem(
 		title: LocalizedString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line.compact"),
-		primaryAction: UIAction { [weak self] _ in self?.floatSelectedItemsToTopOfSection() })
+		primaryAction: UIAction { [weak self] _ in
+			self?.floatSelectedItemsToTopOfSection()
+		}
+	)
+	
 	private(set) final lazy var sinkToBottomButton = UIBarButtonItem(
 		title: LocalizedString.moveToBottom,
 		image: UIImage(systemName: "arrow.down.to.line.compact"),
-		primaryAction: UIAction { [weak self] _ in self?.sinkSelectedItemsToBottomOfSection() })
-	private(set) final lazy var cancelAndDismissButton = UIBarButtonItem(
-		systemItem: .cancel,
-		primaryAction: UIAction { [weak self] _ in self?.dismiss(animated: true) })
+		primaryAction: UIAction { [weak self] _ in
+			self?.sinkSelectedItemsToBottomOfSection()
+		}
+	)
 	
 	// State
 	final var isMergingChanges = false
