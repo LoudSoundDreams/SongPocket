@@ -194,6 +194,8 @@ final class SongCell: UITableViewCell {
 			metadatum?.titleOnDisk,
 		].compacted()
 		
+		// Create and set menu
+		
 		let menu: UIMenu?
 		defer {
 			dotDotDotButton.menu = menu

@@ -41,18 +41,9 @@ extension SongsTVC {
 		
 		// Add title
 		
-		actionSheet.title = {
-			if selectedMediaItemAndBelow.count == 1 {
-				return String.localizedStringWithFormat(
-					LocalizedString.format_quoted,
-					firstSongTitle)
-			} else {
-				return String.localizedStringWithFormat(
-					LocalizedString.format_title_songTitleAndXMoreSongs,
-					firstSongTitle,
-					selectedMediaItemAndBelow.count - 1)
-			}
-		}()
+		actionSheet.title = String.localizedStringWithFormat(
+			LocalizedString.format_xSongs,
+			selectedMediaItemAndBelow.count)
 		
 		// Add actions
 		
