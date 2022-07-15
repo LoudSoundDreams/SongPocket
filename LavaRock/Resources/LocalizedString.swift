@@ -152,7 +152,7 @@ struct LocalizedString {
 //	static let queueSongAndBelow = NSLocalizedString("Queue Song and Below", comment: "Button")
 //	static let playSong = NSLocalizedString("Play Song", comment: "Button")
 	static let playNext = NSLocalizedString("Play Next", comment: "Button")
-	static let playLast = NSLocalizedString("Play Last", comment: "Button")
+	static let playLater = NSLocalizedString("Play Later", comment: "Button")
 //	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let prefix_playingNext = NSLocalizedString("Playing Next: ", comment: "Alert title")
 	static let prefix_playingLast = NSLocalizedString("Playing Last: ", comment: "Alert title")

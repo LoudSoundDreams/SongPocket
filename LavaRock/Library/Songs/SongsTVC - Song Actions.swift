@@ -66,19 +66,18 @@ extension SongsTVC {
 		)
 		
 		// Play next
-		actionSheet.addAction(
-			UIAlertAction(title: LocalizedString.playNext, style: .default) { _ in
-				player.playNext(selectedMediaItemAndBelow)
-				self.presentOpenMusicAlertIfNeeded(
-					willPlayNextAsOpposedToLast: true,
-					havingVerbedSongCount: selectedMediaItemAndBelow.count,
-					firstSongTitle: firstSongTitle)
-				deselectSelectedSong()
-			}
-		)
+		let playNextAction = UIAlertAction(title: LocalizedString.playNext, style: .default) { _ in
+			player.playNext(selectedMediaItemAndBelow)
+			self.presentOpenMusicAlertIfNeeded(
+				willPlayNextAsOpposedToLast: true,
+				havingVerbedSongCount: selectedMediaItemAndBelow.count,
+				firstSongTitle: firstSongTitle)
+			deselectSelectedSong()
+		}
+		actionSheet.addAction(playNextAction)
 		
 		// Play last
-		let playLastAction = UIAlertAction(title: LocalizedString.playLast, style: .default) { _ in
+		let playLastAction = UIAlertAction(title: LocalizedString.playLater, style: .default) { _ in
 			player.playLast(selectedMediaItemAndBelow)
 			self.presentOpenMusicAlertIfNeeded(
 				willPlayNextAsOpposedToLast: false,
@@ -97,7 +96,7 @@ extension SongsTVC {
 			}
 		)
 		
-		// Present action sheet
+		// Present
 		
 		present(actionSheet, animated: true)
 	}

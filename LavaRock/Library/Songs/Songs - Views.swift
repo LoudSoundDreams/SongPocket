@@ -229,7 +229,7 @@ final class SongCell: UITableViewCell {
 		// Play last
 		let playLastElement = UIDeferredMenuElement.uncached({ useMenuElements in
 			let playLastAction = UIAction(
-				title: LocalizedString.playLast,
+				title: LocalizedString.playLater,
 				image: UIImage(systemName: "text.append")
 			) { [weak self] _ in
 				self?.player?.playLast([mediaItem])
