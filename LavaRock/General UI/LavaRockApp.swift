@@ -29,7 +29,7 @@ struct LavaRockApp: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			RootViewControllerRepresentable()
+			MainViewControllerRepresentable()
 				.edgesIgnoringSafeArea(.all)
 				.preferredColorScheme(theme.lighting.colorScheme)
 				.tint(theme.accentColor.color)
@@ -37,7 +37,7 @@ struct LavaRockApp: App {
 	}
 }
 
-struct RootViewControllerRepresentable: UIViewControllerRepresentable {
+private struct MainViewControllerRepresentable: UIViewControllerRepresentable {
 	typealias ViewControllerType = LibraryNC
 	
 	@ObservedObject private var theme: Theme
