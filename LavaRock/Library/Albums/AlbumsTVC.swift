@@ -27,7 +27,7 @@ final class AlbumsTVC:
 	
 	// Controls
 	private var moveOrOrganizeButton = UIBarButtonItem(
-		title: LocalizedString.move)
+		title: LRString.move)
 	
 	// Purpose
 	var purpose: Purpose {
@@ -171,7 +171,7 @@ final class AlbumsTVC:
 		// UIKit runs this closure every time it uses the menu element.
 		let organizeElement = UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
 			let organizeAction = UIAction(
-				title: LocalizedString.organizeByAlbumArtistEllipsis,
+				title: LRString.organizeByAlbumArtistEllipsis,
 				image: UIImage(systemName: "folder.badge.gearshape")
 			) { [weak self] _ in
 				self?.startOrganizing()
@@ -189,7 +189,7 @@ final class AlbumsTVC:
 		})
 		
 		let moveElement = UIAction(
-			title: LocalizedString.moveToEllipsis,
+			title: LRString.moveToEllipsis,
 			image: UIImage(systemName: "folder")
 		) { [weak self] _ in
 			self?.startMoving()
@@ -201,7 +201,7 @@ final class AlbumsTVC:
 					selectedIndexPaths: tableView.selectedIndexPaths)
 					.count
 				return String.localizedStringWithFormat(
-					LocalizedString.format_xAlbums,
+					LRString.format_xAlbums,
 					subjectedCount)
 			}(),
 			children: [

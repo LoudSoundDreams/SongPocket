@@ -11,7 +11,7 @@ extension String {
 		if self == trimmed {
 			return self
 		} else {
-			return "\(trimmed)\(LocalizedString.ellipsis)"
+			return "\(trimmed)\(LRString.ellipsis)"
 		}
 	}
 	

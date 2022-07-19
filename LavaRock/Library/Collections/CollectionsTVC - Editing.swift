@@ -22,8 +22,8 @@ extension CollectionsTVC {
 		
 		let dialog = UIAlertController.forEditingCollectionTitle(
 			alertTitle: Enabling.multicollection
-			? LocalizedString.renameSectionAlertTitle
-			: LocalizedString.renameCollectionAlertTitle,
+			? LRString.renameSectionAlertTitle
+			: LRString.renameCollectionAlertTitle,
 			textFieldText: collection.title,
 			textFieldDelegate: self,
 			cancelHandler: nil,
@@ -90,8 +90,8 @@ extension CollectionsTVC {
 		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
 		let titleForCombinedCollection = Self.suggestedCollectionTitle(combining: selectedCollections) ?? (
 			Enabling.multicollection
-			? LocalizedString.combinedSectionDefaultTitle
-			: LocalizedString.combinedCollectionDefaultTitle)
+			? LRString.combinedSectionDefaultTitle
+			: LRString.combinedCollectionDefaultTitle)
 		
 		let newViewModel = collectionsViewModel.updatedAfterCombiningInNewChildContext(
 			fromInOrder: selectedCollections,
@@ -112,8 +112,8 @@ extension CollectionsTVC {
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: Enabling.multicollection
-				? LocalizedString.combineSectionsAlertTitle
-				: LocalizedString.combineCollectionsAlertTitle,
+				? LRString.combineSectionsAlertTitle
+				: LRString.combineCollectionsAlertTitle,
 				textFieldText: titleForCombinedCollection,
 				textFieldDelegate: self,
 				cancelHandler: { [weak self] in

@@ -54,10 +54,10 @@ class LibraryTVC: UITableViewController {
 	)
 	
 	private(set) final var sortButton = UIBarButtonItem(
-		title: LocalizedString.sort)
+		title: LRString.sort)
 	
 	private(set) final lazy var floatToTopButton = UIBarButtonItem(
-		title: LocalizedString.moveToTop,
+		title: LRString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line.compact"),
 		primaryAction: UIAction { [weak self] _ in
 			self?.floatSelectedItemsToTopOfSection()
@@ -65,7 +65,7 @@ class LibraryTVC: UITableViewController {
 	)
 	
 	private(set) final lazy var sinkToBottomButton = UIBarButtonItem(
-		title: LocalizedString.moveToBottom,
+		title: LRString.moveToBottom,
 		image: UIImage(systemName: "arrow.down.to.line.compact"),
 		primaryAction: UIAction { [weak self] _ in
 			self?.sinkSelectedItemsToBottomOfSection()
@@ -444,9 +444,9 @@ class LibraryTVC: UITableViewController {
 				title: {
 					let formatString: String? = {
 						switch self {
-						case is CollectionsTVC: return LocalizedString.format_xCollections
-						case is AlbumsTVC: return LocalizedString.format_xAlbums
-						case is SongsTVC: return LocalizedString.format_xSongs
+						case is CollectionsTVC: return LRString.format_xCollections
+						case is AlbumsTVC: return LRString.format_xAlbums
+						case is SongsTVC: return LRString.format_xSongs
 						default: return nil
 						}
 					}()

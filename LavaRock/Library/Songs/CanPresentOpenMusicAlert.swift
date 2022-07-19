@@ -31,7 +31,7 @@ extension SongsTVC: CanPresentOpenMusicAlert {
 		guard defaults.bool(forKey: defaultsKey) else { return }
 		
 		let dontShowAgainAction = UIAlertAction(
-			title: LocalizedString.dontShowAgain,
+			title: LRString.dontShowAgain,
 			style: .default
 		) { _ in
 			self.willPlayLaterAlertIsPresented = false
@@ -40,13 +40,13 @@ extension SongsTVC: CanPresentOpenMusicAlert {
 				forKey: defaultsKey)
 		}
 		let openMusicAction = UIAlertAction(
-			title: LocalizedString.openMusic,
+			title: LRString.openMusic,
 			style: .default
 		) { _ in
 			UIApplication.shared.open(.music)
 		}
 		let okAction = UIAlertAction(
-			title: LocalizedString.ok,
+			title: LRString.ok,
 			style: .default
 		) { _ in
 			self.willPlayLaterAlertIsPresented = false
@@ -56,19 +56,19 @@ extension SongsTVC: CanPresentOpenMusicAlert {
 			title: {
 				let prefix = (
 					willPlayNextAsOpposedToLast
-					? LocalizedString.prefix_playingNext
-					: LocalizedString.prefix_playingLast
+					? LRString.prefix_playingNext
+					: LRString.prefix_playingLast
 				)
 				let content: String = {
 					if songCount == 1 {
 						// No “and more song(s)” required.
 						return String.localizedStringWithFormat(
-							LocalizedString.format_quoted,
+							LRString.format_quoted,
 							firstSongTitle)
 					} else {
 						// “and more song(s)” required.
 						return String.localizedStringWithFormat(
-							LocalizedString.format_title_songTitleAndXMoreSongs,
+							LRString.format_title_songTitleAndXMoreSongs,
 							firstSongTitle,
 							songCount - 1)
 					}
@@ -76,7 +76,7 @@ extension SongsTVC: CanPresentOpenMusicAlert {
 				return "\(prefix)\(content)"
 			}(),
 			message: {
-				return LocalizedString.sentence_openMusicToEditTheQueue
+				return LRString.sentence_openMusicToEditTheQueue
 			}(),
 			preferredStyle: .alert)
 		alert.addAction(dontShowAgainAction)

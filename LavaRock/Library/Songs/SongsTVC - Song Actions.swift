@@ -42,14 +42,14 @@ extension SongsTVC {
 		// Add title
 		
 		actionSheet.title = String.localizedStringWithFormat(
-			LocalizedString.format_xSongs,
+			LRString.format_xSongs,
 			selectedMediaItemAndBelow.count)
 		
 		// Add actions
 		
 		// Play
 		actionSheet.addAction(
-			UIAlertAction(title: LocalizedString.play, style: .default) { _ in
+			UIAlertAction(title: LRString.play, style: .default) { _ in
 				player.playNow(selectedMediaItemAndBelow)
 				deselectSelectedSong()
 			}
@@ -57,7 +57,7 @@ extension SongsTVC {
 		)
 		
 		// Play next
-		let playNextAction = UIAlertAction(title: LocalizedString.playNext, style: .default) { _ in
+		let playNextAction = UIAlertAction(title: LRString.playNext, style: .default) { _ in
 			player.playNext(selectedMediaItemAndBelow)
 			self.presentOpenMusicAlertIfNeeded(
 				willPlayNextAsOpposedToLast: true,
@@ -68,7 +68,7 @@ extension SongsTVC {
 		actionSheet.addAction(playNextAction)
 		
 		// Play last
-		let playLastAction = UIAlertAction(title: LocalizedString.playLater, style: .default) { _ in
+		let playLastAction = UIAlertAction(title: LRString.playLater, style: .default) { _ in
 			player.playLast(selectedMediaItemAndBelow)
 			self.presentOpenMusicAlertIfNeeded(
 				willPlayNextAsOpposedToLast: false,

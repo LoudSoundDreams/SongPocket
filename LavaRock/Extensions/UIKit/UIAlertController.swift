@@ -22,7 +22,7 @@ extension UIAlertController {
 		dialog.addTextField { textField in
 			// UITextField
 			textField.text = textFieldText
-			textField.placeholder = LocalizedString.title
+			textField.placeholder = LRString.title
 			textField.clearButtonMode = .always
 			
 			// UITextInputTraits
@@ -36,7 +36,7 @@ extension UIAlertController {
 		
 		let cancelAction = UIAlertAction.cancelWithHandler { _ in cancelHandler?() }
 		let saveAction = UIAlertAction(
-			title: LocalizedString.save,
+			title: LRString.save,
 			style: .default
 		) { _ in
 			let textFieldText = dialog.textFields?.first?.text

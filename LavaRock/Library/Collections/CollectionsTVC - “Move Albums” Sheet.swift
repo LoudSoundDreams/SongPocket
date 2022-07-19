@@ -63,8 +63,8 @@ extension CollectionsTVC {
 			let suggestedTitle = Self.suggestedCollectionTitle(movingAlbumsInAnyOrder: albumsBeingMoved)
 			return suggestedTitle ?? (
 				Enabling.multicollection
-				? LocalizedString.newSectionDefaultTitle
-				: LocalizedString.newCollectionDefaultTitle)
+				? LRString.newSectionDefaultTitle
+				: LRString.newCollectionDefaultTitle)
 		}()
 		let newViewModel = collectionsViewModel.updatedAfterCreating(title: titleForNewCollection)
 		Task {
@@ -72,8 +72,8 @@ extension CollectionsTVC {
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: Enabling.multicollection
-				? LocalizedString.newSectionAlertTitle
-				: LocalizedString.newCollectionAlertTitle,
+				? LRString.newSectionAlertTitle
+				: LRString.newCollectionAlertTitle,
 				textFieldText: titleForNewCollection,
 				textFieldDelegate: self,
 				cancelHandler: { [weak self] in

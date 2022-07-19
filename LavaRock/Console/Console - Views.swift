@@ -48,7 +48,7 @@ final class QueueCell: UITableViewCell {
 			if let songArtist = metadatum.artistOnDisk {
 				return songArtist
 			} else {
-				return LocalizedString.unknownArtist
+				return LRString.unknownArtist
 			}
 		}()
 		

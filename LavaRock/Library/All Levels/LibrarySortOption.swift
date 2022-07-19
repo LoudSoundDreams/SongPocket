@@ -25,17 +25,17 @@ enum LibrarySortOption: CaseIterable {
 	func localizedName() -> String {
 		switch self {
 		case .title:
-			return LocalizedString.title
+			return LRString.title
 		case .newestFirst:
-			return LocalizedString.newest
+			return LRString.newest
 		case .oldestFirst:
-			return LocalizedString.oldest
+			return LRString.oldest
 		case .trackNumber:
-			return LocalizedString.trackNumber
+			return LRString.trackNumber
 		case .shuffle:
-			return LocalizedString.shuffle
+			return LRString.shuffle
 		case .reverse:
-			return LocalizedString.reverse
+			return LRString.reverse
 		}
 	}
 	

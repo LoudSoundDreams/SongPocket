@@ -144,7 +144,7 @@ extension SongMetadatum {
 	
 	func discAndTrackNumberFormatted() -> String {
 		var result = discNumberFormatted()
-		result += LocalizedString.interpunct
+		result += LRString.interpunct
 		if let trackNumber = trackNumberFormattedOptional() {
 			result += trackNumber
 		}

@@ -62,9 +62,9 @@ extension OptionsTVC {
 		}
 		switch sectionCase {
 		case .theme:
-			return LocalizedString.theme
+			return LRString.theme
 		case .tipJar:
-			return LocalizedString.tipJar
+			return LRString.tipJar
 		}
 	}
 	
@@ -79,7 +79,7 @@ extension OptionsTVC {
 		case .theme:
 			return nil
 		case .tipJar:
-			return LocalizedString.tipJarFooter
+			return LRString.tipJarFooter
 		}
 	}
 	

@@ -11,6 +11,6 @@ extension UIAlertAction {
 	static func cancelWithHandler(
 		handler: ((UIAlertAction) -> Void)?
 	) -> UIAlertAction {
-		UIAlertAction(title: LocalizedString.cancel, style: .cancel, handler: handler)
+		UIAlertAction(title: LRString.cancel, style: .cancel, handler: handler)
 	}
 }

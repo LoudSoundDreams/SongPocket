@@ -25,7 +25,7 @@ final class AllowAccessCell: UITableViewCell {
 }
 extension AllowAccessCell: CellTintingWhenSelected {}
 extension AllowAccessCell: CellConfigurableAsButton {
-	static let buttonText = LocalizedString.allowAccessToMusic
+	static let buttonText = LRString.allowAccessToMusic
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
@@ -34,7 +34,7 @@ final class LoadingCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		var content = UIListContentConfiguration.cell()
-		content.text = LocalizedString.loadingEllipsis
+		content.text = LRString.loadingEllipsis
 		content.textProperties.color = .secondaryLabel
 		contentConfiguration = content
 		
@@ -58,7 +58,7 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		var content = UIListContentConfiguration.cell()
-		content.text = LocalizedString.emptyDatabasePlaceholder
+		content.text = LRString.emptyDatabasePlaceholder
 		content.textProperties.color = .secondaryLabel
 		contentConfiguration = content
 		
@@ -90,7 +90,7 @@ final class OpenMusicCell: UITableViewCell {
 }
 extension OpenMusicCell: CellTintingWhenSelected {}
 extension OpenMusicCell: CellConfigurableAsButton {
-	static let buttonText = LocalizedString.openMusic
+	static let buttonText = LRString.openMusic
 }
 
 final class CreateCollectionCell: UITableViewCell {
@@ -106,7 +106,7 @@ final class CreateCollectionCell: UITableViewCell {
 		newCollectionLabel.textColor = .tintColor
 		
 		if Enabling.multicollection {
-			newCollectionLabel.text = LocalizedString.newSectionButtonTitle
+			newCollectionLabel.text = LRString.newSectionButtonTitle
 		}
 	}
 	

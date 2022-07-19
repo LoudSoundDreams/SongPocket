@@ -249,7 +249,7 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	static let unknownTitlePlaceholder = LocalizedString.unknownAlbum
+	static let unknownTitlePlaceholder = LRString.unknownAlbum
 	final func representativeTitleFormattedOrPlaceholder() -> String {
 		guard let title = representativeTitleFormattedOptional() else {
 			return Self.unknownTitlePlaceholder
@@ -266,7 +266,7 @@ extension Album {
 		return title
 	}
 	
-	static let unknownAlbumArtistPlaceholder: String = LocalizedString.unknownAlbumArtist
+	static let unknownAlbumArtistPlaceholder: String = LRString.unknownAlbumArtist
 	final func representativeAlbumArtistFormattedOrPlaceholder() -> String {
 		guard let albumArtist = representativeAlbumArtistFormattedOptional() else {
 			return Self.unknownAlbumArtistPlaceholder

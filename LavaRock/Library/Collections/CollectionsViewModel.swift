@@ -30,8 +30,8 @@ extension CollectionsViewModel: LibraryViewModel {
 	
 	func bigTitle() -> String {
 		return Enabling.multicollection
-		? LocalizedString.sections
-		: LocalizedString.collections
+		? LRString.sections
+		: LRString.collections
 	}
 	
 	func prerowIdentifiersInEachSection() -> [AnyHashable] {

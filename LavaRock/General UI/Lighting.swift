@@ -78,11 +78,11 @@ enum Lighting: Int, CaseIterable {
 	var name: String {
 		switch self {
 		case .light:
-			return LocalizedString.light
+			return LRString.light
 		case .dark:
-			return LocalizedString.dark
+			return LRString.dark
 		case .system:
-			return LocalizedString.system
+			return LRString.system
 		}
 	}
 	

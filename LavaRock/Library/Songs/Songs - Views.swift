@@ -16,7 +16,7 @@ final class CoverArtCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		coverArtView.accessibilityIgnoresInvertColors = true
-		accessibilityLabel = LocalizedString.albumArtwork
+		accessibilityLabel = LRString.albumArtwork
 		accessibilityUserInputLabels = nil // No Voice Control label
 		accessibilityTraits.formUnion(.image)
 	}
@@ -210,7 +210,7 @@ final class SongCell: UITableViewCell {
 		
 		// Play
 		let playAction = UIAction(
-			title: LocalizedString.play,
+			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { [weak self] _ in
 			self?.player?.playNow([mediaItem])
@@ -218,7 +218,7 @@ final class SongCell: UITableViewCell {
 		
 		// Play next
 		let playNextAction = UIAction(
-			title: LocalizedString.playNext,
+			title: LRString.playNext,
 			image: UIImage(systemName: "text.insert")
 		) { [weak self] _ in
 			self?.player?.playNext([mediaItem])
@@ -231,7 +231,7 @@ final class SongCell: UITableViewCell {
 		// Play last
 		let playLastElement = UIDeferredMenuElement.uncached({ useMenuElements in
 			let playLastAction = UIAction(
-				title: LocalizedString.playLater,
+				title: LRString.playLater,
 				image: UIImage(systemName: "text.append")
 			) { [weak self] _ in
 				self?.player?.playLast([mediaItem])

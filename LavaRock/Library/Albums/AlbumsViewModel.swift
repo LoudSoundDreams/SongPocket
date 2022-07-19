@@ -31,12 +31,12 @@ extension AlbumsViewModel: LibraryViewModel {
 	func bigTitle() -> String {
 		switch viewContainer {
 		case .library:
-			return LocalizedString.albums
+			return LRString.albums
 		case
 				.container(let container),
 				.deleted(let container):
 			let collection = container as! Collection
-			return collection.title ?? LocalizedString.albums
+			return collection.title ?? LRString.albums
 		}
 	}
 	

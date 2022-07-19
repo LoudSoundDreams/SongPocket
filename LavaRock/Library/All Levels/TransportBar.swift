@@ -47,12 +47,12 @@ final class TransportBar {
 		moreButtonAction: UIAction
 	) {
 		moreButton = UIBarButtonItem(
-			title: LocalizedString.more,
+			title: LRString.more,
 			primaryAction: moreButtonAction)
 		
 		previousSongButton = {
 			let button = UIBarButtonItem(
-				title: LocalizedString.previousTrack,
+				title: LRString.previousTrack,
 				image: Enabling.console
 				? UIImage(systemName: "arrow.backward.circle")
 				: UIImage(systemName: "backward.end"),
@@ -64,7 +64,7 @@ final class TransportBar {
 		}()
 		rewindButton = {
 			let button = UIBarButtonItem(
-				title: LocalizedString.restart,
+				title: LRString.restart,
 				image: UIImage(systemName: "arrow.counterclockwise.circle"),
 				primaryAction: UIAction { _ in
 					Self.player?.skipToBeginning()
@@ -74,7 +74,7 @@ final class TransportBar {
 		}()
 		jumpBackwardButton = {
 			let button = UIBarButtonItem(
-				title: LocalizedString.skip10SecondsBackwards,
+				title: LRString.skip10SecondsBackwards,
 				image: UIImage(systemName: "gobackward.15"),
 				primaryAction: UIAction { _ in
 					Self.player?.currentPlaybackTime -= 15
@@ -84,7 +84,7 @@ final class TransportBar {
 		}()
 		jumpForwardButton = {
 			let button = UIBarButtonItem(
-				title: LocalizedString.skip10SecondsForward,
+				title: LRString.skip10SecondsForward,
 				image: UIImage(systemName: "goforward.15"),
 				primaryAction: UIAction { _ in
 					Self.player?.currentPlaybackTime += 15
@@ -94,7 +94,7 @@ final class TransportBar {
 		}()
 		nextSongButton = {
 			let button = UIBarButtonItem(
-				title: LocalizedString.nextTrack,
+				title: LRString.nextTrack,
 				image: Enabling.console
 				? UIImage(systemName: "arrow.forward.circle")
 				: UIImage(systemName: "forward.end"),
@@ -120,7 +120,7 @@ final class TransportBar {
 	private func freshen() {
 		
 		func configurePlayButton() {
-			playPauseButton.title = LocalizedString.play
+			playPauseButton.title = LRString.play
 			playPauseButton.primaryAction = UIAction(
 				image: UIImage(systemName: "play.circle")
 			) { _ in
@@ -157,7 +157,7 @@ final class TransportBar {
 		
 		if player.playbackState == .playing {
 			// Configure “pause” button
-			playPauseButton.title = LocalizedString.pause
+			playPauseButton.title = LRString.pause
 			playPauseButton.primaryAction = UIAction(
 				image: UIImage(systemName: "pause.circle")
 			) { _ in

@@ -61,6 +61,8 @@ final class AccentColorCell: UITableViewCell {
 	}
 	@objc private func userChangedAccentColor() {
 		configure()
+//		setNeedsLayout()
+//		setNeedsDisplay()
 	}
 	
 	@objc
@@ -117,7 +119,7 @@ final class TipLoadingCell: UITableViewCell {
 		disableWithAccessibilityTrait()
 		
 		var content = UIListContentConfiguration.cell()
-		content.text = LocalizedString.loadingEllipsis
+		content.text = LRString.loadingEllipsis
 		content.textProperties.color = .secondaryLabel
 		contentConfiguration = content
 	}
@@ -135,7 +137,7 @@ final class TipReloadCell: UITableViewCell {
 }
 extension TipReloadCell: CellTintingWhenSelected {}
 extension TipReloadCell: CellConfigurableAsButton {
-	static let buttonText = LocalizedString.reload
+	static let buttonText = LRString.reload
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
@@ -164,7 +166,7 @@ final class TipConfirmingCell: UITableViewCell {
 		disableWithAccessibilityTrait()
 		
 		var content = UIListContentConfiguration.cell()
-		content.text = LocalizedString.confirmingEllipsis
+		content.text = LRString.confirmingEllipsis
 		content.textProperties.color = .secondaryLabel
 		contentConfiguration = content
 	}
@@ -183,7 +185,7 @@ final class TipThankYouCell: UITableViewCell {
 	private func configure() {
 		var content = UIListContentConfiguration.cell()
 		let heartEmoji = AccentColor.savedPreference().heartEmoji
-		let thankYouMessage = heartEmoji + LocalizedString.tipThankYouMessageWithPaddingSpaces + heartEmoji
+		let thankYouMessage = heartEmoji + LRString.tipThankYouMessageWithPaddingSpaces + heartEmoji
 		content.text = thankYouMessage
 		content.textProperties.color = .secondaryLabel
 		content.textProperties.alignment = .center

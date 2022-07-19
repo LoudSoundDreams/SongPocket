@@ -26,7 +26,7 @@ struct OptionsView: View {
 		NavigationView {
 			Form {
 				
-				Section(LocalizedString.theme) {
+				Section(LRString.theme) {
 					Picker("", selection: $theme.lighting) {
 						ForEach(Lighting.allCases) { lighting in
 							lighting.image
@@ -50,13 +50,13 @@ struct OptionsView: View {
 				Section {
 					switch tipJarViewModel.status {
 					case .notYetFirstLoaded, .loading:
-						Text(LocalizedString.loadingEllipsis)
+						Text(LRString.loadingEllipsis)
 							.foregroundColor(.secondary)
 					case .reload:
 						Button {
 							PurchaseManager.shared.requestTipProduct()
 						} label: {
-							Text(LocalizedString.reload)
+							Text(LRString.reload)
 								.foregroundColor(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
 						}
 					case .ready:
@@ -72,7 +72,7 @@ struct OptionsView: View {
 							}
 						}
 					case .confirming:
-						Text(LocalizedString.confirmingEllipsis)
+						Text(LRString.confirmingEllipsis)
 							.foregroundColor(.secondary)
 					case .thankYou:
 						HStack {
@@ -83,17 +83,17 @@ struct OptionsView: View {
 						}
 					}
 				} header: {
-					Text(LocalizedString.tipJar)
+					Text(LRString.tipJar)
 				} footer: {
-					Text(LocalizedString.tipJarFooter)
+					Text(LRString.tipJarFooter)
 				}
 				
 			}
-			.navigationTitle(LocalizedString.options)
+			.navigationTitle(LRString.options)
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
-					Button(LocalizedString.done) { dismiss() }
+					Button(LRString.done) { dismiss() }
 				}
 			}
 		}
@@ -103,6 +103,6 @@ struct OptionsView: View {
 	
 	private func thankYouMessage() -> String {
 		let heartEmoji = theme.accentColor.heartEmoji
-		return heartEmoji + LocalizedString.tipThankYouMessageWithPaddingSpaces + heartEmoji
+		return heartEmoji + LRString.tipThankYouMessageWithPaddingSpaces + heartEmoji
 	}
 }

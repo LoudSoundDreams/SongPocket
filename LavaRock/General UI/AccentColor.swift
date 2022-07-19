@@ -37,15 +37,15 @@ enum AccentColor: String, CaseIterable {
 	var displayName: String {
 		switch self {
 		case .strawberry:
-			return LocalizedString.strawberry
+			return LRString.strawberry
 		case .tangerine:
-			return LocalizedString.tangerine
+			return LRString.tangerine
 		case .lime:
-			return LocalizedString.lime
+			return LRString.lime
 		case .blueberry:
-			return LocalizedString.blueberry
+			return LRString.blueberry
 		case .grape:
-			return LocalizedString.grape
+			return LRString.grape
 		}
 	}
 	

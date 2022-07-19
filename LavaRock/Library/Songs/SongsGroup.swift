@@ -52,13 +52,13 @@ extension SongsGroup: LibraryGroup {
 					+ metadatum.discNumberFormatted()
 					+ (metadatum.trackNumberFormattedOptional() ?? "")
 					if discAndTrack.count >= 4 {
-						return LocalizedString.interpunct + "0000"
+						return LRString.interpunct + "0000"
 					}
 					if discAndTrack.count > mostDigits.count {
 						mostDigits = discAndTrack
 					}
 				}
-				return LocalizedString.interpunct + mostDigits
+				return LRString.interpunct + mostDigits
 			} else {
 				var mostDigits = "00"
 				for metadatum in metadata {

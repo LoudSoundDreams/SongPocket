@@ -48,7 +48,7 @@ extension _PlayheadReflectable {
 			return
 		}
 		speakerImage = UIImage(systemName: "speaker.fill")
-		headOfAccessibilityLabel = LocalizedString.paused
+		headOfAccessibilityLabel = LRString.paused
 #else
 		guard
 			containsPlayhead,
@@ -60,10 +60,10 @@ extension _PlayheadReflectable {
 		}
 		if player.playbackState == .playing {
 			speakerImage = UIImage(systemName: "speaker.wave.2.fill")
-			headOfAccessibilityLabel = LocalizedString.nowPlaying
+			headOfAccessibilityLabel = LRString.nowPlaying
 		} else {
 			speakerImage = UIImage(systemName: "speaker.fill")
-			headOfAccessibilityLabel = LocalizedString.paused
+			headOfAccessibilityLabel = LRString.paused
 		}
 #endif
 	}

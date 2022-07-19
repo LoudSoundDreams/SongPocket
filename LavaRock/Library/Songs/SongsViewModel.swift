@@ -32,7 +32,7 @@ extension SongsViewModel: LibraryViewModel {
 	func bigTitle() -> String {
 		switch viewContainer {
 		case .library:
-			return LocalizedString.songs
+			return LRString.songs
 		case
 				.container(let container),
 				.deleted(let container):

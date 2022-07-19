@@ -1,5 +1,5 @@
 //
-//  LocalizedString.swift
+//  LRString.swift
 //  LavaRock
 //
 //  Created by h on 2020-12-05.
@@ -9,7 +9,7 @@ import Foundation
 
 // Putting all the keys we pass to NSLocalizedString in one place (here) helps us keep them unique, which we must do to ensure predictable behavior.
 // It also helps us use the same phrases in multiple places if appropriate.
-struct LocalizedString {
+struct LRString {
 	private init() {}
 	
 	// Don’t pass arguments to the Foundation function `NSLocalizedString`, because when you choose Editor -> Export for Localization…, Xcode won’t include those calls.

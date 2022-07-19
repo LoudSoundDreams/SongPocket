@@ -33,7 +33,7 @@ final class CollectionsTVC:
 	
 	// Actions
 	private(set) lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
-		name: LocalizedString.rename,
+		name: LRString.rename,
 		actionHandler: renameFocusedCollectionHandler)
 	private func renameFocusedCollectionHandler(
 		_ sender: UIAccessibilityCustomAction
@@ -53,7 +53,7 @@ final class CollectionsTVC:
 	@IBOutlet private var optionsButton__UIKit: UIBarButtonItem!
 	@IBOutlet private var optionsButton__SwiftUI: UIBarButtonItem!
 	private lazy var combineButton = UIBarButtonItem(
-		title: LocalizedString.combine,
+		title: LRString.combine,
 		primaryAction: UIAction { [weak self] _ in self?.previewCombineAndPrompt() })
 	
 	// Purpose
