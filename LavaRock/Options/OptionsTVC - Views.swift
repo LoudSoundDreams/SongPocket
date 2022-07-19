@@ -42,7 +42,7 @@ final class LightingChooser: UISegmentedControl {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AccentColorCell: UITableViewCell {
-	final var representedAccent: AccentColor? = nil {
+	final var representee: AccentColor? = nil {
 		didSet {
 			configure()
 		}
@@ -55,31 +55,28 @@ final class AccentColorCell: UITableViewCell {
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(userChangedAccentColor),
-			name: .userChangedAccentColor, // Don’t do this during `tintColorDidChange`, because that can break the animation when the table view deselects the row.
+			selector: #selector(savedAccentColor),
+			name: .savedAccentColor, // Don’t do this during `tintColorDidChange`, because that can break the animation when the table view deselects the row.
 			object: nil)
 	}
-	@objc private func userChangedAccentColor() {
+	@objc private func savedAccentColor() {
 		configure()
-//		setNeedsLayout()
-//		setNeedsDisplay()
 	}
 	
-	@objc
 	private func configure() {
-		guard let representedAccent = representedAccent else {
+		guard let representee = representee else {
 			contentConfiguration = defaultContentConfiguration()
 			return
 		}
 		
 		var content = UIListContentConfiguration.cell()
-		content.text = representedAccent.displayName // Freshen text
-		content.textProperties.color = representedAccent.uiColor // Freshen color
+		content.text = representee.displayName // Freshen text
+		content.textProperties.color = representee.uiColor // Freshen color
 		contentConfiguration = content
 		
 		// Freshen checkmark
 		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
-		if representedAccent == AccentColor.savedPreference() {
+		if representee == AccentColor.savedPreference() {
 			accessoryType = .checkmark
 		} else {
 			accessoryType = .none
@@ -89,7 +86,7 @@ final class AccentColorCell: UITableViewCell {
 		// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
 		let colorView = UIView()
 		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
-		colorView.backgroundColor = representedAccent.uiColor.resolvedColor(with: traitCollection).translucent()
+		colorView.backgroundColor = representee.uiColor.resolvedColor(with: traitCollection).translucent()
 		selectedBackgroundView = colorView
 	}
 	

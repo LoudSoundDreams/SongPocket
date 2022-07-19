@@ -7,10 +7,6 @@
 
 import UIKit
 
-extension Notification.Name {
-	static let userChangedAccentColor = Self("user changed accent color")
-}
-
 extension OptionsTVC {
 	private enum Section: Int, CaseIterable {
 		case theme
@@ -153,7 +149,7 @@ extension OptionsTVC {
 			withIdentifier: "Accent Color",
 			for: indexPath) as? AccentColorCell
 		else { return UITableViewCell() }
-		cell.representedAccent = accentColor
+		cell.representee = accentColor
 		return cell
 	}
 	
@@ -170,7 +166,6 @@ extension OptionsTVC {
 		 • Post `userChangedAccentColor` before you deselect the row. (Responding instances respond immediately.)
 		 */
 		Theme.shared.accentColor = selected
-		NotificationCenter.default.post(name: .userChangedAccentColor, object: nil)
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
