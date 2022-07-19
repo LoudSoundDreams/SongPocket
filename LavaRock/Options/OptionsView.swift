@@ -27,24 +27,36 @@ struct OptionsView: View {
 			Form {
 				
 				Section(LRString.theme) {
-					Picker("", selection: $theme.lighting) {
+					Picker(
+						selection: $theme.lighting
+					) {
 						ForEach(Lighting.allCases) { lighting in
 							lighting.image
 								.accessibilityLabel(lighting.name)
 								.tag(lighting)
 						}
+					} label: {
+						EmptyView()
 					}
 					.pickerStyle(.segmented)
 					
-					Picker(selection: $theme.accentColor) {
+					Picker(
+						selection: $theme.accentColor
+					) {
 						ForEach(AccentColor.allCases) { accentColor in
 							Text(accentColor.displayName)
 								.foregroundColor(accentColor.color)
 								.tag(accentColor)
 						}
-					} label: { EmptyView() }
-//					.pickerStyle(.inline)
-					.pickerStyle(.wheel)
+					} label: {
+						EmptyView()
+					}
+						.pickerStyle(
+//							.menu
+//							.inline
+//							.segmented
+							.wheel
+						)
 				}
 				
 				Section {
@@ -93,7 +105,9 @@ struct OptionsView: View {
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
-					Button(LRString.done) { dismiss() }
+					Button(LRString.done) {
+						dismiss()
+					}
 				}
 			}
 		}
