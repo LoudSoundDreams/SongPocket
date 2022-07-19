@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 
 extension Notification.Name {
-	static let savedAccentColor = Self("saved accent color")
+	static let didSaveAccentColor = Self("did save accent color")
 }
 
 extension AccentColor: Identifiable {
@@ -37,7 +37,7 @@ enum AccentColor: String, CaseIterable {
 			rawValue,
 			forKey: Self.defaultsKey)
 		
-		NotificationCenter.default.post(name: .savedAccentColor, object: nil)
+		NotificationCenter.default.post(name: .didSaveAccentColor, object: nil)
 	}
 	
 	var displayName: String {
