@@ -283,7 +283,7 @@ extension LibraryViewModel {
 		let indexPathsToSort = sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: selectedIndexPaths)
 		
-		let rowsBySection = indexPathsToSort.makeDictionaryOfRowsBySection()
+		let rowsBySection = indexPathsToSort.unsortedRowsBySection()
 		
 		var twin = self
 		rowsBySection.forEach { (section, rows) in
@@ -408,7 +408,7 @@ extension LibraryViewModel {
 	func updatedAfterFloatingToTopsOfSections(
 		selectedIndexPaths: [IndexPath]
 	) -> Self {
-		let rowsBySection = selectedIndexPaths.makeDictionaryOfRowsBySection()
+		let rowsBySection = selectedIndexPaths.unsortedRowsBySection()
 		
 		var twin = self
 		rowsBySection.forEach { (section, rows) in
@@ -450,7 +450,7 @@ extension LibraryViewModel {
 	func updatedAfterSinkingToBottomsOfSections(
 		selectedIndexPaths: [IndexPath]
 	) -> Self {
-		let rowsBySection = selectedIndexPaths.makeDictionaryOfRowsBySection()
+		let rowsBySection = selectedIndexPaths.unsortedRowsBySection()
 		
 		var twin = self
 		rowsBySection.forEach { (section, rows) in

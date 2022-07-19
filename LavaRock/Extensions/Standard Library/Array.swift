@@ -47,22 +47,28 @@ extension Array {
 		}
 		return sortedTuples.map { $0.element }
 	}
-	
-	// MARK: - Element: LibraryItem
-	
+}
+
+// MARK: - Element: LibraryItem
+
+extension Array
+where Element: LibraryItem
+{
 	// Needs to match the property observer on `LibraryGroup.items`.
 	mutating func reindex()
-	where Element: LibraryItem
 	{
 		enumerated().forEach { (currentIndex, libraryItem) in
 			libraryItem.index = Int64(currentIndex)
 		}
 	}
-	
-	// MARK: Element == IndexPath
-	
-	func makeDictionaryOfRowsBySection() -> [SectionIndex: [RowIndex]]
-	where Element == IndexPath
+}
+
+// MARK: - Element == IndexPath
+
+extension Array
+where Element == IndexPath
+{
+	func unsortedRowsBySection() -> [SectionIndex: [RowIndex]]
 	{
 		let indexPathsBySection = Dictionary(grouping: self) { $0.sectionIndex }
 		return indexPathsBySection.mapValues { indexPaths in
@@ -70,28 +76,43 @@ extension Array {
 		}
 	}
 	
-	// Whether the index paths form a block of rows next to each other in whatever section they’re in. You can provide the index paths in any order.
-	func isContiguousWithinEachSection() -> Bool
-	where Element == IndexPath
+	func sortedRowsBySection() -> [SectionIndex: [RowIndex]]
 	{
-		return makeDictionaryOfRowsBySection().allSatisfy { (_, rows) in
-			rows.sorted().map { $0.value }.isConsecutive()
+		let indexPathsBySection = Dictionary(grouping: self) { $0.sectionIndex }
+		return indexPathsBySection.mapValues { indexPaths in
+			indexPaths.map { $0.rowIndex }.sorted()
 		}
 	}
 	
-	// Whether the integers are in increasing consecutive order.
+	// Whether each section contains a block of rows next to each other, in any order within each section.
+	func isContiguousWithinEachSection() -> Bool
+	{
+		return sortedRowsBySection().allSatisfy { (_, rows) in
+			rows.map { $0.value }.isConsecutive()
+		}
+	}
+}
+
+// MARK: Element == Int
+
+extension Array
+where Element == Int
+{
+	// Whether the integers are increasing and contiguous.
 	func isConsecutive() -> Bool
 	where Element == Int
 	{
 		return allNeighborsSatisfy { $0 + 1 == $1 }
 	}
-	
-	// MARK: - Miscellaneous
-	
+}
+
+// MARK: - Miscellaneous
+
+extension Array {
 	func allNeighborsSatisfy(
 		_ predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 	) -> Bool {
-		let rest = dropFirst()
+		let rest = dropFirst() // Empty subsequence if self is empty
 		
 		func allNeighborsSatisfy(
 			first: Element?,
