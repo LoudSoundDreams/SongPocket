@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import os
 
 extension Array {
+	private var signposter: OSSignposter {
+		OSSignposter.standardLibrary
+	}
+	
 	// MARK: - Ordering
 	
 	func inAnyOtherOrder() -> Self
@@ -70,6 +75,10 @@ where Element == IndexPath
 {
 	func unsortedRowsBySection() -> [SectionIndex: [RowIndex]]
 	{
+		let state = signposter.beginInterval("make unsorted")
+		defer {
+			signposter.endInterval("make unsorted", state)
+		}
 		let indexPathsBySection = Dictionary(grouping: self) { $0.sectionIndex }
 		return indexPathsBySection.mapValues { indexPaths in
 			indexPaths.map { $0.rowIndex }
@@ -78,6 +87,10 @@ where Element == IndexPath
 	
 	func sortedRowsBySection() -> [SectionIndex: [RowIndex]]
 	{
+		let state = signposter.beginInterval("make sorted")
+		defer {
+			signposter.endInterval("make sorted", state)
+		}
 		let indexPathsBySection = Dictionary(grouping: self) { $0.sectionIndex }
 		return indexPathsBySection.mapValues { indexPaths in
 			indexPaths.map { $0.rowIndex }.sorted()
