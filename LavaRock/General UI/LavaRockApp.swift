@@ -29,7 +29,7 @@ struct LavaRockApp: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			MainViewControllerRepresentable()
+			MainViewControllerRep()
 				.edgesIgnoringSafeArea(.all)
 				.preferredColorScheme(theme.lighting.colorScheme)
 				.tint(theme.accentColor.color)
@@ -37,8 +37,8 @@ struct LavaRockApp: App {
 	}
 }
 
-private struct MainViewControllerRepresentable: UIViewControllerRepresentable {
-	typealias ViewControllerType = LibraryNC
+private struct MainViewControllerRep: UIViewControllerRepresentable {
+	typealias VCType = LibraryNC
 	
 	@ObservedObject private var theme: Theme
 	
@@ -48,7 +48,7 @@ private struct MainViewControllerRepresentable: UIViewControllerRepresentable {
 	
 	func makeUIViewController(
 		context: Context
-	) -> ViewControllerType {
+	) -> VCType {
 		let result = UIStoryboard(name: "Library", bundle: nil)
 			.instantiateInitialViewController() as! LibraryNC
 		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
@@ -56,7 +56,7 @@ private struct MainViewControllerRepresentable: UIViewControllerRepresentable {
 	}
 	
 	func updateUIViewController(
-		_ uiViewController: ViewControllerType,
+		_ uiViewController: VCType,
 		context: Context
 	) {
 		uiViewController.view.tintColor = theme.accentColor.uiColor
