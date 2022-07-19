@@ -13,7 +13,7 @@
 		0708201D275BEE1C00F48D13 /* Lighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708201C275BEE1C00F48D13 /* Lighting.swift */; };
 		0708E53E286A20B6001204BF /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708E53D286A20B6001204BF /* Numbers.swift */; };
 		070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */; };
-		071A0B9E277E76510017F76D /* LavaRockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* LavaRockApp.swift */; };
+		071A0B9E277E76510017F76D /* LavaRock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* LavaRock.swift */; };
 		071A0BA0277E832C0017F76D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9F277E832C0017F76D /* Database.swift */; };
 		071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0BA1277E83CB0017F76D /* LibraryNC.swift */; };
 		07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* TapeDeck.swift */; };
@@ -153,7 +153,7 @@
 		0708201C275BEE1C00F48D13 /* Lighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lighting.swift; sourceTree = "<group>"; };
 		0708E53D286A20B6001204BF /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		070E194024F33FC800B21307 /* CollectionsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - Editing.swift"; sourceTree = "<group>"; };
-		071A0B9D277E76510017F76D /* LavaRockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LavaRockApp.swift; sourceTree = "<group>"; };
+		071A0B9D277E76510017F76D /* LavaRock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LavaRock.swift; sourceTree = "<group>"; };
 		071A0B9F277E832C0017F76D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		071A0BA1277E83CB0017F76D /* LibraryNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryNC.swift; sourceTree = "<group>"; };
 		07267A1F25537C5800C914A3 /* TapeDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeck.swift; sourceTree = "<group>"; };
@@ -560,7 +560,7 @@
 				0708201C275BEE1C00F48D13 /* Lighting.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				0772FB98283010960054834F /* Theme.swift */,
-				071A0B9D277E76510017F76D /* LavaRockApp.swift */,
+				071A0B9D277E76510017F76D /* LavaRock.swift */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
 			);
@@ -837,7 +837,7 @@
 				077BCEB2275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift in Sources */,
 				07A4F90F2519E8410065C87E /* deleteLibraryItems.swift in Sources */,
 				07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */,
-				071A0B9E277E76510017F76D /* LavaRockApp.swift in Sources */,
+				071A0B9E277E76510017F76D /* LavaRock.swift in Sources */,
 				0783DC16286EA65E00A9A4F7 /* Sim_SongMetadatum.swift in Sources */,
 				075D904427F02F5B00BD8F3E /* ConsoleVC - Notifications.swift in Sources */,
 				07E92A0E2510497B00E9073B /* SongsTVC - Song Actions.swift in Sources */,

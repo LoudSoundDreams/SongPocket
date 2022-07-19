@@ -1,5 +1,5 @@
 //
-//  LavaRockApp.swift
+//  LavaRock.swift
 //  LavaRock
 //
 //  Created by h on 2021-12-30.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct LavaRockApp: App {
+struct LavaRock: App {
 	@ObservedObject private var theme: Theme
 	
 	init() {
