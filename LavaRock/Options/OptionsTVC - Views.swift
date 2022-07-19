@@ -42,7 +42,7 @@ final class LightingChooser: UISegmentedControl {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AccentColorCell: UITableViewCell {
-	final var accentColor: AccentColor? = nil {
+	final var representedAccent: AccentColor? = nil {
 		didSet {
 			configure()
 		}
@@ -55,25 +55,28 @@ final class AccentColorCell: UITableViewCell {
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(configure),
+			selector: #selector(userChangedAccentColor),
 			name: .userChangedAccentColor, // Don’t do this during `tintColorDidChange`, because that can break the animation when the table view deselects the row.
 			object: nil)
+	}
+	@objc private func userChangedAccentColor() {
+		configure()
 	}
 	
 	@objc
 	private func configure() {
-		guard let accentColor = accentColor else {
+		guard let representedAccent = representedAccent else {
 			contentConfiguration = defaultContentConfiguration()
 			return
 		}
 		
 		var content = UIListContentConfiguration.cell()
-		content.text = accentColor.displayName
-		content.textProperties.color = accentColor.uiColor
+		content.text = representedAccent.displayName
+		content.textProperties.color = representedAccent.uiColor
 		contentConfiguration = content
 		
 		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
-		if accentColor == AccentColor.savedPreference() {
+		if representedAccent == AccentColor.savedPreference() {
 			accessoryType = .checkmark
 		} else {
 			accessoryType = .none
@@ -83,7 +86,7 @@ final class AccentColorCell: UITableViewCell {
 	// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
 		let colorView = UIView()
 		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
-		colorView.backgroundColor = accentColor.uiColor.resolvedColor(with: traitCollection).translucent()
+		colorView.backgroundColor = representedAccent.uiColor.resolvedColor(with: traitCollection).translucent()
 		selectedBackgroundView = colorView
 	}
 	

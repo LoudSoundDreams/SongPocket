@@ -153,7 +153,7 @@ extension OptionsTVC {
 			withIdentifier: "Accent Color",
 			for: indexPath) as? AccentColorCell
 		else { return UITableViewCell() }
-		cell.accentColor = accentColor
+		cell.representedAccent = accentColor
 		return cell
 	}
 	
