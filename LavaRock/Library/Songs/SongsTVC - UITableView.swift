@@ -20,7 +20,7 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return viewModel.numberOfRows(for: SectionIndex(section))
+		return viewModel.numberOfRows(for: Section_I(section))
 	}
 	
 	// MARK: - Headers
@@ -31,7 +31,7 @@ extension SongsTVC {
 	) -> String? {
 		if Enabling.multialbum {
 			return (viewModel as? SongsViewModel)?
-				.album(for: SectionIndex(section))
+				.album(for: Section_I(section))
 				.representativeTitleFormattedOrPlaceholder()
 		} else {
 			return nil
@@ -54,7 +54,7 @@ extension SongsTVC {
 					withIdentifier: "Cover Art",
 					for: indexPath) as? CoverArtCell
 				else { return UITableViewCell() }
-				let album = songsViewModel.album(for: indexPath.sectionIndex)
+				let album = songsViewModel.album(for: indexPath.section_i)
 				cell.configure(with: album)
 				return cell
 			case .albumInfo:
@@ -62,7 +62,7 @@ extension SongsTVC {
 					withIdentifier: "Album Info",
 					for: indexPath) as? AlbumInfoCell
 				else { return UITableViewCell() }
-				let album = songsViewModel.album(for: indexPath.sectionIndex)
+				let album = songsViewModel.album(for: indexPath.section_i)
 				cell.configure(with: album)
 				return cell
 			}
@@ -78,10 +78,10 @@ extension SongsTVC {
 		cell.configureWith(
 			song: songsViewModel.songNonNil(at: indexPath),
 			albumRepresentative: {
-				let album = songsViewModel.album(for: indexPath.sectionIndex)
+				let album = songsViewModel.album(for: indexPath.section_i)
 				return album.representativeSongMetadatum()
 			}(),
-			spacerTrackNumberText: (songsViewModel.group(for: indexPath.sectionIndex) as? SongsGroup)?.spacerTrackNumberText,
+			spacerTrackNumberText: (songsViewModel.group(for: indexPath.section_i) as? SongsGroup)?.spacerTrackNumberText,
 			alertPresenter: Weak(self)
 		)
 		

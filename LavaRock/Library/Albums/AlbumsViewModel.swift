@@ -12,8 +12,8 @@ struct AlbumsViewModel {
 	// `LibraryViewModel`
 	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
-	let numberOfPresections = SectionIndex(0)
-	var numberOfPrerowsPerSection: RowIndex { RowIndex(prerowsInEachSection.count) }
+	let numberOfPresections = Section_I(0)
+	var numberOfPrerowsPerSection: Row_I { Row_I(prerowsInEachSection.count) }
 	var groups: ColumnOfLibraryItems
 	
 	enum Prerow {
@@ -110,7 +110,7 @@ extension AlbumsViewModel {
 	}
 	
 	// Similar to `SongsViewModel.album`.
-	func collection(for section: SectionIndex) -> Collection {
+	func collection(for section: Section_I) -> Collection {
 		let group = group(for: section)
 		return group.container as! Collection
 	}
@@ -120,7 +120,7 @@ extension AlbumsViewModel {
 		case album
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
-		let row = indexPath.rowIndex
+		let row = indexPath.row_i
 		if row < numberOfPrerowsPerSection {
 			return .prerow(prerowsInEachSection[row.value])
 		} else {
@@ -147,7 +147,7 @@ extension AlbumsViewModel {
 	
 	func updatedAfterMoving(
 		albumsWith albumIDs: [NSManagedObjectID],
-		to section: SectionIndex
+		to section: Section_I
 	) -> Self {
 		let destinationCollection = collection(for: section)
 		

@@ -73,27 +73,27 @@ where Element: LibraryItem
 extension Array
 where Element == IndexPath
 {
-	func unsortedRowsBySection() -> [SectionIndex: [RowIndex]]
+	func unsortedRowsBySection() -> [Section_I: [Row_I]]
 	{
 		let state = signposter.beginInterval("make unsorted")
 		defer {
 			signposter.endInterval("make unsorted", state)
 		}
-		let indexPathsBySection = Dictionary(grouping: self) { $0.sectionIndex }
+		let indexPathsBySection = Dictionary(grouping: self) { $0.section_i }
 		return indexPathsBySection.mapValues { indexPaths in
-			indexPaths.map { $0.rowIndex }
+			indexPaths.map { $0.row_i }
 		}
 	}
 	
-	func sortedRowsBySection() -> [SectionIndex: [RowIndex]]
+	func sortedRowsBySection() -> [Section_I: [Row_I]]
 	{
 		let state = signposter.beginInterval("make sorted")
 		defer {
 			signposter.endInterval("make sorted", state)
 		}
-		let indexPathsBySection = Dictionary(grouping: self) { $0.sectionIndex }
+		let indexPathsBySection = Dictionary(grouping: self) { $0.section_i }
 		return indexPathsBySection.mapValues { indexPaths in
-			indexPaths.map { $0.rowIndex }.sorted()
+			indexPaths.map { $0.row_i }.sorted()
 		}
 	}
 	

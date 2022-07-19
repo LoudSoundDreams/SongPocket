@@ -19,7 +19,7 @@ extension AlbumsTVC {
 		
 		let newViewModel = albumsViewModel.updatedAfterMoving(
 			albumsWith: clipboard.idsOfAlbumsBeingMoved,
-			to: indexPath.sectionIndex)
+			to: indexPath.section_i)
 		Task {
 			guard await setViewModelAndMoveRowsAndShouldContinue(newViewModel) else { return }
 			

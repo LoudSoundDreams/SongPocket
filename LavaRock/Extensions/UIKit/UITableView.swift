@@ -10,9 +10,9 @@ import UIKit
 extension UITableView {
 	// MARK: - Sections
 	
-	final func allSections() -> [SectionIndex] {
+	final func allSections() -> [Section_I] {
 		return (0 ..< numberOfSections).map { section in
-			SectionIndex(section)
+			Section_I(section)
 		}
 	}
 	
@@ -28,15 +28,15 @@ extension UITableView {
 	
 	final func allIndexPaths() -> [IndexPath] {
 		return allSections().flatMap { section in
-			indexPathsForRows(in: section, first: RowIndex(0))
+			indexPathsForRows(in: section, first: Row_I(0))
 		}
 	}
 	
 	final func indexPathsForRows(
-		in section: SectionIndex,
-		first: RowIndex
+		in section: Section_I,
+		first: Row_I
 	) -> [IndexPath] {
-		let lastRow = RowIndex(numberOfRows(inSection: section.value) - 1)
+		let lastRow = Row_I(numberOfRows(inSection: section.value) - 1)
 		guard lastRow.value >= 0 else {
 			// The section has 0 rows.
 			return []
@@ -48,12 +48,12 @@ extension UITableView {
 	}
 	
 	private static func indexPathsForRows(
-		in section: SectionIndex,
-		first: RowIndex,
-		last: RowIndex
+		in section: Section_I,
+		first: Row_I,
+		last: Row_I
 	) -> [IndexPath] {
 		return (first.value ... last.value).map { row in
-			IndexPath(RowIndex(row), in: section)
+			IndexPath(Row_I(row), in: section)
 		}
 	}
 	

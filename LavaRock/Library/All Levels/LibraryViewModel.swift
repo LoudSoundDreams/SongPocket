@@ -46,8 +46,8 @@ protocol LibraryViewModel {
 	
 	var viewContainer: LibraryViewContainer { get }
 	var context: NSManagedObjectContext { get }
-	var numberOfPresections: SectionIndex { get }
-	var numberOfPrerowsPerSection: RowIndex { get }
+	var numberOfPresections: Section_I { get }
+	var numberOfPrerowsPerSection: Row_I { get }
 	
 	var groups: ColumnOfLibraryItems { get set }
 	
@@ -128,23 +128,23 @@ extension LibraryViewModel {
 	
 	// WARNING: Never use `LibraryGroup.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `numberOfPrerowsPerSection`.
 	
-	func group(for section: SectionIndex) -> LibraryGroup {
+	func group(for section: Section_I) -> LibraryGroup {
 		return groups[groupIndex(for: section)]
 	}
 	
 	func itemsInGroup(startingAt selectedIndexPath: IndexPath) -> [NSManagedObject] {
-		let group = group(for: selectedIndexPath.sectionIndex)
-		let selectedItemIndex = itemIndex(for: selectedIndexPath.rowIndex)
+		let group = group(for: selectedIndexPath.section_i)
+		let selectedItemIndex = itemIndex(for: selectedIndexPath.row_i)
 		return group.itemsFrom(selectedItemIndex)
 	}
 	
 	func pointsToSomeItem(_ indexPath: IndexPath) -> Bool {
-		let groupIndex = groupIndex(for: indexPath.sectionIndex)
+		let groupIndex = groupIndex(for: indexPath.section_i)
 		guard 0 <= groupIndex.__, groupIndex.__ < groups.count else {
 			return false
 		}
 		let items = groups[groupIndex].items
-		let itemIndex = itemIndex(for: indexPath.rowIndex)
+		let itemIndex = itemIndex(for: indexPath.row_i)
 		guard 0 <= itemIndex.__, itemIndex.__ < items.count else {
 			return false
 		}
@@ -159,17 +159,17 @@ extension LibraryViewModel {
 	}
 	
 	func itemNonNil(at indexPath: IndexPath) -> NSManagedObject {
-		let group = group(for: indexPath.sectionIndex)
-		return group[itemIndex(for: indexPath.rowIndex)]
+		let group = group(for: indexPath.section_i)
+		return group[itemIndex(for: indexPath.row_i)]
 	}
 	
 	// MARK: Indices
 	
-	func groupIndex(for section: SectionIndex) -> GroupIndex {
+	func groupIndex(for section: Section_I) -> GroupIndex {
 		return GroupIndex(section.value - numberOfPresections.value)
 	}
 	
-	func itemIndex(for row: RowIndex) -> ItemIndex {
+	func itemIndex(for row: Row_I) -> ItemIndex {
 		return ItemIndex(row.value - numberOfPrerowsPerSection.value)
 	}
 	
@@ -208,12 +208,12 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func section(for groupIndex: GroupIndex) -> SectionIndex {
-		return SectionIndex(numberOfPresections.value + groupIndex.__)
+	func section(for groupIndex: GroupIndex) -> Section_I {
+		return Section_I(numberOfPresections.value + groupIndex.__)
 	}
 	
-	func row(for itemIndex: ItemIndex) -> RowIndex {
-		return RowIndex(numberOfPrerowsPerSection.value + itemIndex.__)
+	func row(for itemIndex: ItemIndex) -> Row_I {
+		return Row_I(numberOfPrerowsPerSection.value + itemIndex.__)
 	}
 	
 	// Similar to UITableView.indexPathsForRows.
@@ -221,8 +221,8 @@ extension LibraryViewModel {
 		let indices = groups[groupIndex].items.indices
 		return indices.map {
 			IndexPath(
-				RowIndex(numberOfPrerowsPerSection.value + $0),
-				in: SectionIndex(numberOfPresections.value + groupIndex.__))
+				Row_I(numberOfPrerowsPerSection.value + $0),
+				in: Section_I(numberOfPresections.value + groupIndex.__))
 		}
 	}
 	
@@ -231,8 +231,8 @@ extension LibraryViewModel {
 		groupIndex: GroupIndex
 	) -> IndexPath {
 		return IndexPath(
-			RowIndex(numberOfPrerowsPerSection.value + itemIndex.__),
-			in: SectionIndex(numberOfPresections.value + groupIndex.__))
+			Row_I(numberOfPrerowsPerSection.value + itemIndex.__),
+			in: Section_I(numberOfPresections.value + groupIndex.__))
 	}
 	
 	// MARK: - UITableView
@@ -241,7 +241,7 @@ extension LibraryViewModel {
 		return numberOfPresections.value + groups.count
 	}
 	
-	func numberOfRows(for section: SectionIndex) -> Int {
+	func numberOfRows(for section: Section_I) -> Int {
 		switch viewContainer {
 		case .library:
 			break
@@ -261,15 +261,15 @@ extension LibraryViewModel {
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath
 	) {
-		let sourceGroupIndex = groupIndex(for: sourceIndexPath.sectionIndex)
-		let sourceItemIndex = itemIndex(for: sourceIndexPath.rowIndex)
+		let sourceGroupIndex = groupIndex(for: sourceIndexPath.section_i)
+		let sourceItemIndex = itemIndex(for: sourceIndexPath.row_i)
 		
 		var sourceItems = groups[sourceGroupIndex].items
 		let item = sourceItems.remove(at: sourceItemIndex.__)
 		groups[sourceGroupIndex].setItems(sourceItems)
 		
-		let destinationGroupIndex = groupIndex(for: destinationIndexPath.sectionIndex)
-		let destinationItemIndex = itemIndex(for: destinationIndexPath.rowIndex)
+		let destinationGroupIndex = groupIndex(for: destinationIndexPath.section_i)
+		let destinationItemIndex = itemIndex(for: destinationIndexPath.row_i)
 		
 		var destinationItems = groups[destinationGroupIndex].items
 		destinationItems.insert(item, at: destinationItemIndex.__)
@@ -298,8 +298,8 @@ extension LibraryViewModel {
 	}
 	
 	private func itemsAfterSorting(
-		itemsAtInOrder rows: [RowIndex],
-		in section: SectionIndex,
+		itemsAtInOrder rows: [Row_I],
+		in section: Section_I,
 		sortOptionLocalizedName: String
 	) -> [NSManagedObject] {
 		// Get all the items in the subjected group.
@@ -422,8 +422,8 @@ extension LibraryViewModel {
 	}
 	
 	private func itemsAfterFloatingToTop(
-		itemsAtInAnyOrder rowsInAnyOrder: [RowIndex],
-		in section: SectionIndex
+		itemsAtInAnyOrder rowsInAnyOrder: [Row_I],
+		in section: Section_I
 	) -> [NSManagedObject] {
 		// We could use Swift Algorithms's `MutableCollection.stablePartition` for this.
 		
@@ -464,8 +464,8 @@ extension LibraryViewModel {
 	}
 	
 	private func itemsAfterSinkingToBottom(
-		itemsAtInAnyOrder rowsInAnyOrder: [RowIndex],
-		in section: SectionIndex
+		itemsAtInAnyOrder rowsInAnyOrder: [Row_I],
+		in section: Section_I
 	) -> [NSManagedObject] {
 		let rows = rowsInAnyOrder.sorted()
 		let indicesOfSelectedItems = rows.map {

@@ -15,10 +15,10 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	)-> Int {
-		return numberOfRows(for: SectionIndex(section))
+		return numberOfRows(for: Section_I(section))
 	}
 	
-	final func numberOfRows(for section: SectionIndex) -> Int {
+	final func numberOfRows(for section: Section_I) -> Int {
 		switch viewState {
 		case
 				.allowAccess,

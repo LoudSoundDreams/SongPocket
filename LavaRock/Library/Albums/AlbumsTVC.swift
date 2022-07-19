@@ -122,8 +122,8 @@ final class AlbumsTVC:
 			indexOfOpenedCollection = nil
 			tableView.scrollToRow(
 				at: IndexPath(
-					RowIndex(0),
-					in: SectionIndex(viewModel.numberOfPresections.value + collectionIndex)),
+					Row_I(0),
+					in: Section_I(viewModel.numberOfPresections.value + collectionIndex)),
 				at: .top,
 				animated: false)
 			

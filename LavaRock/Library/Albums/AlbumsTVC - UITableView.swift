@@ -33,7 +33,7 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return viewModel.numberOfRows(for: SectionIndex(section))
+		return viewModel.numberOfRows(for: Section_I(section))
 	}
 	
 	// MARK: - Headers
@@ -58,7 +58,7 @@ extension AlbumsTVC {
 	) -> String? {
 		if Enabling.multicollection {
 			return (viewModel as? AlbumsViewModel)?
-				.collection(for: SectionIndex(section))
+				.collection(for: Section_I(section))
 				.title
 		} else {
 			return nil

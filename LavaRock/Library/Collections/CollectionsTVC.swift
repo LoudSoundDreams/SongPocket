@@ -116,15 +116,15 @@ final class CollectionsTVC:
 		let toInsert: [IndexPath]
 		let toReloadInCollectionsSection: [IndexPath]
 		
-		let collectionsSection = SectionIndex(0)
+		let collectionsSection = Section_I(0)
 		let oldInCollectionsSection = tableView.indexPathsForRows(
 			in: collectionsSection,
-			first: RowIndex(0))
+			first: Row_I(0))
 		let newInCollectionsSection: [IndexPath] = {
 			let numberOfRows = numberOfRows(for: collectionsSection)
 			let indicesOfRows = Array(0 ..< numberOfRows)
 			return indicesOfRows.map { row in
-				IndexPath(RowIndex(row), in: collectionsSection)
+				IndexPath(Row_I(row), in: collectionsSection)
 			}}()
 		
 		switch viewState {
