@@ -73,10 +73,11 @@ final class AccentColorCell: UITableViewCell {
 		}
 		
 		var content = UIListContentConfiguration.cell()
-		content.text = representedAccent.displayName
-		content.textProperties.color = representedAccent.uiColor
+		content.text = representedAccent.displayName // Freshen text
+		content.textProperties.color = representedAccent.uiColor // Freshen color
 		contentConfiguration = content
 		
+		// Freshen checkmark
 		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
 		if representedAccent == AccentColor.savedPreference() {
 			accessoryType = .checkmark
@@ -84,8 +85,8 @@ final class AccentColorCell: UITableViewCell {
 			accessoryType = .none
 		}
 		
-	// Freshen `selectedBackgroundView`
-	// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
+		// Freshen `selectedBackgroundView`
+		// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
 		let colorView = UIView()
 		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
 		colorView.backgroundColor = representedAccent.uiColor.resolvedColor(with: traitCollection).translucent()
