@@ -182,9 +182,7 @@ final class TipThankYouCell: UITableViewCell {
 	
 	private func configure() {
 		var content = UIListContentConfiguration.cell()
-		let heartEmoji = AccentColor.savedPreference().heartEmoji
-		let thankYouMessage = heartEmoji + LRString.tipThankYouMessageWithPaddingSpaces + heartEmoji
-		content.text = thankYouMessage
+		content.text = AccentColor.savedPreference().thankYouMessage()
 		content.textProperties.color = .secondaryLabel
 		content.textProperties.alignment = .center
 		contentConfiguration = content

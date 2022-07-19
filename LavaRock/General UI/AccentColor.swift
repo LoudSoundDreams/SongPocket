@@ -85,7 +85,11 @@ enum AccentColor: String, CaseIterable {
 		}
 	}
 	
-	var heartEmoji: String {
+	func thankYouMessage() -> String {
+		return heartEmoji + LRString.tipThankYouMessageWithPaddingSpaces + heartEmoji
+	}
+	
+	private var heartEmoji: String {
 		switch self {
 		case .strawberry:
 			return "❤️"
