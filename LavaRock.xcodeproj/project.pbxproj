@@ -32,7 +32,7 @@
 		07436D03283A8878002546B5 /* Debug Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07436D02283A8878002546B5 /* Debug Assets.xcassets */; };
 		074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074AB85D27CAD9C3007B63D2 /* Reel.swift */; };
 		0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */; };
-		075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LocalizedString.swift */; };
+		075218A2257C498D0077AE9B /* LRString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LRString.swift */; };
 		0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0759DC80272CD37300FDA7D7 /* Enabling.swift */; };
 		075D904227F02EF700BD8F3E /* ConsoleVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */; };
 		075D904427F02F5B00BD8F3E /* ConsoleVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */; };
@@ -170,7 +170,7 @@
 		07436D02283A8878002546B5 /* Debug Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Debug Assets.xcassets"; sourceTree = "<group>"; };
 		074AB85D27CAD9C3007B63D2 /* Reel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reel.swift; sourceTree = "<group>"; };
 		0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
-		075218A1257C498D0077AE9B /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
+		075218A1257C498D0077AE9B /* LRString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRString.swift; sourceTree = "<group>"; };
 		0759DC80272CD37300FDA7D7 /* Enabling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enabling.swift; sourceTree = "<group>"; };
 		075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - UITableView.swift"; sourceTree = "<group>"; };
 		075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - Notifications.swift"; sourceTree = "<group>"; };
@@ -614,7 +614,7 @@
 			children = (
 				07436D01283A8878002546B5 /* Debug Assets */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
-				075218A1257C498D0077AE9B /* LocalizedString.swift */,
+				075218A1257C498D0077AE9B /* LRString.swift */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
 				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
 			);
@@ -842,7 +842,7 @@
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				072F859F26B74A5D0062323C /* NoItemsBackgroundManager.swift in Sources */,
 				07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */,
-				075218A2257C498D0077AE9B /* LocalizedString.swift in Sources */,
+				075218A2257C498D0077AE9B /* LRString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,
 				07B35E2D288670EE00159FD9 /* OSSignposter.swift in Sources */,
 				0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */,
