@@ -76,7 +76,7 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 		// Lighting
 		window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 		
-		// Accent Color
+		// Accent color
 		// Unfortunately, we can’t remove a view’s tint color override.
 		// So, override the tint color on both the view and its window, every time.
 		vc.view.tintColor = theme.accentColor.uiColor
