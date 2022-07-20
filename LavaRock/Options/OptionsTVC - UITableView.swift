@@ -157,17 +157,9 @@ extension OptionsTVC {
 		let indexOfAccentColor = indexPath.row - Self.indexPathsOfLightingRows.count
 		let selected = AccentColor.allCases[indexOfAccentColor]
 		
-		/*
-		 Keep these statements in the right order so that the table view animates successfully when it deselects the row.
-		 • Set `Theme.shared.accentColor` before you post `userChangedAccentColor`. That …
-			• Triggers `AccentColor.saveAsPreference`.
-			• Triggers `updateUIViewController`, which sets the window’s `tintColor`, which triggers `tintColorDidChange`, but not until later.
-				• That happens after `saveAsPreference`, so instances that override `tintColorDidChange` can get the new value for `savedPreference`.
-		 • Post `userChangedAccentColor` before you deselect the row. (Responding instances respond immediately.)
-		 */
 		Theme.shared.accentColor = selected
 		view.window?.tintColor = selected.uiColor
-		tableView.deselectRow(at: indexPath, animated: true)
+		tableView.deselectRow(at: indexPath, animated: true) // Do this last, or the animation will break.
 	}
 	
 	// MARK: - Tip Jar Section

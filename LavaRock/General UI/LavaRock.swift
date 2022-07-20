@@ -55,14 +55,14 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 	func makeUIViewController(
 		context: Context
 	) -> VCType {
-		let result = UIStoryboard(name: "Library", bundle: nil)
+		let vc = UIStoryboard(name: "Library", bundle: nil)
 			.instantiateInitialViewController() as! LibraryNC
 		// Lighting
-		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
+		vc.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 		// Accent color
-		result.view.tintColor = theme.accentColor.uiColor
-		result.needsOverrideThemeInWindow = true
-		return result
+		vc.view.tintColor = theme.accentColor.uiColor
+		vc.needsOverrideThemeInWindow = true
+		return vc
 	}
 	
 	// SwiftUI does run this between `VCType.viewDidLoad` and its first `.viewWillAppear`.
@@ -70,7 +70,8 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 		_ uiViewController: VCType,
 		context: Context
 	) {
-		let window = uiViewController.view.window
+		let vc = uiViewController
+		let window = vc.view.window
 		
 		// Lighting
 		window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
@@ -78,7 +79,7 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 		// Accent Color
 		// Unfortunately, we can’t remove a view’s tint color override.
 		// So, override the tint color on both the view and its window, every time.
-		uiViewController.view.tintColor = theme.accentColor.uiColor
+		vc.view.tintColor = theme.accentColor.uiColor
 		// When the UIKit Options screen changes the accent color, SwiftUI runs this method at a moment that breaks the animation for deselecting the accent color row.
 		// So, only run this branch for the SwiftUI Options screen, and make the UIKit Options screen do this work itself.
 		if Enabling.swiftUI__options {
