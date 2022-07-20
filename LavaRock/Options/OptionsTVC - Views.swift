@@ -64,22 +64,33 @@ final class AccentColorCell: UITableViewCell {
 	}
 	
 	private func configure() {
+		let new_accessoryType: AccessoryType
+		let new_contentConfiguration: UIContentConfiguration
+		let new_selectedBackgroundView: UIView?
+		defer {
+			accessoryType = new_accessoryType
+			contentConfiguration = new_contentConfiguration
+			selectedBackgroundView = new_selectedBackgroundView
+		}
+		
 		guard let representee = representee else {
-			contentConfiguration = defaultContentConfiguration()
+			new_accessoryType = .none
+			new_contentConfiguration = defaultContentConfiguration()
+			new_selectedBackgroundView = nil
 			return
 		}
 		
 		var content = UIListContentConfiguration.cell()
 		content.text = representee.displayName // Freshen text
 		content.textProperties.color = representee.uiColor // Freshen color
-		contentConfiguration = content
+		new_contentConfiguration = content
 		
 		// Freshen checkmark
 		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
 		if representee == AccentColor.savedPreference() {
-			accessoryType = .checkmark
+			new_accessoryType = .checkmark
 		} else {
-			accessoryType = .none
+			new_accessoryType = .none
 		}
 		
 		// Freshen `selectedBackgroundView`
@@ -87,7 +98,7 @@ final class AccentColorCell: UITableViewCell {
 		let colorView = UIView()
 		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
 		colorView.backgroundColor = representee.uiColor.resolvedColor(with: traitCollection).translucent()
-		selectedBackgroundView = colorView
+		new_selectedBackgroundView = colorView
 	}
 	
 	private lazy var previousAccessibilityContrast = traitCollection.accessibilityContrast
