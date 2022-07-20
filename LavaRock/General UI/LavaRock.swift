@@ -51,7 +51,11 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 	) -> VCType {
 		let result = UIStoryboard(name: "Library", bundle: nil)
 			.instantiateInitialViewController() as! LibraryNC
+		// Override lighting
+		// We want to do that on the view controller’s window, but at first, that’s nil.
+		// So, <override on the view controller itself at first, then move the override to the window as soon as possible>.
 		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
+		result.needsOverrideThemeInWindow = true
 		return result
 	}
 	
@@ -59,6 +63,10 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 		_ uiViewController: VCType,
 		context: Context
 	) {
+		// Override accent color
+		// We want to do that on the view controller’s window, but at first, that’s nil.
+		// Our next-best option would be to <override on the view controller itself at first, then move the override to the window as soon as possible>. But we can’t remove a view controller’s tint color override, even by setting it to nil.
+		// So, override on both the view controller and its window, every time.
 		uiViewController.view.tintColor = theme.accentColor.uiColor
 		if let window = uiViewController.view.window {
 			window.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)

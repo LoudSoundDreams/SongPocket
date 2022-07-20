@@ -9,6 +9,8 @@ import UIKit
 import SwiftUI
 
 final class LibraryNC: UINavigationController {
+	var needsOverrideThemeInWindow = false
+	
 	final lazy var transportBar = TransportBar(
 		moreButtonAction: UIAction { [weak self] _ in
 			guard let self = self else { return }
@@ -30,18 +32,21 @@ final class LibraryNC: UINavigationController {
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		if let window = view.window {
-			if !Self.hasMovedLightingToWindow {
-				Self.hasMovedLightingToWindow = true
-				window.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
-				view.overrideUserInterfaceStyle = .unspecified
-			}
-			if !Self.hasCopiedAccentColorToWindow {
-				Self.hasCopiedAccentColorToWindow = true
-				window.tintColor = view.tintColor
-			}
+		
+		if
+			needsOverrideThemeInWindow,
+			let window = view.window
+		{
+			needsOverrideThemeInWindow = false
+			
+			// Lighting
+			window.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
+			// Remove override from this view controller
+			view.overrideUserInterfaceStyle = .unspecified
+			
+			// Accent color
+			window.tintColor = view.tintColor
+			// Unfortunately, setting `view.tintColor = nil` doesn’t remove the override.
 		}
 	}
-	private static var hasMovedLightingToWindow = false
-	private static var hasCopiedAccentColorToWindow = false
 }
