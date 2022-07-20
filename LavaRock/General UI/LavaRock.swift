@@ -46,16 +46,21 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 		theme = .shared
 	}
 	
+	// Overriding lighting and accent color
+	// We want to do that on the view’s window, but during `makeUIViewController`, that’s nil. So …
+	// • During `make`, override on the view itself. Then, as soon as possible, move the override to the window.
+	// • Thereafter, during `updateUIViewController`, always override on the window.
+	// “As soon as possible” is `viewDidAppear`, because that’s when the window becomes non-nil, and note that that’s after the initial `update`.
+	
 	func makeUIViewController(
 		context: Context
 	) -> VCType {
 		let result = UIStoryboard(name: "Library", bundle: nil)
 			.instantiateInitialViewController() as! LibraryNC
-		// <Override lighting and accent color>
-		// <We want to do that on the view’s window, but at first, that’s nil.>
-		// So,
-		// <override on the view itself at first, then move the override to the window as soon as possible. Thereafter, always override on the window.>
+		// Lighting
 		result.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
+		// Accent color
+		result.view.tintColor = theme.accentColor.uiColor
 		result.needsOverrideThemeInWindow = true
 		return result
 	}
@@ -65,20 +70,19 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 		_ uiViewController: VCType,
 		context: Context
 	) {
-		// <Override lighting and accent color>
-		// <We want to do that on the view’s window, but at first, that’s nil.>
-		// Our next-best option would be to
-		// <override on the view itself at first, then move the override to the window as soon as possible. Thereafter, always override on the window.>
-		// But we can’t remove a view’s tint color override.
+		let window = uiViewController.view.window
+		
+		// Lighting
+		window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
+		
+		// Accent Color
+		// Unfortunately, we can’t remove a view’s tint color override.
 		// So, override the tint color on both the view and its window, every time.
-		if
-			// When the UIKit Options screen changes the accent color, running this branch breaks the animation for deselecting the accent color row.
-			// So, do this only for the SwiftUI Options screen, and make the UIKit Options screen do this itself.
-			let window = uiViewController.view.window
-		{
-			window.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
-			window.tintColor = theme.accentColor.uiColor
-		}
 		uiViewController.view.tintColor = theme.accentColor.uiColor
+		// When the UIKit Options screen changes the accent color, SwiftUI runs this method at a moment that breaks the animation for deselecting the accent color row.
+		// So, only run this branch for the SwiftUI Options screen, and make the UIKit Options screen do this work itself.
+		if Enabling.swiftUI__options {
+			window?.tintColor = theme.accentColor.uiColor
+		}
 	}
 }

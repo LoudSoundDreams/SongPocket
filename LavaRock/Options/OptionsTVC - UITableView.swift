@@ -166,6 +166,7 @@ extension OptionsTVC {
 		 • Post `userChangedAccentColor` before you deselect the row. (Responding instances respond immediately.)
 		 */
 		Theme.shared.accentColor = selected
+		view.window?.tintColor = selected.uiColor
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
