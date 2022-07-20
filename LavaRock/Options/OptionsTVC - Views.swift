@@ -59,7 +59,7 @@ final class AccentColorCell: UITableViewCell {
 			content.textProperties.color = representee.uiColor // Freshen color
 			new_contentConfiguration = content
 			
-			reflectActive()
+			reflectTintColor()
 		}
 	}
 	
@@ -67,18 +67,9 @@ final class AccentColorCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)
-		
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(didSaveAccentColor),
-			name: .didSaveAccentColor, // Don’t do this during `tintColorDidChange`, because that can break the animation when the table view deselects the row.
-			object: nil)
-	}
-	@objc private func didSaveAccentColor() {
-		reflectActive()
 	}
 	
-	private func reflectActive() {
+	private func reflectTintColor() {
 		let new_accessoryType: AccessoryType
 		let new_selectedBackgroundView: UIView?
 		defer {
@@ -107,10 +98,7 @@ final class AccentColorCell: UITableViewCell {
 	final override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		if previousAccessibilityContrast != traitCollection.accessibilityContrast {
-			previousAccessibilityContrast = traitCollection.accessibilityContrast
-			reflectActive()
-		}
+		reflectTintColor()
 	}
 	
 	final override func layoutSubviews() {
