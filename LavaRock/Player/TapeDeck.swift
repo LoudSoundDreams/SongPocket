@@ -36,38 +36,38 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 		}
 		player?.beginGeneratingPlaybackNotifications()
 		
-		reflectPlaybackStateEverywhere() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
-		reflectNowPlayingItemEverywhere()
+		reflect_playback_mode_everywhere() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
+		reflect_now_playing_item_everywhere()
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(reflectPlaybackStateEverywhere),
+			selector: #selector(reflect_playback_mode_everywhere),
 			name: .MPMusicPlayerControllerPlaybackStateDidChange, // As of iOS 15.4, Media Player also posts this when the repeat or shuffle mode changes.
 			object: player)
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(reflectNowPlayingItemEverywhere),
+			selector: #selector(reflect_now_playing_item_everywhere),
 			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: player)
 	}
 	
 	@objc
-	private func reflectPlaybackStateEverywhere() {
+	private func reflect_playback_mode_everywhere() {
 		TapeDeckDisplay.shared.freshenStatus()
 		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {
-			$0.referencee?.reflectPlaybackState()
+			$0.referencee?.reflect_playback_mode()
 		}
 	}
 	
 	@objc
-	private func reflectNowPlayingItemEverywhere() {
+	private func reflect_now_playing_item_everywhere() {
 		TapeDeckDisplay.shared.freshenStatus()
 		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {
-			$0.referencee?.reflectNowPlayingItem()
+			$0.referencee?.reflect_now_playing_item()
 		}
 	}
 	

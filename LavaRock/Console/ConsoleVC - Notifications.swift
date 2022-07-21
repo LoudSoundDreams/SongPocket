@@ -8,11 +8,11 @@
 import Foundation
 
 extension ConsoleVC: TapeDeckReflecting {
-	final func reflectPlaybackState() {
+	final func reflect_playback_mode() {
 		reflectPlayhead_console()
 	}
 	
-	final func reflectNowPlayingItem() {
+	final func reflect_now_playing_item() {
 		reflectPlayhead_console()
 	}
 }

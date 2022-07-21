@@ -11,10 +11,10 @@ import MediaPlayer
 @MainActor
 protocol TapeDeckReflecting: AnyObject {
 	// Adopting types must …
-	// • Call `TapeDeck.shared.addReflector(weakly: self)` as soon as their implementations of `reflectPlaybackState` and `reflectNowPlayingItem` will work.
+	// • Call `TapeDeck.shared.addReflector(weakly: self)` as soon as their implementations of `reflect_playback_mode` and `reflect_now_playing_item` will work.
 	
-	func reflectPlaybackState()
+	func reflect_playback_mode()
 	// Reflect `TapeDeck.shared.player`, and show a disabled state if it’s `nil`. (Call `TapeDeck.shared.setUp` to set it up.)
 	
-	func reflectNowPlayingItem()
+	func reflect_now_playing_item()
 }

@@ -178,11 +178,11 @@ final class TransportBar {
 	}
 }
 extension TransportBar: TapeDeckReflecting {
-	final func reflectPlaybackState() {
+	final func reflect_playback_mode() {
 		freshen()
 	}
 	
-	final func reflectNowPlayingItem() {
+	final func reflect_now_playing_item() {
 		freshen()
 	}
 }

@@ -135,13 +135,13 @@ final class FutureChooser: UISegmentedControl {
 		}
 		
 		Task { await MainActor.run {
-			reflectPlaybackState()
+			reflect_playback_mode()
 			TapeDeck.shared.addReflector(weakly: self)
 		}}
 	}
 }
 extension FutureChooser: TapeDeckReflecting {
-	func reflectPlaybackState() {
+	func reflect_playback_mode() {
 		guard
 			let player = player,
 			!Reel.mediaItems.isEmpty
@@ -165,5 +165,5 @@ extension FutureChooser: TapeDeckReflecting {
 		}
 	}
 	
-	func reflectNowPlayingItem() {}
+	func reflect_now_playing_item() {}
 }

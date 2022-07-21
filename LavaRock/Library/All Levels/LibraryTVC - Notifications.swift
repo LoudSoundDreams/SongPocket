@@ -12,11 +12,11 @@ extension Notification.Name {
 }
 
 extension LibraryTVC: TapeDeckReflecting {
-	final func reflectPlaybackState() {
+	final func reflect_playback_mode() {
 		reflectPlayhead_library()
 	}
 	
-	final func reflectNowPlayingItem() {
+	final func reflect_now_playing_item() {
 		reflectPlayhead_library()
 	}
 }
