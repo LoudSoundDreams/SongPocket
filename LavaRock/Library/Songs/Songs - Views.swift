@@ -216,7 +216,22 @@ final class SongCell: UITableViewCell {
 			// To do the following, iOS might need to fade out other currently-playing audio.
 			// That freezes the menu, so do this asynchronously.
 			Task {
-				self?.player?.playNow([mediaItem])
+				self?.player?.playNow(
+					[mediaItem],
+					disablingRepeatAndShuffle: true)
+			}
+		}
+		
+		// Repeat one
+		let repeatOneAction = UIAction(
+			title: "Repeat",
+			image: UIImage(systemName: "repeat.1")
+		) { [weak self] _ in
+			Task {
+				self?.player?.repeatMode = .one // Do this first, because `MPMusicPlayerController.play` is slow.
+				self?.player?.playNow(
+					[mediaItem],
+					disablingRepeatAndShuffle: false)
 			}
 		}
 		
@@ -259,6 +274,7 @@ final class SongCell: UITableViewCell {
 		menu = UIMenu(presentsUpward: false, groupedElements: [
 			[
 				playAction,
+				repeatOneAction,
 			],
 			[
 				playNextAction,

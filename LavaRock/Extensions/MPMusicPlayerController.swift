@@ -9,16 +9,21 @@ import MediaPlayer
 
 @MainActor
 extension MPMusicPlayerController {
-	final func playNow(_ mediaItems: [MPMediaItem]) {
+	final func playNow(
+		_ mediaItems: [MPMediaItem],
+		disablingRepeatAndShuffle: Bool
+	) {
 		if Enabling.console {
 			Reel.setMediaItems(mediaItems)
 		}
 		
 		setQueue(mediaItems: mediaItems)
 		
-		// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
-		repeatMode = .none
-		shuffleMode = .off
+		if disablingRepeatAndShuffle {
+			// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
+			repeatMode = .none
+			shuffleMode = .off
+		}
 		
 		play()
 	}
