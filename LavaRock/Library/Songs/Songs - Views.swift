@@ -213,8 +213,9 @@ final class SongCell: UITableViewCell {
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { [weak self] _ in
-			// To do the following, iOS might need to fade out other currently-playing audio.
-			// That freezes the menu, so do this asynchronously.
+			// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
+			// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
+			// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 			Task {
 				self?.player?.playNow(
 					[mediaItem],
@@ -224,7 +225,7 @@ final class SongCell: UITableViewCell {
 		
 		// Repeat one
 		let repeatOneAction = UIAction(
-			title: "Repeat",
+			title: "Repeat", // L2DO
 			image: UIImage(systemName: "repeat.1")
 		) { [weak self] _ in
 			Task {

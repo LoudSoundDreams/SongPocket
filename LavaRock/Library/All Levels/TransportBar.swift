@@ -110,13 +110,15 @@ final class TransportBar {
 		
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(freshen),
+			selector: #selector(userChangedReelEmptiness),
 			name: .userChangedReelEmptiness,
 			object: nil)
 	}
+	@objc private func userChangedReelEmptiness() {
+		freshen()
+	}
 	
 	private static let moreButtonDefaultImage = UIImage(systemName: "chevron.up.circle")!
-	@objc
 	private func freshen() {
 		
 		func configurePlayButton() {
