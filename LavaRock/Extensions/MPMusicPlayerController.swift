@@ -6,9 +6,14 @@
 //
 
 import MediaPlayer
+import os
 
 @MainActor
 extension MPMusicPlayerController {
+	private var signposter: OSSignposter {
+		.mediaPlayer
+	}
+	
 	final func playNow(
 		_ mediaItems: [MPMediaItem],
 		disablingRepeatAndShuffle: Bool
@@ -17,7 +22,9 @@ extension MPMusicPlayerController {
 			Reel.setMediaItems(mediaItems)
 		}
 		
+		let setQueueInterval = signposter.beginInterval("set queue")
 		setQueue(mediaItems: mediaItems)
+		signposter.endInterval("set queue", setQueueInterval)
 		
 		if disablingRepeatAndShuffle {
 			// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
@@ -25,7 +32,9 @@ extension MPMusicPlayerController {
 			shuffleMode = .off
 		}
 		
+		let playInterval = signposter.beginInterval("play")
 		play()
+		signposter.endInterval("play", playInterval)
 	}
 	
 	final func playNext(_ mediaItems: [MPMediaItem]) {
