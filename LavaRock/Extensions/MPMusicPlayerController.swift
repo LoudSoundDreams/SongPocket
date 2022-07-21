@@ -20,7 +20,7 @@ extension MPMusicPlayerController {
 		repeatMode = .none
 		shuffleMode = .off
 		
-		play() // Calls `prepareToPlay` automatically
+		play()
 	}
 	
 	final func playNext(_ mediaItems: [MPMediaItem]) {

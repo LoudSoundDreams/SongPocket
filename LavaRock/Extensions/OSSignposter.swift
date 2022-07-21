@@ -10,5 +10,5 @@ import os
 extension OSSignposter {
 	static let standardLibrary = OSSignposter(
 		subsystem: "0. Standard Library",
-		category: "_")
+		category: .pointsOfInterest)
 }

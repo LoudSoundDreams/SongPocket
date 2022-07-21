@@ -10,7 +10,7 @@ import os
 
 extension Array {
 	private var signposter: OSSignposter {
-		OSSignposter.standardLibrary
+		.standardLibrary
 	}
 	
 	// MARK: - Ordering

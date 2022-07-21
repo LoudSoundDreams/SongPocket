@@ -39,6 +39,6 @@ extension OSLog {
 		subsystem: "6. Albums View",
 		category: "_")
 	static let songsView = OSLog(
-		subsystem: "7. Albums View",
+		subsystem: "7. Songs View",
 		category: "_")
 }

@@ -213,7 +213,11 @@ final class SongCell: UITableViewCell {
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { [weak self] _ in
-			self?.player?.playNow([mediaItem])
+			// To do the following, iOS might need to fade out other currently-playing audio.
+			// That freezes the menu, so do this asynchronously.
+			Task {
+				self?.player?.playNow([mediaItem])
+			}
 		}
 		
 		// Play next
