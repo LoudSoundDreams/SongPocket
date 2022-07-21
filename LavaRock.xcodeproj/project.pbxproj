@@ -412,7 +412,7 @@
 				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
 				07FB52C92813693F00CCCBA5 /* Helpers */,
 				07E0BBFE2765680C0010117E /* Extensions */,
-				07FC970A24BAC1050036DD3D /* Model */,
+				07FC970A24BAC1050036DD3D /* Database */,
 				07DF65D027766B7B003B2EA3 /* MusicFolder */,
 				07F1881F27F6B3750074809D /* Player */,
 				07E0BBFF276569480010117E /* General UI */,
@@ -602,7 +602,7 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		07FC970A24BAC1050036DD3D /* Model */ = {
+		07FC970A24BAC1050036DD3D /* Database */ = {
 			isa = PBXGroup;
 			children = (
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
@@ -612,7 +612,7 @@
 				0736E3E924B95FD600A15420 /* Album.swift */,
 				07AE2AA3258C09D900C3A314 /* Collection.swift */,
 			);
-			path = Model;
+			path = Database;
 			sourceTree = "<group>";
 		};
 		07FF1DDF27F8FF0300DF9B78 /* Resources */ = {
