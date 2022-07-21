@@ -58,20 +58,6 @@ extension SongsTVC {
 			// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
 		
-		// Repeat all
-		actionSheet.addAction(
-			UIAlertAction(
-				title: "Repeat", // L2DO
-				style: .default
-			) { _ in
-				player.repeatMode = .all // Do this first, because `MPMusicPlayerController.play` is slow.
-				player.playNow(
-					selectedMediaItemAndBelow,
-					disablingRepeatAndShuffle: false)
-				deselectSelectedSong()
-			}
-		)
-		
 		// Play next
 		let playNextAction = UIAlertAction(title: LRString.playNext, style: .default) { _ in
 			player.playNext(selectedMediaItemAndBelow)
