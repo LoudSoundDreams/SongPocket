@@ -149,23 +149,17 @@ struct LRString {
 	static let songs = NSLocalizedString("Songs", comment: "Big title")
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
-//	static let playSongAndBelow = NSLocalizedString("Play Song and Below", comment: "Button")
-//	static let queueSongAndBelow = NSLocalizedString("Queue Song and Below", comment: "Button")
-//	static let playSong = NSLocalizedString("Play Song", comment: "Button")
-	static let playNext = NSLocalizedString("Queue Next", comment: "Button")
-	static let playLater = NSLocalizedString("Queue Last", comment: "Button")
-//	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
+	
+	static let queueNext = NSLocalizedString("Queue Next", comment: "Button")
+	static let queueLast = NSLocalizedString("Queue Last", comment: "Button")
+	
 	static let prefix_playingNext = NSLocalizedString("Playing Next: ", comment: "Alert title")
 	static let prefix_playingLast = NSLocalizedString("Playing Last: ", comment: "Alert title")
-//	static let playingNext = NSLocalizedString("Playing Next", comment: "Alert title")
-//	static let playingLast = NSLocalizedString("Playing Last", comment: "Alert title")
 	static let sentence_openMusicToEditTheQueue = NSLocalizedString(
 		"Open Music to edit the queue.",
 		comment: "Alert message")
-//	static let title_openMusicToEditTheQueue = NSLocalizedString(
-//		"Open Music to Edit the Queue",
-//		comment: "Alert title")
 	static let dontShowAgain = NSLocalizedString("Don’t Show Again", comment: "Button")
+	
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
 	// MARK: Console

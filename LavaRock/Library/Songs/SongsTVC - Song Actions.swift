@@ -49,7 +49,10 @@ extension SongsTVC {
 		
 		// Play
 		actionSheet.addAction(
-			UIAlertAction(title: LRString.play, style: .default) { _ in
+			UIAlertAction(
+				title: LRString.play,
+				style: .default
+			) { _ in
 				player.playNow(
 					selectedMediaItemAndBelow,
 					disablingRepeatAndShuffle: true)
@@ -59,7 +62,10 @@ extension SongsTVC {
 		)
 		
 		// Play next
-		let playNextAction = UIAlertAction(title: LRString.playNext, style: .default) { _ in
+		let playNextAction = UIAlertAction(
+			title: LRString.queueNext,
+			style: .default
+		) { _ in
 			player.playNext(selectedMediaItemAndBelow)
 			self.presentOpenMusicAlertIfNeeded(
 				willPlayNextAsOpposedToLast: true,
@@ -70,7 +76,10 @@ extension SongsTVC {
 		actionSheet.addAction(playNextAction)
 		
 		// Play last
-		let playLastAction = UIAlertAction(title: LRString.playLater, style: .default) { _ in
+		let playLastAction = UIAlertAction(
+			title: LRString.queueLast,
+			style: .default
+		) { _ in
 			player.playLast(selectedMediaItemAndBelow)
 			self.presentOpenMusicAlertIfNeeded(
 				willPlayNextAsOpposedToLast: false,

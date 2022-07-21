@@ -238,7 +238,7 @@ final class SongCell: UITableViewCell {
 		
 		// Play next
 		let playNextAction = UIAction(
-			title: LRString.playNext,
+			title: LRString.queueNext,
 			image: UIImage(systemName: "text.insert")
 		) { [weak self] _ in
 			self?.player?.playNext([mediaItem])
@@ -251,7 +251,7 @@ final class SongCell: UITableViewCell {
 		// Play last
 		let playLastElement = UIDeferredMenuElement.uncached({ useMenuElements in
 			let playLastAction = UIAction(
-				title: LRString.playLater,
+				title: LRString.queueLast,
 				image: UIImage(systemName: "text.append")
 			) { [weak self] _ in
 				self?.player?.playLast([mediaItem])
