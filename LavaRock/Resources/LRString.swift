@@ -150,6 +150,7 @@ struct LRString {
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
+	static let repeat_button = NSLocalizedString("Repeat", comment: "Button")
 	static let queueNext = NSLocalizedString("Queue Next", comment: "Button")
 	static let queueLast = NSLocalizedString("Queue Last", comment: "Button")
 	

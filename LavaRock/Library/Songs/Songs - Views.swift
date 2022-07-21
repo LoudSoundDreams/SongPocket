@@ -226,7 +226,7 @@ final class SongCell: UITableViewCell {
 		
 		// Repeat one
 		let repeatOneAction = UIAction(
-			title: "Repeat", // L2DO
+			title: LRString.repeat_button,
 			image: UIImage(systemName: "repeat.1")
 		) { [weak self] _ in
 			Task {
