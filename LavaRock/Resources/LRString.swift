@@ -154,8 +154,8 @@ struct LRString {
 	static let queueNext = NSLocalizedString("Queue Next", comment: "Button")
 	static let queueLast = NSLocalizedString("Queue Last", comment: "Button")
 	
-	static let prefix_playingNext = NSLocalizedString("Playing Next: ", comment: "Alert title")
-	static let prefix_playingLast = NSLocalizedString("Playing Last: ", comment: "Alert title")
+	static let prefix_playingNext = NSLocalizedString("Queued Next: ", comment: "Alert title")
+	static let prefix_playingLast = NSLocalizedString("Queued Last: ", comment: "Alert title")
 	static let sentence_openMusicToEditTheQueue = NSLocalizedString(
 		"Open Music to edit the queue.",
 		comment: "Alert message")
