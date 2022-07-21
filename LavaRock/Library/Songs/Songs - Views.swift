@@ -219,7 +219,8 @@ final class SongCell: UITableViewCell {
 			Task {
 				self?.player?.playNow(
 					[mediaItem],
-					disablingRepeatAndShuffle: true)
+					new_repeat_mode: .none,
+					disable_shuffle: true)
 			}
 		}
 		
@@ -229,10 +230,11 @@ final class SongCell: UITableViewCell {
 			image: UIImage(systemName: "repeat.1")
 		) { [weak self] _ in
 			Task {
-				self?.player?.repeatMode = .one // Do this first, because `MPMusicPlayerController.play` is slow.
+//				self?.player?.repeatMode = .one // `MPMusicPlayerController.play` is slow. This tries to get our app to reflect the repeat mode sooner, but it doesn’t work consistently.
 				self?.player?.playNow(
 					[mediaItem],
-					disablingRepeatAndShuffle: false)
+					new_repeat_mode: .one,
+					disable_shuffle: false)
 			}
 		}
 		

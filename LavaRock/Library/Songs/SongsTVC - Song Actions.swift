@@ -55,7 +55,8 @@ extension SongsTVC {
 			) { _ in
 				player.playNow(
 					selectedMediaItemAndBelow,
-					disablingRepeatAndShuffle: true)
+					new_repeat_mode: .none,
+					disable_shuffle: true)
 				deselectSelectedSong()
 			}
 			// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)

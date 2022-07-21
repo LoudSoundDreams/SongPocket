@@ -16,7 +16,8 @@ extension MPMusicPlayerController {
 	
 	final func playNow(
 		_ mediaItems: [MPMediaItem],
-		disablingRepeatAndShuffle: Bool
+		new_repeat_mode: MPMusicRepeatMode,
+		disable_shuffle: Bool
 	) {
 		if Enabling.console {
 			Reel.setMediaItems(mediaItems)
@@ -26,9 +27,9 @@ extension MPMusicPlayerController {
 		setQueue(mediaItems: mediaItems)
 		signposter.endInterval("set queue", setQueueInterval)
 		
-		if disablingRepeatAndShuffle {
-			// As of iOS 14.7 developer beta 1, you must set these after calling `setQueue`, not before, or they won’t actually apply.
-			repeatMode = .none
+		// As of iOS 15.6 RC 2, with `systemMusicPlayer`, you must set these after calling `setQueue`, not before, or they won’t actually apply.
+		repeatMode = new_repeat_mode
+		if disable_shuffle {
 			shuffleMode = .off
 		}
 		
