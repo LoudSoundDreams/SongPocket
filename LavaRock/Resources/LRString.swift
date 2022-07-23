@@ -87,10 +87,9 @@ struct LRString {
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
-	// MARK: Collections View // MC2DO: Edit
+	// MARK: Collections View
 	
-	static let sections = NSLocalizedString("Sections", comment: "Big title")
-	static let collections = NSLocalizedString("Collections", comment: "Big title") // MC2DO: Delete
+	static let collections = NSLocalizedString("Collections", comment: "Big title")
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
@@ -98,38 +97,27 @@ struct LRString {
 		comment: "Placeholder for when the app’s database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.") // MC2DO: Edit
+	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let renameSectionAlertTitle = NSLocalizedString("Rename Section", comment: "Alert title")
-	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title") // MC2DO: Delete
+	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
-	static let combineSectionsAlertTitle = NSLocalizedString("Combine Sections", comment: "Alert title")
-	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title") // MC2DO: Delete
-	static let combinedSectionDefaultTitle = NSLocalizedString("Combined Section", comment: "Alert title")
-	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title") // MC2DO: Delete
+	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title")
+	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title")
 	
-	static let newSectionButtonTitle = NSLocalizedString(
-		"New Section [button]",
-		value: "New Section",
+	static let newCollection_buttonTitle = NSLocalizedString(
+		"New Collection [button]",
+		value: "New Collection",
 		comment: "Button") // MC2DO: Obviate
-	static let newSectionAlertTitle = NSLocalizedString(
-		"New Section [alert title]",
-		value: "New Section",
-		comment: "Alert title")
-	static let newCollectionAlertTitle = NSLocalizedString(
+	static let newCollection_alertTitle = NSLocalizedString(
 		"New Collection [alert title]",
 		value: "New Collection",
-		comment: "Alert title") // MC2DO: Delete
-	static let newSectionDefaultTitle = NSLocalizedString(
-		"New Section [default title for section]",
-		value: "New Section",
-		comment: "Default title for a section if you create one and don’t provide a title.")
-	static let newCollectionDefaultTitle = NSLocalizedString(
+		comment: "Alert title") // MC2DO: Obviate
+	static let newCollection_defaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
 		value: "New Collection",
-		comment: "Default title for a collection if you create one and don’t provide a title.") // MC2DO: Delete
+		comment: "Default title for a collection if you create one and don’t provide a title.")
 	
 	// MARK: Albums View
 	
@@ -199,14 +187,14 @@ struct LRString {
 		"plural - X_songs",
 		comment: "Status message")
 	
-	// MARK: Collections and Albums Views // MC2DO: Edit
+	// MARK: Collections and Albums Views
 	
 	static let format_organizeIntoXCollectionsByAlbumArtistQuestionMark = NSLocalizedString(
 		"plural - organize_into_X_collections_by_album_artist",
-		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of collections it’s moving them into.") // MC2DO: Edit
+		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of collections it’s moving them into.")
 	static let format_chooseACollectionToMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_collection",
-		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.") // MC2DO: Edit
+		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
 	
 	// MARK: Songs View
 	

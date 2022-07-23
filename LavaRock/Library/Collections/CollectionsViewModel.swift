@@ -29,9 +29,7 @@ extension CollectionsViewModel: LibraryViewModel {
 	}
 	
 	func bigTitle() -> String {
-		return Enabling.multicollection
-		? LRString.sections
-		: LRString.collections
+		return LRString.collections
 	}
 	
 	func prerowIdentifiersInEachSection() -> [AnyHashable] {

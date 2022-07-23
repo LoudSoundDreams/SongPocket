@@ -103,11 +103,8 @@ final class CreateCollectionCell: UITableViewCell {
 		
 		accessibilityTraits.formUnion(.button)
 		
+		newCollectionLabel.text = LRString.newCollection_buttonTitle
 		newCollectionLabel.textColor = .tintColor
-		
-		if Enabling.multicollection {
-			newCollectionLabel.text = LRString.newSectionButtonTitle
-		}
 	}
 	
 	final override func layoutSubviews() {

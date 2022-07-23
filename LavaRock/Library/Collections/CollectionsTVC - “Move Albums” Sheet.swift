@@ -61,19 +61,14 @@ extension CollectionsTVC {
 				viewModel.context.object(with: $0) as? Album
 			}
 			let suggestedTitle = Self.suggestedCollectionTitle(movingAlbumsInAnyOrder: albumsBeingMoved)
-			return suggestedTitle ?? (
-				Enabling.multicollection
-				? LRString.newSectionDefaultTitle
-				: LRString.newCollectionDefaultTitle)
+			return suggestedTitle ?? LRString.newCollection_defaultTitle
 		}()
 		let newViewModel = collectionsViewModel.updatedAfterCreating(title: titleForNewCollection)
 		Task {
 			guard await setViewModelAndMoveRowsAndShouldContinue(newViewModel) else { return }
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
-				alertTitle: Enabling.multicollection
-				? LRString.newSectionAlertTitle
-				: LRString.newCollectionAlertTitle,
+				alertTitle: LRString.newCollection_alertTitle,
 				textFieldText: titleForNewCollection,
 				textFieldDelegate: self,
 				cancelHandler: { [weak self] in
