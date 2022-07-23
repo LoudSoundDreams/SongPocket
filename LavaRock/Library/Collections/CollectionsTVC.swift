@@ -246,9 +246,12 @@ final class CollectionsTVC:
 				optionsButton,
 			]
 			editingModeToolbarButtons = [
-				combineButton, .flexibleSpace(),
-				sortButton, .flexibleSpace(),
-				floatToTopButton, .flexibleSpace(),
+				combineButton,
+				.flexibleSpace(),
+				sortButton,
+				.flexibleSpace(),
+				floatToTopButton,
+				.flexibleSpace(),
 				sinkToBottomButton,
 			]
 		}

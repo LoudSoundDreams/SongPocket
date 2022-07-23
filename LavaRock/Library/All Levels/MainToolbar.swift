@@ -85,18 +85,26 @@ final class MainToolbar {
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.console {
 			return [
-				moreButton, .flexibleSpace(),
-				skipBackButton, .flexibleSpace(),
-				playPauseButton, .flexibleSpace(),
-				skipForwardButton, .flexibleSpace(),
-				nextButton,
+				moreButton,
+				.flexibleSpace(),
+				skipBackButton,
+				.flexibleSpace(),
+				playPauseButton,
+				.flexibleSpace(),
+				skipForwardButton,
+				.flexibleSpace(),
+				openMusicButton,
 			]
 		} else {
 			return [
-				previousButton, .flexibleSpace(),
-				rewindButton, .flexibleSpace(),
-				playPauseButton, .flexibleSpace(),
-				nextButton, .flexibleSpace(),
+				previousButton,
+				.flexibleSpace(),
+				rewindButton,
+				.flexibleSpace(),
+				playPauseButton,
+				.flexibleSpace(),
+				nextButton,
+				.flexibleSpace(),
 				openMusicButton,
 			]
 		}

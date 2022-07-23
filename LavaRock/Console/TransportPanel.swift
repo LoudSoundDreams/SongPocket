@@ -45,7 +45,6 @@ struct TransportPanel: View {
 				.font(.system(size: .eight * 4))
 		}
 	}
-	
 	private var rewindButton: some View {
 		Button {
 			player?.skipToBeginning()
@@ -54,7 +53,6 @@ struct TransportPanel: View {
 				.font(.system(size: .eight * 4))
 		}
 	}
-	
 	private var skipBackButton: some View {
 		Button {
 			player?.currentPlaybackTime -= 15
@@ -94,7 +92,6 @@ struct TransportPanel: View {
 				.font(.system(size: .eight * 4))
 		}
 	}
-	
 	private var nextButton: some View {
 		Button {
 			player?.skipToNextItem()

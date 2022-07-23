@@ -102,9 +102,12 @@ final class AlbumsTVC:
 			]
 		case .browsing:
 			editingModeToolbarButtons = [
-				moveOrOrganizeButton, .flexibleSpace(),
-				sortButton, .flexibleSpace(),
-				floatToTopButton, .flexibleSpace(),
+				moveOrOrganizeButton,
+				.flexibleSpace(),
+				sortButton,
+				.flexibleSpace(),
+				floatToTopButton,
+				.flexibleSpace(),
 				sinkToBottomButton,
 			]
 		}

@@ -42,8 +42,10 @@ final class SongsTVC:
 	
 	final override func setUpBarButtons() {
 		editingModeToolbarButtons = [
-			sortButton, .flexibleSpace(),
-			floatToTopButton, .flexibleSpace(),
+			sortButton,
+			.flexibleSpace(),
+			floatToTopButton,
+			.flexibleSpace(),
 			sinkToBottomButton,
 		]
 		
