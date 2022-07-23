@@ -73,6 +73,15 @@ final class MainToolbar {
 		return button
 	}()
 	
+	private lazy var openMusicButton: UIBarButtonItem = {
+		return UIBarButtonItem(
+			title: LRString.openMusic,
+			image: UIImage(systemName: "arrow.up.forward.app"),
+			primaryAction: UIAction(handler: { action in
+				UIApplication.shared.open(.music)
+			}))
+	}()
+	
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.console {
 			return [
@@ -88,14 +97,7 @@ final class MainToolbar {
 				rewindButton, .flexibleSpace(),
 				playPauseButton, .flexibleSpace(),
 				nextButton, .flexibleSpace(),
-				
-				// “Open Music” button
-				UIBarButtonItem(
-					title: LRString.openMusic,
-					image: UIImage(systemName: "arrow.up.forward.app"),
-					primaryAction: UIAction(handler: { action in
-						UIApplication.shared.open(.music)
-					}))
+				openMusicButton,
 			]
 		}
 	}
@@ -138,9 +140,15 @@ final class MainToolbar {
 			!(Enabling.console && Reel.mediaItems.isEmpty)
 		else {
 			configurePlayButton()
-			buttons_array.forEach { $0.disableWithAccessibilityTrait() }
+			
 			moreButton.image = Self.moreButtonDefaultImage
+			
+			// Enable or disable each button as appropriate
+			buttons_array.forEach {
+				$0.disableWithAccessibilityTrait()
+			}
 			moreButton.enableWithAccessibilityTrait()
+			openMusicButton.enableWithAccessibilityTrait()
 			return
 		}
 		
@@ -173,7 +181,9 @@ final class MainToolbar {
 		}
 		
 		// Enable or disable each button as appropriate
-		buttons_array.forEach { $0.enableWithAccessibilityTrait() }
+		buttons_array.forEach {
+			$0.enableWithAccessibilityTrait()
+		}
 	}
 }
 extension MainToolbar: TapeDeckReflecting {
