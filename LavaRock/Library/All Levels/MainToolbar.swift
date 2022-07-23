@@ -65,9 +65,7 @@ final class MainToolbar {
 	private lazy var nextButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.nextTrack,
-			image: true//Enabling.console
-			? UIImage(systemName: "arrow.forward.circle")
-			: UIImage(systemName: "forward.end"),
+			image: UIImage(systemName: "arrow.forward.circle"),
 			primaryAction: UIAction { _ in
 				Self.player?.skipToNextItem()
 			})
@@ -89,7 +87,15 @@ final class MainToolbar {
 				previousButton, .flexibleSpace(),
 				rewindButton, .flexibleSpace(),
 				playPauseButton, .flexibleSpace(),
-				nextButton,
+				nextButton, .flexibleSpace(),
+				
+				// “Open Music” button
+				UIBarButtonItem(
+					title: LRString.openMusic,
+					image: UIImage(systemName: "arrow.up.forward.app"),
+					primaryAction: UIAction(handler: { action in
+						UIApplication.shared.open(.music)
+					}))
 			]
 		}
 	}
