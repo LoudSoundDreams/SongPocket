@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld Collection</string>
+			<string>%lld Folder</string>
 			<key>other</key>
-			<string>%lld Collections</string>
+			<string>%lld Folders</string>
 		</dict>
 	</dict>
 	<key>plural - X_albums</key>

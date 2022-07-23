@@ -89,7 +89,7 @@ struct LRString {
 	
 	// MARK: Collections View
 	
-	static let collections = NSLocalizedString("Collections", comment: "Big title")
+	static let collections = NSLocalizedString("Folders", comment: "Big title")
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
@@ -100,23 +100,23 @@ struct LRString {
 	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let renameCollectionAlertTitle = NSLocalizedString("Rename Collection", comment: "Alert title")
+	static let renameCollectionAlertTitle = NSLocalizedString("Rename Folder", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
-	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Collections", comment: "Alert title")
-	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Collection", comment: "Alert title")
+	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Folders", comment: "Alert title")
+	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Folder", comment: "Alert title")
 	
 	static let newCollection_buttonTitle = NSLocalizedString(
 		"New Collection [button]",
-		value: "New Collection",
+		value: "New Folder",
 		comment: "Button") // MC2DO: Obviate
 	static let newCollection_alertTitle = NSLocalizedString(
 		"New Collection [alert title]",
-		value: "New Collection",
+		value: "New Folder",
 		comment: "Alert title") // MC2DO: Obviate
 	static let newCollection_defaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
-		value: "New Collection",
+		value: "New Folder",
 		comment: "Default title for a collection if you create one and don’t provide a title.")
 	
 	// MARK: Albums View
