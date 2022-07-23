@@ -89,7 +89,7 @@ final class MainToolbar {
 				previousButton, .flexibleSpace(),
 				rewindButton, .flexibleSpace(),
 				playPauseButton, .flexibleSpace(),
-				nextSongButton,
+				nextButton,
 			]
 		}
 	}
