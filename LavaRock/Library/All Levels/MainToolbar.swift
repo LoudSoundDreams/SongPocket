@@ -173,9 +173,6 @@ final class MainToolbar {
 		}
 		
 		// Enable or disable each button as appropriate
-		if player.indexOfNowPlayingItem == 0 {
-			previousButton.disableWithAccessibilityTrait()
-		}
 		buttons_array.forEach { $0.enableWithAccessibilityTrait() }
 	}
 }
