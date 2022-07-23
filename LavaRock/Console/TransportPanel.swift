@@ -8,6 +8,13 @@
 import SwiftUI
 import MediaPlayer
 
+private extension View {
+	func disabled(whenNil optional: Optional<Any>) -> some View {
+		return self
+			.disabled(optional == nil)
+	}
+}
+
 struct TransportPanel: View {
 	@ObservedObject private var tapeDeckDisplay: TapeDeckDisplay
 	init() {
@@ -16,25 +23,37 @@ struct TransportPanel: View {
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
-		VStack {
+		VStack(spacing: .eight * 4) {
 			HStack {
 				previousButton
 				Spacer()
+				skipBackButton
+				Spacer()
 				rewindButton
+				Spacer()
+				skipForwardButton
 				Spacer()
 				nextButton
 			}
-			Spacer(minLength: .eight * 4)
+			.disabled(whenNil: tapeDeckDisplay.status)
+			
 			HStack {
-				skipBackButton
 				Spacer()
 				playPauseButton
+					.disabled(whenNil: tapeDeckDisplay.status)
 				Spacer()
-				skipForwardButton
 			}
 		}
 		.padding([.top, .bottom], .eight * 6)
-		.disabled(tapeDeckDisplay.status == nil)
+	}
+	
+	private var openMusicButton: some View {
+		Button {
+			UIApplication.shared.open(.music)
+		} label: {
+			Image(systemName: "arrow.up.forward.app")
+				.font(.system(size: .eight * 4))
+		}
 	}
 	
 	private var previousButton: some View {
