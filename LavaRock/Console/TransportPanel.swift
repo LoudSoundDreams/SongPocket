@@ -18,15 +18,15 @@ struct TransportPanel: View {
 	var body: some View {
 		VStack {
 			HStack {
-				previousSongButton
+				previousButton
 				Spacer()
 				rewindButton
 				Spacer()
-				nextSongButton
+				nextButton
 			}
 			Spacer(minLength: .eight * 4)
 			HStack {
-				skipBackwardButton
+				skipBackButton
 				Spacer()
 				playPauseButton
 				Spacer()
@@ -37,7 +37,7 @@ struct TransportPanel: View {
 		.disabled(tapeDeckDisplay.status == nil)
 	}
 	
-	private var previousSongButton: some View {
+	private var previousButton: some View {
 		Button {
 			player?.skipToPreviousItem()
 		} label: {
@@ -55,7 +55,7 @@ struct TransportPanel: View {
 		}
 	}
 	
-	private var skipBackwardButton: some View {
+	private var skipBackButton: some View {
 		Button {
 			player?.currentPlaybackTime -= 15
 		} label: {
@@ -95,7 +95,7 @@ struct TransportPanel: View {
 		}
 	}
 	
-	private var nextSongButton: some View {
+	private var nextButton: some View {
 		Button {
 			player?.skipToNextItem()
 		} label: {

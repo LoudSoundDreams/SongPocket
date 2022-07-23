@@ -1,5 +1,5 @@
 //
-//  TransportBar.swift
+//  MainToolbar.swift
 //  LavaRock
 //
 //  Created by h on 2022-05-09.
@@ -12,30 +12,81 @@ import MediaPlayer
 // • Implement `accessibilityPerformMagicTap` and toggle playback.
 // However, as of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor
-final class TransportBar {
+final class MainToolbar {
 	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	private let moreButton: UIBarButtonItem
 	
-	private let previousSongButton: UIBarButtonItem
-	private let rewindButton: UIBarButtonItem
-	private let jumpBackwardButton: UIBarButtonItem
-	private let playPauseButton = UIBarButtonItem()
-	private let jumpForwardButton: UIBarButtonItem
-	private let nextSongButton: UIBarButtonItem
+	private lazy var previousButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.previousTrack,
+			image: true//Enabling.console
+			? UIImage(systemName: "arrow.backward.circle")
+			: UIImage(systemName: "backward.end"),
+			primaryAction: UIAction { _ in
+				Self.player?.skipToPreviousItem()
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	private lazy var rewindButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.restart,
+			image: UIImage(systemName: "arrow.counterclockwise.circle"),
+			primaryAction: UIAction { _ in
+				Self.player?.skipToBeginning()
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	private lazy var skipBackButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.skip10SecondsBackwards,
+			image: UIImage(systemName: "gobackward.15"),
+			primaryAction: UIAction { _ in
+				Self.player?.currentPlaybackTime -= 15
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
 	
-	var buttons: [UIBarButtonItem] {
+	private lazy var playPauseButton = UIBarButtonItem()
+	
+	private lazy var skipForwardButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.skip10SecondsForward,
+			image: UIImage(systemName: "goforward.15"),
+			primaryAction: UIAction { _ in
+				Self.player?.currentPlaybackTime += 15
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	private lazy var nextButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.nextTrack,
+			image: true//Enabling.console
+			? UIImage(systemName: "arrow.forward.circle")
+			: UIImage(systemName: "forward.end"),
+			primaryAction: UIAction { _ in
+				Self.player?.skipToNextItem()
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	
+	var buttons_array: [UIBarButtonItem] {
 		if Enabling.console {
 			return [
 				moreButton, .flexibleSpace(),
-				jumpBackwardButton, .flexibleSpace(),
+				skipBackButton, .flexibleSpace(),
 				playPauseButton, .flexibleSpace(),
-				jumpForwardButton, .flexibleSpace(),
-				nextSongButton,
+				skipForwardButton, .flexibleSpace(),
+				nextButton,
 			]
 		} else {
 			return [
-				previousSongButton, .flexibleSpace(),
+				previousButton, .flexibleSpace(),
 				rewindButton, .flexibleSpace(),
 				playPauseButton, .flexibleSpace(),
 				nextSongButton,
@@ -49,61 +100,6 @@ final class TransportBar {
 		moreButton = UIBarButtonItem(
 			title: LRString.more,
 			primaryAction: moreButtonAction)
-		
-		previousSongButton = {
-			let button = UIBarButtonItem(
-				title: LRString.previousTrack,
-				image: Enabling.console
-				? UIImage(systemName: "arrow.backward.circle")
-				: UIImage(systemName: "backward.end"),
-				primaryAction: UIAction { _ in
-					Self.player?.skipToPreviousItem()
-				})
-			button.accessibilityTraits.formUnion(.startsMediaSession)
-			return button
-		}()
-		rewindButton = {
-			let button = UIBarButtonItem(
-				title: LRString.restart,
-				image: UIImage(systemName: "arrow.counterclockwise.circle"),
-				primaryAction: UIAction { _ in
-					Self.player?.skipToBeginning()
-				})
-			button.accessibilityTraits.formUnion(.startsMediaSession)
-			return button
-		}()
-		jumpBackwardButton = {
-			let button = UIBarButtonItem(
-				title: LRString.skip10SecondsBackwards,
-				image: UIImage(systemName: "gobackward.15"),
-				primaryAction: UIAction { _ in
-					Self.player?.currentPlaybackTime -= 15
-				})
-			button.accessibilityTraits.formUnion(.startsMediaSession)
-			return button
-		}()
-		jumpForwardButton = {
-			let button = UIBarButtonItem(
-				title: LRString.skip10SecondsForward,
-				image: UIImage(systemName: "goforward.15"),
-				primaryAction: UIAction { _ in
-					Self.player?.currentPlaybackTime += 15
-				})
-			button.accessibilityTraits.formUnion(.startsMediaSession)
-			return button
-		}()
-		nextSongButton = {
-			let button = UIBarButtonItem(
-				title: LRString.nextTrack,
-				image: Enabling.console
-				? UIImage(systemName: "arrow.forward.circle")
-				: UIImage(systemName: "forward.end"),
-				primaryAction: UIAction { _ in
-					Self.player?.skipToNextItem()
-				})
-			button.accessibilityTraits.formUnion(.startsMediaSession)
-			return button
-		}()
 		
 		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
@@ -136,7 +132,7 @@ final class TransportBar {
 			!(Enabling.console && Reel.mediaItems.isEmpty)
 		else {
 			configurePlayButton()
-			buttons.forEach { $0.disableWithAccessibilityTrait() }
+			buttons_array.forEach { $0.disableWithAccessibilityTrait() }
 			moreButton.image = Self.moreButtonDefaultImage
 			moreButton.enableWithAccessibilityTrait()
 			return
@@ -171,13 +167,13 @@ final class TransportBar {
 		}
 		
 		// Enable or disable each button as appropriate
-		buttons.forEach { $0.enableWithAccessibilityTrait() }
 		if player.indexOfNowPlayingItem == 0 {
-			previousSongButton.disableWithAccessibilityTrait()
+			previousButton.disableWithAccessibilityTrait()
 		}
+		buttons_array.forEach { $0.enableWithAccessibilityTrait() }
 	}
 }
-extension TransportBar: TapeDeckReflecting {
+extension MainToolbar: TapeDeckReflecting {
 	final func reflect_playback_mode() {
 		freshen()
 	}

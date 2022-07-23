@@ -11,7 +11,7 @@ import SwiftUI
 final class LibraryNC: UINavigationController {
 	var needsOverrideThemeInWindow = false
 	
-	final lazy var transportBar = TransportBar(
+	final lazy var mainToolbar = MainToolbar(
 		moreButtonAction: UIAction { [weak self] _ in
 			guard let self = self else { return }
 			if Enabling.swiftUI__console {
