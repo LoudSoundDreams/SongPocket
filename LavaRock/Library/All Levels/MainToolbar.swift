@@ -85,7 +85,7 @@ final class MainToolbar {
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.console {
 			return [
-				openMusicButton,
+				moreButton,
 				.flexibleSpace(),
 				skipBackButton,
 				.flexibleSpace(),
@@ -93,7 +93,7 @@ final class MainToolbar {
 				.flexibleSpace(),
 				skipForwardButton,
 				.flexibleSpace(),
-				moreButton,
+				openMusicButton,
 			]
 		} else {
 			return [
