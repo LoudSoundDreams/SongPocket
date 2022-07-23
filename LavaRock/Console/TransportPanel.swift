@@ -23,8 +23,12 @@ struct TransportPanel: View {
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
-		VStack(spacing: .eight * 4) {
-			HStack {
+		VStack(
+			spacing: .eight * 4
+		) {
+			HStack(
+				alignment: .firstTextBaseline
+			) {
 				previousButton
 				Spacer()
 				skipBackButton
