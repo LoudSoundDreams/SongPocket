@@ -42,10 +42,13 @@ struct TransportPanel: View {
 			.disabled(whenNil: tapeDeckDisplay.status)
 			
 			HStack {
+				openMusicButton
+					.hidden()
 				Spacer()
 				playPauseButton
 					.disabled(whenNil: tapeDeckDisplay.status)
 				Spacer()
+				openMusicButton
 			}
 		}
 		.padding([.top, .bottom], .eight * 6)

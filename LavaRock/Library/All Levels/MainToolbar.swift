@@ -93,7 +93,7 @@ final class MainToolbar {
 				.flexibleSpace(),
 				skipForwardButton,
 				.flexibleSpace(),
-				openMusicButton,
+				nextButton,
 			]
 		} else {
 			return [
