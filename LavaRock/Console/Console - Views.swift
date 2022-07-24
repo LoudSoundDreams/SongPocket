@@ -85,9 +85,9 @@ extension QueueCell:
 
 final class FutureChooser: UISegmentedControl {
 	private enum Mode: Int, CaseIterable {
-		case repeat1
-		case repeatAll
 		case normal
+		case repeatAll
+		case repeat1
 		
 		var uiImage: UIImage {
 			switch self {
