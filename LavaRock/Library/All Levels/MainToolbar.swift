@@ -195,11 +195,11 @@ final class MainToolbar {
 	}
 }
 extension MainToolbar: TapeDeckReflecting {
-	final func reflect_playback_mode() {
+	func reflect_playback_mode() {
 		freshen()
 	}
 	
-	final func reflect_now_playing_item() {
+	func reflect_now_playing_item() {
 		freshen()
 	}
 }

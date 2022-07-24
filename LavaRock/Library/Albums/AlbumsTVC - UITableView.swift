@@ -10,7 +10,7 @@ import UIKit
 extension AlbumsTVC {
 	// MARK: - Numbers
 	
-	final override func numberOfSections(in tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		setOrRemoveNoItemsBackground()
 		
 		switch purpose {
@@ -29,7 +29,7 @@ extension AlbumsTVC {
 		return super.numberOfSections(in: tableView)
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
@@ -38,7 +38,7 @@ extension AlbumsTVC {
 	
 	// MARK: - Headers
 	
-//	final override func tableView(
+//	override func tableView(
 //		_ tableView: UITableView,
 //		viewForHeaderInSection section: Int
 //	) -> UIView? {
@@ -52,7 +52,7 @@ extension AlbumsTVC {
 //		return cell
 //	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
 	) -> String? {
@@ -67,7 +67,7 @@ extension AlbumsTVC {
 	
 	// MARK: - Cells
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
@@ -124,7 +124,7 @@ extension AlbumsTVC {
 	
 	// MARK: - Selecting
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
@@ -140,7 +140,7 @@ extension AlbumsTVC {
 		}
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
@@ -168,7 +168,7 @@ extension AlbumsTVC {
 		return super.tableView(tableView, willSelectRowAt: indexPath)
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {

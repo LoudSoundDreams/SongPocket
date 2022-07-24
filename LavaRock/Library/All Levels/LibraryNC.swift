@@ -11,7 +11,7 @@ import SwiftUI
 final class LibraryNC: UINavigationController {
 	var needsOverrideThemeInWindow = false
 	
-	final lazy var mainToolbar = MainToolbar(
+	lazy var mainToolbar = MainToolbar(
 		moreButtonAction: UIAction { [weak self] _ in
 			guard let self = self else { return }
 			if Enabling.swiftUI__console {
@@ -30,7 +30,7 @@ final class LibraryNC: UINavigationController {
 		super.init(coder: coder)
 	}
 	
-	final override func viewDidAppear(_ animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
 		if

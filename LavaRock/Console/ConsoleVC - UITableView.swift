@@ -19,14 +19,14 @@ extension ConsoleVC: UITableViewDataSource {
 		}
 	}
 	
-	final func tableView(
+	func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
 		return Reel.mediaItems.count + (RowCase.allCases.count - 1)
 	}
 	
-	final func tableView(
+	func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
@@ -49,7 +49,7 @@ extension ConsoleVC: UITableViewDataSource {
 	}
 }
 extension ConsoleVC: UITableViewDelegate {
-	final func tableView(
+	func tableView(
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
@@ -59,7 +59,7 @@ extension ConsoleVC: UITableViewDelegate {
 		}
 	}
 	
-	final func tableView(
+	func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {

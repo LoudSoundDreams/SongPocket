@@ -10,7 +10,7 @@ import CoreData
 import OSLog
 
 extension AlbumsTVC {
-	final func startOrganizing() {
+	func startOrganizing() {
 		// Prepare a Collections view to present modally.
 		guard
 			let libraryNC = UIStoryboard(name: "Library", bundle: nil)
@@ -177,7 +177,7 @@ extension AlbumsTVC {
 			delegate: delegateForClipboard)
 	}
 	
-	final func startMoving() {
+	func startMoving() {
 		// Prepare a Collections view to present modally.
 		guard
 			let libraryNC = UIStoryboard(name: "Library", bundle: nil)

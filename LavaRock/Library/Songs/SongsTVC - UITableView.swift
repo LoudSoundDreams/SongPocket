@@ -10,13 +10,13 @@ import UIKit
 extension SongsTVC {
 	// MARK: - Numbers
 	
-	final override func numberOfSections(in tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		setOrRemoveNoItemsBackground()
 		
 		return super.numberOfSections(in: tableView)
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
@@ -25,7 +25,7 @@ extension SongsTVC {
 	
 	// MARK: - Headers
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
 	) -> String? {
@@ -40,7 +40,7 @@ extension SongsTVC {
 	
 	// MARK: - Cells
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
@@ -90,7 +90,7 @@ extension SongsTVC {
 	
 	// MARK: - Selecting
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {

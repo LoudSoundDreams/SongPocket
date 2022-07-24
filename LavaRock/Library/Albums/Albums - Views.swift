@@ -11,7 +11,7 @@ import OSLog
 final class MoveHereCell: UITableViewCell {
 	@IBOutlet private var moveHereLabel: UILabel!
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -21,7 +21,7 @@ final class MoveHereCell: UITableViewCell {
 		moveHereLabel.textColor = .tintColor
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.right = directionalLayoutMargins.trailing
@@ -47,7 +47,7 @@ final class AlbumCell: UITableViewCell {
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var releaseDateLabel: UILabel!
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -59,7 +59,7 @@ final class AlbumCell: UITableViewCell {
 		configureForTraitCollection()
 	}
 	
-	final func configure(
+	func configure(
 		with album: Album,
 		mode: Mode
 	) {
@@ -122,7 +122,7 @@ final class AlbumCell: UITableViewCell {
 		].compacted()
 	}
 	
-	final override func traitCollectionDidChange(
+	override func traitCollectionDidChange(
 		_ previousTraitCollection: UITraitCollection?
 	) {
 		super.traitCollectionDidChange(previousTraitCollection)
@@ -151,7 +151,7 @@ final class AlbumCell: UITableViewCell {
 		}
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.left = 0

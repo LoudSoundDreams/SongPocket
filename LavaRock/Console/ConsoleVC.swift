@@ -10,12 +10,12 @@ import MediaPlayer
 import SwiftUI
 
 final class ConsoleVC: UIViewController {
-	@IBOutlet private(set) final var reelTable: UITableView!
-	@IBOutlet private final var futureChooser: FutureChooser!
+	@IBOutlet private(set) var reelTable: UITableView!
+	@IBOutlet private var futureChooser: FutureChooser!
 	
-	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
+	var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
-	final override func viewDidLoad() {
+	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		// Snatch dependencies, assuming `self` is the only instance of its type.

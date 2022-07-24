@@ -13,7 +13,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	static let shared = TapeDeck()
 	private init() {}
 	
-	final func addReflector(weakly newReflector: TapeDeckReflecting) {
+	func addReflector(weakly newReflector: TapeDeckReflecting) {
 		if let indexOfMatchingReflector = reflectors.firstIndex(where: { weakReflector in
 			newReflector === weakReflector.referencee
 		}) {
@@ -25,7 +25,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	
 	private(set) var player: MPMusicPlayerController? = nil // TO DO: Prints noise to the console when running in the Simulator
 	
-	final func setUp() {
+	func setUp() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player?.endGeneratingPlaybackNotifications()
@@ -71,7 +71,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 		}
 	}
 	
-	final func songContainingPlayhead(via context: NSManagedObjectContext) -> Song? {
+	func songContainingPlayhead(via context: NSManagedObjectContext) -> Song? {
 #if targetEnvironment(simulator)
 		guard let songID = Global.songID else {
 			return nil

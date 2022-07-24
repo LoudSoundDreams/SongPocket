@@ -9,7 +9,7 @@ import UIKit
 import StoreKit
 
 final class LightingCell: UITableViewCell {
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.right = directionalLayoutMargins.trailing
@@ -17,7 +17,7 @@ final class LightingCell: UITableViewCell {
 }
 
 final class LightingChooser: UISegmentedControl {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		removeAllSegments()
@@ -42,7 +42,7 @@ final class LightingChooser: UISegmentedControl {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AccentColorCell: UITableViewCell {
-	final var representee: AccentColor? = nil {
+	var representee: AccentColor? = nil {
 		didSet {
 			let new_contentConfiguration: UIContentConfiguration
 			defer {
@@ -63,7 +63,7 @@ final class AccentColorCell: UITableViewCell {
 		}
 	}
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		accessibilityTraits.formUnion(.button)
@@ -95,13 +95,13 @@ final class AccentColorCell: UITableViewCell {
 	
 	private lazy var previousAccessibilityContrast = traitCollection.accessibilityContrast
 	// UIKit does call this when “Increase Contrast” changes.
-	final override func tintColorDidChange() {
+	override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
 		reflectTintColor()
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.left = directionalLayoutMargins.leading // We shouldn’t have to do this, but as of build 482, without this, if you close Options then open it again, something sets the left inset to 0.
@@ -111,7 +111,7 @@ final class AccentColorCell: UITableViewCell {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipLoadingCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		disableWithAccessibilityTrait()
@@ -125,7 +125,7 @@ final class TipLoadingCell: UITableViewCell {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipReloadCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -140,7 +140,7 @@ extension TipReloadCell: CellConfigurableAsButton {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipReadyCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -158,7 +158,7 @@ extension TipReadyCell: CellTintingWhenSelected {}
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipConfirmingCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		disableWithAccessibilityTrait()
@@ -172,7 +172,7 @@ final class TipConfirmingCell: UITableViewCell {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipThankYouCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		isUserInteractionEnabled = false
@@ -188,7 +188,7 @@ final class TipThankYouCell: UITableViewCell {
 		contentConfiguration = content
 	}
 	
-	final override func tintColorDidChange() {
+	override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
 		configure()

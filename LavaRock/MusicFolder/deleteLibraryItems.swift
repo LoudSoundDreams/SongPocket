@@ -9,7 +9,7 @@ import CoreData
 import OSLog
 
 extension MusicFolder {
-	final func deleteLibraryItems(
+	func deleteLibraryItems(
 		for songs: [Song]
 	) {
 		os_signpost(.begin, log: .merge, name: "4. Delete library items")

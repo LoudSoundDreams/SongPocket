@@ -12,7 +12,7 @@ import OSLog
 extension Song: LibraryItem {
 	// Enables `[Song].reindex()`
 	
-	var libraryTitle: String? { metadatum()?.titleOnDisk }
+	final var libraryTitle: String? { metadatum()?.titleOnDisk }
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {

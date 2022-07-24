@@ -8,7 +8,7 @@
 import UIKit
 
 extension AlbumsTVC {
-	final func moveHere(to indexPath: IndexPath) {
+	func moveHere(to indexPath: IndexPath) {
 		guard
 			case let .movingAlbums(clipboard) = purpose,
 			!clipboard.didAlreadyCommitMove, // Without this, if you tap the “Move Here” button more than once, the app crashes. You can tap that button more than once because it receives events during table view updates, which run asynchronously.

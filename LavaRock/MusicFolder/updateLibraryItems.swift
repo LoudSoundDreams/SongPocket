@@ -9,7 +9,7 @@ import CoreData
 import OSLog
 
 extension MusicFolder {
-	final func updateLibraryItems(
+	func updateLibraryItems(
 		potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)]
 	) {
 		os_signpost(.begin, log: .merge, name: "2. Update library items")

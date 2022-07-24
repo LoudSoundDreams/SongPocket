@@ -12,7 +12,7 @@ import OSLog
 final class CoverArtCell: UITableViewCell {
 	@IBOutlet private var coverArtView: UIImageView!
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		coverArtView.accessibilityIgnoresInvertColors = true
@@ -21,7 +21,7 @@ final class CoverArtCell: UITableViewCell {
 		accessibilityTraits.formUnion(.image)
 	}
 	
-	final func configure(with album: Album) {
+	func configure(with album: Album) {
 		os_signpost(.begin, log: .songsView, name: "Set cover art")
 		coverArtView.image = {
 			os_signpost(.begin, log: .songsView, name: "Draw cover art")
@@ -42,13 +42,13 @@ final class AlbumInfoCell: UITableViewCell {
 	@IBOutlet private var mainLabel: UILabel!
 	@IBOutlet private var secondaryLabel: UILabel!
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		accessibilityUserInputLabels = nil // No Voice Control label
 	}
 	
-	final func configure(with album: Album) {
+	func configure(with album: Album) {
 		mainLabel.text = { () -> String in
 			if let albumArtist = album.representativeAlbumArtistFormattedOptional() {
 				return albumArtist
@@ -66,7 +66,7 @@ final class AlbumInfoCell: UITableViewCell {
 		}
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.left = directionalLayoutMargins.leading
@@ -75,7 +75,7 @@ final class AlbumInfoCell: UITableViewCell {
 }
 
 final class ExpandedTargetButton: UIButton {
-	final override func point(
+	override func point(
 		inside point: CGPoint,
 		with event: UIEvent?
 	) -> Bool {
@@ -103,7 +103,7 @@ final class SongCell: UITableViewCell {
 	@IBOutlet private var numberLabel: UILabel!
 	@IBOutlet private var dotDotDotButton: ExpandedTargetButton!
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -116,13 +116,13 @@ final class SongCell: UITableViewCell {
 		accessibilityTraits.formUnion(.button)
 	}
 	
-	final override func setEditing(_ editing: Bool, animated: Bool) {
+	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
 		freshenDotDotDotButton()
 	}
 	
-	final func configureWith<
+	func configureWith<
 		AlertPresenter: CanPresentOpenMusicAlert
 	>(
 		song: Song,
@@ -291,7 +291,7 @@ final class SongCell: UITableViewCell {
 		dotDotDotButton.isEnabled = !isEditing
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.left = 0

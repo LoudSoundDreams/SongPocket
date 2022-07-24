@@ -9,7 +9,7 @@ import CoreData
 import OSLog
 
 extension MusicFolder {
-	final func cleanUpLibraryItems(
+	func cleanUpLibraryItems(
 		allMetadata: [SongMetadatum],
 		isFirstImport: Bool
 	) {

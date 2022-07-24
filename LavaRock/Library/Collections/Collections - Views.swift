@@ -9,7 +9,7 @@ import UIKit
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AllowAccessCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -17,7 +17,7 @@ final class AllowAccessCell: UITableViewCell {
 		configureAsButton()
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.right = directionalLayoutMargins.trailing
@@ -30,7 +30,7 @@ extension AllowAccessCell: CellConfigurableAsButton {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class LoadingCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		var content = UIListContentConfiguration.cell()
@@ -45,7 +45,7 @@ final class LoadingCell: UITableViewCell {
 		accessoryView = spinnerView
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.right = directionalLayoutMargins.trailing
@@ -54,7 +54,7 @@ final class LoadingCell: UITableViewCell {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class NoCollectionsPlaceholderCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		var content = UIListContentConfiguration.cell()
@@ -65,7 +65,7 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 		isUserInteractionEnabled = false
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.right = directionalLayoutMargins.trailing
@@ -74,7 +74,7 @@ final class NoCollectionsPlaceholderCell: UITableViewCell {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class OpenMusicCell: UITableViewCell {
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -82,7 +82,7 @@ final class OpenMusicCell: UITableViewCell {
 		configureAsButton()
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.right = directionalLayoutMargins.trailing
@@ -96,7 +96,7 @@ extension OpenMusicCell: CellConfigurableAsButton {
 final class CreateCollectionCell: UITableViewCell {
 	@IBOutlet private var newCollectionLabel: UILabel!
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -107,7 +107,7 @@ final class CreateCollectionCell: UITableViewCell {
 		newCollectionLabel.textColor = .tintColor
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.right = directionalLayoutMargins.trailing
@@ -132,7 +132,7 @@ final class CollectionCell: UITableViewCell {
 	
 	@IBOutlet private var titleLabel: UILabel!
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		tintSelectedBackgroundView()
@@ -140,7 +140,7 @@ final class CollectionCell: UITableViewCell {
 		removeBackground()
 	}
 	
-	final func configure(
+	func configure(
 		with collection: Collection,
 		mode: Mode,
 		accessibilityActions: [UIAccessibilityCustomAction]
@@ -182,7 +182,7 @@ final class CollectionCell: UITableViewCell {
 			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.left = 0

@@ -68,7 +68,7 @@ final class AlbumsTVC:
 		]
 	}
 	
-	final override func viewDidLoad() {
+	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		if Enabling.multicollection {
@@ -85,7 +85,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-	final override func setUpBarButtons() {
+	override func setUpBarButtons() {
 		switch purpose {
 		case .organizingAlbums:
 			viewingModeTopRightButtons = [
@@ -118,7 +118,7 @@ final class AlbumsTVC:
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
-	final override func viewWillAppear(_ animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if let collectionIndex = indexOfOpenedCollection {
@@ -137,7 +137,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-//	final override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //		print("")
 //		print("scrolled - \(self)")
 //		print(tableView.adjustedContentInset)
@@ -146,7 +146,7 @@ final class AlbumsTVC:
 	
 	// MARK: - Library Items
 	
-	final override func freshenLibraryItems() {
+	override func freshenLibraryItems() {
 		switch purpose {
 		case .organizingAlbums:
 			return
@@ -157,13 +157,13 @@ final class AlbumsTVC:
 		}
 	}
 	
-	final override func reflectViewModelIsEmpty() {
+	override func reflectViewModelIsEmpty() {
 		deleteThenExit(sections: tableView.allSections())
 	}
 	
 	// MARK: - Freshening UI
 	
-	final override func freshenEditingButtons() {
+	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
 		
 		moveOrOrganizeButton.menu = makeOrganizeOrMoveMenu()
@@ -227,7 +227,7 @@ final class AlbumsTVC:
 	
 	// MARK: - Navigation
 	
-	final override func prepare(
+	override func prepare(
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {

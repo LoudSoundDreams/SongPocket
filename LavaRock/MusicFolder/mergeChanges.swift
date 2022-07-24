@@ -14,7 +14,7 @@ extension Notification.Name {
 
 extension MusicFolder {
 	// Updates our database in a sensible way to reflect the fresh `SongMetadatum`s.
-	final func mergeChanges(toMatch freshMetadata: [SongMetadatum]) {
+	func mergeChanges(toMatch freshMetadata: [SongMetadatum]) {
 		os_signpost(.begin, log: .merge, name: "Initial parse")
 		let existingSongs = Song.allFetched(sortedByIndex: false, via: context)
 		

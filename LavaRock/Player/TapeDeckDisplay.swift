@@ -21,7 +21,7 @@ final class TapeDeckDisplay: ObservableObject {
 		freshenStatus()
 	}
 	
-	final func freshenStatus() {
+	func freshenStatus() {
 		guard
 			let player = TapeDeck.shared.player,
 			!(Enabling.console && Reel.mediaItems.isEmpty)

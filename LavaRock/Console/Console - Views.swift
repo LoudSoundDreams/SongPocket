@@ -22,7 +22,7 @@ final class QueueCell: UITableViewCell {
 	
 	@IBOutlet private var textStackTopToCoverArtTop: NSLayoutConstraint!
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		tintSelectedBackgroundView()
 		
 		removeBackground()
@@ -31,7 +31,7 @@ final class QueueCell: UITableViewCell {
 		coverArtView.layer.cornerRadius = 3
 	}
 	
-	final func configure(with metadatum: SongMetadatum) {
+	func configure(with metadatum: SongMetadatum) {
 		coverArtView.image = metadatum.coverArt(sizeInPoints: CGSize(
 			width: coverArtView.frame.width,
 			height: coverArtView.frame.height))
@@ -70,7 +70,7 @@ final class QueueCell: UITableViewCell {
 		}
 	}
 	
-	final override func layoutSubviews() {
+	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		separatorInset.left = textStack.frame.minX
@@ -114,7 +114,7 @@ final class FutureChooser: UISegmentedControl {
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
-	final override func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		removeAllSegments()

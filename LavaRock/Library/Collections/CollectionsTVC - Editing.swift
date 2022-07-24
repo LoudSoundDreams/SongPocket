@@ -8,14 +8,14 @@
 import UIKit
 
 extension CollectionsTVC: UITextFieldDelegate {
-	final func textFieldDidBeginEditing(_ textField: UITextField) {
+	func textFieldDidBeginEditing(_ textField: UITextField) {
 		textField.selectAll(nil) // As of iOS 15.3 developer beta 1, the selection works but the highlight doesn’t appear if `textField.text` is long.
 	}
 }
 extension CollectionsTVC {
 	// MARK: Renaming
 	
-	final func promptRename(at indexPath: IndexPath) {
+	func promptRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
 		
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
@@ -75,7 +75,7 @@ extension CollectionsTVC {
 		return nil
 	}
 	
-	final func previewCombineAndPrompt() {
+	func previewCombineAndPrompt() {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
@@ -122,7 +122,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	final func revertCombine(
+	func revertCombine(
 		thenSelect originalSelectedIndexPaths: [IndexPath]
 	) {
 		guard let originalViewModel = viewModelBeforeCombining else { return }

@@ -11,14 +11,14 @@ import MediaPlayer
 extension CollectionsTVC {
 	// MARK: - Numbers
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	)-> Int {
 		return numberOfRows(for: Section_I(section))
 	}
 	
-	final func numberOfRows(for section: Section_I) -> Int {
+	func numberOfRows(for section: Section_I) -> Int {
 		switch viewState {
 		case
 				.allowAccess,
@@ -35,7 +35,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Cells
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
@@ -151,7 +151,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Editing
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		accessoryButtonTappedForRowWith indexPath: IndexPath
 	) {
@@ -160,7 +160,7 @@ extension CollectionsTVC {
 	
 	// MARK: - Selecting
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
@@ -187,7 +187,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
@@ -226,7 +226,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {

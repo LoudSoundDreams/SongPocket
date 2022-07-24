@@ -109,7 +109,7 @@ final class CollectionsTVC:
 	
 	// MARK: - View State
 	
-	final func reflectViewState(
+	func reflectViewState(
 		runningBeforeCompletion beforeCompletion: (() -> Void)? = nil
 	) async {
 		let toDelete: [IndexPath]
@@ -191,7 +191,7 @@ final class CollectionsTVC:
 		]
 	}
 	
-	final override func viewDidLoad() {
+	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		switch purpose {
@@ -217,7 +217,7 @@ final class CollectionsTVC:
 		reflectDatabase()
 	}
 	
-	final override func setUpBarButtons() {
+	override func setUpBarButtons() {
 		switch purpose {
 		case .willOrganizeAlbums:
 			viewingModeTopLeftButtons = [
@@ -270,7 +270,7 @@ final class CollectionsTVC:
 		}
 	}
 	
-	final func integrateWithMusicApp() async {
+	func integrateWithMusicApp() async {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
@@ -283,7 +283,7 @@ final class CollectionsTVC:
 	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
-	final override func viewDidAppear(_ animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
 		case .willOrganizeAlbums:
 			break
@@ -318,7 +318,7 @@ final class CollectionsTVC:
 	
 	// MARK: - Library Items
 	
-	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
+	override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
 		if
 			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
 				|| presentedViewController is UIHostingController<OptionsView>
@@ -329,7 +329,7 @@ final class CollectionsTVC:
 		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
 	}
 	
-	final override func freshenLibraryItems() {
+	override func freshenLibraryItems() {
 		switch purpose {
 		case .willOrganizeAlbums:
 			return
@@ -370,7 +370,7 @@ final class CollectionsTVC:
 		super.freshenLibraryItems()
 	}
 	
-	final override func reflectViewModelIsEmpty() {
+	override func reflectViewModelIsEmpty() {
 		Task {
 			await reflectViewState()
 		}
@@ -378,7 +378,7 @@ final class CollectionsTVC:
 	
 	// MARK: - Freshening UI
 	
-	final override func freshenEditingButtons() {
+	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
 		
 		combineButton.isEnabled = allowsCombine()
@@ -404,7 +404,7 @@ final class CollectionsTVC:
 		present(hostingController, animated: true)
 	}
 	
-	final override func prepare(
+	override func prepare(
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {

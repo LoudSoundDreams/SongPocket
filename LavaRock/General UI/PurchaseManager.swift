@@ -11,22 +11,22 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 	private override init() {}
 	static let shared = PurchaseManager()
 	
-	final func beginObservingPaymentTransactions() {
+	func beginObservingPaymentTransactions() {
 		Self.paymentQueue.add(self)
 	}
 	
 	@MainActor
-	final func requestTipProduct() {
+	func requestTipProduct() {
 		tipProductRequest.start()
 		
 		TipJarViewModel.shared.status = .loading
 	}
 	
-	final var tipTitle: String? {
+	var tipTitle: String? {
 		return tipProduct?.localizedTitle
 	}
 	
-	final var tipPrice: String? {
+	var tipPrice: String? {
 		guard let tipProduct = tipProduct else { return nil }
 		
 		let formatter = NumberFormatter()
@@ -37,7 +37,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 	}
 	
 	@MainActor
-	final func buyTip() {
+	func buyTip() {
 		guard let tipProduct = tipProduct else { return }
 		let payment = SKPayment(product: tipProduct)
 //		let payment = SKMutablePayment(product: tipProduct)
@@ -66,7 +66,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 extension PurchaseManager: SKProductsRequestDelegate {
 	// StoreKit can call `SKProductsRequestDelegate` methods on any thread.
 	
-	final func productsRequest(
+	func productsRequest(
 		_ request: SKProductsRequest,
 		didReceive response: SKProductsResponse
 	) {
@@ -84,7 +84,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		}
 	}
 	
-	final func request(
+	func request(
 		_ request: SKRequest,
 		didFailWithError error: Error
 	) {
@@ -96,7 +96,7 @@ extension PurchaseManager: SKProductsRequestDelegate {
 	}
 }
 extension PurchaseManager: SKPaymentTransactionObserver {
-	final func paymentQueue(
+	func paymentQueue(
 		_ queue: SKPaymentQueue,
 		updatedTransactions transactions: [SKPaymentTransaction])
 	{

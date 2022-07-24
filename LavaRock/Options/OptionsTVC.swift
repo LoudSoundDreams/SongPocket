@@ -14,7 +14,7 @@ final class OptionsTVC: UITableViewController {
 		TipJarViewModel.shared.ui = self
 	}
 	
-	final override func viewDidLoad() {
+	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		if TipJarViewModel.shared.status == .notYetFirstLoaded {

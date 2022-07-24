@@ -16,7 +16,7 @@ final class MusicFolder { // This is a class and not a struct because it needs a
 	
 	private var library: MPMediaLibrary? = nil
 	
-	final func setUpAndMergeChanges() {
+	func setUpAndMergeChanges() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		library?.endGeneratingLibraryChangeNotifications()

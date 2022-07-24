@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 
 extension SongsTVC {
-	final func showSongActions(
+	func showSongActions(
 		for song: Song,
 		popoverAnchorView: UIView
 	) {

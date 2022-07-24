@@ -32,7 +32,7 @@ final class SongsTVC:
 		]
 	}
 	
-	final override func viewDidLoad() {
+	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		if Enabling.multialbum {
@@ -40,7 +40,7 @@ final class SongsTVC:
 		}
 	}
 	
-	final override func setUpBarButtons() {
+	override func setUpBarButtons() {
 		editingModeToolbarButtons = [
 			sortButton,
 			.flexibleSpace(),
@@ -52,7 +52,7 @@ final class SongsTVC:
 		super.setUpBarButtons()
 	}
 	
-	final override func viewWillAppear(_ animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if let album = openedAlbum {
@@ -65,7 +65,7 @@ final class SongsTVC:
 	
 	// MARK: - Library Items
 	
-	final override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
+	override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
 		if willPlayLaterAlertIsPresented {
 			return false
 		}
@@ -73,7 +73,7 @@ final class SongsTVC:
 		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
 	}
 	
-	final override func reflectViewModelIsEmpty() {
+	override func reflectViewModelIsEmpty() {
 		deleteThenExit(sections: tableView.allSections())
 	}
 }

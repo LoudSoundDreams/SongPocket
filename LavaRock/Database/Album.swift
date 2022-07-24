@@ -12,7 +12,7 @@ import OSLog
 extension Album: LibraryItem {
 	// Enables `[Album].reindex()`
 	
-	var libraryTitle: String? { representativeTitleFormattedOptional() }
+	final var libraryTitle: String? { representativeTitleFormattedOptional() }
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {

@@ -29,7 +29,7 @@ extension MPMediaItem: SongMetadatum {
 	final var dateAddedOnDisk: Date { dateAdded }
 	final var releaseDateOnDisk: Date? { releaseDate }
 	
-	func coverArt(sizeInPoints: CGSize) -> UIImage? {
+	final func coverArt(sizeInPoints: CGSize) -> UIImage? {
 		let signposter = OSSignposter()
 		let state = signposter.beginInterval("Draw cover art")
 		defer {

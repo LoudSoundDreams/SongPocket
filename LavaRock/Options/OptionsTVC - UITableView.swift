@@ -17,7 +17,7 @@ extension OptionsTVC {
 		IndexPath(row: 0, section: Section.theme.rawValue),
 	]
 	
-	final func freshenTipJarRows() {
+	func freshenTipJarRows() {
 		let tipJarIndexPaths = tableView.indexPathsForRows(
 			in: Section_I(Section.tipJar.rawValue),
 			first: Row_I(0))
@@ -28,11 +28,11 @@ extension OptionsTVC {
 	
 	// MARK: Numbers
 	
-	final override func numberOfSections(in tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return Section.allCases.count
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
@@ -49,7 +49,7 @@ extension OptionsTVC {
 	
 	// MARK: Headers and Footers
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		titleForHeaderInSection section: Int
 	) -> String? {
@@ -64,7 +64,7 @@ extension OptionsTVC {
 		}
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		titleForFooterInSection section: Int
 	) -> String? {
@@ -81,7 +81,7 @@ extension OptionsTVC {
 	
 	// MARK: Cells
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
@@ -102,7 +102,7 @@ extension OptionsTVC {
 	
 	// MARK: Selecting
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
@@ -121,7 +121,7 @@ extension OptionsTVC {
 		}
 	}
 	
-	final override func tableView(
+	override func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
