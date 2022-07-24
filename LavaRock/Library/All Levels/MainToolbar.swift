@@ -20,9 +20,7 @@ final class MainToolbar {
 	private lazy var previousButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.previousTrack,
-			image: true//Enabling.console
-			? UIImage(systemName: "arrow.backward.circle")
-			: UIImage(systemName: "backward.end"),
+			image: UIImage(systemName: "arrow.backward.circle"),
 			primaryAction: UIAction { _ in
 				Self.player?.skipToPreviousItem()
 			})
