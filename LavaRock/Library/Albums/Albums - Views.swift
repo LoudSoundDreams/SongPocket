@@ -95,14 +95,17 @@ final class AlbumCell: UITableViewCell {
 		case .normal:
 			removeBackground()
 			contentView.layer.opacity = 1 // The default value
+			accessoryType = .disclosureIndicator
 			enableWithAccessibilityTrait()
 		case .modal:
 			removeBackground()
 			contentView.layer.opacity = .oneFourth // Close to what Files pickers use
+			accessoryType = .none
 			disableWithAccessibilityTrait()
 		case .modalTinted:
 			backgroundColor = .tintColor.translucentFaint()
 			contentView.layer.opacity = .oneHalf
+			accessoryType = .none
 			disableWithAccessibilityTrait()
 		}
 		
