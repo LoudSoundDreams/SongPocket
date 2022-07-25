@@ -11,7 +11,6 @@ import Foundation
 final class TapeDeckDisplay: ObservableObject {
 	struct Status {
 		let isInPlayMode: Bool
-		let isPlayingFirstSongInQueue: Bool
 	}
 	
 	static let shared = TapeDeckDisplay()
@@ -30,7 +29,6 @@ final class TapeDeckDisplay: ObservableObject {
 			return
 		}
 		status = Status(
-			isInPlayMode: player.playbackState == .playing,
-			isPlayingFirstSongInQueue: player.indexOfNowPlayingItem == 0)
+			isInPlayMode: player.playbackState == .playing)
 	}
 }
