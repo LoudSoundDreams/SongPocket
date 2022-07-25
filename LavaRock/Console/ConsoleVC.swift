@@ -18,7 +18,7 @@ final class ConsoleVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		// Snatch dependencies, assuming `self` is the only instance of its type.
+		// Snatch dependencies, assuming `self` is the only instance of this type.
 		Reel.table = reelTable
 		
 		reelTable.dataSource = self

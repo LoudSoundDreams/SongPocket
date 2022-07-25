@@ -59,6 +59,14 @@ struct TransportPanel: View {
 			.eight * 6)
 	}
 	
+	private var shuffleButton: some View {
+		Button {
+		} label: {
+			Image(systemName: "shuffle.circle")
+				.font(.system(size: .eight * 4))
+		}
+	}
+	
 	private var openMusicButton: some View {
 		Button {
 			UIApplication.shared.open(.music)
