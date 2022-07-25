@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Placeholder Collections View Title-->
+        <!--CollectionsTVC-->
         <scene sceneID="X0R-Et-kVe">
             <objects>
                 <tableViewController id="Vce-TP-hYI" customClass="CollectionsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -124,25 +124,8 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Placeholder Collections View Title" id="aA7-bf-O8G">
-                        <leftBarButtonItems>
-                            <barButtonItem title="Options" id="mpR-tt-C6X">
-                                <connections>
-                                    <action selector="presentOptions__UIKit:" destination="Vce-TP-hYI" id="a6n-7y-L6I"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Options" id="dlm-8d-Mjf">
-                                <connections>
-                                    <action selector="presentOptions__SwiftUI:" destination="Vce-TP-hYI" id="Y5b-my-XQo"/>
-                                </connections>
-                            </barButtonItem>
-                        </leftBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="aA7-bf-O8G"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="optionsButton__SwiftUI" destination="dlm-8d-Mjf" id="DDi-Ce-cSk"/>
-                        <outlet property="optionsButton__UIKit" destination="mpR-tt-C6X" id="rCs-Xg-uZH"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Toq-AT-hvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

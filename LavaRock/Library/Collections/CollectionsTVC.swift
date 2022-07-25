@@ -50,8 +50,6 @@ final class CollectionsTVC:
 	}
 	
 	// Controls
-	@IBOutlet private var optionsButton__UIKit: UIBarButtonItem!
-	@IBOutlet private var optionsButton__SwiftUI: UIBarButtonItem!
 	private lazy var combineButton = UIBarButtonItem(
 		title: LRString.combine,
 		primaryAction: UIAction { [weak self] _ in self?.previewCombineAndPrompt() })
@@ -239,9 +237,18 @@ final class CollectionsTVC:
 				cancelAndDismissButton,
 			]
 		case .browsing:
-			let optionsButton: UIBarButtonItem = Enabling.swiftUI__options
-			? optionsButton__SwiftUI
-			: optionsButton__UIKit
+			let optionsButton = UIBarButtonItem(
+				title: LRString.options,
+				primaryAction: UIAction { [weak self] _ in
+					let viewController: UIViewController = (
+						Enabling.swiftUI__options
+						? UIHostingController(rootView: OptionsView())
+						: UIStoryboard(name: "Options", bundle: nil)
+							.instantiateInitialViewController()!
+					)
+					viewController.modalPresentationStyle = .formSheet
+					self?.present(viewController, animated: true)
+				})
 			viewingModeTopLeftButtons = [
 				optionsButton,
 			]
@@ -296,24 +303,6 @@ final class CollectionsTVC:
 		}
 		
 		super.viewDidAppear(animated)
-	}
-	
-	@IBAction private func presentOptions__UIKit(_ sender: UIBarButtonItem) {
-		presentOptions()
-	}
-	
-	@IBAction private func presentOptions__SwiftUI(_ sender: UIBarButtonItem) {
-		presentOptions()
-	}
-	
-	private func presentOptions() {
-		let viewController: UIViewController
-		= Enabling.swiftUI__options
-		? UIHostingController(rootView: OptionsView())
-		: UIStoryboard(name: "Options", bundle: nil)
-			.instantiateInitialViewController()!
-		viewController.modalPresentationStyle = .formSheet
-		present(viewController, animated: true)
 	}
 	
 	// MARK: - Library Items
