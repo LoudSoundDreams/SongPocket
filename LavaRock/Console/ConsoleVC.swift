@@ -24,6 +24,7 @@ final class ConsoleVC: UIViewController {
 //				Reel.setMediaItems([])
 //				TapeDeck.shared.player?.setQueue(mediaItems: []) // As of iOS 15.5, this doesn’t do anything.
 			})
+		navigationItem.title = LRString.queue
 		navigationItem.rightBarButtonItem = {
 			let dismissButton = UIBarButtonItem(
 				title: LRString.done,

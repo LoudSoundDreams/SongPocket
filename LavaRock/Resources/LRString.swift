@@ -155,6 +155,8 @@ struct LRString {
 	
 	static let clear = NSLocalizedString("Clear", comment: "Button")
 	
+	static let queue = NSLocalizedString("Queue", comment: "Big title")
+	
 	static let repeat1 = NSLocalizedString("Repeat one", comment: "Accessibility label")
 	static let repeatAll = NSLocalizedString("Repeat all", comment: "Accessibility label")
 	static let repeatOff = NSLocalizedString("Repeat off", comment: "Accessibility label")
