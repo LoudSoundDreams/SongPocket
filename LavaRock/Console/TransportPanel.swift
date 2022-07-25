@@ -15,6 +15,22 @@ private extension View {
 	}
 }
 
+private struct ChooserRep: UIViewRepresentable {
+	typealias UIViewType = UISegmentedControl
+	
+	func makeUIView(
+		context: Context
+	) -> UISegmentedControl {
+		return FutureChooser()
+	}
+	
+	func updateUIView(
+		_ uiView: UISegmentedControl,
+		context: Context
+	) {
+	}
+}
+
 struct TransportPanel: View {
 	@ObservedObject private var tapeDeckDisplay: TapeDeckDisplay
 	init() {
@@ -26,6 +42,16 @@ struct TransportPanel: View {
 		VStack(
 			spacing: .eight * 4
 		) {
+			HStack {
+				shuffleButton
+					.disabled(whenNil: tapeDeckDisplay.status)
+				Spacer()
+				ChooserRep()
+					.fixedSize()
+				Spacer()
+				openMusicButton
+			}
+			
 			HStack(
 				alignment: .firstTextBaseline
 			) {
@@ -41,15 +67,8 @@ struct TransportPanel: View {
 			}
 			.disabled(whenNil: tapeDeckDisplay.status)
 			
-			HStack {
-				openMusicButton
-					.hidden()
-				Spacer()
-				playPauseButton
-					.disabled(whenNil: tapeDeckDisplay.status)
-				Spacer()
-				openMusicButton
-			}
+			playPauseButton
+				.disabled(whenNil: tapeDeckDisplay.status)
 		}
 		.frame(
 			height: 275,

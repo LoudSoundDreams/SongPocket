@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="mMv-Oy-bR1">
-                                <rect key="frame" x="0.0" y="88" width="375" height="340"/>
+                                <rect key="frame" x="0.0" y="88" width="375" height="598"/>
                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song in Queue" id="uxc-K4-bwq" customClass="QueueCell" customModule="LavaRock" customModuleProvider="target">
@@ -96,20 +96,13 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="repeat.1" catalog="system"/>
                             </button>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hB7-Xq-sOQ" customClass="FutureChooser" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="122" y="440" width="131" height="32"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="800" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hB7-Xq-sOQ" customClass="FutureChooser" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="122" y="698" width="131" height="32"/>
                                 <segments>
                                     <segment title="First"/>
                                     <segment title="Second"/>
                                 </segments>
                             </segmentedControl>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bBO-Pc-YE4">
-                                <rect key="frame" x="16" y="479" width="343" height="250"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="250" id="TQg-Hd-guC"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Npg-CN-dfQ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -118,21 +111,11 @@
                             <constraint firstItem="hB7-Xq-sOQ" firstAttribute="top" secondItem="mMv-Oy-bR1" secondAttribute="bottom" constant="12" id="3fk-LI-yrE"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="leading" secondItem="Npg-CN-dfQ" secondAttribute="leading" id="5Js-ge-qkZ"/>
                             <constraint firstItem="hB7-Xq-sOQ" firstAttribute="centerX" secondItem="Npg-CN-dfQ" secondAttribute="centerX" id="DRO-cF-yge"/>
-                            <constraint firstItem="hB7-Xq-sOQ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="9gW-kt-mSP" secondAttribute="bottomMargin" id="FMz-84-4M5"/>
-                            <constraint firstItem="bBO-Pc-YE4" firstAttribute="trailing" secondItem="9gW-kt-mSP" secondAttribute="trailingMargin" id="Oav-aQ-ysT"/>
-                            <constraint firstItem="bBO-Pc-YE4" firstAttribute="leading" secondItem="9gW-kt-mSP" secondAttribute="leadingMargin" id="PI8-79-FbX"/>
+                            <constraint firstItem="hB7-Xq-sOQ" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" id="FMz-84-4M5"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="top" secondItem="Npg-CN-dfQ" secondAttribute="top" id="PRH-9Q-W4C"/>
-                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="height" secondItem="Npg-CN-dfQ" secondAttribute="height" multiplier="0.5" placeholder="YES" id="fsx-Xr-KI2"/>
-                            <constraint firstItem="bBO-Pc-YE4" firstAttribute="top" secondItem="hB7-Xq-sOQ" secondAttribute="bottom" constant="8" symbolic="YES" id="jyV-jw-q6N"/>
                             <constraint firstItem="JmH-0T-GLg" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" constant="-8" id="m66-w6-p8N"/>
-                            <constraint firstItem="bBO-Pc-YE4" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" id="teX-NG-0rd"/>
                             <constraint firstItem="JmH-0T-GLg" firstAttribute="leading" secondItem="9gW-kt-mSP" secondAttribute="leadingMargin" id="w26-ar-c7k"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="fsx-Xr-KI2"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Queue" id="4UM-VT-l36">
                         <barButtonItem key="leftBarButtonItem" title="Shuffle" id="9dq-pP-MYY"/>

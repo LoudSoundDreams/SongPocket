@@ -18,12 +18,12 @@ final class ConsoleVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-//		navigationItem.leftBarButtonItem = UIBarButtonItem(
-//			title: LRString.clear,
-//			primaryAction: UIAction { _ in
+		navigationItem.leftBarButtonItem = UIBarButtonItem(
+			title: LRString.clear,
+			primaryAction: UIAction { _ in
 //				Reel.setMediaItems([])
 //				TapeDeck.shared.player?.setQueue(mediaItems: []) // As of iOS 15.5, this doesn’t do anything.
-//			})
+			})
 		navigationItem.rightBarButtonItem = {
 			let dismissButton = UIBarButtonItem(
 				title: LRString.done,
@@ -44,9 +44,10 @@ final class ConsoleVC: UIViewController {
 			rootView: TransportPanel()
 				.padding()
 		)
+		futureChooser.removeFromSuperview()
 		if let transportPanel = hostingController.view {
 			view.addSubview(transportPanel, activating: [
-				transportPanel.topAnchor.constraint(equalTo: futureChooser.bottomAnchor, constant: 4),
+				transportPanel.topAnchor.constraint(equalTo: reelTable.bottomAnchor, constant: 0),
 				transportPanel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
 				transportPanel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 				transportPanel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
