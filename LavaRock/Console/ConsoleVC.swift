@@ -24,7 +24,11 @@ final class ConsoleVC: UIViewController {
 		reelTable.dataSource = self
 		reelTable.delegate = self
 		
-		if let transportPanel = UIHostingController(rootView: TransportPanel().padding()).view {
+		let hostingController = UIHostingController(
+			rootView: TransportPanel()
+				.padding()
+		)
+		if let transportPanel = hostingController.view {
 			view.addSubview(transportPanel, activating: [
 				transportPanel.topAnchor.constraint(equalTo: futureChooser.bottomAnchor, constant: 4),
 				transportPanel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
