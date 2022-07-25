@@ -51,12 +51,9 @@ struct TransportPanel: View {
 				openMusicButton
 			}
 		}
-		.padding(
-			[
-				.top,
-				.bottom,
-			],
-			.eight * 6)
+		.frame(
+			height: 275,
+			alignment: .top)
 	}
 	
 	private var shuffleButton: some View {
