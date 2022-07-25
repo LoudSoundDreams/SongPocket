@@ -11,7 +11,7 @@ import SwiftUI
 
 final class ConsoleVC: UIViewController {
 	@IBOutlet private(set) var reelTable: UITableView!
-	@IBOutlet private var futureChooser: FutureChooser!
+	@IBOutlet private var reelTableBottomToSafeArea: NSLayoutConstraint!
 	
 	var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
@@ -44,10 +44,12 @@ final class ConsoleVC: UIViewController {
 			rootView: TransportPanel()
 				.padding()
 		)
-		futureChooser.removeFromSuperview()
 		if let transportPanel = hostingController.view {
+			NSLayoutConstraint.deactivate([
+				reelTableBottomToSafeArea,
+			])
 			view.addSubview(transportPanel, activating: [
-				transportPanel.topAnchor.constraint(equalTo: reelTable.bottomAnchor, constant: 0),
+				transportPanel.topAnchor.constraint(equalTo: reelTable.bottomAnchor),
 				transportPanel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
 				transportPanel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 				transportPanel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
