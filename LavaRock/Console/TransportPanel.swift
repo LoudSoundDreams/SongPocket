@@ -51,7 +51,12 @@ struct TransportPanel: View {
 				openMusicButton
 			}
 		}
-		.padding([.top, .bottom], .eight * 6)
+		.padding(
+			[
+				.top,
+				.bottom,
+			],
+			.eight * 6)
 	}
 	
 	private var openMusicButton: some View {

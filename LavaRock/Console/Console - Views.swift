@@ -84,6 +84,18 @@ extension QueueCell:
 {}
 
 final class FutureChooser: UISegmentedControl {
+	init() {
+		super.init(frame: .zero)
+		
+		setUp()
+	}
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		setUp()
+	}
+	
 	private enum Mode: Int, CaseIterable {
 		case normal
 		case repeatAll
@@ -113,10 +125,7 @@ final class FutureChooser: UISegmentedControl {
 	}
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
-	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
+	private func setUp() {
 		removeAllSegments()
 		Mode.allCases.forEach { mode in
 			insertSegment(
