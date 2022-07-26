@@ -21,15 +21,14 @@ final class LibraryNC: UINavigationController {
 			}
 		})
 	private let consoleViewHost = UIHostingController(rootView: ConsoleView())
-	private let consoleVC: UIViewController = UIStoryboard(
-		name: "Console", bundle: nil)
+	private let consoleVC: UIViewController = UIStoryboard(name: "Console", bundle: nil)
 		.instantiateInitialViewController()!
 	
 	init() {
-		let collectionsTVC = UIStoryboard(
-			name: "CollectionsTVC", bundle: nil)
+		super.init(
+			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
 			.instantiateInitialViewController()!
-		super.init(rootViewController: collectionsTVC)
+		)
 		
 		setUp()
 	}

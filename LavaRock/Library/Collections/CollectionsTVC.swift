@@ -249,8 +249,7 @@ final class CollectionsTVC:
 						let viewController: UIViewController = (
 							Enabling.swiftUI__options
 							? UIHostingController(rootView: OptionsView())
-							: UIStoryboard(name: "Options", bundle: nil)
-								.instantiateInitialViewController()!
+							: OptionsNC()
 						)
 						viewController.modalPresentationStyle = .formSheet
 						self?.present(viewController, animated: true)
