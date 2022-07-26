@@ -38,7 +38,6 @@
 		075D904427F02F5B00BD8F3E /* ConsoleVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */; };
 		07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* LibraryItem.swift */; };
 		07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* CollectionDifference.swift */; };
-		07622F0E27DAEA9D00B953EA /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07622F0D27DAEA9D00B953EA /* Library.storyboard */; };
 		07622F1427DE439D00B953EA /* Console - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07622F1327DE439D00B953EA /* Console - Views.swift */; };
 		07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* SongsGroup.swift */; };
 		07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */; };
@@ -178,7 +177,6 @@
 		075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - Notifications.swift"; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
 		07619EE427342FC9003F95AE /* CollectionDifference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDifference.swift; sourceTree = "<group>"; };
-		07622F0D27DAEA9D00B953EA /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Library.storyboard; sourceTree = "<group>"; };
 		07622F1327DE439D00B953EA /* Console - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Console - Views.swift"; sourceTree = "<group>"; };
 		07642C7B268FFC1600B66BB8 /* SongsGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsGroup.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGroup.swift; sourceTree = "<group>"; };
@@ -341,7 +339,6 @@
 				07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */,
 				07FB52CA2813909400CCCBA5 /* LibrarySortOption.swift */,
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
-				07622F0D27DAEA9D00B953EA /* Library.storyboard */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				07DF76E32828D8AB00B03103 /* MainToolbar.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
@@ -732,7 +729,6 @@
 			files = (
 				073FB55927588B81000FAF5F /* Options.storyboard in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
-				07622F0E27DAEA9D00B953EA /* Library.storyboard in Resources */,
 				07934CF827CDBE04002B2444 /* SongsTVC.storyboard in Resources */,
 				07934CFC27CDBFFD002B2444 /* CollectionsTVC.storyboard in Resources */,
 				073FB56027588BC5000FAF5F /* Console.storyboard in Resources */,
