@@ -42,34 +42,26 @@ struct TransportPanel: View {
 		VStack(
 			spacing: .eight * 4
 		) {
-			HStack {
-				shuffleButton
-					.disabled(whenNil: tapeDeckDisplay.status)
-				Spacer()
-				ChooserRep()
-					.fixedSize()
-				Spacer()
-				shuffleButton
-					.hidden()
-			}
+			ChooserRep()
+				.fixedSize()
 			
 			HStack(
-				alignment: .firstTextBaseline
 			) {
 				previousButton
 				Spacer()
-				skipBackButton
-				Spacer()
 				rewindButton
-				Spacer()
-				skipForwardButton
 				Spacer()
 				nextButton
 			}
-			.disabled(whenNil: tapeDeckDisplay.status)
 			
-			playPauseButton
-				.disabled(whenNil: tapeDeckDisplay.status)
+			HStack(
+			) {
+				skipBackButton
+				Spacer()
+				playPauseButton
+				Spacer()
+				skipForwardButton
+			}
 		}
 		.frame(
 			height: 275,
@@ -82,6 +74,7 @@ struct TransportPanel: View {
 			Image(systemName: "shuffle.circle")
 				.font(.system(size: .eight * 4))
 		}
+		.disabled(whenNil: tapeDeckDisplay.status)
 	}
 	
 	private var openMusicButton: some View {
@@ -100,6 +93,7 @@ struct TransportPanel: View {
 			Image(systemName: "arrow.backward.circle")
 				.font(.system(size: .eight * 4))
 		}
+		.disabled(whenNil: tapeDeckDisplay.status)
 	}
 	private var rewindButton: some View {
 		Button {
@@ -108,6 +102,7 @@ struct TransportPanel: View {
 			Image(systemName: "arrow.counterclockwise.circle")
 				.font(.system(size: .eight * 4))
 		}
+		.disabled(whenNil: tapeDeckDisplay.status)
 	}
 	private var skipBackButton: some View {
 		Button {
@@ -116,6 +111,7 @@ struct TransportPanel: View {
 			Image(systemName: "gobackward.15")
 				.font(.system(size: .eight * 4))
 		}
+		.disabled(whenNil: tapeDeckDisplay.status)
 	}
 	
 	private var playPauseButton: some View {
@@ -138,6 +134,7 @@ struct TransportPanel: View {
 					.font(.system(size: .eight * 6))
 			}
 		}
+		.disabled(whenNil: tapeDeckDisplay.status)
 	}
 	
 	private var skipForwardButton: some View {
@@ -147,6 +144,7 @@ struct TransportPanel: View {
 			Image(systemName: "goforward.15")
 				.font(.system(size: .eight * 4))
 		}
+		.disabled(whenNil: tapeDeckDisplay.status)
 	}
 	private var nextButton: some View {
 		Button {
@@ -155,5 +153,6 @@ struct TransportPanel: View {
 			Image(systemName: "arrow.forward.circle")
 				.font(.system(size: .eight * 4))
 		}
+		.disabled(whenNil: tapeDeckDisplay.status)
 	}
 }
