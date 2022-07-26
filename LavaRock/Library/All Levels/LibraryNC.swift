@@ -21,14 +21,9 @@ final class LibraryNC: UINavigationController {
 			}
 		})
 	private let consoleViewHost = UIHostingController(rootView: ConsoleView())
-	private let consoleVC: UIViewController
-	
-	required init?(coder: NSCoder) {
-		consoleVC = UIStoryboard(name: "Console", bundle: nil)
-			.instantiateInitialViewController()!
-		
-		super.init(coder: coder)
-	}
+	private let consoleVC: UIViewController = UIStoryboard(
+		name: "Console", bundle: nil)
+		.instantiateInitialViewController()!
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)

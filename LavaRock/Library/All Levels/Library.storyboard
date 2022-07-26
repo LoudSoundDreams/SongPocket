@@ -6,11 +6,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Collections-->
+        <!--LibraryNC-->
         <scene sceneID="Ha5-Ct-70h">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YiT-J8-VtB" customClass="LibraryNC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collections" image="square.stack.fill" catalog="system" id="cIJ-xh-mtT"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uLz-8K-DqV">
@@ -40,7 +39,4 @@
             <point key="canvasLocation" x="6607" y="194"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="square.stack.fill" catalog="system" width="113" height="128"/>
-    </resources>
 </document>
