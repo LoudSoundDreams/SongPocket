@@ -21,7 +21,7 @@ final class OptionsTVC: UITableViewController {
 			PurchaseManager.shared.requestTipProduct()
 		}
 		
-		navigationItem.title = LRString.options
+		title = LRString.options
 	}
 	
 	@IBAction private func doneWithOptionsSheet(_ sender: UIBarButtonItem) {

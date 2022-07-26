@@ -14,7 +14,7 @@ struct Enabling {
 	static let multialbum = multicollection && 10 == 10
 	
 	static let console = 10 == 1
-	static let iconsForTopButtons = console || 10 == 1
+	static let iconsForTopButtons = (console && 10 == 10) || 10 == 1
 	static let swiftUI__console = console && 10 == 1
 	
 	static let swiftUI__options = 10 == 1
