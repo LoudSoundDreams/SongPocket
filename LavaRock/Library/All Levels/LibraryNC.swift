@@ -25,6 +25,25 @@ final class LibraryNC: UINavigationController {
 		name: "Console", bundle: nil)
 		.instantiateInitialViewController()!
 	
+	init() {
+		let collectionsTVC = UIStoryboard(
+			name: "CollectionsTVC", bundle: nil)
+			.instantiateInitialViewController()!
+		super.init(rootViewController: collectionsTVC)
+		
+		setUp()
+	}
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		setUp()
+	}
+	
+	private func setUp() {
+		navigationBar.prefersLargeTitles = true
+	}
+	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		

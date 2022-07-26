@@ -55,8 +55,7 @@ private struct MainViewControllerRep: UIViewControllerRepresentable {
 	func makeUIViewController(
 		context: Context
 	) -> VCType {
-		let vc = UIStoryboard(name: "Library", bundle: nil)
-			.instantiateInitialViewController() as! LibraryNC
+		let vc = LibraryNC()
 		// Lighting
 		vc.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 		// Accent color

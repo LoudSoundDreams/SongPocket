@@ -12,9 +12,8 @@ import OSLog
 extension AlbumsTVC {
 	func startOrganizing() {
 		// Prepare a Collections view to present modally.
+		let libraryNC = LibraryNC()
 		guard
-			let libraryNC = UIStoryboard(name: "Library", bundle: nil)
-				.instantiateInitialViewController() as? UINavigationController,
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
@@ -179,9 +178,8 @@ extension AlbumsTVC {
 	
 	func startMoving() {
 		// Prepare a Collections view to present modally.
+		let libraryNC = LibraryNC()
 		guard
-			let libraryNC = UIStoryboard(name: "Library", bundle: nil)
-				.instantiateInitialViewController() as? UINavigationController,
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
