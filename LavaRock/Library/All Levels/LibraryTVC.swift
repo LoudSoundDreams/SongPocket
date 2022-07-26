@@ -40,7 +40,11 @@ class LibraryTVC: UITableViewController {
 			result.append(
 				UIBarButtonItem(
 					title: LRString.openMusic,
-					image: UIImage(systemName: "arrow.up.forward.app"),
+					image: (
+						Enabling.iconsForTopButtons
+						? UIImage(systemName: "arrow.up.forward.app")
+						: nil
+					),
 					primaryAction: UIAction(handler: { action in
 						UIApplication.shared.open(.music)
 					}))
@@ -392,11 +396,13 @@ class LibraryTVC: UITableViewController {
 		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
 		
 		editButtonItem.isEnabled = !viewModel.isEmpty()
-		editButtonItem.image = (
-			isEditing
-			? UIImage(systemName: "pencil.circle.fill")
-			: UIImage(systemName: "pencil.circle")
-		)
+		if Enabling.iconsForTopButtons {
+			editButtonItem.image = (
+				isEditing
+				? UIImage(systemName: "pencil.circle.fill")
+				: UIImage(systemName: "pencil.circle")
+			)
+		}
 		
 		sortButton.isEnabled = allows_sort()
 		sortButton.menu = new_sort_options_menu()
