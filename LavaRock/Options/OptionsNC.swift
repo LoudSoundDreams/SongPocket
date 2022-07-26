@@ -14,15 +14,15 @@ final class OptionsNC: UINavigationController {
 				.instantiateInitialViewController()!
 		)
 		
-		setUp()
+		did_init()
 	}
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		setUp()
+		did_init()
 	}
 	
-	private func setUp() {
+	private func did_init() {
 	}
 }

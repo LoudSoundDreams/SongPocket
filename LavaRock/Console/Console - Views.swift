@@ -87,13 +87,13 @@ final class FutureChooser: UISegmentedControl {
 	init() {
 		super.init(frame: .zero)
 		
-		setUp()
+		did_init()
 	}
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		setUp()
+		did_init()
 	}
 	
 	private enum Mode: Int, CaseIterable {
@@ -125,7 +125,7 @@ final class FutureChooser: UISegmentedControl {
 	}
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
-	private func setUp() {
+	private func did_init() {
 		removeAllSegments()
 		Mode.allCases.forEach { mode in
 			insertSegment(

@@ -36,7 +36,7 @@ class LibraryTVC: UITableViewController {
 		var result = [
 			editButtonItem,
 		]
-		if Enabling.console {
+		if Enabling.console && Enabling.iconsForTopButtons {
 			result.append(
 				UIBarButtonItem.open_Music_button()
 			)
