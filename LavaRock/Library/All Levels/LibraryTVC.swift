@@ -38,16 +38,7 @@ class LibraryTVC: UITableViewController {
 		]
 		if Enabling.console {
 			result.append(
-				UIBarButtonItem(
-					title: LRString.openMusic,
-					image: (
-						Enabling.iconsForTopButtons
-						? UIImage(systemName: "arrow.up.forward.app")
-						: nil
-					),
-					primaryAction: UIAction(handler: { action in
-						UIApplication.shared.open(.music)
-					}))
+				UIBarButtonItem.open_Music_button()
 			)
 		}
 		return result

@@ -71,14 +71,7 @@ final class MainToolbar {
 		return button
 	}()
 	
-	private lazy var openMusicButton: UIBarButtonItem = {
-		return UIBarButtonItem(
-			title: LRString.openMusic,
-			image: UIImage(systemName: "arrow.up.forward.app"),
-			primaryAction: UIAction(handler: { action in
-				UIApplication.shared.open(.music)
-			}))
-	}()
+	private let open_Music_button: UIBarButtonItem = .open_Music_button()
 	
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.console {
@@ -103,7 +96,7 @@ final class MainToolbar {
 				.flexibleSpace(),
 				nextButton,
 				.flexibleSpace(),
-				openMusicButton,
+				open_Music_button,
 			]
 		}
 	}
@@ -153,7 +146,7 @@ final class MainToolbar {
 			buttons_array.forEach {
 				$0.disableWithAccessibilityTrait()
 			}
-			openMusicButton.enableWithAccessibilityTrait()
+			open_Music_button.enableWithAccessibilityTrait()
 			moreButton.enableWithAccessibilityTrait()
 			return
 		}
