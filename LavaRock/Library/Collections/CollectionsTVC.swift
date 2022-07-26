@@ -239,6 +239,7 @@ final class CollectionsTVC:
 		case .browsing:
 			let optionsButton = UIBarButtonItem(
 				title: LRString.options,
+				image: UIImage(systemName: "gear"),
 				primaryAction: UIAction { [weak self] _ in
 					let viewController: UIViewController = (
 						Enabling.swiftUI__options
