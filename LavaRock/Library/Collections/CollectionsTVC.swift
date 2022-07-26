@@ -237,21 +237,20 @@ final class CollectionsTVC:
 				cancelAndDismissButton,
 			]
 		case .browsing:
-			let optionsButton = UIBarButtonItem(
-				title: LRString.options,
-				image: UIImage(systemName: "gear"),
-				primaryAction: UIAction { [weak self] _ in
-					let viewController: UIViewController = (
-						Enabling.swiftUI__options
-						? UIHostingController(rootView: OptionsView())
-						: UIStoryboard(name: "Options", bundle: nil)
-							.instantiateInitialViewController()!
-					)
-					viewController.modalPresentationStyle = .formSheet
-					self?.present(viewController, animated: true)
-				})
 			viewingModeTopLeftButtons = [
-				optionsButton,
+				UIBarButtonItem(
+					title: LRString.options,
+					image: UIImage(systemName: "gear"),
+					primaryAction: UIAction { [weak self] _ in
+						let viewController: UIViewController = (
+							Enabling.swiftUI__options
+							? UIHostingController(rootView: OptionsView())
+							: UIStoryboard(name: "Options", bundle: nil)
+								.instantiateInitialViewController()!
+						)
+						viewController.modalPresentationStyle = .formSheet
+						self?.present(viewController, animated: true)
+					}),
 			]
 			editingModeToolbarButtons = [
 				combineButton,
