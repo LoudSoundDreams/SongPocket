@@ -20,6 +20,8 @@ final class OptionsTVC: UITableViewController {
 		if TipJarViewModel.shared.status == .notYetFirstLoaded {
 			PurchaseManager.shared.requestTipProduct()
 		}
+		
+		navigationItem.title = LRString.options
 	}
 	
 	@IBAction private func doneWithOptionsSheet(_ sender: UIBarButtonItem) {

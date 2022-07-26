@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Options-->
+        <!--OptionsTVC-->
         <scene sceneID="Gwy-Gy-UzT">
             <objects>
                 <tableViewController id="TG3-ks-vKX" customClass="OptionsTVC" customModule="LavaRock" customModuleProvider="target" sceneMemberID="viewController">
@@ -91,7 +91,7 @@
                             <outlet property="delegate" destination="TG3-ks-vKX" id="JRc-B9-IFP"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Options" largeTitleDisplayMode="never" id="oU6-xG-PqK">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="oU6-xG-PqK">
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="UAX-4b-lwh">
                             <connections>
                                 <action selector="doneWithOptionsSheet:" destination="TG3-ks-vKX" id="Wjo-ha-8dE"/>
