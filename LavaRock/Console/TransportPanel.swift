@@ -49,7 +49,8 @@ struct TransportPanel: View {
 				ChooserRep()
 					.fixedSize()
 				Spacer()
-				openMusicButton
+				shuffleButton
+					.hidden()
 			}
 			
 			HStack(

@@ -31,10 +31,23 @@ class LibraryTVC: UITableViewController {
 	final lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [
 		.flexibleSpace(),
 	]
-	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = [
+	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = {
 		// Right to left
-		editButtonItem,
-	]
+		var result = [
+			editButtonItem,
+		]
+		if Enabling.console {
+			result.append(
+				UIBarButtonItem(
+					title: LRString.openMusic,
+					image: UIImage(systemName: "arrow.up.forward.app"),
+					primaryAction: UIAction(handler: { action in
+						UIApplication.shared.open(.music)
+					}))
+			)
+		}
+		return result
+	}()
 	final lazy var editingModeTopRightButtons: [UIBarButtonItem] = [
 		editButtonItem,
 	]
