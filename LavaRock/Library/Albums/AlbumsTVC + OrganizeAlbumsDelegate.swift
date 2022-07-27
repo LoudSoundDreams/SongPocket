@@ -15,7 +15,7 @@ extension AlbumsTVC: OrganizeAlbumsDelegate {
 			return toKeepSelected.contains(idOfAlbum)
 		}
 		Task {
-			let _ = await setViewModelAndMoveRowsAndShouldContinue(
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				viewModel,
 				thenSelecting: Set(toSelect))
 		}

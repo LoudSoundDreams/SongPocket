@@ -101,7 +101,7 @@ extension CollectionsTVC {
 					animated: true)
 			}
 			
-			guard await setViewModelAndMoveRowsAndShouldContinue(
+			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				newViewModel,
 				thenSelecting: [indexPathOfCombined])
 			else { return }
@@ -130,7 +130,7 @@ extension CollectionsTVC {
 		viewModelBeforeCombining = nil
 		
 		Task {
-			let _ = await setViewModelAndMoveRowsAndShouldContinue(
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				originalViewModel,
 				thenSelecting: Set(originalSelectedIndexPaths))
 		}
@@ -156,7 +156,7 @@ extension CollectionsTVC {
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		let toReload = didChangeTitle ? [indexPathOfCombined] : []
 		Task {
-			let _ = await setViewModelAndMoveRowsAndShouldContinue(
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				firstReloading: toReload,
 				newViewModel,
 				thenSelecting: [indexPathOfCombined])

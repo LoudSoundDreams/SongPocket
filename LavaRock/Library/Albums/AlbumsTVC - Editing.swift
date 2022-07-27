@@ -65,7 +65,7 @@ extension AlbumsTVC {
 			}
 			
 			// Similar to `reflectDatabase`.
-			let _ = await collectionsTVC.setViewModelAndMoveRowsAndShouldContinue(
+			let _ = await collectionsTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				firstReloading: originalIndexPathsOfCollectionsContainingMovedAlbums,
 				previewOfChanges,
 				runningBeforeContinuation: {

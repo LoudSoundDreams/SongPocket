@@ -167,7 +167,7 @@ class LibraryTVC: UITableViewController {
 			}
 			
 			let newViewModel = viewModel.updatedWithFreshenedData()
-			guard await setViewModelAndMoveRowsAndShouldContinue(newViewModel) else { return }
+			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
 			freshenNavigationItemTitle()
 			// Update the data within each row (and header), which might be outdated.
@@ -181,14 +181,14 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	// Returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
-	final func setViewModelAndMoveRowsAndShouldContinue(
+	final func setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
-			__setViewModelAndMoveRows(
+			__setViewModelAndMoveAndDeselectRows(
 				firstReloading: toReload,
 				newViewModel,
 				thenSelecting: toSelect
@@ -199,7 +199,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	private func __setViewModelAndMoveRows(
+	private func __setViewModelAndMoveAndDeselectRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
@@ -367,7 +367,7 @@ class LibraryTVC: UITableViewController {
 	final override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
 			let newViewModel = viewModel.updatedWithFreshenedData() // Deletes empty groups if we reordered all the items out of them.
-			__setViewModelAndMoveRows(newViewModel, completionIfShouldRun: { shouldRun in }) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
+			__setViewModelAndMoveAndDeselectRows(newViewModel, completionIfShouldRun: { shouldRun in }) // As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
 			// As of iOS 15.4 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
 			
 			newViewModel.context.tryToSave()

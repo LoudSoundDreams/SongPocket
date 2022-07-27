@@ -65,7 +65,7 @@ extension CollectionsTVC {
 		}()
 		let newViewModel = collectionsViewModel.updatedAfterCreating(title: titleForNewCollection)
 		Task {
-			guard await setViewModelAndMoveRowsAndShouldContinue(newViewModel) else { return }
+			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: LRString.newCollection_alertTitle,
@@ -92,7 +92,7 @@ extension CollectionsTVC {
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		Task {
-			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
 	

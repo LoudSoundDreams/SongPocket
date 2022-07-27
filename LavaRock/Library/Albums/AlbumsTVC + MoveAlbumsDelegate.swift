@@ -12,7 +12,7 @@ extension AlbumsTVC: MoveAlbumsDelegate {
 	func didMove() {
 		let newViewModel = viewModel.updatedWithFreshenedData()
 		Task {
-			let _ = await setViewModelAndMoveRowsAndShouldContinue(newViewModel)
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
 }
