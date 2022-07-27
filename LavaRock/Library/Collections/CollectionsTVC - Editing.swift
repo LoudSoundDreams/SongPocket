@@ -154,12 +154,17 @@ extension CollectionsTVC {
 		let newViewModel = CollectionsViewModel(
 			context: viewModel.context.parent!,
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
-		let toReload = didChangeTitle ? [indexPathOfCombined] : []
 		Task {
+			if didChangeTitle {
+				// I would prefer …
+				// • Not waiting for the reload animation to complete before continuing.
+				// • Not deselecting the row when we reload it.
+				let _ = await tableView.reloadRows__async(at: [indexPathOfCombined], with: .fade)
+			}
+			
 			setEditing(false, animated: true)
 			
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				firstReloading: toReload,
 				newViewModel)
 		}
 	}

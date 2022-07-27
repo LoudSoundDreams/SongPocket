@@ -121,10 +121,21 @@ extension UITableView {
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
-			performBatchUpdates(updates) { didCompleteAnimationsSuccessfully in
+			performBatchUpdates(
+				updates
+			) { didCompleteAnimationsSuccessfully in
 				continuation.resume(returning: didCompleteAnimationsSuccessfully)
 			}
 			beforeContinuation?()
+		}
+	}
+	
+	final func reloadRows__async(
+		at toReload: [IndexPath],
+		with animation: RowAnimation
+	) async -> Bool {
+		return await performBatchUpdates__async {
+			self.reloadRows(at: toReload, with: animation)
 		}
 	}
 	
