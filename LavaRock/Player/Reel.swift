@@ -35,7 +35,7 @@ struct Reel {
 	}
 	
 	static func shouldEnablePlayLast() -> Bool {
-		guard Enabling.console else {
+		guard Enabling.inAppPlayer else {
 			return true
 		}
 		// Only if there’s at least 1 song after the current song

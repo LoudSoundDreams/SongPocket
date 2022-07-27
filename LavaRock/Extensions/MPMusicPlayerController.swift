@@ -19,7 +19,7 @@ extension MPMusicPlayerController {
 		new_repeat_mode: MPMusicRepeatMode,
 		disable_shuffle: Bool
 	) {
-		if Enabling.console {
+		if Enabling.inAppPlayer {
 			Reel.setMediaItems(mediaItems)
 		}
 		
@@ -39,7 +39,7 @@ extension MPMusicPlayerController {
 	}
 	
 	final func playNext(_ mediaItems: [MPMediaItem]) {
-		if Enabling.console {
+		if Enabling.inAppPlayer {
 			if Reel.mediaItems.isEmpty {
 				Reel.setMediaItems(mediaItems)
 				
@@ -59,7 +59,7 @@ extension MPMusicPlayerController {
 			prepend(mediaItems)
 		}
 		
-		if Enabling.console {
+		if Enabling.inAppPlayer {
 		} else {
 			repeatMode = .none
 		}
@@ -71,7 +71,7 @@ extension MPMusicPlayerController {
 	}
 	
 	final func playLast(_ mediaItems: [MPMediaItem]) {
-		if Enabling.console {
+		if Enabling.inAppPlayer {
 			if Reel.mediaItems.isEmpty {
 				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
 				Reel.setMediaItems(mediaItems)
@@ -91,7 +91,7 @@ extension MPMusicPlayerController {
 			append(mediaItems)
 		}
 		
-		if Enabling.console {
+		if Enabling.inAppPlayer {
 		} else {
 			repeatMode = .none
 		}

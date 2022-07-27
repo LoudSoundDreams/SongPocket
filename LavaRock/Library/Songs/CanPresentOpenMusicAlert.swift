@@ -20,7 +20,7 @@ extension SongsTVC: CanPresentOpenMusicAlert {
 		havingVerbedSongCount songCount: Int,
 		firstSongTitle: String
 	) {
-		if Enabling.console || true {
+		if Enabling.inAppPlayer || true {
 			return
 		}
 		

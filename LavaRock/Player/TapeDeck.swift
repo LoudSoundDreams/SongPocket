@@ -29,7 +29,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player?.endGeneratingPlaybackNotifications()
-		if Enabling.console {
+		if Enabling.inAppPlayer {
 			player = .applicationQueuePlayer
 		} else {
 			player = .systemMusicPlayer

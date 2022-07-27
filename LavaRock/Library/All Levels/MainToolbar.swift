@@ -74,7 +74,7 @@ final class MainToolbar {
 	private let open_Music_button: UIBarButtonItem = .open_Music_button()
 	
 	var buttons_array: [UIBarButtonItem] {
-		if Enabling.console {
+		if Enabling.inAppPlayer {
 			return [
 				moreButton,
 				.flexibleSpace(),
@@ -136,7 +136,7 @@ final class MainToolbar {
 		
 		guard
 			let player = Self.player,
-			!(Enabling.console && Reel.mediaItems.isEmpty)
+			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty)
 		else {
 			configurePlayButton()
 			
