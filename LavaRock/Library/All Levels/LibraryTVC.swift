@@ -244,7 +244,7 @@ class LibraryTVC: UITableViewController {
 		
 		isAnimatingBatchUpdates += 1
 		// “'async' call in a function that does not support concurrency”
-		tableView.update__completion(
+		tableView.applyBatchUpdates__completion(
 			firstReloading: toReload,
 			with: .fade,
 			thenMovingSections: sectionBatchUpdates,
