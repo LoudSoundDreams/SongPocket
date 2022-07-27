@@ -156,10 +156,11 @@ extension CollectionsTVC {
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		let toReload = didChangeTitle ? [indexPathOfCombined] : []
 		Task {
+			setEditing(false, animated: true)
+			
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				firstReloading: toReload,
-				newViewModel,
-				thenSelecting: [indexPathOfCombined])
+				newViewModel)
 		}
 	}
 }
