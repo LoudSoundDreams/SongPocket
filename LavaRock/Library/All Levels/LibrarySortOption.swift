@@ -33,7 +33,7 @@ enum LibrarySortOption: CaseIterable {
 		case .trackNumber:
 			return LRString.trackNumber
 		case .shuffle:
-			return LRString.shuffle
+			return LRString.random
 		case .reverse:
 			return LRString.reverse
 		}
