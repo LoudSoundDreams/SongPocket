@@ -107,7 +107,7 @@ extension CollectionsTVC {
 		
 		Task {
 			if didChangeTitle {
-				let _ = await tableView.update__async {
+				let _ = await tableView.performBatchUpdates__async {
 					self.tableView.reloadRows(at: [indexPath], with: .fade)
 				}
 			}

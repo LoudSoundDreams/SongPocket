@@ -116,7 +116,7 @@ extension UITableView {
 		}
 	}
 	
-	final func update__async(
+	final func performBatchUpdates__async(
 		_ updates: (() -> Void)?,
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async -> Bool {
