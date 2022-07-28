@@ -240,11 +240,7 @@ final class CollectionsTVC:
 			viewingModeTopLeftButtons = [
 				UIBarButtonItem(
 					title: LRString.options,
-					image: (
-						Enabling.iconsForTopButtons
-						? UIImage(systemName: "gear")
-						: nil
-					),
+					image: UIImage(systemName: "gear"),
 					primaryAction: UIAction { [weak self] _ in
 						let viewController: UIViewController = (
 							Enabling.swiftUI__options

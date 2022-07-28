@@ -36,7 +36,7 @@ class LibraryTVC: UITableViewController {
 		var result = [
 			editButtonItem,
 		]
-		if Enabling.inAppPlayer && Enabling.iconsForTopButtons {
+		if Enabling.inAppPlayer {
 			result.append(
 				UIBarButtonItem.open_Music_button()
 			)
@@ -388,13 +388,11 @@ class LibraryTVC: UITableViewController {
 		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
 		
 		editButtonItem.isEnabled = !viewModel.isEmpty()
-		if Enabling.iconsForTopButtons {
-			editButtonItem.image = (
-				isEditing
-				? UIImage(systemName: "pencil.circle.fill")
-				: UIImage(systemName: "pencil.circle")
-			)
-		}
+		editButtonItem.image = (
+			isEditing
+			? UIImage(systemName: "pencil.circle.fill")
+			: UIImage(systemName: "pencil.circle")
+		)
 		
 		sortButton.isEnabled = allows_sort()
 		sortButton.menu = new_sort_options_menu()
