@@ -153,7 +153,7 @@ final class CollectionsTVC:
 			toReloadInCollectionsSection = []
 		}
 		
-		let _ = await tableView.performBatchUpdates__async {
+		await tableView.performBatchUpdates__async {
 			let animationForReload: UITableView.RowAnimation = toReloadInCollectionsSection.isEmpty ? .none : .fade
 			self.tableView.reloadRows(at: toReloadInCollectionsSection, with: animationForReload)
 			self.tableView.deleteRows(at: toDelete, with: .middle)
