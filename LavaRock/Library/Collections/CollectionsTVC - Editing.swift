@@ -47,11 +47,19 @@ extension CollectionsTVC {
 		
 		viewModel.context.tryToSave()
 		
-		if didChangeTitle {
-			tableView.reloadRows(at: [indexPath], with: .fade)
-		}
-		if shouldSelectRow {
-			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+		Task {
+			if didChangeTitle {
+				// See corresponding comment in `commitCombine`.
+				await tableView.performBatchUpdates__async {
+					self.tableView.reloadRows(at: [indexPath], with: .fade)
+				} runningBeforeContinuation: {
+					if shouldSelectRow {
+						self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+					}
+				}
+			}
+			
+			setEditing(false, animated: true)
 		}
 	}
 	
