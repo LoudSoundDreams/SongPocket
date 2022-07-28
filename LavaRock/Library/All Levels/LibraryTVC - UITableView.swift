@@ -15,13 +15,6 @@ extension LibraryTVC {
 		return viewModel.numberOfSections()
 	}
 	
-	override func tableView(
-		_ tableView: UITableView,
-		numberOfRowsInSection section: Int
-	) -> Int {
-		return 0
-	}
-	
 	// MARK: - Editing
 	
 	final override func tableView(

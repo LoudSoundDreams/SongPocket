@@ -243,9 +243,9 @@ extension LibraryViewModel {
 	
 	func numberOfRows(for section: Section_I) -> Int {
 		switch viewContainer {
-		case .library:
-			break
-		case .container:
+		case
+				.library,
+				.container:
 			break
 		case .deleted:
 			return 0 // Without `numberOfPrerowsPerSection`
