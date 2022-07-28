@@ -46,7 +46,8 @@ class LibraryTVC: UITableViewController {
 	final lazy var editingModeTopRightButtons: [UIBarButtonItem] = [
 		editButtonItem,
 	]
-	final lazy var viewingModeToolbarButtons = (navigationController as? LibraryNC)?.mainToolbar.buttons_array
+	final lazy var viewingModeToolbarButtons: [UIBarButtonItem]
+	= (navigationController as? LibraryNC)?.mainToolbar.buttons_array ?? []
 	
 	// MARK: Subclasses Should Not Customize
 	
