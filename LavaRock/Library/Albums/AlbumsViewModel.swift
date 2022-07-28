@@ -13,7 +13,9 @@ struct AlbumsViewModel {
 	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
 	let numberOfPresections = Section_I(0)
-	var numberOfPrerowsPerSection: Row_I { Row_I(prerowsInEachSection.count) }
+	var numberOfPrerowsPerSection: Row_I {
+		return Row_I(prerowsInEachSection.count)
+	}
 	var groups: ColumnOfLibraryItems
 	
 	enum Prerow {
