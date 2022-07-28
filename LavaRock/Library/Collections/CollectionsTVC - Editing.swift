@@ -156,10 +156,12 @@ extension CollectionsTVC {
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		Task {
 			if didChangeTitle {
-				// I would prefer …
-				// • Not waiting for the reload animation to complete before continuing.
-				// • Not deselecting the row when we reload it.
-				let _ = await tableView.reloadRows__async(at: [indexPathOfCombined], with: .fade)
+				// I would prefer not waiting for the reload animation to complete before exiting editing mode.
+				await tableView.performBatchUpdates__async {
+					self.tableView.reloadRows(at: [indexPathOfCombined], with: .fade)
+				} runningBeforeContinuation: {
+					self.tableView.selectRow(at: indexPathOfCombined, animated: false, scrollPosition: .none)
+				}
 			}
 			
 			setEditing(false, animated: true)

@@ -131,15 +131,6 @@ extension UITableView {
 		}
 	}
 	
-	final func reloadRows__async(
-		at toReload: [IndexPath],
-		with animation: RowAnimation
-	) async -> Bool {
-		return await performBatchUpdates__async {
-			self.reloadRows(at: toReload, with: animation)
-		}
-	}
-	
 	final func deselectAllRows(animated: Bool) {
 		selectedIndexPaths.forEach {
 			deselectRow(at: $0, animated: animated)
