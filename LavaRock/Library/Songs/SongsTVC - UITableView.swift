@@ -13,7 +13,7 @@ extension SongsTVC {
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		setOrRemoveNoItemsBackground()
 		
-		return super.numberOfSections(in: tableView)
+		return viewModel.numberOfPresections.value + viewModel.groups.count
 	}
 	
 	override func tableView(

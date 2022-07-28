@@ -8,13 +8,6 @@
 import UIKit
 
 extension LibraryTVC {
-	// MARK: - Numbers
-	
-	// Overrides should call super (this implementation) as a last resort.
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		return viewModel.numberOfSections()
-	}
-	
 	// MARK: - Editing
 	
 	final override func tableView(

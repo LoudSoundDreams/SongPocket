@@ -11,6 +11,12 @@ import MediaPlayer
 extension CollectionsTVC {
 	// MARK: - Numbers
 	
+	override func numberOfSections(
+		in tableView: UITableView
+	) -> Int {
+		return viewModel.numberOfPresections.value + viewModel.groups.count
+	}
+	
 	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int

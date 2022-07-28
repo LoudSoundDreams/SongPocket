@@ -237,10 +237,6 @@ extension LibraryViewModel {
 	
 	// MARK: - UITableView
 	
-	func numberOfSections() -> Int {
-		return numberOfPresections.value + groups.count
-	}
-	
 	func numberOfRows(for section: Section_I) -> Int {
 		switch viewContainer {
 		case

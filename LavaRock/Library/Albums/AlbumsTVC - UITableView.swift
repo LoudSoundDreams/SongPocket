@@ -26,7 +26,7 @@ extension AlbumsTVC {
 			break
 		}
 		
-		return super.numberOfSections(in: tableView)
+		return viewModel.numberOfPresections.value + viewModel.groups.count
 	}
 	
 	override func tableView(
