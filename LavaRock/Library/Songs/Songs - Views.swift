@@ -37,6 +37,35 @@ final class CoverArtCell: UITableViewCell {
 	}
 }
 
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
+final class AlbumTitleCell: UITableViewCell {
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		selectionStyle = .none
+	}
+	
+	func configureWith(
+		albumTitle: String
+	) {
+		var content = UIListContentConfiguration.cell()
+		content.text = albumTitle
+		content.textProperties.font = {
+			let font: UIFont = .preferredFont(forTextStyle: .largeTitle)
+//			let font: UIFont = .preferredFont(forTextStyle: .title1)
+//			let font: UIFont = .preferredFont(forTextStyle: .title2)
+			let actualFont: UIFont = .systemFont(ofSize: font.pointSize, weight: .bold)
+			
+			// Close to what navigation bars use
+//			let font: UIFont = .preferredFont(forTextStyle: .largeTitle)
+//			let actualFont: UIFont = .systemFont(ofSize: font.pointSize, weight: .bold)
+			
+			return actualFont
+		}()
+		contentConfiguration = content
+	}
+}
+
 final class AlbumInfoCell: UITableViewCell {
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var mainLabel: UILabel!

@@ -43,8 +43,16 @@
                                     <outlet property="coverArtView" destination="AJa-zb-mTO" id="K6Z-Cx-6ka"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Album Title" id="yPx-1B-Qd2" customClass="AlbumTitleCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="420.00000953674316" width="375" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yPx-1B-Qd2" id="KVH-fY-jkd">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info" id="fSR-9S-A3d" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="420.00000953674316" width="375" height="62.666667938232422"/>
+                                <rect key="frame" x="0.0" y="463.66667747497559" width="375" height="62.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fSR-9S-A3d" id="Mew-Xs-CPf">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="62.666667938232422"/>
@@ -83,7 +91,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song" id="J5T-0G-4uX" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="482.66667747497559" width="375" height="60.666667938232422"/>
+                                <rect key="frame" x="0.0" y="526.33334541320801" width="375" height="60.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60.666667938232422"/>
@@ -175,7 +183,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Songs Placeholder" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="543.33334541320801" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="587.00001335144043" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
