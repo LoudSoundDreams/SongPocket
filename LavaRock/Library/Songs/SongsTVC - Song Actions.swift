@@ -36,13 +36,30 @@ extension SongsTVC {
 		
 		// Create action sheet
 		
-		let actionSheet = UIAlertController(
-			title: String.localizedStringWithFormat(
-				LRString.format_xSongs,
-				selectedMediaItemAndBelow.count),
-			message: nil,
-			preferredStyle: .actionSheet)
-		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
+		let actionSheet: UIAlertController = {
+			let title: String = {
+				let songCount = selectedMediaItemAndBelow.count
+				if songCount == 1 {
+					// No “and more song(s)” required.
+					return String.localizedStringWithFormat(
+						LRString.format_quoted,
+						firstSongTitle)
+				} else {
+					// “and more song(s)” required.
+					return String.localizedStringWithFormat(
+						LRString.format_title_songTitleAndXMoreSongs,
+						firstSongTitle,
+						songCount - 1)
+				}
+			}()
+			
+			let result = UIAlertController(
+				title: title,
+				message: nil,
+				preferredStyle: .actionSheet)
+			result.popoverPresentationController?.sourceView = popoverAnchorView
+			return result
+		}()
 		
 		// Add actions
 		
