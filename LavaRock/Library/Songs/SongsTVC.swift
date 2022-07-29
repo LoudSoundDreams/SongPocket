@@ -19,7 +19,6 @@ final class SongsTVC:
 	
 	// State
 	var openedAlbum: Album? = nil
-	var willPlayLaterAlertIsPresented = false
 	
 	// MARK: - Setup
 	
@@ -56,14 +55,6 @@ final class SongsTVC:
 	}
 	
 	// MARK: - Library Items
-	
-	override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
-		if willPlayLaterAlertIsPresented {
-			return false
-		}
-		
-		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
-	}
 	
 	override func reflectViewModelIsEmpty() {
 		deleteThenExit(sections: tableView.allSections())

@@ -122,13 +122,10 @@ final class SongCell: UITableViewCell {
 		freshenDotDotDotButton()
 	}
 	
-	func configureWith<
-		AlertPresenter: CanPresentOpenMusicAlert
-	>(
+	func configureWith(
 		song: Song,
 		albumRepresentative representative: SongMetadatum?,
-		spacerTrackNumberText: String?,
-		alertPresenter: Weak<AlertPresenter>
+		spacerTrackNumberText: String?
 	) {
 		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
 		let songDisplayTitle: String = {
@@ -244,10 +241,6 @@ final class SongCell: UITableViewCell {
 			image: UIImage(systemName: "text.insert")
 		) { [weak self] _ in
 			self?.player?.playNext([mediaItem])
-			alertPresenter.referencee?.presentOpenMusicAlertIfNeeded(
-				willPlayNextAsOpposedToLast: true,
-				havingVerbedSongCount: 1,
-				firstSongTitle: songDisplayTitle)
 		}
 		
 		// Play last
@@ -257,10 +250,6 @@ final class SongCell: UITableViewCell {
 				image: UIImage(systemName: "text.append")
 			) { [weak self] _ in
 				self?.player?.playLast([mediaItem])
-				alertPresenter.referencee?.presentOpenMusicAlertIfNeeded(
-					willPlayNextAsOpposedToLast: false,
-					havingVerbedSongCount: 1,
-					firstSongTitle: songDisplayTitle)
 			}
 			// Disable if appropriate
 			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
@@ -274,16 +263,19 @@ final class SongCell: UITableViewCell {
 		
 		// Create and set menu
 		
-		menu = UIMenu(presentsUpward: false, groupedElements: [
-			[
-				playAction,
-				repeatOneAction,
-			],
-			[
-				playNextAction,
-				playLastElement,
-			],
-		])
+		menu = UIMenu(
+			presentsUpward: false,
+			groupedElements: [
+				[
+					playAction,
+					repeatOneAction,
+				],
+				[
+					playNextAction,
+					playLastElement,
+				],
+			]
+		)
 	}
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	

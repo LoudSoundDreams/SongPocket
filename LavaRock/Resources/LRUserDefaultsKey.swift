@@ -10,5 +10,7 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	case accentColor = "accentColorName"
 	
 	case hasEverImportedFromMusic = "hasEverImportedFromMusic"
+	
+	// Last used in version 1.7
 	case shouldExplainQueueAction = "shouldExplainQueueAction"
 }

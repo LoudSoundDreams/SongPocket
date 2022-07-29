@@ -67,10 +67,6 @@ extension SongsTVC {
 			style: .default
 		) { _ in
 			player.playNext(selectedMediaItemAndBelow)
-			self.presentOpenMusicAlertIfNeeded(
-				willPlayNextAsOpposedToLast: true,
-				havingVerbedSongCount: selectedMediaItemAndBelow.count,
-				firstSongTitle: firstSongTitle)
 			deselectSelectedSong()
 		}
 		actionSheet.addAction(playNextAction)
@@ -81,10 +77,6 @@ extension SongsTVC {
 			style: .default
 		) { _ in
 			player.playLast(selectedMediaItemAndBelow)
-			self.presentOpenMusicAlertIfNeeded(
-				willPlayNextAsOpposedToLast: false,
-				havingVerbedSongCount: selectedMediaItemAndBelow.count,
-				firstSongTitle: firstSongTitle)
 			deselectSelectedSong()
 		}
 		// Disable if appropriate
