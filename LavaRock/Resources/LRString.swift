@@ -195,9 +195,6 @@ struct LRString {
 	
 	// MARK: Songs View
 	
-//	static let format_sentenceCase_songTitleAndXMoreSongs = NSLocalizedString(
-//		"plural - sentence case - SONG_TITLE_and_X_more_songs",
-//		comment: "The title of a song, wrapped in quotation marks, plus “and 1 more song”, “and 2 more songs”, or so on.")
 	static let format_title_songTitleAndXMoreSongs = NSLocalizedString(
 		"plural - title case - SONG_TITLE_and_X_more_songs",
 		comment: "The title of a song, wrapped in quotation marks, plus “and 1 More Song”, “and 2 More Songs”, or so on.")
