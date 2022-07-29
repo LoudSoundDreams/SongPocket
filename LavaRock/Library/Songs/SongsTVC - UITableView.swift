@@ -44,7 +44,12 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let songsViewModel = viewModel as? SongsViewModel else { return UITableViewCell() }
+		guard let songsViewModel = viewModel as? SongsViewModel
+		else {
+			return UITableViewCell()
+		}
+		let album = songsViewModel.album(for: indexPath.section_i)
+		
 		let rowCase = songsViewModel.rowCase(for: indexPath)
 		switch rowCase {
 		case .prerow(let prerow):
@@ -54,16 +59,19 @@ extension SongsTVC {
 					withIdentifier: "Cover Art",
 					for: indexPath) as? CoverArtCell
 				else { return UITableViewCell() }
-				let album = songsViewModel.album(for: indexPath.section_i)
+				
 				cell.configure(with: album)
+				
 				return cell
+				
 			case .albumInfo:
 				guard let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Album Info",
 					for: indexPath) as? AlbumInfoCell
 				else { return UITableViewCell() }
-				let album = songsViewModel.album(for: indexPath.section_i)
+				
 				cell.configure(with: album)
+				
 				return cell
 			}
 		case .song:

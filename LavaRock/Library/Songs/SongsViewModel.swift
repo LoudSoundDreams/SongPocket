@@ -22,7 +22,10 @@ struct SongsViewModel {
 		case coverArt
 		case albumInfo
 	}
-	let prerowsInEachSection: [Prerow] = [.coverArt, .albumInfo]
+	let prerowsInEachSection: [Prerow] = [
+		.coverArt,
+		.albumInfo,
+	]
 }
 extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
