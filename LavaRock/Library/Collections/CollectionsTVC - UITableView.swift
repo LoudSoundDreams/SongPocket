@@ -305,7 +305,7 @@ extension CollectionsTVC {
 				.denied,
 				.restricted:
 			if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-				await UIApplication.shared.open(settingsURL)
+				let _ = await UIApplication.shared.open(settingsURL)
 			}
 			tableView.deselectRow(at: indexPath, animated: true)
 		@unknown default:

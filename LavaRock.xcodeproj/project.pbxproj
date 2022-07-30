@@ -551,11 +551,11 @@
 		07E0BBFF276569480010117E /* General UI */ = {
 			isa = PBXGroup;
 			children = (
-				0708201C275BEE1C00F48D13 /* Lighting.swift */,
-				073AF48924D16647000C1A6D /* AccentColor.swift */,
-				0772FB98283010960054834F /* Theme.swift */,
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
+				0772FB98283010960054834F /* Theme.swift */,
+				0708201C275BEE1C00F48D13 /* Lighting.swift */,
+				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
 			);
 			path = "General UI";
