@@ -26,81 +26,49 @@ extension SongsTVC {
 		
 		// TO DO: Mock `selectedMediaItem` in the Simulator.
 		
-		let selectedMediaItemAndBelow: [MPMediaItem]
-		= viewModel
-			.itemsInGroup(startingAt: selectedIndexPath)
-			.compactMap { ($0 as? Song)?.mpMediaItem() }
-		let firstSongTitle: String = {
-			selectedMediaItem.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
-		}()
+		let selectedMediaItemAndBelow = mediaItems(startingAt: selectedIndexPath)
 		
 		// Create action sheet
-		let actionSheet: UIAlertController = {
-			let title: String = {
-				let songCount = selectedMediaItemAndBelow.count
-				if songCount == 1 {
-					// No “and more song(s)” required.
-					return String.localizedStringWithFormat(
-						LRString.format_quoted,
-						firstSongTitle)
-				} else {
-					// “and more song(s)” required.
-					return String.localizedStringWithFormat(
-						LRString.format_title_songTitleAndXMoreSongs,
-						firstSongTitle,
-						songCount - 1)
-				}
-			}()
-			
-			let result = UIAlertController(
-				title: title,
-				message: nil,
-				preferredStyle: .actionSheet)
-			result.popoverPresentationController?.sourceView = popoverAnchorView
-			return result
-		}()
+		let actionSheet = UIAlertController(
+			title: nil,
+			message: nil,
+			preferredStyle: .actionSheet)
+		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		
 		// Add actions
 		
+		// For actions that start playback:
+		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		
 		// Play song and below now
-		actionSheet.addAction(
-			UIAlertAction(
-				title: LRString.play,
-				style: .default
-			) { _ in
-				player.playNow(
-					selectedMediaItemAndBelow,
-					new_repeat_mode: .none,
-					disable_shuffle: true)
-				
-				deselectSelectedSong()
-			}
-			// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
-		)
-		
-		// Play song and below next
-		let playNextAction = UIAlertAction(
-			title: LRString.queueNext,
+		let playSongAndBelow = UIAlertAction(
+			title: LRString.playRestOfAlbum,
 			style: .default
 		) { _ in
-			player.playNext(selectedMediaItemAndBelow)
-			
-			deselectSelectedSong()
-		}
-		actionSheet.addAction(playNextAction)
-		
-		// Play song and below last
-		let playLastAction = UIAlertAction(
-			title: LRString.queueLast,
-			style: .default
-		) { _ in
-			player.playLast(selectedMediaItemAndBelow)
+			player.playNow(
+				selectedMediaItemAndBelow,
+				new_repeat_mode: .none,
+				disable_shuffle: true)
 			
 			deselectSelectedSong()
 		}
 		// Disable if appropriate
-		playLastAction.isEnabled = Reel.shouldEnablePlayLast()
-		actionSheet.addAction(playLastAction)
+		playSongAndBelow.isEnabled = selectedMediaItemAndBelow.count >= 2
+		actionSheet.addAction(playSongAndBelow)
+		
+		// Play song now
+		let playSong = UIAlertAction(
+			title: LRString.playSong,
+			style: .default
+		) { _ in
+			player.playNow(
+				[selectedMediaItem],
+				new_repeat_mode: .none,
+				disable_shuffle: true)
+			
+			deselectSelectedSong()
+		}
+		actionSheet.addAction(playSong)
 		
 		// Cancel
 		actionSheet.addAction(

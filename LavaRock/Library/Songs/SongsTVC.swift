@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 final class SongsTVC:
 	LibraryTVC,
@@ -58,5 +59,13 @@ final class SongsTVC:
 	
 	override func reflectViewModelIsEmpty() {
 		deleteThenExit(sections: tableView.allSections())
+	}
+	
+	func mediaItems(
+		startingAt selectedIndexPath: IndexPath
+	) -> [MPMediaItem] {
+		return viewModel
+			.itemsInGroup(startingAt: selectedIndexPath)
+			.compactMap { ($0 as? Song)?.mpMediaItem() }
 	}
 }

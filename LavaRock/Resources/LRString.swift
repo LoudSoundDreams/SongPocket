@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MediaPlayer
 
 // Putting all the keys we pass to `NSLocalizedString` in one place (here) helps us keep them unique, which we must do to ensure predictable behavior.
 // It also helps us use the same phrases in multiple places if appropriate.
@@ -140,9 +141,17 @@ struct LRString {
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
-	static let repeat_button = NSLocalizedString("Repeat", comment: "Button")
-	static let queueNext = NSLocalizedString("Queue Next", comment: "Button")
-	static let queueLast = NSLocalizedString("Queue Last", comment: "Button")
+	static let playRestOfAlbum = NSLocalizedString("Play Rest of Album", comment: "Button")
+	static let playSong = NSLocalizedString("Play Song", comment: "Button")
+	
+	static let repeat_verb = NSLocalizedString("Repeat", comment: "Button")
+	static let repeatRestOfAlbum = NSLocalizedString("Repeat Rest of Album", comment: "Button")
+	
+	static let insert = NSLocalizedString("Insert", comment: "Button")
+	static let insertRestOfAlbum = NSLocalizedString("Insert Rest of Album", comment: "Button")
+	
+	static let queue_verb = NSLocalizedString("Queue", comment: "Button")
+	static let queueRestOfAlbum = NSLocalizedString("Queue Rest of Album", comment: "Button")
 	
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
@@ -195,6 +204,26 @@ struct LRString {
 	
 	// MARK: Songs View
 	
+	static func songTitleQuotedAndXMoreSongs_titleCase(
+		mediaItems: [MPMediaItem]
+	) -> String {
+		guard let first = mediaItems.first else {
+			return "0 Songs" // L2DO
+		}
+		let firstSongTitle = first.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
+		let songCount = mediaItems.count
+		if songCount == 1 {
+			return String.localizedStringWithFormat(
+				format_quoted,
+				firstSongTitle)
+		} else {
+			// With “and X more”
+			return String.localizedStringWithFormat(
+				format_title_songTitleAndXMoreSongs,
+				firstSongTitle,
+				songCount - 1)
+		}
+	}
 	static let format_title_songTitleAndXMoreSongs = NSLocalizedString(
 		"plural - title case - SONG_TITLE_and_X_more_songs",
 		comment: "The title of a song, wrapped in quotation marks, plus “and 1 More Song”, “and 2 More Songs”, or so on.")

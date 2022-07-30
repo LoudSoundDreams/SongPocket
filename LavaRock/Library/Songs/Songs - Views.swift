@@ -154,7 +154,8 @@ final class SongCell: UITableViewCell {
 	func configureWith(
 		song: Song,
 		albumRepresentative representative: SongMetadatum?,
-		spacerTrackNumberText: String?
+		spacerTrackNumberText: String?,
+		thisMediaItemAndBelow: [MPMediaItem]
 	) {
 		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
 		let songDisplayTitle: String = {
@@ -233,25 +234,16 @@ final class SongCell: UITableViewCell {
 		
 		// Create menu elements
 		
-		// Play song
-		let playSong = UIAction(
-			title: LRString.play,
-			image: UIImage(systemName: "play")
-		) { [weak self] _ in
-			// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
-			// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
-			// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
-			Task {
-				self?.player?.playNow(
-					[mediaItem],
-					new_repeat_mode: .none,
-					disable_shuffle: true)
-			}
-		}
+		// For actions that start playback:
+		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
+		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
+		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
+		
+		// Repeat
 		
 		// Repeat song
 		let repeatSong = UIAction(
-			title: LRString.repeat_button,
+			title: LRString.repeat_verb,
 			image: UIImage(systemName: "repeat.1")
 		) { [weak self] _ in
 			Task {
@@ -263,30 +255,98 @@ final class SongCell: UITableViewCell {
 			}
 		}
 		
-		// Play song next
-		let playSongNext = UIAction(
-			title: LRString.queueNext,
-			image: UIImage(systemName: "text.insert")
-		) { [weak self] _ in
-			self?.player?.playNext([mediaItem])
-		}
-		
-		// Play song last
-		let playSongLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let playLastAction = UIAction(
-				title: LRString.queueLast,
-				image: UIImage(systemName: "text.append")
+		// Repeat song and below
+		let repeatSongAndBelow =
+		UIDeferredMenuElement.uncached({ useMenuElements in
+			let action =
+			UIAction(
+				title: LRString.repeatRestOfAlbum,
+				image: UIImage(systemName: "repeat")
 			) { [weak self] _ in
-				self?.player?.playLast([mediaItem])
+				Task {
+					self?.player?.playNow(
+						thisMediaItemAndBelow,
+						new_repeat_mode: .all,
+						disable_shuffle: false)
+				}
 			}
 			// Disable if appropriate
 			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-			playLastAction.attributes = (
+			action.attributes = (
+				thisMediaItemAndBelow.count >= 2
+				? []
+				: .disabled
+			)
+			useMenuElements([action])
+		})
+		
+		// Play next
+		
+		// Play song next
+		let playSongNext =
+		UIDeferredMenuElement.uncached({ useMenuElements in
+			let action =
+			UIAction(
+				title: LRString.insert,
+				image: UIImage(systemName: "text.insert")
+			) { [weak self] _ in
+				self?.player?.playNext([mediaItem])
+			}
+			action.attributes = (
 				Reel.shouldEnablePlayLast()
 				? []
 				: .disabled
 			)
-			useMenuElements([playLastAction])
+			useMenuElements([action])
+		})
+		
+		// Play song and below next
+		let playSongAndBelowNext =
+		UIDeferredMenuElement.uncached({ useMenuElements in
+			let action =
+			UIAction(
+				title: LRString.insertRestOfAlbum,
+				image: UIImage(systemName: "text.insert")
+			) { [weak self] _ in
+				self?.player?.playNext(thisMediaItemAndBelow)
+			}
+			action.attributes = (
+				Reel.shouldEnablePlayLast() && thisMediaItemAndBelow.count >= 2
+				? []
+				: .disabled
+			)
+			useMenuElements([action])
+		})
+		
+		// Play last
+		
+		// Play song last
+		let playSongLast =
+		UIDeferredMenuElement.uncached({ useMenuElements in
+			let action = UIAction(
+				title: LRString.queue_verb,
+				image: UIImage(systemName: "text.append")
+			) { [weak self] _ in
+				self?.player?.playLast([mediaItem])
+			}
+			useMenuElements([action])
+		})
+		
+		// Play song and below last
+		let playSongAndBelowLast = UIDeferredMenuElement.uncached({ useMenuElements in
+			let action =
+			UIAction(
+				title: LRString.queueRestOfAlbum,
+				image: UIImage(systemName: "text.append")
+			) { [weak self] _ in
+				self?.player?.playLast(thisMediaItemAndBelow)
+			}
+			action.attributes = (
+				thisMediaItemAndBelow.count >= 2
+				? []
+				: .disabled
+			)
+			useMenuElements([action])
 		})
 		
 		// —
@@ -297,12 +357,16 @@ final class SongCell: UITableViewCell {
 			presentsUpward: false,
 			groupedElements: [
 				[
-					playSong,
 					repeatSong,
+					repeatSongAndBelow,
 				],
 				[
 					playSongNext,
+					playSongAndBelowNext,
+				],
+				[
 					playSongLast,
+					playSongAndBelowLast,
 				],
 			]
 		)
