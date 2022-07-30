@@ -32,6 +32,12 @@ final class SongsTVC:
 		]
 	}
 	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		navigationItem.largeTitleDisplayMode = .never
+	}
+	
 	override func setUpBarButtons() {
 		editingModeToolbarButtons = [
 			sortButton,
