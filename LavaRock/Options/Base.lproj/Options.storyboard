@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TG3-ks-vKX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21219" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TG3-ks-vKX">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21200"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Lighting" id="zaH-GC-Rqy" customClass="LightingCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="49" width="343" height="53.333332061767578"/>
+                                <rect key="frame" x="16" y="55.333332061767578" width="343" height="53.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zaH-GC-Rqy" id="wNH-sK-cfh">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="53.333332061767578"/>
@@ -37,8 +38,31 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Avatar" id="nyX-bs-NRS" customClass="AvatarCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="16" y="108.66666412353516" width="343" height="53.333332061767578"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nyX-bs-NRS" id="ONA-Xh-5lf">
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="53.333332061767578"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NoR-3i-Svw" customClass="AvatarChooser" customModule="LavaRock" customModuleProvider="target">
+                                            <rect key="frame" x="16" y="11" width="311" height="32.333333333333329"/>
+                                            <segments>
+                                                <segment title="First"/>
+                                                <segment title="Second"/>
+                                            </segments>
+                                        </segmentedControl>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="NoR-3i-Svw" firstAttribute="bottom" secondItem="ONA-Xh-5lf" secondAttribute="bottomMargin" id="192-mc-KeP"/>
+                                        <constraint firstItem="NoR-3i-Svw" firstAttribute="top" secondItem="ONA-Xh-5lf" secondAttribute="topMargin" id="U5u-QC-dd4"/>
+                                        <constraint firstItem="NoR-3i-Svw" firstAttribute="leading" secondItem="ONA-Xh-5lf" secondAttribute="leadingMargin" id="kJ4-UQ-Pn3"/>
+                                        <constraint firstItem="NoR-3i-Svw" firstAttribute="trailing" secondItem="ONA-Xh-5lf" secondAttribute="trailingMargin" id="oKD-gG-gnc"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Accent Color" id="EMH-XS-TPH" customClass="AccentColorCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="102.33333206176758" width="343" height="43.666667938232422"/>
+                                <rect key="frame" x="16" y="161.99999618530273" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EMH-XS-TPH" id="SlB-dR-mO0">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
@@ -46,7 +70,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Loading" id="Zjn-1V-5Go" customClass="TipLoadingCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="146" width="343" height="43.666667938232422"/>
+                                <rect key="frame" x="16" y="205.66666412353516" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zjn-1V-5Go" id="yx8-kP-Iec">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
@@ -54,7 +78,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Reload" id="JHj-8y-flm" customClass="TipReloadCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="189.66666793823242" width="343" height="43.666667938232422"/>
+                                <rect key="frame" x="16" y="249.33333206176758" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JHj-8y-flm" id="dCY-xy-03H">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
@@ -62,7 +86,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Ready" id="LGx-yd-XAR" customClass="TipReadyCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="233.33333587646484" width="343" height="43.666667938232422"/>
+                                <rect key="frame" x="16" y="293" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LGx-yd-XAR" id="lxT-1x-vwl">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
@@ -70,7 +94,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Confirming" id="O44-2d-Z4a" customClass="TipConfirmingCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="277.00000381469727" width="343" height="43.666667938232422"/>
+                                <rect key="frame" x="16" y="336.66666793823242" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O44-2d-Z4a" id="S6U-UY-0L1">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>
@@ -78,7 +102,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tip Thank You" id="4ma-oR-L7i" customClass="TipThankYouCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="16" y="320.66667175292969" width="343" height="43.666667938232422"/>
+                                <rect key="frame" x="16" y="380.33333587646484" width="343" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4ma-oR-L7i" id="LGZ-Cj-puP">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="43.666667938232422"/>

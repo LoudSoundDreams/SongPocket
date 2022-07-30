@@ -16,6 +16,14 @@ final class LightingCell: UITableViewCell {
 	}
 }
 
+final class AvatarCell: UITableViewCell {
+	final override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		separatorInset.right = directionalLayoutMargins.trailing
+	}
+}
+
 final class LightingChooser: UISegmentedControl {
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -38,6 +46,33 @@ final class LightingChooser: UISegmentedControl {
 				animated: false)
 		}
 		selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
+	}
+}
+
+final class AvatarChooser: UISegmentedControl {
+	final override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		removeAllSegments()
+		Avatar.all.forEach { avatar in
+			insertSegment(
+				action: UIAction(
+					image: {
+						let image = UIImage(systemName: avatar.playingImageName)
+						image?.accessibilityLabel = nil // TO DO
+						return image
+					}()
+				) { _ in
+					Avatar.current = avatar
+					// TO DO: Save
+					NotificationCenter.default.post(
+						name: .userChangedAvatar,
+						object: nil)
+				},
+				at: numberOfSegments,
+				animated: false)
+		}
+		selectedSegmentIndex = 0 // TO DO: Load
 	}
 }
 
