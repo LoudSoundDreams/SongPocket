@@ -38,7 +38,9 @@ struct Reel {
 		guard Enabling.inAppPlayer else {
 			return true
 		}
-		// Only if there’s at least 1 song after the current song
+		
+		// Return a value indicating whether there’s at least 1 song after the current song
+		
 		guard let player = TapeDeck.shared.player else {
 			return true
 		}

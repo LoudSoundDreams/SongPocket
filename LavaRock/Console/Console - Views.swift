@@ -38,11 +38,7 @@ final class QueueCell: UITableViewCell {
 		
 		// Don’t let these be `nil`.
 		titleLabel.text = { () -> String in
-			if let songTitle = metadatum.titleOnDisk {
-				return songTitle
-			} else {
-				return SongMetadatumPlaceholder.unknownTitle
-			}
+			return metadatum.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
 		}()
 		secondaryLabel.text = { () -> String in
 			if let songArtist = metadatum.artistOnDisk {

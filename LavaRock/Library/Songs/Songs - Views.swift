@@ -220,8 +220,7 @@ final class SongCell: UITableViewCell {
 			metadatum?.titleOnDisk,
 		].compacted()
 		
-		// Create and set menu
-		
+		// Set menu, and require creating that menu
 		let menu: UIMenu?
 		defer {
 			dotDotDotButton.menu = menu
@@ -234,8 +233,8 @@ final class SongCell: UITableViewCell {
 		
 		// Create menu elements
 		
-		// Play
-		let playAction = UIAction(
+		// Play song
+		let playSong = UIAction(
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { [weak self] _ in
@@ -250,13 +249,13 @@ final class SongCell: UITableViewCell {
 			}
 		}
 		
-		// Repeat one
-		let repeatOneAction = UIAction(
+		// Repeat song
+		let repeatSong = UIAction(
 			title: LRString.repeat_button,
 			image: UIImage(systemName: "repeat.1")
 		) { [weak self] _ in
 			Task {
-//				self?.player?.repeatMode = .one // `MPMusicPlayerController.play` is slow. This tries to get our app to reflect the repeat mode sooner, but it doesn’t work consistently.
+//				self?.player?.repeatMode = .one // Tries to reflect the repeat mode sooner, because `MPMusicPlayerController.play` is slow. But doesn’t work consistently.
 				self?.player?.playNow(
 					[mediaItem],
 					new_repeat_mode: .one,
@@ -264,16 +263,16 @@ final class SongCell: UITableViewCell {
 			}
 		}
 		
-		// Play next
-		let playNextAction = UIAction(
+		// Play song next
+		let playSongNext = UIAction(
 			title: LRString.queueNext,
 			image: UIImage(systemName: "text.insert")
 		) { [weak self] _ in
 			self?.player?.playNext([mediaItem])
 		}
 		
-		// Play last
-		let playLastElement = UIDeferredMenuElement.uncached({ useMenuElements in
+		// Play song last
+		let playSongLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let playLastAction = UIAction(
 				title: LRString.queueLast,
 				image: UIImage(systemName: "text.append")
@@ -290,19 +289,20 @@ final class SongCell: UITableViewCell {
 			useMenuElements([playLastAction])
 		})
 		
-		// Create and set menu
+		// —
 		
+		// Create menu
 		menu = UIMenu(
 			title: "",
 			presentsUpward: false,
 			groupedElements: [
 				[
-					playAction,
-					repeatOneAction,
+					playSong,
+					repeatSong,
 				],
 				[
-					playNextAction,
-					playLastElement,
+					playSongNext,
+					playSongLast,
 				],
 			]
 		)

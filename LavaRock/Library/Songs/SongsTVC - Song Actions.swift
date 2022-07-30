@@ -35,7 +35,6 @@ extension SongsTVC {
 		}()
 		
 		// Create action sheet
-		
 		let actionSheet: UIAlertController = {
 			let title: String = {
 				let songCount = selectedMediaItemAndBelow.count
@@ -63,7 +62,7 @@ extension SongsTVC {
 		
 		// Add actions
 		
-		// Play
+		// Play song and below now
 		actionSheet.addAction(
 			UIAlertAction(
 				title: LRString.play,
@@ -73,27 +72,30 @@ extension SongsTVC {
 					selectedMediaItemAndBelow,
 					new_repeat_mode: .none,
 					disable_shuffle: true)
+				
 				deselectSelectedSong()
 			}
 			// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
 		
-		// Play next
+		// Play song and below next
 		let playNextAction = UIAlertAction(
 			title: LRString.queueNext,
 			style: .default
 		) { _ in
 			player.playNext(selectedMediaItemAndBelow)
+			
 			deselectSelectedSong()
 		}
 		actionSheet.addAction(playNextAction)
 		
-		// Play last
+		// Play song and below last
 		let playLastAction = UIAlertAction(
 			title: LRString.queueLast,
 			style: .default
 		) { _ in
 			player.playLast(selectedMediaItemAndBelow)
+			
 			deselectSelectedSong()
 		}
 		// Disable if appropriate
@@ -103,12 +105,14 @@ extension SongsTVC {
 		// Cancel
 		actionSheet.addAction(
 			UIAlertAction.cancelWithHandler { _ in
+				
 				deselectSelectedSong()
 			}
 		)
 		
-		// Present
+		// —
 		
+		// Present
 		present(actionSheet, animated: true)
 	}
 }
