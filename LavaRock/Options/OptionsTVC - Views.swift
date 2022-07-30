@@ -28,11 +28,12 @@ final class LightingChooser: UISegmentedControl {
 						let image = lighting.uiImage
 						image.accessibilityLabel = lighting.name
 						return image
-					}()) { _ in
-						Task { await MainActor.run {
-							Theme.shared.lighting = lighting
-						}}
-					},
+					}()
+				) { _ in
+					Task { await MainActor.run {
+						Theme.shared.lighting = lighting
+					}}
+				},
 				at: numberOfSegments,
 				animated: false)
 		}
