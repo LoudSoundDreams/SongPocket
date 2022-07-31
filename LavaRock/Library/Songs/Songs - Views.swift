@@ -247,10 +247,10 @@ final class SongCell: UITableViewCell {
 		let repeatSong = UIAction(
 			title: LRString.repeat_verb,
 			image: UIImage(systemName: "repeat.1")
-		) { [weak self] _ in
+		) { _ in
 			Task {
-//				self?.player?.repeatMode = .one // Tries to reflect the repeat mode sooner, because `MPMusicPlayerController.play` is slow. But doesn’t work consistently.
-				self?.player?.playNow(
+//				player.repeatMode = .one // Tries to reflect the repeat mode sooner, because `MPMusicPlayerController.play` is slow. But doesn’t work consistently.
+				TapeDeck.shared.player?.playNow(
 					[mediaItem],
 					new_repeat_mode: .one,
 					disable_shuffle: false)
@@ -271,14 +271,12 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.repeatRestOfAlbum,
 				image: UIImage(systemName: "repeat")
-			) { [weak self] _ in
+			) { _ in
 				// Runs when the user activates the menu item
-				Task {
-					self?.player?.playNow(
-						thisMediaItemAndBelow,
-						new_repeat_mode: .all,
-						disable_shuffle: false)
-				}
+				TapeDeck.shared.player?.playNow(
+					thisMediaItemAndBelow,
+					new_repeat_mode: .all,
+					disable_shuffle: false)
 			}
 			// Disable if appropriate
 			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
@@ -299,8 +297,8 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.insert,
 				image: UIImage(systemName: "text.insert")
-			) { [weak self] _ in
-				self?.player?.playNext([mediaItem])
+			) { _ in
+				TapeDeck.shared.player?.playNext([mediaItem])
 			}
 			action.attributes = (
 				Reel.shouldEnablePlayLast()
@@ -322,8 +320,8 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.insertRestOfAlbum,
 				image: UIImage(systemName: "text.insert")
-			) { [weak self] _ in
-				self?.player?.playNext(thisMediaItemAndBelow)
+			) { _ in
+				TapeDeck.shared.player?.playNext(thisMediaItemAndBelow)
 			}
 			action.attributes = (
 				Reel.shouldEnablePlayLast() && thisMediaItemAndBelow.count >= 2
@@ -342,8 +340,8 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.queue_verb,
 				image: UIImage(systemName: "text.append")
-			) { [weak self] _ in
-				self?.player?.playLast([mediaItem])
+			) { _ in
+				TapeDeck.shared.player?.playLast([mediaItem])
 			}
 			useMenuElements([action])
 		})
@@ -360,8 +358,8 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.queueRestOfAlbum,
 				image: UIImage(systemName: "text.append")
-			) { [weak self] _ in
-				self?.player?.playLast(thisMediaItemAndBelow)
+			) { _ in
+				TapeDeck.shared.player?.playLast(thisMediaItemAndBelow)
 			}
 			action.attributes = (
 				thisMediaItemAndBelow.count >= 2
@@ -394,7 +392,6 @@ final class SongCell: UITableViewCell {
 			]
 		)
 	}
-	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	private func freshenDotDotDotButton() {
 		dotDotDotButton.isEnabled = !isEditing
