@@ -142,6 +142,8 @@ final class SongCell: UITableViewCell {
 		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
 		numberLabel.font = spacerNumberLabel.font
 		
+		dotDotDotButton.maximumContentSizeCategory = .extraExtraExtraLarge
+		
 		accessibilityTraits.formUnion(.button)
 	}
 	
