@@ -260,8 +260,7 @@ final class SongCell: UITableViewCell {
 		// Repeat song and below
 		let repeatSongAndBelow =
 		UIDeferredMenuElement.uncached({ useMenuElements in
-			let action =
-			UIAction(
+			let action = UIAction(
 				title: LRString.repeatRestOfAlbum,
 				image: UIImage(systemName: "repeat")
 			) { [weak self] _ in
@@ -287,8 +286,7 @@ final class SongCell: UITableViewCell {
 		// Play song next
 		let playSongNext =
 		UIDeferredMenuElement.uncached({ useMenuElements in
-			let action =
-			UIAction(
+			let action = UIAction(
 				title: LRString.insert,
 				image: UIImage(systemName: "text.insert")
 			) { [weak self] _ in
@@ -305,8 +303,7 @@ final class SongCell: UITableViewCell {
 		// Play song and below next
 		let playSongAndBelowNext =
 		UIDeferredMenuElement.uncached({ useMenuElements in
-			let action =
-			UIAction(
+			let action = UIAction(
 				title: LRString.insertRestOfAlbum,
 				image: UIImage(systemName: "text.insert")
 			) { [weak self] _ in
@@ -337,8 +334,7 @@ final class SongCell: UITableViewCell {
 		// Play song and below last
 		let playSongAndBelowLast =
 		UIDeferredMenuElement.uncached({ useMenuElements in
-			let action =
-			UIAction(
+			let action = UIAction(
 				title: LRString.queueRestOfAlbum,
 				image: UIImage(systemName: "text.append")
 			) { [weak self] _ in
