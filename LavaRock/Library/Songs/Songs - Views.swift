@@ -335,7 +335,8 @@ final class SongCell: UITableViewCell {
 		})
 		
 		// Play song and below last
-		let playSongAndBelowLast = UIDeferredMenuElement.uncached({ useMenuElements in
+		let playSongAndBelowLast =
+		UIDeferredMenuElement.uncached({ useMenuElements in
 			let action =
 			UIAction(
 				title: LRString.queueRestOfAlbum,
