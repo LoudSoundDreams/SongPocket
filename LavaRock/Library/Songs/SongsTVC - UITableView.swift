@@ -90,7 +90,7 @@ extension SongsTVC {
 				return album.representativeSongMetadatum()
 			}(),
 			spacerTrackNumberText: (songsViewModel.group(for: indexPath.section_i) as? SongsGroup)?.spacerTrackNumberText,
-			thisMediaItemAndBelow: mediaItems(startingAt: indexPath)
+			songsTVC: Weak(self)
 		)
 		
 		return cell

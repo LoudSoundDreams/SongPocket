@@ -157,7 +157,7 @@ final class SongCell: UITableViewCell {
 		song: Song,
 		albumRepresentative representative: SongMetadatum?,
 		spacerTrackNumberText: String?,
-		thisMediaItemAndBelow: [MPMediaItem]
+		songsTVC: Weak<SongsTVC>
 	) {
 		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
 		let songDisplayTitle: String = {
@@ -267,6 +267,7 @@ final class SongCell: UITableViewCell {
 				useMenuElements(menuElements)
 			}
 			
+			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.repeatRestOfAlbum,
 				image: UIImage(systemName: "repeat")
@@ -317,6 +318,7 @@ final class SongCell: UITableViewCell {
 				useMenuElements(menuElements)
 			}
 			
+			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.insertRestOfAlbum,
 				image: UIImage(systemName: "text.insert")
@@ -354,6 +356,7 @@ final class SongCell: UITableViewCell {
 				useMenuElements(menuElements)
 			}
 			
+			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.queueRestOfAlbum,
 				image: UIImage(systemName: "text.append")

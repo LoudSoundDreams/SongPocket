@@ -68,4 +68,18 @@ final class SongsTVC:
 			.itemsInGroup(startingAt: firstIndexPath)
 			.compactMap { ($0 as? Song)?.mpMediaItem() }
 	}
+	
+	// Time complexity: O(n), where “n” is the number of media items in the group.
+	func mediaItemsInFirstGroup(
+		startingAt firstMediaItem: MPMediaItem
+	) -> [MPMediaItem] {
+		let allMediaItems = mediaItems(
+			startingAt: viewModel.indexPathFor(
+				itemIndex: ItemIndex(0),
+				groupIndex: GroupIndex(0)))
+		let result = allMediaItems.drop { mediaItem in
+			mediaItem.persistentID != firstMediaItem.persistentID
+		}
+		return Array(result)
+	}
 }
