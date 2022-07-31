@@ -62,10 +62,10 @@ final class SongsTVC:
 	}
 	
 	func mediaItems(
-		startingAt selectedIndexPath: IndexPath
+		startingAt firstIndexPath: IndexPath
 	) -> [MPMediaItem] {
 		return viewModel
-			.itemsInGroup(startingAt: selectedIndexPath)
+			.itemsInGroup(startingAt: firstIndexPath)
 			.compactMap { ($0 as? Song)?.mpMediaItem() }
 	}
 }
