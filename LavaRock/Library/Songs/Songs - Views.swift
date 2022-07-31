@@ -260,10 +260,18 @@ final class SongCell: UITableViewCell {
 		// Repeat song and below
 		let repeatSongAndBelow =
 		UIDeferredMenuElement.uncached({ useMenuElements in
+			// Runs each time the button presents the menu
+			
+			let menuElements: [UIMenuElement]
+			defer {
+				useMenuElements(menuElements)
+			}
+			
 			let action = UIAction(
 				title: LRString.repeatRestOfAlbum,
 				image: UIImage(systemName: "repeat")
 			) { [weak self] _ in
+				// Runs when the user activates the menu item
 				Task {
 					self?.player?.playNow(
 						thisMediaItemAndBelow,
@@ -278,7 +286,8 @@ final class SongCell: UITableViewCell {
 				? []
 				: .disabled
 			)
-			useMenuElements([action])
+			
+			menuElements = [action]
 		})
 		
 		// Play next
@@ -303,6 +312,11 @@ final class SongCell: UITableViewCell {
 		// Play song and below next
 		let playSongAndBelowNext =
 		UIDeferredMenuElement.uncached({ useMenuElements in
+			let menuElements: [UIMenuElement]
+			defer {
+				useMenuElements(menuElements)
+			}
+			
 			let action = UIAction(
 				title: LRString.insertRestOfAlbum,
 				image: UIImage(systemName: "text.insert")
@@ -314,7 +328,8 @@ final class SongCell: UITableViewCell {
 				? []
 				: .disabled
 			)
-			useMenuElements([action])
+			
+			menuElements = [action]
 		})
 		
 		// Play last
@@ -334,6 +349,11 @@ final class SongCell: UITableViewCell {
 		// Play song and below last
 		let playSongAndBelowLast =
 		UIDeferredMenuElement.uncached({ useMenuElements in
+			let menuElements: [UIMenuElement]
+			defer {
+				useMenuElements(menuElements)
+			}
+			
 			let action = UIAction(
 				title: LRString.queueRestOfAlbum,
 				image: UIImage(systemName: "text.append")
@@ -345,7 +365,8 @@ final class SongCell: UITableViewCell {
 				? []
 				: .disabled
 			)
-			useMenuElements([action])
+			
+			menuElements = [action]
 		})
 		
 		// —
