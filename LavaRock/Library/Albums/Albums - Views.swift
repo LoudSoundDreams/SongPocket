@@ -138,12 +138,12 @@ final class AlbumCell: UITableViewCell {
 		}
 	}
 	
-	private var sizeCategoryIsAccessibility: Bool {
+	private var textIsHuge: Bool {
 		return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 	}
 	
 	private func configureForTraitCollection() {
-		if sizeCategoryIsAccessibility {
+		if textIsHuge {
 			mainStack.axis = .vertical
 			mainStack.alignment = .leading
 			mainStack.spacing = UIStackView.spacingUseSystem
@@ -161,7 +161,7 @@ final class AlbumCell: UITableViewCell {
 		+ contentView.frame.minX
 		+ mainStack.frame.minX // 16
 		+ coverArtView.frame.width // 132
-		+ (sizeCategoryIsAccessibility ? 12 : mainStack.spacing /*12*/)
+		+ (textIsHuge ? 12 : mainStack.spacing /*12*/)
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
