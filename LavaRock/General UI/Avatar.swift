@@ -20,7 +20,7 @@ struct Avatar {
 		playingImageName: "speaker.wave.2.fill")
 	
 	static let all: [Self] = {
-		if #available(iOS 16.0, *) {
+		if #available(iOS 16, *) {
 			return [
 				Avatar(
 					pausedImageName: "speaker.fill",

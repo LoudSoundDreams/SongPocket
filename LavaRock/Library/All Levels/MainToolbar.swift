@@ -20,7 +20,17 @@ final class MainToolbar {
 	private lazy var previousButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.previousTrack,
-			image: UIImage(systemName: "arrow.backward.circle"),
+			image: {
+				if Enabling.inAppPlayer {
+					if #available(iOS 16, *) {
+						return UIImage(systemName: "backward.end.circle")
+					} else {
+						return UIImage(systemName: "arrow.backward.circle")
+					}
+				} else {
+					return UIImage(systemName: "arrow.backward.circle")
+				}
+			}(),
 			primaryAction: UIAction { _ in
 				Self.player?.skipToPreviousItem()
 			})
@@ -63,7 +73,17 @@ final class MainToolbar {
 	private lazy var nextButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.nextTrack,
-			image: UIImage(systemName: "arrow.forward.circle"),
+			image: {
+				if Enabling.inAppPlayer {
+					if #available(iOS 16, *) {
+						return UIImage(systemName: "forward.end.circle")
+					} else {
+						return UIImage(systemName: "arrow.forward.circle")
+					}
+				} else {
+					return UIImage(systemName: "arrow.forward.circle")
+				}
+			}(),
 			primaryAction: UIAction { _ in
 				Self.player?.skipToNextItem()
 			})
@@ -121,6 +141,7 @@ final class MainToolbar {
 		freshen()
 	}
 	
+//	private static let moreButtonDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
 	private static let moreButtonDefaultImage = UIImage(systemName: "chevron.up.circle")!
 	private func freshen() {
 		
