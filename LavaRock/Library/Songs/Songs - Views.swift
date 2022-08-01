@@ -241,54 +241,6 @@ final class SongCell: UITableViewCell {
 		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 		
-		// Repeat
-		
-		// Repeat song
-		let repeatSong = UIAction(
-			title: LRString.repeat_verb,
-			image: UIImage(systemName: "repeat.1")
-		) { _ in
-			Task {
-//				player.repeatMode = .one // Tries to reflect the repeat mode sooner, because `MPMusicPlayerController.play` is slow. But doesn’t work consistently.
-				TapeDeck.shared.player?.playNow(
-					[mediaItem],
-					new_repeat_mode: .one,
-					disable_shuffle: false)
-			}
-		}
-		
-		// Repeat song and below
-		let repeatSongAndBelow =
-		UIDeferredMenuElement.uncached({ useMenuElements in
-			// Runs each time the button presents the menu
-			
-			let menuElements: [UIMenuElement]
-			defer {
-				useMenuElements(menuElements)
-			}
-			
-			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
-			let action = UIAction(
-				title: LRString.repeatRestOfAlbum,
-				image: UIImage(systemName: "repeat")
-			) { _ in
-				// Runs when the user activates the menu item
-				TapeDeck.shared.player?.playNow(
-					thisMediaItemAndBelow,
-					new_repeat_mode: .all,
-					disable_shuffle: false)
-			}
-			// Disable if appropriate
-			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-			action.attributes = (
-				thisMediaItemAndBelow.count >= 2
-				? []
-				: .disabled
-			)
-			
-			menuElements = [action]
-		})
-		
 		// Play next
 		
 		// Play song next
@@ -377,10 +329,6 @@ final class SongCell: UITableViewCell {
 			title: "",
 			presentsUpward: false,
 			groupedElements: [
-				[
-					repeatSong,
-					repeatSongAndBelow,
-				],
 				[
 					playSongNext,
 					playSongAndBelowNext,

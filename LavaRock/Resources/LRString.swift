@@ -144,9 +144,6 @@ struct LRString {
 	static let playRestOfAlbum = NSLocalizedString("Play Rest of Album", comment: "Button")
 	static let playSong = NSLocalizedString("Play Song", comment: "Button")
 	
-	static let repeat_verb = NSLocalizedString("Repeat", comment: "Button")
-	static let repeatRestOfAlbum = NSLocalizedString("Repeat Rest of Album", comment: "Button")
-	
 	static let insertSong = NSLocalizedString("Insert Song", comment: "Button")
 	static let insertRestOfAlbum = NSLocalizedString("Insert Rest of Album", comment: "Button")
 	
