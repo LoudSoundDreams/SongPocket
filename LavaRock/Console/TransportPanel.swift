@@ -46,22 +46,20 @@ struct TransportPanel: View {
 				.fixedSize()
 			
 			HStack(
+				alignment: .firstTextBaseline
 			) {
 				previousButton
 				Spacer()
+				skipBackButton
+				Spacer()
 				rewindButton
+				Spacer()
+				skipForwardButton
 				Spacer()
 				nextButton
 			}
 			
-			HStack(
-			) {
-				skipBackButton
-				Spacer()
-				playPauseButton
-				Spacer()
-				skipForwardButton
-			}
+			playPauseButton
 		}
 		.frame(
 			height: 275,
