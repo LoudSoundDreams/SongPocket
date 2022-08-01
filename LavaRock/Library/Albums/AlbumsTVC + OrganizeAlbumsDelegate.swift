@@ -15,6 +15,7 @@ extension AlbumsTVC: OrganizeAlbumsDelegate {
 			return toKeepSelected.contains(idOfAlbum)
 		}
 		Task {
+			// TO DO: Don’t exit editing mode if any albums we applied “organize” to are still here.
 			if toSelect.isEmpty {
 				setEditing(false, animated: true)
 			}

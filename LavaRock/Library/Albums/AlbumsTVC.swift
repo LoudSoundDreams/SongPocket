@@ -171,24 +171,37 @@ final class AlbumsTVC:
 	}
 	
 	private func makeOrganizeOrMoveMenu() -> UIMenu {
-		// UIKit runs this closure every time it uses the menu element.
 		let organizeElement = UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
+			// Runs each time the button presents the menu
+			let menuElements: [UIMenuElement]
+			defer {
+				useMenuElements(menuElements)
+			}
+			
 			let organizeAction = UIAction(
 				title: LRString.organizeByAlbumArtistEllipsis,
 				image: UIImage(systemName: "folder.badge.gearshape")
 			) { [weak self] _ in
+				// Runs when the user activates the menu item
 				self?.startOrganizing()
 			}
 			
-			guard let self = self else { return }
+			guard let self = self else {
+				menuElements = []
+				return
+			}
+			
 			let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
 				selectedIndexPaths: self.tableView.selectedIndexPaths) ?? false
+			// Disable if appropriate
+			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
 			organizeAction.attributes = (
 				allowed
 				? []
 				: .disabled
 			)
-			useMenuElements([organizeAction])
+			
+			menuElements = [organizeAction]
 		})
 		
 		let moveElement = UIAction(
