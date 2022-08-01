@@ -147,10 +147,10 @@ struct LRString {
 	static let repeat_verb = NSLocalizedString("Repeat", comment: "Button")
 	static let repeatRestOfAlbum = NSLocalizedString("Repeat Rest of Album", comment: "Button")
 	
-	static let insert = NSLocalizedString("Insert", comment: "Button")
+	static let insertSong = NSLocalizedString("Insert Song", comment: "Button")
 	static let insertRestOfAlbum = NSLocalizedString("Insert Rest of Album", comment: "Button")
 	
-	static let queue_verb = NSLocalizedString("Queue", comment: "Button")
+	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	static let queueRestOfAlbum = NSLocalizedString("Queue Rest of Album", comment: "Button")
 	
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")

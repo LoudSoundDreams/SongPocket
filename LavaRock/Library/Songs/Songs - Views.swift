@@ -295,7 +295,7 @@ final class SongCell: UITableViewCell {
 		let playSongNext =
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
-				title: LRString.insert,
+				title: LRString.insertSong,
 				image: UIImage(systemName: "text.insert")
 			) { _ in
 				TapeDeck.shared.player?.playNext([mediaItem])
@@ -338,7 +338,7 @@ final class SongCell: UITableViewCell {
 		let playSongLast =
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
-				title: LRString.queue_verb,
+				title: LRString.queueSong,
 				image: UIImage(systemName: "text.append")
 			) { _ in
 				TapeDeck.shared.player?.playLast([mediaItem])
