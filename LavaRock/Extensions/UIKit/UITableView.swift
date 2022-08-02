@@ -10,10 +10,8 @@ import UIKit
 extension UITableView {
 	// MARK: - Sections
 	
-	final func allSections() -> [Section_I] {
-		return (0 ..< numberOfSections).map { section in
-			Section_I(section)
-		}
+	final func allSections() -> [Int] {
+		return Array(0 ..< numberOfSections)
 	}
 	
 	// MARK: IndexPaths
@@ -28,32 +26,32 @@ extension UITableView {
 	
 	final func allIndexPaths() -> [IndexPath] {
 		return allSections().flatMap { section in
-			indexPathsForRows(in: section, first: Row_I(0))
+			indexPathsForRows(inSection: section, firstRow: 0)
 		}
 	}
 	
 	final func indexPathsForRows(
-		in section: Section_I,
-		first: Row_I
+		inSection section: Int,
+		firstRow: Int
 	) -> [IndexPath] {
-		let lastRow = Row_I(numberOfRows(inSection: section.value) - 1)
-		guard lastRow.value >= 0 else {
+		let lastRow = numberOfRows(inSection: section) - 1
+		guard lastRow >= 0 else {
 			// The section has 0 rows.
 			return []
 		}
 		return Self.indexPathsForRows(
-			in: section,
-			first: first,
-			last: lastRow)
+			inSection: section,
+			firstRow: firstRow,
+			lastRow: lastRow)
 	}
 	
 	private static func indexPathsForRows(
-		in section: Section_I,
-		first: Row_I,
-		last: Row_I
+		inSection section: Int,
+		firstRow: Int,
+		lastRow: Int
 	) -> [IndexPath] {
-		return (first.value ... last.value).map { row in
-			IndexPath(Row_I(row), in: section)
+		return (firstRow ... lastRow).map { row in
+			IndexPath(row: row, section: section)
 		}
 	}
 	

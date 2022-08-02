@@ -12,9 +12,9 @@ struct CollectionsViewModel {
 	// `LibraryViewModel`
 	let viewContainer: LibraryViewContainer = .library
 	let context: NSManagedObjectContext
-	let numberOfPresections = Section_I(0)
-	var numberOfPrerowsPerSection: Row_I {
-		return Row_I(prerowsInEachSection.count)
+	let numberOfPresections = 0
+	var numberOfPrerowsPerSection: Int {
+		prerowsInEachSection.count
 	}
 	var groups: ColumnOfLibraryItems
 	
@@ -88,9 +88,9 @@ extension CollectionsViewModel {
 		case collection
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
-		let row = indexPath.row_i
+		let row = indexPath.row
 		if row < numberOfPrerowsPerSection {
-			return .prerow(prerowsInEachSection[row.value])
+			return .prerow(prerowsInEachSection[row])
 		} else {
 			return .collection
 		}
@@ -141,13 +141,13 @@ extension CollectionsViewModel {
 		title: String
 	) -> Self {
 		let collectionIDs = collections.map { $0.objectID }
-		let index = itemIndex(for: indexPathOfCombined.row_i)
+		let index = itemIndex(forRow: indexPathOfCombined.row)
 		let childContext = NSManagedObjectContext(.mainQueue)
 		childContext.parent = context
 		let combinedCollection = Collection(
 			combiningCollectionsInOrderWith: collectionIDs,
 			title: title,
-			index: Int64(index.__),
+			index: Int64(index),
 			context: childContext)
 		
 		try? childContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
@@ -163,8 +163,8 @@ extension CollectionsViewModel {
 	private static let indexOfNewCollection = 0
 	var indexPathOfNewCollection: IndexPath {
 		return indexPathFor(
-			itemIndex: ItemIndex(Self.indexOfNewCollection),
-			groupIndex: GroupIndex(Self.indexOfOnlyGroup))
+			itemIndex: Self.indexOfNewCollection,
+			groupIndex: Self.indexOfOnlyGroup)
 	}
 	
 	func updatedAfterCreating(title: String) -> Self {

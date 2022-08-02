@@ -298,13 +298,13 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
-	final func deleteThenExit(sections toDelete: [Section_I]) {
+	final func deleteThenExit(sectionsToDelete: [Int]) {
 		tableView.deselectAllRows(animated: true)
 		
 		isAnimatingBatchUpdates += 1
 		tableView.performBatchUpdates {
 			tableView.deleteSections(
-				IndexSet(toDelete.map { $0.value }),
+				IndexSet(sectionsToDelete),
 				with: .middle)
 		} completion: { _ in
 			self.isAnimatingBatchUpdates -= 1

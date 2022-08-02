@@ -31,14 +31,6 @@ protocol LibraryGroup {
 	// Initialize `items = Self.itemsFetched`.
 }
 extension LibraryGroup {
-	subscript(itemIndex: ItemIndex) -> NSManagedObject {
-		return items[itemIndex.__]
-	}
-	
-	func itemsFrom(_ itemIndex: ItemIndex) -> [NSManagedObject] {
-		return Array(items[itemIndex.__...])
-	}
-	
 	// Similar to `Collection.allFetched`, `Album.allFetched`, and `Song.allFetched`.
 	static func itemsFetched(
 		entityName: String,

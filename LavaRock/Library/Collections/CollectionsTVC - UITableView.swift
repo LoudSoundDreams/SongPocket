@@ -14,17 +14,17 @@ extension CollectionsTVC {
 	override func numberOfSections(
 		in tableView: UITableView
 	) -> Int {
-		return viewModel.numberOfPresections.value + viewModel.groups.count
+		return viewModel.numberOfPresections + viewModel.groups.count
 	}
 	
 	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	)-> Int {
-		return numberOfRows(for: Section_I(section))
+		return numberOfRows(forSection: section)
 	}
 	
-	func numberOfRows(for section: Section_I) -> Int {
+	func numberOfRows(forSection section: Int) -> Int {
 		switch viewState {
 		case
 				.allowAccess,
@@ -35,7 +35,7 @@ extension CollectionsTVC {
 		case .emptyPlaceholder:
 			return 2
 		case .someCollections:
-			return viewModel.numberOfRows(for: section)
+			return viewModel.numberOfRows(forSection: section)
 		}
 	}
 	

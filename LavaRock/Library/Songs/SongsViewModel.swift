@@ -12,9 +12,9 @@ struct SongsViewModel {
 	// `LibraryViewModel`
 	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
-	let numberOfPresections = Section_I(0)
-	var numberOfPrerowsPerSection: Row_I {
-		return Row_I(prerowsInEachSection.count)
+	let numberOfPresections = 0
+	var numberOfPrerowsPerSection: Int {
+		prerowsInEachSection.count
 	}
 	var groups: ColumnOfLibraryItems
 	
@@ -111,8 +111,8 @@ extension SongsViewModel {
 	}
 	
 	// Similar to `AlbumsViewModel.collection`.
-	func album(for section: Section_I) -> Album {
-		let group = group(for: section)
+	func album(forSection section: Int) -> Album {
+		let group = group(forSection: section)
 		return group.container as! Album
 	}
 	
@@ -121,9 +121,9 @@ extension SongsViewModel {
 		case song
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
-		let row = indexPath.row_i
+		let row = indexPath.row
 		if row < numberOfPrerowsPerSection {
-			let associatedValue = prerowsInEachSection[row.value]
+			let associatedValue = prerowsInEachSection[row]
 			return .prerow(associatedValue)
 		} else {
 			return .song
@@ -136,8 +136,8 @@ extension SongsViewModel {
 			album.objectID == group.container?.objectID
 		}) {
 			return IndexPath(
-				Row_I(0),
-				in: Section_I(numberOfPresections.value + indexOfMatchingGroup))
+				row: 0,
+				section: numberOfPresections + indexOfMatchingGroup)
 		} else {
 			return nil
 		}

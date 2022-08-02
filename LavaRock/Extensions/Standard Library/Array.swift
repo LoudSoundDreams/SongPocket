@@ -73,27 +73,27 @@ where Element: LibraryItem
 extension Array
 where Element == IndexPath
 {
-	func unsortedRowsBySection() -> [Section_I: [Row_I]]
+	func unsortedRowsBySection() -> [Int: [Int]]
 	{
 		let state = signposter.beginInterval("make unsorted")
 		defer {
 			signposter.endInterval("make unsorted", state)
 		}
-		let indexPathsBySection = Dictionary(grouping: self) { $0.section_i }
+		let indexPathsBySection: [Int: [IndexPath]] = Dictionary(grouping: self) { $0.section }
 		return indexPathsBySection.mapValues { indexPaths in
-			indexPaths.map { $0.row_i }
+			indexPaths.map { $0.row }
 		}
 	}
 	
-	func sortedRowsBySection() -> [Section_I: [Row_I]]
+	func sortedRowsBySection() -> [Int: [Int]]
 	{
 		let state = signposter.beginInterval("make sorted")
 		defer {
 			signposter.endInterval("make sorted", state)
 		}
-		let indexPathsBySection = Dictionary(grouping: self) { $0.section_i }
+		let indexPathsBySection: [Int: [IndexPath]] = Dictionary(grouping: self) { $0.section }
 		return indexPathsBySection.mapValues { indexPaths in
-			indexPaths.map { $0.row_i }.sorted()
+			indexPaths.map { $0.row }.sorted()
 		}
 	}
 	
@@ -101,7 +101,7 @@ where Element == IndexPath
 	func isContiguousWithinEachSection() -> Bool
 	{
 		return sortedRowsBySection().allSatisfy { (_, rows) in
-			rows.map { $0.value }.isConsecutive()
+			rows.isConsecutive()
 		}
 	}
 }

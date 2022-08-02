@@ -125,8 +125,8 @@ final class AlbumsTVC:
 			indexOfOpenedCollection = nil
 			tableView.scrollToRow(
 				at: IndexPath(
-					Row_I(0),
-					in: Section_I(viewModel.numberOfPresections.value + collectionIndex)),
+					row: 0,
+					section: viewModel.numberOfPresections + collectionIndex),
 				at: .top,
 				animated: false)
 			
@@ -158,7 +158,7 @@ final class AlbumsTVC:
 	}
 	
 	override func reflectViewModelIsEmpty() {
-		deleteThenExit(sections: tableView.allSections())
+		deleteThenExit(sectionsToDelete: tableView.allSections())
 	}
 	
 	// MARK: - Freshening UI

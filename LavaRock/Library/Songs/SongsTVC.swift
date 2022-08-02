@@ -58,7 +58,7 @@ final class SongsTVC:
 	// MARK: - Library Items
 	
 	override func reflectViewModelIsEmpty() {
-		deleteThenExit(sections: tableView.allSections())
+		deleteThenExit(sectionsToDelete: tableView.allSections())
 	}
 	
 	func mediaItems(
@@ -75,8 +75,10 @@ final class SongsTVC:
 	) -> [MPMediaItem] {
 		let allMediaItems = mediaItems(
 			startingAt: viewModel.indexPathFor(
-				itemIndex: ItemIndex(0),
-				groupIndex: GroupIndex(0)))
+				itemIndex: 0,
+				groupIndex: 0
+			)
+		)
 		let result = allMediaItems.drop { mediaItem in
 			mediaItem.persistentID != firstMediaItem.persistentID
 		}

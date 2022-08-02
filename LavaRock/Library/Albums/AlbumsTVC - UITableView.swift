@@ -18,7 +18,7 @@ extension AlbumsTVC {
 			break
 		case .movingAlbums(let clipboard):
 			if clipboard.didAlreadyCreate {
-				return viewModel.numberOfPresections.value + 1
+				return viewModel.numberOfPresections + 1
 			} else {
 				break
 			}
@@ -26,14 +26,14 @@ extension AlbumsTVC {
 			break
 		}
 		
-		return viewModel.numberOfPresections.value + viewModel.groups.count
+		return viewModel.numberOfPresections + viewModel.groups.count
 	}
 	
 	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return viewModel.numberOfRows(for: Section_I(section))
+		return viewModel.numberOfRows(forSection: section)
 	}
 	
 	// MARK: - Headers
@@ -58,7 +58,7 @@ extension AlbumsTVC {
 	) -> String? {
 		if Enabling.multicollection {
 			return (viewModel as? AlbumsViewModel)?
-				.collection(for: Section_I(section))
+				.collection(forSection: section)
 				.title
 		} else {
 			return nil

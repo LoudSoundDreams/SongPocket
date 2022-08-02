@@ -30,16 +30,14 @@ extension LibraryTVC {
 		{
 			return proposedDestinationIndexPath
 		} else {
-			let groupIndex = viewModel.groupIndex(for: sourceIndexPath.section_i)
+			let groupIndex = viewModel.groupIndex(forSection: sourceIndexPath.section)
 			if proposedDestinationIndexPath < sourceIndexPath {
 				return viewModel.indexPathFor(
-					itemIndex: ItemIndex(0),
+					itemIndex: 0,
 					groupIndex: groupIndex)
 			} else {
 				return viewModel.indexPathFor(
-					itemIndex: ItemIndex(
-						viewModel.groups[groupIndex].items.indices.last
-						?? 0),
+					itemIndex: viewModel.groups[groupIndex].items.indices.last ?? 0,
 					groupIndex: groupIndex)
 			}
 		}
