@@ -54,7 +54,7 @@ final class QueueCell: UITableViewCell {
 		].compactedAndFormattedAsNarrowList()
 		
 		if let font = titleLabel.font {
-			// TO DO: Localize
+			// L2DO
 			// A `UIFont`’s `lineHeight` equals its `ascender` plus its `descender`.
 			textStackTopToCoverArtTop.constant = -(font.ascender - font.capHeight)
 		}

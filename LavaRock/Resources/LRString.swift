@@ -204,10 +204,7 @@ struct LRString {
 	static func songTitleQuotedAndXMoreSongs_titleCase(
 		mediaItems: [MPMediaItem]
 	) -> String {
-		guard let first = mediaItems.first else {
-			return "0 Songs" // L2DO
-		}
-		let firstSongTitle = first.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
+		let firstSongTitle = mediaItems.first?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
 		let songCount = mediaItems.count
 		if songCount == 1 {
 			return String.localizedStringWithFormat(

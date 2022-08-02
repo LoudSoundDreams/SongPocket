@@ -65,7 +65,8 @@ extension MusicFolder {
 			}
 			return Dictionary(uniqueKeysWithValues: tuplesForExistingAlbums)
 		}()
-		var existingCollectionsByTitle = Dictionary(grouping: existingCollections) { $0.title! }
+		var existingCollectionsByTitle: [String: [Collection]] =
+		Dictionary(grouping: existingCollections) { $0.title! }
 		
 		os_signpost(.begin, log: .create, name: "Create all the Songs and containers")
 		metadataGroups.forEach { metadataGroup in

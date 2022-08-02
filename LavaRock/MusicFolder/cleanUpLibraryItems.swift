@@ -54,8 +54,8 @@ extension MusicFolder {
 		os_signpost(.end, log: .cleanup, name: "Filter out metadata without release dates")
 		
 		os_signpost(.begin, log: .cleanup, name: "Group metadata by album")
-		let metadataByAlbumID
-		= Dictionary(grouping: metadataWithReleaseDates) { $0.albumID }
+		let metadataByAlbumID: [AlbumID: [SongMetadatum]] =
+		Dictionary(grouping: metadataWithReleaseDates) { $0.albumID }
 		os_signpost(.end, log: .cleanup, name: "Group metadata by album")
 		
 		albums.forEach { album in
