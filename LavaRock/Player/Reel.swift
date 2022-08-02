@@ -21,8 +21,7 @@ struct Reel {
 		didSet {
 			table?.reloadData()
 			
-			let wasEmpty = oldValue.isEmpty
-			if wasEmpty != mediaItems.isEmpty {
+			if oldValue.isEmpty != mediaItems.isEmpty {
 				NotificationCenter.default.post(
 					name: .userChangedReelEmptiness,
 					object: nil)
@@ -38,12 +37,11 @@ struct Reel {
 		guard Enabling.inAppPlayer else {
 			return true
 		}
-		
-		// Return a value indicating whether there’s at least 1 song after the current song
-		
 		guard let player = TapeDeck.shared.player else {
 			return true
 		}
+		
+		// Return a value indicating whether there’s at least 1 song after the current song
 		if mediaItems.isEmpty {
 			return false
 		}
