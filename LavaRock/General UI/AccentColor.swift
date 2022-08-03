@@ -129,7 +129,7 @@ enum AccentColor: String, CaseIterable {
 			 • 90 - annoyingly yellow
 			 • 105 - distractingly yellow
 			 
-			 • 130 - canonical (boring) green, to me. i like yellower greens better here than bluer ones
+			 • 130 - light mode: canonical (boring) green, to me. i like yellower greens better here than bluer ones
 			 • 145 - too blue
 			 
 			 Saturation:
@@ -150,8 +150,8 @@ enum AccentColor: String, CaseIterable {
 				alpha: 1)
 			return UIColor( // Good in dark mode
 				hue: 110/360, // Aiming low
-				saturation: 0.90, // Aiming high
-				brightness: 0.80, // Aiming high
+				saturation: 0.70, // Aiming high
+				brightness: 0.85, // Aiming high
 				alpha: 1)
 			 */
 		case .blueberry:
@@ -212,8 +212,8 @@ enum AccentColor: String, CaseIterable {
 				alpha: 1)
 			return UIColor( // Good in dark mode
 				hue: 310/360, // Aiming high
-				saturation: 0.90, // Aiming high
-				brightness: 0.90, // Aiming high
+				saturation: 0.80, // Aiming high
+				brightness: 1.00, // Aiming high
 				alpha: 1)
 			 */
 		}
