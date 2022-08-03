@@ -80,23 +80,27 @@ final class AvatarChooser: UISegmentedControl {
 final class AccentColorCell: UITableViewCell {
 	var representee: AccentColor? = nil {
 		didSet {
-			let new_contentConfiguration: UIContentConfiguration
-			defer {
-				contentConfiguration = new_contentConfiguration
-			}
-			
-			guard let representee = representee else {
-				new_contentConfiguration = defaultContentConfiguration()
-				return
-			}
-			
-			var content = UIListContentConfiguration.cell()
-			content.text = representee.displayName // Freshen text
-			content.textProperties.color = representee.uiColor // Freshen color
-			new_contentConfiguration = content
-			
-			reflectTintColor()
+			freshenText()
+			freshenAccessoryAndBackground()
 		}
+	}
+	
+	private func freshenText() {
+		let new_contentConfiguration: UIContentConfiguration
+		defer {
+			contentConfiguration = new_contentConfiguration
+		}
+		
+		guard let representee = representee else {
+			new_contentConfiguration = defaultContentConfiguration()
+			return
+		}
+		
+		var content = UIListContentConfiguration.cell()
+		content.text = representee.displayName // Freshen text
+		content.textProperties.color = representee.uiColor // Freshen color
+			.resolvedColor(with: traitCollection)
+		new_contentConfiguration = content
 	}
 	
 	override func awakeFromNib() {
@@ -105,7 +109,7 @@ final class AccentColorCell: UITableViewCell {
 		accessibilityTraits.formUnion(.button)
 	}
 	
-	private func reflectTintColor() {
+	private func freshenAccessoryAndBackground() {
 		let new_accessoryType: AccessoryType
 		let new_selectedBackgroundView: UIView?
 		defer {
@@ -134,7 +138,7 @@ final class AccentColorCell: UITableViewCell {
 	override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		reflectTintColor()
+		freshenAccessoryAndBackground()
 	}
 	
 	override func layoutSubviews() {
