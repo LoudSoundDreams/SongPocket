@@ -150,7 +150,7 @@ enum AccentColor: String, CaseIterable {
 				alpha: 1)
 			return UIColor( // Good in dark mode
 				hue: 110/360, // Aiming low
-				saturation: 0.70, // Aiming high
+				saturation: 0.65, // Aiming high
 				brightness: 0.85, // Aiming high
 				alpha: 1)
 			 */
@@ -212,7 +212,7 @@ enum AccentColor: String, CaseIterable {
 				alpha: 1)
 			return UIColor( // Good in dark mode
 				hue: 310/360, // Aiming high
-				saturation: 0.80, // Aiming high
+				saturation: 0.75, // Aiming high
 				brightness: 1.00, // Aiming high
 				alpha: 1)
 			 */
