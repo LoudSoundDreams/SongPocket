@@ -84,12 +84,12 @@ enum AccentColor: String, CaseIterable {
 			return UIColor(named: "strawberry")!
 			/*
 			return UIColor( // Good in light mode, bad in dark mode
-				hue: 340/360, // Aiming low
+				hue: 335/360, // Aiming low
 				saturation: 1.00, // Aiming high
 				brightness: 0.80, // Aiming low
 				alpha: 1)
 			return UIColor( // Good in dark mode
-				hue: 340/360, // Aiming low
+				hue: 335/360, // Aiming low
 				saturation: 0.80, // Aiming high
 				brightness: 1.00, // Aiming high
 				alpha: 1)
