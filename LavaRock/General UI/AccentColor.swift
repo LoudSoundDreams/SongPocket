@@ -77,13 +77,14 @@ enum AccentColor: String, CaseIterable {
 			 • 0.90 - dark mode: too garish
 			 
 			 Brightness:
+			 • 0.75 - light mode: annoyingly dark
 			 • 0.80 - dark mode: too dark
 			 • 1.00 - boringly bright
 			 */
-			return UIColor( // Good in light and dark mode
+			return UIColor( // Good in light mode, bad in dark mode
 				hue: 340/360, // Aiming low
-				saturation: 0.85,
-				brightness: 0.95, // Aiming high
+				saturation: 1.00, // Aiming high
+				brightness: 0.80, // Aiming low
 				alpha: 1)
 		case .tangerine:
 			/*
@@ -119,13 +120,13 @@ enum AccentColor: String, CaseIterable {
 			 •
 			 
 			 Brightness:
-			 • 0.55 - light mode: annoyingly dark
+			 • 0.50 - light mode: annoyingly dark
 			 • 0.75 - light mode: annoyingly bright
 			 */
 			return UIColor( // Good in light mode, bad in dark mode
 				hue: 110/360, // Aiming low
 				saturation: 1.00, // Aiming high
-				brightness: 0.60, // Aiming low
+				brightness: 0.55, // Aiming low
 				alpha: 1)
 		case .blueberry:
 			/*
@@ -170,7 +171,7 @@ enum AccentColor: String, CaseIterable {
 			 */
 			return UIColor( // Good in light mode, bad in dark mode
 				hue: 310/360, // Aiming high
-				saturation: 0.85, // Aiming high
+				saturation: 1.00, // Aiming high
 				brightness: 0.65, // Aiming low
 				alpha: 1)
 		}
