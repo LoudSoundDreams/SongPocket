@@ -82,16 +82,18 @@ enum AccentColor: String, CaseIterable {
 			 • 1.00 - boringly bright
 			 */
 			return UIColor(named: "strawberry")!
-//			return UIColor( // Good in light mode, bad in dark mode
-//				hue: 340/360, // Aiming low
-//				saturation: 1.00, // Aiming high
-//				brightness: 0.80, // Aiming low
-//				alpha: 1)
-//			return UIColor( // Good in dark mode
-//				hue: 340/360, // Aiming low
-//				saturation: 0.90, // Aiming high
-//				brightness: 1.00, // Aiming high
-//				alpha: 1)
+			/*
+			return UIColor( // Good in light mode, bad in dark mode
+				hue: 340/360, // Aiming low
+				saturation: 1.00, // Aiming high
+				brightness: 0.80, // Aiming low
+				alpha: 1)
+			return UIColor( // Good in dark mode
+				hue: 340/360, // Aiming low
+				saturation: 0.90, // Aiming high
+				brightness: 1.00, // Aiming high
+				alpha: 1)
+			 */
 		case .tangerine:
 			/*
 			 Hue:
@@ -108,16 +110,18 @@ enum AccentColor: String, CaseIterable {
 			 •
 			 */
 			return UIColor(named: "tangerine")!
-//			return UIColor( // Good in light mode, bad in dark mode
-//				hue: 35/360, // Aiming high
-//				saturation: 1.00, // Aiming high
-//				brightness: 0.90, // Aiming low
-//				alpha: 1)
-//			return UIColor( // Good in dark mode
-//				hue: 35/360, // Aiming high
-//				saturation: 0.90, // Aiming high
-//				brightness: 1.00, // Aiming high
-//				alpha: 1)
+			/*
+			return UIColor( // Good in light mode, bad in dark mode
+				hue: 35/360, // Aiming high
+				saturation: 1.00, // Aiming high
+				brightness: 0.90, // Aiming low
+				alpha: 1)
+			return UIColor( // Good in dark mode
+				hue: 35/360, // Aiming high
+				saturation: 0.90, // Aiming high
+				brightness: 1.00, // Aiming high
+				alpha: 1)
+			 */
 		case .lime:
 			/*
 			 Hue:
@@ -138,16 +142,18 @@ enum AccentColor: String, CaseIterable {
 			 • 0.85 - dark mode: annoyingly bright
 			 */
 			return UIColor(named: "lime")!
-//			return UIColor( // Good in light mode, bad in dark mode
-//				hue: 110/360, // Aiming low
-//				saturation: 1.00, // Aiming high
-//				brightness: 0.55, // Aiming low
-//				alpha: 1)
-//			return UIColor( // Good in dark mode
-//				hue: 110/360, // Aiming low
-//				saturation: 0.90, // Aiming high
-//				brightness: 0.80, // Aiming high
-//				alpha: 1)
+			/*
+			return UIColor( // Good in light mode, bad in dark mode
+				hue: 110/360, // Aiming low
+				saturation: 1.00, // Aiming high
+				brightness: 0.55, // Aiming low
+				alpha: 1)
+			return UIColor( // Good in dark mode
+				hue: 110/360, // Aiming low
+				saturation: 0.90, // Aiming high
+				brightness: 0.80, // Aiming high
+				alpha: 1)
+			 */
 		case .blueberry:
 			/*
 			 Hue:
@@ -166,16 +172,18 @@ enum AccentColor: String, CaseIterable {
 			 • 0.90 - dark mode: too dark
 			 */
 			return UIColor(named: "blueberry")!
-//			return UIColor( // Good in light mode, bad in dark mode
-//				hue: 215/360, // Aiming low
-//				saturation: 1.00, // Aiming high
-//				brightness: 0.75, // Aiming low
-//				alpha: 1)
-//			return UIColor( // Good in dark mode
-//				hue: 210/360, // Aiming low
-//				saturation: 0.90, // Aiming high
-//				brightness: 1.00, // Aiming high
-//				alpha: 1)
+			/*
+			return UIColor( // Good in light mode, bad in dark mode
+				hue: 215/360, // Aiming low
+				saturation: 1.00, // Aiming high
+				brightness: 0.75, // Aiming low
+				alpha: 1)
+			return UIColor( // Good in dark mode
+				hue: 210/360, // Aiming low
+				saturation: 0.90, // Aiming high
+				brightness: 1.00, // Aiming high
+				alpha: 1)
+			 */
 		case .grape:
 			/*
 			 Hue:
@@ -196,16 +204,18 @@ enum AccentColor: String, CaseIterable {
 			 • 0.95 - light mode: annoyingly bright. dark mode: boringly bright
 			 */
 			return UIColor(named: "grape")!
-//			return UIColor( // Good in light mode, bad in dark mode
-//				hue: 310/360, // Aiming high
-//				saturation: 1.00, // Aiming high
-//				brightness: 0.65, // Aiming low
-//				alpha: 1)
-//			return UIColor( // Good in dark mode
-//				hue: 310/360, // Aiming high
-//				saturation: 0.90, // Aiming high
-//				brightness: 0.90, // Aiming high
-//				alpha: 1)
+			/*
+			return UIColor( // Good in light mode, bad in dark mode
+				hue: 310/360, // Aiming high
+				saturation: 1.00, // Aiming high
+				brightness: 0.65, // Aiming low
+				alpha: 1)
+			return UIColor( // Good in dark mode
+				hue: 310/360, // Aiming high
+				saturation: 0.90, // Aiming high
+				brightness: 0.90, // Aiming high
+				alpha: 1)
+			 */
 		}
 	}
 	
