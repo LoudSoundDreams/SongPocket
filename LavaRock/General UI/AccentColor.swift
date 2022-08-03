@@ -13,11 +13,11 @@ extension AccentColor: Identifiable {
 }
 enum AccentColor: String, CaseIterable {
 	// We persist these raw values in `UserDefaults`.
-	case strawberry = "Strawberry"
-	case tangerine = "Tangerine"
 	case lime = "Lime"
-	case blueberry = "Blueberry"
+	case tangerine = "Tangerine"
+	case strawberry = "Strawberry"
 	case grape = "Grape"
+	case blueberry = "Blueberry"
 	
 	private static let defaults = UserDefaults.standard
 	private static let defaultsKey = LRUserDefaultsKey.accentColor.rawValue
