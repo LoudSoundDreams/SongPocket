@@ -98,8 +98,7 @@ enum AccentColor: String, CaseIterable {
 			/*
 			 Hue:
 			 • 25 - boring orange (the fruit)
-			 • 35 - GOOD
-			 • 40 - yellow
+			 • 45 - yellow
 			 
 			 Saturation:
 			 • 0.75 - too desaturated
@@ -117,8 +116,8 @@ enum AccentColor: String, CaseIterable {
 				brightness: 0.90, // Aiming low
 				alpha: 1)
 			return UIColor( // Good in dark mode
-				hue: 35/360, // Aiming high
-				saturation: 0.90, // Aiming high
+				hue: 40/360, // Aiming high
+				saturation: 1.00, // Aiming high
 				brightness: 1.00, // Aiming high
 				alpha: 1)
 			 */
