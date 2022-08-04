@@ -141,14 +141,14 @@ struct LRString {
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
-	static let playRestOfAlbum = NSLocalizedString("Play Rest of Album", comment: "Button")
+	static let playRestOfAlbum = NSLocalizedString("Play Song and Below", comment: "Button")
 	static let playSong = NSLocalizedString("Play Song", comment: "Button")
 	
 	static let insertSong = NSLocalizedString("Insert Song", comment: "Button")
-	static let insertRestOfAlbum = NSLocalizedString("Insert Rest of Album", comment: "Button")
+	static let insertRestOfAlbum = NSLocalizedString("Insert Song and Below", comment: "Button")
 	
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
-	static let queueRestOfAlbum = NSLocalizedString("Queue Rest of Album", comment: "Button")
+	static let queueRestOfAlbum = NSLocalizedString("Queue Song and Below", comment: "Button")
 	
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
