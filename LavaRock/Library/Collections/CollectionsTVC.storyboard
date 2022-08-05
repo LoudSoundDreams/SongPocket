@@ -71,13 +71,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZA8-cG-C8X">
-                                            <rect key="frame" x="327" y="15" width="15.333333333333314" height="11.999999999999996"/>
+                                            <rect key="frame" x="327" y="15.333333333333332" width="15.333333333333314" height="11.999999999999996"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="uca-y1-fcm">
-                                            <rect key="frame" x="327" y="15" width="15.333333333333314" height="11.999999999999996"/>
+                                            <rect key="frame" x="327" y="15.333333333333332" width="15.333333333333314" height="11.999999999999996"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
@@ -85,7 +85,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oWs-S1-Xp1" secondAttribute="topMargin" constant="1" id="3Qu-eC-zjq"/>
-                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="centerY" secondItem="SFb-dV-xDe" secondAttribute="centerY" id="D3a-34-mMr"/>
+                                        <constraint firstItem="ZA8-cG-C8X" firstAttribute="centerY" secondItem="oWs-S1-Xp1" secondAttribute="centerY" constant="-0.5" id="D3a-34-mMr"/>
                                         <constraint firstItem="uca-y1-fcm" firstAttribute="leading" secondItem="ZA8-cG-C8X" secondAttribute="leading" id="H34-X1-mCI"/>
                                         <constraint firstItem="SFb-dV-xDe" firstAttribute="centerY" secondItem="oWs-S1-Xp1" secondAttribute="centerY" constant="-1" id="Ocg-3j-RGz"/>
                                         <constraint firstItem="ZA8-cG-C8X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SFb-dV-xDe" secondAttribute="trailing" constant="8" symbolic="YES" id="WqS-HV-ixF"/>

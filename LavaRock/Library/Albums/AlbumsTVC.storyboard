@@ -84,13 +84,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XXR-SF-A9b">
-                                            <rect key="frame" x="326.66666666666669" y="60.666666666666671" width="15.666666666666686" height="11.666666666666657"/>
+                                            <rect key="frame" x="326.66666666666669" y="59.999999999999993" width="15.666666666666686" height="11.666666666666671"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="speaker.wave.2.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="hkc-qD-DmK">
-                                            <rect key="frame" x="326.66666666666669" y="60.666666666666671" width="15.666666666666686" height="11.666666666666657"/>
+                                            <rect key="frame" x="326.66666666666669" y="59.999999999999993" width="15.666666666666686" height="11.666666666666671"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
@@ -133,7 +133,7 @@
                                         <constraint firstItem="XXR-SF-A9b" firstAttribute="trailing" secondItem="aoi-DX-wbp" secondAttribute="trailingMargin" id="AOw-Rt-8zd"/>
                                         <constraint firstItem="kNY-CW-ua6" firstAttribute="bottom" secondItem="aoi-DX-wbp" secondAttribute="bottom" id="KZR-NF-aGE"/>
                                         <constraint firstItem="kNY-CW-ua6" firstAttribute="leading" secondItem="aoi-DX-wbp" secondAttribute="leadingMargin" id="U94-JA-g6V"/>
-                                        <constraint firstItem="XXR-SF-A9b" firstAttribute="centerY" secondItem="aoi-DX-wbp" secondAttribute="centerY" id="WTl-Cd-51w"/>
+                                        <constraint firstItem="XXR-SF-A9b" firstAttribute="centerY" secondItem="aoi-DX-wbp" secondAttribute="centerY" constant="-0.5" id="WTl-Cd-51w"/>
                                         <constraint firstItem="hkc-qD-DmK" firstAttribute="leading" secondItem="XXR-SF-A9b" secondAttribute="leading" id="X7t-qE-19R"/>
                                         <constraint firstItem="XXR-SF-A9b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kNY-CW-ua6" secondAttribute="trailing" constant="8" symbolic="YES" id="ihi-mt-GeH"/>
                                         <constraint firstItem="hkc-qD-DmK" firstAttribute="centerY" secondItem="XXR-SF-A9b" secondAttribute="centerY" id="pYU-V5-Vbf"/>
