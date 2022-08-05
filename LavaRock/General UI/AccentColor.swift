@@ -83,12 +83,12 @@ enum AccentColor: String, CaseIterable {
 			 */
 			/*
 			return UIColor( // Good in light mode, bad in dark mode
-				hue: 340/360, // Aiming low
+				hue: 335/360, // Aiming low
 				saturation: 1.00, // Aiming high
 				brightness: 0.80, // Aiming low
 				alpha: 1)
 			return UIColor( // Good in dark mode
-				hue: 340/360, // Aiming low
+				hue: 335/360, // Aiming low
 				saturation: 0.80, // Aiming high
 				brightness: 1.00, // Aiming high
 				alpha: 1)
@@ -156,7 +156,7 @@ enum AccentColor: String, CaseIterable {
 		case .blueberry:
 			/*
 			 Hue:
-			 • 210 - approaching cyan
+			 • 200 - approaching cyan
 			 • 215 - GOOD. a tinge of yellow
 			 • 235 - approaching purple
 			 
@@ -186,6 +186,7 @@ enum AccentColor: String, CaseIterable {
 		case .grape:
 			/*
 			 Hue:
+			 • 255 - too blue
 			 • 280 - boring lavender
 			 
 			 • 315 - too close to Strawberry
