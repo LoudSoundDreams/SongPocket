@@ -81,7 +81,6 @@ enum AccentColor: String, CaseIterable {
 			 • 0.80 - dark mode: too dark
 			 • 1.00 - boringly bright
 			 */
-			return UIColor(named: "strawberry")!
 			/*
 			return UIColor( // Good in light mode, bad in dark mode
 				hue: 335/360, // Aiming low
@@ -94,6 +93,7 @@ enum AccentColor: String, CaseIterable {
 				brightness: 1.00, // Aiming high
 				alpha: 1)
 			 */
+			return UIColor(named: "strawberry")!
 		case .tangerine:
 			/*
 			 Hue:
@@ -108,7 +108,6 @@ enum AccentColor: String, CaseIterable {
 			 • 0.90 - light mode: GOOD. dark mode: too dark
 			 •
 			 */
-			return UIColor(named: "tangerine")!
 			/*
 			return UIColor( // Good in light mode, bad in dark mode
 				hue: 35/360, // Aiming high
@@ -121,6 +120,7 @@ enum AccentColor: String, CaseIterable {
 				brightness: 1.00, // Aiming high
 				alpha: 1)
 			 */
+			return UIColor(named: "tangerine")!
 		case .lime:
 			/*
 			 Hue:
@@ -140,7 +140,6 @@ enum AccentColor: String, CaseIterable {
 			 
 			 • 0.85 - dark mode: annoyingly bright
 			 */
-			return UIColor(named: "lime")!
 			/*
 			return UIColor( // Good in light mode, bad in dark mode
 				hue: 110/360, // Aiming low
@@ -153,6 +152,7 @@ enum AccentColor: String, CaseIterable {
 				brightness: 0.85, // Aiming high
 				alpha: 1)
 			 */
+			return UIColor(named: "lime")!
 		case .blueberry:
 			/*
 			 Hue:
@@ -170,7 +170,6 @@ enum AccentColor: String, CaseIterable {
 			 • 0.65 - light mode: annoyingly dark
 			 • 0.90 - dark mode: too dark
 			 */
-			return UIColor(named: "blueberry")!
 			/*
 			return UIColor( // Good in light mode, bad in dark mode
 				hue: 215/360, // Aiming low
@@ -183,6 +182,7 @@ enum AccentColor: String, CaseIterable {
 				brightness: 1.00, // Aiming high
 				alpha: 1)
 			 */
+			return UIColor(named: "blueberry")!
 		case .grape:
 			/*
 			 Hue:
@@ -202,7 +202,6 @@ enum AccentColor: String, CaseIterable {
 			 
 			 • 0.95 - light mode: annoyingly bright. dark mode: boringly bright
 			 */
-			return UIColor(named: "grape")!
 			/*
 			return UIColor( // Good in light mode, bad in dark mode
 				hue: 310/360, // Aiming high
@@ -215,6 +214,7 @@ enum AccentColor: String, CaseIterable {
 				brightness: 1.00, // Aiming high
 				alpha: 1)
 			 */
+			return UIColor(named: "grape")!
 		}
 	}
 	
