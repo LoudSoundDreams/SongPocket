@@ -41,7 +41,7 @@ struct LRString {
 	
 	// MARK: Options
 	
-	static let options = Enabling.iconsForNavigationBarButtons
+	static let options = Enabling.iconsInNavigationBar
 	? NSLocalizedString("Settings", comment: "Big title")
 	: NSLocalizedString("Options", comment: "Big title")
 	

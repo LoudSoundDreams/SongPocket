@@ -36,7 +36,7 @@ class LibraryTVC: UITableViewController {
 		var result = [
 			editButtonItem,
 		]
-		if Enabling.inAppPlayer {
+		if Enabling.iconsInNavigationBar {
 			result.append(
 				UIBarButtonItem.open_Music_button()
 			)
@@ -389,7 +389,7 @@ class LibraryTVC: UITableViewController {
 		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
 		
 		editButtonItem.isEnabled = !viewModel.isEmpty()
-		if Enabling.iconsForNavigationBarButtons {
+		if Enabling.iconsInNavigationBar {
 			editButtonItem.image = (
 				isEditing
 				? UIImage(systemName: "pencil.circle.fill")

@@ -241,7 +241,7 @@ final class CollectionsTVC:
 				UIBarButtonItem(
 					title: LRString.options,
 					image: (
-						Enabling.iconsForNavigationBarButtons
+						Enabling.iconsInNavigationBar
 						? UIImage(systemName: "gear")
 						: nil
 					),
