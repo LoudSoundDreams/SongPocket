@@ -52,7 +52,7 @@ enum LibrarySortOption: CaseIterable {
 		case .shuffle:
 			return UIImage(systemName: "shuffle")
 		case .reverse:
-			return UIImage(systemName: "arrow.uturn.up")
+			return UIImage(systemName: "arrow.turn.right.up")
 		}
 	}
 	
