@@ -86,6 +86,12 @@ final class AccentColorCell: UITableViewCell {
 		}
 	}
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		accessibilityTraits.formUnion(.button)
+	}
+	
 	private func freshen_contentConfiguration() {
 		let new_contentConfiguration: UIContentConfiguration
 		defer {
@@ -106,10 +112,18 @@ final class AccentColorCell: UITableViewCell {
 		new_contentConfiguration = content
 	}
 	
-	override func awakeFromNib() {
-		super.awakeFromNib()
+	private func freshen_selectedBackgroundView() {
+		let new_selectedBackgroundView: UIView?
+		defer {
+			selectedBackgroundView = new_selectedBackgroundView
+		}
 		
-		accessibilityTraits.formUnion(.button)
+		// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
+		let colorView = UIView()
+		colorView.backgroundColor = representee?.uiColor
+			.resolvedForIncreaseContrast()
+			.translucent()
+		new_selectedBackgroundView = colorView
 	}
 	
 	private func freshen_accessoryType() {
@@ -124,20 +138,6 @@ final class AccentColorCell: UITableViewCell {
 		} else {
 			new_accessoryType = .none
 		}
-	}
-	
-	private func freshen_selectedBackgroundView() {
-		let new_selectedBackgroundView: UIView?
-		defer {
-			selectedBackgroundView = new_selectedBackgroundView
-		}
-		
-		// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
-		let colorView = UIView()
-		colorView.backgroundColor = representee?.uiColor
-			.resolvedForIncreaseContrast()
-			.translucent()
-		new_selectedBackgroundView = colorView
 	}
 	
 	// UIKit does call this when “Increase Contrast” changes.
