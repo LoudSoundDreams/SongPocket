@@ -81,7 +81,8 @@ final class AccentColorCell: UITableViewCell {
 	var representee: AccentColor? = nil {
 		didSet {
 			freshen_contentConfiguration()
-			freshen_accessoryType_and_selectedBackgroundView()
+			freshen_selectedBackgroundView()
+			freshen_accessoryType()
 		}
 	}
 	
@@ -110,23 +111,26 @@ final class AccentColorCell: UITableViewCell {
 		accessibilityTraits.formUnion(.button)
 	}
 	
-	private func freshen_accessoryType_and_selectedBackgroundView() {
+	private func freshen_accessoryType() {
 		let new_accessoryType: AccessoryType
-		let new_selectedBackgroundView: UIView?
 		defer {
 			accessoryType = new_accessoryType
-			selectedBackgroundView = new_selectedBackgroundView
 		}
 		
-		// Checkmark
 		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
 		if representee == AccentColor.savedPreference() {
 			new_accessoryType = .checkmark
 		} else {
 			new_accessoryType = .none
 		}
+	}
+	
+	private func freshen_selectedBackgroundView() {
+		let new_selectedBackgroundView: UIView?
+		defer {
+			selectedBackgroundView = new_selectedBackgroundView
+		}
 		
-		// `selectedBackgroundView`
 		// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
 		let colorView = UIView()
 		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
@@ -140,7 +144,8 @@ final class AccentColorCell: UITableViewCell {
 	override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
-		freshen_accessoryType_and_selectedBackgroundView()
+		freshen_selectedBackgroundView()
+		freshen_accessoryType()
 	}
 	
 	override func layoutSubviews() {
