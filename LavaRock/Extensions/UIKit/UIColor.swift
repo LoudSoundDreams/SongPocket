@@ -40,6 +40,12 @@ extension UIColor {
 		print("A:", mutableAlpha)
 	}
 	
+	final func resolvedForIncreaseContrast() -> UIColor {
+		let view = UIView()
+		view.tintColor = self
+		return view.tintColor
+	}
+	
 	final func translucentFaint() -> UIColor {
 		return withAlphaComponent(.oneEighth)
 	}

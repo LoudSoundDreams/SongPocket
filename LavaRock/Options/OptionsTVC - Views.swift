@@ -102,6 +102,7 @@ final class AccentColorCell: UITableViewCell {
 		content.text = representee.displayName
 		// Text color
 		content.textProperties.color = representee.uiColor
+			.resolvedForIncreaseContrast()
 		new_contentConfiguration = content
 	}
 	
@@ -133,9 +134,8 @@ final class AccentColorCell: UITableViewCell {
 		
 		// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
 		let colorView = UIView()
-		// For some reason, to get this to respect “Increase Contrast”, you must use `resolvedColor`, even though you don’t need to for the text.
 		colorView.backgroundColor = representee?.uiColor
-			.resolvedColor(with: traitCollection)
+			.resolvedForIncreaseContrast()
 			.translucent()
 		new_selectedBackgroundView = colorView
 	}
@@ -144,6 +144,7 @@ final class AccentColorCell: UITableViewCell {
 	override func tintColorDidChange() {
 		super.tintColorDidChange()
 		
+		freshen_contentConfiguration()
 		freshen_selectedBackgroundView()
 		freshen_accessoryType()
 	}
