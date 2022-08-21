@@ -16,10 +16,9 @@ struct LavaRock: App {
 		
 		// Delete unused entries in `UserDefaults`
 		let defaults = UserDefaults.standard
+		let keysToKeep = Set(LRUserDefaultsKey.allCases.map { $0.rawValue })
 		defaults.dictionaryRepresentation().forEach { (key, _object) in
-			if !Set(
-				LRUserDefaultsKey.allCases.map { $0.rawValue }
-			).contains(key) {
+			if !keysToKeep.contains(key) {
 				defaults.removeObject(forKey: key)
 			}
 		}
@@ -29,7 +28,7 @@ struct LavaRock: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			MainViewControllerRep()
+			LibraryNCRep()
 				.edgesIgnoringSafeArea(.all)
 				.preferredColorScheme(theme.lighting.colorScheme)
 				.tint(theme.accentColor.color)
@@ -37,7 +36,7 @@ struct LavaRock: App {
 	}
 }
 
-private struct MainViewControllerRep: UIViewControllerRepresentable {
+private struct LibraryNCRep: UIViewControllerRepresentable {
 	typealias VCType = LibraryNC
 	
 	@ObservedObject private var theme: Theme

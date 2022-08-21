@@ -46,11 +46,10 @@ final class LibraryNC: UINavigationController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if
-			needsOverrideThemeInWindow,
-			let window = view.window
-		{
+		if needsOverrideThemeInWindow {
 			needsOverrideThemeInWindow = false
+			
+			let window = view.window!
 			
 			// Lighting
 			window.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
