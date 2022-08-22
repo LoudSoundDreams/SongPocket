@@ -26,20 +26,17 @@ struct Avatar {
 					pausedImageName: "speaker.fill",
 					playingImageName: "speaker.wave.2.fill"),
 				Avatar(
-					pausedImageName: "arrowshape.forward",
-					playingImageName: "arrowshape.forward.fill"),
-				Avatar(
 					pausedImageName: "bird",
 					playingImageName: "bird.fill"),
 				Avatar(
 					pausedImageName: "fish",
 					playingImageName: "fish.fill"),
 				Avatar(
-					pausedImageName: "beach.umbrella",
-					playingImageName: "beach.umbrella.fill"),
-				Avatar(
 					pausedImageName: "sailboat",
 					playingImageName: "sailboat.fill"),
+				Avatar(
+					pausedImageName: "beach.umbrella",
+					playingImageName: "beach.umbrella.fill"),
 			]
 		} else {
 			return [

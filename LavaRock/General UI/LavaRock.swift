@@ -55,11 +55,14 @@ private struct LibraryNCRep: UIViewControllerRepresentable {
 		context: Context
 	) -> VCType {
 		let vc = LibraryNC()
+		
 		// Lighting
 		vc.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
+		
 		// Accent color
 		vc.view.tintColor = theme.accentColor.uiColor
 		vc.needsOverrideThemeInWindow = true
+		
 		return vc
 	}
 	
