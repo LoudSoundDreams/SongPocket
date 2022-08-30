@@ -9,7 +9,9 @@ import CoreData
 import OSLog
 
 extension Notification.Name {
-	static let mergedChanges = Self("merged changes")
+	static var mergedChanges: Self {
+		Self("merged changes")
+	}
 }
 
 extension MusicFolder {

@@ -8,7 +8,9 @@
 import MediaPlayer
 
 extension Notification.Name {
-	static let userChangedReelEmptiness = Self("user changed reel emptiness")
+	static var userChangedReelEmptiness: Self {
+		Self("user changed reel emptiness")
+	}
 }
 
 @MainActor

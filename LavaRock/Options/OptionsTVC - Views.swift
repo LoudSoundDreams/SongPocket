@@ -58,7 +58,7 @@ final class AvatarChooser: UISegmentedControl {
 			insertSegment(
 				action: UIAction(
 					image: {
-						let image = UIImage(systemName: avatar.playingImageName)
+						let image = UIImage(systemName: avatar.playingSFSymbolName)
 						image?.accessibilityLabel = nil // TO DO
 						return image
 					}()

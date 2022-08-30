@@ -13,6 +13,7 @@ extension AccentColor: Identifiable {
 }
 enum AccentColor: String, CaseIterable {
 	// We persist these raw values in `UserDefaults`.
+	// Cases are in the order that they appear in in the UI.
 	case lime = "Lime"
 	case tangerine = "Tangerine"
 	case strawberry = "Strawberry"

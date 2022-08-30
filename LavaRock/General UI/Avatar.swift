@@ -8,32 +8,34 @@
 import Foundation
 
 extension Notification.Name {
-	static var userChangedAvatar: Self { Self("user changed avatar") }
+	static var userChangedAvatar: Self {
+		Self("user changed avatar")
+	}
 }
 
 struct Avatar {
-	let pausedImageName: String
-	let playingImageName: String
+	let pausedSFSymbolName: String
+	let playingSFSymbolName: String
 	
 	static var current: Self = Avatar(
-		pausedImageName: "speaker.fill",
-		playingImageName: "speaker.wave.2.fill")
+		pausedSFSymbolName: "speaker.fill",
+		playingSFSymbolName: "speaker.wave.2.fill")
 	
 	static let all: [Self] = [
 		Avatar(
-			pausedImageName: "speaker.fill",
-			playingImageName: "speaker.wave.2.fill"),
+			pausedSFSymbolName: "speaker.fill",
+			playingSFSymbolName: "speaker.wave.2.fill"),
 		Avatar(
-			pausedImageName: "bird",
-			playingImageName: "bird.fill"),
+			pausedSFSymbolName: "bird",
+			playingSFSymbolName: "bird.fill"),
 		Avatar(
-			pausedImageName: "fish",
-			playingImageName: "fish.fill"),
+			pausedSFSymbolName: "fish",
+			playingSFSymbolName: "fish.fill"),
 		Avatar(
-			pausedImageName: "sailboat",
-			playingImageName: "sailboat.fill"),
+			pausedSFSymbolName: "sailboat",
+			playingSFSymbolName: "sailboat.fill"),
 		Avatar(
-			pausedImageName: "beach.umbrella",
-			playingImageName: "beach.umbrella.fill"),
+			pausedSFSymbolName: "beach.umbrella",
+			playingSFSymbolName: "beach.umbrella.fill"),
 	]
 }

@@ -8,7 +8,9 @@
 import Foundation
 
 extension Notification.Name {
-	static let userUpdatedDatabase = Self("user updated database")
+	static var userUpdatedDatabase: Self {
+		Self("user updated database")
+	}
 }
 
 extension LibraryTVC: TapeDeckReflecting {
