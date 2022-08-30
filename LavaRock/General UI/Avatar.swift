@@ -19,34 +19,21 @@ struct Avatar {
 		pausedImageName: "speaker.fill",
 		playingImageName: "speaker.wave.2.fill")
 	
-	static let all: [Self] = {
-		if #available(iOS 16, *) {
-			return [
-				Avatar(
-					pausedImageName: "speaker.fill",
-					playingImageName: "speaker.wave.2.fill"),
-				Avatar(
-					pausedImageName: "bird",
-					playingImageName: "bird.fill"),
-				Avatar(
-					pausedImageName: "fish",
-					playingImageName: "fish.fill"),
-				Avatar(
-					pausedImageName: "sailboat",
-					playingImageName: "sailboat.fill"),
-				Avatar(
-					pausedImageName: "beach.umbrella",
-					playingImageName: "beach.umbrella.fill"),
-			]
-		} else {
-			return [
-				Avatar(
-					pausedImageName: "speaker.fill",
-					playingImageName: "speaker.wave.2.fill"),
-				Avatar(
-					pausedImageName: "hifispeaker",
-					playingImageName: "hifispeaker.fill"),
-			]
-		}
-	}()
+	static let all: [Self] = [
+		Avatar(
+			pausedImageName: "speaker.fill",
+			playingImageName: "speaker.wave.2.fill"),
+		Avatar(
+			pausedImageName: "bird",
+			playingImageName: "bird.fill"),
+		Avatar(
+			pausedImageName: "fish",
+			playingImageName: "fish.fill"),
+		Avatar(
+			pausedImageName: "sailboat",
+			playingImageName: "sailboat.fill"),
+		Avatar(
+			pausedImageName: "beach.umbrella",
+			playingImageName: "beach.umbrella.fill"),
+	]
 }

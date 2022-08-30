@@ -22,11 +22,7 @@ final class MainToolbar {
 			title: LRString.previousTrack,
 			image: {
 				if Enabling.inAppPlayer {
-					if #available(iOS 16, *) {
-						return UIImage(systemName: "backward.end.circle")
-					} else {
-						return UIImage(systemName: "arrow.backward.circle")
-					}
+					return UIImage(systemName: "backward.end.circle")
 				} else {
 					return UIImage(systemName: "arrow.backward.circle")
 				}
@@ -75,11 +71,7 @@ final class MainToolbar {
 			title: LRString.nextTrack,
 			image: {
 				if Enabling.inAppPlayer {
-					if #available(iOS 16, *) {
-						return UIImage(systemName: "forward.end.circle")
-					} else {
-						return UIImage(systemName: "arrow.forward.circle")
-					}
+					return UIImage(systemName: "forward.end.circle")
 				} else {
 					return UIImage(systemName: "arrow.forward.circle")
 				}

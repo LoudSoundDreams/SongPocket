@@ -88,13 +88,8 @@ struct TransportPanel: View {
 		Button {
 			player?.skipToPreviousItem()
 		} label: {
-			if #available(iOS 16, *) {
-				Image(systemName: "backward.end.circle")
-					.font(.system(size: .eight * 4))
-			} else {
-				Image(systemName: "arrow.backward.circle")
-					.font(.system(size: .eight * 4))
-			}
+			Image(systemName: "backward.end.circle")
+				.font(.system(size: .eight * 4))
 		}
 		.disabled(whenNil: tapeDeckDisplay.status)
 	}
@@ -153,13 +148,8 @@ struct TransportPanel: View {
 		Button {
 			player?.skipToNextItem()
 		} label: {
-			if #available(iOS 16, *) {
-				Image(systemName: "forward.end.circle")
-					.font(.system(size: .eight * 4))
-			} else {
-				Image(systemName: "arrow.forward.circle")
-					.font(.system(size: .eight * 4))
-			}
+			Image(systemName: "forward.end.circle")
+				.font(.system(size: .eight * 4))
 		}
 		.disabled(whenNil: tapeDeckDisplay.status)
 	}
