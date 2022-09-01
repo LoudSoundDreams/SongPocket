@@ -330,12 +330,12 @@ final class SongCell: UITableViewCell {
 			presentsUpward: false,
 			groupedElements: [
 				[
-					playSongNext,
 					playSongAndBelowNext,
+					playSongNext,
 				],
 				[
-					playSongLast,
 					playSongAndBelowLast,
+					playSongLast,
 				],
 			]
 		)
