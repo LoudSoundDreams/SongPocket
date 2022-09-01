@@ -58,6 +58,15 @@ final class ConsoleVC: UIViewController {
 		}
 		
 		TapeDeck.shared.addReflector(weakly: self)
+		
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(user_changed_avatar),
+			name: .user_changed_avatar,
+			object: nil)
+	}
+	@objc private func user_changed_avatar() {
+		reflectPlayhead_console()
 	}
 	
 	static func rowContainsPlayhead(at indexPath: IndexPath) -> Bool {

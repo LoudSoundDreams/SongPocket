@@ -98,6 +98,11 @@ class LibraryTVC: UITableViewController {
 			selector: #selector(mergedChanges),
 			name: .mergedChanges,
 			object: nil)
+		NotificationCenter.default.addObserverOnce(
+			self,
+			selector: #selector(user_changed_avatar),
+			name: .user_changed_avatar,
+			object: nil)
 		
 		reflectViewContainer()
 		if #available(iOS 16.0, *) {
@@ -107,6 +112,9 @@ class LibraryTVC: UITableViewController {
 	}
 	@objc private func mergedChanges() {
 		reflectDatabase()
+	}
+	@objc private func user_changed_avatar() {
+		reflectPlayhead_library()
 	}
 	
 	final func reflectViewContainer() {

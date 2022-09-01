@@ -31,7 +31,7 @@ extension _PlayheadReflectable {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = UIImage(systemName: "speaker.wave.2.fill")
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.current.playingSFSymbolName)
 		
 		let speakerImage: UIImage?
 		let headOfAccessibilityLabel: String?
@@ -49,7 +49,7 @@ extension _PlayheadReflectable {
 			headOfAccessibilityLabel = nil
 			return
 		}
-		speakerImage = UIImage(systemName: "speaker.fill")
+		speakerImage = UIImage(systemName: Avatar.current.pausedSFSymbolName)
 		headOfAccessibilityLabel = LRString.paused
 #else
 		guard
@@ -61,10 +61,10 @@ extension _PlayheadReflectable {
 			return
 		}
 		if player.playbackState == .playing {
-			speakerImage = UIImage(systemName: "speaker.wave.2.fill")
+			speakerImage = UIImage(systemName: Avatar.current.playingSFSymbolName)
 			headOfAccessibilityLabel = LRString.nowPlaying
 		} else {
-			speakerImage = UIImage(systemName: "speaker.fill")
+			speakerImage = UIImage(systemName: Avatar.current.pausedSFSymbolName)
 			headOfAccessibilityLabel = LRString.paused
 		}
 #endif

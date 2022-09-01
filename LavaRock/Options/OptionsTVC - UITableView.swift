@@ -10,6 +10,7 @@ import UIKit
 extension OptionsTVC {
 	private enum Section: Int, CaseIterable {
 		case theme
+		case avatar
 		case tipJar
 	}
 	
@@ -42,6 +43,8 @@ extension OptionsTVC {
 		switch sectionCase {
 		case .theme:
 			return Self.indexPathsOfLightingRows.count + AccentColor.allCases.count
+		case .avatar:
+			return 1
 		case .tipJar:
 			return 1
 		}
@@ -59,6 +62,8 @@ extension OptionsTVC {
 		switch sectionCase {
 		case .theme:
 			return LRString.theme
+		case .avatar:
+			return LRString.avatar
 		case .tipJar:
 			return LRString.tipJar
 		}
@@ -73,6 +78,8 @@ extension OptionsTVC {
 		}
 		switch sectionCase {
 		case .theme:
+			return nil
+		case .avatar:
 			return nil
 		case .tipJar:
 			return LRString.tipJarFooter
@@ -95,6 +102,10 @@ extension OptionsTVC {
 			} else {
 				return accentColorCell(forRowAt: indexPath)
 			}
+		case .avatar:
+			return tableView.dequeueReusableCell(
+				withIdentifier: "Avatar",
+				for: indexPath) as? AvatarCell ?? UITableViewCell()
 		case .tipJar:
 			return tipJarCell(forRowAt: indexPath)
 		}
@@ -116,6 +127,8 @@ extension OptionsTVC {
 			} else {
 				return indexPath
 			}
+		case .avatar:
+			return nil
 		case .tipJar:
 			return indexPath
 		}
@@ -134,6 +147,8 @@ extension OptionsTVC {
 			} else {
 				didSelectAccentColorRow(at: indexPath)
 			}
+		case .avatar: // Should never run
+			tableView.deselectRow(at: indexPath, animated: true)
 		case .tipJar:
 			didSelectTipJarRow(at: indexPath)
 		}
