@@ -8,7 +8,7 @@
 import Foundation
 
 extension Notification.Name {
-	static var userChangedAvatar: Self {
+	static var user_changed_avatar: Self {
 		Self("user changed avatar")
 	}
 }

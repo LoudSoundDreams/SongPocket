@@ -31,6 +31,8 @@ extension _PlayheadReflectable {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
+		spacerSpeakerImageView.image = UIImage(systemName: "speaker.wave.2.fill")
+		
 		let speakerImage: UIImage?
 		let headOfAccessibilityLabel: String?
 		defer {

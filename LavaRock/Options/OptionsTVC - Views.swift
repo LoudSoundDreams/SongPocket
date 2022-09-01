@@ -66,7 +66,7 @@ final class AvatarChooser: UISegmentedControl {
 					Avatar.current = avatar
 					// TO DO: Save
 					NotificationCenter.default.post(
-						name: .userChangedAvatar,
+						name: .user_changed_avatar,
 						object: nil)
 				},
 				at: numberOfSegments,
