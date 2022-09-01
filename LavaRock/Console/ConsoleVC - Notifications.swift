@@ -20,10 +20,10 @@ extension ConsoleVC {
 	// MARK: - Player
 	
 	func reflectPlayhead_console() {
-		reelTable.visibleIndexPaths.forEach { visibleIndexPath in
-			guard let cell = reelTable.cellForRow(at: visibleIndexPath) as? PlayheadReflectable else { return }
+		reelTable.allIndexPaths().forEach { indexPath in
+			guard let cell = reelTable.cellForRow(at: indexPath) as? PlayheadReflectable else { return }
 			cell.reflectPlayhead(
-				containsPlayhead: Self.rowContainsPlayhead(at: visibleIndexPath),
+				containsPlayhead: Self.rowContainsPlayhead(at: indexPath),
 				bodyOfAccessibilityLabel: cell.bodyOfAccessibilityLabel)
 		}
 	}

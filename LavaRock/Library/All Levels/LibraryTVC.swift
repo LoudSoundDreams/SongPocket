@@ -324,11 +324,11 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Player
 	
 	final func reflectPlayhead_library() {
-		tableView.visibleIndexPaths.forEach { visibleIndexPath in
-			guard let cell = tableView.cellForRow(at: visibleIndexPath) as? PlayheadReflectable else { return }
+		tableView.allIndexPaths().forEach { indexPath in
+			guard let cell = tableView.cellForRow(at: indexPath) as? PlayheadReflectable else { return }
 			cell.reflectPlayhead(
 				containsPlayhead: {
-					guard let libraryItem = viewModel.itemOptional(at: visibleIndexPath) as? LibraryItem else {
+					guard let libraryItem = viewModel.itemOptional(at: indexPath) as? LibraryItem else {
 						return false
 					}
 					return libraryItem.containsPlayhead()
