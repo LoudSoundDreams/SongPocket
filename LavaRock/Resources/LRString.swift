@@ -58,7 +58,7 @@ struct LRString {
 	static let blueberry = NSLocalizedString("Blueberry", comment: "Accent color")
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	
-	static let avatar = NSLocalizedString("Now Playing Icon", comment: "Section header")
+	static let avatar = NSLocalizedString("Now-Playing Icon", comment: "Section header")
 	
 	static let tipJar = NSLocalizedString("Tip Jar", comment: "Section header")
 	static let reload = NSLocalizedString("Reload", comment: "Button")
