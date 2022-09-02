@@ -15,6 +15,9 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	// First used in version 1.0
 	case accentColor = "accentColorName"
 	
-	// Last used in version 1.7
-	case shouldExplainQueueAction = "shouldExplainQueueAction"
+	// MARK: - Deprecated
+	/*
+	 // Last used in version 1.7
+	 case shouldExplainQueueAction = "shouldExplainQueueAction"
+	 */
 }
