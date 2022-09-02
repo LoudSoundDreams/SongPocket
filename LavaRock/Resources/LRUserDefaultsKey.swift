@@ -6,10 +6,14 @@
 //
 
 enum LRUserDefaultsKey: String, CaseIterable {
+	// First used in version 1.6
 	case lighting = "appearance"
-	case accentColor = "accentColorName"
 	
+	// First used in version ?
 	case hasEverImportedFromMusic = "hasEverImportedFromMusic"
+	
+	// First used in version 1.0
+	case accentColor = "accentColorName"
 	
 	// Last used in version 1.7
 	case shouldExplainQueueAction = "shouldExplainQueueAction"
