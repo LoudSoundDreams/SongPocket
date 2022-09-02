@@ -6,6 +6,9 @@
 //
 
 enum LRUserDefaultsKey: String, CaseIterable {
+	// First used in version 1.8
+	case avatar = "nowPlayingIcon"
+	
 	// First used in version 1.6
 	case lighting = "appearance"
 	

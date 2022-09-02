@@ -64,15 +64,13 @@ final class AvatarChooser: UISegmentedControl {
 					}()
 				) { _ in
 					Avatar.current = avatar
-					// TO DO: Save
-					NotificationCenter.default.post(
-						name: .user_changed_avatar,
-						object: nil)
 				},
 				at: numberOfSegments,
 				animated: false)
 		}
-		selectedSegmentIndex = 0 // TO DO: Load
+		selectedSegmentIndex = Avatar.all.firstIndex { availableAvatar in
+			Avatar.current == availableAvatar
+		}!
 	}
 }
 
