@@ -17,6 +17,9 @@ struct Avatar {
 	let pausedSFSymbolName: String
 	let playingSFSymbolName: String
 	let persistentValue: String
+	var displayName: String {
+		return persistentValue
+	}
 	
 	static let all: [Self] = [
 		Self.speaker,

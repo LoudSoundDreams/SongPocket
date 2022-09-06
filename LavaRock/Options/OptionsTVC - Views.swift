@@ -59,7 +59,7 @@ final class AvatarChooser: UISegmentedControl {
 				action: UIAction(
 					image: {
 						let image = UIImage(systemName: avatar.playingSFSymbolName)
-						image?.accessibilityLabel = nil // TO DO
+						image?.accessibilityLabel = avatar.displayName
 						return image
 					}()
 				) { _ in
