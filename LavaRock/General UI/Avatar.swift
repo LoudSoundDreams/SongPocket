@@ -16,42 +16,42 @@ extension Notification.Name {
 struct Avatar {
 	let pausedSFSymbolName: String
 	let playingSFSymbolName: String
-	let value: String
+	let persistentValue: String
 	
 	static let all: [Self] = [
 		Self.speaker,
 		Avatar(
 			pausedSFSymbolName: "bird",
 			playingSFSymbolName: "bird.fill",
-			value: "Bird"),
+			persistentValue: "Bird"),
 		Avatar(
 			pausedSFSymbolName: "fish",
 			playingSFSymbolName: "fish.fill",
-			value: "Fish"),
+			persistentValue: "Fish"),
 		Avatar(
 			pausedSFSymbolName: "sailboat",
 			playingSFSymbolName: "sailboat.fill",
-			value: "Sailboat"),
+			persistentValue: "Sailboat"),
 		Avatar(
 			pausedSFSymbolName: "beach.umbrella",
 			playingSFSymbolName: "beach.umbrella.fill",
-			value: "Beach umbrella"),
+			persistentValue: "Beach umbrella"),
 	]
 	private static var speaker: Self = Avatar(
 		pausedSFSymbolName: "speaker.fill",
 		playingSFSymbolName: "speaker.wave.2.fill",
-		value: "Speaker")
+		persistentValue: "Speaker")
 	
 	static var current: Self {
 		get {
-			defaults.register(defaults: [key: speaker.value])
-			let savedValue = defaults.string(forKey: key)
+			defaults.register(defaults: [persistentKey: speaker.persistentValue])
+			let savedValue = defaults.string(forKey: persistentKey)
 			return all.first { availableAvatar in
-				savedValue == availableAvatar.value
+				savedValue == availableAvatar.persistentValue
 			}!
 		}
 		set {
-			defaults.set(newValue.value, forKey: key)
+			defaults.set(newValue.persistentValue, forKey: persistentKey)
 			
 			NotificationCenter.default.post(
 				name: .user_changed_avatar,
@@ -59,6 +59,6 @@ struct Avatar {
 		}
 	}
 	private static let defaults: UserDefaults = .standard
-	private static let key: String = LRUserDefaultsKey.avatar.rawValue
+	private static let persistentKey: String = LRUserDefaultsKey.avatar.rawValue
 }
 extension Avatar: Equatable {}
