@@ -63,17 +63,9 @@ struct LRString {
 	static let tipJar = NSLocalizedString("Tip Jar", comment: "Section header")
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
-	static var tipJarFooter: String {
-		if UIAccessibility.isVoiceOverRunning {
-			return NSLocalizedString(
-				"Songpocket \(LRString.interpunct) made with love",
-				comment: "Section footer")
-		} else {
-			return NSLocalizedString(
-				"Songpocket • made with love",
-				comment: "Section footer")
-		}
-	}
+	static let tipJarFooter = NSLocalizedString(
+		"Consider tipping when I add features you like! Thank you for using Songpocket.",
+		comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(
 		" Thank You! ",
 		comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
