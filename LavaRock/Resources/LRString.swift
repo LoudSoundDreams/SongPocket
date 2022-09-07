@@ -26,7 +26,7 @@ struct LRString {
 	static let more = NSLocalizedString("More", comment: "Button")
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
-	static let interpunct = NSLocalizedString("·", comment: "Separator between pieces of information")
+	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
 	
 	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "Status message")
 	
@@ -74,7 +74,9 @@ struct LRString {
 				comment: "Section footer")
 		}
 	}
-	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(" Thank You! ", comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
+	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(
+		" Thank You! ",
+		comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
 	// MARK: Transport Bar
 	
