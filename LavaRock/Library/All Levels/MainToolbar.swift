@@ -83,7 +83,7 @@ final class MainToolbar {
 		return button
 	}()
 	
-	private let open_Music_button: UIBarButtonItem = .open_Music_button()
+	private let open_Music_button: UIBarButtonItem = .make_open_Music()
 	
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.inAppPlayer {

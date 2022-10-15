@@ -38,7 +38,7 @@ class LibraryTVC: UITableViewController {
 		]
 		if Enabling.iconsInNavigationBar {
 			result.append(
-				UIBarButtonItem.open_Music_button()
+				UIBarButtonItem.make_open_Music()
 			)
 		}
 		return result

@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIBarButtonItem {
-	static func open_Music_button() -> UIBarButtonItem {
+	static func make_open_Music() -> UIBarButtonItem {
 		return UIBarButtonItem(
 			title: LRString.openMusic,
 			image: UIImage(systemName: "arrow.up.forward.app"),
