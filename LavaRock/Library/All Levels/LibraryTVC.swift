@@ -36,11 +36,6 @@ class LibraryTVC: UITableViewController {
 		var result = [
 			editButtonItem,
 		]
-		if Enabling.iconsInNavigationBar {
-			result.append(
-				UIBarButtonItem.make_open_Music()
-			)
-		}
 		return result
 	}()
 	final lazy var editingModeTopRightButtons: [UIBarButtonItem] = [

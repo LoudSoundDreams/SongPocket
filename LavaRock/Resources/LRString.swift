@@ -72,13 +72,13 @@ struct LRString {
 	
 	// MARK: Transport Bar
 	
-	static let previousTrack = NSLocalizedString("Previous track", comment: "Accessibility label, button")
-	static let restart = NSLocalizedString("Restart", comment: "Accessibility label, button")
+	static let previous = NSLocalizedString("Previous", comment: "Button")
+	static let restart = NSLocalizedString("Restart", comment: "Button")
 	static let skip10SecondsBackwards = NSLocalizedString("Skip 10 seconds backwards", comment: "Accessibility label, button")
 	static let play = NSLocalizedString("Play", comment: "Accessibility label, button")
 	static let pause = NSLocalizedString("Pause", comment: "Accessibility label, button")
 	static let skip10SecondsForward = NSLocalizedString("Skip 10 seconds forward", comment: "Accessibility label, button")
-	static let nextTrack = NSLocalizedString("Next track", comment: "Accessibility label, button")
+	static let next = NSLocalizedString("Next", comment: "Button")
 	
 	// MARK: “Now Playing” Indicator
 	

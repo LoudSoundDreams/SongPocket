@@ -19,7 +19,7 @@ final class MainToolbar {
 	
 	private lazy var previousButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			title: LRString.previousTrack,
+			title: LRString.previous,
 			image: {
 				if Enabling.inAppPlayer {
 					return UIImage(systemName: "backward.end.circle")
@@ -33,6 +33,7 @@ final class MainToolbar {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
+	
 	private lazy var rewindButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.restart,
@@ -43,6 +44,7 @@ final class MainToolbar {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
+	
 	private lazy var skipBackButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.skip10SecondsBackwards,
@@ -66,9 +68,10 @@ final class MainToolbar {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
+	
 	private lazy var nextButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			title: LRString.nextTrack,
+			title: LRString.next,
 			image: {
 				if Enabling.inAppPlayer {
 					return UIImage(systemName: "forward.end.circle")
