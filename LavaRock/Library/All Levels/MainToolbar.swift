@@ -15,7 +15,7 @@ import MediaPlayer
 final class MainToolbar {
 	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
-	private let moreButton: UIBarButtonItem
+	private let showConsoleButton: UIBarButtonItem
 	
 	private lazy var previousButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -88,7 +88,7 @@ final class MainToolbar {
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.inAppPlayer {
 			return [
-				moreButton,
+				showConsoleButton,
 				.flexibleSpace(),
 				skipBackButton,
 				.flexibleSpace(),
@@ -114,11 +114,11 @@ final class MainToolbar {
 	}
 	
 	init(
-		moreButtonAction: UIAction
+		showConsoleAction: UIAction
 	) {
-		moreButton = UIBarButtonItem(
+		showConsoleButton = UIBarButtonItem(
 			title: LRString.more,
-			primaryAction: moreButtonAction)
+			primaryAction: showConsoleAction)
 		
 		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
@@ -133,8 +133,8 @@ final class MainToolbar {
 		freshen()
 	}
 	
-//	private static let moreButtonDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
-	private static let moreButtonDefaultImage = UIImage(systemName: "chevron.up.circle")!
+//	private static let showConsoleButtonDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
+	private static let showConsoleButtonDefaultImage = UIImage(systemName: "chevron.up.circle")!
 	private func freshen() {
 		
 		func configurePlayButton() {
@@ -153,29 +153,29 @@ final class MainToolbar {
 		else {
 			configurePlayButton()
 			
-			moreButton.image = Self.moreButtonDefaultImage
+			showConsoleButton.image = Self.showConsoleButtonDefaultImage
 			
 			// Enable or disable each button as appropriate
 			buttons_array.forEach {
 				$0.disableWithAccessibilityTrait()
 			}
 			open_Music_button.enableWithAccessibilityTrait()
-			moreButton.enableWithAccessibilityTrait()
+			showConsoleButton.enableWithAccessibilityTrait()
 			return
 		}
 		
-		moreButton.image = {
+		showConsoleButton.image = {
 			switch player.repeatMode {
 			case .default:
-				return Self.moreButtonDefaultImage
+				return Self.showConsoleButtonDefaultImage
 			case .none:
-				return Self.moreButtonDefaultImage
+				return Self.showConsoleButtonDefaultImage
 			case .one:
 				return UIImage(systemName: "repeat.1.circle.fill")!
 			case .all:
 				return UIImage(systemName: "repeat.circle.fill")!
 			@unknown default:
-				return Self.moreButtonDefaultImage
+				return Self.showConsoleButtonDefaultImage
 			}
 		}()
 		

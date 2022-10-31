@@ -12,7 +12,7 @@ final class LibraryNC: UINavigationController {
 	var needsOverrideThemeInWindow = false
 	
 	lazy var mainToolbar = MainToolbar(
-		moreButtonAction: UIAction { [weak self] _ in
+		showConsoleAction: UIAction { [weak self] _ in
 			guard let self = self else { return }
 			if Enabling.swiftUI__console {
 				self.present(self.consoleViewHost, animated: true)
