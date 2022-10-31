@@ -17,31 +17,66 @@ final class MainToolbar {
 	
 	private let showConsoleButton: UIBarButtonItem
 	
-	private lazy var previousButton: UIBarButtonItem = {
+	private lazy var moreButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			title: LRString.previous,
-			image: {
-				if Enabling.inAppPlayer {
-					return UIImage(systemName: "backward.end.circle")
-				} else {
-					return UIImage(systemName: "arrow.backward.circle")
-				}
-			}(),
-			primaryAction: UIAction { _ in
-				Self.player?.skipToPreviousItem()
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	
-	private lazy var rewindButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.restart,
-			image: UIImage(systemName: "arrow.counterclockwise.circle"),
-			primaryAction: UIAction { _ in
-				Self.player?.skipToBeginning()
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
+			title: LRString.more,
+			image: UIImage(systemName: "ellipsis.circle"),
+			menu: UIMenu(
+				title: "",
+				presentsUpward: true,
+				groupedElements: [
+					[
+						UIAction(
+							title: LRString.openMusic,
+							image: UIImage(systemName: "arrow.up.forward.app"),
+							handler: { action in
+								UIApplication.shared.open(.music)
+							}
+						),
+					],
+					[
+						UIDeferredMenuElement.uncached({ useMenuElements in
+							let action = UIAction(
+								title: LRString.previous,
+								image: UIImage(systemName: "backward.end.circle"),
+								attributes: {
+									var result: UIMenuElement.Attributes = [
+										.keepsMenuPresented,
+									]
+									// TO DO: Disable this menu element when the player is playing the first track in the queue, or when that becomes true.
+									if Self.player == nil {
+										result.formUnion(.disabled)
+									}
+									return result
+								}(),
+								handler: { action in
+									Self.player?.skipToPreviousItem()
+								}
+							)
+							useMenuElements([action])
+						}),
+						
+						UIDeferredMenuElement.uncached({ useMenuElements in
+							let action = UIAction(
+								title: LRString.restart,
+								image: UIImage(systemName: "arrow.counterclockwise.circle"),
+								attributes: {
+									var result: UIMenuElement.Attributes = []
+									if Self.player == nil {
+										result.formUnion(.disabled)
+									}
+									return result
+								}(),
+								handler: { action in
+									Self.player?.skipToBeginning()
+								}
+							)
+							useMenuElements([action])
+						}),
+					],
+				]
+			)
+		)
 		return button
 	}()
 	
@@ -72,21 +107,13 @@ final class MainToolbar {
 	private lazy var nextButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.next,
-			image: {
-				if Enabling.inAppPlayer {
-					return UIImage(systemName: "forward.end.circle")
-				} else {
-					return UIImage(systemName: "arrow.forward.circle")
-				}
-			}(),
+			image: UIImage(systemName: "forward.end.circle"),
 			primaryAction: UIAction { _ in
 				Self.player?.skipToNextItem()
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	
-	private let open_Music_button: UIBarButtonItem = .make_open_Music()
 	
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.inAppPlayer {
@@ -103,15 +130,15 @@ final class MainToolbar {
 			]
 		} else {
 			return [
-				previousButton,
+				moreButton,
 				.flexibleSpace(),
-				rewindButton,
+				skipBackButton,
 				.flexibleSpace(),
 				playPauseButton,
 				.flexibleSpace(),
-				nextButton,
+				skipForwardButton,
 				.flexibleSpace(),
-				open_Music_button,
+				nextButton,
 			]
 		}
 	}
@@ -162,7 +189,7 @@ final class MainToolbar {
 			buttons_array.forEach {
 				$0.disableWithAccessibilityTrait()
 			}
-			open_Music_button.enableWithAccessibilityTrait()
+			moreButton.enableWithAccessibilityTrait()
 			showConsoleButton.enableWithAccessibilityTrait()
 			return
 		}

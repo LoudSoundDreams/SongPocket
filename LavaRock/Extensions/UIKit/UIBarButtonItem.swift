@@ -8,16 +8,6 @@
 import UIKit
 
 extension UIBarButtonItem {
-	static func make_open_Music() -> UIBarButtonItem {
-		return UIBarButtonItem(
-			title: LRString.openMusic,
-			image: UIImage(systemName: "arrow.up.forward.app"),
-			primaryAction: UIAction { action in
-				UIApplication.shared.open(.music)
-			}
-		)
-	}
-	
 	// Similar to counterpart in `UITableViewCell`.
 	final func disableWithAccessibilityTrait() {
 		isEnabled = false
