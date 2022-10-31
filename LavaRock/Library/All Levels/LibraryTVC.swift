@@ -105,9 +105,6 @@ class LibraryTVC: UITableViewController {
 			object: nil)
 		
 		reflectViewContainer()
-		if #available(iOS 16.0, *) {
-			tableView.selfSizingInvalidation = .enabledIncludingConstraints
-		}
 		setUpBarButtons()
 	}
 	@objc private func mergedChanges() {
@@ -390,13 +387,10 @@ class LibraryTVC: UITableViewController {
 		
 		setBarButtons(animated: animated)
 		
-		if #available(iOS 16.0, *) {
-			// TO DO: Test in `AlbumsTVC`. As of iOS 16 developer beta 1, the animation isn’t smooth when the cover art needs to shrink or expand.
-		} else {
-			tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
-			// During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
-			// As of iOS 15.4 developer beta 1, you must do this after `super.setEditing`, not before.
-		}
+		// As of iOS 16.2 developer beta 1, we still have to do this. Also, `tableView.selfSizingInvalidation` must not be `.enabledIncludingConstraints`, or the animation breaks.
+		tableView.performBatchUpdates(nil) // Makes the cells resize themselves (expand if text has wrapped around to new lines; shrink if text has unwrapped into fewer lines). Otherwise, they’ll stay the same size until they reload some other time, like after you edit them or scroll them offscreen and back onscreen.
+		// During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
+		// As of iOS 15.4 developer beta 1, you must do this after `super.setEditing`, not before.
 	}
 	
 	// Overrides should call super (this implementation).
