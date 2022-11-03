@@ -34,6 +34,30 @@ final class MainToolbar {
 							}
 						),
 					],
+					
+					/*
+					[
+						UIAction(
+							title: LRString.repeat1,
+							image: UIImage(systemName: "repeat.1"),
+							handler: { action in
+							}
+						),
+						UIAction(
+							title: LRString.repeatAll,
+							image: UIImage(systemName: "repeat"),
+							handler: { action in
+							}
+						),
+						UIAction(
+							title: LRString.repeatOff,
+							image: UIImage(systemName: "line.diagonal"),
+							handler: { action in
+							}
+						),
+					],
+					*/
+					
 					[
 						UIDeferredMenuElement.uncached({ useMenuElements in
 							let action = UIAction(
