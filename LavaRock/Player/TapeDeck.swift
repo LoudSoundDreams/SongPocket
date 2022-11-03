@@ -36,7 +36,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 		}
 		player?.beginGeneratingPlaybackNotifications()
 		
-		reflect_playback_mode_everywhere() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `authorized`.
+		reflect_playback_mode_everywhere() // Because before anyone called `setUp`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `.authorized`.
 		reflect_now_playing_item_everywhere()
 		
 		NotificationCenter.default.addObserverOnce(

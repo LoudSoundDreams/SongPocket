@@ -203,7 +203,7 @@ final class MainToolbar {
 		
 		guard
 			let player = Self.player,
-			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty)
+			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty) // When enabling in-app player, when reel is empty, disable transport buttons.
 		else {
 			configurePlayButton()
 			
