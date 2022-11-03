@@ -162,9 +162,9 @@ struct LRString {
 	
 	static let queue = NSLocalizedString("Queue", comment: "Big title")
 	
-	static let repeat1 = NSLocalizedString("Repeat one", comment: "Accessibility label")
-	static let repeatAll = NSLocalizedString("Repeat all", comment: "Accessibility label")
-	static let repeatOff = NSLocalizedString("Repeat off", comment: "Accessibility label")
+	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
+	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")
+	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
 	
 	// MARK: - With Variables, but Without Text Variations (Format Strings)
 	
