@@ -51,7 +51,7 @@ final class MainToolbar {
 						),
 						UIAction(
 							title: LRString.repeatOff,
-							image: UIImage(systemName: "line.diagonal"),
+							image: UIImage(systemName: "minus"),
 							handler: { action in
 							}
 						),
