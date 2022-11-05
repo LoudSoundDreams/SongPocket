@@ -328,7 +328,7 @@ final class SongCell: UITableViewCell {
 		menu = UIMenu(
 			title: "",
 			presentsUpward: false,
-			groupedElements: [
+			menuElementGroups: [
 				[
 					playSongAndBelowNext,
 					playSongNext,

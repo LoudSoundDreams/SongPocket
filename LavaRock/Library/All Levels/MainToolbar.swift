@@ -20,11 +20,11 @@ final class MainToolbar {
 	private lazy var moreButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.more,
-			image: UIImage(systemName: "ellipsis.circle"),
+			image: Self.more_button_default_image,
 			menu: UIMenu(
 				title: "",
 				presentsUpward: true,
-				groupedElements: [
+				menuElementGroups: [
 					[
 						UIAction(
 							title: LRString.openMusic,
@@ -189,6 +189,7 @@ final class MainToolbar {
 	
 //	private static let showConsoleButtonDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
 	private static let showConsoleButtonDefaultImage = UIImage(systemName: "chevron.up.circle")!
+	private static let more_button_default_image = UIImage(systemName: "ellipsis.circle")!
 	private func freshen() {
 		
 		func configurePlayButton() {
@@ -220,14 +221,15 @@ final class MainToolbar {
 		
 		showConsoleButton.image = {
 			switch player.repeatMode {
-			case .default:
-				return Self.showConsoleButtonDefaultImage
-			case .none:
-				return Self.showConsoleButtonDefaultImage
 			case .one:
 				return UIImage(systemName: "repeat.1.circle.fill")!
 			case .all:
 				return UIImage(systemName: "repeat.circle.fill")!
+			case
+					.default,
+					.none
+				:
+				return Self.showConsoleButtonDefaultImage
 			@unknown default:
 				return Self.showConsoleButtonDefaultImage
 			}

@@ -11,18 +11,18 @@ extension UIMenu {
 	convenience init(
 		title: String,
 		presentsUpward: Bool, // As of iOS 14.7 developer beta 2, when you present a `UIMenu` from lower down on the screen, the `UIMenu` shows its children from the bottom upward. Call this with `presentUpward: true` to reverse all the actions.
-		groupedElements: [[UIMenuElement]]
+		menuElementGroups: [[UIMenuElement]]
 	) {
 		let groupedElementsReordered: [[UIMenuElement]] = {
 			if presentsUpward {
-				var groupedElements = groupedElements
-				groupedElements.reverse()
-				groupedElements.indices.forEach {
-					groupedElements[$0].reverse()
+				var groups = menuElementGroups
+				groups.reverse()
+				groups.indices.forEach {
+					groups[$0].reverse()
 				}
-				return groupedElements
+				return groups
 			} else {
-				return groupedElements
+				return menuElementGroups
 			}}()
 		
 		let submenus = groupedElementsReordered.map { groupOfElements in
