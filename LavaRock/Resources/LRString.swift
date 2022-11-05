@@ -23,6 +23,7 @@ struct LRString {
 	static let save = NSLocalizedString("Save", comment: "Button")
 	static let done = NSLocalizedString("Done", comment: "Button")
 	static let ok = NSLocalizedString("OK", comment: "Button")
+	static let off = NSLocalizedString("Off", comment: "Button")
 	static let more = NSLocalizedString("More", comment: "Button")
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
@@ -161,6 +162,10 @@ struct LRString {
 	static let clear = NSLocalizedString("Clear", comment: "Button")
 	
 	static let queue = NSLocalizedString("Queue", comment: "Big title")
+	
+	static let repeat_button = NSLocalizedString("Repeat", comment: "Button")
+	static let all_repeatMode = NSLocalizedString("All", comment: "Repeat mode")
+	static let one_repeatMode = NSLocalizedString("One", comment: "Repeat mode")
 	
 	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
 	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")

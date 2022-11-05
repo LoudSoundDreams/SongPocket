@@ -35,37 +35,63 @@ final class MainToolbar {
 						),
 					],
 					
-					/*
 					[
 						UIMenu(
 							title: LRString.repeat_button,
 							options: [
 								.displayInline,
-								.singleSelection,
 							],
 							children: [
-								UIAction(
-									title: LRString.off,
-									image: UIImage(systemName: "minus"),
-									handler: { action in
-									}
-								),
-								UIAction(
-									title: LRString.all_repeatMode,
-									image: UIImage(systemName: "repeat"),
-									handler: { action in
-									}
-								),
-								UIAction(
-									title: LRString.one_repeatMode,
-									image: UIImage(systemName: "repeat.1"),
-									handler: { action in
-									}
-								),
+								UIDeferredMenuElement.uncached({ useMenuElements in
+									let action = UIAction(
+										title: LRString.off,
+										image: UIImage(systemName: "minus"),
+										state: (
+											Self.player?.repeatMode == MPMusicRepeatMode.none
+											? .on
+											: .off
+										),
+										handler: { action in
+											Self.player?.repeatMode = .none
+										}
+									)
+									useMenuElements([action])
+								}),
+								
+								UIDeferredMenuElement.uncached({ useMenuElements in
+									let action = UIAction(
+										title: LRString.all_repeatMode,
+										image: UIImage(systemName: "repeat"),
+										state: (
+											Self.player?.repeatMode == .all
+											? .on
+											: .off
+										),
+										handler: { action in
+											Self.player?.repeatMode = .all
+										}
+									)
+									useMenuElements([action])
+								}),
+								
+								UIDeferredMenuElement.uncached({ useMenuElements in
+									let action = UIAction(
+										title: LRString.one_repeatMode,
+										image: UIImage(systemName: "repeat.1"),
+										state: (
+											Self.player?.repeatMode == .one
+											? .on
+											: .off
+										),
+										handler: { action in
+											Self.player?.repeatMode = .one
+										}
+									)
+									useMenuElements([action])
+								}),
 							]
 						),
 					],
-					*/
 					
 					[
 						UIDeferredMenuElement.uncached({ useMenuElements in
