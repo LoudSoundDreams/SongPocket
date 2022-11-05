@@ -37,23 +37,32 @@ final class MainToolbar {
 					
 					/*
 					[
-						UIAction(
-							title: LRString.repeat1,
-							image: UIImage(systemName: "repeat.1"),
-							handler: { action in
-							}
-						),
-						UIAction(
-							title: LRString.repeatAll,
-							image: UIImage(systemName: "repeat"),
-							handler: { action in
-							}
-						),
-						UIAction(
-							title: LRString.repeatOff,
-							image: UIImage(systemName: "minus"),
-							handler: { action in
-							}
+						UIMenu(
+							title: LRString.repeat_button,
+							options: [
+								.displayInline,
+								.singleSelection,
+							],
+							children: [
+								UIAction(
+									title: LRString.off,
+									image: UIImage(systemName: "minus"),
+									handler: { action in
+									}
+								),
+								UIAction(
+									title: LRString.all_repeatMode,
+									image: UIImage(systemName: "repeat"),
+									handler: { action in
+									}
+								),
+								UIAction(
+									title: LRString.one_repeatMode,
+									image: UIImage(systemName: "repeat.1"),
+									handler: { action in
+									}
+								),
+							]
 						),
 					],
 					*/
