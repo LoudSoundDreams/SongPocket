@@ -248,6 +248,36 @@ final class MainToolbar {
 	private static let more_button_default_image = UIImage(systemName: "ellipsis.circle")!
 	private func freshen() {
 		
+		/*
+		func freshen_more_button() {
+			let new_image: UIImage
+			defer {
+				moreButton.image = new_image
+			}
+			guard let player = Self.player else {
+				// Configure ellipsis icon
+				new_image = Self.more_button_default_image
+				return
+			}
+			new_image = {
+				switch player.repeatMode {
+				case .one:
+					return UIImage(systemName: "repeat.1.circle.fill")!
+				case .all:
+					return UIImage(systemName: "repeat.circle.fill")!
+				case
+						.default,
+						.none // TO DO: When the user first grants access to Music, Media Player incorrectly returns `.none`.
+					:
+					return Self.more_button_default_image
+				@unknown default:
+					return Self.more_button_default_image
+				}
+			}()
+		}
+		freshen_more_button()
+		*/
+		
 		func configurePlayButton() {
 			playPauseButton.title = LRString.play
 			playPauseButton.primaryAction = UIAction(
