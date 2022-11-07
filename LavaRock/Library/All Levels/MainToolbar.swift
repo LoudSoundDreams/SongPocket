@@ -46,6 +46,13 @@ final class MainToolbar {
 									let action = UIAction(
 										title: LRString.one_repeatMode,
 										image: UIImage(systemName: "repeat.1"),
+										attributes: {
+											var result: UIMenuElement.Attributes = []
+											if Self.player == nil {
+												result.formUnion(.disabled)
+											}
+											return result
+										}(),
 										state: (
 											Self.player?.repeatMode == .one
 											? .on
@@ -62,6 +69,13 @@ final class MainToolbar {
 									let action = UIAction(
 										title: LRString.all_repeatMode,
 										image: UIImage(systemName: "repeat"),
+										attributes: {
+											var result: UIMenuElement.Attributes = []
+											if Self.player == nil {
+												result.formUnion(.disabled)
+											}
+											return result
+										}(),
 										state: (
 											Self.player?.repeatMode == .all
 											? .on
@@ -78,8 +92,15 @@ final class MainToolbar {
 									let action = UIAction(
 										title: LRString.off,
 										image: UIImage(systemName: "minus"),
+										attributes: {
+											var result: UIMenuElement.Attributes = []
+											if Self.player == nil {
+												result.formUnion(.disabled)
+											}
+											return result
+										}(),
 										state: (
-											Self.player?.repeatMode == MPMusicRepeatMode.none
+											(Self.player == nil) || (Self.player?.repeatMode == MPMusicRepeatMode.none)
 											? .on
 											: .off
 										),
