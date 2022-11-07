@@ -44,15 +44,15 @@ final class MainToolbar {
 							children: [
 								UIDeferredMenuElement.uncached({ useMenuElements in
 									let action = UIAction(
-										title: LRString.off,
-										image: UIImage(systemName: "minus"),
+										title: LRString.one_repeatMode,
+										image: UIImage(systemName: "repeat.1"),
 										state: (
-											Self.player?.repeatMode == MPMusicRepeatMode.none
+											Self.player?.repeatMode == .one
 											? .on
 											: .off
 										),
 										handler: { action in
-											Self.player?.repeatMode = .none
+											Self.player?.repeatMode = .one
 										}
 									)
 									useMenuElements([action])
@@ -76,15 +76,15 @@ final class MainToolbar {
 								
 								UIDeferredMenuElement.uncached({ useMenuElements in
 									let action = UIAction(
-										title: LRString.one_repeatMode,
-										image: UIImage(systemName: "repeat.1"),
+										title: LRString.off,
+										image: UIImage(systemName: "minus"),
 										state: (
-											Self.player?.repeatMode == .one
+											Self.player?.repeatMode == MPMusicRepeatMode.none
 											? .on
 											: .off
 										),
 										handler: { action in
-											Self.player?.repeatMode = .one
+											Self.player?.repeatMode = .none
 										}
 									)
 									useMenuElements([action])
