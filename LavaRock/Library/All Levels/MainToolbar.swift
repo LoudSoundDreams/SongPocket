@@ -37,29 +37,36 @@ final class MainToolbar {
 					
 					[
 						UIMenu(
-							title: LRString.repeat_button,
 							options: [
 								.displayInline,
 							],
+							preferredElementSize: .small,
 							children: [
 								UIDeferredMenuElement.uncached({ useMenuElements in
 									let action = UIAction(
-										title: LRString.one_repeatMode,
-										image: UIImage(systemName: "repeat.1"),
+										title: LRString.repeatOff,
+										image: UIImage(systemName: "minus"),
 										attributes: {
 											var result: UIMenuElement.Attributes = []
-											if Self.player == nil {
+											if (Self.player == nil) || (Self.player?.repeatMode == MPMusicRepeatMode.none) {
+												// TO DO: When this mode is selected, show it as such; don’t disable it.
+												// As of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
 												result.formUnion(.disabled)
 											}
 											return result
 										}(),
-										state: (
-											Self.player?.repeatMode == .one
-											? .on
-											: .off
-										),
+										state: {
+											guard let player = Self.player else {
+												return .on // Default when disabled
+											}
+											return (
+												player.repeatMode == MPMusicRepeatMode.none
+												? .on
+												: .off
+											)
+										}(),
 										handler: { action in
-											Self.player?.repeatMode = .one
+											Self.player?.repeatMode = .none
 										}
 									)
 									useMenuElements([action])
@@ -67,20 +74,25 @@ final class MainToolbar {
 								
 								UIDeferredMenuElement.uncached({ useMenuElements in
 									let action = UIAction(
-										title: LRString.all_repeatMode,
+										title: LRString.repeatAll,
 										image: UIImage(systemName: "repeat"),
 										attributes: {
 											var result: UIMenuElement.Attributes = []
-											if Self.player == nil {
+											if (Self.player == nil) || (Self.player?.repeatMode == .all) {
 												result.formUnion(.disabled)
 											}
 											return result
 										}(),
-										state: (
-											Self.player?.repeatMode == .all
-											? .on
-											: .off
-										),
+										state: {
+											guard let player = Self.player else {
+												return .off
+											}
+											return (
+												player.repeatMode == .all
+												? .on
+												: .off
+											)
+										}(),
 										handler: { action in
 											Self.player?.repeatMode = .all
 										}
@@ -90,22 +102,27 @@ final class MainToolbar {
 								
 								UIDeferredMenuElement.uncached({ useMenuElements in
 									let action = UIAction(
-										title: LRString.off,
-										image: UIImage(systemName: "minus"),
+										title: LRString.repeat1,
+										image: UIImage(systemName: "repeat.1"),
 										attributes: {
 											var result: UIMenuElement.Attributes = []
-											if Self.player == nil {
+											if (Self.player == nil) || (Self.player?.repeatMode == .one) {
 												result.formUnion(.disabled)
 											}
 											return result
 										}(),
-										state: (
-											(Self.player == nil) || (Self.player?.repeatMode == MPMusicRepeatMode.none)
-											? .on
-											: .off
-										),
+										state: {
+											guard let player = Self.player else {
+												return .off
+											}
+											return (
+												player.repeatMode == .one
+												? .on
+												: .off
+											)
+										}(),
 										handler: { action in
-											Self.player?.repeatMode = .none
+											Self.player?.repeatMode = .one
 										}
 									)
 									useMenuElements([action])

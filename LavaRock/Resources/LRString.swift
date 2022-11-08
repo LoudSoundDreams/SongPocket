@@ -163,10 +163,6 @@ struct LRString {
 	
 	static let queue = NSLocalizedString("Queue", comment: "Big title")
 	
-	static let repeat_button = NSLocalizedString("Repeat", comment: "Button")
-	static let all_repeatMode = NSLocalizedString("All", comment: "Repeat mode")
-	static let one_repeatMode = NSLocalizedString("One", comment: "Repeat mode")
-	
 	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
 	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")
 	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
