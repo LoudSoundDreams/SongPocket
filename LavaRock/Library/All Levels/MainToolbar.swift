@@ -140,7 +140,6 @@ final class MainToolbar {
 									var result: UIMenuElement.Attributes = [
 										.keepsMenuPresented,
 									]
-									// TO DO: Disable this menu element when the player is playing the first track in the queue, or when that becomes true.
 									if Self.player == nil {
 										result.formUnion(.disabled)
 									}
