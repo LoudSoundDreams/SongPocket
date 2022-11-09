@@ -393,13 +393,6 @@ class LibraryTVC: UITableViewController {
 		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
 		
 		editButtonItem.isEnabled = !viewModel.isEmpty()
-		if Enabling.iconsInNavigationBar {
-			editButtonItem.image = (
-				isEditing
-				? UIImage(systemName: "pencil.circle.fill")
-				: UIImage(systemName: "pencil.circle")
-			)
-		}
 		
 		sortButton.isEnabled = allows_sort()
 		sortButton.menu = new_sort_options_menu()
