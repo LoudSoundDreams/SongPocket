@@ -35,6 +35,7 @@ final class MainToolbar {
 						),
 					],
 					
+					/*
 					[
 						UIMenu(
 							options: [
@@ -130,6 +131,7 @@ final class MainToolbar {
 							]
 						),
 					],
+					*/
 					
 					[
 						UIDeferredMenuElement.uncached({ useMenuElements in
@@ -264,7 +266,6 @@ final class MainToolbar {
 	private static let more_button_default_image = UIImage(systemName: "ellipsis.circle")!
 	private func freshen() {
 		
-		/*
 		func freshen_more_button() {
 			let new_image: UIImage
 			defer {
@@ -291,8 +292,7 @@ final class MainToolbar {
 				}
 			}()
 		}
-		freshen_more_button()
-		*/
+//		freshen_more_button()
 		
 		func configurePlayButton() {
 			playPauseButton.title = LRString.play
