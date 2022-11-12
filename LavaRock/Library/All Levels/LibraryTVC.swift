@@ -155,7 +155,7 @@ class LibraryTVC: UITableViewController {
 		
 		Task {
 			/*
-			 When we need to freshen, you might be in the middle of a content-dependent task. For simplicity, cancel such tasks.
+			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
 			 - Sort options (`LibraryTVC`)
 			 - “Rename Collection” dialog (`CollectionsTVC`)
 			 - “Combine Collections” dialog (`CollectionsTVC`)
@@ -163,8 +163,7 @@ class LibraryTVC: UITableViewController {
 			 - “Organize albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “organize albums” sheet)
 			 - “Move albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “move albums” sheet)
 			 - “New Collection” dialog (`CollectionsTVC` when in “move albums” sheet)
-			 - Song actions (`SongsTVC`)
-			 - (Editing mode is a special state, but freshening in editing mode is fine (with no other “breath-holding modes” presented).)
+			 - Song actions, including “more” menu (`SongsTVC`)
 			 */
 			if shouldDismissAllViewControllersBeforeFreshenLibraryItems() {
 				await view.window?.rootViewController?.dismiss__async(animated: true)

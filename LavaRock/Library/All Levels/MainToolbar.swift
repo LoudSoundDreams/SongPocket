@@ -50,8 +50,9 @@ final class MainToolbar {
 										attributes: {
 											var result: UIMenuElement.Attributes = []
 											if (Self.player == nil) || (Self.player?.repeatMode == MPMusicRepeatMode.none) {
-												// TO DO: When this mode is selected, show it as such; don’t disable it.
-												// As of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
+												// When this mode is selected, we want to show it as such, not disable it.
+												// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
+												// Disabling the selected mode is a compromise.
 												result.formUnion(.disabled)
 											}
 											return result
