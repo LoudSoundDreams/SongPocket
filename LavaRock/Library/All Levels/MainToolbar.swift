@@ -15,7 +15,7 @@ import MediaPlayer
 final class MainToolbar {
 	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
-	private let showConsoleButton: UIBarButtonItem
+	private let presentConsoleButton: UIBarButtonItem
 	
 	private lazy var moreButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -217,7 +217,7 @@ final class MainToolbar {
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.inAppPlayer {
 			return [
-				showConsoleButton,
+				presentConsoleButton,
 				.flexibleSpace(),
 				skipBackButton,
 				.flexibleSpace(),
@@ -243,11 +243,11 @@ final class MainToolbar {
 	}
 	
 	init(
-		showConsoleAction: UIAction
+		presentConsoleAction: UIAction
 	) {
-		showConsoleButton = UIBarButtonItem(
+		presentConsoleButton = UIBarButtonItem(
 			title: LRString.more,
-			primaryAction: showConsoleAction)
+			primaryAction: presentConsoleAction)
 		
 		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
@@ -311,18 +311,18 @@ final class MainToolbar {
 		else {
 			configurePlayButton()
 			
-			showConsoleButton.image = Self.showConsoleButtonDefaultImage
+			presentConsoleButton.image = Self.showConsoleButtonDefaultImage
 			
 			// Enable or disable each button as appropriate
 			buttons_array.forEach {
 				$0.disableWithAccessibilityTrait()
 			}
 			moreButton.enableWithAccessibilityTrait()
-			showConsoleButton.enableWithAccessibilityTrait()
+			presentConsoleButton.enableWithAccessibilityTrait()
 			return
 		}
 		
-		showConsoleButton.image = {
+		presentConsoleButton.image = {
 			switch player.repeatMode {
 			case .one:
 				return UIImage(systemName: "repeat.1.circle.fill")!
