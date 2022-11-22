@@ -32,7 +32,7 @@ protocol SongMetadatum {
 	func coverArt(sizeInPoints: CGSize) -> UIImage?
 }
 
-struct SongMetadatumPlaceholder {
+enum SongMetadatumPlaceholder {
 	static let unknownTitle = "—" // Em dash
 }
 

@@ -5,9 +5,7 @@
 //  Created by h on 2021-10-29.
 //
 
-struct Enabling {
-	private init() {}
-	
+enum Enabling {
 	static let sim_emptyLibrary = 10 == 1
 	
 	static let inAppPlayer = 10 == 1
@@ -20,7 +18,7 @@ struct Enabling {
 }
 
 #if targetEnvironment(simulator)
-struct Global {
+enum Global {
 	static var songID: SongID? = nil
 }
 #endif

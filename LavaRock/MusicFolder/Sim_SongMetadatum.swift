@@ -9,7 +9,7 @@
 import MediaPlayer
 import os
 
-struct Sim_AlbumIDDispenser {
+enum Sim_AlbumIDDispenser {
 	private static var nextAvailable = 1
 	static func takeNumber() -> AlbumID {
 		let result = AlbumID(nextAvailable)
@@ -17,7 +17,7 @@ struct Sim_AlbumIDDispenser {
 		return result
 	}
 }
-private struct Sim_SongIDDispenser {
+private enum Sim_SongIDDispenser {
 	private static var nextAvailable = 1
 	static func takeNumber() -> SongID {
 		let result = SongID(nextAvailable)

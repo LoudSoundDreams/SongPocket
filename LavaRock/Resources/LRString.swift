@@ -10,9 +10,7 @@ import MediaPlayer
 
 // Putting all the keys we pass to `NSLocalizedString` in one place (here) helps us keep them unique, which we must do to ensure predictable behavior.
 // It also helps us use the same phrases in multiple places if appropriate.
-struct LRString {
-	private init() {}
-	
+enum LRString {
 	// Don’t pass arguments other than strings to the Foundation function `NSLocalizedString`, because otherwise, when you choose “Export Localizations…”, Xcode won’t include those calls.
 	
 	// MARK: - Without Variables
