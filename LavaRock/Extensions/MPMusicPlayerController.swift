@@ -59,11 +59,6 @@ extension MPMusicPlayerController {
 			prepend(mediaItems)
 		}
 		
-		if Enabling.inAppPlayer {
-		} else {
-			repeatMode = .none
-		}
-		
 		// TO DO: Do we need this? (See `playLast`)
 		if playbackState != .playing {
 			prepareToPlay()
@@ -89,11 +84,6 @@ extension MPMusicPlayerController {
 		} else {
 			// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
 			append(mediaItems)
-		}
-		
-		if Enabling.inAppPlayer {
-		} else {
-			repeatMode = .none
 		}
 		
 		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
