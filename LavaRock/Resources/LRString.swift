@@ -159,6 +159,11 @@ enum LRString {
 	
 	static let queue = NSLocalizedString("Queue", comment: "Big title")
 	
+	static let repeat_Header = NSLocalizedString("Repeat", comment: "Section header")
+	static let off_Repeat_mode = NSLocalizedString("Off", comment: "Repeat mode")
+	static let all_Repeat_mode = NSLocalizedString("All", comment: "Repeat Mode")
+	static let one_Repeat_mode = NSLocalizedString("One", comment: "Repeat mode")
+	
 	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
 	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")
 	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
