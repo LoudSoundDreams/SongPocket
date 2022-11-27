@@ -35,7 +35,6 @@ final class MainToolbar {
 						),
 					],
 					
-					/*
 					[
 						UIMenu(
 							options: [
@@ -49,7 +48,9 @@ final class MainToolbar {
 										image: UIImage(systemName: "minus"),
 										attributes: {
 											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil) || (Self.player?.repeatMode == MPMusicRepeatMode.none) {
+											if (Self.player == nil)
+												|| (Self.player?.repeatMode == MPMusicRepeatMode.none)
+											{
 												// When this mode is selected, we want to show it as such, not disable it.
 												// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
 												// Disabling the selected mode is a compromise.
@@ -80,7 +81,9 @@ final class MainToolbar {
 										image: UIImage(systemName: "repeat"),
 										attributes: {
 											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil) || (Self.player?.repeatMode == .all) {
+											if (Self.player == nil)
+												|| (Self.player?.repeatMode == .all)
+											{
 												result.formUnion(.disabled)
 											}
 											return result
@@ -108,7 +111,9 @@ final class MainToolbar {
 										image: UIImage(systemName: "repeat.1"),
 										attributes: {
 											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil) || (Self.player?.repeatMode == .one) {
+											if (Self.player == nil)
+												|| (Self.player?.repeatMode == .one)
+											{
 												result.formUnion(.disabled)
 											}
 											return result
@@ -132,7 +137,6 @@ final class MainToolbar {
 							]
 						),
 					],
-					*/
 					
 					[
 						UIDeferredMenuElement.uncached({ useMenuElements in
