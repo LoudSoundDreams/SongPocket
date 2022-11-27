@@ -371,6 +371,7 @@ final class MainToolbar {
 //	private static let showConsoleButtonDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
 	private static let showConsoleButtonDefaultImage = UIImage(systemName: "chevron.up.circle")!
 	private static let more_button_default_image = UIImage(systemName: "ellipsis.circle")!
+	private var has_re_freshened_more_button = false
 	private func freshen() {
 		
 		func freshen_more_button() {
@@ -391,15 +392,26 @@ final class MainToolbar {
 					return UIImage(systemName: "repeat.circle.fill")!
 				case
 						.default,
-						.none // TO DO: When the user first grants access to Music, Media Player incorrectly returns `.none`.
+						.none
 					:
+					// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
+					// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
+					if !has_re_freshened_more_button {
+						has_re_freshened_more_button = true
+						
+						Task {
+							try await Task.sleep(nanoseconds: 0_050_000_000) // 50ms
+							
+							freshen_more_button()
+						}
+					}
 					return Self.more_button_default_image
 				@unknown default:
 					return Self.more_button_default_image
 				}
 			}()
 		}
-//		freshen_more_button()
+		freshen_more_button()
 		
 		func configurePlayButton() {
 			playPauseButton.title = LRString.play
