@@ -147,7 +147,7 @@ final class MainToolbar {
 								UIDeferredMenuElement.uncached({ useMenuElements in
 									let action = UIAction(
 										title: LRString.repeatOff,
-										image: UIImage(systemName: "minus"),
+										image: UIImage(systemName: "circlebadge"),
 										attributes: {
 											var result: UIMenuElement.Attributes = []
 											if (Self.player == nil)
