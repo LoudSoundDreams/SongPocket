@@ -3,7 +3,6 @@
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
-        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,42 +16,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Group Header" id="w3D-pZ-NSc">
-                                <rect key="frame" x="0.0" y="50" width="375" height="49"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w3D-pZ-NSc" id="08q-WV-QUF">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="lastBaseline" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="CtX-Jq-ff6">
-                                            <rect key="frame" x="20" y="11" width="335" height="27"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Placeholder Collection Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="doM-As-S4c">
-                                                    <rect key="frame" x="0.0" y="6.6666666666666696" width="279" height="20.333333333333329"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qq-eW-X1T">
-                                                    <rect key="frame" x="287" y="0.3333333333333357" width="48" height="33"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="Select"/>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="CtX-Jq-ff6" firstAttribute="trailing" secondItem="08q-WV-QUF" secondAttribute="trailingMargin" id="5af-T4-1GL"/>
-                                        <constraint firstItem="CtX-Jq-ff6" firstAttribute="top" secondItem="08q-WV-QUF" secondAttribute="topMargin" id="KK7-5W-KsP"/>
-                                        <constraint firstItem="doM-As-S4c" firstAttribute="bottom" secondItem="08q-WV-QUF" secondAttribute="bottomMargin" id="YB0-im-ubi"/>
-                                        <constraint firstItem="CtX-Jq-ff6" firstAttribute="leading" secondItem="08q-WV-QUF" secondAttribute="leadingMargin" id="nbb-FL-1Ve"/>
-                                        <constraint firstItem="CtX-Jq-ff6" firstAttribute="bottom" secondItem="08q-WV-QUF" secondAttribute="bottomMargin" id="s8v-MF-ktx"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Move Here" id="efd-C3-sWG" customClass="MoveHereCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="99" width="375" height="46.666667938232422"/>
+                                <rect key="frame" x="0.0" y="50" width="375" height="46.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="efd-C3-sWG" id="WyF-JV-Qq5">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="46.666667938232422"/>
@@ -77,7 +42,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Album" id="7XI-b6-UIz" customClass="AlbumCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="145.66666793823242" width="375" height="132.33332824707031"/>
+                                <rect key="frame" x="0.0" y="96.666667938232422" width="375" height="132.33332824707031"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7XI-b6-UIz" id="aoi-DX-wbp">
                                     <rect key="frame" x="0.0" y="0.0" width="344.66666666666669" height="132.33332824707031"/>
@@ -153,7 +118,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Albums Placeholder" rowHeight="100" id="RmC-40-dsA">
-                                <rect key="frame" x="0.0" y="277.99999618530273" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="228.99999618530273" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RmC-40-dsA" id="ENJ-uS-m8G">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
