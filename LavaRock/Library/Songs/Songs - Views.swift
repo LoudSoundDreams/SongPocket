@@ -57,7 +57,7 @@ final class AlbumInfoCell: UITableViewCell {
 		contentConfiguration = UIHostingConfiguration {
 			VStack(
 				alignment: .leading,
-				spacing: .eight * 3/4 // 6
+				spacing: .eight
 			) {
 				Text(albumTitle)
 					.font(.title2)
@@ -82,8 +82,7 @@ final class AlbumInfoCell: UITableViewCell {
 				.fontWeight(.bold)
 				.foregroundColor(.secondary)
 			}
-			.padding(.top, .eight * -1/4) // -2
-			.padding(.bottom, .eight * 1/4) // 2. Match space below `SongCell.artistLabel`.
+			.padding(.bottom, .eight * 1/2)
 		}
 	}
 	
