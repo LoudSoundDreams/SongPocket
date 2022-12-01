@@ -51,10 +51,10 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song" id="J5T-0G-4uX" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="469.0000114440918" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="469.0000114440918" width="375" height="65"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ngy-rH-NbP">
@@ -78,13 +78,13 @@
                                             </constraints>
                                         </stackView>
                                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="tortoise.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WdO-9k-h95">
-                                            <rect key="frame" x="303.66666666666669" y="27" width="25" height="13"/>
+                                            <rect key="frame" x="303.66666666666669" y="26.333333333333329" width="25" height="13"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="tortoise" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="NBN-dN-oQT">
-                                            <rect key="frame" x="303.66666666666669" y="26.666666666666661" width="25.333333333333314" height="13.333333333333339"/>
+                                            <rect key="frame" x="303.66666666666669" y="25.999999999999996" width="25.333333333333314" height="13.333333333333332"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
@@ -102,7 +102,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="950" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ASX-qJ-uK1" customClass="ExpandedTargetButton" customModule="LavaRock" customModuleProvider="target">
-                                            <rect key="frame" x="336.66666666666669" y="21.666666666666671" width="18.333333333333314" height="21"/>
+                                            <rect key="frame" x="336.66666666666669" y="21" width="18.333333333333314" height="21"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="tintColor" systemColor="labelColor"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -117,10 +117,10 @@
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="RAq-AF-bpj" secondAttribute="trailing" constant="12" id="2b4-mj-YkB"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="5VP-d8-YYb"/>
                                         <constraint firstItem="ASX-qJ-uK1" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="trailing" constant="8" symbolic="YES" id="8Vl-wx-2QL"/>
-                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="bottom" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" constant="-2" id="BBp-wO-3RZ"/>
+                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="bottom" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" constant="-3" id="BBp-wO-3RZ"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="8" symbolic="YES" id="KTq-lY-q0D"/>
                                         <constraint firstItem="NBN-dN-oQT" firstAttribute="centerY" secondItem="WdO-9k-h95" secondAttribute="centerY" id="OuF-Vy-8zh"/>
-                                        <constraint firstItem="ASX-qJ-uK1" firstAttribute="centerY" secondItem="TU5-RY-n4A" secondAttribute="centerY" id="S3I-Fz-ciH"/>
+                                        <constraint firstItem="ASX-qJ-uK1" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="S3I-Fz-ciH"/>
                                         <constraint firstItem="NBN-dN-oQT" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="leading" id="SFw-uF-mXA"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="leading" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="WRf-Sw-FoQ"/>
                                         <constraint firstItem="ASX-qJ-uK1" firstAttribute="trailing" secondItem="TU5-RY-n4A" secondAttribute="trailingMargin" id="Y4c-Zm-A8s"/>
@@ -143,7 +143,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Songs Placeholder" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="533.0000114440918" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="534.0000114440918" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
