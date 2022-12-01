@@ -51,23 +51,23 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song" id="J5T-0G-4uX" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="469.0000114440918" width="375" height="65"/>
+                                <rect key="frame" x="0.0" y="469.0000114440918" width="375" height="63"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ngy-rH-NbP">
-                                            <rect key="frame" x="53" y="12.333333333333332" width="171" height="38.666666666666671"/>
+                                            <rect key="frame" x="53" y="11" width="171" height="39"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder Song Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAu-f6-M3i">
-                                                    <rect key="frame" x="0.0" y="0.0" width="171" height="20.333333333333332"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="171" height="20.666666666666668"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="260" text="Placeholder Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ZB-Qq-JY2">
-                                                    <rect key="frame" x="0.0" y="24.333333333333329" width="137.33333333333334" height="14.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="24.666666666666664" width="137.33333333333334" height="14.333333333333336"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
                                                     <nil key="highlightedColor"/>
@@ -78,31 +78,31 @@
                                             </constraints>
                                         </stackView>
                                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="tortoise.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="WdO-9k-h95">
-                                            <rect key="frame" x="303.66666666666669" y="26.333333333333329" width="25" height="13"/>
+                                            <rect key="frame" x="303.66666666666669" y="25.333333333333329" width="25" height="13"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="900" image="tortoise" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="NBN-dN-oQT">
-                                            <rect key="frame" x="303.66666666666669" y="25.999999999999996" width="25.333333333333314" height="13.333333333333332"/>
+                                            <rect key="frame" x="303.66666666666669" y="24.999999999999996" width="25.333333333333314" height="13.333333333333332"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             </preferredSymbolConfiguration>
                                         </imageView>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="400" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="88" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAq-AF-bpj">
-                                            <rect key="frame" x="20" y="12.333333333333334" width="21" height="20.333333333333329"/>
+                                            <rect key="frame" x="20" y="10.999999999999998" width="21" height="20.333333333333329"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="400" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ATM-N6-nhM">
-                                            <rect key="frame" x="30.666666666666668" y="12.333333333333334" width="10.333333333333332" height="20.333333333333329"/>
+                                            <rect key="frame" x="30.666666666666668" y="10.999999999999998" width="10.333333333333332" height="20.333333333333329"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="950" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ASX-qJ-uK1" customClass="ExpandedTargetButton" customModule="LavaRock" customModuleProvider="target">
-                                            <rect key="frame" x="336.66666666666669" y="21" width="18.333333333333314" height="21"/>
+                                            <rect key="frame" x="336.66666666666669" y="20" width="18.333333333333314" height="21"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="tintColor" systemColor="labelColor"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -117,7 +117,7 @@
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="RAq-AF-bpj" secondAttribute="trailing" constant="12" id="2b4-mj-YkB"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="5VP-d8-YYb"/>
                                         <constraint firstItem="ASX-qJ-uK1" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="trailing" constant="8" symbolic="YES" id="8Vl-wx-2QL"/>
-                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="centerY" secondItem="TU5-RY-n4A" secondAttribute="centerY" constant="-1" id="BBp-wO-3RZ"/>
+                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="bottom" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" constant="-2" id="BBp-wO-3RZ"/>
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ngy-rH-NbP" secondAttribute="trailing" constant="8" symbolic="YES" id="KTq-lY-q0D"/>
                                         <constraint firstItem="NBN-dN-oQT" firstAttribute="centerY" secondItem="WdO-9k-h95" secondAttribute="centerY" id="OuF-Vy-8zh"/>
                                         <constraint firstItem="ASX-qJ-uK1" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="S3I-Fz-ciH"/>
@@ -128,7 +128,7 @@
                                         <constraint firstItem="WdO-9k-h95" firstAttribute="centerY" secondItem="Ngy-rH-NbP" secondAttribute="centerY" id="Z5x-M8-pLQ"/>
                                         <constraint firstItem="RAq-AF-bpj" firstAttribute="firstBaseline" secondItem="Ngy-rH-NbP" secondAttribute="firstBaseline" id="bE3-fw-Fd1"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="centerY" secondItem="RAq-AF-bpj" secondAttribute="centerY" id="hVa-OV-pVP"/>
-                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="topMargin" constant="1" id="yme-ol-E5x"/>
+                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="top" secondItem="TU5-RY-n4A" secondAttribute="topMargin" id="yme-ol-E5x"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -143,7 +143,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Songs Placeholder" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="534.0000114440918" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="532.0000114440918" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>

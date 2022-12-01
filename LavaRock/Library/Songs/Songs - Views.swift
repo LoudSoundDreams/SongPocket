@@ -56,14 +56,13 @@ final class AlbumInfoCell: UITableViewCell {
 	) {
 		contentConfiguration = UIHostingConfiguration {
 			VStack(
-				spacing: .zero
+				spacing: .eight * 3/4 // 6
 			) {
 				Text(albumTitle)
 					.multilineTextAlignment(.center)
 					.font(.title2)
 					.fontWeight(.bold)
 					.foregroundColor(.primary) // Without this, SwiftUI uses grey for some reason.
-					.padding(.bottom, .eight)
 				
 				Text({ () -> String in
 					let albumArtistString: String
@@ -84,7 +83,8 @@ final class AlbumInfoCell: UITableViewCell {
 				.fontWeight(.bold)
 				.foregroundColor(.secondary)
 			}
-			.padding(.bottom, .eight / 2) // 4
+			.padding(.top, .eight * -1/4) // -2
+			.padding(.bottom, .eight * 1/4) // 2. Match space below `SongCell.artistLabel`.
 			.frame(maxWidth: .infinity)
 		}
 	}
