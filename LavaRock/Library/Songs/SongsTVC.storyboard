@@ -3,7 +3,6 @@
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
-        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -43,47 +42,16 @@
                                     <outlet property="coverArtView" destination="AJa-zb-mTO" id="K6Z-Cx-6ka"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="Album Info" id="fSR-9S-A3d" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="425.33334350585938" width="375" height="67"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Album Info" id="MJr-xn-Wdl" customClass="AlbumInfoCell" customModule="LavaRock" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="425.33334350585938" width="375" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fSR-9S-A3d" id="Mew-Xs-CPf">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="67"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MJr-xn-Wdl" id="X2H-p4-VpL">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="XaD-Nu-ixA">
-                                            <rect key="frame" x="19.999999999999986" y="11.333333333333332" width="248.66666666666663" height="42.666666666666671"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Placeholder Album Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3iE-oA-DLA">
-                                                    <rect key="frame" x="0.0" y="0.0" width="248.66666666666666" height="20.333333333333332"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Oct 23, 2001" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUo-6A-8rz">
-                                                    <rect key="frame" x="0.0" y="28.333333333333325" width="73.333333333333329" height="14.333333333333332"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="XaD-Nu-ixA" firstAttribute="centerY" secondItem="Mew-Xs-CPf" secondAttribute="centerY" constant="-1" id="ESa-fa-wnj"/>
-                                        <constraint firstItem="XaD-Nu-ixA" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Mew-Xs-CPf" secondAttribute="topMargin" id="X9C-vQ-aRR"/>
-                                        <constraint firstItem="XaD-Nu-ixA" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Mew-Xs-CPf" secondAttribute="trailingMargin" id="YnP-57-flv"/>
-                                        <constraint firstItem="XaD-Nu-ixA" firstAttribute="leading" secondItem="Mew-Xs-CPf" secondAttribute="leadingMargin" id="x4l-qv-N7Q"/>
-                                    </constraints>
                                 </tableViewCellContentView>
-                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <connections>
-                                    <outlet property="mainLabel" destination="3iE-oA-DLA" id="Nzf-wY-hYQ"/>
-                                    <outlet property="secondaryLabel" destination="mUo-6A-8rz" id="3Ul-0J-s86"/>
-                                    <outlet property="textStack" destination="XaD-Nu-ixA" id="bvV-Om-e38"/>
-                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Song" id="J5T-0G-4uX" customClass="SongCell" customModule="LavaRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="492.33334350585938" width="375" height="65"/>
+                                <rect key="frame" x="0.0" y="469.0000114440918" width="375" height="65"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J5T-0G-4uX" id="TU5-RY-n4A">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
@@ -175,7 +143,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="No Songs Placeholder" rowHeight="100" id="X3n-qN-qq8">
-                                <rect key="frame" x="0.0" y="557.33334350585938" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="534.0000114440918" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X3n-qN-qq8" id="I8v-5S-t9B">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
