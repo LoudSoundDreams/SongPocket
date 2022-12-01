@@ -63,7 +63,7 @@ final class AlbumInfoCell: UITableViewCell {
 					.font(.title2)
 					.fontWeight(.bold)
 					.foregroundColor(.primary) // Without this, SwiftUI uses grey for some reason.
-					.padding(.bottom, .eight * 3/4) // 6
+					.padding(.bottom, .eight)
 				
 				Text({ () -> String in
 					let albumArtistString: String
