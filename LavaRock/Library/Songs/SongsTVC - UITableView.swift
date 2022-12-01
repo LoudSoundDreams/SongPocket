@@ -70,7 +70,9 @@ extension SongsTVC {
 					for: indexPath) as? AlbumInfoCell
 				else { return UITableViewCell() }
 				
-				cell.configure(with: album)
+				cell.configureWith(
+					albumTitle: viewModel.bigTitle(),
+					album: album)
 				
 				return cell
 			}

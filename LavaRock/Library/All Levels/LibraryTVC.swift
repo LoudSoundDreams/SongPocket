@@ -109,7 +109,7 @@ class LibraryTVC: UITableViewController {
 		reflectPlayhead_library()
 	}
 	
-	final func reflectViewContainer() {
+	func reflectViewContainer() {
 		title = viewModel.bigTitle()
 	}
 	

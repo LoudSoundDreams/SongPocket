@@ -32,6 +32,18 @@ final class SongsTVC:
 		]
 	}
 	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		title = nil
+		navigationItem.largeTitleDisplayMode = .never
+	}
+	
+	override func reflectViewContainer() {
+		// Freshen each `Album` whose info we’re showing.
+		// Currently, we always reload all table view cells after this method, which takes care of that for us.
+	}
+	
 	override func setUpBarButtons() {
 		editingModeToolbarButtons = [
 			sortButton,

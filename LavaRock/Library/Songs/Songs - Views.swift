@@ -7,6 +7,7 @@
 
 import UIKit
 import MediaPlayer
+import SwiftUI
 import OSLog
 
 final class CoverArtCell: UITableViewCell {
@@ -77,21 +78,44 @@ final class AlbumInfoCell: UITableViewCell {
 		accessibilityUserInputLabels = nil // No Voice Control label
 	}
 	
-	func configure(with album: Album) {
-		mainLabel.text = { () -> String in
-			if let albumArtist = album.representativeAlbumArtistFormattedOptional() {
-				return albumArtist
-			} else {
-				return Album.unknownAlbumArtistPlaceholder
+	func configureWith(
+		albumTitle: String,
+		album: Album
+	) {
+		contentConfiguration = UIHostingConfiguration {
+			VStack(
+				spacing: .zero
+			) {
+				Text(albumTitle)
+					.multilineTextAlignment(.center)
+					.font(.title2)
+					.fontWeight(.bold)
+					.foregroundColor(.primary) // Without this, SwiftUI uses grey for some reason.
+				
+					.padding(.top, -(.eight / 4)) // -2
+					.padding(.bottom, .eight * 3/4) // 6
+				
+				Text({ () -> String in
+					let albumArtistString: String
+					= album.representativeAlbumArtistFormattedOptional()
+					?? Album.unknownAlbumArtistPlaceholder
+					
+					let releaseDateString: String = {
+						guard let releaseDateString = album.releaseDateEstimateFormattedOptional() else {
+							return ""
+						}
+						return " " + LRString.interpunct + " " + releaseDateString
+					}()
+					
+					return albumArtistString + releaseDateString
+				}())
+				.multilineTextAlignment(.center)
+				.font(.caption)
+				.fontWeight(.bold)
+				.foregroundColor(.secondary)
 			}
-		}()
-		secondaryLabel.text = album.releaseDateEstimateFormattedOptional()
-		
-		if secondaryLabel.text == nil {
-			// We couldn’t determine the album’s release date.
-			textStack.spacing = 0
-		} else {
-			textStack.spacing = UIStackView.spacingUseSystem
+			.padding(.bottom, .eight / 4) // 2
+			.frame(maxWidth: .infinity)
 		}
 	}
 	
