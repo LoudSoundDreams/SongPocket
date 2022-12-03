@@ -56,13 +56,6 @@ final class AlbumInfoCell: UITableViewCell {
 				album: album)
 		}
 	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.left = directionalLayoutMargins.leading
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
 }
 
 final class ExpandedTargetButton: UIButton {
