@@ -191,6 +191,50 @@ final class SongCell: UITableViewCell {
 		
 		if Self.usingSwiftUI {
 			
+			contentConfiguration = UIHostingConfiguration {
+				HStack {
+					HStack(
+						alignment: .firstTextBaseline
+					) {
+						// TO DO: Right-align across rows
+						Text(trackDisplay)
+							.monospacedDigit()
+							.foregroundColor(.secondary)
+						
+						VStack(
+							alignment: .leading,
+							spacing: .eight * 1/2
+						) {
+							Text(songTitleDisplay)
+							
+							if let artistDisplay = artistDisplayOptional {
+								Text(artistDisplay)
+									.font(.caption)
+									.foregroundColor(.secondary)
+									.padding(.bottom, .eight * 1/4)
+							}
+						}
+					}
+					
+					Spacer()
+					
+					Image(systemName: "tortoise")
+						.font(.body)
+						.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+						.foregroundColor(.accentColor)
+					
+					// TO DO: Expand tappable area
+					Button {
+						
+					} label: {
+						Image(systemName: "ellipsis")
+							.font(.body)
+							.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+							.foregroundColor(.primary)
+					}
+				}
+			}
+			
 		} else {
 			
 			spacerNumberLabel.text = spacerTrackNumberText
