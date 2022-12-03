@@ -56,10 +56,10 @@ final class AlbumInfoCell: UITableViewCell {
 	) {
 		contentConfiguration = UIHostingConfiguration {
 			VStack(
-				alignment: .leading,
 				spacing: .eight
 			) {
 				Text(albumTitle)
+					.multilineTextAlignment(.center)
 					.font(.title2)
 					.fontWeight(.bold)
 					.foregroundColor(.primary) // Without this, SwiftUI uses grey for some reason.
@@ -78,11 +78,13 @@ final class AlbumInfoCell: UITableViewCell {
 					
 					return albumArtistString + releaseDateString
 				}())
+				.multilineTextAlignment(.center)
 				.font(.caption)
 				.fontWeight(.bold)
 				.foregroundColor(.secondary)
 			}
 			.padding(.bottom, .eight * 1/2)
+			.frame(maxWidth: .infinity)
 		}
 	}
 	
