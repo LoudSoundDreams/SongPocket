@@ -40,10 +40,6 @@ final class CoverArtCell: UITableViewCell {
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AlbumInfoCell: UITableViewCell {
-	@IBOutlet private var textStack: UIStackView!
-	@IBOutlet private var mainLabel: UILabel!
-	@IBOutlet private var secondaryLabel: UILabel!
-	
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
