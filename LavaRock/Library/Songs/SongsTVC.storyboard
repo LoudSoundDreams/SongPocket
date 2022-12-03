@@ -58,7 +58,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ngy-rH-NbP">
-                                            <rect key="frame" x="53" y="12" width="171" height="39"/>
+                                            <rect key="frame" x="49" y="12" width="171" height="39"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="760" text="Placeholder Song Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAu-f6-M3i">
                                                     <rect key="frame" x="0.0" y="0.0" width="171" height="20.666666666666668"/>
@@ -114,7 +114,7 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="RAq-AF-bpj" secondAttribute="trailing" constant="12" id="2b4-mj-YkB"/>
+                                        <constraint firstItem="Ngy-rH-NbP" firstAttribute="leading" secondItem="RAq-AF-bpj" secondAttribute="trailing" constant="8" symbolic="YES" id="2b4-mj-YkB"/>
                                         <constraint firstItem="ATM-N6-nhM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TU5-RY-n4A" secondAttribute="leadingMargin" id="5VP-d8-YYb"/>
                                         <constraint firstItem="ASX-qJ-uK1" firstAttribute="leading" secondItem="WdO-9k-h95" secondAttribute="trailing" constant="8" symbolic="YES" id="8Vl-wx-2QL"/>
                                         <constraint firstItem="Ngy-rH-NbP" firstAttribute="bottom" secondItem="TU5-RY-n4A" secondAttribute="bottomMargin" constant="-3" id="BBp-wO-3RZ"/>
