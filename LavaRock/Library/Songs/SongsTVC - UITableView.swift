@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension SongsTVC {
 	// MARK: - Numbers
@@ -65,14 +66,16 @@ extension SongsTVC {
 				return cell
 				
 			case .albumInfo:
-				guard let cell = tableView.dequeueReusableCell(
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Album Info",
-					for: indexPath) as? AlbumInfoCell
-				else { return UITableViewCell() }
+					for: indexPath)
 				
-				cell.configureWith(
-					albumTitle: viewModel.bigTitle(),
-					album: album)
+				cell.contentConfiguration = UIHostingConfiguration {
+					AlbumInfoRow(
+						albumTitle: viewModel.bigTitle(),
+						album: album)
+				}
 				
 				return cell
 			}

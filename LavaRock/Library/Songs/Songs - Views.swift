@@ -38,26 +38,6 @@ final class CoverArtCell: UITableViewCell {
 	}
 }
 
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class AlbumInfoCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		accessibilityUserInputLabels = nil // No Voice Control label
-	}
-	
-	func configureWith(
-		albumTitle: String,
-		album: Album
-	) {
-		contentConfiguration = UIHostingConfiguration {
-			AlbumInfoRow(
-				albumTitle: albumTitle,
-				album: album)
-		}
-	}
-}
-
 final class ExpandedTargetButton: UIButton {
 	override func point(
 		inside point: CGPoint,
