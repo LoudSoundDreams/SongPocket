@@ -19,7 +19,6 @@ struct AlbumInfoRow: View {
 				.multilineTextAlignment(.center)
 				.font(.title2)
 				.fontWeight(.bold)
-				.foregroundColor(.primary) // Without this, SwiftUI uses grey for some reason.
 			
 			Text({ () -> String in
 				let albumArtistString: String
