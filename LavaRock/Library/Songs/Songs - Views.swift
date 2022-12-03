@@ -55,6 +55,8 @@ final class ExpandedTargetButton: UIButton {
 }
 
 final class SongCell: UITableViewCell {
+	private static let usingSwiftUI = 10 == 1
+	
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -88,7 +90,6 @@ final class SongCell: UITableViewCell {
 		freshenDotDotDotButton()
 	}
 	
-	private static let usingSwiftUI = 10 == 1
 	func configureWith(
 		song: Song,
 		albumRepresentative representative: SongMetadatum?,
@@ -156,6 +157,9 @@ final class SongCell: UITableViewCell {
 									.padding(.bottom, .eight * 1/4)
 							}
 						}
+						.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+							viewDimensions[.leading]
+						}
 					}
 					
 					Spacer()
@@ -173,6 +177,9 @@ final class SongCell: UITableViewCell {
 							.font(.body)
 							.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 							.foregroundColor(.primary)
+					}
+					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+						viewDimensions[.trailing]
 					}
 				}
 			}
@@ -341,10 +348,13 @@ final class SongCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		separatorInset.left = 0
-		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
-		+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
-		separatorInset.right = directionalLayoutMargins.trailing
+		if Self.usingSwiftUI {
+		} else {
+			separatorInset.left = 0
+			+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
+			+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
+			separatorInset.right = directionalLayoutMargins.trailing
+		}
 	}
 }
 extension SongCell:
