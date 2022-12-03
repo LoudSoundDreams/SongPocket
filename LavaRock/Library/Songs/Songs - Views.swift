@@ -146,6 +146,7 @@ final class SongCell: UITableViewCell {
 		freshenDotDotDotButton()
 	}
 	
+	private static let usingSwiftUI = 10 == 1
 	func configureWith(
 		song: Song,
 		albumRepresentative representative: SongMetadatum?,
@@ -154,8 +155,7 @@ final class SongCell: UITableViewCell {
 	) {
 		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
 		
-		spacerNumberLabel.text = spacerTrackNumberText
-		numberLabel.text = { () -> String in
+		let trackDisplay: String = {
 			let result: String? = {
 				guard
 					let representative = representative,
@@ -174,10 +174,10 @@ final class SongCell: UITableViewCell {
 			}()
 			return result ?? "‒" // Figure dash
 		}()
-		titleLabel.text = { () -> String in
+		let songTitleDisplay: String = {
 			return metadatum?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
 		}()
-		artistLabel.text = { () -> String? in
+		let artistDisplayOptional: String? = {
 			let albumArtistOptional = representative?.albumArtistOnDisk
 			if
 				let songArtist = metadatum?.artistOnDisk,
@@ -189,10 +189,27 @@ final class SongCell: UITableViewCell {
 			}
 		}()
 		
-		if artistLabel.text == nil {
-			textStack.spacing = 0
+		if Self.usingSwiftUI {
+			
 		} else {
-			textStack.spacing = 4
+			
+			spacerNumberLabel.text = spacerTrackNumberText
+			numberLabel.text = { () -> String in
+				trackDisplay
+			}()
+			titleLabel.text = { () -> String in
+				songTitleDisplay
+			}()
+			artistLabel.text = { () -> String? in
+				artistDisplayOptional
+			}()
+			
+			if artistLabel.text == nil {
+				textStack.spacing = 0
+			} else {
+				textStack.spacing = 4
+			}
+			
 		}
 		
 		bodyOfAccessibilityLabel = [
