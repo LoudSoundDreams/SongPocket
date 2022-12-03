@@ -153,24 +153,7 @@ final class SongCell: UITableViewCell {
 		songsTVC: Weak<SongsTVC>
 	) {
 		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
-		let songDisplayTitle: String = {
-			metadatum?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
-		}()
 		
-		titleLabel.text = { () -> String in
-			songDisplayTitle
-		}()
-		artistLabel.text = {
-			let albumArtist = representative?.albumArtistOnDisk // Can be `nil`
-			if
-				let songArtist = metadatum?.artistOnDisk,
-				songArtist != albumArtist
-			{
-				return songArtist
-			} else {
-				return nil
-			}
-		}()
 		spacerNumberLabel.text = spacerTrackNumberText
 		numberLabel.text = { () -> String in
 			let result: String? = {
@@ -190,6 +173,20 @@ final class SongCell: UITableViewCell {
 				}
 			}()
 			return result ?? "‒" // Figure dash
+		}()
+		titleLabel.text = { () -> String in
+			return metadatum?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
+		}()
+		artistLabel.text = { () -> String? in
+			let albumArtistOptional = representative?.albumArtistOnDisk
+			if
+				let songArtist = metadatum?.artistOnDisk,
+				songArtist != albumArtistOptional
+			{
+				return songArtist
+			} else {
+				return nil
+			}
 		}()
 		
 		if artistLabel.text == nil {
