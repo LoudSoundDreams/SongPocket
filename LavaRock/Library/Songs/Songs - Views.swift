@@ -11,6 +11,8 @@ import SwiftUI
 import OSLog
 
 final class CoverArtCell: UITableViewCell {
+	var album: Album? = nil
+	
 	@IBOutlet private var coverArtView: UIImageView!
 	
 	override func awakeFromNib() {
@@ -22,18 +24,19 @@ final class CoverArtCell: UITableViewCell {
 		accessibilityTraits.formUnion(.image)
 	}
 	
-	func configure(with album: Album) {
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		let maxHeight = bounds.width
+		
+		os_signpost(.begin, log: .songsView, name: "Draw cover art")
+		let uiImageOptional = album?.representativeSongMetadatum()?.coverArt(sizeInPoints: CGSize(
+			width: maxHeight,
+			height: maxHeight))
+		os_signpost(.end, log: .songsView, name: "Draw cover art")
+		
 		os_signpost(.begin, log: .songsView, name: "Set cover art")
-		coverArtView.image = {
-			os_signpost(.begin, log: .songsView, name: "Draw cover art")
-			defer {
-				os_signpost(.end, log: .songsView, name: "Draw cover art")
-			}
-			let widthAndHeightInPoints = coverArtView.bounds.width
-			return album.representativeSongMetadatum()?.coverArt(sizeInPoints: CGSize(
-				width: widthAndHeightInPoints,
-				height: widthAndHeightInPoints))
-		}()
+		coverArtView.image = uiImageOptional
 		os_signpost(.end, log: .songsView, name: "Set cover art")
 	}
 }

@@ -61,7 +61,7 @@ extension SongsTVC {
 					for: indexPath) as? CoverArtCell
 				else { return UITableViewCell() }
 				
-				cell.configure(with: album)
+				cell.album = album
 				
 				return cell
 				
