@@ -13,7 +13,7 @@ struct AlbumInfoRow: View {
 	
 	var body: some View {
 		VStack(
-			spacing: .eight
+			spacing: .eight // 8
 		) {
 			Text(albumTitle)
 				.multilineTextAlignment(.center)
@@ -39,7 +39,8 @@ struct AlbumInfoRow: View {
 			.fontWeight(.bold)
 			.foregroundColor(.secondary)
 		}
-		.padding(.bottom, .eight * 1/2)
+		.padding(.top, .eight * -1/4) // -2
+		.padding(.bottom, .eight * 3/8) // 3
 		.frame(maxWidth: .infinity)
 		.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
 			viewDimensions[.leading]
