@@ -9,6 +9,12 @@ import UIKit
 import StoreKit
 
 final class LightingCell: UITableViewCell {
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		selectionStyle = .none
+	}
+	
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
@@ -17,6 +23,12 @@ final class LightingCell: UITableViewCell {
 }
 
 final class AvatarCell: UITableViewCell {
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		selectionStyle = .none
+	}
+	
 	final override func layoutSubviews() {
 		super.layoutSubviews()
 		
