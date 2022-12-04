@@ -76,6 +76,7 @@ extension SongsTVC {
 						albumTitle: viewModel.bigTitle(),
 						album: album)
 				}
+				cell.selectionStyle = .none // So that the user can’t even highlight the cell
 				
 				return cell
 			}
