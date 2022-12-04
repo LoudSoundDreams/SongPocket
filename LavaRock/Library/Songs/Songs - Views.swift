@@ -13,7 +13,7 @@ import OSLog
 final class CoverArtCell: UITableViewCell {
 	var albumRepresentative: SongMetadatum? = nil
 	
-	private static let usingSwiftUI = 10 == 10
+	private static let usingSwiftUI = 10 == 1
 	
 	@IBOutlet private var coverArtView: UIImageView!
 	
