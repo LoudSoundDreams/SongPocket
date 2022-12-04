@@ -61,7 +61,7 @@ extension SongsTVC {
 					for: indexPath) as? CoverArtCell
 				else { return UITableViewCell() }
 				
-				cell.album = album
+				cell.albumRepresentative = album.representativeSongMetadatum()
 				
 				return cell
 				

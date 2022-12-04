@@ -11,7 +11,7 @@ import SwiftUI
 import OSLog
 
 final class CoverArtCell: UITableViewCell {
-	var album: Album? = nil
+	var albumRepresentative: SongMetadatum? = nil
 	
 	private static let usingSwiftUI = 10 == 10
 	
@@ -29,10 +29,10 @@ final class CoverArtCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		let maxHeight = bounds.width
+		let maxHeight = bounds.width // Wait until at least after `updateConstraints` to draw the image, because we need up-to-date `bounds`.
 		
 		os_signpost(.begin, log: .songsView, name: "Draw cover art")
-		let uiImageOptional = album?.representativeSongMetadatum()?.coverArt(sizeInPoints: CGSize(
+		let uiImageOptional = albumRepresentative?.coverArt(sizeInPoints: CGSize(
 			width: maxHeight,
 			height: maxHeight))
 		os_signpost(.end, log: .songsView, name: "Draw cover art")
