@@ -184,6 +184,8 @@ final class SongCell: UITableViewCell {
 						viewDimensions[.trailing]
 					}
 				}
+				.padding(.top, .eight * -1/4) // -2
+				
 			}
 			
 		} else {
