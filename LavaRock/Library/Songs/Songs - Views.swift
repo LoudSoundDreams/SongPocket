@@ -13,6 +13,8 @@ import OSLog
 final class CoverArtCell: UITableViewCell {
 	var album: Album? = nil
 	
+	private static let usingSwiftUI = 10 == 10
+	
 	@IBOutlet private var coverArtView: UIImageView!
 	
 	override func awakeFromNib() {
@@ -36,7 +38,36 @@ final class CoverArtCell: UITableViewCell {
 		os_signpost(.end, log: .songsView, name: "Draw cover art")
 		
 		os_signpost(.begin, log: .songsView, name: "Set cover art")
-		coverArtView.image = uiImageOptional
+		if Self.usingSwiftUI {
+			
+			contentConfiguration = UIHostingConfiguration {
+				if let uiImage = uiImageOptional {
+					Image(uiImage: uiImage)
+						.resizable()
+						.scaledToFit()
+						.frame(
+							maxWidth: .infinity, // Horizontally centers narrow artwork
+							maxHeight: maxHeight)
+				} else {
+					ZStack {
+						Color.gray
+							.frame(
+								width: maxHeight,
+								height: maxHeight)
+						
+						Image(systemName: "music.note")
+							.foregroundColor(.secondary)
+							.font(.system(size: .eight * 4))
+					}
+				}
+			}
+			.margins(.all, .zero)
+			
+		} else {
+			
+			coverArtView.image = uiImageOptional
+			
+		}
 		os_signpost(.end, log: .songsView, name: "Set cover art")
 	}
 }
