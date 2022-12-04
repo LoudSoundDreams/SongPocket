@@ -135,10 +135,11 @@ final class SongCell: UITableViewCell {
 		if Self.usingSwiftUI {
 			
 			contentConfiguration = UIHostingConfiguration {
+				
 				HStack {
 					HStack(
 						alignment: .firstTextBaseline,
-						spacing: .eight * (1 + 1/2)
+						spacing: .eight * (1 + 1/2) // 12
 					) {
 						// TO DO: Right-align across rows
 						Text(trackDisplay)
@@ -147,7 +148,7 @@ final class SongCell: UITableViewCell {
 						
 						VStack(
 							alignment: .leading,
-							spacing: .eight * 1/2
+							spacing: .eight * 1/2 // 4
 						) {
 							Text(songTitleDisplay)
 							
@@ -155,7 +156,7 @@ final class SongCell: UITableViewCell {
 								Text(artistDisplay)
 									.font(.caption)
 									.foregroundColor(.secondary)
-									.padding(.bottom, .eight * 1/4)
+									.padding(.bottom, .eight * 1/4) // 2
 							}
 						}
 						.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
