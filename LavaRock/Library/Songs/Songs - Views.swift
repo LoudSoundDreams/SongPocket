@@ -26,10 +26,20 @@ final class CoverArtCell: UITableViewCell {
 		accessibilityTraits.formUnion(.image)
 	}
 	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		
+		drawArtwork()
+	}
+	
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		let maxHeight = bounds.width // Wait until at least after `updateConstraints` to draw the image, because we need up-to-date `bounds`.
+		drawArtwork()
+	}
+	
+	private func drawArtwork() {
+		let maxHeight = bounds.width // Wait until late in the layout or drawing pass to draw the image, because we need up-to-date `bounds`.
 		
 		os_signpost(.begin, log: .songsView, name: "Draw cover art")
 		let uiImageOptional = albumRepresentative?.coverArt(sizeInPoints: CGSize(
@@ -47,13 +57,16 @@ final class CoverArtCell: UITableViewCell {
 						.scaledToFit()
 						.frame(
 							maxWidth: .infinity, // Horizontally centers narrow artwork
-							maxHeight: maxHeight)
+							maxHeight: .infinity) // TO DO: I want to use `maxHeight`, but SwiftUI does something I’m not expecting, and only when transitioning from horizontally compact to horizontally compact
 				} else {
 					ZStack {
 						Color.gray
+						// TO DO: Works when transitioning from horizontally very compact to horizontally less compact, but not the other way
+							.aspectRatio(1, contentMode: .fit)
 							.frame(
-								width: maxHeight,
-								height: maxHeight)
+								maxWidth: .infinity,
+								minHeight: maxHeight,
+								maxHeight: .infinity)
 						
 						Image(systemName: "music.note")
 							.foregroundColor(.secondary)
