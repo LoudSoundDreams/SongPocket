@@ -137,7 +137,8 @@ final class SongCell: UITableViewCell {
 			contentConfiguration = UIHostingConfiguration {
 				HStack {
 					HStack(
-						alignment: .firstTextBaseline
+						alignment: .firstTextBaseline,
+						spacing: .eight * (1 + 1/2)
 					) {
 						// TO DO: Right-align across rows
 						Text(trackDisplay)
