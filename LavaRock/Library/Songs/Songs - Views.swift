@@ -13,7 +13,7 @@ import OSLog
 final class CoverArtCell: UITableViewCell {
 	var albumRepresentative: SongMetadatum? = nil
 	
-	private static let usingSwiftUI = 10 == 1
+	private static let usesSwiftUI = 10 == 1
 	
 	@IBOutlet private var coverArtView: UIImageView!
 	
@@ -48,7 +48,7 @@ final class CoverArtCell: UITableViewCell {
 		os_signpost(.end, log: .songsView, name: "Draw cover art")
 		
 		os_signpost(.begin, log: .songsView, name: "Set cover art")
-		if Self.usingSwiftUI {
+		if Self.usesSwiftUI {
 			
 			contentConfiguration = UIHostingConfiguration {
 				if let uiImage = uiImageOptional {
