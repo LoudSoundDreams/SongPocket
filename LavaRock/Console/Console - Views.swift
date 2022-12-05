@@ -32,7 +32,7 @@ final class QueueCell: UITableViewCell {
 	}
 	
 	func configure(with metadatum: SongMetadatum) {
-		coverArtView.image = metadatum.coverArt(sizeInPoints: CGSize(
+		coverArtView.image = metadatum.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
 			width: coverArtView.frame.width,
 			height: coverArtView.frame.height))
 		

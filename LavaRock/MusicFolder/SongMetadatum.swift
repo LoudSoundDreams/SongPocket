@@ -29,7 +29,7 @@ protocol SongMetadatum {
 	var dateAddedOnDisk: Date { get }
 	var releaseDateOnDisk: Date? { get }
 	
-	func coverArt(sizeInPoints: CGSize) -> UIImage?
+	func coverArt(largerThanOrEqualToSizeInPoints sizeInPoints: CGSize) -> UIImage?
 }
 
 enum SongMetadatumPlaceholder {

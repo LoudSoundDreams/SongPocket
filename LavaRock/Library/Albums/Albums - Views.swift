@@ -72,7 +72,7 @@ final class AlbumCell: UITableViewCell {
 				os_signpost(.end, log: .albumsView, name: "Draw cover art")
 			}
 			let widthAndHeightInPoints = coverArtView.bounds.width
-			return representative?.coverArt(sizeInPoints: CGSize(
+			return representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
 				width: widthAndHeightInPoints,
 				height: widthAndHeightInPoints))
 		}()

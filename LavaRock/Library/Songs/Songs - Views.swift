@@ -42,7 +42,7 @@ final class CoverArtCell: UITableViewCell {
 		let maxHeight = bounds.width // Wait until late in the layout or drawing pass to draw the image, because we need up-to-date `bounds`.
 		
 		os_signpost(.begin, log: .songsView, name: "Draw cover art")
-		let uiImageOptional = albumRepresentative?.coverArt(sizeInPoints: CGSize(
+		let uiImageOptional = albumRepresentative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
 			width: maxHeight,
 			height: maxHeight))
 		os_signpost(.end, log: .songsView, name: "Draw cover art")

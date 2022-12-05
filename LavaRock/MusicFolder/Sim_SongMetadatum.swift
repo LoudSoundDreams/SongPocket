@@ -45,7 +45,7 @@ struct Sim_SongMetadatum: SongMetadatum {
 	let dateAddedOnDisk: Date
 	let releaseDateOnDisk: Date?
 	
-	func coverArt(sizeInPoints: CGSize) -> UIImage? {
+	func coverArt(largerThanOrEqualToSizeInPoints sizeInPoints: CGSize) -> UIImage? {
 		let signposter = OSSignposter()
 		let state = signposter.beginInterval("Sim: draw cover art")
 		defer {
