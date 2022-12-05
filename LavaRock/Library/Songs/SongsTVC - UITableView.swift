@@ -63,6 +63,12 @@ extension SongsTVC {
 				
 				cell.albumRepresentative = album.representativeSongMetadatum()
 				
+				let height = view.frame.height
+				let topInset = view.safeAreaInsets.top
+				let bottomInset = view.safeAreaInsets.bottom
+				let safeHeight = height - topInset - bottomInset
+				cell.configureArtwork(maxHeight: safeHeight)
+				
 				return cell
 				
 			case .albumInfo:

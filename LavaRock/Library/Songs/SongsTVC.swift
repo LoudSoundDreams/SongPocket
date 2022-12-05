@@ -67,6 +67,23 @@ final class SongsTVC:
 		}
 	}
 	
+	override func viewWillTransition(
+		to size: CGSize,
+		with coordinator: UIViewControllerTransitionCoordinator
+	) {
+		super.viewWillTransition(
+			to: size,
+			with: coordinator)
+		
+		if
+			CoverArtCell.usesSwiftUI,
+			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)), // TO DO: Make resilient to change
+			let coverArtCell = cell as? CoverArtCell
+		{
+			coverArtCell.configureArtwork(maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+		}
+	}
+	
 	// MARK: - Library Items
 	
 	override func reflectViewModelIsEmpty() {

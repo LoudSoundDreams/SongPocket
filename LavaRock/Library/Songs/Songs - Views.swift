@@ -11,9 +11,9 @@ import SwiftUI
 import OSLog
 
 final class CoverArtCell: UITableViewCell {
-	var albumRepresentative: SongMetadatum? = nil
+	static let usesSwiftUI = 10 == 10
 	
-	private static let usesSwiftUI = 10 == 1
+	var albumRepresentative: SongMetadatum? = nil
 	
 	@IBOutlet private var coverArtView: UIImageView!
 	
@@ -26,21 +26,9 @@ final class CoverArtCell: UITableViewCell {
 		accessibilityTraits.formUnion(.image)
 	}
 	
-	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-		super.traitCollectionDidChange(previousTraitCollection)
-		
-		drawArtwork()
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		drawArtwork()
-	}
-	
-	private func drawArtwork() {
-		let maxHeight = bounds.width // Wait until late in the layout or drawing pass to draw the image, because we need up-to-date `bounds`.
-		
+	func configureArtwork(
+		maxHeight: CGFloat
+	) {
 		os_signpost(.begin, log: .songsView, name: "Draw cover art")
 		let uiImageOptional = albumRepresentative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
 			width: maxHeight,
@@ -57,16 +45,14 @@ final class CoverArtCell: UITableViewCell {
 						.scaledToFit()
 						.frame(
 							maxWidth: .infinity, // Horizontally centers narrow artwork
-							maxHeight: .infinity) // TO DO: I want to use `maxHeight`, but SwiftUI does something I’m not expecting, and only when transitioning from horizontally compact to horizontally compact
+							maxHeight: maxHeight)
 				} else {
 					ZStack {
 						Color.gray
-						// TO DO: Works when transitioning from horizontally very compact to horizontally less compact, but not the other way
 							.aspectRatio(1, contentMode: .fit)
 							.frame(
 								maxWidth: .infinity,
-								minHeight: maxHeight,
-								maxHeight: .infinity)
+								maxHeight: maxHeight)
 						
 						Image(systemName: "music.note")
 							.foregroundColor(.secondary)
