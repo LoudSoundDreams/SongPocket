@@ -74,7 +74,7 @@ final class ExpandedTargetButton: UIButton {
 }
 
 final class SongCell: UITableViewCell {
-	private static let usingSwiftUI = 10 == 1
+	private static let usesSwiftUI = 10 == 1
 	
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
@@ -151,7 +151,7 @@ final class SongCell: UITableViewCell {
 			}
 		}()
 		
-		if Self.usingSwiftUI {
+		if Self.usesSwiftUI {
 			
 			contentConfiguration = UIHostingConfiguration {
 				
@@ -200,6 +200,7 @@ final class SongCell: UITableViewCell {
 							.foregroundColor(.primary)
 					}
 					.alignmentGuide(.listRowSeparatorTrailing) { moreButtonDimensions in
+						// TO DO: This indents the trailing inset in editing mode. Is that sensible?
 						moreButtonDimensions[.trailing]
 					}
 				}
@@ -371,7 +372,7 @@ final class SongCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		if Self.usingSwiftUI {
+		if Self.usesSwiftUI {
 		} else {
 			separatorInset.left = 0
 			+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge

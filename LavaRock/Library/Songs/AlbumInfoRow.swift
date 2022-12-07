@@ -21,18 +21,18 @@ struct AlbumInfoRow: View {
 				.fontWeight(.bold)
 			
 			Text({ () -> String in
-				let albumArtistString: String
+				let albumArtistSegment: String
 				= album.representativeAlbumArtistFormattedOptional()
 				?? Album.unknownAlbumArtistPlaceholder
 				
-				let releaseDateString: String = {
+				let releaseDateSegment: String = {
 					guard let releaseDateString = album.releaseDateEstimateFormattedOptional() else {
 						return ""
 					}
 					return " " + LRString.interpunct + " " + releaseDateString
 				}()
 				
-				return albumArtistString + releaseDateString
+				return albumArtistSegment + releaseDateSegment
 			}())
 			.multilineTextAlignment(.center)
 			.font(.caption)
