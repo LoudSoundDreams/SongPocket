@@ -17,14 +17,6 @@ final class CoverArtCell: UITableViewCell {
 	
 	@IBOutlet private var coverArtView: UIImageView!
 	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		coverArtView.accessibilityIgnoresInvertColors = true
-		accessibilityUserInputLabels = nil // No Voice Control label
-		accessibilityTraits.formUnion(.image)
-	}
-	
 	func configureArtwork(
 		maxHeight: CGFloat
 	) {
