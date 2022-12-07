@@ -46,6 +46,7 @@ final class CoverArtCell: UITableViewCell {
 						.frame(
 							maxWidth: .infinity, // Horizontally centers narrow artwork
 							maxHeight: maxHeight)
+						.accessibilityIgnoresInvertColors()
 				} else {
 					ZStack {
 						Color.gray
