@@ -24,32 +24,32 @@ final class CoverArtCell: UITableViewCell {
 		os_signpost(.end, log: .songsView, name: "Draw cover art")
 		
 		os_signpost(.begin, log: .songsView, name: "Set cover art")
-			contentConfiguration = UIHostingConfiguration {
-				if let uiImage = uiImageOptional {
-					Image(uiImage: uiImage)
-						.resizable()
-						.scaledToFit()
-						.frame(
-							maxWidth: .infinity, // Horizontally centers narrow artwork
-							maxHeight: maxHeight)
-						.accessibilityLabel(LRString.albumArtwork)
-						.accessibilityIgnoresInvertColors()
-				} else {
-					ZStack {
-						Color.gray
-							.aspectRatio(1, contentMode: .fit)
-							.frame(
-								maxWidth: .infinity,
-								maxHeight: maxHeight)
-						
-						Image(systemName: "music.note")
-							.foregroundColor(.secondary)
-							.font(.system(size: .eight * 4))
-					}
+		contentConfiguration = UIHostingConfiguration {
+			if let uiImage = uiImageOptional {
+				Image(uiImage: uiImage)
+					.resizable()
+					.scaledToFit()
+					.frame(
+						maxWidth: .infinity, // Horizontally centers narrow artwork
+						maxHeight: maxHeight)
 					.accessibilityLabel(LRString.albumArtwork)
+					.accessibilityIgnoresInvertColors()
+			} else {
+				ZStack {
+					Color.gray
+						.aspectRatio(1, contentMode: .fit)
+						.frame(
+							maxWidth: .infinity,
+							maxHeight: maxHeight)
+					
+					Image(systemName: "music.note")
+						.foregroundColor(.secondary)
+						.font(.system(size: .eight * 4))
 				}
+				.accessibilityLabel(LRString.albumArtwork)
 			}
-			.margins(.all, .zero)
+		}
+		.margins(.all, .zero)
 		os_signpost(.end, log: .songsView, name: "Set cover art")
 	}
 }
