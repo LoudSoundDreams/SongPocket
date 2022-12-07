@@ -192,8 +192,8 @@ final class SongCell: UITableViewCell {
 									.padding(.bottom, .eight * 1/4) // 2
 							}
 						}
-						.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-							viewDimensions[.leading]
+						.alignmentGuide(.listRowSeparatorLeading) { textStackDimensions in
+							textStackDimensions[.leading]
 						}
 					}
 					
@@ -213,8 +213,8 @@ final class SongCell: UITableViewCell {
 							.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 							.foregroundColor(.primary)
 					}
-					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-						viewDimensions[.trailing]
+					.alignmentGuide(.listRowSeparatorTrailing) { moreButtonDimensions in
+						moreButtonDimensions[.trailing]
 					}
 				}
 				.padding(.top, .eight * -1/4) // -2
