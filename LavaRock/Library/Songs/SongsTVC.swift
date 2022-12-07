@@ -76,7 +76,6 @@ final class SongsTVC:
 			with: coordinator)
 		
 		if
-			CoverArtCell.usesSwiftUI,
 			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)), // TO DO: Make resilient to change
 			let coverArtCell = cell as? CoverArtCell
 		{

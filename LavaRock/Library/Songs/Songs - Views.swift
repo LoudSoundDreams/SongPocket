@@ -10,12 +10,9 @@ import MediaPlayer
 import SwiftUI
 import OSLog
 
+// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class CoverArtCell: UITableViewCell {
-	static let usesSwiftUI = 10 == 10
-	
 	var albumRepresentative: SongMetadatum? = nil
-	
-	@IBOutlet private var coverArtView: UIImageView!
 	
 	func configureArtwork(
 		maxHeight: CGFloat
@@ -27,8 +24,6 @@ final class CoverArtCell: UITableViewCell {
 		os_signpost(.end, log: .songsView, name: "Draw cover art")
 		
 		os_signpost(.begin, log: .songsView, name: "Set cover art")
-		if Self.usesSwiftUI {
-			
 			contentConfiguration = UIHostingConfiguration {
 				if let uiImage = uiImageOptional {
 					Image(uiImage: uiImage)
@@ -55,12 +50,6 @@ final class CoverArtCell: UITableViewCell {
 				}
 			}
 			.margins(.all, .zero)
-			
-		} else {
-			
-			coverArtView.image = uiImageOptional
-			
-		}
 		os_signpost(.end, log: .songsView, name: "Set cover art")
 	}
 }
