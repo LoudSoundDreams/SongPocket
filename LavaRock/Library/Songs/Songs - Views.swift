@@ -17,14 +17,17 @@ final class CoverArtCell: UITableViewCell {
 	func configureArtwork(
 		maxHeight: CGFloat
 	) {
-		os_signpost(.begin, log: .songsView, name: "Draw cover art")
-		let uiImageOptional = albumRepresentative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
-			width: maxHeight,
-			height: maxHeight))
-		os_signpost(.end, log: .songsView, name: "Draw cover art")
-		
-		os_signpost(.begin, log: .songsView, name: "Set cover art")
+		os_signpost(.begin, log: .songsView, name: "Configure cover art")
 		contentConfiguration = UIHostingConfiguration {
+			let uiImageOptional: UIImage? = {
+				os_signpost(.begin, log: .songsView, name: "Draw cover art")
+				defer {
+					os_signpost(.end, log: .songsView, name: "Draw cover art")
+				}
+				return albumRepresentative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
+					width: maxHeight,
+					height: maxHeight))
+			}()
 			if let uiImage = uiImageOptional {
 				Image(uiImage: uiImage)
 					.resizable()
@@ -50,7 +53,7 @@ final class CoverArtCell: UITableViewCell {
 			}
 		}
 		.margins(.all, .zero)
-		os_signpost(.end, log: .songsView, name: "Set cover art")
+		os_signpost(.end, log: .songsView, name: "Configure cover art")
 	}
 }
 
