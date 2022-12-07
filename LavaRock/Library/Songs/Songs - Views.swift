@@ -21,7 +21,6 @@ final class CoverArtCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		coverArtView.accessibilityIgnoresInvertColors = true
-		accessibilityLabel = LRString.albumArtwork
 		accessibilityUserInputLabels = nil // No Voice Control label
 		accessibilityTraits.formUnion(.image)
 	}
@@ -46,6 +45,7 @@ final class CoverArtCell: UITableViewCell {
 						.frame(
 							maxWidth: .infinity, // Horizontally centers narrow artwork
 							maxHeight: maxHeight)
+						.accessibilityLabel(LRString.albumArtwork)
 						.accessibilityIgnoresInvertColors()
 				} else {
 					ZStack {
@@ -59,6 +59,7 @@ final class CoverArtCell: UITableViewCell {
 							.foregroundColor(.secondary)
 							.font(.system(size: .eight * 4))
 					}
+					.accessibilityLabel(LRString.albumArtwork)
 				}
 			}
 			.margins(.all, .zero)
