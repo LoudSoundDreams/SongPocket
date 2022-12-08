@@ -19,38 +19,9 @@ final class CoverArtCell: UITableViewCell {
 	) {
 		os_signpost(.begin, log: .songsView, name: "Configure cover art")
 		contentConfiguration = UIHostingConfiguration {
-			let uiImageOptional: UIImage? = {
-				os_signpost(.begin, log: .songsView, name: "Draw cover art")
-				defer {
-					os_signpost(.end, log: .songsView, name: "Draw cover art")
-				}
-				return albumRepresentative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
-					width: maxHeight,
-					height: maxHeight))
-			}()
-			if let uiImage = uiImageOptional {
-				Image(uiImage: uiImage)
-					.resizable()
-					.scaledToFit()
-					.frame(
-						maxWidth: .infinity, // Horizontally centers narrow artwork
-						maxHeight: maxHeight)
-					.accessibilityLabel(LRString.albumArtwork)
-					.accessibilityIgnoresInvertColors()
-			} else {
-				ZStack {
-					Color.gray
-						.aspectRatio(1, contentMode: .fit)
-						.frame(
-							maxWidth: .infinity,
-							maxHeight: maxHeight)
-					
-					Image(systemName: "music.note")
-						.foregroundColor(.secondary)
-						.font(.system(size: .eight * 4))
-				}
-				.accessibilityLabel(LRString.albumArtwork)
-			}
+			CoverArtView(
+				albumRepresentative: albumRepresentative,
+				maxHeight: maxHeight)
 		}
 		.margins(.all, .zero)
 		os_signpost(.end, log: .songsView, name: "Configure cover art")

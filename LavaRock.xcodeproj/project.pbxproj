@@ -79,6 +79,7 @@
 		07A4F9052519E72C0065C87E /* updateLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9042519E72C0065C87E /* updateLibraryItems.swift */; };
 		07A4F90A2519E7D20065C87E /* createLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9092519E7D20065C87E /* createLibraryItems.swift */; };
 		07A4F90F2519E8410065C87E /* deleteLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F90E2519E8410065C87E /* deleteLibraryItems.swift */; };
+		07A5E1CD2941CA2100DDB4CA /* CoverArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */; };
 		07A7989127A8ABB1007B70AA /* ConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A7989027A8ABB1007B70AA /* ConsoleView.swift */; };
 		07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* Collection.swift */; };
 		07B1EC40271FB7F600EA8E29 /* ConsoleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC3F271FB7F600EA8E29 /* ConsoleVC.swift */; };
@@ -224,6 +225,7 @@
 		07A4F9042519E72C0065C87E /* updateLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = updateLibraryItems.swift; sourceTree = "<group>"; };
 		07A4F9092519E7D20065C87E /* createLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createLibraryItems.swift; sourceTree = "<group>"; };
 		07A4F90E2519E8410065C87E /* deleteLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = deleteLibraryItems.swift; sourceTree = "<group>"; };
+		07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverArtView.swift; sourceTree = "<group>"; };
 		07A7989027A8ABB1007B70AA /* ConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleView.swift; sourceTree = "<group>"; };
 		07AE2AA3258C09D900C3A314 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		07B1EC3F271FB7F600EA8E29 /* ConsoleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleVC.swift; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 				077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */,
 				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 				072F859E26B74A5D0062323C /* NoItemsBackgroundManager.swift */,
+				07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */,
 			);
 			path = "Multiple Levels";
 			sourceTree = "<group>";
@@ -858,6 +861,7 @@
 				07E0BBD7276567490010117E /* String.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
 				070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */,
+				07A5E1CD2941CA2100DDB4CA /* CoverArtView.swift in Sources */,
 				07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */,
 				073AF48A24D16647000C1A6D /* AccentColor.swift in Sources */,
 				073E6A8725562B93003C84A5 /* Collections - Views.swift in Sources */,
@@ -1051,7 +1055,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
-				CURRENT_PROJECT_VERSION = 676;
+				CURRENT_PROJECT_VERSION = 677;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1079,7 +1083,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
-				CURRENT_PROJECT_VERSION = 676;
+				CURRENT_PROJECT_VERSION = 677;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
