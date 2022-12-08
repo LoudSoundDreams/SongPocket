@@ -408,7 +408,7 @@ class LibraryTVC: UITableViewController {
 			}
 			let selectedIndexPaths = tableView.selectedIndexPaths
 			if selectedIndexPaths.isEmpty {
-				return viewModel.viewContainerIsSpecific()
+				return true
 			} else {
 				return selectedIndexPaths.isContiguousWithinEachSection()
 			}

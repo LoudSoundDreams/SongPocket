@@ -416,21 +416,10 @@ final class CollectionsTVC:
 			case .browsing:
 				return []
 			}}()
-		if Enabling.multicollection {
-			let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
-			let indexOfSelectedCollection = collection.index
-			albumsTVC.indexOfOpenedCollection = Int(indexOfSelectedCollection)
-			
-			albumsTVC.viewModel = AlbumsViewModel(
-				viewContainer: .library,
-				context: viewModel.context,
-				prerowsInEachSection: prerowsInEachSection)
-		} else {
-			let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
-			albumsTVC.viewModel = AlbumsViewModel(
-				viewContainer: .container(collection),
-				context: viewModel.context,
-				prerowsInEachSection: prerowsInEachSection)
-		}
+		let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
+		albumsTVC.viewModel = AlbumsViewModel(
+			parentCollection: .exists(collection),
+			context: viewModel.context,
+			prerowsInEachSection: prerowsInEachSection)
 	}
 }

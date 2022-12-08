@@ -8,9 +8,15 @@
 import UIKit
 import CoreData
 
+enum ParentCollection {
+	case exists(Collection)
+	case deleted(Collection)
+}
+
 struct AlbumsViewModel {
+	let parentCollection: ParentCollection
+	
 	// `LibraryViewModel`
-	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
 	let numberOfPresections = 0
 	var numberOfPrerowsPerSection: Int {
@@ -26,18 +32,11 @@ struct AlbumsViewModel {
 extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
 	
-	func viewContainerIsSpecific() -> Bool {
-		return Enabling.multicollection ? false : true
-	}
-	
 	func bigTitle() -> String {
-		switch viewContainer {
-		case .library:
-			return LRString.albums
+		switch parentCollection {
 		case
-				.container(let container),
-				.deleted(let container):
-			let collection = container as! Collection
+				.exists(let collection),
+				.deleted(let collection):
 			return collection.title ?? LRString.albums
 		}
 	}
@@ -69,32 +68,40 @@ extension AlbumsViewModel: LibraryViewModel {
 		}
 	}
 	
+	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		let freshenedViewContainer = viewContainer.freshened()
+		let freshenedParentCollection: ParentCollection = {
+			switch parentCollection {
+			case .exists(let collection):
+				if collection.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
+					return .deleted(collection)
+				} else {
+					return .exists(collection)
+				}
+			case .deleted(let collection):
+				return .deleted(collection)
+			}
+		}()
 		return Self(
-			viewContainer: freshenedViewContainer,
+			parentCollection: freshenedParentCollection,
 			context: context,
 			prerowsInEachSection: prerowsInEachSection)
 	}
 }
 extension AlbumsViewModel {
 	init(
-		viewContainer: LibraryViewContainer,
+		parentCollection: ParentCollection,
 		context: NSManagedObjectContext,
 		prerowsInEachSection: [Prerow]
 	) {
-		self.viewContainer = viewContainer
+		self.parentCollection = parentCollection
 		self.context = context
 		self.prerowsInEachSection = prerowsInEachSection
 		
 		// Check `viewContainer` to figure out which `Album`s to show.
 		let containers: [NSManagedObject] = {
-			switch viewContainer {
-			case .library:
-				let allCollections = Collection.allFetched(ordered: true, via: context)
-				return allCollections
-			case .container(let container):
-				let collection = container as! Collection
+			switch parentCollection {
+			case .exists(let collection):
 				return [collection]
 			case .deleted:
 				return []
@@ -130,6 +137,17 @@ extension AlbumsViewModel {
 		}
 	}
 	
+	// Similar to counterpart in `SongsViewModel`.
+	func numberOfRows(forSection section: Int) -> Int {
+		switch parentCollection {
+		case .exists:
+			let group = group(forSection: section)
+			return numberOfPrerowsPerSection + group.items.count
+		case .deleted:
+			return 0 // Without `numberOfPrerowsPerSection`
+		}
+	}
+	
 	// MARK: - Organizing
 	
 	// Returns `true` if the albums to organize have at least 2 different album artists.
@@ -159,7 +177,7 @@ extension AlbumsViewModel {
 			via: context)
 		
 		return AlbumsViewModel(
-			viewContainer: viewContainer,
+			parentCollection: parentCollection,
 			context: context,
 			prerowsInEachSection: [])
 	}

@@ -8,9 +8,15 @@
 import UIKit
 import CoreData
 
+enum ParentAlbum {
+	case exists(Album)
+	case deleted(Album)
+}
+
 struct SongsViewModel {
+	let parentAlbum: ParentAlbum
+	
 	// `LibraryViewModel`
-	let viewContainer: LibraryViewContainer
 	let context: NSManagedObjectContext
 	let numberOfPresections = 0
 	var numberOfPrerowsPerSection: Int {
@@ -30,18 +36,11 @@ struct SongsViewModel {
 extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
 	
-	func viewContainerIsSpecific() -> Bool {
-		return Enabling.multialbum ? false : true
-	}
-	
 	func bigTitle() -> String {
-		switch viewContainer {
-		case .library:
-			return LRString.songs
+		switch parentAlbum {
 		case
-				.container(let container),
-				.deleted(let container):
-			let album = container as! Album
+				.exists(let album),
+				.deleted(let album):
 			return album.representativeTitleFormattedOrPlaceholder()
 		}
 	}
@@ -70,30 +69,37 @@ extension SongsViewModel: LibraryViewModel {
 		}
 	}
 	
+	// Similar to counterpart in `AlbumsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		let freshenedViewContainer = viewContainer.freshened()
+		let freshenedParentAlbum: ParentAlbum = {
+			switch parentAlbum {
+			case .exists(let album):
+				if album.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
+					return .deleted(album)
+				} else {
+					return .exists(album)
+				}
+			case .deleted(let album):
+				return .deleted(album)
+			}
+		}()
 		return Self(
-			viewContainer: freshenedViewContainer,
+			parentAlbum: freshenedParentAlbum,
 			context: context)
 	}
 }
 extension SongsViewModel {
 	init(
-		viewContainer: LibraryViewContainer,
+		parentAlbum: ParentAlbum,
 		context: NSManagedObjectContext
 	) {
-		self.viewContainer = viewContainer
+		self.parentAlbum = parentAlbum
 		self.context = context
 		
 		// Check `viewContainer` to figure out which `Song`s to show.
 		let containers: [NSManagedObject] = {
-			switch viewContainer {
-			case .library:
-				let allCollections = Collection.allFetched(ordered: true, via: context)
-				let allAlbums = allCollections.flatMap { $0.albums(sorted: true) }
-				return allAlbums
-			case .container(let container):
-				let album = container as! Album
+			switch parentAlbum {
+			case .exists(let album):
 				return [album]
 			case .deleted:
 				return []
@@ -130,16 +136,14 @@ extension SongsViewModel {
 		}
 	}
 	
-	// Time complexity: O(n), where “n” is the number of groups
-	func indexPath(for album: Album) -> IndexPath? {
-		if let indexOfMatchingGroup = groups.firstIndex(where: { group in
-			album.objectID == group.container?.objectID
-		}) {
-			return IndexPath(
-				row: 0,
-				section: numberOfPresections + indexOfMatchingGroup)
-		} else {
-			return nil
+	// Similar to counterpart in `AlbumsViewModel`.
+	func numberOfRows(forSection section: Int) -> Int {
+		switch parentAlbum {
+		case .exists:
+			let group = group(forSection: section)
+			return numberOfPrerowsPerSection + group.items.count
+		case .deleted:
+			return 0 // Without `numberOfPrerowsPerSection`
 		}
 	}
 }

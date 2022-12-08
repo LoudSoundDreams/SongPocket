@@ -41,7 +41,6 @@ final class AlbumsTVC:
 	}
 	
 	// State
-	var indexOfOpenedCollection: Int? = nil
 	var idsOfAlbumsToKeepSelected: Set<NSManagedObjectID> = []
 	
 	// MARK: “Organize Albums” Sheet
@@ -70,10 +69,6 @@ final class AlbumsTVC:
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		if Enabling.multicollection {
-			navigationItem.largeTitleDisplayMode = .never
-		}
 		
 		switch purpose {
 		case .organizingAlbums(let clipboard):
@@ -117,32 +112,6 @@ final class AlbumsTVC:
 	
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
 	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		if let collectionIndex = indexOfOpenedCollection {
-			indexOfOpenedCollection = nil
-			tableView.scrollToRow(
-				at: IndexPath(
-					row: 0,
-					section: viewModel.numberOfPresections + collectionIndex),
-				at: .top,
-				animated: false)
-			
-//			print("")
-//			print("will appear - \(self)")
-//			print(tableView.adjustedContentInset)
-//			print(tableView.contentOffset)
-		}
-	}
-	
-//	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//		print("")
-//		print("scrolled - \(self)")
-//		print(tableView.adjustedContentInset)
-//		print(tableView.contentOffset)
-//	}
 	
 	// MARK: - Library Items
 	
@@ -231,11 +200,7 @@ final class AlbumsTVC:
 		guard !viewModel.isEmpty() else {
 			return false
 		}
-		if tableView.selectedIndexPaths.isEmpty {
-			return viewModel.viewContainerIsSpecific()
-		} else {
-			return true
-		}
+		return true
 	}
 	
 	// MARK: - Navigation
@@ -251,18 +216,9 @@ final class AlbumsTVC:
 			let songsTVC = segue.destination as? SongsTVC
 		else { return }
 		
-		if Enabling.multialbum {
-			let album = albumsViewModel.albumNonNil(at: selectedIndexPath)
-			songsTVC.openedAlbum = album
-			
-			songsTVC.viewModel = SongsViewModel(
-				viewContainer: .library,
-				context: viewModel.context)
-		} else {
-			let album = albumsViewModel.albumNonNil(at: selectedIndexPath)
-			songsTVC.viewModel = SongsViewModel(
-				viewContainer: .container(album),
-				context: viewModel.context)
-		}
+		let album = albumsViewModel.albumNonNil(at: selectedIndexPath)
+		songsTVC.viewModel = SongsViewModel(
+			parentAlbum: .exists(album),
+			context: viewModel.context)
 	}
 }

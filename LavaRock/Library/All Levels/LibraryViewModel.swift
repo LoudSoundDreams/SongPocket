@@ -8,40 +8,17 @@
 import UIKit
 import CoreData
 
-enum LibraryViewContainer {
-	case library
-	case container(LibraryContainer)
-	case deleted(LibraryContainer)
-	
-	func freshened() -> Self {
-		switch self {
-		case .library:
-			return .library
-		case .container(let container):
-			if container.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
-				return .deleted(container)
-			} else {
-				return .container(container)
-			}
-		case .deleted(let container):
-			return .deleted(container)
-		}
-	}
-}
-
 typealias ColumnOfLibraryItems = [LibraryGroup]
 
 protocol LibraryViewModel {
 	static var entityName: String { get }
 	
-	var viewContainer: LibraryViewContainer { get }
 	var context: NSManagedObjectContext { get }
 	var numberOfPresections: Int { get }
 	var numberOfPrerowsPerSection: Int { get }
 	
 	var groups: ColumnOfLibraryItems { get set }
 	
-	func viewContainerIsSpecific() -> Bool
 	func bigTitle() -> String
 	func prerowIdentifiersInEachSection() -> [AnyHashable]
 	func allowsSortOption(
@@ -170,11 +147,7 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
-			if viewContainerIsSpecific() {
-				return indexPathsForAllItems()
-			} else {
-				return []
-			}
+			return indexPathsForAllItems()
 		} else {
 			return selectedIndexPaths
 		}
@@ -183,11 +156,7 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
-			if viewContainerIsSpecific() {
-				return indexPathsForAllItems()
-			} else {
-				return []
-			}
+			return indexPathsForAllItems()
 		} else {
 			return selectedIndexPaths.sorted()
 		}
@@ -224,21 +193,6 @@ extension LibraryViewModel {
 		return IndexPath(
 			row: numberOfPrerowsPerSection + itemIndex,
 			section: numberOfPresections + groupIndex)
-	}
-	
-	// MARK: - UITableView
-	
-	func numberOfRows(forSection section: Int) -> Int {
-		switch viewContainer {
-		case
-				.library,
-				.container:
-			break
-		case .deleted:
-			return 0 // Without `numberOfPrerowsPerSection`
-		}
-		let group = group(forSection: section)
-		return numberOfPrerowsPerSection + group.items.count
 	}
 	
 	// MARK: - Editing

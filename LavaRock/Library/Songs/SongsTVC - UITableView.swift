@@ -21,22 +21,7 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return viewModel.numberOfRows(forSection: section)
-	}
-	
-	// MARK: - Headers
-	
-	override func tableView(
-		_ tableView: UITableView,
-		titleForHeaderInSection section: Int
-	) -> String? {
-		if Enabling.multialbum {
-			return (viewModel as? SongsViewModel)?
-				.album(forSection: section)
-				.representativeTitleFormattedOrPlaceholder()
-		} else {
-			return nil
-		}
+		return (viewModel as! SongsViewModel).numberOfRows(forSection: section)
 	}
 	
 	// MARK: - Cells

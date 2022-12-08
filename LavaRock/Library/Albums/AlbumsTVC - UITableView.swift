@@ -33,22 +33,7 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return viewModel.numberOfRows(forSection: section)
-	}
-	
-	// MARK: - Headers
-	
-	override func tableView(
-		_ tableView: UITableView,
-		titleForHeaderInSection section: Int
-	) -> String? {
-		if Enabling.multicollection {
-			return (viewModel as? AlbumsViewModel)?
-				.collection(forSection: section)
-				.title
-		} else {
-			return nil
-		}
+		return (viewModel as! AlbumsViewModel).numberOfRows(forSection: section)
 	}
 	
 	// MARK: - Cells

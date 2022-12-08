@@ -35,7 +35,7 @@ extension CollectionsTVC {
 		case .emptyPlaceholder:
 			return 2
 		case .someCollections:
-			return viewModel.numberOfRows(forSection: section)
+			return (viewModel as! CollectionsViewModel).numberOfRows(forSection: section)
 		}
 	}
 	
@@ -120,18 +120,10 @@ extension CollectionsTVC {
 					return .modal
 				}
 			case .movingAlbums(let clipboard):
-				if Enabling.multicollection {
-					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
-						return .modalTinted
-					} else {
-						return .modal
-					}
+				if clipboard.idsOfSourceCollections.contains(collection.objectID) {
+					return .modalDisabled
 				} else {
-					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
-						return .modalDisabled
-					} else {
-						return .modal
-					}
+					return .modal
 				}
 			case .browsing:
 				return .normal

@@ -10,7 +10,6 @@ import CoreData
 
 struct CollectionsViewModel {
 	// `LibraryViewModel`
-	let viewContainer: LibraryViewContainer = .library
 	let context: NSManagedObjectContext
 	let numberOfPresections = 0
 	var numberOfPrerowsPerSection: Int {
@@ -25,10 +24,6 @@ struct CollectionsViewModel {
 }
 extension CollectionsViewModel: LibraryViewModel {
 	static let entityName = "Collection"
-	
-	func viewContainerIsSpecific() -> Bool {
-		return true
-	}
 	
 	func bigTitle() -> String {
 		return LRString.collections
@@ -94,6 +89,11 @@ extension CollectionsViewModel {
 		} else {
 			return .collection
 		}
+	}
+	
+	func numberOfRows(forSection section: Int) -> Int {
+		let group = group(forSection: section)
+		return numberOfPrerowsPerSection + group.items.count
 	}
 	
 	private static let indexOfOnlyGroup = 0
