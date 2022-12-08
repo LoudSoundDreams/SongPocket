@@ -15,28 +15,34 @@ struct AlbumInfoRow: View {
 		VStack(
 			spacing: .eight // 8
 		) {
+			// `Please Please Me`
 			Text(albumTitle)
 				.multilineTextAlignment(.center)
 				.font(.title2)
 				.fontWeight(.bold)
 			
-			Text({ () -> String in
-				let albumArtistSegment: String
-				= album.representativeAlbumArtistFormattedOptional()
-				?? Album.unknownAlbumArtistPlaceholder
+			// Subtitle
+			Group {
+				// Concatenate instances of `Text`
 				
-				let releaseDateSegment: String = {
+				// `The Beatles`
+				Text(
+					album.representativeAlbumArtistFormattedOptional()
+					?? Album.unknownAlbumArtistPlaceholder
+				)
+				.fontWeight(.bold) // As of iOS 16.2 developer beta 4, this is thicker than `.bold()`, peculiarly
+				+
+				
+				// `· Mar 22, 1963`
+				Text({ () -> String in
 					guard let releaseDateString = album.releaseDateEstimateFormattedOptional() else {
 						return ""
 					}
 					return " " + LRString.interpunct + " " + releaseDateString
-				}()
-				
-				return albumArtistSegment + releaseDateSegment
-			}())
+				}())
+			}
 			.multilineTextAlignment(.center)
 			.font(.caption)
-			.fontWeight(.bold)
 			.foregroundColor(.secondary)
 		}
 		.padding(.top, .eight * -1/4) // -2
