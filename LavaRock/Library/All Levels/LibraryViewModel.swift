@@ -14,7 +14,6 @@ protocol LibraryViewModel {
 	static var entityName: String { get }
 	
 	var context: NSManagedObjectContext { get }
-	var numberOfPresections: Int { get }
 	var numberOfPrerowsPerSection: Int { get }
 	
 	var groups: ColumnOfLibraryItems { get set }
@@ -29,7 +28,6 @@ protocol LibraryViewModel {
 }
 
 enum LibrarySectionIdentifier: Hashable {
-//	case presection(Int)
 	case groupWithNoContainer
 	case groupWithContainer(NSManagedObjectID)
 }
@@ -54,16 +52,6 @@ extension LibraryViewModel {
 			LibraryRowIdentifier
 		>
 		
-//		let presectionIndices = Array(0 ..< numberOfPresections)
-//		let presectionStructures: [LibrarySectionStructure] = presectionIndices.map { index in
-//			let sectionIdentifier = LibrarySectionIdentifier.presection(index)
-//
-//
-//			return SectionStructure(
-//				identifier: sectionIdentifier,
-//				rowIdentifiers: [])
-//		}
-		
 		let groupSectionStructures: [LibrarySectionStructure] = groups.map { group in
 			let sectionIdentifier: LibrarySectionIdentifier = {
 				guard let containerID = group.container?.objectID else {
@@ -87,7 +75,6 @@ extension LibraryViewModel {
 				rowIdentifiers: rowIdentifiers)
 		}
 		
-//		return presectionStructures + groupSectionStructures
 		return groupSectionStructures
 	}
 	
@@ -134,7 +121,7 @@ extension LibraryViewModel {
 	// MARK: Indices
 	
 	func groupIndex(forSection section: Int) -> Int {
-		return section - numberOfPresections
+		return section
 	}
 	
 	func itemIndex(forRow row: Int) -> Int {
@@ -169,7 +156,7 @@ extension LibraryViewModel {
 	}
 	
 	func section(forGroupIndex groupIndex: Int) -> Int {
-		return numberOfPresections + groupIndex
+		return groupIndex
 	}
 	
 	func row(forItemIndex itemIndex: Int) -> Int {
@@ -182,7 +169,7 @@ extension LibraryViewModel {
 		return indices.map {
 			IndexPath(
 				row: numberOfPrerowsPerSection + $0,
-				section: numberOfPresections + groupIndex)
+				section: groupIndex)
 		}
 	}
 	
@@ -192,7 +179,7 @@ extension LibraryViewModel {
 	) -> IndexPath {
 		return IndexPath(
 			row: numberOfPrerowsPerSection + itemIndex,
-			section: numberOfPresections + groupIndex)
+			section: groupIndex)
 	}
 	
 	// MARK: - Editing

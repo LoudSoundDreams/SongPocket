@@ -18,7 +18,7 @@ extension AlbumsTVC {
 			break
 		case .movingAlbums(let clipboard):
 			if clipboard.didAlreadyCreate {
-				return viewModel.numberOfPresections + 1
+				return 1
 			} else {
 				break
 			}
@@ -26,7 +26,7 @@ extension AlbumsTVC {
 			break
 		}
 		
-		return viewModel.numberOfPresections + viewModel.groups.count
+		return viewModel.groups.count
 	}
 	
 	override func tableView(

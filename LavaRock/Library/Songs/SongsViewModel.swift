@@ -18,7 +18,6 @@ struct SongsViewModel {
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	let numberOfPresections = 0
 	var numberOfPrerowsPerSection: Int {
 		prerowsInEachSection.count
 	}

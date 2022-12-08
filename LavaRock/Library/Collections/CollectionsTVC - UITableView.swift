@@ -14,7 +14,7 @@ extension CollectionsTVC {
 	override func numberOfSections(
 		in tableView: UITableView
 	) -> Int {
-		return viewModel.numberOfPresections + viewModel.groups.count
+		return viewModel.groups.count
 	}
 	
 	override func tableView(
