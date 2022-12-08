@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import os
+import OSLog
 
 typealias AlbumID = Int64
 typealias SongID = Int64

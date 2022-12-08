@@ -6,7 +6,7 @@
 //
 
 import MediaPlayer
-import os
+import OSLog
 
 @MainActor
 extension MPMusicPlayerController {

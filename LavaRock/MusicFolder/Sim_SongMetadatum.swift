@@ -7,7 +7,7 @@
 
 #if targetEnvironment(simulator)
 import MediaPlayer
-import os
+import OSLog
 
 enum Sim_AlbumIDDispenser {
 	private static var nextAvailable = 1

@@ -5,7 +5,7 @@
 //  Created by h on 2022-07-19.
 //
 
-import os
+import OSLog
 
 extension OSSignposter {
 	static let standardLibrary = OSSignposter(

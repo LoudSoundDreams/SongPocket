@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import os
+import OSLog
 
 extension Array {
 	private var signposter: OSSignposter {

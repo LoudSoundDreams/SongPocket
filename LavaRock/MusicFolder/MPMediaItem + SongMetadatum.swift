@@ -7,7 +7,7 @@
 
 import MediaPlayer
 import UIKit
-import os
+import OSLog
 
 extension MPMediaItem: SongMetadatum {
 	final var albumID: AlbumID { AlbumID(bitPattern: albumPersistentID) }
