@@ -22,6 +22,12 @@ final class CoverArtCell: UITableViewCell {
 			CoverArtView(
 				albumRepresentative: albumRepresentative,
 				maxHeight: maxHeight)
+			.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+				viewDimensions[.leading]
+			}
+			.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+				viewDimensions[.trailing]
+			}
 		}
 		.margins(.all, .zero)
 		os_signpost(.end, log: .songsView, name: "Configure cover art")
