@@ -83,7 +83,7 @@ extension LibraryViewModel {
 	// WARNING: Never use `LibraryGroup.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `numberOfPrerowsPerSection`.
 	
 	func group(forSection section: Int) -> LibraryGroup {
-		return groups[groupIndex(forSection: section)]
+		return groups[section]
 	}
 	
 	func itemsInGroup(startingAt selectedIndexPath: IndexPath) -> [NSManagedObject] {
@@ -93,7 +93,7 @@ extension LibraryViewModel {
 	}
 	
 	func pointsToSomeItem(_ indexPath: IndexPath) -> Bool {
-		let groupIndex = groupIndex(forSection: indexPath.section)
+		let groupIndex = indexPath.section
 		guard 0 <= groupIndex, groupIndex < groups.count else {
 			return false
 		}
@@ -119,10 +119,6 @@ extension LibraryViewModel {
 	}
 	
 	// MARK: Indices
-	
-	func groupIndex(forSection section: Int) -> Int {
-		return section
-	}
 	
 	func itemIndex(forRow row: Int) -> Int {
 		return row - numberOfPrerowsPerSection
@@ -155,10 +151,6 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func section(forGroupIndex groupIndex: Int) -> Int {
-		return groupIndex
-	}
-	
 	func row(forItemIndex itemIndex: Int) -> Int {
 		return numberOfPrerowsPerSection + itemIndex
 	}
@@ -189,14 +181,14 @@ extension LibraryViewModel {
 		at sourceIndexPath: IndexPath,
 		to destinationIndexPath: IndexPath
 	) {
-		let sourceGroupIndex = groupIndex(forSection: sourceIndexPath.section)
+		let sourceGroupIndex = sourceIndexPath.section
 		let sourceItemIndex = itemIndex(forRow: sourceIndexPath.row)
 		
 		var sourceItems = groups[sourceGroupIndex].items
 		let item = sourceItems.remove(at: sourceItemIndex)
 		groups[sourceGroupIndex].setItems(sourceItems)
 		
-		let destinationGroupIndex = groupIndex(forSection: destinationIndexPath.section)
+		let destinationGroupIndex = destinationIndexPath.section
 		let destinationItemIndex = itemIndex(forRow: destinationIndexPath.row)
 		
 		var destinationItems = groups[destinationGroupIndex].items
@@ -219,8 +211,7 @@ extension LibraryViewModel {
 				itemsAtRowsInOrder: rows,
 				inSection: section,
 				sortOptionLocalizedName: sortOptionLocalizedName)
-			let groupIndex = groupIndex(forSection: section)
-			twin.groups[groupIndex].setItems(newItems)
+			twin.groups[section].setItems(newItems)
 		}
 		return twin
 	}
@@ -343,8 +334,7 @@ extension LibraryViewModel {
 			let newItems = itemsAfterFloatingToTop(
 				itemsAtRowsInAnyOrder: rows,
 				inSection: section)
-			let groupIndex = groupIndex(forSection: section)
-			twin.groups[groupIndex].setItems(newItems)
+			twin.groups[section].setItems(newItems)
 		}
 		return twin
 	}
@@ -385,8 +375,7 @@ extension LibraryViewModel {
 			let newItems = itemsAfterSinkingToBottom(
 				itemsAtRowsInAnyOrder: rows,
 				inSection: section)
-			let groupIndex = groupIndex(forSection: section)
-			twin.groups[groupIndex].setItems(newItems)
+			twin.groups[section].setItems(newItems)
 		}
 		return twin
 	}
