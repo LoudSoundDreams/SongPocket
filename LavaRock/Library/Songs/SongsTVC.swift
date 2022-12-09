@@ -88,10 +88,7 @@ final class SongsTVC:
 		startingAt firstMediaItem: MPMediaItem
 	) -> [MPMediaItem] {
 		let allMediaItems = mediaItems(
-			startingAt: viewModel.indexPathFor(
-				itemIndex: 0,
-				groupIndex: 0
-			)
+			startingAt: viewModel.indexPathFor(itemIndex: 0)
 		)
 		let result = allMediaItems.drop { mediaItem in
 			mediaItem.persistentID != firstMediaItem.persistentID

@@ -95,14 +95,12 @@ extension CollectionsViewModel {
 		return numberOfPrerowsPerSection + group.items.count
 	}
 	
-	private static let indexOfOnlyGroup = 0
-	
 	private var group: LibraryGroup {
 		get {
-			groups[Self.indexOfOnlyGroup]
+			groups[0]
 		}
 		set {
-			groups[Self.indexOfOnlyGroup] = newValue
+			groups[0] = newValue
 		}
 	}
 	
@@ -161,9 +159,7 @@ extension CollectionsViewModel {
 	
 	private static let indexOfNewCollection = 0
 	var indexPathOfNewCollection: IndexPath {
-		return indexPathFor(
-			itemIndex: Self.indexOfNewCollection,
-			groupIndex: Self.indexOfOnlyGroup)
+		return indexPathFor(itemIndex: Self.indexOfNewCollection)
 	}
 	
 	func updatedAfterCreating(title: String) -> Self {

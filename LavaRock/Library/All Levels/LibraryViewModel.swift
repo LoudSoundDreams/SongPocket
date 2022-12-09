@@ -166,12 +166,11 @@ extension LibraryViewModel {
 	}
 	
 	func indexPathFor(
-		itemIndex: Int,
-		groupIndex: Int
+		itemIndex: Int
 	) -> IndexPath {
 		return IndexPath(
 			row: numberOfPrerowsPerSection + itemIndex,
-			section: groupIndex)
+			section: 0)
 	}
 	
 	// MARK: - Editing
