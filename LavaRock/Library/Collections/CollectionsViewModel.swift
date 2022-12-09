@@ -97,7 +97,7 @@ extension CollectionsViewModel {
 	
 	private static let indexOfOnlyGroup = 0
 	
-	var group: LibraryGroup {
+	private var group: LibraryGroup {
 		get {
 			groups[Self.indexOfOnlyGroup]
 		}
