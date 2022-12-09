@@ -82,12 +82,12 @@ extension LibraryViewModel {
 	
 	// WARNING: Never use `LibraryGroup.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `numberOfPrerowsPerSection`.
 	
-	func group(forSection section: Int) -> LibraryGroup {
-		return groups[section]
+	func libraryGroup() -> LibraryGroup {
+		return groups[0]
 	}
 	
 	func itemsInGroup(startingAt selectedIndexPath: IndexPath) -> [NSManagedObject] {
-		let group = group(forSection: selectedIndexPath.section)
+		let group = libraryGroup()
 		let selectedItemIndex = itemIndex(forRow: selectedIndexPath.row)
 		return Array(group.items[selectedItemIndex...])
 	}
@@ -113,7 +113,7 @@ extension LibraryViewModel {
 	}
 	
 	func itemNonNil(at indexPath: IndexPath) -> NSManagedObject {
-		let group = group(forSection: indexPath.section)
+		let group = libraryGroup()
 		let itemIndex = itemIndex(forRow: indexPath.row)
 		return group.items[itemIndex]
 	}
@@ -222,7 +222,7 @@ extension LibraryViewModel {
 		sortOptionLocalizedName: String
 	) -> [NSManagedObject] {
 		// Get all the items in the subjected group.
-		let oldItems = group(forSection: section).items
+		let oldItems = libraryGroup().items
 		
 		// Get the indices of the items to sort.
 		let subjectedIndices = rows.map {
@@ -349,7 +349,7 @@ extension LibraryViewModel {
 		let indicesOfSelectedItems = rows.map {
 			itemIndex(forRow: $0)
 		}
-		let oldItems = group(forSection: section).items
+		let oldItems = libraryGroup().items
 		let selectedItems = indicesOfSelectedItems.map {
 			oldItems[$0]
 		}
@@ -388,7 +388,7 @@ extension LibraryViewModel {
 		let indicesOfSelectedItems = rows.map {
 			itemIndex(forRow: $0)
 		}
-		let oldItems = group(forSection: section).items
+		let oldItems = libraryGroup().items
 		let selectedItems = indicesOfSelectedItems.map {
 			oldItems[$0]
 		}

@@ -90,8 +90,8 @@ extension CollectionsViewModel {
 		}
 	}
 	
-	func numberOfRows(forSection section: Int) -> Int {
-		let group = group(forSection: section)
+	func numberOfRows() -> Int {
+		let group = libraryGroup()
 		return numberOfPrerowsPerSection + group.items.count
 	}
 	

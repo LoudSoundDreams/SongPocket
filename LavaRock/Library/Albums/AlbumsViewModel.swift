@@ -105,10 +105,10 @@ extension AlbumsViewModel {
 			case .deleted:
 				return []
 			}}()
-		groups = containers.map {
+		groups = containers.map { container in
 			CollectionsOrAlbumsGroup(
 				entityName: Self.entityName,
-				container: $0,
+				container: container,
 				context: context)
 		}
 	}
@@ -118,8 +118,8 @@ extension AlbumsViewModel {
 	}
 	
 	// Similar to `SongsViewModel.album`.
-	func collection(forSection section: Int) -> Collection {
-		let group = group(forSection: section)
+	func collection() -> Collection {
+		let group = libraryGroup()
 		return group.container as! Collection
 	}
 	
@@ -137,10 +137,10 @@ extension AlbumsViewModel {
 	}
 	
 	// Similar to counterpart in `SongsViewModel`.
-	func numberOfRows(forSection section: Int) -> Int {
+	func numberOfRows() -> Int {
 		switch parentCollection {
 		case .exists:
-			let group = group(forSection: section)
+			let group = libraryGroup()
 			return numberOfPrerowsPerSection + group.items.count
 		case .deleted:
 			return 0 // Without `numberOfPrerowsPerSection`
@@ -168,7 +168,7 @@ extension AlbumsViewModel {
 		albumsWith albumIDs: [NSManagedObjectID],
 		toSection section: Int
 	) -> Self {
-		let destinationCollection = collection(forSection: section)
+		let destinationCollection = collection()
 		
 		destinationCollection.moveAlbumsToBeginning(
 			with: albumIDs,

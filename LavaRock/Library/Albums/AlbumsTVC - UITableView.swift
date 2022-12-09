@@ -33,7 +33,7 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return (viewModel as! AlbumsViewModel).numberOfRows(forSection: section)
+		return (viewModel as! AlbumsViewModel).numberOfRows()
 	}
 	
 	// MARK: - Cells

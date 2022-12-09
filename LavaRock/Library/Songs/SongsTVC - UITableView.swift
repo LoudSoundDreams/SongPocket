@@ -21,7 +21,7 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return (viewModel as! SongsViewModel).numberOfRows(forSection: section)
+		return (viewModel as! SongsViewModel).numberOfRows()
 	}
 	
 	// MARK: - Cells
@@ -34,7 +34,7 @@ extension SongsTVC {
 		else {
 			return UITableViewCell()
 		}
-		let album = songsViewModel.album(forSection: indexPath.section)
+		let album = songsViewModel.album()
 		
 		let rowCase = songsViewModel.rowCase(for: indexPath)
 		switch rowCase {
@@ -83,10 +83,10 @@ extension SongsTVC {
 		cell.configureWith(
 			song: songsViewModel.songNonNil(at: indexPath),
 			albumRepresentative: {
-				let album = songsViewModel.album(forSection: indexPath.section)
+				let album = songsViewModel.album()
 				return album.representativeSongMetadatum()
 			}(),
-			spacerTrackNumberText: (songsViewModel.group(forSection: indexPath.section) as? SongsGroup)?.spacerTrackNumberText,
+			spacerTrackNumberText: (songsViewModel.libraryGroup() as? SongsGroup)?.spacerTrackNumberText,
 			songsTVC: Weak(self)
 		)
 		

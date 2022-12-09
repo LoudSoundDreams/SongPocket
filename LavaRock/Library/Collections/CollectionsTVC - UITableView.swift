@@ -35,7 +35,7 @@ extension CollectionsTVC {
 		case .emptyPlaceholder:
 			return 2
 		case .someCollections:
-			return (viewModel as! CollectionsViewModel).numberOfRows(forSection: section)
+			return (viewModel as! CollectionsViewModel).numberOfRows()
 		}
 	}
 	

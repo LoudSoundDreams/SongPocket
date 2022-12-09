@@ -103,10 +103,10 @@ extension SongsViewModel {
 			case .deleted:
 				return []
 			}}()
-		groups = containers.map {
+		groups = containers.map { container in
 			SongsGroup(
 				entityName: Self.entityName,
-				container: $0,
+				container: container,
 				context: context)
 		}
 	}
@@ -116,8 +116,8 @@ extension SongsViewModel {
 	}
 	
 	// Similar to `AlbumsViewModel.collection`.
-	func album(forSection section: Int) -> Album {
-		let group = group(forSection: section)
+	func album() -> Album {
+		let group = libraryGroup()
 		return group.container as! Album
 	}
 	
@@ -136,10 +136,10 @@ extension SongsViewModel {
 	}
 	
 	// Similar to counterpart in `AlbumsViewModel`.
-	func numberOfRows(forSection section: Int) -> Int {
+	func numberOfRows() -> Int {
 		switch parentAlbum {
 		case .exists:
-			let group = group(forSection: section)
+			let group = libraryGroup()
 			return numberOfPrerowsPerSection + group.items.count
 		case .deleted:
 			return 0 // Without `numberOfPrerowsPerSection`
