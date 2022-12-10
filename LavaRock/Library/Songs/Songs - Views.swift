@@ -253,6 +253,9 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				if let player = TapeDeck.shared.player {
 					player.playNext([mediaItem])
+					
+					let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
+					hapticEngine.impactOccurred()
 				}
 			}
 			action.attributes = (
@@ -278,6 +281,15 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				if let player = TapeDeck.shared.player {
 					player.playNext(thisMediaItemAndBelow)
+					
+					Task {
+						let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
+						hapticEngine.impactOccurred()
+						
+						try await Task.sleep(nanoseconds: 0_200_000_000)
+						
+						hapticEngine.impactOccurred()
+					}
 				}
 			}
 			action.attributes = (
@@ -300,6 +312,9 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				if let player = TapeDeck.shared.player {
 					player.playLast([mediaItem])
+					
+					let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
+					hapticEngine.impactOccurred()
 				}
 			}
 			useMenuElements([action])
@@ -320,6 +335,15 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				if let player = TapeDeck.shared.player {
 					player.playLast(thisMediaItemAndBelow)
+					
+					Task {
+						let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
+						hapticEngine.impactOccurred()
+						
+						try await Task.sleep(nanoseconds: 0_200_000_000)
+						
+						hapticEngine.impactOccurred()
+					}
 				}
 			}
 			action.attributes = (
