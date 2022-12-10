@@ -50,8 +50,6 @@ extension SongsTVC {
 				new_repeat_mode: .none,
 				disable_shuffle: true)
 			
-			UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
-			
 			deselectSelectedSong()
 		}
 		// Disable if appropriate
@@ -67,8 +65,6 @@ extension SongsTVC {
 				[selectedMediaItem],
 				new_repeat_mode: .none,
 				disable_shuffle: true)
-			
-			UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 			
 			deselectSelectedSong()
 		}
