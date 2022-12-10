@@ -254,8 +254,7 @@ final class SongCell: UITableViewCell {
 				if let player = TapeDeck.shared.player {
 					player.playNext([mediaItem])
 					
-					let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
-					hapticEngine.impactOccurred()
+					UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 				}
 			}
 			action.attributes = (
@@ -282,14 +281,7 @@ final class SongCell: UITableViewCell {
 				if let player = TapeDeck.shared.player {
 					player.playNext(thisMediaItemAndBelow)
 					
-					Task {
-						let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
-						hapticEngine.impactOccurred()
-						
-						try await Task.sleep(nanoseconds: 0_200_000_000)
-						
-						hapticEngine.impactOccurred()
-					}
+					UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 				}
 			}
 			action.attributes = (
@@ -313,8 +305,7 @@ final class SongCell: UITableViewCell {
 				if let player = TapeDeck.shared.player {
 					player.playLast([mediaItem])
 					
-					let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
-					hapticEngine.impactOccurred()
+					UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 				}
 			}
 			useMenuElements([action])
@@ -336,14 +327,7 @@ final class SongCell: UITableViewCell {
 				if let player = TapeDeck.shared.player {
 					player.playLast(thisMediaItemAndBelow)
 					
-					Task {
-						let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
-						hapticEngine.impactOccurred()
-						
-						try await Task.sleep(nanoseconds: 0_200_000_000)
-						
-						hapticEngine.impactOccurred()
-					}
+					UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 				}
 			}
 			action.attributes = (

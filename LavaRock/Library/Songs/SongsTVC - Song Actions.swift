@@ -50,14 +50,7 @@ extension SongsTVC {
 				new_repeat_mode: .none,
 				disable_shuffle: true)
 			
-			Task {
-				let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
-				hapticEngine.impactOccurred()
-				
-				try await Task.sleep(nanoseconds: 0_200_000_000)
-				
-				hapticEngine.impactOccurred()
-			}
+			UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 			
 			deselectSelectedSong()
 		}
@@ -75,8 +68,7 @@ extension SongsTVC {
 				new_repeat_mode: .none,
 				disable_shuffle: true)
 			
-			let hapticEngine = UIImpactFeedbackGenerator(style: .heavy)
-			hapticEngine.impactOccurred()
+			UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 			
 			deselectSelectedSong()
 		}
