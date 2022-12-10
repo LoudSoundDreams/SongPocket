@@ -251,7 +251,9 @@ final class SongCell: UITableViewCell {
 				title: LRString.insertSong,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
-				TapeDeck.shared.player?.playNext([mediaItem])
+				if let player = TapeDeck.shared.player {
+					player.playNext([mediaItem])
+				}
 			}
 			action.attributes = (
 				Reel.shouldEnablePlayLast()
@@ -274,7 +276,9 @@ final class SongCell: UITableViewCell {
 				title: LRString.insertRestOfAlbum,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
-				TapeDeck.shared.player?.playNext(thisMediaItemAndBelow)
+				if let player = TapeDeck.shared.player {
+					player.playNext(thisMediaItemAndBelow)
+				}
 			}
 			action.attributes = (
 				Reel.shouldEnablePlayLast() && thisMediaItemAndBelow.count >= 2
@@ -294,7 +298,9 @@ final class SongCell: UITableViewCell {
 				title: LRString.queueSong,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
-				TapeDeck.shared.player?.playLast([mediaItem])
+				if let player = TapeDeck.shared.player {
+					player.playLast([mediaItem])
+				}
 			}
 			useMenuElements([action])
 		})
@@ -312,7 +318,9 @@ final class SongCell: UITableViewCell {
 				title: LRString.queueRestOfAlbum,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
-				TapeDeck.shared.player?.playLast(thisMediaItemAndBelow)
+				if let player = TapeDeck.shared.player {
+					player.playLast(thisMediaItemAndBelow)
+				}
 			}
 			action.attributes = (
 				thisMediaItemAndBelow.count >= 2
