@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 final class TapeDeckDisplay: ObservableObject {
 	struct Status {
-		let isInPlayMode: Bool
+		let isPlaying: Bool
 	}
 	
 	static let shared = TapeDeckDisplay()
@@ -22,13 +22,14 @@ final class TapeDeckDisplay: ObservableObject {
 	
 	func freshenStatus() {
 		guard
-			let player = TapeDeck.shared.player,
-			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty)
+			let player = TapeDeck.shared.player, // Have access to player
+			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty) // At least one song in in-app queue
 		else {
+			// Show disabled default state everywhere
 			status = nil
 			return
 		}
 		status = Status(
-			isInPlayMode: player.playbackState == .playing)
+			isPlaying: player.playbackState == .playing)
 	}
 }

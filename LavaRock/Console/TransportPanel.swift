@@ -115,7 +115,7 @@ struct TransportPanel: View {
 	private var playPauseButton: some View {
 		Button {
 			guard let status = tapeDeckDisplay.status else { return }
-			if status.isInPlayMode {
+			if status.isPlaying {
 				player?.pause()
 			} else {
 				player?.play()
@@ -123,7 +123,7 @@ struct TransportPanel: View {
 		} label: {
 			if
 				let status = tapeDeckDisplay.status,
-				status.isInPlayMode
+				status.isPlaying
 			{
 				Image(systemName: "pause.circle")
 					.font(.system(size: .eight * 6))
