@@ -62,7 +62,7 @@ class LibraryTVC: UITableViewController {
 	
 	private(set) final lazy var floatToTopButton = UIBarButtonItem(
 		title: LRString.moveToTop,
-		image: UIImage(systemName: "arrow.up.to.line.compact"),
+		image: UIImage(systemName: "arrow.up.to.line"),
 		primaryAction: UIAction { [weak self] _ in
 			self?.floatSelectedItemsToTopOfSection()
 		}
@@ -70,7 +70,7 @@ class LibraryTVC: UITableViewController {
 	
 	private(set) final lazy var sinkToBottomButton = UIBarButtonItem(
 		title: LRString.moveToBottom,
-		image: UIImage(systemName: "arrow.down.to.line.compact"),
+		image: UIImage(systemName: "arrow.down.to.line"),
 		primaryAction: UIAction { [weak self] _ in
 			self?.sinkSelectedItemsToBottomOfSection()
 		}
