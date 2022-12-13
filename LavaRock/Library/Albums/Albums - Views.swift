@@ -16,7 +16,9 @@ final class MoveHereCell: UITableViewCell {
 		
 		tintSelectedBackgroundView()
 		
-		accessibilityTraits.formUnion(.button)
+		Task {
+			accessibilityTraits.formUnion(.button)
+		}
 		
 		moveHereLabel.textColor = .tintColor
 	}

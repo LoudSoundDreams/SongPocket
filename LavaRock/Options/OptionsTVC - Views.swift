@@ -99,7 +99,9 @@ final class AccentColorCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		accessibilityTraits.formUnion(.button)
+		Task {
+			accessibilityTraits.formUnion(.button)
+		}
 	}
 	
 	private func freshen_contentConfiguration() {

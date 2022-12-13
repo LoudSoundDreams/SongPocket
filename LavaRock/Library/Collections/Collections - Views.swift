@@ -101,7 +101,9 @@ final class CreateCollectionCell: UITableViewCell {
 		
 		tintSelectedBackgroundView()
 		
-		accessibilityTraits.formUnion(.button)
+		Task {
+			accessibilityTraits.formUnion(.button)
+		}
 		
 		newCollectionLabel.text = LRString.newCollection_buttonTitle
 		newCollectionLabel.textColor = .tintColor
