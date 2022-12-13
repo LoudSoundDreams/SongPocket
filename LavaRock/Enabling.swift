@@ -15,7 +15,7 @@ enum Enabling {
 }
 
 #if targetEnvironment(simulator)
-enum Global {
+enum Sim_Global {
 	static var songID: SongID? = nil
 }
 #endif

@@ -89,7 +89,7 @@ extension MusicFolder {
 		}
 		
 #if targetEnvironment(simulator)
-		Global.songID = Song.allFetched(sortedByIndex: true, via: context).last?.metadatum()?.songID
+		Sim_Global.songID = Song.allFetched(sortedByIndex: true, via: context).last?.metadatum()?.songID
 #endif
 	}
 }

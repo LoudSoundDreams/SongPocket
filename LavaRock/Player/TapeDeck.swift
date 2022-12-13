@@ -73,7 +73,7 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	
 	func songContainingPlayhead(via context: NSManagedObjectContext) -> Song? {
 #if targetEnvironment(simulator)
-		guard let songID = Global.songID else {
+		guard let songID = Sim_Global.songID else {
 			return nil
 		}
 		let songIDToMatch = songID
