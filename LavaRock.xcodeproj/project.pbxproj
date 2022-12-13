@@ -58,6 +58,7 @@
 		0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB57282F798A0054834F /* BatchUpdates.swift */; };
 		0772FB99283010960054834F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB98283010960054834F /* Theme.swift */; };
 		0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */; };
+		07755A58294821860056E90C /* AvatarImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* AvatarImage.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
 		077BCEB2275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */; };
@@ -205,6 +206,7 @@
 		0772FB57282F798A0054834F /* BatchUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchUpdates.swift; sourceTree = "<group>"; };
 		0772FB98283010960054834F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUserDefaultsKey.swift; sourceTree = "<group>"; };
+		07755A57294821860056E90C /* AvatarImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImage.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
 		077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsPreviewing.swift; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 				0708201C275BEE1C00F48D13 /* Lighting.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
 				078DBF032895EFD8000E6433 /* Avatar.swift */,
+				07755A57294821860056E90C /* AvatarImage.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
 			);
 			path = "General UI";
@@ -790,6 +793,7 @@
 				073198CD279D204100E5FD44 /* TipJarViewModel.swift in Sources */,
 				07E0BBF62765678F0010117E /* UIFont.swift in Sources */,
 				0764C62B293BE3A7003BA345 /* AlbumInfoRow.swift in Sources */,
+				07755A58294821860056E90C /* AvatarImage.swift in Sources */,
 				0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */,
 				07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */,
 				07E0BBF32765678F0010117E /* UITableView.swift in Sources */,
@@ -1063,7 +1067,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
-				CURRENT_PROJECT_VERSION = 682;
+				CURRENT_PROJECT_VERSION = 683;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1091,7 +1095,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
-				CURRENT_PROJECT_VERSION = 682;
+				CURRENT_PROJECT_VERSION = 683;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;

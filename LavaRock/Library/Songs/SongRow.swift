@@ -44,10 +44,7 @@ struct SongRow: View {
 			
 			Spacer()
 			
-			Image(systemName: "tortoise")
-				.font(.body)
-				.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-				.foregroundColor(.accentColor)
+			AvatarImage()
 			
 			// TO DO: Expand tappable area
 			Button {
