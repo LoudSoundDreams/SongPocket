@@ -51,7 +51,7 @@
 		076830C924B42E400033E3CC /* CollectionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */; };
 		076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C024B42E3F0033E3CC /* SongsTVC.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
-		07694274282E0EF6003A07CA /* TapeDeckDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07694273282E0EF6003A07CA /* TapeDeckDisplay.swift */; };
+		07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07694273282E0EF6003A07CA /* TapeDeckStatus.swift */; };
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
 		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
 		076F1C0527E8F79400220C2B /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0427E8F79400220C2B /* UISegmentedControl.swift */; };
@@ -199,7 +199,7 @@
 		076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionsTVC.swift; sourceTree = "<group>"; };
 		076830C024B42E3F0033E3CC /* SongsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsTVC.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		07694273282E0EF6003A07CA /* TapeDeckDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeckDisplay.swift; sourceTree = "<group>"; };
+		07694273282E0EF6003A07CA /* TapeDeckStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeckStatus.swift; sourceTree = "<group>"; };
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
 		076F1C0427E8F79400220C2B /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
@@ -589,7 +589,7 @@
 		07F1881F27F6B3750074809D /* Player */ = {
 			isa = PBXGroup;
 			children = (
-				07694273282E0EF6003A07CA /* TapeDeckDisplay.swift */,
+				07694273282E0EF6003A07CA /* TapeDeckStatus.swift */,
 				07CD864E27CAA54600286E6A /* TapeDeckReflecting.swift */,
 				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
 				074AB85D27CAD9C3007B63D2 /* Reel.swift */,
@@ -868,7 +868,7 @@
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				073B99CB294682E700B48C9C /* SongRow.swift in Sources */,
 				07E0BBDF276567760010117E /* URL.swift in Sources */,
-				07694274282E0EF6003A07CA /* TapeDeckDisplay.swift in Sources */,
+				07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */,
 				07E0BBD7276567490010117E /* String.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
 				070E194124F33FC800B21307 /* CollectionsTVC - Editing.swift in Sources */,

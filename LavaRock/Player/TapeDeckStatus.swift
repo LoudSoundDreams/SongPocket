@@ -1,20 +1,21 @@
 //
-//  TapeDeckDisplay.swift
+//  TapeDeckStatus.swift
 //  LavaRock
 //
 //  Created by h on 2022-05-12.
 //
 
 import Combine
+import CoreData
 
 @MainActor
-final class TapeDeckDisplay: ObservableObject {
+final class TapeDeckStatus: ObservableObject {
 	struct Status {
 		let isPlaying: Bool
 	}
 	
-	static let shared = TapeDeckDisplay()
-	@Published private(set) var status: Status? = nil
+	static let shared = TapeDeckStatus()
+	@Published private(set) var current: Status? = nil
 	
 	private init() {
 		freshenStatus()
@@ -26,10 +27,10 @@ final class TapeDeckDisplay: ObservableObject {
 			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty) // In-app queue has at least one song
 		else {
 			// Show disabled default state everywhere
-			status = nil
+			current = nil
 			return
 		}
-		status = Status(
+		current = Status(
 			isPlaying: player.playbackState == .playing)
 	}
 }

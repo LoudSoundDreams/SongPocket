@@ -32,9 +32,9 @@ private struct ChooserRep: UIViewRepresentable {
 }
 
 struct TransportPanel: View {
-	@ObservedObject private var tapeDeckDisplay: TapeDeckDisplay
+	@ObservedObject private var tapeDeckStatus: TapeDeckStatus
 	init() {
-		tapeDeckDisplay = .shared
+		tapeDeckStatus = .shared
 	}
 	
 	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
@@ -72,7 +72,7 @@ struct TransportPanel: View {
 			Image(systemName: "shuffle.circle")
 				.font(.system(size: .eight * 4))
 		}
-		.disabled(whenNil: tapeDeckDisplay.status)
+		.disabled(whenNil: tapeDeckStatus.current)
 	}
 	
 	private var openMusicButton: some View {
@@ -91,7 +91,7 @@ struct TransportPanel: View {
 			Image(systemName: "backward.end.circle")
 				.font(.system(size: .eight * 4))
 		}
-		.disabled(whenNil: tapeDeckDisplay.status)
+		.disabled(whenNil: tapeDeckStatus.current)
 	}
 	private var rewindButton: some View {
 		Button {
@@ -100,7 +100,7 @@ struct TransportPanel: View {
 			Image(systemName: "arrow.counterclockwise.circle")
 				.font(.system(size: .eight * 4))
 		}
-		.disabled(whenNil: tapeDeckDisplay.status)
+		.disabled(whenNil: tapeDeckStatus.current)
 	}
 	private var skipBackButton: some View {
 		Button {
@@ -109,12 +109,12 @@ struct TransportPanel: View {
 			Image(systemName: "gobackward.15")
 				.font(.system(size: .eight * 4))
 		}
-		.disabled(whenNil: tapeDeckDisplay.status)
+		.disabled(whenNil: tapeDeckStatus.current)
 	}
 	
 	private var playPauseButton: some View {
 		Button {
-			guard let status = tapeDeckDisplay.status else { return }
+			guard let status = tapeDeckStatus.current else { return }
 			if status.isPlaying {
 				player?.pause()
 			} else {
@@ -122,7 +122,7 @@ struct TransportPanel: View {
 			}
 		} label: {
 			if
-				let status = tapeDeckDisplay.status,
+				let status = tapeDeckStatus.current,
 				status.isPlaying
 			{
 				Image(systemName: "pause.circle")
@@ -132,7 +132,7 @@ struct TransportPanel: View {
 					.font(.system(size: .eight * 6))
 			}
 		}
-		.disabled(whenNil: tapeDeckDisplay.status)
+		.disabled(whenNil: tapeDeckStatus.current)
 	}
 	
 	private var skipForwardButton: some View {
@@ -142,7 +142,7 @@ struct TransportPanel: View {
 			Image(systemName: "goforward.15")
 				.font(.system(size: .eight * 4))
 		}
-		.disabled(whenNil: tapeDeckDisplay.status)
+		.disabled(whenNil: tapeDeckStatus.current)
 	}
 	private var nextButton: some View {
 		Button {
@@ -151,6 +151,6 @@ struct TransportPanel: View {
 			Image(systemName: "forward.end.circle")
 				.font(.system(size: .eight * 4))
 		}
-		.disabled(whenNil: tapeDeckDisplay.status)
+		.disabled(whenNil: tapeDeckStatus.current)
 	}
 }
