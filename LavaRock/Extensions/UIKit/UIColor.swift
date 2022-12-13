@@ -40,6 +40,7 @@ extension UIColor {
 		print("A:", mutableAlpha)
 	}
 	
+	@MainActor
 	final func resolvedForIncreaseContrast() -> UIColor {
 		let view = UIView()
 		view.tintColor = self
