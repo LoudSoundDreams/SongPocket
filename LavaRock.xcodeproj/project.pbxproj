@@ -59,6 +59,7 @@
 		0772FB99283010960054834F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB98283010960054834F /* Theme.swift */; };
 		0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */; };
 		07755A58294821860056E90C /* AvatarImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* AvatarImage.swift */; };
+		07755A5A2948B55E0056E90C /* FutureChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A592948B55E0056E90C /* FutureChooser.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
 		077BCEB2275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */; };
@@ -207,6 +208,7 @@
 		0772FB98283010960054834F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUserDefaultsKey.swift; sourceTree = "<group>"; };
 		07755A57294821860056E90C /* AvatarImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImage.swift; sourceTree = "<group>"; };
+		07755A592948B55E0056E90C /* FutureChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureChooser.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
 		077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsPreviewing.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 		073FB55827588B76000FAF5F /* Console */ = {
 			isa = PBXGroup;
 			children = (
+				07755A592948B55E0056E90C /* FutureChooser.swift */,
 				07A7989027A8ABB1007B70AA /* ConsoleView.swift */,
 				07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */,
 				073FB56227588BC5000FAF5F /* Console.storyboard */,
@@ -780,6 +783,7 @@
 				073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */,
 				07E0BBDD276567760010117E /* Notification.Name.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */,
+				07755A5A2948B55E0056E90C /* FutureChooser.swift in Sources */,
 				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
 				0783DC18286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift in Sources */,
 				07A7989127A8ABB1007B70AA /* ConsoleView.swift in Sources */,

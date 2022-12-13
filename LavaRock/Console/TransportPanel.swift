@@ -15,22 +15,6 @@ private extension View {
 	}
 }
 
-private struct ChooserRep: UIViewRepresentable {
-	typealias UIViewType = UISegmentedControl
-	
-	func makeUIView(
-		context: Context
-	) -> UISegmentedControl {
-		return FutureChooser()
-	}
-	
-	func updateUIView(
-		_ uiView: UISegmentedControl,
-		context: Context
-	) {
-	}
-}
-
 struct TransportPanel: View {
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus
 	init() {
@@ -42,7 +26,7 @@ struct TransportPanel: View {
 		VStack(
 			spacing: .eight * 4
 		) {
-			ChooserRep()
+			FutureChooserRep()
 				.fixedSize()
 			
 			HStack(
