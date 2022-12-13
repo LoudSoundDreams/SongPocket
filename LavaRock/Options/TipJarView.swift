@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct TipJarView: View {
-	@ObservedObject private var theme: Theme
-	@ObservedObject private var tipJarViewModel: TipJarViewModel
+	@ObservedObject private var theme: Theme = .shared
+	@ObservedObject private var tipJarViewModel: TipJarViewModel = .shared
 	
 	init() {
-		theme = .shared
-		tipJarViewModel = .shared
-		
 		if tipJarViewModel.status == .notYetFirstLoaded {
 			PurchaseManager.shared.requestTipProduct()
 		}

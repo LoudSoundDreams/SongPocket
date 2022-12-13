@@ -10,13 +10,8 @@ import SwiftUI
 struct OptionsView: View {
 	@Environment(\.dismiss) private var dismiss
 	
-	@ObservedObject private var theme: Theme
-	@ObservedObject private var tipJarViewModel: TipJarViewModel
-	
-	init() {
-		theme = .shared
-		tipJarViewModel = .shared
-	}
+	@ObservedObject private var theme: Theme = .shared
+	@ObservedObject private var tipJarViewModel: TipJarViewModel = .shared
 	
 	var body: some View {
 		NavigationView {

@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct ThemePicker: View {
-	@ObservedObject private var theme: Theme
-	
-	init() {
-		theme = .shared
-	}
+	@ObservedObject private var theme: Theme = .shared
 	
 	var body: some View {
 		Picker(

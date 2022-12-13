@@ -9,11 +9,9 @@ import SwiftUI
 
 @main
 struct LavaRock: App {
-	@ObservedObject private var theme: Theme
+	@ObservedObject private var theme: Theme = .shared
 	
 	init() {
-		theme = .shared
-		
 		// Delete unused entries in `UserDefaults`
 		let defaults = UserDefaults.standard
 		let keysToKeep = Set(LRUserDefaultsKey.allCases.map { $0.rawValue })
@@ -39,11 +37,7 @@ struct LavaRock: App {
 private struct LibraryNCRep: UIViewControllerRepresentable {
 	typealias VCType = LibraryNC
 	
-	@ObservedObject private var theme: Theme
-	
-	init() {
-		theme = .shared
-	}
+	@ObservedObject private var theme: Theme = .shared
 	
 	// Overriding lighting and accent color
 	// We want to do that on the view’s window, but during `makeUIViewController`, that’s nil. So …
