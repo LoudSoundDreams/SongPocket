@@ -11,6 +11,7 @@ struct SongRow: View {
 	let trackDisplay: String
 	let songTitleDisplay: String
 	let artistDisplayOptional: String?
+	let songID: SongID
 	
 	var body: some View {
 		
@@ -44,7 +45,7 @@ struct SongRow: View {
 			
 			Spacer()
 			
-			AvatarImage()
+			AvatarImage(songID: songID)
 			
 			// TO DO: Expand tappable area
 			Button {

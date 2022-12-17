@@ -134,7 +134,8 @@ final class SongCell: UITableViewCell {
 				SongRow(
 					trackDisplay: trackDisplay,
 					songTitleDisplay: songTitleDisplay,
-					artistDisplayOptional: artistDisplayOptional)
+					artistDisplayOptional: artistDisplayOptional,
+					songID: song.persistentID)
 			}
 			
 		} else {
