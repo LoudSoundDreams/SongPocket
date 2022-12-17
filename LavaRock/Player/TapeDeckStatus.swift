@@ -22,15 +22,21 @@ final class TapeDeckStatus: ObservableObject {
 	@Published var current: Status? = nil
 	
 	func freshen() {
+		let new_status: Status?
+		defer {
+			current = new_status
+		}
+		
 		guard
 			let player = TapeDeck.shared.player, // Have access to player
 			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty) // In-app queue has at least one song
 		else {
 			// Show disabled default state everywhere
-			current = nil
+			new_status = nil
 			return
 		}
-		current = Status(
+		
+		new_status = Status(
 			isPlaying: player.playbackState == .playing)
 	}
 }
