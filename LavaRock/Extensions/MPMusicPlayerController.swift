@@ -14,6 +14,17 @@ extension MPMusicPlayerController {
 		.mediaPlayer
 	}
 	
+	final func now_playing_SongID() -> SongID? {
+#if targetEnvironment(simulator)
+		return Sim_Global.songID
+#else
+		guard let nowPlayingItem else {
+			return nil
+		}
+		return SongID(bitPattern: nowPlayingItem.persistentID)
+#endif
+	}
+	
 	final func playNow(
 		_ mediaItems: [MPMediaItem],
 		new_repeat_mode: MPMusicRepeatMode,

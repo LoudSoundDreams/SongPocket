@@ -52,23 +52,15 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	}
 	
 	func songContainingPlayhead(via context: NSManagedObjectContext) -> Song? {
-#if targetEnvironment(simulator)
-		guard let songID = Sim_Global.songID else {
+		guard let songID_to_match = player?.now_playing_SongID() else {
 			return nil
 		}
-		let songIDToMatch = songID
-#else
-		guard let nowPlayingItem = player?.nowPlayingItem else {
-			return nil
-		}
-		let songIDToMatch = SongID(bitPattern: nowPlayingItem.persistentID)
-#endif
 		
 		let songsContainingPlayhead = context.objectsFetched(for: { () -> NSFetchRequest<Song> in
 			let request = Song.fetchRequest()
 			request.predicate = NSPredicate(
 				format: "persistentID == %lld",
-				songIDToMatch)
+				songID_to_match)
 			return request
 		}())
 		guard
