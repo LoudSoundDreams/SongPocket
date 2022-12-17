@@ -9,8 +9,8 @@ import Combine
 
 @MainActor
 final class Theme: ObservableObject {
-	static let shared = Theme()
 	private init() {}
+	static let shared = Theme()
 	
 	@Published var lighting: Lighting = .savedPreference() {
 		didSet {

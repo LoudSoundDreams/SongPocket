@@ -14,12 +14,12 @@ final class TapeDeckStatus: ObservableObject {
 		let isPlaying: Bool
 	}
 	
-	static let shared = TapeDeckStatus()
-	@Published private(set) var current: Status? = nil
-	
 	private init() {
 		freshenStatus()
 	}
+	static let shared = TapeDeckStatus()
+	
+	@Published var current: Status? = nil
 	
 	func freshenStatus() {
 		guard

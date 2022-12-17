@@ -10,8 +10,8 @@ import CoreData
 
 @MainActor
 final class TapeDeck { // This is a class and not a struct because it needs a deinitializer.
-	static let shared = TapeDeck()
 	private init() {}
+	static let shared = TapeDeck()
 	
 	func addReflector(weakly newReflector: TapeDeckReflecting) {
 		if let indexOfMatchingReflector = reflectors.firstIndex(where: { weakReflector in
@@ -51,26 +51,6 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 			object: player)
 	}
 	
-	@objc
-	private func reflect_playback_mode_everywhere() {
-		TapeDeckStatus.shared.freshenStatus()
-		
-		reflectors.removeAll { $0.referencee == nil }
-		reflectors.forEach {
-			$0.referencee?.reflect_playback_mode()
-		}
-	}
-	
-	@objc
-	private func reflect_now_playing_item_everywhere() {
-		TapeDeckStatus.shared.freshenStatus()
-		
-		reflectors.removeAll { $0.referencee == nil }
-		reflectors.forEach {
-			$0.referencee?.reflect_now_playing_item()
-		}
-	}
-	
 	func songContainingPlayhead(via context: NSManagedObjectContext) -> Song? {
 #if targetEnvironment(simulator)
 		guard let songID = Sim_Global.songID else {
@@ -101,6 +81,26 @@ final class TapeDeck { // This is a class and not a struct because it needs a de
 	}
 	
 	// MARK: - Private
+	
+	@objc
+	private func reflect_playback_mode_everywhere() {
+		TapeDeckStatus.shared.freshenStatus()
+		
+		reflectors.removeAll { $0.referencee == nil }
+		reflectors.forEach {
+			$0.referencee?.reflect_playback_mode()
+		}
+	}
+	
+	@objc
+	private func reflect_now_playing_item_everywhere() {
+		TapeDeckStatus.shared.freshenStatus()
+		
+		reflectors.removeAll { $0.referencee == nil }
+		reflectors.forEach {
+			$0.referencee?.reflect_now_playing_item()
+		}
+	}
 	
 	private var reflectors: [Weak<TapeDeckReflecting>] = []
 	

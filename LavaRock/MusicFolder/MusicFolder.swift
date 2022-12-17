@@ -9,8 +9,8 @@ import MediaPlayer
 import OSLog
 
 final class MusicFolder { // This is a class and not a struct because it needs a deinitializer.
-	static let shared = MusicFolder()
 	private init() {}
+	static let shared = MusicFolder()
 	
 	let context = Database.viewContext
 	

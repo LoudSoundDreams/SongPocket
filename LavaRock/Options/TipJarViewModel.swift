@@ -19,8 +19,8 @@ protocol TipJarUI: AnyObject {
 
 @MainActor
 final class TipJarViewModel: ObservableObject {
-	static let shared = TipJarViewModel()
 	private init() {}
+	static let shared = TipJarViewModel()
 	
 	enum Status: Equatable {
 		case notYetFirstLoaded
