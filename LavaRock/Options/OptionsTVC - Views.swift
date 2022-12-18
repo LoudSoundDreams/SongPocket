@@ -134,7 +134,7 @@ final class AccentColorCell: UITableViewCell {
 		let colorView = UIView()
 		colorView.backgroundColor = representee?.uiColor
 			.resolvedForIncreaseContrast()
-			.translucent()
+			.withAlphaComponentOneHalf()
 		new_selectedBackgroundView = colorView
 	}
 	

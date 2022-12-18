@@ -164,7 +164,7 @@ final class CollectionCell: UITableViewCell {
 			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
 		case .modalTinted:
-			backgroundColor = .tintColor.translucentFaint()
+			backgroundColor = .tintColor.withAlphaComponentOneEighth()
 			
 			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()

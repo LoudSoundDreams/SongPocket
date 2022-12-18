@@ -47,11 +47,11 @@ extension UIColor {
 		return view.tintColor
 	}
 	
-	final func translucentFaint() -> UIColor {
+	final func withAlphaComponentOneEighth() -> UIColor {
 		return withAlphaComponent(.oneEighth)
 	}
 	
-	final func translucent() -> UIColor {
+	final func withAlphaComponentOneHalf() -> UIColor {
 		return withAlphaComponent(.oneHalf)
 	}
 }

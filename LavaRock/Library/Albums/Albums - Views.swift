@@ -105,7 +105,7 @@ final class AlbumCell: UITableViewCell {
 			accessoryType = .none
 			disableWithAccessibilityTrait()
 		case .modalTinted:
-			backgroundColor = .tintColor.translucentFaint()
+			backgroundColor = .tintColor.withAlphaComponentOneEighth()
 			contentView.layer.opacity = .oneHalf
 			accessoryType = .none
 			disableWithAccessibilityTrait()

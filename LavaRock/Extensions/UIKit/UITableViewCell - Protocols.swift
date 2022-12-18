@@ -15,7 +15,7 @@ protocol CellTintingWhenSelected: UITableViewCell {
 extension CellTintingWhenSelected {
 	func tintSelectedBackgroundView() {
 		let colorView = UIView()
-		colorView.backgroundColor = .tintColor.translucent()
+		colorView.backgroundColor = .tintColor.withAlphaComponentOneHalf()
 		selectedBackgroundView = colorView
 	}
 }
