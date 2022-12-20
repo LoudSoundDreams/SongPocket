@@ -66,16 +66,16 @@ final class AvatarChooser: UISegmentedControl {
 		super.awakeFromNib()
 		
 		removeAllSegments()
-		Avatar.all.forEach { avatar in
+		Avatar.all.forEach { avatarCase in
 			insertSegment(
 				action: UIAction(
 					image: {
-						let image = UIImage(systemName: avatar.playingSFSymbolName)
-						image?.accessibilityLabel = avatar.displayName
+						let image = UIImage(systemName: avatarCase.playingSFSymbolName)
+						image?.accessibilityLabel = avatarCase.displayName
 						return image
 					}()
 				) { _ in
-					Avatar.current = avatar
+					Avatar.current = avatarCase
 				},
 				at: numberOfSegments,
 				animated: false)

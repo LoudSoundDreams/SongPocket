@@ -13,7 +13,6 @@ extension Lighting: Identifiable {
 }
 enum Lighting: Int, CaseIterable {
 	// We persist these raw values in `UserDefaults`.
-	// Cases are in the order that they appear in in the UI.
 	case light = 1
 	case dark = 2
 	case system = 0

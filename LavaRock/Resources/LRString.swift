@@ -8,8 +8,8 @@
 import Foundation
 import MediaPlayer
 
-// Putting all the keys we pass to `NSLocalizedString` in one place (here) helps us keep them unique, which we must do to ensure predictable behavior.
-// It also helps us use the same phrases in multiple places if appropriate.
+// Keeping these keys in one place helps us keep them unique.
+// It also helps us use the same text in multiple places if appropriate.
 enum LRString {
 	// Don’t pass arguments other than strings to the Foundation function `NSLocalizedString`, because otherwise, when you choose “Export Localizations…”, Xcode won’t include those calls.
 	
