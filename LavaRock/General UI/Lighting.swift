@@ -77,7 +77,7 @@ enum Lighting: Int, CaseIterable {
 		}
 	}
 	
-	var name: String {
+	var accessibilityLabel: String {
 		switch self {
 		case .light:
 			return LRString.light

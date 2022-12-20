@@ -46,7 +46,7 @@ final class LightingChooser: UISegmentedControl {
 				action: UIAction(
 					image: {
 						let image = lighting.uiImage
-						image.accessibilityLabel = lighting.name
+						image.accessibilityLabel = lighting.accessibilityLabel
 						return image
 					}()
 				) { _ in
@@ -71,7 +71,7 @@ final class AvatarChooser: UISegmentedControl {
 				action: UIAction(
 					image: {
 						let image = UIImage(systemName: avatarCase.playingSFSymbolName)
-						image?.accessibilityLabel = avatarCase.displayName
+						image?.accessibilityLabel = avatarCase.accessibilityLabel
 						return image
 					}()
 				) { _ in

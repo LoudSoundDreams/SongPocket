@@ -67,7 +67,7 @@ enum Avatar: CaseIterable {
 		}
 	}
 	
-	var displayName: String {
+	var accessibilityLabel: String {
 		switch self {
 		case .speaker:
 			return LRString.speaker

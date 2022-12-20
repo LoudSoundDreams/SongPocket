@@ -16,7 +16,7 @@ struct ThemePicker: View {
 		) {
 			ForEach(Lighting.allCases) { lighting in
 				lighting.image
-					.accessibilityLabel(lighting.name)
+					.accessibilityLabel(lighting.accessibilityLabel)
 					.tag(lighting)
 			}
 		} label: {
