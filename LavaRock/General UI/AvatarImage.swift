@@ -15,8 +15,8 @@ struct AvatarImage: View {
 	var body: some View {
 		ZStack {
 			
-			Image(systemName: "tortoise")
-				.fontBodyDynamicTypeSizeUpToXxxLarge()
+			Image(systemName: Avatar.preference.playingSFSymbolName)
+				.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 				.hidden()
 			
 			if
@@ -24,12 +24,12 @@ struct AvatarImage: View {
 				songID == status.now_playing_SongID
 			{
 				if status.isPlaying {
-					Image(systemName: "tortoise.fill")
-						.fontBodyDynamicTypeSizeUpToXxxLarge()
+					Image(systemName: Avatar.preference.playingSFSymbolName)
+						.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 						.foregroundColor(.accentColor)
 				} else {
-					Image(systemName: "tortoise")
-						.fontBodyDynamicTypeSizeUpToXxxLarge()
+					Image(systemName: Avatar.preference.pausedSFSymbolName)
+						.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 						.foregroundColor(.accentColor)
 				}
 			}
@@ -39,9 +39,10 @@ struct AvatarImage: View {
 }
 
 private extension View {
-	func fontBodyDynamicTypeSizeUpToXxxLarge() -> some View {
+	func fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge() -> some View {
 		return self
 			.font(.body)
+			.imageScale(.small)
 			.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 	}
 }
