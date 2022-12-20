@@ -44,11 +44,10 @@ enum LRString {
 	
 	static let theme = NSLocalizedString("Theme", comment: "Section header")
 	
-	static let light = NSLocalizedString("Light", comment: "Appearance option")
-	static let dark = NSLocalizedString("Dark", comment: "Appearance option")
-	static let system = NSLocalizedString("System", comment: "Appearance option")
+	static let light = NSLocalizedString("Light", comment: "Accessibility label, appearance option")
+	static let dark = NSLocalizedString("Dark", comment: "Accessibility label, appearance option")
+	static let system = NSLocalizedString("System", comment: "Accessibility label, appearance option")
 	
-	static let accentColor = NSLocalizedString("Accent Color", comment: "Section header")
 	static let strawberry = NSLocalizedString("Strawberry", comment: "Accent color")
 	static let tangerine = NSLocalizedString("Tangerine", comment: "Accent color")
 	static let lime = NSLocalizedString("Lime", comment: "Accent color")
@@ -56,6 +55,7 @@ enum LRString {
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	
 	static let avatar = NSLocalizedString("Now-Playing Marker", comment: "Section header")
+	
 	static let speaker = NSLocalizedString("Speaker", comment: "Accessibility label")
 	static let bird = NSLocalizedString("Bird", comment: "Accessibility label")
 	static let fish = NSLocalizedString("Fish", comment: "Accessibility label")
@@ -63,6 +63,7 @@ enum LRString {
 	static let beachUmbrella = NSLocalizedString("Beach umbrella", comment: "Accessibility label")
 	
 	static let tipJar = NSLocalizedString("Tip Jar", comment: "Section header")
+	
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
 	static let tipJarFooter = NSLocalizedString(
