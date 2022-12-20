@@ -63,5 +63,14 @@ struct SongRow: View {
 		}
 		.padding(.top, .eight * -1/4) // -2
 		
+		.accessibilityElement(children: .combine)
+		.accessibilityLabel({ () -> String in
+			return [
+				trackDisplay,
+				songTitleDisplay,
+				artistDisplayOptional,
+			].compactedAndFormattedAsNarrowList()
+		}())
+		
 	}
 }
