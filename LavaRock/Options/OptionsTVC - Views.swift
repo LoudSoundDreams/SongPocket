@@ -75,13 +75,13 @@ final class AvatarChooser: UISegmentedControl {
 						return image
 					}()
 				) { _ in
-					Avatar.selected = avatarCase
+					Avatar.preference = avatarCase
 				},
 				at: numberOfSegments,
 				animated: false)
 		}
 		selectedSegmentIndex = Avatar.allCases.firstIndex { avatarCase in
-			Avatar.selected == avatarCase
+			Avatar.preference == avatarCase
 		}!
 	}
 }

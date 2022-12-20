@@ -20,7 +20,7 @@ enum Avatar: CaseIterable {
 	case sailboat
 	case beachUmbrella
 	
-	static var selected: Self {
+	static var preference: Self {
 		get {
 			defaults.register(defaults: [persistentKey: speaker.persistentValue])
 			let savedValue = defaults.string(forKey: persistentKey)!
