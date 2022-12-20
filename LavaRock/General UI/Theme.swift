@@ -18,9 +18,9 @@ final class Theme: ObservableObject {
 			Lighting.preference = lighting
 		}
 	}
-	@Published var accentColor: AccentColor = .savedPreference() {
+	@Published var accentColor: AccentColor = .preference {
 		didSet {
-			accentColor.saveAsPreference()
+			AccentColor.preference = accentColor
 		}
 	}
 }

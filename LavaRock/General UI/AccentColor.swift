@@ -9,29 +9,26 @@ import SwiftUI
 import UIKit
 
 extension AccentColor: Identifiable {
-	var id: RawValue { rawValue }
+	var id: String { persistentValue }
 }
-enum AccentColor: String, CaseIterable {
-	// We persist these raw values in `UserDefaults`.
-	case lime = "Lime"
-	case tangerine = "Tangerine"
-	case strawberry = "Strawberry"
-	case grape = "Grape"
-	case blueberry = "Blueberry"
+enum AccentColor: CaseIterable {
+	case lime
+	case tangerine
+	case strawberry
+	case grape
+	case blueberry
 	
-	private static let defaults: UserDefaults = .standard
-	private static let defaultsKey: String = LRUserDefaultsKey.accentColor.rawValue
-	
-	static func savedPreference() -> Self {
-		defaults.register(defaults: [defaultsKey: blueberry.rawValue])
-		let savedRawValue = defaults.string(forKey: defaultsKey)!
-		return Self(rawValue: savedRawValue)!
-	}
-	
-	func saveAsPreference() {
-		Self.defaults.set(
-			rawValue,
-			forKey: Self.defaultsKey)
+	static var preference: Self {
+		get {
+			defaults.register(defaults: [persistentKey: blueberry.persistentValue])
+			let savedRawValue = defaults.string(forKey: persistentKey)!
+			return allCases.first { accentColorCase in
+				savedRawValue == accentColorCase.persistentValue
+			}!
+		}
+		set {
+			defaults.set(newValue.persistentValue, forKey: persistentKey)
+		}
 	}
 	
 	var displayName: String {
@@ -232,5 +229,25 @@ enum AccentColor: String, CaseIterable {
 			}
 		}()
 		return heartEmoji + LRString.tipThankYouMessageWithPaddingSpaces + heartEmoji
+	}
+	
+	// MARK: - Private
+	
+	private static let defaults: UserDefaults = .standard
+	private static let persistentKey: String = LRUserDefaultsKey.accentColor.rawValue
+	
+	private var persistentValue: String {
+		switch self {
+		case .lime:
+			return "Lime"
+		case .tangerine:
+			return "Tangerine"
+		case .strawberry:
+			return "Strawberry"
+		case .grape:
+			return "Grape"
+		case .blueberry:
+			return "Blueberry"
+		}
 	}
 }

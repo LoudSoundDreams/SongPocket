@@ -148,7 +148,7 @@ final class AccentColorCell: UITableViewCell {
 		}
 		
 		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
-		if representee == AccentColor.savedPreference() {
+		if representee == AccentColor.preference {
 			new_accessoryType = .checkmark
 		} else {
 			new_accessoryType = .none
@@ -245,7 +245,7 @@ final class TipThankYouCell: UITableViewCell {
 	
 	private func configure() {
 		var content = UIListContentConfiguration.cell()
-		content.text = AccentColor.savedPreference().thankYouMessage()
+		content.text = AccentColor.preference.thankYouMessage()
 		content.textProperties.color = .secondaryLabel
 		content.textProperties.alignment = .center
 		contentConfiguration = content
