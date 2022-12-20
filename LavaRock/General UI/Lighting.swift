@@ -9,34 +9,24 @@ import SwiftUI
 import UIKit
 
 extension Lighting: Identifiable {
-	var id: RawValue { rawValue }
+	var id: Int { persistentValue }
 }
-enum Lighting: Int, CaseIterable {
-	// We persist these raw values in `UserDefaults`.
-	case light = 1
-	case dark = 2
-	case system = 0
+enum Lighting: CaseIterable {
+	case light
+	case dark
+	case system
 	
-	private static let defaults: UserDefaults = .standard
-	private static let defaultsKey: String = LRUserDefaultsKey.lighting.rawValue
-	
-	static func savedPreference() -> Self {
-		let savedRawValue = defaults.integer(forKey: defaultsKey) // Returns `0` when there’s no saved value, which is `.system`, which is what we want.
-		return Self(rawValue: savedRawValue)!
-	}
-	
-	func saveAsPreference() {
-		Self.defaults.set(
-			rawValue,
-			forKey: Self.defaultsKey)
-	}
-	
-	init(indexInDisplayOrder: Int) {
-		self = Self.allCases[indexInDisplayOrder]
-	}
-	
-	var indexInDisplayOrder: Int {
-		return Self.allCases.firstIndex { $0 == self }!
+	static var preference: Self {
+		get {
+			defaults.register(defaults: [persistentKey: system.persistentValue])
+			let savedValue = defaults.integer(forKey: persistentKey) // Note: `UserDefaults.integer` returns `0` when there’s no saved value, which only coincidentally matches `Lighting.system.persistentValue`.
+			return allCases.first { lightingCase in
+				savedValue == lightingCase.persistentValue
+			}!
+		}
+		set {
+			defaults.set(newValue.persistentValue, forKey: persistentKey)
+		}
 	}
 	
 	@MainActor
@@ -47,6 +37,44 @@ enum Lighting: Int, CaseIterable {
 	@MainActor
 	var image: Image {
 		return Image(systemName: sfSymbolName)
+	}
+	
+	var colorScheme: ColorScheme? {
+		switch self {
+		case .light:
+			return .light
+		case .dark:
+			return .dark
+		case .system:
+			return nil
+		}
+	}
+	
+	var accessibilityLabel: String {
+		switch self {
+		case .light:
+			return LRString.light
+		case .dark:
+			return LRString.dark
+		case .system:
+			return LRString.system
+		}
+	}
+	
+	// MARK: - Private
+	
+	private static let defaults: UserDefaults = .standard
+	private static let persistentKey: String = LRUserDefaultsKey.lighting.rawValue
+	
+	private var persistentValue: Int {
+		switch self {
+		case .light:
+			return 1
+		case .dark:
+			return 2
+		case .system:
+			return 0
+		}
 	}
 	
 	@MainActor
@@ -74,28 +102,6 @@ enum Lighting: Int, CaseIterable {
 			@unknown default:
 				return "iphone"
 			}
-		}
-	}
-	
-	var colorScheme: ColorScheme? {
-		switch self {
-		case .light:
-			return .light
-		case .dark:
-			return .dark
-		case .system:
-			return nil
-		}
-	}
-	
-	var accessibilityLabel: String {
-		switch self {
-		case .light:
-			return LRString.light
-		case .dark:
-			return LRString.dark
-		case .system:
-			return LRString.system
 		}
 	}
 }

@@ -57,7 +57,9 @@ final class LightingChooser: UISegmentedControl {
 				at: numberOfSegments,
 				animated: false)
 		}
-		selectedSegmentIndex = Lighting.savedPreference().indexInDisplayOrder
+		selectedSegmentIndex = Lighting.allCases.firstIndex { lightingCase in
+			Lighting.preference == lightingCase
+		}!
 	}
 }
 
