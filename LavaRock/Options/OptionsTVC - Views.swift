@@ -111,6 +111,7 @@ final class AccentColorCell: UITableViewCell {
 		}
 		
 		guard let representee = representee else {
+			// Should never run
 			new_contentConfiguration = defaultContentConfiguration()
 			return
 		}
