@@ -77,17 +77,6 @@ enum Lighting: Int, CaseIterable {
 		}
 	}
 	
-	var accessibilityLabel: String {
-		switch self {
-		case .light:
-			return LRString.light
-		case .dark:
-			return LRString.dark
-		case .system:
-			return LRString.system
-		}
-	}
-	
 	var colorScheme: ColorScheme? {
 		switch self {
 		case .light:
@@ -96,6 +85,17 @@ enum Lighting: Int, CaseIterable {
 			return .dark
 		case .system:
 			return nil
+		}
+	}
+	
+	var accessibilityLabel: String {
+		switch self {
+		case .light:
+			return LRString.light
+		case .dark:
+			return LRString.dark
+		case .system:
+			return LRString.system
 		}
 	}
 }
