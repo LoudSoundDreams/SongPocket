@@ -13,44 +13,19 @@ extension Notification.Name {
 	}
 }
 
-struct Avatar {
-	let pausedSFSymbolName: String
-	let playingSFSymbolName: String
-	let persistentValue: String
-	var displayName: String {
-		return persistentValue
-	}
+enum Avatar: CaseIterable {
+	case speaker
+	case bird
+	case fish
+	case sailboat
+	case beachUmbrella
 	
-	static let all: [Self] = [
-		Self.speaker,
-		Avatar(
-			pausedSFSymbolName: "bird",
-			playingSFSymbolName: "bird.fill",
-			persistentValue: "Bird"),
-		Avatar(
-			pausedSFSymbolName: "fish",
-			playingSFSymbolName: "fish.fill",
-			persistentValue: "Fish"),
-		Avatar(
-			pausedSFSymbolName: "sailboat",
-			playingSFSymbolName: "sailboat.fill",
-			persistentValue: "Sailboat"),
-		Avatar(
-			pausedSFSymbolName: "beach.umbrella",
-			playingSFSymbolName: "beach.umbrella.fill",
-			persistentValue: "Beach umbrella"),
-	]
-	private static var speaker: Self = Avatar(
-		pausedSFSymbolName: "speaker.fill",
-		playingSFSymbolName: "speaker.wave.2.fill",
-		persistentValue: "Speaker")
-	
-	static var current: Self {
+	static var selected: Self {
 		get {
 			defaults.register(defaults: [persistentKey: speaker.persistentValue])
-			let savedValue = defaults.string(forKey: persistentKey)
-			return all.first { availableAvatar in
-				savedValue == availableAvatar.persistentValue
+			let savedValue = defaults.string(forKey: persistentKey)!
+			return allCases.first { avatarCase in
+				savedValue == avatarCase.persistentValue
 			}!
 		}
 		set {
@@ -61,7 +36,69 @@ struct Avatar {
 				object: nil)
 		}
 	}
+	
+	var pausedSFSymbolName: String {
+		switch self {
+		case .speaker:
+			return "speaker.fill"
+		case .bird:
+			return "bird"
+		case .fish:
+			return "fish"
+		case .sailboat:
+			return "sailboat"
+		case .beachUmbrella:
+			return "beach.umbrella"
+		}
+	}
+	
+	var playingSFSymbolName: String {
+		switch self {
+		case .speaker:
+			return "speaker.wave.2.fill"
+		case .bird:
+			return "bird.fill"
+		case .fish:
+			return "fish.fill"
+		case .sailboat:
+			return "sailboat.fill"
+		case .beachUmbrella:
+			return "beach.umbrella.fill"
+		}
+	}
+	
+	var displayName: String {
+		switch self {
+		case .speaker:
+			return LRString.speaker
+		case .bird:
+			return LRString.bird
+		case .fish:
+			return LRString.fish
+		case .sailboat:
+			return LRString.sailboat
+		case .beachUmbrella:
+			return LRString.beachUmbrella
+		}
+	}
+	
+	// MARK: - Private
+	
 	private static let defaults: UserDefaults = .standard
 	private static let persistentKey: String = LRUserDefaultsKey.avatar.rawValue
+	
+	private var persistentValue: String {
+		switch self {
+		case .speaker:
+			return "Speaker"
+		case .bird:
+			return "Bird"
+		case .fish:
+			return "Fish"
+		case .sailboat:
+			return "Sailboat"
+		case .beachUmbrella:
+			return "Beach umbrella"
+		}
+	}
 }
-extension Avatar: Equatable {}

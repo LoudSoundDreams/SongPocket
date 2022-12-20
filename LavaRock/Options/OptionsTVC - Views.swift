@@ -66,7 +66,7 @@ final class AvatarChooser: UISegmentedControl {
 		super.awakeFromNib()
 		
 		removeAllSegments()
-		Avatar.all.forEach { avatarCase in
+		Avatar.allCases.forEach { avatarCase in
 			insertSegment(
 				action: UIAction(
 					image: {
@@ -75,13 +75,13 @@ final class AvatarChooser: UISegmentedControl {
 						return image
 					}()
 				) { _ in
-					Avatar.current = avatarCase
+					Avatar.selected = avatarCase
 				},
 				at: numberOfSegments,
 				animated: false)
 		}
-		selectedSegmentIndex = Avatar.all.firstIndex { availableAvatar in
-			Avatar.current == availableAvatar
+		selectedSegmentIndex = Avatar.allCases.firstIndex { avatarCase in
+			Avatar.selected == avatarCase
 		}!
 	}
 }
