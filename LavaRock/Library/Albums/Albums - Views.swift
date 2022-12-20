@@ -41,7 +41,7 @@ final class AlbumCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	static let usesUIKitAccessibilityLabel = true
+	static let usesUIKitAccessibility__ = true
 	var rowContentAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `coverArtView` and `textStack` at very large text sizes.

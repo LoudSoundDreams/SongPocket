@@ -51,12 +51,12 @@ final class ExpandedTargetButton: UIButton {
 }
 
 final class SongCell: UITableViewCell {
-	private static let usesSwiftUI = 10 == 1
+	private static let usesSwiftUI__ = 10 == 1
 	
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	static let usesUIKitAccessibilityLabel = !usesSwiftUI
+	static let usesUIKitAccessibility__ = !usesSwiftUI__
 	var rowContentAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var textStack: UIStackView!
@@ -78,7 +78,9 @@ final class SongCell: UITableViewCell {
 		
 		dotDotDotButton.maximumContentSizeCategory = .extraExtraExtraLarge
 		
-		accessibilityTraits.formUnion(.button)
+		if Self.usesUIKitAccessibility__ {
+			accessibilityTraits.formUnion(.button)
+		}
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
@@ -129,7 +131,7 @@ final class SongCell: UITableViewCell {
 			}
 		}()
 		
-		if Self.usesSwiftUI {
+		if Self.usesSwiftUI__ {
 			
 			contentConfiguration = UIHostingConfiguration {
 				SongRow(
@@ -319,7 +321,7 @@ final class SongCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		if Self.usesSwiftUI {
+		if Self.usesSwiftUI__ {
 		} else {
 			separatorInset.left = 0
 			+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge

@@ -21,7 +21,7 @@ protocol _PlayheadReflectable: AnyObject {
 	
 	var spacerSpeakerImageView: UIImageView! { get }
 	var speakerImageView: UIImageView! { get }
-	static var usesUIKitAccessibilityLabel: Bool { get }
+	static var usesUIKitAccessibility__: Bool { get }
 	var accessibilityLabel: String? { get set }
 }
 extension _PlayheadReflectable {
@@ -38,7 +38,7 @@ extension _PlayheadReflectable {
 		let nowPlayingStatusAccessibilityLabel: String?
 		defer {
 			speakerImageView.image = speakerImage
-			if Self.usesUIKitAccessibilityLabel {
+			if Self.usesUIKitAccessibility__ {
 				accessibilityLabel = [
 					nowPlayingStatusAccessibilityLabel,
 					rowContentAccessibilityLabel,

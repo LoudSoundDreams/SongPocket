@@ -130,7 +130,7 @@ final class CollectionCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	static let usesUIKitAccessibilityLabel = true
+	static let usesUIKitAccessibility__ = true
 	var rowContentAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var titleLabel: UILabel!
