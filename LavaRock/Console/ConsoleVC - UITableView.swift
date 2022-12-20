@@ -43,7 +43,7 @@ extension ConsoleVC: UITableViewDataSource {
 		cell.configure(with: Reel.mediaItems[indexPath.row])
 		cell.reflectPlayhead(
 			containsPlayhead: Self.rowContainsPlayhead(at: indexPath),
-			bodyOfAccessibilityLabel: cell.bodyOfAccessibilityLabel)
+			rowContentAccessibilityLabel: cell.rowContentAccessibilityLabel)
 		
 		return cell
 	}

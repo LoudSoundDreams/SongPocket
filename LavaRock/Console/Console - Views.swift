@@ -13,7 +13,8 @@ final class QueueCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	var bodyOfAccessibilityLabel: String? = nil
+	static let usesUIKitAccessibilityLabel = true
+	var rowContentAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var coverArtView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
@@ -48,7 +49,7 @@ final class QueueCell: UITableViewCell {
 			}
 		}()
 		
-		bodyOfAccessibilityLabel = [
+		rowContentAccessibilityLabel = [
 			titleLabel.text,
 			secondaryLabel.text,
 		].compactedAndFormattedAsNarrowList()

@@ -56,7 +56,8 @@ final class SongCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	var bodyOfAccessibilityLabel: String? = nil
+	static let usesUIKitAccessibilityLabel = !usesSwiftUI
+	var rowContentAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
@@ -159,7 +160,7 @@ final class SongCell: UITableViewCell {
 			
 		}
 		
-		bodyOfAccessibilityLabel = [
+		rowContentAccessibilityLabel = [
 			numberLabel.text,
 			titleLabel.text,
 			artistLabel.text,
@@ -167,7 +168,7 @@ final class SongCell: UITableViewCell {
 		
 		reflectPlayhead(
 			containsPlayhead: song.containsPlayhead(),
-			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
+			rowContentAccessibilityLabel: rowContentAccessibilityLabel)
 		
 		freshenDotDotDotButton()
 		

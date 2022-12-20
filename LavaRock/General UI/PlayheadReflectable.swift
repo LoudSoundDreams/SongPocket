@@ -11,7 +11,7 @@ typealias PlayheadReflectable = _PlayheadReflectable & CachesBodyOfAccessibility
 
 @MainActor
 protocol CachesBodyOfAccessibilityLabel {
-	var bodyOfAccessibilityLabel: String? { get }
+	var rowContentAccessibilityLabel: String? { get }
 }
 
 @MainActor
@@ -21,12 +21,13 @@ protocol _PlayheadReflectable: AnyObject {
 	
 	var spacerSpeakerImageView: UIImageView! { get }
 	var speakerImageView: UIImageView! { get }
+	static var usesUIKitAccessibilityLabel: Bool { get }
 	var accessibilityLabel: String? { get set }
 }
 extension _PlayheadReflectable {
 	func reflectPlayhead(
 		containsPlayhead: Bool,
-		bodyOfAccessibilityLabel: String? // Force callers to pass this in manually, to help them remember to update it beforehand.
+		rowContentAccessibilityLabel: String? // Force callers to pass this in manually, to help them remember to update it beforehand.
 	) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
@@ -34,13 +35,15 @@ extension _PlayheadReflectable {
 		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
 		
 		let speakerImage: UIImage?
-		let headOfAccessibilityLabel: String?
+		let nowPlayingStatusAccessibilityLabel: String?
 		defer {
 			speakerImageView.image = speakerImage
-			accessibilityLabel = [
-				headOfAccessibilityLabel,
-				bodyOfAccessibilityLabel,
-			].compactedAndFormattedAsNarrowList()
+			if Self.usesUIKitAccessibilityLabel {
+				accessibilityLabel = [
+					nowPlayingStatusAccessibilityLabel,
+					rowContentAccessibilityLabel,
+				].compactedAndFormattedAsNarrowList()
+			}
 		}
 		
 #if targetEnvironment(simulator)
@@ -57,15 +60,15 @@ extension _PlayheadReflectable {
 			let player = TapeDeck.shared.player
 		else {
 			speakerImage = nil
-			headOfAccessibilityLabel = nil
+			nowPlayingStatusAccessibilityLabel = nil
 			return
 		}
 		if player.playbackState == .playing {
 			speakerImage = UIImage(systemName: Avatar.preference.playingSFSymbolName)
-			headOfAccessibilityLabel = LRString.nowPlaying
+			nowPlayingStatusAccessibilityLabel = LRString.nowPlaying
 		} else {
 			speakerImage = UIImage(systemName: Avatar.preference.pausedSFSymbolName)
-			headOfAccessibilityLabel = LRString.paused
+			nowPlayingStatusAccessibilityLabel = LRString.paused
 		}
 #endif
 	}

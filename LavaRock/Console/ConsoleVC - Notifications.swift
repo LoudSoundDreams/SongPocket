@@ -24,7 +24,7 @@ extension ConsoleVC {
 			guard let cell = reelTable.cellForRow(at: indexPath) as? PlayheadReflectable else { return }
 			cell.reflectPlayhead(
 				containsPlayhead: Self.rowContainsPlayhead(at: indexPath),
-				bodyOfAccessibilityLabel: cell.bodyOfAccessibilityLabel)
+				rowContentAccessibilityLabel: cell.rowContentAccessibilityLabel)
 		}
 	}
 }

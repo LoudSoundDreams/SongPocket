@@ -130,7 +130,8 @@ final class CollectionCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	var bodyOfAccessibilityLabel: String? = nil
+	static let usesUIKitAccessibilityLabel = true
+	var rowContentAccessibilityLabel: String? = nil
 	
 	@IBOutlet private var titleLabel: UILabel!
 	
@@ -177,11 +178,11 @@ final class CollectionCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 		
-		bodyOfAccessibilityLabel = titleLabel.text
+		rowContentAccessibilityLabel = titleLabel.text
 		
 		reflectPlayhead(
 			containsPlayhead: collection.containsPlayhead(),
-			bodyOfAccessibilityLabel: bodyOfAccessibilityLabel)
+			rowContentAccessibilityLabel: rowContentAccessibilityLabel)
 	}
 	
 	override func layoutSubviews() {
