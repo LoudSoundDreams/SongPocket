@@ -13,6 +13,8 @@ struct SongRow: View {
 	let artistDisplayOptional: String?
 	let songID: SongID
 	
+	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
+	
 	var body: some View {
 		
 		HStack {
@@ -63,14 +65,31 @@ struct SongRow: View {
 		}
 		.padding(.top, .eight * -1/4) // -2
 		
-		.accessibilityElement(children: .combine)
-		.accessibilityLabel({ () -> String in
-			return [
-				trackDisplay,
-				songTitleDisplay,
-				artistDisplayOptional,
-			].compactedAndFormattedAsNarrowList()
-		}())
+		.accessibilityChildren {
+			Text({ () -> String in
+				let nowPlayingStatusAccessibilityLabel: String? = {
+					guard
+						let status = tapeDeckStatus.current,
+						songID == status.now_playing_SongID
+					else {
+						return nil
+					}
+					if status.isPlaying {
+						return LRString.nowPlaying
+					} else {
+						return LRString.paused
+					}
+				}()
+				
+				return [
+					nowPlayingStatusAccessibilityLabel,
+					trackDisplay,
+					songTitleDisplay,
+					artistDisplayOptional,
+				].compactedAndFormattedAsNarrowList()
+			}())
+			.accessibilityAddTraits(.isButton)
+		}
 		
 	}
 }
