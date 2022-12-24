@@ -17,273 +17,276 @@ final class MainToolbar {
 	
 	private let presentConsoleButton: UIBarButtonItem
 	
-	private lazy var moreButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.more,
-			image: Self.more_button_default_image,
-			menu: UIMenu(
-				title: "",
-				presentsUpward: true,
-				menuElementGroups: [
-					[
-						UIAction(
-							title: LRString.openMusic,
-							image: UIImage(systemName: "arrow.up.forward.app"),
+	private lazy var moreButton = UIBarButtonItem(
+		title: LRString.more,
+		image: Self.more_button_default_image,
+		menu: create_menu_More()
+	)
+	
+	private func create_menu_More() -> UIMenu {
+		return UIMenu(
+			title: "",
+			presentsUpward: true,
+			menuElementGroups: [
+				[
+					UIAction(
+						title: LRString.openMusic,
+						image: UIImage(systemName: "arrow.up.forward.app"),
+						handler: { action in
+							UIApplication.shared.open(.music)
+						}
+					),
+				],
+				
+				[
+					create_submenu_Repeat_compact(),
+				],
+				
+				[
+					UIDeferredMenuElement.uncached({ useMenuElements in
+						let action = UIAction(
+							title: LRString.previous,
+							image: UIImage(systemName: "backward.end.circle"),
+							attributes: {
+								var result: UIMenuElement.Attributes = [
+									.keepsMenuPresented,
+								]
+								if Self.player == nil {
+									result.formUnion(.disabled)
+								}
+								return result
+							}(),
 							handler: { action in
-								UIApplication.shared.open(.music)
+								Self.player?.skipToPreviousItem()
 							}
-						),
-					],
+						)
+						useMenuElements([action])
+					}),
 					
-					/*
-					[
-						UIMenu(
-							title: LRString.repeat_Header,
-							options: [
-								.displayInline,
-							],
-							children: [
-								UIDeferredMenuElement.uncached({ useMenuElements in
-									let action = UIAction(
-										title: LRString.one_Repeat_mode,
-										image: UIImage(systemName: "repeat.1"),
-										attributes: {
-											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil)
-											{
-												result.formUnion(.disabled)
-											}
-											return result
-										}(),
-										state: {
-											guard let player = Self.player else {
-												return .off
-											}
-											return (
-												player.repeatMode == .one
-												? .on
-												: .off
-											)
-										}(),
-										handler: { action in
-											Self.player?.repeatMode = .one
-										}
-									)
-									useMenuElements([action])
-								}),
-								
-								UIDeferredMenuElement.uncached({ useMenuElements in
-									let action = UIAction(
-										title: LRString.all_Repeat_mode,
-										image: UIImage(systemName: "repeat"),
-										attributes: {
-											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil)
-											{
-												result.formUnion(.disabled)
-											}
-											return result
-										}(),
-										state: {
-											guard let player = Self.player else {
-												return .off
-											}
-											return (
-												player.repeatMode == .all
-												? .on
-												: .off
-											)
-										}(),
-										handler: { action in
-											Self.player?.repeatMode = .all
-										}
-									)
-									useMenuElements([action])
-								}),
-								
-								UIDeferredMenuElement.uncached({ useMenuElements in
-									let action = UIAction(
-										title: LRString.off_Repeat_mode,
-										image: UIImage(systemName: "minus"),
-										attributes: {
-											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil)
-											{
-												// When this mode is selected, we want to show it as such, not disable it.
-												// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
-												// Disabling the selected mode is a compromise.
-												result.formUnion(.disabled)
-											}
-											return result
-										}(),
-										state: {
-											guard let player = Self.player else {
-												return .on // Default when disabled
-											}
-											return (
-												player.repeatMode == MPMusicRepeatMode.none
-												? .on
-												: .off
-											)
-										}(),
-										handler: { action in
-											Self.player?.repeatMode = .none
-										}
-									)
-									useMenuElements([action])
-								}),
-							]
-						),
-					],
-					*/
-					
-					[
-						UIMenu(
-							options: [
-								.displayInline,
-							],
-							preferredElementSize: .small,
-							children: [
-								UIDeferredMenuElement.uncached({ useMenuElements in
-									let action = UIAction(
-										title: LRString.repeatOff,
-										image: UIImage(systemName: "circlebadge"),
-										attributes: {
-											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil)
-												|| (Self.player?.repeatMode == MPMusicRepeatMode.none)
-											{
-												// When this mode is selected, we want to show it as such, not disable it.
-												// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
-												// Disabling the selected mode is a compromise.
-												result.formUnion(.disabled)
-											}
-											return result
-										}(),
-										state: {
-											guard let player = Self.player else {
-												return .on // Default when disabled
-											}
-											return (
-												player.repeatMode == MPMusicRepeatMode.none
-												? .on
-												: .off
-											)
-										}(),
-										handler: { action in
-											Self.player?.repeatMode = .none
-										}
-									)
-									useMenuElements([action])
-								}),
-								
-								UIDeferredMenuElement.uncached({ useMenuElements in
-									let action = UIAction(
-										title: LRString.repeatAll,
-										image: UIImage(systemName: "repeat"),
-										attributes: {
-											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil)
-												|| (Self.player?.repeatMode == .all)
-											{
-												result.formUnion(.disabled)
-											}
-											return result
-										}(),
-										state: {
-											guard let player = Self.player else {
-												return .off
-											}
-											return (
-												player.repeatMode == .all
-												? .on
-												: .off
-											)
-										}(),
-										handler: { action in
-											Self.player?.repeatMode = .all
-										}
-									)
-									useMenuElements([action])
-								}),
-								
-								UIDeferredMenuElement.uncached({ useMenuElements in
-									let action = UIAction(
-										title: LRString.repeat1,
-										image: UIImage(systemName: "repeat.1"),
-										attributes: {
-											var result: UIMenuElement.Attributes = []
-											if (Self.player == nil)
-												|| (Self.player?.repeatMode == .one)
-											{
-												result.formUnion(.disabled)
-											}
-											return result
-										}(),
-										state: {
-											guard let player = Self.player else {
-												return .off
-											}
-											return (
-												player.repeatMode == .one
-												? .on
-												: .off
-											)
-										}(),
-										handler: { action in
-											Self.player?.repeatMode = .one
-										}
-									)
-									useMenuElements([action])
-								}),
-							]
-						),
-					],
-					
-					[
-						UIDeferredMenuElement.uncached({ useMenuElements in
-							let action = UIAction(
-								title: LRString.previous,
-								image: UIImage(systemName: "backward.end.circle"),
-								attributes: {
-									var result: UIMenuElement.Attributes = [
-										.keepsMenuPresented,
-									]
-									if Self.player == nil {
-										result.formUnion(.disabled)
-									}
-									return result
-								}(),
-								handler: { action in
-									Self.player?.skipToPreviousItem()
+					UIDeferredMenuElement.uncached({ useMenuElements in
+						let action = UIAction(
+							title: LRString.restart,
+							image: UIImage(systemName: "arrow.counterclockwise.circle"),
+							attributes: {
+								var result: UIMenuElement.Attributes = []
+								if Self.player == nil {
+									result.formUnion(.disabled)
 								}
-							)
-							useMenuElements([action])
-						}),
-						
-						UIDeferredMenuElement.uncached({ useMenuElements in
-							let action = UIAction(
-								title: LRString.restart,
-								image: UIImage(systemName: "arrow.counterclockwise.circle"),
-								attributes: {
-									var result: UIMenuElement.Attributes = []
-									if Self.player == nil {
-										result.formUnion(.disabled)
-									}
-									return result
-								}(),
-								handler: { action in
-									Self.player?.skipToBeginning()
-								}
-							)
-							useMenuElements([action])
-						}),
-					],
-				]
-			)
+								return result
+							}(),
+							handler: { action in
+								Self.player?.skipToBeginning()
+							}
+						)
+						useMenuElements([action])
+					}),
+				],
+			]
 		)
-		return button
-	}()
+	}
+	
+	private func create_submenu_Repeat_compact() -> UIMenu {
+		return UIMenu(
+			options: [
+				.displayInline,
+			],
+			preferredElementSize: .small,
+			children: [
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.repeatOff,
+						image: UIImage(systemName: "circlebadge"),
+						attributes: {
+							var result: UIMenuElement.Attributes = []
+							if (Self.player == nil)
+								|| (Self.player?.repeatMode == MPMusicRepeatMode.none)
+							{
+								// When this mode is selected, we want to show it as such, not disable it.
+								// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
+								// Disabling the selected mode is a compromise.
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						state: {
+							guard let player = Self.player else {
+								return .on // Default when disabled
+							}
+							return (
+								player.repeatMode == MPMusicRepeatMode.none
+								? .on
+								: .off
+							)
+						}(),
+						handler: { action in
+							Self.player?.repeatMode = .none
+						}
+					)
+					useMenuElements([action])
+				}),
+				
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.repeatAll,
+						image: UIImage(systemName: "repeat"),
+						attributes: {
+							var result: UIMenuElement.Attributes = []
+							if (Self.player == nil)
+								|| (Self.player?.repeatMode == .all)
+							{
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						state: {
+							guard let player = Self.player else {
+								return .off
+							}
+							return (
+								player.repeatMode == .all
+								? .on
+								: .off
+							)
+						}(),
+						handler: { action in
+							Self.player?.repeatMode = .all
+						}
+					)
+					useMenuElements([action])
+				}),
+				
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.repeat1,
+						image: UIImage(systemName: "repeat.1"),
+						attributes: {
+							var result: UIMenuElement.Attributes = []
+							if (Self.player == nil)
+								|| (Self.player?.repeatMode == .one)
+							{
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						state: {
+							guard let player = Self.player else {
+								return .off
+							}
+							return (
+								player.repeatMode == .one
+								? .on
+								: .off
+							)
+						}(),
+						handler: { action in
+							Self.player?.repeatMode = .one
+						}
+					)
+					useMenuElements([action])
+				}),
+			]
+		)
+	}
+	
+	private func create_submenu_Repeat_wordy() -> UIMenu {
+		return UIMenu(
+			title: LRString.repeat_Header,
+			options: [
+				.displayInline,
+			],
+			children: [
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.one_Repeat_mode,
+						image: UIImage(systemName: "repeat.1"),
+						attributes: {
+							var result: UIMenuElement.Attributes = []
+							if (Self.player == nil)
+							{
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						state: {
+							guard let player = Self.player else {
+								return .off
+							}
+							return (
+								player.repeatMode == .one
+								? .on
+								: .off
+							)
+						}(),
+						handler: { action in
+							Self.player?.repeatMode = .one
+						}
+					)
+					useMenuElements([action])
+				}),
+				
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.all_Repeat_mode,
+						image: UIImage(systemName: "repeat"),
+						attributes: {
+							var result: UIMenuElement.Attributes = []
+							if (Self.player == nil)
+							{
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						state: {
+							guard let player = Self.player else {
+								return .off
+							}
+							return (
+								player.repeatMode == .all
+								? .on
+								: .off
+							)
+						}(),
+						handler: { action in
+							Self.player?.repeatMode = .all
+						}
+					)
+					useMenuElements([action])
+				}),
+				
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.off_Repeat_mode,
+						image: UIImage(systemName: "minus"),
+						attributes: {
+							var result: UIMenuElement.Attributes = []
+							if (Self.player == nil)
+							{
+								// When this mode is selected, we want to show it as such, not disable it.
+								// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
+								// Disabling the selected mode is a compromise.
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						state: {
+							guard let player = Self.player else {
+								return .on // Default when disabled
+							}
+							return (
+								player.repeatMode == MPMusicRepeatMode.none
+								? .on
+								: .off
+							)
+						}(),
+						handler: { action in
+							Self.player?.repeatMode = .none
+						}
+					)
+					useMenuElements([action])
+				}),
+			]
+		)
+	}
 	
 	private lazy var skipBackButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
