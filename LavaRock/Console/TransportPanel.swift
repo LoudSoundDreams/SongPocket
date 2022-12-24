@@ -32,7 +32,7 @@ struct TransportPanel: View {
 			HStack(
 				alignment: .firstTextBaseline
 			) {
-				previousButton
+				previousSongButton
 				Spacer()
 				skipBackButton
 				Spacer()
@@ -40,7 +40,7 @@ struct TransportPanel: View {
 				Spacer()
 				skipForwardButton
 				Spacer()
-				nextButton
+				nextSongButton
 			}
 			
 			playPauseButton
@@ -68,7 +68,7 @@ struct TransportPanel: View {
 		}
 	}
 	
-	private var previousButton: some View {
+	private var previousSongButton: some View {
 		Button {
 			player?.skipToPreviousItem()
 		} label: {
@@ -128,7 +128,7 @@ struct TransportPanel: View {
 		}
 		.disabled(whenNil: tapeDeckStatus.current)
 	}
-	private var nextButton: some View {
+	private var nextSongButton: some View {
 		Button {
 			player?.skipToNextItem()
 		} label: {

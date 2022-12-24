@@ -309,7 +309,7 @@ final class MainToolbar {
 		return button
 	}()
 	
-	private lazy var nextButton: UIBarButtonItem = {
+	private lazy var nextSongButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.next,
 			image: UIImage(systemName: "forward.end.circle"),
@@ -331,7 +331,7 @@ final class MainToolbar {
 				.flexibleSpace(),
 				skipForwardButton,
 				.flexibleSpace(),
-				nextButton,
+				nextSongButton,
 			]
 		} else {
 			return [
@@ -343,7 +343,7 @@ final class MainToolbar {
 				.flexibleSpace(),
 				skipForwardButton,
 				.flexibleSpace(),
-				nextButton,
+				nextSongButton,
 			]
 		}
 	}
