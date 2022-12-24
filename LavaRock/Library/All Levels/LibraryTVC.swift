@@ -394,7 +394,7 @@ class LibraryTVC: UITableViewController {
 		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
 		sortButton.isEnabled = allows_sort()
-		sortButton.menu = new_sort_options_menu()
+		sortButton.menu = new_sort_options_menu() // Create a new menu, for an accurate “[X] [items]” title.
 		
 		floatToTopButton.isEnabled = allows_float_and_sink()
 		sinkToBottomButton.isEnabled = allows_float_and_sink()
