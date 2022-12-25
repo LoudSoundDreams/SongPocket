@@ -57,7 +57,7 @@ final class SongCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	static let usesUIKitAccessibility__ = !usesSwiftUI__
-	var rowContentAccessibilityLabel: String? = nil
+	var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
@@ -162,7 +162,7 @@ final class SongCell: UITableViewCell {
 			
 		}
 		
-		rowContentAccessibilityLabel = [
+		rowContentAccessibilityLabel__ = [
 			numberLabel.text,
 			titleLabel.text,
 			artistLabel.text,
@@ -170,7 +170,7 @@ final class SongCell: UITableViewCell {
 		
 		reflectPlayhead(
 			containsPlayhead: song.containsPlayhead(),
-			rowContentAccessibilityLabel: rowContentAccessibilityLabel)
+			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
 		
 		freshenDotDotDotButton()
 		

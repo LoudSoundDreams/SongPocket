@@ -11,7 +11,7 @@ typealias PlayheadReflectable = _PlayheadReflectable & CachesBodyOfAccessibility
 
 @MainActor
 protocol CachesBodyOfAccessibilityLabel {
-	var rowContentAccessibilityLabel: String? { get }
+	var rowContentAccessibilityLabel__: String? { get }
 }
 
 @MainActor
@@ -27,7 +27,7 @@ protocol _PlayheadReflectable: AnyObject {
 extension _PlayheadReflectable {
 	func reflectPlayhead(
 		containsPlayhead: Bool,
-		rowContentAccessibilityLabel: String? // Force callers to pass this in manually, to help them remember to update it beforehand.
+		rowContentAccessibilityLabel__: String? // Force callers to pass this in manually, to help them remember to update it beforehand.
 	) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
@@ -41,7 +41,7 @@ extension _PlayheadReflectable {
 			if Self.usesUIKitAccessibility__ {
 				accessibilityLabel = [
 					nowPlayingStatusAccessibilityLabel,
-					rowContentAccessibilityLabel,
+					rowContentAccessibilityLabel__,
 				].compactedAndFormattedAsNarrowList()
 			}
 		}

@@ -14,7 +14,7 @@ final class QueueCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	static let usesUIKitAccessibility__ = true
-	var rowContentAccessibilityLabel: String? = nil
+	var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var coverArtView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
@@ -49,7 +49,7 @@ final class QueueCell: UITableViewCell {
 			}
 		}()
 		
-		rowContentAccessibilityLabel = [
+		rowContentAccessibilityLabel__ = [
 			titleLabel.text,
 			secondaryLabel.text,
 		].compactedAndFormattedAsNarrowList()

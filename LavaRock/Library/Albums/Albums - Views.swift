@@ -42,7 +42,7 @@ final class AlbumCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	static let usesUIKitAccessibility__ = true
-	var rowContentAccessibilityLabel: String? = nil
+	var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `coverArtView` and `textStack` at very large text sizes.
 	@IBOutlet private var coverArtView: UIImageView!
@@ -112,14 +112,14 @@ final class AlbumCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 		
-		rowContentAccessibilityLabel = [
+		rowContentAccessibilityLabel__ = [
 			titleLabel.text,
 			releaseDateLabel.text,
 		].compactedAndFormattedAsNarrowList()
 		
 		reflectPlayhead(
 			containsPlayhead: album.containsPlayhead(),
-			rowContentAccessibilityLabel: rowContentAccessibilityLabel)
+			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
 		
 		// For Voice Control, only include the album title.
 		// Include “Unknown Album” if that’s what we’re showing.

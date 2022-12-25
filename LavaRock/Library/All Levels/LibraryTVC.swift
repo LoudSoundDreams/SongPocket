@@ -332,7 +332,7 @@ class LibraryTVC: UITableViewController {
 					}
 					return libraryItem.containsPlayhead()
 				}(),
-				rowContentAccessibilityLabel: cell.rowContentAccessibilityLabel)
+				rowContentAccessibilityLabel__: cell.rowContentAccessibilityLabel__)
 		}
 	}
 	

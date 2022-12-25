@@ -131,7 +131,7 @@ final class CollectionCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	static let usesUIKitAccessibility__ = true
-	var rowContentAccessibilityLabel: String? = nil
+	var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var titleLabel: UILabel!
 	
@@ -178,11 +178,11 @@ final class CollectionCell: UITableViewCell {
 			disableWithAccessibilityTrait()
 		}
 		
-		rowContentAccessibilityLabel = titleLabel.text
+		rowContentAccessibilityLabel__ = titleLabel.text
 		
 		reflectPlayhead(
 			containsPlayhead: collection.containsPlayhead(),
-			rowContentAccessibilityLabel: rowContentAccessibilityLabel)
+			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
 	}
 	
 	override func layoutSubviews() {
