@@ -78,7 +78,7 @@ final class SongCell: UITableViewCell {
 		
 		dotDotDotButton.maximumContentSizeCategory = .extraExtraExtraLarge
 		
-		if Self.usesUIKitAccessibility__ {
+		if !Self.usesSwiftUI__ {
 			accessibilityTraits.formUnion(.button)
 		}
 	}
