@@ -49,11 +49,11 @@ extension _PlayheadReflectable {
 #if targetEnvironment(simulator)
 		guard containsPlayhead else {
 			speakerImage = nil
-			headOfAccessibilityLabel = nil
+			nowPlayingStatusAccessibilityLabel__ = nil
 			return
 		}
 		speakerImage = UIImage(systemName: Avatar.preference.pausedSFSymbolName)
-		headOfAccessibilityLabel = LRString.paused
+		nowPlayingStatusAccessibilityLabel__ = LRString.paused
 #else
 		guard
 			containsPlayhead,
