@@ -35,12 +35,12 @@ extension _PlayheadReflectable {
 		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
 		
 		let speakerImage: UIImage?
-		let nowPlayingStatusAccessibilityLabel: String?
+		let nowPlayingStatusAccessibilityLabel__: String?
 		defer {
 			speakerImageView.image = speakerImage
 			if Self.usesUIKitAccessibility__ {
 				accessibilityLabel = [
-					nowPlayingStatusAccessibilityLabel,
+					nowPlayingStatusAccessibilityLabel__,
 					rowContentAccessibilityLabel__,
 				].compactedAndFormattedAsNarrowList()
 			}
@@ -60,15 +60,15 @@ extension _PlayheadReflectable {
 			let player = TapeDeck.shared.player
 		else {
 			speakerImage = nil
-			nowPlayingStatusAccessibilityLabel = nil
+			nowPlayingStatusAccessibilityLabel__ = nil
 			return
 		}
 		if player.playbackState == .playing {
 			speakerImage = UIImage(systemName: Avatar.preference.playingSFSymbolName)
-			nowPlayingStatusAccessibilityLabel = LRString.nowPlaying
+			nowPlayingStatusAccessibilityLabel__ = LRString.nowPlaying
 		} else {
 			speakerImage = UIImage(systemName: Avatar.preference.pausedSFSymbolName)
-			nowPlayingStatusAccessibilityLabel = LRString.paused
+			nowPlayingStatusAccessibilityLabel__ = LRString.paused
 		}
 #endif
 	}

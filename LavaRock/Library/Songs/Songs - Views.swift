@@ -319,8 +319,7 @@ final class SongCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		if Self.usesSwiftUI__ {
-		} else {
+		if !Self.usesSwiftUI__ {
 			separatorInset.left = 0
 			+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
 			+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
