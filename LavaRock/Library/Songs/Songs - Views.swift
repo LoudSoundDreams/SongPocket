@@ -176,9 +176,11 @@ final class SongCell: UITableViewCell {
 		
 		// For Voice Control, only include the song title.
 		// Never include the “unknown title” placeholder, if it’s a dash.
-		accessibilityUserInputLabels = [
-			metadatum?.titleOnDisk,
-		].compacted()
+		if !Self.usesSwiftUI__ {
+			accessibilityUserInputLabels = [
+				metadatum?.titleOnDisk,
+			].compacted()
+		}
 		
 		// Set menu, and require creating that menu
 		let menu: UIMenu?
