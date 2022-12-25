@@ -116,9 +116,7 @@ final class SongCell: UITableViewCell {
 			}()
 			return result ?? "‒" // Figure dash
 		}()
-		let songTitleDisplay: String = {
-			return metadatum?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
-		}()
+		let songTitleDisplay: String? = metadatum?.titleOnDisk
 		let artistDisplayOptional: String? = {
 			let albumArtistOptional = representative?.albumArtistOnDisk
 			if
@@ -148,7 +146,7 @@ final class SongCell: UITableViewCell {
 				trackDisplay
 			}()
 			titleLabel.text = { () -> String in
-				songTitleDisplay
+				songTitleDisplay ?? SongMetadatumPlaceholder.unknownTitle
 			}()
 			artistLabel.text = { () -> String? in
 				artistDisplayOptional
@@ -176,7 +174,7 @@ final class SongCell: UITableViewCell {
 		
 		if !Self.usesSwiftUI__ {
 			accessibilityUserInputLabels = [
-				metadatum?.titleOnDisk, // Excludes the “unknown title” placeholder, which is currently a dash.
+				songTitleDisplay, // Excludes the “unknown title” placeholder, which is currently a dash.
 			].compacted()
 		}
 		

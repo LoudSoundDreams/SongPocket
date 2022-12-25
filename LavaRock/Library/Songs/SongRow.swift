@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SongRow: View {
 	let trackDisplay: String
-	let songTitleDisplay: String
+	let songTitleDisplay: String?
 	let artistDisplayOptional: String?
 	let songID: SongID
 	
@@ -31,7 +31,7 @@ struct SongRow: View {
 					alignment: .leading,
 					spacing: .eight * 1/2 // 4
 				) {
-					Text(songTitleDisplay)
+					Text(songTitleDisplay ?? SongMetadatumPlaceholder.unknownTitle)
 					
 					if let artistDisplay = artistDisplayOptional {
 						Text(artistDisplay)
@@ -89,6 +89,11 @@ struct SongRow: View {
 				].compactedAndFormattedAsNarrowList()
 			}())
 			.accessibilityAddTraits(.isButton)
+			.accessibilityInputLabels(
+				[
+					songTitleDisplay, // Excludes the “unknown title” placeholder, which is currently a dash.
+				].compacted()
+			)
 		}
 		
 	}
