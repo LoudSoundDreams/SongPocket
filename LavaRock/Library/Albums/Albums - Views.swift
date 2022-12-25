@@ -121,10 +121,8 @@ final class AlbumCell: UITableViewCell {
 			containsPlayhead: album.containsPlayhead(),
 			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
 		
-		// For Voice Control, only include the album title.
-		// Include “Unknown Album” if that’s what we’re showing.
 		accessibilityUserInputLabels = [
-			titleLabel.text,
+			titleLabel.text, // Includes “Unknown Album” if that’s what we’re showing.
 		].compacted()
 	}
 	

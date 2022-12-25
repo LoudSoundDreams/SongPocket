@@ -184,8 +184,8 @@ final class CollectionCell: UITableViewCell {
 			containsPlayhead: collection.containsPlayhead(),
 			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
 		
+		// Exclude the now-playing marker’s accessibility label.
 		accessibilityUserInputLabels = [
-			// Exclude the now-playing marker’s accessibility label.
 			titleLabel.text,
 		].compacted()
 	}

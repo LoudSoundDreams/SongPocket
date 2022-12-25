@@ -174,11 +174,9 @@ final class SongCell: UITableViewCell {
 		
 		freshenDotDotDotButton()
 		
-		// For Voice Control, only include the song title.
-		// Never include the “unknown title” placeholder, if it’s a dash.
 		if !Self.usesSwiftUI__ {
 			accessibilityUserInputLabels = [
-				metadatum?.titleOnDisk,
+				metadatum?.titleOnDisk, // Excludes the “unknown title” placeholder, which is currently a dash.
 			].compacted()
 		}
 		
