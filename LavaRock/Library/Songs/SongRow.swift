@@ -65,7 +65,7 @@ struct SongRow: View {
 		}
 		.padding(.top, .eight * -1/4) // -2
 		
-		.accessibilityChildren {
+		.accessibilityRepresentation { // Not sure how this differs from `accessibilityChildren`
 			Text({ () -> String in
 				let nowPlayingStatusAccessibilityLabel: String? = {
 					guard
@@ -88,7 +88,9 @@ struct SongRow: View {
 					artistDisplayOptional,
 				].compactedAndFormattedAsNarrowList()
 			}())
+			
 			.accessibilityAddTraits(.isButton)
+			
 			.accessibilityInputLabels(
 				[
 					songTitleDisplay, // Excludes the “unknown title” placeholder, which is currently a dash.
