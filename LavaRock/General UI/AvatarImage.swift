@@ -12,6 +12,26 @@ struct AvatarImage: View {
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
 	
+	private enum State {
+		case notPlaying
+		case paused
+		case playing
+	}
+	
+	private var state: State {
+		guard
+			let status = tapeDeckStatus.current,
+			songID == status.now_playing_SongID
+		else {
+			return .notPlaying
+		}
+		if status.isPlaying {
+			return .playing
+		} else {
+			return .paused
+		}
+	}
+	
 	var body: some View {
 		ZStack {
 			
@@ -19,19 +39,17 @@ struct AvatarImage: View {
 				.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 				.hidden()
 			
-			if
-				let status = tapeDeckStatus.current,
-				songID == status.now_playing_SongID
-			{
-				if status.isPlaying {
-					Image(systemName: Avatar.preference.playingSFSymbolName)
-						.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
-						.foregroundColor(.accentColor)
-				} else {
-					Image(systemName: Avatar.preference.pausedSFSymbolName)
-						.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
-						.foregroundColor(.accentColor)
-				}
+			switch state {
+			case .notPlaying:
+				EmptyView()
+			case .paused:
+				Image(systemName: Avatar.preference.pausedSFSymbolName)
+					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
+					.foregroundColor(.accentColor)
+			case .playing:
+				Image(systemName: Avatar.preference.playingSFSymbolName)
+					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
+					.foregroundColor(.accentColor)
 			}
 			
 		}
