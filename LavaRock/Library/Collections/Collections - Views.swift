@@ -183,6 +183,11 @@ final class CollectionCell: UITableViewCell {
 		reflectPlayhead(
 			containsPlayhead: collection.containsPlayhead(),
 			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+		
+		accessibilityUserInputLabels = [
+			// Exclude the now-playing marker’s accessibility label.
+			titleLabel.text,
+		].compacted()
 	}
 	
 	override func layoutSubviews() {
