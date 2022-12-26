@@ -455,7 +455,6 @@
 				077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */,
 				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 				072F859E26B74A5D0062323C /* NoItemsBackgroundManager.swift */,
-				07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */,
 			);
 			path = "Multiple Levels";
 			sourceTree = "<group>";
@@ -570,6 +569,7 @@
 				0772FB98283010960054834F /* Theme.swift */,
 				0708201C275BEE1C00F48D13 /* Lighting.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
+				07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */,
 				078DBF032895EFD8000E6433 /* Avatar.swift */,
 				07755A57294821860056E90C /* AvatarImage.swift */,
 				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
