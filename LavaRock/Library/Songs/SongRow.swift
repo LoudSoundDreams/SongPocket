@@ -65,38 +65,37 @@ struct SongRow: View {
 		}
 		.padding(.top, .eight * -1/4) // -2
 		
-		.accessibilityRepresentation { // Not sure how this differs from `accessibilityChildren`
-			Text({ () -> String in
-				let nowPlayingStatusAccessibilityLabel: String? = {
-					guard
-						let status = tapeDeckStatus.current,
-						songID == status.now_playing_SongID
-					else {
-						return nil
-					}
-					if status.isPlaying {
-						return LRString.nowPlaying
-					} else {
-						return LRString.paused
-					}
-				}()
-				
-				return [
-					nowPlayingStatusAccessibilityLabel,
-					trackDisplay,
-					songTitleDisplay,
-					artistDisplayOptional,
-				].compactedAndFormattedAsNarrowList()
-			}())
+		.accessibilityElement()
+		.accessibilityLabel({ () -> String in
+			let nowPlayingStatusAccessibilityLabel: String? = {
+				guard
+					let status = tapeDeckStatus.current,
+					songID == status.now_playing_SongID
+				else {
+					return nil
+				}
+				if status.isPlaying {
+					return LRString.nowPlaying
+				} else {
+					return LRString.paused
+				}
+			}()
 			
-			.accessibilityAddTraits(.isButton)
-			
-			.accessibilityInputLabels(
-				[
-					songTitleDisplay, // Excludes the “unknown title” placeholder, which is currently a dash.
-				].compacted()
-			)
-		}
+			return [
+				nowPlayingStatusAccessibilityLabel,
+				trackDisplay,
+				songTitleDisplay,
+				artistDisplayOptional,
+			].compactedAndFormattedAsNarrowList()
+		}())
+		
+		.accessibilityAddTraits(.isButton)
+		
+		.accessibilityInputLabels(
+			[
+				songTitleDisplay, // Excludes the “unknown title” placeholder, which is currently a dash.
+			].compacted()
+		)
 		
 	}
 }
