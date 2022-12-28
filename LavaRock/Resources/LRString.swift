@@ -134,8 +134,8 @@ enum LRString {
 	static let albums = NSLocalizedString("Albums", comment: "Big title")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
-	static let organizeByAlbumArtistEllipsis = NSLocalizedString("Organize by Album Artist…", comment: "Menu option")
-	static let moveToEllipsis = NSLocalizedString("Move To…", comment: "Menu option")
+	static let byAlbumArtistEllipsis = NSLocalizedString("By Album Artist…", comment: "Menu option")
+	static let toFolderEllipsis = NSLocalizedString("To Folder…", comment: "Menu option")
 	
 	static let newest = NSLocalizedString("Newest", comment: "Sort option")
 	static let oldest = NSLocalizedString("Oldest", comment: "Sort option")

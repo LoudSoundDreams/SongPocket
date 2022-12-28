@@ -148,8 +148,8 @@ final class AlbumsTVC:
 			}
 			
 			let organizeAction = UIAction(
-				title: LRString.organizeByAlbumArtistEllipsis,
-				image: UIImage(systemName: "folder.badge.gearshape")
+				title: LRString.byAlbumArtistEllipsis,
+				image: UIImage(systemName: "music.mic")
 			) { [weak self] _ in
 				// Runs when the user activates the menu item
 				self?.startOrganizing()
@@ -174,7 +174,7 @@ final class AlbumsTVC:
 		})
 		
 		let moveElement = UIAction(
-			title: LRString.moveToEllipsis,
+			title: LRString.toFolderEllipsis,
 			image: UIImage(systemName: "folder")
 		) { [weak self] _ in
 			self?.startMoving()
