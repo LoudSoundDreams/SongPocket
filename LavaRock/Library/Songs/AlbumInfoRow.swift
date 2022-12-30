@@ -48,11 +48,5 @@ struct AlbumInfoRow: View {
 		.padding(.top, .eight * -1/4) // -2
 		.padding(.bottom, .eight * 3/8) // 3
 		.frame(maxWidth: .infinity)
-		.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-			viewDimensions[.leading]
-		}
-		.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-			viewDimensions[.trailing]
-		}
 	}
 }

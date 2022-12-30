@@ -66,6 +66,12 @@ extension SongsTVC {
 					AlbumInfoRow(
 						albumTitle: viewModel.bigTitle(),
 						album: album)
+					.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+						viewDimensions[.leading]
+					}
+					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+						viewDimensions[.trailing]
+					}
 				}
 				cell.selectionStyle = .none // So that the user can’t even highlight the cell
 				
