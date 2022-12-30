@@ -97,7 +97,7 @@ final class TipLoadingCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		disableWithAccessibilityTrait()
+		isUserInteractionEnabled = false
 		
 		var content = UIListContentConfiguration.cell()
 		content.text = LRString.loadingEllipsis
@@ -144,7 +144,7 @@ final class TipConfirmingCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		disableWithAccessibilityTrait()
+		isUserInteractionEnabled = false
 		
 		var content = UIListContentConfiguration.cell()
 		content.text = LRString.confirmingEllipsis
