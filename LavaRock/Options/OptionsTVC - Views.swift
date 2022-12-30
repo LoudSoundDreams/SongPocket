@@ -8,20 +8,6 @@
 import UIKit
 import StoreKit
 
-final class LightingCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		selectionStyle = .none
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-
 final class AvatarCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -33,33 +19,6 @@ final class AvatarCell: UITableViewCell {
 		super.layoutSubviews()
 		
 		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-
-final class LightingChooser: UISegmentedControl {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		removeAllSegments()
-		Lighting.allCases.forEach { lighting in
-			insertSegment(
-				action: UIAction(
-					image: {
-						let image = lighting.uiImage
-						image.accessibilityLabel = lighting.accessibilityLabel
-						return image
-					}()
-				) { _ in
-					Task { await MainActor.run {
-						Theme.shared.lighting = lighting
-					}}
-				},
-				at: numberOfSegments,
-				animated: false)
-		}
-		selectedSegmentIndex = Lighting.allCases.firstIndex { lightingCase in
-			Lighting.preference == lightingCase
-		}!
 	}
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension OptionsTVC {
 	private enum Section: Int, CaseIterable {
@@ -96,9 +97,23 @@ extension OptionsTVC {
 		switch sectionCase {
 		case .theme:
 			if Self.indexPathsOfLightingRows.contains(indexPath) {
-				return tableView.dequeueReusableCell(
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Lighting",
-					for: indexPath) as? LightingCell ?? UITableViewCell()
+					for: indexPath)
+				
+				cell.selectionStyle = .none
+				cell.contentConfiguration = UIHostingConfiguration {
+					LightingPicker()
+						.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+							viewDimensions[.leading]
+						}
+						.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+							viewDimensions[.trailing]
+						}
+				}
+				
+				return cell
 			} else {
 				return accentColorCell(forRowAt: indexPath)
 			}
