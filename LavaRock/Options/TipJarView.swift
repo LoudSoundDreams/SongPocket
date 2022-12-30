@@ -47,7 +47,7 @@ struct TipJarView: View {
 		case .thankYou:
 			HStack {
 				Spacer()
-				Text(theme.accentColor.thankYouMessage())
+				Text(theme.accentColor.tipThankYouMessage())
 					.foregroundColor(.secondary)
 				Spacer()
 			}

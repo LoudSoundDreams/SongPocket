@@ -213,7 +213,7 @@ enum AccentColor: CaseIterable {
 		}
 	}
 	
-	func thankYouMessage() -> String {
+	func tipThankYouMessage() -> String {
 		let heartEmoji: String = {
 			switch self {
 			case .strawberry:

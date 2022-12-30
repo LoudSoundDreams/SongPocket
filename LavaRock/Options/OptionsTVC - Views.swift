@@ -165,7 +165,7 @@ final class TipThankYouCell: UITableViewCell {
 	
 	private func configure() {
 		var content = UIListContentConfiguration.cell()
-		content.text = AccentColor.preference.thankYouMessage()
+		content.text = AccentColor.preference.tipThankYouMessage()
 		content.textProperties.color = .secondaryLabel
 		content.textProperties.alignment = .center
 		contentConfiguration = content
