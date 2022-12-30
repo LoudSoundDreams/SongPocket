@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftUI
 
 @MainActor
 protocol CellTintingWhenSelected: UITableViewCell {
