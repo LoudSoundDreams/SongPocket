@@ -206,9 +206,19 @@ extension OptionsTVC {
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch TipJarViewModel.shared.status {
 		case .notYetFirstLoaded, .loading:
-			return tableView.dequeueReusableCell(
+			// The cell in the storyboard is completely default except for the reuse identifier.
+			let cell = tableView.dequeueReusableCell(
 				withIdentifier: "Tip Loading",
-				for: indexPath) as? TipLoadingCell ?? UITableViewCell()
+				for: indexPath)
+			
+			cell.isUserInteractionEnabled = false
+			cell.contentConfiguration = UIHostingConfiguration {
+				Text(LRString.loadingEllipsis)
+					.foregroundColor(.secondary)
+			}
+			
+			return cell
+			
 		case .reload:
 			return tableView.dequeueReusableCell(
 				withIdentifier: "Tip Reload",
@@ -218,13 +228,42 @@ extension OptionsTVC {
 				withIdentifier: "Tip Ready",
 				for: indexPath) as? TipReadyCell ?? UITableViewCell()
 		case .confirming:
-			return tableView.dequeueReusableCell(
+			// The cell in the storyboard is completely default except for the reuse identifier.
+			let cell = tableView.dequeueReusableCell(
 				withIdentifier: "Tip Confirming",
-				for: indexPath) as? TipConfirmingCell ?? UITableViewCell()
+				for: indexPath)
+			
+			cell.isUserInteractionEnabled = false
+			cell.contentConfiguration = UIHostingConfiguration {
+				Text(LRString.confirmingEllipsis)
+					.foregroundColor(.secondary)
+			}
+			
+			return cell
+			
 		case .thankYou:
-			return tableView.dequeueReusableCell(
+			// The cell in the storyboard is completely default except for the reuse identifier.
+			let cell = tableView.dequeueReusableCell(
 				withIdentifier: "Tip Thank You",
-				for: indexPath) as? TipThankYouCell ?? UITableViewCell()
+				for: indexPath)
+			
+			cell.isUserInteractionEnabled = false
+			cell.contentConfiguration = UIHostingConfiguration {
+				TipThankYouView()
+			}
+			
+			return cell
+		}
+	}
+	
+	private struct TipThankYouView: View {
+		@ObservedObject private var theme: Theme = .shared
+		
+		var body: some View {
+			Text(theme.accentColor.tipThankYouMessage())
+				.foregroundColor(.secondary)
+				.multilineTextAlignment(.center)
+				.frame(maxWidth: .infinity)
 		}
 	}
 	

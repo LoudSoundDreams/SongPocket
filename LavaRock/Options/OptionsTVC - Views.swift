@@ -94,20 +94,6 @@ final class AccentColorCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipLoadingCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		isUserInteractionEnabled = false
-		
-		contentConfiguration = UIHostingConfiguration {
-			Text(LRString.loadingEllipsis)
-				.foregroundColor(.secondary)
-		}
-	}
-}
-
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipReloadCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -141,41 +127,3 @@ final class TipReadyCell: UITableViewCell {
 	}
 }
 extension TipReadyCell: CellTintingWhenSelected {}
-
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipConfirmingCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		isUserInteractionEnabled = false
-		
-		contentConfiguration = UIHostingConfiguration {
-			Text(LRString.confirmingEllipsis)
-				.foregroundColor(.secondary)
-		}
-	}
-}
-
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipThankYouCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		isUserInteractionEnabled = false
-		
-		contentConfiguration = UIHostingConfiguration {
-			TipThankYouView()
-		}
-	}
-	
-	private struct TipThankYouView: View {
-		@ObservedObject private var theme: Theme = .shared
-		
-		var body: some View {
-			Text(theme.accentColor.tipThankYouMessage())
-				.foregroundColor(.secondary)
-				.multilineTextAlignment(.center)
-				.frame(maxWidth: .infinity)
-		}
-	}
-}
