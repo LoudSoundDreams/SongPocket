@@ -24,7 +24,7 @@ final class QueueCell: UITableViewCell {
 	@IBOutlet private var textStackTopToCoverArtTop: NSLayoutConstraint!
 	
 	override func awakeFromNib() {
-		tintSelectedBackgroundView()
+		selectedBackgroundView_add_tint()
 		
 		removeBackground()
 		

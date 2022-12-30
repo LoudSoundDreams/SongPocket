@@ -98,7 +98,7 @@ final class TipReloadCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		tintSelectedBackgroundView()
+		selectedBackgroundView_add_tint()
 		
 		contentConfiguration = UIHostingConfiguration {
 			Text(LRString.reload)
@@ -113,7 +113,7 @@ final class TipReadyCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		tintSelectedBackgroundView()
+		selectedBackgroundView_add_tint()
 		
 		contentConfiguration = UIHostingConfiguration {
 			LabeledContent {

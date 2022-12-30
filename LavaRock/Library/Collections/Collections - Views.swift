@@ -13,7 +13,7 @@ final class AllowAccessCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		tintSelectedBackgroundView()
+		selectedBackgroundView_add_tint()
 		
 		contentConfiguration = UIHostingConfiguration {
 			Text(LRString.allowAccessToMusic)
@@ -78,7 +78,7 @@ final class OpenMusicCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		tintSelectedBackgroundView()
+		selectedBackgroundView_add_tint()
 		
 		contentConfiguration = UIHostingConfiguration {
 			Text(LRString.openMusic)
@@ -100,7 +100,7 @@ final class CreateCollectionCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		tintSelectedBackgroundView()
+		selectedBackgroundView_add_tint()
 		
 		Task {
 			accessibilityTraits.formUnion(.button)
@@ -138,7 +138,7 @@ final class CollectionCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		tintSelectedBackgroundView()
+		selectedBackgroundView_add_tint()
 		
 		removeBackground()
 	}

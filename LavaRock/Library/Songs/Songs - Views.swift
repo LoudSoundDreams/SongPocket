@@ -69,7 +69,7 @@ final class SongCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		tintSelectedBackgroundView()
+		selectedBackgroundView_add_tint()
 		
 		removeBackground()
 		

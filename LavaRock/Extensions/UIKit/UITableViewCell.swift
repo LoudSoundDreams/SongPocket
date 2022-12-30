@@ -20,7 +20,7 @@ extension UITableViewCell {
 		accessibilityTraits.subtract(.notEnabled)
 	}
 	
-	final func tintSelectedBackgroundView() {
+	final func selectedBackgroundView_add_tint() {
 		let colorView = UIView()
 		colorView.backgroundColor = .tintColor.withAlphaComponentOneHalf()
 		selectedBackgroundView = colorView
