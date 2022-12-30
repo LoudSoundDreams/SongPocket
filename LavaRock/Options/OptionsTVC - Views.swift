@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import StoreKit
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
@@ -99,10 +100,10 @@ final class TipLoadingCell: UITableViewCell {
 		
 		isUserInteractionEnabled = false
 		
-		var content = UIListContentConfiguration.cell()
-		content.text = LRString.loadingEllipsis
-		content.textProperties.color = .secondaryLabel
-		contentConfiguration = content
+		contentConfiguration = UIHostingConfiguration {
+			Text(LRString.loadingEllipsis)
+				.foregroundColor(.secondary)
+		}
 	}
 }
 
@@ -128,13 +129,15 @@ final class TipReadyCell: UITableViewCell {
 		
 		tintSelectedBackgroundView()
 		
-		accessibilityTraits.formUnion(.button)
-		
-		var content = UIListContentConfiguration.valueCell()
-		content.text = PurchaseManager.shared.tipTitle
-		content.textProperties.color = .tintColor
-		content.secondaryText = PurchaseManager.shared.tipPrice
-		contentConfiguration = content
+		contentConfiguration = UIHostingConfiguration {
+			LabeledContent {
+				Text(PurchaseManager.shared.tipPrice ?? "")
+			} label: {
+				Text(PurchaseManager.shared.tipTitle ?? "")
+					.foregroundColor(.accentColor)
+			}
+			.accessibilityAddTraits(.isButton)
+		}
 	}
 }
 extension TipReadyCell: CellTintingWhenSelected {}
@@ -146,10 +149,10 @@ final class TipConfirmingCell: UITableViewCell {
 		
 		isUserInteractionEnabled = false
 		
-		var content = UIListContentConfiguration.cell()
-		content.text = LRString.confirmingEllipsis
-		content.textProperties.color = .secondaryLabel
-		contentConfiguration = content
+		contentConfiguration = UIHostingConfiguration {
+			Text(LRString.confirmingEllipsis)
+				.foregroundColor(.secondary)
+		}
 	}
 }
 
@@ -160,20 +163,19 @@ final class TipThankYouCell: UITableViewCell {
 		
 		isUserInteractionEnabled = false
 		
-		configure()
+		contentConfiguration = UIHostingConfiguration {
+			TipThankYouView()
+		}
 	}
 	
-	private func configure() {
-		var content = UIListContentConfiguration.cell()
-		content.text = AccentColor.preference.tipThankYouMessage()
-		content.textProperties.color = .secondaryLabel
-		content.textProperties.alignment = .center
-		contentConfiguration = content
-	}
-	
-	override func tintColorDidChange() {
-		super.tintColorDidChange()
+	private struct TipThankYouView: View {
+		@ObservedObject private var theme: Theme = .shared
 		
-		configure()
+		var body: some View {
+			Text(theme.accentColor.tipThankYouMessage())
+				.foregroundColor(.secondary)
+				.multilineTextAlignment(.center)
+				.frame(maxWidth: .infinity)
+		}
 	}
 }
