@@ -75,6 +75,5 @@ final class QueueCell: UITableViewCell {
 }
 extension QueueCell:
 	PlayheadReflectable,
-	CellTintingWhenSelected,
 	CellHavingTransparentBackground
 {}

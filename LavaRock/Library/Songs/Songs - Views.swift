@@ -329,6 +329,5 @@ final class SongCell: UITableViewCell {
 }
 extension SongCell:
 	PlayheadReflectable,
-	CellTintingWhenSelected,
 	CellHavingTransparentBackground
 {}

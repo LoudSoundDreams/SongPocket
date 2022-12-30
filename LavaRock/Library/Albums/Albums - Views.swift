@@ -29,7 +29,6 @@ final class MoveHereCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension MoveHereCell: CellTintingWhenSelected {}
 
 final class AlbumCell: UITableViewCell {
 	enum Mode {
@@ -168,6 +167,5 @@ final class AlbumCell: UITableViewCell {
 }
 extension AlbumCell:
 	PlayheadReflectable,
-	CellTintingWhenSelected,
 	CellHavingTransparentBackground
 {}

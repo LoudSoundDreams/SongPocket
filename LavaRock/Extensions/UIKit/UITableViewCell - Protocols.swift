@@ -8,19 +8,6 @@
 import UIKit
 
 @MainActor
-protocol CellTintingWhenSelected: UITableViewCell {
-	// Adopting types must …
-	// • Override `awakeFromNib` and call `tintSelectedBackgroundView`.
-}
-extension CellTintingWhenSelected {
-	func tintSelectedBackgroundView() {
-		let colorView = UIView()
-		colorView.backgroundColor = .tintColor.withAlphaComponentOneHalf()
-		selectedBackgroundView = colorView
-	}
-}
-
-@MainActor
 protocol CellHavingTransparentBackground: UITableViewCell {
 	// Adopting types must …
 	// • Override `awakeFromNib` and call `removeBackground`.

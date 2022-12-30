@@ -19,4 +19,10 @@ extension UITableViewCell {
 		isUserInteractionEnabled = true
 		accessibilityTraits.subtract(.notEnabled)
 	}
+	
+	final func tintSelectedBackgroundView() {
+		let colorView = UIView()
+		colorView.backgroundColor = .tintColor.withAlphaComponentOneHalf()
+		selectedBackgroundView = colorView
+	}
 }

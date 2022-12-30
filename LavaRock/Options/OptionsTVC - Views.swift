@@ -107,7 +107,6 @@ final class TipReloadCell: UITableViewCell {
 		}
 	}
 }
-extension TipReloadCell: CellTintingWhenSelected {}
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipReadyCell: UITableViewCell {
@@ -127,4 +126,3 @@ final class TipReadyCell: UITableViewCell {
 		}
 	}
 }
-extension TipReadyCell: CellTintingWhenSelected {}

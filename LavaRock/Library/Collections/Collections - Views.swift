@@ -28,7 +28,6 @@ final class AllowAccessCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension AllowAccessCell: CellTintingWhenSelected {}
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class LoadingCell: UITableViewCell {
@@ -94,7 +93,6 @@ final class OpenMusicCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension OpenMusicCell: CellTintingWhenSelected {}
 
 final class CreateCollectionCell: UITableViewCell {
 	@IBOutlet private var newCollectionLabel: UILabel!
@@ -118,7 +116,6 @@ final class CreateCollectionCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension CreateCollectionCell: CellTintingWhenSelected {}
 
 final class CollectionCell: UITableViewCell {
 	enum Mode {
@@ -204,6 +201,5 @@ final class CollectionCell: UITableViewCell {
 }
 extension CollectionCell:
 	PlayheadReflectable,
-	CellTintingWhenSelected,
 	CellHavingTransparentBackground
 {}
