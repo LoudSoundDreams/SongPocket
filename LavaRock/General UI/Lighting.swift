@@ -29,14 +29,31 @@ enum Lighting: CaseIterable {
 		}
 	}
 	
-	@MainActor
-	var uiImage: UIImage {
-		return UIImage(systemName: sfSymbolName)!
-	}
-	
-	@MainActor
-	var image: Image {
-		return Image(systemName: sfSymbolName)
+	var sfSymbolName: String {
+		switch self {
+		case .light:
+			return "sun.max.fill"
+		case .dark:
+			return "moon.fill"
+		case .system:
+			let idiom = UIDevice.current.userInterfaceIdiom
+			switch idiom {
+			case .unspecified:
+				return "iphone"
+			case .phone:
+				return "iphone"
+			case .pad:
+				return "ipad"
+			case .tv:
+				return "tv"
+			case .carPlay:
+				return "iphone"
+			case .mac:
+				return "desktopcomputer"
+			@unknown default:
+				return "iphone"
+			}
+		}
 	}
 	
 	var colorScheme: ColorScheme? {
@@ -74,34 +91,6 @@ enum Lighting: CaseIterable {
 			return 2
 		case .system:
 			return 0
-		}
-	}
-	
-	@MainActor
-	private var sfSymbolName: String {
-		switch self {
-		case .light:
-			return "sun.max.fill"
-		case .dark:
-			return "moon.fill"
-		case .system:
-			let idiom = UIDevice.current.userInterfaceIdiom
-			switch idiom {
-			case .unspecified:
-				return "iphone"
-			case .phone:
-				return "iphone"
-			case .pad:
-				return "ipad"
-			case .tv:
-				return "tv"
-			case .carPlay:
-				return "iphone"
-			case .mac:
-				return "desktopcomputer"
-			@unknown default:
-				return "iphone"
-			}
 		}
 	}
 }

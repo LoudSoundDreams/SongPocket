@@ -13,7 +13,7 @@ struct LightingPicker: View {
 	var body: some View {
 		Picker("", selection: $theme.lighting) {
 			ForEach(Lighting.allCases) { lighting in
-				lighting.image
+				Image(systemName: lighting.sfSymbolName)
 					.accessibilityLabel(lighting.accessibilityLabel)
 			}
 		}
