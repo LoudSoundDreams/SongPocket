@@ -36,6 +36,7 @@
 		0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */; };
 		075218A2257C498D0077AE9B /* LRString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LRString.swift */; };
 		0752D794295E983D00447FD7 /* LightingPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0752D793295E983D00447FD7 /* LightingPicker.swift */; };
+		0752D796295EA20100447FD7 /* AvatarPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0752D795295EA20100447FD7 /* AvatarPicker.swift */; };
 		0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0759DC80272CD37300FDA7D7 /* Enabling.swift */; };
 		075D904227F02EF700BD8F3E /* ConsoleVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */; };
 		075D904427F02F5B00BD8F3E /* ConsoleVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */; };
@@ -180,6 +181,7 @@
 		0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* LRString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRString.swift; sourceTree = "<group>"; };
 		0752D793295E983D00447FD7 /* LightingPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingPicker.swift; sourceTree = "<group>"; };
+		0752D795295EA20100447FD7 /* AvatarPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPicker.swift; sourceTree = "<group>"; };
 		0759DC80272CD37300FDA7D7 /* Enabling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enabling.swift; sourceTree = "<group>"; };
 		075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - UITableView.swift"; sourceTree = "<group>"; };
 		075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - Notifications.swift"; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 				0785C49D2793460100B1E7FC /* OptionsView.swift */,
 				0752D793295E983D00447FD7 /* LightingPicker.swift */,
 				07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */,
+				0752D795295EA20100447FD7 /* AvatarPicker.swift */,
 				07B35E302886FB5100159FD9 /* TipJarView.swift */,
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
 				07962318281265AB00EE026F /* OptionsNC.swift */,
@@ -874,6 +877,7 @@
 				07B1EC40271FB7F600EA8E29 /* ConsoleVC.swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
+				0752D796295EA20100447FD7 /* AvatarPicker.swift in Sources */,
 				073B99CB294682E700B48C9C /* SongRow.swift in Sources */,
 				07E0BBDF276567760010117E /* URL.swift in Sources */,
 				07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */,
@@ -1077,7 +1081,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
-				CURRENT_PROJECT_VERSION = 687;
+				CURRENT_PROJECT_VERSION = 688;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1105,7 +1109,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
-				CURRENT_PROJECT_VERSION = 687;
+				CURRENT_PROJECT_VERSION = 688;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;

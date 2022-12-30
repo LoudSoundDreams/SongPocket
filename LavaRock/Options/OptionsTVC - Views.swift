@@ -8,45 +8,6 @@
 import UIKit
 import StoreKit
 
-final class AvatarCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		selectionStyle = .none
-	}
-	
-	final override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-
-final class AvatarChooser: UISegmentedControl {
-	final override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		removeAllSegments()
-		Avatar.allCases.forEach { avatarCase in
-			insertSegment(
-				action: UIAction(
-					image: {
-						let image = UIImage(systemName: avatarCase.playingSFSymbolName)
-						image?.accessibilityLabel = avatarCase.accessibilityLabel
-						return image
-					}()
-				) { _ in
-					Avatar.preference = avatarCase
-				},
-				at: numberOfSegments,
-				animated: false)
-		}
-		selectedSegmentIndex = Avatar.allCases.firstIndex { avatarCase in
-			Avatar.preference == avatarCase
-		}!
-	}
-}
-
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AccentColorCell: UITableViewCell {
 	var representee: AccentColor? = nil {

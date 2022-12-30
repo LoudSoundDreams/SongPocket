@@ -13,6 +13,20 @@ extension Notification.Name {
 	}
 }
 
+final class AvatarObservable: ObservableObject {
+	private init() {}
+	static let shared = AvatarObservable()
+	
+	@Published var current: Avatar = .preference {
+		didSet {
+			Avatar.preference = current
+		}
+	}
+}
+
+extension Avatar: Identifiable {
+	var id: Self { self }
+}
 enum Avatar: CaseIterable {
 	case speaker
 	case bird

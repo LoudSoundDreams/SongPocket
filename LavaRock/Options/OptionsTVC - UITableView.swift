@@ -118,9 +118,18 @@ extension OptionsTVC {
 				return accentColorCell(forRowAt: indexPath)
 			}
 		case .avatar:
-			return tableView.dequeueReusableCell(
+			// The cell in the storyboard is completely default except for the reuse identifier.
+			let cell = tableView.dequeueReusableCell(
 				withIdentifier: "Avatar",
-				for: indexPath) as? AvatarCell ?? UITableViewCell()
+				for: indexPath)
+			
+			cell.selectionStyle = .none
+			cell.contentConfiguration = UIHostingConfiguration {
+				AvatarPicker()
+			}
+			
+			return cell
+			
 		case .tipJar:
 			return tipJarCell(forRowAt: indexPath)
 		}
