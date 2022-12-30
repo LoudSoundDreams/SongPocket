@@ -22,6 +22,10 @@ struct OptionsView: View {
 					AccentColorPicker()
 				}
 				
+				Section(LRString.nowPlayingMarker) {
+					AvatarPicker()
+				}
+				
 				Section {
 					TipJarView()
 				} header: {
