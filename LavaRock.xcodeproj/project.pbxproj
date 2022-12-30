@@ -108,7 +108,6 @@
 		07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* NotificationCenter.swift */; };
 		07E0BBDF276567760010117E /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDB276567760010117E /* URL.swift */; };
 		07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE22765678F0010117E /* UIAlertAction.swift */; };
-		07E0BBF02765678F0010117E /* UITableViewCell - Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */; };
 		07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE52765678F0010117E /* UIBarButtonItem.swift */; };
 		07E0BBF22765678F0010117E /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE62765678F0010117E /* UIColor.swift */; };
 		07E0BBF32765678F0010117E /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE72765678F0010117E /* UITableView.swift */; };
@@ -260,7 +259,6 @@
 		07E0BBDA276567760010117E /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		07E0BBDB276567760010117E /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		07E0BBE22765678F0010117E /* UIAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertAction.swift; sourceTree = "<group>"; };
-		07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell - Protocols.swift"; sourceTree = "<group>"; };
 		07E0BBE52765678F0010117E /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		07E0BBE62765678F0010117E /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		07E0BBE72765678F0010117E /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
@@ -545,7 +543,6 @@
 				07E0BBED2765678F0010117E /* UIAlertController.swift */,
 				07F0E5B82848555D00EF3F81 /* UIView.swift */,
 				07E0BBE82765678F0010117E /* UITableViewCell.swift */,
-				07E0BBE42765678F0010117E /* UITableViewCell - Protocols.swift */,
 				07E0BBE72765678F0010117E /* UITableView.swift */,
 				0787CB0927A376400068C2E5 /* UIViewController.swift */,
 				073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */,
@@ -826,7 +823,6 @@
 				0703ED2524E8D0DA002EF1B4 /* mergeChanges.swift in Sources */,
 				07A4F9052519E72C0065C87E /* updateLibraryItems.swift in Sources */,
 				07DF76E42828D8AB00B03103 /* MainToolbar.swift in Sources */,
-				07E0BBF02765678F0010117E /* UITableViewCell - Protocols.swift in Sources */,
 				07C8CC76271281B70061A9AD /* OptionsTVC - Views.swift in Sources */,
 				07B2CD832741A218004A0743 /* CollectionsOrAlbumsGroup.swift in Sources */,
 				07EC01EA26C8958300954E08 /* AlbumsViewModel.swift in Sources */,
