@@ -11,15 +11,11 @@ struct LightingPicker: View {
 	@ObservedObject private var theme: Theme = .shared
 	
 	var body: some View {
-		Picker(
-			selection: $theme.lighting
-		) {
+		Picker("", selection: $theme.lighting) {
 			ForEach(Lighting.allCases) { lighting in
 				lighting.image
 					.accessibilityLabel(lighting.accessibilityLabel)
 			}
-		} label: {
-			EmptyView()
 		}
 		.pickerStyle(.segmented)
 	}

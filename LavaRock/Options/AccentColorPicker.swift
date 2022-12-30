@@ -11,15 +11,11 @@ struct AccentColorPicker: View {
 	@ObservedObject private var theme: Theme = .shared
 	
 	var body: some View {
-		Picker(
-			selection: $theme.accentColor
-		) {
+		Picker("", selection: $theme.accentColor) {
 			ForEach(AccentColor.allCases) { accentColor in
 				Text(accentColor.displayName)
 					.foregroundColor(accentColor.color)
 			}
-		} label: {
-			EmptyView()
 		}
 //		.pickerStyle(.menu)
 //		.pickerStyle(.inline)
