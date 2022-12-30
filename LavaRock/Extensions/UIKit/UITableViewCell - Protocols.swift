@@ -32,20 +32,3 @@ extension CellHavingTransparentBackground {
 		backgroundColor = .clear
 	}
 }
-
-@MainActor
-protocol CellConfigurableAsButton: UITableViewCell {
-	// Adopting types must …
-	// • Override `awakeFromNib` and call `configureAsButton`.
-	
-	static var buttonText: String { get }
-}
-extension CellConfigurableAsButton {
-	func configureAsButton() {
-		contentConfiguration = UIHostingConfiguration {
-			Text(Self.buttonText)
-				.foregroundColor(.accentColor)
-				.accessibilityAddTraits(.isButton)
-		}
-	}
-}

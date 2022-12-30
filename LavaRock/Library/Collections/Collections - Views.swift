@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AllowAccessCell: UITableViewCell {
@@ -14,7 +15,11 @@ final class AllowAccessCell: UITableViewCell {
 		
 		tintSelectedBackgroundView()
 		
-		configureAsButton()
+		contentConfiguration = UIHostingConfiguration {
+			Text(LRString.allowAccessToMusic)
+				.foregroundColor(.accentColor)
+				.accessibilityAddTraits(.isButton)
+		}
 	}
 	
 	override func layoutSubviews() {
@@ -24,9 +29,6 @@ final class AllowAccessCell: UITableViewCell {
 	}
 }
 extension AllowAccessCell: CellTintingWhenSelected {}
-extension AllowAccessCell: CellConfigurableAsButton {
-	static let buttonText = LRString.allowAccessToMusic
-}
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class LoadingCell: UITableViewCell {
@@ -79,7 +81,11 @@ final class OpenMusicCell: UITableViewCell {
 		
 		tintSelectedBackgroundView()
 		
-		configureAsButton()
+		contentConfiguration = UIHostingConfiguration {
+			Text(LRString.openMusic)
+				.foregroundColor(.accentColor)
+				.accessibilityAddTraits(.isButton)
+		}
 	}
 	
 	override func layoutSubviews() {
@@ -89,9 +95,6 @@ final class OpenMusicCell: UITableViewCell {
 	}
 }
 extension OpenMusicCell: CellTintingWhenSelected {}
-extension OpenMusicCell: CellConfigurableAsButton {
-	static let buttonText = LRString.openMusic
-}
 
 final class CreateCollectionCell: UITableViewCell {
 	@IBOutlet private var newCollectionLabel: UILabel!

@@ -100,13 +100,14 @@ final class TipReloadCell: UITableViewCell {
 		
 		tintSelectedBackgroundView()
 		
-		configureAsButton()
+		contentConfiguration = UIHostingConfiguration {
+			Text(LRString.reload)
+				.foregroundColor(.accentColor)
+				.accessibilityAddTraits(.isButton)
+		}
 	}
 }
 extension TipReloadCell: CellTintingWhenSelected {}
-extension TipReloadCell: CellConfigurableAsButton {
-	static let buttonText = LRString.reload
-}
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class TipReadyCell: UITableViewCell {
