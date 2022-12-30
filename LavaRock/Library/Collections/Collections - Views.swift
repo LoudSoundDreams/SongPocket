@@ -140,7 +140,7 @@ final class CollectionCell: UITableViewCell {
 		
 		selectedBackgroundView_add_tint()
 		
-		removeBackground()
+		backgroundColor_set_to_clear()
 	}
 	
 	func configure(
@@ -155,12 +155,12 @@ final class CollectionCell: UITableViewCell {
 		
 		switch mode {
 		case .normal:
-			removeBackground()
+			backgroundColor_set_to_clear()
 			
 			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
 		case .modal:
-			removeBackground()
+			backgroundColor_set_to_clear()
 			
 			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
@@ -172,7 +172,7 @@ final class CollectionCell: UITableViewCell {
 			
 			
 		case .modalDisabled:
-			removeBackground()
+			backgroundColor_set_to_clear()
 			
 			contentView.layer.opacity = .oneFourth
 			disableWithAccessibilityTrait()
@@ -199,7 +199,4 @@ final class CollectionCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension CollectionCell:
-	PlayheadReflectable,
-	CellHavingTransparentBackground
-{}
+extension CollectionCell: PlayheadReflectable {}

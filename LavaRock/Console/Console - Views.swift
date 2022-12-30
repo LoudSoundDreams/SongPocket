@@ -26,7 +26,7 @@ final class QueueCell: UITableViewCell {
 	override func awakeFromNib() {
 		selectedBackgroundView_add_tint()
 		
-		removeBackground()
+		backgroundColor_set_to_clear()
 		
 		coverArtView.layer.cornerCurve = .continuous
 		coverArtView.layer.cornerRadius = 3
@@ -73,7 +73,4 @@ final class QueueCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension QueueCell:
-	PlayheadReflectable,
-	CellHavingTransparentBackground
-{}
+extension QueueCell: PlayheadReflectable {}

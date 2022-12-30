@@ -71,7 +71,7 @@ final class SongCell: UITableViewCell {
 		
 		selectedBackgroundView_add_tint()
 		
-		removeBackground()
+		backgroundColor_set_to_clear()
 		
 		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
 		numberLabel.font = spacerNumberLabel.font
@@ -327,7 +327,4 @@ final class SongCell: UITableViewCell {
 		}
 	}
 }
-extension SongCell:
-	PlayheadReflectable,
-	CellHavingTransparentBackground
-{}
+extension SongCell: PlayheadReflectable {}

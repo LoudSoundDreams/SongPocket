@@ -54,7 +54,7 @@ final class AlbumCell: UITableViewCell {
 		
 		selectedBackgroundView_add_tint()
 		
-		removeBackground()
+		backgroundColor_set_to_clear()
 		
 		coverArtView.accessibilityIgnoresInvertColors = true
 		
@@ -95,12 +95,12 @@ final class AlbumCell: UITableViewCell {
 		
 		switch mode {
 		case .normal:
-			removeBackground()
+			backgroundColor_set_to_clear()
 			contentView.layer.opacity = 1 // The default value
 			accessoryType = .disclosureIndicator
 			enableWithAccessibilityTrait()
 		case .modal:
-			removeBackground()
+			backgroundColor_set_to_clear()
 			contentView.layer.opacity = .oneFourth // Close to what Files pickers use
 			accessoryType = .none
 			disableWithAccessibilityTrait()
@@ -165,7 +165,4 @@ final class AlbumCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension AlbumCell:
-	PlayheadReflectable,
-	CellHavingTransparentBackground
-{}
+extension AlbumCell: PlayheadReflectable {}
