@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 @MainActor
 protocol CellTintingWhenSelected: UITableViewCell {
@@ -41,11 +42,10 @@ protocol CellConfigurableAsButton: UITableViewCell {
 }
 extension CellConfigurableAsButton {
 	func configureAsButton() {
-		accessibilityTraits.formUnion(.button)
-		
-		var content = UIListContentConfiguration.cell()
-		content.text = Self.buttonText
-		content.textProperties.color = .tintColor
-		contentConfiguration = content
+		contentConfiguration = UIHostingConfiguration {
+			Text(Self.buttonText)
+				.foregroundColor(.accentColor)
+				.accessibilityAddTraits(.isButton)
+		}
 	}
 }
