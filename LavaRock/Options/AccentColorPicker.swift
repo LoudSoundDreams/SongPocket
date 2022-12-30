@@ -17,7 +17,6 @@ struct AccentColorPicker: View {
 			ForEach(AccentColor.allCases) { accentColor in
 				Text(accentColor.displayName)
 					.foregroundColor(accentColor.color)
-					.tag(accentColor)
 			}
 		} label: {
 			EmptyView()

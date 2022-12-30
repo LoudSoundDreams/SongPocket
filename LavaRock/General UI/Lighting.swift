@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 
 extension Lighting: Identifiable {
-	var id: Int { persistentValue }
+	var id: Self { self }
 }
 enum Lighting: CaseIterable {
 	case light

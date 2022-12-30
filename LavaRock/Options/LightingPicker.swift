@@ -17,7 +17,6 @@ struct LightingPicker: View {
 			ForEach(Lighting.allCases) { lighting in
 				lighting.image
 					.accessibilityLabel(lighting.accessibilityLabel)
-					.tag(lighting)
 			}
 		} label: {
 			EmptyView()

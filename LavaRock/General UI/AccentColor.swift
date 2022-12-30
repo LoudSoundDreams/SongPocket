@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 
 extension AccentColor: Identifiable {
-	var id: String { persistentValue }
+	var id: Self { self }
 }
 enum AccentColor: CaseIterable {
 	case lime
