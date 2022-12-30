@@ -35,6 +35,7 @@
 		074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074AB85D27CAD9C3007B63D2 /* Reel.swift */; };
 		0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */; };
 		075218A2257C498D0077AE9B /* LRString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LRString.swift */; };
+		0752D794295E983D00447FD7 /* LightingPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0752D793295E983D00447FD7 /* LightingPicker.swift */; };
 		0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0759DC80272CD37300FDA7D7 /* Enabling.swift */; };
 		075D904227F02EF700BD8F3E /* ConsoleVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */; };
 		075D904427F02F5B00BD8F3E /* ConsoleVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */; };
@@ -89,7 +90,7 @@
 		07B1EC40271FB7F600EA8E29 /* ConsoleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC3F271FB7F600EA8E29 /* ConsoleVC.swift */; };
 		07B2CD832741A218004A0743 /* CollectionsOrAlbumsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B2CD822741A217004A0743 /* CollectionsOrAlbumsGroup.swift */; };
 		07B35E2D288670EE00159FD9 /* OSSignposter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E2C288670EE00159FD9 /* OSSignposter.swift */; };
-		07B35E2F2886F98E00159FD9 /* ThemePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E2E2886F98E00159FD9 /* ThemePicker.swift */; };
+		07B35E2F2886F98E00159FD9 /* AccentColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */; };
 		07B35E312886FB5100159FD9 /* TipJarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E302886FB5100159FD9 /* TipJarView.swift */; };
 		07C8CC76271281B70061A9AD /* OptionsTVC - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */; };
 		07CAB24724EA227F008AC34C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* Song.swift */; };
@@ -178,6 +179,7 @@
 		074AB85D27CAD9C3007B63D2 /* Reel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reel.swift; sourceTree = "<group>"; };
 		0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* LRString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRString.swift; sourceTree = "<group>"; };
+		0752D793295E983D00447FD7 /* LightingPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingPicker.swift; sourceTree = "<group>"; };
 		0759DC80272CD37300FDA7D7 /* Enabling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enabling.swift; sourceTree = "<group>"; };
 		075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - UITableView.swift"; sourceTree = "<group>"; };
 		075D904327F02F5B00BD8F3E /* ConsoleVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - Notifications.swift"; sourceTree = "<group>"; };
@@ -239,7 +241,7 @@
 		07B1EC3F271FB7F600EA8E29 /* ConsoleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleVC.swift; sourceTree = "<group>"; };
 		07B2CD822741A217004A0743 /* CollectionsOrAlbumsGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionsOrAlbumsGroup.swift; sourceTree = "<group>"; };
 		07B35E2C288670EE00159FD9 /* OSSignposter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSSignposter.swift; sourceTree = "<group>"; };
-		07B35E2E2886F98E00159FD9 /* ThemePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePicker.swift; sourceTree = "<group>"; };
+		07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorPicker.swift; sourceTree = "<group>"; };
 		07B35E302886FB5100159FD9 /* TipJarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarView.swift; sourceTree = "<group>"; };
 		07C8CC75271281B70061A9AD /* OptionsTVC - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionsTVC - Views.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
@@ -312,7 +314,8 @@
 			isa = PBXGroup;
 			children = (
 				0785C49D2793460100B1E7FC /* OptionsView.swift */,
-				07B35E2E2886F98E00159FD9 /* ThemePicker.swift */,
+				0752D793295E983D00447FD7 /* LightingPicker.swift */,
+				07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */,
 				07B35E302886FB5100159FD9 /* TipJarView.swift */,
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
 				07962318281265AB00EE026F /* OptionsNC.swift */,
@@ -778,7 +781,7 @@
 				077E089824FB7AFF007C2479 /* LibraryTVC - Notifications.swift in Sources */,
 				07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */,
 				0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */,
-				07B35E2F2886F98E00159FD9 /* ThemePicker.swift in Sources */,
+				07B35E2F2886F98E00159FD9 /* AccentColorPicker.swift in Sources */,
 				0708E53E286A20B6001204BF /* Numbers.swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* OptionsTVC.swift in Sources */,
 				07E0BBDD276567760010117E /* Notification.Name.swift in Sources */,
@@ -858,6 +861,7 @@
 				07DF65D227766C95003B2EA3 /* SongMetadatum.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				07B35E312886FB5100159FD9 /* TipJarView.swift in Sources */,
+				0752D794295E983D00447FD7 /* LightingPicker.swift in Sources */,
 				072F859F26B74A5D0062323C /* NoItemsBackgroundManager.swift in Sources */,
 				07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */,
 				075218A2257C498D0077AE9B /* LRString.swift in Sources */,

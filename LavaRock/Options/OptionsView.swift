@@ -17,7 +17,9 @@ struct OptionsView: View {
 		NavigationView {
 			Form {
 				Section(LRString.theme) {
-					ThemePicker()
+					LightingPicker()
+					
+					AccentColorPicker()
 				}
 				
 				Section {
