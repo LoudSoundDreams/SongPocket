@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import OSLog
 
 final class MoveHereCell: UITableViewCell {
@@ -61,6 +62,7 @@ final class AlbumCell: UITableViewCell {
 		configureForTraitCollection()
 	}
 	
+	private static let usesSwiftUI__ = 10 == 1
 	func configure(
 		with album: Album,
 		mode: Mode
@@ -74,10 +76,21 @@ final class AlbumCell: UITableViewCell {
 				os_signpost(.end, log: .albumsView, name: "Draw cover art")
 			}
 			let widthAndHeightInPoints = coverArtView.bounds.width
-			return representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
-				width: widthAndHeightInPoints,
-				height: widthAndHeightInPoints))
+			if Self.usesSwiftUI__ {
+				let image = CoverArtView(
+					albumRepresentative: representative,
+					maxHeight: widthAndHeightInPoints)
+				let uiImage = ImageRenderer(content: image).uiImage
+				return uiImage
+			} else {
+				return representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
+					width: widthAndHeightInPoints,
+					height: widthAndHeightInPoints))
+			}
 		}()
+		if Self.usesSwiftUI__ {
+			coverArtView.contentMode = .center
+		}
 		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
 		titleLabel.text = { () -> String in
