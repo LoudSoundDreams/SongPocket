@@ -43,7 +43,7 @@ final class AlbumCell: UITableViewCell {
 	static let usesUIKitAccessibility__ = true
 	var rowContentAccessibilityLabel__: String? = nil
 	
-	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `coverArtView` and `textStack` at very large text sizes.
+	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `coverArtView` and `textStack` at very large text sizes
 	@IBOutlet private var coverArtView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!

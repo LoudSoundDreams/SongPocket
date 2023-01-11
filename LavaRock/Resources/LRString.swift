@@ -83,7 +83,7 @@ enum LRString {
 	static let skip10SecondsForward = NSLocalizedString("Skip 10 seconds forward", comment: "Accessibility label, button")
 	static let next = NSLocalizedString("Next", comment: "Button")
 	
-	// MARK: “Now Playing” Marker
+	// MARK: Now-Playing Marker
 	
 	static let nowPlaying = NSLocalizedString("Now playing", comment: "Accessibility label")
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
