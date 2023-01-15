@@ -65,7 +65,8 @@ final class AlbumCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	func configure(
 		with album: Album,
-		mode: Mode
+		mode: Mode,
+		physicalPixelsPerPoint__: CGFloat
 	) {
 		let representative = album.representativeSongMetadatum() // Can be `nil`
 		
@@ -80,7 +81,9 @@ final class AlbumCell: UITableViewCell {
 				let image = CoverArtView(
 					albumRepresentative: representative,
 					maxHeight: widthAndHeightInPoints)
-				let uiImage = ImageRenderer(content: image).uiImage
+				let renderer = ImageRenderer(content: image)
+				renderer.scale = physicalPixelsPerPoint__
+				let uiImage = renderer.uiImage
 				return uiImage
 			} else {
 				return representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
