@@ -54,6 +54,8 @@ extension SongsTVC {
 				let safeHeight = height - topInset - bottomInset
 				cell.configureArtwork(maxHeight: safeHeight)
 				
+				cell.selectionStyle = .none
+				
 				return cell
 				
 			case .albumInfo:
