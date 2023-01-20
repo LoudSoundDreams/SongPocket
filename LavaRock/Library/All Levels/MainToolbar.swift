@@ -436,10 +436,10 @@ final class MainToolbar {
 			
 			// Enable or disable each button as appropriate
 			buttons_array.forEach {
-				$0.disableWithAccessibilityTrait()
+				$0.isEnabledSetToFalseAlongWithAccessibilityTrait()
 			}
-			moreButton.enableWithAccessibilityTrait()
-			presentConsoleButton.enableWithAccessibilityTrait()
+			moreButton.isEnabledSetToTrueAlongWithAccessibilityTrait()
+			presentConsoleButton.isEnabledSetToTrueAlongWithAccessibilityTrait()
 			return
 		}
 		
@@ -474,7 +474,7 @@ final class MainToolbar {
 		
 		// Enable or disable each button as appropriate
 		buttons_array.forEach {
-			$0.enableWithAccessibilityTrait()
+			$0.isEnabledSetToTrueAlongWithAccessibilityTrait()
 		}
 	}
 }

@@ -9,13 +9,13 @@ import UIKit
 
 extension UIBarButtonItem {
 	// Similar to counterpart in `UITableViewCell`.
-	final func disableWithAccessibilityTrait() {
+	final func isEnabledSetToFalseAlongWithAccessibilityTrait() {
 		isEnabled = false
 		accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
 	}
 	
 	// Similar to counterpart in `UITableViewCell`.
-	final func enableWithAccessibilityTrait() {
+	final func isEnabledSetToTrueAlongWithAccessibilityTrait() {
 		isEnabled = true
 		accessibilityTraits.subtract(.notEnabled)
 	}
