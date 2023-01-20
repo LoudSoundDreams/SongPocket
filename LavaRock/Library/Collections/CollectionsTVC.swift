@@ -265,13 +265,16 @@ final class CollectionsTVC:
 		
 		switch purpose {
 		case .willOrganizeAlbums:
-			navigationController?.setToolbarHidden(false, animated: false)
+			showToolbar()
 		case .organizingAlbums: // Should never run
 			break
 		case .movingAlbums:
 			break
 		case .browsing:
-			navigationController?.setToolbarHidden(false, animated: false) // TO DO: Move this to `LibraryNC`
+			showToolbar()
+		}
+		func showToolbar() { // TO DO: Move this to `LibraryNC`
+			navigationController?.setToolbarHidden(false, animated: false)
 		}
 	}
 	
