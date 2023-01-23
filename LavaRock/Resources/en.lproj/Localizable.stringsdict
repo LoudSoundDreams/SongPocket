@@ -80,8 +80,8 @@
 	<key>plural - move_albums_to_collection</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO@</string>
-		<key>CHOOSE_A_COLLECTION_TO_MOVE_NUMBER_ALBUMS_TO</key>
+		<string>%#@MOVE_NUMBER_ALBUMS_TO@</string>
+		<key>MOVE_NUMBER_ALBUMS_TO</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>

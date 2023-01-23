@@ -119,11 +119,7 @@ enum LRString {
 	static let newCollection_buttonTitle = NSLocalizedString(
 		"New Collection [button]",
 		value: "New Folder",
-		comment: "Button") // MC2DO: Obviate
-	static let newCollection_alertTitle = NSLocalizedString(
-		"New Collection [alert title]",
-		value: "New Folder",
-		comment: "Alert title") // MC2DO: Obviate
+		comment: "Button")
 	static let newCollection_defaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
 		value: "Untitled Folder",
