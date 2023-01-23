@@ -177,27 +177,30 @@ extension AlbumsTVC {
 	}
 	
 	func startMoving() {
-		// Prepare a Collections view to present modally.
+		// Prepare a Folders view to present modally.
 		let libraryNC = LibraryNC(fileNameOfStoryboardForRootViewController: "CollectionsTVC")
 		guard
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let selfVM = viewModel as? AlbumsViewModel
 		else { return }
 		
-		// Provide the extra data that the “move albums” sheet needs.
-		let indexPathsToMove = selfVM.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
-			selectedIndexPaths: tableView.selectedIndexPaths)
-		let albumsToMove = indexPathsToMove.map { selfVM.albumNonNil(at: $0) }
+		// Configure the `CollectionsTVC`.
 		collectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
-			albumsBeingMoved: albumsToMove,
-			delegate: self)
-		
-		// Make the “move albums” sheet use a child managed object context, so that we can cancel without having to revert our changes.
-		let childContext = NSManagedObjectContext(.mainQueue)
-		childContext.parent = viewModel.context
+			albumsBeingMoved: {
+				let indexPathsToMove = selfVM.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+					selectedIndexPaths: tableView.selectedIndexPaths)
+				return indexPathsToMove.map { selfVM.albumNonNil(at: $0) }
+			}(),
+			delegate: self
+		)
 		collectionsTVC.viewModel = CollectionsViewModel(
-			context: childContext,
-			prerowsInEachSection: [.createCollection])
+			context: {
+				let childContext = NSManagedObjectContext(.mainQueue)
+				childContext.parent = viewModel.context
+				return childContext
+			}(),
+			prerowsInEachSection: [.createCollection]
+		)
 		
 		present(libraryNC, animated: true)
 	}

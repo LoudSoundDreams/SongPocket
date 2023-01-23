@@ -88,7 +88,7 @@ extension CollectionsTVC {
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
 			viewModelBeforeCombining == nil, // Prevents you from using the “Combine” button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCreate` when we tap “New Collection”, `didAlreadyCommitMove` for “Move (Albums) Here”, and `didAlreadyCommitOrganize` for “Save (Preview of Organized Albums)”. You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
-			let indexPathOfCombined = selectedIndexPaths.first
+			let targetIndexPath = selectedIndexPaths.first
 		else { return }
 		
 		viewModelBeforeCombining = collectionsViewModel
@@ -99,20 +99,20 @@ extension CollectionsTVC {
 		
 		let newViewModel = collectionsViewModel.updatedAfterCombiningInNewChildContext(
 			fromInOrder: selectedCollections,
-			into: indexPathOfCombined,
+			into: targetIndexPath,
 			title: titleForCombinedCollection)
 		Task {
 			await tableView.performBatchUpdates__async {
 				self.tableView.scrollToRow(
-					at: indexPathOfCombined,
+					at: targetIndexPath,
 					at: .none,
 					animated: true)
 			}
 			
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				newViewModel,
-				thenSelecting: [indexPathOfCombined])
-			else { return }
+				thenSelecting: [targetIndexPath]
+			) else { return }
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: LRString.combineFoldersAlertTitle,
@@ -123,7 +123,7 @@ extension CollectionsTVC {
 				},
 				saveHandler: { [weak self] textFieldText in
 					self?.commitCombine(
-						into: indexPathOfCombined,
+						into: targetIndexPath,
 						proposedTitle: textFieldText)
 				})
 			present(dialog, animated: true)
