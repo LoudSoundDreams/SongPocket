@@ -408,21 +408,17 @@ final class CollectionsTVC:
 		albumsTVC.organizeAlbumsClipboard = organizeAlbumsClipboard
 		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 		
-		let prerowsInEachSection: [AlbumsViewModel.Prerow] = {
-			switch purpose {
-			case .willOrganizeAlbums:
-				return []
-			case .organizingAlbums:
-				return []
-			case .movingAlbums:
-				return [.moveHere]
-			case .browsing:
-				return []
-			}}()
 		let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
 		albumsTVC.viewModel = AlbumsViewModel(
 			parentCollection: .exists(collection),
 			context: viewModel.context,
-			prerowsInEachSection: prerowsInEachSection)
+			prerowsInEachSection: {
+				if case Purpose.movingAlbums = purpose {
+					return [.moveHere]
+				} else {
+					return []
+				}
+			}()
+		)
 	}
 }

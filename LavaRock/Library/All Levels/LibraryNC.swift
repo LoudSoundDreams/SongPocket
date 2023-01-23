@@ -24,9 +24,9 @@ final class LibraryNC: UINavigationController {
 	private let consoleVC: UIViewController = UIStoryboard(name: "Console", bundle: nil)
 		.instantiateInitialViewController()!
 	
-	init() {
+	init(fileNameOfStoryboardForRootViewController: String) {
 		super.init(
-			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
+			rootViewController: UIStoryboard(name: fileNameOfStoryboardForRootViewController, bundle: nil)
 				.instantiateInitialViewController()!
 		)
 		
