@@ -457,9 +457,9 @@ class LibraryTVC: UITableViewController {
 				title: {
 					let formatString: String? = {
 						switch self {
-						case is CollectionsTVC: return LRString.format_xCollections
-						case is AlbumsTVC: return LRString.format_xAlbums
-						case is SongsTVC: return LRString.format_xSongs
+						case is CollectionsTVC: return LRString.variable_xFolders
+						case is AlbumsTVC: return LRString.variable_xAlbums
+						case is SongsTVC: return LRString.variable_xSongs
 						default: return nil
 						}
 					}()

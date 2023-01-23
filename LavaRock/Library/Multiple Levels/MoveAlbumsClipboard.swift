@@ -22,7 +22,7 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 	private(set) weak var delegate: MoveAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
-			LRString.format_chooseACollectionToMoveXAlbumsTo,
+			LRString.variable_chooseACollectionToMoveXAlbumsTo,
 			idsOfAlbumsBeingMovedAsSet.count)
 	}
 	

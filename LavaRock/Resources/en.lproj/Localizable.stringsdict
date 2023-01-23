@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>plural - X_collections</key>
+	<key>plural - X_folders</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@NUMBER_COLLECTIONS@</string>
@@ -50,7 +50,7 @@
 			<string>%lld Songs</string>
 		</dict>
 	</dict>
-	<key>plural - organize_into_X_collections_by_album_artist</key>
+	<key>plural - move_X_albums_to_Y_folders_by_album_artist?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>Move %#@NUMBER_ALBUMS@ to %#@NUMBER_FOLDERS@ by album artist?</string>
@@ -77,7 +77,7 @@
 			<string>%lld folders</string>
 		</dict>
 	</dict>
-	<key>plural - move_albums_to_collection</key>
+	<key>plural - move_X_albums_to</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MOVE_NUMBER_ALBUMS_TO@</string>

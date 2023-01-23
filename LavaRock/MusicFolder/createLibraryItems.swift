@@ -8,7 +8,7 @@
 import CoreData
 import OSLog
 
-extension MusicFolder {
+extension MusicLibrary {
 	// Create new managed objects for the new `SongMetadatum`s, including new `Album`s and `Collection`s to put them in if necessary.
 	func createLibraryItems(
 		for newMetadata: [SongMetadatum],

@@ -186,7 +186,7 @@ final class AlbumsTVC:
 					selectedIndexPaths: tableView.selectedIndexPaths)
 					.count
 				return String.localizedStringWithFormat(
-					LRString.format_xAlbums,
+					LRString.variable_xAlbums,
 					subjectedCount)
 			}(),
 			children: [

@@ -28,7 +28,7 @@ final class OrganizeAlbumsClipboard {
 	private(set) weak var delegate: OrganizeAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
-			LRString.format_organizeIntoXCollectionsByAlbumArtistQuestionMark,
+			LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
 			idsOfSubjectedAlbums.count - idsOfUnmovedAlbums.count,
 			idsOfCollectionsContainingMovedAlbums.count)
 	}

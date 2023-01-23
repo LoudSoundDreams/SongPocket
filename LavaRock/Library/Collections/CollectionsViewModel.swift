@@ -25,7 +25,7 @@ extension CollectionsViewModel: LibraryViewModel {
 	static let entityName = "Collection"
 	
 	func bigTitle() -> String {
-		return LRString.collections
+		return LRString.folders
 	}
 	
 	func prerowIdentifiersInEachSection() -> [AnyHashable] {

@@ -21,7 +21,7 @@ extension CollectionsTVC {
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		
 		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: LRString.renameCollectionAlertTitle,
+			alertTitle: LRString.renameFolderAlertTitle,
 			textFieldText: collection.title,
 			textFieldDelegate: self,
 			cancelHandler: nil,
@@ -83,7 +83,7 @@ extension CollectionsTVC {
 		return nil
 	}
 	
-	func previewCombineAndPrompt() {
+	func previewCombine() {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
@@ -95,7 +95,7 @@ extension CollectionsTVC {
 		
 		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
 		let titleForCombinedCollection = Self.suggestedCollectionTitle(combining: selectedCollections)
-		?? LRString.combinedCollectionDefaultTitle
+		?? LRString.combinedFolderDefaultTitle
 		
 		let newViewModel = collectionsViewModel.updatedAfterCombiningInNewChildContext(
 			fromInOrder: selectedCollections,
@@ -115,7 +115,7 @@ extension CollectionsTVC {
 			else { return }
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
-				alertTitle: LRString.combineCollectionsAlertTitle,
+				alertTitle: LRString.combineFoldersAlertTitle,
 				textFieldText: titleForCombinedCollection,
 				textFieldDelegate: self,
 				cancelHandler: { [weak self] in

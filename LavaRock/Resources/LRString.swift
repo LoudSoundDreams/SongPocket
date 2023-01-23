@@ -99,7 +99,7 @@ enum LRString {
 	
 	// MARK: Folders View
 	
-	static let collections = NSLocalizedString("Folders", comment: "Big title")
+	static let folders = NSLocalizedString("Folders", comment: "Big title")
 	
 	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
@@ -110,18 +110,18 @@ enum LRString {
 	static let title = NSLocalizedString("Title", comment: "The word for the name of a folder, album, or song. Also the name of a sort option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let renameCollectionAlertTitle = NSLocalizedString("Rename Folder", comment: "Alert title")
+	static let renameFolderAlertTitle = NSLocalizedString("Rename Folder", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
-	static let combineCollectionsAlertTitle = NSLocalizedString("Combine Folders", comment: "Alert title")
-	static let combinedCollectionDefaultTitle = NSLocalizedString("Combined Folder", comment: "Alert title")
+	static let combineFoldersAlertTitle = NSLocalizedString("Combine Folders", comment: "Alert title")
+	static let combinedFolderDefaultTitle = NSLocalizedString("Combined Folder", comment: "Alert title")
 	
-	static let newCollection_buttonTitle = NSLocalizedString(
-		"New Collection [button]",
+	static let newFolder_buttonTitle = NSLocalizedString(
+		"New_Folder [button]",
 		value: "New Folder",
 		comment: "Button")
 	static let newCollection_defaultTitle = NSLocalizedString(
-		"New Collection [default title for collection]",
+		"New_Folder [default title]",
 		value: "Untitled Folder",
 		comment: "Default title for a folder if you create one and don’t provide a title.")
 	
@@ -182,29 +182,29 @@ enum LRString {
 	
 	// MARK: Folders
 	
-	static let format_xCollections = NSLocalizedString(
-		"plural - X_collections",
+	static let variable_xFolders = NSLocalizedString(
+		"plural - X_folders",
 		comment: "Status message")
 	
 	// MARK: Albums
 	
-	static let format_xAlbums = NSLocalizedString(
+	static let variable_xAlbums = NSLocalizedString(
 		"plural - X_albums",
 		comment: "Status message")
 	
 	// MARK: Songs
 	
-	static let format_xSongs = NSLocalizedString(
+	static let variable_xSongs = NSLocalizedString(
 		"plural - X_songs",
 		comment: "Status message")
 	
 	// MARK: Folders and Albums Views
 	
-	static let format_organizeIntoXCollectionsByAlbumArtistQuestionMark = NSLocalizedString(
-		"plural - organize_into_X_collections_by_album_artist",
+	static let variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark = NSLocalizedString(
+		"plural - move_X_albums_to_Y_folders_by_album_artist?",
 		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of folders it’s moving them into.")
-	static let format_chooseACollectionToMoveXAlbumsTo = NSLocalizedString(
-		"plural - move_albums_to_collection",
+	static let variable_chooseACollectionToMoveXAlbumsTo = NSLocalizedString(
+		"plural - move_X_albums_to",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
 	
 	// MARK: Songs View

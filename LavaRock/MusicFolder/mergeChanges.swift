@@ -14,7 +14,7 @@ extension Notification.Name {
 	}
 }
 
-extension MusicFolder {
+extension MusicLibrary {
 	// Updates our database in a sensible way to reflect the fresh `SongMetadatum`s.
 	func mergeChanges(toMatch freshMetadata: [SongMetadatum]) {
 		os_signpost(.begin, log: .merge, name: "Initial parse")

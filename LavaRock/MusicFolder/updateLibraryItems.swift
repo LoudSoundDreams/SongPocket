@@ -8,7 +8,7 @@
 import CoreData
 import OSLog
 
-extension MusicFolder {
+extension MusicLibrary {
 	func updateLibraryItems(
 		potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)]
 	) {
