@@ -56,6 +56,7 @@ extension CollectionsTVC {
 		
 		clipboard.didAlreadyCreate = true
 		
+		/*
 		let titleForNewCollection: String = {
 			let albumsBeingMoved = clipboard.idsOfAlbumsBeingMovedAsSet.compactMap {
 				viewModel.context.object(with: $0) as? Album
@@ -63,21 +64,12 @@ extension CollectionsTVC {
 			let suggestedTitle = Self.suggestedCollectionTitle(movingAlbumsInAnyOrder: albumsBeingMoved)
 			return suggestedTitle ?? LRString.newCollection_defaultTitle
 		}()
-		let newViewModel = collectionsViewModel.updatedAfterCreating(title: titleForNewCollection)
+		*/
+		let newViewModel = collectionsViewModel.updatedAfterCreating(title: "Untitled Folder") // L2DO
 		Task {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
-			let dialog = UIAlertController.forEditingCollectionTitle(
-				alertTitle: LRString.newCollection_alertTitle,
-				textFieldText: titleForNewCollection,
-				textFieldDelegate: self,
-				cancelHandler: { [weak self] in
-					self?.revertCreate()
-				},
-				saveHandler: { [weak self] textFieldText in
-					self?.renameAndOpenCreated(proposedTitle: textFieldText)
-				})
-			present(dialog, animated: true)
+			renameAndOpenCreated(proposedTitle: nil)
 		}
 	}
 	
