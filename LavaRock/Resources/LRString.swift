@@ -126,7 +126,7 @@ enum LRString {
 		comment: "Alert title") // MC2DO: Obviate
 	static let newCollection_defaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
-		value: "New Folder",
+		value: "Untitled Folder",
 		comment: "Default title for a collection if you create one and don’t provide a title.")
 	
 	// MARK: Albums View

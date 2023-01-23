@@ -8,45 +8,6 @@
 import UIKit
 
 extension CollectionsTVC {
-	private static func suggestedCollectionTitle(
-		movingAlbumsInAnyOrder albumsInAnyOrder: [Album]
-	) -> String? {
-		guard let someAlbum = albumsInAnyOrder.first else {
-			return nil
-		}
-		let otherAlbums = albumsInAnyOrder.dropFirst()
-		// Don’t query for all the album artists upfront, because that’s slow.
-		
-		let existingTitles: Set<String>? = {
-			guard let context = someAlbum.managedObjectContext else {
-				return nil
-			}
-			let allCollections = Collection.allFetched(ordered: false, via: context)
-			return Set(allCollections.compactMap { $0.title })
-		}()
-		
-		// Check whether the album artists of the albums we’re moving are all identical.
-	albumArtistIdentical: do {
-		let someAlbumArtist = someAlbum.representativeAlbumArtistFormattedOrPlaceholder()
-		
-		if
-			let existingTitles = existingTitles,
-			existingTitles.contains(someAlbumArtist)
-		{
-			break albumArtistIdentical
-		}
-		
-		if otherAlbums.allSatisfy({
-			$0.representativeAlbumArtistFormattedOrPlaceholder() == someAlbumArtist
-		}) {
-			return someAlbumArtist
-		}
-	}
-		
-		// Otherwise, give up.
-		return nil
-	}
-	
 	func createAndPrompt() {
 		guard
 			case let .movingAlbums(clipboard) = purpose,
@@ -56,16 +17,7 @@ extension CollectionsTVC {
 		
 		clipboard.didAlreadyCreate = true
 		
-		/*
-		let titleForNewCollection: String = {
-			let albumsBeingMoved = clipboard.idsOfAlbumsBeingMovedAsSet.compactMap {
-				viewModel.context.object(with: $0) as? Album
-			}
-			let suggestedTitle = Self.suggestedCollectionTitle(movingAlbumsInAnyOrder: albumsBeingMoved)
-			return suggestedTitle ?? LRString.newCollection_defaultTitle
-		}()
-		*/
-		let newViewModel = collectionsViewModel.updatedAfterCreating(title: "Untitled Folder") // L2DO
+		let newViewModel = collectionsViewModel.updatedAfterCreating()
 		Task {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			

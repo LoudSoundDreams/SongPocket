@@ -142,7 +142,7 @@ extension CollectionsViewModel {
 		let childContext = NSManagedObjectContext(.mainQueue)
 		childContext.parent = context
 		let combinedCollection = Collection(
-			combiningCollectionsInOrderWith: collectionIDs,
+			combiningCollectionsWithInOrder: collectionIDs,
 			title: title,
 			index: Int64(index),
 			context: childContext)
@@ -162,9 +162,9 @@ extension CollectionsViewModel {
 		return indexPathFor(itemIndex: Self.indexOfNewCollection)
 	}
 	
-	func updatedAfterCreating(title: String) -> Self {
+	func updatedAfterCreating() -> Self {
 		let newCollection = Collection(context: context)
-		newCollection.title = title
+		newCollection.title = LRString.newCollection_defaultTitle
 		// When we call `setItemsAndMoveRows`, the property observer will set the `index` attribute of each `Collection` for us.
 		
 		var newItems = group.items
