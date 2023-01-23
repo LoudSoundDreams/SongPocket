@@ -97,7 +97,7 @@ enum LRString {
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
-	// MARK: Collections View
+	// MARK: Folders View
 	
 	static let collections = NSLocalizedString("Folders", comment: "Big title")
 	
@@ -107,7 +107,7 @@ enum LRString {
 		comment: "Placeholder for when the app’s database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a collection, album, or song. Also the name of a sort option.")
+	static let title = NSLocalizedString("Title", comment: "The word for the name of a folder, album, or song. Also the name of a sort option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let renameCollectionAlertTitle = NSLocalizedString("Rename Folder", comment: "Alert title")
@@ -123,7 +123,7 @@ enum LRString {
 	static let newCollection_defaultTitle = NSLocalizedString(
 		"New Collection [default title for collection]",
 		value: "Untitled Folder",
-		comment: "Default title for a collection if you create one and don’t provide a title.")
+		comment: "Default title for a folder if you create one and don’t provide a title.")
 	
 	// MARK: Albums View
 	
@@ -180,7 +180,7 @@ enum LRString {
 	
 	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
 	
-	// MARK: Collections
+	// MARK: Folders
 	
 	static let format_xCollections = NSLocalizedString(
 		"plural - X_collections",
@@ -198,11 +198,11 @@ enum LRString {
 		"plural - X_songs",
 		comment: "Status message")
 	
-	// MARK: Collections and Albums Views
+	// MARK: Folders and Albums Views
 	
 	static let format_organizeIntoXCollectionsByAlbumArtistQuestionMark = NSLocalizedString(
 		"plural - organize_into_X_collections_by_album_artist",
-		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of collections it’s moving them into.")
+		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of folders it’s moving them into.")
 	static let format_chooseACollectionToMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_albums_to_collection",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
