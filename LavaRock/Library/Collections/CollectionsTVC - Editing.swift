@@ -137,7 +137,8 @@ extension CollectionsTVC {
 					self?.commitCombine(
 						into: targetIndexPath,
 						proposedTitle: textFieldText)
-				})
+				}
+			)
 			present(dialog, animated: true)
 		}
 	}

@@ -240,7 +240,7 @@ extension CollectionsTVC {
 			case .prerow(let prerow):
 				switch prerow {
 				case .createCollection:
-					createAndPrompt()
+					createAndOpen()
 					return
 				}
 			case .collection:

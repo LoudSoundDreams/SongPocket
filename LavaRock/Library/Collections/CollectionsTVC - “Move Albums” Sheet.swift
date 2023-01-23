@@ -8,7 +8,7 @@
 import UIKit
 
 extension CollectionsTVC {
-	func createAndPrompt() {
+	func createAndOpen() {
 		guard
 			case let .movingAlbums(clipboard) = purpose,
 			!clipboard.didAlreadyCreate, // Without this, if you’re fast, you can tap “Save” to create a new `Collection`, then tap “New Collection” to bring up another dialog before we open the first `Collection` you made. You must reset `didAlreadyCreate = false` both during reverting and if we exit the empty new `Collection`.
@@ -21,7 +21,7 @@ extension CollectionsTVC {
 		Task {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
-			renameAndOpenCreated(proposedTitle: nil)
+			renameAndOpenCreated()
 		}
 	}
 	
@@ -40,14 +40,14 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func renameAndOpenCreated(proposedTitle: String?) {
+	private func renameAndOpenCreated() {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		let indexPath = collectionsViewModel.indexPathOfNewCollection
 		
 		let didChangeTitle = collectionsViewModel.renameAndReturnDidChangeTitle(
 			at: indexPath,
-			proposedTitle: proposedTitle)
+			proposedTitle: nil)
 		
 		Task {
 			if didChangeTitle {
