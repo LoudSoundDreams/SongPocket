@@ -420,7 +420,7 @@
 				0768309924B42DEE0033E3CC /* Info.plist */,
 				07FF1DDF27F8FF0300DF9B78 /* Resources */,
 				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
-				07FB52C92813693F00CCCBA5 /* Helpers */,
+				07FB52C92813693F00CCCBA5 /* Structures */,
 				07E0BBFE2765680C0010117E /* Extensions */,
 				07FC970A24BAC1050036DD3D /* Database */,
 				07DF65D027766B7B003B2EA3 /* MusicFolder */,
@@ -603,7 +603,7 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
-		07FB52C92813693F00CCCBA5 /* Helpers */ = {
+		07FB52C92813693F00CCCBA5 /* Structures */ = {
 			isa = PBXGroup;
 			children = (
 				0708E53D286A20B6001204BF /* Numbers.swift */,
@@ -611,7 +611,7 @@
 				07E0BBEC2765678F0010117E /* SectionStructure.swift */,
 				0772FB57282F798A0054834F /* BatchUpdates.swift */,
 			);
-			path = Helpers;
+			path = Structures;
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Database */ = {
