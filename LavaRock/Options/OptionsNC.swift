@@ -10,7 +10,7 @@ import UIKit
 final class OptionsNC: UINavigationController {
 	init() {
 		super.init(
-			rootViewController: UIStoryboard(name: "Options", bundle: nil)
+			rootViewController: UIStoryboard(name: "OptionsTVC", bundle: nil)
 				.instantiateInitialViewController()!
 		)
 		

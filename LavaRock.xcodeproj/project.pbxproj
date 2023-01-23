@@ -29,7 +29,7 @@
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Collections - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Collections - Views.swift */; };
 		073E6A9225574B99003C84A5 /* PlayheadReflectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */; };
-		073FB55927588B81000FAF5F /* Options.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* Options.storyboard */; };
+		073FB55927588B81000FAF5F /* OptionsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* OptionsTVC.storyboard */; };
 		073FB56027588BC5000FAF5F /* Console.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB56227588BC5000FAF5F /* Console.storyboard */; };
 		07436D03283A8878002546B5 /* Debug Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07436D02283A8878002546B5 /* Debug Assets.xcassets */; };
 		074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074AB85D27CAD9C3007B63D2 /* Reel.swift */; };
@@ -173,7 +173,7 @@
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Collections - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections - Views.swift"; sourceTree = "<group>"; };
 		073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayheadReflectable.swift; sourceTree = "<group>"; };
-		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Options.storyboard; sourceTree = "<group>"; };
+		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/OptionsTVC.storyboard; sourceTree = "<group>"; };
 		073FB56127588BC5000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Console.storyboard; sourceTree = "<group>"; };
 		07436D02283A8878002546B5 /* Debug Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Debug Assets.xcassets"; sourceTree = "<group>"; };
 		074AB85D27CAD9C3007B63D2 /* Reel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reel.swift; sourceTree = "<group>"; };
@@ -320,7 +320,7 @@
 				07B35E302886FB5100159FD9 /* TipJarView.swift */,
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
 				07962318281265AB00EE026F /* OptionsNC.swift */,
-				073FB55B27588B81000FAF5F /* Options.storyboard */,
+				073FB55B27588B81000FAF5F /* OptionsTVC.storyboard */,
 				073AF48E24D1AD73000C1A6D /* OptionsTVC.swift */,
 				0781F1F925991B3300781CF8 /* OptionsTVC - UITableView.swift */,
 				07FD6E112599246700826447 /* OptionsTVC + TipJarUI.swift */,
@@ -742,7 +742,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				073FB55927588B81000FAF5F /* Options.storyboard in Resources */,
+				073FB55927588B81000FAF5F /* OptionsTVC.storyboard in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				07934CF827CDBE04002B2444 /* SongsTVC.storyboard in Resources */,
 				07934CFC27CDBFFD002B2444 /* CollectionsTVC.storyboard in Resources */,
@@ -922,12 +922,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		073FB55B27588B81000FAF5F /* Options.storyboard */ = {
+		073FB55B27588B81000FAF5F /* OptionsTVC.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				073FB55A27588B81000FAF5F /* Base */,
 			);
-			name = Options.storyboard;
+			name = OptionsTVC.storyboard;
 			sourceTree = "<group>";
 		};
 		073FB56227588BC5000FAF5F /* Console.storyboard */ = {
