@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 extension CollectionsTVC: UITextFieldDelegate {
 	func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -97,10 +98,21 @@ extension CollectionsTVC {
 		let titleForCombinedCollection = Self.suggestedCollectionTitle(combining: selectedCollections)
 		?? LRString.combinedFolderDefaultTitle
 		
-		let newViewModel = collectionsViewModel.updatedAfterCombiningInNewChildContext(
-			fromInOrder: selectedCollections,
-			into: targetIndexPath,
-			title: titleForCombinedCollection)
+		// Create a child context previewing the changes.
+		let previewContext = NSManagedObjectContext(.mainQueue)
+		previewContext.parent = viewModel.context
+		let combinedCollection = previewContext.createCollection(
+			byCombiningCollectionsWithInOrder: selectedCollections.map { $0.objectID },
+			title: titleForCombinedCollection,
+			index: Int64(viewModel.itemIndex(forRow: targetIndexPath.row))
+		)
+		try! previewContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
+		
+		// Apply the preview context to this `CollectionsTVC`.
+		let previewViewModel = CollectionsViewModel(
+			context: previewContext,
+			prerowsInEachSection: []
+		)
 		Task {
 			await tableView.performBatchUpdates__async {
 				self.tableView.scrollToRow(
@@ -110,7 +122,7 @@ extension CollectionsTVC {
 			}
 			
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				newViewModel,
+				previewViewModel,
 				thenSelecting: [targetIndexPath]
 			) else { return }
 			

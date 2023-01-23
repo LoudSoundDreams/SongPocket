@@ -130,29 +130,6 @@ extension CollectionsViewModel {
 		return oldTitle != collection.title
 	}
 	
-	// MARK: Combining
-	
-	func updatedAfterCombiningInNewChildContext(
-		fromInOrder collections: [Collection],
-		into indexPathOfCombined: IndexPath,
-		title: String
-	) -> Self {
-		let childContext = NSManagedObjectContext(.mainQueue)
-		childContext.parent = context
-		let combinedCollection = childContext.createCollection(
-			byCombiningCollectionsWithInOrder: collections.map { $0.objectID },
-			title: title,
-			index: Int64(itemIndex(forRow: indexPathOfCombined.row))
-		)
-		
-		try? childContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
-		
-		let twin = Self.init(
-			context: childContext,
-			prerowsInEachSection: prerowsInEachSection)
-		return twin
-	}
-	
 	// MARK: - “Move Albums” Sheet
 	
 	private static let indexOfNewCollection = 0
