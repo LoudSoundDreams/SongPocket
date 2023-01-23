@@ -181,13 +181,13 @@ extension AlbumsTVC {
 		let libraryNC = LibraryNC(fileNameOfStoryboardForRootViewController: "CollectionsTVC")
 		guard
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
-			let albumsViewModel = viewModel as? AlbumsViewModel
+			let selfVM = viewModel as? AlbumsViewModel
 		else { return }
 		
 		// Provide the extra data that the “move albums” sheet needs.
-		let indexPathsToMove = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+		let indexPathsToMove = selfVM.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: tableView.selectedIndexPaths)
-		let albumsToMove = indexPathsToMove.map { albumsViewModel.albumNonNil(at: $0) }
+		let albumsToMove = indexPathsToMove.map { selfVM.albumNonNil(at: $0) }
 		collectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
 			albumsBeingMoved: albumsToMove,
 			delegate: self)
