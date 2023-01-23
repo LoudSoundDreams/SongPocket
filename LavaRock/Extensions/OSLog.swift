@@ -18,21 +18,21 @@ extension OSLog {
 		subsystem: "3. Song",
 		category: .pointsOfInterest)
 	
-	private static let musicLibraryManagerSubsystem = "4. MusicLibraryManager"
+	private static let music_library = "4. MusicLibrary"
 	static let merge = OSLog(
-		subsystem: musicLibraryManagerSubsystem,
+		subsystem: music_library,
 		category: "A. Main")
 	static let update = OSLog(
-		subsystem: musicLibraryManagerSubsystem,
+		subsystem: music_library,
 		category: "B. Update")
 	static let create = OSLog(
-		subsystem: musicLibraryManagerSubsystem,
+		subsystem: music_library,
 		category: "C. Create")
 	static let delete = OSLog(
-		subsystem: musicLibraryManagerSubsystem,
+		subsystem: music_library,
 		category: "D. Delete")
 	static let cleanup = OSLog(
-		subsystem: musicLibraryManagerSubsystem,
+		subsystem: music_library,
 		category: "E. Cleanup")
 	
 	static let albumsView = OSLog(

@@ -1,5 +1,5 @@
 //
-//  MusicFolder.swift
+//  MusicLibrary.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-10.
@@ -8,9 +8,9 @@
 import MediaPlayer
 import OSLog
 
-final class MusicFolder { // This is a class and not a struct because it needs a deinitializer.
+final class MusicLibrary { // This is a class and not a struct because it needs a deinitializer.
 	private init() {}
-	static let shared = MusicFolder()
+	static let shared = MusicLibrary()
 	
 	let context = Database.viewContext
 	
