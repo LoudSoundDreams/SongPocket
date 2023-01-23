@@ -30,4 +30,23 @@ extension NSManagedObjectContext {
 		}
 		return result
 	}
+	
+	final func createCollection(
+		byCombiningCollectionsWithInOrder idsOfCollectionsToCombine: [NSManagedObjectID],
+		title: String,
+		index: Int64
+	) -> Collection {
+		let result = Collection(context: self)
+		result.title = title
+		result.index = index
+		
+		let toCombine = idsOfCollectionsToCombine.map { object(with: $0) } as! [Collection]
+		var contentsOfResult = toCombine.flatMap { $0.albums(sorted: true) }
+		contentsOfResult.reindex()
+		contentsOfResult.forEach { $0.container = result }
+		
+		Collection.deleteAllEmpty(via: self)
+		
+		return result
+	}
 }

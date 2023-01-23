@@ -60,24 +60,6 @@ extension Collection {
 		self.index = index
 	}
 	
-	convenience init(
-		combiningCollectionsWithInOrder idsOfCollectionsToCombine: [NSManagedObjectID],
-		title: String,
-		index: Int64,
-		context: NSManagedObjectContext
-	) {
-		self.init(context: context)
-		self.title = title
-		self.index = index
-		
-		let collectionsToCombine = idsOfCollectionsToCombine.map { context.object(with: $0) } as! [Collection]
-		var newContents = collectionsToCombine.flatMap { $0.albums(sorted: true) }
-		newContents.reindex()
-		newContents.forEach { $0.container = self }
-		
-		Self.deleteAllEmpty(via: context)
-	}
-	
 	// MARK: - All Instances
 	
 	// Similar to `Album.allFetched` and `Song.allFetched`.

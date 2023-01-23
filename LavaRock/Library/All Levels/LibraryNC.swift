@@ -27,7 +27,7 @@ final class LibraryNC: UINavigationController {
 	init() {
 		super.init(
 			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
-			.instantiateInitialViewController()!
+				.instantiateInitialViewController()!
 		)
 		
 		did_init()
