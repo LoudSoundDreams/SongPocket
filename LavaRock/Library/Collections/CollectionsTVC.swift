@@ -410,8 +410,8 @@ final class CollectionsTVC:
 		
 		let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
 		albumsTVC.viewModel = AlbumsViewModel(
-			parentCollection: .exists(collection),
 			context: viewModel.context,
+			parentCollection: .exists(collection),
 			prerowsInEachSection: {
 				if case Purpose.movingAlbums = purpose {
 					return [.moveHere]

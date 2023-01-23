@@ -82,19 +82,19 @@ extension AlbumsViewModel: LibraryViewModel {
 			}
 		}()
 		return Self(
-			parentCollection: freshenedParentCollection,
 			context: context,
+			parentCollection: freshenedParentCollection,
 			prerowsInEachSection: prerowsInEachSection)
 	}
 }
 extension AlbumsViewModel {
 	init(
-		parentCollection: ParentCollection,
 		context: NSManagedObjectContext,
+		parentCollection: ParentCollection,
 		prerowsInEachSection: [Prerow]
 	) {
-		self.parentCollection = parentCollection
 		self.context = context
+		self.parentCollection = parentCollection
 		self.prerowsInEachSection = prerowsInEachSection
 		
 		// Check `viewContainer` to figure out which `Album`s to show.
@@ -176,8 +176,8 @@ extension AlbumsViewModel {
 			via: context)
 		
 		return AlbumsViewModel(
-			parentCollection: parentCollection,
 			context: context,
+			parentCollection: parentCollection,
 			prerowsInEachSection: [])
 	}
 }
