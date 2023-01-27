@@ -41,8 +41,6 @@ final class LibraryNC: UINavigationController {
 	
 	private func did_init() {
 		navigationBar.prefersLargeTitles = true
-		
-		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
