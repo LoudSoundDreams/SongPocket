@@ -184,7 +184,9 @@ final class AlbumCell: UITableViewCell {
 		// • The Music app uses a border and no shadow.
 		// • The Books app uses a shadow and no border.
 		coverArtLayer.borderColor = UIColor.separator.cgColor
-		coverArtLayer.borderWidth = .eight / 32
+		// Draw in pixels, not points
+		let pixelsPerPoint = window?.screen.nativeScale ?? 2
+		coverArtLayer.borderWidth = 1 / pixelsPerPoint
 		
 		separatorInset.left = 0
 		+ contentView.frame.minX
