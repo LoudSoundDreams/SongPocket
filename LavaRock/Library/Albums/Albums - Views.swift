@@ -58,6 +58,7 @@ final class AlbumCell: UITableViewCell {
 		backgroundColor_set_to_clear()
 		
 		coverArtView.accessibilityIgnoresInvertColors = true
+		// Round the corners
 		let coverArtLayer = coverArtView.layer
 		coverArtLayer.cornerCurve = .continuous
 		coverArtLayer.cornerRadius = .eight * 1/2
@@ -175,6 +176,15 @@ final class AlbumCell: UITableViewCell {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		
+		// Draw border around artwork
+		// You must do this when switching between light and dark mode.
+		let coverArtLayer = coverArtView.layer
+		// As of iOS 16.3 …
+		// • The Music app uses a border and no shadow.
+		// • The Books app uses a shadow and no border.
+		coverArtLayer.borderColor = UIColor.separator.cgColor
+		coverArtLayer.borderWidth = .eight / 32
 		
 		separatorInset.left = 0
 		+ contentView.frame.minX
