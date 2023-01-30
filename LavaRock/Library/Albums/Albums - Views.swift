@@ -58,6 +58,9 @@ final class AlbumCell: UITableViewCell {
 		backgroundColor_set_to_clear()
 		
 		coverArtView.accessibilityIgnoresInvertColors = true
+		let coverArtLayer = coverArtView.layer
+		coverArtLayer.cornerCurve = .continuous
+		coverArtLayer.cornerRadius = .eight * 1/2
 		
 		configureForTraitCollection()
 	}
