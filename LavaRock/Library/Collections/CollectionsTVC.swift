@@ -185,7 +185,7 @@ final class CollectionsTVC:
 		
 		sortOptionsGrouped = [
 			[.title],
-			[.shuffle, .reverse],
+			[.scramble, .reverse],
 		]
 	}
 	

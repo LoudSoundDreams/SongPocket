@@ -63,7 +63,7 @@ final class AlbumsTVC:
 		
 		sortOptionsGrouped = [
 			[.newestFirst, .oldestFirst],
-			[.shuffle, .reverse],
+			[.scramble, .reverse],
 		]
 	}
 	

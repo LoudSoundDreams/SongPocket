@@ -62,7 +62,7 @@ extension SongsViewModel: LibraryViewModel {
 				.trackNumber:
 			return true
 		case
-				.shuffle,
+				.scramble,
 				.reverse:
 			return true
 		}

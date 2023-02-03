@@ -314,7 +314,7 @@ extension LibraryViewModel {
 			}
 			return sorted.map { $0.song }
 			
-		case .shuffle:
+		case .scramble:
 			return items.inAnyOtherOrder()
 			
 		case .reverse:

@@ -61,7 +61,7 @@ extension AlbumsViewModel: LibraryViewModel {
 		case .trackNumber:
 			return false
 		case
-				.shuffle,
+				.scramble,
 				.reverse:
 			return true
 		}
