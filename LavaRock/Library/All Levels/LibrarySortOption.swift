@@ -50,7 +50,20 @@ enum LibrarySortOption: CaseIterable {
 		case .trackNumber:
 			return UIImage(systemName: "textformat.123")
 		case .scramble:
-			return UIImage(systemName: "shuffle")
+			switch Int.random(in: 1...6) {
+			case 1:
+				return UIImage(systemName: "die.face.1")
+			case 2:
+				return UIImage(systemName: "die.face.2")
+			case 4:
+				return UIImage(systemName: "die.face.4")
+			case 5:
+				return UIImage(systemName: "die.face.5")
+			case 6:
+				return UIImage(systemName: "die.face.6")
+			default:
+				return UIImage(systemName: "die.face.3") // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
+			}
 		case .reverse:
 			return UIImage(systemName: "arrow.up.and.down")
 		}

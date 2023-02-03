@@ -426,15 +426,15 @@ class LibraryTVC: UITableViewController {
 		func new_sort_options_menu() -> UIMenu {
 			let groupedElements: [[UIMenuElement]] = sortOptionsGrouped.map { sortOptionGroup in
 				let groupOfChildren: [UIMenuElement] = sortOptionGroup.map { sortOption in
-					let action = UIAction(
-						title: sortOption.localizedName(),
-						image: sortOption.uiImage()
-					) { [weak self] action in
-						self?.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
-					}
-					
 					return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
 						guard let self = self else { return }
+						
+						let action = UIAction(
+							title: sortOption.localizedName(),
+							image: sortOption.uiImage()
+						) { [weak self] action in
+							self?.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
+						}
 						let allowed: Bool = {
 							let viewModel = self.viewModel
 							let indexPathsToSort = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
