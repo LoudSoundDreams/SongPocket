@@ -20,8 +20,8 @@ protocol LibraryViewModel {
 	
 	func bigTitle() -> String
 	func prerowIdentifiersInEachSection() -> [AnyHashable]
-	func allowsSortOption(
-		_ sortOption: SortCommand,
+	func allowsSortCommand(
+		_ sortCommand: SortCommand,
 		forItems items: [NSManagedObject]
 	) -> Bool
 	func updatedWithFreshenedData() -> Self
@@ -197,7 +197,7 @@ extension LibraryViewModel {
 	
 	func updatedAfterSorting(
 		selectedIndexPaths: [IndexPath],
-		sortOptionLocalizedName: String
+		sortCommandLocalizedName: String
 	) -> Self {
 		let indexPathsToSort = sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 			selectedIndexPaths: selectedIndexPaths)
@@ -209,7 +209,7 @@ extension LibraryViewModel {
 			let newItems = itemsAfterSorting(
 				itemsAtRowsInOrder: rows,
 				inSection: section,
-				sortOptionLocalizedName: sortOptionLocalizedName)
+				sortCommandLocalizedName: sortCommandLocalizedName)
 			twin.groups[section].setItems(newItems)
 		}
 		return twin
@@ -218,7 +218,7 @@ extension LibraryViewModel {
 	private func itemsAfterSorting(
 		itemsAtRowsInOrder rows: [Int],
 		inSection section: Int,
-		sortOptionLocalizedName: String
+		sortCommandLocalizedName: String
 	) -> [NSManagedObject] {
 		// Get all the items in the subjected group.
 		let oldItems = libraryGroup().items
@@ -235,7 +235,7 @@ extension LibraryViewModel {
 			}
 			return Self.sorted(
 				itemsToSort,
-				sortOptionLocalizedName: sortOptionLocalizedName)
+				sortCommandLocalizedName: sortCommandLocalizedName)
 		}()
 		
 		// Create the new `Array` of items for the subjected group.
@@ -253,12 +253,12 @@ extension LibraryViewModel {
 	// Sort stably! Multiple items with the same name, disc number, or whatever property we’re sorting by should stay in the same order.
 	private static func sorted(
 		_ items: [NSManagedObject],
-		sortOptionLocalizedName: String
+		sortCommandLocalizedName: String
 	) -> [NSManagedObject] {
-		guard let sortOption = SortCommand(localizedName: sortOptionLocalizedName) else {
+		guard let sortCommand = SortCommand(localizedName: sortCommandLocalizedName) else {
 			return items
 		}
-		switch sortOption {
+		switch sortCommand {
 			
 		case .title:
 			guard let collections = items as? [Collection] else {
@@ -277,7 +277,7 @@ extension LibraryViewModel {
 			return albums.sortedMaintainingOrderWhen {
 				$0.releaseDateEstimate == $1.releaseDateEstimate
 			} areInOrder: {
-				$0.precedesForSortOptionNewestFirst($1)
+				$0.precedesByNewestFirst($1)
 			}
 		case .oldestFirst:
 			guard let albums = items as? [Album] else {
@@ -286,7 +286,7 @@ extension LibraryViewModel {
 			return albums.sortedMaintainingOrderWhen {
 				$0.releaseDateEstimate == $1.releaseDateEstimate
 			} areInOrder: {
-				$0.precedesForSortOptionOldestFirst($1)
+				$0.precedesByOldestFirst($1)
 			}
 			
 		case .trackNumber:
@@ -310,7 +310,7 @@ extension LibraryViewModel {
 				else {
 					return true
 				}
-				return leftMetadatum.precedesForSortOptionTrackNumber(rightMetadatum)
+				return leftMetadatum.precedesByTrackNumber(rightMetadatum)
 			}
 			return sorted.map { $0.song }
 			

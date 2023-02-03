@@ -61,7 +61,7 @@ final class AlbumsTVC:
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		sortOptionsGrouped = [
+		sortCommandsGrouped = [
 			[.newestFirst, .oldestFirst],
 			[.scramble, .reverse],
 		]

@@ -179,16 +179,16 @@ extension Album {
 	
 	// MARK: - Predicates for Sorting
 	
-	final func precedesForSortOptionNewestFirst(_ other: Album) -> Bool {
-		return precedesForSortOption(newestFirstRatherThanOldestFirst: true, other)
+	final func precedesByNewestFirst(_ other: Album) -> Bool {
+		return precedes(byNewestFirstRatherThanOldestFirst: true, other)
 	}
 	
-	final func precedesForSortOptionOldestFirst(_ other: Album) -> Bool {
-		return precedesForSortOption(newestFirstRatherThanOldestFirst: false, other)
+	final func precedesByOldestFirst(_ other: Album) -> Bool {
+		return precedes(byNewestFirstRatherThanOldestFirst: false, other)
 	}
 	
-	private func precedesForSortOption(
-		newestFirstRatherThanOldestFirst: Bool,
+	private func precedes(
+		byNewestFirstRatherThanOldestFirst: Bool,
 		_ other: Album
 	) -> Bool {
 		let myReleaseDate = releaseDateEstimate
@@ -207,7 +207,7 @@ extension Album {
 		}
 		
 		// Sort by release date
-		if newestFirstRatherThanOldestFirst {
+		if byNewestFirstRatherThanOldestFirst {
 			return myReleaseDate > otherReleaseDate
 		} else {
 			return myReleaseDate < otherReleaseDate

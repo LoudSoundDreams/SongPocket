@@ -84,7 +84,7 @@ extension SongMetadatum {
 			shouldResortToTitle: true)
 	}
 	
-	func precedesForSortOptionTrackNumber(_ other: SongMetadatum) -> Bool {
+	func precedesByTrackNumber(_ other: SongMetadatum) -> Bool {
 		return precedesInDisplayOrder(
 			inSameAlbum: other,
 			shouldResortToTitle: false)

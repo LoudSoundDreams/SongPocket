@@ -22,7 +22,7 @@ class LibraryTVC: UITableViewController {
 	
 	// Controls
 	final var editingModeToolbarButtons: [UIBarButtonItem] = []
-	final var sortOptionsGrouped: [[SortCommand]] = []
+	final var sortCommandsGrouped: [[SortCommand]] = []
 	
 	// MARK: Subclasses Can Optionally Customize
 	
@@ -424,23 +424,23 @@ class LibraryTVC: UITableViewController {
 		// Menus
 		
 		func new_sort_options_menu() -> UIMenu {
-			let groupedElements: [[UIMenuElement]] = sortOptionsGrouped.map { sortOptionGroup in
-				let groupOfChildren: [UIMenuElement] = sortOptionGroup.map { sortOption in
+			let groupedElements: [[UIMenuElement]] = sortCommandsGrouped.map { commandGroup in
+				let groupOfChildren: [UIMenuElement] = commandGroup.map { sortCommand in
 					return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
 						guard let self = self else { return }
 						
 						let action = UIAction(
-							title: sortOption.localizedName(),
-							image: sortOption.uiImage()
+							title: sortCommand.localizedName(),
+							image: sortCommand.uiImage()
 						) { [weak self] action in
-							self?.sortSelectedOrAllItems(sortOptionLocalizedName: action.title)
+							self?.sortSelectedOrAllItems(sortCommandLocalizedName: action.title)
 						}
 						let allowed: Bool = {
 							let viewModel = self.viewModel
 							let indexPathsToSort = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
 								selectedIndexPaths: self.tableView.selectedIndexPaths)
 							let items = indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
-							return viewModel.allowsSortOption(sortOption, forItems: items)
+							return viewModel.allowsSortCommand(sortCommand, forItems: items)
 						}()
 						action.attributes = (
 							allowed

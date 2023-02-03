@@ -8,10 +8,10 @@
 import UIKit
 
 extension LibraryTVC {
-	final func sortSelectedOrAllItems(sortOptionLocalizedName: String) {
+	final func sortSelectedOrAllItems(sortCommandLocalizedName: String) {
 		let newViewModel = viewModel.updatedAfterSorting(
 			selectedIndexPaths: tableView.selectedIndexPaths,
-			sortOptionLocalizedName: sortOptionLocalizedName)
+			sortCommandLocalizedName: sortCommandLocalizedName)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}

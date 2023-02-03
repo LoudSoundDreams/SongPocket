@@ -32,11 +32,11 @@ extension CollectionsViewModel: LibraryViewModel {
 		return prerowsInEachSection
 	}
 	
-	func allowsSortOption(
-		_ sortOption: SortCommand,
+	func allowsSortCommand(
+		_ sortCommand: SortCommand,
 		forItems items: [NSManagedObject]
 	) -> Bool {
-		switch sortOption {
+		switch sortCommand {
 		case .title:
 			return true
 		case

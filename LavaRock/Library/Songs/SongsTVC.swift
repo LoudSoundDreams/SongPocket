@@ -23,7 +23,7 @@ final class SongsTVC:
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		sortOptionsGrouped = [
+		sortCommandsGrouped = [
 			[.trackNumber],
 			[.scramble, .reverse],
 		]

@@ -183,7 +183,7 @@ final class CollectionsTVC:
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		sortOptionsGrouped = [
+		sortCommandsGrouped = [
 			[.title],
 			[.scramble, .reverse],
 		]
