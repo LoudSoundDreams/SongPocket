@@ -33,7 +33,7 @@ enum SortCommand: CaseIterable {
 		case .trackNumber:
 			return LRString.trackNumber
 		case .scramble:
-			return LRString.scramble
+			return LRString.random
 		case .reverse:
 			return LRString.reverse
 		}
