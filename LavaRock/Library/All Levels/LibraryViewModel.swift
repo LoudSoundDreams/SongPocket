@@ -21,7 +21,7 @@ protocol LibraryViewModel {
 	func bigTitle() -> String
 	func prerowIdentifiersInEachSection() -> [AnyHashable]
 	func allowsSortOption(
-		_ sortOption: LibrarySortOption,
+		_ sortOption: SortCommand,
 		forItems items: [NSManagedObject]
 	) -> Bool
 	func updatedWithFreshenedData() -> Self
@@ -255,7 +255,7 @@ extension LibraryViewModel {
 		_ items: [NSManagedObject],
 		sortOptionLocalizedName: String
 	) -> [NSManagedObject] {
-		guard let sortOption = LibrarySortOption(localizedName: sortOptionLocalizedName) else {
+		guard let sortOption = SortCommand(localizedName: sortOptionLocalizedName) else {
 			return items
 		}
 		switch sortOption {

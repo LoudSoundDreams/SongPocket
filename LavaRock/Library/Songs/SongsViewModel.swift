@@ -49,7 +49,7 @@ extension SongsViewModel: LibraryViewModel {
 	}
 	
 	func allowsSortOption(
-		_ sortOption: LibrarySortOption,
+		_ sortOption: SortCommand,
 		forItems items: [NSManagedObject]
 	) -> Bool {
 		switch sortOption {

@@ -1,5 +1,5 @@
 //
-//  LibrarySortOption.swift
+//  SortCommand.swift
 //  LavaRock
 //
 //  Created by h on 2022-04-22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum LibrarySortOption: CaseIterable {
+enum SortCommand: CaseIterable {
 	// For `Collection`s only
 	case title
 	

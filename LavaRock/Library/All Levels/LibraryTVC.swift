@@ -22,7 +22,7 @@ class LibraryTVC: UITableViewController {
 	
 	// Controls
 	final var editingModeToolbarButtons: [UIBarButtonItem] = []
-	final var sortOptionsGrouped: [[LibrarySortOption]] = []
+	final var sortOptionsGrouped: [[SortCommand]] = []
 	
 	// MARK: Subclasses Can Optionally Customize
 	
