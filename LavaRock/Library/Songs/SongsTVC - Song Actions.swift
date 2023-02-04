@@ -52,7 +52,6 @@ extension SongsTVC {
 			
 			deselectSelectedSong()
 		}
-		// Disable if appropriate
 		playSongAndBelow.isEnabled = selectedMediaItemAndBelow.count >= 2
 		actionSheet.addAction(playSongAndBelow)
 		
@@ -73,7 +72,6 @@ extension SongsTVC {
 		// Cancel
 		actionSheet.addAction(
 			UIAlertAction.cancelWithHandler { _ in
-				
 				deselectSelectedSong()
 			}
 		)
