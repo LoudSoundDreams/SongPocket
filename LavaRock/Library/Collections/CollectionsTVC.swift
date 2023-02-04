@@ -238,17 +238,6 @@ final class CollectionsTVC:
 			]
 		case .browsing:
 			viewingModeTopLeftButtons = [
-				UIBarButtonItem(
-					title: LRString.options,
-					primaryAction: UIAction { [weak self] _ in
-						let viewController: UIViewController = (
-							Enabling.swiftUI__options
-							? UIHostingController(rootView: OptionsView())
-							: OptionsNC()
-						)
-						viewController.modalPresentationStyle = .formSheet
-						self?.present(viewController, animated: true)
-					}),
 			]
 			editingModeToolbarButtons = [
 				combineButton,

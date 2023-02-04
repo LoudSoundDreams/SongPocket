@@ -19,7 +19,8 @@ final class LibraryNC: UINavigationController {
 			} else {
 				self.present(self.consoleVC, animated: true)
 			}
-		})
+		},
+		settings_presenter: self)
 	private let consoleViewHost = UIHostingController(rootView: ConsoleView())
 	private let consoleVC: UIViewController = UIStoryboard(name: "Console", bundle: nil)
 		.instantiateInitialViewController()!

@@ -40,7 +40,7 @@ enum LRString {
 	
 	// MARK: Options
 	
-	static let options = NSLocalizedString("Options", comment: "Big title")
+	static let settings = NSLocalizedString("Settings", comment: "Button")
 	
 	static let theme = NSLocalizedString("Theme", comment: "Section header")
 	

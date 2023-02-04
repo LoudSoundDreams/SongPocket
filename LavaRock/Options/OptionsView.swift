@@ -34,7 +34,7 @@ struct OptionsView: View {
 					Text(LRString.tipJarFooter)
 				}
 			}
-			.navigationTitle(LRString.options)
+			.navigationTitle(LRString.settings)
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {

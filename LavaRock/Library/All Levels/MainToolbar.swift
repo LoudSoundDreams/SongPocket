@@ -7,6 +7,7 @@
 
 import UIKit
 import MediaPlayer
+import SwiftUI
 
 // Instantiators might want to …
 // • Implement `accessibilityPerformMagicTap` and toggle playback.
@@ -17,6 +18,7 @@ final class MainToolbar {
 	
 	private let presentConsoleButton: UIBarButtonItem
 	
+	private weak var settings_presenter: UIViewController? = nil
 	private lazy var moreButton = UIBarButtonItem(
 		title: LRString.more,
 		image: Self.more_button_default_image,
@@ -34,6 +36,20 @@ final class MainToolbar {
 						image: UIImage(systemName: "arrow.up.forward.app"),
 						handler: { action in
 							UIApplication.shared.open(.music)
+						}
+					),
+					
+					UIAction(
+						title: LRString.settings,
+						image: UIImage(systemName: "gear"),
+						handler: { [weak self] action in
+							let viewController: UIViewController = (
+								Enabling.swiftUI__options
+								? UIHostingController(rootView: OptionsView())
+								: OptionsNC()
+							)
+							viewController.modalPresentationStyle = .formSheet
+							self?.settings_presenter?.present(viewController, animated: true)
 						}
 					),
 				],
@@ -352,11 +368,14 @@ final class MainToolbar {
 	}
 	
 	init(
-		presentConsoleAction: UIAction
+		presentConsoleAction: UIAction,
+		settings_presenter: UIViewController
 	) {
 		presentConsoleButton = UIBarButtonItem(
 			title: LRString.more,
 			primaryAction: presentConsoleAction)
+		
+		self.settings_presenter = settings_presenter
 		
 		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
