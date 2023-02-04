@@ -16,7 +16,25 @@ import SwiftUI
 final class MainToolbar {
 	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
-	private let console_button: UIBarButtonItem
+	private lazy var console_button = UIBarButtonItem(
+		title: LRString.more,
+		primaryAction: UIAction(
+			handler: { [weak self] action in
+				guard let self = self else { return }
+				
+				let toPresent: UIViewController = (
+					Enabling.swiftUI__console
+					? self.console_screen_host
+					: self.consoleVC
+				)
+				self.console_presenter?.present(toPresent, animated: true)
+			}
+		)
+	)
+	private weak var console_presenter: UIViewController? = nil
+	private let console_screen_host = UIHostingController(rootView: ConsoleView())
+	private let consoleVC: UIViewController = UIStoryboard(name: "Console", bundle: nil)
+		.instantiateInitialViewController()!
 	
 	private lazy var moreButton = UIBarButtonItem(
 		title: LRString.more,
@@ -368,14 +386,11 @@ final class MainToolbar {
 	}
 	
 	init(
-		presentConsoleAction: UIAction,
-		settings_presenter: UIViewController
+		weakly_Console_presenter: UIViewController,
+		weakly_Settings_presenter: UIViewController
 	) {
-		console_button = UIBarButtonItem(
-			title: LRString.more,
-			primaryAction: presentConsoleAction)
-		
-		self.settings_presenter = settings_presenter
+		self.console_presenter = weakly_Console_presenter
+		self.settings_presenter = weakly_Settings_presenter
 		
 		freshen()
 		TapeDeck.shared.addReflector(weakly: self)

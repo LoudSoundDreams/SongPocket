@@ -12,18 +12,9 @@ final class LibraryNC: UINavigationController {
 	var needsOverrideThemeInWindow = false
 	
 	lazy var mainToolbar = MainToolbar(
-		presentConsoleAction: UIAction { [weak self] action in
-			guard let self = self else { return }
-			if Enabling.swiftUI__console {
-				self.present(self.consoleViewHost, animated: true)
-			} else {
-				self.present(self.consoleVC, animated: true)
-			}
-		},
-		settings_presenter: self)
-	private let consoleViewHost = UIHostingController(rootView: ConsoleView())
-	private let consoleVC: UIViewController = UIStoryboard(name: "Console", bundle: nil)
-		.instantiateInitialViewController()!
+		weakly_Console_presenter: self,
+		weakly_Settings_presenter: self
+	)
 	
 	init(fileNameOfStoryboardForRootViewController: String) {
 		super.init(
