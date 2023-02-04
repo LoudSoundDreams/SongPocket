@@ -1,11 +1,11 @@
 //
-//  OptionsTVC + TipJarUI.swift
+//  SettingsTVC + TipJarUI.swift
 //  LavaRock
 //
 //  Created by h on 2020-12-27.
 //
 
-extension OptionsTVC: TipJarUI {
+extension SettingsTVC: TipJarUI {
 	func statusBecameLoading() {
 		freshenTipJarRows()
 	}

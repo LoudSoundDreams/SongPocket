@@ -1,5 +1,5 @@
 //
-//  OptionsTVC - Views.swift
+//  SettingsTVC - Views.swift
 //  LavaRock
 //
 //  Created by h on 2021-10-09.
@@ -88,7 +88,7 @@ final class AccentColorCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		separatorInset.left = directionalLayoutMargins.leading // We shouldn’t have to do this, but as of build 482, without this, if you close Options then open it again, something sets the left inset to 0.
+		separatorInset.left = directionalLayoutMargins.leading // We shouldn’t have to do this, but as of build 482, without this, if you close Settings then open it again, something sets the left inset to 0.
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }

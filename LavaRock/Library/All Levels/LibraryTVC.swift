@@ -156,13 +156,12 @@ class LibraryTVC: UITableViewController {
 		Task {
 			/*
 			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
-			 - Sort options (`LibraryTVC`)
-			 - “Rename Collection” dialog (`CollectionsTVC`)
-			 - “Combine Collections” dialog (`CollectionsTVC`)
-			 - “Organize or move albums?” menu (`AlbumsTVC`)
+			 - “Sort” menu (`LibraryTVC`)
+			 - “Rename” dialog (`CollectionsTVC`)
+			 - “Combine” dialog (`CollectionsTVC`)
+			 - “Move” menu (`AlbumsTVC`)
 			 - “Organize albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “organize albums” sheet)
 			 - “Move albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “move albums” sheet)
-			 - “New Collection” dialog (`CollectionsTVC` when in “move albums” sheet)
 			 - Song actions, including “more” menu (`SongsTVC`)
 			 */
 			if shouldDismissAllViewControllersBeforeFreshenLibraryItems() {
@@ -394,7 +393,7 @@ class LibraryTVC: UITableViewController {
 		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
 		sortButton.isEnabled = allows_sort()
-		sortButton.menu = new_sort_options_menu() // Create a new menu, for an accurate “[X] [items]” title.
+		sortButton.menu = create_sort_menu() // Create a new menu, for an accurate “[X] [items]” title.
 		
 		floatToTopButton.isEnabled = allows_float_and_sink()
 		sinkToBottomButton.isEnabled = allows_float_and_sink()
@@ -423,7 +422,7 @@ class LibraryTVC: UITableViewController {
 		
 		// Menus
 		
-		func new_sort_options_menu() -> UIMenu {
+		func create_sort_menu() -> UIMenu {
 			let groupedElements: [[UIMenuElement]] = sortCommandsGrouped.map { commandGroup in
 				let groupOfChildren: [UIMenuElement] = commandGroup.map { sortCommand in
 					return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in

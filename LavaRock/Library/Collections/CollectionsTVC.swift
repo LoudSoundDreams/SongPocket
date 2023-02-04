@@ -299,8 +299,8 @@ final class CollectionsTVC:
 	
 	override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
 		if
-			(presentedViewController as? UINavigationController)?.viewControllers.first is OptionsTVC
-				|| presentedViewController is UIHostingController<OptionsView>
+			(presentedViewController as? UINavigationController)?.viewControllers.first is SettingsTVC
+				|| presentedViewController is UIHostingController<SettingsScreen>
 		{
 			return false
 		}
@@ -376,12 +376,6 @@ final class CollectionsTVC:
 	}
 	
 	// MARK: - Navigation
-	
-	@IBAction private func openOptions_SwiftUI(_ sender: UIBarButtonItem) {
-		let hostingController = UIHostingController(rootView: OptionsView())
-		hostingController.modalPresentationStyle = .formSheet
-		present(hostingController, animated: true)
-	}
 	
 	override func prepare(
 		for segue: UIStoryboardSegue,

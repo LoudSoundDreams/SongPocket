@@ -1,5 +1,5 @@
 //
-//  OptionsView.swift
+//  SettingsScreen.swift
 //  LavaRock
 //
 //  Created by h on 2022-01-15.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OptionsView: View {
+struct SettingsScreen: View {
 	@Environment(\.dismiss) private var dismiss
 	
 	@ObservedObject private var theme: Theme = .shared

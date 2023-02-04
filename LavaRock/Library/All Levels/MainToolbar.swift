@@ -16,14 +16,14 @@ import SwiftUI
 final class MainToolbar {
 	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
-	private let presentConsoleButton: UIBarButtonItem
+	private let console_button: UIBarButtonItem
 	
-	private weak var settings_presenter: UIViewController? = nil
 	private lazy var moreButton = UIBarButtonItem(
 		title: LRString.more,
 		image: Self.more_button_default_image,
 		menu: create_menu_More()
 	)
+	private weak var settings_presenter: UIViewController? = nil
 	
 	private func create_menu_More() -> UIMenu {
 		return UIMenu(
@@ -43,13 +43,13 @@ final class MainToolbar {
 						title: LRString.settings,
 						image: UIImage(systemName: "gear"),
 						handler: { [weak self] action in
-							let viewController: UIViewController = (
-								Enabling.swiftUI__options
-								? UIHostingController(rootView: OptionsView())
-								: OptionsNC()
+							let toPresent: UIViewController = (
+								Enabling.swiftUI__settings
+								? UIHostingController(rootView: SettingsScreen())
+								: SettingsNC()
 							)
-							viewController.modalPresentationStyle = .formSheet
-							self?.settings_presenter?.present(viewController, animated: true)
+							toPresent.modalPresentationStyle = .formSheet
+							self?.settings_presenter?.present(toPresent, animated: true)
 						}
 					),
 				],
@@ -342,7 +342,7 @@ final class MainToolbar {
 	var buttons_array: [UIBarButtonItem] {
 		if Enabling.inAppPlayer {
 			return [
-				presentConsoleButton,
+				console_button,
 				.flexibleSpace(),
 				skipBackButton,
 				.flexibleSpace(),
@@ -371,7 +371,7 @@ final class MainToolbar {
 		presentConsoleAction: UIAction,
 		settings_presenter: UIViewController
 	) {
-		presentConsoleButton = UIBarButtonItem(
+		console_button = UIBarButtonItem(
 			title: LRString.more,
 			primaryAction: presentConsoleAction)
 		
@@ -451,18 +451,18 @@ final class MainToolbar {
 		else {
 			configurePlayButton()
 			
-			presentConsoleButton.image = Self.showConsoleButtonDefaultImage
+			console_button.image = Self.showConsoleButtonDefaultImage
 			
 			// Enable or disable each button as appropriate
 			buttons_array.forEach {
 				$0.isEnabledSetToFalseAlongWithAccessibilityTrait()
 			}
 			moreButton.isEnabledSetToTrueAlongWithAccessibilityTrait()
-			presentConsoleButton.isEnabledSetToTrueAlongWithAccessibilityTrait()
+			console_button.isEnabledSetToTrueAlongWithAccessibilityTrait()
 			return
 		}
 		
-		presentConsoleButton.image = {
+		console_button.image = {
 			switch player.repeatMode {
 			case .one:
 				return UIImage(systemName: "repeat.1.circle.fill")!

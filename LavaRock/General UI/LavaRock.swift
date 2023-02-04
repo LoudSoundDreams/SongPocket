@@ -75,9 +75,9 @@ private struct LibraryNCRep: UIViewControllerRepresentable {
 		// Unfortunately, we can’t remove a view’s tint color override.
 		// So, override the tint color on both the view and its window, every time.
 		vc.view.tintColor = theme.accentColor.uiColor
-		// When the UIKit Options screen changes the accent color, SwiftUI runs this method at a moment that breaks the animation for deselecting the accent color row.
-		// So, only run this branch for the SwiftUI Options screen, and make the UIKit Options screen do this work itself.
-		if Enabling.swiftUI__options {
+		// When the UIKit Settings screen changes the accent color, SwiftUI runs this method at a moment that breaks the animation for deselecting the accent color row.
+		// So, only run this branch for the SwiftUI Settings screen, and make the UIKit Settings screen do this work itself.
+		if Enabling.swiftUI__settings {
 			window?.tintColor = theme.accentColor.uiColor
 		}
 	}

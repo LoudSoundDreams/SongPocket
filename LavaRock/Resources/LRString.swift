@@ -38,7 +38,7 @@ enum LRString {
 	
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
 	
-	// MARK: Options
+	// MARK: Settings
 	
 	static let settings = NSLocalizedString("Settings", comment: "Button")
 	

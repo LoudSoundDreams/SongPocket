@@ -1,5 +1,5 @@
 //
-//  OptionsTVC.swift
+//  SettingsTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-07-29.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class OptionsTVC: UITableViewController {
+final class SettingsTVC: UITableViewController {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
@@ -22,9 +22,5 @@ final class OptionsTVC: UITableViewController {
 		}
 		
 		title = LRString.settings
-	}
-	
-	@IBAction private func doneWithOptionsSheet(_ sender: UIBarButtonItem) {
-		dismiss(animated: true)
 	}
 }

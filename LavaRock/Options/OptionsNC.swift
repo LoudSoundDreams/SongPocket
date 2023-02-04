@@ -1,5 +1,5 @@
 //
-//  OptionsNC.swift
+//  SettingsNC.swift
 //  LavaRock
 //
 //  Created by h on 2022-04-22.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-final class OptionsNC: UINavigationController {
+final class SettingsNC: UINavigationController {
 	init() {
 		super.init(
-			rootViewController: UIStoryboard(name: "OptionsTVC", bundle: nil)
+			rootViewController: UIStoryboard(name: "SettingsTVC", bundle: nil)
 				.instantiateInitialViewController()!
 		)
 		

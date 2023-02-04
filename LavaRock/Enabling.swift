@@ -11,7 +11,7 @@ enum Enabling {
 	static let inAppPlayer = 10 == 1
 	static let swiftUI__console = inAppPlayer && 10 == 1
 	
-	static let swiftUI__options = 10 == 1
+	static let swiftUI__settings = 10 == 1
 }
 
 #if targetEnvironment(simulator)

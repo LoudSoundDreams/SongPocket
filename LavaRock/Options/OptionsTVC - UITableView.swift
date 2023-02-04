@@ -1,5 +1,5 @@
 //
-//  OptionsTVC - UITableView.swift
+//  SettingsTVC - UITableView.swift
 //  LavaRock
 //
 //  Created by h on 2020-12-27.
@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-extension OptionsTVC {
+extension SettingsTVC {
 	private enum Section: Int, CaseIterable {
 		case theme
 		case avatar
