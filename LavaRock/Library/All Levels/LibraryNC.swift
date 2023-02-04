@@ -16,9 +16,9 @@ final class LibraryNC: UINavigationController {
 		weakly_Settings_presenter: self
 	)
 	
-	init(fileNameOfStoryboardForRootViewController: String) {
+	init(rootStoryboardName: String) {
 		super.init(
-			rootViewController: UIStoryboard(name: fileNameOfStoryboardForRootViewController, bundle: nil)
+			rootViewController: UIStoryboard(name: rootStoryboardName, bundle: nil)
 				.instantiateInitialViewController()!
 		)
 		

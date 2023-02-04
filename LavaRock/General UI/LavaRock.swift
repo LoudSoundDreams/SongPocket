@@ -48,7 +48,7 @@ private struct LibraryNCRep: UIViewControllerRepresentable {
 	func makeUIViewController(
 		context: Context
 	) -> VCType {
-		let vc = LibraryNC(fileNameOfStoryboardForRootViewController: "CollectionsTVC")
+		let vc = LibraryNC(rootStoryboardName: "CollectionsTVC")
 		
 		// Lighting
 		vc.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)

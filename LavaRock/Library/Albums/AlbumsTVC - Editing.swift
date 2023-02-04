@@ -12,7 +12,7 @@ import OSLog
 extension AlbumsTVC {
 	func startOrganizing() {
 		// Prepare a Collections view to present modally.
-		let libraryNC = LibraryNC(fileNameOfStoryboardForRootViewController: "CollectionsTVC")
+		let libraryNC = LibraryNC(rootStoryboardName: "CollectionsTVC")
 		guard
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
@@ -178,7 +178,7 @@ extension AlbumsTVC {
 	
 	func startMoving() {
 		// Prepare a Folders view to present modally.
-		let libraryNC = LibraryNC(fileNameOfStoryboardForRootViewController: "CollectionsTVC")
+		let libraryNC = LibraryNC(rootStoryboardName: "CollectionsTVC")
 		guard
 			let collectionsTVC = libraryNC.viewControllers.first as? CollectionsTVC,
 			let selfVM = viewModel as? AlbumsViewModel
