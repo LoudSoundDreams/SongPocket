@@ -426,7 +426,7 @@ class LibraryTVC: UITableViewController {
 			let groupedElements: [[UIMenuElement]] = sortCommandsGrouped.map { commandGroup in
 				let groupOfChildren: [UIMenuElement] = commandGroup.map { sortCommand in
 					return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
-						guard let self = self else { return }
+						guard let self else { return }
 						
 						let action = UIAction(
 							title: sortCommand.localizedName(),

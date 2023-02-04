@@ -20,7 +20,7 @@ final class MainToolbar {
 		title: LRString.more,
 		primaryAction: UIAction(
 			handler: { [weak self] action in
-				guard let self = self else { return }
+				guard let self else { return }
 				
 				let toPresent: UIViewController = (
 					Enabling.swiftUI__console

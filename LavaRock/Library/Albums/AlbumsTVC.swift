@@ -155,7 +155,7 @@ final class AlbumsTVC:
 				self?.startOrganizing()
 			}
 			
-			guard let self = self else {
+			guard let self else {
 				menuElements = []
 				return
 			}
