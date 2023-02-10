@@ -300,7 +300,7 @@ final class CollectionsTVC:
 	override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
 		if
 			(presentedViewController as? UINavigationController)?.viewControllers.first is SettingsTVC
-				|| presentedViewController is UIHostingController<SettingsScreen>
+				|| presentedViewController is UIHostingController<SettingsScreen__SwiftUI>
 		{
 			return false
 		}

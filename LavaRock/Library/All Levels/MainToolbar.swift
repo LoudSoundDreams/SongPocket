@@ -63,7 +63,7 @@ final class MainToolbar {
 						handler: { [weak self] action in
 							let toPresent: UIViewController = (
 								Enabling.swiftUI__settings
-								? UIHostingController(rootView: SettingsScreen())
+								? UIHostingController(rootView: SettingsScreen__SwiftUI())
 								: SettingsNC()
 							)
 							toPresent.modalPresentationStyle = .formSheet

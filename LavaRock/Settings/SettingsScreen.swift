@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsScreen: View {
+struct SettingsScreen__SwiftUI: View {
 	@Environment(\.dismiss) private var dismiss
 	
 	@ObservedObject private var theme: Theme = .shared
