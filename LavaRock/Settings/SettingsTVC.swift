@@ -22,5 +22,12 @@ final class SettingsTVC: UITableViewController {
 		}
 		
 		title = LRString.settings
+		
+		navigationItem.rightBarButtonItem = UIBarButtonItem(
+			systemItem: .done,
+			primaryAction: UIAction { [weak self] action in
+				self?.dismiss(animated: true)
+			}
+		)
 	}
 }
