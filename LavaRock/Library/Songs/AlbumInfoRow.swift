@@ -9,7 +9,18 @@ import SwiftUI
 
 struct AlbumInfoRow: View {
 	let albumTitle: String
-	let album: Album
+	let albumArtist: String
+	let releaseDateString: String?
+	
+	init(
+		albumTitle: String,
+		albumArtist: String?, // `nil` uses placeholder
+		releaseDateString: String? // `nil` omits field
+	) {
+		self.albumTitle = albumTitle
+		self.albumArtist = albumArtist ?? Album.unknownAlbumArtistPlaceholder
+		self.releaseDateString = releaseDateString
+	}
 	
 	var body: some View {
 		VStack(
@@ -26,16 +37,13 @@ struct AlbumInfoRow: View {
 				// Concatenate instances of `Text`
 				
 				// “The Beatles”
-				Text(
-					album.representativeAlbumArtistFormattedOptional()
-					?? Album.unknownAlbumArtistPlaceholder
-				)
+				Text(albumArtist)
 				.fontWeight(.bold) // As of iOS 16.2 developer beta 4, this is thicker than `.bold()`, peculiarly
 				+
 				
 				// “· Mar 22, 1963”
 				Text({ () -> String in
-					guard let releaseDateString = album.releaseDateEstimateFormattedOptional() else {
+					guard let releaseDateString else {
 						return ""
 					}
 					return " " + LRString.interpunct + " " + releaseDateString
