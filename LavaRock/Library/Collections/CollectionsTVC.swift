@@ -297,17 +297,6 @@ final class CollectionsTVC:
 	
 	// MARK: - Library Items
 	
-	override func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
-		if
-			(presentedViewController as? UINavigationController)?.viewControllers.first is SettingsTVC
-				|| presentedViewController is UIHostingController<SettingsScreen__SwiftUI>
-		{
-			return false
-		}
-		
-		return super.shouldDismissAllViewControllersBeforeFreshenLibraryItems()
-	}
-	
 	override func freshenLibraryItems() {
 		switch purpose {
 		case .willOrganizeAlbums:

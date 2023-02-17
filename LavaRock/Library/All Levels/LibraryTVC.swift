@@ -140,10 +140,12 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
-		if
-			(presentedViewController as? UINavigationController)?.viewControllers.first is ConsoleVC
-				|| presentedViewController is UIHostingController<ConsoleView>
+	final func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
+		let presentedFromNC = navigationController?.presentedViewController
+		if (presentedFromNC as? UINavigationController)?.viewControllers.first is SettingsTVC
+			|| presentedFromNC is UIHostingController<SettingsScreen__SwiftUI>
+			|| (presentedFromNC as? UINavigationController)?.viewControllers.first is ConsoleVC
+			|| presentedFromNC is UIHostingController<ConsoleView>
 		{
 			return false
 		}
