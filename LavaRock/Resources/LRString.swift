@@ -201,6 +201,12 @@ enum LRString {
 		"plural - move_X_albums_to",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
 	
+	// MARK: Albums view
+	
+	static let variable_moveXAlbumsIntoOneFolder_question_mark = NSLocalizedString(
+		"plural - move_X_albums_into_one_folder_question_mark",
+		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created folder.")
+	
 	// MARK: Songs view
 	
 	static func songTitleQuotedAndXMoreSongs_titleCase(

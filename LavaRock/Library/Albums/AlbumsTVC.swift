@@ -82,7 +82,9 @@ final class AlbumsTVC:
 		
 		switch purpose {
 		case .previewingCombine:
-			navigationItem.prompt = "Move \(is_previewing_combine_with_album_count) albums into one folder?" // L2DO
+			navigationItem.prompt = String.localizedStringWithFormat(
+				LRString.variable_moveXAlbumsIntoOneFolder_question_mark,
+				is_previewing_combine_with_album_count)
 		case .organizingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
 		case .movingAlbums(let clipboard):

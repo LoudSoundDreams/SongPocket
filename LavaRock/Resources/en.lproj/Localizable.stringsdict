@@ -93,6 +93,22 @@
 			<string>Move %lld albums to…</string>
 		</dict>
 	</dict>
+	<key>plural - move_X_albums_into_one_folder_question_mark</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Move %#@X_ALBUMS@ into one folder?</string>
+		<key>X_ALBUMS</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld album</string>
+			<key>other</key>
+			<string>%lld albums</string>
+		</dict>
+	</dict>
 	<key>plural - title case - SONG_TITLE_and_X_more_songs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
