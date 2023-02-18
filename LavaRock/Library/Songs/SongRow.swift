@@ -22,7 +22,6 @@ struct SongRow: View {
 				alignment: .firstTextBaseline,
 				spacing: .eight * (1 + 1/2) // 12
 			) {
-				// TO DO: Right-align across rows
 				Text(trackDisplay)
 					.monospacedDigit()
 					.foregroundColor(.secondary)
@@ -59,7 +58,7 @@ struct SongRow: View {
 					.foregroundColor(.primary)
 			}
 			.alignmentGuide(.listRowSeparatorTrailing) { moreButtonDimensions in
-				// TO DO: This indents the trailing inset in editing mode. Is that sensible?
+				// TO DO: This indents the trailing inset in editing mode. Should we do that?
 				moreButtonDimensions[.trailing]
 			}
 		}

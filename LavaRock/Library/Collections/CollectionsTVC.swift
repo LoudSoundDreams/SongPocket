@@ -262,7 +262,7 @@ final class CollectionsTVC:
 		case .browsing:
 			showToolbar()
 		}
-		func showToolbar() { // TO DO: Move this to `LibraryNC`
+		func showToolbar() {
 			navigationController?.setToolbarHidden(false, animated: false)
 		}
 	}
