@@ -139,7 +139,7 @@ extension CollectionsViewModel {
 	
 	func updatedAfterCreating() -> Self {
 		let newCollection = Collection(context: context)
-		newCollection.title = LRString.newCollection_defaultTitle
+		newCollection.title = LRString.untitledFolder
 		// When we call `setItemsAndMoveRows`, the property observer will set the `index` attribute of each `Collection` for us.
 		
 		var newItems = group.items

@@ -106,7 +106,7 @@ final class CreateCollectionCell: UITableViewCell {
 			accessibilityTraits.formUnion(.button)
 		}
 		
-		newCollectionLabel.text = LRString.newFolder_buttonTitle
+		newCollectionLabel.text = LRString.newFolder
 		newCollectionLabel.textColor = .tintColor
 	}
 	

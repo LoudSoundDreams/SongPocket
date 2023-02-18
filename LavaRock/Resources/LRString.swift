@@ -115,13 +115,9 @@ enum LRString {
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	static let combinedFolderDefaultTitle = NSLocalizedString("Combined Folder", comment: "Alert title")
 	
-	static let newFolder_buttonTitle = NSLocalizedString(
-		"New_Folder [button]",
-		value: "New Folder",
-		comment: "Button")
-	static let newCollection_defaultTitle = NSLocalizedString(
-		"New_Folder [default title]",
-		value: "Untitled Folder",
+	static let newFolder = NSLocalizedString("New Folder", comment: "Button")
+	static let untitledFolder = NSLocalizedString(
+		"Untitled Folder",
 		comment: "Default title for a folder if you create one and don’t provide a title.")
 	
 	// MARK: Albums View
