@@ -15,6 +15,7 @@ final class AlbumsTVC:
 	OrganizeAlbumsPreviewing
 {
 	enum Purpose {
+		case previewingCombine
 		case organizingAlbums(OrganizeAlbumsClipboard)
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
@@ -31,6 +32,9 @@ final class AlbumsTVC:
 	
 	// Purpose
 	var purpose: Purpose {
+		if is_previewing_combine {
+			return .previewingCombine
+		}
 		if let clipboard = organizeAlbumsClipboard {
 			return .organizingAlbums(clipboard)
 		}
@@ -42,6 +46,13 @@ final class AlbumsTVC:
 	
 	// State
 	var idsOfAlbumsToKeepSelected: Set<NSManagedObjectID> = []
+	
+	// MARK: “Combine Collections” Sheet
+	
+	var is_previewing_combine = false // TO DO: Eliminate
+	var is_previewing_combine_with_album_count: Int = 0
+	var cancel_combine_action: UIAction? = nil
+	var save_combine_action: UIAction? = nil
 	
 	// MARK: “Organize Albums” Sheet
 	
@@ -71,6 +82,8 @@ final class AlbumsTVC:
 		super.viewDidLoad()
 		
 		switch purpose {
+		case .previewingCombine:
+			navigationItem.prompt = "Move \(is_previewing_combine_with_album_count) albums into one folder?" // L2DO
 		case .organizingAlbums(let clipboard):
 			navigationItem.prompt = clipboard.prompt
 		case .movingAlbums(let clipboard):
@@ -80,8 +93,26 @@ final class AlbumsTVC:
 		}
 	}
 	
+	private lazy var save_combine_button: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.save,
+			primaryAction: save_combine_action)
+		button.style = .done
+		return button
+	}()
 	override func setUpBarButtons() {
 		switch purpose {
+		case .previewingCombine:
+			viewingModeTopRightButtons = [
+				UIBarButtonItem(
+					title: LRString.cancel,
+					primaryAction: cancel_combine_action)
+			].compacted()
+			viewingModeToolbarButtons = [
+				.flexibleSpace(),
+				save_combine_button,
+				.flexibleSpace(),
+			].compacted()
 		case .organizingAlbums:
 			viewingModeTopRightButtons = [
 				cancelAndDismissButton,
@@ -108,6 +139,20 @@ final class AlbumsTVC:
 		}
 		
 		super.setUpBarButtons()
+		
+		switch purpose {
+		case .previewingCombine:
+			showToolbar()
+		case .organizingAlbums:
+			break
+		case .movingAlbums:
+			break
+		case .browsing:
+			break
+		}
+		func showToolbar() {
+			navigationController?.setToolbarHidden(false, animated: false)
+		}
 	}
 	
 	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
@@ -117,6 +162,8 @@ final class AlbumsTVC:
 	
 	override func freshenLibraryItems() {
 		switch purpose {
+		case .previewingCombine:
+			return
 		case .organizingAlbums:
 			return
 		case .movingAlbums:

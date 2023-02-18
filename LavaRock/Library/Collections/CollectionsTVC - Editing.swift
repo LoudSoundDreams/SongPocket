@@ -108,20 +108,34 @@ extension CollectionsTVC {
 				thenSelecting: [targetIndexPath]
 			) else { return }
 			
-			let dialog = UIAlertController.forEditingCollectionTitle(
-				alertTitle: LRString.combineFoldersAlertTitle,
-				text_field_content_and_placeholder: LRString.combinedFolderDefaultTitle,
-				textFieldDelegate: self,
-				cancelHandler: { [weak self] in
+			// Prepare an Albums view to present modally.
+			let libraryNC = LibraryNC(rootStoryboardName: "AlbumsTVC")
+			libraryNC.presentationController!.delegate = self // In case the user dismisses the sheet by swiping it
+			presented_previewing_Combine_IndexPaths = selectedIndexPaths
+			
+			// Configure the `AlbumsTVC`.
+			let albumsTVC = libraryNC.viewControllers.first as! AlbumsTVC
+			albumsTVC.viewModel = AlbumsViewModel(
+				context: previewContext,
+				parentCollection: .exists(combinedCollection),
+				prerowsInEachSection: []
+			)
+			albumsTVC.is_previewing_combine = true
+			albumsTVC.is_previewing_combine_with_album_count = combinedCollection.contents?.count ?? 0
+			albumsTVC.cancel_combine_action = UIAction { [weak self] _ in
+				self?.dismiss(animated: true, completion: {
 					self?.revertCombine(thenSelect: selectedIndexPaths)
-				},
-				saveHandler: { [weak self] textFieldText in
+				})
+			}
+			albumsTVC.save_combine_action = UIAction { [weak self] _ in
+				self?.dismiss(animated: true, completion: {
 					self?.commitCombine(
 						into: targetIndexPath,
-						proposedTitle: textFieldText)
-				}
-			)
-			present(dialog, animated: true)
+						proposedTitle: LRString.combinedFolderDefaultTitle)
+				})
+			}
+			
+			present(libraryNC, animated: true)
 		}
 	}
 	

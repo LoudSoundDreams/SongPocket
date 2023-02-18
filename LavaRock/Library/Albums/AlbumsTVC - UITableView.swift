@@ -14,6 +14,8 @@ extension AlbumsTVC {
 		setOrRemoveNoItemsBackground()
 		
 		switch purpose {
+		case .previewingCombine:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums(let clipboard):
@@ -45,6 +47,8 @@ extension AlbumsTVC {
 		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return UITableViewCell() }
 		
 		switch purpose {
+		case .previewingCombine:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
@@ -74,6 +78,8 @@ extension AlbumsTVC {
 			with: album,
 			mode: {
 				switch purpose {
+				case .previewingCombine:
+					return .modalTinted
 				case .organizingAlbums(let clipboard):
 					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
 						return .modalTinted
@@ -102,6 +108,8 @@ extension AlbumsTVC {
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
+		case .previewingCombine:
+			return false
 		case .organizingAlbums:
 			return false
 		case .movingAlbums:
@@ -118,6 +126,8 @@ extension AlbumsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch purpose {
+		case .previewingCombine:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums:
@@ -146,6 +156,8 @@ extension AlbumsTVC {
 		didSelectRowAt indexPath: IndexPath
 	) {
 		switch purpose {
+		case .previewingCombine:
+			break
 		case .organizingAlbums:
 			break
 		case .movingAlbums:

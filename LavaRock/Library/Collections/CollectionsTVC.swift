@@ -10,6 +10,14 @@ import UIKit
 import MediaPlayer
 import SwiftUI
 
+extension CollectionsTVC: UIAdaptivePresentationControllerDelegate {
+	func presentationControllerDidDismiss(
+		_ presentationController: UIPresentationController
+	) {
+		revertCombine(thenSelect: presented_previewing_Combine_IndexPaths)
+		presented_previewing_Combine_IndexPaths = []
+	}
+}
 final class CollectionsTVC:
 	LibraryTVC,
 	OrganizeAlbumsPreviewing
@@ -30,6 +38,8 @@ final class CollectionsTVC:
 	}
 	
 	// MARK: - Properties
+	
+	var presented_previewing_Combine_IndexPaths: [IndexPath] = []
 	
 	// Actions
 	private(set) lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
