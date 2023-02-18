@@ -119,7 +119,7 @@ final class CreateCollectionCell: UITableViewCell {
 
 final class CollectionCell: UITableViewCell {
 	enum Mode {
-		case normal
+		case normal([UIAccessibilityCustomAction])
 		case modal
 		case modalTinted
 		
@@ -145,30 +145,30 @@ final class CollectionCell: UITableViewCell {
 	
 	func configure(
 		with collection: Collection,
-		mode: Mode,
-		accessibilityActions: [UIAccessibilityCustomAction]
+		mode: Mode
 	) {
 		titleLabel.text = { () -> String in
 			return collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
 		}()
-		accessibilityCustomActions = accessibilityActions
-		
 		switch mode {
-		case .normal:
+		case .normal(let actions):
 			backgroundColor_set_to_clear()
 			
 			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
+			accessibilityCustomActions = actions
 		case .modal:
 			backgroundColor_set_to_clear()
 			
 			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
+			accessibilityCustomActions = []
 		case .modalTinted:
 			backgroundColor = .tintColor.withAlphaComponentOneEighth()
 			
 			contentView.layer.opacity = 1
 			enableWithAccessibilityTrait()
+			accessibilityCustomActions = []
 			
 			
 		case .modalDisabled:
@@ -176,6 +176,7 @@ final class CollectionCell: UITableViewCell {
 			
 			contentView.layer.opacity = .oneFourth
 			disableWithAccessibilityTrait()
+			accessibilityCustomActions = []
 		}
 		
 		rowContentAccessibilityLabel__ = titleLabel.text

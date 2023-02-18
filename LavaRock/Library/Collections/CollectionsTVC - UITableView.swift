@@ -126,23 +126,13 @@ extension CollectionsTVC {
 					return .modal
 				}
 			case .browsing:
-				return .normal
-			}}()
-		let accessibilityActions: [UIAccessibilityCustomAction] = {
-			switch mode {
-			case .normal:
-				return [renameFocusedCollectionAction]
-			case .modal:
-				return []
-			case .modalTinted:
-				return []
-			case .modalDisabled:
-				return []
-			}}()
+				return .normal([renameFocusedCollectionAction])
+			}
+		}()
 		cell.configure(
 			with: collection,
-			mode: mode,
-			accessibilityActions: accessibilityActions)
+			mode: mode
+		)
 		
 		return cell
 	}
