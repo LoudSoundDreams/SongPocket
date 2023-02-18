@@ -11,7 +11,7 @@ extension UIAlertController {
 	static func forEditingCollectionTitle(
 		alertTitle: String,
 		text_field_content_and_placeholder: String?,
-		textFieldDelegate: UITextFieldDelegate?,
+		textFieldDelegate: UITextFieldDelegate,
 		cancelHandler: (() -> Void)?,
 		saveHandler: @escaping (_ textFieldText: String?) -> Void
 	) -> Self {

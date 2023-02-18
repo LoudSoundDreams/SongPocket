@@ -22,7 +22,7 @@ extension CollectionsTVC {
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		
 		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: LRString.renameFolderAlertTitle,
+			alertTitle: LRString.renameFolder,
 			text_field_content_and_placeholder: collection.title,
 			textFieldDelegate: self,
 			cancelHandler: nil,
@@ -120,7 +120,6 @@ extension CollectionsTVC {
 				parentCollection: .exists(combinedCollection),
 				prerowsInEachSection: []
 			)
-			albumsTVC.is_previewing_combine = true
 			albumsTVC.is_previewing_combine_with_album_count = combinedCollection.contents?.count ?? 0
 			albumsTVC.cancel_combine_action = UIAction { [weak self] _ in
 				self?.dismiss(animated: true, completion: {

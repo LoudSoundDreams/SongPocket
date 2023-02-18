@@ -32,7 +32,7 @@ final class AlbumsTVC:
 	
 	// Purpose
 	var purpose: Purpose {
-		if is_previewing_combine {
+		if is_previewing_combine_with_album_count != 0 {
 			return .previewingCombine
 		}
 		if let clipboard = organizeAlbumsClipboard {
@@ -49,7 +49,6 @@ final class AlbumsTVC:
 	
 	// MARK: “Combine Collections” Sheet
 	
-	var is_previewing_combine = false // TO DO: Eliminate
 	var is_previewing_combine_with_album_count: Int = 0
 	var cancel_combine_action: UIAction? = nil
 	var save_combine_action: UIAction? = nil
