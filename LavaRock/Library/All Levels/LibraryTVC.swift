@@ -51,7 +51,7 @@ class LibraryTVC: UITableViewController {
 	// Controls
 	
 	private(set) final lazy var cancelAndDismissButton = UIBarButtonItem(
-		systemItem: .cancel,
+		title: LRString.cancel,
 		primaryAction: UIAction { [weak self] _ in
 			self?.dismiss(animated: true)
 		}
