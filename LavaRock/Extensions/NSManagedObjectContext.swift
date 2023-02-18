@@ -33,11 +33,10 @@ extension NSManagedObjectContext {
 	
 	final func createCollection(
 		byCombiningCollectionsWithInOrder idsOfCollectionsToCombine: [NSManagedObjectID],
-		title: String,
 		index: Int64
 	) -> Collection {
 		let result = Collection(context: self)
-		result.title = title
+		result.title = LRString.combinedFolderDefaultTitle
 		result.index = index
 		
 		let toCombine = idsOfCollectionsToCombine.map { object(with: $0) } as! [Collection]

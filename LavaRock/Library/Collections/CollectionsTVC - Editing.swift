@@ -95,15 +95,11 @@ extension CollectionsTVC {
 		viewModelBeforeCombining = collectionsViewModel
 		
 		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
-		let titleForCombinedCollection = Self.suggestedCollectionTitle(combining: selectedCollections)
-		?? LRString.combinedFolderDefaultTitle
-		
 		// Create a child context previewing the changes.
 		let previewContext = NSManagedObjectContext(.mainQueue)
 		previewContext.parent = viewModel.context
 		let combinedCollection = previewContext.createCollection(
 			byCombiningCollectionsWithInOrder: selectedCollections.map { $0.objectID },
-			title: titleForCombinedCollection,
 			index: Int64(viewModel.itemIndex(forRow: targetIndexPath.row))
 		)
 		try! previewContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
@@ -128,7 +124,7 @@ extension CollectionsTVC {
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: LRString.combineFoldersAlertTitle,
-				text_field_content_and_placeholder: titleForCombinedCollection,
+				text_field_content_and_placeholder: LRString.combinedFolderDefaultTitle,
 				textFieldDelegate: self,
 				cancelHandler: { [weak self] in
 					self?.revertCombine(thenSelect: selectedIndexPaths)
