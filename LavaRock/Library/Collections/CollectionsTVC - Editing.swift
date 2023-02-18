@@ -30,7 +30,8 @@ extension CollectionsTVC {
 					at: indexPath,
 					proposedTitle: textFieldText,
 					thenSelectIf: rowWasSelectedBeforeRenaming)
-			})
+			}
+		)
 		present(dialog, animated: true)
 	}
 	
@@ -145,7 +146,8 @@ extension CollectionsTVC {
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				originalViewModel,
-				thenSelecting: Set(originalSelectedIndexPaths))
+				thenSelecting: Set(originalSelectedIndexPaths)
+			)
 		}
 	}
 	

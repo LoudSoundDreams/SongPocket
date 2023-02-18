@@ -21,7 +21,8 @@ extension AlbumsTVC: OrganizeAlbumsDelegate {
 			
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				viewModel,
-				thenSelecting: Set(toSelect))
+				thenSelecting: Set(toSelect)
+			)
 		}
 	}
 }
