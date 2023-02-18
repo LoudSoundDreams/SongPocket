@@ -24,7 +24,7 @@ extension CollectionsTVC {
 		let dialog = UIAlertController.make_Rename_dialog(
 			existing_title: collection.title,
 			textFieldDelegate: self,
-			saveHandler: { [weak self] textFieldText in
+			done_handler: { [weak self] textFieldText in
 				self?.commitRename(
 					at: indexPath,
 					proposedTitle: textFieldText,
@@ -49,7 +49,6 @@ extension CollectionsTVC {
 		
 		Task {
 			if didChangeTitle {
-				// See corresponding comment in `commitCombine`.
 				await tableView.performBatchUpdates__async {
 					self.tableView.reloadRows(at: [indexPath], with: .fade)
 				} runningBeforeContinuation: {

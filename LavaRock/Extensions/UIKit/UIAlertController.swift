@@ -11,7 +11,7 @@ extension UIAlertController {
 	static func make_Rename_dialog(
 		existing_title: String?,
 		textFieldDelegate: UITextFieldDelegate,
-		saveHandler: @escaping (_ textFieldText: String?) -> Void
+		done_handler: @escaping (_ textFieldText: String?) -> Void
 	) -> Self {
 		let dialog = Self(
 			title: LRString.renameFolder,
@@ -37,7 +37,7 @@ extension UIAlertController {
 			style: .default
 		) { _ in
 			let textFieldText = dialog.textFields?.first?.text
-			saveHandler(textFieldText)
+			done_handler(textFieldText)
 		}
 		
 		dialog.addAction(saveAction)
