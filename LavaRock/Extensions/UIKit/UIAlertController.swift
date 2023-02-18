@@ -8,21 +8,20 @@
 import UIKit
 
 extension UIAlertController {
-	static func forEditingCollectionTitle(
-		alertTitle: String,
-		text_field_content_and_placeholder: String?,
+	static func make_Rename_dialog(
+		existing_title: String?,
 		textFieldDelegate: UITextFieldDelegate,
 		cancelHandler: (() -> Void)?,
 		saveHandler: @escaping (_ textFieldText: String?) -> Void
 	) -> Self {
 		let dialog = Self(
-			title: alertTitle,
+			title: LRString.renameFolder,
 			message: nil,
 			preferredStyle: .alert)
 		dialog.addTextField { textField in
 			// UITextField
-			textField.text = text_field_content_and_placeholder
-			textField.placeholder = text_field_content_and_placeholder
+			textField.text = existing_title
+			textField.placeholder = existing_title
 			textField.clearButtonMode = .always
 			
 			// UITextInputTraits

@@ -21,9 +21,8 @@ extension CollectionsTVC {
 		
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		
-		let dialog = UIAlertController.forEditingCollectionTitle(
-			alertTitle: LRString.renameFolder,
-			text_field_content_and_placeholder: collection.title,
+		let dialog = UIAlertController.make_Rename_dialog(
+			existing_title: collection.title,
 			textFieldDelegate: self,
 			cancelHandler: nil,
 			saveHandler: { [weak self] textFieldText in

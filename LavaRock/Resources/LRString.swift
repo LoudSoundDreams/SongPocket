@@ -13,7 +13,7 @@ import MediaPlayer
 enum LRString {
 	// Don’t pass arguments other than strings to the Foundation function `NSLocalizedString`, because otherwise, when you choose “Export Localizations…”, Xcode won’t include those calls.
 	
-	// MARK: - Without Variables
+	// MARK: - Without variables
 	
 	// MARK: Standard
 	
@@ -73,7 +73,7 @@ enum LRString {
 		" Thank You! ",
 		comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
 	
-	// MARK: Transport Bar
+	// MARK: Transport bar
 	
 	static let previous = NSLocalizedString("Previous", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
@@ -83,7 +83,7 @@ enum LRString {
 	static let skip10SecondsForward = NSLocalizedString("Skip 10 seconds forward", comment: "Accessibility label, button")
 	static let next = NSLocalizedString("Next", comment: "Button")
 	
-	// MARK: Now-Playing Marker
+	// MARK: Now-playing marker
 	
 	static let nowPlaying = NSLocalizedString("Now playing", comment: "Accessibility label")
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
@@ -97,7 +97,7 @@ enum LRString {
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
-	// MARK: Folders View
+	// MARK: Folders view
 	
 	static let folders = NSLocalizedString("Folders", comment: "Big title")
 	
@@ -119,7 +119,7 @@ enum LRString {
 		"Untitled Folder",
 		comment: "Default title for a folder if you create one and don’t provide a title.")
 	
-	// MARK: Albums View
+	// MARK: Albums view
 	
 	static let albums = NSLocalizedString("Albums", comment: "Big title")
 	
@@ -132,7 +132,7 @@ enum LRString {
 	
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
-	// MARK: Songs View
+	// MARK: Songs view
 	
 	static let songs = NSLocalizedString("Songs", comment: "Big title")
 	
@@ -164,15 +164,15 @@ enum LRString {
 	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")
 	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
 	
-	// MARK: - With Variables, but Without Text Variations (Format Strings)
+	// MARK: - With variables but without text variations (format strings)
 	
-	// MARK: Songs View
+	// MARK: Songs view
 	
 	static let format_quoted = NSLocalizedString(
 		"“%@”",
 		comment: "The input string, wrapped in quotation marks.")
 	
-	// MARK: - With Variables, and With Text Variations (Format Strings From Dictionaries)
+	// MARK: - With variables and text variations (format strings from dictionaries)
 	
 	// MARK: Folders
 	
@@ -192,16 +192,16 @@ enum LRString {
 		"plural - X_songs",
 		comment: "Status message")
 	
-	// MARK: Folders and Albums Views
+	// MARK: Folders and Albums views
 	
 	static let variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark = NSLocalizedString(
-		"plural - move_X_albums_to_Y_folders_by_album_artist?",
+		"plural - move_X_albums_to_Y_folders_by_album_artist_question_mark",
 		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of folders it’s moving them into.")
 	static let variable_chooseACollectionToMoveXAlbumsTo = NSLocalizedString(
 		"plural - move_X_albums_to",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
 	
-	// MARK: Songs View
+	// MARK: Songs view
 	
 	static func songTitleQuotedAndXMoreSongs_titleCase(
 		mediaItems: [MPMediaItem]

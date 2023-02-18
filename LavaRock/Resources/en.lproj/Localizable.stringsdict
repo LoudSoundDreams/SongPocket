@@ -50,7 +50,7 @@
 			<string>%lld Songs</string>
 		</dict>
 	</dict>
-	<key>plural - move_X_albums_to_Y_folders_by_album_artist?</key>
+	<key>plural - move_X_albums_to_Y_folders_by_album_artist_question_mark</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>Move %#@NUMBER_ALBUMS@ by %#@NUMBER_ALBUM_ARTISTS@?</string>
