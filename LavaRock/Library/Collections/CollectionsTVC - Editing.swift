@@ -23,7 +23,7 @@ extension CollectionsTVC {
 		
 		let dialog = UIAlertController.forEditingCollectionTitle(
 			alertTitle: LRString.renameFolderAlertTitle,
-			textFieldText: collection.title,
+			text_field_content_and_placeholder: collection.title,
 			textFieldDelegate: self,
 			cancelHandler: nil,
 			saveHandler: { [weak self] textFieldText in
@@ -128,7 +128,7 @@ extension CollectionsTVC {
 			
 			let dialog = UIAlertController.forEditingCollectionTitle(
 				alertTitle: LRString.combineFoldersAlertTitle,
-				textFieldText: titleForCombinedCollection,
+				text_field_content_and_placeholder: titleForCombinedCollection,
 				textFieldDelegate: self,
 				cancelHandler: { [weak self] in
 					self?.revertCombine(thenSelect: selectedIndexPaths)

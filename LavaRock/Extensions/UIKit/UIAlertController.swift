@@ -10,7 +10,7 @@ import UIKit
 extension UIAlertController {
 	static func forEditingCollectionTitle(
 		alertTitle: String,
-		textFieldText: String?,
+		text_field_content_and_placeholder: String?,
 		textFieldDelegate: UITextFieldDelegate?,
 		cancelHandler: (() -> Void)?,
 		saveHandler: @escaping (_ textFieldText: String?) -> Void
@@ -21,8 +21,8 @@ extension UIAlertController {
 			preferredStyle: .alert)
 		dialog.addTextField { textField in
 			// UITextField
-			textField.text = textFieldText
-			textField.placeholder = LRString.title
+			textField.text = text_field_content_and_placeholder
+			textField.placeholder = text_field_content_and_placeholder
 			textField.clearButtonMode = .always
 			
 			// UITextInputTraits
