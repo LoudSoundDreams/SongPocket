@@ -66,24 +66,6 @@ extension CollectionsTVC {
 	
 	// MARK: Combining
 	
-	private static func suggestedCollectionTitle(
-		combining collections: [Collection]
-	) -> String? {
-		let titles = collections.compactMap { $0.title }
-		guard let firstTitle = titles.first else {
-			return nil
-		}
-		let restOfTitles = titles.dropFirst()
-		
-		// If all the `Collection`s we’re combining have identical titles …
-		if restOfTitles.allSatisfy({ $0 == firstTitle }) {
-			return firstTitle
-		}
-		
-		// Otherwise, give up.
-		return nil
-	}
-	
 	func previewCombine() {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
@@ -94,12 +76,16 @@ extension CollectionsTVC {
 		
 		viewModelBeforeCombining = collectionsViewModel
 		
-		let selectedCollections = selectedIndexPaths.map { collectionsViewModel.collectionNonNil(at: $0) }
 		// Create a child context previewing the changes.
 		let previewContext = NSManagedObjectContext(.mainQueue)
 		previewContext.parent = viewModel.context
 		let combinedCollection = previewContext.createCollection(
-			byCombiningCollectionsWithInOrder: selectedCollections.map { $0.objectID },
+			byCombiningCollectionsWithInOrder: {
+				let selectedCollections = selectedIndexPaths.map {
+					collectionsViewModel.collectionNonNil(at: $0)
+				}
+				return selectedCollections.map { $0.objectID }
+			}(),
 			index: Int64(viewModel.itemIndex(forRow: targetIndexPath.row))
 		)
 		try! previewContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
