@@ -287,6 +287,7 @@ extension Album {
 		guard let releaseDateEstimate = releaseDateEstimate else {
 			return nil
 		}
+		// TO DO: Replace with `Date.formatted`
 		return Self.releaseDateFormatter.string(from: releaseDateEstimate)
 	}
 	private static let releaseDateFormatter: DateFormatter = {

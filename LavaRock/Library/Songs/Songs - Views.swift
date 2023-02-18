@@ -20,7 +20,7 @@ final class CoverArtCell: UITableViewCell {
 		os_signpost(.begin, log: .songsView, name: "Configure cover art")
 		contentConfiguration = UIHostingConfiguration {
 			CoverArtView(
-				albumRepresentative: albumRepresentative,
+				albumRepresentative: albumRepresentative, // TO DO: Redraw when artwork changes
 				maxHeight: maxHeight)
 			.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
 				viewDimensions[.leading]
