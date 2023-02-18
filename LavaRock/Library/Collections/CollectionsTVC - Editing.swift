@@ -128,9 +128,7 @@ extension CollectionsTVC {
 			}
 			albumsTVC.save_combine_action = UIAction { [weak self] _ in
 				self?.dismiss(animated: true, completion: {
-					self?.commitCombine(
-						into: targetIndexPath,
-						proposedTitle: LRString.combinedFolderDefaultTitle)
+					self?.commitCombine()
 				})
 			}
 			
@@ -152,17 +150,10 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func commitCombine(
-		into indexPathOfCombined: IndexPath,
-		proposedTitle: String?
-	) {
+	private func commitCombine() {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		viewModelBeforeCombining = nil
-		
-		let didChangeTitle = collectionsViewModel.renameAndReturnDidChangeTitle(
-			at: indexPathOfCombined,
-			proposedTitle: proposedTitle)
 		
 		viewModel.context.tryToSave()
 		viewModel.context.parent!.tryToSave()
@@ -171,15 +162,6 @@ extension CollectionsTVC {
 			context: viewModel.context.parent!,
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		Task {
-			if didChangeTitle {
-				// I would prefer not waiting for the reload animation to complete before exiting editing mode.
-				await tableView.performBatchUpdates__async {
-					self.tableView.reloadRows(at: [indexPathOfCombined], with: .fade)
-				} runningBeforeContinuation: {
-					self.tableView.selectRow(at: indexPathOfCombined, animated: false, scrollPosition: .none)
-				}
-			}
-			
 			setEditing(false, animated: true)
 			
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(

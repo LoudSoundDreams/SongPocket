@@ -113,7 +113,6 @@ enum LRString {
 	static let renameFolder = NSLocalizedString("Rename Folder", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
-	static let combinedFolderDefaultTitle = NSLocalizedString("Combined Folder", comment: "Alert title")
 	
 	static let newFolder = NSLocalizedString("New Folder", comment: "Button")
 	static let untitledFolder = NSLocalizedString(
