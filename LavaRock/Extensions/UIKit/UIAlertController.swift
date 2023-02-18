@@ -11,7 +11,6 @@ extension UIAlertController {
 	static func make_Rename_dialog(
 		existing_title: String?,
 		textFieldDelegate: UITextFieldDelegate,
-		cancelHandler: (() -> Void)?,
 		saveHandler: @escaping (_ textFieldText: String?) -> Void
 	) -> Self {
 		let dialog = Self(
@@ -33,16 +32,14 @@ extension UIAlertController {
 			textField.delegate = textFieldDelegate
 		}
 		
-		let cancelAction = UIAlertAction.cancelWithHandler { _ in cancelHandler?() }
 		let saveAction = UIAlertAction(
-			title: LRString.save,
+			title: LRString.done,
 			style: .default
 		) { _ in
 			let textFieldText = dialog.textFields?.first?.text
 			saveHandler(textFieldText)
 		}
 		
-		dialog.addAction(cancelAction)
 		dialog.addAction(saveAction)
 		dialog.preferredAction = saveAction
 		

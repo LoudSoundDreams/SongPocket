@@ -24,7 +24,6 @@ extension CollectionsTVC {
 		let dialog = UIAlertController.make_Rename_dialog(
 			existing_title: collection.title,
 			textFieldDelegate: self,
-			cancelHandler: nil,
 			saveHandler: { [weak self] textFieldText in
 				self?.commitRename(
 					at: indexPath,
@@ -59,8 +58,6 @@ extension CollectionsTVC {
 					}
 				}
 			}
-			
-			setEditing(false, animated: true)
 		}
 	}
 	
@@ -128,7 +125,7 @@ extension CollectionsTVC {
 			}
 			albumsTVC.save_combine_action = UIAction { [weak self] _ in
 				self?.dismiss(animated: true, completion: {
-					self?.commitCombine()
+					self?.commitCombine(into: targetIndexPath)
 				})
 			}
 			
@@ -151,7 +148,9 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func commitCombine() {
+	private func commitCombine(
+		into indexPathOfCombined: IndexPath
+	) {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		viewModelBeforeCombining = nil
@@ -163,10 +162,10 @@ extension CollectionsTVC {
 			context: viewModel.context.parent!,
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		Task {
-			setEditing(false, animated: true)
-			
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				newViewModel)
+				newViewModel,
+				thenSelecting: [indexPathOfCombined]
+			)
 		}
 	}
 }
