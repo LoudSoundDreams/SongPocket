@@ -107,7 +107,7 @@ enum LRString {
 		comment: "Placeholder for when the app’s database is empty")
 	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
 	
-	static let title = NSLocalizedString("Title", comment: "The word for the name of a folder, album, or song. Also the name of a sort option.")
+	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also a sort option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let renameFolder = NSLocalizedString("Rename Folder", comment: "Alert title")
@@ -127,8 +127,8 @@ enum LRString {
 	static let byAlbumArtistEllipsis = NSLocalizedString("By Album Artist…", comment: "Menu option")
 	static let toFolderEllipsis = NSLocalizedString("To Folder…", comment: "Menu option")
 	
-	static let newest = NSLocalizedString("Newest", comment: "Sort option")
-	static let oldest = NSLocalizedString("Oldest", comment: "Sort option")
+	static let new = NSLocalizedString("New", comment: "Sort option")
+	static let old = NSLocalizedString("Old", comment: "Sort option")
 	
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
@@ -147,7 +147,7 @@ enum LRString {
 	static let queueRestOfAlbum = NSLocalizedString("Queue Song and Below", comment: "Button")
 	static let queueSong = NSLocalizedString("Queue Song", comment: "Button")
 	
-	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
+	static let track = NSLocalizedString("Track", comment: "Sort option")
 	
 	// MARK: Console
 	

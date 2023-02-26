@@ -9,14 +9,14 @@ import UIKit
 
 enum SortCommand: CaseIterable {
 	// For `Collection`s only
-	case title
+	case folder_name
 	
 	// For `Album`s only
-	case newestFirst
-	case oldestFirst
+	case album_new
+	case album_old
 	
 	// For `Song`s only
-	case trackNumber
+	case song_track
 	
 	// For all types
 	case scramble
@@ -24,14 +24,14 @@ enum SortCommand: CaseIterable {
 	
 	func localizedName() -> String {
 		switch self {
-		case .title:
-			return LRString.title
-		case .newestFirst:
-			return LRString.newest
-		case .oldestFirst:
-			return LRString.oldest
-		case .trackNumber:
-			return LRString.trackNumber
+		case .folder_name:
+			return LRString.name
+		case .album_new:
+			return LRString.new
+		case .album_old:
+			return LRString.old
+		case .song_track:
+			return LRString.track
 		case .scramble:
 			return LRString.random
 		case .reverse:
@@ -41,13 +41,13 @@ enum SortCommand: CaseIterable {
 	
 	func uiImage() -> UIImage? {
 		switch self {
-		case .title:
+		case .folder_name:
 			return UIImage(systemName: "textformat.abc")
-		case .newestFirst:
+		case .album_new:
 			return UIImage(systemName: "hourglass.bottomhalf.filled")
-		case .oldestFirst:
+		case .album_old:
 			return UIImage(systemName: "hourglass.tophalf.filled")
-		case .trackNumber:
+		case .song_track:
 			return UIImage(systemName: "textformat.123")
 		case .scramble:
 			switch Int.random(in: 1...6) {

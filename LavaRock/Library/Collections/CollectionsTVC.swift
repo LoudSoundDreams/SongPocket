@@ -194,7 +194,7 @@ final class CollectionsTVC:
 		super.init(coder: coder)
 		
 		sortCommandsGrouped = [
-			[.title],
+			[.folder_name],
 			[.scramble, .reverse],
 		]
 	}

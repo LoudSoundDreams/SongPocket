@@ -24,7 +24,7 @@ final class SongsTVC:
 		super.init(coder: coder)
 		
 		sortCommandsGrouped = [
-			[.trackNumber],
+			[.song_track],
 			[.scramble, .reverse],
 		]
 	}

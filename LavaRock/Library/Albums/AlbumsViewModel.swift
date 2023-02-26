@@ -49,16 +49,16 @@ extension AlbumsViewModel: LibraryViewModel {
 		forItems items: [NSManagedObject]
 	) -> Bool {
 		switch sortCommand {
-		case .title:
+		case .folder_name:
 			return false
 		case
-				.newestFirst,
-				.oldestFirst:
+				.album_new,
+				.album_old:
 			guard let albums = items as? [Album] else {
 				return false
 			}
 			return albums.contains { $0.releaseDateEstimate != nil }
-		case .trackNumber:
+		case .song_track:
 			return false
 		case
 				.scramble,

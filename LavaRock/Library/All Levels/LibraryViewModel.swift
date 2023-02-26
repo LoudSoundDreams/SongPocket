@@ -260,7 +260,7 @@ extension LibraryViewModel {
 		}
 		switch sortCommand {
 			
-		case .title:
+		case .folder_name:
 			guard let collections = items as? [Collection] else {
 				return items
 			}
@@ -270,7 +270,7 @@ extension LibraryViewModel {
 				return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
 			}
 			
-		case .newestFirst:
+		case .album_new:
 			guard let albums = items as? [Album] else {
 				return items
 			}
@@ -279,7 +279,7 @@ extension LibraryViewModel {
 			} areInOrder: {
 				$0.precedesByNewestFirst($1)
 			}
-		case .oldestFirst:
+		case .album_old:
 			guard let albums = items as? [Album] else {
 				return items
 			}
@@ -289,7 +289,7 @@ extension LibraryViewModel {
 				$0.precedesByOldestFirst($1)
 			}
 			
-		case .trackNumber:
+		case .song_track:
 			guard let songs = items as? [Song] else {
 				return items
 			}
