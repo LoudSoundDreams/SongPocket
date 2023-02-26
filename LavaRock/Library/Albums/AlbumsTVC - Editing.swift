@@ -20,7 +20,7 @@ extension AlbumsTVC {
 		
 		let selectedIndexPaths = tableView.selectedIndexPaths
 		
-		let indexPathsToOrganize = albumsViewModel.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+		let indexPathsToOrganize = albumsViewModel.indexPaths_for_all_if_empty_else_sorted(
 			selectedIndexPaths: selectedIndexPaths)
 		let albumsInOriginalContextToMaybeMove = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
 		
@@ -188,7 +188,7 @@ extension AlbumsTVC {
 		// Configure the `CollectionsTVC`.
 		collectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
 			albumsBeingMoved: {
-				let indexPathsToMove = selfVM.sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+				let indexPathsToMove = selfVM.indexPaths_for_all_if_empty_else_sorted(
 					selectedIndexPaths: tableView.selectedIndexPaths)
 				return indexPathsToMove.map { selfVM.albumNonNil(at: $0) }
 			}(),

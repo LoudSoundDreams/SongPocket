@@ -126,7 +126,7 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	func unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+	func indexPaths_for_all_if_empty_else_unsorted(
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
@@ -135,7 +135,7 @@ extension LibraryViewModel {
 			return selectedIndexPaths
 		}
 	}
-	func sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+	func indexPaths_for_all_if_empty_else_sorted(
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {
 		if selectedIndexPaths.isEmpty {
@@ -199,7 +199,7 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath],
 		sortCommandLocalizedName: String
 	) -> Self {
-		let indexPathsToSort = sortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+		let indexPathsToSort = indexPaths_for_all_if_empty_else_sorted(
 			selectedIndexPaths: selectedIndexPaths)
 		
 		let rowsBySection = indexPathsToSort.unsortedRowsBySection()

@@ -154,7 +154,7 @@ extension AlbumsViewModel {
 	func allowsOrganize(
 		selectedIndexPaths: [IndexPath]
 	) -> Bool {
-		let indexPathsToOrganize = unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+		let indexPathsToOrganize = indexPaths_for_all_if_empty_else_unsorted(
 			selectedIndexPaths: selectedIndexPaths)
 		let albumsToOrganize = indexPathsToOrganize.map { albumNonNil(at: $0) }
 		return albumsToOrganize.contains {

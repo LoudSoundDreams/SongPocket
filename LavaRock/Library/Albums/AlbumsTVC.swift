@@ -230,7 +230,7 @@ final class AlbumsTVC:
 		
 		return UIMenu(
 			title: {
-				let subjectedCount = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+				let subjectedCount = viewModel.indexPaths_for_all_if_empty_else_unsorted(
 					selectedIndexPaths: tableView.selectedIndexPaths)
 					.count
 				return String.localizedStringWithFormat(

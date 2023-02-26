@@ -438,7 +438,7 @@ class LibraryTVC: UITableViewController {
 						}
 						let allowed: Bool = {
 							let viewModel = self.viewModel
-							let indexPathsToSort = viewModel.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+							let indexPathsToSort = viewModel.indexPaths_for_all_if_empty_else_unsorted(
 								selectedIndexPaths: self.tableView.selectedIndexPaths)
 							let items = indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
 							return viewModel.allowsSortCommand(sortCommand, forItems: items)
@@ -468,7 +468,7 @@ class LibraryTVC: UITableViewController {
 						return ""
 					}
 					let subjectedCount = viewModel
-						.unsortedOrForAllItemsIfNoneSelectedAndViewContainerIsSpecific(
+						.indexPaths_for_all_if_empty_else_unsorted(
 							selectedIndexPaths: tableView.selectedIndexPaths)
 						.count
 					return String.localizedStringWithFormat(
