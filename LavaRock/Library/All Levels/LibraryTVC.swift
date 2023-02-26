@@ -440,6 +440,9 @@ class LibraryTVC: UITableViewController {
 							let viewModel = self.viewModel
 							let indexPathsToSort = viewModel.indexPaths_for_all_if_empty_else_unsorted(
 								selectedIndexPaths: self.tableView.selectedIndexPaths)
+							guard indexPathsToSort.count >= 2 else {
+								return false
+							}
 							let items = indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
 							return viewModel.allowsSortCommand(sortCommand, forItems: items)
 						}()
