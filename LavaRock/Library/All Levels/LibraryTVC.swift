@@ -408,6 +408,13 @@ class LibraryTVC: UITableViewController {
 				return false
 			}
 			let selectedIndexPaths = tableView.selectedIndexPaths
+			
+			let to_sort = viewModel.indexPaths_for_all_if_empty_else_unsorted(
+				selectedIndexPaths: selectedIndexPaths)
+			guard to_sort.count >= 2 else {
+				return false
+			}
+			
 			if selectedIndexPaths.isEmpty {
 				return true
 			} else {
