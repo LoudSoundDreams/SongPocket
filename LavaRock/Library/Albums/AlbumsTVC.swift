@@ -92,8 +92,6 @@ final class AlbumsTVC:
 		case .browsing:
 			break
 		}
-		
-		navigationItem.largeTitleDisplayMode = .never
 	}
 	
 	private lazy var save_combine_button: UIBarButtonItem = {
