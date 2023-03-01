@@ -41,20 +41,18 @@ extension CollectionsTVC {
 	) {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
-		let didChangeTitle = collectionsViewModel.renameAndReturnDidChangeTitle(
+		let _ = collectionsViewModel.renameAndReturnDidChangeTitle(
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		
 		viewModel.context.tryToSave()
 		
 		Task {
-			if didChangeTitle {
-				await tableView.performBatchUpdates__async {
-					self.tableView.reloadRows(at: [indexPath], with: .fade)
-				} runningBeforeContinuation: {
-					if shouldSelectRow {
-						self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-					}
+			await tableView.performBatchUpdates__async {
+				self.tableView.reloadRows(at: [indexPath], with: .fade)
+			} runningBeforeContinuation: {
+				if shouldSelectRow {
+					self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 				}
 			}
 		}
