@@ -49,6 +49,6 @@ struct AlbumInfoRow: View {
 			
 			Spacer()
 		}
-		.padding(.bottom, .eight * 4/8)
+		.padding(.bottom, .eight * 5/8)
 	}
 }
