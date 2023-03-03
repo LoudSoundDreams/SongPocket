@@ -284,16 +284,6 @@ extension Album {
 	}
 	
 	final func releaseDateEstimateFormattedOptional() -> String? {
-		guard let releaseDateEstimate = releaseDateEstimate else {
-			return nil
-		}
-		// TO DO: Replace with `Date.formatted`
-		return Self.releaseDateFormatter.string(from: releaseDateEstimate)
+		return releaseDateEstimate?.formatted(date: .abbreviated, time: .omitted)
 	}
-	private static let releaseDateFormatter: DateFormatter = {
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateStyle = .medium
-		dateFormatter.timeStyle = .none
-		return dateFormatter
-	}()
 }
