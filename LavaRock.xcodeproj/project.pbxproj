@@ -90,7 +90,6 @@
 		07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* Collection.swift */; };
 		07B1EC40271FB7F600EA8E29 /* ConsoleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1EC3F271FB7F600EA8E29 /* ConsoleVC.swift */; };
 		07B2CD832741A218004A0743 /* CollectionsOrAlbumsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B2CD822741A217004A0743 /* CollectionsOrAlbumsGroup.swift */; };
-		07B35E2D288670EE00159FD9 /* OSSignposter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E2C288670EE00159FD9 /* OSSignposter.swift */; };
 		07B35E2F2886F98E00159FD9 /* AccentColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */; };
 		07B35E312886FB5100159FD9 /* TipJarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E302886FB5100159FD9 /* TipJarView.swift */; };
 		07C8CC76271281B70061A9AD /* SettingsTVC - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C8CC75271281B70061A9AD /* SettingsTVC - Views.swift */; };
@@ -241,7 +240,6 @@
 		07AE2AA3258C09D900C3A314 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		07B1EC3F271FB7F600EA8E29 /* ConsoleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleVC.swift; sourceTree = "<group>"; };
 		07B2CD822741A217004A0743 /* CollectionsOrAlbumsGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionsOrAlbumsGroup.swift; sourceTree = "<group>"; };
-		07B35E2C288670EE00159FD9 /* OSSignposter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSSignposter.swift; sourceTree = "<group>"; };
 		07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorPicker.swift; sourceTree = "<group>"; };
 		07B35E302886FB5100159FD9 /* TipJarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarView.swift; sourceTree = "<group>"; };
 		07C8CC75271281B70061A9AD /* SettingsTVC - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTVC - Views.swift"; sourceTree = "<group>"; };
@@ -554,7 +552,6 @@
 			isa = PBXGroup;
 			children = (
 				07AB7029273C9A52002B5098 /* Standard Library */,
-				07B35E2C288670EE00159FD9 /* OSSignposter.swift */,
 				076B4DEC27738FF4004B523D /* OSLog.swift */,
 				07E0BBD8276567760010117E /* Foundation */,
 				07E0BBE12765678F0010117E /* UIKit */,
@@ -866,7 +863,6 @@
 				07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */,
 				075218A2257C498D0077AE9B /* LRString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,
-				07B35E2D288670EE00159FD9 /* OSSignposter.swift in Sources */,
 				0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */,
 				07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */,
 				07962319281265AB00EE026F /* SettingsNC.swift in Sources */,
