@@ -9,10 +9,6 @@ import UIKit
 import OSLog
 
 extension Array {
-	private var signposter: OSSignposter {
-		.standardLibrary
-	}
-	
 	// MARK: - Ordering
 	
 	func inAnyOtherOrder() -> Self
@@ -73,11 +69,15 @@ where Element: LibraryItem
 extension Array
 where Element == IndexPath
 {
+	private static var signposter = OSSignposter(
+		subsystem: "[IndexPath]",
+		category: .pointsOfInterest)
+	
 	func unsortedRowsBySection() -> [Int: [Int]]
 	{
-		let state = signposter.beginInterval("make unsorted")
+		let state = Self.signposter.beginInterval("make unsorted")
 		defer {
-			signposter.endInterval("make unsorted", state)
+			Self.signposter.endInterval("make unsorted", state)
 		}
 		let indexPathsBySection: [Int: [IndexPath]] = Dictionary(grouping: self) { $0.section }
 		return indexPathsBySection.mapValues { indexPaths in
@@ -87,9 +87,9 @@ where Element == IndexPath
 	
 	func sortedRowsBySection() -> [Int: [Int]]
 	{
-		let state = signposter.beginInterval("make sorted")
+		let state = Self.signposter.beginInterval("make sorted")
 		defer {
-			signposter.endInterval("make sorted", state)
+			Self.signposter.endInterval("make sorted", state)
 		}
 		let indexPathsBySection: [Int: [IndexPath]] = Dictionary(grouping: self) { $0.section }
 		return indexPathsBySection.mapValues { indexPaths in

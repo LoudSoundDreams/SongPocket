@@ -10,9 +10,9 @@ import OSLog
 
 @MainActor
 extension MPMusicPlayerController {
-	private var signposter: OSSignposter {
-		.mediaPlayer
-	}
+	private static var signposter = OSSignposter(
+		subsystem: "MPMusicPlayerController",
+		category: .pointsOfInterest)
 	
 	final func now_playing_SongID() -> SongID? {
 #if targetEnvironment(simulator)
@@ -34,9 +34,9 @@ extension MPMusicPlayerController {
 			Reel.setMediaItems(mediaItems)
 		}
 		
-		let setQueueInterval = signposter.beginInterval("set queue")
+		let setQueueInterval = Self.signposter.beginInterval("set queue")
 		setQueue(mediaItems: mediaItems)
-		signposter.endInterval("set queue", setQueueInterval)
+		Self.signposter.endInterval("set queue", setQueueInterval)
 		
 		// As of iOS 15.6 RC 2, with `systemMusicPlayer`, you must set these after calling `setQueue`, not before, or they won’t actually apply.
 		repeatMode = new_repeat_mode
@@ -44,9 +44,9 @@ extension MPMusicPlayerController {
 			shuffleMode = .off
 		}
 		
-		let playInterval = signposter.beginInterval("play")
+		let playInterval = Self.signposter.beginInterval("play")
 		play()
-		signposter.endInterval("play", playInterval)
+		Self.signposter.endInterval("play", playInterval)
 	}
 	
 	final func playNext(_ mediaItems: [MPMediaItem]) {
