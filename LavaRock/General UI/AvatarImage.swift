@@ -35,8 +35,7 @@ struct AvatarImage: View {
 	var body: some View {
 		ZStack {
 			
-			Image(systemName: Avatar.preference.playingSFSymbolName)
-				.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
+			playing_image
 				.hidden()
 			
 			switch state {
@@ -47,12 +46,16 @@ struct AvatarImage: View {
 					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 					.foregroundColor(.accentColor)
 			case .playing:
-				Image(systemName: Avatar.preference.playingSFSymbolName)
-					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
+				playing_image
 					.foregroundColor(.accentColor)
 			}
 			
 		}
+	}
+	
+	private var playing_image: some View {
+		Image(systemName: Avatar.preference.playingSFSymbolName)
+			.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 	}
 }
 

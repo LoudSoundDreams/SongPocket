@@ -97,17 +97,21 @@ final class OpenMusicCell: UITableViewCell {
 final class CreateCollectionCell: UITableViewCell {
 	@IBOutlet private var newCollectionLabel: UILabel!
 	
+	private static let usesSwiftUI__ = 10 == 1
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		selectedBackgroundView_add_tint()
 		
-		Task {
-			accessibilityTraits.formUnion(.button)
+		if Self.usesSwiftUI__ {
+		} else {
+			Task {
+				accessibilityTraits.formUnion(.button)
+			}
+			
+			newCollectionLabel.text = LRString.newFolder
+			newCollectionLabel.textColor = .tintColor
 		}
-		
-		newCollectionLabel.text = LRString.newFolder
-		newCollectionLabel.textColor = .tintColor
 	}
 	
 	override func layoutSubviews() {
@@ -118,6 +122,8 @@ final class CreateCollectionCell: UITableViewCell {
 }
 
 final class CollectionCell: UITableViewCell {
+	private static let usesSwiftUI__ = 10 == 1
+	
 	enum Mode {
 		case normal([UIAccessibilityCustomAction])
 		case modal
@@ -130,7 +136,7 @@ final class CollectionCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	static let usesUIKitAccessibility__ = true
+	static let usesUIKitAccessibility__ = !usesSwiftUI__
 	var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var titleLabel: UILabel!
@@ -147,9 +153,8 @@ final class CollectionCell: UITableViewCell {
 		with collection: Collection,
 		mode: Mode
 	) {
-		titleLabel.text = { () -> String in
-			return collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
-		}()
+		
+		titleLabel.text = collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
 		switch mode {
 		case .normal(let actions):
 			backgroundColor_set_to_clear()
@@ -186,9 +191,12 @@ final class CollectionCell: UITableViewCell {
 			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
 		
 		// Exclude the now-playing marker’s accessibility label.
-		accessibilityUserInputLabels = [
-			titleLabel.text,
-		].compacted()
+		if Self.usesUIKitAccessibility__ {
+			accessibilityUserInputLabels = [
+				titleLabel.text,
+			].compacted()
+		}
+		
 	}
 	
 	override func layoutSubviews() {

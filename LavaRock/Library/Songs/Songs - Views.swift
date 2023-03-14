@@ -73,12 +73,12 @@ final class SongCell: UITableViewCell {
 		
 		backgroundColor_set_to_clear()
 		
-		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
-		numberLabel.font = spacerNumberLabel.font
-		
-		dotDotDotButton.maximumContentSizeCategory = .extraExtraExtraLarge
-		
 		if !Self.usesSwiftUI__ {
+			spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
+			numberLabel.font = spacerNumberLabel.font
+			
+			dotDotDotButton.maximumContentSizeCategory = .extraExtraExtraLarge
+			
 			accessibilityTraits.formUnion(.button)
 		}
 	}
@@ -158,24 +158,22 @@ final class SongCell: UITableViewCell {
 				textStack.spacing = 4
 			}
 			
-		}
-		
-		rowContentAccessibilityLabel__ = [
-			numberLabel.text,
-			titleLabel.text,
-			artistLabel.text,
-		].compactedAndFormattedAsNarrowList()
-		
-		reflectPlayhead(
-			containsPlayhead: song.containsPlayhead(),
-			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
-		
-		freshenDotDotDotButton()
-		
-		if !Self.usesSwiftUI__ {
+			rowContentAccessibilityLabel__ = [
+				numberLabel.text,
+				titleLabel.text,
+				artistLabel.text,
+			].compactedAndFormattedAsNarrowList()
+			
+			reflectPlayhead(
+				containsPlayhead: song.containsPlayhead(),
+				rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+			
+			freshenDotDotDotButton()
+			
 			accessibilityUserInputLabels = [
 				songTitleDisplay, // Excludes the “unknown title” placeholder, which is currently a dash.
 			].compacted()
+			
 		}
 		
 		// Set menu, and require creating that menu
