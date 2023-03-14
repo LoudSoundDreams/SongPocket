@@ -50,7 +50,6 @@ struct SongRow: View {
 			
 			// TO DO: Expand tappable area
 			Button {
-				
 			} label: {
 				Image(systemName: "ellipsis")
 					.font(.body)
