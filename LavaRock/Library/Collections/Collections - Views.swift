@@ -153,50 +153,54 @@ final class CollectionCell: UITableViewCell {
 		with collection: Collection,
 		mode: Mode
 	) {
-		
-		titleLabel.text = collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
-		switch mode {
-		case .normal(let actions):
-			backgroundColor_set_to_clear()
+		if Self.usesSwiftUI__ {
 			
-			contentView.layer.opacity = 1
-			enableWithAccessibilityTrait()
-			accessibilityCustomActions = actions
-		case .modal:
-			backgroundColor_set_to_clear()
+		} else {
 			
-			contentView.layer.opacity = 1
-			enableWithAccessibilityTrait()
-			accessibilityCustomActions = []
-		case .modalTinted:
-			backgroundColor = .tintColor.withAlphaComponentOneEighth()
+			titleLabel.text = collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
+			switch mode {
+			case .normal(let actions):
+				backgroundColor_set_to_clear()
+				
+				contentView.layer.opacity = 1
+				enableWithAccessibilityTrait()
+				accessibilityCustomActions = actions
+			case .modal:
+				backgroundColor_set_to_clear()
+				
+				contentView.layer.opacity = 1
+				enableWithAccessibilityTrait()
+				accessibilityCustomActions = []
+			case .modalTinted:
+				backgroundColor = .tintColor.withAlphaComponentOneEighth()
+				
+				contentView.layer.opacity = 1
+				enableWithAccessibilityTrait()
+				accessibilityCustomActions = []
+				
+				
+			case .modalDisabled:
+				backgroundColor_set_to_clear()
+				
+				contentView.layer.opacity = .oneFourth
+				disableWithAccessibilityTrait()
+				accessibilityCustomActions = []
+			}
 			
-			contentView.layer.opacity = 1
-			enableWithAccessibilityTrait()
-			accessibilityCustomActions = []
+			rowContentAccessibilityLabel__ = titleLabel.text
 			
+			reflectPlayhead(
+				containsPlayhead: collection.containsPlayhead(),
+				rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
 			
-		case .modalDisabled:
-			backgroundColor_set_to_clear()
+			// Exclude the now-playing marker’s accessibility label.
+			if Self.usesUIKitAccessibility__ {
+				accessibilityUserInputLabels = [
+					titleLabel.text,
+				].compacted()
+			}
 			
-			contentView.layer.opacity = .oneFourth
-			disableWithAccessibilityTrait()
-			accessibilityCustomActions = []
 		}
-		
-		rowContentAccessibilityLabel__ = titleLabel.text
-		
-		reflectPlayhead(
-			containsPlayhead: collection.containsPlayhead(),
-			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
-		
-		// Exclude the now-playing marker’s accessibility label.
-		if Self.usesUIKitAccessibility__ {
-			accessibilityUserInputLabels = [
-				titleLabel.text,
-			].compacted()
-		}
-		
 	}
 	
 	override func layoutSubviews() {
