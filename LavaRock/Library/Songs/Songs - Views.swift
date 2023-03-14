@@ -116,7 +116,7 @@ final class SongCell: UITableViewCell {
 			}()
 			return result ?? "‒" // Figure dash
 		}()
-		let songTitleDisplay: String? = metadatum?.titleOnDisk
+		let song_title: String? = metadatum?.titleOnDisk
 		let artistDisplayOptional: String? = {
 			let albumArtistOptional = representative?.albumArtistOnDisk
 			if
@@ -134,23 +134,19 @@ final class SongCell: UITableViewCell {
 			contentConfiguration = UIHostingConfiguration {
 				SongRow(
 					trackDisplay: trackDisplay,
-					songTitleDisplay: songTitleDisplay,
-					artistDisplayOptional: artistDisplayOptional,
+					song_title: song_title,
+					artist_if_different_from_album_artist: artistDisplayOptional,
 					songID: song.persistentID)
 			}
 			
 		} else {
 			
 			spacerNumberLabel.text = spacerTrackNumberText
-			numberLabel.text = { () -> String in
-				trackDisplay
-			}()
+			numberLabel.text = trackDisplay
 			titleLabel.text = { () -> String in
-				songTitleDisplay ?? SongMetadatumPlaceholder.unknownTitle
+				song_title ?? SongMetadatumPlaceholder.unknownTitle
 			}()
-			artistLabel.text = { () -> String? in
-				artistDisplayOptional
-			}()
+			artistLabel.text = artistDisplayOptional
 			
 			if artistLabel.text == nil {
 				textStack.spacing = 0
@@ -171,7 +167,7 @@ final class SongCell: UITableViewCell {
 			freshenDotDotDotButton()
 			
 			accessibilityUserInputLabels = [
-				songTitleDisplay, // Excludes the “unknown title” placeholder, which is currently a dash.
+				song_title, // Excludes the “unknown title” placeholder, which is currently a dash.
 			].compacted()
 			
 		}

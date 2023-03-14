@@ -9,8 +9,8 @@ import SwiftUI
 
 struct SongRow: View {
 	let trackDisplay: String
-	let songTitleDisplay: String?
-	let artistDisplayOptional: String?
+	let song_title: String?
+	let artist_if_different_from_album_artist: String?
 	let songID: SongID
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
@@ -30,10 +30,10 @@ struct SongRow: View {
 					alignment: .leading,
 					spacing: .eight * 1/2 // 4
 				) {
-					Text(songTitleDisplay ?? SongMetadatumPlaceholder.unknownTitle)
+					Text(song_title ?? SongMetadatumPlaceholder.unknownTitle)
 					
-					if let artistDisplay = artistDisplayOptional {
-						Text(artistDisplay)
+					if let artist = artist_if_different_from_album_artist {
+						Text(artist)
 							.font(.caption)
 							.foregroundColor(.secondary)
 							.padding(.bottom, .eight * 1/4) // 2
@@ -82,8 +82,8 @@ struct SongRow: View {
 			return [
 				nowPlayingStatusAccessibilityLabel,
 				trackDisplay,
-				songTitleDisplay,
-				artistDisplayOptional,
+				song_title,
+				artist_if_different_from_album_artist,
 			].compactedAndFormattedAsNarrowList()
 		}())
 		
@@ -91,7 +91,7 @@ struct SongRow: View {
 		
 		.accessibilityInputLabels(
 			[
-				songTitleDisplay, // Excludes the “unknown title” placeholder, which is currently a dash.
+				song_title, // Excludes the “unknown title” placeholder, which is currently a dash.
 			].compacted()
 		)
 		
