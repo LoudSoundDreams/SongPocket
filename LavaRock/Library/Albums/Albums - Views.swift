@@ -100,12 +100,9 @@ final class AlbumCell: UITableViewCell {
 		}
 		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
-		titleLabel.text = { () -> String in
-			return album.representativeTitleFormattedOptional() ?? Album.unknownTitlePlaceholder
-		}()
-		
+		titleLabel.text = album.representativeTitleFormattedOptional() ?? Album.unknownTitlePlaceholder
 		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()
-		 
+		
 		if releaseDateLabel.text == nil {
 			// We couldn’t determine the album’s release date.
 			textStack.spacing = 0
