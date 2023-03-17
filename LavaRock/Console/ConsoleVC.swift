@@ -12,27 +12,8 @@ import SwiftUI
 final class ConsoleVC: UIViewController {
 	@IBOutlet private(set) var reelTable: UITableView!
 	
-	var player: MPMusicPlayerController? { TapeDeck.shared.player }
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		navigationItem.leftBarButtonItem = UIBarButtonItem(
-			title: LRString.clear,
-			primaryAction: UIAction { _ in
-//				Reel.setMediaItems([])
-//				TapeDeck.shared.player?.setQueue(mediaItems: []) // As of iOS 15.5, this doesn’t do anything.
-			})
-		title = LRString.queue
-		navigationItem.rightBarButtonItem = {
-			let dismissButton = UIBarButtonItem(
-				title: LRString.done,
-				primaryAction: UIAction { [weak self] _ in
-					self?.dismiss(animated: true)
-				})
-			dismissButton.style = .done
-			return dismissButton
-		}()
 		
 		// Snatch dependencies, assuming `self` is the only instance of this type.
 		Reel.table = reelTable
@@ -51,13 +32,6 @@ final class ConsoleVC: UIViewController {
 				transportPanel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 			])
 		}
-	}
-	
-	static func rowContainsPlayhead(at indexPath: IndexPath) -> Bool {
-		guard let player = TapeDeck.shared.player else {
-			return false
-		}
-		return player.indexOfNowPlayingItem == indexPath.row
 	}
 }
 extension ConsoleVC: UITableViewDataSource {
