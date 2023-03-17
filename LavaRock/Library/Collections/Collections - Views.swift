@@ -137,7 +137,8 @@ final class CollectionCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	static let usesUIKitAccessibility__ = !usesSwiftUI__
-	var rowContentAccessibilityLabel__: String? = nil
+	
+	private var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var titleLabel: UILabel!
 	
@@ -188,10 +189,9 @@ final class CollectionCell: UITableViewCell {
 			}
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
-			
 			reflectPlayhead(
-				containsPlayhead: collection.containsPlayhead(),
-				rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+				containsPlayhead: collection.containsPlayhead()
+			)
 			
 			// Exclude the now-playing marker’s accessibility label.
 			if Self.usesUIKitAccessibility__ {
@@ -212,4 +212,14 @@ final class CollectionCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension CollectionCell: PlayheadReflectable {}
+extension CollectionCell: PlayheadReflectable {
+	func reflectPlayhead(
+		containsPlayhead: Bool
+	) {
+		freshen_avatar_imageView(
+			containsPlayhead: containsPlayhead)
+		freshen_accessibilityLabel(
+			containsPlayhead: containsPlayhead,
+			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+	}
+}

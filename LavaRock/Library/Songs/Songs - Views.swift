@@ -57,7 +57,8 @@ final class SongCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	static let usesUIKitAccessibility__ = !usesSwiftUI__
-	var rowContentAccessibilityLabel__: String? = nil
+	
+	private var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
@@ -159,10 +160,9 @@ final class SongCell: UITableViewCell {
 				titleLabel.text,
 				artistLabel.text,
 			].compactedAndFormattedAsNarrowList()
-			
 			reflectPlayhead(
-				containsPlayhead: song.containsPlayhead(),
-				rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+				containsPlayhead: song.containsPlayhead()
+			)
 			
 			freshenDotDotDotButton()
 			
@@ -321,4 +321,14 @@ final class SongCell: UITableViewCell {
 		}
 	}
 }
-extension SongCell: PlayheadReflectable {}
+extension SongCell: PlayheadReflectable {
+	func reflectPlayhead(
+		containsPlayhead: Bool
+	) {
+		freshen_avatar_imageView(
+			containsPlayhead: containsPlayhead)
+		freshen_accessibilityLabel(
+			containsPlayhead: containsPlayhead,
+			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+	}
+}

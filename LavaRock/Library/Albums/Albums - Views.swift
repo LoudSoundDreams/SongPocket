@@ -44,7 +44,8 @@ final class AlbumCell: UITableViewCell {
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	static let usesUIKitAccessibility__ = true
-	var rowContentAccessibilityLabel__: String? = nil
+	
+	private var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var mainStack: UIStackView! // So that we can rearrange `coverArtView` and `textStack` at very large text sizes
 	@IBOutlet private var coverArtView: UIImageView!
@@ -133,10 +134,9 @@ final class AlbumCell: UITableViewCell {
 			titleLabel.text,
 			releaseDateLabel.text,
 		].compactedAndFormattedAsNarrowList()
-		
 		reflectPlayhead(
-			containsPlayhead: album.containsPlayhead(),
-			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+			containsPlayhead: album.containsPlayhead()
+		)
 		
 		accessibilityUserInputLabels = [
 			titleLabel.text, // Includes “Unknown Album” if that’s what we’re showing.
@@ -200,4 +200,14 @@ final class AlbumCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension AlbumCell: PlayheadReflectable {}
+extension AlbumCell: PlayheadReflectable {
+	func reflectPlayhead(
+		containsPlayhead: Bool
+	) {
+		freshen_avatar_imageView(
+			containsPlayhead: containsPlayhead)
+		freshen_accessibilityLabel(
+			containsPlayhead: containsPlayhead,
+			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+	}
+}

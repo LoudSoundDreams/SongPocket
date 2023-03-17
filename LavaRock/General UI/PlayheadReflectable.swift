@@ -7,15 +7,8 @@
 
 import UIKit
 
-typealias PlayheadReflectable = _PlayheadReflectable & CachesBodyOfAccessibilityLabel
-
 @MainActor
-protocol CachesBodyOfAccessibilityLabel {
-	var rowContentAccessibilityLabel__: String? { get }
-}
-
-@MainActor
-protocol _PlayheadReflectable: AnyObject {
+protocol PlayheadReflectable: AnyObject {
 	// Adopting types must …
 	// • Call `reflectPlayhead` whenever appropriate.
 	
@@ -23,11 +16,14 @@ protocol _PlayheadReflectable: AnyObject {
 	var speakerImageView: UIImageView! { get }
 	static var usesUIKitAccessibility__: Bool { get }
 	var accessibilityLabel: String? { get set }
-}
-extension _PlayheadReflectable {
+	
 	func reflectPlayhead(
-		containsPlayhead: Bool,
-		rowContentAccessibilityLabel__: String? // Force callers to pass this in manually, to help them remember to update it beforehand.
+		containsPlayhead: Bool
+	)
+}
+extension PlayheadReflectable {
+	func freshen_avatar_imageView(
+		containsPlayhead: Bool
 	) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
@@ -35,41 +31,53 @@ extension _PlayheadReflectable {
 		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
 		
 		let speakerImage: UIImage?
-		let nowPlayingStatusAccessibilityLabel__: String?
 		defer {
 			speakerImageView.image = speakerImage
-			if Self.usesUIKitAccessibility__ {
-				accessibilityLabel = [
-					nowPlayingStatusAccessibilityLabel__,
-					rowContentAccessibilityLabel__,
-				].compactedAndFormattedAsNarrowList()
-			}
 		}
 		
 #if targetEnvironment(simulator)
 		guard containsPlayhead else {
 			speakerImage = nil
-			nowPlayingStatusAccessibilityLabel__ = nil
 			return
 		}
 		speakerImage = UIImage(systemName: Avatar.preference.pausedSFSymbolName)
-		nowPlayingStatusAccessibilityLabel__ = LRString.paused
 #else
 		guard
 			containsPlayhead,
 			let player = TapeDeck.shared.player
 		else {
 			speakerImage = nil
-			nowPlayingStatusAccessibilityLabel__ = nil
 			return
 		}
 		if player.playbackState == .playing {
 			speakerImage = UIImage(systemName: Avatar.preference.playingSFSymbolName)
-			nowPlayingStatusAccessibilityLabel__ = LRString.nowPlaying
 		} else {
 			speakerImage = UIImage(systemName: Avatar.preference.pausedSFSymbolName)
-			nowPlayingStatusAccessibilityLabel__ = LRString.paused
 		}
 #endif
+	}
+	
+	func freshen_accessibilityLabel(
+		containsPlayhead: Bool,
+		rowContentAccessibilityLabel__: String?
+	) {
+		let now_playing_status: String? = {
+			guard
+				containsPlayhead,
+				let player = TapeDeck.shared.player
+			else {
+				return nil
+			}
+			if player.playbackState == .playing {
+				return LRString.nowPlaying
+			} else {
+				return LRString.paused
+			}
+		}()
+		
+		accessibilityLabel = [
+			now_playing_status,
+			rowContentAccessibilityLabel__,
+		].compactedAndFormattedAsNarrowList()
 	}
 }
