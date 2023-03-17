@@ -38,7 +38,6 @@
 		0752D794295E983D00447FD7 /* LightingPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0752D793295E983D00447FD7 /* LightingPicker.swift */; };
 		0752D796295EA20100447FD7 /* AvatarPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0752D795295EA20100447FD7 /* AvatarPicker.swift */; };
 		0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0759DC80272CD37300FDA7D7 /* Enabling.swift */; };
-		075D904227F02EF700BD8F3E /* ConsoleVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */; };
 		07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* LibraryItem.swift */; };
 		07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* CollectionDifference.swift */; };
 		07622F1427DE439D00B953EA /* QueueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07622F1327DE439D00B953EA /* QueueCell.swift */; };
@@ -181,7 +180,6 @@
 		0752D793295E983D00447FD7 /* LightingPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingPicker.swift; sourceTree = "<group>"; };
 		0752D795295EA20100447FD7 /* AvatarPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPicker.swift; sourceTree = "<group>"; };
 		0759DC80272CD37300FDA7D7 /* Enabling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enabling.swift; sourceTree = "<group>"; };
-		075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - UITableView.swift"; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
 		07619EE427342FC9003F95AE /* CollectionDifference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDifference.swift; sourceTree = "<group>"; };
 		07622F1327DE439D00B953EA /* QueueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueCell.swift; sourceTree = "<group>"; };
@@ -375,7 +373,6 @@
 				07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */,
 				073FB56227588BC5000FAF5F /* Console.storyboard */,
 				07B1EC3F271FB7F600EA8E29 /* ConsoleVC.swift */,
-				075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */,
 				07622F1327DE439D00B953EA /* QueueCell.swift */,
 			);
 			path = Console;
@@ -853,7 +850,6 @@
 				0783DC16286EA65E00A9A4F7 /* Sim_SongMetadatum.swift in Sources */,
 				07E92A0E2510497B00E9073B /* SongsTVC - Song Actions.swift in Sources */,
 				07843FEB2851A31D000FA316 /* Sequence.swift in Sources */,
-				075D904227F02EF700BD8F3E /* ConsoleVC - UITableView.swift in Sources */,
 				07F36BBE24FC3CCA0064282D /* LibraryTVC - UITableView.swift in Sources */,
 				07DF65D227766C95003B2EA3 /* SongMetadatum.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
