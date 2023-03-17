@@ -94,13 +94,12 @@
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="trailing" secondItem="Npg-CN-dfQ" secondAttribute="trailing" id="0mt-Ka-Nr8"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="leading" secondItem="Npg-CN-dfQ" secondAttribute="leading" id="5Js-ge-qkZ"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="top" secondItem="Npg-CN-dfQ" secondAttribute="top" id="PRH-9Q-W4C"/>
-                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" id="xxf-CX-zyv"/>
+                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" placeholder="YES" id="xxf-CX-zyv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4UM-VT-l36"/>
                     <connections>
                         <outlet property="reelTable" destination="mMv-Oy-bR1" id="Qj5-jH-aer"/>
-                        <outlet property="reelTableBottomToSafeArea" destination="xxf-CX-zyv" id="ukE-zS-4I7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0RZ-8F-INt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

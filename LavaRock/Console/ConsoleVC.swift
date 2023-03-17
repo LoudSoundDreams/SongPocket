@@ -11,7 +11,6 @@ import SwiftUI
 
 final class ConsoleVC: UIViewController {
 	@IBOutlet private(set) var reelTable: UITableView!
-	@IBOutlet private var reelTableBottomToSafeArea: NSLayoutConstraint!
 	
 	var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
@@ -45,9 +44,6 @@ final class ConsoleVC: UIViewController {
 				.padding()
 		)
 		if let transportPanel = hostingController.view {
-			NSLayoutConstraint.deactivate([
-				reelTableBottomToSafeArea,
-			])
 			view.addSubview(transportPanel, activating: [
 				transportPanel.topAnchor.constraint(equalTo: reelTable.bottomAnchor),
 				transportPanel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -55,8 +51,6 @@ final class ConsoleVC: UIViewController {
 				transportPanel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 			])
 		}
-		
-		TapeDeck.shared.addReflector(weakly: self)
 	}
 	
 	static func rowContainsPlayhead(at indexPath: IndexPath) -> Bool {
