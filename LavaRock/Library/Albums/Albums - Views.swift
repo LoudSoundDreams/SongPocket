@@ -32,8 +32,6 @@ final class MoveHereCell: UITableViewCell {
 }
 
 final class AlbumCell: UITableViewCell {
-	private static let usesSwiftUI__ = 10 == 1
-	
 	enum Mode {
 		case normal
 		case modal
@@ -76,25 +74,10 @@ final class AlbumCell: UITableViewCell {
 		let representative = album.representativeSongMetadatum() // Can be `nil`
 		
 		os_signpost(.begin, log: .albumsView, name: "Set cover art")
-		coverArtView.image = {
-			let widthAndHeightInPoints = coverArtView.bounds.width
-			if Self.usesSwiftUI__ {
-				let image = CoverArtView(
-					albumRepresentative: representative,
-					maxHeight: widthAndHeightInPoints)
-				let renderer = ImageRenderer(content: image)
-				renderer.scale = physicalPixelsPerPoint__
-				let uiImage = renderer.uiImage
-				return uiImage
-			} else {
-				return representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
-					width: widthAndHeightInPoints,
-					height: widthAndHeightInPoints))
-			}
-		}()
-		if Self.usesSwiftUI__ {
-			coverArtView.contentMode = .center
-		}
+		let widthAndHeightInPoints = coverArtView.bounds.width
+		coverArtView.image = representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
+			width: widthAndHeightInPoints,
+			height: widthAndHeightInPoints))
 		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
 		titleLabel.text = album.representativeTitleFormattedOptional() ?? Album.unknownTitlePlaceholder
@@ -133,11 +116,9 @@ final class AlbumCell: UITableViewCell {
 			containsPlayhead: album.containsPlayhead()
 		)
 		
-		if !Self.usesSwiftUI__ {
-			accessibilityUserInputLabels = [
-				titleLabel.text, // Includes “Unknown Album” if that’s what we’re showing.
-			].compacted()
-		}
+		accessibilityUserInputLabels = [
+			titleLabel.text, // Includes “Unknown Album” if that’s what we’re showing.
+		].compacted()
 	}
 	
 	override func traitCollectionDidChange(
