@@ -74,6 +74,12 @@ extension MPMusicPlayerController {
 		if playbackState != .playing {
 			prepareToPlay()
 		}
+		
+		if mediaItems.count == 1 {
+			UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+		} else {
+			UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
+		}
 	}
 	
 	final func playLast(_ mediaItems: [MPMediaItem]) {
@@ -100,6 +106,12 @@ extension MPMusicPlayerController {
 		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
 		if playbackState != .playing {
 			prepareToPlay()
+		}
+		
+		if mediaItems.count == 1 {
+			UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+		} else {
+			UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 		}
 	}
 	
