@@ -317,8 +317,7 @@ final class MainToolbar {
 		freshen()
 	}
 	
-//	private static let showConsoleButtonDefaultImage = UIImage(systemName: "line.3.horizontal.circle")!
-	private static let showConsoleButtonDefaultImage = UIImage(systemName: "chevron.up.circle")!
+	private static let showConsoleButtonDefaultImage = UIImage(systemName: "list.bullet.circle")!
 	private static let more_button_default_image = UIImage(systemName: "ellipsis.circle")!
 	private var has_re_freshened_more_button = false
 	private func freshen() {
