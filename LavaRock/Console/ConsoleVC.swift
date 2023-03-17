@@ -19,19 +19,6 @@ final class ConsoleVC: UIViewController {
 		Reel.table = reelTable
 		
 		reelTable.dataSource = self
-		
-		let hostingController = UIHostingController(
-			rootView: TransportPanel()
-				.padding()
-		)
-		if let transportPanel = hostingController.view {
-			view.addSubview(transportPanel, activating: [
-				transportPanel.topAnchor.constraint(equalTo: reelTable.bottomAnchor),
-				transportPanel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-				transportPanel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-				transportPanel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-			])
-		}
 	}
 }
 extension ConsoleVC: UITableViewDataSource {

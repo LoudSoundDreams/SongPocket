@@ -94,7 +94,7 @@
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="trailing" secondItem="Npg-CN-dfQ" secondAttribute="trailing" id="0mt-Ka-Nr8"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="leading" secondItem="Npg-CN-dfQ" secondAttribute="leading" id="5Js-ge-qkZ"/>
                             <constraint firstItem="mMv-Oy-bR1" firstAttribute="top" secondItem="Npg-CN-dfQ" secondAttribute="top" id="PRH-9Q-W4C"/>
-                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" placeholder="YES" id="xxf-CX-zyv"/>
+                            <constraint firstItem="mMv-Oy-bR1" firstAttribute="bottom" secondItem="Npg-CN-dfQ" secondAttribute="bottom" id="xxf-CX-zyv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4UM-VT-l36"/>
