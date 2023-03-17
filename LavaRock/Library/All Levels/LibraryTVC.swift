@@ -324,7 +324,7 @@ class LibraryTVC: UITableViewController {
 	
 	final func reflectPlayhead_library() {
 		tableView.allIndexPaths().forEach { indexPath in
-			guard let cell = tableView.cellForRow(at: indexPath) as? PlayheadReflectable else { return }
+			guard let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying else { return }
 			cell.reflectPlayhead(
 				containsPlayhead: {
 					guard let libraryItem = viewModel.itemOptional(at: indexPath) as? LibraryItem else {

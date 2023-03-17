@@ -131,7 +131,7 @@ final class CollectionCell: UITableViewCell {
 		case modalDisabled
 	}
 	
-	// `PlayheadReflectable`
+	// `AvatarDisplaying`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -207,7 +207,7 @@ final class CollectionCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension CollectionCell: PlayheadReflectable {
+extension CollectionCell: AvatarDisplaying {
 	func reflectPlayhead(
 		containsPlayhead: Bool
 	) {

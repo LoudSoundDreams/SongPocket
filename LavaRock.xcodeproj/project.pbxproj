@@ -27,7 +27,7 @@
 		073B99CB294682E700B48C9C /* SongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073B99CA294682E700B48C9C /* SongRow.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Collections - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Collections - Views.swift */; };
-		073E6A9225574B99003C84A5 /* PlayheadReflectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */; };
+		073E6A9225574B99003C84A5 /* AvatarDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A9125574B98003C84A5 /* AvatarDisplaying.swift */; };
 		073FB55927588B81000FAF5F /* SettingsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* SettingsTVC.storyboard */; };
 		07436D03283A8878002546B5 /* Debug Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07436D02283A8878002546B5 /* Debug Assets.xcassets */; };
 		074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074AB85D27CAD9C3007B63D2 /* Reel.swift */; };
@@ -160,7 +160,7 @@
 		073B99CA294682E700B48C9C /* SongRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRow.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Collections - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections - Views.swift"; sourceTree = "<group>"; };
-		073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayheadReflectable.swift; sourceTree = "<group>"; };
+		073E6A9125574B98003C84A5 /* AvatarDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarDisplaying.swift; sourceTree = "<group>"; };
 		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SettingsTVC.storyboard; sourceTree = "<group>"; };
 		07436D02283A8878002546B5 /* Debug Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Debug Assets.xcassets"; sourceTree = "<group>"; };
 		074AB85D27CAD9C3007B63D2 /* Reel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reel.swift; sourceTree = "<group>"; };
@@ -292,9 +292,6 @@
 			isa = PBXGroup;
 			children = (
 				0785C49D2793460100B1E7FC /* SettingsScreen.swift */,
-				0752D793295E983D00447FD7 /* LightingPicker.swift */,
-				07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */,
-				0752D795295EA20100447FD7 /* AvatarPicker.swift */,
 				07B35E302886FB5100159FD9 /* TipJarView.swift */,
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
 				07962318281265AB00EE026F /* SettingsNC.swift */,
@@ -387,6 +384,7 @@
 				07FC970A24BAC1050036DD3D /* Database */,
 				07DF65D027766B7B003B2EA3 /* MusicFolder */,
 				07F1881F27F6B3750074809D /* Player */,
+				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07E0BBFF276569480010117E /* General UI */,
 				07DF76E32828D8AB00B03103 /* MainToolbar.swift */,
 				07E0BC0027656C300010117E /* Library */,
@@ -527,14 +525,16 @@
 			isa = PBXGroup;
 			children = (
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
-				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				0772FB98283010960054834F /* Theme.swift */,
 				0708201C275BEE1C00F48D13 /* Lighting.swift */,
+				0752D793295E983D00447FD7 /* LightingPicker.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
-				07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */,
+				07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */,
 				078DBF032895EFD8000E6433 /* Avatar.swift */,
+				0752D795295EA20100447FD7 /* AvatarPicker.swift */,
 				07755A57294821860056E90C /* AvatarImage.swift */,
-				073E6A9125574B98003C84A5 /* PlayheadReflectable.swift */,
+				073E6A9125574B98003C84A5 /* AvatarDisplaying.swift */,
+				07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */,
 			);
 			path = "General UI";
 			sourceTree = "<group>";
@@ -769,7 +769,7 @@
 				0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */,
 				071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */,
 				07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */,
-				073E6A9225574B99003C84A5 /* PlayheadReflectable.swift in Sources */,
+				073E6A9225574B99003C84A5 /* AvatarDisplaying.swift in Sources */,
 				07DC1B1D24F339E000AAEEDB /* LibraryTVC - Editing.swift in Sources */,
 				0781F1FA25991B3300781CF8 /* SettingsTVC - UITableView.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */,

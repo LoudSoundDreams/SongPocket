@@ -1,5 +1,5 @@
 //
-//  PlayheadReflectable.swift
+//  AvatarDisplaying.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-07.
@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-protocol PlayheadReflectable: AnyObject {
+protocol AvatarDisplaying: AnyObject {
 	// Adopting types must …
 	// • Call `reflectPlayhead` whenever appropriate.
 	
@@ -19,7 +19,7 @@ protocol PlayheadReflectable: AnyObject {
 		containsPlayhead: Bool
 	)
 }
-extension PlayheadReflectable {
+extension AvatarDisplaying {
 	func freshen_avatar_imageView(
 		containsPlayhead: Bool
 	) {

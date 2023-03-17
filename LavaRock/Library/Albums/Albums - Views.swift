@@ -38,7 +38,7 @@ final class AlbumCell: UITableViewCell {
 		case modalTinted
 	}
 	
-	// `PlayheadReflectable`
+	// `AvatarDisplaying`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -178,7 +178,7 @@ final class AlbumCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension AlbumCell: PlayheadReflectable {
+extension AlbumCell: AvatarDisplaying {
 	func reflectPlayhead(
 		containsPlayhead: Bool
 	) {

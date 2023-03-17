@@ -53,7 +53,7 @@ final class ExpandedTargetButton: UIButton {
 final class SongCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
-	// `PlayheadReflectable`
+	// `AvatarDisplaying`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -292,7 +292,7 @@ final class SongCell: UITableViewCell {
 		}
 	}
 }
-extension SongCell: PlayheadReflectable {
+extension SongCell: AvatarDisplaying {
 	func reflectPlayhead(
 		containsPlayhead: Bool
 	) {
