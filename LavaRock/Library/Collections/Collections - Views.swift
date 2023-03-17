@@ -95,16 +95,16 @@ final class OpenMusicCell: UITableViewCell {
 }
 
 final class CreateCollectionCell: UITableViewCell {
+	private static let usesSwiftUI__ = 10 == 1
+	
 	@IBOutlet private var newCollectionLabel: UILabel!
 	
-	private static let usesSwiftUI__ = 10 == 1
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		selectedBackgroundView_add_tint()
 		
-		if Self.usesSwiftUI__ {
-		} else {
+		if !Self.usesSwiftUI__ {
 			Task {
 				accessibilityTraits.formUnion(.button)
 			}

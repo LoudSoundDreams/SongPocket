@@ -73,7 +73,7 @@ final class MainToolbar {
 				],
 				
 				[
-					create_submenu_Repeat_compact(),
+					create_submenu_Repeat(),
 				],
 				
 				[
@@ -83,7 +83,7 @@ final class MainToolbar {
 		)
 	}
 	
-	private func create_submenu_Repeat_compact() -> UIMenu {
+	private func create_submenu_Repeat() -> UIMenu {
 		return UIMenu(
 			options: [
 				.displayInline,
