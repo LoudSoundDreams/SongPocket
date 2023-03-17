@@ -17,12 +17,8 @@ extension Notification.Name {
 struct Reel {
 	private init() {}
 	
-	static weak var table: UITableView? = nil
-	
 	private(set) static var mediaItems: [MPMediaItem] = [] {
 		didSet {
-			table?.reloadData()
-			
 			if oldValue.isEmpty != mediaItems.isEmpty {
 				NotificationCenter.default.post(
 					name: .userChangedReelEmptiness,
