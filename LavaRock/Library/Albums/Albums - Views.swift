@@ -77,10 +77,6 @@ final class AlbumCell: UITableViewCell {
 		
 		os_signpost(.begin, log: .albumsView, name: "Set cover art")
 		coverArtView.image = {
-			os_signpost(.begin, log: .albumsView, name: "Draw cover art")
-			defer {
-				os_signpost(.end, log: .albumsView, name: "Draw cover art")
-			}
 			let widthAndHeightInPoints = coverArtView.bounds.width
 			if Self.usesSwiftUI__ {
 				let image = CoverArtView(
@@ -137,9 +133,11 @@ final class AlbumCell: UITableViewCell {
 			containsPlayhead: album.containsPlayhead()
 		)
 		
-		accessibilityUserInputLabels = [
-			titleLabel.text, // Includes “Unknown Album” if that’s what we’re showing.
-		].compacted()
+		if !Self.usesSwiftUI__ {
+			accessibilityUserInputLabels = [
+				titleLabel.text, // Includes “Unknown Album” if that’s what we’re showing.
+			].compacted()
+		}
 	}
 	
 	override func traitCollectionDidChange(
