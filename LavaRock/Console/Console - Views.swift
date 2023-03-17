@@ -10,18 +10,10 @@ import MediaPlayer
 
 // Similar to `AlbumCell` and `SongCell`.
 final class QueueCell: UITableViewCell {
-	// `PlayheadReflectable`
-	@IBOutlet var spacerSpeakerImageView: UIImageView!
-	@IBOutlet var speakerImageView: UIImageView!
-	static let usesUIKitAccessibility__ = true
-	var rowContentAccessibilityLabel__: String? = nil
-	
 	@IBOutlet private var coverArtView: UIImageView!
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var secondaryLabel: UILabel!
-	
-	@IBOutlet private var textStackTopToCoverArtTop: NSLayoutConstraint!
 	
 	override func awakeFromNib() {
 		selectedBackgroundView_add_tint()
@@ -48,29 +40,5 @@ final class QueueCell: UITableViewCell {
 				return LRString.unknownArtist
 			}
 		}()
-		
-		rowContentAccessibilityLabel__ = [
-			titleLabel.text,
-			secondaryLabel.text,
-		].compactedAndFormattedAsNarrowList()
-		
-		if let font = titleLabel.font {
-			// A `UIFont`’s `lineHeight` equals its `ascender` plus its `descender`.
-			textStackTopToCoverArtTop.constant = -(font.ascender - font.capHeight)
-		}
-		
-		if secondaryLabel.text == nil {
-			textStack.spacing = 0
-		} else {
-			textStack.spacing = 4
-		}
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.left = textStack.frame.minX
-		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension QueueCell: PlayheadReflectable {}
