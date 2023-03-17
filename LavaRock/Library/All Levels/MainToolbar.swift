@@ -229,30 +229,34 @@ final class MainToolbar {
 				.displayInline,
 			],
 			children: [
+				
 				UIDeferredMenuElement.uncached({ useMenuElements in
 					let action = UIAction(
-						title: LRString.one_Repeat_mode,
-						image: UIImage(systemName: "repeat.1"),
+						title: LRString.off_Repeat_mode,
+						image: UIImage(systemName: "minus"),
 						attributes: {
 							var result: UIMenuElement.Attributes = []
 							if (Self.player == nil)
 							{
+								// When this mode is selected, we want to show it as such, not disable it.
+								// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
+								// Disabling the selected mode is a compromise.
 								result.formUnion(.disabled)
 							}
 							return result
 						}(),
 						state: {
 							guard let player = Self.player else {
-								return .off
+								return .on // Default when disabled
 							}
 							return (
-								player.repeatMode == .one
+								player.repeatMode == MPMusicRepeatMode.none
 								? .on
 								: .off
 							)
 						}(),
 						handler: { action in
-							Self.player?.repeatMode = .one
+							Self.player?.repeatMode = .none
 						}
 					)
 					useMenuElements([action])
@@ -289,35 +293,33 @@ final class MainToolbar {
 				
 				UIDeferredMenuElement.uncached({ useMenuElements in
 					let action = UIAction(
-						title: LRString.off_Repeat_mode,
-						image: UIImage(systemName: "minus"),
+						title: LRString.one_Repeat_mode,
+						image: UIImage(systemName: "repeat.1"),
 						attributes: {
 							var result: UIMenuElement.Attributes = []
 							if (Self.player == nil)
 							{
-								// When this mode is selected, we want to show it as such, not disable it.
-								// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
-								// Disabling the selected mode is a compromise.
 								result.formUnion(.disabled)
 							}
 							return result
 						}(),
 						state: {
 							guard let player = Self.player else {
-								return .on // Default when disabled
+								return .off
 							}
 							return (
-								player.repeatMode == MPMusicRepeatMode.none
+								player.repeatMode == .one
 								? .on
 								: .off
 							)
 						}(),
 						handler: { action in
-							Self.player?.repeatMode = .none
+							Self.player?.repeatMode = .one
 						}
 					)
 					useMenuElements([action])
 				}),
+				
 			]
 		)
 	}
