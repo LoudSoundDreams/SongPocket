@@ -26,9 +26,6 @@ struct TransportPanel: View {
 		VStack(
 			spacing: .eight * 4
 		) {
-			FutureChooserRep()
-				.fixedSize()
-			
 			HStack(
 				alignment: .firstTextBaseline
 			) {
