@@ -14,7 +14,6 @@ protocol PlayheadReflectable: AnyObject {
 	
 	var spacerSpeakerImageView: UIImageView! { get }
 	var speakerImageView: UIImageView! { get }
-	static var usesUIKitAccessibility__: Bool { get }
 	
 	func reflectPlayhead(
 		containsPlayhead: Bool

@@ -56,7 +56,6 @@ final class SongCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	static let usesUIKitAccessibility__ = !usesSwiftUI__
 	
 	private var rowContentAccessibilityLabel__: String? = nil
 	

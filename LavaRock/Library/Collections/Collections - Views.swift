@@ -136,7 +136,6 @@ final class CollectionCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	static let usesUIKitAccessibility__ = !usesSwiftUI__
 	
 	private var rowContentAccessibilityLabel__: String? = nil
 	
@@ -194,7 +193,7 @@ final class CollectionCell: UITableViewCell {
 			)
 			
 			// Exclude the now-playing marker’s accessibility label.
-			if Self.usesUIKitAccessibility__ {
+			if !Self.usesSwiftUI__ {
 				accessibilityUserInputLabels = [
 					titleLabel.text,
 				].compacted()

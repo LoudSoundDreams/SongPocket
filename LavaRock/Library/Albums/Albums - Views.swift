@@ -43,7 +43,6 @@ final class AlbumCell: UITableViewCell {
 	// `PlayheadReflectable`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	static let usesUIKitAccessibility__ = true
 	
 	private var rowContentAccessibilityLabel__: String? = nil
 	
