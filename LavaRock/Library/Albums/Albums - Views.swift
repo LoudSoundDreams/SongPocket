@@ -32,6 +32,8 @@ final class MoveHereCell: UITableViewCell {
 }
 
 final class AlbumCell: UITableViewCell {
+	private static let usesSwiftUI__ = 10 == 1
+	
 	enum Mode {
 		case normal
 		case modal
@@ -66,7 +68,6 @@ final class AlbumCell: UITableViewCell {
 		configureForTraitCollection()
 	}
 	
-	private static let usesSwiftUI__ = 10 == 1
 	func configure(
 		with album: Album,
 		mode: Mode,
