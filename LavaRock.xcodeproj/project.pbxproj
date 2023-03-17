@@ -334,7 +334,6 @@
 				07FB52CA2813909400CCCBA5 /* SortCommand.swift */,
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
-				07DF76E32828D8AB00B03103 /* MainToolbar.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
@@ -349,15 +348,6 @@
 				0781F1F02599181800781CF8 /* StoreKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		073FB55827588B76000FAF5F /* Console */ = {
-			isa = PBXGroup;
-			children = (
-				07A7989027A8ABB1007B70AA /* ConsoleView.swift */,
-				07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */,
-			);
-			path = Console;
 			sourceTree = "<group>";
 		};
 		07436D01283A8878002546B5 /* Debug Assets */ = {
@@ -402,9 +392,11 @@
 				07DF65D027766B7B003B2EA3 /* MusicFolder */,
 				07F1881F27F6B3750074809D /* Player */,
 				07E0BBFF276569480010117E /* General UI */,
+				07DF76E32828D8AB00B03103 /* MainToolbar.swift */,
 				07E0BC0027656C300010117E /* Library */,
 				0706ABDE24D946870090EB21 /* Settings */,
-				073FB55827588B76000FAF5F /* Console */,
+				07A7989027A8ABB1007B70AA /* ConsoleView.swift */,
+				07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */,
 			);
 			path = LavaRock;
 			sourceTree = "<group>";
