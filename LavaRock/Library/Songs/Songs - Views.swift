@@ -201,7 +201,7 @@ final class SongCell: UITableViewCell {
 				TapeDeck.shared.player?.playNext([mediaItem])
 			}
 			action.attributes = (
-				Reel.shouldEnablePlayLast()
+				Reel.allows_Play_Next()
 				? []
 				: .disabled
 			)
@@ -211,11 +211,6 @@ final class SongCell: UITableViewCell {
 		// Play song and below next
 		let playSongAndBelowNext =
 		UIDeferredMenuElement.uncached({ useMenuElements in
-			let menuElements: [UIMenuElement]
-			defer {
-				useMenuElements(menuElements)
-			}
-			
 			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.insertRestOfAlbum,
@@ -224,12 +219,11 @@ final class SongCell: UITableViewCell {
 				TapeDeck.shared.player?.playNext(thisMediaItemAndBelow)
 			}
 			action.attributes = (
-				Reel.shouldEnablePlayLast() && thisMediaItemAndBelow.count >= 2
+				Reel.allows_Play_Next() && thisMediaItemAndBelow.count >= 2
 				? []
 				: .disabled
 			)
-			
-			menuElements = [action]
+			useMenuElements([action])
 		})
 		
 		// Play last
@@ -249,11 +243,6 @@ final class SongCell: UITableViewCell {
 		// Play song and below last
 		let playSongAndBelowLast =
 		UIDeferredMenuElement.uncached({ useMenuElements in
-			let menuElements: [UIMenuElement]
-			defer {
-				useMenuElements(menuElements)
-			}
-			
 			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.queueRestOfAlbum,
@@ -266,8 +255,7 @@ final class SongCell: UITableViewCell {
 				? []
 				: .disabled
 			)
-			
-			menuElements = [action]
+			useMenuElements([action])
 		})
 		
 		// —

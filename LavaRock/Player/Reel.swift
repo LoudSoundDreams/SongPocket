@@ -31,7 +31,7 @@ struct Reel {
 		mediaItems = newMediaItems
 	}
 	
-	static func shouldEnablePlayLast() -> Bool {
+	static func allows_Play_Next() -> Bool {
 		guard Enabling.inAppPlayer else {
 			return true
 		}
