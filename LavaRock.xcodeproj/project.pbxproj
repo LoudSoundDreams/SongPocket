@@ -41,7 +41,7 @@
 		075D904227F02EF700BD8F3E /* ConsoleVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */; };
 		07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* LibraryItem.swift */; };
 		07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* CollectionDifference.swift */; };
-		07622F1427DE439D00B953EA /* Console - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07622F1327DE439D00B953EA /* Console - Views.swift */; };
+		07622F1427DE439D00B953EA /* QueueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07622F1327DE439D00B953EA /* QueueCell.swift */; };
 		07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* SongsGroup.swift */; };
 		07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */; };
 		0764C62B293BE3A7003BA345 /* AlbumInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */; };
@@ -184,7 +184,7 @@
 		075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsoleVC - UITableView.swift"; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
 		07619EE427342FC9003F95AE /* CollectionDifference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDifference.swift; sourceTree = "<group>"; };
-		07622F1327DE439D00B953EA /* Console - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Console - Views.swift"; sourceTree = "<group>"; };
+		07622F1327DE439D00B953EA /* QueueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueCell.swift; sourceTree = "<group>"; };
 		07642C7B268FFC1600B66BB8 /* SongsGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsGroup.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGroup.swift; sourceTree = "<group>"; };
 		0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumInfoRow.swift; sourceTree = "<group>"; };
@@ -376,7 +376,7 @@
 				073FB56227588BC5000FAF5F /* Console.storyboard */,
 				07B1EC3F271FB7F600EA8E29 /* ConsoleVC.swift */,
 				075D904127F02EF700BD8F3E /* ConsoleVC - UITableView.swift */,
-				07622F1327DE439D00B953EA /* Console - Views.swift */,
+				07622F1327DE439D00B953EA /* QueueCell.swift */,
 			);
 			path = Console;
 			sourceTree = "<group>";
@@ -831,7 +831,7 @@
 				07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */,
 				07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */,
 				07E0BBF22765678F0010117E /* UIColor.swift in Sources */,
-				07622F1427DE439D00B953EA /* Console - Views.swift in Sources */,
+				07622F1427DE439D00B953EA /* QueueCell.swift in Sources */,
 				07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */,
 				07E0BBF72765678F0010117E /* UIMenu.swift in Sources */,
 				076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */,
