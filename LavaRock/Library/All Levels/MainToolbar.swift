@@ -20,21 +20,17 @@ final class MainToolbar {
 		title: LRString.more,
 		primaryAction: UIAction(
 			handler: { [weak self] action in
-				guard let self else { return }
-				
-				let toPresent: UIViewController = (
-					Enabling.swiftUI__console
-					? self.console_screen_host
-					: self.consoleVC
+				self?.console_presenter?.present(
+					UIHostingController(
+						rootView: ConsoleView()
+					),
+					animated: true
 				)
-				self.console_presenter?.present(toPresent, animated: true)
 			}
 		)
 	)
 	private weak var console_presenter: UIViewController? = nil
 	private let console_screen_host = UIHostingController(rootView: ConsoleView())
-	private let consoleVC: UIViewController = UIStoryboard(name: "Console", bundle: nil)
-		.instantiateInitialViewController()!
 	
 	private lazy var moreButton = UIBarButtonItem(
 		title: LRString.more,

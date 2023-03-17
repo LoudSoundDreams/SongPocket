@@ -144,7 +144,6 @@ class LibraryTVC: UITableViewController {
 		let presentedFromNC = navigationController?.presentedViewController
 		if (presentedFromNC as? UINavigationController)?.viewControllers.first is SettingsTVC
 			|| presentedFromNC is UIHostingController<SettingsScreen__SwiftUI>
-			|| (presentedFromNC as? UINavigationController)?.viewControllers.first is ConsoleVC
 			|| presentedFromNC is UIHostingController<ConsoleView>
 		{
 			return false
