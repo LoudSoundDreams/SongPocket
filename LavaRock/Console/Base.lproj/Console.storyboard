@@ -82,7 +82,6 @@
                                         <connections>
                                             <outlet property="coverArtView" destination="7Bg-s2-hCP" id="qr9-AK-sqe"/>
                                             <outlet property="secondaryLabel" destination="mcD-xF-zGC" id="01w-OG-MEX"/>
-                                            <outlet property="textStack" destination="WkY-gQ-K1c" id="75j-27-FpP"/>
                                             <outlet property="titleLabel" destination="Ovi-Se-odr" id="di6-CI-nEn"/>
                                         </connections>
                                     </tableViewCell>

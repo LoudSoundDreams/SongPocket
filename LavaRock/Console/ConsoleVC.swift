@@ -39,7 +39,6 @@ final class ConsoleVC: UIViewController {
 		Reel.table = reelTable
 		
 		reelTable.dataSource = self
-		reelTable.delegate = self
 		
 		let hostingController = UIHostingController(
 			rootView: TransportPanel()

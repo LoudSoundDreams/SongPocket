@@ -11,7 +11,6 @@ import MediaPlayer
 // Similar to `AlbumCell` and `SongCell`.
 final class QueueCell: UITableViewCell {
 	@IBOutlet private var coverArtView: UIImageView!
-	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
 	@IBOutlet private var secondaryLabel: UILabel!
 	
@@ -19,9 +18,6 @@ final class QueueCell: UITableViewCell {
 		selectedBackgroundView_add_tint()
 		
 		backgroundColor_set_to_clear()
-		
-		coverArtView.layer.cornerCurve = .continuous
-		coverArtView.layer.cornerRadius = 3
 	}
 	
 	func configure(with metadatum: SongMetadatum) {
@@ -29,10 +25,7 @@ final class QueueCell: UITableViewCell {
 			width: coverArtView.frame.width,
 			height: coverArtView.frame.height))
 		
-		// Don’t let these be `nil`.
-		titleLabel.text = { () -> String in
-			return metadatum.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
-		}()
+		titleLabel.text = metadatum.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
 		secondaryLabel.text = { () -> String in
 			if let songArtist = metadatum.artistOnDisk {
 				return songArtist
