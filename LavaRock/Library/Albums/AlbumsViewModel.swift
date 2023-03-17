@@ -36,7 +36,7 @@ extension AlbumsViewModel: LibraryViewModel {
 		case
 				.exists(let collection),
 				.deleted(let collection):
-			return collection.title ?? LRString.albums
+			return collection.title ?? ""
 		}
 	}
 	
@@ -52,8 +52,8 @@ extension AlbumsViewModel: LibraryViewModel {
 		case .folder_name:
 			return false
 		case
-				.album_new,
-				.album_old:
+				.album_newestFirst,
+				.album_oldestFirst:
 			guard let albums = items as? [Album] else {
 				return false
 			}
@@ -61,7 +61,7 @@ extension AlbumsViewModel: LibraryViewModel {
 		case .song_track:
 			return false
 		case
-				.scramble,
+				.random,
 				.reverse:
 			return true
 		}

@@ -40,12 +40,12 @@ extension CollectionsViewModel: LibraryViewModel {
 		case .folder_name:
 			return true
 		case
-				.album_new,
-				.album_old,
+				.album_newestFirst,
+				.album_oldestFirst,
 				.song_track:
 			return false
 		case
-				.scramble,
+				.random,
 				.reverse:
 			return true
 		}

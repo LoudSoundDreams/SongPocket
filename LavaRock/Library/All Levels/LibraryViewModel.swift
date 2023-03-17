@@ -270,7 +270,7 @@ extension LibraryViewModel {
 				return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
 			}
 			
-		case .album_new:
+		case .album_newestFirst:
 			guard let albums = items as? [Album] else {
 				return items
 			}
@@ -279,7 +279,7 @@ extension LibraryViewModel {
 			} areInOrder: {
 				$0.precedesByNewestFirst($1)
 			}
-		case .album_old:
+		case .album_oldestFirst:
 			guard let albums = items as? [Album] else {
 				return items
 			}
@@ -314,7 +314,7 @@ extension LibraryViewModel {
 			}
 			return sorted.map { $0.song }
 			
-		case .scramble:
+		case .random:
 			return items.inAnyOtherOrder()
 			
 		case .reverse:

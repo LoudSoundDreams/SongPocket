@@ -55,14 +55,14 @@ extension SongsViewModel: LibraryViewModel {
 		switch sortCommand {
 		case
 				.folder_name,
-				.album_new,
-				.album_old:
+				.album_newestFirst,
+				.album_oldestFirst:
 			return false
 		case
 				.song_track:
 			return true
 		case
-				.scramble,
+				.random,
 				.reverse:
 			return true
 		}

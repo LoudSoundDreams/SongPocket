@@ -12,7 +12,7 @@ import MediaPlayer
 final class SongsTVC: LibraryTVC {
 	// MARK: - Properties
 	
-	private(set) lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Songs Placeholder")
+	private(set) lazy var noItemsBackgroundView: UIView? = tableView.dequeueReusableCell(withIdentifier: "No Songs Placeholder")
 	
 	// MARK: - Setup
 	
@@ -21,7 +21,7 @@ final class SongsTVC: LibraryTVC {
 		
 		sortCommandsGrouped = [
 			[.song_track],
-			[.scramble, .reverse],
+			[.random, .reverse],
 		]
 	}
 	

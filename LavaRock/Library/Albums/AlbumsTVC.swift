@@ -22,7 +22,7 @@ final class AlbumsTVC:
 	
 	// MARK: - Properties
 	
-	private(set) lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
+	private(set) lazy var noItemsBackgroundView: UIView? = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
 	
 	// Controls
 	private var moveOrOrganizeButton = UIBarButtonItem(
@@ -70,8 +70,8 @@ final class AlbumsTVC:
 		super.init(coder: coder)
 		
 		sortCommandsGrouped = [
-			[.album_new, .album_old],
-			[.scramble, .reverse],
+			[.album_newestFirst, .album_oldestFirst],
+			[.random, .reverse],
 		]
 	}
 	

@@ -40,7 +40,7 @@ extension SongsTVC {
 		
 		// Play song and below now
 		let playSongAndBelow = UIAlertAction(
-			title: LRString.playRestOfAlbum,
+			title: LRString.playSongAndBelow,
 			style: .default
 		) { _ in
 			player.playNow(

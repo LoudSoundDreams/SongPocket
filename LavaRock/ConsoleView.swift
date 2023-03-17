@@ -22,7 +22,7 @@ struct ConsoleView: View {
 				TransportPanel()
 					.padding()
 			}
-			.navigationTitle("Queue")
+			.navigationTitle(LRString.queue)
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarLeading) {

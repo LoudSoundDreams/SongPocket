@@ -128,8 +128,6 @@ final class CollectionCell: UITableViewCell {
 		case normal([UIAccessibilityCustomAction])
 		case modal
 		case modalTinted
-		
-		
 		case modalDisabled
 	}
 	
@@ -177,8 +175,6 @@ final class CollectionCell: UITableViewCell {
 				contentView.layer.opacity = 1
 				enableWithAccessibilityTrait()
 				accessibilityCustomActions = []
-				
-				
 			case .modalDisabled:
 				backgroundColor_set_to_clear()
 				

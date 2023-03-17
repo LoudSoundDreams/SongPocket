@@ -195,7 +195,7 @@ final class CollectionsTVC:
 		
 		sortCommandsGrouped = [
 			[.folder_name],
-			[.scramble, .reverse],
+			[.random, .reverse],
 		]
 	}
 	

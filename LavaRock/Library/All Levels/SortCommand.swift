@@ -12,27 +12,27 @@ enum SortCommand: CaseIterable {
 	case folder_name
 	
 	// For `Album`s only
-	case album_new
-	case album_old
+	case album_newestFirst
+	case album_oldestFirst
 	
 	// For `Song`s only
 	case song_track
 	
 	// For all types
-	case scramble
+	case random
 	case reverse
 	
 	func localizedName() -> String {
 		switch self {
 		case .folder_name:
 			return LRString.name
-		case .album_new:
-			return LRString.new
-		case .album_old:
-			return LRString.old
+		case .album_newestFirst:
+			return LRString.newestFirst
+		case .album_oldestFirst:
+			return LRString.oldestFirst
 		case .song_track:
 			return LRString.track
-		case .scramble:
+		case .random:
 			return LRString.random
 		case .reverse:
 			return LRString.reverse
@@ -43,13 +43,13 @@ enum SortCommand: CaseIterable {
 		switch self {
 		case .folder_name:
 			return UIImage(systemName: "textformat.abc")
-		case .album_new:
+		case .album_newestFirst:
 			return UIImage(systemName: "hourglass.bottomhalf.filled")
-		case .album_old:
+		case .album_oldestFirst:
 			return UIImage(systemName: "hourglass.tophalf.filled")
 		case .song_track:
 			return UIImage(systemName: "textformat.123")
-		case .scramble:
+		case .random:
 			switch Int.random(in: 1...6) {
 			case 1:
 				return UIImage(systemName: "die.face.1")
