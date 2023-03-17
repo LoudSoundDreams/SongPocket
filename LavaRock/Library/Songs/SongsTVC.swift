@@ -8,11 +8,18 @@
 
 import UIKit
 import MediaPlayer
+import SwiftUI
 
 final class SongsTVC: LibraryTVC {
 	// MARK: - Properties
 	
-	private(set) lazy var noItemsBackgroundView: UIView? = tableView.dequeueReusableCell(withIdentifier: "No Songs Placeholder")
+	private(set) lazy var noItemsBackgroundView: UIView? = {
+		let view = Text(LRString.noSongs)
+			.font(.title)
+			.foregroundColor(.secondary)
+		let hostingController = UIHostingController(rootView: view)
+		return hostingController.view
+	}()
 	
 	// MARK: - Setup
 	

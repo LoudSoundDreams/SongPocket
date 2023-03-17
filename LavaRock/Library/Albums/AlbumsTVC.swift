@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SwiftUI
 
 final class AlbumsTVC:
 	LibraryTVC,
@@ -22,7 +23,13 @@ final class AlbumsTVC:
 	
 	// MARK: - Properties
 	
-	private(set) lazy var noItemsBackgroundView: UIView? = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
+	private(set) lazy var noItemsBackgroundView: UIView? = {
+		let view = Text(LRString.noAlbums)
+			.font(.title)
+			.foregroundColor(.secondary)
+		let hostingController = UIHostingController(rootView: view)
+		return hostingController.view
+	}()
 	
 	// Controls
 	private var moveOrOrganizeButton = UIBarButtonItem(

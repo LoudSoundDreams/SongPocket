@@ -115,6 +115,8 @@ enum LRString {
 	
 	// MARK: Albums view
 	
+	static let noAlbums = NSLocalizedString("No Albums", comment: "Placeholder when showing an empty folder")
+	
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let byAlbumArtistEllipsis = NSLocalizedString("By Album Artist…", comment: "Menu option")
 	static let toFolderEllipsis = NSLocalizedString("To Folder…", comment: "Menu option")
@@ -125,6 +127,8 @@ enum LRString {
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
 	// MARK: Songs view
+	
+	static let noSongs = NSLocalizedString("No Songs", comment: "Placeholder when showing an empty album")
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
