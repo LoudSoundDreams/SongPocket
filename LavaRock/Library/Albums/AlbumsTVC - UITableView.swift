@@ -11,7 +11,12 @@ extension AlbumsTVC {
 	// MARK: - Numbers
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		setOrRemoveNoItemsBackground()
+		if viewModel.isEmpty() {
+			// Don’t call `dequeueReusableCell` here to create the placeholder view as needed, because it can cause an infinite loop.
+			tableView.backgroundView = noItemsBackgroundView
+		} else {
+			tableView.backgroundView = nil
+		}
 		
 		switch purpose {
 		case .previewingCombine:

@@ -9,14 +9,10 @@
 import UIKit
 import MediaPlayer
 
-final class SongsTVC:
-	LibraryTVC,
-	NoItemsBackgroundManager
-{
+final class SongsTVC: LibraryTVC {
 	// MARK: - Properties
 	
-	// `NoItemsBackgroundManager`
-	lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Songs Placeholder")
+	private(set) lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Songs Placeholder")
 	
 	// MARK: - Setup
 	

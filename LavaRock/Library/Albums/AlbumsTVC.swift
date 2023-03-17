@@ -11,7 +11,6 @@ import CoreData
 
 final class AlbumsTVC:
 	LibraryTVC,
-	NoItemsBackgroundManager,
 	OrganizeAlbumsPreviewing
 {
 	enum Purpose {
@@ -23,7 +22,6 @@ final class AlbumsTVC:
 	
 	// MARK: - Properties
 	
-	// `NoItemsBackgroundManager`
 	private(set) lazy var noItemsBackgroundView = tableView.dequeueReusableCell(withIdentifier: "No Albums Placeholder")
 	
 	// Controls

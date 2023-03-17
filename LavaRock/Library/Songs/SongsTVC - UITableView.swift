@@ -12,7 +12,11 @@ extension SongsTVC {
 	// MARK: - Numbers
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		setOrRemoveNoItemsBackground()
+		if viewModel.isEmpty() {
+			tableView.backgroundView = noItemsBackgroundView
+		} else {
+			tableView.backgroundView = nil
+		}
 		
 		return viewModel.groups.count
 	}
