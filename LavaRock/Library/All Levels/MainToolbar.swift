@@ -77,43 +77,7 @@ final class MainToolbar {
 				],
 				
 				[
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.previous,
-							image: UIImage(systemName: "backward.end.circle"),
-							attributes: {
-								var result: UIMenuElement.Attributes = [
-									.keepsMenuPresented,
-								]
-								if Self.player == nil {
-									result.formUnion(.disabled)
-								}
-								return result
-							}(),
-							handler: { action in
-								Self.player?.skipToPreviousItem()
-							}
-						)
-						useMenuElements([action])
-					}),
-					
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.restart,
-							image: UIImage(systemName: "arrow.counterclockwise.circle"),
-							attributes: {
-								var result: UIMenuElement.Attributes = []
-								if Self.player == nil {
-									result.formUnion(.disabled)
-								}
-								return result
-							}(),
-							handler: { action in
-								Self.player?.skipToBeginning()
-							}
-						)
-						useMenuElements([action])
-					}),
+					create_submenu_Transport(),
 				],
 			]
 		)
@@ -214,6 +178,54 @@ final class MainToolbar {
 						}(),
 						handler: { action in
 							Self.player?.repeatMode = .one
+						}
+					)
+					useMenuElements([action])
+				}),
+			]
+		)
+	}
+	
+	private func create_submenu_Transport() -> UIMenu {
+		return UIMenu(
+			options: [
+				.displayInline,
+			],
+			preferredElementSize: .small,
+			children: [
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.previous,
+						image: UIImage(systemName: "backward.end.circle"),
+						attributes: {
+							var result: UIMenuElement.Attributes = [
+								.keepsMenuPresented,
+							]
+							if Self.player == nil {
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						handler: { action in
+							Self.player?.skipToPreviousItem()
+						}
+					)
+					useMenuElements([action])
+				}),
+				
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.restart,
+						image: UIImage(systemName: "arrow.counterclockwise.circle"),
+						attributes: {
+							var result: UIMenuElement.Attributes = []
+							if Self.player == nil {
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						handler: { action in
+							Self.player?.skipToBeginning()
 						}
 					)
 					useMenuElements([action])
