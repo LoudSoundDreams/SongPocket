@@ -104,7 +104,6 @@ extension FutureChooser: TapeDeckReflecting {
 		enable()
 		switch player.repeatMode {
 		case .default:
-			assertionFailure("`MPMusicPlayerController.repeatMode == .default")
 			selectedSegmentIndex = Mode.normal.rawValue
 		case .one:
 			selectedSegmentIndex = Mode.repeat1.rawValue
@@ -113,7 +112,6 @@ extension FutureChooser: TapeDeckReflecting {
 		case .none:
 			selectedSegmentIndex = Mode.normal.rawValue
 		@unknown default:
-			assertionFailure("Unknown value for `MPMusicPlayerController.repeatMode")
 			selectedSegmentIndex = Mode.normal.rawValue
 		}
 	}
