@@ -215,6 +215,7 @@ final class MainToolbar {
 						image: UIImage(systemName: "arrow.counterclockwise.circle"),
 						attributes: {
 							var result: UIMenuElement.Attributes = []
+							// TO DO: Disable when playhead is already at start of track
 							if Self.player == nil {
 								result.formUnion(.disabled)
 							}
