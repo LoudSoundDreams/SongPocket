@@ -15,7 +15,6 @@ protocol PlayheadReflectable: AnyObject {
 	var spacerSpeakerImageView: UIImageView! { get }
 	var speakerImageView: UIImageView! { get }
 	static var usesUIKitAccessibility__: Bool { get }
-	var accessibilityLabel: String? { get set }
 	
 	func reflectPlayhead(
 		containsPlayhead: Bool
@@ -57,10 +56,10 @@ extension PlayheadReflectable {
 #endif
 	}
 	
-	func freshen_accessibilityLabel(
+	func create_accessibilityLabel(
 		containsPlayhead: Bool,
 		rowContentAccessibilityLabel__: String?
-	) {
+	) -> String? {
 		let now_playing_status: String? = {
 			guard
 				containsPlayhead,
@@ -75,7 +74,7 @@ extension PlayheadReflectable {
 			}
 		}()
 		
-		accessibilityLabel = [
+		return [
 			now_playing_status,
 			rowContentAccessibilityLabel__,
 		].compactedAndFormattedAsNarrowList()

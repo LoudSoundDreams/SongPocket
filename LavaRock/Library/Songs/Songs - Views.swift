@@ -327,7 +327,7 @@ extension SongCell: PlayheadReflectable {
 	) {
 		freshen_avatar_imageView(
 			containsPlayhead: containsPlayhead)
-		freshen_accessibilityLabel(
+		accessibilityLabel = create_accessibilityLabel(
 			containsPlayhead: containsPlayhead,
 			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
 	}
