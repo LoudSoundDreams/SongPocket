@@ -14,7 +14,7 @@ extension MPMusicPlayerController {
 		subsystem: "MPMusicPlayerController",
 		category: .pointsOfInterest)
 	
-	final func now_playing_SongID() -> SongID? {
+	final func currentSongID() -> SongID? {
 #if targetEnvironment(simulator)
 		return Sim_Global.songID
 #else

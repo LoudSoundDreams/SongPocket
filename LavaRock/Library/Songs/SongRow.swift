@@ -69,7 +69,7 @@ struct SongRow: View {
 			let nowPlayingStatusAccessibilityLabel: String? = {
 				guard
 					let status = tapeDeckStatus.current,
-					songID == status.now_playing_SongID
+					songID == status.currentSongID
 				else {
 					return nil
 				}
