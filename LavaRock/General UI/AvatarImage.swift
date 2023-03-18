@@ -62,23 +62,29 @@ struct AvatarImage: View {
 				.hidden()
 			
 			// Foreground
-			switch status {
-			case .notPlaying:
-				EmptyView()
-			case .paused:
-				Image(systemName: Avatar.preference.pausedSFSymbolName)
-					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
-					.foregroundColor(.accentColor)
-			case .playing:
-				playing_image
-					.foregroundColor(.accentColor)
-			}
+			foregroundView // If SwiftUI detects that this is an `EmptyView`, it doesn’t bother with the following accessibility label.
 		}
 	}
 	
 	private var playing_image: some View {
 		Image(systemName: Avatar.preference.playingSFSymbolName)
 			.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
+	}
+	
+	@ViewBuilder
+	private var foregroundView: some View {
+		switch status {
+		case .notPlaying:
+			Image(systemName: "aoeu")
+//			EmptyView()
+		case .paused:
+			Image(systemName: Avatar.preference.pausedSFSymbolName)
+				.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
+				.foregroundColor(.accentColor)
+		case .playing:
+			playing_image
+				.foregroundColor(.accentColor)
+		}
 	}
 }
 

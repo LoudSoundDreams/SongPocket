@@ -17,7 +17,6 @@ final class TapeDeckStatus: ObservableObject {
 	
 	struct Status {
 		let isPlaying: Bool
-		let currentSongID: SongID
 	}
 	
 	@Published var current: Status? = nil
@@ -30,7 +29,6 @@ final class TapeDeckStatus: ObservableObject {
 		
 		guard
 			let player = TapeDeck.shared.player, // Have access to player
-			let currentSongID = player.currentSongID(),
 			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty) // In-app queue has at least one song
 		else {
 			// Show disabled default state everywhere
@@ -39,7 +37,7 @@ final class TapeDeckStatus: ObservableObject {
 		}
 		
 		new_status = Status(
-			isPlaying: player.playbackState == .playing,
-			currentSongID: currentSongID)
+			isPlaying: player.playbackState == .playing
+		)
 	}
 }
