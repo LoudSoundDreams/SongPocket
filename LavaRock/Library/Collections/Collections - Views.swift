@@ -104,14 +104,12 @@ final class CreateCollectionCell: UITableViewCell {
 		
 		selectedBackgroundView_add_tint()
 		
-		if !Self.usesSwiftUI__ {
-			Task {
-				accessibilityTraits.formUnion(.button)
-			}
-			
-			newCollectionLabel.text = LRString.newFolder
-			newCollectionLabel.textColor = .tintColor
-		}
+		guard !Self.usesSwiftUI__ else { return }
+		
+		newCollectionLabel.text = LRString.newFolder
+		newCollectionLabel.textColor = .tintColor
+		
+		accessibilityTraits.formUnion(.button)
 	}
 	
 	override func layoutSubviews() {
@@ -195,11 +193,9 @@ final class CollectionCell: UITableViewCell {
 			)
 			
 			// Exclude the now-playing marker’s accessibility label.
-			if !Self.usesSwiftUI__ {
-				accessibilityUserInputLabels = [
-					titleLabel.text,
-				].compacted()
-			}
+			accessibilityUserInputLabels = [
+				titleLabel.text,
+			].compacted()
 			
 		}
 	}

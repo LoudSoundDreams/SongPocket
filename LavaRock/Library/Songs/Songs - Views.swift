@@ -73,14 +73,14 @@ final class SongCell: UITableViewCell {
 		
 		backgroundColor_set_to_clear()
 		
-		if !Self.usesSwiftUI__ {
-			spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
-			numberLabel.font = spacerNumberLabel.font
-			
-			dotDotDotButton.maximumContentSizeCategory = .extraExtraExtraLarge
-			
-			accessibilityTraits.formUnion(.button)
-		}
+		guard !Self.usesSwiftUI__ else { return }
+		
+		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
+		numberLabel.font = spacerNumberLabel.font
+		
+		dotDotDotButton.maximumContentSizeCategory = .extraExtraExtraLarge
+		
+		accessibilityTraits.formUnion(.button)
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
@@ -285,12 +285,12 @@ final class SongCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		if !Self.usesSwiftUI__ {
-			separatorInset.left = 0
-			+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
-			+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
-			separatorInset.right = directionalLayoutMargins.trailing
-		}
+		guard !Self.usesSwiftUI__ else { return }
+		
+		separatorInset.left = 0
+		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
+		+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
+		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
 extension SongCell: AvatarDisplaying {
