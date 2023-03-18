@@ -64,15 +64,7 @@ struct SongRow: View {
 		}
 		.padding(.top, .eight * -1/4) // -2
 		
-		.accessibilityElement()
-		.accessibilityLabel({ () -> String in
-			return [
-				song.avatarStatus().accessibilityLabel, // TO DO: Reference `tapeDeckStatus`
-				trackDisplay,
-				song_title,
-				artist_if_different_from_album_artist,
-			].compactedAndFormattedAsNarrowList()
-		}())
+		.accessibilityElement(children: .combine)
 		
 		.accessibilityAddTraits(.isButton)
 		

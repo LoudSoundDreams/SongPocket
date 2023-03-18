@@ -63,6 +63,8 @@ struct AvatarImage: View {
 			
 			// Foreground
 			foregroundView // If SwiftUI detects that this is an `EmptyView`, it doesn’t bother with the following accessibility label.
+				.accessibilityElement()
+				.accessibilityLabel(status.axLabel ?? "")
 		}
 	}
 	
