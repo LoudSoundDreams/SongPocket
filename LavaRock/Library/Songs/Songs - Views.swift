@@ -53,7 +53,7 @@ final class ExpandedTargetButton: UIButton {
 final class SongCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
-	// `AvatarDisplaying`
+	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -293,7 +293,7 @@ final class SongCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension SongCell: AvatarDisplaying {
+extension SongCell: AvatarDisplaying__ {
 	func indicate(
 		avatarStatus: AvatarStatus
 	) {

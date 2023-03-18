@@ -129,7 +129,7 @@ final class CollectionCell: UITableViewCell {
 		case modalDisabled
 	}
 	
-	// `AvatarDisplaying`
+	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -209,7 +209,7 @@ final class CollectionCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension CollectionCell: AvatarDisplaying {
+extension CollectionCell: AvatarDisplaying__ {
 	func indicate(
 		avatarStatus: AvatarStatus
 	) {

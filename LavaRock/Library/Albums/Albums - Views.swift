@@ -38,7 +38,7 @@ final class AlbumCell: UITableViewCell {
 		case modalTinted
 	}
 	
-	// `AvatarDisplaying`
+	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	
@@ -178,7 +178,7 @@ final class AlbumCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension AlbumCell: AvatarDisplaying {
+extension AlbumCell: AvatarDisplaying__ {
 	func indicate(
 		avatarStatus: AvatarStatus
 	) {

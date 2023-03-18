@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-protocol AvatarDisplaying: AnyObject {
+protocol AvatarDisplaying__: AnyObject {
 	// Adopting types must …
 	// • Call `indicate` whenever appropriate.
 	

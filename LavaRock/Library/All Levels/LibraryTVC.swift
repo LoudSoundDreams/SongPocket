@@ -325,7 +325,7 @@ class LibraryTVC: UITableViewController {
 	final func reflectPlayhead_library() {
 		tableView.allIndexPaths().forEach { indexPath in
 			guard
-				let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying
+				let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying__
 			else { return }
 			cell.indicate(
 				avatarStatus: {
