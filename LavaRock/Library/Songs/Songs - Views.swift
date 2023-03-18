@@ -298,8 +298,10 @@ extension SongCell: AvatarDisplaying {
 	) {
 		freshen_avatar_imageView(
 			containsPlayhead: containsPlayhead)
-		accessibilityLabel = create_accessibilityLabel(
-			containsPlayhead: containsPlayhead,
-			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+		if !Self.usesSwiftUI__ {
+			accessibilityLabel = create_accessibilityLabel(
+				containsPlayhead: containsPlayhead,
+				rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+		}
 	}
 }
