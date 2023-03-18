@@ -157,7 +157,7 @@ final class CollectionsTVC:
 			toInsert = newInCollectionsSection
 			toReloadInCollectionsSection = []
 		case .someCollections: // Merging changes with existing `Collection`s
-			// TO DO: Is this right?
+			// Crashes if you use Reset Location & Privacy
 			toDelete = []
 			toInsert = []
 			toReloadInCollectionsSection = []

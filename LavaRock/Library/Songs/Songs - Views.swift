@@ -51,7 +51,7 @@ final class ExpandedTargetButton: UIButton {
 }
 
 final class SongCell: UITableViewCell {
-	private static let usesSwiftUI__ = 10 == 10
+	private static let usesSwiftUI__ = 10 == 1
 	
 	// `AvatarDisplaying`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
@@ -297,6 +297,8 @@ extension SongCell: AvatarDisplaying {
 	func indicate(
 		avatarStatus: AvatarStatus
 	) {
+		guard !Self.usesSwiftUI__ else { return }
+		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
@@ -304,11 +306,9 @@ extension SongCell: AvatarDisplaying {
 		
 		speakerImageView.image = avatarStatus.uiImage
 		
-		if !Self.usesSwiftUI__ {
-			accessibilityLabel = [
-				avatarStatus.accessibilityLabel,
-				rowContentAccessibilityLabel__,
-			].compactedAndFormattedAsNarrowList()
-		}
+		accessibilityLabel = [
+			avatarStatus.axLabel,
+			rowContentAccessibilityLabel__,
+		].compactedAndFormattedAsNarrowList()
 	}
 }

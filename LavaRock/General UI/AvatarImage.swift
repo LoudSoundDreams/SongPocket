@@ -23,7 +23,7 @@ enum AvatarStatus {
 		}
 	}
 	
-	var accessibilityLabel: String? {
+	var axLabel: String? {
 		switch self {
 		case .notPlaying:
 			return nil

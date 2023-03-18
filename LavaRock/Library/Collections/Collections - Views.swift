@@ -211,6 +211,8 @@ extension CollectionCell: AvatarDisplaying {
 	func indicate(
 		avatarStatus: AvatarStatus
 	) {
+		guard !Self.usesSwiftUI__ else { return }
+		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
@@ -218,11 +220,9 @@ extension CollectionCell: AvatarDisplaying {
 		
 		speakerImageView.image = avatarStatus.uiImage
 		
-		if !Self.usesSwiftUI__ {
-			accessibilityLabel = [
-				avatarStatus.accessibilityLabel,
-				rowContentAccessibilityLabel__,
-			].compactedAndFormattedAsNarrowList()
-		}
+		accessibilityLabel = [
+			avatarStatus.axLabel,
+			rowContentAccessibilityLabel__,
+		].compactedAndFormattedAsNarrowList()
 	}
 }

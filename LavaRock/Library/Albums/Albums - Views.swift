@@ -190,7 +190,7 @@ extension AlbumCell: AvatarDisplaying {
 		speakerImageView.image = avatarStatus.uiImage
 		
 		accessibilityLabel = [
-			avatarStatus.accessibilityLabel,
+			avatarStatus.axLabel,
 			rowContentAccessibilityLabel__,
 		].compactedAndFormattedAsNarrowList()
 	}

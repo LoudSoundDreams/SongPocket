@@ -48,8 +48,8 @@ struct SongRow: View {
 			AvatarImage(
 				libraryItem: song
 			)
+			.accessibilitySortPriority(10)
 			
-			// TO DO: Expand tappable area
 			Button {
 			} label: {
 				Image(systemName: "ellipsis")
