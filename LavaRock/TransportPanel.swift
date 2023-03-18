@@ -16,12 +16,8 @@ private extension View {
 }
 
 struct TransportPanel: View {
-	@ObservedObject private var tapeDeckStatus: TapeDeckStatus
-	init() {
-		tapeDeckStatus = .shared
-	}
-	
-	private var player: MPMusicPlayerController? { TapeDeck.shared.player }
+	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
+	private var controller: MPMusicPlayerController? { TapeDeck.shared.player }
 	var body: some View {
 		VStack(
 			spacing: .eight * 4
@@ -67,7 +63,7 @@ struct TransportPanel: View {
 	
 	private var previousSongButton: some View {
 		Button {
-			player?.skipToPreviousItem()
+			controller?.skipToPreviousItem()
 		} label: {
 			Image(systemName: "backward.end.circle")
 				.font(.system(size: .eight * 4))
@@ -76,7 +72,7 @@ struct TransportPanel: View {
 	}
 	private var rewindButton: some View {
 		Button {
-			player?.skipToBeginning()
+			controller?.skipToBeginning()
 		} label: {
 			Image(systemName: "arrow.counterclockwise.circle")
 				.font(.system(size: .eight * 4))
@@ -85,7 +81,7 @@ struct TransportPanel: View {
 	}
 	private var skipBackButton: some View {
 		Button {
-			player?.currentPlaybackTime -= 15
+			controller?.currentPlaybackTime -= 15
 		} label: {
 			Image(systemName: "gobackward.15")
 				.font(.system(size: .eight * 4))
@@ -97,9 +93,9 @@ struct TransportPanel: View {
 		Button {
 			guard let status = tapeDeckStatus.current else { return }
 			if status.isPlaying {
-				player?.pause()
+				controller?.pause()
 			} else {
-				player?.play()
+				controller?.play()
 			}
 		} label: {
 			if
@@ -118,7 +114,7 @@ struct TransportPanel: View {
 	
 	private var skipForwardButton: some View {
 		Button {
-			player?.currentPlaybackTime += 15
+			controller?.currentPlaybackTime += 15
 		} label: {
 			Image(systemName: "goforward.15")
 				.font(.system(size: .eight * 4))
@@ -127,7 +123,7 @@ struct TransportPanel: View {
 	}
 	private var nextSongButton: some View {
 		Button {
-			player?.skipToNextItem()
+			controller?.skipToNextItem()
 		} label: {
 			Image(systemName: "forward.end.circle")
 				.font(.system(size: .eight * 4))

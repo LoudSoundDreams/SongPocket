@@ -218,13 +218,11 @@ extension CollectionCell: AvatarDisplaying {
 		
 		speakerImageView.image = avatarStatus.uiImage
 		
-		if Self.usesSwiftUI__ {
-		} else {
+		if !Self.usesSwiftUI__ {
 			accessibilityLabel = [
 				avatarStatus.accessibilityLabel,
 				rowContentAccessibilityLabel__,
 			].compactedAndFormattedAsNarrowList()
 		}
-		
 	}
 }
