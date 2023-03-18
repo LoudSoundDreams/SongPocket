@@ -63,11 +63,8 @@ struct SongRow: View {
 			}
 		}
 		.padding(.top, .eight * -1/4) // -2
-		
 		.accessibilityElement(children: .combine)
-		
 		.accessibilityAddTraits(.isButton)
-		
 		.accessibilityInputLabels(
 			[
 				song_title, // Excludes the “unknown title” placeholder, which is currently a dash.

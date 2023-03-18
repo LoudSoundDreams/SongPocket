@@ -21,7 +21,7 @@ struct FolderRow: View {
 			)
 			.accessibilitySortPriority(10)
 		}
-		
 		.accessibilityElement(children: .combine)
+		.accessibilityAddTraits(.isButton)
 	}
 }
