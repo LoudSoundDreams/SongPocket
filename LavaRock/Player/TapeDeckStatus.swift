@@ -10,15 +10,15 @@ import CoreData
 
 @MainActor
 final class TapeDeckStatus: ObservableObject {
-	struct Status {
-		let isPlaying: Bool
-		let now_playing_SongID: SongID
-	}
-	
 	private init() {
 		freshen()
 	}
 	static let shared = TapeDeckStatus()
+	
+	struct Status {
+		let isPlaying: Bool
+		let now_playing_SongID: SongID
+	}
 	
 	@Published var current: Status? = nil
 	

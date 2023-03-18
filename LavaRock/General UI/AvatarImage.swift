@@ -7,39 +7,46 @@
 
 import SwiftUI
 
+enum AvatarState {
+	case notPlaying
+	case paused
+	case playing
+	
+	var uiImage: UIImage? {
+		switch self {
+		case .notPlaying:
+			return nil
+		case .paused:
+			return UIImage(systemName: Avatar.preference.pausedSFSymbolName)
+		case .playing:
+			return UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		}
+	}
+	
+	var accessibilityLabel: String? {
+		switch self {
+		case .notPlaying:
+			return nil
+		case .paused:
+			return LRString.paused
+		case .playing:
+			return LRString.nowPlaying
+		}
+	}
+}
+
 struct AvatarImage: View {
-	let songID: SongID
-	
-	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
-	
-	private enum State {
-		case notPlaying
-		case paused
-		case playing
-	}
-	
-	private var state: State {
-		guard
-			let status = tapeDeckStatus.current,
-			songID == status.now_playing_SongID
-		else {
-			return .notPlaying
-		}
-		if status.isPlaying {
-			return .playing
-		} else {
-			return .paused
-		}
-	}
+	let state: AvatarState
 	
 	var body: some View {
 		ZStack(
 			alignment: .leading
 		) {
-			
+			// Spacer
 			playing_image
 				.hidden()
 			
+			// Foreground
 			switch state {
 			case .notPlaying:
 				EmptyView()
@@ -51,7 +58,6 @@ struct AvatarImage: View {
 				playing_image
 					.foregroundColor(.accentColor)
 			}
-			
 		}
 	}
 	

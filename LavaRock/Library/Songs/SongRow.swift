@@ -14,7 +14,6 @@ struct SongRow: View {
 	let songID: SongID
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
-	
 	var body: some View {
 		
 		HStack {
@@ -46,7 +45,9 @@ struct SongRow: View {
 			
 			Spacer()
 			
-			AvatarImage(songID: songID)
+			AvatarImage(
+				songID: songID
+			)
 			
 			// TO DO: Expand tappable area
 			Button {

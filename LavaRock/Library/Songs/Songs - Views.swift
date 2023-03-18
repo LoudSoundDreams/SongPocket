@@ -136,7 +136,8 @@ final class SongCell: UITableViewCell {
 					trackDisplay: trackDisplay,
 					song_title: song_title,
 					artist_if_different_from_album_artist: artistDisplayOptional,
-					songID: song.persistentID)
+					songID: song.persistentID
+				)
 			}
 			
 		} else {
