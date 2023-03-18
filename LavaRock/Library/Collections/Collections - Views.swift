@@ -192,7 +192,7 @@ final class CollectionCell: UITableViewCell {
 				avatarStatus: collection.avatarStatus()
 			)
 			
-			// Exclude the now-playing marker’s accessibility label.
+			// Don’t include the now-playing marker.
 			accessibilityUserInputLabels = [
 				titleLabel.text,
 			].compacted()

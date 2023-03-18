@@ -23,5 +23,10 @@ struct FolderRow: View {
 		}
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
+		.accessibilityInputLabels(
+			[
+				collection.title,
+			].compacted()
+		)
 	}
 }
