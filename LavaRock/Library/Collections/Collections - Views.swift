@@ -153,6 +153,12 @@ final class CollectionCell: UITableViewCell {
 	) {
 		if Self.usesSwiftUI__ {
 			
+			contentConfiguration = UIHostingConfiguration {
+				FolderRow(
+					collection: collection
+				)
+			}
+			
 		} else {
 			
 			titleLabel.text = collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
