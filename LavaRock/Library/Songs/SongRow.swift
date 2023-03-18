@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct SongRow: View {
+	let song: Song
 	let trackDisplay: String
 	let song_title: String?
 	let artist_if_different_from_album_artist: String?
-	let songID: SongID
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
 	var body: some View {
@@ -46,7 +46,7 @@ struct SongRow: View {
 			Spacer()
 			
 			AvatarImage(
-				songID: songID
+				libraryItem: song
 			)
 			
 			// TO DO: Expand tappable area
@@ -66,22 +66,8 @@ struct SongRow: View {
 		
 		.accessibilityElement()
 		.accessibilityLabel({ () -> String in
-			let nowPlayingStatusAccessibilityLabel: String? = {
-				guard
-					let status = tapeDeckStatus.current,
-					songID == status.currentSongID
-				else {
-					return nil
-				}
-				if status.isPlaying {
-					return LRString.nowPlaying
-				} else {
-					return LRString.paused
-				}
-			}()
-			
 			return [
-				nowPlayingStatusAccessibilityLabel,
+				song.avatarStatus().accessibilityLabel, // TO DO: Reference `tapeDeckStatus`
 				trackDisplay,
 				song_title,
 				artist_if_different_from_album_artist,

@@ -112,8 +112,8 @@ final class AlbumCell: UITableViewCell {
 			titleLabel.text,
 			releaseDateLabel.text,
 		].compactedAndFormattedAsNarrowList()
-		reflectPlayhead(
-			containsPlayhead: album.containsPlayhead()
+		indicate(
+			avatarStatus: album.avatarStatus()
 		)
 		
 		accessibilityUserInputLabels = [
@@ -179,13 +179,19 @@ final class AlbumCell: UITableViewCell {
 	}
 }
 extension AlbumCell: AvatarDisplaying {
-	func reflectPlayhead(
-		containsPlayhead: Bool
+	func indicate(
+		avatarStatus: AvatarStatus
 	) {
-		freshen_avatar_imageView(
-			containsPlayhead: containsPlayhead)
-		accessibilityLabel = create_accessibilityLabel(
-			containsPlayhead: containsPlayhead,
-			rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		
+		speakerImageView.image = avatarStatus.uiImage
+		
+		accessibilityLabel = [
+			avatarStatus.accessibilityLabel,
+			rowContentAccessibilityLabel__,
+		].compactedAndFormattedAsNarrowList()
 	}
 }

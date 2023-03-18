@@ -51,7 +51,7 @@ final class ExpandedTargetButton: UIButton {
 }
 
 final class SongCell: UITableViewCell {
-	private static let usesSwiftUI__ = 10 == 1
+	private static let usesSwiftUI__ = 10 == 10
 	
 	// `AvatarDisplaying`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
@@ -133,10 +133,10 @@ final class SongCell: UITableViewCell {
 			
 			contentConfiguration = UIHostingConfiguration {
 				SongRow(
+					song: song,
 					trackDisplay: trackDisplay,
 					song_title: song_title,
-					artist_if_different_from_album_artist: artistDisplayOptional,
-					songID: song.persistentID
+					artist_if_different_from_album_artist: artistDisplayOptional
 				)
 			}
 			
@@ -160,8 +160,8 @@ final class SongCell: UITableViewCell {
 				titleLabel.text,
 				artistLabel.text,
 			].compactedAndFormattedAsNarrowList()
-			reflectPlayhead(
-				containsPlayhead: song.containsPlayhead()
+			indicate(
+				avatarStatus: song.avatarStatus()
 			)
 			
 			freshenDotDotDotButton()
@@ -294,15 +294,21 @@ final class SongCell: UITableViewCell {
 	}
 }
 extension SongCell: AvatarDisplaying {
-	func reflectPlayhead(
-		containsPlayhead: Bool
+	func indicate(
+		avatarStatus: AvatarStatus
 	) {
-		freshen_avatar_imageView(
-			containsPlayhead: containsPlayhead)
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		
+		speakerImageView.image = avatarStatus.uiImage
+		
 		if !Self.usesSwiftUI__ {
-			accessibilityLabel = create_accessibilityLabel(
-				containsPlayhead: containsPlayhead,
-				rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+			accessibilityLabel = [
+				avatarStatus.accessibilityLabel,
+				rowContentAccessibilityLabel__,
+			].compactedAndFormattedAsNarrowList()
 		}
 	}
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AvatarState {
+enum AvatarStatus {
 	case notPlaying
 	case paused
 	case playing
@@ -36,7 +36,22 @@ enum AvatarState {
 }
 
 struct AvatarImage: View {
-	let state: AvatarState
+	let libraryItem: LibraryItem
+	
+	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
+	private var status: AvatarStatus {
+		guard
+			libraryItem.containsPlayhead(),
+			let tapeDeckStatus = tapeDeckStatus.current
+		else {
+			return .notPlaying
+		}
+		if tapeDeckStatus.isPlaying {
+			return .playing
+		} else {
+			return .paused
+		}
+	}
 	
 	var body: some View {
 		ZStack(
@@ -47,7 +62,7 @@ struct AvatarImage: View {
 				.hidden()
 			
 			// Foreground
-			switch state {
+			switch status {
 			case .notPlaying:
 				EmptyView()
 			case .paused:

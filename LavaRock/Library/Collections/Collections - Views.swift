@@ -184,8 +184,8 @@ final class CollectionCell: UITableViewCell {
 			}
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
-			reflectPlayhead(
-				containsPlayhead: collection.containsPlayhead()
+			indicate(
+				avatarStatus: collection.avatarStatus()
 			)
 			
 			// Exclude the now-playing marker’s accessibility label.
@@ -208,15 +208,22 @@ final class CollectionCell: UITableViewCell {
 	}
 }
 extension CollectionCell: AvatarDisplaying {
-	func reflectPlayhead(
-		containsPlayhead: Bool
+	func indicate(
+		avatarStatus: AvatarStatus
 	) {
-		freshen_avatar_imageView(
-			containsPlayhead: containsPlayhead)
-		if !Self.usesSwiftUI__ {
-			accessibilityLabel = create_accessibilityLabel(	
-				containsPlayhead: containsPlayhead,
-				rowContentAccessibilityLabel__: rowContentAccessibilityLabel__)
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		
+		speakerImageView.image = avatarStatus.uiImage
+		
+		if Self.usesSwiftUI__ {
+		} else {
+			accessibilityLabel = [
+				avatarStatus.accessibilityLabel,
+				rowContentAccessibilityLabel__,
+			].compactedAndFormattedAsNarrowList()
 		}
 		
 	}

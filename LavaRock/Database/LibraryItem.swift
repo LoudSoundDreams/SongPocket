@@ -13,6 +13,22 @@ protocol LibraryItem: NSManagedObject {
 	
 	func containsPlayhead() -> Bool
 }
+extension LibraryItem {
+	@MainActor
+	func avatarStatus() -> AvatarStatus {
+		guard
+			containsPlayhead(),
+			let player = TapeDeck.shared.player
+		else {
+			return .notPlaying
+		}
+		if player.playbackState == .playing {
+			return .playing
+		} else {
+			return .paused
+		}
+	}
+}
 
 protocol LibraryContainer: LibraryItem {
 	var contents: NSSet? { get }
