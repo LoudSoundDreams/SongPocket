@@ -112,8 +112,8 @@ final class AlbumCell: UITableViewCell {
 			titleLabel.text,
 			releaseDateLabel.text,
 		].compactedAndFormattedAsNarrowList()
-		indicate(
-			avatarStatus: album.avatarStatus()
+		indicateAvatarStatus__(
+			album.avatarStatus()
 		)
 		
 		accessibilityUserInputLabels = [
@@ -179,8 +179,8 @@ final class AlbumCell: UITableViewCell {
 	}
 }
 extension AlbumCell: AvatarDisplaying__ {
-	func indicate(
-		avatarStatus: AvatarStatus
+	func indicateAvatarStatus__(
+		_ avatarStatus: AvatarStatus
 	) {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory

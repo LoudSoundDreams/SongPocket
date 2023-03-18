@@ -327,14 +327,12 @@ class LibraryTVC: UITableViewController {
 			guard
 				let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying__
 			else { return }
-			cell.indicate(
-				avatarStatus: {
-					guard let libraryItem = viewModel.itemOptional(at: indexPath) as? LibraryItem else {
-						return .notPlaying
-					}
-					return libraryItem.avatarStatus()
-				}()
-			)
+			cell.indicateAvatarStatus__({
+				guard let libraryItem = viewModel.itemOptional(at: indexPath) as? LibraryItem else {
+					return .notPlaying
+				}
+				return libraryItem.avatarStatus()
+			}())
 		}
 	}
 	

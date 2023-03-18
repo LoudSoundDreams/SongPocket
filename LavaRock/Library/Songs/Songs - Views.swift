@@ -160,8 +160,8 @@ final class SongCell: UITableViewCell {
 				titleLabel.text,
 				artistLabel.text,
 			].compactedAndFormattedAsNarrowList()
-			indicate(
-				avatarStatus: song.avatarStatus()
+			indicateAvatarStatus__(
+				song.avatarStatus()
 			)
 			
 			freshenDotDotDotButton()
@@ -294,8 +294,8 @@ final class SongCell: UITableViewCell {
 	}
 }
 extension SongCell: AvatarDisplaying__ {
-	func indicate(
-		avatarStatus: AvatarStatus
+	func indicateAvatarStatus__(
+		_ avatarStatus: AvatarStatus
 	) {
 		guard !Self.usesSwiftUI__ else { return }
 		

@@ -188,8 +188,8 @@ final class CollectionCell: UITableViewCell {
 			}
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
-			indicate(
-				avatarStatus: collection.avatarStatus()
+			indicateAvatarStatus__(
+				collection.avatarStatus()
 			)
 			
 			// Don’t include the now-playing marker.
@@ -210,8 +210,8 @@ final class CollectionCell: UITableViewCell {
 	}
 }
 extension CollectionCell: AvatarDisplaying__ {
-	func indicate(
-		avatarStatus: AvatarStatus
+	func indicateAvatarStatus__(
+		_ avatarStatus: AvatarStatus
 	) {
 		guard !Self.usesSwiftUI__ else { return }
 		
