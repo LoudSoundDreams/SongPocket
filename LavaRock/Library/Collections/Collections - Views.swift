@@ -154,32 +154,13 @@ final class CollectionCell: UITableViewCell {
 		} else {
 			
 			titleLabel.text = collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
-			switch mode {
-			case .normal(let actions):
-				backgroundColor_set_to_clear()
-				
-				contentView.layer.opacity = 1
-				enableWithAccessibilityTrait()
-				accessibilityCustomActions = actions
-			case .modal:
-				backgroundColor_set_to_clear()
-				
-				contentView.layer.opacity = 1
-				enableWithAccessibilityTrait()
-				accessibilityCustomActions = []
-			case .modalTinted:
-				backgroundColor = .tintColor.withAlphaComponentOneEighth()
-				
-				contentView.layer.opacity = 1
-				enableWithAccessibilityTrait()
-				accessibilityCustomActions = []
-			case .modalDisabled:
-				backgroundColor_set_to_clear()
-				
-				contentView.layer.opacity = .oneFourth
-				disableWithAccessibilityTrait()
-				accessibilityCustomActions = []
-			}
+			contentView.layer.opacity = {
+				if case FolderRowMode.modalDisabled = mode {
+					return .oneFourth
+				} else {
+					return 1
+				}
+			}()
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
 			indicateAvatarStatus__(
@@ -188,9 +169,32 @@ final class CollectionCell: UITableViewCell {
 			
 			// Don’t include the now-playing marker.
 			accessibilityUserInputLabels = [
-				titleLabel.text,
+				collection.title,
 			].compacted()
 			
+		}
+		
+		switch mode {
+		case .normal(let actions):
+			backgroundColor_set_to_clear()
+			
+			enableWithAccessibilityTrait()
+			accessibilityCustomActions = actions
+		case .modal:
+			backgroundColor_set_to_clear()
+			
+			enableWithAccessibilityTrait()
+			accessibilityCustomActions = []
+		case .modalTinted:
+			backgroundColor = .tintColor.withAlphaComponentOneEighth()
+			
+			enableWithAccessibilityTrait()
+			accessibilityCustomActions = []
+		case .modalDisabled:
+			backgroundColor_set_to_clear()
+			
+			disableWithAccessibilityTrait()
+			accessibilityCustomActions = []
 		}
 	}
 	

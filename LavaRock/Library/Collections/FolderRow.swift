@@ -40,8 +40,9 @@ struct FolderRow: View {
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels(
+			// Exclude the now-playing marker.
 			[
-				collection.title,
+				collection.title, // Can be `nil`
 			].compacted()
 		)
 	}
