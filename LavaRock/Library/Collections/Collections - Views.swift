@@ -122,13 +122,6 @@ final class CreateCollectionCell: UITableViewCell {
 final class CollectionCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
-	enum Mode {
-		case normal([UIAccessibilityCustomAction])
-		case modal
-		case modalTinted
-		case modalDisabled
-	}
-	
 	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -147,7 +140,7 @@ final class CollectionCell: UITableViewCell {
 	
 	func configure(
 		with collection: Collection,
-		mode: Mode
+		mode: FolderRowMode
 	) {
 		if Self.usesSwiftUI__ {
 			

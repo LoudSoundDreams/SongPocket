@@ -6,6 +6,14 @@
 //
 
 import SwiftUI
+import UIKit
+
+enum FolderRowMode {
+	case normal([UIAccessibilityCustomAction])
+	case modal
+	case modalTinted
+	case modalDisabled
+}
 
 struct FolderRow: View {
 	let collection: Collection

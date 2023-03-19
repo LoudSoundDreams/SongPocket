@@ -103,7 +103,7 @@ extension CollectionsTVC {
 		else { return UITableViewCell() }
 		
 		let collection = collectionsViewModel.collectionNonNil(at: indexPath)
-		let mode: CollectionCell.Mode = {
+		let mode: FolderRowMode = {
 			switch purpose {
 			case .willOrganizeAlbums(let stickyNote):
 				if stickyNote.idsOfSourceCollections.contains(collection.objectID) {
