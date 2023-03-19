@@ -146,7 +146,8 @@ final class CollectionCell: UITableViewCell {
 			
 			contentConfiguration = UIHostingConfiguration {
 				FolderRow(
-					collection: collection
+					collection: collection,
+					mode: mode
 				)
 			}
 			

@@ -17,6 +17,7 @@ enum FolderRowMode {
 
 struct FolderRow: View {
 	let collection: Collection
+	let mode: FolderRowMode
 	
 	var body: some View {
 		HStack {
@@ -29,6 +30,13 @@ struct FolderRow: View {
 			)
 			.accessibilitySortPriority(10)
 		}
+		.opacity({
+			if case FolderRowMode.modalDisabled = mode {
+				return .oneFourth
+			} else {
+				return 1
+			}
+		}())
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels(

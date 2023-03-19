@@ -7,6 +7,10 @@
 
 import CoreGraphics
 
+extension Double {
+	static var oneFourth: Self { 0.25 }
+}
+
 extension Float {
 	static var oneFourth: Self { 0.25 }
 	static var oneHalf: Self { 0.5 }
