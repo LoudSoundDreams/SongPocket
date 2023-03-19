@@ -57,10 +57,6 @@ struct SongRow: View {
 					.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 					.foregroundColor(.primary)
 			}
-			.alignmentGuide(.listRowSeparatorTrailing) { moreButtonDimensions in
-				// TO DO: This indents the trailing inset in editing mode. Should we do that?
-				moreButtonDimensions[.trailing]
-			}
 		}
 		.padding(.top, .eight * -1/4) // -2
 		.accessibilityElement(children: .combine)

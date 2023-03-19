@@ -138,6 +138,9 @@ final class SongCell: UITableViewCell {
 					song_title: song_title,
 					artist_if_different_from_album_artist: artistDisplayOptional
 				)
+				.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+					viewDimensions[.trailing]
+				}
 			}
 			
 		} else {
