@@ -74,9 +74,6 @@ extension SongsTVC {
 						albumArtist: album.representativeAlbumArtistFormattedOptional(),
 						releaseDateString: album.releaseDateEstimateFormattedOptional()
 					)
-					.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-						viewDimensions[.leading]
-					}
 					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
 						viewDimensions[.trailing]
 					}

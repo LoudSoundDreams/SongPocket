@@ -167,9 +167,9 @@ final class CollectionCell: UITableViewCell {
 				collection.avatarStatus()
 			)
 			
-			// Don’t include the now-playing marker.
+			// Exclude the now-playing marker.
 			accessibilityUserInputLabels = [
-				collection.title,
+				collection.title, // Can be `nil`
 			].compacted()
 			
 		}
@@ -200,6 +200,8 @@ final class CollectionCell: UITableViewCell {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		
+		guard !Self.usesSwiftUI__ else { return }
 		
 		separatorInset.left = 0
 		+ contentView.frame.minX
