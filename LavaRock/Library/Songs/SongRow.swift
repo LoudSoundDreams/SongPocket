@@ -46,8 +46,7 @@ struct SongRow: View {
 			Spacer()
 			
 			AvatarImage(
-				libraryItem: song
-			)
+				libraryItem: song)
 			.accessibilitySortPriority(10)
 			
 			Button {

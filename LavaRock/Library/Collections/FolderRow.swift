@@ -26,8 +26,7 @@ struct FolderRow: View {
 			Spacer()
 			
 			AvatarImage(
-				libraryItem: collection
-			)
+				libraryItem: collection)
 			.accessibilitySortPriority(10)
 		}
 		.opacity({
