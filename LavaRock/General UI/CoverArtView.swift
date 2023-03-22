@@ -33,7 +33,7 @@ struct CoverArtView: View {
 				.accessibilityIgnoresInvertColors()
 		} else {
 			ZStack {
-				Color(uiColor: .secondarySystemBackground) // Close to what the Music app uses
+				Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
 					.aspectRatio(1, contentMode: .fit)
 					.frame(
 						maxWidth: .infinity,

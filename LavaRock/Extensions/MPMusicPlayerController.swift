@@ -103,7 +103,7 @@ extension MPMusicPlayerController {
 			append(mediaItems)
 		}
 		
-		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit the built-in Music app recently.
+		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit Apple Music recently.
 		if playbackState != .playing {
 			prepareToPlay()
 		}

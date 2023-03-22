@@ -275,7 +275,7 @@ extension Album {
 	}
 	final func representativeAlbumArtistFormattedOptional() -> String? {
 		guard
-			let albumArtist = representativeSongMetadatum()?.albumArtistOnDisk, // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in the built-in Music app for iOS.
+			let albumArtist = representativeSongMetadatum()?.albumArtistOnDisk, // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Apple Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in Apple Music for iOS.
 			albumArtist != ""
 		else {
 			return nil

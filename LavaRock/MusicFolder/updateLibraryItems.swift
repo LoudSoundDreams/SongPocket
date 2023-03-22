@@ -32,7 +32,7 @@ extension MusicLibrary {
 	private func mergeClonedAlbumsAndReturnUniqueAlbumsByID(
 		potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)]
 	) -> [AlbumID: Album] {
-		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
+		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Apple Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
 		// We never should have ended up with two `Album`s with the same `albumPersistentID` in the first place, but this makes the merger resilient to that mistake.
 		
 		// To merge `Album`s, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.

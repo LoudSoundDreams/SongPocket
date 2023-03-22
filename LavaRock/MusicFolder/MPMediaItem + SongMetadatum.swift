@@ -23,7 +23,7 @@ extension MPMediaItem: SongMetadatum {
 	final var trackNumberOnDisk: Int { albumTrackNumber }
 	static let unknownTrackNumber = 0 // As of iOS 14.7 developer beta 5.
 	
-	final var titleOnDisk: String? { title } // … we don’t know, because Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
+	final var titleOnDisk: String? { title } // … we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
 	final var artistOnDisk: String? { artist }
 	
 	final var dateAddedOnDisk: Date { dateAdded }

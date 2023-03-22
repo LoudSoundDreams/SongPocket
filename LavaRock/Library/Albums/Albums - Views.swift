@@ -159,8 +159,8 @@ final class AlbumCell: UITableViewCell {
 		// You must do this when switching between light and dark mode.
 		let coverArtLayer = coverArtView.layer
 		// As of iOS 16.3 …
-		// • The Music app uses a border and no shadow.
-		// • The Books app uses a shadow and no border.
+		// • Apple Music uses a border and no shadow.
+		// • Apple Books uses a shadow and no border.
 		coverArtLayer.borderColor = UIColor.separator.cgColor
 		// Draw in pixels, not points
 		let pixelsPerPoint = window?.screen.nativeScale ?? 2
