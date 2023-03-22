@@ -46,7 +46,7 @@ final class MainToolbar {
 			menuElementGroups: [
 				[
 					UIAction(
-						title: LRString.openMusic,
+						title: LRString.appleMusic,
 						image: UIImage(systemName: "arrow.up.forward.app"),
 						handler: { action in
 							UIApplication.shared.open(.music)

@@ -95,11 +95,11 @@ enum LRString {
 	
 	static let folders = NSLocalizedString("Folders", comment: "Big title")
 	
-	static let allowAccessToMusic = NSLocalizedString("Allow Access to Music", comment: "Button")
+	static let allowAccessToMusic = NSLocalizedString("Allow Access to Apple Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
 		"Add music to your library from Apple Music, your computer, or iTunes.",
 		comment: "Placeholder for when the app’s database is empty")
-	static let openMusic = NSLocalizedString("Open Music", comment: "Button")
+	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
 	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also a sort option.")
 	
