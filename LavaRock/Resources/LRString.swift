@@ -69,6 +69,8 @@ enum LRString {
 	
 	// MARK: Transport bar
 	
+	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
+	
 	static let previous = NSLocalizedString("Previous", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
 	static let skip10SecondsBackwards = NSLocalizedString("Skip 10 seconds backwards", comment: "Accessibility label, button")
@@ -99,7 +101,6 @@ enum LRString {
 	static let emptyDatabasePlaceholder = NSLocalizedString(
 		"Add music to your library from Apple Music, your computer, or iTunes.",
 		comment: "Placeholder for when the app’s database is empty")
-	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
 	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also a sort option.")
 	

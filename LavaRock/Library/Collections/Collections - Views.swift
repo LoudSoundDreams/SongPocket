@@ -81,9 +81,14 @@ final class OpenMusicCell: UITableViewCell {
 		selectedBackgroundView_add_tint()
 		
 		contentConfiguration = UIHostingConfiguration {
-			Text(LRString.appleMusic)
-				.foregroundColor(.accentColor)
-				.accessibilityAddTraits(.isButton)
+			LabeledContent {
+				Image(systemName: "arrow.up.forward.app")
+					.foregroundColor(.accentColor)
+			} label: {
+				Text(LRString.appleMusic)
+					.foregroundColor(.accentColor)
+					.accessibilityAddTraits(.isButton)
+			}
 		}
 	}
 	
