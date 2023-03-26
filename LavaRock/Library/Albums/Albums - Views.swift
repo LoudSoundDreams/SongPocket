@@ -91,21 +91,21 @@ final class AlbumCell: UITableViewCell {
 		}
 		
 		switch mode {
-		case .normal:
-			backgroundColor_set_to_clear()
-			contentView.layer.opacity = 1 // The default value
-			accessoryType = .disclosureIndicator
-			enableWithAccessibilityTrait()
-		case .modal:
-			backgroundColor_set_to_clear()
-			contentView.layer.opacity = .oneFourth // Close to what Files pickers use
-			accessoryType = .none
-			disableWithAccessibilityTrait()
-		case .modalTinted:
-			backgroundColor = .tintColor.withAlphaComponentOneEighth()
-			contentView.layer.opacity = .oneHalf
-			accessoryType = .none
-			disableWithAccessibilityTrait()
+			case .normal:
+				backgroundColor_set_to_clear()
+				contentView.layer.opacity = 1 // The default value
+				accessoryType = .disclosureIndicator
+				enableWithAccessibilityTrait()
+			case .modal:
+				backgroundColor_set_to_clear()
+				contentView.layer.opacity = .oneFourth // Close to what Files pickers use
+				accessoryType = .none
+				disableWithAccessibilityTrait()
+			case .modalTinted:
+				backgroundColor = .tintColor.withAlphaComponentOneEighth()
+				contentView.layer.opacity = .oneHalf
+				accessoryType = .none
+				disableWithAccessibilityTrait()
 		}
 		
 		rowContentAccessibilityLabel__ = [

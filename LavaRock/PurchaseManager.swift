@@ -73,12 +73,12 @@ extension PurchaseManager: SKProductsRequestDelegate {
 		DispatchQueue.main.async {
 			response.products.forEach { product in
 				switch product.productIdentifier {
-				case Self.tipProductID:
-					self.tipProduct = product
-					
-					TipJarViewModel.shared.status = .ready
-				default:
-					break
+					case Self.tipProductID:
+						self.tipProduct = product
+						
+						TipJarViewModel.shared.status = .ready
+					default:
+						break
 				}
 			}
 		}
@@ -103,10 +103,10 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 		DispatchQueue.main.async {
 			transactions.forEach { transaction in
 				switch transaction.payment.productIdentifier {
-				case Self.tipProductID:
-					self.handleTipTransaction(transaction)
-				default:
-					break
+					case Self.tipProductID:
+						self.handleTipTransaction(transaction)
+					default:
+						break
 				}
 			}
 		}
@@ -115,20 +115,20 @@ extension PurchaseManager: SKPaymentTransactionObserver {
 	@MainActor
 	private func handleTipTransaction(_ tipTransaction: SKPaymentTransaction) {
 		switch tipTransaction.transactionState {
-		case .purchasing:
-			break
-		case .deferred:
-			TipJarViewModel.shared.status = .ready
-		case
-				.failed,
-				.restored:
-			Self.paymentQueue.finishTransaction(tipTransaction)
-			TipJarViewModel.shared.status = .ready
-		case .purchased:
-			Self.paymentQueue.finishTransaction(tipTransaction)
-			TipJarViewModel.shared.status = .thankYou
-		@unknown default:
-			fatalError()
+			case .purchasing:
+				break
+			case .deferred:
+				TipJarViewModel.shared.status = .ready
+			case
+					.failed,
+					.restored:
+				Self.paymentQueue.finishTransaction(tipTransaction)
+				TipJarViewModel.shared.status = .ready
+			case .purchased:
+				Self.paymentQueue.finishTransaction(tipTransaction)
+				TipJarViewModel.shared.status = .thankYou
+			@unknown default:
+				fatalError()
 		}
 	}
 }

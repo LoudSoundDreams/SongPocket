@@ -53,46 +53,46 @@ enum Avatar: CaseIterable {
 	
 	var pausedSFSymbolName: String {
 		switch self {
-		case .speaker:
-			return "speaker.fill"
-		case .bird:
-			return "bird"
-		case .fish:
-			return "fish"
-		case .sailboat:
-			return "sailboat"
-		case .beachUmbrella:
-			return "beach.umbrella"
+			case .speaker:
+				return "speaker.fill"
+			case .bird:
+				return "bird"
+			case .fish:
+				return "fish"
+			case .sailboat:
+				return "sailboat"
+			case .beachUmbrella:
+				return "beach.umbrella"
 		}
 	}
 	
 	var playingSFSymbolName: String {
 		switch self {
-		case .speaker:
-			return "speaker.wave.2.fill"
-		case .bird:
-			return "bird.fill"
-		case .fish:
-			return "fish.fill"
-		case .sailboat:
-			return "sailboat.fill"
-		case .beachUmbrella:
-			return "beach.umbrella.fill"
+			case .speaker:
+				return "speaker.wave.2.fill"
+			case .bird:
+				return "bird.fill"
+			case .fish:
+				return "fish.fill"
+			case .sailboat:
+				return "sailboat.fill"
+			case .beachUmbrella:
+				return "beach.umbrella.fill"
 		}
 	}
 	
 	var accessibilityLabel: String {
 		switch self {
-		case .speaker:
-			return LRString.speaker
-		case .bird:
-			return LRString.bird
-		case .fish:
-			return LRString.fish
-		case .sailboat:
-			return LRString.sailboat
-		case .beachUmbrella:
-			return LRString.beachUmbrella
+			case .speaker:
+				return LRString.speaker
+			case .bird:
+				return LRString.bird
+			case .fish:
+				return LRString.fish
+			case .sailboat:
+				return LRString.sailboat
+			case .beachUmbrella:
+				return LRString.beachUmbrella
 		}
 	}
 	
@@ -103,16 +103,16 @@ enum Avatar: CaseIterable {
 	
 	private var persistentValue: String {
 		switch self {
-		case .speaker:
-			return "Speaker"
-		case .bird:
-			return "Bird"
-		case .fish:
-			return "Fish"
-		case .sailboat:
-			return "Sailboat"
-		case .beachUmbrella:
-			return "Beach umbrella"
+			case .speaker:
+				return "Speaker"
+			case .bird:
+				return "Bird"
+			case .fish:
+				return "Fish"
+			case .sailboat:
+				return "Sailboat"
+			case .beachUmbrella:
+				return "Beach umbrella"
 		}
 	}
 }

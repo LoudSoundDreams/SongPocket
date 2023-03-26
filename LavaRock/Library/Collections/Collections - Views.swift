@@ -180,26 +180,26 @@ final class CollectionCell: UITableViewCell {
 		}
 		
 		switch mode {
-		case .normal(let actions):
-			backgroundColor_set_to_clear()
-			
-			enableWithAccessibilityTrait()
-			accessibilityCustomActions = actions
-		case .modal:
-			backgroundColor_set_to_clear()
-			
-			enableWithAccessibilityTrait()
-			accessibilityCustomActions = []
-		case .modalTinted:
-			backgroundColor = .tintColor.withAlphaComponentOneEighth()
-			
-			enableWithAccessibilityTrait()
-			accessibilityCustomActions = []
-		case .modalDisabled:
-			backgroundColor_set_to_clear()
-			
-			disableWithAccessibilityTrait()
-			accessibilityCustomActions = []
+			case .normal(let actions):
+				backgroundColor_set_to_clear()
+				
+				enableWithAccessibilityTrait()
+				accessibilityCustomActions = actions
+			case .modal:
+				backgroundColor_set_to_clear()
+				
+				enableWithAccessibilityTrait()
+				accessibilityCustomActions = []
+			case .modalTinted:
+				backgroundColor = .tintColor.withAlphaComponentOneEighth()
+				
+				enableWithAccessibilityTrait()
+				accessibilityCustomActions = []
+			case .modalDisabled:
+				backgroundColor_set_to_clear()
+				
+				disableWithAccessibilityTrait()
+				accessibilityCustomActions = []
 		}
 	}
 	

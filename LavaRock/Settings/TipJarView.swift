@@ -19,38 +19,38 @@ struct TipJarView: View {
 	
 	var body: some View {
 		switch tipJarViewModel.status {
-		case .notYetFirstLoaded, .loading:
-			Text(LRString.loadingEllipsis)
-				.foregroundColor(.secondary)
-		case .reload:
-			Button {
-				PurchaseManager.shared.requestTipProduct()
-			} label: {
-				Text(LRString.reload)
-					.foregroundColor(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
-			}
-		case .ready:
-			Button {
-				PurchaseManager.shared.buyTip()
-			} label: {
-				HStack {
-					Text("tip")
-						.foregroundColor(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
-					Spacer()
-					Text("0¢")
-						.foregroundColor(.secondary)
-				}
-			}
-		case .confirming:
-			Text(LRString.confirmingEllipsis)
-				.foregroundColor(.secondary)
-		case .thankYou:
-			HStack {
-				Spacer()
-				Text(theme.accentColor.tipThankYouMessage())
+			case .notYetFirstLoaded, .loading:
+				Text(LRString.loadingEllipsis)
 					.foregroundColor(.secondary)
-				Spacer()
-			}
+			case .reload:
+				Button {
+					PurchaseManager.shared.requestTipProduct()
+				} label: {
+					Text(LRString.reload)
+						.foregroundColor(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
+				}
+			case .ready:
+				Button {
+					PurchaseManager.shared.buyTip()
+				} label: {
+					HStack {
+						Text("tip")
+							.foregroundColor(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
+						Spacer()
+						Text("0¢")
+							.foregroundColor(.secondary)
+					}
+				}
+			case .confirming:
+				Text(LRString.confirmingEllipsis)
+					.foregroundColor(.secondary)
+			case .thankYou:
+				HStack {
+					Spacer()
+					Text(theme.accentColor.tipThankYouMessage())
+						.foregroundColor(.secondary)
+					Spacer()
+				}
 		}
 	}
 }

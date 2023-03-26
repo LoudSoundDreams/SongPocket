@@ -14,23 +14,23 @@ enum AvatarStatus {
 	
 	var uiImage: UIImage? {
 		switch self {
-		case .notPlaying:
-			return nil
-		case .paused:
-			return UIImage(systemName: Avatar.preference.pausedSFSymbolName)
-		case .playing:
-			return UIImage(systemName: Avatar.preference.playingSFSymbolName)
+			case .notPlaying:
+				return nil
+			case .paused:
+				return UIImage(systemName: Avatar.preference.pausedSFSymbolName)
+			case .playing:
+				return UIImage(systemName: Avatar.preference.playingSFSymbolName)
 		}
 	}
 	
 	var axLabel: String? {
 		switch self {
-		case .notPlaying:
-			return nil
-		case .paused:
-			return LRString.paused
-		case .playing:
-			return LRString.nowPlaying
+			case .notPlaying:
+				return nil
+			case .paused:
+				return LRString.paused
+			case .playing:
+				return LRString.nowPlaying
 		}
 	}
 }
@@ -62,7 +62,7 @@ struct AvatarImage: View {
 				.hidden()
 			
 			// Foreground
-			foregroundView // If SwiftUI detects that this is an `EmptyView`, it doesn’t bother with the following accessibility label.
+			foregroundView
 				.accessibilityElement()
 				.accessibilityLabel(status.axLabel ?? "")
 		}
@@ -76,16 +76,17 @@ struct AvatarImage: View {
 	@ViewBuilder
 	private var foregroundView: some View {
 		switch status {
-		case .notPlaying:
-			Image(systemName: "aoeu")
-//			EmptyView()
-		case .paused:
-			Image(systemName: Avatar.preference.pausedSFSymbolName)
-				.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
-				.foregroundColor(.accentColor)
-		case .playing:
-			playing_image
-				.foregroundColor(.accentColor)
+			case .notPlaying:
+				// If SwiftUI detects that this is an `EmptyView`, it doesn’t bother with the `accessibilityElement` modifier.
+				Image(systemName: "")
+//				EmptyView()
+			case .paused:
+				Image(systemName: Avatar.preference.pausedSFSymbolName)
+					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
+					.foregroundColor(.accentColor)
+			case .playing:
+				playing_image
+					.foregroundColor(.accentColor)
 		}
 	}
 }

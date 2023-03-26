@@ -31,50 +31,50 @@ enum Lighting: CaseIterable {
 	
 	var sfSymbolName: String {
 		switch self {
-		case .light:
-			return "sun.max.fill"
-		case .dark:
-			return "moon.fill"
-		case .system:
-			let idiom = UIDevice.current.userInterfaceIdiom
-			switch idiom {
-			case .unspecified:
-				return "iphone"
-			case .phone:
-				return "iphone"
-			case .pad:
-				return "ipad"
-			case .tv:
-				return "tv"
-			case .carPlay:
-				return "iphone"
-			case .mac:
-				return "desktopcomputer"
-			@unknown default:
-				return "iphone"
-			}
+			case .light:
+				return "sun.max.fill"
+			case .dark:
+				return "moon.fill"
+			case .system:
+				let idiom = UIDevice.current.userInterfaceIdiom
+				switch idiom {
+					case .unspecified:
+						return "iphone"
+					case .phone:
+						return "iphone"
+					case .pad:
+						return "ipad"
+					case .tv:
+						return "tv"
+					case .carPlay:
+						return "iphone"
+					case .mac:
+						return "desktopcomputer"
+					@unknown default:
+						return "iphone"
+				}
 		}
 	}
 	
 	var colorScheme: ColorScheme? {
 		switch self {
-		case .light:
-			return .light
-		case .dark:
-			return .dark
-		case .system:
-			return nil
+			case .light:
+				return .light
+			case .dark:
+				return .dark
+			case .system:
+				return nil
 		}
 	}
 	
 	var accessibilityLabel: String {
 		switch self {
-		case .light:
-			return LRString.light
-		case .dark:
-			return LRString.dark
-		case .system:
-			return LRString.system
+			case .light:
+				return LRString.light
+			case .dark:
+				return LRString.dark
+			case .system:
+				return LRString.system
 		}
 	}
 	
@@ -85,12 +85,12 @@ enum Lighting: CaseIterable {
 	
 	private var persistentValue: Int {
 		switch self {
-		case .light:
-			return 1
-		case .dark:
-			return 2
-		case .system:
-			return 0
+			case .light:
+				return 1
+			case .dark:
+				return 2
+			case .system:
+				return 0
 		}
 	}
 }

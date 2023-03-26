@@ -33,10 +33,10 @@ extension AlbumsViewModel: LibraryViewModel {
 	
 	func bigTitle() -> String {
 		switch parentCollection {
-		case
-				.exists(let collection),
-				.deleted(let collection):
-			return collection.title ?? ""
+			case
+					.exists(let collection),
+					.deleted(let collection):
+				return collection.title ?? ""
 		}
 	}
 	
@@ -49,21 +49,21 @@ extension AlbumsViewModel: LibraryViewModel {
 		forItems items: [NSManagedObject]
 	) -> Bool {
 		switch sortCommand {
-		case .folder_name:
-			return false
-		case
-				.album_newestFirst,
-				.album_oldestFirst:
-			guard let albums = items as? [Album] else {
+			case .folder_name:
 				return false
-			}
-			return albums.contains { $0.releaseDateEstimate != nil }
-		case .song_track:
-			return false
-		case
-				.random,
-				.reverse:
-			return true
+			case
+					.album_newestFirst,
+					.album_oldestFirst:
+				guard let albums = items as? [Album] else {
+					return false
+				}
+				return albums.contains { $0.releaseDateEstimate != nil }
+			case .song_track:
+				return false
+			case
+					.random,
+					.reverse:
+				return true
 		}
 	}
 	
@@ -71,14 +71,14 @@ extension AlbumsViewModel: LibraryViewModel {
 	func updatedWithFreshenedData() -> Self {
 		let freshenedParentCollection: ParentCollection = {
 			switch parentCollection {
-			case .exists(let collection):
-				if collection.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
+				case .exists(let collection):
+					if collection.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
+						return .deleted(collection)
+					} else {
+						return .exists(collection)
+					}
+				case .deleted(let collection):
 					return .deleted(collection)
-				} else {
-					return .exists(collection)
-				}
-			case .deleted(let collection):
-				return .deleted(collection)
 			}
 		}()
 		return Self(
@@ -100,10 +100,10 @@ extension AlbumsViewModel {
 		// Check `viewContainer` to figure out which `Album`s to show.
 		let containers: [NSManagedObject] = {
 			switch parentCollection {
-			case .exists(let collection):
-				return [collection]
-			case .deleted:
-				return []
+				case .exists(let collection):
+					return [collection]
+				case .deleted:
+					return []
 			}}()
 		groups = containers.map { container in
 			CollectionsOrAlbumsGroup(
@@ -139,11 +139,11 @@ extension AlbumsViewModel {
 	// Similar to counterpart in `SongsViewModel`.
 	func numberOfRows() -> Int {
 		switch parentCollection {
-		case .exists:
-			let group = libraryGroup()
-			return numberOfPrerowsPerSection + group.items.count
-		case .deleted:
-			return 0 // Without `numberOfPrerowsPerSection`
+			case .exists:
+				let group = libraryGroup()
+				return numberOfPrerowsPerSection + group.items.count
+			case .deleted:
+				return 0 // Without `numberOfPrerowsPerSection`
 		}
 	}
 	

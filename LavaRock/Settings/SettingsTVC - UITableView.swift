@@ -42,12 +42,12 @@ extension SettingsTVC {
 			return 0
 		}
 		switch sectionCase {
-		case .theme:
-			return Self.indexPathsOfLightingRows.count + AccentColor.allCases.count
-		case .avatar:
-			return 1
-		case .tipJar:
-			return 1
+			case .theme:
+				return Self.indexPathsOfLightingRows.count + AccentColor.allCases.count
+			case .avatar:
+				return 1
+			case .tipJar:
+				return 1
 		}
 	}
 	
@@ -61,12 +61,12 @@ extension SettingsTVC {
 			return nil
 		}
 		switch sectionCase {
-		case .theme:
-			return LRString.theme
-		case .avatar:
-			return LRString.nowPlayingMarker
-		case .tipJar:
-			return LRString.tipJar
+			case .theme:
+				return LRString.theme
+			case .avatar:
+				return LRString.nowPlayingMarker
+			case .tipJar:
+				return LRString.tipJar
 		}
 	}
 	
@@ -78,12 +78,12 @@ extension SettingsTVC {
 			return nil
 		}
 		switch sectionCase {
-		case .theme:
-			return nil
-		case .avatar:
-			return nil
-		case .tipJar:
-			return LRString.tipJarFooter
+			case .theme:
+				return nil
+			case .avatar:
+				return nil
+			case .tipJar:
+				return LRString.tipJarFooter
 		}
 	}
 	
@@ -95,43 +95,43 @@ extension SettingsTVC {
 	) -> UITableViewCell {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return UITableViewCell() }
 		switch sectionCase {
-		case .theme:
-			if Self.indexPathsOfLightingRows.contains(indexPath) {
+			case .theme:
+				if Self.indexPathsOfLightingRows.contains(indexPath) {
+					// The cell in the storyboard is completely default except for the reuse identifier.
+					let cell = tableView.dequeueReusableCell(
+						withIdentifier: "Lighting",
+						for: indexPath)
+					
+					cell.selectionStyle = .none
+					cell.contentConfiguration = UIHostingConfiguration {
+						LightingPicker()
+							.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+								viewDimensions[.leading]
+							}
+							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+								viewDimensions[.trailing]
+							}
+					}
+					
+					return cell
+				} else {
+					return accentColorCell(forRowAt: indexPath)
+				}
+			case .avatar:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Lighting",
+					withIdentifier: "Avatar",
 					for: indexPath)
 				
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					LightingPicker()
-						.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-							viewDimensions[.leading]
-						}
-						.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-							viewDimensions[.trailing]
-						}
+					AvatarPicker()
 				}
 				
 				return cell
-			} else {
-				return accentColorCell(forRowAt: indexPath)
-			}
-		case .avatar:
-			// The cell in the storyboard is completely default except for the reuse identifier.
-			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Avatar",
-				for: indexPath)
-			
-			cell.selectionStyle = .none
-			cell.contentConfiguration = UIHostingConfiguration {
-				AvatarPicker()
-			}
-			
-			return cell
-			
-		case .tipJar:
-			return tipJarCell(forRowAt: indexPath)
+				
+			case .tipJar:
+				return tipJarCell(forRowAt: indexPath)
 		}
 	}
 	
@@ -145,16 +145,16 @@ extension SettingsTVC {
 			return nil
 		}
 		switch sectionCase {
-		case .theme:
-			if Self.indexPathsOfLightingRows.contains(indexPath) {
+			case .theme:
+				if Self.indexPathsOfLightingRows.contains(indexPath) {
+					return nil
+				} else {
+					return indexPath
+				}
+			case .avatar:
 				return nil
-			} else {
+			case .tipJar:
 				return indexPath
-			}
-		case .avatar:
-			return nil
-		case .tipJar:
-			return indexPath
 		}
 	}
 	
@@ -164,17 +164,17 @@ extension SettingsTVC {
 	) {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
-		case .theme:
-			if Self.indexPathsOfLightingRows.contains(indexPath) {
-				// Should never run
+			case .theme:
+				if Self.indexPathsOfLightingRows.contains(indexPath) {
+					// Should never run
+					tableView.deselectRow(at: indexPath, animated: true)
+				} else {
+					didSelectAccentColorRow(at: indexPath)
+				}
+			case .avatar: // Should never run
 				tableView.deselectRow(at: indexPath, animated: true)
-			} else {
-				didSelectAccentColorRow(at: indexPath)
-			}
-		case .avatar: // Should never run
-			tableView.deselectRow(at: indexPath, animated: true)
-		case .tipJar:
-			didSelectTipJarRow(at: indexPath)
+			case .tipJar:
+				didSelectTipJarRow(at: indexPath)
 		}
 	}
 	
@@ -205,54 +205,54 @@ extension SettingsTVC {
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch TipJarViewModel.shared.status {
-		case .notYetFirstLoaded, .loading:
-			// The cell in the storyboard is completely default except for the reuse identifier.
-			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Tip Loading",
-				for: indexPath)
-			
-			cell.isUserInteractionEnabled = false
-			cell.contentConfiguration = UIHostingConfiguration {
-				Text(LRString.loadingEllipsis)
-					.foregroundColor(.secondary)
-			}
-			
-			return cell
-			
-		case .reload:
-			return tableView.dequeueReusableCell(
-				withIdentifier: "Tip Reload",
-				for: indexPath) as? TipReloadCell ?? UITableViewCell()
-		case .ready:
-			return tableView.dequeueReusableCell(
-				withIdentifier: "Tip Ready",
-				for: indexPath) as? TipReadyCell ?? UITableViewCell()
-		case .confirming:
-			// The cell in the storyboard is completely default except for the reuse identifier.
-			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Tip Confirming",
-				for: indexPath)
-			
-			cell.isUserInteractionEnabled = false
-			cell.contentConfiguration = UIHostingConfiguration {
-				Text(LRString.confirmingEllipsis)
-					.foregroundColor(.secondary)
-			}
-			
-			return cell
-			
-		case .thankYou:
-			// The cell in the storyboard is completely default except for the reuse identifier.
-			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Tip Thank You",
-				for: indexPath)
-			
-			cell.isUserInteractionEnabled = false
-			cell.contentConfiguration = UIHostingConfiguration {
-				TipThankYouView()
-			}
-			
-			return cell
+			case .notYetFirstLoaded, .loading:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Tip Loading",
+					for: indexPath)
+				
+				cell.isUserInteractionEnabled = false
+				cell.contentConfiguration = UIHostingConfiguration {
+					Text(LRString.loadingEllipsis)
+						.foregroundColor(.secondary)
+				}
+				
+				return cell
+				
+			case .reload:
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Tip Reload",
+					for: indexPath) as? TipReloadCell ?? UITableViewCell()
+			case .ready:
+				return tableView.dequeueReusableCell(
+					withIdentifier: "Tip Ready",
+					for: indexPath) as? TipReadyCell ?? UITableViewCell()
+			case .confirming:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Tip Confirming",
+					for: indexPath)
+				
+				cell.isUserInteractionEnabled = false
+				cell.contentConfiguration = UIHostingConfiguration {
+					Text(LRString.confirmingEllipsis)
+						.foregroundColor(.secondary)
+				}
+				
+				return cell
+				
+			case .thankYou:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Tip Thank You",
+					for: indexPath)
+				
+				cell.isUserInteractionEnabled = false
+				cell.contentConfiguration = UIHostingConfiguration {
+					TipThankYouView()
+				}
+				
+				return cell
 		}
 	}
 	
@@ -269,17 +269,17 @@ extension SettingsTVC {
 	
 	private func didSelectTipJarRow(at indexPath: IndexPath) {
 		switch TipJarViewModel.shared.status {
-		case
-				.notYetFirstLoaded,
-				.loading,
-				.confirming,
-				.thankYou:
-			// Should never run
-			break
-		case .reload:
-			PurchaseManager.shared.requestTipProduct()
-		case .ready:
-			PurchaseManager.shared.buyTip()
+			case
+					.notYetFirstLoaded,
+					.loading,
+					.confirming,
+					.thankYou:
+				// Should never run
+				break
+			case .reload:
+				PurchaseManager.shared.requestTipProduct()
+			case .ready:
+				PurchaseManager.shared.buyTip()
 		}
 	}
 }

@@ -259,67 +259,67 @@ extension LibraryViewModel {
 			return items
 		}
 		switch sortCommand {
-			
-		case .folder_name:
-			guard let collections = items as? [Collection] else {
-				return items
-			}
-			return collections.sorted {
-				let collectionTitle0 = $0.title ?? ""
-				let collectionTitle1 = $1.title ?? ""
-				return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
-			}
-			
-		case .album_newestFirst:
-			guard let albums = items as? [Album] else {
-				return items
-			}
-			return albums.sortedMaintainingOrderWhen {
-				$0.releaseDateEstimate == $1.releaseDateEstimate
-			} areInOrder: {
-				$0.precedesByNewestFirst($1)
-			}
-		case .album_oldestFirst:
-			guard let albums = items as? [Album] else {
-				return items
-			}
-			return albums.sortedMaintainingOrderWhen {
-				$0.releaseDateEstimate == $1.releaseDateEstimate
-			} areInOrder: {
-				$0.precedesByOldestFirst($1)
-			}
-			
-		case .song_track:
-			guard let songs = items as? [Song] else {
-				return items
-			}
-			// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
-			let songsAndMetadata = songs.map {
-				(song: $0,
-				 metadatum: $0.metadatum())
-			}
-			let sorted = songsAndMetadata.sortedMaintainingOrderWhen {
-				let leftMetadatum = $0.metadatum
-				let rightMetadatum = $1.metadatum
-				return leftMetadatum?.discNumberOnDisk == rightMetadatum?.discNumberOnDisk
-				&& leftMetadatum?.trackNumberOnDisk == rightMetadatum?.trackNumberOnDisk
-			} areInOrder: {
-				guard
-					let leftMetadatum = $0.metadatum,
-					let rightMetadatum = $1.metadatum
-				else {
-					return true
+				
+			case .folder_name:
+				guard let collections = items as? [Collection] else {
+					return items
 				}
-				return leftMetadatum.precedesByTrackNumber(rightMetadatum)
-			}
-			return sorted.map { $0.song }
-			
-		case .random:
-			return items.inAnyOtherOrder()
-			
-		case .reverse:
-			return items.reversed()
-			
+				return collections.sorted {
+					let collectionTitle0 = $0.title ?? ""
+					let collectionTitle1 = $1.title ?? ""
+					return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
+				}
+				
+			case .album_newestFirst:
+				guard let albums = items as? [Album] else {
+					return items
+				}
+				return albums.sortedMaintainingOrderWhen {
+					$0.releaseDateEstimate == $1.releaseDateEstimate
+				} areInOrder: {
+					$0.precedesByNewestFirst($1)
+				}
+			case .album_oldestFirst:
+				guard let albums = items as? [Album] else {
+					return items
+				}
+				return albums.sortedMaintainingOrderWhen {
+					$0.releaseDateEstimate == $1.releaseDateEstimate
+				} areInOrder: {
+					$0.precedesByOldestFirst($1)
+				}
+				
+			case .song_track:
+				guard let songs = items as? [Song] else {
+					return items
+				}
+				// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
+				let songsAndMetadata = songs.map {
+					(song: $0,
+					 metadatum: $0.metadatum())
+				}
+				let sorted = songsAndMetadata.sortedMaintainingOrderWhen {
+					let leftMetadatum = $0.metadatum
+					let rightMetadatum = $1.metadatum
+					return leftMetadatum?.discNumberOnDisk == rightMetadatum?.discNumberOnDisk
+					&& leftMetadatum?.trackNumberOnDisk == rightMetadatum?.trackNumberOnDisk
+				} areInOrder: {
+					guard
+						let leftMetadatum = $0.metadatum,
+						let rightMetadatum = $1.metadatum
+					else {
+						return true
+					}
+					return leftMetadatum.precedesByTrackNumber(rightMetadatum)
+				}
+				return sorted.map { $0.song }
+				
+			case .random:
+				return items.inAnyOtherOrder()
+				
+			case .reverse:
+				return items.reversed()
+				
 		}
 	}
 	

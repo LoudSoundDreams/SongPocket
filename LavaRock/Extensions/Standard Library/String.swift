@@ -19,12 +19,12 @@ extension String {
 	func precedesAlphabeticallyFinderStyle(_ other: Self) -> Bool {
 		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
 		switch comparisonResult {
-		case .orderedAscending:
-			return true
-		case .orderedSame:
-			return true
-		case .orderedDescending:
-			return false
+			case .orderedAscending:
+				return true
+			case .orderedSame:
+				return true
+			case .orderedDescending:
+				return false
 		}
 	}
 }

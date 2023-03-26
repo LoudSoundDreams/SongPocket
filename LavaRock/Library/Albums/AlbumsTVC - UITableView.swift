@@ -19,18 +19,18 @@ extension AlbumsTVC {
 		}
 		
 		switch purpose {
-		case .previewingCombine:
-			break
-		case .organizingAlbums:
-			break
-		case .movingAlbums(let clipboard):
-			if clipboard.didAlreadyCreate {
-				return 1
-			} else {
+			case .previewingCombine:
 				break
-			}
-		case .browsing:
-			break
+			case .organizingAlbums:
+				break
+			case .movingAlbums(let clipboard):
+				if clipboard.didAlreadyCreate {
+					return 1
+				} else {
+					break
+				}
+			case .browsing:
+				break
 		}
 		
 		return viewModel.groups.count
@@ -52,25 +52,25 @@ extension AlbumsTVC {
 		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return UITableViewCell() }
 		
 		switch purpose {
-		case .previewingCombine:
-			break
-		case .organizingAlbums:
-			break
-		case .movingAlbums:
-			let rowCase = albumsViewModel.rowCase(for: indexPath)
-			switch rowCase {
-			case .prerow(let prerow):
-				switch prerow {
-				case .moveHere:
-					return tableView.dequeueReusableCell(
-						withIdentifier: "Move Here",
-						for: indexPath) as? MoveHereCell ?? UITableViewCell()
-				}
-			case .album:
+			case .previewingCombine:
 				break
-			}
-		case .browsing:
-			break
+			case .organizingAlbums:
+				break
+			case .movingAlbums:
+				let rowCase = albumsViewModel.rowCase(for: indexPath)
+				switch rowCase {
+					case .prerow(let prerow):
+						switch prerow {
+							case .moveHere:
+								return tableView.dequeueReusableCell(
+									withIdentifier: "Move Here",
+									for: indexPath) as? MoveHereCell ?? UITableViewCell()
+						}
+					case .album:
+						break
+				}
+			case .browsing:
+				break
 		}
 		
 		guard let cell = tableView.dequeueReusableCell(
@@ -83,22 +83,22 @@ extension AlbumsTVC {
 			with: album,
 			mode: {
 				switch purpose {
-				case .previewingCombine:
-					return .modalTinted
-				case .organizingAlbums(let clipboard):
-					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
+					case .previewingCombine:
 						return .modalTinted
-					} else {
-						return .modal
-					}
-				case .movingAlbums(let clipboard):
-					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
-						return .modalTinted
-					} else {
-						return .modal
-					}
-				case .browsing:
-					return .normal
+					case .organizingAlbums(let clipboard):
+						if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
+							return .modalTinted
+						} else {
+							return .modal
+						}
+					case .movingAlbums(let clipboard):
+						if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
+							return .modalTinted
+						} else {
+							return .modal
+						}
+					case .browsing:
+						return .normal
 				}}(),
 			physicalPixelsPerPoint__: view.window?.screen.nativeScale ?? 0.5
 		)
@@ -113,16 +113,16 @@ extension AlbumsTVC {
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
-		case .previewingCombine:
-			return false
-		case .organizingAlbums:
-			return false
-		case .movingAlbums:
-			return false
-		case .browsing:
-			return super.tableView(
-				tableView,
-				shouldBeginMultipleSelectionInteractionAt: indexPath)
+			case .previewingCombine:
+				return false
+			case .organizingAlbums:
+				return false
+			case .movingAlbums:
+				return false
+			case .browsing:
+				return super.tableView(
+					tableView,
+					shouldBeginMultipleSelectionInteractionAt: indexPath)
 		}
 	}
 	
@@ -131,26 +131,26 @@ extension AlbumsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch purpose {
-		case .previewingCombine:
-			break
-		case .organizingAlbums:
-			break
-		case .movingAlbums:
-			guard let albumsViewModel = viewModel as? AlbumsViewModel else {
-				return nil
-			}
-			let rowCase = albumsViewModel.rowCase(for: indexPath)
-			switch rowCase {
-			case .prerow(let prerow):
-				switch prerow {
-				case .moveHere:
-					return indexPath
-				}
-			case .album:
+			case .previewingCombine:
 				break
-			}
-		case .browsing:
-			break
+			case .organizingAlbums:
+				break
+			case .movingAlbums:
+				guard let albumsViewModel = viewModel as? AlbumsViewModel else {
+					return nil
+				}
+				let rowCase = albumsViewModel.rowCase(for: indexPath)
+				switch rowCase {
+					case .prerow(let prerow):
+						switch prerow {
+							case .moveHere:
+								return indexPath
+						}
+					case .album:
+						break
+				}
+			case .browsing:
+				break
 		}
 		
 		return super.tableView(tableView, willSelectRowAt: indexPath)
@@ -161,25 +161,25 @@ extension AlbumsTVC {
 		didSelectRowAt indexPath: IndexPath
 	) {
 		switch purpose {
-		case .previewingCombine:
-			break
-		case .organizingAlbums:
-			break
-		case .movingAlbums:
-			guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
-			let rowCase = albumsViewModel.rowCase(for: indexPath)
-			switch rowCase {
-			case .prerow(let prerow):
-				switch prerow {
-				case .moveHere:
-					moveHere(to: indexPath)
-					return
-				}
-			case .album:
+			case .previewingCombine:
 				break
-			}
-		case .browsing:
-			break
+			case .organizingAlbums:
+				break
+			case .movingAlbums:
+				guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
+				let rowCase = albumsViewModel.rowCase(for: indexPath)
+				switch rowCase {
+					case .prerow(let prerow):
+						switch prerow {
+							case .moveHere:
+								moveHere(to: indexPath)
+								return
+						}
+					case .album:
+						break
+				}
+			case .browsing:
+				break
 		}
 		
 		super.tableView(tableView, didSelectRowAt: indexPath)

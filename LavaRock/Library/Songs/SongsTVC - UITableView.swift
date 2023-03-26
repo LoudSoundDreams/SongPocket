@@ -42,48 +42,48 @@ extension SongsTVC {
 		
 		let rowCase = songsViewModel.rowCase(for: indexPath)
 		switch rowCase {
-		case .prerow(let prerow):
-			switch prerow {
-			case .coverArt:
-				guard let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Cover Art",
-					for: indexPath) as? CoverArtCell
-				else { return UITableViewCell() }
-				
-				cell.albumRepresentative = album.representativeSongMetadatum()
-				
-				let height = view.frame.height
-				let topInset = view.safeAreaInsets.top
-				let bottomInset = view.safeAreaInsets.bottom
-				let safeHeight = height - topInset - bottomInset
-				cell.configureArtwork(maxHeight: safeHeight)
-				
-				cell.selectionStyle = .none
-				
-				return cell
-				
-			case .albumInfo:
-				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Album Info",
-					for: indexPath)
-				
-				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumInfoRow(
-						albumTitle: viewModel.bigTitle(),
-						albumArtist: album.representativeAlbumArtistFormattedOptional(),
-						releaseDateString: album.releaseDateEstimateFormattedOptional()
-					)
-					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-						viewDimensions[.trailing]
-					}
+			case .prerow(let prerow):
+				switch prerow {
+					case .coverArt:
+						guard let cell = tableView.dequeueReusableCell(
+							withIdentifier: "Cover Art",
+							for: indexPath) as? CoverArtCell
+						else { return UITableViewCell() }
+						
+						cell.albumRepresentative = album.representativeSongMetadatum()
+						
+						let height = view.frame.height
+						let topInset = view.safeAreaInsets.top
+						let bottomInset = view.safeAreaInsets.bottom
+						let safeHeight = height - topInset - bottomInset
+						cell.configureArtwork(maxHeight: safeHeight)
+						
+						cell.selectionStyle = .none
+						
+						return cell
+						
+					case .albumInfo:
+						// The cell in the storyboard is completely default except for the reuse identifier.
+						let cell = tableView.dequeueReusableCell(
+							withIdentifier: "Album Info",
+							for: indexPath)
+						
+						cell.contentConfiguration = UIHostingConfiguration {
+							AlbumInfoRow(
+								albumTitle: viewModel.bigTitle(),
+								albumArtist: album.representativeAlbumArtistFormattedOptional(),
+								releaseDateString: album.releaseDateEstimateFormattedOptional()
+							)
+							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+								viewDimensions[.trailing]
+							}
+						}
+						cell.selectionStyle = .none // So that the user can’t even highlight the cell
+						
+						return cell
 				}
-				cell.selectionStyle = .none // So that the user can’t even highlight the cell
-				
-				return cell
-			}
-		case .song:
-			break
+			case .song:
+				break
 		}
 		
 		guard let cell = tableView.dequeueReusableCell(

@@ -37,10 +37,10 @@ extension SongsViewModel: LibraryViewModel {
 	
 	func bigTitle() -> String {
 		switch parentAlbum {
-		case
-				.exists(let album),
-				.deleted(let album):
-			return album.representativeTitleFormattedOrPlaceholder()
+			case
+					.exists(let album),
+					.deleted(let album):
+				return album.representativeTitleFormattedOrPlaceholder()
 		}
 	}
 	
@@ -53,18 +53,18 @@ extension SongsViewModel: LibraryViewModel {
 		forItems items: [NSManagedObject]
 	) -> Bool {
 		switch sortCommand {
-		case
-				.folder_name,
-				.album_newestFirst,
-				.album_oldestFirst:
-			return false
-		case
-				.song_track:
-			return true
-		case
-				.random,
-				.reverse:
-			return true
+			case
+					.folder_name,
+					.album_newestFirst,
+					.album_oldestFirst:
+				return false
+			case
+					.song_track:
+				return true
+			case
+					.random,
+					.reverse:
+				return true
 		}
 	}
 	
@@ -72,14 +72,14 @@ extension SongsViewModel: LibraryViewModel {
 	func updatedWithFreshenedData() -> Self {
 		let freshenedParentAlbum: ParentAlbum = {
 			switch parentAlbum {
-			case .exists(let album):
-				if album.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
+				case .exists(let album):
+					if album.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
+						return .deleted(album)
+					} else {
+						return .exists(album)
+					}
+				case .deleted(let album):
 					return .deleted(album)
-				} else {
-					return .exists(album)
-				}
-			case .deleted(let album):
-				return .deleted(album)
 			}
 		}()
 		return Self(
@@ -98,10 +98,10 @@ extension SongsViewModel {
 		// Check `viewContainer` to figure out which `Song`s to show.
 		let containers: [NSManagedObject] = {
 			switch parentAlbum {
-			case .exists(let album):
-				return [album]
-			case .deleted:
-				return []
+				case .exists(let album):
+					return [album]
+				case .deleted:
+					return []
 			}}()
 		groups = containers.map { container in
 			SongsGroup(
@@ -138,11 +138,11 @@ extension SongsViewModel {
 	// Similar to counterpart in `AlbumsViewModel`.
 	func numberOfRows() -> Int {
 		switch parentAlbum {
-		case .exists:
-			let group = libraryGroup()
-			return numberOfPrerowsPerSection + group.items.count
-		case .deleted:
-			return 0 // Without `numberOfPrerowsPerSection`
+			case .exists:
+				let group = libraryGroup()
+				return numberOfPrerowsPerSection + group.items.count
+			case .deleted:
+				return 0 // Without `numberOfPrerowsPerSection`
 		}
 	}
 }

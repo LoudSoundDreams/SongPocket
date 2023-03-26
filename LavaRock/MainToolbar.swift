@@ -331,28 +331,28 @@ final class MainToolbar {
 			}
 			new_image = {
 				switch player.repeatMode {
-				case .one:
-					return UIImage(systemName: "repeat.1.circle.fill")!
-				case .all:
-					return UIImage(systemName: "repeat.circle.fill")!
-				case
-						.default,
-						.none
-					:
-					// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
-					// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
-					if !has_re_freshened_more_button {
-						has_re_freshened_more_button = true
-						
-						Task {
-							try await Task.sleep(nanoseconds: 0_050_000_000) // 50ms
+					case .one:
+						return UIImage(systemName: "repeat.1.circle.fill")!
+					case .all:
+						return UIImage(systemName: "repeat.circle.fill")!
+					case
+							.default,
+							.none
+						:
+						// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
+						// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
+						if !has_re_freshened_more_button {
+							has_re_freshened_more_button = true
 							
-							freshen_more_button()
+							Task {
+								try await Task.sleep(nanoseconds: 0_050_000_000) // 50ms
+								
+								freshen_more_button()
+							}
 						}
-					}
-					return Self.more_button_default_image
-				@unknown default:
-					return Self.more_button_default_image
+						return Self.more_button_default_image
+					@unknown default:
+						return Self.more_button_default_image
 				}
 			}()
 		}
@@ -387,17 +387,17 @@ final class MainToolbar {
 		
 		console_button.image = {
 			switch player.repeatMode {
-			case .one:
-				return UIImage(systemName: "repeat.1.circle.fill")!
-			case .all:
-				return UIImage(systemName: "repeat.circle.fill")!
-			case
-					.default,
-					.none
-				:
-				return Self.showConsoleButtonDefaultImage
-			@unknown default:
-				return Self.showConsoleButtonDefaultImage
+				case .one:
+					return UIImage(systemName: "repeat.1.circle.fill")!
+				case .all:
+					return UIImage(systemName: "repeat.circle.fill")!
+				case
+						.default,
+						.none
+					:
+					return Self.showConsoleButtonDefaultImage
+				@unknown default:
+					return Self.showConsoleButtonDefaultImage
 			}
 		}()
 		

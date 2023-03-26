@@ -36,23 +36,23 @@ final class TipJarViewModel: ObservableObject {
 	@Published var status: Status = .notYetFirstLoaded {
 		didSet {
 			switch self.status {
-			case .notYetFirstLoaded: // Should never run
-				break
-			case .loading:
-				ui?.statusBecameLoading()
-			case .reload:
-				ui?.statusBecameReload()
-			case .ready:
-				ui?.statusBecameReady()
-			case .confirming:
-				ui?.statusBecameConfirming()
-			case .thankYou:
-				ui?.statusBecameThankYou()
-				Task {
-					try await Task.sleep(nanoseconds: 10_000_000_000)
-					
-					status = .ready
-				}
+				case .notYetFirstLoaded: // Should never run
+					break
+				case .loading:
+					ui?.statusBecameLoading()
+				case .reload:
+					ui?.statusBecameReload()
+				case .ready:
+					ui?.statusBecameReady()
+				case .confirming:
+					ui?.statusBecameConfirming()
+				case .thankYou:
+					ui?.statusBecameThankYou()
+					Task {
+						try await Task.sleep(nanoseconds: 10_000_000_000)
+						
+						status = .ready
+					}
 			}
 		}
 	}

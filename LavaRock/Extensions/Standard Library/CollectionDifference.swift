@@ -14,19 +14,19 @@ extension CollectionDifference {
 		forEach { change in
 			// If a `Change`’s `associatedWith:` value is non-`nil`, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
 			switch change {
-			case .remove(let offset, _, let associatedOffset):
-				if let associatedOffset = associatedOffset {
-					indicesOfItemsToMove.append(
-						(oldIndex: offset,
-						 newIndex: associatedOffset)
-					)
-				} else {
-					indicesOfOldItemsToDelete.append(offset)
-				}
-			case .insert(let offset, _, let associatedOffset):
-				if associatedOffset == nil {
-					indicesOfNewItemsToInsert.append(offset)
-				}
+				case .remove(let offset, _, let associatedOffset):
+					if let associatedOffset = associatedOffset {
+						indicesOfItemsToMove.append(
+							(oldIndex: offset,
+							 newIndex: associatedOffset)
+						)
+					} else {
+						indicesOfOldItemsToDelete.append(offset)
+					}
+				case .insert(let offset, _, let associatedOffset):
+					if associatedOffset == nil {
+						indicesOfNewItemsToInsert.append(offset)
+					}
 			}
 		}
 		

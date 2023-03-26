@@ -136,31 +136,31 @@ final class CollectionsTVC:
 			}}()
 		
 		switch viewState {
-		case
-				.allowAccess,
-				.loading:
-			if oldInCollectionsSection.count == newInCollectionsSection.count {
-				toDelete = []
-				toInsert = []
-				toReloadInCollectionsSection = newInCollectionsSection
-			} else {
-				toDelete = oldInCollectionsSection // Can be empty
+			case
+					.allowAccess,
+					.loading:
+				if oldInCollectionsSection.count == newInCollectionsSection.count {
+					toDelete = []
+					toInsert = []
+					toReloadInCollectionsSection = newInCollectionsSection
+				} else {
+					toDelete = oldInCollectionsSection // Can be empty
+					toInsert = newInCollectionsSection
+					toReloadInCollectionsSection = []
+				}
+			case .removingRowsInCollectionsSection:
+				toDelete = oldInCollectionsSection
+				toInsert = newInCollectionsSection // Empty
+				toReloadInCollectionsSection = []
+			case .emptyPlaceholder:
+				toDelete = oldInCollectionsSection
 				toInsert = newInCollectionsSection
 				toReloadInCollectionsSection = []
-			}
-		case .removingRowsInCollectionsSection:
-			toDelete = oldInCollectionsSection
-			toInsert = newInCollectionsSection // Empty
-			toReloadInCollectionsSection = []
-		case .emptyPlaceholder:
-			toDelete = oldInCollectionsSection
-			toInsert = newInCollectionsSection
-			toReloadInCollectionsSection = []
-		case .someCollections: // Merging changes with existing `Collection`s
-			// Crashes if you use Reset Location & Privacy
-			toDelete = []
-			toInsert = []
-			toReloadInCollectionsSection = []
+			case .someCollections: // Merging changes with existing `Collection`s
+				// Crashes after Reset Location & Privacy
+				toDelete = []
+				toInsert = []
+				toReloadInCollectionsSection = []
 		}
 		
 		await tableView.performBatchUpdates__async {
@@ -170,16 +170,16 @@ final class CollectionsTVC:
 			self.tableView.insertRows(at: toInsert, with: .middle)
 		} runningBeforeContinuation: {
 			switch self.viewState {
-			case
-					.allowAccess,
-					.loading,
-					.removingRowsInCollectionsSection,
-					.emptyPlaceholder:
-				if self.isEditing {
-					self.setEditing(false, animated: true)
-				}
-			case .someCollections:
-				break
+				case
+						.allowAccess,
+						.loading,
+						.removingRowsInCollectionsSection,
+						.emptyPlaceholder:
+					if self.isEditing {
+						self.setEditing(false, animated: true)
+					}
+				case .someCollections:
+					break
 			}
 			
 			self.didChangeRowsOrSelectedRows() // Freshens “Edit” button
@@ -203,22 +203,22 @@ final class CollectionsTVC:
 		super.viewDidLoad()
 		
 		switch purpose {
-		case .willOrganizeAlbums(let stickyNote):
-			navigationItem.prompt = stickyNote.prompt
-		case .organizingAlbums: // Should never run
-			break
-		case .movingAlbums(let clipboard):
-			navigationItem.prompt = clipboard.prompt
-		case .browsing:
-			NotificationCenter.default.addObserverOnce(
-				self,
-				selector: #selector(userUpdatedDatabase),
-				name: .userUpdatedDatabase,
-				object: nil)
-			
-			Task {
-				await integrateWithAppleMusic()
-			}
+			case .willOrganizeAlbums(let stickyNote):
+				navigationItem.prompt = stickyNote.prompt
+			case .organizingAlbums: // Should never run
+				break
+			case .movingAlbums(let clipboard):
+				navigationItem.prompt = clipboard.prompt
+			case .browsing:
+				NotificationCenter.default.addObserverOnce(
+					self,
+					selector: #selector(userUpdatedDatabase),
+					name: .userUpdatedDatabase,
+					object: nil)
+				
+				Task {
+					await integrateWithAppleMusic()
+				}
 		}
 	}
 	@objc private func userUpdatedDatabase() {
@@ -227,50 +227,50 @@ final class CollectionsTVC:
 	
 	override func setUpBarButtons() {
 		switch purpose {
-		case .willOrganizeAlbums:
-			viewingModeTopLeftButtons = [
-			]
-			viewingModeTopRightButtons = [
-				cancelAndDismissButton,
-			]
-			viewingModeToolbarButtons = [
-				.flexibleSpace(),
-				saveOrganizeButton,
-				.flexibleSpace(),
-			]
-		case .organizingAlbums: // Should never run
-			break
-		case .movingAlbums:
-			viewingModeTopLeftButtons = [
-			]
-			viewingModeTopRightButtons = [
-				cancelAndDismissButton,
-			]
-		case .browsing:
-			viewingModeTopLeftButtons = [
-			]
-			editingModeToolbarButtons = [
-				combineButton,
-				.flexibleSpace(),
-				sortButton,
-				.flexibleSpace(),
-				floatToTopButton,
-				.flexibleSpace(),
-				sinkToBottomButton,
-			]
+			case .willOrganizeAlbums:
+				viewingModeTopLeftButtons = [
+				]
+				viewingModeTopRightButtons = [
+					cancelAndDismissButton,
+				]
+				viewingModeToolbarButtons = [
+					.flexibleSpace(),
+					saveOrganizeButton,
+					.flexibleSpace(),
+				]
+			case .organizingAlbums: // Should never run
+				break
+			case .movingAlbums:
+				viewingModeTopLeftButtons = [
+				]
+				viewingModeTopRightButtons = [
+					cancelAndDismissButton,
+				]
+			case .browsing:
+				viewingModeTopLeftButtons = [
+				]
+				editingModeToolbarButtons = [
+					combineButton,
+					.flexibleSpace(),
+					sortButton,
+					.flexibleSpace(),
+					floatToTopButton,
+					.flexibleSpace(),
+					sinkToBottomButton,
+				]
 		}
 		
 		super.setUpBarButtons()
 		
 		switch purpose {
-		case .willOrganizeAlbums:
-			showToolbar()
-		case .organizingAlbums: // Should never run
-			break
-		case .movingAlbums:
-			break
-		case .browsing:
-			showToolbar()
+			case .willOrganizeAlbums:
+				showToolbar()
+			case .organizingAlbums: // Should never run
+				break
+			case .movingAlbums:
+				break
+			case .browsing:
+				showToolbar()
 		}
 		func showToolbar() {
 			navigationController?.setToolbarHidden(false, animated: false)
@@ -292,14 +292,14 @@ final class CollectionsTVC:
 	
 	override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
-		case .willOrganizeAlbums:
-			break
-		case .organizingAlbums:
-			break
-		case .movingAlbums:
-			revertCreate()
-		case .browsing:
-			break
+			case .willOrganizeAlbums:
+				break
+			case .organizingAlbums:
+				break
+			case .movingAlbums:
+				revertCreate()
+			case .browsing:
+				break
 		}
 		
 		super.viewDidAppear(animated)
@@ -309,35 +309,35 @@ final class CollectionsTVC:
 	
 	override func freshenLibraryItems() {
 		switch purpose {
-		case .willOrganizeAlbums:
-			return
-		case .organizingAlbums:
-			return
-		case .movingAlbums:
-			return
-		case .browsing:
-			break
+			case .willOrganizeAlbums:
+				return
+			case .organizingAlbums:
+				return
+			case .movingAlbums:
+				return
+			case .browsing:
+				break
 		}
 		
 		switch viewState {
-		case
-				.loading,
-				.emptyPlaceholder:
-			// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
-			needsRemoveRowsInCollectionsSection = true // `viewState` is now `.removingRowsInCollectionsSection`
-			Task {
-				await reflectViewState(runningBeforeCompletion: {
-					self.needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.emptyPlaceholder`, but the UI doesn’t reflect that.
-					
-					super.freshenLibraryItems()
-				})
-			}
-			return
-		case
-				.allowAccess,
-				.removingRowsInCollectionsSection,
-				.someCollections:
-			break
+			case
+					.loading,
+					.emptyPlaceholder:
+				// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
+				needsRemoveRowsInCollectionsSection = true // `viewState` is now `.removingRowsInCollectionsSection`
+				Task {
+					await reflectViewState(runningBeforeCompletion: {
+						self.needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.emptyPlaceholder`, but the UI doesn’t reflect that.
+						
+						super.freshenLibraryItems()
+					})
+				}
+				return
+			case
+					.allowAccess,
+					.removingRowsInCollectionsSection,
+					.someCollections:
+				break
 		}
 		
 		if viewModelBeforeCombining != nil {

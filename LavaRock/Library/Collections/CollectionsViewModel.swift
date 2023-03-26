@@ -37,17 +37,17 @@ extension CollectionsViewModel: LibraryViewModel {
 		forItems items: [NSManagedObject]
 	) -> Bool {
 		switch sortCommand {
-		case .folder_name:
-			return true
-		case
-				.album_newestFirst,
-				.album_oldestFirst,
-				.song_track:
-			return false
-		case
-				.random,
-				.reverse:
-			return true
+			case .folder_name:
+				return true
+			case
+					.album_newestFirst,
+					.album_oldestFirst,
+					.song_track:
+				return false
+			case
+					.random,
+					.reverse:
+				return true
 		}
 	}
 	

@@ -86,16 +86,16 @@ final class AlbumsTVC:
 		super.viewDidLoad()
 		
 		switch purpose {
-		case .previewingCombine:
-			navigationItem.prompt = String.localizedStringWithFormat(
-				LRString.variable_moveXAlbumsIntoOneFolder_question_mark,
-				is_previewing_combine_with_album_count)
-		case .organizingAlbums(let clipboard):
-			navigationItem.prompt = clipboard.prompt
-		case .movingAlbums(let clipboard):
-			navigationItem.prompt = clipboard.prompt
-		case .browsing:
-			break
+			case .previewingCombine:
+				navigationItem.prompt = String.localizedStringWithFormat(
+					LRString.variable_moveXAlbumsIntoOneFolder_question_mark,
+					is_previewing_combine_with_album_count)
+			case .organizingAlbums(let clipboard):
+				navigationItem.prompt = clipboard.prompt
+			case .movingAlbums(let clipboard):
+				navigationItem.prompt = clipboard.prompt
+			case .browsing:
+				break
 		}
 	}
 	
@@ -108,53 +108,53 @@ final class AlbumsTVC:
 	}()
 	override func setUpBarButtons() {
 		switch purpose {
-		case .previewingCombine:
-			viewingModeTopRightButtons = [
-				UIBarButtonItem(
-					title: LRString.cancel,
-					primaryAction: cancel_combine_action)
-			].compacted()
-			viewingModeToolbarButtons = [
-				.flexibleSpace(),
-				save_combine_button,
-				.flexibleSpace(),
-			].compacted()
-		case .organizingAlbums:
-			viewingModeTopRightButtons = [
-				cancelAndDismissButton,
-			]
-			viewingModeToolbarButtons = [
-				.flexibleSpace(),
-				saveOrganizeButton,
-				.flexibleSpace(),
-			]
-		case .movingAlbums:
-			viewingModeTopRightButtons = [
-				cancelAndDismissButton,
-			]
-		case .browsing:
-			editingModeToolbarButtons = [
-				moveOrOrganizeButton,
-				.flexibleSpace(),
-				sortButton,
-				.flexibleSpace(),
-				floatToTopButton,
-				.flexibleSpace(),
-				sinkToBottomButton,
-			]
+			case .previewingCombine:
+				viewingModeTopRightButtons = [
+					UIBarButtonItem(
+						title: LRString.cancel,
+						primaryAction: cancel_combine_action)
+				].compacted()
+				viewingModeToolbarButtons = [
+					.flexibleSpace(),
+					save_combine_button,
+					.flexibleSpace(),
+				].compacted()
+			case .organizingAlbums:
+				viewingModeTopRightButtons = [
+					cancelAndDismissButton,
+				]
+				viewingModeToolbarButtons = [
+					.flexibleSpace(),
+					saveOrganizeButton,
+					.flexibleSpace(),
+				]
+			case .movingAlbums:
+				viewingModeTopRightButtons = [
+					cancelAndDismissButton,
+				]
+			case .browsing:
+				editingModeToolbarButtons = [
+					moveOrOrganizeButton,
+					.flexibleSpace(),
+					sortButton,
+					.flexibleSpace(),
+					floatToTopButton,
+					.flexibleSpace(),
+					sinkToBottomButton,
+				]
 		}
 		
 		super.setUpBarButtons()
 		
 		switch purpose {
-		case .previewingCombine:
-			showToolbar()
-		case .organizingAlbums:
-			break
-		case .movingAlbums:
-			break
-		case .browsing:
-			break
+			case .previewingCombine:
+				showToolbar()
+			case .organizingAlbums:
+				break
+			case .movingAlbums:
+				break
+			case .browsing:
+				break
 		}
 		func showToolbar() {
 			navigationController?.setToolbarHidden(false, animated: false)
@@ -168,14 +168,14 @@ final class AlbumsTVC:
 	
 	override func freshenLibraryItems() {
 		switch purpose {
-		case .previewingCombine:
-			return
-		case .organizingAlbums:
-			return
-		case .movingAlbums:
-			return
-		case .browsing:
-			super.freshenLibraryItems()
+			case .previewingCombine:
+				return
+			case .organizingAlbums:
+				return
+			case .movingAlbums:
+				return
+			case .browsing:
+				super.freshenLibraryItems()
 		}
 	}
 	
