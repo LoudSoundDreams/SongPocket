@@ -60,7 +60,7 @@ private struct LibraryNCRep: UIViewControllerRepresentable {
 		return vc
 	}
 	
-	// SwiftUI does run this between `VCType.viewDidLoad` and its first `.viewWillAppear`.
+	// SwiftUI does run this before `VCType.viewDidLoad`.
 	func updateUIViewController(
 		_ uiViewController: VCType,
 		context: Context

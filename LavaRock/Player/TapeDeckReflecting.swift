@@ -5,7 +5,7 @@
 //  Created by h on 2022-02-26.
 //
 
-import MediaPlayer
+import Foundation
 
 @objc // “generic class 'Weak' requires that 'TapeDeckReflecting' be a class type”
 @MainActor

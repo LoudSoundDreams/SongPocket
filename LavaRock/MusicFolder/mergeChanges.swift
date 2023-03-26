@@ -16,7 +16,9 @@ extension Notification.Name {
 
 extension MusicLibrary {
 	// Updates our database in a sensible way to reflect the fresh `SongMetadatum`s.
-	func mergeChanges(toMatch freshMetadata: [SongMetadatum]) {
+	func mergeChanges(
+		toMatchInAnyOrder freshMetadataInAnyOrder: [SongMetadatum]
+	) {
 		os_signpost(.begin, log: .merge, name: "Initial parse")
 		let existingSongs = Song.allFetched(sortedByIndex: false, via: context)
 		
@@ -32,7 +34,7 @@ extension MusicLibrary {
 		var songsToDelete: [Song] = []
 		
 		var metadataBySongID: Dictionary<SongID, SongMetadatum> = {
-			let tuples = freshMetadata.map { metadatum in (metadatum.songID, metadatum) }
+			let tuples = freshMetadataInAnyOrder.map { metadatum in (metadatum.songID, metadatum) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
 		
@@ -73,7 +75,7 @@ extension MusicLibrary {
 			for: songsToDelete)
 		
 		cleanUpLibraryItems(
-			allMetadata: freshMetadata,
+			allMetadata: freshMetadataInAnyOrder,
 			isFirstImport: isFirstImport)
 		
 		defaults.set(

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import MediaPlayer
 
 // Keeping these keys in one place helps us keep them unique.
 // It also helps us use the same text in multiple places if appropriate.
@@ -198,10 +197,10 @@ enum LRString {
 	// MARK: Songs view
 	
 	static func songTitleQuotedAndXMoreSongs_titleCase(
-		mediaItems: [MPMediaItem]
+		metadata: [SongMetadatum]
 	) -> String {
-		let firstSongTitle = mediaItems.first?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
-		let songCount = mediaItems.count
+		let firstSongTitle = metadata.first?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
+		let songCount = metadata.count
 		if songCount == 1 {
 			return String.localizedStringWithFormat(
 				format_quoted,

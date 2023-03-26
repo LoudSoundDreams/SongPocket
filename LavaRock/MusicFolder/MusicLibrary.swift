@@ -43,7 +43,7 @@ final class MusicLibrary { // This is a class and not a struct because it needs 
 			let walpurgisNightAlbumID = Sim_AlbumIDDispenser.takeNumber()
 			let planetaryPiecesAlbumID = Sim_AlbumIDDispenser.takeNumber()
 			let realAlbumID = Sim_AlbumIDDispenser.takeNumber()
-			mergeChanges(toMatch: (
+			mergeChanges(toMatchInAnyOrder: (
 				Enabling.sim_emptyLibrary
 				? []
 				: [
@@ -102,7 +102,7 @@ final class MusicLibrary { // This is a class and not a struct because it needs 
 		let songsQuery = MPMediaQuery.songs()
 		if let freshMediaItems = songsQuery.items {
 			context.performAndWait {
-				mergeChanges(toMatch: freshMediaItems)
+				mergeChanges(toMatchInAnyOrder: freshMediaItems)
 			}
 		}
 #endif
