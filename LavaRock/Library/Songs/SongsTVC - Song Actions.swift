@@ -49,21 +49,8 @@ extension SongsTVC {
 			
 			deselectSelectedSong()
 		}
-		playRestOfAlbum.isEnabled = selectedMediaItemAndBelow.count >= 2
+//		playRestOfAlbum.isEnabled = selectedMediaItemAndBelow.count >= 2
 		actionSheet.addAction(playRestOfAlbum)
-		
-		let playSong = UIAlertAction(
-			title: LRString.playSong,
-			style: .default
-		) { _ in
-			player.playNow(
-				[selectedMediaItem],
-				new_repeat_mode: .none,
-				disable_shuffle: true)
-			
-			deselectSelectedSong()
-		}
-		actionSheet.addAction(playSong)
 		
 		// Cancel
 		actionSheet.addAction(

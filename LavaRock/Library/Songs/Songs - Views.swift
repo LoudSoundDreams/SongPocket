@@ -195,6 +195,16 @@ final class SongCell: UITableViewCell {
 		
 		let player = TapeDeck.shared.player
 		
+		let playSong = UIAction(
+			title: LRString.play,
+			image: UIImage(systemName: "play")
+		) { _ in
+			player?.playNow(
+				[mediaItem],
+				new_repeat_mode: .none,
+				disable_shuffle: true)
+		}
+		
 		let playRestOfAlbumNext = UIDeferredMenuElement.uncached({ useMenuElements in
 			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
@@ -257,12 +267,13 @@ final class SongCell: UITableViewCell {
 			presentsUpward: false,
 			menuElementGroups: [
 				[
-					playRestOfAlbumNext,
+					playSong,
 					playNext,
+					playLast,
 				],
 				[
+					playRestOfAlbumNext,
 					playRestOfAlbumLast,
-					playLast,
 				],
 			]
 		)
