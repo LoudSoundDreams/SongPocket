@@ -193,26 +193,6 @@ final class SongCell: UITableViewCell {
 		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 		
-		// Play next
-		
-		// Play song next
-		let playSongNext =
-		UIDeferredMenuElement.uncached({ useMenuElements in
-			let action = UIAction(
-				title: LRString.playNext,
-				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
-			) { _ in
-				TapeDeck.shared.player?.playNext([mediaItem])
-			}
-			action.attributes = (
-				Reel.allows_Play_Next()
-				? []
-				: .disabled
-			)
-			useMenuElements([action])
-		})
-		
-		// Play song and below next
 		let playSongAndBelowNext =
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
@@ -230,21 +210,22 @@ final class SongCell: UITableViewCell {
 			useMenuElements([action])
 		})
 		
-		// Play last
-		
-		// Play song last
-		let playSongLast =
+		let playSongNext =
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
-				title: LRString.playLast,
-				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
+				title: LRString.playNext,
+				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
-				TapeDeck.shared.player?.playLast([mediaItem])
+				TapeDeck.shared.player?.playNext([mediaItem])
 			}
+			action.attributes = (
+				Reel.allows_Play_Next()
+				? []
+				: .disabled
+			)
 			useMenuElements([action])
 		})
 		
-		// Play song and below last
 		let playSongAndBelowLast =
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
@@ -259,6 +240,17 @@ final class SongCell: UITableViewCell {
 				? []
 				: .disabled
 			)
+			useMenuElements([action])
+		})
+		
+		let playSongLast =
+		UIDeferredMenuElement.uncached({ useMenuElements in
+			let action = UIAction(
+				title: LRString.playLast,
+				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
+			) { _ in
+				TapeDeck.shared.player?.playLast([mediaItem])
+			}
 			useMenuElements([action])
 		})
 		
