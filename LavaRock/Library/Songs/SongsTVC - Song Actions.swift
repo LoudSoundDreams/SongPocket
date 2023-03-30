@@ -38,8 +38,7 @@ extension SongsTVC {
 		// For actions that start playback:
 		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		
-		// Play song and below now
-		let playSongAndBelow = UIAlertAction(
+		let playRestOfAlbum = UIAlertAction(
 			title: LRString.playRestOfAlbum,
 			style: .default
 		) { _ in
@@ -50,10 +49,9 @@ extension SongsTVC {
 			
 			deselectSelectedSong()
 		}
-		playSongAndBelow.isEnabled = selectedMediaItemAndBelow.count >= 2
-		actionSheet.addAction(playSongAndBelow)
+		playRestOfAlbum.isEnabled = selectedMediaItemAndBelow.count >= 2
+		actionSheet.addAction(playRestOfAlbum)
 		
-		// Play song now
 		let playSong = UIAlertAction(
 			title: LRString.playSong,
 			style: .default
