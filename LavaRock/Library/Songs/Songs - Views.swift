@@ -199,7 +199,7 @@ final class SongCell: UITableViewCell {
 		let playSongNext =
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
-				title: LRString.insertSong,
+				title: LRString.playNext,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
 				TapeDeck.shared.player?.playNext([mediaItem])
@@ -217,7 +217,7 @@ final class SongCell: UITableViewCell {
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
-				title: LRString.insertSongAndBelow,
+				title: LRString.playRestOfAlbumNext,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
 				TapeDeck.shared.player?.playNext(thisMediaItemAndBelow)
@@ -236,7 +236,7 @@ final class SongCell: UITableViewCell {
 		let playSongLast =
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
-				title: LRString.queueSong,
+				title: LRString.playLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				TapeDeck.shared.player?.playLast([mediaItem])
@@ -249,7 +249,7 @@ final class SongCell: UITableViewCell {
 		UIDeferredMenuElement.uncached({ useMenuElements in
 			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
-				title: LRString.queueSongAndBelow,
+				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				TapeDeck.shared.player?.playLast(thisMediaItemAndBelow)
