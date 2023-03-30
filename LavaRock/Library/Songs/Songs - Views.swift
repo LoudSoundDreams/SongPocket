@@ -206,15 +206,15 @@ final class SongCell: UITableViewCell {
 		}
 		
 		let playRestOfAlbumNext = UIDeferredMenuElement.uncached({ useMenuElements in
-			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
+			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.playRestOfAlbumNext,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
-				player?.playNext(thisMediaItemAndBelow)
+				player?.playNext(mediaItems)
 			}
 			action.attributes = (
-				Reel.allows_Play_Next() && thisMediaItemAndBelow.count >= 2
+				Reel.allows_Play_Next() && mediaItems.count >= 2
 				? []
 				: .disabled
 			)
@@ -237,15 +237,15 @@ final class SongCell: UITableViewCell {
 		})
 		
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let thisMediaItemAndBelow = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
+			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
-				player?.playLast(thisMediaItemAndBelow)
+				player?.playLast(mediaItems)
 			}
 			action.attributes = (
-				thisMediaItemAndBelow.count >= 2
+				mediaItems.count >= 2
 				? []
 				: .disabled
 			)
