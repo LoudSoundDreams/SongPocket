@@ -20,28 +20,12 @@ extension SongsTVC {
 		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let selectedMediaItem = (viewModel.itemNonNil(at: selectedIndexPath) as? Song)?.mpMediaItem(),
 			let player = player
 		else { return }
 		
 		let selectedMediaItemAndBelow = mediaItems(startingAt: selectedIndexPath)
 		
-		// Create action sheet
-		let actionSheet = UIAlertController(
-			title: nil,
-			message: nil,
-			preferredStyle: .actionSheet)
-		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
-		
-		// Add actions
-		
-		// For actions that start playback:
-		// I want to silence VoiceOver after you choose “play now” actions, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
-		
-		let playRestOfAlbum = UIAlertAction(
-			title: LRString.playRestOfAlbum,
-			style: .default
-		) { _ in
+		func playRestOfAlbumAndDeselect() {
 			player.playNow(
 				selectedMediaItemAndBelow,
 				new_repeat_mode: .none,
@@ -49,19 +33,37 @@ extension SongsTVC {
 			
 			deselectSelectedSong()
 		}
-//		playRestOfAlbum.isEnabled = selectedMediaItemAndBelow.count >= 2
-		actionSheet.addAction(playRestOfAlbum)
 		
-		// Cancel
-		actionSheet.addAction(
-			UIAlertAction.cancelWithHandler { _ in
-				deselectSelectedSong()
+		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		
+		if player.playbackState == .playing {
+			
+			let actionSheet = UIAlertController(
+				title: "Interrupt current song?", // TO DO
+				message: nil,
+				preferredStyle: .actionSheet)
+			actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
+			
+			let confirmPlay = UIAlertAction(
+				title: "Continue", // TO DO
+				style: .default
+			) { alertAction in
+				playRestOfAlbumAndDeselect()
 			}
-		)
-		
-		// —
-		
-		// Present
-		present(actionSheet, animated: true)
+			actionSheet.addAction(confirmPlay)
+			
+			actionSheet.addAction(
+				UIAlertAction.cancelWithHandler { _ in
+					deselectSelectedSong()
+				}
+			)
+			
+			present(actionSheet, animated: true)
+			
+		} else {
+			
+			playRestOfAlbumAndDeselect()
+			
+		}
 	}
 }
