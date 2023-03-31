@@ -25,7 +25,17 @@ extension SongsTVC {
 		
 		let selectedMediaItemAndBelow = mediaItems(startingAt: selectedIndexPath)
 		
-		func playRestOfAlbumAndDeselect() {
+		let actionSheet = UIAlertController(
+			title: nil,
+			message: nil,
+			preferredStyle: .actionSheet)
+		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
+		
+		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		let playRestOfAlbum = UIAlertAction(
+			title: LRString.playRestOfAlbum,
+			style: .default
+		) { _ in
 			player.playNow(
 				selectedMediaItemAndBelow,
 				new_repeat_mode: .none,
@@ -33,37 +43,15 @@ extension SongsTVC {
 			
 			deselectSelectedSong()
 		}
+//		playRestOfAlbum.isEnabled = selectedMediaItemAndBelow.count >= 2
+		actionSheet.addAction(playRestOfAlbum)
 		
-		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
-		
-		if player.playbackState == .playing {
-			
-			let actionSheet = UIAlertController(
-				title: "Interrupt current song?", // TO DO
-				message: nil,
-				preferredStyle: .actionSheet)
-			actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
-			
-			let confirmPlay = UIAlertAction(
-				title: "Continue", // TO DO
-				style: .default
-			) { alertAction in
-				playRestOfAlbumAndDeselect()
+		actionSheet.addAction(
+			UIAlertAction.cancelWithHandler { _ in
+				deselectSelectedSong()
 			}
-			actionSheet.addAction(confirmPlay)
-			
-			actionSheet.addAction(
-				UIAlertAction.cancelWithHandler { _ in
-					deselectSelectedSong()
-				}
-			)
-			
-			present(actionSheet, animated: true)
-			
-		} else {
-			
-			playRestOfAlbumAndDeselect()
-			
-		}
+		)
+		
+		present(actionSheet, animated: true)
 	}
 }
