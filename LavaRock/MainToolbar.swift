@@ -187,8 +187,26 @@ final class MainToolbar {
 			options: [
 				.displayInline,
 			],
-			preferredElementSize: .small,
 			children: [
+				UIDeferredMenuElement.uncached({ useMenuElements in
+					let action = UIAction(
+						title: LRString.restart,
+						image: UIImage(systemName: "arrow.counterclockwise.circle"),
+						attributes: {
+							var result: UIMenuElement.Attributes = []
+							// TO DO: Disable when playhead is already at start of track
+							if Self.player == nil {
+								result.formUnion(.disabled)
+							}
+							return result
+						}(),
+						handler: { action in
+							Self.player?.skipToBeginning()
+						}
+					)
+					useMenuElements([action])
+				}),
+				
 				UIDeferredMenuElement.uncached({ useMenuElements in
 					let action = UIAction(
 						title: LRString.previous,
@@ -204,25 +222,6 @@ final class MainToolbar {
 						}(),
 						handler: { action in
 							Self.player?.skipToPreviousItem()
-						}
-					)
-					useMenuElements([action])
-				}),
-				
-				UIDeferredMenuElement.uncached({ useMenuElements in
-					let action = UIAction(
-						title: LRString.restart,
-						image: UIImage(systemName: "arrow.counterclockwise.circle"),
-						attributes: {
-							var result: UIMenuElement.Attributes = []
-							// TO DO: Disable when playhead is already at start of track
-							if Self.player == nil {
-								result.formUnion(.disabled)
-							}
-							return result
-						}(),
-						handler: { action in
-							Self.player?.skipToBeginning()
 						}
 					)
 					useMenuElements([action])
