@@ -309,8 +309,7 @@ final class CollectionsTVC:
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
 		await reflectViewState()
 		
-		MusicLibrary.shared.beginWatching() // You must start observing `Notification.Name.mergedChanges` before this.
-		TapeDeck.shared.beginWatching()
+		AppleMusic.integrate()
 	}
 	
 	// MARK: - Library Items

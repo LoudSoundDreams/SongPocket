@@ -267,7 +267,6 @@ extension CollectionsTVC {
 	private func didSelectAllowAccessRow(at indexPath: IndexPath) async {
 		switch MPMediaLibrary.authorizationStatus() {
 			case .notDetermined:
-				// The golden opportunity.
 				let authorizationStatus = await MPMediaLibrary.requestAuthorization()
 				
 				switch authorizationStatus {
@@ -281,7 +280,7 @@ extension CollectionsTVC {
 					@unknown default:
 						tableView.deselectRow(at: indexPath, animated: true)
 				}
-			case .authorized:
+			case .authorized: // Should never run
 				break
 			case
 					.denied,

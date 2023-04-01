@@ -36,6 +36,14 @@ struct LavaRock: App {
 	}
 }
 
+@MainActor
+enum AppleMusic {
+	static func integrate() {
+		MusicLibrary.shared.beginWatching() // Folders view must start observing `Notification.Name.mergedChanges` before this.
+		TapeDeck.shared.beginWatching()
+	}
+}
+
 private struct LibraryNCRep: UIViewControllerRepresentable {
 	typealias VCType = LibraryNC
 	
