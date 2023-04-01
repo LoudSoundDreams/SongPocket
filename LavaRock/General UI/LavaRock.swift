@@ -26,7 +26,7 @@ struct LavaRock: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			LibraryNCRep()
+			MainLibraryNC()
 				.edgesIgnoringSafeArea(.all)
 				.preferredColorScheme(theme.lighting.colorScheme)
 				.tint(theme.accentColor.color)
@@ -44,7 +44,7 @@ enum AppleMusic {
 	}
 }
 
-private struct LibraryNCRep: UIViewControllerRepresentable {
+private struct MainLibraryNC: UIViewControllerRepresentable {
 	typealias VCType = LibraryNC
 	
 	@ObservedObject private var theme: Theme = .shared

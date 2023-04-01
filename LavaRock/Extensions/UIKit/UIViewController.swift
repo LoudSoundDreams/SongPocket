@@ -9,11 +9,11 @@ import UIKit
 
 extension UIViewController {
 	final func present__async(
-		_ viewControllerToPresent: UIViewController,
+		_ toPresent: UIViewController,
 		animated: Bool
 	) async {
 		await withCheckedContinuation { continuation in
-			present(viewControllerToPresent, animated: animated) {
+			present(toPresent, animated: animated) {
 				continuation.resume()
 			}
 		}

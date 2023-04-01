@@ -116,7 +116,6 @@ extension UITableView {
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 //	) async -> Bool {
 	) async {
-//		await withCheckedContinuation { continuation in
 		let _ = await withCheckedContinuation { continuation in
 			performBatchUpdates(
 				updates
