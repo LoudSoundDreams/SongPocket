@@ -293,7 +293,9 @@ final class CollectionsTVC:
 					needsIntegrateWithAppleMusic = false
 					
 					Task {
-						await integrateWithAppleMusic()
+						if MPMediaLibrary.authorizationStatus() == .authorized {
+							await prepareThenIntegrateWithAppleMusic()
+						}
 					}
 				}
 		}
@@ -301,11 +303,7 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
-	func integrateWithAppleMusic() async {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return
-		}
-		
+	func prepareThenIntegrateWithAppleMusic() async {
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
 		await reflectViewState()
 		

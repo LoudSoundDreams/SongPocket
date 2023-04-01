@@ -271,7 +271,7 @@ extension CollectionsTVC {
 				
 				switch authorizationStatus {
 					case .authorized:
-						await integrateWithAppleMusic()
+						await prepareThenIntegrateWithAppleMusic()
 					case
 							.notDetermined,
 							.denied,
