@@ -294,7 +294,9 @@ final class CollectionsTVC:
 					
 					Task {
 						if MPMediaLibrary.authorizationStatus() == .authorized {
-							await prepareThenIntegrateWithAppleMusic()
+							await prepareToIntegrateWithAppleMusic()
+							
+							AppleMusic.integrate()
 						}
 					}
 				}
@@ -303,11 +305,9 @@ final class CollectionsTVC:
 		super.viewDidAppear(animated)
 	}
 	
-	func prepareThenIntegrateWithAppleMusic() async {
+	func prepareToIntegrateWithAppleMusic() async {
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
 		await reflectViewState()
-		
-		AppleMusic.integrate()
 	}
 	
 	// MARK: - Library Items
