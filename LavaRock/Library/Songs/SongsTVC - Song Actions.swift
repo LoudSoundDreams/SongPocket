@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 
 extension SongsTVC {
 	func showSongActions(
@@ -20,7 +19,7 @@ extension SongsTVC {
 		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let player = player
+			let player = TapeDeck.shared.player
 		else { return }
 		
 		let selectedMediaItemAndBelow = mediaItems(startingAt: selectedIndexPath)

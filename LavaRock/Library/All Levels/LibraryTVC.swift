@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MediaPlayer
 import SwiftUI
 
 class LibraryTVC: UITableViewController {
@@ -45,8 +44,6 @@ class LibraryTVC: UITableViewController {
 	= (navigationController as? LibraryNC)?.mainToolbar.buttons_array ?? []
 	
 	// MARK: Subclasses Should Not Customize
-	
-	final var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	// Controls
 	

@@ -342,7 +342,7 @@ extension LibraryViewModel {
 		itemsAtRowsInAnyOrder rowsInAnyOrder: [Int],
 		inSection section: Int
 	) -> [NSManagedObject] {
-		// We could use Swift Algorithms's `MutableCollection.stablePartition` for this.
+		// We could use Swift Algorithms’s `MutableCollection.stablePartition` for this.
 		
 		let rows = rowsInAnyOrder.sorted()
 		let indicesOfSelectedItems = rows.map {
