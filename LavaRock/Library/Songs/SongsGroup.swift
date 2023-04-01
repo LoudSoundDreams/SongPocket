@@ -39,18 +39,18 @@ extension SongsGroup: LibraryGroup {
 		self.container = container
 		
 		spacerTrackNumberText = {
-			guard let representative = (container as? Album)?.representativeSongMetadatum() else {
+			guard let representative = (container as? Album)?.representativeSongInfo() else {
 				return nil
 			}
-			let metadata: [SongMetadatum] = items.compactMap { ($0 as? Song)?.metadatum() }
+			let infos: [SongInfo] = items.compactMap { ($0 as? Song)?.songInfo() }
 			// At the least, reserve the width of 2 digits (plus an interpunct, if appropriate).
 			// At the most, reserve the width of 4 digits plus an interpunct.
 			if representative.shouldShowDiscNumber {
 				var mostDigits = "00"
-				for metadatum in metadata {
+				for info in infos {
 					let discAndTrack = ""
-					+ metadatum.discNumberFormatted()
-					+ (metadatum.trackNumberFormattedOptional() ?? "")
+					+ info.discNumberFormatted()
+					+ (info.trackNumberFormattedOptional() ?? "")
 					if discAndTrack.count >= 4 {
 						return LRString.interpunct + "0000"
 					}
@@ -61,8 +61,8 @@ extension SongsGroup: LibraryGroup {
 				return LRString.interpunct + mostDigits
 			} else {
 				var mostDigits = "00"
-				for metadatum in metadata {
-					let track = metadatum.trackNumberFormattedOptional() ?? ""
+				for info in infos {
+					let track = info.trackNumberFormattedOptional() ?? ""
 					if track.count >= 4 {
 						return "0000"
 					}

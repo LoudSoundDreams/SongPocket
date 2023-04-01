@@ -1,5 +1,5 @@
 //
-//  Sim_SongMetadatum.swift
+//  Sim_SongInfo.swift
 //  LavaRock
 //
 //  Created by h on 2022-06-30.
@@ -25,8 +25,8 @@ private enum Sim_SongIDDispenser {
 		return result
 	}
 }
-struct Sim_SongMetadatum: SongMetadatum {
-	// `SongMetadatum`
+struct Sim_SongInfo: SongInfo {
+	// `SongInfo`
 	
 	let albumID: AlbumID
 	let songID: SongID
@@ -59,7 +59,7 @@ struct Sim_SongMetadatum: SongMetadatum {
 	
 	private let coverArtFileName: String?
 }
-extension Sim_SongMetadatum {
+extension Sim_SongInfo {
 	static var dict: [SongID: Self] = [:]
 	
 	init(

@@ -9,9 +9,9 @@ import CoreData
 import OSLog
 
 extension MusicLibrary {
-	// Create new managed objects for the new `SongMetadatum`s, including new `Album`s and `Collection`s to put them in if necessary.
+	// Create new managed objects for the new `SongInfo`s, including new `Album`s and `Collection`s to put them in if necessary.
 	func createLibraryItems(
-		for newMetadata: [SongMetadatum],
+		for newInfos: [SongInfo],
 		existingAlbums: [Album],
 		existingCollections: [Collection],
 		isFirstImport: Bool
@@ -22,35 +22,35 @@ extension MusicLibrary {
 		}
 		
 		func groupedByAlbumID(
-			_ metadata: [SongMetadatum]
-		) -> [AlbumID: [SongMetadatum]] {
+			_ infos: [SongInfo]
+		) -> [AlbumID: [SongInfo]] {
 			os_signpost(.begin, log: .create, name: "Initial group")
 			defer {
 				os_signpost(.end, log: .create, name: "Initial group")
 			}
-			return Dictionary(grouping: metadata) { $0.albumID }
+			return Dictionary(grouping: infos) { $0.albumID }
 		}
 		
-		// Group the `SongMetadatum`s into albums, sorted by the order we’ll add them to our database in.
-		let metadataGroups: [[SongMetadatum]] = {
+		// Group the `SongInfo`s into albums, sorted by the order we’ll add them to our database in.
+		let groupsOfInfos: [[SongInfo]] = {
 			if isFirstImport {
 				// Since our database is empty, we’ll add items from the top down, because it’s faster.
-				let dictionary = groupedByAlbumID(newMetadata)
+				let dictionary = groupedByAlbumID(newInfos)
 				let groups = dictionary.map { $0.value }
 				os_signpost(.begin, log: .create, name: "Initial sort")
-				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(metadataGroups: groups)
+				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(groupsOfInfos: groups)
 				// We’ll sort `Album`s by release date later.
 				os_signpost(.end, log: .create, name: "Initial sort")
 				return sortedGroups
 			} else {
 				// Since our database isn’t empty, we’ll insert items at the top from the bottom up, because it’s simpler.
 				os_signpost(.begin, log: .create, name: "Initial sort")
-				let sortedMetadata = newMetadata.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
+				let sortedInfos = newInfos.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
 				os_signpost(.end, log: .create, name: "Initial sort")
-				let dictionary = groupedByAlbumID(sortedMetadata)
-				let groupsOfSortedMetadata = dictionary.map { $0.value }
+				let dictionary = groupedByAlbumID(sortedInfos)
+				let groupsOfSortedInfos = dictionary.map { $0.value }
 				os_signpost(.begin, log: .create, name: "Initial sort 2")
-				let sortedGroups = groupsOfSortedMetadata.sorted { leftGroup, rightGroup in
+				let sortedGroups = groupsOfSortedInfos.sorted { leftGroup, rightGroup in
 					leftGroup.first!.dateAddedOnDisk < rightGroup.first!.dateAddedOnDisk
 				}
 				os_signpost(.end, log: .create, name: "Initial sort 2")
@@ -69,10 +69,10 @@ extension MusicLibrary {
 		Dictionary(grouping: existingCollections) { $0.title! }
 		
 		os_signpost(.begin, log: .create, name: "Create all the Songs and containers")
-		metadataGroups.forEach { metadataGroup in
+		groupsOfInfos.forEach { groupOfInfos in
 			os_signpost(.begin, log: .create, name: "Create one group of Songs and containers")
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
-				for: metadataGroup,
+				for: groupOfInfos,
 				existingAlbumsByID: existingAlbumsByID,
 				existingCollectionsByTitle: existingCollectionsByTitle,
 				isFirstImport: isFirstImport)
@@ -91,44 +91,44 @@ extension MusicLibrary {
 		os_signpost(.end, log: .create, name: "Create all the Songs and containers")
 	}
 	
-	// MARK: Sorting Groups of `SongMetadatum`s
+	// MARK: Sorting Groups of `SongInfo`s
 	
 	// 1. Group by album artists, sorted alphabetically.
 	// • “Unknown Album Artist” should go at the end.
 	// 2. Within each album artist, group by albums, sorted by most recent first.
 	
 	private func sortedByAlbumArtistNameThenAlbumTitle(
-		metadataGroups: [[SongMetadatum]]
-	) -> [[SongMetadatum]] {
-		let sortedMetadataGroups = metadataGroups.sorted {
+		groupsOfInfos: [[SongInfo]]
+	) -> [[SongInfo]] {
+		let sortedGroupsOfInfos = groupsOfInfos.sorted {
 			guard
-				let leftMetadatum = $0.first,
-				let rightMetadatum = $1.first
+				let leftInfo = $0.first,
+				let rightInfo = $1.first
 			else {
 				// Should never run
 				return true
 			}
-			return leftMetadatum.precedesInDefaultOrder(inDifferentAlbum: rightMetadatum)
+			return leftInfo.precedesInDefaultOrder(inDifferentAlbum: rightInfo)
 		}
-		return sortedMetadataGroups
+		return sortedGroupsOfInfos
 	}
 	
 	// MARK: - Creating Groups of Songs
 	
 	private func createSongsAndReturnNewContainers(
-		for metadata: [SongMetadatum],
+		for infos: [SongInfo],
 		existingAlbumsByID: [AlbumID: Album],
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (Album?, Collection?) {
-		let firstMetadatum = metadata.first!
+		let firstInfo = infos.first!
 		
 		// If we already have a matching `Album` to add the `Song`s to …
-		let albumID = firstMetadatum.albumID
+		let albumID = firstInfo.albumID
 		if let matchingExistingAlbum = existingAlbumsByID[albumID] {
 			
 			// … then add the `Song`s to that `Album`.
-			let songIDs = metadata.map { $0.songID }
+			let songIDs = infos.map { $0.songID }
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
 				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
 				os_signpost(.begin, log: .create, name: "Put the existing Album back in order")
@@ -144,7 +144,7 @@ extension MusicLibrary {
 			// Otherwise, create the `Album` to add the `Song`s to …
 			os_signpost(.begin, log: .create, name: "Create a new Album and maybe new Collection")
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
-				for: firstMetadatum,
+				for: firstInfo,
 				existingCollectionsByTitle: existingCollectionsByTitle,
 				isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
@@ -152,7 +152,7 @@ extension MusicLibrary {
 			
 			// … and then add the `Song`s to that `Album`.
 			os_signpost(.begin, log: .create, name: "Sort the Songs for the new Album")
-			let sortedSongIDs = metadata.sorted {
+			let sortedSongIDs = infos.sorted {
 				$0.precedesInDefaultOrder(inSameAlbum: $1)
 			}.map {
 				$0.songID
@@ -167,12 +167,12 @@ extension MusicLibrary {
 	// MARK: Creating Containers
 	
 	private func newAlbumAndMaybeNewCollectionMade(
-		for newMetadatum: SongMetadatum,
+		for newInfo: SongInfo,
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
 		let titleOfDestinationCollection
-		= newMetadatum.albumArtistOnDisk ?? Album.unknownAlbumArtistPlaceholder
+		= newInfo.albumArtistOnDisk ?? Album.unknownAlbumArtistPlaceholder
 		
 		// If we already have a matching `Collection` to put the `Album` into …
 		if let matchingExistingCollection = existingCollectionsByTitle[titleOfDestinationCollection]?.first {
@@ -182,12 +182,12 @@ extension MusicLibrary {
 				if isFirstImport {
 					return Album(
 						atEndOf: matchingExistingCollection,
-						albumID: newMetadatum.albumID,
+						albumID: newInfo.albumID,
 						context: context)
 				} else {
 					return Album(
 						atBeginningOf: matchingExistingCollection,
-						albumID: newMetadatum.albumID,
+						albumID: newInfo.albumID,
 						context: context)
 				}}()
 			
@@ -218,7 +218,7 @@ extension MusicLibrary {
 			// … and then put the `Album` into that `Collection`.
 			let newAlbum = Album(
 				atEndOf: newCollection,
-				albumID: newMetadatum.albumID,
+				albumID: newInfo.albumID,
 				context: context)
 			
 			return (newAlbum, newCollection)

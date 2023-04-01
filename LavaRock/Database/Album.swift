@@ -106,39 +106,39 @@ extension Album {
 	}
 	
 	final func songsAreInDefaultOrder() -> Bool {
-		let metadata = songs(sorted: true).compactMap { $0.metadatum() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
+		let infos = songs(sorted: true).compactMap { $0.songInfo() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
 		
-		let sortedMetadata = metadata.sorted {
+		let sortedInfos = infos.sorted {
 			$0.precedesInDefaultOrder(inSameAlbum: $1)
 		}
 		
-		return metadata.indices.allSatisfy { index in
-			metadata[index].songID == sortedMetadata[index].songID
+		return infos.indices.allSatisfy { index in
+			infos[index].songID == sortedInfos[index].songID
 		}
 	}
 	
 	final func sortSongsByDefaultOrder() {
 		let songs = songs(sorted: false)
 		
-		// Behavior is undefined if you compare `Song`s that correspond to `SongMetadatum`s from different albums.
-		// `Song`s that don’t have a corresponding `SongMetadatum` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
+		// Behavior is undefined if you compare `Song`s that correspond to `SongInfo`s from different albums.
+		// `Song`s that don’t have a corresponding `SongInfo` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
 		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
-			var songsAndMetadata = songs.map {
+			var songsAndInfos = songs.map {
 				(song: $0,
-				 metadatum: $0.metadatum()) // Can be `nil`
+				 info: $0.songInfo()) // Can be `nil`
 			}
 			
-			songsAndMetadata.sort { leftTuple, rightTuple in
+			songsAndInfos.sort { leftTuple, rightTuple in
 				guard
-					let leftMetadatum = leftTuple.metadatum,
-					let rightMetadatum = rightTuple.metadatum
+					let leftInfo = leftTuple.info,
+					let rightInfo = rightTuple.info
 				else {
 					return true
 				}
-				return leftMetadatum.precedesInDefaultOrder(inSameAlbum: rightMetadatum)
+				return leftInfo.precedesInDefaultOrder(inSameAlbum: rightInfo)
 			}
 			
-			return songsAndMetadata.map { tuple in tuple.song }
+			return songsAndInfos.map { tuple in tuple.song }
 		}
 		
 		var sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
@@ -216,9 +216,9 @@ extension Album {
 	
 	// MARK: - Media Player
 	
-	final func representativeSongMetadatum() -> SongMetadatum? {
+	final func representativeSongInfo() -> SongInfo? {
 #if targetEnvironment(simulator)
-		return songs(sorted: true).first?.metadatum()
+		return songs(sorted: true).first?.songInfo()
 #else
 		return mpMediaItemCollection()?.representativeItem
 #endif
@@ -258,7 +258,7 @@ extension Album {
 	}
 	final func representativeTitleFormattedOptional() -> String? {
 		guard
-			let title = representativeSongMetadatum()?.albumTitleOnDisk,
+			let title = representativeSongInfo()?.albumTitleOnDisk,
 			title != ""
 		else {
 			return nil
@@ -275,7 +275,7 @@ extension Album {
 	}
 	final func representativeAlbumArtistFormattedOptional() -> String? {
 		guard
-			let albumArtist = representativeSongMetadatum()?.albumArtistOnDisk, // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Apple Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in Apple Music for iOS.
+			let albumArtist = representativeSongInfo()?.albumArtistOnDisk, // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Apple Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in Apple Music for iOS.
 			albumArtist != ""
 		else {
 			return nil

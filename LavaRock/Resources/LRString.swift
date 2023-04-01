@@ -196,20 +196,20 @@ enum LRString {
 	// MARK: Songs view
 	
 	static func songTitleQuotedAndXMoreSongs_titleCase(
-		metadata: [SongMetadatum]
+		infos: [SongInfo]
 	) -> String {
-		let firstSongTitle = metadata.first?.titleOnDisk ?? SongMetadatumPlaceholder.unknownTitle
-		let songCount = metadata.count
-		if songCount == 1 {
+		let firstTitle = infos.first?.titleOnDisk ?? SongInfoPlaceholder.unknownTitle
+		let count = infos.count
+		if count == 1 {
 			return String.localizedStringWithFormat(
 				format_quoted,
-				firstSongTitle)
+				firstTitle)
 		} else {
 			// With “and X more”
 			return String.localizedStringWithFormat(
 				format_title_songTitleAndXMoreSongs,
-				firstSongTitle,
-				songCount - 1)
+				firstTitle,
+				count - 1)
 		}
 	}
 	static let format_title_songTitleAndXMoreSongs = NSLocalizedString(

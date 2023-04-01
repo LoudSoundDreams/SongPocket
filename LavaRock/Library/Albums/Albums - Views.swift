@@ -71,7 +71,7 @@ final class AlbumCell: UITableViewCell {
 		mode: Mode,
 		physicalPixelsPerPoint__: CGFloat
 	) {
-		let representative = album.representativeSongMetadatum() // Can be `nil`
+		let representative = album.representativeSongInfo() // Can be `nil`
 		
 		os_signpost(.begin, log: .albumsView, name: "Set cover art")
 		let widthAndHeightInPoints = coverArtView.bounds.width

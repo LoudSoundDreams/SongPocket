@@ -12,7 +12,7 @@ import OSLog
 extension Song: LibraryItem {
 	// Enables `[Song].reindex()`
 	
-	final var libraryTitle: String? { metadatum()?.titleOnDisk }
+	final var libraryTitle: String? { songInfo()?.titleOnDisk }
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {
@@ -112,13 +112,13 @@ extension Song {
 	
 	// MARK: - Media Player
 	
-	final func metadatum() -> SongMetadatum? {
+	final func songInfo() -> SongInfo? {
 #if targetEnvironment(simulator)
 		// To match `mpMediaItem`
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}
-		return Sim_SongMetadatum.dict[persistentID]
+		return Sim_SongInfo.dict[persistentID]
 #else
 		return mpMediaItem()
 #endif

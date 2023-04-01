@@ -10,7 +10,7 @@ import OSLog
 
 extension MusicLibrary {
 	func updateLibraryItems(
-		potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)]
+		potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)]
 	) {
 		os_signpost(.begin, log: .merge, name: "2. Update library items")
 		defer {
@@ -19,18 +19,18 @@ extension MusicLibrary {
 		
 		os_signpost(.begin, log: .update, name: "Merge Albums with the same albumPersistentID")
 		let uniqueAlbumsByID = mergeClonedAlbumsAndReturnUniqueAlbumsByID(
-			potentiallyOutdatedSongsAndFreshMetadata: potentiallyOutdatedSongsAndFreshMetadata)
+			potentiallyOutdatedSongsAndFreshInfos: potentiallyOutdatedSongsAndFreshInfos)
 		os_signpost(.end, log: .update, name: "Merge Albums with the same albumPersistentID")
 		
 		os_signpost(.begin, log: .update, name: "Move Songs to updated Albums")
 		moveSongsToUpdatedAlbums(
-			potentiallyOutdatedSongsAndFreshMetadata: potentiallyOutdatedSongsAndFreshMetadata,
+			potentiallyOutdatedSongsAndFreshInfos: potentiallyOutdatedSongsAndFreshInfos,
 			uniqueAlbumsByID: uniqueAlbumsByID)
 		os_signpost(.end, log: .update, name: "Move Songs to updated Albums")
 	}
 	
 	private func mergeClonedAlbumsAndReturnUniqueAlbumsByID(
-		potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)]
+		potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)]
 	) -> [AlbumID: Album] {
 		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Apple Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
 		// We never should have ended up with two `Album`s with the same `albumPersistentID` in the first place, but this makes the merger resilient to that mistake.
@@ -56,7 +56,7 @@ extension MusicLibrary {
 		// Don’t actually move the `Song`s we need to move yet, because we haven’t sorted them yet.
 		// Filter before sorting. It’s faster.
 		let unsortedSongsToMove: [Song]
-		= potentiallyOutdatedSongsAndFreshMetadata.compactMap { (song, _) in
+		= potentiallyOutdatedSongsAndFreshInfos.compactMap { (song, _) in
 			let potentiallyClonedAlbum = song.container!
 			let canonicalAlbum = uniqueAlbumsByID[potentiallyClonedAlbum.albumPersistentID]
 			if potentiallyClonedAlbum.objectID == canonicalAlbum?.objectID {
@@ -90,14 +90,14 @@ extension MusicLibrary {
 	}
 	
 	private func moveSongsToUpdatedAlbums(
-		potentiallyOutdatedSongsAndFreshMetadata: [(Song, SongMetadatum)],
+		potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)],
 		uniqueAlbumsByID: [AlbumID: Album]
 	) {
-		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongMetadatum.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
+		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongInfo.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
 		
 		os_signpost(.begin, log: .update, name: "Filter to Songs moved to different Albums")
-		let unsortedOutdatedTuples = potentiallyOutdatedSongsAndFreshMetadata.filter { (song, metadatum) in
-			song.container!.albumPersistentID != metadatum.albumID
+		let unsortedOutdatedTuples = potentiallyOutdatedSongsAndFreshInfos.filter { (song, info) in
+			song.container!.albumPersistentID != info.albumID
 		}
 		os_signpost(.end, log: .update, name: "Filter to Songs moved to different Albums")
 		
@@ -109,7 +109,7 @@ extension MusicLibrary {
 		os_signpost(.end, log: .update, name: "Sort Songs moved to different Albums")
 		
 		var existingAlbumsByID = uniqueAlbumsByID
-		outdatedTuples.reversed().forEach { (song, metadatum) in
+		outdatedTuples.reversed().forEach { (song, info) in
 			os_signpost(.begin, log: .update, name: "Move one Song to its up-to-date Album")
 			defer {
 				os_signpost(.end, log: .update, name: "Move one Song to its up-to-date Album")
@@ -117,7 +117,7 @@ extension MusicLibrary {
 			
 			// Get this `Song`’s fresh `albumPersistentID`.
 			os_signpost(.begin, log: .update, name: "Get one Song’s fresh albumPersistentID")
-			let newAlbumID = metadatum.albumID
+			let newAlbumID = info.albumID
 			os_signpost(.end, log: .update, name: "Get one Song’s fresh albumPersistentID")
 			
 			// If this Song’s `albumPersistentID` has stayed the same, move on to the next one.
@@ -141,7 +141,7 @@ extension MusicLibrary {
 				let existingCollection = song.container!.container!
 				let newAlbum = Album(
 					atBeginningOf: existingCollection,
-					albumID: metadatum.albumID,
+					albumID: info.albumID,
 					context: context)
 				
 				// … and then move the `Song` to that `Album`.

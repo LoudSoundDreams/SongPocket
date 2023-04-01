@@ -12,7 +12,7 @@ import OSLog
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class CoverArtCell: UITableViewCell {
-	var albumRepresentative: SongMetadatum? = nil
+	var albumRepresentative: SongInfo? = nil
 	
 	func configureArtwork(
 		maxHeight: CGFloat
@@ -91,36 +91,36 @@ final class SongCell: UITableViewCell {
 	
 	func configureWith(
 		song: Song,
-		albumRepresentative representative: SongMetadatum?,
+		albumRepresentative representative: SongInfo?,
 		spacerTrackNumberText: String?,
 		songsTVC: Weak<SongsTVC>
 	) {
-		let metadatum = song.metadatum() // Can be `nil` if the user recently deleted the `SongMetadatum` from their library
+		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		
 		let trackDisplay: String = {
 			let result: String? = {
 				guard
-					let representative = representative,
-					let metadatum = metadatum
+					let representative,
+					let info
 				else {
-					// Metadata not available
+					// `SongInfo` not available
 					return nil
 				}
 				if representative.shouldShowDiscNumber {
 					// Disc and track number
-					return metadatum.discAndTrackNumberFormatted()
+					return info.discAndTrackNumberFormatted()
 				} else {
 					// Track number only, which might be blank
-					return metadatum.trackNumberFormattedOptional()
+					return info.trackNumberFormattedOptional()
 				}
 			}()
 			return result ?? "‒" // Figure dash
 		}()
-		let song_title: String? = metadatum?.titleOnDisk
+		let song_title: String? = info?.titleOnDisk
 		let artistDisplayOptional: String? = {
 			let albumArtistOptional = representative?.albumArtistOnDisk
 			if
-				let songArtist = metadatum?.artistOnDisk,
+				let songArtist = info?.artistOnDisk,
 				songArtist != albumArtistOptional
 			{
 				return songArtist
@@ -148,7 +148,7 @@ final class SongCell: UITableViewCell {
 			spacerNumberLabel.text = spacerTrackNumberText
 			numberLabel.text = trackDisplay
 			titleLabel.text = { () -> String in
-				song_title ?? SongMetadatumPlaceholder.unknownTitle
+				song_title ?? SongInfoPlaceholder.unknownTitle
 			}()
 			artistLabel.text = artistDisplayOptional
 			

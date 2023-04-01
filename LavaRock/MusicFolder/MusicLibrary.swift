@@ -47,7 +47,7 @@ final class MusicLibrary {
 				Enabling.sim_emptyLibrary
 				? []
 				: [
-					Sim_SongMetadatum(
+					Sim_SongInfo(
 						albumID: walpurgisNightAlbumID,
 						albumArtistOnDisk: "GFriend",
 						albumTitleOnDisk: "回:Walpurgis Night",
@@ -59,7 +59,7 @@ final class MusicLibrary {
 						dateAddedOnDisk: .now,
 						releaseDateOnDisk: .now,
 						coverArtFileName: "Walpurgis Night"),
-					Sim_SongMetadatum(
+					Sim_SongInfo(
 						albumID: walpurgisNightAlbumID,
 						albumArtistOnDisk: "GFriend",
 						albumTitleOnDisk: "回:Walpurgis Night",
@@ -71,7 +71,7 @@ final class MusicLibrary {
 						dateAddedOnDisk: .now,
 						releaseDateOnDisk: .now,
 						coverArtFileName: "Walpurgis Night"),
-					Sim_SongMetadatum(
+					Sim_SongInfo(
 						albumID: planetaryPiecesAlbumID,
 						albumArtistOnDisk: nil,
 						albumTitleOnDisk: nil,
@@ -83,7 +83,7 @@ final class MusicLibrary {
 						dateAddedOnDisk: .now,
 						releaseDateOnDisk: nil,
 						coverArtFileName: "Planetary Pieces"),
-					Sim_SongMetadatum(
+					Sim_SongInfo(
 						albumID: realAlbumID,
 						albumArtistOnDisk: "IU",
 						albumTitleOnDisk: "Real",

@@ -1,5 +1,5 @@
 //
-//  SongMetadatum.swift
+//  SongInfo.swift
 //  LavaRock
 //
 //  Created by h on 2021-12-24.
@@ -11,7 +11,7 @@ import OSLog
 typealias AlbumID = Int64
 typealias SongID = Int64
 
-protocol SongMetadatum {
+protocol SongInfo {
 	var albumID: AlbumID { get }
 	var songID: SongID { get }
 	
@@ -32,15 +32,15 @@ protocol SongMetadatum {
 	func coverArt(largerThanOrEqualToSizeInPoints sizeInPoints: CGSize) -> UIImage?
 }
 
-enum SongMetadatumPlaceholder {
+enum SongInfoPlaceholder {
 	static let unknownTitle = "—" // Em dash
 }
 
-extension SongMetadatum {
+extension SongInfo {
 	// MARK: Predicates for Sorting
 	
-	// Behavior is undefined if you compare with a `SongMetadatum` from the same album.
-	func precedesInDefaultOrder(inDifferentAlbum other: SongMetadatum) -> Bool {
+	// Behavior is undefined if you compare with a `SongInfo` from the same album.
+	func precedesInDefaultOrder(inDifferentAlbum other: SongInfo) -> Bool {
 		let myAlbumArtist = albumArtistOnDisk
 		let otherAlbumArtist = other.albumArtistOnDisk
 		// Either can be `nil`
@@ -78,21 +78,21 @@ extension SongMetadatum {
 		return myAlbumArtist.precedesAlphabeticallyFinderStyle(otherAlbumArtist)
 	}
 	
-	func precedesInDefaultOrder(inSameAlbum other: SongMetadatum) -> Bool {
+	func precedesInDefaultOrder(inSameAlbum other: SongInfo) -> Bool {
 		return precedesInDisplayOrder(
 			inSameAlbum: other,
 			shouldResortToTitle: true)
 	}
 	
-	func precedesByTrackNumber(_ other: SongMetadatum) -> Bool {
+	func precedesByTrackNumber(_ other: SongInfo) -> Bool {
 		return precedesInDisplayOrder(
 			inSameAlbum: other,
 			shouldResortToTitle: false)
 	}
 	
-	// Behavior is undefined if you compare with a `SongMetadatum` from a different album.
+	// Behavior is undefined if you compare with a `SongInfo` from a different album.
 	private func precedesInDisplayOrder(
-		inSameAlbum other: SongMetadatum,
+		inSameAlbum other: SongInfo,
 		shouldResortToTitle: Bool
 	) -> Bool {
 		// Sort by disc number

@@ -29,7 +29,7 @@ struct SongRow: View {
 					alignment: .leading,
 					spacing: .eight * 1/2 // 4
 				) {
-					Text(song_title ?? SongMetadatumPlaceholder.unknownTitle)
+					Text(song_title ?? SongInfoPlaceholder.unknownTitle)
 					
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)

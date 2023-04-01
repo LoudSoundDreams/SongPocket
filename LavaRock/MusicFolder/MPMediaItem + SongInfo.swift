@@ -1,5 +1,5 @@
 //
-//  MPMediaItem + SongMetadatum.swift
+//  MPMediaItem + SongInfo.swift
 //  LavaRock
 //
 //  Created by h on 2022-06-30.
@@ -9,7 +9,7 @@ import MediaPlayer
 import UIKit
 import OSLog
 
-extension MPMediaItem: SongMetadatum {
+extension MPMediaItem: SongInfo {
 	final var albumID: AlbumID { AlbumID(bitPattern: albumPersistentID) }
 	final var songID: SongID { SongID(bitPattern: persistentID) }
 	

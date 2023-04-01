@@ -9,7 +9,7 @@ import SwiftUI
 import OSLog
 
 struct CoverArtView: View {
-	let albumRepresentative: (any SongMetadatum)?
+	let albumRepresentative: (any SongInfo)?
 	let maxHeight: CGFloat
 	
 	var body: some View {

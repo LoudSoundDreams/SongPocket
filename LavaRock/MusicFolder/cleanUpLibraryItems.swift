@@ -10,7 +10,7 @@ import OSLog
 
 extension MusicLibrary {
 	func cleanUpLibraryItems(
-		allMetadata: [SongMetadatum],
+		allInfos: [SongInfo],
 		isFirstImport: Bool
 	) {
 		os_signpost(.begin, log: .merge, name: "5. Clean up library items")
@@ -24,7 +24,7 @@ extension MusicLibrary {
 		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
 			for: allAlbums,
-			considering: allMetadata)
+			considering: allInfos)
 		os_signpost(.end, log: .cleanup, name: "Recalculate Album release date estimates")
 		
 		os_signpost(.begin, log: .cleanup, name: "Reindex all Albums and Songs")
@@ -46,17 +46,17 @@ extension MusicLibrary {
 	// Instead, use the most recent release date among the `MPMediaItemCollection`’s `MPMediaItem`s, and recalculate it whenever necessary.
 	private func recalculateReleaseDateEstimates(
 		for albums: [Album],
-		considering metadata: [SongMetadatum]
+		considering infos: [SongInfo]
 	) {
-		os_signpost(.begin, log: .cleanup, name: "Filter out metadata without release dates")
+		os_signpost(.begin, log: .cleanup, name: "Filter out infos without release dates")
 		// This is pretty slow, but can save time later.
-		let metadataWithReleaseDates = metadata.filter { $0.releaseDateOnDisk != nil }
-		os_signpost(.end, log: .cleanup, name: "Filter out metadata without release dates")
+		let infosWithReleaseDates = infos.filter { $0.releaseDateOnDisk != nil }
+		os_signpost(.end, log: .cleanup, name: "Filter out infos without release dates")
 		
-		os_signpost(.begin, log: .cleanup, name: "Group metadata by album")
-		let metadataByAlbumID: [AlbumID: [SongMetadatum]] =
-		Dictionary(grouping: metadataWithReleaseDates) { $0.albumID }
-		os_signpost(.end, log: .cleanup, name: "Group metadata by album")
+		os_signpost(.begin, log: .cleanup, name: "Group infos by album")
+		let infosByAlbumID: [AlbumID: [SongInfo]] =
+		Dictionary(grouping: infosWithReleaseDates) { $0.albumID }
+		os_signpost(.end, log: .cleanup, name: "Group infos by album")
 		
 		albums.forEach { album in
 			os_signpost(.begin, log: .cleanup, name: "Re-estimate release date for one Album")
@@ -68,11 +68,11 @@ extension MusicLibrary {
 			
 			os_signpost(.begin, log: .cleanup, name: "Find the release dates associated with this Album")
 			// For `Album`s with no release dates, using `guard` to return early is slightly faster than optional chaining.
-			guard let matchingMetadata = metadataByAlbumID[album.albumPersistentID] else {
+			guard let matchingInfos = infosByAlbumID[album.albumPersistentID] else {
 				os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 				return
 			}
-			let matchingReleaseDates = matchingMetadata.compactMap { $0.releaseDateOnDisk }
+			let matchingReleaseDates = matchingInfos.compactMap { $0.releaseDateOnDisk }
 			os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 			
 			os_signpost(.begin, log: .cleanup, name: "Find the latest of those release dates")

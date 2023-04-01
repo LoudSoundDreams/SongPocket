@@ -62,8 +62,8 @@
 		0781F1F12599181800781CF8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0781F1F02599181800781CF8 /* StoreKit.framework */; };
 		0781F1FA25991B3300781CF8 /* SettingsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0781F1F925991B3300781CF8 /* SettingsTVC - UITableView.swift */; };
 		078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078307B32512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift */; };
-		0783DC16286EA65E00A9A4F7 /* Sim_SongMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC15286EA65E00A9A4F7 /* Sim_SongMetadatum.swift */; };
-		0783DC18286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC17286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift */; };
+		0783DC16286EA65E00A9A4F7 /* Sim_SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC15286EA65E00A9A4F7 /* Sim_SongInfo.swift */; };
+		0783DC18286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC17286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift */; };
 		07843FEB2851A31D000FA316 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07843FEA2851A31D000FA316 /* Sequence.swift */; };
 		0785C49E2793460100B1E7FC /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785C49D2793460100B1E7FC /* SettingsScreen.swift */; };
 		0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0787CB0927A376400068C2E5 /* UIViewController.swift */; };
@@ -92,7 +92,7 @@
 		07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */; };
 		07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */; };
 		07DE126329C6819B0002533B /* FolderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DE126229C6819B0002533B /* FolderRow.swift */; };
-		07DF65D227766C95003B2EA3 /* SongMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF65D127766C95003B2EA3 /* SongMetadatum.swift */; };
+		07DF65D227766C95003B2EA3 /* SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF65D127766C95003B2EA3 /* SongInfo.swift */; };
 		07DF76E42828D8AB00B03103 /* MainToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF76E32828D8AB00B03103 /* MainToolbar.swift */; };
 		07E0BBD7276567490010117E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD6276567490010117E /* String.swift */; };
 		07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* NotificationCenter.swift */; };
@@ -205,8 +205,8 @@
 		0781F1F52599184700781CF8 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		0781F1F925991B3300781CF8 /* SettingsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		078307B32512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + MoveAlbumsDelegate.swift"; sourceTree = "<group>"; };
-		0783DC15286EA65E00A9A4F7 /* Sim_SongMetadatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sim_SongMetadatum.swift; sourceTree = "<group>"; };
-		0783DC17286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPMediaItem + SongMetadatum.swift"; sourceTree = "<group>"; };
+		0783DC15286EA65E00A9A4F7 /* Sim_SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sim_SongInfo.swift; sourceTree = "<group>"; };
+		0783DC17286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPMediaItem + SongInfo.swift"; sourceTree = "<group>"; };
 		07843FEA2851A31D000FA316 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		0785C49D2793460100B1E7FC /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		0787CB0927A376400068C2E5 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -235,7 +235,7 @@
 		07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
 		07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
 		07DE126229C6819B0002533B /* FolderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderRow.swift; sourceTree = "<group>"; };
-		07DF65D127766C95003B2EA3 /* SongMetadatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongMetadatum.swift; sourceTree = "<group>"; };
+		07DF65D127766C95003B2EA3 /* SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongInfo.swift; sourceTree = "<group>"; };
 		07DF76E32828D8AB00B03103 /* MainToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainToolbar.swift; sourceTree = "<group>"; };
 		07E0BBD6276567490010117E /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		07E0BBDA276567760010117E /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
@@ -477,9 +477,9 @@
 		07DF65D027766B7B003B2EA3 /* MusicFolder */ = {
 			isa = PBXGroup;
 			children = (
-				07DF65D127766C95003B2EA3 /* SongMetadatum.swift */,
-				0783DC15286EA65E00A9A4F7 /* Sim_SongMetadatum.swift */,
-				0783DC17286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift */,
+				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
+				0783DC15286EA65E00A9A4F7 /* Sim_SongInfo.swift */,
+				0783DC17286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift */,
 				079B2C9424E227BF00A949FA /* MusicLibrary.swift */,
 				0703ED2424E8D0DA002EF1B4 /* mergeChanges.swift */,
 				07A4F9042519E72C0065C87E /* updateLibraryItems.swift */,
@@ -754,7 +754,7 @@
 				073AF48F24D1AD73000C1A6D /* SettingsTVC.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */,
 				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
-				0783DC18286EA73400A9A4F7 /* MPMediaItem + SongMetadatum.swift in Sources */,
+				0783DC18286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift in Sources */,
 				07A7989127A8ABB1007B70AA /* ConsoleView.swift in Sources */,
 				07DE126329C6819B0002533B /* FolderRow.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* createLibraryItems.swift in Sources */,
@@ -817,11 +817,11 @@
 				07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */,
 				071A0B9E277E76510017F76D /* LavaRock.swift in Sources */,
 				07E32D6229C03A72006702A7 /* View.swift in Sources */,
-				0783DC16286EA65E00A9A4F7 /* Sim_SongMetadatum.swift in Sources */,
+				0783DC16286EA65E00A9A4F7 /* Sim_SongInfo.swift in Sources */,
 				07E92A0E2510497B00E9073B /* SongsTVC - Song Actions.swift in Sources */,
 				07843FEB2851A31D000FA316 /* Sequence.swift in Sources */,
 				07F36BBE24FC3CCA0064282D /* LibraryTVC - UITableView.swift in Sources */,
-				07DF65D227766C95003B2EA3 /* SongMetadatum.swift in Sources */,
+				07DF65D227766C95003B2EA3 /* SongInfo.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				07B35E312886FB5100159FD9 /* TipJarView.swift in Sources */,
 				0752D794295E983D00447FD7 /* LightingPicker.swift in Sources */,

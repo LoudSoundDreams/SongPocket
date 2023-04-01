@@ -50,7 +50,7 @@ extension SongsTVC {
 							for: indexPath) as? CoverArtCell
 						else { return UITableViewCell() }
 						
-						cell.albumRepresentative = album.representativeSongMetadatum()
+						cell.albumRepresentative = album.representativeSongInfo()
 						
 						let height = view.frame.height
 						let topInset = view.safeAreaInsets.top
@@ -95,7 +95,7 @@ extension SongsTVC {
 			song: songsViewModel.songNonNil(at: indexPath),
 			albumRepresentative: {
 				let album = songsViewModel.album()
-				return album.representativeSongMetadatum()
+				return album.representativeSongInfo()
 			}(),
 			spacerTrackNumberText: (songsViewModel.libraryGroup() as? SongsGroup)?.spacerTrackNumberText,
 			songsTVC: Weak(self)
