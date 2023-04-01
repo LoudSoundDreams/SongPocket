@@ -28,7 +28,6 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 	
 	// State
 	var didAlreadyCreate = false
-	var didAlreadyCommitMove = false
 	
 	init(
 		albumsBeingMoved: [Album],
