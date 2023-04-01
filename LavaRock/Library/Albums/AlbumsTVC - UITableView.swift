@@ -18,21 +18,6 @@ extension AlbumsTVC {
 			tableView.backgroundView = nil
 		}
 		
-		switch purpose {
-			case .previewingCombine:
-				break
-			case .organizingAlbums:
-				break
-			case .movingAlbums(let clipboard):
-				if clipboard.didAlreadyCreate {
-					return 1
-				} else {
-					break
-				}
-			case .browsing:
-				break
-		}
-		
 		return viewModel.groups.count
 	}
 	

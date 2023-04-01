@@ -64,7 +64,7 @@ extension CollectionsTVC {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
-			viewModelBeforeCombining == nil, // Prevents you from using the “Combine” button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCreate` when we tap “New Collection” and `didAlreadyCommitOrganize` for “Save (Preview of Organized Albums)”. You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
+			viewModelBeforeCombining == nil, // Prevents you from using the “Combine” button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCommitOrganize` for “Save (Preview of Organized Albums)”. You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
 			let targetIndexPath = selectedIndexPaths.first
 		else { return }
 		

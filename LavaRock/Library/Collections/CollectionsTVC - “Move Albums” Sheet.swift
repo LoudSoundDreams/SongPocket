@@ -10,12 +10,9 @@ import UIKit
 extension CollectionsTVC {
 	func createAndOpen() {
 		guard
-			case let .movingAlbums(clipboard) = purpose,
-			!clipboard.didAlreadyCreate, // Without this, if you’re fast, you can tap “Save” to create a new `Collection`, then tap “New Collection” to bring up another dialog before we open the first `Collection` you made. You must reset `didAlreadyCreate = false` both during reverting and if we exit the empty new `Collection`.
+			case .movingAlbums = purpose,
 			let collectionsViewModel = viewModel as? CollectionsViewModel
 		else { return }
-		
-		clipboard.didAlreadyCreate = true
 		
 		let newViewModel = collectionsViewModel.updatedAfterCreating()
 		Task {
@@ -26,13 +23,11 @@ extension CollectionsTVC {
 	}
 	
 	func revertCreate() {
-		guard case let .movingAlbums(clipboard) = purpose else {
+		guard case .movingAlbums = purpose else {
 			fatalError()
 		}
 		
 		let collectionsViewModel = viewModel as! CollectionsViewModel
-		
-		clipboard.didAlreadyCreate = false
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		Task {
