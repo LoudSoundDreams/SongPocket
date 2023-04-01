@@ -199,8 +199,6 @@ final class CollectionsTVC:
 		]
 	}
 	
-	private var needsIntegrateWithAppleMusic = false
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -212,13 +210,13 @@ final class CollectionsTVC:
 			case .movingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
 			case .browsing:
+				AppleMusic.loadingIndicator = self
+				
 				NotificationCenter.default.addObserverOnce(
 					self,
 					selector: #selector(userUpdatedDatabase),
 					name: .userUpdatedDatabase,
 					object: nil)
-				
-				needsIntegrateWithAppleMusic = true
 		}
 	}
 	@objc private func userUpdatedDatabase() {
@@ -289,17 +287,7 @@ final class CollectionsTVC:
 			case .movingAlbums:
 				revertCreate()
 			case .browsing:
-				if needsIntegrateWithAppleMusic {
-					needsIntegrateWithAppleMusic = false
-					
-					Task {
-						if MPMediaLibrary.authorizationStatus() == .authorized {
-							await prepareToIntegrateWithAppleMusic()
-							
-							AppleMusic.integrate()
-						}
-					}
-				}
+				break
 		}
 		
 		super.viewDidAppear(animated)

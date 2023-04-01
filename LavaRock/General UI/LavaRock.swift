@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MediaPlayer
 
 @main
 struct LavaRock: App {
@@ -31,6 +32,7 @@ struct LavaRock: App {
 				.preferredColorScheme(theme.lighting.colorScheme)
 				.tint(theme.accentColor.color)
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
+					await AppleMusic.integrateIfAuthorized()
 				}
 		}
 	}
@@ -38,7 +40,13 @@ struct LavaRock: App {
 
 @MainActor
 enum AppleMusic {
-	static func integrate() {
+	static var loadingIndicator: CollectionsTVC? = nil
+	
+	static func integrateIfAuthorized() async {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		
+		await loadingIndicator?.prepareToIntegrateWithAppleMusic()
+		
 		MusicLibrary.shared.beginWatching() // Folders view must start observing `Notification.Name.mergedChanges` before this.
 		TapeDeck.shared.beginWatching()
 	}
