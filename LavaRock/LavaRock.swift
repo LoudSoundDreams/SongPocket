@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import MediaPlayer
 
 @main
 struct LavaRock: App {
@@ -35,20 +34,6 @@ struct LavaRock: App {
 					await AppleMusic.integrateIfAuthorized()
 				}
 		}
-	}
-}
-
-@MainActor
-enum AppleMusic {
-	static var loadingIndicator: CollectionsTVC? = nil
-	
-	static func integrateIfAuthorized() async {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		await loadingIndicator?.prepareToIntegrateWithAppleMusic()
-		
-		MusicLibrary.shared.beginWatching() // Folders view must start observing `Notification.Name.mergedChanges` before this.
-		TapeDeck.shared.beginWatching()
 	}
 }
 
