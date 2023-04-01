@@ -30,6 +30,8 @@ struct LavaRock: App {
 				.edgesIgnoringSafeArea(.all)
 				.preferredColorScheme(theme.lighting.colorScheme)
 				.tint(theme.accentColor.color)
+				.task { // Runs after `onAppear`, and after the view first appears onscreen
+				}
 		}
 	}
 }
