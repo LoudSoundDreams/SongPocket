@@ -121,6 +121,7 @@
 		07FD6E122599246700826447 /* SettingsTVC + TipJarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* SettingsTVC + TipJarUI.swift */; };
 		07FF080128652A4C00EE4FD4 /* SortingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* SortingTests.swift */; };
 		07FF1DDE27F8F81000DF9B78 /* TransportPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */; };
+		07FFC00C29D8745F00B98447 /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FFC00B29D8745F00B98447 /* Notification.Name.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -262,6 +263,7 @@
 		07FD6E112599246700826447 /* SettingsTVC + TipJarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTVC + TipJarUI.swift"; sourceTree = "<group>"; };
 		07FF080028652A4C00EE4FD4 /* SortingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingTests.swift; sourceTree = "<group>"; };
 		07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportPanel.swift; sourceTree = "<group>"; };
+		07FFC00B29D8745F00B98447 /* Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -487,6 +489,7 @@
 		07E0BBD8276567760010117E /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				07FFC00B29D8745F00B98447 /* Notification.Name.swift */,
 				07E0BBDA276567760010117E /* NotificationCenter.swift */,
 				07E0BBDB276567760010117E /* URL.swift */,
 			);
@@ -798,6 +801,7 @@
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */,
 				0708201D275BEE1C00F48D13 /* Lighting.swift in Sources */,
+				07FFC00C29D8745F00B98447 /* Notification.Name.swift in Sources */,
 				074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */,
 				07CD864D27CAA3CC00286E6A /* Weak.swift in Sources */,
 				07F36BC224FC3F450064282D /* CollectionsTVC - UITableView.swift in Sources */,

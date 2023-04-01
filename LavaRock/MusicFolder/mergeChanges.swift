@@ -8,12 +8,6 @@
 import CoreData
 import OSLog
 
-extension Notification.Name {
-	static var mergedChanges: Self {
-		Self("merged changes")
-	}
-}
-
 extension MusicLibrary {
 	// Updates our database in a sensible way to reflect the fresh `SongMetadatum`s.
 	func mergeChanges(

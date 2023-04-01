@@ -122,50 +122,50 @@ final class CollectionsTVC:
 	) async {
 		let toDelete: [IndexPath]
 		let toInsert: [IndexPath]
-		let toReloadInCollectionsSection: [IndexPath]
+		let toReload: [IndexPath]
 		
 		let collectionsSectionIndex = 0
-		let oldInCollectionsSection = tableView.indexPathsForRows(
+		let oldIndexPaths = tableView.indexPathsForRows(
 			inSection: collectionsSectionIndex,
 			firstRow: 0)
-		let newInCollectionsSection: [IndexPath] = {
+		let newIndexPaths: [IndexPath] = {
 			let numberOfRows = numberOfRows(forSection: collectionsSectionIndex)
 			let indicesOfRows = Array(0 ..< numberOfRows)
 			return indicesOfRows.map { row in
 				IndexPath(row: row, section: collectionsSectionIndex)
-			}}()
+			}
+		}()
 		
 		switch viewState {
 			case
 					.allowAccess,
 					.loading:
-				if oldInCollectionsSection.count == newInCollectionsSection.count {
+				if oldIndexPaths.count == newIndexPaths.count {
 					toDelete = []
 					toInsert = []
-					toReloadInCollectionsSection = newInCollectionsSection
+					toReload = newIndexPaths
 				} else {
-					toDelete = oldInCollectionsSection // Can be empty
-					toInsert = newInCollectionsSection
-					toReloadInCollectionsSection = []
+					toDelete = oldIndexPaths // Can be empty
+					toInsert = newIndexPaths
+					toReload = []
 				}
 			case .removingRowsInCollectionsSection:
-				toDelete = oldInCollectionsSection
-				toInsert = newInCollectionsSection // Empty
-				toReloadInCollectionsSection = []
+				toDelete = oldIndexPaths
+				toInsert = newIndexPaths // Empty
+				toReload = []
 			case .emptyPlaceholder:
-				toDelete = oldInCollectionsSection
-				toInsert = newInCollectionsSection
-				toReloadInCollectionsSection = []
+				toDelete = oldIndexPaths
+				toInsert = newIndexPaths
+				toReload = []
 			case .someCollections: // Merging changes with existing `Collection`s
 				// Crashes after Reset Location & Privacy
 				toDelete = []
 				toInsert = []
-				toReloadInCollectionsSection = []
+				toReload = []
 		}
 		
 		await tableView.performBatchUpdates__async {
-			let animationForReload: UITableView.RowAnimation = toReloadInCollectionsSection.isEmpty ? .none : .fade
-			self.tableView.reloadRows(at: toReloadInCollectionsSection, with: animationForReload)
+			self.tableView.reloadRows(at: toReload, with: (toReload.isEmpty ? .none : .fade))
 			self.tableView.deleteRows(at: toDelete, with: .middle)
 			self.tableView.insertRows(at: toInsert, with: .middle)
 		} runningBeforeContinuation: {
@@ -277,16 +277,6 @@ final class CollectionsTVC:
 		}
 	}
 	
-	func integrateWithAppleMusic() async {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
-		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
-		await reflectViewState()
-		
-		MusicLibrary.shared.setUpAndMergeChanges() // You must finish `LibraryTVC.beginObservingNotifications` before this, because we need to observe the notification after the merge completes.
-		TapeDeck.shared.setUp()
-	}
-	
 	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
@@ -303,6 +293,18 @@ final class CollectionsTVC:
 		}
 		
 		super.viewDidAppear(animated)
+	}
+	
+	func integrateWithAppleMusic() async {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return
+		}
+		
+		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
+		await reflectViewState()
+		
+		MusicLibrary.shared.beginWatching() // You must start observing `Notification.Name.mergedChanges` before this.
+		TapeDeck.shared.beginWatching()
 	}
 	
 	// MARK: - Library Items

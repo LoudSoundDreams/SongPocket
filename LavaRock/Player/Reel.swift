@@ -7,12 +7,6 @@
 
 import MediaPlayer
 
-extension Notification.Name {
-	static var userChangedReelEmptiness: Self {
-		Self("user changed reel emptiness")
-	}
-}
-
 @MainActor
 struct Reel {
 	private init() {}

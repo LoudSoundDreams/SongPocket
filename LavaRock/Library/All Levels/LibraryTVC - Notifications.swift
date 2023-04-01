@@ -7,12 +7,6 @@
 
 import Foundation
 
-extension Notification.Name {
-	static var userUpdatedDatabase: Self {
-		Self("user updated database")
-	}
-}
-
 extension LibraryTVC: TapeDeckReflecting {
 	final func reflect_playback_mode() {
 		reflectPlayhead_library()

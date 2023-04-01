@@ -7,12 +7,6 @@
 
 import Foundation
 
-extension Notification.Name {
-	static var user_changed_avatar: Self {
-		Self("user changed avatar")
-	}
-}
-
 final class AvatarObservable: ObservableObject {
 	private init() {}
 	static let shared = AvatarObservable()

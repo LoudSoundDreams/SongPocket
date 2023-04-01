@@ -8,7 +8,7 @@
 import MediaPlayer
 import OSLog
 
-final class MusicLibrary { // This is a class and not a struct because it needs a deinitializer.
+final class MusicLibrary {
 	private init() {}
 	static let shared = MusicLibrary()
 	
@@ -16,7 +16,7 @@ final class MusicLibrary { // This is a class and not a struct because it needs 
 	
 	private var library: MPMediaLibrary? = nil
 	
-	func setUpAndMergeChanges() {
+	func beginWatching() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		library?.endGeneratingLibraryChangeNotifications()

@@ -14,7 +14,7 @@ protocol TapeDeckReflecting: AnyObject {
 	// • Call `TapeDeck.shared.addReflector(weakly: self)` as soon as their implementations of `reflect_playback_mode` and `reflect_now_playing_item` will work.
 	
 	func reflect_playback_mode()
-	// Reflect `TapeDeck.shared.player`, and show a disabled state if it’s `nil`. (Call `TapeDeck.shared.setUp` to set it up.)
+	// Reflect `TapeDeck.shared.player`, and show a disabled state if it’s `nil`. (Call `TapeDeck.shared.beginWatching` to set it up.)
 	
 	func reflect_now_playing_item()
 }
