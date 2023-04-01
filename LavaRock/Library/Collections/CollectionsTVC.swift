@@ -199,6 +199,8 @@ final class CollectionsTVC:
 		]
 	}
 	
+	private var needsIntegrateWithAppleMusic = false
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -216,9 +218,7 @@ final class CollectionsTVC:
 					name: .userUpdatedDatabase,
 					object: nil)
 				
-				Task {
-					await integrateWithAppleMusic()
-				}
+				needsIntegrateWithAppleMusic = true
 		}
 	}
 	@objc private func userUpdatedDatabase() {
@@ -289,7 +289,13 @@ final class CollectionsTVC:
 			case .movingAlbums:
 				revertCreate()
 			case .browsing:
-				break
+				if needsIntegrateWithAppleMusic {
+					needsIntegrateWithAppleMusic = false
+					
+					Task {
+						await integrateWithAppleMusic()
+					}
+				}
 		}
 		
 		super.viewDidAppear(animated)
