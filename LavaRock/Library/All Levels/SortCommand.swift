@@ -31,7 +31,7 @@ enum SortCommand: CaseIterable {
 			case .album_oldestFirst:
 				return LRString.oldestFirst
 			case .song_track:
-				return LRString.track
+				return LRString.trackNumber
 			case .random:
 				return LRString.random
 			case .reverse:

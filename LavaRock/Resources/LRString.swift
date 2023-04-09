@@ -140,7 +140,7 @@ enum LRString {
 	static let playRestOfAlbumLast = NSLocalizedString("Play Rest of Album Last", comment: "Button")
 	static let playLast = NSLocalizedString("Play Last", comment: "Button")
 	
-	static let track = NSLocalizedString("Track", comment: "Sort option")
+	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
 	// MARK: Console
 	
