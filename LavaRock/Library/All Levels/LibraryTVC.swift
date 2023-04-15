@@ -463,7 +463,7 @@ class LibraryTVC: UITableViewController {
 							default: return nil
 						}
 					}()
-					guard let formatString = formatString else {
+					guard let formatString else {
 						return ""
 					}
 					let subjectedCount = viewModel

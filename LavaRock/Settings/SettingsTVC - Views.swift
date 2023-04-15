@@ -33,7 +33,7 @@ final class AccentColorCell: UITableViewCell {
 			contentConfiguration = new_contentConfiguration
 		}
 		
-		guard let representee = representee else {
+		guard let representee else {
 			// Should never run
 			new_contentConfiguration = defaultContentConfiguration()
 			return

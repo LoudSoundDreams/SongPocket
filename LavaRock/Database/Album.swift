@@ -95,7 +95,7 @@ extension Album {
 	
 	// Similar to `Collection.albums`.
 	final func songs(sorted: Bool) -> [Song] {
-		guard let contents = contents else {
+		guard let contents else {
 			return []
 		}
 		let unsortedSongs = contents.map { $0 as! Song }
@@ -201,10 +201,10 @@ extension Album {
 		// However, as of iOS 14.7, when using `sorted(by:)`, using `guard myReleaseDate != otherReleaseDate else { return true }` here doesn’t always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
 		
 		// Move unknown release date to the end
-		guard let otherReleaseDate = otherReleaseDate else {
+		guard let otherReleaseDate else {
 			return true
 		}
-		guard let myReleaseDate = myReleaseDate else {
+		guard let myReleaseDate else {
 			return false
 		}
 		

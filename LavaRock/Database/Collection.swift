@@ -95,7 +95,7 @@ extension Collection {
 	
 	// Similar to `Album.songs`.
 	final func albums(sorted: Bool) -> [Album] {
-		guard let contents = contents else {
+		guard let contents else {
 			return []
 		}
 		let unsortedAlbums = contents.map { $0 as! Album }

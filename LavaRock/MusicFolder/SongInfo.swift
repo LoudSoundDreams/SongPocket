@@ -68,10 +68,10 @@ extension SongInfo {
 		}
 		
 		// Move unknown album artist to end
-		guard let otherAlbumArtist = otherAlbumArtist, otherAlbumArtist != "" else {
+		guard let otherAlbumArtist, otherAlbumArtist != "" else {
 			return true
 		}
-		guard let myAlbumArtist = myAlbumArtist, myAlbumArtist != "" else {
+		guard let myAlbumArtist, myAlbumArtist != "" else {
 			return false
 		}
 		

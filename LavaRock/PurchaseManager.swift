@@ -27,7 +27,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 	}
 	
 	var tipPrice: String? {
-		guard let tipProduct = tipProduct else { return nil }
+		guard let tipProduct else { return nil }
 		
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .currency
@@ -38,7 +38,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 	
 	@MainActor
 	func buyTip() {
-		guard let tipProduct = tipProduct else { return }
+		guard let tipProduct else { return }
 		let payment = SKPayment(product: tipProduct)
 //		let payment = SKMutablePayment(product: tipProduct)
 //		payment.simulatesAskToBuyInSandbox = true

@@ -32,10 +32,10 @@ class SortingTests: XCTestCase {
 		]
 		XCTAssertTrue(
 			correctlySorted.allNeighborsSatisfy { left, right in
-				guard let right = right else {
+				guard let right else {
 					return true
 				}
-				guard let left = left else {
+				guard let left else {
 					return false
 				}
 				return left.precedesAlphabeticallyFinderStyle(right)
@@ -73,10 +73,10 @@ class SortingTests: XCTestCase {
 			let rightString = $1.string
 			// Either can be `nil`
 			
-			guard let rightString = rightString else {
+			guard let rightString else {
 				return true
 			}
-			guard let leftString = leftString else {
+			guard let leftString else {
 				return false
 			}
 			return leftString.precedesAlphabeticallyFinderStyle(rightString)
