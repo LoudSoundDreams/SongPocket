@@ -66,15 +66,16 @@ extension Sim_SongInfo {
 		albumID: AlbumID,
 		albumArtistOnDisk: String?,
 		albumTitleOnDisk: String?,
+		coverArtFileName: String?,
 		discCountOnDisk: Int,
 		discNumberOnDisk: Int,
 		trackNumberOnDisk: Int,
 		titleOnDisk: String?,
 		artistOnDisk: String?,
 		dateAddedOnDisk: Date,
-		releaseDateOnDisk: Date?,
-		coverArtFileName: String?
+		releaseDateOnDisk: Date?
 	) {
+		// Memberwise initializer
 		self.init(
 			albumID: albumID,
 			songID: Sim_SongIDDispenser.takeNumber(),
@@ -87,7 +88,8 @@ extension Sim_SongInfo {
 			artistOnDisk: artistOnDisk,
 			dateAddedOnDisk: dateAddedOnDisk,
 			releaseDateOnDisk: releaseDateOnDisk,
-			coverArtFileName: coverArtFileName)
+			coverArtFileName: coverArtFileName
+		)
 		
 		Self.dict[self.songID] = self
 	}
