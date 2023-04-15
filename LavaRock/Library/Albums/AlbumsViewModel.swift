@@ -156,7 +156,8 @@ extension AlbumsViewModel {
 			selectedIndexPaths: selectedIndexPaths)
 		let albumsToOrganize = indexPathsToOrganize.map { albumNonNil(at: $0) }
 		return albumsToOrganize.contains {
-			$0.representativeAlbumArtistFormattedOrPlaceholder() != $0.container?.title
+			let albumArtistOrPlaceholder = $0.representativeAlbumArtistFormattedOptional() ?? LRString.unknownAlbumArtist
+			return albumArtistOrPlaceholder != $0.container?.title
 		}
 	}
 	

@@ -249,12 +249,6 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	final func representativeTitleFormattedOrPlaceholder() -> String {
-		guard let title = representativeTitleFormattedOptional() else {
-			return LRString.unknownAlbum
-		}
-		return title
-	}
 	final func representativeTitleFormattedOptional() -> String? {
 		guard
 			let title = representativeSongInfo()?.albumTitleOnDisk,
@@ -265,12 +259,6 @@ extension Album {
 		return title
 	}
 	
-	final func representativeAlbumArtistFormattedOrPlaceholder() -> String {
-		guard let albumArtist = representativeAlbumArtistFormattedOptional() else {
-			return LRString.unknownAlbumArtist
-		}
-		return albumArtist
-	}
 	final func representativeAlbumArtistFormattedOptional() -> String? {
 		guard
 			let albumArtist = representativeSongInfo()?.albumArtistOnDisk, // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Apple Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in Apple Music for iOS.
