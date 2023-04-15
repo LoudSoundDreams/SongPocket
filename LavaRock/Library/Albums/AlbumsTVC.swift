@@ -77,7 +77,7 @@ final class AlbumsTVC:
 		super.init(coder: coder)
 		
 		sortCommandsGrouped = [
-			[.album_newestFirst],
+			[.album_recentlyReleased],
 			[.random, .reverse],
 		]
 	}

@@ -55,7 +55,7 @@ extension SongsViewModel: LibraryViewModel {
 		switch sortCommand {
 			case
 					.folder_name,
-					.album_newestFirst:
+					.album_recentlyReleased:
 				return false
 			case
 					.song_track:
