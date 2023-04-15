@@ -65,32 +65,32 @@ extension Sim_SongInfo {
 	
 	init(
 		albumID: AlbumID,
-		composerOnDisk: String,
-		albumArtistOnDisk: String?,
-		albumTitleOnDisk: String?,
+		composer: String,
+		albumArtist: String?,
+		albumTitle: String?,
 		coverArtFileName: String?,
-		discCountOnDisk: Int,
-		discNumberOnDisk: Int,
-		trackNumberOnDisk: Int,
-		titleOnDisk: String?,
-		artistOnDisk: String?,
-		dateAddedOnDisk: Date,
-		releaseDateOnDisk: Date?
+		discCount: Int,
+		discNumber: Int,
+		trackNumber: Int,
+		title: String?,
+		artist: String?,
+		dateAdded: Date,
+		releaseDate: Date?
 	) {
 		// Memberwise initializer
 		self.init(
 			albumID: albumID,
 			songID: Sim_SongIDDispenser.takeNumber(),
-			composerOnDisk: composerOnDisk,
-			albumArtistOnDisk: albumArtistOnDisk,
-			albumTitleOnDisk: albumTitleOnDisk,
-			discCountOnDisk: discCountOnDisk,
-			discNumberOnDisk: discNumberOnDisk,
-			trackNumberOnDisk: trackNumberOnDisk,
-			titleOnDisk: titleOnDisk,
-			artistOnDisk: artistOnDisk,
-			dateAddedOnDisk: dateAddedOnDisk,
-			releaseDateOnDisk: releaseDateOnDisk,
+			composerOnDisk: composer,
+			albumArtistOnDisk: albumArtist,
+			albumTitleOnDisk: albumTitle,
+			discCountOnDisk: discCount,
+			discNumberOnDisk: discNumber,
+			trackNumberOnDisk: trackNumber,
+			titleOnDisk: title,
+			artistOnDisk: artist,
+			dateAddedOnDisk: dateAdded,
+			releaseDateOnDisk: releaseDate,
 			coverArtFileName: coverArtFileName
 		)
 		

@@ -10,17 +10,7 @@ import SwiftUI
 struct AlbumInfoRow: View {
 	let albumTitle: String
 	let albumArtist: String
-	let releaseDateString: String?
-	
-	init(
-		albumTitle: String,
-		albumArtist: String?, // `nil` uses placeholder
-		releaseDateString: String? // `nil` omits field
-	) {
-		self.albumTitle = albumTitle
-		self.albumArtist = albumArtist ?? LRString.unknownAlbumArtist
-		self.releaseDateString = releaseDateString
-	}
+	let releaseDateStringOptional: String? // `nil` hides line
 	
 	var body: some View {
 		HStack {
@@ -39,9 +29,9 @@ struct AlbumInfoRow: View {
 					.font(.caption)
 					.foregroundColor(.secondary)
 				
-				if let releaseDateString {
+				if let releaseDate = releaseDateStringOptional {
 					// “Mar 22, 1963”
-					Text(releaseDateString)
+					Text(releaseDate)
 						.font(.caption)
 						.foregroundColor(.secondary)
 				}

@@ -152,12 +152,12 @@ extension AlbumsViewModel {
 	func allows_byAlbumArtist(
 		selectedIndexPaths: [IndexPath]
 	) -> Bool {
-		let indexPathsToOrganize = indexPaths_for_all_if_empty_else_unsorted(
+		let indexPathsSubjected = indexPaths_for_all_if_empty_else_unsorted(
 			selectedIndexPaths: selectedIndexPaths)
-		let albumsToOrganize = indexPathsToOrganize.map { albumNonNil(at: $0) }
-		return albumsToOrganize.contains {
-			let albumArtistOrPlaceholder = $0.representativeAlbumArtistFormattedOptional() ?? LRString.unknownAlbumArtist
-			return albumArtistOrPlaceholder != $0.container?.title
+		let albumsSubjected = indexPathsSubjected.map { albumNonNil(at: $0) }
+		return albumsSubjected.contains {
+			let titleOfDestination = $0.representativeAlbumArtistFormattedOptional() ?? LRString.unknownAlbumArtist
+			return titleOfDestination != $0.container?.title
 		}
 	}
 	

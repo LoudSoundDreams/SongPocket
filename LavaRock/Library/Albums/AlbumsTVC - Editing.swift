@@ -116,9 +116,9 @@ extension AlbumsTVC {
 		albumsInOriginalContextToMaybeMove.forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
-			let titleOfDestinationCollection = album.representativeAlbumArtistFormattedOptional() ?? LRString.unknownAlbumArtist
+			let titleOfDestination = album.representativeAlbumArtistFormattedOptional() ?? LRString.unknownAlbumArtist
 			
-			guard album.container!.title != titleOfDestinationCollection else {
+			guard album.container!.title != titleOfDestination else {
 				idsOfUnmovedAlbums.insert(album.objectID)
 				return
 			}
@@ -126,7 +126,7 @@ extension AlbumsTVC {
 			movedAlbumsInOriginalContext.insert(album)
 			
 			// If we’ve created a matching new `Collection` …
-			if let matchingNewCollection = newCollectionsByTitle[titleOfDestinationCollection] {
+			if let matchingNewCollection = newCollectionsByTitle[titleOfDestination] {
 				// … then move the `Album` to the end of that `Collection`.
 				os_signpost(.begin, log: log, name: "Move Album to matching new Collection")
 				matchingNewCollection.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
@@ -135,7 +135,7 @@ extension AlbumsTVC {
 					via: context)
 				os_signpost(.end, log: log, name: "Move Album to matching new Collection")
 			} else if // Otherwise, if we already had a matching existing `Collection` …
-				let matchingExistingCollection = existingCollectionsByTitle[titleOfDestinationCollection]?.first
+				let matchingExistingCollection = existingCollectionsByTitle[titleOfDestination]?.first
 			{
 				// … then move the `Album` to the beginning of that `Collection`.
 				os_signpost(.begin, log: log, name: "Move Album to matching existing Collection")
@@ -149,9 +149,9 @@ extension AlbumsTVC {
 				let newCollection = Collection(
 					index: indexOfSourceCollection + Int64(newCollectionsByTitle.count),
 					before: collectionsToDisplace,
-					title: titleOfDestinationCollection,
+					title: titleOfDestination,
 					context: context)
-				newCollectionsByTitle[titleOfDestinationCollection] = newCollection
+				newCollectionsByTitle[titleOfDestination] = newCollection
 				
 				// … and then move the `Album` to that `Collection`.
 				os_signpost(.begin, log: log, name: "Move Album to new Collection")
