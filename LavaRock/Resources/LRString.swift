@@ -121,7 +121,7 @@ enum LRString {
 	static let byAlbumArtistEllipsis = NSLocalizedString("By Album Artist…", comment: "Menu option")
 	static let toFolderEllipsis = NSLocalizedString("To Folder…", comment: "Menu option")
 	
-	static let newestFirst = NSLocalizedString("Recently Released", comment: "Sort option")
+	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Sort option")
 	
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	

@@ -149,7 +149,7 @@ extension AlbumsViewModel {
 	
 	// Returns `true` if the albums to organize have at least 2 different album artists.
 	// The “albums to organize” are the selected albums, if any, or all the albums, if this is a specifically opened `Collection`.
-	func allowsOrganize(
+	func allows_byAlbumArtist(
 		selectedIndexPaths: [IndexPath]
 	) -> Bool {
 		let indexPathsToOrganize = indexPaths_for_all_if_empty_else_unsorted(

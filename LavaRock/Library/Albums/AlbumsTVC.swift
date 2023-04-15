@@ -217,8 +217,9 @@ final class AlbumsTVC:
 				
 				// Disable if appropriate
 				// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
-					selectedIndexPaths: self.tableView.selectedIndexPaths) ?? false
+				let allowed = (self.viewModel as? AlbumsViewModel)?.allows_byAlbumArtist(
+					selectedIndexPaths: self.tableView.selectedIndexPaths
+				) ?? false
 				if !allowed {
 					action.attributes.formUnion(.disabled)
 				}

@@ -26,7 +26,7 @@ enum SortCommand: CaseIterable {
 			case .folder_name:
 				return LRString.name
 			case .album_recentlyReleased:
-				return LRString.newestFirst
+				return LRString.recentlyReleased
 			case .song_track:
 				return LRString.trackNumber
 			case .random:
