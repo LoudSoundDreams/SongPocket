@@ -41,7 +41,7 @@ enum SortCommand: CaseIterable {
 			case .folder_name:
 				return UIImage(systemName: "textformat.abc")
 			case .album_recentlyReleased:
-				return UIImage(systemName: "hourglass.bottomhalf.filled")
+				return UIImage(systemName: "calendar")
 			case .song_trackNumber:
 				return UIImage(systemName: "textformat.123")
 			case .random:
