@@ -201,6 +201,12 @@ final class AlbumsTVC:
 				useMenuElements(menuElements)
 			}
 			
+			
+			guard let self else {
+				menuElements = []
+				return
+			}
+			
 			let action = UIAction(
 				title: LRString.byAlbumArtistEllipsis,
 				image: UIImage(systemName: "music.mic")
@@ -209,20 +215,13 @@ final class AlbumsTVC:
 				self?.startOrganizing()
 			}
 			
-			guard let self else {
-				menuElements = []
-				return
-			}
-			
-			let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
-				selectedIndexPaths: self.tableView.selectedIndexPaths) ?? false
 			// Disable if appropriate
 			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-			action.attributes = (
-				allowed
-				? []
-				: .disabled
-			)
+			let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
+				selectedIndexPaths: self.tableView.selectedIndexPaths) ?? false
+			if !allowed {
+				action.attributes.formUnion(.disabled)
+			}
 			
 			menuElements = [action]
 		})
