@@ -80,7 +80,7 @@ final class AlbumCell: UITableViewCell {
 			height: widthAndHeightInPoints))
 		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
-		titleLabel.text = album.representativeTitleFormattedOptional() ?? LRString.unknownAlbum
+		titleLabel.text = album.titleFormatted()
 		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()
 		
 		if releaseDateLabel.text == nil {

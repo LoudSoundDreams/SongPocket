@@ -12,7 +12,9 @@ import OSLog
 extension Album: LibraryItem {
 	// Enables `[Album].reindex()`
 	
-	final var libraryTitle: String? { representativeTitleFormattedOptional() }
+	final var libraryTitle: String? {
+		return representativeSongInfo()?.albumTitleOnDisk
+	}
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {
@@ -249,22 +251,25 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	final func representativeTitleFormattedOptional() -> String? {
+	final func titleFormatted() -> String {
+		let albumTitle_maybeNilMaybeEmpty = representativeSongInfo()?.albumTitleOnDisk
 		guard
-			let title = representativeSongInfo()?.albumTitleOnDisk,
-			title != ""
+			let albumTitle = albumTitle_maybeNilMaybeEmpty,
+			albumTitle != ""
 		else {
-			return nil
+			return LRString.unknownAlbum
 		}
-		return title
+		return albumTitle
 	}
 	
-	final func representativeAlbumArtistFormattedOptional() -> String? {
+	final func albumArtistFormatted() -> String {
+		// As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Apple Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in Apple Music for iOS.
+		let albumArtist_maybeNilMaybeEmpty = representativeSongInfo()?.albumArtistOnDisk
 		guard
-			let albumArtist = representativeSongInfo()?.albumArtistOnDisk, // As of iOS 14.0 developer beta 5, even if the “album artist” field is blank in Apple Music for Mac (and other tag editors), `.albumArtist` can still return something: it probably reads the “artist” field from one of the songs. Currently, it returns the same as what’s in the album’s header in Apple Music for iOS.
+			let albumArtist = albumArtist_maybeNilMaybeEmpty,
 			albumArtist != ""
 		else {
-			return nil
+			return LRString.unknownAlbumArtist
 		}
 		return albumArtist
 	}

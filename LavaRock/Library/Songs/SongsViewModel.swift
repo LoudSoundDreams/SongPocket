@@ -40,7 +40,7 @@ extension SongsViewModel: LibraryViewModel {
 			case
 					.exists(let album),
 					.deleted(let album):
-				return album.representativeTitleFormattedOptional() ?? LRString.unknownAlbum
+				return album.titleFormatted()
 		}
 	}
 	

@@ -71,7 +71,7 @@ extension SongsTVC {
 						cell.contentConfiguration = UIHostingConfiguration {
 							AlbumInfoRow(
 								albumTitle: viewModel.bigTitle(),
-								albumArtist: album.representativeAlbumArtistFormattedOptional() ?? LRString.unknownAlbumArtist,
+								albumArtist: album.albumArtistFormatted(),
 								releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
 							)
 							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in

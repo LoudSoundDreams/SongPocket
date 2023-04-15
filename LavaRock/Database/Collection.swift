@@ -11,7 +11,9 @@ import OSLog
 extension Collection: LibraryItem {
 	// Enables `[Collection].reindex()`
 	
-	final var libraryTitle: String? { title }
+	final var libraryTitle: String? {
+		return title
+	}
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {

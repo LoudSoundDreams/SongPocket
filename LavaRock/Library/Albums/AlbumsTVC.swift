@@ -217,7 +217,7 @@ final class AlbumsTVC:
 					image: UIImage(systemName: "music.mic")
 				) { [weak self] _ in
 					// Runs when the user activates the menu item
-					self?.startOrganizing()
+					self?.previewAutoMove()
 				}
 				
 				// Disable if appropriate

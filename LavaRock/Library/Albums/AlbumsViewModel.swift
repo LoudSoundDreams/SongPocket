@@ -156,7 +156,7 @@ extension AlbumsViewModel {
 			selectedIndexPaths: selectedIndexPaths)
 		let albumsSubjected = indexPathsSubjected.map { albumNonNil(at: $0) }
 		return albumsSubjected.contains {
-			let titleOfDestination = $0.representativeAlbumArtistFormattedOptional() ?? LRString.unknownAlbumArtist
+			let titleOfDestination = $0.albumArtistFormatted()
 			return titleOfDestination != $0.container?.title
 		}
 	}

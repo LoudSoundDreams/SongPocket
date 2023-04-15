@@ -10,7 +10,7 @@ import CoreData
 import OSLog
 
 extension AlbumsTVC {
-	func startOrganizing() {
+	func previewAutoMove() {
 		// Prepare a Collections view to present modally.
 		let libraryNC = LibraryNC(rootStoryboardName: "CollectionsTVC")
 		guard
@@ -29,10 +29,11 @@ extension AlbumsTVC {
 		childContext.parent = viewModel.context
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
-		let clipboard = Self.organizeByAlbumArtistAndReturnClipboard(
+		let clipboard = Self.autoMoveAndReturnClipboard(
 			albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
 			via: childContext,
-			delegateForClipboard: self)
+			delegateForClipboard: self
+		)
 		let selectedAlbums = selectedIndexPaths.map { albumsViewModel.albumNonNil(at: $0) }
 		idsOfAlbumsToKeepSelected = Set(selectedAlbums.compactMap {
 			let selectedAlbumID = $0.objectID
@@ -76,7 +77,7 @@ extension AlbumsTVC {
 		}
 	}
 	
-	private static func organizeByAlbumArtistAndReturnClipboard(
+	private static func autoMoveAndReturnClipboard(
 		albumsInOriginalContextToMaybeMove: [Album],
 		via context: NSManagedObjectContext,
 		delegateForClipboard: OrganizeAlbumsDelegate
@@ -116,7 +117,7 @@ extension AlbumsTVC {
 		albumsInOriginalContextToMaybeMove.forEach { album in
 			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
-			let titleOfDestination = album.representativeAlbumArtistFormattedOptional() ?? LRString.unknownAlbumArtist
+			let titleOfDestination = album.albumArtistFormatted()
 			
 			guard album.container!.title != titleOfDestination else {
 				idsOfUnmovedAlbums.insert(album.objectID)

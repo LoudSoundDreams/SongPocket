@@ -12,7 +12,9 @@ import OSLog
 extension Song: LibraryItem {
 	// Enables `[Song].reindex()`
 	
-	final var libraryTitle: String? { songInfo()?.titleOnDisk }
+	final var libraryTitle: String? {
+		return songInfo()?.titleOnDisk
+	}
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {
