@@ -280,7 +280,7 @@ extension LibraryViewModel {
 					$0.precedesByNewestFirst($1)
 				}
 				
-			case .song_track:
+			case .song_trackNumber:
 				guard let songs = items as? [Song] else {
 					return items
 				}

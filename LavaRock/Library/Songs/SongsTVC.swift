@@ -27,7 +27,7 @@ final class SongsTVC: LibraryTVC {
 		super.init(coder: coder)
 		
 		sortCommandsGrouped = [
-			[.song_track],
+			[.song_trackNumber],
 			[.random, .reverse],
 		]
 	}
