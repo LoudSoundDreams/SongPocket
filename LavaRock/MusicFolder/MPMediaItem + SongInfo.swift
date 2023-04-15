@@ -15,6 +15,7 @@ extension MPMediaItem: SongInfo {
 	
 	// Media Player reports unknown values as …
 	
+	final var composerOnDisk: String { composer ?? "" }
 	final var albumArtistOnDisk: String? { albumArtist } // … `nil`, as of iOS 14.7 developer beta 5.
 	final var albumTitleOnDisk: String? { albumTitle } // … `""`, as of iOS 14.7 developer beta 5.
 	

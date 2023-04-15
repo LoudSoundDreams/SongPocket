@@ -49,6 +49,7 @@ final class MusicLibrary {
 				: [
 					Sim_SongInfo(
 						albumID: walpurgisNightAlbumID,
+						composerOnDisk: "FRANTS",
 						albumArtistOnDisk: "GFriend",
 						albumTitleOnDisk: "回:Walpurgis Night",
 						coverArtFileName: "Walpurgis Night",
@@ -62,6 +63,7 @@ final class MusicLibrary {
 					),
 					Sim_SongInfo(
 						albumID: walpurgisNightAlbumID,
+						composerOnDisk: "노주환 & 이원종",
 						albumArtistOnDisk: "GFriend",
 						albumTitleOnDisk: "回:Walpurgis Night",
 						coverArtFileName: "Walpurgis Night",
@@ -75,6 +77,7 @@ final class MusicLibrary {
 					),
 					Sim_SongInfo(
 						albumID: planetaryPiecesAlbumID,
+						composerOnDisk: "",
 						albumArtistOnDisk: nil,
 						albumTitleOnDisk: nil,
 						coverArtFileName: "Planetary Pieces",
@@ -88,6 +91,7 @@ final class MusicLibrary {
 					),
 					Sim_SongInfo(
 						albumID: realAlbumID,
+						composerOnDisk: "이민수",
 						albumArtistOnDisk: "IU",
 						albumTitleOnDisk: "Real",
 						coverArtFileName: "Real",

@@ -31,6 +31,7 @@ struct Sim_SongInfo: SongInfo {
 	let albumID: AlbumID
 	let songID: SongID
 	
+	let composerOnDisk: String
 	let albumArtistOnDisk: String?
 	let albumTitleOnDisk: String?
 	
@@ -64,6 +65,7 @@ extension Sim_SongInfo {
 	
 	init(
 		albumID: AlbumID,
+		composerOnDisk: String,
 		albumArtistOnDisk: String?,
 		albumTitleOnDisk: String?,
 		coverArtFileName: String?,
@@ -79,6 +81,7 @@ extension Sim_SongInfo {
 		self.init(
 			albumID: albumID,
 			songID: Sim_SongIDDispenser.takeNumber(),
+			composerOnDisk: composerOnDisk,
 			albumArtistOnDisk: albumArtistOnDisk,
 			albumTitleOnDisk: albumTitleOnDisk,
 			discCountOnDisk: discCountOnDisk,

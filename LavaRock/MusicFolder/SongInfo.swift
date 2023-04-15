@@ -15,6 +15,7 @@ protocol SongInfo {
 	var albumID: AlbumID { get }
 	var songID: SongID { get }
 	
+	var composerOnDisk: String { get }
 	var albumArtistOnDisk: String? { get }
 	var albumTitleOnDisk: String? { get }
 	
