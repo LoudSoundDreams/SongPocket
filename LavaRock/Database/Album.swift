@@ -249,10 +249,9 @@ extension Album {
 	
 	// MARK: - Formatted Attributes
 	
-	static let unknownTitlePlaceholder = LRString.unknownAlbum
 	final func representativeTitleFormattedOrPlaceholder() -> String {
 		guard let title = representativeTitleFormattedOptional() else {
-			return Self.unknownTitlePlaceholder
+			return LRString.unknownAlbum
 		}
 		return title
 	}
