@@ -266,10 +266,9 @@ extension Album {
 		return title
 	}
 	
-	static let unknownAlbumArtistPlaceholder: String = LRString.unknownAlbumArtist
 	final func representativeAlbumArtistFormattedOrPlaceholder() -> String {
 		guard let albumArtist = representativeAlbumArtistFormattedOptional() else {
-			return Self.unknownAlbumArtistPlaceholder
+			return LRString.unknownAlbumArtist
 		}
 		return albumArtist
 	}

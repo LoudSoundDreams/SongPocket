@@ -18,7 +18,7 @@ struct AlbumInfoRow: View {
 		releaseDateString: String? // `nil` omits field
 	) {
 		self.albumTitle = albumTitle
-		self.albumArtist = albumArtist ?? Album.unknownAlbumArtistPlaceholder
+		self.albumArtist = albumArtist ?? LRString.unknownAlbumArtist
 		self.releaseDateString = releaseDateString
 	}
 	

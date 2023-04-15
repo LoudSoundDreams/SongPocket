@@ -32,7 +32,7 @@ final class AlbumsTVC:
 	}()
 	
 	// Controls
-	private var moveOrOrganizeButton = UIBarButtonItem(
+	private var moveButton = UIBarButtonItem(
 		title: LRString.move)
 	
 	// Purpose
@@ -134,7 +134,7 @@ final class AlbumsTVC:
 				]
 			case .browsing:
 				editingModeToolbarButtons = [
-					moveOrOrganizeButton,
+					moveButton,
 					.flexibleSpace(),
 					sortButton,
 					.flexibleSpace(),
@@ -188,19 +188,20 @@ final class AlbumsTVC:
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
 		
-		moveOrOrganizeButton.menu = makeOrganizeOrMoveMenu()
-		moveOrOrganizeButton.isEnabled = allowsMoveOrOrganize()
+		moveButton.menu = makeMoveMenu()
+		moveButton.isEnabled = allowsMove()
 	}
 	
-	private func makeOrganizeOrMoveMenu() -> UIMenu {
-		let organizeElement = UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
+	private func makeMoveMenu() -> UIMenu {
+		let byAlbumArtist_element = UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
 			// Runs each time the button presents the menu
+			
 			let menuElements: [UIMenuElement]
 			defer {
 				useMenuElements(menuElements)
 			}
 			
-			let organizeAction = UIAction(
+			let action = UIAction(
 				title: LRString.byAlbumArtistEllipsis,
 				image: UIImage(systemName: "music.mic")
 			) { [weak self] _ in
@@ -217,16 +218,16 @@ final class AlbumsTVC:
 				selectedIndexPaths: self.tableView.selectedIndexPaths) ?? false
 			// Disable if appropriate
 			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-			organizeAction.attributes = (
+			action.attributes = (
 				allowed
 				? []
 				: .disabled
 			)
 			
-			menuElements = [organizeAction]
+			menuElements = [action]
 		})
 		
-		let moveElement = UIAction(
+		let toFolder_element = UIAction(
 			title: LRString.toFolderEllipsis,
 			image: UIImage(systemName: "folder")
 		) { [weak self] _ in
@@ -242,14 +243,17 @@ final class AlbumsTVC:
 					LRString.variable_xAlbums,
 					subjectedCount)
 			}(),
-			children: [
-				organizeElement,
-				moveElement,
-			].reversed()
+			presentsUpward: true,
+			menuElementGroups: [
+				[
+					byAlbumArtist_element,
+					toFolder_element,
+				],
+			]
 		)
 	}
 	
-	private func allowsMoveOrOrganize() -> Bool {
+	private func allowsMove() -> Bool {
 		guard !viewModel.isEmpty() else {
 			return false
 		}

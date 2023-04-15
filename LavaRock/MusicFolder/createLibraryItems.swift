@@ -172,7 +172,7 @@ extension MusicLibrary {
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
 		let titleOfDestinationCollection
-		= newInfo.albumArtistOnDisk ?? Album.unknownAlbumArtistPlaceholder
+		= newInfo.albumArtistOnDisk ?? LRString.unknownAlbumArtist
 		
 		// If we already have a matching `Collection` to put the `Album` into …
 		if let matchingExistingCollection = existingCollectionsByTitle[titleOfDestinationCollection]?.first {
