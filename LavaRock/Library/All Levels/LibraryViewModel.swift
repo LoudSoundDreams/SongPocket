@@ -279,15 +279,6 @@ extension LibraryViewModel {
 				} areInOrder: {
 					$0.precedesByNewestFirst($1)
 				}
-			case .album_oldestFirst:
-				guard let albums = items as? [Album] else {
-					return items
-				}
-				return albums.sortedMaintainingOrderWhen {
-					$0.releaseDateEstimate == $1.releaseDateEstimate
-				} areInOrder: {
-					$0.precedesByOldestFirst($1)
-				}
 				
 			case .song_track:
 				guard let songs = items as? [Song] else {

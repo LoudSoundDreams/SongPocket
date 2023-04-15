@@ -122,7 +122,6 @@ enum LRString {
 	static let toFolderEllipsis = NSLocalizedString("To Folder…", comment: "Menu option")
 	
 	static let newestFirst = NSLocalizedString("Newest First", comment: "Sort option")
-	static let oldestFirst = NSLocalizedString("Oldest First", comment: "Sort option")
 	
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
