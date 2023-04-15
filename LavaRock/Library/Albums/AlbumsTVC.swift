@@ -193,38 +193,39 @@ final class AlbumsTVC:
 	}
 	
 	private func makeMoveMenu() -> UIMenu {
-		let byAlbumArtist_element = UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
-			// Runs each time the button presents the menu
-			
-			let menuElements: [UIMenuElement]
-			defer {
-				useMenuElements(menuElements)
+		let byAlbumArtist_element = UIDeferredMenuElement.uncached(
+			{ [weak self] useMenuElements in
+				// Runs each time the button presents the menu
+				
+				let menuElements: [UIMenuElement]
+				defer {
+					useMenuElements(menuElements)
+				}
+				
+				guard let self else {
+					menuElements = []
+					return
+				}
+				
+				let action = UIAction(
+					title: LRString.byAlbumArtistEllipsis,
+					image: UIImage(systemName: "music.mic")
+				) { [weak self] _ in
+					// Runs when the user activates the menu item
+					self?.startOrganizing()
+				}
+				
+				// Disable if appropriate
+				// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
+				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
+					selectedIndexPaths: self.tableView.selectedIndexPaths) ?? false
+				if !allowed {
+					action.attributes.formUnion(.disabled)
+				}
+				
+				menuElements = [action]
 			}
-			
-			
-			guard let self else {
-				menuElements = []
-				return
-			}
-			
-			let action = UIAction(
-				title: LRString.byAlbumArtistEllipsis,
-				image: UIImage(systemName: "music.mic")
-			) { [weak self] _ in
-				// Runs when the user activates the menu item
-				self?.startOrganizing()
-			}
-			
-			// Disable if appropriate
-			// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-			let allowed = (self.viewModel as? AlbumsViewModel)?.allowsOrganize(
-				selectedIndexPaths: self.tableView.selectedIndexPaths) ?? false
-			if !allowed {
-				action.attributes.formUnion(.disabled)
-			}
-			
-			menuElements = [action]
-		})
+		)
 		
 		let toFolder_element = UIAction(
 			title: LRString.toFolderEllipsis,
