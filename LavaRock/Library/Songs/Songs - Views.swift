@@ -194,7 +194,7 @@ final class SongCell: UITableViewCell {
 		
 		// Create menu elements
 		
-		let playSong = UIAction(
+		let play = UIAction(
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { _ in
@@ -204,7 +204,7 @@ final class SongCell: UITableViewCell {
 				disable_shuffle: true)
 		}
 		if isBottommostSong {
-			playSong.attributes.formUnion(.disabled)
+			play.attributes.formUnion(.disabled)
 		}
 		
 		// Disable “play next” actions when they’ll do the same thing as “play last” actions.
@@ -237,10 +237,10 @@ final class SongCell: UITableViewCell {
 		
 		// —
 		
-		let playRestOfAlbumNext = UIDeferredMenuElement.uncached({ useMenuElements in
+		let playToBottomNext = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
-				title: LRString.playRestOfAlbumNext,
+				title: LRString.playToBottomNext,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
 				player?.playNext(mediaItems)
@@ -251,10 +251,10 @@ final class SongCell: UITableViewCell {
 			useMenuElements([action])
 		})
 		
-		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
+		let playToBottomLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
-				title: LRString.playRestOfAlbumLast,
+				title: LRString.playToBottomLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				player?.playLast(mediaItems)
@@ -270,13 +270,13 @@ final class SongCell: UITableViewCell {
 			presentsUpward: false,
 			menuElementGroups: [
 				[
-					playSong,
+					play,
 					playNext,
 					playLast,
 				],
 				[
-					playRestOfAlbumNext,
-					playRestOfAlbumLast,
+					playToBottomNext,
+					playToBottomLast,
 				],
 			]
 		)
