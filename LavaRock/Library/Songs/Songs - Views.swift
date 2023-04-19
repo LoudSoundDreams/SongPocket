@@ -186,14 +186,13 @@ final class SongCell: UITableViewCell {
 			return
 		}
 		
-		// Create menu elements
-		
 		// For actions that start playback:
 		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
 		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
-		
 		let player = TapeDeck.shared.player
+		
+		// Create menu elements
 		
 		let playSong = UIAction(
 			title: LRString.play,
