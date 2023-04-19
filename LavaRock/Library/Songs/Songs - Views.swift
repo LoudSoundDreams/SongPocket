@@ -92,7 +92,8 @@ final class SongCell: UITableViewCell {
 		song: Song,
 		albumRepresentative representative: SongInfo?,
 		spacerTrackNumberText: String?,
-		songsTVC: Weak<SongsTVC>
+		songsTVC: Weak<SongsTVC>,
+		isBottommostSong: Bool
 	) {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		
@@ -203,6 +204,9 @@ final class SongCell: UITableViewCell {
 				new_repeat_mode: .none,
 				disable_shuffle: true)
 		}
+		if isBottommostSong {
+			playSong.attributes.formUnion(.disabled)
+		}
 		
 		// Disable “play next” actions when they’ll do the same thing as “play last” actions.
 		
@@ -214,7 +218,7 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playNext(mediaItems)
 			}
-			if (mediaItems.count <= 1) || !Reel.allows_Play_Next() {
+			if !Reel.allows_Play_Next() {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
@@ -227,7 +231,7 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playNext([mediaItem])
 			}
-			if !Reel.allows_Play_Next() {
+			if isBottommostSong || !Reel.allows_Play_Next() {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
@@ -241,18 +245,21 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playLast(mediaItems)
 			}
-			if mediaItems.count <= 1 {
+			useMenuElements([action])
+		})
+		
+		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
+			let action = UIAction(
+				title: LRString.playLast,
+				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
+			) { _ in
+				player?.playLast([mediaItem])
+			}
+			if isBottommostSong {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
 		})
-		
-		let playLast = UIAction(
-			title: LRString.playLast,
-			image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-		) { _ in
-			player?.playLast([mediaItem])
-		}
 		
 		// —
 		
