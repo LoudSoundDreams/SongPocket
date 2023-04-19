@@ -271,6 +271,8 @@ final class SongCell: UITableViewCell {
 			menuElementGroups: [
 				[
 					play,
+				],
+				[
 					playNext,
 					playLast,
 				],
