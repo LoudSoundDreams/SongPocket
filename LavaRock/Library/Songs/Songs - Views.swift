@@ -209,15 +209,14 @@ final class SongCell: UITableViewCell {
 		
 		// Disable “play next” actions when they’ll do the same thing as “play last” actions.
 		
-		let playRestOfAlbumNext = UIDeferredMenuElement.uncached({ useMenuElements in
-			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
+		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
-				title: LRString.playRestOfAlbumNext,
-				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
+				title: LRString.playLast,
+				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
-				player?.playNext(mediaItems)
+				player?.playLast([mediaItem])
 			}
-			if !Reel.allows_Play_Next() {
+			if isBottommostSong {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
@@ -236,6 +235,22 @@ final class SongCell: UITableViewCell {
 			useMenuElements([action])
 		})
 		
+		// —
+		
+		let playRestOfAlbumNext = UIDeferredMenuElement.uncached({ useMenuElements in
+			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
+			let action = UIAction(
+				title: LRString.playRestOfAlbumNext,
+				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
+			) { _ in
+				player?.playNext(mediaItems)
+			}
+			if !Reel.allows_Play_Next() {
+				action.attributes.formUnion(.disabled)
+			}
+			useMenuElements([action])
+		})
+		
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
@@ -243,19 +258,6 @@ final class SongCell: UITableViewCell {
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				player?.playLast(mediaItems)
-			}
-			useMenuElements([action])
-		})
-		
-		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let action = UIAction(
-				title: LRString.playLast,
-				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in
-				player?.playLast([mediaItem])
-			}
-			if isBottommostSong {
-				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
 		})
