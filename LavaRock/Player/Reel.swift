@@ -33,7 +33,7 @@ struct Reel {
 			return true
 		}
 		
-		// Return a value indicating whether there’s at least 1 song after the current song
+		// Result: whether there’s at least 1 song after the current song
 		if mediaItems.isEmpty {
 			return false
 		}

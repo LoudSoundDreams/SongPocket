@@ -204,6 +204,8 @@ final class SongCell: UITableViewCell {
 				disable_shuffle: true)
 		}
 		
+		// Disable “play next” actions when they’ll do the same thing as “play last” actions.
+		
 		let playRestOfAlbumNext = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
@@ -212,11 +214,9 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playNext(mediaItems)
 			}
-			action.attributes = (
-				Reel.allows_Play_Next() && mediaItems.count >= 2
-				? []
-				: .disabled
-			)
+			if (mediaItems.count <= 1) || !Reel.allows_Play_Next() {
+				action.attributes.formUnion(.disabled)
+			}
 			useMenuElements([action])
 		})
 		
@@ -227,11 +227,9 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playNext([mediaItem])
 			}
-			action.attributes = (
-				Reel.allows_Play_Next()
-				? []
-				: .disabled
-			)
+			if !Reel.allows_Play_Next() {
+				action.attributes.formUnion(.disabled)
+			}
 			useMenuElements([action])
 		})
 		
@@ -243,11 +241,9 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playLast(mediaItems)
 			}
-			action.attributes = (
-				mediaItems.count >= 2
-				? []
-				: .disabled
-			)
+			if mediaItems.count <= 1 {
+				action.attributes.formUnion(.disabled)
+			}
 			useMenuElements([action])
 		})
 		
