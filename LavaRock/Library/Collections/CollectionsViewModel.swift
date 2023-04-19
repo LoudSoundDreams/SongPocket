@@ -40,7 +40,7 @@ extension CollectionsViewModel: LibraryViewModel {
 			case .folder_name:
 				return true
 			case
-					.album_recentlyReleased,
+					.album_newestRelease,
 					.song_trackNumber:
 				return false
 			case

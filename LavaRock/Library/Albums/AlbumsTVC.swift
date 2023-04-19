@@ -78,7 +78,7 @@ final class AlbumsTVC:
 		
 		sortCommandsGrouped = [
 			[
-				.album_recentlyReleased,
+				.album_newestRelease,
 			],
 			[
 				.random,

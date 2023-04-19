@@ -12,7 +12,7 @@ enum SortCommand: CaseIterable {
 	case folder_name
 	
 	// For `Album`s only
-	case album_recentlyReleased
+	case album_newestRelease
 	
 	// For `Song`s only
 	case song_trackNumber
@@ -25,8 +25,8 @@ enum SortCommand: CaseIterable {
 		switch self {
 			case .folder_name:
 				return LRString.name
-			case .album_recentlyReleased:
-				return LRString.recentlyReleased
+			case .album_newestRelease:
+				return LRString.newestRelease
 			case .song_trackNumber:
 				return LRString.trackNumber
 			case .random:
@@ -40,7 +40,7 @@ enum SortCommand: CaseIterable {
 		switch self {
 			case .folder_name:
 				return UIImage(systemName: "textformat.abc")
-			case .album_recentlyReleased:
+			case .album_newestRelease:
 				return UIImage(systemName: "calendar")
 			case .song_trackNumber:
 				return UIImage(systemName: "textformat.123")

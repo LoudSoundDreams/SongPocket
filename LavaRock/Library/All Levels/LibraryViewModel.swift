@@ -270,7 +270,7 @@ extension LibraryViewModel {
 					return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
 				}
 				
-			case .album_recentlyReleased:
+			case .album_newestRelease:
 				guard let albums = items as? [Album] else {
 					return items
 				}
