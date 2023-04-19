@@ -25,20 +25,22 @@ struct Reel {
 		mediaItems = newMediaItems
 	}
 	
+	// Result: whether there’s at least 1 song after the current song
 	static func allows_Play_Next() -> Bool {
-		guard Enabling.inAppPlayer else {
-			return true
-		}
 		guard let player = TapeDeck.shared.player else {
 			return true
 		}
 		
-		// Result: whether there’s at least 1 song after the current song
+		// As of iOS 16.4.1, `MPMusicPlayerController` doesn’t expose how many items are in its queue, so give up
+		guard Enabling.inAppPlayer else {
+			return true
+		}
+		
+		let currentIndex = player.indexOfNowPlayingItem // When nothing is in the player, this is 0, which weirdens the comparison
+		let lastIndexInQueue = mediaItems.count - 1
 		if mediaItems.isEmpty {
 			return false
 		}
-		let indexOfLastSong = mediaItems.count - 1
-		let indexOfCurrentSong = player.indexOfNowPlayingItem // Note: `indexOfNowPlayingItem` returns 0 if the queue is empty
-		return indexOfCurrentSong < indexOfLastSong
+		return currentIndex < lastIndexInQueue
 	}
 }
