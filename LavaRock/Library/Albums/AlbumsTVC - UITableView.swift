@@ -84,8 +84,8 @@ extension AlbumsTVC {
 						}
 					case .browsing:
 						return .normal
-				}}(),
-			physicalPixelsPerPoint__: view.window?.screen.nativeScale ?? 0.5
+				}
+			}()
 		)
 		
 		return cell

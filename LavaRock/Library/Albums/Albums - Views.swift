@@ -58,18 +58,17 @@ final class AlbumCell: UITableViewCell {
 		backgroundColor_set_to_clear()
 		
 		coverArtView.accessibilityIgnoresInvertColors = true
-		// Round the corners
-		let coverArtLayer = coverArtView.layer
-		coverArtLayer.cornerCurve = .continuous
-		coverArtLayer.cornerRadius = .eight * 1/2
+		// Round artwork corners
+		let artViewLayer = coverArtView.layer
+		artViewLayer.cornerCurve = .continuous
+		artViewLayer.cornerRadius = .eight * 1/2
 		
 		configureForTraitCollection()
 	}
 	
 	func configure(
 		with album: Album,
-		mode: Mode,
-		physicalPixelsPerPoint__: CGFloat
+		mode: Mode
 	) {
 		let representative = album.representativeSongInfo() // Can be `nil`
 		
@@ -155,7 +154,7 @@ final class AlbumCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		// Draw border around artwork
+		// Draw artwork border
 		// You must do this when switching between light and dark mode.
 		let artViewLayer = coverArtView.layer
 		// As of iOS 16.3 …
