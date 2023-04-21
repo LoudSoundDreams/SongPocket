@@ -209,18 +209,7 @@ final class SongCell: UITableViewCell {
 		
 		// Disable “play next” actions when they’ll do the same thing as “play last” actions.
 		
-		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let action = UIAction(
-				title: LRString.playLast,
-				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in
-				player?.playLast([mediaItem])
-			}
-			if isBottommostSong {
-				action.attributes.formUnion(.disabled)
-			}
-			useMenuElements([action])
-		})
+		// —
 		
 		let playNext = UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
@@ -230,6 +219,19 @@ final class SongCell: UITableViewCell {
 				player?.playNext([mediaItem])
 			}
 			if isBottommostSong || !Reel.allows_Play_Next() {
+				action.attributes.formUnion(.disabled)
+			}
+			useMenuElements([action])
+		})
+		
+		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
+			let action = UIAction(
+				title: LRString.playLast,
+				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
+			) { _ in
+				player?.playLast([mediaItem])
+			}
+			if isBottommostSong {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
@@ -261,8 +263,6 @@ final class SongCell: UITableViewCell {
 			}
 			useMenuElements([action])
 		})
-		
-		// —
 		
 		// Create menu
 		menu = UIMenu(
