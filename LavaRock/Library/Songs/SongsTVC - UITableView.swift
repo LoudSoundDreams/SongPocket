@@ -98,12 +98,7 @@ extension SongsTVC {
 				return album.representativeSongInfo()
 			}(),
 			spacerTrackNumberText: (songsViewModel.libraryGroup() as? SongsGroup)?.spacerTrackNumberText,
-			songsTVC: Weak(self),
-			isBottommostSong: {
-				let thisRowIndex = indexPath.row
-				let bottommostRowIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
-				return thisRowIndex == bottommostRowIndex
-			}()
+			songsTVC: Weak(self)
 		)
 		
 		return cell
