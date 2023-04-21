@@ -41,6 +41,7 @@ extension CollectionsViewModel: LibraryViewModel {
 				return true
 			case
 					.album_newestRelease,
+					.album_oldestRelease,
 					.song_trackNumber:
 				return false
 			case

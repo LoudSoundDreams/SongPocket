@@ -51,7 +51,9 @@ extension AlbumsViewModel: LibraryViewModel {
 		switch sortCommand {
 			case .folder_name:
 				return false
-			case .album_newestRelease:
+			case
+					.album_newestRelease,
+					.album_oldestRelease:
 				guard let albums = items as? [Album] else {
 					return false
 				}
