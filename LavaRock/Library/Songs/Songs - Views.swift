@@ -271,13 +271,13 @@ final class SongCell: UITableViewCell {
 			presentsUpward: false,
 			menuElementGroups: [
 				[
+					playToBottomNext,
+					playToBottomLast,
+				],
+				[
 					play,
 					playNext,
 					playLast,
-				],
-				[
-					playToBottomNext,
-					playToBottomLast,
 				],
 			]
 		)
