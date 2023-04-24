@@ -439,14 +439,14 @@ class LibraryTVC: UITableViewController {
 							guard indexPathsToSort.count >= 2 else {
 								return false
 							}
-							let items = indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
-							return viewModel.allowsSortCommand(sortCommand, forItems: items)
+							return viewModel.allowsSortCommand(
+								sortCommand,
+								forItems: indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
+							)
 						}()
-						action.attributes = (
-							allowed
-							? []
-							: .disabled
-						)
+						if !allowed {
+							action.attributes.formUnion(.disabled)
+						}
 						useMenuElements([action])
 					})
 				}
