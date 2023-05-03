@@ -71,7 +71,7 @@ extension MusicLibrary {
 		
 		os_signpost(.begin, log: .update, name: "Sort Songs in cloned Albums")
 		let songsToMove = unsortedSongsToMove.sorted {
-			$0.precedesByUserCustomOrder($1)
+			$0.precedesInUserCustomOrder($1)
 		}
 		os_signpost(.end, log: .update, name: "Sort Songs in cloned Albums")
 		
@@ -104,7 +104,7 @@ extension MusicLibrary {
 		// Sort the existing `Song`s by the order they appeared in in the app.
 		os_signpost(.begin, log: .update, name: "Sort Songs moved to different Albums")
 		let outdatedTuples = unsortedOutdatedTuples.sorted { leftTuple, rightTuple in
-			leftTuple.0.precedesByUserCustomOrder(rightTuple.0)
+			leftTuple.0.precedesInUserCustomOrder(rightTuple.0)
 		}
 		os_signpost(.end, log: .update, name: "Sort Songs moved to different Albums")
 		

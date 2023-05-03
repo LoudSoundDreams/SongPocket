@@ -95,7 +95,7 @@ extension Song {
 	
 	// MARK: - Predicates for Sorting
 	
-	final func precedesByUserCustomOrder(_ other: Song) -> Bool {
+	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
 		// Checking `Song` index first and `Collection` index last is slightly faster than vice versa.
 		guard index == other.index else {
 			return index < other.index

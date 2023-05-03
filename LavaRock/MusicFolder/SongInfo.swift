@@ -114,7 +114,7 @@ extension SongInfo {
 				return myTitle.precedesAlphabeticallyFinderStyle(otherTitle)
 			}
 		} else {
-			// At this point, leave elements in the same order if they both have no release date, or the same release date.
+			// At this point, leave elements in the same order if they both have no track number, or the same track number.
 			// However, as of iOS 14.7, when using `sorted(by:)`, returning `true` here doesn’t always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
 			guard myTrack != otherTrack else {
 				return true

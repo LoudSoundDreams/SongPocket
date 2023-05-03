@@ -44,14 +44,14 @@ class SortingTests: XCTestCase {
 	}
 	
 	func testSortStringsStably() {
-		let stringsUnsorted: [String?] = [
+		let input: [String?] = [
 			nil,
 			"",
 			"",
 			nil,
 			"a",
 		]
-		let stringsSorted: [String?] = [
+		let expectedOutput: [String?] = [
 			"",
 			"",
 			"a",
@@ -59,31 +59,32 @@ class SortingTests: XCTestCase {
 			nil,
 		]
 		
-		struct Thing {
+		struct IdentifiableString {
 			let string: String?
 			let id: Int
 		}
-		let thingsUnsorted = stringsUnsorted.enumerated().map { index, string in
-			Thing(string: string, id: index)
+		let identifiableUnsorted = input.enumerated().map { index, string in
+			IdentifiableString(string: string, id: index)
 		}
-		let thingsSorted = thingsUnsorted.sortedMaintainingOrderWhen {
+		let identifiableSorted = identifiableUnsorted.sortedMaintainingOrderWhen {
 			$0.string == $1.string
 		} areInOrder: {
-			let leftString = $0.string
-			let rightString = $1.string
+			let left = $0.string
+			let right = $1.string
 			// Either can be `nil`
 			
-			guard let rightString else {
+			guard let right else {
 				return true
 			}
-			guard let leftString else {
+			guard let left else {
 				return false
 			}
-			return leftString.precedesAlphabeticallyFinderStyle(rightString)
+			return left.precedesAlphabeticallyFinderStyle(right)
 		}
-		XCTAssertEqual(stringsSorted, thingsSorted.map { $0.string })
+		
+		XCTAssertEqual(expectedOutput, identifiableSorted.map { $0.string })
 		XCTAssertTrue(
-			thingsSorted.allNeighborsSatisfy { left, right in
+			identifiableSorted.allNeighborsSatisfy { left, right in
 				if left.string == right.string {
 					return left.id < right.id
 				} else {

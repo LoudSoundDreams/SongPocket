@@ -182,23 +182,22 @@ extension Album {
 	// MARK: - Predicates for Sorting
 	
 	final func precedesByNewestFirst(_ other: Album) -> Bool {
-		return precedes(byNewestFirstRatherThanOldestFirst: true, other)
+		return precedes(other, byNewestFirstRatherThanOldestFirst: true)
 	}
 	
 	final func precedesByOldestFirst(_ other: Album) -> Bool {
-		return precedes(byNewestFirstRatherThanOldestFirst: false, other)
+		return precedes(other, byNewestFirstRatherThanOldestFirst: false)
 	}
 	
 	private func precedes(
-		byNewestFirstRatherThanOldestFirst: Bool,
-		_ other: Album
+		_ other: Album,
+		byNewestFirstRatherThanOldestFirst: Bool
 	) -> Bool {
 		let myReleaseDate = releaseDateEstimate
 		let otherReleaseDate = other.releaseDateEstimate
 		// Either can be `nil`
 		
 		// At this point, leave elements in the same order if they both have no release date, or the same release date.
-		// However, as of iOS 14.7, when using `sorted(by:)`, using `guard myReleaseDate != otherReleaseDate else { return true }` here doesn’t always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
 		
 		// Move unknown release date to the end
 		guard let otherReleaseDate else {

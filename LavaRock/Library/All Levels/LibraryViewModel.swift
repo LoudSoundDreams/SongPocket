@@ -250,7 +250,6 @@ extension LibraryViewModel {
 		return newItems
 	}
 	
-	// Sort stably! Multiple items with the same name, disc number, or whatever property we’re sorting by should stay in the same order.
 	private static func sorted(
 		_ items: [NSManagedObject],
 		sortCommandLocalizedName: String
@@ -259,6 +258,8 @@ extension LibraryViewModel {
 			return items
 		}
 		switch sortCommand {
+				// Sort stably! Multiple items with the same name, disc number, or whatever property we’re sorting by should stay in the same order.
+				// Use `sortedMaintainingOrderWhen` for convenience.
 				
 			case .folder_name:
 				guard let collections = items as? [Collection] else {
@@ -279,6 +280,7 @@ extension LibraryViewModel {
 				} areInOrder: {
 					$0.precedesByNewestFirst($1)
 				}
+				
 			case .album_oldestRelease:
 				guard let albums = items as? [Album] else {
 					return items
@@ -299,18 +301,18 @@ extension LibraryViewModel {
 					 info: $0.songInfo())
 				}
 				let sorted = songsAndInfos.sortedMaintainingOrderWhen {
-					let leftInfo = $0.info
-					let rightInfo = $1.info
-					return leftInfo?.discNumberOnDisk == rightInfo?.discNumberOnDisk
-					&& leftInfo?.trackNumberOnDisk == rightInfo?.trackNumberOnDisk
+					let left = $0.info
+					let right = $1.info
+					return left?.discNumberOnDisk == right?.discNumberOnDisk
+					&& left?.trackNumberOnDisk == right?.trackNumberOnDisk
 				} areInOrder: {
 					guard
-						let leftInfo = $0.info,
-						let rightInfo = $1.info
+						let left = $0.info,
+						let right = $1.info
 					else {
 						return true
 					}
-					return leftInfo.precedesByTrackNumber(rightInfo)
+					return left.precedesByTrackNumber(right)
 				}
 				return sorted.map { $0.song }
 				
