@@ -265,7 +265,9 @@ extension LibraryViewModel {
 				guard let collections = items as? [Collection] else {
 					return items
 				}
-				return collections.sorted {
+				return collections.sortedMaintainingOrderWhen {
+					$0.title == $1.title
+				} areInOrder: {
 					let collectionTitle0 = $0.title ?? ""
 					let collectionTitle1 = $1.title ?? ""
 					return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
