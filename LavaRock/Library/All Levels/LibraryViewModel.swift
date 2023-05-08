@@ -197,7 +197,7 @@ extension LibraryViewModel {
 	
 	func updatedAfterSorting(
 		selectedIndexPaths: [IndexPath],
-		sortCommandLocalizedName: String
+		sortCommand: SortCommand
 	) -> Self {
 		let indexPathsToSort = indexPaths_for_all_if_empty_else_sorted(
 			selectedIndexPaths: selectedIndexPaths)
@@ -209,7 +209,7 @@ extension LibraryViewModel {
 			let newItems = itemsAfterSorting(
 				itemsAtRowsInOrder: rows,
 				inSection: section,
-				sortCommandLocalizedName: sortCommandLocalizedName)
+				sortCommand: sortCommand)
 			twin.groups[section].setItems(newItems)
 		}
 		return twin
@@ -218,7 +218,7 @@ extension LibraryViewModel {
 	private func itemsAfterSorting(
 		itemsAtRowsInOrder rows: [Int],
 		inSection section: Int,
-		sortCommandLocalizedName: String
+		sortCommand: SortCommand
 	) -> [NSManagedObject] {
 		// Get all the items in the subjected group.
 		let oldItems = libraryGroup().items
@@ -235,7 +235,7 @@ extension LibraryViewModel {
 			}
 			return Self.sorted(
 				itemsToSort,
-				sortCommandLocalizedName: sortCommandLocalizedName)
+				sortCommand: sortCommand)
 		}()
 		
 		// Create the new `Array` of items for the subjected group.
@@ -252,11 +252,8 @@ extension LibraryViewModel {
 	
 	private static func sorted(
 		_ items: [NSManagedObject],
-		sortCommandLocalizedName: String
+		sortCommand: SortCommand
 	) -> [NSManagedObject] {
-		guard let sortCommand = SortCommand(localizedName: sortCommandLocalizedName) else {
-			return items
-		}
 		switch sortCommand {
 				// Sort stably! Multiple items with the same name, disc number, or whatever property we’re sorting by should stay in the same order.
 				// Use `sortedMaintainingOrderWhen` for convenience.

@@ -68,13 +68,4 @@ enum SortCommand: CaseIterable {
 				return UIImage(systemName: "arrow.up.and.down")
 		}
 	}
-	
-	init?(localizedName: String) {
-		guard let matchingCase = Self.allCases.first(where: {
-			localizedName == $0.localizedName()
-		}) else {
-			return nil
-		}
-		self = matchingCase
-	}
 }

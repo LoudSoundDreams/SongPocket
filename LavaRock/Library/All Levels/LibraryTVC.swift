@@ -430,7 +430,7 @@ class LibraryTVC: UITableViewController {
 							title: sortCommand.localizedName(),
 							image: sortCommand.uiImage()
 						) { [weak self] action in
-							self?.sortSelectedOrAllItems(sortCommandLocalizedName: action.title)
+							self?.sortSelectedOrAllItems(sortCommand: sortCommand)
 						}
 						let allowed: Bool = {
 							let viewModel = self.viewModel
