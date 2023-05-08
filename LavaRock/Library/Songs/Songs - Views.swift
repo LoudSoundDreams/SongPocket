@@ -237,7 +237,7 @@ final class SongCell: UITableViewCell {
 		let playToBottomNext = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
-				title: LRString.playToBottomNext,
+				title: LRString.playRestOfAlbumNext,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
 				player?.playNext(mediaItems)
@@ -254,7 +254,7 @@ final class SongCell: UITableViewCell {
 		let playToBottomLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
-				title: LRString.playToBottomLast,
+				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				player?.playLast(mediaItems)

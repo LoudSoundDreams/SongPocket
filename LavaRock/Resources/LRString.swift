@@ -132,13 +132,12 @@ enum LRString {
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
-	static let playToBottom = NSLocalizedString("Play to Bottom", comment: "Button")
+	static let startPlaying = NSLocalizedString("Start Playing", comment: "Button")
 	
-	static let playToBottomNext = NSLocalizedString("Play to Bottom Next", comment: "Button")
 	static let playNext = NSLocalizedString("Play Next", comment: "Button")
-	
-	static let playToBottomLast = NSLocalizedString("Play to Bottom Last", comment: "Button")
 	static let playLast = NSLocalizedString("Play Last", comment: "Button")
+	static let playRestOfAlbumNext = NSLocalizedString("Play Rest of Album Next", comment: "Button")
+	static let playRestOfAlbumLast = NSLocalizedString("Play Rest of Album Last", comment: "Button")
 	
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
