@@ -70,7 +70,7 @@ final class SongsTVC: LibraryTVC {
 			with: coordinator)
 		
 		if
-			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)), // TO DO: Make resilient to change
+			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)), // !
 			let coverArtCell = cell as? CoverArtCell
 		{
 			coverArtCell.configureArtwork(maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)

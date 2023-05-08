@@ -9,10 +9,10 @@ import Foundation
 
 extension LibraryTVC: TapeDeckReflecting {
 	final func reflect_playback_mode() {
-		reflectPlayhead_library()
+		reflectPlayhead()
 	}
 	
 	final func reflect_now_playing_item() {
-		reflectPlayhead_library()
+		reflectPlayhead()
 	}
 }

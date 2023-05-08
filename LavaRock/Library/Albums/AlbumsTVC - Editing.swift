@@ -71,7 +71,7 @@ extension AlbumsTVC {
 				previewOfChanges,
 				runningBeforeContinuation: {
 					// Remove the now-playing marker from the source `Collection`, if necessary.
-					collectionsTVC.reflectPlayhead_library()
+					collectionsTVC.reflectPlayhead()
 				}
 			)
 		}

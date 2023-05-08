@@ -103,7 +103,7 @@ class LibraryTVC: UITableViewController {
 		reflectDatabase()
 	}
 	@objc private func user_changed_avatar() {
-		reflectPlayhead_library()
+		reflectPlayhead()
 	}
 	
 	func reflectViewContainer() {
@@ -128,7 +128,7 @@ class LibraryTVC: UITableViewController {
 	
 	final func reflectDatabase() {
 		// Do this even if the view isn’t visible.
-		reflectPlayhead_library()
+		reflectPlayhead()
 		
 		if view.window == nil {
 			needsFreshenLibraryItemsOnViewDidAppear = true
@@ -319,7 +319,7 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Player
 	
-	final func reflectPlayhead_library() {
+	final func reflectPlayhead() {
 		tableView.allIndexPaths().forEach { indexPath in
 			guard
 				let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying__
