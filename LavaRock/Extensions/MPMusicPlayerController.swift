@@ -25,7 +25,10 @@ extension MPMusicPlayerController {
 #endif
 	}
 	
-	final func playNow(_ mediaItems: [MPMediaItem]) {
+	final func playNow(
+		_ mediaItems: [MPMediaItem],
+		skipping numberToSkip: Int
+	) {
 		if Enabling.inAppPlayer {
 			Reel.setMediaItems(mediaItems)
 		}
@@ -39,6 +42,12 @@ extension MPMusicPlayerController {
 		
 		let playInterval = Self.signposter.beginInterval("play")
 		play()
+		if numberToSkip >= 1 {
+			for _ in 1...numberToSkip {
+				// As of iOS 16.5 developer beta 4, you must do this after calling `play`, not before, or it won’t actually work.
+				skipToNextItem()
+			}
+		}
 		Self.signposter.endInterval("play", playInterval)
 	}
 	

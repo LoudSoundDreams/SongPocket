@@ -22,7 +22,7 @@ extension SongsTVC {
 			let player = TapeDeck.shared.player
 		else { return }
 		
-		let selectedMediaItemAndBelow = mediaItems(startingAt: selectedIndexPath)
+		let mediaItemsInSection = mediaItems(startingAt: IndexPath(row: 2, section: 0)) // !
 		
 		let actionSheet = UIAlertController(
 			title: nil,
@@ -35,7 +35,8 @@ extension SongsTVC {
 			title: LRString.startPlaying,
 			style: .default
 		) { _ in
-			player.playNow(selectedMediaItemAndBelow)
+			let numberToSkip = selectedIndexPath.row - 2 // !
+			player.playNow(mediaItemsInSection, skipping: numberToSkip)
 			
 			deselectSelectedSong()
 		}

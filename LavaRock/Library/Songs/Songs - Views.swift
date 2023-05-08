@@ -197,7 +197,7 @@ final class SongCell: UITableViewCell {
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { _ in
-			player?.playNow([mediaItem])
+			player?.playNow([mediaItem], skipping: 0)
 		}
 		
 		// Disable “play next” actions when they’ll do the same thing as “play last” actions.
