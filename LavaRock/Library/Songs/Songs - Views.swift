@@ -197,10 +197,7 @@ final class SongCell: UITableViewCell {
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { _ in
-			player?.playNow(
-				[mediaItem],
-				new_repeat_mode: .none,
-				disable_shuffle: true)
+			player?.playNow([mediaItem])
 		}
 		
 		// Disable “play next” actions when they’ll do the same thing as “play last” actions.

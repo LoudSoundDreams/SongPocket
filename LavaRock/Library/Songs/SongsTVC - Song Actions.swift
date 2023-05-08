@@ -35,10 +35,7 @@ extension SongsTVC {
 			title: LRString.startPlaying,
 			style: .default
 		) { _ in
-			player.playNow(
-				selectedMediaItemAndBelow,
-				new_repeat_mode: .none,
-				disable_shuffle: true)
+			player.playNow(selectedMediaItemAndBelow)
 			
 			deselectSelectedSong()
 		}
