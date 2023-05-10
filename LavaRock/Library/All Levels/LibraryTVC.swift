@@ -55,7 +55,7 @@ class LibraryTVC: UITableViewController {
 	)
 	
 	private(set) final var sortButton = UIBarButtonItem(
-		title: LRString.sort)
+		title: LRString.arrange)
 	
 	private(set) final lazy var floatToTopButton = UIBarButtonItem(
 		title: LRString.moveToTop,
