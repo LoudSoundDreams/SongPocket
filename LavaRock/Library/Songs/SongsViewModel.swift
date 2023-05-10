@@ -53,18 +53,11 @@ extension SongsViewModel: LibraryViewModel {
 		forItems items: [NSManagedObject]
 	) -> Bool {
 		switch sortCommand {
-			case
-					.folder_name,
-					.album_newestRelease,
-					.album_oldestRelease:
-				return false
+			case .random, .reverse: return true
+			case .folder_name, .album_newestRelease, .album_oldestRelease: return false
 			case
 					.song_trackNumber,
 					.song_recentlyAdded:
-				return true
-			case
-					.random,
-					.reverse:
 				return true
 		}
 	}

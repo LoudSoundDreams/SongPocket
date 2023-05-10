@@ -49,11 +49,8 @@ extension AlbumsViewModel: LibraryViewModel {
 		forItems items: [NSManagedObject]
 	) -> Bool {
 		switch sortCommand {
-			case
-					.folder_name,
-					.song_recentlyAdded,
-					.song_trackNumber:
-				return false
+			case .random, .reverse: return true
+			case .folder_name, .song_recentlyAdded, .song_trackNumber: return false
 			case
 					.album_newestRelease,
 					.album_oldestRelease:
@@ -61,10 +58,6 @@ extension AlbumsViewModel: LibraryViewModel {
 					return false
 				}
 				return albums.contains { $0.releaseDateEstimate != nil }
-			case
-					.random,
-					.reverse:
-				return true
 		}
 	}
 	
