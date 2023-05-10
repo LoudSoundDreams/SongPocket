@@ -59,7 +59,8 @@ extension SongsViewModel: LibraryViewModel {
 					.album_oldestRelease:
 				return false
 			case
-					.song_trackNumber:
+					.song_trackNumber,
+					.song_recentlyAdded:
 				return true
 			case
 					.random,

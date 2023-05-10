@@ -86,6 +86,7 @@ enum LRString {
 	// MARK: Editing
 	
 	static let arrange = NSLocalizedString("Arrange", comment: "Button")
+	static let recentlyAdded = NSLocalizedString("Recently Added", comment: "Sort option")
 	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
 	

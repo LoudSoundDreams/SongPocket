@@ -315,6 +315,28 @@ extension LibraryViewModel {
 				}
 				return sorted.map { $0.song }
 				
+			case .song_recentlyAdded:
+				guard let songs = items as? [Song] else {
+					return items
+				}
+				let songsAndInfos = songs.map {
+					(song: $0,
+					 info: $0.songInfo())
+				}
+				let sorted = songsAndInfos.sortedMaintainingOrderWhen {
+					left, right in
+					return left.info?.dateAddedOnDisk == right.info?.dateAddedOnDisk
+				} areInOrder: {
+					guard
+						let left = $0.info,
+						let right = $1.info
+					else {
+						return true
+					}
+					return left.dateAddedOnDisk > right.dateAddedOnDisk
+				}
+				return sorted.map { $0.song }
+				
 			case .random:
 				return items.inAnyOtherOrder()
 				

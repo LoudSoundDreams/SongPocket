@@ -17,6 +17,7 @@ enum SortCommand: CaseIterable {
 	
 	// For `Song`s only
 	case song_trackNumber
+	case song_recentlyAdded
 	
 	// For all types
 	case random
@@ -32,6 +33,8 @@ enum SortCommand: CaseIterable {
 				return LRString.oldestRelease
 			case .song_trackNumber:
 				return LRString.trackNumber
+			case .song_recentlyAdded:
+				return LRString.recentlyAdded
 			case .random:
 				return LRString.random
 			case .reverse:
@@ -49,6 +52,8 @@ enum SortCommand: CaseIterable {
 				return UIImage(systemName: "hourglass.tophalf.filled")
 			case .song_trackNumber:
 				return UIImage(systemName: "textformat.123")
+			case .song_recentlyAdded:
+				return UIImage(systemName: "clock")
 			case .random:
 				switch Int.random(in: 1...6) {
 					case 1:

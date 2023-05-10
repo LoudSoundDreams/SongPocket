@@ -51,6 +51,7 @@ extension AlbumsViewModel: LibraryViewModel {
 		switch sortCommand {
 			case
 					.folder_name,
+					.song_recentlyAdded,
 					.song_trackNumber:
 				return false
 			case
