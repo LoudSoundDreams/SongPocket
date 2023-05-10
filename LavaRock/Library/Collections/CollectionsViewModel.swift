@@ -38,7 +38,7 @@ extension CollectionsViewModel: LibraryViewModel {
 	) -> Bool {
 		switch sortCommand {
 			case .random, .reverse: return true
-			case .album_newestRelease, .album_oldestRelease, .song_trackNumber, .song_recentlyAdded: return false
+			case .album_newestRelease, .song_trackNumber, .song_recentlyAdded: return false
 			case .folder_name:
 				return true
 		}
