@@ -242,14 +242,6 @@ final class AlbumsTVC:
 		}
 		
 		return UIMenu(
-			title: {
-				let subjectedCount = viewModel.indexPaths_for_all_if_empty_else_unsorted(
-					selectedIndexPaths: tableView.selectedIndexPaths)
-					.count
-				return String.localizedStringWithFormat(
-					LRString.variable_xAlbums,
-					subjectedCount)
-			}(),
 			presentsUpward: true,
 			menuElementGroups: [
 				[

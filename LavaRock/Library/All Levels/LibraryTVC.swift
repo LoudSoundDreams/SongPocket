@@ -454,26 +454,6 @@ class LibraryTVC: UITableViewController {
 			}
 			
 			return UIMenu(
-				title: {
-					let formatString: String? = {
-						switch self {
-							case is CollectionsTVC: return LRString.variable_xFolders
-							case is AlbumsTVC: return LRString.variable_xAlbums
-							case is SongsTVC: return LRString.variable_xSongs
-							default: return nil
-						}
-					}()
-					guard let formatString else {
-						return ""
-					}
-					let subjectedCount = viewModel
-						.indexPaths_for_all_if_empty_else_unsorted(
-							selectedIndexPaths: tableView.selectedIndexPaths)
-						.count
-					return String.localizedStringWithFormat(
-						formatString,
-						subjectedCount)
-				}(),
 				presentsUpward: true,
 				menuElementGroups: groupedElements)
 		}
