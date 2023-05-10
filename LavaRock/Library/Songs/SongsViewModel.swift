@@ -54,10 +54,10 @@ extension SongsViewModel: LibraryViewModel {
 	) -> Bool {
 		switch sortCommand {
 			case .random, .reverse: return true
-			case .folder_name, .album_recentlyReleased: return false
+			case .folder_name, .album_released: return false
 			case
-					.song_trackNumber,
-					.song_recentlyAdded:
+					.song_track,
+					.song_added:
 				return true
 		}
 	}

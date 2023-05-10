@@ -50,8 +50,8 @@ extension AlbumsViewModel: LibraryViewModel {
 	) -> Bool {
 		switch sortCommand {
 			case .random, .reverse: return true
-			case .folder_name, .song_recentlyAdded, .song_trackNumber: return false
-			case .album_recentlyReleased:
+			case .folder_name, .song_added, .song_track: return false
+			case .album_released:
 				guard let albums = items as? [Album] else {
 					return false
 				}

@@ -28,8 +28,8 @@ final class SongsTVC: LibraryTVC {
 		
 		sortCommandsGrouped = [
 			[
-				.song_trackNumber,
-				.song_recentlyAdded,
+				.song_track,
+				.song_added,
 			],
 			[
 				.random,
