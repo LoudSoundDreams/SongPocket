@@ -159,20 +159,14 @@ enum LRString {
 	
 	// MARK: - With variables and text variations (format strings from dictionaries)
 	
-	// MARK: Folders
+	// MARK: Library items
 	
 	static let variable_xFolders = NSLocalizedString(
 		"plural - X_folders",
 		comment: "Status message")
-	
-	// MARK: Albums
-	
 	static let variable_xAlbums = NSLocalizedString(
 		"plural - X_albums",
 		comment: "Status message")
-	
-	// MARK: Songs
-	
 	static let variable_xSongs = NSLocalizedString(
 		"plural - X_songs",
 		comment: "Status message")

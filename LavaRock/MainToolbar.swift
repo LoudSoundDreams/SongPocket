@@ -41,7 +41,6 @@ final class MainToolbar {
 	
 	private func create_menu_More() -> UIMenu {
 		return UIMenu(
-			title: "",
 			presentsUpward: true,
 			menuElementGroups: [
 				[

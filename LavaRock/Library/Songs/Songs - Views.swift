@@ -264,7 +264,6 @@ final class SongCell: UITableViewCell {
 		
 		// Create menu
 		menu = UIMenu(
-			title: "",
 			presentsUpward: false,
 			menuElementGroups: [
 				[
