@@ -255,6 +255,13 @@ extension LibraryViewModel {
 		sortCommand: SortCommand
 	) -> [NSManagedObject] {
 		switch sortCommand {
+				
+			case .random:
+				return items.inAnyOtherOrder()
+				
+			case .reverse:
+				return items.reversed()
+				
 				// Sort stably! Multiple items with the same name, disc number, or whatever property we’re sorting by should stay in the same order.
 				// Use `sortedMaintainingOrderWhen` for convenience.
 				
@@ -326,12 +333,6 @@ extension LibraryViewModel {
 					return left.dateAddedOnDisk > right.dateAddedOnDisk
 				}
 				return sorted.map { $0.song }
-				
-			case .random:
-				return items.inAnyOtherOrder()
-				
-			case .reverse:
-				return items.reversed()
 				
 		}
 	}
