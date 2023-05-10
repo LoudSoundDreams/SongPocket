@@ -137,7 +137,7 @@ final class AlbumCell: UITableViewCell {
 		return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 	}
 	
-	private static let mainStackNormalSpacing: CGFloat = .eight * 10/8
+	private static let mainStackSpacingWhenHorizontal: CGFloat = .eight * 10/8
 	
 	private func configureForTraitCollection() {
 		if textIsHuge {
@@ -147,7 +147,7 @@ final class AlbumCell: UITableViewCell {
 		} else {
 			mainStack.axis = .horizontal
 			mainStack.alignment = .center
-			mainStack.spacing = Self.mainStackNormalSpacing
+			mainStack.spacing = Self.mainStackSpacingWhenHorizontal
 		}
 	}
 	
@@ -171,7 +171,7 @@ final class AlbumCell: UITableViewCell {
 		+ coverArtView.frame.width // 132
 		+ (
 			textIsHuge
-			? Self.mainStackNormalSpacing // 10
+			? Self.mainStackSpacingWhenHorizontal // 10
 			: mainStack.spacing
 		)
 		separatorInset.right = directionalLayoutMargins.trailing
