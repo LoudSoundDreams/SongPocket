@@ -20,9 +20,13 @@ enum Lighting: CaseIterable {
 		get {
 			defaults.register(defaults: [persistentKey: system.persistentValue])
 			let savedValue = defaults.integer(forKey: persistentKey) // Note: `UserDefaults.integer` returns `0` when there’s no saved value, which only coincidentally matches `Lighting.system.persistentValue`.
-			return allCases.first { lightingCase in
+			guard let matchingCase = allCases.first(where: { lightingCase in
 				savedValue == lightingCase.persistentValue
-			}!
+			}) else {
+				// Unrecognized persistent value
+				return .system
+			}
+			return matchingCase
 		}
 		set {
 			defaults.set(newValue.persistentValue, forKey: persistentKey)

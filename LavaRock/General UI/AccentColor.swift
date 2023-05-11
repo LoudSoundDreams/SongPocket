@@ -22,9 +22,13 @@ enum AccentColor: CaseIterable {
 		get {
 			defaults.register(defaults: [persistentKey: blueberry.persistentValue])
 			let savedRawValue = defaults.string(forKey: persistentKey)!
-			return allCases.first { accentColorCase in
+			guard let matchingCase = allCases.first(where: { accentColorCase in
 				savedRawValue == accentColorCase.persistentValue
-			}!
+			}) else {
+				// Unrecognized persistent value
+				return .blueberry
+			}
+			return matchingCase
 		}
 		set {
 			defaults.set(newValue.persistentValue, forKey: persistentKey)

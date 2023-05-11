@@ -32,9 +32,13 @@ enum Avatar: CaseIterable {
 		get {
 			defaults.register(defaults: [persistentKey: speaker.persistentValue])
 			let savedValue = defaults.string(forKey: persistentKey)!
-			return allCases.first { avatarCase in
+			guard let matchingCase = allCases.first(where: { avatarCase in
 				savedValue == avatarCase.persistentValue
-			}!
+			}) else {
+				// Unrecognized persistent value
+				return .speaker
+			}
+			return matchingCase
 		}
 		set {
 			defaults.set(newValue.persistentValue, forKey: persistentKey)
