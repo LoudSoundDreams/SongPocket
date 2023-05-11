@@ -200,7 +200,7 @@ final class SongCell: UITableViewCell {
 			player?.playNow([mediaItem], skipping: 0)
 		}
 		
-		// Disable “play next” actions when they’ll do the same thing as “play last” actions.
+		// Disable “prepend” intelligently: when “append” would do the same thing.
 		
 		// —
 		
@@ -211,6 +211,11 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playNext([mediaItem])
 			}
+			// `MPMusicPlayerController` doesn’t expose how many songs are up next.
+			// So, in order to intelligently disable this command, we need to…
+			// 1. Keep track of that number ourselves, and…
+			// 2. Always know when that number changes.
+			// We can't do that with `systemMusicPlayer`.
 			if !Reel.allows_Play_Next() {
 				action.attributes.formUnion(.disabled)
 			}

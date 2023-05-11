@@ -31,7 +31,6 @@ struct Reel {
 			return true
 		}
 		
-		// As of iOS 16.4.1, `MPMusicPlayerController` doesn’t expose how many items are in its queue, so give up
 		guard Enabling.inAppPlayer else {
 			return true
 		}
