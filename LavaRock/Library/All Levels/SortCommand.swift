@@ -45,9 +45,9 @@ enum SortCommand: CaseIterable {
 					default: return UIImage(systemName: "die.face.3") // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
 				}
 			case .reverse: return UIImage(systemName: "arrow.up.and.down")
-			case .folder_name: return UIImage(systemName: "textformat.abc")
+			case .folder_name: return UIImage(systemName: "character")
 			case .album_released: return UIImage(systemName: "sparkles")
-			case .song_track: return UIImage(systemName: "textformat.123")
+			case .song_track: return UIImage(systemName: "opticaldisc")
 			case .song_added: return UIImage(systemName: "clock")
 		}
 	}
