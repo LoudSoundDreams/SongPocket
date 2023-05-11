@@ -7,21 +7,20 @@
 
 // Keeping these keys in one place helps us keep them unique.
 enum LRUserDefaultsKey: String, CaseIterable {
-	// First used in version 1.8
+	// Introduced in version 1.8
 	case avatar = "nowPlayingIcon"
 	
-	// First used in version 1.6
+	// Introduced in version 1.6
 	case lighting = "appearance"
 	
-	// First used in version ?
+	// Introduced in version ?
 	case hasEverImportedFromMusic = "hasEverImportedFromMusic"
 	
-	// First used in version 1.0
+	// Introduced in version 1.0
 	case accentColor = "accentColorName"
 	
-	// MARK: - Deprecated
 	/*
-	 // Last used in version 1.7
-	 case shouldExplainQueueAction = "shouldExplainQueueAction"
+	 Deprecated after version 1.7
+	 "shouldExplainQueueAction"
 	 */
 }
