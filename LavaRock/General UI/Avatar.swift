@@ -25,6 +25,7 @@ enum Avatar: CaseIterable {
 	case speaker
 	case bird
 	case fish
+	case luxo
 	
 	static var preference: Self {
 		get {
@@ -52,6 +53,7 @@ enum Avatar: CaseIterable {
 			case .speaker: return "speaker.fill"
 			case .bird: return "bird"
 			case .fish: return "fish"
+			case .luxo: return "lamp.desk"
 		}
 	}
 	
@@ -60,6 +62,7 @@ enum Avatar: CaseIterable {
 			case .speaker: return "speaker.wave.2.fill"
 			case .bird: return "bird.fill"
 			case .fish: return "fish.fill"
+			case .luxo: return "lamp.desk.fill"
 		}
 	}
 	
@@ -68,6 +71,7 @@ enum Avatar: CaseIterable {
 			case .speaker: return LRString.speaker
 			case .bird: return LRString.bird
 			case .fish: return LRString.fish
+			case .luxo: return LRString.luxoLamp
 		}
 	}
 	
@@ -81,6 +85,7 @@ enum Avatar: CaseIterable {
 			case .speaker: return "Speaker"
 			case .bird: return "Bird"
 			case .fish: return "Fish"
+			case .luxo: return "Luxo" // Introduced after version 1.11.2
 				/*
 				 Deprecated after version 1.11.2
 				 "Sailboat"
