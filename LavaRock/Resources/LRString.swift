@@ -52,8 +52,6 @@ enum LRString {
 	static let speaker = NSLocalizedString("Speaker", comment: "Accessibility label")
 	static let bird = NSLocalizedString("Bird", comment: "Accessibility label")
 	static let fish = NSLocalizedString("Fish", comment: "Accessibility label")
-	static let sailboat = NSLocalizedString("Sailboat", comment: "Accessibility label")
-	static let beachUmbrella = NSLocalizedString("Beach umbrella", comment: "Accessibility label")
 	
 	static let tipJar = NSLocalizedString("Tip Jar", comment: "Section header")
 	
