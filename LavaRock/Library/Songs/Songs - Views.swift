@@ -211,12 +211,7 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playNext([mediaItem])
 			}
-			// `MPMusicPlayerController` doesn’t expose how many songs are up next.
-			// So, in order to intelligently disable this command, we need to…
-			// 1. Keep track of that number ourselves, and…
-			// 2. Always know when that number changes.
-			// We can't do that with `systemMusicPlayer`.
-			if !Reel.allows_Play_Next() {
+			if !Self.shouldEnablePrepend() {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
@@ -234,7 +229,7 @@ final class SongCell: UITableViewCell {
 		
 		// —
 		
-		// Disable multiple-song actions when they’ll do the same thing as single-song actions.
+		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		
 		let playToBottomNext = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
@@ -244,7 +239,7 @@ final class SongCell: UITableViewCell {
 			) { _ in
 				player?.playNext(mediaItems)
 			}
-			if !Reel.allows_Play_Next() {
+			if !Self.shouldEnablePrepend() {
 				action.attributes.formUnion(.disabled)
 			}
 			if mediaItems.count <= 1 {
@@ -282,6 +277,33 @@ final class SongCell: UITableViewCell {
 				],
 			]
 		)
+	}
+	private static func shouldEnablePrepend() -> Bool {
+		// Result: whether there’s at least 1 song queued after the current one
+		// Err toward `true`.
+		
+		// `MPMusicPlayerController` doesn’t expose how many songs are up next.
+		// So, in order to intelligently disable prepending, we need to…
+		// 1. Keep track of that number ourselves, and…
+		// 2. Always know when that number changes.
+		// We can't do that with `systemMusicPlayer`.
+		guard Enabling.inAppPlayer else {
+			return true
+		}
+		
+		guard let player = TapeDeck.shared.player else {
+			return true
+		}
+		
+		let currentIndex = player.indexOfNowPlayingItem // When nothing is in the player, this is 0, which weirdens the comparison
+		
+		let reelCount = Reel.mediaItems.count
+		if reelCount == 0 {
+			return false
+		}
+		let lastIndex = reelCount - 1
+		
+		return currentIndex < lastIndex
 	}
 	
 	private func freshenDotDotDotButton() {
