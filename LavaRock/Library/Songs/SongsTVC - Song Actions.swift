@@ -40,7 +40,6 @@ extension SongsTVC {
 			
 			deselectSelectedSong()
 		}
-//		playToBottom.isEnabled = selectedMediaItemAndBelow.count >= 2
 		actionSheet.addAction(playToBottom)
 		
 		actionSheet.addAction(
