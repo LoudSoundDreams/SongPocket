@@ -280,7 +280,7 @@ final class FoldersTVC:
 		}
 	}
 	
-	@IBAction private func unwindToCollectionsFromEmptyCollection(_ unwindSegue: UIStoryboardSegue) {
+	@IBAction private func unwindToFolders(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {

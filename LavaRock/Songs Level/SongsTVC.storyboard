@@ -134,7 +134,7 @@
                     </tableView>
                     <toolbarItems/>
                     <connections>
-                        <segue destination="gme-PH-Cgo" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToAlbumsFromEmptyAlbum:" id="80Z-h1-Rre"/>
+                        <segue destination="gme-PH-Cgo" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToAlbums:" id="80Z-h1-Rre"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hsb-JF-X0J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

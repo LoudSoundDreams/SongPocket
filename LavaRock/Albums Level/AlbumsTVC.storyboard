@@ -127,7 +127,7 @@
                     </tableView>
                     <toolbarItems/>
                     <connections>
-                        <segue destination="GFi-fJ-75x" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToCollectionsFromEmptyCollection:" id="ZST-h2-yhJ"/>
+                        <segue destination="GFi-fJ-75x" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToFolders:" id="ZST-h2-yhJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DLy-Uy-9MG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

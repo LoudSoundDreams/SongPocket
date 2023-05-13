@@ -166,7 +166,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-	@IBAction private func unwindToAlbumsFromEmptyAlbum(_ unwindSegue: UIStoryboardSegue) {
+	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
 	// MARK: - Library Items
