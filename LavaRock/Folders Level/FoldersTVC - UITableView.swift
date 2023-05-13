@@ -1,5 +1,5 @@
 //
-//  CollectionsTVC - UITableView.swift
+//  FoldersTVC - UITableView.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-30.
@@ -8,7 +8,7 @@
 import UIKit
 import MediaPlayer
 
-extension CollectionsTVC {
+extension FoldersTVC {
 	// MARK: - Numbers
 	
 	override func numberOfSections(

@@ -1,5 +1,5 @@
 //
-//  CollectionsTVC - “Move Albums” Sheet.swift
+//  FoldersTVC - “Move Albums” Sheet.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension CollectionsTVC {
+extension FoldersTVC {
 	func createAndOpen() {
 		guard
 			case .movingAlbums = purpose,

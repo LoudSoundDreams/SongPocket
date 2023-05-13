@@ -9,7 +9,7 @@ import MediaPlayer
 
 @MainActor
 enum AppleMusic {
-	static var loadingIndicator: CollectionsTVC? = nil
+	static var loadingIndicator: FoldersTVC? = nil
 	
 	static func integrateIfAuthorized() async {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
