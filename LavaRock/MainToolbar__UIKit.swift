@@ -1,5 +1,5 @@
 //
-//  MainToolbar.swift
+//  MainToolbar__UIKit.swift
 //  LavaRock
 //
 //  Created by h on 2022-05-09.
@@ -13,7 +13,7 @@ import SwiftUI
 // • Implement `accessibilityPerformMagicTap` and toggle playback.
 // However, as of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor
-final class MainToolbar {
+final class MainToolbar__UIKit {
 	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	private lazy var console_button = UIBarButtonItem(
@@ -418,7 +418,7 @@ final class MainToolbar {
 		}
 	}
 }
-extension MainToolbar: TapeDeckReflecting {
+extension MainToolbar__UIKit: TapeDeckReflecting {
 	func reflect_playback_mode() {
 		freshen()
 	}
