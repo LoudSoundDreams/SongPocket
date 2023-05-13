@@ -312,7 +312,7 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		070E194224F340C500B21307 /* Songs */ = {
+		070E194224F340C500B21307 /* Songs Level */ = {
 			isa = PBXGroup;
 			children = (
 				07642C7B268FFC1600B66BB8 /* SongsGroup.swift */,
@@ -325,7 +325,7 @@
 				0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */,
 				073B99CA294682E700B48C9C /* SongRow.swift */,
 			);
-			path = Songs;
+			path = "Songs Level";
 			sourceTree = "<group>";
 		};
 		070E194524F3424500B21307 /* All Levels */ = {
@@ -398,7 +398,11 @@
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
 				071DC5E62A1045CE0073C854 /* Main Toolbar.swift */,
 				07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */,
-				07E0BC0027656C300010117E /* Library */,
+				070E194524F3424500B21307 /* All Levels */,
+				0777D6832756880300BA0C87 /* Multiple Levels */,
+				07DC1B1E24F33C5100AAEEDB /* Folders Level */,
+				07DC1B2124F33DF400AAEEDB /* Albums Level */,
+				070E194224F340C500B21307 /* Songs Level */,
 				0706ABDE24D946870090EB21 /* Settings */,
 				07A7989027A8ABB1007B70AA /* ConsoleView.swift */,
 				07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */,
@@ -446,7 +450,7 @@
 			path = "Standard Library";
 			sourceTree = "<group>";
 		};
-		07DC1B1E24F33C5100AAEEDB /* Collections */ = {
+		07DC1B1E24F33C5100AAEEDB /* Folders Level */ = {
 			isa = PBXGroup;
 			children = (
 				07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */,
@@ -458,10 +462,10 @@
 				073E6A8625562B93003C84A5 /* Collections - Views.swift */,
 				07DE126229C6819B0002533B /* FolderRow.swift */,
 			);
-			path = Collections;
+			path = "Folders Level";
 			sourceTree = "<group>";
 		};
-		07DC1B2124F33DF400AAEEDB /* Albums */ = {
+		07DC1B2124F33DF400AAEEDB /* Albums Level */ = {
 			isa = PBXGroup;
 			children = (
 				07EC01E926C8958300954E08 /* AlbumsViewModel.swift */,
@@ -474,7 +478,7 @@
 				078307B32512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift */,
 				0736E3A624B8415400A15420 /* Albums - Views.swift */,
 			);
-			path = Albums;
+			path = "Albums Level";
 			sourceTree = "<group>";
 		};
 		07DF65D027766B7B003B2EA3 /* MusicFolder */ = {
@@ -549,18 +553,6 @@
 				07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */,
 			);
 			path = "General UI";
-			sourceTree = "<group>";
-		};
-		07E0BC0027656C300010117E /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				070E194524F3424500B21307 /* All Levels */,
-				0777D6832756880300BA0C87 /* Multiple Levels */,
-				07DC1B1E24F33C5100AAEEDB /* Collections */,
-				07DC1B2124F33DF400AAEEDB /* Albums */,
-				070E194224F340C500B21307 /* Songs */,
-			);
-			path = Library;
 			sourceTree = "<group>";
 		};
 		07F1881F27F6B3750074809D /* Player */ = {
