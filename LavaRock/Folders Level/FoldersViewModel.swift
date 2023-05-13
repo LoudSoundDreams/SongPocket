@@ -66,7 +66,7 @@ extension FoldersViewModel {
 		]
 	}
 	
-	func collectionNonNil(at indexPath: IndexPath) -> Collection {
+	func folderNonNil(at indexPath: IndexPath) -> Collection {
 		return itemNonNil(at: indexPath) as! Collection
 	}
 	
@@ -117,10 +117,10 @@ extension FoldersViewModel {
 		}
 		let newTitle = proposedTitle.truncatedIfLonger(than: 256) // In case the user entered a dangerous amount of text
 		
-		let collection = collectionNonNil(at: indexPath)
-		let oldTitle = collection.title
-		collection.title = newTitle
-		return oldTitle != collection.title
+		let folder = folderNonNil(at: indexPath)
+		let oldTitle = folder.title
+		folder.title = newTitle
+		return oldTitle != folder.title
 	}
 	
 	// MARK: - “Move Albums” Sheet
@@ -154,13 +154,13 @@ extension FoldersViewModel {
 	private func itemsAfterDeletingNewFolder() -> [NSManagedObject] {
 		let oldItems = group.items
 		guard
-			let collection = oldItems[Self.indexOfNewFolder] as? Collection,
-			collection.isEmpty()
+			let folder = oldItems[Self.indexOfNewFolder] as? Collection,
+			folder.isEmpty()
 		else {
 			return oldItems
 		}
 		
-		context.delete(collection)
+		context.delete(folder)
 		
 		var newItems = group.items
 		newItems.remove(at: Self.indexOfNewFolder)

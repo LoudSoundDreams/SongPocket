@@ -44,18 +44,18 @@ final class FoldersTVC:
 	// Actions
 	private(set) lazy var renameFocused = UIAccessibilityCustomAction(
 		name: LRString.rename,
-		actionHandler: renameFocusedCollectionHandler)
-	private func renameFocusedCollectionHandler(
+		actionHandler: renameFocusedHandler)
+	private func renameFocusedHandler(
 		_ sender: UIAccessibilityCustomAction
 	) -> Bool {
-		let indexPathsOfAllCollections = viewModel.indexPathsForAllItems()
-		guard let focusedIndexPath = indexPathsOfAllCollections.first(where: {
+		let ofAllFolders = viewModel.indexPathsForAllItems()
+		guard let focused = ofAllFolders.first(where: {
 			let cell = tableView.cellForRow(at: $0)
 			return cell?.accessibilityElementIsFocused() ?? false
 		}) else {
 			return false
 		}
-		promptRename(at: focusedIndexPath)
+		promptRename(at: focused)
 		return true
 	}
 	
@@ -299,7 +299,7 @@ final class FoldersTVC:
 	}
 	
 	func prepareToIntegrateWithAppleMusic() async {
-		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
+		isMergingChanges = true // `viewState` is now `.loading` or `.someFolders` (updating)
 		await reflectViewState()
 	}
 	
@@ -321,8 +321,8 @@ final class FoldersTVC:
 			case
 					.loading,
 					.emptyPlaceholder:
-				// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
-				needsRemoveFolderRows = true // `viewState` is now `.removingFolderRews`
+				// We have placeholder rows in the Folders section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
+				needsRemoveFolderRows = true // `viewState` is now `.removingFolderRows`
 				Task {
 					await reflectViewState(runningBeforeCompletion: {
 						self.needsRemoveFolderRows = false // WARNING: `viewState` is now `.loading` or `.emptyPlaceholder`, but the UI doesn’t reflect that.
@@ -388,10 +388,10 @@ final class FoldersTVC:
 		albumsTVC.organizeAlbumsClipboard = organizeAlbumsClipboard
 		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 		
-		let collection = foldersViewModel.collectionNonNil(at: selectedIndexPath)
+		let folder = foldersViewModel.folderNonNil(at: selectedIndexPath)
 		albumsTVC.viewModel = AlbumsViewModel(
 			context: viewModel.context,
-			parentFolder: .exists(collection),
+			parentFolder: .exists(folder),
 			prerowsInEachSection: {
 				if case Purpose.movingAlbums = purpose {
 					return [.moveHere]

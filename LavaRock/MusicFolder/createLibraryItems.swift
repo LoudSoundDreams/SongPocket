@@ -170,23 +170,23 @@ extension MusicLibrary {
 		for newInfo: SongInfo,
 		existingFoldersByTitle: [String: [Collection]],
 		isFirstImport: Bool
-	) -> (album: Album, collection: Collection?) {
+	) -> (album: Album, folder: Collection?) {
 		let titleOfDestination
 		= newInfo.albumArtistOnDisk ?? LRString.unknownAlbumArtist
 		
 		// If we already have a matching folder to put the album into…
-		if let matchingExistingCollection = existingFoldersByTitle[titleOfDestination]?.first {
+		if let matchingExisting = existingFoldersByTitle[titleOfDestination]?.first {
 			
 			// …then put the album in that folder.
 			let newAlbum: Album = {
 				if isFirstImport {
 					return Album(
-						atEndOf: matchingExistingCollection,
+						atEndOf: matchingExisting,
 						albumID: newInfo.albumID,
 						context: context)
 				} else {
 					return Album(
-						atBeginningOf: matchingExistingCollection,
+						atBeginningOf: matchingExisting,
 						albumID: newInfo.albumID,
 						context: context)
 				}}()
@@ -195,7 +195,7 @@ extension MusicLibrary {
 			
 		} else {
 			// Otherwise, create the folder to put the album in…
-			let newCollection: Collection = {
+			let newFolder: Collection = {
 				if isFirstImport {
 					os_signpost(.begin, log: .create, name: "Count all the folders so far")
 					let existingCount = existingFoldersByTitle.reduce(0) { partialResult, entry in
@@ -217,11 +217,11 @@ extension MusicLibrary {
 			
 			// …and then put the album in that folder.
 			let newAlbum = Album(
-				atEndOf: newCollection,
+				atEndOf: newFolder,
 				albumID: newInfo.albumID,
 				context: context)
 			
-			return (newAlbum, newCollection)
+			return (newAlbum, newFolder)
 		}
 	}
 }

@@ -33,9 +33,9 @@ extension Collection {
 		title: String,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .folder, name: "Create a Folder at the bottom")
+		os_signpost(.begin, log: .folder, name: "Create a folder at the bottom")
 		defer {
-			os_signpost(.end, log: .folder, name: "Create a Folder at the bottom")
+			os_signpost(.end, log: .folder, name: "Create a folder at the bottom")
 		}
 		
 		self.init(context: context)

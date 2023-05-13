@@ -14,7 +14,7 @@ protocol OrganizeAlbumsDelegate: AnyObject {
 
 struct WillOrganizeAlbumsStickyNote {
 	let prompt: String
-	let idsOfSourceFolders: Set<NSManagedObjectID>
+	let idsOfSourceCollections: Set<NSManagedObjectID>
 }
 
 final class OrganizeAlbumsClipboard {

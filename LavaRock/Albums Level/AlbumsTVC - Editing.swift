@@ -46,7 +46,7 @@ extension AlbumsTVC {
 		
 		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
 			prompt: clipboard.prompt,
-			idsOfSourceFolders: clipboard.idsOfSourceCollections)
+			idsOfSourceCollections: clipboard.idsOfSourceCollections)
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
@@ -61,7 +61,7 @@ extension AlbumsTVC {
 				prerowsInEachSection: [])
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
 			let originalIndexPathsOfFoldersContainingMovedAlbums = oldFoldersViewModel.indexPathsForAllItems().filter {
-				let collectionID = oldFoldersViewModel.collectionNonNil(at: $0).objectID
+				let collectionID = oldFoldersViewModel.folderNonNil(at: $0).objectID
 				return clipboard.idsOfCollectionsContainingMovedAlbums.contains(collectionID)
 			}
 			

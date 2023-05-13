@@ -102,11 +102,11 @@ extension FoldersTVC {
 			for: indexPath) as? FolderCell
 		else { return UITableViewCell() }
 		
-		let collection = foldersViewModel.collectionNonNil(at: indexPath)
+		let collection = foldersViewModel.folderNonNil(at: indexPath)
 		let mode: FolderRowMode = {
 			switch purpose {
 				case .willOrganizeAlbums(let stickyNote):
-					if stickyNote.idsOfSourceFolders.contains(collection.objectID) {
+					if stickyNote.idsOfSourceCollections.contains(collection.objectID) {
 						return .modalDisabled
 					} else {
 						return .modal

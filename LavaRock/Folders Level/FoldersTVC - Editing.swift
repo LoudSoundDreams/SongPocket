@@ -74,11 +74,11 @@ extension FoldersTVC {
 		let previewContext = NSManagedObjectContext(.mainQueue)
 		previewContext.parent = viewModel.context
 		let combined = previewContext.createFolder(
-			byCombiningFoldersWithInOrder: {
-				let selectedCollections = selectedIndexPaths.map {
-					foldersViewModel.collectionNonNil(at: $0)
+			byCombiningCollectionsWithInOrder: {
+				let selected = selectedIndexPaths.map {
+					foldersViewModel.folderNonNil(at: $0)
 				}
-				return selectedCollections.map { $0.objectID }
+				return selected.map { $0.objectID }
 			}(),
 			index: Int64(viewModel.itemIndex(forRow: targetIndexPath.row))
 		)
