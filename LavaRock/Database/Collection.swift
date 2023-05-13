@@ -50,9 +50,9 @@ extension Collection {
 		title: String,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .folder, name: "Create a Collection at the top")
+		os_signpost(.begin, log: .folder, name: "Create a folder at the top")
 		defer {
-			os_signpost(.end, log: .folder, name: "Create a Collection at the top")
+			os_signpost(.end, log: .folder, name: "Create a folder at the top")
 		}
 		
 		displaced.forEach { $0.index += 1 }
@@ -79,16 +79,16 @@ extension Collection {
 	}
 	
 	static func deleteAllEmpty(via context: NSManagedObjectContext) {
-		var allCollections = allFetched(ordered: true, via: context)
+		var all = allFetched(ordered: true, via: context)
 		
-		allCollections.enumerated().reversed().forEach { (index, collection) in
-			if collection.isEmpty() {
-				context.delete(collection)
-				allCollections.remove(at: index)
+		all.enumerated().reversed().forEach { (index, folder) in
+			if folder.isEmpty() {
+				context.delete(folder)
+				all.remove(at: index)
 			}
 		}
 		
-		allCollections.reindex()
+		all.reindex()
 	}
 	
 	// MARK: - Albums
@@ -112,18 +112,18 @@ extension Collection {
 		possiblyToSame: Bool,
 		via context: NSManagedObjectContext
 	) {
-		unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
+		unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
 			with: albumIDs,
-			possiblyToSameCollection: possiblyToSame,
+			possiblyToSame: possiblyToSame,
 			via: context)
 		
 		Self.deleteAllEmpty(via: context) // Also reindexes `self`
 	}
 	
 	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn’t delete empty source `Collection`s. You must call `Collection.deleteAllEmpty` later.
-	final func unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
+	final func unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
 		with albumIDs: [NSManagedObjectID],
-		possiblyToSameCollection: Bool,
+		possiblyToSame: Bool,
 		via context: NSManagedObjectContext
 	) {
 		let albumsToMove = albumIDs.map {
@@ -139,7 +139,7 @@ extension Collection {
 		}
 		
 		// In case we moved any albums to this folder that were already here.
-		if possiblyToSameCollection {
+		if possiblyToSame {
 			var newContents = albums(sorted: true)
 			newContents.reindex()
 		}

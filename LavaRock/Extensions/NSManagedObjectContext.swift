@@ -31,15 +31,15 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
-	final func createCollection(
-		byCombiningCollectionsWithInOrder idsOfCollectionsToCombine: [NSManagedObjectID],
+	final func createFolder(
+		byCombiningFoldersWithInOrder idsOfFoldersToCombine: [NSManagedObjectID],
 		index: Int64
 	) -> Collection {
 		let result = Collection(context: self)
 		result.title = LRString.untitledFolder
 		result.index = index
 		
-		let toCombine = idsOfCollectionsToCombine.map { object(with: $0) } as! [Collection]
+		let toCombine = idsOfFoldersToCombine.map { object(with: $0) } as! [Collection]
 		var contentsOfResult = toCombine.flatMap { $0.albums(sorted: true) }
 		contentsOfResult.reindex()
 		contentsOfResult.forEach { $0.container = result }

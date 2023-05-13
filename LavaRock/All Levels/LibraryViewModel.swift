@@ -266,10 +266,10 @@ extension LibraryViewModel {
 				// Use `sortedMaintainingOrderWhen` for convenience.
 				
 			case .folder_name:
-				guard let collections = items as? [Collection] else {
+				guard let folders = items as? [Collection] else {
 					return items
 				}
-				return collections.sortedMaintainingOrderWhen {
+				return folders.sortedMaintainingOrderWhen {
 					$0.title == $1.title
 				} areInOrder: {
 					let leftTitle = $0.title ?? ""

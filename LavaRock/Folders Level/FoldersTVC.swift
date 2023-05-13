@@ -32,9 +32,9 @@ final class FoldersTVC:
 	enum FoldersViewState {
 		case allowAccess
 		case loading
-		case removingRowsInCollectionsSection
+		case removingFolderRows
 		case emptyPlaceholder
-		case someCollections
+		case someFolders
 	}
 	
 	// MARK: - Properties
@@ -42,7 +42,7 @@ final class FoldersTVC:
 	var presented_previewing_Combine_IndexPaths: [IndexPath] = []
 	
 	// Actions
-	private(set) lazy var renameFocusedCollectionAction = UIAccessibilityCustomAction(
+	private(set) lazy var renameFocused = UIAccessibilityCustomAction(
 		name: LRString.rename,
 		actionHandler: renameFocusedCollectionHandler)
 	private func renameFocusedCollectionHandler(
@@ -77,25 +77,25 @@ final class FoldersTVC:
 	}
 	
 	// State
-	var needsRemoveRowsInCollectionsSection = false
+	var needsRemoveFolderRows = false
 	var viewState: FoldersViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
-		if needsRemoveRowsInCollectionsSection { // You must check this before checking `isMergingChanges`.
-			return .removingRowsInCollectionsSection
+		if needsRemoveFolderRows { // You must check this before checking `isMergingChanges`.
+			return .removingFolderRows
 		}
 		if isMergingChanges {
 			if viewModel.isEmpty() {
 				return .loading
 			} else {
-				return .someCollections
+				return .someFolders
 			}
 		} else {
 			if viewModel.isEmpty() {
 				return .emptyPlaceholder
 			} else {
-				return .someCollections
+				return .someFolders
 			}
 		}
 	}
@@ -124,15 +124,15 @@ final class FoldersTVC:
 		let toInsert: [IndexPath]
 		let toReload: [IndexPath]
 		
-		let collectionsSectionIndex = 0
+		let foldersSectionIndex = 0
 		let oldIndexPaths = tableView.indexPathsForRows(
-			inSection: collectionsSectionIndex,
+			inSection: foldersSectionIndex,
 			firstRow: 0)
 		let newIndexPaths: [IndexPath] = {
-			let numberOfRows = numberOfRows(forSection: collectionsSectionIndex)
+			let numberOfRows = numberOfRows(forSection: foldersSectionIndex)
 			let indicesOfRows = Array(0 ..< numberOfRows)
 			return indicesOfRows.map { row in
-				IndexPath(row: row, section: collectionsSectionIndex)
+				IndexPath(row: row, section: foldersSectionIndex)
 			}
 		}()
 		
@@ -149,7 +149,7 @@ final class FoldersTVC:
 					toInsert = newIndexPaths
 					toReload = []
 				}
-			case .removingRowsInCollectionsSection:
+			case .removingFolderRows:
 				toDelete = oldIndexPaths
 				toInsert = newIndexPaths // Empty
 				toReload = []
@@ -157,7 +157,7 @@ final class FoldersTVC:
 				toDelete = oldIndexPaths
 				toInsert = newIndexPaths
 				toReload = []
-			case .someCollections: // Merging changes with existing folders
+			case .someFolders: // Merging changes with existing folders
 				// Crashes after Reset Location & Privacy
 				toDelete = []
 				toInsert = []
@@ -173,12 +173,12 @@ final class FoldersTVC:
 				case
 						.allowAccess,
 						.loading,
-						.removingRowsInCollectionsSection,
+						.removingFolderRows,
 						.emptyPlaceholder:
 					if self.isEditing {
 						self.setEditing(false, animated: true)
 					}
-				case .someCollections:
+				case .someFolders:
 					break
 			}
 			
@@ -322,10 +322,10 @@ final class FoldersTVC:
 					.loading,
 					.emptyPlaceholder:
 				// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
-				needsRemoveRowsInCollectionsSection = true // `viewState` is now `.removingRowsInCollectionsSection`
+				needsRemoveFolderRows = true // `viewState` is now `.removingFolderRews`
 				Task {
 					await reflectViewState(runningBeforeCompletion: {
-						self.needsRemoveRowsInCollectionsSection = false // WARNING: `viewState` is now `.loading` or `.emptyPlaceholder`, but the UI doesn’t reflect that.
+						self.needsRemoveFolderRows = false // WARNING: `viewState` is now `.loading` or `.emptyPlaceholder`, but the UI doesn’t reflect that.
 						
 						super.freshenLibraryItems()
 					})
@@ -333,8 +333,8 @@ final class FoldersTVC:
 				return
 			case
 					.allowAccess,
-					.removingRowsInCollectionsSection,
-					.someCollections:
+					.removingFolderRows,
+					.someFolders:
 				break
 		}
 		

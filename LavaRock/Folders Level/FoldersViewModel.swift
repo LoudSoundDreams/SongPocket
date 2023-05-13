@@ -72,14 +72,14 @@ extension FoldersViewModel {
 	
 	enum RowCase {
 		case prerow(Prerow)
-		case collection
+		case folder
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
 		if row < numberOfPrerowsPerSection {
 			return .prerow(prerowsInEachSection[row])
 		} else {
-			return .collection
+			return .folder
 		}
 	}
 	

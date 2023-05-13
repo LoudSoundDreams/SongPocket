@@ -58,12 +58,12 @@ extension MusicLibrary {
 			potentiallyOutdatedSongsAndFreshInfos: potentiallyOutdatedSongsAndFreshInfos)
 		
 		let existingAlbums = Album.allFetched(sortedByIndex: false, via: context) // Order doesn’t matter, because we identify `Album`s by their `albumPersistentID`.
-		let existingCollections = Collection.allFetched(ordered: true, via: context) // Order matters, because we’ll try to add new `Album`s to the first `Collection` with a matching title.
+		let existingFolders = Collection.allFetched(ordered: true, via: context) // Order matters, because we’ll try to add new `Album`s to the first `Collection` with a matching title.
 		createLibraryItems( // Create before deleting, because deleting also cleans up empty `Album`s and `Collection`s, which we shouldn’t do yet (see above).
 			// This might create new `Album`s, and if it does, it might create new `Collection`s.
 			for: newInfos,
 			existingAlbums: existingAlbums,
-			existingCollections: existingCollections,
+			existingFolders: existingFolders,
 			isFirstImport: isFirstImport)
 		deleteLibraryItems(
 			for: songsToDelete)

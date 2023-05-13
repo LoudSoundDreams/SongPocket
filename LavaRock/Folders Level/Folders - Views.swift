@@ -54,7 +54,7 @@ final class LoadingCell: UITableViewCell {
 }
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class NoCollectionsPlaceholderCell: UITableViewCell {
+final class NoFoldersPlaceholderCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
@@ -124,7 +124,7 @@ final class CreateFolderCell: UITableViewCell {
 	}
 }
 
-final class CollectionCell: UITableViewCell {
+final class FolderCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
 	// `AvatarDisplaying__`
@@ -214,7 +214,7 @@ final class CollectionCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-extension CollectionCell: AvatarDisplaying__ {
+extension FolderCell: AvatarDisplaying__ {
 	func indicateAvatarStatus__(
 		_ avatarStatus: AvatarStatus
 	) {

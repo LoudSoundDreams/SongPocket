@@ -52,7 +52,7 @@ final class AlbumsTVC:
 	// State
 	var idsOfAlbumsToKeepSelected: Set<NSManagedObjectID> = []
 	
-	// MARK: “Combine Collections” Sheet
+	// MARK: “Combine Folders” Sheet
 	
 	var is_previewing_combine_with_album_count: Int = 0
 	var cancel_combine_action: UIAction? = nil

@@ -30,11 +30,11 @@ extension FoldersTVC {
 					.allowAccess,
 					.loading:
 				return 1
-			case .removingRowsInCollectionsSection:
+			case .removingFolderRows:
 				return 0
 			case .emptyPlaceholder:
 				return 2
-			case .someCollections:
+			case .someFolders:
 				return (viewModel as! FoldersViewModel).numberOfRows()
 		}
 	}
@@ -62,7 +62,7 @@ extension FoldersTVC {
 									withIdentifier: "Create Folder",
 									for: indexPath) as? CreateFolderCell ?? UITableViewCell()
 						}
-					case .collection:
+					case .folder:
 						break
 				}
 			case .browsing:
@@ -78,14 +78,14 @@ extension FoldersTVC {
 				return tableView.dequeueReusableCell(
 					withIdentifier: "Loading",
 					for: indexPath) as? LoadingCell ?? UITableViewCell()
-			case .removingRowsInCollectionsSection: // Should never run
+			case .removingFolderRows: // Should never run
 				return UITableViewCell()
 			case .emptyPlaceholder:
 				switch indexPath.row {
 					case 0:
 						return tableView.dequeueReusableCell(
 							withIdentifier: "No Folders",
-							for: indexPath) as? NoCollectionsPlaceholderCell ?? UITableViewCell()
+							for: indexPath) as? NoFoldersPlaceholderCell ?? UITableViewCell()
 					case 1:
 						return tableView.dequeueReusableCell(
 							withIdentifier: "Open Music",
@@ -93,13 +93,13 @@ extension FoldersTVC {
 					default: // Should never run
 						return UITableViewCell()
 				}
-			case .someCollections:
+			case .someFolders:
 				break
 		}
 		
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Folder",
-			for: indexPath) as? CollectionCell
+			for: indexPath) as? FolderCell
 		else { return UITableViewCell() }
 		
 		let collection = foldersViewModel.collectionNonNil(at: indexPath)
@@ -112,9 +112,9 @@ extension FoldersTVC {
 						return .modal
 					}
 				case .organizingAlbums(let clipboard):
-					if clipboard.idsOfSourceFolders.contains(collection.objectID) {
+					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
 						return .modalDisabled
-					} else if clipboard.idsOfFoldersContainingMovedAlbums.contains(collection.objectID) {
+					} else if clipboard.idsOfCollectionsContainingMovedAlbums.contains(collection.objectID) {
 						return .modalTinted
 					} else {
 						return .modal
@@ -126,7 +126,7 @@ extension FoldersTVC {
 						return .modal
 					}
 				case .browsing:
-					return .normal([renameFocusedCollectionAction])
+					return .normal([renameFocused])
 			}
 		}()
 		cell.configure(
@@ -164,10 +164,10 @@ extension FoldersTVC {
 					case
 							.allowAccess,
 							.loading,
-							.removingRowsInCollectionsSection, // Should never run
+							.removingFolderRows, // Should never run
 							.emptyPlaceholder:
 						return false
-					case .someCollections:
+					case .someFolders:
 						return super.tableView(
 							tableView,
 							shouldBeginMultipleSelectionInteractionAt: indexPath)
@@ -195,7 +195,7 @@ extension FoldersTVC {
 							case .createFolder:
 								return indexPath
 						}
-					case .collection:
+					case .folder:
 						break
 				}
 			case .browsing:
@@ -206,10 +206,10 @@ extension FoldersTVC {
 			case
 					.allowAccess,
 					.loading, // Should never run
-					.removingRowsInCollectionsSection, // Should never run
-					.emptyPlaceholder: // Should never run for `NoCollectionsPlaceholderCell`
+					.removingFolderRows, // Should never run
+					.emptyPlaceholder: // Should never run for `NoFoldersPlaceholderCell`
 				return indexPath
-			case .someCollections:
+			case .someFolders:
 				return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
 	}
@@ -233,7 +233,7 @@ extension FoldersTVC {
 								createAndOpen()
 								return
 						}
-					case .collection:
+					case .folder:
 						break
 				}
 			case .browsing:
@@ -247,7 +247,7 @@ extension FoldersTVC {
 				}
 			case
 					.loading,
-					.removingRowsInCollectionsSection: // Should never run
+					.removingFolderRows: // Should never run
 				return
 			case .emptyPlaceholder:
 				guard tableView.cellForRow(at: indexPath) is OpenMusicCell else {
@@ -259,7 +259,7 @@ extension FoldersTVC {
 					
 					tableView.deselectRow(at: indexPath, animated: true)
 				}
-			case .someCollections:
+			case .someFolders:
 				super.tableView(tableView, didSelectRowAt: indexPath)
 		}
 	}

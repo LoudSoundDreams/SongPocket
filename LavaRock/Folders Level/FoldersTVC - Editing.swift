@@ -17,12 +17,12 @@ extension FoldersTVC {
 	// MARK: Renaming
 	
 	func promptRename(at indexPath: IndexPath) {
-		guard let collection = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
+		guard let folder = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
 		
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		
 		let dialog = UIAlertController.make_Rename_dialog(
-			existing_title: collection.title,
+			existing_title: folder.title,
 			textFieldDelegate: self,
 			done_handler: { [weak self] textFieldText in
 				self?.commitRename(
@@ -73,8 +73,8 @@ extension FoldersTVC {
 		// Create a child context previewing the changes.
 		let previewContext = NSManagedObjectContext(.mainQueue)
 		previewContext.parent = viewModel.context
-		let combinedCollection = previewContext.createCollection(
-			byCombiningCollectionsWithInOrder: {
+		let combined = previewContext.createFolder(
+			byCombiningFoldersWithInOrder: {
 				let selectedCollections = selectedIndexPaths.map {
 					foldersViewModel.collectionNonNil(at: $0)
 				}
@@ -82,7 +82,7 @@ extension FoldersTVC {
 			}(),
 			index: Int64(viewModel.itemIndex(forRow: targetIndexPath.row))
 		)
-		try! previewContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
+		try! previewContext.obtainPermanentIDs(for: [combined]) // So that we don’t unnecessarily remove and reinsert the row later.
 		
 		// Apply the preview context to this `FoldersTVC`.
 		let previewViewModel = FoldersViewModel(
@@ -111,10 +111,10 @@ extension FoldersTVC {
 			let albumsTVC = libraryNC.viewControllers.first as! AlbumsTVC
 			albumsTVC.viewModel = AlbumsViewModel(
 				context: previewContext,
-				parentFolder: .exists(combinedCollection),
+				parentFolder: .exists(combined),
 				prerowsInEachSection: []
 			)
-			albumsTVC.is_previewing_combine_with_album_count = combinedCollection.contents?.count ?? 0
+			albumsTVC.is_previewing_combine_with_album_count = combined.contents?.count ?? 0
 			albumsTVC.cancel_combine_action = UIAction { [weak self] _ in
 				self?.dismiss(animated: true, completion: {
 					self?.revertCombine(thenSelect: selectedIndexPaths)

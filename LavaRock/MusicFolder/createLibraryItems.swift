@@ -13,7 +13,7 @@ extension MusicLibrary {
 	func createLibraryItems(
 		for newInfos: [SongInfo],
 		existingAlbums: [Album],
-		existingCollections: [Collection],
+		existingFolders: [Collection],
 		isFirstImport: Bool
 	) {
 		os_signpost(.begin, log: .merge, name: "3. Create library items")
@@ -65,8 +65,8 @@ extension MusicLibrary {
 			}
 			return Dictionary(uniqueKeysWithValues: tuplesForExistingAlbums)
 		}()
-		var existingCollectionsByTitle: [String: [Collection]] =
-		Dictionary(grouping: existingCollections) { $0.title! }
+		var existingFoldersByTitle: [String: [Collection]] =
+		Dictionary(grouping: existingFolders) { $0.title! }
 		
 		os_signpost(.begin, log: .create, name: "Create all the Songs and containers")
 		groupsOfInfos.forEach { groupOfInfos in
@@ -74,7 +74,7 @@ extension MusicLibrary {
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: groupOfInfos,
 				existingAlbumsByID: existingAlbumsByID,
-				existingCollectionsByTitle: existingCollectionsByTitle,
+				existingFoldersByTitle: existingFoldersByTitle,
 				isFirstImport: isFirstImport)
 			
 			if let newAlbum = newAlbum {
@@ -82,9 +82,9 @@ extension MusicLibrary {
 			}
 			if let newCollection = newCollection {
 				let title = newCollection.title!
-				let oldBucketOfCollections = existingCollectionsByTitle[title] ?? []
-				let newBucketOfCollections = [newCollection] + oldBucketOfCollections
-				existingCollectionsByTitle[title] = newBucketOfCollections
+				let oldBucket = existingFoldersByTitle[title] ?? []
+				let newBucket = [newCollection] + oldBucket
+				existingFoldersByTitle[title] = newBucket
 			}
 			os_signpost(.end, log: .create, name: "Create one group of Songs and containers")
 		}
@@ -118,7 +118,7 @@ extension MusicLibrary {
 	private func createSongsAndReturnNewContainers(
 		for infos: [SongInfo],
 		existingAlbumsByID: [AlbumID: Album],
-		existingCollectionsByTitle: [String: [Collection]],
+		existingFoldersByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (Album?, Collection?) {
 		let firstInfo = infos.first!
@@ -145,7 +145,7 @@ extension MusicLibrary {
 			os_signpost(.begin, log: .create, name: "Create a new album and maybe new folder")
 			let newContainers = newAlbumAndMaybeNewFolderMade(
 				for: firstInfo,
-				existingCollectionsByTitle: existingCollectionsByTitle,
+				existingFoldersByTitle: existingFoldersByTitle,
 				isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
 			os_signpost(.end,log: .create, name: "Create a new album and maybe new folder")
@@ -168,14 +168,14 @@ extension MusicLibrary {
 	
 	private func newAlbumAndMaybeNewFolderMade(
 		for newInfo: SongInfo,
-		existingCollectionsByTitle: [String: [Collection]],
+		existingFoldersByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
 		let titleOfDestination
 		= newInfo.albumArtistOnDisk ?? LRString.unknownAlbumArtist
 		
 		// If we already have a matching folder to put the album into…
-		if let matchingExistingCollection = existingCollectionsByTitle[titleOfDestination]?.first {
+		if let matchingExistingCollection = existingFoldersByTitle[titleOfDestination]?.first {
 			
 			// …then put the album in that folder.
 			let newAlbum: Album = {
@@ -197,20 +197,20 @@ extension MusicLibrary {
 			// Otherwise, create the folder to put the album in…
 			let newCollection: Collection = {
 				if isFirstImport {
-					os_signpost(.begin, log: .create, name: "Count all the Collections so far")
-					let existingCollectionsCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
+					os_signpost(.begin, log: .create, name: "Count all the folders so far")
+					let existingCount = existingFoldersByTitle.reduce(0) { partialResult, entry in
 						partialResult + entry.value.count
 					}
-					os_signpost(.end, log: .create, name: "Count all the Collections so far")
+					os_signpost(.end, log: .create, name: "Count all the folders so far")
 					return Collection(
-						afterAllOtherCount: existingCollectionsCount,
+						afterAllOtherCount: existingCount,
 						title: titleOfDestination,
 						context: context)
 				} else {
-					let existingCollections = existingCollectionsByTitle.flatMap { $0.value }
+					let existing = existingFoldersByTitle.flatMap { $0.value }
 					return Collection(
 						index: 0,
-						before: existingCollections,
+						before: existing,
 						title: titleOfDestination,
 						context: context)
 				}}()

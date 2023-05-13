@@ -20,9 +20,9 @@ struct WillOrganizeAlbumsStickyNote {
 final class OrganizeAlbumsClipboard {
 	// Data
 	let idsOfSubjectedAlbums: Set<NSManagedObjectID>
-	let idsOfSourceFolders: Set<NSManagedObjectID>
+	let idsOfSourceCollections: Set<NSManagedObjectID>
 	let idsOfUnmovedAlbums: Set<NSManagedObjectID>
-	let idsOfFoldersContainingMovedAlbums: Set<NSManagedObjectID>
+	let idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>
 	
 	// Helpers
 	private(set) weak var delegate: OrganizeAlbumsDelegate? = nil
@@ -30,7 +30,7 @@ final class OrganizeAlbumsClipboard {
 		return String.localizedStringWithFormat(
 			LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
 			idsOfSubjectedAlbums.count - idsOfUnmovedAlbums.count,
-			idsOfFoldersContainingMovedAlbums.count)
+			idsOfCollectionsContainingMovedAlbums.count)
 	}
 	
 	// State
@@ -38,15 +38,15 @@ final class OrganizeAlbumsClipboard {
 	
 	init(
 		idsOfSubjectedAlbums: Set<NSManagedObjectID>,
-		idsOfSourceFolders: Set<NSManagedObjectID>,
+		idsOfSourceCollections: Set<NSManagedObjectID>,
 		idsOfUnmovedAlbums: Set<NSManagedObjectID>,
-		idsOfFoldersContainingMovedAlbums: Set<NSManagedObjectID>,
+		idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>,
 		delegate: OrganizeAlbumsDelegate
 	) {
 		self.idsOfSubjectedAlbums = idsOfSubjectedAlbums
-		self.idsOfSourceFolders = idsOfSourceFolders
+		self.idsOfSourceCollections = idsOfSourceCollections
 		self.idsOfUnmovedAlbums = idsOfUnmovedAlbums
-		self.idsOfFoldersContainingMovedAlbums = idsOfFoldersContainingMovedAlbums
+		self.idsOfCollectionsContainingMovedAlbums = idsOfCollectionsContainingMovedAlbums
 		self.delegate = delegate
 	}
 }

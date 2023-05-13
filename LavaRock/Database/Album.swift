@@ -66,7 +66,7 @@ extension Album {
 	
 	// MARK: - All Instances
 	
-	// Similar to `Collection.allFetched` and `Song.allFetched`.
+	// Similar to `allFetched`.
 	static func allFetched(
 		sortedByIndex: Bool,
 		via context: NSManagedObjectContext

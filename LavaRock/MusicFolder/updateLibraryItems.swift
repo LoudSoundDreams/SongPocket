@@ -138,9 +138,9 @@ extension MusicLibrary {
 			} else {
 				// Otherwise, create the `Album` to move the `Song` to…
 				os_signpost(.begin, log: .update, name: "Move a Song to a new Album")
-				let existingCollection = song.container!.container!
+				let existingFolder = song.container!.container!
 				let newAlbum = Album(
-					atBeginningOf: existingCollection,
+					atBeginningOf: existingFolder,
 					albumID: info.albumID,
 					context: context)
 				

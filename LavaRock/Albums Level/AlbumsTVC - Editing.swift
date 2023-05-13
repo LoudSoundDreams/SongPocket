@@ -11,7 +11,7 @@ import OSLog
 
 extension AlbumsTVC {
 	func previewAutoMove() {
-		// Prepare a Collections view to present modally.
+		// Prepare a Folders view to present modally.
 		let libraryNC = LibraryNC(rootStoryboardName: "FoldersTVC")
 		guard
 			let foldersTVC = libraryNC.viewControllers.first as? FoldersTVC,
@@ -46,7 +46,7 @@ extension AlbumsTVC {
 		
 		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
 			prompt: clipboard.prompt,
-			idsOfSourceFolders: clipboard.idsOfSourceFolders)
+			idsOfSourceFolders: clipboard.idsOfSourceCollections)
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
@@ -60,14 +60,14 @@ extension AlbumsTVC {
 				context: childContext,
 				prerowsInEachSection: [])
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
-			let originalIndexPathsOfCollectionsContainingMovedAlbums = oldFoldersViewModel.indexPathsForAllItems().filter {
+			let originalIndexPathsOfFoldersContainingMovedAlbums = oldFoldersViewModel.indexPathsForAllItems().filter {
 				let collectionID = oldFoldersViewModel.collectionNonNil(at: $0).objectID
-				return clipboard.idsOfFoldersContainingMovedAlbums.contains(collectionID)
+				return clipboard.idsOfCollectionsContainingMovedAlbums.contains(collectionID)
 			}
 			
 			// Similar to `reflectDatabase`.
 			let _ = await foldersTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				firstReloading: originalIndexPathsOfCollectionsContainingMovedAlbums,
+				firstReloading: originalIndexPathsOfFoldersContainingMovedAlbums,
 				previewOfChanges,
 				runningBeforeContinuation: {
 					// Remove the now-playing marker from the source folder, if necessary.
@@ -136,13 +136,13 @@ extension AlbumsTVC {
 					via: context)
 				os_signpost(.end, log: log, name: "Move album to matching new folder")
 			} else if // Otherwise, if we already had a matching existing folder…
-				let matchingExistingCollection = existingFoldersByTitle[titleOfDestination]?.first
+				let matchingExisting = existingFoldersByTitle[titleOfDestination]?.first
 			{
 				// …then move the album to the beginning of that folder.
 				os_signpost(.begin, log: log, name: "Move album to matching existing folder")
-				matchingExistingCollection.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
+				matchingExisting.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
 					with: [album.objectID],
-					possiblyToSameCollection: false,
+					possiblyToSame: false,
 					via: context)
 				os_signpost(.end, log: log, name: "Move album to matching existing folder")
 			} else {
@@ -167,9 +167,9 @@ extension AlbumsTVC {
 		// Create the `OrganizeAlbumsClipboard` to return.
 		return OrganizeAlbumsClipboard(
 			idsOfSubjectedAlbums: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-			idsOfSourceFolders: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
+			idsOfSourceCollections: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
 			idsOfUnmovedAlbums: idsOfUnmovedAlbums,
-			idsOfFoldersContainingMovedAlbums: {
+			idsOfCollectionsContainingMovedAlbums: {
 				let idsOfMovedAlbums = movedAlbumsInOriginalContext.map { $0.objectID }
 				return Set(idsOfMovedAlbums.map {
 					let albumInThisContext = context.object(with: $0) as! Album
