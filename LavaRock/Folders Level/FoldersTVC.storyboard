@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vce-TP-hYI">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -114,7 +115,7 @@
                                     <outlet property="spacerSpeakerImageView" destination="ZA8-cG-C8X" id="hJk-4n-kZQ"/>
                                     <outlet property="speakerImageView" destination="uca-y1-fcm" id="r6D-eI-mDX"/>
                                     <outlet property="titleLabel" destination="SFb-dV-xDe" id="IjH-9w-2tc"/>
-                                    <segue destination="6Yx-HL-vln" kind="show" identifier="Open Collection" id="Egm-ag-jV8"/>
+                                    <segue destination="6Yx-HL-vln" kind="show" identifier="Open Folder" id="Egm-ag-jV8"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

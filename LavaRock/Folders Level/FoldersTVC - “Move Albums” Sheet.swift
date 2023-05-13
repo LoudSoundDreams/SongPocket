@@ -52,7 +52,7 @@ extension FoldersTVC {
 			}
 			
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-			performSegue(withIdentifier: "Open Collection", sender: self)
+			performSegue(withIdentifier: "Open Folder", sender: self)
 		}
 	}
 }
