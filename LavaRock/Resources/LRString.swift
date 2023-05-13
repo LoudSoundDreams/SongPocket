@@ -59,7 +59,7 @@ enum LRString {
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
 	static let tipJarFooter = NSLocalizedString(
-		"Consider tipping when I add features you like! Thank you for using Songpocket.",
+		"Thank you for using Songpocket.",
 		comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(
 		" Thank You! ",
