@@ -231,7 +231,7 @@ final class MainToolbar {
 	
 	private lazy var skipBackButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			title: LRString.skip10SecondsBackwards,
+			title: LRString.skipBack10Seconds,
 			image: UIImage(systemName: "gobackward.15"),
 			primaryAction: UIAction { _ in
 				Self.player?.currentPlaybackTime -= 15
@@ -244,7 +244,7 @@ final class MainToolbar {
 	
 	private lazy var skipForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
-			title: LRString.skip10SecondsForward,
+			title: LRString.skipForward10Seconds,
 			image: UIImage(systemName: "goforward.15"),
 			primaryAction: UIAction { _ in
 				Self.player?.currentPlaybackTime += 15
