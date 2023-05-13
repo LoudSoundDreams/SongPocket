@@ -229,7 +229,7 @@ final class MainToolbar {
 		)
 	}
 	
-	private lazy var skipBackButton: UIBarButtonItem = {
+	private lazy var jumpBackButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.skipBack10Seconds,
 			image: UIImage(systemName: "gobackward.15"),
@@ -242,7 +242,7 @@ final class MainToolbar {
 	
 	private lazy var playPauseButton = UIBarButtonItem()
 	
-	private lazy var skipForwardButton: UIBarButtonItem = {
+	private lazy var jumpForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.skipForward10Seconds,
 			image: UIImage(systemName: "goforward.15"),
@@ -253,7 +253,7 @@ final class MainToolbar {
 		return button
 	}()
 	
-	private lazy var nextSongButton: UIBarButtonItem = {
+	private lazy var nextButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.next,
 			image: UIImage(systemName: "forward.end.circle"),
@@ -269,25 +269,25 @@ final class MainToolbar {
 			return [
 				console_button,
 				.flexibleSpace(),
-				skipBackButton,
+				jumpBackButton,
 				.flexibleSpace(),
 				playPauseButton,
 				.flexibleSpace(),
-				skipForwardButton,
+				jumpForwardButton,
 				.flexibleSpace(),
-				nextSongButton,
+				nextButton,
 			]
 		} else {
 			return [
 				moreButton,
 				.flexibleSpace(),
-				skipBackButton,
+				jumpBackButton,
 				.flexibleSpace(),
 				playPauseButton,
 				.flexibleSpace(),
-				skipForwardButton,
+				jumpForwardButton,
 				.flexibleSpace(),
-				nextSongButton,
+				nextButton,
 			]
 		}
 	}
