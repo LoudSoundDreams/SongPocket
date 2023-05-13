@@ -16,6 +16,7 @@
 		071A0B9E277E76510017F76D /* LavaRock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* LavaRock.swift */; };
 		071A0BA0277E832C0017F76D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9F277E832C0017F76D /* Database.swift */; };
 		071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0BA1277E83CB0017F76D /* LibraryNC.swift */; };
+		071DC5E72A1045CE0073C854 /* Main Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071DC5E62A1045CE0073C854 /* Main Toolbar.swift */; };
 		07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* TapeDeck.swift */; };
 		072FD02726C30BB90053369B /* cleanUpLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */; };
 		073198CD279D204100E5FD44 /* TipJarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073198CC279D204100E5FD44 /* TipJarViewModel.swift */; };
@@ -152,6 +153,7 @@
 		071A0B9D277E76510017F76D /* LavaRock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LavaRock.swift; sourceTree = "<group>"; };
 		071A0B9F277E832C0017F76D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		071A0BA1277E83CB0017F76D /* LibraryNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryNC.swift; sourceTree = "<group>"; };
+		071DC5E62A1045CE0073C854 /* Main Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Main Toolbar.swift"; sourceTree = "<group>"; };
 		07267A1F25537C5800C914A3 /* TapeDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeck.swift; sourceTree = "<group>"; };
 		072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cleanUpLibraryItems.swift; sourceTree = "<group>"; };
 		073198CC279D204100E5FD44 /* TipJarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarViewModel.swift; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07E0BBFF276569480010117E /* General UI */,
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
+				071DC5E62A1045CE0073C854 /* Main Toolbar.swift */,
 				07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */,
 				07E0BC0027656C300010117E /* Library */,
 				0706ABDE24D946870090EB21 /* Settings */,
@@ -765,6 +768,7 @@
 				07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */,
 				073198CD279D204100E5FD44 /* TipJarViewModel.swift in Sources */,
 				07E0BBF62765678F0010117E /* UIFont.swift in Sources */,
+				071DC5E72A1045CE0073C854 /* Main Toolbar.swift in Sources */,
 				0764C62B293BE3A7003BA345 /* AlbumInfoRow.swift in Sources */,
 				07755A58294821860056E90C /* AvatarImage.swift in Sources */,
 				0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */,

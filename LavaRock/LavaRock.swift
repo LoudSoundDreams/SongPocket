@@ -33,6 +33,7 @@ struct LavaRock: App {
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()
 				}
+//				.mainToolbar()
 		}
 	}
 }
