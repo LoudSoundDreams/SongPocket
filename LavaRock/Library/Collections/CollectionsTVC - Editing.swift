@@ -153,7 +153,7 @@ extension CollectionsTVC {
 		viewModelBeforeCombining = nil
 		
 		viewModel.context.tryToSave()
-		viewModel.context.parent!.tryToSave()
+		viewModel.context.parent!.tryToSave() // TO DO: Crashes
 		
 		let newViewModel = CollectionsViewModel(
 			context: viewModel.context.parent!,
