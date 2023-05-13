@@ -46,10 +46,10 @@ extension AlbumsTVC {
 		
 		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
 			prompt: clipboard.prompt,
-			idsOfSourceCollections: clipboard.idsOfSourceCollections)
+			idsOfSourceFolders: clipboard.idsOfSourceFolders)
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
-		guard let oldCollectionsViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
+		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
 		Task {
 			await present__async(libraryNC, animated: true)
 			
@@ -59,10 +59,10 @@ extension AlbumsTVC {
 			let previewOfChanges = FoldersViewModel(
 				context: childContext,
 				prerowsInEachSection: [])
-			// We might have moved `Album`s into any existing `Collection` other than the source. If so, fade in a highlight on those rows.
-			let originalIndexPathsOfCollectionsContainingMovedAlbums = oldCollectionsViewModel.indexPathsForAllItems().filter {
-				let collectionID = oldCollectionsViewModel.collectionNonNil(at: $0).objectID
-				return clipboard.idsOfCollectionsContainingMovedAlbums.contains(collectionID)
+			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
+			let originalIndexPathsOfCollectionsContainingMovedAlbums = oldFoldersViewModel.indexPathsForAllItems().filter {
+				let collectionID = oldFoldersViewModel.collectionNonNil(at: $0).objectID
+				return clipboard.idsOfFoldersContainingMovedAlbums.contains(collectionID)
 			}
 			
 			// Similar to `reflectDatabase`.
@@ -70,7 +70,7 @@ extension AlbumsTVC {
 				firstReloading: originalIndexPathsOfCollectionsContainingMovedAlbums,
 				previewOfChanges,
 				runningBeforeContinuation: {
-					// Remove the now-playing marker from the source `Collection`, if necessary.
+					// Remove the now-playing marker from the source folder, if necessary.
 					foldersTVC.reflectPlayhead()
 				}
 			)
@@ -88,34 +88,34 @@ extension AlbumsTVC {
 			os_signpost(.end, log: log, name: "Preview organizing Albums")
 		}
 		
-		// If an `Album` is already in a `Collection` with a title that matches its album artist, then leave it there.
-		// Otherwise, move the `Album` to the first `Collection` with a matching title.
-		// If there is no matching `Collection`, then create one.
-		// Put new `Collection`s above the source `Collection`, in the order that the album artists first appear among the `Album`s we’re moving.
+		// If an album is already in a folder with a title that matches its album artist, then leave it there.
+		// Otherwise, move the album to the first folder with a matching title.
+		// If there is no matching folder, then create one.
+		// Put new folders above the source folder, in the order that the album artists first appear among the albums we’re moving.
 		
 		// Results
 		var movedAlbumsInOriginalContext: Set<Album> = []
 		var idsOfUnmovedAlbums: Set<NSManagedObjectID> = []
 		
 		// Work notes
-		let indexOfSourceCollection = albumsInOriginalContextToMaybeMove.first!.container!.index
-		let collectionsToDisplace: [Collection] = {
+		let indexOfSourceFolder = albumsInOriginalContextToMaybeMove.first!.container!.index
+		let toDisplace: [Collection] = {
 			let predicate = NSPredicate(
 				format: "index >= %lld",
-				indexOfSourceCollection)
+				indexOfSourceFolder)
 			return Collection.allFetched(
 				ordered: true,
 				predicate: predicate,
 				via: context)
 		}()
-		var newCollectionsByTitle: [String: Collection] = [:]
-		let existingCollectionsByTitle: [String: [Collection]] = {
-			let existingCollections = Collection.allFetched(ordered: true, via: context)
-			return Dictionary(grouping: existingCollections) { $0.title! }
+		var newFoldersByTitle: [String: Collection] = [:]
+		let existingFoldersByTitle: [String: [Collection]] = {
+			let existingFolders = Collection.allFetched(ordered: true, via: context)
+			return Dictionary(grouping: existingFolders) { $0.title! }
 		}()
 		
 		albumsInOriginalContextToMaybeMove.forEach { album in
-			// Similar to `newAlbumAndMaybeNewCollectionMade`.
+			// Similar to `newAlbumAndMaybeNewFolderMade`.
 			
 			let titleOfDestination = album.albumArtistFormatted()
 			
@@ -126,50 +126,50 @@ extension AlbumsTVC {
 			
 			movedAlbumsInOriginalContext.insert(album)
 			
-			// If we’ve created a matching new `Collection` …
-			if let matchingNewCollection = newCollectionsByTitle[titleOfDestination] {
-				// … then move the `Album` to the end of that `Collection`.
-				os_signpost(.begin, log: log, name: "Move Album to matching new Collection")
-				matchingNewCollection.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
+			// If we’ve created a matching new folder…
+			if let matchingNewFolder = newFoldersByTitle[titleOfDestination] {
+				// …then move the album to the end of that folder.
+				os_signpost(.begin, log: log, name: "Move album to matching new folder")
+				matchingNewFolder.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 					with: [album.objectID],
-					possiblyToSameCollection: false,
+					possiblyToSame: false,
 					via: context)
-				os_signpost(.end, log: log, name: "Move Album to matching new Collection")
-			} else if // Otherwise, if we already had a matching existing `Collection` …
-				let matchingExistingCollection = existingCollectionsByTitle[titleOfDestination]?.first
+				os_signpost(.end, log: log, name: "Move album to matching new folder")
+			} else if // Otherwise, if we already had a matching existing folder…
+				let matchingExistingCollection = existingFoldersByTitle[titleOfDestination]?.first
 			{
-				// … then move the `Album` to the beginning of that `Collection`.
-				os_signpost(.begin, log: log, name: "Move Album to matching existing Collection")
+				// …then move the album to the beginning of that folder.
+				os_signpost(.begin, log: log, name: "Move album to matching existing folder")
 				matchingExistingCollection.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
 					with: [album.objectID],
 					possiblyToSameCollection: false,
 					via: context)
-				os_signpost(.end, log: log, name: "Move Album to matching existing Collection")
+				os_signpost(.end, log: log, name: "Move album to matching existing folder")
 			} else {
-				// Otherwise, create a matching `Collection`…
-				let newCollection = Collection(
-					index: indexOfSourceCollection + Int64(newCollectionsByTitle.count),
-					before: collectionsToDisplace,
+				// Otherwise, create a matching folder…
+				let newFolder = Collection(
+					index: indexOfSourceFolder + Int64(newFoldersByTitle.count),
+					before: toDisplace,
 					title: titleOfDestination,
 					context: context)
-				newCollectionsByTitle[titleOfDestination] = newCollection
+				newFoldersByTitle[titleOfDestination] = newFolder
 				
-				// … and then move the `Album` to that `Collection`.
-				os_signpost(.begin, log: log, name: "Move Album to new Collection")
-				newCollection.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
+				// …and then move the album to that folder.
+				os_signpost(.begin, log: log, name: "Move album to new folder")
+				newFolder.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 					with: [album.objectID],
-					possiblyToSameCollection: false,
+					possiblyToSame: false,
 					via: context)
-				os_signpost(.end, log: log, name: "Move Album to new Collection")
+				os_signpost(.end, log: log, name: "Move album to new folder")
 			}
 		}
 		
 		// Create the `OrganizeAlbumsClipboard` to return.
 		return OrganizeAlbumsClipboard(
 			idsOfSubjectedAlbums: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-			idsOfSourceCollections: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
+			idsOfSourceFolders: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
 			idsOfUnmovedAlbums: idsOfUnmovedAlbums,
-			idsOfCollectionsContainingMovedAlbums: {
+			idsOfFoldersContainingMovedAlbums: {
 				let idsOfMovedAlbums = movedAlbumsInOriginalContext.map { $0.objectID }
 				return Set(idsOfMovedAlbums.map {
 					let albumInThisContext = context.object(with: $0) as! Album

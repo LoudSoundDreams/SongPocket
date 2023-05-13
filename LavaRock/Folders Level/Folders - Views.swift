@@ -144,21 +144,21 @@ final class CollectionCell: UITableViewCell {
 	}
 	
 	func configure(
-		with collection: Collection,
+		with folder: Collection,
 		mode: FolderRowMode
 	) {
 		if Self.usesSwiftUI__ {
 			
 			contentConfiguration = UIHostingConfiguration {
 				FolderRow(
-					collection: collection,
+					collection: folder,
 					mode: mode
 				)
 			}
 			
 		} else {
 			
-			titleLabel.text = collection.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining `Collection`s before `freshenLibraryItems`, the table view vertically collapses rows for deleted `Collection`s.
+			titleLabel.text = folder.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining folders before `freshenLibraryItems`, the table view vertically collapses rows for deleted folders.
 			contentView.layer.opacity = {
 				if case FolderRowMode.modalDisabled = mode {
 					return .oneFourth
@@ -169,12 +169,12 @@ final class CollectionCell: UITableViewCell {
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
 			indicateAvatarStatus__(
-				collection.avatarStatus()
+				folder.avatarStatus()
 			)
 			
 			// Exclude the now-playing marker.
 			accessibilityUserInputLabels = [
-				collection.title, // Can be `nil`
+				folder.title, // Can be `nil`
 			].compacted()
 			
 		}

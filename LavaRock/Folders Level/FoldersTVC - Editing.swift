@@ -39,9 +39,9 @@ extension FoldersTVC {
 		proposedTitle: String?,
 		thenSelectIf shouldSelectRow: Bool
 	) {
-		let collectionsViewModel = viewModel as! FoldersViewModel
+		let foldersViewModel = viewModel as! FoldersViewModel
 		
-		let _ = collectionsViewModel.renameAndReturnDidChangeTitle(
+		let _ = foldersViewModel.renameAndReturnDidChangeTitle(
 			at: indexPath,
 			proposedTitle: proposedTitle)
 		
@@ -63,12 +63,12 @@ extension FoldersTVC {
 	func previewCombine() {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
-			let collectionsViewModel = viewModel as? FoldersViewModel,
+			let foldersViewModel = viewModel as? FoldersViewModel,
 			viewModelBeforeCombining == nil, // Prevents you from using the “Combine” button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCommitOrganize` for “Save (Preview of Organized Albums)”. You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
 			let targetIndexPath = selectedIndexPaths.first
 		else { return }
 		
-		viewModelBeforeCombining = collectionsViewModel
+		viewModelBeforeCombining = foldersViewModel
 		
 		// Create a child context previewing the changes.
 		let previewContext = NSManagedObjectContext(.mainQueue)
@@ -76,7 +76,7 @@ extension FoldersTVC {
 		let combinedCollection = previewContext.createCollection(
 			byCombiningCollectionsWithInOrder: {
 				let selectedCollections = selectedIndexPaths.map {
-					collectionsViewModel.collectionNonNil(at: $0)
+					foldersViewModel.collectionNonNil(at: $0)
 				}
 				return selectedCollections.map { $0.objectID }
 			}(),
@@ -111,7 +111,7 @@ extension FoldersTVC {
 			let albumsTVC = libraryNC.viewControllers.first as! AlbumsTVC
 			albumsTVC.viewModel = AlbumsViewModel(
 				context: previewContext,
-				parentCollection: .exists(combinedCollection),
+				parentFolder: .exists(combinedCollection),
 				prerowsInEachSection: []
 			)
 			albumsTVC.is_previewing_combine_with_album_count = combinedCollection.contents?.count ?? 0
@@ -148,7 +148,7 @@ extension FoldersTVC {
 	private func commitCombine(
 		into indexPathOfCombined: IndexPath
 	) {
-		let collectionsViewModel = viewModel as! FoldersViewModel
+		let foldersViewModel = viewModel as! FoldersViewModel
 		
 		viewModelBeforeCombining = nil
 		
@@ -157,7 +157,7 @@ extension FoldersTVC {
 		
 		let newViewModel = FoldersViewModel(
 			context: viewModel.context.parent!,
-			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
+			prerowsInEachSection: foldersViewModel.prerowsInEachSection)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				newViewModel,

@@ -65,7 +65,7 @@ extension Song {
 	
 	// MARK: - All Instances
 	
-	// Similar to `Collection.allFetched` and `Album.allFetched`.
+	// Similar to `allFetched`.
 	static func allFetched(
 		sortedByIndex: Bool,
 		via context: NSManagedObjectContext
@@ -107,9 +107,9 @@ extension Song {
 			return myAlbum.index < otherAlbum.index
 		}
 		
-		let myCollection = myAlbum.container!
-		let otherCollection = otherAlbum.container!
-		return myCollection.index < otherCollection.index
+		let myFolder = myAlbum.container!
+		let otherFolder = otherAlbum.container!
+		return myFolder.index < otherFolder.index
 	}
 	
 	// MARK: - Media Player

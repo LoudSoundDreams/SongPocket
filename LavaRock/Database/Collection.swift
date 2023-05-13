@@ -29,33 +29,33 @@ extension Collection: LibraryItem {
 extension Collection: LibraryContainer {}
 extension Collection {
 	convenience init(
-		afterAllOtherCollectionsCount numberOfExistingCollections: Int,
+		afterAllOtherCount existingCount: Int,
 		title: String,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .collection, name: "Create a Collection at the bottom")
+		os_signpost(.begin, log: .folder, name: "Create a Folder at the bottom")
 		defer {
-			os_signpost(.end, log: .collection, name: "Create a Collection at the bottom")
+			os_signpost(.end, log: .folder, name: "Create a Folder at the bottom")
 		}
 		
 		self.init(context: context)
 		self.title = title
-		index = Int64(numberOfExistingCollections)
+		index = Int64(existingCount)
 	}
 	
-	// Use `init(afterAllOtherCollectionsCount:title:context:)` if possible. It’s faster.
+	// Use `init(afterAllOtherCount:title:context:)` if possible. It’s faster.
 	convenience init(
 		index: Int64,
-		before displacedCollections: [Collection],
+		before displaced: [Collection],
 		title: String,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .collection, name: "Create a Collection at the top")
+		os_signpost(.begin, log: .folder, name: "Create a Collection at the top")
 		defer {
-			os_signpost(.end, log: .collection, name: "Create a Collection at the top")
+			os_signpost(.end, log: .folder, name: "Create a Collection at the top")
 		}
 		
-		displacedCollections.forEach { $0.index += 1 }
+		displaced.forEach { $0.index += 1 }
 		
 		self.init(context: context)
 		self.title = title
@@ -109,12 +109,12 @@ extension Collection {
 	
 	final func moveAlbumsToBeginning(
 		with albumIDs: [NSManagedObjectID],
-		possiblyToSameCollection: Bool,
+		possiblyToSame: Bool,
 		via context: NSManagedObjectContext
 	) {
 		unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSourceCollections(
 			with: albumIDs,
-			possiblyToSameCollection: possiblyToSameCollection,
+			possiblyToSameCollection: possiblyToSame,
 			via: context)
 		
 		Self.deleteAllEmpty(via: context) // Also reindexes `self`
@@ -138,7 +138,7 @@ extension Collection {
 			album.index = Int64(index)
 		}
 		
-		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
+		// In case we moved any albums to this folder that were already here.
 		if possiblyToSameCollection {
 			var newContents = albums(sorted: true)
 			newContents.reindex()
@@ -146,34 +146,34 @@ extension Collection {
 	}
 	
 	// WARNING: Leaves empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
-	final func unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSourceCollections(
+	final func unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 		with albumIDs: [NSManagedObjectID],
-		possiblyToSameCollection: Bool,
+		possiblyToSame: Bool,
 		via context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .collection, name: "Move Albums to end")
+		os_signpost(.begin, log: .folder, name: "Move albums to end")
 		defer {
-			os_signpost(.end, log: .collection, name: "Move Albums to end")
+			os_signpost(.end, log: .folder, name: "Move albums to end")
 		}
 		
-		os_signpost(.begin, log: .collection, name: "Fetch Albums")
+		os_signpost(.begin, log: .folder, name: "Fetch albums")
 		let albumsToMove = albumIDs.map {
 			context.object(with: $0)
 		} as! [Album]
-		os_signpost(.end, log: .collection, name: "Fetch Albums")
+		os_signpost(.end, log: .folder, name: "Fetch albums")
 		
-		os_signpost(.begin, log: .collection, name: "Count Albums already in this Collection")
+		os_signpost(.begin, log: .folder, name: "Count albums already in this folder")
 		let oldNumberOfAlbums = albums(sorted: false).count
-		os_signpost(.end, log: .collection, name: "Count Albums already in this Collection")
+		os_signpost(.end, log: .folder, name: "Count albums already in this folder")
 		albumsToMove.enumerated().forEach { (index, album) in
-			os_signpost(.begin, log: .collection, name: "Update Album attributes")
+			os_signpost(.begin, log: .folder, name: "Update album attributes")
 			album.container = self
 			album.index = Int64(oldNumberOfAlbums + index)
-			os_signpost(.end, log: .collection, name: "Update Album attributes")
+			os_signpost(.end, log: .folder, name: "Update album attributes")
 		}
 		
-		// In case we moved any `Album`s to this `Collection` that were already in this `Collection`.
-		if possiblyToSameCollection {
+		// In case we moved any albums to this folder that were already here.
+		if possiblyToSame {
 			var newContents = albums(sorted: true)
 			newContents.reindex()
 		}

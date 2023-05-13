@@ -23,7 +23,7 @@ extension MusicLibrary {
 		let isFirstImport = !hasEverImportedFromMusic
 		
 		// Find out which `Song`s we need to delete, and which we need to potentially update.
-		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new Songs (and maybe new Albums and Collections) for them.
+		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s (and maybe new `Album`s and `Collection`s`) for them.
 		var potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)] = [] // We’ll sort these eventually.
 		var songsToDelete: [Song] = []
 		

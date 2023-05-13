@@ -31,7 +31,7 @@ protocol LibraryGroup {
 	// Initialize `items = Self.itemsFetched`.
 }
 extension LibraryGroup {
-	// Similar to `Collection.allFetched`, `Album.allFetched`, and `Song.allFetched`.
+	// Similar to `allFetched`.
 	static func itemsFetched(
 		entityName: String,
 		container: NSManagedObject?,

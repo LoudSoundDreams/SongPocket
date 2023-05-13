@@ -157,7 +157,7 @@ final class AlbumCell: UITableViewCell {
 		// Draw artwork border
 		// You must do this when switching between light and dark mode.
 		let artViewLayer = coverArtView.layer
-		// As of iOS 16.3 …
+		// As of iOS 16.3…
 		// • Apple Music uses a border and no shadow.
 		// • Apple Books uses a shadow and no border.
 		artViewLayer.borderColor = UIColor.separator.cgColor

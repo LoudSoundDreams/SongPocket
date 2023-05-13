@@ -44,7 +44,7 @@ private struct MainLibraryNC: UIViewControllerRepresentable {
 	@ObservedObject private var theme: Theme = .shared
 	
 	// Overriding lighting and accent color
-	// We want to do that on the view’s window, but during `makeUIViewController`, that’s nil. So …
+	// We want to do that on the view’s window, but during `makeUIViewController`, that’s nil. So…
 	// • During `make`, override on the view itself. Then, as soon as possible, move the override to the window.
 	// • Thereafter, during `updateUIViewController`, always override on the window.
 	// “As soon as possible” is `viewDidAppear`, because that’s when the window becomes non-nil, and note that that’s after the initial `update`.

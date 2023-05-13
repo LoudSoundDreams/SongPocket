@@ -9,7 +9,7 @@ import UIKit
 
 @MainActor
 protocol AvatarDisplaying__: AnyObject {
-	// Adopting types must …
+	// Adopting types must…
 	// • Call `indicateAvatarStatus__` whenever appropriate.
 	
 	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus)

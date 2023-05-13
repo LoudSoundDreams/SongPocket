@@ -11,10 +11,10 @@ extension FoldersTVC {
 	func createAndOpen() {
 		guard
 			case .movingAlbums = purpose,
-			let collectionsViewModel = viewModel as? FoldersViewModel
+			let foldersViewModel = viewModel as? FoldersViewModel
 		else { return }
 		
-		let newViewModel = collectionsViewModel.updatedAfterCreating()
+		let newViewModel = foldersViewModel.updatedAfterCreating()
 		Task {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
@@ -27,20 +27,20 @@ extension FoldersTVC {
 			fatalError()
 		}
 		
-		let collectionsViewModel = viewModel as! FoldersViewModel
+		let foldersViewModel = viewModel as! FoldersViewModel
 		
-		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
+		let newViewModel = foldersViewModel.updatedAfterDeletingNewFolder()
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
 	
 	private func renameAndOpenCreated() {
-		let collectionsViewModel = viewModel as! FoldersViewModel
+		let foldersViewModel = viewModel as! FoldersViewModel
 		
-		let indexPath = collectionsViewModel.indexPathOfNewCollection
+		let indexPath = foldersViewModel.indexPathOfNewFolder
 		
-		let didChangeTitle = collectionsViewModel.renameAndReturnDidChangeTitle(
+		let didChangeTitle = foldersViewModel.renameAndReturnDidChangeTitle(
 			at: indexPath,
 			proposedTitle: nil)
 		

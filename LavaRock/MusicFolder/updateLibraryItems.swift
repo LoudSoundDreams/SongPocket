@@ -126,9 +126,9 @@ extension MusicLibrary {
 			else { return }
 			
 			// This `Song`’s `albumPersistentID` has changed.
-			// If we already have a matching `Album` to move the `Song` to …
+			// If we already have a matching `Album` to move the `Song` to…
 			if let existingAlbum = existingAlbumsByID[newAlbumID] {
-				// … then move the `Song` to that `Album`.
+				// …then move the `Song` to that `Album`.
 				os_signpost(.begin, log: .update, name: "Move a Song to an existing Album")
 				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
 				
@@ -136,7 +136,7 @@ extension MusicLibrary {
 				song.container = existingAlbum
 				os_signpost(.end, log: .update, name: "Move a Song to an existing Album")
 			} else {
-				// Otherwise, create the `Album` to move the `Song` to …
+				// Otherwise, create the `Album` to move the `Song` to…
 				os_signpost(.begin, log: .update, name: "Move a Song to a new Album")
 				let existingCollection = song.container!.container!
 				let newAlbum = Album(
@@ -144,7 +144,7 @@ extension MusicLibrary {
 					albumID: info.albumID,
 					context: context)
 				
-				// … and then move the `Song` to that `Album`.
+				// …and then move the `Song` to that `Album`.
 				song.index = 0
 				song.container = newAlbum
 				
@@ -155,6 +155,6 @@ extension MusicLibrary {
 			}
 		}
 		
-		// We’ll delete empty `Album`s and `Collection`s later.
+		// We’ll delete empty albums and folders later.
 	}
 }

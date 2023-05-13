@@ -10,7 +10,7 @@ import Foundation
 @objc // “generic class 'Weak' requires that 'TapeDeckReflecting' be a class type”
 @MainActor
 protocol TapeDeckReflecting: AnyObject {
-	// Adopting types must …
+	// Adopting types must…
 	// • Call `TapeDeck.shared.addReflector(weakly: self)` as soon as their implementations of `reflect_playback_mode` and `reflect_now_playing_item` will work.
 	
 	func reflect_playback_mode()

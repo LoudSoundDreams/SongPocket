@@ -109,7 +109,7 @@ extension SongsViewModel {
 		return itemNonNil(at: indexPath) as! Song
 	}
 	
-	// Similar to `AlbumsViewModel.collection`.
+	// Similar to `AlbumsViewModel.folder`.
 	func album() -> Album {
 		let group = libraryGroup()
 		return group.container as! Album

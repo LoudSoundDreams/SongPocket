@@ -29,7 +29,7 @@ final class FoldersTVC:
 		case browsing
 	}
 	
-	enum CollectionsViewState {
+	enum FoldersViewState {
 		case allowAccess
 		case loading
 		case removingRowsInCollectionsSection
@@ -78,7 +78,7 @@ final class FoldersTVC:
 	
 	// State
 	var needsRemoveRowsInCollectionsSection = false
-	var viewState: CollectionsViewState {
+	var viewState: FoldersViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
@@ -157,7 +157,7 @@ final class FoldersTVC:
 				toDelete = oldIndexPaths
 				toInsert = newIndexPaths
 				toReload = []
-			case .someCollections: // Merging changes with existing `Collection`s
+			case .someCollections: // Merging changes with existing folders
 				// Crashes after Reset Location & Privacy
 				toDelete = []
 				toInsert = []
@@ -339,7 +339,7 @@ final class FoldersTVC:
 		}
 		
 		if viewModelBeforeCombining != nil {
-			// We’re previewing how the rows look after combining `Collection`s. Put everything back before `LibraryTVC` calls `setItemsAndMoveRows`.
+			// We’re previewing how the rows look after combining folders. Put everything back before `LibraryTVC` calls `setItemsAndMoveRows`.
 			revertCombine(thenSelect: [])
 		}
 		
@@ -359,7 +359,7 @@ final class FoldersTVC:
 		
 		combineButton.isEnabled = allowsCombine()
 		
-		// Prevent the user from using any editing buttons while we’re animating combining `Collection`s, before we present the dialog.
+		// Prevent the user from using any editing buttons while we’re animating combining folders, before we present the dialog.
 		if viewModelBeforeCombining != nil {
 			editingModeToolbarButtons.forEach { $0.isEnabled = false }
 		}
@@ -378,7 +378,7 @@ final class FoldersTVC:
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {
-		let collectionsViewModel = viewModel as! FoldersViewModel
+		let foldersViewModel = viewModel as! FoldersViewModel
 		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
@@ -388,10 +388,10 @@ final class FoldersTVC:
 		albumsTVC.organizeAlbumsClipboard = organizeAlbumsClipboard
 		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 		
-		let collection = collectionsViewModel.collectionNonNil(at: selectedIndexPath)
+		let collection = foldersViewModel.collectionNonNil(at: selectedIndexPath)
 		albumsTVC.viewModel = AlbumsViewModel(
 			context: viewModel.context,
-			parentCollection: .exists(collection),
+			parentFolder: .exists(collection),
 			prerowsInEachSection: {
 				if case Purpose.movingAlbums = purpose {
 					return [.moveHere]

@@ -8,17 +8,13 @@
 import UIKit
 
 enum SortCommand: CaseIterable {
-	// For all types
 	case random
 	case reverse
 	
-	// For `Collection`s only
 	case folder_name
 	
-	// For `Album`s only
 	case album_released
 	
-	// For `Song`s only
 	case song_track
 	case song_added
 	

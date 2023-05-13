@@ -59,7 +59,7 @@ extension FoldersViewModel {
 		self.prerowsInEachSection = prerowsInEachSection
 		
 		groups = [
-			CollectionsOrAlbumsGroup(
+			FoldersOrAlbumsGroup(
 				entityName: Self.entityName,
 				container: nil,
 				context: context)
@@ -125,36 +125,36 @@ extension FoldersViewModel {
 	
 	// MARK: - “Move Albums” Sheet
 	
-	private static let indexOfNewCollection = 0
-	var indexPathOfNewCollection: IndexPath {
-		return indexPathFor(itemIndex: Self.indexOfNewCollection)
+	private static let indexOfNewFolder = 0
+	var indexPathOfNewFolder: IndexPath {
+		return indexPathFor(itemIndex: Self.indexOfNewFolder)
 	}
 	
 	func updatedAfterCreating() -> Self {
-		let newCollection = Collection(context: context)
-		newCollection.title = LRString.untitledFolder
-		// When we call `setItemsAndMoveRows`, the property observer will set the `index` attribute of each `Collection` for us.
+		let newFolder = Collection(context: context)
+		newFolder.title = LRString.untitledFolder
+		// When we call `setItemsAndMoveRows`, the property observer will set each `Collection.index` for us.
 		
 		var newItems = group.items
-		newItems.insert(newCollection, at: Self.indexOfNewCollection)
+		newItems.insert(newFolder, at: Self.indexOfNewFolder)
 		
 		var twin = updatedWithItemsInOnlyGroup(newItems)
 		twin.prerowsInEachSection = []
 		return twin
 	}
 	
-	func updatedAfterDeletingNewCollection() -> Self {
-		let newItems = itemsAfterDeletingNewCollection()
+	func updatedAfterDeletingNewFolder() -> Self {
+		let newItems = itemsAfterDeletingNewFolder()
 		
 		var twin = updatedWithItemsInOnlyGroup(newItems)
 		twin.prerowsInEachSection = [.createFolder]
 		return twin
 	}
 	
-	private func itemsAfterDeletingNewCollection() -> [NSManagedObject] {
+	private func itemsAfterDeletingNewFolder() -> [NSManagedObject] {
 		let oldItems = group.items
 		guard
-			let collection = oldItems[Self.indexOfNewCollection] as? Collection,
+			let collection = oldItems[Self.indexOfNewFolder] as? Collection,
 			collection.isEmpty()
 		else {
 			return oldItems
@@ -163,7 +163,7 @@ extension FoldersViewModel {
 		context.delete(collection)
 		
 		var newItems = group.items
-		newItems.remove(at: Self.indexOfNewCollection)
+		newItems.remove(at: Self.indexOfNewFolder)
 		return newItems
 	}
 }

@@ -30,7 +30,7 @@ extension Album: LibraryItem {
 extension Album: LibraryContainer {}
 extension Album {
 	convenience init(
-		atEndOf collection: Collection,
+		atEndOf folder: Collection,
 		albumID: AlbumID,
 		context: NSManagedObjectContext
 	) {
@@ -41,13 +41,13 @@ extension Album {
 		
 		self.init(context: context)
 		albumPersistentID = albumID
-		index = Int64(collection.contents?.count ?? 0)
-		container = collection
+		index = Int64(folder.contents?.count ?? 0)
+		container = folder
 	}
 	
 	// Use `init(atEndOf:albumID:context:)` if possible. It’s faster.
 	convenience init(
-		atBeginningOf collection: Collection,
+		atBeginningOf folder: Collection,
 		albumID: AlbumID,
 		context: NSManagedObjectContext
 	) {
@@ -56,12 +56,12 @@ extension Album {
 			os_signpost(.end, log: .album, name: "Create an Album at the top")
 		}
 		
-		collection.albums(sorted: false).forEach { $0.index += 1 }
+		folder.albums(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
 		albumPersistentID = albumID
 		index = 0
-		container = collection
+		container = folder
 	}
 	
 	// MARK: - All Instances

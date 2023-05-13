@@ -8,13 +8,13 @@
 import UIKit
 import CoreData
 
-enum ParentCollection {
+enum ParentFolder {
 	case exists(Collection)
 	case deleted(Collection)
 }
 
 struct AlbumsViewModel {
-	let parentCollection: ParentCollection
+	let parentFolder: ParentFolder
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
@@ -32,7 +32,7 @@ extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
 	
 	func bigTitle() -> String {
-		switch parentCollection {
+		switch parentFolder {
 			case
 					.exists(let collection),
 					.deleted(let collection):
@@ -61,13 +61,13 @@ extension AlbumsViewModel: LibraryViewModel {
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		let freshenedParentCollection: ParentCollection = {
-			switch parentCollection {
-				case .exists(let collection):
-					if collection.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
-						return .deleted(collection)
+		let freshenedParent: ParentFolder = {
+			switch parentFolder {
+				case .exists(let folder):
+					if folder.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
+						return .deleted(folder)
 					} else {
-						return .exists(collection)
+						return .exists(folder)
 					}
 				case .deleted(let collection):
 					return .deleted(collection)
@@ -75,30 +75,30 @@ extension AlbumsViewModel: LibraryViewModel {
 		}()
 		return Self(
 			context: context,
-			parentCollection: freshenedParentCollection,
+			parentFolder: freshenedParent,
 			prerowsInEachSection: prerowsInEachSection)
 	}
 }
 extension AlbumsViewModel {
 	init(
 		context: NSManagedObjectContext,
-		parentCollection: ParentCollection,
+		parentFolder: ParentFolder,
 		prerowsInEachSection: [Prerow]
 	) {
 		self.context = context
-		self.parentCollection = parentCollection
+		self.parentFolder = parentFolder
 		self.prerowsInEachSection = prerowsInEachSection
 		
 		// Check `viewContainer` to figure out which `Album`s to show.
 		let containers: [NSManagedObject] = {
-			switch parentCollection {
+			switch parentFolder {
 				case .exists(let collection):
 					return [collection]
 				case .deleted:
 					return []
 			}}()
 		groups = containers.map { container in
-			CollectionsOrAlbumsGroup(
+			FoldersOrAlbumsGroup(
 				entityName: Self.entityName,
 				container: container,
 				context: context)
@@ -110,7 +110,7 @@ extension AlbumsViewModel {
 	}
 	
 	// Similar to `SongsViewModel.album`.
-	func collection() -> Collection {
+	func folder() -> Collection {
 		let group = libraryGroup()
 		return group.container as! Collection
 	}
@@ -130,7 +130,7 @@ extension AlbumsViewModel {
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func numberOfRows() -> Int {
-		switch parentCollection {
+		switch parentFolder {
 			case .exists:
 				let group = libraryGroup()
 				return numberOfPrerowsPerSection + group.items.count
@@ -142,7 +142,7 @@ extension AlbumsViewModel {
 	// MARK: - Organizing
 	
 	// Returns `true` if the albums to organize have at least 2 different album artists.
-	// The “albums to organize” are the selected albums, if any, or all the albums, if this is a specifically opened `Collection`.
+	// The “albums to organize” are the selected albums, if any, or all the albums, if this is a specifically opened folder.
 	func allowsAutoMove(
 		selectedIndexPaths: [IndexPath]
 	) -> Bool {
@@ -161,16 +161,16 @@ extension AlbumsViewModel {
 		albumsWith albumIDs: [NSManagedObjectID],
 		toSection section: Int
 	) -> Self {
-		let destinationCollection = collection()
+		let destination = folder()
 		
-		destinationCollection.moveAlbumsToBeginning(
+		destination.moveAlbumsToBeginning(
 			with: albumIDs,
-			possiblyToSameCollection: true,
+			possiblyToSame: true,
 			via: context)
 		
 		return AlbumsViewModel(
 			context: context,
-			parentCollection: parentCollection,
+			parentFolder: parentFolder,
 			prerowsInEachSection: [])
 	}
 }

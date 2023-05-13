@@ -45,7 +45,7 @@ extension FoldersTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let collectionsViewModel = viewModel as? FoldersViewModel else { return UITableViewCell() }
+		guard let foldersViewModel = viewModel as? FoldersViewModel else { return UITableViewCell() }
 		
 		switch purpose {
 			case .willOrganizeAlbums:
@@ -53,7 +53,7 @@ extension FoldersTVC {
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				let rowCase = collectionsViewModel.rowCase(for: indexPath)
+				let rowCase = foldersViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow(let prerow):
 						switch prerow {
@@ -102,19 +102,19 @@ extension FoldersTVC {
 			for: indexPath) as? CollectionCell
 		else { return UITableViewCell() }
 		
-		let collection = collectionsViewModel.collectionNonNil(at: indexPath)
+		let collection = foldersViewModel.collectionNonNil(at: indexPath)
 		let mode: FolderRowMode = {
 			switch purpose {
 				case .willOrganizeAlbums(let stickyNote):
-					if stickyNote.idsOfSourceCollections.contains(collection.objectID) {
+					if stickyNote.idsOfSourceFolders.contains(collection.objectID) {
 						return .modalDisabled
 					} else {
 						return .modal
 					}
 				case .organizingAlbums(let clipboard):
-					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
+					if clipboard.idsOfSourceFolders.contains(collection.objectID) {
 						return .modalDisabled
-					} else if clipboard.idsOfCollectionsContainingMovedAlbums.contains(collection.objectID) {
+					} else if clipboard.idsOfFoldersContainingMovedAlbums.contains(collection.objectID) {
 						return .modalTinted
 					} else {
 						return .modal
@@ -185,10 +185,10 @@ extension FoldersTVC {
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				guard let collectionsViewModel = viewModel as? FoldersViewModel else {
+				guard let foldersViewModel = viewModel as? FoldersViewModel else {
 					return nil
 				}
-				let rowCase = collectionsViewModel.rowCase(for: indexPath)
+				let rowCase = foldersViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow(let prerow):
 						switch prerow {
@@ -224,8 +224,8 @@ extension FoldersTVC {
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				guard let collectionsViewModel = viewModel as? FoldersViewModel else { return }
-				let rowCase = collectionsViewModel.rowCase(for: indexPath)
+				guard let foldersViewModel = viewModel as? FoldersViewModel else { return }
+				let rowCase = foldersViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow(let prerow):
 						switch prerow {
