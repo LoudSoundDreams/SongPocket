@@ -1,5 +1,5 @@
 //
-//  Collections - Views.swift
+//  Folders - Views.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-06.
@@ -102,7 +102,7 @@ final class OpenMusicCell: UITableViewCell {
 final class CreateFolderCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
-	@IBOutlet private var newCollectionLabel: UILabel!
+	@IBOutlet private var newFolderLabel: UILabel!
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -111,8 +111,8 @@ final class CreateFolderCell: UITableViewCell {
 		
 		guard !Self.usesSwiftUI__ else { return }
 		
-		newCollectionLabel.text = LRString.newFolder
-		newCollectionLabel.textColor = .tintColor
+		newFolderLabel.text = LRString.newFolder
+		newFolderLabel.textColor = .tintColor
 		
 		accessibilityTraits.formUnion(.button)
 	}
@@ -151,7 +151,7 @@ final class FolderCell: UITableViewCell {
 			
 			contentConfiguration = UIHostingConfiguration {
 				FolderRow(
-					collection: folder,
+					folder: folder,
 					mode: mode
 				)
 			}

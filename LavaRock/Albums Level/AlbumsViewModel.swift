@@ -34,9 +34,9 @@ extension AlbumsViewModel: LibraryViewModel {
 	func bigTitle() -> String {
 		switch parentFolder {
 			case
-					.exists(let collection),
-					.deleted(let collection):
-				return collection.title ?? ""
+					.exists(let folder),
+					.deleted(let folder):
+				return folder.title ?? ""
 		}
 	}
 	
@@ -69,8 +69,8 @@ extension AlbumsViewModel: LibraryViewModel {
 					} else {
 						return .exists(folder)
 					}
-				case .deleted(let collection):
-					return .deleted(collection)
+				case .deleted(let folder):
+					return .deleted(folder)
 			}
 		}()
 		return Self(
@@ -92,8 +92,8 @@ extension AlbumsViewModel {
 		// Check `viewContainer` to figure out which `Album`s to show.
 		let containers: [NSManagedObject] = {
 			switch parentFolder {
-				case .exists(let collection):
-					return [collection]
+				case .exists(let folder):
+					return [folder]
 				case .deleted:
 					return []
 			}}()

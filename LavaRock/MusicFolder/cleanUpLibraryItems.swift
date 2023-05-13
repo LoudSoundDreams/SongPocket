@@ -84,16 +84,16 @@ extension MusicLibrary {
 	// MARK: Reindexing
 	
 	private func reindexAlbums(
-		in collection: Collection,
+		in folder: Collection,
 		shouldSortByNewestFirst: Bool
 	) {
-		var albumsInCollection = collection.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
+		var albumsInFolder = folder.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
 		
 		if shouldSortByNewestFirst {
-			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInCollection)
+			albumsInFolder = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInFolder)
 		}
 		
-		albumsInCollection.reindex()
+		albumsInFolder.reindex()
 	}
 	
 	private func sortedByNewestFirstAndUnknownReleaseDateLast(

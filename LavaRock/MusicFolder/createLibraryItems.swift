@@ -71,19 +71,19 @@ extension MusicLibrary {
 		os_signpost(.begin, log: .create, name: "Create all the Songs and containers")
 		groupsOfInfos.forEach { groupOfInfos in
 			os_signpost(.begin, log: .create, name: "Create one group of Songs and containers")
-			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
+			let (newAlbum, newFolder) = createSongsAndReturnNewContainers(
 				for: groupOfInfos,
 				existingAlbumsByID: existingAlbumsByID,
 				existingFoldersByTitle: existingFoldersByTitle,
 				isFirstImport: isFirstImport)
 			
-			if let newAlbum = newAlbum {
+			if let newAlbum {
 				existingAlbumsByID[newAlbum.albumPersistentID] = newAlbum
 			}
-			if let newCollection = newCollection {
-				let title = newCollection.title!
+			if let newFolder {
+				let title = newFolder.title!
 				let oldBucket = existingFoldersByTitle[title] ?? []
-				let newBucket = [newCollection] + oldBucket
+				let newBucket = [newFolder] + oldBucket
 				existingFoldersByTitle[title] = newBucket
 			}
 			os_signpost(.end, log: .create, name: "Create one group of Songs and containers")

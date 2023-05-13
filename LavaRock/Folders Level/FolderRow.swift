@@ -16,17 +16,17 @@ enum FolderRowMode {
 }
 
 struct FolderRow: View {
-	let collection: Collection
+	let folder: Collection
 	let mode: FolderRowMode
 	
 	var body: some View {
 		HStack {
-			Text(collection.title ?? "")
+			Text(folder.title ?? "")
 			
 			Spacer()
 			
 			AvatarImage(
-				libraryItem: collection)
+				libraryItem: folder)
 			.accessibilitySortPriority(10)
 		}
 		.opacity({
@@ -41,7 +41,7 @@ struct FolderRow: View {
 		.accessibilityInputLabels(
 			// Exclude the now-playing marker.
 			[
-				collection.title, // Can be `nil`
+				folder.title, // Can be `nil`
 			].compacted()
 		)
 	}
