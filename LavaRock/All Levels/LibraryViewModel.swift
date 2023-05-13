@@ -272,9 +272,9 @@ extension LibraryViewModel {
 				return collections.sortedMaintainingOrderWhen {
 					$0.title == $1.title
 				} areInOrder: {
-					let collectionTitle0 = $0.title ?? ""
-					let collectionTitle1 = $1.title ?? ""
-					return collectionTitle0.precedesAlphabeticallyFinderStyle(collectionTitle1)
+					let leftTitle = $0.title ?? ""
+					let rightTitle = $1.title ?? ""
+					return leftTitle.precedesAlphabeticallyFinderStyle(rightTitle)
 				}
 				
 			case .album_released:

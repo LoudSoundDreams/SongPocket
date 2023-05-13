@@ -11,7 +11,7 @@ extension CollectionsTVC {
 	func createAndOpen() {
 		guard
 			case .movingAlbums = purpose,
-			let collectionsViewModel = viewModel as? CollectionsViewModel
+			let collectionsViewModel = viewModel as? FoldersViewModel
 		else { return }
 		
 		let newViewModel = collectionsViewModel.updatedAfterCreating()
@@ -27,7 +27,7 @@ extension CollectionsTVC {
 			fatalError()
 		}
 		
-		let collectionsViewModel = viewModel as! CollectionsViewModel
+		let collectionsViewModel = viewModel as! FoldersViewModel
 		
 		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		Task {
@@ -36,7 +36,7 @@ extension CollectionsTVC {
 	}
 	
 	private func renameAndOpenCreated() {
-		let collectionsViewModel = viewModel as! CollectionsViewModel
+		let collectionsViewModel = viewModel as! FoldersViewModel
 		
 		let indexPath = collectionsViewModel.indexPathOfNewCollection
 		

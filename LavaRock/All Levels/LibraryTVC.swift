@@ -15,7 +15,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses Should Customize
 	
 	// Data
-	final lazy var viewModel: LibraryViewModel = CollectionsViewModel(
+	final lazy var viewModel: LibraryViewModel = FoldersViewModel(
 		context: Database.viewContext,
 		prerowsInEachSection: [])
 	

@@ -99,7 +99,7 @@ final class OpenMusicCell: UITableViewCell {
 	}
 }
 
-final class CreateCollectionCell: UITableViewCell {
+final class CreateFolderCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
 	@IBOutlet private var newCollectionLabel: UILabel!

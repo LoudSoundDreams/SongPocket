@@ -39,7 +39,7 @@ extension CollectionsTVC {
 		proposedTitle: String?,
 		thenSelectIf shouldSelectRow: Bool
 	) {
-		let collectionsViewModel = viewModel as! CollectionsViewModel
+		let collectionsViewModel = viewModel as! FoldersViewModel
 		
 		let _ = collectionsViewModel.renameAndReturnDidChangeTitle(
 			at: indexPath,
@@ -63,7 +63,7 @@ extension CollectionsTVC {
 	func previewCombine() {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
-			let collectionsViewModel = viewModel as? CollectionsViewModel,
+			let collectionsViewModel = viewModel as? FoldersViewModel,
 			viewModelBeforeCombining == nil, // Prevents you from using the “Combine” button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCommitOrganize` for “Save (Preview of Organized Albums)”. You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
 			let targetIndexPath = selectedIndexPaths.first
 		else { return }
@@ -85,7 +85,7 @@ extension CollectionsTVC {
 		try! previewContext.obtainPermanentIDs(for: [combinedCollection]) // So that we don’t unnecessarily remove and reinsert the row later.
 		
 		// Apply the preview context to this `CollectionsTVC`.
-		let previewViewModel = CollectionsViewModel(
+		let previewViewModel = FoldersViewModel(
 			context: previewContext,
 			prerowsInEachSection: []
 		)
@@ -148,14 +148,14 @@ extension CollectionsTVC {
 	private func commitCombine(
 		into indexPathOfCombined: IndexPath
 	) {
-		let collectionsViewModel = viewModel as! CollectionsViewModel
+		let collectionsViewModel = viewModel as! FoldersViewModel
 		
 		viewModelBeforeCombining = nil
 		
 		viewModel.context.tryToSave()
 		viewModel.context.parent!.tryToSave() // TO DO: Crashes
 		
-		let newViewModel = CollectionsViewModel(
+		let newViewModel = FoldersViewModel(
 			context: viewModel.context.parent!,
 			prerowsInEachSection: collectionsViewModel.prerowsInEachSection)
 		Task {

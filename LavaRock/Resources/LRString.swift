@@ -164,7 +164,7 @@ enum LRString {
 	static let variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark = NSLocalizedString(
 		"plural - move_X_albums_to_Y_folders_by_album_artist_question_mark",
 		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of folders it’s moving them into.")
-	static let variable_chooseACollectionToMoveXAlbumsTo = NSLocalizedString(
+	static let variable_moveXAlbumsTo = NSLocalizedString(
 		"plural - move_X_albums_to",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
 	

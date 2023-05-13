@@ -49,14 +49,14 @@ extension AlbumsTVC {
 			idsOfSourceCollections: clipboard.idsOfSourceCollections)
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
-		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? CollectionsViewModel else { return }
+		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? FoldersViewModel else { return }
 		Task {
 			await present__async(libraryNC, animated: true)
 			
 			collectionsTVC.organizeAlbumsClipboard = clipboard
 			collectionsTVC.willOrganizeAlbumsStickyNote = nil
 			
-			let previewOfChanges = CollectionsViewModel(
+			let previewOfChanges = FoldersViewModel(
 				context: childContext,
 				prerowsInEachSection: [])
 			// We might have moved `Album`s into any existing `Collection` other than the source. If so, fade in a highlight on those rows.
@@ -195,13 +195,13 @@ extension AlbumsTVC {
 			}(),
 			delegate: self
 		)
-		collectionsTVC.viewModel = CollectionsViewModel(
+		collectionsTVC.viewModel = FoldersViewModel(
 			context: {
 				let childContext = NSManagedObjectContext(.mainQueue)
 				childContext.parent = viewModel.context
 				return childContext
 			}(),
-			prerowsInEachSection: [.createCollection]
+			prerowsInEachSection: [.createFolder]
 		)
 		
 		present(libraryNC, animated: true)

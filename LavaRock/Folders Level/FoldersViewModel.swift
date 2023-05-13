@@ -1,5 +1,5 @@
 //
-//  CollectionsViewModel.swift
+//  FoldersViewModel.swift
 //  LavaRock
 //
 //  Created by h on 2021-08-14.
@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-struct CollectionsViewModel {
+struct FoldersViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
 	var numberOfPrerowsPerSection: Int {
@@ -17,11 +17,11 @@ struct CollectionsViewModel {
 	var groups: ColumnOfLibraryItems
 	
 	enum Prerow {
-		case createCollection
+		case createFolder
 	}
 	var prerowsInEachSection: [Prerow]
 }
-extension CollectionsViewModel: LibraryViewModel {
+extension FoldersViewModel: LibraryViewModel {
 	static let entityName = "Collection"
 	
 	func bigTitle() -> String {
@@ -50,7 +50,7 @@ extension CollectionsViewModel: LibraryViewModel {
 			prerowsInEachSection: prerowsInEachSection)
 	}
 }
-extension CollectionsViewModel {
+extension FoldersViewModel {
 	init(
 		context: NSManagedObjectContext,
 		prerowsInEachSection: [Prerow]
@@ -147,7 +147,7 @@ extension CollectionsViewModel {
 		let newItems = itemsAfterDeletingNewCollection()
 		
 		var twin = updatedWithItemsInOnlyGroup(newItems)
-		twin.prerowsInEachSection = [.createCollection]
+		twin.prerowsInEachSection = [.createFolder]
 		return twin
 	}
 	

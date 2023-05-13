@@ -99,7 +99,7 @@ final class CollectionsTVC:
 			}
 		}
 	}
-	var viewModelBeforeCombining: CollectionsViewModel? = nil
+	var viewModelBeforeCombining: FoldersViewModel? = nil
 	
 	// MARK: “Organize Albums” Sheet
 	
@@ -378,7 +378,7 @@ final class CollectionsTVC:
 		for segue: UIStoryboardSegue,
 		sender: Any?
 	) {
-		let collectionsViewModel = viewModel as! CollectionsViewModel
+		let collectionsViewModel = viewModel as! FoldersViewModel
 		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,

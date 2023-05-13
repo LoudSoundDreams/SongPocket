@@ -35,7 +35,7 @@ extension CollectionsTVC {
 			case .emptyPlaceholder:
 				return 2
 			case .someCollections:
-				return (viewModel as! CollectionsViewModel).numberOfRows()
+				return (viewModel as! FoldersViewModel).numberOfRows()
 		}
 	}
 	
@@ -45,7 +45,7 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return UITableViewCell() }
+		guard let collectionsViewModel = viewModel as? FoldersViewModel else { return UITableViewCell() }
 		
 		switch purpose {
 			case .willOrganizeAlbums:
@@ -57,10 +57,10 @@ extension CollectionsTVC {
 				switch rowCase {
 					case .prerow(let prerow):
 						switch prerow {
-							case .createCollection:
+							case .createFolder:
 								return tableView.dequeueReusableCell(
-									withIdentifier: "Create Collection",
-									for: indexPath) as? CreateCollectionCell ?? UITableViewCell()
+									withIdentifier: "Create Folder",
+									for: indexPath) as? CreateFolderCell ?? UITableViewCell()
 						}
 					case .collection:
 						break
@@ -185,14 +185,14 @@ extension CollectionsTVC {
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				guard let collectionsViewModel = viewModel as? CollectionsViewModel else {
+				guard let collectionsViewModel = viewModel as? FoldersViewModel else {
 					return nil
 				}
 				let rowCase = collectionsViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow(let prerow):
 						switch prerow {
-							case .createCollection:
+							case .createFolder:
 								return indexPath
 						}
 					case .collection:
@@ -224,12 +224,12 @@ extension CollectionsTVC {
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				guard let collectionsViewModel = viewModel as? CollectionsViewModel else { return }
+				guard let collectionsViewModel = viewModel as? FoldersViewModel else { return }
 				let rowCase = collectionsViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow(let prerow):
 						switch prerow {
-							case .createCollection:
+							case .createFolder:
 								createAndOpen()
 								return
 						}
