@@ -84,7 +84,7 @@ extension FoldersTVC {
 				switch indexPath.row {
 					case 0:
 						return tableView.dequeueReusableCell(
-							withIdentifier: "No Collections",
+							withIdentifier: "No Folders",
 							for: indexPath) as? NoCollectionsPlaceholderCell ?? UITableViewCell()
 					case 1:
 						return tableView.dequeueReusableCell(
@@ -98,7 +98,7 @@ extension FoldersTVC {
 		}
 		
 		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Collection",
+			withIdentifier: "Folder",
 			for: indexPath) as? CollectionCell
 		else { return UITableViewCell() }
 		
