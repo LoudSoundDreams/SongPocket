@@ -23,6 +23,7 @@ extension Avatar: Identifiable {
 }
 enum Avatar: CaseIterable {
 	case speaker
+	case pawprint
 	case fish
 	case luxo
 	
@@ -50,6 +51,7 @@ enum Avatar: CaseIterable {
 	var pausedSFSymbolName: String {
 		switch self {
 			case .speaker: return "speaker.fill"
+			case .pawprint: return "pawprint"
 			case .fish: return "fish"
 			case .luxo: return "lamp.desk"
 		}
@@ -58,6 +60,7 @@ enum Avatar: CaseIterable {
 	var playingSFSymbolName: String {
 		switch self {
 			case .speaker: return "speaker.wave.2.fill"
+			case .pawprint: return "pawprint.fill"
 			case .fish: return "fish.fill"
 			case .luxo: return "lamp.desk.fill"
 		}
@@ -66,6 +69,7 @@ enum Avatar: CaseIterable {
 	var accessibilityLabel: String {
 		switch self {
 			case .speaker: return LRString.speaker
+			case .pawprint: return LRString.pawprint
 			case .fish: return LRString.fish
 			case .luxo: return LRString.luxoLamp
 		}
@@ -79,6 +83,7 @@ enum Avatar: CaseIterable {
 	private var persistentValue: String {
 		switch self {
 			case .speaker: return "Speaker"
+			case .pawprint: return "Paw" // Introduced after version 1.11.2
 			case .fish: return "Fish"
 			case .luxo: return "Luxo" // Introduced after version 1.11.2
 				/*

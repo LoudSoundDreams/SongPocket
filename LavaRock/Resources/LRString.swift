@@ -50,6 +50,7 @@ enum LRString {
 	static let nowPlayingMarker = NSLocalizedString("Now-Playing Marker", comment: "Section header")
 	
 	static let speaker = NSLocalizedString("Speaker", comment: "Accessibility label")
+	static let pawprint = NSLocalizedString("Pawprint", comment: "Accessibility label")
 	static let fish = NSLocalizedString("Fish", comment: "Accessibility label")
 	static let luxoLamp = NSLocalizedString("Luxo lamp", comment: "Accessibility label")
 	
