@@ -12,11 +12,11 @@ extension AccentColor: Identifiable {
 	var id: Self { self }
 }
 enum AccentColor: CaseIterable {
-	case lime
-	case tangerine
-	case strawberry
-	case grape
 	case blueberry
+	case grape
+	case strawberry
+	case tangerine
+	case lime
 	
 	static var preference: Self {
 		get {
