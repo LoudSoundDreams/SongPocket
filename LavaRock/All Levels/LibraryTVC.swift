@@ -455,7 +455,7 @@ class LibraryTVC: UITableViewController {
 			
 			return UIMenu(
 				presentsUpward: true,
-				menuElementGroups: groupedElements)
+				groupsOfMenuElements: groupedElements)
 		}
 	}
 	

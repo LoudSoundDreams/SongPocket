@@ -242,7 +242,7 @@ final class AlbumsTVC:
 		
 		return UIMenu(
 			presentsUpward: true,
-			menuElementGroups: [
+			groupsOfMenuElements: [
 				[
 					byAlbumArtist_element,
 					toFolder_element,

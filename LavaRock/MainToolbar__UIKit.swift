@@ -42,7 +42,7 @@ final class MainToolbar__UIKit {
 	private func create_menu_More() -> UIMenu {
 		return UIMenu(
 			presentsUpward: true,
-			menuElementGroups: [
+			groupsOfMenuElements: [
 				[
 					UIAction(
 						title: LRString.appleMusic,
