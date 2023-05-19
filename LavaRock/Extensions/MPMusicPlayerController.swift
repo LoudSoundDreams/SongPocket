@@ -29,13 +29,16 @@ extension MPMusicPlayerController {
 		_ mediaItems: [MPMediaItem],
 		skipping numberToSkip: Int
 	) {
+		let interval = Self.signposter.beginInterval("set queue and play")
+		defer {
+			Self.signposter.endInterval("set queue and play", interval)
+		}
+		
 		if Enabling.inAppPlayer {
 			Reel.setMediaItems(mediaItems)
 		}
 		
-		let setQueueInterval = Self.signposter.beginInterval("set queue")
 		setQueue(mediaItems: mediaItems)
-		Self.signposter.endInterval("set queue", setQueueInterval)
 		
 		// As of iOS 15.6 RC 2, with `systemMusicPlayer`, you must set `repeatMode` and `shuffleMode` after calling `setQueue`, not before, or they won’t actually apply.
 		repeatMode = .none
