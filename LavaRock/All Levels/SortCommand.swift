@@ -43,7 +43,7 @@ enum SortCommand: CaseIterable {
 			case .reverse: return UIImage(systemName: "arrow.up.and.down")
 			case .folder_name: return UIImage(systemName: "character")
 			case .album_released: return UIImage(systemName: "sparkles")
-			case .song_track: return UIImage(systemName: "opticaldisc")
+			case .song_track: return UIImage(systemName: "number")
 			case .song_added: return UIImage(systemName: "clock")
 		}
 	}
