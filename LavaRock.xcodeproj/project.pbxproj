@@ -73,7 +73,6 @@
 		07934CF827CDBE04002B2444 /* SongsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF727CDBE04002B2444 /* SongsTVC.storyboard */; };
 		07934CFA27CDBEB0002B2444 /* AlbumsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */; };
 		07934CFC27CDBFFD002B2444 /* FoldersTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CFB27CDBFFD002B2444 /* FoldersTVC.storyboard */; };
-		07962319281265AB00EE026F /* SettingsNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07962318281265AB00EE026F /* SettingsNC.swift */; };
 		079B2C9524E227BF00A949FA /* MusicLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MusicLibrary.swift */; };
 		07A4F9052519E72C0065C87E /* updateLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9042519E72C0065C87E /* updateLibraryItems.swift */; };
 		07A4F90A2519E7D20065C87E /* createLibraryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9092519E7D20065C87E /* createLibraryItems.swift */; };
@@ -217,7 +216,6 @@
 		07934CF727CDBE04002B2444 /* SongsTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SongsTVC.storyboard; sourceTree = "<group>"; };
 		07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlbumsTVC.storyboard; sourceTree = "<group>"; };
 		07934CFB27CDBFFD002B2444 /* FoldersTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FoldersTVC.storyboard; sourceTree = "<group>"; };
-		07962318281265AB00EE026F /* SettingsNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNC.swift; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* MusicLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicLibrary.swift; sourceTree = "<group>"; };
 		07A4F9042519E72C0065C87E /* updateLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = updateLibraryItems.swift; sourceTree = "<group>"; };
 		07A4F9092519E7D20065C87E /* createLibraryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createLibraryItems.swift; sourceTree = "<group>"; };
@@ -302,7 +300,6 @@
 				0785C49D2793460100B1E7FC /* SettingsScreen.swift */,
 				07B35E302886FB5100159FD9 /* TipJarView.swift */,
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
-				07962318281265AB00EE026F /* SettingsNC.swift */,
 				073FB55B27588B81000FAF5F /* SettingsTVC.storyboard */,
 				073AF48E24D1AD73000C1A6D /* SettingsTVC.swift */,
 				0781F1F925991B3300781CF8 /* SettingsTVC - UITableView.swift */,
@@ -826,7 +823,6 @@
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,
 				0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */,
 				07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */,
-				07962319281265AB00EE026F /* SettingsNC.swift in Sources */,
 				07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
