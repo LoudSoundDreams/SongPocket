@@ -21,17 +21,15 @@ final class LibraryNC: UINavigationController {
 			rootViewController: UIStoryboard(name: rootStoryboardName, bundle: nil)
 				.instantiateInitialViewController()!
 		)
-		
-		did_init()
 	}
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
-		
-		did_init()
 	}
 	
-	private func did_init() {
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
 		navigationBar.prefersLargeTitles = true
 	}
 	
