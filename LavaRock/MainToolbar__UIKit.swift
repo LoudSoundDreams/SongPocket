@@ -40,46 +40,50 @@ final class MainToolbar__UIKit {
 	private weak var settings_presenter: UIViewController? = nil
 	
 	private func createOverflowMenu() -> UIMenu {
-		return UIMenu(
-			presentsUpward: true,
-			groupsOfMenuElements: [
-				[
-					UIAction(
-						title: LRString.appleMusic,
-						image: UIImage(systemName: "arrow.up.forward.app"),
-						handler: { action in
-							UIApplication.shared.open(.music)
-						}
-					),
-					
-					UIAction(
-						title: LRString.settings,
-						image: UIImage(systemName: "gear"),
-						handler: { [weak self] action in
-							let toPresent: UIViewController = {
-								if Enabling.swiftUI__settings {
-									return UIHostingController(rootView: SettingsScreen__SwiftUI())
-								} else {
-									let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
-										.instantiateInitialViewController()!
-									return UINavigationController(rootViewController: settingsTVC)
-								}
-							}()
-							toPresent.modalPresentationStyle = .formSheet
-							self?.settings_presenter?.present(toPresent, animated: true)
-						}
-					),
-				],
+		let groupedElements: [[UIMenuElement]] = [
+			[
+				UIAction(
+					title: LRString.appleMusic,
+					image: UIImage(systemName: "arrow.up.forward.app"),
+					handler: { action in
+						UIApplication.shared.open(.music)
+					}
+				),
 				
-				[
-					create_submenu_Repeat(),
-				],
-				
-				[
-					create_submenu_Transport(),
-				],
-			]
-		)
+				UIAction(
+					title: LRString.settings,
+					image: UIImage(systemName: "gear"),
+					handler: { [weak self] action in
+						let toPresent: UIViewController = {
+							if Enabling.swiftUI__settings {
+								return UIHostingController(rootView: SettingsScreen__SwiftUI())
+							} else {
+								let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
+									.instantiateInitialViewController()!
+								return UINavigationController(rootViewController: settingsTVC)
+							}
+						}()
+						toPresent.modalPresentationStyle = .formSheet
+						self?.settings_presenter?.present(toPresent, animated: true)
+					}
+				),
+			],
+			
+			[
+				create_submenu_Repeat(),
+			],
+			
+			[
+				create_submenu_Transport(),
+			],
+		]
+		let reversedElements = Fn.reversed(groupedElements)
+		let submenus = reversedElements.map { groupOfElements in
+			return UIMenu(
+				options: .displayInline,
+				children: groupOfElements)
+		}
+		return UIMenu(children: submenus)
 	}
 	
 	private func create_submenu_Repeat() -> UIMenu {

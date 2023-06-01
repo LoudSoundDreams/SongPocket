@@ -452,10 +452,13 @@ class LibraryTVC: UITableViewController {
 				}
 				return groupOfChildren
 			}
-			
-			return UIMenu(
-				presentsUpward: true,
-				groupsOfMenuElements: groupedElements)
+			let reversedElements = Fn.reversed(groupedElements)
+			let submenus = reversedElements.map { groupOfElements in
+				return UIMenu(
+					options: .displayInline,
+					children: groupOfElements)
+			}
+			return UIMenu(children: submenus)
 		}
 	}
 	

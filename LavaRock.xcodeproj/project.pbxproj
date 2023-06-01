@@ -59,6 +59,7 @@
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
 		077BCEB2275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */; };
+		077CFA952A28CC7000A796F4 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CFA942A28CC7000A796F4 /* Functions.swift */; };
 		077E089824FB7AFF007C2479 /* LibraryTVC - Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */; };
 		0781F1F12599181800781CF8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0781F1F02599181800781CF8 /* StoreKit.framework */; };
 		0781F1FA25991B3300781CF8 /* SettingsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0781F1F925991B3300781CF8 /* SettingsTVC - UITableView.swift */; };
@@ -201,6 +202,7 @@
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
 		077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsPreviewing.swift; sourceTree = "<group>"; };
+		077CFA942A28CC7000A796F4 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		077E089724FB7AFE007C2479 /* LibraryTVC - Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - Notifications.swift"; sourceTree = "<group>"; };
 		0781F1F02599181800781CF8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0781F1F52599184700781CF8 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 				07FF1DDF27F8FF0300DF9B78 /* Resources */,
 				0759DC80272CD37300FDA7D7 /* Enabling.swift */,
 				07FB52C92813693F00CCCBA5 /* Structures */,
+				077CFA942A28CC7000A796F4 /* Functions.swift */,
 				07E0BBFE2765680C0010117E /* Extensions */,
 				07FC970A24BAC1050036DD3D /* Database */,
 				07FFC00D29D88B6B00B98447 /* AppleMusic.swift */,
@@ -748,6 +751,7 @@
 				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
 				0783DC18286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift in Sources */,
 				07A7989127A8ABB1007B70AA /* ConsoleView.swift in Sources */,
+				077CFA952A28CC7000A796F4 /* Functions.swift in Sources */,
 				07DE126329C6819B0002533B /* FolderRow.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* createLibraryItems.swift in Sources */,
 				072FD02726C30BB90053369B /* cleanUpLibraryItems.swift in Sources */,

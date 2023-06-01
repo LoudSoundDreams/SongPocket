@@ -240,15 +240,10 @@ final class AlbumsTVC:
 			self?.startMoving()
 		}
 		
-		return UIMenu(
-			presentsUpward: true,
-			groupsOfMenuElements: [
-				[
-					byAlbumArtist_element,
-					toFolder_element,
-				],
-			]
-		)
+		return UIMenu(children: [
+			toFolder_element,
+			byAlbumArtist_element,
+		])
 	}
 	
 	private func allowsMove() -> Bool {

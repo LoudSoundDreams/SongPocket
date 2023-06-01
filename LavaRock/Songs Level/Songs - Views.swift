@@ -263,20 +263,23 @@ final class SongCell: UITableViewCell {
 		})
 		
 		// Create menu
-		menu = UIMenu(
-			presentsUpward: false,
-			groupsOfMenuElements: [
-				[
-					play,
-					playNext,
-					playLast,
-				],
-				[
-					playToBottomNext,
-					playToBottomLast,
-				],
-			]
-		)
+		let groupedMenuElements: [[UIMenuElement]] = [
+			[
+				play,
+				playNext,
+				playLast,
+			],
+			[
+				playToBottomNext,
+				playToBottomLast,
+			],
+		]
+		let submenus = groupedMenuElements.map { groupOfElements in
+			return UIMenu(
+				options: .displayInline,
+				children: groupOfElements)
+		}
+		menu = UIMenu(children: submenus)
 	}
 	private static func shouldEnablePrepend() -> Bool {
 		// Result: whether there’s at least 1 song queued after the current one
