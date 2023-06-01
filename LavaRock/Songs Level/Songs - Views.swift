@@ -63,7 +63,7 @@ final class SongCell: UITableViewCell {
 	@IBOutlet private var artistLabel: UILabel!
 	@IBOutlet private var spacerNumberLabel: UILabel!
 	@IBOutlet private var numberLabel: UILabel!
-	@IBOutlet private var dotDotDotButton: ExpandedTargetButton!
+	@IBOutlet private var overflowButton: ExpandedTargetButton!
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -77,7 +77,7 @@ final class SongCell: UITableViewCell {
 		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
 		numberLabel.font = spacerNumberLabel.font
 		
-		dotDotDotButton.maximumContentSizeCategory = .extraExtraExtraLarge
+		overflowButton.maximumContentSizeCategory = .extraExtraExtraLarge
 		
 		accessibilityTraits.formUnion(.button)
 	}
@@ -85,7 +85,7 @@ final class SongCell: UITableViewCell {
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
-		freshenDotDotDotButton()
+		freshenOverflowButton()
 	}
 	
 	func configureWith(
@@ -166,7 +166,7 @@ final class SongCell: UITableViewCell {
 				song.avatarStatus()
 			)
 			
-			freshenDotDotDotButton()
+			freshenOverflowButton()
 			
 			accessibilityUserInputLabels = [
 				song_title, // Excludes the “unknown title” placeholder, which is currently a dash.
@@ -177,7 +177,7 @@ final class SongCell: UITableViewCell {
 		// Set menu, and require creating that menu
 		let menu: UIMenu?
 		defer {
-			dotDotDotButton.menu = menu
+			overflowButton.menu = menu
 		}
 		
 		guard let mediaItem = song.mpMediaItem() else {
@@ -306,8 +306,8 @@ final class SongCell: UITableViewCell {
 		return currentIndex < lastIndex
 	}
 	
-	private func freshenDotDotDotButton() {
-		dotDotDotButton.isEnabled = !isEditing
+	private func freshenOverflowButton() {
+		overflowButton.isEnabled = !isEditing
 	}
 	
 	override func layoutSubviews() {

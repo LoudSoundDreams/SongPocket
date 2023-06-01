@@ -2,8 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Uik-rz-IBd">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -116,8 +115,8 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="artistLabel" destination="4ZB-Qq-JY2" id="0Ih-29-wU1"/>
-                                    <outlet property="dotDotDotButton" destination="ASX-qJ-uK1" id="wO4-uI-cB6"/>
                                     <outlet property="numberLabel" destination="ATM-N6-nhM" id="cNu-A7-tj6"/>
+                                    <outlet property="overflowButton" destination="ASX-qJ-uK1" id="wO4-uI-cB6"/>
                                     <outlet property="spacerNumberLabel" destination="RAq-AF-bpj" id="VFJ-kp-844"/>
                                     <outlet property="spacerSpeakerImageView" destination="WdO-9k-h95" id="uiI-23-DKw"/>
                                     <outlet property="speakerImageView" destination="NBN-dN-oQT" id="das-He-Gu6"/>

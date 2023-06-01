@@ -32,14 +32,14 @@ final class MainToolbar__UIKit {
 	private weak var console_presenter: UIViewController? = nil
 	private let console_screen_host = UIHostingController(rootView: ConsoleView())
 	
-	private lazy var moreButton = UIBarButtonItem(
+	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
-		image: Self.more_button_default_image,
-		menu: create_menu_More()
+		image: Self.overflowButtonDefaultImage,
+		menu: createOverflowMenu()
 	)
 	private weak var settings_presenter: UIViewController? = nil
 	
-	private func create_menu_More() -> UIMenu {
+	private func createOverflowMenu() -> UIMenu {
 		return UIMenu(
 			presentsUpward: true,
 			groupsOfMenuElements: [
@@ -283,7 +283,7 @@ final class MainToolbar__UIKit {
 			]
 		} else {
 			return [
-				moreButton,
+				overflowButton,
 				.flexibleSpace(),
 				jumpBackButton,
 				.flexibleSpace(),
@@ -317,18 +317,18 @@ final class MainToolbar__UIKit {
 	}
 	
 	private static let showConsoleButtonDefaultImage = UIImage(systemName: "list.bullet.circle")!
-	private static let more_button_default_image = UIImage(systemName: "ellipsis.circle")!
-	private var has_re_freshened_more_button = false
+	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
+	private var hasRefreshenedOverflowButton = false
 	private func freshen() {
 		
-		func freshen_more_button() {
+		func freshenOverflowButton() {
 			let new_image: UIImage
 			defer {
-				moreButton.image = new_image
+				overflowButton.image = new_image
 			}
 			guard let player = Self.player else {
 				// Configure ellipsis icon
-				new_image = Self.more_button_default_image
+				new_image = Self.overflowButtonDefaultImage
 				return
 			}
 			new_image = {
@@ -343,22 +343,22 @@ final class MainToolbar__UIKit {
 						:
 						// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
 						// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
-						if !has_re_freshened_more_button {
-							has_re_freshened_more_button = true
+						if !hasRefreshenedOverflowButton {
+							hasRefreshenedOverflowButton = true
 							
 							Task {
 								try await Task.sleep(nanoseconds: 0_050_000_000) // 50ms
 								
-								freshen_more_button()
+								freshenOverflowButton()
 							}
 						}
-						return Self.more_button_default_image
+						return Self.overflowButtonDefaultImage
 					@unknown default:
-						return Self.more_button_default_image
+						return Self.overflowButtonDefaultImage
 				}
 			}()
 		}
-		freshen_more_button()
+		freshenOverflowButton()
 		
 		func configurePlayButton() {
 			playPauseButton.title = LRString.play
@@ -382,7 +382,7 @@ final class MainToolbar__UIKit {
 			buttons_array.forEach {
 				$0.isEnabledSetToFalseAlongWithAccessibilityTrait()
 			}
-			moreButton.isEnabledSetToTrueAlongWithAccessibilityTrait()
+			overflowButton.isEnabledSetToTrueAlongWithAccessibilityTrait()
 			console_button.isEnabledSetToTrueAlongWithAccessibilityTrait()
 			return
 		}

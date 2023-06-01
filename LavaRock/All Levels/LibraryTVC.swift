@@ -160,7 +160,7 @@ class LibraryTVC: UITableViewController {
 			 - “Move” menu (`AlbumsTVC`)
 			 - “Organize albums” sheet (`FoldersTVC` and `AlbumsTVC` when in “organize albums” sheet)
 			 - “Move albums” sheet (`FoldersTVC` and `AlbumsTVC` when in “move albums” sheet)
-			 - Song actions, including “more” menu (`SongsTVC`)
+			 - Song actions, including overflow menu (`SongsTVC`)
 			 */
 			if shouldDismissAllViewControllersBeforeFreshenLibraryItems() {
 				await view.window?.rootViewController?.dismiss__async(animated: true)
