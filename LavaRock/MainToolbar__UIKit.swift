@@ -79,9 +79,7 @@ final class MainToolbar__UIKit {
 		]
 		let reversedElements = Fn.reversed(groupedElements)
 		let submenus = reversedElements.map { groupOfElements in
-			return UIMenu(
-				options: .displayInline,
-				children: groupOfElements)
+			UIMenu(options: .displayInline, children: groupOfElements)
 		}
 		return UIMenu(children: submenus)
 	}
@@ -191,9 +189,7 @@ final class MainToolbar__UIKit {
 	
 	private func create_submenu_Transport() -> UIMenu {
 		return UIMenu(
-			options: [
-				.displayInline,
-			],
+			options: .displayInline,
 			children: [
 				UIDeferredMenuElement.uncached({ useMenuElements in
 					let action = UIAction(

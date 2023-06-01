@@ -275,9 +275,7 @@ final class SongCell: UITableViewCell {
 			],
 		]
 		let submenus = groupedMenuElements.map { groupOfElements in
-			return UIMenu(
-				options: .displayInline,
-				children: groupOfElements)
+			return UIMenu(options: .displayInline, children: groupOfElements)
 		}
 		menu = UIMenu(children: submenus)
 	}
