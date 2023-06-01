@@ -263,20 +263,23 @@ final class SongCell: UITableViewCell {
 		})
 		
 		// Create menu
-		let groupedMenuElements: [[UIMenuElement]] = [
-			[
-				play,
-				playNext,
-				playLast,
-			],
-			[
-				playToBottomNext,
-				playToBottomLast,
-			],
+		let submenus: [UIMenu] = [
+			UIMenu(
+				options: .displayInline,
+				children: [
+					play,
+					playNext,
+					playLast,
+				]
+			),
+			UIMenu(
+				options: .displayInline,
+				children: [
+					playToBottomNext,
+					playToBottomLast,
+				]
+			),
 		]
-		let submenus = groupedMenuElements.map { groupOfElements in
-			return UIMenu(options: .displayInline, children: groupOfElements)
-		}
 		menu = UIMenu(children: submenus)
 	}
 	private static func shouldEnablePrepend() -> Bool {
