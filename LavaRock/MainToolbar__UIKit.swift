@@ -16,22 +16,6 @@ import SwiftUI
 final class MainToolbar__UIKit {
 	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
-	private lazy var console_button = UIBarButtonItem(
-		title: LRString.more,
-		primaryAction: UIAction(
-			handler: { [weak self] action in
-				self?.console_presenter?.present(
-					UIHostingController(
-						rootView: ConsoleView()
-					),
-					animated: true
-				)
-			}
-		)
-	)
-	private weak var console_presenter: UIViewController? = nil
-	private let console_screen_host = UIHostingController(rootView: ConsoleView())
-	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
 		image: Self.overflowButtonDefaultImage,
@@ -269,38 +253,22 @@ final class MainToolbar__UIKit {
 	}()
 	
 	var buttons_array: [UIBarButtonItem] {
-		if Enabling.inAppPlayer {
-			return [
-				console_button,
-				.flexibleSpace(),
-				jumpBackButton,
-				.flexibleSpace(),
-				playPauseButton,
-				.flexibleSpace(),
-				jumpForwardButton,
-				.flexibleSpace(),
-				nextButton,
-			]
-		} else {
-			return [
-				overflowButton,
-				.flexibleSpace(),
-				jumpBackButton,
-				.flexibleSpace(),
-				playPauseButton,
-				.flexibleSpace(),
-				jumpForwardButton,
-				.flexibleSpace(),
-				nextButton,
-			]
-		}
+		return [
+			overflowButton,
+			.flexibleSpace(),
+			jumpBackButton,
+			.flexibleSpace(),
+			playPauseButton,
+			.flexibleSpace(),
+			jumpForwardButton,
+			.flexibleSpace(),
+			nextButton,
+		]
 	}
 	
 	init(
-		weakly_Console_presenter: UIViewController,
 		weakly_Settings_presenter: UIViewController
 	) {
-		self.console_presenter = weakly_Console_presenter
 		self.settings_presenter = weakly_Settings_presenter
 		
 		freshen()
@@ -316,7 +284,6 @@ final class MainToolbar__UIKit {
 		freshen()
 	}
 	
-	private static let showConsoleButtonDefaultImage = UIImage(systemName: "list.bullet.circle")!
 	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
 	private var hasRefreshenedOverflowButton = false
 	private func freshen() {
@@ -376,32 +343,13 @@ final class MainToolbar__UIKit {
 		else {
 			configurePlayButton()
 			
-			console_button.image = Self.showConsoleButtonDefaultImage
-			
 			// Enable or disable each button as appropriate
 			buttons_array.forEach {
 				$0.isEnabledSetToFalseAlongWithAccessibilityTrait()
 			}
 			overflowButton.isEnabledSetToTrueAlongWithAccessibilityTrait()
-			console_button.isEnabledSetToTrueAlongWithAccessibilityTrait()
 			return
 		}
-		
-		console_button.image = {
-			switch player.repeatMode {
-				case .one:
-					return UIImage(systemName: "repeat.1.circle.fill")!
-				case .all:
-					return UIImage(systemName: "repeat.circle.fill")!
-				case
-						.default,
-						.none
-					:
-					return Self.showConsoleButtonDefaultImage
-				@unknown default:
-					return Self.showConsoleButtonDefaultImage
-			}
-		}()
 		
 		if player.playbackState == .playing {
 			// Configure “pause” button

@@ -12,7 +12,6 @@ final class LibraryNC: UINavigationController {
 	var needsOverrideThemeInWindow = false
 	
 	lazy var mainToolbar = MainToolbar__UIKit(
-		weakly_Console_presenter: self,
 		weakly_Settings_presenter: self
 	)
 	
