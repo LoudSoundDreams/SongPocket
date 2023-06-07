@@ -389,7 +389,7 @@
 				07E0BBFE2765680C0010117E /* Extensions */,
 				07FC970A24BAC1050036DD3D /* Database */,
 				07FFC00D29D88B6B00B98447 /* AppleMusic.swift */,
-				07DF65D027766B7B003B2EA3 /* MusicFolder */,
+				07DF65D027766B7B003B2EA3 /* MusicLibrary */,
 				07F1881F27F6B3750074809D /* Player */,
 				07FD6E092599227C00826447 /* PurchaseManager.swift */,
 				07E0BBFF276569480010117E /* General UI */,
@@ -479,7 +479,7 @@
 			path = "Albums Level";
 			sourceTree = "<group>";
 		};
-		07DF65D027766B7B003B2EA3 /* MusicFolder */ = {
+		07DF65D027766B7B003B2EA3 /* MusicLibrary */ = {
 			isa = PBXGroup;
 			children = (
 				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
@@ -492,7 +492,7 @@
 				07A4F90E2519E8410065C87E /* deleteLibraryItems.swift */,
 				072FD02626C30BB90053369B /* cleanUpLibraryItems.swift */,
 			);
-			path = MusicFolder;
+			path = MusicLibrary;
 			sourceTree = "<group>";
 		};
 		07E0BBD8276567760010117E /* Foundation */ = {
