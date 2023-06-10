@@ -64,7 +64,7 @@ extension SettingsTVC {
 			case .theme:
 				return LRString.theme
 			case .avatar:
-				return LRString.nowPlayingMarker
+				return LRString.nowPlayingIcon
 			case .tipJar:
 				return LRString.tipJar
 		}

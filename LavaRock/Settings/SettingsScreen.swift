@@ -22,7 +22,7 @@ struct SettingsScreen__SwiftUI: View {
 					AccentColorPicker()
 				}
 				
-				Section(LRString.nowPlayingMarker) {
+				Section(LRString.nowPlayingIcon) {
 					AvatarPicker()
 				}
 				

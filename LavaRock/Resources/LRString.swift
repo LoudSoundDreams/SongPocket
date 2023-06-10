@@ -47,7 +47,7 @@ enum LRString {
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	static let blueberry = NSLocalizedString("Blueberry", comment: "Accent color")
 	
-	static let nowPlayingMarker = NSLocalizedString("Now-Playing Marker", comment: "Section header")
+	static let nowPlayingIcon = NSLocalizedString("Now-Playing Icon", comment: "Section header")
 	
 	static let speaker = NSLocalizedString("Speaker", comment: "Accessibility label")
 	static let pawprint = NSLocalizedString("Pawprint", comment: "Accessibility label")
