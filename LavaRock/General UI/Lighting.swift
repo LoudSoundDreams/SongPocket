@@ -42,8 +42,6 @@ enum Lighting: CaseIterable {
 			case .system:
 				let idiom = UIDevice.current.userInterfaceIdiom
 				switch idiom {
-					case .unspecified:
-						return "iphone"
 					case .phone:
 						return "iphone"
 					case .pad:
@@ -54,6 +52,10 @@ enum Lighting: CaseIterable {
 						return "iphone"
 					case .mac:
 						return "desktopcomputer"
+					case .reality:
+						return "iphone"
+					case .unspecified:
+						return "iphone"
 					@unknown default:
 						return "iphone"
 				}
