@@ -72,11 +72,11 @@ extension MusicLibrary {
 			allInfos: freshInfosInAnyOrder,
 			isFirstImport: isFirstImport)
 		
+		context.tryToSave()
+		
 		defaults.set(
 			true,
 			forKey: defaultsKeyHasEverImported)
-		
-		context.tryToSave()
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
