@@ -52,15 +52,6 @@ struct TransportPanel: View {
 		.disabled(whenNil: tapeDeckStatus.current)
 	}
 	
-	private var openMusicButton: some View {
-		Button {
-			UIApplication.shared.open(.music)
-		} label: {
-			Image(systemName: "arrow.up.forward.app")
-				.font(.system(size: .eight * 4))
-		}
-	}
-	
 	private var previousSongButton: some View {
 		Button {
 			controller?.skipToPreviousItem()
