@@ -12,18 +12,19 @@ extension SettingsTVC {
 	private enum Section: Int, CaseIterable {
 		case theme
 		case avatar
-		case tipJar
+		case support
 	}
+	private static let tipJarRow = 1
 	
 	static let indexPathsOfLightingRows = [
 		IndexPath(row: 0, section: Section.theme.rawValue),
 	]
 	
 	func freshenTipJarRows() {
-		let tipJarIndexPaths = tableView.indexPathsForRows(
-			inSection: Section.tipJar.rawValue,
-			firstRow: 0)
-		tableView.reloadRows(at: tipJarIndexPaths, with: .fade) // Don’t use `reloadSections`, because that makes the header and footer fade out and back in.
+		let tipJarIndexPath = IndexPath(
+			row: Self.tipJarRow,
+			section: Section.support.rawValue)
+		tableView.reloadRows(at: [tipJarIndexPath], with: .fade) // Don’t use `reloadSections`, because that makes the header and footer fade out and back in.
 	}
 	
 	// MARK: - All Sections
@@ -46,8 +47,8 @@ extension SettingsTVC {
 				return Self.indexPathsOfLightingRows.count + AccentColor.allCases.count
 			case .avatar:
 				return 1
-			case .tipJar:
-				return 1
+			case .support:
+				return 2
 		}
 	}
 	
@@ -65,8 +66,8 @@ extension SettingsTVC {
 				return LRString.theme
 			case .avatar:
 				return LRString.nowPlayingIcon
-			case .tipJar:
-				return LRString.tipJar
+			case .support:
+				return LRString.support
 		}
 	}
 	
@@ -82,8 +83,8 @@ extension SettingsTVC {
 				return nil
 			case .avatar:
 				return nil
-			case .tipJar:
-				return LRString.tipJarFooter
+			case .support:
+				return LRString.supportFooter
 		}
 	}
 	
@@ -130,8 +131,28 @@ extension SettingsTVC {
 				
 				return cell
 				
-			case .tipJar:
-				return tipJarCell(forRowAt: indexPath)
+			case .support:
+				switch indexPath.row {
+					case Self.tipJarRow:
+						return tipJarCell(forRowAt: indexPath)
+					default:
+						// The cell in the storyboard is completely default except for the reuse identifier.
+						let cell = tableView.dequeueReusableCell(
+							withIdentifier: "Contact",
+							for: indexPath)
+						
+						cell.selectedBackgroundView_add_tint()
+						cell.contentConfiguration = UIHostingConfiguration {
+							LabeledContent {
+								Text(verbatim: "linus@songpocket.app")
+							} label: {
+								Text(LRString.contact)
+									.foregroundStyle(Color.accentColor)
+							}
+						}
+						
+						return cell
+				}
 		}
 	}
 	
@@ -153,7 +174,7 @@ extension SettingsTVC {
 				}
 			case .avatar:
 				return nil
-			case .tipJar:
+			case .support:
 				return indexPath
 		}
 	}
@@ -173,8 +194,16 @@ extension SettingsTVC {
 				}
 			case .avatar: // Should never run
 				tableView.deselectRow(at: indexPath, animated: true)
-			case .tipJar:
-				didSelectTipJarRow(at: indexPath)
+			case .support:
+				switch indexPath.row {
+					case Self.tipJarRow:
+						didSelectTipJarRow(at: indexPath)
+					default:
+						let mailtoLink = URL(string: "mailto:linus@songpocket.app?subject=Songpocket%20Feedback")!
+						UIApplication.shared.open(mailtoLink)
+						
+						tableView.deselectRow(at: indexPath, animated: true)
+				}
 		}
 	}
 	
