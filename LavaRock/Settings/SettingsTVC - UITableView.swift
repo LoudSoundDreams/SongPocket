@@ -10,15 +10,11 @@ import SwiftUI
 
 extension SettingsTVC {
 	private enum Section: Int, CaseIterable {
-		case theme
-		case avatar
+		case appearance
 		case support
 	}
+	private static let nonselectableAppearanceRows: [Int] = [0, 6]
 	private static let tipJarRow = 1
-	
-	static let indexPathsOfLightingRows = [
-		IndexPath(row: 0, section: Section.theme.rawValue),
-	]
 	
 	func freshenTipJarRows() {
 		let tipJarIndexPath = IndexPath(
@@ -43,10 +39,8 @@ extension SettingsTVC {
 			return 0
 		}
 		switch sectionCase {
-			case .theme:
-				return Self.indexPathsOfLightingRows.count + AccentColor.allCases.count
-			case .avatar:
-				return 1
+			case .appearance:
+				return AccentColor.allCases.count + Self.nonselectableAppearanceRows.count
 			case .support:
 				return 2
 		}
@@ -62,10 +56,8 @@ extension SettingsTVC {
 			return nil
 		}
 		switch sectionCase {
-			case .theme:
-				return LRString.theme
-			case .avatar:
-				return LRString.nowPlayingIcon
+			case .appearance:
+				return LRString.appearance
 			case .support:
 				return LRString.support
 		}
@@ -79,9 +71,7 @@ extension SettingsTVC {
 			return nil
 		}
 		switch sectionCase {
-			case .theme:
-				return nil
-			case .avatar:
+			case .appearance:
 				return nil
 			case .support:
 				return LRString.supportFooter
@@ -96,29 +86,35 @@ extension SettingsTVC {
 	) -> UITableViewCell {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return UITableViewCell() }
 		switch sectionCase {
-			case .theme:
-				if Self.indexPathsOfLightingRows.contains(indexPath) {
-					// The cell in the storyboard is completely default except for the reuse identifier.
-					let cell = tableView.dequeueReusableCell(
-						withIdentifier: "Lighting",
-						for: indexPath)
-					
-					cell.selectionStyle = .none
-					cell.contentConfiguration = UIHostingConfiguration {
-						LightingPicker()
-							.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-								viewDimensions[.leading]
-							}
-							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-								viewDimensions[.trailing]
-							}
-					}
-					
-					return cell
-				} else {
-					return accentColorCell(forRowAt: indexPath)
+			case .appearance:
+				return appearanceCell(forRowAt: indexPath)
+			case .support:
+				return supportCell(forRowAt: indexPath)
+		}
+	}
+	private func appearanceCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		let _ = Self.nonselectableAppearanceRows
+		switch indexPath.row {
+			case 0:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Lighting",
+					for: indexPath)
+				
+				cell.selectionStyle = .none
+				cell.contentConfiguration = UIHostingConfiguration {
+					LightingPicker()
+						.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+							viewDimensions[.leading]
+						}
+						.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+							viewDimensions[.trailing]
+						}
 				}
-			case .avatar:
+				
+				return cell
+				
+			case 6:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Avatar",
@@ -131,28 +127,31 @@ extension SettingsTVC {
 				
 				return cell
 				
-			case .support:
-				switch indexPath.row {
-					case Self.tipJarRow:
-						return tipJarCell(forRowAt: indexPath)
-					default:
-						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(
-							withIdentifier: "Contact",
-							for: indexPath)
-						
-						cell.selectedBackgroundView_add_tint()
-						cell.contentConfiguration = UIHostingConfiguration {
-							LabeledContent {
-								Text(verbatim: "linus@songpocket.app")
-							} label: {
-								Text(LRString.contact)
-									.foregroundStyle(Color.accentColor)
-							}
-						}
-						
-						return cell
+			default:
+				return accentColorCell(forRowAt: indexPath)
+		}
+	}
+	private func supportCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+		switch indexPath.row {
+			case Self.tipJarRow:
+				return tipJarCell(forRowAt: indexPath)
+			default:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Contact",
+					for: indexPath)
+				
+				cell.selectedBackgroundView_add_tint()
+				cell.contentConfiguration = UIHostingConfiguration {
+					LabeledContent {
+						Text(verbatim: "linus@songpocket.app")
+					} label: {
+						Text(LRString.contact)
+							.foregroundStyle(Color.accentColor)
+					}
 				}
+				
+				return cell
 		}
 	}
 	
@@ -166,14 +165,12 @@ extension SettingsTVC {
 			return nil
 		}
 		switch sectionCase {
-			case .theme:
-				if Self.indexPathsOfLightingRows.contains(indexPath) {
+			case .appearance:
+				if Self.nonselectableAppearanceRows.contains(indexPath.row) {
 					return nil
 				} else {
 					return indexPath
 				}
-			case .avatar:
-				return nil
 			case .support:
 				return indexPath
 		}
@@ -185,15 +182,13 @@ extension SettingsTVC {
 	) {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
-			case .theme:
-				if Self.indexPathsOfLightingRows.contains(indexPath) {
+			case .appearance:
+				guard !Self.nonselectableAppearanceRows.contains(indexPath.row) else {
 					// Should never run
 					tableView.deselectRow(at: indexPath, animated: true)
-				} else {
-					didSelectAccentColorRow(at: indexPath)
+					return
 				}
-			case .avatar: // Should never run
-				tableView.deselectRow(at: indexPath, animated: true)
+				didSelectAccentColorRow(at: indexPath)
 			case .support:
 				switch indexPath.row {
 					case Self.tipJarRow:
@@ -210,7 +205,8 @@ extension SettingsTVC {
 	// MARK: - Accent Color Section
 	
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let indexOfAccentColor = indexPath.row - Self.indexPathsOfLightingRows.count
+		let _ = Self.nonselectableAppearanceRows
+		let indexOfAccentColor = indexPath.row - 1
 		let accentColor = AccentColor.allCases[indexOfAccentColor]
 		
 		guard let cell = tableView.dequeueReusableCell(
@@ -222,7 +218,8 @@ extension SettingsTVC {
 	}
 	
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
-		let indexOfAccentColor = indexPath.row - Self.indexPathsOfLightingRows.count
+		let _ = Self.nonselectableAppearanceRows
+		let indexOfAccentColor = indexPath.row - 1
 		let selected = AccentColor.allCases[indexOfAccentColor]
 		
 		Theme.shared.accentColor = selected

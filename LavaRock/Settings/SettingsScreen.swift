@@ -16,13 +16,11 @@ struct SettingsScreen__SwiftUI: View {
 	var body: some View {
 		NavigationView {
 			Form {
-				Section(LRString.theme) {
+				Section(LRString.appearance) {
 					LightingPicker()
 					
 					AccentColorPicker()
-				}
-				
-				Section(LRString.nowPlayingIcon) {
+					
 					AvatarPicker()
 				}
 				

@@ -35,7 +35,7 @@ enum LRString {
 	
 	static let settings = NSLocalizedString("Settings", comment: "Button")
 	
-	static let theme = NSLocalizedString("Theme", comment: "Section header")
+	static let appearance = NSLocalizedString("Appearance", comment: "Section header")
 	
 	static let light = NSLocalizedString("Light", comment: "Accessibility label, appearance option")
 	static let dark = NSLocalizedString("Dark", comment: "Accessibility label, appearance option")
@@ -46,8 +46,6 @@ enum LRString {
 	static let strawberry = NSLocalizedString("Strawberry", comment: "Accent color")
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	static let blueberry = NSLocalizedString("Blueberry", comment: "Accent color")
-	
-	static let nowPlayingIcon = NSLocalizedString("Now-Playing Icon", comment: "Section header")
 	
 	static let speaker = NSLocalizedString("Speaker", comment: "Accessibility label")
 	static let pawprint = NSLocalizedString("Pawprint", comment: "Accessibility label")
