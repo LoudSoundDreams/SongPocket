@@ -14,7 +14,7 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	case lighting = "appearance"
 	
 	// Introduced in version ?
-	case hasEverImportedFromMusic = "hasEverImportedFromMusic"
+	case hasSavedDatabase = "hasEverImportedFromMusic"
 	
 	// Introduced in version 1.0
 	case accentColor = "accentColorName"

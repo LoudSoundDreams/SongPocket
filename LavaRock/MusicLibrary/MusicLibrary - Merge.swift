@@ -17,10 +17,10 @@ extension MusicLibrary {
 		let existingSongs = Song.allFetched(sortedByIndex: false, via: context)
 		
 		let defaults = UserDefaults.standard
-		let defaultsKeyHasEverImported = LRUserDefaultsKey.hasEverImportedFromMusic.rawValue
+		let keyHasSaved = LRUserDefaultsKey.hasSavedDatabase.rawValue
 		
-		let hasEverImportedFromMusic = defaults.bool(forKey: defaultsKeyHasEverImported) // Returns `false` if there’s no saved value
-		let isFirstImport = !hasEverImportedFromMusic
+		let hasSaved = defaults.bool(forKey: keyHasSaved) // Returns `false` if there’s no saved value
+		let isFirstImport = !hasSaved
 		
 		// Find out which `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s (and maybe new `Album`s and `Collection`s`) for them.
@@ -76,7 +76,7 @@ extension MusicLibrary {
 		
 		defaults.set(
 			true,
-			forKey: defaultsKeyHasEverImported)
+			forKey: keyHasSaved)
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(
