@@ -9,6 +9,11 @@ import SwiftUI
 
 struct AvatarPicker: View {
 	@ObservedObject private var avatarObservable: AvatarObservable = .shared
+	private static var keyHasSaved: String {
+		LRUserDefaultsKey.hasSavedDatabase.rawValue
+	}
+	@AppStorage(Self.keyHasSaved)
+	private var hasSaved: Bool = UserDefaults.standard.bool(forKey: Self.keyHasSaved)
 	
 	var body: some View {
 		Picker("", selection: $avatarObservable.current) {
@@ -18,6 +23,9 @@ struct AvatarPicker: View {
 			}
 		}
 		.pickerStyle(.segmented)
+		.disabled({
+			return !hasSaved
+		}())
 	}
 }
 
