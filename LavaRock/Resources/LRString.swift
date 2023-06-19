@@ -35,8 +35,6 @@ enum LRString {
 	
 	static let settings = NSLocalizedString("Settings", comment: "Button")
 	
-	static let appearance = NSLocalizedString("Appearance", comment: "Section header")
-	
 	static let light = NSLocalizedString("Light", comment: "Accessibility label, appearance option")
 	static let dark = NSLocalizedString("Dark", comment: "Accessibility label, appearance option")
 	static let system = NSLocalizedString("System", comment: "Accessibility label, appearance option")
@@ -52,16 +50,12 @@ enum LRString {
 	static let fish = NSLocalizedString("Fish", comment: "Accessibility label")
 	static let luxoLamp = NSLocalizedString("Luxo lamp", comment: "Accessibility label")
 	
-	static let support = NSLocalizedString("Support", comment: "Section header")
-	static let tipJar = NSLocalizedString("Tip Jar", comment: "Section header")
-	
-	static let contact = NSLocalizedString("Contact", comment: "Button")
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
-	static let supportFooter = NSLocalizedString("Cheers.", comment: "Section footer")
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(
 		" Thank You! ",
 		comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
+	static let contact = NSLocalizedString("Contact", comment: "Button")
 	
 	// MARK: Transport bar
 	

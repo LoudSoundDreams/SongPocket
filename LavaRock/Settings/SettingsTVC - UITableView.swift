@@ -14,7 +14,7 @@ extension SettingsTVC {
 		case support
 	}
 	private static let nonselectableAppearanceRows: [Int] = [0, 6]
-	private static let tipJarRow = 1
+	private static let tipJarRow = 0
 	
 	func freshenTipJarRows() {
 		let tipJarIndexPath = IndexPath(
@@ -43,38 +43,6 @@ extension SettingsTVC {
 				return AccentColor.allCases.count + Self.nonselectableAppearanceRows.count
 			case .support:
 				return 2
-		}
-	}
-	
-	// MARK: Headers and Footers
-	
-	override func tableView(
-		_ tableView: UITableView,
-		titleForHeaderInSection section: Int
-	) -> String? {
-		guard let sectionCase = Section(rawValue: section) else {
-			return nil
-		}
-		switch sectionCase {
-			case .appearance:
-				return LRString.appearance
-			case .support:
-				return LRString.support
-		}
-	}
-	
-	override func tableView(
-		_ tableView: UITableView,
-		titleForFooterInSection section: Int
-	) -> String? {
-		guard let sectionCase = Section(rawValue: section) else {
-			return nil
-		}
-		switch sectionCase {
-			case .appearance:
-				return nil
-			case .support:
-				return LRString.supportFooter
 		}
 	}
 	

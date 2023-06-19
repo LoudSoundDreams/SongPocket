@@ -16,7 +16,7 @@ struct SettingsScreen__SwiftUI: View {
 	var body: some View {
 		NavigationView {
 			Form {
-				Section(LRString.appearance) {
+				Section {
 					LightingPicker()
 					
 					AccentColorPicker()
@@ -26,10 +26,6 @@ struct SettingsScreen__SwiftUI: View {
 				
 				Section {
 					TipJarView()
-				} header: {
-					Text(LRString.tipJar)
-				} footer: {
-					Text(LRString.supportFooter)
 				}
 			}
 			.navigationTitle(LRString.settings)
