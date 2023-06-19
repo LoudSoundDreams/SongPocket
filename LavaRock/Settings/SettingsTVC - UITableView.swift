@@ -240,7 +240,7 @@ extension SettingsTVC {
 				cell.isUserInteractionEnabled = false
 				cell.contentConfiguration = UIHostingConfiguration {
 					Text(LRString.loadingEllipsis)
-						.foregroundColor(.secondary)
+						.foregroundStyle(.secondary)
 				}
 				
 				return cell
@@ -262,7 +262,7 @@ extension SettingsTVC {
 				cell.isUserInteractionEnabled = false
 				cell.contentConfiguration = UIHostingConfiguration {
 					Text(LRString.confirmingEllipsis)
-						.foregroundColor(.secondary)
+						.foregroundStyle(.secondary)
 				}
 				
 				return cell
@@ -287,7 +287,7 @@ extension SettingsTVC {
 		
 		var body: some View {
 			Text(theme.accentColor.tipThankYouMessage())
-				.foregroundColor(.secondary)
+				.foregroundStyle(.secondary)
 				.multilineTextAlignment(.center)
 				.frame(maxWidth: .infinity)
 		}

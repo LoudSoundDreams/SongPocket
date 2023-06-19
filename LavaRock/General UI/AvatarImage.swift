@@ -83,10 +83,10 @@ struct AvatarImage: View {
 			case .paused:
 				Image(systemName: Avatar.preference.pausedSFSymbolName)
 					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
-					.foregroundColor(.accentColor)
+					.foregroundStyle(Color.accentColor)
 			case .playing:
 				playing_image
-					.foregroundColor(.accentColor)
+					.foregroundStyle(Color.accentColor)
 		}
 	}
 }

@@ -29,7 +29,7 @@ struct SettingsScreen__SwiftUI: View {
 				} header: {
 					Text(LRString.tipJar)
 				} footer: {
-					Text(LRString.tipJarFooter)
+					Text(LRString.supportFooter)
 				}
 			}
 			.navigationTitle(LRString.settings)

@@ -102,7 +102,7 @@ final class TipReloadCell: UITableViewCell {
 		
 		contentConfiguration = UIHostingConfiguration {
 			Text(LRString.reload)
-				.foregroundColor(.accentColor)
+				.foregroundStyle(Color.accentColor)
 				.accessibilityAddTraits(.isButton)
 		}
 	}
@@ -120,7 +120,7 @@ final class TipReadyCell: UITableViewCell {
 				Text(PurchaseManager.shared.tipPrice ?? "")
 			} label: {
 				Text(PurchaseManager.shared.tipTitle ?? "")
-					.foregroundColor(.accentColor)
+					.foregroundStyle(Color.accentColor)
 			}
 			.accessibilityAddTraits(.isButton)
 		}

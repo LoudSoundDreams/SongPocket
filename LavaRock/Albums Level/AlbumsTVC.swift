@@ -26,7 +26,7 @@ final class AlbumsTVC:
 	private(set) lazy var noItemsBackgroundView: UIView? = {
 		let view = Text(LRString.noAlbums)
 			.font(.title)
-			.foregroundColor(.secondary)
+			.foregroundStyle(.secondary)
 		let hostingController = UIHostingController(rootView: view)
 		return hostingController.view
 	}()

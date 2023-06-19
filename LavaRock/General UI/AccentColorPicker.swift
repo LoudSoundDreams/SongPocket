@@ -14,7 +14,7 @@ struct AccentColorPicker: View {
 		Picker("", selection: $theme.accentColor) {
 			ForEach(AccentColor.allCases) { accentColor in
 				Text(accentColor.displayName)
-					.foregroundColor(accentColor.color)
+					.foregroundStyle(accentColor.color)
 			}
 		}
 //		.pickerStyle(.menu)

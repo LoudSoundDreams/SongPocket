@@ -23,7 +23,7 @@ struct SongRow: View {
 			) {
 				Text(trackDisplay)
 					.monospacedDigit()
-					.foregroundColor(.secondary)
+					.foregroundStyle(.secondary)
 				
 				VStack(
 					alignment: .leading,
@@ -34,7 +34,7 @@ struct SongRow: View {
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
 							.font(.caption)
-							.foregroundColor(.secondary)
+							.foregroundStyle(.secondary)
 							.padding(.bottom, .eight * 1/4) // 2
 					}
 				}
@@ -54,7 +54,7 @@ struct SongRow: View {
 				Image(systemName: "ellipsis")
 					.font(.body)
 					.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-					.foregroundColor(.primary)
+					.foregroundStyle(.primary)
 			}
 		}
 		.padding(.top, .eight * -1/4) // -2

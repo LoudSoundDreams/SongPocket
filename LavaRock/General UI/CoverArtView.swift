@@ -40,7 +40,7 @@ struct CoverArtView: View {
 						maxHeight: maxHeight)
 				
 				Image(systemName: "music.note")
-					.foregroundColor(.secondary)
+					.foregroundStyle(.secondary)
 					.font(.system(size: .eight * 4))
 			}
 			.accessibilityLabel(LRString.albumArtwork)

@@ -21,13 +21,13 @@ struct TipJarView: View {
 		switch tipJarViewModel.status {
 			case .notYetFirstLoaded, .loading:
 				Text(LRString.loadingEllipsis)
-					.foregroundColor(.secondary)
+					.foregroundStyle(.secondary)
 			case .reload:
 				Button {
 					PurchaseManager.shared.requestTipProduct()
 				} label: {
 					Text(LRString.reload)
-						.foregroundColor(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
+						.foregroundStyle(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
 				}
 			case .ready:
 				Button {
@@ -35,20 +35,20 @@ struct TipJarView: View {
 				} label: {
 					HStack {
 						Text("tip")
-							.foregroundColor(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
+							.foregroundStyle(theme.accentColor.color) // Don’t use the `.accentColor` modifier, because SwiftUI applies “Increase Contrast” twice.
 						Spacer()
 						Text("0¢")
-							.foregroundColor(.secondary)
+							.foregroundStyle(.secondary)
 					}
 				}
 			case .confirming:
 				Text(LRString.confirmingEllipsis)
-					.foregroundColor(.secondary)
+					.foregroundStyle(.secondary)
 			case .thankYou:
 				HStack {
 					Spacer()
 					Text(theme.accentColor.tipThankYouMessage())
-						.foregroundColor(.secondary)
+						.foregroundStyle(.secondary)
 					Spacer()
 				}
 		}

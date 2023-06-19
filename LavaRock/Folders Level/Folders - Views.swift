@@ -17,7 +17,7 @@ final class AllowAccessCell: UITableViewCell {
 		
 		contentConfiguration = UIHostingConfiguration {
 			Text(LRString.allowAccessToMusic)
-				.foregroundColor(.accentColor)
+				.foregroundStyle(Color.accentColor)
 				.accessibilityAddTraits(.isButton)
 		}
 	}
@@ -83,10 +83,10 @@ final class OpenMusicCell: UITableViewCell {
 		contentConfiguration = UIHostingConfiguration {
 			LabeledContent {
 				Image(systemName: "arrow.up.forward.app")
-					.foregroundColor(.accentColor)
+					.foregroundStyle(Color.accentColor)
 			} label: {
 				Text(LRString.appleMusic)
-					.foregroundColor(.accentColor)
+					.foregroundStyle(Color.accentColor)
 					.accessibilityAddTraits(.isButton)
 			}
 		}
