@@ -48,7 +48,6 @@ final class ExpandedTargetButton: UIButton {
 		return tappableRect.contains(point)
 	}
 }
-
 final class SongCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	

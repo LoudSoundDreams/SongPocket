@@ -55,6 +55,7 @@ enum LRString {
 	static let tipThankYouMessageWithPaddingSpaces = NSLocalizedString(
 		" Thank You! ",
 		comment: "After leaving a tip, the thank-you message that appears between two heart emojis. Include padding spaces if your language uses them.")
+	
 	static let contact = NSLocalizedString("Contact", comment: "Button")
 	
 	// MARK: Transport bar

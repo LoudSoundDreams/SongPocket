@@ -214,13 +214,39 @@ extension SettingsTVC {
 				return cell
 				
 			case .reload:
-				return tableView.dequeueReusableCell(
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Tip Reload",
-					for: indexPath) as? TipReloadCell ?? UITableViewCell()
+					for: indexPath)
+				
+				cell.selectedBackgroundView_add_tint()
+				cell.contentConfiguration = UIHostingConfiguration {
+					Text(LRString.reload)
+						.foregroundStyle(Color.accentColor)
+						.accessibilityAddTraits(.isButton)
+				}
+				
+				return cell
+				
 			case .ready:
-				return tableView.dequeueReusableCell(
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Tip Ready",
-					for: indexPath) as? TipReadyCell ?? UITableViewCell()
+					for: indexPath)
+				
+				cell.selectedBackgroundView_add_tint()
+				cell.contentConfiguration = UIHostingConfiguration {
+					LabeledContent {
+						Text(PurchaseManager.shared.tipPrice ?? "")
+					} label: {
+						Text(PurchaseManager.shared.tipTitle ?? "")
+							.foregroundStyle(Color.accentColor)
+					}
+					.accessibilityAddTraits(.isButton)
+				}
+				
+				return cell
+				
 			case .confirming:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
@@ -249,7 +275,6 @@ extension SettingsTVC {
 				return cell
 		}
 	}
-	
 	private struct TipThankYouView: View {
 		@ObservedObject private var theme: Theme = .shared
 		

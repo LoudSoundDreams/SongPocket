@@ -58,8 +58,6 @@ extension SongsTVC {
 						let safeHeight = height - topInset - bottomInset
 						cell.configureArtwork(maxHeight: safeHeight)
 						
-						cell.selectionStyle = .none
-						
 						return cell
 						
 					case .albumInfo:
@@ -68,6 +66,7 @@ extension SongsTVC {
 							withIdentifier: "Album Info",
 							for: indexPath)
 						
+						cell.selectionStyle = .none // So that the user can’t even highlight the cell
 						cell.contentConfiguration = UIHostingConfiguration {
 							AlbumInfoRow(
 								albumTitle: viewModel.bigTitle(),
@@ -78,7 +77,6 @@ extension SongsTVC {
 								viewDimensions[.trailing]
 							}
 						}
-						cell.selectionStyle = .none // So that the user can’t even highlight the cell
 						
 						return cell
 				}

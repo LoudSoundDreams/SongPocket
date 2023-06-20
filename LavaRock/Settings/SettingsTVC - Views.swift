@@ -92,37 +92,3 @@ final class AccentColorCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
-
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReloadCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		selectedBackgroundView_add_tint()
-		
-		contentConfiguration = UIHostingConfiguration {
-			Text(LRString.reload)
-				.foregroundStyle(Color.accentColor)
-				.accessibilityAddTraits(.isButton)
-		}
-	}
-}
-
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class TipReadyCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		selectedBackgroundView_add_tint()
-		
-		contentConfiguration = UIHostingConfiguration {
-			LabeledContent {
-				Text(PurchaseManager.shared.tipPrice ?? "")
-			} label: {
-				Text(PurchaseManager.shared.tipTitle ?? "")
-					.foregroundStyle(Color.accentColor)
-			}
-			.accessibilityAddTraits(.isButton)
-		}
-	}
-}
