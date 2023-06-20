@@ -49,7 +49,7 @@ final class TipJarViewModel: ObservableObject {
 				case .thankYou:
 					ui?.statusBecameThankYou()
 					Task {
-						try await Task.sleep(nanoseconds: 10_000_000_000)
+						try await Task.sleep(nanoseconds: 15_000_000_000)
 						
 						status = .ready
 					}

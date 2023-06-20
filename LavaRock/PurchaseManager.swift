@@ -22,7 +22,7 @@ final class PurchaseManager: NSObject { // Inherit from `NSObject` to more easil
 		TipJarViewModel.shared.status = .loading
 	}
 	
-	var tipTitle: String? {
+	var __tipTitle: String? {
 		return tipProduct?.localizedTitle
 	}
 	

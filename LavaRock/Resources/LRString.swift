@@ -50,6 +50,7 @@ enum LRString {
 	static let fish = NSLocalizedString("Fish", comment: "Accessibility label")
 	static let luxoLamp = NSLocalizedString("Luxo lamp", comment: "Accessibility label")
 	
+	static let tipJar = NSLocalizedString("Tip Jar", comment: "In-app purchase")
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
 	static let thankYouExclamationMark = NSLocalizedString("Thank you!", comment: "Status message")

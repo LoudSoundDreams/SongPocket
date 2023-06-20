@@ -235,8 +235,8 @@ extension SettingsTVC {
 				
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					Text(LRString.loadingEllipsis)
-						.foregroundStyle(.secondary)
+					LabeledContent(LRString.tipJar, value: LRString.loadingEllipsis)
+						.foregroundStyle(.secondary) // Seems to not affect `LabeledContent`’s `value:` argument
 				}
 				
 				return cell
@@ -249,9 +249,13 @@ extension SettingsTVC {
 				
 				cell.selectedBackgroundView_add_tint()
 				cell.contentConfiguration = UIHostingConfiguration {
-					Text(LRString.reload)
-						.foregroundStyle(Color.accentColor)
-						.accessibilityAddTraits(.isButton)
+					LabeledContent {
+						Text(LRString.reload)
+					} label: {
+						Text(LRString.tipJar)
+							.foregroundStyle(Color.accentColor)
+					}
+					.accessibilityAddTraits(.isButton)
 				}
 				
 				return cell
@@ -267,7 +271,7 @@ extension SettingsTVC {
 					LabeledContent {
 						Text(PurchaseManager.shared.tipPrice ?? "")
 					} label: {
-						Text(PurchaseManager.shared.tipTitle ?? "")
+						Text(LRString.tipJar)
 							.foregroundStyle(Color.accentColor)
 					}
 					.accessibilityAddTraits(.isButton)
@@ -283,7 +287,7 @@ extension SettingsTVC {
 				
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					Text(LRString.confirmingEllipsis)
+					LabeledContent(LRString.tipJar, value: LRString.confirmingEllipsis)
 						.foregroundStyle(.secondary)
 				}
 				
@@ -308,10 +312,11 @@ struct TipThankYouView: View {
 	@ObservedObject private var theme: Theme = .shared
 	
 	var body: some View {
-		Text(
-			theme.accentColor.heartEmoji
+		LabeledContent(
+			LRString.tipJar,
+			value: LRString.thankYouExclamationMark
 			+ " "
-			+ LRString.thankYouExclamationMark
+			+ theme.accentColor.heartEmoji
 		)
 		.foregroundStyle(.secondary)
 	}
