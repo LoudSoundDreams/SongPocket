@@ -140,7 +140,23 @@ extension SettingsTVC {
 					return indexPath
 				}
 			case .support:
-				return indexPath
+				switch indexPath.row {
+					case Self.tipJarRow:
+						switch TipJarViewModel.shared.status {
+							case
+									.notYetFirstLoaded,
+									.loading,
+									.confirming,
+									.thankYou:
+								return nil
+							case
+									.reload,
+									.ready:
+								return indexPath
+						}
+					default:
+						return indexPath
+				}
 		}
 	}
 	
@@ -205,7 +221,7 @@ extension SettingsTVC {
 					withIdentifier: "Tip Loading",
 					for: indexPath)
 				
-				cell.isUserInteractionEnabled = false
+				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					Text(LRString.loadingEllipsis)
 						.foregroundStyle(.secondary)
@@ -253,7 +269,7 @@ extension SettingsTVC {
 					withIdentifier: "Tip Confirming",
 					for: indexPath)
 				
-				cell.isUserInteractionEnabled = false
+				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					Text(LRString.confirmingEllipsis)
 						.foregroundStyle(.secondary)
@@ -267,22 +283,12 @@ extension SettingsTVC {
 					withIdentifier: "Tip Thank You",
 					for: indexPath)
 				
-				cell.isUserInteractionEnabled = false
+				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					TipThankYouView()
 				}
 				
 				return cell
-		}
-	}
-	private struct TipThankYouView: View {
-		@ObservedObject private var theme: Theme = .shared
-		
-		var body: some View {
-			Text(theme.accentColor.tipThankYouMessage())
-				.foregroundStyle(.secondary)
-				.multilineTextAlignment(.center)
-				.frame(maxWidth: .infinity)
 		}
 	}
 	
@@ -300,5 +306,17 @@ extension SettingsTVC {
 			case .ready:
 				PurchaseManager.shared.buyTip()
 		}
+	}
+}
+struct TipThankYouView: View {
+	@ObservedObject private var theme: Theme = .shared
+	
+	var body: some View {
+		Text(
+			theme.accentColor.heartEmoji
+			+ " "
+			+ LRString.thankYouExclamationMark
+		)
+		.foregroundStyle(.secondary)
 	}
 }

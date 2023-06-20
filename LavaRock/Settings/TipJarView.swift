@@ -45,12 +45,7 @@ struct TipJarView: View {
 				Text(LRString.confirmingEllipsis)
 					.foregroundStyle(.secondary)
 			case .thankYou:
-				HStack {
-					Spacer()
-					Text(theme.accentColor.tipThankYouMessage())
-						.foregroundStyle(.secondary)
-					Spacer()
-				}
+				TipThankYouView()
 		}
 	}
 }
