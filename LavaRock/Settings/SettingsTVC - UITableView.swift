@@ -176,7 +176,19 @@ extension SettingsTVC {
 			case .support:
 				switch indexPath.row {
 					case Self.tipJarRow:
-						didSelectTipJarRow(at: indexPath)
+						switch TipJarViewModel.shared.status {
+							case
+									.notYetFirstLoaded,
+									.loading,
+									.confirming,
+									.thankYou:
+								// Should never run
+								break
+							case .reload:
+								PurchaseManager.shared.requestTipProduct()
+							case .ready:
+								PurchaseManager.shared.buyTip()
+						}
 					default:
 						let mailtoLink = URL(string: "mailto:linus@songpocket.app?subject=Songpocket%20Feedback")!
 						UIApplication.shared.open(mailtoLink)
@@ -289,22 +301,6 @@ extension SettingsTVC {
 				}
 				
 				return cell
-		}
-	}
-	
-	private func didSelectTipJarRow(at indexPath: IndexPath) {
-		switch TipJarViewModel.shared.status {
-			case
-					.notYetFirstLoaded,
-					.loading,
-					.confirming,
-					.thankYou:
-				// Should never run
-				break
-			case .reload:
-				PurchaseManager.shared.requestTipProduct()
-			case .ready:
-				PurchaseManager.shared.buyTip()
 		}
 	}
 }
