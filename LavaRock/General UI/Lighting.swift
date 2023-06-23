@@ -52,8 +52,6 @@ enum Lighting: CaseIterable {
 						return "iphone"
 					case .mac:
 						return "desktopcomputer"
-					case .reality:
-						return "iphone"
 					case .unspecified:
 						return "iphone"
 					@unknown default:
