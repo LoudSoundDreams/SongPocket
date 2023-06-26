@@ -183,22 +183,22 @@ final class FolderCell: UITableViewCell {
 			case .normal(let actions):
 				backgroundColor_set_to_clear()
 				
-				enableWithAccessibilityTrait()
+				isUserInteractionEnabled_setTrueWithAxTrait()
 				accessibilityCustomActions = actions
 			case .modal:
 				backgroundColor_set_to_clear()
 				
-				enableWithAccessibilityTrait()
+				isUserInteractionEnabled_setTrueWithAxTrait()
 				accessibilityCustomActions = []
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponentOneEighth()
 				
-				enableWithAccessibilityTrait()
+				isUserInteractionEnabled_setTrueWithAxTrait()
 				accessibilityCustomActions = []
 			case .modalDisabled:
 				backgroundColor_set_to_clear()
 				
-				disableWithAccessibilityTrait()
+				isUserInteractionEnabled_setFalseWithAxTrait()
 				accessibilityCustomActions = []
 		}
 	}

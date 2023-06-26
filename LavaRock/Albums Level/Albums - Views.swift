@@ -94,17 +94,17 @@ final class AlbumCell: UITableViewCell {
 				backgroundColor_set_to_clear()
 				contentView.layer.opacity = 1 // The default value
 				accessoryType = .disclosureIndicator
-				enableWithAccessibilityTrait()
+				isUserInteractionEnabled_setTrueWithAxTrait()
 			case .modal:
 				backgroundColor_set_to_clear()
 				contentView.layer.opacity = .oneFourth // Close to what Files pickers use
 				accessoryType = .none
-				disableWithAccessibilityTrait()
+				isUserInteractionEnabled_setFalseWithAxTrait()
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponentOneEighth()
 				contentView.layer.opacity = .oneHalf
 				accessoryType = .none
-				disableWithAccessibilityTrait()
+				isUserInteractionEnabled_setFalseWithAxTrait()
 		}
 		
 		rowContentAccessibilityLabel__ = [
