@@ -345,9 +345,9 @@ final class MainToolbar__UIKit {
 			
 			// Enable or disable each button as appropriate
 			buttons_array.forEach {
-				$0.isEnabledSetToFalseAlongWithAccessibilityTrait()
+				$0.isEnabled_setFalseWithAxTrait()
 			}
-			overflowButton.isEnabledSetToTrueAlongWithAccessibilityTrait()
+			overflowButton.isEnabled_setTrueWithAxTrait()
 			return
 		}
 		
@@ -366,7 +366,7 @@ final class MainToolbar__UIKit {
 		
 		// Enable or disable each button as appropriate
 		buttons_array.forEach {
-			$0.isEnabledSetToTrueAlongWithAccessibilityTrait()
+			$0.isEnabled_setTrueWithAxTrait()
 		}
 	}
 }
