@@ -110,11 +110,9 @@ extension UITableView {
 		}
 	}
 	
-//	@discardableResult
 	final func performBatchUpdates__async(
 		_ updates: (() -> Void)?,
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
-//	) async -> Bool {
 	) async {
 		let _ = await withCheckedContinuation { continuation in
 			performBatchUpdates(
