@@ -41,7 +41,7 @@ class LibraryTVC: UITableViewController {
 		editButtonItem,
 	]
 	final lazy var viewingModeToolbarButtons: [UIBarButtonItem]
-	= (navigationController as? LibraryNC)?.mainToolbar.buttons_array ?? []
+	= (navigationController as? LibraryNC)?.mainToolbar.barButtonItems ?? []
 	
 	// MARK: Subclasses Should Not Customize
 	

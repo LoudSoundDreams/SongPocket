@@ -16,12 +16,60 @@ import SwiftUI
 final class MainToolbar__UIKit {
 	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
+	// MARK: - Buttons
+	
+	var barButtonItems: [UIBarButtonItem] {
+		return [
+			overflowButton,
+			.flexibleSpace(),
+			jumpBackButton,
+			.flexibleSpace(),
+			playPauseButton,
+			.flexibleSpace(),
+			jumpForwardButton,
+			.flexibleSpace(),
+			nextButton,
+		]
+	}
+	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
 		image: Self.overflowButtonDefaultImage,
 		menu: createOverflowMenu()
 	)
-	private weak var settings_presenter: UIViewController? = nil
+	private lazy var jumpBackButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.skipBack10Seconds,
+			image: UIImage(systemName: "gobackward.15"),
+			primaryAction: UIAction { _ in
+				Self.player?.currentPlaybackTime -= 15
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	private lazy var playPauseButton = UIBarButtonItem()
+	private lazy var jumpForwardButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.skipForward10Seconds,
+			image: UIImage(systemName: "goforward.15"),
+			primaryAction: UIAction { _ in
+				Self.player?.currentPlaybackTime += 15
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	private lazy var nextButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.next,
+			image: UIImage(systemName: "forward.end.circle"),
+			primaryAction: UIAction { _ in
+				Self.player?.skipToNextItem()
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	
+	// MARK: - Overflow Menu
 	
 	private func createOverflowMenu() -> UIMenu {
 		let groupedElements: [[UIMenuElement]] = [
@@ -68,6 +116,7 @@ final class MainToolbar__UIKit {
 		return UIMenu(children: submenus)
 	}
 	
+	private weak var settings_presenter: UIViewController? = nil
 	private func create_submenu_Repeat() -> UIMenu {
 		return UIMenu(
 			options: [
@@ -170,7 +219,6 @@ final class MainToolbar__UIKit {
 			]
 		)
 	}
-	
 	private func create_submenu_Transport() -> UIMenu {
 		return UIMenu(
 			options: .displayInline,
@@ -217,54 +265,7 @@ final class MainToolbar__UIKit {
 		)
 	}
 	
-	private lazy var jumpBackButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.skipBack10Seconds,
-			image: UIImage(systemName: "gobackward.15"),
-			primaryAction: UIAction { _ in
-				Self.player?.currentPlaybackTime -= 15
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	
-	private lazy var playPauseButton = UIBarButtonItem()
-	
-	private lazy var jumpForwardButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.skipForward10Seconds,
-			image: UIImage(systemName: "goforward.15"),
-			primaryAction: UIAction { _ in
-				Self.player?.currentPlaybackTime += 15
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	
-	private lazy var nextButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.next,
-			image: UIImage(systemName: "forward.end.circle"),
-			primaryAction: UIAction { _ in
-				Self.player?.skipToNextItem()
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	
-	var buttons_array: [UIBarButtonItem] {
-		return [
-			overflowButton,
-			.flexibleSpace(),
-			jumpBackButton,
-			.flexibleSpace(),
-			playPauseButton,
-			.flexibleSpace(),
-			jumpForwardButton,
-			.flexibleSpace(),
-			nextButton,
-		]
-	}
+	// MARK: -
 	
 	init(
 		weakly_Settings_presenter: UIViewController
@@ -344,7 +345,7 @@ final class MainToolbar__UIKit {
 			configurePlayButton()
 			
 			// Enable or disable each button as appropriate
-			buttons_array.forEach {
+			barButtonItems.forEach {
 				$0.isEnabled_setFalseWithAxTrait()
 			}
 			overflowButton.isEnabled_setTrueWithAxTrait()
@@ -365,7 +366,7 @@ final class MainToolbar__UIKit {
 		}
 		
 		// Enable or disable each button as appropriate
-		buttons_array.forEach {
+		barButtonItems.forEach {
 			$0.isEnabled_setTrueWithAxTrait()
 		}
 	}
