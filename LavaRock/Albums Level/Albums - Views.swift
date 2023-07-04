@@ -63,7 +63,7 @@ final class AlbumCell: UITableViewCell {
 		artViewLayer.cornerCurve = .continuous
 		artViewLayer.cornerRadius = .eight * 1/2
 		
-		configureForTraitCollection()
+		orientMainStack()
 	}
 	
 	func configure(
@@ -129,7 +129,7 @@ final class AlbumCell: UITableViewCell {
 			previousTraitCollection?.preferredContentSizeCategory
 				!= traitCollection.preferredContentSizeCategory
 		{
-			configureForTraitCollection()
+			orientMainStack()
 		}
 	}
 	
@@ -139,7 +139,7 @@ final class AlbumCell: UITableViewCell {
 	
 	private static let mainStackSpacingWhenHorizontal: CGFloat = .eight * 10/8
 	
-	private func configureForTraitCollection() {
+	private func orientMainStack() {
 		if textIsHuge {
 			mainStack.axis = .vertical
 			mainStack.alignment = .leading
