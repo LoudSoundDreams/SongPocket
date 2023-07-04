@@ -32,6 +32,7 @@ final class LibraryNC: UINavigationController {
 		navigationBar.prefersLargeTitles = true
 	}
 	
+	// Xcode 15: Move this to `viewIsAppearing`? (Back-deployed to iOS 13)
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		

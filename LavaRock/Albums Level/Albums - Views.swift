@@ -120,6 +120,7 @@ final class AlbumCell: UITableViewCell {
 		].compacted()
 	}
 	
+	// Xcode 15: Delete this and instead call `registerForTraitChanges` at some point.
 	override func traitCollectionDidChange(
 		_ previousTraitCollection: UITraitCollection?
 	) {
