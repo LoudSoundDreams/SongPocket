@@ -87,7 +87,7 @@ enum Avatar: CaseIterable {
 			case .fish: return "Fish"
 			case .luxo: return "Luxo" // Introduced after version 1.11.2
 				/*
-				 Deprecated after version 1.11.2
+				 Deprecated after version 1.11.2:
 				 "Bird"
 				 "Sailboat"
 				 "Beach umbrella"

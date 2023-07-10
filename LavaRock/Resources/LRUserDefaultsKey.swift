@@ -10,9 +10,6 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	// Introduced in version 1.8
 	case avatar = "nowPlayingIcon"
 	
-	// Introduced in version 1.6
-	case lighting = "appearance"
-	
 	// Introduced in version ?
 	case hasSavedDatabase = "hasEverImportedFromMusic"
 	
@@ -20,7 +17,16 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	case accentColor = "accentColorName"
 	
 	/*
-	 Deprecated after version 1.7
+	 "appearance"
+	 Introduced in version 1.6
+	 Deprecated after version 1.13
+	 Values:
+	 • `0` for “match system”
+	 • `1` for “always light”
+	 • `2` for “always dark”
+	 
 	 "shouldExplainQueueAction"
+	 Deprecated after version 1.7
+	 Values: Bool
 	 */
 }

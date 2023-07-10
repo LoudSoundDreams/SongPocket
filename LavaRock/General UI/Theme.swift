@@ -12,14 +12,9 @@ final class Theme: ObservableObject {
 	private init() {}
 	static let shared = Theme()
 	
-	@Published var lighting: Lighting = .preference {
-		didSet {
-			// This runs before `ObservableObject.objectWillChange` emits.
-			Lighting.preference = lighting
-		}
-	}
 	@Published var accentColor: AccentColor = .preference {
 		didSet {
+			// This runs before `ObservableObject.objectWillChange` emits.
 			AccentColor.preference = accentColor
 		}
 	}

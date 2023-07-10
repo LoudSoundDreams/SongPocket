@@ -28,7 +28,6 @@ struct LavaRock: App {
 		WindowGroup {
 			MainLibraryNC()
 				.edgesIgnoringSafeArea(.all)
-				.preferredColorScheme(theme.lighting.colorScheme)
 				.tint(theme.accentColor.color)
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()
@@ -54,9 +53,6 @@ private struct MainLibraryNC: UIViewControllerRepresentable {
 	) -> VCType {
 		let vc = LibraryNC(rootStoryboardName: "FoldersTVC")
 		
-		// Lighting
-		vc.view.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
-		
 		// Accent color
 		vc.view.tintColor = theme.accentColor.uiColor
 		vc.needsOverrideThemeInWindow = true
@@ -71,9 +67,6 @@ private struct MainLibraryNC: UIViewControllerRepresentable {
 	) {
 		let vc = uiViewController
 		let window = vc.view.window
-		
-		// Lighting
-		window?.overrideUserInterfaceStyle = UIUserInterfaceStyle(theme.lighting.colorScheme)
 		
 		// Accent color
 		// Unfortunately, we can’t remove a view’s tint color override.
