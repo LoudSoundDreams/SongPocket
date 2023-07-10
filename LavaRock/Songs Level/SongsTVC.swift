@@ -42,7 +42,6 @@ final class SongsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		title = nil
-		navigationItem.largeTitleDisplayMode = .never
 	}
 	
 	override func reflectViewContainer() {

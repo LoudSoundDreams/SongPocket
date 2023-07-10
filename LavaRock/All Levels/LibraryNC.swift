@@ -29,7 +29,6 @@ final class LibraryNC: UINavigationController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		navigationBar.prefersLargeTitles = true
 	}
 	
 	// Xcode 15: Move this to `viewIsAppearing`? (Back-deployed to iOS 13)
