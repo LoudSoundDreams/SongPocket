@@ -72,44 +72,32 @@ final class MainToolbar__UIKit {
 	// MARK: - Overflow Menu
 	
 	private func createOverflowMenu() -> UIMenu {
-		let groupedElements: [[UIMenuElement]] = [
-			[
-				UIAction(
-					title: LRString.settings,
-					image: UIImage(systemName: "gear"),
-					handler: { [weak self] action in
-						let toPresent: UIViewController = {
-							if Enabling.swiftUI__settings {
-								return UIHostingController(rootView: SettingsScreen__SwiftUI())
-							} else {
-								let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
-									.instantiateInitialViewController()!
-								return UINavigationController(rootViewController: settingsTVC)
-							}
-						}()
-						toPresent.modalPresentationStyle = .formSheet
-						self?.settings_presenter?.present(toPresent, animated: true)
-					}
-				),
-			],
-			
-			[
-				create_submenu_Repeat(),
-			],
-			
-			[
-				create_submenu_Transport(),
-			],
-		]
-		let reversedElements = Fn.reversed(groupedElements)
-		let submenus = reversedElements.map { groupOfElements in
-			UIMenu(options: .displayInline, children: groupOfElements)
-		}
-		return UIMenu(children: submenus)
+		let menuElements: [UIMenuElement] = [
+			UIAction(
+				title: LRString.settings,
+				image: UIImage(systemName: "gear"),
+				handler: { [weak self] action in
+					let toPresent: UIViewController = {
+						if Enabling.swiftUI__settings {
+							return UIHostingController(rootView: SettingsScreen__SwiftUI())
+						} else {
+							let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
+								.instantiateInitialViewController()!
+							return UINavigationController(rootViewController: settingsTVC)
+						}
+					}()
+					toPresent.modalPresentationStyle = .formSheet
+					self?.settings_presenter?.present(toPresent, animated: true)
+				}
+			),
+			createRepeatMenu(),
+			createTransportMenu(),
+		].reversed()
+		return UIMenu(children: menuElements)
 	}
 	
 	private weak var settings_presenter: UIViewController? = nil
-	private func create_submenu_Repeat() -> UIMenu {
+	private func createRepeatMenu() -> UIMenu {
 		return UIMenu(
 			options: [
 				.displayInline,
@@ -211,7 +199,7 @@ final class MainToolbar__UIKit {
 			]
 		)
 	}
-	private func create_submenu_Transport() -> UIMenu {
+	private func createTransportMenu() -> UIMenu {
 		return UIMenu(
 			options: .displayInline,
 			children: [
