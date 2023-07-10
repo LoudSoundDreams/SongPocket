@@ -77,7 +77,7 @@ final class MainToolbar__UIKit {
 			UIAction(
 				title: LRString.settings,
 				image: UIImage(systemName: "gear"),
-				handler: { [weak self] action in
+				handler: { [weak self] _ in
 					let toPresent: UIViewController = {
 						if Enabling.swiftUI__settings {
 							return UIHostingController(rootView: SettingsScreen__SwiftUI())
