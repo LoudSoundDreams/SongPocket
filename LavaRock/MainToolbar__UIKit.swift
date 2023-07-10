@@ -75,14 +75,6 @@ final class MainToolbar__UIKit {
 		let groupedElements: [[UIMenuElement]] = [
 			[
 				UIAction(
-					title: LRString.appleMusic,
-					image: UIImage(systemName: "arrow.up.forward.app"),
-					handler: { action in
-						UIApplication.shared.open(.music)
-					}
-				),
-				
-				UIAction(
 					title: LRString.settings,
 					image: UIImage(systemName: "gear"),
 					handler: { [weak self] action in

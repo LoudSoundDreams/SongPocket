@@ -255,7 +255,8 @@ extension FoldersTVC {
 					return
 				}
 				Task {
-					let _ = await UIApplication.shared.open(.music) // If iOS shows the ‘Restore “Music”?’ alert, this returns `false`, but before the user responds to the alert, not after, unfortunately.
+					let musicURL = URL(string: "music://")!
+					let _ = await UIApplication.shared.open(musicURL) // If iOS shows the ‘Restore “Music”?’ alert, this returns `false`, but before the user responds to the alert, not after, unfortunately.
 					
 					tableView.deselectRow(at: indexPath, animated: true)
 				}
