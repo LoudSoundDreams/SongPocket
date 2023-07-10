@@ -10,7 +10,7 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	// Introduced in version 1.8
 	case avatar = "nowPlayingIcon"
 	
-	// Introduced in version ?
+	// Introduced in version ??
 	case hasSavedDatabase = "hasEverImportedFromMusic"
 	
 	// Introduced in version 1.0
@@ -26,6 +26,7 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	 • `2` for “always dark”
 	 
 	 "shouldExplainQueueAction"
+	 Introduced in version ??
 	 Deprecated after version 1.7
 	 Values: Bool
 	 */

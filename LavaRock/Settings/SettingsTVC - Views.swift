@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import SwiftUI
-import StoreKit
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AccentColorCell: UITableViewCell {

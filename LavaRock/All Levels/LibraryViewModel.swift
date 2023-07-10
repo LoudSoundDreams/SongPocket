@@ -5,7 +5,6 @@
 //  Created by h on 2021-08-12.
 //
 
-import UIKit
 import CoreData
 
 typealias ColumnOfLibraryItems = [LibraryGroup]

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftUI
 import OSLog
 
 final class MoveHereCell: UITableViewCell {
