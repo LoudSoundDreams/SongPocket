@@ -97,7 +97,6 @@
 		07DF76E42828D8AB00B03103 /* MainToolbar__UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */; };
 		07E0BBD7276567490010117E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD6276567490010117E /* String.swift */; };
 		07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* NotificationCenter.swift */; };
-		07E0BBDF276567760010117E /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDB276567760010117E /* URL.swift */; };
 		07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE22765678F0010117E /* UIAlertAction.swift */; };
 		07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE52765678F0010117E /* UIBarButtonItem.swift */; };
 		07E0BBF22765678F0010117E /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE62765678F0010117E /* UIColor.swift */; };
@@ -240,7 +239,6 @@
 		07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainToolbar__UIKit.swift; sourceTree = "<group>"; };
 		07E0BBD6276567490010117E /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		07E0BBDA276567760010117E /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
-		07E0BBDB276567760010117E /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		07E0BBE22765678F0010117E /* UIAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertAction.swift; sourceTree = "<group>"; };
 		07E0BBE52765678F0010117E /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		07E0BBE62765678F0010117E /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -500,7 +498,6 @@
 			children = (
 				07FFC00B29D8745F00B98447 /* Notification.Name.swift */,
 				07E0BBDA276567760010117E /* NotificationCenter.swift */,
-				07E0BBDB276567760010117E /* URL.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -828,7 +825,6 @@
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				0752D796295EA20100447FD7 /* AvatarPicker.swift in Sources */,
 				073B99CB294682E700B48C9C /* SongRow.swift in Sources */,
-				07E0BBDF276567760010117E /* URL.swift in Sources */,
 				07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */,
 				07E0BBD7276567490010117E /* String.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
