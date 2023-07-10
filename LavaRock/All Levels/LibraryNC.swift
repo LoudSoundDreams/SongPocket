@@ -29,6 +29,7 @@ final class LibraryNC: UINavigationController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 	}
 	
 	// Xcode 15: Move this to `viewIsAppearing`? (Back-deployed to iOS 13)
