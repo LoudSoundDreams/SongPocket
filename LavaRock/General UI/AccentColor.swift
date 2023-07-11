@@ -71,9 +71,9 @@ enum AccentColor: CaseIterable {
 				/*
 				 # Light mode
 				 
-				 Hue (º): 215 - aiming low
+				 Hue (º): 210 - aiming low
 				 Saturation (%): 100 - aiming high
-				 Brightness (%): 75 - aiming low
+				 Brightness (%): 60 - aiming low
 				
 				 # Dark mode
 				 
@@ -89,11 +89,10 @@ enum AccentColor: CaseIterable {
 				 
 				 H: 310 - aiming high
 				 S: 100 - aiming high
-				 B: 65 - aiming low
+				 B: 50 - aiming low
 				 
 				 # Dark mode
 				 
-				 H: 310 - aiming high
 				 S: 50 - aiming low
 				 B: 100 - aiming high
 				 */
@@ -103,13 +102,12 @@ enum AccentColor: CaseIterable {
 				/*
 				 # Light mode
 				 
-				 H: 335 - aiming low
+				 H: 340 - aiming low
 				 S: 100 - aiming high
-				 B: 80 - aiming low
+				 B: 70 - aiming low
 				 
 				 # Dark mode
 				 
-				 H: 340 - aiming low
 				 S: 60 - aiming low
 				 B: 100 - aiming high
 				 */
@@ -119,9 +117,9 @@ enum AccentColor: CaseIterable {
 				/*
 				 # Light mode
 				 
-				 H: 35 - aiming high
+				 H: 10 - aiming low
 				 S: 100 - aiming high
-				 B: 90 - aiming low
+				 B: 75 - aiming low
 				 
 				 # Dark mode
 				 
@@ -135,15 +133,14 @@ enum AccentColor: CaseIterable {
 				/*
 				 # Light mode
 				 
-				 H: 110 - aiming low
+				 H: 100 - aiming low
 				 S: 100 - aiming high
-				 B: 55 - aiming low
+				 B: 40 - aiming low
 				 
 				 # Dark mode
 				 
-				 H: 100 - aiming low
 				 S: 50 - aiming low
-				 B: 85 - aiming high
+				 B: 100 - aiming high
 				 */
 				return UIColor(named: "lime")!
 		}
