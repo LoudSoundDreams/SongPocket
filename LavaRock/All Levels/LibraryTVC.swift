@@ -140,7 +140,6 @@ class LibraryTVC: UITableViewController {
 	final func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
 		if
 			(presentedViewController as? UINavigationController)?.viewControllers.first is SettingsTVC
-				|| presentedViewController is UIHostingController<SettingsScreen__SwiftUI>
 				|| presentedViewController is UIHostingController<ConsoleView>
 		{
 			return false

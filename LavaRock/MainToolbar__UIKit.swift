@@ -79,13 +79,9 @@ final class MainToolbar__UIKit {
 				image: UIImage(systemName: "gear"),
 				handler: { [weak self] _ in
 					let toPresent: UIViewController = {
-						if Enabling.swiftUI__settings {
-							return UIHostingController(rootView: SettingsScreen__SwiftUI())
-						} else {
-							let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
-								.instantiateInitialViewController()!
-							return UINavigationController(rootViewController: settingsTVC)
-						}
+						let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
+							.instantiateInitialViewController()!
+						return UINavigationController(rootViewController: settingsTVC)
 					}()
 					toPresent.modalPresentationStyle = .formSheet
 					self?.settings_presenter?.present(toPresent, animated: true)

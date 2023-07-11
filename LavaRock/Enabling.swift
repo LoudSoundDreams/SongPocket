@@ -9,8 +9,6 @@ enum Enabling {
 	static let sim_emptyLibrary = 10 == 1
 	
 	static let inAppPlayer = 10 == 1
-	
-	static let swiftUI__settings = 10 == 1
 }
 
 #if targetEnvironment(simulator)
