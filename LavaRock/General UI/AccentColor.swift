@@ -141,7 +141,7 @@ enum AccentColor: CaseIterable {
 				 
 				 # Dark mode
 				 
-				 H: 105 - aiming low
+				 H: 100 - aiming low
 				 S: 50 - aiming low
 				 B: 85 - aiming high
 				 */
