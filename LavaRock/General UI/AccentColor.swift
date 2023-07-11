@@ -69,140 +69,96 @@ enum AccentColor: CaseIterable {
 		switch self {
 			case .blueberry:
 				/*
-				 Hue:
-				 • 200 - approaching cyan
-				 • 215 - GOOD. a tinge of yellow
-				 • 235 - approaching purple
+				 # Light mode
 				 
-				 # For hue 215
+				 Hue (º): 215 - aiming low
+				 Saturation (%): 100 - aiming high
+				 Brightness (%): 75 - aiming low
+				
+				 # Dark mode
 				 
-				 Saturation:
-				 • 0.80 - too desaturated
-				 • 0.90 - dark mode: garish at any brightness
-				 
-				 Brightness:
-				 • 0.65 - light mode: annoyingly dark
-				 • 0.90 - dark mode: too dark
+				 H: 210 - aiming low
+				 S: 100 - aiming high
+				 B: 100 - aiming high
 				 */
-//				return UIColor( // Good in light mode, bad in dark mode
-//					hue: 215/360, // Aiming low
-//					saturation: 1.00, // Aiming high
-//					brightness: 0.75, // Aiming low
-//					alpha: 1)
-//				return UIColor( // Good in dark mode
-//					hue: 210/360, // Aiming low
-//					saturation: 0.90, // Aiming high
-//					brightness: 1.00, // Aiming high
-//					alpha: 1)
 				return UIColor(named: "blueberry")!
+				
 			case .grape:
 				/*
-				 Hue:
+				 # Light mode
+				 
+				 H:
+				 Aiming high
 				 • 255 - too blue
 				 • 280 - boring lavender
+				 • …
+				 • 310 - good
+				 S: 100 - aiming high
+				 B: 65 - aiming low
 				 
-				 • 315 - too close to Strawberry
-				 • 325 - approaching maroon
+				 # Dark mode
 				 
-				 Saturation:
-				 • 0.60 - too desaturated
-				 • 0.90 - dark mode: too garish
-				 
-				 Brightness:
-				 • 0.60 - light mode: barely different from black
-				 • 0.95 - light mode: annoyingly bright. dark mode: boringly bright
+				 H: 310 - aiming high
+				 S: 70 - aiming high
+				 B: 100 - aiming high
 				 */
-//				return UIColor( // Good in light mode, bad in dark mode
-//					hue: 310/360, // Aiming high
-//					saturation: 1.00, // Aiming high
-//					brightness: 0.65, // Aiming low
-//					alpha: 1)
-//				return UIColor( // Good in dark mode
-//					hue: 310/360, // Aiming high
-//					saturation: 0.70, // Aiming high
-//					brightness: 1.00, // Aiming high
-//					alpha: 1)
 				return UIColor(named: "grape")!
+				
 			case .strawberry:
 				/*
-				 Hue:
-				 • 335 - approaching maroon
+				 # Light mode
+				 
+				 H:
+				 Aiming low
+				 • 335 - good
 				 • 350 - boring “classic red”
+				 S: 100 - aiming high
+				 B: 80 - aiming low
 				 
-				 Saturation:
-				 • 0.80 - too desaturated
-				 • 0.90 - dark mode: too garish
+				 # Dark mode
 				 
-				 Brightness:
-				 • 0.75 - light mode: annoyingly dark
-				 • 0.80 - dark mode: too dark
-				 • 1.00 - boringly bright
+				 S: 80 - aiming high
+				 B: 100 - aiming high
 				 */
-//				return UIColor( // Good in light mode, bad in dark mode
-//					hue: 335/360, // Aiming low
-//					saturation: 1.00, // Aiming high
-//					brightness: 0.80, // Aiming low
-//					alpha: 1)
-//				return UIColor( // Good in dark mode
-//					hue: 335/360, // Aiming low
-//					saturation: 0.80, // Aiming high
-//					brightness: 1.00, // Aiming high
-//					alpha: 1)
 				return UIColor(named: "strawberry")!
+				
 			case .tangerine:
 				/*
-				 Hue:
+				 # Light mode
+				 
+				 H:
+				 Aiming high
 				 • 25 - boring orange (the fruit)
-				 • 45 - yellow
+				 • 35 - good
+				 S: 100 - aiming high
+				 B: 90 - aiming low
 				 
-				 Saturation:
-				 • 0.75 - too desaturated
-				 • 1.00 - still not garish
+				 # Dark mode
 				 
-				 Brightness:
-				 • 0.90 - light mode: GOOD. dark mode: too dark
-				 •
+				 H: 40 - aiming high
+				 S: 100 - aiming high
+				 B: 100 - aiming high
 				 */
-//				return UIColor( // Good in light mode, bad in dark mode
-//					hue: 35/360, // Aiming high
-//					saturation: 1.00, // Aiming high
-//					brightness: 0.90, // Aiming low
-//					alpha: 1)
-//				return UIColor( // Good in dark mode
-//					hue: 40/360, // Aiming high
-//					saturation: 1.00, // Aiming high
-//					brightness: 1.00, // Aiming high
-//					alpha: 1)
 				return UIColor(named: "tangerine")!
+				
 			case .lime:
 				/*
-				 Hue:
-				 • 80 - browning guac
-				 • 90 - annoyingly yellow
-				 • 105 - distractingly yellow
+				 # Light mode
 				 
-				 • 130 - light mode: canonical (boring) green, to me. i like yellower greens better here than bluer ones
+				 H:
+				 Aiming low
+				 • 110 - good
+				 • …
+				 • 130 - boring “classic green”
 				 • 145 - too blue
+				 S: 100 - aiming high
+				 B: 55 - aiming low
 				 
-				 Saturation:
-				 •
+				 # Dark mode
 				 
-				 Brightness:
-				 • 0.50 - light mode: annoyingly dark
-				 • 0.75 - light mode: annoyingly bright
-				 
-				 • 0.85 - dark mode: annoyingly bright
+				 S: 65 - aiming high
+				 B: 85 - aiming high
 				 */
-//				return UIColor( // Good in light mode, bad in dark mode
-//					hue: 110/360, // Aiming low
-//					saturation: 1.00, // Aiming high
-//					brightness: 0.55, // Aiming low
-//					alpha: 1)
-//				return UIColor( // Good in dark mode
-//					hue: 110/360, // Aiming low
-//					saturation: 0.65, // Aiming high
-//					brightness: 0.85, // Aiming high
-//					alpha: 1)
 				return UIColor(named: "lime")!
 		}
 	}
