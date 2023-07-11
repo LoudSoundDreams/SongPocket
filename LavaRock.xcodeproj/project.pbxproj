@@ -65,7 +65,6 @@
 		0783DC16286EA65E00A9A4F7 /* Sim_SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC15286EA65E00A9A4F7 /* Sim_SongInfo.swift */; };
 		0783DC18286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC17286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift */; };
 		07843FEB2851A31D000FA316 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07843FEA2851A31D000FA316 /* Sequence.swift */; };
-		0785C49E2793460100B1E7FC /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785C49D2793460100B1E7FC /* SettingsScreen.swift */; };
 		0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0787CB0927A376400068C2E5 /* UIViewController.swift */; };
 		078DBF042895EFD8000E6433 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078DBF032895EFD8000E6433 /* Avatar.swift */; };
 		078FDD0F2638872100779AF2 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FDD0E2638872100779AF2 /* Array.swift */; };
@@ -205,7 +204,6 @@
 		0783DC15286EA65E00A9A4F7 /* Sim_SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sim_SongInfo.swift; sourceTree = "<group>"; };
 		0783DC17286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPMediaItem + SongInfo.swift"; sourceTree = "<group>"; };
 		07843FEA2851A31D000FA316 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
-		0785C49D2793460100B1E7FC /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		0787CB0927A376400068C2E5 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		078DBF032895EFD8000E6433 /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		078FDD0E2638872100779AF2 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -291,7 +289,6 @@
 		0706ABDE24D946870090EB21 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				0785C49D2793460100B1E7FC /* SettingsScreen.swift */,
 				07B35E302886FB5100159FD9 /* TipJarView.swift */,
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
 				073FB55B27588B81000FAF5F /* SettingsTVC.storyboard */,
@@ -827,7 +824,6 @@
 				073AF48A24D16647000C1A6D /* AccentColor.swift in Sources */,
 				073E6A8725562B93003C84A5 /* Folders - Views.swift in Sources */,
 				07FB52CB2813909400CCCBA5 /* SortCommand.swift in Sources */,
-				0785C49E2793460100B1E7FC /* SettingsScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
