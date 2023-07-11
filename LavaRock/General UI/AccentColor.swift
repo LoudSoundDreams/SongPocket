@@ -87,12 +87,7 @@ enum AccentColor: CaseIterable {
 				/*
 				 # Light mode
 				 
-				 H:
-				 Aiming high
-				 • 255 - too blue
-				 • 280 - boring lavender
-				 • …
-				 • 310 - good
+				 H: 310 - aiming high
 				 S: 100 - aiming high
 				 B: 65 - aiming low
 				 
@@ -108,10 +103,7 @@ enum AccentColor: CaseIterable {
 				/*
 				 # Light mode
 				 
-				 H:
-				 Aiming low
-				 • 335 - good
-				 • 350 - boring “classic red”
+				 H: 335 - aiming low
 				 S: 100 - aiming high
 				 B: 80 - aiming low
 				 
@@ -127,10 +119,7 @@ enum AccentColor: CaseIterable {
 				/*
 				 # Light mode
 				 
-				 H:
-				 Aiming high
-				 • 25 - boring orange (the fruit)
-				 • 35 - good
+				 H: 35 - aiming high
 				 S: 100 - aiming high
 				 B: 90 - aiming low
 				 
@@ -146,12 +135,7 @@ enum AccentColor: CaseIterable {
 				/*
 				 # Light mode
 				 
-				 H:
-				 Aiming low
-				 • 110 - good
-				 • …
-				 • 130 - boring “classic green”
-				 • 145 - too blue
+				 H: 110 - aiming low
 				 S: 100 - aiming high
 				 B: 55 - aiming low
 				 
