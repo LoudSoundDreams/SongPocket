@@ -17,8 +17,6 @@ struct SettingsScreen__SwiftUI: View {
 		NavigationView {
 			Form {
 				Section {
-					AccentColorPicker()
-					
 					AvatarPicker()
 				}
 				
