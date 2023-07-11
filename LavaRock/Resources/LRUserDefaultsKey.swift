@@ -20,7 +20,7 @@ enum LRUserDefaultsKey: String, CaseIterable {
 	 "appearance"
 	 Introduced in version 1.6
 	 Deprecated after version 1.13
-	 Values:
+	 Values: Int
 	 • `0` for “match system”
 	 • `1` for “always light”
 	 • `2` for “always dark”

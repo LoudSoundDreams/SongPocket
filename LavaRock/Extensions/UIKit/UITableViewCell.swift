@@ -24,7 +24,7 @@ extension UITableViewCell {
 	
 	final func selectedBackgroundView_add_tint() {
 		let colorView = UIView()
-		colorView.backgroundColor = .tintColor.withAlphaComponentOneHalf()
+		colorView.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
 		selectedBackgroundView = colorView
 	}
 }

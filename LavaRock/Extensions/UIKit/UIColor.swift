@@ -14,12 +14,4 @@ extension UIColor {
 		view.tintColor = self
 		return view.tintColor
 	}
-	
-	final func withAlphaComponentOneEighth() -> UIColor {
-		return withAlphaComponent(.oneEighth)
-	}
-	
-	final func withAlphaComponentOneHalf() -> UIColor {
-		return withAlphaComponent(.oneHalf)
-	}
 }

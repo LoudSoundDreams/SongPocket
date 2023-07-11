@@ -191,7 +191,7 @@ final class FolderCell: UITableViewCell {
 				isUserInteractionEnabled_setTrueWithAxTrait()
 				accessibilityCustomActions = []
 			case .modalTinted:
-				backgroundColor = .tintColor.withAlphaComponentOneEighth()
+				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
 				
 				isUserInteractionEnabled_setTrueWithAxTrait()
 				accessibilityCustomActions = []

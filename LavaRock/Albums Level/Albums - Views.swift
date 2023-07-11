@@ -100,7 +100,7 @@ final class AlbumCell: UITableViewCell {
 				accessoryType = .none
 				isUserInteractionEnabled_setFalseWithAxTrait()
 			case .modalTinted:
-				backgroundColor = .tintColor.withAlphaComponentOneEighth()
+				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
 				contentView.layer.opacity = .oneHalf
 				accessoryType = .none
 				isUserInteractionEnabled_setFalseWithAxTrait()

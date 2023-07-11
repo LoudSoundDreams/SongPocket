@@ -56,7 +56,7 @@ final class AccentColorCell: UITableViewCell {
 		let colorView = UIView()
 		colorView.backgroundColor = representee?.uiColor
 			.resolvedForIncreaseContrast()
-			.withAlphaComponentOneHalf()
+			.withAlphaComponent(.oneHalf)
 		new_selectedBackgroundView = colorView
 	}
 	
