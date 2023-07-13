@@ -20,7 +20,7 @@ extension View {
 	
 	private var overflowMenu: some View {
 		Menu {
-			Button("Tip Jar") { // !
+			Button(LRString.tipJar) {
 				
 			}
 		} label: {
