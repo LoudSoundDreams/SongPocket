@@ -76,11 +76,8 @@
 		07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9092519E7D20065C87E /* MusicLibrary - Merge, Create.swift */; };
 		07A4F90F2519E8410065C87E /* MusicLibrary - Merge, Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F90E2519E8410065C87E /* MusicLibrary - Merge, Delete.swift */; };
 		07A5E1CD2941CA2100DDB4CA /* CoverArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */; };
-		07A7989127A8ABB1007B70AA /* ConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A7989027A8ABB1007B70AA /* ConsoleView.swift */; };
 		07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* Collection.swift */; };
 		07B2CD832741A218004A0743 /* FoldersOrAlbumsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B2CD822741A217004A0743 /* FoldersOrAlbumsGroup.swift */; };
-		07B35E2F2886F98E00159FD9 /* AccentColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */; };
-		07B35E312886FB5100159FD9 /* TipJarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B35E302886FB5100159FD9 /* TipJarView.swift */; };
 		07C8CC76271281B70061A9AD /* SettingsTVC - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C8CC75271281B70061A9AD /* SettingsTVC - Views.swift */; };
 		07CAB24724EA227F008AC34C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* Song.swift */; };
 		07CD864D27CAA3CC00286E6A /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD864C27CAA3CC00286E6A /* Weak.swift */; };
@@ -215,11 +212,8 @@
 		07A4F9092519E7D20065C87E /* MusicLibrary - Merge, Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge, Create.swift"; sourceTree = "<group>"; };
 		07A4F90E2519E8410065C87E /* MusicLibrary - Merge, Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge, Delete.swift"; sourceTree = "<group>"; };
 		07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverArtView.swift; sourceTree = "<group>"; };
-		07A7989027A8ABB1007B70AA /* ConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleView.swift; sourceTree = "<group>"; };
 		07AE2AA3258C09D900C3A314 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		07B2CD822741A217004A0743 /* FoldersOrAlbumsGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldersOrAlbumsGroup.swift; sourceTree = "<group>"; };
-		07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorPicker.swift; sourceTree = "<group>"; };
-		07B35E302886FB5100159FD9 /* TipJarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarView.swift; sourceTree = "<group>"; };
 		07C8CC75271281B70061A9AD /* SettingsTVC - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTVC - Views.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		07CD864C27CAA3CC00286E6A /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
@@ -289,7 +283,6 @@
 		0706ABDE24D946870090EB21 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				07B35E302886FB5100159FD9 /* TipJarView.swift */,
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
 				073FB55B27588B81000FAF5F /* SettingsTVC.storyboard */,
 				073AF48E24D1AD73000C1A6D /* SettingsTVC.swift */,
@@ -393,7 +386,6 @@
 				07DC1B2124F33DF400AAEEDB /* Albums Level */,
 				070E194224F340C500B21307 /* Songs Level */,
 				0706ABDE24D946870090EB21 /* Settings */,
-				07A7989027A8ABB1007B70AA /* ConsoleView.swift */,
 				07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */,
 			);
 			path = LavaRock;
@@ -530,7 +522,6 @@
 			children = (
 				0772FB98283010960054834F /* Theme.swift */,
 				073AF48924D16647000C1A6D /* AccentColor.swift */,
-				07B35E2E2886F98E00159FD9 /* AccentColorPicker.swift */,
 				078DBF032895EFD8000E6433 /* Avatar.swift */,
 				0752D795295EA20100447FD7 /* AvatarPicker.swift */,
 				07755A57294821860056E90C /* AvatarImage.swift */,
@@ -729,13 +720,11 @@
 				077E089824FB7AFF007C2479 /* LibraryTVC - Notifications.swift in Sources */,
 				07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */,
 				0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */,
-				07B35E2F2886F98E00159FD9 /* AccentColorPicker.swift in Sources */,
 				0708E53E286A20B6001204BF /* Numbers.swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* SettingsTVC.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* FoldersTVC - “Move Albums” Sheet.swift in Sources */,
 				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
 				0783DC18286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift in Sources */,
-				07A7989127A8ABB1007B70AA /* ConsoleView.swift in Sources */,
 				077CFA952A28CC7000A796F4 /* Functions.swift in Sources */,
 				07DE126329C6819B0002533B /* FolderRow.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */,
@@ -803,7 +792,6 @@
 				07F36BBE24FC3CCA0064282D /* LibraryTVC - UITableView.swift in Sources */,
 				07DF65D227766C95003B2EA3 /* SongInfo.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
-				07B35E312886FB5100159FD9 /* TipJarView.swift in Sources */,
 				07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */,
 				075218A2257C498D0077AE9B /* LRString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,

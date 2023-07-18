@@ -7,7 +7,6 @@
 
 import UIKit
 import MediaPlayer
-import SwiftUI
 
 // Instantiators might want to…
 // • Implement `accessibilityPerformMagicTap` and toggle playback.

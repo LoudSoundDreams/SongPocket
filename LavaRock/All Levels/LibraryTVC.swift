@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftUI
 
 class LibraryTVC: UITableViewController {
 	// MARK: - Properties
@@ -140,7 +139,6 @@ class LibraryTVC: UITableViewController {
 	final func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
 		if
 			(presentedViewController as? UINavigationController)?.viewControllers.first is SettingsTVC
-				|| presentedViewController is UIHostingController<ConsoleView>
 		{
 			return false
 		}

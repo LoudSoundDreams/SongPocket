@@ -9,11 +9,11 @@ import SwiftUI
 
 struct AvatarPicker: View {
 	@ObservedObject private var avatarObservable: AvatarObservable = .shared
-	private static var keyHasSaved: String {
+	private static var hasEverSaved: String {
 		LRUserDefaultsKey.hasSavedDatabase.rawValue
 	}
-	@AppStorage(Self.keyHasSaved)
-	private var hasSaved: Bool = UserDefaults.standard.bool(forKey: Self.keyHasSaved)
+	@AppStorage(Self.hasEverSaved)
+	private var hasSaved: Bool = UserDefaults.standard.bool(forKey: Self.hasEverSaved)
 	
 	var body: some View {
 		Picker("", selection: $avatarObservable.current) {

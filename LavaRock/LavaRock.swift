@@ -9,8 +9,6 @@ import SwiftUI
 
 @main
 struct LavaRock: App {
-	@ObservedObject private var theme: Theme = .shared
-	
 	init() {
 		// Delete unused entries in `UserDefaults`
 		let toKeep = Set(LRUserDefaultsKey.allCases.map { $0.rawValue })
@@ -28,7 +26,6 @@ struct LavaRock: App {
 		WindowGroup {
 			MainLibraryNC()
 				.edgesIgnoringSafeArea(.all)
-				.tint(theme.accentColor.color)
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()
 				}

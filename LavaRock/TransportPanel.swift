@@ -10,8 +10,7 @@ import MediaPlayer
 
 private extension View {
 	func disabled(whenNil optional: Optional<Any>) -> some View {
-		return self
-			.disabled(optional == nil)
+		disabled(optional == nil)
 	}
 }
 

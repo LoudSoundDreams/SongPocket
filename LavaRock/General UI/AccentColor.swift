@@ -5,7 +5,6 @@
 //  Created by h on 2020-07-29.
 //
 
-import SwiftUI
 import UIKit
 
 extension AccentColor: Identifiable {
@@ -47,21 +46,6 @@ enum AccentColor: CaseIterable {
 				return LRString.tangerine
 			case .lime:
 				return LRString.lime
-		}
-	}
-	
-	var color: Color {
-		switch self {
-			case .blueberry:
-				return .blue
-			case .grape:
-				return .purple
-			case .strawberry:
-				return .pink
-			case .tangerine:
-				return .orange
-			case .lime:
-				return .green
 		}
 	}
 	

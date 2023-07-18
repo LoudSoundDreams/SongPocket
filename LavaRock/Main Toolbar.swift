@@ -9,7 +9,7 @@ import SwiftUI
 
 extension View {
 	func mainToolbar() -> some View {
-		return self.toolbar {
+		toolbar {
 			ToolbarItem(placement: .bottomBar) { overflowMenu }
 			ToolbarItem(placement: .bottomBar) { jumpBackButton }
 			ToolbarItem(placement: .bottomBar) { playPauseButton }
