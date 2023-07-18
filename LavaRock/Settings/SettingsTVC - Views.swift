@@ -25,6 +25,15 @@ final class AccentColorCell: UITableViewCell {
 		}
 	}
 	
+	// UIKit does call this when “Increase Contrast” changes.
+	override func tintColorDidChange() {
+		super.tintColorDidChange()
+		
+		freshen_contentConfiguration()
+		freshen_selectedBackgroundView()
+		freshen_accessoryType()
+	}
+	
 	private func freshen_contentConfiguration() {
 		let new_contentConfiguration: UIContentConfiguration
 		defer {
@@ -72,15 +81,6 @@ final class AccentColorCell: UITableViewCell {
 		} else {
 			new_accessoryType = .none
 		}
-	}
-	
-	// UIKit does call this when “Increase Contrast” changes.
-	override func tintColorDidChange() {
-		super.tintColorDidChange()
-		
-		freshen_contentConfiguration()
-		freshen_selectedBackgroundView()
-		freshen_accessoryType()
 	}
 	
 	override func layoutSubviews() {
