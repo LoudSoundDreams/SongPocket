@@ -9,12 +9,6 @@ import XCTest
 @testable import LavaRock
 
 class SortingTests: XCTestCase {
-	override func setUpWithError() throws {
-	}
-	
-	override func tearDownWithError() throws {
-	}
-	
 	func testSortStrings() {
 		let correctlySorted: [String?] = [
 			"",
@@ -92,10 +86,5 @@ class SortingTests: XCTestCase {
 				}
 			}
 		)
-	}
-	
-	func testPerformanceExample() throws {
-		self.measure {
-		}
 	}
 }
