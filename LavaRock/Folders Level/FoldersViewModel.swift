@@ -114,7 +114,7 @@ extension FoldersViewModel {
 		else {
 			return false
 		}
-		let newTitle = proposedTitle.truncatedIfLonger(than: 256) // In case the user entered a dangerous amount of text
+		let newTitle = proposedTitle.truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
 		
 		let folder = folderNonNil(at: indexPath)
 		let oldTitle = folder.title

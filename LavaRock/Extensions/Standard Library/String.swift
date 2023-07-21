@@ -6,13 +6,12 @@
 //
 
 extension String {
-	func truncatedIfLonger(than maxLength: Int) -> String {
-		let trimmed = prefix(maxLength - 1)
-		if self == trimmed {
+	func truncated(toMaxLength maxLength: Int) -> String {
+		guard count > maxLength else {
 			return self
-		} else {
-			return "\(trimmed)\(LRString.ellipsis)"
 		}
+		let trimmed = prefix(maxLength - 1)
+		return "\(trimmed)\(LRString.ellipsis)"
 	}
 	
 	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
