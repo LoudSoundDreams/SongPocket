@@ -9,10 +9,5 @@
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 	</dict>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIColorName</key>
-		<string>Launch Screen Background</string>
-	</dict>
 </dict>
 </plist>
