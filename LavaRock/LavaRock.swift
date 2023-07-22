@@ -11,8 +11,8 @@ import SwiftUI
 struct LavaRock: App {
 	init() {
 		// Delete unused entries in `UserDefaults`
-		let toKeep = Set(LRUserDefaultsKey.allCases.map { $0.rawValue })
 		let defaults = UserDefaults.standard
+		let toKeep = Set(LRUserDefaultsKey.allCases.map { $0.rawValue })
 		defaults.dictionaryRepresentation().forEach { (key, _) in
 			if !toKeep.contains(key) {
 				defaults.removeObject(forKey: key)
