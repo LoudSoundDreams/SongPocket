@@ -86,7 +86,6 @@
 		07DC1B1D24F339E000AAEEDB /* LibraryTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1C24F339E000AAEEDB /* LibraryTVC - Editing.swift */; };
 		07DC1B2024F33C8C00AAEEDB /* FoldersTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* FoldersTVC - “Move Albums” Sheet.swift */; };
 		07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */; };
-		07DE126329C6819B0002533B /* FolderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DE126229C6819B0002533B /* FolderRow.swift */; };
 		07DF65D227766C95003B2EA3 /* SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF65D127766C95003B2EA3 /* SongInfo.swift */; };
 		07DF76E42828D8AB00B03103 /* MainToolbar__UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */; };
 		07E0BBD7276567490010117E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD6276567490010117E /* String.swift */; };
@@ -222,7 +221,6 @@
 		07DC1B1C24F339E000AAEEDB /* LibraryTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryTVC - Editing.swift"; sourceTree = "<group>"; };
 		07DC1B1F24F33C8C00AAEEDB /* FoldersTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FoldersTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
 		07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
-		07DE126229C6819B0002533B /* FolderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderRow.swift; sourceTree = "<group>"; };
 		07DF65D127766C95003B2EA3 /* SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongInfo.swift; sourceTree = "<group>"; };
 		07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainToolbar__UIKit.swift; sourceTree = "<group>"; };
 		07E0BBD6276567490010117E /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -441,7 +439,6 @@
 				070E194024F33FC800B21307 /* FoldersTVC - Editing.swift */,
 				07DC1B1F24F33C8C00AAEEDB /* FoldersTVC - “Move Albums” Sheet.swift */,
 				073E6A8625562B93003C84A5 /* Folders - Views.swift */,
-				07DE126229C6819B0002533B /* FolderRow.swift */,
 			);
 			path = "Folders Level";
 			sourceTree = "<group>";
@@ -726,7 +723,6 @@
 				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
 				0783DC18286EA73400A9A4F7 /* MPMediaItem + SongInfo.swift in Sources */,
 				077CFA952A28CC7000A796F4 /* Functions.swift in Sources */,
-				07DE126329C6819B0002533B /* FolderRow.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */,
 				072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */,
 				07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */,
