@@ -104,9 +104,26 @@ extension FoldersTVC {
 							withIdentifier: "No Folders",
 							for: indexPath) as? NoFoldersPlaceholderCell ?? UITableViewCell()
 					case 1:
-						return tableView.dequeueReusableCell(
+						// The cell in the storyboard is completely default except for the reuse identifier.
+						let cell = tableView.dequeueReusableCell(
 							withIdentifier: "Open Music",
-							for: indexPath) as? OpenMusicCell ?? UITableViewCell()
+							for: indexPath)
+						
+						cell.contentConfiguration = UIHostingConfiguration {
+							LabeledContent {
+								Image(systemName: "arrow.up.forward.app")
+									.foregroundStyle(Color.accentColor)
+							} label: {
+								Text(LRString.appleMusic)
+									.foregroundStyle(Color.accentColor)
+							}
+							.accessibilityAddTraits(.isButton)
+							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+								viewDimensions[.trailing]
+							}
+						}
+						
+						return cell
 					default: // Should never run
 						return UITableViewCell()
 				}
@@ -267,10 +284,6 @@ extension FoldersTVC {
 					.removingFolderRows: // Should never run
 				return
 			case .emptyPlaceholder:
-				guard tableView.cellForRow(at: indexPath) is OpenMusicCell else {
-					tableView.deselectRow(at: indexPath, animated: true)
-					return
-				}
 				Task {
 					let musicURL = URL(string: "music://")!
 					let _ = await UIApplication.shared.open(musicURL) // If iOS shows the ‘Restore “Music”?’ alert, this returns `false`, but before the user responds to the alert, not after, unfortunately.

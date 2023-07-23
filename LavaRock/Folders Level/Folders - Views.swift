@@ -52,30 +52,6 @@ final class NoFoldersPlaceholderCell: UITableViewCell {
 	}
 }
 
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class OpenMusicCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		contentConfiguration = UIHostingConfiguration {
-			LabeledContent {
-				Image(systemName: "arrow.up.forward.app")
-					.foregroundStyle(Color.accentColor)
-			} label: {
-				Text(LRString.appleMusic)
-					.foregroundStyle(Color.accentColor)
-			}
-			.accessibilityAddTraits(.isButton)
-		}
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-
 final class CreateFolderCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
