@@ -7,6 +7,7 @@
 
 import UIKit
 import MediaPlayer
+import SwiftUI
 
 extension FoldersTVC {
 	// MARK: - Numbers
@@ -71,9 +72,25 @@ extension FoldersTVC {
 		
 		switch viewState {
 			case .allowAccess:
-				return tableView.dequeueReusableCell(
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Allow Access",
-					for: indexPath) as? AllowAccessCell ?? UITableViewCell()
+					for: indexPath)
+				
+				cell.contentConfiguration = UIHostingConfiguration {
+					HStack {
+						Text(LRString.allowAccessToMusic)
+							.foregroundStyle(Color.accentColor)
+						Spacer()
+					}
+					.accessibilityAddTraits(.isButton)
+					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+						viewDimensions[.trailing]
+					}
+				}
+				
+				return cell
+				
 			case .loading:
 				return tableView.dequeueReusableCell(
 					withIdentifier: "Loading",

@@ -9,25 +9,6 @@ import UIKit
 import SwiftUI
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class AllowAccessCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		contentConfiguration = UIHostingConfiguration {
-			Text(LRString.allowAccessToMusic)
-				.foregroundStyle(Color.accentColor)
-				.accessibilityAddTraits(.isButton)
-		}
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class LoadingCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
