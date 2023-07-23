@@ -64,8 +64,8 @@ final class OpenMusicCell: UITableViewCell {
 			} label: {
 				Text(LRString.appleMusic)
 					.foregroundStyle(Color.accentColor)
-					.accessibilityAddTraits(.isButton)
 			}
+			.accessibilityAddTraits(.isButton)
 		}
 	}
 	
