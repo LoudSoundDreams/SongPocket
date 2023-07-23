@@ -12,7 +12,6 @@ final class AccentColorCell: UITableViewCell {
 	var representee: AccentColor? = nil {
 		didSet {
 			freshen_contentConfiguration()
-			freshen_selectedBackgroundView()
 			freshen_accessoryType()
 		}
 	}
@@ -30,7 +29,6 @@ final class AccentColorCell: UITableViewCell {
 		super.tintColorDidChange()
 		
 		freshen_contentConfiguration()
-		freshen_selectedBackgroundView()
 		freshen_accessoryType()
 	}
 	
@@ -53,20 +51,6 @@ final class AccentColorCell: UITableViewCell {
 		content.textProperties.color = representee.uiColor
 			.resolvedForIncreaseContrast()
 		new_contentConfiguration = content
-	}
-	
-	private func freshen_selectedBackgroundView() {
-		let new_selectedBackgroundView: UIView?
-		defer {
-			selectedBackgroundView = new_selectedBackgroundView
-		}
-		
-		// Similar to in `CellTintingWhenSelected`, except we need to do this manually to reflect “Increase Contrast”.
-		let colorView = UIView()
-		colorView.backgroundColor = representee?.uiColor
-			.resolvedForIncreaseContrast()
-			.withAlphaComponent(.oneHalf)
-		new_selectedBackgroundView = colorView
 	}
 	
 	private func freshen_accessoryType() {

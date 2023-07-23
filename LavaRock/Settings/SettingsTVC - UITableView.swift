@@ -90,7 +90,6 @@ extension SettingsTVC {
 					withIdentifier: "Contact",
 					for: indexPath)
 				
-				cell.selectedBackgroundView_add_tint()
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(verbatim: "linus@songpocket.app")
@@ -231,7 +230,6 @@ extension SettingsTVC {
 					withIdentifier: "Tip Reload",
 					for: indexPath)
 				
-				cell.selectedBackgroundView_add_tint()
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(LRString.reload)
@@ -253,7 +251,6 @@ extension SettingsTVC {
 					withIdentifier: "Tip Ready",
 					for: indexPath)
 				
-				cell.selectedBackgroundView_add_tint()
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(PurchaseManager.shared.tipPrice ?? "")

@@ -67,8 +67,6 @@ final class SongCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		selectedBackgroundView_add_tint()
-		
 		backgroundColor_set_to_clear()
 		
 		guard !Self.usesSwiftUI__ else { return }

@@ -13,8 +13,6 @@ final class AllowAccessCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		selectedBackgroundView_add_tint()
-		
 		contentConfiguration = UIHostingConfiguration {
 			Text(LRString.allowAccessToMusic)
 				.foregroundStyle(Color.accentColor)
@@ -78,8 +76,6 @@ final class OpenMusicCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		selectedBackgroundView_add_tint()
-		
 		contentConfiguration = UIHostingConfiguration {
 			LabeledContent {
 				Image(systemName: "arrow.up.forward.app")
@@ -106,8 +102,6 @@ final class CreateFolderCell: UITableViewCell {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
-		selectedBackgroundView_add_tint()
 		
 		guard !Self.usesSwiftUI__ else { return }
 		
@@ -137,8 +131,6 @@ final class FolderCell: UITableViewCell {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
-		selectedBackgroundView_add_tint()
 		
 		backgroundColor_set_to_clear()
 	}

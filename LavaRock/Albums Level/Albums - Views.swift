@@ -14,8 +14,6 @@ final class MoveHereCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		selectedBackgroundView_add_tint()
-		
 		Task {
 			accessibilityTraits.formUnion(.button)
 		}
@@ -51,8 +49,6 @@ final class AlbumCell: UITableViewCell {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
-		selectedBackgroundView_add_tint()
 		
 		backgroundColor_set_to_clear()
 		
