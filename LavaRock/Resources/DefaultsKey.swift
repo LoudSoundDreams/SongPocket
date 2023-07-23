@@ -1,12 +1,12 @@
 //
-//  LRUserDefaultsKey.swift
+//  DefaultsKey.swift
 //  LavaRock
 //
 //  Created by h on 2022-02-27.
 //
 
 // Keeping these keys in one place helps us keep them unique.
-enum LRUserDefaultsKey: String, CaseIterable {
+enum DefaultsKey: String, CaseIterable {
 	// Introduced in version 1.8
 	case avatar = "nowPlayingIcon"
 	

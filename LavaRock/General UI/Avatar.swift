@@ -78,7 +78,7 @@ enum Avatar: CaseIterable {
 	// MARK: - Private
 	
 	private static let defaults: UserDefaults = .standard
-	private static let persistentKey: String = LRUserDefaultsKey.avatar.rawValue
+	private static let persistentKey: String = DefaultsKey.avatar.rawValue
 	
 	private var persistentValue: String {
 		switch self {

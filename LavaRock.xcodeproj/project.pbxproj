@@ -52,7 +52,7 @@
 		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
 		0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB57282F798A0054834F /* BatchUpdates.swift */; };
 		0772FB99283010960054834F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB98283010960054834F /* Theme.swift */; };
-		0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */; };
+		0774C88527CBEA0900230F22 /* DefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* DefaultsKey.swift */; };
 		07755A58294821860056E90C /* AvatarImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* AvatarImage.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
@@ -187,7 +187,7 @@
 		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
 		0772FB57282F798A0054834F /* BatchUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchUpdates.swift; sourceTree = "<group>"; };
 		0772FB98283010960054834F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUserDefaultsKey.swift; sourceTree = "<group>"; };
+		0774C88427CBEA0900230F22 /* DefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsKey.swift; sourceTree = "<group>"; };
 		07755A57294821860056E90C /* AvatarImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImage.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
@@ -573,7 +573,7 @@
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				075218A1257C498D0077AE9B /* LRString.swift */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
-				0774C88427CBEA0900230F22 /* LRUserDefaultsKey.swift */,
+				0774C88427CBEA0900230F22 /* DefaultsKey.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -730,7 +730,7 @@
 				07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */,
 				072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */,
 				07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */,
-				0774C88527CBEA0900230F22 /* LRUserDefaultsKey.swift in Sources */,
+				0774C88527CBEA0900230F22 /* DefaultsKey.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Array.swift in Sources */,
 				07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */,
 				073198CD279D204100E5FD44 /* TipJarViewModel.swift in Sources */,

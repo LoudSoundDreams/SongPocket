@@ -12,10 +12,10 @@ struct LavaRock: App {
 	init() {
 		// Delete unused entries in `UserDefaults`
 		let defaults = UserDefaults.standard
-		let toKeep = Set(LRUserDefaultsKey.allCases.map { $0.rawValue })
-		defaults.dictionaryRepresentation().forEach { (key, _) in
-			if !toKeep.contains(key) {
-				defaults.removeObject(forKey: key)
+		let toKeep = Set(DefaultsKey.allCases.map { $0.rawValue })
+		defaults.dictionaryRepresentation().forEach { (existingKey, _) in
+			if !toKeep.contains(existingKey) {
+				defaults.removeObject(forKey: existingKey)
 			}
 		}
 		
