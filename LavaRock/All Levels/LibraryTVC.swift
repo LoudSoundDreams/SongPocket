@@ -29,13 +29,10 @@ class LibraryTVC: UITableViewController {
 	final lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [
 		.flexibleSpace(),
 	]
-	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = {
+	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = [
 		// Right to left
-		var result = [
-			editButtonItem,
-		]
-		return result
-	}()
+		editButtonItem,
+	]
 	final lazy var editingModeTopRightButtons: [UIBarButtonItem] = [
 		editButtonItem,
 	]
