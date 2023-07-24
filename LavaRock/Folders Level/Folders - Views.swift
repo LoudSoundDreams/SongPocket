@@ -18,7 +18,6 @@ final class LoadingCell: UITableViewCell {
 		content.textProperties.color = .secondaryLabel
 		contentConfiguration = content
 		
-		isUserInteractionEnabled = false
 		let spinnerView = UIActivityIndicatorView()
 		spinnerView.startAnimating()
 		spinnerView.sizeToFit() // Without this line of code, UIKit centers the UIActivityIndicatorView at the top-left corner of the cell.

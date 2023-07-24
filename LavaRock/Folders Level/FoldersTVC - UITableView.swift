@@ -89,9 +89,11 @@ extension FoldersTVC {
 				}
 				return cell
 			case .loading:
-				return tableView.dequeueReusableCell(
+				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Loading",
 					for: indexPath) as? LoadingCell ?? UITableViewCell()
+				cell.selectionStyle = .none
+				return cell
 			case .removingFolderRows: // Should never run
 				return UITableViewCell()
 			case .emptyPlaceholder:
