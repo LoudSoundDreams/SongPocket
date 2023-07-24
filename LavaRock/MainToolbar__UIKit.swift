@@ -264,44 +264,6 @@ final class MainToolbar__UIKit {
 	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
 	private var hasRefreshenedOverflowButton = false
 	private func freshen() {
-		
-		func freshenOverflowButton() {
-			let new_image: UIImage
-			defer {
-				overflowButton.image = new_image
-			}
-			guard let player = Self.player else {
-				// Configure ellipsis icon
-				new_image = Self.overflowButtonDefaultImage
-				return
-			}
-			new_image = {
-				switch player.repeatMode {
-					case .one:
-						return UIImage(systemName: "repeat.1.circle.fill")!
-					case .all:
-						return UIImage(systemName: "repeat.circle.fill")!
-					case
-							.default,
-							.none
-						:
-						// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
-						// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
-						if !hasRefreshenedOverflowButton {
-							hasRefreshenedOverflowButton = true
-							
-							Task {
-								try await Task.sleep(nanoseconds: 0_050_000_000) // 50ms
-								
-								freshenOverflowButton()
-							}
-						}
-						return Self.overflowButtonDefaultImage
-					@unknown default:
-						return Self.overflowButtonDefaultImage
-				}
-			}()
-		}
 		freshenOverflowButton()
 		
 		func configurePlayButton() {
@@ -345,6 +307,38 @@ final class MainToolbar__UIKit {
 		barButtonItems.forEach {
 			$0.isEnabled_setTrueWithAxTrait()
 		}
+	}
+	private func freshenOverflowButton() {
+		overflowButton.image = {
+			guard let player = Self.player else {
+				// Configure ellipsis icon
+				return Self.overflowButtonDefaultImage
+			}
+			switch player.repeatMode {
+				case .one:
+					return UIImage(systemName: "repeat.1.circle.fill")!
+				case .all:
+					return UIImage(systemName: "repeat.circle.fill")!
+				case
+						.default,
+						.none
+					:
+					// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
+					// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
+					if !hasRefreshenedOverflowButton {
+						hasRefreshenedOverflowButton = true
+						
+						Task {
+							try await Task.sleep(nanoseconds: 0_050_000_000) // 50ms
+							
+							freshenOverflowButton()
+						}
+					}
+					return Self.overflowButtonDefaultImage
+				@unknown default:
+					return Self.overflowButtonDefaultImage
+			}
+		}()
 	}
 }
 extension MainToolbar__UIKit: TapeDeckReflecting {
