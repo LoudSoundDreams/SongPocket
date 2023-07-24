@@ -41,8 +41,6 @@ final class NoFoldersPlaceholderCell: UITableViewCell {
 		content.text = LRString.emptyDatabasePlaceholder
 		content.textProperties.color = .secondaryLabel
 		contentConfiguration = content
-		
-		isUserInteractionEnabled = false
 	}
 	
 	override func layoutSubviews() {

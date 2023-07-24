@@ -100,9 +100,11 @@ extension FoldersTVC {
 			case .emptyPlaceholder:
 				switch indexPath.row {
 					case 0:
-						return tableView.dequeueReusableCell(
+						let cell = tableView.dequeueReusableCell(
 							withIdentifier: "No Folders",
 							for: indexPath) as? NoFoldersPlaceholderCell ?? UITableViewCell()
+						cell.selectionStyle = .none
+						return cell
 					case 1:
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(
@@ -241,7 +243,7 @@ extension FoldersTVC {
 					.allowAccess,
 					.loading, // Should never run
 					.removingFolderRows, // Should never run
-					.emptyPlaceholder: // Should never run for `NoFoldersPlaceholderCell`
+					.emptyPlaceholder:
 				return indexPath
 			case .someFolders:
 				return super.tableView(tableView, willSelectRowAt: indexPath)
