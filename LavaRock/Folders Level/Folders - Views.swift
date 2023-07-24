@@ -20,13 +20,10 @@ final class LoadingCell: UITableViewCell {
 				Spacer()
 				ProgressView()
 			}
+			.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+				viewDimensions[.trailing]
+			}
 		}
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
 
