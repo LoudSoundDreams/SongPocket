@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class AccentColorCell: UITableViewCell {
@@ -13,14 +14,6 @@ final class AccentColorCell: UITableViewCell {
 		didSet {
 			freshen_contentConfiguration()
 			freshen_accessoryType()
-		}
-	}
-	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		Task {
-			accessibilityTraits.formUnion(.button)
 		}
 	}
 	
@@ -33,24 +26,15 @@ final class AccentColorCell: UITableViewCell {
 	}
 	
 	private func freshen_contentConfiguration() {
-		let new_contentConfiguration: UIContentConfiguration
-		defer {
-			contentConfiguration = new_contentConfiguration
+		contentConfiguration = UIHostingConfiguration {
+			if let representee {
+				Text(representee.displayName)
+					.foregroundStyle(
+						Color(uiColor: representee.uiColor.resolvedForIncreaseContrast())
+					)
+					.accessibilityAddTraits(.isButton)
+			}
 		}
-		
-		guard let representee else {
-			// Should never run
-			new_contentConfiguration = defaultContentConfiguration()
-			return
-		}
-		
-		var content = UIListContentConfiguration.cell()
-		// Text
-		content.text = representee.displayName
-		// Text color
-		content.textProperties.color = representee.uiColor
-			.resolvedForIncreaseContrast()
-		new_contentConfiguration = content
 	}
 	
 	private func freshen_accessoryType() {
