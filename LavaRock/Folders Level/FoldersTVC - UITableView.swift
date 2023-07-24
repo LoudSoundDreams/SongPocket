@@ -76,7 +76,6 @@ extension FoldersTVC {
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Allow Access",
 					for: indexPath)
-				
 				cell.contentConfiguration = UIHostingConfiguration {
 					HStack {
 						Text(LRString.allowAccessToMusic)
@@ -88,9 +87,7 @@ extension FoldersTVC {
 						viewDimensions[.trailing]
 					}
 				}
-				
 				return cell
-				
 			case .loading:
 				return tableView.dequeueReusableCell(
 					withIdentifier: "Loading",
@@ -100,17 +97,27 @@ extension FoldersTVC {
 			case .emptyPlaceholder:
 				switch indexPath.row {
 					case 0:
+						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(
 							withIdentifier: "No Folders",
-							for: indexPath) as? NoFoldersPlaceholderCell ?? UITableViewCell()
+							for: indexPath)
 						cell.selectionStyle = .none
+						cell.contentConfiguration = UIHostingConfiguration {
+							HStack {
+								Text(LRString.emptyDatabasePlaceholder)
+									.foregroundStyle(.secondary)
+								Spacer()
+							}
+							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+								viewDimensions[.trailing]
+							}
+						}
 						return cell
 					case 1:
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(
 							withIdentifier: "Open Music",
 							for: indexPath)
-						
 						cell.contentConfiguration = UIHostingConfiguration {
 							LabeledContent {
 								Image(systemName: "arrow.up.forward.app")
@@ -124,7 +131,6 @@ extension FoldersTVC {
 								viewDimensions[.trailing]
 							}
 						}
-						
 						return cell
 					default: // Should never run
 						return UITableViewCell()

@@ -32,24 +32,6 @@ final class LoadingCell: UITableViewCell {
 	}
 }
 
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class NoFoldersPlaceholderCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		contentConfiguration = UIHostingConfiguration {
-			Text(LRString.emptyDatabasePlaceholder)
-				.foregroundStyle(.secondary)
-		}
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-
 final class CreateFolderCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
