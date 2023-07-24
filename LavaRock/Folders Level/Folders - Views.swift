@@ -37,10 +37,10 @@ final class NoFoldersPlaceholderCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		var content = UIListContentConfiguration.cell()
-		content.text = LRString.emptyDatabasePlaceholder
-		content.textProperties.color = .secondaryLabel
-		contentConfiguration = content
+		contentConfiguration = UIHostingConfiguration {
+			Text(LRString.emptyDatabasePlaceholder)
+				.foregroundStyle(.secondary)
+		}
 	}
 	
 	override func layoutSubviews() {
