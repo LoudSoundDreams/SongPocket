@@ -21,9 +21,7 @@ struct TransportPanel: View {
 		VStack(
 			spacing: .eight * 4
 		) {
-			HStack(
-				alignment: .firstTextBaseline
-			) {
+			HStack(alignment: .firstTextBaseline) {
 				previousSongButton
 				Spacer()
 				skipBackButton

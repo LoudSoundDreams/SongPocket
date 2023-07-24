@@ -38,7 +38,6 @@ struct CoverArtView: View {
 					.frame(
 						maxWidth: .infinity,
 						maxHeight: maxHeight)
-				
 				Image(systemName: "music.note")
 					.foregroundStyle(.secondary)
 					.font(.system(size: .eight * 4))

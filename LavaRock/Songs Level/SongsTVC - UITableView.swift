@@ -65,7 +65,6 @@ extension SongsTVC {
 						let cell = tableView.dequeueReusableCell(
 							withIdentifier: "Album Info",
 							for: indexPath)
-						
 						cell.selectionStyle = .none // So that the user can’t even highlight the cell
 						cell.contentConfiguration = UIHostingConfiguration {
 							AlbumInfoRow(
@@ -77,7 +76,6 @@ extension SongsTVC {
 								viewDimensions[.trailing]
 							}
 						}
-						
 						return cell
 				}
 			case .song:
@@ -88,7 +86,6 @@ extension SongsTVC {
 			withIdentifier: "Song",
 			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
-		
 		cell.configureWith(
 			song: songsViewModel.songNonNil(at: indexPath),
 			albumRepresentative: {
@@ -98,7 +95,6 @@ extension SongsTVC {
 			spacerTrackNumberText: (songsViewModel.libraryGroup() as? SongsGroup)?.spacerTrackNumberText,
 			songsTVC: Weak(self)
 		)
-		
 		return cell
 	}
 	

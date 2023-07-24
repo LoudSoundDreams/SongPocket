@@ -30,7 +30,6 @@ struct SongRow: View {
 					spacing: .eight * 1/2 // 4
 				) {
 					Text(song_title ?? SongInfoPlaceholder.unknownTitle)
-					
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
 							.font(.caption)

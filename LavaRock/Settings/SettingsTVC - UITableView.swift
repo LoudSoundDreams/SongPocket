@@ -68,14 +68,11 @@ extension SettingsTVC {
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Avatar",
 					for: indexPath)
-				
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					AvatarPicker()
 				}
-				
 				return cell
-				
 			default:
 				return accentColorCell(forRowAt: indexPath)
 		}
@@ -89,7 +86,6 @@ extension SettingsTVC {
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Contact",
 					for: indexPath)
-				
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(verbatim: "linus@songpocket.app")
@@ -98,7 +94,6 @@ extension SettingsTVC {
 							.foregroundStyle(Color.accentColor)
 					}
 				}
-				
 				return cell
 		}
 	}
@@ -212,7 +207,6 @@ extension SettingsTVC {
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Tip Loading",
 					for: indexPath)
-				
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent(LRString.tipJar, value: LRString.loadingEllipsis)
@@ -221,15 +215,12 @@ extension SettingsTVC {
 							viewDimensions[.trailing]
 						}
 				}
-				
 				return cell
-				
 			case .reload:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Tip Reload",
 					for: indexPath)
-				
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(LRString.reload)
@@ -242,15 +233,12 @@ extension SettingsTVC {
 					}
 					.accessibilityAddTraits(.isButton)
 				}
-				
 				return cell
-				
 			case .ready:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Tip Ready",
 					for: indexPath)
-				
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(PurchaseManager.shared.tipPrice ?? "")
@@ -263,15 +251,12 @@ extension SettingsTVC {
 					}
 					.accessibilityAddTraits(.isButton)
 				}
-				
 				return cell
-				
 			case .confirming:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Tip Confirming",
 					for: indexPath)
-				
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent(LRString.tipJar, value: LRString.confirmingEllipsis)
@@ -280,15 +265,12 @@ extension SettingsTVC {
 							viewDimensions[.trailing]
 						}
 				}
-				
 				return cell
-				
 			case .thankYou:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Tip Thank You",
 					for: indexPath)
-				
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					TipThankYouView()
@@ -296,14 +278,12 @@ extension SettingsTVC {
 							viewDimensions[.trailing]
 						}
 				}
-				
 				return cell
 		}
 	}
 }
 struct TipThankYouView: View {
 	@ObservedObject private var theme: Theme = .shared
-	
 	var body: some View {
 		LabeledContent(
 			LRString.tipJar,

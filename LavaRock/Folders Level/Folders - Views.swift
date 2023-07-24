@@ -44,9 +44,7 @@ struct FolderRow: View {
 	var body: some View {
 		HStack {
 			Text(folder.title ?? "")
-			
 			Spacer()
-			
 			AvatarImage(
 				libraryItem: folder)
 			.accessibilitySortPriority(10)
@@ -94,8 +92,7 @@ final class FolderCell: UITableViewCell {
 			contentConfiguration = UIHostingConfiguration {
 				FolderRow(
 					folder: folder,
-					mode: mode
-				)
+					mode: mode)
 			}
 			
 		} else {

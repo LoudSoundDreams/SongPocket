@@ -54,9 +54,7 @@ struct AvatarImage: View {
 	}
 	
 	var body: some View {
-		ZStack(
-			alignment: .leading
-		) {
+		ZStack(alignment: .leading) {
 			// Spacer
 			playing_image
 				.hidden()
