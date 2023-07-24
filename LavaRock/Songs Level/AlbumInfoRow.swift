@@ -25,8 +25,8 @@ struct AlbumInfoRow: View {
 				
 				// “The Beatles”
 				Text(albumArtist)
-					.fontWeight(.bold) // As of iOS 16.2 developer beta 4, this is thicker than `.bold()`, peculiarly
 					.font(.caption)
+					.fontWeight(.bold) // As of iOS 16.2 developer beta 4, this is thicker than `.bold()`, peculiarly
 					.foregroundStyle(.secondary)
 				
 				if let releaseDate = releaseDateStringOptional {
