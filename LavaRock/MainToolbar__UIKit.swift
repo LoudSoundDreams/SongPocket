@@ -75,17 +75,16 @@ final class MainToolbar__UIKit {
 		let menuElements: [UIMenuElement] = [
 			UIAction(
 				title: LRString.settings,
-				image: UIImage(systemName: "gear"),
-				handler: { [weak self] _ in
-					let toPresent: UIViewController = {
-						let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
-							.instantiateInitialViewController()!
-						return UINavigationController(rootViewController: settingsTVC)
-					}()
-					toPresent.modalPresentationStyle = .formSheet
-					self?.settings_presenter?.present(toPresent, animated: true)
-				}
-			),
+				image: UIImage(systemName: "gear")
+			) { [weak self] _ in
+				let toPresent: UIViewController = {
+					let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
+						.instantiateInitialViewController()!
+					return UINavigationController(rootViewController: settingsTVC)
+				}()
+				toPresent.modalPresentationStyle = .formSheet
+				self?.settings_presenter?.present(toPresent, animated: true)
+			},
 			createRepeatMenu(),
 			createTransportMenu(),
 		].reversed()
@@ -93,9 +92,7 @@ final class MainToolbar__UIKit {
 		
 		func createRepeatMenu() -> UIMenu {
 			return UIMenu(
-				options: [
-					.displayInline,
-				],
+				options: .displayInline,
 				preferredElementSize: .small,
 				children: [
 					UIDeferredMenuElement.uncached({ useMenuElements in
@@ -103,76 +100,65 @@ final class MainToolbar__UIKit {
 							title: LRString.repeatOff,
 							image: UIImage(systemName: "minus"),
 							attributes: {
-								var result: UIMenuElement.Attributes = []
 								if (Self.player == nil)
 									|| (Self.player?.repeatMode == MPMusicRepeatMode.none)
 								{
 									// When this mode is selected, we want to show it as such, not disable it.
 									// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
 									// Disabling the selected mode is a compromise.
-									result.formUnion(.disabled)
+									return .disabled
 								}
-								return result
+								return []
 							}(),
 							state: {
 								guard let player = Self.player else {
 									return .on // Default when disabled
 								}
-								return (
-									player.repeatMode == MPMusicRepeatMode.none
-									? .on
-									: .off
-								)
-							}(),
-							handler: { action in
-								Self.player?.repeatMode = .none
-							}
-						)
+								return (player.repeatMode == MPMusicRepeatMode.none)
+								? .on
+								: .off
+							}()
+						) { _ in
+							Self.player?.repeatMode = .none
+						}
 						useMenuElements([action])
 					}),
-					
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
 							title: LRString.repeatAll,
 							image: UIImage(systemName: "repeat"),
 							attributes: {
-								var result: UIMenuElement.Attributes = []
 								if (Self.player == nil)
 									|| (Self.player?.repeatMode == .all)
 								{
-									result.formUnion(.disabled)
+									return .disabled
 								}
-								return result
+								return []
 							}(),
 							state: {
 								guard let player = Self.player else {
 									return .off
 								}
-								return (
-									player.repeatMode == .all
-									? .on
-									: .off
-								)
-							}(),
-							handler: { action in
-								Self.player?.repeatMode = .all
-							}
-						)
+								return (player.repeatMode == .all)
+								? .on
+								: .off
+							}()
+						) { action in
+							Self.player?.repeatMode = .all
+						}
 						useMenuElements([action])
 					}),
-					
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
 							title: LRString.repeat1,
 							image: UIImage(systemName: "repeat.1"),
 							attributes: {
-								var result: UIMenuElement.Attributes = []
 								if (Self.player == nil)
 									|| (Self.player?.repeatMode == .one)
 								{
-									result.formUnion(.disabled)
+									return .disabled
 								}
-								return result
+								return []
 							}(),
 							state: {
 								guard let player = Self.player else {
@@ -183,11 +169,10 @@ final class MainToolbar__UIKit {
 									? .on
 									: .off
 								)
-							}(),
-							handler: { action in
-								Self.player?.repeatMode = .one
-							}
-						)
+							}()
+						) { _ in
+							Self.player?.repeatMode = .one
+						}
 						useMenuElements([action])
 					}),
 				]
@@ -203,20 +188,17 @@ final class MainToolbar__UIKit {
 							title: LRString.restart,
 							image: UIImage(systemName: "arrow.counterclockwise.circle"),
 							attributes: {
-								var result: UIMenuElement.Attributes = []
 								// TO DO: Disable when playhead is already at start of track
 								if Self.player == nil {
-									result.formUnion(.disabled)
+									return .disabled
 								}
-								return result
-							}(),
-							handler: { action in
-								Self.player?.skipToBeginning()
-							}
-						)
+								return []
+							}()
+						) { _ in
+							Self.player?.skipToBeginning()
+						}
 						useMenuElements([action])
 					}),
-					
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
 							title: LRString.previous,
@@ -229,11 +211,10 @@ final class MainToolbar__UIKit {
 									result.formUnion(.disabled)
 								}
 								return result
-							}(),
-							handler: { action in
-								Self.player?.skipToPreviousItem()
-							}
-						)
+							}()
+						) { _ in
+							Self.player?.skipToPreviousItem()
+						}
 						useMenuElements([action])
 					}),
 				]

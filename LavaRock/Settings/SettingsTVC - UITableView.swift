@@ -13,7 +13,7 @@ extension SettingsTVC {
 		case appearance
 		case support
 	}
-	private static let nonselectableAppearanceRows: [Int] = [5]
+	private static let avatarRow = 5
 	private static let tipJarRow = 0
 	
 	func freshenTipJarRows() {
@@ -40,7 +40,8 @@ extension SettingsTVC {
 		}
 		switch sectionCase {
 			case .appearance:
-				return AccentColor.allCases.count + Self.nonselectableAppearanceRows.count
+				let _ = Self.avatarRow
+				return AccentColor.allCases.count + 1
 			case .support:
 				return 2
 		}
@@ -61,9 +62,8 @@ extension SettingsTVC {
 		}
 	}
 	private func appearanceCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let _ = Self.nonselectableAppearanceRows
 		switch indexPath.row {
-			case 5:
+			case Self.avatarRow:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Avatar",
@@ -109,11 +109,10 @@ extension SettingsTVC {
 		}
 		switch sectionCase {
 			case .appearance:
-				if Self.nonselectableAppearanceRows.contains(indexPath.row) {
+				if indexPath.row == Self.avatarRow {
 					return nil
-				} else {
-					return indexPath
 				}
+				return indexPath
 			case .support:
 				switch indexPath.row {
 					case Self.tipJarRow:
@@ -142,7 +141,7 @@ extension SettingsTVC {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
 			case .appearance:
-				guard !Self.nonselectableAppearanceRows.contains(indexPath.row) else {
+				guard indexPath.row != Self.avatarRow else {
 					// Should never run
 					tableView.deselectRow(at: indexPath, animated: true)
 					return
@@ -176,9 +175,8 @@ extension SettingsTVC {
 	// MARK: - Accent Color Section
 	
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let _ = Self.nonselectableAppearanceRows
-		let indexOfAccentColor = indexPath.row
-		let accentColor = AccentColor.allCases[indexOfAccentColor]
+		let _ = Self.avatarRow
+		let accentColor = AccentColor.allCases[indexPath.row]
 		
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Accent Color",
@@ -189,9 +187,8 @@ extension SettingsTVC {
 	}
 	
 	private func didSelectAccentColorRow(at indexPath: IndexPath) {
-		let _ = Self.nonselectableAppearanceRows
-		let indexOfAccentColor = indexPath.row
-		let selected = AccentColor.allCases[indexOfAccentColor]
+		let _ = Self.avatarRow
+		let selected = AccentColor.allCases[indexPath.row]
 		
 		Theme.shared.accentColor = selected
 		view.window?.tintColor = selected.uiColor
