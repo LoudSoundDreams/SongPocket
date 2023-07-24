@@ -32,9 +32,10 @@ final class FoldersTVC:
 		case allowAccess
 		case loading
 		case removingFolderRows
-		case emptyPlaceholder
+		case emptyDatabase
 		case someFolders
 	}
+	static let emptyDatabaseInfoRow = 0
 	
 	// MARK: - Properties
 	
@@ -92,7 +93,7 @@ final class FoldersTVC:
 			}
 		} else {
 			if viewModel.isEmpty() {
-				return .emptyPlaceholder
+				return .emptyDatabase
 			} else {
 				return .someFolders
 			}
@@ -152,7 +153,7 @@ final class FoldersTVC:
 				toDelete = oldIndexPaths
 				toInsert = newIndexPaths // Empty
 				toReload = []
-			case .emptyPlaceholder:
+			case .emptyDatabase:
 				toDelete = oldIndexPaths
 				toInsert = newIndexPaths
 				toReload = []
@@ -173,7 +174,7 @@ final class FoldersTVC:
 						.allowAccess,
 						.loading,
 						.removingFolderRows,
-						.emptyPlaceholder:
+						.emptyDatabase:
 					if self.isEditing {
 						self.setEditing(false, animated: true)
 					}
@@ -319,12 +320,12 @@ final class FoldersTVC:
 		switch viewState {
 			case
 					.loading,
-					.emptyPlaceholder:
+					.emptyDatabase:
 				// We have placeholder rows in the Folders section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
 				needsRemoveFolderRows = true // `viewState` is now `.removingFolderRows`
 				Task {
 					await reflectViewState(runningBeforeCompletion: {
-						self.needsRemoveFolderRows = false // WARNING: `viewState` is now `.loading` or `.emptyPlaceholder`, but the UI doesn’t reflect that.
+						self.needsRemoveFolderRows = false // WARNING: `viewState` is now `.loading` or `.emptyDatabase`, but the UI doesn’t reflect that.
 						
 						super.freshenLibraryItems()
 					})
