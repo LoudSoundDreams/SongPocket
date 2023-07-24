@@ -329,7 +329,7 @@ final class MainToolbar__UIKit {
 						hasRefreshenedOverflowButton = true
 						
 						Task {
-							try await Task.sleep(nanoseconds: 0_050_000_000) // 50ms
+							try? await Task.sleep(for: .milliseconds(50))
 							
 							freshenOverflowButton()
 						}
