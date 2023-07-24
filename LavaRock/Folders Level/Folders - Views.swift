@@ -14,14 +14,13 @@ final class LoadingCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		contentConfiguration = UIHostingConfiguration {
-			Text(LRString.loadingEllipsis)
-				.foregroundStyle(.secondary)
+			HStack {
+				Text(LRString.loadingEllipsis)
+					.foregroundStyle(.secondary)
+				Spacer()
+				ProgressView()
+			}
 		}
-		
-		let spinnerView = UIActivityIndicatorView()
-		spinnerView.startAnimating()
-		spinnerView.sizeToFit() // Without this line of code, UIKit centers the UIActivityIndicatorView at the top-left corner of the cell.
-		accessoryView = spinnerView
 	}
 	
 	override func layoutSubviews() {
