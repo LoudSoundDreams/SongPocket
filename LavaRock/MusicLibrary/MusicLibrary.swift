@@ -41,8 +41,6 @@ final class MusicLibrary {
 #if targetEnvironment(simulator)
 		context.performAndWait {
 			let walpurgisNightAlbumID = Sim_AlbumIDDispenser.takeNumber()
-			let planetaryPiecesAlbumID = Sim_AlbumIDDispenser.takeNumber()
-			let realAlbumID = Sim_AlbumIDDispenser.takeNumber()
 			mergeChanges(toMatchInAnyOrder: (
 				Enabling.sim_emptyLibrary
 				? []
@@ -76,7 +74,7 @@ final class MusicLibrary {
 						releaseDate: .now
 					),
 					Sim_SongInfo(
-						albumID: planetaryPiecesAlbumID,
+						albumID: Sim_AlbumIDDispenser.takeNumber(),
 						composer: "",
 						albumArtist: nil,
 						albumTitle: nil,
@@ -90,7 +88,7 @@ final class MusicLibrary {
 						releaseDate: nil
 					),
 					Sim_SongInfo(
-						albumID: realAlbumID,
+						albumID: Sim_AlbumIDDispenser.takeNumber(),
 						composer: "이민수",
 						albumArtist: "IU",
 						albumTitle: "Real",
