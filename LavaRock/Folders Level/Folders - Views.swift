@@ -13,10 +13,10 @@ final class LoadingCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		var content = UIListContentConfiguration.cell()
-		content.text = LRString.loadingEllipsis
-		content.textProperties.color = .secondaryLabel
-		contentConfiguration = content
+		contentConfiguration = UIHostingConfiguration {
+			Text(LRString.loadingEllipsis)
+				.foregroundStyle(.secondary)
+		}
 		
 		let spinnerView = UIActivityIndicatorView()
 		spinnerView.startAnimating()
