@@ -77,7 +77,6 @@ extension AlbumsTVC {
 			withIdentifier: "Album",
 			for: indexPath) as? AlbumCell
 		else { return UITableViewCell() }
-		
 		let album = albumsViewModel.albumNonNil(at: indexPath)
 		cell.configure(
 			with: album,
@@ -102,7 +101,6 @@ extension AlbumsTVC {
 				}
 			}()
 		)
-		
 		return cell
 	}
 	

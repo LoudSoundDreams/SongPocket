@@ -78,7 +78,7 @@ extension FoldersTVC {
 					for: indexPath)
 				cell.contentConfiguration = UIHostingConfiguration {
 					HStack {
-						Text(LRString.allowAccessToMusic)
+						Text(LRString.allowAccessToAppleMusic)
 							.foregroundStyle(Color.accentColor)
 						Spacer()
 					}

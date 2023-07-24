@@ -132,16 +132,16 @@ enum AccentColor: CaseIterable {
 	
 	var heartEmoji: String {
 		switch self {
+			case .blueberry:
+				return "💙"
+			case .grape:
+				return "💜"
 			case .strawberry:
 				return "❤️"
 			case .tangerine:
 				return "🧡"
 			case .lime:
 				return "💚"
-			case .blueberry:
-				return "💙"
-			case .grape:
-				return "💜"
 		}
 	}
 	
@@ -152,16 +152,16 @@ enum AccentColor: CaseIterable {
 	
 	private var persistentValue: String {
 		switch self {
-			case .lime:
-				return "Lime"
-			case .tangerine:
-				return "Tangerine"
-			case .strawberry:
-				return "Strawberry"
-			case .grape:
-				return "Grape"
 			case .blueberry:
 				return "Blueberry"
+			case .grape:
+				return "Grape"
+			case .strawberry:
+				return "Strawberry"
+			case .tangerine:
+				return "Tangerine"
+			case .lime:
+				return "Lime"
 		}
 	}
 }

@@ -12,13 +12,12 @@ import Foundation
 enum LRString {
 	// Don’t pass arguments other than strings to the Foundation function `NSLocalizedString`, because otherwise, when you choose “Export Localizations…”, Xcode won’t include those calls.
 	
-	// MARK: - Without variables
+	// MARK: - WITHOUT VARIABLES
 	
 	// MARK: Standard
 	
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
 	static let save = NSLocalizedString("Save", comment: "Button")
-	static let done = NSLocalizedString("Done", comment: "Button")
 	static let more = NSLocalizedString("More", comment: "Button")
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
@@ -35,11 +34,11 @@ enum LRString {
 	
 	static let settings = NSLocalizedString("Settings", comment: "Button")
 	
-	static let lime = NSLocalizedString("Lime", comment: "Accent color")
-	static let tangerine = NSLocalizedString("Tangerine", comment: "Accent color")
-	static let strawberry = NSLocalizedString("Strawberry", comment: "Accent color")
-	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	static let blueberry = NSLocalizedString("Blueberry", comment: "Accent color")
+	static let grape = NSLocalizedString("Grape", comment: "Accent color")
+	static let strawberry = NSLocalizedString("Strawberry", comment: "Accent color")
+	static let tangerine = NSLocalizedString("Tangerine", comment: "Accent color")
+	static let lime = NSLocalizedString("Lime", comment: "Accent color")
 	
 	static let speaker = NSLocalizedString("Speaker", comment: "Accessibility label")
 	static let pawprint = NSLocalizedString("Pawprint", comment: "Accessibility label")
@@ -55,7 +54,9 @@ enum LRString {
 	
 	// MARK: Transport bar
 	
-	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
+	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
+	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")
+	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
 	
 	static let previous = NSLocalizedString("Previous", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
@@ -81,14 +82,15 @@ enum LRString {
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
-	// MARK: Folders view
+	// MARK: - Folders view
 	
 	static let folders = NSLocalizedString("Folders", comment: "Big title")
 	
-	static let allowAccessToMusic = NSLocalizedString("Allow Access to Apple Music", comment: "Button")
+	static let allowAccessToAppleMusic = NSLocalizedString("Allow Access to Apple Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
 		"Add some music to your library.",
 		comment: "Placeholder for when the app’s database is empty")
+	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
 	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also a sort option.")
 	
@@ -129,23 +131,8 @@ enum LRString {
 	
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	
-	// MARK: Console
-	
-	static let queue = NSLocalizedString("Queue", comment: "Big title")
-	
-	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
-	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")
-	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
-	
-	// MARK: - With variables but without text variations (format strings)
-	
-	// MARK: Songs view
-	
-	static let format_quoted = NSLocalizedString(
-		"“%@”",
-		comment: "The input string, wrapped in quotation marks.")
-	
-	// MARK: - With variables and text variations (format strings from dictionaries)
+	// MARK: - WITH VARIABLES AND TEXT VARIATIONS
+	// (Format strings from dictionaries)
 	
 	// MARK: Folders and Albums views
 	
@@ -161,27 +148,4 @@ enum LRString {
 	static let variable_moveXAlbumsIntoOneFolder_question_mark = NSLocalizedString(
 		"plural - move_X_albums_into_one_folder_question_mark",
 		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created folder.")
-	
-	// MARK: Songs view
-	
-	static func songTitleQuotedAndXMoreSongs_titleCase(
-		infos: [SongInfo]
-	) -> String {
-		let firstTitle = infos.first?.titleOnDisk ?? SongInfoPlaceholder.unknownTitle
-		let count = infos.count
-		if count == 1 {
-			return String.localizedStringWithFormat(
-				format_quoted,
-				firstTitle)
-		} else {
-			// With “and X more”
-			return String.localizedStringWithFormat(
-				format_title_songTitleAndXMoreSongs,
-				firstTitle,
-				count - 1)
-		}
-	}
-	static let format_title_songTitleAndXMoreSongs = NSLocalizedString(
-		"plural - title case - SONG_TITLE_and_X_more_songs",
-		comment: "The title of a song, wrapped in quotation marks, plus “and 1 More Song”, “and 2 More Songs”, or so on.")
 }

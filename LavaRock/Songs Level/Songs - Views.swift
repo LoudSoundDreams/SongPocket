@@ -126,7 +126,6 @@ final class SongCell: UITableViewCell {
 		}()
 		
 		if Self.usesSwiftUI__ {
-			
 			contentConfiguration = UIHostingConfiguration {
 				SongRow(
 					song: song,
@@ -138,9 +137,7 @@ final class SongCell: UITableViewCell {
 					viewDimensions[.trailing]
 				}
 			}
-			
 		} else {
-			
 			spacerNumberLabel.text = spacerTrackNumberText
 			numberLabel.text = trackDisplay
 			titleLabel.text = { () -> String in
@@ -168,7 +165,6 @@ final class SongCell: UITableViewCell {
 			accessibilityUserInputLabels = [
 				song_title, // Excludes the “unknown title” placeholder, which is currently a dash.
 			].compacted()
-			
 		}
 		
 		// Set menu, and require creating that menu

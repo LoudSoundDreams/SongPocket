@@ -9,14 +9,10 @@ import UIKit
 import SwiftUI
 
 final class CreateFolderCell: UITableViewCell {
-	private static let usesSwiftUI__ = 10 == 1
-	
 	@IBOutlet private var newFolderLabel: UILabel!
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
-		guard !Self.usesSwiftUI__ else { return }
 		
 		newFolderLabel.text = LRString.newFolder
 		newFolderLabel.textColor = .tintColor
@@ -88,15 +84,12 @@ final class FolderCell: UITableViewCell {
 		mode: FolderRowMode
 	) {
 		if Self.usesSwiftUI__ {
-			
 			contentConfiguration = UIHostingConfiguration {
 				FolderRow(
 					folder: folder,
 					mode: mode)
 			}
-			
 		} else {
-			
 			titleLabel.text = folder.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining folders before `freshenLibraryItems`, the table view vertically collapses rows for deleted folders.
 			contentView.layer.opacity = {
 				if case FolderRowMode.modalDisabled = mode {
@@ -115,7 +108,6 @@ final class FolderCell: UITableViewCell {
 			accessibilityUserInputLabels = [
 				folder.title, // Can be `nil`
 			].compacted()
-			
 		}
 		
 		switch mode {
