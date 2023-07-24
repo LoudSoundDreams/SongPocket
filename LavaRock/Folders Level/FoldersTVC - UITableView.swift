@@ -89,10 +89,22 @@ extension FoldersTVC {
 				}
 				return cell
 			case .loading:
+				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Loading",
-					for: indexPath) as? LoadingCell ?? UITableViewCell()
+					for: indexPath)
 				cell.selectionStyle = .none
+				cell.contentConfiguration = UIHostingConfiguration {
+					HStack {
+						Text(LRString.loadingEllipsis)
+							.foregroundStyle(.secondary)
+						Spacer()
+						ProgressView()
+					}
+					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+						viewDimensions[.trailing]
+					}
+				}
 				return cell
 			case .removingFolderRows: // Should never run
 				return UITableViewCell()

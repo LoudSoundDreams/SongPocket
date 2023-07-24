@@ -8,25 +8,6 @@
 import UIKit
 import SwiftUI
 
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-final class LoadingCell: UITableViewCell {
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		contentConfiguration = UIHostingConfiguration {
-			HStack {
-				Text(LRString.loadingEllipsis)
-					.foregroundStyle(.secondary)
-				Spacer()
-				ProgressView()
-			}
-			.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-				viewDimensions[.trailing]
-			}
-		}
-	}
-}
-
 final class CreateFolderCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	
