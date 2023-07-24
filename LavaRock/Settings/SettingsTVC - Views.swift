@@ -54,17 +54,14 @@ final class AccentColorCell: UITableViewCell {
 	}
 	
 	private func freshen_accessoryType() {
-		let new_accessoryType: AccessoryType
-		defer {
-			accessoryType = new_accessoryType
-		}
-		
-		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
-		if representee == AccentColor.preference {
-			new_accessoryType = .checkmark
-		} else {
-			new_accessoryType = .none
-		}
+		accessoryType = {
+			// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
+			if representee == AccentColor.preference {
+				return .checkmark
+			} else {
+				return .none
+			}
+		}()
 	}
 	
 	override func layoutSubviews() {
