@@ -8,26 +8,6 @@
 import UIKit
 import OSLog
 
-final class MoveHereCell: UITableViewCell {
-	@IBOutlet private var moveHereLabel: UILabel!
-	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		Task {
-			accessibilityTraits.formUnion(.button)
-		}
-		
-		moveHereLabel.textColor = .tintColor
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-
 final class AlbumCell: UITableViewCell {
 	enum Mode {
 		case normal

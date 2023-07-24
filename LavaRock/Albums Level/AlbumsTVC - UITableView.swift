@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension AlbumsTVC {
 	// MARK: - Numbers
@@ -47,9 +48,23 @@ extension AlbumsTVC {
 					case .prerow(let prerow):
 						switch prerow {
 							case .moveHere:
-								return tableView.dequeueReusableCell(
+								// The cell in the storyboard is completely default except for the reuse identifier.
+								let cell = tableView.dequeueReusableCell(
 									withIdentifier: "Move Here",
-									for: indexPath) as? MoveHereCell ?? UITableViewCell()
+									for: indexPath)
+								cell.contentConfiguration = UIHostingConfiguration {
+									HStack {
+										Text(LRString.moveHere)
+											.foregroundStyle(Color.accentColor)
+											.bold()
+										Spacer()
+									}
+									.accessibilityAddTraits(.isButton)
+									.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+										viewDimensions[.trailing]
+									}
+								}
+								return cell
 						}
 					case .album:
 						break
