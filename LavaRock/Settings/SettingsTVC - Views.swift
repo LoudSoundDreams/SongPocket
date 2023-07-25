@@ -40,10 +40,10 @@ final class AccentColorCell: UITableViewCell {
 							Color(uiColor: representee.uiColor.resolvedForIncreaseContrast())
 						)
 				}
+				.accessibilityAddTraits(.isButton)
 				.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
 					viewDimensions[.trailing]
 				}
-				.accessibilityAddTraits(.isButton)
 				
 			}
 		}

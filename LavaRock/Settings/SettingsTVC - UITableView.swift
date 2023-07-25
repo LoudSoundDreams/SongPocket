@@ -225,10 +225,10 @@ extension SettingsTVC {
 						Text(LRString.tipJar)
 							.foregroundStyle(Color.accentColor)
 					}
+					.accessibilityAddTraits(.isButton)
 					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
 						viewDimensions[.trailing]
 					}
-					.accessibilityAddTraits(.isButton)
 				}
 				return cell
 			case .ready:
@@ -243,10 +243,10 @@ extension SettingsTVC {
 						Text(LRString.tipJar)
 							.foregroundStyle(Color.accentColor)
 					}
+					.accessibilityAddTraits(.isButton)
 					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
 						viewDimensions[.trailing]
 					}
-					.accessibilityAddTraits(.isButton)
 				}
 				return cell
 			case .confirming:
