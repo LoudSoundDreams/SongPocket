@@ -112,7 +112,6 @@
 		07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E092599227C00826447 /* PurchaseManager.swift */; };
 		07FD6E122599246700826447 /* SettingsTVC + TipJarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* SettingsTVC + TipJarUI.swift */; };
 		07FF080128652A4C00EE4FD4 /* SortingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* SortingTests.swift */; };
-		07FF1DDE27F8F81000DF9B78 /* TransportPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */; };
 		07FFC00C29D8745F00B98447 /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FFC00B29D8745F00B98447 /* Notification.Name.swift */; };
 		07FFC00E29D88B6B00B98447 /* AppleMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FFC00D29D88B6B00B98447 /* AppleMusic.swift */; };
 /* End PBXBuildFile section */
@@ -247,7 +246,6 @@
 		07FD6E092599227C00826447 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		07FD6E112599246700826447 /* SettingsTVC + TipJarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTVC + TipJarUI.swift"; sourceTree = "<group>"; };
 		07FF080028652A4C00EE4FD4 /* SortingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingTests.swift; sourceTree = "<group>"; };
-		07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportPanel.swift; sourceTree = "<group>"; };
 		07FFC00B29D8745F00B98447 /* Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 		07FFC00D29D88B6B00B98447 /* AppleMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -384,7 +382,6 @@
 				07DC1B2124F33DF400AAEEDB /* Albums Level */,
 				070E194224F340C500B21307 /* Songs Level */,
 				0706ABDE24D946870090EB21 /* Settings */,
-				07FF1DDD27F8F81000DF9B78 /* TransportPanel.swift */,
 			);
 			path = LavaRock;
 			sourceTree = "<group>";
@@ -761,7 +758,6 @@
 				079B2C9524E227BF00A949FA /* MusicLibrary.swift in Sources */,
 				077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */,
 				07CD864F27CAA54600286E6A /* TapeDeckReflecting.swift in Sources */,
-				07FF1DDE27F8F81000DF9B78 /* TransportPanel.swift in Sources */,
 				07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */,
 				07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */,
 				07E0BBF22765678F0010117E /* UIColor.swift in Sources */,
