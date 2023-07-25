@@ -13,7 +13,6 @@ final class AccentColorCell: UITableViewCell {
 	var representee: AccentColor? = nil {
 		didSet {
 			freshen_contentConfiguration()
-			freshen_accessoryType()
 		}
 	}
 	
@@ -22,32 +21,31 @@ final class AccentColorCell: UITableViewCell {
 		super.tintColorDidChange()
 		
 		freshen_contentConfiguration()
-		freshen_accessoryType()
 	}
 	
 	private func freshen_contentConfiguration() {
 		contentConfiguration = UIHostingConfiguration {
 			if let representee {
-				Text(representee.displayName)
-					.foregroundStyle(
-						Color(uiColor: representee.uiColor.resolvedForIncreaseContrast())
-					)
-					.accessibilityAddTraits(.isButton)
+				
+				LabeledContent {
+					// Don’t compare to the UI’s accent color, because if “Increase Contrast” is enabled, it might not match any `AccentColor`. Compare directly to `AccentColor.preference`.
+					if representee == AccentColor.preference {
+						Image(systemName: "checkmark")
+							.foregroundColor(Color.accentColor)
+							.font(.headline) // Similar to `UITableViewCell.AccessoryType.checkmark`
+					}
+				} label: {
+					Text(representee.displayName)
+						.foregroundStyle(
+							Color(uiColor: representee.uiColor.resolvedForIncreaseContrast())
+						)
+				}
+				.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+					viewDimensions[.trailing]
+				}
+				.accessibilityAddTraits(.isButton)
+				
 			}
 		}
-	}
-	
-	private func freshen_accessoryType() {
-		// Don’t compare `self.tintColor`, because if “Increase Contrast” is enabled, it won’t match any `AccentColor.uiColor`.
-		accessoryType = (representee == AccentColor.preference)
-		? .checkmark
-		: .none
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.left = directionalLayoutMargins.leading // We shouldn’t have to do this, but as of build 482, without this, if you close Settings then open it again, something sets the left inset to 0.
-		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
