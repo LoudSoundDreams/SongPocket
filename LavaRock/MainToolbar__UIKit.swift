@@ -290,9 +290,8 @@ final class MainToolbar__UIKit {
 		}
 	}
 	private func freshenOverflowButton() {
-		overflowButton.image = {
+		overflowButton.image = { () -> UIImage in
 			guard let player = Self.player else {
-				// Configure ellipsis icon
 				return Self.overflowButtonDefaultImage
 			}
 			switch player.repeatMode {
