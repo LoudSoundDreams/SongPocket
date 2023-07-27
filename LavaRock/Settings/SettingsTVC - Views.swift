@@ -49,3 +49,12 @@ final class AccentColorCell: UITableViewCell {
 		}
 	}
 }
+
+private extension UIColor {
+	@MainActor
+	final func resolvedForIncreaseContrast() -> UIColor {
+		let view = UIView()
+		view.tintColor = self
+		return view.tintColor
+	}
+}

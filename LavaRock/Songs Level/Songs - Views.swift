@@ -48,6 +48,15 @@ final class ExpandedTargetButton: UIButton {
 		return tappableRect.contains(point)
 	}
 }
+private extension UIFont {
+	static func monospacedDigitSystemFont(
+		forTextStyle style: TextStyle
+	) -> UIFont {
+		return .monospacedDigitSystemFont(
+			ofSize: UIFont.preferredFont(forTextStyle: style).pointSize,
+			weight: .regular)
+	}
+}
 final class SongCell: UITableViewCell {
 	private static let usesSwiftUI__ = 10 == 1
 	

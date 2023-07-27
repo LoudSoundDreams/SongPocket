@@ -49,87 +49,6 @@ enum AccentColor: CaseIterable {
 		}
 	}
 	
-	var uiColor: UIColor {
-		switch self {
-			case .blueberry:
-				/*
-				 # Light mode
-				 
-				 Hue (º): 210 - aiming low
-				 Saturation (%): 100 - aiming high
-				 Brightness (%): 60 - aiming low
-				
-				 # Dark mode
-				 
-				 H: 200 - aiming low
-				 S: 70 - aiming low
-				 B: 100 - aiming high
-				 */
-				return UIColor(named: "blueberry")!
-				
-			case .grape:
-				/*
-				 # Light mode
-				 
-				 H: 310 - aiming high
-				 S: 100 - aiming high
-				 B: 50 - aiming low
-				 
-				 # Dark mode
-				 
-				 S: 50 - aiming low
-				 B: 100 - aiming high
-				 */
-				return UIColor(named: "grape")!
-				
-			case .strawberry:
-				/*
-				 # Light mode
-				 
-				 H: 340 - aiming low
-				 S: 100 - aiming high
-				 B: 70 - aiming low
-				 
-				 # Dark mode
-				 
-				 S: 60 - aiming low
-				 B: 100 - aiming high
-				 */
-				return UIColor(named: "strawberry")!
-				
-			case .tangerine:
-				/*
-				 # Light mode
-				 
-				 H: 10 - aiming low
-				 S: 100 - aiming high
-				 B: 75 - aiming low
-				 
-				 # Dark mode
-				 
-				 H: 40 - aiming high
-				 S: 70 - aiming low
-				 B: 100 - aiming high
-				 */
-				return UIColor(named: "tangerine")!
-				
-			case .lime:
-				/*
-				 # Light mode
-				 
-				 H: 100 - aiming low
-				 S: 100 - aiming high
-				 B: 40 - aiming low
-				 
-				 # Dark mode
-				 
-				 S: 50 - aiming low
-				 B: 100 - aiming high
-				 */
-				return UIColor(named: "lime")!
-		}
-	}
-	
 	var heartEmoji: String {
 		switch self {
 			case .blueberry:
@@ -142,6 +61,89 @@ enum AccentColor: CaseIterable {
 				return "🧡"
 			case .lime:
 				return "💚"
+		}
+	}
+	
+	/*
+	 BLUEBERRY
+	 
+	 # Light mode
+	 
+	 Hue (º): 210 - aiming low
+	 Saturation (%): 100 - aiming high
+	 Brightness (%): 60 - aiming low
+	 
+	 # Dark mode
+	 
+	 H: 200 - aiming low
+	 S: 70 - aiming low
+	 B: 100 - aiming high
+	 
+	 GRAPE
+	 
+	 # Light mode
+	 
+	 H: 310 - aiming high
+	 S: 100 - aiming high
+	 B: 50 - aiming low
+	 
+	 # Dark mode
+	 
+	 S: 50 - aiming low
+	 B: 100 - aiming high
+	 
+	 STRAWBERRY
+	 
+	 # Light mode
+	 
+	 H: 340 - aiming low
+	 S: 100 - aiming high
+	 B: 70 - aiming low
+	 
+	 # Dark mode
+	 
+	 S: 60 - aiming low
+	 B: 100 - aiming high
+	 
+	 TANGERINE
+	 
+	 # Light mode
+	 
+	 H: 10 - aiming low
+	 S: 100 - aiming high
+	 B: 75 - aiming low
+	 
+	 # Dark mode
+	 
+	 H: 40 - aiming high
+	 S: 70 - aiming low
+	 B: 100 - aiming high
+	 
+	 LIME
+	 
+	 # Light mode
+	 
+	 H: 100 - aiming low
+	 S: 100 - aiming high
+	 B: 40 - aiming low
+	 
+	 # Dark mode
+	 
+	 S: 50 - aiming low
+	 B: 100 - aiming high
+	 */
+	var uiColor: UIColor {
+		switch self {
+			case .blueberry:
+				return UIColor(named: "blueberry")!
+			case .grape:
+				return UIColor(named: "grape")!
+			case .strawberry:
+				return UIColor(named: "strawberry")!
+			case .tangerine:
+				return UIColor(named: "tangerine")!
+			case .lime:
+				return UIColor(named: "lime")!
 		}
 	}
 	
