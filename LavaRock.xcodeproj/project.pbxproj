@@ -92,10 +92,8 @@
 		07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* NotificationCenter.swift */; };
 		07E0BBEE2765678F0010117E /* UIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE22765678F0010117E /* UIAlertAction.swift */; };
 		07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE52765678F0010117E /* UIBarButtonItem.swift */; };
-		07E0BBF22765678F0010117E /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE62765678F0010117E /* UIColor.swift */; };
 		07E0BBF32765678F0010117E /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE72765678F0010117E /* UITableView.swift */; };
 		07E0BBF42765678F0010117E /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE82765678F0010117E /* UITableViewCell.swift */; };
-		07E0BBF62765678F0010117E /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBEA2765678F0010117E /* UIFont.swift */; };
 		07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBEC2765678F0010117E /* SectionStructure.swift */; };
 		07E0BBF92765678F0010117E /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBED2765678F0010117E /* UIAlertController.swift */; };
 		07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */; };
@@ -226,10 +224,8 @@
 		07E0BBDA276567760010117E /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		07E0BBE22765678F0010117E /* UIAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertAction.swift; sourceTree = "<group>"; };
 		07E0BBE52765678F0010117E /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
-		07E0BBE62765678F0010117E /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		07E0BBE72765678F0010117E /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		07E0BBE82765678F0010117E /* UITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
-		07E0BBEA2765678F0010117E /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		07E0BBEC2765678F0010117E /* SectionStructure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionStructure.swift; sourceTree = "<group>"; };
 		07E0BBED2765678F0010117E /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 		07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
@@ -484,8 +480,6 @@
 		07E0BBE12765678F0010117E /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				07E0BBE62765678F0010117E /* UIColor.swift */,
-				07E0BBEA2765678F0010117E /* UIFont.swift */,
 				07E0BBE52765678F0010117E /* UIBarButtonItem.swift */,
 				07E0BBE22765678F0010117E /* UIAlertAction.swift */,
 				07E0BBED2765678F0010117E /* UIAlertController.swift */,
@@ -727,7 +721,6 @@
 				078FDD0F2638872100779AF2 /* Array.swift in Sources */,
 				07E0BBDE276567760010117E /* NotificationCenter.swift in Sources */,
 				073198CD279D204100E5FD44 /* TipJarViewModel.swift in Sources */,
-				07E0BBF62765678F0010117E /* UIFont.swift in Sources */,
 				071DC5E72A1045CE0073C854 /* Main Toolbar.swift in Sources */,
 				0764C62B293BE3A7003BA345 /* AlbumInfoRow.swift in Sources */,
 				07755A58294821860056E90C /* AvatarImage.swift in Sources */,
@@ -760,7 +753,6 @@
 				07CD864F27CAA54600286E6A /* TapeDeckReflecting.swift in Sources */,
 				07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */,
 				07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */,
-				07E0BBF22765678F0010117E /* UIColor.swift in Sources */,
 				07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */,
 				076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
