@@ -223,7 +223,7 @@ extension LibraryViewModel {
 				sortCommand: sortCommand)
 		}()
 		
-		// Create the new `Array` of items for the subjected group.
+		// Replace the subjected items with sorted items.
 		let newItems: [NSManagedObject] = {
 			var result = oldItems
 			sortedItems.enumerated().forEach { (indexOfSortedItem, sortedItem) in

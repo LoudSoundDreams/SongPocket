@@ -79,9 +79,9 @@ where Element == IndexPath
 		defer {
 			Self.signposter.endInterval("make unsorted", state)
 		}
-		let indexPathsBySection: [Int: [IndexPath]] = Dictionary(grouping: self) { $0.section }
-		return indexPathsBySection.mapValues { indexPaths in
-			indexPaths.map { $0.row }
+		let bySection: [Int: [IndexPath]] = Dictionary(grouping: self) { $0.section }
+		return bySection.mapValues { sameSection in
+			sameSection.map { $0.row }
 		}
 	}
 	
