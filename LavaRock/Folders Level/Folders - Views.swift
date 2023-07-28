@@ -88,6 +88,7 @@ final class FolderCell: UITableViewCell {
 				FolderRow(
 					folder: folder,
 					mode: mode)
+				.background { Color.mint.opacity(1/8) }
 			}
 		} else {
 			titleLabel.text = folder.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining folders before `freshenLibraryItems`, the table view vertically collapses rows for deleted folders.
