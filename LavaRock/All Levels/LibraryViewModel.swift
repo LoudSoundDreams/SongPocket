@@ -155,6 +155,8 @@ extension LibraryViewModel {
 	
 	// MARK: - Editing
 	
+	// MARK: Reorder
+	
 	// WARNING: Leaves a group empty if you move all the items out of it. You must call `updatedWithFreshenedData` later to delete empty groups.
 	mutating func moveItem(
 		at sourceIndexPath: IndexPath,
@@ -174,6 +176,8 @@ extension LibraryViewModel {
 		destinationItems.insert(item, at: destinationItemIndex)
 		groups[destinationGroupIndex].setItems(destinationItems)
 	}
+	
+	// MARK: Sort
 	
 	func updatedAfterSorting(
 		selectedIndexPaths: [IndexPath],
@@ -319,6 +323,8 @@ extension LibraryViewModel {
 		}
 	}
 	
+	// MARK: Float
+	
 	func updatedAfterFloatingToTopsOfSections(
 		selectedIndexPaths: [IndexPath]
 	) -> Self {
@@ -359,6 +365,8 @@ extension LibraryViewModel {
 		
 		return newItems
 	}
+	
+	// MARK: Sink
 	
 	func updatedAfterSinkingToBottomsOfSections(
 		selectedIndexPaths: [IndexPath]

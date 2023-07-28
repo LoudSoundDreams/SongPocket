@@ -122,7 +122,7 @@ extension FoldersViewModel {
 		return oldTitle != folder.title
 	}
 	
-	// MARK: - “Move Albums” Sheet
+	// MARK: - “Move albums” sheet
 	
 	private static let indexOfNewFolder = 0
 	var indexPathOfNewFolder: IndexPath {

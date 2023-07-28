@@ -157,7 +157,7 @@ extension AlbumsViewModel {
 		}
 	}
 	
-	// MARK: - “Move Albums” Sheet
+	// MARK: - “Move albums” sheet
 	
 	func updatedAfterMoving(
 		albumsWith albumIDs: [NSManagedObjectID],

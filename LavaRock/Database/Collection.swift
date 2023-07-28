@@ -62,7 +62,7 @@ extension Collection {
 		self.index = index
 	}
 	
-	// MARK: - All Instances
+	// MARK: - All instances
 	
 	// Similar to `Album.allFetched` and `Song.allFetched`.
 	static func allFetched(

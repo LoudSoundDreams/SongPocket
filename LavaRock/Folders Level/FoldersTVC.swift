@@ -101,7 +101,7 @@ final class FoldersTVC:
 	}
 	var viewModelBeforeCombining: FoldersViewModel? = nil
 	
-	// MARK: “Organize Albums” Sheet
+	// MARK: “Organize albums” sheet
 	
 	// Data
 	var willOrganizeAlbumsStickyNote: WillOrganizeAlbumsStickyNote? = nil
@@ -110,12 +110,12 @@ final class FoldersTVC:
 	// Controls
 	private lazy var saveOrganizeButton = makeSaveOrganizeButton()
 	
-	// MARK: “Move Albums” Sheet
+	// MARK: “Move albums” sheet
 	
 	// Data
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
-	// MARK: - View State
+	// MARK: - View state
 	
 	func reflectViewState(
 		runningBeforeCompletion beforeCompletion: (() -> Void)? = nil
@@ -303,7 +303,7 @@ final class FoldersTVC:
 		await reflectViewState()
 	}
 	
-	// MARK: - Library Items
+	// MARK: - Library items
 	
 	override func freshenLibraryItems() {
 		switch purpose {

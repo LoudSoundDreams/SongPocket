@@ -91,7 +91,7 @@ extension MusicLibrary {
 		os_signpost(.end, log: .create, name: "Create all the Songs and containers")
 	}
 	
-	// MARK: Sorting Groups of `SongInfo`s
+	// MARK: Sort groups of `SongInfo`s
 	
 	// 1. Group by album artists, sorted alphabetically.
 	// • “Unknown Album Artist” should go at the end.
@@ -113,7 +113,7 @@ extension MusicLibrary {
 		return sortedGroupsOfInfos
 	}
 	
-	// MARK: - Creating Groups of Songs
+	// MARK: - Create groups of songs
 	
 	private func createSongsAndReturnNewContainers(
 		for infos: [SongInfo],
@@ -164,7 +164,7 @@ extension MusicLibrary {
 		}
 	}
 	
-	// MARK: Creating Containers
+	// MARK: Create containers
 	
 	private func newAlbumAndMaybeNewFolderMade(
 		for newInfo: SongInfo,

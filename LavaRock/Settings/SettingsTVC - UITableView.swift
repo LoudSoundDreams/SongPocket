@@ -23,7 +23,7 @@ extension SettingsTVC {
 		tableView.reloadRows(at: [tipJarIndexPath], with: .fade) // Don’t use `reloadSections`, because that makes the header and footer fade out and back in.
 	}
 	
-	// MARK: - All Sections
+	// MARK: - All sections
 	
 	// MARK: Numbers
 	
@@ -172,7 +172,7 @@ extension SettingsTVC {
 		}
 	}
 	
-	// MARK: - Accent Color Section
+	// MARK: - Accent color
 	
 	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		let _ = Self.avatarRow
@@ -195,7 +195,7 @@ extension SettingsTVC {
 		tableView.deselectRow(at: indexPath, animated: true) // Do this last, or the animation will break.
 	}
 	
-	// MARK: - Tip Jar Section
+	// MARK: - Tip jar
 	
 	private func tipJarCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch TipJarViewModel.shared.status {

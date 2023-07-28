@@ -38,7 +38,7 @@ enum SongInfoPlaceholder {
 }
 
 extension SongInfo {
-	// MARK: Predicates for Sorting
+	// MARK: Predicates
 	
 	// Behavior is undefined if you compare with a `SongInfo` from the same album.
 	func precedesInDefaultOrder(inDifferentAlbum other: SongInfo) -> Bool {
@@ -133,7 +133,7 @@ extension SongInfo {
 		return myTrack < otherTrack
 	}
 	
-	// MARK: Formatted Attributes
+	// MARK: Formatted attributes
 	
 	var shouldShowDiscNumber: Bool {
 		if discCountOnDisk >= 2 {

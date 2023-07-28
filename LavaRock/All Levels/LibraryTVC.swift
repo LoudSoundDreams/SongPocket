@@ -11,7 +11,7 @@ import UIKit
 class LibraryTVC: UITableViewController {
 	// MARK: - Properties
 	
-	// MARK: Subclasses Should Customize
+	// MARK: Subclasses should customize
 	
 	// Data
 	final lazy var viewModel: LibraryViewModel = FoldersViewModel(
@@ -22,7 +22,7 @@ class LibraryTVC: UITableViewController {
 	final var editingModeToolbarButtons: [UIBarButtonItem] = []
 	final var sortCommandsGrouped: [[SortCommand]] = []
 	
-	// MARK: Subclasses Can Optionally Customize
+	// MARK: Subclasses may customize
 	
 	// Controls
 	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
@@ -39,7 +39,7 @@ class LibraryTVC: UITableViewController {
 	final lazy var viewingModeToolbarButtons: [UIBarButtonItem]
 	= (navigationController as? LibraryNC)?.mainToolbar.barButtonItems ?? []
 	
-	// MARK: Subclasses Should Not Customize
+	// MARK: Subclasses should not customize
 	
 	// Controls
 	
@@ -120,7 +120,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: - Library Items
+	// MARK: - Library items
 	
 	final func reflectDatabase() {
 		// Do this even if the view isn’t visible.

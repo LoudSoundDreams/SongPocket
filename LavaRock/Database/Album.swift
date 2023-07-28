@@ -64,7 +64,7 @@ extension Album {
 		container = folder
 	}
 	
-	// MARK: - All Instances
+	// MARK: - All instances
 	
 	// Similar to `allFetched`.
 	static func allFetched(
@@ -179,7 +179,7 @@ extension Album {
 		}
 	}
 	
-	// MARK: - Predicates for Sorting
+	// MARK: - Predicates
 	
 	final func precedesByNewestFirst(_ other: Album) -> Bool {
 		return precedes(other, byNewestFirstRatherThanOldestFirst: true)
@@ -248,7 +248,7 @@ extension Album {
 		return queriedAlbums.first
 	}
 	
-	// MARK: - Formatted Attributes
+	// MARK: - Formatted attributes
 	
 	final func titleFormatted() -> String {
 		let albumTitle_maybeNilMaybeEmpty = representativeSongInfo()?.albumTitleOnDisk

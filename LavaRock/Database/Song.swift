@@ -63,7 +63,7 @@ extension Song {
 		container = album
 	}
 	
-	// MARK: - All Instances
+	// MARK: - All instances
 	
 	// Similar to `allFetched`.
 	static func allFetched(
@@ -94,7 +94,7 @@ extension Song {
 		}
 	}
 	
-	// MARK: - Predicates for Sorting
+	// MARK: - Predicates
 	
 	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
 		// Checking song index first and folder index last is slightly faster than vice versa.

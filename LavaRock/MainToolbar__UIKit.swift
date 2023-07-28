@@ -68,7 +68,7 @@ final class MainToolbar__UIKit {
 		return button
 	}()
 	
-	// MARK: - Overflow Menu
+	// MARK: - Overflow menu
 	
 	private weak var settings_presenter: UIViewController? = nil
 	private func createOverflowMenu() -> UIMenu {

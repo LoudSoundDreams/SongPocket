@@ -77,7 +77,7 @@ final class SongsTVC: LibraryTVC {
 		}
 	}
 	
-	// MARK: - Library Items
+	// MARK: - Library items
 	
 	override func reflectViewModelIsEmpty() {
 		deleteThenExit(sectionsToDelete: tableView.allSections())

@@ -52,13 +52,13 @@ final class AlbumsTVC:
 	// State
 	var idsOfAlbumsToKeepSelected: Set<NSManagedObjectID> = []
 	
-	// MARK: “Combine Folders” Sheet
+	// MARK: “Combine folders” sheet
 	
 	var is_previewing_combine_with_album_count: Int = 0
 	var cancel_combine_action: UIAction? = nil
 	var save_combine_action: UIAction? = nil
 	
-	// MARK: “Organize Albums” Sheet
+	// MARK: “Organize albums” sheet
 	
 	// Data
 	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? = nil
@@ -66,7 +66,7 @@ final class AlbumsTVC:
 	// Controls
 	private lazy var saveOrganizeButton = makeSaveOrganizeButton()
 	
-	// MARK: “Move Albums” Sheet
+	// MARK: “Move albums” sheet
 	
 	// Data
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
@@ -171,7 +171,7 @@ final class AlbumsTVC:
 	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {
 	}
 	
-	// MARK: - Library Items
+	// MARK: - Library items
 	
 	override func freshenLibraryItems() {
 		switch purpose {
