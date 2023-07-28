@@ -125,15 +125,6 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	func indexPaths_for_all_if_empty_else_unsorted(
-		selectedIndexPaths: [IndexPath]
-	) -> [IndexPath] {
-		if selectedIndexPaths.isEmpty {
-			return indexPathsForAllItems()
-		} else {
-			return selectedIndexPaths
-		}
-	}
 	func indexPaths_for_all_if_empty_else_sorted(
 		selectedIndexPaths: [IndexPath]
 	) -> [IndexPath] {

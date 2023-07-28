@@ -145,10 +145,13 @@ extension AlbumsViewModel {
 	func allowsAutoMove(
 		selectedIndexPaths: [IndexPath]
 	) -> Bool {
-		let indexPathsSubjected = indexPaths_for_all_if_empty_else_unsorted(
-			selectedIndexPaths: selectedIndexPaths)
-		let albumsSubjected = indexPathsSubjected.map { albumNonNil(at: $0) }
-		return albumsSubjected.contains {
+		var subjected: [IndexPath] = selectedIndexPaths
+		if subjected.isEmpty {
+			subjected = indexPathsForAllItems()
+		}
+		let albums = subjected.map { albumNonNil(at: $0) }
+		
+		return albums.contains {
 			let titleOfDestination = $0.albumArtistFormatted()
 			return titleOfDestination != $0.container?.title
 		}

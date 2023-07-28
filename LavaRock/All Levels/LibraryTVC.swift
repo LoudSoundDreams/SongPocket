@@ -428,14 +428,18 @@ class LibraryTVC: UITableViewController {
 						}
 						let allowed: Bool = {
 							let viewModel = self.viewModel
-							let indexPathsToSort = viewModel.indexPaths_for_all_if_empty_else_unsorted(
-								selectedIndexPaths: self.tableView.selectedIndexPaths)
-							guard indexPathsToSort.count >= 2 else {
+							var subjected: [IndexPath] = self.tableView.selectedIndexPaths
+							if subjected.isEmpty {
+								subjected = viewModel.indexPathsForAllItems()
+							}
+							
+							if subjected.count <= 1 {
 								return false
 							}
+							
 							return viewModel.allowsSortCommand(
 								sortCommand,
-								forItems: indexPathsToSort.map { viewModel.itemNonNil(at: $0) }
+								forItems: subjected.map { viewModel.itemNonNil(at: $0) }
 							)
 						}()
 						if !allowed {
