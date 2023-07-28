@@ -192,7 +192,7 @@ extension LibraryViewModel {
 		
 		var twin = self
 		rowsBySection.forEach { (section, rows) in
-			let newItems = itemsAfterSorting(
+			let newItems = _itemsAfterSorting(
 				itemsAtRowsInOrder: rows,
 				inSection: section,
 				sortCommand: sortCommand)
@@ -200,8 +200,7 @@ extension LibraryViewModel {
 		}
 		return twin
 	}
-	
-	private func itemsAfterSorting(
+	private func _itemsAfterSorting(
 		itemsAtRowsInOrder rows: [Int],
 		inSection section: Int,
 		sortCommand: SortCommand
@@ -219,7 +218,7 @@ extension LibraryViewModel {
 			let itemsToSort = subjectedIndices.map { itemIndex in
 				oldItems[itemIndex]
 			}
-			return Self.sorted(
+			return Self._sorted(
 				itemsToSort,
 				sortCommand: sortCommand)
 		}()
@@ -235,8 +234,7 @@ extension LibraryViewModel {
 		}()
 		return newItems
 	}
-	
-	private static func sorted(
+	private static func _sorted(
 		_ items: [NSManagedObject],
 		sortCommand: SortCommand
 	) -> [NSManagedObject] {
