@@ -20,9 +20,14 @@ extension AlbumsTVC {
 		
 		let selectedIndexPaths = tableView.selectedIndexPaths
 		
-		let indexPathsToOrganize = albumsViewModel.indexPaths_for_all_if_empty_else_sorted(
-			selectedIndexPaths: selectedIndexPaths)
-		let albumsInOriginalContextToMaybeMove = indexPathsToOrganize.map { albumsViewModel.albumNonNil(at: $0) }
+		var subjected: [IndexPath] = selectedIndexPaths
+		subjected.sort()
+		if subjected.isEmpty {
+			subjected = albumsViewModel.indexPathsForAllItems()
+		}
+		let albumsInOriginalContextToMaybeMove = subjected.map {
+			albumsViewModel.albumNonNil(at: $0)
+		}
 		
 		// Create a child managed object context to begin the changes in.
 		let childContext = NSManagedObjectContext(.mainQueue)
@@ -189,9 +194,14 @@ extension AlbumsTVC {
 		// Configure the `FoldersTVC`.
 		foldersTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
 			albumsBeingMoved: {
-				let indexPathsToMove = selfVM.indexPaths_for_all_if_empty_else_sorted(
-					selectedIndexPaths: tableView.selectedIndexPaths)
-				return indexPathsToMove.map { selfVM.albumNonNil(at: $0) }
+				var subjected: [IndexPath] = tableView.selectedIndexPaths
+				subjected.sort()
+				if subjected.isEmpty {
+					subjected = selfVM.indexPathsForAllItems()
+				}
+				return subjected.map {
+					selfVM.albumNonNil(at: $0)
+				}
 			}(),
 			delegate: self
 		)

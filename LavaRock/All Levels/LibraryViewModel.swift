@@ -125,16 +125,6 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	func indexPaths_for_all_if_empty_else_sorted(
-		selectedIndexPaths: [IndexPath]
-	) -> [IndexPath] {
-		if selectedIndexPaths.isEmpty {
-			return indexPathsForAllItems()
-		} else {
-			return selectedIndexPaths.sorted()
-		}
-	}
-	
 	func indexPathsForAllItems() -> [IndexPath] {
 		return groups.indices.flatMap { groupIndex in
 			indexPaths(forGroupIndex: groupIndex)
@@ -189,10 +179,12 @@ extension LibraryViewModel {
 		selectedIndexPaths: [IndexPath],
 		sortCommand: SortCommand
 	) -> Self {
-		let indexPathsToSort = indexPaths_for_all_if_empty_else_sorted(
-			selectedIndexPaths: selectedIndexPaths)
-		
-		let rowsBySection = indexPathsToSort.unsortedRowsBySection()
+		var subjected: [IndexPath] = selectedIndexPaths
+		subjected.sort()
+		if subjected.isEmpty {
+			subjected = indexPathsForAllItems()
+		}
+		let rowsBySection = subjected.unsortedRowsBySection()
 		
 		var twin = self
 		rowsBySection.forEach { (section, rows) in
