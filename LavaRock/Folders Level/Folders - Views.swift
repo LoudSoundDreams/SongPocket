@@ -39,7 +39,7 @@ struct FolderRow: View {
 	
 	var body: some View {
 		HStack {
-			Text(folder.title ?? "")
+			Text(folder.title ?? " ")
 			Spacer()
 			AvatarImage(
 				libraryItem: folder)
