@@ -295,6 +295,7 @@ final class MainToolbar__UIKit {
 				return Self.overflowButtonDefaultImage
 			}
 			switch player.repeatMode {
+					// TO DO: Add accessibility labels or values for “repeat all” and “repeat one”. What does the Photos app do with its overflow button when filtering to Shared Library?
 				case .one:
 					return UIImage(systemName: "repeat.1.circle.fill")!
 				case .all:
