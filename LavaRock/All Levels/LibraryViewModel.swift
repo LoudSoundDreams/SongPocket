@@ -180,29 +180,24 @@ extension LibraryViewModel {
 	// MARK: Sort
 	
 	func updatedAfterSorting(
-		selectedIndexPaths: [IndexPath],
+		selectedRows: [Int],
 		sortCommand: SortCommand
 	) -> Self {
-		var subjected: [IndexPath] = selectedIndexPaths
+		var subjected: [Int] = selectedRows
 		subjected.sort()
 		if subjected.isEmpty {
-			subjected = indexPathsForAllItems()
+			subjected = indexPathsForAllItems().map { $0.row }
 		}
-		let rowsBySection = subjected.unsortedRowsBySection()
 		
 		var twin = self
-		rowsBySection.forEach { (section, rows) in
-			let newItems = _itemsAfterSorting(
-				itemsAtRowsInOrder: rows,
-				inSection: section,
-				sortCommand: sortCommand)
-			twin.groups[section].setItems(newItems)
-		}
+		let newItems = _itemsAfterSorting(
+			itemsAtRowsInOrder: subjected,
+			sortCommand: sortCommand)
+		twin.groups[0].setItems(newItems)
 		return twin
 	}
 	private func _itemsAfterSorting(
 		itemsAtRowsInOrder rows: [Int],
-		inSection section: Int,
 		sortCommand: SortCommand
 	) -> [NSManagedObject] {
 		// Get all the items in the subjected group.
