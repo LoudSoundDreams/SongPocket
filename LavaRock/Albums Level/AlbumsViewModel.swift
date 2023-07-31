@@ -108,12 +108,6 @@ extension AlbumsViewModel {
 		return itemNonNil(at: indexPath) as! Album
 	}
 	
-	// Similar to `SongsViewModel.album`.
-	func folder() -> Collection {
-		let group = libraryGroup()
-		return group.container as! Collection
-	}
-	
 	enum RowCase {
 		case prerow(Prerow)
 		case album
@@ -163,7 +157,8 @@ extension AlbumsViewModel {
 		albumsWith albumIDs: [NSManagedObjectID],
 		toSection section: Int
 	) -> Self {
-		let destination = folder()
+		let group = libraryGroup()
+		let destination = group.container as! Collection
 		
 		destination.moveAlbumsToBeginning(
 			with: albumIDs,

@@ -38,7 +38,8 @@ extension SongsTVC {
 		else {
 			return UITableViewCell()
 		}
-		let album = songsViewModel.album()
+		let group = songsViewModel.libraryGroup()
+		let album = group.container as! Album
 		
 		let rowCase = songsViewModel.rowCase(for: indexPath)
 		switch rowCase {
@@ -89,7 +90,6 @@ extension SongsTVC {
 		cell.configureWith(
 			song: songsViewModel.songNonNil(at: indexPath),
 			albumRepresentative: {
-				let album = songsViewModel.album()
 				return album.representativeSongInfo()
 			}(),
 			spacerTrackNumberText: (songsViewModel.libraryGroup() as? SongsGroup)?.spacerTrackNumberText,
