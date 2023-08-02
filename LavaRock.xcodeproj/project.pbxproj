@@ -48,7 +48,6 @@
 		07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07694273282E0EF6003A07CA /* TapeDeckStatus.swift */; };
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
 		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
-		0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772FB57282F798A0054834F /* BatchUpdates.swift */; };
 		0774C88527CBEA0900230F22 /* DefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* DefaultsKey.swift */; };
 		07755A58294821860056E90C /* Avatar - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Avatar - Views.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
@@ -89,7 +88,6 @@
 		07E0BBF12765678F0010117E /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE52765678F0010117E /* UIBarButtonItem.swift */; };
 		07E0BBF32765678F0010117E /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE72765678F0010117E /* UITableView.swift */; };
 		07E0BBF42765678F0010117E /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE82765678F0010117E /* UITableViewCell.swift */; };
-		07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBEC2765678F0010117E /* SectionStructure.swift */; };
 		07E0BBF92765678F0010117E /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBED2765678F0010117E /* UIAlertController.swift */; };
 		07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */; };
 		07E92A0E2510497B00E9073B /* SongsTVC - Song Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0D2510497B00E9073B /* SongsTVC - Song Actions.swift */; };
@@ -172,7 +170,6 @@
 		07694273282E0EF6003A07CA /* TapeDeckStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeckStatus.swift; sourceTree = "<group>"; };
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
-		0772FB57282F798A0054834F /* BatchUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchUpdates.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* DefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsKey.swift; sourceTree = "<group>"; };
 		07755A57294821860056E90C /* Avatar - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Avatar - Views.swift"; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
@@ -214,7 +211,6 @@
 		07E0BBE52765678F0010117E /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		07E0BBE72765678F0010117E /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		07E0BBE82765678F0010117E /* UITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
-		07E0BBEC2765678F0010117E /* SectionStructure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionStructure.swift; sourceTree = "<group>"; };
 		07E0BBED2765678F0010117E /* UIAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 		07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
 		07E92A0D2510497B00E9073B /* SongsTVC - Song Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - Song Actions.swift"; sourceTree = "<group>"; };
@@ -506,8 +502,6 @@
 			children = (
 				07CD864C27CAA3CC00286E6A /* Weak.swift */,
 				07619EE427342FC9003F95AE /* Diffing.swift */,
-				07E0BBEC2765678F0010117E /* SectionStructure.swift */,
-				0772FB57282F798A0054834F /* BatchUpdates.swift */,
 			);
 			path = Structures;
 			sourceTree = "<group>";
@@ -682,7 +676,6 @@
 				0708E53E286A20B6001204BF /* Numbers.swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* SettingsTVC.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* FoldersTVC - “Move Albums” Sheet.swift in Sources */,
-				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
 				077CFA952A28CC7000A796F4 /* Functions.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */,
 				072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */,
@@ -745,7 +738,6 @@
 				075218A2257C498D0077AE9B /* LRString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,
 				0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */,
-				07E0BBF82765678F0010117E /* SectionStructure.swift in Sources */,
 				07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
