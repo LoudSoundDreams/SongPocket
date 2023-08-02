@@ -34,7 +34,7 @@
 		075218A2257C498D0077AE9B /* LRString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LRString.swift */; };
 		0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0759DC80272CD37300FDA7D7 /* Enabling.swift */; };
 		07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* LibraryItem.swift */; };
-		07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* CollectionDifference.swift */; };
+		07619EE527342FC9003F95AE /* Diffing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* Diffing.swift */; };
 		07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* SongsGroup.swift */; };
 		07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */; };
 		0764C62B293BE3A7003BA345 /* AlbumInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */; };
@@ -152,7 +152,7 @@
 		075218A1257C498D0077AE9B /* LRString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRString.swift; sourceTree = "<group>"; };
 		0759DC80272CD37300FDA7D7 /* Enabling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enabling.swift; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
-		07619EE427342FC9003F95AE /* CollectionDifference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDifference.swift; sourceTree = "<group>"; };
+		07619EE427342FC9003F95AE /* Diffing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffing.swift; sourceTree = "<group>"; };
 		07642C7B268FFC1600B66BB8 /* SongsGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsGroup.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGroup.swift; sourceTree = "<group>"; };
 		0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumInfoRow.swift; sourceTree = "<group>"; };
@@ -404,7 +404,6 @@
 				07E0BBD6276567490010117E /* String.swift */,
 				07843FEA2851A31D000FA316 /* Sequence.swift */,
 				078FDD0E2638872100779AF2 /* Array.swift */,
-				07619EE427342FC9003F95AE /* CollectionDifference.swift */,
 			);
 			path = "Standard Library";
 			sourceTree = "<group>";
@@ -505,8 +504,8 @@
 		07FB52C92813693F00CCCBA5 /* Structures */ = {
 			isa = PBXGroup;
 			children = (
-				0708E53D286A20B6001204BF /* Numbers.swift */,
 				07CD864C27CAA3CC00286E6A /* Weak.swift */,
+				07619EE427342FC9003F95AE /* Diffing.swift */,
 				07E0BBEC2765678F0010117E /* SectionStructure.swift */,
 				0772FB57282F798A0054834F /* BatchUpdates.swift */,
 			);
@@ -533,6 +532,7 @@
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				075218A1257C498D0077AE9B /* LRString.swift */,
 				07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */,
+				0708E53D286A20B6001204BF /* Numbers.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -695,7 +695,7 @@
 				0764C62B293BE3A7003BA345 /* AlbumInfoRow.swift in Sources */,
 				07755A58294821860056E90C /* Avatar - Views.swift in Sources */,
 				0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */,
-				07619EE527342FC9003F95AE /* CollectionDifference.swift in Sources */,
+				07619EE527342FC9003F95AE /* Diffing.swift in Sources */,
 				07E0BBF32765678F0010117E /* UITableView.swift in Sources */,
 				07FD6E122599246700826447 /* SettingsTVC + TipJarUI.swift in Sources */,
 				076B4DED27738FF4004B523D /* OSLog.swift in Sources */,

@@ -8,7 +8,6 @@
 import CoreData
 
 typealias ColumnOfLibraryItems = [LibraryGroup]
-
 protocol LibraryViewModel {
 	static var entityName: String { get }
 	
@@ -26,11 +25,18 @@ protocol LibraryViewModel {
 	func updatedWithFreshenedData() -> Self
 }
 
+struct SectionStructure<
+	Identifier: Hashable,
+	RowIdentifier: Hashable
+> {
+	let identifier: Identifier
+	let rowIdentifiers: [RowIdentifier]
+}
+extension SectionStructure: Hashable {}
 enum LibrarySectionIdentifier: Hashable {
 	case groupWithNoContainer
 	case groupWithContainer(NSManagedObjectID)
 }
-
 enum LibraryRowIdentifier: Hashable {
 	case prerow(AnyHashable)
 	case libraryItem(NSManagedObjectID)

@@ -1,9 +1,15 @@
 //
-//  CollectionDifference.swift
+//  Diffing.swift
 //  LavaRock
 //
 //  Created by h on 2021-11-04.
 //
+
+struct BatchUpdates<Identifier> {
+	let toDelete: [Identifier]
+	let toInsert: [Identifier]
+	let toMove: [(Identifier, Identifier)]
+}
 
 extension CollectionDifference {
 	func batchUpdates() -> BatchUpdates<Int> {
