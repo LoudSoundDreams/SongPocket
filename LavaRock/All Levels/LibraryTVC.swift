@@ -57,7 +57,7 @@ class LibraryTVC: UITableViewController {
 		title: LRString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line"),
 		primaryAction: UIAction { [weak self] _ in
-			self?.floatSelectedItemsToTopOfSection()
+			self?.floatSelected()
 		}
 	)
 	
@@ -65,7 +65,7 @@ class LibraryTVC: UITableViewController {
 		title: LRString.moveToBottom,
 		image: UIImage(systemName: "arrow.down.to.line"),
 		primaryAction: UIAction { [weak self] _ in
-			self?.sinkSelectedItemsToBottomOfSection()
+			self?.sinkSelected()
 		}
 	)
 	
@@ -401,7 +401,9 @@ class LibraryTVC: UITableViewController {
 			if selectedIndexPaths.isEmpty {
 				return true
 			} else {
-				return selectedIndexPaths.isContiguousWithinEachSection()
+				var selectedRows = selectedIndexPaths.map { $0.row }
+				selectedRows.sort()
+				return selectedRows.isConsecutive()
 			}
 		}
 		
@@ -424,7 +426,7 @@ class LibraryTVC: UITableViewController {
 							title: sortCommand.localizedName(),
 							image: sortCommand.uiImage()
 						) { [weak self] action in
-							self?.sortSelectedOrAllItems(sortCommand: sortCommand)
+							self?.sortSelectedOrAll(sortCommand: sortCommand)
 						}
 						let allowed: Bool = {
 							let viewModel = self.viewModel

@@ -8,7 +8,7 @@
 import UIKit
 
 extension LibraryTVC {
-	final func sortSelectedOrAllItems(sortCommand: SortCommand) {
+	final func sortSelectedOrAll(sortCommand: SortCommand) {
 		let newViewModel = viewModel.updatedAfterSorting(
 			selectedRows: tableView.selectedIndexPaths.map { $0.row },
 			sortCommand: sortCommand)
@@ -17,17 +17,19 @@ extension LibraryTVC {
 		}
 	}
 	
-	final func floatSelectedItemsToTopOfSection() {
-		let newViewModel = viewModel.updatedAfterFloatingToTopsOfSections(
-			selectedIndexPaths: tableView.selectedIndexPaths)
+	final func floatSelected() {
+		let newViewModel = viewModel.updatedAfterFloating(
+			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
+		)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
 	
-	final func sinkSelectedItemsToBottomOfSection() {
-		let newViewModel = viewModel.updatedAfterSinkingToBottomsOfSections(
-			selectedIndexPaths: tableView.selectedIndexPaths)
+	final func sinkSelected() {
+		let newViewModel = viewModel.updatedAfterSinking(
+			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
+		)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}

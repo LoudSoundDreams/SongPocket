@@ -64,48 +64,6 @@ where Element: LibraryItem
 	}
 }
 
-// MARK: - Element == IndexPath
-
-extension Array
-where Element == IndexPath
-{
-	private static var signposter = OSSignposter(
-		subsystem: "[IndexPath]",
-		category: .pointsOfInterest)
-	
-	func unsortedRowsBySection() -> [Int: [Int]]
-	{
-		let state = Self.signposter.beginInterval("make unsorted")
-		defer {
-			Self.signposter.endInterval("make unsorted", state)
-		}
-		let bySection: [Int: [IndexPath]] = Dictionary(grouping: self) { $0.section }
-		return bySection.mapValues { sameSection in
-			sameSection.map { $0.row }
-		}
-	}
-	
-	func sortedRowsBySection() -> [Int: [Int]]
-	{
-		let state = Self.signposter.beginInterval("make sorted")
-		defer {
-			Self.signposter.endInterval("make sorted", state)
-		}
-		let indexPathsBySection: [Int: [IndexPath]] = Dictionary(grouping: self) { $0.section }
-		return indexPathsBySection.mapValues { indexPaths in
-			indexPaths.map { $0.row }.sorted()
-		}
-	}
-	
-	// Whether each section contains a block of rows next to each other, in any order within each section.
-	func isContiguousWithinEachSection() -> Bool
-	{
-		return sortedRowsBySection().allSatisfy { (_, rows) in
-			rows.isConsecutive()
-		}
-	}
-}
-
 // MARK: Element == Int
 
 extension Array

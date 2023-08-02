@@ -318,28 +318,20 @@ extension LibraryViewModel {
 	
 	// MARK: Float
 	
-	func updatedAfterFloatingToTopsOfSections(
-		selectedIndexPaths: [IndexPath]
+	func updatedAfterFloating(
+		selectedRowsInAnyOrder: [Int]
 	) -> Self {
-		let rowsBySection = selectedIndexPaths.unsortedRowsBySection()
-		
 		var twin = self
-		rowsBySection.forEach { (section, rows) in
-			let newItems = itemsAfterFloatingToTop(
-				itemsAtRowsInAnyOrder: rows,
-				inSection: section)
-			twin.groups[section].setItems(newItems)
-		}
+		let newItems = itemsAfterFloating(selectedRowsInAnyOrder: selectedRowsInAnyOrder)
+		twin.groups[0].setItems(newItems)
 		return twin
 	}
-	
-	private func itemsAfterFloatingToTop(
-		itemsAtRowsInAnyOrder rowsInAnyOrder: [Int],
-		inSection section: Int
+	private func itemsAfterFloating(
+		selectedRowsInAnyOrder: [Int]
 	) -> [NSManagedObject] {
 		// We could use Swift Algorithms’s `MutableCollection.stablePartition` for this.
 		
-		let rows = rowsInAnyOrder.sorted()
+		let rows = selectedRowsInAnyOrder.sorted()
 		let indicesOfSelectedItems = rows.map {
 			itemIndex(forRow: $0)
 		}
@@ -361,26 +353,18 @@ extension LibraryViewModel {
 	
 	// MARK: Sink
 	
-	func updatedAfterSinkingToBottomsOfSections(
-		selectedIndexPaths: [IndexPath]
+	func updatedAfterSinking(
+		selectedRowsInAnyOrder: [Int]
 	) -> Self {
-		let rowsBySection = selectedIndexPaths.unsortedRowsBySection()
-		
 		var twin = self
-		rowsBySection.forEach { (section, rows) in
-			let newItems = itemsAfterSinkingToBottom(
-				itemsAtRowsInAnyOrder: rows,
-				inSection: section)
-			twin.groups[section].setItems(newItems)
-		}
+		let newItems = itemsAfterSinking(selectedRowsInAnyOrder: selectedRowsInAnyOrder)
+		twin.groups[0].setItems(newItems)
 		return twin
 	}
-	
-	private func itemsAfterSinkingToBottom(
-		itemsAtRowsInAnyOrder rowsInAnyOrder: [Int],
-		inSection section: Int
+	private func itemsAfterSinking(
+		selectedRowsInAnyOrder: [Int]
 	) -> [NSManagedObject] {
-		let rows = rowsInAnyOrder.sorted()
+		let rows = selectedRowsInAnyOrder.sorted()
 		let indicesOfSelectedItems = rows.map {
 			itemIndex(forRow: $0)
 		}
