@@ -487,9 +487,8 @@ class LibraryTVC: UITableViewController {
 				}
 				return groupOfChildren
 			}
-			let reversedElements = Fn.reversed(groupedElements)
-			let submenus = reversedElements.map { groupOfElements in
-				return UIMenu(options: .displayInline, children: groupOfElements)
+			let submenus = groupedElements.reversed().map { groupOfElements in
+				return UIMenu(options: .displayInline, children: groupOfElements.reversed())
 			}
 			return UIMenu(children: submenus)
 		}
