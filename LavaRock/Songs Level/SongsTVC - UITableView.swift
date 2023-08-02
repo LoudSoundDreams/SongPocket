@@ -104,8 +104,7 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
-		if isEditing {
-		} else {
+		if !isEditing {
 			if
 				let song = viewModel.itemNonNil(at: indexPath) as? Song,
 				let selectedCell = tableView.cellForRow(at: indexPath)
@@ -117,5 +116,46 @@ extension SongsTVC {
 		}
 		
 		super.tableView(tableView, didSelectRowAt: indexPath)
+	}
+	private func showSongActions(
+		for song: Song,
+		popoverAnchorView: UIView
+	) {
+		func deselectSelectedSong() {
+			tableView.deselectAllRows(animated: true)
+		}
+		
+		guard
+			let selectedIndexPath = tableView.indexPathForSelectedRow,
+			let player = TapeDeck.shared.player
+		else { return }
+		
+		let mediaItemsInSection = mediaItems(startingAt: IndexPath(row: 2, section: 0)) // !
+		
+		let actionSheet = UIAlertController(
+			title: nil,
+			message: nil,
+			preferredStyle: .actionSheet)
+		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
+		
+		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		let startPlaying = UIAlertAction(
+			title: LRString.startPlaying,
+			style: .default
+		) { _ in
+			let numberToSkip = selectedIndexPath.row - 2 // !
+			player.playNow(mediaItemsInSection, skipping: numberToSkip)
+			
+			deselectSelectedSong()
+		}
+		actionSheet.addAction(startPlaying)
+		
+		actionSheet.addAction(
+			UIAlertAction(title: LRString.cancel, style: .cancel) { _ in
+				deselectSelectedSong()
+			}
+		)
+		
+		present(actionSheet, animated: true)
 	}
 }
