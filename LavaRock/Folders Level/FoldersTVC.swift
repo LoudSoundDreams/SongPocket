@@ -194,13 +194,8 @@ final class FoldersTVC:
 		super.init(coder: coder)
 		
 		sortCommandsGrouped = [
-			[
-				.folder_name,
-			],
-			[
-				.random,
-				.reverse,
-			],
+			[.folder_name],
+			[.random, .reverse],
 		]
 	}
 	
