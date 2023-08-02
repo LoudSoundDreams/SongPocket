@@ -8,7 +8,17 @@
 
 import UIKit
 
+extension LibraryTVC: TapeDeckReflecting {
+	final func reflect_playback_mode() {
+		reflectPlayhead()
+	}
+	
+	final func reflect_now_playing_item() {
+		reflectPlayhead()
+	}
+}
 class LibraryTVC: UITableViewController {
+	
 	// MARK: - Properties
 	
 	// MARK: Subclasses should customize
@@ -117,6 +127,22 @@ class LibraryTVC: UITableViewController {
 		if needsFreshenLibraryItemsOnViewDidAppear {
 			needsFreshenLibraryItemsOnViewDidAppear = false
 			freshenLibraryItems()
+		}
+	}
+	
+	// MARK: - Player
+	
+	final func reflectPlayhead() {
+		tableView.allIndexPaths().forEach { indexPath in
+			guard
+				let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying__
+			else { return }
+			cell.indicateAvatarStatus__({
+				guard let libraryItem = viewModel.itemOptional(at: indexPath) as? LibraryItem else {
+					return .notPlaying
+				}
+				return libraryItem.avatarStatus()
+			}())
 		}
 	}
 	
@@ -311,20 +337,13 @@ class LibraryTVC: UITableViewController {
 		didChangeRowsOrSelectedRows()
 	}
 	
-	// MARK: - Player
+	// MARK: - Navigation
 	
-	final func reflectPlayhead() {
-		tableView.allIndexPaths().forEach { indexPath in
-			guard
-				let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying__
-			else { return }
-			cell.indicateAvatarStatus__({
-				guard let libraryItem = viewModel.itemOptional(at: indexPath) as? LibraryItem else {
-					return .notPlaying
-				}
-				return libraryItem.avatarStatus()
-			}())
-		}
+	final override func shouldPerformSegue(
+		withIdentifier identifier: String,
+		sender: Any?
+	) -> Bool {
+		return !isEditing
 	}
 	
 	// MARK: - Freshening UI
@@ -460,12 +479,32 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: - Navigation
+	// MARK: - Editing
 	
-	final override func shouldPerformSegue(
-		withIdentifier identifier: String,
-		sender: Any?
-	) -> Bool {
-		return !isEditing
+	final func sortSelectedOrAll(sortCommand: SortCommand) {
+		let newViewModel = viewModel.updatedAfterSorting(
+			selectedRows: tableView.selectedIndexPaths.map { $0.row },
+			sortCommand: sortCommand)
+		Task {
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
+		}
+	}
+	
+	final func floatSelected() {
+		let newViewModel = viewModel.updatedAfterFloating(
+			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
+		)
+		Task {
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
+		}
+	}
+	
+	final func sinkSelected() {
+		let newViewModel = viewModel.updatedAfterSinking(
+			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
+		)
+		Task {
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
+		}
 	}
 }
