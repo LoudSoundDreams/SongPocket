@@ -43,7 +43,7 @@ extension SongsTVC {
 		actionSheet.addAction(playToBottom)
 		
 		actionSheet.addAction(
-			UIAlertAction.cancelWithHandler { _ in
+			UIAlertAction(title: LRString.cancel, style: .cancel) { _ in
 				deselectSelectedSong()
 			}
 		)
