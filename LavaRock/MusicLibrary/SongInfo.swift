@@ -226,59 +226,169 @@ extension Sim_SongInfo {
 			return []
 		}
 		
-		let walpurgis = 1
+		let beethoven = 0
+		let khan = 1
+		let voyage = 2
+		let fez = 3
+		let sonic = 4
 		return [
 			Sim_SongInfo(
-				albumID: walpurgis,
-				albumArtist: "GFriend",
-				albumTitle: "回:Walpurgis Night",
-				coverArtFileName: "Walpurgis Night",
-				discCount: 2,
-				discNumber: 1,
-				trackNumber: 1,
-				title: "Amazingly few discotheques provide jukeboxes.",
-				artist: "Five Boxing Wizards",
-				dateAdded: .now,
-				releaseDate: .now
-			),
-			Sim_SongInfo(
-				albumID: walpurgis,
-				albumArtist: "GFriend",
-				albumTitle: "回:Walpurgis Night",
-				coverArtFileName: "Walpurgis Night",
+				albumID: beethoven,
+				albumArtist: "Beethoven",
+				albumTitle: "",
+				coverArtFileName: "",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 900,
-				title: "Amazingly few discotheques provide jukeboxes. The five boxing wizards jump quickly. Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog.",
-				artist: "GFriend",
+				trackNumber: 1,
+				title: "",
+				artist: "",
 				dateAdded: .now,
-				releaseDate: .now
+				releaseDate: nil
 			),
 			Sim_SongInfo(
-				albumID: 2,
-				albumArtist: nil,
-				albumTitle: nil,
-				coverArtFileName: "Planetary Pieces",
+				albumID: khan,
+				albumArtist: "Star Trek",
+				albumTitle: "Star Trek II",
+				coverArtFileName: "Star Trek II",
 				discCount: 0,
 				discNumber: 0,
 				trackNumber: 0,
 				title: nil,
 				artist: nil,
 				dateAdded: .now,
-				releaseDate: nil
+				releaseDate: .now
 			),
 			Sim_SongInfo(
-				albumID: 3,
-				albumArtist: "IU",
-				albumTitle: "Real",
-				coverArtFileName: "Real",
+				albumID: voyage,
+				albumArtist: "Star Trek",
+				albumTitle: "Star Trek IV",
+				coverArtFileName: "Star Trek IV",
 				discCount: 1,
 				discNumber: 1,
 				trackNumber: 3,
 				title: "좋은 날",
 				artist: "IU",
 				dateAdded: .now,
-				releaseDate: nil
+				releaseDate: .now
+			),
+			
+			Sim_SongInfo(
+				albumID: fez,
+				albumArtist: "Disasterpeace",
+				albumTitle: "Fez",
+				coverArtFileName: "Fez",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 1,
+				title: "Adventure",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: .now
+			),
+			Sim_SongInfo(
+				albumID: fez,
+				albumArtist: "Disasterpeace",
+				albumTitle: "Fez",
+				coverArtFileName: "Fez",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 2,
+				title: "Puzzle",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: .now
+			),
+			Sim_SongInfo(
+				albumID: fez,
+				albumArtist: "Disasterpeace",
+				albumTitle: "Fez",
+				coverArtFileName: "Fez",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 3,
+				title: "Beyond",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: .now
+			),
+			Sim_SongInfo(
+				albumID: fez,
+				albumArtist: "Disasterpeace",
+				albumTitle: "Fez",
+				coverArtFileName: "Fez",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 4,
+				title: "Progress",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: .now
+			),
+			Sim_SongInfo(
+				albumID: fez,
+				albumArtist: "Disasterpeace",
+				albumTitle: "Fez",
+				coverArtFileName: "Fez",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 5,
+				title: "Beacon",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: .now
+			),
+			Sim_SongInfo(
+				albumID: fez,
+				albumArtist: "Disasterpeace",
+				albumTitle: "Fez",
+				coverArtFileName: "Fez",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 6,
+				title: "Flow",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: .now
+			),
+			Sim_SongInfo(
+				albumID: fez,
+				albumArtist: "Disasterpeace",
+				albumTitle: "Fez",
+				coverArtFileName: "Fez",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 7,
+				title: "Formations",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: .now
+			),
+			Sim_SongInfo(
+				albumID: fez,
+				albumArtist: "Disasterpeace",
+				albumTitle: "Fez",
+				coverArtFileName: "Fez",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 8,
+				title: "Legend",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: .now
+			),
+			
+			Sim_SongInfo(
+				albumID: sonic,
+				albumArtist: "Games",
+				albumTitle: "Sonic Adventure",
+				coverArtFileName: "Sonic Adventure",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 900,
+				title: "Amazingly few discotheques provide jukeboxes.",
+				artist: "Tony Harnell",
+				dateAdded: .now,
+				releaseDate: .now
 			),
 		]
 	}
