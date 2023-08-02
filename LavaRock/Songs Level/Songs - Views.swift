@@ -203,8 +203,14 @@ final class SongCell: UITableViewCell {
 		}
 		
 		// Disable “prepend” intelligently: when “append” would do the same thing.
+		// Specifically, only enable “prepend” if there’s at least 1 song queued after the current one.
+		// Err toward leaving “prepend” enabled.
 		
-		// —
+		// `MPMusicPlayerController` doesn’t expose how many songs are up next.
+		// So, in order to intelligently disable prepending, we need to…
+		// 1. Keep track of that number ourselves, and…
+		// 2. Always know when that number changes.
+		// We can't do that with `systemMusicPlayer`.
 		
 		let playNext = UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
@@ -212,9 +218,6 @@ final class SongCell: UITableViewCell {
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
 				player?.playNext([mediaItem])
-			}
-			if !Self.shouldEnablePrepend() {
-				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
 		})
@@ -240,9 +243,6 @@ final class SongCell: UITableViewCell {
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
 			) { _ in
 				player?.playNext(mediaItems)
-			}
-			if !Self.shouldEnablePrepend() {
-				action.attributes.formUnion(.disabled)
 			}
 			if mediaItems.count <= 1 {
 				action.attributes.formUnion(.disabled)
@@ -283,33 +283,6 @@ final class SongCell: UITableViewCell {
 			),
 		]
 		menu = UIMenu(children: submenus)
-	}
-	private static func shouldEnablePrepend() -> Bool {
-		// Result: whether there’s at least 1 song queued after the current one
-		// Err toward `true`.
-		
-		// `MPMusicPlayerController` doesn’t expose how many songs are up next.
-		// So, in order to intelligently disable prepending, we need to…
-		// 1. Keep track of that number ourselves, and…
-		// 2. Always know when that number changes.
-		// We can't do that with `systemMusicPlayer`.
-		guard Enabling.inAppPlayer else {
-			return true
-		}
-		
-		guard let player = TapeDeck.shared.player else {
-			return true
-		}
-		
-		let currentIndex = player.indexOfNowPlayingItem // When nothing is in the player, this is 0, which weirdens the comparison
-		
-		let reelCount = Reel.mediaItems.count
-		if reelCount == 0 {
-			return false
-		}
-		let lastIndex = reelCount - 1
-		
-		return currentIndex < lastIndex
 	}
 	
 	private func freshenOverflowButton() {

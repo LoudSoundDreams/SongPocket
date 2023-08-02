@@ -29,11 +29,7 @@ final class TapeDeck {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		player?.endGeneratingPlaybackNotifications()
-		if Enabling.inAppPlayer {
-			player = .applicationQueuePlayer
-		} else {
-			player = .systemMusicPlayer
-		}
+		player = .systemMusicPlayer
 		player?.beginGeneratingPlaybackNotifications()
 		
 		reflect_playback_mode_everywhere() // Because before anyone called `beginWatching`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `.authorized`.

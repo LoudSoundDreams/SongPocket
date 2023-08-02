@@ -231,15 +231,6 @@ final class MainToolbar__UIKit {
 		
 		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
-		
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(userChangedReelEmptiness),
-			name: .userChangedReelEmptiness,
-			object: nil)
-	}
-	@objc private func userChangedReelEmptiness() {
-		freshen()
 	}
 	
 	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
@@ -258,8 +249,8 @@ final class MainToolbar__UIKit {
 		}
 		
 		guard
-			let player = Self.player,
-			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty) // When enabling in-app player, when reel is empty, disable transport buttons.
+			let player = Self.player
+				// Ideally, disable transport buttons when no songs are in the player
 		else {
 			configurePlayButton()
 			

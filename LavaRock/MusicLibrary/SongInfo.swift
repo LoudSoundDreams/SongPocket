@@ -19,25 +19,19 @@ protocol SongInfo {
 	var composerOnDisk: String { get }
 	var albumArtistOnDisk: String? { get }
 	var albumTitleOnDisk: String? { get }
-	
 	var discCountOnDisk: Int { get }
 	var discNumberOnDisk: Int { get }
 	var trackNumberOnDisk: Int { get }
 	static var unknownTrackNumber: Int { get }
-	
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
-	
 	var dateAddedOnDisk: Date { get }
 	var releaseDateOnDisk: Date? { get }
-	
 	func coverArt(largerThanOrEqualToSizeInPoints sizeInPoints: CGSize) -> UIImage?
 }
-
 enum SongInfoPlaceholder {
 	static let unknownTitle = "—" // Em dash
 }
-
 extension SongInfo {
 	
 	// MARK: Predicates

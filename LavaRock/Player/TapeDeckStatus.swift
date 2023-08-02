@@ -27,8 +27,7 @@ final class TapeDeckStatus: ObservableObject {
 		}
 		
 		guard
-			let player = TapeDeck.shared.player, // Have access to player
-			!(Enabling.inAppPlayer && Reel.mediaItems.isEmpty) // In-app queue has at least one song
+			let player = TapeDeck.shared.player // Have access to player
 		else {
 			// Show disabled default state everywhere
 			new_status = nil

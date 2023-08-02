@@ -19,8 +19,4 @@ extension Notification.Name {
 	static var userUpdatedDatabase: Self {
 		Self("user updated database")
 	}
-	
-	static var userChangedReelEmptiness: Self {
-		Self("user changed reel emptiness")
-	}
 }

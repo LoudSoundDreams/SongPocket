@@ -34,10 +34,6 @@ extension MPMusicPlayerController {
 			Self.signposter.endInterval("set queue and play", interval)
 		}
 		
-		if Enabling.inAppPlayer {
-			Reel.setMediaItems(mediaItems)
-		}
-		
 		setQueue(mediaItems: mediaItems)
 		
 		// As of iOS 15.6 RC 2, with `systemMusicPlayer`, you must set `repeatMode` and `shuffleMode` after calling `setQueue`, not before, or they won’t actually apply.
@@ -56,25 +52,7 @@ extension MPMusicPlayerController {
 	}
 	
 	final func playNext(_ mediaItems: [MPMediaItem]) {
-		if Enabling.inAppPlayer {
-			if Reel.mediaItems.isEmpty {
-				Reel.setMediaItems(mediaItems)
-				
-				setQueue(mediaItems: mediaItems)
-			} else {
-				Reel.setMediaItems({
-					var newMediaItems = Reel.mediaItems
-					newMediaItems.insert(
-						contentsOf: mediaItems,
-						at: indexOfNowPlayingItem + 1)
-					return newMediaItems
-				}())
-				
-				prepend(mediaItems)
-			}
-		} else {
-			prepend(mediaItems)
-		}
+		prepend(mediaItems)
 		
 		// TO DO: Do we need this? (See `playLast`)
 		if playbackState != .playing {
@@ -89,25 +67,8 @@ extension MPMusicPlayerController {
 	}
 	
 	final func playLast(_ mediaItems: [MPMediaItem]) {
-		if Enabling.inAppPlayer {
-			if Reel.mediaItems.isEmpty {
-				// This is a workaround. As of iOS 15.4, when the queue is empty, `append` does nothing.
-				Reel.setMediaItems(mediaItems)
-				
-				setQueue(mediaItems: mediaItems)
-			} else {
-				Reel.setMediaItems({
-					var newMediaItems = Reel.mediaItems
-					newMediaItems.append(contentsOf: mediaItems)
-					return newMediaItems
-				}())
-				
-				append(mediaItems)
-			}
-		} else {
-			// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
-			append(mediaItems)
-		}
+		// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
+		append(mediaItems)
 		
 		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit Apple Music recently.
 		if playbackState != .playing {
