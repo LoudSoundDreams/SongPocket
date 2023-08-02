@@ -24,7 +24,6 @@
 		073AF48A24D16647000C1A6D /* Accent Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* Accent Color.swift */; };
 		073AF48F24D1AD73000C1A6D /* SettingsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* SettingsTVC.swift */; };
 		073B99C72944FA8900B48C9C /* UIImpactFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */; };
-		073B99CB294682E700B48C9C /* SongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073B99CA294682E700B48C9C /* SongRow.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Folders - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Folders - Views.swift */; };
 		073FB55927588B81000FAF5F /* SettingsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* SettingsTVC.storyboard */; };
@@ -37,7 +36,6 @@
 		07619EE527342FC9003F95AE /* Diffing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* Diffing.swift */; };
 		07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* SongsGroup.swift */; };
 		07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */; };
-		0764C62B293BE3A7003BA345 /* AlbumInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */; };
 		0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */; };
 		076830AE24B42DEF0033E3CC /* LavaRockUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */; };
 		076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BB24B42E3E0033E3CC /* LibraryTVC.swift */; };
@@ -131,7 +129,6 @@
 		073AF48924D16647000C1A6D /* Accent Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Accent Color.swift"; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* SettingsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTVC.swift; sourceTree = "<group>"; };
 		073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImpactFeedbackGenerator.swift; sourceTree = "<group>"; };
-		073B99CA294682E700B48C9C /* SongRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRow.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Folders - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folders - Views.swift"; sourceTree = "<group>"; };
 		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SettingsTVC.storyboard; sourceTree = "<group>"; };
@@ -144,7 +141,6 @@
 		07619EE427342FC9003F95AE /* Diffing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffing.swift; sourceTree = "<group>"; };
 		07642C7B268FFC1600B66BB8 /* SongsGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsGroup.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGroup.swift; sourceTree = "<group>"; };
-		0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumInfoRow.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768309224B42DEC0033E3CC /* LavaRock.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LavaRock.xcdatamodel; sourceTree = "<group>"; };
 		0768309924B42DEE0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -256,8 +252,6 @@
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
 				07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */,
 				073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */,
-				0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */,
-				073B99CA294682E700B48C9C /* SongRow.swift */,
 			);
 			path = "Songs Level";
 			sourceTree = "<group>";
@@ -656,7 +650,6 @@
 				07E0BBDE276567760010117E /* Notifications.swift in Sources */,
 				073198CD279D204100E5FD44 /* TipJarViewModel.swift in Sources */,
 				071DC5E72A1045CE0073C854 /* Main Toolbar.swift in Sources */,
-				0764C62B293BE3A7003BA345 /* AlbumInfoRow.swift in Sources */,
 				07755A58294821860056E90C /* Avatar - Views.swift in Sources */,
 				0759DC81272CD37300FDA7D7 /* Enabling.swift in Sources */,
 				07619EE527342FC9003F95AE /* Diffing.swift in Sources */,
@@ -705,7 +698,6 @@
 				07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
-				073B99CB294682E700B48C9C /* SongRow.swift in Sources */,
 				07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */,
 				07E0BBD7276567490010117E /* String.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
