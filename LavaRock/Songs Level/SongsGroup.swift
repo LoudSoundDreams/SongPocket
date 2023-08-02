@@ -20,7 +20,8 @@ struct SongsGroup {
 		}
 	}
 	
-	private(set) var spacerTrackNumberText: String? = nil
+	private(set) var spacerTrackNumberText: String = Self.spacerTrackNumberText_Default
+	static let spacerTrackNumberText_Default: String = "00"
 }
 extension SongsGroup: LibraryGroup {
 	mutating func setItems(_ newItems: [NSManagedObject]) {
@@ -40,13 +41,13 @@ extension SongsGroup: LibraryGroup {
 		
 		spacerTrackNumberText = {
 			guard let representative = (container as? Album)?.representativeSongInfo() else {
-				return nil
+				return Self.spacerTrackNumberText_Default
 			}
 			let infos: [SongInfo] = items.compactMap { ($0 as? Song)?.songInfo() }
 			// At minimum, reserve the width of 2 digits, plus an interpunct if appropriate.
 			// At maximum, reserve the width of 4 digits plus an interpunct.
 			if representative.shouldShowDiscNumber {
-				var widestText = "00"
+				var widestText = Self.spacerTrackNumberText_Default
 				for info in infos {
 					let discAndTrack = ""
 					+ info.discNumberFormatted()
@@ -60,7 +61,7 @@ extension SongsGroup: LibraryGroup {
 				}
 				return LRString.interpunct + widestText
 			} else {
-				var widestText = "00"
+				var widestText = Self.spacerTrackNumberText_Default
 				for info in infos {
 					let track = info.trackNumberFormattedOptional() ?? ""
 					if track.count >= 4 {

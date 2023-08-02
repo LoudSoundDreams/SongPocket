@@ -92,7 +92,7 @@ extension SongsTVC {
 			albumRepresentative: {
 				return album.representativeSongInfo()
 			}(),
-			spacerTrackNumberText: (songsViewModel.libraryGroup() as? SongsGroup)?.spacerTrackNumberText,
+			spacerTrackNumberText: (songsViewModel.libraryGroup() as! SongsGroup).spacerTrackNumberText,
 			songsTVC: Weak(self)
 		)
 		return cell

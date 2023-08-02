@@ -200,7 +200,7 @@ final class SongCell: UITableViewCell {
 	func configureWith(
 		song: Song,
 		albumRepresentative representative: SongInfo?,
-		spacerTrackNumberText: String?,
+		spacerTrackNumberText: String,
 		songsTVC: Weak<SongsTVC>
 	) {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
