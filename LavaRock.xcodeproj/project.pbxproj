@@ -105,7 +105,6 @@
 		07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E092599227C00826447 /* PurchaseManager.swift */; };
 		07FD6E122599246700826447 /* SettingsTVC + TipJarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FD6E112599246700826447 /* SettingsTVC + TipJarUI.swift */; };
 		07FF080128652A4C00EE4FD4 /* SortingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* SortingTests.swift */; };
-		07FFC00C29D8745F00B98447 /* Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FFC00B29D8745F00B98447 /* Notification.Name.swift */; };
 		07FFC00E29D88B6B00B98447 /* AppleMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FFC00D29D88B6B00B98447 /* AppleMusic.swift */; };
 /* End PBXBuildFile section */
 
@@ -232,7 +231,6 @@
 		07FD6E092599227C00826447 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		07FD6E112599246700826447 /* SettingsTVC + TipJarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTVC + TipJarUI.swift"; sourceTree = "<group>"; };
 		07FF080028652A4C00EE4FD4 /* SortingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingTests.swift; sourceTree = "<group>"; };
-		07FFC00B29D8745F00B98447 /* Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.Name.swift; sourceTree = "<group>"; };
 		07FFC00D29D88B6B00B98447 /* AppleMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -457,14 +455,6 @@
 			path = MusicLibrary;
 			sourceTree = "<group>";
 		};
-		07E0BBD8276567760010117E /* Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				07FFC00B29D8745F00B98447 /* Notification.Name.swift */,
-			);
-			path = Foundation;
-			sourceTree = "<group>";
-		};
 		07E0BBE12765678F0010117E /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -485,7 +475,6 @@
 				07AB7029273C9A52002B5098 /* Standard Library */,
 				076B4DEC27738FF4004B523D /* OSLog.swift */,
 				07E0BBDA276567760010117E /* Notifications.swift */,
-				07E0BBD8276567760010117E /* Foundation */,
 				07E32D6129C03A72006702A7 /* View.swift */,
 				07E0BBE12765678F0010117E /* UIKit */,
 				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
@@ -740,7 +729,6 @@
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				07FFC00E29D88B6B00B98447 /* AppleMusic.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */,
-				07FFC00C29D8745F00B98447 /* Notification.Name.swift in Sources */,
 				074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */,
 				07CD864D27CAA3CC00286E6A /* Weak.swift in Sources */,
 				07F36BC224FC3F450064282D /* FoldersTVC - UITableView.swift in Sources */,
