@@ -30,9 +30,9 @@ extension LibraryTVC {
 		
 		if proposedDestinationIndexPath < sourceIndexPath {
 			return viewModel.indexPathFor(itemIndex: 0)
-		} else {
-			return viewModel.indexPathFor(itemIndex: viewModel.groups[0].items.indices.last ?? 0)
 		}
+		
+		return proposedDestinationIndexPath
 	}
 	
 	final override func tableView(
