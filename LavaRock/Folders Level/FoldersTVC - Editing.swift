@@ -19,18 +19,40 @@ extension FoldersTVC {
 	func promptRename(at indexPath: IndexPath) {
 		guard let folder = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
 		
-		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
+		let dialog = UIAlertController(
+			title: LRString.renameFolder,
+			message: nil,
+			preferredStyle: .alert)
 		
-		let dialog = UIAlertController.make_Rename_dialog(
-			existing_title: folder.title,
-			textFieldDelegate: self,
-			done_handler: { [weak self] textFieldText in
-				self?.commitRename(
-					at: indexPath,
-					proposedTitle: textFieldText,
-					thenSelectIf: rowWasSelectedBeforeRenaming)
-			}
-		)
+		let existingTitle = folder.title
+		dialog.addTextField {
+			// UITextField
+			$0.text = existingTitle
+			$0.placeholder = existingTitle
+			$0.clearButtonMode = .always
+			
+			// UITextInputTraits
+			$0.returnKeyType = .done
+			$0.autocapitalizationType = .sentences
+			$0.smartQuotesType = .yes
+			$0.smartDashesType = .yes
+			
+			$0.delegate = self
+		}
+		
+		let cancelAction = UIAlertAction(title: LRString.cancel, style: .cancel)
+		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
+		let saveAction = UIAlertAction(title: LRString.save, style: .default) { [weak self] _ in
+			let textFieldText = dialog.textFields?.first?.text
+			self?.commitRename(
+				at: indexPath,
+				proposedTitle: textFieldText,
+				thenSelectIf: rowWasSelectedBeforeRenaming)
+		}
+		dialog.addAction(cancelAction)
+		dialog.addAction(saveAction)
+		dialog.preferredAction = saveAction
+		
 		present(dialog, animated: true)
 	}
 	
