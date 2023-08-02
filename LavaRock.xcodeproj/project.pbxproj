@@ -83,7 +83,6 @@
 		07E0BBF32765678F0010117E /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE72765678F0010117E /* UITableView.swift */; };
 		07E0BBF42765678F0010117E /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE82765678F0010117E /* UITableViewCell.swift */; };
 		07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */; };
-		07E92A0E2510497B00E9073B /* SongsTVC - Song Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E92A0D2510497B00E9073B /* SongsTVC - Song Actions.swift */; };
 		07EC01E826C84BC700954E08 /* FoldersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E726C84BC700954E08 /* FoldersViewModel.swift */; };
 		07EC01EA26C8958300954E08 /* AlbumsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E926C8958300954E08 /* AlbumsViewModel.swift */; };
 		07EC01EC26C895CB00954E08 /* SongsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01EB26C895CB00954E08 /* SongsViewModel.swift */; };
@@ -198,7 +197,6 @@
 		07E0BBE72765678F0010117E /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		07E0BBE82765678F0010117E /* UITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
-		07E92A0D2510497B00E9073B /* SongsTVC - Song Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - Song Actions.swift"; sourceTree = "<group>"; };
 		07EC01E726C84BC700954E08 /* FoldersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersViewModel.swift; sourceTree = "<group>"; };
 		07EC01E926C8958300954E08 /* AlbumsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewModel.swift; sourceTree = "<group>"; };
 		07EC01EB26C895CB00954E08 /* SongsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsViewModel.swift; sourceTree = "<group>"; };
@@ -257,7 +255,6 @@
 				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
 				07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */,
-				07E92A0D2510497B00E9073B /* SongsTVC - Song Actions.swift */,
 				073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */,
 				0764C62A293BE3A7003BA345 /* AlbumInfoRow.swift */,
 				073B99CA294682E700B48C9C /* SongRow.swift */,
@@ -698,7 +695,6 @@
 				07A4F90F2519E8410065C87E /* MusicLibrary - Merge, Delete.swift in Sources */,
 				07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */,
 				071A0B9E277E76510017F76D /* LavaRock.swift in Sources */,
-				07E92A0E2510497B00E9073B /* SongsTVC - Song Actions.swift in Sources */,
 				07843FEB2851A31D000FA316 /* Sequence.swift in Sources */,
 				07F36BBE24FC3CCA0064282D /* LibraryTVC - UITableView.swift in Sources */,
 				07DF65D227766C95003B2EA3 /* SongInfo.swift in Sources */,
