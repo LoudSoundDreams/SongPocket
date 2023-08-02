@@ -145,9 +145,9 @@ final class AlbumsTVC:
 					.flexibleSpace(),
 					sortButton,
 					.flexibleSpace(),
-					floatToTopButton,
+					floatButton,
 					.flexibleSpace(),
-					sinkToBottomButton,
+					sinkButton,
 				]
 		}
 		

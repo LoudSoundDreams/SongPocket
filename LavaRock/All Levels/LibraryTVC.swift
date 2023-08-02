@@ -63,21 +63,37 @@ class LibraryTVC: UITableViewController {
 	private(set) final var sortButton = UIBarButtonItem(
 		title: LRString.arrange)
 	
-	private(set) final lazy var floatToTopButton = UIBarButtonItem(
+	private(set) final lazy var floatButton = UIBarButtonItem(
 		title: LRString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line"),
 		primaryAction: UIAction { [weak self] _ in
 			self?.floatSelected()
 		}
 	)
+	private func floatSelected() {
+		let newViewModel = viewModel.updatedAfterFloating(
+			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
+		)
+		Task {
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
+		}
+	}
 	
-	private(set) final lazy var sinkToBottomButton = UIBarButtonItem(
+	private(set) final lazy var sinkButton = UIBarButtonItem(
 		title: LRString.moveToBottom,
 		image: UIImage(systemName: "arrow.down.to.line"),
 		primaryAction: UIAction { [weak self] _ in
 			self?.sinkSelected()
 		}
 	)
+	private func sinkSelected() {
+		let newViewModel = viewModel.updatedAfterSinking(
+			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
+		)
+		Task {
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
+		}
+	}
 	
 	// State
 	final var isMergingChanges = false
@@ -406,8 +422,8 @@ class LibraryTVC: UITableViewController {
 		sortButton.isEnabled = allows_sort()
 		sortButton.menu = create_sort_menu() // Create a new menu, for an accurate “[X] [items]” title.
 		
-		floatToTopButton.isEnabled = allows_float_and_sink()
-		sinkToBottomButton.isEnabled = allows_float_and_sink()
+		floatButton.isEnabled = allows_float_and_sink()
+		sinkButton.isEnabled = allows_float_and_sink()
 		
 		// Enable and disable
 		
@@ -478,31 +494,10 @@ class LibraryTVC: UITableViewController {
 			return UIMenu(children: submenus)
 		}
 	}
-	
-	// MARK: - Editing
-	
 	final func sortSelectedOrAll(sortCommand: SortCommand) {
 		let newViewModel = viewModel.updatedAfterSorting(
 			selectedRows: tableView.selectedIndexPaths.map { $0.row },
 			sortCommand: sortCommand)
-		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
-		}
-	}
-	
-	final func floatSelected() {
-		let newViewModel = viewModel.updatedAfterFloating(
-			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
-		)
-		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
-		}
-	}
-	
-	final func sinkSelected() {
-		let newViewModel = viewModel.updatedAfterSinking(
-			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
-		)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}

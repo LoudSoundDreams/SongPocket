@@ -31,7 +31,7 @@ extension SongsTVC {
 		actionSheet.popoverPresentationController?.sourceView = popoverAnchorView
 		
 		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
-		let playToBottom = UIAlertAction(
+		let startPlaying = UIAlertAction(
 			title: LRString.startPlaying,
 			style: .default
 		) { _ in
@@ -40,7 +40,7 @@ extension SongsTVC {
 			
 			deselectSelectedSong()
 		}
-		actionSheet.addAction(playToBottom)
+		actionSheet.addAction(startPlaying)
 		
 		actionSheet.addAction(
 			UIAlertAction(title: LRString.cancel, style: .cancel) { _ in

@@ -53,9 +53,9 @@ final class SongsTVC: LibraryTVC {
 		editingModeToolbarButtons = [
 			sortButton,
 			.flexibleSpace(),
-			floatToTopButton,
+			floatButton,
 			.flexibleSpace(),
-			sinkToBottomButton,
+			sinkButton,
 		]
 		
 		super.setUpBarButtons()

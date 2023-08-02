@@ -257,9 +257,9 @@ final class FoldersTVC:
 					.flexibleSpace(),
 					sortButton,
 					.flexibleSpace(),
-					floatToTopButton,
+					floatButton,
 					.flexibleSpace(),
-					sinkToBottomButton,
+					sinkButton,
 				]
 		}
 		
