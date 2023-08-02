@@ -256,9 +256,11 @@ final class MainToolbar__UIKit {
 			
 			// Enable or disable each button as appropriate
 			barButtonItems.forEach {
-				$0.isEnabled_setFalseWithAxTrait()
+				$0.isEnabled = false
+				$0.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
 			}
-			overflowButton.isEnabled_setTrueWithAxTrait()
+			overflowButton.isEnabled = true
+			overflowButton.accessibilityTraits.subtract(.notEnabled)
 			return
 		}
 		
@@ -277,7 +279,8 @@ final class MainToolbar__UIKit {
 		
 		// Enable or disable each button as appropriate
 		barButtonItems.forEach {
-			$0.isEnabled_setTrueWithAxTrait()
+			$0.isEnabled = true
+			$0.accessibilityTraits.subtract(.notEnabled)
 		}
 	}
 	private func freshenOverflowButton() {
