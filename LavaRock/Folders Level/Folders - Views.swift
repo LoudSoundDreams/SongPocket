@@ -91,7 +91,16 @@ final class FolderCell: UITableViewCell {
 				.background { Color.mint.opacity(1/8) }
 			}
 		} else {
-			titleLabel.text = folder.title ?? " " // Don’t let this be `nil` or `""`. Otherwise, when we revert combining folders before `freshenLibraryItems`, the table view vertically collapses rows for deleted folders.
+			titleLabel.text = { () -> String in
+				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining folders before `freshenLibraryItems`, the table view vertically collapses rows for deleted folders.
+				guard
+					let folderTitle = folder.title,
+					!folderTitle.isEmpty
+				else {
+					return " "
+				}
+				return folderTitle
+			}()
 			contentView.layer.opacity = {
 				if case FolderRowMode.modalDisabled = mode {
 					return .oneFourth
