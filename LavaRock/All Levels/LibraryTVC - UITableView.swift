@@ -24,18 +24,14 @@ extension LibraryTVC {
 		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
 		toProposedIndexPath proposedDestinationIndexPath: IndexPath
 	) -> IndexPath {
-		if
-			viewModel.pointsToSomeItem(proposedDestinationIndexPath),
-			sourceIndexPath.section == proposedDestinationIndexPath.section
-		{
+		if viewModel.pointsToSomeItem(proposedDestinationIndexPath) {
 			return proposedDestinationIndexPath
+		}
+		
+		if proposedDestinationIndexPath < sourceIndexPath {
+			return viewModel.indexPathFor(itemIndex: 0)
 		} else {
-			let groupIndex = sourceIndexPath.section
-			if proposedDestinationIndexPath < sourceIndexPath {
-				return viewModel.indexPathFor(itemIndex: 0)
-			} else {
-				return viewModel.indexPathFor(itemIndex: viewModel.groups[groupIndex].items.indices.last ?? 0)
-			}
+			return viewModel.indexPathFor(itemIndex: viewModel.groups[0].items.indices.last ?? 0)
 		}
 	}
 	
