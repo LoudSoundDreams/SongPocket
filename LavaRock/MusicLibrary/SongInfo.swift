@@ -16,7 +16,6 @@ protocol SongInfo {
 	var albumID: AlbumID { get }
 	var songID: SongID { get }
 	
-	var composerOnDisk: String { get }
 	var albumArtistOnDisk: String? { get }
 	var albumTitleOnDisk: String? { get }
 	var discCountOnDisk: Int { get }
@@ -167,7 +166,6 @@ extension MPMediaItem: SongInfo {
 	final var songID: SongID { SongID(bitPattern: persistentID) }
 	
 	// Media Player reports unknown values as…
-	final var composerOnDisk: String { composer ?? "" }
 	final var albumArtistOnDisk: String? { albumArtist } // `nil`, as of iOS 14.7 developer beta 5.
 	final var albumTitleOnDisk: String? { albumTitle } // `""`, as of iOS 14.7 developer beta 5.
 	final var discCountOnDisk: Int { discCount } // `0`, as of iOS 15.0 RC.
@@ -197,7 +195,6 @@ struct Sim_SongInfo: SongInfo {
 	let albumID: AlbumID
 	let songID: SongID
 	
-	let composerOnDisk: String
 	let albumArtistOnDisk: String?
 	let albumTitleOnDisk: String?
 	let discCountOnDisk: Int
@@ -233,7 +230,6 @@ extension Sim_SongInfo {
 		return [
 			Sim_SongInfo(
 				albumID: walpurgis,
-				composer: "FRANTS",
 				albumArtist: "GFriend",
 				albumTitle: "回:Walpurgis Night",
 				coverArtFileName: "Walpurgis Night",
@@ -247,7 +243,6 @@ extension Sim_SongInfo {
 			),
 			Sim_SongInfo(
 				albumID: walpurgis,
-				composer: "노주환 & 이원종",
 				albumArtist: "GFriend",
 				albumTitle: "回:Walpurgis Night",
 				coverArtFileName: "Walpurgis Night",
@@ -261,7 +256,6 @@ extension Sim_SongInfo {
 			),
 			Sim_SongInfo(
 				albumID: 2,
-				composer: "",
 				albumArtist: nil,
 				albumTitle: nil,
 				coverArtFileName: "Planetary Pieces",
@@ -275,7 +269,6 @@ extension Sim_SongInfo {
 			),
 			Sim_SongInfo(
 				albumID: 3,
-				composer: "이민수",
 				albumArtist: "IU",
 				albumTitle: "Real",
 				coverArtFileName: "Real",
@@ -293,7 +286,6 @@ extension Sim_SongInfo {
 	static var dict: [SongID: Self] = [:]
 	init(
 		albumID: Int,
-		composer: String,
 		albumArtist: String?,
 		albumTitle: String?,
 		coverArtFileName: String?,
@@ -309,7 +301,6 @@ extension Sim_SongInfo {
 		self.init(
 			albumID: AlbumID(albumID),
 			songID: Sim_SongIDDispenser.takeNumber(),
-			composerOnDisk: composer,
 			albumArtistOnDisk: albumArtist,
 			albumTitleOnDisk: albumTitle,
 			discCountOnDisk: discCount,
