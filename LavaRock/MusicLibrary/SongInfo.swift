@@ -220,9 +220,13 @@ struct Sim_SongInfo: SongInfo {
 	}
 	private let coverArtFileName: String?
 }
+enum Sim_Global {
+	static var songID: SongID? = nil
+	static let simulatingEmptyLibrary = 10 == 1
+}
 extension Sim_SongInfo {
 	static var all: [Self] {
-		if Enabling.sim_emptyLibrary {
+		if Sim_Global.simulatingEmptyLibrary {
 			return []
 		}
 		
