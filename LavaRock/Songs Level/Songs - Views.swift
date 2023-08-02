@@ -181,7 +181,7 @@ final class SongCell: UITableViewCell {
 		
 		backgroundColor_set_to_clear()
 		
-		guard !Self.usesSwiftUI__ else { return }
+		if Self.usesSwiftUI__ { return }
 		
 		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
 		numberLabel.font = spacerNumberLabel.font
@@ -395,7 +395,7 @@ final class SongCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		guard !Self.usesSwiftUI__ else { return }
+		if Self.usesSwiftUI__ { return }
 		
 		separatorInset.left = 0
 		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
@@ -407,7 +407,7 @@ extension SongCell: AvatarDisplaying__ {
 	func indicateAvatarStatus__(
 		_ avatarStatus: AvatarStatus
 	) {
-		guard !Self.usesSwiftUI__ else { return }
+		if Self.usesSwiftUI__ { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory

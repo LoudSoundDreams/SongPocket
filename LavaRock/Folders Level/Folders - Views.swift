@@ -91,7 +91,7 @@ final class FolderCell: UITableViewCell {
 				.background { Color.mint.opacity(1/8) }
 			}
 		} else {
-			titleLabel.text = folder.title ?? " " // Don’t let this be empty. Otherwise, when we revert combining folders before `freshenLibraryItems`, the table view vertically collapses rows for deleted folders.
+			titleLabel.text = folder.title ?? " " // Don’t let this be `nil` or `""`. Otherwise, when we revert combining folders before `freshenLibraryItems`, the table view vertically collapses rows for deleted folders.
 			contentView.layer.opacity = {
 				if case FolderRowMode.modalDisabled = mode {
 					return .oneFourth
@@ -138,7 +138,7 @@ final class FolderCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		guard !Self.usesSwiftUI__ else { return }
+		if Self.usesSwiftUI__ { return }
 		
 		separatorInset.left = 0
 		+ contentView.frame.minX
@@ -150,7 +150,7 @@ extension FolderCell: AvatarDisplaying__ {
 	func indicateAvatarStatus__(
 		_ avatarStatus: AvatarStatus
 	) {
-		guard !Self.usesSwiftUI__ else { return }
+		if Self.usesSwiftUI__ { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
