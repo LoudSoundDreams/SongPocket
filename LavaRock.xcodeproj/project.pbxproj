@@ -59,8 +59,6 @@
 		0781F1F12599181800781CF8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0781F1F02599181800781CF8 /* StoreKit.framework */; };
 		0781F1FA25991B3300781CF8 /* SettingsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0781F1F925991B3300781CF8 /* SettingsTVC - UITableView.swift */; };
 		078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078307B32512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift */; };
-		0783DC16286EA65E00A9A4F7 /* SongInfo - Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC15286EA65E00A9A4F7 /* SongInfo - Simulator.swift */; };
-		0783DC18286EA73400A9A4F7 /* SongInfo + Media Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0783DC17286EA73400A9A4F7 /* SongInfo + Media Player.swift */; };
 		07843FEB2851A31D000FA316 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07843FEA2851A31D000FA316 /* Sequence.swift */; };
 		0787CB0A27A376400068C2E5 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0787CB0927A376400068C2E5 /* UIViewController.swift */; };
 		078DBF042895EFD8000E6433 /* Avatar - Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078DBF032895EFD8000E6433 /* Avatar - Setting.swift */; };
@@ -188,8 +186,6 @@
 		0781F1F52599184700781CF8 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		0781F1F925991B3300781CF8 /* SettingsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		078307B32512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + MoveAlbumsDelegate.swift"; sourceTree = "<group>"; };
-		0783DC15286EA65E00A9A4F7 /* SongInfo - Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongInfo - Simulator.swift"; sourceTree = "<group>"; };
-		0783DC17286EA73400A9A4F7 /* SongInfo + Media Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongInfo + Media Player.swift"; sourceTree = "<group>"; };
 		07843FEA2851A31D000FA316 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		0787CB0927A376400068C2E5 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		078DBF032895EFD8000E6433 /* Avatar - Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Avatar - Setting.swift"; sourceTree = "<group>"; };
@@ -451,8 +447,6 @@
 			isa = PBXGroup;
 			children = (
 				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
-				0783DC15286EA65E00A9A4F7 /* SongInfo - Simulator.swift */,
-				0783DC17286EA73400A9A4F7 /* SongInfo + Media Player.swift */,
 				079B2C9424E227BF00A949FA /* MusicLibrary.swift */,
 				0703ED2424E8D0DA002EF1B4 /* MusicLibrary - Merge.swift */,
 				07A4F9042519E72C0065C87E /* MusicLibrary - Merge, Update.swift */,
@@ -703,7 +697,6 @@
 				073AF48F24D1AD73000C1A6D /* SettingsTVC.swift in Sources */,
 				07DC1B2024F33C8C00AAEEDB /* FoldersTVC - “Move Albums” Sheet.swift in Sources */,
 				0772FB58282F798A0054834F /* BatchUpdates.swift in Sources */,
-				0783DC18286EA73400A9A4F7 /* SongInfo + Media Player.swift in Sources */,
 				077CFA952A28CC7000A796F4 /* Functions.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */,
 				072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */,
@@ -759,7 +752,6 @@
 				07FD6E0A2599227C00826447 /* PurchaseManager.swift in Sources */,
 				071A0B9E277E76510017F76D /* LavaRock.swift in Sources */,
 				07E32D6229C03A72006702A7 /* View.swift in Sources */,
-				0783DC16286EA65E00A9A4F7 /* SongInfo - Simulator.swift in Sources */,
 				07E92A0E2510497B00E9073B /* SongsTVC - Song Actions.swift in Sources */,
 				07843FEB2851A31D000FA316 /* Sequence.swift in Sources */,
 				07F36BBE24FC3CCA0064282D /* LibraryTVC - UITableView.swift in Sources */,
