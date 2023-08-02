@@ -229,10 +229,10 @@ extension Sim_SongInfo {
 			return []
 		}
 		
-		let walpurgisNightAlbumID = Sim_AlbumIDDispenser.takeNumber()
+		let walpurgis = 1
 		return [
 			Sim_SongInfo(
-				albumID: walpurgisNightAlbumID,
+				albumID: walpurgis,
 				composer: "FRANTS",
 				albumArtist: "GFriend",
 				albumTitle: "回:Walpurgis Night",
@@ -246,7 +246,7 @@ extension Sim_SongInfo {
 				releaseDate: .now
 			),
 			Sim_SongInfo(
-				albumID: walpurgisNightAlbumID,
+				albumID: walpurgis,
 				composer: "노주환 & 이원종",
 				albumArtist: "GFriend",
 				albumTitle: "回:Walpurgis Night",
@@ -260,7 +260,7 @@ extension Sim_SongInfo {
 				releaseDate: .now
 			),
 			Sim_SongInfo(
-				albumID: Sim_AlbumIDDispenser.takeNumber(),
+				albumID: 2,
 				composer: "",
 				albumArtist: nil,
 				albumTitle: nil,
@@ -274,7 +274,7 @@ extension Sim_SongInfo {
 				releaseDate: nil
 			),
 			Sim_SongInfo(
-				albumID: Sim_AlbumIDDispenser.takeNumber(),
+				albumID: 3,
 				composer: "이민수",
 				albumArtist: "IU",
 				albumTitle: "Real",
@@ -292,7 +292,7 @@ extension Sim_SongInfo {
 	
 	static var dict: [SongID: Self] = [:]
 	init(
-		albumID: AlbumID,
+		albumID: Int,
 		composer: String,
 		albumArtist: String?,
 		albumTitle: String?,
@@ -307,7 +307,7 @@ extension Sim_SongInfo {
 	) {
 		// Memberwise initializer
 		self.init(
-			albumID: albumID,
+			albumID: AlbumID(albumID),
 			songID: Sim_SongIDDispenser.takeNumber(),
 			composerOnDisk: composer,
 			albumArtistOnDisk: albumArtist,
@@ -323,15 +323,6 @@ extension Sim_SongInfo {
 		)
 		
 		Self.dict[self.songID] = self
-	}
-	
-	private enum Sim_AlbumIDDispenser {
-		private static var nextAvailable = 1
-		static func takeNumber() -> AlbumID {
-			let result = AlbumID(nextAvailable)
-			nextAvailable += 1
-			return result
-		}
 	}
 	private enum Sim_SongIDDispenser {
 		private static var nextAvailable = 1
