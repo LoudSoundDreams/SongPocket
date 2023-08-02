@@ -12,12 +12,6 @@ import SwiftUI
 extension FoldersTVC {
 	// MARK: - Numbers
 	
-	override func numberOfSections(
-		in tableView: UITableView
-	) -> Int {
-		return viewModel.groups.count
-	}
-	
 	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
