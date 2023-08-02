@@ -1,11 +1,13 @@
 //
-//  AvatarImage.swift
+//  Avatar - Views.swift
 //  LavaRock
 //
 //  Created by h on 2022-12-12.
 //
 
 import SwiftUI
+
+// MARK: - Status
 
 enum AvatarStatus {
 	case notPlaying
@@ -34,6 +36,16 @@ enum AvatarStatus {
 		}
 	}
 }
+
+@MainActor
+protocol AvatarDisplaying__: AnyObject {
+	// Adopting types must…
+	// • Call `indicateAvatarStatus__` whenever appropriate.
+	
+	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus)
+}
+
+// MARK: - Image
 
 struct AvatarImage: View {
 	let libraryItem: LibraryItem
@@ -88,7 +100,6 @@ struct AvatarImage: View {
 		}
 	}
 }
-
 private extension View {
 	func fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge() -> some View {
 		return self

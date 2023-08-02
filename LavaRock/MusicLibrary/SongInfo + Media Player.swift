@@ -1,5 +1,5 @@
 //
-//  MPMediaItem + SongInfo.swift
+//  SongInfo + Media Player.swift
 //  LavaRock
 //
 //  Created by h on 2022-06-30.
@@ -30,7 +30,9 @@ extension MPMediaItem: SongInfo {
 	final var dateAddedOnDisk: Date { dateAdded }
 	final var releaseDateOnDisk: Date? { releaseDate }
 	
-	final func coverArt(largerThanOrEqualToSizeInPoints sizeInPoints: CGSize) -> UIImage? {
+	final func coverArt(
+		largerThanOrEqualToSizeInPoints sizeInPoints: CGSize
+	) -> UIImage? {
 		let signposter = OSSignposter()
 		let state = signposter.beginInterval("Draw cover art")
 		defer {

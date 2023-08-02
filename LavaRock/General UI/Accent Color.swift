@@ -1,11 +1,24 @@
 //
-//  AccentColor.swift
+//  Accent Color.swift
 //  LavaRock
 //
 //  Created by h on 2020-07-29.
 //
 
 import UIKit
+
+@MainActor
+final class Theme: ObservableObject {
+	private init() {}
+	static let shared = Theme()
+	
+	@Published var accentColor: AccentColor = .preference {
+		didSet {
+			// This runs before `ObservableObject.objectWillChange` emits.
+			AccentColor.preference = accentColor
+		}
+	}
+}
 
 extension AccentColor: Identifiable {
 	var id: Self { self }

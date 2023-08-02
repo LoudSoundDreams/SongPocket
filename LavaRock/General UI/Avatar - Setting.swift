@@ -1,11 +1,13 @@
 //
-//  Avatar.swift
+//  Avatar - Setting.swift
 //  LavaRock
 //
 //  Created by h on 2022-07-30.
 //
 
-import Foundation
+import SwiftUI
+
+// MARK: - Setting
 
 final class AvatarObservable: ObservableObject {
 	private init() {}
@@ -17,6 +19,35 @@ final class AvatarObservable: ObservableObject {
 		}
 	}
 }
+
+struct AvatarPicker: View {
+	@ObservedObject private var avatarObservable: AvatarObservable = .shared
+	private static var hasEverSaved: String {
+		DefaultsKey.hasSavedDatabase.rawValue
+	}
+	@AppStorage(Self.hasEverSaved)
+	private var hasSaved: Bool = UserDefaults.standard.bool(forKey: Self.hasEverSaved)
+	
+	var body: some View {
+		Picker("", selection: $avatarObservable.current) {
+			ForEach(Avatar.allCases) { avatar in
+				Image(systemName: avatar.playingSFSymbolName)
+					.accessibilityLabel(avatar.accessibilityLabel)
+			}
+		}
+		.pickerStyle(.segmented)
+		.disabled({
+			return !hasSaved
+		}())
+	}
+}
+struct AvatarPicker_Previews: PreviewProvider {
+	static var previews: some View {
+		AvatarPicker()
+	}
+}
+
+// MARK: - Model
 
 extension Avatar: Identifiable {
 	var id: Self { self }
@@ -75,7 +106,7 @@ enum Avatar: CaseIterable {
 		}
 	}
 	
-	// MARK: - Private
+	// MARK: Private
 	
 	private static let defaults: UserDefaults = .standard
 	private static let persistentKey: String = DefaultsKey.avatar.rawValue
