@@ -9,6 +9,8 @@ import UIKit
 import SwiftUI
 import OSLog
 
+// MARK: - Cover art
+
 // The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class CoverArtCell: UITableViewCell {
 	var albumRepresentative: SongInfo? = nil
@@ -30,6 +32,107 @@ final class CoverArtCell: UITableViewCell {
 		}
 		.margins(.all, .zero)
 		os_signpost(.end, log: .songsView, name: "Configure cover art")
+	}
+}
+
+// MARK: - Album info
+
+struct AlbumInfoRow: View {
+	let albumTitle: String
+	let albumArtist: String
+	let releaseDateStringOptional: String? // `nil` hides line
+	
+	var body: some View {
+		HStack {
+			VStack(
+				alignment: .leading,
+				spacing: .eight * 5/8
+			) {
+				// “Please Please Me”
+				Text(albumTitle)
+					.font(.title2)
+					.bold()
+				
+				// “The Beatles”
+				Text(albumArtist)
+					.font(.footnote)
+					.bold()
+					.foregroundStyle(.secondary)
+				
+				if let releaseDate = releaseDateStringOptional {
+					// “Mar 22, 1963”
+					Text(releaseDate)
+						.font(.caption)
+						.foregroundStyle(.secondary)
+				}
+			}
+			
+			Spacer()
+		}
+		.padding(.bottom, .eight * 5/8)
+	}
+}
+
+// MARK: - Song
+
+struct SongRow: View {
+	let song: Song
+	let trackDisplay: String
+	let song_title: String?
+	let artist_if_different_from_album_artist: String?
+	
+	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
+	var body: some View {
+		
+		HStack {
+			HStack(
+				alignment: .firstTextBaseline,
+				spacing: .eight * (1 + 1/2) // 12
+			) {
+				Text(trackDisplay)
+					.monospacedDigit()
+					.foregroundStyle(.secondary)
+				
+				VStack(
+					alignment: .leading,
+					spacing: .eight * 1/2 // 4
+				) {
+					Text(song_title ?? SongInfoPlaceholder.unknownTitle)
+					if let artist = artist_if_different_from_album_artist {
+						Text(artist)
+							.font(.caption)
+							.foregroundStyle(.secondary)
+							.padding(.bottom, .eight * 1/4) // 2
+					}
+				}
+				.alignmentGuide(.listRowSeparatorLeading) { textStackDimensions in
+					textStackDimensions[.leading]
+				}
+			}
+			
+			Spacer()
+			
+			AvatarImage(
+				libraryItem: song)
+			.accessibilitySortPriority(10)
+			
+			Button {
+			} label: {
+				Image(systemName: "ellipsis")
+					.font(.body)
+					.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+					.foregroundStyle(.primary)
+			}
+		}
+		.padding(.top, .eight * -1/4) // -2
+		.accessibilityElement(children: .combine)
+		.accessibilityAddTraits(.isButton)
+		.accessibilityInputLabels(
+			[
+				song_title, // Excludes the “unknown title” placeholder, which is currently a dash.
+			].compacted()
+		)
+		
 	}
 }
 
