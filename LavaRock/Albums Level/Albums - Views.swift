@@ -151,9 +151,7 @@ final class AlbumCell: UITableViewCell {
 			album.avatarStatus()
 		)
 		
-		accessibilityUserInputLabels = [
-			titleLabel.text, // Includes “Unknown Album” if that’s what we’re showing.
-		].compacted()
+		accessibilityUserInputLabels = [album.titleFormatted()]
 	}
 	
 	// Xcode 15: Delete this and instead call `registerForTraitChanges` at some point.
