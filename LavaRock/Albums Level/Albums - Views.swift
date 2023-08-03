@@ -23,7 +23,7 @@ struct AlbumRow: View {
 		let minRowHeight: CGFloat = 44 * 3
 		return minRowHeight - 2 * verticalMargin
 	}
-	@Environment(\.pixelLength) private var pixelLength
+	@Environment(\.pixelLength) private var pointsPerPixel
 	var body: some View {
 		HStack(spacing: Self.verticalMargin * 2) {
 			CoverArtView(
@@ -42,7 +42,6 @@ struct AlbumRow: View {
 							// The cover art itself will obscure half our return value.
 							// SwiftUI interprets our return value in points, not pixels.
 							let resultInPixels = 2
-							let pointsPerPixel = pixelLength
 							let result = CGFloat(resultInPixels) * pointsPerPixel
 							print(result)
 							return result
@@ -93,11 +92,13 @@ final class AlbumCell: UITableViewCell {
 		
 		backgroundColor_set_to_clear()
 		
-		coverArtView.accessibilityIgnoresInvertColors = true
-		// Round artwork corners
-		let artViewLayer = coverArtView.layer
-		artViewLayer.cornerCurve = .continuous
-		artViewLayer.cornerRadius = .eight * 1/2
+		if !Self.usesSwiftUI__ {
+			coverArtView.accessibilityIgnoresInvertColors = true
+			// Round artwork corners
+			let artViewLayer = coverArtView.layer
+			artViewLayer.cornerCurve = .continuous
+			artViewLayer.cornerRadius = .eight * 1/2
+		}
 		
 		orientMainStack()
 	}
@@ -189,30 +190,30 @@ final class AlbumCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		if !Self.usesSwiftUI__ {
-			// Draw artwork border
-			// You must do this when switching between light and dark mode.
-			let artViewLayer = coverArtView.layer
-			// As of iOS 16.3…
-			// • Apple Music uses a border and no shadow.
-			// • Apple Books uses a shadow and no border.
-			artViewLayer.borderColor = UIColor.separator.cgColor
-			// Draw in pixels, not points
-			let pixelsPerPoint = window?.screen.nativeScale ?? 2
-			artViewLayer.borderWidth = 1 / pixelsPerPoint
-			
-			separatorInset.left = 0
-			+ contentView.frame.minX
-			+ mainStack.frame.minX // 16
-			+ coverArtView.frame.width // 132
-			+ (
-				textIsHuge
-				? Self.mainStackSpacingWhenHorizontal // 10
-				: mainStack.spacing
-			)
-		}
-		
 		separatorInset.right = directionalLayoutMargins.trailing
+		
+		if Self.usesSwiftUI__ { return }
+		
+		// Draw artwork border
+		// You must do this when switching between light and dark mode.
+		let artViewLayer = coverArtView.layer
+		// As of iOS 16.3…
+		// • Apple Music uses a border and no shadow.
+		// • Apple Books uses a shadow and no border.
+		artViewLayer.borderColor = UIColor.separator.cgColor
+		// Draw in pixels, not points
+		let pixelsPerPoint = window?.screen.nativeScale ?? 2
+		artViewLayer.borderWidth = 1 / pixelsPerPoint
+		
+		separatorInset.left = 0
+		+ contentView.frame.minX
+		+ mainStack.frame.minX // 16
+		+ coverArtView.frame.width // 132
+		+ (
+			textIsHuge
+			? Self.mainStackSpacingWhenHorizontal // 10
+			: mainStack.spacing
+		)
 	}
 }
 extension AlbumCell: AvatarDisplaying__ {
