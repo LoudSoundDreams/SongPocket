@@ -121,8 +121,6 @@ final class FolderCell: UITableViewCell {
 		
 		switch mode {
 			case .normal(let actions):
-				backgroundColor_set_to_clear()
-				
 				isUserInteractionEnabled_setTrueWithAxTrait()
 				accessibilityCustomActions = actions
 			case .modal:

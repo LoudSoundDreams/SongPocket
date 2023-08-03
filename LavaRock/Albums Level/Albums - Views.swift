@@ -129,7 +129,6 @@ final class AlbumCell: UITableViewCell {
 		
 		switch mode {
 			case .normal:
-				backgroundColor_set_to_clear()
 				contentView.layer.opacity = 1 // The default value
 				isUserInteractionEnabled_setTrueWithAxTrait()
 			case .modal:
