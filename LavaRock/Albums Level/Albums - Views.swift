@@ -131,17 +131,14 @@ final class AlbumCell: UITableViewCell {
 			case .normal:
 				backgroundColor_set_to_clear()
 				contentView.layer.opacity = 1 // The default value
-				accessoryType = .disclosureIndicator
 				isUserInteractionEnabled_setTrueWithAxTrait()
 			case .modal:
 				backgroundColor_set_to_clear()
 				contentView.layer.opacity = .oneFourth // Close to what Files pickers use
-				accessoryType = .none
 				isUserInteractionEnabled_setFalseWithAxTrait()
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
 				contentView.layer.opacity = .oneHalf
-				accessoryType = .none
 				isUserInteractionEnabled_setFalseWithAxTrait()
 		}
 		
