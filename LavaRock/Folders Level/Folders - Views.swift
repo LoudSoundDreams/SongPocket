@@ -41,9 +41,8 @@ struct FolderRow: View {
 		HStack {
 			Text(folder.title ?? " ")
 			Spacer()
-			AvatarImage(
-				libraryItem: folder)
-			.accessibilitySortPriority(10)
+			AvatarImage(libraryItem: folder)
+				.accessibilitySortPriority(10)
 		}
 		.opacity({
 			if case FolderRowMode.modalDisabled = mode {
