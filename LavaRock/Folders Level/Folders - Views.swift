@@ -100,7 +100,7 @@ final class FolderCell: UITableViewCell {
 				}
 				return folderTitle
 			}()
-			contentView.layer.opacity = {
+			contentView.layer.opacity = { () -> Float in
 				if case FolderRowMode.modalDisabled = mode {
 					return .oneFourth
 				} else {
