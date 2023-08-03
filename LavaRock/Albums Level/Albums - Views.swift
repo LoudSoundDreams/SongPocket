@@ -137,6 +137,16 @@ final class AlbumCell: UITableViewCell {
 				textStack.spacing = 4
 			}
 			
+			rowContentAccessibilityLabel__ = [
+				titleLabel.text,
+				releaseDateLabel.text,
+			].compactedAndFormattedAsNarrowList()
+			indicateAvatarStatus__(
+				album.avatarStatus()
+			)
+			
+			accessibilityUserInputLabels = [album.titleFormatted()]
+			
 			switch mode {
 				case .normal:
 					contentView.layer.opacity = 1
@@ -159,18 +169,6 @@ final class AlbumCell: UITableViewCell {
 				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
 				isUserInteractionEnabled = false
 				accessibilityTraits.formUnion(.notEnabled)
-		}
-		
-		if !Self.usesSwiftUI__ {
-			rowContentAccessibilityLabel__ = [
-				titleLabel.text,
-				releaseDateLabel.text,
-			].compactedAndFormattedAsNarrowList()
-			indicateAvatarStatus__(
-				album.avatarStatus()
-			)
-			
-			accessibilityUserInputLabels = [album.titleFormatted()]
 		}
 	}
 	
