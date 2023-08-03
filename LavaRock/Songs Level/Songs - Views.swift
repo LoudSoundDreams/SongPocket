@@ -22,6 +22,9 @@ final class CoverArtCell: UITableViewCell {
 		contentConfiguration = UIHostingConfiguration {
 			CoverArtView(
 				albumRepresentative: albumRepresentative, // TO DO: Redraw when artwork changes
+				largerThanOrEqualToSizeInPoints: maxHeight)
+			.frame(
+				maxWidth: .infinity, // Horizontally centers narrow artwork
 				maxHeight: maxHeight)
 			.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
 				viewDimensions[.leading]

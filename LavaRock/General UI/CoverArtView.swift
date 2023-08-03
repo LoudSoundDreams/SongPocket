@@ -10,7 +10,7 @@ import OSLog
 
 struct CoverArtView: View {
 	let albumRepresentative: (any SongInfo)?
-	let maxHeight: CGFloat
+	let largerThanOrEqualToSizeInPoints: CGFloat
 	
 	var body: some View {
 		let uiImageOptional: UIImage? = {
@@ -19,25 +19,19 @@ struct CoverArtView: View {
 				os_signpost(.end, log: .songsView, name: "Draw cover art")
 			}
 			return albumRepresentative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
-				width: maxHeight,
-				height: maxHeight))
+				width: largerThanOrEqualToSizeInPoints,
+				height: largerThanOrEqualToSizeInPoints))
 		}()
 		if let uiImage = uiImageOptional {
 			Image(uiImage: uiImage)
-				.resizable()
-				.scaledToFit()
-				.frame(
-					maxWidth: .infinity, // Horizontally centers narrow artwork
-					maxHeight: maxHeight)
+				.resizable() // Lets 1 image point differ from 1 screen point
+				.scaledToFit() // Maintains aspect ratio
 				.accessibilityLabel(LRString.albumArtwork)
 				.accessibilityIgnoresInvertColors()
 		} else {
 			ZStack {
 				Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
 					.aspectRatio(1, contentMode: .fit)
-					.frame(
-						maxWidth: .infinity,
-						maxHeight: maxHeight)
 				Image(systemName: "music.note")
 					.foregroundStyle(.secondary)
 					.font(.system(size: .eight * 4))

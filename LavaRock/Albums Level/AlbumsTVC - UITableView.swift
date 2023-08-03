@@ -73,10 +73,6 @@ extension AlbumsTVC {
 				break
 		}
 		
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Album",
-			for: indexPath) as? AlbumCell
-		else { return UITableViewCell() }
 		let album = albumsViewModel.albumNonNil(at: indexPath)
 		let mode: AlbumRowMode = {
 			switch purpose {
@@ -98,7 +94,13 @@ extension AlbumsTVC {
 					return .normal
 			}
 		}()
+		
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Album",
+			for: indexPath) as? AlbumCell
+		else { return UITableViewCell() }
 		cell.configure(with: album, mode: mode)
+		
 		return cell
 	}
 	
