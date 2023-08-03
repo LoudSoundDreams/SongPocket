@@ -106,23 +106,25 @@ final class AlbumCell: UITableViewCell {
 		with album: Album,
 		mode: AlbumRowMode
 	) {
-		let representative = album.representativeSongInfo() // Can be `nil`
-		
-		os_signpost(.begin, log: .albumsView, name: "Set cover art")
-		let widthAndHeightInPoints = coverArtView.bounds.width
-		coverArtView.image = representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
-			width: widthAndHeightInPoints,
-			height: widthAndHeightInPoints))
-		os_signpost(.end, log: .albumsView, name: "Set cover art")
-		
-		titleLabel.text = album.titleFormatted()
-		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()
-		
-		if releaseDateLabel.text == nil {
-			// We couldn’t determine the album’s release date.
-			textStack.spacing = 0
-		} else {
-			textStack.spacing = 4
+		if !Self.usesSwiftUI__ {
+			let representative = album.representativeSongInfo() // Can be `nil`
+			
+			os_signpost(.begin, log: .albumsView, name: "Set cover art")
+			let widthAndHeightInPoints = coverArtView.bounds.width
+			coverArtView.image = representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
+				width: widthAndHeightInPoints,
+				height: widthAndHeightInPoints))
+			os_signpost(.end, log: .albumsView, name: "Set cover art")
+			
+			titleLabel.text = album.titleFormatted()
+			releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()
+			
+			if releaseDateLabel.text == nil {
+				// We couldn’t determine the album’s release date.
+				textStack.spacing = 0
+			} else {
+				textStack.spacing = 4
+			}
 		}
 		
 		switch mode {
@@ -143,15 +145,17 @@ final class AlbumCell: UITableViewCell {
 				isUserInteractionEnabled_setFalseWithAxTrait()
 		}
 		
-		rowContentAccessibilityLabel__ = [
-			titleLabel.text,
-			releaseDateLabel.text,
-		].compactedAndFormattedAsNarrowList()
-		indicateAvatarStatus__(
-			album.avatarStatus()
-		)
-		
-		accessibilityUserInputLabels = [album.titleFormatted()]
+		if !Self.usesSwiftUI__ {
+			rowContentAccessibilityLabel__ = [
+				titleLabel.text,
+				releaseDateLabel.text,
+			].compactedAndFormattedAsNarrowList()
+			indicateAvatarStatus__(
+				album.avatarStatus()
+			)
+			
+			accessibilityUserInputLabels = [album.titleFormatted()]
+		}
 	}
 	
 	// Xcode 15: Delete this and instead call `registerForTraitChanges` at some point.
