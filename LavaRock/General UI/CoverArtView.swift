@@ -43,6 +43,7 @@ struct CoverArtView: View {
 					.font(.system(size: .eight * 4))
 			}
 			.accessibilityLabel(LRString.albumArtwork)
+			.accessibilityIgnoresInvertColors()
 		}
 	}
 }
