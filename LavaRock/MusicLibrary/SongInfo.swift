@@ -230,16 +230,44 @@ extension Sim_SongInfo {
 			return []
 		}
 		
-		let beethoven = 0
-		let khan = 1
-		let voyage = 2
-		let fez = 3
-		let sonic = 4
+		let tall = AlbumIDDispenser.takeNumber()
+		let wide = AlbumIDDispenser.takeNumber()
+		let noArtwork = AlbumIDDispenser.takeNumber()
+		let khan = AlbumIDDispenser.takeNumber()
+		let voyage = AlbumIDDispenser.takeNumber()
+		let fez = AlbumIDDispenser.takeNumber()
+		let sonic = AlbumIDDispenser.takeNumber()
 		return [
 			Sim_SongInfo(
-				albumID: beethoven,
+				albumID: tall,
 				albumArtist: "Beethoven",
-				albumTitle: "",
+				albumTitle: "a",
+				coverArtFileName: "Real",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 1,
+				title: "",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: nil
+			),
+			Sim_SongInfo(
+				albumID: wide,
+				albumArtist: "Beethoven",
+				albumTitle: "b",
+				coverArtFileName: "wide",
+				discCount: 1,
+				discNumber: 1,
+				trackNumber: 1,
+				title: "",
+				artist: "",
+				dateAdded: .now,
+				releaseDate: nil
+			),
+			Sim_SongInfo(
+				albumID: noArtwork,
+				albumArtist: "Beethoven",
+				albumTitle: "c",
 				coverArtFileName: "",
 				discCount: 1,
 				discNumber: 1,
@@ -399,7 +427,7 @@ extension Sim_SongInfo {
 	
 	static var dict: [SongID: Self] = [:]
 	init(
-		albumID: Int,
+		albumID: AlbumID,
 		albumArtist: String?,
 		albumTitle: String?,
 		coverArtFileName: String?,
@@ -413,8 +441,8 @@ extension Sim_SongInfo {
 	) {
 		// Memberwise initializer
 		self.init(
-			albumID: AlbumID(albumID),
-			songID: Sim_SongIDDispenser.takeNumber(),
+			albumID: albumID,
+			songID: SongIDDispenser.takeNumber(),
 			albumArtistOnDisk: albumArtist,
 			albumTitleOnDisk: albumTitle,
 			discCountOnDisk: discCount,
@@ -429,7 +457,15 @@ extension Sim_SongInfo {
 		
 		Self.dict[self.songID] = self
 	}
-	private enum Sim_SongIDDispenser {
+	private enum AlbumIDDispenser {
+		private static var nextAvailable = 1
+		static func takeNumber() -> AlbumID {
+			let result = AlbumID(nextAvailable)
+			nextAvailable += 1
+			return result
+		}
+	}
+	private enum SongIDDispenser {
 		private static var nextAvailable = 1
 		static func takeNumber() -> SongID {
 			let result = SongID(nextAvailable)
