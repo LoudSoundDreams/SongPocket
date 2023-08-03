@@ -67,6 +67,16 @@ struct AlbumRow: View {
 				.offset(y: -0.5)
 				.accessibilitySortPriority(10)
 		}
+		.opacity({ () -> Double in
+			switch mode {
+				case .normal:
+					return 1
+				case .modal:
+					return .oneFourth // Close to what Files pickers use
+				case .modalTinted:
+					return .oneHalf
+			}
+		}())
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([album.titleFormatted()])
@@ -126,19 +136,25 @@ final class AlbumCell: UITableViewCell {
 			} else {
 				textStack.spacing = 4
 			}
+			
+			switch mode {
+				case .normal:
+					contentView.layer.opacity = 1
+				case .modal:
+					contentView.layer.opacity = .oneFourth
+				case .modalTinted:
+					contentView.layer.opacity = .oneHalf
+			}
 		}
 		
 		switch mode {
 			case .normal:
-				contentView.layer.opacity = 1 // The default value
 				isUserInteractionEnabled_setTrueWithAxTrait()
 			case .modal:
 				backgroundColor_set_to_clear()
-				contentView.layer.opacity = .oneFourth // Close to what Files pickers use
 				isUserInteractionEnabled_setFalseWithAxTrait()
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
-				contentView.layer.opacity = .oneHalf
 				isUserInteractionEnabled_setFalseWithAxTrait()
 		}
 		
