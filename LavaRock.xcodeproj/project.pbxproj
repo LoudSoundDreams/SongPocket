@@ -78,7 +78,6 @@
 		07E0BBD7276567490010117E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBD6276567490010117E /* String.swift */; };
 		07E0BBDE276567760010117E /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* Notifications.swift */; };
 		07E0BBF32765678F0010117E /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE72765678F0010117E /* UITableView.swift */; };
-		07E0BBF42765678F0010117E /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBE82765678F0010117E /* UITableViewCell.swift */; };
 		07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */; };
 		07EC01E826C84BC700954E08 /* FoldersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E726C84BC700954E08 /* FoldersViewModel.swift */; };
 		07EC01EA26C8958300954E08 /* AlbumsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EC01E926C8958300954E08 /* AlbumsViewModel.swift */; };
@@ -189,7 +188,6 @@
 		07E0BBD6276567490010117E /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		07E0BBDA276567760010117E /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		07E0BBE72765678F0010117E /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
-		07E0BBE82765678F0010117E /* UITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
 		07EC01E726C84BC700954E08 /* FoldersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersViewModel.swift; sourceTree = "<group>"; };
 		07EC01E926C8958300954E08 /* AlbumsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewModel.swift; sourceTree = "<group>"; };
@@ -413,7 +411,6 @@
 				07619EE427342FC9003F95AE /* Diffing.swift */,
 				076B4DEC27738FF4004B523D /* OSLog.swift */,
 				07E0BBDA276567760010117E /* Notifications.swift */,
-				07E0BBE82765678F0010117E /* UITableViewCell.swift */,
 				07E0BBE72765678F0010117E /* UITableView.swift */,
 				0787CB0927A376400068C2E5 /* UIViewController.swift */,
 				073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */,
@@ -608,7 +605,6 @@
 			files = (
 				07EC01EC26C895CB00954E08 /* SongsViewModel.swift in Sources */,
 				07EC01E826C84BC700954E08 /* FoldersViewModel.swift in Sources */,
-				07E0BBF42765678F0010117E /* UITableViewCell.swift in Sources */,
 				0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */,
 				07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */,
 				0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */,
