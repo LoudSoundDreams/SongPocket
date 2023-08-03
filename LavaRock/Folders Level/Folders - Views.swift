@@ -126,22 +126,16 @@ final class FolderCell: UITableViewCell {
 				accessibilityCustomActions = actions
 			case .modal:
 				backgroundColor = .clear
-				
 				isUserInteractionEnabled = true
 				accessibilityTraits.subtract(.notEnabled)
-				accessibilityCustomActions = []
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
-				
 				isUserInteractionEnabled = true
 				accessibilityTraits.subtract(.notEnabled)
-				accessibilityCustomActions = []
 			case .modalDisabled:
 				backgroundColor = .clear
-				
 				isUserInteractionEnabled = false
 				accessibilityTraits.formUnion(.notEnabled)
-				accessibilityCustomActions = []
 		}
 	}
 	
