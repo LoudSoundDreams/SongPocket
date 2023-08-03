@@ -25,7 +25,7 @@ struct AlbumRow: View {
 	}
 	@Environment(\.pixelLength) private var pixelLength
 	var body: some View {
-		HStack(spacing: .eight * 10/8) {
+		HStack(spacing: Self.verticalMargin * 2) {
 			CoverArtView(
 				albumRepresentative: album.representativeSongInfo(),
 				largerThanOrEqualToSizeInPoints: Self.coverArtMaxWidth)
@@ -65,12 +65,12 @@ struct AlbumRow: View {
 			Spacer()
 			
 			AvatarImage(libraryItem: album)
+				.offset(y: -0.5)
 				.accessibilitySortPriority(10)
 		}
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([album.titleFormatted()])
-		// TO DO: Trailing separator inset
 	}
 }
 final class AlbumCell: UITableViewCell {
@@ -191,28 +191,29 @@ final class AlbumCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		if Self.usesSwiftUI__ { return }
+		if !Self.usesSwiftUI__ {
+			// Draw artwork border
+			// You must do this when switching between light and dark mode.
+			let artViewLayer = coverArtView.layer
+			// As of iOS 16.3…
+			// • Apple Music uses a border and no shadow.
+			// • Apple Books uses a shadow and no border.
+			artViewLayer.borderColor = UIColor.separator.cgColor
+			// Draw in pixels, not points
+			let pixelsPerPoint = window?.screen.nativeScale ?? 2
+			artViewLayer.borderWidth = 1 / pixelsPerPoint
+			
+			separatorInset.left = 0
+			+ contentView.frame.minX
+			+ mainStack.frame.minX // 16
+			+ coverArtView.frame.width // 132
+			+ (
+				textIsHuge
+				? Self.mainStackSpacingWhenHorizontal // 10
+				: mainStack.spacing
+			)
+		}
 		
-		// Draw artwork border
-		// You must do this when switching between light and dark mode.
-		let artViewLayer = coverArtView.layer
-		// As of iOS 16.3…
-		// • Apple Music uses a border and no shadow.
-		// • Apple Books uses a shadow and no border.
-		artViewLayer.borderColor = UIColor.separator.cgColor
-		// Draw in pixels, not points
-		let pixelsPerPoint = window?.screen.nativeScale ?? 2
-		artViewLayer.borderWidth = 1 / pixelsPerPoint
-		
-		separatorInset.left = 0
-		+ contentView.frame.minX
-		+ mainStack.frame.minX // 16
-		+ coverArtView.frame.width // 132
-		+ (
-			textIsHuge
-			? Self.mainStackSpacingWhenHorizontal // 10
-			: mainStack.spacing
-		)
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }
