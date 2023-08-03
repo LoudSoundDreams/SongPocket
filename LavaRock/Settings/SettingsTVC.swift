@@ -87,9 +87,7 @@ extension SettingsTVC {
 		switch indexPath.row {
 			case Self.avatarRow:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Avatar",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Avatar", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					AvatarPicker()
@@ -105,9 +103,7 @@ extension SettingsTVC {
 				return tipJarCell(forRowAt: indexPath)
 			default:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Contact",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Contact", for: indexPath)
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(verbatim: "linus@songpocket.app")
@@ -223,9 +219,7 @@ extension SettingsTVC {
 		switch TipJarViewModel.shared.status {
 			case .notYetFirstLoaded, .loading:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Tip Loading",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent(LRString.tipJar, value: LRString.loadingEllipsis)
@@ -237,9 +231,7 @@ extension SettingsTVC {
 				return cell
 			case .reload:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Tip Reload",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Reload", for: indexPath)
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(LRString.reload)
@@ -255,9 +247,7 @@ extension SettingsTVC {
 				return cell
 			case .ready:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Tip Ready",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Ready", for: indexPath)
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent {
 						Text(PurchaseManager.shared.tipPrice ?? "")
@@ -273,9 +263,7 @@ extension SettingsTVC {
 				return cell
 			case .confirming:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Tip Confirming",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Confirming", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent(LRString.tipJar, value: LRString.confirmingEllipsis)
@@ -287,9 +275,7 @@ extension SettingsTVC {
 				return cell
 			case .thankYou:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Tip Thank You",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Thank You", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					TipThankYouView()

@@ -49,9 +49,7 @@ extension AlbumsTVC {
 						switch prerow {
 							case .moveHere:
 								// The cell in the storyboard is completely default except for the reuse identifier.
-								let cell = tableView.dequeueReusableCell(
-									withIdentifier: "Move Here",
-									for: indexPath)
+								let cell = tableView.dequeueReusableCell(withIdentifier: "Move Here", for: indexPath)
 								cell.contentConfiguration = UIHostingConfiguration {
 									HStack {
 										Text(LRString.moveHere)

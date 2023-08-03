@@ -68,9 +68,7 @@ extension FoldersTVC {
 		switch viewState {
 			case .allowAccess:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Allow Access",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access", for: indexPath)
 				cell.contentConfiguration = UIHostingConfiguration {
 					HStack {
 						Text(LRString.allowAccessToAppleMusic)
@@ -85,9 +83,7 @@ extension FoldersTVC {
 				return cell
 			case .loading:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Loading",
-					for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Loading", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					HStack {
@@ -107,9 +103,7 @@ extension FoldersTVC {
 				switch indexPath.row {
 					case Self.emptyDatabaseInfoRow:
 						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(
-							withIdentifier: "No Folders",
-							for: indexPath)
+						let cell = tableView.dequeueReusableCell(withIdentifier: "No Folders", for: indexPath)
 						cell.selectionStyle = .none
 						cell.contentConfiguration = UIHostingConfiguration {
 							HStack {
@@ -124,9 +118,7 @@ extension FoldersTVC {
 						return cell
 					default:
 						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(
-							withIdentifier: "Open Music",
-							for: indexPath)
+						let cell = tableView.dequeueReusableCell(withIdentifier: "Open Music", for: indexPath)
 						cell.contentConfiguration = UIHostingConfiguration {
 							LabeledContent {
 								Image(systemName: "arrow.up.forward.app")

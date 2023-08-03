@@ -63,9 +63,7 @@ extension SongsTVC {
 						
 					case .albumInfo:
 						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(
-							withIdentifier: "Album Info",
-							for: indexPath)
+						let cell = tableView.dequeueReusableCell(withIdentifier: "Album Info", for: indexPath)
 						cell.selectionStyle = .none // So that the user can’t even highlight the cell
 						cell.contentConfiguration = UIHostingConfiguration {
 							AlbumInfoRow(
