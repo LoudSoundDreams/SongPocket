@@ -78,29 +78,27 @@ extension AlbumsTVC {
 			for: indexPath) as? AlbumCell
 		else { return UITableViewCell() }
 		let album = albumsViewModel.albumNonNil(at: indexPath)
-		cell.configure(
-			with: album,
-			mode: {
-				switch purpose {
-					case .previewingCombine:
+		let mode: AlbumRowMode = {
+			switch purpose {
+				case .previewingCombine:
+					return .modalTinted
+				case .organizingAlbums(let clipboard):
+					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
 						return .modalTinted
-					case .organizingAlbums(let clipboard):
-						if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
-							return .modalTinted
-						} else {
-							return .modal
-						}
-					case .movingAlbums(let clipboard):
-						if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
-							return .modalTinted
-						} else {
-							return .modal
-						}
-					case .browsing:
-						return .normal
-				}
-			}()
-		)
+					} else {
+						return .modal
+					}
+				case .movingAlbums(let clipboard):
+					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
+						return .modalTinted
+					} else {
+						return .modal
+					}
+				case .browsing:
+					return .normal
+			}
+		}()
+		cell.configure(with: album, mode: mode)
 		return cell
 	}
 	

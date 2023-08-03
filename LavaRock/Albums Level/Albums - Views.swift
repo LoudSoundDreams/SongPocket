@@ -8,12 +8,12 @@
 import UIKit
 import OSLog
 
+enum AlbumRowMode {
+	case normal
+	case modal
+	case modalTinted
+}
 final class AlbumCell: UITableViewCell {
-	enum Mode {
-		case normal
-		case modal
-		case modalTinted
-	}
 	
 	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
@@ -43,7 +43,7 @@ final class AlbumCell: UITableViewCell {
 	
 	func configure(
 		with album: Album,
-		mode: Mode
+		mode: AlbumRowMode
 	) {
 		let representative = album.representativeSongInfo() // Can be `nil`
 		
