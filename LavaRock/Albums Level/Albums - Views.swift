@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import OSLog
 
 enum AlbumRowMode {
@@ -13,7 +14,56 @@ enum AlbumRowMode {
 	case modal
 	case modalTinted
 }
+struct AlbumRow: View {
+	let album: Album
+	let mode: AlbumRowMode
+	
+	static let verticalMargin: CGFloat = .eight * 5/8
+	private static var coverArtMaxWidth: CGFloat {
+		let minRowHeight: CGFloat = 44 * 3
+		return minRowHeight - 2 * verticalMargin
+	}
+	@Environment(\.pixelLength) private var pixelLength
+	var body: some View {
+		HStack(spacing: .eight * 10/8) {
+			CoverArtView(
+				albumRepresentative: album.representativeSongInfo(),
+				largerThanOrEqualToSizeInPoints: Self.coverArtMaxWidth)
+			.frame(width: Self.coverArtMaxWidth)
+			.clipShape(
+				RoundedRectangle(cornerRadius: .eight * 1/2, style: .continuous)
+			)
+			.background(
+				RoundedRectangle(cornerRadius: .eight * 1/2, style: .continuous)
+					.stroke(
+						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
+						lineWidth: { () -> CGFloat in
+							// Add a border exactly 1 pixel wide.
+							// The cover art itself will obscure half our return value.
+							// SwiftUI interprets our return value in points, not pixels.
+							let resultInPixels = 2
+							let pointsPerPixel = pixelLength
+							let result = CGFloat(resultInPixels) * pointsPerPixel
+							print(result)
+							return result
+						}()
+					)
+			)
+			
+			Text(album.titleFormatted())
+				.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+					viewDimensions[.leading]
+				}
+			
+			Spacer()
+		}
+//		.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+//			viewDimensions[.trailing]
+//		}
+	}
+}
 final class AlbumCell: UITableViewCell {
+	static let usesSwiftUI__ = 10 == 1
 	
 	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
@@ -129,6 +179,8 @@ final class AlbumCell: UITableViewCell {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		
+		if Self.usesSwiftUI__ { return }
 		
 		// Draw artwork border
 		// You must do this when switching between light and dark mode.
