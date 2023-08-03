@@ -159,15 +159,14 @@ final class AlbumCell: UITableViewCell {
 		
 		switch mode {
 			case .normal:
-				isUserInteractionEnabled = true
 				accessibilityTraits.subtract(.notEnabled)
 			case .modal:
 				backgroundColor = .clear
-				isUserInteractionEnabled = false
+				selectionStyle = .none
 				accessibilityTraits.formUnion(.notEnabled)
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
-				isUserInteractionEnabled = false
+				selectionStyle = .none
 				accessibilityTraits.formUnion(.notEnabled)
 		}
 	}

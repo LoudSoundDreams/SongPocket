@@ -132,9 +132,9 @@ extension AlbumsTVC {
 	) -> IndexPath? {
 		switch purpose {
 			case .previewingCombine:
-				break
+				return nil
 			case .organizingAlbums:
-				break
+				return nil
 			case .movingAlbums:
 				guard let albumsViewModel = viewModel as? AlbumsViewModel else {
 					return nil
@@ -144,7 +144,7 @@ extension AlbumsTVC {
 					case .prerow:
 						return indexPath
 					case .album:
-						break
+						return nil
 				}
 			case .browsing:
 				break
