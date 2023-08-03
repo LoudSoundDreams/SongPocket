@@ -51,13 +51,10 @@ extension FoldersTVC {
 			case .movingAlbums:
 				let rowCase = foldersViewModel.rowCase(for: indexPath)
 				switch rowCase {
-					case .prerow(let prerow):
-						switch prerow {
-							case .createFolder:
-								return tableView.dequeueReusableCell(
-									withIdentifier: "Create Folder",
-									for: indexPath) as? CreateFolderCell ?? UITableViewCell()
-						}
+					case .prerow:
+						return tableView.dequeueReusableCell(
+							withIdentifier: "Create Folder",
+							for: indexPath) as? CreateFolderCell ?? UITableViewCell()
 					case .folder:
 						break
 				}
@@ -231,11 +228,8 @@ extension FoldersTVC {
 				}
 				let rowCase = foldersViewModel.rowCase(for: indexPath)
 				switch rowCase {
-					case .prerow(let prerow):
-						switch prerow {
-							case .createFolder:
-								return indexPath
-						}
+					case .prerow:
+						return indexPath
 					case .folder:
 						break
 				}
@@ -272,12 +266,9 @@ extension FoldersTVC {
 				guard let foldersViewModel = viewModel as? FoldersViewModel else { return }
 				let rowCase = foldersViewModel.rowCase(for: indexPath)
 				switch rowCase {
-					case .prerow(let prerow):
-						switch prerow {
-							case .createFolder:
-								createAndOpen()
-								return
-						}
+					case .prerow:
+						createAndOpen()
+						return
 					case .folder:
 						break
 				}

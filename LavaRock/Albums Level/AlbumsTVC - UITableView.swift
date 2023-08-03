@@ -45,25 +45,22 @@ extension AlbumsTVC {
 			case .movingAlbums:
 				let rowCase = albumsViewModel.rowCase(for: indexPath)
 				switch rowCase {
-					case .prerow(let prerow):
-						switch prerow {
-							case .moveHere:
-								// The cell in the storyboard is completely default except for the reuse identifier.
-								let cell = tableView.dequeueReusableCell(withIdentifier: "Move Here", for: indexPath)
-								cell.contentConfiguration = UIHostingConfiguration {
-									HStack {
-										Text(LRString.moveHere)
-											.foregroundStyle(Color.accentColor)
-											.bold()
-										Spacer()
-									}
-									.accessibilityAddTraits(.isButton)
-									.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-										viewDimensions[.trailing]
-									}
-								}
-								return cell
+					case .prerow:
+						// The cell in the storyboard is completely default except for the reuse identifier.
+						let cell = tableView.dequeueReusableCell(withIdentifier: "Move Here", for: indexPath)
+						cell.contentConfiguration = UIHostingConfiguration {
+							HStack {
+								Text(LRString.moveHere)
+									.foregroundStyle(Color.accentColor)
+									.bold()
+								Spacer()
+							}
+							.accessibilityAddTraits(.isButton)
+							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
+								viewDimensions[.trailing]
+							}
 						}
+						return cell
 					case .album:
 						break
 				}
@@ -144,11 +141,8 @@ extension AlbumsTVC {
 				}
 				let rowCase = albumsViewModel.rowCase(for: indexPath)
 				switch rowCase {
-					case .prerow(let prerow):
-						switch prerow {
-							case .moveHere:
-								return indexPath
-						}
+					case .prerow:
+						return indexPath
 					case .album:
 						break
 				}
@@ -172,12 +166,9 @@ extension AlbumsTVC {
 				guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
 				let rowCase = albumsViewModel.rowCase(for: indexPath)
 				switch rowCase {
-					case .prerow(let prerow):
-						switch prerow {
-							case .moveHere:
-								moveHere(to: indexPath)
-								return
-						}
+					case .prerow:
+						moveHere(to: indexPath)
+						return
 					case .album:
 						break
 				}
