@@ -50,16 +50,27 @@ struct AlbumRow: View {
 					)
 			)
 			
-			Text(album.titleFormatted())
-				.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-					viewDimensions[.leading]
+			VStack(alignment: .leading, spacing: .eight * 1/2) {
+				Text(album.titleFormatted())
+					.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+						viewDimensions[.leading]
+					}
+				if let releaseDate = album.releaseDateEstimateFormattedOptional() {
+					Text(releaseDate)
+						.foregroundStyle(.secondary)
+						.font(.caption)
 				}
+			}
 			
 			Spacer()
+			
+			AvatarImage(libraryItem: album)
+				.accessibilitySortPriority(10)
 		}
-//		.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-//			viewDimensions[.trailing]
-//		}
+		.accessibilityElement(children: .combine)
+		.accessibilityAddTraits(.isButton)
+		.accessibilityInputLabels([album.titleFormatted()])
+		// TO DO: Trailing separator inset
 	}
 }
 final class AlbumCell: UITableViewCell {
@@ -209,6 +220,8 @@ extension AlbumCell: AvatarDisplaying__ {
 	func indicateAvatarStatus__(
 		_ avatarStatus: AvatarStatus
 	) {
+		if Self.usesSwiftUI__ { return }
+		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
