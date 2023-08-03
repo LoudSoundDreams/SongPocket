@@ -75,7 +75,7 @@ final class FolderCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		backgroundColor_set_to_clear()
+		backgroundColor = .clear
 	}
 	
 	func configure(
@@ -121,22 +121,26 @@ final class FolderCell: UITableViewCell {
 		
 		switch mode {
 			case .normal(let actions):
-				isUserInteractionEnabled_setTrueWithAxTrait()
+				isUserInteractionEnabled = true
+				accessibilityTraits.subtract(.notEnabled)
 				accessibilityCustomActions = actions
 			case .modal:
-				backgroundColor_set_to_clear()
+				backgroundColor = .clear
 				
-				isUserInteractionEnabled_setTrueWithAxTrait()
+				isUserInteractionEnabled = true
+				accessibilityTraits.subtract(.notEnabled)
 				accessibilityCustomActions = []
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
 				
-				isUserInteractionEnabled_setTrueWithAxTrait()
+				isUserInteractionEnabled = true
+				accessibilityTraits.subtract(.notEnabled)
 				accessibilityCustomActions = []
 			case .modalDisabled:
-				backgroundColor_set_to_clear()
+				backgroundColor = .clear
 				
-				isUserInteractionEnabled_setFalseWithAxTrait()
+				isUserInteractionEnabled = false
+				accessibilityTraits.formUnion(.notEnabled)
 				accessibilityCustomActions = []
 		}
 	}

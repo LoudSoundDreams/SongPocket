@@ -181,7 +181,7 @@ final class SongCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		backgroundColor_set_to_clear()
+		backgroundColor = .clear
 		
 		if Self.usesSwiftUI__ { return }
 		

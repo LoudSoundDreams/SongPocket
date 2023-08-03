@@ -100,7 +100,7 @@ final class AlbumCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		backgroundColor_set_to_clear()
+		backgroundColor = .clear
 		
 		if !Self.usesSwiftUI__ {
 			coverArtView.accessibilityIgnoresInvertColors = true
@@ -149,13 +149,16 @@ final class AlbumCell: UITableViewCell {
 		
 		switch mode {
 			case .normal:
-				isUserInteractionEnabled_setTrueWithAxTrait()
+				isUserInteractionEnabled = true
+				accessibilityTraits.subtract(.notEnabled)
 			case .modal:
-				backgroundColor_set_to_clear()
-				isUserInteractionEnabled_setFalseWithAxTrait()
+				backgroundColor = .clear
+				isUserInteractionEnabled = false
+				accessibilityTraits.formUnion(.notEnabled)
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
-				isUserInteractionEnabled_setFalseWithAxTrait()
+				isUserInteractionEnabled = false
+				accessibilityTraits.formUnion(.notEnabled)
 		}
 		
 		if !Self.usesSwiftUI__ {
