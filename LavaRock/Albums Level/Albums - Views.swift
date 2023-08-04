@@ -25,56 +25,57 @@ struct AlbumRow: View {
 	}
 	var body: some View {
 		HStack {
-		let contentStackLayout: AnyLayout = {
-			if isVertical {
-				return AnyLayout(VStackLayout(alignment: .leading, spacing: 0))
-			}
-			return AnyLayout(HStackLayout(spacing: 0))
-		}()
-		contentStackLayout {
-			let coverArtVerticalMargin: CGFloat = .eight * 5/8
-			let coverArtMaxWidth: CGFloat = {
-				let minRowHeight: CGFloat = 44 * 3
-				return minRowHeight - 2 * coverArtVerticalMargin
-			}()
-			CoverArtView(
-				albumRepresentative: album.representativeSongInfo(),
-				largerThanOrEqualToSizeInPoints: coverArtMaxWidth)
-			.frame(width: coverArtMaxWidth)
-			.clipShape(
-				RoundedRectangle(cornerRadius: .eight * 1/2, style: .continuous)
-			)
-			.background(
-				RoundedRectangle(cornerRadius: .eight * 1/2, style: .continuous)
-					.stroke(
-						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
-						lineWidth: { () -> CGFloat in
-							// Add a border exactly 1 pixel wide.
-							// The cover art itself will obscure half our return value.
-							// SwiftUI interprets our return value in points, not pixels.
-							let resultInPixels = 2
-							let result = CGFloat(resultInPixels) * pointsPerPixel
-							print(result)
-							return result
-						}()
-					)
-			)
-			.padding(.vertical, coverArtVerticalMargin)
-			.padding(.trailing, coverArtVerticalMargin * 2)
-			
-			VStack(alignment: .leading, spacing: .eight * 1/2) {
-				Text(album.titleFormatted())
-					.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-						viewDimensions[.leading]
-					}
-				if let releaseDate = album.releaseDateEstimateFormattedOptional() {
-					Text(releaseDate)
-						.foregroundStyle(.secondary)
-						.font(.caption)
+			let contentStackLayout: AnyLayout = {
+				if isVertical {
+					return AnyLayout(VStackLayout(alignment: .leading, spacing: 0))
 				}
+				return AnyLayout(HStackLayout(spacing: 0))
+			}()
+			contentStackLayout {
+				let coverArtVerticalMargin: CGFloat = .eight * 5/8
+				let coverArtMaxWidth: CGFloat = {
+					let minRowHeight: CGFloat = 44 * 3
+					return minRowHeight - 2 * coverArtVerticalMargin
+				}()
+				CoverArtView(
+					albumRepresentative: album.representativeSongInfo(),
+					largerThanOrEqualToSizeInPoints: coverArtMaxWidth)
+				.frame(width: coverArtMaxWidth)
+				.clipShape(
+					RoundedRectangle(cornerRadius: .eight * 1/2, style: .continuous)
+				)
+				.background(
+					RoundedRectangle(cornerRadius: .eight * 1/2, style: .continuous)
+						.stroke(
+							Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
+							lineWidth: { () -> CGFloat in
+								// Add a border exactly 1 pixel wide.
+								// The cover art itself will obscure half our return value.
+								// SwiftUI interprets our return value in points, not pixels.
+								let resultInPixels = 2
+								let result = CGFloat(resultInPixels) * pointsPerPixel
+								print(result)
+								return result
+							}()
+						)
+				)
+				.padding(.vertical, coverArtVerticalMargin)
+				.padding(.trailing, coverArtVerticalMargin * 2)
+				
+				VStack(alignment: .leading, spacing: .eight * 1/2) {
+					Text(album.titleFormatted())
+						.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+							viewDimensions[.leading]
+						}
+					if let releaseDate = album.releaseDateEstimateFormattedOptional() {
+						Text(releaseDate)
+							.foregroundStyle(.secondary)
+							.font(.caption)
+					}
+				}
+				// TO DO: Always keep wider than a certain width. (88 is good)
+				.padding(.vertical, .eight)
 			}
-			.padding(.vertical, .eight)
-		}
 			
 			Spacer()
 			
