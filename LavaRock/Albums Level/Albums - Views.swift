@@ -30,7 +30,7 @@ struct AlbumRow: View {
 			if textSize >= .accessibility1 {
 				return AnyLayout(VStackLayout(alignment: .leading))
 			}
-			return AnyLayout(HStackLayout(spacing: Self.coverArtVerticalMargin * 2))
+			return AnyLayout(HStackLayout(spacing: 0))
 		}()
 		
 		layout {
@@ -57,6 +57,7 @@ struct AlbumRow: View {
 					)
 			)
 			.padding(.vertical, Self.coverArtVerticalMargin)
+			.padding(.trailing, Self.coverArtVerticalMargin * 2)
 			
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(album.titleFormatted())
