@@ -18,14 +18,22 @@ struct AlbumRow: View {
 	let album: Album
 	let mode: AlbumRowMode
 	
-	static let verticalMargin: CGFloat = .eight * 5/8
+	private static let coverArtVerticalMargin: CGFloat = .eight * 5/8
 	private static var coverArtMaxWidth: CGFloat {
 		let minRowHeight: CGFloat = 44 * 3
-		return minRowHeight - 2 * verticalMargin
+		return minRowHeight - 2 * coverArtVerticalMargin
 	}
 	@Environment(\.pixelLength) private var pointsPerPixel
+	@Environment(\.dynamicTypeSize) private var textSize
 	var body: some View {
-		HStack(spacing: Self.verticalMargin * 2) {
+		let layout: AnyLayout = {
+			if textSize >= .accessibility1 {
+				return AnyLayout(VStackLayout(alignment: .leading))
+			}
+			return AnyLayout(HStackLayout(spacing: Self.coverArtVerticalMargin * 2))
+		}()
+		
+		layout {
 			CoverArtView(
 				albumRepresentative: album.representativeSongInfo(),
 				largerThanOrEqualToSizeInPoints: Self.coverArtMaxWidth)
@@ -48,6 +56,7 @@ struct AlbumRow: View {
 						}()
 					)
 			)
+			.padding(.vertical, Self.coverArtVerticalMargin)
 			
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(album.titleFormatted())
@@ -60,6 +69,7 @@ struct AlbumRow: View {
 						.font(.caption)
 				}
 			}
+			.padding(.vertical, .eight)
 			
 			Spacer()
 			

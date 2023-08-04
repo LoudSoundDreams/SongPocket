@@ -94,7 +94,7 @@ extension AlbumsTVC {
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(album: album, mode: mode)
 			}
-			.margins(.vertical, AlbumRow.verticalMargin)
+			.margins(.vertical, 0)
 			return cell
 		} else {
 			guard let cell = tableView.dequeueReusableCell(
