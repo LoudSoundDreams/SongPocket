@@ -232,15 +232,16 @@ final class AlbumCell: UITableViewCell {
 		let pixelsPerPoint = window?.screen.nativeScale ?? 2
 		artViewLayer.borderWidth = 1 / pixelsPerPoint
 		
-		separatorInset.left = 0
-		+ contentView.frame.minX
-		+ mainStack.frame.minX // 16
-		+ coverArtView.frame.width // 132
-		+ (
-			textIsHuge
-			? Self.mainStackSpacingWhenHorizontal // 10
-			: mainStack.spacing
-		)
+		separatorInset.left = {
+			var result: CGFloat = .zero
+			result += contentView.frame.minX
+			result += mainStack.frame.minX // 16
+			if !textIsHuge {
+				result += coverArtView.frame.width // 132
+				result += mainStack.spacing
+			}
+			return result
+		}()
 	}
 }
 extension AlbumCell: AvatarDisplaying__ {
