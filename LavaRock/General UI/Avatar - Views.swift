@@ -14,7 +14,7 @@ enum AvatarStatus {
 	case paused
 	case playing
 	
-	var uiImage: UIImage? {
+	var uiImage__: UIImage? {
 		switch self {
 			case .notPlaying:
 				return nil
@@ -78,11 +78,11 @@ struct AvatarImage: View {
 		}
 	}
 	
+	@ObservedObject private var current: CurrentAvatar = .shared
 	private var playing_image: some View {
-		Image(systemName: Avatar.preference.playingSFSymbolName)
+		Image(systemName: current.avatar.playingSFSymbolName)
 			.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 	}
-	
 	@ViewBuilder
 	private var foregroundView: some View {
 		switch status {
@@ -91,7 +91,7 @@ struct AvatarImage: View {
 				Image(systemName: "")
 //				EmptyView()
 			case .paused:
-				Image(systemName: Avatar.preference.pausedSFSymbolName)
+				Image(systemName: current.avatar.pausedSFSymbolName)
 					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 					.foregroundStyle(Color.accentColor)
 			case .playing:

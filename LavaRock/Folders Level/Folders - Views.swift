@@ -161,7 +161,7 @@ extension FolderCell: AvatarDisplaying__ {
 		
 		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
 		
-		speakerImageView.image = avatarStatus.uiImage
+		speakerImageView.image = avatarStatus.uiImage__
 		
 		accessibilityLabel = [
 			avatarStatus.axLabel,

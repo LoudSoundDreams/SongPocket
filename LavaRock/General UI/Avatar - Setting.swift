@@ -9,19 +9,19 @@ import SwiftUI
 
 // MARK: - Setting
 
-final class AvatarObservable: ObservableObject {
+final class CurrentAvatar: ObservableObject {
 	private init() {}
-	static let shared = AvatarObservable()
+	static let shared = CurrentAvatar()
 	
-	@Published var current: Avatar = .preference {
+	@Published var avatar: Avatar = .preference {
 		didSet {
-			Avatar.preference = current
+			Avatar.preference = avatar
 		}
 	}
 }
 
 struct AvatarPicker: View {
-	@ObservedObject private var avatarObservable: AvatarObservable = .shared
+	@ObservedObject private var current: CurrentAvatar = .shared
 	private static var hasEverSaved: String {
 		DefaultsKey.hasSavedDatabase.rawValue
 	}
@@ -29,7 +29,7 @@ struct AvatarPicker: View {
 	private var hasSaved: Bool = UserDefaults.standard.bool(forKey: Self.hasEverSaved)
 	
 	var body: some View {
-		Picker("", selection: $avatarObservable.current) {
+		Picker("", selection: $current.avatar) {
 			ForEach(Avatar.allCases) { avatar in
 				Image(systemName: avatar.playingSFSymbolName)
 					.accessibilityLabel(avatar.accessibilityLabel)
