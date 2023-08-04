@@ -19,16 +19,19 @@ struct AlbumRow: View {
 	let mode: AlbumRowMode
 	
 	@Environment(\.pixelLength) private var pointsPerPixel
-	@Environment(\.dynamicTypeSize) private var textSize
+	@Environment(\.dynamicTypeSize) private var textSize: DynamicTypeSize
+	private var isVertical: Bool {
+		textSize >= .accessibility1
+	}
 	var body: some View {
-		let layout: AnyLayout = {
-			if textSize >= .accessibility1 {
-				return AnyLayout(VStackLayout(alignment: .leading))
+		HStack {
+		let contentStackLayout: AnyLayout = {
+			if isVertical {
+				return AnyLayout(VStackLayout(alignment: .leading, spacing: 0))
 			}
 			return AnyLayout(HStackLayout(spacing: 0))
 		}()
-		
-		layout {
+		contentStackLayout {
 			let coverArtVerticalMargin: CGFloat = .eight * 5/8
 			let coverArtMaxWidth: CGFloat = {
 				let minRowHeight: CGFloat = 44 * 3
@@ -71,6 +74,7 @@ struct AlbumRow: View {
 				}
 			}
 			.padding(.vertical, .eight)
+		}
 			
 			Spacer()
 			
