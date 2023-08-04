@@ -18,11 +18,6 @@ struct AlbumRow: View {
 	let album: Album
 	let mode: AlbumRowMode
 	
-	private static let coverArtVerticalMargin: CGFloat = .eight * 5/8
-	private static var coverArtMaxWidth: CGFloat {
-		let minRowHeight: CGFloat = 44 * 3
-		return minRowHeight - 2 * coverArtVerticalMargin
-	}
 	@Environment(\.pixelLength) private var pointsPerPixel
 	@Environment(\.dynamicTypeSize) private var textSize
 	var body: some View {
@@ -34,10 +29,15 @@ struct AlbumRow: View {
 		}()
 		
 		layout {
+			let coverArtVerticalMargin: CGFloat = .eight * 5/8
+			let coverArtMaxWidth: CGFloat = {
+				let minRowHeight: CGFloat = 44 * 3
+				return minRowHeight - 2 * coverArtVerticalMargin
+			}()
 			CoverArtView(
 				albumRepresentative: album.representativeSongInfo(),
-				largerThanOrEqualToSizeInPoints: Self.coverArtMaxWidth)
-			.frame(width: Self.coverArtMaxWidth)
+				largerThanOrEqualToSizeInPoints: coverArtMaxWidth)
+			.frame(width: coverArtMaxWidth)
 			.clipShape(
 				RoundedRectangle(cornerRadius: .eight * 1/2, style: .continuous)
 			)
@@ -56,8 +56,8 @@ struct AlbumRow: View {
 						}()
 					)
 			)
-			.padding(.vertical, Self.coverArtVerticalMargin)
-			.padding(.trailing, Self.coverArtVerticalMargin * 2)
+			.padding(.vertical, coverArtVerticalMargin)
+			.padding(.trailing, coverArtVerticalMargin * 2)
 			
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(album.titleFormatted())
