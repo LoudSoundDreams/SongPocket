@@ -77,9 +77,8 @@ final class SongsTVC: LibraryTVC {
 		deleteThenExit(sectionsToDelete: tableView.allSections())
 	}
 	
-	func mediaItems(startingAtRow: Int) -> [MPMediaItem] {
-		return viewModel
-			.items(startingAtRow: startingAtRow)
-			.compactMap { ($0 as? Song)?.mpMediaItem() }
+	func mediaItems() -> [MPMediaItem] {
+		let items = Array(viewModel.libraryGroup().items)
+		return items.compactMap { ($0 as? Song)?.mpMediaItem() }
 	}
 }

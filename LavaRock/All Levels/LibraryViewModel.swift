@@ -91,12 +91,6 @@ extension LibraryViewModel {
 		return groups[0]
 	}
 	
-	func items(startingAtRow: Int) -> [NSManagedObject] {
-		let group = libraryGroup()
-		let selectedItemIndex = itemIndex(forRow: startingAtRow)
-		return Array(group.items[selectedItemIndex...])
-	}
-	
 	func pointsToSomeItem(row: Int) -> Bool {
 		let items = libraryGroup().items
 		let itemIndex = itemIndex(forRow: row)

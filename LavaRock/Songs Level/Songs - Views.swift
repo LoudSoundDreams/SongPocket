@@ -168,8 +168,7 @@ extension SongsTVC {
 	fileprivate func mediaItemsInFirstGroup(
 		startingAt startingMediaItem: MPMediaItem
 	) -> [MPMediaItem] {
-		let allMediaItems = mediaItems(startingAtRow: viewModel.row(forItemIndex: 0))
-		let result = allMediaItems.drop(while: { mediaItem in
+		let result = mediaItems().drop(while: { mediaItem in
 			mediaItem.persistentID != startingMediaItem.persistentID
 		})
 		return Array(result)
