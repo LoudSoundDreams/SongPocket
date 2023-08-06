@@ -108,11 +108,8 @@ extension SongsTVC {
 		didSelectRowAt indexPath: IndexPath
 	) {
 		if !isEditing {
-			if
-				let song = viewModel.itemNonNil(atRow: indexPath.row) as? Song,
-				let selectedCell = tableView.cellForRow(at: indexPath)
-			{
-				showSongActions(for: song, popoverAnchorView: selectedCell)
+			if let selectedCell = tableView.cellForRow(at: indexPath) {
+				showSongActions(popoverAnchorView: selectedCell)
 				// The UI is clearer if we leave the row selected while the action sheet is onscreen.
 				// You must eventually deselect the row in every possible scenario after this moment.
 			}
@@ -120,10 +117,7 @@ extension SongsTVC {
 		
 		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
-	private func showSongActions(
-		for song: Song,
-		popoverAnchorView: UIView
-	) {
+	private func showSongActions(popoverAnchorView: UIView) {
 		func deselectSelectedSong() {
 			tableView.deselectAllRows(animated: true)
 		}
