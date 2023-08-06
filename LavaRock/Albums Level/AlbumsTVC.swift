@@ -103,10 +103,10 @@ final class AlbumsTVC:
 				return ""
 			}
 			switch albumsViewModel.parentFolder {
-				case
-						.exists(let folder),
-						.deleted(let folder):
+				case .exists(let folder):
 					return folder.title ?? ""
+				case .deleted:
+					return ""
 			}
 		}()
 	}

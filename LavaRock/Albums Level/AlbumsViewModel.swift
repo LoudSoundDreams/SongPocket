@@ -9,7 +9,7 @@ import CoreData
 
 enum ParentFolder {
 	case exists(Collection)
-	case deleted(Collection)
+	case deleted
 }
 
 struct AlbumsViewModel {
@@ -55,12 +55,12 @@ extension AlbumsViewModel: LibraryViewModel {
 			switch parentFolder {
 				case .exists(let folder):
 					if folder.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
-						return .deleted(folder)
+						return .deleted
 					} else {
 						return .exists(folder)
 					}
-				case .deleted(let folder):
-					return .deleted(folder)
+				case .deleted:
+					return .deleted
 			}
 		}()
 		return Self(

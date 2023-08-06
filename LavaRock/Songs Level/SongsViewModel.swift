@@ -9,7 +9,7 @@ import CoreData
 
 enum ParentAlbum {
 	case exists(Album)
-	case deleted(Album)
+	case deleted
 }
 
 struct SongsViewModel {
@@ -58,12 +58,12 @@ extension SongsViewModel: LibraryViewModel {
 			switch parentAlbum {
 				case .exists(let album):
 					if album.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
-						return .deleted(album)
+						return .deleted
 					} else {
 						return .exists(album)
 					}
-				case .deleted(let album):
-					return .deleted(album)
+				case .deleted:
+					return .deleted
 			}
 		}()
 		return Self(
