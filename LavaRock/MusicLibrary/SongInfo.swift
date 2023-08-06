@@ -26,7 +26,7 @@ protocol SongInfo {
 	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get }
 	var releaseDateOnDisk: Date? { get }
-	func coverArt(largerThanOrEqualToSizeInPoints sizeInPoints: CGSize) -> UIImage?
+	func coverArt(atLeastInPoints: CGSize) -> UIImage?
 }
 enum SongInfoPlaceholder {
 	static let unknownTitle = "—" // Em dash
@@ -176,15 +176,13 @@ extension MPMediaItem: SongInfo {
 	final var artistOnDisk: String? { artist }
 	final var dateAddedOnDisk: Date { dateAdded }
 	final var releaseDateOnDisk: Date? { releaseDate }
-	final func coverArt(
-		largerThanOrEqualToSizeInPoints sizeInPoints: CGSize
-	) -> UIImage? {
+	final func coverArt(atLeastInPoints: CGSize) -> UIImage? {
 		let signposter = OSSignposter()
 		let state = signposter.beginInterval("Draw cover art")
 		defer {
 			signposter.endInterval("Draw cover art", state)
 		}
-		return artwork?.image(at: sizeInPoints)
+		return artwork?.image(at: atLeastInPoints)
 	}
 }
 
@@ -205,9 +203,7 @@ struct Sim_SongInfo: SongInfo {
 	let artistOnDisk: String?
 	let dateAddedOnDisk: Date
 	let releaseDateOnDisk: Date?
-	func coverArt(
-		largerThanOrEqualToSizeInPoints sizeInPoints: CGSize
-	) -> UIImage? {
+	func coverArt(atLeastInPoints: CGSize) -> UIImage? {
 		let signposter = OSSignposter()
 		let state = signposter.beginInterval("Sim: draw cover art")
 		defer {
@@ -222,13 +218,10 @@ struct Sim_SongInfo: SongInfo {
 }
 enum Sim_Global {
 	static var songID: SongID? = nil
-	static let simulatingEmptyLibrary = 10 == 1
 }
 extension Sim_SongInfo {
 	static var all: [Self] {
-		if Sim_Global.simulatingEmptyLibrary {
-			return []
-		}
+//		return []
 		
 		let tall = AlbumIDDispenser.takeNumber()
 		let wide = AlbumIDDispenser.takeNumber()

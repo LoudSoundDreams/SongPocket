@@ -111,7 +111,7 @@ final class FolderCell: UITableViewCell {
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
 			indicateAvatarStatus__(
-				folder.avatarStatus()
+				folder.avatarStatus__()
 			)
 			
 			// Exclude the now-playing marker.

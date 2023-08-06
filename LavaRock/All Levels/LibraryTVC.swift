@@ -171,7 +171,7 @@ class LibraryTVC: UITableViewController {
 				else {
 					return .notPlaying
 				}
-				return libraryItem.avatarStatus()
+				return libraryItem.avatarStatus__()
 			}())
 		}
 	}

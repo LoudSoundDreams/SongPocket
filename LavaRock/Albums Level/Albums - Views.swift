@@ -138,7 +138,7 @@ final class AlbumCell: UITableViewCell {
 			
 			os_signpost(.begin, log: .albumsView, name: "Set cover art")
 			let widthAndHeightInPoints = coverArtView.bounds.width
-			coverArtView.image = representative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
+			coverArtView.image = representative?.coverArt(atLeastInPoints: CGSize(
 				width: widthAndHeightInPoints,
 				height: widthAndHeightInPoints))
 			os_signpost(.end, log: .albumsView, name: "Set cover art")
@@ -158,7 +158,7 @@ final class AlbumCell: UITableViewCell {
 				releaseDateLabel.text,
 			].compactedAndFormattedAsNarrowList()
 			indicateAvatarStatus__(
-				album.avatarStatus()
+				album.avatarStatus__()
 			)
 			
 			accessibilityUserInputLabels = [album.titleFormatted()]

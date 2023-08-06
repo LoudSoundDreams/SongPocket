@@ -15,7 +15,7 @@ protocol LibraryItem: NSManagedObject {
 }
 extension LibraryItem {
 	@MainActor
-	func avatarStatus() -> AvatarStatus {
+	func avatarStatus__() -> AvatarStatus {
 		guard
 			containsPlayhead(),
 			let player = TapeDeck.shared.player

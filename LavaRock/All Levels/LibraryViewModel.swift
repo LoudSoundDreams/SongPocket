@@ -32,11 +32,11 @@ struct SectionStructure<
 	let rowIdentifiers: [RowIdentifier]
 }
 extension SectionStructure: Hashable {}
-enum LibrarySectionIdentifier: Hashable {
+enum SectionID: Hashable {
 	case groupWithNoContainer
 	case groupWithContainer(NSManagedObjectID)
 }
-enum LibraryRowIdentifier: Hashable {
+enum RowID: Hashable {
 	case prerow(AnyHashable)
 	case libraryItem(NSManagedObjectID)
 }
@@ -48,38 +48,27 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func sectionStructures() -> [
-		SectionStructure<LibrarySectionIdentifier, LibraryRowIdentifier>
-	] {
-		typealias LibrarySectionStructure = SectionStructure<
-			LibrarySectionIdentifier,
-			LibraryRowIdentifier
-		>
-		
-		let groupSectionStructures: [LibrarySectionStructure] = groups.map { group in
-			let sectionIdentifier: LibrarySectionIdentifier = {
+	func sectionStructures() -> [SectionStructure<SectionID, RowID>] {
+		return groups.map { group in
+			let sectionID: SectionID = {
 				guard let containerID = group.container?.objectID else {
 					return .groupWithNoContainer
 				}
 				return .groupWithContainer(containerID)
 			}()
 			
-			let prerowIdentifiers = prerowIdentifiers().map {
-				LibraryRowIdentifier.prerow($0)
+			let prerowIDs = prerowIdentifiers().map {
+				RowID.prerow($0)
 			}
-			
-			let itemRowIdentifiers = group.items.map { item in
-				LibraryRowIdentifier.libraryItem(item.objectID)
+			let itemRowIDs = group.items.map { item in
+				RowID.libraryItem(item.objectID)
 			}
-			
-			let rowIdentifiers = prerowIdentifiers + itemRowIdentifiers
+			let rowIDs = prerowIDs + itemRowIDs
 			
 			return SectionStructure(
-				identifier: sectionIdentifier,
-				rowIdentifiers: rowIdentifiers)
+				identifier: sectionID,
+				rowIdentifiers: rowIDs)
 		}
-		
-		return groupSectionStructures
 	}
 	
 	// MARK: - Elements

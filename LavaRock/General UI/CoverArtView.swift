@@ -13,15 +13,9 @@ struct CoverArtView: View {
 	let largerThanOrEqualToSizeInPoints: CGFloat
 	
 	var body: some View {
-		let uiImageOptional: UIImage? = {
-			os_signpost(.begin, log: .songsView, name: "Draw cover art")
-			defer {
-				os_signpost(.end, log: .songsView, name: "Draw cover art")
-			}
-			return albumRepresentative?.coverArt(largerThanOrEqualToSizeInPoints: CGSize(
-				width: largerThanOrEqualToSizeInPoints,
-				height: largerThanOrEqualToSizeInPoints))
-		}()
+		let uiImageOptional = albumRepresentative?.coverArt(atLeastInPoints: CGSize(
+			width: largerThanOrEqualToSizeInPoints,
+			height: largerThanOrEqualToSizeInPoints))
 		if let uiImage = uiImageOptional {
 			Image(uiImage: uiImage)
 				.resizable() // Lets 1 image point differ from 1 screen point
