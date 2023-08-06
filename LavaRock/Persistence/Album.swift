@@ -184,11 +184,6 @@ extension Album {
 	final func precedesByNewestFirst(_ other: Album) -> Bool {
 		return precedes(other, byNewestFirstRatherThanOldestFirst: true)
 	}
-	
-	final func precedesByOldestFirst(_ other: Album) -> Bool {
-		return precedes(other, byNewestFirstRatherThanOldestFirst: false)
-	}
-	
 	private func precedes(
 		_ other: Album,
 		byNewestFirstRatherThanOldestFirst: Bool
