@@ -8,9 +8,23 @@
 import UIKit
 import OSLog
 
+extension Array where Element: LibraryItem {
+	// Needs to match the property observer on `LibraryGroup.items`.
+	mutating func reindex()
+	{
+		enumerated().forEach { (currentIndex, libraryItem) in
+			libraryItem.index = Int64(currentIndex)
+		}
+	}
+}
+extension Array where Element == Int {
+	// Whether the integers are increasing and contiguous.
+	func isConsecutive() -> Bool {
+		return allNeighborsSatisfy { $0 + 1 == $1 }
+	}
+}
+
 extension Array {
-	// MARK: - Ordering
-	
 	func inAnyOtherOrder() -> Self
 	where Element: Equatable
 	{
@@ -48,38 +62,7 @@ extension Array {
 		}
 		return sortedTuples.map { $0.element }
 	}
-}
-
-// MARK: - Element: LibraryItem
-
-extension Array
-where Element: LibraryItem
-{
-	// Needs to match the property observer on `LibraryGroup.items`.
-	mutating func reindex()
-	{
-		enumerated().forEach { (currentIndex, libraryItem) in
-			libraryItem.index = Int64(currentIndex)
-		}
-	}
-}
-
-// MARK: Element == Int
-
-extension Array
-where Element == Int
-{
-	// Whether the integers are increasing and contiguous.
-	func isConsecutive() -> Bool
-	where Element == Int
-	{
-		return allNeighborsSatisfy { $0 + 1 == $1 }
-	}
-}
-
-// MARK: - Miscellaneous
-
-extension Array {
+	
 	func allNeighborsSatisfy(
 		_ predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 	) -> Bool {
