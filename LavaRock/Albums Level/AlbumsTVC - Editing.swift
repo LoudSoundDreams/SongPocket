@@ -26,7 +26,7 @@ extension AlbumsTVC {
 			subjected = albumsViewModel.indexPathsForAllItems()
 		}
 		let albumsInOriginalContextToMaybeMove = subjected.map {
-			albumsViewModel.albumNonNil(at: $0)
+			albumsViewModel.albumNonNil(atRow: $0.row)
 		}
 		
 		// Create a child managed object context to begin the changes in.
@@ -39,7 +39,9 @@ extension AlbumsTVC {
 			via: childContext,
 			delegateForClipboard: self
 		)
-		let selectedAlbums = selectedIndexPaths.map { albumsViewModel.albumNonNil(at: $0) }
+		let selectedAlbums = selectedIndexPaths.map {
+			albumsViewModel.albumNonNil(atRow: $0.row)
+		}
 		idsOfAlbumsToKeepSelected = Set(selectedAlbums.compactMap {
 			let selectedAlbumID = $0.objectID
 			if clipboard.idsOfUnmovedAlbums.contains(selectedAlbumID) {
@@ -200,7 +202,7 @@ extension AlbumsTVC {
 					subjected = selfVM.indexPathsForAllItems()
 				}
 				return subjected.map {
-					selfVM.albumNonNil(at: $0)
+					selfVM.albumNonNil(atRow: $0.row)
 				}
 			}(),
 			delegate: self

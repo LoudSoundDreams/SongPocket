@@ -114,13 +114,12 @@ extension LibraryViewModel {
 		guard pointsToSomeItem(indexPath) else {
 			return nil
 		}
-		return itemNonNil(at: indexPath)
+		return itemNonNil(atRow: indexPath.row)
 	}
 	
-	func itemNonNil(at indexPath: IndexPath) -> NSManagedObject {
-		let group = libraryGroup()
-		let itemIndex = itemIndex(forRow: indexPath.row)
-		return group.items[itemIndex]
+	func itemNonNil(atRow: Int) -> NSManagedObject {
+		let itemIndex = itemIndex(forRow: atRow)
+		return libraryGroup().items[itemIndex]
 	}
 	
 	// MARK: Indices

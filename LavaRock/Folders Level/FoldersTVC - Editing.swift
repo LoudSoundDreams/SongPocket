@@ -17,7 +17,7 @@ extension FoldersTVC {
 	// MARK: Renaming
 	
 	func promptRename(at indexPath: IndexPath) {
-		guard let folder = viewModel.itemNonNil(at: indexPath) as? Collection else { return }
+		guard let folder = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
 		
 		let dialog = UIAlertController(
 			title: LRString.renameFolder,

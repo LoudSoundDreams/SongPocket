@@ -11,7 +11,7 @@ extension AlbumsTVC: OrganizeAlbumsDelegate {
 		let toKeepSelected = idsOfAlbumsToKeepSelected
 		idsOfAlbumsToKeepSelected = []
 		let toSelect = viewModel.indexPathsForAllItems().filter {
-			let idOfAlbum = viewModel.albumNonNil(at: $0).objectID
+			let idOfAlbum = viewModel.albumNonNil(atRow: $0.row).objectID
 			return toKeepSelected.contains(idOfAlbum)
 		}
 		Task {

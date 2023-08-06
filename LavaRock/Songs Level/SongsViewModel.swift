@@ -105,7 +105,7 @@ extension SongsViewModel {
 	}
 	
 	func songNonNil(at indexPath: IndexPath) -> Song {
-		return itemNonNil(at: indexPath) as! Song
+		return itemNonNil(atRow: indexPath.row) as! Song
 	}
 	
 	enum RowCase {

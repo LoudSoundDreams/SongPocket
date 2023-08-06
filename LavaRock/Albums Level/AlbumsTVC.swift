@@ -261,7 +261,7 @@ final class AlbumsTVC:
 			let songsTVC = segue.destination as? SongsTVC
 		else { return }
 		
-		let album = albumsViewModel.albumNonNil(at: selectedIndexPath)
+		let album = albumsViewModel.albumNonNil(atRow: selectedIndexPath.row)
 		songsTVC.viewModel = SongsViewModel(
 			parentAlbum: .exists(album),
 			context: viewModel.context)

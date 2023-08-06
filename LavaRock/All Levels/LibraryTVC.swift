@@ -476,7 +476,9 @@ class LibraryTVC: UITableViewController {
 							
 							return viewModel.allowsSortCommand(
 								sortCommand,
-								forItems: subjected.map { viewModel.itemNonNil(at: $0) }
+								forItems: subjected.map { subjectedIndexPath in
+									viewModel.itemNonNil(atRow: subjectedIndexPath.row)
+								}
 							)
 						}()
 						if !allowed {

@@ -104,7 +104,7 @@ extension SongsTVC {
 	) {
 		if !isEditing {
 			if
-				let song = viewModel.itemNonNil(at: indexPath) as? Song,
+				let song = viewModel.itemNonNil(atRow: indexPath.row) as? Song,
 				let selectedCell = tableView.cellForRow(at: indexPath)
 			{
 				showSongActions(for: song, popoverAnchorView: selectedCell)

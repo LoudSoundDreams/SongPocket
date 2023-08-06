@@ -68,7 +68,7 @@ extension AlbumsTVC {
 				break
 		}
 		
-		let album = albumsViewModel.albumNonNil(at: indexPath)
+		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
 		let mode: AlbumRowMode = {
 			switch purpose {
 				case .previewingCombine:

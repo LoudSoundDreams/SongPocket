@@ -104,8 +104,8 @@ extension AlbumsViewModel {
 		}
 	}
 	
-	func albumNonNil(at indexPath: IndexPath) -> Album {
-		return itemNonNil(at: indexPath) as! Album
+	func albumNonNil(atRow: Int) -> Album {
+		return itemNonNil(atRow: atRow) as! Album
 	}
 	
 	enum RowCase {
@@ -143,7 +143,7 @@ extension AlbumsViewModel {
 		if subjected.isEmpty {
 			subjected = indexPathsForAllItems()
 		}
-		let albums = subjected.map { albumNonNil(at: $0) }
+		let albums = subjected.map { albumNonNil(atRow: $0.row) }
 		
 		return albums.contains {
 			let titleOfDestination = $0.albumArtistFormatted()

@@ -66,7 +66,7 @@ extension FoldersViewModel {
 	}
 	
 	func folderNonNil(at indexPath: IndexPath) -> Collection {
-		return itemNonNil(at: indexPath) as! Collection
+		return itemNonNil(atRow: indexPath.row) as! Collection
 	}
 	
 	enum RowCase {
