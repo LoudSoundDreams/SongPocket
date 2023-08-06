@@ -91,6 +91,9 @@ extension LibraryViewModel {
 	}
 	
 	func pointsToSomeItem(row: Int) -> Bool {
+		guard !isEmpty() else {
+			return false
+		}
 		let items = libraryGroup().items
 		let itemIndex = itemIndex(forRow: row)
 		guard 0 <= itemIndex, itemIndex < items.count else {
@@ -113,6 +116,9 @@ extension LibraryViewModel {
 	// MARK: Rows
 	
 	func rowsForAllItems() -> [Int] {
+		guard !isEmpty() else {
+			return []
+		}
 		let indices = libraryGroup().items.indices
 		return indices.map {
 			prerowCount + $0
