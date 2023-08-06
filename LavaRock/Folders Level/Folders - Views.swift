@@ -42,6 +42,7 @@ struct FolderRow: View {
 			Text(folder.title ?? " ")
 			Spacer()
 			AvatarImage(libraryItem: folder)
+				.offset(y: -0.5)
 				.accessibilitySortPriority(10)
 		}
 		.opacity({
