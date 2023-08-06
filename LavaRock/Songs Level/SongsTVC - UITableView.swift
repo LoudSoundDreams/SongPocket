@@ -86,7 +86,7 @@ extension SongsTVC {
 			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
 		cell.configureWith(
-			song: songsViewModel.songNonNil(at: indexPath),
+			song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
 			albumRepresentative: {
 				return album.representativeSongInfo()
 			}(),

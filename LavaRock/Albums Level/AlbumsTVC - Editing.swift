@@ -67,8 +67,8 @@ extension AlbumsTVC {
 				context: childContext,
 				prerows: [])
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
-			let oldFolderRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { someOldRow in
-				let collectionID = oldFoldersViewModel.folderNonNil(atRow: someOldRow).objectID
+			let oldFolderRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldFolderRow in
+				let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldFolderRow).objectID
 				return clipboard.idsOfCollectionsContainingMovedAlbums.contains(collectionID)
 			}
 			let oldFolderIndexPaths_ContainingMovedAlbums: [IndexPath]

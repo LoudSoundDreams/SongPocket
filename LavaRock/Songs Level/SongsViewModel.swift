@@ -104,10 +104,6 @@ extension SongsViewModel {
 		}
 	}
 	
-	func songNonNil(at indexPath: IndexPath) -> Song {
-		return itemNonNil(atRow: indexPath.row) as! Song
-	}
-	
 	enum RowCase {
 		case prerow(Prerow)
 		case song
