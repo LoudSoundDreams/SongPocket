@@ -67,7 +67,7 @@ extension SongsTVC {
 						cell.selectionStyle = .none // So that the user can’t even highlight the cell
 						cell.contentConfiguration = UIHostingConfiguration {
 							AlbumInfoRow(
-								albumTitle: viewModel.bigTitle(),
+								albumTitle: album.titleFormatted(),
 								albumArtist: album.albumArtistFormatted(),
 								releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
 							)

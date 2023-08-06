@@ -16,7 +16,6 @@ protocol LibraryViewModel {
 	
 	var groups: ColumnOfLibraryItems { get set }
 	
-	func bigTitle() -> String
 	func prerowIdentifiers() -> [AnyHashable]
 	func allowsSortCommand(
 		_ sortCommand: SortCommand,

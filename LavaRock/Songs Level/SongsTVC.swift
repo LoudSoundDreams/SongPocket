@@ -38,11 +38,6 @@ final class SongsTVC: LibraryTVC {
 		title = nil
 	}
 	
-	override func reflectViewContainer() {
-		// Freshen each `Album` whose info we’re showing.
-		// Currently, we always reload all table view cells after this method, which takes care of that for us.
-	}
-	
 	override func setUpBarButtons() {
 		editingModeToolbarButtons = [
 			sortButton,

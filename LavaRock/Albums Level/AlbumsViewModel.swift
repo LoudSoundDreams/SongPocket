@@ -30,15 +30,6 @@ struct AlbumsViewModel {
 extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
 	
-	func bigTitle() -> String {
-		switch parentFolder {
-			case
-					.exists(let folder),
-					.deleted(let folder):
-				return folder.title ?? ""
-		}
-	}
-	
 	func prerowIdentifiers() -> [AnyHashable] {
 		return prerows
 	}

@@ -34,15 +34,6 @@ struct SongsViewModel {
 extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
 	
-	func bigTitle() -> String {
-		switch parentAlbum {
-			case
-					.exists(let album),
-					.deleted(let album):
-				return album.titleFormatted()
-		}
-	}
-	
 	func prerowIdentifiers() -> [AnyHashable] {
 		return prerows
 	}

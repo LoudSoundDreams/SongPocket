@@ -23,10 +23,6 @@ struct FoldersViewModel {
 extension FoldersViewModel: LibraryViewModel {
 	static let entityName = "Collection"
 	
-	func bigTitle() -> String {
-		return LRString.folders
-	}
-	
 	func prerowIdentifiers() -> [AnyHashable] {
 		return prerows
 	}

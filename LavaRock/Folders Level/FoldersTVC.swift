@@ -217,6 +217,8 @@ final class FoldersTVC:
 					name: .userUpdatedDatabase,
 					object: nil)
 		}
+		
+		title = LRString.folders
 	}
 	@objc private func userUpdatedDatabase() {
 		reflectDatabase()

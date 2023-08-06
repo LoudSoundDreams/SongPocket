@@ -97,6 +97,18 @@ final class AlbumsTVC:
 			case .browsing:
 				break
 		}
+		
+		title = { () -> String in
+			guard let albumsViewModel = viewModel as? AlbumsViewModel else {
+				return ""
+			}
+			switch albumsViewModel.parentFolder {
+				case
+						.exists(let folder),
+						.deleted(let folder):
+					return folder.title ?? ""
+			}
+		}()
 	}
 	
 	private lazy var save_combine_button: UIBarButtonItem = {

@@ -134,7 +134,6 @@ class LibraryTVC: UITableViewController {
 			name: .user_changed_avatar,
 			object: nil)
 		
-		reflectViewContainer()
 		setUpBarButtons()
 	}
 	@objc private func mergedChanges() {
@@ -142,10 +141,6 @@ class LibraryTVC: UITableViewController {
 	}
 	@objc private func user_changed_avatar() {
 		reflectPlayhead()
-	}
-	
-	func reflectViewContainer() {
-		title = viewModel.bigTitle()
 	}
 	
 	// Overrides should call super (this implementation).
@@ -224,7 +219,6 @@ class LibraryTVC: UITableViewController {
 			let newViewModel = viewModel.updatedWithFreshenedData()
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
-			reflectViewContainer()
 			// Update the data within each row (and header), which might be outdated.
 			// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
