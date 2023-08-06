@@ -117,24 +117,17 @@ extension LibraryViewModel {
 		return row - numberOfPrerowsPerSection
 	}
 	
-	// MARK: IndexPaths
+	// MARK: Rows
 	
 	func rowsForAllItems() -> [Int] {
-		return indexPaths(forGroupIndex: 0).map { $0.row }
+		let indices = libraryGroup().items.indices
+		return indices.map {
+			numberOfPrerowsPerSection + $0
+		}
 	}
 	
 	func row(forItemIndex itemIndex: Int) -> Int {
 		return numberOfPrerowsPerSection + itemIndex
-	}
-	
-	// Similar to UITableView.indexPathsForRows.
-	private func indexPaths(forGroupIndex groupIndex: Int) -> [IndexPath] {
-		let indices = groups[groupIndex].items.indices
-		return indices.map {
-			IndexPath(
-				row: numberOfPrerowsPerSection + $0,
-				section: groupIndex)
-		}
 	}
 	
 	// MARK: - Editing
