@@ -8,15 +8,14 @@
 import UIKit
 
 extension AlbumsTVC {
-	func moveHere(to indexPath: IndexPath) {
+	func moveHere() {
 		guard
 			case let .movingAlbums(clipboard) = purpose,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
 		let newViewModel = albumsViewModel.updatedAfterMoving(
-			albumsWith: clipboard.idsOfAlbumsBeingMoved,
-			toSection: indexPath.section)
+			albumsWith: clipboard.idsOfAlbumsBeingMoved)
 		Task {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			

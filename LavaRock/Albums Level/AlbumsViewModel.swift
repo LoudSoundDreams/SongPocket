@@ -154,8 +154,7 @@ extension AlbumsViewModel {
 	// MARK: - “Move albums” sheet
 	
 	func updatedAfterMoving(
-		albumsWith albumIDs: [NSManagedObjectID],
-		toSection section: Int
+		albumsWith albumIDs: [NSManagedObjectID]
 	) -> Self {
 		let group = libraryGroup()
 		let destination = group.container as! Collection

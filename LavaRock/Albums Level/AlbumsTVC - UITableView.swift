@@ -167,7 +167,7 @@ extension AlbumsTVC {
 				let rowCase = albumsViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow:
-						moveHere(to: indexPath)
+						moveHere()
 						return
 					case .album:
 						break
