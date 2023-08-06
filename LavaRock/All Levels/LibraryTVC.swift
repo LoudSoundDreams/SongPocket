@@ -71,9 +71,17 @@ class LibraryTVC: UITableViewController {
 		}
 	)
 	private func floatSelected() {
-		let newViewModel = viewModel.updatedAfterFloating(
-			rowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
-		)
+		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
+		let unorderedIndices = unorderedRows.map {
+			viewModel.itemIndex(forRow: $0)
+		}
+		
+		var newItems = viewModel.libraryGroup().items
+		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
+		
+		var newViewModel = viewModel
+		newViewModel.groups[0].setItems(newItems)
+		
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -87,9 +95,17 @@ class LibraryTVC: UITableViewController {
 		}
 	)
 	private func sinkSelected() {
-		let newViewModel = viewModel.updatedAfterSinking(
-			rowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
-		)
+		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
+		let unorderedIndices = unorderedRows.map {
+			viewModel.itemIndex(forRow: $0)
+		}
+		
+		var newItems = viewModel.libraryGroup().items
+		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newItems.count)
+		
+		var newViewModel = viewModel
+		newViewModel.groups[0].setItems(newItems)
+		
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}

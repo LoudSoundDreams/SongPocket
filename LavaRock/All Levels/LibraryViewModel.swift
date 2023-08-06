@@ -278,32 +278,4 @@ extension LibraryViewModel {
 				
 		}
 	}
-	
-	// MARK: Float
-	
-	func updatedAfterFloating(rowsInAnyOrder: [Int]) -> Self {
-		let unorderedIndices = rowsInAnyOrder.map {
-			itemIndex(forRow: $0)
-		}
-		var newItems = libraryGroup().items
-		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
-		
-		var twin = self
-		twin.groups[0].setItems(newItems)
-		return twin
-	}
-	
-	// MARK: Sink
-	
-	func updatedAfterSinking(rowsInAnyOrder: [Int]) -> Self {
-		let unorderedIndices = rowsInAnyOrder.map {
-			itemIndex(forRow: $0)
-		}
-		var newItems = libraryGroup().items
-		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newItems.count)
-		
-		var twin = self
-		twin.groups[0].setItems(newItems)
-		return twin
-	}
 }
