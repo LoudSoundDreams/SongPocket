@@ -8,12 +8,19 @@
 import UIKit
 import SwiftUI
 
+struct NoSongsView: View {
+	var body: some View {
+		Text(LRString.noSongs)
+			.foregroundStyle(.secondary)
+			.font(.title)
+	}
+}
 extension SongsTVC {
 	// MARK: - Numbers
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if viewModel.isEmpty() {
-			tableView.backgroundView = noItemsBackgroundView
+			tableView.backgroundView = UIHostingController(rootView: NoSongsView()).view
 		} else {
 			tableView.backgroundView = nil
 		}

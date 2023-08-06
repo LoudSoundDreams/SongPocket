@@ -8,21 +8,8 @@
 
 import UIKit
 import MediaPlayer
-import SwiftUI
 
 final class SongsTVC: LibraryTVC {
-	// MARK: - Properties
-	
-	private(set) lazy var noItemsBackgroundView: UIView? = {
-		let view = Text(LRString.noSongs)
-			.foregroundStyle(.secondary)
-			.font(.title)
-		let hostingController = UIHostingController(rootView: view)
-		return hostingController.view
-	}()
-	
-	// MARK: - Setup
-	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
@@ -54,9 +41,7 @@ final class SongsTVC: LibraryTVC {
 		to size: CGSize,
 		with coordinator: UIViewControllerTransitionCoordinator
 	) {
-		super.viewWillTransition(
-			to: size,
-			with: coordinator)
+		super.viewWillTransition(to: size, with: coordinator)
 		
 		if
 			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)), // !
@@ -65,8 +50,6 @@ final class SongsTVC: LibraryTVC {
 			coverArtCell.configureArtwork(maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 		}
 	}
-	
-	// MARK: - Library items
 	
 	override func reflectViewModelIsEmpty() {
 		deleteThenExit(sectionsToDelete: tableView.allSections())

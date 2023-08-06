@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import SwiftUI
 
 final class AlbumsTVC:
 	LibraryTVC,
@@ -22,14 +21,6 @@ final class AlbumsTVC:
 	}
 	
 	// MARK: - Properties
-	
-	private(set) lazy var noItemsBackgroundView: UIView? = {
-		let view = Text(LRString.noAlbums)
-			.foregroundStyle(.secondary)
-			.font(.title)
-		let hostingController = UIHostingController(rootView: view)
-		return hostingController.view
-	}()
 	
 	// Controls
 	private var moveButton = UIBarButtonItem(

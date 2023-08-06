@@ -8,13 +8,19 @@
 import UIKit
 import SwiftUI
 
+struct NoAlbumsView: View {
+	var body: some View {
+		Text(LRString.noAlbums)
+			.foregroundStyle(.secondary)
+			.font(.title)
+	}
+}
 extension AlbumsTVC {
 	// MARK: - Numbers
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if viewModel.isEmpty() {
-			// Don’t call `dequeueReusableCell` here to create the placeholder view as needed, because it can cause an infinite loop.
-			tableView.backgroundView = noItemsBackgroundView
+			tableView.backgroundView = UIHostingController(rootView: NoAlbumsView()).view
 		} else {
 			tableView.backgroundView = nil
 		}
