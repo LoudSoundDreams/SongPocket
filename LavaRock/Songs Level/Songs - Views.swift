@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import MediaPlayer
 import OSLog
 
 // MARK: - Cover art
@@ -160,6 +161,18 @@ private extension UIFont {
 		return .monospacedDigitSystemFont(
 			ofSize: UIFont.preferredFont(forTextStyle: style).pointSize,
 			weight: .regular)
+	}
+}
+extension SongsTVC {
+	// Time complexity: O(n), where “n” is the number of media items in the group.
+	fileprivate func mediaItemsInFirstGroup(
+		startingAt startingMediaItem: MPMediaItem
+	) -> [MPMediaItem] {
+		let allMediaItems = mediaItems(startingAtRow: viewModel.indexPathFor(itemIndex: 0).row)
+		let result = allMediaItems.drop { mediaItem in
+			mediaItem.persistentID != startingMediaItem.persistentID
+		}
+		return Array(result)
 	}
 }
 final class SongCell: UITableViewCell {

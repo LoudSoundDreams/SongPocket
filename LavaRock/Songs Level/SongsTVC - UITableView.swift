@@ -128,7 +128,7 @@ extension SongsTVC {
 			let player = TapeDeck.shared.player
 		else { return }
 		
-		let mediaItemsInSection = mediaItems(startingAt: IndexPath(row: 2, section: 0)) // !
+		let mediaItemsInSection = mediaItems(startingAtRow: 2) // !
 		
 		let actionSheet = UIAlertController(
 			title: nil,

@@ -77,24 +77,9 @@ final class SongsTVC: LibraryTVC {
 		deleteThenExit(sectionsToDelete: tableView.allSections())
 	}
 	
-	func mediaItems(
-		startingAt firstIndexPath: IndexPath
-	) -> [MPMediaItem] {
+	func mediaItems(startingAtRow: Int) -> [MPMediaItem] {
 		return viewModel
-			.itemsInGroup(startingAt: firstIndexPath)
+			.items(startingAtRow: startingAtRow)
 			.compactMap { ($0 as? Song)?.mpMediaItem() }
-	}
-	
-	// Time complexity: O(n), where “n” is the number of media items in the group.
-	func mediaItemsInFirstGroup(
-		startingAt firstMediaItem: MPMediaItem
-	) -> [MPMediaItem] {
-		let allMediaItems = mediaItems(
-			startingAt: viewModel.indexPathFor(itemIndex: 0)
-		)
-		let result = allMediaItems.drop { mediaItem in
-			mediaItem.persistentID != firstMediaItem.persistentID
-		}
-		return Array(result)
 	}
 }

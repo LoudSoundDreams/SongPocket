@@ -91,9 +91,9 @@ extension LibraryViewModel {
 		return groups[0]
 	}
 	
-	func itemsInGroup(startingAt selectedIndexPath: IndexPath) -> [NSManagedObject] {
+	func items(startingAtRow: Int) -> [NSManagedObject] {
 		let group = libraryGroup()
-		let selectedItemIndex = itemIndex(forRow: selectedIndexPath.row)
+		let selectedItemIndex = itemIndex(forRow: startingAtRow)
 		return Array(group.items[selectedItemIndex...])
 	}
 	
