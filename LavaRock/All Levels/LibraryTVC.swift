@@ -35,15 +35,8 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses may customize
 	
 	// Controls
-	final var viewingModeTopLeftButtons: [UIBarButtonItem] = []
-	final lazy var editingModeTopLeftButtons: [UIBarButtonItem] = [
-		.flexibleSpace(),
-	]
 	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = [
 		// Right to left
-		editButtonItem,
-	]
-	final lazy var editingModeTopRightButtons: [UIBarButtonItem] = [
 		editButtonItem,
 	]
 	final lazy var viewingModeToolbarButtons: [UIBarButtonItem]
@@ -382,20 +375,14 @@ class LibraryTVC: UITableViewController {
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
 		
 		navigationItem.setLeftBarButtonItems(
-			editing
-			? editingModeTopLeftButtons
-			: viewingModeTopLeftButtons,
+			editing ? [.flexibleSpace()] : [],
 			animated: animated)
 		navigationItem.setRightBarButtonItems(
-			editing
-			? editingModeTopRightButtons
-			: viewingModeTopRightButtons,
+			editing ? [editButtonItem] : viewingModeTopRightButtons,
 			animated: animated)
 		
 		setToolbarItems(
-			editing
-			? editingModeToolbarButtons
-			: viewingModeToolbarButtons,
+			editing ? editingModeToolbarButtons : viewingModeToolbarButtons,
 			animated: animated)
 	}
 	
@@ -427,7 +414,7 @@ class LibraryTVC: UITableViewController {
 		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
 		sortButton.isEnabled = allows_sort()
-		sortButton.menu = create_sort_menu() // Create a new menu, for an accurate “[X] [items]” title.
+		sortButton.menu = create_sort_menu()
 		
 		floatButton.isEnabled = allows_float_and_sink()
 		sinkButton.isEnabled = allows_float_and_sink()
