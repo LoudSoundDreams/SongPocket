@@ -28,10 +28,14 @@ extension LibraryTVC {
 			return proposedDestinationIndexPath
 		}
 		
+		// Reordering upward
 		if proposedDestinationIndexPath < sourceIndexPath {
-			return viewModel.indexPathFor(itemIndex: 0)
+			return IndexPath(
+				row: viewModel.row(forItemIndex: 0),
+				section: proposedDestinationIndexPath.section)
 		}
 		
+		// Reordering downward
 		return proposedDestinationIndexPath
 	}
 	

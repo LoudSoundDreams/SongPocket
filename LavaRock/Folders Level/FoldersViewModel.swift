@@ -115,10 +115,7 @@ extension FoldersViewModel {
 	
 	// MARK: - “Move albums” sheet
 	
-	private static let indexOfNewFolder = 0
-	var indexPathOfNewFolder: IndexPath {
-		return indexPathFor(itemIndex: Self.indexOfNewFolder)
-	}
+	static let indexOfNewFolder = 0
 	
 	func updatedAfterCreating() -> Self {
 		let newFolder = Collection(context: context)

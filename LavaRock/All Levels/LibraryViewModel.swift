@@ -139,14 +139,6 @@ extension LibraryViewModel {
 		}
 	}
 	
-	func indexPathFor(
-		itemIndex: Int
-	) -> IndexPath {
-		return IndexPath(
-			row: numberOfPrerowsPerSection + itemIndex,
-			section: 0)
-	}
-	
 	// MARK: - Editing
 	
 	// MARK: Reorder

@@ -38,7 +38,7 @@ extension FoldersTVC {
 	private func renameAndOpenCreated() {
 		let foldersViewModel = viewModel as! FoldersViewModel
 		
-		let indexPath = foldersViewModel.indexPathOfNewFolder
+		let indexPath = IndexPath(row: FoldersViewModel.indexOfNewFolder, section: 0)
 		
 		let didChangeTitle = foldersViewModel.renameAndReturnDidChangeTitle(
 			at: indexPath,
