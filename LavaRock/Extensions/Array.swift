@@ -49,6 +49,18 @@ extension Array {
 		}.inferringMoves()
 	}
 	
+	mutating func replace(
+		atIndices: [Int],
+		withElements: [Element]
+	) {
+		precondition(atIndices.count == withElements.count)
+		withElements.indices.forEach { counter in
+			let index = atIndices[counter]
+			let element = withElements[counter]
+			self[index] = element
+		}
+	}
+	
 	func sortedMaintainingOrderWhen(
 		areEqual: (Element, Element) -> Bool,
 		areInOrder: (Element, Element) -> Bool

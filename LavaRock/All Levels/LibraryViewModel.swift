@@ -173,16 +173,11 @@ extension LibraryViewModel {
 		itemsAtRowsInOrder rows: [Int],
 		sortCommand: SortCommand
 	) -> [NSManagedObject] {
-		// Get all the items in the subjected group.
 		let oldItems = libraryGroup().items
-		
-		// Get the indices of the items to sort.
-		let subjectedIndices = rows.map {
-			itemIndex(forRow: $0)
-		}
+		let subjectedIndices = rows.map { itemIndex(forRow: $0) }
 		
 		// Get just the items to sort, and get them sorted in a separate `Array`.
-		let sortedItems: [NSManagedObject] = {
+		let sortedItemsOnly: [NSManagedObject] = {
 			let itemsToSort = subjectedIndices.map { itemIndex in
 				oldItems[itemIndex]
 			}
@@ -191,16 +186,11 @@ extension LibraryViewModel {
 				sortCommand: sortCommand)
 		}()
 		
-		// Replace the subjected items with sorted items.
-		let newItems: [NSManagedObject] = {
-			var result = oldItems
-			sortedItems.enumerated().forEach { (indexOfSortedItem, sortedItem) in
-				let destinationIndex = subjectedIndices[indexOfSortedItem]
-				result[destinationIndex] = sortedItem
-			}
-			return result
-		}()
-		return newItems
+		var result = oldItems
+		result.replace(
+			atIndices: subjectedIndices,
+			withElements: sortedItemsOnly)
+		return result
 	}
 	private static func _sorted(
 		_ items: [NSManagedObject],
