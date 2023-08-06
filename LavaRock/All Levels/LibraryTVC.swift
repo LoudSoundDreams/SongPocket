@@ -72,7 +72,7 @@ class LibraryTVC: UITableViewController {
 	)
 	private func floatSelected() {
 		let newViewModel = viewModel.updatedAfterFloating(
-			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
+			rowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
 		)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
@@ -88,7 +88,7 @@ class LibraryTVC: UITableViewController {
 	)
 	private func sinkSelected() {
 		let newViewModel = viewModel.updatedAfterSinking(
-			selectedRowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
+			rowsInAnyOrder: tableView.selectedIndexPaths.map { $0.row }
 		)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)

@@ -281,69 +281,29 @@ extension LibraryViewModel {
 	
 	// MARK: Float
 	
-	func updatedAfterFloating(
-		selectedRowsInAnyOrder: [Int]
-	) -> Self {
-		var twin = self
-		let newItems = itemsAfterFloating(selectedRowsInAnyOrder: selectedRowsInAnyOrder)
-		twin.groups[0].setItems(newItems)
-		return twin
-	}
-	private func itemsAfterFloating(
-		selectedRowsInAnyOrder: [Int]
-	) -> [NSManagedObject] {
-		// We could use Swift Algorithms’s `MutableCollection.stablePartition` for this.
-		
-		let rows = selectedRowsInAnyOrder.sorted()
-		let indicesOfSelectedItems = rows.map {
+	func updatedAfterFloating(rowsInAnyOrder: [Int]) -> Self {
+		let unorderedIndices = rowsInAnyOrder.map {
 			itemIndex(forRow: $0)
 		}
-		let oldItems = libraryGroup().items
-		let selectedItems = indicesOfSelectedItems.map {
-			oldItems[$0]
-		}
+		var newItems = libraryGroup().items
+		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		
-		var newItems = oldItems
-		indicesOfSelectedItems.reversed().forEach {
-			newItems.remove(at: $0)
-		}
-		selectedItems.reversed().forEach {
-			newItems.insert($0, at: 0)
-		}
-		
-		return newItems
+		var twin = self
+		twin.groups[0].setItems(newItems)
+		return twin
 	}
 	
 	// MARK: Sink
 	
-	func updatedAfterSinking(
-		selectedRowsInAnyOrder: [Int]
-	) -> Self {
-		var twin = self
-		let newItems = itemsAfterSinking(selectedRowsInAnyOrder: selectedRowsInAnyOrder)
-		twin.groups[0].setItems(newItems)
-		return twin
-	}
-	private func itemsAfterSinking(
-		selectedRowsInAnyOrder: [Int]
-	) -> [NSManagedObject] {
-		let rows = selectedRowsInAnyOrder.sorted()
-		let indicesOfSelectedItems = rows.map {
+	func updatedAfterSinking(rowsInAnyOrder: [Int]) -> Self {
+		let unorderedIndices = rowsInAnyOrder.map {
 			itemIndex(forRow: $0)
 		}
-		let oldItems = libraryGroup().items
-		let selectedItems = indicesOfSelectedItems.map {
-			oldItems[$0]
-		}
+		var newItems = libraryGroup().items
+		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newItems.count)
 		
-		var newItems = oldItems
-		indicesOfSelectedItems.reversed().forEach {
-			newItems.remove(at: $0)
-		}
-		selectedItems.forEach {
-			newItems.append($0)
-		}
-		
-		return newItems
+		var twin = self
+		twin.groups[0].setItems(newItems)
+		return twin
 	}
 }
