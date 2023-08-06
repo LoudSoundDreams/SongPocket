@@ -18,14 +18,14 @@ struct AlbumsViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
 	var prerowCount: Int {
-		prerowsInEachSection.count
+		prerows.count
 	}
 	var groups: ColumnOfLibraryItems
 	
 	enum Prerow {
 		case moveHere
 	}
-	var prerowsInEachSection: [Prerow]
+	var prerows: [Prerow]
 }
 extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
@@ -39,8 +39,8 @@ extension AlbumsViewModel: LibraryViewModel {
 		}
 	}
 	
-	func prerowIdentifiersInEachSection() -> [AnyHashable] {
-		return prerowsInEachSection
+	func prerowIdentifiers() -> [AnyHashable] {
+		return prerows
 	}
 	
 	func allowsSortCommand(
@@ -75,18 +75,18 @@ extension AlbumsViewModel: LibraryViewModel {
 		return Self(
 			context: context,
 			parentFolder: freshenedParent,
-			prerowsInEachSection: prerowsInEachSection)
+			prerows: prerows)
 	}
 }
 extension AlbumsViewModel {
 	init(
 		context: NSManagedObjectContext,
 		parentFolder: ParentFolder,
-		prerowsInEachSection: [Prerow]
+		prerows: [Prerow]
 	) {
 		self.context = context
 		self.parentFolder = parentFolder
-		self.prerowsInEachSection = prerowsInEachSection
+		self.prerows = prerows
 		
 		// Check `viewContainer` to figure out which `Album`s to show.
 		let containers: [NSManagedObject] = {
@@ -115,7 +115,7 @@ extension AlbumsViewModel {
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
 		if row < prerowCount {
-			return .prerow(prerowsInEachSection[indexPath.row])
+			return .prerow(prerows[indexPath.row])
 		} else {
 			return .album
 		}
@@ -167,6 +167,6 @@ extension AlbumsViewModel {
 		return AlbumsViewModel(
 			context: context,
 			parentFolder: parentFolder,
-			prerowsInEachSection: [])
+			prerows: [])
 	}
 }

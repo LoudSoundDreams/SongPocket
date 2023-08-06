@@ -18,7 +18,7 @@ struct SongsViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
 	var prerowCount: Int {
-		prerowsInEachSection.count
+		prerows.count
 	}
 	var groups: ColumnOfLibraryItems
 	
@@ -26,7 +26,7 @@ struct SongsViewModel {
 		case coverArt
 		case albumInfo
 	}
-	let prerowsInEachSection: [Prerow] = [
+	let prerows: [Prerow] = [
 		.coverArt,
 		.albumInfo,
 	]
@@ -43,8 +43,8 @@ extension SongsViewModel: LibraryViewModel {
 		}
 	}
 	
-	func prerowIdentifiersInEachSection() -> [AnyHashable] {
-		return prerowsInEachSection
+	func prerowIdentifiers() -> [AnyHashable] {
+		return prerows
 	}
 	
 	func allowsSortCommand(
@@ -115,7 +115,7 @@ extension SongsViewModel {
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
 		if row < prerowCount {
-			let associatedValue = prerowsInEachSection[row]
+			let associatedValue = prerows[row]
 			return .prerow(associatedValue)
 		} else {
 			return .song

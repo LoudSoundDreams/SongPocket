@@ -65,7 +65,7 @@ extension AlbumsTVC {
 			
 			let previewOfChanges = FoldersViewModel(
 				context: childContext,
-				prerowsInEachSection: [])
+				prerows: [])
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
 			let oldFolderRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { someOldRow in
 				let collectionID = oldFoldersViewModel.folderNonNil(atRow: someOldRow).objectID
@@ -217,7 +217,7 @@ extension AlbumsTVC {
 				childContext.parent = viewModel.context
 				return childContext
 			}(),
-			prerowsInEachSection: [.createFolder]
+			prerows: [.createFolder]
 		)
 		
 		present(libraryNC, animated: true)

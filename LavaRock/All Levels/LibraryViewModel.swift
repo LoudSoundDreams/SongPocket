@@ -17,7 +17,7 @@ protocol LibraryViewModel {
 	var groups: ColumnOfLibraryItems { get set }
 	
 	func bigTitle() -> String
-	func prerowIdentifiersInEachSection() -> [AnyHashable]
+	func prerowIdentifiers() -> [AnyHashable]
 	func allowsSortCommand(
 		_ sortCommand: SortCommand,
 		forItems items: [NSManagedObject]
@@ -65,7 +65,7 @@ extension LibraryViewModel {
 				return .groupWithContainer(containerID)
 			}()
 			
-			let prerowIdentifiers = prerowIdentifiersInEachSection().map {
+			let prerowIdentifiers = prerowIdentifiers().map {
 				LibraryRowIdentifier.prerow($0)
 			}
 			

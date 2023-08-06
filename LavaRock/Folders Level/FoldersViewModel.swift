@@ -11,14 +11,14 @@ struct FoldersViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
 	var prerowCount: Int {
-		prerowsInEachSection.count
+		prerows.count
 	}
 	var groups: ColumnOfLibraryItems
 	
 	enum Prerow {
 		case createFolder
 	}
-	var prerowsInEachSection: [Prerow]
+	var prerows: [Prerow]
 }
 extension FoldersViewModel: LibraryViewModel {
 	static let entityName = "Collection"
@@ -27,8 +27,8 @@ extension FoldersViewModel: LibraryViewModel {
 		return LRString.folders
 	}
 	
-	func prerowIdentifiersInEachSection() -> [AnyHashable] {
-		return prerowsInEachSection
+	func prerowIdentifiers() -> [AnyHashable] {
+		return prerows
 	}
 	
 	func allowsSortCommand(
@@ -46,16 +46,16 @@ extension FoldersViewModel: LibraryViewModel {
 	func updatedWithFreshenedData() -> Self {
 		return Self(
 			context: context,
-			prerowsInEachSection: prerowsInEachSection)
+			prerows: prerows)
 	}
 }
 extension FoldersViewModel {
 	init(
 		context: NSManagedObjectContext,
-		prerowsInEachSection: [Prerow]
+		prerows: [Prerow]
 	) {
 		self.context = context
-		self.prerowsInEachSection = prerowsInEachSection
+		self.prerows = prerows
 		
 		groups = [
 			FoldersOrAlbumsGroup(
@@ -76,7 +76,7 @@ extension FoldersViewModel {
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
 		if row < prerowCount {
-			return .prerow(prerowsInEachSection[row])
+			return .prerow(prerows[row])
 		} else {
 			return .folder
 		}
@@ -126,7 +126,7 @@ extension FoldersViewModel {
 		newItems.insert(newFolder, at: Self.indexOfNewFolder)
 		
 		var twin = updatedWithItemsInOnlyGroup(newItems)
-		twin.prerowsInEachSection = []
+		twin.prerows = []
 		return twin
 	}
 	
@@ -134,7 +134,7 @@ extension FoldersViewModel {
 		let newItems = itemsAfterDeletingNewFolder()
 		
 		var twin = updatedWithItemsInOnlyGroup(newItems)
-		twin.prerowsInEachSection = [.createFolder]
+		twin.prerows = [.createFolder]
 		return twin
 	}
 	

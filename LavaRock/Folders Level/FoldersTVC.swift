@@ -386,7 +386,7 @@ final class FoldersTVC:
 		albumsTVC.viewModel = AlbumsViewModel(
 			context: viewModel.context,
 			parentFolder: .exists(folder),
-			prerowsInEachSection: {
+			prerows: {
 				if case Purpose.movingAlbums = purpose {
 					return [.moveHere]
 				} else {
