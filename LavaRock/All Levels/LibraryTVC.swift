@@ -253,7 +253,6 @@ class LibraryTVC: UITableViewController {
 			beforeContinuation?()
 		}
 	}
-	
 	private func __setViewModelAndMoveAndDeselectRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,

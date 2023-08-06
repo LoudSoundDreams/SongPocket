@@ -10,7 +10,7 @@ import CoreData
 struct FoldersViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var numberOfPrerowsPerSection: Int {
+	var prerowCount: Int {
 		prerowsInEachSection.count
 	}
 	var groups: ColumnOfLibraryItems
@@ -75,7 +75,7 @@ extension FoldersViewModel {
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
-		if row < numberOfPrerowsPerSection {
+		if row < prerowCount {
 			return .prerow(prerowsInEachSection[row])
 		} else {
 			return .folder
@@ -84,7 +84,7 @@ extension FoldersViewModel {
 	
 	func numberOfRows() -> Int {
 		let group = libraryGroup()
-		return numberOfPrerowsPerSection + group.items.count
+		return prerowCount + group.items.count
 	}
 	
 	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {

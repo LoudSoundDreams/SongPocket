@@ -17,7 +17,7 @@ struct AlbumsViewModel {
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var numberOfPrerowsPerSection: Int {
+	var prerowCount: Int {
 		prerowsInEachSection.count
 	}
 	var groups: ColumnOfLibraryItems
@@ -114,7 +114,7 @@ extension AlbumsViewModel {
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
-		if row < numberOfPrerowsPerSection {
+		if row < prerowCount {
 			return .prerow(prerowsInEachSection[indexPath.row])
 		} else {
 			return .album
@@ -126,9 +126,9 @@ extension AlbumsViewModel {
 		switch parentFolder {
 			case .exists:
 				let group = libraryGroup()
-				return numberOfPrerowsPerSection + group.items.count
+				return prerowCount + group.items.count
 			case .deleted:
-				return 0 // Without `numberOfPrerowsPerSection`
+				return 0 // Without `prerowCount`
 		}
 	}
 	

@@ -12,7 +12,7 @@ protocol LibraryViewModel {
 	static var entityName: String { get }
 	
 	var context: NSManagedObjectContext { get }
-	var numberOfPrerowsPerSection: Int { get }
+	var prerowCount: Int { get }
 	
 	var groups: ColumnOfLibraryItems { get set }
 	
@@ -85,7 +85,7 @@ extension LibraryViewModel {
 	
 	// MARK: - Elements
 	
-	// WARNING: Never use `LibraryGroup.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `numberOfPrerowsPerSection`.
+	// WARNING: Never use `LibraryGroup.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `prerowCount`.
 	
 	func libraryGroup() -> LibraryGroup {
 		return groups[0]
@@ -114,7 +114,7 @@ extension LibraryViewModel {
 	// MARK: Indices
 	
 	func itemIndex(forRow row: Int) -> Int {
-		return row - numberOfPrerowsPerSection
+		return row - prerowCount
 	}
 	
 	// MARK: Rows
@@ -122,12 +122,12 @@ extension LibraryViewModel {
 	func rowsForAllItems() -> [Int] {
 		let indices = libraryGroup().items.indices
 		return indices.map {
-			numberOfPrerowsPerSection + $0
+			prerowCount + $0
 		}
 	}
 	
 	func row(forItemIndex itemIndex: Int) -> Int {
-		return numberOfPrerowsPerSection + itemIndex
+		return prerowCount + itemIndex
 	}
 	
 	// MARK: - Editing
