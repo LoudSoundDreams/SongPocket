@@ -87,18 +87,9 @@ extension FoldersViewModel {
 		return numberOfPrerowsPerSection + group.items.count
 	}
 	
-	private var group: LibraryGroup {
-		get {
-			groups[0]
-		}
-		set {
-			groups[0] = newValue
-		}
-	}
-	
 	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
 		var twin = self
-		twin.group.setItems(newItems)
+		twin.groups[0].setItems(newItems)
 		return twin
 	}
 	
@@ -134,7 +125,7 @@ extension FoldersViewModel {
 		newFolder.title = LRString.untitledFolder
 		// When we call `setItemsAndMoveRows`, the property observer will set each `Collection.index` for us.
 		
-		var newItems = group.items
+		var newItems = libraryGroup().items
 		newItems.insert(newFolder, at: Self.indexOfNewFolder)
 		
 		var twin = updatedWithItemsInOnlyGroup(newItems)
@@ -151,7 +142,7 @@ extension FoldersViewModel {
 	}
 	
 	private func itemsAfterDeletingNewFolder() -> [NSManagedObject] {
-		let oldItems = group.items
+		let oldItems = libraryGroup().items
 		guard
 			let folder = oldItems[Self.indexOfNewFolder] as? Collection,
 			folder.isEmpty()
@@ -161,7 +152,7 @@ extension FoldersViewModel {
 		
 		context.delete(folder)
 		
-		var newItems = group.items
+		var newItems = libraryGroup().items
 		newItems.remove(at: Self.indexOfNewFolder)
 		return newItems
 	}
