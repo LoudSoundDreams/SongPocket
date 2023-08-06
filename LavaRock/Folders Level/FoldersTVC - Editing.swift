@@ -133,7 +133,7 @@ extension FoldersTVC {
 			let albumsTVC = libraryNC.viewControllers.first as! AlbumsTVC
 			albumsTVC.viewModel = AlbumsViewModel(
 				context: previewContext,
-				parentFolder: .exists(combined),
+				folder: combined,
 				prerows: []
 			)
 			albumsTVC.is_previewing_combine_with_album_count = combined.contents?.count ?? 0

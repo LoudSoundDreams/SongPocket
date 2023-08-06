@@ -99,15 +99,7 @@ final class AlbumsTVC:
 		}
 		
 		title = { () -> String in
-			guard let albumsViewModel = viewModel as? AlbumsViewModel else {
-				return ""
-			}
-			switch albumsViewModel.parentFolder {
-				case .exists(let folder):
-					return folder.title ?? ""
-				case .deleted:
-					return ""
-			}
+			return (viewModel as? AlbumsViewModel)?.folder?.title ?? ""
 		}()
 	}
 	
@@ -273,9 +265,9 @@ final class AlbumsTVC:
 			let songsTVC = segue.destination as? SongsTVC
 		else { return }
 		
-		let album = albumsViewModel.albumNonNil(atRow: selectedIndexPath.row)
+		let selectedAlbum = albumsViewModel.albumNonNil(atRow: selectedIndexPath.row)
 		songsTVC.viewModel = SongsViewModel(
-			parentAlbum: .exists(album),
+			album: selectedAlbum,
 			context: viewModel.context)
 	}
 }

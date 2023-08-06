@@ -7,13 +7,8 @@
 
 import CoreData
 
-enum ParentAlbum {
-	case exists(Album)
-	case deleted
-}
-
 struct SongsViewModel {
-	let parentAlbum: ParentAlbum
+	let album: Album?
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
@@ -54,45 +49,39 @@ extension SongsViewModel: LibraryViewModel {
 	
 	// Similar to counterpart in `AlbumsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		let freshenedParentAlbum: ParentAlbum = {
-			switch parentAlbum {
-				case .exists(let album):
-					if album.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
-						return .deleted
-					} else {
-						return .exists(album)
-					}
-				case .deleted:
-					return .deleted
+		let freshenedAlbum: Album? = {
+			guard
+				let album,
+				!album.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
+			else {
+				return nil
 			}
+			return album
 		}()
 		return Self(
-			parentAlbum: freshenedParentAlbum,
+			album: freshenedAlbum,
 			context: context)
 	}
 }
 extension SongsViewModel {
 	init(
-		parentAlbum: ParentAlbum,
+		album: Album?,
 		context: NSManagedObjectContext
 	) {
-		self.parentAlbum = parentAlbum
+		self.album = album
 		self.context = context
 		
-		// Check `viewContainer` to figure out which `Song`s to show.
-		let containers: [NSManagedObject] = {
-			switch parentAlbum {
-				case .exists(let album):
-					return [album]
-				case .deleted:
-					return []
-			}}()
-		groups = containers.map { container in
+		guard let album else {
+			groups = []
+			return
+		}
+		
+		groups = [
 			SongsGroup(
 				entityName: Self.entityName,
-				container: container,
+				container: album,
 				context: context)
-		}
+		]
 	}
 	
 	enum RowCase {
@@ -111,12 +100,10 @@ extension SongsViewModel {
 	
 	// Similar to counterpart in `AlbumsViewModel`.
 	func numberOfRows() -> Int {
-		switch parentAlbum {
-			case .exists:
-				let group = libraryGroup()
-				return prerowCount + group.items.count
-			case .deleted:
-				return 0 // Without `prerowCount`
+		if album == nil {
+			return 0 // Without `prerowCount`
+		} else {
+			return prerowCount + libraryGroup().items.count
 		}
 	}
 }

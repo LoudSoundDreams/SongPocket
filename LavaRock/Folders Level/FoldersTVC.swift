@@ -384,10 +384,10 @@ final class FoldersTVC:
 		albumsTVC.organizeAlbumsClipboard = organizeAlbumsClipboard
 		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 		
-		let folder = foldersViewModel.folderNonNil(atRow: selectedIndexPath.row)
+		let selectedFolder = foldersViewModel.folderNonNil(atRow: selectedIndexPath.row)
 		albumsTVC.viewModel = AlbumsViewModel(
 			context: viewModel.context,
-			parentFolder: .exists(folder),
+			folder: selectedFolder,
 			prerows: {
 				if case Purpose.movingAlbums = purpose {
 					return [.moveHere]

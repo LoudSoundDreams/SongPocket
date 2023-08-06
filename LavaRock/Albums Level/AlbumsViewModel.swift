@@ -7,13 +7,8 @@
 
 import CoreData
 
-enum ParentFolder {
-	case exists(Collection)
-	case deleted
-}
-
 struct AlbumsViewModel {
-	let parentFolder: ParentFolder
+	let folder: Collection?
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
@@ -51,48 +46,42 @@ extension AlbumsViewModel: LibraryViewModel {
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		let freshenedParent: ParentFolder = {
-			switch parentFolder {
-				case .exists(let folder):
-					if folder.wasDeleted() { // WARNING: You must check this, or the initializer will create groups with no items.
-						return .deleted
-					} else {
-						return .exists(folder)
-					}
-				case .deleted:
-					return .deleted
+		let freshenedFolder: Collection? = {
+			guard
+				let folder,
+				!folder.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
+			else {
+				return nil
 			}
+			return folder
 		}()
 		return Self(
 			context: context,
-			parentFolder: freshenedParent,
+			folder: freshenedFolder,
 			prerows: prerows)
 	}
 }
 extension AlbumsViewModel {
 	init(
 		context: NSManagedObjectContext,
-		parentFolder: ParentFolder,
+		folder: Collection?,
 		prerows: [Prerow]
 	) {
 		self.context = context
-		self.parentFolder = parentFolder
+		self.folder = folder
 		self.prerows = prerows
 		
-		// Check `viewContainer` to figure out which `Album`s to show.
-		let containers: [NSManagedObject] = {
-			switch parentFolder {
-				case .exists(let folder):
-					return [folder]
-				case .deleted:
-					return []
-			}}()
-		groups = containers.map { container in
+		guard let folder else {
+			groups = []
+			return
+		}
+		
+		groups = [
 			FoldersOrAlbumsGroup(
 				entityName: Self.entityName,
-				container: container,
+				container: folder,
 				context: context)
-		}
+		]
 	}
 	
 	func albumNonNil(atRow: Int) -> Album {
@@ -114,12 +103,10 @@ extension AlbumsViewModel {
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func numberOfRows() -> Int {
-		switch parentFolder {
-			case .exists:
-				let group = libraryGroup()
-				return prerowCount + group.items.count
-			case .deleted:
-				return 0 // Without `prerowCount`
+		if folder == nil {
+			return 0 // Without `prerowCount`
+		} else {
+			return prerowCount + libraryGroup().items.count
 		}
 	}
 	
@@ -144,7 +131,7 @@ extension AlbumsViewModel {
 	
 	// MARK: - “Move albums” sheet
 	
-	func updatedAfterMoving(
+	func updatedAfterInserting(
 		albumsWith albumIDs: [NSManagedObjectID]
 	) -> Self {
 		let group = libraryGroup()
@@ -157,7 +144,7 @@ extension AlbumsViewModel {
 		
 		return AlbumsViewModel(
 			context: context,
-			parentFolder: parentFolder,
+			folder: folder,
 			prerows: [])
 	}
 }
