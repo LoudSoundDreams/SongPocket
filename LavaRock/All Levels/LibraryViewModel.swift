@@ -136,22 +136,18 @@ extension LibraryViewModel {
 	
 	// WARNING: Leaves a group empty if you move all the items out of it. You must call `updatedWithFreshenedData` later to delete empty groups.
 	mutating func moveItem(
-		at sourceIndexPath: IndexPath,
-		to destinationIndexPath: IndexPath
+		atRow: Int,
+		toRow: Int
 	) {
-		let sourceGroupIndex = sourceIndexPath.section
-		let sourceItemIndex = itemIndex(forRow: sourceIndexPath.row)
-		
-		var sourceItems = groups[sourceGroupIndex].items
+		let sourceItemIndex = itemIndex(forRow: atRow)
+		var sourceItems = libraryGroup().items
 		let item = sourceItems.remove(at: sourceItemIndex)
-		groups[sourceGroupIndex].setItems(sourceItems)
+		groups[0].setItems(sourceItems)
 		
-		let destinationGroupIndex = destinationIndexPath.section
-		let destinationItemIndex = itemIndex(forRow: destinationIndexPath.row)
-		
-		var destinationItems = groups[destinationGroupIndex].items
+		let destinationItemIndex = itemIndex(forRow: toRow)
+		var destinationItems = libraryGroup().items
 		destinationItems.insert(item, at: destinationItemIndex)
-		groups[destinationGroupIndex].setItems(destinationItems)
+		groups[0].setItems(destinationItems)
 	}
 	
 	// MARK: Sort
