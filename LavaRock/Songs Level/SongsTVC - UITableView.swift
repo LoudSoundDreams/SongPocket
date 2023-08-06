@@ -25,7 +25,12 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return (viewModel as! SongsViewModel).numberOfRows()
+		let songsViewModel = viewModel as! SongsViewModel
+		if songsViewModel.album == nil {
+			return 0 // Without `prerowCount`
+		} else {
+			return songsViewModel.prerowCount + songsViewModel.libraryGroup().items.count
+		}
 	}
 	
 	// MARK: - Cells

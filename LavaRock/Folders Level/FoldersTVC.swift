@@ -123,15 +123,13 @@ final class FoldersTVC:
 		let toInsert: [IndexPath]
 		let toReload: [IndexPath]
 		
-		let foldersSectionIndex = 0
-		let oldIndexPaths = tableView.indexPathsForRows(
-			inSection: foldersSectionIndex,
-			firstRow: 0)
+		let foldersSection = 0
+		let oldIndexPaths = tableView.indexPathsForRows(inSection: foldersSection, firstRow: 0)
 		let newIndexPaths: [IndexPath] = {
-			let numberOfRows = numberOfRows(forSection: foldersSectionIndex)
+			let numberOfRows = numberOfRows(forSection: foldersSection)
 			let indicesOfRows = Array(0 ..< numberOfRows)
 			return indicesOfRows.map { row in
-				IndexPath(row: row, section: foldersSectionIndex)
+				IndexPath(row: row, section: foldersSection)
 			}
 		}()
 		

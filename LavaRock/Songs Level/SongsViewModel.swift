@@ -97,13 +97,4 @@ extension SongsViewModel {
 			return .song
 		}
 	}
-	
-	// Similar to counterpart in `AlbumsViewModel`.
-	func numberOfRows() -> Int {
-		if album == nil {
-			return 0 // Without `prerowCount`
-		} else {
-			return prerowCount + libraryGroup().items.count
-		}
-	}
 }

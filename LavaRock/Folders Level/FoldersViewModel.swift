@@ -78,11 +78,6 @@ extension FoldersViewModel {
 		}
 	}
 	
-	func numberOfRows() -> Int {
-		let group = libraryGroup()
-		return prerowCount + group.items.count
-	}
-	
 	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
 		var twin = self
 		twin.groups[0].setItems(newItems)

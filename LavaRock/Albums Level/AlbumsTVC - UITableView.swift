@@ -26,7 +26,12 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		return (viewModel as! AlbumsViewModel).numberOfRows()
+		let albumsViewModel = viewModel as! AlbumsViewModel
+		if albumsViewModel.folder == nil {
+			return 0 // Without `prerowCount`
+		} else {
+			return albumsViewModel.prerowCount + albumsViewModel.libraryGroup().items.count
+		}
 	}
 	
 	// MARK: - Cells

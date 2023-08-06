@@ -101,15 +101,6 @@ extension AlbumsViewModel {
 		}
 	}
 	
-	// Similar to counterpart in `SongsViewModel`.
-	func numberOfRows() -> Int {
-		if folder == nil {
-			return 0 // Without `prerowCount`
-		} else {
-			return prerowCount + libraryGroup().items.count
-		}
-	}
-	
 	// MARK: - Organizing
 	
 	// Returns `true` if the albums to organize have at least 2 different album artists.
