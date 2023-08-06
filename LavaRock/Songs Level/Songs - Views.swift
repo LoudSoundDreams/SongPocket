@@ -169,9 +169,9 @@ extension SongsTVC {
 		startingAt startingMediaItem: MPMediaItem
 	) -> [MPMediaItem] {
 		let allMediaItems = mediaItems(startingAtRow: viewModel.indexPathFor(itemIndex: 0).row)
-		let result = allMediaItems.drop { mediaItem in
+		let result = allMediaItems.drop(while: { mediaItem in
 			mediaItem.persistentID != startingMediaItem.persistentID
-		}
+		})
 		return Array(result)
 	}
 }
