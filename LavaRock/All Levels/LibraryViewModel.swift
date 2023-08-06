@@ -97,13 +97,9 @@ extension LibraryViewModel {
 		return Array(group.items[selectedItemIndex...])
 	}
 	
-	func pointsToSomeItem(_ indexPath: IndexPath) -> Bool {
-		let groupIndex = indexPath.section
-		guard 0 <= groupIndex, groupIndex < groups.count else {
-			return false
-		}
-		let items = groups[groupIndex].items
-		let itemIndex = itemIndex(forRow: indexPath.row)
+	func pointsToSomeItem(row: Int) -> Bool {
+		let items = libraryGroup().items
+		let itemIndex = itemIndex(forRow: row)
 		guard 0 <= itemIndex, itemIndex < items.count else {
 			return false
 		}

@@ -14,7 +14,7 @@ extension LibraryTVC {
 		_ tableView: UITableView,
 		canEditRowAt indexPath: IndexPath
 	) -> Bool {
-		return viewModel.pointsToSomeItem(indexPath)
+		return viewModel.pointsToSomeItem(row: indexPath.row)
 	}
 	
 	// MARK: Reordering
@@ -24,7 +24,7 @@ extension LibraryTVC {
 		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
 		toProposedIndexPath proposedDestinationIndexPath: IndexPath
 	) -> IndexPath {
-		if viewModel.pointsToSomeItem(proposedDestinationIndexPath) {
+		if viewModel.pointsToSomeItem(row: proposedDestinationIndexPath.row) {
 			return proposedDestinationIndexPath
 		}
 		
@@ -52,7 +52,7 @@ extension LibraryTVC {
 		_ tableView: UITableView,
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
-		return viewModel.pointsToSomeItem(indexPath)
+		return viewModel.pointsToSomeItem(row: indexPath.row)
 	}
 	
 	final override func tableView(
@@ -74,7 +74,7 @@ extension LibraryTVC {
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
-		return viewModel.pointsToSomeItem(indexPath) ? indexPath : nil
+		return viewModel.pointsToSomeItem(row: indexPath.row) ? indexPath : nil
 	}
 	
 	// Overrides should call super (this implementation) if `viewModel.pointsToSomeItem(indexPath)`.

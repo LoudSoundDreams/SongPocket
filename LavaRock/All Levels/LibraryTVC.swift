@@ -155,7 +155,7 @@ class LibraryTVC: UITableViewController {
 			else { return }
 			cell.indicateAvatarStatus__({
 				guard
-					viewModel.pointsToSomeItem(indexPath),
+					viewModel.pointsToSomeItem(row: indexPath.row),
 					let libraryItem = viewModel.itemNonNil(atRow: indexPath.row) as? LibraryItem
 				else {
 					return .notPlaying
