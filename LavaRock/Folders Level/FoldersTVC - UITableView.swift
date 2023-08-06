@@ -140,7 +140,7 @@ extension FoldersTVC {
 			for: indexPath) as? FolderCell
 		else { return UITableViewCell() }
 		
-		let collection = foldersViewModel.folderNonNil(at: indexPath)
+		let collection = foldersViewModel.folderNonNil(atRow: indexPath.row)
 		let mode: FolderRowMode = {
 			switch purpose {
 				case .willOrganizeAlbums(let stickyNote):

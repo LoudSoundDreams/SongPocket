@@ -65,8 +65,8 @@ extension FoldersViewModel {
 		]
 	}
 	
-	func folderNonNil(at indexPath: IndexPath) -> Collection {
-		return itemNonNil(atRow: indexPath.row) as! Collection
+	func folderNonNil(atRow: Int) -> Collection {
+		return itemNonNil(atRow: atRow) as! Collection
 	}
 	
 	enum RowCase {
@@ -96,7 +96,7 @@ extension FoldersViewModel {
 	// MARK: - Renaming
 	
 	func renameAndReturnDidChangeTitle(
-		at indexPath: IndexPath,
+		atRow: Int,
 		proposedTitle: String?
 	) -> Bool {
 		guard
@@ -107,7 +107,7 @@ extension FoldersViewModel {
 		}
 		let newTitle = proposedTitle.truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
 		
-		let folder = folderNonNil(at: indexPath)
+		let folder = folderNonNil(atRow: atRow)
 		let oldTitle = folder.title
 		folder.title = newTitle
 		return oldTitle != folder.title

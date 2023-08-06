@@ -119,10 +119,8 @@ extension LibraryViewModel {
 	
 	// MARK: IndexPaths
 	
-	func indexPathsForAllItems() -> [IndexPath] {
-		return groups.indices.flatMap { groupIndex in
-			indexPaths(forGroupIndex: groupIndex)
-		}
+	func rowsForAllItems() -> [Int] {
+		return indexPaths(forGroupIndex: 0).map { $0.row }
 	}
 	
 	func row(forItemIndex itemIndex: Int) -> Int {
@@ -130,7 +128,7 @@ extension LibraryViewModel {
 	}
 	
 	// Similar to UITableView.indexPathsForRows.
-	func indexPaths(forGroupIndex groupIndex: Int) -> [IndexPath] {
+	private func indexPaths(forGroupIndex groupIndex: Int) -> [IndexPath] {
 		let indices = groups[groupIndex].items.indices
 		return indices.map {
 			IndexPath(
@@ -172,7 +170,7 @@ extension LibraryViewModel {
 		var subjected: [Int] = selectedRows
 		subjected.sort()
 		if subjected.isEmpty {
-			subjected = indexPathsForAllItems().map { $0.row }
+			subjected = rowsForAllItems()
 		}
 		
 		var twin = self

@@ -10,8 +10,11 @@ extension AlbumsTVC: OrganizeAlbumsDelegate {
 		let viewModel = viewModel.updatedWithFreshenedData() as! AlbumsViewModel // Shadowing so that we don’t accidentally refer to `self.viewModel`, which is incoherent at this point.
 		let toKeepSelected = idsOfAlbumsToKeepSelected
 		idsOfAlbumsToKeepSelected = []
-		let toSelect = viewModel.indexPathsForAllItems().filter {
-			let idOfAlbum = viewModel.albumNonNil(atRow: $0.row).objectID
+		let toSelect = tableView.allIndexPaths().filter { someIndexPath in
+			guard viewModel.pointsToSomeItem(row: someIndexPath.row) else {
+				return false
+			}
+			let idOfAlbum = viewModel.albumNonNil(atRow: someIndexPath.row).objectID
 			return toKeepSelected.contains(idOfAlbum)
 		}
 		Task {

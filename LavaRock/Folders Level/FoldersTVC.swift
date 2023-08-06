@@ -48,8 +48,7 @@ final class FoldersTVC:
 	private func renameFocusedHandler(
 		_ sender: UIAccessibilityCustomAction
 	) -> Bool {
-		let ofAllFolders = viewModel.indexPathsForAllItems()
-		guard let focused = ofAllFolders.first(where: {
+		guard let focused = tableView.allIndexPaths().first(where: {
 			let cell = tableView.cellForRow(at: $0)
 			return cell?.accessibilityElementIsFocused() ?? false
 		}) else {
@@ -383,7 +382,7 @@ final class FoldersTVC:
 		albumsTVC.organizeAlbumsClipboard = organizeAlbumsClipboard
 		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 		
-		let folder = foldersViewModel.folderNonNil(at: selectedIndexPath)
+		let folder = foldersViewModel.folderNonNil(atRow: selectedIndexPath.row)
 		albumsTVC.viewModel = AlbumsViewModel(
 			context: viewModel.context,
 			parentFolder: .exists(folder),

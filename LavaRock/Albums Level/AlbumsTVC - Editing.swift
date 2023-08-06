@@ -20,13 +20,13 @@ extension AlbumsTVC {
 		
 		let selectedIndexPaths = tableView.selectedIndexPaths
 		
-		var subjected: [IndexPath] = selectedIndexPaths
-		subjected.sort()
-		if subjected.isEmpty {
-			subjected = albumsViewModel.indexPathsForAllItems()
+		var subjectedRows: [Int] = selectedIndexPaths.map { $0.row }
+		subjectedRows.sort()
+		if subjectedRows.isEmpty {
+			subjectedRows = albumsViewModel.rowsForAllItems()
 		}
-		let albumsInOriginalContextToMaybeMove = subjected.map {
-			albumsViewModel.albumNonNil(atRow: $0.row)
+		let albumsInOriginalContextToMaybeMove = subjectedRows.map {
+			albumsViewModel.albumNonNil(atRow: $0)
 		}
 		
 		// Create a child managed object context to begin the changes in.
@@ -67,14 +67,18 @@ extension AlbumsTVC {
 				context: childContext,
 				prerowsInEachSection: [])
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
-			let originalIndexPathsOfFoldersContainingMovedAlbums = oldFoldersViewModel.indexPathsForAllItems().filter {
-				let collectionID = oldFoldersViewModel.folderNonNil(at: $0).objectID
+			let oldFolderRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { someOldRow in
+				let collectionID = oldFoldersViewModel.folderNonNil(atRow: someOldRow).objectID
 				return clipboard.idsOfCollectionsContainingMovedAlbums.contains(collectionID)
+			}
+			let oldFolderIndexPaths_ContainingMovedAlbums: [IndexPath]
+			= oldFolderRows_ContainingMovedAlbums.map { oldRow in
+				IndexPath(row: oldRow, section: 0)
 			}
 			
 			// Similar to `reflectDatabase`.
 			let _ = await foldersTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				firstReloading: originalIndexPathsOfFoldersContainingMovedAlbums,
+				firstReloading: oldFolderIndexPaths_ContainingMovedAlbums,
 				previewOfChanges,
 				runningBeforeContinuation: {
 					// Remove the now-playing marker from the source folder, if necessary.
@@ -196,13 +200,13 @@ extension AlbumsTVC {
 		// Configure the `FoldersTVC`.
 		foldersTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
 			albumsBeingMoved: {
-				var subjected: [IndexPath] = tableView.selectedIndexPaths
-				subjected.sort()
-				if subjected.isEmpty {
-					subjected = selfVM.indexPathsForAllItems()
+				var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
+				subjectedRows.sort()
+				if subjectedRows.isEmpty {
+					subjectedRows = selfVM.rowsForAllItems()
 				}
-				return subjected.map {
-					selfVM.albumNonNil(atRow: $0.row)
+				return subjectedRows.map {
+					selfVM.albumNonNil(atRow: $0)
 				}
 			}(),
 			delegate: self

@@ -41,7 +41,7 @@ extension FoldersTVC {
 		let indexPath = IndexPath(row: FoldersViewModel.indexOfNewFolder, section: 0)
 		
 		let didChangeTitle = foldersViewModel.renameAndReturnDidChangeTitle(
-			at: indexPath,
+			atRow: indexPath.row,
 			proposedTitle: nil)
 		
 		Task {

@@ -64,7 +64,7 @@ extension FoldersTVC {
 		let foldersViewModel = viewModel as! FoldersViewModel
 		
 		let _ = foldersViewModel.renameAndReturnDidChangeTitle(
-			at: indexPath,
+			atRow: indexPath.row,
 			proposedTitle: proposedTitle)
 		
 		viewModel.context.tryToSave()
@@ -98,7 +98,7 @@ extension FoldersTVC {
 		let combined = previewContext.createFolder(
 			byCombiningCollectionsWithInOrder: {
 				let selected = selectedIndexPaths.map {
-					foldersViewModel.folderNonNil(at: $0)
+					foldersViewModel.folderNonNil(atRow: $0.row)
 				}
 				return selected.map { $0.objectID }
 			}(),
