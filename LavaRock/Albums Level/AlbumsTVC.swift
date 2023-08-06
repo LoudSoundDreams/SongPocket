@@ -193,9 +193,13 @@ final class AlbumsTVC:
 		super.freshenEditingButtons()
 		
 		moveButton.menu = makeMoveMenu()
-		moveButton.isEnabled = allowsMove()
+		moveButton.isEnabled = {
+			guard !viewModel.isEmpty() else {
+				return false
+			}
+			return true
+		}()
 	}
-	
 	private func makeMoveMenu() -> UIMenu {
 		let byAlbumArtist_element = UIDeferredMenuElement.uncached(
 			{ [weak self] useMenuElements in
@@ -243,13 +247,6 @@ final class AlbumsTVC:
 			toFolder_element,
 			byAlbumArtist_element,
 		])
-	}
-	
-	private func allowsMove() -> Bool {
-		guard !viewModel.isEmpty() else {
-			return false
-		}
-		return true
 	}
 	
 	// MARK: - Navigation
