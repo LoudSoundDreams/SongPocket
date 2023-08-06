@@ -154,7 +154,10 @@ class LibraryTVC: UITableViewController {
 				let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying__
 			else { return }
 			cell.indicateAvatarStatus__({
-				guard let libraryItem = viewModel.itemOptional(at: indexPath) as? LibraryItem else {
+				guard
+					viewModel.pointsToSomeItem(indexPath),
+					let libraryItem = viewModel.itemNonNil(atRow: indexPath.row) as? LibraryItem
+				else {
 					return .notPlaying
 				}
 				return libraryItem.avatarStatus()
