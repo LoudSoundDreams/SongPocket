@@ -450,54 +450,51 @@ class LibraryTVC: UITableViewController {
 			}
 			return !tableView.selectedIndexPaths.isEmpty
 		}
-		
-		// Menus
-		
-		func create_sort_menu() -> UIMenu {
-			let groupedElements: [[UIMenuElement]] = sortCommandsGrouped.map { commandGroup in
-				let groupOfChildren: [UIMenuElement] = commandGroup.map { sortCommand in
-					return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
-						guard let self else { return }
-						
-						let action = UIAction(
-							title: sortCommand.localizedName(),
-							image: sortCommand.uiImage()
-						) { [weak self] action in
-							self?.sortSelectedOrAll(sortCommand: sortCommand)
-						}
-						let allowed: Bool = {
-							let viewModel = self.viewModel
-							var subjectedRows: [Int] = self.tableView.selectedIndexPaths.map { $0.row }
-							if subjectedRows.isEmpty {
-								subjectedRows = viewModel.rowsForAllItems()
-							}
-							
-							guard subjectedRows.count >= 2 else {
-								return false
-							}
-							
-							return viewModel.allowsSortCommand(
-								sortCommand,
-								forItems: subjectedRows.map {
-									viewModel.itemNonNil(atRow: $0)
-								}
-							)
-						}()
-						if !allowed {
-							action.attributes.formUnion(.disabled)
-						}
-						useMenuElements([action])
-					})
-				}
-				return groupOfChildren
-			}
-			let submenus = groupedElements.reversed().map { groupOfElements in
-				return UIMenu(options: .displayInline, children: groupOfElements.reversed())
-			}
-			return UIMenu(children: submenus)
-		}
 	}
-	final func sortSelectedOrAll(sortCommand: SortCommand) {
+	private func create_sort_menu() -> UIMenu {
+		let groupedElements: [[UIMenuElement]] = sortCommandsGrouped.map { commandGroup in
+			let groupOfChildren: [UIMenuElement] = commandGroup.map { sortCommand in
+				return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
+					guard let self else { return }
+					
+					let action = UIAction(
+						title: sortCommand.localizedName(),
+						image: sortCommand.uiImage()
+					) { [weak self] action in
+						self?.sortSelectedOrAll(sortCommand: sortCommand)
+					}
+					let allowed: Bool = {
+						let viewModel = self.viewModel
+						var subjectedRows: [Int] = self.tableView.selectedIndexPaths.map { $0.row }
+						if subjectedRows.isEmpty {
+							subjectedRows = viewModel.rowsForAllItems()
+						}
+						
+						guard subjectedRows.count >= 2 else {
+							return false
+						}
+						
+						return viewModel.allowsSortCommand(
+							sortCommand,
+							forItems: subjectedRows.map {
+								viewModel.itemNonNil(atRow: $0)
+							}
+						)
+					}()
+					if !allowed {
+						action.attributes.formUnion(.disabled)
+					}
+					useMenuElements([action])
+				})
+			}
+			return groupOfChildren
+		}
+		let submenus = groupedElements.reversed().map { groupOfElements in
+			return UIMenu(options: .displayInline, children: groupOfElements.reversed())
+		}
+		return UIMenu(children: submenus)
+	}
+	private func sortSelectedOrAll(sortCommand: SortCommand) {
 		let newViewModel = viewModel.updatedAfterSorting(
 			selectedRows: tableView.selectedIndexPaths.map { $0.row },
 			sortCommand: sortCommand)
