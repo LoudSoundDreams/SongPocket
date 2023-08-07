@@ -30,22 +30,22 @@ enum ArrangeCommand: CaseIterable {
 		}
 	}
 	
-	func uiImage() -> UIImage? {
+	var sfSymbolName: String {
 		switch self {
 			case .random:
 				switch Int.random(in: 1...6) {
-					case 1: return UIImage(systemName: "die.face.1")
-					case 2: return UIImage(systemName: "die.face.2")
-					case 4: return UIImage(systemName: "die.face.4")
-					case 5: return UIImage(systemName: "die.face.5")
-					case 6: return UIImage(systemName: "die.face.6")
-					default: return UIImage(systemName: "die.face.3") // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
+					case 1: return "die.face.1"
+					case 2: return "die.face.2"
+					case 4: return "die.face.4"
+					case 5: return "die.face.5"
+					case 6: return "die.face.6"
+					default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
 				}
-			case .reverse: return UIImage(systemName: "arrow.up.and.down")
-			case .folder_name: return UIImage(systemName: "character")
-			case .album_released: return UIImage(systemName: "sparkles")
-			case .song_track: return UIImage(systemName: "number")
-			case .song_added: return UIImage(systemName: "clock")
+			case .reverse: return "arrow.up.and.down"
+			case .folder_name: return "character"
+			case .album_released: return "sparkles"
+			case .song_track: return "number"
+			case .song_added: return "clock"
 		}
 	}
 	
@@ -56,7 +56,7 @@ enum ArrangeCommand: CaseIterable {
 		return UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
 				title: localizedName(),
-				image: uiImage()
+				image: UIImage(systemName: sfSymbolName)
 			) { _ in handler() }
 			if !enabled {
 				action.attributes.formUnion(.disabled)

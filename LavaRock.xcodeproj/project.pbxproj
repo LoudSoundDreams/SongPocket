@@ -255,8 +255,8 @@
 		070E194524F3424500B21307 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */,
 				07FB52CA2813909400CCCBA5 /* ArrangeCommand.swift */,
+				07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */,
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
