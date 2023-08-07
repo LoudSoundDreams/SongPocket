@@ -20,8 +20,6 @@ struct AlbumsViewModel {
 	var groups: ColumnOfLibraryItems
 }
 extension AlbumsViewModel: LibraryViewModel {
-	static let entityName = "Album"
-	
 	func prerowCount() -> Int {
 		return prerows.count
 	}
@@ -61,9 +59,8 @@ extension AlbumsViewModel {
 			return
 		}
 		groups = [
-			FoldersOrAlbumsGroup(
-				entityName: Self.entityName,
-				container: folder,
+			AlbumsGroup(
+				folder: folder,
 				context: context)
 		]
 	}

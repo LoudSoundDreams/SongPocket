@@ -23,27 +23,4 @@ protocol LibraryGroup {
 	 //		}
 	 //	}
 	 */
-	
-	init(
-		entityName: String,
-		container: NSManagedObject?,
-		context: NSManagedObjectContext)
-	// Initialize `items = Self.itemsFetched`.
-}
-extension LibraryGroup {
-	// Similar to `allFetched`.
-	static func itemsFetched(
-		entityName: String,
-		container: NSManagedObject?,
-		context: NSManagedObjectContext
-	) -> [NSManagedObject] {
-		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
-		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		if let container = container {
-			fetchRequest.predicate = NSPredicate(
-				format: "container == %@",
-				container)
-		}
-		return context.objectsFetched(for: fetchRequest)
-	}
 }

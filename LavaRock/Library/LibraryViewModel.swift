@@ -12,7 +12,6 @@ protocol LibraryViewModel {
 	var context: NSManagedObjectContext { get }
 	var groups: ColumnOfLibraryItems { get set }
 	
-	static var entityName: String { get }
 	func prerowCount() -> Int
 	func prerowIdentifiers() -> [AnyHashable]
 	func updatedWithFreshenedData() -> Self

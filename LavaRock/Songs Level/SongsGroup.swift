@@ -29,15 +29,11 @@ extension SongsGroup: LibraryGroup {
 	}
 	
 	init(
-		entityName: String,
-		container: NSManagedObject?,
+		album: Album?,
 		context: NSManagedObjectContext
 	) {
-		items = Self.itemsFetched( // Doesn’t trigger the property observer
-			entityName: entityName,
-			container: container,
-			context: context)
-		self.container = container
+		items = Song.allFetched(sorted: true, inAlbum: album, context: context)
+		self.container = album
 		
 		spacerTrackNumberText = {
 			guard let representative = (container as? Album)?.representativeSongInfo() else {

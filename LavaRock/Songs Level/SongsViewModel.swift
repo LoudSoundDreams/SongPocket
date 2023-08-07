@@ -24,8 +24,6 @@ struct SongsViewModel {
 	var groups: ColumnOfLibraryItems
 }
 extension SongsViewModel: LibraryViewModel {
-	static let entityName = "Song"
-	
 	func prerowCount() -> Int {
 		return prerows.count
 	}
@@ -64,8 +62,7 @@ extension SongsViewModel {
 		
 		groups = [
 			SongsGroup(
-				entityName: Self.entityName,
-				container: album,
+				album: album,
 				context: context)
 		]
 	}
