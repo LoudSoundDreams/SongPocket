@@ -439,12 +439,12 @@ class LibraryTVC: UITableViewController {
 			return selectedRows.isConsecutive()
 		}
 	}
-	final func rowsToArrange() -> [Int] {
-		var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
-		if subjectedRows.isEmpty {
-			subjectedRows = viewModel.rowsForAllItems()
+	final func unsortedRowsToArrange() -> [Int] {
+		var result: [Int] = tableView.selectedIndexPaths.map { $0.row }
+		if result.isEmpty {
+			result = viewModel.rowsForAllItems()
 		}
-		return subjectedRows
+		return result
 	}
 	final func sortSelectedOrAll(sortCommand: SortCommand) {
 		let newViewModel = viewModel.updatedAfterSorting(

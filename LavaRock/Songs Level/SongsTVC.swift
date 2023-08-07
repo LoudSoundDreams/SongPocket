@@ -45,7 +45,7 @@ final class SongsTVC: LibraryTVC {
 				return command.createMenuElement(
 					enabled: {
 						guard
-							rowsToArrange().count >= 2,
+							unsortedRowsToArrange().count >= 2,
 							setOfCommands.contains(command)
 						else {
 							return false

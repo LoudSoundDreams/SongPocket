@@ -244,14 +244,14 @@ final class AlbumsTVC:
 				command.createMenuElement(
 					enabled: {
 						guard
-							rowsToArrange().count >= 2,
+							unsortedRowsToArrange().count >= 2,
 							setOfCommands.contains(command)
 						else {
 							return false
 						}
 						
 						guard command != .album_released else {
-							let subjectedItems = rowsToArrange().map {
+							let subjectedItems = unsortedRowsToArrange().map {
 								viewModel.itemNonNil(atRow: $0)
 							}
 							guard let albums = subjectedItems as? [Album] else {

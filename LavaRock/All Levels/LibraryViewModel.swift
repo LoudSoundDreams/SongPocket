@@ -69,8 +69,6 @@ extension LibraryViewModel {
 	
 	// MARK: - Elements
 	
-	// WARNING: Never use `LibraryGroup.items[indexPath.row]`. That might return the wrong library item, because `IndexPath`s are offset by `prerowCount`.
-	
 	func libraryGroup() -> LibraryGroup {
 		return groups[0]
 	}
@@ -92,13 +90,9 @@ extension LibraryViewModel {
 		return libraryGroup().items[itemIndex]
 	}
 	
-	// MARK: Indices
-	
 	func itemIndex(forRow row: Int) -> Int {
 		return row - prerowCount
 	}
-	
-	// MARK: Rows
 	
 	func rowsForAllItems() -> [Int] {
 		guard !isEmpty() else {
@@ -109,7 +103,6 @@ extension LibraryViewModel {
 			prerowCount + $0
 		}
 	}
-	
 	func row(forItemIndex itemIndex: Int) -> Int {
 		return prerowCount + itemIndex
 	}
