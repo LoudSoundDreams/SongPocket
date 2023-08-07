@@ -63,6 +63,8 @@ extension SongsTVC {
 							for: indexPath) as? CoverArtCell
 						else { return UITableViewCell() }
 						
+						cell.selectionStyle = .none
+						
 						cell.albumRepresentative = album.representativeSongInfo()
 						
 						let height = view.frame.height
