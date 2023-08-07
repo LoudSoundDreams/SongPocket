@@ -216,6 +216,7 @@ final class FoldersTVC:
 					object: nil)
 		}
 		
+		navigationItem.backButtonDisplayMode = .minimal
 		title = LRString.folders
 	}
 	@objc private func userUpdatedDatabase() {

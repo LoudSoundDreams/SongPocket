@@ -89,6 +89,7 @@ final class AlbumsTVC:
 				break
 		}
 		
+		navigationItem.backButtonDisplayMode = .minimal
 		title = { () -> String in
 			return (viewModel as? AlbumsViewModel)?.folder?.title ?? ""
 		}()
