@@ -23,8 +23,7 @@ final class AlbumsTVC:
 	// MARK: - Properties
 	
 	// Controls
-	private var moveButton = UIBarButtonItem(
-		title: LRString.move)
+	private var moveButton = UIBarButtonItem(title: LRString.move)
 	
 	// Purpose
 	var purpose: Purpose {
@@ -157,8 +156,7 @@ final class AlbumsTVC:
 		}
 	}
 	
-	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {
-	}
+	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {}
 	
 	// MARK: - Library items
 	
@@ -184,15 +182,15 @@ final class AlbumsTVC:
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
 		
-		moveButton.menu = makeMoveMenu()
 		moveButton.isEnabled = {
 			guard !viewModel.isEmpty() else {
 				return false
 			}
 			return true
 		}()
+		moveButton.menu = createMoveMenu()
 	}
-	private func makeMoveMenu() -> UIMenu {
+	private func createMoveMenu() -> UIMenu {
 		let byAlbumArtist_element = UIDeferredMenuElement.uncached(
 			{ [weak self] useMenuElements in
 				// Runs each time the button presents the menu

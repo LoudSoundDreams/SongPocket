@@ -269,8 +269,7 @@ final class FoldersTVC:
 		}
 	}
 	
-	@IBAction private func unwindToFolders(_ unwindSegue: UIStoryboardSegue) {
-	}
+	@IBAction private func unwindToFolders(_ unwindSegue: UIStoryboardSegue) {}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
