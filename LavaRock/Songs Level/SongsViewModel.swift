@@ -33,20 +33,6 @@ extension SongsViewModel: LibraryViewModel {
 		return prerows
 	}
 	
-	func allowsSortCommand(
-		_ sortCommand: SortCommand,
-		forItems items: [NSManagedObject]
-	) -> Bool {
-		switch sortCommand {
-			case .random, .reverse: return true
-			case .folder_name, .album_released: return false
-			case
-					.song_track,
-					.song_added:
-				return true
-		}
-	}
-	
 	// Similar to counterpart in `AlbumsViewModel`.
 	func updatedWithFreshenedData() -> Self {
 		let freshenedAlbum: Album? = {

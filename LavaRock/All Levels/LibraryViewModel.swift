@@ -17,10 +17,6 @@ protocol LibraryViewModel {
 	var groups: ColumnOfLibraryItems { get set }
 	
 	func prerowIdentifiers() -> [AnyHashable]
-	func allowsSortCommand(
-		_ sortCommand: SortCommand,
-		forItems items: [NSManagedObject]
-	) -> Bool
 	func updatedWithFreshenedData() -> Self
 }
 

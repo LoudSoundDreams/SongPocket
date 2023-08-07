@@ -241,7 +241,23 @@ final class AlbumsTVC:
 		let elementsGrouped: [[UIMenuElement]] = commandsGrouped.reversed().map {
 			$0.reversed().map { command in
 				command.createMenuElement(
-					enabled: allowsSortCommand(command)
+					enabled: {
+						guard rowsToArrange().count >= 2 else {
+							return false
+						}
+						switch command {
+							case .random, .reverse: return true
+							case .folder_name, .song_track, .song_added: return false
+							case .album_released:
+								let subjectedItems = rowsToArrange().map {
+									viewModel.itemNonNil(atRow: $0)
+								}
+								guard let albums = subjectedItems as? [Album] else {
+									return false
+								}
+								return albums.contains { $0.releaseDateEstimate != nil }
+						}
+					}()
 				) { [weak self] in
 					self?.sortSelectedOrAll(sortCommand: command)
 				}

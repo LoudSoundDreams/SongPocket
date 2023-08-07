@@ -29,21 +29,6 @@ extension AlbumsViewModel: LibraryViewModel {
 		return prerows
 	}
 	
-	func allowsSortCommand(
-		_ sortCommand: SortCommand,
-		forItems items: [NSManagedObject]
-	) -> Bool {
-		switch sortCommand {
-			case .random, .reverse: return true
-			case .folder_name, .song_added, .song_track: return false
-			case .album_released:
-				guard let albums = items as? [Album] else {
-					return false
-				}
-				return albums.contains { $0.releaseDateEstimate != nil }
-		}
-	}
-	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
 		let freshenedFolder: Collection? = {

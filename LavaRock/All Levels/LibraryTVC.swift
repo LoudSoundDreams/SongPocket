@@ -449,7 +449,17 @@ class LibraryTVC: UITableViewController {
 		let elementsGrouped: [[UIMenuElement]] = arrangeFoldersOrSongsCommands.reversed().map {
 			$0.reversed().map { command in
 				return command.createMenuElement(
-					enabled: allowsSortCommand(command)
+					enabled: {
+						guard rowsToArrange().count >= 2 else {
+							return false
+						}
+						switch command {
+							case .random, .reverse: return true
+							case .folder_name: return self is FoldersTVC
+							case .album_released: return false
+							case .song_track, .song_added: return self is SongsTVC
+						}
+					}()
 				) { [weak self] in
 					self?.sortSelectedOrAll(sortCommand: command)
 				}
@@ -460,22 +470,12 @@ class LibraryTVC: UITableViewController {
 		}
 		return UIMenu(children: inlineSubmenus)
 	}
-	final func allowsSortCommand(_ sortCommand: SortCommand) -> Bool {
+	final func rowsToArrange() -> [Int] {
 		var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
 		if subjectedRows.isEmpty {
 			subjectedRows = viewModel.rowsForAllItems()
 		}
-		
-		guard subjectedRows.count >= 2 else {
-			return false
-		}
-		
-		return viewModel.allowsSortCommand(
-			sortCommand,
-			forItems: subjectedRows.map {
-				viewModel.itemNonNil(atRow: $0)
-			}
-		)
+		return subjectedRows
 	}
 	final func sortSelectedOrAll(sortCommand: SortCommand) {
 		let newViewModel = viewModel.updatedAfterSorting(

@@ -27,18 +27,6 @@ extension FoldersViewModel: LibraryViewModel {
 		return prerows
 	}
 	
-	func allowsSortCommand(
-		_ sortCommand: SortCommand,
-		forItems items: [NSManagedObject]
-	) -> Bool {
-		switch sortCommand {
-			case .random, .reverse: return true
-			case .album_released, .song_track, .song_added: return false
-			case .folder_name:
-				return true
-		}
-	}
-	
 	func updatedWithFreshenedData() -> Self {
 		return Self(
 			context: context,
