@@ -33,7 +33,6 @@
 		075218A2257C498D0077AE9B /* LRString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LRString.swift */; };
 		07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* LibraryItem.swift */; };
 		07619EE527342FC9003F95AE /* Diffing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07619EE427342FC9003F95AE /* Diffing.swift */; };
-		07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7B268FFC1600B66BB8 /* SongsGroup.swift */; };
 		07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */; };
 		0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */; };
 		076830AE24B42DEF0033E3CC /* LavaRockUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */; };
@@ -65,7 +64,6 @@
 		07A4F90F2519E8410065C87E /* MusicLibrary - Merge, Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F90E2519E8410065C87E /* MusicLibrary - Merge, Delete.swift */; };
 		07A5E1CD2941CA2100DDB4CA /* CoverArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */; };
 		07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* Collection.swift */; };
-		07B2CD832741A218004A0743 /* FoldersGroup, AlbumsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B2CD822741A217004A0743 /* FoldersGroup, AlbumsGroup.swift */; };
 		07C8CC76271281B70061A9AD /* SettingsTVC - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C8CC75271281B70061A9AD /* SettingsTVC - Views.swift */; };
 		07CAB24724EA227F008AC34C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* Song.swift */; };
 		07CD864D27CAA3CC00286E6A /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD864C27CAA3CC00286E6A /* Weak.swift */; };
@@ -136,7 +134,6 @@
 		075218A1257C498D0077AE9B /* LRString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRString.swift; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
 		07619EE427342FC9003F95AE /* Diffing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffing.swift; sourceTree = "<group>"; };
-		07642C7B268FFC1600B66BB8 /* SongsGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsGroup.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGroup.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768309224B42DEC0033E3CC /* LavaRock.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LavaRock.xcdatamodel; sourceTree = "<group>"; };
@@ -175,7 +172,6 @@
 		07A4F90E2519E8410065C87E /* MusicLibrary - Merge, Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge, Delete.swift"; sourceTree = "<group>"; };
 		07A5E1CC2941CA2100DDB4CA /* CoverArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverArtView.swift; sourceTree = "<group>"; };
 		07AE2AA3258C09D900C3A314 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
-		07B2CD822741A217004A0743 /* FoldersGroup, AlbumsGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FoldersGroup, AlbumsGroup.swift"; sourceTree = "<group>"; };
 		07C8CC75271281B70061A9AD /* SettingsTVC - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsTVC - Views.swift"; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		07CD864C27CAA3CC00286E6A /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
@@ -242,7 +238,6 @@
 		070E194224F340C500B21307 /* Songs Level */ = {
 			isa = PBXGroup;
 			children = (
-				07642C7B268FFC1600B66BB8 /* SongsGroup.swift */,
 				07EC01EB26C895CB00954E08 /* SongsViewModel.swift */,
 				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
@@ -261,7 +256,6 @@
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
-				07B2CD822741A217004A0743 /* FoldersGroup, AlbumsGroup.swift */,
 				077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */,
 				077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */,
 				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
@@ -598,7 +592,6 @@
 				07EC01EC26C895CB00954E08 /* SongsViewModel.swift in Sources */,
 				07EC01E826C84BC700954E08 /* FoldersViewModel.swift in Sources */,
 				0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */,
-				07642C7C268FFC1600B66BB8 /* SongsGroup.swift in Sources */,
 				0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */,
 				0708E53E286A20B6001204BF /* Numbers.swift in Sources */,
 				073AF48F24D1AD73000C1A6D /* SettingsTVC.swift in Sources */,
@@ -628,7 +621,6 @@
 				07A4F9052519E72C0065C87E /* MusicLibrary - Merge, Update.swift in Sources */,
 				07DF76E42828D8AB00B03103 /* MainToolbar__UIKit.swift in Sources */,
 				07C8CC76271281B70061A9AD /* SettingsTVC - Views.swift in Sources */,
-				07B2CD832741A218004A0743 /* FoldersGroup, AlbumsGroup.swift in Sources */,
 				07EC01EA26C8958300954E08 /* AlbumsViewModel.swift in Sources */,
 				079B2C9524E227BF00A949FA /* MusicLibrary.swift in Sources */,
 				077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */,
