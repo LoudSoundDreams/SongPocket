@@ -252,7 +252,7 @@
 			path = "Songs Level";
 			sourceTree = "<group>";
 		};
-		070E194524F3424500B21307 /* All Levels */ = {
+		070E194524F3424500B21307 /* Library */ = {
 			isa = PBXGroup;
 			children = (
 				07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */,
@@ -261,8 +261,12 @@
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
+				07B2CD822741A217004A0743 /* FoldersOrAlbumsGroup.swift */,
+				077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */,
+				077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */,
+				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 			);
-			path = "All Levels";
+			path = Library;
 			sourceTree = "<group>";
 		};
 		0723C8CF254A5FA100C3150F /* Frameworks */ = {
@@ -318,8 +322,7 @@
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
 				071DC5E62A1045CE0073C854 /* Main Toolbar.swift */,
 				07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */,
-				070E194524F3424500B21307 /* All Levels */,
-				0777D6832756880300BA0C87 /* Multiple Levels */,
+				070E194524F3424500B21307 /* Library */,
 				07DC1B1E24F33C5100AAEEDB /* Folders Level */,
 				07DC1B2124F33DF400AAEEDB /* Albums Level */,
 				070E194224F340C500B21307 /* Songs Level */,
@@ -344,17 +347,6 @@
 				076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */,
 			);
 			path = LavaRockUITests;
-			sourceTree = "<group>";
-		};
-		0777D6832756880300BA0C87 /* Multiple Levels */ = {
-			isa = PBXGroup;
-			children = (
-				07B2CD822741A217004A0743 /* FoldersOrAlbumsGroup.swift */,
-				077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */,
-				077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */,
-				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
-			);
-			path = "Multiple Levels";
 			sourceTree = "<group>";
 		};
 		07DC1B1E24F33C5100AAEEDB /* Folders Level */ = {
