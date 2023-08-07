@@ -353,12 +353,12 @@ final class FoldersTVC:
 		}
 		return tableView.selectedIndexPaths.count >= 2
 	}
-	private static let arrangeCommands: [[SortCommand]] = [
+	private static let arrangeCommands: [[ArrangeCommand]] = [
 		[.folder_name],
 		[.random, .reverse],
 	]
 	private func createArrangeFoldersMenu() -> UIMenu {
-		let setOfCommands: Set<SortCommand> = Set(Self.arrangeCommands.flatMap { $0 })
+		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
 		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
 			$0.reversed().map { command in
 				return command.createMenuElement(
@@ -373,7 +373,7 @@ final class FoldersTVC:
 						return true
 					}()
 				) { [weak self] in
-					self?.sortSelectedOrAll(sortCommand: command)
+					self?.arrangeSelectedOrAll(by: command)
 				}
 			}
 		}

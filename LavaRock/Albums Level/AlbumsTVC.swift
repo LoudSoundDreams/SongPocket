@@ -233,12 +233,12 @@ final class AlbumsTVC:
 			byAlbumArtist_element,
 		])
 	}
-	private static let arrangeCommands: [[SortCommand]] = [
+	private static let arrangeCommands: [[ArrangeCommand]] = [
 		[.album_released],
 		[.random, .reverse],
 	]
 	private func createArrangeAlbumsMenu() -> UIMenu {
-		let setOfCommands: Set<SortCommand> = Set(Self.arrangeCommands.flatMap { $0 })
+		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
 		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
 			$0.reversed().map { command in
 				command.createMenuElement(
@@ -262,7 +262,7 @@ final class AlbumsTVC:
 						return true
 					}()
 				) { [weak self] in
-					self?.sortSelectedOrAll(sortCommand: command)
+					self?.arrangeSelectedOrAll(by: command)
 				}
 			}
 		}

@@ -75,9 +75,9 @@ enum LRString {
 	// MARK: Editing
 	
 	static let arrange = NSLocalizedString("Arrange", comment: "Button")
-	static let recentlyAdded = NSLocalizedString("Recently Added", comment: "Sort option")
-	static let random = NSLocalizedString("Random", comment: "Sort option")
-	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
+	static let recentlyAdded = NSLocalizedString("Recently Added", comment: "Arrange option")
+	static let random = NSLocalizedString("Random", comment: "Arrange option")
+	static let reverse = NSLocalizedString("Reverse", comment: "Arrange option")
 	
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
@@ -92,7 +92,7 @@ enum LRString {
 		comment: "Placeholder for when the app’s database is empty")
 	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
-	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also a sort option.")
+	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also an Arrange option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let renameFolder = NSLocalizedString("Rename Folder", comment: "Alert title")
@@ -112,7 +112,7 @@ enum LRString {
 	static let byAlbumArtistEllipsis = NSLocalizedString("By Album Artist…", comment: "Menu option")
 	static let toFolderEllipsis = NSLocalizedString("To Folder…", comment: "Menu option")
 	
-	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Sort option")
+	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Arrange option")
 	
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
@@ -129,7 +129,7 @@ enum LRString {
 	static let playRestOfAlbumNext = NSLocalizedString("Play Rest of Album Next", comment: "Button")
 	static let playRestOfAlbumLast = NSLocalizedString("Play Rest of Album Last", comment: "Button")
 	
-	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
+	static let trackNumber = NSLocalizedString("Track Number", comment: "Arrange option")
 	
 	// MARK: - WITH VARIABLES AND TEXT VARIATIONS
 	// (Format strings from dictionaries)

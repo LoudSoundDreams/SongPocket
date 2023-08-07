@@ -46,7 +46,7 @@ extension LibraryTVC {
 	) {
 		viewModel.moveItem(atRow: fromIndexPath.row, toRow: to.row)
 		
-		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
+		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the “Arrange” button. If you made all the selected rows contiguous, that should enable the “Arrange” button.
 	}
 	
 	// MARK: - Selecting

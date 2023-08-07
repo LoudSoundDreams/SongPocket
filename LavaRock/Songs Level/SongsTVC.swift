@@ -34,12 +34,12 @@ final class SongsTVC: LibraryTVC {
 		arrangeSongsButton.isEnabled = allowsArrange()
 		arrangeSongsButton.menu = createArrangeSongsMenu()
 	}
-	private static let arrangeCommands: [[SortCommand]] = [
+	private static let arrangeCommands: [[ArrangeCommand]] = [
 		[.song_track, .song_added],
 		[.random, .reverse],
 	]
 	private func createArrangeSongsMenu() -> UIMenu {
-		let setOfCommands: Set<SortCommand> = Set(Self.arrangeCommands.flatMap { $0 })
+		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
 		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
 			$0.reversed().map { command in
 				return command.createMenuElement(
@@ -54,7 +54,7 @@ final class SongsTVC: LibraryTVC {
 						return true
 					}()
 				) { [weak self] in
-					self?.sortSelectedOrAll(sortCommand: command)
+					self?.arrangeSelectedOrAll(by: command)
 				}
 			}
 		}

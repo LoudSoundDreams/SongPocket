@@ -446,13 +446,13 @@ class LibraryTVC: UITableViewController {
 		}
 		return result
 	}
-	final func sortSelectedOrAll(sortCommand: SortCommand) {
+	final func arrangeSelectedOrAll(by command: ArrangeCommand) {
 		let subjectedRows = unsortedRowsToArrange().sorted()
 		let subjectedIndices = subjectedRows.map { viewModel.itemIndex(forRow: $0) }
 		let allItems = viewModel.libraryGroup().items
 		
 		var newViewModel = viewModel
-		let newItems = sortCommand.apply(
+		let newItems = command.apply(
 			onOrderedIndices: subjectedIndices,
 			in: allItems)
 		newViewModel.groups[0].setItems(newItems)

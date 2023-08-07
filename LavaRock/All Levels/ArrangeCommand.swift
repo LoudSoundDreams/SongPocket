@@ -1,5 +1,5 @@
 //
-//  SortCommand.swift
+//  ArrangeCommand.swift
 //  LavaRock
 //
 //  Created by h on 2022-04-22.
@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-enum SortCommand: CaseIterable {
+enum ArrangeCommand: CaseIterable {
 	case random
 	case reverse
 	
