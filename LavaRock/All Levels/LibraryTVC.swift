@@ -446,19 +446,19 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	private func createArrangeFoldersOrSongsMenu() -> UIMenu {
+		let enabledCommands: Set<SortCommand> = Set(arrangeFoldersOrSongsCommands.flatMap { $0 })
 		let elementsGrouped: [[UIMenuElement]] = arrangeFoldersOrSongsCommands.reversed().map {
 			$0.reversed().map { command in
 				return command.createMenuElement(
 					enabled: {
-						guard rowsToArrange().count >= 2 else {
+						guard
+							rowsToArrange().count >= 2,
+							enabledCommands.contains(command)
+						else {
 							return false
 						}
-						switch command {
-							case .random, .reverse: return true
-							case .folder_name: return self is FoldersTVC
-							case .album_released: return false
-							case .song_track, .song_added: return self is SongsTVC
-						}
+						
+						return true
 					}()
 				) { [weak self] in
 					self?.sortSelectedOrAll(sortCommand: command)
