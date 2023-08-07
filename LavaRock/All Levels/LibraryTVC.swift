@@ -447,9 +447,15 @@ class LibraryTVC: UITableViewController {
 		return result
 	}
 	final func sortSelectedOrAll(sortCommand: SortCommand) {
-		let newViewModel = viewModel.updatedAfterSorting(
-			selectedRows: tableView.selectedIndexPaths.map { $0.row },
-			sortCommand: sortCommand)
+		let subjectedRows = unsortedRowsToArrange().sorted()
+		let subjectedIndices = subjectedRows.map { viewModel.itemIndex(forRow: $0) }
+		let allItems = viewModel.libraryGroup().items
+		
+		var newViewModel = viewModel
+		let newItems = sortCommand.apply(
+			onOrderedIndices: subjectedIndices,
+			in: allItems)
+		newViewModel.groups[0].setItems(newItems)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
