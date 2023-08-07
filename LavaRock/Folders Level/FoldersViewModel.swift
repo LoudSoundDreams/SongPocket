@@ -36,13 +36,13 @@ extension FoldersViewModel {
 	) {
 		self.prerows = prerows
 		
+		self.context = context
 		groups = [
 			FoldersOrAlbumsGroup(
 				entityName: Self.entityName,
 				container: nil,
 				context: context)
 		]
-		self.context = context
 	}
 	
 	func folderNonNil(atRow: Int) -> Collection {

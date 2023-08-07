@@ -56,7 +56,6 @@ extension AlbumsViewModel {
 		self.folder = folder
 		
 		self.context = context
-		
 		guard let folder else {
 			groups = []
 			return
