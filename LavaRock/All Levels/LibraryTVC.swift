@@ -30,7 +30,7 @@ class LibraryTVC: UITableViewController {
 	
 	// Controls
 	final var editingModeToolbarButtons: [UIBarButtonItem] = []
-	final var sortCommandsGrouped: [[SortCommand]] = []
+	final var arrangeFoldersOrSongsCommands: [[SortCommand]] = []
 	
 	// MARK: Subclasses may customize
 	
@@ -53,7 +53,7 @@ class LibraryTVC: UITableViewController {
 		}
 	)
 	
-	private(set) final var sortButton = UIBarButtonItem(title: LRString.arrange)
+	private(set) final var arrangeFoldersOrSongsButton = UIBarButtonItem(title: LRString.arrange)
 	
 	private(set) final lazy var floatButton = UIBarButtonItem(
 		title: LRString.moveToTop,
@@ -420,80 +420,64 @@ class LibraryTVC: UITableViewController {
 		
 		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
-		sortButton.isEnabled = allows_sort()
-		sortButton.menu = create_sort_menu()
+		arrangeFoldersOrSongsButton.isEnabled = allowsArrange()
+		arrangeFoldersOrSongsButton.menu = createArrangeFoldersOrSongsMenu()
 		
-		floatButton.isEnabled = allows_float_and_sink()
-		sinkButton.isEnabled = allows_float_and_sink()
-		
-		// Enable and disable
-		
-		// You should only be allowed to sort items that are contiguous and within the same `LibraryGroup`.
-		func allows_sort() -> Bool {
-			guard !viewModel.isEmpty() else {
-				return false
-			}
-			let selectedIndexPaths = tableView.selectedIndexPaths
-			if selectedIndexPaths.isEmpty {
-				return true
-			} else {
-				var selectedRows = selectedIndexPaths.map { $0.row }
-				selectedRows.sort()
-				return selectedRows.isConsecutive()
-			}
-		}
-		
-		func allows_float_and_sink() -> Bool {
+		let allowsFloatAndSink: Bool = {
 			guard !viewModel.isEmpty() else {
 				return false
 			}
 			return !tableView.selectedIndexPaths.isEmpty
+		}()
+		floatButton.isEnabled = allowsFloatAndSink
+		sinkButton.isEnabled = allowsFloatAndSink
+	}
+	func allowsArrange() -> Bool {
+		guard !viewModel.isEmpty() else {
+			return false
+		}
+		let selectedIndexPaths = tableView.selectedIndexPaths
+		if selectedIndexPaths.isEmpty {
+			return true
+		} else {
+			var selectedRows = selectedIndexPaths.map { $0.row }
+			selectedRows.sort()
+			return selectedRows.isConsecutive()
 		}
 	}
-	private func create_sort_menu() -> UIMenu {
-		let groupedElements: [[UIMenuElement]] = sortCommandsGrouped.map { commandGroup in
-			let groupOfChildren: [UIMenuElement] = commandGroup.map { sortCommand in
-				return UIDeferredMenuElement.uncached({ [weak self] useMenuElements in
-					guard let self else { return }
-					
-					let action = UIAction(
-						title: sortCommand.localizedName(),
-						image: sortCommand.uiImage()
-					) { [weak self] action in
-						self?.sortSelectedOrAll(sortCommand: sortCommand)
-					}
-					let allowed: Bool = {
-						let viewModel = self.viewModel
-						var subjectedRows: [Int] = self.tableView.selectedIndexPaths.map { $0.row }
-						if subjectedRows.isEmpty {
-							subjectedRows = viewModel.rowsForAllItems()
-						}
-						
-						guard subjectedRows.count >= 2 else {
-							return false
-						}
-						
-						return viewModel.allowsSortCommand(
-							sortCommand,
-							forItems: subjectedRows.map {
-								viewModel.itemNonNil(atRow: $0)
-							}
-						)
-					}()
-					if !allowed {
-						action.attributes.formUnion(.disabled)
-					}
-					useMenuElements([action])
-				})
+	private func createArrangeFoldersOrSongsMenu() -> UIMenu {
+		let elementsGrouped: [[UIMenuElement]] = arrangeFoldersOrSongsCommands.reversed().map {
+			$0.reversed().map { command in
+				return command.createMenuElement(
+					enabled: allowsSortCommand(command)
+				) { [weak self] in
+					self?.sortSelectedOrAll(sortCommand: command)
+				}
 			}
-			return groupOfChildren
 		}
-		let submenus = groupedElements.reversed().map { groupOfElements in
-			return UIMenu(options: .displayInline, children: groupOfElements.reversed())
+		let inlineSubmenus = elementsGrouped.map {
+			return UIMenu(options: .displayInline, children: $0)
 		}
-		return UIMenu(children: submenus)
+		return UIMenu(children: inlineSubmenus)
 	}
-	private func sortSelectedOrAll(sortCommand: SortCommand) {
+	final func allowsSortCommand(_ sortCommand: SortCommand) -> Bool {
+		var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
+		if subjectedRows.isEmpty {
+			subjectedRows = viewModel.rowsForAllItems()
+		}
+		
+		guard subjectedRows.count >= 2 else {
+			return false
+		}
+		
+		return viewModel.allowsSortCommand(
+			sortCommand,
+			forItems: subjectedRows.map {
+				viewModel.itemNonNil(atRow: $0)
+			}
+		)
+	}
+	final func sortSelectedOrAll(sortCommand: SortCommand) {
 		let newViewModel = viewModel.updatedAfterSorting(
 			selectedRows: tableView.selectedIndexPaths.map { $0.row },
 			sortCommand: sortCommand)

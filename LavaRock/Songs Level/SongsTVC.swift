@@ -13,7 +13,7 @@ final class SongsTVC: LibraryTVC {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		sortCommandsGrouped = [
+		arrangeFoldersOrSongsCommands = [
 			[.song_track, .song_added],
 			[.random, .reverse],
 		]
@@ -27,7 +27,7 @@ final class SongsTVC: LibraryTVC {
 	
 	override func setUpBarButtons() {
 		editingModeToolbarButtons = [
-			sortButton,
+			arrangeFoldersOrSongsButton,
 			.flexibleSpace(),
 			floatButton,
 			.flexibleSpace(),

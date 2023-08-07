@@ -47,4 +47,20 @@ enum SortCommand: CaseIterable {
 			case .song_added: return UIImage(systemName: "clock")
 		}
 	}
+	
+	func createMenuElement(
+		enabled: Bool,
+		handler: @escaping () -> Void
+	) -> UIMenuElement {
+		return UIDeferredMenuElement.uncached({ useMenuElements in
+			let action = UIAction(
+				title: localizedName(),
+				image: uiImage()
+			) { _ in handler() }
+			if !enabled {
+				action.attributes.formUnion(.disabled)
+			}
+			useMenuElements([action])
+		})
+	}
 }

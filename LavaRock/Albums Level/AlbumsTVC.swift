@@ -23,6 +23,7 @@ final class AlbumsTVC:
 	// MARK: - Properties
 	
 	// Controls
+	private var arrangeAlbumsButton = UIBarButtonItem(title: LRString.arrange)
 	private var moveButton = UIBarButtonItem(title: LRString.move)
 	
 	// Purpose
@@ -62,15 +63,6 @@ final class AlbumsTVC:
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
 	// MARK: - Setup
-	
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
-		
-		sortCommandsGrouped = [
-			[.album_released],
-			[.random, .reverse],
-		]
-	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -131,7 +123,7 @@ final class AlbumsTVC:
 				editingModeToolbarButtons = [
 					moveButton,
 					.flexibleSpace(),
-					sortButton,
+					arrangeAlbumsButton,
 					.flexibleSpace(),
 					floatButton,
 					.flexibleSpace(),
@@ -189,6 +181,9 @@ final class AlbumsTVC:
 			return true
 		}()
 		moveButton.menu = createMoveMenu()
+		
+		arrangeAlbumsButton.isEnabled = allowsArrange()
+		arrangeAlbumsButton.menu = createArrangeAlbumsMenu()
 	}
 	private func createMoveMenu() -> UIMenu {
 		let byAlbumArtist_element = UIDeferredMenuElement.uncached(
@@ -237,6 +232,25 @@ final class AlbumsTVC:
 			toFolder_element,
 			byAlbumArtist_element,
 		])
+	}
+	private func createArrangeAlbumsMenu() -> UIMenu {
+		let commandsGrouped: [[SortCommand]] = [
+			[.album_released],
+			[.random, .reverse],
+		]
+		let elementsGrouped: [[UIMenuElement]] = commandsGrouped.reversed().map {
+			$0.reversed().map { command in
+				command.createMenuElement(
+					enabled: allowsSortCommand(command)
+				) { [weak self] in
+					self?.sortSelectedOrAll(sortCommand: command)
+				}
+			}
+		}
+		let inlineSubmenus = elementsGrouped.map {
+			UIMenu(options: .displayInline, children: $0)
+		}
+		return UIMenu(children: inlineSubmenus)
 	}
 	
 	// MARK: - Navigation

@@ -190,7 +190,7 @@ final class FoldersTVC:
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		sortCommandsGrouped = [
+		arrangeFoldersOrSongsCommands = [
 			[.folder_name],
 			[.random, .reverse],
 		]
@@ -244,7 +244,7 @@ final class FoldersTVC:
 				editingModeToolbarButtons = [
 					combineButton,
 					.flexibleSpace(),
-					sortButton,
+					arrangeFoldersOrSongsButton,
 					.flexibleSpace(),
 					floatButton,
 					.flexibleSpace(),
