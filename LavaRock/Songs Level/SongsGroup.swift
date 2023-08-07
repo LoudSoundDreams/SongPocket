@@ -17,50 +17,53 @@ struct SongsGroup {
 		}
 	}
 	
-	private(set) var spacerTrackNumberText: String = Self.spacerTrackNumberText_Default
-	static let spacerTrackNumberText_Default: String = "00"
+	let trackNumberSpacer: String
 	
 	init(
 		album: Album?,
 		context: NSManagedObjectContext
 	) {
+		container = album
 		items = Song.allFetched(sorted: true, inAlbum: album, context: context)
-		self.container = album
 		
-		spacerTrackNumberText = {
-			guard let representative = (container as? Album)?.representativeSongInfo() else {
-				return Self.spacerTrackNumberText_Default
-			}
-			let infos: [SongInfo] = items.compactMap { ($0 as? Song)?.songInfo() }
-			// At minimum, reserve the width of 2 digits, plus an interpunct if appropriate.
-			// At maximum, reserve the width of 4 digits plus an interpunct.
-			if representative.shouldShowDiscNumber {
-				var widestText = Self.spacerTrackNumberText_Default
-				for info in infos {
-					let discAndTrack = ""
-					+ info.discNumberFormatted()
-					+ (info.trackNumberFormattedOptional() ?? "")
-					if discAndTrack.count >= 4 {
-						return LRString.interpunct + "0000"
-					}
-					if discAndTrack.count > widestText.count {
-						widestText = discAndTrack
-					}
+		let defaultSpacer = "00"
+		guard let representative = album?.representativeSongInfo() else {
+			trackNumberSpacer = defaultSpacer
+			return
+		}
+		
+		let infos: [SongInfo] = items.compactMap { ($0 as? Song)?.songInfo() }
+		// At minimum, reserve the width of 2 digits, plus an interpunct if appropriate.
+		// At maximum, reserve the width of 4 digits plus an interpunct.
+		if representative.shouldShowDiscNumber {
+			var widestText = defaultSpacer
+			for info in infos {
+				let discAndTrack = ""
+				+ info.discNumberFormatted()
+				+ (info.trackNumberFormattedOptional() ?? "")
+				if discAndTrack.count >= 4 {
+					trackNumberSpacer = LRString.interpunct + "0000"
+					return
 				}
-				return LRString.interpunct + widestText
-			} else {
-				var widestText = Self.spacerTrackNumberText_Default
-				for info in infos {
-					let track = info.trackNumberFormattedOptional() ?? ""
-					if track.count >= 4 {
-						return "0000"
-					}
-					if track.count > widestText.count {
-						widestText = track
-					}
+				if discAndTrack.count > widestText.count {
+					widestText = discAndTrack
 				}
-				return String(widestText)
 			}
-		}()
+			trackNumberSpacer = LRString.interpunct + widestText
+		} else {
+			var widestText = defaultSpacer
+			for info in infos {
+				let track = info.trackNumberFormattedOptional() ?? ""
+				if track.count >= 4 {
+					trackNumberSpacer = "0000"
+					return
+				}
+				if track.count > widestText.count {
+					widestText = track
+				}
+			}
+			trackNumberSpacer = String(widestText)
+			return
+		}
 	}
 }
