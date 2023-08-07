@@ -7,22 +7,14 @@
 
 import CoreData
 
+extension FoldersGroup: LibraryGroup {}
 struct FoldersGroup {
 	// `LibraryGroup`
 	let container: NSManagedObject? = nil
-	private(set) var items: [NSManagedObject] {
+	var items: [NSManagedObject] {
 		didSet {
-			items.enumerated().forEach { (currentIndex, libraryItem) in
-				libraryItem.setValue(
-					Int64(currentIndex),
-					forKey: "index")
-			}
+			_reindex()
 		}
-	}
-}
-extension FoldersGroup: LibraryGroup {
-	mutating func setItems(_ newItems: [NSManagedObject]) {
-		items = newItems
 	}
 	
 	init(context: NSManagedObjectContext) {
@@ -30,22 +22,14 @@ extension FoldersGroup: LibraryGroup {
 	}
 }
 
+extension AlbumsGroup: LibraryGroup {}
 struct AlbumsGroup {
 	// `LibraryGroup`
 	let container: NSManagedObject?
-	private(set) var items: [NSManagedObject] {
+	var items: [NSManagedObject] {
 		didSet {
-			items.enumerated().forEach { (currentIndex, libraryItem) in
-				libraryItem.setValue(
-					Int64(currentIndex),
-					forKey: "index")
-			}
+			_reindex()
 		}
-	}
-}
-extension AlbumsGroup: LibraryGroup {
-	mutating func setItems(_ newItems: [NSManagedObject]) {
-		items = newItems
 	}
 	
 	init(

@@ -50,7 +50,7 @@ extension LibraryTVC {
 		var newItems = viewModel.libraryGroup().items
 		let itemBeingMoved = newItems.remove(at: fromIndex)
 		newItems.insert(itemBeingMoved, at: toIndex)
-		viewModel.groups[0].setItems(newItems)
+		viewModel.groups[0].items = newItems
 		
 		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the “Arrange” button. If you made all the selected rows contiguous, that should enable the “Arrange” button.
 	}

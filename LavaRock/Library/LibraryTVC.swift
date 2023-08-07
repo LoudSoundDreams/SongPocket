@@ -69,7 +69,7 @@ class LibraryTVC: UITableViewController {
 		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		
 		var newViewModel = viewModel
-		newViewModel.groups[0].setItems(newItems)
+		newViewModel.groups[0].items = newItems
 		
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
@@ -93,7 +93,7 @@ class LibraryTVC: UITableViewController {
 		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newItems.count)
 		
 		var newViewModel = viewModel
-		newViewModel.groups[0].setItems(newItems)
+		newViewModel.groups[0].items = newItems
 		
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
@@ -455,7 +455,7 @@ class LibraryTVC: UITableViewController {
 		let newItems = command.apply(
 			onOrderedIndices: subjectedIndices,
 			in: allItems)
-		newViewModel.groups[0].setItems(newItems)
+		newViewModel.groups[0].items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}

@@ -60,7 +60,7 @@ extension FoldersViewModel {
 	
 	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
 		var twin = self
-		twin.groups[0].setItems(newItems)
+		twin.groups[0].items = newItems
 		return twin
 	}
 	

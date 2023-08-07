@@ -7,26 +7,18 @@
 
 import CoreData
 
+extension SongsGroup: LibraryGroup {}
 struct SongsGroup {
 	// `LibraryGroup`
 	let container: NSManagedObject?
-	private(set) var items: [NSManagedObject] {
+	var items: [NSManagedObject] {
 		didSet {
-			items.enumerated().forEach { (currentIndex, libraryItem) in
-				libraryItem.setValue(
-					Int64(currentIndex),
-					forKey: "Index")
-			}
+			_reindex()
 		}
 	}
 	
 	private(set) var spacerTrackNumberText: String = Self.spacerTrackNumberText_Default
 	static let spacerTrackNumberText_Default: String = "00"
-}
-extension SongsGroup: LibraryGroup {
-	mutating func setItems(_ newItems: [NSManagedObject]) {
-		items = newItems
-	}
 	
 	init(
 		album: Album?,
