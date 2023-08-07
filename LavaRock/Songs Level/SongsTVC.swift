@@ -10,24 +10,16 @@ import UIKit
 import MediaPlayer
 
 final class SongsTVC: LibraryTVC {
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
-		
-		arrangeFoldersOrSongsCommands = [
-			[.song_track, .song_added],
-			[.random, .reverse],
-		]
-	}
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		title = nil
 	}
 	
+	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.arrange)
 	override func setUpBarButtons() {
 		editingModeToolbarButtons = [
-			arrangeFoldersOrSongsButton,
+			arrangeSongsButton,
 			.flexibleSpace(),
 			floatButton,
 			.flexibleSpace(),
@@ -35,6 +27,41 @@ final class SongsTVC: LibraryTVC {
 		]
 		
 		super.setUpBarButtons()
+	}
+	override func freshenEditingButtons() {
+		super.freshenEditingButtons()
+		
+		arrangeSongsButton.isEnabled = allowsArrange()
+		arrangeSongsButton.menu = createArrangeSongsMenu()
+	}
+	private static let arrangeCommands: [[SortCommand]] = [
+		[.song_track, .song_added],
+		[.random, .reverse],
+	]
+	private func createArrangeSongsMenu() -> UIMenu {
+		let setOfCommands: Set<SortCommand> = Set(Self.arrangeCommands.flatMap { $0 })
+		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
+			$0.reversed().map { command in
+				return command.createMenuElement(
+					enabled: {
+						guard
+							rowsToArrange().count >= 2,
+							setOfCommands.contains(command)
+						else {
+							return false
+						}
+						
+						return true
+					}()
+				) { [weak self] in
+					self?.sortSelectedOrAll(sortCommand: command)
+				}
+			}
+		}
+		let inlineSubmenus = elementsGrouped.map {
+			return UIMenu(options: .displayInline, children: $0)
+		}
+		return UIMenu(children: inlineSubmenus)
 	}
 	
 	override func viewWillTransition(

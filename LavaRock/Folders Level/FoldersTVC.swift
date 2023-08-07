@@ -62,6 +62,7 @@ final class FoldersTVC:
 	private lazy var combineButton = UIBarButtonItem(
 		title: LRString.combine,
 		primaryAction: UIAction { [weak self] _ in self?.previewCombine() })
+	private lazy var arrangeFoldersButton = UIBarButtonItem(title: LRString.arrange)
 	
 	// Purpose
 	var purpose: Purpose {
@@ -187,15 +188,6 @@ final class FoldersTVC:
 	
 	// MARK: - Setup
 	
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
-		
-		arrangeFoldersOrSongsCommands = [
-			[.folder_name],
-			[.random, .reverse],
-		]
-	}
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -244,7 +236,7 @@ final class FoldersTVC:
 				editingModeToolbarButtons = [
 					combineButton,
 					.flexibleSpace(),
-					arrangeFoldersOrSongsButton,
+					arrangeFoldersButton,
 					.flexibleSpace(),
 					floatButton,
 					.flexibleSpace(),
@@ -347,6 +339,9 @@ final class FoldersTVC:
 		
 		combineButton.isEnabled = allowsCombine()
 		
+		arrangeFoldersButton.isEnabled = allowsArrange()
+		arrangeFoldersButton.menu = createArrangeFoldersMenu()
+		
 		// Prevent the user from using any editing buttons while we’re animating combining folders, before we present the dialog.
 		if viewModelBeforeCombining != nil {
 			editingModeToolbarButtons.forEach { $0.isEnabled = false }
@@ -357,6 +352,35 @@ final class FoldersTVC:
 			return false
 		}
 		return tableView.selectedIndexPaths.count >= 2
+	}
+	private static let arrangeCommands: [[SortCommand]] = [
+		[.folder_name],
+		[.random, .reverse],
+	]
+	private func createArrangeFoldersMenu() -> UIMenu {
+		let setOfCommands: Set<SortCommand> = Set(Self.arrangeCommands.flatMap { $0 })
+		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
+			$0.reversed().map { command in
+				return command.createMenuElement(
+					enabled: {
+						guard
+							rowsToArrange().count >= 2,
+							setOfCommands.contains(command)
+						else {
+							return false
+						}
+						
+						return true
+					}()
+				) { [weak self] in
+					self?.sortSelectedOrAll(sortCommand: command)
+				}
+			}
+		}
+		let inlineSubmenus = elementsGrouped.map {
+			return UIMenu(options: .displayInline, children: $0)
+		}
+		return UIMenu(children: inlineSubmenus)
 	}
 	
 	// MARK: - Navigation

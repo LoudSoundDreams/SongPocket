@@ -30,7 +30,6 @@ class LibraryTVC: UITableViewController {
 	
 	// Controls
 	final var editingModeToolbarButtons: [UIBarButtonItem] = []
-	final var arrangeFoldersOrSongsCommands: [[SortCommand]] = []
 	
 	// MARK: Subclasses may customize
 	
@@ -52,8 +51,6 @@ class LibraryTVC: UITableViewController {
 			self?.dismiss(animated: true)
 		}
 	)
-	
-	private(set) final var arrangeFoldersOrSongsButton = UIBarButtonItem(title: LRString.arrange)
 	
 	private(set) final lazy var floatButton = UIBarButtonItem(
 		title: LRString.moveToTop,
@@ -420,9 +417,6 @@ class LibraryTVC: UITableViewController {
 		
 		editButtonItem.isEnabled = !viewModel.isEmpty()
 		
-		arrangeFoldersOrSongsButton.isEnabled = allowsArrange()
-		arrangeFoldersOrSongsButton.menu = createArrangeFoldersOrSongsMenu()
-		
 		let allowsFloatAndSink: Bool = {
 			guard !viewModel.isEmpty() else {
 				return false
@@ -432,7 +426,7 @@ class LibraryTVC: UITableViewController {
 		floatButton.isEnabled = allowsFloatAndSink
 		sinkButton.isEnabled = allowsFloatAndSink
 	}
-	func allowsArrange() -> Bool {
+	final func allowsArrange() -> Bool {
 		guard !viewModel.isEmpty() else {
 			return false
 		}
@@ -444,31 +438,6 @@ class LibraryTVC: UITableViewController {
 			selectedRows.sort()
 			return selectedRows.isConsecutive()
 		}
-	}
-	private func createArrangeFoldersOrSongsMenu() -> UIMenu {
-		let enabledCommands: Set<SortCommand> = Set(arrangeFoldersOrSongsCommands.flatMap { $0 })
-		let elementsGrouped: [[UIMenuElement]] = arrangeFoldersOrSongsCommands.reversed().map {
-			$0.reversed().map { command in
-				return command.createMenuElement(
-					enabled: {
-						guard
-							rowsToArrange().count >= 2,
-							enabledCommands.contains(command)
-						else {
-							return false
-						}
-						
-						return true
-					}()
-				) { [weak self] in
-					self?.sortSelectedOrAll(sortCommand: command)
-				}
-			}
-		}
-		let inlineSubmenus = elementsGrouped.map {
-			return UIMenu(options: .displayInline, children: $0)
-		}
-		return UIMenu(children: inlineSubmenus)
 	}
 	final func rowsToArrange() -> [Int] {
 		var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
