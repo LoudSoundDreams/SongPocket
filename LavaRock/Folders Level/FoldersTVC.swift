@@ -352,7 +352,6 @@ final class FoldersTVC:
 			editingModeToolbarButtons.forEach { $0.isEnabled = false }
 		}
 	}
-	
 	private func allowsCombine() -> Bool {
 		guard !viewModel.isEmpty() else {
 			return false

@@ -23,8 +23,8 @@ final class AlbumsTVC:
 	// MARK: - Properties
 	
 	// Controls
-	private var arrangeAlbumsButton = UIBarButtonItem(title: LRString.arrange)
-	private var moveButton = UIBarButtonItem(title: LRString.move)
+	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.arrange)
+	private lazy var moveButton = UIBarButtonItem(title: LRString.move)
 	
 	// Purpose
 	var purpose: Purpose {
