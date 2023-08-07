@@ -64,8 +64,8 @@ extension AlbumsTVC {
 			foldersTVC.willOrganizeAlbumsStickyNote = nil
 			
 			let previewOfChanges = FoldersViewModel(
-				context: childContext,
-				prerows: [])
+				prerows: [],
+				context: childContext)
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
 			let oldFolderRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldFolderRow in
 				let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldFolderRow).objectID
@@ -115,13 +115,13 @@ extension AlbumsTVC {
 				format: "index >= %lld",
 				indexOfSourceFolder)
 			return Collection.allFetched(
-				ordered: true,
+				sorted: true,
 				predicate: predicate,
-				via: context)
+				context: context)
 		}()
 		var newFoldersByTitle: [String: Collection] = [:]
 		let existingFoldersByTitle: [String: [Collection]] = {
-			let existingFolders = Collection.allFetched(ordered: true, via: context)
+			let existingFolders = Collection.allFetched(sorted: true, context: context)
 			return Dictionary(grouping: existingFolders) { $0.title! }
 		}()
 		
@@ -212,12 +212,12 @@ extension AlbumsTVC {
 			delegate: self
 		)
 		foldersTVC.viewModel = FoldersViewModel(
+			prerows: [.createFolder],
 			context: {
 				let childContext = NSManagedObjectContext(.mainQueue)
 				childContext.parent = viewModel.context
 				return childContext
-			}(),
-			prerows: [.createFolder]
+			}()
 		)
 		
 		present(libraryNC, animated: true)

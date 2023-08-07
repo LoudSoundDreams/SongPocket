@@ -65,14 +65,17 @@ extension Song {
 	
 	// MARK: - All instances
 	
-	// Similar to `allFetched`.
 	static func allFetched(
-		sortedByIndex: Bool,
-		via context: NSManagedObjectContext
+		sorted: Bool,
+		inAlbum: Album?,
+		context: NSManagedObjectContext
 	) -> [Song] {
 		let fetchRequest = fetchRequest()
-		if sortedByIndex {
+		if sorted {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		}
+		if let inAlbum {
+			fetchRequest.predicate = NSPredicate(format: "container == %@", inAlbum)
 		}
 		return context.objectsFetched(for: fetchRequest)
 	}
@@ -80,7 +83,7 @@ extension Song {
 	static func printAllInDatabaseOrder(
 		via context: NSManagedObjectContext
 	) {
-		var allSongs = allFetched(sortedByIndex: true, via: context)
+		var allSongs = allFetched(sorted: true, inAlbum: nil, context: context)
 		allSongs.sort { $0.container!.index < $1.container!.index }
 		allSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
 		allSongs.forEach {

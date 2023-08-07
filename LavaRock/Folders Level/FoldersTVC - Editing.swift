@@ -108,9 +108,8 @@ extension FoldersTVC {
 		
 		// Apply the preview context to this `FoldersTVC`.
 		let previewViewModel = FoldersViewModel(
-			context: previewContext,
-			prerows: []
-		)
+			prerows: [],
+			context: previewContext)
 		Task {
 			await tableView.performBatchUpdates__async {
 				self.tableView.scrollToRow(
@@ -132,10 +131,9 @@ extension FoldersTVC {
 			// Configure the `AlbumsTVC`.
 			let albumsTVC = libraryNC.viewControllers.first as! AlbumsTVC
 			albumsTVC.viewModel = AlbumsViewModel(
-				context: previewContext,
+				prerows: [],
 				folder: combined,
-				prerows: []
-			)
+				context: previewContext)
 			albumsTVC.is_previewing_combine_with_album_count = combined.contents?.count ?? 0
 			albumsTVC.cancel_combine_action = UIAction { [weak self] _ in
 				self?.dismiss(animated: true, completion: {
@@ -178,8 +176,8 @@ extension FoldersTVC {
 		viewModel.context.parent!.tryToSave() // TO DO: Crashes
 		
 		let newViewModel = FoldersViewModel(
-			context: viewModel.context.parent!,
-			prerows: foldersViewModel.prerows)
+			prerows: foldersViewModel.prerows,
+			context: viewModel.context.parent!)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				newViewModel,

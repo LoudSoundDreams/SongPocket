@@ -401,15 +401,14 @@ final class FoldersTVC:
 		
 		let selectedFolder = foldersViewModel.folderNonNil(atRow: selectedIndexPath.row)
 		albumsTVC.viewModel = AlbumsViewModel(
-			context: viewModel.context,
-			folder: selectedFolder,
 			prerows: {
 				if case Purpose.movingAlbums = purpose {
 					return [.moveHere]
 				} else {
 					return []
 				}
-			}()
-		)
+			}(),
+			folder: selectedFolder,
+			context: viewModel.context)
 	}
 }

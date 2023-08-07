@@ -41,26 +41,26 @@ extension AlbumsViewModel: LibraryViewModel {
 			return folder
 		}()
 		return Self(
-			context: context,
+			prerows: prerows,
 			folder: freshenedFolder,
-			prerows: prerows)
+			context: context)
 	}
 }
 extension AlbumsViewModel {
 	init(
-		context: NSManagedObjectContext,
+		prerows: [Prerow],
 		folder: Collection?,
-		prerows: [Prerow]
+		context: NSManagedObjectContext
 	) {
-		self.context = context
-		self.folder = folder
 		self.prerows = prerows
+		self.folder = folder
+		
+		self.context = context
 		
 		guard let folder else {
 			groups = []
 			return
 		}
-		
 		groups = [
 			FoldersOrAlbumsGroup(
 				entityName: Self.entityName,
@@ -119,8 +119,8 @@ extension AlbumsViewModel {
 			via: context)
 		
 		return AlbumsViewModel(
-			context: context,
+			prerows: [],
 			folder: folder,
-			prerows: [])
+			context: context)
 	}
 }

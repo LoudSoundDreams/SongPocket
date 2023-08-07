@@ -25,8 +25,8 @@ class LibraryTVC: UITableViewController {
 	
 	// Data
 	final lazy var viewModel: LibraryViewModel = FoldersViewModel(
-		context: Database.viewContext,
-		prerows: [])
+		prerows: [],
+		context: Database.viewContext)
 	
 	// Controls
 	final var editingModeToolbarButtons: [UIBarButtonItem] = []

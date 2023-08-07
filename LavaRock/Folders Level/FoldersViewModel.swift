@@ -26,17 +26,14 @@ extension FoldersViewModel: LibraryViewModel {
 		return prerows
 	}
 	func updatedWithFreshenedData() -> Self {
-		return Self(
-			context: context,
-			prerows: prerows)
+		return Self(prerows: prerows, context: context)
 	}
 }
 extension FoldersViewModel {
 	init(
-		context: NSManagedObjectContext,
-		prerows: [Prerow]
+		prerows: [Prerow],
+		context: NSManagedObjectContext
 	) {
-		self.context = context
 		self.prerows = prerows
 		
 		groups = [
@@ -45,6 +42,7 @@ extension FoldersViewModel {
 				container: nil,
 				context: context)
 		]
+		self.context = context
 	}
 	
 	func folderNonNil(atRow: Int) -> Collection {

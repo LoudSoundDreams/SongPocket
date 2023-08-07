@@ -18,8 +18,8 @@ extension MusicLibrary {
 			os_signpost(.end, log: .merge, name: "5. Clean up library items")
 		}
 		
-		let allFolders = Collection.allFetched(ordered: false, via: context) // Order doesn’t matter, because this is for reindexing the albums within each folder.
-		let allAlbums = Album.allFetched(sortedByIndex: false, via: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
+		let allFolders = Collection.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for reindexing the albums within each folder.
+		let allAlbums = Album.allFetched(sorted: false, inCollection: nil, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
 		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(

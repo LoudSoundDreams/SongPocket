@@ -66,12 +66,12 @@ extension Collection {
 	
 	// Similar to `Album.allFetched` and `Song.allFetched`.
 	static func allFetched(
-		ordered: Bool,
+		sorted: Bool,
 		predicate: NSPredicate? = nil,
-		via context: NSManagedObjectContext
+		context: NSManagedObjectContext
 	) -> [Collection] {
 		let fetchRequest = fetchRequest()
-		if ordered {
+		if sorted {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
 		fetchRequest.predicate = predicate
@@ -79,7 +79,7 @@ extension Collection {
 	}
 	
 	static func deleteAllEmpty(via context: NSManagedObjectContext) {
-		var all = allFetched(ordered: true, via: context)
+		var all = allFetched(sorted: true, context: context)
 		
 		all.enumerated().reversed().forEach { (index, folder) in
 			if folder.isEmpty() {
