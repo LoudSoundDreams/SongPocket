@@ -8,25 +8,23 @@
 import CoreData
 
 struct FoldersViewModel {
-	// `LibraryViewModel`
-	let context: NSManagedObjectContext
-	var prerowCount: Int {
-		prerows.count
-	}
-	var groups: ColumnOfLibraryItems
-	
 	enum Prerow {
 		case createFolder
 	}
 	var prerows: [Prerow]
+	
+	// `LibraryViewModel`
+	let context: NSManagedObjectContext
+	var groups: ColumnOfLibraryItems
 }
 extension FoldersViewModel: LibraryViewModel {
 	static let entityName = "Collection"
-	
+	func prerowCount() -> Int {
+		return prerows.count
+	}
 	func prerowIdentifiers() -> [AnyHashable] {
 		return prerows
 	}
-	
 	func updatedWithFreshenedData() -> Self {
 		return Self(
 			context: context,
@@ -59,7 +57,7 @@ extension FoldersViewModel {
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
-		if row < prerowCount {
+		if row < prerowCount() {
 			return .prerow(prerows[row])
 		} else {
 			return .folder

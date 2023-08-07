@@ -8,15 +8,6 @@
 import CoreData
 
 struct SongsViewModel {
-	let album: Album?
-	
-	// `LibraryViewModel`
-	let context: NSManagedObjectContext
-	var prerowCount: Int {
-		prerows.count
-	}
-	var groups: ColumnOfLibraryItems
-	
 	enum Prerow {
 		case coverArt
 		case albumInfo
@@ -25,10 +16,19 @@ struct SongsViewModel {
 		.coverArt,
 		.albumInfo,
 	]
+	
+	let album: Album?
+	
+	// `LibraryViewModel`
+	let context: NSManagedObjectContext
+	var groups: ColumnOfLibraryItems
 }
 extension SongsViewModel: LibraryViewModel {
 	static let entityName = "Song"
 	
+	func prerowCount() -> Int {
+		return prerows.count
+	}
 	func prerowIdentifiers() -> [AnyHashable] {
 		return prerows
 	}
@@ -76,7 +76,7 @@ extension SongsViewModel {
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
-		if row < prerowCount {
+		if row < prerowCount() {
 			let associatedValue = prerows[row]
 			return .prerow(associatedValue)
 		} else {

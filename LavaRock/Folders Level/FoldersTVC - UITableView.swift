@@ -31,7 +31,7 @@ extension FoldersTVC {
 				let _ = Self.emptyDatabaseInfoRow
 				return 2
 			case .someFolders:
-				return viewModel.prerowCount + viewModel.libraryGroup().items.count
+				return viewModel.prerowCount() + viewModel.libraryGroup().items.count
 		}
 	}
 	

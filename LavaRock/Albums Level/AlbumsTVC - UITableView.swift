@@ -36,7 +36,7 @@ extension AlbumsTVC {
 		if albumsViewModel.folder == nil {
 			return 0 // Without `prerowCount`
 		} else {
-			return albumsViewModel.prerowCount + albumsViewModel.libraryGroup().items.count
+			return albumsViewModel.prerowCount() + albumsViewModel.libraryGroup().items.count
 		}
 	}
 	

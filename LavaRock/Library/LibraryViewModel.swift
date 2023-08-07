@@ -9,13 +9,11 @@ import CoreData
 
 typealias ColumnOfLibraryItems = [LibraryGroup]
 protocol LibraryViewModel {
-	static var entityName: String { get }
-	
 	var context: NSManagedObjectContext { get }
-	var prerowCount: Int { get }
-	
 	var groups: ColumnOfLibraryItems { get set }
 	
+	static var entityName: String { get }
+	func prerowCount() -> Int
 	func prerowIdentifiers() -> [AnyHashable]
 	func updatedWithFreshenedData() -> Self
 }
@@ -87,7 +85,7 @@ extension LibraryViewModel {
 	}
 	
 	func itemIndex(forRow row: Int) -> Int {
-		return row - prerowCount
+		return row - prerowCount()
 	}
 	
 	func rowsForAllItems() -> [Int] {
@@ -96,10 +94,10 @@ extension LibraryViewModel {
 		}
 		let indices = libraryGroup().items.indices
 		return indices.map {
-			prerowCount + $0
+			prerowCount() + $0
 		}
 	}
 	func row(forItemIndex itemIndex: Int) -> Int {
-		return prerowCount + itemIndex
+		return prerowCount() + itemIndex
 	}
 }

@@ -8,23 +8,23 @@
 import CoreData
 
 struct AlbumsViewModel {
-	let folder: Collection?
-	
-	// `LibraryViewModel`
-	let context: NSManagedObjectContext
-	var prerowCount: Int {
-		prerows.count
-	}
-	var groups: ColumnOfLibraryItems
-	
 	enum Prerow {
 		case moveHere
 	}
 	var prerows: [Prerow]
+	
+	let folder: Collection?
+	
+	// `LibraryViewModel`
+	let context: NSManagedObjectContext
+	var groups: ColumnOfLibraryItems
 }
 extension AlbumsViewModel: LibraryViewModel {
 	static let entityName = "Album"
 	
+	func prerowCount() -> Int {
+		return prerows.count
+	}
 	func prerowIdentifiers() -> [AnyHashable] {
 		return prerows
 	}
@@ -79,8 +79,8 @@ extension AlbumsViewModel {
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
 		let row = indexPath.row
-		if row < prerowCount {
-			return .prerow(prerows[indexPath.row])
+		if row < prerowCount() {
+			return .prerow(prerows[row])
 		} else {
 			return .album
 		}

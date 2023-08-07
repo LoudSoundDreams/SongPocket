@@ -36,7 +36,7 @@ extension SongsTVC {
 		if songsViewModel.album == nil {
 			return 0 // Without `prerowCount`
 		} else {
-			return songsViewModel.prerowCount + songsViewModel.libraryGroup().items.count
+			return songsViewModel.prerowCount() + songsViewModel.libraryGroup().items.count
 		}
 	}
 	
