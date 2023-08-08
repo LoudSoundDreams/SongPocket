@@ -24,7 +24,11 @@ extension Song: LibraryItem {
 		else {
 			return false
 		}
+#if targetEnvironment(simulator)
+		return objectID == Sim_Global.currentSong?.objectID
+#else
 		return objectID == containingSong.objectID
+#endif
 	}
 }
 extension Song {

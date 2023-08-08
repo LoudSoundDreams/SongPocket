@@ -24,7 +24,11 @@ extension Album: LibraryItem {
 		else {
 			return false
 		}
+#if targetEnvironment(simulator)
+		return objectID == Sim_Global.currentSong?.container?.objectID
+#else
 		return objectID == containingSong.container?.objectID
+#endif
 	}
 }
 extension Album: LibraryContainer {}

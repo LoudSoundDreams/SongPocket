@@ -22,11 +22,15 @@ extension LibraryItem {
 		else {
 			return .notPlaying
 		}
+#if targetEnvironment(simulator)
+		return .playing
+#else
 		if player.playbackState == .playing {
 			return .playing
 		} else {
 			return .paused
 		}
+#endif
 	}
 }
 

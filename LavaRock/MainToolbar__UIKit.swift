@@ -236,6 +236,12 @@ final class MainToolbar__UIKit {
 	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
 	private var hasRefreshenedOverflowButton = false
 	private func freshen() {
+#if targetEnvironment(simulator)
+		defer {
+			configurePauseButton()
+		}
+#endif
+		
 		freshenOverflowButton()
 		
 		func configurePlayButton() {

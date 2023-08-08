@@ -23,7 +23,11 @@ extension Collection: LibraryItem {
 		else {
 			return false
 		}
+#if targetEnvironment(simulator)
+		return objectID == Sim_Global.currentSong?.container?.container?.objectID
+#else
 		return objectID == containingSong.container?.container?.objectID
+#endif
 	}
 }
 extension Collection: LibraryContainer {}

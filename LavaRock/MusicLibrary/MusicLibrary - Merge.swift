@@ -85,11 +85,13 @@ extension MusicLibrary {
 		}
 		
 #if targetEnvironment(simulator)
-		Sim_Global.currentSongID = Song.allFetched(
+		Sim_Global.currentSong = Song.allFetched(
 			sorted: true,
 			inAlbum: nil,
 			context: context)
-		.last?.songInfo()?.songID
+		.first { fetchedSong in
+			fetchedSong.songInfo()?.songID == Sim_Global.currentSongID
+		}
 #endif
 	}
 }

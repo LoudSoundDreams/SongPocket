@@ -58,11 +58,15 @@ struct AvatarImage: View {
 		else {
 			return .notPlaying
 		}
+#if targetEnvironment(simulator)
+		return .playing
+#else
 		if tapeDeckStatus.isPlaying {
 			return .playing
 		} else {
 			return .paused
 		}
+#endif
 	}
 	
 	var body: some View {

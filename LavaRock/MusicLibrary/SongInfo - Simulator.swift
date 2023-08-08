@@ -11,7 +11,8 @@ import UIKit
 import OSLog
 
 enum Sim_Global {
-	static var currentSongID: SongID? = nil
+	static let currentSongID = SongID(420)
+	static var currentSong: Song? = nil
 }
 
 struct Sim_SongInfo: SongInfo {
@@ -92,6 +93,7 @@ extension Sim_SongInfo {
 				dateAdded: .now,
 				releaseDate: nil
 			),
+			
 			Sim_SongInfo(
 				albumID: khan,
 				albumArtist: "Star Trek",
@@ -120,6 +122,7 @@ extension Sim_SongInfo {
 			),
 			
 			Sim_SongInfo(
+				isCurrentSong: true,
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
@@ -242,6 +245,7 @@ extension Sim_SongInfo {
 	
 	static var dict: [SongID: Self] = [:]
 	init(
+		isCurrentSong: Bool = false,
 		albumID: AlbumID,
 		albumArtist: String?,
 		albumTitle: String?,
@@ -257,7 +261,7 @@ extension Sim_SongInfo {
 		// Memberwise initializer
 		self.init(
 			albumID: albumID,
-			songID: SongIDDispenser.takeNumber(),
+			songID: isCurrentSong ? Sim_Global.currentSongID : SongIDDispenser.takeNumber(),
 			albumArtistOnDisk: albumArtist,
 			albumTitleOnDisk: albumTitle,
 			discCountOnDisk: discCount,
