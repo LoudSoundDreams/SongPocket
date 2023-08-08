@@ -115,7 +115,6 @@ extension Sim_SongInfo {
 				discNumber: 0,
 				track: 0,
 				title: nil,
-				by: nil,
 				added: .now,
 				released: "1982-06-04"
 			),
@@ -143,7 +142,6 @@ extension Sim_SongInfo {
 				discNumber: 1,
 				track: 1,
 				title: "Adventure",
-				by: "",
 				added: .now,
 				released: fezReleased
 			),
@@ -156,7 +154,6 @@ extension Sim_SongInfo {
 				discNumber: 1,
 				track: 2,
 				title: "Puzzle",
-				by: "",
 				added: .now,
 				released: fezReleased
 			),
@@ -169,7 +166,6 @@ extension Sim_SongInfo {
 				discNumber: 1,
 				track: 3,
 				title: "Beyond",
-				by: "",
 				added: .now,
 				released: fezReleased
 			),
@@ -182,7 +178,6 @@ extension Sim_SongInfo {
 				discNumber: 1,
 				track: 4,
 				title: "Progress",
-				by: "",
 				added: .now,
 				released: fezReleased
 			),
@@ -195,7 +190,6 @@ extension Sim_SongInfo {
 				discNumber: 1,
 				track: 5,
 				title: "Beacon",
-				by: "",
 				added: .now,
 				released: fezReleased
 			),
@@ -208,7 +202,6 @@ extension Sim_SongInfo {
 				discNumber: 1,
 				track: 6,
 				title: "Flow",
-				by: "",
 				added: .now,
 				released: fezReleased
 			),
@@ -221,7 +214,6 @@ extension Sim_SongInfo {
 				discNumber: 1,
 				track: 7,
 				title: "Formations",
-				by: "",
 				added: .now,
 				released: fezReleased
 			),
@@ -234,7 +226,6 @@ extension Sim_SongInfo {
 				discNumber: 1,
 				track: 8,
 				title: "Legend",
-				by: "",
 				added: .now,
 				released: fezReleased
 			),
@@ -266,7 +257,7 @@ extension Sim_SongInfo {
 		discNumber: Int,
 		track: Int,
 		title: String?,
-		by: String?,
+		by: String? = nil,
 		added: Date,
 		released: String? = nil
 	) {

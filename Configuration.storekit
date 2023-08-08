@@ -5,7 +5,7 @@
   ],
   "products" : [
     {
-      "displayPrice" : "4.20",
+      "displayPrice" : "5.00",
       "familyShareable" : false,
       "internalID" : "CCFD9971",
       "localizations" : [
@@ -74,7 +74,7 @@
 
   ],
   "version" : {
-    "major" : 3,
+    "major" : 2,
     "minor" : 0
   }
 }
