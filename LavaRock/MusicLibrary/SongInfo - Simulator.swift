@@ -58,67 +58,67 @@ extension Sim_SongInfo {
 				albumID: tall,
 				albumArtist: "Beethoven",
 				albumTitle: "a",
-				coverArtFileName: "Real",
+				coverArt: "Real",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 1,
+				track: 1,
 				title: "",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: nil
+				by: "",
+				added: .now,
+				released: nil
 			),
 			Sim_SongInfo(
 				albumID: wide,
 				albumArtist: "Beethoven",
 				albumTitle: "b",
-				coverArtFileName: "wide",
+				coverArt: "wide",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 1,
+				track: 1,
 				title: "",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: nil
+				by: "",
+				added: .now,
+				released: nil
 			),
 			Sim_SongInfo(
 				albumID: noArtwork,
 				albumArtist: "Beethoven",
 				albumTitle: "c",
-				coverArtFileName: "",
+				coverArt: "",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 1,
+				track: 1,
 				title: "",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: nil
+				by: "",
+				added: .now,
+				released: nil
 			),
 			
 			Sim_SongInfo(
 				albumID: khan,
 				albumArtist: "Star Trek",
 				albumTitle: "Star Trek II",
-				coverArtFileName: "Star Trek II",
+				coverArt: "Star Trek II",
 				discCount: 0,
 				discNumber: 0,
-				trackNumber: 0,
+				track: 0,
 				title: nil,
-				artist: nil,
-				dateAdded: .now,
-				releaseDate: .now
+				by: nil,
+				added: .now,
+				released: .now
 			),
 			Sim_SongInfo(
 				albumID: voyage,
 				albumArtist: "Star Trek",
 				albumTitle: "Star Trek IV",
-				coverArtFileName: "Star Trek IV",
+				coverArt: "Star Trek IV",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 3,
+				track: 3,
 				title: "좋은 날",
-				artist: "IU",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "IU",
+				added: .now,
+				released: .now
 			),
 			
 			Sim_SongInfo(
@@ -126,119 +126,119 @@ extension Sim_SongInfo {
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
-				coverArtFileName: "Fez",
+				coverArt: "Fez",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 1,
+				track: 1,
 				title: "Adventure",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "",
+				added: .now,
+				released: .now
 			),
 			Sim_SongInfo(
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
-				coverArtFileName: "Fez",
+				coverArt: "Fez",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 2,
+				track: 2,
 				title: "Puzzle",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "",
+				added: .now,
+				released: .now
 			),
 			Sim_SongInfo(
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
-				coverArtFileName: "Fez",
+				coverArt: "Fez",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 3,
+				track: 3,
 				title: "Beyond",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "",
+				added: .now,
+				released: .now
 			),
 			Sim_SongInfo(
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
-				coverArtFileName: "Fez",
+				coverArt: "Fez",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 4,
+				track: 4,
 				title: "Progress",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "",
+				added: .now,
+				released: .now
 			),
 			Sim_SongInfo(
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
-				coverArtFileName: "Fez",
+				coverArt: "Fez",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 5,
+				track: 5,
 				title: "Beacon",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "",
+				added: .now,
+				released: .now
 			),
 			Sim_SongInfo(
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
-				coverArtFileName: "Fez",
+				coverArt: "Fez",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 6,
+				track: 6,
 				title: "Flow",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "",
+				added: .now,
+				released: .now
 			),
 			Sim_SongInfo(
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
-				coverArtFileName: "Fez",
+				coverArt: "Fez",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 7,
+				track: 7,
 				title: "Formations",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "",
+				added: .now,
+				released: .now
 			),
 			Sim_SongInfo(
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",
-				coverArtFileName: "Fez",
+				coverArt: "Fez",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 8,
+				track: 8,
 				title: "Legend",
-				artist: "",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "",
+				added: .now,
+				released: .now
 			),
 			
 			Sim_SongInfo(
 				albumID: sonic,
 				albumArtist: "Games",
 				albumTitle: "Sonic Adventure",
-				coverArtFileName: "Sonic Adventure",
+				coverArt: "Sonic Adventure",
 				discCount: 1,
 				discNumber: 1,
-				trackNumber: 900,
+				track: 900,
 				title: "Amazingly few discotheques provide jukeboxes.",
-				artist: "Tony Harnell",
-				dateAdded: .now,
-				releaseDate: .now
+				by: "Tony Harnell",
+				added: .now,
+				released: .now
 			),
 		]
 	}
@@ -249,14 +249,14 @@ extension Sim_SongInfo {
 		albumID: AlbumID,
 		albumArtist: String?,
 		albumTitle: String?,
-		coverArtFileName: String?,
+		coverArt: String?,
 		discCount: Int,
 		discNumber: Int,
-		trackNumber: Int,
+		track: Int,
 		title: String?,
-		artist: String?,
-		dateAdded: Date,
-		releaseDate: Date?
+		by: String?,
+		added: Date,
+		released: Date?
 	) {
 		// Memberwise initializer
 		self.init(
@@ -266,12 +266,12 @@ extension Sim_SongInfo {
 			albumTitleOnDisk: albumTitle,
 			discCountOnDisk: discCount,
 			discNumberOnDisk: discNumber,
-			trackNumberOnDisk: trackNumber,
+			trackNumberOnDisk: track,
 			titleOnDisk: title,
-			artistOnDisk: artist,
-			dateAddedOnDisk: dateAdded,
-			releaseDateOnDisk: releaseDate,
-			coverArtFileName: coverArtFileName
+			artistOnDisk: by,
+			dateAddedOnDisk: added,
+			releaseDateOnDisk: released,
+			coverArtFileName: coverArt
 		)
 		
 		Self.dict[self.songID] = self
