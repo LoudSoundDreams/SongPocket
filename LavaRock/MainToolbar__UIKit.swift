@@ -247,6 +247,15 @@ final class MainToolbar__UIKit {
 			}
 			playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 		}
+		func configurePauseButton() {
+			playPauseButton.title = LRString.pause
+			playPauseButton.primaryAction = UIAction(
+				image: UIImage(systemName: "pause.circle")
+			) { _ in
+				Self.player?.pause()
+			}
+			playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
+		}
 		
 		guard
 			let player = Self.player
@@ -265,14 +274,7 @@ final class MainToolbar__UIKit {
 		}
 		
 		if player.playbackState == .playing {
-			// Configure “pause” button
-			playPauseButton.title = LRString.pause
-			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: "pause.circle")
-			) { _ in
-				Self.player?.pause()
-			}
-			playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
+			configurePauseButton()
 		} else {
 			configurePlayButton()
 		}

@@ -16,7 +16,7 @@ extension MPMusicPlayerController {
 	
 	final func currentSongID() -> SongID? {
 #if targetEnvironment(simulator)
-		return Sim_Global.songID
+		return Sim_Global.currentSongID
 #else
 		guard let nowPlayingItem else {
 			return nil

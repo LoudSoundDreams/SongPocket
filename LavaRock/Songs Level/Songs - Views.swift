@@ -427,7 +427,6 @@ extension SongCell: AvatarDisplaying__ {
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
 		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
-		
 		speakerImageView.image = avatarStatus.uiImage__
 		
 		accessibilityLabel = [
