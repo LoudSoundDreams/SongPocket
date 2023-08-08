@@ -42,6 +42,15 @@ struct Sim_SongInfo: SongInfo {
 	}
 	private let coverArtFileName: String?
 }
+private extension Date {
+	static func curfewUTC(
+		iso8601Date10Char: String // "1984-01-24"
+	) -> Self {
+		return try! Self(
+			"\(iso8601Date10Char)T23:59:59Z",
+			strategy: .iso8601)
+	}
+}
 extension Sim_SongInfo {
 	static var all: [Self] {
 //		return []
@@ -49,10 +58,13 @@ extension Sim_SongInfo {
 		let tall = AlbumIDDispenser.takeNumber()
 		let wide = AlbumIDDispenser.takeNumber()
 		let noArtwork = AlbumIDDispenser.takeNumber()
-		let khan = AlbumIDDispenser.takeNumber()
-		let voyage = AlbumIDDispenser.takeNumber()
+		let trek2 = AlbumIDDispenser.takeNumber()
+		let trek4 = AlbumIDDispenser.takeNumber()
 		let fez = AlbumIDDispenser.takeNumber()
 		let sonic = AlbumIDDispenser.takeNumber()
+		
+		let fezReleased = "2012-04-20"
+		
 		return [
 			Sim_SongInfo(
 				albumID: tall,
@@ -95,7 +107,7 @@ extension Sim_SongInfo {
 			),
 			
 			Sim_SongInfo(
-				albumID: khan,
+				albumID: trek2,
 				albumArtist: "Star Trek",
 				albumTitle: "Star Trek II",
 				coverArt: "Star Trek II",
@@ -105,10 +117,10 @@ extension Sim_SongInfo {
 				title: nil,
 				by: nil,
 				added: .now,
-				released: .now
+				released: "1982-06-04"
 			),
 			Sim_SongInfo(
-				albumID: voyage,
+				albumID: trek4,
 				albumArtist: "Star Trek",
 				albumTitle: "Star Trek IV",
 				coverArt: "Star Trek IV",
@@ -118,7 +130,7 @@ extension Sim_SongInfo {
 				title: "좋은 날",
 				by: "IU",
 				added: .now,
-				released: .now
+				released: "1986-11-26"
 			),
 			
 			Sim_SongInfo(
@@ -133,7 +145,7 @@ extension Sim_SongInfo {
 				title: "Adventure",
 				by: "",
 				added: .now,
-				released: .now
+				released: fezReleased
 			),
 			Sim_SongInfo(
 				albumID: fez,
@@ -146,7 +158,7 @@ extension Sim_SongInfo {
 				title: "Puzzle",
 				by: "",
 				added: .now,
-				released: .now
+				released: fezReleased
 			),
 			Sim_SongInfo(
 				albumID: fez,
@@ -159,7 +171,7 @@ extension Sim_SongInfo {
 				title: "Beyond",
 				by: "",
 				added: .now,
-				released: .now
+				released: fezReleased
 			),
 			Sim_SongInfo(
 				albumID: fez,
@@ -172,7 +184,7 @@ extension Sim_SongInfo {
 				title: "Progress",
 				by: "",
 				added: .now,
-				released: .now
+				released: fezReleased
 			),
 			Sim_SongInfo(
 				albumID: fez,
@@ -185,7 +197,7 @@ extension Sim_SongInfo {
 				title: "Beacon",
 				by: "",
 				added: .now,
-				released: .now
+				released: fezReleased
 			),
 			Sim_SongInfo(
 				albumID: fez,
@@ -198,7 +210,7 @@ extension Sim_SongInfo {
 				title: "Flow",
 				by: "",
 				added: .now,
-				released: .now
+				released: fezReleased
 			),
 			Sim_SongInfo(
 				albumID: fez,
@@ -211,7 +223,7 @@ extension Sim_SongInfo {
 				title: "Formations",
 				by: "",
 				added: .now,
-				released: .now
+				released: fezReleased
 			),
 			Sim_SongInfo(
 				albumID: fez,
@@ -224,7 +236,7 @@ extension Sim_SongInfo {
 				title: "Legend",
 				by: "",
 				added: .now,
-				released: .now
+				released: fezReleased
 			),
 			
 			Sim_SongInfo(
@@ -238,7 +250,7 @@ extension Sim_SongInfo {
 				title: "Amazingly few discotheques provide jukeboxes.",
 				by: "Tony Harnell",
 				added: .now,
-				released: .now
+				released: "1999-01-20"
 			),
 		]
 	}
@@ -256,7 +268,7 @@ extension Sim_SongInfo {
 		title: String?,
 		by: String?,
 		added: Date,
-		released: Date?
+		released: String? = nil
 	) {
 		// Memberwise initializer
 		self.init(
@@ -270,7 +282,12 @@ extension Sim_SongInfo {
 			titleOnDisk: title,
 			artistOnDisk: by,
 			dateAddedOnDisk: added,
-			releaseDateOnDisk: released,
+			releaseDateOnDisk: {
+				guard let released else {
+					return nil
+				}
+				return Date.curfewUTC(iso8601Date10Char: released)
+			}(),
 			coverArtFileName: coverArt
 		)
 		
