@@ -99,11 +99,9 @@ struct AlbumRow: View {
 final class AlbumCell: UITableViewCell {
 	static let usesSwiftUI__ = 10 == 1
 	
-	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	
-	private var rowContentAccessibilityLabel__: String? = nil
+	var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var mainStack: UIStackView!
 	@IBOutlet private var coverArtView: UIImageView!
@@ -245,23 +243,5 @@ final class AlbumCell: UITableViewCell {
 			}
 			return result
 		}()
-	}
-}
-extension AlbumCell: AvatarDisplaying__ {
-	func indicateAvatarStatus__(
-		_ avatarStatus: AvatarStatus
-	) {
-		if Self.usesSwiftUI__ { return }
-		
-		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
-		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
-		
-		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
-		speakerImageView.image = avatarStatus.uiImage__
-		
-		accessibilityLabel = [
-			avatarStatus.axLabel,
-			rowContentAccessibilityLabel__,
-		].compactedAndFormattedAsNarrowList()
 	}
 }

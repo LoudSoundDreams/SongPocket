@@ -63,13 +63,11 @@ struct FolderRow: View {
 	}
 }
 final class FolderCell: UITableViewCell {
-	private static let usesSwiftUI__ = 10 == 1
+	static let usesSwiftUI__ = 10 == 1
 	
-	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	
-	private var rowContentAccessibilityLabel__: String? = nil
+	var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var titleLabel: UILabel!
 	
@@ -149,23 +147,5 @@ final class FolderCell: UITableViewCell {
 		+ contentView.frame.minX
 		+ titleLabel.frame.minX
 		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-extension FolderCell: AvatarDisplaying__ {
-	func indicateAvatarStatus__(
-		_ avatarStatus: AvatarStatus
-	) {
-		if Self.usesSwiftUI__ { return }
-		
-		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
-		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
-		
-		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
-		speakerImageView.image = avatarStatus.uiImage__
-		
-		accessibilityLabel = [
-			avatarStatus.axLabel,
-			rowContentAccessibilityLabel__,
-		].compactedAndFormattedAsNarrowList()
 	}
 }

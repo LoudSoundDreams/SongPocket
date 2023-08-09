@@ -44,6 +44,54 @@ protocol AvatarDisplaying__: AnyObject {
 	
 	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus)
 }
+extension FolderCell: AvatarDisplaying__ {
+	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus) {
+		if Self.usesSwiftUI__ { return }
+		
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		speakerImageView.image = avatarStatus.uiImage__
+		
+		accessibilityLabel = [
+			avatarStatus.axLabel,
+			rowContentAccessibilityLabel__,
+		].compactedAndFormattedAsNarrowList()
+	}
+}
+extension AlbumCell: AvatarDisplaying__ {
+	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus) {
+		if Self.usesSwiftUI__ { return }
+		
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		speakerImageView.image = avatarStatus.uiImage__
+		
+		accessibilityLabel = [
+			avatarStatus.axLabel,
+			rowContentAccessibilityLabel__,
+		].compactedAndFormattedAsNarrowList()
+	}
+}
+extension SongCell: AvatarDisplaying__ {
+	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus) {
+		if Self.usesSwiftUI__ { return }
+		
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		speakerImageView.image = avatarStatus.uiImage__
+		
+		accessibilityLabel = [
+			avatarStatus.axLabel,
+			rowContentAccessibilityLabel__,
+		].compactedAndFormattedAsNarrowList()
+	}
+}
 
 // MARK: - Image
 

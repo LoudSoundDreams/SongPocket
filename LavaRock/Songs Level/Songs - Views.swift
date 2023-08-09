@@ -143,13 +143,11 @@ extension SongsTVC {
 	}
 }
 final class SongCell: UITableViewCell {
-	private static let usesSwiftUI__ = 10 == 1
+	static let usesSwiftUI__ = 10 == 1
 	
-	// `AvatarDisplaying__`
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
-	
-	private var rowContentAccessibilityLabel__: String? = nil
+	var rowContentAccessibilityLabel__: String? = nil
 	
 	@IBOutlet private var textStack: UIStackView!
 	@IBOutlet private var titleLabel: UILabel!
@@ -381,23 +379,5 @@ final class SongCell: UITableViewCell {
 		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
 		+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
 		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-extension SongCell: AvatarDisplaying__ {
-	func indicateAvatarStatus__(
-		_ avatarStatus: AvatarStatus
-	) {
-		if Self.usesSwiftUI__ { return }
-		
-		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
-		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
-		
-		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
-		speakerImageView.image = avatarStatus.uiImage__
-		
-		accessibilityLabel = [
-			avatarStatus.axLabel,
-			rowContentAccessibilityLabel__,
-		].compactedAndFormattedAsNarrowList()
 	}
 }
