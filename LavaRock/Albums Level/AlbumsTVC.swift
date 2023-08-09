@@ -82,7 +82,7 @@ final class AlbumsTVC:
 		
 		navigationItem.backButtonDisplayMode = .minimal
 		title = { () -> String in
-			return (viewModel as? AlbumsViewModel)?.folder?.title ?? ""
+			return (viewModel as! AlbumsViewModel).folder?.title ?? ""
 		}()
 	}
 	
@@ -210,9 +210,8 @@ final class AlbumsTVC:
 				
 				// Disable if appropriate
 				// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-				let allowed = (self.viewModel as? AlbumsViewModel)?.allowsAutoMove(
-					selectedIndexPaths: self.tableView.selectedIndexPaths
-				) ?? false
+				let allowed = (self.viewModel as! AlbumsViewModel).allowsAutoMove(
+					selectedIndexPaths: self.tableView.selectedIndexPaths)
 				if !allowed {
 					action.attributes.formUnion(.disabled)
 				}

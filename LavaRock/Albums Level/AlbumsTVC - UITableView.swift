@@ -46,7 +46,7 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return UITableViewCell() }
+		let albumsViewModel = viewModel as! AlbumsViewModel
 		
 		switch purpose {
 			case .previewingCombine:
@@ -145,9 +145,7 @@ extension AlbumsTVC {
 			case .organizingAlbums:
 				return nil
 			case .movingAlbums:
-				guard let albumsViewModel = viewModel as? AlbumsViewModel else {
-					return nil
-				}
+				let albumsViewModel = viewModel as! AlbumsViewModel
 				let rowCase = albumsViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow:
@@ -172,7 +170,7 @@ extension AlbumsTVC {
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
+				let albumsViewModel = viewModel as! AlbumsViewModel
 				let rowCase = albumsViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow:

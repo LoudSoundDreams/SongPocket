@@ -41,7 +41,7 @@ extension FoldersTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let foldersViewModel = viewModel as? FoldersViewModel else { return UITableViewCell() }
+		let foldersViewModel = viewModel as! FoldersViewModel
 		
 		switch purpose {
 			case .willOrganizeAlbums:
@@ -215,9 +215,7 @@ extension FoldersTVC {
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				guard let foldersViewModel = viewModel as? FoldersViewModel else {
-					return nil
-				}
+				let foldersViewModel = viewModel as! FoldersViewModel
 				let rowCase = foldersViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow:
@@ -255,7 +253,7 @@ extension FoldersTVC {
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				guard let foldersViewModel = viewModel as? FoldersViewModel else { return }
+				let foldersViewModel = viewModel as! FoldersViewModel
 				let rowCase = foldersViewModel.rowCase(for: indexPath)
 				switch rowCase {
 					case .prerow:

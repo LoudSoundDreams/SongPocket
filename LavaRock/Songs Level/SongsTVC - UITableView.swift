@@ -46,10 +46,7 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard let songsViewModel = viewModel as? SongsViewModel
-		else {
-			return UITableViewCell()
-		}
+		let songsViewModel = viewModel as! SongsViewModel
 		let album = songsViewModel.libraryGroup().container as! Album
 		
 		let rowCase = songsViewModel.rowCase(for: indexPath)
