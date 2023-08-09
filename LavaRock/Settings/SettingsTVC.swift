@@ -224,9 +224,7 @@ extension SettingsTVC {
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent(LRString.tipJar, value: LRString.loadingEllipsis)
 						.foregroundStyle(.secondary) // Seems to not affect `LabeledContent`’s `value:` argument
-						.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-							viewDimensions[.trailing]
-						}
+						.alignmentGuide_separatorTrailing()
 				}
 				return cell
 			case .reload:
@@ -240,9 +238,7 @@ extension SettingsTVC {
 							.foregroundStyle(Color.accentColor)
 					}
 					.accessibilityAddTraits(.isButton)
-					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-						viewDimensions[.trailing]
-					}
+					.alignmentGuide_separatorTrailing()
 				}
 				return cell
 			case .ready:
@@ -256,9 +252,7 @@ extension SettingsTVC {
 							.foregroundStyle(Color.accentColor)
 					}
 					.accessibilityAddTraits(.isButton)
-					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-						viewDimensions[.trailing]
-					}
+					.alignmentGuide_separatorTrailing()
 				}
 				return cell
 			case .confirming:
@@ -268,9 +262,7 @@ extension SettingsTVC {
 				cell.contentConfiguration = UIHostingConfiguration {
 					LabeledContent(LRString.tipJar, value: LRString.confirmingEllipsis)
 						.foregroundStyle(.secondary)
-						.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-							viewDimensions[.trailing]
-						}
+						.alignmentGuide_separatorTrailing()
 				}
 				return cell
 			case .thankYou:
@@ -279,9 +271,7 @@ extension SettingsTVC {
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					TipThankYouView()
-						.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-							viewDimensions[.trailing]
-						}
+						.alignmentGuide_separatorTrailing()
 				}
 				return cell
 		}

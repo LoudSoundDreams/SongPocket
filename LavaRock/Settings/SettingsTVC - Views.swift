@@ -41,9 +41,7 @@ final class AccentColorCell: UITableViewCell {
 						)
 				}
 				.accessibilityAddTraits(.isButton)
-				.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-					viewDimensions[.trailing]
-				}
+				.alignmentGuide_separatorTrailing()
 				
 			}
 		}

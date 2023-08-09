@@ -27,12 +27,8 @@ final class CoverArtCell: UITableViewCell {
 			.frame(
 				maxWidth: .infinity, // Horizontally centers narrow artwork
 				maxHeight: maxHeight)
-			.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-				viewDimensions[.leading]
-			}
-			.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-				viewDimensions[.trailing]
-			}
+			.alignmentGuide_separatorLeading()
+			.alignmentGuide_separatorTrailing()
 		}
 		.margins(.all, .zero)
 		os_signpost(.end, log: .songsView, name: "Configure cover art")
@@ -109,9 +105,7 @@ struct SongRow: View {
 							.padding(.bottom, .eight * 1/4) // 2
 					}
 				}
-				.alignmentGuide(.listRowSeparatorLeading) { textStackDimensions in
-					textStackDimensions[.leading]
-				}
+				.alignmentGuide_separatorLeading()
 			}
 			
 			Spacer()
@@ -259,9 +253,7 @@ final class SongCell: UITableViewCell {
 					song_title: song_title,
 					artist_if_different_from_album_artist: artistDisplayOptional
 				)
-				.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-					viewDimensions[.trailing]
-				}
+				.alignmentGuide_separatorTrailing()
 			}
 		} else {
 			spacerNumberLabel.text = spacerTrackNumberText

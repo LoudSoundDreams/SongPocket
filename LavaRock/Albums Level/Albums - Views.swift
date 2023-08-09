@@ -64,9 +64,7 @@ struct AlbumRow: View {
 				
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(album.titleFormatted())
-						.alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-							viewDimensions[.leading]
-						}
+						.alignmentGuide_separatorLeading()
 					if let releaseDate = album.releaseDateEstimateFormattedOptional() {
 						Text(releaseDate)
 							.foregroundStyle(.secondary)

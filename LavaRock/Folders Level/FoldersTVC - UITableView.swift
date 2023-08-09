@@ -73,9 +73,7 @@ extension FoldersTVC {
 						Spacer()
 					}
 					.accessibilityAddTraits(.isButton)
-					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-						viewDimensions[.trailing]
-					}
+					.alignmentGuide_separatorTrailing()
 				}
 				return cell
 			case .loading:
@@ -89,9 +87,7 @@ extension FoldersTVC {
 						Spacer()
 						ProgressView()
 					}
-					.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-						viewDimensions[.trailing]
-					}
+					.alignmentGuide_separatorTrailing()
 				}
 				return cell
 			case .removingFolderRows: // Should never run
@@ -108,9 +104,7 @@ extension FoldersTVC {
 									.foregroundStyle(.secondary)
 								Spacer()
 							}
-							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-								viewDimensions[.trailing]
-							}
+							.alignmentGuide_separatorTrailing()
 						}
 						return cell
 					default:
@@ -125,9 +119,7 @@ extension FoldersTVC {
 									.foregroundStyle(Color.accentColor)
 							}
 							.accessibilityAddTraits(.isButton)
-							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-								viewDimensions[.trailing]
-							}
+							.alignmentGuide_separatorTrailing()
 						}
 						return cell
 				}

@@ -25,6 +25,7 @@
 		073AF48A24D16647000C1A6D /* Accent Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48924D16647000C1A6D /* Accent Color.swift */; };
 		073AF48F24D1AD73000C1A6D /* SettingsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AF48E24D1AD73000C1A6D /* SettingsTVC.swift */; };
 		073B99C72944FA8900B48C9C /* UIImpactFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */; };
+		073CD6462A83FC66008E32A7 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CD6452A83FC66008E32A7 /* View.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Folders - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Folders - Views.swift */; };
 		073FB55927588B81000FAF5F /* SettingsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 073FB55B27588B81000FAF5F /* SettingsTVC.storyboard */; };
@@ -127,6 +128,7 @@
 		073AF48924D16647000C1A6D /* Accent Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Accent Color.swift"; sourceTree = "<group>"; };
 		073AF48E24D1AD73000C1A6D /* SettingsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTVC.swift; sourceTree = "<group>"; };
 		073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImpactFeedbackGenerator.swift; sourceTree = "<group>"; };
+		073CD6452A83FC66008E32A7 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Folders - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folders - Views.swift"; sourceTree = "<group>"; };
 		073FB55A27588B81000FAF5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SettingsTVC.storyboard; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				07619EE427342FC9003F95AE /* Diffing.swift */,
 				076B4DEC27738FF4004B523D /* OSLog.swift */,
 				07E0BBDA276567760010117E /* Notifications.swift */,
+				073CD6452A83FC66008E32A7 /* View.swift */,
 				07E0BBE72765678F0010117E /* UITableView.swift */,
 				0787CB0927A376400068C2E5 /* UIViewController.swift */,
 				073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */,
@@ -633,6 +636,7 @@
 				07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */,
 				076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
+				073CD6462A83FC66008E32A7 /* View.swift in Sources */,
 				07FFC00E29D88B6B00B98447 /* AppleMusic.swift in Sources */,
 				07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */,
 				074AB85E27CAD9C3007B63D2 /* Reel.swift in Sources */,

@@ -67,9 +67,7 @@ extension AlbumsTVC {
 								Spacer()
 							}
 							.accessibilityAddTraits(.isButton)
-							.alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-								viewDimensions[.trailing]
-							}
+							.alignmentGuide_separatorTrailing()
 						}
 						return cell
 					case .album:
