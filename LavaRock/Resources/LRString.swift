@@ -84,7 +84,7 @@ enum LRString {
 	
 	// MARK: - Folders view
 	
-	static let folders = NSLocalizedString("Folders", comment: "Big title")
+	static let folders = NSLocalizedString("Stacks", comment: "Big title")
 	
 	static let allowAccessToAppleMusic = NSLocalizedString("Allow Access to Apple Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
@@ -95,13 +95,13 @@ enum LRString {
 	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also an Arrange option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let renameFolder = NSLocalizedString("Rename Folder", comment: "Alert title")
+	static let renameFolder = NSLocalizedString("Rename Stack", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	
-	static let newFolder = NSLocalizedString("New Folder", comment: "Button")
+	static let newFolder = NSLocalizedString("New Stack", comment: "Button")
 	static let untitledFolder = NSLocalizedString(
-		"Untitled Folder",
+		"Untitled Stack",
 		comment: "Default title for a folder if you create one and don’t provide a title.")
 	
 	// MARK: Albums view
@@ -110,7 +110,7 @@ enum LRString {
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let byAlbumArtistEllipsis = NSLocalizedString("By Album Artist…", comment: "Menu option")
-	static let toFolderEllipsis = NSLocalizedString("To Folder…", comment: "Menu option")
+	static let toFolderEllipsis = NSLocalizedString("To Stack…", comment: "Menu option")
 	
 	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Arrange option")
 	

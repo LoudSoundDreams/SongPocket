@@ -223,7 +223,7 @@ final class AlbumsTVC:
 		
 		let toFolder_element = UIAction(
 			title: LRString.toFolderEllipsis,
-			image: UIImage(systemName: "folder")
+			image: UIImage(systemName: "square.stack.3d.down.forward")
 		) { [weak self] _ in
 			self?.startMoving()
 		}
