@@ -143,7 +143,7 @@ extension SongsTVC {
 				) { [weak self] _ in
 					guard let self else { return }
 					
-					let numberToSkip = (viewModel as! SongsViewModel).prerowCount()
+					let numberToSkip = indexPath.row - (viewModel as! SongsViewModel).prerowCount()
 					player.playNow(mediaItems(), skipping: numberToSkip)
 					
 					tableView.deselectAllRows(animated: true)
