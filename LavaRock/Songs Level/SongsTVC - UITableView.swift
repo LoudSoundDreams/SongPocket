@@ -43,7 +43,7 @@ extension SongsTVC {
 	
 	// MARK: - Cells
 	
-	func createCoverArtConfiguration(
+	static func createCoverArtConfiguration(
 		albumRepresentative: SongInfo?,
 		maxHeight: CGFloat
 	) -> UIHostingConfiguration<some View, EmptyView> {
@@ -80,7 +80,7 @@ extension SongsTVC {
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Cover Art", for: indexPath)
 						cell.selectionStyle = .none
-						cell.contentConfiguration = createCoverArtConfiguration(
+						cell.contentConfiguration = Self.createCoverArtConfiguration(
 							albumRepresentative: album.representativeSongInfo(),
 							maxHeight: {
 								let height = view.frame.height

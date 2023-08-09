@@ -71,7 +71,7 @@ final class SongsTVC: LibraryTVC {
 		super.viewWillTransition(to: size, with: coordinator)
 		
 		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) { // !
-			cell.contentConfiguration = createCoverArtConfiguration(
+			cell.contentConfiguration = Self.createCoverArtConfiguration(
 				albumRepresentative: {
 					let songsViewModel = viewModel as! SongsViewModel
 					return (songsViewModel.libraryGroup().container as? Album)?.representativeSongInfo()

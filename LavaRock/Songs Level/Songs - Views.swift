@@ -22,7 +22,7 @@ struct AlbumInfoRow: View {
 				alignment: .leading,
 				spacing: .eight * 5/8
 			) {
-				// “Please Please Me”
+				// “Rubber Soul”
 				Text(albumTitle)
 					.font(.title2)
 					.bold()
@@ -34,7 +34,7 @@ struct AlbumInfoRow: View {
 					.foregroundStyle(.secondary)
 				
 				if let releaseDate = releaseDateStringOptional {
-					// “Mar 22, 1963”
+					// “Dec 3, 1965”
 					Text(releaseDate)
 						.font(.caption)
 						.foregroundStyle(.secondary)
