@@ -50,14 +50,14 @@ extension SongsTVC {
 		else {
 			return UITableViewCell()
 		}
-		let group = songsViewModel.libraryGroup()
-		let album = group.container as! Album
+		let album = songsViewModel.libraryGroup().container as! Album
 		
 		let rowCase = songsViewModel.rowCase(for: indexPath)
 		switch rowCase {
 			case .prerow(let prerow):
 				switch prerow {
 					case .coverArt:
+						// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 						guard let cell = tableView.dequeueReusableCell(
 							withIdentifier: "Cover Art",
 							for: indexPath) as? CoverArtCell
@@ -128,7 +128,7 @@ extension SongsTVC {
 				) { [weak self] _ in
 					guard let self else { return }
 					
-					let numberToSkip = indexPath.row - 2 // !
+					let numberToSkip = (viewModel as! SongsViewModel).prerowCount()
 					player.playNow(mediaItems(), skipping: numberToSkip)
 					
 					tableView.deselectAllRows(animated: true)

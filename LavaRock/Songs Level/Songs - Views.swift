@@ -12,7 +12,6 @@ import OSLog
 
 // MARK: - Cover art
 
-// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 final class CoverArtCell: UITableViewCell {
 	var albumRepresentative: SongInfo? = nil
 	

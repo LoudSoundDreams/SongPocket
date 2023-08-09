@@ -196,6 +196,7 @@ extension SettingsTVC {
 		let _ = Self.avatarRow
 		let accentColor = AccentColor.allCases[indexPath.row]
 		
+		// The cell in the storyboard is completely default except for the reuse identifier and custom class.
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Accent Color",
 			for: indexPath) as? AccentColorCell
