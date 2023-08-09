@@ -8,31 +8,6 @@
 import UIKit
 import SwiftUI
 import MediaPlayer
-import OSLog
-
-// MARK: - Cover art
-
-final class CoverArtCell: UITableViewCell {
-	var albumRepresentative: SongInfo? = nil
-	
-	func configureArtwork(
-		maxHeight: CGFloat
-	) {
-		os_signpost(.begin, log: .songsView, name: "Configure cover art")
-		contentConfiguration = UIHostingConfiguration {
-			CoverArtView(
-				albumRepresentative: albumRepresentative, // TO DO: Redraw when artwork changes
-				largerThanOrEqualToSizeInPoints: maxHeight)
-			.frame(
-				maxWidth: .infinity, // Horizontally centers narrow artwork
-				maxHeight: maxHeight)
-			.alignmentGuide_separatorLeading()
-			.alignmentGuide_separatorTrailing()
-		}
-		.margins(.all, .zero)
-		os_signpost(.end, log: .songsView, name: "Configure cover art")
-	}
-}
 
 // MARK: - Album info
 

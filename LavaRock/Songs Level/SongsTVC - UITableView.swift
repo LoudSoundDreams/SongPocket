@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import OSLog
 
 struct NoSongsView: View {
 	var body: some View {
@@ -42,6 +43,28 @@ extension SongsTVC {
 	
 	// MARK: - Cells
 	
+	func createCoverArtConfiguration(
+		albumRepresentative: SongInfo?,
+		maxHeight: CGFloat
+	) -> UIHostingConfiguration<some View, EmptyView> {
+		os_signpost(.begin, log: .songsView, name: "Create cover art configuration")
+		defer {
+			os_signpost(.end, log: .songsView, name: "Create cover art configuration")
+		}
+		
+		return UIHostingConfiguration {
+			CoverArtView(
+				albumRepresentative: albumRepresentative, // TO DO: Redraw when artwork changes
+				largerThanOrEqualToSizeInPoints: maxHeight)
+			.frame(
+				maxWidth: .infinity, // Horizontally centers narrow artwork
+				maxHeight: maxHeight)
+			.alignmentGuide_separatorLeading()
+			.alignmentGuide_separatorTrailing()
+		}
+		.margins(.all, .zero)
+	}
+	
 	override func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
@@ -54,24 +77,19 @@ extension SongsTVC {
 			case .prerow(let prerow):
 				switch prerow {
 					case .coverArt:
-						// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-						guard let cell = tableView.dequeueReusableCell(
-							withIdentifier: "Cover Art",
-							for: indexPath) as? CoverArtCell
-						else { return UITableViewCell() }
-						
+						// The cell in the storyboard is completely default except for the reuse identifier.
+						let cell = tableView.dequeueReusableCell(withIdentifier: "Cover Art", for: indexPath)
 						cell.selectionStyle = .none
-						
-						cell.albumRepresentative = album.representativeSongInfo()
-						
-						let height = view.frame.height
-						let topInset = view.safeAreaInsets.top
-						let bottomInset = view.safeAreaInsets.bottom
-						let safeHeight = height - topInset - bottomInset
-						cell.configureArtwork(maxHeight: safeHeight)
-						
+						cell.contentConfiguration = createCoverArtConfiguration(
+							albumRepresentative: album.representativeSongInfo(),
+							maxHeight: {
+								let height = view.frame.height
+								let topInset = view.safeAreaInsets.top
+								let bottomInset = view.safeAreaInsets.bottom
+								return height - topInset - bottomInset
+							}()
+						)
 						return cell
-						
 					case .albumInfo:
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Album Info", for: indexPath)
