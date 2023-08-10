@@ -68,7 +68,7 @@ struct AlbumRow: View {
 					if let releaseDate = album.releaseDateEstimateFormattedOptional() {
 						Text(releaseDate)
 							.foregroundStyle(.secondary)
-							.font(.caption)
+							.font_footnote()
 					}
 				}
 				// TO DO: Always keep wider than a certain width. (88 is good)

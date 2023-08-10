@@ -72,7 +72,7 @@ struct SongRow: View {
 					Text(song_title ?? SongInfoPlaceholder.unknownTitle)
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
-							.font(.caption)
+							.font_footnote()
 							.foregroundStyle(.secondary)
 							.padding(.bottom, .eight * 1/4) // 2
 					}
