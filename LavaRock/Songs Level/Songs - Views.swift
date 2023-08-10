@@ -24,18 +24,18 @@ struct AlbumInfoRow: View {
 			) {
 				// “Rubber Soul”
 				Text(albumTitle)
-					.font(.title2).bold() // As of iOS 16.6, Apple Music uses this for “Recently Added”.
+					.font_title2_bold()
 				
 				// “The Beatles”
 				Text(albumArtist)
-					.font(.caption2).bold() // As of iOS 16.6, Apple Music uses this for genres and release years on album details views.
 					.foregroundStyle(.secondary)
+					.font_caption2_bold()
 				
 				if let releaseDate = releaseDateStringOptional {
 					// “Dec 3, 1965”
 					Text(releaseDate)
-						.font(.footnote) // As of iOS 16.6, Apple Music uses this for artist names on song rows.
 						.foregroundStyle(.secondary)
+						.font_footnote()
 				}
 			}
 			
