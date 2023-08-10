@@ -24,8 +24,7 @@ struct AlbumInfoRow: View {
 			) {
 				// “Rubber Soul”
 				Text(albumTitle)
-					.font(.title2)
-					.bold()
+					.font(.title2).bold() // As of iOS 16.6, Apple Music uses this for “Recently Added”.
 				
 				// “The Beatles”
 				Text(albumArtist)
