@@ -39,9 +39,9 @@ final class MainToolbar__UIKit {
 	private lazy var jumpBackButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.skipBack10Seconds,
-			image: UIImage(systemName: "gobackward.15"),
+			image: UIImage(systemName: "gobackward.10"),
 			primaryAction: UIAction { _ in
-				Self.player?.currentPlaybackTime -= 15
+				Self.player?.currentPlaybackTime -= 10
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -50,9 +50,9 @@ final class MainToolbar__UIKit {
 	private lazy var jumpForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.skipForward10Seconds,
-			image: UIImage(systemName: "goforward.15"),
+			image: UIImage(systemName: "goforward.10"),
 			primaryAction: UIAction { _ in
-				Self.player?.currentPlaybackTime += 15
+				Self.player?.currentPlaybackTime += 10
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
