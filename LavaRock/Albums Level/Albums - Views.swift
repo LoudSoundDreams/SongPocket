@@ -72,7 +72,8 @@ struct AlbumRow: View {
 					}
 				}
 				// TO DO: Always keep wider than a certain width. (88 is good)
-				.padding(.vertical, .eight)
+				.padding(.top, coverArtVerticalMargin * 2 - 5) // !
+				.padding(.bottom, .eight)
 			}
 			
 			Spacer()
