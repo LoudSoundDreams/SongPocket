@@ -29,7 +29,7 @@ struct AlbumRow: View {
 				if isVertical {
 					return AnyLayout(VStackLayout(alignment: .leading, spacing: 0))
 				}
-				return AnyLayout(HStackLayout(spacing: 0))
+				return AnyLayout(HStackLayout(alignment: .top, spacing: 0))
 			}()
 			contentStackLayout {
 				let coverArtVerticalMargin: CGFloat = .eight * 5/8
@@ -146,7 +146,7 @@ final class AlbumCell: UITableViewCell {
 				// We couldn’t determine the album’s release date.
 				textStack.spacing = 0
 			} else {
-				textStack.spacing = 4
+				textStack.spacing = .eight * 1/2
 			}
 			
 			rowContentAccessibilityLabel__ = [
