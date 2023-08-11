@@ -234,7 +234,7 @@ final class SongCell: UITableViewCell {
 			if artistLabel.text == nil {
 				textStack.spacing = 0
 			} else {
-				textStack.spacing = 4
+				textStack.spacing = .eight * 1/2
 			}
 			
 			rowContentAccessibilityLabel__ = [

@@ -9,11 +9,10 @@ import CoreData
 
 struct SongsViewModel {
 	enum Prerow {
-		case coverArt
-		case albumInfo
+		case albumHeader
 	}
 	private static let prerows: [Prerow] = [
-		.coverArt,
+		.albumHeader,
 	]
 	
 	let album: Album?

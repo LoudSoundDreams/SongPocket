@@ -55,6 +55,7 @@ extension SongsTVC {
 					maxHeight: maxHeight)
 				
 				Divider()
+					.offset(y: -0.5)
 				
 				AlbumInfoRow(
 					albumTitle: albumTitle,
@@ -78,39 +79,23 @@ extension SongsTVC {
 		
 		let rowCase = songsViewModel.rowCase(for: indexPath)
 		switch rowCase {
-			case .prerow(let prerow):
-				switch prerow {
-					case .coverArt:
-						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(withIdentifier: "Cover Art", for: indexPath)
-						cell.selectionStyle = .none
-						cell.contentConfiguration = Self.createCoverArtConfiguration(
-							albumRepresentative: album.representativeSongInfo(),
-							maxHeight: {
-								let height = view.frame.height
-								let topInset = view.safeAreaInsets.top
-								let bottomInset = view.safeAreaInsets.bottom
-								return height - topInset - bottomInset
-							}(),
-							albumTitle: album.titleFormatted(),
-							albumArtist: album.albumArtistFormatted(),
-							releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
-						)
-						return cell
-					case .albumInfo:
-						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(withIdentifier: "Album Info", for: indexPath)
-						cell.selectionStyle = .none // So that the user can’t even highlight the cell
-						cell.contentConfiguration = UIHostingConfiguration {
-							AlbumInfoRow(
-								albumTitle: album.titleFormatted(),
-								albumArtist: album.albumArtistFormatted(),
-								releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
-							)
-							.alignmentGuide_separatorTrailing()
-						}
-						return cell
-				}
+			case .prerow:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
+				cell.selectionStyle = .none // So that the user can’t even highlight the cell
+				cell.contentConfiguration = Self.createCoverArtConfiguration(
+					albumRepresentative: album.representativeSongInfo(),
+					maxHeight: {
+						let height = view.frame.height
+						let topInset = view.safeAreaInsets.top
+						let bottomInset = view.safeAreaInsets.bottom
+						return height - topInset - bottomInset
+					}(),
+					albumTitle: album.titleFormatted(),
+					albumArtist: album.albumArtistFormatted(),
+					releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
+				)
+				return cell
 			case .song:
 				break
 		}
