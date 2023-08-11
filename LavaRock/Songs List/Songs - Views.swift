@@ -38,7 +38,6 @@ struct AlbumInfoRow: View {
 						.font_footnote()
 				}
 			}
-			
 			Spacer()
 		}
 		.padding(.bottom, .eight * 5/8)
