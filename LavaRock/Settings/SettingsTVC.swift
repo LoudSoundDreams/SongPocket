@@ -88,7 +88,7 @@ extension SettingsTVC {
 			case Self.avatarRow:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Avatar", for: indexPath)
-				cell.selectionStyle = .none
+				cell.selectionStyle = .none // So that the user can’t even highlight the cell
 				cell.contentConfiguration = UIHostingConfiguration {
 					AvatarPicker()
 				}

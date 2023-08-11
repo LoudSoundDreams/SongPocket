@@ -9,42 +9,6 @@ import UIKit
 import SwiftUI
 import MediaPlayer
 
-// MARK: - Album info
-
-struct AlbumInfoRow: View {
-	let albumTitle: String
-	let albumArtist: String
-	let releaseDateStringOptional: String? // `nil` hides line
-	
-	var body: some View {
-		HStack {
-			VStack(
-				alignment: .leading,
-				spacing: .eight * 5/8
-			) {
-				// “Rubber Soul”
-				Text(albumTitle)
-					.font_title2_bold()
-				
-				// “The Beatles”
-				Text(albumArtist)
-					.foregroundStyle(.secondary)
-					.font_caption2_bold()
-				
-				if let releaseDate = releaseDateStringOptional {
-					// “Dec 3, 1965”
-					Text(releaseDate)
-						.foregroundStyle(.secondary)
-						.font_footnote()
-				}
-			}
-			Spacer()
-		}
-	}
-}
-
-// MARK: - Song
-
 struct SongRow: View {
 	let song: Song
 	let trackDisplay: String

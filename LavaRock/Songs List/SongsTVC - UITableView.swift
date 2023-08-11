@@ -60,7 +60,7 @@ extension SongsTVC {
 			case .prerow:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
-				cell.selectionStyle = .none // So that the user can’t even highlight the cell
+				cell.selectionStyle = .none
 				cell.contentConfiguration = Self.createAlbumHeaderConfiguration(
 					album: album,
 					maxHeight: {

@@ -9,6 +9,8 @@ import UIKit
 import SwiftUI
 import OSLog
 
+// MARK: - Header
+
 struct AlbumHeader: View {
 	let album: Album
 	let maxHeight: CGFloat
@@ -66,11 +68,46 @@ struct CoverArtView: View {
 	}
 }
 
+struct AlbumInfoRow: View {
+	let albumTitle: String
+	let albumArtist: String
+	let releaseDateStringOptional: String? // `nil` hides line
+	
+	var body: some View {
+		HStack {
+			VStack(
+				alignment: .leading,
+				spacing: .eight * 5/8
+			) {
+				// “Rubber Soul”
+				Text(albumTitle)
+					.font_title2_bold()
+				
+				// “The Beatles”
+				Text(albumArtist)
+					.foregroundStyle(.secondary)
+					.font_caption2_bold()
+				
+				if let releaseDate = releaseDateStringOptional {
+					// “Dec 3, 1965”
+					Text(releaseDate)
+						.foregroundStyle(.secondary)
+						.font_footnote()
+				}
+			}
+			Spacer()
+		}
+	}
+}
+
+// MARK: - Row
+
 enum AlbumRowMode {
 	case normal
 	case modal
 	case modalTinted
 }
+
 struct AlbumRow: View {
 	let album: Album
 	let mode: AlbumRowMode
@@ -154,6 +191,7 @@ struct AlbumRow: View {
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
 }
+
 final class AlbumCell: UITableViewCell {
 	static let usesSwiftUI__ = 10 == 1
 	
