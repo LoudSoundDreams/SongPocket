@@ -40,17 +40,31 @@ extension SongsTVC {
 	
 	static func createCoverArtConfiguration(
 		albumRepresentative: SongInfo?,
-		maxHeight: CGFloat
+		maxHeight: CGFloat,
+		albumTitle: String,
+		albumArtist: String,
+		releaseDateStringOptional: String?
 	) -> UIHostingConfiguration<some View, EmptyView> {
 		return UIHostingConfiguration {
-			CoverArtView(
-				albumRepresentative: albumRepresentative, // TO DO: Redraw when artwork changes
-				largerThanOrEqualToSizeInPoints: maxHeight)
-			.frame(
-				maxWidth: .infinity, // Horizontally centers narrow artwork
-				maxHeight: maxHeight)
+			VStack(spacing: 0) {
+				CoverArtView(
+					albumRepresentative: albumRepresentative, // TO DO: Redraw when artwork changes
+					largerThanOrEqualToSizeInPoints: maxHeight)
+				.frame(
+					maxWidth: .infinity, // Horizontally centers narrow artwork
+					maxHeight: maxHeight)
+				
+				Divider()
+				
+				AlbumInfoRow(
+					albumTitle: albumTitle,
+					albumArtist: albumArtist,
+					releaseDateStringOptional: releaseDateStringOptional)
+				.padding(.top, .eight * 5/4)
+				.padding(.horizontal)
+				.padding(.bottom)
+			}
 			.alignmentGuide_separatorLeading()
-			.alignmentGuide_separatorTrailing()
 		}
 		.margins(.all, .zero)
 	}
@@ -77,7 +91,10 @@ extension SongsTVC {
 								let topInset = view.safeAreaInsets.top
 								let bottomInset = view.safeAreaInsets.bottom
 								return height - topInset - bottomInset
-							}()
+							}(),
+							albumTitle: album.titleFormatted(),
+							albumArtist: album.albumArtistFormatted(),
+							releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
 						)
 						return cell
 					case .albumInfo:

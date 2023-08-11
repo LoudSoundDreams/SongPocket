@@ -14,7 +14,6 @@ struct SongsViewModel {
 	}
 	private static let prerows: [Prerow] = [
 		.coverArt,
-		.albumInfo,
 	]
 	
 	let album: Album?

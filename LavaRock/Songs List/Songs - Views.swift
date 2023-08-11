@@ -40,7 +40,6 @@ struct AlbumInfoRow: View {
 			}
 			Spacer()
 		}
-		.padding(.bottom, .eight * 5/8)
 	}
 }
 

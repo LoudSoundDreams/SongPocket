@@ -70,13 +70,17 @@ final class SongsTVC: LibraryTVC {
 	) {
 		super.viewWillTransition(to: size, with: coordinator)
 		
-		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) { // !
+		if
+			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)), // ! Use `SongsViewModel.rowCase`
+			let songsViewModel = viewModel as? SongsViewModel,
+			let album = songsViewModel.libraryGroup().container as? Album
+		{
 			cell.contentConfiguration = Self.createCoverArtConfiguration(
-				albumRepresentative: {
-					let songsViewModel = viewModel as! SongsViewModel
-					return (songsViewModel.libraryGroup().container as? Album)?.representativeSongInfo()
-				}(),
-				maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
+				albumRepresentative: album.representativeSongInfo(),
+				maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
+				albumTitle: album.titleFormatted(),
+				albumArtist: album.albumArtistFormatted(),
+				releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
 			)
 		}
 	}
