@@ -17,8 +17,6 @@ struct NoSongsView: View {
 	}
 }
 extension SongsTVC {
-	// MARK: - Numbers
-	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if viewModel.isEmpty() {
 			tableView.backgroundView = UIHostingController(rootView: NoSongsView()).view
@@ -28,7 +26,6 @@ extension SongsTVC {
 		
 		return viewModel.groups.count
 	}
-	
 	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
@@ -41,17 +38,10 @@ extension SongsTVC {
 		}
 	}
 	
-	// MARK: - Cells
-	
 	static func createCoverArtConfiguration(
 		albumRepresentative: SongInfo?,
 		maxHeight: CGFloat
 	) -> UIHostingConfiguration<some View, EmptyView> {
-		os_signpost(.begin, log: .songsView, name: "Create cover art configuration")
-		defer {
-			os_signpost(.end, log: .songsView, name: "Create cover art configuration")
-		}
-		
 		return UIHostingConfiguration {
 			CoverArtView(
 				albumRepresentative: albumRepresentative, // TO DO: Redraw when artwork changes
@@ -114,9 +104,7 @@ extension SongsTVC {
 		else { return UITableViewCell() }
 		cell.configureWith(
 			song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
-			albumRepresentative: {
-				return album.representativeSongInfo()
-			}(),
+			albumRepresentative: album.representativeSongInfo(),
 			spacerTrackNumberText: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer,
 			songsTVC: Weak(self)
 		)

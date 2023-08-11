@@ -277,9 +277,7 @@ final class SongCell: UITableViewCell {
 		let play = UIAction(
 			title: LRString.play,
 			image: UIImage(systemName: "play")
-		) { _ in
-			player?.playNow([mediaItem], skipping: 0)
-		}
+		) { _ in player?.playNow([mediaItem], skipping: 0) }
 		
 		// Disable “prepend” intelligently: when “append” would do the same thing.
 		// Specifically, only enable “prepend” if there’s at least 1 song queued after the current one.
@@ -295,9 +293,7 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.playNext,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
-			) { _ in
-				player?.playNext([mediaItem])
-			}
+			) { _ in player?.playNext([mediaItem]) }
 			useMenuElements([action])
 		})
 		
@@ -305,9 +301,7 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.playLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in
-				player?.playLast([mediaItem])
-			}
+			) { _ in player?.playLast([mediaItem]) }
 			useMenuElements([action])
 		})
 		
@@ -320,9 +314,7 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.playRestOfAlbumNext,
 				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
-			) { _ in
-				player?.playNext(mediaItems)
-			}
+			) { _ in player?.playNext(mediaItems) }
 			if mediaItems.count <= 1 {
 				action.attributes.formUnion(.disabled)
 			}
@@ -334,9 +326,7 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in
-				player?.playLast(mediaItems)
-			}
+			) { _ in player?.playLast(mediaItems) }
 			if mediaItems.count <= 1 {
 				action.attributes.formUnion(.disabled)
 			}
@@ -345,21 +335,15 @@ final class SongCell: UITableViewCell {
 		
 		// Create menu
 		let submenus: [UIMenu] = [
-			UIMenu(
-				options: .displayInline,
-				children: [
-					play,
-					playNext,
-					playLast,
-				]
-			),
-			UIMenu(
-				options: .displayInline,
-				children: [
-					playToBottomNext,
-					playToBottomLast,
-				]
-			),
+			UIMenu(options: .displayInline, children: [
+				play,
+				playNext,
+				playLast,
+			]),
+			UIMenu(options: .displayInline, children: [
+				playToBottomNext,
+				playToBottomLast,
+			]),
 		]
 		menu = UIMenu(children: submenus)
 	}
