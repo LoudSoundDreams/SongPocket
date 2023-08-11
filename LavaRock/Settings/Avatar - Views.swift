@@ -133,7 +133,8 @@ struct AvatarImage: View {
 	@ObservedObject private var current: CurrentAvatar = .shared
 	private var playing_image: some View {
 		Image(systemName: current.avatar.playingSFSymbolName)
-			.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
+			.fontBody_dynamicTypeSizeUpToXxxLarge()
+			.imageScale(.small)
 	}
 	@ViewBuilder
 	private var foregroundView: some View {
@@ -144,19 +145,12 @@ struct AvatarImage: View {
 //				EmptyView()
 			case .paused:
 				Image(systemName: current.avatar.pausedSFSymbolName)
-					.fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge()
 					.foregroundStyle(Color.accentColor)
+					.fontBody_dynamicTypeSizeUpToXxxLarge()
+					.imageScale(.small)
 			case .playing:
 				playing_image
 					.foregroundStyle(Color.accentColor)
 		}
-	}
-}
-private extension View {
-	func fontBody_imageScaleSmall_dynamicTypeSizeUpToXxxLarge() -> some View {
-		return self
-			.font(.body)
-			.imageScale(.small)
-			.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 	}
 }

@@ -25,6 +25,12 @@ extension View {
 		font(.footnote)
 	}
 	
+	func fontBody_dynamicTypeSizeUpToXxxLarge() -> some View {
+		return self
+			.font(.body)
+			.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+	}
+	
 	func alignmentGuide_separatorLeading() -> some View {
 		alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
 			viewDimensions[.leading]

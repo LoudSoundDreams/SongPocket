@@ -50,9 +50,8 @@ struct SongRow: View {
 			Button {
 			} label: {
 				Image(systemName: "ellipsis")
-					.font(.body)
-					.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 					.foregroundStyle(.primary)
+					.fontBody_dynamicTypeSizeUpToXxxLarge()
 			}
 		}
 		.padding(.top, .eight * -1/4) // -2
