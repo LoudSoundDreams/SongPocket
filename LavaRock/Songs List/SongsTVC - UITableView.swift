@@ -38,32 +38,12 @@ extension SongsTVC {
 		}
 	}
 	
-	static func createCoverArtConfiguration(
+	static func createAlbumHeaderConfiguration(
 		album: Album,
 		maxHeight: CGFloat
 	) -> UIHostingConfiguration<some View, EmptyView> {
 		return UIHostingConfiguration {
-			VStack(spacing: 0) {
-				CoverArtView(
-					albumRepresentative: album.representativeSongInfo(), // TO DO: Redraw when artwork changes
-					largerThanOrEqualToSizeInPoints: maxHeight)
-				.frame(
-					maxWidth: .infinity, // Horizontally centers narrow artwork
-					maxHeight: maxHeight)
-				
-				Divider()
-					.offset(y: -0.5)
-				
-				AlbumInfoRow(
-					albumTitle: album.titleFormatted(),
-					albumArtist: album.albumArtistFormatted(),
-					releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
-				)
-				.padding(.top, .eight * 5/4)
-				.padding(.horizontal)
-				.padding(.bottom)
-			}
-			.alignmentGuide_separatorLeading()
+			AlbumHeader(album: album, maxHeight: maxHeight)
 		}
 		.margins(.all, .zero)
 	}
@@ -81,7 +61,7 @@ extension SongsTVC {
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
 				cell.selectionStyle = .none // So that the user can’t even highlight the cell
-				cell.contentConfiguration = Self.createCoverArtConfiguration(
+				cell.contentConfiguration = Self.createAlbumHeaderConfiguration(
 					album: album,
 					maxHeight: {
 						let height = view.frame.height
