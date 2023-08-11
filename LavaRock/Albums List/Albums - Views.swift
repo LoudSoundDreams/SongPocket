@@ -23,9 +23,10 @@ struct AlbumHeader: View {
 			.frame(
 				maxWidth: .infinity, // Horizontally centers narrow artwork
 				maxHeight: maxHeight)
+			.offset(y: -0.5)
 			
 			Divider()
-				.offset(y: -0.5)
+				.offset(y: -1)
 			
 			AlbumInfoRow(
 				albumTitle: album.titleFormatted(),
@@ -37,6 +38,7 @@ struct AlbumHeader: View {
 			.padding(.bottom)
 		}
 		.alignmentGuide_separatorLeading()
+		.alignmentGuide_separatorTrailing()
 	}
 }
 
