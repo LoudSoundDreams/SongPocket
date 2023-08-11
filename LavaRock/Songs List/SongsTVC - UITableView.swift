@@ -39,16 +39,13 @@ extension SongsTVC {
 	}
 	
 	static func createCoverArtConfiguration(
-		albumRepresentative: SongInfo?,
-		maxHeight: CGFloat,
-		albumTitle: String,
-		albumArtist: String,
-		releaseDateStringOptional: String?
+		album: Album,
+		maxHeight: CGFloat
 	) -> UIHostingConfiguration<some View, EmptyView> {
 		return UIHostingConfiguration {
 			VStack(spacing: 0) {
 				CoverArtView(
-					albumRepresentative: albumRepresentative, // TO DO: Redraw when artwork changes
+					albumRepresentative: album.representativeSongInfo(), // TO DO: Redraw when artwork changes
 					largerThanOrEqualToSizeInPoints: maxHeight)
 				.frame(
 					maxWidth: .infinity, // Horizontally centers narrow artwork
@@ -58,9 +55,10 @@ extension SongsTVC {
 					.offset(y: -0.5)
 				
 				AlbumInfoRow(
-					albumTitle: albumTitle,
-					albumArtist: albumArtist,
-					releaseDateStringOptional: releaseDateStringOptional)
+					albumTitle: album.titleFormatted(),
+					albumArtist: album.albumArtistFormatted(),
+					releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
+				)
 				.padding(.top, .eight * 5/4)
 				.padding(.horizontal)
 				.padding(.bottom)
@@ -84,16 +82,13 @@ extension SongsTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
 				cell.selectionStyle = .none // So that the user can’t even highlight the cell
 				cell.contentConfiguration = Self.createCoverArtConfiguration(
-					albumRepresentative: album.representativeSongInfo(),
+					album: album,
 					maxHeight: {
 						let height = view.frame.height
 						let topInset = view.safeAreaInsets.top
 						let bottomInset = view.safeAreaInsets.bottom
 						return height - topInset - bottomInset
-					}(),
-					albumTitle: album.titleFormatted(),
-					albumArtist: album.albumArtistFormatted(),
-					releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
+					}()
 				)
 				return cell
 			case .song:

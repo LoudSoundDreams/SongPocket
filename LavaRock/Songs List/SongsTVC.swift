@@ -76,12 +76,8 @@ final class SongsTVC: LibraryTVC {
 			let album = songsViewModel.libraryGroup().container as? Album
 		{
 			cell.contentConfiguration = Self.createCoverArtConfiguration(
-				albumRepresentative: album.representativeSongInfo(),
-				maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
-				albumTitle: album.titleFormatted(),
-				albumArtist: album.albumArtistFormatted(),
-				releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
-			)
+				album: album,
+				maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 		}
 	}
 	
