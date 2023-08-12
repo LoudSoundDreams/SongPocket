@@ -65,6 +65,15 @@ final class FolderCell: UITableViewCell {
 		super.awakeFromNib()
 		
 		backgroundColor = .clear
+		
+		if !Self.usesSwiftUI__ {
+			accessoryView = {
+				let chevron_uiView = UIHostingController(rootView: Chevron()).view
+				chevron_uiView?.sizeToFit()
+				chevron_uiView?.backgroundColor = nil
+				return chevron_uiView
+			}()
+		}
 	}
 	
 	func configure(

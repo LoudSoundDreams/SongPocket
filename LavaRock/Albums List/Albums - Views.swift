@@ -123,6 +123,13 @@ final class AlbumCell: UITableViewCell {
 		artViewLayer.cornerRadius = .eight * 1/2
 		
 		orientMainStack()
+		
+		accessoryView = {
+			let chevron_uiView = UIHostingController(rootView: Chevron()).view
+			chevron_uiView?.sizeToFit()
+			chevron_uiView?.backgroundColor = nil
+			return chevron_uiView
+		}()
 	}
 	
 	func configure(
