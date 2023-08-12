@@ -34,8 +34,6 @@ class LibraryTVC: UITableViewController {
 	// Controls
 	final lazy var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = []
-	final lazy var viewingModeToolbarButtons: [UIBarButtonItem]
-	= (navigationController as? LibraryNC)?.mainToolbar.barButtonItems ?? []
 	
 	// MARK: Subclasses should not customize
 	
@@ -374,9 +372,11 @@ class LibraryTVC: UITableViewController {
 			animated: animated)
 		
 		setToolbarItems(
-			editing ? editingModeToolbarButtons : viewingModeToolbarButtons,
+			editing ? editingModeToolbarButtons : mainToolbarItems,
 			animated: animated)
 	}
+	private lazy var mainToolbarItems: [UIBarButtonItem]
+	= (navigationController as? LibraryNC)?.mainToolbar.barButtonItems ?? []
 	
 	// For clarity, call this rather than `freshenEditingButtons` directly, whenever possible.
 	final func didChangeRowsOrSelectedRows() {

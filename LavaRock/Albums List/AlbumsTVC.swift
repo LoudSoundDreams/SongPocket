@@ -99,9 +99,9 @@ final class AlbumsTVC:
 				viewingModeTopLeftButtons = [
 					UIBarButtonItem(title: LRString.cancel, primaryAction: cancel_combine_action),
 				]
-				viewingModeToolbarButtons = [.flexibleSpace(), save_combine_button, .flexibleSpace()]
+				viewingModeTopRightButtons = [save_combine_button]
 			case .organizingAlbums:
-				viewingModeToolbarButtons = [.flexibleSpace(), saveOrganizeButton, .flexibleSpace()]
+				break
 			case .movingAlbums:
 				viewingModeTopRightButtons = [{
 					let moveButton = UIBarButtonItem(title: LRString.move, primaryAction: UIAction { [weak self] _ in self?.moveHere() })
@@ -119,20 +119,6 @@ final class AlbumsTVC:
 		}
 		
 		super.setUpBarButtons()
-		
-		switch purpose {
-			case .previewingCombine:
-				showToolbar()
-			case .organizingAlbums:
-				break
-			case .movingAlbums:
-				break
-			case .browsing:
-				break
-		}
-		func showToolbar() {
-			navigationController?.setToolbarHidden(false, animated: false)
-		}
 	}
 	
 	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {}

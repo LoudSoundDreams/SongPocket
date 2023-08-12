@@ -219,7 +219,7 @@ final class FoldersTVC:
 		switch purpose {
 			case .willOrganizeAlbums:
 				viewingModeTopLeftButtons = [cancelAndDismissButton]
-				viewingModeToolbarButtons = [.flexibleSpace(), saveOrganizeButton, .flexibleSpace()]
+				viewingModeTopRightButtons = [saveOrganizeButton]
 			case .organizingAlbums: // Should never run
 				break
 			case .movingAlbums:
@@ -241,16 +241,13 @@ final class FoldersTVC:
 		
 		switch purpose {
 			case .willOrganizeAlbums:
-				showToolbar()
+				break
 			case .organizingAlbums: // Should never run
 				break
 			case .movingAlbums:
 				break
 			case .browsing:
-				showToolbar()
-		}
-		func showToolbar() {
-			navigationController?.setToolbarHidden(false, animated: false)
+				navigationController?.setToolbarHidden(false, animated: false)
 		}
 	}
 	
