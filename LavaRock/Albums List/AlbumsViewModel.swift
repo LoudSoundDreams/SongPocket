@@ -8,11 +8,6 @@
 import CoreData
 
 struct AlbumsViewModel {
-	enum Prerow {
-		case moveHere
-	}
-	var prerows: [Prerow]
-	
 	let folder: Collection?
 	
 	// `LibraryViewModel`
@@ -20,12 +15,9 @@ struct AlbumsViewModel {
 	var groups: ColumnOfLibraryItems
 }
 extension AlbumsViewModel: LibraryViewModel {
-	func prerowCount() -> Int {
-		return prerows.count
-	}
-	func prerowIdentifiers() -> [AnyHashable] {
-		return prerows
-	}
+	// TO DO: Delete
+	func prerowCount() -> Int { return 0 }
+	func prerowIdentifiers() -> [AnyHashable] { return [] }
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
@@ -39,18 +31,15 @@ extension AlbumsViewModel: LibraryViewModel {
 			return folder
 		}()
 		return Self(
-			prerows: prerows,
 			folder: freshenedFolder,
 			context: context)
 	}
 }
 extension AlbumsViewModel {
 	init(
-		prerows: [Prerow],
 		folder: Collection?,
 		context: NSManagedObjectContext
 	) {
-		self.prerows = prerows
 		self.folder = folder
 		
 		self.context = context
@@ -67,19 +56,6 @@ extension AlbumsViewModel {
 	
 	func albumNonNil(atRow: Int) -> Album {
 		return itemNonNil(atRow: atRow) as! Album
-	}
-	
-	enum RowCase {
-		case prerow(Prerow)
-		case album
-	}
-	func rowCase(for indexPath: IndexPath) -> RowCase {
-		let row = indexPath.row
-		if row < prerowCount() {
-			return .prerow(prerows[row])
-		} else {
-			return .album
-		}
 	}
 	
 	// MARK: - Organizing
@@ -115,7 +91,6 @@ extension AlbumsViewModel {
 			via: context)
 		
 		return AlbumsViewModel(
-			prerows: [],
 			folder: folder,
 			context: context)
 	}

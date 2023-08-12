@@ -46,37 +46,9 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
+		// TO DO: Delete "Move Here" cell from storyboard
+		
 		let albumsViewModel = viewModel as! AlbumsViewModel
-		
-		switch purpose {
-			case .previewingCombine:
-				break
-			case .organizingAlbums:
-				break
-			case .movingAlbums:
-				let rowCase = albumsViewModel.rowCase(for: indexPath)
-				switch rowCase {
-					case .prerow:
-						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(withIdentifier: "Move Here", for: indexPath)
-						cell.contentConfiguration = UIHostingConfiguration {
-							HStack {
-								Text(LRString.moveHere)
-									.foregroundStyle(Color.accentColor)
-									.bold()
-								Spacer()
-							}
-							.accessibilityAddTraits(.isButton)
-							.alignmentGuide_separatorTrailing()
-						}
-						return cell
-					case .album:
-						break
-				}
-			case .browsing:
-				break
-		}
-		
 		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
 		let mode: AlbumRowMode = {
 			switch purpose {
@@ -145,44 +117,11 @@ extension AlbumsTVC {
 			case .organizingAlbums:
 				return nil
 			case .movingAlbums:
-				let albumsViewModel = viewModel as! AlbumsViewModel
-				let rowCase = albumsViewModel.rowCase(for: indexPath)
-				switch rowCase {
-					case .prerow:
-						return indexPath
-					case .album:
-						return nil
-				}
+				return nil
 			case .browsing:
 				break
 		}
 		
 		return super.tableView(tableView, willSelectRowAt: indexPath)
-	}
-	
-	override func tableView(
-		_ tableView: UITableView,
-		didSelectRowAt indexPath: IndexPath
-	) {
-		switch purpose {
-			case .previewingCombine:
-				break
-			case .organizingAlbums:
-				break
-			case .movingAlbums:
-				let albumsViewModel = viewModel as! AlbumsViewModel
-				let rowCase = albumsViewModel.rowCase(for: indexPath)
-				switch rowCase {
-					case .prerow:
-						moveHere()
-						return
-					case .album:
-						break
-				}
-			case .browsing:
-				break
-		}
-		
-		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
 }

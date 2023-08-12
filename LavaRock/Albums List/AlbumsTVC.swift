@@ -103,7 +103,11 @@ final class AlbumsTVC:
 			case .organizingAlbums:
 				viewingModeToolbarButtons = [.flexibleSpace(), saveOrganizeButton, .flexibleSpace()]
 			case .movingAlbums:
-				break
+				viewingModeTopRightButtons = [{
+					let moveButton = UIBarButtonItem(title: LRString.move, primaryAction: UIAction { [weak self] _ in self?.moveHere() })
+					moveButton.style = .done
+					return moveButton
+				}()]
 			case .browsing:
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
