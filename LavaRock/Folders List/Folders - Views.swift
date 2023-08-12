@@ -8,26 +8,6 @@
 import UIKit
 import SwiftUI
 
-// TO DO: Delete
-final class CreateFolderCell: UITableViewCell {
-	@IBOutlet private var newFolderLabel: UILabel!
-	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		newFolderLabel.text = LRString.newFolder
-		newFolderLabel.textColor = .tintColor
-		
-		accessibilityTraits.formUnion(.button)
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
-}
-
 enum FolderRowMode {
 	case normal([UIAccessibilityCustomAction])
 	case modal

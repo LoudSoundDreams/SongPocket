@@ -41,8 +41,6 @@ extension FoldersTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		// TO DO: Delete "Create Folder" cell from storyboard
-		
 		switch viewState {
 			case .allowAccess:
 				// The cell in the storyboard is completely default except for the reuse identifier.
