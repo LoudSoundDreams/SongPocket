@@ -12,7 +12,6 @@ struct SongsViewModel {
 		case albumHeader
 	}
 	private static let prerows: [Prerow] = [
-		.albumHeader,
 	]
 	
 	let album: Album?

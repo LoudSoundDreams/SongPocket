@@ -48,6 +48,22 @@ extension AlbumsTVC {
 	) -> UITableViewCell {
 		let albumsViewModel = viewModel as! AlbumsViewModel
 		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
+		
+		
+		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
+		cell.contentConfiguration = SongsTVC.createAlbumHeaderConfiguration(
+			album: album,
+			maxHeight: {
+				let height = view.frame.height
+				let topInset = view.safeAreaInsets.top
+				let bottomInset = view.safeAreaInsets.bottom
+				return height - topInset - bottomInset
+			}()
+		)
+		return cell
+		
+		
 		let mode: AlbumRowMode = {
 			switch purpose {
 				case .previewingCombine:
