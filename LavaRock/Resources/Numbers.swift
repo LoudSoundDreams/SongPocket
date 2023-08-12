@@ -8,16 +8,17 @@
 import CoreGraphics
 
 extension Double {
-	static var oneFourth: Self { 0.25 }
-	static var oneHalf: Self { 0.5 }
+	static var oneEighth: Self { 1/8 }
+	static var oneFourth: Self { 1/4 }
+	static var oneHalf: Self { 1/2 }
 }
 
 extension Float {
-	static var oneFourth: Self { 0.25 }
-	static var oneHalf: Self { 0.5 }
+	static var oneFourth: Self { 1/4 }
+	static var oneHalf: Self { 1/2 }
 }
 
 extension CGFloat {
-	static var oneEighth: Self { 0.125 }
+	static var oneEighth: Self { 1/8 }
 	static var eight: Self { 8 }
 }
