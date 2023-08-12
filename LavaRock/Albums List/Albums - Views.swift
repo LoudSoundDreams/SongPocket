@@ -31,7 +31,10 @@ struct AlbumHeader: View {
 			AlbumInfoRow(album: album)
 				.padding(.top, .eight * 5/4)
 				.padding(.horizontal)
-				.padding(.bottom)
+				.padding(
+					.bottom,
+					Enabling.bigAlbums ? (.eight * 5/2) : nil
+				)
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
@@ -68,7 +71,7 @@ struct AlbumInfoRow: View {
 	let album: Album
 	
 	var body: some View {
-		HStack {
+		HStack(alignment: .firstTextBaseline) {
 			VStack(
 				alignment: .leading,
 				spacing: .eight * 5/8
@@ -90,6 +93,10 @@ struct AlbumInfoRow: View {
 				}
 			}
 			Spacer()
+			if Enabling.bigAlbums {
+				AvatarImage(libraryItem: album)
+				Chevron()
+			}
 		}
 	}
 }
