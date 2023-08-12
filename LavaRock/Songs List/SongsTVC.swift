@@ -43,16 +43,9 @@ final class SongsTVC: LibraryTVC {
 		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
 			$0.reversed().map { command in
 				return command.createMenuElement(
-					enabled: {
-						guard
-							unsortedRowsToArrange().count >= 2,
-							setOfCommands.contains(command)
-						else {
-							return false
-						}
-						
-						return true
-					}()
+					enabled:
+						unsortedRowsToArrange().count >= 2
+					&& setOfCommands.contains(command)
 				) { [weak self] in
 					self?.arrangeSelectedOrAll(by: command)
 				}
