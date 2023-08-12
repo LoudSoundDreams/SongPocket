@@ -39,17 +39,19 @@ extension AlbumsTVC {
 			via: childContext,
 			delegateForClipboard: self
 		)
-		let selectedAlbums = selectedIndexPaths.map {
-			albumsViewModel.albumNonNil(atRow: $0.row)
-		}
-		idsOfAlbumsToKeepSelected = Set(selectedAlbums.compactMap {
-			let selectedAlbumID = $0.objectID
-			if clipboard.idsOfUnmovedAlbums.contains(selectedAlbumID) {
-				return selectedAlbumID
-			} else {
-				return nil
+		idsOfAlbumsToKeepSelected = { () -> Set<NSManagedObjectID> in
+			let selectedAlbums = selectedIndexPaths.map {
+				albumsViewModel.albumNonNil(atRow: $0.row)
 			}
-		})
+			return Set(selectedAlbums.compactMap {
+				let selectedAlbumID = $0.objectID
+				if clipboard.idsOfUnmovedAlbums.contains(selectedAlbumID) {
+					return selectedAlbumID
+				} else {
+					return nil
+				}
+			})
+		}()
 		
 		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
 			prompt: clipboard.prompt,
