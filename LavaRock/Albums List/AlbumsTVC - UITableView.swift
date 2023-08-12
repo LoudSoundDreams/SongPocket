@@ -46,8 +46,6 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		// TO DO: Delete "Move Here" cell from storyboard
-		
 		let albumsViewModel = viewModel as! AlbumsViewModel
 		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
 		let mode: AlbumRowMode = {
