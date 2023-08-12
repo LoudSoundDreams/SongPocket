@@ -68,21 +68,12 @@ extension AlbumsTVC {
 					return .normal
 			}
 		}()
-		if AlbumCell.usesSwiftUI__ {
-			let cell = tableView.dequeueReusableCell(withIdentifier: "Album", for: indexPath)
-			cell.contentConfiguration = UIHostingConfiguration {
-				AlbumRow(album: album, mode: mode)
-			}
-			.margins(.vertical, 0)
-			return cell
-		} else {
-			guard let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Album",
-				for: indexPath) as? AlbumCell
-			else { return UITableViewCell() }
-			cell.configure(with: album, mode: mode)
-			return cell
-		}
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: "Album",
+			for: indexPath) as? AlbumCell
+		else { return UITableViewCell() }
+		cell.configure(with: album, mode: mode)
+		return cell
 	}
 	
 	// MARK: - Selecting

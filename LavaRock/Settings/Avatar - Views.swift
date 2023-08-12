@@ -62,8 +62,6 @@ extension FolderCell: AvatarDisplaying__ {
 }
 extension AlbumCell: AvatarDisplaying__ {
 	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus) {
-		if Self.usesSwiftUI__ { return }
-		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		

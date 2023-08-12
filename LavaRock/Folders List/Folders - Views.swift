@@ -31,7 +31,7 @@ struct FolderRow: View {
 		.alignmentGuide_separatorTrailing()
 		.opacity({
 			if case FolderRowMode.modalDisabled = mode {
-				return .oneFourth
+				return .oneFourth // Close to what Files pickers use
 			} else {
 				return 1
 			}
