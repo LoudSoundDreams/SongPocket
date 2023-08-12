@@ -1,11 +1,20 @@
 //
-//  View.swift
+//  SwiftUI.swift
 //  LavaRock
 //
 //  Created by h on 2023-08-09.
 //
 
 import SwiftUI
+
+struct Chevron: View {
+	var body: some View {
+		// Similar to what Apple Music uses for search results
+		Image(systemName: "chevron.forward")
+			.foregroundStyle(.secondary)
+			.imageScale(.small)
+	}
+}
 
 extension View {
 	func font_title2_bold() -> some View {
