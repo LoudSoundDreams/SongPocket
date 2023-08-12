@@ -46,49 +46,42 @@ extension AlbumsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		let albumsViewModel = viewModel as! AlbumsViewModel
-		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
-		
-		
 		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
-		cell.contentConfiguration = SongsTVC.createAlbumHeaderConfiguration(
-			album: album,
-			maxHeight: {
-				let height = view.frame.height
-				let topInset = view.safeAreaInsets.top
-				let bottomInset = view.safeAreaInsets.bottom
-				return height - topInset - bottomInset
-			}()
-		)
-		return cell
-		
-		
-		let mode: AlbumRowMode = {
-			switch purpose {
-				case .previewingCombine:
-					return .modalTinted
-				case .organizingAlbums(let clipboard):
-					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
-						return .modalTinted
-					} else {
-						return .modal
+		let albumsViewModel = viewModel as! AlbumsViewModel
+		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
+		cell.contentConfiguration = UIHostingConfiguration {
+			AlbumHeader(
+				album: album,
+				maxHeight: {
+					let height = view.frame.height
+					let topInset = view.safeAreaInsets.top
+					let bottomInset = view.safeAreaInsets.bottom
+					return height - topInset - bottomInset
+				}(),
+				mode: {
+					switch purpose {
+						case .previewingCombine:
+							return .modalTinted
+						case .organizingAlbums(let clipboard):
+							if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
+								return .modalTinted
+							} else {
+								return .modal
+							}
+						case .movingAlbums(let clipboard):
+							if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
+								return .modalTinted
+							} else {
+								return .modal
+							}
+						case .browsing:
+							return .normal
 					}
-				case .movingAlbums(let clipboard):
-					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
-						return .modalTinted
-					} else {
-						return .modal
-					}
-				case .browsing:
-					return .normal
-			}
-		}()
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Album",
-			for: indexPath) as? AlbumCell
-		else { return UITableViewCell() }
-		cell.configure(with: album, mode: mode)
+				}()
+			)
+		}
+		.margins(.all, .zero)
 		return cell
 	}
 	

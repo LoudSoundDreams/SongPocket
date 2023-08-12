@@ -14,6 +14,7 @@ import OSLog
 struct AlbumHeader: View {
 	let album: Album
 	let maxHeight: CGFloat
+	let mode: AlbumRowMode
 	
 	var body: some View {
 		VStack(spacing: 0) {
@@ -38,6 +39,16 @@ struct AlbumHeader: View {
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
+		.opacity({ () -> Double in
+			switch mode {
+				case .normal:
+					return 1
+				case .modal:
+					return .oneFourth // Close to what Files pickers use
+				case .modalTinted:
+					return .oneHalf
+			}
+		}())
 	}
 }
 struct CoverArtView: View {

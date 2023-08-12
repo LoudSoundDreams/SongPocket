@@ -50,23 +50,6 @@ final class SongsTVC: LibraryTVC {
 		return UIMenu(children: inlineSubmenus)
 	}
 	
-	override func viewWillTransition(
-		to size: CGSize,
-		with coordinator: UIViewControllerTransitionCoordinator
-	) {
-		super.viewWillTransition(to: size, with: coordinator)
-		
-		if
-			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)), // ! Use `SongsViewModel.rowCase`
-			let songsViewModel = viewModel as? SongsViewModel,
-			let album = songsViewModel.libraryGroup().container as? Album
-		{
-			cell.contentConfiguration = Self.createAlbumHeaderConfiguration(
-				album: album,
-				maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
-		}
-	}
-	
 	override func reflectViewModelIsEmpty() {
 		deleteThenExit(sectionsToDelete: tableView.allSections())
 	}

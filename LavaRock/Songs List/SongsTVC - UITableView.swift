@@ -38,47 +38,18 @@ extension SongsTVC {
 		}
 	}
 	
-	static func createAlbumHeaderConfiguration(
-		album: Album,
-		maxHeight: CGFloat
-	) -> UIHostingConfiguration<some View, EmptyView> {
-		return UIHostingConfiguration {
-			AlbumHeader(album: album, maxHeight: maxHeight)
-		}
-		.margins(.all, .zero)
-	}
-	
 	override func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		let songsViewModel = viewModel as! SongsViewModel
-		let album = songsViewModel.libraryGroup().container as! Album
-		
-		let rowCase = songsViewModel.rowCase(for: indexPath)
-		switch rowCase {
-			case .prerow:
-				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
-				cell.selectionStyle = .none
-				cell.contentConfiguration = Self.createAlbumHeaderConfiguration(
-					album: album,
-					maxHeight: {
-						let height = view.frame.height
-						let topInset = view.safeAreaInsets.top
-						let bottomInset = view.safeAreaInsets.bottom
-						return height - topInset - bottomInset
-					}()
-				)
-				return cell
-			case .song:
-				break
-		}
+		// TO DO: Delete "Album Header" cell from storyboard.
 		
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Song",
 			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
+		let songsViewModel = viewModel as! SongsViewModel
+		let album = songsViewModel.libraryGroup().container as! Album
 		cell.configureWith(
 			song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
 			albumRepresentative: album.representativeSongInfo(),
