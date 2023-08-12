@@ -72,22 +72,14 @@ struct AlbumInfoRow: View {
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			VStack(
-				alignment: .leading,
-				spacing: .eight * 5/8
-			) {
-				// “Rubber Soul”
-				Text(album.titleFormatted())
+			VStack(alignment: .leading, spacing: .eight * 5/8) {
+				Text(album.titleFormatted()) // “Rubber Soul”
 					.font_title2_bold()
-				
-				// “The Beatles”
-				Text(album.albumArtistFormatted())
+				Text(album.albumArtistFormatted()) // “The Beatles”
 					.foregroundStyle(.secondary)
 					.font_caption2_bold()
-				
 				if let releaseDate = album.releaseDateEstimateFormattedOptional() {
-					// “Dec 3, 1965”
-					Text(releaseDate)
+					Text(releaseDate) // “Dec 3, 1965”
 						.foregroundStyle(.secondary)
 						.font_footnote()
 				}
