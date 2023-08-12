@@ -34,11 +34,15 @@ extension AlbumsTVC {
 		childContext.parent = viewModel.context
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
-		let clipboard = Self.autoMoveAndReturnClipboard(
+		let report = Self.autoMoveAndReturnReport(
 			albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
-			via: childContext,
-			delegateForClipboard: self
-		)
+			via: childContext)
+		let clipboard = OrganizeAlbumsClipboard(
+			idsOfSubjectedAlbums: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
+			idsOfSourceCollections: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
+			idsOfUnmovedAlbums: report.ids_unmovedAlbums,
+			idsOfCollectionsContainingMovedAlbums: report.ids_collectionsContainingMovedAlbums,
+			delegate: self)
 		idsOfAlbumsToKeepSelected = { () -> Set<NSManagedObjectID> in
 			let selectedAlbums = selectedIndexPaths.map {
 				albumsViewModel.albumNonNil(atRow: $0.row)
@@ -87,12 +91,13 @@ extension AlbumsTVC {
 			)
 		}
 	}
-	
-	private static func autoMoveAndReturnClipboard(
+	private static func autoMoveAndReturnReport(
 		albumsInOriginalContextToMaybeMove: [Album],
-		via context: NSManagedObjectContext,
-		delegateForClipboard: OrganizeAlbumsDelegate
-	) -> OrganizeAlbumsClipboard {
+		via context: NSManagedObjectContext
+	) -> (
+		ids_unmovedAlbums: Set<NSManagedObjectID>,
+		ids_collectionsContainingMovedAlbums: Set<NSManagedObjectID>
+	) {
 		let log = OSLog.albumsView
 		os_signpost(.begin, log: log, name: "Preview organizing Albums")
 		defer {
@@ -106,7 +111,7 @@ extension AlbumsTVC {
 		
 		// Results
 		var movedAlbumsInOriginalContext: Set<Album> = []
-		var idsOfUnmovedAlbums: Set<NSManagedObjectID> = []
+		var ids_unmovedAlbums: Set<NSManagedObjectID> = []
 		
 		// Work notes
 		let indexOfSourceFolder = albumsInOriginalContextToMaybeMove.first!.container!.index
@@ -131,7 +136,7 @@ extension AlbumsTVC {
 			let titleOfDestination = album.albumArtistFormatted()
 			
 			guard album.container!.title != titleOfDestination else {
-				idsOfUnmovedAlbums.insert(album.objectID)
+				ids_unmovedAlbums.insert(album.objectID)
 				return
 			}
 			
@@ -169,18 +174,16 @@ extension AlbumsTVC {
 			}
 		}
 		
-		// Create the `OrganizeAlbumsClipboard` to return.
-		return OrganizeAlbumsClipboard(
-			idsOfSubjectedAlbums: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-			idsOfSourceCollections: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
-			idsOfUnmovedAlbums: idsOfUnmovedAlbums,
-			idsOfCollectionsContainingMovedAlbums: {
-				let idsOfMovedAlbums = movedAlbumsInOriginalContext.map { $0.objectID }
-				return Set(idsOfMovedAlbums.map {
+		return (
+			ids_unmovedAlbums: ids_unmovedAlbums,
+			ids_collectionsContainingMovedAlbums: {
+				let ids_movedAlbums = movedAlbumsInOriginalContext.map { $0.objectID }
+				return Set(ids_movedAlbums.map {
 					let albumInThisContext = context.object(with: $0) as! Album
 					return albumInThisContext.container!.objectID
-				})}(),
-			delegate: delegateForClipboard)
+				})
+			}()
+		)
 	}
 	
 	func startMoving() {

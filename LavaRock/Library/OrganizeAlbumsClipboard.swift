@@ -19,7 +19,7 @@ struct WillOrganizeAlbumsStickyNote {
 
 final class OrganizeAlbumsClipboard {
 	// Data
-	let idsOfSubjectedAlbums: Set<NSManagedObjectID>
+	let idsOfSubjectedAlbums: Set<NSManagedObjectID> // Selected or all albums in source collection
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	let idsOfUnmovedAlbums: Set<NSManagedObjectID>
 	let idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>
