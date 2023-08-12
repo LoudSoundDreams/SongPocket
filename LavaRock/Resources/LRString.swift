@@ -92,21 +92,20 @@ enum LRString {
 		comment: "Placeholder for when the app’s database is empty")
 	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
-	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also an Arrange option.")
+	static let name = NSLocalizedString("Name", comment: "The word for the title of a stack. Also an Arrange option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let renameFolder = NSLocalizedString("Rename Stack", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	
-	static let newFolder = NSLocalizedString("New Stack", comment: "Button")
 	static let untitledFolder = NSLocalizedString(
 		"Untitled Stack",
-		comment: "Default title for a folder if you create one and don’t provide a title.")
+		comment: "Default title for a stack if you create one and don’t provide a title.")
 	
 	// MARK: Albums view
 	
-	static let noAlbums = NSLocalizedString("No Albums", comment: "Placeholder when showing an empty folder")
+	static let noAlbums = NSLocalizedString("No Albums", comment: "Placeholder when showing an empty stack")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let byAlbumArtistEllipsis = NSLocalizedString("By Album Artist…", comment: "Menu option")
@@ -138,7 +137,7 @@ enum LRString {
 	
 	static let variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark = NSLocalizedString(
 		"plural - move_X_albums_to_Y_folders_by_album_artist_question_mark",
-		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of folders it’s moving them into.")
+		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of stacks it’s moving them into.")
 	static let variable_moveXAlbumsTo = NSLocalizedString(
 		"plural - move_X_albums_to",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
@@ -147,5 +146,5 @@ enum LRString {
 	
 	static let variable_moveXAlbumsIntoOneFolder_question_mark = NSLocalizedString(
 		"plural - move_X_albums_into_one_folder_question_mark",
-		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created folder.")
+		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created stack.")
 }
