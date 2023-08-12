@@ -37,11 +37,6 @@ extension Collection {
 		title: String,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .folder, name: "Create a folder at the bottom")
-		defer {
-			os_signpost(.end, log: .folder, name: "Create a folder at the bottom")
-		}
-		
 		self.init(context: context)
 		self.title = title
 		index = Int64(existingCount)
@@ -54,11 +49,6 @@ extension Collection {
 		title: String,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .folder, name: "Create a folder at the top")
-		defer {
-			os_signpost(.end, log: .folder, name: "Create a folder at the top")
-		}
-		
 		displaced.forEach { $0.index += 1 }
 		
 		self.init(context: context)
@@ -155,25 +145,14 @@ extension Collection {
 		possiblyToSame: Bool,
 		via context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .folder, name: "Move albums to end")
-		defer {
-			os_signpost(.end, log: .folder, name: "Move albums to end")
-		}
-		
-		os_signpost(.begin, log: .folder, name: "Fetch albums")
 		let albumsToMove = albumIDs.map {
 			context.object(with: $0)
 		} as! [Album]
-		os_signpost(.end, log: .folder, name: "Fetch albums")
 		
-		os_signpost(.begin, log: .folder, name: "Count albums already in this folder")
 		let oldNumberOfAlbums = albums(sorted: false).count
-		os_signpost(.end, log: .folder, name: "Count albums already in this folder")
 		albumsToMove.enumerated().forEach { (index, album) in
-			os_signpost(.begin, log: .folder, name: "Update album attributes")
 			album.container = self
 			album.index = Int64(oldNumberOfAlbums + index)
-			os_signpost(.end, log: .folder, name: "Update album attributes")
 		}
 		
 		// In case we moved any albums to this folder that were already here.

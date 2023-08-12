@@ -138,12 +138,10 @@ final class AlbumCell: UITableViewCell {
 	) {
 		let representative = album.representativeSongInfo() // Can be `nil`
 		
-		os_signpost(.begin, log: .albumsView, name: "Set cover art")
 		let widthAndHeightInPoints = coverArtView.bounds.width
 		coverArtView.image = representative?.coverArt(atLeastInPoints: CGSize(
 			width: widthAndHeightInPoints,
 			height: widthAndHeightInPoints))
-		os_signpost(.end, log: .albumsView, name: "Set cover art")
 		
 		titleLabel.text = album.titleFormatted()
 		releaseDateLabel.text = album.releaseDateEstimateFormattedOptional()

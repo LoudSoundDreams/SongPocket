@@ -38,11 +38,6 @@ extension Album {
 		albumID: AlbumID,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .album, name: "Create an Album at the bottom")
-		defer {
-			os_signpost(.end, log: .album, name: "Create an Album at the bottom")
-		}
-		
 		self.init(context: context)
 		albumPersistentID = albumID
 		index = Int64(folder.contents?.count ?? 0)
@@ -55,11 +50,6 @@ extension Album {
 		albumID: AlbumID,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .album, name: "Create an Album at the top")
-		defer {
-			os_signpost(.end, log: .album, name: "Create an Album at the top")
-		}
-		
 		folder.albums(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
@@ -158,11 +148,6 @@ extension Album {
 	// MARK: Creating
 	
 	final func createSongsAtEnd(with songIDs: [SongID]) {
-		os_signpost(.begin, log: .album, name: "Create Songs at the bottom")
-		defer {
-			os_signpost(.end, log: .album, name: "Create Songs at the bottom")
-		}
-		
 		songIDs.forEach {
 			let _ = Song(
 				atEndOf: self,
@@ -173,11 +158,6 @@ extension Album {
 	
 	// Use `createSongsAtEnd` if possible. It’s faster.
 	final func createSongsAtBeginning(with songIDs: [SongID]) {
-		os_signpost(.begin, log: .album, name: "Create Songs at the top")
-		defer {
-			os_signpost(.end, log: .album, name: "Create Songs at the top")
-		}
-		
 		songIDs.reversed().forEach {
 			let _ = Song(
 				atBeginningOf: self,
@@ -237,10 +217,6 @@ extension Album {
 			value: albumPersistentID,
 			forProperty: MPMediaItemPropertyAlbumPersistentID))
 		
-		os_signpost(.begin, log: .album, name: "Query for MPMediaItemCollection")
-		defer {
-			os_signpost(.end, log: .album, name: "Query for MPMediaItemCollection")
-		}
 		guard
 			let queriedAlbums = albumsQuery.collections,
 			queriedAlbums.count == 1

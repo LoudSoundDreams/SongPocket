@@ -30,11 +30,6 @@ struct Sim_SongInfo: SongInfo {
 	let dateAddedOnDisk: Date
 	let releaseDateOnDisk: Date?
 	func coverArt(atLeastInPoints: CGSize) -> UIImage? {
-		let signposter = OSSignposter()
-		let state = signposter.beginInterval("Sim: draw cover art")
-		defer {
-			signposter.endInterval("Sim: draw cover art", state)
-		}
 		guard let fileName = coverArtFileName else {
 			return nil
 		}

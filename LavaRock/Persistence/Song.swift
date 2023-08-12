@@ -37,11 +37,6 @@ extension Song {
 		songID: SongID,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .song, name: "Create a Song at the bottom")
-		defer {
-			os_signpost(.end, log: .song, name: "Create a Song at the bottom")
-		}
-		
 		self.init(context: context)
 		persistentID = songID
 		index = Int64(album.contents?.count ?? 0)
@@ -54,11 +49,6 @@ extension Song {
 		songID: SongID,
 		context: NSManagedObjectContext
 	) {
-		os_signpost(.begin, log: .song, name: "Create a Song at the top")
-		defer {
-			os_signpost(.end, log: .song, name: "Create a Song at the top")
-		}
-		
 		album.songs(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)

@@ -140,22 +140,18 @@ extension AlbumsTVC {
 			// If we’ve created a matching new folder…
 			if let matchingNewFolder = newFoldersByTitle[titleOfDestination] {
 				// …then move the album to the end of that folder.
-				os_signpost(.begin, log: log, name: "Move album to matching new folder")
 				matchingNewFolder.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 					with: [album.objectID],
 					possiblyToSame: false,
 					via: context)
-				os_signpost(.end, log: log, name: "Move album to matching new folder")
 			} else if // Otherwise, if we already had a matching existing folder…
 				let matchingExisting = existingFoldersByTitle[titleOfDestination]?.first
 			{
 				// …then move the album to the beginning of that folder.
-				os_signpost(.begin, log: log, name: "Move album to matching existing folder")
 				matchingExisting.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
 					with: [album.objectID],
 					possiblyToSame: false,
 					via: context)
-				os_signpost(.end, log: log, name: "Move album to matching existing folder")
 			} else {
 				// Otherwise, create a matching folder…
 				let newFolder = Collection(
@@ -166,12 +162,10 @@ extension AlbumsTVC {
 				newFoldersByTitle[titleOfDestination] = newFolder
 				
 				// …and then move the album to that folder.
-				os_signpost(.begin, log: log, name: "Move album to new folder")
 				newFolder.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 					with: [album.objectID],
 					possiblyToSame: false,
 					via: context)
-				os_signpost(.end, log: log, name: "Move album to new folder")
 			}
 		}
 		
