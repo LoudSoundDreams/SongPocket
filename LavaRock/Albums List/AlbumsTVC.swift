@@ -96,37 +96,20 @@ final class AlbumsTVC:
 	override func setUpBarButtons() {
 		switch purpose {
 			case .previewingCombine:
-				viewingModeTopRightButtons = [
-					UIBarButtonItem(
-						title: LRString.cancel,
-						primaryAction: cancel_combine_action)
-				].compacted()
-				viewingModeToolbarButtons = [
-					.flexibleSpace(),
-					save_combine_button,
-					.flexibleSpace(),
-				].compacted()
+				viewingModeTopLeftButtons = [
+					UIBarButtonItem(title: LRString.cancel, primaryAction: cancel_combine_action)
+				]
+				viewingModeToolbarButtons = [.flexibleSpace(), save_combine_button, .flexibleSpace()]
 			case .organizingAlbums:
-				viewingModeTopRightButtons = [
-					cancelAndDismissButton,
-				]
-				viewingModeToolbarButtons = [
-					.flexibleSpace(),
-					saveOrganizeButton,
-					.flexibleSpace(),
-				]
+				viewingModeToolbarButtons = [.flexibleSpace(), saveOrganizeButton, .flexibleSpace()]
 			case .movingAlbums:
-				viewingModeTopRightButtons = [
-					cancelAndDismissButton,
-				]
+				break
 			case .browsing:
+				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
-					moveButton,
-					.flexibleSpace(),
-					arrangeAlbumsButton,
-					.flexibleSpace(),
-					floatButton,
-					.flexibleSpace(),
+					moveButton, .flexibleSpace(),
+					arrangeAlbumsButton, .flexibleSpace(),
+					floatButton, .flexibleSpace(),
 					sinkButton,
 				]
 		}

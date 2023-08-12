@@ -18,11 +18,10 @@ final class SongsTVC: LibraryTVC {
 	
 	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.arrange)
 	override func setUpBarButtons() {
+		viewingModeTopRightButtons = [editButtonItem]
 		editingModeToolbarButtons = [
-			arrangeSongsButton,
-			.flexibleSpace(),
-			floatButton,
-			.flexibleSpace(),
+			arrangeSongsButton, .flexibleSpace(),
+			floatButton, .flexibleSpace(),
 			sinkButton,
 		]
 		

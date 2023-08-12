@@ -34,10 +34,8 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses may customize
 	
 	// Controls
-	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = [
-		// Right to left
-		editButtonItem,
-	]
+	final lazy var viewingModeTopLeftButtons: [UIBarButtonItem] = []
+	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = []
 	final lazy var viewingModeToolbarButtons: [UIBarButtonItem]
 	= (navigationController as? LibraryNC)?.mainToolbar.barButtonItems ?? []
 	
@@ -371,7 +369,7 @@ class LibraryTVC: UITableViewController {
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
 		
 		navigationItem.setLeftBarButtonItems(
-			editing ? [.flexibleSpace()] : [],
+			editing ? [.flexibleSpace()] : viewingModeTopLeftButtons,
 			animated: animated)
 		navigationItem.setRightBarButtonItems(
 			editing ? [editButtonItem] : viewingModeTopRightButtons,

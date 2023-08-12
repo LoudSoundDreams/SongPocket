@@ -218,28 +218,18 @@ final class FoldersTVC:
 	override func setUpBarButtons() {
 		switch purpose {
 			case .willOrganizeAlbums:
-				viewingModeTopRightButtons = [
-					cancelAndDismissButton,
-				]
-				viewingModeToolbarButtons = [
-					.flexibleSpace(),
-					saveOrganizeButton,
-					.flexibleSpace(),
-				]
+				viewingModeTopLeftButtons = [cancelAndDismissButton]
+				viewingModeToolbarButtons = [.flexibleSpace(), saveOrganizeButton, .flexibleSpace()]
 			case .organizingAlbums: // Should never run
 				break
 			case .movingAlbums:
-				viewingModeTopRightButtons = [
-					cancelAndDismissButton,
-				]
+				viewingModeTopLeftButtons = [cancelAndDismissButton]
 			case .browsing:
+				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
-					combineButton,
-					.flexibleSpace(),
-					arrangeFoldersButton,
-					.flexibleSpace(),
-					floatButton,
-					.flexibleSpace(),
+					combineButton, .flexibleSpace(),
+					arrangeFoldersButton, .flexibleSpace(),
+					floatButton, .flexibleSpace(),
 					sinkButton,
 				]
 		}
