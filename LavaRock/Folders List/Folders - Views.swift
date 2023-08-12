@@ -22,10 +22,13 @@ struct FolderRow: View {
 		HStack {
 			Text(folder.title ?? " ")
 			Spacer()
-			AvatarImage(libraryItem: folder)
-				.offset(y: -0.5)
-				.accessibilitySortPriority(10)
+			HStack(alignment: .firstTextBaseline) {
+				AvatarImage(libraryItem: folder)
+					.accessibilitySortPriority(10)
+				Chevron()
+			}
 		}
+		.alignmentGuide_separatorTrailing()
 		.opacity({
 			if case FolderRowMode.modalDisabled = mode {
 				return .oneFourth
@@ -33,6 +36,12 @@ struct FolderRow: View {
 				return 1
 			}
 		}())
+		// TO DO:
+		// • Background color
+		// • Disabling
+		// • Selection style
+		// • Accessibility traits
+		// • Accessibility action for renaming
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels(
