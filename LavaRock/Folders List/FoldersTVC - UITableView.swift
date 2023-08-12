@@ -41,26 +41,7 @@ extension FoldersTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		let foldersViewModel = viewModel as! FoldersViewModel
-		
-		switch purpose {
-			case .willOrganizeAlbums:
-				break
-			case .organizingAlbums:
-				break
-			case .movingAlbums:
-				let rowCase = foldersViewModel.rowCase(for: indexPath)
-				switch rowCase {
-					case .prerow:
-						return tableView.dequeueReusableCell(
-							withIdentifier: "Create Folder",
-							for: indexPath) as? CreateFolderCell ?? UITableViewCell()
-					case .folder:
-						break
-				}
-			case .browsing:
-				break
-		}
+		// TO DO: Delete "Create Folder" cell from storyboard
 		
 		switch viewState {
 			case .allowAccess:
@@ -132,6 +113,7 @@ extension FoldersTVC {
 			for: indexPath) as? FolderCell
 		else { return UITableViewCell() }
 		
+		let foldersViewModel = viewModel as! FoldersViewModel
 		let collection = foldersViewModel.folderNonNil(atRow: indexPath.row)
 		let mode: FolderRowMode = {
 			switch purpose {
@@ -209,24 +191,6 @@ extension FoldersTVC {
 		_ tableView: UITableView,
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
-		switch purpose {
-			case .willOrganizeAlbums:
-				return nil
-			case .organizingAlbums:
-				break
-			case .movingAlbums:
-				let foldersViewModel = viewModel as! FoldersViewModel
-				let rowCase = foldersViewModel.rowCase(for: indexPath)
-				switch rowCase {
-					case .prerow:
-						return indexPath
-					case .folder:
-						break
-				}
-			case .browsing:
-				break
-		}
-		
 		switch viewState {
 			case
 					.allowAccess,
@@ -247,25 +211,6 @@ extension FoldersTVC {
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
-		switch purpose {
-			case .willOrganizeAlbums:
-				break
-			case .organizingAlbums:
-				break
-			case .movingAlbums:
-				let foldersViewModel = viewModel as! FoldersViewModel
-				let rowCase = foldersViewModel.rowCase(for: indexPath)
-				switch rowCase {
-					case .prerow:
-						createAndOpen()
-						return
-					case .folder:
-						break
-				}
-			case .browsing:
-				break
-		}
-		
 		switch viewState {
 			case .allowAccess:
 				Task {

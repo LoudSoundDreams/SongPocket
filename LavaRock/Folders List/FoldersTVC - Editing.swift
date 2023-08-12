@@ -107,9 +107,7 @@ extension FoldersTVC {
 		try! previewContext.obtainPermanentIDs(for: [combined]) // So that we don’t unnecessarily remove and reinsert the row later.
 		
 		// Apply the preview context to this `FoldersTVC`.
-		let previewViewModel = FoldersViewModel(
-			prerows: [],
-			context: previewContext)
+		let previewViewModel = FoldersViewModel(context: previewContext)
 		Task {
 			await tableView.performBatchUpdates__async {
 				self.tableView.scrollToRow(
@@ -142,7 +140,7 @@ extension FoldersTVC {
 			}
 			albumsTVC.save_combine_action = UIAction { [weak self] _ in
 				self?.dismiss(animated: true, completion: {
-					self?.commitCombine(into: targetIndexPath)
+					self?.commitCombine(intoIndexPath: targetIndexPath)
 				})
 			}
 			
@@ -165,23 +163,17 @@ extension FoldersTVC {
 		}
 	}
 	
-	private func commitCombine(
-		into indexPathOfCombined: IndexPath
-	) {
-		let foldersViewModel = viewModel as! FoldersViewModel
-		
+	private func commitCombine(intoIndexPath: IndexPath) {
 		viewModelBeforeCombining = nil
 		
 		viewModel.context.tryToSave()
 		viewModel.context.parent!.tryToSave() // TO DO: Crashes
 		
-		let newViewModel = FoldersViewModel(
-			prerows: foldersViewModel.prerows,
-			context: viewModel.context.parent!)
+		let newViewModel = FoldersViewModel(context: viewModel.context.parent!)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				newViewModel,
-				thenSelecting: [indexPathOfCombined]
+				thenSelecting: [intoIndexPath]
 			)
 		}
 	}

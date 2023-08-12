@@ -63,9 +63,7 @@ extension AlbumsTVC {
 			foldersTVC.organizeAlbumsClipboard = clipboard
 			foldersTVC.willOrganizeAlbumsStickyNote = nil
 			
-			let previewOfChanges = FoldersViewModel(
-				prerows: [],
-				context: childContext)
+			let previewOfChanges = FoldersViewModel(context: childContext)
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
 			let oldFolderRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldFolderRow in
 				let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldFolderRow).objectID
@@ -212,7 +210,6 @@ extension AlbumsTVC {
 			delegate: self
 		)
 		foldersTVC.viewModel = FoldersViewModel(
-			prerows: [.createFolder],
 			context: {
 				let childContext = NSManagedObjectContext(.mainQueue)
 				childContext.parent = viewModel.context

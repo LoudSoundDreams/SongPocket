@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 
+// TO DO: Delete
 final class CreateFolderCell: UITableViewCell {
 	@IBOutlet private var newFolderLabel: UILabel!
 	

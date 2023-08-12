@@ -224,6 +224,9 @@ final class FoldersTVC:
 				break
 			case .movingAlbums:
 				viewingModeTopLeftButtons = [cancelAndDismissButton]
+				viewingModeTopRightButtons = [
+					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }),
+				]
 			case .browsing:
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
