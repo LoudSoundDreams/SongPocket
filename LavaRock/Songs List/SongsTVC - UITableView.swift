@@ -42,8 +42,6 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		// TO DO: Delete "Album Header" cell from storyboard.
-		
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Song",
 			for: indexPath) as? SongCell
