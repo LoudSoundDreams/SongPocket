@@ -28,20 +28,15 @@ struct AlbumHeader: View {
 			Divider()
 				.offset(y: -1)
 			
-			AlbumInfoRow(
-				albumTitle: album.titleFormatted(),
-				albumArtist: album.albumArtistFormatted(),
-				releaseDateStringOptional: album.releaseDateEstimateFormattedOptional()
-			)
-			.padding(.top, .eight * 5/4)
-			.padding(.horizontal)
-			.padding(.bottom)
+			AlbumInfoRow(album: album)
+				.padding(.top, .eight * 5/4)
+				.padding(.horizontal)
+				.padding(.bottom)
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
 	}
 }
-
 struct CoverArtView: View {
 	let albumRepresentative: (any SongInfo)?
 	let largerThanOrEqualToSizeInPoints: CGFloat
@@ -69,11 +64,8 @@ struct CoverArtView: View {
 		}
 	}
 }
-
 struct AlbumInfoRow: View {
-	let albumTitle: String
-	let albumArtist: String
-	let releaseDateStringOptional: String? // `nil` hides line
+	let album: Album
 	
 	var body: some View {
 		HStack {
@@ -82,15 +74,15 @@ struct AlbumInfoRow: View {
 				spacing: .eight * 5/8
 			) {
 				// “Rubber Soul”
-				Text(albumTitle)
+				Text(album.titleFormatted())
 					.font_title2_bold()
 				
 				// “The Beatles”
-				Text(albumArtist)
+				Text(album.albumArtistFormatted())
 					.foregroundStyle(.secondary)
 					.font_caption2_bold()
 				
-				if let releaseDate = releaseDateStringOptional {
+				if let releaseDate = album.releaseDateEstimateFormattedOptional() {
 					// “Dec 3, 1965”
 					Text(releaseDate)
 						.foregroundStyle(.secondary)
