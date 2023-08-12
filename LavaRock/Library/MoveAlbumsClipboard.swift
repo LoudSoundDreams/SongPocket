@@ -26,6 +26,9 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 			idsOfAlbumsBeingMovedAsSet.count)
 	}
 	
+	// State
+	var hasCreatedNewFolder = false
+	
 	init(
 		albumsBeingMoved: [Album],
 		delegate: MoveAlbumsDelegate

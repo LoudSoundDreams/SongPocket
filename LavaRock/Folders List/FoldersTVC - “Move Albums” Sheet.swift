@@ -10,9 +10,11 @@ import UIKit
 extension FoldersTVC {
 	func createAndOpen() {
 		guard
-			case .movingAlbums = purpose,
+			case .movingAlbums(let clipboard) = purpose,
+			!clipboard.hasCreatedNewFolder,
 			let foldersViewModel = viewModel as? FoldersViewModel
 		else { return }
+		clipboard.hasCreatedNewFolder = true
 		
 		let newViewModel = foldersViewModel.updatedAfterCreating()
 		Task {
@@ -23,9 +25,10 @@ extension FoldersTVC {
 	}
 	
 	func revertCreate() {
-		guard case .movingAlbums = purpose else {
+		guard case .movingAlbums(let clipboard) = purpose else {
 			fatalError()
 		}
+		clipboard.hasCreatedNewFolder = false
 		
 		let foldersViewModel = viewModel as! FoldersViewModel
 		

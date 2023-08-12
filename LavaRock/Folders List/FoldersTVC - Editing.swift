@@ -14,6 +14,7 @@ extension FoldersTVC: UITextFieldDelegate {
 	}
 }
 extension FoldersTVC {
+	
 	// MARK: Renaming
 	
 	func promptRename(at indexPath: IndexPath) {
@@ -86,7 +87,8 @@ extension FoldersTVC {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
 			let foldersViewModel = viewModel as? FoldersViewModel,
-			viewModelBeforeCombining == nil, // Prevents you from using the “Combine” button multiple times quickly without dealing with the dialog first. This pattern is similar to checking `didAlreadyCommitOrganize` for “Save (Preview of Organized Albums)”. You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
+			viewModelBeforeCombining == nil, // Prevents users from activating the “Combine” button multiple times quickly without dealing with the dialog first. This is analogous to the way we check `hasCreatedNewFolder` and `didAlreadyCommitOrganize`.
+			// You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
 			let targetIndexPath = selectedIndexPaths.first
 		else { return }
 		

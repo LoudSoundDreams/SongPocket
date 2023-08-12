@@ -78,7 +78,6 @@ extension FoldersViewModel {
 		
 		return updatedWithItemsInOnlyGroup(newItems)
 	}
-	
 	private func itemsAfterDeletingNewFolder() -> [NSManagedObject] {
 		let oldItems = libraryGroup().items
 		guard
