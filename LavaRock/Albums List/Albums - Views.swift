@@ -123,15 +123,3 @@ struct AlbumInfoRow: View {
 		}
 	}
 }
-
-// TO DO: Delete
-final class AlbumCell: UITableViewCell {
-	@IBOutlet var spacerSpeakerImageView: UIImageView!
-	@IBOutlet var speakerImageView: UIImageView!
-	
-	@IBOutlet private var mainStack: UIStackView!
-	@IBOutlet private var coverArtView: UIImageView!
-	@IBOutlet private var textStack: UIStackView!
-	@IBOutlet private var titleLabel: UILabel!
-	@IBOutlet private var releaseDateLabel: UILabel!
-}
