@@ -54,9 +54,6 @@ final class AlbumsTVC:
 	// Data
 	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? = nil
 	
-	// Controls
-	private lazy var saveOrganizeButton = makeSaveOrganizeButton()
-	
 	// MARK: “Move albums” sheet
 	
 	// Data
@@ -86,20 +83,17 @@ final class AlbumsTVC:
 		}()
 	}
 	
-	private lazy var save_combine_button: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.save,
-			primaryAction: save_combine_action)
-		button.style = .done
-		return button
-	}()
 	override func setUpBarButtons() {
 		switch purpose {
 			case .previewingCombine:
 				viewingModeTopLeftButtons = [
 					UIBarButtonItem(title: LRString.cancel, primaryAction: cancel_combine_action),
 				]
-				viewingModeTopRightButtons = [save_combine_button]
+				viewingModeTopRightButtons = [{
+					let saveCombineButton = UIBarButtonItem(systemItem: .save, primaryAction: save_combine_action)
+					saveCombineButton.style = .done
+					return saveCombineButton
+				}()]
 			case .organizingAlbums:
 				break
 			case .movingAlbums:

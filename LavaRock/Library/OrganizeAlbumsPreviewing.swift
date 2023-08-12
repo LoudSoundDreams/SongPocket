@@ -13,15 +13,7 @@ protocol OrganizeAlbumsPreviewing: UIViewController {
 	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? { get }
 }
 extension OrganizeAlbumsPreviewing {
-	func makeSaveOrganizeButton() -> UIBarButtonItem {
-		let button = UIBarButtonItem(
-			title: LRString.save,
-			primaryAction: UIAction { [weak self] _ in self?.commitOrganize() })
-		button.style = .done
-		return button
-	}
-	
-	private func commitOrganize() {
+	func commitOrganize() {
 		guard
 			let clipboard = organizeAlbumsClipboard,
 			!clipboard.didAlreadyCommitOrganize

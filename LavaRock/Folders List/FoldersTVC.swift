@@ -107,9 +107,6 @@ final class FoldersTVC:
 	var willOrganizeAlbumsStickyNote: WillOrganizeAlbumsStickyNote? = nil
 	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? = nil
 	
-	// Controls
-	private lazy var saveOrganizeButton = makeSaveOrganizeButton()
-	
 	// MARK: “Move albums” sheet
 	
 	// Data
@@ -219,7 +216,15 @@ final class FoldersTVC:
 		switch purpose {
 			case .willOrganizeAlbums:
 				viewingModeTopLeftButtons = [cancelAndDismissButton]
-				viewingModeTopRightButtons = [saveOrganizeButton]
+				viewingModeTopRightButtons = [{
+					let saveOrganizeButton = UIBarButtonItem(systemItem: .save,
+						primaryAction: UIAction { [weak self] _ in
+							self?.commitOrganize()
+						}
+					)
+					saveOrganizeButton.style = .done
+					return saveOrganizeButton
+				}()]
 			case .organizingAlbums: // Should never run
 				break
 			case .movingAlbums:
