@@ -97,7 +97,7 @@ final class AlbumsTVC:
 		switch purpose {
 			case .previewingCombine:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(title: LRString.cancel, primaryAction: cancel_combine_action)
+					UIBarButtonItem(title: LRString.cancel, primaryAction: cancel_combine_action),
 				]
 				viewingModeToolbarButtons = [.flexibleSpace(), save_combine_button, .flexibleSpace()]
 			case .organizingAlbums:

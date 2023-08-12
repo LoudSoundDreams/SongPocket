@@ -19,14 +19,10 @@ final class MainToolbar__UIKit {
 	
 	var barButtonItems: [UIBarButtonItem] {
 		return [
-			overflowButton,
-			.flexibleSpace(),
-			jumpBackButton,
-			.flexibleSpace(),
-			playPauseButton,
-			.flexibleSpace(),
-			jumpForwardButton,
-			.flexibleSpace(),
+			overflowButton, .flexibleSpace(),
+			jumpBackButton, .flexibleSpace(),
+			playPauseButton, .flexibleSpace(),
+			jumpForwardButton, .flexibleSpace(),
 			nextButton,
 		]
 	}
