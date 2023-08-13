@@ -168,7 +168,7 @@ final class AlbumsTVC:
 				}
 				
 				let action = UIAction(
-					title: LRString.byAlbumArtistEllipsis,
+					title: LRString.byArtistEllipsis,
 					image: UIImage(systemName: "music.mic")
 				) { [weak self] _ in
 					// Runs when the user activates the menu item

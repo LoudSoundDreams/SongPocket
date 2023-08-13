@@ -94,7 +94,7 @@ extension MusicLibrary {
 	// MARK: Sort groups of `SongInfo`s
 	
 	// 1. Group by album artists, sorted alphabetically.
-	// • “Unknown Album Artist” should go at the end.
+	// • “Unknown Artist” should go at the end.
 	// 2. Within each album artist, group by albums, sorted by most recent first.
 	
 	private func sortedByAlbumArtistNameThenAlbumTitle(
@@ -172,7 +172,7 @@ extension MusicLibrary {
 		isFirstImport: Bool
 	) -> (album: Album, folder: Collection?) {
 		let titleOfDestination
-		= newInfo.albumArtistOnDisk ?? LRString.unknownAlbumArtist
+		= newInfo.albumArtistOnDisk ?? LRString.unknownArtist
 		
 		// If we already have a matching folder to put the album into…
 		if let matchingExisting = existingFoldersByTitle[titleOfDestination]?.first {

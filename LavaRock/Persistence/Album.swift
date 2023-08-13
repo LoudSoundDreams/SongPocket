@@ -246,7 +246,7 @@ extension Album {
 			let albumArtist = albumArtist_maybeNilMaybeEmpty,
 			albumArtist != ""
 		else {
-			return LRString.unknownAlbumArtist
+			return LRString.unknownArtist
 		}
 		return albumArtist
 	}

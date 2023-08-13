@@ -28,7 +28,7 @@ enum LRString {
 	// MARK: Albums
 	
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
-	static let unknownAlbumArtist = NSLocalizedString("Unknown Album Artist", comment: "")
+	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
 	
 	// MARK: Settings
 	
@@ -108,7 +108,7 @@ enum LRString {
 	static let noAlbums = NSLocalizedString("No Albums", comment: "Placeholder when showing an empty stack")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
-	static let byAlbumArtistEllipsis = NSLocalizedString("By Album Artist…", comment: "Menu option")
+	static let byArtistEllipsis = NSLocalizedString("By Artist…", comment: "Menu option")
 	static let toFolderEllipsis = NSLocalizedString("To Stack…", comment: "Menu option")
 	
 	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Arrange option")
