@@ -99,8 +99,8 @@ enum LRString {
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	
-	static let untitledFolder = NSLocalizedString(
-		"Untitled Stack",
+	static let bullet = NSLocalizedString(
+		"•",
 		comment: "Default title for a stack if you create one and don’t provide a title.")
 	
 	// MARK: Albums view

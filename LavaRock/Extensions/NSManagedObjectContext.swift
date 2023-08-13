@@ -36,7 +36,7 @@ extension NSManagedObjectContext {
 		index: Int64
 	) -> Collection {
 		let result = Collection(context: self)
-		result.title = LRString.untitledFolder
+		result.title = LRString.bullet
 		result.index = index
 		
 		let toCombine = idsOfCollectionsToCombine.map { object(with: $0) } as! [Collection]
