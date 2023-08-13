@@ -42,12 +42,39 @@ extension SongsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
+		let songsViewModel = viewModel as! SongsViewModel
+		let album = songsViewModel.libraryGroup().container as! Album
+		
+		switch songsViewModel.rowCase(for: indexPath) {
+			case .prerow:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Banner", for: indexPath)
+				cell.contentConfiguration = UIHostingConfiguration {
+					HStack {
+						VStack(
+							alignment: .leading,
+							spacing: .eight * 3/4
+						) {
+							Text(album.titleFormatted()) // “Rubber Soul”
+								.font_title2_bold()
+							Text(album.albumArtistFormatted()) // “The Beatles”
+								.foregroundStyle(.secondary)
+								.font_caption2_bold()
+						}
+						Spacer()
+					}
+					.alignmentGuide_separatorTrailing()
+					.padding(.bottom, .eight * 1/2)
+				}
+				return cell
+			case .song:
+				break
+		}
+		
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: "Song",
 			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
-		let songsViewModel = viewModel as! SongsViewModel
-		let album = songsViewModel.libraryGroup().container as! Album
 		cell.configureWith(
 			song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
 			albumRepresentative: album.representativeSongInfo(),
