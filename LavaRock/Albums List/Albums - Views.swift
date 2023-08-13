@@ -33,7 +33,7 @@ struct AlbumHeader: View {
 				.offset(y: -1)
 			
 			AlbumInfoRow(album: album)
-				.padding(.top, .eight * 5/4)
+				.padding(.top, .eight * 3/2)
 				.padding(.horizontal)
 				.padding(
 					.bottom,
@@ -91,30 +91,10 @@ struct AlbumInfoRow: View {
 	let album: Album
 	
 	var body: some View {
-		HStack(alignment: .firstTextBaseline) {
-			VStack(
-				alignment: .leading,
-				spacing: .eight * 3/4
-			) {
-				Text(album.titleFormatted()) // “Rubber Soul”
-					.font_title2_bold()
-				
-				if let releaseDate = album.releaseDateEstimateFormattedOptional() {
-					let segment: String = " \(LRString.interpunct) \(releaseDate)" // “ · Dec 3, 1965”
-					(
-						Text(album.albumArtistFormatted()) // “The Beatles”
-							.bold()
-						+
-						Text(segment)
-					)
-					.foregroundStyle(.secondary)
-					.font(.caption2)
-				} else {
-					Text(album.albumArtistFormatted())
-						.foregroundStyle(.secondary)
-						.font_caption2_bold()
-				}
-			}
+		HStack {
+			Text(album.releaseDateEstimateFormattedOptional() ?? "—")
+				.foregroundStyle(.secondary)
+				.font(.caption2)
 			Spacer()
 			if Enabling.bigAlbums {
 				AvatarImage(libraryItem: album)
