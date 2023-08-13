@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum Enabling {
-	static let bigAlbums = 10 == 1
+	static let bigAlbums = 10 == 10
 }
 
 @main
