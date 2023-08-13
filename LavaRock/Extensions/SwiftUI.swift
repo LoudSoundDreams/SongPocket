@@ -21,6 +21,10 @@ extension View {
 		// As of iOS 16.6, Apple Music uses this for “Recently Added”.
 		font(.title2).bold()
 	}
+	func font_headline() -> some View {
+		// As of iOS 16.6, Apple Music uses this for the current song title on the now-playing screen.
+		font(.headline)
+	}
 	func font_caption2_bold() -> some View {
 		/*
 		 As of iOS 16.6, Apple Music uses this for…
