@@ -50,6 +50,32 @@ extension AlbumsTVC {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
 		let albumsViewModel = viewModel as! AlbumsViewModel
 		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
+		let mode: AlbumRowMode = {
+			switch purpose {
+				case .previewingCombine:
+					return .modalTinted
+				case .organizingAlbums(let clipboard):
+					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
+						return .modalTinted
+					} else {
+						return .modal
+					}
+				case .movingAlbums(let clipboard):
+					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
+						return .modalTinted
+					} else {
+						return .modal
+					}
+				case .browsing:
+					return .normal
+			}
+		}()
+		cell.backgroundColor = .clear
+		switch mode {
+			case .normal: break
+			case .modal, .modalTinted:
+				cell.selectionStyle = .none
+		}
 		cell.contentConfiguration = UIHostingConfiguration {
 			AlbumHeader(
 				album: album,
@@ -59,27 +85,7 @@ extension AlbumsTVC {
 					let bottomInset = view.safeAreaInsets.bottom
 					return height - topInset - bottomInset
 				}(),
-				mode: {
-					switch purpose {
-						case .previewingCombine:
-							return .modalTinted
-						case .organizingAlbums(let clipboard):
-							if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
-								return .modalTinted
-							} else {
-								return .modal
-							}
-						case .movingAlbums(let clipboard):
-							if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
-								return .modalTinted
-							} else {
-								return .modal
-							}
-						case .browsing:
-							return .normal
-					}
-				}()
-			)
+				mode: mode)
 		}
 		.margins(.all, .zero)
 		return cell

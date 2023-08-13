@@ -11,8 +11,8 @@ import OSLog
 
 enum AlbumRowMode {
 	case normal
-	case modal
-	case modalTinted
+	case modal // disabled
+	case modalTinted // disabledTinted
 }
 struct AlbumHeader: View {
 	let album: Album
@@ -52,10 +52,12 @@ struct AlbumHeader: View {
 					return .oneHalf
 			}
 		}())
-		// TO DO:
-		// • Background color
-		// • Selection style
-		// • Accessibility traits
+		.background {
+			if case AlbumRowMode.modalTinted = mode {
+				Color.accentColor.opacity(.oneEighth)
+			}
+		}
+		// TO DO: Accessibility traits
 	}
 }
 struct CoverArtView: View {
