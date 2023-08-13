@@ -238,8 +238,8 @@ extension SettingsTVC {
 						Text(LRString.tipJar)
 							.foregroundStyle(Color.accentColor)
 					}
-					.accessibilityAddTraits(.isButton)
 					.alignmentGuide_separatorTrailing()
+					.accessibilityAddTraits(.isButton)
 				}
 				return cell
 			case .ready:
@@ -252,8 +252,8 @@ extension SettingsTVC {
 						Text(LRString.tipJar)
 							.foregroundStyle(Color.accentColor)
 					}
-					.accessibilityAddTraits(.isButton)
 					.alignmentGuide_separatorTrailing()
+					.accessibilityAddTraits(.isButton)
 				}
 				return cell
 			case .confirming:

@@ -51,8 +51,8 @@ extension FoldersTVC {
 							.foregroundStyle(Color.accentColor)
 						Spacer()
 					}
-					.accessibilityAddTraits(.isButton)
 					.alignmentGuide_separatorTrailing()
+					.accessibilityAddTraits(.isButton)
 				}
 				return cell
 			case .loading:
@@ -97,8 +97,8 @@ extension FoldersTVC {
 								Text(LRString.appleMusic)
 									.foregroundStyle(Color.accentColor)
 							}
-							.accessibilityAddTraits(.isButton)
 							.alignmentGuide_separatorTrailing()
+							.accessibilityAddTraits(.isButton)
 						}
 						return cell
 				}
