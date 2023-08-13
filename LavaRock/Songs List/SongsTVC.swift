@@ -10,16 +10,6 @@ import UIKit
 import MediaPlayer
 
 final class SongsTVC: LibraryTVC {
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		if Enabling.bigAlbums {
-			title = (viewModel as! SongsViewModel).album?.titleFormatted()
-		} else {
-			title = nil
-		}
-	}
-	
 	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.arrange)
 	override func setUpBarButtons() {
 		viewingModeTopRightButtons = [editButtonItem]
