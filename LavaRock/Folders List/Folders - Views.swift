@@ -44,12 +44,7 @@ struct FolderRow: View {
 		// • Accessibility action for renaming
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels(
-			// Exclude the now-playing marker.
-			[
-				folder.title, // Can be `nil`
-			].compacted()
-		)
+		.accessibilityInputLabels([folder.title].compacted()) // Exclude the now-playing status.
 	}
 }
 final class FolderCell: UITableViewCell {
@@ -111,10 +106,7 @@ final class FolderCell: UITableViewCell {
 				folder.avatarStatus__()
 			)
 			
-			// Exclude the now-playing marker.
-			accessibilityUserInputLabels = [
-				folder.title, // Can be `nil`
-			].compacted()
+			accessibilityUserInputLabels = [folder.title].compacted()
 		}
 		
 		switch mode {

@@ -57,11 +57,7 @@ struct SongRow: View {
 		.padding(.top, .eight * -1/4) // -2
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels(
-			[
-				song_title, // Excludes the “unknown title” placeholder, which is currently a dash.
-			].compacted()
-		)
+		.accessibilityInputLabels([song_title].compacted())
 		
 	}
 }
@@ -211,9 +207,7 @@ final class SongCell: UITableViewCell {
 			
 			freshenOverflowButton()
 			
-			accessibilityUserInputLabels = [
-				song_title, // Excludes the “unknown title” placeholder, which is currently a dash.
-			].compacted()
+			accessibilityUserInputLabels = [song_title].compacted()
 		}
 		
 		// Set menu, and require creating that menu

@@ -103,11 +103,7 @@ struct AvatarImage: View {
 	
 	var body: some View {
 		ZStack(alignment: .leading) {
-			// Spacer
-			playing_image
-				.hidden()
-			
-			// Foreground
+			playing_image.hidden()
 			foregroundView
 				.accessibilityElement()
 				.accessibilityLabel(status.axLabel ?? "")
