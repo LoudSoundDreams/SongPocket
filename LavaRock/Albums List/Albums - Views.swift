@@ -35,10 +35,7 @@ struct AlbumHeader: View {
 			AlbumInfoRow(album: album)
 				.padding(.top, .eight * 3/2)
 				.padding(.horizontal)
-				.padding(
-					.bottom,
-					Enabling.bigAlbums ? (.eight * 5/2) : nil
-				)
+				.padding(.bottom, .eight * 5/2)
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
@@ -96,10 +93,8 @@ struct AlbumInfoRow: View {
 				.foregroundStyle(.secondary)
 				.font(.caption2)
 			Spacer()
-			if Enabling.bigAlbums {
-				AvatarImage(libraryItem: album)
-				Chevron()
-			}
+			AvatarImage(libraryItem: album)
+			Chevron()
 		}
 	}
 }

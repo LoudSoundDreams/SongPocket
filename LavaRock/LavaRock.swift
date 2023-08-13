@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-enum Enabling {
-	static let bigAlbums = 10 == 10
-}
-
 @main
 struct LavaRock: App {
 	init() {
