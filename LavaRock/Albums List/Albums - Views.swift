@@ -72,16 +72,27 @@ struct AlbumInfoRow: View {
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			VStack(alignment: .leading, spacing: .eight * 5/8) {
+			VStack(
+				alignment: .leading,
+				spacing: .eight * 3/4
+			) {
 				Text(album.titleFormatted()) // “Rubber Soul”
 					.font_title2_bold()
-				Text(album.albumArtistFormatted()) // “The Beatles”
-					.foregroundStyle(.secondary)
-					.font_caption2_bold()
+				
 				if let releaseDate = album.releaseDateEstimateFormattedOptional() {
-					Text(releaseDate) // “Dec 3, 1965”
+					let segment: String = " \(LRString.interpunct) \(releaseDate)" // “ · Dec 3, 1965”
+					(
+						Text(album.albumArtistFormatted()) // “The Beatles”
+							.bold()
+						+
+						Text(segment)
+					)
+					.foregroundStyle(.secondary)
+					.font(.caption2)
+				} else {
+					Text(album.albumArtistFormatted())
 						.foregroundStyle(.secondary)
-						.font_footnote()
+						.font_caption2_bold()
 				}
 			}
 			Spacer()
