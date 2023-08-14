@@ -92,7 +92,7 @@ struct AlbumInfoRow: View {
 	
 	var body: some View {
 		HStack {
-			Text(album.releaseDateEstimateFormattedOptional() ?? "—")
+			Text(album.releaseDateEstimateFormattedOptional() ?? "—") // Em dash
 				.foregroundStyle(.secondary)
 				.font(.caption2)
 			Spacer()

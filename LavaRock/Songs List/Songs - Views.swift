@@ -9,6 +9,39 @@ import UIKit
 import SwiftUI
 import MediaPlayer
 
+// MARK: - Album banner
+
+struct AlbumBanner: View {
+	let album: Album
+	let trackNumberSpacer: String
+	
+	var body: some View {
+		HStack(spacing: .eight * 5/4) {
+			Text(trackNumberSpacer)
+				.monospacedDigit()
+				.hidden()
+			
+			VStack(
+				alignment: .leading,
+				spacing: .eight * 3/4
+			) {
+				Text(album.titleFormatted()) // “Rubber Soul”
+					.font_title2_bold()
+				Text(album.albumArtistFormatted()) // “The Beatles”
+					.foregroundStyle(.secondary)
+					.font_caption2_bold()
+			}
+			.alignmentGuide_separatorLeading()
+			
+			Spacer()
+		}
+		.alignmentGuide_separatorTrailing()
+		.padding(.bottom, .eight * 1/2)
+	}
+}
+
+// MARK: - Song
+
 struct SongRow: View {
 	let song: Song
 	let trackDisplay: String

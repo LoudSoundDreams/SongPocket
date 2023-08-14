@@ -51,21 +51,10 @@ extension SongsTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Banner", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					HStack {
-						VStack(
-							alignment: .leading,
-							spacing: .eight * 3/4
-						) {
-							Text(album.titleFormatted()) // “Rubber Soul”
-								.font_title2_bold()
-							Text(album.albumArtistFormatted()) // “The Beatles”
-								.foregroundStyle(.secondary)
-								.font_caption2_bold()
-						}
-						Spacer()
-					}
-					.alignmentGuide_separatorTrailing()
-					.padding(.bottom, .eight * 1/2)
+					AlbumBanner(
+						album: album,
+						trackNumberSpacer: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer
+					)
 				}
 				return cell
 			case .song:
