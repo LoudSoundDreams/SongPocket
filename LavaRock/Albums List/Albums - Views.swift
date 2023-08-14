@@ -28,6 +28,7 @@ struct AlbumHeader: View {
 				maxWidth: .infinity, // Horizontally centers narrow artwork
 				maxHeight: maxHeight)
 			.offset(y: -0.5)
+			.accessibilityLabel(album.titleFormatted())
 			
 			Divider()
 				.offset(y: -1)
@@ -36,6 +37,7 @@ struct AlbumHeader: View {
 				.padding(.top, .eight * 3/2)
 				.padding(.horizontal)
 				.padding(.bottom, .eight * 5/2)
+				.accessibilityRespondsToUserInteraction(false)
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
@@ -54,7 +56,8 @@ struct AlbumHeader: View {
 				Color.accentColor.opacity(.oneEighth)
 			}
 		}
-		// TO DO: Accessibility traits
+		.accessibilityAddTraits(.isButton)
+		.accessibilityInputLabels([album.titleFormatted()])
 	}
 }
 struct CoverArtView: View {
@@ -94,7 +97,9 @@ struct AlbumInfoRow: View {
 				.font(.caption2)
 			Spacer()
 			AvatarImage(libraryItem: album)
+				.accessibilitySortPriority(10) // Bigger is sooner
 			Chevron()
 		}
+		.accessibilityElement(children: .combine)
 	}
 }
