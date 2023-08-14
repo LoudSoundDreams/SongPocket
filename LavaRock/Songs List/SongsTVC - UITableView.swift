@@ -49,6 +49,7 @@ extension SongsTVC {
 			case .prerow:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Banner", for: indexPath)
+				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
 					HStack {
 						VStack(
