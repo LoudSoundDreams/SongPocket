@@ -36,7 +36,6 @@ struct FolderRow: View {
 				return 1
 			}
 		}())
-		// TO DO:
 		// • Background color
 		// • Disabling
 		// • Selection style

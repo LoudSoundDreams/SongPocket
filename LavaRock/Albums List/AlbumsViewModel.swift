@@ -15,7 +15,6 @@ struct AlbumsViewModel {
 	var groups: ColumnOfLibraryItems
 }
 extension AlbumsViewModel: LibraryViewModel {
-	// TO DO: Delete
 	func prerowCount() -> Int { return 0 }
 	func prerowIdentifiers() -> [AnyHashable] { return [] }
 	

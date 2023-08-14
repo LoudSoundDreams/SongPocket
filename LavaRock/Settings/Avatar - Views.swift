@@ -105,9 +105,9 @@ struct AvatarImage: View {
 		ZStack(alignment: .leading) {
 			playing_image.hidden()
 			foregroundView
-				.accessibilityElement()
-				.accessibilityLabel(status.axLabel ?? "")
 		}
+		.accessibilityElement()
+		.accessibilityLabel(status.axLabel ?? "")
 	}
 	
 	@ObservedObject private var current: CurrentAvatar = .shared
@@ -120,9 +120,7 @@ struct AvatarImage: View {
 	private var foregroundView: some View {
 		switch status {
 			case .notPlaying:
-				// If SwiftUI detects that this is an `EmptyView`, it doesn’t bother with the `accessibilityElement` modifier.
-				Image(systemName: "")
-//				EmptyView()
+				EmptyView()
 			case .paused:
 				Image(systemName: current.avatar.pausedSFSymbolName)
 					.foregroundStyle(Color.accentColor)

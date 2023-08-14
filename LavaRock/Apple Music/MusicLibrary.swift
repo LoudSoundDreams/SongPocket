@@ -13,9 +13,8 @@ final class MusicLibrary {
 	private init() {}
 	static let shared = MusicLibrary()
 	
-	let context = Database.viewContext
-	
 	private var library: MPMediaLibrary? = nil
+	let context = Database.viewContext
 	
 	func beginWatching() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
@@ -32,13 +31,11 @@ final class MusicLibrary {
 		mergeChanges()
 	}
 	@objc private func mediaLibraryDidChange() { mergeChanges() }
-	
 	private func mergeChanges() {
 		os_signpost(.begin, log: .merge, name: "1. Merge changes")
 		defer {
 			os_signpost(.end, log: .merge, name: "1. Merge changes")
 		}
-		
 #if targetEnvironment(simulator)
 		context.performAndWait {
 			mergeChanges(toMatchInAnyOrder: Sim_SongInfo.all)

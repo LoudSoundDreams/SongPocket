@@ -184,7 +184,7 @@ final class MainToolbar__UIKit {
 							title: LRString.restart,
 							image: UIImage(systemName: "arrow.counterclockwise.circle"),
 							attributes: {
-								// TO DO: Disable when playhead is already at start of track
+								// I want to disable this when the playhead is already at start of track, but can’t check that reliably
 								if Self.player == nil {
 									return .disabled
 								}
