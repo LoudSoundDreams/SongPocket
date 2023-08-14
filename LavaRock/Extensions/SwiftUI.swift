@@ -17,15 +17,15 @@ struct Chevron: View {
 }
 
 extension View {
-	func font_title2_bold() -> some View {
+	func fontTitle2_bold() -> some View {
 		// As of iOS 16.6, Apple Music uses this for “Recently Added”.
 		font(.title2).bold()
 	}
-	func font_headline() -> some View {
+	func __fontHeadline() -> some View {
 		// As of iOS 16.6, Apple Music uses this for the current song title on the now-playing screen.
 		font(.headline)
 	}
-	func font_caption2_bold() -> some View {
+	func fontCaption2_bold() -> some View {
 		/*
 		 As of iOS 16.6, Apple Music uses this for…
 		 • Genre, release year, and “Lossless” on album details views
@@ -33,7 +33,7 @@ extension View {
 		 */
 		font(.caption2).bold()
 	}
-	func font_footnote() -> some View {
+	func fontFootnote() -> some View {
 		// As of iOS 16.6, Apple Music uses this for artist names on song rows.
 		font(.footnote)
 	}

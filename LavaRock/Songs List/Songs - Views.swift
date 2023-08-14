@@ -26,10 +26,10 @@ struct AlbumBanner: View {
 				spacing: .eight * 3/4
 			) {
 				Text(album.titleFormatted()) // “Rubber Soul”
-					.font_title2_bold()
+					.fontTitle2_bold()
 				Text(album.albumArtistFormatted()) // “The Beatles”
 					.foregroundStyle(.secondary)
-					.font_caption2_bold()
+					.fontCaption2_bold()
 			}
 			.alignmentGuide_separatorLeading()
 			
@@ -67,7 +67,7 @@ struct SongRow: View {
 					Text(song_title ?? SongInfoPlaceholder.unknownTitle)
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
-							.font_footnote()
+							.fontFootnote()
 							.foregroundStyle(.secondary)
 							.padding(.bottom, .eight * 1/4) // 2
 					}
