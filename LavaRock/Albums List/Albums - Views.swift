@@ -46,7 +46,7 @@ struct AlbumHeader: View {
 			.accessibilityLabel(album.titleFormatted())
 			
 			AlbumInfoRow(album: album)
-				.padding(.top, .eight * 5/4)
+				.padding(.top, .eight * 3/2)
 				.padding(.horizontal)
 				.padding(.bottom, .eight * 4)
 				.accessibilityRespondsToUserInteraction(false)
@@ -106,7 +106,7 @@ struct AlbumInfoRow: View {
 		HStack {
 			Text(album.releaseDateEstimateFormattedOptional() ?? "—") // Em dash
 				.foregroundStyle(.secondary)
-				.font(.caption2)
+				.fontFootnote()
 			Spacer()
 			AvatarImage(libraryItem: album)
 				.accessibilitySortPriority(10) // Bigger is sooner
