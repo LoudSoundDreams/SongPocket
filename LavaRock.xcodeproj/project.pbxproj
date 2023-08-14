@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0703130126923D2600134B06 /* AlbumsTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703130026923D2600134B06 /* AlbumsTVC - Editing.swift */; };
-		0703ED2524E8D0DA002EF1B4 /* MusicLibrary - Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703ED2424E8D0DA002EF1B4 /* MusicLibrary - Merge.swift */; };
 		0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */; };
 		0708E53E286A20B6001204BF /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0708E53D286A20B6001204BF /* Numbers.swift */; };
 		070C844C2A81F9410094DFF7 /* SongInfo - Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */; };
@@ -109,7 +108,6 @@
 
 /* Begin PBXFileReference section */
 		0703130026923D2600134B06 /* AlbumsTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - Editing.swift"; sourceTree = "<group>"; };
-		0703ED2424E8D0DA002EF1B4 /* MusicLibrary - Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge.swift"; sourceTree = "<group>"; };
 		0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAlbumsClipboard.swift; sourceTree = "<group>"; };
 		0708E53D286A20B6001204BF /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongInfo - Simulator.swift"; sourceTree = "<group>"; };
@@ -378,7 +376,6 @@
 			children = (
 				07FFC00D29D88B6B00B98447 /* AppleMusic.swift */,
 				079B2C9424E227BF00A949FA /* MusicLibrary.swift */,
-				0703ED2424E8D0DA002EF1B4 /* MusicLibrary - Merge.swift */,
 				07A4F9042519E72C0065C87E /* MusicLibrary - Merge, Update.swift */,
 				07A4F9092519E7D20065C87E /* MusicLibrary - Merge, Create.swift */,
 				07A4F90E2519E8410065C87E /* MusicLibrary - Merge, Delete.swift */,
@@ -602,7 +599,6 @@
 				078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */,
-				0703ED2524E8D0DA002EF1B4 /* MusicLibrary - Merge.swift in Sources */,
 				07A4F9052519E72C0065C87E /* MusicLibrary - Merge, Update.swift in Sources */,
 				07DF76E42828D8AB00B03103 /* MainToolbar__UIKit.swift in Sources */,
 				07C8CC76271281B70061A9AD /* SettingsTVC - Views.swift in Sources */,
