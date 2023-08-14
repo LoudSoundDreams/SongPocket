@@ -34,9 +34,9 @@ struct AlbumHeader: View {
 				.offset(y: -1)
 			
 			AlbumInfoRow(album: album)
-				.padding(.top, .eight * 3/2)
+				.padding(.top, .eight * 5/4)
 				.padding(.horizontal)
-				.padding(.bottom, .eight * 5/2)
+				.padding(.bottom, .eight * 4)
 				.accessibilityRespondsToUserInteraction(false)
 		}
 		.alignmentGuide_separatorLeading()
