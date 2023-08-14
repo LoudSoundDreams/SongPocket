@@ -19,19 +19,31 @@ struct AlbumHeader: View {
 	let maxHeight: CGFloat
 	let mode: AlbumRowMode
 	
+	@Environment(\.pixelLength) private var pointsPerPixel
+	private static let borderWidthInPixels: CGFloat = 2
 	var body: some View {
 		VStack(spacing: 0) {
+			Rectangle().frame(height: 1/2 * Self.borderWidthInPixels * pointsPerPixel).hidden()
 			CoverArtView(
 				albumRepresentative: album.representativeSongInfo(), // TO DO: Redraw when artwork changes
 				largerThanOrEqualToSizeInPoints: maxHeight)
 			.frame(
 				maxWidth: .infinity, // Horizontally centers narrow artwork
 				maxHeight: maxHeight)
-			.offset(y: -0.5)
+			.background(
+				Rectangle()
+					.stroke(
+						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
+						lineWidth: {
+							// Add a grey border exactly 1 pixel wide, like list separators.
+							// Draw outside the artwork; don’t overlap it.
+							// The artwork itself will obscure half the stroke width.
+							// SwiftUI interprets our return value in points, not pixels.
+							return Self.borderWidthInPixels * pointsPerPixel
+						}()
+					)
+			)
 			.accessibilityLabel(album.titleFormatted())
-			
-			Divider()
-				.offset(y: -1)
 			
 			AlbumInfoRow(album: album)
 				.padding(.top, .eight * 5/4)

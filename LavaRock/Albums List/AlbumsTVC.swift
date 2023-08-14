@@ -81,6 +81,7 @@ final class AlbumsTVC:
 		title = { () -> String in
 			return (viewModel as! AlbumsViewModel).folder?.title ?? ""
 		}()
+		tableView.separatorStyle = .none
 	}
 	
 	override func setUpBarButtons() {
