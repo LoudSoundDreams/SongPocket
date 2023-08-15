@@ -324,6 +324,8 @@ final class SongCell: UITableViewCell {
 		let submenus: [UIMenu] = [
 			UIMenu(options: .displayInline, children: [
 				play,
+			]),
+			UIMenu(options: .displayInline, children: [
 				playNext,
 				playLast,
 			]),
