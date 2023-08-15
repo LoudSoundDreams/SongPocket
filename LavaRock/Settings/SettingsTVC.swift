@@ -108,7 +108,7 @@ extension SettingsTVC {
 					LabeledContent {
 						Text(verbatim: "linus@songpocket.app")
 					} label: {
-						Text(LRString.contact)
+						Text(LRString.sayHi)
 							.foregroundStyle(Color.accentColor)
 					}
 				}
@@ -223,7 +223,7 @@ extension SettingsTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					LabeledContent(LRString.tipJar, value: LRString.loadingEllipsis)
+					LabeledContent(LRString.leaveTip, value: LRString.loadingEllipsis)
 						.foregroundStyle(.secondary) // Seems to not affect `LabeledContent`’s `value:` argument
 						.alignmentGuide_separatorTrailing()
 				}
@@ -235,7 +235,7 @@ extension SettingsTVC {
 					LabeledContent {
 						Text(LRString.reload)
 					} label: {
-						Text(LRString.tipJar)
+						Text(LRString.leaveTip)
 							.foregroundStyle(Color.accentColor)
 					}
 					.alignmentGuide_separatorTrailing()
@@ -249,7 +249,7 @@ extension SettingsTVC {
 					LabeledContent {
 						Text(PurchaseManager.shared.tipPrice ?? "")
 					} label: {
-						Text(LRString.tipJar)
+						Text(LRString.leaveTip)
 							.foregroundStyle(Color.accentColor)
 					}
 					.alignmentGuide_separatorTrailing()
@@ -261,7 +261,7 @@ extension SettingsTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Confirming", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					LabeledContent(LRString.tipJar, value: LRString.confirmingEllipsis)
+					LabeledContent(LRString.leaveTip, value: LRString.confirmingEllipsis)
 						.foregroundStyle(.secondary)
 						.alignmentGuide_separatorTrailing()
 				}
@@ -282,7 +282,7 @@ struct TipThankYouView: View {
 	@ObservedObject private var theme: Theme = .shared
 	var body: some View {
 		LabeledContent(
-			LRString.tipJar,
+			LRString.leaveTip,
 			value: LRString.thankYouExclamationMark
 			+ " "
 			+ theme.accentColor.heartEmoji

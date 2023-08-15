@@ -22,6 +22,7 @@ enum LRString {
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
+	static let bullet = NSLocalizedString("•", comment: "Default title for a stack if you create one and don’t provide a title.")
 	
 	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "Status message")
 	
@@ -45,12 +46,12 @@ enum LRString {
 	static let fish = NSLocalizedString("Fish", comment: "Accessibility label")
 	static let luxoLamp = NSLocalizedString("Luxo lamp", comment: "Accessibility label")
 	
-	static let tipJar = NSLocalizedString("Tip Jar", comment: "In-app purchase")
+	static let leaveTip = NSLocalizedString("Leave Tip", comment: "In-app purchase")
 	static let reload = NSLocalizedString("Reload", comment: "Button")
 	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
 	static let thankYouExclamationMark = NSLocalizedString("Thank you!", comment: "Status message")
 	
-	static let contact = NSLocalizedString("Contact", comment: "Button")
+	static let sayHi = NSLocalizedString("Say Hi", comment: "Button")
 	
 	// MARK: Transport bar
 	
@@ -98,10 +99,6 @@ enum LRString {
 	static let renameFolder = NSLocalizedString("Rename Stack", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
-	
-	static let bullet = NSLocalizedString(
-		"•",
-		comment: "Default title for a stack if you create one and don’t provide a title.")
 	
 	// MARK: Albums view
 	
