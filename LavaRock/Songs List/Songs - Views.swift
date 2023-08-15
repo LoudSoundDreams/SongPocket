@@ -23,20 +23,19 @@ struct AlbumBanner: View {
 			
 			VStack(
 				alignment: .leading,
-				spacing: .eight * 3/4
+				spacing: .eight * 1/2
 			) {
-				Text(album.titleFormatted()) // “Rubber Soul”
-					.fontTitle2_bold()
 				Text(album.albumArtistFormatted()) // “The Beatles”
 					.foregroundStyle(.secondary)
 					.fontCaption2_bold()
+				Text(album.titleFormatted()) // “Rubber Soul”
+					.fontTitle2_bold()
 			}
 			.alignmentGuide_separatorLeading()
 			
 			Spacer()
 		}
 		.alignmentGuide_separatorTrailing()
-		.padding(.bottom, .eight * 1/2)
 	}
 }
 
