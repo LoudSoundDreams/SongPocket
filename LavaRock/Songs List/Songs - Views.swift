@@ -31,10 +31,10 @@ struct AlbumBanner: View {
 				Text(album.titleFormatted()) // “Rubber Soul”
 					.fontTitle2_bold()
 			}
-			.alignmentGuide_separatorLeading()
 			
 			Spacer()
 		}
+		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
 	}
 }
