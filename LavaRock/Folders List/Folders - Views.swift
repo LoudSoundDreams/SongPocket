@@ -68,6 +68,7 @@ final class FolderCell: UITableViewCell {
 				return chevron_uiView
 			}()
 		}
+		isAccessibilityElement = true // Prevents `accessoryView` from being a separate element
 	}
 	
 	func configure(
