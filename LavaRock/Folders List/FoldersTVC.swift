@@ -41,23 +41,6 @@ final class FoldersTVC:
 	
 	var presented_previewing_Combine_IndexPaths: [IndexPath] = []
 	
-	// Actions
-	private(set) lazy var renameFocused = UIAccessibilityCustomAction(
-		name: LRString.rename,
-		actionHandler: renameFocusedHandler)
-	private func renameFocusedHandler(
-		_ sender: UIAccessibilityCustomAction
-	) -> Bool {
-		guard let focused = tableView.allIndexPaths().first(where: {
-			let cell = tableView.cellForRow(at: $0)
-			return cell?.accessibilityElementIsFocused() ?? false
-		}) else {
-			return false
-		}
-		promptRename(at: focused)
-		return true
-	}
-	
 	// Controls
 	private lazy var combineButton = UIBarButtonItem(
 		title: LRString.combine,

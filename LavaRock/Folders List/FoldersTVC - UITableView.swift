@@ -136,7 +136,21 @@ extension FoldersTVC {
 						return .modal
 					}
 				case .browsing:
-					return .normal([renameFocused])
+					return .normal([
+						UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
+							guard
+								let self,
+								let focused = tableView.allIndexPaths().first(where: {
+									let cell = tableView.cellForRow(at: $0)
+									return cell?.accessibilityElementIsFocused() ?? false
+								})
+							else {
+								return false
+							}
+							promptRename(at: focused)
+							return true
+						}
+					])
 			}
 		}()
 		cell.configure(
