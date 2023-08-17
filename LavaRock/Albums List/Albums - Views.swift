@@ -44,6 +44,7 @@ struct AlbumHeader: View {
 					)
 			)
 			.accessibilityLabel(album.titleFormatted())
+			.accessibilitySortPriority(10)
 			
 			AlbumInfoRow(album: album)
 				.padding(.top, .eight * 3/2)
