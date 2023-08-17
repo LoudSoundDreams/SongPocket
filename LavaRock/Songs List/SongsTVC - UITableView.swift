@@ -48,10 +48,10 @@ extension SongsTVC {
 		switch songsViewModel.rowCase(for: indexPath) {
 			case .prerow:
 				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Banner", for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumBanner(
+					AlbumHeader(
 						album: album,
 						trackNumberSpacer: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer
 					)

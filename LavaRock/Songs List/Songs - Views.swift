@@ -9,9 +9,9 @@ import UIKit
 import SwiftUI
 import MediaPlayer
 
-// MARK: - Album banner
+// MARK: - Album header
 
-struct AlbumBanner: View {
+struct AlbumHeader: View {
 	let album: Album
 	let trackNumberSpacer: String
 	

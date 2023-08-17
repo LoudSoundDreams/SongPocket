@@ -202,7 +202,7 @@ class LibraryTVC: UITableViewController {
 			let newViewModel = viewModel.updatedWithFreshenedData()
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
-			// Update the data within each row (and header), which might be outdated.
+			// Update the data within each row, which might be outdated.
 			// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
 		}

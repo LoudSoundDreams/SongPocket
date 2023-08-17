@@ -14,7 +14,7 @@ enum AlbumRowMode {
 	case modal // disabled
 	case modalTinted // disabledTinted
 }
-struct AlbumHeader: View {
+struct AlbumCard: View {
 	let album: Album
 	let maxHeight: CGFloat
 	let mode: AlbumRowMode

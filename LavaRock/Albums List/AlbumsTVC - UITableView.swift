@@ -47,7 +47,7 @@ extension AlbumsTVC {
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 		let albumsViewModel = viewModel as! AlbumsViewModel
 		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
 		let mode: AlbumRowMode = {
@@ -77,7 +77,7 @@ extension AlbumsTVC {
 				cell.selectionStyle = .none
 		}
 		cell.contentConfiguration = UIHostingConfiguration {
-			AlbumHeader(
+			AlbumCard(
 				album: album,
 				maxHeight: {
 					let height = view.frame.height
