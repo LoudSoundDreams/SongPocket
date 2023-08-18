@@ -61,10 +61,10 @@ enum LRString {
 	static let previous = NSLocalizedString("Previous", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
 	// As of iOS 16.5 RC 1, picture-in-picture videos use “Skip back 10 seconds” and “Skip forward 10 seconds”.
-	static let skipBack10Seconds = NSLocalizedString("Skip back 10 seconds", comment: "Accessibility label, button")
+	static let skipBack15Seconds = NSLocalizedString("Skip back 15 seconds", comment: "Accessibility label, button")
 	static let play = NSLocalizedString("Play", comment: "Accessibility label, button")
 	static let pause = NSLocalizedString("Pause", comment: "Accessibility label, button")
-	static let skipForward10Seconds = NSLocalizedString("Skip forward 10 seconds", comment: "Accessibility label, button")
+	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Accessibility label, button")
 	static let next = NSLocalizedString("Next", comment: "Button")
 	
 	// MARK: Now-playing marker
