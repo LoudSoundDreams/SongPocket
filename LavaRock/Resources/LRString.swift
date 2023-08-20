@@ -31,9 +31,9 @@ enum LRString {
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
 	
-	// MARK: Settings
+	// MARK: Toolbar
 	
-	static let settings = NSLocalizedString("Settings", comment: "Button")
+	static let theme = NSLocalizedString("Theme", comment: "Heading")
 	
 	static let blueberry = NSLocalizedString("Blueberry", comment: "Accent color")
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
@@ -45,15 +45,6 @@ enum LRString {
 	static let pawprint = NSLocalizedString("Pawprint", comment: "Now-playing icon")
 	static let fish = NSLocalizedString("Fish", comment: "Now-playing icon")
 	static let luxoLamp = NSLocalizedString("Luxo Lamp", comment: "Now-playing icon")
-	
-	static let leaveTip = NSLocalizedString("Leave Tip", comment: "In-app purchase")
-	static let reload = NSLocalizedString("Reload", comment: "Button")
-	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
-	static let thankYouExclamationMark = NSLocalizedString("Thank you!", comment: "Status message")
-	
-	static let sayHi = NSLocalizedString("Say Hi", comment: "Button")
-	
-	// MARK: Transport bar
 	
 	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
 	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")
@@ -82,6 +73,17 @@ enum LRString {
 	
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
+	
+	// MARK: - About
+	
+	static let about = NSLocalizedString("About", comment: "Button")
+	
+	static let leaveTip = NSLocalizedString("Leave Tip", comment: "In-app purchase")
+	static let reload = NSLocalizedString("Reload", comment: "Button")
+	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
+	static let thankYouExclamationMark = NSLocalizedString("Thank you!", comment: "Status message")
+	
+	static let sayHi = NSLocalizedString("Say Hi", comment: "Button")
 	
 	// MARK: - Folders view
 	

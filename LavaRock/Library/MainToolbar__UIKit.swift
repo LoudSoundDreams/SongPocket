@@ -8,6 +8,14 @@
 import UIKit
 import MediaPlayer
 
+private extension UIColor {
+	final func resolvedForIncreaseContrast() -> UIColor {
+		let view = UIView()
+		view.tintColor = self
+		return view.tintColor
+	}
+}
+
 // Instantiators might want to…
 // • Implement `accessibilityPerformMagicTap` and toggle playback.
 // However, as of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
@@ -68,20 +76,77 @@ final class MainToolbar__UIKit {
 	
 	private weak var settings_presenter: UIViewController? = nil
 	private func createOverflowMenu() -> UIMenu {
-		let menuElements: [UIMenuElement] = [
-			// Settings
-			UIAction(
-				title: LRString.settings,
-				image: UIImage(systemName: "gear")
-			) { [weak self] _ in
-				let toPresent: UIViewController = {
-					let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
-						.instantiateInitialViewController()!
-					return UINavigationController(rootViewController: settingsTVC)
+		
+		func createAccentColorImage(
+			_ accentColor: AccentColor
+		) -> UIImage {
+			return UIImage(systemName: "circle.fill")!
+				.applyingSymbolConfiguration(UIImage.SymbolConfiguration(
+					paletteColors: [accentColor.uiColor]))! // TO DO: Resolve for Increase Contrast
+		}
+		
+		func createAvatarAction(
+			_ avatar: Avatar
+		) -> UIAction {
+			return UIAction(
+				title: avatar.displayName,
+				image: UIImage(systemName: avatar.playingSFSymbolName),
+				attributes: {
+					var result: UIMenu.Attributes = .keepsMenuPresented
+					let hasEverSaved = UserDefaults.standard.bool(forKey: DefaultsKey.hasSavedDatabase.rawValue)
+					if !hasEverSaved {
+						result.formUnion(.disabled)
+					}
+					return result
 				}()
-				toPresent.modalPresentationStyle = .formSheet
-				self?.settings_presenter?.present(toPresent, animated: true)
-			},
+			) { _ in
+				CurrentAvatar.shared.avatar = avatar
+			}
+		}
+		
+		let menuElements: [UIMenuElement] = [
+			UIMenu(
+				title: LRString.theme,
+				image: UIImage(systemName: "paintbrush"),
+				children: [
+					UIMenu(
+						options: .displayInline,
+						preferredElementSize: .small,
+						children: [
+							AccentColor.blueberry,
+							AccentColor.grape,
+							AccentColor.tangerine,
+							AccentColor.lime,
+						].map { accentColor in
+							UIAction(
+								title: accentColor.displayName,
+								image: createAccentColorImage(accentColor),
+								attributes: .keepsMenuPresented
+							) { [weak self] _ in
+								Theme.shared.accentColor = accentColor
+								self?.settings_presenter?.view.window?.tintColor = accentColor.uiColor
+							}
+						}
+					),
+					
+					UIMenu(
+						options: .displayInline,
+						preferredElementSize: .small,
+						children: [
+							Avatar.speaker,
+							Avatar.pawprint,
+							Avatar.fish,
+						].map { avatar in
+							UIDeferredMenuElement.uncached({ useMenuElements in
+								useMenuElements([
+									createAvatarAction(avatar)
+								])
+							})
+						}
+					),
+					
+				].reversed()
+			),
 			
 			// Repeat
 			UIMenu(

@@ -20,33 +20,6 @@ final class CurrentAvatar: ObservableObject {
 	}
 }
 
-struct AvatarPicker: View {
-	@ObservedObject private var current: CurrentAvatar = .shared
-	private static var hasEverSaved: String {
-		DefaultsKey.hasSavedDatabase.rawValue
-	}
-	@AppStorage(Self.hasEverSaved)
-	private var hasSaved: Bool = UserDefaults.standard.bool(forKey: Self.hasEverSaved)
-	
-	var body: some View {
-		Picker("", selection: $current.avatar) {
-			ForEach(Avatar.allCases) { avatar in
-				Image(systemName: avatar.playingSFSymbolName)
-					.accessibilityLabel(avatar.displayName)
-			}
-		}
-		.pickerStyle(.segmented)
-		.disabled({
-			return !hasSaved
-		}())
-	}
-}
-struct AvatarPicker_Previews: PreviewProvider {
-	static var previews: some View {
-		AvatarPicker()
-	}
-}
-
 // MARK: - Model
 
 extension Avatar: Identifiable {

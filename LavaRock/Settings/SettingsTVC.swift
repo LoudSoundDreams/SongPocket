@@ -22,22 +22,20 @@ final class SettingsTVC: UITableViewController {
 			PurchaseManager.shared.requestTipProduct()
 		}
 		
-		title = LRString.settings
-		
-		navigationItem.rightBarButtonItem = UIBarButtonItem(
-			systemItem: .done,
+		navigationItem.leftBarButtonItem = UIBarButtonItem(
+			systemItem: .close,
 			primaryAction: UIAction { [weak self] action in
 				self?.dismiss(animated: true)
 			}
 		)
+		
+		title = LRString.about
 	}
 }
 extension SettingsTVC {
 	private enum Section: Int, CaseIterable {
-		case appearance
 		case support
 	}
-	private static let avatarRow = 5
 	private static let tipJarRow = 0
 	
 	func freshenTipJarRows() {
@@ -61,9 +59,6 @@ extension SettingsTVC {
 			return 0
 		}
 		switch sectionCase {
-			case .appearance:
-				let _ = Self.avatarRow
-				return AccentColor.allCases.count + 1
 			case .support:
 				return 2
 		}
@@ -77,24 +72,8 @@ extension SettingsTVC {
 	) -> UITableViewCell {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return UITableViewCell() }
 		switch sectionCase {
-			case .appearance:
-				return appearanceCell(forRowAt: indexPath)
 			case .support:
 				return supportCell(forRowAt: indexPath)
-		}
-	}
-	private func appearanceCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch indexPath.row {
-			case Self.avatarRow:
-				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(withIdentifier: "Avatar", for: indexPath)
-				cell.selectionStyle = .none // So that the user can’t even highlight the cell
-				cell.contentConfiguration = UIHostingConfiguration {
-					AvatarPicker()
-				}
-				return cell
-			default:
-				return accentColorCell(forRowAt: indexPath)
 		}
 	}
 	private func supportCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -126,11 +105,6 @@ extension SettingsTVC {
 			return nil
 		}
 		switch sectionCase {
-			case .appearance:
-				if indexPath.row == Self.avatarRow {
-					return nil
-				}
-				return indexPath
 			case .support:
 				switch indexPath.row {
 					case Self.tipJarRow:
@@ -158,13 +132,6 @@ extension SettingsTVC {
 	) {
 		guard let sectionCase = Section(rawValue: indexPath.section) else { return }
 		switch sectionCase {
-			case .appearance:
-				guard indexPath.row != Self.avatarRow else {
-					// Should never run
-					tableView.deselectRow(at: indexPath, animated: true)
-					return
-				}
-				didSelectAccentColorRow(at: indexPath)
 			case .support:
 				switch indexPath.row {
 					case Self.tipJarRow:
@@ -188,30 +155,6 @@ extension SettingsTVC {
 						tableView.deselectRow(at: indexPath, animated: true)
 				}
 		}
-	}
-	
-	// MARK: - Accent color
-	
-	private func accentColorCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-		let _ = Self.avatarRow
-		let accentColor = AccentColor.allCases[indexPath.row]
-		
-		// The cell in the storyboard is completely default except for the reuse identifier and custom class.
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Accent Color",
-			for: indexPath) as? AccentColorCell
-		else { return UITableViewCell() }
-		cell.representee = accentColor
-		return cell
-	}
-	
-	private func didSelectAccentColorRow(at indexPath: IndexPath) {
-		let _ = Self.avatarRow
-		let selected = AccentColor.allCases[indexPath.row]
-		
-		Theme.shared.accentColor = selected
-		view.window?.tintColor = selected.uiColor
-		tableView.deselectRow(at: indexPath, animated: true) // Do this last, or the animation will break.
 	}
 	
 	// MARK: - Tip jar

@@ -216,6 +216,7 @@ final class FoldersTVC:
 					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }),
 				]
 			case .browsing:
+				viewingModeTopLeftButtons = [aboutButton]
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
 					combineButton, .flexibleSpace(),
@@ -238,6 +239,22 @@ final class FoldersTVC:
 				navigationController?.setToolbarHidden(false, animated: false)
 		}
 	}
+	private lazy var aboutButton: UIBarButtonItem = {
+		return UIBarButtonItem(
+			title: LRString.about,
+			primaryAction: UIAction { [weak self] _ in
+				guard let self else { return }
+				let toPresent: UIViewController = {
+					let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
+						.instantiateInitialViewController()!
+					return UINavigationController(rootViewController: settingsTVC)
+				}()
+				toPresent.modalPresentationStyle = .formSheet
+				toPresent.sheetPresentationController!.detents = [.medium()]
+				present(toPresent, animated: true)
+			}
+		)
+	}()
 	
 	@IBAction private func unwindToFolders(_ unwindSegue: UIStoryboardSegue) {}
 	
