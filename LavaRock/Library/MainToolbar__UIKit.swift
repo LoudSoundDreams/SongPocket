@@ -112,12 +112,7 @@ final class MainToolbar__UIKit {
 					UIMenu(
 						options: .displayInline,
 						preferredElementSize: .small,
-						children: [
-							AccentColor.blueberry,
-							AccentColor.grape,
-							AccentColor.tangerine,
-							AccentColor.lime,
-						].map { accentColor in
+						children: AccentColor.allCases.map { accentColor in
 							UIAction(
 								title: accentColor.displayName,
 								image: createAccentColorImage(accentColor),
@@ -132,11 +127,7 @@ final class MainToolbar__UIKit {
 					UIMenu(
 						options: .displayInline,
 						preferredElementSize: .small,
-						children: [
-							Avatar.speaker,
-							Avatar.pawprint,
-							Avatar.fish,
-						].map { avatar in
+						children: Avatar.allCases.map { avatar in
 							UIDeferredMenuElement.uncached({ useMenuElements in
 								useMenuElements([
 									createAvatarAction(avatar)

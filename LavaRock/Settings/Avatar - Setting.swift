@@ -29,7 +29,6 @@ enum Avatar: CaseIterable {
 	case speaker
 	case pawprint
 	case fish
-	case luxo
 	
 	static var preference: Self {
 		get {
@@ -57,7 +56,6 @@ enum Avatar: CaseIterable {
 			case .speaker: return "speaker.fill"
 			case .pawprint: return "pawprint"
 			case .fish: return "fish"
-			case .luxo: return "lamp.desk"
 		}
 	}
 	
@@ -66,7 +64,6 @@ enum Avatar: CaseIterable {
 			case .speaker: return "speaker.wave.2.fill"
 			case .pawprint: return "pawprint.fill"
 			case .fish: return "fish.fill"
-			case .luxo: return "lamp.desk.fill"
 		}
 	}
 	
@@ -75,7 +72,6 @@ enum Avatar: CaseIterable {
 			case .speaker: return LRString.speaker
 			case .pawprint: return LRString.pawprint
 			case .fish: return LRString.fish
-			case .luxo: return LRString.luxoLamp
 		}
 	}
 	
@@ -87,10 +83,13 @@ enum Avatar: CaseIterable {
 	private var persistentValue: String {
 		switch self {
 			case .speaker: return "Speaker"
-			case .pawprint: return "Paw" // Introduced after version 1.11.2
+			case .pawprint: return "Paw" // Introduced in version 1.12
 			case .fish: return "Fish"
-			case .luxo: return "Luxo" // Introduced after version 1.11.2
 				/*
+				 Introduced in version 1.12
+				 Deprecated after version 1.13.3
+				 "Luxo"
+				 
 				 Deprecated after version 1.11.2:
 				 "Bird"
 				 "Sailboat"

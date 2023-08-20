@@ -26,7 +26,6 @@ extension AccentColor: Identifiable {
 enum AccentColor: CaseIterable {
 	case blueberry
 	case grape
-	case strawberry
 	case tangerine
 	case lime
 	
@@ -53,8 +52,6 @@ enum AccentColor: CaseIterable {
 				return LRString.blueberry
 			case .grape:
 				return LRString.grape
-			case .strawberry:
-				return LRString.strawberry
 			case .tangerine:
 				return LRString.tangerine
 			case .lime:
@@ -68,8 +65,6 @@ enum AccentColor: CaseIterable {
 				return "💙"
 			case .grape:
 				return "💜"
-			case .strawberry:
-				return "❤️"
 			case .tangerine:
 				return "🧡"
 			case .lime:
@@ -151,8 +146,6 @@ enum AccentColor: CaseIterable {
 				return UIColor(named: "blueberry")!
 			case .grape:
 				return UIColor(named: "grape")!
-			case .strawberry:
-				return UIColor(named: "strawberry")!
 			case .tangerine:
 				return UIColor(named: "tangerine")!
 			case .lime:
@@ -171,12 +164,14 @@ enum AccentColor: CaseIterable {
 				return "Blueberry"
 			case .grape:
 				return "Grape"
-			case .strawberry:
-				return "Strawberry"
 			case .tangerine:
 				return "Tangerine"
 			case .lime:
 				return "Lime"
+				/*
+				 Deprecated after version 1.13.3:
+				 "Strawberry"
+				 */
 		}
 	}
 }
