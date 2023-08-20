@@ -1,5 +1,5 @@
 //
-//  Tip Jar.swift
+//  About - Views.swift
 //  LavaRock
 //
 //  Created by h on 2023-08-20.
@@ -51,5 +51,16 @@ struct TipThankYouRow: View {
 			+ theme.accentColor.heartEmoji
 		)
 		.foregroundStyle(.secondary)
+	}
+}
+
+struct ContactRow: View {
+	var body: some View {
+		LabeledContent {
+			Text(verbatim: "linus@songpocket.app")
+		} label: {
+			Text(LRString.sayHi)
+				.foregroundStyle(Color.accentColor)
+		}
 	}
 }

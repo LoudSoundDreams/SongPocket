@@ -53,12 +53,7 @@ extension SettingsTVC {
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Contact", for: indexPath)
 				cell.contentConfiguration = UIHostingConfiguration {
-					LabeledContent {
-						Text(verbatim: "linus@songpocket.app")
-					} label: {
-						Text(LRString.sayHi)
-							.foregroundStyle(Color.accentColor)
-					}
+					ContactRow()
 				}
 				return cell
 		}
