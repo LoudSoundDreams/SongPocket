@@ -41,10 +41,10 @@ enum LRString {
 	static let tangerine = NSLocalizedString("Tangerine", comment: "Accent color")
 	static let lime = NSLocalizedString("Lime", comment: "Accent color")
 	
-	static let speaker = NSLocalizedString("Speaker", comment: "Accessibility label")
-	static let pawprint = NSLocalizedString("Pawprint", comment: "Accessibility label")
-	static let fish = NSLocalizedString("Fish", comment: "Accessibility label")
-	static let luxoLamp = NSLocalizedString("Luxo lamp", comment: "Accessibility label")
+	static let speaker = NSLocalizedString("Speaker", comment: "Now-playing icon")
+	static let pawprint = NSLocalizedString("Pawprint", comment: "Now-playing icon")
+	static let fish = NSLocalizedString("Fish", comment: "Now-playing icon")
+	static let luxoLamp = NSLocalizedString("Luxo Lamp", comment: "Now-playing icon")
 	
 	static let leaveTip = NSLocalizedString("Leave Tip", comment: "In-app purchase")
 	static let reload = NSLocalizedString("Reload", comment: "Button")

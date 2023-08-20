@@ -32,7 +32,7 @@ struct AvatarPicker: View {
 		Picker("", selection: $current.avatar) {
 			ForEach(Avatar.allCases) { avatar in
 				Image(systemName: avatar.playingSFSymbolName)
-					.accessibilityLabel(avatar.accessibilityLabel)
+					.accessibilityLabel(avatar.displayName)
 			}
 		}
 		.pickerStyle(.segmented)
@@ -97,7 +97,7 @@ enum Avatar: CaseIterable {
 		}
 	}
 	
-	var accessibilityLabel: String {
+	var displayName: String {
 		switch self {
 			case .speaker: return LRString.speaker
 			case .pawprint: return LRString.pawprint
