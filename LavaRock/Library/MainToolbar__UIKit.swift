@@ -69,6 +69,7 @@ final class MainToolbar__UIKit {
 	private weak var settings_presenter: UIViewController? = nil
 	private func createOverflowMenu() -> UIMenu {
 		let menuElements: [UIMenuElement] = [
+			// Settings
 			UIAction(
 				title: LRString.settings,
 				image: UIImage(systemName: "gear")
@@ -81,13 +82,9 @@ final class MainToolbar__UIKit {
 				toPresent.modalPresentationStyle = .formSheet
 				self?.settings_presenter?.present(toPresent, animated: true)
 			},
-			createRepeatMenu(),
-			createTransportMenu(),
-		].reversed()
-		return UIMenu(children: menuElements)
-		
-		func createRepeatMenu() -> UIMenu {
-			return UIMenu(
+			
+			// Repeat
+			UIMenu(
 				options: .displayInline,
 				preferredElementSize: .small,
 				children: [
@@ -172,11 +169,10 @@ final class MainToolbar__UIKit {
 						useMenuElements([action])
 					}),
 				]
-			)
-		}
-		
-		func createTransportMenu() -> UIMenu {
-			return UIMenu(
+			),
+			
+			// Transport
+			UIMenu(
 				options: .displayInline,
 				children: [
 					UIDeferredMenuElement.uncached({ useMenuElements in
@@ -214,8 +210,10 @@ final class MainToolbar__UIKit {
 						useMenuElements([action])
 					}),
 				]
-			)
-		}
+			),
+			
+		]
+		return UIMenu(children: menuElements.reversed())
 	}
 	
 	// MARK: -
