@@ -111,8 +111,7 @@ extension SettingsTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Loading", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					LabeledContent(LRString.leaveTip, value: LRString.loadingEllipsis)
-						.foregroundStyle(.secondary) // Seems to not affect `LabeledContent`’s `value:` argument
+					TipLoadingRow()
 						.alignmentGuide_separatorTrailing()
 				}
 				return cell
@@ -120,28 +119,16 @@ extension SettingsTVC {
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Reload", for: indexPath)
 				cell.contentConfiguration = UIHostingConfiguration {
-					LabeledContent {
-						Text(LRString.reload)
-					} label: {
-						Text(LRString.leaveTip)
-							.foregroundStyle(Color.accentColor)
-					}
-					.alignmentGuide_separatorTrailing()
-					.accessibilityAddTraits(.isButton)
+					TipReloadRow()
+						.alignmentGuide_separatorTrailing()
 				}
 				return cell
 			case .ready:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Ready", for: indexPath)
 				cell.contentConfiguration = UIHostingConfiguration {
-					LabeledContent {
-						Text(PurchaseManager.shared.tipPrice ?? "")
-					} label: {
-						Text(LRString.leaveTip)
-							.foregroundStyle(Color.accentColor)
-					}
-					.alignmentGuide_separatorTrailing()
-					.accessibilityAddTraits(.isButton)
+					TipReadyRow()
+						.alignmentGuide_separatorTrailing()
 				}
 				return cell
 			case .confirming:
@@ -149,8 +136,7 @@ extension SettingsTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Confirming", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					LabeledContent(LRString.leaveTip, value: LRString.confirmingEllipsis)
-						.foregroundStyle(.secondary)
+					TipConfirmingRow()
 						.alignmentGuide_separatorTrailing()
 				}
 				return cell
@@ -159,23 +145,11 @@ extension SettingsTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Tip Thank You", for: indexPath)
 				cell.selectionStyle = .none
 				cell.contentConfiguration = UIHostingConfiguration {
-					TipThankYouView()
+					TipThankYouRow()
 						.alignmentGuide_separatorTrailing()
 				}
 				return cell
 		}
-	}
-}
-struct TipThankYouView: View {
-	@ObservedObject private var theme: Theme = .shared
-	var body: some View {
-		LabeledContent(
-			LRString.leaveTip,
-			value: LRString.thankYouExclamationMark
-			+ " "
-			+ theme.accentColor.heartEmoji
-		)
-		.foregroundStyle(.secondary)
 	}
 }
 extension SettingsTVC: TipJarUI {
