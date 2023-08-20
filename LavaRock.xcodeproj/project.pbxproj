@@ -225,9 +225,6 @@
 			children = (
 				073FB55B27588B81000FAF5F /* SettingsTVC.storyboard */,
 				073AF48E24D1AD73000C1A6D /* SettingsTVC.swift */,
-				073AF48924D16647000C1A6D /* Accent Color.swift */,
-				078DBF032895EFD8000E6433 /* Avatar - Setting.swift */,
-				07755A57294821860056E90C /* Avatar - Views.swift */,
 				073198CC279D204100E5FD44 /* TipJarViewModel.swift */,
 			);
 			path = Settings;
@@ -251,6 +248,9 @@
 				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				071DC5E62A1045CE0073C854 /* Main Toolbar.swift */,
 				07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */,
+				073AF48924D16647000C1A6D /* Accent Color.swift */,
+				078DBF032895EFD8000E6433 /* Avatar - Setting.swift */,
+				07755A57294821860056E90C /* Avatar - Views.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
