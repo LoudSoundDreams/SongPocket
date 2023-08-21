@@ -5,7 +5,6 @@
 //  Created by h on 2020-07-10.
 //
 
-import UIKit
 import SwiftUI
 import OSLog
 

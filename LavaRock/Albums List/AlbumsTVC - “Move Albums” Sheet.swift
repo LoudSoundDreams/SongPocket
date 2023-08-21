@@ -5,7 +5,7 @@
 //  Created by h on 2020-08-23.
 //
 
-import UIKit
+import Foundation
 
 extension AlbumsTVC {
 	func moveHere() {
