@@ -190,7 +190,7 @@ final class AlbumsTVC:
 		
 		let toFolder_element = UIAction(
 			title: LRString.toFolderEllipsis,
-			image: UIImage(systemName: "square.stack.3d.down.forward")
+			image: UIImage(systemName: "square.stack")
 		) { [weak self] _ in
 			self?.startMoving()
 		}
