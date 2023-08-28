@@ -72,12 +72,6 @@ enum LRString {
 	// MARK: - About
 	
 	static let about = NSLocalizedString("About", comment: "Button")
-	
-	static let leaveTip = NSLocalizedString("Leave Tip", comment: "In-app purchase")
-	static let reload = NSLocalizedString("Reload", comment: "Button")
-	static let confirmingEllipsis = NSLocalizedString("Confirming…", comment: "Status message")
-	static let thankYouExclamationMark = NSLocalizedString("Thank you!", comment: "Status message")
-	
 	static let sayHi = NSLocalizedString("Say Hi", comment: "Button")
 	
 	// MARK: - Folders view

@@ -18,8 +18,6 @@ struct LavaRock: App {
 				defaults.removeObject(forKey: existingKey)
 			}
 		}
-		
-		PurchaseManager.shared.beginObservingPaymentTransactions()
 	}
 	
 	var body: some Scene {

@@ -173,14 +173,8 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	final func shouldDismissAllViewControllersBeforeFreshenLibraryItems() -> Bool {
-		if
-			(presentedViewController as? UINavigationController)?.viewControllers.first is SettingsTVC
-		{
-			return false
-		}
 		return true
 	}
-	
 	func freshenLibraryItems() {
 		isMergingChanges = false
 		
