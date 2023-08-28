@@ -67,7 +67,7 @@ final class AlbumsTVC:
 		switch purpose {
 			case .previewingCombine:
 				navigationItem.prompt = String.localizedStringWithFormat(
-					LRString.variable_moveXAlbumsIntoOneFolder_question_mark,
+					LRString.variable_createStackFromXAlbums_questionMark,
 					is_previewing_combine_with_album_count)
 			case .organizingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt

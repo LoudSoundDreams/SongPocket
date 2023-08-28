@@ -130,15 +130,15 @@ enum LRString {
 	// MARK: Folders and Albums views
 	
 	static let variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark = NSLocalizedString(
-		"plural - move_X_albums_to_Y_folders_by_album_artist_question_mark",
+		"plural_Move_X_albums_by_Y_artists_questionMark",
 		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of stacks it’s moving them into.")
 	static let variable_moveXAlbumsTo = NSLocalizedString(
-		"plural - move_X_albums_to",
+		"plural_Move_X_albums_to_ellipsis",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
 	
 	// MARK: Albums view
 	
-	static let variable_moveXAlbumsIntoOneFolder_question_mark = NSLocalizedString(
-		"plural - move_X_albums_into_one_folder_question_mark",
+	static let variable_createStackFromXAlbums_questionMark = NSLocalizedString(
+		"plural_Create_a_stack_of_X_albums_questionMark",
 		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created stack.")
 }

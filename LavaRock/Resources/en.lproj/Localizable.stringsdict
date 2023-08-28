@@ -2,11 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>plural - move_X_albums_to_Y_folders_by_album_artist_question_mark</key>
+	<key>plural_Move_X_albums_by_Y_artists_questionMark</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Move %#@NUMBER_ALBUMS@ to %#@NUMBER_ALBUM_ARTISTS@?</string>
-		<key>NUMBER_ALBUMS</key>
+		<string>Move %#@NUM_ALBUMS@ by %#@NUM_ARTISTS@?</string>
+		<key>NUM_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
@@ -17,38 +17,38 @@
 			<key>other</key>
 			<string>%lld albums</string>
 		</dict>
-		<key>NUMBER_ALBUM_ARTISTS</key>
+		<key>NUM_ARTISTS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld stack</string>
+			<string>%lld artist</string>
 			<key>other</key>
-			<string>%lld stacks</string>
+			<string>%lld artists</string>
 		</dict>
 	</dict>
-	<key>plural - move_X_albums_to</key>
+	<key>plural_Move_X_albums_to_ellipsis</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MOVE_NUMBER_ALBUMS_TO@</string>
-		<key>MOVE_NUMBER_ALBUMS_TO</key>
+		<string>Move %#@NUM_ALBUMS@ to…</string>
+		<key>NUM_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>Move %lld album to…</string>
+			<string>%lld album</string>
 			<key>other</key>
-			<string>Move %lld albums to…</string>
+			<string>%lld albums</string>
 		</dict>
 	</dict>
-	<key>plural - move_X_albums_into_one_folder_question_mark</key>
+	<key>plural_Create_a_stack_of_X_albums_questionMark</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Move %#@X_ALBUMS@ into one stack?</string>
+		<string>Create a stack of %#@X_ALBUMS@?</string>
 		<key>X_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
