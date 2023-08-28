@@ -241,12 +241,13 @@ final class FoldersTVC:
 	}
 	private lazy var optionsButton: UIBarButtonItem = {
 		return UIBarButtonItem(
-			title: LRString.options,
+			title: LRString.about,
 			menu: Self.newOptionsMenu()
 		)
 	}()
 	private static func newOptionsMenu() -> UIMenu {
 		let menuElements: [UIMenuElement] = [
+			/*
 			// Now-playing icon
 			UIMenu(
 				options: .displayInline,
@@ -260,6 +261,7 @@ final class FoldersTVC:
 					})
 				}
 			),
+			 */
 			
 			/*
 			// Tip jar

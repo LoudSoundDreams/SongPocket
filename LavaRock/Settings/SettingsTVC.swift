@@ -29,7 +29,7 @@ final class SettingsTVC: UITableViewController {
 			}
 		)
 		
-		title = LRString.options
+		title = LRString.about
 	}
 }
 extension SettingsTVC {
