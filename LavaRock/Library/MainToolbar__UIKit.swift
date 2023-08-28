@@ -214,23 +214,8 @@ final class MainToolbar__UIKit {
 			// Transport
 			UIMenu(
 				options: .displayInline,
+				preferredElementSize: .small,
 				children: [
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.restart,
-							image: UIImage(systemName: "arrow.counterclockwise.circle"),
-							attributes: {
-								// I want to disable this when the playhead is already at start of track, but can’t check that reliably
-								if Self.player == nil {
-									return .disabled
-								}
-								return []
-							}()
-						) { _ in
-							Self.player?.skipToBeginning()
-						}
-						useMenuElements([action])
-					}),
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
 							title: LRString.previous,
@@ -246,6 +231,23 @@ final class MainToolbar__UIKit {
 							}()
 						) { _ in
 							Self.player?.skipToPreviousItem()
+						}
+						useMenuElements([action])
+					}),
+					
+					UIDeferredMenuElement.uncached({ useMenuElements in
+						let action = UIAction(
+							title: LRString.restart,
+							image: UIImage(systemName: "arrow.counterclockwise.circle"),
+							attributes: {
+								// I want to disable this when the playhead is already at start of track, but can’t check that reliably
+								if Self.player == nil {
+									return .disabled
+								}
+								return []
+							}()
+						) { _ in
+							Self.player?.skipToBeginning()
 						}
 						useMenuElements([action])
 					}),
