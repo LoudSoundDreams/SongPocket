@@ -29,7 +29,7 @@ final class SettingsTVC: UITableViewController {
 			}
 		)
 		
-		title = LRString.about
+		title = LRString.options
 	}
 }
 extension SettingsTVC {
@@ -92,9 +92,6 @@ extension SettingsTVC {
 						PurchaseManager.shared.buyTip()
 				}
 			default:
-				let mailtoLink = URL(string: "mailto:linus@songpocket.app?subject=Songpocket%20Feedback")!
-				UIApplication.shared.open(mailtoLink)
-				
 				tableView.deselectRow(at: indexPath, animated: true)
 		}
 	}

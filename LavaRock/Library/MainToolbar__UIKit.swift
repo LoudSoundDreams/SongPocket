@@ -38,7 +38,7 @@ final class MainToolbar__UIKit {
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
 		image: Self.overflowButtonDefaultImage,
-		menu: createOverflowMenu()
+		menu: Self.newPlaybackMenu()
 	)
 	private lazy var jumpBackButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -75,29 +75,8 @@ final class MainToolbar__UIKit {
 	// MARK: - Overflow menu
 	
 	private weak var settings_presenter: UIViewController? = nil
-	private func createOverflowMenu() -> UIMenu {
+	private static func newPlaybackMenu() -> UIMenu {
 		let menuElements: [UIMenuElement] = [
-			// Now-playing icon
-			UIMenu(
-				options: .displayInline,
-				children: [
-					UIMenu(
-						options: .displayInline,
-						preferredElementSize: .small,
-						children: [
-							Avatar.speaker,
-							Avatar.fish,
-						].map { avatar in
-							UIDeferredMenuElement.uncached({ useMenuElements in
-								useMenuElements([
-									Avatar.createAvatarAction(avatar)
-								])
-							})
-						}
-					),
-				]
-			),
-			
 			// Repeat
 			UIMenu(
 				options: .displayInline,

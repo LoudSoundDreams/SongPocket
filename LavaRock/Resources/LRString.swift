@@ -71,7 +71,7 @@ enum LRString {
 	
 	// MARK: - About
 	
-	static let about = NSLocalizedString("About", comment: "Button")
+	static let options = NSLocalizedString("Options", comment: "Button")
 	
 	static let leaveTip = NSLocalizedString("Leave Tip", comment: "In-app purchase")
 	static let reload = NSLocalizedString("Reload", comment: "Button")

@@ -216,7 +216,7 @@ final class FoldersTVC:
 					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }),
 				]
 			case .browsing:
-				viewingModeTopLeftButtons = [aboutButton]
+				viewingModeTopLeftButtons = [optionsButton]
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
 					combineButton, .flexibleSpace(),
@@ -239,22 +239,58 @@ final class FoldersTVC:
 				navigationController?.setToolbarHidden(false, animated: false)
 		}
 	}
-	private lazy var aboutButton: UIBarButtonItem = {
+	private lazy var optionsButton: UIBarButtonItem = {
 		return UIBarButtonItem(
-			title: LRString.about,
-			primaryAction: UIAction { [weak self] _ in
-				guard let self else { return }
-				let toPresent: UIViewController = {
-					let settingsTVC = UIStoryboard(name: "SettingsTVC", bundle: nil)
-						.instantiateInitialViewController()!
-					return UINavigationController(rootViewController: settingsTVC)
-				}()
-				toPresent.modalPresentationStyle = .formSheet
-				toPresent.sheetPresentationController!.detents = [.medium()]
-				present(toPresent, animated: true)
-			}
+			title: LRString.options,
+			menu: Self.newOptionsMenu()
 		)
 	}()
+	private static func newOptionsMenu() -> UIMenu {
+		let menuElements: [UIMenuElement] = [
+			// Now-playing icon
+			UIMenu(
+				options: .displayInline,
+				children: [
+					UIMenu(
+						options: .displayInline,
+						preferredElementSize: .small,
+						children: [
+							Avatar.speaker,
+							Avatar.fish,
+						].map { avatar in
+							UIDeferredMenuElement.uncached({ useMenuElements in
+								useMenuElements([
+									Avatar.createAvatarAction(avatar)
+								])
+							})
+						}
+					),
+				]
+			),
+			
+			/*
+			// Tip jar
+			UIAction(
+				title: LRString.leaveTip,
+				subtitle: "$5",
+				image: UIImage(systemName: "dollarsign.circle")
+			) { _ in
+			},
+			 */
+			
+			// Contact
+			UIAction(
+				title: LRString.sayHi,
+				subtitle: "linus@songpocket.app",
+				image: UIImage(systemName: "envelope")
+			) { _ in
+				let mailtoLink = URL(string: "mailto:linus@songpocket.app?subject=Songpocket%20Feedback")!
+				UIApplication.shared.open(mailtoLink)
+			},
+		]
+		return UIMenu(children: menuElements)
+	}
+	
 	
 	@IBAction private func unwindToFolders(_ unwindSegue: UIStoryboardSegue) {}
 	
