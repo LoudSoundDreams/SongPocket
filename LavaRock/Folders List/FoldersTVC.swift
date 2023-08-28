@@ -250,20 +250,15 @@ final class FoldersTVC:
 			// Now-playing icon
 			UIMenu(
 				options: .displayInline,
+				preferredElementSize: .small,
 				children: [
-					UIMenu(
-						options: .displayInline,
-						preferredElementSize: .small,
-						children: [
-							Avatar.speaker,
-							Avatar.fish,
-						].map { avatar in
-							UIDeferredMenuElement.uncached({ useElements in
-								useElements([avatar.newUIAction()])
-							})
-						}
-					),
-				]
+					Avatar.speaker,
+					Avatar.fish,
+				].map { avatar in
+					UIDeferredMenuElement.uncached({ useElements in
+						useElements([avatar.newUIAction()])
+					})
+				}
 			),
 			
 			/*
