@@ -22,7 +22,7 @@ enum LRString {
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
-	static let bullet = NSLocalizedString("•", comment: "Default title for a stack if you create one and don’t provide a title.")
+	static let tilde = NSLocalizedString("~", comment: "Default title for a stack if you create one and don’t provide a title.")
 	
 	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "Status message")
 	
