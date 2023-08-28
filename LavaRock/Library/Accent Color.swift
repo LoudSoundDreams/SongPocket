@@ -59,19 +59,6 @@ enum AccentColor: CaseIterable {
 		}
 	}
 	
-	var heartEmoji: String {
-		switch self {
-			case .blueberry:
-				return "💙"
-			case .grape:
-				return "💜"
-			case .tangerine:
-				return "🧡"
-			case .lime:
-				return "💚"
-		}
-	}
-	
 	/*
 	 BLUEBERRY
 	 

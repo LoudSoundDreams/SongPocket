@@ -42,13 +42,22 @@ struct TipConfirmingRow: View {
 	}
 }
 struct TipThankYouRow: View {
-	@ObservedObject private var theme: Theme = .shared
+	@Environment(\.colorScheme) private var lighting
 	var body: some View {
 		LabeledContent(
 			LRString.leaveTip,
-			value: LRString.thankYouExclamationMark
-			+ " "
-			+ theme.accentColor.heartEmoji
+			value: { () -> String in
+				var result = "\(LRString.thankYouExclamationMark) "
+				switch lighting {
+					case .light:
+						result.append("🖤")
+					case .dark:
+						result.append("🤍")
+					@unknown default:
+						result.append("🩶")
+				}
+				return result
+			}()
 		)
 		.foregroundStyle(.secondary)
 	}
