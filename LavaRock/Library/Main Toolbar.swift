@@ -20,8 +20,7 @@ extension View {
 	
 	private var overflowMenu: some View {
 		Menu {
-			Button(LRString.leaveTip) {
-				
+			Button("Leave Tip") {
 			}
 		} label: {
 			Image(systemName: "ellipsis.circle")
@@ -30,7 +29,6 @@ extension View {
 	
 	private var jumpBackButton: some View {
 		Button {
-			
 		} label: {
 			Image(systemName: "gobackward.15")
 		}
@@ -38,7 +36,6 @@ extension View {
 	
 	private var playPauseButton: some View {
 		Button {
-			
 		} label: {
 			Image(systemName: "play.circle")
 		}
@@ -46,7 +43,6 @@ extension View {
 	
 	private var jumpForwardButton: some View {
 		Button {
-			
 		} label: {
 			Image(systemName: "goforward.15")
 		}
@@ -54,7 +50,6 @@ extension View {
 	
 	private var nextButton: some View {
 		Button {
-			
 		} label: {
 			Image(systemName: "forward.end.circle")
 		}

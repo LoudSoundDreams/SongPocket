@@ -266,7 +266,7 @@ final class FoldersTVC:
 			/*
 			// Tip jar
 			UIAction(
-				title: LRString.leaveTip,
+				title: "Leave Tip",
 				subtitle: "$5",
 				image: UIImage(systemName: "dollarsign.circle")
 			) { _ in
