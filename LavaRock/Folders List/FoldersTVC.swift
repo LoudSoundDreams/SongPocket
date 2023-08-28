@@ -258,10 +258,8 @@ final class FoldersTVC:
 							Avatar.speaker,
 							Avatar.fish,
 						].map { avatar in
-							UIDeferredMenuElement.uncached({ useMenuElements in
-								useMenuElements([
-									Avatar.createAvatarAction(avatar)
-								])
+							UIDeferredMenuElement.uncached({ useElements in
+								useElements([avatar.newUIAction()])
 							})
 						}
 					),
