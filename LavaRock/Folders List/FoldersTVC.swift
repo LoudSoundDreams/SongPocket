@@ -216,7 +216,7 @@ final class FoldersTVC:
 					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }),
 				]
 			case .browsing:
-				viewingModeTopLeftButtons = [optionsButton]
+				viewingModeTopLeftButtons = []
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
 					combineButton, .flexibleSpace(),
