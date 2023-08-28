@@ -75,6 +75,25 @@ enum Avatar: CaseIterable {
 		}
 	}
 	
+	static func createAvatarAction(
+		_ avatar: Avatar
+	) -> UIAction {
+		return UIAction(
+			title: avatar.displayName,
+			image: UIImage(systemName: avatar.playingSFSymbolName),
+			attributes: {
+				var result: UIMenu.Attributes = .keepsMenuPresented
+				let hasEverSaved = UserDefaults.standard.bool(forKey: DefaultsKey.hasSavedDatabase.rawValue)
+				if !hasEverSaved {
+					result.formUnion(.disabled)
+				}
+				return result
+			}()
+		) { _ in
+			CurrentAvatar.shared.avatar = avatar
+		}
+	}
+	
 	// MARK: Private
 	
 	private static let defaults: UserDefaults = .standard

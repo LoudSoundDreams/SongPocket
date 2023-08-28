@@ -33,8 +33,6 @@ enum LRString {
 	
 	// MARK: Toolbar
 	
-	static let character = NSLocalizedString("Character", comment: "Heading")
-	
 	static let blueberry = NSLocalizedString("Blueberry", comment: "Accent color")
 	static let grape = NSLocalizedString("Grape", comment: "Accent color")
 	static let tangerine = NSLocalizedString("Tangerine", comment: "Accent color")

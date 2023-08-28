@@ -76,38 +76,21 @@ final class MainToolbar__UIKit {
 	
 	private weak var settings_presenter: UIViewController? = nil
 	private func createOverflowMenu() -> UIMenu {
-		
-		func createAvatarAction(
-			_ avatar: Avatar
-		) -> UIAction {
-			return UIAction(
-				title: avatar.displayName,
-				image: UIImage(systemName: avatar.playingSFSymbolName),
-				attributes: {
-					var result: UIMenu.Attributes = .keepsMenuPresented
-					let hasEverSaved = UserDefaults.standard.bool(forKey: DefaultsKey.hasSavedDatabase.rawValue)
-					if !hasEverSaved {
-						result.formUnion(.disabled)
-					}
-					return result
-				}()
-			) { _ in
-				CurrentAvatar.shared.avatar = avatar
-			}
-		}
-		
 		let menuElements: [UIMenuElement] = [
+			// Now-playing icon
 			UIMenu(
-				title: LRString.character,
-//				image: UIImage(systemName: "paintbrush"), // !
+				options: .displayInline,
 				children: [
 					UIMenu(
 						options: .displayInline,
 						preferredElementSize: .small,
-						children: Avatar.allCases.map { avatar in
+						children: [
+							Avatar.speaker,
+							Avatar.fish,
+						].map { avatar in
 							UIDeferredMenuElement.uncached({ useMenuElements in
 								useMenuElements([
-									createAvatarAction(avatar)
+									Avatar.createAvatarAction(avatar)
 								])
 							})
 						}
