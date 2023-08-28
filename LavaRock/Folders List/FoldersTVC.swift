@@ -216,7 +216,7 @@ final class FoldersTVC:
 					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }),
 				]
 			case .browsing:
-				viewingModeTopLeftButtons = []
+				viewingModeTopLeftButtons = [aboutButton]
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
 					combineButton, .flexibleSpace(),
@@ -239,13 +239,13 @@ final class FoldersTVC:
 				navigationController?.setToolbarHidden(false, animated: false)
 		}
 	}
-	private lazy var optionsButton: UIBarButtonItem = {
+	private lazy var aboutButton: UIBarButtonItem = {
 		return UIBarButtonItem(
 			title: LRString.about,
-			menu: Self.newOptionsMenu()
+			menu: Self.newAboutMenu()
 		)
 	}()
-	private static func newOptionsMenu() -> UIMenu {
+	private static func newAboutMenu() -> UIMenu {
 		let menuElements: [UIMenuElement] = [
 			/*
 			// Now-playing icon
