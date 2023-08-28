@@ -28,7 +28,7 @@ final class SongsTVC: LibraryTVC {
 		arrangeSongsButton.menu = createArrangeSongsMenu()
 	}
 	private static let arrangeCommands: [[ArrangeCommand]] = [
-		[.song_track, .song_added],
+		[.song_track],
 		[.random, .reverse],
 	]
 	private func createArrangeSongsMenu() -> UIMenu {

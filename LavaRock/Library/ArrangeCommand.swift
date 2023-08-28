@@ -17,7 +17,6 @@ enum ArrangeCommand: CaseIterable {
 	case album_released
 	
 	case song_track
-	case song_added
 	
 	func localizedName() -> String {
 		switch self {
@@ -26,7 +25,6 @@ enum ArrangeCommand: CaseIterable {
 			case .folder_name: return LRString.name
 			case .album_released: return LRString.recentlyReleased
 			case .song_track: return LRString.trackNumber
-			case .song_added: return LRString.recentlyAdded
 		}
 	}
 	
@@ -45,7 +43,6 @@ enum ArrangeCommand: CaseIterable {
 			case .folder_name: return "character"
 			case .album_released: return "sparkles"
 			case .song_track: return "number"
-			case .song_added: return "clock"
 		}
 	}
 	
@@ -136,28 +133,6 @@ enum ArrangeCommand: CaseIterable {
 						return true
 					}
 					return left.precedesByTrackNumber(right)
-				}
-				return sorted.map { $0.song }
-				
-			case .song_added:
-				guard let songs = items as? [Song] else {
-					return items
-				}
-				let songsAndInfos = songs.map {
-					(song: $0,
-					 info: $0.songInfo())
-				}
-				let sorted = songsAndInfos.sortedMaintainingOrderWhen {
-					left, right in
-					return left.info?.dateAddedOnDisk == right.info?.dateAddedOnDisk
-				} areInOrder: {
-					guard
-						let left = $0.info,
-						let right = $1.info
-					else {
-						return true
-					}
-					return left.dateAddedOnDisk > right.dateAddedOnDisk
 				}
 				return sorted.map { $0.song }
 		}
