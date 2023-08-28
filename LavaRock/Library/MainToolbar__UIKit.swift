@@ -106,24 +106,9 @@ final class MainToolbar__UIKit {
 		
 		let menuElements: [UIMenuElement] = [
 			UIMenu(
-				title: LRString.theme,
-				image: UIImage(systemName: "paintbrush"),
+				title: LRString.character,
+//				image: UIImage(systemName: "paintbrush"), // !
 				children: [
-					UIMenu(
-						options: .displayInline,
-						preferredElementSize: .small,
-						children: AccentColor.allCases.map { accentColor in
-							UIAction(
-								title: accentColor.displayName,
-								image: createAccentColorImage(accentColor),
-								attributes: .keepsMenuPresented
-							) { [weak self] _ in
-								Theme.shared.accentColor = accentColor
-								self?.settings_presenter?.view.window?.tintColor = accentColor.uiColor
-							}
-						}
-					),
-					
 					UIMenu(
 						options: .displayInline,
 						preferredElementSize: .small,
@@ -135,8 +120,7 @@ final class MainToolbar__UIKit {
 							})
 						}
 					),
-					
-				].reversed()
+				]
 			),
 			
 			// Repeat
