@@ -77,14 +77,6 @@ final class MainToolbar__UIKit {
 	private weak var settings_presenter: UIViewController? = nil
 	private func createOverflowMenu() -> UIMenu {
 		
-		func createAccentColorImage(
-			_ accentColor: AccentColor
-		) -> UIImage {
-			return UIImage(systemName: "circle.fill")!
-				.applyingSymbolConfiguration(UIImage.SymbolConfiguration(
-					paletteColors: [accentColor.uiColor]))! // TO DO: Resolve for Increase Contrast
-		}
-		
 		func createAvatarAction(
 			_ avatar: Avatar
 		) -> UIAction {
