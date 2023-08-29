@@ -198,7 +198,14 @@ final class FoldersTVC:
 	override func setUpBarButtons() {
 		switch purpose {
 			case .willOrganizeAlbums:
-				viewingModeTopLeftButtons = [cancelAndDismissButton]
+				viewingModeTopLeftButtons = [
+					UIBarButtonItem(
+						title: LRString.cancel,
+						primaryAction: UIAction { [weak self] _ in
+							self?.dismiss(animated: true)
+						}
+					),
+				]
 				viewingModeTopRightButtons = [{
 					let saveOrganizeButton = UIBarButtonItem(systemItem: .save,
 						primaryAction: UIAction { [weak self] _ in
@@ -211,7 +218,14 @@ final class FoldersTVC:
 			case .organizingAlbums: // Should never run
 				break
 			case .movingAlbums:
-				viewingModeTopLeftButtons = [cancelAndDismissButton]
+				viewingModeTopLeftButtons = [
+					UIBarButtonItem(
+						title: LRString.cancel,
+						primaryAction: UIAction { [weak self] _ in
+							self?.dismiss(animated: true)
+						}
+					),
+				]
 				viewingModeTopRightButtons = [
 					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }),
 				]

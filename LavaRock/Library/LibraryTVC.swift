@@ -34,13 +34,6 @@ class LibraryTVC: UITableViewController {
 	
 	// Controls
 	
-	private(set) final lazy var cancelAndDismissButton = UIBarButtonItem(
-		title: LRString.cancel,
-		primaryAction: UIAction { [weak self] _ in
-			self?.dismiss(animated: true)
-		}
-	)
-	
 	private(set) final lazy var floatButton = UIBarButtonItem(
 		title: LRString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line"),
