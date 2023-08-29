@@ -26,9 +26,6 @@ struct AlbumCard: View {
 			CoverArtView(
 				albumRepresentative: album.representativeSongInfo(), // TO DO: Redraw when artwork changes
 				largerThanOrEqualToSizeInPoints: maxHeight)
-			.frame(
-				maxWidth: .infinity, // Horizontally centers narrow artwork
-				maxHeight: maxHeight)
 			.background(
 				Rectangle()
 					.stroke(
@@ -42,6 +39,9 @@ struct AlbumCard: View {
 						}()
 					)
 			)
+			.frame(
+				maxWidth: .infinity, // Horizontally centers narrow artwork
+				maxHeight: maxHeight)
 			.accessibilityLabel(album.titleFormatted())
 			.accessibilitySortPriority(10)
 			
