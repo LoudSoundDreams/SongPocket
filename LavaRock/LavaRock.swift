@@ -35,13 +35,13 @@ struct LavaRock: App {
 private struct MainLibraryNC: UIViewControllerRepresentable {
 	typealias VCType = LibraryNC
 	
-	@ObservedObject private var theme: Theme = .shared
-	
 	// Overriding lighting and accent color
 	// We want to do that on the view’s window, but during `makeUIViewController`, that’s nil. So…
 	// • During `make`, override on the view itself. Then, as soon as possible, move the override to the window.
 	// • Thereafter, during `updateUIViewController`, always override on the window.
 	// “As soon as possible” is `viewDidAppear`, because that’s when the window becomes non-nil, and note that that’s after the initial `update`.
+	
+	let tint: UIColor = UIColor(named: "synthwave")!
 	
 	func makeUIViewController(
 		context: Context
@@ -49,7 +49,7 @@ private struct MainLibraryNC: UIViewControllerRepresentable {
 		let vc = LibraryNC(rootStoryboardName: "FoldersTVC")
 		
 		// Accent color
-		vc.view.tintColor = theme.accentColor.uiColor
+		vc.view.tintColor = tint
 		vc.needsOverrideThemeInWindow = true
 		
 		return vc
@@ -66,7 +66,7 @@ private struct MainLibraryNC: UIViewControllerRepresentable {
 		// Accent color
 		// Unfortunately, we can’t remove a view’s tint color override.
 		// So, override the tint color on both the view and its window, every time.
-		vc.view.tintColor = theme.accentColor.uiColor
+		vc.view.tintColor = tint
 		// When the UIKit Settings screen changes the accent color, SwiftUI runs this method at a moment that breaks the animation for deselecting the accent color row.
 		// So, only run this line for the SwiftUI Settings screen, and make the UIKit Settings screen do this work itself.
 //		window?.tintColor = theme.accentColor.uiColor

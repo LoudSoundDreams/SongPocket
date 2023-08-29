@@ -10,9 +10,6 @@ enum DefaultsKey: String, CaseIterable {
 	// Introduced in version ?
 	case hasSavedDatabase = "hasEverImportedFromMusic"
 	
-	// Introduced in version 1.0
-	case accentColor = "accentColorName"
-	
 	/*
 	 Deprecated after version 1.13.3
 	 Introduced in version 1.8
@@ -28,6 +25,16 @@ enum DefaultsKey: String, CaseIterable {
 	 • "Bird"
 	 • "Sailboat"
 	 • "Beach umbrella"
+	 
+	 Deprecated after version 1.13.3
+	 Introduced in version 1.0
+	 "accentColorName"
+	 Values: String
+	 • "Blueberry"
+	 • "Grape"
+	 • "Strawberry"
+	 • "Tangerine"
+	 • "Lime"
 	 
 	 Deprecated after version 1.13
 	 Introduced in version 1.6
