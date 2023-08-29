@@ -38,11 +38,6 @@ final class LibraryNC: UINavigationController {
 			
 			let window = view.window!
 			
-			// Lighting
-			window.overrideUserInterfaceStyle = view.overrideUserInterfaceStyle
-			// Remove override from this view controller
-			view.overrideUserInterfaceStyle = .unspecified
-			
 			// Accent color
 			window.tintColor = view.tintColor
 			// Unfortunately, setting `view.tintColor = nil` doesn’t remove the override.

@@ -47,11 +47,8 @@ private struct MainLibraryNC: UIViewControllerRepresentable {
 		context: Context
 	) -> VCType {
 		let vc = LibraryNC(rootStoryboardName: "FoldersTVC")
-		
-		// Accent color
 		vc.view.tintColor = tint
 		vc.needsOverrideThemeInWindow = true
-		
 		return vc
 	}
 	
@@ -63,12 +60,8 @@ private struct MainLibraryNC: UIViewControllerRepresentable {
 		let vc = uiViewController
 //		let window = vc.view.window
 		
-		// Accent color
 		// Unfortunately, we can’t remove a view’s tint color override.
 		// So, override the tint color on both the view and its window, every time.
 		vc.view.tintColor = tint
-		// When the UIKit Settings screen changes the accent color, SwiftUI runs this method at a moment that breaks the animation for deselecting the accent color row.
-		// So, only run this line for the SwiftUI Settings screen, and make the UIKit Settings screen do this work itself.
-//		window?.tintColor = theme.accentColor.uiColor
 	}
 }
