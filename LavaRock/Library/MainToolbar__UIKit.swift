@@ -219,7 +219,7 @@ final class MainToolbar__UIKit {
 		}
 #endif
 		
-		freshenOverflowButton()
+		overflowButton.image = newOverflowButtonImage()
 		
 		func configurePlayButton() {
 			playPauseButton.title = LRString.play
@@ -268,37 +268,35 @@ final class MainToolbar__UIKit {
 			$0.accessibilityTraits.subtract(.notEnabled)
 		}
 	}
-	private func freshenOverflowButton() {
-		overflowButton.image = { () -> UIImage in
-			guard let player = Self.player else {
-				return Self.overflowButtonDefaultImage
-			}
-			switch player.repeatMode {
-					// TO DO: Add accessibility labels or values for “repeat all” and “repeat one”. What does the Photos app do with its overflow button when filtering to Shared Library?
-				case .one:
-					return UIImage(systemName: "repeat.1.circle.fill")!
-				case .all:
-					return UIImage(systemName: "repeat.circle.fill")!
-				case
-						.default,
-						.none
-					:
-					// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
-					// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
-					if !hasRefreshenedOverflowButton {
-						hasRefreshenedOverflowButton = true
+	private func newOverflowButtonImage() -> UIImage {
+		guard let player = Self.player else {
+			return Self.overflowButtonDefaultImage
+		}
+		switch player.repeatMode {
+				// TO DO: Add accessibility labels or values for “repeat all” and “repeat one”. What does the Photos app do with its overflow button when filtering to Shared Library?
+			case .one:
+				return UIImage(systemName: "repeat.1.circle.fill")!
+			case .all:
+				return UIImage(systemName: "repeat.circle.fill")!
+			case
+					.default,
+					.none
+				:
+				// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
+				// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
+				if !hasRefreshenedOverflowButton {
+					hasRefreshenedOverflowButton = true
+					
+					Task {
+						try? await Task.sleep(for: .milliseconds(50))
 						
-						Task {
-							try? await Task.sleep(for: .milliseconds(50))
-							
-							freshenOverflowButton()
-						}
+						overflowButton.image = newOverflowButtonImage()
 					}
-					return Self.overflowButtonDefaultImage
-				@unknown default:
-					return Self.overflowButtonDefaultImage
-			}
-		}()
+				}
+				return Self.overflowButtonDefaultImage
+			@unknown default:
+				return Self.overflowButtonDefaultImage
+		}
 	}
 }
 extension MainToolbar__UIKit: TapeDeckReflecting {
