@@ -21,9 +21,7 @@ extension FoldersTVC {
 	
 	func numberOfRows(forSection section: Int) -> Int {
 		switch viewState {
-			case
-					.allowAccess,
-					.loading:
+			case .allowAccess, .loading:
 				return 1
 			case .removingFolderRows:
 				return 0

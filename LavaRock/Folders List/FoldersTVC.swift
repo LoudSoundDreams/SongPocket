@@ -115,9 +115,7 @@ final class FoldersTVC:
 		}()
 		
 		switch viewState {
-			case
-					.allowAccess,
-					.loading:
+			case .allowAccess, .loading:
 				if oldIndexPaths.count == newIndexPaths.count {
 					toDelete = []
 					toInsert = []
@@ -148,11 +146,7 @@ final class FoldersTVC:
 			self.tableView.insertRows(at: toInsert, with: .middle)
 		} runningBeforeContinuation: {
 			switch self.viewState {
-				case
-						.allowAccess,
-						.loading,
-						.removingFolderRows,
-						.emptyDatabase:
+				case .allowAccess, .loading, .removingFolderRows, .emptyDatabase:
 					if self.isEditing {
 						self.setEditing(false, animated: true)
 					}
@@ -338,9 +332,7 @@ final class FoldersTVC:
 		}
 		
 		switch viewState {
-			case
-					.loading,
-					.emptyDatabase:
+			case .loading, .emptyDatabase:
 				// We have placeholder rows in the Folders section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
 				needsRemoveFolderRows = true // `viewState` is now `.removingFolderRows`
 				Task {
@@ -351,10 +343,7 @@ final class FoldersTVC:
 					})
 				}
 				return
-			case
-					.allowAccess,
-					.removingFolderRows,
-					.someFolders:
+			case .allowAccess, .removingFolderRows, .someFolders:
 				break
 		}
 		
