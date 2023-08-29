@@ -42,7 +42,7 @@
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
 		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
 		0774C88527CBEA0900230F22 /* DefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* DefaultsKey.swift */; };
-		07755A58294821860056E90C /* Avatar - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Avatar - Views.swift */; };
+		07755A58294821860056E90C /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Avatar.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		077BCEB0275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */; };
 		077BCEB2275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */; };
@@ -144,7 +144,7 @@
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* DefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsKey.swift; sourceTree = "<group>"; };
-		07755A57294821860056E90C /* Avatar - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Avatar - Views.swift"; sourceTree = "<group>"; };
+		07755A57294821860056E90C /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		077BCEAF275314BE0066DE96 /* AlbumsTVC + OrganizeAlbumsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC + OrganizeAlbumsDelegate.swift"; sourceTree = "<group>"; };
 		077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsPreviewing.swift; sourceTree = "<group>"; };
@@ -234,7 +234,7 @@
 				07DF76E32828D8AB00B03103 /* MainToolbar__UIKit.swift */,
 				073AF48924D16647000C1A6D /* Accent Color.swift */,
 				078DBF032895EFD8000E6433 /* Avatar - Setting.swift */,
-				07755A57294821860056E90C /* Avatar - Views.swift */,
+				07755A57294821860056E90C /* Avatar.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
@@ -562,7 +562,7 @@
 				078FDD0F2638872100779AF2 /* Array.swift in Sources */,
 				07E0BBDE276567760010117E /* Notifications.swift in Sources */,
 				071DC5E72A1045CE0073C854 /* Main Toolbar.swift in Sources */,
-				07755A58294821860056E90C /* Avatar - Views.swift in Sources */,
+				07755A58294821860056E90C /* Avatar.swift in Sources */,
 				07619EE527342FC9003F95AE /* Diffing.swift in Sources */,
 				07E0BBF32765678F0010117E /* UITableView.swift in Sources */,
 				076B4DED27738FF4004B523D /* OSLog.swift in Sources */,

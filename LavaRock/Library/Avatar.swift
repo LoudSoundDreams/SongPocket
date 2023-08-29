@@ -1,5 +1,5 @@
 //
-//  Avatar - Views.swift
+//  Avatar.swift
 //  LavaRock
 //
 //  Created by h on 2022-12-12.
@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-// MARK: - Status
+enum Avatar {
+	static let pausedSFSymbolName = "speaker.fill"
+	static let playingSFSymbolName = "speaker.wave.2.fill"
+}
 
 enum AvatarStatus {
 	case notPlaying
@@ -19,9 +22,9 @@ enum AvatarStatus {
 			case .notPlaying:
 				return nil
 			case .paused:
-				return UIImage(systemName: Avatar.preference.pausedSFSymbolName)
+				return UIImage(systemName: Avatar.pausedSFSymbolName)
 			case .playing:
-				return UIImage(systemName: Avatar.preference.playingSFSymbolName)
+				return UIImage(systemName: Avatar.playingSFSymbolName)
 		}
 	}
 	
@@ -51,7 +54,7 @@ extension FolderCell: AvatarDisplaying__ {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.playingSFSymbolName)
 		speakerImageView.image = avatarStatus.uiImage__
 		
 		accessibilityLabel = [
@@ -67,7 +70,7 @@ extension SongCell: AvatarDisplaying__ {
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = UIImage(systemName: Avatar.preference.playingSFSymbolName)
+		spacerSpeakerImageView.image = UIImage(systemName: Avatar.playingSFSymbolName)
 		speakerImageView.image = avatarStatus.uiImage__
 		
 		accessibilityLabel = [
@@ -76,8 +79,6 @@ extension SongCell: AvatarDisplaying__ {
 		].compactedAndFormattedAsNarrowList()
 	}
 }
-
-// MARK: - Image
 
 struct AvatarImage: View {
 	let libraryItem: LibraryItem
@@ -111,9 +112,8 @@ struct AvatarImage: View {
 		.accessibilityLabel(status.axLabel ?? "")
 	}
 	
-	@ObservedObject private var current: CurrentAvatar = .shared
 	private var playing_image: some View {
-		Image(systemName: current.avatar.playingSFSymbolName)
+		Image(systemName: Avatar.playingSFSymbolName)
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
 			.imageScale(.small)
 	}
@@ -123,7 +123,7 @@ struct AvatarImage: View {
 			case .notPlaying:
 				EmptyView()
 			case .paused:
-				Image(systemName: current.avatar.pausedSFSymbolName)
+				Image(systemName: Avatar.pausedSFSymbolName)
 					.foregroundStyle(Color.accentColor)
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 					.imageScale(.small)

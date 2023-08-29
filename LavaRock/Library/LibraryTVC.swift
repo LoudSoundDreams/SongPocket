@@ -111,19 +111,11 @@ class LibraryTVC: UITableViewController {
 			selector: #selector(mergedChanges),
 			name: .mergedChanges,
 			object: nil)
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(user_changed_avatar),
-			name: .user_changed_avatar,
-			object: nil)
 		
 		setUpBarButtons()
 	}
 	@objc private func mergedChanges() {
 		reflectDatabase()
-	}
-	@objc private func user_changed_avatar() {
-		reflectPlayhead()
 	}
 	
 	// Overrides should call super (this implementation).
