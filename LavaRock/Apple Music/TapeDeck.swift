@@ -52,13 +52,11 @@ final class TapeDeck {
 			return nil
 		}
 		
-		let songsContainingPlayhead = context.objectsFetched(for: { () -> NSFetchRequest<Song> in
-			let request = Song.fetchRequest()
-			request.predicate = NSPredicate(
-				format: "persistentID == %lld",
-				currentSongID)
-			return request
-		}())
+		let request = Song.fetchRequest()
+		request.predicate = NSPredicate(
+			format: "persistentID == %lld",
+			currentSongID)
+		let songsContainingPlayhead = context.objectsFetched(for: request)
 		guard
 			songsContainingPlayhead.count == 1,
 			let song = songsContainingPlayhead.first

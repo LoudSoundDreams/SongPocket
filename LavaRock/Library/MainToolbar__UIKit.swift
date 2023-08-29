@@ -300,11 +300,6 @@ final class MainToolbar__UIKit {
 	}
 }
 extension MainToolbar__UIKit: TapeDeckReflecting {
-	func reflect_playback_mode() {
-		freshen()
-	}
-	
-	func reflect_now_playing_item() {
-		freshen()
-	}
+	func reflect_playback_mode() { freshen() }
+	func reflect_now_playing_item() { freshen() }
 }

@@ -9,13 +9,8 @@
 import UIKit
 
 extension LibraryTVC: TapeDeckReflecting {
-	final func reflect_playback_mode() {
-		reflectPlayhead()
-	}
-	
-	final func reflect_now_playing_item() {
-		reflectPlayhead()
-	}
+	final func reflect_playback_mode() { reflectPlayhead() }
+	final func reflect_now_playing_item() { reflectPlayhead() }
 }
 class LibraryTVC: UITableViewController {
 	
