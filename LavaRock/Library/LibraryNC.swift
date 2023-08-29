@@ -10,9 +10,7 @@ import UIKit
 final class LibraryNC: UINavigationController {
 	var needsOverrideThemeInWindow = false
 	
-	lazy var mainToolbar = MainToolbar__UIKit(
-		weakly_Settings_presenter: self
-	)
+	lazy var mainToolbar = MainToolbar__UIKit()
 	
 	init(rootStoryboardName: String) {
 		super.init(

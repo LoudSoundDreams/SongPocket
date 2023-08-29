@@ -66,7 +66,6 @@ final class MainToolbar__UIKit {
 	
 	// MARK: - Overflow menu
 	
-	private weak var settings_presenter: UIViewController? = nil
 	private static func newPlaybackMenu() -> UIMenu {
 		let menuElements: [UIMenuElement] = [
 			// Repeat
@@ -206,11 +205,7 @@ final class MainToolbar__UIKit {
 	
 	// MARK: -
 	
-	init(
-		weakly_Settings_presenter: UIViewController
-	) {
-		self.settings_presenter = weakly_Settings_presenter
-		
+	init() {
 		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
 	}
