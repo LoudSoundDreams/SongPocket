@@ -124,6 +124,6 @@ enum LRString {
 	// MARK: Albums view
 	
 	static let variable_createStackFromXAlbums_questionMark = NSLocalizedString(
-		"plural_Create_a_stack_of_X_albums_questionMark",
+		"plural_Create_a_stack_from_X_albums_questionMark",
 		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created stack.")
 }

@@ -32,7 +32,7 @@
 	<key>plural_Move_X_albums_to_ellipsis</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Move %#@NUM_ALBUMS@ to…</string>
+		<string>Move %#@NUM_ALBUMS@ to another stack.</string>
 		<key>NUM_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -45,10 +45,10 @@
 			<string>%lld albums</string>
 		</dict>
 	</dict>
-	<key>plural_Create_a_stack_of_X_albums_questionMark</key>
+	<key>plural_Create_a_stack_from_X_albums_questionMark</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Create a stack of %#@X_ALBUMS@?</string>
+		<string>Create a stack from %#@X_ALBUMS@?</string>
 		<key>X_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
