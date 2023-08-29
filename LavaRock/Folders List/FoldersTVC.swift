@@ -284,8 +284,7 @@ final class FoldersTVC:
 			// Contact
 			UIAction(
 				title: LRString.sayHi,
-				subtitle: "linus@songpocket.app",
-				image: UIImage(systemName: "envelope")
+				subtitle: "linus@songpocket.app"
 			) { _ in
 				let mailtoLink = URL(string: "mailto:linus@songpocket.app?subject=Songpocket%20Feedback")!
 				UIApplication.shared.open(mailtoLink)
