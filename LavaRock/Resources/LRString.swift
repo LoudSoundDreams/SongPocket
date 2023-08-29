@@ -22,14 +22,14 @@ enum LRString {
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
-	static let tilde = NSLocalizedString("~", comment: "Default title for a stack if you create one and don’t provide a title.")
+	static let tilde = NSLocalizedString("~", comment: "Default title for a new stack")
 	
 	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "Status message")
 	
 	// MARK: Albums
 	
-	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
+	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
 	
 	// MARK: Toolbar
 	
@@ -40,10 +40,10 @@ enum LRString {
 	static let previous = NSLocalizedString("Previous", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
 	// As of iOS 16.5 RC 1, picture-in-picture videos use “Skip back 10 seconds” and “Skip forward 10 seconds”.
-	static let skipBack15Seconds = NSLocalizedString("Skip back 15 seconds", comment: "Accessibility label, button")
-	static let play = NSLocalizedString("Play", comment: "Accessibility label, button")
-	static let pause = NSLocalizedString("Pause", comment: "Accessibility label, button")
-	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Accessibility label, button")
+	static let skipBack15Seconds = NSLocalizedString("Skip back 15 seconds", comment: "Button")
+	static let play = NSLocalizedString("Play", comment: "Button")
+	static let pause = NSLocalizedString("Pause", comment: "Button")
+	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Button")
 	static let next = NSLocalizedString("Next", comment: "Button")
 	
 	// MARK: Now-playing icon
