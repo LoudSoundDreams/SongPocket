@@ -161,7 +161,7 @@ class LibraryTVC: UITableViewController {
 		Task {
 			/*
 			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
-			 - “Sort” menu (`LibraryTVC`)
+			 - “Arrange” menu (`LibraryTVC`)
 			 - “Rename” dialog (`FoldersTVC`)
 			 - “Combine” dialog (`FoldersTVC`)
 			 - “Move” menu (`AlbumsTVC`)
@@ -312,7 +312,7 @@ class LibraryTVC: UITableViewController {
 				with: .middle)
 		} completion: { _ in
 			self.isAnimatingBatchUpdates -= 1
-			if self.isAnimatingBatchUpdates == 0 { // See corresponding comment in `setItemsAndMoveRows`.
+			if self.isAnimatingBatchUpdates == 0 { // See corresponding comment in `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
 				self.dismiss(animated: true) { // If we moved all the albums out of a folder, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
 					self.performSegue(withIdentifier: "Removed All Contents", sender: self)
 				}

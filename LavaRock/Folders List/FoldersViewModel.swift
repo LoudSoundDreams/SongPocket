@@ -65,7 +65,7 @@ extension FoldersViewModel {
 	func updatedAfterCreating() -> Self {
 		let newFolder = Collection(context: context)
 		newFolder.title = LRString.tilde
-		// When we call `setItemsAndMoveRows`, the property observer will set each `Collection.index` for us.
+		// When we call `setViewModelAndMoveAndDeselectRowsAndShouldContinue`, the property observer will set each `Collection.index` for us.
 		
 		var newItems = libraryGroup().items
 		newItems.insert(newFolder, at: Self.indexOfNewFolder)

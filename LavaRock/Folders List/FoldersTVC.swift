@@ -17,10 +17,7 @@ extension FoldersTVC: UIAdaptivePresentationControllerDelegate {
 		presented_previewing_Combine_IndexPaths = []
 	}
 }
-final class FoldersTVC:
-	LibraryTVC,
-	OrganizeAlbumsPreviewing
-{
+final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	enum Purpose {
 		case willOrganizeAlbums(WillOrganizeAlbumsStickyNote)
 		case organizingAlbums(OrganizeAlbumsClipboard)
@@ -286,7 +283,7 @@ final class FoldersTVC:
 		
 		switch viewState {
 			case .loading, .emptyDatabase:
-				// We have placeholder rows in the Folders section. Remove them before `LibraryTVC` calls `setItemsAndMoveRows`.
+				// We have placeholder rows in the Folders section. Remove them before `LibraryTVC` calls `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
 				needsRemoveFolderRows = true // `viewState` is now `.removingFolderRows`
 				Task {
 					await reflectViewState(runningBeforeCompletion: {
@@ -301,7 +298,7 @@ final class FoldersTVC:
 		}
 		
 		if viewModelBeforeCombining != nil {
-			// We’re previewing how the rows look after combining folders. Put everything back before `LibraryTVC` calls `setItemsAndMoveRows`.
+			// We’re previewing how the rows look after combining folders. Put everything back before `LibraryTVC` calls `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
 			revertCombine(thenSelect: [])
 		}
 		

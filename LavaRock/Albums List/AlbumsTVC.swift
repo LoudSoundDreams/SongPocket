@@ -9,10 +9,7 @@
 import UIKit
 import CoreData
 
-final class AlbumsTVC:
-	LibraryTVC,
-	OrganizeAlbumsPreviewing
-{
+final class AlbumsTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	enum Purpose {
 		case previewingCombine
 		case organizingAlbums(OrganizeAlbumsClipboard)
