@@ -65,7 +65,7 @@ extension MusicLibrary {
 		let existingSongs = Song.allFetched(sorted: false, inAlbum: nil, context: context)
 		
 		let defaults = UserDefaults.standard
-		let keyHasSaved = DefaultsKey.hasSavedDatabase.rawValue
+		let keyHasSaved = LRDefaultsKey.hasSavedDatabase.rawValue
 		
 		let hasSaved = defaults.bool(forKey: keyHasSaved) // Returns `false` if there’s no saved value
 		let isFirstImport = !hasSaved
