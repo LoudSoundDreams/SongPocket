@@ -104,7 +104,7 @@ struct AlbumInfoRow: View {
 	let album: Album
 	
 	var body: some View {
-		HStack {
+		HStack(alignment: .firstTextBaseline) {
 			ZStack(alignment: .leading) {
 				Text("1999").hidden() // Preserves vertical height
 				if let releaseDate = album.releaseDateEstimateFormattedOptional() {
