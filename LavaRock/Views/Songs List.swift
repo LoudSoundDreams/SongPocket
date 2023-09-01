@@ -38,7 +38,6 @@ struct AlbumHeader: View {
 struct SongRow: View {
 	let song: Song
 	let trackDisplay: String
-	let song_title: String?
 	let artist_if_different_from_album_artist: String?
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
@@ -57,7 +56,7 @@ struct SongRow: View {
 					alignment: .leading,
 					spacing: .eight * 1/2 // 4
 				) {
-					Text(song_title ?? SongInfoPlaceholder.unknownTitle)
+					Text(song.songInfo()?.titleOnDisk ?? SongInfoPlaceholder.unknownTitle)
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
 							.foregroundStyle(.secondary)
@@ -83,7 +82,7 @@ struct SongRow: View {
 		.padding(.top, .eight * -1/4) // -2
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels([song_title].compacted())
+		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 		
 	}
 }

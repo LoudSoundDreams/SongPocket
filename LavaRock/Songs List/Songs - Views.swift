@@ -77,7 +77,6 @@ final class SongCell: UITableViewCell {
 			}()
 			return result ?? "‒" // Figure dash
 		}()
-		let song_title: String? = info?.titleOnDisk
 		let artistDisplayOptional: String? = {
 			let albumArtistOptional = representative?.albumArtistOnDisk
 			if
@@ -95,7 +94,6 @@ final class SongCell: UITableViewCell {
 				SongRow(
 					song: song,
 					trackDisplay: trackDisplay,
-					song_title: song_title,
 					artist_if_different_from_album_artist: artistDisplayOptional
 				)
 				.alignmentGuide_separatorTrailing()
@@ -104,7 +102,7 @@ final class SongCell: UITableViewCell {
 			spacerNumberLabel.text = spacerTrackNumberText
 			numberLabel.text = trackDisplay
 			titleLabel.text = { () -> String in
-				song_title ?? SongInfoPlaceholder.unknownTitle
+				info?.titleOnDisk ?? SongInfoPlaceholder.unknownTitle
 			}()
 			artistLabel.text = artistDisplayOptional
 			
@@ -123,7 +121,7 @@ final class SongCell: UITableViewCell {
 			
 			freshenOverflowButton()
 			
-			accessibilityUserInputLabels = [song_title].compacted()
+			accessibilityUserInputLabels = [info?.titleOnDisk].compacted()
 		}
 		
 		// Set menu, and require creating that menu
