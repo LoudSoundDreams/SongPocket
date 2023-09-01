@@ -8,44 +8,6 @@
 import UIKit
 import SwiftUI
 
-enum FolderRowMode {
-	case normal([UIAccessibilityCustomAction])
-	case modal
-	case modalTinted
-	case modalDisabled
-}
-struct FolderRow: View {
-	let folder: Collection
-	let mode: FolderRowMode
-	
-	var body: some View {
-		HStack {
-			Text(folder.title ?? " ")
-			Spacer()
-			HStack(alignment: .firstTextBaseline) {
-				AvatarImage(libraryItem: folder)
-					.accessibilitySortPriority(10)
-				Chevron()
-			}
-		}
-		.alignmentGuide_separatorTrailing()
-		.opacity({
-			if case FolderRowMode.modalDisabled = mode {
-				return .oneFourth // Close to what Files pickers use
-			} else {
-				return 1
-			}
-		}())
-		// • Background color
-		// • Disabling
-		// • Selection style
-		// • Accessibility traits
-		// • Accessibility action for renaming
-		.accessibilityElement(children: .combine)
-		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels([folder.title].compacted()) // Exclude the now-playing status.
-	}
-}
 final class FolderCell: UITableViewCell {
 	static let usesSwiftUI__ = 10 == 1
 	
@@ -73,14 +35,12 @@ final class FolderCell: UITableViewCell {
 	
 	func configure(
 		with folder: Collection,
-		mode: FolderRowMode
+		mode: StackRow.Mode
 	) {
 		if Self.usesSwiftUI__ {
 			contentConfiguration = UIHostingConfiguration {
-				FolderRow(
-					folder: folder,
-					mode: mode)
-				.background { Color.mint.opacity(1/8) }
+				StackRow(folder: folder, mode: mode)
+					.background { Color.mint.opacity(1/8) }
 			}
 		} else {
 			titleLabel.text = { () -> String in
@@ -94,7 +54,7 @@ final class FolderCell: UITableViewCell {
 				return folderTitle
 			}()
 			contentView.layer.opacity = { () -> Float in
-				if case FolderRowMode.modalDisabled = mode {
+				if mode == .modalDisabled {
 					return .oneFourth
 				} else {
 					return 1

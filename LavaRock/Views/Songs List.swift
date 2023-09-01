@@ -1,11 +1,39 @@
 //
-//  SongRow.swift
+//  Songs List.swift
 //  LavaRock
 //
 //  Created by h on 2023-09-01.
 //
 
 import SwiftUI
+
+struct AlbumHeader: View {
+	let album: Album
+	let trackNumberSpacer: String
+	
+	var body: some View {
+		HStack(spacing: .eight * 5/4) {
+			Text(trackNumberSpacer)
+				.monospacedDigit()
+				.hidden()
+			
+			VStack(
+				alignment: .leading,
+				spacing: .eight * 1/2
+			) {
+				Text(album.albumArtistFormatted()) // “The Beatles”
+					.foregroundStyle(.secondary)
+					.fontCaption2_bold()
+				Text(album.titleFormatted()) // “Rubber Soul”
+					.fontTitle2_bold()
+			}
+			
+			Spacer()
+		}
+		.alignmentGuide_separatorLeading()
+		.alignmentGuide_separatorTrailing()
+	}
+}
 
 struct SongRow: View {
 	let song: Song
@@ -22,8 +50,8 @@ struct SongRow: View {
 				spacing: .eight * (1 + 1/2) // 12
 			) {
 				Text(trackDisplay)
-					.monospacedDigit()
 					.foregroundStyle(.secondary)
+					.monospacedDigit()
 				
 				VStack(
 					alignment: .leading,
@@ -32,8 +60,8 @@ struct SongRow: View {
 					Text(song_title ?? SongInfoPlaceholder.unknownTitle)
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
-							.fontFootnote()
 							.foregroundStyle(.secondary)
+							.fontFootnote()
 							.padding(.bottom, .eight * 1/4) // 2
 					}
 				}

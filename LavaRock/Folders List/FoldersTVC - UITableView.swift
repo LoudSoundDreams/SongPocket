@@ -106,7 +106,7 @@ extension FoldersTVC {
 		
 		let foldersViewModel = viewModel as! FoldersViewModel
 		let collection = foldersViewModel.folderNonNil(atRow: indexPath.row)
-		let mode: FolderRowMode = {
+		let mode: StackRow.Mode = {
 			switch purpose {
 				case .willOrganizeAlbums(let stickyNote):
 					if stickyNote.idsOfSourceCollections.contains(collection.objectID) {

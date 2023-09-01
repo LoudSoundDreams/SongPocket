@@ -9,38 +9,6 @@ import UIKit
 import SwiftUI
 import MediaPlayer
 
-// MARK: - Album header
-
-struct AlbumHeader: View {
-	let album: Album
-	let trackNumberSpacer: String
-	
-	var body: some View {
-		HStack(spacing: .eight * 5/4) {
-			Text(trackNumberSpacer)
-				.monospacedDigit()
-				.hidden()
-			
-			VStack(
-				alignment: .leading,
-				spacing: .eight * 1/2
-			) {
-				Text(album.albumArtistFormatted()) // “The Beatles”
-					.foregroundStyle(.secondary)
-					.fontCaption2_bold()
-				Text(album.titleFormatted()) // “Rubber Soul”
-					.fontTitle2_bold()
-			}
-			
-			Spacer()
-		}
-		.alignmentGuide_separatorLeading()
-		.alignmentGuide_separatorTrailing()
-	}
-}
-
-// MARK: - Song row
-
 extension SongsTVC {
 	// Time complexity: O(n), where “n” is the number of media items in the group.
 	fileprivate func mediaItemsInFirstGroup(
