@@ -8,13 +8,8 @@
 import Foundation
 
 extension Notification.Name {
-	static var mergedChanges: Self {
-		Self("merged changes")
-	}
-	
-	static var userUpdatedDatabase: Self {
-		Self("user updated database")
-	}
+	static var LRMergedChanges: Self { Self("merged changes") }
+	static var LRUserUpdatedDatabase: Self { Self("user updated database") }
 }
 
 extension NotificationCenter {

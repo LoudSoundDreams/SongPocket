@@ -21,13 +21,9 @@ extension FoldersTVC {
 	
 	func numberOfRows(forSection section: Int) -> Int {
 		switch viewState {
-			case .allowAccess, .loading:
-				return 1
-			case .removingFolderRows:
-				return 0
-			case .emptyDatabase:
-				let _ = Self.emptyDatabaseInfoRow
-				return 2
+			case .allowAccess, .loading: return 1
+			case .removingFolderRows: return 0
+			case .emptyDatabase: return 2
 			case .someFolders:
 				return viewModel.prerowCount() + viewModel.libraryGroup().items.count
 		}
@@ -100,8 +96,7 @@ extension FoldersTVC {
 						}
 						return cell
 				}
-			case .someFolders:
-				break
+			case .someFolders: break
 		}
 		
 		guard let cell = tableView.dequeueReusableCell(
@@ -151,10 +146,7 @@ extension FoldersTVC {
 					])
 			}
 		}()
-		cell.configure(
-			with: collection,
-			mode: mode
-		)
+		cell.configure(with: collection, mode: mode)
 		
 		return cell
 	}
@@ -175,24 +167,13 @@ extension FoldersTVC {
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
-			case .willOrganizeAlbums:
-				return false
-			case .organizingAlbums:
-				return false
-			case .movingAlbums:
-				return false
+			case .willOrganizeAlbums: return false
+			case .organizingAlbums: return false
+			case .movingAlbums: return false
 			case .browsing:
 				switch viewState {
-					case
-							.allowAccess,
-							.loading,
-							.removingFolderRows, // Should never run
-							.emptyDatabase:
-						return false
-					case .someFolders:
-						return super.tableView(
-							tableView,
-							shouldBeginMultipleSelectionInteractionAt: indexPath)
+					case .allowAccess, .loading, .removingFolderRows, .emptyDatabase: return false
+					case .someFolders: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
 				}
 		}
 	}
@@ -202,18 +183,13 @@ extension FoldersTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch viewState {
-			case
-					.allowAccess,
-					.loading, // Should never run
-					.removingFolderRows: // Should never run
-				return indexPath
+			case .allowAccess, .loading, .removingFolderRows: return indexPath
 			case .emptyDatabase:
 				if indexPath.row == Self.emptyDatabaseInfoRow {
 					return nil
 				}
 				return indexPath
-			case .someFolders:
-				return super.tableView(tableView, willSelectRowAt: indexPath)
+			case .someFolders: return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
 	}
 	
@@ -226,10 +202,7 @@ extension FoldersTVC {
 				Task {
 					await didSelectAllowAccessRow(at: indexPath)
 				}
-			case
-					.loading,
-					.removingFolderRows: // Should never run
-				return
+			case .loading, .removingFolderRows: return
 			case .emptyDatabase:
 				Task {
 					let musicURL = URL(string: "music://")!
@@ -250,19 +223,14 @@ extension FoldersTVC {
 				switch authorizationStatus {
 					case .authorized:
 						await AppleMusic.integrateIfAuthorized()
-					case
-							.notDetermined,
-							.denied,
-							.restricted:
+					case .notDetermined, .denied, .restricted:
 						tableView.deselectRow(at: indexPath, animated: true)
 					@unknown default:
 						tableView.deselectRow(at: indexPath, animated: true)
 				}
 			case .authorized: // Should never run
 				break
-			case
-					.denied,
-					.restricted:
+			case .denied, .restricted:
 				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
 					let _ = await UIApplication.shared.open(settingsURL)
 				}

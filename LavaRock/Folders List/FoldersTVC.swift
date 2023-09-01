@@ -10,9 +10,7 @@ import UIKit
 import MediaPlayer
 
 extension FoldersTVC: UIAdaptivePresentationControllerDelegate {
-	func presentationControllerDidDismiss(
-		_ presentationController: UIPresentationController
-	) {
+	func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
 		revertCombine(thenSelect: presented_previewing_Combine_IndexPaths)
 		presented_previewing_Combine_IndexPaths = []
 	}
@@ -46,13 +44,9 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	
 	// Purpose
 	var purpose: Purpose {
-		if let clipboard = organizeAlbumsClipboard {
-			return .organizingAlbums(clipboard)
-		} else if let stickyNote = willOrganizeAlbumsStickyNote {
-			return .willOrganizeAlbums(stickyNote)
-		} else if let clipboard = moveAlbumsClipboard {
-			return .movingAlbums(clipboard)
-		}
+		if let clipboard = organizeAlbumsClipboard { return .organizingAlbums(clipboard) }
+		if let stickyNote = willOrganizeAlbumsStickyNote { return .willOrganizeAlbums(stickyNote) }
+		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
 		return .browsing
 	}
 	
@@ -147,8 +141,7 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 					if self.isEditing {
 						self.setEditing(false, animated: true)
 					}
-				case .someFolders:
-					break
+				case .someFolders: break
 			}
 			
 			self.didChangeRowsOrSelectedRows() // Freshens “Edit” button
@@ -165,60 +158,49 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 		switch purpose {
 			case .willOrganizeAlbums(let stickyNote):
 				navigationItem.prompt = stickyNote.prompt
-			case .organizingAlbums: // Should never run
-				break
+			case .organizingAlbums: break // Should never run
 			case .movingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
 			case .browsing:
 				AppleMusic.loadingIndicator = self
 				
-				NotificationCenter.default.addObserverOnce(
-					self,
-					selector: #selector(userUpdatedDatabase),
-					name: .userUpdatedDatabase,
-					object: nil)
+				NotificationCenter.default.addObserverOnce(self, selector: #selector(userUpdatedDatabase), name: .LRUserUpdatedDatabase, object: nil)
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
 		title = LRString.folders
 	}
-	@objc private func userUpdatedDatabase() {
-		reflectDatabase()
-	}
+	@objc private func userUpdatedDatabase() { reflectDatabase() }
 	
 	override func setUpBarButtons() {
 		switch purpose {
 			case .willOrganizeAlbums:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(
-						title: LRString.cancel,
-						primaryAction: UIAction { [weak self] _ in
-							self?.dismiss(animated: true)
-						}
-					),
+					UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
+						self?.dismiss(animated: true)
+					}),
 				]
-				viewingModeTopRightButtons = [{
-					let saveOrganizeButton = UIBarButtonItem(systemItem: .save,
-						primaryAction: UIAction { [weak self] _ in
+				viewingModeTopRightButtons = [
+					{
+						let saveOrganizeButton = UIBarButtonItem(systemItem: .save, primaryAction: UIAction { [weak self] _ in
 							self?.commitOrganize()
-						}
-					)
-					saveOrganizeButton.style = .done
-					return saveOrganizeButton
-				}()]
+						})
+						saveOrganizeButton.style = .done
+						return saveOrganizeButton
+					}(),
+				]
 			case .organizingAlbums: // Should never run
 				break
 			case .movingAlbums:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(
-						title: LRString.cancel,
-						primaryAction: UIAction { [weak self] _ in
-							self?.dismiss(animated: true)
-						}
-					),
+					UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
+						self?.dismiss(animated: true)
+					}),
 				]
 				viewingModeTopRightButtons = [
-					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }),
+					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in
+						self?.createAndOpen()
+					}),
 				]
 			case .browsing:
 				viewingModeTopLeftButtons = []
@@ -234,12 +216,7 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 		super.setUpBarButtons()
 		
 		switch purpose {
-			case .willOrganizeAlbums:
-				break
-			case .organizingAlbums: // Should never run
-				break
-			case .movingAlbums:
-				break
+			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: break
 			case .browsing:
 				navigationController?.setToolbarHidden(false, animated: false)
 		}
@@ -249,14 +226,9 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
-			case .willOrganizeAlbums:
-				break
-			case .organizingAlbums:
-				break
 			case .movingAlbums:
 				revertCreate()
-			case .browsing:
-				break
+			case .willOrganizeAlbums, .organizingAlbums, .browsing: break
 		}
 		
 		super.viewDidAppear(animated)
@@ -271,14 +243,8 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	
 	override func freshenLibraryItems() {
 		switch purpose {
-			case .willOrganizeAlbums:
-				return
-			case .organizingAlbums:
-				return
-			case .movingAlbums:
-				return
-			case .browsing:
-				break
+			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: return
+			case .browsing: break
 		}
 		
 		switch viewState {
@@ -293,8 +259,7 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 					})
 				}
 				return
-			case .allowAccess, .removingFolderRows, .someFolders:
-				break
+			case .allowAccess, .removingFolderRows, .someFolders: break
 		}
 		
 		if viewModelBeforeCombining != nil {
@@ -357,10 +322,7 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	
 	// MARK: - Navigation
 	
-	override func prepare(
-		for segue: UIStoryboardSegue,
-		sender: Any?
-	) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		let foldersViewModel = viewModel as! FoldersViewModel
 		
 		guard

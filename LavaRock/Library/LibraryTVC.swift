@@ -94,17 +94,11 @@ class LibraryTVC: UITableViewController {
 		
 		TapeDeck.shared.addReflector(weakly: self)
 		
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(mergedChanges),
-			name: .mergedChanges,
-			object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: .LRMergedChanges, object: nil)
 		
 		setUpBarButtons()
 	}
-	@objc private func mergedChanges() {
-		reflectDatabase()
-	}
+	@objc private func mergedChanges() { reflectDatabase() }
 	
 	// Overrides should call super (this implementation).
 	func setUpBarButtons() {

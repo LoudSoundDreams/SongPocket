@@ -127,9 +127,7 @@ extension MusicLibrary {
 			forKey: keyHasSaved)
 		
 		DispatchQueue.main.async {
-			NotificationCenter.default.post(
-				name: .mergedChanges,
-				object: nil)
+			NotificationCenter.default.post(name: .LRMergedChanges, object: nil)
 			
 			self.signal_mergedChanges.toggle()
 		}

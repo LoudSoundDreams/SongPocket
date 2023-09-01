@@ -25,15 +25,9 @@ final class AlbumsTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	
 	// Purpose
 	var purpose: Purpose {
-		if is_previewing_combine_with_album_count != 0 {
-			return .previewingCombine
-		}
-		if let clipboard = organizeAlbumsClipboard {
-			return .organizingAlbums(clipboard)
-		}
-		if let clipboard = moveAlbumsClipboard {
-			return .movingAlbums(clipboard)
-		}
+		if is_previewing_combine_with_album_count != 0 { return .previewingCombine }
+		if let clipboard = organizeAlbumsClipboard { return .organizingAlbums(clipboard) }
+		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
 		return .browsing
 	}
 	
@@ -70,8 +64,7 @@ final class AlbumsTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 				navigationItem.prompt = clipboard.prompt
 			case .movingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
-			case .browsing:
-				break
+			case .browsing: break
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
@@ -85,21 +78,27 @@ final class AlbumsTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 		switch purpose {
 			case .previewingCombine:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(title: LRString.cancel, primaryAction: cancel_combine_action),
+					UIBarButtonItem(systemItem: .cancel, primaryAction: cancel_combine_action),
 				]
-				viewingModeTopRightButtons = [{
-					let saveCombineButton = UIBarButtonItem(systemItem: .save, primaryAction: save_combine_action)
-					saveCombineButton.style = .done
-					return saveCombineButton
-				}()]
+				viewingModeTopRightButtons = [
+					{
+						let saveCombineButton = UIBarButtonItem(systemItem: .save, primaryAction: save_combine_action)
+						saveCombineButton.style = .done
+						return saveCombineButton
+					}(),
+				]
 			case .organizingAlbums:
 				break
 			case .movingAlbums:
-				viewingModeTopRightButtons = [{
-					let moveButton = UIBarButtonItem(title: LRString.move, primaryAction: UIAction { [weak self] _ in self?.moveHere() })
-					moveButton.style = .done
-					return moveButton
-				}()]
+				viewingModeTopRightButtons = [
+					{
+						let moveButton = UIBarButtonItem(title: LRString.move, primaryAction: UIAction { [weak self] _ in
+							self?.moveHere()
+						})
+						moveButton.style = .done
+						return moveButton
+					}(),
+				]
 			case .browsing:
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
@@ -119,14 +118,8 @@ final class AlbumsTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	
 	override func freshenLibraryItems() {
 		switch purpose {
-			case .previewingCombine:
-				return
-			case .organizingAlbums:
-				return
-			case .movingAlbums:
-				return
-			case .browsing:
-				super.freshenLibraryItems()
+			case .previewingCombine, .organizingAlbums, .movingAlbums: return
+			case .browsing: super.freshenLibraryItems()
 		}
 	}
 	
@@ -238,10 +231,7 @@ final class AlbumsTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	
 	// MARK: - Navigation
 	
-	override func prepare(
-		for segue: UIStoryboardSegue,
-		sender: Any?
-	) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		let albumsViewModel = viewModel as! AlbumsViewModel
 		
 		guard

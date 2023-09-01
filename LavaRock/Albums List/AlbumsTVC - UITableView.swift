@@ -52,8 +52,7 @@ extension AlbumsTVC {
 		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
 		let mode: AlbumCard.Mode = {
 			switch purpose {
-				case .previewingCombine:
-					return .disabledTinted
+				case .previewingCombine: return .disabledTinted
 				case .organizingAlbums(let clipboard):
 					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
 						return .disabledTinted
@@ -66,8 +65,7 @@ extension AlbumsTVC {
 					} else {
 						return .disabled
 					}
-				case .browsing:
-					return .normal
+				case .browsing: return .normal
 			}
 		}()
 		cell.backgroundColor = .clear
@@ -98,16 +96,8 @@ extension AlbumsTVC {
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
-			case .previewingCombine:
-				return false
-			case .organizingAlbums:
-				return false
-			case .movingAlbums:
-				return false
-			case .browsing:
-				return super.tableView(
-					tableView,
-					shouldBeginMultipleSelectionInteractionAt: indexPath)
+			case .previewingCombine, .organizingAlbums, .movingAlbums: return false
+			case .browsing: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
 		}
 	}
 	
@@ -116,16 +106,8 @@ extension AlbumsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch purpose {
-			case .previewingCombine:
-				return nil
-			case .organizingAlbums:
-				return nil
-			case .movingAlbums:
-				return nil
-			case .browsing:
-				break
+			case .previewingCombine, .organizingAlbums, .movingAlbums: return nil
+			case .browsing: return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
-		
-		return super.tableView(tableView, willSelectRowAt: indexPath)
 	}
 }

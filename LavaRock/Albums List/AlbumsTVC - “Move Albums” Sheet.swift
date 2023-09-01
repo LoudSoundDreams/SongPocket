@@ -22,9 +22,7 @@ extension AlbumsTVC {
 			viewModel.context.tryToSave()
 			viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven’t exited editing mode, because if you moved all the albums out of a folder, we’ll close the folder and exit editing mode shortly.
 			
-			NotificationCenter.default.post(
-				name: .userUpdatedDatabase,
-				object: nil)
+			NotificationCenter.default.post(name: .LRUserUpdatedDatabase, object: nil)
 			
 			dismiss(animated: true)
 			clipboard.delegate?.didMove()
