@@ -43,10 +43,10 @@ struct SongRow: View {
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
 	var body: some View {
 		
-		HStack {
+		HStack(alignment: .firstTextBaseline) {
 			HStack(
 				alignment: .firstTextBaseline,
-				spacing: .eight * (1 + 1/2) // 12
+				spacing: .eight * 5/4 // Between track number and title
 			) {
 				Text(trackDisplay)
 					.foregroundStyle(.secondary)
@@ -73,7 +73,7 @@ struct SongRow: View {
 			Button {
 			} label: {
 				Image(systemName: "ellipsis")
-					.foregroundStyle(.primary)
+					.foregroundStyle(Color.primary)
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 			}
 		}
