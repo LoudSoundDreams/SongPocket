@@ -94,6 +94,7 @@ final class SongCell: UITableViewCell {
 				SongRow(
 					song: song,
 					trackDisplay: trackDisplay,
+					trackNumberSpacer: spacerTrackNumberText,
 					artist_if_different_from_album_artist: artistDisplayOptional
 				)
 				.alignmentGuide_separatorTrailing()

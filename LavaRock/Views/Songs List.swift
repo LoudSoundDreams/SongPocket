@@ -13,8 +13,7 @@ struct AlbumHeader: View {
 	
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
-			Text(trackNumberSpacer)
-				.monospacedDigit()
+			TrackNumberLabel(text: trackNumberSpacer, spacerText: trackNumberSpacer)
 				.hidden()
 				.alignmentGuide_separatorLeading()
 			
@@ -38,6 +37,7 @@ struct AlbumHeader: View {
 struct SongRow: View {
 	let song: Song
 	let trackDisplay: String
+	let trackNumberSpacer: String
 	let artist_if_different_from_album_artist: String?
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
@@ -48,9 +48,7 @@ struct SongRow: View {
 				alignment: .firstTextBaseline,
 				spacing: .eight * 5/4 // Between track number and title
 			) {
-				Text(trackDisplay)
-					.foregroundStyle(.secondary)
-					.monospacedDigit()
+				TrackNumberLabel(text: trackDisplay, spacerText: trackNumberSpacer)
 				
 				VStack(
 					alignment: .leading,
@@ -82,5 +80,18 @@ struct SongRow: View {
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 		
+	}
+}
+
+struct TrackNumberLabel: View {
+	let text: String
+	let spacerText: String
+	
+	var body: some View {
+		ZStack(alignment: .trailing) {
+			Text(spacerText).hidden()
+			Text(text).foregroundStyle(.secondary)
+		}
+		.monospacedDigit()
 	}
 }
