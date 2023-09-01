@@ -228,11 +228,18 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 		switch purpose {
 			case .movingAlbums:
 				revertCreate()
-			case .willOrganizeAlbums, .organizingAlbums, .browsing: break
+			case .willOrganizeAlbums, .organizingAlbums: break
+			case .browsing:
+				if !forBrowsingAndHasFirstAppeared {
+					forBrowsingAndHasFirstAppeared = true
+					
+					view.window!.tintColor = UIColor(named: "synthwave")!
+				}
 		}
 		
 		super.viewDidAppear(animated)
 	}
+	private var forBrowsingAndHasFirstAppeared = false
 	
 	func prepareToIntegrateWithAppleMusic() async {
 		isMergingChanges = true // `viewState` is now `.loading` or `.someFolders` (updating)
