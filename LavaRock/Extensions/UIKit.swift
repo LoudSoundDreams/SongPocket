@@ -1,5 +1,5 @@
 //
-//  UIViewController.swift
+//  UIKit.swift
 //  LavaRock
 //
 //  Created by h on 2022-01-27.
@@ -26,6 +26,17 @@ extension UIViewController {
 			dismiss(animated: animated) {
 				continuation.resume()
 			}
+		}
+	}
+}
+
+extension UIImpactFeedbackGenerator {
+	final func impactOccurredTwice() {
+		Task {
+			impactOccurred()
+			try await Task.sleep(nanoseconds: 0_200_000_000)
+			
+			impactOccurred()
 		}
 	}
 }
