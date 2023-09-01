@@ -351,7 +351,7 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	// Overrides should call super (this implementation).
-	final override func setEditing(_ editing: Bool, animated: Bool) {
+	override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
 			let newViewModel = viewModel.updatedWithFreshenedData()
 			__setViewModelAndMoveAndDeselectRows(

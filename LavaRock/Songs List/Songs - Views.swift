@@ -91,13 +91,16 @@ final class SongCell: UITableViewCell {
 		
 		if Self.usesSwiftUI__ {
 			contentConfiguration = UIHostingConfiguration {
-				SongRow(
-					song: song,
-					trackDisplay: trackDisplay,
-					trackNumberSpacer: spacerTrackNumberText,
-					artist_if_different_from_album_artist: artistDisplayOptional
-				)
-				.alignmentGuide_separatorTrailing()
+				if let referencee = songsTVC.referencee {
+					SongRow(
+						song: song,
+						trackDisplay: trackDisplay,
+						trackNumberSpacer: spacerTrackNumberText,
+						artist_if_different_from_album_artist: artistDisplayOptional,
+						listStatus: referencee.status
+					)
+					.alignmentGuide_separatorTrailing()
+				}
 			}
 		} else {
 			spacerNumberLabel.text = spacerTrackNumberText

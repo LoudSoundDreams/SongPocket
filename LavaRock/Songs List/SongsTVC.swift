@@ -9,7 +9,19 @@
 import UIKit
 import MediaPlayer
 
+final class SongsListStatus: ObservableObject {
+	@Published fileprivate(set) var editing = false
+}
+
 final class SongsTVC: LibraryTVC {
+	let status = SongsListStatus()
+	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		
+		status.editing = editing
+	}
+	
 	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.arrange)
 	override func setUpBarButtons() {
 		viewingModeTopRightButtons = [editButtonItem]

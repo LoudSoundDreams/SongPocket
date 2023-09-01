@@ -39,6 +39,7 @@ struct SongRow: View {
 	let trackDisplay: String
 	let trackNumberSpacer: String
 	let artist_if_different_from_album_artist: String?
+	@ObservedObject var listStatus: SongsListStatus
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
 	var body: some View {
@@ -71,9 +72,10 @@ struct SongRow: View {
 			Button {
 			} label: {
 				Image(systemName: "ellipsis")
-					.foregroundStyle(Color.primary)
+					.tint(Color.primary)
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 			}
+			.disabled(listStatus.editing)
 		}
 		.padding(.top, .eight * -1/4) // -2
 		.accessibilityElement(children: .combine)
