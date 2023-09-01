@@ -14,7 +14,6 @@
 		070E194124F33FC800B21307 /* FoldersTVC - Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E194024F33FC800B21307 /* FoldersTVC - Editing.swift */; };
 		071A0B9E277E76510017F76D /* LavaRock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* LavaRock.swift */; };
 		071A0BA0277E832C0017F76D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9F277E832C0017F76D /* Database.swift */; };
-		071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0BA1277E83CB0017F76D /* LibraryNC.swift */; };
 		071DC5E72A1045CE0073C854 /* Main Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071DC5E62A1045CE0073C854 /* Main Toolbar.swift */; };
 		07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* TapeDeck.swift */; };
 		072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */; };
@@ -107,7 +106,6 @@
 		070E194024F33FC800B21307 /* FoldersTVC - Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FoldersTVC - Editing.swift"; sourceTree = "<group>"; };
 		071A0B9D277E76510017F76D /* LavaRock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LavaRock.swift; sourceTree = "<group>"; };
 		071A0B9F277E832C0017F76D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
-		071A0BA1277E83CB0017F76D /* LibraryNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryNC.swift; sourceTree = "<group>"; };
 		071DC5E62A1045CE0073C854 /* Main Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Main Toolbar.swift"; sourceTree = "<group>"; };
 		07267A1F25537C5800C914A3 /* TapeDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeck.swift; sourceTree = "<group>"; };
 		072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge, Clean Up.swift"; sourceTree = "<group>"; };
@@ -223,7 +221,6 @@
 		070E194524F3424500B21307 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				071A0BA1277E83CB0017F76D /* LibraryNC.swift */,
 				071DC5E62A1045CE0073C854 /* Main Toolbar.swift */,
 				07DF76E32828D8AB00B03103 /* TransportToolbar__.swift */,
 				07755A57294821860056E90C /* Avatar.swift */,
@@ -562,7 +559,6 @@
 				070C844C2A81F9410094DFF7 /* SongInfo - Simulator.swift in Sources */,
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */,
-				071A0BA2277E83CB0017F76D /* LibraryNC.swift in Sources */,
 				07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */,
 				078307B42512BC59005CDA67 /* AlbumsTVC + MoveAlbumsDelegate.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
@@ -779,7 +775,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 850;
+				CURRENT_PROJECT_VERSION = 851;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -807,7 +803,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 850;
+				CURRENT_PROJECT_VERSION = 851;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
