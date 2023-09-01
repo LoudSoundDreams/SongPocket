@@ -32,12 +32,17 @@ struct LavaRock: App {
 	}
 }
 private struct RootView: UIViewControllerRepresentable {
-	typealias VCType = LibraryNC
+	typealias VCType = UINavigationController
 	
 	func makeUIViewController(context: Context) -> VCType {
-		let result = LibraryNC(rootStoryboardName: "FoldersTVC")
+		let result = UINavigationController(
+			rootViewController: UIStoryboard(name: "FoldersTVC", bundle: nil)
+				.instantiateInitialViewController()!
+		)
+		
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		
 		return result
 	}
 	

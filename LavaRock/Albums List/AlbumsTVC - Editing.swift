@@ -12,9 +12,12 @@ import OSLog
 extension AlbumsTVC {
 	func previewAutoMove() {
 		// Prepare a Folders view to present modally.
-		let libraryNC = LibraryNC(rootStoryboardName: "FoldersTVC")
+		let nc = UINavigationController(
+			rootViewController: UIStoryboard(name: "FoldersTVC", bundle: nil)
+				.instantiateInitialViewController()!
+		)
 		guard
-			let foldersTVC = libraryNC.viewControllers.first as? FoldersTVC,
+			let foldersTVC = nc.viewControllers.first as? FoldersTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
@@ -64,7 +67,7 @@ extension AlbumsTVC {
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
 		Task {
-			await present__async(libraryNC, animated: true)
+			await present__async(nc, animated: true)
 			
 			foldersTVC.organizeAlbumsClipboard = clipboard
 			foldersTVC.willOrganizeAlbumsStickyNote = nil
@@ -188,9 +191,12 @@ extension AlbumsTVC {
 	
 	func startMoving() {
 		// Prepare a Folders view to present modally.
-		let libraryNC = LibraryNC(rootStoryboardName: "FoldersTVC")
+		let nc = UINavigationController(
+			rootViewController: UIStoryboard(name: "FoldersTVC", bundle: nil)
+				.instantiateInitialViewController()!
+		)
 		guard
-			let foldersTVC = libraryNC.viewControllers.first as? FoldersTVC,
+			let foldersTVC = nc.viewControllers.first as? FoldersTVC,
 			let selfVM = viewModel as? AlbumsViewModel
 		else { return }
 		
@@ -216,6 +222,6 @@ extension AlbumsTVC {
 			}()
 		)
 		
-		present(libraryNC, animated: true)
+		present(nc, animated: true)
 	}
 }

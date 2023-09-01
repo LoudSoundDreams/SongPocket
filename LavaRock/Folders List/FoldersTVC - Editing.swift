@@ -124,12 +124,15 @@ extension FoldersTVC {
 			) else { return }
 			
 			// Prepare an Albums view to present modally.
-			let libraryNC = LibraryNC(rootStoryboardName: "AlbumsTVC")
-			libraryNC.presentationController!.delegate = self // In case the user dismisses the sheet by swiping it
+			let nc = UINavigationController(
+				rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil)
+					.instantiateInitialViewController()!
+			)
+			nc.presentationController!.delegate = self // In case the user dismisses the sheet by swiping it
 			presented_previewing_Combine_IndexPaths = selectedIndexPaths
 			
 			// Configure the `AlbumsTVC`.
-			let albumsTVC = libraryNC.viewControllers.first as! AlbumsTVC
+			let albumsTVC = nc.viewControllers.first as! AlbumsTVC
 			albumsTVC.viewModel = AlbumsViewModel(
 				folder: combined,
 				context: previewContext)
@@ -145,7 +148,7 @@ extension FoldersTVC {
 				})
 			}
 			
-			present(libraryNC, animated: true)
+			present(nc, animated: true)
 		}
 	}
 	
