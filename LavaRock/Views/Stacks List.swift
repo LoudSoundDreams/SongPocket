@@ -23,8 +23,7 @@ struct StackRow: View {
 			Text(folder.title ?? " ")
 			Spacer()
 			HStack(alignment: .firstTextBaseline) {
-				AvatarImage(libraryItem: folder)
-					.accessibilitySortPriority(10)
+				AvatarImage(libraryItem: folder).accessibilitySortPriority(10)
 				Chevron()
 			}
 		}
