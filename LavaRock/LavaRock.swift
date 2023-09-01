@@ -22,7 +22,7 @@ struct LavaRock: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			RootNC()
+			RootView()
 				.edgesIgnoringSafeArea(.all)
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()
@@ -31,7 +31,7 @@ struct LavaRock: App {
 		}
 	}
 }
-private struct RootNC: UIViewControllerRepresentable {
+private struct RootView: UIViewControllerRepresentable {
 	typealias VCType = LibraryNC
 	
 	func makeUIViewController(context: Context) -> VCType {
