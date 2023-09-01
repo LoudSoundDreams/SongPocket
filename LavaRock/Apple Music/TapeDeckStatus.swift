@@ -18,7 +18,7 @@ final class TapeDeckStatus: ObservableObject {
 		let isPlaying: Bool
 	}
 	
-	@Published var current: Status? = nil
+	@Published private(set) var current: Status? = nil
 	
 	func freshen() {
 		let new_status: Status?
