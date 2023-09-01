@@ -349,8 +349,7 @@ class LibraryTVC: UITableViewController {
 			editing ? editingModeToolbarButtons : viewingModeToolbarItems,
 			animated: animated)
 	}
-	private lazy var viewingModeToolbarItems: [UIBarButtonItem]
-	= (navigationController as? LibraryNC)?.transportToolbar.barButtonItems ?? []
+	private lazy var viewingModeToolbarItems: [UIBarButtonItem] = TransportToolbar__.shared.barButtonItems
 	
 	// For clarity, call this rather than `freshenEditingButtons` directly, whenever possible.
 	final func didChangeRowsOrSelectedRows() {

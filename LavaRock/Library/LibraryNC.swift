@@ -8,8 +8,6 @@
 import UIKit
 
 final class LibraryNC: UINavigationController {
-	lazy var transportToolbar = TransportToolbar__()
-	
 	init(rootStoryboardName: String) {
 		super.init(
 			rootViewController: UIStoryboard(name: rootStoryboardName, bundle: nil)

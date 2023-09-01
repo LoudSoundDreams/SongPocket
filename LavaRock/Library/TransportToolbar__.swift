@@ -13,10 +13,7 @@ import MediaPlayer
 // However, as of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor
 final class TransportToolbar__ {
-	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
-	
-	// MARK: - Buttons
-	
+	static let shared = TransportToolbar__()
 	var barButtonItems: [UIBarButtonItem] {
 		return [
 			overflowButton, .flexibleSpace(),
@@ -26,6 +23,10 @@ final class TransportToolbar__ {
 			nextButton,
 		]
 	}
+	
+	// MARK: - PRIVATE
+	
+	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
@@ -205,7 +206,7 @@ final class TransportToolbar__ {
 	
 	// MARK: -
 	
-	init() {
+	private init() {
 		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
 	}
