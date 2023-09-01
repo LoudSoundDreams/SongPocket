@@ -37,8 +37,6 @@ final class SongCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		backgroundColor = .clear
-		
 		if Self.usesSwiftUI__ { return }
 		
 		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)

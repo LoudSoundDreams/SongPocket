@@ -16,6 +16,7 @@ struct AlbumHeader: View {
 			Text(trackNumberSpacer)
 				.monospacedDigit()
 				.hidden()
+				.alignmentGuide_separatorLeading()
 			
 			VStack(
 				alignment: .leading,
@@ -30,7 +31,6 @@ struct AlbumHeader: View {
 			
 			Spacer()
 		}
-		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
 	}
 }

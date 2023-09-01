@@ -65,6 +65,7 @@ extension SongsTVC {
 			withIdentifier: "Song",
 			for: indexPath) as? SongCell
 		else { return UITableViewCell() }
+		cell.backgroundColor = .clear
 		cell.configureWith(
 			song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
 			albumRepresentative: album.representativeSongInfo(),
