@@ -8,7 +8,7 @@
 import UIKit
 
 final class LibraryNC: UINavigationController {
-	lazy var mainToolbar = MainToolbar__UIKit()
+	lazy var transportToolbar = TransportToolbar__()
 	
 	init(rootStoryboardName: String) {
 		super.init(
