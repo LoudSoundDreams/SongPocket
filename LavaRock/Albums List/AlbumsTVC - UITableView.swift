@@ -50,21 +50,21 @@ extension AlbumsTVC {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 		let albumsViewModel = viewModel as! AlbumsViewModel
 		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
-		let mode: AlbumRowMode = {
+		let mode: AlbumCard.Mode = {
 			switch purpose {
 				case .previewingCombine:
-					return .modalTinted
+					return .disabledTinted
 				case .organizingAlbums(let clipboard):
 					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
-						return .modalTinted
+						return .disabledTinted
 					} else {
-						return .modal
+						return .disabled
 					}
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
-						return .modalTinted
+						return .disabledTinted
 					} else {
-						return .modal
+						return .disabled
 					}
 				case .browsing:
 					return .normal
@@ -73,7 +73,7 @@ extension AlbumsTVC {
 		cell.backgroundColor = .clear
 		switch mode {
 			case .normal: break
-			case .modal, .modalTinted:
+			case .disabled, .disabledTinted:
 				cell.selectionStyle = .none
 		}
 		cell.contentConfiguration = UIHostingConfiguration {

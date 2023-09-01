@@ -1,5 +1,5 @@
 //
-//  Albums - Views.swift
+//  AlbumCard.swift
 //  LavaRock
 //
 //  Created by h on 2020-07-10.
@@ -8,15 +8,16 @@
 import SwiftUI
 import OSLog
 
-enum AlbumRowMode {
-	case normal
-	case modal // disabled
-	case modalTinted // disabledTinted
-}
 struct AlbumCard: View {
+	enum Mode {
+		case normal
+		case disabled
+		case disabledTinted
+	}
+	
 	let album: Album
 	let maxHeight: CGFloat
-	let mode: AlbumRowMode
+	let mode: Mode
 	
 	@Environment(\.pixelLength) private var pointsPerPixel
 	private static let borderWidthInPixels: CGFloat = 2
@@ -57,14 +58,14 @@ struct AlbumCard: View {
 			switch mode {
 				case .normal:
 					return 1
-				case .modal:
+				case .disabled:
 					return .oneFourth // Close to what Files pickers use
-				case .modalTinted:
+				case .disabledTinted:
 					return .oneHalf
 			}
 		}())
 		.background {
-			if case AlbumRowMode.modalTinted = mode {
+			if mode == .disabledTinted {
 				Color.accentColor.opacity(.oneEighth)
 			}
 		}
