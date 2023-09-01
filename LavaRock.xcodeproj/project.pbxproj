@@ -76,6 +76,7 @@
 		07F36BC224FC3F450064282D /* FoldersTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC124FC3F450064282D /* FoldersTVC - UITableView.swift */; };
 		07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */; };
 		07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */; };
+		07F4AA162AA2393D00AA5F1E /* SongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F4AA152AA2393D00AA5F1E /* SongRow.swift */; };
 		07FB52CB2813909400CCCBA5 /* ArrangeCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FB52CA2813909400CCCBA5 /* ArrangeCommand.swift */; };
 		07FF080128652A4C00EE4FD4 /* SortingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* SortingTests.swift */; };
 		07FFC00E29D88B6B00B98447 /* AppleMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FFC00D29D88B6B00B98447 /* AppleMusic.swift */; };
@@ -175,6 +176,7 @@
 		07F36BC124FC3F450064282D /* FoldersTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FoldersTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC524FC3FE40064282D /* AlbumsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - UITableView.swift"; sourceTree = "<group>"; };
 		07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - UITableView.swift"; sourceTree = "<group>"; };
+		07F4AA152AA2393D00AA5F1E /* SongRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRow.swift; sourceTree = "<group>"; };
 		07FB52CA2813909400CCCBA5 /* ArrangeCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeCommand.swift; sourceTree = "<group>"; };
 		07FF080028652A4C00EE4FD4 /* SortingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingTests.swift; sourceTree = "<group>"; };
 		07FFC00D29D88B6B00B98447 /* AppleMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusic.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
 				07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */,
+				07F4AA152AA2393D00AA5F1E /* SongRow.swift */,
 				073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */,
 				07EC01EB26C895CB00954E08 /* SongsViewModel.swift */,
 			);
@@ -592,6 +595,7 @@
 				0787CB0A27A376400068C2E5 /* UIKit.swift in Sources */,
 				07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
+				07F4AA162AA2393D00AA5F1E /* SongRow.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */,
 				07E0BBD7276567490010117E /* String.swift in Sources */,
