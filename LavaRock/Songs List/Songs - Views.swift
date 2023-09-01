@@ -127,14 +127,33 @@ final class SongCell: UITableViewCell {
 			menu = nil
 			return
 		}
+		menu = newOverflowMenu(mediaItem: mediaItem, songsTVC: songsTVC)
+	}
+	
+	private func freshenOverflowButton() {
+		overflowButton.isEnabled = !isEditing
+	}
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
 		
+		if Self.usesSwiftUI__ { return }
+		
+		separatorInset.left = 0
+		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
+		+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
+		separatorInset.right = directionalLayoutMargins.trailing
+	}
+	
+	private func newOverflowMenu(
+		mediaItem: MPMediaItem,
+		songsTVC: Weak<SongsTVC>
+	) -> UIMenu {
 		// For actions that start playback:
 		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
 		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 		let player = TapeDeck.shared.player
-		
-		// Create menu elements
 		
 		let play = UIAction(
 			title: LRString.play,
@@ -158,7 +177,6 @@ final class SongCell: UITableViewCell {
 			) { _ in player?.playNext([mediaItem]) }
 			useMenuElements([action])
 		})
-		
 		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
 				title: LRString.playLast,
@@ -167,10 +185,7 @@ final class SongCell: UITableViewCell {
 			useMenuElements([action])
 		})
 		
-		// —
-		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
-		
 		let playToBottomNext = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
@@ -182,7 +197,6 @@ final class SongCell: UITableViewCell {
 			}
 			useMenuElements([action])
 		})
-		
 		let playToBottomLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
@@ -195,7 +209,6 @@ final class SongCell: UITableViewCell {
 			useMenuElements([action])
 		})
 		
-		// Create menu
 		let submenus: [UIMenu] = [
 			UIMenu(options: .displayInline, children: [
 				play,
@@ -209,22 +222,7 @@ final class SongCell: UITableViewCell {
 				playToBottomLast,
 			]),
 		]
-		menu = UIMenu(children: submenus)
-	}
-	
-	private func freshenOverflowButton() {
-		overflowButton.isEnabled = !isEditing
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if Self.usesSwiftUI__ { return }
-		
-		separatorInset.left = 0
-		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
-		+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
-		separatorInset.right = directionalLayoutMargins.trailing
+		return UIMenu(children: submenus)
 	}
 }
 private extension UIFont {
