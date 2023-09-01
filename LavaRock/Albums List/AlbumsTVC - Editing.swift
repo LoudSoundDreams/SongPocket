@@ -13,6 +13,7 @@ extension AlbumsTVC {
 	func previewAutoMove() {
 		// Prepare a Folders view to present modally.
 		let libraryNC = LibraryNC(rootStoryboardName: "FoldersTVC")
+		libraryNC.view.tintColor = .synthwave
 		guard
 			let foldersTVC = libraryNC.viewControllers.first as? FoldersTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
@@ -189,6 +190,7 @@ extension AlbumsTVC {
 	func startMoving() {
 		// Prepare a Folders view to present modally.
 		let libraryNC = LibraryNC(rootStoryboardName: "FoldersTVC")
+		libraryNC.view.tintColor = .synthwave
 		guard
 			let foldersTVC = libraryNC.viewControllers.first as? FoldersTVC,
 			let selfVM = viewModel as? AlbumsViewModel

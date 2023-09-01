@@ -7,6 +7,10 @@
 
 import UIKit
 
+extension UIColor {
+	static let synthwave = UIColor(named: "synthwave")!
+}
+
 extension UIViewController {
 	final func present__async(
 		_ toPresent: UIViewController,

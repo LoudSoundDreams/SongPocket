@@ -42,13 +42,11 @@ private struct RootNC: UIViewControllerRepresentable {
 	// • Thereafter, during `updateUIViewController`, always override on the window.
 	// “As soon as possible” is `viewDidAppear`, because that’s when the window becomes non-nil, and note that that’s after the initial `update`.
 	
-	let tint: UIColor = UIColor(named: "synthwave")!
-	
 	func makeUIViewController(
 		context: Context
 	) -> VCType {
 		let vc = LibraryNC(rootStoryboardName: "FoldersTVC")
-		vc.view.tintColor = tint
+//		vc.view.tintColor = tint
 		vc.needsOverrideThemeInWindow = true
 		return vc
 	}
@@ -58,11 +56,11 @@ private struct RootNC: UIViewControllerRepresentable {
 		_ uiViewController: VCType,
 		context: Context
 	) {
-		let vc = uiViewController
+//		let vc = uiViewController
 //		let window = vc.view.window
 		
 		// Unfortunately, we can’t remove a view’s tint color override.
 		// So, override the tint color on both the view and its window, every time.
-		vc.view.tintColor = tint
+//		vc.view.tintColor = tint
 	}
 }

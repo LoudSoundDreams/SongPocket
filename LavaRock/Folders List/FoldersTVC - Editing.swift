@@ -125,6 +125,7 @@ extension FoldersTVC {
 			
 			// Prepare an Albums view to present modally.
 			let libraryNC = LibraryNC(rootStoryboardName: "AlbumsTVC")
+			libraryNC.view.tintColor = .synthwave
 			libraryNC.presentationController!.delegate = self // In case the user dismisses the sheet by swiping it
 			presented_previewing_Combine_IndexPaths = selectedIndexPaths
 			

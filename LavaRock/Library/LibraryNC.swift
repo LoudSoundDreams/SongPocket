@@ -36,10 +36,10 @@ final class LibraryNC: UINavigationController {
 		if needsOverrideThemeInWindow {
 			needsOverrideThemeInWindow = false
 			
-			let window = view.window!
+//			let window = view.window!
 			
 			// Accent color
-			window.tintColor = view.tintColor
+//			window.tintColor = view.tintColor
 			// Unfortunately, setting `view.tintColor = nil` doesn’t remove the override.
 		}
 	}
