@@ -39,6 +39,8 @@ final class SongCell: UITableViewCell {
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
+		if Self.usesSwiftUI__ { return }
+		
 		freshenOverflowButton()
 	}
 	
@@ -113,25 +115,15 @@ final class SongCell: UITableViewCell {
 			reflectStatus__(song.avatarStatus__())
 			
 			freshenOverflowButton()
+			overflowButton.menu = {
+				guard let mediaItem = song.mpMediaItem() else {
+					return nil
+				}
+				return newOverflowMenu(mediaItem: mediaItem, songsTVC: songsTVC)
+			}()
 			
 			accessibilityUserInputLabels = [info?.titleOnDisk].compacted()
 		}
-		
-		// Set menu, and require creating that menu
-		let menu: UIMenu?
-		defer {
-			overflowButton.menu = menu
-		}
-		
-		guard let mediaItem = song.mpMediaItem() else {
-			menu = nil
-			return
-		}
-		menu = newOverflowMenu(mediaItem: mediaItem, songsTVC: songsTVC)
-	}
-	
-	private func freshenOverflowButton() {
-		overflowButton.isEnabled = !isEditing
 	}
 	
 	override func layoutSubviews() {
@@ -145,6 +137,9 @@ final class SongCell: UITableViewCell {
 		separatorInset.right = directionalLayoutMargins.trailing
 	}
 	
+	private func freshenOverflowButton() {
+		overflowButton.isEnabled = !isEditing
+	}
 	private func newOverflowMenu(
 		mediaItem: MPMediaItem,
 		songsTVC: Weak<SongsTVC>
