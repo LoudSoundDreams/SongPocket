@@ -53,16 +53,16 @@ struct SongRow: View {
 				
 				VStack(
 					alignment: .leading,
-					spacing: .eight * 1/2 // 4
+					spacing: .eight * 1/2
 				) {
 					Text(song.songInfo()?.titleOnDisk ?? SongInfoPlaceholder.unknownTitle)
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
 							.foregroundStyle(.secondary)
 							.fontFootnote()
-							.padding(.bottom, .eight * 1/4) // 2
 					}
 				}
+				.padding(.bottom, .eight * 1/4)
 				.alignmentGuide_separatorLeading()
 			}
 			
@@ -77,7 +77,7 @@ struct SongRow: View {
 			}
 			.disabled(listStatus.editing)
 		}
-		.padding(.top, .eight * -1/4) // -2
+		.padding(.top, .eight * -1/4)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
