@@ -41,30 +41,6 @@ struct AlbumHeader: View {
 
 // MARK: - Song row
 
-final class ExpandedTargetButton: UIButton {
-	override func point(
-		inside point: CGPoint,
-		with event: UIEvent?
-	) -> Bool {
-		let tappableWidth = max(bounds.width, 44)
-		let tappableHeight = max(bounds.height, 55)
-		let tappableRect = CGRect(
-			x: bounds.midX - tappableWidth/2,
-			y: bounds.midY - tappableHeight/2,
-			width: tappableWidth,
-			height: tappableHeight)
-		return tappableRect.contains(point)
-	}
-}
-private extension UIFont {
-	static func monospacedDigitSystemFont(
-		forTextStyle style: TextStyle
-	) -> UIFont {
-		return .monospacedDigitSystemFont(
-			ofSize: UIFont.preferredFont(forTextStyle: style).pointSize,
-			weight: .regular)
-	}
-}
 extension SongsTVC {
 	// Time complexity: O(n), where “n” is the number of media items in the group.
 	fileprivate func mediaItemsInFirstGroup(
@@ -121,10 +97,7 @@ final class SongCell: UITableViewCell {
 		
 		let trackDisplay: String = {
 			let result: String? = {
-				guard
-					let representative,
-					let info
-				else {
+				guard let representative, let info else {
 					// `SongInfo` not available
 					return nil
 				}
@@ -297,5 +270,29 @@ final class SongCell: UITableViewCell {
 		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
 		+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
 		separatorInset.right = directionalLayoutMargins.trailing
+	}
+}
+private extension UIFont {
+	static func monospacedDigitSystemFont(
+		forTextStyle style: TextStyle
+	) -> UIFont {
+		return .monospacedDigitSystemFont(
+			ofSize: UIFont.preferredFont(forTextStyle: style).pointSize,
+			weight: .regular)
+	}
+}
+final class ExpandedTargetButton: UIButton {
+	override func point(
+		inside point: CGPoint,
+		with event: UIEvent?
+	) -> Bool {
+		let tappableWidth = max(bounds.width, 44)
+		let tappableHeight = max(bounds.height, 55)
+		let tappableRect = CGRect(
+			x: bounds.midX - tappableWidth/2,
+			y: bounds.midY - tappableHeight/2,
+			width: tappableWidth,
+			height: tappableHeight)
+		return tappableRect.contains(point)
 	}
 }
