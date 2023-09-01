@@ -69,7 +69,33 @@ struct SongRow: View {
 			Spacer()
 			
 			AvatarImage(libraryItem: song).accessibilitySortPriority(10)
-			Button {
+			Menu {
+				Button {
+				} label: {
+					Label(LRString.play, systemImage: "play")
+				}
+				
+				Divider()
+				
+				Button {
+				} label: {
+					Label(LRString.playNext, systemImage: "text.line.first.and.arrowtriangle.forward")
+				}
+				Button {
+				} label: {
+					Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward")
+				}
+				
+				Divider()
+
+				Button {
+				} label: {
+					Label(LRString.playRestOfAlbumNext, systemImage: "text.line.first.and.arrowtriangle.forward")
+				}
+				Button {
+				} label: {
+					Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
+				}
 			} label: {
 				Image(systemName: "ellipsis")
 					.tint(Color.primary)
