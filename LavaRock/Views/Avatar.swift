@@ -19,23 +19,17 @@ enum AvatarStatus {
 	
 	var uiImage__: UIImage? {
 		switch self {
-			case .notPlaying:
-				return nil
-			case .paused:
-				return UIImage(systemName: Avatar.pausedSFSymbolName)
-			case .playing:
-				return UIImage(systemName: Avatar.playingSFSymbolName)
+			case .notPlaying: return nil
+			case .paused: return UIImage(systemName: Avatar.pausedSFSymbolName)
+			case .playing: return UIImage(systemName: Avatar.playingSFSymbolName)
 		}
 	}
 	
 	var axLabel: String? {
 		switch self {
-			case .notPlaying:
-				return nil
-			case .paused:
-				return LRString.paused
-			case .playing:
-				return LRString.nowPlaying
+			case .notPlaying: return nil
+			case .paused: return LRString.paused
+			case .playing: return LRString.nowPlaying
 		}
 	}
 }
@@ -57,10 +51,7 @@ extension FolderCell: AvatarDisplaying__ {
 		spacerSpeakerImageView.image = UIImage(systemName: Avatar.playingSFSymbolName)
 		speakerImageView.image = avatarStatus.uiImage__
 		
-		accessibilityLabel = [
-			avatarStatus.axLabel,
-			rowContentAccessibilityLabel__,
-		].compactedAndFormattedAsNarrowList()
+		accessibilityLabel = [avatarStatus.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 }
 extension SongCell: AvatarDisplaying__ {
@@ -73,10 +64,7 @@ extension SongCell: AvatarDisplaying__ {
 		spacerSpeakerImageView.image = UIImage(systemName: Avatar.playingSFSymbolName)
 		speakerImageView.image = avatarStatus.uiImage__
 		
-		accessibilityLabel = [
-			avatarStatus.axLabel,
-			rowContentAccessibilityLabel__,
-		].compactedAndFormattedAsNarrowList()
+		accessibilityLabel = [avatarStatus.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 }
 
