@@ -20,7 +20,6 @@
 		072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */; };
 		0736E3A724B8415400A15420 /* Albums - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3A624B8415400A15420 /* Albums - Views.swift */; };
 		0736E3EA24B95FD600A15420 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* Album.swift */; };
-		073B99C72944FA8900B48C9C /* UIImpactFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */; };
 		073CD6462A83FC66008E32A7 /* SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CD6452A83FC66008E32A7 /* SwiftUI.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Folders - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Folders - Views.swift */; };
@@ -114,7 +113,6 @@
 		072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge, Clean Up.swift"; sourceTree = "<group>"; };
 		0736E3A624B8415400A15420 /* Albums - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Albums - Views.swift"; sourceTree = "<group>"; };
 		0736E3E924B95FD600A15420 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
-		073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImpactFeedbackGenerator.swift; sourceTree = "<group>"; };
 		073CD6452A83FC66008E32A7 /* SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Folders - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folders - Views.swift"; sourceTree = "<group>"; };
@@ -376,7 +374,6 @@
 				073CD6452A83FC66008E32A7 /* SwiftUI.swift */,
 				07E0BBE72765678F0010117E /* UITableView.swift */,
 				0787CB0927A376400068C2E5 /* UIKit.swift */,
-				073B99C62944FA8900B48C9C /* UIImpactFeedbackGenerator.swift */,
 				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
 				076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */,
 			);
@@ -605,7 +602,6 @@
 				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
 				070E194124F33FC800B21307 /* FoldersTVC - Editing.swift in Sources */,
 				07F36BC824FC400E0064282D /* SongsTVC - UITableView.swift in Sources */,
-				073B99C72944FA8900B48C9C /* UIImpactFeedbackGenerator.swift in Sources */,
 				073E6A8725562B93003C84A5 /* Folders - Views.swift in Sources */,
 				07FB52CB2813909400CCCBA5 /* ArrangeCommand.swift in Sources */,
 			);
