@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum Avatar {
-	static let pausedSFSymbolName = "speaker.fill"
-	static let playingSFSymbolName = "speaker.wave.2.fill"
-}
-
 enum AvatarStatus {
 	case notPlaying
 	case paused
@@ -20,8 +15,8 @@ enum AvatarStatus {
 	var uiImage__: UIImage? {
 		switch self {
 			case .notPlaying: return nil
-			case .paused: return UIImage(systemName: Avatar.pausedSFSymbolName)
-			case .playing: return UIImage(systemName: Avatar.playingSFSymbolName)
+			case .paused: return UIImage(systemName: "speaker.fill")
+			case .playing: return UIImage(systemName: "speaker.wave.2.fill")
 		}
 	}
 	
@@ -35,36 +30,33 @@ enum AvatarStatus {
 }
 
 @MainActor
-protocol AvatarDisplaying__: AnyObject {
-	// Adopting types must…
-	// • Call `indicateAvatarStatus__` whenever appropriate.
-	
-	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus)
+protocol AvatarReflecting__: AnyObject {
+	func reflectStatus__(_ status: AvatarStatus)
 }
-extension FolderCell: AvatarDisplaying__ {
-	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus) {
+extension FolderCell: AvatarReflecting__ {
+	func reflectStatus__(_ status: AvatarStatus) {
 		if Self.usesSwiftUI__ { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = UIImage(systemName: Avatar.playingSFSymbolName)
-		speakerImageView.image = avatarStatus.uiImage__
+		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage__
+		speakerImageView.image = status.uiImage__
 		
-		accessibilityLabel = [avatarStatus.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
+		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 }
-extension SongCell: AvatarDisplaying__ {
-	func indicateAvatarStatus__(_ avatarStatus: AvatarStatus) {
+extension SongCell: AvatarReflecting__ {
+	func reflectStatus__(_ status: AvatarStatus) {
 		if Self.usesSwiftUI__ { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = UIImage(systemName: Avatar.playingSFSymbolName)
-		speakerImageView.image = avatarStatus.uiImage__
+		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage__
+		speakerImageView.image = status.uiImage__
 		
-		accessibilityLabel = [avatarStatus.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
+		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 }
 
@@ -101,7 +93,7 @@ struct AvatarImage: View {
 	}
 	
 	private var playing_image: some View {
-		Image(systemName: Avatar.playingSFSymbolName)
+		Image(systemName: "speaker.wave.2.fill")
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
 			.imageScale(.small)
 	}
@@ -111,7 +103,7 @@ struct AvatarImage: View {
 			case .notPlaying:
 				EmptyView()
 			case .paused:
-				Image(systemName: Avatar.pausedSFSymbolName)
+				Image(systemName: "speaker.fill")
 					.foregroundStyle(Color.accentColor)
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 					.imageScale(.small)

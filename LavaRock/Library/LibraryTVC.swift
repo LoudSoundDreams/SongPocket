@@ -119,9 +119,9 @@ class LibraryTVC: UITableViewController {
 	final func reflectPlayhead() {
 		tableView.allIndexPaths().forEach { indexPath in
 			guard
-				let cell = tableView.cellForRow(at: indexPath) as? AvatarDisplaying__
+				let cell = tableView.cellForRow(at: indexPath) as? AvatarReflecting__
 			else { return }
-			cell.indicateAvatarStatus__({
+			cell.reflectStatus__({
 				guard
 					viewModel.pointsToSomeItem(row: indexPath.row),
 					let libraryItem = viewModel.itemNonNil(atRow: indexPath.row) as? LibraryItem

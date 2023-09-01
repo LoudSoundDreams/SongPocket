@@ -62,9 +62,7 @@ final class FolderCell: UITableViewCell {
 			}()
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
-			indicateAvatarStatus__(
-				folder.avatarStatus__()
-			)
+			reflectStatus__(folder.avatarStatus__())
 			
 			accessibilityUserInputLabels = [folder.title].compacted()
 		}
