@@ -20,10 +20,4 @@ final class LibraryNC: UINavigationController {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-	}
 }

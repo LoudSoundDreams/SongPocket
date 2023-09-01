@@ -35,7 +35,10 @@ private struct RootNC: UIViewControllerRepresentable {
 	typealias VCType = LibraryNC
 	
 	func makeUIViewController(context: Context) -> VCType {
-		return LibraryNC(rootStoryboardName: "FoldersTVC")
+		let result = LibraryNC(rootStoryboardName: "FoldersTVC")
+		let toolbar = result.toolbar!
+		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		return result
 	}
 	
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}
