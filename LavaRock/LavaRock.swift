@@ -24,7 +24,6 @@ struct LavaRock: App {
 		WindowGroup {
 			RootNC()
 				.edgesIgnoringSafeArea(.all)
-				.tint(Color("synthwave"))
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()
 				}
