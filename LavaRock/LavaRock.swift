@@ -22,8 +22,9 @@ struct LavaRock: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			MainLibraryNC()
+			RootNC()
 				.edgesIgnoringSafeArea(.all)
+				.tint(Color("synthwave"))
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()
 				}
@@ -32,7 +33,7 @@ struct LavaRock: App {
 	}
 }
 
-private struct MainLibraryNC: UIViewControllerRepresentable {
+private struct RootNC: UIViewControllerRepresentable {
 	typealias VCType = LibraryNC
 	
 	// Overriding lighting and accent color
