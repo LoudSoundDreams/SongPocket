@@ -191,32 +191,29 @@ final class AlbumsTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 		])
 	}
 	private static let arrangeCommands: [[ArrangeCommand]] = [
-		[.album_released],
+		[.album_newest, .album_oldest],
 		[.random, .reverse],
 	]
 	private func createArrangeAlbumsMenu() -> UIMenu {
-		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
 		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
 			$0.reversed().map { command in
 				command.createMenuElement(
 					enabled: {
-						guard
-							unsortedRowsToArrange().count >= 2,
-							setOfCommands.contains(command)
-						else {
+						guard unsortedRowsToArrange().count >= 2 else {
 							return false
 						}
-						
-						guard command != .album_released else {
-							let subjectedItems = unsortedRowsToArrange().map {
-								viewModel.itemNonNil(atRow: $0)
-							}
-							guard let albums = subjectedItems as? [Album] else {
-								return false
-							}
-							return albums.contains { $0.releaseDateEstimate != nil }
+						switch command {
+							case .random, .reverse: return true
+							case .folder_name, .song_track: return false
+							case .album_newest, .album_oldest:
+								let subjectedItems = unsortedRowsToArrange().map {
+									viewModel.itemNonNil(atRow: $0)
+								}
+								guard let albums = subjectedItems as? [Album] else {
+									return false
+								}
+								return albums.contains { $0.releaseDateEstimate != nil }
 						}
-						return true
 					}()
 				) { [weak self] in
 					self?.arrangeSelectedOrAll(by: command)

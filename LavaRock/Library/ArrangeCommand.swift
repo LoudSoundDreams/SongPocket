@@ -14,7 +14,8 @@ enum ArrangeCommand: CaseIterable {
 	
 	case folder_name
 	
-	case album_released
+	case album_newest
+	case album_oldest
 	
 	case song_track
 	
@@ -23,7 +24,8 @@ enum ArrangeCommand: CaseIterable {
 			case .random: return LRString.random
 			case .reverse: return LRString.reverse
 			case .folder_name: return LRString.name
-			case .album_released: return LRString.recentlyReleased
+			case .album_newest: return LRString.newest
+			case .album_oldest: return LRString.oldest
 			case .song_track: return LRString.trackNumber
 		}
 	}
@@ -41,7 +43,8 @@ enum ArrangeCommand: CaseIterable {
 				}
 			case .reverse: return "arrow.up.and.down"
 			case .folder_name: return "character"
-			case .album_released: return "sparkles"
+			case .album_newest: return "hourglass.bottomhalf.filled"
+			case .album_oldest: return "hourglass.tophalf.filled"
 			case .song_track: return "number"
 		}
 	}
@@ -101,7 +104,7 @@ enum ArrangeCommand: CaseIterable {
 					return leftTitle.precedesAlphabeticallyFinderStyle(rightTitle)
 				}
 				
-			case .album_released:
+			case .album_newest:
 				guard let albums = items as? [Album] else {
 					return items
 				}
@@ -109,6 +112,16 @@ enum ArrangeCommand: CaseIterable {
 					$0.releaseDateEstimate == $1.releaseDateEstimate
 				} areInOrder: {
 					$0.precedesByNewestFirst($1)
+				}
+				
+			case .album_oldest:
+				guard let albums = items as? [Album] else {
+					return items
+				}
+				return albums.sortedMaintainingOrderWhen {
+					$0.releaseDateEstimate == $1.releaseDateEstimate
+				} areInOrder: {
+					$0.precedesByOldestFirst($1)
 				}
 				
 			case .song_track:

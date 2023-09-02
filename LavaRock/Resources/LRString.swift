@@ -90,7 +90,8 @@ enum LRString {
 	static let byArtistEllipsis = NSLocalizedString("By Artist…", comment: "Menu option")
 	static let toFolderEllipsis = NSLocalizedString("To Stack…", comment: "Menu option")
 	
-	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Arrange option")
+	static let newest = NSLocalizedString("Newest", comment: "Arrange option")
+	static let oldest = NSLocalizedString("Oldest", comment: "Arrange option")
 	
 	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
