@@ -66,7 +66,7 @@ enum ArrangeCommand: CaseIterable {
 		onOrderedIndices: [Int],
 		in allItems: [NSManagedObject]
 	) -> [NSManagedObject] {
-		// Get just the items to sort, and get them sorted in a separate `Array`.
+		// Get just the items to sort, and get them sorted in a separate array.
 		let sortedItemsOnly: [NSManagedObject] = {
 			let toSort = onOrderedIndices.map { allItems[$0] }
 			return self.apply(to: toSort)
