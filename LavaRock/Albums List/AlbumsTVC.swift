@@ -32,7 +32,7 @@ final class AlbumsTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	}
 	
 	// State
-	var idsOfAlbumsToKeepSelected: Set<NSManagedObjectID> = []
+	var ids_albumsToKeepSelected: Set<NSManagedObjectID> = []
 	
 	// MARK: “Combine folders” sheet
 	

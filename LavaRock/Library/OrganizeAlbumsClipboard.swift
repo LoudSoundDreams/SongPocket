@@ -14,39 +14,39 @@ protocol OrganizeAlbumsDelegate: AnyObject {
 
 struct WillOrganizeAlbumsStickyNote {
 	let prompt: String
-	let idsOfSourceCollections: Set<NSManagedObjectID>
+	let ids_sourceCollections: Set<NSManagedObjectID>
 }
 
 final class OrganizeAlbumsClipboard {
 	// Data
-	let idsOfSubjectedAlbums: Set<NSManagedObjectID> // Selected or all albums in source collection
-	let idsOfSourceCollections: Set<NSManagedObjectID>
-	let idsOfUnmovedAlbums: Set<NSManagedObjectID>
-	let idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>
+	let ids_subjectedAlbums: Set<NSManagedObjectID> // Selected or all albums in source collection
+	let ids_sourceCollections: Set<NSManagedObjectID>
+	let ids_unmovedAlbums: Set<NSManagedObjectID>
+	let ids_collectionsContainingMovedAlbums: Set<NSManagedObjectID>
 	
 	// Helpers
 	private(set) weak var delegate: OrganizeAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
 			LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
-			idsOfSubjectedAlbums.count - idsOfUnmovedAlbums.count,
-			idsOfCollectionsContainingMovedAlbums.count)
+			ids_subjectedAlbums.count - ids_unmovedAlbums.count,
+			ids_collectionsContainingMovedAlbums.count)
 	}
 	
 	// State
 	var didAlreadyCommitOrganize = false
 	
 	init(
-		idsOfSubjectedAlbums: Set<NSManagedObjectID>,
-		idsOfSourceCollections: Set<NSManagedObjectID>,
-		idsOfUnmovedAlbums: Set<NSManagedObjectID>,
-		idsOfCollectionsContainingMovedAlbums: Set<NSManagedObjectID>,
+		ids_subjectedAlbums: Set<NSManagedObjectID>,
+		ids_sourceCollections: Set<NSManagedObjectID>,
+		ids_unmovedAlbums: Set<NSManagedObjectID>,
+		ids_collectionsContainingMovedAlbums: Set<NSManagedObjectID>,
 		delegate: OrganizeAlbumsDelegate
 	) {
-		self.idsOfSubjectedAlbums = idsOfSubjectedAlbums
-		self.idsOfSourceCollections = idsOfSourceCollections
-		self.idsOfUnmovedAlbums = idsOfUnmovedAlbums
-		self.idsOfCollectionsContainingMovedAlbums = idsOfCollectionsContainingMovedAlbums
+		self.ids_subjectedAlbums = ids_subjectedAlbums
+		self.ids_sourceCollections = ids_sourceCollections
+		self.ids_unmovedAlbums = ids_unmovedAlbums
+		self.ids_collectionsContainingMovedAlbums = ids_collectionsContainingMovedAlbums
 		self.delegate = delegate
 	}
 }

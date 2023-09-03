@@ -109,15 +109,15 @@ extension FoldersTVC {
 		let mode: StackRow.Mode = {
 			switch purpose {
 				case .willOrganizeAlbums(let stickyNote):
-					if stickyNote.idsOfSourceCollections.contains(collection.objectID) {
+					if stickyNote.ids_sourceCollections.contains(collection.objectID) {
 						return .modalDisabled
 					} else {
 						return .modal
 					}
 				case .organizingAlbums(let clipboard):
-					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
+					if clipboard.ids_sourceCollections.contains(collection.objectID) {
 						return .modalDisabled
-					} else if clipboard.idsOfCollectionsContainingMovedAlbums.contains(collection.objectID) {
+					} else if clipboard.ids_collectionsContainingMovedAlbums.contains(collection.objectID) {
 						return .modalTinted
 					} else {
 						return .modal

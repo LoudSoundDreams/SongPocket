@@ -54,7 +54,7 @@ extension AlbumsTVC {
 			switch purpose {
 				case .previewingCombine: return .disabledTinted
 				case .organizingAlbums(let clipboard):
-					if clipboard.idsOfSubjectedAlbums.contains(album.objectID) {
+					if clipboard.ids_subjectedAlbums.contains(album.objectID) {
 						return .disabledTinted
 					} else {
 						return .disabled

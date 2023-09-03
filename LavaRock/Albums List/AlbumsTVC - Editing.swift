@@ -42,20 +42,20 @@ extension AlbumsTVC {
 				albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
 				via: childContext)
 			return OrganizeAlbumsClipboard(
-				idsOfSubjectedAlbums: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-				idsOfSourceCollections: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
-				idsOfUnmovedAlbums: report.ids_unmovedAlbums,
-				idsOfCollectionsContainingMovedAlbums: report.ids_collectionsContainingMovedAlbums,
+				ids_subjectedAlbums: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
+				ids_sourceCollections: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
+				ids_unmovedAlbums: report.ids_unmovedAlbums,
+				ids_collectionsContainingMovedAlbums: report.ids_collectionsContainingMovedAlbums,
 				delegate: self
 			)
 		}()
-		idsOfAlbumsToKeepSelected = { () -> Set<NSManagedObjectID> in
+		ids_albumsToKeepSelected = { () -> Set<NSManagedObjectID> in
 			let selectedAlbums = selectedIndexPaths.map {
 				albumsViewModel.albumNonNil(atRow: $0.row)
 			}
 			return Set(selectedAlbums.compactMap {
 				let selectedAlbumID = $0.objectID
-				if clipboard.idsOfUnmovedAlbums.contains(selectedAlbumID) {
+				if clipboard.ids_unmovedAlbums.contains(selectedAlbumID) {
 					return selectedAlbumID
 				} else {
 					return nil
@@ -65,7 +65,7 @@ extension AlbumsTVC {
 		
 		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
 			prompt: clipboard.prompt,
-			idsOfSourceCollections: clipboard.idsOfSourceCollections)
+			ids_sourceCollections: clipboard.ids_sourceCollections)
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
@@ -79,7 +79,7 @@ extension AlbumsTVC {
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
 			let oldFolderRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldFolderRow in
 				let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldFolderRow).objectID
-				return clipboard.idsOfCollectionsContainingMovedAlbums.contains(collectionID)
+				return clipboard.ids_collectionsContainingMovedAlbums.contains(collectionID)
 			}
 			let oldFolderIndexPaths_ContainingMovedAlbums: [IndexPath]
 			= oldFolderRows_ContainingMovedAlbums.map { oldRow in
