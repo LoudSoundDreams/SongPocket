@@ -123,7 +123,7 @@ extension AlbumsTVC {
 			return Dictionary(grouping: existingFolders) { $0.title! }
 		}()
 		
-		albumsInOriginalContextToMaybeMove.forEach { album in
+		albumsInOriginalContextToMaybeMove.reversed().forEach { album in
 			// Similar to `newAlbumAndMaybeNewFolderMade`.
 			
 			let targetTitle = album.albumArtistFormatted()
@@ -135,31 +135,32 @@ extension AlbumsTVC {
 			
 			movedAlbums_ids.insert(album.objectID)
 			
-			// If we’ve created a matching new folder…
+			// If we’ve created a matching stack…
 			if let createdMatch = createdDuringSession[targetTitle] {
-				// …then move the album to the end of that folder.
+				// …then move the album to the top of that stack.
 				createdMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
-					atIndex: createdMatch.contents?.count ?? 0,
+					atIndex: 0,
 					albumIDs: [album.objectID],
 					possiblyToSame: false,
 					via: context)
-			} else if // Otherwise, if we already had a matching existing folder…
+			} else if
+				// Otherwise, if there were already a matching stack before all this…
 				let existingMatch = existingFoldersByTitle[targetTitle]?.first
 			{
-				// …then move the album to the beginning of that folder.
+				// …then move the album to the top of that stack.
 				existingMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
 					atIndex: 0,
 					albumIDs: [album.objectID],
 					possiblyToSame: false,
 					via: context)
 			} else {
-				// Otherwise, create a matching folder…
+				// Otherwise, create a matching stack where the source stack was…
 				let newMatch = context.newCollection(
-					index: indexOfSourceFolder + Int64(createdDuringSession.count),
+					index: indexOfSourceFolder,
 					title: targetTitle)
 				createdDuringSession[targetTitle] = newMatch
 				
-				// …and then move the album to that folder.
+				// …then put the album into it.
 				newMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
 					atIndex: 0,
 					albumIDs: [album.objectID],
