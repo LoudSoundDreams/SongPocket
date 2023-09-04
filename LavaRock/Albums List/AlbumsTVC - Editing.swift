@@ -44,12 +44,7 @@ extension AlbumsTVC {
 			via: childContext)
 		let clipboard = OrganizeAlbumsClipboard(
 			subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-			destinationCollections_ids: destinationCollections_ids,
-			prompt: String.localizedStringWithFormat(
-				LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
-				albumsInOriginalContextToMaybeMove.count,
-				destinationCollections_ids.count
-			)
+			destinationCollections_ids: destinationCollections_ids
 		)
 		
 		foldersTVC.navigationItem.prompt = clipboard.prompt
@@ -91,14 +86,7 @@ extension AlbumsTVC {
 			os_signpost(.end, log: log, name: "Preview organizing Albums")
 		}
 		
-		// If an album is already in a folder with a title that matches its album artist, then leave it there.
-		// Otherwise, move the album to the first folder with a matching title.
-		// If there is no matching folder, then create one.
-		// Put new folders above the source folder, in the order that the album artists first appear among the albums we’re moving.
-		
-		// Work notes
-		let sourceCollection = albumsInOriginalContextToMaybeMove.first!.container!
-		let sourceCollection_index = sourceCollection.index
+		let sourceCollectionIndex = albumsInOriginalContextToMaybeMove.first!.container!.index
 		var createdDuringSession: [String: Collection] = [:]
 		let existingFoldersByTitle: [String: [Collection]] = {
 			let existingFolders = Collection.allFetched(sorted: true, context: context)
@@ -131,7 +119,7 @@ extension AlbumsTVC {
 			} else {
 				// Last option: create a stack where the source stack was…
 				let newMatch = context.newCollection(
-					index: sourceCollection_index,
+					index: sourceCollectionIndex,
 					title: targetTitle)
 				createdDuringSession[targetTitle] = newMatch
 				
@@ -180,13 +168,11 @@ extension AlbumsTVC {
 				selfVM.albumNonNil(atRow: $0)
 			}
 		}())
-		foldersTVC.viewModel = FoldersViewModel(
-			context: {
-				let childContext = NSManagedObjectContext(.mainQueue)
-				childContext.parent = viewModel.context
-				return childContext
-			}()
-		)
+		foldersTVC.viewModel = FoldersViewModel(context: {
+			let childContext = NSManagedObjectContext(.mainQueue)
+			childContext.parent = viewModel.context
+			return childContext
+		}())
 		
 		present(nc, animated: true)
 	}
