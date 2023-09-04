@@ -25,7 +25,7 @@ extension AlbumsTVC {
 			NotificationCenter.default.post(name: .LRUserUpdatedDatabase, object: nil)
 			
 			dismiss(animated: true)
-			clipboard.delegate?.didMove()
+			NotificationCenter.default.post(name: .LRMovedAlbums, object: nil)
 		}
 	}
 }

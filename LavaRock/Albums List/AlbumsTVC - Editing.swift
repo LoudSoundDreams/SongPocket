@@ -210,8 +210,7 @@ extension AlbumsTVC {
 				return subjectedRows.map {
 					selfVM.albumNonNil(atRow: $0)
 				}
-			}(),
-			delegate: self
+			}()
 		)
 		foldersTVC.viewModel = FoldersViewModel(
 			context: {

@@ -7,11 +7,6 @@
 
 import CoreData
 
-@MainActor
-protocol MoveAlbumsDelegate: AnyObject {
-	func didMove()
-}
-
 final class MoveAlbumsClipboard { // This is a class and not a struct because we use it to share information.
 	// Data
 	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
@@ -19,7 +14,6 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	
 	// Helpers
-	private(set) weak var delegate: MoveAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
 			LRString.variable_moveXAlbumsTo,
@@ -29,13 +23,9 @@ final class MoveAlbumsClipboard { // This is a class and not a struct because we
 	// State
 	var hasCreatedNewFolder = false
 	
-	init(
-		albumsBeingMoved: [Album],
-		delegate: MoveAlbumsDelegate
-	) {
+	init(albumsBeingMoved: [Album]) {
 		idsOfAlbumsBeingMoved = albumsBeingMoved.map { $0.objectID }
 		idsOfAlbumsBeingMovedAsSet = Set(idsOfAlbumsBeingMoved)
 		idsOfSourceCollections = Set(albumsBeingMoved.map { $0.container!.objectID })
-		self.delegate = delegate
 	}
 }

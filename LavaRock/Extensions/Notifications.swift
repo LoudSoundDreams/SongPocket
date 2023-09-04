@@ -9,7 +9,8 @@ import Foundation
 
 extension Notification.Name {
 	static let LRMergedChanges = Self("merged changes")
-	static let LROrganizedAlbums = Self("user organized albums")
+	static let LROrganizedAlbums = Self("organized albums")
+	static let LRMovedAlbums = Self("moved albums")
 	static let LRUserUpdatedDatabase = Self("user updated database")
 }
 

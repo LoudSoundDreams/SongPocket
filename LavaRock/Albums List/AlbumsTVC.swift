@@ -65,7 +65,8 @@ final class AlbumsTVC: LibraryTVC {
 			case .movingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
 			case .browsing:
-				NotificationCenter.default.addObserverOnce(self, selector: #selector(didOrganize), name: .LROrganizedAlbums, object: nil)
+				NotificationCenter.default.addObserverOnce(self, selector: #selector(didOrganizeAlbums), name: .LROrganizedAlbums, object: nil)
+				NotificationCenter.default.addObserverOnce(self, selector: #selector(didMoveAlbums), name: .LRMovedAlbums, object: nil)
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
@@ -118,7 +119,7 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Library items
 	
 	@objc
-	func didOrganize() {
+	private func didOrganizeAlbums() {
 		let viewModel = viewModel.updatedWithFreshenedData() as! AlbumsViewModel // Shadowing so that we don’t accidentally refer to `self.viewModel`, which is incoherent at this point.
 		let toKeepSelected = ids_albumsToKeepSelected
 		ids_albumsToKeepSelected = []
@@ -134,6 +135,17 @@ final class AlbumsTVC: LibraryTVC {
 				viewModel,
 				thenSelecting: Set(toSelect)
 			)
+		}
+	}
+	
+	// Similar to `freshenLibraryItems`.
+	// Call this from the modal `AlbumsTVC` in the “move albums” sheet after completing the animation for inserting the `Album`s we moved. This instance here, the base-level `AlbumsTVC`, should be the modal `AlbumsTVC`’s delegate, and this method removes the rows for those `Album`s.
+	// That timing looks good: we remove the `Album`s while dismissing the sheet, so you catch just a glimpse of the `Album`s disappearing, even though it technically doesn’t make sense.
+	@objc
+	private func didMoveAlbums() {
+		let newViewModel = viewModel.updatedWithFreshenedData()
+		Task {
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
 	
