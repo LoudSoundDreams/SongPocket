@@ -77,18 +77,17 @@ extension AlbumsTVC {
 			
 			let previewOfChanges = FoldersViewModel(context: childContext)
 			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
-			let oldFolderRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldFolderRow in
-				let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldFolderRow).objectID
-				return clipboard.ids_collectionsContainingMovedAlbums.contains(collectionID)
-			}
-			let oldFolderIndexPaths_ContainingMovedAlbums: [IndexPath]
-			= oldFolderRows_ContainingMovedAlbums.map { oldRow in
-				IndexPath(row: oldRow, section: 0)
-			}
+			let oldIndexPaths_ContainingMovedAlbums: [IndexPath] = {
+				let oldRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
+					let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldRow).objectID
+					return clipboard.ids_collectionsContainingMovedAlbums.contains(collectionID)
+				}
+				return oldRows_ContainingMovedAlbums.map { row in IndexPath(row: row, section: 0) }
+			}()
 			
 			// Similar to `reflectDatabase`.
 			let _ = await foldersTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				firstReloading: oldFolderIndexPaths_ContainingMovedAlbums,
+				firstReloading: oldIndexPaths_ContainingMovedAlbums,
 				previewOfChanges,
 				runningBeforeContinuation: {
 					// Remove the now-playing marker from the source folder, if necessary.
