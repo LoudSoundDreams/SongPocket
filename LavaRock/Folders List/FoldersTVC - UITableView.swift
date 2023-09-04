@@ -108,26 +108,18 @@ extension FoldersTVC {
 		let collection = foldersViewModel.folderNonNil(atRow: indexPath.row)
 		let mode: StackRow.Mode = {
 			switch purpose {
-				case .willOrganizeAlbums(let stickyNote):
-					if stickyNote.sourceCollections_ids.contains(collection.objectID) {
-						return .modalDisabled
-					} else {
-						return .modal
-					}
+				case .willOrganizeAlbums:
+					return .modalDisabled
 				case .organizingAlbums(let clipboard):
-					if clipboard.sourceCollections_ids.contains(collection.objectID) {
-						return .modalDisabled
-					} else if clipboard.containingMoved_ids.contains(collection.objectID) {
+					if clipboard.containingMoved_ids.contains(collection.objectID) {
 						return .modalTinted
-					} else {
-						return .modal
 					}
+					return .modalDisabled
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
 						return .modalDisabled
-					} else {
-						return .modal
 					}
+					return .modal
 				case .browsing:
 					return .normal([
 						UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
