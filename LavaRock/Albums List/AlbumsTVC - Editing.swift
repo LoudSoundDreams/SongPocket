@@ -117,16 +117,13 @@ extension AlbumsTVC {
 		
 		// Work notes
 		let indexOfSourceFolder = albumsInOriginalContextToMaybeMove.first!.container!.index
-		let toDisplace: [Collection] = {
+		let sourceAndBelow: [Collection] = {
 			let predicate = NSPredicate(
 				format: "index >= %lld",
 				indexOfSourceFolder)
-			return Collection.allFetched(
-				sorted: true,
-				predicate: predicate,
-				context: context)
+			return Collection.allFetched(sorted: true, predicate: predicate, context: context)
 		}()
-		var newFoldersByTitle: [String: Collection] = [:]
+		var createdDuringSession: [String: Collection] = [:]
 		let existingFoldersByTitle: [String: [Collection]] = {
 			let existingFolders = Collection.allFetched(sorted: true, context: context)
 			return Dictionary(grouping: existingFolders) { $0.title! }
@@ -145,31 +142,31 @@ extension AlbumsTVC {
 			movedAlbums_ids.insert(album.objectID)
 			
 			// If we’ve created a matching new folder…
-			if let matchingNewFolder = newFoldersByTitle[targetTitle] {
+			if let createdMatch = createdDuringSession[targetTitle] {
 				// …then move the album to the end of that folder.
-				matchingNewFolder.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
+				createdMatch.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 					with: [album.objectID],
 					possiblyToSame: false,
 					via: context)
 			} else if // Otherwise, if we already had a matching existing folder…
-				let matchingExisting = existingFoldersByTitle[targetTitle]?.first
+				let existingMatch = existingFoldersByTitle[targetTitle]?.first
 			{
 				// …then move the album to the beginning of that folder.
-				matchingExisting.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
+				existingMatch.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
 					with: [album.objectID],
 					possiblyToSame: false,
 					via: context)
 			} else {
 				// Otherwise, create a matching folder…
-				let newFolder = Collection(
-					index: indexOfSourceFolder + Int64(newFoldersByTitle.count),
-					before: toDisplace,
+				let newMatch = Collection(
+					index: indexOfSourceFolder + Int64(createdDuringSession.count),
+					before: sourceAndBelow,
 					title: targetTitle,
 					context: context)
-				newFoldersByTitle[targetTitle] = newFolder
+				createdDuringSession[targetTitle] = newMatch
 				
 				// …and then move the album to that folder.
-				newFolder.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
+				newMatch.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 					with: [album.objectID],
 					possiblyToSame: false,
 					via: context)
