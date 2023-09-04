@@ -40,31 +40,18 @@ extension AlbumsTVC {
 		childContext.parent = viewModel.context
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
-		let report = Self.autoMoveAndReturnReport(
+		let destinationCollections_ids = Self.autoMoveAndReturnDestinationCollectionIDs(
 			albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
 			via: childContext)
 		let clipboard = OrganizeAlbumsClipboard(
 			subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-			destinationCollections_ids: report.destinationCollections_ids,
+			destinationCollections_ids: destinationCollections_ids,
 			prompt: String.localizedStringWithFormat(
 				LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
-				albumsInOriginalContextToMaybeMove.count - report.unmovedAlbums_ids.count,
-				report.destinationCollections_ids.count
+				albumsInOriginalContextToMaybeMove.count,
+				destinationCollections_ids.count
 			)
 		)
-		ids_albumsToKeepSelected = { () -> Set<NSManagedObjectID> in
-			let selectedAlbums = selectedIndexPaths.map {
-				albumsViewModel.albumNonNil(atRow: $0.row)
-			}
-			return Set(selectedAlbums.compactMap {
-				let selectedAlbumID = $0.objectID
-				if report.unmovedAlbums_ids.contains(selectedAlbumID) {
-					return selectedAlbumID
-				} else {
-					return nil
-				}
-			})
-		}()
 		
 		foldersTVC.navigationItem.prompt = clipboard.prompt
 		foldersTVC.willOrganizeAlbums = true
@@ -95,13 +82,10 @@ extension AlbumsTVC {
 			)
 		}
 	}
-	private static func autoMoveAndReturnReport(
+	private static func autoMoveAndReturnDestinationCollectionIDs(
 		albumsInOriginalContextToMaybeMove: [Album],
 		via context: NSManagedObjectContext
-	) -> (
-		unmovedAlbums_ids: Set<NSManagedObjectID>,
-		destinationCollections_ids: Set<NSManagedObjectID>
-	) {
+	) -> Set<NSManagedObjectID> {
 		let log = OSLog.albumsView
 		os_signpost(.begin, log: log, name: "Preview organizing Albums")
 		defer {
@@ -114,13 +98,11 @@ extension AlbumsTVC {
 		// Put new folders above the source folder, in the order that the album artists first appear among the albums we’re moving.
 		
 		// Results
-		var unmovedAlbums_ids: Set<NSManagedObjectID> = []
 		var movedAlbums_ids: Set<NSManagedObjectID> = []
 		
 		// Work notes
 		let sourceCollection = albumsInOriginalContextToMaybeMove.first!.container!
 		let sourceCollection_index = sourceCollection.index
-		let sourceCollection_id = sourceCollection.objectID
 		var createdDuringSession: [String: Collection] = [:]
 		let existingFoldersByTitle: [String: [Collection]] = {
 			let existingFolders = Collection.allFetched(sorted: true, context: context)
@@ -170,19 +152,16 @@ extension AlbumsTVC {
 		
 		context.deleteEmptyCollections()
 		
-		return (
-			unmovedAlbums_ids: unmovedAlbums_ids,
-			destinationCollections_ids: {
-				let subjectedAlbums_ids = movedAlbums_ids.union(unmovedAlbums_ids)
-				let subjectedAlbums = subjectedAlbums_ids.map {
-					context.object(with: $0) as! Album
-				}
-				let destinationCollections_ids = subjectedAlbums.map {
-					$0.container!.objectID
-				}
-				return Set(destinationCollections_ids)
-			}()
-		)
+		return {
+			let subjectedAlbums_ids = movedAlbums_ids
+			let subjectedAlbums = subjectedAlbums_ids.map {
+				context.object(with: $0) as! Album
+			}
+			let destinationCollections_ids = subjectedAlbums.map {
+				$0.container!.objectID
+			}
+			return Set(destinationCollections_ids)
+		}()
 	}
 	
 	// MARK: - Move to stack

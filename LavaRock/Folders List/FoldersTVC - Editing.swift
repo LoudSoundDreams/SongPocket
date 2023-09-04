@@ -15,7 +15,7 @@ extension FoldersTVC: UITextFieldDelegate {
 }
 extension FoldersTVC {
 	
-	// MARK: Renaming
+	// MARK: Rename
 	
 	func promptRename(at indexPath: IndexPath) {
 		guard let folder = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
@@ -79,7 +79,7 @@ extension FoldersTVC {
 		}
 	}
 	
-	// MARK: Combining
+	// MARK: Combine
 	
 	func previewCombine() {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()

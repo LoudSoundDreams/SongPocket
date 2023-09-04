@@ -31,9 +31,6 @@ final class AlbumsTVC: LibraryTVC {
 		return .browsing
 	}
 	
-	// State
-	var ids_albumsToKeepSelected: Set<NSManagedObjectID> = []
-	
 	// MARK: “Combine folders” sheet
 	
 	var is_previewing_combine_with_album_count: Int = 0
@@ -121,20 +118,8 @@ final class AlbumsTVC: LibraryTVC {
 	@objc
 	private func didOrganizeAlbums() {
 		let viewModel = viewModel.updatedWithFreshenedData() as! AlbumsViewModel // Shadowing so that we don’t accidentally refer to `self.viewModel`, which is incoherent at this point.
-		let toKeepSelected = ids_albumsToKeepSelected
-		ids_albumsToKeepSelected = []
-		let toSelect = tableView.allIndexPaths().filter { someIndexPath in
-			guard viewModel.pointsToSomeItem(row: someIndexPath.row) else {
-				return false
-			}
-			let idOfAlbum = viewModel.albumNonNil(atRow: someIndexPath.row).objectID
-			return toKeepSelected.contains(idOfAlbum)
-		}
 		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				viewModel,
-				thenSelecting: Set(toSelect)
-			)
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(viewModel)
 		}
 	}
 	
