@@ -12,8 +12,6 @@ extension AlbumsTVC: MoveAlbumsDelegate {
 	func didMove() {
 		let newViewModel = viewModel.updatedWithFreshenedData()
 		Task {
-			setEditing(false, animated: true)
-			
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}

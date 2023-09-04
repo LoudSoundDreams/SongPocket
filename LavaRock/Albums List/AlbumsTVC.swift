@@ -130,10 +130,6 @@ final class AlbumsTVC: LibraryTVC {
 			return toKeepSelected.contains(idOfAlbum)
 		}
 		Task {
-			if toSelect.isEmpty {
-				setEditing(false, animated: true)
-			}
-			
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				viewModel,
 				thenSelecting: Set(toSelect)
