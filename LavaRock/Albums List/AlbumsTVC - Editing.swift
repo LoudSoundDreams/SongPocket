@@ -86,7 +86,9 @@ extension AlbumsTVC {
 			os_signpost(.end, log: log, name: "Preview organizing Albums")
 		}
 		
-		let sourceCollectionIndex = albumsInOriginalContextToMaybeMove.first!.container!.index
+		let sourceCollection = albumsInOriginalContextToMaybeMove.first!.container!
+		let sourceCollection_index = sourceCollection.index
+		let sourceCollection_id = sourceCollection.objectID
 		var createdDuringSession: [String: Collection] = [:]
 		let existingFoldersByTitle: [String: [Collection]] = {
 			let existingFolders = Collection.allFetched(sorted: true, context: context)
@@ -108,7 +110,9 @@ extension AlbumsTVC {
 					via: context)
 			} else if
 				// Otherwise, if there were already a matching stack before all this…
-				let firstExistingMatch = existingFoldersByTitle[targetTitle]?.first
+				let firstExistingMatch = existingFoldersByTitle[targetTitle]?.first(where: { existing in
+					sourceCollection_id != existing.objectID
+				})
 			{
 				// …then move the album to the top of that stack.
 				firstExistingMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
@@ -119,7 +123,7 @@ extension AlbumsTVC {
 			} else {
 				// Last option: create a stack where the source stack was…
 				let newMatch = context.newCollection(
-					index: sourceCollectionIndex,
+					index: sourceCollection_index,
 					title: targetTitle)
 				createdDuringSession[targetTitle] = newMatch
 				
