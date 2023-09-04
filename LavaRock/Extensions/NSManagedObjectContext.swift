@@ -49,6 +49,17 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
+	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
+	final func unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade() {
+		let all = Album.allFetched(sorted: false, inCollection: nil, context: self)
+		
+		all.forEach { album in
+			if album.isEmpty() {
+				delete(album)
+			}
+		}
+	}
+	
 	final func deleteEmptyCollections() {
 		var all = Collection.allFetched(sorted: true, context: self)
 		

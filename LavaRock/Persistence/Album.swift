@@ -75,19 +75,6 @@ extension Album {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	// WARNING: Leaves gaps in the `Album` indices within `Collection`s, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
-	static func unsafe_deleteAllEmpty_withoutReindexOrCascade(
-		via context: NSManagedObjectContext
-	) {
-		let allAlbums = allFetched(sorted: false, inCollection: nil, context: context) // Use `ordered: true` if you ever create a variant of this method that does reindex the remaining `Album`s.
-		
-		allAlbums.forEach { album in
-			if album.isEmpty() {
-				context.delete(album)
-			}
-		}
-	}
-	
 	// MARK: - Songs
 	
 	// Similar to `Collection.albums`.
