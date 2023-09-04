@@ -61,7 +61,8 @@ extension AlbumsTVC {
 			})
 		}()
 		
-		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(prompt: clipboard.prompt)
+		foldersTVC.navigationItem.prompt = clipboard.prompt
+		foldersTVC.willOrganizeAlbums = true
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
@@ -69,7 +70,7 @@ extension AlbumsTVC {
 			await present__async(nc, animated: true)
 			
 			foldersTVC.organizeAlbumsClipboard = clipboard
-			foldersTVC.willOrganizeAlbumsStickyNote = nil
+			foldersTVC.willOrganizeAlbums = false
 			
 			// Similar to `reflectDatabase`.
 			let _ = await foldersTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(

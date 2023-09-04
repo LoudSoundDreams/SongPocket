@@ -17,7 +17,7 @@ extension FoldersTVC: UIAdaptivePresentationControllerDelegate {
 }
 final class FoldersTVC: LibraryTVC {
 	enum Purpose {
-		case willOrganizeAlbums(WillOrganizeAlbumsStickyNote)
+		case willOrganizeAlbums
 		case organizingAlbums(OrganizeAlbumsClipboard)
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
@@ -45,7 +45,7 @@ final class FoldersTVC: LibraryTVC {
 	// Purpose
 	var purpose: Purpose {
 		if let clipboard = organizeAlbumsClipboard { return .organizingAlbums(clipboard) }
-		if let stickyNote = willOrganizeAlbumsStickyNote { return .willOrganizeAlbums(stickyNote) }
+		if willOrganizeAlbums { return .willOrganizeAlbums }
 		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
 		return .browsing
 	}
@@ -78,7 +78,7 @@ final class FoldersTVC: LibraryTVC {
 	// MARK: “Organize albums” sheet
 	
 	// Data
-	var willOrganizeAlbumsStickyNote: WillOrganizeAlbumsStickyNote? = nil
+	var willOrganizeAlbums = false
 	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? = nil
 	
 	// MARK: “Move albums” sheet
@@ -156,9 +156,7 @@ final class FoldersTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		switch purpose {
-			case .willOrganizeAlbums(let stickyNote):
-				navigationItem.prompt = stickyNote.prompt
-			case .organizingAlbums: break // Should never run
+			case .willOrganizeAlbums, .organizingAlbums: break
 			case .movingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
 			case .browsing:

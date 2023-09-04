@@ -159,9 +159,7 @@ extension FoldersTVC {
 		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
-			case .willOrganizeAlbums: return false
-			case .organizingAlbums: return false
-			case .movingAlbums: return false
+			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: return false
 			case .browsing:
 				switch viewState {
 					case .allowAccess, .loading, .removingFolderRows, .emptyDatabase: return false

@@ -7,10 +7,6 @@
 
 import CoreData
 
-struct WillOrganizeAlbumsStickyNote {
-	let prompt: String
-}
-
 final class OrganizeAlbumsClipboard {
 	// Data
 	let subjectedAlbums_ids: Set<NSManagedObjectID> // Selected or all albums in source collection
