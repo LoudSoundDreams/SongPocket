@@ -10,6 +10,9 @@ import CoreData
 import OSLog
 
 extension AlbumsTVC {
+	
+	// MARK: - Move by artist
+	
 	func previewAutoMove() {
 		// Prepare a Folders view to present modally.
 		let nc = UINavigationController(
@@ -75,12 +78,12 @@ extension AlbumsTVC {
 			// Similar to `reflectDatabase`.
 			let _ = await foldersTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				firstReloading: {
-					// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
-					let oldRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
+					// We might have moved albums into existing folders. Fade in a highlight on those rows.
+					let destinationRows = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
 						let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldRow).objectID
 						return clipboard.containingMoved_ids.contains(collectionID)
 					}
-					return oldRows_ContainingMovedAlbums.map { row in IndexPath(row: row, section: 0) }
+					return destinationRows.map { row in IndexPath(row: row, section: 0) }
 				}(),
 				FoldersViewModel(context: childContext),
 				runningBeforeContinuation: {
@@ -177,6 +180,8 @@ extension AlbumsTVC {
 		)
 	}
 	
+	// MARK: - Move to stack
+	
 	func startMoving() {
 		// Prepare a Folders view to present modally.
 		let nc = UINavigationController(
@@ -189,18 +194,16 @@ extension AlbumsTVC {
 		else { return }
 		
 		// Configure the `FoldersTVC`.
-		foldersTVC.moveAlbumsClipboard = MoveAlbumsClipboard(
-			albumsBeingMoved: {
-				var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
-				subjectedRows.sort()
-				if subjectedRows.isEmpty {
-					subjectedRows = selfVM.rowsForAllItems()
-				}
-				return subjectedRows.map {
-					selfVM.albumNonNil(atRow: $0)
-				}
-			}()
-		)
+		foldersTVC.moveAlbumsClipboard = MoveAlbumsClipboard(albumsBeingMoved: {
+			var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
+			subjectedRows.sort()
+			if subjectedRows.isEmpty {
+				subjectedRows = selfVM.rowsForAllItems()
+			}
+			return subjectedRows.map {
+				selfVM.albumNonNil(atRow: $0)
+			}
+		}())
 		foldersTVC.viewModel = FoldersViewModel(
 			context: {
 				let childContext = NSManagedObjectContext(.mainQueue)
