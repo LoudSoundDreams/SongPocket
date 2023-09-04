@@ -41,7 +41,7 @@ extension FoldersTVC {
 			$0.delegate = self
 		}
 		
-		let cancelAction = UIAlertAction(title: LRString.cancel, style: .cancel)
+		let cancel = UIAlertAction(title: LRString.cancel, style: .cancel)
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		let saveAction = UIAlertAction(title: LRString.save, style: .default) { [weak self] _ in
 			let textFieldText = dialog.textFields?.first?.text
@@ -50,7 +50,7 @@ extension FoldersTVC {
 				proposedTitle: textFieldText,
 				thenSelectIf: rowWasSelectedBeforeRenaming)
 		}
-		dialog.addAction(cancelAction)
+		dialog.addAction(cancel)
 		dialog.addAction(saveAction)
 		dialog.preferredAction = saveAction
 		
