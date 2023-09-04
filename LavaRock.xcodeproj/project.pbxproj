@@ -41,7 +41,6 @@
 		0774C88527CBEA0900230F22 /* LRDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRDefaultsKey.swift */; };
 		07755A58294821860056E90C /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Avatar.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
-		077BCEB2275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */; };
 		0781F1F12599181800781CF8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0781F1F02599181800781CF8 /* StoreKit.framework */; };
 		07843FEB2851A31D000FA316 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07843FEA2851A31D000FA316 /* Sequence.swift */; };
 		0787CB0A27A376400068C2E5 /* UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0787CB0927A376400068C2E5 /* UIKit.swift */; };
@@ -139,7 +138,6 @@
 		0774C88427CBEA0900230F22 /* LRDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRDefaultsKey.swift; sourceTree = "<group>"; };
 		07755A57294821860056E90C /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
-		077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsPreviewing.swift; sourceTree = "<group>"; };
 		0781F1F02599181800781CF8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0781F1F52599184700781CF8 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		07843FEA2851A31D000FA316 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
@@ -227,7 +225,6 @@
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
 				07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */,
 				077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */,
-				077BCEB1275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift */,
 				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 				07FB52CA2813909400CCCBA5 /* ArrangeCommand.swift */,
 			);
@@ -587,7 +584,6 @@
 				07F36BC224FC3F450064282D /* FoldersTVC - UITableView.swift in Sources */,
 				071A0BA0277E832C0017F76D /* Database.swift in Sources */,
 				076830C924B42E400033E3CC /* FoldersTVC.swift in Sources */,
-				077BCEB2275316AD0066DE96 /* OrganizeAlbumsPreviewing.swift in Sources */,
 				07A4F90F2519E8410065C87E /* MusicLibrary - Merge, Delete.swift in Sources */,
 				071A0B9E277E76510017F76D /* LavaRock.swift in Sources */,
 				07843FEB2851A31D000FA316 /* Sequence.swift in Sources */,
