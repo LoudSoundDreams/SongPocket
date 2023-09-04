@@ -9,7 +9,7 @@ import CoreData
 
 final class OrganizeAlbumsClipboard {
 	let subjectedAlbums_ids: Set<NSManagedObjectID> // Selected or all albums in source collection
-	let containingMoved_ids: Set<NSManagedObjectID>
+	let destinationCollections_ids: Set<NSManagedObjectID>
 	let prompt: String
 	
 	// State
@@ -17,11 +17,11 @@ final class OrganizeAlbumsClipboard {
 	
 	init(
 		subjectedAlbums_ids: Set<NSManagedObjectID>,
-		containingMoved_ids: Set<NSManagedObjectID>,
+		destinationCollections_ids: Set<NSManagedObjectID>,
 		prompt: String
 	) {
 		self.subjectedAlbums_ids = subjectedAlbums_ids
-		self.containingMoved_ids = containingMoved_ids
+		self.destinationCollections_ids = destinationCollections_ids
 		self.prompt = prompt
 	}
 }

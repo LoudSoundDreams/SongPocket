@@ -68,11 +68,27 @@ extension AlbumsViewModel {
 		}
 		let albums = subjectedRows.map { albumNonNil(atRow: $0) }
 		
-		// If at least one album isn’t where it already belongs
-		return albums.contains {
-			let targetTitle = $0.albumArtistFormatted()
-			return targetTitle != $0.container?.title
+		// Return `true` if we can move any album to either a new collection or another collection with the same title
+		for album in albums {
+			let targetTitle = album.albumArtistFormatted()
+			if targetTitle != album.container?.title {
+				return true
+			}
 		}
+		let existingByTitle: [String: [Collection]] = {
+			let all = Collection.allFetched(sorted: false, context: context)
+			return Dictionary(grouping: all) { $0.title! }
+		}()
+		for album in albums {
+			let targetTitle = album.albumArtistFormatted() // Must match above
+			guard let existingTargets = existingByTitle[targetTitle] else { continue }
+			if let _ = existingTargets.first(where: { existingCollection in
+				existingCollection != album.container!
+			}) {
+				return true
+			}
+		}
+		return false
 	}
 	
 	// MARK: - “Move albums” sheet

@@ -45,11 +45,11 @@ extension AlbumsTVC {
 			via: childContext)
 		let clipboard = OrganizeAlbumsClipboard(
 			subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-			containingMoved_ids: report.containingMoved_ids,
+			destinationCollections_ids: report.destinationCollections_ids,
 			prompt: String.localizedStringWithFormat(
 				LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
 				albumsInOriginalContextToMaybeMove.count - report.unmovedAlbums_ids.count,
-				report.containingMoved_ids.count
+				report.destinationCollections_ids.count
 			)
 		)
 		ids_albumsToKeepSelected = { () -> Set<NSManagedObjectID> in
@@ -83,7 +83,7 @@ extension AlbumsTVC {
 					// We might have moved albums into existing folders. Fade in a highlight on those rows.
 					let destinationRows = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
 						let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldRow).objectID
-						return clipboard.containingMoved_ids.contains(collectionID)
+						return clipboard.destinationCollections_ids.contains(collectionID)
 					}
 					return destinationRows.map { row in IndexPath(row: row, section: 0) }
 				}(),
@@ -100,7 +100,7 @@ extension AlbumsTVC {
 		via context: NSManagedObjectContext
 	) -> (
 		unmovedAlbums_ids: Set<NSManagedObjectID>,
-		containingMoved_ids: Set<NSManagedObjectID>
+		destinationCollections_ids: Set<NSManagedObjectID>
 	) {
 		let log = OSLog.albumsView
 		os_signpost(.begin, log: log, name: "Preview organizing Albums")
@@ -118,7 +118,9 @@ extension AlbumsTVC {
 		var movedAlbums_ids: Set<NSManagedObjectID> = []
 		
 		// Work notes
-		let indexOfSourceFolder = albumsInOriginalContextToMaybeMove.first!.container!.index
+		let sourceCollection = albumsInOriginalContextToMaybeMove.first!.container!
+		let sourceCollection_index = sourceCollection.index
+		let sourceCollection_id = sourceCollection.objectID
 		var createdDuringSession: [String: Collection] = [:]
 		let existingFoldersByTitle: [String: [Collection]] = {
 			let existingFolders = Collection.allFetched(sorted: true, context: context)
@@ -129,11 +131,6 @@ extension AlbumsTVC {
 			// Similar to `newAlbumAndMaybeNewFolderMade`.
 			
 			let targetTitle = album.albumArtistFormatted()
-			
-			guard album.container!.title != targetTitle else {
-				unmovedAlbums_ids.insert(album.objectID)
-				return
-			}
 			
 			movedAlbums_ids.insert(album.objectID)
 			
@@ -147,18 +144,18 @@ extension AlbumsTVC {
 					via: context)
 			} else if
 				// Otherwise, if there were already a matching stack before all this…
-				let existingMatch = existingFoldersByTitle[targetTitle]?.first
+				let firstExistingMatch = existingFoldersByTitle[targetTitle]?.first
 			{
 				// …then move the album to the top of that stack.
-				existingMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
+				firstExistingMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
 					atIndex: 0,
 					albumIDs: [album.objectID],
-					possiblyToSame: false,
+					possiblyToSame: true,
 					via: context)
 			} else {
 				// Last option: create a stack where the source stack was…
 				let newMatch = context.newCollection(
-					index: indexOfSourceFolder,
+					index: sourceCollection_index,
 					title: targetTitle)
 				createdDuringSession[targetTitle] = newMatch
 				
@@ -171,13 +168,19 @@ extension AlbumsTVC {
 			}
 		}
 		
+		context.deleteEmptyCollections()
+		
 		return (
 			unmovedAlbums_ids: unmovedAlbums_ids,
-			containingMoved_ids: {
-				return Set(movedAlbums_ids.map {
-					let albumInThisContext = context.object(with: $0) as! Album
-					return albumInThisContext.container!.objectID
-				})
+			destinationCollections_ids: {
+				let subjectedAlbums_ids = movedAlbums_ids.union(unmovedAlbums_ids)
+				let subjectedAlbums = subjectedAlbums_ids.map {
+					context.object(with: $0) as! Album
+				}
+				let destinationCollections_ids = subjectedAlbums.map {
+					$0.container!.objectID
+				}
+				return Set(destinationCollections_ids)
 			}()
 		)
 	}
