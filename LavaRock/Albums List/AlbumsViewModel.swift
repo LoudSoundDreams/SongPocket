@@ -59,8 +59,6 @@ extension AlbumsViewModel {
 	
 	// MARK: - Organizing
 	
-	// Returns `true` if the albums to organize have at least 2 different album artists.
-	// The “albums to organize” are the selected albums, if any, or all the albums, if this is a specifically opened folder.
 	func allowsAutoMove(
 		selectedIndexPaths: [IndexPath]
 	) -> Bool {
@@ -70,9 +68,10 @@ extension AlbumsViewModel {
 		}
 		let albums = subjectedRows.map { albumNonNil(atRow: $0) }
 		
+		// If at least one album isn’t where it already belongs
 		return albums.contains {
-			let titleOfDestination = $0.albumArtistFormatted()
-			return titleOfDestination != $0.container?.title
+			let targetTitle = $0.albumArtistFormatted()
+			return targetTitle != $0.container?.title
 		}
 	}
 	

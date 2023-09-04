@@ -52,20 +52,20 @@ extension AlbumsTVC {
 		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
 		let mode: AlbumCard.Mode = {
 			switch purpose {
-				case .previewingCombine: return .disabledTinted
+				case .previewingCombine:
+					return .disabledTinted
 				case .organizingAlbums(let clipboard):
 					if clipboard.subjectedAlbums_ids.contains(album.objectID) {
 						return .disabledTinted
-					} else {
-						return .disabled
 					}
+					return .disabled
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
 						return .disabledTinted
-					} else {
-						return .disabled
 					}
-				case .browsing: return .normal
+					return .disabled
+				case .browsing:
+					return .normal
 			}
 		}()
 		cell.backgroundColor = .clear

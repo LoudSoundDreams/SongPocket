@@ -156,7 +156,7 @@ extension AlbumsTVC {
 					possiblyToSame: false,
 					via: context)
 			} else {
-				// Otherwise, create a matching stack where the source stack was…
+				// Last option: create a stack where the source stack was…
 				let newMatch = context.newCollection(
 					index: indexOfSourceFolder,
 					title: targetTitle)
