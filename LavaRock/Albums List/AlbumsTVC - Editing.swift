@@ -75,20 +75,17 @@ extension AlbumsTVC {
 			foldersTVC.organizeAlbumsClipboard = clipboard
 			foldersTVC.willOrganizeAlbumsStickyNote = nil
 			
-			let previewOfChanges = FoldersViewModel(context: childContext)
-			// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
-			let oldIndexPaths_ContainingMovedAlbums: [IndexPath] = {
-				let oldRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
-					let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldRow).objectID
-					return clipboard.ids_collectionsContainingMovedAlbums.contains(collectionID)
-				}
-				return oldRows_ContainingMovedAlbums.map { row in IndexPath(row: row, section: 0) }
-			}()
-			
 			// Similar to `reflectDatabase`.
 			let _ = await foldersTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				firstReloading: oldIndexPaths_ContainingMovedAlbums,
-				previewOfChanges,
+				firstReloading: {
+					// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
+					let oldRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
+						let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldRow).objectID
+						return clipboard.ids_collectionsContainingMovedAlbums.contains(collectionID)
+					}
+					return oldRows_ContainingMovedAlbums.map { row in IndexPath(row: row, section: 0) }
+				}(),
+				FoldersViewModel(context: childContext),
 				runningBeforeContinuation: {
 					// Remove the now-playing marker from the source folder, if necessary.
 					foldersTVC.reflectPlayhead()
