@@ -43,7 +43,6 @@ extension AlbumsTVC {
 				via: childContext)
 			return OrganizeAlbumsClipboard(
 				subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-				sourceCollections_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
 				unmovedAlbums_ids: report.unmovedAlbums_ids,
 				containingMoved_ids: report.containingMoved_ids
 			)
@@ -62,10 +61,7 @@ extension AlbumsTVC {
 			})
 		}()
 		
-		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
-			prompt: clipboard.prompt,
-			sourceCollections_ids: clipboard.sourceCollections_ids
-		)
+		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(prompt: clipboard.prompt)
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
