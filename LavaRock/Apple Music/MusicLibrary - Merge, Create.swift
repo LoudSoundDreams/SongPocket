@@ -207,13 +207,10 @@ extension MusicLibrary {
 						title: titleOfDestination,
 						context: context)
 				} else {
-					let existing = existingFoldersByTitle.flatMap { $0.value }
-					return Collection(
-						index: 0,
-						before: existing,
-						title: titleOfDestination,
-						context: context)
-				}}()
+					// At the top
+					return context.newCollection(index: 0, title: titleOfDestination)
+				}
+			}()
 			
 			// …and then put the album in that folder.
 			let newAlbum = Album(

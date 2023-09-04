@@ -117,12 +117,6 @@ extension AlbumsTVC {
 		
 		// Work notes
 		let indexOfSourceFolder = albumsInOriginalContextToMaybeMove.first!.container!.index
-		let sourceAndBelow: [Collection] = {
-			let predicate = NSPredicate(
-				format: "index >= %lld",
-				indexOfSourceFolder)
-			return Collection.allFetched(sorted: false, predicate: predicate, context: context)
-		}()
 		var createdDuringSession: [String: Collection] = [:]
 		let existingFoldersByTitle: [String: [Collection]] = {
 			let existingFolders = Collection.allFetched(sorted: true, context: context)
@@ -158,11 +152,9 @@ extension AlbumsTVC {
 					via: context)
 			} else {
 				// Otherwise, create a matching folder…
-				let newMatch = Collection(
+				let newMatch = context.newCollection(
 					index: indexOfSourceFolder + Int64(createdDuringSession.count),
-					before: sourceAndBelow,
-					title: targetTitle,
-					context: context)
+					title: targetTitle)
 				createdDuringSession[targetTitle] = newMatch
 				
 				// …and then move the album to that folder.

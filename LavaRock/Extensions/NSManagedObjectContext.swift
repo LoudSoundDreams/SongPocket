@@ -49,6 +49,25 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
+	// Use `Collection(afterAllOtherCount:title:context:)` if possible. It’s faster.
+	final func newCollection(
+		index: Int64,
+		title: String
+	) -> Collection {
+		let toDisplace: [Collection] = {
+			let predicate = NSPredicate(
+				format: "index >= %lld",
+				index)
+			return Collection.allFetched(sorted: false, predicate: predicate, context: self)
+		}()
+		toDisplace.forEach { $0.index += 1 }
+		
+		let result = Collection(context: self)
+		result.title = title
+		result.index = index
+		return result
+	}
+	
 	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
 	final func unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade() {
 		let all = Album.allFetched(sorted: false, inCollection: nil, context: self)

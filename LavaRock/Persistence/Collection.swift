@@ -42,20 +42,6 @@ extension Collection {
 		index = Int64(existingCount)
 	}
 	
-	// Use `init(afterAllOtherCount:title:context:)` if possible. It’s faster.
-	convenience init(
-		index: Int64,
-		before displaced: [Collection],
-		title: String,
-		context: NSManagedObjectContext
-	) {
-		displaced.forEach { $0.index += 1 }
-		
-		self.init(context: context)
-		self.title = title
-		self.index = index
-	}
-	
 	// MARK: - All instances
 	
 	// Similar to `Album.allFetched` and `Song.allFetched`.
@@ -111,8 +97,8 @@ extension Collection {
 			context.object(with: $0)
 		} as! [Album]
 		
-		let numberOfAlbumsToMove = albumsToMove.count
-		albums(sorted: false).forEach { $0.index += Int64(numberOfAlbumsToMove) }
+		// Displace contents
+		albums(sorted: false).forEach { $0.index += Int64(albumsToMove.count) }
 		
 		albumsToMove.enumerated().forEach { (index, album) in
 			album.container = self
