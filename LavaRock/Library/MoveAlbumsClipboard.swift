@@ -7,13 +7,10 @@
 
 import CoreData
 
-final class MoveAlbumsClipboard { // This is a class and not a struct because we use it to share information.
-	// Data
+final class MoveAlbumsClipboard {
 	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	let idsOfAlbumsBeingMovedAsSet: Set<NSManagedObjectID>
 	let idsOfSourceCollections: Set<NSManagedObjectID>
-	
-	// Helpers
 	var prompt: String {
 		return String.localizedStringWithFormat(
 			LRString.variable_moveXAlbumsTo,
