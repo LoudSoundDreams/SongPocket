@@ -84,10 +84,11 @@ extension AlbumsViewModel {
 		let group = libraryGroup()
 		let destination = group.container as! Collection
 		
-		destination.moveAlbumsToBeginning(
+		destination.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
 			with: albumIDs,
 			possiblyToSame: true,
 			via: context)
+		context.deleteEmptyCollections()
 		
 		return AlbumsViewModel(
 			folder: folder,
