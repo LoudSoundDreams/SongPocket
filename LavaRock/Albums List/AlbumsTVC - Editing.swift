@@ -112,8 +112,8 @@ extension AlbumsTVC {
 		// Put new folders above the source folder, in the order that the album artists first appear among the albums we’re moving.
 		
 		// Results
-		var movedAlbumsInOriginalContext: Set<Album> = []
 		var unmovedAlbums_ids: Set<NSManagedObjectID> = []
+		var movedAlbums_ids: Set<NSManagedObjectID> = []
 		
 		// Work notes
 		let indexOfSourceFolder = albumsInOriginalContextToMaybeMove.first!.container!.index
@@ -142,7 +142,7 @@ extension AlbumsTVC {
 				return
 			}
 			
-			movedAlbumsInOriginalContext.insert(album)
+			movedAlbums_ids.insert(album.objectID)
 			
 			// If we’ve created a matching new folder…
 			if let matchingNewFolder = newFoldersByTitle[targetTitle] {
@@ -179,8 +179,7 @@ extension AlbumsTVC {
 		return (
 			unmovedAlbums_ids: unmovedAlbums_ids,
 			containingMoved_ids: {
-				let ids_movedAlbums = movedAlbumsInOriginalContext.map { $0.objectID }
-				return Set(ids_movedAlbums.map {
+				return Set(movedAlbums_ids.map {
 					let albumInThisContext = context.object(with: $0) as! Album
 					return albumInThisContext.container!.objectID
 				})
