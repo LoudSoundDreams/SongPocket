@@ -135,9 +135,9 @@ extension AlbumsTVC {
 		albumsInOriginalContextToMaybeMove.forEach { album in
 			// Similar to `newAlbumAndMaybeNewFolderMade`.
 			
-			let titleOfDestination = album.albumArtistFormatted()
+			let targetTitle = album.albumArtistFormatted()
 			
-			guard album.container!.title != titleOfDestination else {
+			guard album.container!.title != targetTitle else {
 				unmovedAlbums_ids.insert(album.objectID)
 				return
 			}
@@ -145,14 +145,14 @@ extension AlbumsTVC {
 			movedAlbumsInOriginalContext.insert(album)
 			
 			// If we’ve created a matching new folder…
-			if let matchingNewFolder = newFoldersByTitle[titleOfDestination] {
+			if let matchingNewFolder = newFoldersByTitle[targetTitle] {
 				// …then move the album to the end of that folder.
 				matchingNewFolder.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 					with: [album.objectID],
 					possiblyToSame: false,
 					via: context)
 			} else if // Otherwise, if we already had a matching existing folder…
-				let matchingExisting = existingFoldersByTitle[titleOfDestination]?.first
+				let matchingExisting = existingFoldersByTitle[targetTitle]?.first
 			{
 				// …then move the album to the beginning of that folder.
 				matchingExisting.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
@@ -164,9 +164,9 @@ extension AlbumsTVC {
 				let newFolder = Collection(
 					index: indexOfSourceFolder + Int64(newFoldersByTitle.count),
 					before: toDisplace,
-					title: titleOfDestination,
+					title: targetTitle,
 					context: context)
-				newFoldersByTitle[titleOfDestination] = newFolder
+				newFoldersByTitle[targetTitle] = newFolder
 				
 				// …and then move the album to that folder.
 				newFolder.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
