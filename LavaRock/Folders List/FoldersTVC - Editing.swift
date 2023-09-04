@@ -97,8 +97,8 @@ extension FoldersTVC {
 		// Create a child context previewing the changes.
 		let previewContext = NSManagedObjectContext(.mainQueue)
 		previewContext.parent = viewModel.context
-		let combined = previewContext.createFolder(
-			byCombiningCollectionsWithInOrder: {
+		let combined = previewContext.combine(
+			{
 				let selected = selectedIndexPaths.map {
 					foldersViewModel.folderNonNil(atRow: $0.row)
 				}

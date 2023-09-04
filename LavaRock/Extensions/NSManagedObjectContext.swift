@@ -31,8 +31,8 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
-	final func createFolder(
-		byCombiningCollectionsWithInOrder idsOfCollectionsToCombine: [NSManagedObjectID],
+	final func combine(
+		_ idsOfCollectionsToCombine: [NSManagedObjectID],
 		index: Int64
 	) -> Collection {
 		let result = Collection(context: self)
