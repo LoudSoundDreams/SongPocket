@@ -117,7 +117,7 @@ extension FoldersTVC {
 				case .organizingAlbums(let clipboard):
 					if clipboard.sourceCollections_ids.contains(collection.objectID) {
 						return .modalDisabled
-					} else if clipboard.collectionsContainingMovedAlbums_ids.contains(collection.objectID) {
+					} else if clipboard.containingMoved_ids.contains(collection.objectID) {
 						return .modalTinted
 					} else {
 						return .modal

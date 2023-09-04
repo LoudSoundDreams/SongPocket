@@ -45,7 +45,7 @@ extension AlbumsTVC {
 				subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
 				sourceCollections_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
 				unmovedAlbums_ids: report.unmovedAlbums_ids,
-				collectionsContainingMovedAlbums_ids: report.collectionsContainingMovedAlbums_ids,
+				containingMoved_ids: report.containingMoved_ids,
 				delegate: self
 			)
 		}()
@@ -82,7 +82,7 @@ extension AlbumsTVC {
 					// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
 					let oldRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
 						let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldRow).objectID
-						return clipboard.collectionsContainingMovedAlbums_ids.contains(collectionID)
+						return clipboard.containingMoved_ids.contains(collectionID)
 					}
 					return oldRows_ContainingMovedAlbums.map { row in IndexPath(row: row, section: 0) }
 				}(),
@@ -99,7 +99,7 @@ extension AlbumsTVC {
 		via context: NSManagedObjectContext
 	) -> (
 		unmovedAlbums_ids: Set<NSManagedObjectID>,
-		collectionsContainingMovedAlbums_ids: Set<NSManagedObjectID>
+		containingMoved_ids: Set<NSManagedObjectID>
 	) {
 		let log = OSLog.albumsView
 		os_signpost(.begin, log: log, name: "Preview organizing Albums")
@@ -179,7 +179,7 @@ extension AlbumsTVC {
 		
 		return (
 			unmovedAlbums_ids: unmovedAlbums_ids,
-			collectionsContainingMovedAlbums_ids: {
+			containingMoved_ids: {
 				let ids_movedAlbums = movedAlbumsInOriginalContext.map { $0.objectID }
 				return Set(ids_movedAlbums.map {
 					let albumInThisContext = context.object(with: $0) as! Album
