@@ -138,16 +138,18 @@ extension AlbumsTVC {
 			// If we’ve created a matching new folder…
 			if let createdMatch = createdDuringSession[targetTitle] {
 				// …then move the album to the end of that folder.
-				createdMatch.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
-					with: [album.objectID],
+				createdMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
+					atIndex: createdMatch.contents?.count ?? 0,
+					albumIDs: [album.objectID],
 					possiblyToSame: false,
 					via: context)
 			} else if // Otherwise, if we already had a matching existing folder…
 				let existingMatch = existingFoldersByTitle[targetTitle]?.first
 			{
 				// …then move the album to the beginning of that folder.
-				existingMatch.unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
-					with: [album.objectID],
+				existingMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
+					atIndex: 0,
+					albumIDs: [album.objectID],
 					possiblyToSame: false,
 					via: context)
 			} else {
@@ -158,8 +160,9 @@ extension AlbumsTVC {
 				createdDuringSession[targetTitle] = newMatch
 				
 				// …and then move the album to that folder.
-				newMatch.unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
-					with: [album.objectID],
+				newMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
+					atIndex: 0,
+					albumIDs: [album.objectID],
 					possiblyToSame: false,
 					via: context)
 			}

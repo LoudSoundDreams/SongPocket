@@ -75,8 +75,9 @@ extension Collection {
 	}
 	
 	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn’t delete empty source `Collection`s. You must call `deleteEmptyCollections` later.
-	final func unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
-		with albumIDs: [NSManagedObjectID],
+	final func unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
+		atIndex: Int,
+		albumIDs: [NSManagedObjectID],
 		possiblyToSame: Bool,
 		via context: NSManagedObjectContext
 	) {
@@ -85,34 +86,15 @@ extension Collection {
 		} as! [Album]
 		
 		// Displace contents
-		albums(sorted: false).forEach { $0.index += Int64(albumsToMove.count) }
-		
-		albumsToMove.enumerated().forEach { (index, album) in
-			album.container = self
-			album.index = Int64(index)
+		let toDisplace: [Album] = albums(sorted: false).filter { $0.index >= atIndex }
+		toDisplace.forEach {
+			$0.index += Int64(albumsToMove.count)
 		}
 		
-		// In case we moved any albums to this folder that were already here.
-		if possiblyToSame {
-			var newContents = albums(sorted: true)
-			newContents.reindex()
-		}
-	}
-	
-	// WARNING: Leaves empty `Collection`s. You must call `deleteEmptyCollections` later.
-	final func unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
-		with albumIDs: [NSManagedObjectID],
-		possiblyToSame: Bool,
-		via context: NSManagedObjectContext
-	) {
-		let albumsToMove = albumIDs.map {
-			context.object(with: $0)
-		} as! [Album]
-		
-		let oldNumberOfAlbums = albums(sorted: false).count
-		albumsToMove.enumerated().forEach { (index, album) in
+		// Move albums here
+		albumsToMove.enumerated().forEach { (offset, album) in
 			album.container = self
-			album.index = Int64(oldNumberOfAlbums + index)
+			album.index = Int64(atIndex + offset)
 		}
 		
 		// In case we moved any albums to this folder that were already here.
