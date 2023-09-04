@@ -19,34 +19,34 @@ struct WillOrganizeAlbumsStickyNote {
 
 final class OrganizeAlbumsClipboard {
 	// Data
-	let ids_subjectedAlbums: Set<NSManagedObjectID> // Selected or all albums in source collection
-	let ids_sourceCollections: Set<NSManagedObjectID>
-	let ids_unmovedAlbums: Set<NSManagedObjectID>
-	let ids_collectionsContainingMovedAlbums: Set<NSManagedObjectID>
+	let subjectedAlbums_ids: Set<NSManagedObjectID> // Selected or all albums in source collection
+	let sourceCollections_ids: Set<NSManagedObjectID>
+	let unmovedAlbums_ids: Set<NSManagedObjectID>
+	let collectionsContainingMovedAlbums_ids: Set<NSManagedObjectID>
 	
 	// Helpers
 	private(set) weak var delegate: OrganizeAlbumsDelegate? = nil
 	var prompt: String {
 		return String.localizedStringWithFormat(
 			LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
-			ids_subjectedAlbums.count - ids_unmovedAlbums.count,
-			ids_collectionsContainingMovedAlbums.count)
+			subjectedAlbums_ids.count - unmovedAlbums_ids.count,
+			collectionsContainingMovedAlbums_ids.count)
 	}
 	
 	// State
 	var didAlreadyCommitOrganize = false
 	
 	init(
-		ids_subjectedAlbums: Set<NSManagedObjectID>,
-		ids_sourceCollections: Set<NSManagedObjectID>,
-		ids_unmovedAlbums: Set<NSManagedObjectID>,
-		ids_collectionsContainingMovedAlbums: Set<NSManagedObjectID>,
+		subjectedAlbums_ids: Set<NSManagedObjectID>,
+		sourceCollections_ids: Set<NSManagedObjectID>,
+		unmovedAlbums_ids: Set<NSManagedObjectID>,
+		collectionsContainingMovedAlbums_ids: Set<NSManagedObjectID>,
 		delegate: OrganizeAlbumsDelegate
 	) {
-		self.ids_subjectedAlbums = ids_subjectedAlbums
-		self.ids_sourceCollections = ids_sourceCollections
-		self.ids_unmovedAlbums = ids_unmovedAlbums
-		self.ids_collectionsContainingMovedAlbums = ids_collectionsContainingMovedAlbums
+		self.subjectedAlbums_ids = subjectedAlbums_ids
+		self.sourceCollections_ids = sourceCollections_ids
+		self.unmovedAlbums_ids = unmovedAlbums_ids
+		self.collectionsContainingMovedAlbums_ids = collectionsContainingMovedAlbums_ids
 		self.delegate = delegate
 	}
 }

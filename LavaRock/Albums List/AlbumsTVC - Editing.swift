@@ -42,10 +42,10 @@ extension AlbumsTVC {
 				albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
 				via: childContext)
 			return OrganizeAlbumsClipboard(
-				ids_subjectedAlbums: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-				ids_sourceCollections: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
-				ids_unmovedAlbums: report.ids_unmovedAlbums,
-				ids_collectionsContainingMovedAlbums: report.ids_collectionsContainingMovedAlbums,
+				subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
+				sourceCollections_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
+				unmovedAlbums_ids: report.ids_unmovedAlbums,
+				collectionsContainingMovedAlbums_ids: report.ids_collectionsContainingMovedAlbums,
 				delegate: self
 			)
 		}()
@@ -55,7 +55,7 @@ extension AlbumsTVC {
 			}
 			return Set(selectedAlbums.compactMap {
 				let selectedAlbumID = $0.objectID
-				if clipboard.ids_unmovedAlbums.contains(selectedAlbumID) {
+				if clipboard.unmovedAlbums_ids.contains(selectedAlbumID) {
 					return selectedAlbumID
 				} else {
 					return nil
@@ -65,7 +65,7 @@ extension AlbumsTVC {
 		
 		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
 			prompt: clipboard.prompt,
-			ids_sourceCollections: clipboard.ids_sourceCollections)
+			ids_sourceCollections: clipboard.sourceCollections_ids)
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
@@ -81,7 +81,7 @@ extension AlbumsTVC {
 					// We might have moved albums into any existing folder other than the source. If so, fade in a highlight on those rows.
 					let oldRows_ContainingMovedAlbums = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
 						let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldRow).objectID
-						return clipboard.ids_collectionsContainingMovedAlbums.contains(collectionID)
+						return clipboard.collectionsContainingMovedAlbums_ids.contains(collectionID)
 					}
 					return oldRows_ContainingMovedAlbums.map { row in IndexPath(row: row, section: 0) }
 				}(),
