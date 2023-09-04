@@ -40,23 +40,25 @@ extension AlbumsTVC {
 		childContext.parent = viewModel.context
 		
 		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
-		let clipboard: OrganizeAlbumsClipboard = {
-			let report = Self.autoMoveAndReturnReport(
-				albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
-				via: childContext)
-			return OrganizeAlbumsClipboard(
-				subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-				unmovedAlbums_ids: report.unmovedAlbums_ids,
-				containingMoved_ids: report.containingMoved_ids
+		let report = Self.autoMoveAndReturnReport(
+			albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
+			via: childContext)
+		let clipboard = OrganizeAlbumsClipboard(
+			subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
+			containingMoved_ids: report.containingMoved_ids,
+			prompt: String.localizedStringWithFormat(
+				LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
+				albumsInOriginalContextToMaybeMove.count - report.unmovedAlbums_ids.count,
+				report.containingMoved_ids.count
 			)
-		}()
+		)
 		ids_albumsToKeepSelected = { () -> Set<NSManagedObjectID> in
 			let selectedAlbums = selectedIndexPaths.map {
 				albumsViewModel.albumNonNil(atRow: $0.row)
 			}
 			return Set(selectedAlbums.compactMap {
 				let selectedAlbumID = $0.objectID
-				if clipboard.unmovedAlbums_ids.contains(selectedAlbumID) {
+				if report.unmovedAlbums_ids.contains(selectedAlbumID) {
 					return selectedAlbumID
 				} else {
 					return nil
