@@ -39,7 +39,6 @@ extension AlbumsTVC {
 		let childContext = NSManagedObjectContext(.mainQueue)
 		childContext.parent = viewModel.context
 		
-		// Move the `Album`s it makes sense to move, and save the object IDs of the rest, to keep them selected.
 		let destinationCollections_ids = Self.autoMoveAndReturnDestinationCollectionIDs(
 			albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
 			via: childContext)
@@ -97,9 +96,6 @@ extension AlbumsTVC {
 		// If there is no matching folder, then create one.
 		// Put new folders above the source folder, in the order that the album artists first appear among the albums we’re moving.
 		
-		// Results
-		var movedAlbums_ids: Set<NSManagedObjectID> = []
-		
 		// Work notes
 		let sourceCollection = albumsInOriginalContextToMaybeMove.first!.container!
 		let sourceCollection_index = sourceCollection.index
@@ -113,8 +109,6 @@ extension AlbumsTVC {
 			// Similar to `newAlbumAndMaybeNewFolderMade`.
 			
 			let targetTitle = album.albumArtistFormatted()
-			
-			movedAlbums_ids.insert(album.objectID)
 			
 			// If we’ve created a matching stack…
 			if let createdMatch = createdDuringSession[targetTitle] {
@@ -152,16 +146,14 @@ extension AlbumsTVC {
 		
 		context.deleteEmptyCollections()
 		
-		return {
-			let subjectedAlbums_ids = movedAlbums_ids
-			let subjectedAlbums = subjectedAlbums_ids.map {
-				context.object(with: $0) as! Album
-			}
-			let destinationCollections_ids = subjectedAlbums.map {
-				$0.container!.objectID
-			}
-			return Set(destinationCollections_ids)
-		}()
+		let subjectedAlbums_ids = albumsInOriginalContextToMaybeMove.map { $0.objectID }
+		let subjectedAlbums = subjectedAlbums_ids.map {
+			context.object(with: $0) as! Album
+		}
+		let destinationCollections_ids = subjectedAlbums.map {
+			$0.container!.objectID
+		}
+		return Set(destinationCollections_ids)
 	}
 	
 	// MARK: - Move to stack
