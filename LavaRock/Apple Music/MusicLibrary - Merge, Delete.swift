@@ -23,6 +23,6 @@ extension MusicLibrary {
 		}
 		
 		Album.unsafe_deleteAllEmpty_withoutReindexOrCascade(via: context)
-		Collection.deleteAllEmpty(via: context)
+		context.deleteEmptyCollections()
 	}
 }

@@ -72,19 +72,6 @@ extension Collection {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	static func deleteAllEmpty(via context: NSManagedObjectContext) {
-		var all = allFetched(sorted: true, context: context)
-		
-		all.enumerated().reversed().forEach { (index, folder) in
-			if folder.isEmpty() {
-				context.delete(folder)
-				all.remove(at: index)
-			}
-		}
-		
-		all.reindex()
-	}
-	
 	// MARK: - Albums
 	
 	// Similar to `Album.songs`.
@@ -111,10 +98,10 @@ extension Collection {
 			possiblyToSame: possiblyToSame,
 			via: context)
 		
-		Self.deleteAllEmpty(via: context) // Also reindexes `self`
+		context.deleteEmptyCollections() // Also sets `self.index`
 	}
 	
-	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn’t delete empty source `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn’t delete empty source `Collection`s. You must call `deleteEmptyCollections` later.
 	final func unsafe_moveAlbumsToBeginning_withoutDeleteOrReindexSources(
 		with albumIDs: [NSManagedObjectID],
 		possiblyToSame: Bool,
@@ -139,7 +126,7 @@ extension Collection {
 		}
 	}
 	
-	// WARNING: Leaves empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	// WARNING: Leaves empty `Collection`s. You must call `deleteEmptyCollections` later.
 	final func unsafe_moveAlbumsToEnd_withoutDeleteOrReindexSources(
 		with albumIDs: [NSManagedObjectID],
 		possiblyToSame: Bool,

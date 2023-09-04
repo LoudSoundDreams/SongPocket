@@ -75,7 +75,7 @@ extension Album {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	// WARNING: Leaves gaps in the `Album` indices within `Collection`s, and doesn’t delete empty `Collection`s. You must call `Collection.deleteAllEmpty` later.
+	// WARNING: Leaves gaps in the `Album` indices within `Collection`s, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
 	static func unsafe_deleteAllEmpty_withoutReindexOrCascade(
 		via context: NSManagedObjectContext
 	) {

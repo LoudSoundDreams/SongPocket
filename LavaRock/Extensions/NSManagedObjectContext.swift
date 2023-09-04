@@ -44,8 +44,21 @@ extension NSManagedObjectContext {
 		contentsOfResult.reindex()
 		contentsOfResult.forEach { $0.container = result }
 		
-		Collection.deleteAllEmpty(via: self)
+		deleteEmptyCollections()
 		
 		return result
+	}
+	
+	final func deleteEmptyCollections() {
+		var all = Collection.allFetched(sorted: true, context: self)
+		
+		all.enumerated().reversed().forEach { (index, collection) in
+			if collection.isEmpty() {
+				delete(collection)
+				all.remove(at: index)
+			}
+		}
+		
+		all.reindex()
 	}
 }
