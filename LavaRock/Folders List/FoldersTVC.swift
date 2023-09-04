@@ -15,7 +15,7 @@ extension FoldersTVC: UIAdaptivePresentationControllerDelegate {
 		presented_previewing_Combine_IndexPaths = []
 	}
 }
-final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
+final class FoldersTVC: LibraryTVC {
 	enum Purpose {
 		case willOrganizeAlbums(WillOrganizeAlbumsStickyNote)
 		case organizingAlbums(OrganizeAlbumsClipboard)
@@ -247,6 +247,25 @@ final class FoldersTVC: LibraryTVC, OrganizeAlbumsPreviewing {
 	}
 	
 	// MARK: - Library items
+	
+	private func commitOrganize() {
+		guard
+			let clipboard = organizeAlbumsClipboard,
+			!clipboard.didAlreadyCommitOrganize
+		else { return }
+		
+		clipboard.didAlreadyCommitOrganize = true
+		
+		viewModel.context.deleteEmptyCollections() // You must do this because when we previewed changes in the context, we didn’t delete the source folder even if we moved all the albums out of it.
+		
+		viewModel.context.tryToSave()
+		viewModel.context.parent!.tryToSave()
+		
+		NotificationCenter.default.post(name: .LRUserUpdatedDatabase, object: nil)
+		
+		dismiss(animated: true)
+		NotificationCenter.default.post(name: .LROrganizedAlbums, object: nil)
+	}
 	
 	override func freshenLibraryItems() {
 		switch purpose {
