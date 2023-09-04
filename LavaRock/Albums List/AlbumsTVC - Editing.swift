@@ -121,7 +121,7 @@ extension AlbumsTVC {
 			let predicate = NSPredicate(
 				format: "index >= %lld",
 				indexOfSourceFolder)
-			return Collection.allFetched(sorted: true, predicate: predicate, context: context)
+			return Collection.allFetched(sorted: false, predicate: predicate, context: context)
 		}()
 		var createdDuringSession: [String: Collection] = [:]
 		let existingFoldersByTitle: [String: [Collection]] = {
