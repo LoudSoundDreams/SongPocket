@@ -44,8 +44,8 @@ extension AlbumsTVC {
 			return OrganizeAlbumsClipboard(
 				subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
 				sourceCollections_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
-				unmovedAlbums_ids: report.ids_unmovedAlbums,
-				collectionsContainingMovedAlbums_ids: report.ids_collectionsContainingMovedAlbums,
+				unmovedAlbums_ids: report.unmovedAlbums_ids,
+				collectionsContainingMovedAlbums_ids: report.collectionsContainingMovedAlbums_ids,
 				delegate: self
 			)
 		}()
@@ -65,7 +65,8 @@ extension AlbumsTVC {
 		
 		foldersTVC.willOrganizeAlbumsStickyNote = WillOrganizeAlbumsStickyNote(
 			prompt: clipboard.prompt,
-			ids_sourceCollections: clipboard.sourceCollections_ids)
+			sourceCollections_ids: clipboard.sourceCollections_ids
+		)
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
@@ -97,8 +98,8 @@ extension AlbumsTVC {
 		albumsInOriginalContextToMaybeMove: [Album],
 		via context: NSManagedObjectContext
 	) -> (
-		ids_unmovedAlbums: Set<NSManagedObjectID>,
-		ids_collectionsContainingMovedAlbums: Set<NSManagedObjectID>
+		unmovedAlbums_ids: Set<NSManagedObjectID>,
+		collectionsContainingMovedAlbums_ids: Set<NSManagedObjectID>
 	) {
 		let log = OSLog.albumsView
 		os_signpost(.begin, log: log, name: "Preview organizing Albums")
@@ -113,7 +114,7 @@ extension AlbumsTVC {
 		
 		// Results
 		var movedAlbumsInOriginalContext: Set<Album> = []
-		var ids_unmovedAlbums: Set<NSManagedObjectID> = []
+		var unmovedAlbums_ids: Set<NSManagedObjectID> = []
 		
 		// Work notes
 		let indexOfSourceFolder = albumsInOriginalContextToMaybeMove.first!.container!.index
@@ -138,7 +139,7 @@ extension AlbumsTVC {
 			let titleOfDestination = album.albumArtistFormatted()
 			
 			guard album.container!.title != titleOfDestination else {
-				ids_unmovedAlbums.insert(album.objectID)
+				unmovedAlbums_ids.insert(album.objectID)
 				return
 			}
 			
@@ -177,8 +178,8 @@ extension AlbumsTVC {
 		}
 		
 		return (
-			ids_unmovedAlbums: ids_unmovedAlbums,
-			ids_collectionsContainingMovedAlbums: {
+			unmovedAlbums_ids: unmovedAlbums_ids,
+			collectionsContainingMovedAlbums_ids: {
 				let ids_movedAlbums = movedAlbumsInOriginalContext.map { $0.objectID }
 				return Set(ids_movedAlbums.map {
 					let albumInThisContext = context.object(with: $0) as! Album
