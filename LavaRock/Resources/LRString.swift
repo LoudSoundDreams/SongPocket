@@ -17,7 +17,7 @@ enum LRString {
 	// MARK: Standard
 	
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
-	static let save = NSLocalizedString("Save", comment: "Button")
+	static let done = NSLocalizedString("Done", comment: "Button")
 	static let more = NSLocalizedString("More", comment: "Button")
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")

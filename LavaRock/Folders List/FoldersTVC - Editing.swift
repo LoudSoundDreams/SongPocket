@@ -43,7 +43,7 @@ extension FoldersTVC {
 		
 		let cancel = UIAlertAction(title: LRString.cancel, style: .cancel)
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
-		let saveAction = UIAlertAction(title: LRString.save, style: .default) { [weak self] _ in
+		let done = UIAlertAction(title: LRString.done, style: .default) { [weak self] _ in
 			let textFieldText = dialog.textFields?.first?.text
 			self?.commitRename(
 				at: indexPath,
@@ -51,8 +51,8 @@ extension FoldersTVC {
 				thenSelectIf: rowWasSelectedBeforeRenaming)
 		}
 		dialog.addAction(cancel)
-		dialog.addAction(saveAction)
-		dialog.preferredAction = saveAction
+		dialog.addAction(done)
+		dialog.preferredAction = done
 		
 		present(dialog, animated: true)
 	}
@@ -67,8 +67,6 @@ extension FoldersTVC {
 		let _ = foldersViewModel.renameAndReturnDidChangeTitle(
 			atRow: indexPath.row,
 			proposedTitle: proposedTitle)
-		
-		viewModel.context.tryToSave()
 		
 		Task {
 			await tableView.performBatchUpdates__async {
