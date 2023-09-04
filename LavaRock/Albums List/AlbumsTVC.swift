@@ -64,7 +64,8 @@ final class AlbumsTVC: LibraryTVC {
 				navigationItem.prompt = clipboard.prompt
 			case .movingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
-			case .browsing: break
+			case .browsing:
+				NotificationCenter.default.addObserverOnce(self, selector: #selector(didOrganize), name: .LROrganizedAlbums, object: nil)
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
@@ -115,6 +116,30 @@ final class AlbumsTVC: LibraryTVC {
 	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {}
 	
 	// MARK: - Library items
+	
+	@objc
+	func didOrganize() {
+		let viewModel = viewModel.updatedWithFreshenedData() as! AlbumsViewModel // Shadowing so that we don’t accidentally refer to `self.viewModel`, which is incoherent at this point.
+		let toKeepSelected = ids_albumsToKeepSelected
+		ids_albumsToKeepSelected = []
+		let toSelect = tableView.allIndexPaths().filter { someIndexPath in
+			guard viewModel.pointsToSomeItem(row: someIndexPath.row) else {
+				return false
+			}
+			let idOfAlbum = viewModel.albumNonNil(atRow: someIndexPath.row).objectID
+			return toKeepSelected.contains(idOfAlbum)
+		}
+		Task {
+			if toSelect.isEmpty {
+				setEditing(false, animated: true)
+			}
+			
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
+				viewModel,
+				thenSelecting: Set(toSelect)
+			)
+		}
+	}
 	
 	override func freshenLibraryItems() {
 		switch purpose {

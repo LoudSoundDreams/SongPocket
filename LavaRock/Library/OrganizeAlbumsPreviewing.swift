@@ -29,6 +29,6 @@ extension OrganizeAlbumsPreviewing {
 		NotificationCenter.default.post(name: .LRUserUpdatedDatabase, object: nil)
 		
 		dismiss(animated: true)
-		clipboard.delegate?.didOrganize()
+		NotificationCenter.default.post(name: .LROrganizedAlbums, object: nil)
 	}
 }

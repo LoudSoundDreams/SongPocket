@@ -45,8 +45,7 @@ extension AlbumsTVC {
 				subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
 				sourceCollections_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.container!.objectID }),
 				unmovedAlbums_ids: report.unmovedAlbums_ids,
-				containingMoved_ids: report.containingMoved_ids,
-				delegate: self
+				containingMoved_ids: report.containingMoved_ids
 			)
 		}()
 		ids_albumsToKeepSelected = { () -> Set<NSManagedObjectID> in
