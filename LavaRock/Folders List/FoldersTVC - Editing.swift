@@ -41,26 +41,25 @@ extension FoldersTVC {
 			$0.delegate = self
 		}
 		
-		let cancel = UIAlertAction(title: LRString.cancel, style: .cancel)
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		let done = UIAlertAction(title: LRString.done, style: .default) { [weak self] _ in
-			let textFieldText = dialog.textFields?.first?.text
 			self?.commitRename(
-				at: indexPath,
-				proposedTitle: textFieldText,
-				thenSelectIf: rowWasSelectedBeforeRenaming)
+				proposedTitle: dialog.textFields?.first?.text,
+				indexPath: indexPath,
+				thenShouldReselect: rowWasSelectedBeforeRenaming
+			)
 		}
-		dialog.addAction(cancel)
+		
+		dialog.addAction(UIAlertAction(title: LRString.cancel, style: .cancel))
 		dialog.addAction(done)
 		dialog.preferredAction = done
 		
 		present(dialog, animated: true)
 	}
-	
 	private func commitRename(
-		at indexPath: IndexPath,
 		proposedTitle: String?,
-		thenSelectIf shouldSelectRow: Bool
+		indexPath: IndexPath,
+		thenShouldReselect: Bool
 	) {
 		let foldersViewModel = viewModel as! FoldersViewModel
 		
@@ -72,7 +71,7 @@ extension FoldersTVC {
 			await tableView.performBatchUpdates__async {
 				self.tableView.reloadRows(at: [indexPath], with: .fade)
 			} runningBeforeContinuation: {
-				if shouldSelectRow {
+				if thenShouldReselect {
 					self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 				}
 			}

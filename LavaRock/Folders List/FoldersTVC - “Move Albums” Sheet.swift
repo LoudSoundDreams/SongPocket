@@ -23,21 +23,6 @@ extension FoldersTVC {
 			renameAndOpenCreated()
 		}
 	}
-	
-	func revertCreate() {
-		guard case .movingAlbums(let clipboard) = purpose else {
-			fatalError()
-		}
-		clipboard.hasCreatedNewFolder = false
-		
-		let foldersViewModel = viewModel as! FoldersViewModel
-		
-		let newViewModel = foldersViewModel.updatedAfterDeletingNewFolder()
-		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
-		}
-	}
-	
 	private func renameAndOpenCreated() {
 		let foldersViewModel = viewModel as! FoldersViewModel
 		
@@ -56,6 +41,20 @@ extension FoldersTVC {
 			
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 			performSegue(withIdentifier: "Open Folder", sender: self)
+		}
+	}
+	
+	func revertCreate() {
+		guard case .movingAlbums(let clipboard) = purpose else {
+			fatalError()
+		}
+		clipboard.hasCreatedNewFolder = false
+		
+		let foldersViewModel = viewModel as! FoldersViewModel
+		
+		let newViewModel = foldersViewModel.updatedAfterDeletingNewFolder()
+		Task {
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
 }
