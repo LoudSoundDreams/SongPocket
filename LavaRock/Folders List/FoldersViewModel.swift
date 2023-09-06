@@ -38,23 +38,6 @@ extension FoldersViewModel {
 		return twin
 	}
 	
-	// MARK: - Renaming
-	
-	func rename(
-		proposedTitle: String?,
-		atRow: Int
-	) {
-		guard
-			let proposedTitle = proposedTitle,
-			proposedTitle != ""
-		else { return }
-		
-		let newTitle = proposedTitle.truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
-		
-		let folder = folderNonNil(atRow: atRow)
-		folder.title = newTitle
-	}
-	
 	// MARK: - “Move albums” sheet
 	
 	static let indexOfNewFolder = 0

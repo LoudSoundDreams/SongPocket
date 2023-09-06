@@ -29,7 +29,7 @@ extension FoldersTVC {
 		dialog.addTextField {
 			// UITextField
 			$0.text = existingTitle
-			$0.placeholder = existingTitle
+			$0.placeholder = LRString.tilde
 			$0.clearButtonMode = .always
 			
 			// UITextInputTraits
@@ -44,7 +44,7 @@ extension FoldersTVC {
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		let done = UIAlertAction(title: LRString.done, style: .default) { [weak self] _ in
 			self?.commitRename(
-				proposedTitle: dialog.textFields?.first?.text,
+				textFieldText: dialog.textFields?.first?.text,
 				indexPath: indexPath,
 				thenShouldReselect: rowWasSelectedBeforeRenaming
 			)
@@ -57,15 +57,19 @@ extension FoldersTVC {
 		present(dialog, animated: true)
 	}
 	private func commitRename(
-		proposedTitle: String?,
+		textFieldText: String?,
 		indexPath: IndexPath,
 		thenShouldReselect: Bool
 	) {
 		let foldersViewModel = viewModel as! FoldersViewModel
-		foldersViewModel.rename(
-			proposedTitle: proposedTitle,
-			atRow: indexPath.row
-		)
+		let folder = foldersViewModel.folderNonNil(atRow: indexPath.row)
+		
+		let proposedTitle = (textFieldText ?? "").truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
+		if proposedTitle.isEmpty {
+			folder.title = LRString.tilde
+		} else {
+			folder.title = proposedTitle
+		}
 		
 		Task {
 			await tableView.performBatchUpdates__async {
