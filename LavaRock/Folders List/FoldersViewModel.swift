@@ -40,22 +40,19 @@ extension FoldersViewModel {
 	
 	// MARK: - Renaming
 	
-	func renameAndReturnDidChangeTitle(
-		atRow: Int,
-		proposedTitle: String?
-	) -> Bool {
+	func rename(
+		proposedTitle: String?,
+		atRow: Int
+	) {
 		guard
 			let proposedTitle = proposedTitle,
 			proposedTitle != ""
-		else {
-			return false
-		}
+		else { return }
+		
 		let newTitle = proposedTitle.truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
 		
 		let folder = folderNonNil(atRow: atRow)
-		let oldTitle = folder.title
 		folder.title = newTitle
-		return oldTitle != folder.title
 	}
 	
 	// MARK: - “Move albums” sheet

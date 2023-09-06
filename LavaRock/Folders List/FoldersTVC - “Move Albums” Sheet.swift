@@ -20,28 +20,13 @@ extension FoldersTVC {
 		Task {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
-			renameAndOpenCreated()
+			openCreated()
 		}
 	}
-	private func renameAndOpenCreated() {
-		let foldersViewModel = viewModel as! FoldersViewModel
-		
+	private func openCreated() {
 		let indexPath = IndexPath(row: FoldersViewModel.indexOfNewFolder, section: 0)
-		
-		let didChangeTitle = foldersViewModel.renameAndReturnDidChangeTitle(
-			atRow: indexPath.row,
-			proposedTitle: nil)
-		
-		Task {
-			if didChangeTitle {
-				await tableView.performBatchUpdates__async {
-					self.tableView.reloadRows(at: [indexPath], with: .fade)
-				}
-			}
-			
-			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-			performSegue(withIdentifier: "Open Folder", sender: self)
-		}
+		tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+		performSegue(withIdentifier: "Open Folder", sender: self)
 	}
 	
 	func revertCreate() {

@@ -62,10 +62,10 @@ extension FoldersTVC {
 		thenShouldReselect: Bool
 	) {
 		let foldersViewModel = viewModel as! FoldersViewModel
-		
-		let _ = foldersViewModel.renameAndReturnDidChangeTitle(
-			atRow: indexPath.row,
-			proposedTitle: proposedTitle)
+		foldersViewModel.rename(
+			proposedTitle: proposedTitle,
+			atRow: indexPath.row
+		)
 		
 		Task {
 			await tableView.performBatchUpdates__async {
