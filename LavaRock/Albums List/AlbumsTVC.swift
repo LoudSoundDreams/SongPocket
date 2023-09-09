@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 import CoreData
 
 final class AlbumsTVC: LibraryTVC {
@@ -112,6 +113,32 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {}
+	
+	override func viewWillTransition(
+		to size: CGSize,
+		with coordinator: UIViewControllerTransitionCoordinator
+	) {
+		super.viewWillTransition(to: size, with: coordinator)
+		
+		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
+		
+		(tableView.indexPathsForVisibleRows ?? []).forEach { indexPath in
+			guard
+				let cell = tableView.cellForRow(at: indexPath),
+				albumsViewModel.pointsToSomeItem(row: indexPath.row)
+			else { return }
+			let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
+			let (mode, selectionStyle) = new_albumCardMode_and_selectionStyle(album: album)
+			cell.selectionStyle = selectionStyle
+			cell.contentConfiguration = UIHostingConfiguration {
+				AlbumCard(
+					album: album,
+					maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
+					mode: mode)
+			}
+			.margins(.all, .zero)
+		}
+	}
 	
 	// MARK: - Library items
 	

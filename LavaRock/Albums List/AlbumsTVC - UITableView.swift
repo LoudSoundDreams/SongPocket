@@ -48,8 +48,28 @@ extension AlbumsTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		let albumsViewModel = viewModel as! AlbumsViewModel
-		let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
+		cell.backgroundColor = .clear
+		let album = (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row)
+		let (mode, selectionStyle) = new_albumCardMode_and_selectionStyle(album: album)
+		cell.selectionStyle = selectionStyle
+		cell.contentConfiguration = UIHostingConfiguration {
+			AlbumCard(
+				album: album,
+				maxHeight: {
+					let height = view.frame.height
+					let topInset = view.safeAreaInsets.top
+					let bottomInset = view.safeAreaInsets.bottom
+					return height - topInset - bottomInset
+				}(),
+				mode: mode)
+		}
+		.margins(.all, .zero)
+		return cell
+	}
+	func new_albumCardMode_and_selectionStyle(album: Album) -> (
+		mode: AlbumCard.Mode,
+		selectionStyle: UITableViewCell.SelectionStyle
+	) {
 		let mode: AlbumCard.Mode = {
 			switch purpose {
 				case .previewingCombine:
@@ -68,25 +88,13 @@ extension AlbumsTVC {
 					return .normal
 			}
 		}()
-		cell.backgroundColor = .clear
-		switch mode {
-			case .normal: break
-			case .disabled, .disabledTinted:
-				cell.selectionStyle = .none
-		}
-		cell.contentConfiguration = UIHostingConfiguration {
-			AlbumCard(
-				album: album,
-				maxHeight: {
-					let height = view.frame.height
-					let topInset = view.safeAreaInsets.top
-					let bottomInset = view.safeAreaInsets.bottom
-					return height - topInset - bottomInset
-				}(),
-				mode: mode)
-		}
-		.margins(.all, .zero)
-		return cell
+		let selectionStyle: UITableViewCell.SelectionStyle = {
+			switch mode {
+				case .normal: return .default
+				case .disabled, .disabledTinted: return .none
+			}
+		}()
+		return (mode, selectionStyle)
 	}
 	
 	// MARK: - Selecting
