@@ -122,7 +122,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
 		
-		(tableView.indexPathsForVisibleRows ?? []).forEach { indexPath in
+		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
 			guard
 				let cell = tableView.cellForRow(at: indexPath),
 				albumsViewModel.pointsToSomeItem(row: indexPath.row)
