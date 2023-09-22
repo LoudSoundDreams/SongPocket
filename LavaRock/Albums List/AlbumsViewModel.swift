@@ -8,7 +8,7 @@
 import CoreData
 
 struct AlbumsViewModel {
-	let folder: Collection?
+	let collection: Collection?
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
@@ -20,35 +20,35 @@ extension AlbumsViewModel: LibraryViewModel {
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		let freshenedFolder: Collection? = {
+		let freshenedCollection: Collection? = {
 			guard
-				let folder,
-				!folder.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
+				let collection,
+				!collection.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
 			else {
 				return nil
 			}
-			return folder
+			return collection
 		}()
 		return Self(
-			folder: freshenedFolder,
+			collection: freshenedCollection,
 			context: context)
 	}
 }
 extension AlbumsViewModel {
 	init(
-		folder: Collection?,
+		collection: Collection?,
 		context: NSManagedObjectContext
 	) {
-		self.folder = folder
+		self.collection = collection
 		
 		self.context = context
-		guard let folder else {
+		guard let collection else {
 			groups = []
 			return
 		}
 		groups = [
 			AlbumsGroup(
-				folder: folder,
+				collection: collection,
 				context: context)
 		]
 	}
@@ -107,7 +107,7 @@ extension AlbumsViewModel {
 		context.deleteEmptyCollections()
 		
 		return AlbumsViewModel(
-			folder: folder,
+			collection: collection,
 			context: context)
 	}
 }

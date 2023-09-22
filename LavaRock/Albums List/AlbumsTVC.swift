@@ -32,7 +32,7 @@ final class AlbumsTVC: LibraryTVC {
 		return .browsing
 	}
 	
-	// MARK: “Combine folders” sheet
+	// MARK: “Combine collections” sheet
 	
 	var is_previewing_combine_with_album_count: Int = 0
 	var cancel_combine_action: UIAction? = nil
@@ -69,7 +69,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		navigationItem.backButtonDisplayMode = .minimal
 		title = { () -> String in
-			return (viewModel as! AlbumsViewModel).folder?.title ?? ""
+			return (viewModel as! AlbumsViewModel).collection?.title ?? ""
 		}()
 		tableView.separatorStyle = .none
 	}
@@ -186,7 +186,7 @@ final class AlbumsTVC: LibraryTVC {
 		moveButton.menu = createMoveMenu()
 		
 		arrangeAlbumsButton.isEnabled = allowsArrange()
-		arrangeAlbumsButton.menu = createArrangeAlbumsMenu()
+		arrangeAlbumsButton.menu = createArrangeMenu()
 	}
 	private func createMoveMenu() -> UIMenu {
 		let byAlbumArtist_element = UIDeferredMenuElement.uncached(
@@ -223,7 +223,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 		)
 		
-		let toFolder_element = UIAction(
+		let toCollection_element = UIAction(
 			title: LRString.toFolderEllipsis,
 			image: UIImage(systemName: "square.stack")
 		) { [weak self] _ in
@@ -231,7 +231,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		
 		return UIMenu(children: [
-			toFolder_element,
+			toCollection_element,
 			byAlbumArtist_element,
 		])
 	}
@@ -239,7 +239,7 @@ final class AlbumsTVC: LibraryTVC {
 		[.album_newest, .album_oldest],
 		[.random, .reverse],
 	]
-	private func createArrangeAlbumsMenu() -> UIMenu {
+	private func createArrangeMenu() -> UIMenu {
 		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
 			$0.reversed().map { command in
 				command.createMenuElement(
@@ -249,7 +249,7 @@ final class AlbumsTVC: LibraryTVC {
 						}
 						switch command {
 							case .random, .reverse: return true
-							case .folder_name, .song_track: return false
+							case .collection_name, .song_track: return false
 							case .album_newest, .album_oldest:
 								let subjectedItems = unsortedRowsToArrange().map {
 									viewModel.itemNonNil(atRow: $0)

@@ -11,10 +11,10 @@ extension CollectionsTVC {
 	func createAndOpen() {
 		guard
 			case .movingAlbums(let clipboard) = purpose,
-			!clipboard.hasCreatedNewFolder,
+			!clipboard.hasCreatedNewCollection,
 			let collectionsViewModel = viewModel as? CollectionsViewModel
 		else { return }
-		clipboard.hasCreatedNewFolder = true
+		clipboard.hasCreatedNewCollection = true
 		
 		let newViewModel = collectionsViewModel.updatedAfterCreating()
 		Task {
@@ -24,20 +24,20 @@ extension CollectionsTVC {
 		}
 	}
 	private func openCreated() {
-		let indexPath = IndexPath(row: CollectionsViewModel.indexOfNewFolder, section: 0)
+		let indexPath = IndexPath(row: CollectionsViewModel.indexOfNewCollection, section: 0)
 		tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-		performSegue(withIdentifier: "Open Folder", sender: self)
+		performSegue(withIdentifier: "Open Collection", sender: self)
 	}
 	
 	func revertCreate() {
 		guard case .movingAlbums(let clipboard) = purpose else {
 			fatalError()
 		}
-		clipboard.hasCreatedNewFolder = false
+		clipboard.hasCreatedNewCollection = false
 		
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
-		let newViewModel = collectionsViewModel.updatedAfterDeletingNewFolder()
+		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}

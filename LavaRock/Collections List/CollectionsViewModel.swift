@@ -24,11 +24,11 @@ extension CollectionsViewModel {
 	) {
 		self.context = context
 		groups = [
-			FoldersGroup(context: context)
+			CollectionsGroup(context: context)
 		]
 	}
 	
-	func folderNonNil(atRow: Int) -> Collection {
+	func collectionNonNil(atRow: Int) -> Collection {
 		return itemNonNil(atRow: atRow) as! Collection
 	}
 	
@@ -40,37 +40,37 @@ extension CollectionsViewModel {
 	
 	// MARK: - “Move albums” sheet
 	
-	static let indexOfNewFolder = 0
+	static let indexOfNewCollection = 0
 	
 	func updatedAfterCreating() -> Self {
-		let newFolder = Collection(context: context)
-		newFolder.title = LRString.tilde
+		let newCollection = Collection(context: context)
+		newCollection.title = LRString.tilde
 		// When we call `setViewModelAndMoveAndDeselectRowsAndShouldContinue`, the property observer will set each `Collection.index` for us.
 		
 		var newItems = libraryGroup().items
-		newItems.insert(newFolder, at: Self.indexOfNewFolder)
+		newItems.insert(newCollection, at: Self.indexOfNewCollection)
 		
 		return updatedWithItemsInOnlyGroup(newItems)
 	}
 	
-	func updatedAfterDeletingNewFolder() -> Self {
-		let newItems = itemsAfterDeletingNewFolder()
+	func updatedAfterDeletingNewCollection() -> Self {
+		let newItems = itemsAfterDeletingNewCollection()
 		
 		return updatedWithItemsInOnlyGroup(newItems)
 	}
-	private func itemsAfterDeletingNewFolder() -> [NSManagedObject] {
+	private func itemsAfterDeletingNewCollection() -> [NSManagedObject] {
 		let oldItems = libraryGroup().items
 		guard
-			let folder = oldItems[Self.indexOfNewFolder] as? Collection,
-			folder.isEmpty()
+			let collection = oldItems[Self.indexOfNewCollection] as? Collection,
+			collection.isEmpty()
 		else {
 			return oldItems
 		}
 		
-		context.delete(folder)
+		context.delete(collection)
 		
 		var newItems = libraryGroup().items
-		newItems.remove(at: Self.indexOfNewFolder)
+		newItems.remove(at: Self.indexOfNewCollection)
 		return newItems
 	}
 }

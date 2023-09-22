@@ -14,7 +14,7 @@ extension AlbumsTVC {
 	// MARK: - Move by artist
 	
 	func previewAutoMove() {
-		// Prepare a Folders view to present modally.
+		// Prepare a Collections view to present modally.
 		let nc = UINavigationController(
 			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
 				.instantiateInitialViewController()!
@@ -61,16 +61,16 @@ extension AlbumsTVC {
 			// Similar to `reflectDatabase`.
 			let _ = await collectionsTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				firstReloading: {
-					// We might have moved albums into existing folders. Fade in a highlight on those rows.
+					// We might have moved albums into existing collections. Fade in a highlight on those rows.
 					let destinationRows = oldCollectionsViewModel.rowsForAllItems().filter { oldRow in
-						let collectionID = oldCollectionsViewModel.folderNonNil(atRow: oldRow).objectID
+						let collectionID = oldCollectionsViewModel.collectionNonNil(atRow: oldRow).objectID
 						return clipboard.destinationCollections_ids.contains(collectionID)
 					}
 					return destinationRows.map { row in IndexPath(row: row, section: 0) }
 				}(),
 				CollectionsViewModel(context: childContext),
 				runningBeforeContinuation: {
-					// Remove the now-playing marker from the source folder, if necessary.
+					// Remove the now-playing marker from the source collection, if necessary.
 					collectionsTVC.reflectPlayhead()
 				}
 			)
@@ -90,13 +90,13 @@ extension AlbumsTVC {
 		let sourceCollection_index = sourceCollection.index
 		let sourceCollection_id = sourceCollection.objectID
 		var createdDuringSession: [String: Collection] = [:]
-		let existingFoldersByTitle: [String: [Collection]] = {
-			let existingFolders = Collection.allFetched(sorted: true, context: context)
-			return Dictionary(grouping: existingFolders) { $0.title! }
+		let existingCollectionsByTitle: [String: [Collection]] = {
+			let existing = Collection.allFetched(sorted: true, context: context)
+			return Dictionary(grouping: existing) { $0.title! }
 		}()
 		
 		albumsInOriginalContextToMaybeMove.reversed().forEach { album in
-			// Similar to `newAlbumAndMaybeNewFolderMade`.
+			// Similar to `newAlbumAndMaybeNewCollectionMade`.
 			
 			let targetTitle = album.albumArtistFormatted()
 			
@@ -110,7 +110,7 @@ extension AlbumsTVC {
 					via: context)
 			} else if
 				// Otherwise, if there were already a matching collection before all this…
-				let firstExistingMatch = existingFoldersByTitle[targetTitle]?.first(where: { existing in
+				let firstExistingMatch = existingCollectionsByTitle[targetTitle]?.first(where: { existing in
 					sourceCollection_id != existing.objectID
 				})
 			{
@@ -148,7 +148,7 @@ extension AlbumsTVC {
 		return Set(destinationCollections_ids)
 	}
 	
-	// MARK: - Move to stack
+	// MARK: - Move to collection
 	
 	func startMoving() {
 		// Prepare a Collections view to present modally.

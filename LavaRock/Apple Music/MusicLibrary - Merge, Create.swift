@@ -13,7 +13,7 @@ extension MusicLibrary {
 	func createLibraryItems(
 		for newInfos: [SongInfo],
 		existingAlbums: [Album],
-		existingFolders: [Collection],
+		existingCollections: [Collection],
 		isFirstImport: Bool
 	) {
 		os_signpost(.begin, log: .merge, name: "3. Create library items")
@@ -65,26 +65,26 @@ extension MusicLibrary {
 			}
 			return Dictionary(uniqueKeysWithValues: tuplesForExistingAlbums)
 		}()
-		var existingFoldersByTitle: [String: [Collection]] =
-		Dictionary(grouping: existingFolders) { $0.title! }
+		var existingCollectionsByTitle: [String: [Collection]] =
+		Dictionary(grouping: existingCollections) { $0.title! }
 		
 		os_signpost(.begin, log: .create, name: "Create all the Songs and containers")
 		groupsOfInfos.forEach { groupOfInfos in
 			os_signpost(.begin, log: .create, name: "Create one group of Songs and containers")
-			let (newAlbum, newFolder) = createSongsAndReturnNewContainers(
+			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: groupOfInfos,
 				existingAlbumsByID: existingAlbumsByID,
-				existingFoldersByTitle: existingFoldersByTitle,
+				existingCollectionsByTitle: existingCollectionsByTitle,
 				isFirstImport: isFirstImport)
 			
 			if let newAlbum {
 				existingAlbumsByID[newAlbum.albumPersistentID] = newAlbum
 			}
-			if let newFolder {
-				let title = newFolder.title!
-				let oldBucket = existingFoldersByTitle[title] ?? []
-				let newBucket = [newFolder] + oldBucket
-				existingFoldersByTitle[title] = newBucket
+			if let newCollection {
+				let title = newCollection.title!
+				let oldBucket = existingCollectionsByTitle[title] ?? []
+				let newBucket = [newCollection] + oldBucket
+				existingCollectionsByTitle[title] = newBucket
 			}
 			os_signpost(.end, log: .create, name: "Create one group of Songs and containers")
 		}
@@ -118,7 +118,7 @@ extension MusicLibrary {
 	private func createSongsAndReturnNewContainers(
 		for infos: [SongInfo],
 		existingAlbumsByID: [AlbumID: Album],
-		existingFoldersByTitle: [String: [Collection]],
+		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (Album?, Collection?) {
 		let firstInfo = infos.first!
@@ -142,13 +142,13 @@ extension MusicLibrary {
 			
 		} else {
 			// Otherwise, create the `Album` to add the `Song`s to…
-			os_signpost(.begin, log: .create, name: "Create a new album and maybe new folder")
-			let newContainers = newAlbumAndMaybeNewFolderMade(
+			os_signpost(.begin, log: .create, name: "Create a new album and maybe new collection")
+			let newContainers = newAlbumAndMaybeNewCollectionMade(
 				for: firstInfo,
-				existingFoldersByTitle: existingFoldersByTitle,
+				existingCollectionsByTitle: existingCollectionsByTitle,
 				isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
-			os_signpost(.end,log: .create, name: "Create a new album and maybe new folder")
+			os_signpost(.end,log: .create, name: "Create a new album and maybe new collection")
 			
 			// …and then add the `Song`s to that `Album`.
 			os_signpost(.begin, log: .create, name: "Sort the songs for the new album")
@@ -166,18 +166,18 @@ extension MusicLibrary {
 	
 	// MARK: Create containers
 	
-	private func newAlbumAndMaybeNewFolderMade(
+	private func newAlbumAndMaybeNewCollectionMade(
 		for newInfo: SongInfo,
-		existingFoldersByTitle: [String: [Collection]],
+		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
-	) -> (album: Album, folder: Collection?) {
+	) -> (album: Album, collection: Collection?) {
 		let titleOfDestination
 		= newInfo.albumArtistOnDisk ?? LRString.unknownArtist
 		
-		// If we already have a matching folder to put the album into…
-		if let matchingExisting = existingFoldersByTitle[titleOfDestination]?.first {
+		// If we already have a matching collection to put the album into…
+		if let matchingExisting = existingCollectionsByTitle[titleOfDestination]?.first {
 			
-			// …then put the album in that folder.
+			// …then put the album in that collection.
 			let newAlbum: Album = {
 				if isFirstImport {
 					return Album(
@@ -194,14 +194,14 @@ extension MusicLibrary {
 			return (newAlbum, nil)
 			
 		} else {
-			// Otherwise, create the folder to put the album in…
-			let newFolder: Collection = {
+			// Otherwise, create the collection to put the album in…
+			let newCollection: Collection = {
 				if isFirstImport {
-					os_signpost(.begin, log: .create, name: "Count all the folders so far")
-					let existingCount = existingFoldersByTitle.reduce(0) { partialResult, entry in
+					os_signpost(.begin, log: .create, name: "Count all the collections so far")
+					let existingCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
 						partialResult + entry.value.count
 					}
-					os_signpost(.end, log: .create, name: "Count all the folders so far")
+					os_signpost(.end, log: .create, name: "Count all the collections so far")
 					return Collection(
 						afterAllOtherCount: existingCount,
 						title: titleOfDestination,
@@ -212,13 +212,13 @@ extension MusicLibrary {
 				}
 			}()
 			
-			// …and then put the album in that folder.
+			// …and then put the album in that collection.
 			let newAlbum = Album(
-				atEndOf: newFolder,
+				atEndOf: newCollection,
 				albumID: newInfo.albumID,
 				context: context)
 			
-			return (newAlbum, newFolder)
+			return (newAlbum, newCollection)
 		}
 	}
 }

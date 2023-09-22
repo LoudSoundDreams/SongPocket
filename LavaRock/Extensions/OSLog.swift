@@ -8,8 +8,8 @@
 import OSLog
 
 extension OSLog {
-	static let folder = OSLog(
-		subsystem: "1. Folder",
+	static let collection = OSLog(
+		subsystem: "1. Collection",
 		category: .pointsOfInterest)
 	static let album = OSLog(
 		subsystem: "2. Album",

@@ -37,13 +37,13 @@ final class SongsTVC: LibraryTVC {
 		super.freshenEditingButtons()
 		
 		arrangeSongsButton.isEnabled = allowsArrange()
-		arrangeSongsButton.menu = createArrangeSongsMenu()
+		arrangeSongsButton.menu = createArrangeMenu()
 	}
 	private static let arrangeCommands: [[ArrangeCommand]] = [
 		[.song_track],
 		[.random, .reverse],
 	]
-	private func createArrangeSongsMenu() -> UIMenu {
+	private func createArrangeMenu() -> UIMenu {
 		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
 		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
 			$0.reversed().map { command in

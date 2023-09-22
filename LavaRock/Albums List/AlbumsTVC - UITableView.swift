@@ -33,7 +33,7 @@ extension AlbumsTVC {
 		numberOfRowsInSection section: Int
 	) -> Int {
 		let albumsViewModel = viewModel as! AlbumsViewModel
-		if albumsViewModel.folder == nil {
+		if albumsViewModel.collection == nil {
 			return 0 // Without `prerowCount`
 		} else {
 			return albumsViewModel.prerowCount() + albumsViewModel.libraryGroup().items.count

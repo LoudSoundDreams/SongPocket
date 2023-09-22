@@ -18,14 +18,14 @@ extension CollectionsTVC {
 	// MARK: Rename
 	
 	func promptRename(at indexPath: IndexPath) {
-		guard let folder = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
+		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
 		
 		let dialog = UIAlertController(
 			title: LRString.renameFolder,
 			message: nil,
 			preferredStyle: .alert)
 		
-		let existingTitle = folder.title
+		let existingTitle = collection.title
 		dialog.addTextField {
 			// UITextField
 			$0.text = existingTitle
@@ -62,13 +62,13 @@ extension CollectionsTVC {
 		thenShouldReselect: Bool
 	) {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
-		let folder = collectionsViewModel.folderNonNil(atRow: indexPath.row)
+		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
 		
 		let proposedTitle = (textFieldText ?? "").truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
 		if proposedTitle.isEmpty {
-			folder.title = LRString.tilde
+			collection.title = LRString.tilde
 		} else {
-			folder.title = proposedTitle
+			collection.title = proposedTitle
 		}
 		
 		Task {
@@ -88,7 +88,7 @@ extension CollectionsTVC {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
 			let collectionsViewModel = viewModel as? CollectionsViewModel,
-			viewModelBeforeCombining == nil, // Prevents users from activating the “Combine” button multiple times quickly without dealing with the dialog first. This is analogous to the way we check `hasCreatedNewFolder` and `didAlreadyCommitOrganize`.
+			viewModelBeforeCombining == nil, // Prevents users from activating the “Combine” button multiple times quickly without dealing with the dialog first. This is analogous to the way we check `hasCreatedNewCollection` and `didAlreadyCommitOrganize`.
 			// You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
 			let targetIndexPath = selectedIndexPaths.first
 		else { return }
@@ -101,7 +101,7 @@ extension CollectionsTVC {
 		let combined = previewContext.combine(
 			{
 				let selected = selectedIndexPaths.map {
-					collectionsViewModel.folderNonNil(atRow: $0.row)
+					collectionsViewModel.collectionNonNil(atRow: $0.row)
 				}
 				return selected.map { $0.objectID }
 			}(),
@@ -135,7 +135,7 @@ extension CollectionsTVC {
 			// Configure the `AlbumsTVC`.
 			let albumsTVC = nc.viewControllers.first as! AlbumsTVC
 			albumsTVC.viewModel = AlbumsViewModel(
-				folder: combined,
+				collection: combined,
 				context: previewContext)
 			albumsTVC.is_previewing_combine_with_album_count = combined.contents?.count ?? 0
 			albumsTVC.cancel_combine_action = UIAction { [weak self] _ in

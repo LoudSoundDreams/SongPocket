@@ -20,7 +20,7 @@ extension AlbumsTVC {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
 			viewModel.context.tryToSave()
-			viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven’t exited editing mode, because if you moved all the albums out of a folder, we’ll close the folder and exit editing mode shortly.
+			viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven’t exited editing mode, because if you moved all the albums out of a collection, we’ll close the collection and exit editing mode shortly.
 			
 			NotificationCenter.default.post(name: .LRUserUpdatedDatabase, object: nil)
 			

@@ -33,7 +33,7 @@ enum AvatarStatus {
 protocol AvatarReflecting__: AnyObject {
 	func reflectStatus__(_ status: AvatarStatus)
 }
-extension FolderCell: AvatarReflecting__ {
+extension CollectionCell: AvatarReflecting__ {
 	func reflectStatus__(_ status: AvatarStatus) {
 		if Self.usesSwiftUI__ { return }
 		

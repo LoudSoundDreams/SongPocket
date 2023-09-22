@@ -94,7 +94,7 @@ extension Song {
 	// MARK: - Predicates
 	
 	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
-		// Checking song index first and folder index last is slightly faster than vice versa.
+		// Checking song index first and collection index last is slightly faster than vice versa.
 		guard index == other.index else {
 			return index < other.index
 		}
@@ -105,9 +105,9 @@ extension Song {
 			return myAlbum.index < otherAlbum.index
 		}
 		
-		let myFolder = myAlbum.container!
-		let otherFolder = otherAlbum.container!
-		return myFolder.index < otherFolder.index
+		let myCollection = myAlbum.container!
+		let otherCollection = otherAlbum.container!
+		return myCollection.index < otherCollection.index
 	}
 	
 	// MARK: - Media Player

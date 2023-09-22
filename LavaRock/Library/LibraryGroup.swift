@@ -22,8 +22,8 @@ extension LibraryGroup {
 	}
 }
 
-extension FoldersGroup: LibraryGroup {}
-struct FoldersGroup {
+extension CollectionsGroup: LibraryGroup {}
+struct CollectionsGroup {
 	// `LibraryGroup`
 	let container: NSManagedObject? = nil
 	var items: [NSManagedObject] {
@@ -48,11 +48,11 @@ struct AlbumsGroup {
 	}
 	
 	init(
-		folder: Collection?,
+		collection: Collection?,
 		context: NSManagedObjectContext
 	) {
-		items = Album.allFetched(sorted: true, inCollection: folder, context: context)
-		self.container = folder
+		items = Album.allFetched(sorted: true, inCollection: collection, context: context)
+		self.container = collection
 	}
 }
 

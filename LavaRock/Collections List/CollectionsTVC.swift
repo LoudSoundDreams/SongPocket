@@ -26,9 +26,9 @@ final class CollectionsTVC: LibraryTVC {
 	enum CollectionsViewState {
 		case allowAccess
 		case loading
-		case removingFolderRows
+		case removingCollectionRows
 		case emptyDatabase
-		case someFolders
+		case someCollections
 	}
 	static let emptyDatabaseInfoRow = 0
 	
@@ -40,7 +40,7 @@ final class CollectionsTVC: LibraryTVC {
 	private lazy var combineButton = UIBarButtonItem(
 		title: LRString.combine,
 		primaryAction: UIAction { [weak self] _ in self?.previewCombine() })
-	private lazy var arrangeFoldersButton = UIBarButtonItem(title: LRString.arrange)
+	private lazy var arrangeCollectionsButton = UIBarButtonItem(title: LRString.arrange)
 	
 	// Purpose
 	var purpose: Purpose {
@@ -51,25 +51,25 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	// State
-	var needsRemoveFolderRows = false
+	var needsRemoveCollectionRows = false
 	var viewState: CollectionsViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
-		if needsRemoveFolderRows { // You must check this before checking `isMergingChanges`.
-			return .removingFolderRows
+		if needsRemoveCollectionRows { // You must check this before checking `isMergingChanges`.
+			return .removingCollectionRows
 		}
 		if isMergingChanges {
 			if viewModel.isEmpty() {
 				return .loading
 			} else {
-				return .someFolders
+				return .someCollections
 			}
 		} else {
 			if viewModel.isEmpty() {
 				return .emptyDatabase
 			} else {
-				return .someFolders
+				return .someCollections
 			}
 		}
 	}
@@ -95,13 +95,13 @@ final class CollectionsTVC: LibraryTVC {
 		let toInsert: [IndexPath]
 		let toReload: [IndexPath]
 		
-		let foldersSection = 0
-		let oldIndexPaths = tableView.indexPathsForRows(inSection: foldersSection, firstRow: 0)
+		let section = 0
+		let oldIndexPaths = tableView.indexPathsForRows(inSection: section, firstRow: 0)
 		let newIndexPaths: [IndexPath] = {
-			let numberOfRows = numberOfRows(forSection: foldersSection)
+			let numberOfRows = numberOfRows(forSection: section)
 			let indicesOfRows = Array(0 ..< numberOfRows)
 			return indicesOfRows.map { row in
-				IndexPath(row: row, section: foldersSection)
+				IndexPath(row: row, section: section)
 			}
 		}()
 		
@@ -116,7 +116,7 @@ final class CollectionsTVC: LibraryTVC {
 					toInsert = newIndexPaths
 					toReload = []
 				}
-			case .removingFolderRows:
+			case .removingCollectionRows:
 				toDelete = oldIndexPaths
 				toInsert = newIndexPaths // Empty
 				toReload = []
@@ -124,7 +124,7 @@ final class CollectionsTVC: LibraryTVC {
 				toDelete = oldIndexPaths
 				toInsert = newIndexPaths
 				toReload = []
-			case .someFolders: // Merging changes with existing folders
+			case .someCollections: // Merging changes with existing collections
 				// Crashes after Reset Location & Privacy
 				toDelete = []
 				toInsert = []
@@ -137,11 +137,11 @@ final class CollectionsTVC: LibraryTVC {
 			self.tableView.insertRows(at: toInsert, with: .middle)
 		} runningBeforeContinuation: {
 			switch self.viewState {
-				case .allowAccess, .loading, .removingFolderRows, .emptyDatabase:
+				case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
 					if self.isEditing {
 						self.setEditing(false, animated: true)
 					}
-				case .someFolders: break
+				case .someCollections: break
 			}
 			
 			self.didChangeRowsOrSelectedRows() // Freshens “Edit” button
@@ -205,7 +205,7 @@ final class CollectionsTVC: LibraryTVC {
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
 					combineButton, .flexibleSpace(),
-					arrangeFoldersButton, .flexibleSpace(),
+					arrangeCollectionsButton, .flexibleSpace(),
 					floatButton, .flexibleSpace(),
 					sinkButton,
 				]
@@ -220,7 +220,7 @@ final class CollectionsTVC: LibraryTVC {
 		}
 	}
 	
-	@IBAction private func unwindToFolders(_ unwindSegue: UIStoryboardSegue) {}
+	@IBAction private func unwindToCollections(_ unwindSegue: UIStoryboardSegue) {}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
@@ -240,7 +240,7 @@ final class CollectionsTVC: LibraryTVC {
 	private var forBrowsingAndHasFirstAppeared = false
 	
 	func prepareToIntegrateWithAppleMusic() async {
-		isMergingChanges = true // `viewState` is now `.loading` or `.someFolders` (updating)
+		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
 		await reflectViewState()
 	}
 	
@@ -271,21 +271,21 @@ final class CollectionsTVC: LibraryTVC {
 		
 		switch viewState {
 			case .loading, .emptyDatabase:
-				// We have placeholder rows in the Folders section. Remove them before `LibraryTVC` calls `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
-				needsRemoveFolderRows = true // `viewState` is now `.removingFolderRows`
+				// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
+				needsRemoveCollectionRows = true // `viewState` is now `.removingCollectionRows`
 				Task {
 					await reflectViewState(runningBeforeCompletion: {
-						self.needsRemoveFolderRows = false // WARNING: `viewState` is now `.loading` or `.emptyDatabase`, but the UI doesn’t reflect that.
+						self.needsRemoveCollectionRows = false // WARNING: `viewState` is now `.loading` or `.emptyDatabase`, but the UI doesn’t reflect that.
 						
 						super.freshenLibraryItems()
 					})
 				}
 				return
-			case .allowAccess, .removingFolderRows, .someFolders: break
+			case .allowAccess, .removingCollectionRows, .someCollections: break
 		}
 		
 		if viewModelBeforeCombining != nil {
-			// We’re previewing how the rows look after combining folders. Put everything back before `LibraryTVC` calls `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
+			// We’re previewing how the rows look after combining collections. Put everything back before `LibraryTVC` calls `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
 			revertCombine(thenSelect: [])
 		}
 		
@@ -305,10 +305,10 @@ final class CollectionsTVC: LibraryTVC {
 		
 		combineButton.isEnabled = allowsCombine()
 		
-		arrangeFoldersButton.isEnabled = allowsArrange()
-		arrangeFoldersButton.menu = createArrangeFoldersMenu()
+		arrangeCollectionsButton.isEnabled = allowsArrange()
+		arrangeCollectionsButton.menu = createArrangeMenu()
 		
-		// Prevent the user from using any editing buttons while we’re animating combining folders, before we present the dialog.
+		// Prevent the user from using any editing buttons while we’re animating combining collections, before we present the dialog.
 		if viewModelBeforeCombining != nil {
 			editingModeToolbarButtons.forEach { $0.isEnabled = false }
 		}
@@ -320,10 +320,10 @@ final class CollectionsTVC: LibraryTVC {
 		return tableView.selectedIndexPaths.count >= 2
 	}
 	private static let arrangeCommands: [[ArrangeCommand]] = [
-		[.folder_name],
+		[.collection_name],
 		[.random, .reverse],
 	]
-	private func createArrangeFoldersMenu() -> UIMenu {
+	private func createArrangeMenu() -> UIMenu {
 		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
 		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
 			$0.reversed().map { command in
@@ -355,9 +355,9 @@ final class CollectionsTVC: LibraryTVC {
 		albumsTVC.organizeAlbumsClipboard = organizeAlbumsClipboard
 		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 		
-		let selectedFolder = collectionsViewModel.folderNonNil(atRow: selectedIndexPath.row)
+		let selectedCollection = collectionsViewModel.collectionNonNil(atRow: selectedIndexPath.row)
 		albumsTVC.viewModel = AlbumsViewModel(
-			folder: selectedFolder,
+			collection: selectedCollection,
 			context: viewModel.context)
 	}
 }

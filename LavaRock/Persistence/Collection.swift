@@ -97,7 +97,7 @@ extension Collection {
 			album.index = Int64(atIndex + offset)
 		}
 		
-		// In case we moved any albums to this folder that were already here.
+		// In case we moved any albums to this collection that were already here.
 		if possiblyToSame {
 			var newContents = albums(sorted: true)
 			newContents.reindex()

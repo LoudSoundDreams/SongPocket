@@ -18,7 +18,7 @@ final class MoveAlbumsClipboard {
 	}
 	
 	// State
-	var hasCreatedNewFolder = false
+	var hasCreatedNewCollection = false
 	
 	init(albumsBeingMoved: [Album]) {
 		idsOfAlbumsBeingMoved = albumsBeingMoved.map { $0.objectID }

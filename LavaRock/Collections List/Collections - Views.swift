@@ -1,5 +1,5 @@
 //
-//  Folders - Views.swift
+//  Collections - Views.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-06.
@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-final class FolderCell: UITableViewCell {
+final class CollectionCell: UITableViewCell {
 	static let usesSwiftUI__ = 10 == 1
 	
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
@@ -34,24 +34,24 @@ final class FolderCell: UITableViewCell {
 	}
 	
 	func configure(
-		with folder: Collection,
+		with collection: Collection,
 		mode: CollectionRow.Mode
 	) {
 		if Self.usesSwiftUI__ {
 			contentConfiguration = UIHostingConfiguration {
-				CollectionRow(folder: folder, mode: mode)
+				CollectionRow(collection: collection, mode: mode)
 					.background { Color.mint.opacity(1/8) }
 			}
 		} else {
 			titleLabel.text = { () -> String in
-				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining folders before `freshenLibraryItems`, the table view vertically collapses rows for deleted folders.
+				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
 				guard
-					let folderTitle = folder.title,
-					!folderTitle.isEmpty
+					let collectionTitle = collection.title,
+					!collectionTitle.isEmpty
 				else {
 					return " "
 				}
-				return folderTitle
+				return collectionTitle
 			}()
 			contentView.layer.opacity = { () -> Float in
 				if mode == .modalDisabled {
@@ -62,9 +62,9 @@ final class FolderCell: UITableViewCell {
 			}()
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
-			reflectStatus__(folder.avatarStatus__())
+			reflectStatus__(collection.avatarStatus__())
 			
-			accessibilityUserInputLabels = [folder.title].compacted()
+			accessibilityUserInputLabels = [collection.title].compacted()
 		}
 		
 		switch mode {

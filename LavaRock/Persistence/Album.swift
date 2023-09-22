@@ -34,28 +34,28 @@ extension Album: LibraryItem {
 extension Album: LibraryContainer {}
 extension Album {
 	convenience init(
-		atEndOf folder: Collection,
+		atEndOf collection: Collection,
 		albumID: AlbumID,
 		context: NSManagedObjectContext
 	) {
 		self.init(context: context)
 		albumPersistentID = albumID
-		index = Int64(folder.contents?.count ?? 0)
-		container = folder
+		index = Int64(collection.contents?.count ?? 0)
+		container = collection
 	}
 	
 	// Use `init(atEndOf:albumID:context:)` if possible. It’s faster.
 	convenience init(
-		atBeginningOf folder: Collection,
+		atBeginningOf collection: Collection,
 		albumID: AlbumID,
 		context: NSManagedObjectContext
 	) {
-		folder.albums(sorted: false).forEach { $0.index += 1 }
+		collection.albums(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
 		albumPersistentID = albumID
 		index = 0
-		container = folder
+		container = collection
 	}
 	
 	// MARK: - All instances

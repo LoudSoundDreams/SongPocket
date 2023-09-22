@@ -18,7 +18,7 @@ extension MusicLibrary {
 			os_signpost(.end, log: .merge, name: "5. Clean up library items")
 		}
 		
-		let allFolders = Collection.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for reindexing the albums within each folder.
+		let allCollections = Collection.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for reindexing the albums within each collection.
 		let allAlbums = Album.allFetched(sorted: false, inCollection: nil, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
 		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
@@ -28,7 +28,7 @@ extension MusicLibrary {
 		os_signpost(.end, log: .cleanup, name: "Recalculate Album release date estimates")
 		
 		os_signpost(.begin, log: .cleanup, name: "Reindex all Albums and Songs")
-		allFolders.forEach {
+		allCollections.forEach {
 			reindexAlbums(
 				in: $0,
 				shouldSortByNewestFirst: isFirstImport)
@@ -84,16 +84,16 @@ extension MusicLibrary {
 	// MARK: Reindex
 	
 	private func reindexAlbums(
-		in folder: Collection,
+		in collection: Collection,
 		shouldSortByNewestFirst: Bool
 	) {
-		var albumsInFolder = folder.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
+		var albumsInCollection = collection.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
 		
 		if shouldSortByNewestFirst {
-			albumsInFolder = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInFolder)
+			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInCollection)
 		}
 		
-		albumsInFolder.reindex()
+		albumsInCollection.reindex()
 	}
 	
 	private func sortedByNewestFirstAndUnknownReleaseDateLast(

@@ -22,9 +22,9 @@ extension CollectionsTVC {
 	func numberOfRows(forSection section: Int) -> Int {
 		switch viewState {
 			case .allowAccess, .loading: return 1
-			case .removingFolderRows: return 0
+			case .removingCollectionRows: return 0
 			case .emptyDatabase: return 2
-			case .someFolders:
+			case .someCollections:
 				return viewModel.prerowCount() + viewModel.libraryGroup().items.count
 		}
 	}
@@ -63,13 +63,13 @@ extension CollectionsTVC {
 					.alignmentGuide_separatorTrailing()
 				}
 				return cell
-			case .removingFolderRows: // Should never run
+			case .removingCollectionRows: // Should never run
 				return UITableViewCell()
 			case .emptyDatabase:
 				switch indexPath.row {
 					case Self.emptyDatabaseInfoRow:
 						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(withIdentifier: "No Folders", for: indexPath)
+						let cell = tableView.dequeueReusableCell(withIdentifier: "No Collections", for: indexPath)
 						cell.selectionStyle = .none
 						cell.contentConfiguration = UIHostingConfiguration {
 							HStack {
@@ -96,16 +96,16 @@ extension CollectionsTVC {
 						}
 						return cell
 				}
-			case .someFolders: break
+			case .someCollections: break
 		}
 		
 		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Folder",
-			for: indexPath) as? FolderCell
+			withIdentifier: "Collection",
+			for: indexPath) as? CollectionCell
 		else { return UITableViewCell() }
 		
 		let collectionsViewModel = viewModel as! CollectionsViewModel
-		let collection = collectionsViewModel.folderNonNil(atRow: indexPath.row)
+		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
 		let mode: CollectionRow.Mode = {
 			switch purpose {
 				case .willOrganizeAlbums:
@@ -162,8 +162,8 @@ extension CollectionsTVC {
 			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: return false
 			case .browsing:
 				switch viewState {
-					case .allowAccess, .loading, .removingFolderRows, .emptyDatabase: return false
-					case .someFolders: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
+					case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase: return false
+					case .someCollections: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
 				}
 		}
 	}
@@ -173,13 +173,13 @@ extension CollectionsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch viewState {
-			case .allowAccess, .loading, .removingFolderRows: return indexPath
+			case .allowAccess, .loading, .removingCollectionRows: return indexPath
 			case .emptyDatabase:
 				if indexPath.row == Self.emptyDatabaseInfoRow {
 					return nil
 				}
 				return indexPath
-			case .someFolders: return super.tableView(tableView, willSelectRowAt: indexPath)
+			case .someCollections: return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
 	}
 	
@@ -192,7 +192,7 @@ extension CollectionsTVC {
 				Task {
 					await didSelectAllowAccessRow(at: indexPath)
 				}
-			case .loading, .removingFolderRows: return
+			case .loading, .removingCollectionRows: return
 			case .emptyDatabase:
 				Task {
 					let musicURL = URL(string: "music://")!
@@ -200,7 +200,7 @@ extension CollectionsTVC {
 					
 					tableView.deselectRow(at: indexPath, animated: true)
 				}
-			case .someFolders:
+			case .someCollections:
 				super.tableView(tableView, didSelectRowAt: indexPath)
 		}
 	}

@@ -16,7 +16,7 @@ enum AppleMusic {
 		
 		await loadingIndicator?.prepareToIntegrateWithAppleMusic()
 		
-		MusicLibrary.shared.beginWatching() // Folders view must start observing `Notification.Name.mergedChanges` before this.
+		MusicLibrary.shared.beginWatching() // Collections view must start observing `Notification.Name.mergedChanges` before this.
 		TapeDeck.shared.beginWatching()
 	}
 }

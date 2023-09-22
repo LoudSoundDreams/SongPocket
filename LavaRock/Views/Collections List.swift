@@ -15,15 +15,15 @@ struct CollectionRow: View {
 		case modalDisabled
 	}
 	
-	let folder: Collection
+	let collection: Collection
 	let mode: Mode
 	
 	var body: some View {
 		HStack {
-			Text(folder.title ?? " ")
+			Text(collection.title ?? " ")
 			Spacer()
 			HStack(alignment: .firstTextBaseline) {
-				AvatarImage(libraryItem: folder).accessibilitySortPriority(10)
+				AvatarImage(libraryItem: collection).accessibilitySortPriority(10)
 				Chevron()
 			}
 		}
@@ -42,6 +42,6 @@ struct CollectionRow: View {
 		// • Accessibility action for renaming
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels([folder.title].compacted()) // Exclude the now-playing status.
+		.accessibilityInputLabels([collection.title].compacted()) // Exclude the now-playing status.
 	}
 }
