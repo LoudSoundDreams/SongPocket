@@ -1,5 +1,5 @@
 //
-//  FoldersTVC.swift
+//  CollectionsTVC.swift
 //  LavaRock
 //
 //  Created by h on 2020-05-04.
@@ -9,13 +9,13 @@
 import UIKit
 import MediaPlayer
 
-extension FoldersTVC: UIAdaptivePresentationControllerDelegate {
+extension CollectionsTVC: UIAdaptivePresentationControllerDelegate {
 	func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
 		revertCombine(thenSelect: presented_previewing_Combine_IndexPaths)
 		presented_previewing_Combine_IndexPaths = []
 	}
 }
-final class FoldersTVC: LibraryTVC {
+final class CollectionsTVC: LibraryTVC {
 	enum Purpose {
 		case willOrganizeAlbums
 		case organizingAlbums(OrganizeAlbumsClipboard)

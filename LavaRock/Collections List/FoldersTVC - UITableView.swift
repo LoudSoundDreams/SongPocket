@@ -1,5 +1,5 @@
 //
-//  FoldersTVC - UITableView.swift
+//  CollectionsTVC - UITableView.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-30.
@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 import SwiftUI
 
-extension FoldersTVC {
+extension CollectionsTVC {
 	// MARK: - Numbers
 	
 	override func tableView(

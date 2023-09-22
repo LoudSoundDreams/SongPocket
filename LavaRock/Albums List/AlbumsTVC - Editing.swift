@@ -16,11 +16,11 @@ extension AlbumsTVC {
 	func previewAutoMove() {
 		// Prepare a Folders view to present modally.
 		let nc = UINavigationController(
-			rootViewController: UIStoryboard(name: "FoldersTVC", bundle: nil)
+			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
 				.instantiateInitialViewController()!
 		)
 		guard
-			let foldersTVC = nc.viewControllers.first as? FoldersTVC,
+			let collectionsTVC = nc.viewControllers.first as? CollectionsTVC,
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
@@ -47,19 +47,19 @@ extension AlbumsTVC {
 			destinationCollections_ids: destinationCollections_ids
 		)
 		
-		foldersTVC.navigationItem.prompt = clipboard.prompt
-		foldersTVC.willOrganizeAlbums = true
+		collectionsTVC.navigationItem.prompt = clipboard.prompt
+		collectionsTVC.willOrganizeAlbums = true
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
-		guard let oldFoldersViewModel = foldersTVC.viewModel as? FoldersViewModel else { return }
+		guard let oldFoldersViewModel = collectionsTVC.viewModel as? FoldersViewModel else { return }
 		Task {
 			await present__async(nc, animated: true)
 			
-			foldersTVC.organizeAlbumsClipboard = clipboard
-			foldersTVC.willOrganizeAlbums = false
+			collectionsTVC.organizeAlbumsClipboard = clipboard
+			collectionsTVC.willOrganizeAlbums = false
 			
 			// Similar to `reflectDatabase`.
-			let _ = await foldersTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
+			let _ = await collectionsTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				firstReloading: {
 					// We might have moved albums into existing folders. Fade in a highlight on those rows.
 					let destinationRows = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
@@ -71,7 +71,7 @@ extension AlbumsTVC {
 				FoldersViewModel(context: childContext),
 				runningBeforeContinuation: {
 					// Remove the now-playing marker from the source folder, if necessary.
-					foldersTVC.reflectPlayhead()
+					collectionsTVC.reflectPlayhead()
 				}
 			)
 		}
@@ -151,18 +151,18 @@ extension AlbumsTVC {
 	// MARK: - Move to stack
 	
 	func startMoving() {
-		// Prepare a Folders view to present modally.
+		// Prepare a Collections view to present modally.
 		let nc = UINavigationController(
-			rootViewController: UIStoryboard(name: "FoldersTVC", bundle: nil)
+			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
 				.instantiateInitialViewController()!
 		)
 		guard
-			let foldersTVC = nc.viewControllers.first as? FoldersTVC,
+			let collectionsTVC = nc.viewControllers.first as? CollectionsTVC,
 			let selfVM = viewModel as? AlbumsViewModel
 		else { return }
 		
-		// Configure the `FoldersTVC`.
-		foldersTVC.moveAlbumsClipboard = MoveAlbumsClipboard(albumsBeingMoved: {
+		// Configure the `CollectionsTVC`.
+		collectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(albumsBeingMoved: {
 			var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
 			subjectedRows.sort()
 			if subjectedRows.isEmpty {
@@ -172,7 +172,7 @@ extension AlbumsTVC {
 				selfVM.albumNonNil(atRow: $0)
 			}
 		}())
-		foldersTVC.viewModel = FoldersViewModel(context: {
+		collectionsTVC.viewModel = FoldersViewModel(context: {
 			let childContext = NSManagedObjectContext(.mainQueue)
 			childContext.parent = viewModel.context
 			return childContext

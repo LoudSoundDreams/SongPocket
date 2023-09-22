@@ -1,5 +1,5 @@
 //
-//  FoldersTVC - Editing.swift
+//  CollectionsTVC - Editing.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-23.
@@ -8,12 +8,12 @@
 import UIKit
 import CoreData
 
-extension FoldersTVC: UITextFieldDelegate {
+extension CollectionsTVC: UITextFieldDelegate {
 	func textFieldDidBeginEditing(_ textField: UITextField) {
 		textField.selectAll(nil) // As of iOS 15.3 developer beta 1, the selection works but the highlight doesn’t appear if `textField.text` is long.
 	}
 }
-extension FoldersTVC {
+extension CollectionsTVC {
 	
 	// MARK: Rename
 	
@@ -109,7 +109,7 @@ extension FoldersTVC {
 		)
 		try! previewContext.obtainPermanentIDs(for: [combined]) // So that we don’t unnecessarily remove and reinsert the row later.
 		
-		// Apply the preview context to this `FoldersTVC`.
+		// Apply the preview context in the current view.
 		let previewViewModel = FoldersViewModel(context: previewContext)
 		Task {
 			await tableView.performBatchUpdates__async {

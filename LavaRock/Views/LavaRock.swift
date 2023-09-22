@@ -36,7 +36,7 @@ private struct RootView: UIViewControllerRepresentable {
 	
 	func makeUIViewController(context: Context) -> VCType {
 		let result = UINavigationController(
-			rootViewController: UIStoryboard(name: "FoldersTVC", bundle: nil)
+			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
 				.instantiateInitialViewController()!
 		)
 		
