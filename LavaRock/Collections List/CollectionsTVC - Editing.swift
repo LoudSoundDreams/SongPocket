@@ -61,8 +61,8 @@ extension CollectionsTVC {
 		indexPath: IndexPath,
 		thenShouldReselect: Bool
 	) {
-		let foldersViewModel = viewModel as! FoldersViewModel
-		let folder = foldersViewModel.folderNonNil(atRow: indexPath.row)
+		let collectionsViewModel = viewModel as! CollectionsViewModel
+		let folder = collectionsViewModel.folderNonNil(atRow: indexPath.row)
 		
 		let proposedTitle = (textFieldText ?? "").truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
 		if proposedTitle.isEmpty {
@@ -87,13 +87,13 @@ extension CollectionsTVC {
 	func previewCombine() {
 		let selectedIndexPaths = tableView.selectedIndexPaths.sorted()
 		guard
-			let foldersViewModel = viewModel as? FoldersViewModel,
+			let collectionsViewModel = viewModel as? CollectionsViewModel,
 			viewModelBeforeCombining == nil, // Prevents users from activating the “Combine” button multiple times quickly without dealing with the dialog first. This is analogous to the way we check `hasCreatedNewFolder` and `didAlreadyCommitOrganize`.
 			// You must reset `viewModelBeforeCombining = nil` during both reverting and committing.
 			let targetIndexPath = selectedIndexPaths.first
 		else { return }
 		
-		viewModelBeforeCombining = foldersViewModel
+		viewModelBeforeCombining = collectionsViewModel
 		
 		// Create a child context previewing the changes.
 		let previewContext = NSManagedObjectContext(.mainQueue)
@@ -101,7 +101,7 @@ extension CollectionsTVC {
 		let combined = previewContext.combine(
 			{
 				let selected = selectedIndexPaths.map {
-					foldersViewModel.folderNonNil(atRow: $0.row)
+					collectionsViewModel.folderNonNil(atRow: $0.row)
 				}
 				return selected.map { $0.objectID }
 			}(),
@@ -110,7 +110,7 @@ extension CollectionsTVC {
 		try! previewContext.obtainPermanentIDs(for: [combined]) // So that we don’t unnecessarily remove and reinsert the row later.
 		
 		// Apply the preview context in the current view.
-		let previewViewModel = FoldersViewModel(context: previewContext)
+		let previewViewModel = CollectionsViewModel(context: previewContext)
 		Task {
 			await tableView.performBatchUpdates__async {
 				self.tableView.scrollToRow(
@@ -174,7 +174,7 @@ extension CollectionsTVC {
 		viewModel.context.tryToSave()
 		viewModel.context.parent!.tryToSave() // TO DO: Crashes
 		
-		let newViewModel = FoldersViewModel(context: viewModel.context.parent!)
+		let newViewModel = CollectionsViewModel(context: viewModel.context.parent!)
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				newViewModel,

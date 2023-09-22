@@ -51,7 +51,7 @@ extension AlbumsTVC {
 		collectionsTVC.willOrganizeAlbums = true
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
-		guard let oldFoldersViewModel = collectionsTVC.viewModel as? FoldersViewModel else { return }
+		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? CollectionsViewModel else { return }
 		Task {
 			await present__async(nc, animated: true)
 			
@@ -62,13 +62,13 @@ extension AlbumsTVC {
 			let _ = await collectionsTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 				firstReloading: {
 					// We might have moved albums into existing folders. Fade in a highlight on those rows.
-					let destinationRows = oldFoldersViewModel.rowsForAllItems().filter { oldRow in
-						let collectionID = oldFoldersViewModel.folderNonNil(atRow: oldRow).objectID
+					let destinationRows = oldCollectionsViewModel.rowsForAllItems().filter { oldRow in
+						let collectionID = oldCollectionsViewModel.folderNonNil(atRow: oldRow).objectID
 						return clipboard.destinationCollections_ids.contains(collectionID)
 					}
 					return destinationRows.map { row in IndexPath(row: row, section: 0) }
 				}(),
-				FoldersViewModel(context: childContext),
+				CollectionsViewModel(context: childContext),
 				runningBeforeContinuation: {
 					// Remove the now-playing marker from the source folder, if necessary.
 					collectionsTVC.reflectPlayhead()
@@ -172,7 +172,7 @@ extension AlbumsTVC {
 				selfVM.albumNonNil(atRow: $0)
 			}
 		}())
-		collectionsTVC.viewModel = FoldersViewModel(context: {
+		collectionsTVC.viewModel = CollectionsViewModel(context: {
 			let childContext = NSManagedObjectContext(.mainQueue)
 			childContext.parent = viewModel.context
 			return childContext

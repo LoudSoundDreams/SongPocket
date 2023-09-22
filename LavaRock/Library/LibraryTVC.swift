@@ -19,7 +19,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: Subclasses should customize
 	
 	// Data
-	final lazy var viewModel: LibraryViewModel = FoldersViewModel(context: Database.viewContext)
+	final lazy var viewModel: LibraryViewModel = CollectionsViewModel(context: Database.viewContext)
 	
 	// Controls
 	final var editingModeToolbarButtons: [UIBarButtonItem] = []

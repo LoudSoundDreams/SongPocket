@@ -1,5 +1,5 @@
 //
-//  FoldersViewModel.swift
+//  CollectionsViewModel.swift
 //  LavaRock
 //
 //  Created by h on 2021-08-14.
@@ -7,19 +7,19 @@
 
 import CoreData
 
-struct FoldersViewModel {
+struct CollectionsViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
 	var groups: ColumnOfLibraryItems
 }
-extension FoldersViewModel: LibraryViewModel {
+extension CollectionsViewModel: LibraryViewModel {
 	func prerowCount() -> Int { return 0 }
 	func prerowIdentifiers() -> [AnyHashable] { return [] }
 	func updatedWithFreshenedData() -> Self {
 		return Self(context: context)
 	}
 }
-extension FoldersViewModel {
+extension CollectionsViewModel {
 	init(context: NSManagedObjectContext
 	) {
 		self.context = context

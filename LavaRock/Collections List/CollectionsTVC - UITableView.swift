@@ -104,8 +104,8 @@ extension CollectionsTVC {
 			for: indexPath) as? FolderCell
 		else { return UITableViewCell() }
 		
-		let foldersViewModel = viewModel as! FoldersViewModel
-		let collection = foldersViewModel.folderNonNil(atRow: indexPath.row)
+		let collectionsViewModel = viewModel as! CollectionsViewModel
+		let collection = collectionsViewModel.folderNonNil(atRow: indexPath.row)
 		let mode: CollectionRow.Mode = {
 			switch purpose {
 				case .willOrganizeAlbums:

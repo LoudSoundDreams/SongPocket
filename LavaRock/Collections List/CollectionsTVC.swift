@@ -23,7 +23,7 @@ final class CollectionsTVC: LibraryTVC {
 		case browsing
 	}
 	
-	enum FoldersViewState {
+	enum CollectionsViewState {
 		case allowAccess
 		case loading
 		case removingFolderRows
@@ -52,7 +52,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	// State
 	var needsRemoveFolderRows = false
-	var viewState: FoldersViewState {
+	var viewState: CollectionsViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
@@ -73,7 +73,7 @@ final class CollectionsTVC: LibraryTVC {
 			}
 		}
 	}
-	var viewModelBeforeCombining: FoldersViewModel? = nil
+	var viewModelBeforeCombining: CollectionsViewModel? = nil
 	
 	// MARK: “Organize albums” sheet
 	
@@ -345,7 +345,7 @@ final class CollectionsTVC: LibraryTVC {
 	// MARK: - Navigation
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		let foldersViewModel = viewModel as! FoldersViewModel
+		let collectionsViewModel = viewModel as! CollectionsViewModel
 		
 		guard
 			let selectedIndexPath = tableView.indexPathForSelectedRow,
@@ -355,7 +355,7 @@ final class CollectionsTVC: LibraryTVC {
 		albumsTVC.organizeAlbumsClipboard = organizeAlbumsClipboard
 		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 		
-		let selectedFolder = foldersViewModel.folderNonNil(atRow: selectedIndexPath.row)
+		let selectedFolder = collectionsViewModel.folderNonNil(atRow: selectedIndexPath.row)
 		albumsTVC.viewModel = AlbumsViewModel(
 			folder: selectedFolder,
 			context: viewModel.context)
