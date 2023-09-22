@@ -106,7 +106,7 @@ extension FoldersTVC {
 		
 		let foldersViewModel = viewModel as! FoldersViewModel
 		let collection = foldersViewModel.folderNonNil(atRow: indexPath.row)
-		let mode: StackRow.Mode = {
+		let mode: CollectionRow.Mode = {
 			switch purpose {
 				case .willOrganizeAlbums:
 					return .modalDisabled

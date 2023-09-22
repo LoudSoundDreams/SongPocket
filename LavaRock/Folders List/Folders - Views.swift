@@ -35,11 +35,11 @@ final class FolderCell: UITableViewCell {
 	
 	func configure(
 		with folder: Collection,
-		mode: StackRow.Mode
+		mode: CollectionRow.Mode
 	) {
 		if Self.usesSwiftUI__ {
 			contentConfiguration = UIHostingConfiguration {
-				StackRow(folder: folder, mode: mode)
+				CollectionRow(folder: folder, mode: mode)
 					.background { Color.mint.opacity(1/8) }
 			}
 		} else {

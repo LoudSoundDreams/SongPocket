@@ -1,5 +1,5 @@
 //
-//  Stacks List.swift
+//  Collections List.swift
 //  LavaRock
 //
 //  Created by h on 2023-09-01.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StackRow: View {
+struct CollectionRow: View {
 	enum Mode: Equatable {
 		case normal([UIAccessibilityCustomAction])
 		case modal

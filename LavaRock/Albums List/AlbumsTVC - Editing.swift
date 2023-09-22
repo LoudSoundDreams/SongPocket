@@ -100,28 +100,28 @@ extension AlbumsTVC {
 			
 			let targetTitle = album.albumArtistFormatted()
 			
-			// If we’ve created a matching stack…
+			// If we’ve created a matching collection…
 			if let createdMatch = createdDuringSession[targetTitle] {
-				// …then move the album to the top of that stack.
+				// …then move the album to the beginning of that collection.
 				createdMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
 					atIndex: 0,
 					albumIDs: [album.objectID],
 					possiblyToSame: false,
 					via: context)
 			} else if
-				// Otherwise, if there were already a matching stack before all this…
+				// Otherwise, if there were already a matching collection before all this…
 				let firstExistingMatch = existingFoldersByTitle[targetTitle]?.first(where: { existing in
 					sourceCollection_id != existing.objectID
 				})
 			{
-				// …then move the album to the top of that stack.
+				// …then move the album to the beginning of that collection.
 				firstExistingMatch.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
 					atIndex: 0,
 					albumIDs: [album.objectID],
 					possiblyToSame: true,
 					via: context)
 			} else {
-				// Last option: create a stack where the source stack was…
+				// Last option: create a collection where the source collection was…
 				let newMatch = context.newCollection(
 					index: sourceCollection_index,
 					title: targetTitle)
