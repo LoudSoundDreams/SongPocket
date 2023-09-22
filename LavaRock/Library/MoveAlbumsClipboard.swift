@@ -13,7 +13,7 @@ final class MoveAlbumsClipboard {
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	var prompt: String {
 		return String.localizedStringWithFormat(
-			LRString.variable_moveXAlbumsTo,
+			LRString.variable_moveXAlbumsToAnotherCrate,
 			idsOfAlbumsBeingMovedAsSet.count)
 	}
 	

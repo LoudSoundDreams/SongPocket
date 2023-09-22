@@ -12,7 +12,7 @@ final class OrganizeAlbumsClipboard {
 	let destinationCollections_ids: Set<NSManagedObjectID>
 	var prompt: String {
 		String.localizedStringWithFormat(
-			LRString.variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark,
+			LRString.variable_moveXAlbumsToYCrates_questionMark,
 			subjectedAlbums_ids.count,
 			destinationCollections_ids.count
 		)

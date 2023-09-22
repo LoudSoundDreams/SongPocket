@@ -56,7 +56,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch purpose {
 			case .previewingCombine:
 				navigationItem.prompt = String.localizedStringWithFormat(
-					LRString.variable_createStackFromXAlbums_questionMark,
+					LRString.variable_moveXAlbumsIntoOneCrate_questionMark,
 					is_previewing_combine_with_album_count)
 			case .organizingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
@@ -224,7 +224,7 @@ final class AlbumsTVC: LibraryTVC {
 		)
 		
 		let toCollection_element = UIAction(
-			title: LRString.toFolderEllipsis,
+			title: LRString.toCrateEllipsis,
 			image: UIImage(systemName: "square.stack")
 		) { [weak self] _ in
 			self?.startMoving()

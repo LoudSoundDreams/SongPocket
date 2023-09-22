@@ -21,7 +21,7 @@ extension CollectionsTVC {
 		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
 		
 		let dialog = UIAlertController(
-			title: LRString.renameFolder,
+			title: LRString.renameCrate,
 			message: nil,
 			preferredStyle: .alert)
 		

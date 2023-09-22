@@ -166,7 +166,7 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
-		title = LRString.folders
+		title = LRString.crates
 	}
 	@objc private func userUpdatedDatabase() { reflectDatabase() }
 	

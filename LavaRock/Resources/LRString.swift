@@ -22,7 +22,7 @@ enum LRString {
 	
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
-	static let tilde = NSLocalizedString("~", comment: "Default title for a new stack")
+	static let tilde = NSLocalizedString("~", comment: "Default title for a new crate")
 	
 	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "Status message")
 	
@@ -65,9 +65,9 @@ enum LRString {
 	static let about = NSLocalizedString("About", comment: "Button")
 	static let sayHi = NSLocalizedString("Say Hi", comment: "Button")
 	
-	// MARK: - Folders view
+	// MARK: - Crates view
 	
-	static let folders = NSLocalizedString("Stacks", comment: "Big title")
+	static let crates = NSLocalizedString("Crates", comment: "Big title")
 	
 	static let allowAccessToAppleMusic = NSLocalizedString("Allow Access to Apple Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
@@ -75,20 +75,20 @@ enum LRString {
 		comment: "Placeholder for when the app’s database is empty")
 	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
-	static let name = NSLocalizedString("Name", comment: "The word for the title of a stack. Also an Arrange option.")
+	static let name = NSLocalizedString("Name", comment: "The word for the title of a crate. Also an Arrange option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let renameFolder = NSLocalizedString("Rename Stack", comment: "Alert title")
+	static let renameCrate = NSLocalizedString("Rename Crate", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	
 	// MARK: Albums view
 	
-	static let noAlbums = NSLocalizedString("No Albums", comment: "Placeholder when showing an empty stack")
+	static let noAlbums = NSLocalizedString("No Albums", comment: "Placeholder when showing an empty crate")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let byArtistEllipsis = NSLocalizedString("By Artist…", comment: "Menu option")
-	static let toFolderEllipsis = NSLocalizedString("To Stack…", comment: "Menu option")
+	static let toCrateEllipsis = NSLocalizedString("To Crate…", comment: "Menu option")
 	
 	static let newest = NSLocalizedString("Newest", comment: "Arrange option")
 	static let oldest = NSLocalizedString("Oldest", comment: "Arrange option")
@@ -113,18 +113,18 @@ enum LRString {
 	// MARK: - WITH VARIABLES AND TEXT VARIATIONS
 	// (Format strings from dictionaries)
 	
-	// MARK: Folders and Albums views
+	// MARK: Crates and Albums views
 	
-	static let variable_moveXAlbumsToYFoldersByAlbumArtistQuestionMark = NSLocalizedString(
-		"plural_Move_X_albums_by_Y_artists_questionMark",
-		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of stacks it’s moving them into.")
-	static let variable_moveXAlbumsTo = NSLocalizedString(
-		"plural_Move_X_albums_to_ellipsis",
+	static let variable_moveXAlbumsToYCrates_questionMark = NSLocalizedString(
+		"plural_Move_X_albums_to_Y_crates_questionMark",
+		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of crates it’s moving them into.")
+	static let variable_moveXAlbumsToAnotherCrate = NSLocalizedString(
+		"plural_Move_X_albums_to_another_crate",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
 	
 	// MARK: Albums view
 	
-	static let variable_createStackFromXAlbums_questionMark = NSLocalizedString(
-		"plural_Create_a_stack_from_X_albums_questionMark",
-		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created stack.")
+	static let variable_moveXAlbumsIntoOneCrate_questionMark = NSLocalizedString(
+		"plural_Move_X_albums_into_one_crate_questionMark",
+		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created crate.")
 }
