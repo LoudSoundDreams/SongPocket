@@ -225,7 +225,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		let toCollection_element = UIAction(
 			title: LRString.toCrateEllipsis,
-			image: UIImage(systemName: "square.stack")
+			image: UIImage(systemName: "tray.full")
 		) { [weak self] _ in
 			self?.startMoving()
 		}
