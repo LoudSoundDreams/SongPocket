@@ -222,17 +222,26 @@ final class CollectionsTVC: LibraryTVC {
 	
 	@IBAction private func unwindToCollections(_ unwindSegue: UIStoryboardSegue) {}
 	
-	override func viewDidAppear(_ animated: Bool) {
+	override func viewIsAppearing(_ animated: Bool) {
+		super.viewIsAppearing(animated)
+		
 		switch purpose {
-			case .movingAlbums:
-				revertCreate()
-			case .willOrganizeAlbums, .organizingAlbums: break
+			case .movingAlbums, .willOrganizeAlbums, .organizingAlbums: break
 			case .browsing:
 				if !forBrowsingAndHasFirstAppeared {
 					forBrowsingAndHasFirstAppeared = true
 					
 					view.window!.tintColor = UIColor(named: "synthwave")! // As of iOS 16.6.1, the build setting “Global Accent Color Name” doesn’t apply to (UIKit) alerts or action sheets.
 				}
+		}
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		switch purpose {
+			case .movingAlbums:
+				revertCreate()
+			case .willOrganizeAlbums, .organizingAlbums, .browsing: 
+				break
 		}
 		
 		super.viewDidAppear(animated)
