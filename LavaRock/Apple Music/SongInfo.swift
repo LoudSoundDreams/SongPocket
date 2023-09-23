@@ -28,9 +28,6 @@ protocol SongInfo {
 	var releaseDateOnDisk: Date? { get }
 	func coverArt(atLeastInPoints: CGSize) -> UIImage?
 }
-enum SongInfoPlaceholder {
-	static let unknownTitle = "—" // Em dash
-}
 extension SongInfo {
 	
 	// MARK: Predicates

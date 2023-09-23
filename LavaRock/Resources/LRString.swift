@@ -20,6 +20,7 @@ enum LRString {
 	static let done = NSLocalizedString("Done", comment: "Button")
 	static let more = NSLocalizedString("More", comment: "Button")
 	
+	static let emDash = NSLocalizedString("—", comment: "Em dash, for missing data")
 	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
 	static let tilde = NSLocalizedString("~", comment: "Default title for a new crate")

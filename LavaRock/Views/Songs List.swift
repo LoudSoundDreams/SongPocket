@@ -55,7 +55,7 @@ struct SongRow: View {
 					alignment: .leading,
 					spacing: .eight * 1/2
 				) {
-					Text(song.songInfo()?.titleOnDisk ?? SongInfoPlaceholder.unknownTitle)
+					Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
 							.foregroundStyle(.secondary)

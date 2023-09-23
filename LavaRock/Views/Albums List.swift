@@ -105,14 +105,9 @@ struct AlbumInfoRow: View {
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			ZStack(alignment: .leading) {
-				Text("1999").hidden() // Preserves vertical height
-				if let releaseDate = album.releaseDateEstimateFormattedOptional() {
-					Text(releaseDate)
-				}
-			}
-			.foregroundStyle(.secondary)
-			.fontFootnote()
+			Text(album.releaseDateEstimateFormattedOptional() ?? LRString.emDash)
+				.foregroundStyle(.secondary)
+				.fontFootnote()
 			Spacer()
 			AvatarImage(libraryItem: album).accessibilitySortPriority(10) // Bigger is sooner
 			Chevron()

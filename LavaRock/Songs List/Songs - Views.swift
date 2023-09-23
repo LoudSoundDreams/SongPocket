@@ -97,7 +97,7 @@ final class SongCell: UITableViewCell {
 			spacerNumberLabel.text = spacerTrackNumberText
 			numberLabel.text = trackDisplay
 			titleLabel.text = { () -> String in
-				info?.titleOnDisk ?? SongInfoPlaceholder.unknownTitle
+				info?.titleOnDisk ?? LRString.emDash
 			}()
 			artistLabel.text = artistDisplayOptional
 			
