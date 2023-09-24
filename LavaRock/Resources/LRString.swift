@@ -72,7 +72,7 @@ enum LRString {
 	
 	static let allowAccessToAppleMusic = NSLocalizedString("Allow Access to Apple Music", comment: "Button")
 	static let emptyDatabasePlaceholder = NSLocalizedString(
-		"Add some music to your library.",
+		"Add music to your library.",
 		comment: "Placeholder for when the app’s database is empty")
 	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
