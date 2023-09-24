@@ -12,6 +12,36 @@ import SwiftUI
 extension CollectionsTVC {
 	// MARK: - Numbers
 	
+	/*
+	override func numberOfSections(in tableView: UITableView) -> Int {
+		if #available(iOS 17, *) {
+			if viewModel.isEmpty() {
+				contentUnavailableConfiguration = UIHostingConfiguration {
+					ContentUnavailableView {
+						EmptyView()
+					} description: {
+						Text(LRString.emptyDatabasePlaceholder)
+					} actions: {
+						Button {
+							let musicURL = URL(string: "music://")!
+							UIApplication.shared.open(musicURL)
+						} label: {
+							HStack {
+								Text(LRString.appleMusic)
+								Image(systemName: "arrow.up.forward")
+							}
+						}
+					}
+				}
+			} else {
+				contentUnavailableConfiguration = nil
+			}
+		}
+		
+		return 1
+	}
+	*/
+	
 	override func tableView(
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
