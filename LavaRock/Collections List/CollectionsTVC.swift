@@ -174,7 +174,7 @@ final class CollectionsTVC: LibraryTVC {
 		switch purpose {
 			case .willOrganizeAlbums:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
+					UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
 						self?.dismiss(animated: true)
 					}),
 				]
@@ -191,7 +191,7 @@ final class CollectionsTVC: LibraryTVC {
 				break
 			case .movingAlbums:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
+					UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
 						self?.dismiss(animated: true)
 					}),
 				]

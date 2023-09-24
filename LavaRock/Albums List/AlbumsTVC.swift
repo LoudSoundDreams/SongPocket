@@ -75,7 +75,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch purpose {
 			case .previewingCombine:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(systemItem: .cancel, primaryAction: cancel_combine_action),
+					UIBarButtonItem(systemItem: .close, primaryAction: cancel_combine_action),
 				]
 				viewingModeTopRightButtons = [
 					{
