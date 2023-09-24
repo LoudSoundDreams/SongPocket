@@ -68,9 +68,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
-		title = { () -> String in
-			return (viewModel as! AlbumsViewModel).collection?.title ?? ""
-		}()
+		title = (viewModel as! AlbumsViewModel).collection?.title ?? ""
 		tableView.separatorStyle = .none
 	}
 	
