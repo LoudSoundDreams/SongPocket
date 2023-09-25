@@ -215,7 +215,6 @@
 		070E194524F3424500B21307 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				07DF76E32828D8AB00B03103 /* TransportToolbar__.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
@@ -268,7 +267,7 @@
 		0768308724B42DEC0033E3CC /* LavaRock */ = {
 			isa = PBXGroup;
 			children = (
-				07F4AA172AA2508800AA5F1E /* Views */,
+				07F4AA172AA2508800AA5F1E /* General */,
 				07FC970A24BAC1050036DD3D /* Persistence */,
 				070E194524F3424500B21307 /* Library */,
 				07DC1B1E24F33C5100AAEEDB /* Collections List */,
@@ -366,14 +365,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		07F4AA172AA2508800AA5F1E /* Views */ = {
+		07F4AA172AA2508800AA5F1E /* General */ = {
 			isa = PBXGroup;
 			children = (
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
 				071DC5E62A1045CE0073C854 /* Main Toolbar.swift */,
+				07DF76E32828D8AB00B03103 /* TransportToolbar__.swift */,
 				07755A57294821860056E90C /* Avatar.swift */,
 			);
-			path = Views;
+			path = General;
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Persistence */ = {
