@@ -79,7 +79,6 @@ final class CollectionCell: UITableViewCell {
 		if Self.usesSwiftUI__ {
 			contentConfiguration = UIHostingConfiguration {
 				CollectionRow(collection: collection, mode: mode)
-					.background { Color.mint.opacity(1/8) }
 			}
 		} else {
 			titleLabel.text = { () -> String in
