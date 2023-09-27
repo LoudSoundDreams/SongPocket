@@ -107,19 +107,26 @@ final class CollectionCell: UITableViewCell {
 		
 		switch mode {
 			case .normal(let actions):
+				accessibilityCustomActions = actions
+				
 				isUserInteractionEnabled = true
 				accessibilityTraits.subtract(.notEnabled)
-				accessibilityCustomActions = actions
+				
 			case .modal:
 				backgroundColor = .clear
+				
 				isUserInteractionEnabled = true
 				accessibilityTraits.subtract(.notEnabled)
+				
 			case .modalTinted:
 				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
+				
 				isUserInteractionEnabled = true
 				accessibilityTraits.subtract(.notEnabled)
+				
 			case .modalDisabled:
 				backgroundColor = .clear
+				
 				isUserInteractionEnabled = false
 				accessibilityTraits.formUnion(.notEnabled)
 		}
