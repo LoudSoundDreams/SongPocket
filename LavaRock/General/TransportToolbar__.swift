@@ -72,73 +72,11 @@ final class TransportToolbar__ {
 			// Repeat
 			UIMenu(
 				options: .displayInline,
-				preferredElementSize: .small,
 				children: [
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
-							title: LRString.repeatOff,
-							image: UIImage(systemName: "minus"),
-							attributes: {
-								if (Self.player == nil)
-									|| (Self.player?.repeatMode == MPMusicRepeatMode.none)
-								{
-									// When this mode is selected, we want to show it as such, not disable it.
-									// However, as of iOS 16.2 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
-									// Disabling the selected mode is a compromise.
-									return .disabled
-								}
-								return []
-							}(),
-							state: {
-								guard let player = Self.player else {
-									return .on // Default when disabled
-								}
-								return (player.repeatMode == MPMusicRepeatMode.none)
-								? .on
-								: .off
-							}()
-						) { _ in
-							Self.player?.repeatMode = .none
-						}
-						useMenuElements([action])
-					}),
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.repeatAll,
-							image: UIImage(systemName: "repeat"),
-							attributes: {
-								if (Self.player == nil)
-									|| (Self.player?.repeatMode == .all)
-								{
-									return .disabled
-								}
-								return []
-							}(),
-							state: {
-								guard let player = Self.player else {
-									return .off
-								}
-								return (player.repeatMode == .all)
-								? .on
-								: .off
-							}()
-						) { action in
-							Self.player?.repeatMode = .all
-						}
-						useMenuElements([action])
-					}),
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.repeat1,
+							title: LRString.repeat_,
 							image: UIImage(systemName: "repeat.1"),
-							attributes: {
-								if (Self.player == nil)
-									|| (Self.player?.repeatMode == .one)
-								{
-									return .disabled
-								}
-								return []
-							}(),
 							state: {
 								guard let player = Self.player else {
 									return .off
@@ -150,7 +88,12 @@ final class TransportToolbar__ {
 								)
 							}()
 						) { _ in
-							Self.player?.repeatMode = .one
+							guard let player = Self.player else { return }
+							if player.repeatMode == .one {
+								player.repeatMode = .none
+							} else {
+								player.repeatMode = .one
+							}
 						}
 						useMenuElements([action])
 					}),
@@ -160,7 +103,6 @@ final class TransportToolbar__ {
 			// Transport
 			UIMenu(
 				options: .displayInline,
-				preferredElementSize: .small,
 				children: [
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
@@ -197,7 +139,7 @@ final class TransportToolbar__ {
 						}
 						useMenuElements([action])
 					}),
-				]
+				].reversed()
 			),
 			
 		]

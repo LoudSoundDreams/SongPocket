@@ -34,9 +34,7 @@ enum LRString {
 	
 	// MARK: Toolbar
 	
-	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
-	static let repeatAll = NSLocalizedString("Repeat All", comment: "Button")
-	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
+	static let repeat_ = NSLocalizedString("Repeat", comment: "Button")
 	
 	static let previous = NSLocalizedString("Previous", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
