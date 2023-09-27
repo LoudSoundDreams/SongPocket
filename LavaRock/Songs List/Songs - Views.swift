@@ -281,13 +281,6 @@ final class SongCell: UITableViewCell {
 		// 2. Always know when that number changes.
 		// We can't do that with `systemMusicPlayer`.
 		
-		let playNext = UIDeferredMenuElement.uncached({ useMenuElements in
-			let action = UIAction(
-				title: LRString.playNext,
-				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
-			) { _ in player?.playNext([mediaItem]) }
-			useMenuElements([action])
-		})
 		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
 				title: LRString.playLast,
@@ -297,18 +290,7 @@ final class SongCell: UITableViewCell {
 		})
 		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
-		let playToBottomNext = UIDeferredMenuElement.uncached({ useMenuElements in
-			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
-			let action = UIAction(
-				title: LRString.playRestOfAlbumNext,
-				image: UIImage(systemName: "text.line.first.and.arrowtriangle.forward")
-			) { _ in player?.playNext(mediaItems) }
-			if mediaItems.count <= 1 {
-				action.attributes.formUnion(.disabled)
-			}
-			useMenuElements([action])
-		})
-		let playToBottomLast = UIDeferredMenuElement.uncached({ useMenuElements in
+		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast,
@@ -325,12 +307,8 @@ final class SongCell: UITableViewCell {
 				play,
 			]),
 			UIMenu(options: .displayInline, children: [
-				playNext,
 				playLast,
-			]),
-			UIMenu(options: .displayInline, children: [
-				playToBottomNext,
-				playToBottomLast,
+				playRestOfAlbumLast,
 			]),
 		]
 		return UIMenu(children: submenus)
