@@ -136,41 +136,49 @@ extension CollectionsTVC {
 		
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
-		let mode: CollectionRow.Mode = {
+		let (tinted, enabled) = { () -> (tint: Bool, enable: Bool) in
 			switch purpose {
-				case .willOrganizeAlbums:
-					return .modalDisabled
+				case .willOrganizeAlbums: return (tint: false, enable: false)
 				case .organizingAlbums(let clipboard):
 					if clipboard.destinationCollections_ids.contains(collection.objectID) {
-						return .modalTinted
+						return (tint: true, enable: true)
 					}
-					return .modalDisabled
+					return (tint: false, enable: false)
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
-						return .modalDisabled
+						return (tint: false, enable: false)
 					}
-					return .modal
-				case .browsing:
-					cell.accessibilityCustomActions = [
-						UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
-							guard
-								let self,
-								let focused = tableView.allIndexPaths().first(where: {
-									let cell = tableView.cellForRow(at: $0)
-									return cell?.accessibilityElementIsFocused() ?? false
-								})
-							else {
-								return false
-							}
-							promptRename(at: focused)
-							return true
-						}
-					]
-					return .normal
+					return (tint: false, enable: true)
+				case .browsing: return (tint: false, enable: true)
 			}
 		}()
-		cell.configure(with: collection, mode: mode)
-		
+		cell.configure(with: collection, dimmed: !enabled)
+		cell.backgroundColor = tinted ? .tintColor.withAlphaComponent(.oneEighth) : .clear
+		cell.isUserInteractionEnabled = enabled
+		if enabled {
+			cell.accessibilityTraits.subtract(.notEnabled)
+		} else {
+			cell.accessibilityTraits.formUnion(.notEnabled)
+		}
+		switch purpose {
+			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: break
+			case .browsing:
+				cell.accessibilityCustomActions = [
+					UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
+						guard
+							let self,
+							let focused = tableView.allIndexPaths().first(where: {
+								let cell = tableView.cellForRow(at: $0)
+								return cell?.accessibilityElementIsFocused() ?? false
+							})
+						else {
+							return false
+						}
+						promptRename(at: focused)
+						return true
+					}
+				]
+		}
 		return cell
 	}
 	

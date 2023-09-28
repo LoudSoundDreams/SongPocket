@@ -9,15 +9,8 @@ import SwiftUI
 import UIKit
 
 struct CollectionRow: View {
-	enum Mode: Equatable {
-		case normal
-		case modal
-		case modalTinted
-		case modalDisabled
-	}
-	
 	let collection: Collection
-	let mode: Mode
+	let dimmed: Bool
 	
 	var body: some View {
 		HStack {
@@ -29,17 +22,11 @@ struct CollectionRow: View {
 			}
 		}
 		.alignmentGuide_separatorTrailing()
-		.opacity({
-			if mode == .modalDisabled {
-				return .oneFourth // Close to what Files pickers use
-			} else {
-				return 1
-			}
-		}())
-		// • Background color
-		// • Disabling
-		// • Selection style
-		// • Accessibility action for renaming
+		.opacity(
+			dimmed
+			? .oneFourth // Close to what Files pickers use
+			: 1
+		)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([collection.title].compacted()) // Exclude the now-playing status.
@@ -74,11 +61,11 @@ final class CollectionCell: UITableViewCell {
 	
 	func configure(
 		with collection: Collection,
-		mode: CollectionRow.Mode
+		dimmed: Bool
 	) {
 		if Self.usesSwiftUI__ {
 			contentConfiguration = UIHostingConfiguration {
-				CollectionRow(collection: collection, mode: mode)
+				CollectionRow(collection: collection, dimmed: dimmed)
 			}
 		} else {
 			titleLabel.text = { () -> String in
@@ -91,42 +78,12 @@ final class CollectionCell: UITableViewCell {
 				}
 				return collectionTitle
 			}()
-			contentView.layer.opacity = { () -> Float in
-				if mode == .modalDisabled {
-					return .oneFourth
-				} else {
-					return 1
-				}
-			}()
+			contentView.layer.opacity = dimmed ? .oneFourth : 1
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
 			reflectStatus__(collection.avatarStatus__())
 			
 			accessibilityUserInputLabels = [collection.title].compacted()
-		}
-		
-		switch mode {
-			case .normal:
-				isUserInteractionEnabled = true
-				accessibilityTraits.subtract(.notEnabled)
-				
-			case .modal:
-				backgroundColor = .clear
-				
-				isUserInteractionEnabled = true
-				accessibilityTraits.subtract(.notEnabled)
-				
-			case .modalTinted:
-				backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
-				
-				isUserInteractionEnabled = true
-				accessibilityTraits.subtract(.notEnabled)
-				
-			case .modalDisabled:
-				backgroundColor = .clear
-				
-				isUserInteractionEnabled = false
-				accessibilityTraits.formUnion(.notEnabled)
 		}
 	}
 	
