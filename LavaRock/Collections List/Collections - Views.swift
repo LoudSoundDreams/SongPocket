@@ -68,8 +68,8 @@ final class CollectionCell: UITableViewCell {
 				chevron_uiView?.backgroundColor = nil
 				return chevron_uiView
 			}()
+			isAccessibilityElement = true // Prevents `accessoryView` from being a separate element
 		}
-		isAccessibilityElement = true // Prevents `accessoryView` from being a separate element
 	}
 	
 	func configure(
