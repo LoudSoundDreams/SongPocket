@@ -155,13 +155,13 @@ class LibraryTVC: UITableViewController {
 		Task {
 			/*
 			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
-			 - “Arrange” menu (`LibraryTVC`)
-			 - “Rename” dialog (`CollectionsTVC`)
-			 - “Combine” dialog (`CollectionsTVC`)
-			 - “Move” menu (`AlbumsTVC`)
-			 - “Organize albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “organize albums” sheet)
-			 - “Move albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “move albums” sheet)
-			 - Song actions, including overflow menu (`SongsTVC`)
+			 • “Arrange” menu (`LibraryTVC`)
+			 • “Rename” dialog (`CollectionsTVC`)
+			 • “Combine” dialog (`CollectionsTVC`)
+			 • “Move” menu (`AlbumsTVC`)
+			 • “Organize albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “organize albums” sheet)
+			 • “Move albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “move albums” sheet)
+			 • Song actions, including overflow menu (`SongsTVC`)
 			 */
 			if shouldDismissAllViewControllersBeforeFreshenLibraryItems() {
 				await view.window?.rootViewController?.dismiss__async(animated: true)

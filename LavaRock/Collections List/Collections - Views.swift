@@ -39,7 +39,6 @@ struct CollectionRow: View {
 		// • Background color
 		// • Disabling
 		// • Selection style
-		// • Accessibility traits
 		// • Accessibility action for renaming
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
