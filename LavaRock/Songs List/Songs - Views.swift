@@ -81,18 +81,7 @@ struct SongRow: View {
 				
 				Button {
 				} label: {
-					Label(LRString.playNext, systemImage: "text.line.first.and.arrowtriangle.forward")
-				}
-				Button {
-				} label: {
 					Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward")
-				}
-				
-				Divider()
-				
-				Button {
-				} label: {
-					Label(LRString.playRestOfAlbumNext, systemImage: "text.line.first.and.arrowtriangle.forward")
 				}
 				Button {
 				} label: {
