@@ -59,11 +59,6 @@ enum LRString {
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
-	// MARK: - About
-	
-	static let about = NSLocalizedString("About", comment: "Button")
-	static let sayHi = NSLocalizedString("Say Hi", comment: "Button")
-	
 	// MARK: - Crates view
 	
 	static let crates = NSLocalizedString("Crates", comment: "Big title")
@@ -91,8 +86,6 @@ enum LRString {
 	
 	static let newest = NSLocalizedString("Newest", comment: "Arrange option")
 	static let oldest = NSLocalizedString("Oldest", comment: "Arrange option")
-	
-	static let moveHere = NSLocalizedString("Move Here", comment: "Button")
 	
 	// MARK: Songs view
 	
