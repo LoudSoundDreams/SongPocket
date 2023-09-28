@@ -30,7 +30,7 @@ struct CollectionRow: View {
 		)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels([collection.title].compacted()) // Exclude the now-playing status.
+		.accessibilityInputLabels([title].compacted()) // Exclude the now-playing status.
 	}
 }
 
