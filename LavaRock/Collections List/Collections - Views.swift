@@ -9,12 +9,13 @@ import SwiftUI
 import UIKit
 
 struct CollectionRow: View {
+	let title: String?
 	let collection: Collection
 	let dimmed: Bool
 	
 	var body: some View {
 		HStack {
-			Text(collection.title ?? " ") // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
+			Text(title ?? " ") // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
 			Spacer()
 			HStack(alignment: .firstTextBaseline) {
 				AvatarImage(libraryItem: collection).accessibilitySortPriority(10)
@@ -62,7 +63,7 @@ final class CollectionCell: UITableViewCell {
 	) {
 		if Self.usesSwiftUI__ {
 			contentConfiguration = UIHostingConfiguration {
-				CollectionRow(collection: collection, dimmed: dimmed)
+				CollectionRow(title: collection.title, collection: collection, dimmed: dimmed)
 			}
 		} else {
 			titleLabel.text = { () -> String in
