@@ -14,7 +14,7 @@ struct CollectionRow: View {
 	
 	var body: some View {
 		HStack {
-			Text(collection.title ?? " ")
+			Text(collection.title ?? " ") // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
 			Spacer()
 			HStack(alignment: .firstTextBaseline) {
 				AvatarImage(libraryItem: collection).accessibilitySortPriority(10)
@@ -45,18 +45,15 @@ final class CollectionCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		backgroundColor = .clear
+		if Self.usesSwiftUI__ { return }
 		
-		editingAccessoryType = .detailButton
-		if !Self.usesSwiftUI__ {
-			accessoryView = {
-				let chevron_uiView = UIHostingController(rootView: Chevron()).view
-				chevron_uiView?.sizeToFit()
-				chevron_uiView?.backgroundColor = nil
-				return chevron_uiView
-			}()
-			isAccessibilityElement = true // Prevents `accessoryView` from being a separate element
-		}
+		accessoryView = {
+			let chevron_uiView = UIHostingController(rootView: Chevron()).view
+			chevron_uiView?.sizeToFit()
+			chevron_uiView?.backgroundColor = nil
+			return chevron_uiView
+		}()
+		isAccessibilityElement = true // Prevents `accessoryView` from being a separate element
 	}
 	
 	func configure(
@@ -69,7 +66,6 @@ final class CollectionCell: UITableViewCell {
 			}
 		} else {
 			titleLabel.text = { () -> String in
-				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
 				guard
 					let collectionTitle = collection.title,
 					!collectionTitle.isEmpty

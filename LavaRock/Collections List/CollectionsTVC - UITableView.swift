@@ -153,6 +153,7 @@ extension CollectionsTVC {
 			}
 		}()
 		cell.configure(with: collection, dimmed: !enabled)
+		cell.editingAccessoryType = .detailButton
 		cell.backgroundColor = tinted ? .tintColor.withAlphaComponent(.oneEighth) : .clear
 		cell.isUserInteractionEnabled = enabled
 		if enabled {
