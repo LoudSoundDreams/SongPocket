@@ -151,7 +151,7 @@ extension CollectionsTVC {
 					}
 					return .modal
 				case .browsing:
-					return .normal([
+					cell.accessibilityCustomActions = [
 						UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
 							guard
 								let self,
@@ -165,7 +165,8 @@ extension CollectionsTVC {
 							promptRename(at: focused)
 							return true
 						}
-					])
+					]
+					return .normal
 			}
 		}()
 		cell.configure(with: collection, mode: mode)

@@ -10,7 +10,7 @@ import UIKit
 
 struct CollectionRow: View {
 	enum Mode: Equatable {
-		case normal([UIAccessibilityCustomAction])
+		case normal
 		case modal
 		case modalTinted
 		case modalDisabled
@@ -106,9 +106,7 @@ final class CollectionCell: UITableViewCell {
 		}
 		
 		switch mode {
-			case .normal(let actions):
-				accessibilityCustomActions = actions
-				
+			case .normal:
 				isUserInteractionEnabled = true
 				accessibilityTraits.subtract(.notEnabled)
 				
