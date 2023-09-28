@@ -60,6 +60,7 @@ final class CollectionCell: UITableViewCell {
 		
 		backgroundColor = .clear
 		
+		editingAccessoryType = .detailButton
 		if !Self.usesSwiftUI__ {
 			accessoryView = {
 				let chevron_uiView = UIHostingController(rootView: Chevron()).view
