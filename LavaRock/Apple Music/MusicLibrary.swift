@@ -9,11 +9,9 @@ import MediaPlayer
 import CoreData
 import OSLog
 
-final class MusicLibrary: ObservableObject {
+final class MusicLibrary {
 	private init() {}
 	static let shared = MusicLibrary()
-	
-	@Published private(set) var signal_mergedChanges = false
 	
 	private var library: MPMediaLibrary? = nil
 	let context = Database.viewContext
@@ -128,8 +126,6 @@ extension MusicLibrary {
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(name: .LRMergedChanges, object: nil)
-			
-			self.signal_mergedChanges.toggle()
 		}
 		
 #if targetEnvironment(simulator)

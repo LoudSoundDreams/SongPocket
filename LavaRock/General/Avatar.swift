@@ -64,7 +64,6 @@ struct AvatarImage: View {
 	let libraryItem: LibraryItem
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
-	@ObservedObject private var musicLibrary: MusicLibrary = .shared // In case the user added or deleted the current song. Currently, the view body never actually references this.
 	private var status: AvatarStatus {
 		guard
 			libraryItem.containsPlayhead(),
