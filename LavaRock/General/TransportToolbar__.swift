@@ -75,6 +75,12 @@ final class TransportToolbar__ {
 						let action = UIAction(
 							title: LRString.repeat_,
 							image: UIImage(systemName: "repeat.1"),
+							attributes: {
+								if Self.player == nil {
+									return .disabled
+								}
+								return []
+							}(),
 							state: {
 								guard let player = Self.player else {
 									return .off
@@ -126,7 +132,7 @@ final class TransportToolbar__ {
 							title: LRString.restart,
 							image: UIImage(systemName: "arrow.counterclockwise.circle"),
 							attributes: {
-								// I want to disable this when the playhead is already at start of track, but can’t check that reliably
+								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
 								if Self.player == nil {
 									return .disabled
 								}
