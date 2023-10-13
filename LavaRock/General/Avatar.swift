@@ -64,6 +64,7 @@ struct AvatarImage: View {
 	let libraryItem: LibraryItem
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
+	@ObservedObject private var musicLibrary: MusicLibrary = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 	private var status: AvatarStatus {
 		guard
 			libraryItem.containsPlayhead(),
