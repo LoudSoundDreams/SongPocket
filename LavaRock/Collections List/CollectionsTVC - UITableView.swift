@@ -12,7 +12,6 @@ import SwiftUI
 extension CollectionsTVC {
 	// MARK: - Numbers
 	
-	/*
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if #available(iOS 17, *) {
 			switch viewState {
@@ -40,7 +39,6 @@ extension CollectionsTVC {
 		
 		return 1
 	}
-	*/
 	
 	override func tableView(
 		_ tableView: UITableView,
@@ -53,7 +51,12 @@ extension CollectionsTVC {
 		switch viewState {
 			case .allowAccess, .loading: return 1
 			case .removingCollectionRows: return 0
-			case .emptyDatabase: return 2
+			case .emptyDatabase:
+				if #available(iOS 17, *) {
+					return 0
+				} else {
+					return 2
+				}
 			case .someCollections:
 				return viewModel.prerowCount() + viewModel.libraryGroup().items.count
 		}
