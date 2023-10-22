@@ -15,26 +15,26 @@ extension CollectionsTVC {
 	/*
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if #available(iOS 17, *) {
-			if viewModel.isEmpty() {
-				contentUnavailableConfiguration = UIHostingConfiguration {
-					ContentUnavailableView {
-						EmptyView()
-					} description: {
-						Text(LRString.emptyDatabasePlaceholder)
-					} actions: {
-						Button {
-							let musicURL = URL(string: "music://")!
-							UIApplication.shared.open(musicURL)
-						} label: {
-							HStack {
-								Text(LRString.appleMusic)
-								Image(systemName: "arrow.up.forward")
+			switch viewState {
+				case .allowAccess, .loading, .removingCollectionRows, .someCollections:
+					contentUnavailableConfiguration = nil
+				case .emptyDatabase:
+					contentUnavailableConfiguration = UIHostingConfiguration {
+						ContentUnavailableView {
+						} description: {
+							Text(LRString.emptyDatabasePlaceholder)
+						} actions: {
+							Button {
+								let musicURL = URL(string: "music://")!
+								UIApplication.shared.open(musicURL)
+							} label: {
+								HStack {
+									Text(LRString.appleMusic)
+									Image(systemName: "arrow.up.forward")
+								}
 							}
 						}
 					}
-				}
-			} else {
-				contentUnavailableConfiguration = nil
 			}
 		}
 		
