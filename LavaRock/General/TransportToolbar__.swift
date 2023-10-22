@@ -31,6 +31,7 @@ final class TransportToolbar__ {
 		image: Self.overflowButtonDefaultImage,
 		menu: Self.newPlaybackMenu()
 	)
+	
 	private lazy var jumpBackButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.skipBack15Seconds,
@@ -41,7 +42,9 @@ final class TransportToolbar__ {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
+	
 	private lazy var playPauseButton = UIBarButtonItem()
+	
 	private lazy var jumpForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.skipForward15Seconds,
@@ -52,6 +55,7 @@ final class TransportToolbar__ {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
+	
 	private lazy var nextButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
 			title: LRString.next,
@@ -168,29 +172,12 @@ final class TransportToolbar__ {
 		
 		overflowButton.image = newOverflowButtonImage()
 		
-		func configurePlayButton() {
-			playPauseButton.title = LRString.play
-			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: "play.circle")
-			) { _ in
-				Self.player?.play()
-			}
-			playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
-		}
-		func configurePauseButton() {
-			playPauseButton.title = LRString.pause
-			playPauseButton.primaryAction = UIAction(
-				image: UIImage(systemName: "pause.circle")
-			) { _ in
-				Self.player?.pause()
-			}
-			playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
-		}
-		
 		guard
 			let player = Self.player
-				// Ideally, disable transport buttons when no songs are in the player
+				// Ideally, detect when no songs are in the player
 		else {
+			// Disable everything
+			
 			configurePlayButton()
 			
 			// Enable or disable each button as appropriate
@@ -244,6 +231,24 @@ final class TransportToolbar__ {
 			@unknown default:
 				return Self.overflowButtonDefaultImage
 		}
+	}
+	func configurePlayButton() {
+		playPauseButton.title = LRString.play
+		playPauseButton.primaryAction = UIAction(
+			image: UIImage(systemName: "play.circle")
+		) { _ in
+			Self.player?.play()
+		}
+		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
+	}
+	func configurePauseButton() {
+		playPauseButton.title = LRString.pause
+		playPauseButton.primaryAction = UIAction(
+			image: UIImage(systemName: "pause.circle")
+		) { _ in
+			Self.player?.pause()
+		}
+		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
 }
 extension TransportToolbar__: TapeDeckReflecting {
