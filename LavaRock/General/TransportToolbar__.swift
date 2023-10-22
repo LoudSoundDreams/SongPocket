@@ -40,10 +40,21 @@ final class TransportToolbar__ {
 				Self.player?.currentPlaybackTime -= 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
+		if #available(iOS 17, *) {
+			button.isSymbolAnimationEnabled = true
+			button.addSymbolEffect(.scale)
+		}
 		return button
 	}()
 	
-	private lazy var playPauseButton = UIBarButtonItem()
+	private lazy var playPauseButton: UIBarButtonItem = {
+		let button = UIBarButtonItem()
+		if #available(iOS 17, *) {
+			button.isSymbolAnimationEnabled = true
+			button.addSymbolEffect(.scale)
+		}
+		return button
+	}()
 	
 	private lazy var jumpForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -53,6 +64,10 @@ final class TransportToolbar__ {
 				Self.player?.currentPlaybackTime += 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
+		if #available(iOS 17, *) {
+			button.isSymbolAnimationEnabled = true
+			button.addSymbolEffect(.scale)
+		}
 		return button
 	}()
 	
@@ -64,6 +79,10 @@ final class TransportToolbar__ {
 				Self.player?.skipToNextItem()
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
+		if #available(iOS 17, *) {
+			button.isSymbolAnimationEnabled = true
+			button.addSymbolEffect(.scale)
+		}
 		return button
 	}()
 	
@@ -166,7 +185,7 @@ final class TransportToolbar__ {
 	private func reflect_playbackState_and_nowPlayingItem() {
 #if targetEnvironment(simulator)
 		defer {
-			configurePauseButton()
+			showPauseButton()
 		}
 #endif
 		
@@ -181,9 +200,9 @@ final class TransportToolbar__ {
 		}
 		
 		if player.playbackState == .playing {
-			configurePauseButton()
+			showPauseButton()
 		} else {
-			configurePlayButton()
+			showPlayButton()
 		}
 		
 		// Enable everything
@@ -193,7 +212,7 @@ final class TransportToolbar__ {
 		}
 	}
 	private func disableEverything() {
-		configurePlayButton()
+		showPlayButton()
 		
 		barButtonItems.forEach {
 			$0.isEnabled = false
@@ -233,7 +252,7 @@ final class TransportToolbar__ {
 				return Self.overflowButtonDefaultImage
 		}
 	}
-	func configurePlayButton() {
+	func showPlayButton() {
 		playPauseButton.title = LRString.play
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "play.circle")
@@ -242,7 +261,7 @@ final class TransportToolbar__ {
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
-	func configurePauseButton() {
+	func showPauseButton() {
 		playPauseButton.title = LRString.pause
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "pause.circle")
