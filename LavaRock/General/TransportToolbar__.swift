@@ -40,21 +40,10 @@ final class TransportToolbar__ {
 				Self.player?.currentPlaybackTime -= 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
-		if #available(iOS 17, *) {
-			button.isSymbolAnimationEnabled = true
-			button.addSymbolEffect(.scale)
-		}
 		return button
 	}()
 	
-	private lazy var playPauseButton: UIBarButtonItem = {
-		let button = UIBarButtonItem()
-		if #available(iOS 17, *) {
-			button.isSymbolAnimationEnabled = true
-			button.addSymbolEffect(.scale)
-		}
-		return button
-	}()
+	private lazy var playPauseButton = UIBarButtonItem()
 	
 	private lazy var jumpForwardButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -64,10 +53,6 @@ final class TransportToolbar__ {
 				Self.player?.currentPlaybackTime += 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
-		if #available(iOS 17, *) {
-			button.isSymbolAnimationEnabled = true
-			button.addSymbolEffect(.scale)
-		}
 		return button
 	}()
 	
@@ -79,10 +64,6 @@ final class TransportToolbar__ {
 				Self.player?.skipToNextItem()
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
-		if #available(iOS 17, *) {
-			button.isSymbolAnimationEnabled = true
-			button.addSymbolEffect(.scale)
-		}
 		return button
 	}()
 	
