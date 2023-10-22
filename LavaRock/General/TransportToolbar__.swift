@@ -157,13 +157,13 @@ final class TransportToolbar__ {
 	// MARK: -
 	
 	private init() {
-		freshen()
+		reflect_playbackState_and_nowPlayingItem()
 		TapeDeck.shared.addReflector(weakly: self)
 	}
 	
 	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
 	private var hasRefreshenedOverflowButton = false
-	private func freshen() {
+	private func reflect_playbackState_and_nowPlayingItem() {
 #if targetEnvironment(simulator)
 		defer {
 			configurePauseButton()
@@ -176,17 +176,7 @@ final class TransportToolbar__ {
 			let player = Self.player
 				// Ideally, detect when no songs are in the player
 		else {
-			// Disable everything
-			
-			configurePlayButton()
-			
-			// Enable or disable each button as appropriate
-			barButtonItems.forEach {
-				$0.isEnabled = false
-				$0.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
-			}
-			overflowButton.isEnabled = true
-			overflowButton.accessibilityTraits.subtract(.notEnabled)
+			disableEverything()
 			return
 		}
 		
@@ -196,11 +186,22 @@ final class TransportToolbar__ {
 			configurePlayButton()
 		}
 		
-		// Enable or disable each button as appropriate
+		// Enable everything
 		barButtonItems.forEach {
 			$0.isEnabled = true
 			$0.accessibilityTraits.subtract(.notEnabled)
 		}
+	}
+	private func disableEverything() {
+		configurePlayButton()
+		
+		barButtonItems.forEach {
+			$0.isEnabled = false
+			$0.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
+		}
+		overflowButton.isEnabled = true
+		overflowButton.accessibilityTraits.subtract(.notEnabled)
+		return
 	}
 	private func newOverflowButtonImage() -> UIImage {
 		guard let player = Self.player else {
@@ -252,6 +253,10 @@ final class TransportToolbar__ {
 	}
 }
 extension TransportToolbar__: TapeDeckReflecting {
-	func reflect_playback_mode() { freshen() }
-	func reflect_now_playing_item() { freshen() }
+	func reflect_playback_mode() {
+		reflect_playbackState_and_nowPlayingItem()
+	}
+	func reflect_now_playing_item() { 
+		reflect_playbackState_and_nowPlayingItem()
+	}
 }
