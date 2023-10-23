@@ -312,6 +312,13 @@ final class CollectionsTVC: LibraryTVC {
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
 		
+		switch viewState {
+			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
+				editButtonItem.isEnabled = false
+			case .someCollections:
+				break
+		}
+		
 		combineButton.isEnabled = allowsCombine()
 		
 		arrangeCollectionsButton.isEnabled = allowsArrange()
