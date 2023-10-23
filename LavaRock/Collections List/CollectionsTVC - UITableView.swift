@@ -20,19 +20,17 @@ extension CollectionsTVC {
 				case .allowAccess:
 					contentUnavailableConfiguration = UIHostingConfiguration {
 						ContentUnavailableView {
-							Text("Hi, let’s play")
+							Text(LRString.hiLetsPlay)
 								.fontTitle2_bold()
 						} description: {
-							Text("…your Apple Music library!")
+							Text(LRString.ellipsis_yourAppleMusicLibrary_exclamationMark)
 						} actions: {
 							Button {
 								Task {
 									await self.requestAccessToAppleMusic()
 								}
 							} label: {
-								HStack {
-									Text("Allow Access")
-								}
+								Text(LRString.allowAccess)
 							}
 						}
 					}
