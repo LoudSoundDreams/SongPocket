@@ -15,8 +15,31 @@ extension CollectionsTVC {
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if #available(iOS 17, *) {
 			switch viewState {
-				case .allowAccess, .loading, .removingCollectionRows, .someCollections:
+				case .removingCollectionRows, .someCollections:
 					contentUnavailableConfiguration = nil
+				case .allowAccess:
+					contentUnavailableConfiguration = UIHostingConfiguration {
+						ContentUnavailableView {
+							Text("Hi, let’s play")
+								.fontTitle2_bold()
+						} description: {
+							Text("…your Apple Music library!")
+						} actions: {
+							Button {
+								Task {
+									await self.requestAccessToAppleMusic()
+								}
+							} label: {
+								HStack {
+									Text("Allow Access")
+								}
+							}
+						}
+					}
+				case .loading:
+					contentUnavailableConfiguration = UIHostingConfiguration {
+						ProgressView()
+					}
 				case .emptyDatabase:
 					contentUnavailableConfiguration = UIHostingConfiguration {
 						ContentUnavailableView {
@@ -49,7 +72,18 @@ extension CollectionsTVC {
 	
 	func numberOfRows(forSection section: Int) -> Int {
 		switch viewState {
-			case .allowAccess, .loading: return 1
+			case .allowAccess:
+				if #available(iOS 17, *) {
+					return 0
+				} else {
+					return 1
+				}
+			case .loading:
+				if #available(iOS 17, *) {
+					return 0
+				} else {
+					return 1
+				}
 			case .removingCollectionRows: return 0
 			case .emptyDatabase:
 				if #available(iOS 17, *) {
@@ -233,7 +267,7 @@ extension CollectionsTVC {
 		switch viewState {
 			case .allowAccess:
 				Task {
-					await didSelectAllowAccessRow(at: indexPath)
+					await requestAccessToAppleMusic()
 				}
 			case .loading, .removingCollectionRows: return
 			case .emptyDatabase:
@@ -248,7 +282,7 @@ extension CollectionsTVC {
 		}
 	}
 	
-	private func didSelectAllowAccessRow(at indexPath: IndexPath) async {
+	private func requestAccessToAppleMusic() async {
 		switch MPMediaLibrary.authorizationStatus() {
 			case .notDetermined:
 				let authorizationStatus = await MPMediaLibrary.requestAuthorization()
@@ -257,9 +291,9 @@ extension CollectionsTVC {
 					case .authorized:
 						await AppleMusic.integrateIfAuthorized()
 					case .notDetermined, .denied, .restricted:
-						tableView.deselectRow(at: indexPath, animated: true)
+						tableView.deselectAllRows(animated: true)
 					@unknown default:
-						tableView.deselectRow(at: indexPath, animated: true)
+						tableView.deselectAllRows(animated: true)
 				}
 			case .authorized: // Should never run
 				break
@@ -267,9 +301,9 @@ extension CollectionsTVC {
 				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
 					let _ = await UIApplication.shared.open(settingsURL)
 				}
-				tableView.deselectRow(at: indexPath, animated: true)
+				tableView.deselectAllRows(animated: true)
 			@unknown default:
-				tableView.deselectRow(at: indexPath, animated: true)
+				tableView.deselectAllRows(animated: true)
 		}
 	}
 }
