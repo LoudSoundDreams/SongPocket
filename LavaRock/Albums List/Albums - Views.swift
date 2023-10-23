@@ -27,7 +27,7 @@ struct AlbumCard: View {
 			CoverArtView(
 				albumRepresentative: album.representativeSongInfo(), // TO DO: Redraw when artwork changes
 				largerThanOrEqualToSizeInPoints: maxHeight)
-			.background(
+			.background( // Use `border` instead?
 				Rectangle()
 					.stroke(
 						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
