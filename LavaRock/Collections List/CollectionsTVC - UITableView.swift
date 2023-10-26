@@ -48,10 +48,7 @@ extension CollectionsTVC {
 								let musicURL = URL(string: "music://")!
 								UIApplication.shared.open(musicURL)
 							} label: {
-								HStack {
-									Text(LRString.appleMusic)
-									Image(systemName: "arrow.up.forward")
-								}
+								Text(LRString.openMusic)
 							}
 						}
 					}
