@@ -13,46 +13,44 @@ extension CollectionsTVC {
 	// MARK: - Numbers
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		if #available(iOS 17, *) {
-			switch viewState {
-				case .removingCollectionRows, .someCollections:
-					contentUnavailableConfiguration = nil
-				case .allowAccess:
-					contentUnavailableConfiguration = UIHostingConfiguration {
-						ContentUnavailableView {
-							Text(LRString.hiLetsPlay)
-								.fontTitle2_bold()
-						} description: {
-							Text(LRString.ellipsis_yourAppleMusicLibrary_exclamationMark)
-						} actions: {
-							Button {
-								Task {
-									await self.requestAccessToAppleMusic()
-								}
-							} label: {
-								Text(LRString.allowAccess)
+		switch viewState {
+			case .removingCollectionRows, .someCollections:
+				contentUnavailableConfiguration = nil
+			case .allowAccess:
+				contentUnavailableConfiguration = UIHostingConfiguration {
+					ContentUnavailableView {
+						Text(LRString.hiLetsPlay)
+							.fontTitle2_bold()
+					} description: {
+						Text(LRString.ellipsis_yourAppleMusicLibrary_exclamationMark)
+					} actions: {
+						Button {
+							Task {
+								await self.requestAccessToAppleMusic()
 							}
+						} label: {
+							Text(LRString.allowAccess)
 						}
 					}
-				case .loading:
-					contentUnavailableConfiguration = UIHostingConfiguration {
-						ProgressView()
-					}
-				case .emptyDatabase:
-					contentUnavailableConfiguration = UIHostingConfiguration {
-						ContentUnavailableView {
-						} description: {
-							Text(LRString.emptyDatabasePlaceholder)
-						} actions: {
-							Button {
-								let musicURL = URL(string: "music://")!
-								UIApplication.shared.open(musicURL)
-							} label: {
-								Text(LRString.openMusic)
-							}
+				}
+			case .loading:
+				contentUnavailableConfiguration = UIHostingConfiguration {
+					ProgressView()
+				}
+			case .emptyDatabase:
+				contentUnavailableConfiguration = UIHostingConfiguration {
+					ContentUnavailableView {
+					} description: {
+						Text(LRString.emptyDatabasePlaceholder)
+					} actions: {
+						Button {
+							let musicURL = URL(string: "music://")!
+							UIApplication.shared.open(musicURL)
+						} label: {
+							Text(LRString.openMusic)
 						}
 					}
-			}
+				}
 		}
 		
 		return 1
@@ -67,25 +65,10 @@ extension CollectionsTVC {
 	
 	func numberOfRows(forSection section: Int) -> Int {
 		switch viewState {
-			case .allowAccess:
-				if #available(iOS 17, *) {
-					return 0
-				} else {
-					return 1
-				}
-			case .loading:
-				if #available(iOS 17, *) {
-					return 0
-				} else {
-					return 1
-				}
+			case .allowAccess: return 0
+			case .loading: return 0
 			case .removingCollectionRows: return 0
-			case .emptyDatabase:
-				if #available(iOS 17, *) {
-					return 0
-				} else {
-					return 2
-				}
+			case .emptyDatabase: return 0
 			case .someCollections:
 				return viewModel.prerowCount() + viewModel.libraryGroup().items.count
 		}
