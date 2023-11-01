@@ -81,20 +81,7 @@ extension CollectionsTVC {
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		switch viewState {
-			case .allowAccess:
-				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(withIdentifier: "Allow Access", for: indexPath)
-				cell.contentConfiguration = UIHostingConfiguration {
-					HStack {
-						Text(LRString.allowAccessToAppleMusic)
-							.foregroundStyle(Color.accentColor)
-						Spacer()
-					}
-					.alignmentGuide_separatorTrailing()
-					.accessibilityAddTraits(.isButton)
-				}
-				return cell
-			case .loading:
+			case .allowAccess, .loading:
 				// Should never run
 				return UITableViewCell()
 			case .removingCollectionRows: // Should never run
