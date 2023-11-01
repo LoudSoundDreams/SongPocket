@@ -95,36 +95,25 @@ final class CollectionsTVC: LibraryTVC {
 		let toInsert: [IndexPath]
 		let toReload: [IndexPath]
 		
-		let section = 0
-		let oldIndexPaths = tableView.indexPathsForRows(inSection: section, firstRow: 0)
-		let newIndexPaths: [IndexPath] = {
-			guard self.viewState == .someCollections else {
-				return []
-			}
-			let numberOfRows = self.viewModel.libraryGroup().items.count
-			let indicesOfRows = Array(0 ..< numberOfRows)
-			return indicesOfRows.map { row in
-				IndexPath(row: row, section: section)
-			}
-		}()
+		let oldIndexPaths = tableView.indexPathsForRows(inSection: 0, firstRow: 0)
 		switch viewState {
 			case .allowAccess, .loading:
-				if oldIndexPaths.count == newIndexPaths.count {
+				if oldIndexPaths.isEmpty {
 					toDelete = []
 					toInsert = []
-					toReload = newIndexPaths
+					toReload = []
 				} else {
-					toDelete = oldIndexPaths // Can be empty
-					toInsert = newIndexPaths
+					toDelete = oldIndexPaths
+					toInsert = []
 					toReload = []
 				}
 			case .removingCollectionRows:
 				toDelete = oldIndexPaths
-				toInsert = newIndexPaths // Empty
+				toInsert = []
 				toReload = []
 			case .emptyDatabase:
 				toDelete = oldIndexPaths
-				toInsert = newIndexPaths
+				toInsert = []
 				toReload = []
 			case .someCollections: // Merging changes with existing collections
 				// Crashes after Reset Location & Privacy
