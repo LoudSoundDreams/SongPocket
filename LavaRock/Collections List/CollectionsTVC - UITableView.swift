@@ -60,15 +60,8 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	)-> Int {
-		return numberOfRows(forSection: section)
-	}
-	
-	func numberOfRows(forSection section: Int) -> Int {
 		switch viewState {
-			case .allowAccess: return 0
-			case .loading: return 0
-			case .removingCollectionRows: return 0
-			case .emptyDatabase: return 0
+			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase: return 0
 			case .someCollections:
 				return viewModel.prerowCount() + viewModel.libraryGroup().items.count
 		}

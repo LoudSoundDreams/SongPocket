@@ -98,13 +98,15 @@ final class CollectionsTVC: LibraryTVC {
 		let section = 0
 		let oldIndexPaths = tableView.indexPathsForRows(inSection: section, firstRow: 0)
 		let newIndexPaths: [IndexPath] = {
-			let numberOfRows = numberOfRows(forSection: section)
+			guard self.viewState == .someCollections else {
+				return []
+			}
+			let numberOfRows = self.viewModel.libraryGroup().items.count
 			let indicesOfRows = Array(0 ..< numberOfRows)
 			return indicesOfRows.map { row in
 				IndexPath(row: row, section: section)
 			}
 		}()
-		
 		switch viewState {
 			case .allowAccess, .loading:
 				if oldIndexPaths.count == newIndexPaths.count {
