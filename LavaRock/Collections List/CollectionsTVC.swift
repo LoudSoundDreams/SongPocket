@@ -92,24 +92,16 @@ final class CollectionsTVC: LibraryTVC {
 		runningBeforeCompletion beforeCompletion: (() -> Void)? = nil
 	) async {
 		let toDelete: [IndexPath]
-		let toInsert: [IndexPath]
-		let toReload: [IndexPath]
 		switch viewState {
 			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
 				toDelete = tableView.indexPathsForRows(inSection: 0, firstRow: 0)
-				toInsert = []
-				toReload = []
 			case .someCollections: // Merging changes with existing collections
 				// Crashes after Reset Location & Privacy
 				toDelete = []
-				toInsert = []
-				toReload = []
 		}
 		
 		await tableView.performBatchUpdates__async {
-			self.tableView.reloadRows(at: toReload, with: (toReload.isEmpty ? .none : .fade))
 			self.tableView.deleteRows(at: toDelete, with: .middle)
-			self.tableView.insertRows(at: toInsert, with: .middle)
 		} runningBeforeContinuation: {
 			switch self.viewState {
 				case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
