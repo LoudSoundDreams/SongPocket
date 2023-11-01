@@ -94,25 +94,9 @@ final class CollectionsTVC: LibraryTVC {
 		let toDelete: [IndexPath]
 		let toInsert: [IndexPath]
 		let toReload: [IndexPath]
-		
-		let oldIndexPaths = tableView.indexPathsForRows(inSection: 0, firstRow: 0)
 		switch viewState {
-			case .allowAccess, .loading:
-				if oldIndexPaths.isEmpty {
-					toDelete = []
-					toInsert = []
-					toReload = []
-				} else {
-					toDelete = oldIndexPaths
-					toInsert = []
-					toReload = []
-				}
-			case .removingCollectionRows:
-				toDelete = oldIndexPaths
-				toInsert = []
-				toReload = []
-			case .emptyDatabase:
-				toDelete = oldIndexPaths
+			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
+				toDelete = tableView.indexPathsForRows(inSection: 0, firstRow: 0)
 				toInsert = []
 				toReload = []
 			case .someCollections: // Merging changes with existing collections
