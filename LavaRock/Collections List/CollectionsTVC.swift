@@ -84,7 +84,7 @@ final class CollectionsTVC: LibraryTVC {
 	// MARK: - View state
 	
 	func reflectViewState(
-		runningBeforeCompletion beforeCompletion: (() -> Void)? = nil
+		toRunBeforeAwait: (() -> Void)? = nil
 	) async {
 		let toDelete: [IndexPath] = {
 			switch viewState {
@@ -108,7 +108,7 @@ final class CollectionsTVC: LibraryTVC {
 			
 			self.didChangeRowsOrSelectedRows() // Freshens “Edit” button
 			
-			beforeCompletion?()
+			toRunBeforeAwait?()
 		}
 	}
 	
@@ -243,7 +243,7 @@ final class CollectionsTVC: LibraryTVC {
 		switch viewState {
 			case .loading, .emptyDatabase:
 				Task {
-					await reflectViewState(runningBeforeCompletion: {
+					await reflectViewState(toRunBeforeAwait: {
 						super.freshenLibraryItems()
 					})
 				}
