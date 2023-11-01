@@ -35,7 +35,7 @@ extension CollectionsTVC {
 				}
 			case .loading:
 				contentUnavailableConfiguration = UIHostingConfiguration {
-					ProgressView()
+					ProgressView().tint(.secondary)
 				}
 			case .emptyDatabase:
 				contentUnavailableConfiguration = UIHostingConfiguration {
