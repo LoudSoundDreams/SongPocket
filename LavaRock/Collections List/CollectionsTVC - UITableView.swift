@@ -14,7 +14,7 @@ extension CollectionsTVC {
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		switch viewState {
-			case .removingCollectionRows, .someCollections:
+			case .someCollections:
 				contentUnavailableConfiguration = nil
 			case .allowAccess:
 				contentUnavailableConfiguration = UIHostingConfiguration {
@@ -61,7 +61,7 @@ extension CollectionsTVC {
 		numberOfRowsInSection section: Int
 	)-> Int {
 		switch viewState {
-			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase: return 0
+			case .allowAccess, .loading, .emptyDatabase: return 0
 			case .someCollections:
 				return viewModel.prerowCount() + viewModel.libraryGroup().items.count
 		}
@@ -74,7 +74,7 @@ extension CollectionsTVC {
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		switch viewState {
-			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
+			case .allowAccess, .loading, .emptyDatabase:
 				// Should never run
 				return UITableViewCell()
 			case .someCollections: break
@@ -153,7 +153,7 @@ extension CollectionsTVC {
 			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: return false
 			case .browsing:
 				switch viewState {
-					case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase: return false
+					case .allowAccess, .loading, .emptyDatabase: return false
 					case .someCollections: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
 				}
 		}
@@ -164,7 +164,7 @@ extension CollectionsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch viewState {
-			case .allowAccess, .loading, .removingCollectionRows: return indexPath
+			case .allowAccess, .loading: return indexPath
 			case .emptyDatabase:
 				if indexPath.row == Self.emptyDatabaseInfoRow {
 					return nil
@@ -183,7 +183,7 @@ extension CollectionsTVC {
 				Task {
 					await requestAccessToAppleMusic()
 				}
-			case .loading, .removingCollectionRows: return
+			case .loading: return
 			case .emptyDatabase:
 				Task {
 					let musicURL = URL(string: "music://")!

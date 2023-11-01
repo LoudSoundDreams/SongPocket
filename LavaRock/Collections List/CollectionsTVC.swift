@@ -26,7 +26,6 @@ final class CollectionsTVC: LibraryTVC {
 	enum CollectionsViewState {
 		case allowAccess
 		case loading
-		case removingCollectionRows
 		case emptyDatabase
 		case someCollections
 	}
@@ -51,13 +50,9 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	// State
-	var needsRemoveCollectionRows = false
 	var viewState: CollectionsViewState {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
-		}
-		if needsRemoveCollectionRows { // You must check this before checking `isMergingChanges`.
-			return .removingCollectionRows
 		}
 		if isMergingChanges {
 			if viewModel.isEmpty() {
@@ -93,7 +88,7 @@ final class CollectionsTVC: LibraryTVC {
 	) async {
 		let toDelete: [IndexPath] = {
 			switch viewState {
-				case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
+				case .allowAccess, .loading, .emptyDatabase:
 					return tableView.indexPathsForRows(inSection: 0, firstRow: 0)
 				case .someCollections: // Merging changes with existing collections
 					// Crashes after Reset Location & Privacy
@@ -104,7 +99,7 @@ final class CollectionsTVC: LibraryTVC {
 			self.tableView.deleteRows(at: toDelete, with: .middle)
 		} runningBeforeContinuation: {
 			switch self.viewState {
-				case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
+				case .allowAccess, .loading, .emptyDatabase:
 					if self.isEditing {
 						self.setEditing(false, animated: true)
 					}
@@ -247,17 +242,13 @@ final class CollectionsTVC: LibraryTVC {
 		
 		switch viewState {
 			case .loading, .emptyDatabase:
-				// We have placeholder rows in the Collections section. Remove them before `LibraryTVC` calls `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
-				needsRemoveCollectionRows = true // `viewState` is now `.removingCollectionRows`
 				Task {
 					await reflectViewState(runningBeforeCompletion: {
-						self.needsRemoveCollectionRows = false // WARNING: `viewState` is now `.loading` or `.emptyDatabase`, but the UI doesn’t reflect that.
-						
 						super.freshenLibraryItems()
 					})
 				}
 				return
-			case .allowAccess, .removingCollectionRows, .someCollections: break
+			case .allowAccess, .someCollections: break
 		}
 		
 		if viewModelBeforeCombining != nil {
@@ -280,7 +271,7 @@ final class CollectionsTVC: LibraryTVC {
 		super.freshenEditingButtons()
 		
 		switch viewState {
-			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
+			case .allowAccess, .loading, .emptyDatabase:
 				editButtonItem.isEnabled = false
 			case .someCollections:
 				break
