@@ -25,8 +25,6 @@ enum LRString {
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
 	static let tilde = NSLocalizedString("~", comment: "Default title for a new crate")
 	
-	static let loadingEllipsis = NSLocalizedString("Loading…", comment: "Status message")
-	
 	// MARK: Albums
 	
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")

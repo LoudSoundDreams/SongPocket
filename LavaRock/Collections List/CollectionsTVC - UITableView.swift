@@ -95,19 +95,8 @@ extension CollectionsTVC {
 				}
 				return cell
 			case .loading:
-				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(withIdentifier: "Loading", for: indexPath)
-				cell.selectionStyle = .none
-				cell.contentConfiguration = UIHostingConfiguration {
-					HStack {
-						Text(LRString.loadingEllipsis)
-							.foregroundStyle(.secondary)
-						Spacer()
-						ProgressView()
-					}
-					.alignmentGuide_separatorTrailing()
-				}
-				return cell
+				// Should never run
+				return UITableViewCell()
 			case .removingCollectionRows: // Should never run
 				return UITableViewCell()
 			case .emptyDatabase:
