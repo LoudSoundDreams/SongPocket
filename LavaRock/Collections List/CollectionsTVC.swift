@@ -91,15 +91,15 @@ final class CollectionsTVC: LibraryTVC {
 	func reflectViewState(
 		runningBeforeCompletion beforeCompletion: (() -> Void)? = nil
 	) async {
-		let toDelete: [IndexPath]
-		switch viewState {
-			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
-				toDelete = tableView.indexPathsForRows(inSection: 0, firstRow: 0)
-			case .someCollections: // Merging changes with existing collections
-				// Crashes after Reset Location & Privacy
-				toDelete = []
-		}
-		
+		let toDelete: [IndexPath] = {
+			switch viewState {
+				case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
+					return tableView.indexPathsForRows(inSection: 0, firstRow: 0)
+				case .someCollections: // Merging changes with existing collections
+					// Crashes after Reset Location & Privacy
+					return []
+			}
+		}()
 		await tableView.performBatchUpdates__async {
 			self.tableView.deleteRows(at: toDelete, with: .middle)
 		} runningBeforeContinuation: {
