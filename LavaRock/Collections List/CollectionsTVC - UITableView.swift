@@ -81,42 +81,9 @@ extension CollectionsTVC {
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		switch viewState {
-			case .allowAccess, .loading:
+			case .allowAccess, .loading, .removingCollectionRows, .emptyDatabase:
 				// Should never run
 				return UITableViewCell()
-			case .removingCollectionRows: // Should never run
-				return UITableViewCell()
-			case .emptyDatabase:
-				switch indexPath.row {
-					case Self.emptyDatabaseInfoRow:
-						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(withIdentifier: "No Collections", for: indexPath)
-						cell.selectionStyle = .none
-						cell.contentConfiguration = UIHostingConfiguration {
-							HStack {
-								Text(LRString.emptyDatabasePlaceholder)
-									.foregroundStyle(.secondary)
-								Spacer()
-							}
-							.alignmentGuide_separatorTrailing()
-						}
-						return cell
-					default:
-						// The cell in the storyboard is completely default except for the reuse identifier.
-						let cell = tableView.dequeueReusableCell(withIdentifier: "Open Music", for: indexPath)
-						cell.contentConfiguration = UIHostingConfiguration {
-							LabeledContent {
-								Image(systemName: "arrow.up.forward.app")
-									.foregroundStyle(Color.accentColor)
-							} label: {
-								Text(LRString.appleMusic)
-									.foregroundStyle(Color.accentColor)
-							}
-							.alignmentGuide_separatorTrailing()
-							.accessibilityAddTraits(.isButton)
-						}
-						return cell
-				}
 			case .someCollections: break
 		}
 		
