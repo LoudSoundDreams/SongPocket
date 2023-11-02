@@ -77,9 +77,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	// MARK: - View state
 	
-	func reflectViewState(
-		toRunBeforeAwait: (() -> Void)? = nil
-	) async {
+	func reflectViewState() {
 		let toDelete: [IndexPath] = {
 			switch viewState {
 				case .allowAccess, .loading, .emptyDatabase:
@@ -94,17 +92,15 @@ final class CollectionsTVC: LibraryTVC {
 			tableView.deleteRows(at: toDelete, with: .middle)
 		}
 		
-		switch self.viewState {
+		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase:
-				if self.isEditing {
-					self.setEditing(false, animated: true)
+				if isEditing {
+					setEditing(false, animated: true)
 				}
 			case .someCollections: break
 		}
 		
-		self.didChangeRowsOrSelectedRows() // Freshens “Edit” button
-		
-		toRunBeforeAwait?()
+		didChangeRowsOrSelectedRows() // Freshens “Edit” button
 	}
 	
 	// MARK: - Setup
@@ -207,7 +203,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	func prepareToIntegrateWithAppleMusic() async {
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
-		await reflectViewState()
+		reflectViewState()
 	}
 	
 	// MARK: - Library items
@@ -237,11 +233,8 @@ final class CollectionsTVC: LibraryTVC {
 		
 		switch viewState {
 			case .loading, .emptyDatabase:
-				Task {
-					await reflectViewState(toRunBeforeAwait: {
-						super.freshenLibraryItems()
-					})
-				}
+				reflectViewState()
+				super.freshenLibraryItems()
 				return
 			case .allowAccess, .someCollections: break
 		}
@@ -255,9 +248,7 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	override func reflectViewModelIsEmpty() {
-		Task {
-			await reflectViewState()
-		}
+		reflectViewState()
 	}
 	
 	// MARK: - Freshening UI
