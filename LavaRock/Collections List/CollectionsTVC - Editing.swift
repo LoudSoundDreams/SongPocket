@@ -71,14 +71,11 @@ extension CollectionsTVC {
 			collection.title = proposedTitle
 		}
 		
-		Task {
-			await tableView.performBatchUpdates__async {
-				self.tableView.reloadRows(at: [indexPath], with: .fade)
-			} runningBeforeContinuation: {
-				if thenShouldReselect {
-					self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-				}
-			}
+		tableView.performBatchUpdates {
+			tableView.reloadRows(at: [indexPath], with: .fade)
+		}
+		if thenShouldReselect {
+			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 		}
 	}
 	

@@ -89,21 +89,22 @@ final class CollectionsTVC: LibraryTVC {
 					return []
 			}
 		}()
-		await tableView.performBatchUpdates__async {
-			self.tableView.deleteRows(at: toDelete, with: .middle)
-		} runningBeforeContinuation: {
-			switch self.viewState {
-				case .allowAccess, .loading, .emptyDatabase:
-					if self.isEditing {
-						self.setEditing(false, animated: true)
-					}
-				case .someCollections: break
-			}
-			
-			self.didChangeRowsOrSelectedRows() // Freshens “Edit” button
-			
-			toRunBeforeAwait?()
+		
+		tableView.performBatchUpdates {
+			tableView.deleteRows(at: toDelete, with: .middle)
 		}
+		
+		switch self.viewState {
+			case .allowAccess, .loading, .emptyDatabase:
+				if self.isEditing {
+					self.setEditing(false, animated: true)
+				}
+			case .someCollections: break
+		}
+		
+		self.didChangeRowsOrSelectedRows() // Freshens “Edit” button
+		
+		toRunBeforeAwait?()
 	}
 	
 	// MARK: - Setup
