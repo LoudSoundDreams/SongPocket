@@ -164,12 +164,8 @@ extension CollectionsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch viewState {
-			case .allowAccess, .loading: return indexPath
-			case .emptyDatabase:
-				if indexPath.row == Self.emptyDatabaseInfoRow {
-					return nil
-				}
-				return indexPath
+			case .allowAccess: return indexPath
+			case .loading, .emptyDatabase: return nil // Should never run
 			case .someCollections: return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
 	}
@@ -179,11 +175,7 @@ extension CollectionsTVC {
 		didSelectRowAt indexPath: IndexPath
 	) {
 		switch viewState {
-			case .allowAccess:
-				Task {
-					await requestAccessToAppleMusic()
-				}
-			case .loading: return
+			case .allowAccess, .loading: return // Should never run
 			case .emptyDatabase:
 				Task {
 					let musicURL = URL(string: "music://")!
@@ -204,10 +196,8 @@ extension CollectionsTVC {
 				switch authorizationStatus {
 					case .authorized:
 						await AppleMusic.integrateIfAuthorized()
-					case .notDetermined, .denied, .restricted:
-						tableView.deselectAllRows(animated: true)
-					@unknown default:
-						tableView.deselectAllRows(animated: true)
+					case .notDetermined, .denied, .restricted: break
+					@unknown default: break
 				}
 			case .authorized: // Should never run
 				break
@@ -215,9 +205,7 @@ extension CollectionsTVC {
 				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
 					let _ = await UIApplication.shared.open(settingsURL)
 				}
-				tableView.deselectAllRows(animated: true)
-			@unknown default:
-				tableView.deselectAllRows(animated: true)
+			@unknown default: break
 		}
 	}
 }

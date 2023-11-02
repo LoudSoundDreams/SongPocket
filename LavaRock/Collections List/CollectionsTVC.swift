@@ -54,19 +54,13 @@ final class CollectionsTVC: LibraryTVC {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return .allowAccess
 		}
-		if isMergingChanges {
-			if viewModel.isEmpty() {
-				return .loading
-			} else {
-				return .someCollections
-			}
-		} else {
-			if viewModel.isEmpty() {
-				return .emptyDatabase
-			} else {
-				return .someCollections
-			}
+		guard viewModel.isEmpty() else {
+			return .someCollections
 		}
+		if isMergingChanges {
+			return .loading
+		}
+		return .emptyDatabase
 	}
 	var viewModelBeforeCombining: CollectionsViewModel? = nil
 	
