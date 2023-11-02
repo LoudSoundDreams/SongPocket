@@ -73,16 +73,12 @@ extension CollectionsTVC {
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		switch viewState {
-			case .allowAccess, .loading, .emptyDatabase:
-				// Should never run
-				return UITableViewCell()
-			case .someCollections: break
-		}
-		
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Collection",
-			for: indexPath) as? CollectionCell
+		guard
+			viewState == .someCollections,
+			let cell = tableView.dequeueReusableCell(
+				withIdentifier: "Collection",
+				for: indexPath
+			) as? CollectionCell
 		else { return UITableViewCell() }
 		
 		let collectionsViewModel = viewModel as! CollectionsViewModel
@@ -153,7 +149,7 @@ extension CollectionsTVC {
 			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: return false
 			case .browsing:
 				switch viewState {
-					case .allowAccess, .loading, .emptyDatabase: return false
+					case .allowAccess, .loading, .emptyDatabase: return false // Should never run
 					case .someCollections: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
 				}
 		}
@@ -199,8 +195,7 @@ extension CollectionsTVC {
 					case .notDetermined, .denied, .restricted: break
 					@unknown default: break
 				}
-			case .authorized: // Should never run
-				break
+			case .authorized: break // Should never run
 			case .denied, .restricted:
 				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
 					let _ = await UIApplication.shared.open(settingsURL)

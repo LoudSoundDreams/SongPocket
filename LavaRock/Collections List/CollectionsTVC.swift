@@ -267,8 +267,7 @@ final class CollectionsTVC: LibraryTVC {
 		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase:
 				editButtonItem.isEnabled = false
-			case .someCollections:
-				break
+			case .someCollections: break
 		}
 		
 		combineButton.isEnabled = allowsCombine()
