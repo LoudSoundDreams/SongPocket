@@ -17,7 +17,6 @@ struct AlbumHeader: View {
 		HStack(spacing: .eight * 5/4) {
 			TrackNumberLabel(text: trackNumberSpacer, spacerText: trackNumberSpacer)
 				.hidden()
-				.alignmentGuide_separatorLeading()
 			
 			VStack(
 				alignment: .leading,
@@ -29,6 +28,7 @@ struct AlbumHeader: View {
 				Text(album.titleFormatted()) // “Rubber Soul”
 					.fontTitle2_bold()
 			}
+			.alignmentGuide_separatorLeading()
 			
 			Spacer()
 		}
