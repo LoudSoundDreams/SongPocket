@@ -160,8 +160,7 @@ extension CollectionsTVC {
 		willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch viewState {
-			case .allowAccess: return indexPath
-			case .loading, .emptyDatabase: return nil // Should never run
+			case .allowAccess, .loading, .emptyDatabase: return nil // Should never run
 			case .someCollections: return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
 	}
@@ -171,16 +170,8 @@ extension CollectionsTVC {
 		didSelectRowAt indexPath: IndexPath
 	) {
 		switch viewState {
-			case .allowAccess, .loading: return // Should never run
-			case .emptyDatabase:
-				Task {
-					let musicURL = URL(string: "music://")!
-					let _ = await UIApplication.shared.open(musicURL) // If iOS shows the ‘Restore “Music”?’ alert, this returns `false`, but before the user responds to the alert, not after, unfortunately.
-					
-					tableView.deselectRow(at: indexPath, animated: true)
-				}
-			case .someCollections:
-				super.tableView(tableView, didSelectRowAt: indexPath)
+			case .allowAccess, .loading, .emptyDatabase: return // Should never run
+			case .someCollections: super.tableView(tableView, didSelectRowAt: indexPath)
 		}
 	}
 	
