@@ -258,7 +258,7 @@ final class SongCell: UITableViewCell {
 		let play = UIAction(
 			title: LRString.play,
 			image: UIImage(systemName: "play")
-		) { _ in player?.playNow([mediaItem], skipping: 0) }
+		) { _ in player?.playNow([mediaItem], numberToSkip: 0) }
 		
 		// Disable “prepend” intelligently: when “append” would do the same thing.
 		// Specifically, only enable “prepend” if there’s at least 1 song queued after the current one.
