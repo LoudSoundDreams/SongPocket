@@ -37,7 +37,7 @@
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07694273282E0EF6003A07CA /* TapeDeckStatus.swift */; };
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
-		076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */; };
+		076F1C0227E66DAA00220C2B /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* Player.swift */; };
 		0774C88527CBEA0900230F22 /* LRDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRDefaultsKey.swift */; };
 		07755A58294821860056E90C /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Avatar.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
@@ -134,7 +134,7 @@
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07694273282E0EF6003A07CA /* TapeDeckStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeckStatus.swift; sourceTree = "<group>"; };
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
-		076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMusicPlayerController.swift; sourceTree = "<group>"; };
+		076F1C0127E66DAA00220C2B /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0774C88427CBEA0900230F22 /* LRDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRDefaultsKey.swift; sourceTree = "<group>"; };
 		07755A57294821860056E90C /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
@@ -344,6 +344,7 @@
 				072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */,
 				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
 				070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */,
+				076F1C0127E66DAA00220C2B /* Player.swift */,
 				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
 				07694273282E0EF6003A07CA /* TapeDeckStatus.swift */,
 				07CD864E27CAA54600286E6A /* TapeDeckReflecting.swift */,
@@ -366,7 +367,6 @@
 				07E0BBE72765678F0010117E /* UITableView.swift */,
 				0787CB0927A376400068C2E5 /* UIKit.swift */,
 				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
-				076F1C0127E66DAA00220C2B /* MPMusicPlayerController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -574,7 +574,7 @@
 				07CD864F27CAA54600286E6A /* TapeDeckReflecting.swift in Sources */,
 				07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */,
 				07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */,
-				076F1C0227E66DAA00220C2B /* MPMusicPlayerController.swift in Sources */,
+				076F1C0227E66DAA00220C2B /* Player.swift in Sources */,
 				073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */,
 				073CD6462A83FC66008E32A7 /* SwiftUI.swift in Sources */,
 				07FFC00E29D88B6B00B98447 /* AppleMusic.swift in Sources */,
