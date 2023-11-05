@@ -5,15 +5,15 @@
 //  Created by h on 2023-11-05.
 //
 
-import MediaPlayer
+import MusicKit
 import UIKit
 
 extension CollectionsTVC {
 	func requestAccessToAppleMusic() async {
-		switch MPMediaLibrary.authorizationStatus() {
+		switch MusicAuthorization.currentStatus {
 			case .authorized: break // Should never run
 			case .notDetermined:
-				let response = await MPMediaLibrary.requestAuthorization()
+				let response = await MusicAuthorization.request()
 				
 				switch response {
 					case .denied, .restricted, .notDetermined: break
