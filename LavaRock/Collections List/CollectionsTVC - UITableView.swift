@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MediaPlayer
 import SwiftUI
 
 extension CollectionsTVC {
@@ -172,26 +171,6 @@ extension CollectionsTVC {
 		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase: return // Should never run
 			case .someCollections: super.tableView(tableView, didSelectRowAt: indexPath)
-		}
-	}
-	
-	private func requestAccessToAppleMusic() async {
-		switch MPMediaLibrary.authorizationStatus() {
-			case .notDetermined:
-				let authorizationStatus = await MPMediaLibrary.requestAuthorization()
-				
-				switch authorizationStatus {
-					case .authorized:
-						await AppleMusic.integrateIfAuthorized()
-					case .notDetermined, .denied, .restricted: break
-					@unknown default: break
-				}
-			case .authorized: break // Should never run
-			case .denied, .restricted:
-				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-					let _ = await UIApplication.shared.open(settingsURL)
-				}
-			@unknown default: break
 		}
 	}
 }

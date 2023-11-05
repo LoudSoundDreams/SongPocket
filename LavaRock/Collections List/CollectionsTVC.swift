@@ -75,7 +75,7 @@ final class CollectionsTVC: LibraryTVC {
 	// Data
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
-	// MARK: - View state
+	// MARK: -
 	
 	func reflectViewState() {
 		let toDelete: [IndexPath] = {
@@ -87,7 +87,6 @@ final class CollectionsTVC: LibraryTVC {
 					return []
 			}
 		}()
-		
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: toDelete, with: .middle)
 		}
