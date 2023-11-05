@@ -65,9 +65,4 @@ final class SongsTVC: LibraryTVC {
 	override func reflectViewModelIsEmpty() {
 		deleteThenExit(sectionsToDelete: tableView.allSections())
 	}
-	
-	func mediaItems() -> [MPMediaItem] {
-		let items = Array(viewModel.libraryGroup().items)
-		return items.compactMap { ($0 as? Song)?.mpMediaItem() }
-	}
 }

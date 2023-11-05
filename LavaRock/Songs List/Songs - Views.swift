@@ -280,7 +280,7 @@ final class SongCell: UITableViewCell {
 		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let mediaItems = songsTVC.referencee?.mediaItemsInFirstGroup(startingAt: mediaItem) ?? []
+			let mediaItems = songsTVC.referencee?.mediaItems(startingAt: mediaItem) ?? []
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
