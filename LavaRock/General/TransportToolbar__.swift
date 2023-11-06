@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MusicKit
 import MediaPlayer
 
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
@@ -24,7 +25,13 @@ final class TransportToolbar__ {
 	
 	// MARK: - PRIVATE
 	
-	private static var playerIfAuthorized: MPMusicPlayerController? { TapeDeck.shared.player }
+	private static var playerIfAuthorized: SystemMusicPlayer? {
+		guard let _ = TapeDeck.shared.player else {
+			return nil
+		}
+		return SystemMusicPlayer.shared
+	}
+	private static var __playerIfAuthorized: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
@@ -37,7 +44,7 @@ final class TransportToolbar__ {
 			title: LRString.skipBack15Seconds,
 			image: UIImage(systemName: "gobackward.15"),
 			primaryAction: UIAction { _ in
-				Self.playerIfAuthorized?.currentPlaybackTime -= 15
+				Self.playerIfAuthorized?.playbackTime -= 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -50,7 +57,7 @@ final class TransportToolbar__ {
 			title: LRString.skipForward15Seconds,
 			image: UIImage(systemName: "goforward.15"),
 			primaryAction: UIAction { _ in
-				Self.playerIfAuthorized?.currentPlaybackTime += 15
+				Self.playerIfAuthorized?.playbackTime += 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -61,7 +68,9 @@ final class TransportToolbar__ {
 			title: LRString.next,
 			image: UIImage(systemName: "forward.end.circle"),
 			primaryAction: UIAction { _ in
-				Self.playerIfAuthorized?.skipToNextItem()
+				Task {
+					try await Self.playerIfAuthorized?.skipToNextEntry()
+				}
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -89,7 +98,7 @@ final class TransportToolbar__ {
 								guard let player = Self.playerIfAuthorized else {
 									return .off
 								}
-								if player.repeatMode == .one {
+								if player.state.repeatMode == .one {
 									return .on
 								} else {
 									return .off
@@ -97,10 +106,10 @@ final class TransportToolbar__ {
 							}()
 						) { _ in
 							guard let player = Self.playerIfAuthorized else { return }
-							if player.repeatMode == .one {
-								player.repeatMode = .none
+							if player.state.repeatMode == .one {
+								player.state.repeatMode = MusicPlayer.RepeatMode.none
 							} else {
-								player.repeatMode = .one
+								player.state.repeatMode = .one
 							}
 						}
 						useMenuElements([action])
@@ -126,7 +135,9 @@ final class TransportToolbar__ {
 								return result
 							}()
 						) { _ in
-							Self.playerIfAuthorized?.skipToPreviousItem()
+							Task {
+								try await Self.playerIfAuthorized?.skipToPreviousEntry()
+							}
 						}
 						useMenuElements([action])
 					}),
@@ -143,7 +154,7 @@ final class TransportToolbar__ {
 								return []
 							}()
 						) { _ in
-							Self.playerIfAuthorized?.skipToBeginning()
+							Self.playerIfAuthorized?.restartCurrentEntry()
 						}
 						useMenuElements([action])
 					}),
@@ -173,7 +184,7 @@ final class TransportToolbar__ {
 		overflowButton.image = newOverflowButtonImage()
 		
 		guard
-			let player = Self.playerIfAuthorized
+			let player = Self.__playerIfAuthorized
 				// Ideally, detect when no songs are in the player
 		else {
 			disableEverything()
@@ -204,7 +215,7 @@ final class TransportToolbar__ {
 		return
 	}
 	private func newOverflowButtonImage() -> UIImage {
-		guard let player = Self.playerIfAuthorized else {
+		guard let player = Self.__playerIfAuthorized else {
 			return Self.overflowButtonDefaultImage
 		}
 		switch player.repeatMode {
@@ -230,7 +241,9 @@ final class TransportToolbar__ {
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "play.circle")
 		) { _ in
-			Self.playerIfAuthorized?.play()
+			Task {
+				try await Self.playerIfAuthorized?.play()
+			}
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
