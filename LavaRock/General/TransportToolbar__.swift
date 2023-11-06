@@ -209,7 +209,6 @@ final class TransportToolbar__ {
 		}
 		switch player.repeatMode {
 				// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
-			case .all: return UIImage(systemName: "repeat.circle.fill")!
 			case .one: return UIImage(systemName: "repeat.1.circle.fill")!
 			default:
 				// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
