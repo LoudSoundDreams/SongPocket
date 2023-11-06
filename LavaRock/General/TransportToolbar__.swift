@@ -36,32 +36,10 @@ final class TransportToolbar__ {
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
 		image: Self.overflowButtonDefaultImage,
-		menu: Self.newPlaybackMenu()
+		menu: Self.newOverflowMenu()
 	)
 	
-	private lazy var jumpBackButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.skipBack15Seconds,
-			image: UIImage(systemName: "gobackward.15"),
-			primaryAction: UIAction { _ in
-				Self.playerIfAuthorized?.playbackTime -= 15
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	
 	private lazy var playPauseButton = UIBarButtonItem()
-	
-	private lazy var jumpForwardButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.skipForward15Seconds,
-			image: UIImage(systemName: "goforward.15"),
-			primaryAction: UIAction { _ in
-				Self.playerIfAuthorized?.playbackTime += 15
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
 	
 	private lazy var nextButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -76,9 +54,30 @@ final class TransportToolbar__ {
 		return button
 	}()
 	
+	private lazy var jumpBackButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.skipBack15Seconds,
+			image: UIImage(systemName: "gobackward.15"),
+			primaryAction: UIAction { _ in
+				Self.playerIfAuthorized?.playbackTime -= 15
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	private lazy var jumpForwardButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.skipForward15Seconds,
+			image: UIImage(systemName: "goforward.15"),
+			primaryAction: UIAction { _ in
+				Self.playerIfAuthorized?.playbackTime += 15
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	
 	// MARK: - Overflow menu
 	
-	private static func newPlaybackMenu() -> UIMenu {
+	private static func newOverflowMenu() -> UIMenu {
 		let menuElements: [UIMenuElement] = [
 			// Repeat
 			UIMenu(
@@ -89,20 +88,12 @@ final class TransportToolbar__ {
 							title: LRString.repeat_,
 							image: UIImage(systemName: "repeat.1"),
 							attributes: {
-								if Self.playerIfAuthorized == nil {
-									return .disabled
-								}
+								if Self.playerIfAuthorized == nil { return .disabled }
 								return []
 							}(),
 							state: {
-								guard let player = Self.playerIfAuthorized else {
-									return .off
-								}
-								if player.state.repeatMode == .one {
-									return .on
-								} else {
-									return .off
-								}
+								guard let player = Self.playerIfAuthorized else { return .off }
+								return (player.state.repeatMode == .one) ? .on : .off
 							}()
 						) { _ in
 							guard let player = Self.playerIfAuthorized else { return }
@@ -126,12 +117,8 @@ final class TransportToolbar__ {
 							title: LRString.previous,
 							image: UIImage(systemName: "backward.end.circle"),
 							attributes: {
-								var result: UIMenuElement.Attributes = [
-									.keepsMenuPresented,
-								]
-								if Self.playerIfAuthorized == nil {
-									result.formUnion(.disabled)
-								}
+								var result: UIMenuElement.Attributes = [.keepsMenuPresented]
+								if Self.playerIfAuthorized == nil { result.formUnion(.disabled) }
 								return result
 							}()
 						) { _ in
@@ -148,9 +135,7 @@ final class TransportToolbar__ {
 							image: UIImage(systemName: "arrow.counterclockwise.circle"),
 							attributes: {
 								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-								if Self.playerIfAuthorized == nil {
-									return .disabled
-								}
+								if Self.playerIfAuthorized == nil { return .disabled }
 								return []
 							}()
 						) { _ in
@@ -183,10 +168,8 @@ final class TransportToolbar__ {
 		
 		overflowButton.image = newOverflowButtonImage()
 		
-		guard
-			let player = Self.__playerIfAuthorized
-				// Ideally, detect when no songs are in the player
-		else {
+		guard let player = Self.__playerIfAuthorized else {
+			// Ideally, also do this when no songs are in the player
 			disableEverything()
 			return
 		}
