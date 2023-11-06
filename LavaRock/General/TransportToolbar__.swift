@@ -24,7 +24,7 @@ final class TransportToolbar__ {
 	
 	// MARK: - PRIVATE
 	
-	private static var player: MPMusicPlayerController? { TapeDeck.shared.player }
+	private static var playerIfAuthorized: MPMusicPlayerController? { TapeDeck.shared.player }
 	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
@@ -37,7 +37,7 @@ final class TransportToolbar__ {
 			title: LRString.skipBack15Seconds,
 			image: UIImage(systemName: "gobackward.15"),
 			primaryAction: UIAction { _ in
-				Self.player?.currentPlaybackTime -= 15
+				Self.playerIfAuthorized?.currentPlaybackTime -= 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -50,7 +50,7 @@ final class TransportToolbar__ {
 			title: LRString.skipForward15Seconds,
 			image: UIImage(systemName: "goforward.15"),
 			primaryAction: UIAction { _ in
-				Self.player?.currentPlaybackTime += 15
+				Self.playerIfAuthorized?.currentPlaybackTime += 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -61,7 +61,7 @@ final class TransportToolbar__ {
 			title: LRString.next,
 			image: UIImage(systemName: "forward.end.circle"),
 			primaryAction: UIAction { _ in
-				Self.player?.skipToNextItem()
+				Self.playerIfAuthorized?.skipToNextItem()
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -80,23 +80,23 @@ final class TransportToolbar__ {
 							title: LRString.repeat_,
 							image: UIImage(systemName: "repeat.1"),
 							attributes: {
-								if Self.player == nil {
+								if Self.playerIfAuthorized == nil {
 									return .disabled
 								}
 								return []
 							}(),
 							state: {
-								guard let player = Self.player else {
+								guard let player = Self.playerIfAuthorized else {
 									return .off
 								}
-								return (
-									player.repeatMode == .one
-									? .on
-									: .off
-								)
+								if player.repeatMode == .one {
+									return .on
+								} else {
+									return .off
+								}
 							}()
 						) { _ in
-							guard let player = Self.player else { return }
+							guard let player = Self.playerIfAuthorized else { return }
 							if player.repeatMode == .one {
 								player.repeatMode = .none
 							} else {
@@ -120,13 +120,13 @@ final class TransportToolbar__ {
 								var result: UIMenuElement.Attributes = [
 									.keepsMenuPresented,
 								]
-								if Self.player == nil {
+								if Self.playerIfAuthorized == nil {
 									result.formUnion(.disabled)
 								}
 								return result
 							}()
 						) { _ in
-							Self.player?.skipToPreviousItem()
+							Self.playerIfAuthorized?.skipToPreviousItem()
 						}
 						useMenuElements([action])
 					}),
@@ -137,13 +137,13 @@ final class TransportToolbar__ {
 							image: UIImage(systemName: "arrow.counterclockwise.circle"),
 							attributes: {
 								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-								if Self.player == nil {
+								if Self.playerIfAuthorized == nil {
 									return .disabled
 								}
 								return []
 							}()
 						) { _ in
-							Self.player?.skipToBeginning()
+							Self.playerIfAuthorized?.skipToBeginning()
 						}
 						useMenuElements([action])
 					}),
@@ -173,7 +173,7 @@ final class TransportToolbar__ {
 		overflowButton.image = newOverflowButtonImage()
 		
 		guard
-			let player = Self.player
+			let player = Self.playerIfAuthorized
 				// Ideally, detect when no songs are in the player
 		else {
 			disableEverything()
@@ -204,19 +204,14 @@ final class TransportToolbar__ {
 		return
 	}
 	private func newOverflowButtonImage() -> UIImage {
-		guard let player = Self.player else {
+		guard let player = Self.playerIfAuthorized else {
 			return Self.overflowButtonDefaultImage
 		}
 		switch player.repeatMode {
 				// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
-			case .one:
-				return UIImage(systemName: "repeat.1.circle.fill")!
-			case .all:
-				return UIImage(systemName: "repeat.circle.fill")!
-			case
-					.default,
-					.none
-				:
+			case .all: return UIImage(systemName: "repeat.circle.fill")!
+			case .one: return UIImage(systemName: "repeat.1.circle.fill")!
+			default:
 				// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
 				// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
 				if !hasRefreshenedOverflowButton {
@@ -229,8 +224,6 @@ final class TransportToolbar__ {
 					}
 				}
 				return Self.overflowButtonDefaultImage
-			@unknown default:
-				return Self.overflowButtonDefaultImage
 		}
 	}
 	func showPlayButton() {
@@ -238,7 +231,7 @@ final class TransportToolbar__ {
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "play.circle")
 		) { _ in
-			Self.player?.play()
+			Self.playerIfAuthorized?.play()
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
@@ -247,7 +240,7 @@ final class TransportToolbar__ {
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "pause.circle")
 		) { _ in
-			Self.player?.pause()
+			Self.playerIfAuthorized?.pause()
 		}
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
