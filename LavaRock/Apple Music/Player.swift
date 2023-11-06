@@ -6,26 +6,15 @@
 //
 
 import MediaPlayer
-import OSLog
 
 @MainActor
 extension MPMusicPlayerController {
-	private static var signposter = OSSignposter(
-		subsystem: "MPMusicPlayerController",
-		category: .pointsOfInterest)
-	
 	final func playNow(
 		_ mediaItems: [MPMediaItem],
 		numberToSkip: Int
 	) {
-		let interval = Self.signposter.beginInterval("set queue and play")
-		defer {
-			Self.signposter.endInterval("set queue and play", interval)
-		}
-		
 		setQueue(with: MPMediaItemCollection(items: mediaItems))
 		
-		let playInterval = Self.signposter.beginInterval("play")
 		play()
 		repeatMode = .none
 		shuffleMode = .off
@@ -35,7 +24,6 @@ extension MPMusicPlayerController {
 				skipToNextItem()
 			}
 		}
-		Self.signposter.endInterval("play", playInterval)
 	}
 	
 	final func playLast(_ mediaItems: [MPMediaItem]) {
