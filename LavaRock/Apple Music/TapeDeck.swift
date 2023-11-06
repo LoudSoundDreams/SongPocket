@@ -48,14 +48,25 @@ final class TapeDeck {
 	}
 	
 	func songContainingPlayhead(via context: NSManagedObjectContext) -> Song? {
-		guard let currentSongID = player?.currentSongID() else {
+		let currentSongID: SongID?
+#if targetEnvironment(simulator)
+		currentSongID = Sim_Global.currentSong?.songInfo()?.songID
+#else
+		if let nowPlayingItem = player?.nowPlayingItem {
+			currentSongID = SongID(bitPattern: nowPlayingItem.persistentID)
+		} else {
+			currentSongID = nil
+		}
+#endif
+		guard let currentSongID else {
 			return nil
 		}
 		
 		let request = Song.fetchRequest()
 		request.predicate = NSPredicate(
 			format: "persistentID == %lld",
-			currentSongID)
+			currentSongID
+		)
 		let songsContainingPlayhead = context.objectsFetched(for: request)
 		guard
 			songsContainingPlayhead.count == 1,
