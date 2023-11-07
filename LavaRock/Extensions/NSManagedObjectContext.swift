@@ -31,6 +31,21 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
+	final func printAllSongs() {
+		var allSongs = Song.allFetched(sorted: true, inAlbum: nil, context: self)
+		allSongs.sort { $0.container!.index < $1.container!.index }
+		allSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
+		allSongs.forEach {
+			print(
+				$0.container!.container!.index,
+				$0.container!.index,
+				$0.index,
+				$0.persistentID,
+				$0.libraryTitle ?? ""
+			)
+		}
+	}
+	
 	final func combine(
 		_ idsOfCollectionsToCombine: [NSManagedObjectID],
 		index: Int64
