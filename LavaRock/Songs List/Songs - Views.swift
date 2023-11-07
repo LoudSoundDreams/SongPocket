@@ -276,7 +276,9 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.playLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in player?.playLast([mediaItem]) }
+			) { _ in
+				player?.playLast([mediaItem])
+			}
 			useMenuElements([action])
 		})
 		
@@ -286,7 +288,9 @@ final class SongCell: UITableViewCell {
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in player?.playLast(mediaItems) }
+			) { _ in 
+				player?.playLast(mediaItems)
+			}
 			if mediaItems.count <= 1 {
 				action.attributes.formUnion(.disabled)
 			}
