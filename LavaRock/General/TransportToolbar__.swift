@@ -26,7 +26,6 @@ final class TransportToolbar__ {
 	// MARK: - PRIVATE
 	
 	private static var player: SystemMusicPlayer? { .sharedIfAuthorized }
-	private static var __player: MPMusicPlayerController? { .systemMusicPlayerIfAuthorized }
 	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
@@ -163,7 +162,7 @@ final class TransportToolbar__ {
 		
 		overflowButton.image = newOverflowButtonImage()
 		
-		guard let player = Self.__player else {
+		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else {
 			// Ideally, also do this when no songs are in the player
 			disableEverything()
 			return
@@ -193,7 +192,7 @@ final class TransportToolbar__ {
 		return
 	}
 	private func newOverflowButtonImage() -> UIImage {
-		guard let player = Self.__player else {
+		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else {
 			return Self.overflowButtonDefaultImage
 		}
 		switch player.repeatMode {
