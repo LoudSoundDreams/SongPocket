@@ -86,8 +86,8 @@ final class TransportToolbar__ {
 								return []
 							}(),
 							state: {
-								guard let player = Self.player else { return .off }
-								return (player.state.repeatMode == .one) ? .on : .off
+								guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return .off }
+								return (player.repeatMode == .one) ? .on : .off
 							}()
 						) { _ in
 							guard let player = Self.player else { return }
