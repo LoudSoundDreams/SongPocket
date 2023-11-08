@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import MediaPlayer
 
 protocol LibraryItem: NSManagedObject {
 	var libraryTitle: String? { get }
@@ -18,7 +19,7 @@ extension LibraryItem {
 	func avatarStatus__() -> AvatarStatus {
 		guard
 			containsPlayhead(),
-			let player = TapeDeck.shared.player
+			let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized
 		else {
 			return .notPlaying
 		}

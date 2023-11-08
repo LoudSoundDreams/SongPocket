@@ -18,16 +18,13 @@ extension Song: LibraryItem {
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {
-		guard
-			let context = managedObjectContext,
-			let containingSong = TapeDeck.shared.songContainingPlayhead(via: context)
-		else {
-			return false
-		}
 #if targetEnvironment(simulator)
 		return objectID == Sim_Global.currentSong?.objectID
 #else
-		return objectID == containingSong.objectID
+		guard let songInPlayer = managedObjectContext?.songInPlayer() else {
+			return false
+		}
+		return objectID == songInPlayer.objectID
 #endif
 	}
 }

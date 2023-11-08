@@ -25,13 +25,8 @@ final class TransportToolbar__ {
 	
 	// MARK: - PRIVATE
 	
-	private static var playerIfAuthorized: SystemMusicPlayer? {
-		guard let _ = TapeDeck.shared.player else {
-			return nil
-		}
-		return SystemMusicPlayer.shared
-	}
-	private static var __playerIfAuthorized: MPMusicPlayerController? { TapeDeck.shared.player }
+	private static var player: SystemMusicPlayer? { .sharedIfAuthorized }
+	private static var __player: MPMusicPlayerController? { .systemMusicPlayerIfAuthorized }
 	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
@@ -47,7 +42,7 @@ final class TransportToolbar__ {
 			image: UIImage(systemName: "forward.end.circle"),
 			primaryAction: UIAction { _ in
 				Task {
-					try await Self.playerIfAuthorized?.skipToNextEntry()
+					try await Self.player?.skipToNextEntry()
 				}
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
@@ -59,7 +54,7 @@ final class TransportToolbar__ {
 			title: LRString.skipBack15Seconds,
 			image: UIImage(systemName: "gobackward.15"),
 			primaryAction: UIAction { _ in
-				Self.playerIfAuthorized?.playbackTime -= 15
+				Self.player?.playbackTime -= 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -69,7 +64,7 @@ final class TransportToolbar__ {
 			title: LRString.skipForward15Seconds,
 			image: UIImage(systemName: "goforward.15"),
 			primaryAction: UIAction { _ in
-				Self.playerIfAuthorized?.playbackTime += 15
+				Self.player?.playbackTime += 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -88,15 +83,15 @@ final class TransportToolbar__ {
 							title: LRString.repeat_,
 							image: UIImage(systemName: "repeat.1"),
 							attributes: {
-								if Self.playerIfAuthorized == nil { return .disabled }
+								if Self.player == nil { return .disabled }
 								return []
 							}(),
 							state: {
-								guard let player = Self.playerIfAuthorized else { return .off }
+								guard let player = Self.player else { return .off }
 								return (player.state.repeatMode == .one) ? .on : .off
 							}()
 						) { _ in
-							guard let player = Self.playerIfAuthorized else { return }
+							guard let player = Self.player else { return }
 							if player.state.repeatMode == .one {
 								player.state.repeatMode = MusicPlayer.RepeatMode.none
 							} else {
@@ -118,12 +113,12 @@ final class TransportToolbar__ {
 							image: UIImage(systemName: "backward.end.circle"),
 							attributes: {
 								var result: UIMenuElement.Attributes = [.keepsMenuPresented]
-								if Self.playerIfAuthorized == nil { result.formUnion(.disabled) }
+								if Self.player == nil { result.formUnion(.disabled) }
 								return result
 							}()
 						) { _ in
 							Task {
-								try await Self.playerIfAuthorized?.skipToPreviousEntry()
+								try await Self.player?.skipToPreviousEntry()
 							}
 						}
 						useMenuElements([action])
@@ -135,11 +130,11 @@ final class TransportToolbar__ {
 							image: UIImage(systemName: "arrow.counterclockwise.circle"),
 							attributes: {
 								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-								if Self.playerIfAuthorized == nil { return .disabled }
+								if Self.player == nil { return .disabled }
 								return []
 							}()
 						) { _ in
-							Self.playerIfAuthorized?.restartCurrentEntry()
+							Self.player?.restartCurrentEntry()
 						}
 						useMenuElements([action])
 					}),
@@ -168,7 +163,7 @@ final class TransportToolbar__ {
 		
 		overflowButton.image = newOverflowButtonImage()
 		
-		guard let player = Self.__playerIfAuthorized else {
+		guard let player = Self.__player else {
 			// Ideally, also do this when no songs are in the player
 			disableEverything()
 			return
@@ -198,7 +193,7 @@ final class TransportToolbar__ {
 		return
 	}
 	private func newOverflowButtonImage() -> UIImage {
-		guard let player = Self.__playerIfAuthorized else {
+		guard let player = Self.__player else {
 			return Self.overflowButtonDefaultImage
 		}
 		switch player.repeatMode {
@@ -225,7 +220,7 @@ final class TransportToolbar__ {
 			image: UIImage(systemName: "play.circle")
 		) { _ in
 			Task {
-				try await Self.playerIfAuthorized?.play()
+				try await Self.player?.play()
 			}
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
@@ -235,7 +230,7 @@ final class TransportToolbar__ {
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "pause.circle")
 		) { _ in
-			Self.playerIfAuthorized?.pause()
+			Self.player?.pause()
 		}
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}

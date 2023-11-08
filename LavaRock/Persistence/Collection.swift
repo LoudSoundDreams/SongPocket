@@ -17,16 +17,13 @@ extension Collection: LibraryItem {
 	
 	@MainActor
 	final func containsPlayhead() -> Bool {
-		guard
-			let context = managedObjectContext,
-			let containingSong = TapeDeck.shared.songContainingPlayhead(via: context)
-		else {
-			return false
-		}
 #if targetEnvironment(simulator)
 		return objectID == Sim_Global.currentSong?.container?.container?.objectID
 #else
-		return objectID == containingSong.container?.container?.objectID
+		guard let currentSong = managedObjectContext?.songInPlayer() else {
+			return false
+		}
+		return objectID == currentSong.container?.container?.objectID
 #endif
 	}
 }

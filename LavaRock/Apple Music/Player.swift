@@ -5,8 +5,27 @@
 //  Created by h on 2022-03-19.
 //
 
+import MusicKit
 import MediaPlayer
 
+@MainActor
+extension SystemMusicPlayer {
+	static var sharedIfAuthorized: SystemMusicPlayer? {
+		guard MusicAuthorization.currentStatus == .authorized else {
+			return nil
+		}
+		return .shared
+	}
+}
+
+extension MPMusicPlayerController {
+	static var systemMusicPlayerIfAuthorized: MPMusicPlayerController? {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+			return nil
+		}
+		return .systemMusicPlayer
+	}
+}
 @MainActor
 extension MPMusicPlayerController {
 	final func playNow(

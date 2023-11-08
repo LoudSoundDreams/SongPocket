@@ -253,7 +253,7 @@ final class SongCell: UITableViewCell {
 		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
 		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
-		let player = TapeDeck.shared.player
+		let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized
 		
 		let play = UIAction(
 			title: LRString.play,

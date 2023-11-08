@@ -5,6 +5,7 @@
 //  Created by h on 2022-05-12.
 //
 
+import MediaPlayer
 import Combine
 
 @MainActor
@@ -26,9 +27,7 @@ final class TapeDeckStatus: ObservableObject {
 			current = new_status
 		}
 		
-		guard
-			let player = TapeDeck.shared.player // Have access to player
-		else {
+		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else {
 			// Show disabled default state everywhere
 			new_status = nil
 			return

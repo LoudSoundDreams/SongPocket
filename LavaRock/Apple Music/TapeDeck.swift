@@ -23,14 +23,11 @@ final class TapeDeck {
 		reflectors.append(Weak(newReflector))
 	}
 	
-	private(set) var player: MPMusicPlayerController? = nil
-	
 	func beginWatching() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return }
 		
-		player?.endGeneratingPlaybackNotifications()
-		player = .systemMusicPlayer
-		player?.beginGeneratingPlaybackNotifications()
+		player.endGeneratingPlaybackNotifications()
+		player.beginGeneratingPlaybackNotifications()
 		
 		reflect_playback_mode_everywhere() // Because before anyone called `beginWatching`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `.authorized`.
 		reflect_now_playing_item_everywhere()
@@ -45,36 +42,6 @@ final class TapeDeck {
 			selector: #selector(reflect_now_playing_item_everywhere),
 			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: player)
-	}
-	
-	func songContainingPlayhead(via context: NSManagedObjectContext) -> Song? {
-		let currentSongID: SongID?
-#if targetEnvironment(simulator)
-		currentSongID = Sim_Global.currentSong?.songInfo()?.songID
-#else
-		if let nowPlayingItem = player?.nowPlayingItem {
-			currentSongID = SongID(bitPattern: nowPlayingItem.persistentID)
-		} else {
-			currentSongID = nil
-		}
-#endif
-		guard let currentSongID else {
-			return nil
-		}
-		
-		let request = Song.fetchRequest()
-		request.predicate = NSPredicate(
-			format: "persistentID == %lld",
-			currentSongID
-		)
-		let songsContainingPlayhead = context.objectsFetched(for: request)
-		guard
-			songsContainingPlayhead.count == 1,
-			let song = songsContainingPlayhead.first
-		else {
-			return nil
-		}
-		return song
 	}
 	
 	// MARK: - Private
@@ -100,8 +67,4 @@ final class TapeDeck {
 	}
 	
 	private var reflectors: [Weak<TapeDeckReflecting>] = []
-	
-	deinit {
-		player?.endGeneratingPlaybackNotifications()
-	}
 }

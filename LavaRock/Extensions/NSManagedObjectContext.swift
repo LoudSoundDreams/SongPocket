@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import MediaPlayer
 
 extension NSManagedObjectContext {
 	final func tryToSave() {
@@ -44,6 +45,36 @@ extension NSManagedObjectContext {
 				$0.libraryTitle ?? ""
 			)
 		}
+	}
+	
+	final func songInPlayer() -> Song? {
+		let currentSongID: SongID? = {
+#if targetEnvironment(simulator)
+			return Sim_Global.currentSong?.songInfo()?.songID
+#else
+			guard let nowPlayingItem = MPMusicPlayerController.systemMusicPlayerIfAuthorized?.nowPlayingItem else {
+				return nil
+			}
+			return SongID(bitPattern: nowPlayingItem.persistentID)
+#endif
+		}()
+		guard let currentSongID else {
+			return nil
+		}
+		
+		let request = Song.fetchRequest()
+		request.predicate = NSPredicate(
+			format: "persistentID == %lld",
+			currentSongID
+		)
+		let songsContainingPlayhead = objectsFetched(for: request)
+		guard
+			songsContainingPlayhead.count == 1,
+			let song = songsContainingPlayhead.first
+		else {
+			return nil
+		}
+		return song
 	}
 	
 	final func combine(
