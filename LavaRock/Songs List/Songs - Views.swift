@@ -253,13 +253,11 @@ final class SongCell: UITableViewCell {
 		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
 		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
-		let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized
-		
 		let play = UIAction(
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { _ in
-			player?.playNow([mediaItem], numberToSkip: 0)
+			MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playNow([mediaItem], numberToSkip: 0)
 		}
 		
 		// Disable “prepend” intelligently: when “append” would do the same thing.
@@ -277,7 +275,7 @@ final class SongCell: UITableViewCell {
 				title: LRString.playLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
-				player?.playLast([mediaItem])
+				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playLast([mediaItem])
 			}
 			useMenuElements([action])
 		})
@@ -289,7 +287,7 @@ final class SongCell: UITableViewCell {
 				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in 
-				player?.playLast(mediaItems)
+				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playLast(mediaItems)
 			}
 			if mediaItems.count <= 1 {
 				action.attributes.formUnion(.disabled)
