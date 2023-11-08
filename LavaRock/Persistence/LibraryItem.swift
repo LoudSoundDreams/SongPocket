@@ -16,7 +16,7 @@ protocol LibraryItem: NSManagedObject {
 }
 extension LibraryItem {
 	@MainActor
-	func avatarStatus__() -> AvatarStatus {
+	func avatarStatus() -> AvatarStatus__ {
 		guard
 			containsPlayhead(),
 			let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized

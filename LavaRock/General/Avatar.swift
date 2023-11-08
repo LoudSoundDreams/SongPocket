@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-enum AvatarStatus {
+enum AvatarStatus__ {
 	case notPlaying
 	case paused
 	case playing
 	
-	var uiImage__: UIImage? {
+	var uiImage: UIImage? {
 		switch self {
 			case .notPlaying: return nil
 			case .paused: return UIImage(systemName: "speaker.fill")
@@ -31,30 +31,30 @@ enum AvatarStatus {
 
 @MainActor
 protocol AvatarReflecting__: AnyObject {
-	func reflectStatus__(_ status: AvatarStatus)
+	func reflectAvatarStatus(_ status: AvatarStatus__)
 }
 extension CollectionCell: AvatarReflecting__ {
-	func reflectStatus__(_ status: AvatarStatus) {
+	func reflectAvatarStatus(_ status: AvatarStatus__) {
 		if Self.usesSwiftUI__ { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage__
-		speakerImageView.image = status.uiImage__
+		spacerSpeakerImageView.image = AvatarStatus__.playing.uiImage
+		speakerImageView.image = status.uiImage
 		
 		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 }
 extension SongCell: AvatarReflecting__ {
-	func reflectStatus__(_ status: AvatarStatus) {
+	func reflectAvatarStatus(_ status: AvatarStatus__) {
 		if Self.usesSwiftUI__ { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage__
-		speakerImageView.image = status.uiImage__
+		spacerSpeakerImageView.image = AvatarStatus__.playing.uiImage
+		speakerImageView.image = status.uiImage
 		
 		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
@@ -65,7 +65,7 @@ struct AvatarImage: View {
 	
 	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
 	@ObservedObject private var musicLibrary: MusicLibrary = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
-	private var status: AvatarStatus {
+	private var status: AvatarStatus__ {
 		guard
 			libraryItem.containsPlayhead(),
 			let tapeDeckStatus = tapeDeckStatus.current

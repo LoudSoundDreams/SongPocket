@@ -121,14 +121,14 @@ class LibraryTVC: UITableViewController {
 			guard
 				let cell = tableView.cellForRow(at: indexPath) as? AvatarReflecting__
 			else { return }
-			cell.reflectStatus__({
+			cell.reflectAvatarStatus({
 				guard
 					viewModel.pointsToSomeItem(row: indexPath.row),
 					let libraryItem = viewModel.itemNonNil(atRow: indexPath.row) as? LibraryItem
 				else {
 					return .notPlaying
 				}
-				return libraryItem.avatarStatus__()
+				return libraryItem.avatarStatus()
 			}())
 		}
 	}
