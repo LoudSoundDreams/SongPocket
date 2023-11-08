@@ -95,8 +95,13 @@ extension SongsTVC {
 			) { [weak self] _ in
 				guard let self else { return }
 				
-				let numberToSkip = indexPath.row - (viewModel as! SongsViewModel).prerowCount()
-				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playNow(mediaItems(), numberToSkip: numberToSkip)
+				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playNow(
+					{
+						let allSongs = self.viewModel.libraryGroup().items
+						return allSongs.compactMap { ($0 as? Song)?.mpMediaItem() }
+					}(),
+					numberToSkip: indexPath.row - (viewModel as! SongsViewModel).prerowCount()
+				)
 				
 				tableView.deselectAllRows(animated: true)
 			}

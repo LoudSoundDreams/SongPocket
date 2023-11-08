@@ -282,14 +282,23 @@ final class SongCell: UITableViewCell {
 		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let mediaItems = songsTVC.referencee?.mediaItems(startingAt: mediaItem) ?? []
+			let restOfAlbum: [MPMediaItem] = {
+				guard let tvc = songsTVC.referencee else { return [] }
+				
+				let allSongs = tvc.viewModel.libraryGroup().items
+				let allMediaItems = allSongs.compactMap { ($0 as? Song)?.mpMediaItem() }
+				let restOfAlbum = allMediaItems.drop(while: { mediaItem in
+					mediaItem.persistentID != mediaItem.persistentID
+				})
+				return Array(restOfAlbum)
+			}()
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in 
-				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playLast(mediaItems)
+				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playLast(restOfAlbum)
 			}
-			if mediaItems.count <= 1 {
+			if restOfAlbum.count <= 1 {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
