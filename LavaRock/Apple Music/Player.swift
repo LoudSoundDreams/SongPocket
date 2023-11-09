@@ -18,6 +18,21 @@ extension SystemMusicPlayer {
 	}
 }
 
+extension MusicLibraryRequest {
+	static func filter(matchingMusicItemID: MusicItemID) async -> MusicKit.Song? {
+		var request = MusicLibraryRequest<MusicKit.Song>()
+		request.filter(matching: \.id, equalTo: matchingMusicItemID)
+		guard
+			let response = try? await request.response(),
+			response.items.count == 1
+		else {
+			return nil
+		}
+		
+		return response.items.first
+	}
+}
+
 extension MPMusicPlayerController {
 	static var systemMusicPlayerIfAuthorized: MPMusicPlayerController? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
@@ -28,23 +43,6 @@ extension MPMusicPlayerController {
 }
 @MainActor
 extension MPMusicPlayerController {
-	final func playNow(
-		_ mediaItems: [MPMediaItem],
-		numberToSkip: Int
-	) {
-		setQueue(with: MPMediaItemCollection(items: mediaItems))
-		
-		play()
-		repeatMode = .none
-		shuffleMode = .off
-		if numberToSkip >= 1 {
-			for _ in 1...numberToSkip {
-				// As of iOS 16.5 developer beta 4, you must do this after calling `play`, not before, or it won’t actually work.
-				skipToNextItem()
-			}
-		}
-	}
-	
 	final func playLast(_ mediaItems: [MPMediaItem]) {
 		// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
 		append(

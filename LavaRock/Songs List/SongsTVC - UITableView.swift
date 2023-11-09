@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import MusicKit
 import MediaPlayer
 import OSLog
 
@@ -93,17 +94,42 @@ extension SongsTVC {
 				title: LRString.startPlaying,
 				style: .default
 			) { [weak self] _ in
-				guard let self else { return }
-				
-				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playNow(
-					{
-						let allSongs = self.viewModel.libraryGroup().items
-						return allSongs.compactMap { ($0 as? Song)?.mpMediaItem() }
-					}(),
-					numberToSkip: indexPath.row - (viewModel as! SongsViewModel).prerowCount()
-				)
-				
-				tableView.deselectAllRows(animated: true)
+				Task {
+					guard let self else { return }
+					
+					let allMusicItems: [MusicKit.Song] = await {
+						let allMusicItemIDs = self.viewModel.libraryGroup().items.map {
+							let song = $0 as! Song
+							return MusicItemID(String(song.persistentID))
+						}
+						
+						var result: [MusicKit.Song] = []
+						for musicItemID in allMusicItemIDs {
+							let musicItem = await MusicLibraryRequest<MusicKit.Song>.filter(matchingMusicItemID: musicItemID)
+							guard let musicItem else { continue }
+							
+							result.append(musicItem)
+						}
+						return result
+					}()
+					let rowSong = (self.viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
+					let rowMusicItem = await MusicLibraryRequest<MusicKit.Song>.filter(matchingMusicItemID: MusicItemID(String(rowSong.persistentID)))
+					
+					guard
+						let player = SystemMusicPlayer.sharedIfAuthorized,
+						let rowMusicItem
+					else { return }
+					
+					player.queue = SystemMusicPlayer.Queue(
+						for: allMusicItems,
+						startingAt: rowMusicItem
+					)
+					player.state.repeatMode = MusicPlayer.RepeatMode.none
+					player.state.shuffleMode = .off
+					try? await player.play()
+					
+					tableView.deselectAllRows(animated: true)
+				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 			
