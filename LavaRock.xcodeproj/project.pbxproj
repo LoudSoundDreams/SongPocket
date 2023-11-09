@@ -57,7 +57,6 @@
 		07CD864D27CAA3CC00286E6A /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD864C27CAA3CC00286E6A /* Weak.swift */; };
 		07CD864F27CAA54600286E6A /* TapeDeckReflecting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD864E27CAA54600286E6A /* TapeDeckReflecting.swift */; };
 		07D2D2BC2AF8149600960644 /* CollectionsTVC - MusicKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D2D2BB2AF8149600960644 /* CollectionsTVC - MusicKit.swift */; };
-		07D2D2BE2AF81A9E00960644 /* SongsTVC - MusicKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D2D2BD2AF81A9E00960644 /* SongsTVC - MusicKit.swift */; };
 		07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */; };
 		07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */; };
 		07DC1B2324F33E0500AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */; };
@@ -155,7 +154,6 @@
 		07CD864C27CAA3CC00286E6A /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		07CD864E27CAA54600286E6A /* TapeDeckReflecting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeckReflecting.swift; sourceTree = "<group>"; };
 		07D2D2BB2AF8149600960644 /* CollectionsTVC - MusicKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - MusicKit.swift"; sourceTree = "<group>"; };
-		07D2D2BD2AF81A9E00960644 /* SongsTVC - MusicKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongsTVC - MusicKit.swift"; sourceTree = "<group>"; };
 		07D9DBF5257C9CA2007EEB87 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
 		07DC1B2224F33E0400AAEEDB /* AlbumsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlbumsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
@@ -209,7 +207,6 @@
 			children = (
 				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
-				07D2D2BD2AF81A9E00960644 /* SongsTVC - MusicKit.swift */,
 				07F36BC724FC400E0064282D /* SongsTVC - UITableView.swift */,
 				073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */,
 				07EC01EB26C895CB00954E08 /* SongsViewModel.swift */,
@@ -595,7 +592,6 @@
 				0787CB0A27A376400068C2E5 /* UIKit.swift in Sources */,
 				07E0BBFB276567F70010117E /* NSManagedObjectContext.swift in Sources */,
 				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
-				07D2D2BE2AF81A9E00960644 /* SongsTVC - MusicKit.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				07694274282E0EF6003A07CA /* TapeDeckStatus.swift in Sources */,
 				07E0BBD7276567490010117E /* String.swift in Sources */,
