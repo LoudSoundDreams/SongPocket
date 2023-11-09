@@ -7,7 +7,6 @@
 
 import CoreData
 import MediaPlayer
-import OSLog
 
 extension Song: LibraryItem {
 	// Enables `[Song].reindex()`
@@ -113,17 +112,13 @@ extension Song {
 		songsQuery.addFilterPredicate(MPMediaPropertyPredicate(
 			value: persistentID,
 			forProperty: MPMediaItemPropertyPersistentID))
-		
-		os_signpost(.begin, log: .song, name: "Query for MPMediaItem")
-		defer {
-			os_signpost(.end, log: .song, name: "Query for MPMediaItem")
-		}
 		guard
 			let queriedSongs = songsQuery.items,
 			queriedSongs.count == 1
 		else {
 			return nil
 		}
+		
 		return queriedSongs.first
 	}
 }

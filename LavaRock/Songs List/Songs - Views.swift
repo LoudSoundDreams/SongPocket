@@ -9,6 +9,8 @@ import SwiftUI
 import UIKit
 import MediaPlayer
 
+// MARK: - SwiftUI
+
 struct AlbumHeader: View {
 	let album: Album
 	let trackNumberSpacer: String
@@ -113,6 +115,8 @@ struct TrackNumberLabel: View {
 		.monospacedDigit()
 	}
 }
+
+// MARK: - UIKit
 
 final class SongCell: UITableViewCell {
 	static let usesSwiftUI__ = 10 == 1
@@ -257,7 +261,10 @@ final class SongCell: UITableViewCell {
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { _ in
-			MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playNow([mediaItem], numberToSkip: 0)
+			MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playNow(
+				[mediaItem],
+				numberToSkip: 0
+			)
 		}
 		
 		// Disable “prepend” intelligently: when “append” would do the same thing.
