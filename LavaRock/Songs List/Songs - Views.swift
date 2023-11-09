@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UIKit
+import MusicKit
 import MediaPlayer
 
 // MARK: - SwiftUI
@@ -261,10 +262,18 @@ final class SongCell: UITableViewCell {
 			title: LRString.play,
 			image: UIImage(systemName: "play")
 		) { _ in
-			MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playNow(
-				[mediaItem],
-				numberToSkip: 0
-			)
+			Task {
+				guard let player = SystemMusicPlayer.sharedIfAuthorized else { return }
+				
+				var libraryRequest = MusicLibraryRequest<MusicKit.Song>()
+				libraryRequest.filter(matching: \.id, equalTo: MusicItemID(String(mediaItem.persistentID)))
+				guard let response = try? await libraryRequest.response() else { return }
+				
+				player.queue = SystemMusicPlayer.Queue(for: response.items)
+				player.state.repeatMode = MusicPlayer.RepeatMode.none
+				player.state.shuffleMode = .off
+				try? await player.play()
+			}
 		}
 		
 		// Disable “prepend” intelligently: when “append” would do the same thing.
