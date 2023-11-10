@@ -303,8 +303,8 @@ final class SongCell: UITableViewCell {
 				
 				let allSongs = tvc.viewModel.libraryGroup().items
 				let allMediaItems = allSongs.compactMap { ($0 as? Song)?.mpMediaItem() }
-				let restOfAlbum = allMediaItems.drop(while: { mediaItem in
-					mediaItem.persistentID != mediaItem.persistentID
+				let restOfAlbum = allMediaItems.drop(while: {
+					$0.persistentID != mediaItem.persistentID
 				})
 				return Array(restOfAlbum)
 			}()
