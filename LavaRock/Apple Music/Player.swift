@@ -18,6 +18,7 @@ extension SystemMusicPlayer {
 	}
 }
 
+@MainActor
 extension MusicLibraryRequest {
 	static func filter(matchingMusicItemID: MusicItemID) async -> MusicKit.Song? {
 		var request = MusicLibraryRequest<MusicKit.Song>()
@@ -39,27 +40,5 @@ extension MPMusicPlayerController {
 			return nil
 		}
 		return .systemMusicPlayer
-	}
-}
-@MainActor
-extension MPMusicPlayerController {
-	final func playLast(_ mediaItems: [MPMediaItem]) {
-		// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
-		append(
-			MPMusicPlayerMediaItemQueueDescriptor(
-				itemCollection: MPMediaItemCollection(items: mediaItems)
-			)
-		)
-		
-		// As of iOS 14.7 developer beta 1, you must do this in case the user force quit Apple Music recently.
-		if playbackState != .playing {
-			prepareToPlay()
-		}
-		
-		if mediaItems.count == 1 {
-			UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-		} else {
-			UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
-		}
 	}
 }

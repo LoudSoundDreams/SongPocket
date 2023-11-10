@@ -291,7 +291,14 @@ final class SongCell: UITableViewCell {
 				title: LRString.playLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
-				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playLast([mediaItem])
+				Task {
+					let rowMusicItem = await MusicLibraryRequest<MusicKit.Song>.filter(matchingMusicItemID: MusicItemID(String(mediaItem.persistentID)))
+					guard let rowMusicItem else { return }
+					
+					try await SystemMusicPlayer.sharedIfAuthorized?.queue.insert([rowMusicItem], position: .tail)
+					
+					UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+				}
 			}
 			useMenuElements([action])
 		})
@@ -312,7 +319,21 @@ final class SongCell: UITableViewCell {
 				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in 
-				MPMusicPlayerController.systemMusicPlayerIfAuthorized?.playLast(restOfAlbum)
+				guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return }
+				
+				// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
+				player.append(
+					MPMusicPlayerMediaItemQueueDescriptor(
+						itemCollection: MPMediaItemCollection(items: restOfAlbum)
+					)
+				)
+				
+				// As of iOS 14.7 developer beta 1, you must do this in case the user force quit Apple Music recently.
+				if player.playbackState != .playing {
+					player.prepareToPlay()
+				}
+				
+				UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 			}
 			if restOfAlbum.count <= 1 {
 				action.attributes.formUnion(.disabled)
