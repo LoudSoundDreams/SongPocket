@@ -6,7 +6,6 @@
 //
 
 import MusicKit
-import MediaPlayer
 
 @MainActor
 extension SystemMusicPlayer {
@@ -33,6 +32,8 @@ extension MusicLibraryRequest {
 		return response.items.first
 	}
 }
+
+import MediaPlayer
 
 extension MPMusicPlayerController {
 	static var systemMusicPlayerIfAuthorized: MPMusicPlayerController? {
