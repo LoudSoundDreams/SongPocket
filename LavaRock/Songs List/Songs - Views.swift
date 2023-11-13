@@ -270,9 +270,10 @@ final class SongCell: UITableViewCell {
 				guard let response = try? await libraryRequest.response() else { return }
 				
 				player.queue = SystemMusicPlayer.Queue(for: response.items)
+				try? await player.play()
+				
 				player.state.repeatMode = MusicPlayer.RepeatMode.none
 				player.state.shuffleMode = .off
-				try? await player.play()
 			}
 		}
 		

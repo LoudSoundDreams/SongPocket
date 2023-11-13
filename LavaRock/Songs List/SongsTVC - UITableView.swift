@@ -124,9 +124,11 @@ extension SongsTVC {
 						for: allMusicItems,
 						startingAt: rowMusicItem
 					)
+					try? await player.play()
+					
+					// As of iOS 17.2 beta, if setting the queue effectively did nothing, you must do these after calling `play`, not before.
 					player.state.repeatMode = MusicPlayer.RepeatMode.none
 					player.state.shuffleMode = .off
-					try? await player.play()
 					
 					tableView.deselectAllRows(animated: true)
 				}
