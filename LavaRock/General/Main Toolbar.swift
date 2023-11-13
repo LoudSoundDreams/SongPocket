@@ -20,8 +20,6 @@ extension View {
 	
 	private var overflowMenu: some View {
 		Menu {
-			Button("Leave Tip") {
-			}
 		} label: {
 			Image(systemName: "ellipsis.circle")
 		}
