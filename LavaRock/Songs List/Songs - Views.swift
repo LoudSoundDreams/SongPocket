@@ -293,7 +293,7 @@ final class SongCell: UITableViewCell {
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				Task {
-					let rowMusicItem = await MusicLibraryRequest<MusicKit.Song>.filter(matchingMusicItemID: MusicItemID(String(mediaItem.persistentID)))
+					let rowMusicItem = await MusicLibraryRequest<MusicKit.Song>.filteredToSong(matchingMusicItemID: MusicItemID(String(mediaItem.persistentID)))
 					guard let rowMusicItem else { return }
 					
 					try await SystemMusicPlayer.sharedIfAuthorized?.queue.insert([rowMusicItem], position: .tail)
