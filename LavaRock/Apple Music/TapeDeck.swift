@@ -25,7 +25,6 @@ final class TapeDeck {
 	func beginWatching() {
 		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return }
 		
-		player.endGeneratingPlaybackNotifications()
 		player.beginGeneratingPlaybackNotifications()
 		
 		reflect_playback_mode_everywhere() // Because before anyone called `beginWatching`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `.authorized`.
@@ -35,12 +34,12 @@ final class TapeDeck {
 			self,
 			selector: #selector(reflect_playback_mode_everywhere),
 			name: .MPMusicPlayerControllerPlaybackStateDidChange, // As of iOS 15.4, Media Player also posts this when the repeat or shuffle mode changes.
-			object: player)
+			object: nil)
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(reflect_now_playing_item_everywhere),
 			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
-			object: player)
+			object: nil)
 	}
 	
 	// MARK: - Private
