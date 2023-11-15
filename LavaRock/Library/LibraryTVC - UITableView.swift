@@ -11,8 +11,7 @@ extension LibraryTVC {
 	// MARK: - Editing
 	
 	final override func tableView(
-		_ tableView: UITableView,
-		canEditRowAt indexPath: IndexPath
+		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
 	) -> Bool {
 		return viewModel.pointsToSomeItem(row: indexPath.row)
 	}
@@ -59,15 +58,13 @@ extension LibraryTVC {
 	
 	// Overrides should call super (this implementation) as a last resort.
 	override func tableView(
-		_ tableView: UITableView,
-		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
+		_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		return viewModel.pointsToSomeItem(row: indexPath.row)
 	}
 	
 	final override func tableView(
-		_ tableView: UITableView,
-		didBeginMultipleSelectionInteractionAt indexPath: IndexPath
+		_ tableView: UITableView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) {
 		if !isEditing {
 			setEditing(true, animated: true) // As of iOS 14.7 developer beta 2 and LavaRock build 144, starting a multiple-selection interaction sometimes causes the table view to crash when our override of `setEditing` calls `tableView.performBatchUpdates(nil)`, with “[Assert] Attempted to call -cellForRowAtIndexPath: on the table view while it was in the process of updating its visible cells, which is not allowed.”
@@ -81,16 +78,14 @@ extension LibraryTVC {
 	// However, you can begin a multiple-selection interaction on a cell that does allow user interaction and `shouldBeginMultipleSelectionInteractionAt`, and swipe over a cell that doesn’t allow user interaction, to select it too.
 	// Therefore, if you support multiple-selection interactions, you must use this method to disable selection for certain rows.
 	override func tableView(
-		_ tableView: UITableView,
-		willSelectRowAt indexPath: IndexPath
+		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		return viewModel.pointsToSomeItem(row: indexPath.row) ? indexPath : nil
 	}
 	
 	// Overrides should call super (this implementation) if `viewModel.pointsToSomeItem(indexPath)`.
 	override func tableView(
-		_ tableView: UITableView,
-		didSelectRowAt indexPath: IndexPath
+		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if isEditing {
 			if let cell = tableView.cellForRow(at: indexPath) {
@@ -103,8 +98,7 @@ extension LibraryTVC {
 	// MARK: Deselecting
 	
 	final override func tableView(
-		_ tableView: UITableView,
-		didDeselectRowAt indexPath: IndexPath
+		_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath
 	) {
 		if let cell = tableView.cellForRow(at: indexPath) {
 			cell.accessibilityTraits.subtract(.selected)

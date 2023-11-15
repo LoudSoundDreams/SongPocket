@@ -29,8 +29,7 @@ extension AlbumsTVC {
 	}
 	
 	override func tableView(
-		_ tableView: UITableView,
-		numberOfRowsInSection section: Int
+		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
 		let albumsViewModel = viewModel as! AlbumsViewModel
 		if albumsViewModel.collection == nil {
@@ -43,8 +42,7 @@ extension AlbumsTVC {
 	// MARK: - Cells
 	
 	override func tableView(
-		_ tableView: UITableView,
-		cellForRowAt indexPath: IndexPath
+		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
@@ -100,8 +98,7 @@ extension AlbumsTVC {
 	// MARK: - Selecting
 	
 	override func tableView(
-		_ tableView: UITableView,
-		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
+		_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
 			case .previewingCombine, .organizingAlbums, .movingAlbums: return false
@@ -110,8 +107,7 @@ extension AlbumsTVC {
 	}
 	
 	override func tableView(
-		_ tableView: UITableView,
-		willSelectRowAt indexPath: IndexPath
+		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch purpose {
 			case .previewingCombine, .organizingAlbums, .movingAlbums: return nil

@@ -29,8 +29,7 @@ extension SongsTVC {
 		return viewModel.groups.count
 	}
 	override func tableView(
-		_ tableView: UITableView,
-		numberOfRowsInSection section: Int
+		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
 		let songsViewModel = viewModel as! SongsViewModel
 		if songsViewModel.album == nil {
@@ -41,8 +40,7 @@ extension SongsTVC {
 	}
 	
 	override func tableView(
-		_ tableView: UITableView,
-		cellForRowAt indexPath: IndexPath
+		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		let songsViewModel = viewModel as! SongsViewModel
 		let album = songsViewModel.libraryGroup().container as! Album
@@ -80,8 +78,7 @@ extension SongsTVC {
 	// MARK: - Selecting
 	
 	override func tableView(
-		_ tableView: UITableView,
-		didSelectRowAt indexPath: IndexPath
+		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if
 			!isEditing,

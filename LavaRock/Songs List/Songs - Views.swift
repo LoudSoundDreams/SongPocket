@@ -138,7 +138,9 @@ final class SongCell: UITableViewCell {
 		
 		if Self.usesSwiftUI__ { return }
 		
-		spacerNumberLabel.font = .monospacedDigitSystemFont(forTextStyle: .body)
+		spacerNumberLabel.font = .monospacedDigitSystemFont(
+			ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
+			weight: .regular)
 		numberLabel.font = spacerNumberLabel.font
 		
 		overflowButton.maximumContentSizeCategory = .extraExtraExtraLarge
@@ -254,17 +256,14 @@ final class SongCell: UITableViewCell {
 		guard
 			let player = SystemMusicPlayer.sharedIfAuthorized,
 			let tvc = songsTVC.referencee
-		else {
-			return nil
-		}
+		else { return nil }
 		
 		// For actions that start playback:
 		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
 		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 		let play = UIAction(
-			title: LRString.play,
-			image: UIImage(systemName: "play")
+			title: LRString.play, image: UIImage(systemName: "play")
 		) { _ in
 			Task {
 				guard let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
@@ -289,8 +288,7 @@ final class SongCell: UITableViewCell {
 		
 		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
-				title: LRString.playLast,
-				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
+				title: LRString.playLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				Task {
 					guard let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
@@ -307,9 +305,8 @@ final class SongCell: UITableViewCell {
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let restOfSongs = tvc.viewModel.libraryGroup().items.map { $0 as! Song }
 			let action = UIAction(
-				title: LRString.playRestOfAlbumLast,
-				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in 
+				title: LRString.playRestOfAlbumLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
+			) { _ in
 				Task {
 					guard let rowItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
 					
@@ -336,32 +333,16 @@ final class SongCell: UITableViewCell {
 			useMenuElements([action])
 		})
 		
-		let submenus: [UIMenu] = [
-			UIMenu(options: .displayInline, children: [
-				play,
-			]),
-			UIMenu(options: .displayInline, children: [
-				playLast,
-				playRestOfAlbumLast,
-			]),
-		]
-		return UIMenu(children: submenus)
-	}
-}
-private extension UIFont {
-	static func monospacedDigitSystemFont(
-		forTextStyle style: TextStyle
-	) -> UIFont {
-		return .monospacedDigitSystemFont(
-			ofSize: UIFont.preferredFont(forTextStyle: style).pointSize,
-			weight: .regular)
+		return UIMenu(
+			children: [
+				UIMenu(options: .displayInline, children: [play]),
+				UIMenu(options: .displayInline, children: [playLast, playRestOfAlbumLast]),
+			]
+		)
 	}
 }
 final class ExpandedTargetButton: UIButton {
-	override func point(
-		inside point: CGPoint,
-		with event: UIEvent?
-	) -> Bool {
+	override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
 		let tappableWidth = max(bounds.width, 44)
 		let tappableHeight = max(bounds.height, 55)
 		let tappableRect = CGRect(

@@ -56,8 +56,7 @@ extension CollectionsTVC {
 	}
 	
 	override func tableView(
-		_ tableView: UITableView,
-		numberOfRowsInSection section: Int
+		_ tableView: UITableView, numberOfRowsInSection section: Int
 	)-> Int {
 		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase: return 0
@@ -69,8 +68,7 @@ extension CollectionsTVC {
 	// MARK: - Cells
 	
 	override func tableView(
-		_ tableView: UITableView,
-		cellForRowAt indexPath: IndexPath
+		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		guard
 			viewState == .someCollections,
@@ -132,8 +130,7 @@ extension CollectionsTVC {
 	// MARK: - Editing
 	
 	override func tableView(
-		_ tableView: UITableView,
-		accessoryButtonTappedForRowWith indexPath: IndexPath
+		_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath
 	) {
 		promptRename(at: indexPath)
 	}
@@ -141,8 +138,7 @@ extension CollectionsTVC {
 	// MARK: - Selecting
 	
 	override func tableView(
-		_ tableView: UITableView,
-		shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
+		_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
 			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: return false
@@ -155,8 +151,7 @@ extension CollectionsTVC {
 	}
 	
 	override func tableView(
-		_ tableView: UITableView,
-		willSelectRowAt indexPath: IndexPath
+		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase: return nil // Should never run
@@ -165,8 +160,7 @@ extension CollectionsTVC {
 	}
 	
 	override func tableView(
-		_ tableView: UITableView,
-		didSelectRowAt indexPath: IndexPath
+		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase: return // Should never run
