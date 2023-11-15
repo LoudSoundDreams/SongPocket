@@ -21,9 +21,9 @@ extension Album: LibraryItem {
 #if targetEnvironment(simulator)
 		return objectID == Sim_Global.currentSong?.container?.objectID
 #else
-		guard let songInPlayer = managedObjectContext?.songInPlayer() else {
-			return false
-		}
+		guard 
+			let songInPlayer = managedObjectContext?.songInPlayer()
+		else { return false }
 		return objectID == songInPlayer.container?.objectID
 #endif
 	}

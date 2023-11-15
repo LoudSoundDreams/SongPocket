@@ -20,9 +20,9 @@ extension Song: LibraryItem {
 #if targetEnvironment(simulator)
 		return objectID == Sim_Global.currentSong?.objectID
 #else
-		guard let songInPlayer = managedObjectContext?.songInPlayer() else {
-			return false
-		}
+		guard
+			let songInPlayer = managedObjectContext?.songInPlayer()
+		else { return false }
 		return objectID == songInPlayer.objectID
 #endif
 	}

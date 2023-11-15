@@ -12,6 +12,7 @@ final class TapeDeck {
 	private init() {}
 	static let shared = TapeDeck()
 	
+	private var reflectors: [Weak<TapeDeckReflecting>] = []
 	func addReflector(weakly newReflector: TapeDeckReflecting) {
 		if let indexOfMatchingReflector = reflectors.firstIndex(where: { weakReflector in
 			newReflector === weakReflector.referencee
@@ -41,11 +42,7 @@ final class TapeDeck {
 			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
 			object: nil)
 	}
-	
-	// MARK: - Private
-	
-	@objc
-	private func reflect_playback_mode_everywhere() {
+	@objc private func reflect_playback_mode_everywhere() {
 		TapeDeckStatus.shared.freshen()
 		
 		reflectors.removeAll { $0.referencee == nil }
@@ -53,9 +50,7 @@ final class TapeDeck {
 			$0.referencee?.reflect_playback_mode()
 		}
 	}
-	
-	@objc
-	private func reflect_now_playing_item_everywhere() {
+	@objc private func reflect_now_playing_item_everywhere() {
 		TapeDeckStatus.shared.freshen()
 		
 		reflectors.removeAll { $0.referencee == nil }
@@ -63,6 +58,4 @@ final class TapeDeck {
 			$0.referencee?.reflect_now_playing_item()
 		}
 	}
-	
-	private var reflectors: [Weak<TapeDeckReflecting>] = []
 }

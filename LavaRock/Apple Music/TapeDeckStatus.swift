@@ -14,27 +14,22 @@ final class TapeDeckStatus: ObservableObject {
 		freshen()
 	}
 	static let shared = TapeDeckStatus()
+	@Published private(set) var current: Status? = nil
 	
 	struct Status {
 		let isPlaying: Bool
 	}
 	
-	@Published private(set) var current: Status? = nil
-	
 	func freshen() {
-		let new_status: Status?
-		defer {
-			current = new_status
-		}
+		let new: Status?
+		defer { current = new }
 		
 		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else {
 			// Show disabled default state everywhere
-			new_status = nil
+			new = nil
 			return
 		}
 		
-		new_status = Status(
-			isPlaying: player.playbackState == .playing
-		)
+		new = Status(isPlaying: player.playbackState == .playing)
 	}
 }
