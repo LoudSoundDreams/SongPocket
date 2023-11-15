@@ -254,6 +254,8 @@ final class SongCell: UITableViewCell {
 		mediaItem: MPMediaItem,
 		songsTVC: Weak<SongsTVC>
 	) -> UIMenu {
+		let musicItemID = MusicItemID(String(mediaItem.persistentID))
+		
 		// For actions that start playback:
 		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
 		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
@@ -263,13 +265,12 @@ final class SongCell: UITableViewCell {
 			image: UIImage(systemName: "play")
 		) { _ in
 			Task {
-				guard let player = SystemMusicPlayer.sharedIfAuthorized else { return }
+				guard
+					let player = SystemMusicPlayer.sharedIfAuthorized,
+					let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID)
+				else { return }
 				
-				var libraryRequest = MusicLibraryRequest<MusicKit.Song>()
-				libraryRequest.filter(matching: \.id, equalTo: MusicItemID(String(mediaItem.persistentID)))
-				guard let response = try? await libraryRequest.response() else { return }
-				
-				player.queue = SystemMusicPlayer.Queue(for: response.items)
+				player.queue = SystemMusicPlayer.Queue(for: [rowMusicItem])
 				try? await player.play()
 				
 				player.state.repeatMode = MusicPlayer.RepeatMode.none
@@ -293,9 +294,7 @@ final class SongCell: UITableViewCell {
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				Task {
-					guard let rowMusicItem = await MusicLibraryRequest.song(with: MusicItemID(String(mediaItem.persistentID))) else {
-						return
-					}
+					guard let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
 					
 					try await SystemMusicPlayer.sharedIfAuthorized?.queue.insert([rowMusicItem], position: .tail)
 					

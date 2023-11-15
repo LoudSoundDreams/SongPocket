@@ -120,10 +120,7 @@ extension SongsTVC {
 						let rowMusicItem
 					else { return }
 					
-					player.queue = SystemMusicPlayer.Queue(
-						for: allMusicItems,
-						startingAt: rowMusicItem
-					)
+					player.queue = SystemMusicPlayer.Queue(for: allMusicItems, startingAt: rowMusicItem)
 					try? await player.play()
 					
 					// As of iOS 17.2 beta, if setting the queue effectively did nothing, you must do these after calling `play`, not before.
