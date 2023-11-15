@@ -19,9 +19,11 @@ extension SystemMusicPlayer {
 
 @MainActor
 extension MusicLibraryRequest {
-	static func filteredToSong(matchingMusicItemID: MusicItemID) async -> MusicKit.Song? {
-		var request = MusicLibraryRequest<MusicKit.Song>()
-		request.filter(matching: \.id, equalTo: matchingMusicItemID)
+	static func song(with musicItemID: MusicItemID) async -> MusicKit.Song?
+	where MusicItemType == MusicKit.Song
+	{
+		var request = MusicLibraryRequest()
+		request.filter(matching: \.id, equalTo: musicItemID)
 		guard
 			let response = try? await request.response(),
 			response.items.count == 1

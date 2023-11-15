@@ -105,15 +105,15 @@ extension SongsTVC {
 						
 						var result: [MusicKit.Song] = []
 						for musicItemID in allMusicItemIDs {
-							let musicItem = await MusicLibraryRequest<MusicKit.Song>.filteredToSong(matchingMusicItemID: musicItemID)
-							guard let musicItem else { continue }
-							
+							guard let musicItem = await MusicLibraryRequest.song(with: musicItemID) else {
+								continue
+							}
 							result.append(musicItem)
 						}
 						return result
 					}()
 					let rowSong = (self.viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
-					let rowMusicItem = await MusicLibraryRequest<MusicKit.Song>.filteredToSong(matchingMusicItemID: MusicItemID(String(rowSong.persistentID)))
+					let rowMusicItem = await MusicLibraryRequest.song(with: MusicItemID(String(rowSong.persistentID)))
 					
 					guard
 						let player = SystemMusicPlayer.sharedIfAuthorized,
