@@ -95,19 +95,19 @@ extension SongsTVC {
 				style: .default
 			) { [weak self] _ in
 				Task {
-					guard let self else { return }
+					guard
+						let self,
+						let player = SystemMusicPlayer.sharedIfAuthorized
+					else { return }
 					
 					let allMusicItems: [MusicKit.Song] = await {
-						let allMusicItemIDs = self.viewModel.libraryGroup().items.map {
+						var result: [MusicKit.Song] = []
+						let allIDs = self.viewModel.libraryGroup().items.map {
 							let song = $0 as! Song
 							return MusicItemID(String(song.persistentID))
 						}
-						
-						var result: [MusicKit.Song] = []
-						for musicItemID in allMusicItemIDs {
-							guard let musicItem = await MusicLibraryRequest.song(with: musicItemID) else {
-								continue
-							}
+						for id in allIDs {
+							guard let musicItem = await MusicLibraryRequest.song(with: id) else { continue }
 							result.append(musicItem)
 						}
 						return result
@@ -115,10 +115,7 @@ extension SongsTVC {
 					let rowSong = (self.viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
 					let rowMusicItem = await MusicLibraryRequest.song(with: MusicItemID(String(rowSong.persistentID)))
 					
-					guard
-						let player = SystemMusicPlayer.sharedIfAuthorized,
-						let rowMusicItem
-					else { return }
+					guard let rowMusicItem else { return }
 					
 					player.queue = SystemMusicPlayer.Queue(for: allMusicItems, startingAt: rowMusicItem)
 					try? await player.play()

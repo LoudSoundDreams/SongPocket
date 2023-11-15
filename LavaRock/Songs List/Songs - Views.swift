@@ -225,12 +225,9 @@ final class SongCell: UITableViewCell {
 			reflectAvatarStatus(song.avatarStatus())
 			
 			freshenOverflowButton()
-			overflowButton.menu = {
-				guard let mediaItem = song.mpMediaItem() else {
-					return nil
-				}
-				return newOverflowMenu(mediaItem: mediaItem, songsTVC: songsTVC)
-			}()
+			overflowButton.menu = newOverflowMenu(
+				musicItemID: MusicItemID(String(song.persistentID)),
+				songsTVC: songsTVC)
 			
 			accessibilityUserInputLabels = [info?.titleOnDisk].compacted()
 		}
@@ -251,10 +248,15 @@ final class SongCell: UITableViewCell {
 		overflowButton.isEnabled = !isEditing
 	}
 	private func newOverflowMenu(
-		mediaItem: MPMediaItem,
+		musicItemID: MusicItemID,
 		songsTVC: Weak<SongsTVC>
-	) -> UIMenu {
-		let musicItemID = MusicItemID(String(mediaItem.persistentID))
+	) -> UIMenu? {
+		guard
+			let player = SystemMusicPlayer.sharedIfAuthorized,
+			let tvc = songsTVC.referencee
+		else {
+			return nil
+		}
 		
 		// For actions that start playback:
 		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
@@ -265,10 +267,7 @@ final class SongCell: UITableViewCell {
 			image: UIImage(systemName: "play")
 		) { _ in
 			Task {
-				guard
-					let player = SystemMusicPlayer.sharedIfAuthorized,
-					let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID)
-				else { return }
+				guard let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
 				
 				player.queue = SystemMusicPlayer.Queue(for: [rowMusicItem])
 				try? await player.play()
@@ -296,7 +295,7 @@ final class SongCell: UITableViewCell {
 				Task {
 					guard let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
 					
-					try await SystemMusicPlayer.sharedIfAuthorized?.queue.insert([rowMusicItem], position: .tail)
+					try await player.queue.insert([rowMusicItem], position: .tail)
 					
 					UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 				}
@@ -306,37 +305,32 @@ final class SongCell: UITableViewCell {
 		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let restOfAlbum: [MPMediaItem] = {
-				guard let tvc = songsTVC.referencee else { return [] }
-				
-				let allSongs = tvc.viewModel.libraryGroup().items
-				let allMediaItems = allSongs.compactMap { ($0 as? Song)?.mpMediaItem() }
-				let restOfAlbum = allMediaItems.drop(while: {
-					$0.persistentID != mediaItem.persistentID
-				})
-				return Array(restOfAlbum)
-			}()
+			let restOfSongs = tvc.viewModel.libraryGroup().items.map { $0 as! Song }
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast,
 				image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in 
-				guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return }
-				
-				// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
-				player.append(
-					MPMusicPlayerMediaItemQueueDescriptor(
-						itemCollection: MPMediaItemCollection(items: restOfAlbum)
-					)
-				)
-				
-				// As of iOS 14.7 developer beta 1, you must do this in case the user force quit Apple Music recently.
-				if player.playbackState != .playing {
-					player.prepareToPlay()
+				Task {
+					guard let rowItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
+					
+					let musicItems: [MusicKit.Song] = await {
+						var allItems: [MusicKit.Song] = []
+						let ids = restOfSongs.map { MusicItemID(String($0.persistentID)) }
+						for id in ids {
+							guard let musicItem = await MusicLibraryRequest.song(with: id) else { continue }
+							allItems.append(musicItem)
+						}
+						let result = allItems.drop(while: { $0.id != rowItem.id })
+						return Array(result)
+					}()
+					// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
+					try await player.queue.insert(musicItems, position: .tail)
+					// As of iOS 14.7 developer beta 1, you must call `MPMusicPlayerController.prepareToPlay` in case the user force quit Apple Music recently.
+					
+					UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 				}
-				
-				UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 			}
-			if restOfAlbum.count <= 1 {
+			if restOfSongs.count <= 1 {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
