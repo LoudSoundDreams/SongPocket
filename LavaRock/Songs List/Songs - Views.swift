@@ -258,13 +258,12 @@ final class SongCell: UITableViewCell {
 			let tvc = songsTVC.referencee
 		else { return nil }
 		
-		// For actions that start playback:
-		// `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
-		// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
-		// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 		let play = UIAction(
 			title: LRString.play, image: UIImage(systemName: "play")
 		) { _ in
+			// For actions that start playback, `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
+			// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
+			// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 			Task {
 				guard let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
 				
@@ -275,16 +274,6 @@ final class SongCell: UITableViewCell {
 				player.state.shuffleMode = .off
 			}
 		}
-		
-		// Disable “prepend” intelligently: when “append” would do the same thing.
-		// Specifically, only enable “prepend” if there’s at least 1 song queued after the current one.
-		// Err toward leaving “prepend” enabled.
-		
-		// `MPMusicPlayerController` doesn’t expose how many songs are up next.
-		// So, in order to intelligently disable prepending, we need to…
-		// 1. Keep track of that number ourselves, and…
-		// 2. Always know when that number changes.
-		// We can't do that with `systemMusicPlayer`.
 		
 		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
@@ -322,7 +311,6 @@ final class SongCell: UITableViewCell {
 					}()
 					// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
 					try await player.queue.insert(musicItems, position: .tail)
-					// As of iOS 14.7 developer beta 1, you must call `MPMusicPlayerController.prepareToPlay` in case the user force quit Apple Music recently.
 					
 					UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 				}
