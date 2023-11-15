@@ -100,6 +100,7 @@ struct CoverArtView: View {
 		}
 	}
 }
+import MusicKit
 struct AlbumInfoRow: View {
 	let album: Album
 	
@@ -109,7 +110,11 @@ struct AlbumInfoRow: View {
 				.foregroundStyle(.secondary)
 				.fontFootnote()
 			Spacer()
-			AvatarImage(libraryItem: album).accessibilitySortPriority(10) // Bigger is sooner
+			AvatarImage(
+				libraryItem: album,
+				state: SystemMusicPlayer.sharedIfAuthorized!.state, // !
+				queue: SystemMusicPlayer.sharedIfAuthorized!.queue // !
+			).accessibilitySortPriority(10) // Bigger is sooner
 			Chevron()
 		}
 		.accessibilityElement(children: .combine)

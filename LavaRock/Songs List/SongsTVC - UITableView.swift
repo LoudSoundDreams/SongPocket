@@ -27,6 +27,7 @@ extension SongsTVC {
 		
 		return viewModel.groups.count
 	}
+	
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
@@ -73,8 +74,6 @@ extension SongsTVC {
 		)
 		return cell
 	}
-	
-	// MARK: - Selecting
 	
 	override func tableView(
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath

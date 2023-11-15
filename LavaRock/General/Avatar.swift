@@ -60,22 +60,20 @@ extension SongCell: AvatarReflecting__ {
 	}
 }
 
+import MusicKit
+
 struct AvatarImage: View {
 	let libraryItem: LibraryItem
 	
-	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
+	@ObservedObject var state: MusicPlayer.State
+	@ObservedObject var queue: MusicPlayer.Queue
 	@ObservedObject private var musicLibrary: MusicLibrary = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 	private var status: AvatarStatus__ {
-		guard
-			libraryItem.containsPlayhead(),
-			let tapeDeckStatus = tapeDeckStatus.current
-		else {
-			return .notPlaying
-		}
+		guard libraryItem.containsPlayhead() else { return .notPlaying }
 #if targetEnvironment(simulator)
 		return .playing
 #else
-		if tapeDeckStatus.isPlaying {
+		if state.playbackStatus == .playing {
 			return .playing
 		} else {
 			return .paused

@@ -45,7 +45,6 @@ struct SongRow: View {
 	let artist_if_different_from_album_artist: String?
 	@ObservedObject var listStatus: SongsListStatus
 	
-	@ObservedObject private var tapeDeckStatus: TapeDeckStatus = .shared
 	var body: some View {
 		
 		HStack(alignment: .firstTextBaseline) {
@@ -72,7 +71,11 @@ struct SongRow: View {
 			
 			Spacer()
 			
-			AvatarImage(libraryItem: song).accessibilitySortPriority(10)
+			AvatarImage(
+				libraryItem: song,
+				state: SystemMusicPlayer.sharedIfAuthorized!.state, // !
+				queue: SystemMusicPlayer.sharedIfAuthorized!.queue // !
+			).accessibilitySortPriority(10)
 			Menu {
 				Button {
 				} label: {

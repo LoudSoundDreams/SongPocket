@@ -18,7 +18,7 @@ struct CollectionRow: View {
 			Text(title ?? " ") // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
 			Spacer()
 			HStack(alignment: .firstTextBaseline) {
-				AvatarImage(libraryItem: collection).accessibilitySortPriority(10)
+//				AvatarImage(libraryItem: collection).accessibilitySortPriority(10)
 				Chevron()
 			}
 		}

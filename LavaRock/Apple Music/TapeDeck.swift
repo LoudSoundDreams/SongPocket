@@ -43,16 +43,12 @@ final class TapeDeck {
 			object: nil)
 	}
 	@objc private func playbackState() {
-		TapeDeckStatus.shared.freshen()
-		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {
 			$0.referencee?.reflect_playbackState()
 		}
 	}
 	@objc private func nowPlaying() {
-		TapeDeckStatus.shared.freshen()
-		
 		reflectors.removeAll { $0.referencee == nil }
 		reflectors.forEach {
 			$0.referencee?.reflect_nowPlaying()
