@@ -147,13 +147,13 @@ final class TransportToolbar__ {
 	// MARK: -
 	
 	private init() {
-		reflect_playbackState_and_nowPlayingItem()
+		reflect_playbackState_and_nowPlaying()
 		TapeDeck.shared.addReflector(weakly: self)
 	}
 	
 	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
 	private var hasRefreshenedOverflowButton = false
-	private func reflect_playbackState_and_nowPlayingItem() {
+	private func reflect_playbackState_and_nowPlaying() {
 #if targetEnvironment(simulator)
 		defer {
 			showPauseButton()
@@ -235,10 +235,10 @@ final class TransportToolbar__ {
 	}
 }
 extension TransportToolbar__: TapeDeckReflecting {
-	func reflect_playback_mode() {
-		reflect_playbackState_and_nowPlayingItem()
+	func reflect_playbackState() {
+		reflect_playbackState_and_nowPlaying()
 	}
-	func reflect_now_playing_item() { 
-		reflect_playbackState_and_nowPlayingItem()
+	func reflect_nowPlaying() { 
+		reflect_playbackState_and_nowPlaying()
 	}
 }
