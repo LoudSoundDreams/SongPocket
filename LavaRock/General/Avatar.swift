@@ -69,7 +69,9 @@ struct AvatarImage: View {
 	@ObservedObject var queue: MusicPlayer.Queue
 	@ObservedObject private var musicLibrary: MusicLibrary = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 	private var status: AvatarStatus__ {
-		guard libraryItem.containsPlayhead() else { return .notPlaying }
+		if !libraryItem.containsPlayhead() {
+			return .notPlaying
+		}
 #if targetEnvironment(simulator)
 		return .playing
 #else
