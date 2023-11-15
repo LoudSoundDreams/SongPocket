@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MediaPlayer
+import MusicKit
 
 extension CollectionsTVC: UIAdaptivePresentationControllerDelegate {
 	func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
@@ -51,7 +51,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	// State
 	var viewState: CollectionsViewState {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
+		guard MusicAuthorization.currentStatus == .authorized else {
 			return .allowAccess
 		}
 		guard viewModel.isEmpty() else {

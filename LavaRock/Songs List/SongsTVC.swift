@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MediaPlayer
 
 final class SongsListStatus: ObservableObject {
 	@Published fileprivate(set) var editing = false

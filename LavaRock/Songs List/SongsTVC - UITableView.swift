@@ -8,7 +8,6 @@
 import UIKit
 import SwiftUI
 import MusicKit
-import MediaPlayer
 import OSLog
 
 struct NoSongsView: View {

@@ -5,14 +5,14 @@
 //  Created by h on 2023-04-01.
 //
 
-import MediaPlayer
+import MusicKit
 
 @MainActor
 enum AppleMusic {
 	static var loadingIndicator: CollectionsTVC? = nil
 	
 	static func integrateIfAuthorized() async {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
+		guard MusicAuthorization.currentStatus == .authorized else { return }
 		
 		await loadingIndicator?.prepareToIntegrateWithAppleMusic()
 		
