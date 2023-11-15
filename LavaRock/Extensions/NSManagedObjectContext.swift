@@ -58,9 +58,7 @@ extension NSManagedObjectContext {
 			return SongID(bitPattern: nowPlayingItem.persistentID)
 #endif
 		}()
-		guard let currentSongID else {
-			return nil
-		}
+		guard let currentSongID else { return nil }
 		
 		let request = Song.fetchRequest()
 		request.predicate = NSPredicate(
@@ -71,9 +69,7 @@ extension NSManagedObjectContext {
 		guard
 			songsContainingPlayhead.count == 1,
 			let song = songsContainingPlayhead.first
-		else {
-			return nil
-		}
+		else { return nil }
 		return song
 	}
 	
