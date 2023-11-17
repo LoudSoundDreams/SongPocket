@@ -6,7 +6,19 @@
 //
 
 import CoreData
-import MediaPlayer
+
+protocol LibraryContainer: LibraryItem {
+	var contents: NSSet? { get }
+}
+extension LibraryContainer {
+	func isEmpty() -> Bool {
+		return contents == nil || contents?.count == 0
+	}
+	
+	func wasDeleted() -> Bool {
+		return managedObjectContext == nil
+	}
+}
 
 protocol LibraryItem: NSManagedObject {
 	var libraryTitle: String? { get }
@@ -14,6 +26,18 @@ protocol LibraryItem: NSManagedObject {
 	
 	func containsPlayhead() -> Bool
 }
+
+extension Array where Element: LibraryItem {
+	// Needs to match the property observer on `LibraryGroup.items`.
+	mutating func reindex()
+	{
+		enumerated().forEach { (currentIndex, libraryItem) in
+			libraryItem.index = Int64(currentIndex)
+		}
+	}
+}
+
+import MediaPlayer
 extension LibraryItem {
 	@MainActor
 	func avatarStatus() -> AvatarStatus__ {
@@ -32,18 +56,5 @@ extension LibraryItem {
 			return .paused
 		}
 #endif
-	}
-}
-
-protocol LibraryContainer: LibraryItem {
-	var contents: NSSet? { get }
-}
-extension LibraryContainer {
-	func isEmpty() -> Bool {
-		return contents == nil || contents?.count == 0
-	}
-	
-	func wasDeleted() -> Bool {
-		return managedObjectContext == nil
 	}
 }

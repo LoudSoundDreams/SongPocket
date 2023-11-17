@@ -8,9 +8,8 @@
 import CoreData
 import OSLog
 
+extension Collection: LibraryContainer {}
 extension Collection: LibraryItem {
-	// Enables `[Collection].reindex()`
-	
 	final var libraryTitle: String? {
 		return title
 	}
@@ -27,7 +26,7 @@ extension Collection: LibraryItem {
 #endif
 	}
 }
-extension Collection: LibraryContainer {}
+
 extension Collection {
 	convenience init(
 		afterAllOtherCount existingCount: Int,

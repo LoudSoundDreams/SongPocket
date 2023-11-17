@@ -9,8 +9,6 @@ import CoreData
 import MediaPlayer
 
 extension Song: LibraryItem {
-	// Enables `[Song].reindex()`
-	
 	final var libraryTitle: String? {
 		return songInfo()?.titleOnDisk
 	}
@@ -27,6 +25,7 @@ extension Song: LibraryItem {
 #endif
 	}
 }
+
 extension Song {
 	convenience init(
 		atEndOf album: Album,

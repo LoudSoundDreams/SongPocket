@@ -7,15 +7,6 @@
 
 import OSLog
 
-extension Array where Element: LibraryItem {
-	// Needs to match the property observer on `LibraryGroup.items`.
-	mutating func reindex()
-	{
-		enumerated().forEach { (currentIndex, libraryItem) in
-			libraryItem.index = Int64(currentIndex)
-		}
-	}
-}
 extension Array where Element == Int {
 	// Whether the integers are increasing and contiguous.
 	func isConsecutive() -> Bool {
