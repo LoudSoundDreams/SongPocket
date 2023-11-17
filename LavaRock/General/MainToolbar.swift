@@ -1,5 +1,5 @@
 //
-//  TransportToolbar__.swift
+//  MainToolbar.swift
 //  LavaRock
 //
 //  Created by h on 2022-05-09.
@@ -11,8 +11,8 @@ import MediaPlayer
 
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor
-final class TransportToolbar__ {
-	static let shared = TransportToolbar__()
+final class MainToolbar {
+	static let shared = MainToolbar()
 	var barButtonItems: [UIBarButtonItem] {
 		return [
 			overflowButton, .flexibleSpace(),
@@ -234,7 +234,7 @@ final class TransportToolbar__ {
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
 }
-extension TransportToolbar__: TapeDeckReflecting {
+extension MainToolbar: TapeDeckReflecting {
 	func reflect_playbackState() {
 		reflect_playbackState_and_nowPlaying()
 	}
