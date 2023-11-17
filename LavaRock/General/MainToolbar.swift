@@ -147,13 +147,13 @@ final class MainToolbar {
 	// MARK: -
 	
 	private init() {
-		reflect_playbackState_and_nowPlaying()
+		freshen()
 		TapeDeck.shared.addReflector(weakly: self)
 	}
 	
 	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
 	private var hasRefreshenedOverflowButton = false
-	private func reflect_playbackState_and_nowPlaying() {
+	private func freshen() {
 #if targetEnvironment(simulator)
 		defer {
 			showPauseButton()
@@ -236,9 +236,9 @@ final class MainToolbar {
 }
 extension MainToolbar: TapeDeckReflecting {
 	func reflect_playbackState() {
-		reflect_playbackState_and_nowPlaying()
+		freshen()
 	}
 	func reflect_nowPlaying() { 
-		reflect_playbackState_and_nowPlaying()
+		freshen()
 	}
 }
