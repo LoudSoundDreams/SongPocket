@@ -40,7 +40,7 @@ extension Array where Element: LibraryItem {
 import MediaPlayer
 extension LibraryItem {
 	@MainActor
-	func avatarStatus() -> AvatarStatus__ {
+	func avatarStatus__() -> AvatarStatus {
 		guard
 			containsPlayhead(),
 			let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized

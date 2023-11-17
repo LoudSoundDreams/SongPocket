@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AvatarStatus__ {
+enum AvatarStatus {
 	case notPlaying
 	case paused
 	case playing
@@ -31,29 +31,29 @@ enum AvatarStatus__ {
 
 @MainActor
 protocol AvatarReflecting__: AnyObject {
-	func reflectAvatarStatus(_ status: AvatarStatus__)
+	func reflectAvatarStatus(_ status: AvatarStatus)
 }
 extension CollectionCell: AvatarReflecting__ {
-	func reflectAvatarStatus(_ status: AvatarStatus__) {
+	func reflectAvatarStatus(_ status: AvatarStatus) {
 		if Self.usesSwiftUI__ { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = AvatarStatus__.playing.uiImage
+		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
 		speakerImageView.image = status.uiImage
 		
 		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 }
 extension SongCell: AvatarReflecting__ {
-	func reflectAvatarStatus(_ status: AvatarStatus__) {
+	func reflectAvatarStatus(_ status: AvatarStatus) {
 		if Self.usesSwiftUI__ { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
 		
-		spacerSpeakerImageView.image = AvatarStatus__.playing.uiImage
+		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
 		speakerImageView.image = status.uiImage
 		
 		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
@@ -68,7 +68,7 @@ struct AvatarImage: View {
 	@ObservedObject var state: MusicPlayer.State
 	@ObservedObject var queue: MusicPlayer.Queue
 	@ObservedObject private var musicLibrary: MusicLibrary = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
-	private var status: AvatarStatus__ {
+	private var status: AvatarStatus {
 		if !libraryItem.containsPlayhead() {
 			return .notPlaying
 		}

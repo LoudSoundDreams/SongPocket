@@ -78,7 +78,7 @@ final class CollectionCell: UITableViewCell {
 			contentView.layer.opacity = dimmed ? .oneFourth : 1
 			
 			rowContentAccessibilityLabel__ = titleLabel.text
-			reflectAvatarStatus(collection.avatarStatus())
+			reflectAvatarStatus(collection.avatarStatus__())
 			
 			accessibilityUserInputLabels = [collection.title].compacted()
 		}
