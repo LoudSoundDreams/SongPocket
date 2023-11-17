@@ -52,9 +52,7 @@ enum LRDefaultsKey: String, CaseIterable {
 }
 
 import CoreData
-struct Database {
-	private init() {}
-	
+enum Database {
 	static let viewContext = container.viewContext
 	private static let container: NSPersistentContainer = {
 		let container = NSPersistentContainer(name: "LavaRock")
