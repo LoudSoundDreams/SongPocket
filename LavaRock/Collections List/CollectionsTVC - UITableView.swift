@@ -39,14 +39,16 @@ extension CollectionsTVC {
 			case .emptyDatabase:
 				contentUnavailableConfiguration = UIHostingConfiguration {
 					ContentUnavailableView {
+						Text(LRString.emptyLibrary_title)
+							.fontTitle2_bold()
 					} description: {
-						Text(LRString.emptyDatabasePlaceholder)
+						Text(LRString.emptyLibrary_subtitle)
 					} actions: {
 						Button {
 							let musicURL = URL(string: "music://")!
 							UIApplication.shared.open(musicURL)
 						} label: {
-							Text(LRString.openMusic)
+							Text(LRString.emptyLibrary_button)
 						}
 					}
 				}
