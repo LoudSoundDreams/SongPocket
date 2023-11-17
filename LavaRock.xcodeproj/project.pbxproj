@@ -37,7 +37,6 @@
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		076B4DED27738FF4004B523D /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076B4DEC27738FF4004B523D /* OSLog.swift */; };
 		076F1C0227E66DAA00220C2B /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* Player.swift */; };
-		0774C88527CBEA0900230F22 /* LRDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774C88427CBEA0900230F22 /* LRDefaultsKey.swift */; };
 		07755A58294821860056E90C /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Avatar.swift */; };
 		077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */; };
 		07843FEB2851A31D000FA316 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07843FEA2851A31D000FA316 /* Sequence.swift */; };
@@ -130,7 +129,6 @@
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		076B4DEC27738FF4004B523D /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		076F1C0127E66DAA00220C2B /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		0774C88427CBEA0900230F22 /* LRDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRDefaultsKey.swift; sourceTree = "<group>"; };
 		07755A57294821860056E90C /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizeAlbumsClipboard.swift; sourceTree = "<group>"; };
 		0781F1F02599181800781CF8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -365,7 +363,6 @@
 		07FC970A24BAC1050036DD3D /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				0774C88427CBEA0900230F22 /* LRDefaultsKey.swift */,
 				071A0B9F277E832C0017F76D /* Persistence.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
 				07602AC72620DC4C00D84123 /* LibraryItem.swift */,
@@ -531,7 +528,6 @@
 				07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */,
 				072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */,
 				07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */,
-				0774C88527CBEA0900230F22 /* LRDefaultsKey.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Array.swift in Sources */,
 				07E0BBDE276567760010117E /* Notifications.swift in Sources */,
 				071DC5E72A1045CE0073C854 /* Main Toolbar.swift in Sources */,
