@@ -122,7 +122,7 @@ struct TrackNumberLabel: View {
 // MARK: - UIKit
 
 final class SongCell: UITableViewCell {
-	static let usesSwiftUI__ = 10 == 1
+	static let usesSwiftUI = 10 == 1
 	
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -138,7 +138,7 @@ final class SongCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		if Self.usesSwiftUI__ { return }
+		if Self.usesSwiftUI { return }
 		
 		spacerNumberLabel.font = .monospacedDigitSystemFont(
 			ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
@@ -153,7 +153,7 @@ final class SongCell: UITableViewCell {
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
-		if Self.usesSwiftUI__ { return }
+		if Self.usesSwiftUI { return }
 		
 		freshenOverflowButton()
 	}
@@ -194,7 +194,7 @@ final class SongCell: UITableViewCell {
 			}
 		}()
 		
-		if Self.usesSwiftUI__ {
+		if Self.usesSwiftUI {
 			contentConfiguration = UIHostingConfiguration {
 				if let referencee = songsTVC.referencee {
 					SongRow(
@@ -240,7 +240,7 @@ final class SongCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		if Self.usesSwiftUI__ { return }
+		if Self.usesSwiftUI { return }
 		
 		separatorInset.left = 0
 		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge

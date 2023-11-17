@@ -35,7 +35,7 @@ protocol AvatarReflecting__: AnyObject {
 }
 extension CollectionCell: AvatarReflecting__ {
 	func reflectAvatarStatus(_ status: AvatarStatus) {
-		if Self.usesSwiftUI__ { return }
+		if Self.usesSwiftUI { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
@@ -48,7 +48,7 @@ extension CollectionCell: AvatarReflecting__ {
 }
 extension SongCell: AvatarReflecting__ {
 	func reflectAvatarStatus(_ status: AvatarStatus) {
-		if Self.usesSwiftUI__ { return }
+		if Self.usesSwiftUI { return }
 		
 		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
 		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory

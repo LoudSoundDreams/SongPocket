@@ -35,7 +35,7 @@ struct CollectionRow: View {
 }
 
 final class CollectionCell: UITableViewCell {
-	static let usesSwiftUI__ = 10 == 1
+	static let usesSwiftUI = 10 == 1
 	
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -46,7 +46,7 @@ final class CollectionCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		if Self.usesSwiftUI__ { return }
+		if Self.usesSwiftUI { return }
 		
 		accessoryView = {
 			let chevron_uiView = UIHostingController(rootView: Chevron()).view
@@ -61,7 +61,7 @@ final class CollectionCell: UITableViewCell {
 		with collection: Collection,
 		dimmed: Bool
 	) {
-		if Self.usesSwiftUI__ {
+		if Self.usesSwiftUI {
 			contentConfiguration = UIHostingConfiguration {
 				CollectionRow(title: collection.title, collection: collection, dimmed: dimmed)
 			}
@@ -87,7 +87,7 @@ final class CollectionCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		if Self.usesSwiftUI__ { return }
+		if Self.usesSwiftUI { return }
 		
 		separatorInset.left = 0
 		+ contentView.frame.minX
