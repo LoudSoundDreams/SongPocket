@@ -53,7 +53,6 @@
 		07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* Collection.swift */; };
 		07CAB24724EA227F008AC34C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* Song.swift */; };
 		07CD864D27CAA3CC00286E6A /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD864C27CAA3CC00286E6A /* Weak.swift */; };
-		07CD864F27CAA54600286E6A /* TapeDeckReflecting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD864E27CAA54600286E6A /* TapeDeckReflecting.swift */; };
 		07D2D2BC2AF8149600960644 /* CollectionsTVC - MusicKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D2D2BB2AF8149600960644 /* CollectionsTVC - MusicKit.swift */; };
 		07D9DBF4257C9CA2007EEB87 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 07D9DBF6257C9CA2007EEB87 /* Localizable.stringsdict */; };
 		07DC1B2024F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */; };
@@ -148,7 +147,6 @@
 		07AE2AA3258C09D900C3A314 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		07CD864C27CAA3CC00286E6A /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
-		07CD864E27CAA54600286E6A /* TapeDeckReflecting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeckReflecting.swift; sourceTree = "<group>"; };
 		07D2D2BB2AF8149600960644 /* CollectionsTVC - MusicKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - MusicKit.swift"; sourceTree = "<group>"; };
 		07D9DBF5257C9CA2007EEB87 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		07DC1B1F24F33C8C00AAEEDB /* CollectionsTVC - “Move Albums” Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionsTVC - “Move Albums” Sheet.swift"; sourceTree = "<group>"; };
@@ -330,7 +328,6 @@
 				070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */,
 				076F1C0127E66DAA00220C2B /* Player.swift */,
 				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
-				07CD864E27CAA54600286E6A /* TapeDeckReflecting.swift */,
 			);
 			path = "Apple Music";
 			sourceTree = "<group>";
@@ -553,7 +550,6 @@
 				07EC01EA26C8958300954E08 /* AlbumsViewModel.swift in Sources */,
 				079B2C9524E227BF00A949FA /* MusicLibrary.swift in Sources */,
 				077BCEAE2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift in Sources */,
-				07CD864F27CAA54600286E6A /* TapeDeckReflecting.swift in Sources */,
 				07F36BC624FC3FE40064282D /* AlbumsTVC - UITableView.swift in Sources */,
 				07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */,
 				076F1C0227E66DAA00220C2B /* Player.swift in Sources */,
