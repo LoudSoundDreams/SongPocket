@@ -119,7 +119,7 @@ class LibraryTVC: UITableViewController {
 	final func reflectPlayhead() {
 		tableView.allIndexPaths().forEach { indexPath in
 			guard
-				let cell = tableView.cellForRow(at: indexPath) as? AvatarReflecting__
+				let cell = tableView.cellForRow(at: indexPath) as? AvatarReflecting
 			else { return }
 			cell.reflectAvatarStatus({
 				guard
@@ -188,7 +188,7 @@ class LibraryTVC: UITableViewController {
 		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
-			__setViewModelAndMoveAndDeselectRows(
+			_setViewModelAndMoveAndDeselectRows(
 				firstReloading: toReload,
 				newViewModel,
 				thenSelecting: toSelect
@@ -198,7 +198,7 @@ class LibraryTVC: UITableViewController {
 			beforeContinuation?()
 		}
 	}
-	private func __setViewModelAndMoveAndDeselectRows(
+	private func _setViewModelAndMoveAndDeselectRows(
 		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
@@ -354,7 +354,7 @@ class LibraryTVC: UITableViewController {
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
 			let newViewModel = viewModel.updatedWithFreshenedData()
-			__setViewModelAndMoveAndDeselectRows(
+			_setViewModelAndMoveAndDeselectRows(
 				newViewModel,
 				completionIfShouldRun: { shouldRun in }
 			)

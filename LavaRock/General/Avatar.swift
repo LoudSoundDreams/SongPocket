@@ -30,10 +30,10 @@ enum AvatarStatus {
 }
 
 @MainActor
-protocol AvatarReflecting__: AnyObject {
+protocol AvatarReflecting: AnyObject {
 	func reflectAvatarStatus(_ status: AvatarStatus)
 }
-extension CollectionCell: AvatarReflecting__ {
+extension CollectionCell: AvatarReflecting {
 	func reflectAvatarStatus(_ status: AvatarStatus) {
 		if Self.usesSwiftUI { return }
 		
@@ -46,7 +46,7 @@ extension CollectionCell: AvatarReflecting__ {
 		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 }
-extension SongCell: AvatarReflecting__ {
+extension SongCell: AvatarReflecting {
 	func reflectAvatarStatus(_ status: AvatarStatus) {
 		if Self.usesSwiftUI { return }
 		
