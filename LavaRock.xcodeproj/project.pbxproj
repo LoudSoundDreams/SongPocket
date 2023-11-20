@@ -252,6 +252,7 @@
 		0768308724B42DEC0033E3CC /* LavaRock */ = {
 			isa = PBXGroup;
 			children = (
+				07FF1DDF27F8FF0300DF9B78 /* Resources */,
 				07F4AA172AA2508800AA5F1E /* General */,
 				07FC970A24BAC1050036DD3D /* Persistence */,
 				070E194524F3424500B21307 /* Library */,
@@ -260,7 +261,6 @@
 				070E194224F340C500B21307 /* Songs List */,
 				07DF65D027766B7B003B2EA3 /* Apple Music */,
 				07E0BBFE2765680C0010117E /* Extensions */,
-				07FF1DDF27F8FF0300DF9B78 /* Resources */,
 				0768309924B42DEE0033E3CC /* Info.plist */,
 			);
 			path = LavaRock;
