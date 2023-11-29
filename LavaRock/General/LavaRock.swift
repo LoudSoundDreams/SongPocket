@@ -28,7 +28,6 @@ struct LavaRock: App {
 					await AppleMusic.integrateIfAuthorized()
 				}
 				.tint(Color("denim")) // Applies before `integrateIfAuthorized`.
-//				.mainToolbar()
 		}
 	}
 }
