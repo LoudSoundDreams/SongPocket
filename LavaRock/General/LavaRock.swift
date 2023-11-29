@@ -27,7 +27,7 @@ struct LavaRock: App {
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()
 				}
-				.tint(Color("synthwave")) // Applies before `integrateIfAuthorized`.
+				.tint(Color("denim")) // Applies before `integrateIfAuthorized`.
 //				.mainToolbar()
 		}
 	}
