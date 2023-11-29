@@ -183,7 +183,8 @@ final class CollectionsTVC: LibraryTVC {
 				if !forBrowsingAndHasFirstAppeared {
 					forBrowsingAndHasFirstAppeared = true
 					
-					view.window!.tintColor = UIColor(named: "synthwave")! // As of iOS 16.6.1, the build setting “Global Accent Color Name” doesn’t apply to (UIKit) alerts or action sheets.
+					// As of iOS 16.6.1, the build setting “Global Accent Color Name” doesn’t apply to (UIKit) alerts or action sheets.
+					view.window!.tintColor = UIColor(named: "synthwave")!
 				}
 		}
 	}
