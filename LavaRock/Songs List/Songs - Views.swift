@@ -162,7 +162,8 @@ final class SongCell: UITableViewCell {
 		song: Song,
 		albumRepresentative representative: SongInfo?,
 		spacerTrackNumberText: String,
-		songsTVC: Weak<SongsTVC>
+		songsTVC: Weak<SongsTVC>,
+		forBottomOfAlbum: Bool
 	) {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		
@@ -231,7 +232,8 @@ final class SongCell: UITableViewCell {
 			freshenOverflowButton()
 			overflowButton.menu = newOverflowMenu(
 				musicItemID: MusicItemID(String(song.persistentID)),
-				songsTVC: songsTVC)
+				songsTVC: songsTVC,
+				songPersistentIDForBottomOfAlbum: song.persistentID)
 			
 			accessibilityUserInputLabels = [info?.titleOnDisk].compacted()
 		}
@@ -253,7 +255,8 @@ final class SongCell: UITableViewCell {
 	}
 	private func newOverflowMenu(
 		musicItemID: MusicItemID,
-		songsTVC: Weak<SongsTVC>
+		songsTVC: Weak<SongsTVC>,
+		songPersistentIDForBottomOfAlbum: Int64
 	) -> UIMenu? {
 		guard
 			let player = SystemMusicPlayer.sharedIfAuthorized,
@@ -317,7 +320,7 @@ final class SongCell: UITableViewCell {
 					UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
 				}
 			}
-			if restOfSongs.count <= 1 {
+			if songPersistentIDForBottomOfAlbum == restOfSongs.last?.persistentID {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])

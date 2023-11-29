@@ -70,7 +70,8 @@ extension SongsTVC {
 			song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
 			albumRepresentative: album.representativeSongInfo(),
 			spacerTrackNumberText: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer,
-			songsTVC: Weak(self)
+			songsTVC: Weak(self),
+			forBottomOfAlbum: indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
 		)
 		return cell
 	}
