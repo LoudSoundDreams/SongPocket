@@ -23,7 +23,7 @@ struct LavaRock: App {
 	var body: some Scene {
 		WindowGroup {
 			RootView()
-				.edgesIgnoringSafeArea(.all)
+				.ignoresSafeArea()
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()
 				}
