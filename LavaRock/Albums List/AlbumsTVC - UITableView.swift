@@ -8,21 +8,19 @@
 import UIKit
 import SwiftUI
 
-struct NoAlbumsView: View {
-	var body: some View {
-		Text(LRString.noAlbums)
-			.foregroundStyle(.secondary)
-			.font(.title)
-	}
-}
 extension AlbumsTVC {
 	// MARK: - Numbers
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if viewModel.isEmpty() {
-			tableView.backgroundView = UIHostingController(rootView: NoAlbumsView()).view
+			contentUnavailableConfiguration = UIHostingConfiguration {
+				Text(LRString.noAlbums)
+					.foregroundStyle(.secondary)
+					.font(.title)
+			}
+			.margins(.all, .zero)
 		} else {
-			tableView.backgroundView = nil
+			contentUnavailableConfiguration = nil
 		}
 		
 		return viewModel.groups.count
