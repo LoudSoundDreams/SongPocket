@@ -120,7 +120,6 @@ class LibraryTVC: UITableViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
 		if needsFreshenLibraryItemsOnViewDidAppear {
 			needsFreshenLibraryItemsOnViewDidAppear = false
 			freshenLibraryItems()

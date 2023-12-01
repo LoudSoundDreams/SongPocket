@@ -17,7 +17,6 @@ final class SongsTVC: LibraryTVC {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		
 		status.editing = editing
 	}
 	

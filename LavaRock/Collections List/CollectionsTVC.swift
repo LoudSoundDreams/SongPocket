@@ -176,7 +176,6 @@ final class CollectionsTVC: LibraryTVC {
 	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
-		
 		switch purpose {
 			case .movingAlbums, .willOrganizeAlbums, .organizingAlbums: break
 			case .browsing:
@@ -196,7 +195,6 @@ final class CollectionsTVC: LibraryTVC {
 			case .willOrganizeAlbums, .organizingAlbums, .browsing: 
 				break
 		}
-		
 		super.viewDidAppear(animated)
 	}
 	private var forBrowsingAndHasFirstAppeared = false

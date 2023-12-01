@@ -105,7 +105,6 @@ final class AlbumsTVC: LibraryTVC {
 					sinkButton,
 				]
 		}
-		
 		super.setUpBarButtons()
 	}
 	
