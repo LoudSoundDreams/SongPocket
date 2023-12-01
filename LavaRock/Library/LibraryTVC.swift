@@ -107,6 +107,8 @@ class LibraryTVC: UITableViewController {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: .LRMergedChanges, object: nil)
 		
+		view.backgroundColor = UIColor(LRColor.grey_oneEighth)
+		
 		setUpBarButtons()
 	}
 	@objc private func mergedChanges() { reflectDatabase() }
