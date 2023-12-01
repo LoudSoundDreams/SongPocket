@@ -100,7 +100,10 @@ extension CollectionsTVC {
 		}()
 		cell.configure(with: collection, dimmed: !enabled)
 		cell.editingAccessoryType = .detailButton
-		cell.backgroundColor = tinted ? .tintColor.withAlphaComponent(.oneEighth) : .clear
+		cell.backgroundColors_configureForLibraryItem()
+		if tinted {
+			cell.backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
+		}
 		cell.isUserInteractionEnabled = enabled
 		if enabled {
 			cell.accessibilityTraits.subtract(.notEnabled)

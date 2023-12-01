@@ -8,6 +8,17 @@
 
 import UIKit
 
+extension UITableViewCell {
+	final func backgroundColors_configureForLibraryItem() {
+		backgroundColor = .clear
+		selectedBackgroundView = {
+			let result = UIView()
+			result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
+			return result
+		}()
+	}
+}
+
 extension LibraryTVC: TapeDeckReflecting {
 	final func reflect_playbackState() { reflectPlayhead() }
 	final func reflect_nowPlaying() { reflectPlayhead() }

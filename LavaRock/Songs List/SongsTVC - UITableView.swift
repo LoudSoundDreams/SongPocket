@@ -50,6 +50,7 @@ extension SongsTVC {
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
 				cell.selectionStyle = .none // So the user can’t even highlight the cell
+				cell.backgroundColors_configureForLibraryItem()
 				cell.contentConfiguration = UIHostingConfiguration {
 					AlbumHeader(
 						album: album,
@@ -62,7 +63,7 @@ extension SongsTVC {
 					withIdentifier: "Song",
 					for: indexPath) as? SongCell
 				else { return UITableViewCell() }
-				cell.backgroundColor = .clear
+				cell.backgroundColors_configureForLibraryItem()
 				cell.configureWith(
 					song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
 					albumRepresentative: album.representativeSongInfo(),

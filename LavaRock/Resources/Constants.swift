@@ -16,5 +16,6 @@ extension Float {
 }
 extension CGFloat {
 	static var oneEighth: Self { 1/8 }
+	static var oneHalf: Self { 1/2 }
 	static var eight: Self { 8 }
 }

@@ -46,10 +46,10 @@ extension AlbumsTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		cell.backgroundColor = .clear
 		let album = (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row)
 		let (mode, selectionStyle) = new_albumCardMode_and_selectionStyle(album: album)
 		cell.selectionStyle = selectionStyle
+		cell.backgroundColors_configureForLibraryItem()
 		cell.contentConfiguration = UIHostingConfiguration {
 			AlbumCard(
 				album: album,
