@@ -58,22 +58,20 @@ extension SongsTVC {
 				}
 				return cell
 			case .song:
-				break
+				guard let cell = tableView.dequeueReusableCell(
+					withIdentifier: "Song",
+					for: indexPath) as? SongCell
+				else { return UITableViewCell() }
+				cell.backgroundColor = .clear
+				cell.configureWith(
+					song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
+					albumRepresentative: album.representativeSongInfo(),
+					spacerTrackNumberText: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer,
+					songsTVC: Weak(self),
+					forBottomOfAlbum: indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+				)
+				return cell
 		}
-		
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: "Song",
-			for: indexPath) as? SongCell
-		else { return UITableViewCell() }
-		cell.backgroundColor = .clear
-		cell.configureWith(
-			song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
-			albumRepresentative: album.representativeSongInfo(),
-			spacerTrackNumberText: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer,
-			songsTVC: Weak(self),
-			forBottomOfAlbum: indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
-		)
-		return cell
 	}
 	
 	override func tableView(
