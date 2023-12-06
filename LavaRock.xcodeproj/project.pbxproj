@@ -186,7 +186,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		070E194224F340C500B21307 /* Songs List */ = {
+		070E194224F340C500B21307 /* Songs View */ = {
 			isa = PBXGroup;
 			children = (
 				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
@@ -195,21 +195,7 @@
 				073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */,
 				07EC01EB26C895CB00954E08 /* SongsViewModel.swift */,
 			);
-			path = "Songs List";
-			sourceTree = "<group>";
-		};
-		070E194524F3424500B21307 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
-				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
-				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
-				07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */,
-				077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */,
-				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
-				07FB52CA2813909400CCCBA5 /* ArrangeCommand.swift */,
-			);
-			path = Library;
+			path = "Songs View";
 			sourceTree = "<group>";
 		};
 		0723C8CF254A5FA100C3150F /* Frameworks */ = {
@@ -253,12 +239,11 @@
 			isa = PBXGroup;
 			children = (
 				07FF1DDF27F8FF0300DF9B78 /* Resources */,
-				07F4AA172AA2508800AA5F1E /* General */,
 				07FC970A24BAC1050036DD3D /* Persistence */,
-				070E194524F3424500B21307 /* Library */,
-				07DC1B1E24F33C5100AAEEDB /* Collections List */,
-				07DC1B2124F33DF400AAEEDB /* Albums List */,
-				070E194224F340C500B21307 /* Songs List */,
+				07F4AA172AA2508800AA5F1E /* Shared UI */,
+				07DC1B1E24F33C5100AAEEDB /* Crates View */,
+				07DC1B2124F33DF400AAEEDB /* Albums View */,
+				070E194224F340C500B21307 /* Songs View */,
 				07DF65D027766B7B003B2EA3 /* Apple Music */,
 				07E0BBFE2765680C0010117E /* Extensions */,
 				0768309924B42DEE0033E3CC /* Info.plist */,
@@ -284,7 +269,7 @@
 			path = LavaRockUITests;
 			sourceTree = "<group>";
 		};
-		07DC1B1E24F33C5100AAEEDB /* Collections List */ = {
+		07DC1B1E24F33C5100AAEEDB /* Crates View */ = {
 			isa = PBXGroup;
 			children = (
 				07934CFB27CDBFFD002B2444 /* CollectionsTVC.storyboard */,
@@ -296,10 +281,10 @@
 				073E6A8625562B93003C84A5 /* Collections - Views.swift */,
 				07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */,
 			);
-			path = "Collections List";
+			path = "Crates View";
 			sourceTree = "<group>";
 		};
-		07DC1B2124F33DF400AAEEDB /* Albums List */ = {
+		07DC1B2124F33DF400AAEEDB /* Albums View */ = {
 			isa = PBXGroup;
 			children = (
 				07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */,
@@ -310,7 +295,7 @@
 				0736E3A624B8415400A15420 /* Albums - Views.swift */,
 				07EC01E926C8958300954E08 /* AlbumsViewModel.swift */,
 			);
-			path = "Albums List";
+			path = "Albums View";
 			sourceTree = "<group>";
 		};
 		07DF65D027766B7B003B2EA3 /* Apple Music */ = {
@@ -349,15 +334,22 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		07F4AA172AA2508800AA5F1E /* General */ = {
+		07F4AA172AA2508800AA5F1E /* Shared UI */ = {
 			isa = PBXGroup;
 			children = (
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
 				071DC5E62A1045CE0073C854 /* Main Toolbar.swift */,
 				07DF76E32828D8AB00B03103 /* MainToolbar.swift */,
 				07755A57294821860056E90C /* Avatar.swift */,
+				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
+				07F36BBD24FC3CCA0064282D /* LibraryTVC - UITableView.swift */,
+				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
+				07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */,
+				077BCEAD2752F6DE0066DE96 /* OrganizeAlbumsClipboard.swift */,
+				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
+				07FB52CA2813909400CCCBA5 /* ArrangeCommand.swift */,
 			);
-			path = General;
+			path = "Shared UI";
 			sourceTree = "<group>";
 		};
 		07FC970A24BAC1050036DD3D /* Persistence */ = {
