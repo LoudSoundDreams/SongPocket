@@ -109,6 +109,10 @@ class LibraryTVC: UITableViewController {
 		
 		view.backgroundColor = UIColor(LRColor.grey_oneEighth)
 		
+		if let navBar = navigationController?.navigationBar {
+			navBar.scrollEdgeAppearance = navBar.standardAppearance
+		}
+		
 		setUpBarButtons()
 	}
 	@objc private func mergedChanges() { reflectDatabase() }
