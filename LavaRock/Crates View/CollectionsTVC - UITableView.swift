@@ -18,10 +18,10 @@ extension CollectionsTVC {
 			case .allowAccess:
 				contentUnavailableConfiguration = UIHostingConfiguration {
 					ContentUnavailableView {
-						Text(LRString.hiLetsPlay)
+						Text(LRString.welcome_title)
 							.fontTitle2_bold()
 					} description: {
-						Text(LRString.ellipsis_yourAppleMusicLibrary_exclamationMark)
+						Text(LRString.welcome_subtitle)
 					} actions: {
 						Button {
 							Task {

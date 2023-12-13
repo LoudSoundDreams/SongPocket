@@ -61,8 +61,8 @@ enum LRString {
 	
 	static let crates = NSLocalizedString("Crates", comment: "Big title")
 	
-	static let hiLetsPlay = NSLocalizedString("Hi, Let’s Play", comment: "Placeholder when no access to Apple Music; title")
-	static let ellipsis_yourAppleMusicLibrary_exclamationMark = NSLocalizedString("…your Apple Music library!", comment: "Placeholder when no access to Apple Music; subtitle")
+	static let welcome_title = NSLocalizedString("Hi, Let’s Play", comment: "Placeholder when no access to Apple Music; title")
+	static let welcome_subtitle = NSLocalizedString("…your Apple Music library!", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let allowAccess = NSLocalizedString("Allow Access", comment: "Button")
 	
 	static let emptyLibrary_title = NSLocalizedString("Nothing to Hear Here", comment: "Placeholder when library is empty; title")
