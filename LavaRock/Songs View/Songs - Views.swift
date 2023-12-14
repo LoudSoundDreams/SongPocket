@@ -48,12 +48,12 @@ struct SongRow: View {
 	var body: some View {
 		
 		HStack(alignment: .firstTextBaseline) {
+			// Text
 			HStack(
 				alignment: .firstTextBaseline,
-				spacing: .eight * 5/4 // Between track number and title
+				spacing: .eight * 5/4
 			) {
 				TrackNumberLabel(text: trackDisplay, spacerText: trackNumberSpacer)
-				
 				VStack(
 					alignment: .leading,
 					spacing: .eight * 1/2
@@ -99,7 +99,6 @@ struct SongRow: View {
 			}
 			.disabled(listStatus.editing)
 		}
-		.padding(.top, .eight * -1/4)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())

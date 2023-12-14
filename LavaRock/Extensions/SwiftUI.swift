@@ -45,13 +45,9 @@ extension View {
 	}
 	
 	func alignmentGuide_separatorLeading() -> some View {
-		alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-			viewDimensions[.leading]
-		}
+		alignmentGuide(.listRowSeparatorLeading) { viewDim in viewDim[.leading] }
 	}
 	func alignmentGuide_separatorTrailing() -> some View {
-		alignmentGuide(.listRowSeparatorTrailing) { viewDimensions in
-			viewDimensions[.trailing]
-		}
+		alignmentGuide(.listRowSeparatorTrailing) { viewDim in viewDim[.trailing] }
 	}
 }
