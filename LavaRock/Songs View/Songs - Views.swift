@@ -93,12 +93,18 @@ struct SongRow: View {
 					Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
 				}
 			} label: {
-				Image(systemName: "ellipsis")
-					.tint(Color.primary)
-					.fontBody_dynamicTypeSizeUpToXxxLarge()
+				ZStack {
+					Circle()
+						.frame(width: 44, height: 44)
+						.hidden()
+					Image(systemName: "ellipsis")
+						.tint(Color.primary)
+						.fontBody_dynamicTypeSizeUpToXxxLarge()
+				}
 			}
 			.disabled(listStatus.editing)
 		}
+		.padding(.horizontal)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
@@ -207,6 +213,7 @@ final class SongCell: UITableViewCell {
 					.alignmentGuide_separatorTrailing()
 				}
 			}
+			.margins(.all, .zero)
 		} else {
 			spacerNumberLabel.text = spacerTrackNumberText
 			numberLabel.text = trackDisplay
