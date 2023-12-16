@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MusicKit
 import UIKit
 
 struct CollectionRow: View {
@@ -15,13 +16,27 @@ struct CollectionRow: View {
 	
 	var body: some View {
 		HStack {
+			ZStack(alignment: .leading) {
+				AvatarImage(
+					libraryItem: collection,
+					state: SystemMusicPlayer.sharedIfAuthorized!.state, // !
+					queue: SystemMusicPlayer.sharedIfAuthorized!.queue // !
+				).accessibilitySortPriority(10)
+				Chevron().hidden()
+			}
 			Text(title ?? " ") // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
-			Spacer()
-			HStack(alignment: .firstTextBaseline) {
-//				AvatarImage(libraryItem: collection).accessibilitySortPriority(10)
+				.multilineTextAlignment(.center)
+				.frame(maxWidth: .infinity)
+			ZStack(alignment: .trailing) {
+				AvatarImage(
+					libraryItem: collection,
+					state: SystemMusicPlayer.sharedIfAuthorized!.state, // !
+					queue: SystemMusicPlayer.sharedIfAuthorized!.queue // !
+				).hidden()
 				Chevron()
 			}
 		}
+		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
 		.opacity(
 			dimmed
