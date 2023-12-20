@@ -57,7 +57,6 @@ final class MusicLibrary: ObservableObject {
 	}
 }
 extension MusicLibrary {
-	// Updates our database in a sensible way to reflect the fresh `SongInfo`s.
 	func mergeChanges(
 		toMatchInAnyOrder freshInfosInAnyOrder: [SongInfo]
 	) {
@@ -71,7 +70,7 @@ extension MusicLibrary {
 		let isFirstImport = !hasSaved
 		
 		// Find out which `Song`s we need to delete, and which we need to potentially update.
-		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s (and maybe new `Album`s and `Collection`s`) for them.
+		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
 		var potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)] = [] // We’ll sort these eventually.
 		var songsToDelete: [Song] = []
 		
