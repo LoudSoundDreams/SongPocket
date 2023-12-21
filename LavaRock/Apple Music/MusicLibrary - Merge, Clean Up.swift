@@ -29,7 +29,7 @@ extension MusicLibrary {
 		
 		os_signpost(.begin, log: .cleanup, name: "Reindex all Albums and Songs")
 		allCollections.forEach {
-			reindexAlbums(
+			Self.reindexAlbums(
 				in: $0,
 				shouldSortByNewestFirst: isFirstImport)
 		}
@@ -83,7 +83,7 @@ extension MusicLibrary {
 	
 	// MARK: Reindex
 	
-	private func reindexAlbums(
+	private static func reindexAlbums(
 		in collection: Collection,
 		shouldSortByNewestFirst: Bool
 	) {
@@ -96,7 +96,7 @@ extension MusicLibrary {
 		albumsInCollection.reindex()
 	}
 	
-	private func sortedByNewestFirstAndUnknownReleaseDateLast(
+	private static func sortedByNewestFirstAndUnknownReleaseDateLast(
 		_ albums: [Album]
 	) -> [Album] {
 		var albumsCopy = albums
