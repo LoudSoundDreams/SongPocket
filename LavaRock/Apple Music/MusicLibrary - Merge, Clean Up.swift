@@ -34,7 +34,7 @@ extension MusicLibrary {
 				shouldSortByNewestFirst: isFirstImport)
 		}
 		allAlbums.forEach {
-			reindexSongs(in: $0)
+			$0.renumberSongs()
 		}
 		os_signpost(.end, log: .cleanup, name: "Reindex all Albums and Songs")
 	}
@@ -111,11 +111,5 @@ extension MusicLibrary {
 			rightAlbum.releaseDateEstimate == nil
 		}
 		return albumsCopy
-	}
-	
-	private func reindexSongs(in album: Album) {
-		var songsInAlbum = album.songs(sorted: true)
-		
-		songsInAlbum.reindex()
 	}
 }
