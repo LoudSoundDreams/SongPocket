@@ -21,13 +21,14 @@ extension CollectionsTVC {
 		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
 		
 		let fallback = LRString.tilde
-		let existingTitle = collection.title ?? fallback
+		let existingTitle = collection.title// ?? fallback
 		
 		let dialog = UIAlertController(
-			title: String.localizedStringWithFormat(
-				LRString.variable_rename_FolderName,
-				existingTitle
-			),
+			title: LRString.rename,
+//			title: String.localizedStringWithFormat(
+//				LRString.variable_rename_FolderName,
+//				existingTitle
+//			),
 			message: nil,
 			preferredStyle: .alert)
 		
