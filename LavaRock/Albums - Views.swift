@@ -73,6 +73,7 @@ struct AlbumCard: View {
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
 }
+
 struct CoverArtView: View {
 	let albumRepresentative: (any SongInfo)?
 	let largerThanOrEqualToSizeInPoints: CGFloat
@@ -100,6 +101,7 @@ struct CoverArtView: View {
 		}
 	}
 }
+
 import MusicKit
 struct AlbumInfoRow: View {
 	let album: Album
