@@ -92,7 +92,7 @@ struct CoverArtView: View {
 			ZStack {
 				Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
 					.aspectRatio(1, contentMode: .fit)
-				Image(systemName: "music.note")
+				Image(systemName: "opticaldisc")
 					.foregroundStyle(.secondary)
 					.font(.system(size: .eight * 4))
 			}
