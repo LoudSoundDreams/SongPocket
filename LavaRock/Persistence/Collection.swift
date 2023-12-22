@@ -70,6 +70,12 @@ extension Collection {
 		}
 	}
 	
+	// Similar to `Album.renumberSongs`.
+	final func renumberAlbums() {
+		var albums = albums(sorted: true)
+		albums.reindex()
+	}
+	
 	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn’t delete empty source `Collection`s. You must call `deleteEmptyCollections` later.
 	final func unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
 		atIndex: Int,
@@ -95,8 +101,7 @@ extension Collection {
 		
 		// In case we moved any albums to this collection that were already here.
 		if possiblyToSame {
-			var newContents = albums(sorted: true)
-			newContents.reindex()
+			renumberAlbums()
 		}
 	}
 }

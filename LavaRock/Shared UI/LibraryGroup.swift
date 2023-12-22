@@ -9,7 +9,7 @@ import CoreData
 
 protocol LibraryGroup {
 	var container: NSManagedObject? { get }
-	var items: [NSManagedObject] { get set } // You must add a `didSet` that calls `_reindex()`.
+	var items: [NSManagedObject] { get set } // You must add a `didSet` that calls `_reindex`.
 }
 extension LibraryGroup {
 	// Must match `[LibraryItem].reindex`.
@@ -27,9 +27,7 @@ struct CollectionsGroup {
 	// `LibraryGroup`
 	let container: NSManagedObject? = nil
 	var items: [NSManagedObject] {
-		didSet {
-			_reindex()
-		}
+		didSet { _reindex() }
 	}
 	
 	init(context: NSManagedObjectContext) {
@@ -42,9 +40,7 @@ struct AlbumsGroup {
 	// `LibraryGroup`
 	let container: NSManagedObject?
 	var items: [NSManagedObject] {
-		didSet {
-			_reindex()
-		}
+		didSet { _reindex() }
 	}
 	
 	init(
@@ -61,9 +57,7 @@ struct SongsGroup {
 	// `LibraryGroup`
 	let container: NSManagedObject?
 	var items: [NSManagedObject] {
-		didSet {
-			_reindex()
-		}
+		didSet { _reindex() }
 	}
 	
 	let trackNumberSpacer: String
