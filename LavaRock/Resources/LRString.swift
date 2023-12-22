@@ -72,7 +72,7 @@ enum LRString {
 	static let name = NSLocalizedString("Name", comment: "The word for the title of a crate. Also an Arrange option.")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let renameCrate = NSLocalizedString("Rename Crate", comment: "Alert title")
+//	static let renameCrate = NSLocalizedString("Rename Crate", comment: "Alert title")
 	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	
@@ -100,6 +100,10 @@ enum LRString {
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Arrange option")
 	
 	// MARK: - WITH VARIABLES, BUT NO TEXT VARIATIONS
+	
+	static let variable_rename_FolderName = NSLocalizedString(
+		"Rename “%@”",
+		comment: "Alert title. Include the name of the folder before renaming.")
 	
 	// MARK: - WITH VARIABLES AND TEXT VARIATIONS
 	// (Format strings from dictionaries)

@@ -20,7 +20,10 @@ final class SongsTVC: LibraryTVC {
 		status.editing = editing
 	}
 	
-	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.arrange)
+	private lazy var arrangeSongsButton = UIBarButtonItem(
+		title: LRString.arrange,
+		image: UIImage(systemName: "arrow.up.arrow.down")
+	)
 	override func setUpBarButtons() {
 		viewingModeTopRightButtons = [editButtonItem]
 		editingModeToolbarButtons = [

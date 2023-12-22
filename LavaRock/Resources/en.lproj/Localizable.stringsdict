@@ -32,7 +32,7 @@
 	<key>plural_Move_X_albums_to_another_crate</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Move %#@NUM_ALBUMS@ to another crate.</string>
+		<string>Move %#@NUM_ALBUMS@ to…</string>
 		<key>NUM_ALBUMS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>

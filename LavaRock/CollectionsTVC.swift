@@ -8,6 +8,7 @@
 
 import UIKit
 import MusicKit
+import SwiftUI
 
 extension CollectionsTVC: UIAdaptivePresentationControllerDelegate {
 	func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
@@ -39,7 +40,10 @@ final class CollectionsTVC: LibraryTVC {
 	private lazy var combineButton = UIBarButtonItem(
 		title: LRString.combine,
 		primaryAction: UIAction { [weak self] _ in self?.previewCombine() })
-	private lazy var arrangeCollectionsButton = UIBarButtonItem(title: LRString.arrange)
+	private lazy var arrangeCollectionsButton = UIBarButtonItem(
+		title: LRString.arrange,
+		image: UIImage(systemName: "arrow.up.arrow.down")
+	)
 	
 	// Purpose
 	var purpose: Purpose {
@@ -118,7 +122,13 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
-		title = LRString.crates
+		navigationItem.titleView = {
+			let view = UIHostingController(
+				rootView: Image(systemName: "folder")
+			).view
+			view?.backgroundColor = .clear
+			return view
+		}()
 	}
 	@objc private func userUpdatedDatabase() { reflectDatabase() }
 	

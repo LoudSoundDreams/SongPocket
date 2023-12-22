@@ -20,16 +20,21 @@ extension CollectionsTVC {
 	func promptRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
 		
+		let fallback = LRString.tilde
+		let existingTitle = collection.title ?? fallback
+		
 		let dialog = UIAlertController(
-			title: LRString.renameCrate,
+			title: String.localizedStringWithFormat(
+				LRString.variable_rename_FolderName,
+				existingTitle
+			),
 			message: nil,
 			preferredStyle: .alert)
 		
-		let existingTitle = collection.title
 		dialog.addTextField {
 			// UITextField
 			$0.text = existingTitle
-			$0.placeholder = LRString.tilde
+			$0.placeholder = fallback
 			$0.clearButtonMode = .always
 			
 			// UITextInputTraits
