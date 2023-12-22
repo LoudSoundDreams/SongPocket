@@ -106,6 +106,7 @@ final class MainToolbar {
 			UIMenu(
 				options: .displayInline,
 				children: [
+					
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
 							title: LRString.previous,
@@ -137,6 +138,7 @@ final class MainToolbar {
 						}
 						useMenuElements([action])
 					}),
+					
 				].reversed()
 			),
 			
