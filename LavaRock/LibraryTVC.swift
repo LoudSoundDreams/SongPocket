@@ -48,9 +48,7 @@ class LibraryTVC: UITableViewController {
 	private(set) final lazy var floatButton = UIBarButtonItem(
 		title: LRString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line"),
-		primaryAction: UIAction { [weak self] _ in
-			self?.floatSelected()
-		}
+		primaryAction: UIAction { [weak self] _ in self?.floatSelected() }
 	)
 	private func floatSelected() {
 		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
@@ -72,9 +70,7 @@ class LibraryTVC: UITableViewController {
 	private(set) final lazy var sinkButton = UIBarButtonItem(
 		title: LRString.moveToBottom,
 		image: UIImage(systemName: "arrow.down.to.line"),
-		primaryAction: UIAction { [weak self] _ in
-			self?.sinkSelected()
-		}
+		primaryAction: UIAction { [weak self] _ in self?.sinkSelected() }
 	)
 	private func sinkSelected() {
 		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }

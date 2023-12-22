@@ -75,11 +75,15 @@ final class AlbumsTVC: LibraryTVC {
 		switch purpose {
 			case .previewingCombine:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(systemItem: .close, primaryAction: cancel_combine_action),
+					UIBarButtonItem(
+						systemItem: .close,
+						primaryAction: cancel_combine_action),
 				]
 				viewingModeTopRightButtons = [
 					{
-						let saveCombineButton = UIBarButtonItem(systemItem: .save, primaryAction: save_combine_action)
+						let saveCombineButton = UIBarButtonItem(
+							systemItem: .save,
+							primaryAction: save_combine_action)
 						saveCombineButton.style = .done
 						return saveCombineButton
 					}(),
@@ -89,11 +93,12 @@ final class AlbumsTVC: LibraryTVC {
 			case .movingAlbums:
 				viewingModeTopRightButtons = [
 					{
-						let moveButton = UIBarButtonItem(title: LRString.move, primaryAction: UIAction { [weak self] _ in
-							self?.moveHere()
-						})
-						moveButton.style = .done
-						return moveButton
+						let moveHereButton = UIBarButtonItem(
+							title: LRString.move,
+							primaryAction: UIAction { [weak self] _ in self?.moveHere() }
+						)
+						moveHereButton.style = .done
+						return moveHereButton
 					}(),
 				]
 			case .browsing:

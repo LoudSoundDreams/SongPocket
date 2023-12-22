@@ -126,15 +126,19 @@ final class CollectionsTVC: LibraryTVC {
 		switch purpose {
 			case .willOrganizeAlbums:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
-						self?.dismiss(animated: true)
-					}),
+					UIBarButtonItem(
+						systemItem: .close,
+						primaryAction: UIAction { [weak self] _ in
+							self?.dismiss(animated: true)
+						}
+					),
 				]
 				viewingModeTopRightButtons = [
 					{
-						let saveOrganizeButton = UIBarButtonItem(systemItem: .save, primaryAction: UIAction { [weak self] _ in
-							self?.commitOrganize()
-						})
+						let saveOrganizeButton = UIBarButtonItem(
+							systemItem: .save,
+							primaryAction: UIAction { [weak self] _ in self?.commitOrganize() }
+						)
 						saveOrganizeButton.style = .done
 						return saveOrganizeButton
 					}(),
@@ -143,14 +147,18 @@ final class CollectionsTVC: LibraryTVC {
 				break
 			case .movingAlbums:
 				viewingModeTopLeftButtons = [
-					UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
-						self?.dismiss(animated: true)
-					}),
+					UIBarButtonItem(
+						systemItem: .close,
+						primaryAction: UIAction { [weak self] _ in
+							self?.dismiss(animated: true)
+						}
+					),
 				]
 				viewingModeTopRightButtons = [
-					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in
-						self?.createAndOpen()
-					}),
+					UIBarButtonItem(
+						systemItem: .add,
+						primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }
+					),
 				]
 			case .browsing:
 				viewingModeTopLeftButtons = []
