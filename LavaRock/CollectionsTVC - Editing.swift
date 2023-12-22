@@ -25,10 +25,6 @@ extension CollectionsTVC {
 		
 		let dialog = UIAlertController(
 			title: LRString.rename,
-//			title: String.localizedStringWithFormat(
-//				LRString.variable_rename_FolderName,
-//				existingTitle
-//			),
 			message: nil,
 			preferredStyle: .alert)
 		

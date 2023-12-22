@@ -101,10 +101,6 @@ enum LRString {
 	
 	// MARK: - WITH VARIABLES, BUT NO TEXT VARIATIONS
 	
-	static let variable_rename_FolderName = NSLocalizedString(
-		"Rename “%@”",
-		comment: "Alert title. Include the name of the folder before renaming.")
-	
 	// MARK: - WITH VARIABLES AND TEXT VARIATIONS
 	// (Format strings from dictionaries)
 	

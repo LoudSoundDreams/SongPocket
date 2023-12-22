@@ -121,13 +121,6 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
-//		navigationItem.titleView = {
-//			let view = UIHostingController(
-//				rootView: Image(systemName: "folder")
-//			).view
-//			view?.backgroundColor = .clear
-//			return view
-//		}()
 	}
 	@objc private func userUpdatedDatabase() { reflectDatabase() }
 	
