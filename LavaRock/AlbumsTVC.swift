@@ -68,8 +68,8 @@ final class AlbumsTVC: LibraryTVC {
 					is_previewing_combine_with_album_count)
 			case .organizingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
-			case .movingAlbums(let clipboard):
-				navigationItem.prompt = clipboard.prompt
+			case .movingAlbums: break
+//				navigationItem.prompt = clipboard.prompt
 			case .browsing:
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(didOrganizeAlbums), name: .LROrganizedAlbums, object: nil)
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(didMoveAlbums), name: .LRMovedAlbums, object: nil)

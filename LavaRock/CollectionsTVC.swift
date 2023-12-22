@@ -113,8 +113,8 @@ final class CollectionsTVC: LibraryTVC {
 		
 		switch purpose {
 			case .willOrganizeAlbums, .organizingAlbums: break
-			case .movingAlbums(let clipboard):
-				navigationItem.prompt = clipboard.prompt
+			case .movingAlbums: break
+//				navigationItem.prompt = clipboard.prompt
 			case .browsing:
 				AppleMusic.loadingIndicator = self
 				
