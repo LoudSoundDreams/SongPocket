@@ -41,8 +41,7 @@ final class CollectionsTVC: LibraryTVC {
 		title: LRString.combine,
 		primaryAction: UIAction { [weak self] _ in self?.previewCombine() })
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(
-		title: LRString.arrange,
-		image: UIImage(systemName: "arrow.up.arrow.down")
+		title: LRString.arrange
 	)
 	
 	// Purpose
