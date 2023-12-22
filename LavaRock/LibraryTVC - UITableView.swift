@@ -51,7 +51,7 @@ extension LibraryTVC {
 		newItems.insert(itemBeingMoved, at: toIndex)
 		viewModel.groups[0].items = newItems
 		
-		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the “Arrange” button. If you made all the selected rows contiguous, that should enable the “Arrange” button.
+		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
 	}
 	
 	// MARK: - Selecting

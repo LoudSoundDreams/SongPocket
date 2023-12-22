@@ -21,7 +21,7 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	private lazy var arrangeSongsButton = UIBarButtonItem(
-		title: LRString.arrange
+		title: LRString.sort
 	)
 	override func setUpBarButtons() {
 		viewingModeTopRightButtons = [editButtonItem]

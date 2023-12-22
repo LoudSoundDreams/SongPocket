@@ -22,7 +22,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// Controls
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(
-		title: LRString.arrange
+		title: LRString.sort
 	)
 	private lazy var moveButton = UIBarButtonItem(
 		title: LRString.move,

@@ -167,7 +167,7 @@ class LibraryTVC: UITableViewController {
 		Task {
 			/*
 			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
-			 • “Arrange” menu (`LibraryTVC`)
+			 • “Sort” menu (`LibraryTVC`)
 			 • “Rename” dialog (`CollectionsTVC`)
 			 • “Combine” dialog (`CollectionsTVC`)
 			 • “Move” menu (`AlbumsTVC`)
