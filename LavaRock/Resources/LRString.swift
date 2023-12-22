@@ -59,8 +59,6 @@ enum LRString {
 	
 	// MARK: - Crates view
 	
-	static let crates = NSLocalizedString("Crates", comment: "Big title")
-	
 	static let welcome_title = NSLocalizedString("Hi, Let’s Play", comment: "Placeholder when no access to Apple Music; title")
 	static let welcome_subtitle = NSLocalizedString("…your Apple Music library!", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let allowAccess = NSLocalizedString("Allow Access", comment: "Button")
@@ -69,16 +67,12 @@ enum LRString {
 	static let emptyLibrary_subtitle = NSLocalizedString("Your library’s empty.", comment: "Placeholder when library is empty; subtitle")
 	static let emptyLibrary_button = NSLocalizedString("Add Music", comment: "Button")
 	
-	static let name = NSLocalizedString("Name", comment: "The word for the title of a crate. Also a sort option.")
-	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-//	static let renameCrate = NSLocalizedString("Rename Crate", comment: "Alert title")
-	
 	static let combine = NSLocalizedString("Combine", comment: "Button")
 	
-	// MARK: Albums view
+	static let name = NSLocalizedString("Name", comment: "The word for the title of a crate. Also a sort option.")
 	
-	static let noAlbums = NSLocalizedString("No Albums", comment: "Placeholder when showing an empty crate")
+	// MARK: Albums view
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
 	static let byArtistEllipsis = NSLocalizedString("By Artist…", comment: "Menu option")
@@ -88,8 +82,6 @@ enum LRString {
 	static let oldest = NSLocalizedString("Oldest", comment: "Sort option")
 	
 	// MARK: Songs view
-	
-	static let noSongs = NSLocalizedString("No Songs", comment: "Placeholder when showing an empty album")
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
@@ -107,9 +99,6 @@ enum LRString {
 	static let variable_moveXAlbumsToYCrates_questionMark = NSLocalizedString(
 		"plural_Move_X_albums_to_Y_crates_questionMark",
 		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of crates it’s moving them into.")
-	static let variable_moveXAlbumsToAnotherCrate = NSLocalizedString(
-		"plural_Move_X_albums_to_another_crate",
-		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
 	static let variable_moveXAlbumsIntoOneCrate_questionMark = NSLocalizedString(
 		"plural_Move_X_albums_into_one_crate_questionMark",
 		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created crate.")

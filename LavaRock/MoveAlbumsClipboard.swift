@@ -11,11 +11,6 @@ final class MoveAlbumsClipboard {
 	let idsOfAlbumsBeingMoved: [NSManagedObjectID]
 	let idsOfAlbumsBeingMovedAsSet: Set<NSManagedObjectID>
 	let idsOfSourceCollections: Set<NSManagedObjectID>
-//	var prompt: String {
-//		return String.localizedStringWithFormat(
-//			LRString.variable_moveXAlbumsToAnotherCrate,
-//			idsOfAlbumsBeingMovedAsSet.count)
-//	}
 	
 	// State
 	var hasCreatedNewCollection = false

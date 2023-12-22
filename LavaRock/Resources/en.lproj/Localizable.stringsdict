@@ -29,22 +29,6 @@
 			<string>%lld crates</string>
 		</dict>
 	</dict>
-	<key>plural_Move_X_albums_to_another_crate</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>Move %#@NUM_ALBUMS@ to…</string>
-		<key>NUM_ALBUMS</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>lld</string>
-			<key>one</key>
-			<string>%lld album</string>
-			<key>other</key>
-			<string>%lld albums</string>
-		</dict>
-	</dict>
 	<key>plural_Move_X_albums_into_one_crate_questionMark</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

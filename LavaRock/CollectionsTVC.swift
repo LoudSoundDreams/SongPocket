@@ -111,9 +111,7 @@ final class CollectionsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		switch purpose {
-			case .willOrganizeAlbums, .organizingAlbums: break
-			case .movingAlbums: break
-//				navigationItem.prompt = clipboard.prompt
+			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: break
 			case .browsing:
 				AppleMusic.loadingIndicator = self
 				
