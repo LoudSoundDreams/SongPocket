@@ -164,7 +164,7 @@ final class CollectionsTVC: LibraryTVC {
 				viewingModeTopLeftButtons = []
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
-					combineButton, .flexibleSpace(),
+//					combineButton, .flexibleSpace(),
 					arrangeCollectionsButton, .flexibleSpace(),
 					floatButton, .flexibleSpace(),
 					sinkButton,
