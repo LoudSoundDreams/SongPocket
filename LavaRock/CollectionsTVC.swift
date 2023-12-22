@@ -204,6 +204,25 @@ final class CollectionsTVC: LibraryTVC {
 		reflectViewState()
 	}
 	
+	func requestAccessToAppleMusic() async {
+		switch MusicAuthorization.currentStatus {
+			case .authorized: break // Should never run
+			case .notDetermined:
+				let response = await MusicAuthorization.request()
+				
+				switch response {
+					case .denied, .restricted, .notDetermined: break
+					case .authorized: await AppleMusic.integrateIfAuthorized()
+					@unknown default: break
+				}
+			case .denied, .restricted:
+				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+					let _ = await UIApplication.shared.open(settingsURL)
+				}
+			@unknown default: break
+		}
+	}
+	
 	// MARK: - Library items
 	
 	private func commitOrganize() {
