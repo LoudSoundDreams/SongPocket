@@ -99,10 +99,10 @@ enum LRString {
 	
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Arrange option")
 	
+	// MARK: - WITH VARIABLES, BUT NO TEXT VARIATIONS
+	
 	// MARK: - WITH VARIABLES AND TEXT VARIATIONS
 	// (Format strings from dictionaries)
-	
-	// MARK: Crates and Albums views
 	
 	static let variable_moveXAlbumsToYCrates_questionMark = NSLocalizedString(
 		"plural_Move_X_albums_to_Y_crates_questionMark",
@@ -110,9 +110,6 @@ enum LRString {
 	static let variable_moveXAlbumsToAnotherCrate = NSLocalizedString(
 		"plural_Move_X_albums_to_another_crate",
 		comment: "Prompt that appears atop the “move albums” sheet. Include the number of albums the user is moving.")
-	
-	// MARK: Albums view
-	
 	static let variable_moveXAlbumsIntoOneCrate_questionMark = NSLocalizedString(
 		"plural_Move_X_albums_into_one_crate_questionMark",
 		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created crate.")
