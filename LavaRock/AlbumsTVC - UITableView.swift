@@ -14,7 +14,7 @@ extension AlbumsTVC {
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if viewModel.isEmpty() {
 			contentUnavailableConfiguration = UIHostingConfiguration {
-				Text(LRString.noAlbums)
+				Image(systemName: "square.stack")
 					.foregroundStyle(.secondary)
 					.font(.title)
 			}

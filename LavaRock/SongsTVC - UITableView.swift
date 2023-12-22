@@ -14,7 +14,7 @@ extension SongsTVC {
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if viewModel.isEmpty() {
 			contentUnavailableConfiguration = UIHostingConfiguration {
-				Text(LRString.noSongs)
+				Image(systemName: "music.note")
 					.foregroundStyle(.secondary)
 					.font(.title)
 			}
