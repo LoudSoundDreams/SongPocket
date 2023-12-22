@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MusicKit
 
 enum AvatarStatus {
 	case notPlaying
@@ -28,39 +29,6 @@ enum AvatarStatus {
 		}
 	}
 }
-
-@MainActor
-protocol AvatarReflecting: AnyObject {
-	func reflectAvatarStatus(_ status: AvatarStatus)
-}
-extension CollectionCell: AvatarReflecting {
-	func reflectAvatarStatus(_ status: AvatarStatus) {
-		if Self.usesSwiftUI { return }
-		
-		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
-		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
-		
-		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
-		speakerImageView.image = status.uiImage
-		
-		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
-	}
-}
-extension SongCell: AvatarReflecting {
-	func reflectAvatarStatus(_ status: AvatarStatus) {
-		if Self.usesSwiftUI { return }
-		
-		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
-		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
-		
-		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
-		speakerImageView.image = status.uiImage
-		
-		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
-	}
-}
-
-import MusicKit
 
 struct AvatarImage: View {
 	let libraryItem: LibraryItem
@@ -111,5 +79,36 @@ struct AvatarImage: View {
 				playing_image
 					.foregroundStyle(Color.accentColor)
 		}
+	}
+}
+
+@MainActor
+protocol AvatarReflecting: AnyObject {
+	func reflectAvatarStatus(_ status: AvatarStatus)
+}
+extension CollectionCell: AvatarReflecting {
+	func reflectAvatarStatus(_ status: AvatarStatus) {
+		if Self.usesSwiftUI { return }
+		
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
+		speakerImageView.image = status.uiImage
+		
+		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
+	}
+}
+extension SongCell: AvatarReflecting {
+	func reflectAvatarStatus(_ status: AvatarStatus) {
+		if Self.usesSwiftUI { return }
+		
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
+		speakerImageView.image = status.uiImage
+		
+		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 }
