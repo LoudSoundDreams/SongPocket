@@ -21,14 +21,16 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Properties
 	
 	// Controls
-	private lazy var arrangeAlbumsButton = UIBarButtonItem(
-		title: LRString.sort
-	)
 	private lazy var moveButton = UIBarButtonItem(
 		title: LRString.move,
+		image: UIImage(systemName: "folder"),
 		primaryAction: UIAction { [weak self] _ in self?.startMoving() }
 	)
 //	private lazy var moveButton = UIBarButtonItem(title: LRString.move)
+	private lazy var arrangeAlbumsButton = UIBarButtonItem(
+		title: LRString.sort,
+		image: UIImage(systemName: "arrow.up.arrow.down")
+	)
 	
 	// Purpose
 	var purpose: Purpose {
