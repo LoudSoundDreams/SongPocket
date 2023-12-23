@@ -19,7 +19,6 @@ final class MainToolbar {
 			jumpBackButton, .flexibleSpace(),
 			playPauseButton, .flexibleSpace(),
 			jumpForwardButton, .flexibleSpace(),
-			nextButton,
 		]
 	}
 	
@@ -34,19 +33,6 @@ final class MainToolbar {
 	)
 	
 	private lazy var playPauseButton = UIBarButtonItem()
-	
-	private lazy var nextButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.next,
-			image: UIImage(systemName: "forward.end.circle"),
-			primaryAction: UIAction { _ in
-				Task {
-					try await Self.player?.skipToNextEntry()
-				}
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
 	
 	private lazy var jumpBackButton: UIBarButtonItem = {
 		let button = UIBarButtonItem(
@@ -110,7 +96,7 @@ final class MainToolbar {
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
 							title: LRString.previous,
-							image: UIImage(systemName: "backward.end.circle"),
+							image: UIImage(systemName: "backward.end"),
 							attributes: {
 								var result: UIMenuElement.Attributes = [.keepsMenuPresented]
 								if Self.player == nil { result.formUnion(.disabled) }
@@ -127,7 +113,7 @@ final class MainToolbar {
 					UIDeferredMenuElement.uncached({ useMenuElements in
 						let action = UIAction(
 							title: LRString.restart,
-							image: UIImage(systemName: "arrow.counterclockwise.circle"),
+							image: UIImage(systemName: "arrow.counterclockwise"),
 							attributes: {
 								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
 								if Self.player == nil { return .disabled }
@@ -135,6 +121,23 @@ final class MainToolbar {
 							}()
 						) { _ in
 							Self.player?.restartCurrentEntry()
+						}
+						useMenuElements([action])
+					}),
+					
+					UIDeferredMenuElement.uncached({ useMenuElements in
+						let action = UIAction(
+							title: LRString.next,
+							image: UIImage(systemName: "forward.end"),
+							attributes: {
+								var result: UIMenuElement.Attributes = [.keepsMenuPresented]
+								if Self.player == nil { result.formUnion(.disabled) }
+								return result
+							}()
+						) { _ in
+							Task {
+								try await Self.player?.skipToNextEntry()
+							}
 						}
 						useMenuElements([action])
 					}),

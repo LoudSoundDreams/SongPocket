@@ -25,11 +25,11 @@ final class SongsTVC: LibraryTVC {
 		image: UIImage(systemName: "arrow.up.arrow.down")
 	)
 	override func setUpBarButtons() {
-		viewingModeTopRightButtons = [editButtonItem]
 		editingModeToolbarButtons = [
 			arrangeSongsButton, .flexibleSpace(),
 			floatButton, .flexibleSpace(),
-			sinkButton,
+			sinkButton, .flexibleSpace(),
+			editButtonItem,
 		]
 		
 		super.setUpBarButtons()

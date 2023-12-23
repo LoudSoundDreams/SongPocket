@@ -348,14 +348,14 @@ class LibraryTVC: UITableViewController {
 			editing ? [] : viewingModeTopLeftButtons,
 			animated: animated)
 		navigationItem.setRightBarButtonItems(
-			editing ? [editButtonItem] : viewingModeTopRightButtons,
+			editing ? [] : viewingModeTopRightButtons,
 			animated: animated)
 		
 		setToolbarItems(
 			editing ? editingModeToolbarButtons : viewingModeToolbarItems,
 			animated: animated)
 	}
-	private lazy var viewingModeToolbarItems: [UIBarButtonItem] = MainToolbar.shared.barButtonItems
+	private lazy var viewingModeToolbarItems: [UIBarButtonItem] = MainToolbar.shared.barButtonItems + [editButtonItem]
 	
 	// For clarity, call this rather than `freshenEditingButtons` directly, whenever possible.
 	final func didChangeRowsOrSelectedRows() {
@@ -391,6 +391,11 @@ class LibraryTVC: UITableViewController {
 		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
 		
 		editButtonItem.isEnabled = !viewModel.isEmpty()
+		editButtonItem.image = (
+			isEditing
+			? UIImage(systemName: "checkmark.circle.fill")
+			: UIImage(systemName: "checkmark.circle")
+		)
 		
 		let allowsFloatAndSink: Bool = {
 			guard !viewModel.isEmpty() else {
