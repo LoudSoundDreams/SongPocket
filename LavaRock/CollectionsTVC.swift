@@ -162,7 +162,6 @@ final class CollectionsTVC: LibraryTVC {
 					),
 				]
 			case .browsing:
-				viewingModeTopLeftButtons = []
 				viewingModeTopRightButtons = [editButtonItem]
 				editingModeToolbarButtons = [
 //					combineButton, .flexibleSpace(),

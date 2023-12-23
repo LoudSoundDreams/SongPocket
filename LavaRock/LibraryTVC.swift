@@ -345,7 +345,7 @@ class LibraryTVC: UITableViewController {
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
 		
 		navigationItem.setLeftBarButtonItems(
-			editing ? [.flexibleSpace()] : viewingModeTopLeftButtons,
+			editing ? [] : viewingModeTopLeftButtons,
 			animated: animated)
 		navigationItem.setRightBarButtonItems(
 			editing ? [editButtonItem] : viewingModeTopRightButtons,
