@@ -148,7 +148,7 @@ final class MainToolbar {
 			),
 			
 		]
-		return UIMenu(children: menuElements.reversed())
+		return UIMenu(children: menuElements)
 	}
 	
 	// MARK: -
