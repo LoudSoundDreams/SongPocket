@@ -15,10 +15,11 @@ final class MainToolbar {
 	static let shared = MainToolbar()
 	var barButtonItems: [UIBarButtonItem] {
 		return [
-			overflowButton, .flexibleSpace(),
+			.flexibleSpace(),
 			jumpBackButton, .flexibleSpace(),
 			playPauseButton, .flexibleSpace(),
 			jumpForwardButton, .flexibleSpace(),
+			overflowButton,
 		]
 	}
 	

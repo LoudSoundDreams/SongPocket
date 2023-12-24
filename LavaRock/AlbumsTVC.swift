@@ -110,11 +110,11 @@ final class AlbumsTVC: LibraryTVC {
 				]
 			case .browsing:
 				editingModeToolbarButtons = [
+					editButtonItem, .flexibleSpace(),
 					moveButton, .flexibleSpace(),
 					arrangeAlbumsButton, .flexibleSpace(),
 					floatButton, .flexibleSpace(),
-					sinkButton, .flexibleSpace(),
-					editButtonItem,
+					sinkButton,
 				]
 		}
 		super.setUpBarButtons()
