@@ -92,6 +92,7 @@ final class MainToolbar {
 			// Transport
 			UIMenu(
 				options: .displayInline,
+				preferredElementSize: .small,
 				children: [
 					
 					UIDeferredMenuElement.uncached({ useMenuElements in
@@ -143,7 +144,7 @@ final class MainToolbar {
 						useMenuElements([action])
 					}),
 					
-				].reversed()
+				]
 			),
 			
 		]
