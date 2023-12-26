@@ -11,10 +11,6 @@ import OSLog
 
 extension Album: LibraryContainer {}
 extension Album: LibraryItem {
-	final var libraryTitle: String? {
-		return representativeSongInfo()?.albumTitleOnDisk
-	}
-	
 	@MainActor
 	final func containsPlayhead() -> Bool {
 #if targetEnvironment(simulator)

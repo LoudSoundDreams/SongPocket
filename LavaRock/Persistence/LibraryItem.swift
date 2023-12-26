@@ -21,7 +21,6 @@ extension LibraryContainer {
 }
 
 protocol LibraryItem: NSManagedObject {
-	var libraryTitle: String? { get }
 	var index: Int64 { get set }
 	
 	func containsPlayhead() -> Bool

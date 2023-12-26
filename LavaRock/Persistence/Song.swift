@@ -9,10 +9,6 @@ import CoreData
 import MediaPlayer
 
 extension Song: LibraryItem {
-	final var libraryTitle: String? {
-		return songInfo()?.titleOnDisk
-	}
-	
 	@MainActor
 	final func containsPlayhead() -> Bool {
 #if targetEnvironment(simulator)

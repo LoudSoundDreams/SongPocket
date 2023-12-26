@@ -10,10 +10,6 @@ import OSLog
 
 extension Collection: LibraryContainer {}
 extension Collection: LibraryItem {
-	final var libraryTitle: String? {
-		return title
-	}
-	
 	@MainActor
 	final func containsPlayhead() -> Bool {
 #if targetEnvironment(simulator)

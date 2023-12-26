@@ -42,7 +42,7 @@ extension NSManagedObjectContext {
 				$0.container!.index,
 				$0.index,
 				$0.persistentID,
-				$0.libraryTitle ?? ""
+				$0.songInfo()?.titleOnDisk ?? "—"
 			)
 		}
 	}
