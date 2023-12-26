@@ -359,7 +359,7 @@ class LibraryTVC: UITableViewController {
 			editing ? editingModeToolbarButtons : viewingModeToolbarItems,
 			animated: animated)
 	}
-	private lazy var viewingModeToolbarItems: [UIBarButtonItem] = [editButtonItem] + MainToolbar.shared.barButtonItems
+	private lazy var viewingModeToolbarItems: [UIBarButtonItem] = MainToolbar.shared.barButtonItems + [editButtonItem]
 	
 	// For clarity, call this rather than `freshenEditingButtons` directly, whenever possible.
 	final func didChangeRowsOrSelectedRows() {
