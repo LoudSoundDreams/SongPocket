@@ -169,8 +169,6 @@ class LibraryTVC: UITableViewController {
 			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
 			 • “Sort” menu (`LibraryTVC`)
 			 • “Rename” dialog (`CollectionsTVC`)
-			 • “Move” menu (`AlbumsTVC`)
-			 • “Organize albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “organize albums” sheet)
 			 • “Move albums” sheet (`CollectionsTVC` and `AlbumsTVC` when in “move albums” sheet)
 			 • Song actions, including overflow menu (`SongsTVC`)
 			 */

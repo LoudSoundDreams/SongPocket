@@ -66,9 +66,7 @@ extension AlbumsViewModel {
 		let destination = group.container as! Collection
 		
 		destination.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
-			atIndex: 0,
 			albumIDs: albumIDs,
-			possiblyToSame: true,
 			via: context)
 		context.deleteEmptyCollections()
 		
