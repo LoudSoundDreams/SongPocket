@@ -251,9 +251,9 @@ class LibraryTVC: UITableViewController {
 		isAnimatingBatchUpdates += 1
 		// “'async' call in a function that does not support concurrency”
 		tableView.applyBatchUpdates__completion(
-			thenMovingSections: sectionBatchUpdates,
-			andRows: rowBatchUpdates,
-			with: .middle
+			sectionUpdates: sectionBatchUpdates,
+			rowUpdates: rowBatchUpdates,
+			animation: .middle
 		) {
 			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate anything. Here, we wait for the animations to finish before we run the completion closure (once).
