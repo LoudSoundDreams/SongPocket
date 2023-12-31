@@ -55,7 +55,6 @@ final class AlbumsTVC: LibraryTVC {
 		switch purpose {
 			case .organizingAlbums, .movingAlbums: break
 			case .browsing:
-				NotificationCenter.default.addObserverOnce(self, selector: #selector(didOrganizeAlbums), name: .LROrganizedAlbums, object: nil)
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(didMoveAlbums), name: .LRMovedAlbums, object: nil)
 		}
 		
@@ -117,14 +116,6 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	// MARK: - Library items
-	
-	@objc
-	private func didOrganizeAlbums() {
-		let viewModel = viewModel.updatedWithFreshenedData() as! AlbumsViewModel // Shadowing so that we don’t accidentally refer to `self.viewModel`, which is incoherent at this point.
-		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(viewModel)
-		}
-	}
 	
 	// Similar to `freshenLibraryItems`.
 	// Call this from the modal `AlbumsTVC` in the “move albums” sheet after completing the animation for inserting the `Album`s we moved. This instance here, the base-level `AlbumsTVC`, should be the modal `AlbumsTVC`’s delegate, and this method removes the rows for those `Album`s.

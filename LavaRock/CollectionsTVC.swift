@@ -122,16 +122,6 @@ final class CollectionsTVC: LibraryTVC {
 						}
 					),
 				]
-				viewingModeTopRightButtons = [
-					{
-						let saveOrganizeButton = UIBarButtonItem(
-							systemItem: .save,
-							primaryAction: UIAction { [weak self] _ in self?.commitOrganize() }
-						)
-						saveOrganizeButton.style = .done
-						return saveOrganizeButton
-					}(),
-				]
 			case .organizingAlbums: // Should never run
 				break
 			case .movingAlbums:
@@ -219,23 +209,6 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	// MARK: - Library items
-	
-	private func commitOrganize() {
-		guard
-			let clipboard = organizeAlbumsClipboard,
-			!clipboard.didAlreadyCommitOrganize
-		else { return }
-		
-		clipboard.didAlreadyCommitOrganize = true
-		
-		viewModel.context.tryToSave()
-		viewModel.context.parent!.tryToSave()
-		
-		NotificationCenter.default.post(name: .LRUserUpdatedDatabase, object: nil)
-		
-		dismiss(animated: true)
-		NotificationCenter.default.post(name: .LROrganizedAlbums, object: nil)
-	}
 	
 	override func freshenLibraryItems() {
 		switch purpose {

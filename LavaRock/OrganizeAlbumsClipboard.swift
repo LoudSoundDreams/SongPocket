@@ -11,9 +11,6 @@ final class OrganizeAlbumsClipboard {
 	let subjectedAlbums_ids: Set<NSManagedObjectID> // Selected or all albums in source collection
 	let destinationCollections_ids: Set<NSManagedObjectID>
 	
-	// State
-	var didAlreadyCommitOrganize = false
-	
 	init(
 		subjectedAlbums_ids: Set<NSManagedObjectID>,
 		destinationCollections_ids: Set<NSManagedObjectID>
