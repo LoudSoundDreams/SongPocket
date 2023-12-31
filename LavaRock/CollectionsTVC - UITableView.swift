@@ -82,28 +82,20 @@ extension CollectionsTVC {
 		
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
-		let (tinted, enabled) = { () -> (tint: Bool, enable: Bool) in
+		let enabled = { () -> Bool in
 			switch purpose {
-				case .willOrganizeAlbums: return (tint: false, enable: false)
-				case .organizingAlbums(let clipboard):
-					if clipboard.destinationCollections_ids.contains(collection.objectID) {
-						return (tint: true, enable: true)
-					}
-					return (tint: false, enable: false)
+				case .willOrganizeAlbums, .organizingAlbums: return false
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
-						return (tint: false, enable: false)
+						return false
 					}
-					return (tint: false, enable: true)
-				case .browsing: return (tint: false, enable: true)
+					return true
+				case .browsing: return true
 			}
 		}()
 		cell.configure(with: collection, dimmed: !enabled)
 		cell.editingAccessoryType = .detailButton
 		cell.backgroundColors_configureForLibraryItem()
-		if tinted {
-			cell.backgroundColor = .tintColor.withAlphaComponent(.oneEighth)
-		}
 		cell.isUserInteractionEnabled = enabled
 		if enabled {
 			cell.accessibilityTraits.subtract(.notEnabled)

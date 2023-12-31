@@ -193,24 +193,20 @@ class LibraryTVC: UITableViewController {
 	
 	// Returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
 	final func setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
-		thenSelecting toSelect: Set<IndexPath> = [],
-		runningBeforeContinuation beforeContinuation: (() -> Void)? = nil
+		thenSelecting toSelect: Set<IndexPath> = []
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
 			_setViewModelAndMoveAndDeselectRows(
-				firstReloading: toReload,
 				newViewModel,
 				thenSelecting: toSelect
 			) { shouldContinue in
 				continuation.resume(returning: shouldContinue)
 			}
-			beforeContinuation?()
+			// If necessary, include code here to run before the continuation.
 		}
 	}
 	private func _setViewModelAndMoveAndDeselectRows(
-		firstReloading toReload: [IndexPath] = [],
 		_ newViewModel: LibraryViewModel,
 		thenSelecting toSelect: Set<IndexPath> = [],
 		completionIfShouldRun: @escaping (Bool) -> Void // We used to use `completion: @escaping () -> Void` here and just not run it every time, but that leaked `CheckedContinuation` if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler. Hence, this method always runs the completion handler, and callers should pass in completion handlers that return immediately if the parameter is `false`.
@@ -255,8 +251,6 @@ class LibraryTVC: UITableViewController {
 		isAnimatingBatchUpdates += 1
 		// “'async' call in a function that does not support concurrency”
 		tableView.applyBatchUpdates__completion(
-			firstReloading: toReload,
-			with: .fade,
 			thenMovingSections: sectionBatchUpdates,
 			andRows: rowBatchUpdates,
 			with: .middle

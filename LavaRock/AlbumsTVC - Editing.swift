@@ -49,7 +49,6 @@ extension AlbumsTVC {
 		collectionsTVC.willOrganizeAlbums = true
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
-		guard let oldCollectionsViewModel = collectionsTVC.viewModel as? CollectionsViewModel else { return }
 		Task {
 			await present__async(nc, animated: true)
 			
@@ -58,19 +57,7 @@ extension AlbumsTVC {
 			
 			// Similar to `reflectDatabase`.
 			let _ = await collectionsTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-				firstReloading: {
-					// We might have moved albums into existing collections. Fade in a highlight on those rows.
-					let destinationRows = oldCollectionsViewModel.rowsForAllItems().filter { oldRow in
-						let collectionID = oldCollectionsViewModel.collectionNonNil(atRow: oldRow).objectID
-						return clipboard.destinationCollections_ids.contains(collectionID)
-					}
-					return destinationRows.map { row in IndexPath(row: row, section: 0) }
-				}(),
-				CollectionsViewModel(context: childContext),
-				runningBeforeContinuation: {
-					// Remove the now-playing marker from the source collection, if necessary.
-					collectionsTVC.reflectPlayhead()
-				}
+				CollectionsViewModel(context: childContext)
 			)
 		}
 	}

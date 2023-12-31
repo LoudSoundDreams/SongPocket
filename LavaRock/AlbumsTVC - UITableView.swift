@@ -68,10 +68,7 @@ extension AlbumsTVC {
 	) {
 		let mode: AlbumCard.Mode = {
 			switch purpose {
-				case .organizingAlbums(let clipboard):
-					if clipboard.subjectedAlbums_ids.contains(album.objectID) {
-						return .disabledTinted
-					}
+				case .organizingAlbums:
 					return .disabled
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
