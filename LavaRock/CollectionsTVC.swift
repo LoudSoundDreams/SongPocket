@@ -22,7 +22,6 @@ final class CollectionsTVC: LibraryTVC {
 		case emptyDatabase
 		case someCollections
 	}
-	static let emptyDatabaseInfoRow = 0
 	
 	// MARK: - Properties
 	
