@@ -57,40 +57,6 @@ extension AlbumsViewModel {
 		return itemNonNil(atRow: atRow) as! Album
 	}
 	
-	// MARK: - Organizing
-	
-	func allowsAutoMove(
-		selectedIndexPaths: [IndexPath]
-	) -> Bool {
-		var subjectedRows: [Int] = selectedIndexPaths.map { $0.row }
-		if subjectedRows.isEmpty {
-			subjectedRows = rowsForAllItems()
-		}
-		let albums = subjectedRows.map { albumNonNil(atRow: $0) }
-		
-		// Return `true` if we can move any album to either a new collection or another collection with the same title
-		for album in albums {
-			let targetTitle = album.albumArtistFormatted()
-			if targetTitle != album.container?.title {
-				return true
-			}
-		}
-		let existingByTitle: [String: [Collection]] = {
-			let all = Collection.allFetched(sorted: false, context: context)
-			return Dictionary(grouping: all) { $0.title! }
-		}()
-		for album in albums {
-			let targetTitle = album.albumArtistFormatted() // Must match above
-			guard let existingTargets = existingByTitle[targetTitle] else { continue }
-			if let _ = existingTargets.first(where: { existingCollection in
-				existingCollection != album.container!
-			}) {
-				return true
-			}
-		}
-		return false
-	}
-	
 	// MARK: - “Move albums” sheet
 	
 	func updatedAfterInserting(

@@ -7,13 +7,12 @@
 
 import UIKit
 import CoreData
-import OSLog
 
 extension AlbumsTVC {
 	
 	// MARK: - Move by artist
 	
-	func previewAutoMove() {
+	func _previewAutoMove() {
 		// Prepare a Collections view to present modally.
 		let nc = UINavigationController(
 			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
@@ -47,7 +46,6 @@ extension AlbumsTVC {
 			destinationCollections_ids: destinationCollections_ids
 		)
 		
-		collectionsTVC.navigationItem.prompt = clipboard.prompt
 		collectionsTVC.willOrganizeAlbums = true
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
@@ -80,12 +78,6 @@ extension AlbumsTVC {
 		albumsInOriginalContextToMaybeMove: [Album],
 		via context: NSManagedObjectContext
 	) -> Set<NSManagedObjectID> {
-		let log = OSLog.albumsView
-		os_signpost(.begin, log: log, name: "Preview organizing Albums")
-		defer {
-			os_signpost(.end, log: log, name: "Preview organizing Albums")
-		}
-		
 		let sourceCollection = albumsInOriginalContextToMaybeMove.first!.container!
 		let sourceCollection_index = sourceCollection.index
 		let sourceCollection_id = sourceCollection.objectID

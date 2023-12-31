@@ -10,13 +10,6 @@ import CoreData
 final class OrganizeAlbumsClipboard {
 	let subjectedAlbums_ids: Set<NSManagedObjectID> // Selected or all albums in source collection
 	let destinationCollections_ids: Set<NSManagedObjectID>
-	var prompt: String {
-		String.localizedStringWithFormat(
-			LRString.variable_moveXAlbumsToYCrates_questionMark,
-			subjectedAlbums_ids.count,
-			destinationCollections_ids.count
-		)
-	}
 	
 	// State
 	var didAlreadyCommitOrganize = false

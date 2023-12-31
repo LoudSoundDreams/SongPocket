@@ -74,8 +74,6 @@ enum LRString {
 	// MARK: Albums view
 	
 	static let move = NSLocalizedString("Move", comment: "Button")
-	static let byArtistEllipsis = NSLocalizedString("By Artist…", comment: "Menu option")
-	static let toCrateEllipsis = NSLocalizedString("To Crate…", comment: "Menu option")
 	
 	static let newest = NSLocalizedString("Newest", comment: "Sort option")
 	static let oldest = NSLocalizedString("Oldest", comment: "Sort option")
@@ -94,8 +92,4 @@ enum LRString {
 	
 	// MARK: - WITH VARIABLES AND TEXT VARIATIONS
 	// (Format strings from dictionaries)
-	
-	static let variable_moveXAlbumsToYCrates_questionMark = NSLocalizedString(
-		"plural_Move_X_albums_to_Y_crates_questionMark",
-		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of crates it’s moving them into.")
 }

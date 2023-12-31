@@ -25,7 +25,6 @@ final class AlbumsTVC: LibraryTVC {
 		image: UIImage(systemName: "folder"),
 		primaryAction: UIAction { [weak self] _ in self?.startMoving() }
 	)
-//	private lazy var moveButton = UIBarButtonItem(title: LRString.move)
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(
 		title: LRString.sort,
 		image: UIImage(systemName: "arrow.up.arrow.down")
@@ -54,9 +53,7 @@ final class AlbumsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		switch purpose {
-			case .organizingAlbums(let clipboard):
-				navigationItem.prompt = clipboard.prompt
-			case .movingAlbums: break
+			case .organizingAlbums, .movingAlbums: break
 			case .browsing:
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(didOrganizeAlbums), name: .LROrganizedAlbums, object: nil)
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(didMoveAlbums), name: .LRMovedAlbums, object: nil)
@@ -162,57 +159,9 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			return true
 		}()
-//		moveButton.menu = createMoveMenu()
 		
 		arrangeAlbumsButton.isEnabled = allowsArrange()
 		arrangeAlbumsButton.menu = createArrangeMenu()
-	}
-	private func createMoveMenu() -> UIMenu {
-		let byAlbumArtist_element = UIDeferredMenuElement.uncached(
-			{ [weak self] useMenuElements in
-				// Runs each time the button presents the menu
-				
-				let menuElements: [UIMenuElement]
-				defer {
-					useMenuElements(menuElements)
-				}
-				
-				guard let self else {
-					menuElements = []
-					return
-				}
-				
-				let action = UIAction(
-					title: LRString.byArtistEllipsis,
-					image: UIImage(systemName: "music.mic")
-				) { [weak self] _ in
-					// Runs when the user activates the menu item
-					self?.previewAutoMove()
-				}
-				
-				// Disable if appropriate
-				// This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-				let allowed = (self.viewModel as! AlbumsViewModel).allowsAutoMove(
-					selectedIndexPaths: self.tableView.selectedIndexPaths)
-				if !allowed {
-					action.attributes.formUnion(.disabled)
-				}
-				
-				menuElements = [action]
-			}
-		)
-		
-		let toCollection_element = UIAction(
-			title: LRString.toCrateEllipsis,
-			image: UIImage(systemName: "tray")
-		) { [weak self] _ in
-			self?.startMoving()
-		}
-		
-		return UIMenu(children: [
-			toCollection_element,
-			byAlbumArtist_element,
-		])
 	}
 	private static let arrangeCommands: [[ArrangeCommand]] = [
 		[.album_newest, .album_oldest],

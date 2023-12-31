@@ -54,10 +54,12 @@ enum ArrangeCommand: CaseIterable {
 		handler: @escaping () -> Void
 	) -> UIMenuElement {
 		return UIDeferredMenuElement.uncached({ useMenuElements in
+			// Runs each time the button presents the menu
 			let action = UIAction(
 				title: localizedName(),
 				image: UIImage(systemName: sfSymbolName)
 			) { _ in handler() }
+			// Disable if appropriate. This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
 			if !enabled {
 				action.attributes.formUnion(.disabled)
 			}
