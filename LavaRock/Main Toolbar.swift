@@ -11,9 +11,13 @@ extension View {
 	func mainToolbar() -> some View {
 		toolbar {
 			ToolbarItem(placement: .bottomBar) { overflowMenu }
+			ToolbarItem(placement: .bottomBar) { Spacer() }
 			ToolbarItem(placement: .bottomBar) { jumpBackButton }
+			ToolbarItem(placement: .bottomBar) { Spacer() }
 			ToolbarItem(placement: .bottomBar) { playPauseButton }
+			ToolbarItem(placement: .bottomBar) { Spacer() }
 			ToolbarItem(placement: .bottomBar) { jumpForwardButton }
+			ToolbarItem(placement: .bottomBar) { Spacer() }
 			ToolbarItem(placement: .bottomBar) { nextButton }
 		}
 	}
