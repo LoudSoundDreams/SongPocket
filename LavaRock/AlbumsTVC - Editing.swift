@@ -41,19 +41,10 @@ extension AlbumsTVC {
 		let destinationCollections_ids = Self.autoMoveAndReturnDestinationCollectionIDs(
 			albumsInOriginalContextToMaybeMove: albumsInOriginalContextToMaybeMove,
 			via: childContext)
-		let clipboard = OrganizeAlbumsClipboard(
-			subjectedAlbums_ids: Set(albumsInOriginalContextToMaybeMove.map { $0.objectID }),
-			destinationCollections_ids: destinationCollections_ids
-		)
-		
-		collectionsTVC.willOrganizeAlbums = true
 		
 		// Make the “organize albums” sheet show the child context, but only after we present it.
 		Task {
 			await present__async(nc, animated: true)
-			
-			collectionsTVC.organizeAlbumsClipboard = clipboard
-			collectionsTVC.willOrganizeAlbums = false
 			
 			// Similar to `reflectDatabase`.
 			let _ = await collectionsTVC.setViewModelAndMoveAndDeselectRowsAndShouldContinue(

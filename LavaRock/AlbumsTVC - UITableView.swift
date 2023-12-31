@@ -68,8 +68,6 @@ extension AlbumsTVC {
 	) {
 		let mode: AlbumCard.Mode = {
 			switch purpose {
-				case .organizingAlbums:
-					return .disabled
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {
 						return .disabledTinted
@@ -94,7 +92,7 @@ extension AlbumsTVC {
 		_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
-			case .organizingAlbums, .movingAlbums: return false
+			case .movingAlbums: return false
 			case .browsing: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
 		}
 	}
@@ -103,7 +101,7 @@ extension AlbumsTVC {
 		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
 		switch purpose {
-			case .organizingAlbums, .movingAlbums: return nil
+			case .movingAlbums: return nil
 			case .browsing: return super.tableView(tableView, willSelectRowAt: indexPath)
 		}
 	}

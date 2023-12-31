@@ -12,8 +12,6 @@ import SwiftUI
 
 final class CollectionsTVC: LibraryTVC {
 	enum Purpose {
-		case willOrganizeAlbums
-		case organizingAlbums(OrganizeAlbumsClipboard)
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
 	}
@@ -36,8 +34,6 @@ final class CollectionsTVC: LibraryTVC {
 	
 	// Purpose
 	var purpose: Purpose {
-		if let clipboard = organizeAlbumsClipboard { return .organizingAlbums(clipboard) }
-		if willOrganizeAlbums { return .willOrganizeAlbums }
 		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
 		return .browsing
 	}
@@ -55,12 +51,6 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		return .emptyDatabase
 	}
-	
-	// MARK: “Organize albums” sheet
-	
-	// Data
-	var willOrganizeAlbums = false
-	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? = nil
 	
 	// MARK: “Move albums” sheet
 	
@@ -100,7 +90,7 @@ final class CollectionsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		switch purpose {
-			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: break
+			case .movingAlbums: break
 			case .browsing:
 				AppleMusic.loadingIndicator = self
 				
@@ -113,17 +103,6 @@ final class CollectionsTVC: LibraryTVC {
 	
 	override func setUpBarButtons() {
 		switch purpose {
-			case .willOrganizeAlbums:
-				viewingModeTopLeftButtons = [
-					UIBarButtonItem(
-						systemItem: .close,
-						primaryAction: UIAction { [weak self] _ in
-							self?.dismiss(animated: true)
-						}
-					),
-				]
-			case .organizingAlbums: // Should never run
-				break
 			case .movingAlbums:
 				viewingModeTopLeftButtons = [
 					UIBarButtonItem(
@@ -151,7 +130,7 @@ final class CollectionsTVC: LibraryTVC {
 		super.setUpBarButtons()
 		
 		switch purpose {
-			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: break
+			case .movingAlbums: break
 			case .browsing:
 				navigationController?.setToolbarHidden(false, animated: false)
 		}
@@ -162,7 +141,7 @@ final class CollectionsTVC: LibraryTVC {
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
 		switch purpose {
-			case .movingAlbums, .willOrganizeAlbums, .organizingAlbums: break
+			case .movingAlbums: break
 			case .browsing:
 				if !forBrowsingAndHasFirstAppeared {
 					forBrowsingAndHasFirstAppeared = true
@@ -177,8 +156,7 @@ final class CollectionsTVC: LibraryTVC {
 		switch purpose {
 			case .movingAlbums:
 				revertCreate()
-			case .willOrganizeAlbums, .organizingAlbums, .browsing: 
-				break
+			case .browsing: break
 		}
 		super.viewDidAppear(animated)
 	}
@@ -212,7 +190,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	override func freshenLibraryItems() {
 		switch purpose {
-			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: return
+			case .movingAlbums: return
 			case .browsing: break
 		}
 		
@@ -278,7 +256,6 @@ final class CollectionsTVC: LibraryTVC {
 			let albumsTVC = segue.destination as? AlbumsTVC
 		else { return }
 		
-		albumsTVC.organizeAlbumsClipboard = organizeAlbumsClipboard
 		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 		
 		let selectedCollection = collectionsViewModel.collectionNonNil(atRow: selectedIndexPath.row)

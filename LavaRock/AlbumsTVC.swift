@@ -12,7 +12,6 @@ import CoreData
 
 final class AlbumsTVC: LibraryTVC {
 	enum Purpose {
-		case organizingAlbums(OrganizeAlbumsClipboard)
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
 	}
@@ -32,15 +31,9 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// Purpose
 	var purpose: Purpose {
-		if let clipboard = organizeAlbumsClipboard { return .organizingAlbums(clipboard) }
 		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
 		return .browsing
 	}
-	
-	// MARK: “Organize albums” sheet
-	
-	// Data
-	var organizeAlbumsClipboard: OrganizeAlbumsClipboard? = nil
 	
 	// MARK: “Move albums” sheet
 	
@@ -53,7 +46,7 @@ final class AlbumsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		switch purpose {
-			case .organizingAlbums, .movingAlbums: break
+			case .movingAlbums: break
 			case .browsing:
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(didMoveAlbums), name: .LRMovedAlbums, object: nil)
 		}
@@ -64,7 +57,6 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func setUpBarButtons() {
 		switch purpose {
-			case .organizingAlbums: break
 			case .movingAlbums:
 				viewingModeTopRightButtons = [
 					{
@@ -130,7 +122,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func freshenLibraryItems() {
 		switch purpose {
-			case .organizingAlbums, .movingAlbums: return
+			case .movingAlbums: return
 			case .browsing: super.freshenLibraryItems()
 		}
 	}

@@ -84,7 +84,6 @@ extension CollectionsTVC {
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
 		let enabled = { () -> Bool in
 			switch purpose {
-				case .willOrganizeAlbums, .organizingAlbums: return false
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
 						return false
@@ -103,7 +102,7 @@ extension CollectionsTVC {
 			cell.accessibilityTraits.formUnion(.notEnabled)
 		}
 		switch purpose {
-			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: break
+			case .movingAlbums: break
 			case .browsing:
 				cell.accessibilityCustomActions = [
 					UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
@@ -138,7 +137,7 @@ extension CollectionsTVC {
 		_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
 	) -> Bool {
 		switch purpose {
-			case .willOrganizeAlbums, .organizingAlbums, .movingAlbums: return false
+			case .movingAlbums: return false
 			case .browsing:
 				switch viewState {
 					case .allowAccess, .loading, .emptyDatabase: return false // Should never run
