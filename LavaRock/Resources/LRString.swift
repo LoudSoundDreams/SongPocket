@@ -68,7 +68,6 @@ enum LRString {
 	static let emptyLibrary_button = NSLocalizedString("Add Music", comment: "Button")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	static let combine = NSLocalizedString("Combine", comment: "Button")
 	
 	static let name = NSLocalizedString("Name", comment: "The word for the title of a crate. Also a sort option.")
 	
@@ -99,7 +98,4 @@ enum LRString {
 	static let variable_moveXAlbumsToYCrates_questionMark = NSLocalizedString(
 		"plural_Move_X_albums_to_Y_crates_questionMark",
 		comment: "Prompt that appears atop the “organize albums” sheet. Include the number of albums the app is moving, and the number of crates it’s moving them into.")
-	static let variable_moveXAlbumsIntoOneCrate_questionMark = NSLocalizedString(
-		"plural_Move_X_albums_into_one_crate_questionMark",
-		comment: "Prompt that appears atop the “Combine” sheet. Include the number of albums the app is moving into the newly created crate.")
 }

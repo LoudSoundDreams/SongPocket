@@ -73,24 +73,6 @@ extension NSManagedObjectContext {
 		return song
 	}
 	
-	final func combine(
-		_ idsOfCollectionsToCombine: [NSManagedObjectID],
-		index: Int64
-	) -> Collection {
-		let result = Collection(context: self)
-		result.title = LRString.tilde
-		result.index = index
-		
-		let toCombine = idsOfCollectionsToCombine.map { object(with: $0) } as! [Collection]
-		var contentsOfResult = toCombine.flatMap { $0.albums(sorted: true) }
-		contentsOfResult.reindex()
-		contentsOfResult.forEach { $0.container = result }
-		
-		deleteEmptyCollections()
-		
-		return result
-	}
-	
 	// Use `Collection(afterAllOtherCount:title:context:)` if possible. It’s faster.
 	final func newCollection(
 		index: Int64,

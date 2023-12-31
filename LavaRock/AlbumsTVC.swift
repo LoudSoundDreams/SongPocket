@@ -12,7 +12,6 @@ import CoreData
 
 final class AlbumsTVC: LibraryTVC {
 	enum Purpose {
-		case previewingCombine
 		case organizingAlbums(OrganizeAlbumsClipboard)
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
@@ -34,17 +33,10 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// Purpose
 	var purpose: Purpose {
-		if is_previewing_combine_with_album_count != 0 { return .previewingCombine }
 		if let clipboard = organizeAlbumsClipboard { return .organizingAlbums(clipboard) }
 		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
 		return .browsing
 	}
-	
-	// MARK: “Combine collections” sheet
-	
-	var is_previewing_combine_with_album_count: Int = 0
-	var cancel_combine_action: UIAction? = nil
-	var save_combine_action: UIAction? = nil
 	
 	// MARK: “Organize albums” sheet
 	
@@ -62,10 +54,6 @@ final class AlbumsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		switch purpose {
-			case .previewingCombine:
-				navigationItem.prompt = String.localizedStringWithFormat(
-					LRString.variable_moveXAlbumsIntoOneCrate_questionMark,
-					is_previewing_combine_with_album_count)
 			case .organizingAlbums(let clipboard):
 				navigationItem.prompt = clipboard.prompt
 			case .movingAlbums: break
@@ -80,23 +68,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func setUpBarButtons() {
 		switch purpose {
-			case .previewingCombine:
-				viewingModeTopLeftButtons = [
-					UIBarButtonItem(
-						systemItem: .close,
-						primaryAction: cancel_combine_action),
-				]
-				viewingModeTopRightButtons = [
-					{
-						let saveCombineButton = UIBarButtonItem(
-							systemItem: .save,
-							primaryAction: save_combine_action)
-						saveCombineButton.style = .done
-						return saveCombineButton
-					}(),
-				]
-			case .organizingAlbums:
-				break
+			case .organizingAlbums: break
 			case .movingAlbums:
 				viewingModeTopRightButtons = [
 					{
@@ -170,7 +142,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func freshenLibraryItems() {
 		switch purpose {
-			case .previewingCombine, .organizingAlbums, .movingAlbums: return
+			case .organizingAlbums, .movingAlbums: return
 			case .browsing: super.freshenLibraryItems()
 		}
 	}

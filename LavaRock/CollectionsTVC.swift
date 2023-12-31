@@ -10,12 +10,6 @@ import UIKit
 import MusicKit
 import SwiftUI
 
-extension CollectionsTVC: UIAdaptivePresentationControllerDelegate {
-	func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-		revertCombine(thenSelect: presented_previewing_Combine_IndexPaths)
-		presented_previewing_Combine_IndexPaths = []
-	}
-}
 final class CollectionsTVC: LibraryTVC {
 	enum Purpose {
 		case willOrganizeAlbums
@@ -34,12 +28,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	// MARK: - Properties
 	
-	var presented_previewing_Combine_IndexPaths: [IndexPath] = []
-	
 	// Controls
-	private lazy var combineButton = UIBarButtonItem(
-		title: LRString.combine,
-		primaryAction: UIAction { [weak self] _ in self?.previewCombine() })
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(
 		title: LRString.sort,
 		image: UIImage(systemName: "arrow.up.arrow.down")
@@ -66,7 +55,6 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		return .emptyDatabase
 	}
-	var viewModelBeforeCombining: CollectionsViewModel? = nil
 	
 	// MARK: “Organize albums” sheet
 	
@@ -163,7 +151,6 @@ final class CollectionsTVC: LibraryTVC {
 				]
 			case .browsing:
 				editingModeToolbarButtons = [
-//					combineButton, .flexibleSpace(),
 					arrangeCollectionsButton, .flexibleSpace(),
 					floatButton, .flexibleSpace(),
 					sinkButton, .flexibleSpace(),
@@ -264,11 +251,6 @@ final class CollectionsTVC: LibraryTVC {
 			case .allowAccess, .someCollections: break
 		}
 		
-		if viewModelBeforeCombining != nil {
-			// We’re previewing how the rows look after combining collections. Put everything back before `LibraryTVC` calls `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
-			revertCombine(thenSelect: [])
-		}
-		
 		super.freshenLibraryItems()
 	}
 	
@@ -287,21 +269,8 @@ final class CollectionsTVC: LibraryTVC {
 			case .someCollections: break
 		}
 		
-		combineButton.isEnabled = allowsCombine()
-		
 		arrangeCollectionsButton.isEnabled = allowsArrange()
 		arrangeCollectionsButton.menu = createArrangeMenu()
-		
-		// Prevent the user from using any editing buttons while we’re animating combining collections, before we present the dialog.
-		if viewModelBeforeCombining != nil {
-			editingModeToolbarButtons.forEach { $0.isEnabled = false }
-		}
-	}
-	private func allowsCombine() -> Bool {
-		guard !viewModel.isEmpty() else {
-			return false
-		}
-		return tableView.selectedIndexPaths.count >= 2
 	}
 	private static let arrangeCommands: [[ArrangeCommand]] = [
 		[.collection_name],
