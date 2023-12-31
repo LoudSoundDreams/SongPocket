@@ -130,37 +130,4 @@ extension CollectionsTVC {
 	) {
 		promptRename(at: indexPath)
 	}
-	
-	// MARK: - Selecting
-	
-	override func tableView(
-		_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
-	) -> Bool {
-		switch purpose {
-			case .movingAlbums: return false
-			case .browsing:
-				switch viewState {
-					case .allowAccess, .loading, .emptyDatabase: return false // Should never run
-					case .someCollections: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
-				}
-		}
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
-	) -> IndexPath? {
-		switch viewState {
-			case .allowAccess, .loading, .emptyDatabase: return nil // Should never run
-			case .someCollections: return super.tableView(tableView, willSelectRowAt: indexPath)
-		}
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
-	) {
-		switch viewState {
-			case .allowAccess, .loading, .emptyDatabase: return // Should never run
-			case .someCollections: super.tableView(tableView, didSelectRowAt: indexPath)
-		}
-	}
 }

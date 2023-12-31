@@ -45,9 +45,14 @@ extension AlbumsTVC {
 		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 		let album = (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row)
-		let (mode, selectionStyle) = new_albumCardMode_and_selectionStyle(album: album)
-		cell.selectionStyle = selectionStyle
+		let (mode, enabled) = new_albumCardMode_and_selectionStyle(album: album)
 		cell.backgroundColors_configureForLibraryItem()
+		cell.isUserInteractionEnabled = enabled
+		if enabled {
+			cell.accessibilityTraits.subtract(.notEnabled)
+		} else {
+			cell.accessibilityTraits.formUnion(.notEnabled)
+		}
 		cell.contentConfiguration = UIHostingConfiguration {
 			AlbumCard(
 				album: album,
@@ -64,7 +69,7 @@ extension AlbumsTVC {
 	}
 	func new_albumCardMode_and_selectionStyle(album: Album) -> (
 		mode: AlbumCard.Mode,
-		selectionStyle: UITableViewCell.SelectionStyle
+		enabled: Bool
 	) {
 		let mode: AlbumCard.Mode = {
 			switch purpose {
@@ -77,32 +82,12 @@ extension AlbumsTVC {
 					return .normal
 			}
 		}()
-		let selectionStyle: UITableViewCell.SelectionStyle = {
-			switch mode {
-				case .normal: return .default
-				case .disabled, .disabledTinted: return .none
+		let enabled: Bool = {
+			switch purpose {
+				case .movingAlbums: return false
+				case .browsing: return true
 			}
 		}()
-		return (mode, selectionStyle)
-	}
-	
-	// MARK: - Selecting
-	
-	override func tableView(
-		_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath
-	) -> Bool {
-		switch purpose {
-			case .movingAlbums: return false
-			case .browsing: return super.tableView(tableView, shouldBeginMultipleSelectionInteractionAt: indexPath)
-		}
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
-	) -> IndexPath? {
-		switch purpose {
-			case .movingAlbums: return nil
-			case .browsing: return super.tableView(tableView, willSelectRowAt: indexPath)
-		}
+		return (mode, enabled)
 	}
 }
