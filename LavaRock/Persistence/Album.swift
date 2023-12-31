@@ -7,7 +7,6 @@
 
 import CoreData
 import MediaPlayer
-import OSLog
 
 extension Album: LibraryContainer {}
 extension Album: LibraryItem {

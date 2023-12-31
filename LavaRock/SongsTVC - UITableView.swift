@@ -8,7 +8,6 @@
 import UIKit
 import SwiftUI
 import MusicKit
-import OSLog
 
 extension SongsTVC {
 	override func numberOfSections(in tableView: UITableView) -> Int {

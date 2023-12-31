@@ -5,8 +5,6 @@
 //  Created by h on 2021-04-27.
 //
 
-import OSLog
-
 extension Array where Element == Int {
 	// Whether the integers are increasing and contiguous.
 	func isConsecutive() -> Bool {

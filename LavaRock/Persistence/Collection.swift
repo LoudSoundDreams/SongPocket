@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import OSLog
 
 extension Collection: LibraryContainer {}
 extension Collection: LibraryItem {

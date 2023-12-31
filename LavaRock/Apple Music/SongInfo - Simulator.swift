@@ -8,7 +8,6 @@
 #if targetEnvironment(simulator)
 import MediaPlayer
 import UIKit
-import OSLog
 
 enum Sim_Global {
 	static let currentSongID = SongID(420)

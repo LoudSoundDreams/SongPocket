@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import OSLog
 
 struct AlbumCard: View {
 	enum Mode {
