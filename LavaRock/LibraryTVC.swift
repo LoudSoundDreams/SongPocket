@@ -253,6 +253,8 @@ class LibraryTVC: UITableViewController {
 			}
 		}
 		
+		tableView.deselectAllRows(animated: true)
+		
 		didChangeRowsOrSelectedRows()
 	}
 	
