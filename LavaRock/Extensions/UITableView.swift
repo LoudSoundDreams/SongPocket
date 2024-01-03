@@ -36,13 +36,12 @@ extension UITableView {
 			return []
 		}
 		return Self.indexPathsForRows(
-			inSection: section,
+			section: section,
 			firstRow: firstRow,
 			lastRow: lastRow)
 	}
-	
 	private static func indexPathsForRows(
-		inSection section: Int,
+		section: Int,
 		firstRow: Int,
 		lastRow: Int
 	) -> [IndexPath] {
@@ -81,18 +80,6 @@ extension UITableView {
 			}
 		} completion: { _ in
 			completion()
-		}
-	}
-	
-	final func performBatchUpdates__async(
-		_ updates: (() -> Void)?//,
-//		toRunBeforeCompletion: (() -> Void)? = nil
-	) async {
-		let _ = await withCheckedContinuation { continuation in
-			performBatchUpdates(updates) { didCompleteAnimationsSuccessfully in
-				continuation.resume(returning: didCompleteAnimationsSuccessfully)
-			}
-//			toRunBeforeCompletion?()
 		}
 	}
 	
