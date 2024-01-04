@@ -21,9 +21,9 @@
 		073CD6462A83FC66008E32A7 /* SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CD6452A83FC66008E32A7 /* SwiftUI.swift */; };
 		073CDBF324B82BBB00F6D2B1 /* Songs - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */; };
 		073E6A8725562B93003C84A5 /* Collections - Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073E6A8625562B93003C84A5 /* Collections - Views.swift */; };
-		07436D03283A8878002546B5 /* Debug Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07436D02283A8878002546B5 /* Debug Assets.xcassets */; };
 		0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */; };
 		075218A2257C498D0077AE9B /* LRString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LRString.swift */; };
+		075FC9042B46765D00219146 /* Sample Artwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075FC9032B46765D00219146 /* Sample Artwork.xcassets */; };
 		07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* LibraryItem.swift */; };
 		07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */; };
 		0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */; };
@@ -96,9 +96,9 @@
 		073CD6452A83FC66008E32A7 /* SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI.swift; sourceTree = "<group>"; };
 		073CDBF224B82BBB00F6D2B1 /* Songs - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Songs - Views.swift"; sourceTree = "<group>"; };
 		073E6A8625562B93003C84A5 /* Collections - Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collections - Views.swift"; sourceTree = "<group>"; };
-		07436D02283A8878002546B5 /* Debug Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Debug Assets.xcassets"; sourceTree = "<group>"; };
 		0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* LRString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRString.swift; sourceTree = "<group>"; };
+		075FC9032B46765D00219146 /* Sample Artwork.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Sample Artwork.xcassets"; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
 		07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGroup.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,12 +163,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		07436D01283A8878002546B5 /* Debug Assets */ = {
+		075FC9052B4677D800219146 /* Dev Assets */ = {
 			isa = PBXGroup;
 			children = (
-				07436D02283A8878002546B5 /* Debug Assets.xcassets */,
+				075FC9032B46765D00219146 /* Sample Artwork.xcassets */,
 			);
-			path = "Debug Assets";
+			path = "Dev Assets";
 			sourceTree = "<group>";
 		};
 		0768307C24B42DEC0033E3CC = {
@@ -194,7 +194,12 @@
 		0768308724B42DEC0033E3CC /* LavaRock */ = {
 			isa = PBXGroup;
 			children = (
-				07FF1DDF27F8FF0300DF9B78 /* Resources */,
+				076830CF24B42E510033E3CC /* Assets.xcassets */,
+				075FC9052B4677D800219146 /* Dev Assets */,
+				07E0BBDA276567760010117E /* Constants.swift */,
+				078FDD0E2638872100779AF2 /* Standard.swift */,
+				073CD6452A83FC66008E32A7 /* SwiftUI.swift */,
+				07E0BBE72765678F0010117E /* UIKit.swift */,
 				075218A1257C498D0077AE9B /* LRString.swift */,
 				071A0B9F277E832C0017F76D /* Persistence.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
@@ -263,19 +268,6 @@
 				076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */,
 			);
 			path = LavaRockUITests;
-			sourceTree = "<group>";
-		};
-		07FF1DDF27F8FF0300DF9B78 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				07436D01283A8878002546B5 /* Debug Assets */,
-				076830CF24B42E510033E3CC /* Assets.xcassets */,
-				07E0BBDA276567760010117E /* Constants.swift */,
-				078FDD0E2638872100779AF2 /* Standard.swift */,
-				073CD6452A83FC66008E32A7 /* SwiftUI.swift */,
-				07E0BBE72765678F0010117E /* UIKit.swift */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -384,7 +376,7 @@
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				07934CF827CDBE04002B2444 /* SongsTVC.storyboard in Resources */,
 				07934CFC27CDBFFD002B2444 /* CollectionsTVC.storyboard in Resources */,
-				07436D03283A8878002546B5 /* Debug Assets.xcassets in Resources */,
+				075FC9042B46765D00219146 /* Sample Artwork.xcassets in Resources */,
 				07934CFA27CDBEB0002B2444 /* AlbumsTVC.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -622,8 +614,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 938;
-				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
+				CURRENT_PROJECT_VERSION = 939;
+				DEVELOPMENT_ASSET_PATHS = "LavaRock/Dev\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
@@ -652,8 +644,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 938;
-				DEVELOPMENT_ASSET_PATHS = "LavaRock/Resources/Debug\\ Assets";
+				CURRENT_PROJECT_VERSION = 939;
+				DEVELOPMENT_ASSET_PATHS = "LavaRock/Dev\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LavaRock/Info.plist;
