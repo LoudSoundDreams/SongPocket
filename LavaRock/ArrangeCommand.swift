@@ -91,9 +91,6 @@ enum ArrangeCommand: CaseIterable {
 			case .reverse:
 				return items.reversed()
 				
-				// Sort stably! Multiple items with the same name, disc number, or whatever property we’re sorting by should stay in the same order.
-				// Use `sortedMaintainingOrderWhen` for convenience.
-				
 			case .collection_name:
 				guard let collections = items as? [Collection] else {
 					return items

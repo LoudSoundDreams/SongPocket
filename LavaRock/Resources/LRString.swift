@@ -7,14 +7,10 @@
 
 import Foundation
 
-// Keeping these keys in one place helps us keep them unique.
-// It also helps us use the same text in multiple places if appropriate.
 enum LRString {
 	// Don’t pass arguments other than strings to the Foundation function `NSLocalizedString`, because otherwise, when you choose “Export Localizations…”, Xcode won’t include those calls.
 	
 	// MARK: - WITHOUT VARIABLES
-	
-	// MARK: Standard
 	
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
 	static let done = NSLocalizedString("Done", comment: "Button")
@@ -25,10 +21,11 @@ enum LRString {
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
 	static let tilde = NSLocalizedString("~", comment: "Default title for a new crate")
 	
-	// MARK: Albums
-	
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
+	
+	static let nowPlaying = NSLocalizedString("Now playing", comment: "Accessibility label")
+	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
 	
 	// MARK: Toolbar
 	
@@ -43,17 +40,9 @@ enum LRString {
 	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Button")
 	static let next = NSLocalizedString("Next", comment: "Button")
 	
-	// MARK: Now-playing icon
-	
-	static let nowPlaying = NSLocalizedString("Now playing", comment: "Accessibility label")
-	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
-	
-	// MARK: Editing
-	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
-	
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
@@ -68,19 +57,17 @@ enum LRString {
 	static let emptyLibrary_button = NSLocalizedString("Add Music", comment: "Button")
 	
 	static let rename = NSLocalizedString("Rename", comment: "Button")
-	
 	static let name = NSLocalizedString("Name", comment: "The word for the title of a crate. Also a sort option.")
 	
 	// MARK: Albums view
 	
-	static let move = NSLocalizedString("Move", comment: "Button")
+	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
+	static let move = NSLocalizedString("Move", comment: "Button")
 	static let newest = NSLocalizedString("Newest", comment: "Sort option")
 	static let oldest = NSLocalizedString("Oldest", comment: "Sort option")
 	
 	// MARK: Songs view
-	
-	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
 	static let startPlaying = NSLocalizedString("Start Playing", comment: "Button")
 	static let playLast = NSLocalizedString("Play Last", comment: "Button")
