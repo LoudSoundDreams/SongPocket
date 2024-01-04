@@ -18,14 +18,3 @@ extension UIViewController {
 		}
 	}
 }
-
-extension UIImpactFeedbackGenerator {
-	final func impactOccurredTwice() {
-		Task {
-			impactOccurred()
-			try await Task.sleep(nanoseconds: 0_200_000_000)
-			
-			impactOccurred()
-		}
-	}
-}

@@ -209,9 +209,24 @@
 			isa = PBXGroup;
 			children = (
 				07FF1DDF27F8FF0300DF9B78 /* Resources */,
-				07E0BBFE2765680C0010117E /* Extensions */,
-				07FC970A24BAC1050036DD3D /* Persistence */,
-				07DF65D027766B7B003B2EA3 /* Apple Music */,
+				075218A1257C498D0077AE9B /* LRString.swift */,
+				071A0B9F277E832C0017F76D /* Persistence.swift */,
+				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
+				07602AC72620DC4C00D84123 /* LibraryItem.swift */,
+				07AE2AA3258C09D900C3A314 /* Collection.swift */,
+				0736E3E924B95FD600A15420 /* Album.swift */,
+				07CAB24624EA227F008AC34C /* Song.swift */,
+				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
+				07FFC00D29D88B6B00B98447 /* AppleMusic.swift */,
+				079B2C9424E227BF00A949FA /* MusicLibrary.swift */,
+				07A4F9042519E72C0065C87E /* MusicLibrary - Merge, Update.swift */,
+				07A4F9092519E7D20065C87E /* MusicLibrary - Merge, Create.swift */,
+				07A4F90E2519E8410065C87E /* MusicLibrary - Merge, Delete.swift */,
+				072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */,
+				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
+				070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */,
+				076F1C0127E66DAA00220C2B /* Player.swift */,
+				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
 				071DC5E62A1045CE0073C854 /* Main Toolbar.swift */,
 				07DF76E32828D8AB00B03103 /* MainToolbar.swift */,
@@ -264,26 +279,12 @@
 			path = LavaRockUITests;
 			sourceTree = "<group>";
 		};
-		07DF65D027766B7B003B2EA3 /* Apple Music */ = {
+		07FF1DDF27F8FF0300DF9B78 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				07FFC00D29D88B6B00B98447 /* AppleMusic.swift */,
-				079B2C9424E227BF00A949FA /* MusicLibrary.swift */,
-				07A4F9042519E72C0065C87E /* MusicLibrary - Merge, Update.swift */,
-				07A4F9092519E7D20065C87E /* MusicLibrary - Merge, Create.swift */,
-				07A4F90E2519E8410065C87E /* MusicLibrary - Merge, Delete.swift */,
-				072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */,
-				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
-				070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */,
-				076F1C0127E66DAA00220C2B /* Player.swift */,
-				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
-			);
-			path = "Apple Music";
-			sourceTree = "<group>";
-		};
-		07E0BBFE2765680C0010117E /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
+				07436D01283A8878002546B5 /* Debug Assets */,
+				076830CF24B42E510033E3CC /* Assets.xcassets */,
+				0708E53D286A20B6001204BF /* Constants.swift */,
 				07CD864C27CAA3CC00286E6A /* Weak.swift */,
 				07E0BBD6276567490010117E /* String.swift */,
 				07843FEA2851A31D000FA316 /* Sequence.swift */,
@@ -294,31 +295,6 @@
 				073CD6452A83FC66008E32A7 /* SwiftUI.swift */,
 				07E0BBE72765678F0010117E /* UITableView.swift */,
 				0787CB0927A376400068C2E5 /* UIKit.swift */,
-				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		07FC970A24BAC1050036DD3D /* Persistence */ = {
-			isa = PBXGroup;
-			children = (
-				071A0B9F277E832C0017F76D /* Persistence.swift */,
-				07602AC72620DC4C00D84123 /* LibraryItem.swift */,
-				07AE2AA3258C09D900C3A314 /* Collection.swift */,
-				0736E3E924B95FD600A15420 /* Album.swift */,
-				07CAB24624EA227F008AC34C /* Song.swift */,
-				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
-			);
-			path = Persistence;
-			sourceTree = "<group>";
-		};
-		07FF1DDF27F8FF0300DF9B78 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				07436D01283A8878002546B5 /* Debug Assets */,
-				076830CF24B42E510033E3CC /* Assets.xcassets */,
-				075218A1257C498D0077AE9B /* LRString.swift */,
-				0708E53D286A20B6001204BF /* Constants.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";

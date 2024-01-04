@@ -323,7 +323,11 @@ final class SongCell: UITableViewCell {
 					// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
 					try await player.queue.insert(musicItems, position: .tail)
 					
-					UIImpactFeedbackGenerator(style: .heavy).impactOccurredTwice()
+					let impactor = UIImpactFeedbackGenerator(style: .heavy)
+					impactor.impactOccurred()
+					try await Task.sleep(nanoseconds: 0_200_000_000)
+					
+					impactor.impactOccurred()
 				}
 			}
 			if songPersistentIDForBottomOfAlbum == restOfSongs.last?.persistentID {
