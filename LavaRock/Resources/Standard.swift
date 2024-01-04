@@ -1,9 +1,53 @@
 //
-//  Array.swift
+//  Standard.swift
 //  LavaRock
 //
 //  Created by h on 2021-04-27.
 //
+
+final class Weak<Referencee: AnyObject> {
+	weak var referencee: Referencee? = nil
+	init(_ referencee: Referencee) { self.referencee = referencee }
+}
+
+extension String {
+	func truncated(toMaxLength maxLength: Int) -> String {
+		guard count > maxLength else {
+			return self
+		}
+		let trimmed = prefix(maxLength - 1)
+		return "\(trimmed)\(LRString.ellipsis)"
+	}
+	
+	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
+	func precedesAlphabeticallyFinderStyle(_ other: Self) -> Bool {
+		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
+		switch comparisonResult {
+			case .orderedAscending:
+				return true
+			case .orderedSame:
+				return true
+			case .orderedDescending:
+				return false
+		}
+	}
+}
+
+extension Sequence {
+	func compacted<WrappedType>() -> [WrappedType]
+	where Element == Optional<WrappedType>
+	{
+		return compactMap { $0 }
+	}
+	
+	func compactedAndFormattedAsNarrowList() -> String
+	where Element == String?
+	{
+		return self
+			.compacted()
+			.formatted(.list(type: .and, width: .narrow))
+	}
+}
 
 extension Array where Element == Int {
 	// Whether the integers are increasing and contiguous.
