@@ -11,9 +11,6 @@ struct SongsViewModel {
 	enum Prerow {
 		case albumInfo
 	}
-	private static let prerows: [Prerow] = [
-		.albumInfo,
-	]
 	
 	let album: Album?
 	
@@ -22,11 +19,9 @@ struct SongsViewModel {
 	var groups: ColumnOfLibraryItems
 }
 extension SongsViewModel: LibraryViewModel {
-	func prerowCount() -> Int {
-		return Self.prerows.count
-	}
+	func prerowCount() -> Int { return 1 }
 	func prerowIdentifiers() -> [AnyHashable] {
-		return Self.prerows
+		return [Prerow.albumInfo]
 	}
 	
 	// Similar to counterpart in `AlbumsViewModel`.
@@ -70,10 +65,8 @@ extension SongsViewModel {
 		case song
 	}
 	func rowCase(for indexPath: IndexPath) -> RowCase {
-		let row = indexPath.row
-		if row < prerowCount() {
-			let associatedValue = Self.prerows[row]
-			return .prerow(associatedValue)
+		if indexPath.row < prerowCount() {
+			return .prerow(.albumInfo)
 		} else {
 			return .song
 		}
