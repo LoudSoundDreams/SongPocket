@@ -342,15 +342,11 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
-			let newViewModel = viewModel.updatedWithFreshenedData()
-			_setViewModelAndMoveAndDeselectRows(
-				newViewModel,
-				completionIfShouldRun: { shouldRun in }
-			)
-			// As of iOS 15.4 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing` without animating them.
-			// As of iOS 15.4 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
+			// As of iOS 17.3 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing`, but without animating them.
+			// As of iOS 17.3 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
+			tableView.deselectAllRows(animated: true)
 			
-			newViewModel.context.tryToSave()
+			viewModel.context.tryToSave()
 		}
 		
 		super.setEditing(editing, animated: animated)
