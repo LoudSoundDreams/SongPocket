@@ -15,7 +15,7 @@ struct CollectionRow: View {
 	let dimmed: Bool
 	
 	var body: some View {
-		HStack {
+		HStack(alignment: .firstTextBaseline) {
 			ZStack(alignment: .leading) {
 				AvatarImage(
 					libraryItem: collection,
@@ -24,6 +24,7 @@ struct CollectionRow: View {
 				).accessibilitySortPriority(10)
 				Chevron().hidden()
 			}
+			
 			Text({ () -> String in // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
 				guard let title, !title.isEmpty else {
 					return " "
@@ -32,6 +33,7 @@ struct CollectionRow: View {
 			}())
 			.multilineTextAlignment(.center)
 			.frame(maxWidth: .infinity)
+			
 			ZStack(alignment: .trailing) {
 				AvatarPlayingImage().hidden()
 				Chevron()

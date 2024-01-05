@@ -113,16 +113,25 @@ struct AlbumInfoRow: View {
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
+			ZStack(alignment: .leading) {
+				AvatarImage(
+					libraryItem: album,
+					state: SystemMusicPlayer.sharedIfAuthorized!.state,
+					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
+				).accessibilitySortPriority(10) // Bigger is sooner
+				Chevron().hidden()
+			}
+			
 			Text(album.releaseDateEstimateFormattedOptional() ?? LRString.emDash)
 				.foregroundStyle(.secondary)
 				.fontFootnote()
-			Spacer()
-			AvatarImage(
-				libraryItem: album,
-				state: SystemMusicPlayer.sharedIfAuthorized!.state,
-				queue: SystemMusicPlayer.sharedIfAuthorized!.queue
-			).accessibilitySortPriority(10) // Bigger is sooner
-			Chevron()
+				.multilineTextAlignment(.center)
+				.frame(maxWidth: .infinity)
+			
+			ZStack(alignment: .trailing) {
+				AvatarPlayingImage().hidden()
+				Chevron()
+			}
 		}
 		.accessibilityElement(children: .combine)
 	}

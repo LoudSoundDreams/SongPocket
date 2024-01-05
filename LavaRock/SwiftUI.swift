@@ -12,6 +12,7 @@ struct Chevron: View {
 		// Similar to what Apple Music uses for search results
 		Image(systemName: "chevron.forward")
 			.foregroundStyle(.secondary)
+			.fontBody_dynamicTypeSizeUpToXxxLarge()
 			.imageScale(.small)
 	}
 }
