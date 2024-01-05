@@ -24,9 +24,14 @@ struct CollectionRow: View {
 				).accessibilitySortPriority(10)
 				Chevron().hidden()
 			}
-			Text(title ?? " ") // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
-				.multilineTextAlignment(.center)
-				.frame(maxWidth: .infinity)
+			Text({ () -> String in // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
+				guard let title, !title.isEmpty else {
+					return " "
+				}
+				return title
+			}())
+			.multilineTextAlignment(.center)
+			.frame(maxWidth: .infinity)
 			ZStack(alignment: .trailing) {
 				AvatarPlayingImage().hidden()
 				Chevron()
