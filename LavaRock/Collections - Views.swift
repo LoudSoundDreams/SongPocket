@@ -33,7 +33,7 @@ struct CollectionRow: View {
 			}())
 			.multilineTextAlignment(.center)
 			.frame(maxWidth: .infinity)
-			.padding(.bottom, .eight * 1/2)
+			.padding(.bottom, .eight * 1/4)
 			
 			ZStack(alignment: .trailing) {
 				AvatarPlayingImage().hidden()
