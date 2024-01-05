@@ -46,7 +46,7 @@ enum LRString {
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
-	// MARK: - Crates view
+	// MARK: - Folders view
 	
 	static let welcome_title = NSLocalizedString("Hi, Let’s Play", comment: "Placeholder when no access to Apple Music; title")
 	static let welcome_subtitle = NSLocalizedString("…your Apple Music library!", comment: "Placeholder when no access to Apple Music; subtitle")
