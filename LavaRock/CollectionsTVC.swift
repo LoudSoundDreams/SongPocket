@@ -80,7 +80,7 @@ final class CollectionsTVC: LibraryTVC {
 			case .someCollections: break
 		}
 		
-		didChangeRowsOrSelectedRows() // Freshens “Edit” button
+		freshenEditingButtons() // Including “Edit” button
 	}
 	
 	// MARK: - Setup

@@ -51,7 +51,7 @@ extension LibraryTVC {
 		newItems.insert(itemBeingMoved, at: toIndex)
 		viewModel.groups[0].items = newItems
 		
-		didChangeRowsOrSelectedRows() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
+		freshenEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
 	}
 	
 	// MARK: - Selecting
@@ -70,7 +70,7 @@ extension LibraryTVC {
 			if let cell = tableView.cellForRow(at: indexPath) {
 				cell.accessibilityTraits.formUnion(.selected)
 			}
-			didChangeRowsOrSelectedRows()
+			freshenEditingButtons()
 		}
 	}
 	
@@ -82,6 +82,6 @@ extension LibraryTVC {
 		if let cell = tableView.cellForRow(at: indexPath) {
 			cell.accessibilityTraits.subtract(.selected)
 		}
-		didChangeRowsOrSelectedRows()
+		freshenEditingButtons()
 	}
 }

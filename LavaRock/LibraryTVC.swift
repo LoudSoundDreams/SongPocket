@@ -254,7 +254,7 @@ class LibraryTVC: UITableViewController {
 		
 		tableView.deselectAllRows(animated: true)
 		
-		didChangeRowsOrSelectedRows()
+		freshenEditingButtons()
 	}
 	
 	private static func batchUpdatesOfRows<Identifier: Hashable>(
@@ -298,7 +298,7 @@ class LibraryTVC: UITableViewController {
 			}
 		}
 		
-		didChangeRowsOrSelectedRows()
+		freshenEditingButtons()
 	}
 	
 	// MARK: - Navigation
@@ -333,11 +333,6 @@ class LibraryTVC: UITableViewController {
 			animated: animated)
 	}
 	private lazy var viewingModeToolbarItems: [UIBarButtonItem] = MainToolbar.shared.barButtonItems + [editButtonItem]
-	
-	// For clarity, call this rather than `freshenEditingButtons` directly, whenever possible.
-	final func didChangeRowsOrSelectedRows() {
-		freshenEditingButtons()
-	}
 	
 	// Overrides should call super (this implementation).
 	override func setEditing(_ editing: Bool, animated: Bool) {
