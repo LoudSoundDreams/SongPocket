@@ -64,6 +64,12 @@ struct AlbumCard: View {
 					return .oneHalf
 			}
 		}())
+		.disabled({
+			switch mode {
+				case .normal: return false
+				case .disabled, .disabledTinted: return true
+			}
+		}())
 		.background {
 			if mode == .disabledTinted {
 				Color.accentColor.opacity(.oneEighth)
