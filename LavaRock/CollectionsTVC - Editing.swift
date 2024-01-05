@@ -20,9 +20,6 @@ extension CollectionsTVC {
 	func promptRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
 		
-		let fallback = LRString.tilde
-		let existingTitle = collection.title// ?? fallback
-		
 		let dialog = UIAlertController(
 			title: LRString.rename,
 			message: nil,
@@ -30,8 +27,8 @@ extension CollectionsTVC {
 		
 		dialog.addTextField {
 			// UITextField
-			$0.text = existingTitle
-			$0.placeholder = fallback
+			$0.text = collection.title
+			$0.placeholder = LRString.emDash
 			$0.clearButtonMode = .always
 			
 			// UITextInputTraits
@@ -43,6 +40,8 @@ extension CollectionsTVC {
 			$0.delegate = self
 		}
 		
+		dialog.addAction(UIAlertAction(title: LRString.cancel, style: .cancel))
+		
 		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
 		let done = UIAlertAction(title: LRString.done, style: .default) { [weak self] _ in
 			self?.commitRename(
@@ -51,8 +50,6 @@ extension CollectionsTVC {
 				thenShouldReselect: rowWasSelectedBeforeRenaming
 			)
 		}
-		
-		dialog.addAction(UIAlertAction(title: LRString.cancel, style: .cancel))
 		dialog.addAction(done)
 		dialog.preferredAction = done
 		
@@ -68,7 +65,7 @@ extension CollectionsTVC {
 		
 		let proposedTitle = (textFieldText ?? "").truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
 		if proposedTitle.isEmpty {
-			collection.title = LRString.tilde
+			collection.title = LRString.emDash
 		} else {
 			collection.title = proposedTitle
 		}
