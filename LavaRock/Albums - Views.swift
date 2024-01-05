@@ -46,7 +46,7 @@ struct AlbumCard: View {
 			.accessibilitySortPriority(10)
 			
 			AlbumInfoRow(album: album)
-				.padding(.top, .eight * 3/2)
+				.padding(.top, .eight * (1 + 1/2))
 				.padding(.horizontal)
 				.padding(.bottom, .eight * 3)
 				.accessibilityRespondsToUserInteraction(false)
