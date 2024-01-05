@@ -24,26 +24,16 @@ extension LibraryTVC: TapeDeckReflecting {
 	final func reflect_nowPlaying() { reflectPlayhead() }
 }
 class LibraryTVC: UITableViewController {
+	// MARK: - Data
 	
-	// MARK: - Properties
-	
-	// MARK: Subclasses should customize
-	
-	// Data
 	final lazy var viewModel: LibraryViewModel = CollectionsViewModel(context: Database.viewContext)
 	
-	// Controls
-	final var editingModeToolbarButtons: [UIBarButtonItem] = []
+	// MARK: Controls
 	
-	// MARK: Subclasses may customize
-	
-	// Controls
 	final lazy var viewingModeTopLeftButtons: [UIBarButtonItem] = []
 	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = []
 	
-	// MARK: Subclasses should not customize
-	
-	// Controls
+	final var editingModeToolbarButtons: [UIBarButtonItem] = []
 	
 	private(set) final lazy var floatButton = UIBarButtonItem(
 		title: LRString.moveToTop,
@@ -89,7 +79,8 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// State
+	// MARK: State
+	
 	final var isMergingChanges = false
 	final var needsFreshenLibraryItemsOnViewDidAppear = false
 	private var isAnimatingBatchUpdates = 0
