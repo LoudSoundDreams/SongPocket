@@ -80,8 +80,9 @@ extension Collection {
 			context.object(with: $0)
 		} as! [Album]
 		
+		let atIndex = 0
+		
 		// Displace contents
-		let atIndex = 0 // !
 		let toDisplace: [Album] = albums(sorted: false).filter { $0.index >= atIndex }
 		toDisplace.forEach {
 			$0.index += Int64(albumsToMove.count)
@@ -94,9 +95,6 @@ extension Collection {
 		}
 		
 		// In case we moved any albums to this collection that were already here.
-		let possiblyToSame = true // !
-		if possiblyToSame {
-			renumberAlbums()
-		}
+		renumberAlbums()
 	}
 }
