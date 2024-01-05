@@ -32,9 +32,9 @@ enum AvatarStatus {
 
 struct AvatarImage: View {
 	let libraryItem: LibraryItem
-	
 	@ObservedObject var state: MusicPlayer.State
 	@ObservedObject var queue: MusicPlayer.Queue
+	
 	@ObservedObject private var musicLibrary: MusicLibrary = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 	private var status: AvatarStatus {
 		if !libraryItem.containsPlayhead() {
