@@ -93,12 +93,11 @@ final class CollectionsTVC: LibraryTVC {
 			case .browsing:
 				AppleMusic.loadingIndicator = self
 				
-				NotificationCenter.default.addObserverOnce(self, selector: #selector(userUpdatedDatabase), name: .LRUserUpdatedDatabase, object: nil)
+				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
 	}
-	@objc private func userUpdatedDatabase() { reflectDatabase() }
 	
 	override func setUpBarButtons() {
 		switch purpose {

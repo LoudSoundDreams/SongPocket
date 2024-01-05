@@ -101,7 +101,7 @@ class LibraryTVC: UITableViewController {
 		
 		TapeDeck.shared.addReflector(weakly: self)
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: .LRMergedChanges, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRMergedChanges, object: nil)
 		
 		view.backgroundColor = UIColor(LRColor.grey_oneEighth)
 		
@@ -111,7 +111,6 @@ class LibraryTVC: UITableViewController {
 		
 		setUpBarButtons()
 	}
-	@objc private func mergedChanges() { reflectDatabase() }
 	
 	// Overrides should call super (this implementation).
 	func setUpBarButtons() {
@@ -147,7 +146,7 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Library items
 	
-	final func reflectDatabase() {
+	@objc final func reflectDatabase() {
 		// Do this even if the view isn’t visible.
 		reflectPlayhead()
 		

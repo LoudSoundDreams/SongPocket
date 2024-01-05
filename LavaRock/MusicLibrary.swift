@@ -26,27 +26,26 @@ final class MusicLibrary: ObservableObject {
 		library?.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.addObserverOnce(
 			self,
-			selector: #selector(mediaLibraryDidChange),
+			selector: #selector(mergeChanges),
 			name: .MPMediaLibraryDidChange,
 			object: library)
 		
 		mergeChanges()
 	}
-	@objc private func mediaLibraryDidChange() { mergeChanges() }
-	private func mergeChanges() {
+	@objc private func mergeChanges() {
 		os_signpost(.begin, log: .merge, name: "1. Merge changes")
 		defer {
 			os_signpost(.end, log: .merge, name: "1. Merge changes")
 		}
 #if targetEnvironment(simulator)
 		context.performAndWait {
-			mergeChanges(toMatchInAnyOrder: Sim_SongInfo.all)
+			mergeChangesToMatch(freshInAnyOrder: Sim_SongInfo.all)
 		}
 #else
 		let songsQuery = MPMediaQuery.songs()
 		if let freshMediaItems = songsQuery.items {
 			context.performAndWait {
-				mergeChanges(toMatchInAnyOrder: freshMediaItems)
+				mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
 			}
 		}
 #endif
@@ -57,9 +56,7 @@ final class MusicLibrary: ObservableObject {
 	}
 }
 extension MusicLibrary {
-	func mergeChanges(
-		toMatchInAnyOrder freshInfosInAnyOrder: [SongInfo]
-	) {
+	func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
 		os_signpost(.begin, log: .merge, name: "Initial parse")
 		let existingSongs = Song.allFetched(sorted: false, inAlbum: nil, context: context)
 		
@@ -75,7 +72,7 @@ extension MusicLibrary {
 		var songsToDelete: [Song] = []
 		
 		var infosBySongID: Dictionary<SongID, SongInfo> = {
-			let tuples = freshInfosInAnyOrder.map { info in (info.songID, info) }
+			let tuples = freshInAnyOrder.map { info in (info.songID, info) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
 		
@@ -116,7 +113,7 @@ extension MusicLibrary {
 			for: songsToDelete)
 		
 		cleanUpLibraryItems(
-			allInfos: freshInfosInAnyOrder,
+			allInfos: freshInAnyOrder,
 			isFirstImport: isFirstImport)
 		
 		context.tryToSave()
