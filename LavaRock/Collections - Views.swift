@@ -52,7 +52,7 @@ struct CollectionRow: View {
 }
 
 final class CollectionCell: UITableViewCell {
-	static let usesSwiftUI = 10 == 1
+	static let usesSwiftUI = 10 == 10
 	
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
