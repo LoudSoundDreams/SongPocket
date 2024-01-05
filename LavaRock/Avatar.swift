@@ -30,6 +30,13 @@ enum AvatarStatus {
 	}
 }
 
+struct AvatarPlayingImage: View {
+	var body: some View {
+		Image(systemName: "speaker.wave.2.fill")
+			.fontBody_dynamicTypeSizeUpToXxxLarge()
+			.imageScale(.small)
+	}
+}
 struct AvatarImage: View {
 	let libraryItem: LibraryItem
 	@ObservedObject var state: MusicPlayer.State
@@ -53,20 +60,13 @@ struct AvatarImage: View {
 	
 	var body: some View {
 		ZStack(alignment: .leading) {
-			playing_image.hidden()
+			AvatarPlayingImage().hidden()
 			foregroundView
 		}
 		.accessibilityElement()
 		.accessibilityLabel(status.axLabel ?? "")
 	}
-	
-	private var playing_image: some View {
-		Image(systemName: "speaker.wave.2.fill")
-			.fontBody_dynamicTypeSizeUpToXxxLarge()
-			.imageScale(.small)
-	}
-	@ViewBuilder
-	private var foregroundView: some View {
+	@ViewBuilder private var foregroundView: some View {
 		switch status {
 			case .notPlaying:
 				EmptyView()
@@ -76,7 +76,7 @@ struct AvatarImage: View {
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 					.imageScale(.small)
 			case .playing:
-				playing_image
+				AvatarPlayingImage()
 					.foregroundStyle(Color.accentColor)
 		}
 	}

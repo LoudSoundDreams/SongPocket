@@ -28,23 +28,20 @@ struct CollectionRow: View {
 				.multilineTextAlignment(.center)
 				.frame(maxWidth: .infinity)
 			ZStack(alignment: .trailing) {
-				AvatarImage(
-					libraryItem: collection,
-					state: SystemMusicPlayer.sharedIfAuthorized!.state,
-					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
-				).hidden()
+				AvatarPlayingImage().hidden()
 				Chevron()
 			}
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
+		.accessibilityElement(children: .combine)
+		.accessibilityAddTraits(.isButton)
 		.opacity(
 			dimmed
 			? .oneFourth // Close to what Files pickers use
 			: 1
 		)
-		.accessibilityElement(children: .combine)
-		.accessibilityAddTraits(.isButton)
+		.disabled(dimmed)
 		.accessibilityInputLabels([title].compacted()) // Exclude the now-playing status.
 	}
 }
