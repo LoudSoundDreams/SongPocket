@@ -33,6 +33,7 @@ struct CollectionRow: View {
 			}())
 			.multilineTextAlignment(.center)
 			.frame(maxWidth: .infinity)
+			.padding(.bottom, .eight * 1/2)
 			
 			ZStack(alignment: .trailing) {
 				AvatarPlayingImage().hidden()
@@ -50,67 +51,5 @@ struct CollectionRow: View {
 		)
 		.disabled(dimmed)
 		.accessibilityInputLabels([title].compacted()) // Exclude the now-playing status.
-	}
-}
-
-final class CollectionCell: UITableViewCell {
-	static let usesSwiftUI = 10 == 10
-	
-	@IBOutlet var spacerSpeakerImageView: UIImageView!
-	@IBOutlet var speakerImageView: UIImageView!
-	var rowContentAccessibilityLabel__: String? = nil
-	
-	@IBOutlet private var titleLabel: UILabel!
-	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		if Self.usesSwiftUI { return }
-		
-		accessoryView = {
-			let chevron_uiView = UIHostingController(rootView: Chevron()).view
-			chevron_uiView?.sizeToFit()
-			chevron_uiView?.backgroundColor = nil
-			return chevron_uiView
-		}()
-		isAccessibilityElement = true // Prevents `accessoryView` from being a separate element
-	}
-	
-	func configure(
-		with collection: Collection,
-		dimmed: Bool
-	) {
-		if Self.usesSwiftUI {
-			contentConfiguration = UIHostingConfiguration {
-				CollectionRow(title: collection.title, collection: collection, dimmed: dimmed)
-			}
-		} else {
-			titleLabel.text = { () -> String in
-				guard
-					let collectionTitle = collection.title,
-					!collectionTitle.isEmpty
-				else {
-					return " "
-				}
-				return collectionTitle
-			}()
-			contentView.layer.opacity = dimmed ? .oneFourth : 1
-			
-			rowContentAccessibilityLabel__ = titleLabel.text
-			reflectAvatarStatus(collection.avatarStatus__())
-			
-			accessibilityUserInputLabels = [collection.title].compacted()
-		}
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if Self.usesSwiftUI { return }
-		
-		separatorInset.left = 0
-		+ contentView.frame.minX
-		+ titleLabel.frame.minX
-		separatorInset.right = directionalLayoutMargins.trailing
 	}
 }

@@ -72,14 +72,10 @@ extension CollectionsTVC {
 	override func tableView(
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard
-			viewState == .someCollections,
-			let cell = tableView.dequeueReusableCell(
-				withIdentifier: "Collection",
-				for: indexPath
-			) as? CollectionCell
-		else { return UITableViewCell() }
+		guard viewState == .someCollections else { return UITableViewCell() }
 		
+		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Folder", for: indexPath)
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
 		let enabled = { () -> Bool in
@@ -92,7 +88,9 @@ extension CollectionsTVC {
 				case .browsing: return true
 			}
 		}()
-		cell.configure(with: collection, dimmed: !enabled)
+		cell.contentConfiguration = UIHostingConfiguration {
+			CollectionRow(title: collection.title, collection: collection, dimmed: !enabled)
+		}
 		cell.editingAccessoryType = .detailButton
 		cell.backgroundColors_configureForLibraryItem()
 		cell.isUserInteractionEnabled = enabled
