@@ -53,6 +53,7 @@ struct AlbumCard: View {
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
+		.accessibilityAddTraits(.isButton)
 		.opacity({ () -> Double in
 			switch mode {
 				case .normal:
@@ -68,7 +69,6 @@ struct AlbumCard: View {
 				Color.accentColor.opacity(.oneEighth)
 			}
 		}
-		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
 }
@@ -113,8 +113,8 @@ struct AlbumInfoRow: View {
 			Spacer()
 			AvatarImage(
 				libraryItem: album,
-				state: SystemMusicPlayer.sharedIfAuthorized!.state, // !
-				queue: SystemMusicPlayer.sharedIfAuthorized!.queue // !
+				state: SystemMusicPlayer.sharedIfAuthorized!.state,
+				queue: SystemMusicPlayer.sharedIfAuthorized!.queue
 			).accessibilitySortPriority(10) // Bigger is sooner
 			Chevron()
 		}

@@ -19,8 +19,8 @@ struct CollectionRow: View {
 			ZStack(alignment: .leading) {
 				AvatarImage(
 					libraryItem: collection,
-					state: SystemMusicPlayer.sharedIfAuthorized!.state, // !
-					queue: SystemMusicPlayer.sharedIfAuthorized!.queue // !
+					state: SystemMusicPlayer.sharedIfAuthorized!.state,
+					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
 				).accessibilitySortPriority(10)
 				Chevron().hidden()
 			}
@@ -30,8 +30,8 @@ struct CollectionRow: View {
 			ZStack(alignment: .trailing) {
 				AvatarImage(
 					libraryItem: collection,
-					state: SystemMusicPlayer.sharedIfAuthorized!.state, // !
-					queue: SystemMusicPlayer.sharedIfAuthorized!.queue // !
+					state: SystemMusicPlayer.sharedIfAuthorized!.state,
+					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
 				).hidden()
 				Chevron()
 			}

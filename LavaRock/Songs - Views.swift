@@ -73,8 +73,8 @@ struct SongRow: View {
 			
 			AvatarImage(
 				libraryItem: song,
-				state: SystemMusicPlayer.sharedIfAuthorized!.state, // !
-				queue: SystemMusicPlayer.sharedIfAuthorized!.queue // !
+				state: SystemMusicPlayer.sharedIfAuthorized!.state,
+				queue: SystemMusicPlayer.sharedIfAuthorized!.queue
 			).accessibilitySortPriority(10)
 			Menu {
 				Button {
@@ -108,7 +108,6 @@ struct SongRow: View {
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
-		
 	}
 }
 struct TrackNumberLabel: View {
