@@ -44,7 +44,7 @@ extension CollectionsViewModel {
 	
 	func updatedAfterCreating() -> Self {
 		let newCollection = Collection(context: context)
-		newCollection.title = LRString.emDash
+		newCollection.title = LRString.tilde
 		// When we call `setViewModelAndMoveAndDeselectRowsAndShouldContinue`, the property observer will set each `Collection.index` for us.
 		
 		var newItems = libraryGroup().items

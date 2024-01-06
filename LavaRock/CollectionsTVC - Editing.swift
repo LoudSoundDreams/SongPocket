@@ -28,7 +28,7 @@ extension CollectionsTVC {
 		dialog.addTextField {
 			// UITextField
 			$0.text = collection.title
-			$0.placeholder = LRString.emDash
+			$0.placeholder = LRString.tilde
 			$0.clearButtonMode = .always
 			
 			// UITextInputTraits
@@ -65,7 +65,7 @@ extension CollectionsTVC {
 		
 		let proposedTitle = (textFieldText ?? "").truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
 		if proposedTitle.isEmpty {
-			collection.title = LRString.emDash
+			collection.title = LRString.tilde
 		} else {
 			collection.title = proposedTitle
 		}
