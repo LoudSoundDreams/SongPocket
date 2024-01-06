@@ -48,7 +48,7 @@ struct AlbumCard: View {
 			AlbumInfoRow(album: album)
 				.padding(.top, .eight * (1 + 1/2))
 				.padding(.horizontal)
-				.padding(.bottom, .eight * 3)
+				.padding(.bottom, .eight * 4)
 				.accessibilityRespondsToUserInteraction(false)
 		}
 		.alignmentGuide_separatorLeading()
@@ -127,7 +127,6 @@ struct AlbumInfoRow: View {
 				.fontFootnote()
 				.multilineTextAlignment(.center)
 				.frame(maxWidth: .infinity)
-				.offset(y: .eight * -1/4)
 			
 			ZStack(alignment: .trailing) {
 				AvatarPlayingImage().hidden()
