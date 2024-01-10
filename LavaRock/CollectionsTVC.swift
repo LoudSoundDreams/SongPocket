@@ -118,6 +118,7 @@ final class CollectionsTVC: LibraryTVC {
 				]
 			case .browsing:
 				editingModeToolbarButtons = [
+					.flexibleSpace(), .flexibleSpace(),
 					arrangeCollectionsButton, .flexibleSpace(),
 					floatButton, .flexibleSpace(),
 					sinkButton, .flexibleSpace(),
