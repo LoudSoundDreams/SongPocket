@@ -99,9 +99,8 @@ final class MainToolbar {
 							title: LRString.previous,
 							image: UIImage(systemName: "backward.end"),
 							attributes: {
-								var result: UIMenuElement.Attributes = [.keepsMenuPresented]
-								if Self.player == nil { result.formUnion(.disabled) }
-								return result
+								if Self.player == nil { return .disabled }
+								return []
 							}()
 						) { _ in
 							Task {
@@ -131,9 +130,8 @@ final class MainToolbar {
 							title: LRString.next,
 							image: UIImage(systemName: "forward.end"),
 							attributes: {
-								var result: UIMenuElement.Attributes = [.keepsMenuPresented]
-								if Self.player == nil { result.formUnion(.disabled) }
-								return result
+								if Self.player == nil { return .disabled }
+								return []
 							}()
 						) { _ in
 							Task {
