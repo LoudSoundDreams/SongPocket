@@ -72,8 +72,6 @@ extension CollectionsTVC {
 	override func tableView(
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		guard viewState == .someCollections else { return UITableViewCell() }
-		
 		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Folder", for: indexPath)
 		let collectionsViewModel = viewModel as! CollectionsViewModel
