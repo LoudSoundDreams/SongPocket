@@ -102,6 +102,7 @@ struct SongRow: View {
 						.fontBody_dynamicTypeSizeUpToXxxLarge()
 				}
 			}
+			.alignmentGuide_separatorTrailing()
 			.disabled(listStatus.editing)
 		}
 		.padding(.horizontal)
@@ -209,7 +210,6 @@ final class SongCell: UITableViewCell {
 						artist_if_different_from_album_artist: artistDisplayOptional,
 						listStatus: referencee.status
 					)
-					.alignmentGuide_separatorTrailing()
 				}
 			}
 			.margins(.all, .zero)
