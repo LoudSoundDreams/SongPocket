@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import OSLog
 
 extension MusicLibrary {
 	// Create new managed objects for the new `SongInfo`s, including new `Album`s and `Collection`s to put them in if necessary.
@@ -16,18 +15,9 @@ extension MusicLibrary {
 		existingCollections: [Collection],
 		isFirstImport: Bool
 	) {
-		os_signpost(.begin, log: .merge, name: "3. Create library items")
-		defer {
-			os_signpost(.end, log: .merge, name: "3. Create library items")
-		}
-		
 		func groupedByAlbumID(
 			_ infos: [SongInfo]
 		) -> [AlbumID: [SongInfo]] {
-			os_signpost(.begin, log: .create, name: "Initial group")
-			defer {
-				os_signpost(.end, log: .create, name: "Initial group")
-			}
 			return Dictionary(grouping: infos) { $0.albumID }
 		}
 		
@@ -37,23 +27,17 @@ extension MusicLibrary {
 				// Since our database is empty, we’ll add items from the top down, because it’s faster.
 				let dictionary = groupedByAlbumID(newInfos)
 				let groups = dictionary.map { $0.value }
-				os_signpost(.begin, log: .create, name: "Initial sort")
 				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(groupsOfInfos: groups)
 				// We’ll sort `Album`s by release date later.
-				os_signpost(.end, log: .create, name: "Initial sort")
 				return sortedGroups
 			} else {
 				// Since our database isn’t empty, we’ll insert items at the top from the bottom up, because it’s simpler.
-				os_signpost(.begin, log: .create, name: "Initial sort")
 				let sortedInfos = newInfos.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
-				os_signpost(.end, log: .create, name: "Initial sort")
 				let dictionary = groupedByAlbumID(sortedInfos)
 				let groupsOfSortedInfos = dictionary.map { $0.value }
-				os_signpost(.begin, log: .create, name: "Initial sort 2")
 				let sortedGroups = groupsOfSortedInfos.sorted { leftGroup, rightGroup in
 					leftGroup.first!.dateAddedOnDisk < rightGroup.first!.dateAddedOnDisk
 				}
-				os_signpost(.end, log: .create, name: "Initial sort 2")
 				return sortedGroups
 			}
 			// We’ll sort `Song`s within each `Album` later, because it depends on whether the existing `Song`s in each `Album` are in album order.
@@ -68,9 +52,8 @@ extension MusicLibrary {
 		var existingCollectionsByTitle: [String: [Collection]] =
 		Dictionary(grouping: existingCollections) { $0.title! }
 		
-		os_signpost(.begin, log: .create, name: "Create all the Songs and containers")
 		groupsOfInfos.forEach { groupOfInfos in
-			os_signpost(.begin, log: .create, name: "Create one group of Songs and containers")
+			// Create one group of `Song`s and containers
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
 				for: groupOfInfos,
 				existingAlbumsByID: existingAlbumsByID,
@@ -86,9 +69,7 @@ extension MusicLibrary {
 				let newBucket = [newCollection] + oldBucket
 				existingCollectionsByTitle[title] = newBucket
 			}
-			os_signpost(.end, log: .create, name: "Create one group of Songs and containers")
 		}
-		os_signpost(.end, log: .create, name: "Create all the Songs and containers")
 	}
 	
 	// MARK: Sort groups of `SongInfo`s
@@ -131,9 +112,7 @@ extension MusicLibrary {
 			let songIDs = infos.map { $0.songID }
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
 				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
-				os_signpost(.begin, log: .create, name: "Put the existing Album back in order")
 				matchingExistingAlbum.sortSongsByDefaultOrder()
-				os_signpost(.end, log: .create, name: "Put the existing Album back in order")
 			} else {
 				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
 			}
@@ -142,22 +121,18 @@ extension MusicLibrary {
 			
 		} else {
 			// Otherwise, create the `Album` to add the `Song`s to…
-			os_signpost(.begin, log: .create, name: "Create a new album and maybe new collection")
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
 				for: firstInfo,
 				existingCollectionsByTitle: existingCollectionsByTitle,
 				isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
-			os_signpost(.end,log: .create, name: "Create a new album and maybe new collection")
 			
 			// …and then add the `Song`s to that `Album`.
-			os_signpost(.begin, log: .create, name: "Sort the songs for the new album")
 			let sortedSongIDs = infos.sorted {
 				$0.precedesInDefaultOrder(inSameAlbum: $1)
 			}.map {
 				$0.songID
 			}
-			os_signpost(.end, log: .create, name: "Sort the songs for the new album")
 			newAlbum.createSongsAtEnd(with: sortedSongIDs)
 			
 			return newContainers
@@ -197,11 +172,9 @@ extension MusicLibrary {
 			// Otherwise, create the collection to put the album in…
 			let newCollection: Collection = {
 				if isFirstImport {
-					os_signpost(.begin, log: .create, name: "Count all the collections so far")
 					let existingCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
 						partialResult + entry.value.count
 					}
-					os_signpost(.end, log: .create, name: "Count all the collections so far")
 					return Collection(
 						afterAllOtherCount: existingCount,
 						title: titleOfDestination,

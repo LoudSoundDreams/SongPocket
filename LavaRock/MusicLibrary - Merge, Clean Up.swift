@@ -6,28 +6,19 @@
 //
 
 import CoreData
-import OSLog
 
 extension MusicLibrary {
 	func cleanUpLibraryItems(
 		allInfos: [SongInfo],
 		isFirstImport: Bool
 	) {
-		os_signpost(.begin, log: .merge, name: "5. Clean up library items")
-		defer {
-			os_signpost(.end, log: .merge, name: "5. Clean up library items")
-		}
-		
 		let allCollections = Collection.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for reindexing the albums within each collection.
 		let allAlbums = Album.allFetched(sorted: false, inCollection: nil, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
-		os_signpost(.begin, log: .cleanup, name: "Recalculate Album release date estimates")
 		recalculateReleaseDateEstimates(
 			for: allAlbums,
 			considering: allInfos)
-		os_signpost(.end, log: .cleanup, name: "Recalculate Album release date estimates")
 		
-		os_signpost(.begin, log: .cleanup, name: "Reindex all Albums and Songs")
 		allCollections.forEach {
 			Self.reindexAlbums(
 				in: $0,
@@ -36,7 +27,6 @@ extension MusicLibrary {
 		allAlbums.forEach {
 			$0.renumberSongs()
 		}
-		os_signpost(.end, log: .cleanup, name: "Reindex all Albums and Songs")
 	}
 	
 	// MARK: Re-estimate release date
@@ -48,36 +38,27 @@ extension MusicLibrary {
 		for albums: [Album],
 		considering infos: [SongInfo]
 	) {
-		os_signpost(.begin, log: .cleanup, name: "Filter out infos without release dates")
+		// Filter out infos without release dates
 		// This is pretty slow, but can save time later.
 		let infosWithReleaseDates = infos.filter { $0.releaseDateOnDisk != nil }
-		os_signpost(.end, log: .cleanup, name: "Filter out infos without release dates")
 		
-		os_signpost(.begin, log: .cleanup, name: "Group infos by album")
 		let infosByAlbumID: [AlbumID: [SongInfo]] =
 		Dictionary(grouping: infosWithReleaseDates) { $0.albumID }
-		os_signpost(.end, log: .cleanup, name: "Group infos by album")
 		
 		albums.forEach { album in
-			os_signpost(.begin, log: .cleanup, name: "Re-estimate release date for one Album")
-			defer {
-				os_signpost(.end, log: .cleanup, name: "Re-estimate release date for one Album")
-			}
+			// Re-estimate release date for one `Album`
 			
 			album.releaseDateEstimate = nil
 			
-			os_signpost(.begin, log: .cleanup, name: "Find the release dates associated with this Album")
+			// Find the release dates associated with this `Album`
 			// For `Album`s with no release dates, using `guard` to return early is slightly faster than optional chaining.
 			guard let matchingInfos = infosByAlbumID[album.albumPersistentID] else {
-				os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 				return
 			}
 			let matchingReleaseDates = matchingInfos.compactMap { $0.releaseDateOnDisk }
-			os_signpost(.end, log: .cleanup, name: "Find the release dates associated with this Album")
 			
-			os_signpost(.begin, log: .cleanup, name: "Find the latest of those release dates")
+			// Find the latest of those release dates
 			album.releaseDateEstimate = matchingReleaseDates.max()
-			os_signpost(.end, log: .cleanup, name: "Find the latest of those release dates")
 		}
 	}
 	

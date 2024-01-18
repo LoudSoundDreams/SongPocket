@@ -7,7 +7,6 @@
 
 import MediaPlayer
 import CoreData
-import OSLog
 
 final class MusicLibrary: ObservableObject {
 	private init() {}
@@ -34,10 +33,6 @@ final class MusicLibrary: ObservableObject {
 		mergeChanges()
 	}
 	@objc private func mergeChanges() {
-		os_signpost(.begin, log: .merge, name: "1. Merge changes")
-		defer {
-			os_signpost(.end, log: .merge, name: "1. Merge changes")
-		}
 #if targetEnvironment(simulator)
 		context.performAndWait {
 			mergeChangesToMatch(freshInAnyOrder: Sim_SongInfo.all)
@@ -58,7 +53,6 @@ final class MusicLibrary: ObservableObject {
 }
 extension MusicLibrary {
 	func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
-		os_signpost(.begin, log: .merge, name: "Initial parse")
 		let existingSongs = Song.allFetched(sorted: false, inAlbum: nil, context: context)
 		
 		let defaults = UserDefaults.standard
@@ -93,7 +87,6 @@ extension MusicLibrary {
 		}
 		// `infosBySongID` now holds the `SongInfo`s that we don’t have `Song`s for.
 		let newInfos = infosBySongID.map { $0.value }
-		os_signpost(.end, log: .merge, name: "Initial parse")
 		
 		updateLibraryItems( // Update before creating and deleting, so that we can easily put new `Song`s above modified `Song`s.
 			// This also deletes all but one `Album` with any given `albumPersistentID`.
