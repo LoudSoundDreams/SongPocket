@@ -9,6 +9,12 @@ import UIKit
 import SwiftUI
 
 extension CollectionsTVC {
+	override func tableView(
+		_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath
+	) {
+		promptRename(at: indexPath)
+	}
+	
 	// MARK: - Numbers
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
@@ -117,13 +123,5 @@ extension CollectionsTVC {
 				]
 		}
 		return cell
-	}
-	
-	// MARK: - Editing
-	
-	override func tableView(
-		_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath
-	) {
-		promptRename(at: indexPath)
 	}
 }

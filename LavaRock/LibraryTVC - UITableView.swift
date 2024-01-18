@@ -8,8 +8,6 @@
 import UIKit
 
 extension LibraryTVC {
-	// MARK: - Editing
-	
 	final override func tableView(
 		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
 	) -> Bool {
@@ -73,8 +71,6 @@ extension LibraryTVC {
 			freshenEditingButtons()
 		}
 	}
-	
-	// MARK: Deselecting
 	
 	final override func tableView(
 		_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath
