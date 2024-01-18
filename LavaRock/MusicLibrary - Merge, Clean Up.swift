@@ -9,9 +9,17 @@ import CoreData
 
 extension MusicLibrary {
 	func cleanUpLibraryItems(
+		songsToDelete: [Song],
 		allInfos: [SongInfo],
 		isFirstImport: Bool
 	) {
+		songsToDelete.forEach {
+			context.delete($0)
+			// WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s. Later, you must delete empty `Album`s and reindex the `Song`s within each `Album`.
+		}
+		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
+		context.deleteEmptyCollections()
+		
 		let allCollections = Collection.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for reindexing the albums within each collection.
 		let allAlbums = Album.allFetched(sorted: false, inCollection: nil, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		

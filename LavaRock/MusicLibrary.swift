@@ -103,10 +103,8 @@ extension MusicLibrary {
 			existingAlbums: existingAlbums,
 			existingCollections: existingCollections,
 			isFirstImport: isFirstImport)
-		deleteLibraryItems(
-			for: songsToDelete)
-		
 		cleanUpLibraryItems(
+			songsToDelete: songsToDelete,
 			allInfos: freshInAnyOrder,
 			isFirstImport: isFirstImport)
 		
