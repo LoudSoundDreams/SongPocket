@@ -217,7 +217,7 @@ final class MainToolbar {
 				return Self.overflowButtonDefaultImage
 		}
 	}
-	func showPlayButton() {
+	private func showPlayButton() {
 		playPauseButton.title = LRString.play
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "play.circle")
@@ -228,7 +228,7 @@ final class MainToolbar {
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
-	func showPauseButton() {
+	private func showPauseButton() {
 		playPauseButton.title = LRString.pause
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "pause.circle")
