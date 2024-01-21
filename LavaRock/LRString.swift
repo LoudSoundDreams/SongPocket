@@ -48,8 +48,8 @@ enum LRString {
 	
 	// MARK: - Folders view
 	
-	static let welcome_title = NSLocalizedString("Hi, Let’s Play", comment: "Placeholder when no access to Apple Music; title")
-	static let welcome_subtitle = NSLocalizedString("…your Apple Music library!", comment: "Placeholder when no access to Apple Music; subtitle")
+	static let welcome_title = NSLocalizedString("Let’s Hear It", comment: "Placeholder when no access to Apple Music; title")
+	static let welcome_subtitle = NSLocalizedString("…your Music library, that is!", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let allowAccess = NSLocalizedString("Allow Access", comment: "Button")
 	
 	static let emptyLibrary_subtitle = NSLocalizedString("Your library’s empty.", comment: "Placeholder when library is empty; subtitle")
