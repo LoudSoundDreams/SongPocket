@@ -45,8 +45,9 @@ extension CollectionsTVC {
 			case .emptyDatabase:
 				contentUnavailableConfiguration = UIHostingConfiguration {
 					ContentUnavailableView {
-						Text(LRString.emptyLibrary_title)
-							.fontTitle2_bold()
+						Image(systemName: "square.stack")
+							.foregroundStyle(.secondary)
+							.font(.title)
 					} description: {
 						Text(LRString.emptyLibrary_subtitle)
 					} actions: {
