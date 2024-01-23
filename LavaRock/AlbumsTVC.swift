@@ -43,6 +43,18 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
+		switch purpose {
+			case .movingAlbums: break
+			case .browsing:
+				editingButtons = [
+					moveButton, .flexibleSpace(),
+					arrangeAlbumsButton, .flexibleSpace(),
+					floatButton, .flexibleSpace(),
+					sinkButton, .flexibleSpace(),
+					editButtonItem,
+				]
+		}
+		
 		super.viewDidLoad()
 		
 		switch purpose {
@@ -53,12 +65,10 @@ final class AlbumsTVC: LibraryTVC {
 		
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
-	}
-	
-	override func setUpBarButtons() {
+		
 		switch purpose {
 			case .movingAlbums:
-				viewingModeTopRightButtons = [
+				navigationItem.setRightBarButton(
 					{
 						let moveHereButton = UIBarButtonItem(
 							title: LRString.move,
@@ -67,17 +77,9 @@ final class AlbumsTVC: LibraryTVC {
 						moveHereButton.style = .done
 						return moveHereButton
 					}(),
-				]
-			case .browsing:
-				editingModeToolbarButtons = [
-					moveButton, .flexibleSpace(),
-					arrangeAlbumsButton, .flexibleSpace(),
-					floatButton, .flexibleSpace(),
-					sinkButton, .flexibleSpace(),
-					editButtonItem,
-				]
+					animated: false)
+			case .browsing: break
 		}
-		super.setUpBarButtons()
 	}
 	
 	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {}

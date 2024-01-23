@@ -30,10 +30,7 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: Controls
 	
-	final lazy var viewingModeTopLeftButtons: [UIBarButtonItem] = []
-	final lazy var viewingModeTopRightButtons: [UIBarButtonItem] = []
-	
-	final var editingModeToolbarButtons: [UIBarButtonItem] = []
+	final var editingButtons: [UIBarButtonItem] = []
 	
 	private(set) final lazy var floatButton = UIBarButtonItem(
 		title: LRString.moveToTop,
@@ -100,11 +97,6 @@ class LibraryTVC: UITableViewController {
 			navBar.scrollEdgeAppearance = navBar.standardAppearance
 		}
 		
-		setUpBarButtons()
-	}
-	
-	// Overrides should call super (this implementation).
-	func setUpBarButtons() {
 		setBarButtons(animated: false)
 	}
 	
@@ -312,18 +304,18 @@ class LibraryTVC: UITableViewController {
 			(
 				editing
 				? [.flexibleSpace()] // Removes “Back” button
-				: viewingModeTopLeftButtons
+				: []
 			),
-			animated: animated)
-		navigationItem.setRightBarButtonItems(
-			editing ? [] : viewingModeTopRightButtons,
 			animated: animated)
 		
 		setToolbarItems(
-			editing ? editingModeToolbarButtons : viewingModeToolbarItems,
+			(
+				editing
+				? editingButtons
+				: MainToolbar.shared.barButtonItems + [editButtonItem]
+			),
 			animated: animated)
 	}
-	private lazy var viewingModeToolbarItems: [UIBarButtonItem] = MainToolbar.shared.barButtonItems + [editButtonItem]
 	
 	// Overrides should call super (this implementation).
 	override func setEditing(_ editing: Bool, animated: Bool) {

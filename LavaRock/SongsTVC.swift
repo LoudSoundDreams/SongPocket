@@ -24,8 +24,8 @@ final class SongsTVC: LibraryTVC {
 		title: LRString.sort,
 		image: UIImage(systemName: "arrow.up.arrow.down")
 	)
-	override func setUpBarButtons() {
-		editingModeToolbarButtons = [
+	override func viewDidLoad() {
+		editingButtons = [
 			.flexibleSpace(), .flexibleSpace(),
 			arrangeSongsButton, .flexibleSpace(),
 			floatButton, .flexibleSpace(),
@@ -33,7 +33,7 @@ final class SongsTVC: LibraryTVC {
 			editButtonItem,
 		]
 		
-		super.setUpBarButtons()
+		super.viewDidLoad()
 	}
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()

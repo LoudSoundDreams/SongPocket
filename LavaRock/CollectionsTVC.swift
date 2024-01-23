@@ -91,6 +91,18 @@ final class CollectionsTVC: LibraryTVC {
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
+		switch purpose {
+			case .movingAlbums: break
+			case .browsing:
+				editingButtons = [
+					.flexibleSpace(), .flexibleSpace(),
+					arrangeCollectionsButton, .flexibleSpace(),
+					floatButton, .flexibleSpace(),
+					sinkButton, .flexibleSpace(),
+					editButtonItem,
+				]
+		}
+		
 		super.viewDidLoad()
 		
 		switch purpose {
@@ -102,36 +114,25 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		
 		navigationItem.backButtonDisplayMode = .minimal
-	}
-	
-	override func setUpBarButtons() {
+		
 		switch purpose {
 			case .movingAlbums:
-				viewingModeTopLeftButtons = [
+				navigationItem.setLeftBarButton(
 					UIBarButtonItem(
 						systemItem: .close,
 						primaryAction: UIAction { [weak self] _ in
 							self?.dismiss(animated: true)
 						}
 					),
-				]
-				viewingModeTopRightButtons = [
+					animated: false)
+				navigationItem.setRightBarButton(
 					UIBarButtonItem(
 						systemItem: .add,
 						primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }
 					),
-				]
-			case .browsing:
-				editingModeToolbarButtons = [
-					.flexibleSpace(), .flexibleSpace(),
-					arrangeCollectionsButton, .flexibleSpace(),
-					floatButton, .flexibleSpace(),
-					sinkButton, .flexibleSpace(),
-					editButtonItem,
-				]
+					animated: false)
+			case .browsing: break
 		}
-		
-		super.setUpBarButtons()
 		
 		switch purpose {
 			case .movingAlbums: break

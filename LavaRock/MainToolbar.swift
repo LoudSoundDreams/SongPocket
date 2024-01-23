@@ -13,14 +13,12 @@ import MediaPlayer
 @MainActor
 final class MainToolbar {
 	static let shared = MainToolbar()
-	var barButtonItems: [UIBarButtonItem] {
-		return [
-			overflowButton, .flexibleSpace(),
-			jumpBackButton, .flexibleSpace(),
-			playPauseButton, .flexibleSpace(),
-			jumpForwardButton, .flexibleSpace(),
-		]
-	}
+	lazy var barButtonItems: [UIBarButtonItem] = [
+		overflowButton, .flexibleSpace(),
+		jumpBackButton, .flexibleSpace(),
+		playPauseButton, .flexibleSpace(),
+		jumpForwardButton, .flexibleSpace(),
+	]
 	
 	// MARK: - PRIVATE
 	
