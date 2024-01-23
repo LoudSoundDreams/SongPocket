@@ -28,7 +28,85 @@ final class MainToolbar {
 	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
-		menu: Self.newOverflowMenu()
+		menu: {
+			let menuElements: [UIMenuElement] = [
+				UIMenu(
+					options: .displayInline,
+					children: [
+						UIDeferredMenuElement.uncached({ useMenuElements in
+							let action = UIAction(
+								title: LRString.repeat_,
+								image: UIImage(systemName: "repeat.1"),
+								attributes: {
+									if Self.player == nil { return .disabled }
+									return []
+								}(),
+								state: {
+									guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return .off }
+									return (player.repeatMode == .one) ? .on : .off
+								}()
+							) { _ in
+								guard let player = Self.player else { return }
+								if player.state.repeatMode == .one {
+									player.state.repeatMode = MusicPlayer.RepeatMode.none
+								} else {
+									player.state.repeatMode = .one
+								}
+							}
+							useMenuElements([action])
+						}),
+					]
+				),
+				
+				UIMenu(
+					options: .displayInline,
+					preferredElementSize: .small,
+					children: [
+						
+						UIDeferredMenuElement.uncached({ useMenuElements in
+							let action = UIAction(
+								title: LRString.previous,
+								image: UIImage(systemName: "backward.end"),
+								attributes: (Self.player == nil) ? .disabled : []
+							) { _ in
+								Task {
+									try await Self.player?.skipToPreviousEntry()
+								}
+							}
+							useMenuElements([action])
+						}),
+						
+						UIDeferredMenuElement.uncached({ useMenuElements in
+							let action = UIAction(
+								title: LRString.restart,
+								image: UIImage(systemName: "arrow.counterclockwise"),
+								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
+								attributes: (Self.player == nil) ? .disabled : []
+							) { _ in
+								Self.player?.restartCurrentEntry()
+							}
+							useMenuElements([action])
+						}),
+						
+						UIDeferredMenuElement.uncached({ useMenuElements in
+							let action = UIAction(
+								title: LRString.next,
+								image: UIImage(systemName: "forward.end"),
+								attributes: (Self.player == nil) ? .disabled : []
+							) { _ in
+								Task {
+									try await Self.player?.skipToNextEntry()
+								}
+							}
+							useMenuElements([action])
+						}),
+						
+					]
+				),
+				
+			]
+			return UIMenu(children: menuElements)
+		}()
 	)
 	
 	private lazy var playPauseButton = UIBarButtonItem()
@@ -53,88 +131,6 @@ final class MainToolbar {
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	
-	// MARK: - Overflow menu
-	
-	private static func newOverflowMenu() -> UIMenu {
-		let menuElements: [UIMenuElement] = [
-			UIMenu(
-				options: .displayInline,
-				children: [
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.repeat_,
-							image: UIImage(systemName: "repeat.1"),
-							attributes: {
-								if Self.player == nil { return .disabled }
-								return []
-							}(),
-							state: {
-								guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return .off }
-								return (player.repeatMode == .one) ? .on : .off
-							}()
-						) { _ in
-							guard let player = Self.player else { return }
-							if player.state.repeatMode == .one {
-								player.state.repeatMode = MusicPlayer.RepeatMode.none
-							} else {
-								player.state.repeatMode = .one
-							}
-						}
-						useMenuElements([action])
-					}),
-				]
-			),
-			
-			UIMenu(
-				options: .displayInline,
-				preferredElementSize: .small,
-				children: [
-					
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.previous,
-							image: UIImage(systemName: "backward.end"),
-							attributes: (Self.player == nil) ? .disabled : []
-						) { _ in
-							Task {
-								try await Self.player?.skipToPreviousEntry()
-							}
-						}
-						useMenuElements([action])
-					}),
-					
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.restart,
-							image: UIImage(systemName: "arrow.counterclockwise"),
-							// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-							attributes: (Self.player == nil) ? .disabled : []
-						) { _ in
-							Self.player?.restartCurrentEntry()
-						}
-						useMenuElements([action])
-					}),
-					
-					UIDeferredMenuElement.uncached({ useMenuElements in
-						let action = UIAction(
-							title: LRString.next,
-							image: UIImage(systemName: "forward.end"),
-							attributes: (Self.player == nil) ? .disabled : []
-						) { _ in
-							Task {
-								try await Self.player?.skipToNextEntry()
-							}
-						}
-						useMenuElements([action])
-					}),
-					
-				]
-			),
-			
-		]
-		return UIMenu(children: menuElements)
-	}
 	
 	// MARK: -
 	
