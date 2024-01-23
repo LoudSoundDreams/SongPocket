@@ -166,16 +166,21 @@ final class MainToolbar {
 		
 		overflowButton.image = newOverflowButtonImage()
 		
-		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else {
-			// Ideally, also do this when no songs are in the player
-			disableEverything()
+		guard
+			let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized
+				// Ideally, also do this when no songs are in the player
+		else {
+			showPlay()
+			
+			// Disable everything
+			barButtonItems.forEach {
+				$0.isEnabled = false
+				$0.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
+			}
+			overflowButton.isEnabled = true
+			overflowButton.accessibilityTraits.subtract(.notEnabled)
+			
 			return
-		}
-		
-		if player.playbackState == .playing {
-			showPauseButton()
-		} else {
-			showPlayButton()
 		}
 		
 		// Enable everything
@@ -183,17 +188,12 @@ final class MainToolbar {
 			$0.isEnabled = true
 			$0.accessibilityTraits.subtract(.notEnabled)
 		}
-	}
-	private func disableEverything() {
-		showPlayButton()
 		
-		barButtonItems.forEach {
-			$0.isEnabled = false
-			$0.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
+		if player.playbackState == .playing {
+			showPause()
+		} else {
+			showPlay()
 		}
-		overflowButton.isEnabled = true
-		overflowButton.accessibilityTraits.subtract(.notEnabled)
-		return
 	}
 	private func newOverflowButtonImage() -> UIImage {
 		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else {
@@ -217,7 +217,7 @@ final class MainToolbar {
 				return Self.overflowButtonDefaultImage
 		}
 	}
-	private func showPlayButton() {
+	private func showPlay() {
 		playPauseButton.title = LRString.play
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "play.circle")
@@ -228,7 +228,7 @@ final class MainToolbar {
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
-	private func showPauseButton() {
+	private func showPause() {
 		playPauseButton.title = LRString.pause
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "pause.circle")
