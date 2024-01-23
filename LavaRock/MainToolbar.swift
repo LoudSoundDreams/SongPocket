@@ -28,7 +28,6 @@ final class MainToolbar {
 	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
-		image: Self.overflowButtonDefaultImage,
 		menu: Self.newOverflowMenu()
 	)
 	
@@ -155,12 +154,10 @@ final class MainToolbar {
 		TapeDeck.shared.addReflector(weakly: self)
 	}
 	
-	private static let overflowButtonDefaultImage = UIImage(systemName: "ellipsis.circle")!
-	private var hasRefreshenedOverflowButton = false
 	private func freshen() {
 #if targetEnvironment(simulator)
 		defer {
-			showPauseButton()
+			showPause()
 		}
 #endif
 		
@@ -195,9 +192,12 @@ final class MainToolbar {
 			showPlay()
 		}
 	}
+	private var hasRefreshenedOverflowButton = false
 	private func newOverflowButtonImage() -> UIImage {
+		let repeatOff = UIImage(systemName: "ellipsis.circle")!
+		
 		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else {
-			return Self.overflowButtonDefaultImage
+			return repeatOff
 		}
 		switch player.repeatMode {
 				// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
@@ -214,7 +214,7 @@ final class MainToolbar {
 						overflowButton.image = newOverflowButtonImage()
 					}
 				}
-				return Self.overflowButtonDefaultImage
+				return repeatOff
 		}
 	}
 	private func showPlay() {
