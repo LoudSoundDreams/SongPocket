@@ -58,7 +58,6 @@ final class MainToolbar {
 	
 	private static func newOverflowMenu() -> UIMenu {
 		let menuElements: [UIMenuElement] = [
-			// Repeat
 			UIMenu(
 				options: .displayInline,
 				children: [
@@ -87,7 +86,6 @@ final class MainToolbar {
 				]
 			),
 			
-			// Transport
 			UIMenu(
 				options: .displayInline,
 				preferredElementSize: .small,
@@ -97,10 +95,7 @@ final class MainToolbar {
 						let action = UIAction(
 							title: LRString.previous,
 							image: UIImage(systemName: "backward.end"),
-							attributes: {
-								if Self.player == nil { return .disabled }
-								return []
-							}()
+							attributes: (Self.player == nil) ? .disabled : []
 						) { _ in
 							Task {
 								try await Self.player?.skipToPreviousEntry()
@@ -113,11 +108,8 @@ final class MainToolbar {
 						let action = UIAction(
 							title: LRString.restart,
 							image: UIImage(systemName: "arrow.counterclockwise"),
-							attributes: {
-								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-								if Self.player == nil { return .disabled }
-								return []
-							}()
+							// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
+							attributes: (Self.player == nil) ? .disabled : []
 						) { _ in
 							Self.player?.restartCurrentEntry()
 						}
@@ -128,10 +120,7 @@ final class MainToolbar {
 						let action = UIAction(
 							title: LRString.next,
 							image: UIImage(systemName: "forward.end"),
-							attributes: {
-								if Self.player == nil { return .disabled }
-								return []
-							}()
+							attributes: (Self.player == nil) ? .disabled : []
 						) { _ in
 							Task {
 								try await Self.player?.skipToNextEntry()
