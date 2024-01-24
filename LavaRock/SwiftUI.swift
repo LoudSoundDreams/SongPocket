@@ -17,6 +17,15 @@ struct Chevron: View {
 	}
 }
 
+extension Color {
+	static func random() -> Self {
+		return Color(
+			red: .random(in: 0...1),
+			green: .random(in: 0...1),
+			blue: .random(in: 0...1))
+	}
+}
+
 extension View {
 	func fontTitle2_bold() -> some View {
 		// As of iOS 16.6, Apple Music uses this for “Recently Added”.
