@@ -6,7 +6,6 @@
 //
 
 #if targetEnvironment(simulator)
-import MediaPlayer
 import UIKit
 
 enum Sim_Global {
@@ -23,7 +22,7 @@ struct Sim_SongInfo: SongInfo {
 	let discCountOnDisk: Int
 	let discNumberOnDisk: Int
 	let trackNumberOnDisk: Int
-	static let unknownTrackNumber = MPMediaItem.unknownTrackNumber
+	static let unknownTrackNumber = 0
 	let titleOnDisk: String?
 	let artistOnDisk: String?
 	let dateAddedOnDisk: Date

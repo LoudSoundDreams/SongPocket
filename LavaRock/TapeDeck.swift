@@ -18,7 +18,6 @@ protocol TapeDeckReflecting: AnyObject {
 }
 
 import MediaPlayer
-
 @MainActor
 final class TapeDeck {
 	private init() {}
