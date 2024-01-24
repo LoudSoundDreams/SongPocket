@@ -104,12 +104,11 @@ extension SongsTVC {
 						}
 						return result
 					}()
-					let rowSong = (self.viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
-					let rowMusicItem = await MusicLibraryRequest.song(with: MusicItemID(String(rowSong.persistentID)))
 					
-					guard let rowMusicItem else { return }
+					let song = (self.viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
+					guard let musicItem = await MusicLibraryRequest.song(with: MusicItemID(String(song.persistentID))) else { return }
 					
-					player.queue = SystemMusicPlayer.Queue(for: allMusicItems, startingAt: rowMusicItem)
+					player.queue = SystemMusicPlayer.Queue(for: allMusicItems, startingAt: musicItem)
 					try? await player.play()
 					
 					// As of iOS 17.2 beta, if setting the queue effectively did nothing, you must do these after calling `play`, not before.

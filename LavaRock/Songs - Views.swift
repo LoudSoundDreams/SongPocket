@@ -284,9 +284,9 @@ final class SongCell: UITableViewCell {
 			// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 			// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 			Task {
-				guard let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
+				guard let musicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
 				
-				player.queue = SystemMusicPlayer.Queue(for: [rowMusicItem])
+				player.queue = SystemMusicPlayer.Queue(for: [musicItem])
 				try? await player.play()
 				
 				player.state.repeatMode = MusicPlayer.RepeatMode.none
@@ -299,9 +299,9 @@ final class SongCell: UITableViewCell {
 				title: LRString.playLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				Task {
-					guard let rowMusicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
+					guard let musicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
 					
-					try await player.queue.insert([rowMusicItem], position: .tail)
+					try await player.queue.insert([musicItem], position: .tail)
 					
 					UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 				}
@@ -318,18 +318,18 @@ final class SongCell: UITableViewCell {
 				Task {
 					guard let rowItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
 					
-					let musicItems: [MusicKit.Song] = await {
-						var allItems: [MusicKit.Song] = []
+					let toAppend: [MusicKit.Song] = await {
+						var musicItems: [MusicKit.Song] = []
 						let ids = restOfSongs.map { MusicItemID(String($0.persistentID)) }
 						for id in ids {
 							guard let musicItem = await MusicLibraryRequest.song(with: id) else { continue }
-							allItems.append(musicItem)
+							musicItems.append(musicItem)
 						}
-						let result = allItems.drop(while: { $0.id != rowItem.id })
+						let result = musicItems.drop(while: { $0.id != rowItem.id })
 						return Array(result)
 					}()
 					// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
-					try await player.queue.insert(musicItems, position: .tail)
+					try await player.queue.insert(toAppend, position: .tail)
 					
 					let impactor = UIImpactFeedbackGenerator(style: .heavy)
 					impactor.impactOccurred()
