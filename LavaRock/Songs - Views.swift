@@ -195,7 +195,7 @@ final class SongCell: UITableViewCell {
 					return info.trackNumberFormattedOptional()
 				}
 			}()
-			return result ?? "‒" // Figure dash
+			return result ?? "#"
 		}()
 		let artistDisplayOptional: String? = {
 			let albumArtistOptional = representative?.albumArtistOnDisk
