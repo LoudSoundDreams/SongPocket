@@ -9,8 +9,7 @@ import CoreData
 import MediaPlayer
 
 extension Song: LibraryItem {
-	@MainActor
-	final func containsPlayhead() -> Bool {
+	@MainActor final func containsPlayhead() -> Bool {
 #if targetEnvironment(simulator)
 		return objectID == Sim_Global.currentSong?.objectID
 #else

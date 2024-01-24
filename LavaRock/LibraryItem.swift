@@ -37,8 +37,7 @@ extension Array where Element: LibraryItem {
 }
 
 import MediaPlayer
-extension LibraryItem {
-	@MainActor
+@MainActor extension LibraryItem {
 	func avatarStatus__() -> AvatarStatus {
 		guard
 			containsPlayhead(),

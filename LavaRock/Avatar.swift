@@ -82,8 +82,7 @@ struct AvatarImage: View {
 	}
 }
 
-@MainActor
-protocol AvatarReflecting: AnyObject {
+@MainActor protocol AvatarReflecting: AnyObject {
 	func reflectAvatarStatus(_ status: AvatarStatus)
 }
 extension SongCell: AvatarReflecting {

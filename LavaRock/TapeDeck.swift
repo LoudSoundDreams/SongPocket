@@ -6,8 +6,7 @@
 //
 
 @objc // “generic class 'Weak' requires that 'TapeDeckReflecting' be a class type”
-@MainActor
-protocol TapeDeckReflecting: AnyObject {
+@MainActor protocol TapeDeckReflecting: AnyObject {
 	// Adopting types must…
 	// • Call `TapeDeck.shared.addReflector(weakly: self)` as soon as their implementations of `reflect_playbackState` and `reflect_nowPlaying` will work.
 	
@@ -18,8 +17,7 @@ protocol TapeDeckReflecting: AnyObject {
 }
 
 import MediaPlayer
-@MainActor
-final class TapeDeck {
+@MainActor final class TapeDeck {
 	private init() {}
 	static let shared = TapeDeck()
 	

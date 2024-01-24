@@ -7,8 +7,7 @@
 
 import MusicKit
 
-@MainActor
-enum AppleMusic {
+@MainActor enum AppleMusic {
 	static var loadingIndicator: CollectionsTVC? = nil
 	
 	static func integrateIfAuthorized() async {
@@ -21,8 +20,7 @@ enum AppleMusic {
 	}
 }
 
-@MainActor
-extension SystemMusicPlayer {
+@MainActor extension SystemMusicPlayer {
 	static var sharedIfAuthorized: SystemMusicPlayer? {
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return nil
@@ -31,8 +29,7 @@ extension SystemMusicPlayer {
 	}
 }
 
-@MainActor
-extension MusicLibraryRequest {
+@MainActor extension MusicLibraryRequest {
 	static func song(with musicItemID: MusicItemID) async -> MusicKit.Song?
 	where MusicItemType == MusicKit.Song
 	{

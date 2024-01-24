@@ -10,8 +10,7 @@ import MediaPlayer
 
 extension Album: LibraryContainer {}
 extension Album: LibraryItem {
-	@MainActor
-	final func containsPlayhead() -> Bool {
+	@MainActor final func containsPlayhead() -> Bool {
 #if targetEnvironment(simulator)
 		return objectID == Sim_Global.currentSong?.container?.objectID
 #else
