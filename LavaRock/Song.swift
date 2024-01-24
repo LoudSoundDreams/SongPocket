@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import MediaPlayer
 
 extension Song: LibraryItem {
 	@MainActor final func containsPlayhead() -> Bool {
@@ -82,9 +81,12 @@ extension Song {
 		let otherCollection = otherAlbum.container!
 		return myCollection.index < otherCollection.index
 	}
-	
-	// MARK: - Media Player
-	
+}
+
+// MARK: - Media Player
+
+import MediaPlayer
+extension Song {
 	final func songInfo() -> SongInfo? {
 #if targetEnvironment(simulator)
 		// To match `mpMediaItem`
@@ -97,7 +99,6 @@ extension Song {
 #endif
 	}
 	
-	// Slow.
 	final func mpMediaItem() -> MPMediaItem? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil

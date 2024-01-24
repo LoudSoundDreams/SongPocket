@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MusicKit
 
 struct AlbumCard: View {
 	enum Mode {
@@ -107,7 +108,6 @@ struct CoverArtView: View {
 	}
 }
 
-import MusicKit
 struct AlbumInfoRow: View {
 	let album: Album
 	

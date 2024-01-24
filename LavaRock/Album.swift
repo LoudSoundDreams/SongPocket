@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import MediaPlayer
 
 extension Album: LibraryContainer {}
 extension Album: LibraryItem {
@@ -182,9 +181,12 @@ extension Album {
 			return myReleaseDate < otherReleaseDate
 		}
 	}
-	
-	// MARK: - Media Player
-	
+}
+
+// MARK: - Media Player
+
+import MediaPlayer
+extension Album {
 	final func representativeSongInfo() -> SongInfo? {
 #if targetEnvironment(simulator)
 		return songs(sorted: true).first?.songInfo()
@@ -193,7 +195,6 @@ extension Album {
 #endif
 	}
 	
-	// Slow.
 	private func mpMediaItemCollection() -> MPMediaItemCollection? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
