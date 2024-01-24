@@ -245,7 +245,7 @@ final class SongCell: UITableViewCell {
 			
 			freshenOverflowButton()
 			overflowButton.menu = newOverflowMenu(
-				musicItemID: MusicItemID(String(song.persistentID)),
+				song: song,
 				songsTVC: songsTVC,
 				songPersistentIDForBottomOfAlbum: song.persistentID)
 			
@@ -268,7 +268,7 @@ final class SongCell: UITableViewCell {
 		overflowButton.isEnabled = !isEditing
 	}
 	private func newOverflowMenu(
-		musicItemID: MusicItemID,
+		song: Song,
 		songsTVC: Weak<SongsTVC>,
 		songPersistentIDForBottomOfAlbum: Int64
 	) -> UIMenu? {
@@ -284,7 +284,7 @@ final class SongCell: UITableViewCell {
 			// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
 			// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
 			Task {
-				guard let musicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
+				guard let musicItem = await song.musicKitSong() else { return }
 				
 				player.queue = SystemMusicPlayer.Queue(for: [musicItem])
 				try? await player.play()
@@ -299,7 +299,7 @@ final class SongCell: UITableViewCell {
 				title: LRString.playLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				Task {
-					guard let musicItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
+					guard let musicItem = await song.musicKitSong() else { return }
 					
 					try await player.queue.insert([musicItem], position: .tail)
 					
@@ -316,13 +316,12 @@ final class SongCell: UITableViewCell {
 				title: LRString.playRestOfAlbumLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
 				Task {
-					guard let rowItem = await MusicLibraryRequest.song(with: musicItemID) else { return }
+					guard let rowItem = await song.musicKitSong() else { return }
 					
 					let toAppend: [MusicKit.Song] = await {
 						var musicItems: [MusicKit.Song] = []
-						let ids = restOfSongs.map { MusicItemID(String($0.persistentID)) }
-						for id in ids {
-							guard let musicItem = await MusicLibraryRequest.song(with: id) else { continue }
+						for song in restOfSongs {
+							guard let musicItem = await song.musicKitSong() else { continue }
 							musicItems.append(musicItem)
 						}
 						let result = musicItems.drop(while: { $0.id != rowItem.id })

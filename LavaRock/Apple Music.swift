@@ -29,23 +29,6 @@ import MusicKit
 	}
 }
 
-@MainActor extension MusicLibraryRequest {
-	static func song(with musicItemID: MusicItemID) async -> MusicKit.Song?
-	where MusicItemType == MusicKit.Song
-	{
-		var request = MusicLibraryRequest()
-		request.filter(matching: \.id, equalTo: musicItemID)
-		guard
-			let response = try? await request.response(),
-			response.items.count == 1
-		else {
-			return nil
-		}
-		
-		return response.items.first
-	}
-}
-
 import MediaPlayer
 extension MPMusicPlayerController {
 	static var systemMusicPlayerIfAuthorized: MPMusicPlayerController? {

@@ -94,19 +94,15 @@ extension SongsTVC {
 					
 					let allMusicItems: [MusicKit.Song] = await {
 						var result: [MusicKit.Song] = []
-						let allIDs = self.viewModel.libraryGroup().items.map {
-							let song = $0 as! Song
-							return MusicItemID(String(song.persistentID))
-						}
-						for id in allIDs {
-							guard let musicItem = await MusicLibraryRequest.song(with: id) else { continue }
+						for song in (self.viewModel.libraryGroup().items as! [Song]) {
+							guard let musicItem = await song.musicKitSong() else { continue }
 							result.append(musicItem)
 						}
 						return result
 					}()
 					
 					let song = (self.viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
-					guard let musicItem = await MusicLibraryRequest.song(with: MusicItemID(String(song.persistentID))) else { return }
+					guard let musicItem = await song.musicKitSong() else { return }
 					
 					player.queue = SystemMusicPlayer.Queue(for: allMusicItems, startingAt: musicItem)
 					try? await player.play()

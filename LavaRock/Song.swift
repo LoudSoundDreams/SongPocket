@@ -83,7 +83,23 @@ extension Song {
 	}
 }
 
-// MARK: - Media Player
+// MARK: - Apple Music
+
+import MusicKit
+@MainActor extension Song {
+	final func musicKitSong() async -> MusicKit.Song? {
+		var request = MusicLibraryRequest<MusicKit.Song>()
+		request.filter(matching: \.id, equalTo: MusicItemID(String(persistentID)))
+		guard
+			let response = try? await request.response(),
+			response.items.count == 1
+		else {
+			return nil
+		}
+		
+		return response.items.first
+	}
+}
 
 import MediaPlayer
 extension Song {
