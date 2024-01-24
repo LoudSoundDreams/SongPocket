@@ -24,10 +24,19 @@ struct AlbumHeader: View {
 				alignment: .leading,
 				spacing: .eight * 1/2
 			) {
-				Text(album.albumArtistFormatted()) // “The Beatles”
-					.foregroundStyle(.secondary)
-					.fontCaption2_bold()
-				Text(album.titleFormatted()) // “Rubber Soul”
+				Text({ () -> String in
+					let representative = album.representativeSongInfo()
+					guard
+						let albumArtist = representative?.albumArtistOnDisk,
+						albumArtist != ""
+					else {
+						return LRString.unknownArtist
+					}
+					return albumArtist
+				}())
+				.foregroundStyle(.secondary)
+				.fontCaption2_bold()
+				Text(album.titleFormatted())
 					.fontTitle2_bold()
 			}
 			.alignmentGuide_separatorLeading()
