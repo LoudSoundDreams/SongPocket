@@ -25,7 +25,8 @@ struct CollectionRow: View {
 				Chevron().hidden()
 			}
 			
-			Text({ () -> String in // Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
+			Text({ () -> String in 
+				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
 				guard let title, !title.isEmpty else {
 					return " "
 				}
