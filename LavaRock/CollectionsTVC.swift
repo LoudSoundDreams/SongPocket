@@ -67,7 +67,7 @@ final class CollectionsTVC: LibraryTVC {
 		let toDelete: [IndexPath] = {
 			switch viewState {
 				case .allowAccess, .loading, .emptyDatabase:
-					return tableView.indexPathsForRows(inSection: 0, firstRow: 0)
+					return tableView.indexPathsForRows(section: 0, firstRow: 0)
 				case .someCollections: // Merging changes with existing collections
 					// Crashes after Reset Location & Privacy
 					return []
@@ -262,7 +262,7 @@ final class CollectionsTVC: LibraryTVC {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
 		
-		let proposedTitle = (textFieldText ?? "").truncated(toMaxLength: 256) // In case the user entered a dangerous amount of text
+		let proposedTitle = (textFieldText ?? "").truncated(maxLength: 256) // In case the user entered a dangerous amount of text
 		if proposedTitle.isEmpty {
 			collection.title = LRString.tilde
 		} else {

@@ -11,7 +11,7 @@ final class Weak<Referencee: AnyObject> {
 }
 
 extension String {
-	func truncated(toMaxLength maxLength: Int) -> String {
+	func truncated(maxLength: Int) -> String {
 		guard count > maxLength else {
 			return self
 		}
