@@ -24,8 +24,9 @@ struct AlbumCard: View {
 	var body: some View {
 		VStack(spacing: 0) {
 			Rectangle().frame(height: 1/2 * Self.borderWidthInPixels * pointsPerPixel).hidden()
+			// TO DO: Redraw when artwork changes
 			CoverArtView(
-				albumRepresentative: album.representativeSongInfo(), // TO DO: Redraw when artwork changes
+				albumRepresentative: album.representativeSongInfo(),
 				largerThanOrEqualToSizeInPoints: maxHeight)
 			.background( // Use `border` instead?
 				Rectangle()
