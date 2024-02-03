@@ -312,7 +312,7 @@ class LibraryTVC: UITableViewController {
 			(
 				editing
 				? editingButtons
-				: MainToolbar.shared.barButtonItems + [editButtonItem]
+				: [editButtonItem] + MainToolbar.shared.barButtonItems
 			),
 			animated: animated)
 	}

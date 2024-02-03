@@ -47,11 +47,11 @@ final class AlbumsTVC: LibraryTVC {
 			case .movingAlbums: break
 			case .browsing:
 				editingButtons = [
+					editButtonItem, .flexibleSpace(),
 					moveButton, .flexibleSpace(),
 					arrangeAlbumsButton, .flexibleSpace(),
 					floatButton, .flexibleSpace(),
-					sinkButton, .flexibleSpace(),
-					editButtonItem,
+					sinkButton,
 				]
 		}
 		

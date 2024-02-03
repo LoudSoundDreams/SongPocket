@@ -26,11 +26,11 @@ final class SongsTVC: LibraryTVC {
 	)
 	override func viewDidLoad() {
 		editingButtons = [
+			editButtonItem, .flexibleSpace(),
 			.flexibleSpace(), .flexibleSpace(),
 			arrangeSongsButton, .flexibleSpace(),
 			floatButton, .flexibleSpace(),
-			sinkButton, .flexibleSpace(),
-			editButtonItem,
+			sinkButton,
 		]
 		
 		super.viewDidLoad()
