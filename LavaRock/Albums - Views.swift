@@ -115,12 +115,12 @@ struct AlbumInfoRow: View {
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			ZStack(alignment: .leading) {
+				Chevron().hidden()
 				AvatarImage(
 					libraryItem: album,
 					state: SystemMusicPlayer.sharedIfAuthorized!.state,
 					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
 				).accessibilitySortPriority(10) // Bigger is sooner
-				Chevron().hidden()
 			}
 			
 			Text(album.releaseDateEstimateFormattedOptional() ?? LRString.emDash)

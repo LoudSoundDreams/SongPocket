@@ -55,9 +55,7 @@ struct SongRow: View {
 	@ObservedObject var listStatus: SongsListStatus
 	
 	var body: some View {
-		
 		HStack(alignment: .firstTextBaseline) {
-			// Text
 			HStack(
 				alignment: .firstTextBaseline,
 				spacing: .eight * 5/4
@@ -86,30 +84,11 @@ struct SongRow: View {
 				queue: SystemMusicPlayer.sharedIfAuthorized!.queue
 			).accessibilitySortPriority(10)
 			Menu {
-				Button {
-				} label: {
-					Label(LRString.play, systemImage: "play")
-				}
-				
-				Divider()
-				
-				Button {
-				} label: {
-					Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward")
-				}
-				Button {
-				} label: {
-					Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
-				}
+				overflowMenuContent()
 			} label: {
-				ZStack {
-					Circle()
-						.frame(width: 44, height: 44)
-						.hidden()
-					Image(systemName: "ellipsis")
-						.tint(Color.primary)
-						.fontBody_dynamicTypeSizeUpToXxxLarge()
-				}
+				Image(systemName: "ellipsis.circle")
+					.tint(Color.primary)
+					.fontBody_dynamicTypeSizeUpToXxxLarge()
 			}
 			.alignmentGuide_separatorTrailing()
 			.disabled(listStatus.editing)
@@ -118,6 +97,23 @@ struct SongRow: View {
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
+	}
+	@ViewBuilder private func overflowMenuContent() -> some View {
+		Button {
+		} label: {
+			Label(LRString.play, systemImage: "play")
+		}
+		
+		Divider()
+		
+		Button {
+		} label: {
+			Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward")
+		}
+		Button {
+		} label: {
+			Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
+		}
 	}
 }
 struct TrackNumberLabel: View {

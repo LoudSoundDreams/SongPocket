@@ -17,12 +17,12 @@ struct CollectionRow: View {
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			ZStack(alignment: .leading) {
+				Chevron().hidden()
 				AvatarImage(
 					libraryItem: collection,
 					state: SystemMusicPlayer.sharedIfAuthorized!.state,
 					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
 				).accessibilitySortPriority(10)
-				Chevron().hidden()
 			}
 			
 			Text({ () -> String in 
