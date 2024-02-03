@@ -56,6 +56,15 @@ struct SongRow: View {
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
+			ZStack(alignment: .leading) {
+				overflowMenuLabel().hidden()
+				AvatarImage(
+					libraryItem: song,
+					state: SystemMusicPlayer.sharedIfAuthorized!.state,
+					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
+				).accessibilitySortPriority(10)
+			}
+			
 			HStack(
 				alignment: .firstTextBaseline,
 				spacing: .eight * 5/4
@@ -72,31 +81,32 @@ struct SongRow: View {
 							.fontFootnote()
 					}
 				}
+				.frame(maxWidth: .infinity)
 				.padding(.bottom, .eight * 1/4)
 				.alignmentGuide_separatorLeading()
 			}
 			
-			Spacer()
-			
-			AvatarImage(
-				libraryItem: song,
-				state: SystemMusicPlayer.sharedIfAuthorized!.state,
-				queue: SystemMusicPlayer.sharedIfAuthorized!.queue
-			).accessibilitySortPriority(10)
-			Menu {
-				overflowMenuContent()
-			} label: {
-				Image(systemName: "ellipsis.circle")
-					.tint(Color.primary)
-					.fontBody_dynamicTypeSizeUpToXxxLarge()
+			ZStack(alignment: .trailing) {
+				AvatarPlayingImage().hidden()
+				Menu {
+					overflowMenuContent()
+				} label: {
+					overflowMenuLabel()
+				}
+				.disabled(listStatus.editing)
 			}
-			.alignmentGuide_separatorTrailing()
-			.disabled(listStatus.editing)
 		}
+		.alignmentGuide_separatorLeading()
+		.alignmentGuide_separatorTrailing()
 		.padding(.horizontal)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
+	}
+	private func overflowMenuLabel() -> some View {
+		Image(systemName: "ellipsis.circle")
+			.tint(Color.primary)
+			.fontBody_dynamicTypeSizeUpToXxxLarge()
 	}
 	@ViewBuilder private func overflowMenuContent() -> some View {
 		Button {
