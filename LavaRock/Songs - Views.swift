@@ -56,20 +56,23 @@ struct SongRow: View {
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			ZStack(alignment: .leading) {
-				overflowMenuLabel().hidden()
-				AvatarImage(
-					libraryItem: song,
-					state: SystemMusicPlayer.sharedIfAuthorized!.state,
-					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
-				).accessibilitySortPriority(10)
+			HStack(alignment: .firstTextBaseline) {
+				ZStack(alignment: .leading) {
+					overflowMenuLabel().hidden()
+					AvatarImage(
+						libraryItem: song,
+						state: SystemMusicPlayer.sharedIfAuthorized!.state,
+						queue: SystemMusicPlayer.sharedIfAuthorized!.queue
+					).accessibilitySortPriority(10)
+				}
+				TrackNumberLabel(text: trackDisplay, spacerText: "")
 			}
 			
 			HStack(
 				alignment: .firstTextBaseline,
 				spacing: .eight * 5/4
 			) {
-				TrackNumberLabel(text: trackDisplay, spacerText: trackNumberSpacer)
+				
 				VStack(
 					alignment: .leading,
 					spacing: .eight * 1/2
@@ -86,14 +89,16 @@ struct SongRow: View {
 				.alignmentGuide_separatorLeading()
 			}
 			
-			ZStack(alignment: .trailing) {
-				AvatarPlayingImage().hidden()
-				Menu {
-					overflowMenuContent()
-				} label: {
-					overflowMenuLabel()
+			HStack(alignment: .firstTextBaseline) {
+				ZStack(alignment: .trailing) {
+					AvatarPlayingImage().hidden()
+					Menu {
+						overflowMenuContent()
+					} label: {
+						overflowMenuLabel()
+					}
+					.disabled(listStatus.editing)
 				}
-				.disabled(listStatus.editing)
 			}
 		}
 		.alignmentGuide_separatorLeading()
@@ -105,7 +110,6 @@ struct SongRow: View {
 	}
 	private func overflowMenuLabel() -> some View {
 		Image(systemName: "ellipsis.circle")
-			.tint(Color.primary)
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
 	}
 	@ViewBuilder private func overflowMenuContent() -> some View {
