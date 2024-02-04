@@ -61,8 +61,8 @@ struct SongRow: View {
 					overflowMenuLabel().hidden()
 					AvatarImage(
 						libraryItem: song,
-						state: SystemMusicPlayer.sharedIfAuthorized!.state,
-						queue: SystemMusicPlayer.sharedIfAuthorized!.queue
+						state: SystemMusicPlayer._shared!.state,
+						queue: SystemMusicPlayer._shared!.queue
 					).accessibilitySortPriority(10)
 				}
 				TrackNumberLabel(text: trackDisplay, spacerText: "")
@@ -283,7 +283,7 @@ final class SongCell: UITableViewCell {
 		songPersistentIDForBottomOfAlbum: Int64
 	) -> UIMenu? {
 		guard
-			let player = SystemMusicPlayer.sharedIfAuthorized,
+			let player = SystemMusicPlayer._shared,
 			let tvc = songsTVC.referencee
 		else { return nil }
 		

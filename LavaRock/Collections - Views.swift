@@ -20,8 +20,8 @@ struct CollectionRow: View {
 				Chevron().hidden()
 				AvatarImage(
 					libraryItem: collection,
-					state: SystemMusicPlayer.sharedIfAuthorized!.state,
-					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
+					state: SystemMusicPlayer._shared!.state,
+					queue: SystemMusicPlayer._shared!.queue
 				).accessibilitySortPriority(10)
 			}
 			

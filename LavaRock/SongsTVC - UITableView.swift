@@ -89,7 +89,7 @@ extension SongsTVC {
 				Task {
 					guard
 						let self,
-						let player = SystemMusicPlayer.sharedIfAuthorized
+						let player = SystemMusicPlayer._shared
 					else { return }
 					
 					let allMusicItems: [MusicKit.Song] = await {

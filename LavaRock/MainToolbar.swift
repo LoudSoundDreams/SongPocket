@@ -22,7 +22,7 @@ import MediaPlayer
 	
 	// MARK: - PRIVATE
 	
-	private static var player: SystemMusicPlayer? { .sharedIfAuthorized }
+	private static var player: SystemMusicPlayer? { ._shared }
 	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,

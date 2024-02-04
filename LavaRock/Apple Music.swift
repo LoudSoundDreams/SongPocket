@@ -21,7 +21,7 @@ import MusicKit
 }
 
 @MainActor extension SystemMusicPlayer {
-	static var sharedIfAuthorized: SystemMusicPlayer? {
+	static var _shared: SystemMusicPlayer? {
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return nil
 		}

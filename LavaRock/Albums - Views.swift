@@ -118,8 +118,8 @@ struct AlbumInfoRow: View {
 				Chevron().hidden()
 				AvatarImage(
 					libraryItem: album,
-					state: SystemMusicPlayer.sharedIfAuthorized!.state,
-					queue: SystemMusicPlayer.sharedIfAuthorized!.queue
+					state: SystemMusicPlayer._shared!.state,
+					queue: SystemMusicPlayer._shared!.queue
 				).accessibilitySortPriority(10) // Bigger is sooner
 			}
 			
