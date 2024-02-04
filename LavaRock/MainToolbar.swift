@@ -40,7 +40,7 @@ import MediaPlayer
 									return []
 								}(),
 								state: {
-									guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return .off }
+									guard let player = MPMusicPlayerController._system else { return .off }
 									return (player.repeatMode == .one) ? .on : .off
 								}()
 							) { _ in
@@ -147,7 +147,7 @@ import MediaPlayer
 		overflowButton.image = newOverflowButtonImage()
 		
 		guard
-			let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized
+			let player = MPMusicPlayerController._system
 				// Ideally, also do this when no songs are in the player
 		else {
 			showPlay()
@@ -179,7 +179,7 @@ import MediaPlayer
 	private func newOverflowButtonImage() -> UIImage {
 		let repeatOff = UIImage(systemName: "ellipsis.circle")!
 		
-		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else {
+		guard let player = MPMusicPlayerController._system else {
 			return repeatOff
 		}
 		switch player.repeatMode {

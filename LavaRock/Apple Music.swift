@@ -31,7 +31,7 @@ import MusicKit
 
 import MediaPlayer
 extension MPMusicPlayerController {
-	static var systemMusicPlayerIfAuthorized: MPMusicPlayerController? {
+	static var _system: MPMusicPlayerController? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else {
 			return nil
 		}

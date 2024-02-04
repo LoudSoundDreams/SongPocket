@@ -40,7 +40,7 @@ import MediaPlayer
 	func avatarStatus__() -> AvatarStatus {
 		guard
 			containsPlayhead(),
-			let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized
+			let player = MPMusicPlayerController._system
 		else {
 			return .notPlaying
 		}

@@ -33,7 +33,7 @@ import MediaPlayer
 	}
 	
 	func beginWatching() {
-		guard let player = MPMusicPlayerController.systemMusicPlayerIfAuthorized else { return }
+		guard let player = MPMusicPlayerController._system else { return }
 		
 		player.beginGeneratingPlaybackNotifications()
 		
