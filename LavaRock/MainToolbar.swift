@@ -22,8 +22,6 @@ import MediaPlayer
 	
 	// MARK: - PRIVATE
 	
-	private static var player: SystemMusicPlayer? { ._shared }
-	
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
 		menu: {
@@ -36,7 +34,9 @@ import MediaPlayer
 								title: LRString.repeat_,
 								image: UIImage(systemName: "repeat.1"),
 								attributes: {
-									if Self.player == nil { return .disabled }
+									if SystemMusicPlayer._shared == nil {
+										return .disabled
+									}
 									return []
 								}(),
 								state: {
@@ -44,7 +44,7 @@ import MediaPlayer
 									return (player.repeatMode == .one) ? .on : .off
 								}()
 							) { _ in
-								guard let player = Self.player else { return }
+								guard let player = SystemMusicPlayer._shared else { return }
 								if player.state.repeatMode == .one {
 									player.state.repeatMode = MusicPlayer.RepeatMode.none
 								} else {
@@ -65,10 +65,10 @@ import MediaPlayer
 							let action = UIAction(
 								title: LRString.previous,
 								image: UIImage(systemName: "backward.end"),
-								attributes: (Self.player == nil) ? .disabled : []
+								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []
 							) { _ in
 								Task {
-									try await Self.player?.skipToPreviousEntry()
+									try await SystemMusicPlayer._shared?.skipToPreviousEntry()
 								}
 							}
 							useMenuElements([action])
@@ -79,9 +79,9 @@ import MediaPlayer
 								title: LRString.restart,
 								image: UIImage(systemName: "arrow.counterclockwise"),
 								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-								attributes: (Self.player == nil) ? .disabled : []
+								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []
 							) { _ in
-								Self.player?.restartCurrentEntry()
+								SystemMusicPlayer._shared?.restartCurrentEntry()
 							}
 							useMenuElements([action])
 						}),
@@ -90,10 +90,10 @@ import MediaPlayer
 							let action = UIAction(
 								title: LRString.next,
 								image: UIImage(systemName: "forward.end"),
-								attributes: (Self.player == nil) ? .disabled : []
+								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []
 							) { _ in
 								Task {
-									try await Self.player?.skipToNextEntry()
+									try await SystemMusicPlayer._shared?.skipToNextEntry()
 								}
 							}
 							useMenuElements([action])
@@ -114,7 +114,7 @@ import MediaPlayer
 			title: LRString.skipBack15Seconds,
 			image: UIImage(systemName: "gobackward.15"),
 			primaryAction: UIAction { _ in
-				Self.player?.playbackTime -= 15
+				SystemMusicPlayer._shared?.playbackTime -= 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -124,7 +124,7 @@ import MediaPlayer
 			title: LRString.skipForward15Seconds,
 			image: UIImage(systemName: "goforward.15"),
 			primaryAction: UIAction { _ in
-				Self.player?.playbackTime += 15
+				SystemMusicPlayer._shared?.playbackTime += 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
@@ -206,7 +206,7 @@ import MediaPlayer
 			image: UIImage(systemName: "play.circle")
 		) { _ in
 			Task {
-				try await Self.player?.play()
+				try await SystemMusicPlayer._shared?.play()
 			}
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
@@ -216,7 +216,7 @@ import MediaPlayer
 		playPauseButton.primaryAction = UIAction(
 			image: UIImage(systemName: "pause.circle")
 		) { _ in
-			Self.player?.pause()
+			SystemMusicPlayer._shared?.pause()
 		}
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
