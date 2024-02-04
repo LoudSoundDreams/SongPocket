@@ -19,10 +19,6 @@ extension UITableViewCell {
 	}
 }
 
-extension LibraryTVC: TapeDeckReflecting {
-	final func reflect_playbackState() { reflectPlayhead() }
-	final func reflect_nowPlaying() { reflectPlayhead() }
-}
 class LibraryTVC: UITableViewController {
 	// MARK: - Data
 	
@@ -87,8 +83,6 @@ class LibraryTVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		TapeDeck.shared.addReflector(weakly: self)
-		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRMergedChanges, object: nil)
 		
 		view.backgroundColor = UIColor(LRColor.grey_oneEighth)
@@ -108,31 +102,9 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	// MARK: - Player
-	
-	final func reflectPlayhead() {
-		tableView.allIndexPaths().forEach { indexPath in
-			guard
-				let cell = tableView.cellForRow(at: indexPath) as? AvatarReflecting
-			else { return }
-			cell.reflectAvatarStatus({
-				guard
-					viewModel.pointsToSomeItem(row: indexPath.row),
-					let libraryItem = viewModel.itemNonNil(atRow: indexPath.row) as? LibraryItem
-				else {
-					return .notPlaying
-				}
-				return libraryItem.avatarStatus__()
-			}())
-		}
-	}
-	
 	// MARK: - Library items
 	
-	@objc final func reflectDatabase() {
-		// Do this even if the view isn’t visible.
-		reflectPlayhead()
-		
+	@objc func reflectDatabase() {
 		if view.window == nil {
 			needsFreshenLibraryItemsOnViewDidAppear = true
 		} else {

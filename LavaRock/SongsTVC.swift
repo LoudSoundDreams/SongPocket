@@ -12,6 +12,27 @@ final class SongsListStatus: ObservableObject {
 	@Published fileprivate(set) var editing = false
 }
 
+extension SongsTVC: TapeDeckReflecting {
+	final func reflect_playbackState() { reflectAvatar() }
+	final func reflect_nowPlaying() { reflectAvatar() }
+	
+	private func reflectAvatar() {
+		tableView.allIndexPaths().forEach { indexPath in
+			guard
+				let cell = tableView.cellForRow(at: indexPath) as? AvatarReflecting
+			else { return }
+			cell.reflectAvatarStatus({
+				guard
+					viewModel.pointsToSomeItem(row: indexPath.row),
+					let libraryItem = viewModel.itemNonNil(atRow: indexPath.row) as? LibraryItem
+				else {
+					return .notPlaying
+				}
+				return libraryItem.avatarStatus__()
+			}())
+		}
+	}
+}
 final class SongsTVC: LibraryTVC {
 	let status = SongsListStatus()
 	
@@ -34,6 +55,14 @@ final class SongsTVC: LibraryTVC {
 		]
 		
 		super.viewDidLoad()
+		
+		TapeDeck.shared.addReflector(weakly: self)
+	}
+	override func reflectDatabase() {
+		// Do this even if the view isn’t visible.
+		reflectAvatar()
+		
+		super.reflectDatabase()
 	}
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()

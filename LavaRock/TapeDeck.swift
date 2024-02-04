@@ -53,14 +53,10 @@ import MediaPlayer
 	}
 	@objc private func playbackState() {
 		reflectors.removeAll { $0.referencee == nil }
-		reflectors.forEach {
-			$0.referencee?.reflect_playbackState()
-		}
+		reflectors.forEach { $0.referencee?.reflect_playbackState() }
 	}
 	@objc private func nowPlaying() {
 		reflectors.removeAll { $0.referencee == nil }
-		reflectors.forEach {
-			$0.referencee?.reflect_nowPlaying()
-		}
+		reflectors.forEach { $0.referencee?.reflect_nowPlaying() }
 	}
 }
