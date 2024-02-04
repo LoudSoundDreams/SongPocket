@@ -7,7 +7,7 @@
 
 import CoreData
 
-protocol LibraryContainer: LibraryItem {
+protocol LibraryContainer: NSManagedObject {
 	var contents: NSSet? { get }
 }
 extension LibraryContainer {
