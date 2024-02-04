@@ -103,6 +103,24 @@ import MusicKit
 
 import MediaPlayer
 extension Song {
+	@MainActor func avatarStatus__() -> AvatarStatus {
+		guard
+			containsPlayhead(),
+			let player = MPMusicPlayerController._system
+		else {
+			return .notPlaying
+		}
+#if targetEnvironment(simulator)
+		return .playing
+#else
+		if player.playbackState == .playing {
+			return .playing
+		} else {
+			return .paused
+		}
+#endif
+	}
+	
 	final func songInfo() -> SongInfo? {
 #if targetEnvironment(simulator)
 		// To match `mpMediaItem`

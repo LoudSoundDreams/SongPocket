@@ -24,11 +24,11 @@ extension SongsTVC: TapeDeckReflecting {
 			cell.reflectAvatarStatus({
 				guard
 					viewModel.pointsToSomeItem(row: indexPath.row),
-					let libraryItem = viewModel.itemNonNil(atRow: indexPath.row) as? LibraryItem
+					let song = viewModel.itemNonNil(atRow: indexPath.row) as? Song
 				else {
 					return .notPlaying
 				}
-				return libraryItem.avatarStatus__()
+				return song.avatarStatus__()
 			}())
 		}
 	}

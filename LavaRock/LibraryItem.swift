@@ -34,24 +34,3 @@ extension Array where Element: LibraryItem {
 		}
 	}
 }
-
-import MediaPlayer
-@MainActor extension LibraryItem {
-	func avatarStatus__() -> AvatarStatus {
-		guard
-			containsPlayhead(),
-			let player = MPMusicPlayerController._system
-		else {
-			return .notPlaying
-		}
-#if targetEnvironment(simulator)
-		return .playing
-#else
-		if player.playbackState == .playing {
-			return .playing
-		} else {
-			return .paused
-		}
-#endif
-	}
-}
