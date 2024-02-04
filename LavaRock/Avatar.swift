@@ -81,20 +81,3 @@ struct AvatarImage: View {
 		}
 	}
 }
-
-@MainActor protocol AvatarReflecting: AnyObject {
-	func reflectAvatarStatus(_ status: AvatarStatus)
-}
-extension SongCell: AvatarReflecting {
-	func reflectAvatarStatus(_ status: AvatarStatus) {
-		if Self.usesSwiftUI { return }
-		
-		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
-		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
-		
-		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
-		speakerImageView.image = status.uiImage
-		
-		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
-	}
-}

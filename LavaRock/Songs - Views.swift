@@ -146,7 +146,7 @@ struct TrackNumberLabel: View {
 // MARK: - UIKit
 
 final class SongCell: UITableViewCell {
-	static let usesSwiftUI = 10 == 1
+	private static let usesSwiftUI = 10 == 1
 	
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
@@ -180,6 +180,18 @@ final class SongCell: UITableViewCell {
 		if Self.usesSwiftUI { return }
 		
 		freshenOverflowButton()
+	}
+	
+	func reflectAvatarStatus(_ status: AvatarStatus) {
+		if Self.usesSwiftUI { return }
+		
+		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
+		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
+		
+		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
+		speakerImageView.image = status.uiImage
+		
+		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
 	}
 	
 	func configureWith(

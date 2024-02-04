@@ -19,7 +19,7 @@ extension SongsTVC: TapeDeckReflecting {
 	private func reflectAvatar() {
 		tableView.allIndexPaths().forEach { indexPath in
 			guard
-				let cell = tableView.cellForRow(at: indexPath) as? AvatarReflecting
+				let cell = tableView.cellForRow(at: indexPath) as? SongCell
 			else { return }
 			cell.reflectAvatarStatus({
 				guard
