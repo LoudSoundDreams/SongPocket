@@ -28,7 +28,7 @@ extension SongsTVC: TapeDeckReflecting {
 				else {
 					return .notPlaying
 				}
-				return song.avatarStatus__()
+				return song.avatarStatus()
 			}())
 		}
 	}

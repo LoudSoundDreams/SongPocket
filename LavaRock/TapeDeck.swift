@@ -33,9 +33,9 @@ import MediaPlayer
 	}
 	
 	func beginWatching() {
-		guard let player = MPMusicPlayerController._system else { return }
+		guard let __player = MPMusicPlayerController._system else { return }
 		
-		player.beginGeneratingPlaybackNotifications()
+		__player.beginGeneratingPlaybackNotifications()
 		
 		playbackState() // Because before anyone called `beginWatching`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `.authorized`.
 		nowPlaying()

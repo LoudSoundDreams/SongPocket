@@ -86,7 +86,7 @@ extension UITableView {
 	
 	// MARK: - Updating
 	
-	final func applyBatchUpdates__completion(
+	final func applyBatches(
 		sectionUpdates: BatchUpdates<Int>,
 		rowUpdates: [BatchUpdates<IndexPath>],
 		animation: RowAnimation,

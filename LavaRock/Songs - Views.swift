@@ -263,7 +263,7 @@ final class SongCell: UITableViewCell {
 				titleLabel.text,
 				artistLabel.text,
 			].compactedAndFormattedAsNarrowList()
-			reflectAvatarStatus(song.avatarStatus__())
+			reflectAvatarStatus(song.avatarStatus())
 			
 			freshenOverflowButton()
 			overflowButton.menu = newOverflowMenu(

@@ -40,8 +40,8 @@ import MediaPlayer
 									return []
 								}(),
 								state: {
-									guard let player = MPMusicPlayerController._system else { return .off }
-									return (player.repeatMode == .one) ? .on : .off
+									guard let __player = MPMusicPlayerController._system else { return .off }
+									return (__player.repeatMode == .one) ? .on : .off
 								}()
 							) { _ in
 								guard let player = SystemMusicPlayer._shared else { return }
@@ -147,7 +147,7 @@ import MediaPlayer
 		overflowButton.image = newOverflowButtonImage()
 		
 		guard
-			let player = MPMusicPlayerController._system
+			let __player = MPMusicPlayerController._system
 				// Ideally, also do this when no songs are in the player
 		else {
 			showPlay()
@@ -169,7 +169,7 @@ import MediaPlayer
 			$0.accessibilityTraits.subtract(.notEnabled)
 		}
 		
-		if player.playbackState == .playing {
+		if __player.playbackState == .playing {
 			showPause()
 		} else {
 			showPlay()
@@ -179,10 +179,10 @@ import MediaPlayer
 	private func newOverflowButtonImage() -> UIImage {
 		let repeatOff = UIImage(systemName: "ellipsis.circle")!
 		
-		guard let player = MPMusicPlayerController._system else {
+		guard let __player = MPMusicPlayerController._system else {
 			return repeatOff
 		}
-		switch player.repeatMode {
+		switch __player.repeatMode {
 				// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
 			case .one: return UIImage(systemName: "repeat.1.circle.fill")!
 			default:
