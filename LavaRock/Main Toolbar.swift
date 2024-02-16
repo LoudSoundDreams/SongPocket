@@ -10,7 +10,7 @@ import SwiftUI
 extension View {
 	func mainToolbar() -> some View {
 		toolbar {
-			ToolbarItem(placement: .bottomBar) { overflowMenu }
+			ToolbarItem(placement: .bottomBar) { selectButton }
 			ToolbarItem(placement: .bottomBar) { Spacer() }
 			ToolbarItem(placement: .bottomBar) { jumpBackButton }
 			ToolbarItem(placement: .bottomBar) { Spacer() }
@@ -18,14 +18,15 @@ extension View {
 			ToolbarItem(placement: .bottomBar) { Spacer() }
 			ToolbarItem(placement: .bottomBar) { jumpForwardButton }
 			ToolbarItem(placement: .bottomBar) { Spacer() }
-			ToolbarItem(placement: .bottomBar) { nextButton }
+			ToolbarItem(placement: .bottomBar) { overflowButton }
 		}
 	}
 	
-	private var overflowMenu: some View {
-		Menu {
+	private var selectButton: some View {
+		Button {
+			print("user tapped Select")
 		} label: {
-			Image(systemName: "ellipsis.circle")
+			Image(systemName: "checkmark.circle")
 		}
 	}
 	
@@ -50,10 +51,10 @@ extension View {
 		}
 	}
 	
-	private var nextButton: some View {
-		Button {
+	private var overflowButton: some View {
+		Menu {
 		} label: {
-			Image(systemName: "forward.end.circle")
+			Image(systemName: "ellipsis.circle")
 		}
 	}
 }
