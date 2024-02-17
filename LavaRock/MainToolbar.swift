@@ -33,12 +33,7 @@ import MediaPlayer
 							let action = UIAction(
 								title: LRString.repeat_,
 								image: UIImage(systemName: "repeat.1"),
-								attributes: {
-									if SystemMusicPlayer._shared == nil {
-										return .disabled
-									}
-									return []
-								}(),
+								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : [],
 								state: {
 									guard let __player = MPMusicPlayerController._system else { return .off }
 									return (__player.repeatMode == .one) ? .on : .off
@@ -190,7 +185,6 @@ import MediaPlayer
 				// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
 				if !hasRefreshenedOverflowButton {
 					hasRefreshenedOverflowButton = true
-					
 					Task {
 						try? await Task.sleep(for: .milliseconds(50))
 						
