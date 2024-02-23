@@ -26,25 +26,61 @@ import MediaPlayer
 		title: LRString.more,
 		menu: {
 			let menuElements: [UIMenuElement] = [
+				// We want to indicate which mode is active by selecting it, not disabling it.
+				// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
+				// Disabling the selected mode is a compromise.
 				UIMenu(
 					options: .displayInline,
+					preferredElementSize: .small,
 					children: [
 						UIDeferredMenuElement.uncached({ useMenuElements in
 							let action = UIAction(
-								title: LRString.repeat_,
-								image: UIImage(systemName: "repeat.1"),
-								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : [],
+								title: LRString.repeatOff,
+								image: UIImage(systemName: "minus"),
+								attributes: {
+									guard let __player = MPMusicPlayerController._system else {
+										return .disabled
+									}
+									if __player.repeatMode == MPMusicRepeatMode.none {
+										return .disabled
+									} else {
+										return []
+									}
+								}(),
 								state: {
+									guard let __player = MPMusicPlayerController._system else {
+										// Assume Repeat is off
+										return .on
+									}
+									return (__player.repeatMode == MPMusicRepeatMode.none) ? .on : .off
+								}()
+							) { _ in
+								MPMusicPlayerController._system?.repeatMode = MPMusicRepeatMode.none
+							}
+							useMenuElements([action])
+						}),
+						UIDeferredMenuElement.uncached({ useMenuElements in
+							let action = UIAction(
+								title: LRString.repeat1,
+								image: UIImage(systemName: "repeat.1"),
+								attributes: {
+									// Disable if appropriate
+									guard let __player = MPMusicPlayerController._system else {
+										return .disabled
+									}
+									if __player.repeatMode == .one {
+										return .disabled
+									} else {
+										return []
+									}
+								}(),
+								state: {
+									// Select if appropriate
 									guard let __player = MPMusicPlayerController._system else { return .off }
 									return (__player.repeatMode == .one) ? .on : .off
 								}()
 							) { _ in
-								guard let player = SystemMusicPlayer._shared else { return }
-								if player.state.repeatMode == .one {
-									player.state.repeatMode = MusicPlayer.RepeatMode.none
-								} else {
-									player.state.repeatMode = .one
-								}
+								MPMusicPlayerController._system?.repeatMode = .one
 							}
 							useMenuElements([action])
 						}),
