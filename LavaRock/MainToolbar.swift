@@ -50,12 +50,10 @@ import MediaPlayer
 						}),
 					]
 				),
-				
 				UIMenu(
 					options: .displayInline,
 					preferredElementSize: .small,
 					children: [
-						
 						UIDeferredMenuElement.uncached({ useMenuElements in
 							let action = UIAction(
 								title: LRString.previous,
@@ -68,7 +66,6 @@ import MediaPlayer
 							}
 							useMenuElements([action])
 						}),
-						
 						UIDeferredMenuElement.uncached({ useMenuElements in
 							let action = UIAction(
 								title: LRString.restart,
@@ -80,7 +77,6 @@ import MediaPlayer
 							}
 							useMenuElements([action])
 						}),
-						
 						UIDeferredMenuElement.uncached({ useMenuElements in
 							let action = UIAction(
 								title: LRString.next,
@@ -93,10 +89,8 @@ import MediaPlayer
 							}
 							useMenuElements([action])
 						}),
-						
 					]
 				),
-				
 			]
 			return UIMenu(children: menuElements)
 		}()
