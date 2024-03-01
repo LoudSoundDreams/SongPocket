@@ -45,11 +45,6 @@ extension CollectionsTVC {
 			case .emptyDatabase:
 				contentUnavailableConfiguration = UIHostingConfiguration {
 					ContentUnavailableView {
-						Image(systemName: "square.stack")
-							.foregroundStyle(.secondary)
-							.font(.title)
-					} description: {
-						Text(LRString.emptyLibrary_subtitle)
 					} actions: {
 						Button {
 							let musicURL = URL(string: "music://")!
