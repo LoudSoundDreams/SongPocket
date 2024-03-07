@@ -7,7 +7,7 @@
 
 import UIKit
 import SwiftUI
-import MusicKit
+@preconcurrency import MusicKit
 
 extension SongsTVC {
 	override func numberOfSections(in tableView: UITableView) -> Int {

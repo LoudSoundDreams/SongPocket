@@ -85,7 +85,7 @@ extension Song {
 
 // MARK: - Apple Music
 
-import MusicKit
+@preconcurrency import MusicKit
 @MainActor extension Song {
 	final func musicKitSong() async -> MusicKit.Song? {
 		var request = MusicLibraryRequest<MusicKit.Song>()

@@ -7,7 +7,7 @@
 
 import SwiftUI
 import UIKit
-import MusicKit
+@preconcurrency import MusicKit
 
 // MARK: - SwiftUI
 
