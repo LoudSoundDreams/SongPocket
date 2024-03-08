@@ -43,7 +43,7 @@ struct AlbumCard: View {
 			)
 			.frame(
 				maxWidth: .infinity, // Horizontally centers narrow artwork
-				maxHeight: maxHeight)
+				maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
 			.accessibilityLabel(album.titleFormatted())
 			.accessibilitySortPriority(10)
 			
