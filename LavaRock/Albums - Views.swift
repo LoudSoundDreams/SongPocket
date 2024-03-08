@@ -8,7 +8,7 @@
 import SwiftUI
 import MusicKit
 
-struct AlbumCard: View {
+struct AlbumRow: View {
 	enum Mode {
 		case normal
 		case disabled
@@ -25,7 +25,7 @@ struct AlbumCard: View {
 		VStack(spacing: 0) {
 			Rectangle().frame(height: 1/2 * Self.borderWidthInPixels * pointsPerPixel).hidden()
 			// TO DO: Redraw when artwork changes
-			CoverArtView(
+			CoverArt(
 				albumRepresentative: album.representativeSongInfo(),
 				largerThanOrEqualToSizeInPoints: maxHeight)
 			.background( // Use `border` instead?
@@ -47,7 +47,7 @@ struct AlbumCard: View {
 			.accessibilityLabel(album.titleFormatted())
 			.accessibilitySortPriority(10)
 			
-			AlbumInfoRow(album: album)
+			AlbumInfo(album: album)
 				.padding(.top, .eight * (1 + 1/2))
 				.padding(.horizontal)
 				.padding(.bottom, .eight * 4)
@@ -81,7 +81,7 @@ struct AlbumCard: View {
 	}
 }
 
-struct CoverArtView: View {
+struct CoverArt: View {
 	let albumRepresentative: (any SongInfo)?
 	let largerThanOrEqualToSizeInPoints: CGFloat
 	
@@ -109,7 +109,7 @@ struct CoverArtView: View {
 	}
 }
 
-struct AlbumInfoRow: View {
+struct AlbumInfo: View {
 	let album: Album
 	
 	var body: some View {

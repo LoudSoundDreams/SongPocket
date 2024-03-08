@@ -45,7 +45,7 @@ extension AlbumsTVC {
 		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 		let album = (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row)
-		let (mode, enabled) = new_albumCardMode_and_selectionStyle(album: album)
+		let (mode, enabled) = new_albumRowMode_and_selectionStyle(album: album)
 		cell.backgroundColors_configureForLibraryItem()
 		cell.isUserInteractionEnabled = enabled
 		if enabled {
@@ -54,7 +54,7 @@ extension AlbumsTVC {
 			cell.accessibilityTraits.formUnion(.notEnabled)
 		}
 		cell.contentConfiguration = UIHostingConfiguration {
-			AlbumCard(
+			AlbumRow(
 				album: album,
 				maxHeight: {
 					let height = view.frame.height
@@ -67,11 +67,11 @@ extension AlbumsTVC {
 		.margins(.all, .zero)
 		return cell
 	}
-	func new_albumCardMode_and_selectionStyle(album: Album) -> (
-		mode: AlbumCard.Mode,
+	func new_albumRowMode_and_selectionStyle(album: Album) -> (
+		mode: AlbumRow.Mode,
 		enabled: Bool
 	) {
-		let mode: AlbumCard.Mode = {
+		let mode: AlbumRow.Mode = {
 			switch purpose {
 				case .movingAlbums(let clipboard):
 					if clipboard.idsOfAlbumsBeingMovedAsSet.contains(album.objectID) {

@@ -98,9 +98,9 @@ final class AlbumsTVC: LibraryTVC {
 				albumsViewModel.pointsToSomeItem(row: indexPath.row)
 			else { return }
 			let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
-			let (mode, _) = new_albumCardMode_and_selectionStyle(album: album)
+			let (mode, _) = new_albumRowMode_and_selectionStyle(album: album)
 			cell.contentConfiguration = UIHostingConfiguration {
-				AlbumCard(
+				AlbumRow(
 					album: album,
 					maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
 					mode: mode)
