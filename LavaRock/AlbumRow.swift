@@ -1,5 +1,5 @@
 //
-//  Albums - Views.swift
+//  AlbumRow.swift
 //  LavaRock
 //
 //  Created by h on 2020-07-10.
@@ -47,7 +47,7 @@ struct AlbumRow: View {
 			.accessibilityLabel(album.titleFormatted())
 			.accessibilitySortPriority(10)
 			
-			AlbumInfo(album: album)
+			AlbumLabel(album: album)
 				.padding(.top, .eight * (1 + 1/2))
 				.padding(.horizontal)
 				.padding(.bottom, .eight * 4)
@@ -80,8 +80,7 @@ struct AlbumRow: View {
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
 }
-
-struct CoverArt: View {
+private struct CoverArt: View {
 	let albumRepresentative: (any SongInfo)?
 	let largerThanOrEqualToSizeInPoints: CGFloat
 	
@@ -108,8 +107,7 @@ struct CoverArt: View {
 		}
 	}
 }
-
-struct AlbumInfo: View {
+private struct AlbumLabel: View {
 	let album: Album
 	
 	var body: some View {

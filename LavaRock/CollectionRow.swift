@@ -1,5 +1,5 @@
 //
-//  Collections - Views.swift
+//  CollectionRow.swift
 //  LavaRock
 //
 //  Created by h on 2020-11-06.
