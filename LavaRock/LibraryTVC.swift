@@ -162,14 +162,9 @@ class LibraryTVC: UITableViewController {
 			return
 		}
 		
+		// Determine the batch updates for the rows within each section.
 		let oldSections = oldViewModel.sectionStructures()
 		let newSections = newViewModel.sectionStructures()
-		let sectionBatchUpdates = oldSections.differenceInferringMoves(toMatch: newSections) {
-			oldSection, newSection in
-			oldSection.identifier == newSection.identifier
-		}.batchUpdates()
-		
-		// Determine the batch updates for the rows within each section.
 		let oldSectionIdentifiersAndIndices = zip(
 			oldSections.map { $0.identifier },
 			oldSections.indices)
@@ -192,7 +187,6 @@ class LibraryTVC: UITableViewController {
 		isAnimatingBatchUpdates += 1
 		// “'async' call in a function that does not support concurrency”
 		tableView.applyBatches(
-			sectionUpdates: sectionBatchUpdates,
 			rowUpdates: rowBatchUpdates,
 			animation: .middle
 		) {

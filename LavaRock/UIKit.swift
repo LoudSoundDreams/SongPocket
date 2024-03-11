@@ -87,7 +87,6 @@ extension UITableView {
 	// MARK: - Updating
 	
 	final func applyBatches(
-		sectionUpdates: BatchUpdates<Int>,
 		rowUpdates: [BatchUpdates<IndexPath>],
 		animation: RowAnimation,
 		completion: @escaping () -> Void
@@ -95,20 +94,11 @@ extension UITableView {
 		let rowsToDelete = rowUpdates.flatMap { $0.toDelete }
 		let rowsToInsert = rowUpdates.flatMap { $0.toInsert }
 		let rowsToMove = rowUpdates.flatMap { $0.toMove }
-		
 		performBatchUpdates {
 			// If necessary, call `reloadRows` first.
-			
-			deleteSections(IndexSet(sectionUpdates.toDelete), with: animation)
 			deleteRows(at: rowsToDelete, with: animation)
-			
-			insertSections(IndexSet(sectionUpdates.toInsert), with: animation)
 			insertRows(at: rowsToInsert, with: animation)
-			
-			// Do *not* skip `moveSection` or `moveRow` even if the old and new indices are the same.
-			sectionUpdates.toMove.forEach { (sourceIndex, destinationIndex) in
-				moveSection(sourceIndex, toSection: destinationIndex)
-			}
+			// Do _not_ skip `moveRow` even if the old and new indices are the same.
 			rowsToMove.forEach { (sourceIndexPath, destinationIndexPath) in
 				moveRow(at: sourceIndexPath, to: destinationIndexPath)
 			}
