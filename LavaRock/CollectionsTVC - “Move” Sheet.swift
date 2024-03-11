@@ -33,6 +33,7 @@ extension CollectionsTVC {
 		guard case .movingAlbums(let clipboard) = purpose else {
 			fatalError()
 		}
+		guard clipboard.hasCreatedNewCollection else { return }
 		clipboard.hasCreatedNewCollection = false
 		
 		let collectionsViewModel = viewModel as! CollectionsViewModel
