@@ -14,6 +14,7 @@ protocol LibraryViewModel {
 	func prerowCount() -> Int
 	func prerowIdentifiers() -> [AnyHashable]
 	func updatedWithFreshenedData() -> Self
+	func sectionStructure() -> [AnyHashable]
 }
 extension LibraryViewModel {
 	func isEmpty() -> Bool {
@@ -56,26 +57,5 @@ extension LibraryViewModel {
 	}
 	func row(forItemIndex itemIndex: Int) -> Int {
 		return prerowCount() + itemIndex
-	}
-}
-
-struct SectionStructure<RowIdentifier: Hashable> {
-	let rowIdentifiers: [RowIdentifier]
-}
-enum RowID: Hashable {
-	case prerow(AnyHashable)
-	case libraryItem(NSManagedObjectID)
-}
-extension LibraryViewModel {
-	func sectionStructure() -> SectionStructure<RowID> {
-		let prerowIDs = prerowIdentifiers().map {
-			RowID.prerow($0)
-		}
-		let itemRowIDs = groups[0].items.map { item in
-			RowID.libraryItem(item.objectID)
-		}
-		let rowIDs = prerowIDs + itemRowIDs
-		
-		return SectionStructure(rowIdentifiers: rowIDs)
 	}
 }

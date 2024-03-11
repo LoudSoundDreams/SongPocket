@@ -37,6 +37,13 @@ extension SongsViewModel: LibraryViewModel {
 			album: freshenedAlbum,
 			context: context)
 	}
+	
+	func sectionStructure() -> [AnyHashable] {
+		let itemRowIDs = groups[0].items.map {
+			AnyHashable($0.objectID)
+		}
+		return [42] + itemRowIDs
+	}
 }
 extension SongsViewModel {
 	init(

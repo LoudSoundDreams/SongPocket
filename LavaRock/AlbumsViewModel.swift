@@ -31,6 +31,10 @@ extension AlbumsViewModel: LibraryViewModel {
 			collection: freshenedCollection,
 			context: context)
 	}
+	
+	func sectionStructure() -> [AnyHashable] {
+		return groups[0].items.map { $0.objectID }
+	}
 }
 extension AlbumsViewModel {
 	init(

@@ -163,8 +163,8 @@ class LibraryTVC: UITableViewController {
 		}
 		
 		let batchUpdates = Self.batchUpdatesOfRows(
-			oldIdentifiers: oldViewModel.sectionStructure().rowIdentifiers,
-			newIdentifiers: newViewModel.sectionStructure().rowIdentifiers)
+			oldIdentifiers: oldViewModel.sectionStructure(),
+			newIdentifiers: newViewModel.sectionStructure())
 		
 		isAnimatingBatchUpdates += 1
 		// “'async' call in a function that does not support concurrency”
