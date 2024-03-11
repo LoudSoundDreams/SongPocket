@@ -16,7 +16,7 @@ struct SongsViewModel {
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var groups: ColumnOfLibraryItems
+	var groups: [LibraryGroup]
 }
 extension SongsViewModel: LibraryViewModel {
 	func prerowCount() -> Int { return 1 }

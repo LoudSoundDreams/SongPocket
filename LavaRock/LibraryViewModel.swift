@@ -7,10 +7,9 @@
 
 import CoreData
 
-typealias ColumnOfLibraryItems = [LibraryGroup]
 protocol LibraryViewModel {
 	var context: NSManagedObjectContext { get }
-	var groups: ColumnOfLibraryItems { get set }
+	var groups: [LibraryGroup] { get set }
 	
 	func prerowCount() -> Int
 	func prerowIdentifiers() -> [AnyHashable]
@@ -63,7 +62,6 @@ extension LibraryViewModel {
 struct SectionStructure<RowIdentifier: Hashable> {
 	let rowIdentifiers: [RowIdentifier]
 }
-extension SectionStructure: Hashable {}
 enum RowID: Hashable {
 	case prerow(AnyHashable)
 	case libraryItem(NSManagedObjectID)

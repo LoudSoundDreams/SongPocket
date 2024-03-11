@@ -10,7 +10,7 @@ import CoreData
 struct CollectionsViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var groups: ColumnOfLibraryItems
+	var groups: [LibraryGroup]
 }
 extension CollectionsViewModel: LibraryViewModel {
 	func prerowCount() -> Int { return 0 }
