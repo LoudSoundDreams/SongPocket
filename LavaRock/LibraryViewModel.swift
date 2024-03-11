@@ -16,7 +16,7 @@ protocol LibraryViewModel {
 	func row(forItemIndex itemIndex: Int) -> Int
 	
 	func updatedWithFreshenedData() -> Self
-	func sectionStructure() -> [AnyHashable]
+	func rowIdentifiers() -> [AnyHashable]
 }
 extension LibraryViewModel {
 	func isEmpty() -> Bool {

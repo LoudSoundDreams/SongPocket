@@ -9,9 +9,7 @@ import SwiftUI
 import MusicKit
 
 enum AvatarStatus {
-	case notPlaying
-	case paused
-	case playing
+	case notPlaying, paused, playing
 	
 	var uiImage: UIImage? {
 		switch self {

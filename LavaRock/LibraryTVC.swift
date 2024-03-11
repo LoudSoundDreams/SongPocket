@@ -20,19 +20,13 @@ extension UITableViewCell {
 }
 
 class LibraryTVC: UITableViewController {
-	// MARK: - Data
-	
 	final lazy var viewModel: LibraryViewModel = CollectionsViewModel(context: Database.viewContext)
 	
-	// MARK: Controls
-	
 	final var editingButtons: [UIBarButtonItem] = []
-	
 	private(set) final lazy var floatButton = UIBarButtonItem(
 		title: LRString.moveToTop,
 		image: UIImage(systemName: "arrow.up.to.line"),
-		primaryAction: UIAction { [weak self] _ in self?.floatSelected() }
-	)
+		primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
 	private func floatSelected() {
 		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
 		let unorderedIndices = unorderedRows.map {
@@ -48,12 +42,10 @@ class LibraryTVC: UITableViewController {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
-	
 	private(set) final lazy var sinkButton = UIBarButtonItem(
 		title: LRString.moveToBottom,
 		image: UIImage(systemName: "arrow.down.to.line"),
-		primaryAction: UIAction { [weak self] _ in self?.sinkSelected() }
-	)
+		primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	private func sinkSelected() {
 		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
 		let unorderedIndices = unorderedRows.map {
@@ -69,8 +61,6 @@ class LibraryTVC: UITableViewController {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
-	
-	// MARK: State
 	
 	final var isMergingChanges = false
 	final var needsFreshenLibraryItemsOnViewDidAppear = false
@@ -162,9 +152,9 @@ class LibraryTVC: UITableViewController {
 			return
 		}
 		
-		let batchUpdates = Self.batchUpdatesOfRows(
-			oldIdentifiers: oldViewModel.sectionStructure(),
-			newIdentifiers: newViewModel.sectionStructure())
+		let batchUpdates = Self.batchUpdatesFromIdentifiers(
+			old: oldViewModel.rowIdentifiers(),
+			new: newViewModel.rowIdentifiers())
 		
 		isAnimatingBatchUpdates += 1
 		// “'async' call in a function that does not support concurrency”
@@ -181,13 +171,10 @@ class LibraryTVC: UITableViewController {
 		
 		freshenEditingButtons()
 	}
-	private static func batchUpdatesOfRows<Identifier: Hashable>(
-		oldIdentifiers: [Identifier],
-		newIdentifiers: [Identifier]
-	) -> BatchUpdates<IndexPath> {
-		let updates = oldIdentifiers.differenceInferringMoves(
-			toMatch: newIdentifiers,
-			by: ==)
+	private static func batchUpdatesFromIdentifiers
+	<Identifier: Hashable>(old: [Identifier], new: [Identifier])
+	-> BatchUpdates<IndexPath> {
+		let updates = old.differenceInferringMoves(toMatch: new, by: ==)
 			.batchUpdates()
 		
 		let section = 0
@@ -224,8 +211,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Navigation
 	
 	final override func shouldPerformSegue(
-		withIdentifier identifier: String,
-		sender: Any?
+		withIdentifier identifier: String, sender: Any?
 	) -> Bool {
 		return !isEditing
 	}

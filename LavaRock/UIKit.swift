@@ -55,13 +55,9 @@ extension CollectionDifference {
 }
 
 extension UITableView {
-	// MARK: - Sections
-	
 	final func allSections() -> [Int] {
 		return Array(0 ..< numberOfSections)
 	}
-	
-	// MARK: IndexPaths
 	
 	final var selectedIndexPaths: [IndexPath] {
 		return indexPathsForSelectedRows ?? []
@@ -83,8 +79,6 @@ extension UITableView {
 			IndexPath(row: row, section: section)
 		}
 	}
-	
-	// MARK: - Updating
 	
 	final func applyBatchUpdates(
 		_ batchUpdates: BatchUpdates<IndexPath>,

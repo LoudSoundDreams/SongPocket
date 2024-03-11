@@ -25,7 +25,7 @@ extension CollectionsViewModel: LibraryViewModel {
 	func updatedWithFreshenedData() -> Self {
 		return Self(context: context)
 	}
-	func sectionStructure() -> [AnyHashable] {
+	func rowIdentifiers() -> [AnyHashable] {
 		return groups[0].items.map { $0.objectID }
 	}
 }

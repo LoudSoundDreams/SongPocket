@@ -246,10 +246,6 @@ import MediaPlayer
 	}
 }
 extension MainToolbar: TapeDeckReflecting {
-	func reflect_playbackState() {
-		freshen()
-	}
-	func reflect_nowPlaying() { 
-		freshen()
-	}
+	func reflect_playbackState() { freshen() }
+	func reflect_nowPlaying() { freshen() }
 }

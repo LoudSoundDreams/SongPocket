@@ -225,7 +225,7 @@ final class SongsTVC: LibraryTVC {
 	}
 }
 
-// MARK: - Views
+// MARK: - Rows
 
 private struct AlbumHeader: View {
 	let album: Album

@@ -28,8 +28,6 @@ final class CollectionsTVC: LibraryTVC {
 		case someCollections
 	}
 	
-	// MARK: - Properties
-	
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(
 		title: LRString.sort,
 		image: UIImage(systemName: "arrow.up.arrow.down")
@@ -473,7 +471,7 @@ final class CollectionsTVC: LibraryTVC {
 	}
 }
 
-// MARK: - Views
+// MARK: - Rows
 
 private struct CollectionRow: View {
 	let title: String?

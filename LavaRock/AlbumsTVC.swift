@@ -17,8 +17,6 @@ final class AlbumsTVC: LibraryTVC {
 		case browsing
 	}
 	
-	// MARK: - Properties
-	
 	private lazy var moveButton = UIBarButtonItem(
 		title: LRString.move,
 		image: UIImage(systemName: "folder"),
@@ -320,7 +318,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 }
 
-// MARK: - Views
+// MARK: - Rows
 
 private struct AlbumRow: View {
 	enum Mode {

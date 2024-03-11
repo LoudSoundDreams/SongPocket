@@ -24,7 +24,6 @@ extension LibraryGroup {
 
 extension CollectionsGroup: LibraryGroup {}
 struct CollectionsGroup {
-	// `LibraryGroup`
 	let container: NSManagedObject? = nil
 	var items: [NSManagedObject] {
 		didSet { _reindex() }
@@ -37,7 +36,6 @@ struct CollectionsGroup {
 
 extension AlbumsGroup: LibraryGroup {}
 struct AlbumsGroup {
-	// `LibraryGroup`
 	let container: NSManagedObject?
 	var items: [NSManagedObject] {
 		didSet { _reindex() }
@@ -54,7 +52,6 @@ struct AlbumsGroup {
 
 extension SongsGroup: LibraryGroup {}
 struct SongsGroup {
-	// `LibraryGroup`
 	let container: NSManagedObject?
 	var items: [NSManagedObject] {
 		didSet { _reindex() }
