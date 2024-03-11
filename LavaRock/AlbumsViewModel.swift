@@ -65,7 +65,7 @@ extension AlbumsViewModel {
 		return itemNonNil(atRow: atRow) as! Album
 	}
 	
-	// MARK: - “Move albums” sheet
+	// MARK: - “Move” sheet
 	
 	func updatedAfterInserting(
 		albumsWith albumIDs: [NSManagedObjectID]

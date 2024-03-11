@@ -47,7 +47,7 @@ extension CollectionsViewModel {
 		return twin
 	}
 	
-	// MARK: - “Move albums” sheet
+	// MARK: - “Move” sheet
 	
 	static let indexOfNewCollection = 0
 	

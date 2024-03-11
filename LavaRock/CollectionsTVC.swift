@@ -56,8 +56,6 @@ final class CollectionsTVC: LibraryTVC {
 		return .emptyDatabase
 	}
 	
-	// MARK: “Move albums” sheet
-	
 	// Data
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
@@ -330,6 +328,44 @@ final class CollectionsTVC: LibraryTVC {
 		albumsTVC.viewModel = AlbumsViewModel(
 			collection: selectedCollection,
 			context: viewModel.context)
+	}
+	
+	// MARK: - “Move” sheet
+	
+	private func createAndOpen() {
+		guard
+			case .movingAlbums(let clipboard) = purpose,
+			!clipboard.hasCreatedNewCollection,
+			let collectionsViewModel = viewModel as? CollectionsViewModel
+		else { return }
+		clipboard.hasCreatedNewCollection = true
+		
+		let newViewModel = collectionsViewModel.updatedAfterCreating()
+		Task {
+			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
+			
+			openCreated()
+		}
+	}
+	private func openCreated() {
+		let indexPath = IndexPath(row: CollectionsViewModel.indexOfNewCollection, section: 0)
+		tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+		performSegue(withIdentifier: "Open Collection", sender: self)
+	}
+	
+	private func revertCreate() {
+		guard case .movingAlbums(let clipboard) = purpose else {
+			fatalError()
+		}
+		guard clipboard.hasCreatedNewCollection else { return }
+		clipboard.hasCreatedNewCollection = false
+		
+		let collectionsViewModel = viewModel as! CollectionsViewModel
+		
+		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
+		Task {
+			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
+		}
 	}
 	
 	// MARK: - Table view
