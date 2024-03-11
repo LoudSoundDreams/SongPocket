@@ -60,45 +60,24 @@ extension LibraryViewModel {
 	}
 }
 
-// MARK: - Table view
-
-struct SectionStructure<
-	Identifier: Hashable,
-	RowIdentifier: Hashable
-> {
-	let identifier: Identifier
+struct SectionStructure<RowIdentifier: Hashable> {
 	let rowIdentifiers: [RowIdentifier]
 }
 extension SectionStructure: Hashable {}
-enum SectionID: Hashable {
-	case groupWithNoContainer
-	case groupWithContainer(NSManagedObjectID)
-}
 enum RowID: Hashable {
 	case prerow(AnyHashable)
 	case libraryItem(NSManagedObjectID)
 }
-
 extension LibraryViewModel {
-	func sectionStructure() -> SectionStructure<SectionID, RowID> {
-		let group = groups[0]
-		let sectionID: SectionID = {
-			guard let containerID = group.container?.objectID else {
-				return .groupWithNoContainer
-			}
-			return .groupWithContainer(containerID)
-		}()
-		
+	func sectionStructure() -> SectionStructure<RowID> {
 		let prerowIDs = prerowIdentifiers().map {
 			RowID.prerow($0)
 		}
-		let itemRowIDs = group.items.map { item in
+		let itemRowIDs = groups[0].items.map { item in
 			RowID.libraryItem(item.objectID)
 		}
 		let rowIDs = prerowIDs + itemRowIDs
 		
-		return SectionStructure(
-			identifier: sectionID,
-			rowIdentifiers: rowIDs)
+		return SectionStructure(rowIdentifiers: rowIDs)
 	}
 }
