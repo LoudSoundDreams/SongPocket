@@ -162,34 +162,13 @@ class LibraryTVC: UITableViewController {
 			return
 		}
 		
-		// Determine the batch updates for the rows within each section.
-		let oldSections = oldViewModel.sectionStructures()
-		let newSections = newViewModel.sectionStructures()
-		let oldSectionIdentifiersAndIndices = zip(
-			oldSections.map { $0.identifier },
-			oldSections.indices)
-		let oldSectionIndicesByIdentifier = Dictionary(uniqueKeysWithValues: oldSectionIdentifiersAndIndices)
-		var rowBatchUpdates: [BatchUpdates<IndexPath>] = []
-		newSections.enumerated().forEach { (newSectionIndex, newSection) in
-			let sectionIdentifier = newSection.identifier
-			// We never delete, insert, or move rows into or out of deleted or inserted sections, because when we delete or insert sections, we also delete or insert all the rows within them.
-			// We also never move rows between sections with different identifiers, because we only compare sections with equivalent identifiers.
-			guard let oldSectionIndex = oldSectionIndicesByIdentifier[sectionIdentifier] else { return }
-			
-			let rowBatchUpdatesInSection = Self.batchUpdatesOfRows(
-				oldSection: oldSectionIndex,
-				oldIdentifiers: oldSections[oldSectionIndex].rowIdentifiers,
-				newSection: newSectionIndex,
-				newIdentifiers: newSection.rowIdentifiers)
-			rowBatchUpdates.append(rowBatchUpdatesInSection)
-		}
+		let batchUpdates = Self.batchUpdatesOfRows(
+			oldIdentifiers: oldViewModel.sectionStructure().rowIdentifiers,
+			newIdentifiers: newViewModel.sectionStructure().rowIdentifiers)
 		
 		isAnimatingBatchUpdates += 1
 		// “'async' call in a function that does not support concurrency”
-		tableView.applyBatches(
-			rowUpdates: rowBatchUpdates,
-			animation: .middle
-		) {
+		tableView.applyBatchUpdates(batchUpdates) {
 			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate anything. Here, we wait for the animations to finish before we run the completion closure (once).
 				completionIfShouldRun(true)
@@ -202,11 +181,8 @@ class LibraryTVC: UITableViewController {
 		
 		freshenEditingButtons()
 	}
-	
 	private static func batchUpdatesOfRows<Identifier: Hashable>(
-		oldSection: Int,
 		oldIdentifiers: [Identifier],
-		newSection: Int,
 		newIdentifiers: [Identifier]
 	) -> BatchUpdates<IndexPath> {
 		let updates = oldIdentifiers.differenceInferringMoves(
@@ -214,16 +190,14 @@ class LibraryTVC: UITableViewController {
 			by: ==)
 			.batchUpdates()
 		
-		let toDelete = updates.toDelete.map { IndexPath(row: $0, section: oldSection) }
-		let toInsert = updates.toInsert.map { IndexPath(row: $0, section: newSection) }
+		let section = 0
+		let toDelete = updates.toDelete.map { IndexPath(row: $0, section: section) }
+		let toInsert = updates.toInsert.map { IndexPath(row: $0, section: section) }
 		let toMove = updates.toMove.map { (oldRow, newRow) in
-			(IndexPath(row: oldRow, section: oldSection),
-			 IndexPath(row: newRow, section: newSection))
+			(IndexPath(row: oldRow, section: section),
+			 IndexPath(row: newRow, section: section))
 		}
-		return BatchUpdates(
-			toDelete: toDelete,
-			toInsert: toInsert,
-			toMove: toMove)
+		return BatchUpdates(toDelete: toDelete, toInsert: toInsert, toMove: toMove)
 	}
 	
 	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
