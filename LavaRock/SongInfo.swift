@@ -73,13 +73,11 @@ extension SongInfo {
 			inSameAlbum: other,
 			shouldResortToTitle: true)
 	}
-	
 	func precedesByTrackNumber(_ other: SongInfo) -> Bool {
 		return precedesInDisplayOrder(
 			inSameAlbum: other,
 			shouldResortToTitle: false)
 	}
-	
 	// Behavior is undefined if you compare with a `SongInfo` from a different album.
 	private func precedesInDisplayOrder(
 		inSameAlbum other: SongInfo,

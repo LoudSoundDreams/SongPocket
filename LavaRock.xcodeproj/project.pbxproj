@@ -13,7 +13,7 @@
 		071A0BA0277E832C0017F76D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9F277E832C0017F76D /* Persistence.swift */; };
 		071DC5E72A1045CE0073C854 /* Main Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071DC5E62A1045CE0073C854 /* Main Toolbar.swift */; };
 		07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07267A1F25537C5800C914A3 /* TapeDeck.swift */; };
-		072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */; };
+		072FD02726C30BB90053369B /* MusicLibrary - Clean Up.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* MusicLibrary - Clean Up.swift */; };
 		0736E3EA24B95FD600A15420 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* Album.swift */; };
 		073CD6462A83FC66008E32A7 /* SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073CD6452A83FC66008E32A7 /* SwiftUI.swift */; };
 		0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */; };
@@ -35,8 +35,8 @@
 		07934CFA27CDBEB0002B2444 /* AlbumsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */; };
 		07934CFC27CDBFFD002B2444 /* CollectionsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CFB27CDBFFD002B2444 /* CollectionsTVC.storyboard */; };
 		079B2C9524E227BF00A949FA /* MusicLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* MusicLibrary.swift */; };
-		07A4F9052519E72C0065C87E /* MusicLibrary - Merge, Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9042519E72C0065C87E /* MusicLibrary - Merge, Update.swift */; };
-		07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9092519E7D20065C87E /* MusicLibrary - Merge, Create.swift */; };
+		07A4F9052519E72C0065C87E /* MusicLibrary - Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9042519E72C0065C87E /* MusicLibrary - Update.swift */; };
+		07A4F90A2519E7D20065C87E /* MusicLibrary - Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A4F9092519E7D20065C87E /* MusicLibrary - Create.swift */; };
 		07AE2AA4258C09D900C3A314 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE2AA3258C09D900C3A314 /* Collection.swift */; };
 		07CAB24724EA227F008AC34C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB24624EA227F008AC34C /* Song.swift */; };
 		07DF65D227766C95003B2EA3 /* SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF65D127766C95003B2EA3 /* SongInfo.swift */; };
@@ -75,7 +75,7 @@
 		071A0B9F277E832C0017F76D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		071DC5E62A1045CE0073C854 /* Main Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Main Toolbar.swift"; sourceTree = "<group>"; };
 		07267A1F25537C5800C914A3 /* TapeDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeDeck.swift; sourceTree = "<group>"; };
-		072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge, Clean Up.swift"; sourceTree = "<group>"; };
+		072FD02626C30BB90053369B /* MusicLibrary - Clean Up.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Clean Up.swift"; sourceTree = "<group>"; };
 		0736E3E924B95FD600A15420 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		073CD6452A83FC66008E32A7 /* SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI.swift; sourceTree = "<group>"; };
 		0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
@@ -103,8 +103,8 @@
 		07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlbumsTVC.storyboard; sourceTree = "<group>"; };
 		07934CFB27CDBFFD002B2444 /* CollectionsTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CollectionsTVC.storyboard; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* MusicLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicLibrary.swift; sourceTree = "<group>"; };
-		07A4F9042519E72C0065C87E /* MusicLibrary - Merge, Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge, Update.swift"; sourceTree = "<group>"; };
-		07A4F9092519E7D20065C87E /* MusicLibrary - Merge, Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Merge, Create.swift"; sourceTree = "<group>"; };
+		07A4F9042519E72C0065C87E /* MusicLibrary - Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Update.swift"; sourceTree = "<group>"; };
+		07A4F9092519E7D20065C87E /* MusicLibrary - Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicLibrary - Create.swift"; sourceTree = "<group>"; };
 		07AE2AA3258C09D900C3A314 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		07CAB24624EA227F008AC34C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		07DF65D127766C95003B2EA3 /* SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongInfo.swift; sourceTree = "<group>"; };
@@ -184,9 +184,9 @@
 				07E0BBFA276567F70010117E /* NSManagedObjectContext.swift */,
 				076F1C0127E66DAA00220C2B /* Apple Music.swift */,
 				079B2C9424E227BF00A949FA /* MusicLibrary.swift */,
-				07A4F9042519E72C0065C87E /* MusicLibrary - Merge, Update.swift */,
-				07A4F9092519E7D20065C87E /* MusicLibrary - Merge, Create.swift */,
-				072FD02626C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift */,
+				07A4F9042519E72C0065C87E /* MusicLibrary - Update.swift */,
+				07A4F9092519E7D20065C87E /* MusicLibrary - Create.swift */,
+				072FD02626C30BB90053369B /* MusicLibrary - Clean Up.swift */,
 				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
 				070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */,
 				07267A1F25537C5800C914A3 /* TapeDeck.swift */,
@@ -366,8 +366,8 @@
 				07EC01EC26C895CB00954E08 /* SongsViewModel.swift in Sources */,
 				07EC01E826C84BC700954E08 /* CollectionsViewModel.swift in Sources */,
 				0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */,
-				07A4F90A2519E7D20065C87E /* MusicLibrary - Merge, Create.swift in Sources */,
-				072FD02726C30BB90053369B /* MusicLibrary - Merge, Clean Up.swift in Sources */,
+				07A4F90A2519E7D20065C87E /* MusicLibrary - Create.swift in Sources */,
+				072FD02726C30BB90053369B /* MusicLibrary - Clean Up.swift in Sources */,
 				07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Standard.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
@@ -378,7 +378,7 @@
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				07267A2025537C5800C914A3 /* TapeDeck.swift in Sources */,
-				07A4F9052519E72C0065C87E /* MusicLibrary - Merge, Update.swift in Sources */,
+				07A4F9052519E72C0065C87E /* MusicLibrary - Update.swift in Sources */,
 				07DF76E42828D8AB00B03103 /* MainToolbar.swift in Sources */,
 				07EC01EA26C8958300954E08 /* AlbumsViewModel.swift in Sources */,
 				079B2C9524E227BF00A949FA /* MusicLibrary.swift in Sources */,
