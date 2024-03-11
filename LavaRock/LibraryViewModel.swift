@@ -12,7 +12,6 @@ protocol LibraryViewModel {
 	var groups: [LibraryGroup] { get set }
 	
 	func prerowCount() -> Int
-	func prerowIdentifiers() -> [AnyHashable]
 	func updatedWithFreshenedData() -> Self
 	func sectionStructure() -> [AnyHashable]
 }

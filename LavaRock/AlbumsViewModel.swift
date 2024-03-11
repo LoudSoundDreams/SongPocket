@@ -16,7 +16,6 @@ struct AlbumsViewModel {
 }
 extension AlbumsViewModel: LibraryViewModel {
 	func prerowCount() -> Int { return 0 }
-	func prerowIdentifiers() -> [AnyHashable] { return [] }
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {

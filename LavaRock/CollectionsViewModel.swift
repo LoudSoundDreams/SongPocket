@@ -14,7 +14,6 @@ struct CollectionsViewModel {
 }
 extension CollectionsViewModel: LibraryViewModel {
 	func prerowCount() -> Int { return 0 }
-	func prerowIdentifiers() -> [AnyHashable] { return [] }
 	func updatedWithFreshenedData() -> Self {
 		return Self(context: context)
 	}

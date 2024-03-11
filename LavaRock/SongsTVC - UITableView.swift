@@ -42,8 +42,8 @@ extension SongsTVC {
 		let songsViewModel = viewModel as! SongsViewModel
 		let album = songsViewModel.libraryGroup().container as! Album
 		
-		switch songsViewModel.rowCase(for: indexPath) {
-			case .prerow:
+		switch indexPath.row {
+			case 0:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
 				cell.selectionStyle = .none // So the user can’t even highlight the cell
@@ -55,7 +55,7 @@ extension SongsTVC {
 					)
 				}
 				return cell
-			case .song:
+			default:
 				guard let cell = tableView.dequeueReusableCell(
 					withIdentifier: "Song",
 					for: indexPath) as? SongCell
