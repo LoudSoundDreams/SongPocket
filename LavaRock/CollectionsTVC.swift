@@ -16,12 +16,12 @@ extension CollectionsTVC: UITextFieldDelegate {
 	}
 }
 final class CollectionsTVC: LibraryTVC {
-	enum Purpose {
+	private enum Purpose {
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
 	}
 	
-	enum CollectionsViewState {
+	private enum CollectionsViewState {
 		case allowAccess
 		case loading
 		case emptyDatabase
@@ -30,20 +30,17 @@ final class CollectionsTVC: LibraryTVC {
 	
 	// MARK: - Properties
 	
-	// Controls
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(
 		title: LRString.sort,
 		image: UIImage(systemName: "arrow.up.arrow.down")
 	)
 	
-	// Purpose
-	var purpose: Purpose {
+	private var purpose: Purpose {
 		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
 		return .browsing
 	}
 	
-	// State
-	var viewState: CollectionsViewState {
+	private var viewState: CollectionsViewState {
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return .allowAccess
 		}
@@ -56,7 +53,6 @@ final class CollectionsTVC: LibraryTVC {
 		return .emptyDatabase
 	}
 	
-	// Data
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
 	// MARK: -

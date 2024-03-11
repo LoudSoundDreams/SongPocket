@@ -11,14 +11,13 @@ import SwiftUI
 import CoreData
 
 final class AlbumsTVC: LibraryTVC {
-	enum Purpose {
+	private enum Purpose {
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
 	}
 	
 	// MARK: - Properties
 	
-	// Controls
 	private lazy var moveButton = UIBarButtonItem(
 		title: LRString.move,
 		image: UIImage(systemName: "folder"),
@@ -29,13 +28,11 @@ final class AlbumsTVC: LibraryTVC {
 		image: UIImage(systemName: "arrow.up.arrow.down")
 	)
 	
-	// Purpose
-	var purpose: Purpose {
+	private var purpose: Purpose {
 		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
 		return .browsing
 	}
 	
-	// Data
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
 	// MARK: - Setup
@@ -297,7 +294,7 @@ final class AlbumsTVC: LibraryTVC {
 		.margins(.all, .zero)
 		return cell
 	}
-	func new_albumRowMode_and_selectionStyle(album: Album) -> (
+	private func new_albumRowMode_and_selectionStyle(album: Album) -> (
 		mode: AlbumRow.Mode,
 		enabled: Bool
 	) {
