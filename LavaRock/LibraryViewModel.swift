@@ -81,25 +81,26 @@ enum RowID: Hashable {
 
 extension LibraryViewModel {
 	func sectionStructures() -> [SectionStructure<SectionID, RowID>] {
-		return groups.map { group in
-			let sectionID: SectionID = {
-				guard let containerID = group.container?.objectID else {
-					return .groupWithNoContainer
-				}
-				return .groupWithContainer(containerID)
-			}()
-			
-			let prerowIDs = prerowIdentifiers().map {
-				RowID.prerow($0)
+		let group = groups[0]
+		let sectionID: SectionID = {
+			guard let containerID = group.container?.objectID else {
+				return .groupWithNoContainer
 			}
-			let itemRowIDs = group.items.map { item in
-				RowID.libraryItem(item.objectID)
-			}
-			let rowIDs = prerowIDs + itemRowIDs
-			
-			return SectionStructure(
+			return .groupWithContainer(containerID)
+		}()
+		
+		let prerowIDs = prerowIdentifiers().map {
+			RowID.prerow($0)
+		}
+		let itemRowIDs = group.items.map { item in
+			RowID.libraryItem(item.objectID)
+		}
+		let rowIDs = prerowIDs + itemRowIDs
+		
+		return [
+			SectionStructure(
 				identifier: sectionID,
 				rowIdentifiers: rowIDs)
-		}
+		]
 	}
 }
