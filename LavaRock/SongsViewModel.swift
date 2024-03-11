@@ -27,10 +27,8 @@ extension SongsViewModel: LibraryViewModel {
 	// Similar to counterpart in `AlbumsViewModel`.
 	func updatedWithFreshenedData() -> Self {
 		let freshenedAlbum: Album? = {
-			guard
-				let album,
-				!album.wasDeleted() // WARNING: You must check this, or the initializer will create groups with no items.
-			else {
+			// WARNING: You must check this, or the initializer will create groups with no items.
+			guard let album, !album.wasDeleted() else {
 				return nil
 			}
 			return album
