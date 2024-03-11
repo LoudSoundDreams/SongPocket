@@ -20,8 +20,7 @@ extension CollectionsViewModel: LibraryViewModel {
 	}
 }
 extension CollectionsViewModel {
-	init(context: NSManagedObjectContext
-	) {
+	init(context: NSManagedObjectContext) {
 		self.context = context
 		groups = [
 			CollectionsGroup(context: context)
