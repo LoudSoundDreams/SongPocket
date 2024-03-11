@@ -23,7 +23,7 @@ extension LibraryContainer {
 protocol LibraryItem: NSManagedObject {
 	var index: Int64 { get set }
 	
-	func containsPlayhead() -> Bool
+	@MainActor func containsPlayhead() -> Bool
 }
 
 extension Array where Element: LibraryItem {

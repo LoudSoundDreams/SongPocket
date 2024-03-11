@@ -30,7 +30,24 @@ enum ArrangeCommand: CaseIterable {
 		}
 	}
 	
-	var sfSymbolName: String {
+	@MainActor func createMenuElement(
+		enabled: Bool,
+		handler: @escaping () -> Void
+	) -> UIMenuElement {
+		return UIDeferredMenuElement.uncached({ useMenuElements in
+			// Runs each time the button presents the menu
+			let action = UIAction(
+				title: localizedName(),
+				image: UIImage(systemName: sfSymbolName)
+			) { _ in handler() }
+			// Disable if appropriate. This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
+			if !enabled {
+				action.attributes.formUnion(.disabled)
+			}
+			useMenuElements([action])
+		})
+	}
+	private var sfSymbolName: String {
 		switch self {
 			case .random:
 				switch Int.random(in: 1...6) {
@@ -47,24 +64,6 @@ enum ArrangeCommand: CaseIterable {
 			case .album_oldest: return "hourglass.tophalf.filled"
 			case .song_track: return "number"
 		}
-	}
-	
-	func createMenuElement(
-		enabled: Bool,
-		handler: @escaping () -> Void
-	) -> UIMenuElement {
-		return UIDeferredMenuElement.uncached({ useMenuElements in
-			// Runs each time the button presents the menu
-			let action = UIAction(
-				title: localizedName(),
-				image: UIImage(systemName: sfSymbolName)
-			) { _ in handler() }
-			// Disable if appropriate. This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-			if !enabled {
-				action.attributes.formUnion(.disabled)
-			}
-			useMenuElements([action])
-		})
 	}
 	
 	func apply(
