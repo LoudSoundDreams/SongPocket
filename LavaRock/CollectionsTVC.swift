@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import MusicKit
 import SwiftUI
+import MusicKit
 
 extension CollectionsTVC: UITextFieldDelegate {
 	func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -470,5 +470,55 @@ final class CollectionsTVC: LibraryTVC {
 				]
 		}
 		return cell
+	}
+}
+
+// MARK: - Views
+
+private struct CollectionRow: View {
+	let title: String?
+	let collection: Collection
+	let dimmed: Bool
+	
+	var body: some View {
+		HStack(alignment: .firstTextBaseline) {
+			ZStack(alignment: .leading) {
+				Chevron().hidden()
+				AvatarImage(
+					libraryItem: collection,
+					state: SystemMusicPlayer._shared!.state,
+					queue: SystemMusicPlayer._shared!.queue
+				).accessibilitySortPriority(10)
+			}
+			
+			Text({ () -> String in
+				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
+				guard let title, !title.isEmpty else {
+					return " "
+				}
+				return title
+			}())
+			.multilineTextAlignment(.center)
+			.frame(maxWidth: .infinity)
+			.padding(.bottom, .eight * 1/4)
+			
+			ZStack(alignment: .trailing) {
+				AvatarPlayingImage().hidden()
+				Chevron()
+			}
+		}
+		.alignmentGuide_separatorLeading()
+		.alignmentGuide_separatorTrailing()
+		.accessibilityElement(children: .combine)
+		.accessibilityAddTraits(.isButton)
+		.opacity(
+			dimmed
+			? .oneFourth // Close to what Files pickers use
+			: 1
+		)
+		.disabled(dimmed)
+		.accessibilityInputLabels([title].compacted()) // Exclude the now-playing status.
+		// ! Accessibility action
+		// ! Accessibility “selected” state
 	}
 }
