@@ -63,7 +63,7 @@ extension CollectionsTVC {
 		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase: return 0
 			case .someCollections:
-				return viewModel.prerowCount() + viewModel.libraryGroup().items.count
+				return viewModel.libraryGroup().items.count
 		}
 	}
 	

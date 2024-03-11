@@ -11,7 +11,10 @@ protocol LibraryViewModel {
 	var context: NSManagedObjectContext { get }
 	var groups: [LibraryGroup] { get set }
 	
-	func prerowCount() -> Int
+	func itemIndex(forRow row: Int) -> Int
+	func rowsForAllItems() -> [Int]
+	func row(forItemIndex itemIndex: Int) -> Int
+	
 	func updatedWithFreshenedData() -> Self
 	func sectionStructure() -> [AnyHashable]
 }
@@ -39,22 +42,5 @@ extension LibraryViewModel {
 	func itemNonNil(atRow: Int) -> NSManagedObject {
 		let itemIndex = itemIndex(forRow: atRow)
 		return libraryGroup().items[itemIndex]
-	}
-	
-	func itemIndex(forRow row: Int) -> Int {
-		return row - prerowCount()
-	}
-	
-	func rowsForAllItems() -> [Int] {
-		guard !isEmpty() else {
-			return []
-		}
-		let indices = libraryGroup().items.indices
-		return indices.map {
-			prerowCount() + $0
-		}
-	}
-	func row(forItemIndex itemIndex: Int) -> Int {
-		return prerowCount() + itemIndex
 	}
 }

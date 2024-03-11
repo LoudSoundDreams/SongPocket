@@ -8,6 +8,7 @@
 import CoreData
 
 struct SongsViewModel {
+	static let prerowCount = 1
 	let album: Album?
 	
 	// `LibraryViewModel`
@@ -15,7 +16,20 @@ struct SongsViewModel {
 	var groups: [LibraryGroup]
 }
 extension SongsViewModel: LibraryViewModel {
-	func prerowCount() -> Int { return 1 }
+	func itemIndex(forRow row: Int) -> Int {
+		return row - Self.prerowCount
+	}
+	func rowsForAllItems() -> [Int] {
+		guard !isEmpty() else {
+			return []
+		}
+		return libraryGroup().items.indices.map { 
+			Self.prerowCount + $0
+		}
+	}
+	func row(forItemIndex itemIndex: Int) -> Int {
+		return Self.prerowCount + itemIndex
+	}
 	
 	// Similar to counterpart in `AlbumsViewModel`.
 	func updatedWithFreshenedData() -> Self {

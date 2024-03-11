@@ -31,9 +31,9 @@ extension AlbumsTVC {
 	) -> Int {
 		let albumsViewModel = viewModel as! AlbumsViewModel
 		if albumsViewModel.collection == nil {
-			return 0 // Without `prerowCount`
+			return 0
 		} else {
-			return albumsViewModel.prerowCount() + albumsViewModel.libraryGroup().items.count
+			return albumsViewModel.libraryGroup().items.count
 		}
 	}
 	
