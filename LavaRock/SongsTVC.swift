@@ -279,38 +279,24 @@ private struct SongRow: View {
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			HStack(alignment: .firstTextBaseline) {
-				ZStack(alignment: .leading) {
-					overflowMenuLabel().hidden()
-					AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
+			AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
+			VStack(alignment: .leading, spacing: .eight * 1/2) {
+				Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
+					.alignmentGuide_separatorLeading()
+				if let artist = artist_if_different_from_album_artist {
+					Text(artist)
+						.foregroundStyle(.secondary)
+						.fontFootnote()
 				}
-				TrackNumberLabel(text: trackDisplay, spacerText: "")
 			}
+			.padding(.bottom, .eight * 1/4)
 			
-			HStack(alignment: .firstTextBaseline, spacing: .eight * 5/4) {
-				VStack(alignment: .leading, spacing: .eight * 1/2) {
-					Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
-					if let artist = artist_if_different_from_album_artist {
-						Text(artist)
-							.foregroundStyle(.secondary)
-							.fontFootnote()
-					}
-				}
-				.frame(maxWidth: .infinity)
-				.padding(.bottom, .eight * 1/4)
-				.alignmentGuide_separatorLeading()
-			}
+			Spacer()
 			
-			HStack(alignment: .firstTextBaseline) {
-				ZStack(alignment: .trailing) {
-					AvatarPlayingImage().hidden()
-					Menu { overflowMenuContent() } label: { overflowMenuLabel() }
-					.disabled(listStatus.editing)
-				}
-			}
+			TrackNumberLabel(text: trackDisplay, spacerText: "")
+			Menu { overflowMenuContent() } label: { overflowMenuLabel() }.disabled(listStatus.editing)
+				.alignmentGuide_separatorTrailing()
 		}
-		.alignmentGuide_separatorLeading()
-		.alignmentGuide_separatorTrailing()
 		.padding(.horizontal)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
