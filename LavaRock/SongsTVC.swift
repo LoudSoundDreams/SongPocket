@@ -284,7 +284,7 @@ private struct SongRow: View {
 			Menu { overflowMenuContent() } label: { overflowMenuLabel() }.disabled(listStatus.editing)
 				.alignmentGuide_separatorTrailing()
 		}
-		.padding(.horizontal)
+		.padding(.bottom, .eight * 1/4)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
@@ -410,7 +410,6 @@ final class SongCell: UITableViewCell {
 					)
 				}
 			}
-			.margins(.all, .zero)
 		} else {
 			spacerNumberLabel.text = spacerTrackNumberText
 			numberLabel.text = trackDisplay
