@@ -108,7 +108,6 @@ final class SongsTVC: LibraryTVC {
 					.foregroundStyle(.secondary)
 					.font(.title)
 			}
-			.margins(.all, .zero)
 		} else {
 			contentUnavailableConfiguration = nil
 		}

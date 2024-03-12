@@ -246,7 +246,7 @@ final class AlbumsTVC: LibraryTVC {
 					.foregroundStyle(.secondary)
 					.font(.title)
 			}
-			.margins(.all, .zero)
+			.margins(.all, .zero) // As of iOS 17.4, without this, the content shows up too low within a sheet until you move the sheet vertically by any amount.
 		} else {
 			contentUnavailableConfiguration = nil
 		}
