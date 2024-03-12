@@ -359,7 +359,7 @@ private struct TrackNumberLabel: View {
 	}
 }
 
-private final class SongCell: UITableViewCell {
+final class SongCell: UITableViewCell {
 	private static let usesSwiftUI = 10 == 1
 	
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
