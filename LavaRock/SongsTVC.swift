@@ -261,7 +261,6 @@ private struct AlbumHeader: View {
 private struct SongRow: View {
 	let song: Song
 	let trackDisplay: String
-	let trackNumberSpacer: String
 	let artist_if_different_from_album_artist: String?
 	@ObservedObject var listStatus: SongsListStatus
 	
@@ -406,7 +405,6 @@ final class SongCell: UITableViewCell {
 					SongRow(
 						song: song,
 						trackDisplay: trackDisplay,
-						trackNumberSpacer: spacerTrackNumberText,
 						artist_if_different_from_album_artist: artistDisplayOptional,
 						listStatus: referencee.status
 					)
