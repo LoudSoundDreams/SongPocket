@@ -227,27 +227,34 @@ final class SongsTVC: LibraryTVC {
 
 // MARK: - Rows
 
+private struct TrackNumberLabel: View {
+	let text: String
+	let spacerText: String
+	
+	var body: some View {
+		ZStack(alignment: .trailing) {
+			Text(spacerText).hidden()
+			Text(text).foregroundStyle(.secondary)
+		}
+		.monospacedDigit()
+	}
+}
+
 private struct AlbumHeader: View {
 	let album: Album
 	let trackNumberSpacer: String
 	
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
-			TrackNumberLabel(text: trackNumberSpacer, spacerText: trackNumberSpacer)
-				.hidden()
+			TrackNumberLabel(text: trackNumberSpacer, spacerText: trackNumberSpacer).hidden()
 			
-			VStack(
-				alignment: .leading,
-				spacing: .eight * 1/2
-			) {
+			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text({ () -> String in
-					let representative = album.representativeSongInfo()
 					guard
-						let albumArtist = representative?.albumArtistOnDisk,
+						let representative = album.representativeSongInfo(),
+						let albumArtist = representative.albumArtistOnDisk,
 						albumArtist != ""
-					else {
-						return LRString.unknownArtist
-					}
+					else { return LRString.unknownArtist }
 					return albumArtist
 				}())
 				.foregroundStyle(.secondary)
@@ -284,15 +291,8 @@ private struct SongRow: View {
 				TrackNumberLabel(text: trackDisplay, spacerText: "")
 			}
 			
-			HStack(
-				alignment: .firstTextBaseline,
-				spacing: .eight * 5/4
-			) {
-				
-				VStack(
-					alignment: .leading,
-					spacing: .eight * 1/2
-				) {
+			HStack(alignment: .firstTextBaseline, spacing: .eight * 5/4) {
+				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
 					if let artist = artist_if_different_from_album_artist {
 						Text(artist)
@@ -308,11 +308,7 @@ private struct SongRow: View {
 			HStack(alignment: .firstTextBaseline) {
 				ZStack(alignment: .trailing) {
 					AvatarPlayingImage().hidden()
-					Menu {
-						overflowMenuContent()
-					} label: {
-						overflowMenuLabel()
-					}
+					Menu { overflowMenuContent() } label: { overflowMenuLabel() }
 					.disabled(listStatus.editing)
 				}
 			}
@@ -344,18 +340,6 @@ private struct SongRow: View {
 		} label: {
 			Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
 		}
-	}
-}
-private struct TrackNumberLabel: View {
-	let text: String
-	let spacerText: String
-	
-	var body: some View {
-		ZStack(alignment: .trailing) {
-			Text(spacerText).hidden()
-			Text(text).foregroundStyle(.secondary)
-		}
-		.monospacedDigit()
 	}
 }
 

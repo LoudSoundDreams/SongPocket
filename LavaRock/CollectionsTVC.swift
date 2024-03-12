@@ -491,9 +491,7 @@ private struct CollectionRow: View {
 			
 			Text({ () -> String in
 				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
-				guard let title, !title.isEmpty else {
-					return " "
-				}
+				guard let title, !title.isEmpty else { return " " }
 				return title
 			}())
 			.multilineTextAlignment(.center)
