@@ -226,27 +226,17 @@ final class SongsTVC: LibraryTVC {
 
 // MARK: - Rows
 
-private struct TrackNumberLabel: View {
-	let text: String
-	let spacerText: String
-	
-	var body: some View {
-		ZStack(alignment: .trailing) {
-			Text(spacerText).hidden()
-			Text(text).foregroundStyle(.secondary)
-		}
-		.monospacedDigit()
-	}
-}
-
 private struct AlbumHeader: View {
 	let album: Album
 	let trackNumberSpacer: String
 	
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
-			TrackNumberLabel(text: trackNumberSpacer, spacerText: trackNumberSpacer).hidden()
-			
+			if SongCell.usesSwiftUI {
+				AvatarPlayingImage().hidden()
+			} else {
+				Text(trackNumberSpacer).monospacedDigit().hidden()
+			}
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text({ () -> String in
 					guard
@@ -262,7 +252,6 @@ private struct AlbumHeader: View {
 					.fontTitle2_bold()
 			}
 			.alignmentGuide_separatorLeading()
-			
 			Spacer()
 		}
 		.alignmentGuide_separatorTrailing()
@@ -289,10 +278,10 @@ private struct SongRow: View {
 				}
 			}
 			.padding(.bottom, .eight * 1/4)
-			
 			Spacer()
-			
-			TrackNumberLabel(text: trackDisplay, spacerText: "")
+			Text(trackDisplay)
+				.foregroundStyle(.secondary)
+				.monospacedDigit()
 			Menu { overflowMenuContent() } label: { overflowMenuLabel() }.disabled(listStatus.editing)
 				.alignmentGuide_separatorTrailing()
 		}
@@ -302,8 +291,9 @@ private struct SongRow: View {
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 	}
 	private func overflowMenuLabel() -> some View {
-		Image(systemName: "ellipsis.circle")
+		Image(systemName: "ellipsis.circle.fill")
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
+			.symbolRenderingMode(.hierarchical)
 	}
 	@ViewBuilder private func overflowMenuContent() -> some View {
 		Button {
@@ -325,7 +315,7 @@ private struct SongRow: View {
 }
 
 final class SongCell: UITableViewCell {
-	private static let usesSwiftUI = 10 == 1
+	static let usesSwiftUI = 10 == 1
 	
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
