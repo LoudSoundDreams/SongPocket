@@ -1,5 +1,5 @@
 //
-//  MusicLibrary.swift
+//  MusicRepo.swift
 //  LavaRock
 //
 //  Created by h on 2020-08-10.
@@ -8,9 +8,9 @@
 import MediaPlayer
 import CoreData
 
-final class MusicLibrary: ObservableObject {
+final class MusicRepo: ObservableObject {
 	private init() {}
-	static let shared = MusicLibrary()
+	static let shared = MusicRepo()
 	
 	@Published private(set) var signal_mergedChanges = false
 	@Published var signal_userUpdatedDatabase = false
@@ -51,7 +51,7 @@ final class MusicLibrary: ObservableObject {
 		library?.endGeneratingLibraryChangeNotifications()
 	}
 }
-extension MusicLibrary {
+extension MusicRepo {
 	func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
 		let existingSongs = Song.allFetched(sorted: false, inAlbum: nil, context: context)
 		

@@ -1,5 +1,5 @@
 //
-//  MusicLibrary - Merge, Clean Up.swift
+//  MusicRepo - Merge, Clean Up.swift
 //  LavaRock
 //
 //  Created by h on 2021-08-10.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-extension MusicLibrary {
+extension MusicRepo {
 	func cleanUpLibraryItems(
 		songsToDelete: [Song],
 		allInfos: [SongInfo],

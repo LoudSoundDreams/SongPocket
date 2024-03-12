@@ -1,5 +1,5 @@
 //
-//  MusicLibrary - Merge, Create.swift
+//  MusicRepo - Merge, Create.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-22.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-extension MusicLibrary {
+extension MusicRepo {
 	// Create new managed objects for the new `SongInfo`s, including new `Album`s and `Collection`s to put them in if necessary.
 	func createLibraryItems(
 		for newInfos: [SongInfo],

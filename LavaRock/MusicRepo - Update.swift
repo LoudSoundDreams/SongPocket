@@ -1,5 +1,5 @@
 //
-//  MusicLibrary - Merge, Update.swift
+//  MusicRepo - Merge, Update.swift
 //  LavaRock
 //
 //  Created by h on 2020-09-22.
@@ -7,7 +7,7 @@
 
 import CoreData
 
-extension MusicLibrary {
+extension MusicRepo {
 	func updateLibraryItems(
 		potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)]
 	) {

@@ -15,7 +15,7 @@ import MusicKit
 		
 		await loadingIndicator?.prepareToIntegrateWithAppleMusic()
 		
-		MusicLibrary.shared.beginWatching() // Collections view must start observing `Notification.Name.mergedChanges` before this.
+		MusicRepo.shared.beginWatching() // Collections view must start observing `Notification.Name.mergedChanges` before this.
 		TapeDeck.shared.beginWatching()
 	}
 }
