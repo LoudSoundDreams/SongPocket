@@ -439,7 +439,7 @@ final class CollectionsTVC: LibraryTVC {
 		}()
 		cell.contentConfiguration = UIHostingConfiguration {
 			CollectionRow(title: collection.title, collection: collection, dimmed: !enabled)
-		}
+		}.margins(.all, 0)
 		cell.editingAccessoryType = .detailButton
 		cell.backgroundColors_configureForLibraryItem()
 		cell.isUserInteractionEnabled = enabled
@@ -501,6 +501,7 @@ private struct CollectionRow: View {
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
+		.padding(.horizontal).padding(.vertical, .eight * 3/2)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.opacity(

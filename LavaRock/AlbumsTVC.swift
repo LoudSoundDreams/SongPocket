@@ -98,8 +98,7 @@ final class AlbumsTVC: LibraryTVC {
 					album: album,
 					maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
 					mode: mode)
-			}
-			.margins(.all, .zero)
+			}.margins(.all, .zero)
 		}
 	}
 	
@@ -289,8 +288,7 @@ final class AlbumsTVC: LibraryTVC {
 					return height - topInset - bottomInset
 				}(),
 				mode: mode)
-		}
-		.margins(.all, .zero)
+		}.margins(.all, .zero)
 		return cell
 	}
 	private func new_albumRowMode_and_selectionStyle(album: Album) -> (
@@ -360,7 +358,7 @@ private struct AlbumRow: View {
 			.accessibilitySortPriority(10)
 			
 			AlbumLabel(album: album)
-				.padding(.top, .eight * (1 + 1/2))
+				.padding(.top, .eight * 3/2)
 				.padding(.horizontal)
 				.padding(.bottom, .eight * 4)
 				.accessibilityRespondsToUserInteraction(false)

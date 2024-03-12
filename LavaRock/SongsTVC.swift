@@ -143,7 +143,7 @@ final class SongsTVC: LibraryTVC {
 						album: album,
 						trackNumberSpacer: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer
 					)
-				}
+				}.margins(.all, 0)
 				return cell
 			default:
 				guard let cell = tableView.dequeueReusableCell(
@@ -255,6 +255,7 @@ private struct AlbumHeader: View {
 			Spacer()
 		}
 		.alignmentGuide_separatorTrailing()
+		.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
 }
 
@@ -284,7 +285,9 @@ private struct SongRow: View {
 			Menu { overflowMenuContent() } label: { overflowMenuLabel() }.disabled(listStatus.editing)
 				.alignmentGuide_separatorTrailing()
 		}
-		.padding(.bottom, .eight * 1/4)
+		.padding(.top, .eight)
+		.padding(.horizontal)
+		.padding(.bottom, .eight * 3/2)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
@@ -292,6 +295,7 @@ private struct SongRow: View {
 	private func overflowMenuLabel() -> some View {
 		Image(systemName: "ellipsis.circle.fill")
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
+			.imageScale(.large)
 			.symbolRenderingMode(.hierarchical)
 	}
 	@ViewBuilder private func overflowMenuContent() -> some View {
@@ -409,7 +413,7 @@ final class SongCell: UITableViewCell {
 						listStatus: referencee.status
 					)
 				}
-			}
+			}.margins(.all, 0)
 		} else {
 			spacerNumberLabel.text = spacerTrackNumberText
 			numberLabel.text = trackDisplay
