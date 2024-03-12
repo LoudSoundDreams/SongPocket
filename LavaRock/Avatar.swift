@@ -76,6 +76,7 @@ struct AvatarImage: View {
 			case .playing:
 				AvatarPlayingImage()
 					.foregroundStyle(Color.accentColor)
+					.symbolRenderingMode(SongCell.usesSwiftUI ? .hierarchical : .monochrome)
 		}
 	}
 }
