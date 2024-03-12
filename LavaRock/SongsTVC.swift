@@ -282,11 +282,7 @@ private struct SongRow: View {
 			HStack(alignment: .firstTextBaseline) {
 				ZStack(alignment: .leading) {
 					overflowMenuLabel().hidden()
-					AvatarImage(
-						libraryItem: song,
-						state: SystemMusicPlayer._shared!.state,
-						queue: SystemMusicPlayer._shared!.queue
-					).accessibilitySortPriority(10)
+					AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
 				}
 				TrackNumberLabel(text: trackDisplay, spacerText: "")
 			}

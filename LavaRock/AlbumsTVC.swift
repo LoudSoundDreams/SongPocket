@@ -426,11 +426,7 @@ private struct AlbumLabel: View {
 		HStack(alignment: .firstTextBaseline) {
 			ZStack(alignment: .leading) {
 				Chevron().hidden()
-				AvatarImage(
-					libraryItem: album,
-					state: SystemMusicPlayer._shared!.state,
-					queue: SystemMusicPlayer._shared!.queue
-				).accessibilitySortPriority(10) // Bigger is sooner
+				AvatarImage(libraryItem: album, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			}
 			
 			Text(album.releaseDateEstimateFormattedOptional() ?? LRString.emDash)

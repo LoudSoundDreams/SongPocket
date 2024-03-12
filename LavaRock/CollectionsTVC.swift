@@ -482,11 +482,7 @@ private struct CollectionRow: View {
 		HStack(alignment: .firstTextBaseline) {
 			ZStack(alignment: .leading) {
 				Chevron().hidden()
-				AvatarImage(
-					libraryItem: collection,
-					state: SystemMusicPlayer._shared!.state,
-					queue: SystemMusicPlayer._shared!.queue
-				).accessibilitySortPriority(10)
+				AvatarImage(libraryItem: collection, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
 			}
 			
 			Text({ () -> String in
