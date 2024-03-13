@@ -8,11 +8,11 @@
 import CoreData
 
 struct AlbumsViewModel {
-	let collection: Collection?
+	let collection: Collection
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var group: LibraryGroup?
+	var group: LibraryGroup
 }
 extension AlbumsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row }
@@ -20,39 +20,26 @@ extension AlbumsViewModel: LibraryViewModel {
 		guard !isEmpty() else {
 			return []
 		}
-		return libraryGroup().items.indices.map { $0 }
+		return group.items.indices.map { $0 }
 	}
 	func row(forItemIndex itemIndex: Int) -> Int { return itemIndex }
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		let freshenedCollection: Collection? = {
-			// WARNING: You must check this, or the initializer will create groups with no items.
-			guard let collection, !collection.wasDeleted() else {
-				return nil
-			}
-			return collection
-		}()
-		return Self(
-			collection: freshenedCollection,
-			context: context)
+		return Self(collection: collection, context: context)
 	}
 	
 	func rowIdentifiers() -> [AnyHashable] {
-		return group!.items.map { $0.objectID }
+		return group.items.map { $0.objectID }
 	}
 }
 extension AlbumsViewModel {
 	init(
-		collection: Collection?,
+		collection: Collection,
 		context: NSManagedObjectContext
 	) {
 		self.collection = collection
 		self.context = context
-		guard let collection else {
-			group = nil
-			return
-		}
 		group = AlbumsGroup(collection: collection, context: context)
 	}
 	
@@ -65,7 +52,6 @@ extension AlbumsViewModel {
 	func updatedAfterInserting(
 		albumsWith albumIDs: [NSManagedObjectID]
 	) -> Self {
-		let group = libraryGroup()
 		let destination = group.container as! Collection
 		
 		destination.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(

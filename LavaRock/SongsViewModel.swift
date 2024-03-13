@@ -9,11 +9,11 @@ import CoreData
 
 struct SongsViewModel {
 	static let prerowCount = 1
-	let album: Album?
+	let album: Album
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var group: LibraryGroup?
+	var group: LibraryGroup
 }
 extension SongsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int {
@@ -23,7 +23,7 @@ extension SongsViewModel: LibraryViewModel {
 		guard !isEmpty() else {
 			return []
 		}
-		return libraryGroup().items.indices.map { 
+		return group.items.indices.map {
 			Self.prerowCount + $0
 		}
 	}
@@ -33,20 +33,11 @@ extension SongsViewModel: LibraryViewModel {
 	
 	// Similar to counterpart in `AlbumsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		let freshenedAlbum: Album? = {
-			// WARNING: You must check this, or the initializer will create groups with no items.
-			guard let album, !album.wasDeleted() else {
-				return nil
-			}
-			return album
-		}()
-		return Self(
-			album: freshenedAlbum,
-			context: context)
+		return Self(album: album, context: context)
 	}
 	
 	func rowIdentifiers() -> [AnyHashable] {
-		let itemRowIDs = group!.items.map {
+		let itemRowIDs = group.items.map {
 			AnyHashable($0.objectID)
 		}
 		return [42] + itemRowIDs
@@ -54,15 +45,11 @@ extension SongsViewModel: LibraryViewModel {
 }
 extension SongsViewModel {
 	init(
-		album: Album?,
+		album: Album,
 		context: NSManagedObjectContext
 	) {
 		self.album = album
 		self.context = context
-		guard let album else {
-			group = nil
-			return
-		}
 		group = SongsGroup(album: album, context: context)
 	}
 }

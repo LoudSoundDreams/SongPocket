@@ -414,8 +414,7 @@ final class CollectionsTVC: LibraryTVC {
 	)-> Int {
 		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase: return 0
-			case .someCollections:
-				return viewModel.libraryGroup().items.count
+			case .someCollections: return viewModel.group.items.count
 		}
 	}
 	

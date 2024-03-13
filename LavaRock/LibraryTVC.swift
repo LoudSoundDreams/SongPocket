@@ -33,11 +33,11 @@ class LibraryTVC: UITableViewController {
 			viewModel.itemIndex(forRow: $0)
 		}
 		
-		var newItems = viewModel.libraryGroup().items
+		var newItems = viewModel.group.items
 		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		
 		var newViewModel = viewModel
-		newViewModel.group!.items = newItems
+		newViewModel.group.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -52,11 +52,11 @@ class LibraryTVC: UITableViewController {
 			viewModel.itemIndex(forRow: $0)
 		}
 		
-		var newItems = viewModel.libraryGroup().items
+		var newItems = viewModel.group.items
 		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newItems.count)
 		
 		var newViewModel = viewModel
-		newViewModel.group!.items = newItems
+		newViewModel.group.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -305,13 +305,13 @@ class LibraryTVC: UITableViewController {
 	final func arrangeSelectedOrAll(by command: ArrangeCommand) {
 		let subjectedRows = unsortedRowsToArrange().sorted()
 		let subjectedIndices = subjectedRows.map { viewModel.itemIndex(forRow: $0) }
-		let allItems = viewModel.libraryGroup().items
+		let allItems = viewModel.group.items
 		
 		var newViewModel = viewModel
 		let newItems = command.apply(
 			onOrderedIndices: subjectedIndices,
 			in: allItems)
-		newViewModel.group!.items = newItems
+		newViewModel.group.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -353,10 +353,10 @@ class LibraryTVC: UITableViewController {
 		let fromIndex = viewModel.itemIndex(forRow: fromIndexPath.row)
 		let toIndex = viewModel.itemIndex(forRow: to.row)
 		
-		var newItems = viewModel.libraryGroup().items
+		var newItems = viewModel.group.items
 		let itemBeingMoved = newItems.remove(at: fromIndex)
 		newItems.insert(itemBeingMoved, at: toIndex)
-		viewModel.group!.items = newItems
+		viewModel.group.items = newItems
 		
 		freshenEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
 	}

@@ -112,7 +112,7 @@ final class SongsTVC: LibraryTVC {
 			contentUnavailableConfiguration = nil
 		}
 		
-		if viewModel.group == nil {
+		if viewModel.group.items.isEmpty {
 			return 0
 		} else {
 			return 1
@@ -122,11 +122,10 @@ final class SongsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
-		let songsViewModel = viewModel as! SongsViewModel
-		if songsViewModel.album == nil {
+		if viewModel.isEmpty() {
 			return 0 // Without `prerowCount`
 		} else {
-			return SongsViewModel.prerowCount + songsViewModel.libraryGroup().items.count
+			return SongsViewModel.prerowCount + viewModel.group.items.count
 		}
 	}
 	
@@ -134,7 +133,7 @@ final class SongsTVC: LibraryTVC {
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		let songsViewModel = viewModel as! SongsViewModel
-		let album = songsViewModel.libraryGroup().container as! Album
+		let album = songsViewModel.group.container as! Album
 		
 		switch indexPath.row {
 			case 0:
@@ -145,7 +144,7 @@ final class SongsTVC: LibraryTVC {
 				cell.contentConfiguration = UIHostingConfiguration {
 					AlbumHeader(
 						album: album,
-						trackNumberSpacer: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer
+						trackNumberSpacer: (songsViewModel.group as! SongsGroup).trackNumberSpacer
 					)
 				}.margins(.all, 0)
 				return cell
@@ -158,7 +157,7 @@ final class SongsTVC: LibraryTVC {
 				cell.configureWith(
 					song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
 					albumRepresentative: album.representativeSongInfo(),
-					spacerTrackNumberText: (songsViewModel.libraryGroup() as! SongsGroup).trackNumberSpacer,
+					spacerTrackNumberText: (songsViewModel.group as! SongsGroup).trackNumberSpacer,
 					songsTVC: Weak(self),
 					forBottomOfAlbum: indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
 				)
@@ -188,7 +187,7 @@ final class SongsTVC: LibraryTVC {
 					
 					let allMusicItems: [MusicKit.Song] = await {
 						var result: [MusicKit.Song] = []
-						for song in (self.viewModel.libraryGroup().items as! [Song]) {
+						for song in (self.viewModel.group.items as! [Song]) {
 							guard let musicItem = await song.musicKitSong() else { continue }
 							result.append(musicItem)
 						}
@@ -507,7 +506,7 @@ final class SongCell: UITableViewCell {
 		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let restOfSongs = tvc.viewModel.libraryGroup().items.map { $0 as! Song }
+			let restOfSongs = tvc.viewModel.group.items.map { $0 as! Song }
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in

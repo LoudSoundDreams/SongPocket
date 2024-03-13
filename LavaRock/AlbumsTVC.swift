@@ -250,7 +250,7 @@ final class AlbumsTVC: LibraryTVC {
 			contentUnavailableConfiguration = nil
 		}
 		
-		if viewModel.group == nil {
+		if viewModel.group.items.isEmpty {
 			return 0
 		} else {
 			return 1
@@ -260,12 +260,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
-		let albumsViewModel = viewModel as! AlbumsViewModel
-		if albumsViewModel.collection == nil {
-			return 0
-		} else {
-			return albumsViewModel.libraryGroup().items.count
-		}
+		return viewModel.group.items.count
 	}
 	
 	override func tableView(

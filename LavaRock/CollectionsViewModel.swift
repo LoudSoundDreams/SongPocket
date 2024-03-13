@@ -10,7 +10,7 @@ import CoreData
 struct CollectionsViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var group: LibraryGroup?
+	var group: LibraryGroup
 }
 extension CollectionsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row }
@@ -18,7 +18,7 @@ extension CollectionsViewModel: LibraryViewModel {
 		guard !isEmpty() else {
 			return []
 		}
-		return libraryGroup().items.indices.map { $0 }
+		return group.items.indices.map { $0 }
 	}
 	func row(forItemIndex itemIndex: Int) -> Int { return itemIndex }
 	
@@ -26,7 +26,7 @@ extension CollectionsViewModel: LibraryViewModel {
 		return Self(context: context)
 	}
 	func rowIdentifiers() -> [AnyHashable] {
-		return group!.items.map { $0.objectID }
+		return group.items.map { $0.objectID }
 	}
 }
 extension CollectionsViewModel {
@@ -41,7 +41,7 @@ extension CollectionsViewModel {
 	
 	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
 		var twin = self
-		twin.group!.items = newItems
+		twin.group.items = newItems
 		return twin
 	}
 	
@@ -54,7 +54,7 @@ extension CollectionsViewModel {
 		newCollection.title = LRString.tilde
 		// When we call `setViewModelAndMoveAndDeselectRowsAndShouldContinue`, the property observer will set each `Collection.index` for us.
 		
-		var newItems = libraryGroup().items
+		var newItems = group.items
 		newItems.insert(newCollection, at: Self.indexOfNewCollection)
 		
 		return updatedWithItemsInOnlyGroup(newItems)
@@ -66,7 +66,7 @@ extension CollectionsViewModel {
 		return updatedWithItemsInOnlyGroup(newItems)
 	}
 	private func itemsAfterDeletingNewCollection() -> [NSManagedObject] {
-		let oldItems = libraryGroup().items
+		let oldItems = group.items
 		guard
 			let collection = oldItems[Self.indexOfNewCollection] as? Collection,
 			collection.isEmpty()
@@ -76,7 +76,7 @@ extension CollectionsViewModel {
 		
 		context.delete(collection)
 		
-		var newItems = libraryGroup().items
+		var newItems = group.items
 		newItems.remove(at: Self.indexOfNewCollection)
 		return newItems
 	}

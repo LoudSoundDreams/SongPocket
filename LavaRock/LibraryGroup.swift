@@ -9,7 +9,10 @@ import CoreData
 
 protocol LibraryGroup {
 	var container: NSManagedObject? { get }
-	var items: [NSManagedObject] { get set } // You must add a `didSet` that calls `_reindex`.
+	
+	// Can be empty.
+	// You must add a `didSet` that calls `_reindex`.
+	var items: [NSManagedObject] { get set }
 }
 extension LibraryGroup {
 	// Must match `[LibraryItem].reindex`.
