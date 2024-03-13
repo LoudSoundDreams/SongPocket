@@ -64,7 +64,6 @@ class LibraryTVC: UITableViewController {
 	
 	final var isMergingChanges = false
 	final var needsFreshenLibraryItemsOnViewDidAppear = false
-	private var isAnimatingBatchUpdates = 0
 	
 	// MARK: - Setup
 	
@@ -113,7 +112,10 @@ class LibraryTVC: UITableViewController {
 			await view.window?.rootViewController?.dismiss__async(animated: true)
 			
 			let newViewModel = viewModel.updatedWithFreshenedData()
-			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
+			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else {
+				// The return value was false, meaning either (1) table view animations are already in progress from an earlier execution of this method, so we shouldn’t run the code after the `await` call this time (that earlier execution will), or (2) we applied an empty view model, so we don’t need to update any row contents.
+				return
+			}
 			
 			// Update the data within each row, which might be outdated.
 			// Doing it without an animation looks fine, because we animated the deletes, inserts, and moves earlier; here, we just change the contents of the rows after they stop moving.
@@ -138,13 +140,14 @@ class LibraryTVC: UITableViewController {
 			// If necessary, include code here to run before the continuation.
 		}
 	}
+	private var isAnimatingBatchUpdates = 0
 	private func _setViewModelAndMoveAndDeselectRows(
 		_ newViewModel: LibraryViewModel,
-		completionIfShouldRun: @escaping (Bool) -> Void // We used to use `completion: @escaping () -> Void` here and sometimes not run it, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
+		completionIfShouldRun: @escaping (Bool) -> Void // We used to sometimes not run this completion handler, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
 	) {
 		let oldViewModel = viewModel
 		
-		viewModel = newViewModel
+		viewModel = newViewModel // Can be empty
 		
 		guard !newViewModel.isEmpty() else {
 			completionIfShouldRun(false)
@@ -157,10 +160,10 @@ class LibraryTVC: UITableViewController {
 			new: newViewModel.rowIdentifiers())
 		
 		isAnimatingBatchUpdates += 1
-		// “'async' call in a function that does not support concurrency”
 		tableView.applyBatchUpdates(batchUpdates) {
+			// Completion handler
 			self.isAnimatingBatchUpdates -= 1
-			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate anything. Here, we wait for the animations to finish before we run the completion closure (once).
+			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate any rows. Here, we wait for the animations to finish before we run the completion closure (once).
 				completionIfShouldRun(true)
 			} else {
 				completionIfShouldRun(false)
@@ -186,7 +189,6 @@ class LibraryTVC: UITableViewController {
 		}
 		return BatchUpdates(toDelete: toDelete, toInsert: toInsert, toMove: toMove)
 	}
-	
 	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
 	final func deleteThenExit(sectionsToDelete: [Int]) {
 		tableView.deselectAllRows(animated: true)

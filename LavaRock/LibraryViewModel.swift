@@ -20,8 +20,11 @@ protocol LibraryViewModel {
 }
 extension LibraryViewModel {
 	func isEmpty() -> Bool {
-		return groups.allSatisfy { group in
-			group.items.isEmpty
+		// `groups` always contains either 0 or 1 `LibraryGroup`s
+		if groups.isEmpty {
+			return true
+		} else {
+			return groups[0].items.isEmpty
 		}
 	}
 	func pointsToSomeItem(row: Int) -> Bool {
