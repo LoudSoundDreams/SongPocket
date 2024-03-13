@@ -148,16 +148,15 @@ final class CollectionsTVC: LibraryTVC {
 				}
 		}
 	}
+	private var forBrowsingAndHasFirstAppeared = false
 	
 	override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
-			case .movingAlbums:
-				revertCreate()
+			case .movingAlbums: revertCreate()
 			case .browsing: break
 		}
 		super.viewDidAppear(animated)
 	}
-	private var forBrowsingAndHasFirstAppeared = false
 	
 	func prepareToIntegrateWithAppleMusic() async {
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
