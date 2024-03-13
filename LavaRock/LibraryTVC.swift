@@ -37,7 +37,7 @@ class LibraryTVC: UITableViewController {
 		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		
 		var newViewModel = viewModel
-		newViewModel.groups[0].items = newItems
+		newViewModel.group!.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -56,7 +56,7 @@ class LibraryTVC: UITableViewController {
 		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newItems.count)
 		
 		var newViewModel = viewModel
-		newViewModel.groups[0].items = newItems
+		newViewModel.group!.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -311,7 +311,7 @@ class LibraryTVC: UITableViewController {
 		let newItems = command.apply(
 			onOrderedIndices: subjectedIndices,
 			in: allItems)
-		newViewModel.groups[0].items = newItems
+		newViewModel.group!.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -356,7 +356,7 @@ class LibraryTVC: UITableViewController {
 		var newItems = viewModel.libraryGroup().items
 		let itemBeingMoved = newItems.remove(at: fromIndex)
 		newItems.insert(itemBeingMoved, at: toIndex)
-		viewModel.groups[0].items = newItems
+		viewModel.group!.items = newItems
 		
 		freshenEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
 	}

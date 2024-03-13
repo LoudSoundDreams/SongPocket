@@ -112,7 +112,11 @@ final class SongsTVC: LibraryTVC {
 			contentUnavailableConfiguration = nil
 		}
 		
-		return viewModel.groups.count
+		if viewModel.group == nil {
+			return 0
+		} else {
+			return 1
+		}
 	}
 	
 	override func tableView(

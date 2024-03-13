@@ -9,7 +9,7 @@ import CoreData
 
 protocol LibraryViewModel {
 	var context: NSManagedObjectContext { get }
-	var groups: [LibraryGroup] { get set }
+	var group: LibraryGroup? { get set }
 	
 	func itemIndex(forRow row: Int) -> Int
 	func rowsForAllItems() -> [Int]
@@ -20,11 +20,10 @@ protocol LibraryViewModel {
 }
 extension LibraryViewModel {
 	func isEmpty() -> Bool {
-		// `groups` always contains either 0 or 1 `LibraryGroup`s
-		if groups.isEmpty {
+		if group == nil {
 			return true
 		} else {
-			return groups[0].items.isEmpty
+			return group!.items.isEmpty
 		}
 	}
 	func pointsToSomeItem(row: Int) -> Bool {
@@ -39,8 +38,9 @@ extension LibraryViewModel {
 		return true
 	}
 	
+	// We’ll delete this soon
 	func libraryGroup() -> LibraryGroup {
-		return groups[0]
+		return group!
 	}
 	func itemNonNil(atRow: Int) -> NSManagedObject {
 		let itemIndex = itemIndex(forRow: atRow)

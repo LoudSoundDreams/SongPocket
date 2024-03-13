@@ -13,7 +13,7 @@ struct SongsViewModel {
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var groups: [LibraryGroup]
+	var group: LibraryGroup?
 }
 extension SongsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int {
@@ -46,7 +46,7 @@ extension SongsViewModel: LibraryViewModel {
 	}
 	
 	func rowIdentifiers() -> [AnyHashable] {
-		let itemRowIDs = groups[0].items.map {
+		let itemRowIDs = group!.items.map {
 			AnyHashable($0.objectID)
 		}
 		return [42] + itemRowIDs
@@ -59,16 +59,10 @@ extension SongsViewModel {
 	) {
 		self.album = album
 		self.context = context
-		
 		guard let album else {
-			groups = []
+			group = nil
 			return
 		}
-		
-		groups = [
-			SongsGroup(
-				album: album,
-				context: context)
-		]
+		group = SongsGroup(album: album, context: context)
 	}
 }

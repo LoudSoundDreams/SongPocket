@@ -10,7 +10,7 @@ import CoreData
 struct CollectionsViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var groups: [LibraryGroup]
+	var group: LibraryGroup?
 }
 extension CollectionsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row }
@@ -26,15 +26,13 @@ extension CollectionsViewModel: LibraryViewModel {
 		return Self(context: context)
 	}
 	func rowIdentifiers() -> [AnyHashable] {
-		return groups[0].items.map { $0.objectID }
+		return group!.items.map { $0.objectID }
 	}
 }
 extension CollectionsViewModel {
 	init(context: NSManagedObjectContext) {
 		self.context = context
-		groups = [
-			CollectionsGroup(context: context)
-		]
+		group = CollectionsGroup(context: context)
 	}
 	
 	func collectionNonNil(atRow: Int) -> Collection {
@@ -43,7 +41,7 @@ extension CollectionsViewModel {
 	
 	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
 		var twin = self
-		twin.groups[0].items = newItems
+		twin.group!.items = newItems
 		return twin
 	}
 	
