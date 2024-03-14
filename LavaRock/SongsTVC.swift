@@ -298,7 +298,6 @@ private struct SongRow: View {
 	private func overflowMenuLabel() -> some View {
 		Image(systemName: "ellipsis.circle.fill")
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
-			.imageScale(.large)
 			.symbolRenderingMode(.hierarchical)
 	}
 	@ViewBuilder private func overflowMenuContent() -> some View {
