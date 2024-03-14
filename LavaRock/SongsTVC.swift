@@ -546,7 +546,7 @@ final class SongCell: UITableViewCell {
 		)
 	}
 }
-private final class ExpandedTargetButton: UIButton {
+final class ExpandedTargetButton: UIButton {
 	override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
 		let tappableWidth = max(bounds.width, 44)
 		let tappableHeight = max(bounds.height, 55)
