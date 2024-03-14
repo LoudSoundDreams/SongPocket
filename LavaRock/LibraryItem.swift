@@ -14,10 +14,6 @@ extension LibraryContainer {
 	func isEmpty() -> Bool {
 		return contents == nil || contents?.count == 0
 	}
-	
-	func wasDeleted() -> Bool {
-		return managedObjectContext == nil
-	}
 }
 
 protocol LibraryItem: NSManagedObject {
