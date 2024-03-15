@@ -301,11 +301,14 @@ private struct SongRow: View {
 	}
 	@ViewBuilder private func overflowMenuContent() -> some View {
 		Button {
+			Task { await song.play() }
 		} label: { Label(LRString.play, systemImage: "play") }
 		Divider()
 		Button {
+			Task { await song.playLast() }
 		} label: { Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
 		Button {
+			Task { await song.playRestOfAlbumLast() }
 		} label: {
 			Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
 		}
