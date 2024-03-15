@@ -285,7 +285,8 @@ private struct SongRow: View {
 			Text(trackDisplay)
 				.foregroundStyle(.secondary)
 				.monospacedDigit()
-			Menu { overflowMenuContent() } label: { overflowMenuLabel() }.disabled(listStatus.editing)
+			Menu { overflowMenuContent() } label: { overflowMenuLabel() }
+				.disabled(listStatus.editing)
 				.alignmentGuide_separatorTrailing()
 		}
 		.padding(.top, .eight)
@@ -302,16 +303,10 @@ private struct SongRow: View {
 	}
 	@ViewBuilder private func overflowMenuContent() -> some View {
 		Button {
-		} label: {
-			Label(LRString.play, systemImage: "play")
-		}
-		
+		} label: { Label(LRString.play, systemImage: "play") }
 		Divider()
-		
 		Button {
-		} label: {
-			Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward")
-		}
+		} label: { Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
 		Button {
 		} label: {
 			Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
