@@ -287,6 +287,9 @@ private struct SongRow: View {
 				.monospacedDigit()
 			Menu { overflowMenuContent() } label: { overflowMenuLabel() }
 				.disabled(listStatus.editing)
+				.onTapGesture {
+					signal_tappedMenu.toggle()
+				}
 				.alignmentGuide_separatorTrailing()
 		}
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
@@ -309,7 +312,9 @@ private struct SongRow: View {
 		} label: {
 			Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
 		}
+		.disabled(signal_tappedMenu)
 	}
+	@State private var signal_tappedMenu = false
 }
 
 final class SongCell: UITableViewCell {
