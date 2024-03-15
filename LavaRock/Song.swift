@@ -113,6 +113,60 @@ extension Song {
 		
 		return response.items.first
 	}
+	
+	final func play() async {
+		guard
+			let player = SystemMusicPlayer._shared,
+			let musicItem = await musicKitSong()
+		else { return }
+		
+		player.queue = SystemMusicPlayer.Queue(for: [musicItem])
+		try? await player.play()
+		
+		player.state.repeatMode = MusicPlayer.RepeatMode.none
+		player.state.shuffleMode = .off
+	}
+	
+	final func playLast() async {
+		guard
+			let player = SystemMusicPlayer._shared,
+			let musicItem = await musicKitSong()
+		else { return }
+		
+		guard let _ =
+				try? await player.queue.insert([musicItem], position: .tail)
+		else { return }
+		
+		UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+	}
+	
+	final func playRestOfAlbumLast() async {
+		guard 
+			let player = SystemMusicPlayer._shared,
+			let rowItem = await musicKitSong(),
+			let songsInAlbum = container?.songs(sorted: true)
+		else { return }
+		
+		let toAppend: [MusicKit.Song] = await {
+			var musicItems: [MusicKit.Song] = []
+			for song in songsInAlbum {
+				guard let musicItem = await song.musicKitSong() else { continue }
+				musicItems.append(musicItem)
+			}
+			let result = musicItems.drop(while: { $0.id != rowItem.id })
+			return Array(result)
+		}()
+		// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
+		guard let _ =
+				try? await player.queue.insert(toAppend, position: .tail)
+		else { return }
+		
+		let impactor = UIImpactFeedbackGenerator(style: .heavy)
+		impactor.impactOccurred()
+		try? await Task.sleep(nanoseconds: 0_200_000_000)
+		
+		impactor.impactOccurred()
+	}
 }
 
 import MediaPlayer

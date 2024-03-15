@@ -432,7 +432,7 @@ final class SongCell: UITableViewCell {
 			reflectAvatarStatus(song.avatarStatus())
 			
 			freshenOverflowButton()
-			overflowButton.menu = newOverflowMenu(song: song, songsTVC: songsTVC)
+			overflowButton.menu = newOverflowMenu(song: song)
 			
 			accessibilityUserInputLabels = [info?.titleOnDisk].compacted()
 		}
@@ -452,74 +452,28 @@ final class SongCell: UITableViewCell {
 	private func freshenOverflowButton() {
 		overflowButton.isEnabled = !isEditing
 	}
-	private func newOverflowMenu(
-		song: Song,
-		songsTVC: Weak<SongsTVC>
-	) -> UIMenu? {
-		guard
-			let player = SystemMusicPlayer._shared,
-			let tvc = songsTVC.referencee
-		else { return nil }
-		
+	private func newOverflowMenu(song: Song) -> UIMenu? {
 		let play = UIAction(
 			title: LRString.play, image: UIImage(systemName: "play")
 		) { _ in
-			// For actions that start playback, `MPMusicPlayerController.play` might need to fade out other currently-playing audio.
-			// That blocks the main thread, so wait until the menu dismisses itself before calling it; for example, by doing the following asynchronously.
-			// The UI will still freeze, but at least the menu won’t be onscreen while it happens.
-			Task {
-				guard let musicItem = await song.musicKitSong() else { return }
-				
-				player.queue = SystemMusicPlayer.Queue(for: [musicItem])
-				try? await player.play()
-				
-				player.state.repeatMode = MusicPlayer.RepeatMode.none
-				player.state.shuffleMode = .off
-			}
+			Task { await song.play() }
 		}
 		
 		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
 			let action = UIAction(
 				title: LRString.playLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
-				Task {
-					guard let musicItem = await song.musicKitSong() else { return }
-					
-					try await player.queue.insert([musicItem], position: .tail)
-					
-					UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-				}
+				Task { await song.playLast() }
 			}
 			useMenuElements([action])
 		})
 		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let songsInAlbum = tvc.viewModel.group.items.map { $0 as! Song }
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
-				Task {
-					guard let rowItem = await song.musicKitSong() else { return }
-					
-					let toAppend: [MusicKit.Song] = await {
-						var musicItems: [MusicKit.Song] = []
-						for song in songsInAlbum {
-							guard let musicItem = await song.musicKitSong() else { continue }
-							musicItems.append(musicItem)
-						}
-						let result = musicItems.drop(while: { $0.id != rowItem.id })
-						return Array(result)
-					}()
-					// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
-					try await player.queue.insert(toAppend, position: .tail)
-					
-					let impactor = UIImpactFeedbackGenerator(style: .heavy)
-					impactor.impactOccurred()
-					try await Task.sleep(nanoseconds: 0_200_000_000)
-					
-					impactor.impactOccurred()
-				}
+				Task { await song.playRestOfAlbumLast() }
 			}
 			if song.isAtBottomOfAlbum() {
 				action.attributes.formUnion(.disabled)
