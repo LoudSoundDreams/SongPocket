@@ -244,6 +244,7 @@ final class AlbumsTVC: LibraryTVC {
 				Image(systemName: "square.stack")
 					.foregroundStyle(.secondary)
 					.font(.title)
+					.accessibilityLabel(LRString.noAlbums)
 			}
 			.margins(.all, .zero) // As of iOS 17.4, without this, the content shows up too low within a sheet until you move the sheet vertically by any amount.
 		} else {
@@ -397,7 +398,6 @@ private struct CoverArt: View {
 			Image(uiImage: uiImage)
 				.resizable() // Lets 1 image point differ from 1 screen point
 				.scaledToFit() // Maintains aspect ratio
-				.accessibilityLabel(LRString.albumArtwork)
 				.accessibilityIgnoresInvertColors()
 		} else {
 			ZStack {

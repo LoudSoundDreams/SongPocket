@@ -59,6 +59,7 @@ enum LRString {
 	
 	// MARK: Albums view
 	
+	static let noAlbums = NSLocalizedString("No albums", comment: "Accessibility label")
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
 	static let move = NSLocalizedString("Move", comment: "Button")

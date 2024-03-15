@@ -286,7 +286,6 @@ private struct SongRow: View {
 				.alignmentGuide_separatorTrailing()
 		}
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
-		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 	}
