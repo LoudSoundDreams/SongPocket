@@ -96,7 +96,7 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	override func reflectViewModelIsEmpty() {
-		deleteThenExit(sectionsToDelete: tableView.allSections())
+		deleteThenExit()
 	}
 	
 	// MARK: - Table view
@@ -112,11 +112,7 @@ final class SongsTVC: LibraryTVC {
 			contentUnavailableConfiguration = nil
 		}
 		
-		if viewModel.group.items.isEmpty {
-			return 0
-		} else {
-			return 1
-		}
+		return 1
 	}
 	
 	override func tableView(
