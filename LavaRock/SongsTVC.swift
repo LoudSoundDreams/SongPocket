@@ -310,7 +310,7 @@ private struct SongRow: View {
 		} label: {
 			Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
 		}
-		.disabled(signal_tappedMenu)
+		.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
 }
@@ -434,10 +434,7 @@ final class SongCell: UITableViewCell {
 			reflectAvatarStatus(song.avatarStatus())
 			
 			freshenOverflowButton()
-			overflowButton.menu = newOverflowMenu(
-				song: song,
-				songsTVC: songsTVC,
-				songPersistentIDForBottomOfAlbum: song.persistentID)
+			overflowButton.menu = newOverflowMenu(song: song, songsTVC: songsTVC)
 			
 			accessibilityUserInputLabels = [info?.titleOnDisk].compacted()
 		}
@@ -459,8 +456,7 @@ final class SongCell: UITableViewCell {
 	}
 	private func newOverflowMenu(
 		song: Song,
-		songsTVC: Weak<SongsTVC>,
-		songPersistentIDForBottomOfAlbum: Int64
+		songsTVC: Weak<SongsTVC>
 	) -> UIMenu? {
 		guard
 			let player = SystemMusicPlayer._shared,
@@ -527,7 +523,7 @@ final class SongCell: UITableViewCell {
 					impactor.impactOccurred()
 				}
 			}
-			if songPersistentIDForBottomOfAlbum == restOfSongs.last?.persistentID {
+			if song.isAtBottomOfAlbum() {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])

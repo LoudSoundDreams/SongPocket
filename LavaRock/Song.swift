@@ -46,6 +46,20 @@ extension Song {
 		container = album
 	}
 	
+	final func isAtBottomOfAlbum() -> Bool {
+		guard
+			let myID = songInfo()?.songID,
+			let album = container,
+			let bottomSong = album.songs(sorted: true).last,
+			let bottomSongInfo = bottomSong.songInfo()
+		else {
+			// Better to accidentally leave “Play Rest of Album Last” enabled than accidentally disable it.
+			return false
+		}
+		let result = myID == bottomSongInfo.songID
+		return result
+	}
+	
 	// MARK: - All instances
 	
 	static func allFetched(
