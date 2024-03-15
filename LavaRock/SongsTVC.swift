@@ -497,7 +497,7 @@ final class SongCell: UITableViewCell {
 		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let restOfSongs = tvc.viewModel.group.items.map { $0 as! Song }
+			let songsInAlbum = tvc.viewModel.group.items.map { $0 as! Song }
 			let action = UIAction(
 				title: LRString.playRestOfAlbumLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
 			) { _ in
@@ -506,7 +506,7 @@ final class SongCell: UITableViewCell {
 					
 					let toAppend: [MusicKit.Song] = await {
 						var musicItems: [MusicKit.Song] = []
-						for song in restOfSongs {
+						for song in songsInAlbum {
 							guard let musicItem = await song.musicKitSong() else { continue }
 							musicItems.append(musicItem)
 						}
