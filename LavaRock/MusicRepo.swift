@@ -12,8 +12,8 @@ final class MusicRepo: ObservableObject {
 	private init() {}
 	static let shared = MusicRepo()
 	
-	@Published private(set) var signal_mergedChanges = false
-	@Published var signal_userUpdatedDatabase = false
+	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
+	@Published var signal_userUpdatedDatabase = false // Value doesn’t actually matter
 	
 	private var library: MPMediaLibrary? = nil
 	let context = Database.viewContext

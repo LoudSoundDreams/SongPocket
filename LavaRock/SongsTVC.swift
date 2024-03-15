@@ -287,9 +287,7 @@ private struct SongRow: View {
 				.monospacedDigit()
 			Menu { overflowMenuContent() } label: { overflowMenuLabel() }
 				.disabled(listStatus.editing)
-				.onTapGesture {
-					signal_tappedMenu.toggle()
-				}
+				.onTapGesture { signal_tappedMenu.toggle() }
 				.alignmentGuide_separatorTrailing()
 		}
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
@@ -314,7 +312,7 @@ private struct SongRow: View {
 		}
 		.disabled(signal_tappedMenu)
 	}
-	@State private var signal_tappedMenu = false
+	@State private var signal_tappedMenu = false // Value doesn’t actually matter
 }
 
 final class SongCell: UITableViewCell {
