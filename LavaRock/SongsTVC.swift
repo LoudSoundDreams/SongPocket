@@ -158,8 +158,7 @@ final class SongsTVC: LibraryTVC {
 					song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
 					albumRepresentative: album.representativeSongInfo(),
 					spacerTrackNumberText: (songsViewModel.group as! SongsGroup).trackNumberSpacer,
-					songsTVC: Weak(self),
-					forBottomOfAlbum: indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+					songsTVC: Weak(self)
 				)
 				return cell
 		}
@@ -368,8 +367,7 @@ final class SongCell: UITableViewCell {
 		song: Song,
 		albumRepresentative representative: SongInfo?,
 		spacerTrackNumberText: String,
-		songsTVC: Weak<SongsTVC>,
-		forBottomOfAlbum: Bool
+		songsTVC: Weak<SongsTVC>
 	) {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		
