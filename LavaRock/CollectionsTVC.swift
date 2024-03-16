@@ -437,7 +437,7 @@ final class CollectionsTVC: LibraryTVC {
 		}()
 		cell.contentConfiguration = UIHostingConfiguration {
 			CollectionRow(title: collection.title, collection: collection, dimmed: !enabled)
-		}.margins(.all, 0)
+		}.margins(.all, .zero)
 		cell.editingAccessoryType = .detailButton
 		cell.backgroundColors_configureForLibraryItem()
 		cell.isUserInteractionEnabled = enabled

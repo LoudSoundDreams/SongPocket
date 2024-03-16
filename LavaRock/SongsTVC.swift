@@ -142,7 +142,7 @@ final class SongsTVC: LibraryTVC {
 						album: album,
 						trackNumberSpacer: (songsViewModel.group as! SongsGroup).trackNumberSpacer
 					)
-				}.margins(.all, 0)
+				}.margins(.all, .zero)
 				return cell
 			default:
 				guard let cell = tableView.dequeueReusableCell(
@@ -407,7 +407,7 @@ final class SongCell: UITableViewCell {
 						listStatus: referencee.status
 					)
 				}
-			}.margins(.all, 0)
+			}.margins(.all, .zero)
 		} else {
 			spacerNumberLabel.text = spacerTrackNumberText
 			numberLabel.text = trackDisplay
