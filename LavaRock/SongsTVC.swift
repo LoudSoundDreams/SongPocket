@@ -99,7 +99,8 @@ final class SongsTVC: LibraryTVC {
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		let songsViewModel = viewModel as! SongsViewModel
-		let album = songsViewModel.group.container as! Album
+		let songsGroup = songsViewModel.group as! SongsGroup
+		let album = songsGroup.containerAlbum!
 		
 		switch indexPath.row {
 			case 0:
@@ -108,10 +109,7 @@ final class SongsTVC: LibraryTVC {
 				cell.selectionStyle = .none // So the user can’t even highlight the cell
 				cell.backgroundColors_configureForLibraryItem()
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumHeader(
-						album: album,
-						trackNumberSpacer: (songsViewModel.group as! SongsGroup).trackNumberSpacer
-					)
+					AlbumHeader(album: album)
 				}.margins(.all, .zero)
 				return cell
 			default:
@@ -226,7 +224,6 @@ final class SongsTVC: LibraryTVC {
 
 private struct AlbumHeader: View {
 	let album: Album
-	let trackNumberSpacer: String
 	
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {

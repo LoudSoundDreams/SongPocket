@@ -52,7 +52,8 @@ extension AlbumsViewModel {
 	func updatedAfterInserting(
 		albumsWith albumIDs: [NSManagedObjectID]
 	) -> Self {
-		let destination = group.container as! Collection
+		let albumsGroup = group as! AlbumsGroup
+		let destination = albumsGroup.containerCollection!
 		
 		destination.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
 			albumIDs: albumIDs,
