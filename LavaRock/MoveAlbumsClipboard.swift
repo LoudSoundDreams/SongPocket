@@ -1,9 +1,4 @@
-//
-//  MoveAlbumsClipboard.swift
-//  LavaRock
-//
-//  Created by h on 2020-08-04.
-//
+// 2020-08-04
 
 import CoreData
 

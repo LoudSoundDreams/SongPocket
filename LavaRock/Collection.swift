@@ -1,9 +1,4 @@
-//
-//  Collection.swift
-//  LavaRock
-//
-//  Created by h on 2020-12-17.
-//
+// 2020-12-17
 
 import CoreData
 

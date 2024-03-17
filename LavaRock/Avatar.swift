@@ -1,9 +1,4 @@
-//
-//  Avatar.swift
-//  LavaRock
-//
-//  Created by h on 2022-12-12.
-//
+// 2022-12-12
 
 import SwiftUI
 import MusicKit

@@ -1,9 +1,4 @@
-//
-//  SongInfo - Simulator.swift
-//  LavaRock
-//
-//  Created by h on 2023-08-08.
-//
+// 2023-08-08
 
 #if targetEnvironment(simulator)
 import UIKit

@@ -1,9 +1,4 @@
-//
-//  NSManagedObjectContext.swift
-//  LavaRock
-//
-//  Created by h on 2020-08-22.
-//
+// 2020-08-22
 
 import CoreData
 import MediaPlayer

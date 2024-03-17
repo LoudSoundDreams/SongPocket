@@ -1,9 +1,4 @@
-//
-//  LibraryItem.swift
-//  LavaRock
-//
-//  Created by h on 2021-04-09.
-//
+// 2021-04-09
 
 import CoreData
 

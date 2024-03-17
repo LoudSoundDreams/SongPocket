@@ -1,9 +1,4 @@
-//
-//  MusicRepo - Create.swift
-//  LavaRock
-//
-//  Created by h on 2020-09-22.
-//
+// 2020-09-22
 
 import CoreData
 

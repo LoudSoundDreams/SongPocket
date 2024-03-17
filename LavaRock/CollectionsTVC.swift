@@ -1,10 +1,4 @@
-//
-//  CollectionsTVC.swift
-//  LavaRock
-//
-//  Created by h on 2020-05-04.
-//  Copyright © 2020 h. All rights reserved.
-//
+// 2020-05-04
 
 import UIKit
 import SwiftUI

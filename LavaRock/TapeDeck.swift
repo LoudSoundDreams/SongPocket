@@ -1,9 +1,4 @@
-//
-//  TapeDeck.swift
-//  LavaRock
-//
-//  Created by h on 2020-11-04.
-//
+// 2020-11-04
 
 @objc // “generic class 'Weak' requires that 'TapeDeckReflecting' be a class type”
 @MainActor protocol TapeDeckReflecting: AnyObject {

@@ -1,9 +1,4 @@
-//
-//  Standard.swift
-//  LavaRock
-//
-//  Created by h on 2021-04-27.
-//
+// 2021-04-27
 
 final class Weak<Referencee: AnyObject> {
 	weak var referencee: Referencee? = nil

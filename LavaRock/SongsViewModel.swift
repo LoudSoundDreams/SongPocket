@@ -1,9 +1,4 @@
-//
-//  SongsViewModel.swift
-//  LavaRock
-//
-//  Created by h on 2021-08-14.
-//
+// 2021-08-14
 
 import CoreData
 

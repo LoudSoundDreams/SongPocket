@@ -1,9 +1,4 @@
-//
-//  Main Toolbar.swift
-//  LavaRock
-//
-//  Created by h on 2022-05-09.
-//
+// 2022-05-09
 
 import UIKit
 @preconcurrency import MusicKit

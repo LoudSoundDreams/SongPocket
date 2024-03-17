@@ -1,9 +1,4 @@
-//
-//  LRString.swift
-//  LavaRock
-//
-//  Created by h on 2020-12-05.
-//
+// 2020-12-05
 
 import Foundation
 

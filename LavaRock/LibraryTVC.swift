@@ -1,10 +1,4 @@
-//
-//  LibraryTVC.swift
-//  LavaRock
-//
-//  Created by h on 2020-04-15.
-//  Copyright © 2020 h. All rights reserved.
-//
+// 2020-04-15
 
 import UIKit
 

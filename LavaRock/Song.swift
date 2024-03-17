@@ -1,9 +1,4 @@
-//
-//  Song.swift
-//  LavaRock
-//
-//  Created by h on 2020-08-16.
-//
+// 2020-08-16
 
 import CoreData
 

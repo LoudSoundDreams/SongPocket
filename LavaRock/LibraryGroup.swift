@@ -1,9 +1,4 @@
-//
-//  LibraryGroup.swift
-//  LavaRock
-//
-//  Created by h on 2021-07-02.
-//
+// 2021-07-02
 
 import CoreData
 

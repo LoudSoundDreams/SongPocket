@@ -1,9 +1,4 @@
-//
-//  Constants.swift
-//  LavaRock
-//
-//  Created by h on 2021-10-26.
-//
+// 2021-10-26
 
 extension Double {
 	static var oneEighth: Self { 1/8 }

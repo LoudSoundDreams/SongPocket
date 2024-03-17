@@ -1,9 +1,4 @@
-//
-//  UIKit.swift
-//  LavaRock
-//
-//  Created by h on 2020-08-06.
-//
+// 2020-08-06
 
 import UIKit
 

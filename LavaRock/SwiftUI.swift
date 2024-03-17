@@ -1,9 +1,4 @@
-//
-//  SwiftUI.swift
-//  LavaRock
-//
-//  Created by h on 2023-08-09.
-//
+// 2023-08-09
 
 import SwiftUI
 
