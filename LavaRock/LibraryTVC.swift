@@ -107,7 +107,7 @@ class LibraryTVC: UITableViewController {
 			
 			let newViewModel = viewModel.updatedWithFreshenedData()
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else {
-				// The return value was false, meaning either (1) table view animations are already in progress from an earlier execution of this method, so we shouldn’t run the code after the `await` call this time (that earlier execution will), or (2) we applied an empty view model, so we don’t need to update any row contents.
+				// The return value was false, meaning either (A) table view animations are already in progress from an earlier execution of this method, so we shouldn’t run the code after the `await` call this time (that earlier execution will), or (B) we applied an empty view model, so we don’t need to update any row contents.
 				return
 			}
 			
