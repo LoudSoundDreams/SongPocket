@@ -266,21 +266,21 @@ private struct SongRow: View {
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
-			AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
-			VStack(alignment: .leading, spacing: .eight * 1/2) {
-				Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
-					.alignmentGuide_separatorLeading()
-				if let artist = artist_if_different_from_album_artist {
-					Text(artist)
-						.foregroundStyle(.secondary)
-						.fontFootnote()
+				AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
+				VStack(alignment: .leading, spacing: .eight * 1/2) {
+					Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
+						.alignmentGuide_separatorLeading()
+					if let artist = artist_if_different_from_album_artist {
+						Text(artist)
+							.foregroundStyle(.secondary)
+							.fontFootnote()
+					}
 				}
-			}
-			.padding(.bottom, .eight * 1/4)
-			Spacer()
-			Text(trackDisplay)
-				.foregroundStyle(.secondary)
-				.monospacedDigit()
+				.padding(.bottom, .eight * 1/4)
+				Spacer()
+				Text(trackDisplay)
+					.foregroundStyle(.secondary)
+					.monospacedDigit()
 			}
 			.accessibilityElement(children: .combine)
 			.accessibilityAddTraits(.isButton)
