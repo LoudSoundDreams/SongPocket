@@ -509,7 +509,5 @@ private struct CollectionRow: View {
 		)
 		.disabled(dimmed)
 		.accessibilityInputLabels([title].compacted()) // Exclude the now-playing status.
-		// ! Accessibility action
-		// ! Accessibility “selected” state
 	}
 }

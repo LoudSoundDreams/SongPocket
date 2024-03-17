@@ -151,8 +151,7 @@ final class SongsTVC: LibraryTVC {
 						song: song,
 						trackDisplay: trackDisplay,
 						artist_if_different_from_album_artist: artistDisplayOptional,
-						listStatus: listStatus // TO DO: Memory leak?
-					)
+						listStatus: listStatus)
 				}.margins(.all, .zero)
 				return cell
 		}
