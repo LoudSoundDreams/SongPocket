@@ -254,7 +254,7 @@ final class CollectionsTVC: LibraryTVC {
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
 		
 		let proposedTitle = (textFieldText ?? "").truncated(maxLength: 256) // In case the user entered a dangerous amount of text
-		if proposedTitle.isEmpty {
+		if proposedTitle == "" {
 			collection.title = LRString.tilde
 		} else {
 			collection.title = proposedTitle
@@ -485,7 +485,7 @@ private struct CollectionRow: View {
 			
 			Text({ () -> String in
 				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
-				guard let title, !title.isEmpty else { return " " }
+				guard let title, title != "" else { return " " }
 				return title
 			}())
 			.multilineTextAlignment(.center)
