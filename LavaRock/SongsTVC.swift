@@ -265,6 +265,7 @@ private struct SongRow: View {
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
+			HStack(alignment: .firstTextBaseline) {
 			AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
@@ -280,14 +281,16 @@ private struct SongRow: View {
 			Text(trackDisplay)
 				.foregroundStyle(.secondary)
 				.monospacedDigit()
+			}
+			.accessibilityElement(children: .combine)
+			.accessibilityAddTraits(.isButton)
+			.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 			Menu { overflowMenuContent() } label: { overflowMenuLabel() }
 				.disabled(listStatus.editing)
 				.onTapGesture { signal_tappedMenu.toggle() }
 				.alignmentGuide_separatorTrailing()
 		}
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
-		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 	}
 	private func overflowMenuLabel() -> some View {
 		Image(systemName: "ellipsis.circle.fill")
