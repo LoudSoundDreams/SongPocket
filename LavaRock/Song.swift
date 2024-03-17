@@ -171,24 +171,6 @@ extension Song {
 
 import MediaPlayer
 extension Song {
-	@MainActor func avatarStatus() -> AvatarStatus {
-		guard
-			containsPlayhead(),
-			let __player = MPMusicPlayerController._system
-		else {
-			return .notPlaying
-		}
-#if targetEnvironment(simulator)
-		return .playing
-#else
-		if __player.playbackState == .playing {
-			return .playing
-		} else {
-			return .paused
-		}
-#endif
-	}
-	
 	final func songInfo() -> SongInfo? {
 #if targetEnvironment(simulator)
 		// To match `mpMediaItem`

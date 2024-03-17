@@ -91,7 +91,7 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Library items
 	
-	@objc func reflectDatabase() {
+	@objc final func reflectDatabase() {
 		if view.window == nil {
 			needsFreshenLibraryItemsOnViewDidAppear = true
 		} else {
@@ -219,13 +219,11 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Freshening UI
 	
 	private func setBarButtons(animated: Bool) {
-		let editing = isEditing
-		
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
 		
 		navigationItem.setLeftBarButtonItems(
 			(
-				editing
+				isEditing
 				? [.flexibleSpace()] // Removes “Back” button
 				: []
 			),
@@ -233,7 +231,7 @@ class LibraryTVC: UITableViewController {
 		
 		setToolbarItems(
 			(
-				editing
+				isEditing
 				? editingButtons
 				: [editButtonItem] + MainToolbar.shared.barButtonItems
 			),

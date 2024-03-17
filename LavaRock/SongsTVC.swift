@@ -13,28 +13,6 @@ import SwiftUI
 final class SongsListStatus: ObservableObject {
 	@Published fileprivate(set) var editing = false
 }
-
-extension SongsTVC: TapeDeckReflecting {
-	final func reflect_playbackState() { reflectAvatar() }
-	final func reflect_nowPlaying() { reflectAvatar() }
-	
-	private func reflectAvatar() {
-		tableView.allIndexPaths().forEach { indexPath in
-			guard
-				let cell = tableView.cellForRow(at: indexPath) as? SongCell
-			else { return }
-			cell.reflectAvatarStatus({
-				guard
-					viewModel.pointsToSomeItem(row: indexPath.row),
-					let song = viewModel.itemNonNil(atRow: indexPath.row) as? Song
-				else {
-					return .notPlaying
-				}
-				return song.avatarStatus()
-			}())
-		}
-	}
-}
 final class SongsTVC: LibraryTVC {
 	private let listStatus = SongsListStatus()
 	
@@ -57,14 +35,6 @@ final class SongsTVC: LibraryTVC {
 		]
 		
 		super.viewDidLoad()
-		
-		TapeDeck.shared.addReflector(weakly: self)
-	}
-	override func reflectDatabase() {
-		// Do this even if the view isn’t visible.
-		reflectAvatar()
-		
-		super.reflectDatabase()
 	}
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
@@ -341,32 +311,4 @@ private struct SongRow: View {
 		.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
-}
-
-final class SongCell: UITableViewCell {
-	@IBOutlet var spacerSpeakerImageView: UIImageView!
-	@IBOutlet var speakerImageView: UIImageView!
-	var rowContentAccessibilityLabel__: String? = nil
-	
-	@IBOutlet private var textStack: UIStackView!
-	@IBOutlet private var titleLabel: UILabel!
-	@IBOutlet private var artistLabel: UILabel!
-	@IBOutlet private var spacerNumberLabel: UILabel!
-	@IBOutlet private var numberLabel: UILabel!
-	@IBOutlet private var overflowButton: ExpandedTargetButton!
-	
-	func reflectAvatarStatus(_ status: AvatarStatus) {
-	}
-}
-final class ExpandedTargetButton: UIButton {
-	override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-		let tappableWidth = max(bounds.width, 44)
-		let tappableHeight = max(bounds.height, 55)
-		let tappableRect = CGRect(
-			x: bounds.midX - tappableWidth/2,
-			y: bounds.midY - tappableHeight/2,
-			width: tappableWidth,
-			height: tappableHeight)
-		return tappableRect.contains(point)
-	}
 }
