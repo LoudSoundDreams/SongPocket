@@ -15,8 +15,27 @@ import MediaPlayer
 		overflowButton,
 	]
 	
-	// MARK: - PRIVATE
-	
+	private lazy var playPauseButton = UIBarButtonItem()
+	private lazy var jumpBackButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.skipBack15Seconds,
+			image: UIImage(systemName: "gobackward.15"),
+			primaryAction: UIAction { _ in
+				SystemMusicPlayer._shared?.playbackTime -= 15
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
+	private lazy var jumpForwardButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: LRString.skipForward15Seconds,
+			image: UIImage(systemName: "goforward.15"),
+			primaryAction: UIAction { _ in
+				SystemMusicPlayer._shared?.playbackTime += 15
+			})
+		button.accessibilityTraits.formUnion(.startsMediaSession)
+		return button
+	}()
 	private lazy var overflowButton = UIBarButtonItem(
 		title: LRString.more,
 		menu: {
@@ -128,31 +147,6 @@ import MediaPlayer
 		}()
 	)
 	
-	private lazy var playPauseButton = UIBarButtonItem()
-	
-	private lazy var jumpBackButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.skipBack15Seconds,
-			image: UIImage(systemName: "gobackward.15"),
-			primaryAction: UIAction { _ in
-				SystemMusicPlayer._shared?.playbackTime -= 15
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	private lazy var jumpForwardButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.skipForward15Seconds,
-			image: UIImage(systemName: "goforward.15"),
-			primaryAction: UIAction { _ in
-				SystemMusicPlayer._shared?.playbackTime += 15
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	
-	// MARK: -
-	
 	private init() {
 		freshen()
 		
@@ -197,7 +191,6 @@ import MediaPlayer
 			showPlay()
 		}
 	}
-	private var hasRefreshenedOverflowButton = false
 	private func newOverflowButtonImage() -> UIImage {
 		let repeatOff = UIImage(systemName: "ellipsis.circle")!
 		
@@ -221,6 +214,7 @@ import MediaPlayer
 				return repeatOff
 		}
 	}
+	private var hasRefreshenedOverflowButton = false
 	private func showPlay() {
 		playPauseButton.title = LRString.play
 		playPauseButton.primaryAction = UIAction(
