@@ -89,6 +89,7 @@ import MediaPlayer
 							let action = UIAction(
 								title: LRString.previous,
 								image: UIImage(systemName: "backward.end"),
+								// Ideally, disable this when there are no previous tracks to skip to.
 								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []
 							) { _ in
 								Task {
@@ -154,7 +155,8 @@ import MediaPlayer
 	
 	private init() {
 		freshen()
-		TapeDeck.shared.addReflector(weakly: self)
+		
+		TapeDeck.shared.reflectorToolbar = Weak(self)
 	}
 	
 	private func freshen() {

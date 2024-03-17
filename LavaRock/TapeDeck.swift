@@ -3,7 +3,7 @@
 @objc // “generic class 'Weak' requires that 'TapeDeckReflecting' be a class type”
 @MainActor protocol TapeDeckReflecting: AnyObject {
 	// Adopting types must…
-	// • Call `TapeDeck.shared.addReflector(weakly: self)` as soon as their implementations of `reflect_playbackState` and `reflect_nowPlaying` will work.
+	// • Set `TapeDeck.shared.reflectorToolbar` as soon as their implementations of `reflect_playbackState` and `reflect_nowPlaying` will work.
 	
 	func reflect_playbackState()
 	// Reflect `TapeDeck.shared.player`, and show a disabled state if it’s `nil`. (Call `TapeDeck.shared.watchMPPlayer` to set it up.)
@@ -16,16 +16,7 @@ import MediaPlayer
 	private init() {}
 	static let shared = TapeDeck()
 	
-	private var reflectors: [Weak<TapeDeckReflecting>] = []
-	func addReflector(weakly newReflector: TapeDeckReflecting) {
-		if let indexOfMatchingReflector = reflectors.firstIndex(where: { weakReflector in
-			newReflector === weakReflector.referencee
-		}) {
-			reflectors.remove(at: indexOfMatchingReflector)
-		}
-		
-		reflectors.append(Weak(newReflector))
-	}
+	var reflectorToolbar: Weak<MainToolbar>? = nil
 	
 	func watchMPPlayer() {
 		guard let __player = MPMusicPlayerController._system else { return }
@@ -47,11 +38,9 @@ import MediaPlayer
 			object: nil)
 	}
 	@objc private func playbackState() {
-		reflectors.removeAll { $0.referencee == nil }
-		reflectors.forEach { $0.referencee?.reflect_playbackState() }
+		reflectorToolbar?.referencee?.reflect_playbackState()
 	}
 	@objc private func nowPlaying() {
-		reflectors.removeAll { $0.referencee == nil }
-		reflectors.forEach { $0.referencee?.reflect_nowPlaying() }
+		reflectorToolbar?.referencee?.reflect_nowPlaying()
 	}
 }
