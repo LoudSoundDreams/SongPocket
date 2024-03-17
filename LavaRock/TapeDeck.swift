@@ -1,9 +1,9 @@
 // 2020-11-04
 
 import MediaPlayer
-@MainActor final class TapeDeck {
+@MainActor final class AudioPlayer {
 	private init() {}
-	static let shared = TapeDeck()
+	static let shared = AudioPlayer()
 	
 	var reflectorToolbar: Weak<MainToolbar>? = nil
 	

@@ -150,7 +150,7 @@ import MediaPlayer
 	private init() {
 		freshen()
 		
-		TapeDeck.shared.reflectorToolbar = Weak(self)
+		AudioPlayer.shared.reflectorToolbar = Weak(self)
 	}
 	
 	func freshen() {
