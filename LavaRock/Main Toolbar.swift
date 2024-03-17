@@ -153,7 +153,7 @@ import MediaPlayer
 		TapeDeck.shared.reflectorToolbar = Weak(self)
 	}
 	
-	private func freshen() {
+	func freshen() {
 #if targetEnvironment(simulator)
 		defer {
 			showPause()
@@ -235,10 +235,6 @@ import MediaPlayer
 		}
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
-}
-extension MainToolbar: TapeDeckReflecting {
-	func reflect_playbackState() { freshen() }
-	func reflect_nowPlaying() { freshen() }
 }
 
 // MARK: - SwiftUI

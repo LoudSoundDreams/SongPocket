@@ -1,16 +1,5 @@
 // 2020-11-04
 
-@objc // “generic class 'Weak' requires that 'TapeDeckReflecting' be a class type”
-@MainActor protocol TapeDeckReflecting: AnyObject {
-	// Adopting types must…
-	// • Set `TapeDeck.shared.reflectorToolbar` as soon as their implementations of `reflect_playbackState` and `reflect_nowPlaying` will work.
-	
-	func reflect_playbackState()
-	// Reflect `TapeDeck.shared.player`, and show a disabled state if it’s `nil`. (Call `TapeDeck.shared.watchMPPlayer` to set it up.)
-	
-	func reflect_nowPlaying()
-}
-
 import MediaPlayer
 @MainActor final class TapeDeck {
 	private init() {}
@@ -38,9 +27,9 @@ import MediaPlayer
 			object: nil)
 	}
 	@objc private func playbackState() {
-		reflectorToolbar?.referencee?.reflect_playbackState()
+		reflectorToolbar?.referencee?.freshen()
 	}
 	@objc private func nowPlaying() {
-		reflectorToolbar?.referencee?.reflect_nowPlaying()
+		reflectorToolbar?.referencee?.freshen()
 	}
 }
