@@ -36,11 +36,11 @@ extension SongsTVC: TapeDeckReflecting {
 	}
 }
 final class SongsTVC: LibraryTVC {
-	let status = SongsListStatus()
+	private let listStatus = SongsListStatus()
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		status.editing = editing
+		listStatus.editing = editing
 	}
 	
 	private lazy var arrangeSongsButton = UIBarButtonItem(
@@ -145,17 +145,46 @@ final class SongsTVC: LibraryTVC {
 				}.margins(.all, .zero)
 				return cell
 			default:
-				guard let cell = tableView.dequeueReusableCell(
-					withIdentifier: "Song",
-					for: indexPath) as? SongCell
-				else { return UITableViewCell() }
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Song", for: indexPath)
 				cell.backgroundColors_configureForLibraryItem()
-				cell.configureWith(
-					song: songsViewModel.itemNonNil(atRow: indexPath.row) as! Song,
-					albumRepresentative: album.representativeSongInfo(),
-					spacerTrackNumberText: (songsViewModel.group as! SongsGroup).trackNumberSpacer,
-					songsTVC: Weak(self)
-				)
+				let song = songsViewModel.itemNonNil(atRow: indexPath.row) as! Song
+				let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
+				let albumRepresentative: SongInfo? = album.representativeSongInfo()
+				let trackDisplay: String = {
+					let result: String? = {
+						guard let albumRepresentative, let info else {
+							// `SongInfo` not available
+							return nil
+						}
+						if albumRepresentative.shouldShowDiscNumber {
+							// Disc and track number
+							return info.discAndTrackNumberFormatted()
+						} else {
+							// Track number only, which might be blank
+							return info.trackNumberFormattedOptional()
+						}
+					}()
+					return result ?? "#"
+				}()
+				let artistDisplayOptional: String? = {
+					let albumArtistOptional = albumRepresentative?.albumArtistOnDisk
+					if
+						let songArtist = info?.artistOnDisk,
+						songArtist != albumArtistOptional
+					{
+						return songArtist
+					} else {
+						return nil
+					}
+				}()
+				cell.contentConfiguration = UIHostingConfiguration {
+					SongRow(
+						song: song,
+						trackDisplay: trackDisplay,
+						artist_if_different_from_album_artist: artistDisplayOptional,
+						listStatus: listStatus // TO DO: Memory leak?
+					)
+				}.margins(.all, .zero)
 				return cell
 		}
 	}
@@ -230,11 +259,7 @@ private struct AlbumHeader: View {
 	
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
-			if SongCell.usesSwiftUI {
-				AvatarPlayingImage().hidden()
-			} else {
-				Text(trackNumberSpacer).monospacedDigit().hidden()
-			}
+			AvatarPlayingImage().hidden()
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text({ () -> String in
 					guard
@@ -305,6 +330,8 @@ private struct SongRow: View {
 		Button {
 			Task { await song.playLast() }
 		} label: { Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
+		
+		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		Button {
 			Task { await song.playRestOfAlbumLast() }
 		} label: {
@@ -316,8 +343,6 @@ private struct SongRow: View {
 }
 
 final class SongCell: UITableViewCell {
-	static let usesSwiftUI = 10 == 1
-	
 	@IBOutlet var spacerSpeakerImageView: UIImageView!
 	@IBOutlet var speakerImageView: UIImageView!
 	var rowContentAccessibilityLabel__: String? = nil
@@ -329,165 +354,7 @@ final class SongCell: UITableViewCell {
 	@IBOutlet private var numberLabel: UILabel!
 	@IBOutlet private var overflowButton: ExpandedTargetButton!
 	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		if Self.usesSwiftUI { return }
-		
-		spacerNumberLabel.font = .monospacedDigitSystemFont(
-			ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
-			weight: .regular)
-		numberLabel.font = spacerNumberLabel.font
-		
-		overflowButton.maximumContentSizeCategory = .extraExtraExtraLarge
-		
-		accessibilityTraits.formUnion(.button)
-	}
-	
-	override func setEditing(_ editing: Bool, animated: Bool) {
-		super.setEditing(editing, animated: animated)
-		
-		if Self.usesSwiftUI { return }
-		
-		freshenOverflowButton()
-	}
-	
 	func reflectAvatarStatus(_ status: AvatarStatus) {
-		if Self.usesSwiftUI { return }
-		
-		spacerSpeakerImageView.maximumContentSizeCategory = .extraExtraExtraLarge
-		speakerImageView.maximumContentSizeCategory = spacerSpeakerImageView.maximumContentSizeCategory
-		
-		spacerSpeakerImageView.image = AvatarStatus.playing.uiImage
-		speakerImageView.image = status.uiImage
-		
-		accessibilityLabel = [status.axLabel, rowContentAccessibilityLabel__].compactedAndFormattedAsNarrowList()
-	}
-	
-	func configureWith(
-		song: Song,
-		albumRepresentative representative: SongInfo?,
-		spacerTrackNumberText: String,
-		songsTVC: Weak<SongsTVC>
-	) {
-		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
-		
-		let trackDisplay: String = {
-			let result: String? = {
-				guard let representative, let info else {
-					// `SongInfo` not available
-					return nil
-				}
-				if representative.shouldShowDiscNumber {
-					// Disc and track number
-					return info.discAndTrackNumberFormatted()
-				} else {
-					// Track number only, which might be blank
-					return info.trackNumberFormattedOptional()
-				}
-			}()
-			return result ?? "#"
-		}()
-		let artistDisplayOptional: String? = {
-			let albumArtistOptional = representative?.albumArtistOnDisk
-			if
-				let songArtist = info?.artistOnDisk,
-				songArtist != albumArtistOptional
-			{
-				return songArtist
-			} else {
-				return nil
-			}
-		}()
-		
-		if Self.usesSwiftUI {
-			contentConfiguration = UIHostingConfiguration {
-				if let referencee = songsTVC.referencee {
-					SongRow(
-						song: song,
-						trackDisplay: trackDisplay,
-						artist_if_different_from_album_artist: artistDisplayOptional,
-						listStatus: referencee.status
-					)
-				}
-			}.margins(.all, .zero)
-		} else {
-			spacerNumberLabel.text = spacerTrackNumberText
-			numberLabel.text = trackDisplay
-			titleLabel.text = { () -> String in
-				info?.titleOnDisk ?? LRString.emDash
-			}()
-			artistLabel.text = artistDisplayOptional
-			
-			if artistLabel.text == nil {
-				textStack.spacing = 0
-			} else {
-				textStack.spacing = .eight * 1/2
-			}
-			
-			rowContentAccessibilityLabel__ = [
-				numberLabel.text,
-				titleLabel.text,
-				artistLabel.text,
-			].compactedAndFormattedAsNarrowList()
-			reflectAvatarStatus(song.avatarStatus())
-			
-			freshenOverflowButton()
-			overflowButton.menu = newOverflowMenu(song: song)
-			
-			accessibilityUserInputLabels = [info?.titleOnDisk].compacted()
-		}
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if Self.usesSwiftUI { return }
-		
-		separatorInset.left = 0
-		+ contentView.frame.minX // Cell’s leading edge → content view’s leading edge
-		+ textStack.frame.minX // Content view’s leading edge → text stack’s leading edge
-		separatorInset.right = directionalLayoutMargins.trailing
-	}
-	
-	private func freshenOverflowButton() {
-		overflowButton.isEnabled = !isEditing
-	}
-	private func newOverflowMenu(song: Song) -> UIMenu? {
-		let play = UIAction(
-			title: LRString.play, image: UIImage(systemName: "play")
-		) { _ in
-			Task { await song.play() }
-		}
-		
-		let playLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let action = UIAction(
-				title: LRString.playLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in
-				Task { await song.playLast() }
-			}
-			useMenuElements([action])
-		})
-		
-		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
-		let playRestOfAlbumLast = UIDeferredMenuElement.uncached({ useMenuElements in
-			let action = UIAction(
-				title: LRString.playRestOfAlbumLast, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")
-			) { _ in
-				Task { await song.playRestOfAlbumLast() }
-			}
-			if song.isAtBottomOfAlbum() {
-				action.attributes.formUnion(.disabled)
-			}
-			useMenuElements([action])
-		})
-		
-		return UIMenu(
-			children: [
-				UIMenu(options: .displayInline, children: [play]),
-				UIMenu(options: .displayInline, children: [playLast, playRestOfAlbumLast]),
-			]
-		)
 	}
 }
 final class ExpandedTargetButton: UIButton {
