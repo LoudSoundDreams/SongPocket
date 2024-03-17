@@ -13,7 +13,7 @@ final class MusicRepo: ObservableObject {
 	private var library: MPMediaLibrary? = nil
 	let context = Database.viewContext
 	
-	func beginWatching() {
+	func watchMPLibrary() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
 		
 		library?.endGeneratingLibraryChangeNotifications()

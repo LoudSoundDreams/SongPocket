@@ -6,7 +6,7 @@
 	// • Call `TapeDeck.shared.addReflector(weakly: self)` as soon as their implementations of `reflect_playbackState` and `reflect_nowPlaying` will work.
 	
 	func reflect_playbackState()
-	// Reflect `TapeDeck.shared.player`, and show a disabled state if it’s `nil`. (Call `TapeDeck.shared.beginWatching` to set it up.)
+	// Reflect `TapeDeck.shared.player`, and show a disabled state if it’s `nil`. (Call `TapeDeck.shared.watchMPPlayer` to set it up.)
 	
 	func reflect_nowPlaying()
 }
@@ -27,12 +27,12 @@ import MediaPlayer
 		reflectors.append(Weak(newReflector))
 	}
 	
-	func beginWatching() {
+	func watchMPPlayer() {
 		guard let __player = MPMusicPlayerController._system else { return }
 		
 		__player.beginGeneratingPlaybackNotifications()
 		
-		playbackState() // Because before anyone called `beginWatching`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `.authorized`.
+		playbackState() // Because before anyone called `watchMPPlayer`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `.authorized`.
 		nowPlaying()
 		
 		NotificationCenter.default.addObserverOnce(
