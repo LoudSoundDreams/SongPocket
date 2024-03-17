@@ -42,6 +42,7 @@ extension NSManagedObjectContext {
 		}
 	}
 	
+	// To make now-playing indicators use MusicKit, we need to be storing MusicKit `Song` identifiers in our database.
 	final func songInPlayer() -> Song? {
 		let currentSongID: SongID? = {
 #if targetEnvironment(simulator)
