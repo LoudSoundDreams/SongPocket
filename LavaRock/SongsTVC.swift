@@ -145,6 +145,7 @@ final class SongsTVC: LibraryTVC {
 				}.margins(.all, .zero)
 				return cell
 			default:
+				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Song", for: indexPath)
 				cell.backgroundColors_configureForLibraryItem()
 				let song = songsViewModel.itemNonNil(atRow: indexPath.row) as! Song
