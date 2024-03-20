@@ -241,11 +241,6 @@ import MediaPlayer
 
 import SwiftUI
 
-struct MainToolbar_Previews: PreviewProvider {
-	static var previews: some View {
-		Color.clear.mainToolbar()
-	}
-}
 extension View {
 	func mainToolbar() -> some View {
 		toolbar {
