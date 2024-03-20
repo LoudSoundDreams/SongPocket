@@ -45,13 +45,6 @@ final class AlbumsTVC: LibraryTVC {
 		
 		super.viewDidLoad()
 		
-		switch purpose {
-			case .movingAlbums: break
-			case .browsing:
-				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
-		}
-		
-		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
 		switch purpose {
@@ -66,7 +59,8 @@ final class AlbumsTVC: LibraryTVC {
 						return moveHereButton
 					}(),
 					animated: false)
-			case .browsing: break
+			case .browsing:
+				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
 		}
 	}
 	

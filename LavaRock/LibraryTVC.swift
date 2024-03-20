@@ -64,15 +64,15 @@ class LibraryTVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRMergedChanges, object: nil)
-		
 		view.backgroundColor = UIColor(LRColor.grey_oneEighth)
 		
+		navigationItem.backButtonDisplayMode = .minimal
 		if let navBar = navigationController?.navigationBar {
 			navBar.scrollEdgeAppearance = navBar.standardAppearance
 		}
-		
 		setBarButtons(animated: false)
+		
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRMergedChanges, object: nil)
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {

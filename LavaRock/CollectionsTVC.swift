@@ -92,16 +92,6 @@ final class CollectionsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		switch purpose {
-			case .movingAlbums: break
-			case .browsing:
-				AppleMusic.loadingIndicator = self
-				
-				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
-		}
-		
-		navigationItem.backButtonDisplayMode = .minimal
-		
-		switch purpose {
 			case .movingAlbums:
 				navigationItem.setLeftBarButton(
 					UIBarButtonItem(
@@ -117,15 +107,14 @@ final class CollectionsTVC: LibraryTVC {
 						primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }
 					),
 					animated: false)
-			case .browsing: break
-		}
-		
-		switch purpose {
-			case .movingAlbums: break
 			case .browsing:
 				if !LavaRock.usesSwiftUIMainToolbar {
 					navigationController?.setToolbarHidden(false, animated: false)
 				}
+				
+				AppleMusic.loadingIndicator = self
+				
+				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
 		}
 	}
 	
