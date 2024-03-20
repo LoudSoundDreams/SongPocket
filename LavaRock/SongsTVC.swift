@@ -127,7 +127,7 @@ final class SongsTVC: LibraryTVC {
 							return info.trackNumberFormattedOptional()
 						}
 					}()
-					return result ?? "#"
+					return result ?? LRString.octothorpe
 				}()
 				let artistDisplayOptional: String? = {
 					let albumArtistOptional = albumRepresentative?.albumArtistOnDisk
