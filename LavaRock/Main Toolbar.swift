@@ -241,9 +241,18 @@ import MediaPlayer
 
 import SwiftUI
 
-extension View {
-	func mainToolbar() -> some View {
-		toolbar {
+final class MainToolbarStatus: ObservableObject {
+	private init() {}
+	static let shared = MainToolbarStatus()
+	
+	@Published fileprivate(set) var inSelectMode = false
+}
+
+struct MainToolbarContent: ToolbarContent {
+	@ObservedObject private var status: MainToolbarStatus = .shared
+	
+	@ViewBuilder var body: some ToolbarContent {
+		if LavaRock.usesSwiftUIMainToolbar {
 			ToolbarItem(placement: .bottomBar) { selectButton }
 			ToolbarItem(placement: .bottomBar) { Spacer() }
 			ToolbarItem(placement: .bottomBar) { jumpBackButton }
@@ -253,13 +262,18 @@ extension View {
 			ToolbarItem(placement: .bottomBar) { jumpForwardButton }
 			ToolbarItem(placement: .bottomBar) { Spacer() }
 			ToolbarItem(placement: .bottomBar) { overflowButton }
+		} else {
+			ToolbarItem { EmptyView() }
 		}
 	}
-	
 	private var selectButton: some View {
 		Button {
+			status.inSelectMode.toggle()
 		} label: {
-			Image(systemName: "checkmark.circle")
+			Image(
+				systemName: status.inSelectMode
+				? "checkmark.circle.fill"
+				: "checkmark.circle")
 		}
 	}
 	private var jumpBackButton: some View {

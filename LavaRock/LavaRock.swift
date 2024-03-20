@@ -4,6 +4,8 @@ import SwiftUI
 
 @main
 struct LavaRock: App {
+	static let usesSwiftUIMainToolbar = 10 == 1
+	
 	init() {
 		// Delete unused entries in `UserDefaults`
 		let defaults = UserDefaults.standard
@@ -18,6 +20,7 @@ struct LavaRock: App {
 	var body: some Scene {
 		WindowGroup {
 			RootView()
+				.toolbar { MainToolbarContent() }
 				.ignoresSafeArea()
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()

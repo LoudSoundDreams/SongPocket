@@ -123,7 +123,9 @@ final class CollectionsTVC: LibraryTVC {
 		switch purpose {
 			case .movingAlbums: break
 			case .browsing:
-				navigationController?.setToolbarHidden(false, animated: false)
+				if !LavaRock.usesSwiftUIMainToolbar {
+					navigationController?.setToolbarHidden(false, animated: false)
+				}
 		}
 	}
 	
