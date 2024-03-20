@@ -20,7 +20,9 @@ struct LavaRock: App {
 	var body: some Scene {
 		WindowGroup {
 			RootView()
-				.toolbar { ToolbarItemGroup(placement: .bottomBar) { MainToolbar() } }
+				.toolbar { if Self.usesSwiftUIMainToolbar {
+					ToolbarItemGroup(placement: .bottomBar) { MainToolbar() }
+				} }
 				.ignoresSafeArea()
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
 					await AppleMusic.integrateIfAuthorized()

@@ -254,27 +254,23 @@ struct MainToolbar: View {
 	@ObservedObject private var status: MainToolbarStatus = .shared
 	
 	var body: some View {
-		if LavaRock.usesSwiftUIMainToolbar {
-			if status.inSelectMode {
-				selectButton; Spacer()
-				switch status.baseNC?.topViewController {
-					case is CollectionsTVC:
-						Text("collections")
-					case is AlbumsTVC:
-						Text("albums")
-					case is SongsTVC:
-						Text("songs")
-					default: EmptyView()
-				}
-			} else {
-				selectButton; Spacer()
-				jumpBackButton; Spacer()
-				playPauseButton; Spacer()
-				jumpForwardButton; Spacer()
-				overflowButton
+		if status.inSelectMode {
+			selectButton; Spacer()
+			switch status.baseNC?.topViewController {
+				case is CollectionsTVC:
+					Text("collections")
+				case is AlbumsTVC:
+					Text("albums")
+				case is SongsTVC:
+					Text("songs")
+				default: EmptyView()
 			}
 		} else {
-			EmptyView()
+			selectButton; Spacer()
+			jumpBackButton; Spacer()
+			playPauseButton; Spacer()
+			jumpForwardButton; Spacer()
+			overflowButton
 		}
 	}
 	private var selectButton: some View {
