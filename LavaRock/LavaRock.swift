@@ -31,7 +31,6 @@ struct LavaRock: App {
 }
 private struct RootView: UIViewControllerRepresentable {
 	typealias VCType = UINavigationController
-	
 	func makeUIViewController(context: Context) -> VCType {
 		let result = UINavigationController(
 			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
@@ -43,6 +42,5 @@ private struct RootView: UIViewControllerRepresentable {
 		
 		return result
 	}
-	
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}
 }
