@@ -263,7 +263,7 @@ struct MainToolbar: View {
 					floatButton; Spacer()
 					sinkButton
 				case is CollectionsTVC, is SongsTVC:
-					Spacer()
+					Spacer(); Spacer()
 					arrangeButton; Spacer()
 					floatButton; Spacer()
 					sinkButton
