@@ -33,7 +33,7 @@ extension MPMusicPlayerController {
 	private init() {}
 	static let shared = AudioPlayer()
 	
-	var reflectorToolbar: Weak<MainToolbar>? = nil
+	var reflectorToolbar: Weak<__MainToolbar>? = nil
 	
 	func watchMPPlayer() {
 		guard let __player = MPMusicPlayerController._system else { return }

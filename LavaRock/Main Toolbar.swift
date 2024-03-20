@@ -5,8 +5,8 @@ import UIKit
 import MediaPlayer
 
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
-@MainActor final class MainToolbar {
-	static let shared = MainToolbar()
+@MainActor final class __MainToolbar {
+	static let shared = __MainToolbar()
 	lazy var barButtonItems: [UIBarButtonItem] = [
 		.flexibleSpace(),
 		jumpBackButton, .flexibleSpace(),
@@ -250,35 +250,31 @@ final class MainToolbarStatus: ObservableObject {
 	@Published fileprivate(set) var inSelectMode = false
 }
 
-struct MainToolbarContent: ToolbarContent {
+struct MainToolbar: View {
 	@ObservedObject private var status: MainToolbarStatus = .shared
 	
-	@ViewBuilder var body: some ToolbarContent {
+	var body: some View {
 		if LavaRock.usesSwiftUIMainToolbar {
 			if status.inSelectMode {
-				ToolbarItem(placement: .bottomBar) { selectButton }
-				ToolbarItem(placement: .bottomBar) { Spacer() }
-				ToolbarItem(placement: .bottomBar) {
-					switch status.baseNC?.topViewController {
-						case is CollectionsTVC: Text("collections")
-						case is AlbumsTVC: Text("albums")
-						case is SongsTVC: Text("songs")
-						default: EmptyView()
-					}
+				selectButton; Spacer()
+				switch status.baseNC?.topViewController {
+					case is CollectionsTVC:
+						Text("collections")
+					case is AlbumsTVC:
+						Text("albums")
+					case is SongsTVC:
+						Text("songs")
+					default: EmptyView()
 				}
 			} else {
-				ToolbarItem(placement: .bottomBar) { selectButton }
-				ToolbarItem(placement: .bottomBar) { Spacer() }
-				ToolbarItem(placement: .bottomBar) { jumpBackButton }
-				ToolbarItem(placement: .bottomBar) { Spacer() }
-				ToolbarItem(placement: .bottomBar) { playPauseButton }
-				ToolbarItem(placement: .bottomBar) { Spacer() }
-				ToolbarItem(placement: .bottomBar) { jumpForwardButton }
-				ToolbarItem(placement: .bottomBar) { Spacer() }
-				ToolbarItem(placement: .bottomBar) { overflowButton }
+				selectButton; Spacer()
+				jumpBackButton; Spacer()
+				playPauseButton; Spacer()
+				jumpForwardButton; Spacer()
+				overflowButton
 			}
 		} else {
-			ToolbarItem { EmptyView() }
+			EmptyView()
 		}
 	}
 	private var selectButton: some View {
