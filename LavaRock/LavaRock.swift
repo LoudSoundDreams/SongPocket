@@ -40,6 +40,8 @@ private struct RootView: UIViewControllerRepresentable {
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		
+		MainToolbarStatus.shared.baseNC = result
+		
 		return result
 	}
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}

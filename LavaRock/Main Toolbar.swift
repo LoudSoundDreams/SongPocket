@@ -245,6 +245,8 @@ final class MainToolbarStatus: ObservableObject {
 	private init() {}
 	static let shared = MainToolbarStatus()
 	
+	var baseNC: UINavigationController? = nil
+	
 	@Published fileprivate(set) var inSelectMode = false
 }
 
@@ -253,15 +255,28 @@ struct MainToolbarContent: ToolbarContent {
 	
 	@ViewBuilder var body: some ToolbarContent {
 		if LavaRock.usesSwiftUIMainToolbar {
-			ToolbarItem(placement: .bottomBar) { selectButton }
-			ToolbarItem(placement: .bottomBar) { Spacer() }
-			ToolbarItem(placement: .bottomBar) { jumpBackButton }
-			ToolbarItem(placement: .bottomBar) { Spacer() }
-			ToolbarItem(placement: .bottomBar) { playPauseButton }
-			ToolbarItem(placement: .bottomBar) { Spacer() }
-			ToolbarItem(placement: .bottomBar) { jumpForwardButton }
-			ToolbarItem(placement: .bottomBar) { Spacer() }
-			ToolbarItem(placement: .bottomBar) { overflowButton }
+			if status.inSelectMode {
+				ToolbarItem(placement: .bottomBar) { selectButton }
+				ToolbarItem(placement: .bottomBar) { Spacer() }
+				ToolbarItem(placement: .bottomBar) {
+					switch status.baseNC?.topViewController {
+						case is CollectionsTVC: Text("collections")
+						case is AlbumsTVC: Text("albums")
+						case is SongsTVC: Text("songs")
+						default: EmptyView()
+					}
+				}
+			} else {
+				ToolbarItem(placement: .bottomBar) { selectButton }
+				ToolbarItem(placement: .bottomBar) { Spacer() }
+				ToolbarItem(placement: .bottomBar) { jumpBackButton }
+				ToolbarItem(placement: .bottomBar) { Spacer() }
+				ToolbarItem(placement: .bottomBar) { playPauseButton }
+				ToolbarItem(placement: .bottomBar) { Spacer() }
+				ToolbarItem(placement: .bottomBar) { jumpForwardButton }
+				ToolbarItem(placement: .bottomBar) { Spacer() }
+				ToolbarItem(placement: .bottomBar) { overflowButton }
+			}
 		} else {
 			ToolbarItem { EmptyView() }
 		}
@@ -270,10 +285,7 @@ struct MainToolbarContent: ToolbarContent {
 		Button {
 			status.inSelectMode.toggle()
 		} label: {
-			Image(
-				systemName: status.inSelectMode
-				? "checkmark.circle.fill"
-				: "checkmark.circle")
+			Image(systemName: status.inSelectMode ? "checkmark.circle.fill" : "checkmark.circle")
 		}
 	}
 	private var jumpBackButton: some View {
