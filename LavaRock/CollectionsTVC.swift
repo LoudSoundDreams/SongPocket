@@ -108,7 +108,7 @@ final class CollectionsTVC: LibraryTVC {
 					),
 					animated: false)
 			case .browsing:
-				if !LavaRock.usesSwiftUIMainToolbar {
+				if !MainToolbar.usesSwiftUI {
 					navigationController?.setToolbarHidden(false, animated: false)
 				}
 				

@@ -4,8 +4,6 @@ import SwiftUI
 
 @main
 struct LavaRock: App {
-	static let usesSwiftUIMainToolbar = 10 == 1
-	
 	init() {
 		// Delete unused entries in `UserDefaults`
 		let defaults = UserDefaults.standard
@@ -20,7 +18,7 @@ struct LavaRock: App {
 	var body: some Scene {
 		WindowGroup {
 			RootView()
-				.toolbar { if Self.usesSwiftUIMainToolbar {
+				.toolbar { if MainToolbar.usesSwiftUI {
 					ToolbarItemGroup(placement: .bottomBar) { MainToolbar() }
 				} }
 				.ignoresSafeArea()

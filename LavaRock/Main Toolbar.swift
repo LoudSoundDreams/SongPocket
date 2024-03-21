@@ -251,6 +251,8 @@ final class MainToolbarStatus: ObservableObject {
 }
 
 struct MainToolbar: View {
+	static let usesSwiftUI = 10 == 1
+	
 	@ObservedObject private var status: MainToolbarStatus = .shared
 	
 	var body: some View {
