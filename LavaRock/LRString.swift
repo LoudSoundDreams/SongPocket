@@ -45,7 +45,7 @@ enum LRString {
 	
 	// MARK: - Folders view
 	
-	static let welcome_message = NSLocalizedString("Songpocket views and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
+	static let welcome_message = NSLocalizedString("SongPocket views and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let welcome_button = NSLocalizedString("Continue", comment: "Button")
 	
 	static let emptyLibrary_button = NSLocalizedString("Add Music to Library", comment: "Button")
