@@ -47,16 +47,12 @@ extension Collection {
 	
 	// Similar to `Album.songs`.
 	final func albums(sorted: Bool) -> [Album] {
-		guard let contents else {
-			return []
-		}
-		let unsortedAlbums = contents.map { $0 as! Album }
-		if sorted {
-			let sortedAlbums = unsortedAlbums.sorted { $0.index < $1.index }
-			return sortedAlbums
-		} else {
-			return unsortedAlbums
-		}
+		guard let contents else { return [] }
+		
+		let unsorted = contents.map { $0 as! Album }
+		guard sorted else { return unsorted }
+		
+		return unsorted.sorted { $0.index < $1.index }
 	}
 	
 	// Similar to `Album.renumberSongs`.
