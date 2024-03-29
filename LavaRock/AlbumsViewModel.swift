@@ -44,16 +44,12 @@ extension AlbumsViewModel {
 	
 	// MARK: - “Move” sheet
 	
-	func updatedAfterInserting(
-		albumsWith albumIDs: [NSManagedObjectID]
-	) -> Self {
+	func updatedAfterInserting(albumIDs: [NSManagedObjectID]) -> Self {
 		let albumsGroup = group as! AlbumsGroup
 		let destination = albumsGroup.containerCollection!
-		
-		destination.unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
+		context.move(
 			albumIDs: albumIDs,
-			via: context)
-		context.deleteEmptyCollections()
+			toCollectionWith: destination.objectID)
 		
 		return AlbumsViewModel(
 			collection: collection,

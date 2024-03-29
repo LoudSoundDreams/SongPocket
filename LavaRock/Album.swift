@@ -75,6 +75,7 @@ extension Album {
 		}
 	}
 	
+	// Similar to `Collection.renumberAlbums`.
 	final func renumberSongs() {
 		var songs = songs(sorted: true)
 		songs.reindex()

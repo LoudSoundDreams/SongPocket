@@ -85,6 +85,32 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
+	final func move(
+		albumIDs: [NSManagedObjectID],
+		toCollectionWith collectionID: NSManagedObjectID
+	) {
+		let toMove = albumIDs.map { object(with: $0) } as! [Album]
+		let destination = object(with: collectionID) as! Collection
+		let sourceCollections = Set(toMove.map { $0.container! })
+		
+		// Displace existing contents
+		var toDisplace = Set(destination.albums(sorted: false))
+		toMove.forEach { toDisplace.remove($0) }
+		toDisplace.forEach {
+			$0.index += Int64(toMove.count)
+		}
+		
+		// Move albums
+		toMove.enumerated().forEach { (offset, album) in
+			album.container = destination
+			album.index = Int64(offset)
+		}
+		
+		// Clean up
+		sourceCollections.forEach { $0.renumberAlbums() }
+		deleteEmptyCollections()
+	}
+	
 	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
 	final func unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade() {
 		let all = Album.allFetched(sorted: false, inCollection: nil, context: self)

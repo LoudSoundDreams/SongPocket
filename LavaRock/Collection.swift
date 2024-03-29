@@ -55,25 +55,9 @@ extension Collection {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	// WARNING: Leaves gaps in the `Album` indices in source `Collection`s, and doesn’t delete empty source `Collection`s. You must call `deleteEmptyCollections` later.
-	final func unsafe_InsertAlbums_WithoutDeleteOrReindexSources(
-		albumIDs: [NSManagedObjectID],
-		via context: NSManagedObjectContext
-	) {
-		let toMove = albumIDs.map { context.object(with: $0) } as! [Album]
-		
-		// Displace contents
-		let existingContents = Set(albums(sorted: false))
-		var toDisplace = existingContents
-		toMove.forEach { toDisplace.remove($0) }
-		toDisplace.forEach {
-			$0.index += Int64(toMove.count)
-		}
-		
-		// Move albums here
-		toMove.enumerated().forEach { (offset, album) in
-			album.container = self
-			album.index = Int64(offset)
-		}
+	// Similar to `Album.renumberSongs`.
+	final func renumberAlbums() {
+		var albums = albums(sorted: true)
+		albums.reindex()
 	}
 }
