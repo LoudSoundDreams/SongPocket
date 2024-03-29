@@ -161,10 +161,7 @@ final class SongsTVC: LibraryTVC {
 			// The UI is clearer if we leave the row selected while the action sheet is onscreen.
 			// You must eventually deselect the row in every possible scenario after this moment.
 			
-			let startPlaying = UIAlertAction(
-				title: LRString.startPlaying,
-				style: .default
-			) { [weak self] _ in
+			let startPlaying = UIAlertAction(title: LRString.startPlaying, style: .default) { [weak self] _ in
 				Task {
 					guard
 						let self,

@@ -121,7 +121,6 @@ extension Song {
 		player.state.repeatMode = MusicPlayer.RepeatMode.none
 		player.state.shuffleMode = .off
 	}
-	
 	final func playLast() async {
 		guard
 			let player = SystemMusicPlayer._shared,
@@ -134,7 +133,6 @@ extension Song {
 		
 		UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 	}
-	
 	final func playRestOfAlbumLast() async {
 		guard 
 			let player = SystemMusicPlayer._shared,
