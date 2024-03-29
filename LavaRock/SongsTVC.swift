@@ -20,13 +20,22 @@ final class SongsTVC: LibraryTVC {
 		image: UIImage(systemName: "arrow.up.arrow.down")
 	)
 	override func viewDidLoad() {
-		editingButtons = [
-			editButtonItem, .flexibleSpace(),
-			.flexibleSpace(), .flexibleSpace(),
-			arrangeSongsButton, .flexibleSpace(),
-			floatButton, .flexibleSpace(),
-			sinkButton,
-		]
+		if Enabling.unifiedAlbumList {
+			editingButtons = [
+				editButtonItem, .flexibleSpace(),
+				arrangeSongsButton, .flexibleSpace(),
+				floatButton, .flexibleSpace(),
+				sinkButton,
+			]
+		} else {
+			editingButtons = [
+				editButtonItem, .flexibleSpace(),
+				.flexibleSpace(), .flexibleSpace(),
+				arrangeSongsButton, .flexibleSpace(),
+				floatButton, .flexibleSpace(),
+				sinkButton,
+			]
+		}
 		
 		super.viewDidLoad()
 	}

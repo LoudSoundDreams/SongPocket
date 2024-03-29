@@ -34,13 +34,22 @@ final class AlbumsTVC: LibraryTVC {
 		switch purpose {
 			case .movingAlbums: break
 			case .browsing:
-				editingButtons = [
-					editButtonItem, .flexibleSpace(),
-					moveButton, .flexibleSpace(),
-					arrangeAlbumsButton, .flexibleSpace(),
-					floatButton, .flexibleSpace(),
-					sinkButton,
-				]
+				if Enabling.unifiedAlbumList {
+					editingButtons = [
+						editButtonItem, .flexibleSpace(),
+						arrangeAlbumsButton, .flexibleSpace(),
+						floatButton, .flexibleSpace(),
+						sinkButton,
+					]
+				} else {
+					editingButtons = [
+						editButtonItem, .flexibleSpace(),
+						moveButton, .flexibleSpace(),
+						arrangeAlbumsButton, .flexibleSpace(),
+						floatButton, .flexibleSpace(),
+						sinkButton,
+					]
+				}
 		}
 		
 		super.viewDidLoad()
