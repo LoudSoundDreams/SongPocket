@@ -71,18 +71,16 @@ extension Collection {
 		via context: NSManagedObjectContext
 	) {
 		let toMove = albumIDs.map { context.object(with: $0) } as! [Album]
-		let targetIndex = 0
 		
 		// Displace contents
-		let toDisplace: [Album] = albums(sorted: false).filter { $0.index >= targetIndex }
-		toDisplace.forEach {
+		albums(sorted: false).forEach {
 			$0.index += Int64(toMove.count)
 		}
 		
 		// Move albums here
 		toMove.enumerated().forEach { (offset, album) in
 			album.container = self
-			album.index = Int64(targetIndex + offset)
+			album.index = Int64(offset)
 		}
 		
 		// In case we moved any albums to this collection that were already here.
