@@ -115,10 +115,7 @@ extension MusicRepo {
 		}
 		
 #if targetEnvironment(simulator)
-		Sim_Global.currentSong = Song.allFetched(
-			sorted: true,
-			inAlbum: nil,
-			context: context)
+		Sim_Global.currentSong = Song.allFetched(sorted: true, inAlbum: nil, context: context)
 		.first { fetchedSong in
 			fetchedSong.songInfo()?.songID == Sim_Global.currentSongID
 		}

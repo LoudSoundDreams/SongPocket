@@ -70,22 +70,19 @@ extension Collection {
 		albumIDs: [NSManagedObjectID],
 		via context: NSManagedObjectContext
 	) {
-		let albumsToMove = albumIDs.map {
-			context.object(with: $0)
-		} as! [Album]
-		
-		let atIndex = 0
+		let toMove = albumIDs.map { context.object(with: $0) } as! [Album]
+		let targetIndex = 0
 		
 		// Displace contents
-		let toDisplace: [Album] = albums(sorted: false).filter { $0.index >= atIndex }
+		let toDisplace: [Album] = albums(sorted: false).filter { $0.index >= targetIndex }
 		toDisplace.forEach {
-			$0.index += Int64(albumsToMove.count)
+			$0.index += Int64(toMove.count)
 		}
 		
 		// Move albums here
-		albumsToMove.enumerated().forEach { (offset, album) in
+		toMove.enumerated().forEach { (offset, album) in
 			album.container = self
-			album.index = Int64(atIndex + offset)
+			album.index = Int64(targetIndex + offset)
 		}
 		
 		// In case we moved any albums to this collection that were already here.
