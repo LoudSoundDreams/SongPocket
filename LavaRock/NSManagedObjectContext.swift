@@ -27,18 +27,15 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
-	final func printAllSongs() {
-		var allSongs = Song.allFetched(sorted: true, inAlbum: nil, context: self)
-		allSongs.sort { $0.container!.index < $1.container!.index }
-		allSongs.sort { $0.container!.container!.index < $1.container!.container!.index }
-		allSongs.forEach {
-			print(
-				$0.container!.container!.index,
-				$0.container!.index,
-				$0.index,
-				$0.persistentID,
-				$0.songInfo()?.titleOnDisk ?? "NO SONG TITLE"
-			)
+	final func printLibrary() {
+		Collection.allFetched(sorted: true, context: self).forEach { collection in
+			print(collection.index, collection.title ?? "")
+			collection.albums(sorted: true).forEach { album in
+				print(" ", album.index, album.titleFormatted())
+				album.songs(sorted: true).forEach { song in
+					print("   ", song.index, song.songInfo()?.titleOnDisk ?? "")
+				}
+			}
 		}
 	}
 	
