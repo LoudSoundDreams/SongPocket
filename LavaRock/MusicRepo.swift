@@ -105,9 +105,7 @@ extension MusicRepo {
 		
 		context.tryToSave()
 		
-		defaults.set(
-			true,
-			forKey: keyHasSaved)
+		defaults.set(true, forKey: keyHasSaved)
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(name: .LRMergedChanges, object: nil)
