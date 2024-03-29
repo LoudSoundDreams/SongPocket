@@ -171,10 +171,7 @@ final class SongsTVC: LibraryTVC {
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 			
-			let actionSheet = UIAlertController(
-				title: nil,
-				message: nil,
-				preferredStyle: .actionSheet)
+			let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 			actionSheet.popoverPresentationController?.sourceView = selectedCell
 			actionSheet.addAction(startPlaying)
 			actionSheet.addAction(

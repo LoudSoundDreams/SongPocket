@@ -195,10 +195,7 @@ final class CollectionsTVC: LibraryTVC {
 	func promptRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
 		
-		let dialog = UIAlertController(
-			title: LRString.rename,
-			message: nil,
-			preferredStyle: .alert)
+		let dialog = UIAlertController(title: LRString.rename, message: nil, preferredStyle: .alert)
 		
 		dialog.addTextField {
 			// UITextField
