@@ -46,7 +46,7 @@ extension AlbumsViewModel {
 	
 	func updatedAfterInserting(albumIDs: [NSManagedObjectID]) -> Self {
 		let albumsGroup = group as! AlbumsGroup
-		let destination = albumsGroup.containerCollection!
+		let destination = albumsGroup.containerCollection
 		context.move(
 			albumIDs: albumIDs,
 			toCollectionWith: destination.objectID)
