@@ -83,17 +83,19 @@ extension MusicRepo {
 		// `infosBySongID` now holds the `SongInfo`s that we don’t have `Song`s for.
 		let newInfos = infosBySongID.map { $0.value }
 		
-		updateLibraryItems( // Update before creating and deleting, so that we can easily put new `Song`s above modified `Song`s.
-			// This also deletes all but one `Album` with any given `albumPersistentID`.
-			// This might create `Album`s, but not `Collection`s or `Song`s.
-			// This might delete `Album`s, but not `Collection`s or `Song`s.
-			// This also might leave behind empty `Album`s. We don’t delete those here, so that if the user also added other `Song`s to those `Album`s, we can keep those `Album`s in the same place, instead of re-adding them to the top.
+		// Update before creating and deleting, so that we can easily put new `Song`s above modified `Song`s.
+		// This also deletes all but one `Album` with any given `albumPersistentID`.
+		// This might create `Album`s, but not `Collection`s or `Song`s.
+		// This might delete `Album`s, but not `Collection`s or `Song`s.
+		// This also might leave behind empty `Album`s. We don’t delete those here, so that if the user also added other `Song`s to those `Album`s, we can keep those `Album`s in the same place, instead of re-adding them to the top.
+		updateLibraryItems(
 			potentiallyOutdatedSongsAndFreshInfos: potentiallyOutdatedSongsAndFreshInfos)
 		
+		// Create before deleting, because deleting also cleans up empty `Album`s and `Collection`s, which we shouldn’t do yet (see above).
+		// This might create new `Album`s, and if it does, it might create new `Collection`s.
 		let existingAlbums = Album.allFetched(sorted: false, inCollection: nil, context: context) // Order doesn’t matter, because we identify `Album`s by their `albumPersistentID`.
 		let existingCollections = Collection.allFetched(sorted: true, context: context) // Order matters, because we’ll try to add new `Album`s to the first `Collection` with a matching title.
-		createLibraryItems( // Create before deleting, because deleting also cleans up empty `Album`s and `Collection`s, which we shouldn’t do yet (see above).
-			// This might create new `Album`s, and if it does, it might create new `Collection`s.
+		createLibraryItems(
 			for: newInfos,
 			existingAlbums: existingAlbums,
 			existingCollections: existingCollections,

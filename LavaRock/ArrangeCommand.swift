@@ -79,16 +79,11 @@ enum ArrangeCommand: CaseIterable {
 	}
 	private func apply(to items: [NSManagedObject]) -> [NSManagedObject] {
 		switch self {
-			case .random:
-				return items.inAnyOtherOrder()
-				
-			case .reverse:
-				return items.reversed()
+			case .random: return items.inAnyOtherOrder()
+			case .reverse: return items.reversed()
 				
 			case .collection_name:
-				guard let collections = items as? [Collection] else {
-					return items
-				}
+				guard let collections = items as? [Collection] else { return items }
 				return collections.sortedMaintainingOrderWhen {
 					$0.title == $1.title
 				} areInOrder: {
@@ -98,19 +93,14 @@ enum ArrangeCommand: CaseIterable {
 				}
 				
 			case .album_newest:
-				guard let albums = items as? [Album] else {
-					return items
-				}
+				guard let albums = items as? [Album] else { return items }
 				return albums.sortedMaintainingOrderWhen {
 					$0.releaseDateEstimate == $1.releaseDateEstimate
 				} areInOrder: {
 					$0.precedesByNewestFirst($1)
 				}
-				
 			case .album_oldest:
-				guard let albums = items as? [Album] else {
-					return items
-				}
+				guard let albums = items as? [Album] else { return items }
 				return albums.sortedMaintainingOrderWhen {
 					$0.releaseDateEstimate == $1.releaseDateEstimate
 				} areInOrder: {
@@ -118,9 +108,7 @@ enum ArrangeCommand: CaseIterable {
 				}
 				
 			case .song_track:
-				guard let songs = items as? [Song] else {
-					return items
-				}
+				guard let songs = items as? [Song] else { return items }
 				// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
 				let songsAndInfos = songs.map {
 					(song: $0,

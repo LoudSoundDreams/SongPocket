@@ -24,8 +24,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(
 		title: LRString.sort,
-		image: UIImage(systemName: "arrow.up.arrow.down")
-	)
+		image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	private var purpose: Purpose {
 		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
@@ -33,15 +32,9 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	private var viewState: CollectionsViewState {
-		guard MusicAuthorization.currentStatus == .authorized else {
-			return .allowAccess
-		}
-		guard viewModel.isEmpty() else {
-			return .someCollections
-		}
-		if isMergingChanges {
-			return .loading
-		}
+		guard MusicAuthorization.currentStatus == .authorized else { return .allowAccess }
+		guard viewModel.isEmpty() else { return .someCollections }
+		if isMergingChanges { return .loading }
 		return .emptyDatabase
 	}
 	
@@ -94,18 +87,13 @@ final class CollectionsTVC: LibraryTVC {
 		switch purpose {
 			case .movingAlbums:
 				navigationItem.setLeftBarButton(
-					UIBarButtonItem(
-						systemItem: .close,
-						primaryAction: UIAction { [weak self] _ in
-							self?.dismiss(animated: true)
-						}
-					),
+					UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
+						self?.dismiss(animated: true)
+					}),
 					animated: false)
 				navigationItem.setRightBarButton(
-					UIBarButtonItem(
-						systemItem: .add,
-						primaryAction: UIAction { [weak self] _ in self?.createAndOpen() }
-					),
+					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen()
+					}),
 					animated: false)
 			case .browsing:
 				if !MainToolbar.usesSwiftUI {

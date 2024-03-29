@@ -21,7 +21,7 @@ struct LavaRock: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			RootView()
+			RootVC()
 				.toolbar { if MainToolbar.usesSwiftUI {
 					ToolbarItemGroup(placement: .bottomBar) { MainToolbar() }
 				} }
@@ -33,7 +33,7 @@ struct LavaRock: App {
 		}
 	}
 }
-private struct RootView: UIViewControllerRepresentable {
+private struct RootVC: UIViewControllerRepresentable {
 	typealias VCType = UINavigationController
 	func makeUIViewController(context: Context) -> VCType {
 		let result = UINavigationController(

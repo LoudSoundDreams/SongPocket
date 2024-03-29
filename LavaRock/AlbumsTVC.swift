@@ -14,12 +14,10 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var moveButton = UIBarButtonItem(
 		title: LRString.move,
 		image: UIImage(systemName: "folder"),
-		primaryAction: UIAction { [weak self] _ in self?.startMoving() }
-	)
+		primaryAction: UIAction { [weak self] _ in self?.startMoving() })
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(
 		title: LRString.sort,
-		image: UIImage(systemName: "arrow.up.arrow.down")
-	)
+		image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	private var purpose: Purpose {
 		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
@@ -60,10 +58,9 @@ final class AlbumsTVC: LibraryTVC {
 			case .movingAlbums:
 				navigationItem.setRightBarButton(
 					{
-						let moveHereButton = UIBarButtonItem(
-							title: LRString.move,
-							primaryAction: UIAction { [weak self] _ in self?.moveHere() }
-						)
+						let moveHereButton = UIBarButtonItem(title: LRString.move, primaryAction: UIAction { [weak self] _ in
+							self?.moveHere()
+						})
 						moveHereButton.style = .done
 						return moveHereButton
 					}(),
@@ -364,12 +361,9 @@ private struct AlbumRow: View {
 		.accessibilityAddTraits(.isButton)
 		.opacity({ () -> Double in
 			switch mode {
-				case .normal:
-					return 1
-				case .disabled:
-					return .oneFourth // Close to what Files pickers use
-				case .disabledTinted:
-					return .oneHalf
+				case .normal: return 1
+				case .disabled: return .oneFourth // Close to what Files pickers use
+				case .disabledTinted: return .oneHalf
 			}
 		}())
 		.disabled({

@@ -7,7 +7,6 @@ final class MoveAlbumsClipboard {
 	let idsOfAlbumsBeingMovedAsSet: Set<NSManagedObjectID>
 	let idsOfSourceCollections: Set<NSManagedObjectID>
 	
-	// State
 	var hasCreatedNewCollection = false
 	
 	init(albumsBeingMoved: [Album]) {

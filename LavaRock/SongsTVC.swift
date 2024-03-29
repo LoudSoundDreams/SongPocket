@@ -17,8 +17,7 @@ final class SongsTVC: LibraryTVC {
 	
 	private lazy var arrangeSongsButton = UIBarButtonItem(
 		title: LRString.sort,
-		image: UIImage(systemName: "arrow.up.arrow.down")
-	)
+		image: UIImage(systemName: "arrow.up.arrow.down"))
 	override func viewDidLoad() {
 		if Enabling.unifiedAlbumList {
 			editingButtons = [
