@@ -211,8 +211,12 @@ final class AlbumsTVC: LibraryTVC {
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
-		let newViewModel = albumsViewModel.updatedAfterInserting(
-			albumIDs: clipboard.idsOfAlbumsBeingMoved)
+		albumsViewModel.context.move(
+			albumIDs: clipboard.idsOfAlbumsBeingMoved,
+			toCollectionWith: (albumsViewModel.group as! AlbumsGroup).containerCollection.objectID)
+		let newViewModel = AlbumsViewModel(
+			collection: albumsViewModel.collection,
+			context: albumsViewModel.context)
 		Task {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			

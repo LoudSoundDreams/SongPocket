@@ -41,18 +41,4 @@ extension AlbumsViewModel {
 	func albumNonNil(atRow: Int) -> Album {
 		return itemNonNil(atRow: atRow) as! Album
 	}
-	
-	// MARK: - “Move” sheet
-	
-	func updatedAfterInserting(albumIDs: [NSManagedObjectID]) -> Self {
-		let albumsGroup = group as! AlbumsGroup
-		let destination = albumsGroup.containerCollection
-		context.move(
-			albumIDs: albumIDs,
-			toCollectionWith: destination.objectID)
-		
-		return AlbumsViewModel(
-			collection: collection,
-			context: context)
-	}
 }
