@@ -2,7 +2,7 @@
 
 import UIKit
 import SwiftUI
-@preconcurrency import MusicKit
+import MusicKit
 
 final class SongsListStatus: ObservableObject {
 	@Published fileprivate(set) var editing = false
@@ -161,31 +161,10 @@ final class SongsTVC: LibraryTVC {
 			// The UI is clearer if we leave the row selected while the action sheet is onscreen.
 			// You must eventually deselect the row in every possible scenario after this moment.
 			
-			let startPlaying = UIAlertAction(title: LRString.startPlaying, style: .default) { [weak self] _ in
+			let song = (viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
+			let startPlaying = UIAlertAction(title: LRString.startPlaying, style: .default) { _ in
 				Task {
-					guard
-						let self,
-						let player = SystemMusicPlayer._shared
-					else { return }
-					
-					let allMusicItems: [MusicKit.Song] = await {
-						var result: [MusicKit.Song] = []
-						for song in (self.viewModel.group.items as! [Song]) {
-							guard let musicItem = await song.musicKitSong() else { continue }
-							result.append(musicItem)
-						}
-						return result
-					}()
-					
-					let song = (self.viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
-					guard let musicItem = await song.musicKitSong() else { return }
-					
-					player.queue = SystemMusicPlayer.Queue(for: allMusicItems, startingAt: musicItem)
-					try? await player.play()
-					
-					// As of iOS 17.2 beta, if setting the queue effectively did nothing, you must do these after calling `play`, not before.
-					player.state.repeatMode = MusicPlayer.RepeatMode.none
-					player.state.shuffleMode = .off
+					await song.playAlbumStartingHere()
 					
 					tableView.deselectAllRows(animated: true)
 				}

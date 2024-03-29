@@ -109,6 +109,29 @@ extension Song {
 		return response.items.first
 	}
 	
+	final func playAlbumStartingHere() async {
+		guard
+			let player = SystemMusicPlayer._shared,
+			let rowItem = await musicKitSong(),
+			let songsInAlbum = container?.songs(sorted: true)
+		else { return }
+		
+		let musicItems: [MusicKit.Song] = await {
+			var result: [MusicKit.Song] = []
+			for song in songsInAlbum {
+				guard let musicItem = await song.musicKitSong() else { continue }
+				result.append(musicItem)
+			}
+			return result
+		}()
+		
+		player.queue = SystemMusicPlayer.Queue(for: musicItems, startingAt: rowItem)
+		try? await player.play()
+		
+		// As of iOS 17.2 beta, if setting the queue effectively did nothing, you must do these after calling `play`, not before.
+		player.state.repeatMode = MusicPlayer.RepeatMode.none
+		player.state.shuffleMode = .off
+	}
 	final func play() async {
 		guard
 			let player = SystemMusicPlayer._shared,
