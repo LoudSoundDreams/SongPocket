@@ -1,5 +1,9 @@
 // 2021-12-30
 
+enum Enabling {
+	static let unifiedAlbumList = 10 == 1
+}
+
 import SwiftUI
 
 @main

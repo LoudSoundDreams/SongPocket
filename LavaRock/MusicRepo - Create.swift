@@ -141,22 +141,26 @@ extension MusicRepo {
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
-		let titleOfDestination
-		= newInfo.albumArtistOnDisk ?? LRString.unknownArtist
+		let titleOfDestination: String = Enabling.unifiedAlbumList
+		? LRString.bullet
+		: newInfo.albumArtistOnDisk ?? LRString.unknownArtist
 		
 		// If we already have a matching collection to put the album into…
-		if let matchingExisting = existingCollectionsByTitle[titleOfDestination]?.first {
+		let destination: Collection? = Enabling.unifiedAlbumList
+		? existingCollectionsByTitle.values.first?.first
+		: existingCollectionsByTitle[titleOfDestination]?.first
+		if let destination {
 			
 			// …then put the album in that collection.
 			let newAlbum: Album = {
 				if isFirstImport {
 					return Album(
-						atEndOf: matchingExisting,
+						atEndOf: destination,
 						albumID: newInfo.albumID,
 						context: context)
 				} else {
 					return Album(
-						atBeginningOf: matchingExisting,
+						atBeginningOf: destination,
 						albumID: newInfo.albumID,
 						context: context)
 				}}()
