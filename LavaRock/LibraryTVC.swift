@@ -365,6 +365,7 @@ class LibraryTVC: UITableViewController {
 			if let cell = tableView.cellForRow(at: indexPath) {
 				cell.accessibilityTraits.formUnion(.selected)
 			}
+			
 			freshenEditingButtons()
 		}
 	}
@@ -375,6 +376,7 @@ class LibraryTVC: UITableViewController {
 		if let cell = tableView.cellForRow(at: indexPath) {
 			cell.accessibilityTraits.subtract(.selected)
 		}
+		
 		freshenEditingButtons()
 	}
 }

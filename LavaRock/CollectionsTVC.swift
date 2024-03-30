@@ -317,12 +317,6 @@ final class CollectionsTVC: LibraryTVC {
 	
 	// MARK: - Table view
 	
-	override func tableView(
-		_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath
-	) {
-		promptRename(at: indexPath)
-	}
-	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		switch viewState {
 			case .someCollections:
@@ -420,6 +414,12 @@ final class CollectionsTVC: LibraryTVC {
 				]
 		}
 		return cell
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath
+	) {
+		promptRename(at: indexPath)
 	}
 }
 
