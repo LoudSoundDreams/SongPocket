@@ -37,8 +37,7 @@ private struct RootVC: UIViewControllerRepresentable {
 	typealias VCType = UINavigationController
 	func makeUIViewController(context: Context) -> VCType {
 		let result = UINavigationController(
-			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
-				.instantiateInitialViewController()!
+			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil).instantiateInitialViewController()!
 		)
 		
 		let toolbar = result.toolbar!

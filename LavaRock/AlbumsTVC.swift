@@ -114,8 +114,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func startMoving() {
 		// Prepare a Collections view to present modally.
 		let nc = UINavigationController(
-			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil)
-				.instantiateInitialViewController()!
+			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil).instantiateInitialViewController()!
 		)
 		guard
 			let collectionsTVC = nc.viewControllers.first as? CollectionsTVC,
