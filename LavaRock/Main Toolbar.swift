@@ -17,135 +17,103 @@ import MediaPlayer
 	
 	private lazy var playPauseButton = UIBarButtonItem()
 	private lazy var jumpBackButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.skipBack15Seconds,
-			image: UIImage(systemName: "gobackward.15"),
-			primaryAction: UIAction { _ in
+		let button = UIBarButtonItem(title: LRString.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), primaryAction: UIAction { _ in
 				SystemMusicPlayer._shared?.playbackTime -= 15
 			})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
 	private lazy var jumpForwardButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: LRString.skipForward15Seconds,
-			image: UIImage(systemName: "goforward.15"),
-			primaryAction: UIAction { _ in
-				SystemMusicPlayer._shared?.playbackTime += 15
-			})
+		let button = UIBarButtonItem(title: LRString.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), primaryAction: UIAction { _ in
+			SystemMusicPlayer._shared?.playbackTime += 15
+		})
 		button.accessibilityTraits.formUnion(.startsMediaSession)
 		return button
 	}()
-	private lazy var overflowButton = UIBarButtonItem(
-		title: LRString.more,
-		menu: {
-			let menuElements: [UIMenuElement] = [
-				// We want to indicate which mode is active by selecting it, not disabling it.
-				// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
-				// Disabling the selected mode is a compromise.
-				UIMenu(
-					options: .displayInline,
-					preferredElementSize: .small,
-					children: [
-						UIDeferredMenuElement.uncached({ useMenuElements in
-							let action = UIAction(
-								title: LRString.repeatOff,
-								image: UIImage(systemName: "minus"),
-								attributes: {
-									guard let __player = MPMusicPlayerController._system else {
-										return .disabled
-									}
-									if __player.repeatMode == MPMusicRepeatMode.none {
-										return .disabled
-									} else {
-										return []
-									}
-								}(),
-								state: {
-									guard let __player = MPMusicPlayerController._system else {
-										// Assume Repeat is off
-										return .on
-									}
-									return (__player.repeatMode == MPMusicRepeatMode.none) ? .on : .off
-								}()
-							) { _ in
-								MPMusicPlayerController._system?.repeatMode = MPMusicRepeatMode.none
-							}
-							useMenuElements([action])
-						}),
-						UIDeferredMenuElement.uncached({ useMenuElements in
-							let action = UIAction(
-								title: LRString.repeat1,
-								image: UIImage(systemName: "repeat.1"),
-								attributes: {
-									// Disable if appropriate
-									guard let __player = MPMusicPlayerController._system else {
-										return .disabled
-									}
-									if __player.repeatMode == .one {
-										return .disabled
-									} else {
-										return []
-									}
-								}(),
-								state: {
-									// Select if appropriate
-									guard let __player = MPMusicPlayerController._system else { return .off }
-									return (__player.repeatMode == .one) ? .on : .off
-								}()
-							) { _ in
-								MPMusicPlayerController._system?.repeatMode = .one
-							}
-							useMenuElements([action])
-						}),
-					]
-				),
-				UIMenu(
-					options: .displayInline,
-					preferredElementSize: .small,
-					children: [
-						UIDeferredMenuElement.uncached({ useMenuElements in
-							let action = UIAction(
-								title: LRString.previous,
-								image: UIImage(systemName: "backward.end"),
-								// Ideally, disable this when there are no previous tracks to skip to.
-								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []
-							) { _ in
-								Task {
-									try await SystemMusicPlayer._shared?.skipToPreviousEntry()
-								}
-							}
-							useMenuElements([action])
-						}),
-						UIDeferredMenuElement.uncached({ useMenuElements in
-							let action = UIAction(
-								title: LRString.restart,
-								image: UIImage(systemName: "arrow.counterclockwise"),
-								// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []
-							) { _ in
-								SystemMusicPlayer._shared?.restartCurrentEntry()
-							}
-							useMenuElements([action])
-						}),
-						UIDeferredMenuElement.uncached({ useMenuElements in
-							let action = UIAction(
-								title: LRString.next,
-								image: UIImage(systemName: "forward.end"),
-								attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []
-							) { _ in
-								Task {
-									try await SystemMusicPlayer._shared?.skipToNextEntry()
-								}
-							}
-							useMenuElements([action])
-						}),
-					]
-				),
-			]
-			return UIMenu(children: menuElements)
-		}()
-	)
+	private lazy var overflowButton = UIBarButtonItem(title: LRString.more, menu: UIMenu(children: [
+		// We want to indicate which mode is active by selecting it, not disabling it.
+		// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
+		// Disabling the selected mode is a compromise.
+		UIMenu(options: .displayInline, preferredElementSize: .small, children: [
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				let action = UIAction(
+					title: LRString.repeatOff,
+					image: UIImage(systemName: "minus"),
+					attributes: {
+						guard let __player = MPMusicPlayerController._system else {
+							return .disabled
+						}
+						if __player.repeatMode == MPMusicRepeatMode.none {
+							return .disabled
+						} else {
+							return []
+						}
+					}(),
+					state: {
+						guard let __player = MPMusicPlayerController._system else {
+							// Assume Repeat is off
+							return .on
+						}
+						return (__player.repeatMode == MPMusicRepeatMode.none) ? .on : .off
+					}()
+				) { _ in
+					MPMusicPlayerController._system?.repeatMode = MPMusicRepeatMode.none
+				}
+				useMenuElements([action])
+			}),
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				let action = UIAction(
+					title: LRString.repeat1,
+					image: UIImage(systemName: "repeat.1"),
+					attributes: {
+						// Disable if appropriate
+						guard let __player = MPMusicPlayerController._system else {
+							return .disabled
+						}
+						if __player.repeatMode == .one {
+							return .disabled
+						} else {
+							return []
+						}
+					}(),
+					state: {
+						// Select if appropriate
+						guard let __player = MPMusicPlayerController._system else { return .off }
+						return (__player.repeatMode == .one) ? .on : .off
+					}()
+				) { _ in
+					MPMusicPlayerController._system?.repeatMode = .one
+				}
+				useMenuElements([action])
+			}),
+		]),
+		UIMenu(options: .displayInline, preferredElementSize: .small, children: [
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				// Ideally, disable this when there are no previous tracks to skip to.
+				let action = UIAction(title: LRString.previous, image: UIImage(systemName: "backward.end"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
+					Task {
+						try await SystemMusicPlayer._shared?.skipToPreviousEntry()
+					}
+				}
+				useMenuElements([action])
+			}),
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
+				let action = UIAction(title: LRString.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
+					SystemMusicPlayer._shared?.restartCurrentEntry()
+				}
+				useMenuElements([action])
+			}),
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				let action = UIAction(title: LRString.next, image: UIImage(systemName: "forward.end"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
+					Task {
+						try await SystemMusicPlayer._shared?.skipToNextEntry()
+					}
+				}
+				useMenuElements([action])
+			}),
+		]),
+	]))
 	
 	private init() {
 		freshen()
@@ -217,9 +185,7 @@ import MediaPlayer
 	private var hasRefreshenedOverflowButton = false
 	private func showPlay() {
 		playPauseButton.title = LRString.play
-		playPauseButton.primaryAction = UIAction(
-			image: UIImage(systemName: "play.circle")
-		) { _ in
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle")) { _ in
 			Task {
 				try await SystemMusicPlayer._shared?.play()
 			}
@@ -228,9 +194,7 @@ import MediaPlayer
 	}
 	private func showPause() {
 		playPauseButton.title = LRString.pause
-		playPauseButton.primaryAction = UIAction(
-			image: UIImage(systemName: "pause.circle")
-		) { _ in
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "pause.circle")) { _ in
 			SystemMusicPlayer._shared?.pause()
 		}
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
