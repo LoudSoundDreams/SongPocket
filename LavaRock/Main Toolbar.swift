@@ -9,9 +9,7 @@ import MediaPlayer
 	static let shared = __MainToolbar()
 	lazy var barButtonItems: [UIBarButtonItem] = [
 		.flexibleSpace(),
-		jumpBackButton, .flexibleSpace(),
 		playPauseButton, .flexibleSpace(),
-		jumpForwardButton, .flexibleSpace(),
 		overflowButton,
 	]
 	
@@ -34,6 +32,46 @@ import MediaPlayer
 		// We want to indicate which mode is active by selecting it, not disabling it.
 		// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
 		// Disabling the selected mode is a compromise.
+		UIMenu(options: .displayInline, preferredElementSize: .small, children: [
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				let action = UIAction(title: LRString.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: (SystemMusicPlayer._shared == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]) { _ in
+					SystemMusicPlayer._shared?.playbackTime -= 15
+				}
+				useMenuElements([action])
+			}),
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				let action = UIAction(title: LRString.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: (SystemMusicPlayer._shared == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]) { _ in
+					SystemMusicPlayer._shared?.playbackTime += 15
+				}
+				useMenuElements([action])
+			}),
+		]),
+		UIMenu(options: .displayInline, preferredElementSize: .small, children: [
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				// Ideally, disable this when there are no previous tracks to skip to.
+				let action = UIAction(title: LRString.previous, image: UIImage(systemName: "backward.end"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
+					Task {
+						try await SystemMusicPlayer._shared?.skipToPreviousEntry()
+					}
+				}
+				useMenuElements([action])
+			}),
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
+				let action = UIAction(title: LRString.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
+					SystemMusicPlayer._shared?.restartCurrentEntry()
+				}
+				useMenuElements([action])
+			}),
+			UIDeferredMenuElement.uncached({ useMenuElements in
+				let action = UIAction(title: LRString.next, image: UIImage(systemName: "forward.end"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
+					Task {
+						try await SystemMusicPlayer._shared?.skipToNextEntry()
+					}
+				}
+				useMenuElements([action])
+			}),
+		]),
 		UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 			UIDeferredMenuElement.uncached({ useMenuElements in
 				let action = UIAction(
@@ -83,32 +121,6 @@ import MediaPlayer
 					}()
 				) { _ in
 					MPMusicPlayerController._system?.repeatMode = .one
-				}
-				useMenuElements([action])
-			}),
-		]),
-		UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-			UIDeferredMenuElement.uncached({ useMenuElements in
-				// Ideally, disable this when there are no previous tracks to skip to.
-				let action = UIAction(title: LRString.previous, image: UIImage(systemName: "backward.end"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
-					Task {
-						try await SystemMusicPlayer._shared?.skipToPreviousEntry()
-					}
-				}
-				useMenuElements([action])
-			}),
-			UIDeferredMenuElement.uncached({ useMenuElements in
-				// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-				let action = UIAction(title: LRString.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
-					SystemMusicPlayer._shared?.restartCurrentEntry()
-				}
-				useMenuElements([action])
-			}),
-			UIDeferredMenuElement.uncached({ useMenuElements in
-				let action = UIAction(title: LRString.next, image: UIImage(systemName: "forward.end"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
-					Task {
-						try await SystemMusicPlayer._shared?.skipToNextEntry()
-					}
 				}
 				useMenuElements([action])
 			}),
