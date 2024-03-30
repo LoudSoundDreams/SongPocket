@@ -2,20 +2,6 @@
 
 import CoreData
 
-extension Collection: LibraryContainer {}
-extension Collection: LibraryItem {
-	@MainActor final func containsPlayhead() -> Bool {
-#if targetEnvironment(simulator)
-		return objectID == Sim_Global.currentSong?.container?.container?.objectID
-#else
-		guard 
-			let currentSong = managedObjectContext?.songInPlayer()
-		else { return false }
-		return objectID == currentSong.container?.container?.objectID
-#endif
-	}
-}
-
 extension Collection {
 	convenience init(
 		afterAllOtherCount existingCount: Int,
