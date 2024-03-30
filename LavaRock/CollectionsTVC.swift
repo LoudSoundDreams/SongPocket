@@ -259,24 +259,6 @@ final class CollectionsTVC: LibraryTVC {
 		return UIMenu(children: inlineSubmenus)
 	}
 	
-	// MARK: - Navigation
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		let collectionsViewModel = viewModel as! CollectionsViewModel
-		
-		guard
-			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let albumsTVC = segue.destination as? AlbumsTVC
-		else { return }
-		
-		albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
-		
-		let selectedCollection = collectionsViewModel.collectionNonNil(atRow: selectedIndexPath.row)
-		albumsTVC.viewModel = AlbumsViewModel(
-			collection: selectedCollection,
-			context: viewModel.context)
-	}
-	
 	// MARK: - “Move” sheet
 	
 	private func createAndOpen() {
@@ -297,7 +279,7 @@ final class CollectionsTVC: LibraryTVC {
 	private func openCreated() {
 		let indexPath = IndexPath(row: CollectionsViewModel.indexOfNewCollection, section: 0)
 		tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-		performSegue(withIdentifier: "Open Collection", sender: self)
+		openCollection(atIndexPath: indexPath)
 	}
 	
 	private func revertCreate() {
@@ -369,7 +351,7 @@ final class CollectionsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
+		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Folder", for: indexPath)
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
@@ -420,6 +402,32 @@ final class CollectionsTVC: LibraryTVC {
 		_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath
 	) {
 		promptRename(at: indexPath)
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
+	) {
+		if !isEditing {
+			openCollection(atIndexPath: indexPath)
+		}
+		
+		super.tableView(tableView, didSelectRowAt: indexPath)
+	}
+	
+	private func openCollection(atIndexPath: IndexPath) {
+		navigationController?.pushViewController(
+			{
+				let albumsTVC = UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController() as! AlbumsTVC
+				
+				albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
+				
+				albumsTVC.viewModel = AlbumsViewModel(
+					collection: (viewModel as! CollectionsViewModel).collectionNonNil(atRow: atIndexPath.row),
+					context: viewModel.context)
+				
+				return albumsTVC
+			}(),
+			animated: true)
 	}
 }
 
