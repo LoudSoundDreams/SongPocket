@@ -34,14 +34,12 @@ struct AlbumsGroup {
 	var items: [NSManagedObject] {
 		didSet { _reindex() }
 	}
-	let containerCollection: Collection
 	
 	init(
 		collection: Collection,
 		context: NSManagedObjectContext
 	) {
 		items = Album.allFetched(sorted: true, inCollection: collection, context: context)
-		containerCollection = collection
 	}
 }
 
@@ -50,13 +48,11 @@ struct SongsGroup {
 	var items: [NSManagedObject] {
 		didSet { _reindex() }
 	}
-	let containerAlbum: Album
 	
 	init(
 		album: Album,
 		context: NSManagedObjectContext
 	) {
 		items = Song.allFetched(sorted: true, inAlbum: album, context: context)
-		containerAlbum = album
 	}
 }

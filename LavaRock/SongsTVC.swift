@@ -101,8 +101,7 @@ final class SongsTVC: LibraryTVC {
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
 		let songsViewModel = viewModel as! SongsViewModel
-		let songsGroup = songsViewModel.group as! SongsGroup
-		let album = songsGroup.containerAlbum
+		let album = songsViewModel.album
 		
 		switch indexPath.row {
 			case 0:

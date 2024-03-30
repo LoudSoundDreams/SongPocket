@@ -208,7 +208,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		albumsViewModel.context.move(
 			albumIDs: clipboard.idsOfAlbumsBeingMoved,
-			toCollectionWith: (albumsViewModel.group as! AlbumsGroup).containerCollection.objectID)
+			toCollectionWith: albumsViewModel.collection.objectID)
 		let newViewModel = AlbumsViewModel(
 			collection: albumsViewModel.collection,
 			context: albumsViewModel.context)
