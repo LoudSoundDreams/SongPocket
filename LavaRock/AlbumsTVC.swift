@@ -153,7 +153,7 @@ final class AlbumsTVC: LibraryTVC {
 		super.freshenEditingButtons()
 		
 		moveButton.isEnabled = {
-			guard !viewModel.isEmpty() else {
+			guard !viewModel.items.isEmpty else {
 				return false
 			}
 			return true
@@ -226,7 +226,7 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		if viewModel.isEmpty() {
+		if viewModel.items.isEmpty {
 			contentUnavailableConfiguration = UIHostingConfiguration {
 				Image(systemName: "square.stack")
 					.foregroundStyle(.secondary)
@@ -243,7 +243,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
-		return viewModel.group.items.count
+		return viewModel.items.count
 	}
 	
 	override func tableView(

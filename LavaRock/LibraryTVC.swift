@@ -27,11 +27,11 @@ class LibraryTVC: UITableViewController {
 			viewModel.itemIndex(forRow: $0)
 		}
 		
-		var newItems = viewModel.group.items
+		var newItems = viewModel.items
 		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		
 		var newViewModel = viewModel
-		newViewModel.group.items = newItems
+		newViewModel.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -46,11 +46,11 @@ class LibraryTVC: UITableViewController {
 			viewModel.itemIndex(forRow: $0)
 		}
 		
-		var newItems = viewModel.group.items
+		var newItems = viewModel.items
 		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newItems.count)
 		
 		var newViewModel = viewModel
-		newViewModel.group.items = newItems
+		newViewModel.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -143,7 +143,7 @@ class LibraryTVC: UITableViewController {
 		
 		viewModel = newViewModel // Can be empty
 		
-		guard !newViewModel.isEmpty() else {
+		guard !newViewModel.items.isEmpty else {
 			completionIfShouldRun(false)
 			reflectViewModelIsEmpty()
 			return
@@ -248,7 +248,7 @@ class LibraryTVC: UITableViewController {
 	func freshenEditingButtons() {
 		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
 		
-		editButtonItem.isEnabled = !viewModel.isEmpty()
+		editButtonItem.isEnabled = !viewModel.items.isEmpty
 		editButtonItem.image = (
 			isEditing
 			? UIImage(systemName: "checkmark.circle.fill")
@@ -256,7 +256,7 @@ class LibraryTVC: UITableViewController {
 		)
 		
 		let allowsFloatAndSink: Bool = {
-			guard !viewModel.isEmpty() else {
+			guard !viewModel.items.isEmpty else {
 				return false
 			}
 			return !tableView.selectedIndexPaths.isEmpty
@@ -265,7 +265,7 @@ class LibraryTVC: UITableViewController {
 		sinkButton.isEnabled = allowsFloatAndSink
 	}
 	final func allowsArrange() -> Bool {
-		guard !viewModel.isEmpty() else {
+		guard !viewModel.items.isEmpty else {
 			return false
 		}
 		let selectedIndexPaths = tableView.selectedIndexPaths
@@ -287,13 +287,13 @@ class LibraryTVC: UITableViewController {
 	final func arrangeSelectedOrAll(by command: ArrangeCommand) {
 		let subjectedRows = unsortedRowsToArrange().sorted()
 		let subjectedIndices = subjectedRows.map { viewModel.itemIndex(forRow: $0) }
-		let allItems = viewModel.group.items
+		let allItems = viewModel.items
 		
 		var newViewModel = viewModel
 		let newItems = command.apply(
 			onOrderedIndices: subjectedIndices,
 			in: allItems)
-		newViewModel.group.items = newItems
+		newViewModel.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
@@ -335,10 +335,10 @@ class LibraryTVC: UITableViewController {
 		let fromIndex = viewModel.itemIndex(forRow: fromIndexPath.row)
 		let toIndex = viewModel.itemIndex(forRow: to.row)
 		
-		var newItems = viewModel.group.items
+		var newItems = viewModel.items
 		let itemBeingMoved = newItems.remove(at: fromIndex)
 		newItems.insert(itemBeingMoved, at: toIndex)
-		viewModel.group.items = newItems
+		viewModel.items = newItems
 		
 		freshenEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
 	}

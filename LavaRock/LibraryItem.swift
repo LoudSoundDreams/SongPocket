@@ -16,12 +16,3 @@ protocol LibraryItem: NSManagedObject {
 	
 	@MainActor func containsPlayhead() -> Bool
 }
-
-extension Array where Element: LibraryItem {
-	// Needs to match the property observer on `LibraryGroup.items`.
-	mutating func reindex() {
-		enumerated().forEach { (currentIndex, libraryItem) in
-			libraryItem.index = Int64(currentIndex)
-		}
-	}
-}

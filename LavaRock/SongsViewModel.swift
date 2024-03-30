@@ -8,17 +8,16 @@ struct SongsViewModel {
 	
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var group: LibraryGroup
+	var items: [NSManagedObject] {
+		didSet { Fn.renumber(items) }
+	}
 }
 extension SongsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int {
 		return row - Self.prerowCount
 	}
 	func rowsForAllItems() -> [Int] {
-		guard !isEmpty() else {
-			return []
-		}
-		return group.items.indices.map {
+		return items.indices.map {
 			Self.prerowCount + $0
 		}
 	}
@@ -32,7 +31,7 @@ extension SongsViewModel: LibraryViewModel {
 	}
 	
 	func rowIdentifiers() -> [AnyHashable] {
-		let itemRowIDs = group.items.map {
+		let itemRowIDs = items.map {
 			AnyHashable($0.objectID)
 		}
 		return [42] + itemRowIDs
@@ -43,8 +42,8 @@ extension SongsViewModel {
 		album: Album,
 		context: NSManagedObjectContext
 	) {
+		items = Song.allFetched(sorted: true, inAlbum: album, context: context)
 		self.album = album
 		self.context = context
-		group = SongsGroup(album: album, context: context)
 	}
 }

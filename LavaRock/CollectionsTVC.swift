@@ -33,7 +33,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	private var viewState: CollectionsViewState {
 		guard MusicAuthorization.currentStatus == .authorized else { return .allowAccess }
-		guard viewModel.isEmpty() else { return .someCollections }
+		guard viewModel.items.isEmpty else { return .someCollections }
 		if isMergingChanges { return .loading }
 		return .emptyDatabase
 	}
@@ -342,7 +342,7 @@ final class CollectionsTVC: LibraryTVC {
 	)-> Int {
 		switch viewState {
 			case .allowAccess, .loading, .emptyDatabase: return 0
-			case .someCollections: return viewModel.group.items.count
+			case .someCollections: return viewModel.items.count
 		}
 	}
 	

@@ -75,12 +75,6 @@ extension Album {
 		}
 	}
 	
-	// Similar to `Collection.renumberAlbums`.
-	final func renumberSongs() {
-		var songs = songs(sorted: true)
-		songs.reindex()
-	}
-	
 	final func songsAreInDefaultOrder() -> Bool {
 		let infos = songs(sorted: true).compactMap { $0.songInfo() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
 		
@@ -117,9 +111,8 @@ extension Album {
 			return songsAndInfos.map { tuple in tuple.song }
 		}
 		
-		var sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
-		
-		sortedSongs.reindex()
+		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
+		Fn.renumber(sortedSongs)
 	}
 	
 	// MARK: Creating

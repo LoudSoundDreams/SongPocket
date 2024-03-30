@@ -54,10 +54,4 @@ extension Collection {
 		
 		return unsorted.sorted { $0.index < $1.index }
 	}
-	
-	// Similar to `Album.renumberSongs`.
-	final func renumberAlbums() {
-		var albums = albums(sorted: true)
-		albums.reindex()
-	}
 }

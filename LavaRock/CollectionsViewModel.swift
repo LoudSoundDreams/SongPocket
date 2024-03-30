@@ -5,15 +5,14 @@ import CoreData
 struct CollectionsViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
-	var group: LibraryGroup
+	var items: [NSManagedObject] {
+		didSet { Fn.renumber(items) }
+	}
 }
 extension CollectionsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row }
 	func rowsForAllItems() -> [Int] {
-		guard !isEmpty() else {
-			return []
-		}
-		return group.items.indices.map { $0 }
+		return items.indices.map { $0 }
 	}
 	func row(forItemIndex itemIndex: Int) -> Int { return itemIndex }
 	
@@ -21,13 +20,13 @@ extension CollectionsViewModel: LibraryViewModel {
 		return Self(context: context)
 	}
 	func rowIdentifiers() -> [AnyHashable] {
-		return group.items.map { $0.objectID }
+		return items.map { $0.objectID }
 	}
 }
 extension CollectionsViewModel {
 	init(context: NSManagedObjectContext) {
+		items = Collection.allFetched(sorted: true, context: context)
 		self.context = context
-		group = CollectionsGroup(context: context)
 	}
 	
 	func collectionNonNil(atRow: Int) -> Collection {
@@ -36,7 +35,7 @@ extension CollectionsViewModel {
 	
 	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
 		var twin = self
-		twin.group.items = newItems
+		twin.items = newItems
 		return twin
 	}
 	
@@ -47,9 +46,8 @@ extension CollectionsViewModel {
 	func updatedAfterCreating() -> Self {
 		let newCollection = Collection(context: context)
 		newCollection.title = LRString.tilde
-		// When we call `setViewModelAndMoveAndDeselectRowsAndShouldContinue`, the property observer will set each `Collection.index` for us.
 		
-		var newItems = group.items
+		var newItems = items
 		newItems.insert(newCollection, at: Self.indexOfNewCollection)
 		
 		return updatedWithItemsInOnlyGroup(newItems)
@@ -61,7 +59,7 @@ extension CollectionsViewModel {
 		return updatedWithItemsInOnlyGroup(newItems)
 	}
 	private func itemsAfterDeletingNewCollection() -> [NSManagedObject] {
-		let oldItems = group.items
+		let oldItems = items
 		guard
 			let collection = oldItems[Self.indexOfNewCollection] as? Collection,
 			collection.isEmpty()
@@ -71,7 +69,7 @@ extension CollectionsViewModel {
 		
 		context.delete(collection)
 		
-		var newItems = group.items
+		var newItems = items
 		newItems.remove(at: Self.indexOfNewCollection)
 		return newItems
 	}

@@ -74,7 +74,7 @@ final class SongsTVC: LibraryTVC {
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		if viewModel.isEmpty() {
+		if viewModel.items.isEmpty {
 			contentUnavailableConfiguration = UIHostingConfiguration {
 				Image(systemName: "music.note")
 					.foregroundStyle(.secondary)
@@ -90,10 +90,10 @@ final class SongsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
-		if viewModel.isEmpty() {
+		if viewModel.items.isEmpty {
 			return 0 // Without `prerowCount`
 		} else {
-			return SongsViewModel.prerowCount + viewModel.group.items.count
+			return SongsViewModel.prerowCount + viewModel.items.count
 		}
 	}
 	

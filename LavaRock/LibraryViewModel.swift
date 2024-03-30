@@ -4,7 +4,9 @@ import CoreData
 
 protocol LibraryViewModel {
 	var context: NSManagedObjectContext { get }
-	var group: LibraryGroup { get set }
+	
+	// You must add a `didSet` that calls `Fn.renumber(items)`.
+	var items: [NSManagedObject] { get set }
 	
 	func itemIndex(forRow row: Int) -> Int
 	func rowsForAllItems() -> [Int]
@@ -14,14 +16,10 @@ protocol LibraryViewModel {
 	func rowIdentifiers() -> [AnyHashable]
 }
 extension LibraryViewModel {
-	func isEmpty() -> Bool {
-		return group.items.isEmpty
-	}
 	func pointsToSomeItem(row: Int) -> Bool {
-		guard !isEmpty() else {
+		guard !items.isEmpty else {
 			return false
 		}
-		let items = group.items
 		let itemIndex = itemIndex(forRow: row)
 		guard 0 <= itemIndex, itemIndex < items.count else {
 			return false
@@ -30,6 +28,6 @@ extension LibraryViewModel {
 	}
 	func itemNonNil(atRow: Int) -> NSManagedObject {
 		let itemIndex = itemIndex(forRow: atRow)
-		return group.items[itemIndex]
+		return items[itemIndex]
 	}
 }
