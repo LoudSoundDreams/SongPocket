@@ -78,8 +78,6 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	@IBAction private func unwindToAlbums(_ unwindSegue: UIStoryboardSegue) {}
-	
 	override func viewWillTransition(
 		to size: CGSize,
 		with coordinator: UIViewControllerTransitionCoordinator

@@ -32,12 +32,8 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <connections>
-                        <segue destination="GFi-fJ-75x" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToCollections:" id="ZST-h2-yhJ"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DLy-Uy-9MG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="GFi-fJ-75x" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="7669.6000000000004" y="193.5960591133005"/>
         </scene>

@@ -105,8 +105,6 @@ final class CollectionsTVC: LibraryTVC {
 		}
 	}
 	
-	@IBAction private func unwindToCollections(_ unwindSegue: UIStoryboardSegue) {}
-	
 	override func viewDidAppear(_ animated: Bool) {
 		switch purpose {
 			case .movingAlbums: revertCreate()

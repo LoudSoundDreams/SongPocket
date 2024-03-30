@@ -40,12 +40,8 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <connections>
-                        <segue destination="gme-PH-Cgo" kind="unwind" identifier="Removed All Contents" unwindAction="unwindToAlbums:" id="80Z-h1-Rre"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hsb-JF-X0J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="gme-PH-Cgo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="8373.6000000000004" y="192.85714285714286"/>
         </scene>
