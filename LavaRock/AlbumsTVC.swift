@@ -200,22 +200,6 @@ final class AlbumsTVC: LibraryTVC {
 		return UIMenu(children: inlineSubmenus)
 	}
 	
-	// MARK: - Navigation
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		let albumsViewModel = viewModel as! AlbumsViewModel
-		
-		guard
-			let selectedIndexPath = tableView.indexPathForSelectedRow,
-			let songsTVC = segue.destination as? SongsTVC
-		else { return }
-		
-		let selectedAlbum = albumsViewModel.albumNonNil(atRow: selectedIndexPath.row)
-		songsTVC.viewModel = SongsViewModel(
-			album: selectedAlbum,
-			context: viewModel.context)
-	}
-	
 	// MARK: - “Move” sheet
 	
 	private func moveHere() {
@@ -267,7 +251,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		// The cell in the storyboard is completely default except for the reuse identifier and selection segue.
+		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 		let album = (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row)
 		let (mode, enabled) = new_albumRowMode_and_selectionStyle(album: album)
@@ -313,6 +297,24 @@ final class AlbumsTVC: LibraryTVC {
 			}
 		}()
 		return (mode, enabled)
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
+	) {
+		if !isEditing {
+			navigationController?.pushViewController(
+				{
+					let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
+					songsTVC.viewModel = SongsViewModel(
+						album: (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row),
+						context: viewModel.context)
+					return songsTVC
+				}(),
+				animated: true)
+		}
+		
+		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
 }
 

@@ -202,14 +202,6 @@ class LibraryTVC: UITableViewController {
 		freshenEditingButtons()
 	}
 	
-	// MARK: - Navigation
-	
-	final override func shouldPerformSegue(
-		withIdentifier identifier: String, sender: Any?
-	) -> Bool {
-		return !isEditing
-	}
-	
 	// MARK: - Freshening UI
 	
 	private func setBarButtons(animated: Bool) {

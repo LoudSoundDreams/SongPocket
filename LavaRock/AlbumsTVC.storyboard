@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DGZ-AG-uNY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DGZ-AG-uNY">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,9 +23,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="v3s-iD-Mt5" kind="show" id="rUf-ZP-JHr"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
@@ -44,16 +40,6 @@
                 <exit id="GFi-fJ-75x" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="7669.6000000000004" y="193.5960591133005"/>
-        </scene>
-        <!--SongsTVC-->
-        <scene sceneID="Raa-6h-0N5">
-            <objects>
-                <viewControllerPlaceholder storyboardName="SongsTVC" id="v3s-iD-Mt5" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="leS-C5-NRJ"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MhA-1Q-hfh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="8373.9130434782619" y="192.85714285714286"/>
         </scene>
     </scenes>
     <resources>
