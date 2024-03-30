@@ -18,7 +18,6 @@
 		075218A2257C498D0077AE9B /* LRString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* LRString.swift */; };
 		075FC9042B46765D00219146 /* Sample Artwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075FC9032B46765D00219146 /* Sample Artwork.xcassets */; };
 		07602AC82620DC4C00D84123 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07602AC72620DC4C00D84123 /* LibraryItem.swift */; };
-		07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */; };
 		0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */; };
 		076830AE24B42DEF0033E3CC /* LavaRockUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */; };
 		076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BB24B42E3E0033E3CC /* LibraryTVC.swift */; };
@@ -80,7 +79,6 @@
 		075218A1257C498D0077AE9B /* LRString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRString.swift; sourceTree = "<group>"; };
 		075FC9032B46765D00219146 /* Sample Artwork.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Sample Artwork.xcassets"; sourceTree = "<group>"; };
 		07602AC72620DC4C00D84123 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
-		07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGroup.swift; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768309224B42DEC0033E3CC /* LavaRock.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LavaRock.xcdatamodel; sourceTree = "<group>"; };
 		0768309924B42DEE0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 				07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */,
 				07EC01E926C8958300954E08 /* AlbumsViewModel.swift */,
 				07EC01EB26C895CB00954E08 /* SongsViewModel.swift */,
-				07642C7D268FFEDC00B66BB8 /* LibraryGroup.swift */,
 				07755A57294821860056E90C /* Avatar.swift */,
 				076F1C0127E66DAA00220C2B /* Apple Music.swift */,
 				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
@@ -366,7 +363,6 @@
 				0751DE3926C5C6E800AA14DA /* LibraryViewModel.swift in Sources */,
 				07A4F90A2519E7D20065C87E /* MusicRepo - Create.swift in Sources */,
 				072FD02726C30BB90053369B /* MusicRepo - Clean Up.swift in Sources */,
-				07642C7E268FFEDC00B66BB8 /* LibraryGroup.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Standard.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
 				07755A58294821860056E90C /* Avatar.swift in Sources */,
