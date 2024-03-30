@@ -33,16 +33,9 @@ extension CollectionsViewModel {
 		return itemNonNil(atRow: atRow) as! Collection
 	}
 	
-	private func updatedWithItemsInOnlyGroup(_ newItems: [NSManagedObject]) -> Self {
-		var twin = self
-		twin.items = newItems
-		return twin
-	}
-	
 	// MARK: - “Move” sheet
 	
 	static let indexOfNewCollection = 0
-	
 	func updatedAfterCreating() -> Self {
 		let newCollection = Collection(context: context)
 		newCollection.title = LRString.tilde
@@ -50,13 +43,16 @@ extension CollectionsViewModel {
 		var newItems = items
 		newItems.insert(newCollection, at: Self.indexOfNewCollection)
 		
-		return updatedWithItemsInOnlyGroup(newItems)
+		var twin = self
+		twin.items = newItems
+		return twin
 	}
-	
 	func updatedAfterDeletingNewCollection() -> Self {
 		let newItems = itemsAfterDeletingNewCollection()
 		
-		return updatedWithItemsInOnlyGroup(newItems)
+		var twin = self
+		twin.items = newItems
+		return twin
 	}
 	private func itemsAfterDeletingNewCollection() -> [NSManagedObject] {
 		let oldItems = items
