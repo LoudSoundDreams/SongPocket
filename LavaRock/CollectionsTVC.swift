@@ -95,11 +95,10 @@ final class CollectionsTVC: LibraryTVC {
 					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen()
 					}),
 					animated: false)
-			case .browsing:
 				if !MainToolbar.usesSwiftUI {
-					navigationController?.setToolbarHidden(false, animated: false)
+					navigationController?.setToolbarHidden(true, animated: false)
 				}
-				
+			case .browsing:
 				AppleMusic.loadingIndicator = self
 				
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
@@ -107,21 +106,6 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	@IBAction private func unwindToCollections(_ unwindSegue: UIStoryboardSegue) {}
-	
-	override func viewIsAppearing(_ animated: Bool) {
-		super.viewIsAppearing(animated)
-		switch purpose {
-			case .movingAlbums: break
-			case .browsing:
-				if !forBrowsingAndHasFirstAppeared {
-					forBrowsingAndHasFirstAppeared = true
-					
-					// As of iOS 16.6.1, the build setting “Global Accent Color Name” doesn’t apply to (UIKit) alerts or action sheets.
-					view.window!.tintColor = UIColor(named: "denim")!
-				}
-		}
-	}
-	private var forBrowsingAndHasFirstAppeared = false
 	
 	override func viewDidAppear(_ animated: Bool) {
 		switch purpose {

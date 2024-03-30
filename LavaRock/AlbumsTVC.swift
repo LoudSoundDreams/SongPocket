@@ -29,6 +29,14 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
+		if Enabling.unifiedAlbumList {
+			if let collection = Collection.allFetched(sorted: true, context: Database.viewContext).first {
+				viewModel = AlbumsViewModel(
+					collection: collection,
+					context: Database.viewContext)
+			}
+		}
+		
 		switch purpose {
 			case .movingAlbums: break
 			case .browsing:

@@ -34,11 +34,20 @@ struct LavaRock: App {
 	}
 }
 private struct RootVC: UIViewControllerRepresentable {
-	typealias VCType = UINavigationController
+	typealias VCType = RootNC
 	func makeUIViewController(context: Context) -> VCType {
-		let result = UINavigationController(
-			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil).instantiateInitialViewController()!
-		)
+		let result: RootNC = {
+			if Enabling.unifiedAlbumList {
+				if let _ = Collection.allFetched(sorted: false, context: Database.viewContext).first {
+					return RootNC(
+						rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
+					)
+				}
+			}
+			return RootNC(
+				rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil).instantiateInitialViewController()!
+			)
+		}()
 		
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
@@ -48,4 +57,21 @@ private struct RootVC: UIViewControllerRepresentable {
 		return result
 	}
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}
+}
+private final class RootNC: UINavigationController {
+	override func viewIsAppearing(_ animated: Bool) {
+		super.viewIsAppearing(animated)
+		
+		if !Self.hasAppeared {
+			Self.hasAppeared = true
+			
+			// As of iOS 16.6.1, the build setting “Global Accent Color Name” doesn’t apply to (UIKit) alerts or action sheets.
+			view.window!.tintColor = UIColor(named: "denim")!
+			
+			if !MainToolbar.usesSwiftUI {
+				setToolbarHidden(false, animated: false)
+			}
+		}
+	}
+	private static var hasAppeared = false
 }
