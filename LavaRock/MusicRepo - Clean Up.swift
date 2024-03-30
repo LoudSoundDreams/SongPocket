@@ -29,7 +29,7 @@ extension MusicRepo {
 		}
 		allAlbums.forEach {
 			let songs = $0.songs(sorted: true)
-			Fn.renumber(songs)
+			Library.renumber(songs)
 		}
 	}
 	
@@ -78,7 +78,7 @@ extension MusicRepo {
 			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInCollection)
 		}
 		
-		Fn.renumber(albumsInCollection)
+		Library.renumber(albumsInCollection)
 	}
 	
 	private static func sortedByNewestFirstAndUnknownReleaseDateLast(

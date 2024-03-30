@@ -9,7 +9,7 @@ struct SongsViewModel {
 	// `LibraryViewModel`
 	let context: NSManagedObjectContext
 	var items: [NSManagedObject] {
-		didSet { Fn.renumber(items) }
+		didSet { Library.renumber(items) }
 	}
 }
 extension SongsViewModel: LibraryViewModel {

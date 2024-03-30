@@ -112,7 +112,7 @@ extension Album {
 		}
 		
 		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
-		Fn.renumber(sortedSongs)
+		Library.renumber(sortedSongs)
 	}
 	
 	// MARK: Creating

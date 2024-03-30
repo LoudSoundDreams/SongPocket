@@ -1,14 +1,5 @@
 // 2021-10-26
 
-import CoreData
-enum Fn {
-	static func renumber(_ items: [NSManagedObject]) { // Replace with `LibraryItem`
-		items.enumerated().forEach { (currentIndex, item) in
-			item.setValue(Int64(currentIndex), forKey: "index")
-		}
-	}
-}
-
 extension Double {
 	static var oneEighth: Self { 1/8 }
 	static var oneFourth: Self { 1/4 }

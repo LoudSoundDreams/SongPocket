@@ -2,6 +2,14 @@
 
 import CoreData
 
+enum Library {
+	static func renumber(_ items: [NSManagedObject]) { // Replace with `LibraryItem`
+		items.enumerated().forEach { (currentIndex, item) in
+			item.setValue(Int64(currentIndex), forKey: "index")
+		}
+	}
+}
+
 protocol LibraryContainer: NSManagedObject {
 	var contents: NSSet? { get }
 }

@@ -109,7 +109,7 @@ extension NSManagedObjectContext {
 		// Clean up
 		sourceCollections.forEach {
 			let albums = $0.albums(sorted: true)
-			Fn.renumber(albums)
+			Library.renumber(albums)
 		}
 		deleteEmptyCollections()
 	}
@@ -135,6 +135,6 @@ extension NSManagedObjectContext {
 			}
 		}
 		
-		Fn.renumber(all)
+		Library.renumber(all)
 	}
 }
