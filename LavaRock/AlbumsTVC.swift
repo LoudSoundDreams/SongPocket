@@ -74,8 +74,14 @@ final class AlbumsTVC: LibraryTVC {
 					}(),
 					animated: false)
 			case .browsing:
+				if Enabling.unifiedAlbumList {
+					NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectRepoStatus), name: .LRMusicRepoStatusChanged, object: nil)
+				}
+				
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
 		}
+	}
+	@objc private func reflectRepoStatus() {
 	}
 	
 	override func viewWillTransition(
