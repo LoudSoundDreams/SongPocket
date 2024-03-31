@@ -1,17 +1,14 @@
 // 2020-08-10
 
-import MediaPlayer
 import CoreData
+import MediaPlayer
 
 final class MusicRepo: ObservableObject {
-	private init() {}
 	static let shared = MusicRepo()
+	private init() {}
 	
 	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
 	@Published var signal_userUpdatedDatabase = false // Value doesn’t actually matter
-	
-	private var library: MPMediaLibrary? = nil
-	let context = Database.viewContext
 	
 	func watchMPLibrary() {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
@@ -27,6 +24,8 @@ final class MusicRepo: ObservableObject {
 		
 		mergeChanges()
 	}
+	private var library: MPMediaLibrary? = nil
+	let context = Database.viewContext
 	@objc private func mergeChanges() {
 #if targetEnvironment(simulator)
 		context.performAndWait {
