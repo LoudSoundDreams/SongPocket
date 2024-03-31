@@ -16,10 +16,10 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	private enum CollectionsViewState {
-		case allowAccess
+		case noAccess
 		case loading
-		case emptyDatabase
-		case someCollections
+		case empty
+		case stocked
 	}
 	
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(
@@ -32,22 +32,22 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	private var viewState: CollectionsViewState {
-		guard MusicAuthorization.currentStatus == .authorized else { return .allowAccess }
-		guard viewModel.items.isEmpty else { return .someCollections }
+		guard MusicAuthorization.currentStatus == .authorized else { return .noAccess }
+		guard viewModel.items.isEmpty else { return .stocked }
 		if isMergingChanges { return .loading }
-		return .emptyDatabase
+		return .empty
 	}
 	
 	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
 	// MARK: -
 	
-	@objc private func reflectViewState() {
+	@objc private func reflectRepoStatus() {
 		let toDelete: [IndexPath] = {
 			switch viewState {
-				case .allowAccess, .loading, .emptyDatabase:
+				case .noAccess, .loading, .empty:
 					return tableView.indexPathsForRows(section: 0, firstRow: 0)
-				case .someCollections: // Merging changes with existing collections
+				case .stocked: // Merging changes with existing collections
 					// Crashes after Reset Location & Privacy
 					return []
 			}
@@ -57,11 +57,11 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		
 		switch viewState {
-			case .allowAccess, .loading, .emptyDatabase:
+			case .noAccess, .loading, .empty:
 				if isEditing {
 					setEditing(false, animated: true)
 				}
-			case .someCollections: break
+			case .stocked: break
 		}
 		
 		freshenEditingButtons() // Including “Edit” button
@@ -100,7 +100,7 @@ final class CollectionsTVC: LibraryTVC {
 				}
 			case .browsing:
 				if !Enabling.unifiedAlbumList {
-					NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectViewState), name: .LRMusicRepoStatusChanged, object: nil)
+					NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectRepoStatus), name: .LRMusicRepoStatusChanged, object: nil)
 				}
 				AppleMusic.loadingIndicator = self
 				
@@ -118,10 +118,10 @@ final class CollectionsTVC: LibraryTVC {
 	
 	func prepareToIntegrateWithAppleMusic() async {
 		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
-		reflectViewState()
+		reflectRepoStatus()
 	}
 	
-	func requestAccessToAppleMusic() async {
+	private func requestAccessToAppleMusic() async {
 		switch MusicAuthorization.currentStatus {
 			case .authorized: break // Should never run
 			case .notDetermined:
@@ -149,18 +149,18 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		
 		switch viewState {
-			case .loading, .emptyDatabase:
-				reflectViewState()
+			case .loading, .empty:
+				reflectRepoStatus()
 				super.freshenLibraryItems()
 				return
-			case .allowAccess, .someCollections: break
+			case .noAccess, .stocked: break
 		}
 		
 		super.freshenLibraryItems()
 	}
 	
 	override func reflectViewModelIsEmpty() {
-		reflectViewState()
+		reflectRepoStatus()
 	}
 	
 	// MARK: Editing
@@ -229,9 +229,9 @@ final class CollectionsTVC: LibraryTVC {
 		super.freshenEditingButtons()
 		
 		switch viewState {
-			case .allowAccess, .loading, .emptyDatabase:
+			case .noAccess, .loading, .empty:
 				editButtonItem.isEnabled = false
-			case .someCollections: break
+			case .stocked: break
 		}
 		
 		arrangeCollectionsButton.isEnabled = allowsArrange()
@@ -302,9 +302,9 @@ final class CollectionsTVC: LibraryTVC {
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		switch viewState {
-			case .someCollections:
+			case .stocked:
 				contentUnavailableConfiguration = nil
-			case .allowAccess:
+			case .noAccess:
 				contentUnavailableConfiguration = UIHostingConfiguration {
 					ContentUnavailableView {
 					} description: {
@@ -323,7 +323,7 @@ final class CollectionsTVC: LibraryTVC {
 				contentUnavailableConfiguration = UIHostingConfiguration {
 					ProgressView().tint(.secondary)
 				}
-			case .emptyDatabase:
+			case .empty:
 				contentUnavailableConfiguration = UIHostingConfiguration {
 					ContentUnavailableView {
 					} actions: {
@@ -344,8 +344,8 @@ final class CollectionsTVC: LibraryTVC {
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	)-> Int {
 		switch viewState {
-			case .allowAccess, .loading, .emptyDatabase: return 0
-			case .someCollections: return viewModel.items.count
+			case .noAccess, .loading, .empty: return 0
+			case .stocked: return viewModel.items.count
 		}
 	}
 	
