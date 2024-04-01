@@ -10,11 +10,22 @@ extension CollectionsTVC: UITextFieldDelegate {
 	}
 }
 final class CollectionsTVC: LibraryTVC {
+	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
+	private var purpose: Purpose {
+		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
+		return .browsing
+	}
 	private enum Purpose {
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
 	}
 	
+	private var viewState: CollectionsViewState {
+		guard MusicAuthorization.currentStatus == .authorized else { return .noAccess }
+		guard viewModel.items.isEmpty else { return .stocked }
+		if isMergingChanges { return .loading }
+		return .empty
+	}
 	private enum CollectionsViewState {
 		case noAccess
 		case loading
@@ -25,20 +36,6 @@ final class CollectionsTVC: LibraryTVC {
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(
 		title: LRString.sort,
 		image: UIImage(systemName: "arrow.up.arrow.down"))
-	
-	private var purpose: Purpose {
-		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
-		return .browsing
-	}
-	
-	private var viewState: CollectionsViewState {
-		guard MusicAuthorization.currentStatus == .authorized else { return .noAccess }
-		guard viewModel.items.isEmpty else { return .stocked }
-		if isMergingChanges { return .loading }
-		return .empty
-	}
-	
-	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
 	// MARK: -
 	

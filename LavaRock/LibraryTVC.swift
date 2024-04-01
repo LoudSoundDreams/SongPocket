@@ -57,7 +57,7 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	final var isMergingChanges = false
-	final var needsFreshenLibraryItemsOnViewDidAppear = false
+	private var needsFreshenLibraryItemsOnViewDidAppear = false
 	
 	// MARK: - Setup
 	

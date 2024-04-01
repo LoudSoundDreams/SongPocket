@@ -6,6 +6,11 @@ import MusicKit
 import CoreData
 
 final class AlbumsTVC: LibraryTVC {
+	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
+	private var purpose: Purpose {
+		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
+		return .browsing
+	}
 	private enum Purpose {
 		case movingAlbums(MoveAlbumsClipboard)
 		case browsing
@@ -18,13 +23,6 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(
 		title: LRString.sort,
 		image: UIImage(systemName: "arrow.up.arrow.down"))
-	
-	private var purpose: Purpose {
-		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
-		return .browsing
-	}
-	
-	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
 	
 	// MARK: - Setup
 	
