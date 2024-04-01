@@ -40,27 +40,16 @@ final class CollectionsTVC: LibraryTVC {
 	// MARK: -
 	
 	private func reflectRepoStatus() {
-		let toDelete: [IndexPath] = {
-			switch viewState {
-				case .noAccess, .loading, .empty:
-					return tableView.indexPathsForRows(section: 0, firstRow: 0)
-				case .stocked: // Merging changes with existing collections
-					// Crashes after Reset Location & Privacy
-					return []
-			}
-		}()
-		tableView.performBatchUpdates {
-			tableView.deleteRows(at: toDelete, with: .middle)
-		}
-		
 		switch viewState {
 			case .noAccess, .loading, .empty:
+				tableView.deleteRows(
+					at: tableView.indexPathsForRows(section: 0, firstRow: 0),
+					with: .middle)
 				if isEditing {
 					setEditing(false, animated: true)
 				}
 			case .stocked: break
 		}
-		
 		freshenEditingButtons() // Including “Edit” button
 	}
 	
