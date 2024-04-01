@@ -171,9 +171,7 @@ final class CollectionsTVC: LibraryTVC {
 			collection.title = proposedTitle
 		}
 		
-		tableView.performBatchUpdates {
-			tableView.reloadRows(at: [indexPath], with: .fade)
-		}
+		tableView.reloadRows(at: [indexPath], with: .fade)
 		if thenShouldReselect {
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 		}
