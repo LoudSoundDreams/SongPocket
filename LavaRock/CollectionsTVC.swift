@@ -37,22 +37,6 @@ final class CollectionsTVC: LibraryTVC {
 		title: LRString.sort,
 		image: UIImage(systemName: "arrow.up.arrow.down"))
 	
-	// MARK: -
-	
-	private func reflectRepoStatus() {
-		switch viewState {
-			case .noAccess, .loading, .empty:
-				tableView.deleteRows(
-					at: tableView.indexPathsForRows(section: 0, firstRow: 0),
-					with: .middle)
-				if isEditing {
-					setEditing(false, animated: true)
-				}
-			case .stocked: break
-		}
-		freshenEditingButtons() // Including “Edit” button
-	}
-	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
@@ -100,27 +84,8 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	func prepareToIntegrateWithAppleMusic() async {
-		isMergingChanges = true // `viewState` is now `.loading` or `.someCollections` (updating)
+		isMergingChanges = true // `viewState` is now `.loading` or `.stocked` (updating)
 		reflectRepoStatus()
-	}
-	
-	private func requestAccessToAppleMusic() async {
-		switch MusicAuthorization.currentStatus {
-			case .authorized: break // Should never run
-			case .notDetermined:
-				let response = await MusicAuthorization.request()
-				
-				switch response {
-					case .denied, .restricted, .notDetermined: break
-					case .authorized: await AppleMusic.integrateIfAuthorized()
-					@unknown default: break
-				}
-			case .denied, .restricted:
-				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-					let _ = await UIApplication.shared.open(settingsURL)
-				}
-			@unknown default: break
-		}
 	}
 	
 	// MARK: - Library items
@@ -130,12 +95,10 @@ final class CollectionsTVC: LibraryTVC {
 			case .movingAlbums: return
 			case .browsing: break
 		}
-		
 		switch viewState {
 			case .loading, .empty: reflectRepoStatus()
 			case .noAccess, .stocked: break
 		}
-		
 		super.freshenLibraryItems()
 	}
 	
@@ -143,9 +106,23 @@ final class CollectionsTVC: LibraryTVC {
 		reflectRepoStatus()
 	}
 	
+	private func reflectRepoStatus() {
+		switch viewState {
+			case .noAccess, .loading, .empty:
+				tableView.deleteRows(
+					at: tableView.indexPathsForRows(section: 0, firstRow: 0),
+					with: .middle)
+				if isEditing {
+					setEditing(false, animated: true)
+				}
+			case .stocked: break
+		}
+		freshenEditingButtons() // Including “Edit” button
+	}
+	
 	// MARK: Editing
 	
-	func promptRename(at indexPath: IndexPath) {
+	private func promptRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
 		
 		let dialog = UIAlertController(title: LRString.rename, message: nil, preferredStyle: .alert)
@@ -172,8 +149,7 @@ final class CollectionsTVC: LibraryTVC {
 			self?.commitRename(
 				textFieldText: dialog.textFields?.first?.text,
 				indexPath: indexPath,
-				thenShouldReselect: rowWasSelectedBeforeRenaming
-			)
+				thenShouldReselect: rowWasSelectedBeforeRenaming)
 		}
 		dialog.addAction(done)
 		dialog.preferredAction = done
@@ -207,13 +183,10 @@ final class CollectionsTVC: LibraryTVC {
 	
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
-		
 		switch viewState {
-			case .noAccess, .loading, .empty:
-				editButtonItem.isEnabled = false
+			case .noAccess, .loading, .empty: editButtonItem.isEnabled = false
 			case .stocked: break
 		}
-		
 		arrangeCollectionsButton.isEnabled = allowsArrange()
 		arrangeCollectionsButton.menu = createArrangeMenu()
 	}
@@ -318,6 +291,24 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		
 		return 1
+	}
+	private func requestAccessToAppleMusic() async {
+		switch MusicAuthorization.currentStatus {
+			case .authorized: break // Should never run
+			case .notDetermined:
+				let response = await MusicAuthorization.request()
+				
+				switch response {
+					case .denied, .restricted, .notDetermined: break
+					case .authorized: await AppleMusic.integrateIfAuthorized()
+					@unknown default: break
+				}
+			case .denied, .restricted:
+				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+					let _ = await UIApplication.shared.open(settingsURL)
+				}
+			@unknown default: break
+		}
 	}
 	
 	override func tableView(
