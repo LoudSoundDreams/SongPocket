@@ -102,11 +102,6 @@ final class CollectionsTVC: LibraryTVC {
 		super.freshenLibraryItems()
 	}
 	
-	override func reflectViewModelIsEmpty() {
-		deleteThenExit()
-		setEditing(false, animated: true) // Do this after `deleteThenExit`, not before, because this includes `performBatchUpdates`.
-	}
-	
 	private func reflectRepoStatus() {
 		switch viewState {
 			case .noAccess, .loading, .empty:
@@ -119,6 +114,11 @@ final class CollectionsTVC: LibraryTVC {
 			case .stocked: break
 		}
 		freshenEditingButtons() // Including “Edit” button
+	}
+	
+	override func reflectViewModelIsEmpty() {
+		deleteThenExit()
+		setEditing(false, animated: true) // Do this after `deleteThenExit`, not before, because this includes `performBatchUpdates`.
 	}
 	
 	// MARK: Editing
