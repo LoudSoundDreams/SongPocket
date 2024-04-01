@@ -414,16 +414,10 @@ private struct CollectionRow: View {
 				Chevron().hidden()
 				AvatarImage(libraryItem: collection, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
 			}
-			
-			Text({ () -> String in
-				// Don’t let this be `nil` or `""`. Otherwise, when we revert combining collections before `freshenLibraryItems`, the table view vertically collapses rows for deleted collections.
-				guard let title, title != "" else { return " " }
-				return title
-			}())
-			.multilineTextAlignment(.center)
-			.frame(maxWidth: .infinity)
-			.padding(.bottom, .eight * 1/4)
-			
+			Text(title ?? "")
+				.multilineTextAlignment(.center)
+				.frame(maxWidth: .infinity)
+				.padding(.bottom, .eight * 1/4)
 			ZStack(alignment: .trailing) {
 				AvatarPlayingImage().hidden()
 				Chevron()
