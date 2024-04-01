@@ -103,7 +103,8 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	override func reflectViewModelIsEmpty() {
-		reflectRepoStatus()
+		deleteThenExit()
+		setEditing(false, animated: true) // Do this after `deleteThenExit`, not before, because this includes `performBatchUpdates`.
 	}
 	
 	private func reflectRepoStatus() {
