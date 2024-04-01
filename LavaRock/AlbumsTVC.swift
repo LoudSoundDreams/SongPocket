@@ -29,9 +29,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func viewDidLoad() {
 		if Enabling.unifiedAlbumList {
 			if let collection = Collection.allFetched(sorted: true, context: Database.viewContext).first {
-				viewModel = AlbumsViewModel(
-					collection: collection,
-					context: Database.viewContext)
+				viewModel = AlbumsViewModel(collection: collection)
 			}
 		}
 		
@@ -138,7 +136,7 @@ final class AlbumsTVC: LibraryTVC {
 		}())
 		collectionsTVC.viewModel = CollectionsViewModel(context: {
 			let childContext = NSManagedObjectContext(.mainQueue)
-			childContext.parent = viewModel.context
+			childContext.parent = Database.viewContext
 			return childContext
 		}())
 		
@@ -204,17 +202,16 @@ final class AlbumsTVC: LibraryTVC {
 			let albumsViewModel = viewModel as? AlbumsViewModel
 		else { return }
 		
-		albumsViewModel.context.move(
+		let childContext = albumsViewModel.collection.managedObjectContext!
+		childContext.move(
 			albumIDs: clipboard.idsOfAlbumsBeingMoved,
 			toCollectionWith: albumsViewModel.collection.objectID)
-		let newViewModel = AlbumsViewModel(
-			collection: albumsViewModel.collection,
-			context: albumsViewModel.context)
+		let newViewModel = AlbumsViewModel(collection: albumsViewModel.collection)
 		Task {
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
-			viewModel.context.tryToSave()
-			viewModel.context.parent!.tryToSave() // Save the main context now, even though we haven’t exited editing mode, because if you moved all the albums out of a collection, we’ll close the collection and exit editing mode shortly.
+			childContext.tryToSave()
+			childContext.parent!.tryToSave() // Save the main context now, even though we haven’t exited editing mode, because if you moved all the albums out of a collection, we’ll close the collection and exit editing mode shortly.
 			
 			NotificationCenter.default.post(name: .LRUserUpdatedDatabase, object: nil)
 			MusicRepo.shared.signal_userUpdatedDatabase.toggle()
@@ -302,9 +299,7 @@ final class AlbumsTVC: LibraryTVC {
 			navigationController?.pushViewController(
 				{
 					let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-					songsTVC.viewModel = SongsViewModel(
-						album: (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row),
-						context: viewModel.context)
+					songsTVC.viewModel = SongsViewModel(album: (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row))
 					return songsTVC
 				}(),
 				animated: true)

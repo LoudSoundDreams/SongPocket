@@ -6,7 +6,6 @@ struct AlbumsViewModel {
 	let collection: Collection
 	
 	// `LibraryViewModel`
-	let context: NSManagedObjectContext
 	var items: [NSManagedObject] {
 		didSet { Library.renumber(items) }
 	}
@@ -20,7 +19,7 @@ extension AlbumsViewModel: LibraryViewModel {
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
-		return Self(collection: collection, context: context)
+		return Self(collection: collection)
 	}
 	
 	func rowIdentifiers() -> [AnyHashable] {
@@ -28,13 +27,14 @@ extension AlbumsViewModel: LibraryViewModel {
 	}
 }
 extension AlbumsViewModel {
-	init(
-		collection: Collection,
-		context: NSManagedObjectContext
-	) {
-		items = Album.allFetched(sorted: true, inCollection: collection, context: context)
+	init(collection: Collection) {
+		if let context = collection.managedObjectContext {
+			items = Album.allFetched(sorted: true, inCollection: collection, context: context)
+		} else {
+			// We deleted `collection`
+			items = []
+		}
 		self.collection = collection
-		self.context = context
 	}
 	
 	func albumNonNil(atRow: Int) -> Album {

@@ -3,8 +3,6 @@
 import CoreData
 
 protocol LibraryViewModel {
-	var context: NSManagedObjectContext { get }
-	
 	// You must add a `didSet` that calls `Fn.renumber(items)`.
 	var items: [NSManagedObject] { get set }
 	

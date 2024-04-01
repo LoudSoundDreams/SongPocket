@@ -3,8 +3,9 @@
 import CoreData
 
 struct CollectionsViewModel {
-	// `LibraryViewModel`
 	let context: NSManagedObjectContext
+	
+	// `LibraryViewModel`
 	var items: [NSManagedObject] {
 		didSet { Library.renumber(items) }
 	}

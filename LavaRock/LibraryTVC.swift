@@ -230,7 +230,7 @@ class LibraryTVC: UITableViewController {
 			// As of iOS 17.3 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
 			tableView.deselectAllRows(animated: true)
 			
-			viewModel.context.tryToSave()
+			Database.viewContext.tryToSave()
 		}
 		
 		super.setEditing(editing, animated: animated)

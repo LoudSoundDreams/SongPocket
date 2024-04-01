@@ -391,9 +391,7 @@ final class CollectionsTVC: LibraryTVC {
 				
 				albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
 				
-				albumsTVC.viewModel = AlbumsViewModel(
-					collection: (viewModel as! CollectionsViewModel).collectionNonNil(atRow: atIndexPath.row),
-					context: viewModel.context)
+				albumsTVC.viewModel = AlbumsViewModel(collection: (viewModel as! CollectionsViewModel).collectionNonNil(atRow: atIndexPath.row))
 				
 				return albumsTVC
 			}(),
