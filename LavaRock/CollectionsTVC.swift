@@ -146,10 +146,7 @@ final class CollectionsTVC: LibraryTVC {
 		}
 		
 		switch viewState {
-			case .loading, .empty:
-				reflectRepoStatus()
-				super.freshenLibraryItems()
-				return
+			case .loading, .empty: reflectRepoStatus()
 			case .noAccess, .stocked: break
 		}
 		
