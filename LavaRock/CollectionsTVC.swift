@@ -84,7 +84,8 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	
 	func prepareToIntegrateWithAppleMusic() async {
-		isMergingChanges = true // `viewState` is now `.loading` or `.stocked` (updating)
+		// `viewState` is either `.noAccess`, `.empty`, or `.stocked`
+		isMergingChanges = true // Now, `viewState` is either `.loading` or `.stocked`
 		reflectRepoStatus()
 	}
 	
@@ -104,14 +105,14 @@ final class CollectionsTVC: LibraryTVC {
 	
 	private func reflectRepoStatus() {
 		switch viewState {
-			case .noAccess, .loading, .empty:
+			case .loading, .empty:
 				tableView.deleteRows(
 					at: tableView.indexPathsForRows(section: 0, firstRow: 0),
 					with: .middle)
 				if isEditing {
 					setEditing(false, animated: true)
 				}
-			case .stocked: break
+			case .noAccess, .stocked: break
 		}
 		freshenEditingButtons() // Including “Edit” button
 	}
