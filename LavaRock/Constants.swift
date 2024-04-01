@@ -24,7 +24,6 @@ enum LRColor {
 
 import Foundation
 extension Notification.Name {
-	static let LRMusicRepoStatusChanged = Self("music repo status changed")
 	static let LRMergedChanges = Self("merged changes")
 	static let LRUserUpdatedDatabase = Self("user updated database")
 }

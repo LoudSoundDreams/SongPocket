@@ -42,7 +42,7 @@ final class CollectionsTVC: LibraryTVC {
 	
 	// MARK: -
 	
-	@objc private func reflectRepoStatus() {
+	private func reflectRepoStatus() {
 		let toDelete: [IndexPath] = {
 			switch viewState {
 				case .noAccess, .loading, .empty:
@@ -99,9 +99,6 @@ final class CollectionsTVC: LibraryTVC {
 					navigationController?.setToolbarHidden(true, animated: false)
 				}
 			case .browsing:
-				if !Enabling.unifiedAlbumList {
-					NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectRepoStatus), name: .LRMusicRepoStatusChanged, object: nil)
-				}
 				AppleMusic.loadingIndicator = self
 				
 				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
