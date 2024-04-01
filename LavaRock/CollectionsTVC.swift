@@ -254,43 +254,39 @@ final class CollectionsTVC: LibraryTVC {
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		switch viewState {
-			case .stocked:
-				contentUnavailableConfiguration = nil
-			case .noAccess:
-				contentUnavailableConfiguration = UIHostingConfiguration {
+		refreshPlaceholder()
+		return 1
+	}
+	private func refreshPlaceholder() {
+		contentUnavailableConfiguration = {
+			switch viewState {
+				case .stocked: return nil
+				case .noAccess: return UIHostingConfiguration {
 					ContentUnavailableView {
 					} description: {
 						Text(LRString.welcome_message)
 					} actions: {
-						Button {
+						Button(LRString.welcome_button) {
 							Task {
 								await self.requestAccessToAppleMusic()
 							}
-						} label: {
-							Text(LRString.welcome_button)
 						}
 					}
 				}
-			case .loading:
-				contentUnavailableConfiguration = UIHostingConfiguration {
+				case .loading: return UIHostingConfiguration {
 					ProgressView().tint(.secondary)
 				}
-			case .empty:
-				contentUnavailableConfiguration = UIHostingConfiguration {
+				case .empty: return UIHostingConfiguration {
 					ContentUnavailableView {
 					} actions: {
-						Button {
+						Button(LRString.emptyLibrary_button) {
 							let musicURL = URL(string: "music://")!
 							UIApplication.shared.open(musicURL)
-						} label: {
-							Text(LRString.emptyLibrary_button)
 						}
 					}
 				}
-		}
-		
-		return 1
+			}
+		}()
 	}
 	private func requestAccessToAppleMusic() async {
 		switch MusicAuthorization.currentStatus {
