@@ -30,8 +30,8 @@ extension MPMusicPlayerController {
 	}
 }
 @MainActor final class AudioPlayer {
-	private init() {}
 	static let shared = AudioPlayer()
+	private init() {}
 	
 	var reflectorToolbar: Weak<__MainToolbar>? = nil
 	

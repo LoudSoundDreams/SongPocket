@@ -218,8 +218,8 @@ import MediaPlayer
 import SwiftUI
 
 final class MainToolbarStatus: ObservableObject {
-	private init() {}
 	static let shared = MainToolbarStatus()
+	private init() {}
 	
 	var baseNC: UINavigationController? = nil
 	
