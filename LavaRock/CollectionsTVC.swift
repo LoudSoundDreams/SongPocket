@@ -122,7 +122,39 @@ final class CollectionsTVC: LibraryTVC {
 		setEditing(false, animated: true) // Do this after `deleteThenExit`, not before, because this includes `performBatchUpdates`.
 	}
 	
-	// MARK: Editing
+	// MARK: - Editing
+	
+	override func freshenEditingButtons() {
+		super.freshenEditingButtons()
+		switch viewState {
+			case .noAccess, .loading, .empty: editButtonItem.isEnabled = false
+			case .stocked: break
+		}
+		arrangeCollectionsButton.isEnabled = allowsArrange()
+		arrangeCollectionsButton.menu = createArrangeMenu()
+	}
+	private static let arrangeCommands: [[ArrangeCommand]] = [
+		[.collection_name],
+		[.random, .reverse],
+	]
+	private func createArrangeMenu() -> UIMenu {
+		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
+		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
+			$0.reversed().map { command in
+				return command.createMenuElement(
+					enabled:
+						unsortedRowsToArrange().count >= 2
+					&& setOfCommands.contains(command)
+				) { [weak self] in
+					self?.arrangeSelectedOrAll(by: command)
+				}
+			}
+		}
+		let inlineSubmenus = elementsGrouped.map {
+			return UIMenu(options: .displayInline, children: $0)
+		}
+		return UIMenu(children: inlineSubmenus)
+	}
 	
 	private func promptRename(at indexPath: IndexPath) {
 		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
@@ -177,40 +209,6 @@ final class CollectionsTVC: LibraryTVC {
 		if thenShouldReselect {
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
 		}
-	}
-	
-	// MARK: - Freshening UI
-	
-	override func freshenEditingButtons() {
-		super.freshenEditingButtons()
-		switch viewState {
-			case .noAccess, .loading, .empty: editButtonItem.isEnabled = false
-			case .stocked: break
-		}
-		arrangeCollectionsButton.isEnabled = allowsArrange()
-		arrangeCollectionsButton.menu = createArrangeMenu()
-	}
-	private static let arrangeCommands: [[ArrangeCommand]] = [
-		[.collection_name],
-		[.random, .reverse],
-	]
-	private func createArrangeMenu() -> UIMenu {
-		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
-		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
-			$0.reversed().map { command in
-				return command.createMenuElement(
-					enabled:
-						unsortedRowsToArrange().count >= 2
-					&& setOfCommands.contains(command)
-				) { [weak self] in
-					self?.arrangeSelectedOrAll(by: command)
-				}
-			}
-		}
-		let inlineSubmenus = elementsGrouped.map {
-			return UIMenu(options: .displayInline, children: $0)
-		}
-		return UIMenu(children: inlineSubmenus)
 	}
 	
 	// MARK: - “Move” sheet

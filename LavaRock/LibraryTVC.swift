@@ -201,7 +201,7 @@ class LibraryTVC: UITableViewController {
 		freshenEditingButtons()
 	}
 	
-	// MARK: - Freshening UI
+	// MARK: - Editing
 	
 	private func setBarButtons(animated: Bool) {
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
