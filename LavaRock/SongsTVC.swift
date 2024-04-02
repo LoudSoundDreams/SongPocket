@@ -15,9 +15,7 @@ final class SongsTVC: LibraryTVC {
 		listStatus.editing = editing
 	}
 	
-	private lazy var arrangeSongsButton = UIBarButtonItem(
-		title: LRString.sort,
-		image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	override func viewDidLoad() {
 		if Enabling.unifiedAlbumList {
 			editingButtons = [
@@ -40,7 +38,6 @@ final class SongsTVC: LibraryTVC {
 	}
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
-		
 		arrangeSongsButton.isEnabled = allowsArrange()
 		arrangeSongsButton.menu = createArrangeMenu()
 	}

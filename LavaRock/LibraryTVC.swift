@@ -17,10 +17,7 @@ class LibraryTVC: UITableViewController {
 	final lazy var viewModel: LibraryViewModel = CollectionsViewModel(context: Database.viewContext)
 	
 	final var editingButtons: [UIBarButtonItem] = []
-	private(set) final lazy var floatButton = UIBarButtonItem(
-		title: LRString.moveToTop,
-		image: UIImage(systemName: "arrow.up.to.line"),
-		primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
+	private(set) final lazy var floatButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
 	private func floatSelected() {
 		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
 		let unorderedIndices = unorderedRows.map {
@@ -36,10 +33,7 @@ class LibraryTVC: UITableViewController {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
-	private(set) final lazy var sinkButton = UIBarButtonItem(
-		title: LRString.moveToBottom,
-		image: UIImage(systemName: "arrow.down.to.line"),
-		primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
+	private(set) final lazy var sinkButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	private func sinkSelected() {
 		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
 		let unorderedIndices = unorderedRows.map {
@@ -245,15 +239,12 @@ class LibraryTVC: UITableViewController {
 	
 	// Overrides should call super (this implementation).
 	func freshenEditingButtons() {
-		// There can momentarily be 0 library items if we’re freshening to reflect changes in the Music library.
-		
 		editButtonItem.isEnabled = !viewModel.items.isEmpty
 		editButtonItem.image = (
 			isEditing
 			? UIImage(systemName: "checkmark.circle.fill")
 			: UIImage(systemName: "checkmark.circle")
 		)
-		
 		let allowsFloatAndSink: Bool = {
 			guard !viewModel.items.isEmpty else {
 				return false

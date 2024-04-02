@@ -33,9 +33,7 @@ final class CollectionsTVC: LibraryTVC {
 		case stocked
 	}
 	
-	private lazy var arrangeCollectionsButton = UIBarButtonItem(
-		title: LRString.sort,
-		image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var arrangeCollectionsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	// MARK: - Setup
 	

@@ -16,13 +16,8 @@ final class AlbumsTVC: LibraryTVC {
 		case browsing
 	}
 	
-	private lazy var moveButton = UIBarButtonItem(
-		title: LRString.move,
-		image: UIImage(systemName: "folder"),
-		primaryAction: UIAction { [weak self] _ in self?.startMoving() })
-	private lazy var arrangeAlbumsButton = UIBarButtonItem(
-		title: LRString.sort,
-		image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var moveButton = UIBarButtonItem(title: LRString.move, image: UIImage(systemName: "folder"), primaryAction: UIAction { [weak self] _ in self?.startMoving() })
+	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	// MARK: - Setup
 	
@@ -115,14 +110,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
-		
-		moveButton.isEnabled = {
-			guard !viewModel.items.isEmpty else {
-				return false
-			}
-			return true
-		}()
-		
+		moveButton.isEnabled = !viewModel.items.isEmpty
 		arrangeAlbumsButton.isEnabled = allowsArrange()
 		arrangeAlbumsButton.menu = createArrangeMenu()
 	}
@@ -163,7 +151,6 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func startMoving() {
-		// Prepare a Collections view to present modally.
 		let nc = UINavigationController(
 			rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil).instantiateInitialViewController()!
 		)
@@ -172,7 +159,6 @@ final class AlbumsTVC: LibraryTVC {
 			let selfVM = viewModel as? AlbumsViewModel
 		else { return }
 		
-		// Configure the `CollectionsTVC`.
 		collectionsTVC.moveAlbumsClipboard = MoveAlbumsClipboard(albumsBeingMoved: {
 			var subjectedRows: [Int] = tableView.selectedIndexPaths.map { $0.row }
 			subjectedRows.sort()
