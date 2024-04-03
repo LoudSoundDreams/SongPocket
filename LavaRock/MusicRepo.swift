@@ -11,8 +11,6 @@ final class MusicRepo: ObservableObject {
 	@Published var signal_userUpdatedDatabase = false // Value doesn’t actually matter
 	
 	func watchMPLibrary() {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return }
-		
 		library?.endGeneratingLibraryChangeNotifications()
 		library = MPMediaLibrary.default()
 		library?.beginGeneratingLibraryChangeNotifications()

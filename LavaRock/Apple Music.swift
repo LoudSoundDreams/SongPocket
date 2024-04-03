@@ -40,7 +40,7 @@ extension MPMusicPlayerController {
 		
 		__player.beginGeneratingPlaybackNotifications()
 		
-		playbackState() // Because before anyone called `watchMPPlayer`, `player` was `nil`, and `MPMediaLibrary.authorizationStatus` might not have been `.authorized`.
+		playbackState()
 		nowPlaying()
 		
 		NotificationCenter.default.addObserverOnce(

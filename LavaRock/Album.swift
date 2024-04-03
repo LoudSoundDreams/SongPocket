@@ -170,9 +170,6 @@ extension Album {
 	}
 	
 	private func mpMediaItemCollection() -> MPMediaItemCollection? {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return nil
-		}
 		let albumsQuery = MPMediaQuery.albums()
 		albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(
 			value: albumPersistentID,

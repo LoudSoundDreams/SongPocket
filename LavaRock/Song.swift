@@ -176,10 +176,6 @@ import MediaPlayer
 extension Song {
 	final func songInfo() -> SongInfo? {
 #if targetEnvironment(simulator)
-		// To match `mpMediaItem`
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return nil
-		}
 		return Sim_SongInfo.dict[persistentID]
 #else
 		return mpMediaItem()
@@ -187,9 +183,6 @@ extension Song {
 	}
 	
 	final func mpMediaItem() -> MPMediaItem? {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else {
-			return nil
-		}
 		let songsQuery = MPMediaQuery.songs()
 		songsQuery.addFilterPredicate(MPMediaPropertyPredicate(
 			value: persistentID,
