@@ -174,7 +174,7 @@ class LibraryTVC: UITableViewController {
 			tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
 		} completion: { _ in
 			self.isAnimatingBatchUpdates -= 1
-			if self.isAnimatingBatchUpdates == 0 { // See corresponding comment in `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
+			if self.isAnimatingBatchUpdates == 0 {
 				self.dismiss(animated: true) {
 					// If we moved all the albums out of a collection, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
 					self.navigationController?.popViewController(animated: true)
