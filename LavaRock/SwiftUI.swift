@@ -2,16 +2,6 @@
 
 import SwiftUI
 
-struct Chevron: View {
-	var body: some View {
-		// Similar to what Apple Music uses for search results
-		Image(systemName: "chevron.forward")
-			.foregroundStyle(.secondary)
-			.fontBody_dynamicTypeSizeUpToXxxLarge()
-			.imageScale(.small)
-	}
-}
-
 extension Color {
 	static func random() -> Self {
 		return Color(

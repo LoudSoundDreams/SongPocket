@@ -3,33 +3,16 @@
 import SwiftUI
 import MusicKit
 
-enum AvatarStatus {
-	case notPlaying, paused, playing
-	
-	var uiImage: UIImage? {
-		switch self {
-			case .notPlaying: return nil
-			case .paused: return UIImage(systemName: "speaker.fill")
-			case .playing: return UIImage(systemName: "speaker.wave.2.fill")
-		}
-	}
-	
-	var axLabel: String? {
-		switch self {
-			case .notPlaying: return nil
-			case .paused: return LRString.paused
-			case .playing: return LRString.nowPlaying
-		}
-	}
-}
-
-struct AvatarPlayingImage: View {
+struct Chevron: View {
 	var body: some View {
-		Image(systemName: "speaker.wave.2.fill")
+		// Similar to what Apple Music uses for search results
+		Image(systemName: "chevron.forward")
+			.foregroundStyle(.secondary)
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
 			.imageScale(.small)
 	}
 }
+
 struct AvatarImage: View {
 	let libraryItem: LibraryItem
 	@ObservedObject var state: MusicPlayer.State
@@ -72,6 +55,23 @@ struct AvatarImage: View {
 				AvatarPlayingImage()
 					.foregroundStyle(Color.accentColor)
 					.symbolRenderingMode(.hierarchical)
+		}
+	}
+}
+struct AvatarPlayingImage: View {
+	var body: some View {
+		Image(systemName: "speaker.wave.2.fill")
+			.fontBody_dynamicTypeSizeUpToXxxLarge()
+			.imageScale(.small)
+	}
+}
+enum AvatarStatus {
+	case notPlaying, paused, playing
+	var axLabel: String? {
+		switch self {
+			case .notPlaying: return nil
+			case .paused: return LRString.paused
+			case .playing: return LRString.nowPlaying
 		}
 	}
 }

@@ -25,7 +25,7 @@
 		076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830C024B42E3F0033E3CC /* SongsTVC.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		076F1C0227E66DAA00220C2B /* Apple Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* Apple Music.swift */; };
-		07755A58294821860056E90C /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Avatar.swift */; };
+		07755A58294821860056E90C /* Shared Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Shared Views.swift */; };
 		078FDD0F2638872100779AF2 /* Standard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FDD0E2638872100779AF2 /* Standard.swift */; };
 		07934CF827CDBE04002B2444 /* SongsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF727CDBE04002B2444 /* SongsTVC.storyboard */; };
 		07934CFA27CDBEB0002B2444 /* AlbumsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */; };
@@ -91,7 +91,7 @@
 		076830C024B42E3F0033E3CC /* SongsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsTVC.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		076F1C0127E66DAA00220C2B /* Apple Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Apple Music.swift"; sourceTree = "<group>"; };
-		07755A57294821860056E90C /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
+		07755A57294821860056E90C /* Shared Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared Views.swift"; sourceTree = "<group>"; };
 		078FDD0E2638872100779AF2 /* Standard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standard.swift; sourceTree = "<group>"; };
 		07934CF727CDBE04002B2444 /* SongsTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SongsTVC.storyboard; sourceTree = "<group>"; };
 		07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlbumsTVC.storyboard; sourceTree = "<group>"; };
@@ -169,6 +169,7 @@
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
 				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
+				07755A57294821860056E90C /* Shared Views.swift */,
 				07934CFB27CDBFFD002B2444 /* CollectionsTVC.storyboard */,
 				07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */,
 				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
@@ -177,7 +178,6 @@
 				07EC01E726C84BC700954E08 /* CollectionsViewModel.swift */,
 				07EC01E926C8958300954E08 /* AlbumsViewModel.swift */,
 				07EC01EB26C895CB00954E08 /* SongsViewModel.swift */,
-				07755A57294821860056E90C /* Avatar.swift */,
 				076F1C0127E66DAA00220C2B /* Apple Music.swift */,
 				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
 				070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */,
@@ -362,7 +362,7 @@
 				072FD02726C30BB90053369B /* MusicRepo - Clean Up.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Standard.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
-				07755A58294821860056E90C /* Avatar.swift in Sources */,
+				07755A58294821860056E90C /* Shared Views.swift in Sources */,
 				07E0BBF32765678F0010117E /* UIKit.swift in Sources */,
 				070C844C2A81F9410094DFF7 /* SongInfo - Simulator.swift in Sources */,
 				076830CA24B42E400033E3CC /* SongsTVC.swift in Sources */,
