@@ -14,20 +14,6 @@ import MediaPlayer
 	]
 	
 	private lazy var playPauseButton = UIBarButtonItem()
-	private lazy var jumpBackButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(title: LRString.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), primaryAction: UIAction { _ in
-				SystemMusicPlayer._shared?.playbackTime -= 15
-			})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
-	private lazy var jumpForwardButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(title: LRString.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), primaryAction: UIAction { _ in
-			SystemMusicPlayer._shared?.playbackTime += 15
-		})
-		button.accessibilityTraits.formUnion(.startsMediaSession)
-		return button
-	}()
 	private lazy var overflowButton = UIBarButtonItem(title: LRString.more, menu: UIMenu(children: [
 		// We want to indicate which mode is active by selecting it, not disabling it.
 		// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
