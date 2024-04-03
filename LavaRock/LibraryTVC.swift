@@ -126,7 +126,6 @@ class LibraryTVC: UITableViewController {
 			// If necessary, include code here to run before the continuation.
 		}
 	}
-	private var isAnimatingBatchUpdates = 0
 	private func _setViewModelAndMoveAndDeselectRows(
 		_ newViewModel: LibraryViewModel,
 		completionIfShouldRun: @escaping (Bool) -> Void // We used to sometimes not run this completion handler, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
@@ -144,7 +143,6 @@ class LibraryTVC: UITableViewController {
 		let batchUpdates = Self.batchUpdatesFromIdentifiers(
 			old: oldViewModel.rowIdentifiers(),
 			new: newViewModel.rowIdentifiers())
-		
 		isAnimatingBatchUpdates += 1
 		tableView.applyBatchUpdates(batchUpdates) {
 			// Completion handler
@@ -157,7 +155,6 @@ class LibraryTVC: UITableViewController {
 		}
 		
 		tableView.deselectAllRows(animated: true)
-		
 		freshenEditingButtons()
 	}
 	private static func batchUpdatesFromIdentifiers
@@ -185,7 +182,8 @@ class LibraryTVC: UITableViewController {
 		} completion: { _ in
 			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 { // See corresponding comment in `setViewModelAndMoveAndDeselectRowsAndShouldContinue`.
-				self.dismiss(animated: true) { // If we moved all the albums out of a collection, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
+				self.dismiss(animated: true) {
+					// If we moved all the albums out of a collection, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
 					self.navigationController?.popViewController(animated: true)
 				}
 			}
@@ -193,6 +191,7 @@ class LibraryTVC: UITableViewController {
 		
 		freshenEditingButtons()
 	}
+	private var isAnimatingBatchUpdates = 0
 	
 	// MARK: - Editing
 	
