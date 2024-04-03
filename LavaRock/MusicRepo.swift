@@ -131,5 +131,6 @@ extension MusicRepo {
 		
 		let allAlbums = allCollections.flatMap { $0.albums(sorted: true) }
 		context.move(albumIDs: allAlbums.map { $0.objectID }, toCollectionWith: firstCollection.objectID)
+		firstCollection.title = LRString.bullet
 	}
 }
