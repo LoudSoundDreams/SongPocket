@@ -50,16 +50,12 @@ extension CollectionDifference {
 }
 
 extension UITableView {
-	final func allSections() -> [Int] {
-		return Array(0 ..< numberOfSections)
-	}
-	
 	final var selectedIndexPaths: [IndexPath] {
 		return indexPathsForSelectedRows ?? []
 	}
 	
 	final func allIndexPaths() -> [IndexPath] {
-		return allSections().flatMap { section in
+		return Array(0 ..< numberOfSections).flatMap { section in
 			indexPathsForRows(section: section, firstRow: 0)
 		}
 	}
