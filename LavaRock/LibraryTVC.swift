@@ -1,6 +1,7 @@
 // 2020-04-15
 
 import UIKit
+import MusicKit
 
 extension UITableViewCell {
 	final func backgroundColors_configureForLibraryItem() {
@@ -50,7 +51,6 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	final var isMergingChanges = false
 	private var needsFreshenLibraryItemsOnViewDidAppear = false
 	
 	// MARK: - Setup
@@ -88,7 +88,6 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	func freshenLibraryItems() {
-		isMergingChanges = false
 		Task {
 			/*
 			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
@@ -239,7 +238,7 @@ class LibraryTVC: UITableViewController {
 	
 	// Overrides should call super (this implementation).
 	func freshenEditingButtons() {
-		editButtonItem.isEnabled = !viewModel.items.isEmpty
+		editButtonItem.isEnabled = MusicAuthorization.currentStatus == .authorized && !viewModel.items.isEmpty
 		editButtonItem.image = (
 			isEditing
 			? UIImage(systemName: "checkmark.circle.fill")

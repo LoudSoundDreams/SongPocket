@@ -5,11 +5,7 @@ import MusicKit
 @MainActor enum AppleMusic {
 	static var loadingIndicator: CollectionsTVC? = nil
 	
-	static func integrateIfAuthorized() async {
-		guard MusicAuthorization.currentStatus == .authorized else { return }
-		
-		await loadingIndicator?.prepareToIntegrateWithAppleMusic()
-		
+	static func integrate() {
 		MusicRepo.shared.watchMPLibrary() // Collections view must start observing `Notification.Name.mergedChanges` before this.
 		AudioPlayer.shared.watchMPPlayer()
 	}

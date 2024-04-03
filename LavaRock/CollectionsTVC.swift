@@ -20,17 +20,6 @@ final class CollectionsTVC: LibraryTVC {
 		case browsing
 	}
 	
-	private var viewState: CollectionsViewState {
-		guard MusicAuthorization.currentStatus == .authorized else { return .noAccess }
-		if viewModel.items.isEmpty && isMergingChanges { return .loading }
-		return .libraryVisible
-	}
-	private enum CollectionsViewState {
-		case noAccess
-		case loading
-		case libraryVisible
-	}
-	
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	// MARK: - Setup
@@ -79,37 +68,13 @@ final class CollectionsTVC: LibraryTVC {
 		super.viewDidAppear(animated)
 	}
 	
-	func prepareToIntegrateWithAppleMusic() async {
-		isMergingChanges = true
-		reflectRepoStatus()
-	}
-	
 	// MARK: - Library items
 	
 	override func freshenLibraryItems() {
 		switch purpose {
 			case .movingAlbums: return
-			case .browsing: break
+			case .browsing: super.freshenLibraryItems()
 		}
-		switch viewState {
-			case .loading: reflectRepoStatus()
-			case .noAccess, .libraryVisible: break
-		}
-		super.freshenLibraryItems()
-	}
-	
-	private func reflectRepoStatus() {
-		switch viewState {
-			case .loading:
-				tableView.deleteRows(
-					at: tableView.indexPathsForRows(section: 0, firstRow: 0),
-					with: .middle)
-				if isEditing {
-					setEditing(false, animated: true)
-				}
-			case .noAccess, .libraryVisible: break
-		}
-		freshenEditingButtons() // Including “Edit” button
 	}
 	
 	override func reflectViewModelIsEmpty() {
@@ -121,10 +86,6 @@ final class CollectionsTVC: LibraryTVC {
 	
 	override func freshenEditingButtons() {
 		super.freshenEditingButtons()
-		switch viewState {
-			case .noAccess, .loading: editButtonItem.isEnabled = false
-			case .libraryVisible: break
-		}
 		arrangeCollectionsButton.isEnabled = allowsArrange()
 		arrangeCollectionsButton.menu = createArrangeMenu()
 	}
@@ -252,8 +213,8 @@ final class CollectionsTVC: LibraryTVC {
 	}
 	private func refreshPlaceholder() {
 		contentUnavailableConfiguration = {
-			switch viewState {
-				case .noAccess: return UIHostingConfiguration {
+			guard MusicAuthorization.currentStatus == .authorized else {
+				return UIHostingConfiguration {
 					ContentUnavailableView {
 					} description: {
 						Text(LRString.welcome_message)
@@ -265,35 +226,28 @@ final class CollectionsTVC: LibraryTVC {
 						}
 					}
 				}
-				case .loading: return UIHostingConfiguration {
-					ProgressView().tint(.secondary)
-				}
-				case .libraryVisible:
-					if viewModel.items.isEmpty {
-						return UIHostingConfiguration {
-							ContentUnavailableView {
-							} actions: {
-								Button(LRString.emptyLibrary_button) {
-									let musicURL = URL(string: "music://")!
-									UIApplication.shared.open(musicURL)
-								}
-							}
-						}
-					} else {
-						return nil
-					}
 			}
+			if viewModel.items.isEmpty {
+				return UIHostingConfiguration {
+					ContentUnavailableView {
+					} actions: {
+						Button(LRString.emptyLibrary_button) {
+							let musicURL = URL(string: "music://")!
+							UIApplication.shared.open(musicURL)
+						}
+					}
+				}
+			}
+			return nil
 		}()
 	}
 	private func requestAccessToAppleMusic() async {
 		switch MusicAuthorization.currentStatus {
 			case .authorized: break // Should never run
 			case .notDetermined:
-				let response = await MusicAuthorization.request()
-				
-				switch response {
+				switch await MusicAuthorization.request() {
 					case .denied, .restricted, .notDetermined: break
-					case .authorized: await AppleMusic.integrateIfAuthorized()
+					case .authorized: AppleMusic.integrate()
 					@unknown default: break
 				}
 			case .denied, .restricted:
@@ -307,10 +261,7 @@ final class CollectionsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	)-> Int {
-		switch viewState {
-			case .noAccess, .loading: return 0
-			case .libraryVisible: return viewModel.items.count
-		}
+		return viewModel.items.count
 	}
 	
 	override func tableView(

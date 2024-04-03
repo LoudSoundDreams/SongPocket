@@ -5,6 +5,7 @@ enum Enabling {
 }
 
 import SwiftUI
+import MusicKit
 
 @main
 struct LavaRock: App {
@@ -27,9 +28,10 @@ struct LavaRock: App {
 				} }
 				.ignoresSafeArea()
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
-					await AppleMusic.integrateIfAuthorized()
+					guard MusicAuthorization.currentStatus == .authorized else { return }
+					AppleMusic.integrate()
 				}
-				.tint(Color("denim")) // Applies before `integrateIfAuthorized`.
+				.tint(Color("denim")) // Applies before `AppleMusic.integrate`.
 		}
 	}
 }
