@@ -102,10 +102,6 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	override func reflectViewModelIsEmpty() {
-		deleteThenExit()
-	}
-	
 	// MARK: - Editing
 	
 	override func freshenEditingButtons() {

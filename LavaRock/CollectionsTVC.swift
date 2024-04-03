@@ -77,11 +77,6 @@ final class CollectionsTVC: LibraryTVC {
 		}
 	}
 	
-	override func reflectViewModelIsEmpty() {
-		deleteThenExit()
-		setEditing(false, animated: true) // Do this after `deleteThenExit`, not before, because this includes `performBatchUpdates`.
-	}
-	
 	// MARK: - Editing
 	
 	override func freshenEditingButtons() {

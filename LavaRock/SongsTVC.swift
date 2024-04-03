@@ -64,10 +64,6 @@ final class SongsTVC: LibraryTVC {
 		return UIMenu(children: inlineSubmenus)
 	}
 	
-	override func reflectViewModelIsEmpty() {
-		deleteThenExit()
-	}
-	
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {

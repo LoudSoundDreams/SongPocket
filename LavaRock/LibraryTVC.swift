@@ -109,10 +109,6 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	func reflectViewModelIsEmpty() {
-		fatalError()
-	}
-	
 	// Returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
 	final func setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 		_ newViewModel: LibraryViewModel
@@ -136,7 +132,7 @@ class LibraryTVC: UITableViewController {
 		
 		guard !newViewModel.items.isEmpty else {
 			completionIfShouldRun(false)
-			reflectViewModelIsEmpty()
+			deleteThenExit()
 			return
 		}
 		
@@ -172,10 +168,7 @@ class LibraryTVC: UITableViewController {
 		}
 		return BatchUpdates(toDelete: toDelete, toInsert: toInsert, toMove: toMove)
 	}
-	// `LibraryTVC` itself doesn’t call this, but its subclasses might want to.
-	final func deleteThenExit() {
-		tableView.deselectAllRows(animated: true)
-		
+	private func deleteThenExit() {
 		isAnimatingBatchUpdates += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
@@ -189,7 +182,7 @@ class LibraryTVC: UITableViewController {
 			}
 		}
 		
-		freshenEditingButtons()
+		setEditing(false, animated: true)
 	}
 	private var isAnimatingBatchUpdates = 0
 	
