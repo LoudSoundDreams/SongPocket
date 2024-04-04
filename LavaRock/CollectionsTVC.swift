@@ -10,71 +10,22 @@ extension CollectionsTVC: UITextFieldDelegate {
 	}
 }
 final class CollectionsTVC: LibraryTVC {
-	var moveAlbumsClipboard: MoveAlbumsClipboard? = nil
-	private var purpose: Purpose {
-		if let clipboard = moveAlbumsClipboard { return .movingAlbums(clipboard) }
-		return .browsing
-	}
-	private enum Purpose {
-		case movingAlbums(MoveAlbumsClipboard)
-		case browsing
-	}
-	
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		switch purpose {
-			case .movingAlbums: break
-			case .browsing:
-				editingButtons = [
-					editButtonItem, .flexibleSpace(),
-					.flexibleSpace(), .flexibleSpace(),
-					arrangeCollectionsButton, .flexibleSpace(),
-					floatButton, .flexibleSpace(),
-					sinkButton,
-				]
-		}
+		editingButtons = [
+			editButtonItem, .flexibleSpace(),
+			.flexibleSpace(), .flexibleSpace(),
+			arrangeCollectionsButton, .flexibleSpace(),
+			floatButton, .flexibleSpace(),
+			sinkButton,
+		]
 		
 		super.viewDidLoad()
 		
-		switch purpose {
-			case .movingAlbums:
-				navigationItem.setLeftBarButton(
-					UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
-						self?.dismiss(animated: true)
-					}),
-					animated: false)
-				navigationItem.setRightBarButton(
-					UIBarButtonItem(systemItem: .add, primaryAction: UIAction { [weak self] _ in self?.createAndOpen()
-					}),
-					animated: false)
-				if !MainToolbar.usesSwiftUI {
-					navigationController?.setToolbarHidden(true, animated: false)
-				}
-			case .browsing:
-				AppleMusic.loadingIndicator = self
-				
-				NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRUserUpdatedDatabase, object: nil)
-		}
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		switch purpose {
-			case .movingAlbums: revertCreate()
-			case .browsing: break
-		}
-		super.viewDidAppear(animated)
-	}
-	
-	// MARK: - Library items
-	
-	override func freshenLibraryItems() {
-		switch purpose {
-			case .movingAlbums: return
-			case .browsing: super.freshenLibraryItems()
-		}
+		AppleMusic.loadingIndicator = self
 	}
 	
 	// MARK: - Editing
@@ -162,44 +113,6 @@ final class CollectionsTVC: LibraryTVC {
 		}
 	}
 	
-	// MARK: - “Move” sheet
-	
-	private func createAndOpen() {
-		guard
-			case .movingAlbums(let clipboard) = purpose,
-			!clipboard.hasCreatedNewCollection,
-			let collectionsViewModel = viewModel as? CollectionsViewModel
-		else { return }
-		clipboard.hasCreatedNewCollection = true
-		
-		let newViewModel = collectionsViewModel.updatedAfterCreating()
-		Task {
-			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
-			
-			openCreated()
-		}
-	}
-	private func openCreated() {
-		let indexPath = IndexPath(row: CollectionsViewModel.indexOfNewCollection, section: 0)
-		tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-		openCollection(atIndexPath: indexPath)
-	}
-	
-	private func revertCreate() {
-		guard case .movingAlbums(let clipboard) = purpose else {
-			fatalError()
-		}
-		guard clipboard.hasCreatedNewCollection else { return }
-		clipboard.hasCreatedNewCollection = false
-		
-		let collectionsViewModel = viewModel as! CollectionsViewModel
-		
-		let newViewModel = collectionsViewModel.updatedAfterDeletingNewCollection()
-		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
-		}
-	}
-	
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
@@ -266,46 +179,26 @@ final class CollectionsTVC: LibraryTVC {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Folder", for: indexPath)
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
-		let enabled = { () -> Bool in
-			switch purpose {
-				case .movingAlbums(let clipboard):
-					if clipboard.idsOfSourceCollections.contains(collection.objectID) {
-						return false
-					}
-					return true
-				case .browsing: return true
-			}
-		}()
 		cell.contentConfiguration = UIHostingConfiguration {
-			CollectionRow(title: collection.title, collection: collection, dimmed: !enabled)
+			CollectionRow(title: collection.title, collection: collection)
 		}.margins(.all, .zero)
 		cell.editingAccessoryType = .detailButton
 		cell.backgroundColors_configureForLibraryItem()
-		cell.isUserInteractionEnabled = enabled
-		if enabled {
-			cell.accessibilityTraits.subtract(.notEnabled)
-		} else {
-			cell.accessibilityTraits.formUnion(.notEnabled)
-		}
-		switch purpose {
-			case .movingAlbums: break
-			case .browsing:
-				cell.accessibilityCustomActions = [
-					UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
-						guard
-							let self,
-							let focused = tableView.allIndexPaths().first(where: {
-								let cell = tableView.cellForRow(at: $0)
-								return cell?.accessibilityElementIsFocused() ?? false
-							})
-						else {
-							return false
-						}
-						promptRename(at: focused)
-						return true
-					}
-				]
-		}
+		cell.accessibilityCustomActions = [
+			UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
+				guard
+					let self,
+					let focused = tableView.allIndexPaths().first(where: {
+						let cell = tableView.cellForRow(at: $0)
+						return cell?.accessibilityElementIsFocused() ?? false
+					})
+				else {
+					return false
+				}
+				promptRename(at: focused)
+				return true
+			}
+		]
 		return cell
 	}
 	
@@ -329,11 +222,7 @@ final class CollectionsTVC: LibraryTVC {
 		navigationController?.pushViewController(
 			{
 				let albumsTVC = UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController() as! AlbumsTVC
-				
-				albumsTVC.moveAlbumsClipboard = moveAlbumsClipboard
-				
 				albumsTVC.viewModel = AlbumsViewModel(collection: (viewModel as! CollectionsViewModel).collectionNonNil(atRow: atIndexPath.row))
-				
 				return albumsTVC
 			}(),
 			animated: true)
@@ -345,7 +234,6 @@ final class CollectionsTVC: LibraryTVC {
 private struct CollectionRow: View {
 	let title: String?
 	let collection: Collection
-	let dimmed: Bool
 	
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
@@ -367,12 +255,6 @@ private struct CollectionRow: View {
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
-		.opacity(
-			dimmed
-			? .oneFourth // Close to what Files pickers use
-			: 1
-		)
-		.disabled(dimmed)
 		.accessibilityInputLabels([title].compacted()) // Exclude the now-playing status.
 	}
 }

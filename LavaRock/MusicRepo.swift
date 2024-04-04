@@ -8,7 +8,6 @@ final class MusicRepo: ObservableObject {
 	private init() {}
 	
 	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
-	@Published var signal_userUpdatedDatabase = false // Value doesn’t actually matter
 	
 	func watchMPLibrary() {
 		library?.endGeneratingLibraryChangeNotifications()

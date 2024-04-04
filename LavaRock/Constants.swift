@@ -25,7 +25,6 @@ enum LRColor {
 import Foundation
 extension Notification.Name {
 	static let LRMergedChanges = Self("merged changes")
-	static let LRUserUpdatedDatabase = Self("user updated database")
 }
 extension NotificationCenter {
 	// Helps callers observe each kind of `Notification` exactly once.

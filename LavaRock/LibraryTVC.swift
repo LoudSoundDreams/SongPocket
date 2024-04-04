@@ -15,7 +15,7 @@ extension UITableViewCell {
 }
 
 class LibraryTVC: UITableViewController {
-	final lazy var viewModel: LibraryViewModel = CollectionsViewModel(context: Database.viewContext)
+	final lazy var viewModel: LibraryViewModel = CollectionsViewModel()
 	
 	final var editingButtons: [UIBarButtonItem] = []
 	private(set) final lazy var floatButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
@@ -69,7 +69,7 @@ class LibraryTVC: UITableViewController {
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRMergedChanges, object: nil)
 	}
 	
-	override func viewDidAppear(_ animated: Bool) {
+	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		if needsFreshenLibraryItemsOnViewDidAppear {
 			needsFreshenLibraryItemsOnViewDidAppear = false
@@ -87,7 +87,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	func freshenLibraryItems() {
+	final func freshenLibraryItems() {
 		Task {
 			/*
 			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
