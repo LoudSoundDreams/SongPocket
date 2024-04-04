@@ -1,9 +1,5 @@
 // 2021-12-30
 
-enum Enabling {
-	static let unifiedAlbumList = 10 == 1
-}
-
 import SwiftUI
 import MusicKit
 
@@ -38,18 +34,9 @@ struct LavaRock: App {
 private struct RootVC: UIViewControllerRepresentable {
 	typealias VCType = RootNC
 	func makeUIViewController(context: Context) -> VCType {
-		let result: RootNC = {
-			if Enabling.unifiedAlbumList {
-				if let _ = Collection.allFetched(sorted: false, context: Database.viewContext).first {
-					return RootNC(
-						rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
-					)
-				}
-			}
-			return RootNC(
-				rootViewController: UIStoryboard(name: "CollectionsTVC", bundle: nil).instantiateInitialViewController()!
-			)
-		}()
+		let result = RootNC(
+			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
+		)
 		
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance

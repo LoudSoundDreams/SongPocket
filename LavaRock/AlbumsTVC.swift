@@ -10,12 +10,6 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		if Enabling.unifiedAlbumList {
-			if let collection = Collection.allFetched(sorted: true, context: Database.viewContext).first {
-				viewModel = AlbumsViewModel(collection: collection)
-			}
-		}
-		
 		editingButtons = [
 			editButtonItem, .flexibleSpace(),
 			arrangeAlbumsButton, .flexibleSpace(),
@@ -96,18 +90,38 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		if viewModel.items.isEmpty {
-			contentUnavailableConfiguration = UIHostingConfiguration {
-				Image(systemName: "square.stack")
-					.foregroundStyle(.secondary)
-					.font(.title)
-					.accessibilityLabel(LRString.noAlbums)
-			}.margins(.all, .zero) // As of iOS 17.4, without this, the content shows up too low within a sheet until you move the sheet vertically by any amount.
-		} else {
-			contentUnavailableConfiguration = nil
-		}
-		
+		refreshPlaceholder()
 		return 1
+	}
+	private func refreshPlaceholder() {
+		contentUnavailableConfiguration = {
+			guard MusicAuthorization.currentStatus == .authorized else {
+				return UIHostingConfiguration {
+					ContentUnavailableView {
+					} description: {
+						Text(LRString.welcome_message)
+					} actions: {
+						Button(LRString.welcome_button) {
+							Task {
+								await AppleMusic.requestAccess()
+							}
+						}
+					}
+				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
+			}
+			if viewModel.items.isEmpty {
+				return UIHostingConfiguration {
+					ContentUnavailableView {
+					} actions: {
+						Button(LRString.emptyLibrary_button) {
+							let musicURL = URL(string: "music://")!
+							UIApplication.shared.open(musicURL)
+						}
+					}
+				}
+			}
+			return nil
+		}()
 	}
 	
 	override func tableView(

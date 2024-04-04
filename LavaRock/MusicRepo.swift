@@ -101,10 +101,6 @@ extension MusicRepo {
 			allInfos: freshInAnyOrder,
 			isFirstImport: isFirstImport)
 		
-		if Enabling.unifiedAlbumList {
-			smoosh()
-		}
-		
 		context.tryToSave()
 		
 		defaults.set(true, forKey: keyHasSaved)
@@ -120,16 +116,5 @@ extension MusicRepo {
 			fetchedSong.songInfo()?.songID == Sim_Global.currentSongID
 		}
 #endif
-	}
-	private func smoosh() {
-		let allCollections = Collection.allFetched(sorted: true, context: context)
-		guard
-			allCollections.count >= 2,
-			let firstCollection = allCollections.first
-		else { return }
-		
-		let allAlbums = allCollections.flatMap { $0.albums(sorted: true) }
-		context.move(albumIDs: allAlbums.map { $0.objectID }, toCollectionWith: firstCollection.objectID)
-		firstCollection.title = LRString.bullet
 	}
 }

@@ -3,6 +3,23 @@
 import MusicKit
 
 @MainActor enum AppleMusic {
+	static func requestAccess() async {
+		switch MusicAuthorization.currentStatus {
+			case .authorized: break // Should never run
+			case .notDetermined:
+				switch await MusicAuthorization.request() {
+					case .denied, .restricted, .notDetermined: break
+					case .authorized: AppleMusic.integrate()
+					@unknown default: break
+				}
+			case .denied, .restricted:
+				if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+					let _ = await UIApplication.shared.open(settingsURL)
+				}
+			@unknown default: break
+		}
+	}
+	
 	static func integrate() {
 		MusicRepo.shared.watchMPLibrary() // Collections view must start observing `Notification.Name.mergedChanges` before this.
 		AudioPlayer.shared.watchMPPlayer()

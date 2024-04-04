@@ -16,7 +16,6 @@ enum LRString {
 	static let tilde = NSLocalizedString("~", comment: "Default title for a new folder")
 	static let octothorpe = NSLocalizedString("#", comment: "Number sign, for missing number")
 	static let emDash = NSLocalizedString("—", comment: "Em dash, for missing data")
-	static let bullet = NSLocalizedString("•", comment: "")
 	
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
@@ -53,7 +52,6 @@ enum LRString {
 	
 	// MARK: Albums view
 	
-	static let noAlbums = NSLocalizedString("No albums", comment: "Accessibility label")
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
 	static let newest = NSLocalizedString("Newest", comment: "Sort option")

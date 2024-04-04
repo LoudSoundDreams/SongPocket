@@ -15,7 +15,7 @@ extension UITableViewCell {
 }
 
 class LibraryTVC: UITableViewController {
-	final lazy var viewModel: LibraryViewModel = CollectionsViewModel()
+	final lazy var viewModel: LibraryViewModel = AlbumsViewModel()
 	
 	final var editingButtons: [UIBarButtonItem] = []
 	private(set) final lazy var floatButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
@@ -174,7 +174,6 @@ class LibraryTVC: UITableViewController {
 			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 {
 				self.dismiss(animated: true) {
-					// If we moved all the albums out of a collection, we need to wait until we’ve completely dismissed the “move albums” sheet before we exit. Otherwise, we’ll fail to exit and get trapped in a blank `AlbumsTVC`.
 					self.navigationController?.popViewController(animated: true)
 				}
 			}

@@ -31,6 +31,8 @@ extension MusicRepo {
 			let songs = $0.songs(sorted: true)
 			Library.renumber(songs)
 		}
+		
+		smoosh()
 	}
 	
 	// MARK: Re-estimate release date
@@ -96,5 +98,21 @@ extension MusicRepo {
 			rightAlbum.releaseDateEstimate == nil
 		}
 		return albumsCopy
+	}
+	
+	// MARK: Combine all folders
+	
+	// Historic databases can contain multiple `Collection`s, each with a non-default title.
+	// Moves all `Album`s into the first `Collection`, and gives it the default title.
+	private func smoosh() {
+		let allCollections = Collection.allFetched(sorted: true, context: context)
+		guard
+			allCollections.count >= 2,
+			let firstCollection = allCollections.first
+		else { return }
+		
+		let allAlbums = allCollections.flatMap { $0.albums(sorted: true) }
+		context.move(albumIDs: allAlbums.map { $0.objectID }, toCollectionWith: firstCollection.objectID)
+		firstCollection.title = LRString.tilde
 	}
 }
