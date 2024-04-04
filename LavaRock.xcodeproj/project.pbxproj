@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */; };
 		070C844C2A81F9410094DFF7 /* SongInfo - Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */; };
 		071A0B9E277E76510017F76D /* LavaRock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* LavaRock.swift */; };
 		072FD02726C30BB90053369B /* MusicRepo - Clean Up.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072FD02626C30BB90053369B /* MusicRepo - Clean Up.swift */; };
@@ -67,7 +66,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAlbumsClipboard.swift; sourceTree = "<group>"; };
 		070C844B2A81F9410094DFF7 /* SongInfo - Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SongInfo - Simulator.swift"; sourceTree = "<group>"; };
 		071A0B9D277E76510017F76D /* LavaRock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LavaRock.swift; sourceTree = "<group>"; };
 		072FD02626C30BB90053369B /* MusicRepo - Clean Up.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MusicRepo - Clean Up.swift"; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 				076830BF24B42E3F0033E3CC /* CollectionsTVC.swift */,
 				07CBB6FE2BBEA9DE008B0BB5 /* Albums View.swift */,
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
-				0706ABE024D947850090EB21 /* MoveAlbumsClipboard.swift */,
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
 				07755A57294821860056E90C /* Shared Views.swift */,
 				07934CFB27CDBFFD002B2444 /* CollectionsTVC.storyboard */,
@@ -386,7 +383,6 @@
 				075218A2257C498D0077AE9B /* LRString.swift in Sources */,
 				07CAB24724EA227F008AC34C /* Song.swift in Sources */,
 				07E0BBFB276567F70010117E /* Database.swift in Sources */,
-				0706ABE124D947850090EB21 /* MoveAlbumsClipboard.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				0736E3EA24B95FD600A15420 /* Album.swift in Sources */,
 				07FB52CB2813909400CCCBA5 /* ArrangeCommand.swift in Sources */,

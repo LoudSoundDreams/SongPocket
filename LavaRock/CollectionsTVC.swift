@@ -17,7 +17,6 @@ final class CollectionsTVC: LibraryTVC {
 	override func viewDidLoad() {
 		editingButtons = [
 			editButtonItem, .flexibleSpace(),
-			.flexibleSpace(), .flexibleSpace(),
 			arrangeCollectionsButton, .flexibleSpace(),
 			floatButton, .flexibleSpace(),
 			sinkButton,

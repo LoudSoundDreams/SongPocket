@@ -59,7 +59,6 @@ enum LRString {
 	static let noAlbums = NSLocalizedString("No albums", comment: "Accessibility label")
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
-	static let move = NSLocalizedString("Move", comment: "Button")
 	static let newest = NSLocalizedString("Newest", comment: "Sort option")
 	static let oldest = NSLocalizedString("Oldest", comment: "Sort option")
 	
