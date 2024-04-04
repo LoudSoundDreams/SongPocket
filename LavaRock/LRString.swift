@@ -8,10 +8,8 @@ enum LRString {
 	// MARK: - WITHOUT VARIABLES
 	
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
-	static let done = NSLocalizedString("Done", comment: "Button")
 	static let more = NSLocalizedString("More", comment: "Button")
 	
-	static let ellipsis = NSLocalizedString("…", comment: "Indicator for truncated text")
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
 	static let tilde = NSLocalizedString("~", comment: "Default title for a new folder")
 	static let octothorpe = NSLocalizedString("#", comment: "Number sign, for missing number")
@@ -43,14 +41,12 @@ enum LRString {
 	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
 	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
 	
-	// MARK: - Folders view
+	// MARK: Albums view
 	
 	static let welcome_message = NSLocalizedString("SongPocket views and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let welcome_button = NSLocalizedString("Continue", comment: "Button")
 	
 	static let emptyLibrary_button = NSLocalizedString("Add Music to Library", comment: "Button")
-	
-	// MARK: Albums view
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	

@@ -220,19 +220,9 @@ struct MainToolbar: View {
 	var body: some View {
 		if status.inSelectMode {
 			selectButton; Spacer()
-			switch status.baseNC?.topViewController {
-				case is AlbumsTVC:
-					moveAlbumsButton; Spacer()
-					arrangeButton; Spacer()
-					floatButton; Spacer()
-					sinkButton
-				case is CollectionsTVC, is SongsTVC:
-					Spacer(); Spacer()
-					arrangeButton; Spacer()
-					floatButton; Spacer()
-					sinkButton
-				default: EmptyView()
-			}
+			arrangeButton; Spacer()
+			floatButton; Spacer()
+			sinkButton
 		} else {
 			selectButton; Spacer()
 			jumpBackButton; Spacer()
@@ -270,12 +260,6 @@ struct MainToolbar: View {
 		Menu {
 		} label: {
 			Image(systemName: "ellipsis.circle")
-		}
-	}
-	private var moveAlbumsButton: some View {
-		Button {
-		} label: {
-			Image(systemName: "folder")
 		}
 	}
 	private var arrangeButton: some View {

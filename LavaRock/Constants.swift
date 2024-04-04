@@ -2,11 +2,6 @@
 
 extension Double {
 	static var oneEighth: Self { 1/8 }
-	static var oneFourth: Self { 1/4 }
-	static var oneHalf: Self { 1/2 }
-}
-extension Float {
-	static var oneFourth: Self { 1/4 }
 }
 extension CGFloat {
 	static var oneHalf: Self { 1/2 }

@@ -6,14 +6,6 @@ final class Weak<Referencee: AnyObject> {
 }
 
 extension String {
-	func truncated(maxLength: Int) -> String {
-		guard count > maxLength else {
-			return self
-		}
-		let trimmed = prefix(maxLength - 1)
-		return "\(trimmed)\(LRString.ellipsis)"
-	}
-	
 	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
 	func precedesAlphabeticallyFinderStyle(_ other: Self) -> Bool {
 		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses

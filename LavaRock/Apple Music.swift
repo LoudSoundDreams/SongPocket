@@ -21,7 +21,7 @@ import MusicKit
 	}
 	
 	static func integrate() {
-		MusicRepo.shared.watchMPLibrary() // Collections view must start observing `Notification.Name.mergedChanges` before this.
+		MusicRepo.shared.watchMPLibrary()
 		AudioPlayer.shared.watchMPPlayer()
 	}
 }
