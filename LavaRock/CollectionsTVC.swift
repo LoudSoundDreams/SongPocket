@@ -4,11 +4,6 @@ import UIKit
 import SwiftUI
 import MusicKit
 
-extension CollectionsTVC: UITextFieldDelegate {
-	func textFieldDidBeginEditing(_ textField: UITextField) {
-		textField.selectAll(nil) // As of iOS 15.3 developer beta 1, the selection works but the highlight doesn’t appear if `textField.text` is long.
-	}
-}
 final class CollectionsTVC: LibraryTVC {
 	private lazy var arrangeCollectionsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	
@@ -55,61 +50,6 @@ final class CollectionsTVC: LibraryTVC {
 			return UIMenu(options: .displayInline, children: $0)
 		}
 		return UIMenu(children: inlineSubmenus)
-	}
-	
-	private func promptRename(at indexPath: IndexPath) {
-		guard let collection = viewModel.itemNonNil(atRow: indexPath.row) as? Collection else { return }
-		
-		let dialog = UIAlertController(title: LRString.rename, message: nil, preferredStyle: .alert)
-		
-		dialog.addTextField {
-			// UITextField
-			$0.text = collection.title
-			$0.placeholder = LRString.tilde
-			$0.clearButtonMode = .always
-			
-			// UITextInputTraits
-			$0.returnKeyType = .done
-			$0.autocapitalizationType = .sentences
-			$0.smartQuotesType = .yes
-			$0.smartDashesType = .yes
-			
-			$0.delegate = self
-		}
-		
-		dialog.addAction(UIAlertAction(title: LRString.cancel, style: .cancel))
-		
-		let rowWasSelectedBeforeRenaming = tableView.selectedIndexPaths.contains(indexPath)
-		let done = UIAlertAction(title: LRString.done, style: .default) { [weak self] _ in
-			self?.commitRename(
-				textFieldText: dialog.textFields?.first?.text,
-				indexPath: indexPath,
-				thenShouldReselect: rowWasSelectedBeforeRenaming)
-		}
-		dialog.addAction(done)
-		dialog.preferredAction = done
-		
-		present(dialog, animated: true)
-	}
-	private func commitRename(
-		textFieldText: String?,
-		indexPath: IndexPath,
-		thenShouldReselect: Bool
-	) {
-		let collectionsViewModel = viewModel as! CollectionsViewModel
-		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
-		
-		let proposedTitle = (textFieldText ?? "").truncated(maxLength: 256) // In case the user entered a dangerous amount of text
-		if proposedTitle == "" {
-			collection.title = LRString.tilde
-		} else {
-			collection.title = proposedTitle
-		}
-		
-		tableView.reloadRows(at: [indexPath], with: .fade)
-		if thenShouldReselect {
-			tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-		}
 	}
 	
 	// MARK: - Table view
@@ -181,30 +121,8 @@ final class CollectionsTVC: LibraryTVC {
 		cell.contentConfiguration = UIHostingConfiguration {
 			CollectionRow(title: collection.title, collection: collection)
 		}.margins(.all, .zero)
-		cell.editingAccessoryType = .detailButton
 		cell.backgroundColors_configureForLibraryItem()
-		cell.accessibilityCustomActions = [
-			UIAccessibilityCustomAction(name: LRString.rename) { [weak self] action in
-				guard
-					let self,
-					let focused = tableView.allIndexPaths().first(where: {
-						let cell = tableView.cellForRow(at: $0)
-						return cell?.accessibilityElementIsFocused() ?? false
-					})
-				else {
-					return false
-				}
-				promptRename(at: focused)
-				return true
-			}
-		]
 		return cell
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath
-	) {
-		promptRename(at: indexPath)
 	}
 	
 	override func tableView(

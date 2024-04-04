@@ -51,7 +51,6 @@ enum LRString {
 	
 	static let emptyLibrary_button = NSLocalizedString("Add Music to Library", comment: "Button")
 	
-	static let rename = NSLocalizedString("Rename", comment: "Button")
 	static let name = NSLocalizedString("Name", comment: "The word for the title of a folder. Also a sort option.")
 	
 	// MARK: Albums view

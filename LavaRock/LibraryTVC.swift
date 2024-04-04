@@ -92,7 +92,6 @@ class LibraryTVC: UITableViewController {
 			/*
 			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
 			 • “Sort” menu (`LibraryTVC`)
-			 • “Rename” dialog (`CollectionsTVC`)
 			 • Song actions, including overflow menu (`SongsTVC`)
 			 */
 			await view.window?.rootViewController?.dismiss__async(animated: true)
