@@ -84,7 +84,7 @@ final class CollectionsTVC: LibraryTVC {
 		let collectionsViewModel = viewModel as! CollectionsViewModel
 		let collection = collectionsViewModel.collectionNonNil(atRow: indexPath.row)
 		cell.contentConfiguration = UIHostingConfiguration {
-			CollectionRow(title: collection.title, collection: collection)
+			Text(collection.title ?? "")
 		}.margins(.all, .zero)
 		cell.backgroundColors_configureForLibraryItem()
 		return cell
@@ -108,35 +108,5 @@ final class CollectionsTVC: LibraryTVC {
 				return albumsTVC
 			}(),
 			animated: true)
-	}
-}
-
-// MARK: - Rows
-
-private struct CollectionRow: View {
-	let title: String?
-	let collection: Collection
-	
-	var body: some View {
-		HStack(alignment: .firstTextBaseline) {
-			ZStack(alignment: .leading) {
-				Chevron().hidden()
-				AvatarImage(libraryItem: collection, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
-			}
-			Text(title ?? "")
-				.multilineTextAlignment(.center)
-				.frame(maxWidth: .infinity)
-				.padding(.bottom, .eight * 1/4)
-			ZStack(alignment: .trailing) {
-				AvatarPlayingImage().hidden()
-				Chevron()
-			}
-		}
-		.alignmentGuide_separatorLeading()
-		.alignmentGuide_separatorTrailing()
-		.padding(.horizontal).padding(.vertical, .eight * 3/2)
-		.accessibilityElement(children: .combine)
-		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels([title].compacted()) // Exclude the now-playing status.
 	}
 }
