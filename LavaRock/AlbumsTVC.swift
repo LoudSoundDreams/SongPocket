@@ -72,7 +72,7 @@ final class AlbumsTVC: LibraryTVC {
 						}
 						switch command {
 							case .random, .reverse: return true
-							case .collection_name, .song_track: return false
+							case .song_track: return false
 							case .album_newest, .album_oldest:
 								let subjectedItems = unsortedRowsToArrange().map {
 									viewModel.itemNonNil(atRow: $0)

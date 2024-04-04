@@ -5,51 +5,16 @@ import SwiftUI
 import MusicKit
 
 final class CollectionsTVC: LibraryTVC {
-	private lazy var arrangeCollectionsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
 		editingButtons = [
-			editButtonItem, .flexibleSpace(),
-			arrangeCollectionsButton, .flexibleSpace(),
-			floatButton, .flexibleSpace(),
-			sinkButton,
+			editButtonItem,
 		]
 		
 		super.viewDidLoad()
 		
 		AppleMusic.loadingIndicator = self
-	}
-	
-	// MARK: - Editing
-	
-	override func freshenEditingButtons() {
-		super.freshenEditingButtons()
-		arrangeCollectionsButton.isEnabled = allowsArrange()
-		arrangeCollectionsButton.menu = createArrangeMenu()
-	}
-	private static let arrangeCommands: [[ArrangeCommand]] = [
-		[.collection_name],
-		[.random, .reverse],
-	]
-	private func createArrangeMenu() -> UIMenu {
-		let setOfCommands: Set<ArrangeCommand> = Set(Self.arrangeCommands.flatMap { $0 })
-		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
-			$0.reversed().map { command in
-				return command.createMenuElement(
-					enabled:
-						unsortedRowsToArrange().count >= 2
-					&& setOfCommands.contains(command)
-				) { [weak self] in
-					self?.arrangeSelectedOrAll(by: command)
-				}
-			}
-		}
-		let inlineSubmenus = elementsGrouped.map {
-			return UIMenu(options: .displayInline, children: $0)
-		}
-		return UIMenu(children: inlineSubmenus)
 	}
 	
 	// MARK: - Table view
