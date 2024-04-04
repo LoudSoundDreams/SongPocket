@@ -3,7 +3,6 @@
 import UIKit
 import SwiftUI
 import MusicKit
-import CoreData
 
 final class AlbumsTVC: LibraryTVC {
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))

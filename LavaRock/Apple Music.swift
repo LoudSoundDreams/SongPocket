@@ -3,8 +3,6 @@
 import MusicKit
 
 @MainActor enum AppleMusic {
-	static var loadingIndicator: CollectionsTVC? = nil
-	
 	static func integrate() {
 		MusicRepo.shared.watchMPLibrary() // Collections view must start observing `Notification.Name.mergedChanges` before this.
 		AudioPlayer.shared.watchMPPlayer()

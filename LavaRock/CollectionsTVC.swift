@@ -5,18 +5,6 @@ import SwiftUI
 import MusicKit
 
 final class CollectionsTVC: LibraryTVC {
-	// MARK: - Setup
-	
-	override func viewDidLoad() {
-		editingButtons = [
-			editButtonItem,
-		]
-		
-		super.viewDidLoad()
-		
-		AppleMusic.loadingIndicator = self
-	}
-	
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
