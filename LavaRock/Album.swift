@@ -174,30 +174,25 @@ extension Album {
 		albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(
 			value: albumPersistentID,
 			forProperty: MPMediaItemPropertyAlbumPersistentID))
-		
 		guard
 			let queriedAlbums = albumsQuery.collections,
 			queriedAlbums.count == 1
-		else {
-			return nil
-		}
+		else { return nil }
 		return queriedAlbums.first
 	}
 	
 	// MARK: - Formatted attributes
 	
 	final func titleFormatted() -> String {
-		let representative = representativeSongInfo()
 		guard
-			let albumTitle = representative?.albumTitleOnDisk,
+			let albumTitle = representativeSongInfo()?.albumTitleOnDisk,
 			albumTitle != ""
-		else {
-			return LRString.unknownAlbum
-		}
+		else { return LRString.unknownAlbum }
 		return albumTitle
 	}
 	
-	final func releaseDateEstimateFormattedOptional() -> String? {
-		return releaseDateEstimate?.formatted(date: .abbreviated, time: .omitted)
+	final func releaseDateEstimateFormatted() -> String {
+		guard let releaseDateEstimate else { return LRString.emDash }
+		return releaseDateEstimate.formatted(date: .abbreviated, time: .omitted)
 	}
 }

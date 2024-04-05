@@ -197,8 +197,8 @@ private struct AlbumHeader: View {
 				.fontCaption2_bold()
 				Text(album.titleFormatted())
 					.fontTitle2_bold()
+					.alignmentGuide_separatorLeading()
 			}
-			.alignmentGuide_separatorLeading()
 			Spacer()
 		}
 		.alignmentGuide_separatorTrailing()

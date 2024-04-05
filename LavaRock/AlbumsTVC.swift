@@ -205,7 +205,6 @@ private struct AlbumRow: View {
 				.padding(.top, .eight * 3/2)
 				.padding(.horizontal)
 				.padding(.bottom, .eight * 4)
-				.accessibilityRespondsToUserInteraction(false)
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
@@ -249,7 +248,7 @@ private struct AlbumLabel: View {
 				AvatarImage(libraryItem: album, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			}
 			
-			Text(album.releaseDateEstimateFormattedOptional() ?? LRString.emDash)
+			Text(album.releaseDateEstimateFormatted())
 				.foregroundStyle(.secondary)
 				.fontFootnote()
 				.multilineTextAlignment(.center)

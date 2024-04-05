@@ -89,10 +89,7 @@ extension Song {
 		guard
 			let response = try? await request.response(),
 			response.items.count == 1
-		else {
-			return nil
-		}
-		
+		else { return nil }
 		return response.items.first
 	}
 	
@@ -190,10 +187,7 @@ extension Song {
 		guard
 			let queriedSongs = songsQuery.items,
 			queriedSongs.count == 1
-		else {
-			return nil
-		}
-		
+		else { return nil }
 		return queriedSongs.first
 	}
 }
