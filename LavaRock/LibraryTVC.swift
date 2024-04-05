@@ -299,20 +299,12 @@ class LibraryTVC: UITableViewController {
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if isEditing {
-			if let cell = tableView.cellForRow(at: indexPath) {
-				cell.accessibilityTraits.formUnion(.selected)
-			}
-			
 			freshenEditingButtons()
 		}
 	}
 	final override func tableView(
 		_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath
 	) {
-		if let cell = tableView.cellForRow(at: indexPath) {
-			cell.accessibilityTraits.subtract(.selected)
-		}
-		
 		freshenEditingButtons()
 	}
 }
