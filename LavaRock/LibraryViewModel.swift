@@ -3,7 +3,7 @@
 import CoreData
 
 protocol LibraryViewModel {
-	// You must add a `didSet` that calls `Fn.renumber(items)`.
+	// You must add a `didSet` that calls `Library.renumber(items)`.
 	var items: [NSManagedObject] { get set }
 	
 	func itemIndex(forRow row: Int) -> Int
@@ -21,9 +21,7 @@ extension LibraryViewModel {
 
 struct AlbumsViewModel {
 	// `LibraryViewModel`
-	var items: [NSManagedObject] {
-		didSet { Library.renumber(items) }
-	}
+	var items: [NSManagedObject] { didSet { Library.renumber(items) } }
 }
 extension AlbumsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row }
@@ -31,10 +29,7 @@ extension AlbumsViewModel: LibraryViewModel {
 		return items.indices.map { $0 }
 	}
 	
-	// Similar to counterpart in `SongsViewModel`.
-	func updatedWithFreshenedData() -> Self {
-		return Self()
-	}
+	func updatedWithFreshenedData() -> Self { return Self() }
 	func rowIdentifiers() -> [AnyHashable] {
 		return items.map { $0.objectID }
 	}
@@ -58,24 +53,15 @@ struct SongsViewModel {
 	let album: Album
 	
 	// `LibraryViewModel`
-	var items: [NSManagedObject] {
-		didSet { Library.renumber(items) }
-	}
+	var items: [NSManagedObject] { didSet { Library.renumber(items) } }
 }
 extension SongsViewModel: LibraryViewModel {
-	func itemIndex(forRow row: Int) -> Int {
-		return row - Self.prerowCount
-	}
+	func itemIndex(forRow row: Int) -> Int { return row - Self.prerowCount }
 	func rowsForAllItems() -> [Int] {
-		return items.indices.map {
-			Self.prerowCount + $0
-		}
+		return items.indices.map { Self.prerowCount + $0 }
 	}
 	
-	// Similar to counterpart in `AlbumsViewModel`.
-	func updatedWithFreshenedData() -> Self {
-		return Self(album: album)
-	}
+	func updatedWithFreshenedData() -> Self { return Self(album: album) }
 	func rowIdentifiers() -> [AnyHashable] {
 		let itemRowIDs = items.map {
 			AnyHashable($0.objectID)
