@@ -30,13 +30,11 @@ extension AlbumsViewModel: LibraryViewModel {
 	func rowsForAllItems() -> [Int] {
 		return items.indices.map { $0 }
 	}
-	func row(forItemIndex itemIndex: Int) -> Int { return itemIndex }
 	
 	// Similar to counterpart in `SongsViewModel`.
 	func updatedWithFreshenedData() -> Self {
 		return Self()
 	}
-	
 	func rowIdentifiers() -> [AnyHashable] {
 		return items.map { $0.objectID }
 	}
@@ -73,15 +71,11 @@ extension SongsViewModel: LibraryViewModel {
 			Self.prerowCount + $0
 		}
 	}
-	func row(forItemIndex itemIndex: Int) -> Int {
-		return Self.prerowCount + itemIndex
-	}
 	
 	// Similar to counterpart in `AlbumsViewModel`.
 	func updatedWithFreshenedData() -> Self {
 		return Self(album: album)
 	}
-	
 	func rowIdentifiers() -> [AnyHashable] {
 		let itemRowIDs = items.map {
 			AnyHashable($0.objectID)
