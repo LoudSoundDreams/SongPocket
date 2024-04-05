@@ -19,7 +19,7 @@ struct AvatarImage: View {
 	@ObservedObject var queue: MusicPlayer.Queue
 	
 	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
-	private var status: AvatarStatus {
+	private var status: Status {
 		if !libraryItem.containsPlayhead() {
 			return .notPlaying
 		}
@@ -33,6 +33,9 @@ struct AvatarImage: View {
 		}
 #endif
 	}
+	enum Status {
+		case notPlaying, paused, playing
+	}
 	
 	var body: some View {
 		ZStack(alignment: .leading) {
@@ -40,7 +43,13 @@ struct AvatarImage: View {
 			foregroundView
 		}
 		.accessibilityElement()
-		.accessibilityLabel(status.axLabel ?? "")
+		.accessibilityLabel({
+			switch status {
+				case .notPlaying: return ""
+				case .paused: return LRString.paused
+				case .playing: return LRString.nowPlaying
+			}
+		}())
 	}
 	@ViewBuilder private var foregroundView: some View {
 		switch status {
@@ -63,15 +72,5 @@ struct AvatarPlayingImage: View {
 		Image(systemName: "speaker.wave.2.fill")
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
 			.imageScale(.small)
-	}
-}
-enum AvatarStatus {
-	case notPlaying, paused, playing
-	var axLabel: String? {
-		switch self {
-			case .notPlaying: return nil
-			case .paused: return LRString.paused
-			case .playing: return LRString.nowPlaying
-		}
 	}
 }

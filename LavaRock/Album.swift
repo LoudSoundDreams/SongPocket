@@ -49,16 +49,12 @@ extension Album {
 	
 	// Similar to `Collection.albums`.
 	final func songs(sorted: Bool) -> [Song] {
-		guard let contents else {
-			return []
-		}
-		let unsortedSongs = contents.map { $0 as! Song }
-		if sorted {
-			let sortedSongs = unsortedSongs.sorted { $0.index < $1.index }
-			return sortedSongs
-		} else {
-			return unsortedSongs
-		}
+		guard let contents else { return [] }
+		
+		let unsorted = contents.map { $0 as! Song }
+		guard sorted else { return unsorted }
+		
+		return unsorted.sorted { $0.index < $1.index }
 	}
 	
 	final func songsAreInDefaultOrder() -> Bool {
