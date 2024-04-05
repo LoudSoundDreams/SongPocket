@@ -101,15 +101,10 @@ final class SongsTVC: LibraryTVC {
 				let albumRepresentative: SongInfo? = album.representativeSongInfo()
 				let trackDisplay: String = {
 					let result: String? = {
-						guard let albumRepresentative, let info else {
-							// `SongInfo` not available
-							return nil
-						}
+						guard let albumRepresentative, let info else { return nil }
 						if albumRepresentative.shouldShowDiscNumber {
-							// Disc and track number
 							return info.discAndTrackNumberFormatted()
 						} else {
-							// Track number only, which might be blank
 							return info.trackNumberFormattedOptional()
 						}
 					}()
