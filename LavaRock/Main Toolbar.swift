@@ -218,66 +218,35 @@ struct MainToolbar: View {
 	@ObservedObject private var status: MainToolbarStatus = .shared
 	
 	var body: some View {
+		Button {
+			withAnimation {
+				status.inSelectMode.toggle()
+			}
+		} label: { Image(systemName: status.inSelectMode ? "checkmark.circle.fill" : "checkmark.circle") }
+		Spacer()
 		if status.inSelectMode {
-			selectButton; Spacer()
-			arrangeButton; Spacer()
-			floatButton; Spacer()
-			sinkButton
+			Menu {
+			} label: { Image(systemName: "arrow.up.arrow.down") }
+			Spacer()
+			Button {
+			} label: { Image(systemName: "arrow.up.to.line") }
+			Spacer()
+			Button {
+			} label: { Image(systemName: "arrow.down.to.line") }
 		} else {
-			selectButton; Spacer()
-			jumpBackButton; Spacer()
-			playPauseButton; Spacer()
-			jumpForwardButton; Spacer()
-			overflowButton
-		}
-	}
-	private var selectButton: some View {
-		Button {
-			status.inSelectMode.toggle()
-		} label: {
-			Image(systemName: status.inSelectMode ? "checkmark.circle.fill" : "checkmark.circle")
-		}
-	}
-	private var jumpBackButton: some View {
-		Button {
-		} label: {
-			Image(systemName: "gobackward.15")
-		}
-	}
-	private var playPauseButton: some View {
-		Button {
-		} label: {
-			Image(systemName: "play.circle")
-		}
-	}
-	private var jumpForwardButton: some View {
-		Button {
-		} label: {
-			Image(systemName: "goforward.15")
-		}
-	}
-	private var overflowButton: some View {
-		Menu {
-		} label: {
-			Image(systemName: "ellipsis.circle")
-		}
-	}
-	private var arrangeButton: some View {
-		Menu {
-		} label: {
-			Image(systemName: "arrow.up.arrow.down")
-		}
-	}
-	private var floatButton: some View {
-		Button {
-		} label: {
-			Image(systemName: "arrow.up.to.line")
-		}
-	}
-	private var sinkButton: some View {
-		Button {
-		} label: {
-			Image(systemName: "arrow.down.to.line")
+			Button {
+			} label: { Image(systemName: "play.circle") }
+			Spacer()
+			Menu {
+				ControlGroup {
+					Button {
+					} label: { Image(systemName: "gobackward.15") }
+					Button {
+					} label: { Image(systemName: "goforward.15") }
+				}
+				.menuActionDismissBehavior(.disabled)
+				.controlGroupStyle(.compactMenu)
+			} label: { Image(systemName: "ellipsis.circle") }
 		}
 	}
 }
