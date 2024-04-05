@@ -28,11 +28,9 @@ final class AlbumsTVC: LibraryTVC {
 	) {
 		super.viewWillTransition(to: size, with: coordinator)
 		
-		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
-		
 		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
 			guard let cell = tableView.cellForRow(at: indexPath) else { return }
-			let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
+			let album = viewModel.itemNonNil(atRow: indexPath.row) as! Album
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(
 					album: album,
@@ -132,7 +130,7 @@ final class AlbumsTVC: LibraryTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		let album = (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row)
+		let album = viewModel.itemNonNil(atRow: indexPath.row) as! Album
 		cell.backgroundColors_configureForLibraryItem()
 		cell.contentConfiguration = UIHostingConfiguration {
 			AlbumRow(
@@ -154,7 +152,7 @@ final class AlbumsTVC: LibraryTVC {
 			navigationController?.pushViewController(
 				{
 					let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-					songsTVC.viewModel = SongsViewModel(album: (viewModel as! AlbumsViewModel).albumNonNil(atRow: indexPath.row))
+					songsTVC.viewModel = SongsViewModel(album: viewModel.itemNonNil(atRow: indexPath.row) as! Album)
 					return songsTVC
 				}(),
 				animated: true)

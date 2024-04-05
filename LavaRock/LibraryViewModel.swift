@@ -8,7 +8,6 @@ protocol LibraryViewModel {
 	
 	func itemIndex(forRow row: Int) -> Int
 	func rowsForAllItems() -> [Int]
-	func row(forItemIndex itemIndex: Int) -> Int
 	
 	func updatedWithFreshenedData() -> Self
 	func rowIdentifiers() -> [AnyHashable]

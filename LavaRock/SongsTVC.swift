@@ -82,8 +82,7 @@ final class SongsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		let songsViewModel = viewModel as! SongsViewModel
-		let album = songsViewModel.album
+		let album = (viewModel as! SongsViewModel).album
 		
 		switch indexPath.row {
 			case 0:
@@ -99,7 +98,7 @@ final class SongsTVC: LibraryTVC {
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Song", for: indexPath)
 				cell.backgroundColors_configureForLibraryItem()
-				let song = songsViewModel.itemNonNil(atRow: indexPath.row) as! Song
+				let song = viewModel.itemNonNil(atRow: indexPath.row) as! Song
 				let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 				let albumRepresentative: SongInfo? = album.representativeSongInfo()
 				let trackDisplay: String = {
@@ -156,7 +155,7 @@ final class SongsTVC: LibraryTVC {
 			// The UI is clearer if we leave the row selected while the action sheet is onscreen.
 			// You must eventually deselect the row in every possible scenario after this moment.
 			
-			let song = (viewModel as! SongsViewModel).itemNonNil(atRow: indexPath.row) as! Song
+			let song = viewModel.itemNonNil(atRow: indexPath.row) as! Song
 			let startPlaying = UIAlertAction(title: LRString.startPlaying, style: .default) { _ in
 				Task {
 					await song.playAlbumStartingHere()

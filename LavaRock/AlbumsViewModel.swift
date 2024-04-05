@@ -36,8 +36,4 @@ extension AlbumsViewModel {
 			items = []
 		}
 	}
-	
-	func albumNonNil(atRow: Int) -> Album {
-		return itemNonNil(atRow: atRow) as! Album
-	}
 }
