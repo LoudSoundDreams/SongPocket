@@ -69,7 +69,6 @@ final class SongsTVC: LibraryTVC {
 		
 		return 1
 	}
-	
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
@@ -142,6 +141,12 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	override func tableView(
+		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
+	) -> IndexPath? {
+		guard indexPath.row >= SongsViewModel.prerowCount else { return nil }
+		return indexPath
+	}
+	override func tableView(
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if
@@ -173,6 +178,22 @@ final class SongsTVC: LibraryTVC {
 		}
 		
 		super.tableView(tableView, didSelectRowAt: indexPath)
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
+	) -> Bool {
+		return indexPath.row >= SongsViewModel.prerowCount
+	}
+	override func tableView(
+		_ tableView: UITableView,
+		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
+		toProposedIndexPath proposedDestinationIndexPath: IndexPath
+	) -> IndexPath {
+		if proposedDestinationIndexPath.row < SongsViewModel.prerowCount {
+			return IndexPath(row: SongsViewModel.prerowCount, section: proposedDestinationIndexPath.section)
+		}
+		return proposedDestinationIndexPath
 	}
 }
 

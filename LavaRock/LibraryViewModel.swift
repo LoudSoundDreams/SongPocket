@@ -14,16 +14,6 @@ protocol LibraryViewModel {
 	func rowIdentifiers() -> [AnyHashable]
 }
 extension LibraryViewModel {
-	func pointsToSomeItem(row: Int) -> Bool {
-		guard !items.isEmpty else {
-			return false
-		}
-		let itemIndex = itemIndex(forRow: row)
-		guard 0 <= itemIndex, itemIndex < items.count else {
-			return false
-		}
-		return true
-	}
 	func itemNonNil(atRow: Int) -> NSManagedObject {
 		let itemIndex = itemIndex(forRow: atRow)
 		return items[itemIndex]

@@ -31,10 +31,7 @@ final class AlbumsTVC: LibraryTVC {
 		guard let albumsViewModel = viewModel as? AlbumsViewModel else { return }
 		
 		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
-			guard
-				let cell = tableView.cellForRow(at: indexPath),
-				albumsViewModel.pointsToSomeItem(row: indexPath.row)
-			else { return }
+			guard let cell = tableView.cellForRow(at: indexPath) else { return }
 			let album = albumsViewModel.albumNonNil(atRow: indexPath.row)
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(
