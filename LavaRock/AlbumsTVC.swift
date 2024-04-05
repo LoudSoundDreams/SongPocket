@@ -46,23 +46,21 @@ final class AlbumsTVC: LibraryTVC {
 		arrangeAlbumsButton.isEnabled = allowsArrange()
 		arrangeAlbumsButton.menu = createArrangeMenu()
 	}
-	private static let arrangeCommands: [[ArrangeCommand]] = [
-		[.album_newest, .album_oldest],
-		[.random, .reverse],
-	]
 	private func createArrangeMenu() -> UIMenu {
-		let elementsGrouped: [[UIMenuElement]] = Self.arrangeCommands.reversed().map {
+		let availableCommands: [[ArrangeCommand]] = [
+			[.album_newest, .album_oldest],
+			[.random, .reverse],
+		]
+		let elementsGrouped: [[UIMenuElement]] = availableCommands.reversed().map {
 			$0.reversed().map { command in
 				command.createMenuElement(
 					enabled: {
-						guard unsortedRowsToArrange().count >= 2 else {
-							return false
-						}
+						guard selectedOrAllRows().count >= 2 else { return false }
 						switch command {
 							case .random, .reverse: return true
 							case .song_track: return false
 							case .album_newest, .album_oldest:
-								let subjectedItems = unsortedRowsToArrange().map {
+								let subjectedItems = selectedOrAllRows().map {
 									viewModel.itemNonNil(atRow: $0)
 								}
 								guard let albums = subjectedItems as? [Album] else {

@@ -255,15 +255,8 @@ class LibraryTVC: UITableViewController {
 			return selectedRows.isConsecutive()
 		}
 	}
-	final func unsortedRowsToArrange() -> [Int] {
-		var result: [Int] = tableView.selectedIndexPaths.map { $0.row }
-		if result.isEmpty {
-			result = viewModel.rowsForAllItems()
-		}
-		return result
-	}
 	final func arrangeSelectedOrAll(by command: ArrangeCommand) {
-		let subjectedRows = unsortedRowsToArrange().sorted()
+		let subjectedRows = selectedOrAllRows().sorted()
 		let subjectedIndices = subjectedRows.map { viewModel.itemIndex(forRow: $0) }
 		let allItems = viewModel.items
 		
@@ -275,6 +268,13 @@ class LibraryTVC: UITableViewController {
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
+	}
+	final func selectedOrAllRows() -> [Int] {
+		var result: [Int] = tableView.selectedIndexPaths.map { $0.row }
+		if result.isEmpty {
+			result = viewModel.rowsForAllItems()
+		}
+		return result
 	}
 	
 	// MARK: - Table view
