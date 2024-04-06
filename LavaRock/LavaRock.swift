@@ -18,7 +18,7 @@ struct LavaRock: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			RootVC()
+			RootVCRep()
 				.toolbar { if MainToolbar.usesSwiftUI {
 					ToolbarItemGroup(placement: .bottomBar) { MainToolbar() }
 				} }
@@ -31,23 +31,24 @@ struct LavaRock: App {
 		}
 	}
 }
-private struct RootVC: UIViewControllerRepresentable {
+private struct RootVCRep: UIViewControllerRepresentable {
 	typealias VCType = RootNC
 	func makeUIViewController(context: Context) -> VCType {
-		let result = RootNC(
-			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
-		)
-		
-		let toolbar = result.toolbar!
-		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-		
-		MainToolbarStatus.shared.baseNC = result
-		
-		return result
+		return RootNC.instantiateWithAlbumsTVC()
 	}
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}
 }
 private final class RootNC: UINavigationController {
+	static func instantiateWithAlbumsTVC() -> Self {
+		let result = Self(
+			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
+		)
+		let toolbar = result.toolbar!
+		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		MainToolbarStatus.shared.baseNC = result
+		return result
+	}
+	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
 		
