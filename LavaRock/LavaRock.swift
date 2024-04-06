@@ -5,6 +5,7 @@ import MusicKit
 
 enum WorkingOn {
 	static let mainToolbar = 10 == 1
+	static let albumList = 10 == 1
 }
 
 @main
@@ -39,11 +40,23 @@ struct LavaRock: App {
 private struct RootVCRep: UIViewControllerRepresentable {
 	typealias VCType = RootNC
 	func makeUIViewController(context: Context) -> VCType {
-		return RootNC.instantiateWithAlbumsTVC()
+		if WorkingOn.albumList {
+			return RootNC.instantiateWithAlbumList()
+		} else {
+			return RootNC.instantiateWithAlbumsTVC()
+		}
 	}
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}
 }
 private final class RootNC: UINavigationController {
+	static func instantiateWithAlbumList() -> Self {
+		let result = Self(
+			rootViewController: UIHostingController(rootView: AxisView())
+		)
+		let toolbar = result.toolbar!
+		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		return result
+	}
 	static func instantiateWithAlbumsTVC() -> Self {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
