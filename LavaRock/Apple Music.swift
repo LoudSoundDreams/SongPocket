@@ -43,17 +43,12 @@ extension MPMusicPlayerController {
 @MainActor final class AudioPlayer {
 	static let shared = AudioPlayer()
 	private init() {}
-	
 	var reflectorToolbar: Weak<__MainToolbar>? = nil
-	
 	func watchMPPlayer() {
 		guard let __player = MPMusicPlayerController._system else { return }
-		
 		__player.beginGeneratingPlaybackNotifications()
-		
 		playbackState()
 		nowPlaying()
-		
 		NotificationCenter.default.addObserverOnce(
 			self,
 			selector: #selector(playbackState),
