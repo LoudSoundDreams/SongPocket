@@ -212,9 +212,8 @@ private struct AlbumHeader: View {
 					.fontTitle2_bold()
 					.alignmentGuide_separatorLeading()
 			}
-			Spacer()
+			Spacer().alignmentGuide_separatorTrailing()
 		}
-		.alignmentGuide_separatorTrailing()
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
 }

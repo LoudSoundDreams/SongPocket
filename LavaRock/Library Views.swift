@@ -18,24 +18,18 @@ struct AvatarImage: View {
 	@ObservedObject var state: MusicPlayer.State
 	@ObservedObject var queue: MusicPlayer.Queue
 	
-	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 	private var status: Status {
-		if !libraryItem.containsPlayhead() {
-			return .notPlaying
-		}
+		guard libraryItem.containsPlayhead() else { return .notPlaying }
 #if targetEnvironment(simulator)
 		return .playing
 #else
-		if state.playbackStatus == .playing {
-			return .playing
-		} else {
-			return .paused
-		}
+		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif
 	}
 	enum Status {
 		case notPlaying, paused, playing
 	}
+	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 	
 	var body: some View {
 		ZStack(alignment: .leading) {
@@ -53,8 +47,7 @@ struct AvatarImage: View {
 	}
 	@ViewBuilder private var foregroundView: some View {
 		switch status {
-			case .notPlaying:
-				EmptyView()
+			case .notPlaying: EmptyView()
 			case .paused:
 				Image(systemName: "speaker.fill")
 					.foregroundStyle(Color.accentColor)

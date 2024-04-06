@@ -240,13 +240,11 @@ private struct AlbumLabel: View {
 				Chevron().hidden()
 				AvatarImage(libraryItem: album, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			}
-			
 			Text(album.releaseDateEstimateFormatted())
 				.foregroundStyle(.secondary)
 				.fontFootnote()
 				.multilineTextAlignment(.center)
 				.frame(maxWidth: .infinity)
-			
 			ZStack(alignment: .trailing) {
 				AvatarPlayingImage().hidden()
 				Chevron()
