@@ -3,6 +3,10 @@
 import SwiftUI
 import MusicKit
 
+enum WorkingOn {
+	static let mainToolbar = 10 == 1
+}
+
 @main
 struct LavaRock: App {
 	init() {
@@ -15,12 +19,13 @@ struct LavaRock: App {
 			}
 		}
 	}
-	
 	var body: some Scene {
 		WindowGroup {
 			RootVCRep()
-				.toolbar { if MainToolbar.usesSwiftUI {
-					ToolbarItemGroup(placement: .bottomBar) { MainToolbar() }
+				.toolbar { if WorkingOn.mainToolbar {
+					ToolbarItemGroup(placement: .bottomBar) {
+						MainToolbar()
+					}
 				} }
 				.ignoresSafeArea()
 				.task { // Runs after `onAppear`, and after the view first appears onscreen
@@ -47,7 +52,6 @@ private final class RootNC: UINavigationController {
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		return result
 	}
-	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
 		
@@ -57,7 +61,7 @@ private final class RootNC: UINavigationController {
 			// As of iOS 16.6.1, the build setting “Global Accent Color Name” doesn’t apply to (UIKit) alerts or action sheets.
 			view.window!.tintColor = UIColor(named: "denim")!
 			
-			if !MainToolbar.usesSwiftUI {
+			if !WorkingOn.mainToolbar {
 				setToolbarHidden(false, animated: false)
 			}
 		}
