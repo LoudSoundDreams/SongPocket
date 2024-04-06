@@ -130,9 +130,9 @@ private struct CoverArt: View {
 			ZStack {
 				Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
 					.aspectRatio(1, contentMode: .fit)
-				Image(systemName: "opticaldisc")
+				Image(systemName: "music.note")
 					.foregroundStyle(.secondary)
-					.font(.system(size: .eight * 4))
+					.font(.title)
 			}
 			.accessibilityLabel(LRString.albumArtwork)
 			.accessibilityIgnoresInvertColors()
