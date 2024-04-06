@@ -63,20 +63,17 @@ private final class RootNC: UINavigationController {
 		)
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		if !WorkingOn.mainToolbar {
+			result.setToolbarHidden(false, animated: false)
+		}
 		return result
 	}
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
-		
 		if !Self.hasAppeared {
 			Self.hasAppeared = true
-			
 			// As of iOS 16.6.1, the build setting “Global Accent Color Name” doesn’t apply to (UIKit) alerts or action sheets.
 			view.window!.tintColor = UIColor(named: "denim")!
-			
-			if !WorkingOn.mainToolbar {
-				setToolbarHidden(false, animated: false)
-			}
 		}
 	}
 	private static var hasAppeared = false
