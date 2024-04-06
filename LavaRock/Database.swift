@@ -143,7 +143,7 @@ extension NSManagedObjectContext {
 	final func unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade() {
 		let all = Album.allFetched(sorted: false, inCollection: nil, context: self)
 		all.forEach { album in
-			if album.isEmpty() {
+			if album.contents?.count == 0 {
 				delete(album)
 			}
 		}
@@ -152,7 +152,7 @@ extension NSManagedObjectContext {
 	final func deleteEmptyCollections() {
 		var all = Collection.allFetched(sorted: true, context: self)
 		all.enumerated().reversed().forEach { (index, collection) in
-			if collection.isEmpty() {
+			if collection.contents?.count == 0 {
 				delete(collection)
 				all.remove(at: index)
 			}

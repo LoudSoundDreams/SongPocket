@@ -10,20 +10,7 @@ enum Library {
 	}
 }
 
-protocol LibraryContainer: NSManagedObject {
-	var contents: NSSet? { get }
-}
-extension LibraryContainer {
-	func isEmpty() -> Bool {
-		return contents == nil || contents?.count == 0
-	}
-}
-extension Collection: LibraryContainer {}
-extension Album: LibraryContainer {}
-
 protocol LibraryItem: NSManagedObject {
-	var index: Int64 { get set }
-	
 	@MainActor func containsPlayhead() -> Bool
 }
 extension Collection: LibraryItem {
