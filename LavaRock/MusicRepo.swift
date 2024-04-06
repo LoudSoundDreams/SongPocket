@@ -6,9 +6,7 @@ import MediaPlayer
 final class MusicRepo: ObservableObject {
 	static let shared = MusicRepo()
 	private init() {}
-	
 	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
-	
 	func watchMPLibrary() {
 		library?.endGeneratingLibraryChangeNotifications()
 		library = MPMediaLibrary.default()
@@ -18,9 +16,9 @@ final class MusicRepo: ObservableObject {
 			selector: #selector(mergeChanges),
 			name: .MPMediaLibraryDidChange,
 			object: library)
-		
 		mergeChanges()
 	}
+	
 	private var library: MPMediaLibrary? = nil
 	let context = Database.viewContext
 	@objc private func mergeChanges() {
@@ -37,13 +35,7 @@ final class MusicRepo: ObservableObject {
 		}
 #endif
 	}
-	
-	deinit {
-		library?.endGeneratingLibraryChangeNotifications()
-	}
-}
-extension MusicRepo {
-	func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
+	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
 		let existingSongs = Song.allFetched(sorted: false, inAlbum: nil, context: context)
 		
 		let defaults = UserDefaults.standard

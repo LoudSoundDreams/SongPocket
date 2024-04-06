@@ -45,7 +45,6 @@ private final class RootNC: UINavigationController {
 		)
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-		MainToolbarStatus.shared.baseNC = result
 		return result
 	}
 	

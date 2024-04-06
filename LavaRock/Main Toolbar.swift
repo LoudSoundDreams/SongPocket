@@ -206,9 +206,6 @@ import SwiftUI
 final class MainToolbarStatus: ObservableObject {
 	static let shared = MainToolbarStatus()
 	private init() {}
-	
-	var baseNC: UINavigationController? = nil
-	
 	@Published fileprivate(set) var inSelectMode = false
 }
 
