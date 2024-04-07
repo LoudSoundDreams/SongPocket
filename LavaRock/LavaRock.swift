@@ -21,6 +21,8 @@ struct LavaRock: App {
 	}
 	var body: some Scene {
 		WindowGroup {
+//			AxisView()
+//			AlbumList()
 			RootVCRep()
 				.ignoresSafeArea()
 				.toolbar { if WorkingOn.mainToolbar {
@@ -37,17 +39,11 @@ struct LavaRock: App {
 }
 private struct RootVCRep: UIViewControllerRepresentable {
 	typealias VCType = RootNC
-	func makeUIViewController(context: Context) -> VCType {
-//		return RootNC.instantiateWithAlbumList()
-		return RootNC.instantiateWithAlbumsTVC()
-	}
+	func makeUIViewController(context: Context) -> VCType { RootNC.create() }
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}
 }
 private final class RootNC: UINavigationController {
-	static func instantiateWithAlbumList() -> Self {
-		return Self(rootViewController: UIHostingController(rootView: AxisView()))
-	}
-	static func instantiateWithAlbumsTVC() -> Self {
+	static func create() -> Self {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
 		)

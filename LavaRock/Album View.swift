@@ -55,3 +55,36 @@ struct AxisView: View {
 		}
 	}
 }
+
+struct AlbumList: View {
+	@State private var albums: [FakeAlbum] = [
+		FakeAlbum("one"),
+		FakeAlbum("two"),
+		FakeAlbum("three"),
+	]
+	@State private var selectedAlbums: Set<FakeAlbum> = []
+	var body: some View {
+		List(
+			$albums,
+			editActions: [.delete, .move],
+			selection: $selectedAlbums
+		) { $album in
+			Text(album.title)
+		}
+	}
+}
+struct FakeAlbum: Hashable {
+	let title: String
+	init(_ title: String) {
+		self.title = title
+	}
+}
+extension FakeAlbum: Identifiable {
+	var id: Int { FakeAlbum.takeANumber() }
+	private static func takeANumber() -> Int {
+		let result = highestNumber
+		highestNumber += 1
+		return result
+	}
+	private static var highestNumber = 1
+}
