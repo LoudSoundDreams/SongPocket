@@ -22,17 +22,16 @@ struct LavaRock: App {
 	var body: some Scene {
 		WindowGroup {
 			RootVCRep()
+				.ignoresSafeArea()
 				.toolbar { if WorkingOn.mainToolbar {
 					ToolbarItemGroup(placement: .bottomBar) {
 						MainToolbar()
 					}
 				} }
-				.ignoresSafeArea()
-				.task { // Runs after `onAppear`, and after the view first appears onscreen
+				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
 					AppleMusic.integrate()
 				}
-				.tint(Color("denim")) // Applies before `AppleMusic.integrate`.
 		}
 	}
 }
@@ -63,7 +62,6 @@ private final class RootNC: UINavigationController {
 		super.viewIsAppearing(animated)
 		if !Self.hasAppeared {
 			Self.hasAppeared = true
-			// As of iOS 16.6.1, the build setting “Global Accent Color Name” doesn’t apply to (UIKit) alerts or action sheets.
 			view.window!.tintColor = UIColor(named: "denim")!
 		}
 	}
