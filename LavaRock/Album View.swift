@@ -23,6 +23,8 @@ struct AxisView: View {
 			}
 			.scrollTargetBehavior(.viewAligned(limitBehavior: .never))
 			.scrollPosition(id: $currentNumber)
+			.toolbar(.visible, for: .bottomBar)
+			.toolbarBackground(.visible, for: .bottomBar)
 			.toolbar { ToolbarItemGroup(placement: .bottomBar) {
 				Button {
 					withAnimation {
