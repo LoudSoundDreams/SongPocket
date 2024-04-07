@@ -153,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				071A0B9D277E76510017F76D /* LavaRock.swift */,
-				07DF76E32828D8AB00B03103 /* Main Toolbar.swift */,
 				07CBB6FE2BBEA9DE008B0BB5 /* Album View.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
@@ -161,6 +160,7 @@
 				07755A57294821860056E90C /* Library Views.swift */,
 				07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */,
 				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
+				07DF76E32828D8AB00B03103 /* Main Toolbar.swift */,
 				07FB52CA2813909400CCCBA5 /* ArrangeCommand.swift */,
 				0751DE3826C5C6E800AA14DA /* LibraryViewModel.swift */,
 				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
@@ -529,7 +529,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1005;
+				CURRENT_PROJECT_VERSION = 1006;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Dev\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -559,7 +559,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1005;
+				CURRENT_PROJECT_VERSION = 1006;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Dev\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
