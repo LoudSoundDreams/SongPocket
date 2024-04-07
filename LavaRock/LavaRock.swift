@@ -29,7 +29,7 @@ struct LavaRock: App {
 					ToolbarItemGroup(placement: .bottomBar) {
 						MainToolbar()
 					}
-				} }
+				}}
 				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
 					AppleMusic.integrate()

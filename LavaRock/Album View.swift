@@ -61,16 +61,20 @@ struct AlbumList: View {
 		FakeAlbum("one"),
 		FakeAlbum("two"),
 		FakeAlbum("three"),
-	]
+	] {
+		didSet {
+			print()
+			print(albums)
+		}
+	}
 	@State private var selectedAlbums: Set<FakeAlbum> = []
 	var body: some View {
-		List(
-			$albums,
-			editActions: [.delete, .move],
-			selection: $selectedAlbums
-		) { $album in
+		List($albums, editActions: [.move], selection: $selectedAlbums) { $album in
 			Text(album.title)
 		}
+		.toolbar { ToolbarItemGroup(placement: .bottomBar) {
+			EditButton()
+		}}
 	}
 }
 struct FakeAlbum: Hashable {
