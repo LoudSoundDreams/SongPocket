@@ -23,7 +23,7 @@ struct LavaRock: App {
 		let workingOnAlbumView = 1
 		WindowGroup {
 			switch workingOnAlbumView {
-				case 10: AxisView()
+				case 10: AlbumShelf()
 				case 100: AlbumList()
 				default:
 					RootVCRep()

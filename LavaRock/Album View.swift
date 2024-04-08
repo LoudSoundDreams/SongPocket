@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-struct AxisView: View {
+struct AlbumShelf: View {
 	@State private var numbers: [Int] = Array(1...3)
 	@State private var currentNumber: Int? = 2
 	var body: some View {
