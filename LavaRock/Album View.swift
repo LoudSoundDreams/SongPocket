@@ -56,38 +56,37 @@ struct AxisView: View {
 }
 
 struct AlbumList: View {
-	@State private var albums: [FakeAlbum] = [
-		FakeAlbum("one"),
-		FakeAlbum("two"),
-		FakeAlbum("three"),
-	] {
+	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray {
 		didSet {
-			print()
-			print(albums)
+			albums.enumerated().forEach { offset, album in
+				print(album.title, terminator: "")
+			}
 		}
 	}
 	@State private var selectedAlbums: Set<FakeAlbum> = []
 	var body: some View {
-		List($albums, editActions: [.move], selection: $selectedAlbums) { $album in
-			Text(album.title)
+		List(selection: $selectedAlbums) {
+			ForEach($albums, editActions: .move) { $album in
+				Text(album.title)
+			}
+			.onMove { from, to in
+				albums.move(fromOffsets: from, toOffset: to)
+			}
 		}
-		.toolbar { ToolbarItemGroup(placement: .bottomBar) {
-			EditButton()
-		}}
 	}
 }
-struct FakeAlbum: Hashable {
+struct FakeAlbum: Identifiable, Hashable {
+	let position: Int
 	let title: String
-	init(_ title: String) {
-		self.title = title
-	}
-}
-extension FakeAlbum: Identifiable {
-	var id: Int { FakeAlbum.takeANumber() }
-	private static func takeANumber() -> Int {
-		let result = highestNumber
-		highestNumber += 1
+	static let demoArray: [Self] = {
+		var result: [Self] = []
+		let titles = "uncopyrightable"
+		titles.enumerated().forEach { offset, letter in
+			result.append(Self(position: offset, title: String(letter)))
+		}
 		return result
-	}
-	private static var highestNumber = 1
+	}()
+	
+	// `Identifiable`
+	let id = UUID()
 }
