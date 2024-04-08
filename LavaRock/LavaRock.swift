@@ -20,20 +20,24 @@ struct LavaRock: App {
 		}
 	}
 	var body: some Scene {
+		let workingOnAlbumView = 1
 		WindowGroup {
-//			AxisView()
-//			AlbumList()
-			RootVCRep()
-				.ignoresSafeArea()
-				.toolbar { if WorkingOn.mainToolbar {
-					ToolbarItemGroup(placement: .bottomBar) {
-						MainToolbar()
-					}
-				}}
-				.task {
-					guard MusicAuthorization.currentStatus == .authorized else { return }
-					AppleMusic.integrate()
-				}
+			switch workingOnAlbumView {
+				case 10: AxisView()
+				case 100: AlbumList()
+				default:
+					RootVCRep()
+						.ignoresSafeArea()
+						.toolbar { if WorkingOn.mainToolbar {
+							ToolbarItemGroup(placement: .bottomBar) {
+								MainToolbar()
+							}
+						}}
+						.task {
+							guard MusicAuthorization.currentStatus == .authorized else { return }
+							AppleMusic.integrate()
+						}
+			}
 		}
 	}
 }

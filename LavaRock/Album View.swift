@@ -5,7 +5,6 @@ import SwiftUI
 struct AxisView: View {
 	@State private var numbers: [Int] = Array(1...3)
 	@State private var currentNumber: Int? = 2
-	
 	var body: some View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
