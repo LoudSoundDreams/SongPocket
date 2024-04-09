@@ -3,51 +3,60 @@
 import SwiftUI
 
 struct AlbumShelf: View {
-	@State private var numbers: [Int] = Array(1...3)
-	@State private var currentNumber: Int? = 2
+	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray
+	@State private var visiblePosition: Int? = 2
 	var body: some View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
 				LazyHStack {
-					ForEach(numbers, id: \.self) { number in
+					ForEach(albums) { album in
 						ZStack {
-							Rectangle().foregroundStyle(Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1)))
-							Circle().foregroundStyle(Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1)))
+							Rectangle().foregroundStyle(album.squareColor)
+							Circle().foregroundStyle(album.circleColor)
+							Text(album.title)
 						}
 						.aspectRatio(1, contentMode: .fit)
 						.containerRelativeFrame(.horizontal)
-						.id(number)
+						.id(album.position)
 					}
-				}.scrollTargetLayout()
+				}
+				.scrollTargetLayout()
 			}
 			.scrollTargetBehavior(.viewAligned(limitBehavior: .never))
-			.scrollPosition(id: $currentNumber)
+			.scrollPosition(id: $visiblePosition)
 			.toolbar(.visible, for: .bottomBar)
 			.toolbarBackground(.visible, for: .bottomBar)
 			.toolbar { ToolbarItemGroup(placement: .bottomBar) {
 				Button {
 					withAnimation {
-						if currentNumber != nil && currentNumber! > 1 {
-							currentNumber! -= 1
+						if visiblePosition != nil && visiblePosition! > 0 {
+							visiblePosition! -= 1
 						}
 					}
 				} label: { Image(systemName: "arrow.backward") }
-					.disabled(currentNumber == 1)
+					.disabled({ guard let visiblePosition else { return false }; return visiblePosition <= 0 }())
 				Spacer()
-				Text({ guard let currentNumber else { return "" }; return String(currentNumber) }())
+				Text({ guard let visiblePosition else { return "" }; return String(visiblePosition) }())
 				Spacer()
 				Button {
 					withAnimation {
-						if currentNumber != nil && currentNumber! < numbers.count {
-							currentNumber! += 1
+						if visiblePosition != nil && visiblePosition! < albums.count - 1 {
+							visiblePosition! += 1
 						}
 					}
 				} label: { Image(systemName: "arrow.forward") }
-					.disabled(currentNumber == numbers.count)
+					.disabled({ guard let visiblePosition else { return false }; return visiblePosition >= albums.count - 1 }())
 				Spacer()
 				Button {
 					withAnimation {
-						numbers.append(numbers.count + 1)
+						albums.append(
+							FakeAlbum(
+								position: albums.count,
+								title: {
+									let alphabet = "abcdefghijklmnopqrstuvwxyz"
+									let letters: [String] = alphabet.map { String($0) }
+									return letters.randomElement()!
+								}()))
 					}
 				} label: { Image(systemName: "plus") }
 			} }
@@ -75,17 +84,21 @@ struct AlbumList: View {
 		}
 	}
 }
+
 struct FakeAlbum: Identifiable, Hashable {
 	let position: Int
 	let title: String
 	static let demoArray: [Self] = {
 		var result: [Self] = []
-		let titles = "uncopyrightable"
+		let titles = "abcd"
 		titles.enumerated().forEach { offset, letter in
 			result.append(Self(position: offset, title: String(letter)))
 		}
 		return result
 	}()
+	
+	let circleColor = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
+	let squareColor = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
 	
 	// `Identifiable`
 	let id = UUID()
