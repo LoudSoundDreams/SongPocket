@@ -3,7 +3,10 @@
 import SwiftUI
 
 struct AlbumShelf: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray
+	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray {
+		didSet {
+		}
+	}
 	@State private var visiblePosition: Int? = 2
 	var body: some View {
 		ScrollViewReader { proxy in
@@ -17,7 +20,6 @@ struct AlbumShelf: View {
 						}
 						.aspectRatio(1, contentMode: .fit)
 						.containerRelativeFrame(.horizontal)
-						.id(album.position)
 					}
 				}
 				.scrollTargetLayout()
@@ -28,6 +30,9 @@ struct AlbumShelf: View {
 			.toolbarBackground(.visible, for: .bottomBar)
 			.toolbar { ToolbarItemGroup(placement: .bottomBar) {
 				Button {
+				} label: { Image(systemName: "minus.circle") }
+				Spacer()
+				Button {
 					withAnimation {
 						if visiblePosition != nil && visiblePosition! > 0 {
 							visiblePosition! -= 1
@@ -36,7 +41,11 @@ struct AlbumShelf: View {
 				} label: { Image(systemName: "arrow.backward") }
 					.disabled({ guard let visiblePosition else { return false }; return visiblePosition <= 0 }())
 				Spacer()
-				Text({ guard let visiblePosition else { return "" }; return String(visiblePosition) }())
+				ZStack {
+					Text(String(albums.count - 1)).hidden()
+					Text({ guard let visiblePosition else { return "" }; return String(visiblePosition) }())
+						.animation(.none)
+				}
 				Spacer()
 				Button {
 					withAnimation {
@@ -58,7 +67,7 @@ struct AlbumShelf: View {
 									return letters.randomElement()!
 								}()))
 					}
-				} label: { Image(systemName: "plus") }
+				} label: { Image(systemName: "plus.circle") }
 			} }
 		}
 	}
@@ -85,21 +94,21 @@ struct AlbumList: View {
 	}
 }
 
-struct FakeAlbum: Identifiable, Hashable {
-	let position: Int
+struct FakeAlbum: Hashable {
+	var position: Int
 	let title: String
-	static let demoArray: [Self] = {
-		var result: [Self] = []
+	static let demoArray: [FakeAlbum] = {
+		var result: [FakeAlbum] = []
 		let titles = "abcd"
 		titles.enumerated().forEach { offset, letter in
-			result.append(Self(position: offset, title: String(letter)))
+			result.append(FakeAlbum(position: offset, title: String(letter)))
 		}
 		return result
 	}()
 	
 	let circleColor = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
 	let squareColor = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
-	
-	// `Identifiable`
-	let id = UUID()
+}
+extension FakeAlbum: Identifiable {
+	var id: Int { position }
 }
