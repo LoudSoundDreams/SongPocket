@@ -34,9 +34,7 @@ struct AlbumShelf: View {
 				Spacer()
 				Button {
 					withAnimation {
-						if visiblePosition != nil && visiblePosition! > 0 {
-							visiblePosition! -= 1
-						}
+						if let pos = visiblePosition, pos > 0 { visiblePosition = pos - 1 }
 					}
 				} label: { Image(systemName: "arrow.backward") }
 					.disabled({ guard let visiblePosition else { return false }; return visiblePosition <= 0 }())
@@ -49,9 +47,7 @@ struct AlbumShelf: View {
 				Spacer()
 				Button {
 					withAnimation {
-						if visiblePosition != nil && visiblePosition! < albums.count - 1 {
-							visiblePosition! += 1
-						}
+						if let pos = visiblePosition, pos < albums.count - 1 { visiblePosition = pos + 1 }
 					}
 				} label: { Image(systemName: "arrow.forward") }
 					.disabled({ guard let visiblePosition else { return false }; return visiblePosition >= albums.count - 1 }())
