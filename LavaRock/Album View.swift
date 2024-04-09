@@ -53,9 +53,7 @@ struct AlbumShelf: View {
 					.disabled({ guard let visiblePosition else { return false }; return visiblePosition >= albums.count - 1 }())
 				Spacer()
 				Button {
-					withAnimation {
-						albums.append(FakeAlbum(position: albums.count, title: .randomLowercaseLetter()))
-					}
+					albums.append(FakeAlbum(position: albums.count, title: .randomLowercaseLetter()))
 				} label: { Image(systemName: "plus.circle") }
 			} }
 		}
