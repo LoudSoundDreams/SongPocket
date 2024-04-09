@@ -58,14 +58,7 @@ struct AlbumShelf: View {
 				Spacer()
 				Button {
 					withAnimation {
-						albums.append(
-							FakeAlbum(
-								position: albums.count,
-								title: {
-									let alphabet = "abcdefghijklmnopqrstuvwxyz"
-									let letters: [String] = alphabet.map { String($0) }
-									return letters.randomElement()!
-								}()))
+						albums.append(FakeAlbum(position: albums.count, title: .randomLowercaseLetter()))
 					}
 				} label: { Image(systemName: "plus.circle") }
 			} }
@@ -95,20 +88,20 @@ struct AlbumList: View {
 }
 
 struct FakeAlbum: Hashable {
+	static let demoArray: [Self] = {
+		return (0...3).map { Self(position: $0, title: .randomLowercaseLetter()) }
+	}()
 	var position: Int
 	let title: String
-	static let demoArray: [FakeAlbum] = {
-		var result: [FakeAlbum] = []
-		let titles = "abcd"
-		titles.enumerated().forEach { offset, letter in
-			result.append(FakeAlbum(position: offset, title: String(letter)))
-		}
-		return result
-	}()
-	
-	let circleColor = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
-	let squareColor = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
+	let circleColor = Color.random()
+	let squareColor = Color.random()
 }
 extension FakeAlbum: Identifiable {
 	var id: Int { position }
+}
+
+extension String {
+	static func randomLowercaseLetter() -> Self {
+		return "abcdefghijklmnopqrstuvwxyz".map { String($0) }.randomElement()!
+	}
 }
