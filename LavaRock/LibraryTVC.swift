@@ -187,22 +187,18 @@ class LibraryTVC: UITableViewController {
 	
 	private func setBarButtons(animated: Bool) {
 		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
-		
 		navigationItem.setLeftBarButtonItems(
 			(
 				isEditing
 				? [.flexibleSpace()] // Removes “Back” button
 				: []
-			),
-			animated: animated)
-		
+			), animated: animated)
 		setToolbarItems(
 			(
 				isEditing
 				? editingButtons
 				: [editButtonItem] + __MainToolbar.shared.barButtonItems
-			),
-			animated: animated)
+			), animated: animated)
 	}
 	
 	// Overrides should call super (this implementation).

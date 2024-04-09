@@ -63,9 +63,6 @@ struct AlbumShelf: View {
 struct AlbumList: View {
 	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray {
 		didSet {
-			albums.enumerated().forEach { offset, album in
-				print(album.title, terminator: "")
-			}
 		}
 	}
 	@State private var selectedAlbums: Set<FakeAlbum> = []
@@ -96,6 +93,7 @@ extension FakeAlbum: Identifiable {
 
 extension String {
 	static func randomLowercaseLetter() -> Self {
-		return "abcdefghijklmnopqrstuvwxyz".map { String($0) }.randomElement()!
+		let character = "abcdefghijklmnopqrstuvwxyz".randomElement()!
+		return String(character)
 	}
 }
