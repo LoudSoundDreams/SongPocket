@@ -64,9 +64,7 @@ import MediaPlayer
 					title: LRString.repeatOff,
 					image: UIImage(systemName: "minus"),
 					attributes: {
-						guard let __player = MPMusicPlayerController._system else {
-							return .disabled
-						}
+						guard let __player = MPMusicPlayerController._system else { return .disabled }
 						if __player.repeatMode == MPMusicRepeatMode.none {
 							return .disabled
 						} else {
@@ -91,9 +89,7 @@ import MediaPlayer
 					image: UIImage(systemName: "repeat.1"),
 					attributes: {
 						// Disable if appropriate
-						guard let __player = MPMusicPlayerController._system else {
-							return .disabled
-						}
+						guard let __player = MPMusicPlayerController._system else { return .disabled }
 						if __player.repeatMode == .one {
 							return .disabled
 						} else {
@@ -128,10 +124,9 @@ import MediaPlayer
 		
 		overflowButton.image = newOverflowButtonImage()
 		
-		guard
-			let __player = MPMusicPlayerController._system
-				// Ideally, also do this when no songs are in the player
-		else {
+		guard let __player = MPMusicPlayerController._system else {
+			// Ideally, also do this when no songs are in the player
+			
 			showPlay()
 			
 			// Disable everything
@@ -160,9 +155,7 @@ import MediaPlayer
 	private func newOverflowButtonImage() -> UIImage {
 		let repeatOff = UIImage(systemName: "ellipsis.circle")!
 		
-		guard let __player = MPMusicPlayerController._system else {
-			return repeatOff
-		}
+		guard let __player = MPMusicPlayerController._system else { return repeatOff }
 		switch __player.repeatMode {
 				// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
 			case .one: return UIImage(systemName: "repeat.1.circle.fill")!

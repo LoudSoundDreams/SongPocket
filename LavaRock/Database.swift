@@ -70,9 +70,7 @@ extension NSManagedObjectContext {
 #if targetEnvironment(simulator)
 			return Sim_Global.currentSong?.songInfo()?.songID
 #else
-			guard
-				let __nowPlayingItem = MPMusicPlayerController._system?.nowPlayingItem
-			else { return nil }
+			guard let __nowPlayingItem = MPMusicPlayerController._system?.nowPlayingItem else { return nil }
 			return SongID(bitPattern: __nowPlayingItem.persistentID)
 #endif
 		}()
