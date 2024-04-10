@@ -159,19 +159,20 @@ import MediaPlayer
 		switch __player.repeatMode {
 				// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
 			case .one: return UIImage(systemName: "repeat.1.circle.fill")!
-			default:
-				// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
-				// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
-				if !hasRefreshenedOverflowButton {
-					hasRefreshenedOverflowButton = true
-					Task {
-						try? await Task.sleep(for: .milliseconds(50))
-						
-						overflowButton.image = newOverflowButtonImage()
-					}
-				}
-				return repeatOff
+			case .all, .none, .default: break
+			@unknown default: break
 		}
+		// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
+		// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
+		if !hasRefreshenedOverflowButton {
+			hasRefreshenedOverflowButton = true
+			Task {
+				try? await Task.sleep(for: .milliseconds(50))
+				
+				overflowButton.image = newOverflowButtonImage()
+			}
+		}
+		return repeatOff
 	}
 	private var hasRefreshenedOverflowButton = false
 	private func showPlay() {
