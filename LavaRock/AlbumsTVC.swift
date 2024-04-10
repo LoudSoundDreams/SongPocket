@@ -47,12 +47,12 @@ final class AlbumsTVC: LibraryTVC {
 		arrangeAlbumsButton.menu = createArrangeMenu()
 	}
 	private func createArrangeMenu() -> UIMenu {
-		let availableCommands: [[ArrangeCommand]] = [
+		let sections: [[ArrangeCommand]] = [
 			[.album_newest, .album_oldest],
 			[.random, .reverse],
 		]
-		let elementsGrouped: [[UIMenuElement]] = availableCommands.reversed().map {
-			$0.reversed().map { command in
+		let elementsGrouped: [[UIMenuElement]] = sections.reversed().map { section in
+			section.reversed().map { command in
 				command.createMenuElement(
 					enabled: {
 						guard selectedOrAllRows().count >= 2 else { return false }

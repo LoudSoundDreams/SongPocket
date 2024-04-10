@@ -32,15 +32,21 @@ final class SongsTVC: LibraryTVC {
 		arrangeSongsButton.menu = createArrangeMenu()
 	}
 	private func createArrangeMenu() -> UIMenu {
-		let availableCommands: [[ArrangeCommand]] = [
+		let sections: [[ArrangeCommand]] = [
 			[.song_track],
 			[.random, .reverse],
 		]
-		let set: Set<ArrangeCommand> = Set(availableCommands.flatMap { $0 })
-		let elementsGrouped: [[UIMenuElement]] = availableCommands.reversed().map {
-			$0.reversed().map { command in
+		let elementsGrouped: [[UIMenuElement]] = sections.reversed().map { section in
+			section.reversed().map { command in
 				return command.createMenuElement(
-					enabled: selectedOrAllRows().count >= 2 && set.contains(command)
+					enabled: {
+						guard selectedOrAllRows().count >= 2 else { return false }
+						switch command {
+							case .random, .reverse: return true
+							case .album_newest, .album_oldest: return false
+							case .song_track: return true
+						}
+					}()
 				) { [weak self] in
 					self?.arrangeSelectedOrAll(by: command)
 				}
