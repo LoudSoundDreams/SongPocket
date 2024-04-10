@@ -109,9 +109,9 @@ final class SongsTVC: LibraryTVC {
 					let result: String? = {
 						guard let albumRepresentative, let info else { return nil }
 						if albumRepresentative.shouldShowDiscNumber {
-							return info.discAndTrackNumberFormatted()
+							return info.discAndTrackFormatted()
 						} else {
-							return info.trackNumberFormattedOptional()
+							return info.trackFormatted()
 						}
 					}()
 					return result ?? LRString.octothorpe

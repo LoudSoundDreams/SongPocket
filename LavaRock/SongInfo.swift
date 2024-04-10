@@ -124,24 +124,11 @@ extension SongInfo {
 			return discNumberOnDisk >= 2
 		}
 	}
-	
-	func discAndTrackNumberFormatted() -> String {
-		var result = discNumberFormatted()
-		result += LRString.interpunct
-		if let trackNumber = trackNumberFormattedOptional() {
-			result += trackNumber
-		}
-		return result
+	func discAndTrackFormatted() -> String {
+		return "\(discNumberOnDisk)\(LRString.interpunct)\(trackFormatted())"
 	}
-	
-	func discNumberFormatted() -> String {
-		return String(discNumberOnDisk)
-	}
-	
-	func trackNumberFormattedOptional() -> String? {
-		guard trackNumberOnDisk != Self.unknownTrackNumber else {
-			return nil
-		}
+	func trackFormatted() -> String {
+		guard trackNumberOnDisk != Self.unknownTrackNumber else { return LRString.octothorpe }
 		return String(trackNumberOnDisk)
 	}
 }
@@ -158,8 +145,8 @@ extension MPMediaItem: SongInfo {
 	final var albumTitleOnDisk: String? { albumTitle } // `""`, as of iOS 14.7 developer beta 5
 	final var discCountOnDisk: Int { discCount } // `0`, as of iOS 15.0 RC
 	final var discNumberOnDisk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
-	final var trackNumberOnDisk: Int { albumTrackNumber }
 	static let unknownTrackNumber = 0 // As of iOS 14.7 developer beta 5
+	final var trackNumberOnDisk: Int { albumTrackNumber }
 	final var titleOnDisk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
 	final var artistOnDisk: String? { artist }
 	final var dateAddedOnDisk: Date { dateAdded }
