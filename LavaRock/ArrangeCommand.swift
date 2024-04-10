@@ -12,16 +12,6 @@ enum ArrangeCommand: CaseIterable {
 	
 	case song_track
 	
-	func localizedName() -> String {
-		switch self {
-			case .random: return LRString.random
-			case .reverse: return LRString.reverse
-			case .album_newest: return LRString.newest
-			case .album_oldest: return LRString.oldest
-			case .song_track: return LRString.trackNumber
-		}
-	}
-	
 	@MainActor func createMenuElement(
 		enabled: Bool,
 		handler: @escaping () -> Void
@@ -29,8 +19,32 @@ enum ArrangeCommand: CaseIterable {
 		return UIDeferredMenuElement.uncached({ useMenuElements in
 			// Runs each time the button presents the menu
 			let action = UIAction(
-				title: localizedName(),
-				image: UIImage(systemName: sfSymbolName)
+				title: {
+					switch self {
+						case .random: return LRString.random
+						case .reverse: return LRString.reverse
+						case .album_newest: return LRString.newest
+						case .album_oldest: return LRString.oldest
+						case .song_track: return LRString.trackNumber
+					}
+				}(),
+				image: UIImage(systemName: {
+					switch self {
+						case .random:
+							switch Int.random(in: 1...6) {
+								case 1: return "die.face.1"
+								case 2: return "die.face.2"
+								case 4: return "die.face.4"
+								case 5: return "die.face.5"
+								case 6: return "die.face.6"
+								default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
+							}
+						case .reverse: return "arrow.up.and.down"
+						case .album_newest: return "hourglass.bottomhalf.filled"
+						case .album_oldest: return "hourglass.tophalf.filled"
+						case .song_track: return "number"
+					}
+				}())
 			) { _ in handler() }
 			// Disable if appropriate. This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
 			if !enabled {
@@ -38,23 +52,6 @@ enum ArrangeCommand: CaseIterable {
 			}
 			useMenuElements([action])
 		})
-	}
-	private var sfSymbolName: String {
-		switch self {
-			case .random:
-				switch Int.random(in: 1...6) {
-					case 1: return "die.face.1"
-					case 2: return "die.face.2"
-					case 4: return "die.face.4"
-					case 5: return "die.face.5"
-					case 6: return "die.face.6"
-					default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
-				}
-			case .reverse: return "arrow.up.and.down"
-			case .album_newest: return "hourglass.bottomhalf.filled"
-			case .album_oldest: return "hourglass.tophalf.filled"
-			case .song_track: return "number"
-		}
 	}
 	
 	func apply(
