@@ -52,6 +52,7 @@ enum LRString {
 	
 	static let newest = NSLocalizedString("Newest", comment: "Sort option")
 	static let oldest = NSLocalizedString("Oldest", comment: "Sort option")
+	static let artist = NSLocalizedString("Artist", comment: "Sort option")
 	
 	// MARK: Songs view
 	

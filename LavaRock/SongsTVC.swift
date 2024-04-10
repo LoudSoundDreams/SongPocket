@@ -43,7 +43,7 @@ final class SongsTVC: LibraryTVC {
 						guard selectedOrAllRows().count >= 2 else { return false }
 						switch command {
 							case .random, .reverse: return true
-							case .album_newest, .album_oldest: return false
+							case .album_newest, .album_oldest, .album_artist: return false
 							case .song_track: return true
 						}
 					}()

@@ -67,6 +67,7 @@ final class AlbumsTVC: LibraryTVC {
 									return false
 								}
 								return albums.contains { $0.releaseDateEstimate != nil }
+							case .album_artist: return true
 						}
 					}()
 				) { [weak self] in
