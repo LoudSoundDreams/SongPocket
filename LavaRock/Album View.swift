@@ -79,9 +79,9 @@ struct AlbumList: View {
 
 // If this were a struct, `[FakeAlbum].didSet` would loop infinitely when you set one of `FakeAlbum`’s properties.
 final class FakeAlbum: Identifiable {
-	static let demoArray: [FakeAlbum] = {
-		return (0...3).map { FakeAlbum(position: $0, title: .randomLowercaseLetter()) }
-	}()
+	static let demoArray: [FakeAlbum] = (0...3).map {
+		FakeAlbum(position: $0, title: .randomLowercaseLetter())
+	}
 	static func renumber(_ albums: [FakeAlbum]) {
 		albums.indices.forEach { albums[$0].position = $0 }
 	}
