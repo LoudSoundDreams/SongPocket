@@ -38,6 +38,7 @@ struct AlbumShelf: View {
 					}
 				} label: { Image(systemName: "arrow.backward") }
 					.disabled({ guard let visibleIndex else { return false }; return visibleIndex <= 0 }())
+					.animation(.none, value: visibleIndex) // Without this, if you enable the button by tapping “next”, the icon fades in.
 				Spacer()
 				ZStack {
 					Text(String(albums.count - 1)).hidden()
@@ -51,6 +52,7 @@ struct AlbumShelf: View {
 					}
 				} label: { Image(systemName: "arrow.forward") }
 					.disabled({ guard let visibleIndex else { return false }; return visibleIndex >= albums.count - 1 }())
+					.animation(.none, value: visibleIndex)
 				Spacer()
 				Button {
 					albums.append(FakeAlbum(position: albums.count, title: .randomLowercaseLetter()))
