@@ -31,6 +31,11 @@ class SortingTests: XCTestCase {
 		})
 	}
 	
+	struct IdentifiableString {
+		let string: String?
+		let id: Int
+	}
+	
 	func testStable() {
 		let input: [String?] = [
 			nil,
@@ -47,10 +52,6 @@ class SortingTests: XCTestCase {
 			nil,
 		]
 		
-		struct IdentifiableString {
-			let string: String?
-			let id: Int
-		}
 		let before = input.enumerated().map { (index, string) in
 			IdentifiableString(string: string, id: index)
 		}
