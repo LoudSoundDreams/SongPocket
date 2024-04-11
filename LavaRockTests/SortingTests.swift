@@ -31,52 +31,52 @@ class SortingTests: XCTestCase {
 		})
 	}
 	
-	struct IdentifiableString {
-		let string: String?
+	struct Numbered {
+		let name: Int?
 		let id: Int
 	}
 	
 	func testStable() {
-		let input: [String?] = [
+		let input: [Int?] = [
 			nil,
-			"",
-			"",
+			0,
+			0,
 			nil,
-			"",
-			"",
+			0,
+			0,
 			nil,
-			"",
-			"",
+			0,
+			0,
 			nil,
-			"",
-			"",
-			"a",
+			0,
+			0,
+			1,
 			nil,
-			"",
-			"",
+			0,
+			0,
 			nil,
-			"",
-			"",
+			0,
+			0,
 			nil,
-			"",
-			"",
+			0,
+			0,
 		]
-		let expected: [String?] = [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"a",
+		let expected: [Int?] = [
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			1,
 			nil,
 			nil,
 			nil,
@@ -86,30 +86,46 @@ class SortingTests: XCTestCase {
 			nil,
 		]
 		
-		let before = input.enumerated().map { (index, string) in
-			IdentifiableString(string: string, id: index)
+		let before = input.enumerated().map { (offset, name) in
+			Numbered(name: name, id: offset)
 		}
-		let after = before.sortedMaintainingOrderWhen {
-			$0.string == $1.string
+		let after1 = before.sortedMaintainingOrderWhen {
+			$0.name == $1.name
 		} areInOrder: {
-			let left = $0.string
-			let right = $1.string
-			// Either can be `nil`
-			guard let right else { return true }
-			guard let left else { return false }
-			return left.precedesAlphabeticallyFinderStyle(right)
+			guard let right = $1.name else { return true }
+			guard let left = $0.name else { return false }
+			return left < right //
+		}
+		let after2 = before.sortedMaintainingOrderWhen {
+			$0.name == $1.name
+		} areInOrder: {
+			guard let right = $1.name else { return true }
+			guard let left = $0.name else { return false }
+			return left <= right //
 		}
 		
-		XCTAssertEqual(expected, after.map { $0.string })
-		XCTAssertTrue(after.allNeighborsSatisfy { left, right in
-			if left.string == right.string {
+		XCTAssertEqual(expected, after1.map { $0.name })
+		XCTAssertEqual(expected, after2.map { $0.name })
+		XCTAssertTrue(after1.allNeighborsSatisfy { left, right in
+			if left.name == right.name {
 				return left.id < right.id
 			} else {
-				if left.string == nil { return right.string == nil }
+				if left.name == nil { return right.name == nil }
 				// Below, assume left string is non-nil
-				if right.string == nil { return true }
+				if right.name == nil { return true }
 				// Below, assume right string is non-nil
-				return left.string!.precedesAlphabeticallyFinderStyle(right.string!)
+				return left.name! < right.name!
+			}
+		})
+		XCTAssertTrue(after2.allNeighborsSatisfy { left, right in
+			if left.name == right.name {
+				return left.id < right.id
+			} else {
+				if left.name == nil { return right.name == nil }
+				// Below, assume left string is non-nil
+				if right.name == nil { return true }
+				// Below, assume right string is non-nil
+				return left.name! < right.name!
 			}
 		})
 	}
