@@ -9,8 +9,8 @@ import XCTest
 @testable import LavaRock
 
 class SortingTests: XCTestCase {
-	func testSortStrings() {
-		let correctlySorted: [String?] = [
+	func textLexical() {
+		let lexical: [String?] = [
 			"",
 			"",
 			" ",
@@ -24,20 +24,14 @@ class SortingTests: XCTestCase {
 			nil,
 			nil,
 		]
-		XCTAssertTrue(
-			correctlySorted.allNeighborsSatisfy { left, right in
-				guard let right else {
-					return true
-				}
-				guard let left else {
-					return false
-				}
-				return left.precedesAlphabeticallyFinderStyle(right)
-			}
-		)
+		XCTAssertTrue(lexical.allNeighborsSatisfy { left, right in
+			guard let right else { return true }
+			guard let left else { return false }
+			return left.precedesAlphabeticallyFinderStyle(right)
+		})
 	}
 	
-	func testSortStringsStably() {
+	func testStable() {
 		let input: [String?] = [
 			nil,
 			"",
@@ -45,7 +39,7 @@ class SortingTests: XCTestCase {
 			nil,
 			"a",
 		]
-		let expectedOutput: [String?] = [
+		let expected: [String?] = [
 			"",
 			"",
 			"a",
@@ -57,34 +51,31 @@ class SortingTests: XCTestCase {
 			let string: String?
 			let id: Int
 		}
-		let identifiableUnsorted = input.enumerated().map { index, string in
+		let before = input.enumerated().map { (index, string) in
 			IdentifiableString(string: string, id: index)
 		}
-		let identifiableSorted = identifiableUnsorted.sortedMaintainingOrderWhen {
+		let after = before.sortedMaintainingOrderWhen {
 			$0.string == $1.string
 		} areInOrder: {
 			let left = $0.string
 			let right = $1.string
 			// Either can be `nil`
-			
-			guard let right else {
-				return true
-			}
-			guard let left else {
-				return false
-			}
+			guard let right else { return true }
+			guard let left else { return false }
 			return left.precedesAlphabeticallyFinderStyle(right)
 		}
 		
-		XCTAssertEqual(expectedOutput, identifiableSorted.map { $0.string })
-		XCTAssertTrue(
-			identifiableSorted.allNeighborsSatisfy { left, right in
-				if left.string == right.string {
-					return left.id < right.id
-				} else {
-					return true
-				}
+		XCTAssertEqual(expected, after.map { $0.string })
+		XCTAssertTrue(after.allNeighborsSatisfy { left, right in
+			if left.string == right.string {
+				return left.id < right.id
+			} else {
+				if left.string == nil { return right.string == nil }
+				// Below, assume left string is non-nil
+				if right.string == nil { return true }
+				// Below, assume right string is non-nil
+				return left.string!.precedesAlphabeticallyFinderStyle(right.string!)
 			}
-		)
+		})
 	}
 }
