@@ -10,18 +10,16 @@ struct AlbumShelf: View {
 	var body: some View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
-				LazyHStack {
-					ForEach(albums) { album in
-						ZStack {
-							Rectangle().foregroundStyle(album.squareColor)
-							Circle().foregroundStyle(album.circleColor)
-							Text(album.title)
-						}
-						.aspectRatio(1, contentMode: .fit)
-						.containerRelativeFrame(.horizontal)
-						.id(album.position)
+				LazyHStack { ForEach(albums) { album in
+					ZStack {
+						Rectangle().foregroundStyle(album.squareColor)
+						Circle().foregroundStyle(album.circleColor)
+						Text(album.title)
 					}
-				}
+					.aspectRatio(1, contentMode: .fit)
+					.containerRelativeFrame(.horizontal)
+					.id(album.position)
+				}}
 				.scrollTargetLayout()
 			}
 			.scrollTargetBehavior(.viewAligned(limitBehavior: .never))
