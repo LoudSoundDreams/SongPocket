@@ -48,7 +48,7 @@ extension SongInfo {
 			}
 			
 			// Sort by album title
-			return myAlbumTitle.precedesAlphabeticallyFinderStyle(otherAlbumTitle)
+			return myAlbumTitle.precedesInFinder(otherAlbumTitle)
 		}
 		
 		// Move unknown album artist to end
@@ -60,7 +60,7 @@ extension SongInfo {
 		}
 		
 		// Sort by album artist
-		return myAlbumArtist.precedesAlphabeticallyFinderStyle(otherAlbumArtist)
+		return myAlbumArtist.precedesInFinder(otherAlbumArtist)
 	}
 	
 	func precedesInDefaultOrder(inSameAlbum other: SongInfo) -> Bool {
@@ -93,7 +93,7 @@ extension SongInfo {
 				// Sort by song title
 				let myTitle = titleOnDisk ?? ""
 				let otherTitle = other.titleOnDisk ?? ""
-				return myTitle.precedesAlphabeticallyFinderStyle(otherTitle)
+				return myTitle.precedesInFinder(otherTitle)
 			}
 		} else {
 			// At this point, leave elements in the same order if they both have no track number, or the same track number.

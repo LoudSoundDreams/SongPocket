@@ -27,7 +27,7 @@ class SortingTests: XCTestCase {
 		XCTAssertTrue(lexical.allNeighborsSatisfy { left, right in
 			guard let right else { return true }
 			guard let left else { return false }
-			return left.precedesAlphabeticallyFinderStyle(right)
+			return left.precedesInFinder(right)
 		})
 	}
 	

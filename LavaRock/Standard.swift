@@ -12,7 +12,7 @@ extension String {
 	}
 	
 	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
-	func precedesAlphabeticallyFinderStyle(_ other: Self) -> Bool {
+	func precedesInFinder(_ other: Self) -> Bool {
 		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
 		switch comparisonResult {
 			case .orderedAscending:
