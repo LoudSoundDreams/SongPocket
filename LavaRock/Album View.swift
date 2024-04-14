@@ -11,14 +11,9 @@ struct AlbumShelf: View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
 				LazyHStack { ForEach(albums) { album in
-					ZStack {
-						Rectangle().foregroundStyle(album.squareColor)
-						Circle().foregroundStyle(album.circleColor)
-						Text(album.title)
-					}
-					.aspectRatio(1, contentMode: .fit)
-					.containerRelativeFrame(.horizontal)
-					.id(album.position)
+					FakeAlbumImage(album)
+						.containerRelativeFrame(.horizontal)
+						.id(album.position)
 				}}
 				.scrollTargetLayout()
 			}
@@ -57,6 +52,13 @@ struct AlbumShelf: View {
 				} label: { Image(systemName: "plus.circle") }
 			} }
 		}
+	}
+	@ViewBuilder private func FakeAlbumImage(_ album: FakeAlbum) -> some View {
+		ZStack {
+			Rectangle().foregroundStyle(album.squareColor)
+			Circle().foregroundStyle(album.circleColor)
+			Text(album.title)
+		}.aspectRatio(1, contentMode: .fit)
 	}
 }
 
