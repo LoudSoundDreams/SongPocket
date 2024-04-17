@@ -24,7 +24,7 @@ enum ArrangeCommand: CaseIterable {
 					switch self {
 						case .random: return LRString.random
 						case .reverse: return LRString.reverse
-						case .album_newest: return LRString.newest
+						case .album_newest: return LRString.recentlyReleased
 						case .album_oldest: return LRString.oldest
 						case .album_artist: return LRString.artist
 						case .song_track: return LRString.trackNumber
