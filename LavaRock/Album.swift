@@ -121,35 +121,13 @@ extension Album {
 	// MARK: - Predicates
 	
 	final func precedesByNewestFirst(_ other: Album) -> Bool {
-		return precedes(other, byNewestFirstRatherThanOldestFirst: true)
-	}
-	final func precedesByOldestFirst(_ other: Album) -> Bool {
-		return precedes(other, byNewestFirstRatherThanOldestFirst: false)
-	}
-	private func precedes(
-		_ other: Album,
-		byNewestFirstRatherThanOldestFirst: Bool
-	) -> Bool {
-		let myReleaseDate = releaseDateEstimate
-		let otherReleaseDate = other.releaseDateEstimate
-		// Either can be `nil`
-		
-		// At this point, leave elements in the same order if they both have no release date, or the same release date.
+		// Leave elements in the same order if they both have no release date, or the same release date.
 		
 		// Move unknown release date to the end
-		guard let otherReleaseDate else {
-			return true
-		}
-		guard let myReleaseDate else {
-			return false
-		}
+		guard let otherDate = other.releaseDateEstimate else { return true }
+		guard let myDate = releaseDateEstimate else { return false }
 		
-		// Sort by release date
-		if byNewestFirstRatherThanOldestFirst {
-			return myReleaseDate > otherReleaseDate
-		} else {
-			return myReleaseDate < otherReleaseDate
-		}
+		return myDate > otherDate
 	}
 }
 
