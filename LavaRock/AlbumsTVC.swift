@@ -48,7 +48,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func createArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
-			[.album_newest, .album_oldest],
+			[.album_newest, .album_artist],
 			[.random, .reverse],
 		]
 		let elementsGrouped: [[UIMenuElement]] = sections.reversed().map { section in

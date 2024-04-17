@@ -42,7 +42,7 @@ enum ArrangeCommand: CaseIterable {
 								default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
 							}
 						case .reverse: return "arrow.up.and.down"
-						case .album_newest: return "hourglass.bottomhalf.filled"//"calendar"
+						case .album_newest: return "calendar"
 						case .album_oldest: return "hourglass.tophalf.filled"
 						case .album_artist: return "music.mic"
 						case .song_track: return "number"
@@ -93,7 +93,19 @@ enum ArrangeCommand: CaseIterable {
 					$0.precedesByOldestFirst($1)
 				}
 			case .album_artist:
-				return items
+				guard let albums = items as? [Album] else { return items }
+				let albumsAndReps = albums.map {
+					(album: $0,
+					 artist: $0.representativeSongInfo()?.albumArtistOnDisk)
+				}
+				let sorted = albumsAndReps.sortedMaintainingOrderWhen {
+					$0.artist == $1.artist
+				} areInOrder: { leftTuple, rightTuple in
+					guard let rightArtist = rightTuple.artist else { return true }
+					guard let leftArtist = leftTuple.artist else { return false }
+					return leftArtist.precedesInFinder(rightArtist)
+				}
+				return sorted.map { $0.album }
 				
 			case .song_track:
 				guard let songs = items as? [Song] else { return items }

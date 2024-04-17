@@ -86,11 +86,11 @@ extension Array {
 	}
 	
 	func sortedMaintainingOrderWhen(
-		areEqual: (Element, Element) -> Bool,
+		shouldMaintainOrder: (Element, Element) -> Bool,
 		areInOrder: (Element, Element) -> Bool
 	) -> Self {
 		let sortedTuples = enumerated().sorted {
-			if areEqual($0.element, $1.element) {
+			if shouldMaintainOrder($0.element, $1.element) {
 				return $0.offset < $1.offset
 			} else {
 				return areInOrder($0.element, $1.element)
