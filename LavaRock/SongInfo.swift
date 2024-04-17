@@ -118,11 +118,7 @@ extension SongInfo {
 	// MARK: Formatted attributes
 	
 	var shouldShowDiscNumber: Bool {
-		if discCountOnDisk >= 2 {
-			return true
-		} else {
-			return discNumberOnDisk >= 2
-		}
+		return discCountOnDisk >= 2 || discNumberOnDisk >= 2
 	}
 	func discAndTrackFormatted() -> String {
 		return "\(discNumberOnDisk)\(LRString.interpunct)\(trackFormatted())"
