@@ -36,30 +36,21 @@ extension SongInfo {
 			// Either can be `nil`
 			
 			guard myAlbumTitle != otherAlbumTitle else {
-				return true // Maybe we could go further with some other criterion
+				return true
+				// Maybe we could go further with some other criterion
 			}
 			
 			// Move unknown album title to end
-			guard otherAlbumTitle != "", let otherAlbumTitle = otherAlbumTitle else {
-				return true
-			}
-			guard myAlbumTitle != "", let myAlbumTitle = myAlbumTitle else {
-				return false
-			}
+			guard otherAlbumTitle != "", let otherAlbumTitle = otherAlbumTitle else { return true }
+			guard myAlbumTitle != "", let myAlbumTitle = myAlbumTitle else { return false }
 			
-			// Sort by album title
 			return myAlbumTitle.precedesInFinder(otherAlbumTitle)
 		}
 		
 		// Move unknown album artist to end
-		guard let otherAlbumArtist, otherAlbumArtist != "" else {
-			return true
-		}
-		guard let myAlbumArtist, myAlbumArtist != "" else {
-			return false
-		}
+		guard let otherAlbumArtist, otherAlbumArtist != "" else { return true }
+		guard let myAlbumArtist, myAlbumArtist != "" else { return false }
 		
-		// Sort by album artist
 		return myAlbumArtist.precedesInFinder(otherAlbumArtist)
 	}
 	
@@ -98,20 +89,13 @@ extension SongInfo {
 		} else {
 			// At this point, leave elements in the same order if they both have no track number, or the same track number.
 			// However, as of iOS 14.7, when using `sorted(by:)`, returning `true` here doesn’t always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
-			guard myTrack != otherTrack else {
-				return true
-			}
+			guard myTrack != otherTrack else { return true }
 		}
 		
 		// Move unknown track number to the end
-		guard otherTrack != type(of: other).unknownTrackNumber else {
-			return true
-		}
-		guard myTrack != Self.unknownTrackNumber else {
-			return false
-		}
+		guard otherTrack != type(of: other).unknownTrackNumber else { return true }
+		guard myTrack != Self.unknownTrackNumber else { return false }
 		
-		// Sort by track number
 		return myTrack < otherTrack
 	}
 	
