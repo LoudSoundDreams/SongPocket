@@ -235,6 +235,7 @@ struct MainToolbar: View {
 				.menuActionDismissBehavior(.disabled)
 				.controlGroupStyle(.compactMenu)
 			} label: { Image(systemName: "ellipsis.circle") }
+				.menuOrder(.fixed)
 		}
 	}
 }
