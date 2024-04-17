@@ -40,7 +40,7 @@ enum ArrangeCommand: CaseIterable {
 								default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
 							}
 						case .reverse: return "arrow.up.and.down"
-						case .album_newest: return "calendar"
+						case .album_newest: return "sparkles"
 						case .album_artist: return "music.mic"
 						case .song_track: return "number"
 					}
