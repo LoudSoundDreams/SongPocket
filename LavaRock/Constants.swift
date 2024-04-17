@@ -1,8 +1,5 @@
 // 2021-10-26
 
-extension Double {
-	static var oneEighth: Self { 1/8 }
-}
 extension CGFloat {
 	static var oneHalf: Self { 1/2 }
 	static var eight: Self { 8 }
@@ -13,7 +10,7 @@ enum LRColor {
 	static let grey_oneEighth = Color(
 		hue: 0,
 		saturation: 0,
-		brightness: 1/8
+		brightness: pow(.oneHalf, 3)
 	)
 }
 
