@@ -79,7 +79,22 @@ enum ArrangeCommand: CaseIterable {
 			case .reverse: return items.reversed()
 				
 			case .album_recentlyAdded:
-				return items
+				guard let albums = items as? [Album] else { return items }
+				let albumsAndDates = albums.map {
+					(
+						album: $0,
+						dateFirstAdded: $0.songs(sorted: false)
+							.compactMap { $0.songInfo()?.dateAddedOnDisk }
+							.reduce(into: Date.now) { oldestSoFar, dateAdded in
+								oldestSoFar = min(oldestSoFar, dateAdded)
+							}
+					)
+				}
+				let sorted = albumsAndDates.sorted { leftTuple, rightTuple in
+					leftTuple.dateFirstAdded > rightTuple.dateFirstAdded
+				}
+				return sorted.map { $0.album }
+				
 			case .album_newest:
 				guard let albums = items as? [Album] else { return items }
 				return albums.sortedMaintainingOrderWhen {
