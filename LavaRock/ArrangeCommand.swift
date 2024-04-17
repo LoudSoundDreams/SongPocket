@@ -7,6 +7,7 @@ enum ArrangeCommand: CaseIterable {
 	case random
 	case reverse
 	
+	case album_recentlyAdded
 	case album_newest
 	case album_artist
 	
@@ -23,6 +24,7 @@ enum ArrangeCommand: CaseIterable {
 					switch self {
 						case .random: return LRString.random
 						case .reverse: return LRString.reverse
+						case .album_recentlyAdded: return LRString.recentlyAdded
 						case .album_newest: return LRString.recentlyReleased
 						case .album_artist: return LRString.artist
 						case .song_track: return LRString.trackNumber
@@ -40,6 +42,7 @@ enum ArrangeCommand: CaseIterable {
 								default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
 							}
 						case .reverse: return "arrow.up.and.down"
+						case .album_recentlyAdded: return "clock"
 						case .album_newest: return "sparkles"
 						case .album_artist: return "music.mic"
 						case .song_track: return "number"
@@ -75,6 +78,8 @@ enum ArrangeCommand: CaseIterable {
 			case .random: return items.inAnyOtherOrder()
 			case .reverse: return items.reversed()
 				
+			case .album_recentlyAdded:
+				return items
 			case .album_newest:
 				guard let albums = items as? [Album] else { return items }
 				return albums.sortedMaintainingOrderWhen {

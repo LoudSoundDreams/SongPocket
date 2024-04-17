@@ -65,7 +65,7 @@ final class AlbumsTVC: LibraryTVC {
 								}
 								guard let albums = subjectedItems as? [Album] else { return false }
 								return albums.contains { $0.releaseDateEstimate != nil }
-							case .album_artist: return true
+							case .album_recentlyAdded, .album_artist: return true
 						}
 					}()
 				) { [weak self] in
