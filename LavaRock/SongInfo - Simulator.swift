@@ -23,9 +23,7 @@ struct Sim_SongInfo: SongInfo {
 	let dateAddedOnDisk: Date
 	let releaseDateOnDisk: Date?
 	func coverArt(atLeastInPoints: CGSize) -> UIImage? {
-		guard let fileName = coverArtFileName else {
-			return nil
-		}
+		guard let fileName = coverArtFileName else { return nil }
 		return UIImage(named: fileName)
 	}
 	private let coverArtFileName: String?
@@ -478,9 +476,7 @@ extension Sim_SongInfo {
 			artistOnDisk: by,
 			dateAddedOnDisk: added,
 			releaseDateOnDisk: {
-				guard let released else {
-					return nil
-				}
+				guard let released else { return nil }
 				return Date.curfewUTC(iso8601Date10Char: released)
 			}(),
 			coverArtFileName: coverArt

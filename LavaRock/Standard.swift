@@ -52,9 +52,7 @@ extension Array {
 	func inAnyOtherOrder() -> Self
 	where Element: Equatable
 	{
-		guard count >= 2 else {
-			return self
-		}
+		guard count >= 2 else { return self }
 		var result: Self
 		repeat {
 			result = shuffled()
@@ -109,10 +107,7 @@ extension Array {
 			rest: ArraySlice<Element>,
 			predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 		) -> Bool {
-			guard
-				let first = first,
-				let second = rest.first
-			else {
+			guard let first = first, let second = rest.first else {
 				// We’ve reached the end.
 				return true
 			}

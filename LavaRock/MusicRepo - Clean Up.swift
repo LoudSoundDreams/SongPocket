@@ -58,9 +58,7 @@ extension MusicRepo {
 			
 			// Find the release dates associated with this `Album`
 			// For `Album`s with no release dates, using `guard` to return early is slightly faster than optional chaining.
-			guard let matchingInfos = infosByAlbumID[album.albumPersistentID] else {
-				return
-			}
+			guard let matchingInfos = infosByAlbumID[album.albumPersistentID] else { return }
 			let matchingReleaseDates = matchingInfos.compactMap { $0.releaseDateOnDisk }
 			
 			// Find the latest of those release dates

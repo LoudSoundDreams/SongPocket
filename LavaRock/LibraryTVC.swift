@@ -236,9 +236,7 @@ class LibraryTVC: UITableViewController {
 		sinkButton.isEnabled = allowsFloatAndSink
 	}
 	final func allowsArrange() -> Bool {
-		guard !viewModel.items.isEmpty else {
-			return false
-		}
+		guard !viewModel.items.isEmpty else { return false }
 		let selectedIndexPaths = tableView.selectedIndexPaths
 		if selectedIndexPaths.isEmpty {
 			return true

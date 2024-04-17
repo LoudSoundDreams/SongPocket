@@ -81,12 +81,7 @@ extension Album {
 			}
 			
 			songsAndInfos.sort { leftTuple, rightTuple in
-				guard
-					let leftInfo = leftTuple.info,
-					let rightInfo = rightTuple.info
-				else {
-					return true
-				}
+				guard let leftInfo = leftTuple.info, let rightInfo = rightTuple.info else { return true }
 				return leftInfo.precedesInDefaultOrder(inSameAlbum: rightInfo)
 			}
 			

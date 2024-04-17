@@ -63,9 +63,7 @@ final class AlbumsTVC: LibraryTVC {
 								let subjectedItems = selectedOrAllRows().map {
 									viewModel.itemNonNil(atRow: $0)
 								}
-								guard let albums = subjectedItems as? [Album] else {
-									return false
-								}
+								guard let albums = subjectedItems as? [Album] else { return false }
 								return albums.contains { $0.releaseDateEstimate != nil }
 							case .album_artist: return true
 						}

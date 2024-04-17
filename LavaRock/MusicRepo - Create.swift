@@ -77,10 +77,7 @@ extension MusicRepo {
 		groupsOfInfos: [[SongInfo]]
 	) -> [[SongInfo]] {
 		let sortedGroupsOfInfos = groupsOfInfos.sorted {
-			guard
-				let leftInfo = $0.first,
-				let rightInfo = $1.first
-			else {
+			guard let leftInfo = $0.first, let rightInfo = $1.first else {
 				// Should never run
 				return true
 			}

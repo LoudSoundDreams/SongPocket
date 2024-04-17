@@ -110,12 +110,7 @@ enum ArrangeCommand: CaseIterable {
 					return left?.discNumberOnDisk == right?.discNumberOnDisk
 					&& left?.trackNumberOnDisk == right?.trackNumberOnDisk
 				} areInOrder: {
-					guard
-						let left = $0.info,
-						let right = $1.info
-					else {
-						return true
-					}
+					guard let left = $0.info, let right = $1.info else { return true }
 					return left.precedesByTrackNumber(right)
 				}
 				return sorted.map { $0.song }

@@ -93,9 +93,7 @@ extension MusicRepo {
 			let newAlbumID = info.albumID
 			
 			// If this Song’s `albumPersistentID` has stayed the same, move on to the next one.
-			guard
-				newAlbumID != song.container!.albumPersistentID
-			else { return }
+			guard newAlbumID != song.container!.albumPersistentID else { return }
 			
 			// This `Song`’s `albumPersistentID` has changed.
 			// If we already have a matching `Album` to move the `Song` to…
