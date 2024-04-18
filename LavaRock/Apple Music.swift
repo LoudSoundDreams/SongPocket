@@ -61,9 +61,9 @@ extension MPMusicPlayerController {
 			object: nil)
 	}
 	@objc private func playbackState() {
-		reflectorToolbar?.referencee?.freshen()
+		reflectorToolbar?.referencee?.refresh()
 	}
 	@objc private func nowPlaying() {
-		reflectorToolbar?.referencee?.freshen()
+		reflectorToolbar?.referencee?.refresh()
 	}
 }

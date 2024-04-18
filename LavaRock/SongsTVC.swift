@@ -26,8 +26,8 @@ final class SongsTVC: LibraryTVC {
 		
 		super.viewDidLoad()
 	}
-	override func freshenEditingButtons() {
-		super.freshenEditingButtons()
+	override func refreshEditingButtons() {
+		super.refreshEditingButtons()
 		arrangeSongsButton.isEnabled = allowsArrange()
 		arrangeSongsButton.menu = createArrangeMenu()
 	}

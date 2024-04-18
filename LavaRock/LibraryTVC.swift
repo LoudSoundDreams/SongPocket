@@ -149,7 +149,7 @@ class LibraryTVC: UITableViewController {
 		}
 		
 		tableView.deselectAllRows(animated: true)
-		freshenEditingButtons()
+		refreshEditingButtons()
 	}
 	private static func batchUpdatesFromIdentifiers
 	<Identifier: Hashable>(old: [Identifier], new: [Identifier])
@@ -186,7 +186,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Editing
 	
 	private func setBarButtons(animated: Bool) {
-		freshenEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
+		refreshEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
 		navigationItem.setLeftBarButtonItems(
 			(
 				isEditing
@@ -221,7 +221,7 @@ class LibraryTVC: UITableViewController {
 	}
 	
 	// Overrides should call super (this implementation).
-	func freshenEditingButtons() {
+	func refreshEditingButtons() {
 		editButtonItem.isEnabled = MusicAuthorization.currentStatus == .authorized && !viewModel.items.isEmpty
 		editButtonItem.image = (
 			isEditing
@@ -283,19 +283,19 @@ class LibraryTVC: UITableViewController {
 		newItems.insert(itemBeingMoved, at: toIndex)
 		viewModel.items = newItems
 		
-		freshenEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
+		refreshEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
 	}
 	
 	override func tableView(
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if isEditing {
-			freshenEditingButtons()
+			refreshEditingButtons()
 		}
 	}
 	final override func tableView(
 		_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath
 	) {
-		freshenEditingButtons()
+		refreshEditingButtons()
 	}
 }

@@ -41,8 +41,8 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	override func freshenEditingButtons() {
-		super.freshenEditingButtons()
+	override func refreshEditingButtons() {
+		super.refreshEditingButtons()
 		arrangeAlbumsButton.isEnabled = allowsArrange()
 		arrangeAlbumsButton.menu = createArrangeMenu()
 	}
