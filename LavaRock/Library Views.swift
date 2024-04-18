@@ -11,7 +11,18 @@ struct AvatarImage: View {
 	var body: some View {
 		ZStack(alignment: .leading) {
 			AvatarPlayingImage().hidden()
-			foregroundView
+			switch status {
+				case .notPlaying: EmptyView()
+				case .paused:
+					Image(systemName: "speaker.fill")
+						.foregroundStyle(Color.accentColor)
+						.fontBody_dynamicTypeSizeUpToXxxLarge()
+						.imageScale(.small)
+				case .playing:
+					AvatarPlayingImage()
+						.foregroundStyle(Color.accentColor)
+						.symbolRenderingMode(.hierarchical)
+			}
 		}
 		.accessibilityElement()
 		.accessibilityLabel({ switch status {
@@ -19,20 +30,6 @@ struct AvatarImage: View {
 			case .paused: return LRString.paused
 			case .playing: return LRString.nowPlaying
 		}}())
-	}
-	@ViewBuilder private var foregroundView: some View {
-		switch status {
-			case .notPlaying: EmptyView()
-			case .paused:
-				Image(systemName: "speaker.fill")
-					.foregroundStyle(Color.accentColor)
-					.fontBody_dynamicTypeSizeUpToXxxLarge()
-					.imageScale(.small)
-			case .playing:
-				AvatarPlayingImage()
-					.foregroundStyle(Color.accentColor)
-					.symbolRenderingMode(.hierarchical)
-		}
 	}
 	private var status: Status {
 		guard libraryItem.containsPlayhead() else { return .notPlaying }
