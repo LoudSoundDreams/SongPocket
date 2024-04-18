@@ -74,8 +74,6 @@ struct AlbumRow: View {
 	let album: Album
 	let maxHeight: CGFloat
 	
-	@Environment(\.pixelLength) private var pointsPerPixel
-	private static let borderWidthInPixels: CGFloat = 2
 	var body: some View {
 		VStack(spacing: 0) {
 			Rectangle().frame(height: 1/2 * Self.borderWidthInPixels * pointsPerPixel).hidden()
@@ -112,6 +110,8 @@ struct AlbumRow: View {
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
+	private static let borderWidthInPixels: CGFloat = 2
+	@Environment(\.pixelLength) private var pointsPerPixel
 }
 private struct CoverArt: View {
 	let albumRepresentative: (any SongInfo)?
