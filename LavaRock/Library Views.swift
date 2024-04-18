@@ -3,16 +3,6 @@
 import SwiftUI
 import MusicKit
 
-struct Chevron: View {
-	var body: some View {
-		// Similar to what Apple Music uses for search results
-		Image(systemName: "chevron.forward")
-			.foregroundStyle(.secondary)
-			.fontBody_dynamicTypeSizeUpToXxxLarge()
-			.imageScale(.small)
-	}
-}
-
 struct AvatarImage: View {
 	let libraryItem: LibraryItem
 	@ObservedObject var state: MusicPlayer.State
@@ -82,18 +72,15 @@ struct AlbumRow: View {
 				albumRepresentative: album.representativeSongInfo(),
 				largerThanOrEqualToSizeInPoints: maxHeight)
 			.background( // Use `border` instead?
-				Rectangle()
-					.stroke(
-						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
-						lineWidth: {
-							// Add a grey border exactly 1 pixel wide, like list separators.
-							// Draw outside the artwork; don’t overlap it.
-							// The artwork itself will obscure half the stroke width.
-							// SwiftUI interprets our return value in points, not pixels.
-							return Self.borderWidthInPixels * pointsPerPixel
-						}()
-					)
-			)
+				Rectangle().stroke(
+					Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
+					lineWidth: {
+						// Add a grey border exactly 1 pixel wide, like list separators.
+						// Draw outside the artwork; don’t overlap it.
+						// The artwork itself will obscure half the stroke width.
+						// SwiftUI interprets our return value in points, not pixels.
+						return Self.borderWidthInPixels * pointsPerPixel
+					}()))
 			.frame(
 				maxWidth: .infinity, // Horizontally centers narrow artwork
 				maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
@@ -159,6 +146,15 @@ private struct AlbumLabel: View {
 			}
 		}
 		.accessibilityElement(children: .combine)
+	}
+}
+struct Chevron: View {
+	var body: some View {
+		// Similar to what Apple Music uses for search results
+		Image(systemName: "chevron.forward")
+			.foregroundStyle(.secondary)
+			.fontBody_dynamicTypeSizeUpToXxxLarge()
+			.imageScale(.small)
 	}
 }
 
