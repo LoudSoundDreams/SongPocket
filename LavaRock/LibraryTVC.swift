@@ -51,7 +51,7 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	
-	private var needsFreshenLibraryItemsOnViewDidAppear = false
+	private var needsRefreshLibraryItemsOnViewDidAppear = false
 	
 	// MARK: - Setup
 	
@@ -71,9 +71,9 @@ class LibraryTVC: UITableViewController {
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		if needsFreshenLibraryItemsOnViewDidAppear {
-			needsFreshenLibraryItemsOnViewDidAppear = false
-			freshenLibraryItems()
+		if needsRefreshLibraryItemsOnViewDidAppear {
+			needsRefreshLibraryItemsOnViewDidAppear = false
+			refreshLibraryItems()
 		}
 	}
 	
@@ -81,22 +81,22 @@ class LibraryTVC: UITableViewController {
 	
 	@objc final func reflectDatabase() {
 		if view.window == nil {
-			needsFreshenLibraryItemsOnViewDidAppear = true
+			needsRefreshLibraryItemsOnViewDidAppear = true
 		} else {
-			freshenLibraryItems()
+			refreshLibraryItems()
 		}
 	}
 	
-	final func freshenLibraryItems() {
+	final func refreshLibraryItems() {
 		Task {
 			/*
-			 The user might currently be in the middle of a content-dependent task, which freshening would affect the consequences of.
+			 The user might currently be in the middle of a content-dependent task, which refreshing would affect the consequences of.
 			 • “Sort” menu (`LibraryTVC`)
 			 • Song actions, including overflow menu (`SongsTVC`)
 			 */
 			await view.window?.rootViewController?.dismiss__async(animated: true)
 			
-			let newViewModel = viewModel.updatedWithFreshenedData()
+			let newViewModel = viewModel.withRefreshedData()
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else {
 				// The return value was false, meaning either (A) table view animations are already in progress from an earlier execution of this method, so we shouldn’t run the code after the `await` call this time (later, that earlier execution will), or (B) we applied an empty view model, so we don’t need to update any row contents.
 				return
