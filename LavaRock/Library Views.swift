@@ -68,25 +68,22 @@ struct AlbumRow: View {
 		VStack(spacing: 0) {
 			Rectangle().frame(height: 1/2 * Self.borderWidthInPixels * pointsPerPixel).hidden()
 			// TO DO: Redraw when artwork changes
-			CoverArt(
-				albumRepresentative: album.representativeSongInfo(),
-				largerThanOrEqualToSizeInPoints: maxHeight)
-			.background( // Use `border` instead?
-				Rectangle().stroke(
-					Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
-					lineWidth: {
-						// Add a grey border exactly 1 pixel wide, like list separators.
-						// Draw outside the artwork; don’t overlap it.
-						// The artwork itself will obscure half the stroke width.
-						// SwiftUI interprets our return value in points, not pixels.
-						return Self.borderWidthInPixels * pointsPerPixel
-					}()))
-			.frame(
-				maxWidth: .infinity, // Horizontally centers narrow artwork
-				maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
-			.accessibilityLabel(album.titleFormatted())
-			.accessibilitySortPriority(10)
-			
+			CoverArt(album: album, largerThanOrEqualToSizeInPoints: maxHeight)
+				.background( // Use `border` instead?
+					Rectangle().stroke(
+						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
+						lineWidth: {
+							// Add a grey border exactly 1 pixel wide, like list separators.
+							// Draw outside the artwork; don’t overlap it.
+							// The artwork itself will obscure half the stroke width.
+							// SwiftUI interprets our return value in points, not pixels.
+							return Self.borderWidthInPixels * pointsPerPixel
+						}()))
+				.frame(
+					maxWidth: .infinity, // Horizontally centers narrow artwork
+					maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
+				.accessibilityLabel(album.titleFormatted())
+				.accessibilitySortPriority(10)
 			AlbumLabel(album: album)
 				.padding(.top, .eight * 3/2)
 				.padding(.horizontal)
@@ -101,13 +98,11 @@ struct AlbumRow: View {
 	@Environment(\.pixelLength) private var pointsPerPixel
 }
 private struct CoverArt: View {
-	let albumRepresentative: (any SongInfo)?
+	let album: Album
 	let largerThanOrEqualToSizeInPoints: CGFloat
 	
 	var body: some View {
-		let uiImageOptional = albumRepresentative?.coverArt(atLeastInPoints: CGSize(
-			width: largerThanOrEqualToSizeInPoints,
-			height: largerThanOrEqualToSizeInPoints))
+		let uiImageOptional = album.representativeSongInfo()?.coverArt(atLeastInPoints: CGSize(width: largerThanOrEqualToSizeInPoints, height: largerThanOrEqualToSizeInPoints))
 		if let uiImage = uiImageOptional {
 			Image(uiImage: uiImage)
 				.resizable() // Lets 1 image point differ from 1 screen point
