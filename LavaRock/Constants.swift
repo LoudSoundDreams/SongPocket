@@ -20,6 +20,8 @@ enum LRColor {
 import Foundation
 extension Notification.Name {
 	static let LRMergedChanges = Self("merged changes")
+	static let LRShowAlbumDetail = Self("show album detail")
+	static let LRHideAlbumDetail = Self("hide album detail")
 }
 extension NotificationCenter {
 	// Helps callers observe each kind of `Notification` exactly once.

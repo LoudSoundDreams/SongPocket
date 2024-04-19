@@ -20,6 +20,13 @@ final class AlbumsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		tableView.separatorStyle = .none
+		
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(showAlbumDetail), name: .LRShowAlbumDetail, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(hideAlbumDetail), name: .LRHideAlbumDetail, object: nil)
+	}
+	@objc private func showAlbumDetail(notification: Notification) {
+	}
+	@objc private func hideAlbumDetail(notification: Notification) {
 	}
 	
 	override func viewWillTransition(
