@@ -115,11 +115,11 @@ private struct CoverArt: View {
 			}.animation(.linear(duration: pow(.oneHalf, 4))) { albumInfo in
 				albumInfo.opacity(showingInfo ? 1 : .zero)
 			}
-		}.onTapGesture { if 10 == 1
-			{
-			showingInfo.toggle()
-			NotificationCenter.default.post(name: (showingInfo ? .LRShowAlbumDetail : .LRHideAlbumDetail), object: album)
-		}}
+		}
+//		}.onTapGesture {
+//			showingInfo.toggle()
+//			NotificationCenter.default.post(name: (showingInfo ? .LRShowAlbumDetail : .LRHideAlbumDetail), object: album)
+//		}
 	}
 	@State private var showingInfo = false
 }
