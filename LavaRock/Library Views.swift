@@ -186,24 +186,31 @@ struct AlbumHeader: View {
 
 struct SongRow: View {
 	let song: Song
-	let trackDisplay: String
-	let artist_if_different_from_album_artist: String?
+	let album: Album
 	@ObservedObject var tvcStatus: SongsTVCStatus
 	var body: some View {
+		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
+		let albumRepInfo = album.representativeSongInfo() // Can be `nil` too
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
 				AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
 						.alignmentGuide_separatorLeading()
-					if let artist = artist_if_different_from_album_artist {
-						Text(artist)
+					let albumArtistOptional = albumRepInfo?.albumArtistOnDisk
+					if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
+						Text(songArtist)
 							.foregroundStyle(.secondary)
 							.fontFootnote()
 					}
 				}.padding(.bottom, .eight * 1/4)
 				Spacer()
-				Text(trackDisplay)
+				Text({
+					guard let info, let albumRepInfo else { return LRString.octothorpe }
+					return albumRepInfo.shouldShowDiscNumber
+					? info.discAndTrackFormatted()
+					: info.trackFormatted()
+				}())
 					.foregroundStyle(.secondary)
 					.monospacedDigit()
 			}

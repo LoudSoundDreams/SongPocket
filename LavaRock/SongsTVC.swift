@@ -102,36 +102,8 @@ final class SongsTVC: LibraryTVC {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Song", for: indexPath)
 				cell.backgroundColors_configureForLibraryItem()
 				let song = viewModel.itemNonNil(atRow: indexPath.row) as! Song
-				let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
-				let albumRepresentative: SongInfo? = album.representativeSongInfo()
-				let trackDisplay: String = {
-					let result: String? = {
-						guard let albumRepresentative, let info else { return nil }
-						if albumRepresentative.shouldShowDiscNumber {
-							return info.discAndTrackFormatted()
-						} else {
-							return info.trackFormatted()
-						}
-					}()
-					return result ?? LRString.octothorpe
-				}()
-				let artistDisplayOptional: String? = {
-					let albumArtistOptional = albumRepresentative?.albumArtistOnDisk
-					if
-						let songArtist = info?.artistOnDisk,
-						songArtist != albumArtistOptional
-					{
-						return songArtist
-					} else {
-						return nil
-					}
-				}()
 				cell.contentConfiguration = UIHostingConfiguration {
-					SongRow(
-						song: song,
-						trackDisplay: trackDisplay,
-						artist_if_different_from_album_artist: artistDisplayOptional,
-						tvcStatus: tvcStatus)
+					SongRow(song: song, album: album, tvcStatus: tvcStatus)
 				}.margins(.all, .zero)
 				return cell
 		}
