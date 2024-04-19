@@ -173,7 +173,7 @@ struct SongRow: View {
 	let song: Song
 	let trackDisplay: String
 	let artist_if_different_from_album_artist: String?
-	@ObservedObject var listStatus: SongsListStatus
+	@ObservedObject var tvcStatus: SongsTVCStatus
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
@@ -197,7 +197,7 @@ struct SongRow: View {
 			.accessibilityAddTraits(.isButton)
 			.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 			Menu { overflowMenuContent() } label: { overflowMenuLabel() }
-				.disabled(listStatus.editing)
+				.disabled(tvcStatus.isEditing)
 				.onTapGesture { signal_tappedMenu.toggle() }
 				.alignmentGuide_separatorTrailing()
 		}

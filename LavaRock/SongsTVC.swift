@@ -4,15 +4,15 @@ import UIKit
 import SwiftUI
 import MusicKit
 
-final class SongsListStatus: ObservableObject {
-	@Published fileprivate(set) var editing = false
+final class SongsTVCStatus: ObservableObject {
+	@Published fileprivate(set) var isEditing = false
 }
 final class SongsTVC: LibraryTVC {
-	private let listStatus = SongsListStatus()
+	private let tvcStatus = SongsTVCStatus()
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		listStatus.editing = editing
+		tvcStatus.isEditing = editing
 	}
 	
 	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
@@ -132,7 +132,7 @@ final class SongsTVC: LibraryTVC {
 						song: song,
 						trackDisplay: trackDisplay,
 						artist_if_different_from_album_artist: artistDisplayOptional,
-						listStatus: listStatus)
+						tvcStatus: tvcStatus)
 				}.margins(.all, .zero)
 				return cell
 		}
