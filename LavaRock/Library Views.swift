@@ -92,23 +92,34 @@ private struct CoverArt: View {
 	let largerThanOrEqualToSizeInPoints: CGFloat
 	var body: some View {
 		let uiImageOptional = album.representativeSongInfo()?.coverArt(atLeastInPoints: CGSize(width: largerThanOrEqualToSizeInPoints, height: largerThanOrEqualToSizeInPoints))
-		if let uiImage = uiImageOptional {
-			Image(uiImage: uiImage)
-				.resizable() // Lets 1 image point differ from 1 screen point
-				.scaledToFit() // Maintains aspect ratio
+		ZStack {
+			if let uiImage = uiImageOptional {
+				Image(uiImage: uiImage)
+					.resizable() // Lets 1 image point differ from 1 screen point
+					.scaledToFit() // Maintains aspect ratio
+					.accessibilityIgnoresInvertColors()
+			} else {
+				ZStack {
+					Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
+						.aspectRatio(1, contentMode: .fit)
+					Image(systemName: "music.note")
+						.foregroundStyle(.secondary)
+						.font(.title)
+				}
+				.accessibilityLabel(LRString.albumArtwork)
 				.accessibilityIgnoresInvertColors()
-		} else {
-			ZStack {
-				Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
-					.aspectRatio(1, contentMode: .fit)
-				Image(systemName: "music.note")
-					.foregroundStyle(.secondary)
-					.font(.title)
 			}
-			.accessibilityLabel(LRString.albumArtwork)
-			.accessibilityIgnoresInvertColors()
+			ZStack {
+				Rectangle().foregroundStyle(.regularMaterial)
+				AlbumHeader(album: album)
+			}.animation(.linear(duration: pow(.oneHalf, 4))) { albumInfo in
+				albumInfo.opacity(showingInfo ? 1 : .zero)
+			}
+		}.onTapGesture {
+//			showingInfo.toggle()
 		}
 	}
+	@State private var showingInfo = false
 }
 private struct AlbumLabel: View {
 	let album: Album
