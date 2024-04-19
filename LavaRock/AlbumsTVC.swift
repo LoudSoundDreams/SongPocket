@@ -5,6 +5,7 @@ import SwiftUI
 import MusicKit
 
 final class AlbumsTVC: LibraryTVC {
+	private var expandedAlbum: Album? = nil
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	// MARK: - Setup
@@ -25,8 +26,11 @@ final class AlbumsTVC: LibraryTVC {
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(hideAlbumDetail), name: .LRHideAlbumDetail, object: nil)
 	}
 	@objc private func showAlbumDetail(notification: Notification) {
+		guard let album = notification.object as? Album else { return }
+		expandedAlbum = album
 	}
 	@objc private func hideAlbumDetail(notification: Notification) {
+		expandedAlbum = nil
 	}
 	
 	override func viewWillTransition(

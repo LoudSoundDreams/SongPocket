@@ -118,7 +118,11 @@ private struct CoverArt: View {
 		}
 //		}.onTapGesture {
 //			showingInfo.toggle()
-//			NotificationCenter.default.post(name: (showingInfo ? .LRShowAlbumDetail : .LRHideAlbumDetail), object: album)
+//			if showingInfo {
+//				NotificationCenter.default.post(name: .LRShowAlbumDetail, object: album)
+//			} else {
+//				NotificationCenter.default.post(name: .LRHideAlbumDetail, object: nil)
+//			}
 //		}
 	}
 	@State private var showingInfo = false

@@ -9,7 +9,6 @@ final class SongsTVCStatus: ObservableObject {
 }
 final class SongsTVC: LibraryTVC {
 	private let tvcStatus = SongsTVCStatus()
-	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		tvcStatus.isEditing = editing
