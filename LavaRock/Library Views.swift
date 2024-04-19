@@ -109,7 +109,7 @@ private struct CoverArt: View {
 				.accessibilityLabel(LRString.albumArtwork)
 				.accessibilityIgnoresInvertColors()
 			}
-			ZStack {
+			ZStack(alignment: .bottomLeading) {
 				Rectangle().foregroundStyle(.regularMaterial)
 				AlbumHeader(album: album)
 			}.animation(.linear(duration: pow(.oneHalf, 4))) { albumInfo in
