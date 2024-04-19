@@ -144,8 +144,7 @@ private struct AlbumLabel: View {
 				AvatarPlayingImage().hidden()
 				Chevron()
 			}
-		}
-		.accessibilityElement(children: .combine)
+		}.accessibilityElement(children: .combine)
 	}
 }
 struct Chevron: View {
@@ -181,8 +180,7 @@ struct AlbumHeader: View {
 					.alignmentGuide_separatorLeading()
 			}
 			Spacer().alignmentGuide_separatorTrailing()
-		}
-		.padding(.horizontal).padding(.vertical, .eight * 3/2)
+		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
 }
 
@@ -203,8 +201,7 @@ struct SongRow: View {
 							.foregroundStyle(.secondary)
 							.fontFootnote()
 					}
-				}
-				.padding(.bottom, .eight * 1/4)
+				}.padding(.bottom, .eight * 1/4)
 				Spacer()
 				Text(trackDisplay)
 					.foregroundStyle(.secondary)
@@ -217,8 +214,7 @@ struct SongRow: View {
 				.disabled(tvcStatus.isEditing)
 				.onTapGesture { signal_tappedMenu.toggle() }
 				.alignmentGuide_separatorTrailing()
-		}
-		.padding(.horizontal).padding(.vertical, .eight * 3/2)
+		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
 	private func overflowMenuLabel() -> some View {
 		Image(systemName: "ellipsis.circle.fill")
@@ -239,8 +235,7 @@ struct SongRow: View {
 			Task { await song.playRestOfAlbumLast() }
 		} label: {
 			Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
-		}
-		.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
+		}.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
 }

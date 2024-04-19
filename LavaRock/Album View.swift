@@ -14,8 +14,7 @@ struct AlbumShelf: View {
 					FakeAlbumImage(album)
 						.containerRelativeFrame(.horizontal)
 						.id(album.position)
-				}}
-				.scrollTargetLayout()
+				}}.scrollTargetLayout()
 			}
 			.scrollTargetBehavior(.viewAligned(limitBehavior: .never))
 			.scrollPosition(id: $visibleIndex)
@@ -50,7 +49,7 @@ struct AlbumShelf: View {
 				Button {
 					albums.append(FakeAlbum(position: albums.count, title: .randomLowercaseLetter()))
 				} label: { Image(systemName: "plus.circle") }
-			} }
+			}}
 		}
 	}
 	@ViewBuilder private func FakeAlbumImage(_ album: FakeAlbum) -> some View {
@@ -104,8 +103,7 @@ struct AlbumList: View {
 		List(selection: $selectedAlbums) {
 			ForEach($albums, editActions: .move) { $album in
 				Text(album.title)
-			}
-			.onMove { from, to in
+			}.onMove { from, to in
 				albums.move(fromOffsets: from, toOffset: to)
 			}
 		}
