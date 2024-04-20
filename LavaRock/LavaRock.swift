@@ -49,6 +49,7 @@ private final class RootNC: UINavigationController {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
 		)
+		__MainToolbar.shared.navigator = Weak(result)
 		let navBar = result.navigationBar
 		navBar.scrollEdgeAppearance = navBar.standardAppearance
 		if !WorkingOn.mainToolbar {

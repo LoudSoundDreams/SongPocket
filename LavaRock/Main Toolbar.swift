@@ -12,6 +12,7 @@ import MediaPlayer
 		playPauseButton, .flexibleSpace(),
 		overflowButton,
 	]
+	var navigator: Weak<UINavigationController>? = nil
 	
 	private lazy var playPauseButton = UIBarButtonItem()
 	private lazy var overflowButton = UIBarButtonItem(title: LRString.more, menu: UIMenu(children: [
@@ -85,6 +86,31 @@ import MediaPlayer
 				useMenuElements([action])
 			},
 		]),
+		UIDeferredMenuElement.uncached { useMenuElements in
+			let action = UIAction(
+				title: LRString.goToAlbum, image: UIImage(systemName: "square.stack"),
+				attributes: {
+					guard 
+						SystemMusicPlayer._shared != nil,
+						let albumInPlayer = Database.viewContext.songInPlayer()?.container
+					else { return .disabled }
+					return []
+				}()
+			) { [weak self] _ in
+				guard
+					let albumInPlayer = Database.viewContext.songInPlayer()?.container,
+					let navigator = self?.navigator?.referencee
+				else { return }
+				navigator.popToRootViewController(animated: true)
+				// TO DO: Scroll to album
+				navigator.pushViewController({
+					let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
+					songsTVC.viewModel = SongsViewModel(album: albumInPlayer)
+					return songsTVC
+				}(), animated: true)
+			}
+			useMenuElements([action])
+		},
 	]))
 	
 	private init() {
