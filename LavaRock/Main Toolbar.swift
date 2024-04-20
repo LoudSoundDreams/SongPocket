@@ -88,7 +88,7 @@ import MediaPlayer
 		]),
 		UIDeferredMenuElement.uncached { useMenuElements in
 			let action = UIAction(
-				title: LRString.goToCurrentAlbum, image: UIImage(systemName: "square.stack"),
+				title: LRString.nowPlaying, image: UIImage(systemName: "chevron.forward"),
 				attributes: {
 					guard 
 						SystemMusicPlayer._shared != nil,
