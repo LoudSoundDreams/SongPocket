@@ -25,6 +25,8 @@ final class AlbumsTVC: LibraryTVC {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(showAlbumDetail), name: .LRShowAlbumDetail, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(hideAlbumDetail), name: .LRHideAlbumDetail, object: nil)
+		
+		__MainToolbar.shared.albumsTVC = Weak(self)
 	}
 	@objc private func showAlbumDetail(notification: Notification) {
 		guard let album = notification.object as? Album else { return }
@@ -161,6 +163,20 @@ final class AlbumsTVC: LibraryTVC {
 			openAlbum(viewModel.itemNonNil(atRow: indexPath.row) as! Album)
 		}
 		super.tableView(tableView, didSelectRowAt: indexPath)
+	}
+	func openCurrentAlbum() {
+		guard let albumInPlayer = Database.viewContext.songInPlayer()?.container else { return }
+		navigationController?.popToRootViewController(animated: true)
+		let indexPath = IndexPath(row: Int(albumInPlayer.index), section: 0)
+		tableView.performBatchUpdates {
+			tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+		} completion: { _ in
+			self.tableView.performBatchUpdates {
+				self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+			} completion: { _ in
+				self.openAlbum(albumInPlayer)
+			}
+		}
 	}
 	private func openAlbum(_ album: Album) {
 		navigationController?.pushViewController({
