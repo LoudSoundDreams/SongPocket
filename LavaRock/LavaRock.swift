@@ -51,9 +51,11 @@ private final class RootNC: UINavigationController {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
 		)
-		let toolbar = result.toolbar!
-		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		let navBar = result.navigationBar
+		navBar.scrollEdgeAppearance = navBar.standardAppearance
 		if !WorkingOn.mainToolbar {
+			let toolbar = result.toolbar!
+			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 			result.setToolbarHidden(false, animated: false)
 		}
 		return result

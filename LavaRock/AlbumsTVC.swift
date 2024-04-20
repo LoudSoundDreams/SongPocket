@@ -20,6 +20,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		super.viewDidLoad()
 		
+		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(showAlbumDetail), name: .LRShowAlbumDetail, object: nil)
@@ -157,15 +158,17 @@ final class AlbumsTVC: LibraryTVC {
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if !isEditing {
-			navigationController?.pushViewController(
-				{
-					let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-					songsTVC.viewModel = SongsViewModel(album: viewModel.itemNonNil(atRow: indexPath.row) as! Album)
-					return songsTVC
-				}(),
-				animated: true)
+			openAlbum(viewModel.itemNonNil(atRow: indexPath.row) as! Album)
 		}
-		
 		super.tableView(tableView, didSelectRowAt: indexPath)
+	}
+	private func openAlbum(_ album: Album) {
+		navigationController?.pushViewController(
+			{
+				let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
+				songsTVC.viewModel = SongsViewModel(album: album)
+				return songsTVC
+			}(),
+			animated: true)
 	}
 }
