@@ -33,7 +33,7 @@ enum LRString {
 	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Button")
 	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
 	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
-	static let goToAlbum = NSLocalizedString("Go to Album", comment: "Button")
+	static let goToCurrentAlbum = NSLocalizedString("Go to Current Album", comment: "Button")
 	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let random = NSLocalizedString("Random", comment: "Sort option")
