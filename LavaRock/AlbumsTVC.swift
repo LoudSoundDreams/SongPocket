@@ -163,12 +163,10 @@ final class AlbumsTVC: LibraryTVC {
 		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
 	private func openAlbum(_ album: Album) {
-		navigationController?.pushViewController(
-			{
-				let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-				songsTVC.viewModel = SongsViewModel(album: album)
-				return songsTVC
-			}(),
-			animated: true)
+		navigationController?.pushViewController({
+			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
+			songsTVC.viewModel = SongsViewModel(album: album)
+			return songsTVC
+		}(), animated: true)
 	}
 }

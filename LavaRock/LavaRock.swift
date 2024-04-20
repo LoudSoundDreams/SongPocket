@@ -29,9 +29,7 @@ struct LavaRock: App {
 					RootVCRep()
 						.ignoresSafeArea()
 						.toolbar { if WorkingOn.mainToolbar {
-							ToolbarItemGroup(placement: .bottomBar) {
-								MainToolbar()
-							}
+							ToolbarItemGroup(placement: .bottomBar) { MainToolbar() }
 						}}
 						.task {
 							guard MusicAuthorization.currentStatus == .authorized else { return }

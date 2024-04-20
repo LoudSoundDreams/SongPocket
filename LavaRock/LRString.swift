@@ -23,15 +23,14 @@ enum LRString {
 	
 	// MARK: Toolbar
 	
-	static let previous = NSLocalizedString("Previous", comment: "Button")
-	static let restart = NSLocalizedString("Restart", comment: "Button")
-	// As of iOS 16.5 RC 1, picture-in-picture videos use “Skip back 10 seconds” and “Skip forward 10 seconds”.
-	static let skipBack15Seconds = NSLocalizedString("Skip back 15 seconds", comment: "Button")
 	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")
-	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Button")
+	static let restart = NSLocalizedString("Restart", comment: "Button")
+	static let previous = NSLocalizedString("Previous", comment: "Button")
 	static let next = NSLocalizedString("Next", comment: "Button")
-	
+	// As of iOS 16.5 RC 1, picture-in-picture videos use “Skip back 10 seconds” and “Skip forward 10 seconds”.
+	static let skipBack15Seconds = NSLocalizedString("Skip back 15 seconds", comment: "Button")
+	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Button")
 	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
 	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
 	
