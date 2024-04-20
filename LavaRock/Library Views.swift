@@ -59,7 +59,7 @@ struct AlbumRow: View {
 			Rectangle().frame(height: 1/2 * Self.borderWidthInPixels * pointsPerPixel).hidden()
 			// TO DO: Redraw when artwork changes
 			CoverArt(album: album, largerThanOrEqualToSizeInPoints: maxHeight)
-				.background( // Use `border` instead?
+				.background( // Don’t use `border`, because that obscures the artwork.
 					Rectangle().stroke(
 						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
 						lineWidth: {
@@ -91,8 +91,8 @@ private struct CoverArt: View {
 	let album: Album
 	let largerThanOrEqualToSizeInPoints: CGFloat
 	var body: some View {
-		let uiImageOptional = album.representativeSongInfo()?.coverArt(atLeastInPoints: CGSize(width: largerThanOrEqualToSizeInPoints, height: largerThanOrEqualToSizeInPoints))
 		ZStack {
+			let uiImageOptional = album.representativeSongInfo()?.coverArt(atLeastInPoints: CGSize(width: largerThanOrEqualToSizeInPoints, height: largerThanOrEqualToSizeInPoints))
 			if let uiImage = uiImageOptional {
 				Image(uiImage: uiImage)
 					.resizable() // Lets 1 image point differ from 1 screen point
