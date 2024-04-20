@@ -166,6 +166,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	func openCurrentAlbum() {
 		guard let albumInPlayer = Database.viewContext.songInPlayer()?.container else { return }
+		if albumInPlayer == ((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.album { return }
 		navigationController?.popToRootViewController(animated: true)
 		let indexPath = IndexPath(row: Int(albumInPlayer.index), section: 0)
 		tableView.performBatchUpdates {
