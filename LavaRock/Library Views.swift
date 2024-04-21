@@ -15,15 +15,14 @@ struct AvatarImage: View {
 				case .notPlaying: EmptyView()
 				case .paused:
 					Image(systemName: "speaker.fill")
-						.foregroundStyle(Color.accentColor)
 						.fontBody_dynamicTypeSizeUpToXxxLarge()
 						.imageScale(.small)
 				case .playing:
 					AvatarPlayingImage()
-						.foregroundStyle(Color.accentColor)
 						.symbolRenderingMode(.hierarchical)
 			}
 		}
+		.foregroundStyle(Color.accentColor)
 		.accessibilityElement()
 		.accessibilityLabel({ switch status {
 			case .notPlaying: return ""
@@ -56,19 +55,16 @@ struct AlbumRow: View {
 	let maxHeight: CGFloat
 	var body: some View {
 		VStack(spacing: 0) {
-			Rectangle().frame(height: 1/2 * Self.borderWidthInPixels * pointsPerPixel).hidden()
+			Rectangle().frame(width: 42, height: 1/2 * Self.strokeWidthInPixels * pointsPerPixel).hidden()
 			// TO DO: Redraw when artwork changes
 			CoverArt(album: album, largerThanOrEqualToSizeInPoints: maxHeight)
-				.background( // Don’t use `border`, because that obscures the artwork.
+				.background( // Don’t use `border`, because that obscures the artwork. Draw outside the artwork; don’t overlap it.
 					Rectangle().stroke(
 						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
-						lineWidth: {
-							// Add a grey border exactly 1 pixel wide, like list separators.
-							// Draw outside the artwork; don’t overlap it.
-							// The artwork itself will obscure half the stroke width.
-							// SwiftUI interprets our return value in points, not pixels.
-							return Self.borderWidthInPixels * pointsPerPixel
-						}()))
+						// Add a grey border exactly 1 pixel wide, like list separators.
+						// The artwork itself will obscure half the stroke width.
+						// SwiftUI interprets our return value in points, not pixels.
+						lineWidth: Self.strokeWidthInPixels * pointsPerPixel))
 				.frame(
 					maxWidth: .infinity, // Horizontally centers narrow artwork
 					maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
@@ -84,7 +80,7 @@ struct AlbumRow: View {
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
-	private static let borderWidthInPixels: CGFloat = 2
+	private static let strokeWidthInPixels: CGFloat = 2
 	@Environment(\.pixelLength) private var pointsPerPixel
 }
 private struct CoverArt: View {
@@ -133,7 +129,7 @@ private struct AlbumLabel: View {
 		HStack(alignment: .firstTextBaseline) {
 			ZStack(alignment: .leading) {
 				Chevron().hidden()
-				AvatarImage(libraryItem: album, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
+				AvatarImage(libraryItem: album, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
 			}
 			Text(album.releaseDateEstimateFormatted())
 				.foregroundStyle(.secondary)
@@ -193,7 +189,7 @@ struct SongRow: View {
 		let albumRepInfo = album.representativeSongInfo() // Can be `nil` too
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
-				AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
+				AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
 						.alignmentGuide_separatorLeading()
