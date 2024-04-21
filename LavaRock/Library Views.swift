@@ -70,10 +70,7 @@ struct AlbumRow: View {
 					maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
 				.accessibilityLabel(album.titleFormatted())
 				.accessibilitySortPriority(10)
-			AlbumLabel(album: album)
-				.padding(.top, .eight * 3/2)
-				.padding(.horizontal)
-				.padding(.bottom, .eight * 4)
+			Rectangle().frame(width: 42, height: 1/2 * Self.strokeWidthInPixels * pointsPerPixel).hidden()
 		}
 		.alignmentGuide_separatorLeading()
 		.alignmentGuide_separatorTrailing()
@@ -123,35 +120,6 @@ private struct CoverArt: View {
 	}
 	@State private var showingInfo = false
 }
-private struct AlbumLabel: View {
-	let album: Album
-	var body: some View {
-		HStack(alignment: .firstTextBaseline) {
-			ZStack(alignment: .leading) {
-				Chevron().hidden()
-				AvatarImage(libraryItem: album, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10)
-			}
-			Text(album.releaseDateEstimateFormatted())
-				.foregroundStyle(.secondary)
-				.fontFootnote()
-				.multilineTextAlignment(.center)
-				.frame(maxWidth: .infinity)
-			ZStack(alignment: .trailing) {
-				AvatarPlayingImage().hidden()
-				Chevron()
-			}
-		}.accessibilityElement(children: .combine)
-	}
-}
-struct Chevron: View {
-	var body: some View {
-		// Similar to what Apple Music uses for search results
-		Image(systemName: "chevron.forward")
-			.foregroundStyle(.secondary)
-			.fontBody_dynamicTypeSizeUpToXxxLarge()
-			.imageScale(.small)
-	}
-}
 
 // MARK: - Song list
 
@@ -161,6 +129,9 @@ struct AlbumHeader: View {
 		HStack(spacing: .eight * 5/4) {
 			AvatarPlayingImage().hidden()
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
+				Text(album.titleFormatted())
+					.fontTitle2Bold()
+					.alignmentGuide_separatorLeading()
 				Text({ () -> String in
 					guard
 						let representative = album.representativeSongInfo(),
@@ -171,10 +142,10 @@ struct AlbumHeader: View {
 				}())
 				.foregroundStyle(.secondary)
 				.fontCaption2Bold()
-				Text(album.titleFormatted())
-					.fontTitle2Bold()
-					.alignmentGuide_separatorLeading()
-			}
+				Text(album.releaseDateEstimateFormatted())
+					.foregroundStyle(.secondary)
+					.font(.caption2)
+			}.padding(.bottom, .eight * 1/4)
 			Spacer().alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
