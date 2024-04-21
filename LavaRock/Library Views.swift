@@ -174,9 +174,9 @@ struct AlbumHeader: View {
 					return albumArtist
 				}())
 				.foregroundStyle(.secondary)
-				.fontCaption2_bold()
+				.fontCaption2Bold()
 				Text(album.titleFormatted())
-					.fontTitle2_bold()
+					.fontTitle2Bold()
 					.alignmentGuide_separatorLeading()
 			}
 			Spacer().alignmentGuide_separatorTrailing()

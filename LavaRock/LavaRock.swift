@@ -62,7 +62,7 @@ private final class RootNC: UINavigationController {
 		super.viewIsAppearing(animated)
 		if !Self.hasAppeared {
 			Self.hasAppeared = true
-			view.window!.tintColor = UIColor(named: "denim")!
+			view.window!.tintColor = .denim
 		}
 	}
 	private static var hasAppeared = false
