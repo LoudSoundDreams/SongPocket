@@ -5,7 +5,7 @@ import SwiftUI
 import MusicKit
 
 final class AlbumsTVC: LibraryTVC {
-	private var expandedAlbum: Album? = nil
+	private var tracklist: SongsViewModel? = nil
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	// MARK: - Setup
@@ -30,10 +30,10 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	@objc private func showAlbumDetail(notification: Notification) {
 		guard let album = notification.object as? Album else { return }
-		expandedAlbum = album
+		tracklist = SongsViewModel(album: album)
 	}
 	@objc private func hideAlbumDetail(notification: Notification) {
-		expandedAlbum = nil
+		tracklist = nil
 	}
 	
 	override func viewWillTransition(

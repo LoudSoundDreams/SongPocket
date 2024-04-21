@@ -246,9 +246,7 @@ class LibraryTVC: UITableViewController {
 		let allItems = viewModel.items
 		
 		var newViewModel = viewModel
-		let newItems = command.apply(
-			onOrderedIndices: subjectedIndices,
-			in: allItems)
+		let newItems = command.apply(onOrderedIndices: subjectedIndices, in: allItems)
 		newViewModel.items = newItems
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
