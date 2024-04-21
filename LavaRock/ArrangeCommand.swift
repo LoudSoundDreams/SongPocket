@@ -68,9 +68,11 @@ enum ArrangeCommand: CaseIterable {
 		}()
 		
 		var result = allItems
-		result.replace(
-			atIndices: onOrderedIndices,
-			withElements: sortedItemsOnly)
+		onOrderedIndices.indices.forEach { counter in
+			let replaceAt = onOrderedIndices[counter]
+			let newElement = sortedItemsOnly[counter]
+			result[replaceAt] = newElement
+		}
 		return result
 	}
 	private func apply(to items: [NSManagedObject]) -> [NSManagedObject] {
