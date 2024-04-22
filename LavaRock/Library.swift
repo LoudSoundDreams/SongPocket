@@ -10,30 +10,7 @@ enum Library {
 	}
 }
 
-protocol LibraryItem: NSManagedObject {
-	@MainActor func containsPlayhead() -> Bool
-}
-extension Collection: LibraryItem {
-	@MainActor final func containsPlayhead() -> Bool {
-#if targetEnvironment(simulator)
-		return objectID == Sim_Global.currentSong?.container?.container?.objectID
-#else
-		guard let currentSong = managedObjectContext?.songInPlayer() else { return false }
-		return objectID == currentSong.container?.container?.objectID
-#endif
-	}
-}
-extension Album: LibraryItem {
-	@MainActor final func containsPlayhead() -> Bool {
-#if targetEnvironment(simulator)
-		return objectID == Sim_Global.currentSong?.container?.objectID
-#else
-		guard let songInPlayer = managedObjectContext?.songInPlayer() else { return false }
-		return objectID == songInPlayer.container?.objectID
-#endif
-	}
-}
-extension Song: LibraryItem {
+extension Song {
 	@MainActor final func containsPlayhead() -> Bool {
 #if targetEnvironment(simulator)
 		return objectID == Sim_Global.currentSong?.objectID

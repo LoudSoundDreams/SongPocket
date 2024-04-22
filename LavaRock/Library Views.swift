@@ -68,7 +68,7 @@ private struct CoverArt: View {
 // MARK: - Song list
 
 struct AvatarImage: View {
-	let libraryItem: LibraryItem
+	let song: Song
 	@ObservedObject var state: MusicPlayer.State
 	@ObservedObject var queue: MusicPlayer.Queue
 	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
@@ -95,7 +95,7 @@ struct AvatarImage: View {
 		}}())
 	}
 	private var status: Status {
-		guard libraryItem.containsPlayhead() else { return .notPlaying }
+		guard song.containsPlayhead() else { return .notPlaying }
 #if targetEnvironment(simulator)
 		return .playing
 #else
@@ -149,7 +149,7 @@ struct SongRow: View {
 		let albumRepInfo = album.representativeSongInfo() // Can be `nil` too
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
-				AvatarImage(libraryItem: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
+				AvatarImage(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
 						.alignmentGuide_separatorLeading()
