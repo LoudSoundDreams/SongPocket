@@ -67,51 +67,6 @@ private struct CoverArt: View {
 
 // MARK: - Song list
 
-struct AvatarImage: View {
-	let song: Song
-	@ObservedObject var state: MusicPlayer.State
-	@ObservedObject var queue: MusicPlayer.Queue
-	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
-	var body: some View {
-		ZStack(alignment: .leading) {
-			AvatarPlayingImage().hidden()
-			switch status {
-				case .notPlaying: EmptyView()
-				case .paused:
-					Image(systemName: "speaker.fill")
-						.fontBody_dynamicTypeSizeUpToXxxLarge()
-						.imageScale(.small)
-				case .playing:
-					AvatarPlayingImage()
-						.symbolRenderingMode(.hierarchical)
-			}
-		}
-		.foregroundStyle(Color.accentColor)
-		.accessibilityElement()
-		.accessibilityLabel({ switch status {
-			case .notPlaying: return ""
-			case .paused: return LRString.paused
-			case .playing: return LRString.nowPlaying
-		}}())
-	}
-	private var status: Status {
-		guard song.containsPlayhead() else { return .notPlaying }
-#if targetEnvironment(simulator)
-		return .playing
-#else
-		return (state.playbackStatus == .playing) ? .playing : .paused
-#endif
-	}
-	enum Status { case notPlaying, paused, playing }
-}
-struct AvatarPlayingImage: View {
-	var body: some View {
-		Image(systemName: "speaker.wave.2.fill")
-			.fontBody_dynamicTypeSizeUpToXxxLarge()
-			.imageScale(.small)
-	}
-}
-
 struct AlbumHeader: View {
 	let album: Album
 	var body: some View {
@@ -201,4 +156,49 @@ struct SongRow: View {
 		}.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
+}
+
+struct AvatarImage: View {
+	let song: Song
+	@ObservedObject var state: MusicPlayer.State
+	@ObservedObject var queue: MusicPlayer.Queue
+	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
+	var body: some View {
+		ZStack(alignment: .leading) {
+			AvatarPlayingImage().hidden()
+			switch status {
+				case .notPlaying: EmptyView()
+				case .paused:
+					Image(systemName: "speaker.fill")
+						.fontBody_dynamicTypeSizeUpToXxxLarge()
+						.imageScale(.small)
+				case .playing:
+					AvatarPlayingImage()
+						.symbolRenderingMode(.hierarchical)
+			}
+		}
+		.foregroundStyle(Color.accentColor)
+		.accessibilityElement()
+		.accessibilityLabel({ switch status {
+			case .notPlaying: return ""
+			case .paused: return LRString.paused
+			case .playing: return LRString.nowPlaying
+		}}())
+	}
+	private var status: Status {
+		guard song.containsPlayhead() else { return .notPlaying }
+#if targetEnvironment(simulator)
+		return .playing
+#else
+		return (state.playbackStatus == .playing) ? .playing : .paused
+#endif
+	}
+	enum Status { case notPlaying, paused, playing }
+}
+struct AvatarPlayingImage: View {
+	var body: some View {
+		Image(systemName: "speaker.wave.2.fill")
+			.fontBody_dynamicTypeSizeUpToXxxLarge()
+			.imageScale(.small)
+	}
 }
