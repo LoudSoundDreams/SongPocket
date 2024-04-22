@@ -53,6 +53,35 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
+	var isBeneathCurrentAlbum: Bool {
+		guard let albumInPlayer = Database.viewContext.songInPlayer()?.container else { return false }
+		return albumInPlayer == ((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.album
+	}
+	func openCurrentAlbum() {
+		guard
+			let albumInPlayer = Database.viewContext.songInPlayer()?.container,
+			!isBeneathCurrentAlbum
+		else { return }
+		navigationController?.popToRootViewController(animated: true)
+		let indexPath = IndexPath(row: Int(albumInPlayer.index), section: 0)
+		tableView.performBatchUpdates {
+			tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+		} completion: { _ in
+			self.tableView.performBatchUpdates {
+				self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+			} completion: { _ in
+				self.openAlbum(albumInPlayer)
+			}
+		}
+	}
+	private func openAlbum(_ album: Album) {
+		navigationController?.pushViewController({
+			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
+			songsTVC.viewModel = SongsViewModel(album: album)
+			return songsTVC
+		}(), animated: true)
+	}
+	
 	// MARK: - Editing
 	
 	override func refreshEditingButtons() {
@@ -155,33 +184,5 @@ final class AlbumsTVC: LibraryTVC {
 			openAlbum(viewModel.items[indexPath.row] as! Album)
 		}
 		super.tableView(tableView, didSelectRowAt: indexPath)
-	}
-	var isBeneathCurrentAlbum: Bool {
-		guard let albumInPlayer = Database.viewContext.songInPlayer()?.container else { return false }
-		return albumInPlayer == ((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.album
-	}
-	func openCurrentAlbum() {
-		guard 
-			let albumInPlayer = Database.viewContext.songInPlayer()?.container,
-			!isBeneathCurrentAlbum
-		else { return }
-		navigationController?.popToRootViewController(animated: true)
-		let indexPath = IndexPath(row: Int(albumInPlayer.index), section: 0)
-		tableView.performBatchUpdates {
-			tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-		} completion: { _ in
-			self.tableView.performBatchUpdates {
-				self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-			} completion: { _ in
-				self.openAlbum(albumInPlayer)
-			}
-		}
-	}
-	private func openAlbum(_ album: Album) {
-		navigationController?.pushViewController({
-			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-			songsTVC.viewModel = SongsViewModel(album: album)
-			return songsTVC
-		}(), animated: true)
 	}
 }
