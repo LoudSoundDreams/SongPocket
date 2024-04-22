@@ -86,13 +86,14 @@ import MediaPlayer
 				useMenuElements([action])
 			},
 		]),
-		UIDeferredMenuElement.uncached { useMenuElements in
+		UIDeferredMenuElement.uncached { [weak self] useMenuElements in
 			let action = UIAction(
 				title: LRString.nowPlaying, image: UIImage(systemName: "chevron.forward"),
 				attributes: {
 					guard 
 						SystemMusicPlayer._shared != nil,
-						let _ = Database.viewContext.songInPlayer()?.container
+						let _ = Database.viewContext.songInPlayer()?.container,
+						let albumsTVC = self?.albumsTVC?.referencee, !albumsTVC.isBeneathCurrentAlbum
 					else { return .disabled }
 					return []
 				}()
