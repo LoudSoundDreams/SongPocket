@@ -59,8 +59,7 @@ extension UITableView {
 			indexPathsForRows(section: section, firstRow: 0)
 		}
 	}
-	
-	final func indexPathsForRows(section: Int, firstRow: Int) -> [IndexPath] {
+	private func indexPathsForRows(section: Int, firstRow: Int) -> [IndexPath] {
 		let lastRow = numberOfRows(inSection: section) - 1
 		guard lastRow >= 0 else {
 			// The section has 0 rows.
