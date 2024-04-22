@@ -13,7 +13,7 @@ protocol LibraryViewModel {
 
 struct AlbumsViewModel {
 	// `LibraryViewModel`
-	var items: [NSManagedObject] { didSet { Library.renumber(items) } }
+	var items: [NSManagedObject] { didSet { Database.renumber(items) } }
 }
 extension AlbumsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row }
@@ -41,7 +41,7 @@ struct SongsViewModel {
 	let album: Album
 	
 	// `LibraryViewModel`
-	var items: [NSManagedObject] { didSet { Library.renumber(items) } }
+	var items: [NSManagedObject] { didSet { Database.renumber(items) } }
 }
 extension SongsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row - Self.prerowCount }

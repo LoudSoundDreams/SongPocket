@@ -1,15 +1,5 @@
 // 2021-04-09
 
-import CoreData
-
-enum Library {
-	static func renumber(_ items: [NSManagedObject]) {
-		items.enumerated().forEach { (currentIndex, item) in
-			item.setValue(Int64(currentIndex), forKey: "index")
-		}
-	}
-}
-
 extension Song {
 	@MainActor final func containsPlayhead() -> Bool {
 #if targetEnvironment(simulator)

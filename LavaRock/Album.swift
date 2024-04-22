@@ -89,7 +89,7 @@ extension Album {
 		}
 		
 		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
-		Library.renumber(sortedSongs)
+		Database.renumber(sortedSongs)
 	}
 	
 	// MARK: Creating

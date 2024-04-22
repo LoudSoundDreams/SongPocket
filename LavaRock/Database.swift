@@ -26,6 +26,12 @@ enum Database {
 		})
 		return container
 	}()
+	
+	static func renumber(_ items: [NSManagedObject]) {
+		items.enumerated().forEach { (currentIndex, item) in
+			item.setValue(Int64(currentIndex), forKey: "index")
+		}
+	}
 }
 
 extension NSManagedObjectContext {
@@ -132,7 +138,7 @@ extension NSManagedObjectContext {
 		// Clean up
 		sourceCollections.forEach {
 			let albums = $0.albums(sorted: true)
-			Library.renumber(albums)
+			Database.renumber(albums)
 		}
 		deleteEmptyCollections()
 	}
@@ -155,6 +161,6 @@ extension NSManagedObjectContext {
 				all.remove(at: index)
 			}
 		}
-		Library.renumber(all)
+		Database.renumber(all)
 	}
 }
