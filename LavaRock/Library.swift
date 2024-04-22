@@ -3,7 +3,7 @@
 import CoreData
 
 enum Library {
-	static func renumber(_ items: [NSManagedObject]) { // Replace with `LibraryItem`
+	static func renumber(_ items: [NSManagedObject]) {
 		items.enumerated().forEach { (currentIndex, item) in
 			item.setValue(Int64(currentIndex), forKey: "index")
 		}

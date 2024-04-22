@@ -20,9 +20,8 @@ class LibraryTVC: UITableViewController {
 	final var editingButtons: [UIBarButtonItem] = []
 	private(set) final lazy var floatButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
 	private func floatSelected() {
-		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
-		let unorderedIndices = unorderedRows.map {
-			viewModel.itemIndex(forRow: $0)
+		let unorderedIndices = tableView.selectedIndexPaths.map {
+			viewModel.itemIndex(forRow: $0.row)
 		}
 		
 		var newItems = viewModel.items
@@ -36,9 +35,8 @@ class LibraryTVC: UITableViewController {
 	}
 	private(set) final lazy var sinkButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	private func sinkSelected() {
-		let unorderedRows = tableView.selectedIndexPaths.map { $0.row }
-		let unorderedIndices = unorderedRows.map {
-			viewModel.itemIndex(forRow: $0)
+		let unorderedIndices = tableView.selectedIndexPaths.map {
+			viewModel.itemIndex(forRow: $0.row)
 		}
 		
 		var newItems = viewModel.items
@@ -230,14 +228,11 @@ class LibraryTVC: UITableViewController {
 	}
 	final func allowsArrange() -> Bool {
 		guard !viewModel.items.isEmpty else { return false }
-		let selectedIndexPaths = tableView.selectedIndexPaths
-		if selectedIndexPaths.isEmpty {
+		let selected = tableView.selectedIndexPaths
+		if selected.isEmpty {
 			return true
-		} else {
-			var selectedRows = selectedIndexPaths.map { $0.row }
-			selectedRows.sort()
-			return selectedRows.isConsecutive()
 		}
+		return selected.map { $0.row }.sorted().isConsecutive()
 	}
 	final func arrangeSelectedOrAll(by command: ArrangeCommand) {
 		var newViewModel = viewModel

@@ -72,10 +72,10 @@ final class AlbumsTVC: LibraryTVC {
 					switch command {
 						case .random, .reverse: return true
 						case .song_track: return false
+						case .album_recentlyAdded, .album_artist: return true
 						case .album_newest:
 							let toSort = selectedOrAllIndices().map { viewModel.items[$0] } as! [Album]
 							return toSort.contains { $0.releaseDateEstimate != nil }
-						case .album_recentlyAdded, .album_artist: return true
 					}
 				}()) { [weak self] in self?.arrangeSelectedOrAll(by: command) }
 			}

@@ -3,7 +3,7 @@
 import UIKit
 import CoreData
 
-enum ArrangeCommand: CaseIterable {
+enum ArrangeCommand {
 	case random
 	case reverse
 	
@@ -20,34 +20,30 @@ enum ArrangeCommand: CaseIterable {
 		return UIDeferredMenuElement.uncached { useMenuElements in
 			// Runs each time the button presents the menu
 			let action = UIAction(
-				title: {
-					switch self {
-						case .random: return LRString.random
-						case .reverse: return LRString.reverse
-						case .album_recentlyAdded: return LRString.recentlyAdded
-						case .album_newest: return LRString.newest
-						case .album_artist: return LRString.artist
-						case .song_track: return LRString.trackNumber
-					}
-				}(),
-				image: UIImage(systemName: {
-					switch self {
-						case .random:
-							switch Int.random(in: 1...6) {
-								case 1: return "die.face.1"
-								case 2: return "die.face.2"
-								case 4: return "die.face.4"
-								case 5: return "die.face.5"
-								case 6: return "die.face.6"
-								default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
-							}
-						case .reverse: return "arrow.up.and.down"
-						case .album_recentlyAdded: return "clock"
-						case .album_newest: return "sparkles"
-						case .album_artist: return "music.mic"
-						case .song_track: return "number"
-					}
-				}())
+				title: { switch self {
+					case .random: return LRString.random
+					case .reverse: return LRString.reverse
+					case .album_recentlyAdded: return LRString.recentlyAdded
+					case .album_newest: return LRString.newest
+					case .album_artist: return LRString.artist
+					case .song_track: return LRString.trackNumber
+				}}(),
+				image: UIImage(systemName: { switch self {
+					case .random:
+						switch Int.random(in: 1...6) {
+							case 1: return "die.face.1"
+							case 2: return "die.face.2"
+							case 4: return "die.face.4"
+							case 5: return "die.face.5"
+							case 6: return "die.face.6"
+							default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
+						}
+					case .reverse: return "arrow.up.and.down"
+					case .album_recentlyAdded: return "clock"
+					case .album_newest: return "sparkles"
+					case .album_artist: return "music.mic"
+					case .song_track: return "number"
+				}}())
 			) { _ in handler() }
 			// Disable if appropriate. This must be inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
 			if !enabled {
@@ -104,10 +100,7 @@ enum ArrangeCommand: CaseIterable {
 			case .song_track:
 				guard let songs = items as? [Song] else { return items }
 				// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
-				let songsAndInfos = songs.map {
-					(song: $0,
-					 info: $0.songInfo())
-				}
+				let songsAndInfos = songs.map { (song: $0, info: $0.songInfo()) }
 				let sorted = songsAndInfos.sortedMaintainingOrderWhen {
 					let left = $0.info
 					let right = $1.info
