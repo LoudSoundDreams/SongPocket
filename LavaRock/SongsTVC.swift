@@ -37,16 +37,14 @@ final class SongsTVC: LibraryTVC {
 		]
 		let elementsGrouped: [[UIMenuElement]] = sections.reversed().map { section in
 			section.reversed().map { command in
-				return command.createMenuElement(
-					enabled: {
-						guard selectedOrAllIndices().count >= 2 else { return false }
-						switch command {
-							case .random, .reverse: return true
-							case .album_recentlyAdded, .album_newest, .album_artist: return false
-							case .song_track: return true
-						}
-					}()
-				) { [weak self] in self?.arrangeSelectedOrAll(by: command) }
+				return command.createMenuElement(enabled: {
+					guard selectedOrAllIndices().count >= 2 else { return false }
+					switch command {
+						case .random, .reverse: return true
+						case .album_recentlyAdded, .album_newest, .album_artist: return false
+						case .song_track: return true
+					}
+				}()) { [weak self] in self?.arrangeSelectedOrAll(by: command) }
 			}
 		}
 		let inlineSubmenus = elementsGrouped.map {

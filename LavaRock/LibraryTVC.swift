@@ -64,6 +64,13 @@ class LibraryTVC: UITableViewController {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRMergedChanges, object: nil)
 	}
+	@objc private func reflectDatabase() {
+		if view.window == nil {
+			needsRefreshLibraryItemsOnViewDidAppear = true
+		} else {
+			refreshLibraryItems()
+		}
+	}
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
@@ -75,15 +82,7 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Library items
 	
-	@objc final func reflectDatabase() {
-		if view.window == nil {
-			needsRefreshLibraryItemsOnViewDidAppear = true
-		} else {
-			refreshLibraryItems()
-		}
-	}
-	
-	final func refreshLibraryItems() {
+	private func refreshLibraryItems() {
 		Task {
 			/*
 			 The user might currently be in the middle of a content-dependent task, which refreshing would affect the consequences of.
