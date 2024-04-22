@@ -27,8 +27,6 @@ struct AlbumRow: View {
 				.accessibilitySortPriority(10)
 			Rectangle().frame(width: 42, height: 1/2 * Self.strokeWidthInPixels * pointsPerPixel).hidden()
 		}
-		.alignmentGuide_separatorLeading()
-		.alignmentGuide_separatorTrailing()
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
