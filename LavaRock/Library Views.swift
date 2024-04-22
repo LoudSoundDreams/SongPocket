@@ -53,7 +53,7 @@ private struct CoverArt: View {
 				albumInfo.opacity(showingInfo ? 1 : .zero)
 			}
 		}
-//		}.onTapGesture {
+//		.onTapGesture {
 //			showingInfo.toggle()
 //			if showingInfo {
 //				NotificationCenter.default.post(name: .LRShowAlbumDetail, object: album)
