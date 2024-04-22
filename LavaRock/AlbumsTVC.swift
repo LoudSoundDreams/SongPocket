@@ -79,9 +79,7 @@ final class AlbumsTVC: LibraryTVC {
 							case .album_recentlyAdded, .album_artist: return true
 						}
 					}()
-				) { [weak self] in
-					self?.arrangeSelectedOrAll(by: command)
-				}
+				) { [weak self] in self?.arrangeSelectedOrAll(by: command) }
 			}
 		}
 		let inlineSubmenus = elementsGrouped.map {

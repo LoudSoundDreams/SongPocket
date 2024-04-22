@@ -92,7 +92,7 @@ import MediaPlayer
 				attributes: {
 					guard 
 						SystemMusicPlayer._shared != nil,
-						let albumInPlayer = Database.viewContext.songInPlayer()?.container
+						let _ = Database.viewContext.songInPlayer()?.container
 					else { return .disabled }
 					return []
 				}()

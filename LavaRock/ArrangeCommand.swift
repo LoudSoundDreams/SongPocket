@@ -17,7 +17,7 @@ enum ArrangeCommand: CaseIterable {
 		enabled: Bool,
 		handler: @escaping () -> Void
 	) -> UIMenuElement {
-		return UIDeferredMenuElement.uncached({ useMenuElements in
+		return UIDeferredMenuElement.uncached { useMenuElements in
 			// Runs each time the button presents the menu
 			let action = UIAction(
 				title: {
@@ -54,7 +54,7 @@ enum ArrangeCommand: CaseIterable {
 				action.attributes.formUnion(.disabled)
 			}
 			useMenuElements([action])
-		})
+		}
 	}
 	
 	func apply(to items: [NSManagedObject]) -> [NSManagedObject] {
