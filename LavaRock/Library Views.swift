@@ -186,10 +186,15 @@ struct AvatarImage: View {
 		}}())
 	}
 	private var status: Status {
-		guard song.containsPlayhead() else { return .notPlaying }
 #if targetEnvironment(simulator)
+		guard song.objectID == Sim_Global.currentSong?.objectID else {
+			return .notPlaying
+		}
 		return .playing
 #else
+		guard song.objectID == song.managedObjectContext?.songInPlayer()?.objectID else {
+			return .notPlaying
+		}
 		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif
 	}
