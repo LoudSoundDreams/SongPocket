@@ -57,25 +57,7 @@ enum ArrangeCommand: CaseIterable {
 		})
 	}
 	
-	func apply(
-		onOrderedIndices: [Int],
-		in allItems: [NSManagedObject]
-	) -> [NSManagedObject] {
-		// Get just the items to sort, and get them sorted in a separate array.
-		let sortedItemsOnly: [NSManagedObject] = {
-			let toSort = onOrderedIndices.map { allItems[$0] }
-			return self.apply(to: toSort)
-		}()
-		
-		var result = allItems
-		onOrderedIndices.indices.forEach { counter in
-			let replaceAt = onOrderedIndices[counter]
-			let newElement = sortedItemsOnly[counter]
-			result[replaceAt] = newElement
-		}
-		return result
-	}
-	private func apply(to items: [NSManagedObject]) -> [NSManagedObject] {
+	func apply(to items: [NSManagedObject]) -> [NSManagedObject] {
 		switch self {
 			case .random: return items.inAnyOtherOrder()
 			case .reverse: return items.reversed()

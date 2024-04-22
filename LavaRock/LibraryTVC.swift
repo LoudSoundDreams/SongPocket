@@ -241,23 +241,27 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	final func arrangeSelectedOrAll(by command: ArrangeCommand) {
-		let subjectedRows = selectedOrAllRows().sorted()
-		let subjectedIndices = subjectedRows.map { viewModel.itemIndex(forRow: $0) }
-		let allItems = viewModel.items
-		
 		var newViewModel = viewModel
-		let newItems = command.apply(onOrderedIndices: subjectedIndices, in: allItems)
-		newViewModel.items = newItems
+		newViewModel.items = {
+			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
+			let toSort = subjectedIndicesInOrder.map { viewModel.items[$0] }
+			let sorted = command.apply(to: toSort)
+			var result = viewModel.items
+			subjectedIndicesInOrder.indices.forEach { counter in
+				let replaceAt = subjectedIndicesInOrder[counter]
+				let newItem = sorted[counter]
+				result[replaceAt] = newItem
+			}
+			return result
+		}()
 		Task {
 			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
 		}
 	}
-	final func selectedOrAllRows() -> [Int] {
-		var result: [Int] = tableView.selectedIndexPaths.map { $0.row }
-		if result.isEmpty {
-			result = viewModel.rowsForAllItems()
-		}
-		return result
+	final func selectedOrAllIndices() -> [Int] {
+		let selected = tableView.selectedIndexPaths
+		guard !selected.isEmpty else { return viewModel.items.indices.map { $0 } }
+		return selected.map { viewModel.itemIndex(forRow: $0.row) }
 	}
 	
 	// MARK: - Table view

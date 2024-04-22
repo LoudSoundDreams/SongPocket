@@ -39,7 +39,7 @@ final class SongsTVC: LibraryTVC {
 			section.reversed().map { command in
 				return command.createMenuElement(
 					enabled: {
-						guard selectedOrAllRows().count >= 2 else { return false }
+						guard selectedOrAllIndices().count >= 2 else { return false }
 						switch command {
 							case .random, .reverse: return true
 							case .album_recentlyAdded, .album_newest, .album_artist: return false
@@ -100,7 +100,7 @@ final class SongsTVC: LibraryTVC {
 			default:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Song", for: indexPath)
-				let song = viewModel.itemNonNil(atRow: indexPath.row) as! Song
+				let song = viewModel.items[viewModel.itemIndex(forRow: indexPath.row)] as! Song
 				cell.backgroundColors_configureForLibraryItem()
 				cell.contentConfiguration = UIHostingConfiguration {
 					SongRow(song: song, album: album, tvcStatus: tvcStatus)
@@ -125,7 +125,7 @@ final class SongsTVC: LibraryTVC {
 			// The UI is clearer if we leave the row selected while the action sheet is onscreen.
 			// You must eventually deselect the row in every possible scenario after this moment.
 			
-			let song = viewModel.itemNonNil(atRow: indexPath.row) as! Song
+			let song = viewModel.items[viewModel.itemIndex(forRow: indexPath.row)] as! Song
 			let startPlaying = UIAlertAction(title: LRString.startPlaying, style: .default) { _ in
 				Task {
 					await song.playAlbumStartingHere()

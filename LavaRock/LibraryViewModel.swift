@@ -7,16 +7,8 @@ protocol LibraryViewModel {
 	var items: [NSManagedObject] { get set }
 	
 	func itemIndex(forRow row: Int) -> Int
-	func rowsForAllItems() -> [Int]
-	
 	func withRefreshedData() -> Self
 	func rowIdentifiers() -> [AnyHashable]
-}
-extension LibraryViewModel {
-	func itemNonNil(atRow: Int) -> NSManagedObject {
-		let itemIndex = itemIndex(forRow: atRow)
-		return items[itemIndex]
-	}
 }
 
 struct AlbumsViewModel {
@@ -25,10 +17,6 @@ struct AlbumsViewModel {
 }
 extension AlbumsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row }
-	func rowsForAllItems() -> [Int] {
-		return items.indices.map { $0 }
-	}
-	
 	func withRefreshedData() -> Self { return Self() }
 	func rowIdentifiers() -> [AnyHashable] {
 		return items.map { $0.objectID }
@@ -57,15 +45,9 @@ struct SongsViewModel {
 }
 extension SongsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row - Self.prerowCount }
-	func rowsForAllItems() -> [Int] {
-		return items.indices.map { Self.prerowCount + $0 }
-	}
-	
 	func withRefreshedData() -> Self { return Self(album: album) }
 	func rowIdentifiers() -> [AnyHashable] {
-		let itemRowIDs = items.map {
-			AnyHashable($0.objectID)
-		}
+		let itemRowIDs = items.map { AnyHashable($0.objectID) }
 		return [42] + itemRowIDs
 	}
 }

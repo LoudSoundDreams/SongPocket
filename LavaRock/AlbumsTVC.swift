@@ -44,7 +44,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
 			guard let cell = tableView.cellForRow(at: indexPath) else { return }
-			let album = viewModel.itemNonNil(atRow: indexPath.row) as! Album
+			let album = viewModel.items[indexPath.row] as! Album
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(
 					album: album,
@@ -69,16 +69,13 @@ final class AlbumsTVC: LibraryTVC {
 			section.reversed().map { command in
 				command.createMenuElement(
 					enabled: {
-						guard selectedOrAllRows().count >= 2 else { return false }
+						guard selectedOrAllIndices().count >= 2 else { return false }
 						switch command {
 							case .random, .reverse: return true
 							case .song_track: return false
 							case .album_newest:
-								let subjectedItems = selectedOrAllRows().map {
-									viewModel.itemNonNil(atRow: $0)
-								}
-								guard let albums = subjectedItems as? [Album] else { return false }
-								return albums.contains { $0.releaseDateEstimate != nil }
+								let toSort = selectedOrAllIndices().map { viewModel.items[$0] } as! [Album]
+								return toSort.contains { $0.releaseDateEstimate != nil }
 							case .album_recentlyAdded, .album_artist: return true
 						}
 					}()
@@ -141,7 +138,7 @@ final class AlbumsTVC: LibraryTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		let album = viewModel.itemNonNil(atRow: indexPath.row) as! Album
+		let album = viewModel.items[indexPath.row] as! Album
 		cell.backgroundColors_configureForLibraryItem()
 		cell.contentConfiguration = UIHostingConfiguration {
 			AlbumRow(
@@ -160,7 +157,7 @@ final class AlbumsTVC: LibraryTVC {
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if !isEditing {
-			openAlbum(viewModel.itemNonNil(atRow: indexPath.row) as! Album)
+			openAlbum(viewModel.items[indexPath.row] as! Album)
 		}
 		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
