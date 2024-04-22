@@ -10,27 +10,18 @@ struct AlbumRow: View {
 	let maxHeight: CGFloat
 	var body: some View {
 		VStack(spacing: 0) {
-			Rectangle().frame(width: 42, height: 1/2 * Self.strokeWidthInPixels * pointsPerPixel).hidden()
+			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
 			// TO DO: Redraw when artwork changes
 			CoverArt(album: album, largerThanOrEqualToSizeInPoints: maxHeight)
-				.background( // Don’t use `border`, because that obscures the artwork. Draw outside the artwork; don’t overlap it.
-					Rectangle().stroke(
-						Color(uiColor: .separator), // As of iOS 16.6, only this is correct in dark mode, not `opaqueSeparator`.
-						// Add a grey border exactly 1 pixel wide, like list separators.
-						// The artwork itself will obscure half the stroke width.
-						// SwiftUI interprets our return value in points, not pixels.
-						lineWidth: Self.strokeWidthInPixels * pointsPerPixel))
 				.frame(
 					maxWidth: .infinity, // Horizontally centers narrow artwork
 					maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
 				.accessibilityLabel(album.titleFormatted())
 				.accessibilitySortPriority(10)
-			Rectangle().frame(width: 42, height: 1/2 * Self.strokeWidthInPixels * pointsPerPixel).hidden()
 		}
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
-	private static let strokeWidthInPixels: CGFloat = 2
 	@Environment(\.pixelLength) private var pointsPerPixel
 }
 private struct CoverArt: View {
