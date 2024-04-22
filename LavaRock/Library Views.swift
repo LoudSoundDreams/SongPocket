@@ -184,18 +184,18 @@ struct SongRow: View {
 			.accessibilityElement(children: .combine)
 			.accessibilityAddTraits(.isButton)
 			.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
-			Menu { overflowMenuContent() } label: { overflowMenuLabel() }
+			Menu { overflowMenuContent } label: { overflowMenuLabel }
 				.disabled(tvcStatus.isEditing)
 				.onTapGesture { signal_tappedMenu.toggle() }
 				.alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
-	private func overflowMenuLabel() -> some View {
+	private var overflowMenuLabel: some View {
 		Image(systemName: "ellipsis.circle.fill")
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
 			.symbolRenderingMode(.hierarchical)
 	}
-	@ViewBuilder private func overflowMenuContent() -> some View {
+	@ViewBuilder private var overflowMenuContent: some View {
 		Button {
 			Task { await song.play() }
 		} label: { Label(LRString.play, systemImage: "play") }
