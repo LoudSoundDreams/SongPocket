@@ -48,7 +48,9 @@ private struct CoverArt: View {
 			}
 			ZStack(alignment: .bottomLeading) {
 				Rectangle().foregroundStyle(.regularMaterial)
-				AlbumHeader(album: album)
+				ScrollView {
+					AlbumHeader(album: album)
+				}.aspectRatio(1, contentMode: .fit)
 			}
 			.opacity(showingInfo ? 1 : .zero)
 			.animation(.linear(duration: pow(.oneHalf, 4)), value: showingInfo)
