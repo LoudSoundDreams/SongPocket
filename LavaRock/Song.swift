@@ -173,7 +173,7 @@ import MediaPlayer
 extension Song {
 	final func songInfo() -> SongInfo? {
 #if targetEnvironment(simulator)
-		return Sim_SongInfo.dict[persistentID]
+		return Sim_SongInfo.everyInfo[persistentID]
 #else
 		return mpMediaItem()
 #endif

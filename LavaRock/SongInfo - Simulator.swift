@@ -58,14 +58,11 @@ extension Sim_SongInfo {
 				guard let released else { return nil }
 				return Date.lateNight(iso8601_10Char: released)
 			}(),
-			coverArtFileName: coverArt
-		)
-		
-		Self.dict[songID] = self
+			coverArtFileName: coverArt)
 	}
-	static var dict: [SongID: Self] = [:]
-	static var all: [Self] {
-//		return []
+	static var everyInfo: [SongID: Self] = {
+		var result: [SongID: Self] = [:]
+//		return result
 		
 		let tall = AlbumIDDispenser.takeNumber()
 		let wide = AlbumIDDispenser.takeNumber()
@@ -77,7 +74,7 @@ extension Sim_SongInfo {
 		
 		let fezReleased = "2012-04-20"
 		
-		return [
+		[
 			Sim_SongInfo(
 				albumID: tall,
 				albumArtist: "Beethoven",
@@ -471,8 +468,9 @@ extension Sim_SongInfo {
 				added: .now,
 				released: "1999-01-20"
 			),
-		]
-	}
+		].forEach { result[$0.songID] = $0 }
+		return result
+	}()
 	
 	private enum AlbumIDDispenser {
 		private static var nextAvailable = 1

@@ -24,7 +24,7 @@ final class MusicRepo: ObservableObject {
 	@objc private func mergeChanges() {
 #if targetEnvironment(simulator)
 		context.performAndWait {
-			mergeChangesToMatch(freshInAnyOrder: Sim_SongInfo.all)
+			mergeChangesToMatch(freshInAnyOrder: Array(Sim_SongInfo.everyInfo.values))
 		}
 #else
 		let songsQuery = MPMediaQuery.songs()
