@@ -29,12 +29,9 @@ struct Sim_SongInfo: SongInfo {
 	private let coverArtFileName: String?
 }
 private extension Date {
-	static func curfewUTC(
-		iso8601Date10Char: String // "1984-01-24"
-	) -> Self {
-		return try! Self(
-			"\(iso8601Date10Char)T23:59:59Z",
-			strategy: .iso8601)
+	// "1984-01-24"
+	static func lateNight(iso8601_10Char: String) -> Self {
+		return try! Self("\(iso8601_10Char)T23:59:59Z", strategy: .iso8601)
 	}
 }
 extension Sim_SongInfo {
@@ -463,7 +460,6 @@ extension Sim_SongInfo {
 		added: Date,
 		released: String? = nil
 	) {
-		// Memberwise initializer
 		self.init(
 			albumID: albumID,
 			songID: isCurrentSong ? Sim_Global.currentSongID : SongIDDispenser.takeNumber(),
@@ -477,12 +473,12 @@ extension Sim_SongInfo {
 			dateAddedOnDisk: added,
 			releaseDateOnDisk: {
 				guard let released else { return nil }
-				return Date.curfewUTC(iso8601Date10Char: released)
+				return Date.lateNight(iso8601_10Char: released)
 			}(),
 			coverArtFileName: coverArt
 		)
 		
-		Self.dict[self.songID] = self
+		Self.dict[songID] = self
 	}
 	private enum AlbumIDDispenser {
 		private static var nextAvailable = 1
