@@ -28,13 +28,42 @@ struct Sim_SongInfo: SongInfo {
 	}
 	private let coverArtFileName: String?
 }
-private extension Date {
-	// "1984-01-24"
-	static func lateNight(iso8601_10Char: String) -> Self {
-		return try! Self("\(iso8601_10Char)T23:59:59Z", strategy: .iso8601)
-	}
-}
 extension Sim_SongInfo {
+	init(
+		isCurrentSong: Bool = false,
+		albumID: AlbumID,
+		albumArtist: String?,
+		albumTitle: String?,
+		coverArt: String?,
+		discCount: Int,
+		discNumber: Int,
+		track: Int,
+		title: String?,
+		by: String? = nil,
+		added: Date,
+		released: String? = nil
+	) {
+		self.init(
+			albumID: albumID,
+			songID: isCurrentSong ? Sim_Global.currentSongID : SongIDDispenser.takeNumber(),
+			albumArtistOnDisk: albumArtist,
+			albumTitleOnDisk: albumTitle,
+			discCountOnDisk: discCount,
+			discNumberOnDisk: discNumber,
+			trackNumberOnDisk: track,
+			titleOnDisk: title,
+			artistOnDisk: by,
+			dateAddedOnDisk: added,
+			releaseDateOnDisk: {
+				guard let released else { return nil }
+				return Date.lateNight(iso8601_10Char: released)
+			}(),
+			coverArtFileName: coverArt
+		)
+		
+		Self.dict[songID] = self
+	}
+	static var dict: [SongID: Self] = [:]
 	static var all: [Self] {
 //		return []
 		
@@ -445,41 +474,6 @@ extension Sim_SongInfo {
 		]
 	}
 	
-	static var dict: [SongID: Self] = [:]
-	init(
-		isCurrentSong: Bool = false,
-		albumID: AlbumID,
-		albumArtist: String?,
-		albumTitle: String?,
-		coverArt: String?,
-		discCount: Int,
-		discNumber: Int,
-		track: Int,
-		title: String?,
-		by: String? = nil,
-		added: Date,
-		released: String? = nil
-	) {
-		self.init(
-			albumID: albumID,
-			songID: isCurrentSong ? Sim_Global.currentSongID : SongIDDispenser.takeNumber(),
-			albumArtistOnDisk: albumArtist,
-			albumTitleOnDisk: albumTitle,
-			discCountOnDisk: discCount,
-			discNumberOnDisk: discNumber,
-			trackNumberOnDisk: track,
-			titleOnDisk: title,
-			artistOnDisk: by,
-			dateAddedOnDisk: added,
-			releaseDateOnDisk: {
-				guard let released else { return nil }
-				return Date.lateNight(iso8601_10Char: released)
-			}(),
-			coverArtFileName: coverArt
-		)
-		
-		Self.dict[songID] = self
-	}
 	private enum AlbumIDDispenser {
 		private static var nextAvailable = 1
 		static func takeNumber() -> AlbumID {
@@ -495,6 +489,12 @@ extension Sim_SongInfo {
 			nextAvailable += 1
 			return result
 		}
+	}
+}
+private extension Date {
+	// "1984-01-24"
+	static func lateNight(iso8601_10Char: String) -> Self {
+		return try! Self("\(iso8601_10Char)T23:59:59Z", strategy: .iso8601)
 	}
 }
 #endif
