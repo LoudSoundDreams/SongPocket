@@ -29,9 +29,7 @@ class LibraryTVC: UITableViewController {
 		
 		var newViewModel = viewModel
 		newViewModel.items = newItems
-		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
-		}
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	private(set) final lazy var sinkButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	private func sinkSelected() {
@@ -44,9 +42,7 @@ class LibraryTVC: UITableViewController {
 		
 		var newViewModel = viewModel
 		newViewModel.items = newItems
-		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
-		}
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	
 	private var needsRefreshLibraryItemsOnViewDidAppear = false
@@ -248,9 +244,7 @@ class LibraryTVC: UITableViewController {
 			}
 			return result
 		}()
-		Task {
-			let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel)
-		}
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	final func selectedOrAllIndices() -> [Int] {
 		let selected = tableView.selectedIndexPaths

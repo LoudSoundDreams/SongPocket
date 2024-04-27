@@ -130,9 +130,7 @@ final class AlbumsTVC: LibraryTVC {
 						Text(LRString.welcome_message)
 					} actions: {
 						Button(LRString.welcome_button) {
-							Task {
-								await AppleMusic.requestAccess()
-							}
+							Task { await AppleMusic.requestAccess() }
 						}
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.

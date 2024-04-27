@@ -80,8 +80,7 @@ struct AlbumHeader: View {
 					.alignmentGuide_separatorLeading()
 				Text({ () -> String in
 					guard
-						let representative = album.representativeSongInfo(),
-						let albumArtist = representative.albumArtistOnDisk,
+						let albumArtist = album.representativeSongInfo()?.albumArtistOnDisk,
 						albumArtist != ""
 					else { return LRString.unknownArtist }
 					return albumArtist

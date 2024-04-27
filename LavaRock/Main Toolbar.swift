@@ -33,9 +33,7 @@ import MediaPlayer
 			UIDeferredMenuElement.uncached { useMenuElements in
 				// Ideally, disable this when there are no previous tracks to skip to.
 				let action = UIAction(title: LRString.previous, image: UIImage(systemName: "backward.end"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
-					Task {
-						try await SystemMusicPlayer._shared?.skipToPreviousEntry()
-					}
+					Task { try await SystemMusicPlayer._shared?.skipToPreviousEntry() }
 				}
 				useMenuElements([action])
 			},
@@ -46,9 +44,7 @@ import MediaPlayer
 			},
 			UIDeferredMenuElement.uncached { useMenuElements in
 				let action = UIAction(title: LRString.next, image: UIImage(systemName: "forward.end"), attributes: (SystemMusicPlayer._shared == nil) ? .disabled : []) { _ in
-					Task {
-						try await SystemMusicPlayer._shared?.skipToNextEntry()
-					}
+					Task { try await SystemMusicPlayer._shared?.skipToNextEntry() }
 				}
 				useMenuElements([action])
 			},
@@ -168,9 +164,7 @@ import MediaPlayer
 	private func showPlay() {
 		playPauseButton.title = LRString.play
 		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle")) { _ in
-			Task {
-				try await SystemMusicPlayer._shared?.play()
-			}
+			Task { try await SystemMusicPlayer._shared?.play() }
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
