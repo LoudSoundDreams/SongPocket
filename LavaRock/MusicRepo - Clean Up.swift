@@ -18,14 +18,10 @@ extension MusicRepo {
 		let allCollections = Collection.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for reindexing the albums within each collection.
 		let allAlbums = Album.allFetched(sorted: false, inCollection: nil, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
-		recalculateReleaseDateEstimates(
-			for: allAlbums,
-			considering: allInfos)
+		recalculateReleaseDateEstimates(for: allAlbums, considering: allInfos)
 		
 		allCollections.forEach {
-			Self.reindexAlbums(
-				in: $0,
-				shouldSortByNewestFirst: isFirstImport)
+			Self.reindexAlbums(in: $0, shouldSortByNewestFirst: isFirstImport)
 		}
 		allAlbums.forEach {
 			let songs = $0.songs(sorted: true)
@@ -80,7 +76,6 @@ extension MusicRepo {
 		
 		Database.renumber(albumsInCollection)
 	}
-	
 	private static func sortedByNewestFirstAndUnknownReleaseDateLast(
 		_ albums: [Album]
 	) -> [Album] {
