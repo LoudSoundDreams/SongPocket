@@ -71,26 +71,14 @@ extension MusicRepo {
 		var albumsInCollection = collection.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
 		
 		if shouldSortByNewestFirst {
-			albumsInCollection = sortedByNewestFirstAndUnknownReleaseDateLast(albumsInCollection)
+			albumsInCollection = albumsInCollection.sortedMaintainingOrderWhen {
+				$0.releaseDateEstimate == $1.releaseDateEstimate
+			} areInOrder: {
+				$0.precedesByNewestFirst($1)
+			}
 		}
 		
 		Database.renumber(albumsInCollection)
-	}
-	private static func sortedByNewestFirstAndUnknownReleaseDateLast(
-		_ albums: [Album]
-	) -> [Album] {
-		var albumsCopy = albums
-		let commonDate = Date()
-		albumsCopy.sort {
-			// Reverses the order of all `Album`s whose `releaseDateEstimate` is `nil`.
-			$0.releaseDateEstimate ?? commonDate
-			>= $1.releaseDateEstimate ?? commonDate
-		}
-		albumsCopy.sort { _, rightAlbum in
-			// Re-reverses the order of all `Album`s whose `releaseDateEstimate` is `nil`.
-			rightAlbum.releaseDateEstimate == nil
-		}
-		return albumsCopy
 	}
 	
 	// MARK: Combine all folders
