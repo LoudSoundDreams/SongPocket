@@ -88,7 +88,7 @@ import MediaPlayer
 				attributes: {
 					guard 
 						SystemMusicPlayer._shared != nil,
-						let _ = Database.viewContext.songInPlayer()?.container,
+						Database.viewContext.songInPlayer() != nil,
 						let albumsTVC = self?.albumsTVC?.referencee, !albumsTVC.isBeneathCurrentAlbum
 					else { return .disabled }
 					return []
@@ -111,7 +111,8 @@ import MediaPlayer
 		overflowButton.image = newOverflowButtonImage()
 		
 		guard let __player = MPMusicPlayerController._system else {
-			// Ideally, also do this when no songs are in the player
+			// Uncommon case: music player unavailable
+			// Ideally, also do this when no songs are in the player.
 			
 			showPlay()
 			
