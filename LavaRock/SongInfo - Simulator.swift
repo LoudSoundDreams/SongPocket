@@ -3,11 +3,6 @@
 #if targetEnvironment(simulator)
 import UIKit
 
-enum Sim_Global {
-	static let currentSongID = SongID(420)
-	static var currentSong: Song? = nil
-}
-
 struct Sim_SongInfo: SongInfo {
 	let albumID: AlbumID
 	let songID: SongID
@@ -30,9 +25,11 @@ struct Sim_SongInfo: SongInfo {
 	// Not protocol requirements
 	private let coverArtFileName: String?
 }
+extension Sim_SongInfo: Equatable {}
 extension Sim_SongInfo {
+	static var current: Self? = nil
 	init(
-		isCurrentSong: Bool = false,
+		asCurrent: Bool = false,
 		albumID: AlbumID,
 		albumArtist: String?,
 		albumTitle: String?,
@@ -47,7 +44,7 @@ extension Sim_SongInfo {
 	) {
 		self.init(
 			albumID: albumID,
-			songID: isCurrentSong ? Sim_Global.currentSongID : SongIDDispenser.takeNumber(),
+			songID: SongIDDispenser.takeNumber(),
 			albumArtistOnDisk: albumArtist,
 			albumTitleOnDisk: albumTitle,
 			discCountOnDisk: discCount,
@@ -61,6 +58,7 @@ extension Sim_SongInfo {
 				return Date.lateNight(iso8601_10Char: released)
 			}(),
 			coverArtFileName: coverArt)
+		if asCurrent { Self.current = self }
 	}
 	static var everyInfo: [SongID: Self] = {
 		var result: [SongID: Self] = [:]
@@ -144,7 +142,7 @@ extension Sim_SongInfo {
 			),
 			
 			Sim_SongInfo(
-				isCurrentSong: true,
+				asCurrent: true,
 				albumID: fez,
 				albumArtist: "Disasterpeace",
 				albumTitle: "Fez",

@@ -54,13 +54,15 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	var isBeneathCurrentAlbum: Bool {
-		guard let albumInPlayer = Database.viewContext.songInPlayer()?.container else { return false }
-		return albumInPlayer == ((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.album
+		guard let pushedAlbum = ((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.album else { return false }
+		return pushedAlbum.songs(sorted: false).contains { $0.isInPlayer() }
 	}
 	func openCurrentAlbum() {
 		guard
-			let albumToOpen = Database.viewContext.songInPlayer()?.container,
-			!isBeneathCurrentAlbum
+			!isBeneathCurrentAlbum,
+			let albumToOpen = (viewModel.items as! [Album]).first(where: { album in
+				album.songs(sorted: false).contains { $0.isInPlayer() }
+			})
 		else { return }
 		navigationController?.popToRootViewController(animated: true)
 		let indexPath = IndexPath(row: Int(albumToOpen.index), section: 0)

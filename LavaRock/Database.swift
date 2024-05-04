@@ -70,31 +70,6 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	// To make now-playing indicators use MusicKit, we need to be storing MusicKit `Song` identifiers in our database.
-	final func songInPlayer() -> Song? {
-		let currentSongID: SongID? = {
-#if targetEnvironment(simulator)
-			return Sim_Global.currentSong?.songInfo()?.songID
-#else
-			guard let __nowPlayingItem = MPMusicPlayerController._system?.nowPlayingItem else { return nil }
-			return __nowPlayingItem.songID
-#endif
-		}()
-		guard let currentSongID else { return nil }
-		
-		let request = Song.fetchRequest()
-		request.predicate = NSPredicate(
-			format: "persistentID == %lld",
-			currentSongID
-		)
-		let songsContainingPlayhead = objectsFetched(for: request)
-		guard
-			songsContainingPlayhead.count == 1,
-			let song = songsContainingPlayhead.first
-		else { return nil }
-		return song
-	}
-	
 	// Use `Collection(afterAllOtherCount:title:context:)` if possible. It’s faster.
 	final func newCollection(
 		index: Int64,
