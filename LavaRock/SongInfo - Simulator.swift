@@ -26,6 +26,8 @@ struct Sim_SongInfo: SongInfo {
 		guard let fileName = coverArtFileName else { return nil }
 		return UIImage(named: fileName)
 	}
+	
+	// Not protocol requirements
 	private let coverArtFileName: String?
 }
 extension Sim_SongInfo {

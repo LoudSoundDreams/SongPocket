@@ -16,6 +16,8 @@ import MediaPlayer
 	
 	private lazy var playPauseButton = UIBarButtonItem()
 	private lazy var overflowButton = UIBarButtonItem(title: LRString.more, menu: UIMenu(children: [
+		// TO DO: Add hack to enable elements in Simulator when appropriate
+		
 		// We want to indicate which mode is active by selecting it, not disabling it.
 		// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
 		// Disabling the selected mode is a compromise.
@@ -104,7 +106,10 @@ import MediaPlayer
 	
 	func refresh() {
 #if targetEnvironment(simulator)
-		defer { showPause() }
+		defer {
+			showPause()
+			playPauseButton.isEnabled = true
+		}
 #endif
 		
 		overflowButton.image = newOverflowButtonImage()
