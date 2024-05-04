@@ -156,7 +156,6 @@ extension Song {
 			let result = musicItems.drop(while: { $0.id != rowItem.id })
 			return Array(result)
 		}()
-		// As of iOS 15.4, when using `MPMusicPlayerController.systemMusicPlayer` and the queue is empty, this does nothing, but I can’t find a workaround.
 		guard let _ =
 				try? await player.queue.insert(toAppend, position: .tail)
 		else { return }
@@ -178,8 +177,7 @@ extension Song {
 		return mpMediaItem()
 #endif
 	}
-	
-	final func mpMediaItem() -> MPMediaItem? {
+	private func mpMediaItem() -> MPMediaItem? {
 		let songsQuery = MPMediaQuery.songs()
 		songsQuery.addFilterPredicate(MPMediaPropertyPredicate(
 			value: persistentID,

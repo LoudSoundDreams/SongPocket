@@ -54,7 +54,7 @@ import MediaPlayer
 				let action = UIAction(
 					title: LRString.repeatOff, image: UIImage(systemName: "minus"),
 					attributes: {
-						guard 
+						guard
 							let __player = MPMusicPlayerController._system,
 							SystemMusicPlayer._shared?.queue.currentEntry != nil
 						else { return .disabled }
@@ -74,7 +74,7 @@ import MediaPlayer
 				let action = UIAction(
 					title: LRString.repeat1, image: UIImage(systemName: "repeat.1"),
 					attributes: {
-						guard 
+						guard
 							let __player = MPMusicPlayerController._system,
 							SystemMusicPlayer._shared?.queue.currentEntry != nil
 						else { return .disabled }
@@ -92,7 +92,7 @@ import MediaPlayer
 			let action = UIAction(
 				title: LRString.nowPlaying, image: UIImage(systemName: "chevron.forward"),
 				attributes: {
-					guard 
+					guard
 						SystemMusicPlayer._shared != nil,
 						Database.viewContext.songInPlayer() != nil,
 						let albumsTVC = self?.albumsTVC?.referencee, !albumsTVC.isBeneathCurrentAlbum
@@ -150,7 +150,7 @@ import MediaPlayer
 	private func newOverflowButtonImage() -> UIImage {
 		let repeatOff = UIImage(systemName: "ellipsis.circle")!
 		
-		guard 
+		guard
 			let __player = MPMusicPlayerController._system,
 			SystemMusicPlayer._shared?.queue.currentEntry != nil
 		else { return repeatOff }

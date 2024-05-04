@@ -137,7 +137,6 @@ extension Album {
 		return mpMediaItemCollection()?.representativeItem
 #endif
 	}
-	
 	private func mpMediaItemCollection() -> MPMediaItemCollection? {
 		let albumsQuery = MPMediaQuery.albums()
 		albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(
