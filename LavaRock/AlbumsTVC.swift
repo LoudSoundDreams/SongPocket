@@ -59,18 +59,18 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	func openCurrentAlbum() {
 		guard
-			let albumInPlayer = Database.viewContext.songInPlayer()?.container,
+			let albumToOpen = Database.viewContext.songInPlayer()?.container,
 			!isBeneathCurrentAlbum
 		else { return }
 		navigationController?.popToRootViewController(animated: true)
-		let indexPath = IndexPath(row: Int(albumInPlayer.index), section: 0)
+		let indexPath = IndexPath(row: Int(albumToOpen.index), section: 0)
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 		} completion: { _ in
 			self.tableView.performBatchUpdates {
 				self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
 			} completion: { _ in
-				self.openAlbum(albumInPlayer)
+				self.openAlbum(albumToOpen)
 			}
 		}
 	}
