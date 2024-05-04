@@ -77,7 +77,7 @@ extension NSManagedObjectContext {
 			return Sim_Global.currentSong?.songInfo()?.songID
 #else
 			guard let __nowPlayingItem = MPMusicPlayerController._system?.nowPlayingItem else { return nil }
-			return SongID(bitPattern: __nowPlayingItem.persistentID)
+			return __nowPlayingItem.songID
 #endif
 		}()
 		guard let currentSongID else { return nil }
