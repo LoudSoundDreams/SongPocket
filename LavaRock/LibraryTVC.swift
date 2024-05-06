@@ -17,6 +17,7 @@ extension UITableViewCell {
 class LibraryTVC: UITableViewController {
 	final lazy var viewModel: LibraryViewModel = AlbumsViewModel()
 	
+	private var viewingButtons: [UIBarButtonItem] { [editButtonItem] + __MainToolbar.shared.barButtonItems }
 	final var editingButtons: [UIBarButtonItem] = []
 	private(set) final lazy var floatButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
 	private func floatSelected() {
@@ -54,7 +55,8 @@ class LibraryTVC: UITableViewController {
 		
 		view.backgroundColor = UIColor(LRColor.grey_oneEighth)
 		
-		setBarButtons(animated: false)
+		refreshEditingButtons() // For “Edit” button
+		setToolbarItems(viewingButtons, animated: false)
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRMergedChanges, object: nil)
 	}
@@ -174,20 +176,6 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Editing
 	
-	private func setBarButtons(animated: Bool) {
-		refreshEditingButtons() // Do this always, not just when `isEditing`, because on a clean install, we need to disable the “Edit” button.
-		navigationItem.setLeftBarButtonItems((
-			isEditing
-			? [.flexibleSpace()] // Removes “Back” button
-			: []
-		), animated: animated)
-		setToolbarItems((
-			isEditing
-			? editingButtons
-			: [editButtonItem] + __MainToolbar.shared.barButtonItems
-		), animated: animated)
-	}
-	
 	// Overrides should call super (this implementation).
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
@@ -200,7 +188,8 @@ class LibraryTVC: UITableViewController {
 		
 		super.setEditing(editing, animated: animated)
 		
-		setBarButtons(animated: animated)
+		refreshEditingButtons()
+		setToolbarItems(editing ? editingButtons : viewingButtons, animated: animated)
 		
 		// As of iOS 17.5 developer beta 1, we still have to do this to resize cells in case text wrapped. During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
 		// As of iOS 15.4 developer beta 1, you must do this after `super.setEditing`, not before.
