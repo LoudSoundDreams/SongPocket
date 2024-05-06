@@ -27,8 +27,7 @@ final class MusicRepo: ObservableObject {
 			mergeChangesToMatch(freshInAnyOrder: Array(Sim_SongInfo.everyInfo.values))
 		}
 #else
-		let songsQuery = MPMediaQuery.songs()
-		if let freshMediaItems = songsQuery.items {
+		if let freshMediaItems = MPMediaQuery.songs().items {
 			context.performAndWait {
 				mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
 			}

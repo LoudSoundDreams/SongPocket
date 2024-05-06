@@ -170,7 +170,7 @@ extension Song {
 
 import MediaPlayer
 extension Song {
-	final func songInfo() -> SongInfo? {
+	final func songInfo() -> (any SongInfo)? {
 #if targetEnvironment(simulator)
 		return Sim_SongInfo.everyInfo[persistentID]
 #else
