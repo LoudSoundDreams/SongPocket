@@ -24,15 +24,15 @@ extension AlbumsViewModel: LibraryViewModel {
 }
 extension AlbumsViewModel {
 	init() {
-		if
+		guard
 			let collection = Collection.allFetched(sorted: false, context: Database.viewContext).first,
 			let context = collection.managedObjectContext
-		{
-			items = Album.allFetched(sorted: true, inCollection: collection, context: context)
-		} else {
+		else {
 			// We deleted `collection`
 			items = []
+			return
 		}
+		items = Album.allFetched(sorted: true, inCollection: collection, context: context)
 	}
 }
 
@@ -53,11 +53,11 @@ extension SongsViewModel: LibraryViewModel {
 }
 extension SongsViewModel {
 	init(album: Album) {
-		if let context = album.managedObjectContext {
-			items = Song.allFetched(sorted: true, inAlbum: album, context: context)
-		} else {
-			items = []
-		}
 		self.album = album
+		guard let context = album.managedObjectContext else {
+			items = []
+			return
+		}
+		items = Song.allFetched(sorted: true, inAlbum: album, context: context)
 	}
 }
