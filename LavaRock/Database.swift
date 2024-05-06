@@ -75,13 +75,10 @@ extension NSManagedObjectContext {
 		index: Int64,
 		title: String
 	) -> Collection {
-		let toDisplace: [Collection] = {
-			let predicate = NSPredicate(
-				format: "index >= %lld",
-				index)
-			return Collection.allFetched(sorted: false, predicate: predicate, context: self)
-		}()
-		toDisplace.forEach { $0.index += 1 }
+		// Displace existing `Collection`s past insertion point
+		Collection.allFetched(sorted: false, context: self).forEach {
+			if $0.index >= index { $0.index += 1 }
+		}
 		
 		let result = Collection(context: self)
 		result.title = title

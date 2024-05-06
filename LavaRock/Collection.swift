@@ -17,14 +17,12 @@ extension Collection {
 	
 	static func allFetched(
 		sorted: Bool,
-		predicate: NSPredicate? = nil, // TO DO: Delete
 		context: NSManagedObjectContext
 	) -> [Collection] {
 		let fetchRequest = fetchRequest()
 		if sorted {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		}
-		fetchRequest.predicate = predicate
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
