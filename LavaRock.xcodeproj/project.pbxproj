@@ -189,8 +189,8 @@
 		076830A124B42DEE0033E3CC /* LavaRockTests */ = {
 			isa = PBXGroup;
 			children = (
-				076830A424B42DEE0033E3CC /* Info.plist */,
 				07FF080028652A4C00EE4FD4 /* SortingTests.swift */,
+				076830A424B42DEE0033E3CC /* Info.plist */,
 			);
 			path = LavaRockTests;
 			sourceTree = "<group>";
@@ -198,8 +198,8 @@
 		076830AC24B42DEF0033E3CC /* LavaRockUITests */ = {
 			isa = PBXGroup;
 			children = (
-				076830AF24B42DEF0033E3CC /* Info.plist */,
 				076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */,
+				076830AF24B42DEF0033E3CC /* Info.plist */,
 			);
 			path = LavaRockUITests;
 			sourceTree = "<group>";
