@@ -30,17 +30,14 @@ extension Album {
 	
 	// MARK: - All instances
 	
+	// Similar to `Collection.allFetched`.
 	static func allFetched(
 		sorted: Bool,
-		inCollection: Collection?,
 		context: NSManagedObjectContext
 	) -> [Album] {
 		let fetchRequest = fetchRequest()
 		if sorted {
 			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		}
-		if let inCollection {
-			fetchRequest.predicate = NSPredicate(format: "container == %@", inCollection)
 		}
 		return context.objectsFetched(for: fetchRequest)
 	}

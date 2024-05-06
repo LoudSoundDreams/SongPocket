@@ -15,6 +15,7 @@ extension Collection {
 	
 	// MARK: - All instances
 	
+	// Similar to `Album.allFetched`.
 	static func allFetched(
 		sorted: Bool,
 		context: NSManagedObjectContext

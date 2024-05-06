@@ -16,7 +16,7 @@ extension MusicRepo {
 		context.deleteEmptyCollections()
 		
 		let allCollections = Collection.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for reindexing the albums within each collection.
-		let allAlbums = Album.allFetched(sorted: false, inCollection: nil, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
+		let allAlbums = Album.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
 		recalculateReleaseDateEstimates(for: allAlbums, considering: allInfos)
 		

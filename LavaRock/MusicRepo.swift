@@ -80,7 +80,7 @@ final class MusicRepo: ObservableObject {
 		
 		// Create before deleting, because deleting also cleans up empty `Album`s and `Collection`s, which we shouldn’t do yet (see above).
 		// This might create new `Album`s, and if it does, it might create new `Collection`s.
-		let existingAlbums = Album.allFetched(sorted: false, inCollection: nil, context: context) // Order doesn’t matter, because we identify `Album`s by their `albumPersistentID`.
+		let existingAlbums = Album.allFetched(sorted: false, context: context) // Order doesn’t matter, because we identify `Album`s by their `albumPersistentID`.
 		let existingCollections = Collection.allFetched(sorted: true, context: context) // Order matters, because we’ll try to add new `Album`s to the first `Collection` with a matching title.
 		createLibraryItems(
 			for: newInfos,

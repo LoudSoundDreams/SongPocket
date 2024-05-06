@@ -24,15 +24,12 @@ extension AlbumsViewModel: LibraryViewModel {
 }
 extension AlbumsViewModel {
 	init() {
-		guard
-			let collection = Collection.allFetched(sorted: false, context: Database.viewContext).first,
-			let context = collection.managedObjectContext
-		else {
+		guard let collection = Collection.allFetched(sorted: false, context: Database.viewContext).first else {
 			// We deleted `collection`
 			items = []
 			return
 		}
-		items = Album.allFetched(sorted: true, inCollection: collection, context: context)
+		items = collection.albums(sorted: true)
 	}
 }
 

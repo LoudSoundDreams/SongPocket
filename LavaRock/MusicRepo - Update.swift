@@ -25,7 +25,7 @@ extension MusicRepo {
 		// To merge `Album`s, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
 		// Specifically, if a `Song`’s `Album` isn’t the uppermost one in the user’s custom order with that `albumPersistentID`, then move it to the end of that `Album`.
 		
-		let allAlbums = Album.allFetched(sorted: true, inCollection: nil, context: context)
+		let allAlbums = Album.allFetched(sorted: true, context: context)
 		
 		// We only really need a `Set<Album>` here, but `moveSongsToUpdatedAlbums` needs a `[AlbumID: Album]`, so we can reuse this.
 		let uniqueAlbumsByID: Dictionary<AlbumID, Album> = {
