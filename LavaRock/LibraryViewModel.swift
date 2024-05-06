@@ -13,23 +13,15 @@ protocol LibraryViewModel {
 
 struct AlbumsViewModel {
 	// `LibraryViewModel`
-	var items: [NSManagedObject] { didSet { Database.renumber(items) } }
+	var items: [NSManagedObject] = Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? [] {
+		didSet { Database.renumber(items) }
+	}
 }
 extension AlbumsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row }
 	func withRefreshedData() -> Self { return Self() }
 	func rowIdentifiers() -> [AnyHashable] {
 		return items.map { $0.objectID }
-	}
-}
-extension AlbumsViewModel {
-	init() {
-		guard let collection = Collection.allFetched(sorted: false, context: Database.viewContext).first else {
-			// We deleted `collection`
-			items = []
-			return
-		}
-		items = collection.albums(sorted: true)
 	}
 }
 
