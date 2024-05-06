@@ -48,7 +48,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	var isBeneathCurrentAlbum: Bool {
-		guard let pushedAlbum = ((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.album else { return false }
+		guard let pushedAlbum = (((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.items.first as? Song)?.container else { return false }
 		return pushedAlbum.songs(sorted: false).contains { $0.isInPlayer() }
 	}
 	func openCurrentAlbum() {

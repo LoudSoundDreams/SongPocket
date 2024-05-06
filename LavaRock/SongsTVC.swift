@@ -76,8 +76,7 @@ final class SongsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		let album = (viewModel as! SongsViewModel).album
-		
+		let album = (viewModel.items.first as! Song).container!
 		switch indexPath.row {
 			case 0:
 				// The cell in the storyboard is completely default except for the reuse identifier.

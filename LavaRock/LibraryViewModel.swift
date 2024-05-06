@@ -38,7 +38,7 @@ extension AlbumsViewModel {
 
 struct SongsViewModel {
 	static let prerowCount = 1
-	let album: Album
+	private let album: Album
 	
 	// `LibraryViewModel`
 	var items: [NSManagedObject] { didSet { Database.renumber(items) } }
