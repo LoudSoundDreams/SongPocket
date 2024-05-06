@@ -54,7 +54,5 @@ extension SongsViewModel: LibraryViewModel {
 	}
 }
 extension SongsViewModel {
-	init(album: Album) {
-		items = album.songs(sorted: true)
-	}
+	init(album: Album) { items = album.songs(sorted: true) }
 }
