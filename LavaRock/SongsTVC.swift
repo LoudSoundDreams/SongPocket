@@ -16,13 +16,7 @@ final class SongsTVC: LibraryTVC {
 	
 	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	override func viewDidLoad() {
-		editingButtons = [
-			editButtonItem, .flexibleSpace(),
-			arrangeSongsButton, .flexibleSpace(),
-			floatButton, .flexibleSpace(),
-			sinkButton,
-		]
-		
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeSongsButton, .flexibleSpace(), floatButton, .flexibleSpace(), sinkButton]
 		super.viewDidLoad()
 	}
 	override func refreshEditingButtons() {

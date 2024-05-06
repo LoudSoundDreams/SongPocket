@@ -11,12 +11,7 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		editingButtons = [
-			editButtonItem, .flexibleSpace(),
-			arrangeAlbumsButton, .flexibleSpace(),
-			floatButton, .flexibleSpace(),
-			sinkButton,
-		]
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeAlbumsButton, .flexibleSpace(), floatButton, .flexibleSpace(), sinkButton]
 		
 		super.viewDidLoad()
 		
@@ -25,7 +20,6 @@ final class AlbumsTVC: LibraryTVC {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(showAlbumDetail), name: .LRShowAlbumDetail, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(hideAlbumDetail), name: .LRHideAlbumDetail, object: nil)
-		
 		__MainToolbar.shared.albumsTVC = Weak(self)
 	}
 	@objc private func showAlbumDetail(notification: Notification) {
