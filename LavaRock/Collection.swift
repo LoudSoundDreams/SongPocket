@@ -15,10 +15,9 @@ extension Collection {
 	
 	// MARK: - All instances
 	
-	// Similar to `Album.allFetched` and `Song.allFetched`.
 	static func allFetched(
 		sorted: Bool,
-		predicate: NSPredicate? = nil,
+		predicate: NSPredicate? = nil, // TO DO: Delete
 		context: NSManagedObjectContext
 	) -> [Collection] {
 		let fetchRequest = fetchRequest()

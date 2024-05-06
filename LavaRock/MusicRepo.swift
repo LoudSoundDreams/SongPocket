@@ -35,7 +35,7 @@ final class MusicRepo: ObservableObject {
 #endif
 	}
 	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
-		let existingSongs = Song.allFetched(sorted: false, inAlbum: nil, context: context)
+		let existingSongs: [Song] = context.objectsFetched(for: Song.fetchRequest()) // Not sorted
 		
 		let defaults = UserDefaults.standard
 		let keyHasSaved = LRDefaultsKey.hasSavedDatabase.rawValue

@@ -58,6 +58,6 @@ extension SongsViewModel: LibraryViewModel {
 }
 extension SongsViewModel {
 	init(album: Album) {
-		items = Song.allFetched(sorted: true, inAlbum: album, context: album.managedObjectContext!)
+		items = album.songs(sorted: true)
 	}
 }

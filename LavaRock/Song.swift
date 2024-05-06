@@ -42,23 +42,6 @@ extension Song {
 		return result
 	}
 	
-	// MARK: - All instances
-	
-	static func allFetched(
-		sorted: Bool,
-		inAlbum: Album?,
-		context: NSManagedObjectContext
-	) -> [Song] {
-		let fetchRequest = fetchRequest()
-		if sorted {
-			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		}
-		if let inAlbum {
-			fetchRequest.predicate = NSPredicate(format: "container == %@", inAlbum)
-		}
-		return context.objectsFetched(for: fetchRequest)
-	}
-	
 	// MARK: - Predicates
 	
 	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
