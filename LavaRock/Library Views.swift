@@ -64,8 +64,10 @@ private struct CoverArt: View {
 //			}
 //		}
 	}
-	static let workingOnTapToShowInfo = 10 == 1
 	@State private var showingInfo = false
+}
+extension WorkingOn {
+	static let inlineTracklist = 10 == 1
 }
 
 // MARK: - Song list

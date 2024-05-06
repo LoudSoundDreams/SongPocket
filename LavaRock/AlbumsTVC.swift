@@ -51,7 +51,8 @@ final class AlbumsTVC: LibraryTVC {
 		guard let pushedAlbum = (((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.items.first as? Song)?.container else { return false }
 		return pushedAlbum.songs(sorted: false).contains { $0.isInPlayer() }
 	}
-	func openCurrentAlbum() {
+	func goToCurrentAlbum() {
+		if WorkingOn.inlineTracklist { return }
 		guard
 			!isBeneathCurrentAlbum,
 			let albumToOpen = (viewModel.items as! [Album]).first(where: { album in
@@ -175,7 +176,9 @@ final class AlbumsTVC: LibraryTVC {
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if !isEditing {
-			pushAlbum(viewModel.items[indexPath.row] as! Album)
+			if !WorkingOn.inlineTracklist {
+				pushAlbum(viewModel.items[indexPath.row] as! Album)
+			}
 		}
 		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
