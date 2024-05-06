@@ -72,11 +72,11 @@ final class AlbumsTVC: LibraryTVC {
 			self.tableView.performBatchUpdates {
 				self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
 			} completion: { _ in
-				self.openAlbum(albumToOpen)
+				self.pushAlbum(albumToOpen)
 			}
 		}
 	}
-	private func openAlbum(_ album: Album) {
+	private func pushAlbum(_ album: Album) {
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
 			songsTVC.viewModel = SongsViewModel(album: album)
@@ -181,7 +181,7 @@ final class AlbumsTVC: LibraryTVC {
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		if !isEditing {
-			openAlbum(viewModel.items[indexPath.row] as! Album)
+			pushAlbum(viewModel.items[indexPath.row] as! Album)
 		}
 		super.tableView(tableView, didSelectRowAt: indexPath)
 	}

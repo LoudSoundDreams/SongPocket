@@ -10,13 +10,13 @@ import XCTest
 
 class SortingTests: XCTestCase {
 	func textLexical() {
-		let lexical: [String?] = [
+		let expected: [String?] = [
 			"", "", " ",
 			"1", "2", "10",
 			"a", "A", "z", "Z",
 			nil, nil,
 		]
-		XCTAssertTrue(lexical.allNeighborsSatisfy { left, right in
+		XCTAssertTrue(expected.allNeighborsSatisfy { left, right in
 			guard let right else { return true }
 			guard let left else { return false }
 			return left.precedesInFinder(right)
