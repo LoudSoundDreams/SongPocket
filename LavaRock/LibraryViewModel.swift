@@ -38,14 +38,19 @@ extension AlbumsViewModel {
 
 struct SongsViewModel {
 	static let prerowCount = 1
-	private let album: Album
 	
 	// `LibraryViewModel`
 	var items: [NSManagedObject] { didSet { Database.renumber(items) } }
 }
 extension SongsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row - Self.prerowCount }
-	func withRefreshedData() -> Self { return Self(album: album) }
+	func withRefreshedData() -> Self {
+		// Get the `Album` from the first non-deleted `Song`.
+		guard let album = (items as! [Song]).first(where: { $0.container != nil })?.container else {
+			return Self(items: [])
+		}
+		return Self(album: album)
+	}
 	func rowIdentifiers() -> [AnyHashable] {
 		let itemRowIDs = items.map { AnyHashable($0.objectID) }
 		return [42] + itemRowIDs
@@ -53,11 +58,6 @@ extension SongsViewModel: LibraryViewModel {
 }
 extension SongsViewModel {
 	init(album: Album) {
-		self.album = album
-		guard let context = album.managedObjectContext else {
-			items = []
-			return
-		}
-		items = Song.allFetched(sorted: true, inAlbum: album, context: context)
+		items = Song.allFetched(sorted: true, inAlbum: album, context: album.managedObjectContext!)
 	}
 }
