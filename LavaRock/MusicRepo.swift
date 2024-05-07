@@ -11,11 +11,7 @@ final class MusicRepo: ObservableObject {
 		library?.endGeneratingLibraryChangeNotifications()
 		library = MPMediaLibrary.default()
 		library?.beginGeneratingLibraryChangeNotifications()
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(mergeChanges),
-			name: .MPMediaLibraryDidChange,
-			object: library)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
 		mergeChanges()
 	}
 	

@@ -23,37 +23,24 @@ extension CollectionDifference {
 		var oldToDelete: [Int] = []
 		var newToInsert: [Int] = []
 		var toMove: [(old: Int, new: Int)] = []
-		
-		forEach { change in
-			// If a `Change`’s `associatedWith:` value is non-`nil`, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
-			switch change {
-				case .remove(let offset, _, let associatedOffset):
-					if let associatedOffset = associatedOffset {
-						toMove.append(
-							(old: offset, new: associatedOffset)
-						)
-					} else {
-						oldToDelete.append(offset)
-					}
-				case .insert(let offset, _, let associatedOffset):
-					if associatedOffset == nil {
-						newToInsert.append(offset)
-					}
-			}
-		}
-		
-		return BatchUpdates(
-			toDelete: oldToDelete,
-			toInsert: newToInsert,
-			toMove: toMove)
+		forEach { change in switch change {
+				// If a `Change`’s `associatedWith:` value is non-`nil`, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
+			case .remove(let offset, _, let associatedOffset):
+				if let associatedOffset = associatedOffset {
+					toMove.append((old: offset, new: associatedOffset))
+				} else {
+					oldToDelete.append(offset)
+				}
+			case .insert(let offset, _, let associatedOffset):
+				if associatedOffset == nil {
+					newToInsert.append(offset)
+				}
+		}}
+		return BatchUpdates(toDelete: oldToDelete, toInsert: newToInsert, toMove: toMove)
 	}
 }
 
 extension UITableView {
-	final var selectedIndexPaths: [IndexPath] {
-		return indexPathsForSelectedRows ?? []
-	}
-	
 	final func allIndexPaths() -> [IndexPath] {
 		return Array(0 ..< numberOfSections).flatMap { section in
 			indexPathsForRows(section: section, firstRow: 0)
@@ -70,6 +57,11 @@ extension UITableView {
 		}
 	}
 	
+	final var selectedIndexPaths: [IndexPath] { indexPathsForSelectedRows ?? [] }
+	final func deselectAllRows(animated: Bool) {
+		selectedIndexPaths.forEach { deselectRow(at: $0, animated: animated) }
+	}
+	
 	final func applyBatchUpdates(
 		_ batchUpdates: BatchUpdates<IndexPath>,
 		completion: @escaping () -> Void
@@ -82,14 +74,6 @@ extension UITableView {
 			batchUpdates.toMove.forEach { (source, destination) in
 				moveRow(at: source, to: destination)
 			}
-		} completion: { _ in
-			completion()
-		}
-	}
-	
-	final func deselectAllRows(animated: Bool) {
-		selectedIndexPaths.forEach {
-			deselectRow(at: $0, animated: animated)
-		}
+		} completion: { _ in completion() }
 	}
 }

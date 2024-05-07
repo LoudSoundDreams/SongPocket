@@ -170,14 +170,12 @@ final class AlbumsTVC: LibraryTVC {
 		let album = viewModel.items[indexPath.row] as! Album
 		cell.backgroundColors_configureForLibraryItem()
 		cell.contentConfiguration = UIHostingConfiguration {
-			AlbumRow(
-				album: album,
-				maxHeight: {
-					let height = view.frame.height
-					let topInset = view.safeAreaInsets.top
-					let bottomInset = view.safeAreaInsets.bottom
-					return height - topInset - bottomInset
-				}())
+			AlbumRow(album: album, maxHeight: {
+				let height = view.frame.height
+				let topInset = view.safeAreaInsets.top
+				let bottomInset = view.safeAreaInsets.bottom
+				return height - topInset - bottomInset
+			}())
 		}.margins(.all, .zero)
 		return cell
 	}
@@ -185,8 +183,8 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
-		if !isEditing {
-			if !WorkingOn.inlineTracklist {
+		if !WorkingOn.inlineTracklist {
+			if !isEditing {
 				pushAlbum(viewModel.items[indexPath.row] as! Album)
 			}
 		}
