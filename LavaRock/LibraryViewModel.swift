@@ -3,7 +3,7 @@
 import CoreData
 
 protocol LibraryViewModel {
-	// You must add a `didSet` that calls `Library.renumber(items)`.
+	// You must add a `didSet` that calls `Database.renumber(items)`.
 	var items: [NSManagedObject] { get set }
 	
 	func itemIndex(forRow row: Int) -> Int

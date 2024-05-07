@@ -58,14 +58,14 @@ class LibraryTVC: UITableViewController {
 		refreshEditingButtons() // For “Edit” button
 		setToolbarItems(viewingButtons, animated: false)
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectDatabase), name: .LRMergedChanges, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: .LRMergedChanges, object: nil)
 	}
-	@objc private func reflectDatabase() {
-		if view.window == nil {
+	@objc private func refreshLibraryItemsWhenVisible() {
+		guard view.window != nil else {
 			needsRefreshLibraryItemsOnViewDidAppear = true
-		} else {
-			refreshLibraryItems()
+			return
 		}
+		refreshLibraryItems()
 	}
 	
 	final override func viewDidAppear(_ animated: Bool) {

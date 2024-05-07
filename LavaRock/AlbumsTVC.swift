@@ -53,7 +53,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	func goToCurrentAlbum() {
 		guard !WorkingOn.inlineTracklist else {
-			showCurrentAlbum()
+			expandCurrentAlbum()
 			return
 		}
 		guard
@@ -74,7 +74,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 		}
 	}
-	private func showCurrentAlbum() {
+	private func expandCurrentAlbum() {
 		guard let albumToOpen = (viewModel.items as! [Album]).first(where: { album in
 			album.songs(sorted: false).contains { $0.isInPlayer() }
 		}) else { return }
