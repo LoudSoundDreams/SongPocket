@@ -52,7 +52,10 @@ final class AlbumsTVC: LibraryTVC {
 		return pushedAlbum.songs(sorted: false).contains { $0.isInPlayer() }
 	}
 	func goToCurrentAlbum() {
-		if WorkingOn.inlineTracklist { return }
+		guard !WorkingOn.inlineTracklist else {
+			showCurrentAlbum()
+			return
+		}
 		guard
 			!isBeneathCurrentAlbum,
 			let albumToOpen = (viewModel.items as! [Album]).first(where: { album in
@@ -70,6 +73,13 @@ final class AlbumsTVC: LibraryTVC {
 				self.pushAlbum(albumToOpen)
 			}
 		}
+	}
+	private func showCurrentAlbum() {
+		guard let albumToOpen = (viewModel.items as! [Album]).first(where: { album in
+			album.songs(sorted: false).contains { $0.isInPlayer() }
+		}) else { return }
+		let indexPath = IndexPath(row: Int(albumToOpen.index), section: 0)
+		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}
 	private func pushAlbum(_ album: Album) {
 		navigationController?.pushViewController({
