@@ -47,19 +47,9 @@ extension MPMusicPlayerController {
 	func watchMPPlayer() {
 		guard let __player = MPMusicPlayerController._system else { return }
 		__player.beginGeneratingPlaybackNotifications()
-		playbackState()
-		nowPlaying()
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(playbackState),
-			name: .MPMusicPlayerControllerPlaybackStateDidChange, // As of iOS 15.4, Media Player also posts this when the repeat or shuffle mode changes.
-			object: nil)
-		NotificationCenter.default.addObserverOnce(
-			self,
-			selector: #selector(nowPlaying),
-			name: .MPMusicPlayerControllerNowPlayingItemDidChange,
-			object: nil)
+		refreshToolbar()
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshToolbar), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil) // As of iOS 15.4, Media Player also posts this when the repeat or shuffle mode changes.
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshToolbar), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
 	}
-	@objc private func playbackState() { reflectorToolbar?.referencee?.refresh() }
-	@objc private func nowPlaying() { reflectorToolbar?.referencee?.refresh() }
+	@objc private func refreshToolbar() { reflectorToolbar?.referencee?.refresh() }
 }
