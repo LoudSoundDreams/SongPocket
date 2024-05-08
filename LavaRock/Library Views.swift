@@ -28,6 +28,20 @@ private struct CoverArt: View {
 	let album: Album
 	let largerThanOrEqualToSizeInPoints: CGFloat
 	var body: some View {
+		if WorkingOn.inlineTracklist {
+			tappable.onTapGesture {
+				showingInfo.toggle()
+				if showingInfo {
+					NotificationCenter.default.post(name: .LRShowAlbumDetail, object: album)
+				} else {
+					NotificationCenter.default.post(name: .LRHideAlbumDetail, object: nil)
+				}
+			}
+		} else {
+			tappable
+		}
+	}
+	var tappable: some View {
 		ZStack {
 			let uiImageOptional = album.representativeSongInfo()?.coverArt(atLeastInPoints: CGSize(width: largerThanOrEqualToSizeInPoints, height: largerThanOrEqualToSizeInPoints))
 			if let uiImage = uiImageOptional {
@@ -55,19 +69,8 @@ private struct CoverArt: View {
 			.opacity(showingInfo ? 1 : .zero)
 			.animation(.linear(duration: pow(.oneHalf, 4)), value: showingInfo)
 		}
-//		.onTapGesture {
-//			showingInfo.toggle()
-//			if showingInfo {
-//				NotificationCenter.default.post(name: .LRShowAlbumDetail, object: album)
-//			} else {
-//				NotificationCenter.default.post(name: .LRHideAlbumDetail, object: nil)
-//			}
-//		}
 	}
 	@State private var showingInfo = false
-}
-extension WorkingOn {
-	static let inlineTracklist = 10 == 1
 }
 
 // MARK: - Song list
