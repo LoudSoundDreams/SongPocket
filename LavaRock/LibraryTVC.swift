@@ -35,8 +35,6 @@ class LibraryTVC: UITableViewController {
 		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	
-	private var needsRefreshLibraryItemsOnViewDidAppear = false
-	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
@@ -56,6 +54,7 @@ class LibraryTVC: UITableViewController {
 		}
 		refreshLibraryItems()
 	}
+	private var needsRefreshLibraryItemsOnViewDidAppear = false
 	
 	final override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
@@ -64,9 +63,6 @@ class LibraryTVC: UITableViewController {
 			refreshLibraryItems()
 		}
 	}
-	
-	// MARK: - Library items
-	
 	private func refreshLibraryItems() {
 		Task {
 			/*
@@ -86,6 +82,8 @@ class LibraryTVC: UITableViewController {
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
 		}
 	}
+	
+	// MARK: - Moving rows
 	
 	// Returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
 	final func setViewModelAndMoveAndDeselectRowsAndShouldContinue(
