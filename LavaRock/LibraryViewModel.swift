@@ -12,17 +12,34 @@ protocol LibraryViewModel {
 }
 
 struct ExpandableViewModel {
-	func itemForIndexPath(_ indexPath: IndexPath) -> AlbumOrSong {
-		
-		return .album((Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true).first)!)
+	var albums: [Album] = Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? [] {
+		didSet { Database.renumber(albums) }
 	}
-	enum AlbumOrSong { case album(Album), song(Song) }
+	var expandedIndex: Int? = nil
 	
-	func collapseAllThenExpand(_ album: Album) {
-		collapseAll()
-		
+	func itemForIndexPath(_ indexPath: IndexPath) -> Item {
+		guard let expandedIndex, indexPath.row > expandedIndex else {
+			// Before any song rows
+			return .album(albums[indexPath.row])
+		}
+		let skippedAlbumCount = expandedIndex + 1
+		let rowIndexAfterSkippedAlbums = indexPath.row - skippedAlbumCount
+		let songs = albums[expandedIndex].songs(sorted: true)
+		let isSongRow = rowIndexAfterSkippedAlbums < songs.count
+		guard !isSongRow else {
+			return Item.song(songs[rowIndexAfterSkippedAlbums])
+		}
+		let albumIndex = rowIndexAfterSkippedAlbums - songs.count
+		return Item.album(albums[albumIndex])
 	}
-	func collapseAll() {
+	enum Item { case album(Album), song(Song) }
+	
+	mutating func collapseAllThenExpand(_ album: Album) {
+		collapseAll()
+		expandedIndex = albums.firstIndex(where: { album.objectID == $0.objectID })
+	}
+	mutating func collapseAll() {
+		expandedIndex = nil
 	}
 }
 
