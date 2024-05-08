@@ -125,11 +125,10 @@ class LibraryTVC: UITableViewController {
 			return
 		}
 		
-		let batchUpdates = Self.batchUpdatesFromIdentifiers(
-			old: oldViewModel.rowIdentifiers(),
-			new: newViewModel.rowIdentifiers())
 		isAnimatingBatchUpdates += 1
-		tableView.applyBatchUpdates(batchUpdates) {
+		tableView.performUpdatesFromRowIdentifiers(
+			old: oldViewModel.rowIdentifiers(), new: newViewModel.rowIdentifiers()
+		) {
 			// Completion handler
 			self.isAnimatingBatchUpdates -= 1
 			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate any rows. Here, we wait for the animations to finish before we run the completion closure (once).
@@ -141,21 +140,6 @@ class LibraryTVC: UITableViewController {
 		
 		tableView.deselectAllRows(animated: true)
 		refreshEditingButtons()
-	}
-	private static func batchUpdatesFromIdentifiers
-	<Identifier: Hashable>(old: [Identifier], new: [Identifier])
-	-> BatchUpdates<IndexPath> {
-		let updates = old.differenceInferringMoves(toMatch: new, by: ==)
-			.batchUpdates()
-		
-		let section = 0
-		let toDelete = updates.toDelete.map { IndexPath(row: $0, section: section) }
-		let toInsert = updates.toInsert.map { IndexPath(row: $0, section: section) }
-		let toMove = updates.toMove.map { (oldRow, newRow) in
-			(IndexPath(row: oldRow, section: section),
-			 IndexPath(row: newRow, section: section))
-		}
-		return BatchUpdates(toDelete: toDelete, toInsert: toInsert, toMove: toMove)
 	}
 	private func deleteThenExit() {
 		isAnimatingBatchUpdates += 1

@@ -12,34 +12,6 @@ extension UIViewController {
 	}
 }
 
-struct BatchUpdates<Identifier> {
-	let toDelete: [Identifier]
-	let toInsert: [Identifier]
-	let toMove: [(Identifier, Identifier)]
-}
-
-extension CollectionDifference {
-	func batchUpdates() -> BatchUpdates<Int> {
-		var oldToDelete: [Int] = []
-		var newToInsert: [Int] = []
-		var toMove: [(old: Int, new: Int)] = []
-		forEach { change in switch change {
-				// If a `Change`’s `associatedWith:` value is non-`nil`, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
-			case .remove(let offset, _, let associatedOffset):
-				if let associatedOffset = associatedOffset {
-					toMove.append((old: offset, new: associatedOffset))
-				} else {
-					oldToDelete.append(offset)
-				}
-			case .insert(let offset, _, let associatedOffset):
-				if associatedOffset == nil {
-					newToInsert.append(offset)
-				}
-		}}
-		return BatchUpdates(toDelete: oldToDelete, toInsert: newToInsert, toMove: toMove)
-	}
-}
-
 extension UITableView {
 	final func allIndexPaths() -> [IndexPath] {
 		return Array(0 ..< numberOfSections).flatMap { section in
@@ -62,18 +34,51 @@ extension UITableView {
 		selectedIndexPaths.forEach { deselectRow(at: $0, animated: animated) }
 	}
 	
-	final func applyBatchUpdates(
-		_ batchUpdates: BatchUpdates<IndexPath>,
+	final func performUpdatesFromRowIdentifiers<Identifier: Hashable>(
+		old: [Identifier], new: [Identifier],
 		completion: @escaping () -> Void
 	) {
+		let updates = BatchUpdates(old: old, new: new)
+		let section = 0
+		let deletes = updates.oldToDelete.map { IndexPath(row: $0, section: section) }
+		let inserts = updates.newToInsert.map { IndexPath(row: $0, section: section) }
+		let moves = updates.toMove.map { (oldRow, newRow) in
+			(IndexPath(row: oldRow, section: section),
+			 IndexPath(row: newRow, section: section))
+		}
 		performBatchUpdates {
 			// If necessary, call `reloadRows` first.
-			deleteRows(at: batchUpdates.toDelete, with: .middle)
-			insertRows(at: batchUpdates.toInsert, with: .middle)
+			deleteRows(at: deletes, with: .middle)
+			insertRows(at: inserts, with: .middle)
 			// Do _not_ skip `moveRow` even if the old and new indices are the same.
-			batchUpdates.toMove.forEach { (source, destination) in
-				moveRow(at: source, to: destination)
-			}
+			moves.forEach { (old, new) in moveRow(at: old, to: new) }
 		} completion: { _ in completion() }
+	}
+	private struct BatchUpdates {
+		let oldToDelete: [Int]
+		let newToInsert: [Int]
+		let toMove: [(old: Int, new: Int)]
+		init<Identifier: Hashable>(old: [Identifier], new: [Identifier]) {
+			let difference = old.differenceInferringMoves(toMatch: new, by: ==)
+			var deletes: [Int] = []
+			var inserts: [Int] = []
+			var moves: [(Int, Int)] = []
+			difference.forEach { change in switch change {
+					// If a `Change`’s `associatedWith:` value is non-`nil`, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
+				case .remove(let offset, _, let associatedOffset):
+					if let associatedOffset = associatedOffset {
+						moves.append((old: offset, new: associatedOffset))
+					} else {
+						deletes.append(offset)
+					}
+				case .insert(let offset, _, let associatedOffset):
+					if associatedOffset == nil {
+						inserts.append(offset)
+					}
+			}}
+			oldToDelete = deletes
+			newToInsert = inserts
+			toMove = moves
+		}
 	}
 }
