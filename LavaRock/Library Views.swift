@@ -41,7 +41,7 @@ private struct CoverArt: View {
 			tappable
 		}
 	}
-	var tappable: some View {
+	private var tappable: some View {
 		ZStack {
 			let uiImageOptional = album.representativeSongInfo()?.coverArt(atLeastInPoints: CGSize(width: largerThanOrEqualToSizeInPoints, height: largerThanOrEqualToSizeInPoints))
 			if let uiImage = uiImageOptional {

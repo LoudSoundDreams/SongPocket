@@ -182,15 +182,15 @@ class LibraryTVC: UITableViewController {
 	
 	final override func tableView(
 		_ tableView: UITableView,
-		moveRowAt fromIndexPath: IndexPath,
-		to: IndexPath
+		moveRowAt source: IndexPath,
+		to destination: IndexPath
 	) {
-		let fromIndex = viewModel.itemIndex(forRow: fromIndexPath.row)
-		let toIndex = viewModel.itemIndex(forRow: to.row)
+		let fromIndex = viewModel.itemIndex(forRow: source.row)
+		let toIndex = viewModel.itemIndex(forRow: destination.row)
 		
 		var newItems = viewModel.items
-		let itemBeingMoved = newItems.remove(at: fromIndex)
-		newItems.insert(itemBeingMoved, at: toIndex)
+		let passenger = newItems.remove(at: fromIndex)
+		newItems.insert(passenger, at: toIndex)
 		viewModel.items = newItems
 		
 		refreshEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
