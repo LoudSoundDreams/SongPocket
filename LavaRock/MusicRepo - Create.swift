@@ -168,12 +168,19 @@ extension MusicRepo {
 						partialResult + entry.value.count
 					}
 					let result = Collection(context: context)
-					result.title = titleOfDestination
 					result.index = Int64(existingCount)
+					result.title = titleOfDestination
 					return result
 				} else {
 					// At the beginning
-					return context.newCollection(index: 0, title: titleOfDestination)
+					
+					// Displace others
+					Collection.allFetched(sorted: false, context: context).forEach { $0.index += 1 }
+					
+					let result = Collection(context: context)
+					result.index = Int64(0)
+					result.title = titleOfDestination
+					return result
 				}
 			}()
 			
