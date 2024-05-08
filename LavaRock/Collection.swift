@@ -3,16 +3,6 @@
 import CoreData
 
 extension Collection {
-	convenience init(
-		afterAllOtherCount existingCount: Int,
-		title: String,
-		context: NSManagedObjectContext
-	) {
-		self.init(context: context)
-		self.title = title
-		index = Int64(existingCount)
-	}
-	
 	// MARK: - All instances
 	
 	// Similar to `Album.allFetched`.

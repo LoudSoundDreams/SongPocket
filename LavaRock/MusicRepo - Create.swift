@@ -167,10 +167,10 @@ extension MusicRepo {
 					let existingCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
 						partialResult + entry.value.count
 					}
-					return Collection(
-						afterAllOtherCount: existingCount,
-						title: titleOfDestination,
-						context: context)
+					let result = Collection(context: context)
+					result.title = titleOfDestination
+					result.index = Int64(existingCount)
+					return result
 				} else {
 					// At the beginning
 					return context.newCollection(index: 0, title: titleOfDestination)
