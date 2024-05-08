@@ -5,7 +5,7 @@ import SwiftUI
 import MusicKit
 
 final class AlbumsTVC: LibraryTVC {
-	private var tracklist: SongsViewModel? = nil
+	private var expandableViewModel = ExpandableViewModel()
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	
 	// MARK: - Setup
@@ -24,10 +24,10 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	@objc private func showAlbumDetail(notification: Notification) {
 		guard let album = notification.object as? Album else { return }
-		tracklist = SongsViewModel(album: album)
+		expandableViewModel.collapseAllThenExpand(album)
 	}
 	@objc private func hideAlbumDetail(notification: Notification) {
-		tracklist = nil
+		expandableViewModel.collapseAll()
 	}
 	
 	override func viewWillTransition(
@@ -167,7 +167,15 @@ final class AlbumsTVC: LibraryTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		let album = viewModel.items[indexPath.row] as! Album
+		guard WorkingOn.inlineTracklist else {
+			return configuredCellForAlbum(cell: cell, album: viewModel.items[indexPath.row] as! Album)
+		}
+		switch expandableViewModel.itemForIndexPath(indexPath) {
+			case .album(let album): return configuredCellForAlbum(cell: cell, album: album)
+			case .song(let song): return Self.configuredCellForSong(cell: cell, song: song)
+		}
+	}
+	private func configuredCellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
 		cell.backgroundColors_configureForLibraryItem()
 		cell.contentConfiguration = UIHostingConfiguration {
 			AlbumRow(album: album, maxHeight: {
@@ -177,6 +185,12 @@ final class AlbumsTVC: LibraryTVC {
 				return height - topInset - bottomInset
 			}())
 		}.margins(.all, .zero)
+		return cell
+	}
+	private static func configuredCellForSong(cell: UITableViewCell, song: Song) -> UITableViewCell {
+		cell.contentConfiguration = UIHostingConfiguration {
+			Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
+		}
 		return cell
 	}
 	

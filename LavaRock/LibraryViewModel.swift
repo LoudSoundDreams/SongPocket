@@ -11,6 +11,21 @@ protocol LibraryViewModel {
 	func rowIdentifiers() -> [AnyHashable]
 }
 
+struct ExpandableViewModel {
+	func itemForIndexPath(_ indexPath: IndexPath) -> AlbumOrSong {
+		
+		return .album((Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true).first)!)
+	}
+	enum AlbumOrSong { case album(Album), song(Song) }
+	
+	func collapseAllThenExpand(_ album: Album) {
+		collapseAll()
+		
+	}
+	func collapseAll() {
+	}
+}
+
 struct AlbumsViewModel {
 	// `LibraryViewModel`
 	var items: [NSManagedObject] = Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? [] {
