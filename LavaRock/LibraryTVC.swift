@@ -103,9 +103,7 @@ class LibraryTVC: UITableViewController {
 		_ newViewModel: LibraryViewModel
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
-			_setViewModelAndMoveAndDeselectRows(
-				newViewModel
-			) { shouldContinue in
+			_setViewModelAndMoveAndDeselectRows(newViewModel) { shouldContinue in
 				continuation.resume(returning: shouldContinue)
 			}
 			// If necessary, include code here to run before the continuation.
