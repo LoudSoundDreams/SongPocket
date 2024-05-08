@@ -3,17 +3,6 @@
 import UIKit
 import MusicKit
 
-extension UITableViewCell {
-	final func backgroundColors_configureForLibraryItem() {
-		backgroundColor = .clear
-		selectedBackgroundView = {
-			let result = UIView()
-			result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
-			return result
-		}()
-	}
-}
-
 class LibraryTVC: UITableViewController {
 	final lazy var viewModel: LibraryViewModel = AlbumsViewModel()
 	

@@ -176,7 +176,12 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	private func configuredCellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
-		cell.backgroundColors_configureForLibraryItem()
+		cell.backgroundColor = .clear
+		cell.selectedBackgroundView = {
+			let result = UIView()
+			result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
+			return result
+		}()
 		cell.contentConfiguration = UIHostingConfiguration {
 			AlbumRow(album: album, maxHeight: {
 				let height = view.frame.height
