@@ -179,4 +179,19 @@ final class SongsTVC: LibraryTVC {
 		}
 		return proposedDestinationIndexPath
 	}
+	override func tableView(
+		_ tableView: UITableView,
+		moveRowAt source: IndexPath,
+		to destination: IndexPath
+	) {
+		let fromIndex = source.row - SongsViewModel.prerowCount
+		let toIndex = destination.row - SongsViewModel.prerowCount
+		
+		var newItems = viewModel.items
+		let passenger = newItems.remove(at: fromIndex)
+		newItems.insert(passenger, at: toIndex)
+		viewModel.items = newItems
+		
+		refreshEditingButtons()
+	}
 }
