@@ -7,11 +7,13 @@ import MusicKit
 final class AlbumsTVC: LibraryTVC {
 	private var expandableViewModel = ExpandableViewModel()
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var floatAlbumsButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
+	private lazy var sinkAlbumsButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeAlbumsButton, .flexibleSpace(), floatButton, .flexibleSpace(), sinkButton]
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeAlbumsButton, .flexibleSpace(), floatAlbumsButton, .flexibleSpace(), sinkAlbumsButton]
 		
 		super.viewDidLoad()
 		
@@ -95,6 +97,8 @@ final class AlbumsTVC: LibraryTVC {
 		super.refreshEditingButtons()
 		arrangeAlbumsButton.isEnabled = allowsArrange()
 		arrangeAlbumsButton.menu = createArrangeMenu()
+		floatAlbumsButton.isEnabled = allowsFloatAndSink()
+		sinkAlbumsButton.isEnabled = allowsFloatAndSink()
 	}
 	private func createArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
@@ -120,6 +124,23 @@ final class AlbumsTVC: LibraryTVC {
 			UIMenu(options: .displayInline, children: $0)
 		}
 		return UIMenu(children: inlineSubmenus)
+	}
+	private func floatSelected() {
+		var allAlbums = viewModel.items
+		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row }
+		allAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
+		Database.renumber(allAlbums)
+		// Don’t use `refreshLibraryItems`, because that deselects rows without an animation if no rows moved.
+		let newViewModel = viewModel.withRefreshedData()
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+	}
+	private func sinkSelected() {
+		var allAlbums = viewModel.items
+		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row }
+		allAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: allAlbums.count)
+		Database.renumber(allAlbums)
+		let newViewModel = viewModel.withRefreshedData()
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	
 	// MARK: - Table view

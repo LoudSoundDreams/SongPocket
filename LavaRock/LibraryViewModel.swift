@@ -6,7 +6,7 @@ protocol LibraryViewModel {
 	// You must add a `didSet` that calls `Database.renumber(items)`.
 	var items: [NSManagedObject] { get set }
 	
-	func itemIndex(forRow row: Int) -> Int
+	func itemIndex(forRow row: Int) -> Int // TO DO: Delete
 	func withRefreshedData() -> Self
 	func rowIdentifiers() -> [AnyHashable]
 }

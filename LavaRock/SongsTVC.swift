@@ -16,14 +16,18 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var floatSongsButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
+	private lazy var sinkSongsButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeSongsButton, .flexibleSpace(), floatButton, .flexibleSpace(), sinkButton]
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeSongsButton, .flexibleSpace(), floatSongsButton, .flexibleSpace(), sinkSongsButton]
 		super.viewDidLoad()
 	}
 	override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		arrangeSongsButton.isEnabled = allowsArrange()
 		arrangeSongsButton.menu = createArrangeMenu()
+		floatSongsButton.isEnabled = allowsFloatAndSink()
+		sinkSongsButton.isEnabled = allowsFloatAndSink()
 	}
 	private func createArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
@@ -46,6 +50,22 @@ final class SongsTVC: LibraryTVC {
 			return UIMenu(options: .displayInline, children: $0)
 		}
 		return UIMenu(children: inlineSubmenus)
+	}
+	private func floatSelected() {
+		var allSongs = viewModel.items
+		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
+		allSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
+		Database.renumber(allSongs)
+		let newViewModel = viewModel.withRefreshedData()
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+	}
+	private func sinkSelected() {
+		var allSongs = viewModel.items
+		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
+		allSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: allSongs.count)
+		Database.renumber(allSongs)
+		let newViewModel = viewModel.withRefreshedData()
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	
 	// MARK: - Table view

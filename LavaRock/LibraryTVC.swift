@@ -8,32 +8,6 @@ class LibraryTVC: UITableViewController {
 	
 	private var viewingButtons: [UIBarButtonItem] { [editButtonItem] + __MainToolbar.shared.barButtonItems }
 	final var editingButtons: [UIBarButtonItem] = []
-	private(set) final lazy var floatButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
-	private func floatSelected() {
-		let unorderedIndices = tableView.selectedIndexPaths.map {
-			viewModel.itemIndex(forRow: $0.row)
-		}
-		
-		var newItems = viewModel.items
-		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
-		
-		var newViewModel = viewModel
-		newViewModel.items = newItems
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
-	}
-	private(set) final lazy var sinkButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
-	private func sinkSelected() {
-		let unorderedIndices = tableView.selectedIndexPaths.map {
-			viewModel.itemIndex(forRow: $0.row)
-		}
-		
-		var newItems = viewModel.items
-		newItems.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newItems.count)
-		
-		var newViewModel = viewModel
-		newViewModel.items = newItems
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
-	}
 	
 	// MARK: - Setup
 	
@@ -168,17 +142,7 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	func refreshEditingButtons() {
 		editButtonItem.isEnabled = MusicAuthorization.currentStatus == .authorized && !viewModel.items.isEmpty
-		editButtonItem.image = (
-			isEditing
-			? UIImage(systemName: "checkmark.circle.fill")
-			: UIImage(systemName: "checkmark.circle")
-		)
-		let allowsFloatAndSink: Bool = {
-			guard !viewModel.items.isEmpty else { return false }
-			return !tableView.selectedIndexPaths.isEmpty
-		}()
-		floatButton.isEnabled = allowsFloatAndSink
-		sinkButton.isEnabled = allowsFloatAndSink
+		editButtonItem.image = UIImage(systemName: isEditing ? "checkmark.circle.fill" : "checkmark.circle")
 	}
 	final func allowsArrange() -> Bool {
 		guard !viewModel.items.isEmpty else { return false }
@@ -208,6 +172,10 @@ class LibraryTVC: UITableViewController {
 		let selected = tableView.selectedIndexPaths
 		guard !selected.isEmpty else { return viewModel.items.indices.map { $0 } }
 		return selected.map { viewModel.itemIndex(forRow: $0.row) }
+	}
+	final func allowsFloatAndSink() -> Bool {
+		guard !viewModel.items.isEmpty else { return false }
+		return !tableView.selectedIndexPaths.isEmpty
 	}
 	
 	// MARK: - Table view
