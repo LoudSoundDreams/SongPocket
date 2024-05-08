@@ -124,7 +124,6 @@ extension NSManagedObjectContext {
 			}
 		}
 	}
-	
 	final func deleteEmptyCollections() {
 		var all = Collection.allFetched(sorted: true, context: self)
 		all.enumerated().reversed().forEach { (index, collection) in

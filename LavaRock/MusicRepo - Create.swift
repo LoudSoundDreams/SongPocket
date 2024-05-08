@@ -163,6 +163,7 @@ extension MusicRepo {
 			// Otherwise, create the collection to put the album in…
 			let newCollection: Collection = {
 				if isFirstImport {
+					// At the end
 					let existingCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
 						partialResult + entry.value.count
 					}
@@ -171,7 +172,7 @@ extension MusicRepo {
 						title: titleOfDestination,
 						context: context)
 				} else {
-					// At the top
+					// At the beginning
 					return context.newCollection(index: 0, title: titleOfDestination)
 				}
 			}()
