@@ -156,7 +156,7 @@ class LibraryTVC: UITableViewController {
 	
 	// Overrides should call super (this implementation).
 	func refreshEditingButtons() {
-		editButtonItem.isEnabled = MusicAuthorization.currentStatus == .authorized && !libraryViewModel.isEmpty()
+		editButtonItem.isEnabled = !libraryViewModel.isEmpty()
 		editButtonItem.image = UIImage(systemName: isEditing ? "checkmark.circle.fill" : "checkmark.circle")
 	}
 	final func allowsArrange() -> Bool {
