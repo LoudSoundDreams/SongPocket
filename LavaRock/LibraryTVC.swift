@@ -4,7 +4,22 @@ import UIKit
 import MusicKit
 
 class LibraryTVC: UITableViewController {
-	final lazy var viewModel: LibraryViewModel = AlbumsViewModel()
+	final var libraryViewModel: LibraryViewModel {
+		get {
+			if let self = self as? AlbumsTVC {
+				return self.albumsViewModel
+			}
+			return (self as! SongsTVC).songsViewModel
+		}
+		set {
+			if let self = self as? AlbumsTVC {
+				self.albumsViewModel = newValue as! AlbumsViewModel
+			} else {
+				let songsViewModel = newValue as! SongsViewModel
+				(self as! SongsTVC).songsViewModel = songsViewModel
+			}
+		}
+	}
 	
 	private var viewingButtons: [UIBarButtonItem] { [editButtonItem] + __MainToolbar.shared.barButtonItems }
 	final var editingButtons: [UIBarButtonItem] = []
@@ -46,7 +61,7 @@ class LibraryTVC: UITableViewController {
 			 */
 			await view.window?.rootViewController?.dismiss__async(animated: true)
 			
-			let newViewModel = viewModel.withRefreshedData()
+			let newViewModel = libraryViewModel.withRefreshedData()
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else {
 				// The return value was false, meaning either (A) table view animations are already in progress from an earlier execution of this method, so we shouldn’t run the code after the `await` call this time (later, that earlier execution will), or (B) we applied an empty view model, so we don’t need to update any row contents.
 				return
@@ -74,11 +89,11 @@ class LibraryTVC: UITableViewController {
 		_ newViewModel: LibraryViewModel,
 		completionIfShouldRun: @escaping (Bool) -> Void // We used to sometimes not run this completion handler, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
 	) {
-		let oldViewModel = viewModel
+		let oldViewModel = libraryViewModel
 		
-		viewModel = newViewModel // Can be empty
+		libraryViewModel = newViewModel // Can be empty
 		
-		guard !newViewModel.items.isEmpty else {
+		guard !newViewModel.isEmpty() else {
 			completionIfShouldRun(false)
 			deleteThenExit()
 			return
@@ -141,41 +156,16 @@ class LibraryTVC: UITableViewController {
 	
 	// Overrides should call super (this implementation).
 	func refreshEditingButtons() {
-		editButtonItem.isEnabled = MusicAuthorization.currentStatus == .authorized && !viewModel.items.isEmpty
+		editButtonItem.isEnabled = MusicAuthorization.currentStatus == .authorized && !libraryViewModel.isEmpty()
 		editButtonItem.image = UIImage(systemName: isEditing ? "checkmark.circle.fill" : "checkmark.circle")
 	}
 	final func allowsArrange() -> Bool {
-		guard !viewModel.items.isEmpty else { return false }
+		guard !libraryViewModel.isEmpty() else { return false }
 		let selected = tableView.selectedIndexPaths
 		if selected.isEmpty {
 			return true
 		}
 		return selected.map { $0.row }.sorted().isConsecutive()
-	}
-	final func arrangeSelectedOrAll(by command: ArrangeCommand) {
-		var newViewModel = viewModel
-		newViewModel.items = {
-			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
-			let toSort = subjectedIndicesInOrder.map { viewModel.items[$0] }
-			let sorted = command.apply(to: toSort)
-			var result = viewModel.items
-			subjectedIndicesInOrder.indices.forEach { counter in
-				let replaceAt = subjectedIndicesInOrder[counter]
-				let newItem = sorted[counter]
-				result[replaceAt] = newItem
-			}
-			return result
-		}()
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
-	}
-	final func selectedOrAllIndices() -> [Int] {
-		let selected = tableView.selectedIndexPaths
-		guard !selected.isEmpty else { return viewModel.items.indices.map { $0 } }
-		return selected.map { viewModel.itemIndex(forRow: $0.row) }
-	}
-	final func allowsFloatAndSink() -> Bool {
-		guard !viewModel.items.isEmpty else { return false }
-		return !tableView.selectedIndexPaths.isEmpty
 	}
 	
 	// MARK: - Table view

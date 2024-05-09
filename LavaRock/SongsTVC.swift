@@ -8,6 +8,8 @@ final class SongsTVCStatus: ObservableObject {
 	@Published fileprivate(set) var isEditing = false
 }
 final class SongsTVC: LibraryTVC {
+	var songsViewModel: SongsViewModel! = nil
+	
 	private let tvcStatus = SongsTVCStatus()
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
@@ -51,27 +53,52 @@ final class SongsTVC: LibraryTVC {
 		}
 		return UIMenu(children: inlineSubmenus)
 	}
+	private func arrangeSelectedOrAll(by command: ArrangeCommand) {
+		var newViewModel = songsViewModel!
+		newViewModel.songs = {
+			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
+			let toSort = subjectedIndicesInOrder.map { songsViewModel.songs[$0] }
+			let sorted = command.apply(to: toSort) as! [Song]
+			var result = songsViewModel.songs
+			subjectedIndicesInOrder.indices.forEach { counter in
+				let replaceAt = subjectedIndicesInOrder[counter]
+				let newItem = sorted[counter]
+				result[replaceAt] = newItem
+			}
+			return result
+		}()
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+	}
+	private func selectedOrAllIndices() -> [Int] {
+		let selected = tableView.selectedIndexPaths
+		guard !selected.isEmpty else { return songsViewModel.songs.indices.map { $0 } }
+		return selected.map { $0.row - SongsViewModel.prerowCount }
+	}
+	private func allowsFloatAndSink() -> Bool {
+		guard !songsViewModel.songs.isEmpty else { return false }
+		return !tableView.selectedIndexPaths.isEmpty
+	}
 	private func floatSelected() {
-		var allSongs = viewModel.items
+		var allSongs = songsViewModel.songs
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
 		allSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(allSongs)
-		let newViewModel = viewModel.withRefreshedData()
+		let newViewModel = songsViewModel.withRefreshedData()
 		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	private func sinkSelected() {
-		var allSongs = viewModel.items
+		var allSongs = songsViewModel.songs
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
 		allSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: allSongs.count)
 		Database.renumber(allSongs)
-		let newViewModel = viewModel.withRefreshedData()
+		let newViewModel = songsViewModel.withRefreshedData()
 		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		if viewModel.items.isEmpty {
+		if songsViewModel.songs.isEmpty {
 			contentUnavailableConfiguration = UIHostingConfiguration {
 				Image(systemName: "music.note")
 					.foregroundStyle(.secondary)
@@ -86,17 +113,17 @@ final class SongsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
-		if viewModel.items.isEmpty {
+		if songsViewModel.songs.isEmpty {
 			return 0 // Without `prerowCount`
 		} else {
-			return SongsViewModel.prerowCount + viewModel.items.count
+			return SongsViewModel.prerowCount + songsViewModel.songs.count
 		}
 	}
 	
 	override func tableView(
 		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
 	) -> UITableViewCell {
-		let album = (viewModel.items.first as! Song).container!
+		let album = songsViewModel.songs.first!.container!
 		switch indexPath.row {
 			case 0:
 				// The cell in the storyboard is completely default except for the reuse identifier.
@@ -110,7 +137,7 @@ final class SongsTVC: LibraryTVC {
 			default:
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Song", for: indexPath)
-				let song = viewModel.items[indexPath.row - SongsViewModel.prerowCount] as! Song
+				let song = songsViewModel.songs[indexPath.row - SongsViewModel.prerowCount]
 				cell.backgroundColor = .clear
 				cell.selectedBackgroundView = {
 					let result = UIView()
@@ -140,7 +167,7 @@ final class SongsTVC: LibraryTVC {
 			// The UI is clearer if we leave the row selected while the action sheet is onscreen.
 			// You must eventually deselect the row in every possible scenario after this moment.
 			
-			let song = viewModel.items[indexPath.row - SongsViewModel.prerowCount] as! Song
+			let song = songsViewModel.songs[indexPath.row - SongsViewModel.prerowCount]
 			let startPlaying = UIAlertAction(title: LRString.startPlaying, style: .default) { _ in
 				Task {
 					await song.playAlbumStartingHere()
@@ -187,10 +214,10 @@ final class SongsTVC: LibraryTVC {
 		let fromIndex = source.row - SongsViewModel.prerowCount
 		let toIndex = destination.row - SongsViewModel.prerowCount
 		
-		var newItems = viewModel.items
+		var newItems = songsViewModel.songs
 		let passenger = newItems.remove(at: fromIndex)
 		newItems.insert(passenger, at: toIndex)
-		viewModel.items = newItems
+		songsViewModel.songs = newItems
 		
 		refreshEditingButtons()
 	}

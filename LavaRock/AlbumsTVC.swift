@@ -6,6 +6,7 @@ import MusicKit
 
 final class AlbumsTVC: LibraryTVC {
 	private var expandableViewModel = ExpandableViewModel()
+	var albumsViewModel = AlbumsViewModel()
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var floatAlbumsButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
 	private lazy var sinkAlbumsButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
@@ -40,7 +41,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
 			guard let cell = tableView.cellForRow(at: indexPath) else { return }
-			let album = viewModel.items[indexPath.row] as! Album
+			let album = albumsViewModel.albums[indexPath.row]
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(
 					album: album,
@@ -50,7 +51,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	var isBeneathCurrentAlbum: Bool {
-		guard let pushedAlbum = (((navigationController?.topViewController as? SongsTVC)?.viewModel as? SongsViewModel)?.items.first as? Song)?.container else { return false }
+		guard let pushedAlbum = (navigationController?.topViewController as? SongsTVC)?.songsViewModel.songs.first?.container else { return false }
 		return pushedAlbum.songs(sorted: false).contains { $0.isInPlayer() }
 	}
 	func goToCurrentAlbum() {
@@ -60,7 +61,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		guard
 			!isBeneathCurrentAlbum,
-			let albumToOpen = (viewModel.items as! [Album]).first(where: { album in
+			let albumToOpen = albumsViewModel.albums.first(where: { album in
 				album.songs(sorted: false).contains { $0.isInPlayer() }
 			})
 		else { return }
@@ -77,7 +78,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	private func expandCurrentAlbum() {
-		guard let albumToOpen = (viewModel.items as! [Album]).first(where: { album in
+		guard let albumToOpen = albumsViewModel.albums.first(where: { album in
 			album.songs(sorted: false).contains { $0.isInPlayer() }
 		}) else { return }
 		let indexPath = IndexPath(row: Int(albumToOpen.index), section: 0)
@@ -86,7 +87,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func pushAlbum(_ album: Album) {
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-			songsTVC.viewModel = SongsViewModel(album: album)
+			songsTVC.songsViewModel = SongsViewModel(album: album)
 			return songsTVC
 		}(), animated: true)
 	}
@@ -114,7 +115,7 @@ final class AlbumsTVC: LibraryTVC {
 						case .song_track: return false
 						case .album_recentlyAdded, .album_artist: return true
 						case .album_newest:
-							let toSort = selectedOrAllIndices().map { viewModel.items[$0] } as! [Album]
+							let toSort = selectedOrAllIndices().map { albumsViewModel.albums[$0] }
 							return toSort.contains { $0.releaseDateEstimate != nil }
 					}
 				}()) { [weak self] in self?.arrangeSelectedOrAll(by: command) }
@@ -125,21 +126,46 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		return UIMenu(children: inlineSubmenus)
 	}
+	private func arrangeSelectedOrAll(by command: ArrangeCommand) {
+		var newViewModel = albumsViewModel
+		newViewModel.albums = {
+			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
+			let toSort = subjectedIndicesInOrder.map { albumsViewModel.albums[$0] }
+			let sorted = command.apply(to: toSort) as! [Album]
+			var result = albumsViewModel.albums
+			subjectedIndicesInOrder.indices.forEach { counter in
+				let replaceAt = subjectedIndicesInOrder[counter]
+				let newItem = sorted[counter]
+				result[replaceAt] = newItem
+			}
+			return result
+		}()
+		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+	}
+	private func selectedOrAllIndices() -> [Int] {
+		let selected = tableView.selectedIndexPaths
+		guard !selected.isEmpty else { return albumsViewModel.albums.indices.map { $0 } }
+		return selected.map { $0.row }
+	}
+	private func allowsFloatAndSink() -> Bool {
+		guard !albumsViewModel.albums.isEmpty else { return false }
+		return !tableView.selectedIndexPaths.isEmpty
+	}
 	private func floatSelected() {
-		var allAlbums = viewModel.items
+		var allAlbums = albumsViewModel.albums
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row }
 		allAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(allAlbums)
 		// Don’t use `refreshLibraryItems`, because that deselects rows without an animation if no rows moved.
-		let newViewModel = viewModel.withRefreshedData()
+		let newViewModel = albumsViewModel.withRefreshedData()
 		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	private func sinkSelected() {
-		var allAlbums = viewModel.items
+		var allAlbums = albumsViewModel.albums
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row }
 		allAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: allAlbums.count)
 		Database.renumber(allAlbums)
-		let newViewModel = viewModel.withRefreshedData()
+		let newViewModel = albumsViewModel.withRefreshedData()
 		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
 	}
 	
@@ -163,7 +189,7 @@ final class AlbumsTVC: LibraryTVC {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if viewModel.items.isEmpty {
+			if albumsViewModel.albums.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {
 					} actions: {
@@ -180,7 +206,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
-		return viewModel.items.count
+		return albumsViewModel.albums.count
 	}
 	
 	override func tableView(
@@ -189,7 +215,7 @@ final class AlbumsTVC: LibraryTVC {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 		guard WorkingOn.inlineTracklist else {
-			return configuredCellForAlbum(cell: cell, album: viewModel.items[indexPath.row] as! Album)
+			return configuredCellForAlbum(cell: cell, album: albumsViewModel.albums[indexPath.row])
 		}
 		switch expandableViewModel.itemForIndexPath(indexPath) {
 			case .album(let album): return configuredCellForAlbum(cell: cell, album: album)
@@ -225,7 +251,7 @@ final class AlbumsTVC: LibraryTVC {
 	) {
 		if !WorkingOn.inlineTracklist {
 			if !isEditing {
-				pushAlbum(viewModel.items[indexPath.row] as! Album)
+				pushAlbum(albumsViewModel.albums[indexPath.row])
 			}
 		}
 		super.tableView(tableView, didSelectRowAt: indexPath)
@@ -239,10 +265,10 @@ final class AlbumsTVC: LibraryTVC {
 		let fromIndex = source.row
 		let toIndex = destination.row
 		
-		var newItems = viewModel.items
+		var newItems = albumsViewModel.albums
 		let passenger = newItems.remove(at: fromIndex)
 		newItems.insert(passenger, at: toIndex)
-		viewModel.items = newItems
+		albumsViewModel.albums = newItems
 		
 		refreshEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
 	}
