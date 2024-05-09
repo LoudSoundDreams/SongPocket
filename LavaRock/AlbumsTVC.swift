@@ -206,6 +206,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
+		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
 		return albumsViewModel.albums.count
 	}
 	
