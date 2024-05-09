@@ -89,6 +89,7 @@ extension Array {
 		_ predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
 	) -> Bool {
 		let rest = dropFirst() // Empty subsequence if self is empty
+		return allNeighborsSatisfy(first: first, rest: rest, predicate: predicate)
 		
 		func allNeighborsSatisfy(
 			first: Element?,
@@ -104,15 +105,7 @@ extension Array {
 				return false // Short-circuit.
 			}
 			let newRest = rest.dropFirst()
-			return allNeighborsSatisfy(
-				first: second,
-				rest: newRest,
-				predicate: predicate)
+			return allNeighborsSatisfy(first: second, rest: newRest, predicate: predicate)
 		}
-		
-		return allNeighborsSatisfy(
-			first: first,
-			rest: rest,
-			predicate: predicate)
 	}
 }

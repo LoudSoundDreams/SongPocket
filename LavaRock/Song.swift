@@ -42,7 +42,7 @@ extension Song {
 		return result
 	}
 	
-	// MARK: - Predicates
+	// MARK: - Sorting
 	
 	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
 		// Checking song index first and collection index last is slightly faster than vice versa.

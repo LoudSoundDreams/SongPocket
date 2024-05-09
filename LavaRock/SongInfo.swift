@@ -22,7 +22,7 @@ protocol SongInfo {
 	func coverArt(atLeastInPoints: CGSize) -> UIImage?
 }
 extension SongInfo {
-	// MARK: - Predicates
+	// MARK: - Sorting
 	
 	// Behavior is undefined if you compare with a `SongInfo` from the same album.
 	func precedesInDefaultOrder(inDifferentAlbum other: SongInfo) -> Bool {

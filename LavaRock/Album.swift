@@ -110,7 +110,7 @@ extension Album {
 		}
 	}
 	
-	// MARK: - Predicates
+	// MARK: - Sorting
 	
 	final func precedesByNewestFirst(_ other: Album) -> Bool {
 		// Leave elements in the same order if they both have no release date, or the same release date.
