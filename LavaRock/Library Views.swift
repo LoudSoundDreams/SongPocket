@@ -200,7 +200,7 @@ struct AvatarImage: View {
 		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif
 	}
-	enum Status { case notPlaying, paused, playing }
+	private enum Status { case notPlaying, paused, playing }
 }
 struct AvatarPlayingImage: View {
 	var body: some View {
