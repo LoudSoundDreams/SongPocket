@@ -12,7 +12,7 @@ struct AlbumRow: View {
 		VStack(spacing: 0) {
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
 			// TO DO: Redraw when artwork changes
-			CoverArt(album: album, largerThanOrEqualToSizeInPoints: maxHeight)
+			CoverArt(album: album, minResolution: maxHeight)
 				.frame(
 					maxWidth: .infinity, // Horizontally centers narrow artwork
 					maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
@@ -26,7 +26,7 @@ struct AlbumRow: View {
 }
 private struct CoverArt: View {
 	let album: Album
-	let largerThanOrEqualToSizeInPoints: CGFloat
+	let minResolution: CGFloat
 	var body: some View {
 		if WorkingOn.inlineTracklist {
 			tappable.onTapGesture {
@@ -43,7 +43,7 @@ private struct CoverArt: View {
 	}
 	private var tappable: some View {
 		ZStack {
-			let uiImageOptional = album.representativeSongInfo()?.coverArt(atLeastInPoints: CGSize(width: largerThanOrEqualToSizeInPoints, height: largerThanOrEqualToSizeInPoints))
+			let uiImageOptional = album.representativeSongInfo()?.coverArt(resolutionAtLeastInPoints: CGSize(width: minResolution, height: minResolution))
 			if let uiImage = uiImageOptional {
 				Image(uiImage: uiImage)
 					.resizable() // Lets 1 image point differ from 1 screen point

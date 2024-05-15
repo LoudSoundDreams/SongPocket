@@ -19,7 +19,7 @@ protocol SongInfo {
 	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get }
 	var releaseDateOnDisk: Date? { get }
-	func coverArt(atLeastInPoints: CGSize) -> UIImage?
+	func coverArt(resolutionAtLeastInPoints: CGSize) -> UIImage?
 }
 extension SongInfo {
 	// MARK: - Sorting
@@ -131,7 +131,7 @@ extension MPMediaItem: SongInfo {
 	final var artistOnDisk: String? { artist }
 	final var dateAddedOnDisk: Date { dateAdded }
 	final var releaseDateOnDisk: Date? { releaseDate }
-	final func coverArt(atLeastInPoints: CGSize) -> UIImage? {
-		return artwork?.image(at: atLeastInPoints)
+	final func coverArt(resolutionAtLeastInPoints: CGSize) -> UIImage? {
+		return artwork?.image(at: resolutionAtLeastInPoints)
 	}
 }
