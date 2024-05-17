@@ -11,13 +11,12 @@ enum WorkingOn {
 @main
 struct LavaRock: App {
 	init() {
-		// Delete unused entries in `UserDefaults`
+		// Clean up after ourselves; leave no unused data in persistent storage.
 		let defaults = UserDefaults.standard
 		let toKeep = Set(LRDefaultsKey.allCases.map { $0.rawValue })
 		defaults.dictionaryRepresentation().forEach { (existingKey, _) in
-			if !toKeep.contains(existingKey) {
-				defaults.removeObject(forKey: existingKey)
-			}
+			if toKeep.contains(existingKey) { return }
+			defaults.removeObject(forKey: existingKey)
 		}
 	}
 	var body: some Scene {
