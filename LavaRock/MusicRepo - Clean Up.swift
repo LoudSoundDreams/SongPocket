@@ -83,7 +83,7 @@ extension MusicRepo {
 	
 	// MARK: Combine all folders
 	
-	// Historic databases can contain multiple `Collection`s, each with a non-default title.
+	// Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
 	// Moves all `Album`s into the first `Collection`, and gives it the default title.
 	private func smoosh() {
 		let allCollections = Collection.allFetched(sorted: true, context: context)
