@@ -49,6 +49,8 @@ For help, see [Apple’s documentation](https://developer.apple.com/documentatio
 
 Fork this repo, make your changes in your fork, then open a pull request against my repo. For help, see [GitHub’s documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models#fork-and-pull-model).
 
+If you change the UI, include screenshots. (You were looking at it anyway, right?)
+
 # Non-goals
 
 SongPocket won’t do everything for everyone, and generally, we should [remove](https://ignorethecode.net/blog/2010/02/02/removing-features) and [say no](https://alexgaynor.net/2020/nov/30/why-software-ends-up-complex) to features more often, for a simpler experience.
