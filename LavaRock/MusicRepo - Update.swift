@@ -8,7 +8,9 @@ extension MusicRepo {
 		let canonicalAlbums: [AlbumID: Album] = mergeClonedAlbumsAndReturnCanonical(existingAndFresh: existingAndFresh)
 		
 		// Move `Song`s to updated `Album`s
-		moveSongsToUpdatedAlbums(existingAndFresh: existingAndFresh, canonicalAlbums: canonicalAlbums)
+		moveSongsToUpdatedAlbums(
+			existingAndFresh: existingAndFresh.map { (song, info) in (song, info.albumID) },
+			canonicalAlbums: canonicalAlbums)
 	}
 	
 	private func mergeClonedAlbumsAndReturnCanonical(
@@ -51,15 +53,14 @@ extension MusicRepo {
 	}
 	
 	private func moveSongsToUpdatedAlbums(
-		existingAndFresh: [(Song, SongInfo)],
+		existingAndFresh: [(Song, AlbumID)],
 		canonicalAlbums: [AlbumID: Album]
 	) {
 		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongInfo.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
-		
-		let toUpdate: [(Song, SongInfo)] = {
+		let toUpdate: [(Song, AlbumID)] = {
 			// Filter to `Song`s moved to different `Album`s
-			let unsortedOutdated = existingAndFresh.filter { (song, info) in
-				info.albumID != song.container!.albumPersistentID
+			let unsortedOutdated = existingAndFresh.filter { (song, albumID) in
+				albumID != song.container!.albumPersistentID
 			}
 			// Sort by the order the user arranged the `Song`s in the app.
 			return unsortedOutdated.sorted { leftTuple, rightTuple in
@@ -67,11 +68,10 @@ extension MusicRepo {
 			}
 		}()
 		var existingAlbums = canonicalAlbums
-		toUpdate.reversed().forEach { (song, info) in
+		toUpdate.reversed().forEach { (song, freshAlbumID) in
 			// This `Song`’s `albumPersistentID` has changed. Move it to its up-to-date `Album`.
-			let newAlbumID = info.albumID
 			// If we already have a matching `Album` to move the `Song` to…
-			if let existingAlbum = existingAlbums[newAlbumID] {
+			if let existingAlbum = existingAlbums[freshAlbumID] {
 				// …then move the `Song` to that `Album`.
 				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
 				
@@ -82,7 +82,7 @@ extension MusicRepo {
 				let existingCollection = song.container!.container!
 				let newAlbum = Album(
 					atBeginningOf: existingCollection,
-					albumID: info.albumID,
+					albumID: freshAlbumID,
 					context: context)
 				
 				// …and then move the `Song` to that `Album`.
@@ -90,7 +90,7 @@ extension MusicRepo {
 				song.container = newAlbum
 				
 				// Make a note of the new `Album`.
-				existingAlbums[newAlbumID] = newAlbum
+				existingAlbums[freshAlbumID] = newAlbum
 			}
 		}
 	}
