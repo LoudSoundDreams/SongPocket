@@ -3,21 +3,18 @@
 import CoreData
 
 extension MusicRepo {
-	func updateLibraryItems(
-		potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)]
-	) {
+	func updateLibraryItems(existingAndFresh: [(Song, SongInfo)]) {
 		// Merge `Album`s with the same `albumPersistentID`
-		let uniqueAlbumsByID = mergeClonedAlbumsAndReturnUniqueAlbumsByID(
-			potentiallyOutdatedSongsAndFreshInfos: potentiallyOutdatedSongsAndFreshInfos)
+		let uniqueAlbumsByID = mergeClonedAlbumsAndReturnUniqueAlbumsByID(existingAndFresh: existingAndFresh)
 		
 		// Move `Song`s to updated `Album`s
 		moveSongsToUpdatedAlbums(
-			potentiallyOutdatedSongsAndFreshInfos: potentiallyOutdatedSongsAndFreshInfos,
+			existingAndFresh: existingAndFresh,
 			uniqueAlbumsByID: uniqueAlbumsByID)
 	}
 	
 	private func mergeClonedAlbumsAndReturnUniqueAlbumsByID(
-		potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)]
+		existingAndFresh: [(Song, SongInfo)]
 	) -> [AlbumID: Album] {
 		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Apple Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
 		// We never should have ended up with two `Album`s with the same `albumPersistentID` in the first place, but this makes the merger resilient to that mistake.
@@ -38,8 +35,7 @@ extension MusicRepo {
 		// Filter to `Song`s in cloned `Album`s
 		// Don’t actually move the `Song`s we need to move yet, because we haven’t sorted them yet.
 		// Filter before sorting. It’s faster.
-		let unsortedSongsToMove: [Song]
-		= potentiallyOutdatedSongsAndFreshInfos.compactMap { (song, _) in
+		let unsortedSongsToMove: [Song] = existingAndFresh.compactMap { (song, _) in
 			let potentiallyClonedAlbum = song.container!
 			let canonicalAlbum = uniqueAlbumsByID[potentiallyClonedAlbum.albumPersistentID]
 			if potentiallyClonedAlbum.objectID == canonicalAlbum?.objectID {
@@ -70,13 +66,13 @@ extension MusicRepo {
 	}
 	
 	private func moveSongsToUpdatedAlbums(
-		potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)],
+		existingAndFresh: [(Song, SongInfo)],
 		uniqueAlbumsByID: [AlbumID: Album]
 	) {
 		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongInfo.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
 		
 		// Filter to `Song`s moved to different `Album`s
-		let unsortedOutdatedTuples = potentiallyOutdatedSongsAndFreshInfos.filter { (song, info) in
+		let unsortedOutdatedTuples = existingAndFresh.filter { (song, info) in
 			song.container!.albumPersistentID != info.albumID
 		}
 		

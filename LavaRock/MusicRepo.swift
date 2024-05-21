@@ -31,48 +31,44 @@ final class MusicRepo: ObservableObject {
 #endif
 	}
 	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
-		let existingSongs: [Song] = context.objectsFetched(for: Song.fetchRequest()) // Not sorted
-		
 		let defaults = UserDefaults.standard
 		let keyHasSaved = LRDefaultsKey.hasSavedDatabase.rawValue
 		
 		let hasSaved = defaults.bool(forKey: keyHasSaved) // Returns `false` if there’s no saved value
 		let isFirstImport = !hasSaved
 		
-		// Find out which `Song`s we need to delete, and which we need to potentially update.
+		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
-		var potentiallyOutdatedSongsAndFreshInfos: [(Song, SongInfo)] = [] // We’ll sort these eventually.
-		var songsToDelete: [Song] = []
+		var maybeOutdated: [(existing: Song, fresh: SongInfo)] = [] // We’ll sort these eventually.
+		var toDelete: [Song] = []
 		
 		var infosBySongID: Dictionary<SongID, SongInfo> = {
 			let tuples = freshInAnyOrder.map { info in (info.songID, info) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
 		
+		let existingSongs: [Song] = context.objectsFetched(for: Song.fetchRequest()) // Not sorted
 		existingSongs.forEach { existingSong in
 			let songID = existingSong.persistentID
-			if let potentiallyUpdatedInfo = infosBySongID[songID] {
+			if let maybeUpdatedInfo = infosBySongID[songID] {
 				// We have an existing `Song` for this `SongInfo`. We might need to update it.
-				potentiallyOutdatedSongsAndFreshInfos.append(
-					(existingSong, potentiallyUpdatedInfo)
-				)
+				maybeOutdated.append((existing: existingSong, fresh: maybeUpdatedInfo))
 				
 				infosBySongID[songID] = nil
 			} else {
 				// This `Song` no longer corresponds to any `SongInfo`. We’ll delete it.
-				songsToDelete.append(existingSong)
+				toDelete.append(existingSong)
 			}
 		}
 		// `infosBySongID` now holds the `SongInfo`s that we don’t have `Song`s for.
-		let newInfos = infosBySongID.map { $0.value }
+		let newInfos: [SongInfo] = infosBySongID.map { $0.value }
 		
 		// Update before creating and deleting, so that we can easily put new `Song`s above modified `Song`s.
 		// This also deletes all but one `Album` with any given `albumPersistentID`.
 		// This might create `Album`s, but not `Collection`s or `Song`s.
 		// This might delete `Album`s, but not `Collection`s or `Song`s.
 		// This also might leave behind empty `Album`s. We don’t delete those here, so that if the user also added other `Song`s to those `Album`s, we can keep those `Album`s in the same place, instead of re-adding them to the top.
-		updateLibraryItems(
-			potentiallyOutdatedSongsAndFreshInfos: potentiallyOutdatedSongsAndFreshInfos)
+		updateLibraryItems(existingAndFresh: maybeOutdated)
 		
 		// Create before deleting, because deleting also cleans up empty `Album`s and `Collection`s, which we shouldn’t do yet (see above).
 		// This might create new `Album`s, and if it does, it might create new `Collection`s.
@@ -84,7 +80,7 @@ final class MusicRepo: ObservableObject {
 			existingCollections: existingCollections,
 			isFirstImport: isFirstImport)
 		cleanUpLibraryItems(
-			songsToDelete: songsToDelete,
+			songsToDelete: toDelete,
 			allInfos: freshInAnyOrder,
 			isFirstImport: isFirstImport)
 		
