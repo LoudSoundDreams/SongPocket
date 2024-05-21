@@ -82,7 +82,7 @@ final class MusicRepo: ObservableObject {
 		let existingAlbums = Album.allFetched(sorted: false, context: context) // Order doesn’t matter, because we identify `Album`s by their `albumPersistentID`.
 		let existingCollections = Collection.allFetched(sorted: true, context: context) // Order matters, because we’ll try to add new `Album`s to the first `Collection` with a matching title.
 		createLibraryItems(
-			for: toCreate,
+			newInfos: toCreate,
 			existingAlbums: existingAlbums,
 			existingCollections: existingCollections,
 			isFirstImport: isFirstImport)

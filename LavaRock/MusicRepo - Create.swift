@@ -5,14 +5,12 @@ import CoreData
 extension MusicRepo {
 	// Create new managed objects for the new `SongInfo`s, including new `Album`s and `Collection`s to put them in if necessary.
 	func createLibraryItems(
-		for newInfos: [SongInfo],
+		newInfos: [SongInfo],
 		existingAlbums: [Album],
 		existingCollections: [Collection],
 		isFirstImport: Bool
 	) {
-		func groupedByAlbumID(
-			_ infos: [SongInfo]
-		) -> [AlbumID: [SongInfo]] {
+		func byAlbumID(infos: [SongInfo]) -> [AlbumID: [SongInfo]] {
 			return Dictionary(grouping: infos) { $0.albumID }
 		}
 		
@@ -20,7 +18,7 @@ extension MusicRepo {
 		let groupsOfInfos: [[SongInfo]] = {
 			if isFirstImport {
 				// Since our database is empty, we’ll add items from the top down, because it’s faster.
-				let dictionary = groupedByAlbumID(newInfos)
+				let dictionary = byAlbumID(infos: newInfos)
 				let groups = dictionary.map { $0.value }
 				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(groupsOfInfos: groups)
 				// We’ll sort `Album`s by release date later.
@@ -28,7 +26,7 @@ extension MusicRepo {
 			} else {
 				// Since our database isn’t empty, we’ll insert items at the top from the bottom up, because it’s simpler.
 				let sortedInfos = newInfos.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
-				let dictionary = groupedByAlbumID(sortedInfos)
+				let dictionary = byAlbumID(infos: sortedInfos)
 				let groupsOfSortedInfos = dictionary.map { $0.value }
 				let sortedGroups = groupsOfSortedInfos.sorted { leftGroup, rightGroup in
 					leftGroup.first!.dateAddedOnDisk < rightGroup.first!.dateAddedOnDisk
@@ -38,15 +36,11 @@ extension MusicRepo {
 			// We’ll sort `Song`s within each `Album` later, because it depends on whether the existing `Song`s in each `Album` are in album order.
 		}()
 		
-		var existingAlbumsByID: Dictionary<AlbumID, Album> = {
-			let tuplesForExistingAlbums = existingAlbums.map { album in
-				(album.albumPersistentID, album)
-			}
-			return Dictionary(uniqueKeysWithValues: tuplesForExistingAlbums)
+		var existingAlbumsByID: [AlbumID: Album] = {
+			let tuples = existingAlbums.map { album in (album.albumPersistentID, album) }
+			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		var existingCollectionsByTitle: [String: [Collection]] =
-		Dictionary(grouping: existingCollections) { $0.title! }
-		
+		var existingCollectionsByTitle: [String: [Collection]] = Dictionary(grouping: existingCollections) { $0.title! }
 		groupsOfInfos.forEach { groupOfInfos in
 			// Create one group of `Song`s and containers
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
