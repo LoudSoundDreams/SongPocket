@@ -5,15 +5,13 @@ import CoreData
 extension MusicRepo {
 	func updateLibraryItems(existingAndFresh: [(Song, SongInfo)]) {
 		// Merge `Album`s with the same `albumPersistentID`
-		let uniqueAlbumsByID: [AlbumID: Album] = mergeClonedAlbumsAndReturnUniqueAlbumsByID(existingAndFresh: existingAndFresh)
+		let canonicalAlbums: [AlbumID: Album] = mergeClonedAlbumsAndReturnCanonical(existingAndFresh: existingAndFresh)
 		
 		// Move `Song`s to updated `Album`s
-		moveSongsToUpdatedAlbums(
-			existingAndFresh: existingAndFresh,
-			uniqueAlbumsByID: uniqueAlbumsByID)
+		moveSongsToUpdatedAlbums(existingAndFresh: existingAndFresh, canonicalAlbums: canonicalAlbums)
 	}
 	
-	private func mergeClonedAlbumsAndReturnUniqueAlbumsByID(
+	private func mergeClonedAlbumsAndReturnCanonical(
 		existingAndFresh: [(Song, SongInfo)]
 	) -> [AlbumID: Album] {
 		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Apple Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
@@ -54,7 +52,7 @@ extension MusicRepo {
 	
 	private func moveSongsToUpdatedAlbums(
 		existingAndFresh: [(Song, SongInfo)],
-		uniqueAlbumsByID: [AlbumID: Album]
+		canonicalAlbums: [AlbumID: Album]
 	) {
 		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongInfo.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
 		
@@ -68,12 +66,12 @@ extension MusicRepo {
 				leftTuple.0.precedesInUserCustomOrder(rightTuple.0)
 			}
 		}()
-		var existingAlbumsByID = uniqueAlbumsByID
+		var existingAlbums = canonicalAlbums
 		toUpdate.reversed().forEach { (song, info) in
 			// This `Song`’s `albumPersistentID` has changed. Move it to its up-to-date `Album`.
 			let newAlbumID = info.albumID
 			// If we already have a matching `Album` to move the `Song` to…
-			if let existingAlbum = existingAlbumsByID[newAlbumID] {
+			if let existingAlbum = existingAlbums[newAlbumID] {
 				// …then move the `Song` to that `Album`.
 				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
 				
@@ -92,7 +90,7 @@ extension MusicRepo {
 				song.container = newAlbum
 				
 				// Make a note of the new `Album`.
-				existingAlbumsByID[newAlbumID] = newAlbum
+				existingAlbums[newAlbumID] = newAlbum
 			}
 		}
 	}
