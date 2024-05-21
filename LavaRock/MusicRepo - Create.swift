@@ -106,7 +106,7 @@ extension MusicRepo {
 		} else {
 			// Otherwise, create the `Album` to add the `Song`s to…
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
-				newInfo: firstInfo,
+				albumID: firstInfo.albumID,
 				existingCollectionsByTitle: existingCollectionsByTitle,
 				isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
@@ -126,7 +126,7 @@ extension MusicRepo {
 	// MARK: Create containers
 	
 	private func newAlbumAndMaybeNewCollectionMade(
-		newInfo: SongInfo,
+		albumID: AlbumID,
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
@@ -137,9 +137,9 @@ extension MusicRepo {
 			// …then put the album in that collection.
 			let newAlbum: Album = {
 				if isFirstImport {
-					return Album(atEndOf: destination, albumID: newInfo.albumID, context: context)
+					return Album(atEndOf: destination, albumID: albumID, context: context)
 				} else {
-					return Album(atBeginningOf: destination, albumID: newInfo.albumID, context: context)
+					return Album(atBeginningOf: destination, albumID: albumID, context: context)
 				}}()
 			
 			return (newAlbum, nil)
@@ -169,7 +169,7 @@ extension MusicRepo {
 			}()
 			
 			// …and then put the album in that collection.
-			let newAlbum = Album(atEndOf: newCollection, albumID: newInfo.albumID, context: context)
+			let newAlbum = Album(atEndOf: newCollection, albumID: albumID, context: context)
 			
 			return (newAlbum, newCollection)
 		}
