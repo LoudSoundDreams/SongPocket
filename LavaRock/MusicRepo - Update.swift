@@ -71,18 +71,18 @@ extension MusicRepo {
 	) {
 		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongInfo.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
 		
-		// Filter to `Song`s moved to different `Album`s
-		let unsortedOutdatedTuples = existingAndFresh.filter { (song, info) in
-			song.container!.albumPersistentID != info.albumID
-		}
-		
-		// Sort the existing `Song`s by the order they appeared in in the app.
-		let outdatedTuples = unsortedOutdatedTuples.sorted { leftTuple, rightTuple in
-			leftTuple.0.precedesInUserCustomOrder(rightTuple.0)
-		}
-		
+		let toUpdate: [(Song, SongInfo)] = {
+			// Filter to `Song`s moved to different `Album`s
+			let unsortedOutdated = existingAndFresh.filter { (song, info) in
+				info.albumID != song.container!.albumPersistentID
+			}
+			// Sort by the order the user arranged the `Song`s in the app.
+			return unsortedOutdated.sorted { leftTuple, rightTuple in
+				leftTuple.0.precedesInUserCustomOrder(rightTuple.0)
+			}
+		}()
 		var existingAlbumsByID = uniqueAlbumsByID
-		outdatedTuples.reversed().forEach { (song, info) in
+		toUpdate.reversed().forEach { (song, info) in
 			// Move one `Song` to its up-to-date `Album`
 			
 			// Get this `Song`’s fresh `albumPersistentID`.
