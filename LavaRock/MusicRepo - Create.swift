@@ -44,7 +44,7 @@ extension MusicRepo {
 		groupsOfInfos.forEach { groupOfInfos in
 			// Create one group of `Song`s and containers
 			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
-				for: groupOfInfos,
+				newInfos: groupOfInfos,
 				existingAlbumsByID: existingAlbumsByID,
 				existingCollectionsByTitle: existingCollectionsByTitle,
 				isFirstImport: isFirstImport)
@@ -83,19 +83,18 @@ extension MusicRepo {
 	// MARK: - Create groups of songs
 	
 	private func createSongsAndReturnNewContainers(
-		for infos: [SongInfo],
+		newInfos: [SongInfo],
 		existingAlbumsByID: [AlbumID: Album],
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (Album?, Collection?) {
-		let firstInfo = infos.first!
+		let firstInfo = newInfos.first!
 		
 		// If we already have a matching `Album` to add the `Song`s to…
 		let albumID = firstInfo.albumID
 		if let matchingExistingAlbum = existingAlbumsByID[albumID] {
-			
 			// …then add the `Song`s to that `Album`.
-			let songIDs = infos.map { $0.songID }
+			let songIDs = newInfos.map { $0.songID }
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
 				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
 				matchingExistingAlbum.sortSongsByDefaultOrder()
@@ -104,17 +103,16 @@ extension MusicRepo {
 			}
 			
 			return (nil, nil)
-			
 		} else {
 			// Otherwise, create the `Album` to add the `Song`s to…
 			let newContainers = newAlbumAndMaybeNewCollectionMade(
-				for: firstInfo,
+				newInfo: firstInfo,
 				existingCollectionsByTitle: existingCollectionsByTitle,
 				isFirstImport: isFirstImport)
 			let newAlbum = newContainers.album
 			
 			// …and then add the `Song`s to that `Album`.
-			let sortedSongIDs = infos.sorted {
+			let sortedSongIDs = newInfos.sorted {
 				$0.precedesInDefaultOrder(inSameAlbum: $1)
 			}.map {
 				$0.songID
@@ -128,7 +126,7 @@ extension MusicRepo {
 	// MARK: Create containers
 	
 	private func newAlbumAndMaybeNewCollectionMade(
-		for newInfo: SongInfo,
+		newInfo: SongInfo,
 		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
 	) -> (album: Album, collection: Collection?) {
@@ -136,23 +134,15 @@ extension MusicRepo {
 		
 		// If we already have a matching collection to put the album into…
 		if let destination = existingCollectionsByTitle.values.first?.first {
-			
 			// …then put the album in that collection.
 			let newAlbum: Album = {
 				if isFirstImport {
-					return Album(
-						atEndOf: destination,
-						albumID: newInfo.albumID,
-						context: context)
+					return Album(atEndOf: destination, albumID: newInfo.albumID, context: context)
 				} else {
-					return Album(
-						atBeginningOf: destination,
-						albumID: newInfo.albumID,
-						context: context)
+					return Album(atBeginningOf: destination, albumID: newInfo.albumID, context: context)
 				}}()
 			
 			return (newAlbum, nil)
-			
 		} else {
 			// Otherwise, create the collection to put the album in…
 			let newCollection: Collection = {
@@ -179,10 +169,7 @@ extension MusicRepo {
 			}()
 			
 			// …and then put the album in that collection.
-			let newAlbum = Album(
-				atEndOf: newCollection,
-				albumID: newInfo.albumID,
-				context: context)
+			let newAlbum = Album(atEndOf: newCollection, albumID: newInfo.albumID, context: context)
 			
 			return (newAlbum, newCollection)
 		}
