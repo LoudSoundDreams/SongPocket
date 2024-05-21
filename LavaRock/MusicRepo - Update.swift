@@ -17,15 +17,14 @@ extension MusicRepo {
 		existingAndFresh: [(Song, SongInfo)]
 	) -> [AlbumID: Album] {
 		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Apple Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
-		// We never should have ended up with two `Album`s with the same `albumPersistentID` in the first place, but this makes the merger resilient to that mistake.
+		// We never should have had two `Album`s with the same `albumPersistentID`, but this code makes our database resilient to that problem.
 		
-		// To merge `Album`s, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
-		// Specifically, if a `Song`’s `Album` isn’t the uppermost one in the user’s custom order with that `albumPersistentID`, then move it to the end of that `Album`.
+		// To merge `Album`s with the same `albumPersistentID`, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
+		// The one `Album` we’ll keep is the uppermost in the user’s custom order.
 		
-		let allAlbums = Album.allFetched(sorted: true, context: context)
-		
-		// We only really need a `Set<Album>` here, but `moveSongsToUpdatedAlbums` needs a `[AlbumID: Album]`, so we can reuse this.
-		let uniqueAlbumsByID: Dictionary<AlbumID, Album> = {
+		// We only really need a `Set<Album>` here, but `moveSongsToUpdatedAlbums` needs a `[AlbumID: Album]` anyway, so we can reuse this.
+		let uniqueAlbumsByID: [AlbumID: Album] = {
+			let allAlbums = Album.allFetched(sorted: true, context: context)
 			let tuplesForAllAlbums = allAlbums.map { album in
 				(album.albumPersistentID, album)
 			}
@@ -33,9 +32,9 @@ extension MusicRepo {
 		}()
 		
 		// Filter to `Song`s in cloned `Album`s
-		// Don’t actually move the `Song`s we need to move yet, because we haven’t sorted them yet.
+		// Don’t actually move any `Song`s, because we haven’t sorted them yet.
 		// Filter before sorting. It’s faster.
-		let unsortedSongsToMove: [Song] = existingAndFresh.compactMap { (song, _) in
+		let unsortedToMove: [Song] = existingAndFresh.compactMap { (song, _) in
 			let potentiallyClonedAlbum = song.container!
 			let canonicalAlbum = uniqueAlbumsByID[potentiallyClonedAlbum.albumPersistentID]
 			if potentiallyClonedAlbum.objectID == canonicalAlbum?.objectID {
@@ -47,13 +46,8 @@ extension MusicRepo {
 		
 		// `Song`s will very rarely make it past this point.
 		
-		// Sort `Song`s in cloned `Album`s
-		let songsToMove = unsortedSongsToMove.sorted {
-			$0.precedesInUserCustomOrder($1)
-		}
-		
-		// Move `Song`s from cloned `Album`s
-		songsToMove.forEach { song in
+		let toMove = unsortedToMove.sorted { $0.precedesInUserCustomOrder($1) }
+		toMove.forEach { song in
 			let targetAlbum = uniqueAlbumsByID[song.container!.albumPersistentID]!
 			let newIndexOfSong = targetAlbum.contents?.count ?? 0
 			song.container = targetAlbum
