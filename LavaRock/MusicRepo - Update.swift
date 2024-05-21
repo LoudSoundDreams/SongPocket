@@ -33,22 +33,18 @@ extension MusicRepo {
 		// Don’t actually move any `Song`s, because we haven’t sorted them yet.
 		let unsortedToMove: [Song] = existingAndFresh.compactMap { (song, _) in
 			let album = song.container!
-			let canonical = topmostUniqueAlbums[album.albumPersistentID]
-			if album.objectID == canonical?.objectID {
-				return nil
-			} else {
-				return song
-			}
+			let canonical = topmostUniqueAlbums[album.albumPersistentID]!
+			guard canonical.objectID != album.objectID else { return nil }
+			return song
 		}
 		
 		// `Song`s will very rarely make it past this point.
 		
 		let toMove = unsortedToMove.sorted { $0.precedesInUserCustomOrder($1) }
 		toMove.forEach { song in
-			let targetAlbum = topmostUniqueAlbums[song.container!.albumPersistentID]!
-			let newIndexOfSong = targetAlbum.contents?.count ?? 0
-			song.container = targetAlbum
-			song.index = Int64(newIndexOfSong)
+			let destination = topmostUniqueAlbums[song.container!.albumPersistentID]!
+			song.index = Int64(destination.contents?.count ?? 0)
+			song.container = destination
 		}
 		
 		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
