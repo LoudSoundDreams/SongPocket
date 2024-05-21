@@ -5,7 +5,7 @@ import CoreData
 extension MusicRepo {
 	func updateLibraryItems(existingAndFresh: [(Song, SongInfo)]) {
 		// Merge `Album`s with the same `albumPersistentID`
-		let uniqueAlbumsByID = mergeClonedAlbumsAndReturnUniqueAlbumsByID(existingAndFresh: existingAndFresh)
+		let uniqueAlbumsByID: [AlbumID: Album] = mergeClonedAlbumsAndReturnUniqueAlbumsByID(existingAndFresh: existingAndFresh)
 		
 		// Move `Song`s to updated `Album`s
 		moveSongsToUpdatedAlbums(
