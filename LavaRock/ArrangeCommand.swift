@@ -108,7 +108,7 @@ enum ArrangeCommand {
 					&& left?.trackNumberOnDisk == right?.trackNumberOnDisk
 				} areInOrder: {
 					guard let left = $0.info, let right = $1.info else { return true }
-					return left.precedesByTrackNumber(right)
+					return left.precedesNumerically(inSameAlbum: right, shouldResortToTitle: false)
 				}
 				return sorted.map { $0.song }
 		}
