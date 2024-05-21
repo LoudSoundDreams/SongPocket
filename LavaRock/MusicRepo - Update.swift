@@ -21,9 +21,7 @@ extension MusicRepo {
 		
 		// To merge `Album`s with the same `albumPersistentID`, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
 		// The one `Album` we’ll keep is the uppermost in the user’s custom order.
-		
-		// We only really need a `Set<Album>` here, but `moveSongsToUpdatedAlbums` needs a `[AlbumID: Album]` anyway, so we can reuse this.
-		let uniqueAlbumsByID: [AlbumID: Album] = {
+		let topmostUniqueAlbums: [AlbumID: Album] = {
 			let allAlbums = Album.allFetched(sorted: true, context: context)
 			let tuplesForAllAlbums = allAlbums.map { album in
 				(album.albumPersistentID, album)
@@ -33,11 +31,10 @@ extension MusicRepo {
 		
 		// Filter to `Song`s in cloned `Album`s
 		// Don’t actually move any `Song`s, because we haven’t sorted them yet.
-		// Filter before sorting. It’s faster.
 		let unsortedToMove: [Song] = existingAndFresh.compactMap { (song, _) in
-			let potentiallyClonedAlbum = song.container!
-			let canonicalAlbum = uniqueAlbumsByID[potentiallyClonedAlbum.albumPersistentID]
-			if potentiallyClonedAlbum.objectID == canonicalAlbum?.objectID {
+			let album = song.container!
+			let canonical = topmostUniqueAlbums[album.albumPersistentID]
+			if album.objectID == canonical?.objectID {
 				return nil
 			} else {
 				return song
@@ -48,7 +45,7 @@ extension MusicRepo {
 		
 		let toMove = unsortedToMove.sorted { $0.precedesInUserCustomOrder($1) }
 		toMove.forEach { song in
-			let targetAlbum = uniqueAlbumsByID[song.container!.albumPersistentID]!
+			let targetAlbum = topmostUniqueAlbums[song.container!.albumPersistentID]!
 			let newIndexOfSong = targetAlbum.contents?.count ?? 0
 			song.container = targetAlbum
 			song.index = Int64(newIndexOfSong)
@@ -56,7 +53,7 @@ extension MusicRepo {
 		
 		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
 		
-		return uniqueAlbumsByID
+		return topmostUniqueAlbums
 	}
 	
 	private func moveSongsToUpdatedAlbums(
