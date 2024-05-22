@@ -103,8 +103,10 @@ enum ArrangeCommand {
 				let sorted = songsAndInfos.sortedMaintainingOrderWhen {
 					let left = $0.info
 					let right = $1.info
-					return left?.discNumberOnDisk == right?.discNumberOnDisk
-					&& left?.trackNumberOnDisk == right?.trackNumberOnDisk
+					return (
+						left?.discNumberOnDisk == right?.discNumberOnDisk
+						&& left?.trackNumberOnDisk == right?.trackNumberOnDisk
+					)
 				} areInOrder: {
 					guard let left = $0.info, let right = $1.info else { return true }
 					return left.precedesNumerically(inSameAlbum: right, shouldResortToTitle: false)

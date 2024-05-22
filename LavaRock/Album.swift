@@ -52,20 +52,17 @@ extension Album {
 	final func sortSongsByDefaultOrder() {
 		let songs = songs(sorted: false)
 		
-		// Behavior is undefined if you compare `Song`s that correspond to `SongInfo`s from different albums.
 		// `Song`s that don’t have a corresponding `SongInfo` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
 		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
 			var songsAndInfos = songs.map {
 				(song: $0,
 				 info: $0.songInfo()) // Can be `nil`
 			}
-			
-			songsAndInfos.sort { leftTuple, rightTuple in
-				guard let leftInfo = leftTuple.info, let rightInfo = rightTuple.info else { return true }
-				return leftInfo.precedesNumerically(inSameAlbum: rightInfo, shouldResortToTitle: true)
+			songsAndInfos.sort {
+				guard let left = $0.info, let right = $1.info else { return true }
+				return left.precedesNumerically(inSameAlbum: right, shouldResortToTitle: true)
 			}
-			
-			return songsAndInfos.map { tuple in tuple.song }
+			return songsAndInfos.map { $0.song }
 		}
 		
 		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
