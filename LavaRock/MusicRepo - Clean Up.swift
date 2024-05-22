@@ -19,8 +19,19 @@ extension MusicRepo {
 		
 		recalculateReleaseDateEstimates(for: allAlbums, considering: allInfos)
 		
-		Collection.allFetched(sorted: false, context: context).forEach {
-			Self.reindexAlbums(in: $0, shouldSortByNewestFirst: isFirstImport)
+		Collection.allFetched(sorted: false, context: context).forEach { collection in
+			// If this is the first import, sort `Album`s by newest first.
+			// Always reindex all `Album`s, because we might have deleted some, which leaves gaps in the indices.
+			let albums: [Album] = {
+				let byIndex = collection.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
+				guard isFirstImport else { return byIndex }
+				return byIndex.sortedMaintainingOrderWhen {
+					$0.releaseDateEstimate == $1.releaseDateEstimate
+				} areInOrder: {
+					$0.precedesByNewestFirst($1)
+				}
+			}()
+			Database.renumber(albums)
 		}
 		allAlbums.forEach {
 			let songs = $0.songs(sorted: true)
@@ -57,24 +68,5 @@ extension MusicRepo {
 			// Find the latest of those release dates
 			album.releaseDateEstimate = matchingReleaseDates.max()
 		}
-	}
-	
-	// MARK: Reindex
-	
-	private static func reindexAlbums(
-		in collection: Collection,
-		shouldSortByNewestFirst: Bool
-	) {
-		var albumsInCollection = collection.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
-		
-		if shouldSortByNewestFirst {
-			albumsInCollection = albumsInCollection.sortedMaintainingOrderWhen {
-				$0.releaseDateEstimate == $1.releaseDateEstimate
-			} areInOrder: {
-				$0.precedesByNewestFirst($1)
-			}
-		}
-		
-		Database.renumber(albumsInCollection)
 	}
 }
