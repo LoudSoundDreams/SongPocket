@@ -285,10 +285,14 @@ final class MusicRepo: ObservableObject {
 			// …then add the `Song`s to that `Album`.
 			let songIDs = newInfos.map { $0.songID }
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
-				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
+				songIDs.reversed().forEach {
+					let _ = Song(atBeginningOf: matchingExistingAlbum, songID: $0)
+				}
 				matchingExistingAlbum.sortSongsByDefaultOrder()
 			} else {
-				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
+				songIDs.reversed().forEach {
+					let _ = Song(atBeginningOf: matchingExistingAlbum, songID: $0)
+				}
 			}
 			
 			return nil
@@ -302,7 +306,9 @@ final class MusicRepo: ObservableObject {
 			}.map {
 				$0.songID
 			}
-			newAlbum.createSongsAtEnd(with: sortedSongIDs)
+			sortedSongIDs.forEach {
+				let _ = Song(atEndOf: newAlbum, songID: $0)
+			}
 			
 			return newAlbum
 		}

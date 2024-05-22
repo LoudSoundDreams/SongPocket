@@ -89,27 +89,6 @@ extension Album {
 		Database.renumber(sortedSongs)
 	}
 	
-	// MARK: Creating
-	
-	final func createSongsAtEnd(with songIDs: [SongID]) {
-		songIDs.forEach {
-			let _ = Song(
-				atEndOf: self,
-				songID: $0,
-				context: managedObjectContext!)
-		}
-	}
-	
-	// Use `createSongsAtEnd` if possible. It’s faster.
-	final func createSongsAtBeginning(with songIDs: [SongID]) {
-		songIDs.reversed().forEach {
-			let _ = Song(
-				atBeginningOf: self,
-				songID: $0,
-				context: managedObjectContext!)
-		}
-	}
-	
 	// MARK: - Sorting
 	
 	final func precedesByNewestFirst(_ other: Album) -> Bool {

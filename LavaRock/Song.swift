@@ -3,29 +3,24 @@
 import CoreData
 
 extension Song {
-	convenience init(
-		atEndOf album: Album,
-		songID: SongID,
-		context: NSManagedObjectContext
-	) {
+	convenience init?(atEndOf album: Album, songID: SongID) {
+		guard let context = album.managedObjectContext else { return nil }
 		self.init(context: context)
-		persistentID = songID
 		index = Int64(album.contents?.count ?? 0)
 		container = album
+		persistentID = songID
 	}
 	
-	// Use `init(atEndOf:songID:context:)` if possible. It’s faster.
-	convenience init(
-		atBeginningOf album: Album,
-		songID: SongID,
-		context: NSManagedObjectContext
-	) {
+	// Use `init(atEndOf:songID:)` if possible. It’s faster.
+	convenience init?(atBeginningOf album: Album, songID: SongID) {
+		guard let context = album.managedObjectContext else { return nil }
+		
 		album.songs(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		persistentID = songID
 		index = 0
 		container = album
+		persistentID = songID
 	}
 	
 	final func isAtBottomOfAlbum() -> Bool {
