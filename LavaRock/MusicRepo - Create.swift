@@ -7,7 +7,6 @@ extension MusicRepo {
 	func createLibraryItems(
 		newInfos: [SongInfo],
 		existingAlbums: [Album],
-		existingCollections: [Collection],
 		isFirstImport: Bool
 	) {
 		func byAlbumID(infos: [SongInfo]) -> [AlbumID: [SongInfo]] {
@@ -40,23 +39,14 @@ extension MusicRepo {
 			let tuples = existingAlbums.map { album in (album.albumPersistentID, album) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		var existingCollectionsByTitle: [String: [Collection]] = Dictionary(grouping: existingCollections) { $0.title! }
 		groupsOfInfos.forEach { groupOfInfos in
 			// Create one group of `Song`s and containers
-			let (newAlbum, newCollection) = createSongsAndReturnNewContainers(
+			if let newAlbum = createSongsAndReturnNewAlbum(
 				newInfos: groupOfInfos,
 				existingAlbumsByID: existingAlbumsByID,
-				existingCollectionsByTitle: existingCollectionsByTitle,
-				isFirstImport: isFirstImport)
-			
-			if let newAlbum {
+				isFirstImport: isFirstImport
+			) {
 				existingAlbumsByID[newAlbum.albumPersistentID] = newAlbum
-			}
-			if let newCollection {
-				let title = newCollection.title!
-				let oldBucket = existingCollectionsByTitle[title] ?? []
-				let newBucket = [newCollection] + oldBucket
-				existingCollectionsByTitle[title] = newBucket
 			}
 		}
 	}
@@ -82,12 +72,11 @@ extension MusicRepo {
 	
 	// MARK: - Create groups of songs
 	
-	private func createSongsAndReturnNewContainers(
+	private func createSongsAndReturnNewAlbum(
 		newInfos: [SongInfo],
 		existingAlbumsByID: [AlbumID: Album],
-		existingCollectionsByTitle: [String: [Collection]],
 		isFirstImport: Bool
-	) -> (Album?, Collection?) {
+	) -> Album? {
 		let firstInfo = newInfos.first!
 		
 		// If we already have a matching `Album` to add the `Song`s to…
@@ -102,14 +91,10 @@ extension MusicRepo {
 				matchingExistingAlbum.createSongsAtBeginning(with: songIDs)
 			}
 			
-			return (nil, nil)
+			return nil
 		} else {
 			// Otherwise, create the `Album` to add the `Song`s to…
-			let newContainers = newAlbumAndMaybeNewCollectionMade(
-				albumID: firstInfo.albumID,
-				existingCollectionsByTitle: existingCollectionsByTitle,
-				isFirstImport: isFirstImport)
-			let newAlbum = newContainers.album
+			let newAlbum = createAlbum(albumID: firstInfo.albumID, isFirstImport: isFirstImport)
 			
 			// …and then add the `Song`s to that `Album`.
 			let sortedSongIDs = newInfos.sorted {
@@ -119,59 +104,27 @@ extension MusicRepo {
 			}
 			newAlbum.createSongsAtEnd(with: sortedSongIDs)
 			
-			return newContainers
+			return newAlbum
 		}
 	}
 	
 	// MARK: Create containers
 	
-	private func newAlbumAndMaybeNewCollectionMade(
-		albumID: AlbumID,
-		existingCollectionsByTitle: [String: [Collection]],
-		isFirstImport: Bool
-	) -> (album: Album, collection: Collection?) {
-		let titleOfDestination = LRString.tilde
-		
-		// If we already have a matching collection to put the album into…
-		if let destination = existingCollectionsByTitle.values.first?.first {
-			// …then put the album in that collection.
-			let newAlbum: Album = {
-				if isFirstImport {
-					return Album(atEndOf: destination, albumID: albumID, context: context)
-				} else {
-					return Album(atBeginningOf: destination, albumID: albumID, context: context)
-				}}()
-			
-			return (newAlbum, nil)
+	private func createAlbum(albumID: AlbumID, isFirstImport: Bool) -> Album {
+		let collection: Collection = {
+			if let existing = Collection.allFetched(sorted: false, context: context).first {
+				// Order doesn’t matter, because our database should contain exactly 0 or 1 `Collection`s at this point.
+				return existing
+			}
+			let new = Collection(context: context)
+			new.index = 0
+			new.title = LRString.tilde
+			return new
+		}()
+		if isFirstImport {
+			return Album(atEndOf: collection, albumID: albumID, context: context)
 		} else {
-			// Otherwise, create the collection to put the album in…
-			let newCollection: Collection = {
-				if isFirstImport {
-					// At the end
-					let existingCount = existingCollectionsByTitle.reduce(0) { partialResult, entry in
-						partialResult + entry.value.count
-					}
-					let result = Collection(context: context)
-					result.index = Int64(existingCount)
-					result.title = titleOfDestination
-					return result
-				} else {
-					// At the beginning
-					
-					// Displace others
-					Collection.allFetched(sorted: false, context: context).forEach { $0.index += 1 }
-					
-					let result = Collection(context: context)
-					result.index = Int64(0)
-					result.title = titleOfDestination
-					return result
-				}
-			}()
-			
-			// …and then put the album in that collection.
-			let newAlbum = Album(atEndOf: newCollection, albumID: albumID, context: context)
-			
-			return (newAlbum, newCollection)
+			return Album(atBeginningOf: collection, albumID: albumID, context: context)
 		}
 	}
 }
