@@ -72,10 +72,10 @@ extension NSManagedObjectContext {
 	
 	final func move(
 		albumIDs: [NSManagedObjectID],
-		toCollectionWith collectionID: NSManagedObjectID
+		toCollectionID: NSManagedObjectID
 	) {
 		let toMove = albumIDs.map { object(with: $0) } as! [Album]
-		let destination = object(with: collectionID) as! Collection
+		let destination = object(with: toCollectionID) as! Collection
 		let sourceCollections = Set(toMove.map { $0.container! })
 		
 		// Displace existing contents
