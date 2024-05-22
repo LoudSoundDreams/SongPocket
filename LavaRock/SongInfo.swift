@@ -103,7 +103,7 @@ extension SongInfo {
 	}
 }
 
-// MARK: - Media Player
+// MARK: - Apple Music
 
 import MediaPlayer
 extension MPMediaItem: SongInfo {

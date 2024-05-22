@@ -60,7 +60,7 @@ extension Album {
 	}
 }
 
-// MARK: - Media Player
+// MARK: - Apple Music
 
 import MediaPlayer
 extension Album {
