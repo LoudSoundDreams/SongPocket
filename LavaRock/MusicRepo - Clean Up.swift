@@ -15,12 +15,11 @@ extension MusicRepo {
 		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
 		context.deleteEmptyCollections()
 		
-		let allCollections = Collection.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for reindexing the albums within each collection.
 		let allAlbums = Album.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
 		recalculateReleaseDateEstimates(for: allAlbums, considering: allInfos)
 		
-		allCollections.forEach {
+		Collection.allFetched(sorted: false, context: context).forEach {
 			Self.reindexAlbums(in: $0, shouldSortByNewestFirst: isFirstImport)
 		}
 		allAlbums.forEach {
