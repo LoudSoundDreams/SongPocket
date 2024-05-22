@@ -102,9 +102,14 @@ final class MusicRepo: ObservableObject {
 	private func smooshAllCollections() {
 		let allCollections = Collection.allFetched(sorted: true, context: context)
 		guard let firstCollection = allCollections.first else { return }
+		
 		firstCollection.title = LRString.tilde
-		guard allCollections.count >= 2 else { return }
-		let allAlbums = allCollections.flatMap { $0.albums(sorted: true) }
-		context.move(albumIDs: allAlbums.map { $0.objectID }, toCollectionID: firstCollection.objectID)
+		allCollections.dropFirst().forEach { laterCollection in
+			laterCollection.albums(sorted: true).forEach { album in
+				album.index = Int64(firstCollection.contents?.count ?? 0)
+				album.container = firstCollection
+			}
+		}
+		context.deleteEmptyCollections()
 	}
 }
