@@ -278,17 +278,17 @@ final class MusicRepo: ObservableObject {
 		
 		// If we already have a matching `Album` to add the `Song`s to…
 		let albumID = firstInfo.albumID
-		if let matchingExistingAlbum = existingAlbums[albumID] {
+		if let existingAlbum = existingAlbums[albumID] {
 			// …then add the `Song`s to that `Album`.
 			let songIDs = newInfos.map { $0.songID }
-			if matchingExistingAlbum.songsAreInDefaultOrder() {
+			if existingAlbum.songsAreInDefaultOrder() {
 				songIDs.reversed().forEach {
-					let _ = Song(atBeginningOf: matchingExistingAlbum, songID: $0)
+					let _ = Song(atBeginningOf: existingAlbum, songID: $0)
 				}
-				matchingExistingAlbum.sortSongsByDefaultOrder()
+				existingAlbum.sortSongsByDefaultOrder()
 			} else {
 				songIDs.reversed().forEach {
-					let _ = Song(atBeginningOf: matchingExistingAlbum, songID: $0)
+					let _ = Song(atBeginningOf: existingAlbum, songID: $0)
 				}
 			}
 			
