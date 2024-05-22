@@ -49,26 +49,6 @@ extension Album {
 	
 	// MARK: - Sorting
 	
-	final func sortSongsByDefaultOrder() {
-		let songs = songs(sorted: false)
-		
-		// `Song`s that don’t have a corresponding `SongInfo` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
-		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
-			var songsAndInfos = songs.map {
-				(song: $0,
-				 info: $0.songInfo()) // Can be `nil`
-			}
-			songsAndInfos.sort {
-				guard let left = $0.info, let right = $1.info else { return true }
-				return left.precedesNumerically(inSameAlbum: right, shouldResortToTitle: true)
-			}
-			return songsAndInfos.map { $0.song }
-		}
-		
-		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
-		Database.renumber(sortedSongs)
-	}
-	
 	final func precedesByNewestFirst(_ other: Album) -> Bool {
 		// Leave elements in the same order if they both have no release date, or the same release date.
 		

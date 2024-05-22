@@ -294,7 +294,8 @@ final class MusicRepo: ObservableObject {
 				songIDs.reversed().forEach {
 					let _ = Song(atBeginningOf: existingAlbum, songID: $0)
 				}
-				existingAlbum.sortSongsByDefaultOrder()
+				
+				Self.sortSongsByDefaultOrder(in: existingAlbum)
 			} else {
 				songIDs.reversed().forEach {
 					let _ = Song(atBeginningOf: existingAlbum, songID: $0)
@@ -316,6 +317,25 @@ final class MusicRepo: ObservableObject {
 			
 			return newAlbum
 		}
+	}
+	private static func sortSongsByDefaultOrder(in album: Album) {
+		let songs = album.songs(sorted: false)
+		
+		// `Song`s that don’t have a corresponding `SongInfo` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
+		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
+			var songsAndInfos = songs.map {
+				(song: $0,
+				 info: $0.songInfo()) // Can be `nil`
+			}
+			songsAndInfos.sort {
+				guard let left = $0.info, let right = $1.info else { return true }
+				return left.precedesNumerically(inSameAlbum: right, shouldResortToTitle: true)
+			}
+			return songsAndInfos.map { $0.song }
+		}
+		
+		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
+		Database.renumber(sortedSongs)
 	}
 	private func createAlbum(albumID: AlbumID, isFirstImport: Bool) -> Album {
 		let collection: Collection = {
