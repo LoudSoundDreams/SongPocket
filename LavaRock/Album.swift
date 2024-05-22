@@ -3,32 +3,27 @@
 import CoreData
 
 extension Album {
-	convenience init(
-		atEndOf collection: Collection,
-		albumID: AlbumID,
-		context: NSManagedObjectContext
-	) {
+	convenience init?(atEndOf collection: Collection, albumID: AlbumID) {
+		guard let context = collection.managedObjectContext else { return nil }
 		self.init(context: context)
-		albumPersistentID = albumID
 		index = Int64(collection.contents?.count ?? 0)
 		container = collection
+		albumPersistentID = albumID
 	}
 	
-	// Use `init(atEndOf:albumID:context:)` if possible. It’s faster.
-	convenience init(
-		atBeginningOf collection: Collection,
-		albumID: AlbumID,
-		context: NSManagedObjectContext
-	) {
+	// Use `init(atEndOf:albumID:)` if possible. It’s faster.
+	convenience init?(atBeginningOf collection: Collection, albumID: AlbumID) {
+		guard let context = collection.managedObjectContext else { return nil }
+		
 		collection.albums(sorted: false).forEach { $0.index += 1 }
 		
 		self.init(context: context)
-		albumPersistentID = albumID
 		index = 0
 		container = collection
+		albumPersistentID = albumID
 	}
 	
-	// MARK: - All instances
+	// MARK: - Fetching
 	
 	// Similar to `Collection.allFetched`.
 	static func allFetched(
@@ -42,8 +37,6 @@ extension Album {
 		return context.objectsFetched(for: fetchRequest)
 	}
 	
-	// MARK: - Songs
-	
 	// Similar to `Collection.albums`.
 	final func songs(sorted: Bool) -> [Song] {
 		guard let contents else { return [] }
@@ -53,6 +46,8 @@ extension Album {
 		
 		return unsorted.sorted { $0.index < $1.index }
 	}
+	
+	// MARK: - Sorting
 	
 	final func songsAreInDefaultOrder() -> Bool {
 		let infos = songs(sorted: true).compactMap { $0.songInfo() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
@@ -88,8 +83,6 @@ extension Album {
 		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
 		Database.renumber(sortedSongs)
 	}
-	
-	// MARK: - Sorting
 	
 	final func precedesByNewestFirst(_ other: Album) -> Bool {
 		// Leave elements in the same order if they both have no release date, or the same release date.

@@ -23,6 +23,8 @@ extension Song {
 		persistentID = songID
 	}
 	
+	// MARK: -
+	
 	final func isAtBottomOfAlbum() -> Bool {
 		guard
 			let myID = songInfo()?.songID,

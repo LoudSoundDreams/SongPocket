@@ -192,10 +192,7 @@ final class MusicRepo: ObservableObject {
 			} else {
 				// Otherwise, create the `Album` to move the `Song` to…
 				let existingCollection = song.container!.container!
-				let newAlbum = Album(
-					atBeginningOf: existingCollection,
-					albumID: freshAlbumID,
-					context: context)
+				let newAlbum = Album(atBeginningOf: existingCollection, albumID: freshAlbumID)
 				
 				// …and then move the `Song` to that `Album`.
 				song.index = 0
@@ -325,9 +322,9 @@ final class MusicRepo: ObservableObject {
 			return new
 		}()
 		if isFirstImport {
-			return Album(atEndOf: collection, albumID: albumID, context: context)
+			return Album(atEndOf: collection, albumID: albumID)!
 		} else {
-			return Album(atBeginningOf: collection, albumID: albumID, context: context)
+			return Album(atBeginningOf: collection, albumID: albumID)!
 		}
 	}
 	

@@ -3,7 +3,7 @@
 import CoreData
 
 extension Collection {
-	// MARK: - All instances
+	// MARK: - Fetching
 	
 	// Similar to `Album.allFetched`.
 	static func allFetched(
@@ -16,8 +16,6 @@ extension Collection {
 		}
 		return context.objectsFetched(for: fetchRequest)
 	}
-	
-	// MARK: - Albums
 	
 	// Similar to `Album.songs`.
 	final func albums(sorted: Bool) -> [Album] {
