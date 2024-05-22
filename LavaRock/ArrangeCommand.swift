@@ -74,7 +74,6 @@ enum ArrangeCommand {
 					leftTuple.dateFirstAdded > rightTuple.dateFirstAdded
 				}
 				return sorted.map { $0.album }
-				
 			case .album_newest:
 				guard let albums = items as? [Album] else { return items }
 				return albums.sortedMaintainingOrderWhen {
