@@ -54,9 +54,6 @@ extension SongInfo {
 		return myAlbumArtist.precedesInFinder(otherAlbumArtist)
 	}
 	
-	func precedesInDefaultOrder(inSameAlbum: SongInfo) -> Bool {
-		return precedesNumerically(inSameAlbum: inSameAlbum, shouldResortToTitle: true)
-	}
 	// Behavior is undefined if you compare with a `SongInfo` from a different album.
 	func precedesNumerically(
 		inSameAlbum other: SongInfo,

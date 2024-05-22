@@ -62,7 +62,7 @@ extension Album {
 			
 			songsAndInfos.sort { leftTuple, rightTuple in
 				guard let leftInfo = leftTuple.info, let rightInfo = rightTuple.info else { return true }
-				return leftInfo.precedesInDefaultOrder(inSameAlbum: rightInfo)
+				return leftInfo.precedesNumerically(inSameAlbum: rightInfo, shouldResortToTitle: true)
 			}
 			
 			return songsAndInfos.map { tuple in tuple.song }
