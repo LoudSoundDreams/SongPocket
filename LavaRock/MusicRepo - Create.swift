@@ -4,11 +4,7 @@ import CoreData
 
 extension MusicRepo {
 	// Create new managed objects for the new `SongInfo`s, including new `Album`s and `Collection`s to put them in if necessary.
-	func createLibraryItems(
-		newInfos: [SongInfo],
-		existingAlbums: [Album],
-		isFirstImport: Bool
-	) {
+	func createLibraryItems(newInfos: [SongInfo], isFirstImport: Bool) {
 		func byAlbumID(infos: [SongInfo]) -> [AlbumID: [SongInfo]] {
 			return Dictionary(grouping: infos) { $0.albumID }
 		}
@@ -35,18 +31,19 @@ extension MusicRepo {
 			// We’ll sort `Song`s within each `Album` later, because it depends on whether the existing `Song`s in each `Album` are in album order.
 		}()
 		
-		var existingAlbumsByID: [AlbumID: Album] = {
-			let tuples = existingAlbums.map { album in (album.albumPersistentID, album) }
+		var existingAlbums: [AlbumID: Album] = {
+			let allAlbums = Album.allFetched(sorted: false, context: context)
+			let tuples = allAlbums.map { ($0.albumPersistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
 		groupsOfInfos.forEach { groupOfInfos in
 			// Create one group of `Song`s and containers
 			if let newAlbum = createSongsAndReturnNewAlbum(
 				newInfos: groupOfInfos,
-				existingAlbumsByID: existingAlbumsByID,
+				existingAlbums: existingAlbums,
 				isFirstImport: isFirstImport
 			) {
-				existingAlbumsByID[newAlbum.albumPersistentID] = newAlbum
+				existingAlbums[newAlbum.albumPersistentID] = newAlbum
 			}
 		}
 	}
@@ -74,14 +71,14 @@ extension MusicRepo {
 	
 	private func createSongsAndReturnNewAlbum(
 		newInfos: [SongInfo],
-		existingAlbumsByID: [AlbumID: Album],
+		existingAlbums: [AlbumID: Album],
 		isFirstImport: Bool
 	) -> Album? {
 		let firstInfo = newInfos.first!
 		
 		// If we already have a matching `Album` to add the `Song`s to…
 		let albumID = firstInfo.albumID
-		if let matchingExistingAlbum = existingAlbumsByID[albumID] {
+		if let matchingExistingAlbum = existingAlbums[albumID] {
 			// …then add the `Song`s to that `Album`.
 			let songIDs = newInfos.map { $0.songID }
 			if matchingExistingAlbum.songsAreInDefaultOrder() {
