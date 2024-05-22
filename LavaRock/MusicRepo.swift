@@ -281,7 +281,14 @@ final class MusicRepo: ObservableObject {
 		if let existingAlbum = existingAlbums[albumID] {
 			// …then add the `Song`s to that `Album`.
 			let songIDs = newInfos.map { $0.songID }
-			if existingAlbum.songsAreInDefaultOrder() {
+			let isInDefaultOrder: Bool = {
+				let infos = existingAlbum.songs(sorted: true).compactMap { $0.songInfo() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
+				let orderedInfos = infos.sorted { $0.precedesInDefaultOrder(inSameAlbum: $1) }
+				return infos.indices.allSatisfy { index in
+					infos[index].songID == orderedInfos[index].songID
+				}
+			}()
+			if isInDefaultOrder {
 				songIDs.reversed().forEach {
 					let _ = Song(atBeginningOf: existingAlbum, songID: $0)
 				}

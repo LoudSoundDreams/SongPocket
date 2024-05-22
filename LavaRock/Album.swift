@@ -49,18 +49,6 @@ extension Album {
 	
 	// MARK: - Sorting
 	
-	final func songsAreInDefaultOrder() -> Bool {
-		let infos = songs(sorted: true).compactMap { $0.songInfo() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
-		
-		let sortedInfos = infos.sorted {
-			$0.precedesInDefaultOrder(inSameAlbum: $1)
-		}
-		
-		return infos.indices.allSatisfy { index in
-			infos[index].songID == sortedInfos[index].songID
-		}
-	}
-	
 	final func sortSongsByDefaultOrder() {
 		let songs = songs(sorted: false)
 		
