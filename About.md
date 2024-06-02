@@ -22,7 +22,7 @@ That means you can adapt or share it, but when you do so, please…
 
 Be reasonable. Contact me with any questions.
 
-# How to compile
+# Compiling
 
 1. Install Xcode on your Mac.
 2. Download the code for SongPocket, then open “LavaRock.xcodeproj”. (That’s SongPocket’s internal name.)
@@ -45,7 +45,7 @@ In the Simulator, most Apple Music features are unavailable, so you’ll need to
 
 For help, see [Apple’s documentation](https://developer.apple.com/documentation/xcode/running-your-app-in-simulator-or-on-a-device/#Connect-real-devices-to-your-Mac).
 
-## To submit changes
+# Contributing
 
 Fork this repo, make your changes in your fork, then open a pull request against my repo. For help, see [GitHub’s documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models#fork-and-pull-model).
 
@@ -55,7 +55,8 @@ If you change the UI, include screenshots. (You were looking at it anyway, right
 
 SongPocket won’t do everything for everyone, and generally, we should [remove](https://ignorethecode.net/blog/2010/02/02/removing-features) and [say no](https://alexgaynor.net/2020/nov/30/why-software-ends-up-complex) to features more often, for a simpler experience.
 
-So, tentatively…
+So, tentatively, Songpocket…
 
-1. SongPocket won’t replace iOS’s Music app. This lets it do better what iOS Music doesn’t focus on. (Besides, [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for removing items from the user’s library.)
-2. SongPocket won’t offer multiple ways to do the same action. [Monotonous design is better.](https://verbnounenter.net/monotony)
+1. Won’t offer multiple ways to do the same action. [Monotonous design is better.](https://verbnounenter.net/monotony)
+2. Won’t replace iOS’s Music app. This lets it do better what iOS Music doesn’t focus on. (Besides, [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for removing items from the user’s library.)
+3. Won’t show song durations, because I [consider them spoilers](https://en.wikipedia.org/wiki/Hidden_track). If this were a music app for everyone, I would add a mode; but it’s not, and [modes are bad](https://spectrum.ieee.org/of-modes-and-men). (Settings are modes too.)
